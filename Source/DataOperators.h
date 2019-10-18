@@ -36,6 +36,7 @@ namespace DataOperators
 #include "ReduceOp.hpp"
 #include "ScanOp.hpp"
 #include "SortOp.hpp"
+#include "StartOp.hpp"
 #include "SuperAggOp.hpp"
 #include "SuperCountOp.hpp"
 #include "SuperMergeOp.hpp"
