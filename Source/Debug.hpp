@@ -29,7 +29,7 @@ namespace Correctness
 
 #define THROW(azDescription) \
 { \
-  Correctness::vAssertFailed(zDescription,__FILE__,__LINE__); \
+  Correctness::vAssertFailed(azDescription,__FILE__,__LINE__); \
 }
 
 

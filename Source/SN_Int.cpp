@@ -38,7 +38,7 @@ i8 SN_Int::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
   
   if ( ! StrLib::bExtractInteger(aacCrs,&m_wDtm.m_iInt,
                                  true/*bWithSign*/) )
-    throw C_UNKNOWN;
+    THROW("StrLib::bExtractInteger");
 
   return m_wDtm.m_iInt;
 }

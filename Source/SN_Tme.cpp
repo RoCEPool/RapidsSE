@@ -39,8 +39,8 @@ i8 SN_Tme::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
   i8 iHour, iMinute, iSecond, iMicro;
   
   if ( ! StrLib::bExtractTime(aacCrs, iHour, iMinute, iSecond, iMicro) )
-    throw C_UNKNOWN;
-  
+    THROW("StrLib::bExtractTime");
+
   m_wDtm.xTme.m_uHour   = iHour;
   m_wDtm.xTme.m_uMinute = iMinute;
   m_wDtm.xTme.m_uSecond = iSecond;
