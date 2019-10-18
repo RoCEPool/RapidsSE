@@ -133,45 +133,69 @@ eOR ScanOp::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANOP,_FOOTER_);
   
-  if (m_bRunPrelim)
-    vPreliminary();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pipe the crw buffers
-  
-  if (m_pPipeline->bPulsed()) {
-    vDebugPoint();
-  }
-  
-  while (m_pCrwBuffer) {
+  for (;;) {
     
-    if (bIsCancelling()) {
-      vTrace("%s::!CANCELED :   after piping %lld buffers\n"_Stz,
-             m_sName.szStz(),
-             m_iWorkDone);
-      break;
+    Operand* pOperand = pPopQueue();
+    
+    if (! pOperand) {
+      ASSERT(bIsLocked());
+      return OR_BIDE;
     }
     
-    vPipeOut(m_pCrwBuffer);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    vIncWorkDone();
-    
-    m_pCrwBuffer = m_pCrwBuffer->pNextBuffer();
-    
+    switch (pOperand->eClass()) {
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case CN_ENDMARKER:
+        vPipeOut(pOperand);
+        goto L_EXIT;
+        break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case CN_STARTMARKER:
+        
+        if (m_bRunPrelim)
+          vPreliminary();
+        if (m_pPipeline->bPulsed()) {
+          vDebugPoint();
+        }
+        
+        while (m_pCrwBuffer) {
+          
+          if (bIsCancelling()) {
+            vTrace("%s::!CANCELED :   after piping %lld buffers\n"_Stz,
+                   m_sName.szStz(),
+                   m_iWorkDone);
+            break;
+          }
+          
+          vPipeOut(m_pCrwBuffer);
+          
+          vIncWorkDone();
+          
+          m_pCrwBuffer = m_pCrwBuffer->pNextBuffer();
+          
 #ifdef WITH_PULSING
-    if (bPause()) {
-      AM::vGrabTaskLock(m_pTask);
-      vPipeOut(new PauseMarker);
-      return OR_PAUSE;
-    }
+          if (bPause()) {
+            AM::vGrabTaskLock(m_pTask);
+            vPipeOut(new PauseMarker);
+            return OR_PAUSE;
+          }
 #endif
+        }
+        break;
+        
+      default:
+        RASSERT(0);
+        break;
+    }
+    
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pipe end marker
-  
-  vPipeOut_endMarker();
-  
+L_EXIT:
   return OR_EXIT;
 }
 

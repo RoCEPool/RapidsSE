@@ -129,6 +129,9 @@ eOR StartOp::eStartLoop(void)
   // pipe out the start marker
   vPipeOut(new StartMarker);
   
+  // pipe out the end marker
+  vPipeOut(new EndMarker);
+  
   return OR_EXIT;
 }
 
