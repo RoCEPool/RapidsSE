@@ -19,7 +19,7 @@ void Step::vAddSteps_DdlLock(void)
 /*----------------------------------------------------------------------------*/
 /* ddlLock::dropRead -- drop ddl lock for read                                */
 /*----------------------------------------------------------------------------*/
-void Step::vDdlLockDropRead(MP_Task mpTask)
+void Step::vDdlLockDropRead(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDdlLockDropRead"_Stz);
   
@@ -35,7 +35,7 @@ void Step::vDdlLockDropRead(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* ddlLock::dropWrite -- drop ddl lock for write                              */
 /*----------------------------------------------------------------------------*/
-void Step::vDdlLockDropWrite(MP_Task mpTask)
+void Step::vDdlLockDropWrite(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDdlLockDropWrite"_Stz);
   
@@ -51,7 +51,7 @@ void Step::vDdlLockDropWrite(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* ddlLock::grabRead -- grab ddl lock for read                                */
 /*----------------------------------------------------------------------------*/
-void Step::vDdlLockGrabRead(MP_Task mpTask)
+void Step::vDdlLockGrabRead(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDdlLockGrabRead"_Stz);
   
@@ -67,7 +67,7 @@ void Step::vDdlLockGrabRead(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* ddlLock::grabWrite -- grab ddl lock for write                              */
 /*----------------------------------------------------------------------------*/
-void Step::vDdlLockGrabWrite(MP_Task mpTask)
+void Step::vDdlLockGrabWrite(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDdlLockGrabWrite"_Stz);
   
@@ -83,7 +83,7 @@ void Step::vDdlLockGrabWrite(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* ddlLock::testDrop -- test for ddl lock and drop if locked by task          */
 /*----------------------------------------------------------------------------*/
-void Step::vDdlLockTestDrop(MP_Task mpTask)
+void Step::vDdlLockTestDrop(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDdlLockTestDrop"_Stz);
   

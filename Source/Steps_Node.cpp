@@ -31,7 +31,7 @@ void Step::vAddSteps_Node(void)
 /*----------------------------------------------------------------------------*/
 /* node::new -- create a new node                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeNew(MP_Task mpTask)
+void Step::vNodeNew(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodeNew"_Stz);
   
@@ -77,7 +77,7 @@ void Step::vNodeNew(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* node.forget -- remove node from node list and delete                       */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeForget(MP_Task mpTask)
+void Step::vNodeForget(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodeForget"_Stz);
   
@@ -103,7 +103,7 @@ void Step::vNodeForget(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* node.IP -- push IP of node                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeIP(MP_Task mpTask)
+void Step::vNodeIP(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodeIP"_Stz);
   
@@ -125,7 +125,7 @@ void Step::vNodeIP(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* node.name -- push name of node                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeName(MP_Task mpTask)
+void Step::vNodeName(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodeName"_Stz);
   
@@ -147,7 +147,7 @@ void Step::vNodeName(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* node.no -- push node number of node (of a grid)                            */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeNo(MP_Task mpTask)
+void Step::vNodeNo(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vNodeNo"_Stz);
   
@@ -167,7 +167,7 @@ ENTRY("vNodeNo"_Stz);
 /*----------------------------------------------------------------------------*/
 /* node.partitions -- get no of partitions of this node (of a grid)           */
 /*----------------------------------------------------------------------------*/
-void Step::vNodePartitions(MP_Task mpTask)
+void Step::vNodePartitions(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodePartitions"_Stz);
   
@@ -179,7 +179,7 @@ void Step::vNodePartitions(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* node.port -- push port number of node (of a grid)                          */
 /*----------------------------------------------------------------------------*/
-void Step::vNodePort(MP_Task mpTask)
+void Step::vNodePort(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodeNo"_Stz);
   
@@ -196,7 +196,7 @@ void Step::vNodePort(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* node.recvSocket! -- set receive socket for node                            */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeRecvSocketStore(MP_Task mpTask)
+void Step::vNodeRecvSocketStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodeRecvSocketStore"_Stz);
   
@@ -218,7 +218,7 @@ void Step::vNodeRecvSocketStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* node.recvSocket@ -- get receive socket for node                            */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeRecvSocketFetch(MP_Task mpTask)
+void Step::vNodeRecvSocketFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodeRecvSocketFetch"_Stz);
   
@@ -237,7 +237,7 @@ void Step::vNodeRecvSocketFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* node.sendSocket! -- set send socket for node                               */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeSendSocketStore(MP_Task mpTask)
+void Step::vNodeSendSocketStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodeSendSocketStore"_Stz);
   
@@ -259,7 +259,7 @@ void Step::vNodeSendSocketStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* node.sendSocket@ -- get send socket for node                               */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeSendSocketFetch(MP_Task mpTask)
+void Step::vNodeSendSocketFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodeSendSocketFetch"_Stz);
   
@@ -278,7 +278,7 @@ void Step::vNodeSendSocketFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* node.size -- get size of this node (of a grid)                             */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeSize(MP_Task mpTask)
+void Step::vNodeSize(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodeSize"_Stz);
   
@@ -290,7 +290,7 @@ void Step::vNodeSize(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* node.start -- start node                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeStartNode(MP_Task mpTask)
+void Step::vNodeStartNode(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodeStartNode"_Stz);
   
@@ -307,7 +307,7 @@ void Step::vNodeStartNode(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* node.state! -- set state of node                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeStateStore(MP_Task mpTask)
+void Step::vNodeStateStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodeStateStore"_Stz);
   
@@ -328,7 +328,7 @@ void Step::vNodeStateStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* node.state@ -- get state of node                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeStateFetch(MP_Task mpTask)
+void Step::vNodeStateFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodeStateFetch"_Stz);
   
@@ -347,7 +347,7 @@ void Step::vNodeStateFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* node.status -- get status of this node (of a grid)                         */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeStatus(MP_Task mpTask)
+void Step::vNodeStatus(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNodeStatus"_Stz);
 

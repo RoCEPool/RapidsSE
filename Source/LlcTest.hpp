@@ -8,7 +8,7 @@ namespace Utilities
   class LlcTest
   {
   public:
-    static void vTest(Tasks::MP_Task mpTask);
+    static void vTest(Tasks::MP_Task mpTask, Forth* pForth);
 
     static void vAnIteration(i8 iIteration, i8 nStepLength, i8 nMissRatio);
   };

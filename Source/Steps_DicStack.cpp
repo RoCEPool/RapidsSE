@@ -20,7 +20,7 @@ void Step::vAddSteps_DicStack(void)
 /*----------------------------------------------------------------------------*/
 /* dicStack.depth -- get number of dictionaries on dictionary stack           */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackDepth(MP_Task mpTask)
+void Step::vDicStackDepth(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDicStackDepth"_Stz);
   
@@ -41,7 +41,7 @@ void Step::vDicStackDepth(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.drop -- discard top of dictionary stack                           */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackDrop(MP_Task mpTask)
+void Step::vDicStackDrop(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDicStackDrop"_Stz);
   
@@ -60,7 +60,7 @@ void Step::vDicStackDrop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.dump -- dump dictionary stack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackDump(MP_Task mpTask)
+void Step::vDicStackDump(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDicStackDump"_Stz);
   
@@ -79,7 +79,7 @@ void Step::vDicStackDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.pick -- pick a dic from dic stack and push onto data stack        */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackPick(MP_Task mpTask)
+void Step::vDicStackPick(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDicStackPick"_Stz);
   
@@ -104,7 +104,7 @@ void Step::vDicStackPick(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.pop -- pop top of dictionary stack                                */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackPop(MP_Task mpTask)
+void Step::vDicStackPop(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDicStackPop"_Stz);
   
@@ -123,7 +123,7 @@ void Step::vDicStackPop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.push -- push a dictionary onto given dictionary stack             */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackPush(MP_Task mpTask)
+void Step::vDicStackPush(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDicStackPush"_Stz);
   

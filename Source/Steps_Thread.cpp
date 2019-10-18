@@ -28,7 +28,7 @@ void Step::vAddSteps_Thread(void)
 /*----------------------------------------------------------------------------*/
 /* thread.bind -- bind this thread to a cpu                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadBind(MP_Task mpTask)
+void Step::vThreadBind(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vThreadBind"_Stz);
   
@@ -53,7 +53,7 @@ ENTRY("vThreadBind"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.cpu -- get the cpu this thread is running on                        */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadCpu(MP_Task mpTask)
+void Step::vThreadCpu(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vThreadCpu"_Stz);
   
@@ -74,7 +74,7 @@ ENTRY("vThreadCpu"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.dedicated@ -- fetch m_eDedicated                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadDedicatedFetch(MP_Task mpTask)
+void Step::vThreadDedicatedFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vThreadDedicatedFetch"_Stz);
   
@@ -91,7 +91,7 @@ void Step::vThreadDedicatedFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.dedicated! -- store m_eDedicated                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadDedicatedStore(MP_Task mpTask)
+void Step::vThreadDedicatedStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vThreadDedicatedStore"_Stz);
   
@@ -112,7 +112,7 @@ void Step::vThreadDedicatedStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.disableRealtime -- disable realtime                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadDisableRealtime(MP_Task mpTask)
+void Step::vThreadDisableRealtime(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vThreadDisableRealtime"_Stz);
   
@@ -126,7 +126,7 @@ void Step::vThreadDisableRealtime(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.dump -- thread dump                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadDump(MP_Task mpTask)
+void Step::vThreadDump(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vThreadDump"_Stz);
   
@@ -147,7 +147,7 @@ ENTRY("vThreadDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.enableRealtime -- enable realtime                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadEnableRealtime(MP_Task mpTask)
+void Step::vThreadEnableRealtime(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vThreadEnableRealtime"_Stz);
   
@@ -161,7 +161,7 @@ void Step::vThreadEnableRealtime(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.id -- get the id of thread                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadId(MP_Task mpTask)
+void Step::vThreadId(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vThreadId"_Stz);
   
@@ -183,7 +183,7 @@ ENTRY("vThreadId"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread::sleepMsec -- sleep for n milliseconds                                */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadSleepMsec(MP_Task mpTask)
+void Step::vThreadSleepMsec(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vThreadSleepMsec"_Stz);
   
@@ -202,7 +202,7 @@ ENTRY("vThreadSleepMsec"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread::sleepNsec -- sleep for n nanoseconds                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadSleepNsec(MP_Task mpTask)
+void Step::vThreadSleepNsec(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vThreadSleepNsec"_Stz);
   
@@ -221,7 +221,7 @@ void Step::vThreadSleepNsec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.sleepSsec -- sleep for n seconds                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadSleepSsec(MP_Task mpTask)
+void Step::vThreadSleepSsec(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vThreadSleepSsec"_Stz);
   
@@ -240,7 +240,7 @@ void Step::vThreadSleepSsec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread::sleepUsec -- sleep for n microseconds                                */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadSleepUsec(MP_Task mpTask)
+void Step::vThreadSleepUsec(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vThreadSleepUsec"_Stz);
   

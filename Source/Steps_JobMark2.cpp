@@ -17,7 +17,7 @@ void Step::vAddSteps_JobMark2(void)
 /*----------------------------------------------------------------------------*/
 /* jobMark2.index! -- store index pointer                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJobMark2IndexStore(MP_Task mpTask)
+void Step::vJobMark2IndexStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobMark2IndexStore"_Stz);
   
@@ -39,7 +39,7 @@ void Step::vJobMark2IndexStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobMark2.tableName@ -- fetch table name                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJobMark2TableNameFetch(MP_Task mpTask)
+void Step::vJobMark2TableNameFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobMark2TableNameFetch"_Stz);
   
@@ -59,7 +59,7 @@ void Step::vJobMark2TableNameFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobMark2.table! -- store table pointer                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJobMark2TableStore(MP_Task mpTask)
+void Step::vJobMark2TableStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobMark2TableStore"_Stz);
   

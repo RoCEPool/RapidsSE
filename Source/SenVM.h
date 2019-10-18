@@ -29,13 +29,13 @@ namespace SenVM
 #include "Local.hpp"
 #include "LocalSet.hpp"
 #include "Routine.hpp"
+#include "Stack.hpp"
+#include "Forth.hpp"
 #include "Word.hpp"
 
-#include "Stack.hpp"
 
 #include "Compiler.hpp"
 
-#include "Forth.hpp"
 
 // -- -- -- -- -- -- -- --
 

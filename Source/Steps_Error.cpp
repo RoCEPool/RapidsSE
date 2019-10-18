@@ -15,7 +15,7 @@ void Step::vAddSteps_Error(void)
 /*----------------------------------------------------------------------------*/
 /* error.msg -- get error message given the error code                        */
 /*----------------------------------------------------------------------------*/
-void Step::vErrorMsg(MP_Task mpTask)
+void Step::vErrorMsg(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vErrorMsg"_Stz);
   

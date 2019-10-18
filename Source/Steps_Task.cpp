@@ -40,7 +40,7 @@ void Step::vAddSteps_Task(void)
 /*----------------------------------------------------------------------------*/
 /* task.ack -- acknowledge that task of this tasks completion                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskAck(MP_Task mpTask)
+void Step::vTaskAck(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskAck"_Stz);
   
@@ -62,7 +62,7 @@ void Step::vTaskAck(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.acks! -- store value into given tasks m_oAcksRmg                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskAcksStore(MP_Task mpTask)
+void Step::vTaskAcksStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskAcksStore"_Stz);
   
@@ -97,7 +97,7 @@ void Step::vTaskAcksStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.breakPoint -- break point so we can examine task & thread state       */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskBreakPoint(MP_Task mpTask)
+void Step::vTaskBreakPoint(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskBreakPoint"_Stz);
     
@@ -107,7 +107,7 @@ void Step::vTaskBreakPoint(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.dicStack -- push task dictionary onto data stack                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskDicStack(MP_Task mpTask)
+void Step::vTaskDicStack(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskDicStack"_Stz);
   
@@ -128,7 +128,7 @@ void Step::vTaskDicStack(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.dropLock -- drop lock of task on data stack                           */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskDropLock(MP_Task mpTask)
+void Step::vTaskDropLock(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskDrop"_Stz);
   
@@ -146,7 +146,7 @@ void Step::vTaskDropLock(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.dump -- dump of task on data stack                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskDump(MP_Task mpTask)
+void Step::vTaskDump(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vTaskDump"_Stz);
   
@@ -163,7 +163,7 @@ ENTRY("vTaskDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* task::delete -- remove task from scheduler and delete                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskDelete(MP_Task mpTask)
+void Step::vTaskDelete(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskDelete"_Stz);
   
@@ -177,7 +177,7 @@ void Step::vTaskDelete(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.grabLock -- grab lock of task on data stack                           */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskGrabLock(MP_Task mpTask)
+void Step::vTaskGrabLock(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskGrab"_Stz);
   
@@ -194,7 +194,7 @@ void Step::vTaskGrabLock(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.isAckSet -- is task ack set?                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskIsAckSet(MP_Task mpTask)
+void Step::vTaskIsAckSet(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskIsAckSet"_Stz);
   
@@ -220,7 +220,7 @@ void Step::vTaskIsAckSet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.job@ -- push job of given task                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskJobFetch(MP_Task mpTask)
+void Step::vTaskJobFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskJobFetch"_Stz);
   
@@ -239,7 +239,7 @@ void Step::vTaskJobFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.job! -- store job into given task                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskJobStore(MP_Task mpTask)
+void Step::vTaskJobStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskJobStore"_Stz);
   
@@ -261,7 +261,7 @@ void Step::vTaskJobStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.name@ -- fetch task name                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskNameFetch(MP_Task mpTask)
+void Step::vTaskNameFetch(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vTaskNameFetch"_Stz);
   
@@ -280,7 +280,7 @@ ENTRY("vTaskNameFetch"_Stz);
 /*----------------------------------------------------------------------------*/
 /* task.seed -- set seed word and args of task                                */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSeed(MP_Task mpTask)
+void Step::vTaskSeed(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vTaskSeed"_Stz);
   
@@ -325,7 +325,7 @@ ENTRY("vTaskSeed"_Stz);
 /*----------------------------------------------------------------------------*/
 /* task.session@ -- fetch session of task on data stack                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSessionFetch(MP_Task mpTask)
+void Step::vTaskSessionFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskSessionFetch"_Stz);
   
@@ -344,7 +344,7 @@ void Step::vTaskSessionFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.session! -- store session on data stack into task on data stack       */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSessionStore(MP_Task mpTask)
+void Step::vTaskSessionStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskSessionStore"_Stz);
   
@@ -369,7 +369,7 @@ void Step::vTaskSessionStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.sendNode@ -- fetch send node of task on data stack                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSendNodeFetch(MP_Task mpTask)
+void Step::vTaskSendNodeFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskSendNodeFetch"_Stz);
   
@@ -390,7 +390,7 @@ void Step::vTaskSendNodeFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.sendNode! -- store send node on data stack into task on data stack    */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSendNodeStore(MP_Task mpTask)
+void Step::vTaskSendNodeStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskSendNodeStore"_Stz);
   
@@ -412,7 +412,7 @@ void Step::vTaskSendNodeStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task::sleepMsec -- this task sleeps for given milliseconds                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSleepMsec(MP_Task mpTask)
+void Step::vTaskSleepMsec(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskSleepMsec"_Stz);
   
@@ -432,7 +432,7 @@ void Step::vTaskSleepMsec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task::sleepSsec -- this task sleeps for given seconds                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSleepSsec(MP_Task mpTask)
+void Step::vTaskSleepSsec(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskSleepSsec"_Stz);
   
@@ -452,7 +452,7 @@ void Step::vTaskSleepSsec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task::sleepUsec -- this task sleeps for given microseconds                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSleepUsec(MP_Task mpTask)
+void Step::vTaskSleepUsec(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskSleepUsec"_Stz);
   
@@ -470,7 +470,7 @@ void Step::vTaskSleepUsec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.state@ -- fetch state of task                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskStateFetch(MP_Task mpTask)
+void Step::vTaskStateFetch(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vTaskStateFetch"_Stz);
   
@@ -489,7 +489,7 @@ ENTRY("vTaskStateFetch"_Stz);
 /*----------------------------------------------------------------------------*/
 /* task::this -- push this task                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskThis(MP_Task mpTask)
+void Step::vTaskThis(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vTaskThis"_Stz);
   
@@ -503,7 +503,7 @@ ENTRY("vTaskThis"_Stz);
 /*----------------------------------------------------------------------------*/
 /* task.thread -- push given tasks thread                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskThread(MP_Task mpTask)
+void Step::vTaskThread(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskThread"_Stz);
   
@@ -522,7 +522,7 @@ void Step::vTaskThread(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.wait -- this task waits for signal                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskWait(MP_Task mpTask)
+void Step::vTaskWait(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskWait"_Stz);
   
@@ -534,7 +534,7 @@ void Step::vTaskWait(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task::yield -- this task yields                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskYield(MP_Task mpTask)
+void Step::vTaskYield(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskYield"_Stz);
     

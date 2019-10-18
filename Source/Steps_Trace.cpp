@@ -18,7 +18,7 @@ void Step::vAddSteps_Trace(void)
 /*----------------------------------------------------------------------------*/
 /* turn tracing off                                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vTraceOff(MP_Task mpTask)
+void Step::vTraceOff(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTraceOff"_Stz);
   
@@ -30,7 +30,7 @@ void Step::vTraceOff(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* turn tracing on                                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vTraceOn(MP_Task mpTask)
+void Step::vTraceOn(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTraceOn"_Stz);
   
@@ -42,7 +42,7 @@ void Step::vTraceOn(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* trace point                                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vTracePoint(MP_Task mpTask)
+void Step::vTracePoint(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTracePoint"_Stz);
   
@@ -60,7 +60,7 @@ void Step::vTracePoint(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* set tracing                                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vTraceSet(MP_Task mpTask)
+void Step::vTraceSet(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTraceSet"_Stz);
   

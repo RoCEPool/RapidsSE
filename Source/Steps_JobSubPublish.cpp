@@ -21,7 +21,7 @@ void Step::vAddSteps_JobSubPublish(void)
 /*----------------------------------------------------------------------------*/
 /* job_subPublish.begin -- begin subpublish                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPublishBegin(MP_Task mpTask)
+void Step::vJob_SubPublishBegin(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubPublishBegin"_Stz);
   
@@ -40,7 +40,7 @@ void Step::vJob_SubPublishBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subPublish.chunk -- chunk subpublish                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPublishChunk(MP_Task mpTask)
+void Step::vJob_SubPublishChunk(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubPublishChunk"_Stz);
   
@@ -64,7 +64,7 @@ void Step::vJob_SubPublishChunk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subPublish.end -- end subpublish                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPublishEnd(MP_Task mpTask)
+void Step::vJob_SubPublishEnd(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubPublishEnd"_Stz);
   
@@ -82,7 +82,7 @@ void Step::vJob_SubPublishEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subPublish.publishJobId@ -- fetch the publish job id                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPublishPublishJobIdFetch(MP_Task mpTask)
+void Step::vJob_SubPublishPublishJobIdFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubPublishPublishJobIdFetch"_Stz);
   
@@ -99,7 +99,7 @@ void Step::vJob_SubPublishPublishJobIdFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subPublish.slot@ -- fetch the job slot                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPublishSlotFetch(MP_Task mpTask)
+void Step::vJob_SubPublishSlotFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubPublishSlotFetch"_Stz);
   
@@ -116,7 +116,7 @@ void Step::vJob_SubPublishSlotFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subPublish.table! -- store table into job subPublish                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPublishTableStore(MP_Task mpTask)
+void Step::vJob_SubPublishTableStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubPublishTableStore"_Stz);
   

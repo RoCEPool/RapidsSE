@@ -16,7 +16,7 @@ void Step::vAddSteps_Utility(void)
 /*----------------------------------------------------------------------------*/
 /* utility::prefetch -- test prefetch                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vUtilityPrefetch(MP_Task mpTask)
+void Step::vUtilityPrefetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vUtilityPrefetch"_Stz);
   
@@ -28,7 +28,7 @@ void Step::vUtilityPrefetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* utility::schemaTest -- run schema test                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vUtilitySchemaTest(MP_Task mpTask)
+void Step::vUtilitySchemaTest(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vUtilitySchemaTest"_Stz);
   

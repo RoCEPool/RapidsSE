@@ -17,7 +17,7 @@ void Step::vAddSteps_JobCat(void)
 /*----------------------------------------------------------------------------*/
 /* job_cat.begin -- begin cat                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_CatBegin(MP_Task mpTask)
+void Step::vJob_CatBegin(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_CatBegin"_Stz);
   
@@ -36,7 +36,7 @@ void Step::vJob_CatBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_cat.chunk -- cat data from pipe                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_CatChunk(MP_Task mpTask)
+void Step::vJob_CatChunk(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_CatChunk"_Stz);
   
@@ -55,7 +55,7 @@ void Step::vJob_CatChunk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_cat.end -- end cat                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_CatEnd(MP_Task mpTask)
+void Step::vJob_CatEnd(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_CatEnd"_Stz);
   

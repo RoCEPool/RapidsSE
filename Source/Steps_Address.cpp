@@ -17,7 +17,7 @@ void Step::vAddSteps_Address(void)
 /*----------------------------------------------------------------------------*/
 /* eql -- test top two address on data stack for equality                     */
 /*----------------------------------------------------------------------------*/
-void Step::vAddressEqual(MP_Task mpTask)
+void Step::vAddressEqual(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAddressEql"_Stz);
   
@@ -40,7 +40,7 @@ void Step::vAddressEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* @ -- fetch value using pointer on stack                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vAddressFetch(MP_Task mpTask)
+void Step::vAddressFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAddressFetch"_Stz);
   
@@ -83,7 +83,7 @@ void Step::vAddressFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* ! -- store value using pointer on stack                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vAddressStore(MP_Task mpTask)
+void Step::vAddressStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAddressStore"_Stz);
   

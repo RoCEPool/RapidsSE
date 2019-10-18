@@ -20,7 +20,7 @@ void Step::vAddSteps_ApiState(void)
 /*----------------------------------------------------------------------------*/
 /* c -- increment the number of __begun received                              */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncBegun(MP_Task mpTask)
+void Step::vApiStateIncBegun(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vApiIncBegun"_Stz);
   
@@ -43,7 +43,7 @@ void Step::vApiStateIncBegun(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* apiState::incCancelled -- increment the number of __cancelled received     */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncCancelled(MP_Task mpTask)
+void Step::vApiStateIncCancelled(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vApiIncBegun"_Stz);
   
@@ -66,7 +66,7 @@ void Step::vApiStateIncCancelled(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* apiState::incEnded -- increment the number of __ended received             */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncEnded(MP_Task mpTask)
+void Step::vApiStateIncEnded(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vApiIncBegun"_Stz);
   
@@ -89,7 +89,7 @@ void Step::vApiStateIncEnded(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* apiState::incExecuted-- increment the number of __executed received        */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncExecuted(MP_Task mpTask)
+void Step::vApiStateIncExecuted(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vApiIncExecuted"_Stz);
   
@@ -112,7 +112,7 @@ void Step::vApiStateIncExecuted(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* apiState::senLoc -- set last reported sen location                         */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateSenLoc(MP_Task mpTask)
+void Step::vApiStateSenLoc(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vApiStateSenLoc"_Stz);
   
@@ -130,7 +130,7 @@ void Step::vApiStateSenLoc(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* apiState::traceSession -- trace the api state for this session             */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateTraceSession(MP_Task mpTask)
+void Step::vApiStateTraceSession(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vApiStateTraceSession"_Stz);
   

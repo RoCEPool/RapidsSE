@@ -31,7 +31,7 @@ void Step::vAddSteps_Word(void)
 /*----------------------------------------------------------------------------*/
 /* word -- root kind                                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vWord(MP_Task mpTask)
+void Step::vWord(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWord"_Stz);
   EXIT();
@@ -40,7 +40,7 @@ void Step::vWord(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.category@ -- word category fetch                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vWordCategoryFetch(MP_Task mpTask)
+void Step::vWordCategoryFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordKindGet"_Stz);
   
@@ -59,7 +59,7 @@ void Step::vWordCategoryFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.category! -- word category store                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vWordCategoryStore(MP_Task mpTask)
+void Step::vWordCategoryStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordKindSet"_Stz);
   
@@ -81,7 +81,7 @@ void Step::vWordCategoryStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.dump -- dump word                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vWordDump(MP_Task mpTask)
+void Step::vWordDump(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vWordDump"_Stz);
   
@@ -98,7 +98,7 @@ ENTRY("vWordDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* word.EnameSet@ -- fetch ename set                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vWordEnmSetFetch(MP_Task mpTask)
+void Step::vWordEnmSetFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordEnmSetFetch"_Stz);
   
@@ -117,7 +117,7 @@ void Step::vWordEnmSetFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.EnameSet! -- store ename set                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vWordEnmSetStore(MP_Task mpTask)
+void Step::vWordEnmSetStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordEnmSetStore"_Stz);
   
@@ -139,7 +139,7 @@ void Step::vWordEnmSetStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.exitHook@ -- get exit hook of word                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vWordExitHookGet(MP_Task mpTask)
+void Step::vWordExitHookGet(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordExitHookGet"_Stz);
   
@@ -158,7 +158,7 @@ void Step::vWordExitHookGet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.exitHook! -- set exit hook of word                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vWordExitHookSet(MP_Task mpTask)
+void Step::vWordExitHookSet(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordExitHookSet"_Stz);
   
@@ -179,7 +179,7 @@ void Step::vWordExitHookSet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.forget -- forget word on stack                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vWordForget(MP_Task mpTask)
+void Step::vWordForget(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordForget"_Stz);
   
@@ -199,7 +199,7 @@ void Step::vWordForget(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.immediate@ -- get immediate flag of word                              */
 /*----------------------------------------------------------------------------*/
-void Step::vWordImmediateGet(MP_Task mpTask)
+void Step::vWordImmediateGet(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordImmediateGet"_Stz);
   
@@ -218,7 +218,7 @@ void Step::vWordImmediateGet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.immediate! -- set immediate flag of word                              */
 /*----------------------------------------------------------------------------*/
-void Step::vWordImmediateSet(MP_Task mpTask)
+void Step::vWordImmediateSet(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordImmediateSet"_Stz);
   
@@ -239,7 +239,7 @@ void Step::vWordImmediateSet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* isImmediate -- is word immediate?                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vWordIsImmediate(MP_Task mpTask)
+void Step::vWordIsImmediate(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordIsImmediate"_Stz);
   
@@ -260,7 +260,7 @@ void Step::vWordIsImmediate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.isIntrinsic -- is word a primitive?                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vWordIsIntrinsic(MP_Task mpTask)
+void Step::vWordIsIntrinsic(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordIsIntrinsic"_Stz);
   
@@ -279,7 +279,7 @@ void Step::vWordIsIntrinsic(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.kind@ -- word kind get                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vWordKindFetch(MP_Task mpTask)
+void Step::vWordKindFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordKindFetch"_Stz);
   
@@ -298,7 +298,7 @@ void Step::vWordKindFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.kind! -- word kind set                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vWordKindStore(MP_Task mpTask)
+void Step::vWordKindStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordKindStore"_Stz);
   
@@ -320,7 +320,7 @@ void Step::vWordKindStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.name@ -- fetch name of word                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vWordNameFetch(MP_Task mpTask)
+void Step::vWordNameFetch(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vWordName"_Stz);
   
@@ -339,7 +339,7 @@ ENTRY("vWordName"_Stz);
 /*----------------------------------------------------------------------------*/
 /* word.name! -- store name of word                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vWordNameStore(MP_Task mpTask)
+void Step::vWordNameStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordName"_Stz);
   
@@ -360,7 +360,7 @@ void Step::vWordNameStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.prev -- push prev word                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vWordPrev(MP_Task mpTask)
+void Step::vWordPrev(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vWordPrev"_Stz);
   

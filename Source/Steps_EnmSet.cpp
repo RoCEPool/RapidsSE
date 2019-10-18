@@ -21,7 +21,7 @@ void Step::vAddSteps_EnmSet(void)
 /*----------------------------------------------------------------------------*/
 /* EnameSet::new -- new ename-set                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vEnmSetNew(MP_Task mpTask)
+void Step::vEnmSetNew(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vEnmSetNew"_Stz);
   
@@ -38,7 +38,7 @@ void Step::vEnmSetNew(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* EnameSet.addInt -- add a name-integer pair to ename-set                      */
 /*----------------------------------------------------------------------------*/
-void Step::vEnmSetAddInt(MP_Task mpTask)
+void Step::vEnmSetAddInt(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vEnmSetAddInt"_Stz);
   
@@ -64,7 +64,7 @@ void Step::vEnmSetAddInt(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* EnameSet.addStr -- add a name-string pair to ename-set                       */
 /*----------------------------------------------------------------------------*/
-void Step::vEnmSetAddStr(MP_Task mpTask)
+void Step::vEnmSetAddStr(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vEnmSetAddStr"_Stz);
   
@@ -90,7 +90,7 @@ void Step::vEnmSetAddStr(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* EnameSet.asStr -- get ename-set as a single string                           */
 /*----------------------------------------------------------------------------*/
-void Step::vEnmSetAsStr(MP_Task mpTask)
+void Step::vEnmSetAsStr(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vEnmSetAsStr"_Stz);
   
@@ -112,7 +112,7 @@ void Step::vEnmSetAsStr(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* EnameSet.getStr -- get str value from ename-set with given name              */
 /*----------------------------------------------------------------------------*/
-void Step::vEnmSetGetStr(MP_Task mpTask)
+void Step::vEnmSetGetStr(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vEnmSetGetStr"_Stz);
   
@@ -136,7 +136,7 @@ void Step::vEnmSetGetStr(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* EnameSet.hasName -- test if ename-set has a pair with given name             */
 /*----------------------------------------------------------------------------*/
-void Step::vEnmSetHasName(MP_Task mpTask)
+void Step::vEnmSetHasName(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vEnmSetHasName"_Stz);
   

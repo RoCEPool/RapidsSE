@@ -37,7 +37,7 @@ void Step::vAddSteps_Astack(void)
 /*----------------------------------------------------------------------------*/
 /* astack.class -- get class of nth value on aux stack                        */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackClass(MP_Task mpTask)
+void Step::vAstackClass(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstackClass"_Stz);
   
@@ -59,7 +59,7 @@ void Step::vAstackClass(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* adepth -- put number of values in aux stack onto data stack                */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackDepth(MP_Task mpTask)
+void Step::vAstackDepth(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstackDepth"_Stz);
   
@@ -73,7 +73,7 @@ void Step::vAstackDepth(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* adrop -- discard top value off astack                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackDrop(MP_Task mpTask)
+void Step::vAstackDrop(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstackDrop"_Stz);
   
@@ -89,7 +89,7 @@ void Step::vAstackDrop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* adup -- dup top of aux stack                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackDup(MP_Task mpTask)
+void Step::vAstackDup(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstackDup"_Stz);
   
@@ -108,7 +108,7 @@ void Step::vAstackDup(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* a@ -- place copy of top value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackFetch(MP_Task mpTask)
+void Step::vAstackFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstackFetch"_Stz);
   
@@ -126,7 +126,7 @@ void Step::vAstackFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* nip -- drop the 2nd value from the aux stack ( B A -- A )                  */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackNip(MP_Task mpTask)
+void Step::vAstackNip(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstackNip"_Stz);
   
@@ -144,7 +144,7 @@ void Step::vAstackNip(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* apick -- place copy of nth value in aux stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackPick(MP_Task mpTask)
+void Step::vAstackPick(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstackPick"_Stz);
   
@@ -166,7 +166,7 @@ void Step::vAstackPick(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* areverse -- reverse astack values ( ... D C B A n -- A B C D ... )         */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackReverse(MP_Task mpTask)
+void Step::vAstackReverse(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstackReverse"_Stz);
   
@@ -200,7 +200,7 @@ void Step::vAstackReverse(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* astk -- dump the aux stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackStk(MP_Task mpTask)
+void Step::vAstackStk(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstackStk"_Stz);
   
@@ -214,7 +214,7 @@ void Step::vAstackStk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* swap -- swap top two values on aux stack                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackSwap(MP_Task mpTask)
+void Step::vAstackSwap(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstackSwap"_Stz);
   
@@ -233,7 +233,7 @@ void Step::vAstackSwap(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >a -- move value from dstack to astack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackToA(MP_Task mpTask)
+void Step::vAstackToA(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstackToA"_Stz);
   
@@ -249,7 +249,7 @@ void Step::vAstackToA(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* a> -- move value from astack to dstack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackToP(MP_Task mpTask)
+void Step::vAstackToP(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstackToP"_Stz);
   
@@ -265,7 +265,7 @@ void Step::vAstackToP(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >auxStack -- pop stack of this task and push onto aux stack of that task   */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackTransfer(MP_Task mpTask)
+void Step::vAstackTransfer(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstackTransfer"_Stz);
   
@@ -288,7 +288,7 @@ void Step::vAstackTransfer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* a0 -- place copy of 0th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack0(MP_Task mpTask)
+void Step::vAstack0(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstack0"_Stz);
   
@@ -306,7 +306,7 @@ void Step::vAstack0(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* a1 -- place copy of 1st value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack1(MP_Task mpTask)
+void Step::vAstack1(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstack1"_Stz);
   
@@ -324,7 +324,7 @@ void Step::vAstack1(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r2 -- place copy of 2nd value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack2(MP_Task mpTask)
+void Step::vAstack2(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstack2"_Stz);
   
@@ -342,7 +342,7 @@ void Step::vAstack2(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r3 -- place copy of 3rd value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack3(MP_Task mpTask)
+void Step::vAstack3(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstack3"_Stz);
   
@@ -360,7 +360,7 @@ void Step::vAstack3(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r4 -- place copy of 4th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack4(MP_Task mpTask)
+void Step::vAstack4(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstack4"_Stz);
   
@@ -378,7 +378,7 @@ void Step::vAstack4(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r5 -- place copy of 0th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack5(MP_Task mpTask)
+void Step::vAstack5(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstack5"_Stz);
   
@@ -396,7 +396,7 @@ void Step::vAstack5(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r6 -- place copy of 6th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack6(MP_Task mpTask)
+void Step::vAstack6(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstack6"_Stz);
   
@@ -414,7 +414,7 @@ void Step::vAstack6(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r7 -- place copy of 7th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack7(MP_Task mpTask)
+void Step::vAstack7(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstack7"_Stz);
   
@@ -432,7 +432,7 @@ void Step::vAstack7(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r8 -- place copy of 8th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack8(MP_Task mpTask)
+void Step::vAstack8(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstack8"_Stz);
   
@@ -450,7 +450,7 @@ void Step::vAstack8(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r9 -- place copy of 9th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack9(MP_Task mpTask)
+void Step::vAstack9(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAstack9"_Stz);
   

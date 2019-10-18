@@ -17,7 +17,7 @@ void Step::vAddSteps_JobMonitor(void)
 /*----------------------------------------------------------------------------*/
 /* job_monitor.begin -- begin monitor                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_MonitorBegin(MP_Task mpTask)
+void Step::vJob_MonitorBegin(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_MonitorBegin"_Stz);
   
@@ -36,7 +36,7 @@ void Step::vJob_MonitorBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_monitor.take -- monitor take                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_MonitorTake(MP_Task mpTask)
+void Step::vJob_MonitorTake(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_MonitorTake"_Stz);
   
@@ -60,7 +60,7 @@ void Step::vJob_MonitorTake(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_monitor.end -- end monitor                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_MonitorEnd(MP_Task mpTask)
+void Step::vJob_MonitorEnd(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_MonitorEnd"_Stz);
   

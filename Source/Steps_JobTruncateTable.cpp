@@ -18,7 +18,7 @@ void Step::vAddSteps_JobTruncateTable(void)
 /*----------------------------------------------------------------------------*/
 /* job_subTruncate.slot@ -- fetch the job slot                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubTruncateSlotFetch(MP_Task mpTask)
+void Step::vJob_SubTruncateSlotFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubTruncateSlotFetch"_Stz);
   
@@ -35,7 +35,7 @@ void Step::vJob_SubTruncateSlotFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subTruncate.truncateJobId@ -- fetch the truncate job id                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubTruncateTruncateJobIdFetch(MP_Task mpTask)
+void Step::vJob_SubTruncateTruncateJobIdFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubTruncateTruncateJobIdFetch"_Stz);
   
@@ -52,7 +52,7 @@ void Step::vJob_SubTruncateTruncateJobIdFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_truncateTable.spawnSub -- spawn sub truncate job                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_TruncateTableSpawnSub(MP_Task mpTask)
+void Step::vJob_TruncateTableSpawnSub(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_TruncateTableSpawnSub"_Stz);
   

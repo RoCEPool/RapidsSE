@@ -31,7 +31,7 @@ void Step::vAddSteps_Bp(void)
 /*----------------------------------------------------------------------------*/
 /* bp.analyze -- buffer pool analyze                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vBpAnalyze(MP_Task mpTask)
+void Step::vBpAnalyze(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vBpa"_Stz);
   
@@ -43,7 +43,7 @@ void Step::vBpAnalyze(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp.dump -- dump of objects in the buffer pool                              */
 /*----------------------------------------------------------------------------*/
-void Step::vBpDump(MP_Task mpTask)
+void Step::vBpDump(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vBpDump"_Stz);
   
@@ -55,7 +55,7 @@ void Step::vBpDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* epochDump -- dump an epoch                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vBpEpochDump(MP_Task mpTask)
+void Step::vBpEpochDump(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vBpEpochDump"_Stz);
   
@@ -71,7 +71,7 @@ void Step::vBpEpochDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* epochTake -- take an epoch                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vBpEpochTake(MP_Task mpTask)
+void Step::vBpEpochTake(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vBpEpochTake"_Stz);
   
@@ -83,7 +83,7 @@ void Step::vBpEpochTake(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp.readBufferPool -- read the buffers from the file                        */
 /*----------------------------------------------------------------------------*/
-void Step::vBpReadBufferPool(MP_Task mpTask)
+void Step::vBpReadBufferPool(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vBpReadBufferPool"_Stz);
   
@@ -95,7 +95,7 @@ void Step::vBpReadBufferPool(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp.writeBufferPool -- write the buffer pool buffers to a file              */
 /*----------------------------------------------------------------------------*/
-void Step::vBpWriteBufferPool(MP_Task mpTask)
+void Step::vBpWriteBufferPool(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vBpWriteBufferPool"_Stz);
   
@@ -107,7 +107,7 @@ void Step::vBpWriteBufferPool(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::freeBuffers -- push number of free buffers in buffer pool onto stack   */
 /*----------------------------------------------------------------------------*/
-void Step::vBpFreeBuffers(MP_Task mpTask)
+void Step::vBpFreeBuffers(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vBpFreeBuffers"_Stz);
   
@@ -121,7 +121,7 @@ void Step::vBpFreeBuffers(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::freePercent -- push free percent of buffer pool onto stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vBpFreePercent(MP_Task mpTask)
+void Step::vBpFreePercent(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vBpFreePercent"_Stz);
   
@@ -135,7 +135,7 @@ void Step::vBpFreePercent(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::freeSpace -- push free space in buffer pool onto stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vBpFreeSpace(MP_Task mpTask)
+void Step::vBpFreeSpace(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vBpFreeSpace"_Stz);
   
@@ -150,7 +150,7 @@ void Step::vBpFreeSpace(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::inUseSpace -- push in-use space in buffer pool onto stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vBpInUseSpace(MP_Task mpTask)
+void Step::vBpInUseSpace(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vBpInUseSpace"_Stz);
   
@@ -167,7 +167,7 @@ void Step::vBpInUseSpace(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::totalSpace -- push total space in buffer pool onto stack               */
 /*----------------------------------------------------------------------------*/
-void Step::vBpTotalSpace(MP_Task mpTask)
+void Step::vBpTotalSpace(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vBpTotalSpace"_Stz);
   

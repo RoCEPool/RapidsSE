@@ -18,7 +18,7 @@ void Step::vAddSteps_Memory(void)
 /*----------------------------------------------------------------------------*/
 /* memory.bytedump -- byte-oriented dump                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vMemoryByteDump(MP_Task mpTask)
+void Step::vMemoryByteDump(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vMemoryByteDump"_Stz);
   
@@ -40,7 +40,7 @@ ENTRY("vMemoryByteDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* memory.reset -- reset memory statistics                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vMemoryReset(MP_Task mpTask)
+void Step::vMemoryReset(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vMemoryReset"_Stz);
   
@@ -52,7 +52,7 @@ void Step::vMemoryReset(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* memory.statistics-- trace memory statistics                                */
 /*----------------------------------------------------------------------------*/
-void Step::vMemoryStatistics(MP_Task mpTask)
+void Step::vMemoryStatistics(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vMemoryStatistics"_Stz);
 
@@ -63,7 +63,7 @@ void Step::vMemoryStatistics(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* memory.worddump -- word-oriented dump                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vMemoryWordDump(MP_Task mpTask)
+void Step::vMemoryWordDump(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vMemoryWordDump"_Stz);
   

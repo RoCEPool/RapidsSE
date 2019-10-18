@@ -18,7 +18,7 @@ void Step::vAddSteps_JobWalk(void)
 /*----------------------------------------------------------------------------*/
 /* job_walk.begin -- begin walk                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WalkBegin(MP_Task mpTask)
+void Step::vJob_WalkBegin(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_WalkBegin"_Stz);
   
@@ -37,7 +37,7 @@ void Step::vJob_WalkBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_walk.end -- end walk                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WalkEnd(MP_Task mpTask)
+void Step::vJob_WalkEnd(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_WalkEnd"_Stz);
   
@@ -54,7 +54,7 @@ void Step::vJob_WalkEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_walk.index! -- store index in the job                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WalkIndexStore(MP_Task mpTask)
+void Step::vJob_WalkIndexStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_WalkIndexStore"_Stz);
   
@@ -78,7 +78,7 @@ void Step::vJob_WalkIndexStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_walk.table! -- store table in the job                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WalkTableStore(MP_Task mpTask)
+void Step::vJob_WalkTableStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_WalkTableStore"_Stz);
   

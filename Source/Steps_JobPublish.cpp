@@ -16,7 +16,7 @@ void Step::vAddSteps_JobPublish(void)
 /*----------------------------------------------------------------------------*/
 /* Job_publish.spawnSub -- spawn sub publish job                              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_PublishSpawnSub(MP_Task mpTask)
+void Step::vJob_PublishSpawnSub(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_PublishSpawnSub"_Stz);
   
@@ -57,7 +57,7 @@ void Step::vJob_PublishSpawnSub(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_purge.table! -- store table into job_purge                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_PublishTableStore(MP_Task mpTask)
+void Step::vJob_PublishTableStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_PublishTableStore"_Stz);
   

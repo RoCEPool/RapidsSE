@@ -16,7 +16,7 @@ void Step::vAddSteps_JobAnalyzeIndex(void)
 /*----------------------------------------------------------------------------*/
 /* jobAnalyzeIndex.isDetailed -- is it a detailed analysis of the index       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_AnalyzeIndexIsDetailed(MP_Task mpTask)
+void Step::vJob_AnalyzeIndexIsDetailed(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_AnalyzeIndexIsDetailed"_Stz);
   
@@ -35,7 +35,7 @@ void Step::vJob_AnalyzeIndexIsDetailed(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobAnalyzeTable.isDetailed -- is it a detailed analysis of the index       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_AnalyzeTableIsDetailed(MP_Task mpTask)
+void Step::vJob_AnalyzeTableIsDetailed(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_AnalyzeTableIsDetailed"_Stz);
   

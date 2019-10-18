@@ -21,7 +21,7 @@ void Step::vAddSteps_JobWriteBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* job_WriteBuffer.parentJobId@ -- fetch parent jobid from job                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferParentJobIdFetch(MP_Task mpTask)
+void Step::vJob_WriteBufferParentJobIdFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_WriteBufferParentJobIdFetch"_Stz);
   
@@ -42,7 +42,7 @@ void Step::vJob_WriteBufferParentJobIdFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_WriteBuffer.insertRows -- insert rows from working buffer into table   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferInsertRows(MP_Task mpTask)
+void Step::vJob_WriteBufferInsertRows(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_WriteBufferInsertRows"_Stz);
   
@@ -61,7 +61,7 @@ void Step::vJob_WriteBufferInsertRows(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_WriteBuffer.isIngesting -- is writebuffer being ingesting              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferIsIngesting(MP_Task mpTask)
+void Step::vJob_WriteBufferIsIngesting(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_WriteBufferIsIngesting"_Stz);
   
@@ -80,7 +80,7 @@ void Step::vJob_WriteBufferIsIngesting(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_WriteBuffer.isInserting -- is writebuffer being inserted               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferIsInserting(MP_Task mpTask)
+void Step::vJob_WriteBufferIsInserting(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_WriteBufferIsInserting"_Stz);
   
@@ -99,7 +99,7 @@ void Step::vJob_WriteBufferIsInserting(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_WriteBuffer.isLoading -- is writebuffer being loaded                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferIsLoading(MP_Task mpTask)
+void Step::vJob_WriteBufferIsLoading(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_WriteBufferIsLoading"_Stz);
   
@@ -118,7 +118,7 @@ void Step::vJob_WriteBufferIsLoading(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_WriteBuffer.partition@ -- fetch partition no. from job_writeBuffer     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferPartitionFetch(MP_Task mpTask)
+void Step::vJob_WriteBufferPartitionFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_WriteBufferPartitionFetch"_Stz);
   
@@ -136,7 +136,7 @@ void Step::vJob_WriteBufferPartitionFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_WriteBuffer.table! -- store table into job_writeBuffer                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferTableStore(MP_Task mpTask)
+void Step::vJob_WriteBufferTableStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_WriteBufferTableStore"_Stz);
   

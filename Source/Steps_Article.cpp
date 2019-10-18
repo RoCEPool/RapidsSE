@@ -15,7 +15,7 @@ void Step::vAddSteps_Article(void)
 /*----------------------------------------------------------------------------*/
 /* article::dump -- dump the system articles                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vArticleDump(MP_Task mpTask)
+void Step::vArticleDump(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vArticleDump"_Stz);
   

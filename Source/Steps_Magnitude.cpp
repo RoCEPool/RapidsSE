@@ -17,7 +17,7 @@ void Step::vAddSteps_Magnitude(void)
 /*----------------------------------------------------------------------------*/
 /* >DigitName -- convert to digit name                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vToDigitName(MP_Task mpTask)
+void Step::vToDigitName(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vToDigitName"_Stz);
   
@@ -51,7 +51,7 @@ void Step::vToDigitName(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bytes.magnitude -- return magnitude of bytes                               */
 /*----------------------------------------------------------------------------*/
-void Step::vBytesMagnitude(MP_Task mpTask)
+void Step::vBytesMagnitude(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vBytesMagnitude"_Stz);
   
@@ -70,7 +70,7 @@ void Step::vBytesMagnitude(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* number.magnitude -- get magnitude of number                                */
 /*----------------------------------------------------------------------------*/
-void Step::vNumberMagnitude(MP_Task mpTask)
+void Step::vNumberMagnitude(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vNumberMagnitude"_Stz);
   

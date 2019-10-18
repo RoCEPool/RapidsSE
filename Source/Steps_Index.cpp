@@ -41,7 +41,7 @@ void Step::vAddSteps_Index(void)
 /*----------------------------------------------------------------------------*/
 /* index.analyze -- analyze index                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexAnalyze(MP_Task mpTask)
+void Step::vIndexAnalyze(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexAnalyze"_Stz);
   
@@ -68,7 +68,7 @@ void Step::vIndexAnalyze(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.column@ -- get the column from the index                             */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexColumnFetch(MP_Task mpTask)
+void Step::vIndexColumnFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexColumnFetch"_Stz);
   
@@ -93,7 +93,7 @@ void Step::vIndexColumnFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.columnCount@ -- fetch index column count                             */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexColumnCountFetch(MP_Task mpTask)
+void Step::vIndexColumnCountFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexColumnCountFetch"_Stz);
   
@@ -111,7 +111,7 @@ void Step::vIndexColumnCountFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.columnName -- get column name                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexColumnName(MP_Task mpTask)
+void Step::vIndexColumnName(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexColumnName"_Stz);
   
@@ -136,7 +136,7 @@ void Step::vIndexColumnName(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.columnType -- get column type                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexColumnType(MP_Task mpTask)
+void Step::vIndexColumnType(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexColumnType"_Stz);
   
@@ -162,7 +162,7 @@ void Step::vIndexColumnType(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.compact -- index compaction                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexCompact(MP_Task mpTask)
+void Step::vIndexCompact(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexCompact"_Stz);
   
@@ -183,7 +183,7 @@ void Step::vIndexCompact(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.createColumnVecR -- create column vector from job_createIndex        */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexCreateColumnVec(MP_Task mpTask)
+void Step::vIndexCreateColumnVec(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexCreateColumnVec"_Stz);
   
@@ -207,7 +207,7 @@ void Step::vIndexCreateColumnVec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.dump -- dump the index                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexDump(MP_Task mpTask)
+void Step::vIndexDump(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexDump"_Stz);
   
@@ -235,7 +235,7 @@ void Step::vIndexDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.init -- initialize the index                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexInit(MP_Task mpTask)
+void Step::vIndexInit(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexInit"_Stz);
   Object* pPtrIndex = nullptr;
@@ -254,7 +254,7 @@ void Step::vIndexInit(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isPrimaryKey@ -- fetch isPrimaryKey from index                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsPrimaryKeyFetch(MP_Task mpTask)
+void Step::vIndexIsPrimaryKeyFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexIsPrimaryKeyFetch"_Stz);
   
@@ -276,7 +276,7 @@ void Step::vIndexIsPrimaryKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isPrimaryKey! -- store isPrimaryKey into index                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsPrimaryKeyStore(MP_Task mpTask)
+void Step::vIndexIsPrimaryKeyStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexIsPrimaryKeyStore"_Stz);
   
@@ -300,7 +300,7 @@ void Step::vIndexIsPrimaryKeyStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isUnique@ -- fetch isUnique from index                               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsUniqueFetch(MP_Task mpTask)
+void Step::vIndexIsUniqueFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexIsUniqueFetch"_Stz);
   
@@ -322,7 +322,7 @@ void Step::vIndexIsUniqueFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isUnique! -- store isUnique into index                               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsUniqueStore(MP_Task mpTask)
+void Step::vIndexIsUniqueStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexIsUniqueStore"_Stz);
   
@@ -346,7 +346,7 @@ void Step::vIndexIsUniqueStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isValidUniqueIndex -- is it a valid unqiue index                     */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsValidUniqueIndex(MP_Task mpTask)
+void Step::vIndexIsValidUniqueIndex(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexIsValidUniqueIndex"_Stz);
   
@@ -385,7 +385,7 @@ void Step::vIndexIsValidUniqueIndex(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.lowerBound -- return rows with lower bound                           */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexLowerBound(MP_Task mpTask)
+void Step::vIndexLowerBound(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexLowerBound"_Stz);
   
@@ -531,7 +531,7 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 /* index.name@ -- fetch index name                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexNameFetch(MP_Task mpTask)
+void Step::vIndexNameFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexNameFetch"_Stz);
   
@@ -553,7 +553,7 @@ void Step::vIndexNameFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.populate -- populate the index                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexPopulate(MP_Task mpTask)
+void Step::vIndexPopulate(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexPopulate"_Stz);
   Object* pPtrIndex = nullptr;
@@ -577,7 +577,7 @@ void Step::vIndexPopulate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.range -- return rows within given range                              */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexRange(MP_Task mpTask)
+void Step::vIndexRange(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexRange"_Stz);
   
@@ -804,7 +804,7 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 /* index.showColumnVec -- show column vector                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexShowColumnVec(MP_Task mpTask)
+void Step::vIndexShowColumnVec(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexShowColumnVec"_Stz);
   
@@ -822,7 +822,7 @@ void Step::vIndexShowColumnVec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.space -- push space used by index                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexSpace(MP_Task mpTask)
+void Step::vIndexSpace(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexSpace"_Stz);
   
@@ -843,7 +843,7 @@ void Step::vIndexSpace(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.subDic -- get table sub dictionary                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexSubDic(MP_Task mpTask)
+void Step::vIndexSubDic(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexSubDic"_Stz);
   
@@ -864,7 +864,7 @@ void Step::vIndexSubDic(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.table@ -- fetch table in index                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTableFetch(MP_Task mpTask)
+void Step::vIndexTableFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexTableFetch"_Stz);
   
@@ -887,7 +887,7 @@ void Step::vIndexTableFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.table! -- store table in index                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTableStore(MP_Task mpTask)
+void Step::vIndexTableStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexTableStore"_Stz);
   
@@ -914,7 +914,7 @@ void Step::vIndexTableStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.truncate -- truncate the index                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTruncate(MP_Task mpTask)
+void Step::vIndexTruncate(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexTruncate"_Stz);
   
@@ -938,7 +938,7 @@ void Step::vIndexTruncate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.upperBound -- return rows with upper bound                           */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexUpperBound(MP_Task mpTask)
+void Step::vIndexUpperBound(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexUpperBound"_Stz);
   
@@ -1107,7 +1107,7 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 /* index.verify -- verify index                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexVerify(MP_Task mpTask)
+void Step::vIndexVerify(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexVerify"_Stz);
   
@@ -1129,7 +1129,7 @@ void Step::vIndexVerify(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.visualize -- visualize the index                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexVisualize(MP_Task mpTask)
+void Step::vIndexVisualize(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexVisualize"_Stz);
   

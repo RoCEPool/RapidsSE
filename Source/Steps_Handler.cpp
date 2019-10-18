@@ -15,7 +15,7 @@ void Step::vAddSteps_Handler(void)
 /*----------------------------------------------------------------------------*/
 /* error.msg -- get error message given the error code                        */
 /*----------------------------------------------------------------------------*/
-void Step::vHandlerServiceSleepQueue(MP_Task mpTask)
+void Step::vHandlerServiceSleepQueue(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vHandlerServiceSleepQueue"_Stz);
   

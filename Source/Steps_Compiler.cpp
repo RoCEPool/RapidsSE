@@ -15,7 +15,7 @@ void Step::vAddSteps_Compiler(void)
 /*----------------------------------------------------------------------------*/
 /* compiler::current -- push word being compiled                              */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerCurrent(MP_Task mpTask)
+void Step::vCompilerCurrent(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vCompilerCurrent"_Stz);
   

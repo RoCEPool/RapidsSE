@@ -19,7 +19,7 @@ void Step::vAddSteps_JobSubPurger(void)
 /*----------------------------------------------------------------------------*/
 /* job_subPurger.begin -- begin subpurger                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPurgerBegin(MP_Task mpTask)
+void Step::vJob_SubPurgerBegin(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubPurgerBegin"_Stz);
   
@@ -38,7 +38,7 @@ void Step::vJob_SubPurgerBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subPurger.chunk -- chunk subpurger                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPurgerChunk(MP_Task mpTask)
+void Step::vJob_SubPurgerChunk(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubPurgerChunk"_Stz);
   
@@ -73,7 +73,7 @@ void Step::vJob_SubPurgerChunk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subPurger.end -- end subpurger                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPurgerEnd(MP_Task mpTask)
+void Step::vJob_SubPurgerEnd(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubPurgerEnd"_Stz);
   
@@ -90,7 +90,7 @@ void Step::vJob_SubPurgerEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subPurger.purgeJobId@ -- fetch the purge job id                        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPurgerPurgeJobIdFetch(MP_Task mpTask)
+void Step::vJob_SubPurgerPurgeJobIdFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubPurgerPurgeJobIdFetch"_Stz);
   
@@ -107,7 +107,7 @@ void Step::vJob_SubPurgerPurgeJobIdFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subPurger.slot@ -- fetch the job slot                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPurgerSlotFetch(MP_Task mpTask)
+void Step::vJob_SubPurgerSlotFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubPurgerSlotFetch"_Stz);
   

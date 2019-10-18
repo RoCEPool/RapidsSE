@@ -26,7 +26,7 @@ void Step::vAddSteps_Socket(void)
 /*----------------------------------------------------------------------------*/
 /* socket.accept: accept a socket connection                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vSocketAccept(MP_Task mpTask)
+void Step::vSocketAccept(MP_Task mpTask, Forth* pForth)
 {
   SysCall oSysCall;
   Socket* pSocket;
@@ -58,7 +58,7 @@ void Step::vSocketAccept(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* open a socket                                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vSocketClose(MP_Task mpTask)
+void Step::vSocketClose(MP_Task mpTask, Forth* pForth)
 {
   SysCall oSysCall;
   Socket* pSocket;
@@ -84,7 +84,7 @@ void Step::vSocketClose(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.connect: connect to a server                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vSocketConnect(MP_Task mpTask)
+void Step::vSocketConnect(MP_Task mpTask, Forth* pForth)
 {
   SysCall oSysCall;
   Socket* pSocket;
@@ -145,7 +145,7 @@ void Step::vSocketConnect(MP_Task mpTask)
   EXIT();
 }
 /*----------------------------------------------------------------------------*/
-//void Step::vSocketConnect(MP_Task mpTask)
+//void Step::vSocketConnect(MP_Task mpTask, Forth* pForth)
 //{
 //  SysCall oSysCall;
 //  Socket* pSocket;
@@ -218,7 +218,7 @@ void Step::vSocketConnect(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.dropWrite: drop socket write lock                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vSocketDropWrite(MP_Task mpTask)
+void Step::vSocketDropWrite(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vSocketDropWrite"_Stz);
   
@@ -235,7 +235,7 @@ void Step::vSocketDropWrite(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.grabWrite: grab socket write lock                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vSocketGrabWrite(MP_Task mpTask)
+void Step::vSocketGrabWrite(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vSocketGrabWrite"_Stz);
   
@@ -252,7 +252,7 @@ void Step::vSocketGrabWrite(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket::listen: listen in for socket connections                           */
 /*----------------------------------------------------------------------------*/
-void Step::vSocketListen(MP_Task mpTask)
+void Step::vSocketListen(MP_Task mpTask, Forth* pForth)
 {
   SysCall oSysCall;
   Socket* pSocket;
@@ -285,7 +285,7 @@ void Step::vSocketListen(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket::open: open a socket                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vSocketOpen(MP_Task mpTask)
+void Step::vSocketOpen(MP_Task mpTask, Forth* pForth)
 {
   SysCall oSysCall;
   Socket* pSocket;
@@ -307,14 +307,14 @@ void Step::vSocketOpen(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.recvObject: recv object from a socket                               */
 /*----------------------------------------------------------------------------*/
-void Step::vSocketRecvObject(MP_Task mpTask)
+void Step::vSocketRecvObject(MP_Task mpTask, Forth* pForth)
 {
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // test for low memory condition
   
   bool bLowMem = gpBufferPool->bLowMemory();
   if (bLowMem) {
-    vSocketRecvObject_LowMem(mpTask);
+    vSocketRecvObject_LowMem(mpTask,pForth);
     return;
   }
   
@@ -542,7 +542,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.recvObject_LowMem: recv object from a socket (under low mem cond)   */
 /*----------------------------------------------------------------------------*/
-void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
+void Step::vSocketRecvObject_LowMem(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vSocketRecvObject_LowMem"_Stz);
   
@@ -798,7 +798,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.sendObject: send object via a socket                                */
 /*----------------------------------------------------------------------------*/
-void Step::vSocketSendObject(MP_Task mpTask)
+void Step::vSocketSendObject(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vSocketSendObject"_Stz);
   

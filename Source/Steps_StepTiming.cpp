@@ -17,7 +17,7 @@ void Step::vAddSteps_StepTiming(void)
 /*----------------------------------------------------------------------------*/
 /* StepTiming::reset -- reset steps                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vStepTimingReset(MP_Task mpTask)
+void Step::vStepTimingReset(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vStepTimingReset"_Stz);
   
@@ -39,7 +39,7 @@ void Step::vStepTimingReset(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* StepTiming::start -- start step tracking                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vStepTimingStart(MP_Task mpTask)
+void Step::vStepTimingStart(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vStepTimingStart"_Stz);
   
@@ -61,7 +61,7 @@ void Step::vStepTimingStart(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* StepTiming::write -- write steps                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vStepTimingWrite(MP_Task mpTask)
+void Step::vStepTimingWrite(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vStepTimingWritevStepTimingWrite"_Stz);
 

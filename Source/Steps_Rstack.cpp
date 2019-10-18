@@ -39,7 +39,7 @@ void Step::vAddSteps_Rstack(void)
 /*----------------------------------------------------------------------------*/
 /* cs-pick -- place copy of nth value in control stack onto control stack     */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackCsPick(MP_Task mpTask)
+void Step::vRstackCsPick(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackCsPick"_Stz);
   
@@ -69,7 +69,7 @@ void Step::vRstackCsPick(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* cs-roll -- roll top control values at n ( Z Y ... B A n -- Y ... B A Z )   */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackCsRoll(MP_Task mpTask)
+void Step::vRstackCsRoll(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackCsRoll"_Stz);
   
@@ -106,7 +106,7 @@ void Step::vRstackCsRoll(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* rdepth -- put number of values in return stack onto data stack             */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackDepth(MP_Task mpTask)
+void Step::vRstackDepth(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackDepth"_Stz);
   
@@ -120,7 +120,7 @@ void Step::vRstackDepth(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* rdrop -- discard top value off rstack                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackDrop(MP_Task mpTask)
+void Step::vRstackDrop(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackDrop"_Stz);
   
@@ -136,7 +136,7 @@ void Step::vRstackDrop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r@ -- place copy of top value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackFetch(MP_Task mpTask)
+void Step::vRstackFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackFetch"_Stz);
   
@@ -154,7 +154,7 @@ void Step::vRstackFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* 2r@ -- place copy of two top values in return stack onto data stack        */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackFetchTwo(MP_Task mpTask)
+void Step::vRstackFetchTwo(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackFetchTwo"_Stz);
   
@@ -175,7 +175,7 @@ void Step::vRstackFetchTwo(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* rpick -- place copy of nth value in return stack onto data stack           */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackPick(MP_Task mpTask)
+void Step::vRstackPick(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackPick"_Stz);
   
@@ -197,7 +197,7 @@ void Step::vRstackPick(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* rreverse -- reverse rstack values ( ... D C B A n -- A B C D ... )         */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackReverse(MP_Task mpTask)
+void Step::vRstackReverse(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackReverse"_Stz);
   
@@ -231,7 +231,7 @@ void Step::vRstackReverse(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* rroll -- roll top rstack values at n ( ... D C B A n -- A ... D C B )      */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackRoll(MP_Task mpTask)
+void Step::vRstackRoll(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackRoll"_Stz);
   
@@ -267,7 +267,7 @@ void Step::vRstackRoll(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* -rroll -- inverse roll top rstack values at n ( Z ... B A n -- ... B A Z ) */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackRollInv(MP_Task mpTask)
+void Step::vRstackRollInv(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackRollInv"_Stz);
   
@@ -305,7 +305,7 @@ void Step::vRstackRollInv(MP_Task mpTask)
 /* rstk -- dump the return stack                                              */
 /*----------------------------------------------------------------------------*/
 /*
-void Step::vRstackStk(MP_Task mpTask)
+void Step::vRstackStk(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackStk"_Stz);
   
@@ -318,7 +318,7 @@ void Step::vRstackStk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* rswap -- swap top two values on return stack                               */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackSwap(MP_Task mpTask)
+void Step::vRstackSwap(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackSwap"_Stz);
   
@@ -337,7 +337,7 @@ void Step::vRstackSwap(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r> -- move value from rstack to dstack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackToP(MP_Task mpTask)
+void Step::vRstackToP(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackToP"_Stz);
   
@@ -353,7 +353,7 @@ void Step::vRstackToP(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >r -- move value from dstack to rstack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackToR(MP_Task mpTask)
+void Step::vRstackToR(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackToR"_Stz);
   
@@ -369,7 +369,7 @@ void Step::vRstackToR(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* 2>r -- move two values from dstack to rstack preserving order              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackToRTwo(MP_Task mpTask)
+void Step::vRstackToRTwo(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackToRTwo"_Stz);
   
@@ -387,7 +387,7 @@ void Step::vRstackToRTwo(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r0 -- place copy of 0th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack0(MP_Task mpTask)
+void Step::vRstack0(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstack0"_Stz);
   
@@ -405,7 +405,7 @@ void Step::vRstack0(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r1 -- place copy of 1st value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack1(MP_Task mpTask)
+void Step::vRstack1(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstack1"_Stz);
   
@@ -423,7 +423,7 @@ void Step::vRstack1(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r2 -- place copy of 2nd value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack2(MP_Task mpTask)
+void Step::vRstack2(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstack2"_Stz);
   
@@ -441,7 +441,7 @@ void Step::vRstack2(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r3 -- place copy of 3rd value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack3(MP_Task mpTask)
+void Step::vRstack3(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstack3"_Stz);
   
@@ -459,7 +459,7 @@ void Step::vRstack3(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r4 -- place copy of 4th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack4(MP_Task mpTask)
+void Step::vRstack4(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstack4"_Stz);
   
@@ -477,7 +477,7 @@ void Step::vRstack4(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r5 -- place copy of 0th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack5(MP_Task mpTask)
+void Step::vRstack5(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstack5"_Stz);
   
@@ -495,7 +495,7 @@ void Step::vRstack5(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r6 -- place copy of 6th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack6(MP_Task mpTask)
+void Step::vRstack6(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstack6"_Stz);
   
@@ -513,7 +513,7 @@ void Step::vRstack6(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r7 -- place copy of 7th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack7(MP_Task mpTask)
+void Step::vRstack7(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstack7"_Stz);
   
@@ -531,7 +531,7 @@ void Step::vRstack7(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r8 -- place copy of 8th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack8(MP_Task mpTask)
+void Step::vRstack8(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstack8"_Stz);
   
@@ -549,7 +549,7 @@ void Step::vRstack8(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r9 -- place copy of 9th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack9(MP_Task mpTask)
+void Step::vRstack9(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstack9"_Stz);
   

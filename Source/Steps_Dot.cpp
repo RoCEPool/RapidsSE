@@ -18,7 +18,7 @@ void Step::vAddSteps_Dot(void)
 /*----------------------------------------------------------------------------*/
 /* . -- print top value on stack                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vDot(MP_Task mpTask)
+void Step::vDot(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDot"_Stz);
   
@@ -38,7 +38,7 @@ void Step::vDot(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* .put -- print top value on stack (no new line)                             */
 /*----------------------------------------------------------------------------*/
-void Step::vDotPut(MP_Task mpTask)
+void Step::vDotPut(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDotPut"_Stz);
   
@@ -54,7 +54,7 @@ void Step::vDotPut(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* .\n -- print new line                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vDotNewline(MP_Task mpTask)
+void Step::vDotNewline(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDotNewline"_Stz);
   
@@ -66,7 +66,7 @@ void Step::vDotNewline(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* .verbose -- print top value on stack if arg.m_bVerbose                     */
 /*----------------------------------------------------------------------------*/
-void Step::vDotVerbose(MP_Task mpTask)
+void Step::vDotVerbose(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDotVerbose"_Stz);
   

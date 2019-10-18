@@ -18,7 +18,7 @@ void Step::vAddSteps_Docol(void)
 /*----------------------------------------------------------------------------*/
 /* ] -- enter compiler state                                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vDocolCompiling(MP_Task mpTask)
+void Step::vDocolCompiling(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDocolCompiling"_Stz);
   
@@ -30,7 +30,7 @@ void Step::vDocolCompiling(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* [ -- enter interpreter state                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vDocolInterpreting(MP_Task mpTask)
+void Step::vDocolInterpreting(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDocolInterpreting"_Stz);
   
@@ -42,7 +42,7 @@ void Step::vDocolInterpreting(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* docol.isCompiling -- currently in compiling mode?                          */
 /*----------------------------------------------------------------------------*/
-void Step::vDocolIsCompiling(MP_Task mpTask)
+void Step::vDocolIsCompiling(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDocolIsCompiling"_Stz);
   
@@ -56,7 +56,7 @@ void Step::vDocolIsCompiling(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* docol.isInterpreting -- currently in interpreting mode?                    */
 /*----------------------------------------------------------------------------*/
-void Step::vDocolIsInterpreting(MP_Task mpTask)
+void Step::vDocolIsInterpreting(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDocolIsInterpreting"_Stz);
   

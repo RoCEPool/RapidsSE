@@ -20,7 +20,7 @@ void Step::vAddSteps_JobLoadTable(void)
 /*----------------------------------------------------------------------------*/
 /* loadTable.begin -- begin load of file                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_LoadTableBegin(MP_Task mpTask)
+void Step::vJob_LoadTableBegin(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_LoadTableBegin"_Stz);
   
@@ -39,7 +39,7 @@ void Step::vJob_LoadTableBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loadTable.chunk -- chunk the file                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_LoadTableChunk(MP_Task mpTask)
+void Step::vJob_LoadTableChunk(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_LoadTableChunk"_Stz);
   
@@ -58,7 +58,7 @@ void Step::vJob_LoadTableChunk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loadTable.dumpMap -- dump the load map                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_LoadTableDumpMap(MP_Task mpTask)
+void Step::vJob_LoadTableDumpMap(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_LoaderDUmpMap"_Stz);
   
@@ -75,7 +75,7 @@ void Step::vJob_LoadTableDumpMap(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loadTable.end -- end load of file                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_LoadTableEnd(MP_Task mpTask)
+void Step::vJob_LoadTableEnd(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_LoadTableEnd"_Stz);
   
@@ -92,7 +92,7 @@ void Step::vJob_LoadTableEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_LoadTable.filePath@ -- fetch filePath from job_loadTable               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_LoadTableFilePathFetch(MP_Task mpTask)
+void Step::vJob_LoadTableFilePathFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_LoadTableFilePathFetch"_Stz);
   
@@ -110,7 +110,7 @@ void Step::vJob_LoadTableFilePathFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loadTable.table! -- store table into loader                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_LoadTableTableStore(MP_Task mpTask)
+void Step::vJob_LoadTableTableStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_LoaderTableStore"_Stz);
   

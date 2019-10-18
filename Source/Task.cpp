@@ -246,7 +246,7 @@ void Task::vTaskLoop_job(void)
     
     // call the intinsic
     try {
-      fpIntrinsic(this);
+      fpIntrinsic(this,m_pForth);
     }
     
     catch (eFK eFailure) {

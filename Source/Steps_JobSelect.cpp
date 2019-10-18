@@ -17,7 +17,7 @@ void Step::vAddSteps_JobSelect(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Select.begin -- begin                                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SelectBegin(MP_Task mpTask)
+void Step::vJob_SelectBegin(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SelectBegin"_Stz);
   
@@ -34,7 +34,7 @@ void Step::vJob_SelectBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_Select.end -- end                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SelectEnd(MP_Task mpTask)
+void Step::vJob_SelectEnd(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SelectEnd"_Stz);
   
@@ -51,7 +51,7 @@ void Step::vJob_SelectEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_Select.execute -- execute                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SelectExecute(MP_Task mpTask)
+void Step::vJob_SelectExecute(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SelectExecute"_Stz);
   

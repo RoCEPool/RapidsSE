@@ -17,7 +17,7 @@ void Step::vAddSteps_JobDynamic(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Dynamic.begin -- begin the dynamic job                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_DynamicBegin(MP_Task mpTask)
+void Step::vJob_DynamicBegin(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_DynamicBegin"_Stz);
   
@@ -34,7 +34,7 @@ void Step::vJob_DynamicBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_Dynamic.end -- end the dynamic job                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_DynamicEnd(MP_Task mpTask)
+void Step::vJob_DynamicEnd(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_DynamicEnd"_Stz);
   
@@ -51,7 +51,7 @@ void Step::vJob_DynamicEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_Dynamic.execute -- execute                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_DynamicExecute(MP_Task mpTask)
+void Step::vJob_DynamicExecute(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_DynamicExecute"_Stz);
   

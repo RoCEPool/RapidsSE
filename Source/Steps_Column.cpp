@@ -20,7 +20,7 @@ void Step::vAddSteps_Column(void)
 /*----------------------------------------------------------------------------*/
 /* column.isNullable@ -- fetch column is nullable                             */
 /*----------------------------------------------------------------------------*/
-void Step::vColumnIsNullableFetch(MP_Task mpTask)
+void Step::vColumnIsNullableFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vColumnIsNullableFetch"_Stz);
   
@@ -43,7 +43,7 @@ void Step::vColumnIsNullableFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* column.isPartitionKey@ -- fetch column is partitionKey                     */
 /*----------------------------------------------------------------------------*/
-void Step::vColumnIsPartitionKeyFetch(MP_Task mpTask)
+void Step::vColumnIsPartitionKeyFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vColumnIsPartitionKeyFetch"_Stz);
   
@@ -66,7 +66,7 @@ void Step::vColumnIsPartitionKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* column.length@ -- fetch column length                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vColumnLengthFetch(MP_Task mpTask)
+void Step::vColumnLengthFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vColumnLengthFetch"_Stz);
   
@@ -86,7 +86,7 @@ void Step::vColumnLengthFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* column.name@ -- fetch column name                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vColumnNameFetch(MP_Task mpTask)
+void Step::vColumnNameFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vColumnNameFetch"_Stz);
   
@@ -106,7 +106,7 @@ void Step::vColumnNameFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* column.scale@ -- fetch column scale                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vColumnScaleFetch(MP_Task mpTask)
+void Step::vColumnScaleFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vColumnScaleFetch"_Stz);
   
@@ -126,7 +126,7 @@ void Step::vColumnScaleFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* column.type@ -- fetch column type                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vColumnTypeFetch(MP_Task mpTask)
+void Step::vColumnTypeFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vColumnTypeFetch"_Stz);
   

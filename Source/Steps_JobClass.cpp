@@ -26,7 +26,7 @@ void Step::vAddSteps_JobClass(void)
 /*----------------------------------------------------------------------------*/
 /* jobClass::find -- find job class                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassFind(MP_Task mpTask)
+void Step::vJobClassFind(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobClassFind"_Stz);
   
@@ -46,7 +46,7 @@ void Step::vJobClassFind(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobClass.buffer@ -- get JobClass::m_bBuffer                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassBuffer(MP_Task mpTask)
+void Step::vJobClassBuffer(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobClassBuffer"_Stz);
   
@@ -65,7 +65,7 @@ void Step::vJobClassBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobClass.name -- get the name of the job class                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassName(MP_Task mpTask)
+void Step::vJobClassName(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobClassName"_Stz);
   
@@ -84,7 +84,7 @@ void Step::vJobClassName(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobClass.new -- create a new job by running the new-function               */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassNew(MP_Task mpTask)
+void Step::vJobClassNew(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobClassNew"_Stz);
   
@@ -103,7 +103,7 @@ void Step::vJobClassNew(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobClass.seedRun -- get the run seed of the job class                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassSeedRun(MP_Task mpTask)
+void Step::vJobClassSeedRun(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobClassSeedRun"_Stz);
   
@@ -122,7 +122,7 @@ void Step::vJobClassSeedRun(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobClass.seedReq -- get the req seed of the job class                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassSeedReq(MP_Task mpTask)
+void Step::vJobClassSeedReq(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobClassSeedReq"_Stz);
   
@@ -141,7 +141,7 @@ void Step::vJobClassSeedReq(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobClass.seedRcv -- get the rcv seed of the job class                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassSeedRcv(MP_Task mpTask)
+void Step::vJobClassSeedRcv(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobClassSeedRcv"_Stz);
   
@@ -160,7 +160,7 @@ void Step::vJobClassSeedRcv(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobClass.seedExe -- get the exe seed of the job class                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassSeedExe(MP_Task mpTask)
+void Step::vJobClassSeedExe(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobClassSeedExe"_Stz);
   
@@ -179,7 +179,7 @@ void Step::vJobClassSeedExe(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobClass.seedEnd -- get the end seed of the job class                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassSeedEnd(MP_Task mpTask)
+void Step::vJobClassSeedEnd(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobClassSeedEnd"_Stz);
   
@@ -198,7 +198,7 @@ void Step::vJobClassSeedEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobClass.seedCan -- get the can seed of the job class                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassSeedCan(MP_Task mpTask)
+void Step::vJobClassSeedCan(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobClassSeedCan"_Stz);
   

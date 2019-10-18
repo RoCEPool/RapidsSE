@@ -20,7 +20,7 @@ void Step::vAddSteps_JobSubIngester(void)
 /*----------------------------------------------------------------------------*/
 /* job_subIngesterr::spawn -- spawn a new subIngester                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubIngesterSpawn(MP_Task mpTask)
+void Step::vJob_SubIngesterSpawn(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubIngesterSpawn"_Stz);
   
@@ -62,7 +62,7 @@ void Step::vJob_SubIngesterSpawn(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subIngester.begin -- begin ingesting                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubIngesterBegin(MP_Task mpTask)
+void Step::vJob_SubIngesterBegin(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vSubIngesterBegin"_Stz);
   
@@ -81,7 +81,7 @@ void Step::vJob_SubIngesterBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subIngester.chunk -- read & process rows till buffer full / eof        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubIngesterChunk(MP_Task mpTask)
+void Step::vJob_SubIngesterChunk(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubIngesterChunk"_Stz);
   
@@ -114,7 +114,7 @@ void Step::vJob_SubIngesterChunk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subIngester.end -- end ingesting                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubIngesterEnd(MP_Task mpTask)
+void Step::vJob_SubIngesterEnd(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vSubIngesterEnd"_Stz);
   
@@ -131,7 +131,7 @@ void Step::vJob_SubIngesterEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.jobIngest -- get job_ingest                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubIngesterJobIngest(MP_Task mpTask)
+void Step::vJob_SubIngesterJobIngest(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SubIngesterJobIngest"_Stz);
   

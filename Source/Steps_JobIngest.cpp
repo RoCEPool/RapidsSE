@@ -18,7 +18,7 @@ void Step::vAddSteps_JobIngest(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Ingest.begin -- begin ingesting                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_IngestBegin(MP_Task mpTask)
+void Step::vJob_IngestBegin(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_IngestBegin"_Stz);
   
@@ -37,7 +37,7 @@ void Step::vJob_IngestBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_ingest.chunk -- ingest a chunk of data into a table                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_IngestChunk(MP_Task mpTask)
+void Step::vJob_IngestChunk(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_IngestChunk"_Stz);
   
@@ -62,7 +62,7 @@ void Step::vJob_IngestChunk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_Ingest.end -- end ingesting                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_IngestEnd(MP_Task mpTask)
+void Step::vJob_IngestEnd(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_IngestEnd"_Stz);
   
@@ -79,7 +79,7 @@ void Step::vJob_IngestEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_ingest.table! -- store table into job_ingest                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_IngestTableStore(MP_Task mpTask)
+void Step::vJob_IngestTableStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_IngestTableStore"_Stz);
   

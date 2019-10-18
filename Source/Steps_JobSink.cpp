@@ -17,7 +17,7 @@ void Step::vAddSteps_JobSink(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Sink.begin -- begin sink                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SinkBegin(MP_Task mpTask)
+void Step::vJob_SinkBegin(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SinkBegin"_Stz);
   
@@ -36,7 +36,7 @@ void Step::vJob_SinkBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_sink.chunk -- sink data from pipe                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SinkChunk(MP_Task mpTask)
+void Step::vJob_SinkChunk(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SinkChunk"_Stz);
   
@@ -55,7 +55,7 @@ void Step::vJob_SinkChunk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_sink.end -- end sink                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SinkEnd(MP_Task mpTask)
+void Step::vJob_SinkEnd(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_SinkEnd"_Stz);
   

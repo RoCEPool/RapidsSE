@@ -19,7 +19,7 @@ void Step::vAddSteps_Lock(void)
 /*----------------------------------------------------------------------------*/
 /* lock.dropread -- drop read lock                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vLockDropRead(MP_Task mpTask)
+void Step::vLockDropRead(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vLockDropRead"_Stz);
   
@@ -39,7 +39,7 @@ ENTRY("vLockDropRead"_Stz);
 /*----------------------------------------------------------------------------*/
 /* lock.dropwrite -- drop write lock                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vLockDropWrite(MP_Task mpTask)
+void Step::vLockDropWrite(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vLockDropWrite"_Stz);
 
@@ -59,7 +59,7 @@ ENTRY("vLockDropWrite"_Stz);
 /*----------------------------------------------------------------------------*/
 /* lock.grabread -- grab read lock                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vLockGrabRead(MP_Task mpTask)
+void Step::vLockGrabRead(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vLockGrabRead"_Stz);
 
@@ -79,7 +79,7 @@ ENTRY("vLockGrabRead"_Stz);
 /*----------------------------------------------------------------------------*/
 /* lock.grabwrite -- grab write lock                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vLockGrabWrite(MP_Task mpTask)
+void Step::vLockGrabWrite(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vLockGrabWrite"_Stz);
 
@@ -99,7 +99,7 @@ ENTRY("vLockGrabWrite"_Stz);
 /*----------------------------------------------------------------------------*/
 /* lock.init -- initialise lock                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vLockInit(MP_Task mpTask)
+void Step::vLockInit(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vLockInit"_Stz);
   

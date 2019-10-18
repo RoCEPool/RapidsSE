@@ -17,7 +17,7 @@ void Step::vAddSteps_Logic(void)
 /*----------------------------------------------------------------------------*/
 /* and -- logical and of top two values                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vLogicAnd(MP_Task mpTask)
+void Step::vLogicAnd(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vLogicAnd"_Stz);
   
@@ -39,7 +39,7 @@ void Step::vLogicAnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* not -- not of top value                                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vLogicNot(MP_Task mpTask)
+void Step::vLogicNot(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vLogicNot"_Stz);
   
@@ -57,7 +57,7 @@ void Step::vLogicNot(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* or -- logical or of top two values                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vLogicOr(MP_Task mpTask)
+void Step::vLogicOr(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vLogicOr"_Stz);
   

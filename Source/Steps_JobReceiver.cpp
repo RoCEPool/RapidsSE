@@ -20,7 +20,7 @@ void Step::vAddSteps_JobReceiver(void)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.connNo@ -- fetch connNo from job_receiver                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReceiverConnNoFetch(MP_Task mpTask)
+void Step::vJob_ReceiverConnNoFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_ReceiverConnNoFetch"_Stz);
   
@@ -38,7 +38,7 @@ void Step::vJob_ReceiverConnNoFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.jobReceived -- job has been recieved                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReceiverJobReceived(MP_Task mpTask)
+void Step::vJob_ReceiverJobReceived(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_ReceiverJobReceived"_Stz);
   
@@ -69,7 +69,7 @@ void Step::vJob_ReceiverJobReceived(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.connNo! -- store connNo into job_receiver                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReceiverConnNoStore(MP_Task mpTask)
+void Step::vJob_ReceiverConnNoStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_ReceiverConnNoStore"_Stz);
   
@@ -90,7 +90,7 @@ void Step::vJob_ReceiverConnNoStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.node@ -- fetch node from job_receiver                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReceiverNodeFetch(MP_Task mpTask)
+void Step::vJob_ReceiverNodeFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_ReceiverNodeFetch"_Stz);
   
@@ -108,7 +108,7 @@ void Step::vJob_ReceiverNodeFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.node! -- store node into job_receiver                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReceiverNodeStore(MP_Task mpTask)
+void Step::vJob_ReceiverNodeStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJob_ReceiverNodeStore"_Stz);
   

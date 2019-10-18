@@ -15,7 +15,7 @@ void Step::vAddSteps_Shell(void)
 /*----------------------------------------------------------------------------*/
 /* shell::execute -- execute given shell command                              */
 /*----------------------------------------------------------------------------*/
-void Step::vShellExecute(MP_Task mpTask)
+void Step::vShellExecute(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vShellExecute"_Stz);
   

@@ -21,7 +21,7 @@ void Step::vAddSteps_EntBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.dump -- dump the index buffer                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vEntBufferDump(MP_Task mpTask)
+void Step::vEntBufferDump(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vEntBufferDump"_Stz);
   
@@ -40,7 +40,7 @@ void Step::vEntBufferDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.index@ -- get index from entry buffer                          */
 /*----------------------------------------------------------------------------*/
-void Step::vEntBufferIndexFetch(MP_Task mpTask)
+void Step::vEntBufferIndexFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vEntBufferIndexFetch"_Stz);
   
@@ -60,7 +60,7 @@ void Step::vEntBufferIndexFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.index! -- set index in entry buffer                            */
 /*----------------------------------------------------------------------------*/
-void Step::vEntBufferIndexStore(MP_Task mpTask)
+void Step::vEntBufferIndexStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vEntBufferIndexStore"_Stz);
   
@@ -86,7 +86,7 @@ void Step::vEntBufferIndexStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.nextBuffer -- get next buffer of this index buffer             */
 /*----------------------------------------------------------------------------*/
-void Step::vEntBufferNextBuffer(MP_Task mpTask)
+void Step::vEntBufferNextBuffer(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vEntBufferNextBuffer"_Stz);
   
@@ -110,7 +110,7 @@ void Step::vEntBufferNextBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.partition@ -- get partition no of this index buffer            */
 /*----------------------------------------------------------------------------*/
-void Step::vEntBufferPartitionFetch(MP_Task mpTask)
+void Step::vEntBufferPartitionFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vEntBufferPartitionFetch"_Stz);
   
@@ -130,7 +130,7 @@ void Step::vEntBufferPartitionFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer.partition! -- set partition no of this index buffer            */
 /*----------------------------------------------------------------------------*/
-void Step::vEntBufferPartitionStore(MP_Task mpTask)
+void Step::vEntBufferPartitionStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vEntBufferPartitionStore"_Stz);
   
@@ -154,7 +154,7 @@ void Step::vEntBufferPartitionStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* entryBuffer::toEntBuffer -- convert string to entry buffer pointer       */
 /*----------------------------------------------------------------------------*/
-void Step::vEntBufferToEntBuffer(MP_Task mpTask)
+void Step::vEntBufferToEntBuffer(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vEntBufferToEntBuffer"_Stz);
   

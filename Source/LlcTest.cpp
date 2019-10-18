@@ -11,7 +11,7 @@ i8 xArray[C_ELEMENTS];
 /*----------------------------------------------------------------------------*/
 /* test                                                                       */
 /*----------------------------------------------------------------------------*/
-void LlcTest::vTest(MP_Task mpTask)
+void LlcTest::vTest(MP_Task mpTask, Forth* pForth)
 {
 #ifdef WITH_APPLE
   

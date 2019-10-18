@@ -16,7 +16,7 @@ void Step::vAddSteps_Cast(void)
 /*----------------------------------------------------------------------------*/
 /* (int) -- cast ptr to int                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vCastInt(MP_Task mpTask)
+void Step::vCastInt(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vCastInt"_Stz);
   
@@ -32,7 +32,7 @@ void Step::vCastInt(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* (ptr) -- cast int to ptr                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vCastPtr(MP_Task mpTask)
+void Step::vCastPtr(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vCastPtr"_Stz);
   
