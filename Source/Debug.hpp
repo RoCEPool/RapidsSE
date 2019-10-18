@@ -42,8 +42,6 @@ namespace Correctness
 #define NEVER_REACH \
   Correctness::vAssertFailed("NEVER_REACH",__FILE__,__LINE__);
 
-// throw C_NEVER_THROWN; \
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

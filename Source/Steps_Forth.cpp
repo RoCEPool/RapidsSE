@@ -723,13 +723,7 @@ void Step::vTick(MP_Task mpTask, Forth* pForth)
   ENTRY("vTick"_Stz);
   
   mpTask->m_pCompiler->m_pTokeniser->vNextToken();
-  
-  //  if ( ! bExtracted ) {
-  //    mpTask->m_sException.vSprint("No name: ' ");
-  //    mpTask->m_sFile = __FILE__;
-  //    throw (i8)__LINE__;
-  //  }
-  
+    
   s32 sWordNm;
   sWordNm = mpTask->m_pCompiler->m_pTokeniser->sToken();
   
