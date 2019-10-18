@@ -42,27 +42,33 @@
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// throw invalid auxiliary stack
+// invalid auxiliary stack
 
-#define THROW_INVALID_ASTACK(primitive) \
+#define THROW_INVALID_ASTACK(azStepNm) \
 { \
-  THROW(FK_ASSERT,"Invalid aux stack for: %s"_Stz,primitive); \
+  char zDescription[1024]; \
+  StrLib::vSprint(zDescription,"Invalid aux stack for: %s"_Stz,azStepNm); \
+  Correctness::vAssertFailed(zDescription,__FILE__,__LINE__); \
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// throw invalid data stack
+// invalid data stack
 
-#define THROW_INVALID_DSTACK(primitive) \
+#define THROW_INVALID_DSTACK(azStepNm) \
 { \
-  THROW(FK_ASSERT,"Invalid data stack in for: %s"_Stz,primitive); \
+  char zDescription[1024]; \
+  StrLib::vSprint(zDescription,"Invalid data stack for: %s"_Stz,azStepNm); \
+  Correctness::vAssertFailed(zDescription,__FILE__,__LINE__); \
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// throw invalid return stack
+// invalid return stack
 
-#define THROW_INVALID_RSTACK(primitive) \
+#define THROW_INVALID_RSTACK(azStepNm) \
 { \
-  THROW(FK_ASSERT,"Invalid return stack for: %s"_Stz,primitive); \
+  char zDescription[1024]; \
+  StrLib::vSprint(zDescription,"Invalid return stack for: %s"_Stz,azStepNm); \
+  Correctness::vAssertFailed(zDescription,__FILE__,__LINE__); \
 }
 
 /*============================================================================*/
