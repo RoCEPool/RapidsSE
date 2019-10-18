@@ -260,6 +260,7 @@ void Task::vTaskLoop_job(void)
     
     catch (Exception xException) {
       xException.vJob(m_pJob);
+      Correctness::vExceptionCaught(xException);
     }
     
   }

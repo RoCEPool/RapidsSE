@@ -39,8 +39,7 @@ void Step::vAssert(MP_Task mpTask)
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iTrue) )
     THROW_INVALID_DSTACK("assert"_Stz);
   
-  if ( ! iTrue )
-    THROW(FK_ASSERT,"assert in word %s"_Stz, "NULL");
+  RASSERT(iTrue);
   
   EXIT();
 }

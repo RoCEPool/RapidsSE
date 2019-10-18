@@ -20,7 +20,7 @@ namespace Correctness
   void vThrowTrap(void);
   
   
-  void vAssertFailed(const char* azCondition, const char* azFileNm, i8 iLineNo);
+  void vAssertFailed(const char* azCondition, const char* azFilePath, i8 iLineNo);
   void vExceptionCaught(Exception xException);
 };
 

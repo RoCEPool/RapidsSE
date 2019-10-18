@@ -148,12 +148,16 @@ void Correctness::vThrowTrap(void)
 /* handle an assertion failure                                                */
 /*----------------------------------------------------------------------------*/
 void Correctness::vAssertFailed(const char* azCondition,
-                                const char* azFileNm, i8 iLineNo)
+                                const char* azFilePath, i8 iLineNo)
 {
   // put a breakpoint here to trap throws
   sleep(0);
   
-  Exception xException(FK_ASSERT,azCondition,azFileNm,iLineNo);
+  char zFileNm[256];
+  
+  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+
+  Exception xException(FK_ASSERT,azCondition,zFileNm,iLineNo);
   
   throw xException;
 }
@@ -166,7 +170,7 @@ void Correctness::vExceptionCaught(Exception xException)
   // put a breakpoint here to trap throws
   sleep(0);
   
-  printf("Exception : %s %s in job %s (file %s line %lld)\n",
+  printf("Exception : %s of (%s) in job %s failed (file %s line %lld)\n",
          aFK[xException.eKind()]->azChar(),
          xException.azText(),
          xException.pJob()
