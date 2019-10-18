@@ -20,6 +20,9 @@ Exception::Exception(eFK   eKind,
   StrLib::vCopy(m_zText,azText);   //! #030 this should be length delimited copy
   StrLib::vCopy(m_zFileNm,azFileNm);
   m_iLineNo = iLineNo;
+  
+  // at the time of the exception we may not know the job
+  m_pJob = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,6 +43,22 @@ Exception::~Exception(void) noexcept(false)
 char* Exception::azFileNm(void)
 {
   return m_zFileNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get job where exception occurred                                           */
+/*----------------------------------------------------------------------------*/
+Job* Exception::pJob(void)
+{
+  return m_pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job where exception occurred                                           */
+/*----------------------------------------------------------------------------*/
+void Exception::vJob(Job* pJob)
+{
+  m_pJob = pJob;
 }
 
 /*----------------------------------------------------------------------------*/
