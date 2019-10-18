@@ -373,8 +373,8 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
          pJob->m_bWasReceived ? "wasReceived" : "notReceived",
          pJob->pTask()        ? "hasTask"     : "noTask"
          );
-  if (CN_JOB_STARTCLUSTER == pJob->eClass())
-    vDebugPoint();
+  //if (CN_JOB_STARTCLUSTER == pJob->eClass())
+  //  vDebugPoint();
 
   if (pJob->pTask()) {
     pJob->pTask()->vState(TS_ABLE);

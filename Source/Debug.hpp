@@ -18,6 +18,10 @@ namespace Correctness
   void vDebugTrap(void);
   void vStackDump(void);
   void vThrowTrap(void);
+  
+  
+  void vAsserted(const char* aCondition, const char*  aFileNm, i8 iLineNo);
+
 };
 
 /*============================================================================*/

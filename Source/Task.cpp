@@ -81,8 +81,8 @@ Task::Task(Job* pJob, Session* pSession)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (pJob->m_bWasReceived)
-    vDebugPoint();
+  //if (pJob->m_bWasReceived)
+  //  vDebugPoint();
   
   vIncActNo(); ++ gixTask;
   AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
