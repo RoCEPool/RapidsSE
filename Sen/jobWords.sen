@@ -265,36 +265,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* distribute current job to all participating nodes                          */
-/*----------------------------------------------------------------------------*/
-: job::distribute ( -- )
-
-  job::this locals| pJob |
-
-  // set the no of acks expected by originator job
-  //   to be the number of connected nodes in the grid
-  grid::connectedNodes pJob job.acksRemaining!
-
-  // grab this task's lock
-  task::this task.grabLock
-
-  // set acks for originator task
-  1 task::acks!
-
-  // send the job to each node in the grid
-  grid::definedNodes 0 do
-
-    I grid::node node.sendSocket@ if
-      I pJob job.forward
-    then
-
-  loop
-
-  // create the response vector in the orginating job to receive responses
-  pJob job.createResponseVec
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 : job::pathSet
 
