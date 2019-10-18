@@ -525,6 +525,10 @@ bool Dynamo::bPhase2_staging(void)
   for (i8 i_Stage = 0; i_Stage < pStageSpecVec->nItems(); i_Stage++) {
     StageSpec* pStageSpec = pStageSpecVec->pGet(i_Stage);
 
+    // prepend a StartOp to the first stage
+    if (i_Stage == 0)
+      pStageSpec->vPrependStartOp();
+    
     OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
     for (i8 i_Op = 0; i_Op < pOpSpecVec->nItems(); i_Op++) {
       OpSpec* pOpSpec = pOpSpecVec->pGet(i_Op);

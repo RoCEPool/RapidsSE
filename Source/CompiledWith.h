@@ -35,7 +35,7 @@
 #define WITH_SHARED_LOG         // code for Log compiled in
 //#define WITH_STATISTICS_COUNTERS // statistics
 #define WITH_TRACE_API          // code for tracing api's compiled in
-//#define WITH_TRACE_DYNAMO       // code for tracing compiling dynamic pipeline
+#define WITH_TRACE_DYNAMO       // code for tracing compiling dynamic pipeline
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // release behaviours

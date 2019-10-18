@@ -74,6 +74,7 @@
 
   task::wait
 
+"P done" .
   pJob_dynamic job.notice
 
   pJob_dynamic job::participantExecuted

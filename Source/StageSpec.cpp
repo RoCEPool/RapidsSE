@@ -126,7 +126,7 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX)
   
   OpSpec* pOpSpec;
   i8 iConsumeArg = C_UNKNOWN;
-
+  
   pOpSpec = new OpSpec("consume"_Stz,this);
   
   // add argument to the consumeOp depending on the topology
@@ -142,7 +142,7 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX)
     case PX_ALL_PARTITIONS_TO_ORIGIN:
       iConsumeArg = AM::pGrid()->nPartitions();
       break;
-    
+      
     case PX_ORIGIN_TO_ORIGIN:
       iConsumeArg = 1;
       break;
@@ -156,7 +156,27 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX)
   
   // rework the m_i_OpSpec
   for (i8 i_Op = 0; i_Op < m_pOpSpecVec->nItems(); i_Op++) {
-     OpSpec* pOpSpec = m_pOpSpecVec->pGet(i_Op);
+    OpSpec* pOpSpec = m_pOpSpecVec->pGet(i_Op);
+    pOpSpec->v_OpSpec(i_Op);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* prepend a startOp spec                                                     */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vPrependStartOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  OpSpec* pOpSpec;
+  
+  pOpSpec = new OpSpec("start"_Stz,this);
+  m_pOpSpecVec->vInsert(pOpSpec);
+  
+  // rework the m_i_OpSpec
+  for (i8 i_Op = 0; i_Op < m_pOpSpecVec->nItems(); i_Op++) {
+    OpSpec* pOpSpec = m_pOpSpecVec->pGet(i_Op);
     pOpSpec->v_OpSpec(i_Op);
   }
   

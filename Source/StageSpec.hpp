@@ -31,6 +31,7 @@ namespace Pipelines
     Stz* szName(void);
     OpSpecVec* pOpSpecVec(void);
     void vPrependConsumeOp(ePX eTopologyX);
+    void vPrependStartOp(void);
     ePO  eTopology(void);
     void vTopology(ePO eTopology);
     void vToPipeStr(Stz* szPipeStr);
