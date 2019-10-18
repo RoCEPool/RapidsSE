@@ -21,27 +21,20 @@
     { \
       if ( !(condition) ) { \
         printf("ASSERT in %s at %d\n",__FILE__,__LINE__); \
+        Correctness::vAssertPoint(); \
         Correctness::vAssertTrap(); \
     } \
   }
   #else
     #define ASSERT(condition)
   #endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  #define BEEN_CALLED(_condition) \
-  { \
-    if ( !(_condition) ) { \
-      printf("BEEN_CALLED in %s at %d\n",__FILE__,__LINE__); \
-      Correctness::vAssertCalled(); \
-    } \
-  }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #define RASSERT(condition) \
   { \
     if ( !(condition) ) { \
       printf("RASSERT in %s at %d\n",__FILE__,__LINE__); \
+      Correctness::vAssertPoint(); \
       Correctness::vAssertRelease(); \
     } \
   }
@@ -68,6 +61,7 @@
   /* NEVER_REACH macro (point in code which should never be reached           */
   /*--------------------------------------------------------------------------*/
   #define NEVER_REACH { \
+    Correctness::vAssertPoint(); \
     Correctness::vAssertTrap(); \
     throw(-1); \
   }

@@ -5,6 +5,10 @@
 " jobSeeds.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/***                          - Originating Node -                          ***/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* request default                                      (on originating node) */
 /*----------------------------------------------------------------------------*/
 : defaultSeed _req ( -- )
@@ -13,22 +17,21 @@
 
   <jobNm> .
 
-  // add job to originator list
   job::becomeOriginator
 
-  // distribute the job to all connected node as a participant
-  job::distribute
+  job::distributeConnected
 
-  // wait for the 1 ack from deciding job__ended
+  // wait for the signal from deciding job__ended/cancelled
   task::wait
 
-  //job::this job.removeOriginator
+  //job::this job.removeOriginator  // this is currently being done by job_ended
 
   //"Signalling waiting thread" .
   job::this job.signalWaiter
 ;
 
 /*----------------------------------------------------------------------------*/
+/***                       - Participating Nodes -                          ***/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
