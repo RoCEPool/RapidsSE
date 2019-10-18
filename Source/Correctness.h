@@ -16,8 +16,13 @@ namespace Correctness
 //------------------------------------------------------------------------------
 
 
+#include "eFK.h"
+#include "Exception.hpp"
+
+
 #include "Footer.hpp"
 #include "Header.hpp"
+
 #include "Debug.hpp"
 
 #include "MemLib.hpp"
@@ -34,9 +39,6 @@ namespace Correctness
 
 #include "Statistics.hpp"
 #include "Focal.hpp"
-
-#include "eFK.h"
-#include "Exception.hpp"
 
 
 

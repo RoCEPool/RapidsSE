@@ -142,14 +142,20 @@ void Correctness::vThrowTrap(void)
   sleep(0);
 }
 
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* assert trap                                                                */
+/* handle an assertion failure                                                */
 /*----------------------------------------------------------------------------*/
-void Correctness::vAsserted(const char* aCondition, const char* aFileNm, i8 iLineNo)
+void Correctness::vAssertFailed(const char* azCondition,
+                                const char* azFileNm, i8 iLineNo)
 {
   // put a breakpoint here to trap throws
   sleep(0);
+  
+  Exception xException(FK_ASSERT,azCondition,azFileNm,iLineNo);
+  
+  throw xException;
 }
 
 /*============================================================================*/

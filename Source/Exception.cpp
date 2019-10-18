@@ -4,6 +4,13 @@
 
 #include "Correctness.h"
 
+/*
+ Notes:
+ 1) An exception generally occurs in the context of a job
+ 2) The exception is thrown by value (ie the Excpetion object is copied
+    entirely on the stack
+ */
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -12,8 +19,8 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Exception::Exception(eFK   eKind,
-                     char* azText,
-                     char* azFileNm,
+                     const char* azText,
+                     const char* azFileNm,
                      i8    iLineNo)
 {
   m_eKind = eKind;

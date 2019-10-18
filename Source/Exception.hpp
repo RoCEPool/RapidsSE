@@ -17,8 +17,8 @@ namespace Correctness
   
   public:
     Exception(eFK   eKind,
-              char* azText,
-              char* azFileNm,
+              const char* azText,
+              const char* azFileNm,
               i8    iLineNo);
   
    ~Exception(void) noexcept(false);

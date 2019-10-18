@@ -21,7 +21,7 @@
     { \
       if ( !(condition) ) { \
         printf("ASSERT in %s at %d\n",__FILE__,__LINE__); \
-        Correctness::vAsserted((const char*)#condition,(const char*)__FILE__,__LINE__); \
+        Correctness::vAssertFailed((const char*)#condition,(const char*)__FILE__,__LINE__); \
         Correctness::vAssertPoint(); \
         Correctness::vAssertTrap(); \
     } \
@@ -35,7 +35,7 @@
   { \
     if ( !(condition) ) { \
       printf("RASSERT in %s at %d\n",__FILE__,__LINE__); \
-      Correctness::vAsserted((const char*)#condition,(const char*)__FILE__,__LINE__); \
+      Correctness::vAssertFailed((const char*)#condition,(const char*)__FILE__,__LINE__); \
       Correctness::vAssertPoint(); \
       Correctness::vAssertRelease(); \
     } \
