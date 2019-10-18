@@ -11,6 +11,8 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
+  //ASSERT(1 == 0);
+  
   printf("sizeof(Column)       %lld\n", (i8)sizeof(Column));
   printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
   printf("sizeof(HeapBuffer)   %lld\n", (i8)sizeof(HeapBuffer));
@@ -51,6 +53,12 @@ int main(int argc, const char* argv[])
  to run prompt:
 
  ./SE --prompt --name NODE0 --log
+ 
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+ in /Users/ray/Desktop/rapidsse/OS X/RapidsSE.xcodeproj/project.xcworkspace/xcuserdata/rayh.xcuserdatad
+ 
+ $ rm UserInterfaceState.xcuserstate
  
  */
 
