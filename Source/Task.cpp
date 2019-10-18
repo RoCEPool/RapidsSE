@@ -258,6 +258,10 @@ void Task::vTaskLoop_job(void)
       vRetry();
     }
     
+    catch (Exception xException) {
+      xException.vJob(m_pJob);
+    }
+    
   }
   
   if (m_pJob && m_pJob->m_xReqTuple.m_iDetail)

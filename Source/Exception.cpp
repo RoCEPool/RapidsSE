@@ -9,6 +9,8 @@
  1) An exception generally occurs in the context of a job
  2) The exception is thrown by value (ie the Excpetion object is copied
     entirely on the stack
+ 3) The exception is caught by value in a task-level catch
+ 4) The task-level catch can determine job etc
  */
 
 /*----------------------------------------------------------------------------*/

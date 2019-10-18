@@ -21,6 +21,7 @@ namespace Correctness
   
   
   void vAssertFailed(const char* azCondition, const char* azFileNm, i8 iLineNo);
+  void vExceptionCaught(Exception xException);
 };
 
 /*============================================================================*/
