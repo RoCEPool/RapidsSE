@@ -33,6 +33,7 @@ namespace Jobs
     bool bPopulateJob(Session* pSession, TokenVec* pTokenVec);
     void vShow(void);
 
+    void vBegin(void);
     void vEnd(void);
     void vExecute(void);
 

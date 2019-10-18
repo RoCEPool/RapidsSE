@@ -66,8 +66,11 @@
   pTask task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //pathDump
+  // begin the dynamic job
+  pJob_dynamic job_Dynamic.begin
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // execute the dynamic job
   pJob_dynamic job_Dynamic.execute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -75,7 +78,7 @@
   task::wait
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // end the startOp
+  // end the dynamic job
   pJob_dynamic job_Dynamic.end
 
   pJob_dynamic job.notice

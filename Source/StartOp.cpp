@@ -128,9 +128,6 @@ eOR StartOp::eStartLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STARTOP,_FOOTER_);
   
-  // pipe out the start marker and get the query started
-  vPipeOut(new StartMarker);
-  
   for (;;) {
     
     Operand* pOperand = pPopQueue();
@@ -152,6 +149,10 @@ eOR StartOp::eStartLoop(void)
         // pipe out the cancel marker
         vPipeOut(pOperand);
         goto L_EXIT;
+        
+      case CN_STARTMARKER:
+        vPipeOut(pOperand);
+        break;
         
       default:
         ASSERT(0);

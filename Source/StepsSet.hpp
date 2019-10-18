@@ -564,6 +564,7 @@ public:
   static void vJob_CreateIndexIsUniqueFetch(Tasks::MP_Task mpTask);
 
   // job Dynamic
+  static void vJob_DynamicBegin(Tasks::MP_Task mpTask);
   static void vJob_DynamicEnd(Tasks::MP_Task mpTask);
   static void vJob_DynamicExecute(Tasks::MP_Task mpTask);
 

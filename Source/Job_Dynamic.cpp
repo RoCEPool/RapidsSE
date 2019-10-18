@@ -213,6 +213,34 @@ void Job_Dynamic::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* query begin (participant job executes this code)                           */
+/*----------------------------------------------------------------------------*/
+void Job_Dynamic::vBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  
+  m_pPipeline    = new Pipeline(this);
+  m_pBufferQueue = nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenize the pipeline
+  
+  Tokeniser* pTokenizer = new Tokeniser;
+  TokenVec* pTokenVec = new TokenVec;
+  pTokenizer->vTokenise(pTokenVec, m_sRequest);
+  pTokenVec->vCutToken(pTokenVec->nTokens());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // populate the job
+  
+  bool bResult = bPopulateJob(m_pSession, pTokenVec);
+  if ( ! bResult ) {
+    vAddError(EC_INVALID_COMMAND);
+    return;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* query end (participant job executes this code)                             */
 /*----------------------------------------------------------------------------*/
 void Job_Dynamic::vEnd(void)
@@ -236,26 +264,6 @@ void Job_Dynamic::vExecute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   
-  m_pPipeline    = new Pipeline(this);
-  m_pBufferQueue = nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tokenize the pipeline
-  
-  Tokeniser* pTokenizer = new Tokeniser;
-  TokenVec* pTokenVec = new TokenVec;
-  pTokenizer->vTokenise(pTokenVec, m_sRequest);
-  pTokenVec->vCutToken(pTokenVec->nTokens());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // populate the job
-  
-  bool bResult = bPopulateJob(m_pSession, pTokenVec);
-  if ( ! bResult ) {
-    vAddError(EC_INVALID_COMMAND);
-    return;
-  }
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of operators to be executed on this node
   
@@ -271,6 +279,15 @@ void Job_Dynamic::vExecute(void)
   // spawn operaotors for this node
   
   m_pPipeline->vSpawnOperators(iThisNode);
+  
+  // get the first stage of the pipeline
+  Stage* pStage = m_pPipeline->pStageVec()->pGet(0);
+  
+  // get the first op of the first stage
+  StartOp * pStartOp = _pStartOp(pStage->pOpVec()->pGet(0));
+  
+  // send an end marker to the stratOp
+  pStartOp->vAppendLeft(new StartMarker);
   
 }
 

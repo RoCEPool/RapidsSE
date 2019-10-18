@@ -9,8 +9,26 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobDynamic(void)
 {
+  vAddStep("Job_Dynamic.begin"_Stz,    &Step::vJob_DynamicBegin);
   vAddStep("Job_Dynamic.end"_Stz,      &Step::vJob_DynamicEnd);
   vAddStep("Job_Dynamic.execute"_Stz,  &Step::vJob_DynamicExecute);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_Dynamic.begin -- begin the dynamic job                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_DynamicBegin(MP_Task mpTask)
+{
+  ENTRY("vJob_DynamicBegin"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_Dynamic.begin"_Stz);
+  Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
+  
+  pJob_Dynamic->vBegin();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
