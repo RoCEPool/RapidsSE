@@ -8,13 +8,13 @@ namespace Correctness
   class Exception
   {
   private:
-    i8   m_eKind;         // kind of exception
+    eFK  m_eKind;         // kind of exception
     char m_zText[1024];   // descriptive text
     char m_zFileNm[256];  // file name/path
     i8   m_iLineNo;       // line number
   
   public:
-    Exception(i8    eKind,
+    Exception(eFK   eKind,
               char* azText,
               char* azFileNm,
               i8    iLineNo);
@@ -22,7 +22,7 @@ namespace Correctness
    ~Exception(void) noexcept(false);
   
     char* azFileNm(void);
-    i8    eKind(void);
+    eFK   eKind(void);
     i8    iLineNo(void);
     char* azText(void);
   };

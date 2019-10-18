@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Exception::Exception(i8    eKind,
+Exception::Exception(eFK   eKind,
                      char* azText,
                      char* azFileNm,
                      i8    iLineNo)
@@ -45,7 +45,7 @@ char* Exception::azFileNm(void)
 /*----------------------------------------------------------------------------*/
 /* get exception kind                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Exception::eKind(void)
+eFK Exception::eKind(void)
 {
   return m_eKind;
 }

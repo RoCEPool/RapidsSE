@@ -34,6 +34,8 @@ namespace Correctness
 
 #include "Statistics.hpp"
 #include "Focal.hpp"
+
+#include "eFK.h"
 #include "Exception.hpp"
 
 
