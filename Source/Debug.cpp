@@ -199,6 +199,46 @@ void Correctness::vExceptionCaught(Exception xException)
   Correctness::vAssertTrap();
 }
 
+
+
+/*----------------------------------------------------------------------------*/
+/* throw an exception of given kind                                           */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void Correctness::vThrow(eFK eKind, const char* azFilePath, i8 iLineNo,
+                                        Stz* szFormat,...)
+{
+  // put a breakpoint here to trap throws
+  sleep(0);
+  
+  char zFileNm[256];
+  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  char zCondition[256];
+  StrLib::vSprint(zCondition,xArgs,szFormat->azChar());
+  va_end(xArgs);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Exception xException(eKind,zCondition,zFileNm,iLineNo);
+  
+  printf("Exception : %s of (%s) in job %s failed (file %s line %lld)\n",
+         aFK[xException.eKind()]->azChar(),
+         xException.azText(),
+         xException.pJob()
+         ? aCN[((Object*)xException.pJob())->eClass()]->azChar()
+         : "<null>",
+         xException.azFileNm(),
+         xException.iLineNo());
+  
+  // dump the call stack
+  vStackDump();
+  
+  throw xException;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

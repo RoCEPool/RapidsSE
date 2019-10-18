@@ -26,6 +26,10 @@ namespace Correctness
   
   
   void vExceptionCaught(Exception xException);
+  
+  [[ noreturn ]] void vThrow(eFK eKind, const char* azFilePath, i8 iLineNo,
+                             Stz* szFormat,...);
+
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -41,6 +45,7 @@ namespace Correctness
 /*--------------------------------------------------------------------------*/
 #define NEVER_REACH \
   Correctness::vAssertFailed("NEVER_REACH",__FILE__,__LINE__);
+
 
 /*============================================================================*/
 /* end                                                                        */
