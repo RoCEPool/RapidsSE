@@ -380,6 +380,7 @@ pDUMPFUN *gpDump[]
   /*126 */ &Dump::vInvalid,         // CN_STAGESPEC
   /*126 */ &Dump::vInvalid,         // CN_STAGESPECVEC
   /*126 */ &Dump::vInvalid,         // CN_STAGEVEC
+  /*    */ &Dump::vInvalid,         // CN_STARTMARKER
   /*    */ &Dump::vInvalid,         // CN_STARTOP
   /*    */ &Dump::vInvalid,         // CN_STATISTICS
   /*127 */ &Dump::vInvalid,         // CN_STEPACCUM
@@ -800,6 +801,7 @@ i8 giClassSize[]
   /*126 */ sizeof(StageSpec),          // CN_STAGESPEC
   /*126 */ sizeof(StageSpecVec),       // CN_STAGESPECVEC
   /*126 */ sizeof(StageVec),           // CN_STAGEVEC
+  /*    */ sizeof(StartMarker),        // CN_STARTMARKER
   /*    */ sizeof(StartOp),            // CN_STARTOP
   /*    */ sizeof(Statistics),         // CN_STATISTICS
   /*127 */ sizeof(StepAccum),          // CN_STEPACCUM
@@ -1220,6 +1222,7 @@ eHT geWhichHeap[]
   /*126 */ HT_TRANSIENT_SMALL,   // CN_STAGESPEC
   /*126 */ HT_TRANSIENT_SMALL,   // CN_STAGESPECVEC
   /*126 */ HT_TRANSIENT_SMALL,   // CN_STAGEVEC
+  /*    */ HT_TRANSIENT_SMALL,   // CN_STARTMARKER
   /*    */ HT_TRANSIENT_SMALL,   // CN_STARTOP
   /*127 */ HT_INVALID,           // CN_STEPACCUM
   /*127 */ HT_INVALID,           // CN_STATISTICS

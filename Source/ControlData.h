@@ -20,6 +20,7 @@ namespace ControlData
 #include "EarlyMarker.hpp"
 #include "EndMarker.hpp"
 #include "PauseMarker.hpp"
+#include "StartMarker.hpp"
 #include "TimeMarker.hpp"
 
 /*============================================================================*/

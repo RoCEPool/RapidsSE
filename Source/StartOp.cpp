@@ -127,7 +127,7 @@ eOR StartOp::eStartLoop(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STARTOP,_FOOTER_);
   
   // pipe out the start marker
-  vPipeOut(new EndMarker);
+  vPipeOut(new StartMarker);
   
   return OR_EXIT;
 }
