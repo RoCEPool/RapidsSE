@@ -269,7 +269,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
           pNewWord->vEncode(afpCalledEntryStep);
         }
         else {
-          THROW(FK_ASSERT,"Invalid eWordType %lld"_Stz,pCalledWord->eKind());
+          THROW_ASSERT(FK_ASSERT,"Invalid eWordType %lld"_Stz,pCalledWord->eKind());
         }
         break;
         
@@ -280,7 +280,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
       }
         
       default:
-        THROW(FK_ASSERT,"Invalid m_eToken %lld"_Stz,m_pCompiler->m_pTokeniser->eToken());
+        THROW_ASSERT(FK_ASSERT,"Invalid m_eToken %lld"_Stz,m_pCompiler->m_pTokeniser->eToken());
     }
     
     m_pCompiler->m_pTokeniser->vNextToken();

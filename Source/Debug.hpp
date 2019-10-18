@@ -24,6 +24,15 @@ namespace Correctness
   void vExceptionCaught(Exception xException);
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// invalid auxiliary stack
+
+#define THROW(azDescription) \
+{ \
+  Correctness::vAssertFailed(zDescription,__FILE__,__LINE__); \
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

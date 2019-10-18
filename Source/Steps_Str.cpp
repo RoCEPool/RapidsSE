@@ -93,7 +93,7 @@ void Step::vStrClip(MP_Task mpTask, Forth* pForth)
   i8 iHasLength = sString.nLength();
   
   if ( iLength < 0 || llabs(iLength) >= iHasLength)
-    THROW(FK_ASSERT,"Invalid length for: str.clip"_Stz);
+    THROW_ASSERT(FK_ASSERT,"Invalid length for: str.clip"_Stz);
   
   char* pStart;
   
@@ -215,7 +215,7 @@ void Step::vStrLeft(MP_Task mpTask, Forth* pForth)
   i8 iHasLength = sString.nLength();
   
   if ( iLength < 0)
-    THROW(FK_ASSERT,"Invalid length for: str.left"_Stz);
+    THROW_ASSERT(FK_ASSERT,"Invalid length for: str.left"_Stz);
   
   char* pStart = sString.azChar();
   
@@ -407,7 +407,7 @@ void Step::vStrRight(MP_Task mpTask, Forth* pForth)
   i8 iHasLength = sString.nLength();
   
   if ( iLength < 0)
-    THROW(FK_ASSERT,"Invalid length for: str.right"_Stz);
+    THROW_ASSERT(FK_ASSERT,"Invalid length for: str.right"_Stz);
 
   if (iLength > iHasLength)
     iLength = iHasLength;
@@ -441,14 +441,14 @@ void Step::vStrSub(MP_Task mpTask, Forth* pForth)
   
   // validate start index
   if ( iStart < 0 || iStart >= iHasLength)
-    THROW(FK_ASSERT,"Invalid start index of %lld for: str.sub"_Stz,iStart);
+    THROW_ASSERT(FK_ASSERT,"Invalid start index of %lld for: str.sub"_Stz,iStart);
   
   // handle to end of string case
   if (-1 == iLength)
     iLength = iHasLength - iStart;
   
   if ( iLength <= 0 || iStart + iLength > iHasLength)
-    THROW(FK_ASSERT,"Invalid length of %lld for: str.sub"_Stz,iLength);
+    THROW_ASSERT(FK_ASSERT,"Invalid length of %lld for: str.sub"_Stz,iLength);
   
   char* pStart = sString.azChar() + iStart;
   

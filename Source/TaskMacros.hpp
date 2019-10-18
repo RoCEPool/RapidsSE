@@ -8,7 +8,7 @@
 
 #define GET_THROW(_1,_2,_3,_4,NAME,...) NAME
 
-#define THROW(...) \
+#define THROW_ASSERT(...) \
   GET_THROW(__VA_ARGS__, THROW4, THROW3, THROW2, THROW1)(__VA_ARGS__)
 
 #define THROW2(p1, p2) \

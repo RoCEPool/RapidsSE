@@ -72,7 +72,7 @@ void Step::vAddressFetch(MP_Task mpTask, Forth* pForth)
       break;
   
     default:
-      THROW(FK_ASSERT,"Invalid eClass %lld"_Stz,eClass);
+      THROW_ASSERT(FK_ASSERT,"Invalid eClass %lld"_Stz,eClass);
   }
   
   mpTask->m_pForth->m_pDataStack->vPushGenVar(xValFetched);
@@ -117,7 +117,7 @@ void Step::vAddressStore(MP_Task mpTask, Forth* pForth)
       break;
       
     default:
-      THROW(FK_ASSERT,"Invalid eClass %lld"_Stz,eClass);
+      THROW_ASSERT(FK_ASSERT,"Invalid eClass %lld"_Stz,eClass);
   }
   
   EXIT();
