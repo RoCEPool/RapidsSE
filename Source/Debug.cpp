@@ -184,14 +184,15 @@ void Correctness::vExceptionCaught(Exception xException)
   // put a breakpoint here to trap throws
   sleep(0);
   
-  printf("Exception : %s of (%s) in job %s caught (file %s line %lld)\n",
-         aFK[xException.eKind()]->azChar(),
-         xException.azText(),
-         xException.pJob()
-           ? aCN[((Object*)xException.pJob())->eClass()]->azChar()
-           : "<null>",
-         xException.azFileNm(),
-         xException.iLineNo());
+  xException.vPrint();
+//  printf("Exception : %s of (%s) in job %s caught (file %s line %lld)\n",
+//         aFK[xException.eKind()]->azChar(),
+//         xException.azText(),
+//         xException.pJob()
+//           ? aCN[((Object*)xException.pJob())->eClass()]->azChar()
+//           : "<null>",
+//         xException.azFileNm(),
+//         xException.iLineNo());
   
   // dump the call stack
   vStackDump();
@@ -223,14 +224,15 @@ void Correctness::vExceptionCaught(Exception xException)
   
   Exception xException(eKind,zCondition,zFileNm,iLineNo);
   
-  printf("Exception : %s of (%s) in job %s failed (file %s line %lld)\n",
-         aFK[xException.eKind()]->azChar(),
-         xException.azText(),
-         xException.pJob()
-         ? aCN[((Object*)xException.pJob())->eClass()]->azChar()
-         : "<null>",
-         xException.azFileNm(),
-         xException.iLineNo());
+  xException.vPrint();
+//  printf("Exception : %s of (%s) in job %s failed (file %s line %lld)\n",
+//         aFK[xException.eKind()]->azChar(),
+//         xException.azText(),
+//         xException.pJob()
+//         ? aCN[((Object*)xException.pJob())->eClass()]->azChar()
+//         : "<null>",
+//         xException.azFileNm(),
+//         xException.iLineNo());
   
   // dump the call stack
   vStackDump();
