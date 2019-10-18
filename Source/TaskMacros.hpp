@@ -5,7 +5,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // variable argument throws
-
+/*
 #define GET_THROW(_1,_2,_3,_4,NAME,...) NAME
 
 #define THROW_ASSERT(...) \
@@ -40,6 +40,7 @@
   Correctness::vThrowTrap(); \
   throw p1; \
 }
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // invalid auxiliary stack
