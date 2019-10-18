@@ -30,6 +30,8 @@ namespace Correctness
     i8    iLineNo(void);
     char* azText(void);
   
+    void  vPrint(void);
+    void  vSprint(char* azText);
   };
 }
 

@@ -94,6 +94,41 @@ char* Exception::azText(void)
   return m_zText;
 }
 
+/*----------------------------------------------------------------------------*/
+/* print the exception                                                        */
+/*----------------------------------------------------------------------------*/
+void Exception::vPrint(void)
+{
+  char zIntoBuf[1024];
+  
+  vSprint(zIntoBuf);
+  
+  printf("%s\n",zIntoBuf);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint the exception into given char buffer                                */
+/*----------------------------------------------------------------------------*/
+void Exception::vSprint(char* azIntoBuf)
+{
+  StrLib::vSprint((Stz*)azIntoBuf,
+                  
+                  "Exception : %s of (%s) "
+                  "in job %s failed "
+                  "(file %s line %lld)"_Stz,
+         
+                  aFK[eKind()]->azChar(),
+                  azText(),
+
+                  pJob()
+                  ? aCN[((Object*)pJob())->eClass()]->azChar()
+                  : "<null>",
+
+                  azFileNm(),
+                  iLineNo()
+                  );
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
