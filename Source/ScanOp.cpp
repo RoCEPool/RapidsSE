@@ -148,12 +148,6 @@ eOR ScanOp::eOpLoop(void)
     switch (pOperand->eClass()) {
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      case CN_ENDMARKER:
-        vPipeOut(pOperand);
-        goto L_EXIT;
-        break;
-        
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case CN_STARTMARKER:
         
         if (m_bRunPrelim)
@@ -185,6 +179,7 @@ eOR ScanOp::eOpLoop(void)
           }
 #endif
         }
+        goto L_EXIT;
         break;
         
       default:
@@ -196,6 +191,7 @@ eOR ScanOp::eOpLoop(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
+  vPipeOut(new EndMarker);
   return OR_EXIT;
 }
 

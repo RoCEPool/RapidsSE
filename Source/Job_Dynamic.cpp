@@ -213,6 +213,23 @@ void Job_Dynamic::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* query end (participant job executes this code)                             */
+/*----------------------------------------------------------------------------*/
+void Job_Dynamic::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  
+  // get the first stage of the pipeline
+  Stage* pStage = m_pPipeline->pStageVec()->pGet(0);
+  
+  // get the first op of the first stage
+  StartOp * pStartOp = _pStartOp(pStage->pOpVec()->pGet(0));
+  
+  // send an end marker to the stratOp
+  pStartOp->vAppendLeft(new EndMarker);
+}
+
+/*----------------------------------------------------------------------------*/
 /* query execute (participant job executes this code)                         */
 /*----------------------------------------------------------------------------*/
 void Job_Dynamic::vExecute(void)
@@ -296,7 +313,7 @@ Job* Jobs::pJob_Dynamic_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId,
 void Jobs::vJob_Dynamic_post(Job* pJob)
 {
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJob);
-  
+
   if ( pJob_Dynamic->m_bHasError ) {
 
     vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),

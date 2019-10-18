@@ -74,7 +74,10 @@
 
   task::wait
 
-"P done" .
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // end the startOp
+  pJob_dynamic job_Dynamic.end
+
   pJob_dynamic job.notice
 
   pJob_dynamic job::participantExecuted

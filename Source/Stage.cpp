@@ -186,6 +186,10 @@ i8 Stage::nOpsOnNode(i8 iNode)
     i8 iPartitionNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
     if (iPartitionNode == iNode) {
       nOps += pStagePtn->pOpVec()->nItems();
+      
+      // ignore startOps
+      if (pStagePtn->pOpVec()->pGet(0)->eClass() == CN_STARTOP)
+        nOps--;
     }
   }
   
@@ -196,6 +200,10 @@ i8 Stage::nOpsOnNode(i8 iNode)
     // skip if Op not for this node
     if (pStageNde->iNode() == iNode) {
       nOps += pStageNde->pOpVec()->nItems();
+      
+      // ignore startOps
+      if (pStageNde->pOpVec()->pGet(0)->eClass() == CN_STARTOP)
+        nOps--;
     }
   }
   

@@ -75,6 +75,8 @@ StartOp::StartOp(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STARTOP,_FOOTER_);
   
+  m_bAckJobEnd = false;
+  
   m_fpCall = StartOp::eCall;
   
   _checkInitialised_(CN_STARTOP);
@@ -126,12 +128,38 @@ eOR StartOp::eStartLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STARTOP,_FOOTER_);
   
-  // pipe out the start marker
+  // pipe out the start marker and get the query started
   vPipeOut(new StartMarker);
   
-  // pipe out the end marker
-  vPipeOut(new EndMarker);
-  
+  for (;;) {
+    
+    Operand* pOperand = pPopQueue();
+    
+    if (! pOperand) {
+      ASSERT(bIsLocked());
+      return OR_BIDE;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    switch (pOperand->eClass()) {
+        
+      case CN_ENDMARKER:
+        goto L_EXIT;
+        break;
+        
+      case CN_CANCELMARKER:
+        // pipe out the cancel marker
+        vPipeOut(pOperand);
+        goto L_EXIT;
+        
+      default:
+        ASSERT(0);
+        
+    }
+  }
+    
+  L_EXIT:
   return OR_EXIT;
 }
 
