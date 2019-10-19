@@ -20,8 +20,9 @@ namespace Correctness
   void vThrowTrap(void);
   
   
-  [[ noreturn ]] void vAssertFailed(const char* azCondition,
-                                    const char* azFilePath, i8 iLineNo);
+  [[ noreturn ]] void vAssert(const char* azFilePath, i8 iLineNo,
+                              const char* azCondition);
+  
   // refer: https://en.cppreference.com/w/cpp/language/attributes/noreturn
   
   
@@ -39,15 +40,13 @@ namespace Correctness
 // invalid auxiliary stack
 
 #define THROW(azDescription) \
-{ \
-  Correctness::vAssertFailed(azDescription,__FILE__,__LINE__); \
-}
+  Correctness::vAssert(__FILE__,__LINE__,azDescription);
 
 /*--------------------------------------------------------------------------*/
 /* NEVER_REACH macro (point in code which should never be reached           */
 /*--------------------------------------------------------------------------*/
 #define NEVER_REACH \
-  Correctness::vAssertFailed("NEVER_REACH",__FILE__,__LINE__);
+  Correctness::vAssert(__FILE__,__LINE__,"NEVER_REACH");
 
 
 /*============================================================================*/

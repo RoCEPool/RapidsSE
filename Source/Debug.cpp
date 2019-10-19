@@ -147,8 +147,8 @@ void Correctness::vThrowTrap(void)
 /*----------------------------------------------------------------------------*/
 /* handle an assertion failure                                                */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vAssertFailed(const char* azCondition,
-                                const char* azFilePath, i8 iLineNo)
+[[ noreturn ]] void Correctness::vAssert(const char* azFilePath, i8 iLineNo,
+                                         const char* azCondition)
 {
   // put a breakpoint here to trap throws
   sleep(0);

@@ -18,29 +18,17 @@
   /*--------------------------------------------------------------------------*/
   #ifdef WITH_ASSERT_MACRO
     #define ASSERT(condition) \
-    { \
-      if ( !(condition) ) { \
-        printf("ASSERT in %s at %d\n",__FILE__,__LINE__); \
-        Correctness::vAssertFailed((const char*)#condition,(const char*)__FILE__,__LINE__); \
-        Correctness::vAssertPoint(); \
-        Correctness::vAssertTrap(); \
-    } \
-  }
+      if (! (condition)) \
+        Correctness::vAssert((const char*)__FILE__,__LINE__,(const char*)#condition);
   #else
     #define ASSERT(condition)
   #endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #define RASSERT(condition) \
-  { \
-    if ( !(condition) ) { \
-      printf("RASSERT in %s at %d\n",__FILE__,__LINE__); \
-      Correctness::vAssertFailed((const char*)#condition,(const char*)__FILE__,__LINE__); \
-      Correctness::vAssertPoint(); \
-      Correctness::vAssertRelease(); \
-    } \
-  }
-  
+    if (! (condition)) \
+      Correctness::vAssert((const char*)__FILE__,__LINE__,(const char*)#condition);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #define RASSERT_TYPE(pARG,eCLASS) \
   { \
