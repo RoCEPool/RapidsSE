@@ -81,7 +81,7 @@ void Step::vAstackDrop(MP_Task mpTask, Forth* pForth)
   
   GenVar xValA;
   if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xValA) )
-    THROW_INVALID_ASTACK("adrop"_Stz);
+    vThrow(__FILE__,__LINE__,FK_ASTACK,__STEP__);
   
   EXIT();
 }
@@ -134,7 +134,7 @@ void Step::vAstackNip(MP_Task mpTask, Forth* pForth)
   GenVar xValB;
   
   if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xValA,xValB) )
-  THROW_INVALID_ASTACK("anip"_Stz);
+  vThrow(__FILE__,__LINE__,FK_ASTACK,__STEP__);
   
   mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValA);
   
@@ -189,7 +189,7 @@ void Step::vAstackReverse(MP_Task mpTask, Forth* pForth)
   
   for (i8 i = 0; i < nValues; i++) {
     if ( ! mpTask->m_pForth->m_pAuxStack->bPop(apValWrk[i]) )
-      THROW_INVALID_ASTACK("areverse"_Stz);
+      vThrow(__FILE__,__LINE__,FK_ASTACK,__STEP__);
   }
   
   for (i8 i = 0; i < nValues; i++) {
@@ -222,7 +222,7 @@ void Step::vAstackSwap(MP_Task mpTask, Forth* pForth)
   GenVar xValB;
   
   if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xValA,xValB) )
-  THROW_INVALID_ASTACK("aswap"_Stz);
+  vThrow(__FILE__,__LINE__,FK_ASTACK,__STEP__);
   
   mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValA);
   mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValB);
@@ -255,7 +255,7 @@ void Step::vAstackToP(MP_Task mpTask, Forth* pForth)
   
   GenVar xVal;
   if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xVal) )
-    THROW_INVALID_ASTACK("a>"_Stz);
+    vThrow(__FILE__,__LINE__,FK_ASTACK,__STEP__);
   
   mpTask->m_pForth->m_pDataStack->vPushGenVar(xVal);
   

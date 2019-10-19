@@ -31,7 +31,7 @@ namespace Correctness
                              Stz* szFormat,...);
 
   [[ noreturn ]] void vThrow(const char* azFilePath, i8 iLineNo,
-                             eFK eKind, char* azStepNm);
+                             eFK eKind, Stz* szStepNm);
   
 };
 

@@ -45,12 +45,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // invalid auxiliary stack
 
-#define THROW_INVALID_ASTACK(azStepNm) \
-{ \
-  char zDescription[1024]; \
-  StrLib::vSprint(zDescription,"Invalid aux stack for: %s"_Stz,azStepNm); \
-  Correctness::vAssertFailed(zDescription,__FILE__,__LINE__); \
-}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // invalid data stack
