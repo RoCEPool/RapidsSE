@@ -18,21 +18,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* constructor (step-form)                                                    */
-/*----------------------------------------------------------------------------*/
-Exception::Exception(eFK   eKind,
-                     const char* azText)
-{
-  m_eKind = eKind;
-  StrLib::vCopy(m_zText,"azText"); //! #030 this should be length delimited copy
-  StrLib::vCopy(m_zFileNm,"step .cpp file");
-  m_iLineNo = -1;
-  
-  // at the time of the exception we may not know the job
-  m_pJob = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor (long-form)                                                    */
 /*----------------------------------------------------------------------------*/
 Exception::Exception(eFK   eKind,

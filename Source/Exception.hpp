@@ -18,9 +18,6 @@ namespace Correctness
   
   public:
     Exception(eFK   eKind,
-              const char* azText);
-  
-    Exception(eFK   eKind,
               const char* azFuncNm,
               const char* azText,
               const char* azFileNm,
