@@ -63,19 +63,16 @@ void Correctness::vDebugPoint(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* error handler                                                              */
+/* dump current thread's call stack                                           */
 /*----------------------------------------------------------------------------*/
 void Correctness::vStackDump(void)
 {
-  void *pArray[C_STACK_BACKTRACE];
-  int iSize;
-  
-  // get void*'s for all entries on the stack
-  iSize = backtrace(pArray, C_STACK_BACKTRACE);
+  // get void*'s for all frames on the stack
+  void* aaFramePtr[C_STACK_BACKTRACE];
+  int nPtrs = backtrace(aaFramePtr,C_STACK_BACKTRACE);
   
   // print out all the frames to stderr
-  //fprintf(stderr, "Error: signal %d:\n", sig);
-  backtrace_symbols_fd(pArray, iSize, STDERR_FILENO);
+  backtrace_symbols_fd(aaFramePtr,nPtrs,STDERR_FILENO);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -5,7 +5,7 @@
 
 namespace Correctness
 {
-  static const i8 C_STACK_BACKTRACE = 10;
+  static const i8 C_STACK_BACKTRACE = 16;
 
   void vAssertTrap(void);
   void vAssertType(void* aObject, eCN eExpectingClass);
