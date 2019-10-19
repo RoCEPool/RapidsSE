@@ -83,7 +83,7 @@ ENTRY("vInputOpen"_Stz);
   bool bOpened = mpTask->m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
   
   if ( ! bOpened )
-    vThrow(FK_ASSERT,__LINE__,__FILE__,"No such file: %s"_Stz,sFilePath.azChar());
+    vThrow(__FILE__,__LINE__,"No such file: %s"_Stz,sFilePath.azChar());
   
   EXIT();
 }

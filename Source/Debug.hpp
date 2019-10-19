@@ -29,7 +29,7 @@ namespace Correctness
   
   [[ noreturn ]] void vThrow(eFK eKind, Stz* szFormat,...);
   
-  [[ noreturn ]] void vThrow(eFK eKind, i8 iLineNo, const char* azFilePath, 
+  [[ noreturn ]] void vThrow(const char* azFilePath, i8 iLineNo, 
                              Stz* szFormat,...);
 
 };

@@ -229,10 +229,9 @@ void Correctness::vExceptionCaught(Exception xException)
 }
 
 /*----------------------------------------------------------------------------*/
-/* throw an exception of given kind (long-form)                               */
+/* throw an FK_ASSERT exception (long-form)                                   */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vThrow(eFK eKind,
-                                        i8 iLineNo, const char* azFilePath,
+[[ noreturn ]] void Correctness::vThrow(const char* azFilePath, i8 iLineNo,
                                         Stz* szFormat,...)
 {
   // put a breakpoint here to trap throws
@@ -249,7 +248,7 @@ void Correctness::vExceptionCaught(Exception xException)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Exception xException(eKind,zCondition,zFileNm,iLineNo);
+  Exception xException(FK_ASSERT,zCondition,zFileNm,iLineNo);
   
   xException.vPrint();
   

@@ -75,7 +75,7 @@ void Step::vFlowHazard(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vFlowHazard"_Stz);
   
-  vThrow(FK_ASSERT,__LINE__,__FILE__,"Entered hazard"_Stz);
+  vThrow(__FILE__,__LINE__,"Entered hazard"_Stz);
   
   EXIT();
 }
@@ -220,7 +220,7 @@ void Step::vFlowThrow(MP_Task mpTask, Forth* pForth)
   
   sException.vSprint("THROW TEST"_Stz);
   
-  vThrow(FK_ASSERT,__LINE__,__FILE__,sException);
+  vThrow(__FILE__,__LINE__,sException);
   
   EXIT();
 }
