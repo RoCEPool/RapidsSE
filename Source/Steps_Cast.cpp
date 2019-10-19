@@ -22,7 +22,7 @@ void Step::vCastInt(MP_Task mpTask, Forth* pForth)
   
   Object* pPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtr) )
-    THROW_INVALID_DSTACK("(int)"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   mpTask->m_pForth->m_pDataStack->vPushI8((i8)pPtr);
   
@@ -38,7 +38,7 @@ void Step::vCastPtr(MP_Task mpTask, Forth* pForth)
   
   i8 iInt;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iInt) )
-    THROW_INVALID_DSTACK("(ptr)"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   mpTask->m_pForth->m_pDataStack->vPushPointer((Object*)iInt);
   

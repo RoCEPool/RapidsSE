@@ -21,7 +21,7 @@ void Step::vClassName(MP_Task mpTask, Forth* pForth)
   
   i8 iClassNo;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iClassNo) )
-    THROW_INVALID_DSTACK("class::name"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   s32 sClassName;
   

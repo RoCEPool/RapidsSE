@@ -63,7 +63,7 @@ void Step::vGridFindNode(MP_Task mpTask, Forth* pForth)
   
   s256 sNodeNm;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sNodeNm) )
-    THROW_INVALID_DSTACK("grid::findNode"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Node* pNode = AM::pGrid()->pFindNode(sNodeNm);
   
@@ -93,7 +93,7 @@ void Step::vGridNode(MP_Task mpTask, Forth* pForth)
   
   i8 iNode;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iNode) )
-    THROW_INVALID_DSTACK("grid::node"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Node* pNode = AM::pGrid()->pGetNode(iNode);
   
@@ -197,7 +197,7 @@ void Step::vGridStartedStore(MP_Task mpTask, Forth* pForth)
   i8 iStarted;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iStarted) )
-    THROW_INVALID_DSTACK("grid::started!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   AM::pGrid()->vHasStarted(iStarted == 1 ? true : false);
   
@@ -226,7 +226,7 @@ void Step::vGridStartNodeStore(MP_Task mpTask, Forth* pForth)
   i8 iStartNode;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iStartNode) )
-    THROW_INVALID_DSTACK("grid::StartNode!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   AM::pGrid()->vStartNode(iStartNode);
   
@@ -254,7 +254,7 @@ void Step::vGridToNode(MP_Task mpTask, Forth* pForth)
   
   i8 iParitionId;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iParitionId) )
-    THROW_INVALID_DSTACK("grid::toNode"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
   //mpTask->m_pForth->m_pDataStack->vPush((i8)0);
@@ -275,7 +275,7 @@ void Step::vGridToPartition(MP_Task mpTask, Forth* pForth)
   
   i8 iSlot;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iSlot) )
-    THROW_INVALID_DSTACK("grid::toPartition"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   i8 iPartitionId = TablePtn::iSlotToPartition(iSlot);
   
@@ -293,7 +293,7 @@ void Step::vGridToSlot(MP_Task mpTask, Forth* pForth)
   
   i8 iPartitionId;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPartitionId) )
-    THROW_INVALID_DSTACK("grid::toSlot"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   i8 iSlot = TablePtn::iPartitionToSlot(iPartitionId);
   

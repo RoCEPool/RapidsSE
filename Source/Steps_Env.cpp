@@ -22,7 +22,7 @@ void Step::vEnvGet(MP_Task mpTask, Forth* pForth)
   s32 sEnvName;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sEnvName) )
-    THROW_INVALID_DSTACK("env@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   s256 sEnvVal;
   

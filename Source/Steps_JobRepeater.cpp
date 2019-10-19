@@ -23,7 +23,7 @@ void Step::vJob_RepeaterBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Repeater;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Repeater) )
-    THROW_INVALID_DSTACK("Job_Repeater.begin"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Repeater* pJob_Repeater = _pJob_Repeater(pPtrJob_Repeater);
   
   bool bBegun = pJob_Repeater->bBegin();
@@ -42,7 +42,7 @@ void Step::vJob_RepeaterChunk(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Repeater;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Repeater) )
-    THROW_INVALID_DSTACK("job_repeater.chunk"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Repeater* pJob_Repeater = _pJob_Repeater(pPtrJob_Repeater);
   
   bool bCallAgain = pJob_Repeater->bChunk();
@@ -61,7 +61,7 @@ void Step::vJob_RepeaterEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Repeater;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Repeater) )
-    THROW_INVALID_DSTACK("job_repeater.end"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Repeater* pJob_Repeater = _pJob_Repeater(pPtrJob_Repeater);
   
   pJob_Repeater->vEnd();

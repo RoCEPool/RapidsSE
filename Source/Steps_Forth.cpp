@@ -47,7 +47,7 @@ void Step::vAllot(MP_Task mpTask, Forth* pForth)
   i8 iBytes;
   
   if ( !  mpTask->m_pForth->m_pDataStack->bPop(iBytes) )
-    THROW_INVALID_DSTACK("allot"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   RASSERT(iBytes);
   
@@ -114,7 +114,7 @@ void Step::vComma(MP_Task mpTask, Forth* pForth)
   
   GenVar xValue;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValue) )
-    THROW_INVALID_DSTACK("comma"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pCurrentWord->vEncode("pushValue"_Stz,&xValue);
     
@@ -130,7 +130,7 @@ void Step::vCompileComma(MP_Task mpTask, Forth* pForth)
   
   Object* pWordObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("compile,"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Word* pCalledWord = _pWord(pWordObject);
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
@@ -200,7 +200,7 @@ void Step::vCreateFrom(MP_Task mpTask, Forth* pForth)
   
   s32 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK(">create"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Dic* pDic;
   if (mpTask->m_oDicStack.iCount())
@@ -228,7 +228,7 @@ void Step::vCreateFromPersistent(MP_Task mpTask, Forth* pForth)
   
   s32 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK(">create"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Dic* pDic;
   if (mpTask->m_oDicStack.iCount())
@@ -253,7 +253,7 @@ void Step::vCreateFromInRoot(MP_Task mpTask, Forth* pForth)
   
   s32 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK(">createInRoot"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Dic* pDic = AM::pRootDic();
   
@@ -352,7 +352,7 @@ void Step::vFind(MP_Task mpTask, Forth* pForth)
   
   s256 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("find"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if (mpTask->m_iTracing) {
     i8 i = 0;
@@ -374,7 +374,7 @@ void Step::vFindInCurrent(MP_Task mpTask, Forth* pForth)
   
   s256 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("findInCurrent"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if (mpTask->m_iTracing) {
     i8 i = 0; i++;
@@ -438,7 +438,7 @@ void Step::vLocate(MP_Task mpTask, Forth* pForth)
   
   i8 iAddrAsInt;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAddrAsInt) )
-    THROW_INVALID_DSTACK("locate"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   void* aCellVoid = (void*)iAddrAsInt;
   Cell* aHasCell = _aCell(aCellVoid);
@@ -654,7 +654,7 @@ void Step::vSeriesName(Tasks::MP_Task mpTask, Forth* pForth)
   
   s32 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("series-name"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

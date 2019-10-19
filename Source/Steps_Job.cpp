@@ -121,12 +121,12 @@ void Step::vJobAcksRemaining(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.acksRemaining!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   i8 nAcksRemaining;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(nAcksRemaining) )
-    THROW_INVALID_DSTACK("job.acksRemaining!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pJob->vAcksRmg(nAcksRemaining);
   
@@ -142,7 +142,7 @@ void Step::vJobAddOriginator(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.addOriginator"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
     
   // add the job to the originating jobs
@@ -173,7 +173,7 @@ void Step::vJobAddParticipant(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.addParticipant"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
 //  AM::pParticipatingJobs()->vGrabLock();
@@ -203,7 +203,7 @@ void Step::vJobAssertBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.assertBegin"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   if (Job::iNodeNo(pJob->m_iUniqueId) == AM::pGrid()->m_iThisNode) {
@@ -270,7 +270,7 @@ void Step::vJobAssertNeutral(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.assertNeutral"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   if (JL_NONE != pJob->m_eJobList)
@@ -302,7 +302,7 @@ void Step::vJobAssertOriginator(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.assertOriginator"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   if (JL_ORIGINATING != pJob->m_eJobList)
@@ -333,7 +333,7 @@ void Step::vJobAssertParticipant(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.assertParticipant"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   if (JL_PARTICIPATING != pJob->m_eJobList)
@@ -364,7 +364,7 @@ void Step::vJobAssertReceived(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.assertReceived"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   if (! pJob->m_bWasReceived)
@@ -384,7 +384,7 @@ void Step::vJobCatalogNameFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.catalogName@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   s32 sCatalogName;
@@ -405,7 +405,7 @@ void Step::vJobClass(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.class"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   eCN eClass = pJob->eClass();
@@ -424,7 +424,7 @@ void Step::vJobColumnCountFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.columnCount@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob_CreateTable->m_iColumns);
@@ -441,12 +441,12 @@ void Step::vJobColumnIsPartKey(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.columnIsPartKey"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
   
   i8 iColumnNo;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iColumnNo) )
-    THROW_INVALID_DSTACK("job.columnIsPartKey@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].bIsPtnKey());
   
@@ -462,12 +462,12 @@ void Step::vJobColumnNameFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.columnName@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
   
   i8 iColumnNo;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iColumnNo) )
-    THROW_INVALID_DSTACK("job.columnName@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   mpTask->m_pForth->m_pDataStack->vPushS32(pJob_CreateTable->m_xColumns[iColumnNo].sColumnName());
   
@@ -483,12 +483,12 @@ void Step::vJobColumnTypeFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.columnType@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
   
   i8 iColumnNo;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iColumnNo) )
-    THROW_INVALID_DSTACK("job.columnType@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].eColumnType());
   
@@ -520,7 +520,7 @@ void Step::vJobCreateResponseVec(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.createResponseVec@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   RASSERT( ! pJob->m_pResponseVec );
@@ -538,7 +538,7 @@ void Step::vJobOperandFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.operand@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushPointer(pJob->m_pOperand);
@@ -555,12 +555,12 @@ void Step::vJobOperandStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.operand!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   Object* pOperandPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pOperandPtr) )
-    THROW_INVALID_DSTACK("job.operand!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Operand* pOperand = _pOperand(pOperandPtr);
   
   pJob->m_pOperand = pOperand;
@@ -577,7 +577,7 @@ void Step::vJobDelete(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.delete"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   //vTrace("Deleting job %p\n"_Stz, pJob);
@@ -602,7 +602,7 @@ void Step::vJobDecAcksRemaining(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.decAcksRemaining"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   bool bAmDecider = pJob->m_oAcksRmg.bDecAndDecide();
@@ -621,7 +621,7 @@ void Step::vJobDicPath(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.dicPath"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
 
   mpTask->m_pForth->m_pDataStack->vPushPointer(&pJob->m_oDicPath);
@@ -638,12 +638,12 @@ void Step::vJobEnameFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.ename@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   s32 sEname;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sEname) )
-    THROW_INVALID_DSTACK("job.ename@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   s4K sValue ( pJob->m_oEnmSet.szValue(sEname) );
   
@@ -661,16 +661,16 @@ void Step::vJobEnameStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.ename!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   s32 sEname;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sEname) )
-    THROW_INVALID_DSTACK("job.ename!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   s4K sValue;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sValue) )
-    THROW_INVALID_DSTACK("job.ename!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
 
   RASSERT(0);
   
@@ -686,12 +686,12 @@ void Step::vJobErrorFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.error@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
 
   i8 iNode;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iNode) )
-    THROW_INVALID_DSTACK("job.error@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_xResponse.m_eErrorCode);
   
@@ -707,12 +707,12 @@ void Step::vJobErrorStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.error!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   i8 iJobError;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iJobError) )
-    THROW_INVALID_DSTACK("job.error!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
   pJob->m_bHasError = true;
@@ -732,7 +732,7 @@ void Step::vJobExecuteFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.execute@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   s32 sExecute;
@@ -769,7 +769,7 @@ void Step::vJobFindOriginator(MP_Task mpTask, Forth* pForth)
   
   i8 iJobId;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iJobId) )
-    THROW_INVALID_DSTACK("job::findOriginator"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Job* pJobFound = Scheduler::pFindOriginatingJob(iJobId);
   RASSERT(pJobFound);
@@ -788,7 +788,7 @@ void Step::vJobFindParticipant(MP_Task mpTask, Forth* pForth)
   
   i8 iJobId;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iJobId) )
-    THROW_INVALID_DSTACK("job::findPartcipant"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
     
   Job* pJobFound = Scheduler::pFindParticipatingJob(iJobId);
   RASSERT(pJobFound);
@@ -807,7 +807,7 @@ void Step::vJobFolderNameFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.folderName@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   s32 sFolderName;
@@ -828,7 +828,7 @@ void Step::vJobHasError(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.hasError"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Space* pJob = _pJob_Space(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_bHasError);
@@ -845,7 +845,7 @@ void Step::vJobHasOperand(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.hasOperand"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   
@@ -867,7 +867,7 @@ void Step::vJobIdFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.id@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_iUniqueId);
@@ -884,7 +884,7 @@ void Step::vJobIndexNameFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.indexName@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
 
   s32 sIndexName = pJob->szIndexName();
@@ -902,7 +902,7 @@ void Step::vJobIsExecuting(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.isExecuting"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   i8 iIsExecuting = pJob->m_eSeed == SS_SEED_EXE ? 1 : 0;
@@ -920,7 +920,7 @@ void Step::vJobJobClass(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.jobClass"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   i8 iJobClass_p = (i8)pJob->eClass();
@@ -939,7 +939,7 @@ void Step::vJobJobListFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.jobList@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_eJobList);
@@ -956,12 +956,12 @@ void Step::vJobMetadataStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.metadata"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   s4K sMetadata;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sMetadata) )
-    THROW_INVALID_DSTACK("job.metadata!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pJob->m_sMetadata = sMetadata;
   
@@ -977,7 +977,7 @@ void Step::vJobNodeNameFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.NodeName@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   s32 sNodeName;
@@ -998,7 +998,7 @@ void Step::vJobNoWaitFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.noWait@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_bNoWait);
@@ -1015,7 +1015,7 @@ void Step::vJobObjectNameFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.objectName@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
 
   s32 sObjectName;
@@ -1036,7 +1036,7 @@ void Step::vJobOriginatingTaskFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.originatingTask@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushPointer(pJob->m_pOriginatingTask);
@@ -1053,12 +1053,12 @@ void Step::vJobOriginatingTaskStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.originatingTask!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   Object* pOriginatingTaskPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pOriginatingTaskPtr) )
-    THROW_INVALID_DSTACK("job.originatingTask!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Task* pOriginatingTask = _pTask(pOriginatingTaskPtr);
   ASSERT(CN_TASK == pOriginatingTask->eClass());
   
@@ -1076,7 +1076,7 @@ void Step::vJobOriginatorFetch(MP_Task mpTask, Forth* pForth)
   
   i8 iJobId;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iJobId) )
-    THROW_INVALID_DSTACK("job::originator@@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(Job::iOriginatorNode(iJobId));
   
@@ -1092,7 +1092,7 @@ void Step::vJobParentIdFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.parentId@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_iParentId);
@@ -1109,7 +1109,7 @@ void Step::vJobParticipantFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.partcipant@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_iParticipantNode);
@@ -1126,12 +1126,12 @@ void Step::vJobParticipantStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.partcipant!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   i8 iParticipantNode;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iParticipantNode) )
-    THROW_INVALID_DSTACK("job.partcipant!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pJob->m_iParticipantNode = iParticipantNode;
   
@@ -1147,7 +1147,7 @@ void Step::vJobParticipantHasError(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.participantHasError@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   i8 bHasError = false;
@@ -1173,16 +1173,16 @@ void Step::vJobParticipantResponseStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.participantResponse!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   i8 iNode;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iNode) )
-    THROW_INVALID_DSTACK("job.participantResponse!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Object* pParticipantJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pParticipantJobPtr) )
-    THROW_INVALID_DSTACK("job.participantResponse!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pParticipantJob = _pJob(pParticipantJobPtr);
   
   // there should be a response vector
@@ -1220,7 +1220,7 @@ void Step::vJobPartitionsFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.partitions@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob_Sanity->m_iPartitions);
@@ -1237,7 +1237,7 @@ void Step::vJobPhaseFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.phase@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_eJobPhase);
@@ -1254,12 +1254,12 @@ void Step::vJobPhaseStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.phase!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   i8 iJobPhase;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iJobPhase) )
-    THROW_INVALID_DSTACK("job.phase!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pJob->m_eJobPhase = (eJP)iJobPhase;
   
@@ -1277,7 +1277,7 @@ void Step::vJobPostRecv(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.postRecv"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1326,7 +1326,7 @@ void Step::vJobPreSend(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.preSend"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   JobClass* pJobClass = pJob->m_aJobClass;
@@ -1353,7 +1353,7 @@ void Step::vJobRecv(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.recv"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   // find the job in the catalog
@@ -1375,7 +1375,7 @@ void Step::vJobRemoveOriginator(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.id@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   bool bRemove = Scheduler::bRemoveOriginatingJob(pJob);
@@ -1409,7 +1409,7 @@ void Step::vJobRemoveParticipant(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.id@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   bool bRemove = Scheduler::bRemoveParticipatingJob(pJob);
@@ -1442,7 +1442,7 @@ void Step::vJobRegionSizeFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.regionSize@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob_Sanity->m_iRegionSize);
@@ -1459,11 +1459,11 @@ void Step::vJobReseed(MP_Task mpTask, Forth* pForth)
   
   i8 i_Seed;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Seed) )
-    THROW_INVALID_DSTACK("job.reseed"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.reseed"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   AM::vLogSvc(SL_INF,mpTask->m_pJob,VA_SVC_SPAWN_JOB,
@@ -1487,7 +1487,7 @@ void Step::vJobResponseFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.response@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushS4K(pJob->m_xResponse.m_sResponse);
@@ -1504,12 +1504,12 @@ void Step::vJobResponseStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.response!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   s4K sResponse;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sResponse) )
-    THROW_INVALID_DSTACK("job.response!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   //pJob->m_xNode[iNode].m_sResponse = sResponse;
   pJob->m_xResponse.m_sResponse = sResponse;
@@ -1526,7 +1526,7 @@ void Step::vJobRoutineNameFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.routineName@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   s32 sRoutineName;
@@ -1547,7 +1547,7 @@ void Step::vJobRowsInvalidFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.rowsInvalid@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   i8 iRowsInvalid = *pJob->m_xResponse.m_ixRowsInvalid;
@@ -1565,12 +1565,12 @@ void Step::vJobRowsInvalidStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.rowsInvalid!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   i8 iRowsInvalid;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iRowsInvalid) )
-    THROW_INVALID_DSTACK("job.rowsInvalid!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   //pJob->m_xNode[iNode].m_ixRowsInvalid = iRowsInvalid;
   
@@ -1588,7 +1588,7 @@ void Step::vJobRowsProcessedFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.rowsProcessed@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   i8 iRowsProcessed = *pJob->m_xResponse.m_ixRowsProcessed;
@@ -1606,12 +1606,12 @@ void Step::vJobRowsProcessedStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   i8 iRowsProcessed;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iRowsProcessed) )
-    THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   //pJob->m_xNode[iNode].m_ixRowsProcessed = iRowsProcessed;
   
@@ -1629,7 +1629,7 @@ void Step::vJobSchemaNameFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.schemaName@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   s32 sSchemaName;
@@ -1650,7 +1650,7 @@ void Step::vJobRowsSkippedFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.rowsSkipped@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
  
   i8 iRowsSkipped = *pJob->m_xResponse.m_ixRowsSkipped;
@@ -1669,12 +1669,12 @@ void Step::vJobRowsSkippedStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.rowsSkipped!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   i8 iRowsSkipped;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iRowsSkipped) )
-    THROW_INVALID_DSTACK("job.rowsSkipped!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   //pJob->m_xNode[iNode].m_ixRowsSkipped = iRowsSkipped;
   
@@ -1692,7 +1692,7 @@ void Step::vJobSeedFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.seed@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_eSeed);
@@ -1709,7 +1709,7 @@ void Step::vJobSend(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.send"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   // find the job in the catalog
@@ -1731,7 +1731,7 @@ void Step::vJobSessionStateFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.sessionState@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_xReqTuple.m_i_State);
@@ -1748,7 +1748,7 @@ void Step::vJobShow(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.show"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   // find the job in the catalog
@@ -1773,7 +1773,7 @@ void Step::vJobSignalWaiter(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.signalWaiter"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1816,7 +1816,7 @@ void Step::vJobSignalWaiter(MP_Task mpTask, Forth* pForth)
 //
 //  Object* pJobPtr;
 //  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-//  THROW_INVALID_DSTACK("job.signalWaiter"_Stz);
+//  vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
 //  Job* pJob = _pJob(pJobPtr);
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1863,7 +1863,7 @@ void Step::vJobSlotFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.slot@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_i_Slot);
@@ -1880,11 +1880,11 @@ void Step::vJobSpawn(MP_Task mpTask, Forth* pForth)
   
   i8 i_Seed;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Seed) )
-    THROW_INVALID_DSTACK("job.spawn"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
 
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.spawn"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   AM::vLogSvc(SL_INF,mpTask->m_pJob,VA_SVC_SPAWN_JOB,
@@ -1908,11 +1908,11 @@ void Step::vJobSpawnDedicated(MP_Task mpTask, Forth* pForth)
   
   i8 i_Seed;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Seed) )
-    THROW_INVALID_DSTACK("job.spawn_dedicated"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.spawn_dedicated"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   AM::vLogSvc(SL_INF,mpTask->m_pJob,VA_SVC_SPAWN_JOB,
@@ -1936,7 +1936,7 @@ void Step::vJobStateDiagram(MP_Task mpTask, Forth* pForth)
   
   i8 iClassNo;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iClassNo) )
-    THROW_INVALID_DSTACK("job.stateDiagram"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
 
   s256 sDiagram;
   
@@ -1956,7 +1956,7 @@ void Step::vJobTaskFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.task@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushPointer(pJob->pTask());
@@ -1973,12 +1973,12 @@ void Step::vJobTaskStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.task!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   Object* pTaskPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskPtr) )
-    THROW_INVALID_DSTACK("job.task!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Task* pTask = _pTask(pTaskPtr);
   
   // for the moment this should always be null
@@ -1997,7 +1997,7 @@ void Step::vJobTenantNameFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.tenantName@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
   
   s32 sTenantName;
@@ -2032,11 +2032,11 @@ void Step::vJobWaitParticipant(MP_Task mpTask, Forth* pForth)
   
   i8 iJobId;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iJobId) )
-    THROW_INVALID_DSTACK("job::vJobWaitParticipant"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Object* pJobObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobObject) )
-    THROW_INVALID_DSTACK("job::vJobWaitParticipant"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   //Job* pCallingJob = _pJob(pJobObject);
   

@@ -36,7 +36,7 @@ void Step::vSocketAccept(MP_Task mpTask, Forth* pForth)
   ENTRY("vSocketAccept"_Stz);
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socket.accept"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -68,7 +68,7 @@ void Step::vSocketClose(MP_Task mpTask, Forth* pForth)
   ENTRY("vSocketClose"_Stz);
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socketclose"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -97,13 +97,13 @@ void Step::vSocketConnect(MP_Task mpTask, Forth* pForth)
   ENTRY("vSocketConnect"_Stz);
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("socket.connect"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xNodeVar) )
-    THROW_INVALID_DSTACK("socket.connect"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPort) )
-    THROW_INVALID_DSTACK("socket.connect"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   // get address of node
   Stz* sAddr = xNodeVar.szStz();
@@ -158,13 +158,13 @@ void Step::vSocketConnect(MP_Task mpTask, Forth* pForth)
 //  ENTRY("vSocketConnect"_Stz);
 //
 //  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-//    THROW_INVALID_DSTACK("socket.connect"_Stz);
+//    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
 //
 //  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xNodeVar) )
-//    THROW_INVALID_DSTACK("socket.connect"_Stz);
+//    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
 //
 //  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPort) )
-//    THROW_INVALID_DSTACK("socket.connect"_Stz);
+//    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
 //
 //  // get address of node
 //  Stz* sAddr = xNodeVar.szStz();
@@ -225,7 +225,7 @@ void Step::vSocketDropWrite(MP_Task mpTask, Forth* pForth)
   
   Object* pSocketPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pSocketPtr) )
-    THROW_INVALID_DSTACK("socket.dropWrite"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Socket* pSocket = _pSocket(pSocketPtr);
   
   pSocket->vDropWrite();
@@ -242,7 +242,7 @@ void Step::vSocketGrabWrite(MP_Task mpTask, Forth* pForth)
   
   Object* pSocketPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pSocketPtr) )
-    THROW_INVALID_DSTACK("socket.grabWrite"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Socket* pSocket = _pSocket(pSocketPtr);
   
   pSocket->vGrabWrite();
@@ -262,7 +262,7 @@ void Step::vSocketListen(MP_Task mpTask, Forth* pForth)
   ENTRY("vSocketListen"_Stz);
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPort) )
-    THROW_INVALID_DSTACK("socketlisten"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pSocket = new Socket;
   bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
@@ -325,7 +325,7 @@ void Step::vSocketRecvObject(MP_Task mpTask, Forth* pForth)
   
   Object* pSocketPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pSocketPtr) )
-    THROW_INVALID_DSTACK("socket.recvObject"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Socket* pSocket = _pSocket(pSocketPtr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -553,7 +553,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask, Forth* pForth)
   
   Object* pSocketPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pSocketPtr) )
-    THROW_INVALID_DSTACK("socket.recvObject"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Socket* pSocket = _pSocket(pSocketPtr);
   
   void* aLowBuff = pSocket->m_aLowBuff;
@@ -805,12 +805,12 @@ void Step::vSocketSendObject(MP_Task mpTask, Forth* pForth)
   
   Object* pSocketPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pSocketPtr) )
-    THROW_INVALID_DSTACK("socket.sendObject"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Socket* pSocket = _pSocket(pSocketPtr);
   
   Object* pObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-  THROW_INVALID_DSTACK("socket.sendObject"_Stz);
+  vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

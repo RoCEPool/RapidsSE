@@ -21,7 +21,7 @@ void Step::vJob_OperandPipeOut(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_Operand.pipeOut"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Operand* pJob_Operand = _pJob_Operand(pJobPtr);
   
   // find the parent participant job

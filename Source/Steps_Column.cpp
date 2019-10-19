@@ -27,7 +27,7 @@ void Step::vColumnIsNullableFetch(MP_Task mpTask, Forth* pForth)
   Object* pPtrColumn;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrColumn) )
-  THROW_INVALID_DSTACK("column.isNullable"_Stz);
+  vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -50,7 +50,7 @@ void Step::vColumnIsPartitionKeyFetch(MP_Task mpTask, Forth* pForth)
   Object* pPtrColumn;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrColumn) )
-  THROW_INVALID_DSTACK("column.isPartitionKey"_Stz);
+  vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -73,7 +73,7 @@ void Step::vColumnLengthFetch(MP_Task mpTask, Forth* pForth)
   Object* pPtrColumn;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrColumn) )
-  THROW_INVALID_DSTACK("column.length"_Stz);
+  vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -93,7 +93,7 @@ void Step::vColumnNameFetch(MP_Task mpTask, Forth* pForth)
   Object* pPtrColumn;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrColumn) )
-  THROW_INVALID_DSTACK("column.name"_Stz);
+  vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -113,7 +113,7 @@ void Step::vColumnScaleFetch(MP_Task mpTask, Forth* pForth)
   Object* pPtrColumn;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrColumn) )
-  THROW_INVALID_DSTACK("column.scale"_Stz);
+  vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -133,7 +133,7 @@ void Step::vColumnTypeFetch(MP_Task mpTask, Forth* pForth)
   Object* pPtrColumn;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrColumn) )
-  THROW_INVALID_DSTACK("column.type"_Stz);
+  vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());

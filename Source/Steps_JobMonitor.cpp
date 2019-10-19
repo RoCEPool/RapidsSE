@@ -23,7 +23,7 @@ void Step::vJob_MonitorBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobMonitor;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobMonitor) )
-    THROW_INVALID_DSTACK("job_monitor.begin"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Monitor* pJob_Monitor = _pJob_Monitor(pPtrJobMonitor);
   
   bool bBegun = pJob_Monitor->bBegin();
@@ -42,7 +42,7 @@ void Step::vJob_MonitorTake(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobMonitor;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobMonitor) )
-    THROW_INVALID_DSTACK("job_monitor.chunk"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Monitor* pJob_Monitor = _pJob_Monitor(pPtrJobMonitor);
   
   bool bCallAgain = pJob_Monitor->bTake();
@@ -66,7 +66,7 @@ void Step::vJob_MonitorEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Monitor;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Monitor) )
-    THROW_INVALID_DSTACK("job_monitor.end"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Monitor* pJob_Monitor = _pJob_Monitor(pPtrJob_Monitor);
   
   pJob_Monitor->vEnd();

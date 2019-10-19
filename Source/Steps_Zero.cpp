@@ -26,7 +26,7 @@ void Step::vZeroLess(MP_Task mpTask, Forth* pForth)
   
   i8 iZero;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0<"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if (iZero < 0)
     mpTask->m_pForth->m_pDataStack->vPushBool(true);
@@ -45,7 +45,7 @@ void Step::vZeroLessEqual(MP_Task mpTask, Forth* pForth)
   
   i8 iZero;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0<="_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if (iZero <= 0)
     mpTask->m_pForth->m_pDataStack->vPushBool(true);
@@ -64,7 +64,7 @@ void Step::vZeroEqual(MP_Task mpTask, Forth* pForth)
   
   i8 iZero;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0=="_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if (iZero == 0)
     mpTask->m_pForth->m_pDataStack->vPushBool(true);
@@ -83,7 +83,7 @@ void Step::vZeroNotEqual(MP_Task mpTask, Forth* pForth)
   
   i8 iZero;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0!="_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if (iZero != 0)
     mpTask->m_pForth->m_pDataStack->vPushBool(true);
@@ -102,7 +102,7 @@ void Step::vZeroGreaterEqual(MP_Task mpTask, Forth* pForth)
   
   i8 iZero;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0>="_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if (iZero >= 0)
     mpTask->m_pForth->m_pDataStack->vPushBool(true);
@@ -121,7 +121,7 @@ void Step::vZeroGreater(MP_Task mpTask, Forth* pForth)
   
   i8 iZero;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0>"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if (iZero > 0)
     mpTask->m_pForth->m_pDataStack->vPushBool(true);

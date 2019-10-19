@@ -27,12 +27,12 @@ void Step::vJob_SubWalkerSpawn(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Walk;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Walk) )
-    THROW_INVALID_DSTACK("Job_subWalker::spawn"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Walk* pJob_Walk = _pJob_Walk(pPtrJob_Walk);
   
   i8 i_Slot;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Slot) )
-    THROW_INVALID_DSTACK("Job_subWalker::spawn"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -69,7 +69,7 @@ void Step::vJob_SubWalkerWalkJobFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_SubWalker;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubWalker) )
-    THROW_INVALID_DSTACK("Job_subWalker.exportJob@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJob_SubWalker);
   
   mpTask->m_pForth->m_pDataStack->vPushPointer(pJob_SubWalker->m_pJobWalk);
@@ -87,7 +87,7 @@ void Step::vJob_SubWalkerBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobSubWalker;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubWalker) )
-    THROW_INVALID_DSTACK("job_subWalker.begin"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJobSubWalker);
   
   bool bBegun = pJob_SubWalker->bBegin();
@@ -106,7 +106,7 @@ void Step::vJob_SubWalkerChunk(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobSubWalker;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubWalker) )
-    THROW_INVALID_DSTACK("job_subWalker.chunk"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJobSubWalker);
   
   bool bCallAgain = pJob_SubWalker->bChunk();
@@ -125,7 +125,7 @@ void Step::vJob_SubWalkerEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobSubWalker;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubWalker) )
-    THROW_INVALID_DSTACK("job_subexporter.end"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJobSubWalker);
   
   pJob_SubWalker->vEnd();

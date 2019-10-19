@@ -26,7 +26,7 @@ void Step::vJob_SubIngesterSpawn(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Ingest;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Ingest) )
-    THROW_INVALID_DSTACK("job_subIngester::spawn"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -68,7 +68,7 @@ void Step::vJob_SubIngesterBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_SubIngester;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubIngester) )
-    THROW_INVALID_DSTACK("job_job_subIngester.begin"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
 
   bool bBegun = pJob_SubIngester->bBegin();
@@ -87,7 +87,7 @@ void Step::vJob_SubIngesterChunk(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_SubIngester;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubIngester) )
-    THROW_INVALID_DSTACK("job_subIngester.chunk"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
   
   bool bCallAgain = pJob_SubIngester->bChunk();
@@ -120,7 +120,7 @@ void Step::vJob_SubIngesterEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_SubIngester;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubIngester) )
-    THROW_INVALID_DSTACK("job_subIngester.end"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
   
   pJob_SubIngester->vEnd();
@@ -137,7 +137,7 @@ void Step::vJob_SubIngesterJobIngest(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_SubIngester;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubIngester) )
-  THROW_INVALID_DSTACK("subLoader.end"_Stz);
+  vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
   
   mpTask->m_pForth->m_pDataStack->vPushPointer(pJob_SubIngester->m_pJob_Ingest);

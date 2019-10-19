@@ -53,7 +53,7 @@ void Step::vTxCommit(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTx;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.commit"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Tx* pTx = _pTx(pPtrTx);
   
   pTx->vPhase(XP_COMMITTED);
@@ -75,7 +75,7 @@ void Step::vTxCounterDec(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTx;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.counterDec"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iCounter = pTx->iCounterDec();
@@ -100,7 +100,7 @@ void Step::vTxCounterFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTx;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.counter@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iCounter = pTx->iCounterGet();
@@ -119,12 +119,12 @@ void Step::vTxCounterStore(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTx;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.counter!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iCounter;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iCounter) )
-    THROW_INVALID_DSTACK("tx.counter!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pTx->vCounterSet(iCounter);
   
@@ -140,14 +140,14 @@ void Step::vTxDistMemberFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTx;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.distMember@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Tx* pTx = _pTx(pPtrTx);
   
   ASSERT(pTx->bLocalTx());
   
   i8 i_Node;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Node) )
-    THROW_INVALID_DSTACK("tx.distMember@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   bool bDistMember = pTx->bDistMember(i_Node);
   
@@ -165,18 +165,18 @@ void Step::vTxDistMemberStore(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTx;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.distMember!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Tx* pTx = _pTx(pPtrTx);
   
   ASSERT(pTx->bLocalTx());
   
   i8 i_Node;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Node) )
-    THROW_INVALID_DSTACK("tx.distMember!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
 
   i8 iDistMember;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iDistMember) )
-    THROW_INVALID_DSTACK("tx.distMember!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pTx->vDistMember(i_Node,iDistMember);
   
@@ -193,7 +193,7 @@ ENTRY("vTxDump"_Stz);
   Object* pPtrTx;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.dump"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Tx* pTx = _pTx(pPtrTx);
   
   pTx->vContentDump();
@@ -223,7 +223,7 @@ void Step::vTxFree(MP_Task mpTask, Forth* pForth)
   Object* pPtrTx;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.free"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Tx* pTx = _pTx(pPtrTx);
   
 //  vTrace("Freeing tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
@@ -245,7 +245,7 @@ void Step::vTxId(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTx;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.id"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iTxId = pTx->iLocalTxId();
@@ -264,7 +264,7 @@ void Step::vTxPrepare(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTx;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.prepare"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Tx* pTx = _pTx(pPtrTx);
   
   pTx->vPhase(XP_PREPARED);
@@ -286,7 +286,7 @@ void Step::vTxRollback(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTx;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("tx.rollback"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Tx* pTx = _pTx(pPtrTx);
   
   pTx->vPhase(XP_ROLLEDBACK);
@@ -308,7 +308,7 @@ void Step::vTxTestDist(MP_Task mpTask, Forth* pForth)
   
   i8 iDistTxId;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iDistTxId) )
-    THROW_INVALID_DSTACK("tx.testDist"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Tx* pTx = Tx::pTestDistTx(iDistTxId);
 

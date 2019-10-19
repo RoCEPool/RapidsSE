@@ -26,7 +26,7 @@ void Step::vJob_ReceiverConnNoFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_Receiver.connNo@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   i8 iConnNo = pJob_Receiver->iConnNo();
@@ -44,7 +44,7 @@ void Step::vJob_ReceiverJobReceived(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_receiver.jobReceived!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job* pJob = _pJob(pJobPtr);
 
   if (CN_JOB__EXECUTED == pJob->eClass()) {
@@ -75,12 +75,12 @@ void Step::vJob_ReceiverConnNoStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_receiver.connNo!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   i8 iConnNo;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iConnNo) )
-    THROW_INVALID_DSTACK("job_receiver.connNo!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pJob_Receiver->vConnNo(iConnNo);
   
@@ -96,7 +96,7 @@ void Step::vJob_ReceiverNodeFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_Receiver.node@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   Node* pNode = pJob_Receiver->pNode();
@@ -114,12 +114,12 @@ void Step::vJob_ReceiverNodeStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_receiver.node!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   Object* pNodePtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pNodePtr) )
-    THROW_INVALID_DSTACK("job_receiver.node!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Node* pNode = _pNode(pNodePtr);
   
   pJob_Receiver->vNode(pNode);

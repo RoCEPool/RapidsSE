@@ -24,7 +24,7 @@ void Step::vJob_SubTruncateSlotFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_subTruncate.slot@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_i_Slot);
@@ -41,7 +41,7 @@ void Step::vJob_SubTruncateTruncateJobIdFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_subTruncate.truncateJobId@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_iTruncateJobId);
@@ -58,12 +58,12 @@ void Step::vJob_TruncateTableSpawnSub(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_truncateTable.spawnSub"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJobPtr);
   
   i8 iSlot;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iSlot) )
-    THROW_INVALID_DSTACK("Job_truncateTable.spawnSub"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   i8 iRequestId = pJob_TruncateTable->m_xReqTuple.m_iReqId;
   Session* pSession = pJob_TruncateTable->m_pSession;

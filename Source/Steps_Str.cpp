@@ -63,7 +63,7 @@ void Step::vStrCat(MP_Task mpTask, Forth* pForth)
   s48K sStrA;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sStrB,sStrA) )
-    THROW_INVALID_DSTACK("str.cat"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   sStrR = sStrA;
   
@@ -87,7 +87,7 @@ void Step::vStrClip(MP_Task mpTask, Forth* pForth)
   
   // get the arguments
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString,iLength) )
-    THROW_INVALID_DSTACK("str.clip"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   // validate length
   i8 iHasLength = sString.nLength();
@@ -121,7 +121,7 @@ void Step::vStrEqual(MP_Task mpTask, Forth* pForth)
   
   // get the arguments
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xStringB,xStringA) )
-    THROW_INVALID_DSTACK("str.equal"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   i8 iEqual = StrLib::bEqualTo(_aStrVal(xStringA.aNestedValue())->azChar(),
                                _aStrVal(xStringB.aNestedValue())->azChar(),
@@ -144,7 +144,7 @@ void Step::vStrEscape(MP_Task mpTask, Forth* pForth)
   
   // get the arguments
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xArg) )
-    THROW_INVALID_DSTACK("str.escape"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   StrLib::vEscape(xArg.azChar(),xEscaped.azChar());
   
@@ -162,7 +162,7 @@ void Step::vStrFirstCsv(MP_Task mpTask, Forth* pForth)
   
   s48K sStr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sStr) )
-    THROW_INVALID_DSTACK("str.firstCsv"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   s48K sFirstValue;
   
@@ -185,7 +185,7 @@ void Step::vStrFormat(MP_Task mpTask, Forth* pForth)
   
   s48K sFormat;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sFormat) )
-    THROW_INVALID_DSTACK("str.format"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   s48K sString;
   
@@ -209,7 +209,7 @@ void Step::vStrLeft(MP_Task mpTask, Forth* pForth)
   
   // get the arguments
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString,iLength) )
-    THROW_INVALID_DSTACK("str.left"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   // validate length
   i8 iHasLength = sString.nLength();
@@ -238,7 +238,7 @@ void Step::vStrLength(MP_Task mpTask, Forth* pForth)
   
   // get the arguments
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("str.length"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   iLength = sString.nLength();
   
@@ -262,7 +262,7 @@ void Step::vStrPrepend(MP_Task mpTask, Forth* pForth)
   GenVar xValB;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValB,xValA) )
-    THROW_INVALID_DSTACK("str.prepend"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   // If received INTEGER convert to STRING
   if (xValA.eClass() == CN_INTVAL) {
@@ -304,7 +304,7 @@ void Step::vStrRandom(MP_Task mpTask, Forth* pForth)
   
   i8 iLength;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iLength) )
-    THROW_INVALID_DSTACK("str.random"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   s256 sRnd;
   
@@ -324,11 +324,11 @@ void Step::vStrRemovePrefix(MP_Task mpTask, Forth* pForth)
   
   s48K sString;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("str.removePrefix"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   s32 sIntro;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sIntro) )
-    THROW_INVALID_DSTACK("str.removePrefix"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   StrLib::vRemovePrefix(sString.azChar(), * sIntro.azChar());
   
@@ -346,11 +346,11 @@ void Step::vStrRemoveSuffix(MP_Task mpTask, Forth* pForth)
   
   s48K sString;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("str.removeSuffix"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   s32 sIntro;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sIntro) )
-    THROW_INVALID_DSTACK("str.removeSuffix"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   StrLib::vRemoveSuffix(sString.azChar(), * sIntro.azChar());
   
@@ -371,13 +371,13 @@ void Step::vStrReplace(MP_Task mpTask, Forth* pForth)
   s48K sThis;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("str.replace"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
 
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sThat) )
-    THROW_INVALID_DSTACK("str.replace"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sThis) )
-    THROW_INVALID_DSTACK("str.replace"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   s48K sReplaced;
   
@@ -401,7 +401,7 @@ void Step::vStrRight(MP_Task mpTask, Forth* pForth)
   
   // get the arguments
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString,iLength) )
-    THROW_INVALID_DSTACK("str.right"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   // validate length
   i8 iHasLength = sString.nLength();
@@ -435,7 +435,7 @@ void Step::vStrSub(MP_Task mpTask, Forth* pForth)
   
   // get the arguments
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString,iStart,iLength) )
-    THROW_INVALID_DSTACK("str.sub"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   i8 iHasLength = sString.nLength();
   
@@ -469,7 +469,7 @@ void Step::vStrTailInt(MP_Task mpTask, Forth* pForth)
   // get the string
   s48K sString;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("str.tailInt"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   // get last char in string
   char* aLast = StrLib::sLast(sString.azChar());

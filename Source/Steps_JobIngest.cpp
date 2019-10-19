@@ -24,7 +24,7 @@ void Step::vJob_IngestBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Ingest;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Ingest) )
-    THROW_INVALID_DSTACK("Job_Ingest.begin"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
   
   bool bBegun = pJob_Ingest->bBegin();
@@ -43,7 +43,7 @@ void Step::vJob_IngestChunk(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobIngest;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobIngest) )
-    THROW_INVALID_DSTACK("job_ingest.chunk"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJobIngest);
   
   bool bCallAgain = pJob_Ingest->bChunk();
@@ -68,7 +68,7 @@ void Step::vJob_IngestEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Ingest;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Ingest) )
-    THROW_INVALID_DSTACK("Job_Ingest.end"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
   
   pJob_Ingest->vEnd();
@@ -86,7 +86,7 @@ void Step::vJob_IngestTableStore(MP_Task mpTask, Forth* pForth)
   Object* pPtrTable;
   Object* pPtrJob_Ingest;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Ingest,pPtrTable) )
-    THROW_INVALID_DSTACK("job_ingest.tableStore"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
   

@@ -26,7 +26,7 @@ void Step::vDicStackDepth(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrDicStack;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicStack.depth"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
@@ -47,7 +47,7 @@ void Step::vDicStackDrop(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrDicStack;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicStack.drop"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
@@ -66,7 +66,7 @@ void Step::vDicStackDump(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrDicStack;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicStack.dump"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
@@ -85,14 +85,14 @@ void Step::vDicStackPick(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrDicStack;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicStack.pick"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
   
   i8 iDic;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iDic) )
-    THROW_INVALID_DSTACK("dicStack.pick"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Object* pPtrDic = pDicStack->pPick(iDic);
 
@@ -110,7 +110,7 @@ void Step::vDicStackPop(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrDicStack;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicStack.pop"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
@@ -129,7 +129,7 @@ void Step::vDicStackPush(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrDicStack;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicStack.push"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   DicStack* pDicStack = DicStack::_pDicStack(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
@@ -137,7 +137,7 @@ void Step::vDicStackPush(MP_Task mpTask, Forth* pForth)
   Object* pPtrDic;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dicStack.push"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Dic* pDic = _pDic(pPtrDic);
   

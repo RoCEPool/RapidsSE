@@ -43,16 +43,6 @@
 */
 
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// invalid data stack
-
-#define THROW_INVALID_DSTACK(azStepNm) \
-{ \
-  char zDescription[1024]; \
-  StrLib::vSprint(zDescription,"Invalid data stack for: %s"_Stz,azStepNm); \
-  Correctness::vAssertFailed(zDescription,__FILE__,__LINE__); \
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

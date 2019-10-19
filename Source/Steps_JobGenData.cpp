@@ -22,7 +22,7 @@ void Step::vJob_GenerateGenerate(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Generate;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Generate) )
-    THROW_INVALID_DSTACK("job_genData.generate"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Generate* pJob_Generate = _pJob_Generate(pPtrJob_Generate);
   
   pJob_Generate->vGenerate();
@@ -40,7 +40,7 @@ void Step::vJob_GenerateTableStore(MP_Task mpTask, Forth* pForth)
   Object* pPtrTable;
   Object* pPtrJob_Generate;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Generate,pPtrTable) )
-    THROW_INVALID_DSTACK("job_genData.tableStore"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Job_Generate* pJob_Generate = _pJob_Generate(pPtrJob_Generate);
   

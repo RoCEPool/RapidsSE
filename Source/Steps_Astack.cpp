@@ -43,7 +43,7 @@ void Step::vAstackClass(MP_Task mpTask, Forth* pForth)
   
   i8 nTh;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(nTh) )
-    THROW_INVALID_DSTACK("astack.class"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   GenVar xVariable;
   
@@ -97,7 +97,7 @@ void Step::vAstackDup(MP_Task mpTask, Forth* pForth)
   
   GenVar xValA;
   if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xValA) )
-  THROW_INVALID_DSTACK("adup"_Stz);
+  vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValA);
   mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValA);
@@ -150,7 +150,7 @@ void Step::vAstackPick(MP_Task mpTask, Forth* pForth)
   
   i8 iPick;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iPick) )
-    THROW_INVALID_DSTACK("apick"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   // could do this directly on stack
   
@@ -185,7 +185,7 @@ void Step::vAstackReverse(MP_Task mpTask, Forth* pForth)
   
   i8 nValues;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(nValues) )
-    THROW_INVALID_DSTACK("areverse"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   for (i8 i = 0; i < nValues; i++) {
     if ( ! mpTask->m_pForth->m_pAuxStack->bPop(apValWrk[i]) )
@@ -239,7 +239,7 @@ void Step::vAstackToA(MP_Task mpTask, Forth* pForth)
   
   GenVar xValOpaque;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValOpaque) )
-    THROW_INVALID_DSTACK(">a"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValOpaque);
   
@@ -271,12 +271,12 @@ void Step::vAstackTransfer(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTask;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK(">auxStack"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Task* pThatTask = _pTask(pPtrTask);
   
   GenVar xVariable;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xVariable) )
-    THROW_INVALID_DSTACK(">auxStack"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pThatTask->m_okLock.vGrabWrite();
   pThatTask->m_pForth->m_pAuxStack->vPushGenVar(xVariable);

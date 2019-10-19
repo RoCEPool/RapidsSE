@@ -24,11 +24,11 @@ ENTRY("vMemoryByteDump"_Stz);
   
   i8 iSize;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iSize) )
-    THROW_INVALID_DSTACK("memory.bytedump"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Object* pWordObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("memory.bytedump"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Word* pWord = _pWord(pWordObject);
   
   //pWord->vByteDump(iSize);
@@ -69,11 +69,11 @@ ENTRY("vMemoryWordDump"_Stz);
   
   i8 iSize;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iSize) )
-    THROW_INVALID_DSTACK("memory.worddump"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Object* pWordObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("memory.worddump"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Word* pWord = _pWord(pWordObject);
   
   //pWord->vWordDump(iSize);

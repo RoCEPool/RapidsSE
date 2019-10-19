@@ -35,7 +35,7 @@ ENTRY("vTimeDelete"_Stz);
   Object* pPtrTimer;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.delete"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -58,7 +58,7 @@ ENTRY("vTimerInit"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.init"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -77,7 +77,7 @@ ENTRY("vTimerMicrosecs"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.microsecs"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -98,7 +98,7 @@ ENTRY("vTimerMillisecs"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.millisecs"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -119,7 +119,7 @@ ENTRY("vTimerNanosecs"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.nanosecs"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -160,7 +160,7 @@ ENTRY("vTimerReset"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.reset"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -179,7 +179,7 @@ ENTRY("vTimerSecs"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.secs"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -200,7 +200,7 @@ ENTRY("vTimerStart"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.Start"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -219,7 +219,7 @@ ENTRY("vTimerTicks"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.ticks"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -240,7 +240,7 @@ ENTRY("vTimerUpdate"_Stz);
   
   Object* pPtrTimer;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
-    THROW_INVALID_DSTACK("timer.update"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());

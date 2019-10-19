@@ -78,7 +78,7 @@ ENTRY("vInputOpen"_Stz);
   s256 sFilePath;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sFilePath) )
-    THROW_INVALID_DSTACK("input.open"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   bool bOpened = mpTask->m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
   
@@ -145,7 +145,7 @@ ENTRY("vInputText"_Stz);
   s48K sInput;                                             //! NEED STACK CHECKS
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sInput) )
-    THROW_INVALID_DSTACK("input.text"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
     
   mpTask->m_pCompiler->m_pTokeniser->vUseString(sInput);
   

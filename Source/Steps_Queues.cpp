@@ -39,7 +39,7 @@ void Step::vQueuesExecutingLength(MP_Task mpTask, Forth* pForth)
   i8 iSlot;
   
   if ( !  mpTask->m_pForth->m_pDataStack->bPop(iSlot) )
-    THROW_INVALID_DSTACK("queues::QueuesExecutingLength"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Queues* pQueues = AM::pQueues();
   mpTask->m_pForth->m_pDataStack->vPushI8(pQueues->nTasksExecuting());
@@ -57,7 +57,7 @@ void Step::vQueuesReadyLength(MP_Task mpTask, Forth* pForth)
   i8 iSlot;
   
   if ( !  mpTask->m_pForth->m_pDataStack->bPop(iSlot) )
-    THROW_INVALID_DSTACK("queues::QueuesReadyLength"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Queues* pQueues = AM::pQueues();
   mpTask->m_pForth->m_pDataStack->vPushI8(pQueues->nTasksReady());

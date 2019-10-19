@@ -44,16 +44,16 @@ void Step::vEnmSetAddInt(MP_Task mpTask, Forth* pForth)
   
   Object* pEnameSet_obj;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pEnameSet_obj) )
-    THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   i8 iValue;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iValue) )
-    THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   s32 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pEnameSet->vAdd(sName,iValue,TN_INTEGER);
   pEnameSet->vPrint();
@@ -70,16 +70,16 @@ void Step::vEnmSetAddStr(MP_Task mpTask, Forth* pForth)
   
   Object* pEnameSet_obj;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pEnameSet_obj) )
-    THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
 
   s32 sValue;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sValue) )
-    THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   s32 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pEnameSet->vAdd(sName,sValue,TN_STRING);
   pEnameSet->vPrint();
@@ -96,7 +96,7 @@ void Step::vEnmSetAsStr(MP_Task mpTask, Forth* pForth)
   
   Object* pEnameSet_obj;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pEnameSet_obj) )
-    THROW_INVALID_DSTACK("vEnmSetAsStr"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
@@ -118,12 +118,12 @@ void Step::vEnmSetGetStr(MP_Task mpTask, Forth* pForth)
   
   Object* pEnameSet_obj;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pEnameSet_obj) )
-    THROW_INVALID_DSTACK("vEnmSetGetStr"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s32 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("vEnmSetGetStr"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   s48K sValue;
   sValue = pEnameSet->szValue(sName);
@@ -142,12 +142,12 @@ void Step::vEnmSetHasName(MP_Task mpTask, Forth* pForth)
   
   Object* pEnameSet_obj;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pEnameSet_obj) )
-    THROW_INVALID_DSTACK("vEnmSetHasName"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s32 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("vEnmSetHasName"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
 
   bool bHas = pEnameSet->bHasName(sName);
   

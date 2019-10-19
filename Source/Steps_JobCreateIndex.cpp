@@ -21,7 +21,7 @@ void Step::vJob_CreateIndexIsUniqueFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_createIndex.isUnique@"_Stz);
+    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob_CreateIndex->m_bIsUnique);
