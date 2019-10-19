@@ -205,8 +205,8 @@ void Correctness::vExceptionCaught(Exception xException)
 /*----------------------------------------------------------------------------*/
 /* throw an exception of given kind (step-form)                               */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vThrow(eFK eKind, char* azStepNm,
-                                        const char* azFilePath, i8 iLineNo)
+[[ noreturn ]] void Correctness::vThrow(const char* azFilePath, i8 iLineNo,
+                                        eFK eKind, char* azStepNm)
 {
   // put a breakpoint here to trap throws
   sleep(0);
