@@ -37,7 +37,7 @@ namespace Correctness
 /* NEVER_REACH macro (point in code which should never be reached           */
 /*--------------------------------------------------------------------------*/
 #define NEVER_REACH \
-  Correctness::vThrow(FK_ASSERT,__func__,__FILE__,__LINE__,"NEVER_REACH");
+  Correctness::vThrow(FK_REACHED,__func__,__FILE__,__LINE__,"NEVER_REACH point reached");
 
 
 /*============================================================================*/
