@@ -133,15 +133,6 @@ void Correctness::vStackDump(void)
   backtrace_symbols_fd(pArray, iSize, STDERR_FILENO);
 }
 
-/*----------------------------------------------------------------------------*/
-/* throw trap                                                                 */
-/*----------------------------------------------------------------------------*/
-void Correctness::vThrowTrap(void)
-{
-  // put a breakpoint here to trap throws
-  sleep(0);
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 
 

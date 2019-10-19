@@ -17,8 +17,7 @@ namespace Correctness
   void vDebugPoint(void);
   void vDebugTrap(void);
   void vStackDump(void);
-  void vThrowTrap(void);
-    
+     
 
   // the [[ noreturn ]] attribute is the C++11 standard for indicating a
   // function never returns
