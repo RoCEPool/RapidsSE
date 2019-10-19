@@ -171,30 +171,6 @@ void Correctness::vExceptionCaught(Exception xException)
 
 
 /*----------------------------------------------------------------------------*/
-/* handle an assertion failure                                                */
-/*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vAssert(eFK eKind, const char* azFunc,
-                                         const char* azFilePath, i8 iLineNo,
-                                         const char* azCondition)
-{
-  // put a breakpoint here to trap throws
-  sleep(0);
-  
-  char zFileNm[256];
-  
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
-  
-  Exception xException(eKind,azCondition,zFileNm,iLineNo);
-  
-  // dump the call stack
-  vStackDump();
-  
-  
-  
-  throw xException;
-}
-
-/*----------------------------------------------------------------------------*/
 /* throw an exception of given kind (step-form)                               */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void Correctness::vThrow(eFK eKind, const char* azFunc,
