@@ -24,7 +24,7 @@ void Step::vAddSteps_Log(void)
 /*----------------------------------------------------------------------------*/
 /* log::dump -- dump the log                                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vLogDump(MP_Task mpTask, Forth* pForth)
+void Step::vLogDump(Forth* pForth)
 {
   ENTRY("vActivityLogDump"_Stz);
   
@@ -36,7 +36,7 @@ void Step::vLogDump(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* log::mark -- write a log entry into the log                                */
 /*----------------------------------------------------------------------------*/
-void Step::vLogMark(MP_Task mpTask, Forth* pForth)
+void Step::vLogMark(Forth* pForth)
 {
   ENTRY("vActivityLogMark"_Stz);
   
@@ -54,7 +54,7 @@ void Step::vLogMark(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* log::markEntry -- write an log entry for word entry                        */
 /*----------------------------------------------------------------------------*/
-void Step::vLogMarkEntry(MP_Task mpTask, Forth* pForth)
+void Step::vLogMarkEntry(Forth* pForth)
 {
   ENTRY("vActivityLogMarkEntry"_Stz);
   
@@ -74,7 +74,7 @@ void Step::vLogMarkEntry(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* log::mark -- write an log entry for word exit                              */
 /*----------------------------------------------------------------------------*/
-void Step::vLogMarkExit(MP_Task mpTask, Forth* pForth)
+void Step::vLogMarkExit(Forth* pForth)
 {
   ENTRY("vActivityLogMarkExit"_Stz);
   
@@ -95,7 +95,7 @@ void Step::vLogMarkExit(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* log::mark -- write an log entry for word exit                              */
 /*----------------------------------------------------------------------------*/
-void Step::vLogMarkPhase(MP_Task mpTask, Forth* pForth)
+void Step::vLogMarkPhase(Forth* pForth)
 {
   ENTRY("vActivityLogMarkPhase"_Stz);
   
@@ -117,7 +117,7 @@ void Step::vLogMarkPhase(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* log::markSeed -- write a seed mark into the action sequence                */
 /*----------------------------------------------------------------------------*/
-void Step::vLogMarkSeed(MP_Task mpTask, Forth* pForth)
+void Step::vLogMarkSeed(Forth* pForth)
 {
   ENTRY("vLogMarkSeed"_Stz);
   
@@ -137,7 +137,7 @@ void Step::vLogMarkSeed(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* log::markWord -- write a word mark into the action sequence                */
 /*----------------------------------------------------------------------------*/
-void Step::vLogMarkWord(MP_Task mpTask, Forth* pForth)
+void Step::vLogMarkWord(Forth* pForth)
 {
   ENTRY("vLogMarkWord"_Stz);
   
@@ -157,7 +157,7 @@ void Step::vLogMarkWord(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* log::jobSeed -- add a job seed entry into log                              */
 /*----------------------------------------------------------------------------*/
-void Step::vLogJobSeed(MP_Task mpTask, Forth* pForth)
+void Step::vLogJobSeed(Forth* pForth)
 {
   ENTRY("vLogJobSeed"_Stz);
   

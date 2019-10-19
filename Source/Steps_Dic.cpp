@@ -22,7 +22,7 @@ void Step::vAddSteps_Dic(void)
 /*----------------------------------------------------------------------------*/
 /* dic.init -- initialise a dictionary                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vDicInit(MP_Task mpTask, Forth* pForth)
+void Step::vDicInit(Forth* pForth)
 {
 ENTRY("vDicInit"_Stz);
   
@@ -44,7 +44,7 @@ ENTRY("vDicInit"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dic.kind@ -- get dictionary kind                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vDicKindGet(MP_Task mpTask, Forth* pForth)
+void Step::vDicKindGet(Forth* pForth)
 {
   ENTRY("vDicFrozenGet"_Stz);
   
@@ -66,7 +66,7 @@ void Step::vDicKindGet(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dic.kind! -- set dictionary kind                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vDicKindSet(MP_Task mpTask, Forth* pForth)
+void Step::vDicKindSet(Forth* pForth)
 {
   ENTRY("vDicKindSet"_Stz);
   
@@ -88,7 +88,7 @@ void Step::vDicKindSet(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dic.lastWord -- get last word of dictionary                                */
 /*----------------------------------------------------------------------------*/
-void Step::vDicLastWord(MP_Task mpTask, Forth* pForth)
+void Step::vDicLastWord(Forth* pForth)
 {
 ENTRY("vDicLastWord"_Stz);
   
@@ -109,7 +109,7 @@ ENTRY("vDicLastWord"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dic.name -- push name of dictionary onto stack                             */
 /*----------------------------------------------------------------------------*/
-void Step::vDicName(MP_Task mpTask, Forth* pForth)
+void Step::vDicName(Forth* pForth)
 {
 ENTRY("vDicName"_Stz);
  
@@ -129,7 +129,7 @@ ENTRY("vDicName"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dic.ref -- has dictionary got references                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vDicRef(MP_Task mpTask, Forth* pForth)
+void Step::vDicRef(Forth* pForth)
 {
   ENTRY("vDicRef"_Stz);
   
@@ -150,7 +150,7 @@ void Step::vDicRef(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dic.root -- push root dictionary onto stack                                */
 /*----------------------------------------------------------------------------*/
-void Step::vDicRoot(MP_Task mpTask, Forth* pForth)
+void Step::vDicRoot(Forth* pForth)
 {
   ENTRY("vDicRoot"_Stz);
   
@@ -163,7 +163,7 @@ void Step::vDicRoot(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dic.wordCount -- get number of words in dictionary                         */
 /*----------------------------------------------------------------------------*/
-void Step::vDicWordCount(MP_Task mpTask, Forth* pForth)
+void Step::vDicWordCount(Forth* pForth)
 {
   ENTRY("vDicWordCount"_Stz);
   

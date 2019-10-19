@@ -17,7 +17,7 @@ void Step::vAddSteps_Process(void)
 /*----------------------------------------------------------------------------*/
 /* process.getpid -- get pid of this process                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vProcessGetPid(MP_Task mpTask, Forth* pForth)
+void Step::vProcessGetPid(Forth* pForth)
 {
 ENTRY("vProcessGetPid"_Stz);
   
@@ -31,7 +31,7 @@ ENTRY("vProcessGetPid"_Stz);
 /*----------------------------------------------------------------------------*/
 /* process::quit -- process exits early                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vProcessQuit(MP_Task mpTask, Forth* pForth)
+void Step::vProcessQuit(Forth* pForth)
 {
   ENTRY("vProcessQuit"_Stz);
   
@@ -45,7 +45,7 @@ void Step::vProcessQuit(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* process.testpid -- test pid on stack                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vProcessTestPid(MP_Task mpTask, Forth* pForth)
+void Step::vProcessTestPid(Forth* pForth)
 {
 ENTRY("vProcessTestPid"_Stz);
 

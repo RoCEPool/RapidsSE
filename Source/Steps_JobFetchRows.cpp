@@ -41,7 +41,7 @@ void Step::vAddSteps_JobFetchRows(void)
 /*----------------------------------------------------------------------------*/
 /* Job_fetchRows.column! -- store column in the job                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_FetchRowsColumnStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_FetchRowsColumnStore(Forth* pForth)
 {
   ENTRY("vJob_FetchRowsColumnStore"_Stz);
   
@@ -63,7 +63,7 @@ void Step::vJob_FetchRowsColumnStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_fetchRows.column@ -- fetch column name from the job                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_FetchRowsColumnNameFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_FetchRowsColumnNameFetch(Forth* pForth)
 {
   ENTRY("vJob_FetchRowsColumnNameFetch"_Stz);
   
@@ -80,7 +80,7 @@ void Step::vJob_FetchRowsColumnNameFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_fetchRows.lastBuffers! -- set no of expected last buffers              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_FetchRowsLastBuffersStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_FetchRowsLastBuffersStore(Forth* pForth)
 {
   ENTRY("vJob_FetchRowsLastBuffersStore"_Stz);
   
@@ -101,7 +101,7 @@ void Step::vJob_FetchRowsLastBuffersStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_fetchRows.partition@ -- fetch partition no from the job                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_FetchRowsPartitionFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_FetchRowsPartitionFetch(Forth* pForth)
 {
   ENTRY("vJob_FetchRowsPartitionFetch"_Stz);
   
@@ -118,7 +118,7 @@ void Step::vJob_FetchRowsPartitionFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_fetchRows.planner! -- store planner in the job                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_FetchRowsPlannerStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_FetchRowsPlannerStore(Forth* pForth)
 {
   ENTRY("vJob_FetchRowsPlannerStore"_Stz);
   
@@ -144,7 +144,7 @@ void Step::vJob_FetchRowsPlannerStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_fetchRows.spawnSub -- spawn sub fetch job                              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_FetchRowsSpawnSub(MP_Task mpTask, Forth* pForth)
+void Step::vJob_FetchRowsSpawnSub(Forth* pForth)
 {
   ENTRY("vJob_FetchRowsSpawnSub"_Stz);
   
@@ -197,7 +197,7 @@ void Step::vJob_FetchRowsSpawnSub(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_fetchRows.table! -- store table in the job                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_FetchRowsTableStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_FetchRowsTableStore(Forth* pForth)
 {
   ENTRY("vJob_FetchRowsTableStore"_Stz);
   
@@ -219,7 +219,7 @@ void Step::vJob_FetchRowsTableStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_fetchRows.where@ -- fetch the where string from the job                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_FetchRowsWhereFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_FetchRowsWhereFetch(Forth* pForth)
 {
   ENTRY("vJob_FetchRowsWhereFetch"_Stz);
   
@@ -236,7 +236,7 @@ void Step::vJob_FetchRowsWhereFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_inflateRows.column@ -- fetch column name from the job                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_InflateRowsColumnNameFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_InflateRowsColumnNameFetch(Forth* pForth)
 {
   ENTRY("vJob_InflateRowsColumnNameFetch"_Stz);
   
@@ -253,7 +253,7 @@ void Step::vJob_InflateRowsColumnNameFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_inflateRows.column! -- store column in the job                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_InflateRowsColumnStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_InflateRowsColumnStore(Forth* pForth)
 {
   ENTRY("vJob_InflateRowsColumnStore"_Stz);
   
@@ -275,7 +275,7 @@ void Step::vJob_InflateRowsColumnStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_inflateRows.spawnSub -- spawn sub fetch job                            */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_InflateRowsSpawnSub(MP_Task mpTask, Forth* pForth)
+void Step::vJob_InflateRowsSpawnSub(Forth* pForth)
 {
   ENTRY("vJob_InflateRowsSpawnSub"_Stz);
   
@@ -316,7 +316,7 @@ void Step::vJob_InflateRowsSpawnSub(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_inflateRows.spawnSubInflate -- spawn sub inflate job                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_InflateRowsSpawnSubInflate(MP_Task mpTask, Forth* pForth)
+void Step::vJob_InflateRowsSpawnSubInflate(Forth* pForth)
 {
   ENTRY("vJob_InflateRowsSpawnSubInflate"_Stz);
   
@@ -349,7 +349,7 @@ void Step::vJob_InflateRowsSpawnSubInflate(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_inflateRows.subInfTasks@ -- fetch no of sub inflate tasks to spawn */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_InflateRowsSubInfTasksFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_InflateRowsSubInfTasksFetch(Forth* pForth)
 {
   ENTRY("vJob_InflateRowsSubInfTasksFetch"_Stz);
   
@@ -368,7 +368,7 @@ void Step::vJob_InflateRowsSubInfTasksFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_inflateRows.table! -- store table in the job                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_InflateRowsTableStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_InflateRowsTableStore(Forth* pForth)
 {
   ENTRY("vJob_InflateRowsTableStore"_Stz);
   
@@ -390,7 +390,7 @@ void Step::vJob_InflateRowsTableStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_inflateRows.where@ -- fetch the where string from the job              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_InflateRowsWhereFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_InflateRowsWhereFetch(Forth* pForth)
 {
   ENTRY("vJob_InflateRowsWhereFetch"_Stz);
   
@@ -407,7 +407,7 @@ void Step::vJob_InflateRowsWhereFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subFetch.bufferQueue@ -- fetch the job buffer queue                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubFetchBufferQueueFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubFetchBufferQueueFetch(Forth* pForth)
 {
   ENTRY("vJob_SubFetchBufferQueueFetch"_Stz);
   
@@ -424,7 +424,7 @@ void Step::vJob_SubFetchBufferQueueFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subFetch.phrase@ -- fetch the job phrase                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubFetchPhraseFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubFetchPhraseFetch(Forth* pForth)
 {
   ENTRY("vJob_SubFetchPhraseFetch"_Stz);
   
@@ -441,7 +441,7 @@ void Step::vJob_SubFetchPhraseFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subFetch.planner@ -- fetch the job planner                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubFetchPlannerFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubFetchPlannerFetch(Forth* pForth)
 {
   ENTRY("vJob_SubFetchPlannerFetch"_Stz);
   
@@ -459,7 +459,7 @@ void Step::vJob_SubFetchPlannerFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subFetch.slot@ -- fetch the job slot                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubFetchSlotFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubFetchSlotFetch(Forth* pForth)
 {
   ENTRY("vJob_SubFetchSlotFetch"_Stz);
   
@@ -476,7 +476,7 @@ void Step::vJob_SubFetchSlotFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subInflate.JobInflateRows@ -- fetch the inflate rows job               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubInflateJobInflateRowsFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubInflateJobInflateRowsFetch(Forth* pForth)
 {
   ENTRY("vJob_SubInflateJobInflateRowsFetch"_Stz);
   
@@ -493,7 +493,7 @@ void Step::vJob_SubInflateJobInflateRowsFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subInflate.inflateRows -- inflate rows                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubInflateInflateRows(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubInflateInflateRows(Forth* pForth)
 {
   ENTRY("vJob_SubInflateInflateRows"_Stz);
   
@@ -548,7 +548,7 @@ void Step::vJob_SubInflateInflateRows(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subScan.bufferQueue@ -- fetch the job buffer queue                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubScanBufferQueueFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubScanBufferQueueFetch(Forth* pForth)
 {
   ENTRY("vJob_SubScanBufferQueueFetch"_Stz);
   
@@ -565,7 +565,7 @@ void Step::vJob_SubScanBufferQueueFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subScan.slot@ -- fetch the job slot                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubScanSlotFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubScanSlotFetch(Forth* pForth)
 {
   ENTRY("vJob_SubScanSlotFetch"_Stz);
   

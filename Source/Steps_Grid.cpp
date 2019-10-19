@@ -31,7 +31,7 @@ void Step::vAddSteps_Grid(void)
 /*----------------------------------------------------------------------------*/
 /* grid::connectedNodes -- get number of connected nodes in the grid          */
 /*----------------------------------------------------------------------------*/
-void Step::vGridConnectedNodes(MP_Task mpTask, Forth* pForth)
+void Step::vGridConnectedNodes(Forth* pForth)
 {
   ENTRY("vGridConnectedNodes"_Stz);
   
@@ -45,7 +45,7 @@ void Step::vGridConnectedNodes(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::definedNodes -- get number of nodes in the grid                             */
 /*----------------------------------------------------------------------------*/
-void Step::vGridDefinedNodes(MP_Task mpTask, Forth* pForth)
+void Step::vGridDefinedNodes(Forth* pForth)
 {
   ENTRY("vGridDefinedNodes"_Stz);
   
@@ -57,7 +57,7 @@ void Step::vGridDefinedNodes(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::findNode -- find node based on name                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vGridFindNode(MP_Task mpTask, Forth* pForth)
+void Step::vGridFindNode(Forth* pForth)
 {
   ENTRY("vGridFindNode"_Stz);
   
@@ -75,7 +75,7 @@ void Step::vGridFindNode(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::incConnectedNodes -- inc connected nodes                             */
 /*----------------------------------------------------------------------------*/
-void Step::vGridIncConnectedNodes(MP_Task mpTask, Forth* pForth)
+void Step::vGridIncConnectedNodes(Forth* pForth)
 {
   ENTRY("vGridIncConnectedNodes"_Stz);
   
@@ -87,7 +87,7 @@ void Step::vGridIncConnectedNodes(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::node -- get node from grid                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vGridNode(MP_Task mpTask, Forth* pForth)
+void Step::vGridNode(Forth* pForth)
 {
   ENTRY("vGridNode"_Stz);
   
@@ -105,7 +105,7 @@ void Step::vGridNode(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::partitions -- get number of partitions in the grid                   */
 /*----------------------------------------------------------------------------*/
-void Step::vGridPartitions(MP_Task mpTask, Forth* pForth)
+void Step::vGridPartitions(Forth* pForth)
 {
   ENTRY("vGridNode"_Stz);
   
@@ -117,7 +117,7 @@ void Step::vGridPartitions(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::show -- show the status of the grid                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vGridShow(MP_Task mpTask, Forth* pForth)
+void Step::vGridShow(Forth* pForth)
 {
   ENTRY("vGridShow"_Stz);
   
@@ -147,7 +147,7 @@ void Step::vGridShow(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::slots -- get number of slots of partitions per node in the grid       */
 /*----------------------------------------------------------------------------*/
-void Step::vGridSlots(MP_Task mpTask, Forth* pForth)
+void Step::vGridSlots(Forth* pForth)
 {
   ENTRY("vGridNode"_Stz);
   
@@ -159,7 +159,7 @@ void Step::vGridSlots(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::thisNode@ -- get this node from the grid                              */
 /*----------------------------------------------------------------------------*/
-void Step::vGridThisNodeFetch(MP_Task mpTask, Forth* pForth)
+void Step::vGridThisNodeFetch(Forth* pForth)
 {
   ENTRY("vGridThisNodeFetch"_Stz);
   
@@ -175,7 +175,7 @@ void Step::vGridThisNodeFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::thisNodeName@ -- get this node name from the grid                     */
 /*----------------------------------------------------------------------------*/
-void Step::vGridThisNodeNameFetch(MP_Task mpTask, Forth* pForth)
+void Step::vGridThisNodeNameFetch(Forth* pForth)
 {
   ENTRY("vGridThisNodeNameFetch"_Stz);
   
@@ -190,7 +190,7 @@ void Step::vGridThisNodeNameFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::started! -- set grid started                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vGridStartedStore(MP_Task mpTask, Forth* pForth)
+void Step::vGridStartedStore(Forth* pForth)
 {
   ENTRY("vGridSetStarted"_Stz);
   
@@ -207,7 +207,7 @@ void Step::vGridStartedStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::StartNode@ -- get grid start node                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vGridStartNodeFetch(MP_Task mpTask, Forth* pForth)
+void Step::vGridStartNodeFetch(Forth* pForth)
 {
   ENTRY("vGridStartNodeFetch"_Stz);
   
@@ -219,7 +219,7 @@ void Step::vGridStartNodeFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::StartNode! -- set grid start node                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vGridStartNodeStore(MP_Task mpTask, Forth* pForth)
+void Step::vGridStartNodeStore(Forth* pForth)
 {
   ENTRY("vGridStartNodeStore"_Stz);
   
@@ -236,7 +236,7 @@ void Step::vGridStartNodeStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::started@ -- get grid started                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vGridStartedFetch(MP_Task mpTask, Forth* pForth)
+void Step::vGridStartedFetch(Forth* pForth)
 {
   ENTRY("vGridGetStarted"_Stz);
   
@@ -248,7 +248,7 @@ void Step::vGridStartedFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::toNode -- convert partition id to node no                            */
 /*----------------------------------------------------------------------------*/
-void Step::vGridToNode(MP_Task mpTask, Forth* pForth)
+void Step::vGridToNode(Forth* pForth)
 {
   ENTRY("vGridToNode"_Stz);
   
@@ -269,7 +269,7 @@ void Step::vGridToNode(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::toPartition -- convert slot to partitionId                           */
 /*----------------------------------------------------------------------------*/
-void Step::vGridToPartition(MP_Task mpTask, Forth* pForth)
+void Step::vGridToPartition(Forth* pForth)
 {
   ENTRY("vGridToPartition"_Stz);
   
@@ -287,7 +287,7 @@ void Step::vGridToPartition(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* grid::toSlot -- convert partitionId to slot                                */
 /*----------------------------------------------------------------------------*/
-void Step::vGridToSlot(MP_Task mpTask, Forth* pForth)
+void Step::vGridToSlot(Forth* pForth)
 {
   ENTRY("vGridToSlot"_Stz);
   

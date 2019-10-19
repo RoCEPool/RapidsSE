@@ -20,7 +20,7 @@ void Step::vAddSteps_Zero(void)
 /*----------------------------------------------------------------------------*/
 /* 0< -- test if top value is less than zero                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroLess(MP_Task mpTask, Forth* pForth)
+void Step::vZeroLess(Forth* pForth)
 {
   ENTRY("vZeroLess"_Stz);
   
@@ -39,7 +39,7 @@ void Step::vZeroLess(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* 0<= -- test if top value is less than or equal to zero                     */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroLessEqual(MP_Task mpTask, Forth* pForth)
+void Step::vZeroLessEqual(Forth* pForth)
 {
   ENTRY("vZeroLessEqual"_Stz);
   
@@ -58,7 +58,7 @@ void Step::vZeroLessEqual(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* 0== -- test if top value is equal to zero / nullptr                        */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroEqual(MP_Task mpTask, Forth* pForth)
+void Step::vZeroEqual(Forth* pForth)
 {
   ENTRY("vZeroEqual"_Stz);
   
@@ -77,7 +77,7 @@ void Step::vZeroEqual(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* 0!= -- test if top value is not equal to zero                              */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroNotEqual(MP_Task mpTask, Forth* pForth)
+void Step::vZeroNotEqual(Forth* pForth)
 {
   ENTRY("vZeroNotEqual"_Stz);
   
@@ -96,7 +96,7 @@ void Step::vZeroNotEqual(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* zeroGreaterEqual -- test if top value is greater than or equal to zero     */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroGreaterEqual(MP_Task mpTask, Forth* pForth)
+void Step::vZeroGreaterEqual(Forth* pForth)
 {
   ENTRY("vZeroGreaterEqual"_Stz);
   
@@ -115,7 +115,7 @@ void Step::vZeroGreaterEqual(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* 0> -- test if top value is greater than zero                              */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroGreater(MP_Task mpTask, Forth* pForth)
+void Step::vZeroGreater(Forth* pForth)
 {
   ENTRY("vZeroGreater"_Stz);
   

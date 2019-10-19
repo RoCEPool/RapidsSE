@@ -16,7 +16,7 @@ void Step::vAddSteps_DicLock(void)
 /*----------------------------------------------------------------------------*/
 /* diclLock.dropWrite -- drop dic lock for write                              */
 /*----------------------------------------------------------------------------*/
-void Step::vDicLockDropWrite(MP_Task mpTask, Forth* pForth)
+void Step::vDicLockDropWrite(Forth* pForth)
 {
   ENTRY("vDicLockDropWrite"_Stz);
   
@@ -28,7 +28,7 @@ void Step::vDicLockDropWrite(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* DicLock.grabWrite -- grab dic lock for write                               */
 /*----------------------------------------------------------------------------*/
-void Step::vDicLockGrabWrite(MP_Task mpTask, Forth* pForth)
+void Step::vDicLockGrabWrite(Forth* pForth)
 {
   ENTRY("vDicLockGrabWrite"_Stz);
   

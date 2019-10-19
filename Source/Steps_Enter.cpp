@@ -16,7 +16,7 @@ void Step::vAddSteps_Enter(void)
 /*----------------------------------------------------------------------------*/
 /* enterObject -- enter object routine   (this is the does step for a object) */
 /*----------------------------------------------------------------------------*/
-void Step::vEnterObject(MP_Task mpTask, Forth* pForth)
+void Step::vEnterObject(Forth* pForth)
 {
   ENTRY("vEnterObject"_Stz);
   
@@ -44,7 +44,7 @@ void Step::vEnterObject(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* enterRoutine -- enter word routine    (this is the does step for a : word) */
 /*----------------------------------------------------------------------------*/
-void Step::vEnterRoutine(MP_Task mpTask, Forth* pForth)
+void Step::vEnterRoutine(Forth* pForth)
 {
   ENTRY("vEnterRoutine"_Stz);
   

@@ -35,7 +35,7 @@ void Step::vAddSteps_Str(void)
 /*----------------------------------------------------------------------------*/
 /* str.algebra -- string algebra tests                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vStrAlgebra(MP_Task mpTask, Forth* pForth)
+void Step::vStrAlgebra(Forth* pForth)
 {
   ENTRY("vStrAlgebra"_Stz);
  
@@ -54,7 +54,7 @@ void Step::vStrAlgebra(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* str.cat -- concat two strings                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vStrCat(MP_Task mpTask, Forth* pForth)
+void Step::vStrCat(Forth* pForth)
 {
   ENTRY("vStrCat"_Stz);
   
@@ -77,7 +77,7 @@ void Step::vStrCat(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* str.clip -- returns left or right n part of a string ( length str -- str ) */
 /*----------------------------------------------------------------------------*/
-void Step::vStrClip(MP_Task mpTask, Forth* pForth)
+void Step::vStrClip(Forth* pForth)
 {
   ENTRY("vStrClip"_Stz);
   
@@ -112,7 +112,7 @@ void Step::vStrClip(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* str.equal -- test if two strings are equal                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vStrEqual(MP_Task mpTask, Forth* pForth)
+void Step::vStrEqual(Forth* pForth)
 {
   ENTRY("vStrEql"_Stz);
   
@@ -135,7 +135,7 @@ void Step::vStrEqual(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* str.escape -- put a '\\' before and '\"'                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vStrEscape(MP_Task mpTask, Forth* pForth)
+void Step::vStrEscape(Forth* pForth)
 {
   ENTRY("vStrEscape"_Stz);
   
@@ -156,7 +156,7 @@ void Step::vStrEscape(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* str.firstCsv -- get first value from csv string                            */
 /*----------------------------------------------------------------------------*/
-void Step::vStrFirstCsv(MP_Task mpTask, Forth* pForth)
+void Step::vStrFirstCsv(Forth* pForth)
 {
   ENTRY("vStrFirstCsv"_Stz);
   
@@ -179,7 +179,7 @@ void Step::vStrFirstCsv(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* str.format -- pop format string and use it for a sprintf                   */
 /*----------------------------------------------------------------------------*/
-void Step::vStrFormat(MP_Task mpTask, Forth* pForth)
+void Step::vStrFormat(Forth* pForth)
 {
   ENTRY("vStrFormat"_Stz);
   
@@ -199,7 +199,7 @@ void Step::vStrFormat(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* str.left -- returns left n part of a string ( length str -- str )          */
 /*----------------------------------------------------------------------------*/
-void Step::vStrLeft(MP_Task mpTask, Forth* pForth)
+void Step::vStrLeft(Forth* pForth)
 {
   ENTRY("vClip"_Stz);
   
@@ -230,7 +230,7 @@ void Step::vStrLeft(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* str.length -- string length                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vStrLength(MP_Task mpTask, Forth* pForth)
+void Step::vStrLength(Forth* pForth)
 {
   ENTRY("vStrLen"_Stz);
   
@@ -251,7 +251,7 @@ void Step::vStrLength(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* str.prepend -- prepend top string before second string                     */
 /*----------------------------------------------------------------------------*/
-void Step::vStrPrepend(MP_Task mpTask, Forth* pForth)
+void Step::vStrPrepend(Forth* pForth)
 {
   ENTRY("vStrPrepend"_Stz);
   
@@ -299,7 +299,7 @@ void Step::vStrPrepend(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* str.random-- generate random string of given length                        */
 /*----------------------------------------------------------------------------*/
-void Step::vStrRandom(MP_Task mpTask, Forth* pForth)
+void Step::vStrRandom(Forth* pForth)
 {
   ENTRY("vStrRandom"_Stz);
   
@@ -319,7 +319,7 @@ void Step::vStrRandom(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* str.removePrefix -- remove prefix from string                              */
 /*----------------------------------------------------------------------------*/
-void Step::vStrRemovePrefix(MP_Task mpTask, Forth* pForth)
+void Step::vStrRemovePrefix(Forth* pForth)
 {
   ENTRY("vStrRemovePrefix"_Stz);
   
@@ -341,7 +341,7 @@ void Step::vStrRemovePrefix(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* str.removeSuffix -- remove suffix from string                              */
 /*----------------------------------------------------------------------------*/
-void Step::vStrRemoveSuffix(MP_Task mpTask, Forth* pForth)
+void Step::vStrRemoveSuffix(Forth* pForth)
 {
   ENTRY("vStrRemoveSuffix"_Stz);
   
@@ -363,7 +363,7 @@ void Step::vStrRemoveSuffix(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* str.replace-- replace this with that within string                         */
 /*----------------------------------------------------------------------------*/
-void Step::vStrReplace(MP_Task mpTask, Forth* pForth)
+void Step::vStrReplace(Forth* pForth)
 {
   ENTRY("vStrReplace"_Stz);
   
@@ -392,7 +392,7 @@ void Step::vStrReplace(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* str.right -- Returns the right n part of a string ( length str -- str )    */
 /*----------------------------------------------------------------------------*/
-void Step::vStrRight(MP_Task mpTask, Forth* pForth)
+void Step::vStrRight(Forth* pForth)
 {
   ENTRY("vStrRight"_Stz);
   
@@ -425,7 +425,7 @@ void Step::vStrRight(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* substr -- substring ( length start str == substr )                         */
 /*----------------------------------------------------------------------------*/
-void Step::vStrSub(MP_Task mpTask, Forth* pForth)
+void Step::vStrSub(Forth* pForth)
 {
   ENTRY("vStrSub"_Stz);
   
@@ -465,7 +465,7 @@ void Step::vStrSub(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tailInt -- extract (possible) int at end of string                         */
 /*----------------------------------------------------------------------------*/
-void Step::vStrTailInt(MP_Task mpTask, Forth* pForth)
+void Step::vStrTailInt(Forth* pForth)
 {
   ENTRY("vStrTailInt"_Stz);
   

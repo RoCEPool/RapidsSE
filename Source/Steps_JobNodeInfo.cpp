@@ -15,7 +15,7 @@ void Step::vAddSteps_JobNodeInfo(void)
 /*----------------------------------------------------------------------------*/
 /* job_nodeInfo.nodeName@ -- fetch node name                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_NodeInfoNodeNameFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_NodeInfoNodeNameFetch(Forth* pForth)
 {
   ENTRY("vJob_NodeInfoNodeNameFetch"_Stz);
   

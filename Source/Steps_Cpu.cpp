@@ -15,7 +15,7 @@ void Step::vAddSteps_Cpu(void)
 /*----------------------------------------------------------------------------*/
 /* cpu.rdtscp -- read cpu time stamp counter                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vCpuRdtscp(MP_Task mpTask, Forth* pForth)
+void Step::vCpuRdtscp(Forth* pForth)
 {
   ENTRY("vCpuRdtscp"_Stz);
   

@@ -25,7 +25,7 @@ void Step::vAddSteps_Encode(void)
 /*----------------------------------------------------------------------------*/
 /* again -- encode jump to known backward address                   immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeAgain(MP_Task mpTask, Forth* pForth)
+void Step::vEncodeAgain(Forth* pForth)
 {
   ENTRY("vEncodeAgain"_Stz); // ( dest -- / -- )
   
@@ -45,7 +45,7 @@ void Step::vEncodeAgain(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* ahead -- encode jump to unknown forward address                  immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeAhead(MP_Task mpTask, Forth* pForth)
+void Step::vEncodeAhead(Forth* pForth)
 {
   ENTRY("vEncodeAhead"_Stz);// ( -- orig / -- )
   
@@ -64,7 +64,7 @@ void Step::vEncodeAhead(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* encode -- encode jump on true to known backward address          immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeContinue(MP_Task mpTask, Forth* pForth)
+void Step::vEncodeContinue(Forth* pForth)
 {
   ENTRY("vEncodeContinue"_Stz); // ( -- orig / flag -- )
   
@@ -87,7 +87,7 @@ void Step::vEncodeContinue(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* here -- push address of last cell of word                        immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeHere(MP_Task mpTask, Forth* pForth)
+void Step::vEncodeHere(Forth* pForth)
 {
   ENTRY("vEncodeHere"_Stz);
   
@@ -104,7 +104,7 @@ void Step::vEncodeHere(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* if -- encode jump on false to unknown forward address            immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeIf(MP_Task mpTask, Forth* pForth)
+void Step::vEncodeIf(Forth* pForth)
 {
   ENTRY("vEncodeIf"_Stz); // ( -- orig / flag -- )
   
@@ -123,7 +123,7 @@ void Step::vEncodeIf(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* ifAgain -- encode jump to known backward address (inside if)     immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeIfAgain(MP_Task mpTask, Forth* pForth)
+void Step::vEncodeIfAgain(Forth* pForth)
 {
   ENTRY("vEncodeIfAgain"_Stz); // ( dest -- / -- )
   
@@ -154,7 +154,7 @@ void Step::vEncodeIfAgain(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* loop -- encode runtime for : LOOP                                immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeLoop(MP_Task mpTask, Forth* pForth)
+void Step::vEncodeLoop(Forth* pForth)
 {
   ENTRY("vEncodeLoop"_Stz);
   
@@ -202,7 +202,7 @@ void Step::vEncodeLoop(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* loopPlus -- encode runtime for : +LOOP                           immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeLoopPlus(MP_Task mpTask, Forth* pForth)
+void Step::vEncodeLoopPlus(Forth* pForth)
 {
   ENTRY("vEncodeLoopPlus"_Stz);
   
@@ -250,7 +250,7 @@ void Step::vEncodeLoopPlus(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* next -- encode runtime for : NEXT                                immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeNext(MP_Task mpTask, Forth* pForth)
+void Step::vEncodeNext(Forth* pForth)
 {
   ENTRY("vEncodeNext"_Stz);
   
@@ -275,7 +275,7 @@ void Step::vEncodeNext(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* then -- resolve jump to unknown forward address                  immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeThen(MP_Task mpTask, Forth* pForth)
+void Step::vEncodeThen(Forth* pForth)
 {
   ENTRY("vEncodeThen"_Stz);  // ( orig -- / -- )
   
@@ -295,7 +295,7 @@ void Step::vEncodeThen(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* until -- encode jump false to known backward address             immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeUntil(MP_Task mpTask, Forth* pForth)
+void Step::vEncodeUntil(Forth* pForth)
 {
   ENTRY("vEncodeUntil"_Stz); // ( dest -- / flag -- )
   

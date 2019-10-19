@@ -28,7 +28,7 @@ void Step::vAddSteps_Timer(void)
 /*----------------------------------------------------------------------------*/
 /* timer.delete -- delete timer                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerDelete(MP_Task mpTask, Forth* pForth)
+void Step::vTimerDelete(Forth* pForth)
 {
 ENTRY("vTimeDelete"_Stz);
   
@@ -52,7 +52,7 @@ ENTRY("vTimeDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.init -- init timer                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerInit(MP_Task mpTask, Forth* pForth)
+void Step::vTimerInit(Forth* pForth)
 {
 ENTRY("vTimerInit"_Stz);
   
@@ -71,7 +71,7 @@ ENTRY("vTimerInit"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.microsecs -- get elapsed duration in microseconds                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerMicrosecs(MP_Task mpTask, Forth* pForth)
+void Step::vTimerMicrosecs(Forth* pForth)
 {
 ENTRY("vTimerMicrosecs"_Stz);
   
@@ -92,7 +92,7 @@ ENTRY("vTimerMicrosecs"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.millisecs -- get elapsed duration in milliseconds                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerMillisecs(MP_Task mpTask, Forth* pForth)
+void Step::vTimerMillisecs(Forth* pForth)
 {
 ENTRY("vTimerMillisecs"_Stz);
   
@@ -113,7 +113,7 @@ ENTRY("vTimerMillisecs"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.nanosecs -- get elapsed duration in nanoseconds                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerNanosecs(MP_Task mpTask, Forth* pForth)
+void Step::vTimerNanosecs(Forth* pForth)
 {
 ENTRY("vTimerNanosecs"_Stz);
   
@@ -134,7 +134,7 @@ ENTRY("vTimerNanosecs"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer::new -- new timer                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerNew(MP_Task mpTask, Forth* pForth)
+void Step::vTimerNew(Forth* pForth)
 {
 ENTRY("vTimerNew"_Stz);
 
@@ -154,7 +154,7 @@ ENTRY("vTimerNew"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.reset -- reset timer                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerReset(MP_Task mpTask, Forth* pForth)
+void Step::vTimerReset(Forth* pForth)
 {
 ENTRY("vTimerReset"_Stz);
   
@@ -173,7 +173,7 @@ ENTRY("vTimerReset"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.secs -- get elapsed duration in seconds                              */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerSecs(MP_Task mpTask, Forth* pForth)
+void Step::vTimerSecs(Forth* pForth)
 {
 ENTRY("vTimerSecs"_Stz);
   
@@ -194,7 +194,7 @@ ENTRY("vTimerSecs"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.start -- start timer                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerStart(MP_Task mpTask, Forth* pForth)
+void Step::vTimerStart(Forth* pForth)
 {
 ENTRY("vTimerStart"_Stz);
   
@@ -213,7 +213,7 @@ ENTRY("vTimerStart"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.ticks -- get elapsed ticks                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerTicks(MP_Task mpTask, Forth* pForth)
+void Step::vTimerTicks(Forth* pForth)
 {
 ENTRY("vTimerTicks"_Stz);
   
@@ -234,7 +234,7 @@ ENTRY("vTimerTicks"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.update -- update timer                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerUpdate(MP_Task mpTask, Forth* pForth)
+void Step::vTimerUpdate(Forth* pForth)
 {
 ENTRY("vTimerUpdate"_Stz);
   
@@ -253,7 +253,7 @@ ENTRY("vTimerUpdate"_Stz);
 /*----------------------------------------------------------------------------*/
 /* time.current -- return current time as a string                            */
 /*----------------------------------------------------------------------------*/
-void Step::vTimeCurrent(MP_Task mpTask, Forth* pForth)
+void Step::vTimeCurrent(Forth* pForth)
 {
   ENTRY("vTimeCurrent"_Stz);
   

@@ -20,7 +20,7 @@ void Step::vAddSteps_To(void)
 /*----------------------------------------------------------------------------*/
 /* >body -- convert word pointer to body pointer                              */
 /*----------------------------------------------------------------------------*/
-void Step::vToBody(MP_Task mpTask, Forth* pForth)
+void Step::vToBody(Forth* pForth)
 {
   ENTRY("vToBody"_Stz);
   
@@ -42,7 +42,7 @@ void Step::vToBody(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >int -- convert value to int                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vToInt(MP_Task mpTask, Forth* pForth)
+void Step::vToInt(Forth* pForth)
 {
   ENTRY("vToInt"_Stz);
   
@@ -60,7 +60,7 @@ void Step::vToInt(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >ptr -- convert int to ptr                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vToPtr(MP_Task mpTask, Forth* pForth)
+void Step::vToPtr(Forth* pForth)
 {
   ENTRY("vToPtr"_Stz);
   
@@ -78,7 +78,7 @@ void Step::vToPtr(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >str -- convert value to str                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vToStr(MP_Task mpTask, Forth* pForth)
+void Step::vToStr(Forth* pForth)
 {
   ENTRY("vToStr"_Stz);
   
@@ -98,7 +98,7 @@ void Step::vToStr(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >task -- convert int to task ptr                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vToTask(MP_Task mpTask, Forth* pForth)
+void Step::vToTask(Forth* pForth)
 {
   ENTRY("vToTask"_Stz);
   

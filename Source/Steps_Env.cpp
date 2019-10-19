@@ -15,7 +15,7 @@ void Step::vAddSteps_Env(void)
 /*----------------------------------------------------------------------------*/
 /* env@ -- get environment variable                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vEnvGet(MP_Task mpTask, Forth* pForth)
+void Step::vEnvGet(Forth* pForth)
 {
   ENTRY("vEnvGet"_Stz);
   

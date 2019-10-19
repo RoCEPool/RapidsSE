@@ -15,7 +15,7 @@ void Step::vAddSteps_JobCreateIndex(void)
 /*----------------------------------------------------------------------------*/
 /* job_createIndex.isUnique@ -- fetch column type from create table job       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_CreateIndexIsUniqueFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_CreateIndexIsUniqueFetch(Forth* pForth)
 {
   ENTRY("vJob_CreateIndexIsUniqueFetch"_Stz);
   

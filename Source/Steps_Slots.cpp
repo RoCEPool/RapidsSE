@@ -18,7 +18,7 @@ void Step::vAddSteps_Slots(void)
 /*----------------------------------------------------------------------------*/
 /* slots.columnCount -- get column count                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vSlotsColumnCount(MP_Task mpTask, Forth* pForth)
+void Step::vSlotsColumnCount(Forth* pForth)
 {
   ENTRY("vSlotsColumnCount"_Stz);
   
@@ -36,7 +36,7 @@ void Step::vSlotsColumnCount(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* slots.columnName -- get column name                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vSlotsColumnName(MP_Task mpTask, Forth* pForth)
+void Step::vSlotsColumnName(Forth* pForth)
 {
   ENTRY("vSlotsColumnName"_Stz);
   
@@ -61,7 +61,7 @@ void Step::vSlotsColumnName(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* slots.createColumnVec -- create slots column vector from subdic         */
 /*----------------------------------------------------------------------------*/
-void Step::vSlotsCreateColumnVec(MP_Task mpTask, Forth* pForth)
+void Step::vSlotsCreateColumnVec(Forth* pForth)
 {
   ENTRY("vSlotsCreateColumnVec"_Stz);
   
@@ -79,7 +79,7 @@ void Step::vSlotsCreateColumnVec(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* slots.subDic -- get slots sub dictionary                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vSlotsSubDic(MP_Task mpTask, Forth* pForth)
+void Step::vSlotsSubDic(Forth* pForth)
 {
   ENTRY("vSlotsSubDic"_Stz);
   

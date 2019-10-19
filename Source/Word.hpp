@@ -121,7 +121,7 @@ namespace SenVM
   Word* _pWord(void* aAddr);
 }
 
-void vEnterRoutine(Tasks::MP_Task mpTask, Forth* pForth);
+void vEnterRoutine(Forth* pForth);
 
 /*============================================================================*/
 /* end                                                                        */

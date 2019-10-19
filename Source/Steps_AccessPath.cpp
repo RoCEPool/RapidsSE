@@ -16,7 +16,7 @@ void Step::vAddSteps_AccessPath(void)
 /*----------------------------------------------------------------------------*/
 /* accessPath.table! -- store table into access path                          */
 /*----------------------------------------------------------------------------*/
-void Step::vAccessPathTableStore(MP_Task mpTask, Forth* pForth)
+void Step::vAccessPathTableStore(Forth* pForth)
 {
   ENTRY("vAccessPathTableStore"_Stz);
   
@@ -38,7 +38,7 @@ void Step::vAccessPathTableStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* accessPath.table@ -- fetch table from access path                          */
 /*----------------------------------------------------------------------------*/
-void Step::vAccessPathTableFetch(MP_Task mpTask, Forth* pForth)
+void Step::vAccessPathTableFetch(Forth* pForth)
 {
   ENTRY("vAccessPathTableFetch"_Stz);
   

@@ -16,7 +16,7 @@ void Step::vAddSteps_JobPurge(void)
 /*----------------------------------------------------------------------------*/
 /* Job_purge.spawnSub -- spawn sub purge job                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_PurgeSpawnSub(MP_Task mpTask, Forth* pForth)
+void Step::vJob_PurgeSpawnSub(Forth* pForth)
 {
   ENTRY("vJob_PurgeSpawnSub"_Stz);
   
@@ -55,7 +55,7 @@ void Step::vJob_PurgeSpawnSub(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_purge.table! -- store table into job_purge                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_PurgeTableStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_PurgeTableStore(Forth* pForth)
 {
   ENTRY("vJob_PurgeTableStore"_Stz);
   

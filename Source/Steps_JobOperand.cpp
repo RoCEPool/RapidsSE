@@ -15,7 +15,7 @@ void Step::vAddSteps_JobOperand(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Operand.pipeOut -- pipe out the operand                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_OperandPipeOut(MP_Task mpTask, Forth* pForth)
+void Step::vJob_OperandPipeOut(Forth* pForth)
 {
   ENTRY("vJob_OperandPipeOut"_Stz);
   

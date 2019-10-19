@@ -246,7 +246,7 @@ void Task::vTaskLoop_job(void)
     
     // call the intinsic
     try {
-      fpIntrinsic(this,m_pForth);
+      fpIntrinsic(m_pForth);
     }
     
     // catch any exception

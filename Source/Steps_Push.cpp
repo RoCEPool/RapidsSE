@@ -18,7 +18,7 @@ void Step::vAddSteps_Push(void)
 /*----------------------------------------------------------------------------*/
 /* i -- copy loop index from return stack onto data stack                     */
 /*----------------------------------------------------------------------------*/
-void Step::vPushI(MP_Task mpTask, Forth* pForth)
+void Step::vPushI(Forth* pForth)
 {
   ENTRY("vPushI"_Stz);
   
@@ -32,7 +32,7 @@ void Step::vPushI(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* j -- copy 2nd loop index from return stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vPushJ(MP_Task mpTask, Forth* pForth)
+void Step::vPushJ(Forth* pForth)
 {
   ENTRY("vPushJ"_Stz);
   
@@ -46,7 +46,7 @@ void Step::vPushJ(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* nullPtr -- push a nullptr                                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vPushNullPtr(MP_Task mpTask, Forth* pForth)
+void Step::vPushNullPtr(Forth* pForth)
 {
   ENTRY("vPushNullPtr"_Stz);
   
@@ -61,7 +61,7 @@ void Step::vPushNullPtr(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* pushValue -- push value arg onto stack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vPushValue(MP_Task mpTask, Forth* pForth)
+void Step::vPushValue(Forth* pForth)
 {
   ENTRY("vPushValue"_Stz);
   

@@ -22,7 +22,7 @@ void Step::vAddSteps_Locals(void)
 /*----------------------------------------------------------------------------*/
 /* local.fetch -- push locals[n] onto dstack                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vLocalFetch(MP_Task mpTask, Forth* pForth)
+void Step::vLocalFetch(Forth* pForth)
 {
   ENTRY("vLocalFetch"_Stz);
   
@@ -43,7 +43,7 @@ void Step::vLocalFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* localStore -- pop dstack into locals[n]                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vLocalStore(MP_Task mpTask, Forth* pForth)
+void Step::vLocalStore(Forth* pForth)
 {
   ENTRY("vLocalStore"_Stz);
   
@@ -64,7 +64,7 @@ void Step::vLocalStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* locals| -- declare set of local variables                       immediate  */
 /*----------------------------------------------------------------------------*/
-void Step::vLocalsBar(MP_Task mpTask, Forth* pForth)
+void Step::vLocalsBar(Forth* pForth)
 {
 ENTRY("vLocalsBar"_Stz);
   
@@ -122,7 +122,7 @@ ENTRY("vLocalsBar"_Stz);
 /*----------------------------------------------------------------------------*/
 /* locals.pop -- pop locals frame                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vLocalsPop(MP_Task mpTask, Forth* pForth)
+void Step::vLocalsPop(Forth* pForth)
 {
 ENTRY("vLocalsPop"_Stz);
   
@@ -141,7 +141,7 @@ ENTRY("vLocalsPop"_Stz);
 /*----------------------------------------------------------------------------*/
 /* locals.push -- push locals frame                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vLocalsPush(MP_Task mpTask, Forth* pForth)
+void Step::vLocalsPush(Forth* pForth)
 {
 ENTRY("vLocalsPush"_Stz);
   
@@ -159,7 +159,7 @@ ENTRY("vLocalsPush"_Stz);
 /*----------------------------------------------------------------------------*/
 /* to -- compile store value into local variable                    immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vLocalsTo(MP_Task mpTask, Forth* pForth)
+void Step::vLocalsTo(Forth* pForth)
 {
 ENTRY("vLocalsTo"_Stz);
   

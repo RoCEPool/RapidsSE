@@ -34,7 +34,7 @@ void Step::vAddSteps_Dir(void)
 /*----------------------------------------------------------------------------*/
 /* dir.changetCurrent -- change working directory                             */
 /*----------------------------------------------------------------------------*/
-void Step::vDirChangeCurrent(MP_Task mpTask, Forth* pForth)
+void Step::vDirChangeCurrent(Forth* pForth)
 {
   ENTRY("vDirChangeCurrent"_Stz);
   
@@ -52,7 +52,7 @@ void Step::vDirChangeCurrent(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dir::exists -- test if a directory exists                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vDirExists(MP_Task mpTask, Forth* pForth)
+void Step::vDirExists(Forth* pForth)
 {
 ENTRY("vDirExists"_Stz);
   
@@ -70,7 +70,7 @@ ENTRY("vDirExists"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir::getCurrent -- get working directory                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vDirGetCurrent(MP_Task mpTask, Forth* pForth)
+void Step::vDirGetCurrent(Forth* pForth)
 {
   ENTRY("vDirGetCurrent"_Stz);
   
@@ -93,7 +93,7 @@ void Step::vDirGetCurrent(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dir::make -- make a directory                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vDirMake(MP_Task mpTask, Forth* pForth)
+void Step::vDirMake(Forth* pForth)
 {
 ENTRY("vDirMake"_Stz);
   
@@ -111,7 +111,7 @@ ENTRY("vDirMake"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir::remove -- remove a directory                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vDirRemove(MP_Task mpTask, Forth* pForth)
+void Step::vDirRemove(Forth* pForth)
 {
 ENTRY("vDirRemove"_Stz);
   
@@ -129,7 +129,7 @@ ENTRY("vDirRemove"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.close -- close directory                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vDirClose(MP_Task mpTask, Forth* pForth)
+void Step::vDirClose(Forth* pForth)
 {
 ENTRY("vDirClose"_Stz);
   
@@ -148,7 +148,7 @@ ENTRY("vDirClose"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.delete -- delete instance of dir                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vDirDelete(MP_Task mpTask, Forth* pForth)
+void Step::vDirDelete(Forth* pForth)
 {
 ENTRY("vDirDelete"_Stz);
   
@@ -167,7 +167,7 @@ ENTRY("vDirDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.entryName -- get dir entry name                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vDirEntryName(MP_Task mpTask, Forth* pForth)
+void Step::vDirEntryName(Forth* pForth)
 {
 ENTRY("vDirEntryName"_Stz);
   
@@ -190,7 +190,7 @@ ENTRY("vDirEntryName"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.entryType -- get dir entry type                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vDirEntryType(MP_Task mpTask, Forth* pForth)
+void Step::vDirEntryType(Forth* pForth)
 {
 ENTRY("vDirEntryType"_Stz);
   
@@ -213,7 +213,7 @@ ENTRY("vDirEntryType"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.isClosed -- is dir closed?                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vDirIsClosed(MP_Task mpTask, Forth* pForth)
+void Step::vDirIsClosed(Forth* pForth)
 {
 ENTRY("vDirIsClosed"_Stz);
   
@@ -234,7 +234,7 @@ ENTRY("vDirIsClosed"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.isOpen -- is dir open?                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vDirIsOpen(MP_Task mpTask, Forth* pForth)
+void Step::vDirIsOpen(Forth* pForth)
 {
 ENTRY("vDirIsOpen"_Stz);
   
@@ -255,7 +255,7 @@ ENTRY("vDirIsOpen"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir::new -- new instance of dir                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vDirNew(MP_Task mpTask, Forth* pForth)
+void Step::vDirNew(Forth* pForth)
 {
 ENTRY("vDirNew"_Stz);
   
@@ -272,7 +272,7 @@ ENTRY("vDirNew"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.open -- open dir for reading                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vDirOpen(MP_Task mpTask, Forth* pForth)
+void Step::vDirOpen(Forth* pForth)
 {
 ENTRY("vDirOpen"_Stz);
   
@@ -296,7 +296,7 @@ ENTRY("vDirOpen"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.path@ -- get path                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vDirPathGet(MP_Task mpTask, Forth* pForth)
+void Step::vDirPathGet(Forth* pForth)
 {
 ENTRY("vDirPathGet"_Stz);
   
@@ -320,7 +320,7 @@ ENTRY("vDirPathGet"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.read -- read next dir entry                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vDirRead(MP_Task mpTask, Forth* pForth)
+void Step::vDirRead(Forth* pForth)
 {
 ENTRY("vDirRead"_Stz);
   
@@ -341,7 +341,7 @@ ENTRY("vDirRead"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.rewind -- rewind dir pointer                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vDirRewind(MP_Task mpTask, Forth* pForth)
+void Step::vDirRewind(Forth* pForth)
 {
 ENTRY("vDirRewind"_Stz);
   
@@ -360,7 +360,7 @@ ENTRY("vDirRewind"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.seek -- seek dir ptr to a given position                               */
 /*----------------------------------------------------------------------------*/
-void Step::vDirSeek(MP_Task mpTask, Forth* pForth)
+void Step::vDirSeek(Forth* pForth)
 {
 ENTRY("vDirSeek"_Stz);
   
@@ -383,7 +383,7 @@ ENTRY("vDirSeek"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.tell -- tel current dir position                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vDirTell(MP_Task mpTask, Forth* pForth)
+void Step::vDirTell(Forth* pForth)
 {
 ENTRY("vDirTell"_Stz);
   

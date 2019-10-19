@@ -21,7 +21,7 @@ void Step::vAddSteps_JobSubExporter(void)
 /*----------------------------------------------------------------------------*/
 /* job_subExporter::spawn -- spawn a new subexporter                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubExporterSpawn(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubExporterSpawn(Forth* pForth)
 {
   ENTRY("vJob_SubExporterSpawn"_Stz);
   
@@ -64,7 +64,7 @@ void Step::vJob_SubExporterSpawn(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subExporter.exportJob@ -- get export job                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubExporterExportJobFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubExporterExportJobFetch(Forth* pForth)
 {
   ENTRY("vJob_SubExporterSpawn"_Stz);
   
@@ -82,7 +82,7 @@ void Step::vJob_SubExporterExportJobFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subExporter.begin -- begin sub-exporter                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubExporterBegin(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubExporterBegin(Forth* pForth)
 {
   ENTRY("vJob_SubExporterBegin"_Stz);
   
@@ -101,7 +101,7 @@ void Step::vJob_SubExporterBegin(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subExporter.chunk -- chunk sub-exporter                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubExporterChunk(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubExporterChunk(Forth* pForth)
 {
   ENTRY("vJob_SubExporterChunk"_Stz);
   
@@ -120,7 +120,7 @@ void Step::vJob_SubExporterChunk(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subExporter.end -- end sub-exporter                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubExporterEnd(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubExporterEnd(Forth* pForth)
 {
   ENTRY("vJob_SubExporterEnd"_Stz);
   

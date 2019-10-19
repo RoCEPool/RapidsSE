@@ -27,7 +27,7 @@ void Step::vAddSteps_Input(void)
 /*----------------------------------------------------------------------------*/
 /* input.close -- close current input stream                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vInputClose(MP_Task mpTask, Forth* pForth)
+void Step::vInputClose(Forth* pForth)
 {
 ENTRY("vInputClose"_Stz);
   
@@ -39,7 +39,7 @@ ENTRY("vInputClose"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.depth -- push current depth of input stream onto data stack         */
 /*----------------------------------------------------------------------------*/
-void Step::vInputDepth(MP_Task mpTask, Forth* pForth)
+void Step::vInputDepth(Forth* pForth)
 {
 ENTRY("vInputDepth"_Stz);
   
@@ -53,7 +53,7 @@ ENTRY("vInputDepth"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.next -- get next input token from current input stream               */
 /*----------------------------------------------------------------------------*/
-void Step::vInputNext(MP_Task mpTask, Forth* pForth)
+void Step::vInputNext(Forth* pForth)
 {
 ENTRY("vInputNext"_Stz);
   
@@ -71,7 +71,7 @@ ENTRY("vInputNext"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.open -- open new input using filepath on data stack                  */
 /*----------------------------------------------------------------------------*/
-void Step::vInputOpen(MP_Task mpTask, Forth* pForth)
+void Step::vInputOpen(Forth* pForth)
 {
 ENTRY("vInputOpen"_Stz);
   
@@ -92,7 +92,7 @@ ENTRY("vInputOpen"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.pop -- pop to previous input stream                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vInputPop(MP_Task mpTask, Forth* pForth)
+void Step::vInputPop(Forth* pForth)
 {
 ENTRY("vInputPop"_Stz);
   
@@ -105,7 +105,7 @@ ENTRY("vInputPop"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.push -- push input stream, allowing for new input stream             */
 /*----------------------------------------------------------------------------*/
-void Step::vInputPush(MP_Task mpTask, Forth* pForth)
+void Step::vInputPush(Forth* pForth)
 {
 ENTRY("vInputPush"_Stz);
   
@@ -120,7 +120,7 @@ ENTRY("vInputPush"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.stdin -- use stdin as new input stream                               */
 /*----------------------------------------------------------------------------*/
-void Step::vInputStdin(MP_Task mpTask, Forth* pForth)
+void Step::vInputStdin(Forth* pForth)
 {
 ENTRY("vInputStdin"_Stz);
   
@@ -135,7 +135,7 @@ ENTRY("vInputStdin"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.text -- use string as new input stream                               */
 /*----------------------------------------------------------------------------*/
-void Step::vInputText(MP_Task mpTask, Forth* pForth)
+void Step::vInputText(Forth* pForth)
 {
 ENTRY("vInputText"_Stz);
   
@@ -156,7 +156,7 @@ ENTRY("vInputText"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.token -- push current token of input stream onto data stack          */
 /*----------------------------------------------------------------------------*/
-void Step::vInputToken(MP_Task mpTask, Forth* pForth)
+void Step::vInputToken(Forth* pForth)
 {
 ENTRY("vInputToken"_Stz);
   
@@ -168,7 +168,7 @@ ENTRY("vInputToken"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.type -- push current token type onto data stack                      */
 /*----------------------------------------------------------------------------*/
-void Step::vInputType(MP_Task mpTask, Forth* pForth)
+void Step::vInputType(Forth* pForth)
 {
 ENTRY("vInputType"_Stz);
   
@@ -182,7 +182,7 @@ ENTRY("vInputType"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.unknown -- unknown current token                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vInputUnknown(MP_Task mpTask, Forth* pForth)
+void Step::vInputUnknown(Forth* pForth)
 {
   ENTRY("vInputUnknown"_Stz);
   
@@ -200,7 +200,7 @@ void Step::vInputUnknown(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* next-token -- token colon                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTokenColon(MP_Task mpTask, Forth* pForth)
+void Step::vTokenColon(Forth* pForth)
 {
   ENTRY("vTokenColon"_Stz);
   

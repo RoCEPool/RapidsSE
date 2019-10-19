@@ -22,7 +22,7 @@ void Step::vAddSteps_Session(void)
 /*----------------------------------------------------------------------------*/
 /* session.commandProcessor -- get session command processor                  */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionCommand(MP_Task mpTask, Forth* pForth)
+void Step::vSessionCommand(Forth* pForth)
 {
   ENTRY("vSessionDicStack"_Stz);
   
@@ -41,7 +41,7 @@ void Step::vSessionCommand(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* session.dicStack -- get session dic stack                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionDicStack(MP_Task mpTask, Forth* pForth)
+void Step::vSessionDicStack(Forth* pForth)
 {
   ENTRY("vSessionDicStack"_Stz);
   
@@ -60,7 +60,7 @@ void Step::vSessionDicStack(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* session.dump -- dump of SE interface                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionDump(MP_Task mpTask, Forth* pForth)
+void Step::vSessionDump(Forth* pForth)
 {
 ENTRY("vSessionDump"_Stz);
   
@@ -79,7 +79,7 @@ ENTRY("vSessionDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* session.isExiting -- is session exiting                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionIsExiting(MP_Task mpTask, Forth* pForth)
+void Step::vSessionIsExiting(Forth* pForth)
 {
   ENTRY("vSessionIsExiting"_Stz);
   
@@ -98,7 +98,7 @@ void Step::vSessionIsExiting(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* session.pid -- get pid of SE session                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionPid(MP_Task mpTask, Forth* pForth)
+void Step::vSessionPid(Forth* pForth)
 {
   ENTRY("vSessionPid"_Stz);
   
@@ -117,7 +117,7 @@ void Step::vSessionPid(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* session.slot@ -- fetch slot of SE session                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionSlotFetch(MP_Task mpTask, Forth* pForth)
+void Step::vSessionSlotFetch(Forth* pForth)
 {
   ENTRY("vSessionSlotFetch"_Stz);
   
@@ -136,7 +136,7 @@ void Step::vSessionSlotFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* session.tx@ -- fetch tx of SE session                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionTxFetch(MP_Task mpTask, Forth* pForth)
+void Step::vSessionTxFetch(Forth* pForth)
 {
   ENTRY("vSessionTxFetch"_Stz);
   
@@ -155,7 +155,7 @@ void Step::vSessionTxFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* session.tx! -- store tx of SE session                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionTxStore(MP_Task mpTask, Forth* pForth)
+void Step::vSessionTxStore(Forth* pForth)
 {
   ENTRY("vSessionTxStore"_Stz);
   

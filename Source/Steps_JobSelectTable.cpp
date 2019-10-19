@@ -16,7 +16,7 @@ void Step::vAddSteps_JobSelectTable(void)
 /*----------------------------------------------------------------------------*/
 /* Job_selectTable.partition@ -- fetch partition no from the job              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SelectTablePartitionFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SelectTablePartitionFetch(Forth* pForth)
 {
   ENTRY("vJob_FetchRowsPartitionFetch"_Stz);
   
@@ -34,7 +34,7 @@ void Step::vJob_SelectTablePartitionFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_selectTable.table! -- store table in the job                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SelectTableTableStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SelectTableTableStore(Forth* pForth)
 {
   ENTRY("vJob_SelectTableTableStore"_Stz);
   

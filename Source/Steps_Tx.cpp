@@ -28,7 +28,7 @@ void Step::vAddSteps_Tx(void)
 /*----------------------------------------------------------------------------*/
 /* tx::begin -- begin a tx                                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTxBegin(MP_Task mpTask, Forth* pForth)
+void Step::vTxBegin(Forth* pForth)
 {
   ENTRY("vTxBegin"_Stz);
   
@@ -47,7 +47,7 @@ void Step::vTxBegin(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.commit -- commit a tx                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTxCommit(MP_Task mpTask, Forth* pForth)
+void Step::vTxCommit(Forth* pForth)
 {
   ENTRY("vTxCommit"_Stz);
   
@@ -69,7 +69,7 @@ void Step::vTxCommit(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.counterDec -- decrement tx general counter                              */
 /*----------------------------------------------------------------------------*/
-void Step::vTxCounterDec(MP_Task mpTask, Forth* pForth)
+void Step::vTxCounterDec(Forth* pForth)
 {
   ENTRY("vTxCounterDec"_Stz);
   
@@ -94,7 +94,7 @@ void Step::vTxCounterDec(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.counter@ -- fetch tx general counter                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTxCounterFetch(MP_Task mpTask, Forth* pForth)
+void Step::vTxCounterFetch(Forth* pForth)
 {
   ENTRY("vTxCounterFetch"_Stz);
   
@@ -113,7 +113,7 @@ void Step::vTxCounterFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.counter! -- store tx general counter                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTxCounterStore(MP_Task mpTask, Forth* pForth)
+void Step::vTxCounterStore(Forth* pForth)
 {
   ENTRY("vTxCounterStore"_Stz);
   
@@ -134,7 +134,7 @@ void Step::vTxCounterStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.distMember@ -- fetch if given node is a distributed member of tx        */
 /*----------------------------------------------------------------------------*/
-void Step::vTxDistMemberFetch(MP_Task mpTask, Forth* pForth)
+void Step::vTxDistMemberFetch(Forth* pForth)
 {
   ENTRY("vTxDistMemberFetch"_Stz);
   
@@ -159,7 +159,7 @@ void Step::vTxDistMemberFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.distMember! -- store if given node is a distributed member of tx        */
 /*----------------------------------------------------------------------------*/
-void Step::vTxDistMemberStore(MP_Task mpTask, Forth* pForth)
+void Step::vTxDistMemberStore(Forth* pForth)
 {
   ENTRY("vTxDistMemberStore"_Stz);
   
@@ -186,7 +186,7 @@ void Step::vTxDistMemberStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.dump -- dump a tx                                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTxDump(MP_Task mpTask, Forth* pForth)
+void Step::vTxDump(Forth* pForth)
 {
 ENTRY("vTxDump"_Stz);
   
@@ -204,7 +204,7 @@ ENTRY("vTxDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* tx::dumpAll -- dump all tx's                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vTxDumpAll(MP_Task mpTask, Forth* pForth)
+void Step::vTxDumpAll(Forth* pForth)
 {
   ENTRY("vTxDumpAll"_Stz);
   
@@ -216,7 +216,7 @@ void Step::vTxDumpAll(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.free -- free a tx                                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTxFree(MP_Task mpTask, Forth* pForth)
+void Step::vTxFree(Forth* pForth)
 {
   ENTRY("vTxFree"_Stz);
   
@@ -239,7 +239,7 @@ void Step::vTxFree(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.id -- get tx id from tx on data stack                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTxId(MP_Task mpTask, Forth* pForth)
+void Step::vTxId(Forth* pForth)
 {
   ENTRY("vTxId"_Stz);
   
@@ -258,7 +258,7 @@ void Step::vTxId(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.prepare -- prepare a tx                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTxPrepare(MP_Task mpTask, Forth* pForth)
+void Step::vTxPrepare(Forth* pForth)
 {
   ENTRY("vTxPrepare"_Stz);
   
@@ -280,7 +280,7 @@ void Step::vTxPrepare(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.rollback -- rollback a tx                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vTxRollback(MP_Task mpTask, Forth* pForth)
+void Step::vTxRollback(Forth* pForth)
 {
   ENTRY("vTxRollback"_Stz);
   
@@ -302,7 +302,7 @@ void Step::vTxRollback(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx::testDist -- test for a distributed tx and create if it doesnt exist    */
 /*----------------------------------------------------------------------------*/
-void Step::vTxTestDist(MP_Task mpTask, Forth* pForth)
+void Step::vTxTestDist(Forth* pForth)
 {
   ENTRY("vTxTestDist"_Stz);
   

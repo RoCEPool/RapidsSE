@@ -3,7 +3,7 @@
 /*============================================================================*/
 #include "StorageEngine.h"
 
-void Task::vAddMunged(MP_Task mpTask, Forth* pForth)
+void Task::vAddMunged(Forth* pForth)
 {
   s48K sFileContents;
 
@@ -5505,7 +5505,7 @@ void Task::vAddMunged(MP_Task mpTask, Forth* pForth)
     "\n"
     "  \\\"#include \\\\\\\"StorageEngine.h\\\\\\\"\\\\n\\\" pCppFile file.write\n"
     "  \\\"\\\\n\\\" pCppFile file.write\n"
-    "  \\\"void Task::vAddMunged(MP_Task mpTask, Forth* pForth)\\\\n\\\" pCppFile file.write\n"
+    "  \\\"void Task::vAddMunged(Forth* pForth)\\\\n\\\" pCppFile file.write\n"
     "  \\\"{\\\\n\\\" pCppFile file.write\n"
     "  \\\"  s48K sFileContents;\\\\n\\\" pCppFile file.write\n"
     " ;\n"

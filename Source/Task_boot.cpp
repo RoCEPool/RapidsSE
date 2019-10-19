@@ -18,7 +18,7 @@ void Task::vAddBaseWords(void)
   
 #ifdef WITH_MUNGED_SEN
   if (AM::bMunged())
-    vAddMunged(mpTask,mpTask->m_pForth);
+    vAddMunged(m_pForth);
 #endif
 }
 
@@ -259,7 +259,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
         if (WK_INTRINSIC == pCalledWord->eKind()) {
           fpStep = pCalledWord->fpEntryStep();
           if (pCalledWord->bImmediate())
-            (*fpStep)(this,m_pForth);
+            (*fpStep)(m_pForth);
           else {
             pNewWord->vAppend(pCalledWord->afpEntryStep());
           }

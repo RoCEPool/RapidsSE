@@ -41,8 +41,12 @@ namespace Gadgets
 #include "SP_ReqTuple.hpp"
 #include "SP_String.hpp"
 
-namespace Tasks { typedef MP<Task,CN_TASK> MP_Task;
-                  typedef void (*StepFp)(Tasks::MP_Task, Forth* pForth); }
+namespace Tasks {
+  
+  typedef MP<Task,CN_TASK> MP_Task;
+  
+  typedef void (*StepFp)(Forth* pForth);
+}
 
 typedef void (*FNADDR)(void*);
 
@@ -50,7 +54,7 @@ typedef void (*FNADDR)(void*);
   \
   FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)Step::FNNAME); \
   \
-  void Step::FNNAME(MP_Task mpTask, Forth* pForth)
+  void Step::FNNAME(Forth* pForth)
 
 #define JOBS_fn(FNNAME) \
   \

@@ -42,11 +42,11 @@ void Step::vAddSteps_Test(void)
 /*----------------------------------------------------------------------------*/
 /* test::test0 -- analyse llc misses                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest0(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest0(Forth* pForth)
 {
   ENTRY("vTestTest0"_Stz);
   
-  LlcTest::vTest(mpTask,pForth);
+  LlcTest::vTest(pForth);
   
   EXIT();
 }
@@ -54,7 +54,7 @@ void Step::vTestTest0(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test1 -- test1                                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest1(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest1(Forth* pForth)
 {
   ENTRY("vTestTest1"_Stz);
   
@@ -64,7 +64,7 @@ void Step::vTestTest1(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test2 -- test2                                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest2(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest2(Forth* pForth)
 {
   ENTRY("vTestTest2"_Stz);
   
@@ -76,7 +76,7 @@ void Step::vTestTest2(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test3 -- test3                                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest3(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest3(Forth* pForth)
 {
   ENTRY("vTestTest3"_Stz);
   
@@ -88,7 +88,7 @@ void Step::vTestTest3(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test4 -- test4                                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest4(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest4(Forth* pForth)
 {
   ENTRY("vTestTest4"_Stz);
   
@@ -100,7 +100,7 @@ void Step::vTestTest4(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test5 -- test5                                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest5(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest5(Forth* pForth)
 {
   ENTRY("vTestTest5"_Stz);
   
@@ -112,7 +112,7 @@ void Step::vTestTest5(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test6 -- test6                                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest6(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest6(Forth* pForth)
 {
   ENTRY("vTestTest6"_Stz);
   
@@ -124,7 +124,7 @@ void Step::vTestTest6(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test7 -- test7                                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest7(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest7(Forth* pForth)
 {
   ENTRY("vTestTest7"_Stz);
   
@@ -136,7 +136,7 @@ void Step::vTestTest7(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test8 -- test8                                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest8(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest8(Forth* pForth)
 {
   ENTRY("vTestTest8"_Stz);
   
@@ -148,7 +148,7 @@ void Step::vTestTest8(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test9 -- test9                                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest9(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest9(Forth* pForth)
 {
   ENTRY("vTestTest9 "_Stz);
   
@@ -160,7 +160,7 @@ void Step::vTestTest9(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test10 -- test1                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest10(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest10(Forth* pForth)
 {
   ENTRY("vTestTest10 "_Stz);
   
@@ -172,7 +172,7 @@ void Step::vTestTest10(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test11 -- test1                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest11(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest11(Forth* pForth)
 {
   ENTRY("vTestTest11 "_Stz);
   
@@ -184,7 +184,7 @@ void Step::vTestTest11(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test12 -- test12                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest12(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest12(Forth* pForth)
 {
   ENTRY("vTestTest12 "_Stz);
   
@@ -196,7 +196,7 @@ void Step::vTestTest12(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test13 -- test13                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest13(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest13(Forth* pForth)
 {
   ENTRY("vTestTest13 "_Stz);
   
@@ -208,7 +208,7 @@ void Step::vTestTest13(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test14 -- test14                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest14(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest14(Forth* pForth)
 {
   ENTRY("vTestTest14 "_Stz);
   
@@ -220,7 +220,7 @@ void Step::vTestTest14(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test15 -- test15                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest15(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest15(Forth* pForth)
 {
   ENTRY("vTestTest15 "_Stz);
   
@@ -232,7 +232,7 @@ void Step::vTestTest15(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test16 -- test16                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest16(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest16(Forth* pForth)
 {
   ENTRY("vTestTest16 "_Stz);
   
@@ -244,7 +244,7 @@ void Step::vTestTest16(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test17 -- test17                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest17(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest17(Forth* pForth)
 {
   ENTRY("vTestTest17 "_Stz);
   
@@ -256,7 +256,7 @@ void Step::vTestTest17(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test18 -- test18                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest18(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest18(Forth* pForth)
 {
   ENTRY("vTestTest18 "_Stz);
   
@@ -268,7 +268,7 @@ void Step::vTestTest18(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test19 -- test19                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest19(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest19(Forth* pForth)
 {
   ENTRY("vTestTest19 "_Stz);
   
@@ -280,7 +280,7 @@ void Step::vTestTest19(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test20 -- test20                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest20(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest20(Forth* pForth)
 {
   ENTRY("vTestTest20 "_Stz);
   
@@ -292,7 +292,7 @@ void Step::vTestTest20(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test21 -- test21                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest21(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest21(Forth* pForth)
 {
   ENTRY("vTestTest21 "_Stz);
   
@@ -304,7 +304,7 @@ void Step::vTestTest21(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test22 -- test22                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest22(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest22(Forth* pForth)
 {
   ENTRY("vTestTest22 "_Stz);
   
@@ -316,7 +316,7 @@ void Step::vTestTest22(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test23 -- test23                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest23(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest23(Forth* pForth)
 {
   ENTRY("vTestTest23 "_Stz);
   
@@ -328,7 +328,7 @@ void Step::vTestTest23(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test24 -- test24                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest24(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest24(Forth* pForth)
 {
   ENTRY("vTestTest24 "_Stz);
   
@@ -340,7 +340,7 @@ void Step::vTestTest24(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test::test25 -- test25                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTestTest25(MP_Task mpTask, Forth* pForth)
+void Step::vTestTest25(Forth* pForth)
 {
   ENTRY("vTestTest25 "_Stz);
   

@@ -16,7 +16,7 @@ void Step::vAddSteps_JobGenData(void)
 /*----------------------------------------------------------------------------*/
 /* job_genData.generate -- generate data for a table                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_GenerateGenerate(MP_Task mpTask, Forth* pForth)
+void Step::vJob_GenerateGenerate(Forth* pForth)
 {
   ENTRY("vJob_GenerateGenerate"_Stz);
   
@@ -33,7 +33,7 @@ void Step::vJob_GenerateGenerate(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_genData.table! -- store table into job_genData                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_GenerateTableStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_GenerateTableStore(Forth* pForth)
 {
   ENTRY("vJob_GenerateTableStore"_Stz);
   

@@ -16,7 +16,7 @@ void Step::vAddSteps_Cursor(void)
 /*----------------------------------------------------------------------------*/
 /* cursor@ -- fetch cursor from return stack onto data stack                  */
 /*----------------------------------------------------------------------------*/
-void Step::vCursorFetch(MP_Task mpTask, Forth* pForth)
+void Step::vCursorFetch(Forth* pForth)
 {
   ENTRY("vCursorFetch"_Stz);
   
@@ -34,7 +34,7 @@ void Step::vCursorFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* cursor! -- replace cursor on return stack from data stack                  */
 /*----------------------------------------------------------------------------*/
-void Step::vCursorStore(MP_Task mpTask, Forth* pForth)
+void Step::vCursorStore(Forth* pForth)
 {
   ENTRY("vCursorStore"_Stz);
   

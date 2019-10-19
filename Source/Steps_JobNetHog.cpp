@@ -15,7 +15,7 @@ void Step::vAddSteps_JobNetHog(void)
 /*----------------------------------------------------------------------------*/
 /* job_nodeInfo.nodeName@ -- fetch node name                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_NetHogHogNoFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_NetHogHogNoFetch(Forth* pForth)
 {
   ENTRY("vJob_NetHogHogNoFetch"_Stz);
   

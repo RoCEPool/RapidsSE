@@ -17,7 +17,7 @@ void Step::vAddSteps_JobRepeater(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Repeater.begin -- begin repeating                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_RepeaterBegin(MP_Task mpTask, Forth* pForth)
+void Step::vJob_RepeaterBegin(Forth* pForth)
 {
   ENTRY("vJob_RepeaterBegin"_Stz);
   
@@ -36,7 +36,7 @@ void Step::vJob_RepeaterBegin(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_repeater.chunk -- indefinietly copy file into pipe                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_RepeaterChunk(MP_Task mpTask, Forth* pForth)
+void Step::vJob_RepeaterChunk(Forth* pForth)
 {
   ENTRY("vJob_RepeaterChunk"_Stz);
   
@@ -55,7 +55,7 @@ void Step::vJob_RepeaterChunk(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_repeater.end -- end repeater                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_RepeaterEnd(MP_Task mpTask, Forth* pForth)
+void Step::vJob_RepeaterEnd(Forth* pForth)
 {
   ENTRY("vJob_RepeaterEnd"_Stz);
   

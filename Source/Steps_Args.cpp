@@ -16,7 +16,7 @@ void Step::vAddSteps_Args(void)
 /*----------------------------------------------------------------------------*/
 /* args::oscillate -- oscillate the dummy parameters                          */
 /*----------------------------------------------------------------------------*/
-void Step::vArgsOscillate(MP_Task mpTask, Forth* pForth)
+void Step::vArgsOscillate(Forth* pForth)
 {
   ENTRY("vArgsOscillate"_Stz);
   
@@ -26,7 +26,7 @@ void Step::vArgsOscillate(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* args.print -- print arguments                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vArgsPrint(MP_Task mpTask, Forth* pForth)
+void Step::vArgsPrint(Forth* pForth)
 {
 ENTRY("vArgsPrint"_Stz);
   

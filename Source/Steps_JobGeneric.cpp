@@ -21,7 +21,7 @@ void Step::vAddSteps_JobGeneric(void)
 /*----------------------------------------------------------------------------*/
 /* job_begun::new -- new a job__begun for this job                            */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__BegunNew(MP_Task mpTask, Forth* pForth)
+void Step::vJob__BegunNew(Forth* pForth)
 {
   ENTRY("vJob__BegunNew"_Stz);
   
@@ -47,7 +47,7 @@ void Step::vJob__BegunNew(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job__cancel::new -- new a job__cancel for this job                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__CancelNew(MP_Task mpTask, Forth* pForth)
+void Step::vJob__CancelNew(Forth* pForth)
 {
   ENTRY("vJob__CancelNew"_Stz);
   
@@ -73,7 +73,7 @@ void Step::vJob__CancelNew(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job__cancelled::new -- new a job__cancelled for this job                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__CancelledNew(MP_Task mpTask, Forth* pForth)
+void Step::vJob__CancelledNew(Forth* pForth)
 {
   ENTRY("vJob__CancelledNew"_Stz);
   
@@ -99,7 +99,7 @@ void Step::vJob__CancelledNew(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job__end::new - new a job__end for this job                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__EndNew(MP_Task mpTask, Forth* pForth)
+void Step::vJob__EndNew(Forth* pForth)
 {
   ENTRY("vJob__EndNew"_Stz);
   
@@ -125,7 +125,7 @@ void Step::vJob__EndNew(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job__ended::new -- new a job__ended for this job                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__EndedNew(MP_Task mpTask, Forth* pForth)
+void Step::vJob__EndedNew(Forth* pForth)
 {
   ENTRY("vJob__EndedNew"_Stz);
   
@@ -151,7 +151,7 @@ void Step::vJob__EndedNew(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job__execute::new -- new a job__execute for this job                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__ExecuteNew(MP_Task mpTask, Forth* pForth)
+void Step::vJob__ExecuteNew(Forth* pForth)
 {
   ENTRY("vJob__ExecuteNew"_Stz);
   
@@ -177,7 +177,7 @@ void Step::vJob__ExecuteNew(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job__executed::new -- new a job__executed for this job                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__ExecutedNew(MP_Task mpTask, Forth* pForth)
+void Step::vJob__ExecutedNew(Forth* pForth)
 {
   ENTRY("vJob__ExecutedNew"_Stz);
   

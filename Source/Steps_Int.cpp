@@ -30,7 +30,7 @@ void Step::vAddSteps_Int(void)
 /*----------------------------------------------------------------------------*/
 /* + -- add top two integers on stack                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vIntAdd(MP_Task mpTask, Forth* pForth)
+void Step::vIntAdd(Forth* pForth)
 {
   ENTRY("vIntAdd"_Stz);
   /*
@@ -62,7 +62,7 @@ void Step::vIntAdd(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* / -- divide top integer by second integer on stack                         */
 /*----------------------------------------------------------------------------*/
-void Step::vIntDivide(MP_Task mpTask, Forth* pForth)
+void Step::vIntDivide(Forth* pForth)
 {
   ENTRY("vIntDivide"_Stz);
   
@@ -81,7 +81,7 @@ void Step::vIntDivide(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* == -- test top two integers on data stack for equality                     */
 /*----------------------------------------------------------------------------*/
-void Step::vIntEqual(MP_Task mpTask, Forth* pForth)
+void Step::vIntEqual(Forth* pForth)
 {
   ENTRY("vIntEqual"_Stz);
   
@@ -100,7 +100,7 @@ void Step::vIntEqual(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* > -- test top two integers on data stack for greater than                  */
 /*----------------------------------------------------------------------------*/
-void Step::vIntGreater(MP_Task mpTask, Forth* pForth)
+void Step::vIntGreater(Forth* pForth)
 {
   ENTRY("vIntGreater"_Stz);
   
@@ -119,7 +119,7 @@ void Step::vIntGreater(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >= -- test top two integers on data stack for greater than equal to        */
 /*----------------------------------------------------------------------------*/
-void Step::vIntGreaterEqual(MP_Task mpTask, Forth* pForth)
+void Step::vIntGreaterEqual(Forth* pForth)
 {
   ENTRY("vIntGreaterEqual"_Stz);
   
@@ -138,7 +138,7 @@ void Step::vIntGreaterEqual(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* hash -- get hash of string                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vIntHash(MP_Task mpTask, Forth* pForth)
+void Step::vIntHash(Forth* pForth)
 {
   ENTRY("vIntHash"_Stz);
   
@@ -158,7 +158,7 @@ void Step::vIntHash(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* ho16 -- get high order 16 bits of int                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vIntHo16(MP_Task mpTask, Forth* pForth)
+void Step::vIntHo16(Forth* pForth)
 {
   ENTRY("vIntHash"_Stz);
   
@@ -174,7 +174,7 @@ void Step::vIntHo16(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* < -- test top two integers on data stack for less than                     */
 /*----------------------------------------------------------------------------*/
-void Step::vIntLess(MP_Task mpTask, Forth* pForth)
+void Step::vIntLess(Forth* pForth)
 {
   ENTRY("vIntLess"_Stz);
   
@@ -193,7 +193,7 @@ void Step::vIntLess(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* <= -- test top two integers on data stack for less than equal to           */
 /*----------------------------------------------------------------------------*/
-void Step::vIntLessEqual(MP_Task mpTask, Forth* pForth)
+void Step::vIntLessEqual(Forth* pForth)
 {
   ENTRY("vIntLessEqual"_Stz);
   
@@ -212,7 +212,7 @@ void Step::vIntLessEqual(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* % -- modulo of top integer by second integer on stack                      */
 /*----------------------------------------------------------------------------*/
-void Step::vIntModulo(MP_Task mpTask, Forth* pForth)
+void Step::vIntModulo(Forth* pForth)
 {
   ENTRY("vIntModulo"_Stz);
   
@@ -231,7 +231,7 @@ void Step::vIntModulo(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* * multiply second integer by top integer on stack                          */
 /*----------------------------------------------------------------------------*/
-void Step::vIntMultiply(MP_Task mpTask, Forth* pForth)
+void Step::vIntMultiply(Forth* pForth)
 {
   ENTRY("vIntMultiply"_Stz);
   
@@ -250,7 +250,7 @@ void Step::vIntMultiply(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* neg -- gegate top integer on stack                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vIntNeg(MP_Task mpTask, Forth* pForth)
+void Step::vIntNeg(Forth* pForth)
 {
   ENTRY("vIntNeg"_Stz);
   
@@ -269,7 +269,7 @@ void Step::vIntNeg(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* != -- test top two integers on data stack for not equal                    */
 /*----------------------------------------------------------------------------*/
-void Step::vIntNotEqual(MP_Task mpTask, Forth* pForth)
+void Step::vIntNotEqual(Forth* pForth)
 {
   ENTRY("vIntNotEqual"_Stz);
   
@@ -288,7 +288,7 @@ void Step::vIntNotEqual(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* int.random -- generate a random number in the given range                  */
 /*----------------------------------------------------------------------------*/
-void Step::vIntRandom(MP_Task mpTask, Forth* pForth)
+void Step::vIntRandom(Forth* pForth)
 {
   ENTRY("vIntRandom"_Stz);
   
@@ -310,7 +310,7 @@ void Step::vIntRandom(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* - -- subtract second integer from top integer on stack                     */
 /*----------------------------------------------------------------------------*/
-void Step::vIntSubtract(MP_Task mpTask, Forth* pForth)
+void Step::vIntSubtract(Forth* pForth)
 {
   ENTRY("vIntSubtract"_Stz);
   
@@ -329,7 +329,7 @@ void Step::vIntSubtract(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* uint.random -- generate a random number in the given range                  */
 /*----------------------------------------------------------------------------*/
-void Step::vUnsignedIntRandom(MP_Task mpTask, Forth* pForth)
+void Step::vUnsignedIntRandom(Forth* pForth)
 {
   ENTRY("vUnsignedIntRandom"_Stz);
   

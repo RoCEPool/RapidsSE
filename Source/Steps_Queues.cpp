@@ -20,11 +20,11 @@ void Step::vAddSteps_Queues(void)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesCheckSleeping -- check the sleeping queue                    */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesCheckSleeping(MP_Task mpTask, Forth* pForth)
+void Step::vQueuesCheckSleeping(Forth* pForth)
 {
   ENTRY("vQueuesCheckSleeping"_Stz);
   
-  Scheduler::vWakeSleepingTasks(* mpTask);
+  Scheduler::vWakeSleepingTasks(pForth->m_pTask);
   
   EXIT();
 }
@@ -32,7 +32,7 @@ void Step::vQueuesCheckSleeping(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesExecutingLength -- get the executing queue length            */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesExecutingLength(MP_Task mpTask, Forth* pForth)
+void Step::vQueuesExecutingLength(Forth* pForth)
 {
   ENTRY("vQueuesExecutingLength"_Stz);
   
@@ -50,7 +50,7 @@ void Step::vQueuesExecutingLength(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesReadyLength -- get the ready queue length                    */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesReadyLength(MP_Task mpTask, Forth* pForth)
+void Step::vQueuesReadyLength(Forth* pForth)
 {
   ENTRY("vQueuesReadyLength"_Stz);
   
@@ -68,7 +68,7 @@ void Step::vQueuesReadyLength(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesSleepingLength -- get the sleeping queue length              */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesSleepingLength(MP_Task mpTask, Forth* pForth)
+void Step::vQueuesSleepingLength(Forth* pForth)
 {
   ENTRY("vQueuesSleepingLength"_Stz);
   
@@ -81,7 +81,7 @@ void Step::vQueuesSleepingLength(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesWaitingLength -- get the sleeping queue length              */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesWaitingLength(MP_Task mpTask, Forth* pForth)
+void Step::vQueuesWaitingLength(Forth* pForth)
 {
   ENTRY("vQueuesWaitingLength"_Stz);
   

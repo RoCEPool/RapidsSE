@@ -15,7 +15,7 @@ void Step::vAddSteps_AttachMap(void)
 /*----------------------------------------------------------------------------*/
 /* attachmap::tenants@ -- fetch word tenants from attachmap                   */
 /*----------------------------------------------------------------------------*/
-void Step::vAttachMapTenantsFetch(MP_Task mpTask, Forth* pForth)
+void Step::vAttachMapTenantsFetch(Forth* pForth)
 {
   ENTRY("vAttachMapTenantsFetch"_Stz);
   

@@ -17,7 +17,7 @@ void Step::vAddSteps_DicPath(void)
 /*----------------------------------------------------------------------------*/
 /* dicPath.depth -- get number of dictionaries in dictionary path             */
 /*----------------------------------------------------------------------------*/
-void Step::vDicPathDepth(MP_Task mpTask, Forth* pForth)
+void Step::vDicPathDepth(Forth* pForth)
 {
   ENTRY("vDicStackDepth"_Stz);
   
@@ -38,7 +38,7 @@ void Step::vDicPathDepth(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dicPath.dump -- dump dictionary path                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vDicPathDump(MP_Task mpTask, Forth* pForth)
+void Step::vDicPathDump(Forth* pForth)
 {
   ENTRY("vDicPathDump"_Stz);
   
@@ -57,7 +57,7 @@ void Step::vDicPathDump(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dicPath.pick -- pick a dic from dic path and push onto data stack          */
 /*----------------------------------------------------------------------------*/
-void Step::vDicPathPick(MP_Task mpTask, Forth* pForth)
+void Step::vDicPathPick(Forth* pForth)
 {
   ENTRY("vDicPathPick"_Stz);
   

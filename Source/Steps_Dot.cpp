@@ -18,7 +18,7 @@ void Step::vAddSteps_Dot(void)
 /*----------------------------------------------------------------------------*/
 /* . -- print top value on stack                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vDot(MP_Task mpTask, Forth* pForth)
+void Step::vDot(Forth* pForth)
 {
   ENTRY("vDot"_Stz);
   
@@ -38,7 +38,7 @@ void Step::vDot(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* .put -- print top value on stack (no new line)                             */
 /*----------------------------------------------------------------------------*/
-void Step::vDotPut(MP_Task mpTask, Forth* pForth)
+void Step::vDotPut(Forth* pForth)
 {
   ENTRY("vDotPut"_Stz);
   
@@ -54,7 +54,7 @@ void Step::vDotPut(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* .\n -- print new line                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vDotNewline(MP_Task mpTask, Forth* pForth)
+void Step::vDotNewline(Forth* pForth)
 {
   ENTRY("vDotNewline"_Stz);
   
@@ -66,7 +66,7 @@ void Step::vDotNewline(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* .verbose -- print top value on stack if arg.m_bVerbose                     */
 /*----------------------------------------------------------------------------*/
-void Step::vDotVerbose(MP_Task mpTask, Forth* pForth)
+void Step::vDotVerbose(Forth* pForth)
 {
   ENTRY("vDotVerbose"_Stz);
   
@@ -76,7 +76,7 @@ void Step::vDotVerbose(MP_Task mpTask, Forth* pForth)
   
   if (AM::bVerbose()) {
     vTrace("[%p %s] %s\n"_Stz,
-           *mpTask,
+           pForth->m_pTask,
            pForth->m_pTask->szJobName(),
            xVariable.szStz());
   }

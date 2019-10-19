@@ -15,7 +15,7 @@ void Step::vAddSteps_Class(void)
 /*----------------------------------------------------------------------------*/
 /* class::name -- translate class no to name                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vClassName(MP_Task mpTask, Forth* pForth)
+void Step::vClassName(Forth* pForth)
 {
   ENTRY("vClassName"_Stz);
   

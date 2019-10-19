@@ -20,7 +20,7 @@ void Step::vAddSteps_JobSubLoader(void)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader::spawn -- spawn a new subloader                              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderSpawn(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubLoaderSpawn(Forth* pForth)
 {
   ENTRY("vJob_SubLoaderSpawn"_Stz);
   
@@ -64,7 +64,7 @@ void Step::vJob_SubLoaderSpawn(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.begin -- begin loading                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderBegin(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubLoaderBegin(Forth* pForth)
 {
   ENTRY("vJob_SubLoaderBegin"_Stz);
   
@@ -83,7 +83,7 @@ void Step::vJob_SubLoaderBegin(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.chunk -- read & process rows till buffer full / eof          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderChunk(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubLoaderChunk(Forth* pForth)
 {
   ENTRY("vJob_SubLoaderChunk"_Stz);
   
@@ -111,7 +111,7 @@ void Step::vJob_SubLoaderChunk(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.end -- end loading                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderEnd(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubLoaderEnd(Forth* pForth)
 {
   ENTRY("vJob_SubLoaderEnd"_Stz);
   
@@ -128,7 +128,7 @@ void Step::vJob_SubLoaderEnd(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.terminate -- test early termination                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderTerminate(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubLoaderTerminate(Forth* pForth)
 {
   ENTRY("vJob_SubLoaderTerminate"_Stz);
   

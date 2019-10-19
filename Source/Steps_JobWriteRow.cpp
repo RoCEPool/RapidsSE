@@ -19,7 +19,7 @@ void Step::vAddSteps_JobWriteRow(void)
 /*----------------------------------------------------------------------------*/
 /* job_WriteRow.parentJobId@ -- fetch parent jobid from job                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteRowParentJobIdFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_WriteRowParentJobIdFetch(Forth* pForth)
 {
   ENTRY("vJob_WriteRowParentJobIdFetch"_Stz);
   
@@ -39,7 +39,7 @@ void Step::vJob_WriteRowParentJobIdFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_writeRow.encodeRow -- hash row to a partition                            */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteRowEncodeRow(MP_Task mpTask, Forth* pForth)
+void Step::vJob_WriteRowEncodeRow(Forth* pForth)
 {
   ENTRY("vJob_WriteRowEncodeRow"_Stz);
   
@@ -88,7 +88,7 @@ void Step::vJob_WriteRowEncodeRow(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_WriteRow.insertRow -- insert row into the table                        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteRowInsertRow(MP_Task mpTask, Forth* pForth)
+void Step::vJob_WriteRowInsertRow(Forth* pForth)
 {
   ENTRY("vJob_WriteRowInsertRow"_Stz);
   
@@ -105,7 +105,7 @@ void Step::vJob_WriteRowInsertRow(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_WriteRow.partition@ -- fetch partition no. from job_WriteRow           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteRowPartitionFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_WriteRowPartitionFetch(Forth* pForth)
 {
   ENTRY("vJob_WriteRowPartitionFetch"_Stz);
   
@@ -123,7 +123,7 @@ void Step::vJob_WriteRowPartitionFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_WriteRow.table! -- store table into job_WriteRow                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteRowTableStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_WriteRowTableStore(Forth* pForth)
 {
   ENTRY("vJob_WriteRowTableStore"_Stz);
   

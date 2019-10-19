@@ -33,7 +33,7 @@ void Step::vAddSteps_Dstack(void)
 /*----------------------------------------------------------------------------*/
 /* >DStack -- pop stack of this task and push onto aux stack of that task     */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackTransfer(MP_Task mpTask, Forth* pForth)
+void Step::vDstackTransfer(Forth* pForth)
 {
   ENTRY("vDstackTransfer"_Stz);
   
@@ -57,7 +57,7 @@ void Step::vDstackTransfer(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* stack.class -- get class of nth value on stack                             */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackClass(MP_Task mpTask, Forth* pForth)
+void Step::vDstackClass(Forth* pForth)
 {
   ENTRY("vDstackClass"_Stz);
   
@@ -79,7 +79,7 @@ void Step::vDstackClass(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* depth -- push depth of parameters stack onto stack                         */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackDepth(MP_Task mpTask, Forth* pForth)
+void Step::vDstackDepth(Forth* pForth)
 {
   ENTRY("vDstackDepth"_Stz);
   
@@ -93,7 +93,7 @@ void Step::vDstackDepth(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* drop -- discard top value off stack                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackDrop(MP_Task mpTask, Forth* pForth)
+void Step::vDstackDrop(Forth* pForth)
 {
   ENTRY("vDstackDrop"_Stz);
   
@@ -109,7 +109,7 @@ void Step::vDstackDrop(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* 2drop -- discard top two values off stack                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackDropTwo(MP_Task mpTask, Forth* pForth)
+void Step::vDstackDropTwo(Forth* pForth)
 {
   ENTRY("vDstackDrop"_Stz);
   
@@ -126,7 +126,7 @@ void Step::vDstackDropTwo(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dup -- dup top of data stack                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackDup(MP_Task mpTask, Forth* pForth)
+void Step::vDstackDup(Forth* pForth)
 {
   ENTRY("vDstackDup"_Stz);
   
@@ -149,7 +149,7 @@ void Step::vDstackDup(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* ?dup -- dup top of data stack  if non zero                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackDupNonZero(MP_Task mpTask, Forth* pForth)
+void Step::vDstackDupNonZero(Forth* pForth)
 {
   ENTRY("vDstackDupNonZero"_Stz);
   
@@ -172,7 +172,7 @@ void Step::vDstackDupNonZero(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* nip -- drop the 2nd value from the stack ( B A -- A )                      */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackNip(MP_Task mpTask, Forth* pForth)
+void Step::vDstackNip(Forth* pForth)
 {
   ENTRY("vDstackNip"_Stz);
   
@@ -190,7 +190,7 @@ void Step::vDstackNip(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* over -- place copy of 2nd value on top stack  ( B A -- B A B )             */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackOver(MP_Task mpTask, Forth* pForth)
+void Step::vDstackOver(Forth* pForth)
 {
   ENTRY("vDstackOver"_Stz);
   
@@ -208,7 +208,7 @@ void Step::vDstackOver(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* pick -- put copy of nth value onto stack ( ... D C B A n -- D C B A N ... )*/
 /*----------------------------------------------------------------------------*/
-void Step::vDstackPick(MP_Task mpTask, Forth* pForth)
+void Step::vDstackPick(Forth* pForth)
 {
   ENTRY("vDstackPick"_Stz);
   
@@ -230,7 +230,7 @@ void Step::vDstackPick(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* reverse -- reverse stack values ( ... D C B A n -- A B C D ... )           */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackReverse(MP_Task mpTask, Forth* pForth)
+void Step::vDstackReverse(Forth* pForth)
 {
   ENTRY("vDstackReverse"_Stz);
   
@@ -264,7 +264,7 @@ void Step::vDstackReverse(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* roll -- roll top stack values at n ( ... D C B A n -- A ... D C B )        */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackRoll(MP_Task mpTask, Forth* pForth)
+void Step::vDstackRoll(Forth* pForth)
 {
   ENTRY("vDstackRoll"_Stz);
   
@@ -300,7 +300,7 @@ void Step::vDstackRoll(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* -roll -- inverse roll top stack values at n ( Z ... B A n -- ... B A Z )   */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackRollInv(MP_Task mpTask, Forth* pForth)
+void Step::vDstackRollInv(Forth* pForth)
 {
   ENTRY("vDstackRollInv"_Stz);
   
@@ -337,7 +337,7 @@ void Step::vDstackRollInv(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* rot -- rotate top 3 values clockwise (rotate C to top) ( C B A -- B A C )  */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackRot(MP_Task mpTask, Forth* pForth)
+void Step::vDstackRot(Forth* pForth)
 {
   ENTRY("vDstackRot"_Stz);
   
@@ -358,7 +358,7 @@ void Step::vDstackRot(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* -rot -- rotate top 3 values anticlockwise (A to bottom) ( C B A -- A C B ) */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackRotInv(MP_Task mpTask, Forth* pForth)
+void Step::vDstackRotInv(Forth* pForth)
 {
   ENTRY("vDstackRotInv"_Stz);
   
@@ -379,7 +379,7 @@ void Step::vDstackRotInv(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* stk -- dump the data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackStk(MP_Task mpTask, Forth* pForth)
+void Step::vDstackStk(Forth* pForth)
 {
   ENTRY("vDstackStk"_Stz);
   
@@ -393,7 +393,7 @@ void Step::vDstackStk(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* swap -- swap top two values on data stack                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackSwap(MP_Task mpTask, Forth* pForth)
+void Step::vDstackSwap(Forth* pForth)
 {
   ENTRY("vDstackSwap"_Stz);
   
@@ -412,7 +412,7 @@ void Step::vDstackSwap(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tuck -- copy the first stack value below second ( B A -- A B A )           */
 /*----------------------------------------------------------------------------*/
-void Step::vDstackTuck(MP_Task mpTask, Forth* pForth)
+void Step::vDstackTuck(Forth* pForth)
 {
   ENTRY("vDstackTuck"_Stz);
   

@@ -45,7 +45,7 @@ void Step::vAddSteps_Table(void)
 /*----------------------------------------------------------------------------*/
 /* table.addIndex -- add index to the table                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTableAddIndex(MP_Task mpTask, Forth* pForth)
+void Step::vTableAddIndex(Forth* pForth)
 {
   ENTRY("vTableAddIndex"_Stz);
   
@@ -72,7 +72,7 @@ void Step::vTableAddIndex(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.analyze -- analyze table                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vTableAnalyze(MP_Task mpTask, Forth* pForth)
+void Step::vTableAnalyze(Forth* pForth)
 {
   ENTRY("vTableAnalyze"_Stz);
   
@@ -100,7 +100,7 @@ void Step::vTableAnalyze(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.isValidIndexColumns -- validate index columns from job_createIndex  */
 /*----------------------------------------------------------------------------*/
-void Step::vTableIsValidIndexColumns(MP_Task mpTask, Forth* pForth)
+void Step::vTableIsValidIndexColumns(Forth* pForth)
 {
   ENTRY("vTableIsValidIndexColumns"_Stz);
   
@@ -124,7 +124,7 @@ void Step::vTableIsValidIndexColumns(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.lazyBuildIndexes -- lazy build of indexes (from lazy chains)         */
 /*----------------------------------------------------------------------------*/
-void Step::vTableLazyBuildIndexes(MP_Task mpTask, Forth* pForth)
+void Step::vTableLazyBuildIndexes(Forth* pForth)
 {
   ENTRY("vTableLazyBuildIndexes"_Stz);
   i8 iSlot;
@@ -150,7 +150,7 @@ void Step::vTableLazyBuildIndexes(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.isLoading! -- store lable is loading                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTableIsLoadingStore(MP_Task mpTask, Forth* pForth)
+void Step::vTableIsLoadingStore(Forth* pForth)
 {
   ENTRY("vTableIsLoadingStore"_Stz);
   
@@ -174,7 +174,7 @@ void Step::vTableIsLoadingStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.column@ -- get the column from the table                             */
 /*----------------------------------------------------------------------------*/
-void Step::vTableColumnFetch(MP_Task mpTask, Forth* pForth)
+void Step::vTableColumnFetch(Forth* pForth)
 {
   ENTRY("vTableColumnFetch"_Stz);
   
@@ -198,7 +198,7 @@ void Step::vTableColumnFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.columnCount@ -- get column count                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTableColumnCountFetch(MP_Task mpTask, Forth* pForth)
+void Step::vTableColumnCountFetch(Forth* pForth)
 {
   ENTRY("vTableColumnCountFetch"_Stz);
   
@@ -219,7 +219,7 @@ void Step::vTableColumnCountFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.createColumnVec -- create column vector from job_createTable     */
 /*----------------------------------------------------------------------------*/
-void Step::vTableCreateColumnVec(MP_Task mpTask, Forth* pForth)
+void Step::vTableCreateColumnVec(Forth* pForth)
 {
   ENTRY("vTableCreateColumnVec"_Stz);
   
@@ -243,7 +243,7 @@ void Step::vTableCreateColumnVec(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.drop -- drop of table on data stack                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vTableDrop(MP_Task mpTask, Forth* pForth)
+void Step::vTableDrop(Forth* pForth)
 {
 ENTRY("vTableDrop"_Stz);
   
@@ -260,7 +260,7 @@ ENTRY("vTableDrop"_Stz);
 /*----------------------------------------------------------------------------*/
 /* table.dump                                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTableDump(MP_Task mpTask, Forth* pForth)
+void Step::vTableDump(Forth* pForth)
 {
 ENTRY("vTableDump"_Stz);
   
@@ -285,7 +285,7 @@ ENTRY("vTableDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* table.genData -- generate data for table                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTableGenData(MP_Task mpTask, Forth* pForth)
+void Step::vTableGenData(Forth* pForth)
 {
   ENTRY("vTableGenData"_Stz);
 
@@ -295,7 +295,7 @@ void Step::vTableGenData(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.getColumnsAsString -- get columns as a csv string                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTableGetColumnsAsString(MP_Task mpTask, Forth* pForth)
+void Step::vTableGetColumnsAsString(Forth* pForth)
 {
   ENTRY("vTableGetColumnsAsString"_Stz);
   
@@ -331,7 +331,7 @@ void Step::vTableGetColumnsAsString(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.getPtn -- get table partition given slot no                          */
 /*----------------------------------------------------------------------------*/
-void Step::vTableGetPtn(MP_Task mpTask, Forth* pForth)
+void Step::vTableGetPtn(Forth* pForth)
 {
   ENTRY("vTableGetPtn"_Stz);
   
@@ -356,7 +356,7 @@ void Step::vTableGetPtn(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.inflateScan -- scan the table for inflation                          */
 /*----------------------------------------------------------------------------*/
-void Step::vTableInflateScan(MP_Task mpTask, Forth* pForth)
+void Step::vTableInflateScan(Forth* pForth)
 {
   ENTRY("vTableInflateScan"_Stz);
   
@@ -423,7 +423,7 @@ void Step::vTableInflateScan(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.indexCount -- get the no of indexes in the table                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTableIndexCount(MP_Task mpTask, Forth* pForth)
+void Step::vTableIndexCount(Forth* pForth)
 {
   ENTRY("vTableIndexCount"_Stz);
   
@@ -442,7 +442,7 @@ void Step::vTableIndexCount(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.init -- init of table on data stack                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vTableInit(MP_Task mpTask, Forth* pForth)
+void Step::vTableInit(Forth* pForth)
 {
 ENTRY("vTableInit"_Stz);
   
@@ -461,7 +461,7 @@ ENTRY("vTableInit"_Stz);
 /*----------------------------------------------------------------------------*/
 /* table.findColumn -- find the column from the table ?                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTableFindColumn(MP_Task mpTask, Forth* pForth)
+void Step::vTableFindColumn(Forth* pForth)
 {
   ENTRY("vTableFindColumn"_Stz);
   
@@ -501,7 +501,7 @@ void Step::vTableFindColumn(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.isColumn -- is the column a valid column of the table ?              */
 /*----------------------------------------------------------------------------*/
-void Step::vTableIsColumn(MP_Task mpTask, Forth* pForth)
+void Step::vTableIsColumn(Forth* pForth)
 {
   ENTRY("vTableInit"_Stz);
   
@@ -540,7 +540,7 @@ void Step::vTableIsColumn(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.name -- get table name                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vTableName(MP_Task mpTask, Forth* pForth)
+void Step::vTableName(Forth* pForth)
 {
   ENTRY("vTableName"_Stz);
   
@@ -563,7 +563,7 @@ void Step::vTableName(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.publish -- purge rows/buffers in table on data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePublish(MP_Task mpTask, Forth* pForth)
+void Step::vTablePublish(Forth* pForth)
 {
   ENTRY("vTablePublish"_Stz);
   
@@ -587,7 +587,7 @@ void Step::vTablePublish(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.purge -- purge rows/buffers in table on data stack                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePurge(MP_Task mpTask, Forth* pForth)
+void Step::vTablePurge(Forth* pForth)
 {
   ENTRY("vTablePurge"_Stz);
   
@@ -613,7 +613,7 @@ void Step::vTablePurge(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.removeIndex -- remove an index from the table                        */
 /*----------------------------------------------------------------------------*/
-void Step::vTableRemoveIndex(MP_Task mpTask, Forth* pForth)
+void Step::vTableRemoveIndex(Forth* pForth)
 {
   ENTRY("vTableRef"_Stz);
   
@@ -638,7 +638,7 @@ void Step::vTableRemoveIndex(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.scan -- scan the table                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vTableScan(MP_Task mpTask, Forth* pForth)
+void Step::vTableScan(Forth* pForth)
 {
   ENTRY("vTableScan"_Stz);
   
@@ -740,7 +740,7 @@ void Step::vTableScan(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.showColumnVec -- show column vector                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vTableShowColumnVec(MP_Task mpTask, Forth* pForth)
+void Step::vTableShowColumnVec(Forth* pForth)
 {
   ENTRY("vTableShowColumnVec"_Stz);
   
@@ -758,7 +758,7 @@ void Step::vTableShowColumnVec(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.subDic -- get table sub dictionary                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTableSubDic(MP_Task mpTask, Forth* pForth)
+void Step::vTableSubDic(Forth* pForth)
 {
   ENTRY("vTableSubDic"_Stz);
   
@@ -779,7 +779,7 @@ void Step::vTableSubDic(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.subLoaders -- set table sub loaders                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vTableSubLoaders(MP_Task mpTask, Forth* pForth)
+void Step::vTableSubLoaders(Forth* pForth)
 {
   ENTRY("vTableSubDic"_Stz);
   
@@ -802,7 +802,7 @@ void Step::vTableSubLoaders(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.slots -- push the slots of table on data stack                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTableSlots(MP_Task mpTask, Forth* pForth)
+void Step::vTableSlots(Forth* pForth)
 {
   ENTRY("vTableSlots"_Stz);
   
@@ -821,7 +821,7 @@ void Step::vTableSlots(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.space -- push space used by table                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTableSpace(MP_Task mpTask, Forth* pForth)
+void Step::vTableSpace(Forth* pForth)
 {
   ENTRY("vTableSpace"_Stz);
   
@@ -842,7 +842,7 @@ void Step::vTableSpace(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.truncate -- release all rows/buffers in table on data stack          */
 /*----------------------------------------------------------------------------*/
-void Step::vTableTruncate(MP_Task mpTask, Forth* pForth)
+void Step::vTableTruncate(Forth* pForth)
 {
   ENTRY("vTableTruncate"_Stz);
   
@@ -866,7 +866,7 @@ void Step::vTableTruncate(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.verify -- verify the table                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vTableVerify(MP_Task mpTask, Forth* pForth)
+void Step::vTableVerify(Forth* pForth)
 {
   ENTRY("vTableVerify"_Stz);
   
@@ -889,7 +889,7 @@ void Step::vTableVerify(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* table.visualize -- visualize the table                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTableVisualize(MP_Task mpTask, Forth* pForth)
+void Step::vTableVisualize(Forth* pForth)
 {
   ENTRY("vTableVisualize"_Stz);
   

@@ -17,7 +17,7 @@ void Step::vAddSteps_JobKidExport(void)
 /*----------------------------------------------------------------------------*/
 /* job_kidExport.exportJobId -- get the job id of the original export job     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_KidExportExportJobId(MP_Task mpTask, Forth* pForth)
+void Step::vJob_KidExportExportJobId(Forth* pForth)
 {
   ENTRY("vJob_KidExportExportJobId"_Stz);
   
@@ -34,7 +34,7 @@ void Step::vJob_KidExportExportJobId(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_kidExport.exportOrigin -- get the node no where export began           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_KidExportExportOrigin(MP_Task mpTask, Forth* pForth)
+void Step::vJob_KidExportExportOrigin(Forth* pForth)
 {
   ENTRY("vJob_KidExportExportOrigin"_Stz);
   
@@ -53,7 +53,7 @@ void Step::vJob_KidExportExportOrigin(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_kidExport.writeExportBuffer -- write buffer to export file             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_KidExportWriteExportBuffer(MP_Task mpTask, Forth* pForth)
+void Step::vJob_KidExportWriteExportBuffer(Forth* pForth)
 {
   ENTRY("vJob_KidExportWriteExportBuffer"_Stz);
   

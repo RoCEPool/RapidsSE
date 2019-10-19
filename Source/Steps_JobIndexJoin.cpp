@@ -25,7 +25,7 @@ void Step::vAddSteps_JobIndexJoin(void)
 /*----------------------------------------------------------------------------*/
 /* Job_IndexJoin.lastBuffers! -- set no of expected last buffers              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_IndexJoinLastBuffersStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_IndexJoinLastBuffersStore(Forth* pForth)
 {
   ENTRY("vJob_IndexJoinLastBuffersStore"_Stz);
   
@@ -46,7 +46,7 @@ void Step::vJob_IndexJoinLastBuffersStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_IndexJoin.leftIndex! -- set the left index                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_IndexJoinLeftIndexStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_IndexJoinLeftIndexStore(Forth* pForth)
 {
   ENTRY("vJob_IndexJoinLeftIndexStore"_Stz);
   
@@ -68,7 +68,7 @@ void Step::vJob_IndexJoinLeftIndexStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_IndexJoin.leftTable! -- store left table in the job                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_IndexJoinLeftTableStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_IndexJoinLeftTableStore(Forth* pForth)
 {
   ENTRY("vJob_IndexJoinLeftTableStore"_Stz);
   
@@ -90,7 +90,7 @@ void Step::vJob_IndexJoinLeftTableStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_IndexJoin.rightIndex! -- set the right index                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_IndexJoinRightIndexStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_IndexJoinRightIndexStore(Forth* pForth)
 {
   ENTRY("vJob_IndexJoinRightIndexStore"_Stz);
   
@@ -112,7 +112,7 @@ void Step::vJob_IndexJoinRightIndexStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_IndexJoin.rightIndexName@ -- get the right index name                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_IndexJoinRightIndexNameFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_IndexJoinRightIndexNameFetch(Forth* pForth)
 {
   ENTRY("vJob_IndexJoinRightIndexNameFetch"_Stz);
   
@@ -129,7 +129,7 @@ void Step::vJob_IndexJoinRightIndexNameFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_IndexJoin.rightTable! -- store right table in the job                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_IndexJoinRightTableStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_IndexJoinRightTableStore(Forth* pForth)
 {
   ENTRY("vJob_IndexJoinRightTableStore"_Stz);
   
@@ -151,7 +151,7 @@ void Step::vJob_IndexJoinRightTableStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_IndexJoin.rightTableName@ -- get the right table name                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_IndexJoinRightTableNameFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_IndexJoinRightTableNameFetch(Forth* pForth)
 {
   ENTRY("vJob_IndexJoinRightTableNameFetch"_Stz);
   
@@ -168,7 +168,7 @@ void Step::vJob_IndexJoinRightTableNameFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_IndexJoin.spawnSub -- spawn sub fetch job                              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_IndexJoinSpawnSub(MP_Task mpTask, Forth* pForth)
+void Step::vJob_IndexJoinSpawnSub(Forth* pForth)
 {
   ENTRY("vJob_IndexJoinSpawnSub"_Stz);
   
@@ -208,7 +208,7 @@ void Step::vJob_IndexJoinSpawnSub(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_SubIndexJoin.indexJoin -- execute the index join                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubIndexJoinIndexJoin(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubIndexJoinIndexJoin(Forth* pForth)
 {
   ENTRY("vJob_SubIndexJoinIndexJoin"_Stz);
   

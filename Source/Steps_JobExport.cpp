@@ -19,7 +19,7 @@ void Step::vAddSteps_JobExport(void)
 /*----------------------------------------------------------------------------*/
 /* Job_export.auxAckDecided@ -- fetch if aux ack decided                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ExportAuxAckDecidedFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_ExportAuxAckDecidedFetch(Forth* pForth)
 {
   ENTRY("vJob_ExportAuxAckDecidedFetch"_Stz);
   
@@ -36,7 +36,7 @@ void Step::vJob_ExportAuxAckDecidedFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_export.auxAckDecided! -- store if aux ack decided                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ExportAuxAckDecidedStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_ExportAuxAckDecidedStore(Forth* pForth)
 {
   ENTRY("vJob_ExportAuxAckDecidedStore"_Stz);
   
@@ -57,7 +57,7 @@ void Step::vJob_ExportAuxAckDecidedStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_export.begin -- begin export                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ExportBegin(MP_Task mpTask, Forth* pForth)
+void Step::vJob_ExportBegin(Forth* pForth)
 {
   ENTRY("vJob_ExportBegin"_Stz);
   
@@ -76,7 +76,7 @@ void Step::vJob_ExportBegin(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_export.end -- end export                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ExportEnd(MP_Task mpTask, Forth* pForth)
+void Step::vJob_ExportEnd(Forth* pForth)
 {
   ENTRY("vJob_ExportEnd"_Stz);
   
@@ -93,7 +93,7 @@ void Step::vJob_ExportEnd(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_export.table! -- store table in the job                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ExportTableStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_ExportTableStore(Forth* pForth)
 {
   ENTRY("vJob_ExportTableStore"_Stz);
   

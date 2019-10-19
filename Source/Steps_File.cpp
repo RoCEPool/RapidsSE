@@ -22,7 +22,7 @@ void Step::vAddSteps_File(void)
 /*----------------------------------------------------------------------------*/
 /* file.close -- close a file ( file -- )                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vFileClose(MP_Task mpTask, Forth* pForth)
+void Step::vFileClose(Forth* pForth)
 {
 ENTRY("vFileClose"_Stz);
   
@@ -41,7 +41,7 @@ ENTRY("vFileClose"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.delete -- delete a file ( file -- )                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vFileDelete(MP_Task mpTask, Forth* pForth)
+void Step::vFileDelete(Forth* pForth)
 {
 ENTRY("vFileDelete"_Stz);
   
@@ -60,7 +60,7 @@ ENTRY("vFileDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file::new -- new a file ( -- file )                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vFileNew(MP_Task mpTask, Forth* pForth)
+void Step::vFileNew(Forth* pForth)
 {
 ENTRY("vFileNew"_Stz);
   
@@ -77,7 +77,7 @@ ENTRY("vFileNew"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.open -- open a file ( mode file -- bool )                             */
 /*----------------------------------------------------------------------------*/
-void Step::vFileOpen(MP_Task mpTask, Forth* pForth)
+void Step::vFileOpen(Forth* pForth)
 {
 ENTRY("vFileOpen"_Stz);
   
@@ -105,7 +105,7 @@ ENTRY("vFileOpen"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.path@ -- get file path ( file -- "<path>" )                           */
 /*----------------------------------------------------------------------------*/
-void Step::vFilePathGet(MP_Task mpTask, Forth* pForth)
+void Step::vFilePathGet(Forth* pForth)
 {
 ENTRY("vFilePathGet"_Stz);
   
@@ -126,7 +126,7 @@ ENTRY("vFilePathGet"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.read -- read line from a file ( file -- "<line>" 1 | 0 )              */
 /*----------------------------------------------------------------------------*/
-void Step::vFileRead(MP_Task mpTask, Forth* pForth)
+void Step::vFileRead(Forth* pForth)
 {
   ENTRY("vFileRead"_Stz);
   
@@ -155,7 +155,7 @@ void Step::vFileRead(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* file.write -- write to a file ( "<line>" file -- )                         */
 /*----------------------------------------------------------------------------*/
-void Step::vFileWrite(MP_Task mpTask, Forth* pForth)
+void Step::vFileWrite(Forth* pForth)
 {
 ENTRY("vFileWrite"_Stz);
   

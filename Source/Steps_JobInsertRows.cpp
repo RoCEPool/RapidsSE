@@ -25,7 +25,7 @@ void Step::vAddSteps_JobInsertRows(void)
 /*----------------------------------------------------------------------------*/
 /* job_copyBuffer.copy -- copy the record buffer into entryBuffer             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_CopyBufferCopy(MP_Task mpTask, Forth* pForth)
+void Step::vJob_CopyBufferCopy(Forth* pForth)
 {
   ENTRY("vJob_CopyBufferCopy"_Stz);
   
@@ -42,7 +42,7 @@ void Step::vJob_CopyBufferCopy(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_InsertRow.newJobWriteRow -- new the writeRow job                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_InsertRowNewJobWriteRow(MP_Task mpTask, Forth* pForth)
+void Step::vJob_InsertRowNewJobWriteRow(Forth* pForth)
 {
   ENTRY("vJob_InsertRowNewJobWriteRow"_Stz);
   
@@ -77,7 +77,7 @@ void Step::vJob_InsertRowNewJobWriteRow(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_InsertRow.partition@ -- fetch partition id from job                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_InsertRowPartitionFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_InsertRowPartitionFetch(Forth* pForth)
 {
   ENTRY("vJob_InsertRowPartitionFetch"_Stz);
   
@@ -94,7 +94,7 @@ void Step::vJob_InsertRowPartitionFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_InsertRow.record! -- store the record in the job                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_InsertRowRecordStore(MP_Task mpTask, Forth* pForth)
+void Step::vJob_InsertRowRecordStore(Forth* pForth)
 {
   ENTRY("vJob_InsertRowRecordNull"_Stz);
   
@@ -116,7 +116,7 @@ void Step::vJob_InsertRowRecordStore(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_InsertRow.spawnWriteRow -- spawn a writeRow job                        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_InsertRowSpawnJobWriteRow(MP_Task mpTask, Forth* pForth)
+void Step::vJob_InsertRowSpawnJobWriteRow(Forth* pForth)
 {
   ENTRY("vJob_WriteRowSpawnJobWriteRow"_Stz);
   
@@ -139,7 +139,7 @@ void Step::vJob_InsertRowSpawnJobWriteRow(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_InsertTable.SubInserterJob@ -- fetch subInserter jobid from job        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_InsertTableSubInserterJobFetch(MP_Task mpTask, Forth* pForth)
+void Step::vJob_InsertTableSubInserterJobFetch(Forth* pForth)
 {
   ENTRY("vJob_InsertTableSubInserterJobFetch"_Stz);
   
@@ -156,7 +156,7 @@ void Step::vJob_InsertTableSubInserterJobFetch(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_SubInserter.begin -- begin subInserter                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubInserterBegin(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubInserterBegin(Forth* pForth)
 {
   ENTRY("vJob_SubInserterBegin"_Stz);
   
@@ -178,7 +178,7 @@ void Step::vJob_SubInserterBegin(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_SubInsert.end -- spawn last write buffers ~each partition              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubInserterEnd(MP_Task mpTask, Forth* pForth)
+void Step::vJob_SubInserterEnd(Forth* pForth)
 {
   ENTRY("vJob_SubInserterEnd"_Stz);
   

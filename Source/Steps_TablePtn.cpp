@@ -21,7 +21,7 @@ void Step::vAddSteps_TablePartition(void)
 /*----------------------------------------------------------------------------*/
 /* tablePtn.attemptGrabRead -- attempt to grabp read lock on table partition  */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePtnAttemptGrabRead(MP_Task mpTask, Forth* pForth)
+void Step::vTablePtnAttemptGrabRead(Forth* pForth)
 {
   ENTRY("vTablePtnAttemptGrabRead"_Stz);
   
@@ -41,7 +41,7 @@ void Step::vTablePtnAttemptGrabRead(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tablePtn.attemptGrabWrite -- attempt to grab write lock on table partition */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePtnAttemptGrabWrite(MP_Task mpTask, Forth* pForth)
+void Step::vTablePtnAttemptGrabWrite(Forth* pForth)
 {
   ENTRY("vTablePtnAttemptGrabWrite"_Stz);
   
@@ -61,7 +61,7 @@ void Step::vTablePtnAttemptGrabWrite(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tablePtn.dropRead -- drop a read lock on the partition of a table          */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePtnDropRead(MP_Task mpTask, Forth* pForth)
+void Step::vTablePtnDropRead(Forth* pForth)
 {
   ENTRY("vTablePtnDropRead"_Stz);
   
@@ -79,7 +79,7 @@ void Step::vTablePtnDropRead(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tablePtn.dump -- dump partition id                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePtnDump(MP_Task mpTask, Forth* pForth)
+void Step::vTablePtnDump(Forth* pForth)
 {
   ENTRY("vTablePtnDump"_Stz);
   
@@ -96,7 +96,7 @@ void Step::vTablePtnDump(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tablePtn.dropWrite -- drop a write lock on the partition of a table        */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePtnDropWrite(MP_Task mpTask, Forth* pForth)
+void Step::vTablePtnDropWrite(Forth* pForth)
 {
   ENTRY("vTablePtnDropWrite"_Stz);
   
@@ -114,7 +114,7 @@ void Step::vTablePtnDropWrite(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tablePtn.isLocked -- test if a table partition is locked                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePtnIsLocked(MP_Task mpTask, Forth* pForth)
+void Step::vTablePtnIsLocked(Forth* pForth)
 {
   ENTRY("vTablePtnIsLocked"_Stz);
   

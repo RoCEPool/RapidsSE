@@ -22,7 +22,7 @@
 
   "#include \"StorageEngine.h\"\n" pCppFile file.write
   "\n" pCppFile file.write
-  "void Task::vAddMunged(MP_Task mpTask, Forth* pForth)\n" pCppFile file.write
+  "void Task::vAddMunged(Forth* pForth)\n" pCppFile file.write
   "{\n" pCppFile file.write
   "  s48K sFileContents;\n" pCppFile file.write
 ;

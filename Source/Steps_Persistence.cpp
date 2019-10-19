@@ -16,7 +16,7 @@ void Step::vAddSteps_Persistence(void)
 /*----------------------------------------------------------------------------*/
 /* persistence::checkpoint -- take a checkpoint                               */
 /*----------------------------------------------------------------------------*/
-void Step::vPersistenceCheckpoint(MP_Task mpTask, Forth* pForth)
+void Step::vPersistenceCheckpoint(Forth* pForth)
 {
   ENTRY("vPersistenceCheckpoint"_Stz);
   
@@ -38,7 +38,7 @@ void Step::vPersistenceCheckpoint(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* persistence::reload -- reload                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vPersistenceReload(MP_Task mpTask, Forth* pForth)
+void Step::vPersistenceReload(Forth* pForth)
 {
   ENTRY("vPersistenceReload"_Stz);
   

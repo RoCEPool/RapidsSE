@@ -40,7 +40,7 @@ void Step::vAddSteps_Forth(void)
 /*----------------------------------------------------------------------------*/
 /* allot -- reserve n bytes in word being compiled                            */
 /*----------------------------------------------------------------------------*/
-void Step::vAllot(MP_Task mpTask, Forth* pForth)
+void Step::vAllot(Forth* pForth)
 {
   ENTRY("vAllot"_Stz);
   
@@ -62,7 +62,7 @@ void Step::vAllot(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* cell -- push size of a cell                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vCell(MP_Task mpTask, Forth* pForth)
+void Step::vCell(Forth* pForth)
 {
   ENTRY("vCell"_Stz);
   
@@ -76,7 +76,7 @@ void Step::vCell(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* : (aka colon) -- create word named by next token, enter compiling state    */
 /*----------------------------------------------------------------------------*/
-void Step::vColon(MP_Task mpTask, Forth* pForth)
+void Step::vColon(Forth* pForth)
 {
   ENTRY("vColon"_Stz);
   
@@ -106,7 +106,7 @@ void Step::vColon(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* comma -- encode push of value on stack into word being compiled            */
 /*----------------------------------------------------------------------------*/
-void Step::vComma(MP_Task mpTask, Forth* pForth)
+void Step::vComma(Forth* pForth)
 {
   ENTRY("vComma"_Stz);
   
@@ -124,7 +124,7 @@ void Step::vComma(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* compile, -- encode call to word on stack into word being compiled          */
 /*----------------------------------------------------------------------------*/
-void Step::vCompileComma(MP_Task mpTask, Forth* pForth)
+void Step::vCompileComma(Forth* pForth)
 {
   ENTRY("vCompileComma"_Stz);
   
@@ -145,7 +145,7 @@ void Step::vCompileComma(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* create -- create word named by next token, becomes word being compiled     */
 /*----------------------------------------------------------------------------*/
-void Step::vCreate(MP_Task mpTask, Forth* pForth)
+void Step::vCreate(Forth* pForth)
 {
   ENTRY("vCreate"_Stz);
   
@@ -170,7 +170,7 @@ void Step::vCreate(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* createPersistent -- create word in dictionary (persistent heap)            */
 /*----------------------------------------------------------------------------*/
-void Step::vCreatePersistent(MP_Task mpTask, Forth* pForth)
+void Step::vCreatePersistent(Forth* pForth)
 {
   ENTRY("vCreate"_Stz);
   
@@ -194,7 +194,7 @@ void Step::vCreatePersistent(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >create -- create word in dictionary using string on stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vCreateFrom(MP_Task mpTask, Forth* pForth)
+void Step::vCreateFrom(Forth* pForth)
 {
   ENTRY("vCreateFrom"_Stz);
   
@@ -222,7 +222,7 @@ void Step::vCreateFrom(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >createPersistent -- create word in dic using string on stack (persistent) */
 /*----------------------------------------------------------------------------*/
-void Step::vCreateFromPersistent(MP_Task mpTask, Forth* pForth)
+void Step::vCreateFromPersistent(Forth* pForth)
 {
   ENTRY("vCreateFrom"_Stz);
   
@@ -247,7 +247,7 @@ void Step::vCreateFromPersistent(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >createInRoot -- create word in root dictionary using string on stack      */
 /*----------------------------------------------------------------------------*/
-void Step::vCreateFromInRoot(MP_Task mpTask, Forth* pForth)
+void Step::vCreateFromInRoot(Forth* pForth)
 {
   ENTRY("vCreateFromInRoot"_Stz);
   
@@ -268,7 +268,7 @@ void Step::vCreateFromInRoot(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* createTenants -- create tenant word in dictionary                          */
 /*----------------------------------------------------------------------------*/
-void Step::vCreateTenants(MP_Task mpTask, Forth* pForth)
+void Step::vCreateTenants(Forth* pForth)
 {
   ENTRY("vCreateTenants"_Stz);
   
@@ -288,7 +288,7 @@ void Step::vCreateTenants(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* does> -- routine does                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vDoes(MP_Task mpTask, Forth* pForth)
+void Step::vDoes(Forth* pForth)
 {
   ENTRY("vDoes"_Stz);
   
@@ -305,7 +305,7 @@ void Step::vDoes(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* does_rt -- runtime for does>                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vDoes_RT(MP_Task mpTask, Forth* pForth)
+void Step::vDoes_RT(Forth* pForth)
 {
   ENTRY("vDoes_RT"_Stz);
   
@@ -320,7 +320,7 @@ void Step::vDoes_RT(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* exit_rt -- runtime for exit from routine                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vExit_RT(MP_Task mpTask, Forth* pForth)
+void Step::vExit_RT(Forth* pForth)
 {
   ENTRY("vExit_RT"_Stz);
   
@@ -346,7 +346,7 @@ void Step::vExit_RT(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* find -- find and push word named on stack                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vFind(MP_Task mpTask, Forth* pForth)
+void Step::vFind(Forth* pForth)
 {
   ENTRY("vFind"_Stz);
   
@@ -368,7 +368,7 @@ void Step::vFind(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* findInCurrent -- find and push word named on stack withinin curr dic       */
 /*----------------------------------------------------------------------------*/
-void Step::vFindInCurrent(MP_Task mpTask, Forth* pForth)
+void Step::vFindInCurrent(Forth* pForth)
 {
   ENTRY("vFindInCurrent"_Stz);
   
@@ -390,7 +390,7 @@ void Step::vFindInCurrent(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* forget -- forget the word named by next token                              */
 /*----------------------------------------------------------------------------*/
-void Step::vForget(MP_Task mpTask, Forth* pForth)
+void Step::vForget(Forth* pForth)
 {
   ENTRY("vForget"_Stz);
   
@@ -418,7 +418,7 @@ void Step::vForget(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* immediate -- make the word being compiled an immediate word                */
 /*----------------------------------------------------------------------------*/
-void Step::vImmediate(MP_Task mpTask, Forth* pForth)
+void Step::vImmediate(Forth* pForth)
 {
   ENTRY("vImmediate"_Stz);
   
@@ -434,7 +434,7 @@ void Step::vImmediate(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* locate -- locate and push word name based on the ip which is on the stack  */
 /*----------------------------------------------------------------------------*/
-void Step::vLocate(MP_Task mpTask, Forth* pForth)
+void Step::vLocate(Forth* pForth)
 {
   ENTRY("vLocate"_Stz);
   
@@ -463,7 +463,7 @@ void Step::vLocate(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* postpone -- encode call to word named by next token into word being compiled  */
 /*----------------------------------------------------------------------------*/
-void Step::vPostpone(MP_Task mpTask, Forth* pForth)
+void Step::vPostpone(Forth* pForth)
 {
   ENTRY("vPostpone"_Stz);
   
@@ -504,7 +504,7 @@ void Step::vPostpone(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* prompt -- make the word being compiled directly runnable by prompt         */
 /*----------------------------------------------------------------------------*/
-void Step::vPrompt(MP_Task mpTask, Forth* pForth)
+void Step::vPrompt(Forth* pForth)
 {
   ENTRY("vImmediate"_Stz);
   
@@ -518,7 +518,7 @@ void Step::vPrompt(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* see -- dump routine of word named by next token                            */
 /*----------------------------------------------------------------------------*/
-void Step::vSee(MP_Task mpTask, Forth* pForth)
+void Step::vSee(Forth* pForth)
 {
   ENTRY("vSee"_Stz);
   
@@ -607,7 +607,7 @@ void Step::vSee(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* ; -- end compilation of current word, enter interpreter state              */
 /*----------------------------------------------------------------------------*/
-void Step::vSemicolon(MP_Task mpTask, Forth* pForth)
+void Step::vSemicolon(Forth* pForth)
 {
   ENTRY("vSemicolon"_Stz);
   
@@ -652,7 +652,7 @@ void Step::vSemicolon(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* series-name -- generate next name within series for word named on stack    */
 /*----------------------------------------------------------------------------*/
-void Step::vSeriesName(Tasks::MP_Task mpTask, Forth* pForth)
+void Step::vSeriesName(Forth* pForth)
 {
   ENTRY("vSeriesName"_Stz);
   
@@ -697,7 +697,7 @@ void Step::vSeriesName(Tasks::MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* subDic -- push sub dictionary                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vSubDic(MP_Task mpTask, Forth* pForth)
+void Step::vSubDic(Forth* pForth)
 {
   ENTRY("vSubDic"_Stz);
   
@@ -724,7 +724,7 @@ void Step::vSubDic(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tick -- find and push word named by next token                             */
 /*----------------------------------------------------------------------------*/
-void Step::vTick(MP_Task mpTask, Forth* pForth)
+void Step::vTick(Forth* pForth)
 {
   ENTRY("vTick"_Stz);
   
