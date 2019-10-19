@@ -37,15 +37,6 @@
       Correctness::vAssertType(pARG,eCLASS); \
     } \
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  #define RASSERT_WARN(condition) \
-  { \
-    if ( !(condition) ) { \
-      printf("RASSERT_WARN in %s at %d\n",__FILE__,__LINE__); \
-      Correctness::vAssertWarn(); \
-    } \
-  }
         
 
 /*============================================================================*/
