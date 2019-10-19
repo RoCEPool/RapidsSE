@@ -16,7 +16,7 @@ void Process::vEntry(void)
 /*----------------------------------------------------------------------------*/
 /* process exit                                                               */
 /*----------------------------------------------------------------------------*/
-__attribute__((noreturn)) void Process::vExit(i8 iExitStatus)
+[[ noreturn ]] void Process::vExit(i8 iExitStatus)
 {
   fprintf(stderr,"Calling exit(%lld)\n",iExitStatus);
   
@@ -26,7 +26,7 @@ __attribute__((noreturn)) void Process::vExit(i8 iExitStatus)
 /*----------------------------------------------------------------------------*/
 /* process exit failure                                                       */
 /*----------------------------------------------------------------------------*/
-__attribute__((noreturn)) void Process::vExitFailure(void)
+[[ noreturn ]] void Process::vExitFailure(void)
 {
   fprintf(stderr,"Calling exit(%lld)\n",(u8)EXIT_FAILURE);
   
@@ -36,7 +36,7 @@ __attribute__((noreturn)) void Process::vExitFailure(void)
 /*----------------------------------------------------------------------------*/
 /* process exit success                                                       */
 /*----------------------------------------------------------------------------*/
-__attribute__((noreturn)) void Process::vExitSuccess(void)
+[[ noreturn ]] void Process::vExitSuccess(void)
 {
   fprintf(stderr,"Calling exit(%lld)\n",(i8)EXIT_SUCCESS);
   
