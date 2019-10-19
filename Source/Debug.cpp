@@ -144,30 +144,6 @@ void Correctness::vThrowTrap(void)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-/*----------------------------------------------------------------------------*/
-/* handle an assertion failure                                                */
-/*----------------------------------------------------------------------------*/
-void Correctness::vExceptionCaught(Exception xException)
-{
-  // put a breakpoint here to trap throws
-  sleep(0);
-  
-  xException.vPrint();
-//  printf("Exception : %s of (%s) in job %s caught (file %s line %lld)\n",
-//         aFK[xException.eKind()]->azChar(),
-//         xException.azText(),
-//         xException.pJob()
-//           ? aCN[((Object*)xException.pJob())->eClass()]->azChar()
-//           : "<null>",
-//         xException.azFileNm(),
-//         xException.iLineNo());
-  
-  // dump the call stack
-  vStackDump();
-
-  Correctness::vAssertTrap();
-}
-
 
 
 /*----------------------------------------------------------------------------*/

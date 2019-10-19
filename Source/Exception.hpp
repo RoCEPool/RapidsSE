@@ -35,6 +35,8 @@ namespace Correctness
   
     void  vPrint(void);
     void  vSprint(char* azText);
+  
+    void  vCaught(void);
   };
 }
 

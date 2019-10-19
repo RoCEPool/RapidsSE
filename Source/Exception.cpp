@@ -144,6 +144,24 @@ void Exception::vSprint(char* azIntoBuf)
                   );
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* handle an assertion failure                                                */
+/*----------------------------------------------------------------------------*/
+void Exception::vCaught(void)
+{
+  // put a breakpoint here to trap throws
+  sleep(0);
+  
+  vPrint();
+  
+  // dump the call stack
+  vStackDump();
+  
+  Correctness::vAssertTrap();
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

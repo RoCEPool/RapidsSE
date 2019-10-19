@@ -18,12 +18,10 @@ namespace Correctness
   void vDebugTrap(void);
   void vStackDump(void);
   void vThrowTrap(void);
-  
-  void vExceptionCaught(Exception xException);
-  
+    
 
   // refer: https://en.cppreference.com/w/cpp/language/attributes/noreturn
-    
+  
   [[ noreturn ]] void vThrow(eFK eKind, const char* azFunc,
                              const char* azFilePath, i8 iLineNo);
   
