@@ -7,27 +7,6 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* abort the process                                                          */
-/*----------------------------------------------------------------------------*/
-void Correctness::vAbortProcess(void)
-{
-  // dump the call stack
-  vStackDump();
-  
-  // write activity log
-  AM::vWriteLog();
-  
-  // dump api state
-  AM::vDumpApi();
-  
-  // put a breakpoint here
-  sleep(0);
-  
-  // generate a core
-  abort();
-}
-
-/*----------------------------------------------------------------------------*/
 /* debug point                                                                */
 /*----------------------------------------------------------------------------*/
 void Correctness::vDebugPoint(void)
@@ -48,10 +27,34 @@ void Correctness::vStackDump(void)
   backtrace_symbols_fd(aaFramePtr,nPtrs,STDERR_FILENO);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+
+/*----------------------------------------------------------------------------*/
+/* abort the process                                                          */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void Correctness::vAbortProcess(void)
+{
+  // dump the call stack
+  vStackDump();
+  
+  // write activity log
+  AM::vWriteLog();
+  
+  // dump api state
+  AM::vDumpApi();
+  
+  // put a breakpoint here
+  sleep(0);
+  
+  // generate a core
+  abort();
+}
+
 /*----------------------------------------------------------------------------*/
 /* have a fatal type error                                                    */
 /*----------------------------------------------------------------------------*/
-void Correctness::vTypeFatal(void* aObject, eCN eExpectingClass)
+[[ noreturn ]] void Correctness::vTypeFatal(void* aObject, eCN eExpectingClass)
 {
   Object* pObject = static_cast<Object*>(aObject);
   eCN eGotClass = pObject->eClass();
@@ -74,10 +77,6 @@ void Correctness::vTypeFatal(void* aObject, eCN eExpectingClass)
   
   vAbortProcess();
 }
-
-////////////////////////////////////////////////////////////////////////////////
-
-
 
 /*----------------------------------------------------------------------------*/
 /* throw an FK_ASSERT exception (long-form)                                   */
