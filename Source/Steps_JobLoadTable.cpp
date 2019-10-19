@@ -20,18 +20,18 @@ void Step::vAddSteps_JobLoadTable(void)
 /*----------------------------------------------------------------------------*/
 /* loadTable.begin -- begin load of file                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_LoadTableBegin(Forth* pForth)
+void Step::vJob_LoadTableBegin(void)
 {
   ENTRY("vJob_LoadTableBegin"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
+  if ( ! m_pDataStack->bPop(pPtrJob_LoadTable) )
     THROW_DSTACK();
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   bool bBegun = pJob_LoadTable->bBegin();
   
-  pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -39,18 +39,18 @@ void Step::vJob_LoadTableBegin(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* loadTable.chunk -- chunk the file                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_LoadTableChunk(Forth* pForth)
+void Step::vJob_LoadTableChunk(void)
 {
   ENTRY("vJob_LoadTableChunk"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
+  if ( ! m_pDataStack->bPop(pPtrJob_LoadTable) )
     THROW_DSTACK();
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
   bool bCallAgain = pJob_LoadTable->bChunk();
   
-  pForth->m_pDataStack->vPushBool(bCallAgain);
+  m_pDataStack->vPushBool(bCallAgain);
   
  EXIT();
 }
@@ -58,12 +58,12 @@ void Step::vJob_LoadTableChunk(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* loadTable.dumpMap -- dump the load map                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_LoadTableDumpMap(Forth* pForth)
+void Step::vJob_LoadTableDumpMap(void)
 {
   ENTRY("vJob_LoaderDUmpMap"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
+  if ( ! m_pDataStack->bPop(pPtrJob_LoadTable) )
     THROW_DSTACK();
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
@@ -75,12 +75,12 @@ void Step::vJob_LoadTableDumpMap(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* loadTable.end -- end load of file                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_LoadTableEnd(Forth* pForth)
+void Step::vJob_LoadTableEnd(void)
 {
   ENTRY("vJob_LoadTableEnd"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
+  if ( ! m_pDataStack->bPop(pPtrJob_LoadTable) )
     THROW_DSTACK();
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
@@ -92,17 +92,17 @@ void Step::vJob_LoadTableEnd(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_LoadTable.filePath@ -- fetch filePath from job_loadTable               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_LoadTableFilePathFetch(Forth* pForth)
+void Step::vJob_LoadTableFilePathFetch(void)
 {
   ENTRY("vJob_LoadTableFilePathFetch"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
+  if ( ! m_pDataStack->bPop(pPtrJob_LoadTable) )
     THROW_DSTACK();
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   s256 sFilePath = pJob_LoadTable->szFilePath();
-  pForth->m_pDataStack->vPushS256(sFilePath);
+  m_pDataStack->vPushS256(sFilePath);
   
   EXIT();
 }
@@ -110,13 +110,13 @@ void Step::vJob_LoadTableFilePathFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* loadTable.table! -- store table into loader                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_LoadTableTableStore(Forth* pForth)
+void Step::vJob_LoadTableTableStore(void)
 {
   ENTRY("vJob_LoaderTableStore"_Stz);
   
   Object* pPtrTable;
   Object* pPtrJob_LoadTable;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_LoadTable,pPtrTable) )
+  if ( ! m_pDataStack->bPop(pPtrJob_LoadTable,pPtrTable) )
     THROW_DSTACK();
   
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);

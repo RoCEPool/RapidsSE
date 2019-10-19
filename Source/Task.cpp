@@ -246,7 +246,7 @@ void Task::vTaskLoop_job(void)
     
     // call the intinsic
     try {
-      ((Step*)m_pForth->*fpStep)(m_pForth);
+      ((Step*)m_pForth->*fpStep)();
     }
     
     // catch any exception

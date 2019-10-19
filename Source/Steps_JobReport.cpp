@@ -17,18 +17,18 @@ void Step::vAddSteps_JobReport(void)
 /*----------------------------------------------------------------------------*/
 /* job_report.begin -- begin monitor                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReportBegin(Forth* pForth)
+void Step::vJob_ReportBegin(void)
 {
   ENTRY("vJob_ReportBegin"_Stz);
   
   Object* pPtrJobReport;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJobReport) )
+  if ( ! m_pDataStack->bPop(pPtrJobReport) )
     THROW_DSTACK();
   Job_Report* pJob_Report = _pJob_Report(pPtrJobReport);
   
   bool bBegun = pJob_Report->bBegin();
   
-  pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -36,22 +36,22 @@ void Step::vJob_ReportBegin(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_report.take -- monitor take                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReportTake(Forth* pForth)
+void Step::vJob_ReportTake(void)
 {
   ENTRY("vJob_ReportTake"_Stz);
   
   Object* pPtrJobReport;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJobReport) )
+  if ( ! m_pDataStack->bPop(pPtrJobReport) )
     THROW_DSTACK();
   Job_Report* pJob_Report = _pJob_Report(pPtrJobReport);
   
   bool bCallAgain = pJob_Report->bTake();
   
-  pForth->m_pDataStack->vPushBool(bCallAgain);
+  m_pDataStack->vPushBool(bCallAgain);
   
 //  if (bCallAgain) {
-//    pForth->m_pTask->vSleepUs(C_1M);
-//    pForth->m_pTask->vTransition(TR_SLEEP);
+//    m_pTask->vSleepUs(C_1M);
+//    m_pTask->vTransition(TR_SLEEP);
 //  }
   
   EXIT();
@@ -60,12 +60,12 @@ void Step::vJob_ReportTake(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_report.end -- end monitor                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReportEnd(Forth* pForth)
+void Step::vJob_ReportEnd(void)
 {
   ENTRY("vJob_ReportEnd"_Stz);
   
   Object* pPtrJob_Report;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Report) )
+  if ( ! m_pDataStack->bPop(pPtrJob_Report) )
     THROW_DSTACK();
   Job_Report* pJob_Report = _pJob_Report(pPtrJob_Report);
   

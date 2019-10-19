@@ -25,15 +25,15 @@ void Step::vAddSteps_Encode(void)
 /*----------------------------------------------------------------------------*/
 /* again -- encode jump to known backward address                   immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeAgain(Forth* pForth)
+void Step::vEncodeAgain(void)
 {
   ENTRY("vEncodeAgain"_Stz); // ( dest -- / -- )
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   // cstack: pop known backward address
   Cell* pKnownDestination;
-  if ( ! pForth->m_pDataStack->bPop(pKnownDestination) )
+  if ( ! m_pDataStack->bPop(pKnownDestination) )
     THROW_DSTACK();
   
   // append : jump to known backward address
@@ -45,18 +45,18 @@ void Step::vEncodeAgain(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* ahead -- encode jump to unknown forward address                  immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeAhead(Forth* pForth)
+void Step::vEncodeAhead(void)
 {
   ENTRY("vEncodeAhead"_Stz);// ( -- orig / -- )
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   // append : jump to unknown forward address
   pCurrentWord->vEncode("jump"_Stz);
   Cell* pUnknownOrigin = (Cell*)pCurrentWord->aAppend((Cell*)nullptr);
   
   // cstack: push unknown forward address
-  pForth->m_pDataStack->vPushCell(pUnknownOrigin);
+  m_pDataStack->vPushCell(pUnknownOrigin);
   
   EXIT();
 }
@@ -64,22 +64,22 @@ void Step::vEncodeAhead(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* encode -- encode jump on true to known backward address          immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeContinue(Forth* pForth)
+void Step::vEncodeContinue(void)
 {
   ENTRY("vEncodeContinue"_Stz); // ( -- orig / flag -- )
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   // cstack: pop known backward address
   Cell* pKnownBackward;
-  if ( ! pForth->m_pDataStack->bPop(pKnownBackward) )
+  if ( ! m_pDataStack->bPop(pKnownBackward) )
     THROW_DSTACK();
   
   // append : jump on true to known backward address
   pCurrentWord->vEncode("jumpTrue"_Stz,pKnownBackward);
   
   // cstack: push known backward address
-  pForth->m_pDataStack->vPushCell(pKnownBackward);
+  m_pDataStack->vPushCell(pKnownBackward);
   
   EXIT();
 }
@@ -87,16 +87,16 @@ void Step::vEncodeContinue(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* here -- push address of last cell of word                        immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeHere(Forth* pForth)
+void Step::vEncodeHere(void)
 {
   ENTRY("vEncodeHere"_Stz);
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   Cell* pLastCell = pCurrentWord->aLastCell();
   
   // cstack: push address of last cell
-  pForth->m_pDataStack->vPushCell(pLastCell);
+  m_pDataStack->vPushCell(pLastCell);
   
   EXIT();
 }
@@ -104,18 +104,18 @@ void Step::vEncodeHere(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* if -- encode jump on false to unknown forward address            immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeIf(Forth* pForth)
+void Step::vEncodeIf(void)
 {
   ENTRY("vEncodeIf"_Stz); // ( -- orig / flag -- )
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   // append : jumpFalse to unknown forward address
   pCurrentWord->vEncode("jumpFalse"_Stz);
   Cell* pUnknownOrigin = (Cell*)pCurrentWord->aAppend((Cell*)nullptr);
   
   // cstack: push unknown forward address
-  pForth->m_pDataStack->vPushCell(pUnknownOrigin);
+  m_pDataStack->vPushCell(pUnknownOrigin);
   
   EXIT();
 }
@@ -123,30 +123,30 @@ void Step::vEncodeIf(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* ifAgain -- encode jump to known backward address (inside if)     immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeIfAgain(Forth* pForth)
+void Step::vEncodeIfAgain(void)
 {
   ENTRY("vEncodeIfAgain"_Stz); // ( dest -- / -- )
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   // cstack: pop known if address
   Cell* pIfDestination;
-  if ( ! pForth->m_pDataStack->bPop(pIfDestination) )
+  if ( ! m_pDataStack->bPop(pIfDestination) )
     THROW_DSTACK();
   
   // cstack: pop known backward address
   Cell* pKnownDestination;
-  if ( ! pForth->m_pDataStack->bPop(pKnownDestination) )
+  if ( ! m_pDataStack->bPop(pKnownDestination) )
     THROW_DSTACK();
   
   // append : jump to known backward address
   pCurrentWord->vEncode("jump"_Stz,pKnownDestination);
   
   // cstack: push known forward address
-  pForth->m_pDataStack->vPushCell(pKnownDestination);
+  m_pDataStack->vPushCell(pKnownDestination);
   
   // cstack: push known forward address
-  pForth->m_pDataStack->vPushCell(pIfDestination);
+  m_pDataStack->vPushCell(pIfDestination);
   
   EXIT();
 }
@@ -154,11 +154,11 @@ void Step::vEncodeIfAgain(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* loop -- encode runtime for : LOOP                                immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeLoop(Forth* pForth)
+void Step::vEncodeLoop(void)
 {
   ENTRY("vEncodeLoop"_Stz);
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   // increment index:
   pCurrentWord->vEncode("r>"_Stz);
@@ -167,13 +167,13 @@ void Step::vEncodeLoop(Forth* pForth)
   
   i8 iIsDo;
   // cstack: is do ?
-  if ( ! pForth->m_pDataStack->bPop(iIsDo) )
+  if ( ! m_pDataStack->bPop(iIsDo) )
     THROW_DSTACK();
   
   Cell* pDoLimitTest = nullptr;
   if (! iIsDo) {
     // cstack: pop destination address of backward jump
-    if ( ! pForth->m_pDataStack->bPop(pDoLimitTest) )
+    if ( ! m_pDataStack->bPop(pDoLimitTest) )
       THROW_DSTACK();
     pDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   }
@@ -185,7 +185,7 @@ void Step::vEncodeLoop(Forth* pForth)
     // jump on true to doHere:
     Cell* pDoHere;
     // cstack: pop destination address of backward jump
-    if ( ! pForth->m_pDataStack->bPop(pDoHere) )
+    if ( ! m_pDataStack->bPop(pDoHere) )
       THROW_DSTACK();
     pCurrentWord->vEncode("jumpTrue"_Stz,pDoHere);
   }
@@ -202,11 +202,11 @@ void Step::vEncodeLoop(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* loopPlus -- encode runtime for : +LOOP                           immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeLoopPlus(Forth* pForth)
+void Step::vEncodeLoopPlus(void)
 {
   ENTRY("vEncodeLoopPlus"_Stz);
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   // increment index:
   pCurrentWord->vEncode("r>"_Stz);
@@ -215,13 +215,13 @@ void Step::vEncodeLoopPlus(Forth* pForth)
   
   i8 iIsDo;
   // cstack: is do ?
-  if ( ! pForth->m_pDataStack->bPop(iIsDo) )
+  if ( ! m_pDataStack->bPop(iIsDo) )
     THROW_DSTACK();
   
   Cell* pDoLimitTest = nullptr;
   if (! iIsDo) {
     // cstack: pop destination address of backward jump
-    if ( ! pForth->m_pDataStack->bPop(pDoLimitTest) )
+    if ( ! m_pDataStack->bPop(pDoLimitTest) )
       THROW_DSTACK();
     pDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   }
@@ -233,7 +233,7 @@ void Step::vEncodeLoopPlus(Forth* pForth)
     // jump on true to doHere:
     Cell* pDoHere;
     // cstack: pop destination address of backward jump
-    if ( ! pForth->m_pDataStack->bPop(pDoHere) )
+    if ( ! m_pDataStack->bPop(pDoHere) )
       THROW_DSTACK();
     pCurrentWord->vEncode("jumpTrue"_Stz,pDoHere);
   }
@@ -250,15 +250,15 @@ void Step::vEncodeLoopPlus(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* next -- encode runtime for : NEXT                                immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeNext(Forth* pForth)
+void Step::vEncodeNext(void)
 {
   ENTRY("vEncodeNext"_Stz);
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   Cell* pDoLimitTest = nullptr;
   // cstack: pop destination address of backward jump
-  if ( ! pForth->m_pDataStack->bPop(pDoLimitTest) )
+  if ( ! m_pDataStack->bPop(pDoLimitTest) )
     THROW_DSTACK();
   pDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   
@@ -275,15 +275,15 @@ void Step::vEncodeNext(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* then -- resolve jump to unknown forward address                  immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeThen(Forth* pForth)
+void Step::vEncodeThen(void)
 {
   ENTRY("vEncodeThen"_Stz);  // ( orig -- / -- )
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   // cstack: pop unknown forward address
   Cell* pUnknownOrigin;
-  if ( ! pForth->m_pDataStack->bPop(pUnknownOrigin) )
+  if ( ! m_pDataStack->bPop(pUnknownOrigin) )
     THROW_DSTACK();
   
   // resolve forward branch to this point in routine
@@ -295,15 +295,15 @@ void Step::vEncodeThen(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* until -- encode jump false to known backward address             immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vEncodeUntil(Forth* pForth)
+void Step::vEncodeUntil(void)
 {
   ENTRY("vEncodeUntil"_Stz); // ( dest -- / flag -- )
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   // cstack: pop known backward address
   Cell* pKnownDestination;
-  if ( ! pForth->m_pDataStack->bPop(pKnownDestination) )
+  if ( ! m_pDataStack->bPop(pKnownDestination) )
     THROW_DSTACK();
   
   // append : jump on false to known backward address

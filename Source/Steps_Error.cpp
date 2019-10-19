@@ -15,13 +15,13 @@ void Step::vAddSteps_Error(void)
 /*----------------------------------------------------------------------------*/
 /* error.msg -- get error message given the error code                        */
 /*----------------------------------------------------------------------------*/
-void Step::vErrorMsg(Forth* pForth)
+void Step::vErrorMsg(void)
 {
   ENTRY("vErrorMsg"_Stz);
   
   
   i8 iErrorCode;
-  if ( ! pForth->m_pDataStack->bPop(iErrorCode) )
+  if ( ! m_pDataStack->bPop(iErrorCode) )
     THROW_DSTACK();
   
   if (iErrorCode < EC_NONE || iErrorCode > EC_ENUMS)
@@ -30,7 +30,7 @@ void Step::vErrorMsg(Forth* pForth)
   s256 sErrorMsg;
   sErrorMsg = aEC[iErrorCode];
   
-  pForth->m_pDataStack->vPushS256(sErrorMsg);
+  m_pDataStack->vPushS256(sErrorMsg);
   
   EXIT();
 }

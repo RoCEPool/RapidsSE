@@ -28,13 +28,13 @@ void Step::vAddSteps_Timer(void)
 /*----------------------------------------------------------------------------*/
 /* timer.delete -- delete timer                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerDelete(Forth* pForth)
+void Step::vTimerDelete(void)
 {
 ENTRY("vTimeDelete"_Stz);
   
   Object* pPtrTimer;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -52,12 +52,12 @@ ENTRY("vTimeDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.init -- init timer                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerInit(Forth* pForth)
+void Step::vTimerInit(void)
 {
 ENTRY("vTimerInit"_Stz);
   
   Object* pPtrTimer;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -71,12 +71,12 @@ ENTRY("vTimerInit"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.microsecs -- get elapsed duration in microseconds                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerMicrosecs(Forth* pForth)
+void Step::vTimerMicrosecs(void)
 {
 ENTRY("vTimerMicrosecs"_Stz);
   
   Object* pPtrTimer;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -84,7 +84,7 @@ ENTRY("vTimerMicrosecs"_Stz);
   
   i8 iMicroseconds = pTimer->iMicroseconds();
   
-  pForth->m_pDataStack->vPushI8(iMicroseconds);
+  m_pDataStack->vPushI8(iMicroseconds);
   
   EXIT();
 }
@@ -92,12 +92,12 @@ ENTRY("vTimerMicrosecs"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.millisecs -- get elapsed duration in milliseconds                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerMillisecs(Forth* pForth)
+void Step::vTimerMillisecs(void)
 {
 ENTRY("vTimerMillisecs"_Stz);
   
   Object* pPtrTimer;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -105,7 +105,7 @@ ENTRY("vTimerMillisecs"_Stz);
   
   i8 iMilliseconds = pTimer->iMilliseconds();
   
-  pForth->m_pDataStack->vPushI8(iMilliseconds);
+  m_pDataStack->vPushI8(iMilliseconds);
   
   EXIT();
 }
@@ -113,12 +113,12 @@ ENTRY("vTimerMillisecs"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.nanosecs -- get elapsed duration in nanoseconds                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerNanosecs(Forth* pForth)
+void Step::vTimerNanosecs(void)
 {
 ENTRY("vTimerNanosecs"_Stz);
   
   Object* pPtrTimer;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -126,7 +126,7 @@ ENTRY("vTimerNanosecs"_Stz);
   
   i8 iNanoseconds = pTimer->iNanoseconds();
   
-  pForth->m_pDataStack->vPushI8(iNanoseconds);
+  m_pDataStack->vPushI8(iNanoseconds);
   
   EXIT();
 }
@@ -134,7 +134,7 @@ ENTRY("vTimerNanosecs"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer::new -- new timer                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerNew(Forth* pForth)
+void Step::vTimerNew(void)
 {
 ENTRY("vTimerNew"_Stz);
 
@@ -146,7 +146,7 @@ ENTRY("vTimerNew"_Stz);
   
   Object* pPtrTimer = pTimer;
   
-  pForth->m_pDataStack->vPushPointer(pPtrTimer);
+  m_pDataStack->vPushPointer(pPtrTimer);
   
   EXIT();
 }
@@ -154,12 +154,12 @@ ENTRY("vTimerNew"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.reset -- reset timer                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerReset(Forth* pForth)
+void Step::vTimerReset(void)
 {
 ENTRY("vTimerReset"_Stz);
   
   Object* pPtrTimer;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -173,12 +173,12 @@ ENTRY("vTimerReset"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.secs -- get elapsed duration in seconds                              */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerSecs(Forth* pForth)
+void Step::vTimerSecs(void)
 {
 ENTRY("vTimerSecs"_Stz);
   
   Object* pPtrTimer;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -186,7 +186,7 @@ ENTRY("vTimerSecs"_Stz);
   
   i8 iSeconds = pTimer->iSeconds();
   
-  pForth->m_pDataStack->vPushI8(iSeconds);
+  m_pDataStack->vPushI8(iSeconds);
   
   EXIT();
 }
@@ -194,12 +194,12 @@ ENTRY("vTimerSecs"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.start -- start timer                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerStart(Forth* pForth)
+void Step::vTimerStart(void)
 {
 ENTRY("vTimerStart"_Stz);
   
   Object* pPtrTimer;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -213,12 +213,12 @@ ENTRY("vTimerStart"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.ticks -- get elapsed ticks                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerTicks(Forth* pForth)
+void Step::vTimerTicks(void)
 {
 ENTRY("vTimerTicks"_Stz);
   
   Object* pPtrTimer;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -226,7 +226,7 @@ ENTRY("vTimerTicks"_Stz);
   
   i8 iTicks = pTimer->iTicks();
   
-  pForth->m_pDataStack->vPushI8(iTicks);
+  m_pDataStack->vPushI8(iTicks);
   
   EXIT();
 }
@@ -234,12 +234,12 @@ ENTRY("vTimerTicks"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.update -- update timer                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vTimerUpdate(Forth* pForth)
+void Step::vTimerUpdate(void)
 {
 ENTRY("vTimerUpdate"_Stz);
   
   Object* pPtrTimer;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -253,7 +253,7 @@ ENTRY("vTimerUpdate"_Stz);
 /*----------------------------------------------------------------------------*/
 /* time.current -- return current time as a string                            */
 /*----------------------------------------------------------------------------*/
-void Step::vTimeCurrent(Forth* pForth)
+void Step::vTimeCurrent(void)
 {
   ENTRY("vTimeCurrent"_Stz);
   
@@ -262,7 +262,7 @@ void Step::vTimeCurrent(Forth* pForth)
   
   s32 s = xNow.sz();
   
-  pForth->m_pDataStack->vPushS32(s);
+  m_pDataStack->vPushS32(s);
   
   EXIT();
 }

@@ -16,17 +16,17 @@ void Step::vAddSteps_JobPurge(void)
 /*----------------------------------------------------------------------------*/
 /* Job_purge.spawnSub -- spawn sub purge job                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_PurgeSpawnSub(Forth* pForth)
+void Step::vJob_PurgeSpawnSub(void)
 {
   ENTRY("vJob_PurgeSpawnSub"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Purge* pJob_Purge = _pJob_Purge(pJobPtr);
   
   i8 iSlot;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iSlot) )
+  if ( ! m_pDataStack->bPopAsInt(iSlot) )
     THROW_DSTACK();
   
   i8 iPurgeJobId = pJob_Purge->m_iUniqueId;
@@ -55,13 +55,13 @@ void Step::vJob_PurgeSpawnSub(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_purge.table! -- store table into job_purge                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_PurgeTableStore(Forth* pForth)
+void Step::vJob_PurgeTableStore(void)
 {
   ENTRY("vJob_PurgeTableStore"_Stz);
   
   Object* pPtrTable;
   Object* pPtrJob_Purge;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Purge,pPtrTable) )
+  if ( ! m_pDataStack->bPop(pPtrJob_Purge,pPtrTable) )
     THROW_DSTACK();
   
   Job_Purge* pJob_Purge = _pJob_Purge(pPtrJob_Purge);

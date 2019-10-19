@@ -39,7 +39,7 @@ void Step::vAddSteps_Rstack(void)
 /*----------------------------------------------------------------------------*/
 /* cs-pick -- place copy of nth value in control stack onto control stack     */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackCsPick(Forth* pForth)
+void Step::vRstackCsPick(void)
 {
   ENTRY("vRstackCsPick"_Stz);
   
@@ -47,21 +47,21 @@ void Step::vRstackCsPick(Forth* pForth)
   
   // pop which value
   i8 nThValue;
-  if ( ! pForth->m_pDataStack->bPopAsInt(nThValue) )
+  if ( ! m_pDataStack->bPopAsInt(nThValue) )
     THROW_DSTACK();
   
   // pop one return address
 //  GenVar xRtnWsp;
-//  bool b = pForth->m_pReturnStack->bPop(&xRtnWsp);
+//  bool b = m_pReturnStack->bPop(&xRtnWsp);
 //  ASSERT(b);
   
   // copy n-th value onto top
   GenVar xVariable;
-  pForth->m_pReturnStack->vPeekValue(nThValue,xVariable);
-  pForth->m_pReturnStack->vPushGenVar(xVariable);
+  m_pReturnStack->vPeekValue(nThValue,xVariable);
+  m_pReturnStack->vPushGenVar(xVariable);
   
   // push back the one return address
-//  pForth->m_pReturnStack->vPush(xRtnWsp);
+//  m_pReturnStack->vPush(xRtnWsp);
   
   EXIT();
 }
@@ -69,35 +69,35 @@ void Step::vRstackCsPick(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* cs-roll -- roll top control values at n ( Z Y ... B A n -- Y ... B A Z )   */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackCsRoll(Forth* pForth)
+void Step::vRstackCsRoll(void)
 {
   ENTRY("vRstackCsRoll"_Stz);
   
   // pop n values
   i8 nValues;
-  if ( ! pForth->m_pDataStack->bPop(nValues) )
+  if ( ! m_pDataStack->bPop(nValues) )
     THROW_DSTACK();
   
   GenVar xValMid;
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
-    if ( ! pForth->m_pDataStack->bPop(xValMid) )
+    if ( ! m_pDataStack->bPop(xValMid) )
       THROW_DSTACK();
     
-    pForth->m_pReturnStack->vPushGenVar(xValMid);
+    m_pReturnStack->vPushGenVar(xValMid);
   }
   
   Cell* aCellZ;
-  if ( ! pForth->m_pDataStack->bPop(aCellZ) )
+  if ( ! m_pDataStack->bPop(aCellZ) )
     THROW_DSTACK();
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
-    if ( ! pForth->m_pReturnStack->bPop(xValMid) )
+    if ( ! m_pReturnStack->bPop(xValMid) )
       THROW_RSTACK();
     
-    pForth->m_pDataStack->vPushGenVar(xValMid);
+    m_pDataStack->vPushGenVar(xValMid);
   }
 
-  pForth->m_pDataStack->vPushCell(aCellZ);
+  m_pDataStack->vPushCell(aCellZ);
   
   
   EXIT();
@@ -106,13 +106,13 @@ void Step::vRstackCsRoll(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* rdepth -- put number of values in return stack onto data stack             */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackDepth(Forth* pForth)
+void Step::vRstackDepth(void)
 {
   ENTRY("vRstackDepth"_Stz);
   
-  i8 iDepth = pForth->m_pReturnStack->nValues();
+  i8 iDepth = m_pReturnStack->nValues();
   
-  pForth->m_pDataStack->vPushI8(iDepth);
+  m_pDataStack->vPushI8(iDepth);
   
   EXIT();
 }
@@ -120,14 +120,14 @@ void Step::vRstackDepth(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* rdrop -- discard top value off rstack                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackDrop(Forth* pForth)
+void Step::vRstackDrop(void)
 {
   ENTRY("vRstackDrop"_Stz);
   
   // should just discard on stack
   
   GenVar xValA;
-  if ( ! pForth->m_pReturnStack->bPop(xValA) )
+  if ( ! m_pReturnStack->bPop(xValA) )
     THROW_RSTACK();
   
   EXIT();
@@ -136,7 +136,7 @@ void Step::vRstackDrop(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r@ -- place copy of top value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackFetch(Forth* pForth)
+void Step::vRstackFetch(void)
 {
   ENTRY("vRstackFetch"_Stz);
   
@@ -144,9 +144,9 @@ void Step::vRstackFetch(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pReturnStack->vPeekValue(0,xVariable);
+  m_pReturnStack->vPeekValue(0,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -154,7 +154,7 @@ void Step::vRstackFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* 2r@ -- place copy of two top values in return stack onto data stack        */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackFetchTwo(Forth* pForth)
+void Step::vRstackFetchTwo(void)
 {
   ENTRY("vRstackFetchTwo"_Stz);
   
@@ -163,11 +163,11 @@ void Step::vRstackFetchTwo(Forth* pForth)
   GenVar xValX0;
   GenVar xValX1;
   
-  pForth->m_pReturnStack->vPeekValue(0,xValX0);
-  pForth->m_pReturnStack->vPeekValue(1,xValX1);
+  m_pReturnStack->vPeekValue(0,xValX0);
+  m_pReturnStack->vPeekValue(1,xValX1);
   
-  pForth->m_pDataStack->vPushGenVar(xValX1);
-  pForth->m_pDataStack->vPushGenVar(xValX0);
+  m_pDataStack->vPushGenVar(xValX1);
+  m_pDataStack->vPushGenVar(xValX0);
   
   EXIT();
 }
@@ -175,21 +175,21 @@ void Step::vRstackFetchTwo(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* rpick -- place copy of nth value in return stack onto data stack           */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackPick(Forth* pForth)
+void Step::vRstackPick(void)
 {
   ENTRY("vRstackPick"_Stz);
   
   i8 iPick;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iPick) )
+  if ( ! m_pDataStack->bPopAsInt(iPick) )
     THROW_DSTACK();
   
   // could do this directly on stack
   
   GenVar xVariable;
   
-  pForth->m_pReturnStack->vPeekValue(iPick,xVariable);
+  m_pReturnStack->vPeekValue(iPick,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -197,7 +197,7 @@ void Step::vRstackPick(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* rreverse -- reverse rstack values ( ... D C B A n -- A B C D ... )         */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackReverse(Forth* pForth)
+void Step::vRstackReverse(void)
 {
   ENTRY("vRstackReverse"_Stz);
   
@@ -215,23 +215,23 @@ void Step::vRstackReverse(Forth* pForth)
   };
   
   i8 nValues;
-  if ( ! pForth->m_pDataStack->bPop(nValues) )
+  if ( ! m_pDataStack->bPop(nValues) )
     THROW_DSTACK();
   
   for (i8 i = 0; i < nValues; i++) {
-    if ( ! pForth->m_pReturnStack->bPop(apValWrk[i]) )
+    if ( ! m_pReturnStack->bPop(apValWrk[i]) )
       THROW_DSTACK();
   }
   
   for (i8 i = 0; i < nValues; i++) {
-    pForth->m_pReturnStack->vPushGenVar(apValWrk[i]);
+    m_pReturnStack->vPushGenVar(apValWrk[i]);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* rroll -- roll top rstack values at n ( ... D C B A n -- A ... D C B )      */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackRoll(Forth* pForth)
+void Step::vRstackRoll(void)
 {
   ENTRY("vRstackRoll"_Stz);
   
@@ -239,26 +239,26 @@ void Step::vRstackRoll(Forth* pForth)
   GenVar xValX;
   
   i8 nValues;
-  if ( ! pForth->m_pDataStack->bPop(nValues) )
+  if ( ! m_pDataStack->bPop(nValues) )
     THROW_DSTACK();
   
-  if ( ! pForth->m_pReturnStack->bPop(xValA) )
+  if ( ! m_pReturnStack->bPop(xValA) )
     THROW_RSTACK();
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
-    if ( ! pForth->m_pReturnStack->bPop(xValX) )
+    if ( ! m_pReturnStack->bPop(xValX) )
       THROW_RSTACK();
     
-    pForth->m_pDataStack->vPushGenVar(xValX);
+    m_pDataStack->vPushGenVar(xValX);
   }
   
-  pForth->m_pReturnStack->vPushGenVar(xValA);
+  m_pReturnStack->vPushGenVar(xValA);
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
-    if ( ! pForth->m_pDataStack->bPop(xValX) )
+    if ( ! m_pDataStack->bPop(xValX) )
       THROW_DSTACK();
     
-    pForth->m_pReturnStack->vPushGenVar(xValX);
+    m_pReturnStack->vPushGenVar(xValX);
   }
   
   EXIT();
@@ -267,7 +267,7 @@ void Step::vRstackRoll(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* -rroll -- inverse roll top rstack values at n ( Z ... B A n -- ... B A Z ) */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackRollInv(Forth* pForth)
+void Step::vRstackRollInv(void)
 {
   ENTRY("vRstackRollInv"_Stz);
   
@@ -275,28 +275,28 @@ void Step::vRstackRollInv(Forth* pForth)
   GenVar xValX;
   
   i8 nValues;
-  if ( ! pForth->m_pDataStack->bPop(nValues) )
+  if ( ! m_pDataStack->bPop(nValues) )
     THROW_DSTACK();
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
-    if ( ! pForth->m_pReturnStack->bPop(xValX) )
+    if ( ! m_pReturnStack->bPop(xValX) )
       THROW_RSTACK();
     
-    pForth->m_pDataStack->vPushGenVar(xValX);
+    m_pDataStack->vPushGenVar(xValX);
   }
   
-  if ( ! pForth->m_pReturnStack->bPop(xValZ) )
+  if ( ! m_pReturnStack->bPop(xValZ) )
     THROW_DSTACK();
   
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
-    if ( ! pForth->m_pDataStack->bPop(xValX) )
+    if ( ! m_pDataStack->bPop(xValX) )
       THROW_DSTACK();
     
-    pForth->m_pReturnStack->vPushGenVar(xValX);
+    m_pReturnStack->vPushGenVar(xValX);
   }
   
-  pForth->m_pReturnStack->vPushGenVar(xValZ);
+  m_pReturnStack->vPushGenVar(xValZ);
   
   EXIT();
 }
@@ -305,11 +305,11 @@ void Step::vRstackRollInv(Forth* pForth)
 /* rstk -- dump the return stack                                              */
 /*----------------------------------------------------------------------------*/
 /*
-void Step::vRstackStk(Forth* pForth)
+void Step::vRstackStk(void)
 {
   ENTRY("vRstackStk"_Stz);
   
-  pForth->m_pReturnStack->vDump(pForth->m_pTask->m_sName.s(),"ReturnStack:");
+  m_pReturnStack->vDump(m_pTask->m_sName.s(),"ReturnStack:");
   
   EXIT();
 }
@@ -318,18 +318,18 @@ void Step::vRstackStk(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* rswap -- swap top two values on return stack                               */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackSwap(Forth* pForth)
+void Step::vRstackSwap(void)
 {
   ENTRY("vRstackSwap"_Stz);
   
   GenVar xValA;
   GenVar xValB;
   
-  if ( ! pForth->m_pReturnStack->bPop(xValA,xValB) )
+  if ( ! m_pReturnStack->bPop(xValA,xValB) )
     THROW_DSTACK();
   
-  pForth->m_pReturnStack->vPushGenVar(xValA);
-  pForth->m_pReturnStack->vPushGenVar(xValB);
+  m_pReturnStack->vPushGenVar(xValA);
+  m_pReturnStack->vPushGenVar(xValB);
   
   EXIT();
 }
@@ -337,15 +337,15 @@ void Step::vRstackSwap(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r> -- move value from rstack to dstack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackToP(Forth* pForth)
+void Step::vRstackToP(void)
 {
   ENTRY("vRstackToP"_Stz);
   
   GenVar xVal;
-  if ( ! pForth->m_pReturnStack->bPop(xVal) )
+  if ( ! m_pReturnStack->bPop(xVal) )
     THROW_DSTACK();
   
-  pForth->m_pDataStack->vPushGenVar(xVal);
+  m_pDataStack->vPushGenVar(xVal);
   
   EXIT();
 }
@@ -353,15 +353,15 @@ void Step::vRstackToP(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >r -- move value from dstack to rstack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackToR(Forth* pForth)
+void Step::vRstackToR(void)
 {
   ENTRY("vRstackToR"_Stz);
   
   GenVar xValOpaque;
-  if ( ! pForth->m_pDataStack->bPop(xValOpaque) )
+  if ( ! m_pDataStack->bPop(xValOpaque) )
     THROW_DSTACK();
   
-  pForth->m_pReturnStack->vPushGenVar(xValOpaque);
+  m_pReturnStack->vPushGenVar(xValOpaque);
   
   EXIT();
 }
@@ -369,17 +369,17 @@ void Step::vRstackToR(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* 2>r -- move two values from dstack to rstack preserving order              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstackToRTwo(Forth* pForth)
+void Step::vRstackToRTwo(void)
 {
   ENTRY("vRstackToRTwo"_Stz);
   
   GenVar xValX0;
   GenVar xValX1;
-  if ( ! pForth->m_pDataStack->bPop(xValX0,xValX1) )
+  if ( ! m_pDataStack->bPop(xValX0,xValX1) )
     THROW_DSTACK();
   
-  pForth->m_pReturnStack->vPushGenVar(xValX1);
-  pForth->m_pReturnStack->vPushGenVar(xValX0);
+  m_pReturnStack->vPushGenVar(xValX1);
+  m_pReturnStack->vPushGenVar(xValX0);
   
   EXIT();
 }
@@ -387,7 +387,7 @@ void Step::vRstackToRTwo(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r0 -- place copy of 0th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack0(Forth* pForth)
+void Step::vRstack0(void)
 {
   ENTRY("vRstack0"_Stz);
   
@@ -395,9 +395,9 @@ void Step::vRstack0(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pReturnStack->vPeekValue(0,xVariable);
+  m_pReturnStack->vPeekValue(0,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -405,7 +405,7 @@ void Step::vRstack0(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r1 -- place copy of 1st value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack1(Forth* pForth)
+void Step::vRstack1(void)
 {
   ENTRY("vRstack1"_Stz);
   
@@ -413,9 +413,9 @@ void Step::vRstack1(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pReturnStack->vPeekValue(1,xVariable);
+  m_pReturnStack->vPeekValue(1,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -423,7 +423,7 @@ void Step::vRstack1(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r2 -- place copy of 2nd value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack2(Forth* pForth)
+void Step::vRstack2(void)
 {
   ENTRY("vRstack2"_Stz);
   
@@ -431,9 +431,9 @@ void Step::vRstack2(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pReturnStack->vPeekValue(2,xVariable);
+  m_pReturnStack->vPeekValue(2,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -441,7 +441,7 @@ void Step::vRstack2(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r3 -- place copy of 3rd value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack3(Forth* pForth)
+void Step::vRstack3(void)
 {
   ENTRY("vRstack3"_Stz);
   
@@ -449,9 +449,9 @@ void Step::vRstack3(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pReturnStack->vPeekValue(3,xVariable);
+  m_pReturnStack->vPeekValue(3,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -459,7 +459,7 @@ void Step::vRstack3(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r4 -- place copy of 4th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack4(Forth* pForth)
+void Step::vRstack4(void)
 {
   ENTRY("vRstack4"_Stz);
   
@@ -467,9 +467,9 @@ void Step::vRstack4(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pReturnStack->vPeekValue(4,xVariable);
+  m_pReturnStack->vPeekValue(4,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -477,7 +477,7 @@ void Step::vRstack4(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r5 -- place copy of 0th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack5(Forth* pForth)
+void Step::vRstack5(void)
 {
   ENTRY("vRstack5"_Stz);
   
@@ -485,9 +485,9 @@ void Step::vRstack5(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pReturnStack->vPeekValue(5,xVariable);
+  m_pReturnStack->vPeekValue(5,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -495,7 +495,7 @@ void Step::vRstack5(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r6 -- place copy of 6th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack6(Forth* pForth)
+void Step::vRstack6(void)
 {
   ENTRY("vRstack6"_Stz);
   
@@ -503,9 +503,9 @@ void Step::vRstack6(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pReturnStack->vPeekValue(6,xVariable);
+  m_pReturnStack->vPeekValue(6,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -513,7 +513,7 @@ void Step::vRstack6(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r7 -- place copy of 7th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack7(Forth* pForth)
+void Step::vRstack7(void)
 {
   ENTRY("vRstack7"_Stz);
   
@@ -521,9 +521,9 @@ void Step::vRstack7(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pReturnStack->vPeekValue(7,xVariable);
+  m_pReturnStack->vPeekValue(7,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -531,7 +531,7 @@ void Step::vRstack7(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r8 -- place copy of 8th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack8(Forth* pForth)
+void Step::vRstack8(void)
 {
   ENTRY("vRstack8"_Stz);
   
@@ -539,9 +539,9 @@ void Step::vRstack8(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pReturnStack->vPeekValue(8,xVariable);
+  m_pReturnStack->vPeekValue(8,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -549,7 +549,7 @@ void Step::vRstack8(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r9 -- place copy of 9th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vRstack9(Forth* pForth)
+void Step::vRstack9(void)
 {
   ENTRY("vRstack9"_Stz);
   
@@ -557,9 +557,9 @@ void Step::vRstack9(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pReturnStack->vPeekValue(9,xVariable);
+  m_pReturnStack->vPeekValue(9,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }

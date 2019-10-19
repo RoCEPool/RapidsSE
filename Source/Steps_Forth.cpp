@@ -40,18 +40,18 @@ void Step::vAddSteps_Forth(void)
 /*----------------------------------------------------------------------------*/
 /* allot -- reserve n bytes in word being compiled                            */
 /*----------------------------------------------------------------------------*/
-void Step::vAllot(Forth* pForth)
+void Step::vAllot(void)
 {
   ENTRY("vAllot"_Stz);
   
   i8 iBytes;
   
-  if ( !  pForth->m_pDataStack->bPop(iBytes) )
+  if ( !  m_pDataStack->bPop(iBytes) )
     THROW_DSTACK();
   
   RASSERT(iBytes);
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   byte* aAddress = pCurrentWord->ayAllot(iBytes);
   ASSERT(aAddress);
@@ -62,13 +62,13 @@ void Step::vAllot(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* cell -- push size of a cell                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vCell(Forth* pForth)
+void Step::vCell(void)
 {
   ENTRY("vCell"_Stz);
   
   i8 nBytes = sizeof(void*);
   
-  pForth->m_pDataStack->vPushI8(nBytes);
+  m_pDataStack->vPushI8(nBytes);
   
   EXIT();
 }
@@ -76,20 +76,20 @@ void Step::vCell(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* : (aka colon) -- create word named by next token, enter compiling state    */
 /*----------------------------------------------------------------------------*/
-void Step::vColon(Forth* pForth)
+void Step::vColon(void)
 {
   ENTRY("vColon"_Stz);
   
   s32 sName;
   
-  pForth->m_pTask->m_pCompiler->m_bCompiling = true;
+  m_pTask->m_pCompiler->m_bCompiling = true;
   
-  pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
-  sName = pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken();
+  m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+  sName = m_pTask->m_pCompiler->m_pTokeniser->sToken();
   
   Dic* pDic;
-  if (pForth->m_pTask->m_oDicStack.iCount())
-    pDic = pForth->m_pTask->m_oDicStack.pTop();
+  if (m_pTask->m_oDicStack.iCount())
+    pDic = m_pTask->m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
   
@@ -98,7 +98,7 @@ void Step::vColon(Forth* pForth)
   
   Word* pNewWord = new(pDic) Word(sName);
   
-  pForth->m_pTask->m_pCompiler->m_pCurrent = pNewWord;
+  m_pTask->m_pCompiler->m_pCurrent = pNewWord;
   
   EXIT();
 }
@@ -106,14 +106,14 @@ void Step::vColon(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* comma -- encode push of value on stack into word being compiled            */
 /*----------------------------------------------------------------------------*/
-void Step::vComma(Forth* pForth)
+void Step::vComma(void)
 {
   ENTRY("vComma"_Stz);
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   GenVar xValue;
-  if ( ! pForth->m_pDataStack->bPop(xValue) )
+  if ( ! m_pDataStack->bPop(xValue) )
     THROW_DSTACK();
   
   pCurrentWord->vEncode("pushValue"_Stz,&xValue);
@@ -124,16 +124,16 @@ void Step::vComma(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* compile, -- encode call to word on stack into word being compiled          */
 /*----------------------------------------------------------------------------*/
-void Step::vCompileComma(Forth* pForth)
+void Step::vCompileComma(void)
 {
   ENTRY("vCompileComma"_Stz);
   
   Object* pWordObject;
-  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pCalledWord = _pWord(pWordObject);
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
   
@@ -145,24 +145,24 @@ void Step::vCompileComma(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* create -- create word named by next token, becomes word being compiled     */
 /*----------------------------------------------------------------------------*/
-void Step::vCreate(Forth* pForth)
+void Step::vCreate(void)
 {
   ENTRY("vCreate"_Stz);
   
-  pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+  m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
   
   Dic* pDic;
-  if (pForth->m_pTask->m_oDicStack.iCount())
-    pDic = pForth->m_pTask->m_oDicStack.pTop();
+  if (m_pTask->m_oDicStack.iCount())
+    pDic = m_pTask->m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
   
   
-  //vTrace(": %s\n"_Stz,pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar());
+  //vTrace(": %s\n"_Stz,m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar());
   
-  Word* pNewWord = new(pDic) Word(pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken());
+  Word* pNewWord = new(pDic) Word(m_pTask->m_pCompiler->m_pTokeniser->sToken());
   
-  pForth->m_pTask->m_pCompiler->m_pCurrent = pNewWord;
+  m_pTask->m_pCompiler->m_pCurrent = pNewWord;
   
   EXIT();
 }
@@ -170,23 +170,23 @@ void Step::vCreate(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* createPersistent -- create word in dictionary (persistent heap)            */
 /*----------------------------------------------------------------------------*/
-void Step::vCreatePersistent(Forth* pForth)
+void Step::vCreatePersistent(void)
 {
   ENTRY("vCreate"_Stz);
   
-  pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+  m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
   
   Dic* pDic;
-  if (pForth->m_pTask->m_oDicStack.iCount())
-    pDic = pForth->m_pTask->m_oDicStack.pTop();
+  if (m_pTask->m_oDicStack.iCount())
+    pDic = m_pTask->m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
   
-  //vTrace(": %s\n"_Stz,pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar());
+  //vTrace(": %s\n"_Stz,m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar());
   
-  Word* pNewWord = new(pDic,true) Word(pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken());
+  Word* pNewWord = new(pDic,true) Word(m_pTask->m_pCompiler->m_pTokeniser->sToken());
   
-  pForth->m_pTask->m_pCompiler->m_pCurrent = pNewWord;
+  m_pTask->m_pCompiler->m_pCurrent = pNewWord;
   
   EXIT();
 }
@@ -194,27 +194,27 @@ void Step::vCreatePersistent(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >create -- create word in dictionary using string on stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vCreateFrom(Forth* pForth)
+void Step::vCreateFrom(void)
 {
   ENTRY("vCreateFrom"_Stz);
   
   s32 sName;
-  if ( ! pForth->m_pDataStack->bPop(sName) )
+  if ( ! m_pDataStack->bPop(sName) )
     THROW_DSTACK();
   
   Dic* pDic;
-  if (pForth->m_pTask->m_oDicStack.iCount())
-    pDic = pForth->m_pTask->m_oDicStack.pTop();
+  if (m_pTask->m_oDicStack.iCount())
+    pDic = m_pTask->m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
   
   //vTrace(": %s\n"_Stz,sName.azChar());
   Word* pNewWord = new(pDic) Word(sName);
   
-  if (! pForth->m_pTask->m_pCompiler)
-    pForth->m_pTask->m_pCompiler = new Compiler;
+  if (! m_pTask->m_pCompiler)
+    m_pTask->m_pCompiler = new Compiler;
   
-  pForth->m_pTask->m_pCompiler->m_pCurrent = pNewWord;
+  m_pTask->m_pCompiler->m_pCurrent = pNewWord;
   
   EXIT();
 }
@@ -222,24 +222,24 @@ void Step::vCreateFrom(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >createPersistent -- create word in dic using string on stack (persistent) */
 /*----------------------------------------------------------------------------*/
-void Step::vCreateFromPersistent(Forth* pForth)
+void Step::vCreateFromPersistent(void)
 {
   ENTRY("vCreateFrom"_Stz);
   
   s32 sName;
-  if ( ! pForth->m_pDataStack->bPop(sName) )
+  if ( ! m_pDataStack->bPop(sName) )
     THROW_DSTACK();
   
   Dic* pDic;
-  if (pForth->m_pTask->m_oDicStack.iCount())
-    pDic = pForth->m_pTask->m_oDicStack.pTop();
+  if (m_pTask->m_oDicStack.iCount())
+    pDic = m_pTask->m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
   
   //vTrace(": %s\n"_Stz,sName.azChar());
   Word* pNewWord = new(pDic,true) Word(sName);
   
-  pForth->m_pTask->m_pCompiler->m_pCurrent = pNewWord;
+  m_pTask->m_pCompiler->m_pCurrent = pNewWord;
   
   EXIT();
 }
@@ -247,12 +247,12 @@ void Step::vCreateFromPersistent(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >createInRoot -- create word in root dictionary using string on stack      */
 /*----------------------------------------------------------------------------*/
-void Step::vCreateFromInRoot(Forth* pForth)
+void Step::vCreateFromInRoot(void)
 {
   ENTRY("vCreateFromInRoot"_Stz);
   
   s32 sName;
-  if ( ! pForth->m_pDataStack->bPop(sName) )
+  if ( ! m_pDataStack->bPop(sName) )
     THROW_DSTACK();
   
   Dic* pDic = AM::pRootDic();
@@ -260,7 +260,7 @@ void Step::vCreateFromInRoot(Forth* pForth)
   //vTrace(": %s\n"_Stz,sName.azChar());
   Word* pNewWord = new(pDic) Word(sName);
   
-  pForth->m_pTask->m_pCompiler->m_pCurrent = pNewWord;
+  m_pTask->m_pCompiler->m_pCurrent = pNewWord;
   
   EXIT();
 }
@@ -268,17 +268,17 @@ void Step::vCreateFromInRoot(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* createTenants -- create tenant word in dictionary                          */
 /*----------------------------------------------------------------------------*/
-void Step::vCreateTenants(Forth* pForth)
+void Step::vCreateTenants(void)
 {
   ENTRY("vCreateTenants"_Stz);
   
-  pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+  m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
     
   Dic* pDic = AM::pRootDic();
 
-  Word* pNewWord = new(pDic) Word(pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken());
+  Word* pNewWord = new(pDic) Word(m_pTask->m_pCompiler->m_pTokeniser->sToken());
   
-  pForth->m_pTask->m_pCompiler->m_pCurrent = pNewWord;
+  m_pTask->m_pCompiler->m_pCurrent = pNewWord;
   
   AM::vTenants(pNewWord);
   
@@ -288,11 +288,11 @@ void Step::vCreateTenants(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* does> -- routine does                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vDoes(Forth* pForth)
+void Step::vDoes(void)
 {
   ENTRY("vDoes"_Stz);
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   pCurrentWord->vEncode("does_rt"_Stz);
   pCurrentWord->vEncode("exit_rt"_Stz);
@@ -305,14 +305,14 @@ void Step::vDoes(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* does_rt -- runtime for does>                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vDoes_RT(Forth* pForth)
+void Step::vDoes_RT(void)
 {
   ENTRY("vDoes_RT"_Stz);
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   pCurrentWord->vEntryStep(&Step::vEnterObject);
-  pCurrentWord->vEntryCell(pForth->m_pTask->m_pForth->m_aInxPtr + 1);
+  pCurrentWord->vEntryCell(m_pTask->m_pForth->m_aInxPtr + 1);
   
   EXIT();
 }
@@ -320,25 +320,25 @@ void Step::vDoes_RT(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* exit_rt -- runtime for exit from routine                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vExit_RT(Forth* pForth)
+void Step::vExit_RT(void)
 {
   ENTRY("vExit_RT"_Stz);
   
-  //vTrace("Exit: r eturn stack %lld\n"_Stz, pForth->m_pReturnStack->iValues());
+  //vTrace("Exit: r eturn stack %lld\n"_Stz, m_pReturnStack->iValues());
   
-  if ( (pForth->m_pTask->m_iTracing & C_TRACE_ROUTINES) )
-    pForth->m_pTask->vTracePoint("<"_Stz);
+  if ( (m_pTask->m_iTracing & C_TRACE_ROUTINES) )
+    m_pTask->vTracePoint("<"_Stz);
   
-  if (pForth->m_pTask->m_pForth->m_pLocalsFrame
-      && pForth->m_pTask->m_pForth->m_pLocalsFrame->aDiscardPoint() ==
-      pForth->m_pReturnStack->aPeekValue())
-    pForth->m_pTask->vLocalsPop();
+  if (m_pTask->m_pForth->m_pLocalsFrame
+      && m_pTask->m_pForth->m_pLocalsFrame->aDiscardPoint() ==
+      m_pReturnStack->aPeekValue())
+    m_pTask->vLocalsPop();
   
   Cell* aCell;
-  if ( ! pForth->m_pReturnStack->bPop(aCell) )
+  if ( ! m_pReturnStack->bPop(aCell) )
     THROW_RSTACK();
   
-  pForth->m_pTask->m_pForth->m_aInxPtr = aCell;
+  m_pTask->m_pForth->m_aInxPtr = aCell;
   
   EXIT();
 }
@@ -346,21 +346,21 @@ void Step::vExit_RT(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* find -- find and push word named on stack                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vFind(Forth* pForth)
+void Step::vFind(void)
 {
   ENTRY("vFind"_Stz);
   
   s256 sName;
-  if ( ! pForth->m_pDataStack->bPop(sName) )
+  if ( ! m_pDataStack->bPop(sName) )
     THROW_DSTACK();
   
-  if (pForth->m_pTask->m_iTracing) {
+  if (m_pTask->m_iTracing) {
     i8 i = 0;
   }
   
-  Word* pWord = pForth->m_pTask->m_oDicStack.pFindWord(sName);
+  Word* pWord = m_pTask->m_oDicStack.pFindWord(sName);
   
-  pForth->m_pDataStack->vPushPointer(pWord);
+  m_pDataStack->vPushPointer(pWord);
   
   EXIT();
 }
@@ -368,21 +368,21 @@ void Step::vFind(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* findInCurrent -- find and push word named on stack withinin curr dic       */
 /*----------------------------------------------------------------------------*/
-void Step::vFindInCurrent(Forth* pForth)
+void Step::vFindInCurrent(void)
 {
   ENTRY("vFindInCurrent"_Stz);
   
   s256 sName;
-  if ( ! pForth->m_pDataStack->bPop(sName) )
+  if ( ! m_pDataStack->bPop(sName) )
     THROW_DSTACK();
   
-  if (pForth->m_pTask->m_iTracing) {
+  if (m_pTask->m_iTracing) {
     i8 i = 0; i++;
   }
   
-  Word* pWord = pForth->m_pTask->m_oDicStack.pFindInCurrent(sName);
+  Word* pWord = m_pTask->m_oDicStack.pFindInCurrent(sName);
   
-  pForth->m_pDataStack->vPushPointer(pWord);
+  m_pDataStack->vPushPointer(pWord);
   
   EXIT();
 }
@@ -390,24 +390,24 @@ void Step::vFindInCurrent(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* forget -- forget the word named by next token                              */
 /*----------------------------------------------------------------------------*/
-void Step::vForget(Forth* pForth)
+void Step::vForget(void)
 {
   ENTRY("vForget"_Stz);
   
-  pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+  m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
   
-  Word* pWord = pForth->m_pTask->m_oDicStack.pFindWord(pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken());
+  Word* pWord = m_pTask->m_oDicStack.pFindWord(m_pTask->m_pCompiler->m_pTokeniser->sToken());
   
   if ( ! pWord )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
            "No such word: %s",
-           pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar());
+           m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar());
   
   s32 sName;
   
-  sName = pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken();
+  sName = m_pTask->m_pCompiler->m_pTokeniser->sToken();
   
-  Word* pRemovedWord = pForth->m_pTask->m_oDicStack.pRemoveWord(sName);
+  Word* pRemovedWord = m_pTask->m_oDicStack.pRemoveWord(sName);
   ASSERT(pRemovedWord);
   
   delete pRemovedWord;
@@ -418,11 +418,11 @@ void Step::vForget(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* immediate -- make the word being compiled an immediate word                */
 /*----------------------------------------------------------------------------*/
-void Step::vImmediate(Forth* pForth)
+void Step::vImmediate(void)
 {
   ENTRY("vImmediate"_Stz);
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   //vTrace("Step::vImmediate: %s\n"_Stz,pCurrentWord->sName().azChar());
   
@@ -434,27 +434,27 @@ void Step::vImmediate(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* locate -- locate and push word name based on the ip which is on the stack  */
 /*----------------------------------------------------------------------------*/
-void Step::vLocate(Forth* pForth)
+void Step::vLocate(void)
 {
   ENTRY("vLocate"_Stz);
   
   i8 iAddrAsInt;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iAddrAsInt) )
+  if ( ! m_pDataStack->bPopAsInt(iAddrAsInt) )
     THROW_DSTACK();
   
   void* aCellVoid = (void*)iAddrAsInt;
   Cell* aHasCell = _aCell(aCellVoid);
   
-  Word* pLocatedWord = pForth->m_pTask->m_oDicStack.pLocateWord(aHasCell);
+  Word* pLocatedWord = m_pTask->m_oDicStack.pLocateWord(aHasCell);
   
   if (pLocatedWord) {
     s32 sName;
     sName = pLocatedWord->sName();
-    pForth->m_pDataStack->vPushS32(sName);
+    m_pDataStack->vPushS32(sName);
   }
   else {
     i8 iZero = 0;
-    pForth->m_pDataStack->vPushI8(iZero);
+    m_pDataStack->vPushI8(iZero);
   }
   
   EXIT();
@@ -463,21 +463,21 @@ void Step::vLocate(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* postpone -- encode call to word named by next token into word being compiled  */
 /*----------------------------------------------------------------------------*/
-void Step::vPostpone(Forth* pForth)
+void Step::vPostpone(void)
 {
   ENTRY("vPostpone"_Stz);
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   // get name of word to be called
-  pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+  m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
   
   // find the word in dic stack
-  Word* pCalledWord = pForth->m_pTask->m_oDicStack.pFindWord(pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken());
+  Word* pCalledWord = m_pTask->m_oDicStack.pFindWord(m_pTask->m_pCompiler->m_pTokeniser->sToken());
   if ( ! pCalledWord )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
            "No word: %s ",
-           pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar());
+           m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar());
   
   if (pCalledWord->bImmediate()) {
     
@@ -504,11 +504,11 @@ void Step::vPostpone(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* prompt -- make the word being compiled directly runnable by prompt         */
 /*----------------------------------------------------------------------------*/
-void Step::vPrompt(Forth* pForth)
+void Step::vPrompt(void)
 {
   ENTRY("vImmediate"_Stz);
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   pCurrentWord->vPrompt(true);
   
@@ -518,17 +518,17 @@ void Step::vPrompt(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* see -- dump routine of word named by next token                            */
 /*----------------------------------------------------------------------------*/
-void Step::vSee(Forth* pForth)
+void Step::vSee(void)
 {
   ENTRY("vSee"_Stz);
   
   s48K sString;
   
-  pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+  m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
   
-  Word* pWord = pForth->m_pTask->m_oDicStack.pFindWord(pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken());
+  Word* pWord = m_pTask->m_oDicStack.pFindWord(m_pTask->m_pCompiler->m_pTokeniser->sToken());
   if ( ! pWord ) {
-    vTrace("See: %s unknown\n"_Stz,pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar());
+    vTrace("See: %s unknown\n"_Stz,m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar());
     return;
   }
   
@@ -543,7 +543,7 @@ void Step::vSee(Forth* pForth)
     
     StepFp fpHasStep = *aDoesCell->m_afpIntrinsic;
     
-    Word* pCallsWord = pForth->m_pTask->m_oDicStack.pLocateWord(fpHasStep);
+    Word* pCallsWord = m_pTask->m_oDicStack.pLocateWord(fpHasStep);
     
     // jumps
     if (*aDoesCell->m_afpIntrinsic == &Step::vFlowJump ||
@@ -607,28 +607,28 @@ void Step::vSee(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* ; -- end compilation of current word, enter interpreter state              */
 /*----------------------------------------------------------------------------*/
-void Step::vSemicolon(Forth* pForth)
+void Step::vSemicolon(void)
 {
   ENTRY("vSemicolon"_Stz);
   
-  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
-  if (pForth->m_pTask->m_pCompiler->m_nLocals) {
+  if (m_pTask->m_pCompiler->m_nLocals) {
     
     // reset the number of local variables
-    pForth->m_pTask->m_pCompiler->m_nLocals = 0;
+    m_pTask->m_pCompiler->m_nLocals = 0;
     
     // pop top dictionary
-    pForth->m_pTask->m_oDicStack.vDiscard();
+    m_pTask->m_oDicStack.vDiscard();
     
     // enocde locals frame pop
     pCurrentWord->vEncode("locals.pop"_Stz);
   }
   
   if (! pCurrentWord->sName().bSame("exit"_Stz) &&
-      pForth->m_pTask->m_oDicStack.pFindWord("exit"_Stz)) {
+      m_pTask->m_oDicStack.pFindWord("exit"_Stz)) {
     
-    if (pForth->m_pTask->m_oDicStack.pFindWord(pCurrentWord->szExitHook())) {
+    if (m_pTask->m_oDicStack.pFindWord(pCurrentWord->szExitHook())) {
       pCurrentWord->vEncode(pCurrentWord->szExitHook());
       pCurrentWord->vEncode("exit_rt"_Stz);
     }
@@ -638,13 +638,13 @@ void Step::vSemicolon(Forth* pForth)
   else
     pCurrentWord->vEncode("exit_rt"_Stz);
   
-  pForth->m_pTask->m_pCompiler->m_bCompiling = false;
+  m_pTask->m_pCompiler->m_bCompiling = false;
   
   // discard subDic use
-  for ( ; pForth->m_pTask->m_pCompiler->m_nSubDic; pForth->m_pTask->m_pCompiler->m_nSubDic--)
-    pForth->m_pTask->m_oDicStack.vDiscard();
+  for ( ; m_pTask->m_pCompiler->m_nSubDic; m_pTask->m_pCompiler->m_nSubDic--)
+    m_pTask->m_oDicStack.vDiscard();
   
-  pForth->m_pTask->m_pCompiler->m_pCurrent = nullptr;
+  m_pTask->m_pCompiler->m_pCurrent = nullptr;
   
   EXIT();
 }
@@ -652,12 +652,12 @@ void Step::vSemicolon(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* series-name -- generate next name within series for word named on stack    */
 /*----------------------------------------------------------------------------*/
-void Step::vSeriesName(Forth* pForth)
+void Step::vSeriesName(void)
 {
   ENTRY("vSeriesName"_Stz);
   
   s32 sName;
-  if ( ! pForth->m_pDataStack->bPop(sName) )
+  if ( ! m_pDataStack->bPop(sName) )
     THROW_DSTACK();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -689,7 +689,7 @@ void Step::vSeriesName(Forth* pForth)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pForth->m_pDataStack->vPushS32(sNextName);
+  m_pDataStack->vPushS32(sNextName);
 
   EXIT();
 }
@@ -697,16 +697,16 @@ void Step::vSeriesName(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* subDic -- push sub dictionary                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vSubDic(Forth* pForth)
+void Step::vSubDic(void)
 {
   ENTRY("vSubDic"_Stz);
   
-  pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+  m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
   
   s32 sNameSubDic;
-  sNameSubDic = pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken();
+  sNameSubDic = m_pTask->m_pCompiler->m_pTokeniser->sToken();
   
-  Word* pWordSubDic = pForth->m_pTask->m_oDicStack.pFindWord(sNameSubDic);
+  Word* pWordSubDic = m_pTask->m_oDicStack.pFindWord(sNameSubDic);
   if ( ! pWordSubDic )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
            "No such subDic: %s",
@@ -714,9 +714,9 @@ void Step::vSubDic(Forth* pForth)
   
   Dic* pDic = _pDic(pWordSubDic->aWspArea());
   
-  pForth->m_pTask->m_oDicStack.vPush(pDic);
+  m_pTask->m_oDicStack.vPush(pDic);
   
-  pForth->m_pTask->m_pCompiler->m_nSubDic++;
+  m_pTask->m_pCompiler->m_nSubDic++;
   
   EXIT();
 }
@@ -724,26 +724,26 @@ void Step::vSubDic(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tick -- find and push word named by next token                             */
 /*----------------------------------------------------------------------------*/
-void Step::vTick(Forth* pForth)
+void Step::vTick(void)
 {
   ENTRY("vTick"_Stz);
   
-  pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+  m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
     
   s32 sWordNm;
-  sWordNm = pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken();
+  sWordNm = m_pTask->m_pCompiler->m_pTokeniser->sToken();
   
-  Word* pWord = pForth->m_pTask->m_oDicStack.pFindWord(sWordNm);
+  Word* pWord = m_pTask->m_oDicStack.pFindWord(sWordNm);
   
   if (! pWord)
     vFatal("No word: %s "_Stz,sWordNm.azChar());
   
-  if (pForth->m_pTask->m_pCompiler->m_bCompiling) {
-    Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
+  if (m_pTask->m_pCompiler->m_bCompiling) {
+    Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
     pCurrentWord->vEncode("pushValue"_Stz,pWord);
   }
   else {
-    pForth->m_pDataStack->vPushPointer(pWord);
+    m_pDataStack->vPushPointer(pWord);
   }
   
   EXIT();

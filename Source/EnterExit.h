@@ -29,8 +29,8 @@
     _pStepAccum->vEnter(_iEnterCycles,_iEnterMisses); \
   } \
   \
-  if (C_TRACE_STEPS && pForth->m_pTask->m_iTracing) \
-    pForth->m_pTask->vTraceStep(szStepNm);
+  if (C_TRACE_STEPS && m_pTask->m_iTracing) \
+    m_pTask->vTraceStep(szStepNm);
 
 /*----------------------------------------------------------------------------*/
 /* step exit macro                                                            */

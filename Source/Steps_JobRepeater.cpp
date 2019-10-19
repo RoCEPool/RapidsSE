@@ -17,18 +17,18 @@ void Step::vAddSteps_JobRepeater(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Repeater.begin -- begin repeating                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_RepeaterBegin(Forth* pForth)
+void Step::vJob_RepeaterBegin(void)
 {
   ENTRY("vJob_RepeaterBegin"_Stz);
   
   Object* pPtrJob_Repeater;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Repeater) )
+  if ( ! m_pDataStack->bPop(pPtrJob_Repeater) )
     THROW_DSTACK();
   Job_Repeater* pJob_Repeater = _pJob_Repeater(pPtrJob_Repeater);
   
   bool bBegun = pJob_Repeater->bBegin();
   
-  pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -36,18 +36,18 @@ void Step::vJob_RepeaterBegin(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_repeater.chunk -- indefinietly copy file into pipe                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_RepeaterChunk(Forth* pForth)
+void Step::vJob_RepeaterChunk(void)
 {
   ENTRY("vJob_RepeaterChunk"_Stz);
   
   Object* pPtrJob_Repeater;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Repeater) )
+  if ( ! m_pDataStack->bPop(pPtrJob_Repeater) )
     THROW_DSTACK();
   Job_Repeater* pJob_Repeater = _pJob_Repeater(pPtrJob_Repeater);
   
   bool bCallAgain = pJob_Repeater->bChunk();
   
-  pForth->m_pDataStack->vPushBool(bCallAgain);
+  m_pDataStack->vPushBool(bCallAgain);
 
   EXIT();
 }
@@ -55,12 +55,12 @@ void Step::vJob_RepeaterChunk(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_repeater.end -- end repeater                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_RepeaterEnd(Forth* pForth)
+void Step::vJob_RepeaterEnd(void)
 {
   ENTRY("vJob_RepeaterEnd"_Stz);
   
   Object* pPtrJob_Repeater;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Repeater) )
+  if ( ! m_pDataStack->bPop(pPtrJob_Repeater) )
     THROW_DSTACK();
   Job_Repeater* pJob_Repeater = _pJob_Repeater(pPtrJob_Repeater);
   

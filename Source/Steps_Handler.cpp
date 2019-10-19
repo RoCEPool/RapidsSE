@@ -15,11 +15,11 @@ void Step::vAddSteps_Handler(void)
 /*----------------------------------------------------------------------------*/
 /* error.msg -- get error message given the error code                        */
 /*----------------------------------------------------------------------------*/
-void Step::vHandlerServiceSleepQueue(Forth* pForth)
+void Step::vHandlerServiceSleepQueue(void)
 {
   ENTRY("vHandlerServiceSleepQueue"_Stz);
   
-  pForth->m_pTask->m_pThread->m_pPthread->vSleepSsec(1,CN_WORD);
+  m_pTask->m_pThread->m_pPthread->vSleepSsec(1,CN_WORD);
   
   EXIT();
 }

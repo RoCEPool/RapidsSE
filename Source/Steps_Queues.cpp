@@ -20,11 +20,11 @@ void Step::vAddSteps_Queues(void)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesCheckSleeping -- check the sleeping queue                    */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesCheckSleeping(Forth* pForth)
+void Step::vQueuesCheckSleeping(void)
 {
   ENTRY("vQueuesCheckSleeping"_Stz);
   
-  Scheduler::vWakeSleepingTasks(pForth->m_pTask);
+  Scheduler::vWakeSleepingTasks(m_pTask);
   
   EXIT();
 }
@@ -32,17 +32,17 @@ void Step::vQueuesCheckSleeping(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesExecutingLength -- get the executing queue length            */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesExecutingLength(Forth* pForth)
+void Step::vQueuesExecutingLength(void)
 {
   ENTRY("vQueuesExecutingLength"_Stz);
   
   i8 iSlot;
   
-  if ( !  pForth->m_pDataStack->bPop(iSlot) )
+  if ( !  m_pDataStack->bPop(iSlot) )
     THROW_DSTACK();
   
   Queues* pQueues = AM::pQueues();
-  pForth->m_pDataStack->vPushI8(pQueues->nTasksExecuting());
+  m_pDataStack->vPushI8(pQueues->nTasksExecuting());
   
   EXIT();
 }
@@ -50,17 +50,17 @@ void Step::vQueuesExecutingLength(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesReadyLength -- get the ready queue length                    */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesReadyLength(Forth* pForth)
+void Step::vQueuesReadyLength(void)
 {
   ENTRY("vQueuesReadyLength"_Stz);
   
   i8 iSlot;
   
-  if ( !  pForth->m_pDataStack->bPop(iSlot) )
+  if ( !  m_pDataStack->bPop(iSlot) )
     THROW_DSTACK();
   
   Queues* pQueues = AM::pQueues();
-  pForth->m_pDataStack->vPushI8(pQueues->nTasksReady());
+  m_pDataStack->vPushI8(pQueues->nTasksReady());
   
   EXIT();
 }
@@ -68,12 +68,12 @@ void Step::vQueuesReadyLength(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesSleepingLength -- get the sleeping queue length              */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesSleepingLength(Forth* pForth)
+void Step::vQueuesSleepingLength(void)
 {
   ENTRY("vQueuesSleepingLength"_Stz);
   
   Queues* pQueues = AM::pQueues();
-  pForth->m_pDataStack->vPushI8(pQueues->nTasksSleeping());
+  m_pDataStack->vPushI8(pQueues->nTasksSleeping());
   
   EXIT();
 }
@@ -81,12 +81,12 @@ void Step::vQueuesSleepingLength(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesWaitingLength -- get the sleeping queue length              */
 /*----------------------------------------------------------------------------*/
-void Step::vQueuesWaitingLength(Forth* pForth)
+void Step::vQueuesWaitingLength(void)
 {
   ENTRY("vQueuesWaitingLength"_Stz);
   
   Queues* pQueues = AM::pQueues();
-  pForth->m_pDataStack->vPushI8(pQueues->nTasksWaiting());
+  m_pDataStack->vPushI8(pQueues->nTasksWaiting());
   
   EXIT();
 }

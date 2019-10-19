@@ -34,12 +34,12 @@ void Step::vAddSteps_Dir(void)
 /*----------------------------------------------------------------------------*/
 /* dir.changetCurrent -- change working directory                             */
 /*----------------------------------------------------------------------------*/
-void Step::vDirChangeCurrent(Forth* pForth)
+void Step::vDirChangeCurrent(void)
 {
   ENTRY("vDirChangeCurrent"_Stz);
   
   s256 sDir;
-  if ( ! pForth->m_pDataStack->bPop(sDir) )
+  if ( ! m_pDataStack->bPop(sDir) )
     THROW_DSTACK();
   
   if ( ! Dir::bChangeCurrent(sDir) )
@@ -52,17 +52,17 @@ void Step::vDirChangeCurrent(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dir::exists -- test if a directory exists                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vDirExists(Forth* pForth)
+void Step::vDirExists(void)
 {
 ENTRY("vDirExists"_Stz);
   
   s256 sDirPath;
-  if ( ! pForth->m_pDataStack->bPop(sDirPath) )
+  if ( ! m_pDataStack->bPop(sDirPath) )
     THROW_DSTACK();
   
   i8 iResult = Dir::bExists(sDirPath);
   
-  pForth->m_pDataStack->vPushI8(iResult);
+  m_pDataStack->vPushI8(iResult);
   
   EXIT();
 }
@@ -70,7 +70,7 @@ ENTRY("vDirExists"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir::getCurrent -- get working directory                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vDirGetCurrent(Forth* pForth)
+void Step::vDirGetCurrent(void)
 {
   ENTRY("vDirGetCurrent"_Stz);
   
@@ -80,7 +80,7 @@ void Step::vDirGetCurrent(Forth* pForth)
   
   if (Dir::bGetCurrent(sDirPath)) {
     xStrVal = sDirPath;
-    pForth->m_pDataStack->vPushGenVar(xStrVal);
+    m_pDataStack->vPushGenVar(xStrVal);
   }
   else {
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
@@ -93,17 +93,17 @@ void Step::vDirGetCurrent(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dir::make -- make a directory                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vDirMake(Forth* pForth)
+void Step::vDirMake(void)
 {
 ENTRY("vDirMake"_Stz);
   
   s256 sPath;
-  if ( ! pForth->m_pDataStack->bPop(sPath) )
+  if ( ! m_pDataStack->bPop(sPath) )
     THROW_DSTACK();
   
   i8 iResult = Dir::bMake(sPath);
   
-  pForth->m_pDataStack->vPushI8(iResult);
+  m_pDataStack->vPushI8(iResult);
   
   EXIT();
 }
@@ -111,17 +111,17 @@ ENTRY("vDirMake"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir::remove -- remove a directory                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vDirRemove(Forth* pForth)
+void Step::vDirRemove(void)
 {
 ENTRY("vDirRemove"_Stz);
   
   s256 sPath;
-  if ( ! pForth->m_pDataStack->bPop(sPath) )
+  if ( ! m_pDataStack->bPop(sPath) )
     THROW_DSTACK();
   
   i8 iResult = Dir::bRemove(sPath);
   
-  pForth->m_pDataStack->vPushI8(iResult);
+  m_pDataStack->vPushI8(iResult);
   
   EXIT();
 }
@@ -129,13 +129,13 @@ ENTRY("vDirRemove"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.close -- close directory                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vDirClose(Forth* pForth)
+void Step::vDirClose(void)
 {
 ENTRY("vDirClose"_Stz);
   
   Object* pPtrDir;
 
-  if ( ! pForth->m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPop(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -148,13 +148,13 @@ ENTRY("vDirClose"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.delete -- delete instance of dir                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vDirDelete(Forth* pForth)
+void Step::vDirDelete(void)
 {
 ENTRY("vDirDelete"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPop(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -167,13 +167,13 @@ ENTRY("vDirDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.entryName -- get dir entry name                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vDirEntryName(Forth* pForth)
+void Step::vDirEntryName(void)
 {
 ENTRY("vDirEntryName"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPop(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -182,7 +182,7 @@ ENTRY("vDirEntryName"_Stz);
   
   sEntryName = pDir->sEntryName();
   
-  pForth->m_pDataStack->vPushS256(sEntryName);
+  m_pDataStack->vPushS256(sEntryName);
   
   EXIT();
 }
@@ -190,13 +190,13 @@ ENTRY("vDirEntryName"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.entryType -- get dir entry type                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vDirEntryType(Forth* pForth)
+void Step::vDirEntryType(void)
 {
 ENTRY("vDirEntryType"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPop(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -205,7 +205,7 @@ ENTRY("vDirEntryType"_Stz);
   
   iEntryType = pDir->iEntryType();
   
-  pForth->m_pDataStack->vPushI8(iEntryType);
+  m_pDataStack->vPushI8(iEntryType);
   
   EXIT();
 }
@@ -213,20 +213,20 @@ ENTRY("vDirEntryType"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.isClosed -- is dir closed?                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vDirIsClosed(Forth* pForth)
+void Step::vDirIsClosed(void)
 {
 ENTRY("vDirIsClosed"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPop(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
   bool bIsClosed = pDir->bIsClosed();
   
-  pForth->m_pDataStack->vPushI8(bIsClosed);
+  m_pDataStack->vPushI8(bIsClosed);
   
   EXIT();
 }
@@ -234,20 +234,20 @@ ENTRY("vDirIsClosed"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.isOpen -- is dir open?                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vDirIsOpen(Forth* pForth)
+void Step::vDirIsOpen(void)
 {
 ENTRY("vDirIsOpen"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPop(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
   bool bIsOpen = pDir->bIsOpen();
   
-  pForth->m_pDataStack->vPushI8(bIsOpen);
+  m_pDataStack->vPushI8(bIsOpen);
   
   EXIT();
 }
@@ -255,7 +255,7 @@ ENTRY("vDirIsOpen"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir::new -- new instance of dir                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vDirNew(Forth* pForth)
+void Step::vDirNew(void)
 {
 ENTRY("vDirNew"_Stz);
   
@@ -264,7 +264,7 @@ ENTRY("vDirNew"_Stz);
   Object* pPtrDir;
   pPtrDir = (Object*)pDir;
   
-  pForth->m_pDataStack->vPushPointer(pPtrDir);
+  m_pDataStack->vPushPointer(pPtrDir);
   
   EXIT();
 }
@@ -272,23 +272,23 @@ ENTRY("vDirNew"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.open -- open dir for reading                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vDirOpen(Forth* pForth)
+void Step::vDirOpen(void)
 {
 ENTRY("vDirOpen"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPop(pPtrDir) )
     THROW_DSTACK();
   Dir* pDir = _pDir(pPtrDir);
   
   s256 sPath;
-  if ( ! pForth->m_pDataStack->bPop(sPath) )
+  if ( ! m_pDataStack->bPop(sPath) )
     THROW_DSTACK();
   
   bool bOpened = pDir->bOpen(sPath);
   
-  pForth->m_pDataStack->vPushI8(bOpened);
+  m_pDataStack->vPushI8(bOpened);
   
   EXIT();
 }
@@ -296,13 +296,13 @@ ENTRY("vDirOpen"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.path@ -- get path                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vDirPathGet(Forth* pForth)
+void Step::vDirPathGet(void)
 {
 ENTRY("vDirPathGet"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPop(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -311,7 +311,7 @@ ENTRY("vDirPathGet"_Stz);
   
   sPath = pDir->sPath();
   
-  pForth->m_pDataStack->vPushS256(sPath);
+  m_pDataStack->vPushS256(sPath);
 
   
   EXIT();
@@ -320,20 +320,20 @@ ENTRY("vDirPathGet"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.read -- read next dir entry                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vDirRead(Forth* pForth)
+void Step::vDirRead(void)
 {
 ENTRY("vDirRead"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPop(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
   bool bRead  = pDir->bRead();
   
-  pForth->m_pDataStack->vPushI8(bRead);
+  m_pDataStack->vPushI8(bRead);
   
   EXIT();
 }
@@ -341,13 +341,13 @@ ENTRY("vDirRead"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.rewind -- rewind dir pointer                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vDirRewind(Forth* pForth)
+void Step::vDirRewind(void)
 {
 ENTRY("vDirRewind"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPop(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -360,19 +360,19 @@ ENTRY("vDirRewind"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.seek -- seek dir ptr to a given position                               */
 /*----------------------------------------------------------------------------*/
-void Step::vDirSeek(Forth* pForth)
+void Step::vDirSeek(void)
 {
 ENTRY("vDirSeek"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPop(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
   i8 iPosition;
-  if ( ! pForth->m_pDataStack->bPop(iPosition) )
+  if ( ! m_pDataStack->bPop(iPosition) )
     THROW_DSTACK();
   
   pDir->vSeek(iPosition);
@@ -383,20 +383,20 @@ ENTRY("vDirSeek"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dir.tell -- tel current dir position                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vDirTell(Forth* pForth)
+void Step::vDirTell(void)
 {
 ENTRY("vDirTell"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPop(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
   i8 iPosition = pDir->iTell();
   
-  pForth->m_pDataStack->vPushI8(iPosition);
+  m_pDataStack->vPushI8(iPosition);
   
   EXIT();
 }

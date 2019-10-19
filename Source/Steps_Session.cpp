@@ -22,18 +22,18 @@ void Step::vAddSteps_Session(void)
 /*----------------------------------------------------------------------------*/
 /* session.commandProcessor -- get session command processor                  */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionCommand(Forth* pForth)
+void Step::vSessionCommand(void)
 {
   ENTRY("vSessionDicStack"_Stz);
   
   Object* pPtrSession;
-  if ( ! pForth->m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPop(pPtrSession) )
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  pForth->m_pDataStack->vPushPointer(pSession->m_pInput);
+  m_pDataStack->vPushPointer(pSession->m_pInput);
   
   EXIT();
 }
@@ -41,18 +41,18 @@ void Step::vSessionCommand(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* session.dicStack -- get session dic stack                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionDicStack(Forth* pForth)
+void Step::vSessionDicStack(void)
 {
   ENTRY("vSessionDicStack"_Stz);
   
   Object* pPtrSession;
-  if ( ! pForth->m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPop(pPtrSession) )
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  pForth->m_pDataStack->vPushPointer(pSession->pPathStack());
+  m_pDataStack->vPushPointer(pSession->pPathStack());
   
   EXIT();
 }
@@ -60,12 +60,12 @@ void Step::vSessionDicStack(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* session.dump -- dump of SE interface                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionDump(Forth* pForth)
+void Step::vSessionDump(void)
 {
 ENTRY("vSessionDump"_Stz);
   
   Object* pPtrSession;
-  if ( ! pForth->m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPop(pPtrSession) )
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
@@ -79,18 +79,18 @@ ENTRY("vSessionDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* session.isExiting -- is session exiting                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionIsExiting(Forth* pForth)
+void Step::vSessionIsExiting(void)
 {
   ENTRY("vSessionIsExiting"_Stz);
   
   Object* pPtrSession;
-  if ( ! pForth->m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPop(pPtrSession) )
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  pForth->m_pDataStack->vPushI8(pSession->m_bSessionExiting);
+  m_pDataStack->vPushI8(pSession->m_bSessionExiting);
   
   EXIT();
 }
@@ -98,18 +98,18 @@ void Step::vSessionIsExiting(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* session.pid -- get pid of SE session                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionPid(Forth* pForth)
+void Step::vSessionPid(void)
 {
   ENTRY("vSessionPid"_Stz);
   
   Object* pPtrSession;
-  if ( ! pForth->m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPop(pPtrSession) )
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  pForth->m_pDataStack->vPushI8(pSession->m_iPid);
+  m_pDataStack->vPushI8(pSession->m_iPid);
   
   EXIT();
 }
@@ -117,18 +117,18 @@ void Step::vSessionPid(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* session.slot@ -- fetch slot of SE session                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionSlotFetch(Forth* pForth)
+void Step::vSessionSlotFetch(void)
 {
   ENTRY("vSessionSlotFetch"_Stz);
   
   Object* pPtrSession;
-  if ( ! pForth->m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPop(pPtrSession) )
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  pForth->m_pDataStack->vPushI8(pSession->iSlot());
+  m_pDataStack->vPushI8(pSession->iSlot());
   
   EXIT();
 }
@@ -136,18 +136,18 @@ void Step::vSessionSlotFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* session.tx@ -- fetch tx of SE session                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionTxFetch(Forth* pForth)
+void Step::vSessionTxFetch(void)
 {
   ENTRY("vSessionTxFetch"_Stz);
   
   Object* pPtrSession;
-  if ( ! pForth->m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPop(pPtrSession) )
     THROW_DSTACK();
   Session* pSession = _pSession(pPtrSession);
   
   Tx* pTx = pSession->pTx();
   
-  pForth->m_pDataStack->vPushPointer(pTx);
+  m_pDataStack->vPushPointer(pTx);
   
   EXIT();
 }
@@ -155,17 +155,17 @@ void Step::vSessionTxFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* session.tx! -- store tx of SE session                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionTxStore(Forth* pForth)
+void Step::vSessionTxStore(void)
 {
   ENTRY("vSessionTxStore"_Stz);
   
   Object* pPtrSession;
-  if ( ! pForth->m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPop(pPtrSession) )
     THROW_DSTACK();
   Session* pSession = _pSession(pPtrSession);
   
   Object* pPtrTx;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   

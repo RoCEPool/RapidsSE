@@ -20,12 +20,12 @@ void Step::vAddSteps_ApiState(void)
 /*----------------------------------------------------------------------------*/
 /* c -- increment the number of __begun received                              */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncBegun(Forth* pForth)
+void Step::vApiStateIncBegun(void)
 {
   ENTRY("vApiIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
@@ -43,12 +43,12 @@ void Step::vApiStateIncBegun(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* apiState::incCancelled -- increment the number of __cancelled received     */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncCancelled(Forth* pForth)
+void Step::vApiStateIncCancelled(void)
 {
   ENTRY("vApiIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
@@ -66,12 +66,12 @@ void Step::vApiStateIncCancelled(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* apiState::incEnded -- increment the number of __ended received             */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncEnded(Forth* pForth)
+void Step::vApiStateIncEnded(void)
 {
   ENTRY("vApiIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
@@ -89,12 +89,12 @@ void Step::vApiStateIncEnded(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* apiState::incExecuted-- increment the number of __executed received        */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncExecuted(Forth* pForth)
+void Step::vApiStateIncExecuted(void)
 {
   ENTRY("vApiIncExecuted"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
@@ -112,15 +112,15 @@ void Step::vApiStateIncExecuted(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* apiState::senLoc -- set last reported sen location                         */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateSenLoc(Forth* pForth)
+void Step::vApiStateSenLoc(void)
 {
   ENTRY("vApiStateSenLoc"_Stz);
   
   i8 iPosition;
-  if ( ! pForth->m_pDataStack->bPop(iPosition) )
+  if ( ! m_pDataStack->bPop(iPosition) )
     THROW_DSTACK();
   
-  Session* pSession = pForth->m_pTask->m_pSession;
+  Session* pSession = m_pTask->m_pSession;
   
   ApiState::vMarkSenLoc(pSession,iPosition);
   
@@ -130,12 +130,12 @@ void Step::vApiStateSenLoc(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* apiState::traceSession -- trace the api state for this session             */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateTraceSession(Forth* pForth)
+void Step::vApiStateTraceSession(void)
 {
   ENTRY("vApiStateTraceSession"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);

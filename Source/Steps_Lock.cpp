@@ -19,12 +19,12 @@ void Step::vAddSteps_Lock(void)
 /*----------------------------------------------------------------------------*/
 /* lock.dropread -- drop read lock                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vLockDropRead(Forth* pForth)
+void Step::vLockDropRead(void)
 {
 ENTRY("vLockDropRead"_Stz);
   
   Object* pPtrLock;;
-  if ( ! pForth->m_pDataStack->bPop(pPtrLock) )
+  if ( ! m_pDataStack->bPop(pPtrLock) )
     THROW_DSTACK();
   
   Lock* pLock = _pLock(pPtrLock);
@@ -39,12 +39,12 @@ ENTRY("vLockDropRead"_Stz);
 /*----------------------------------------------------------------------------*/
 /* lock.dropwrite -- drop write lock                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vLockDropWrite(Forth* pForth)
+void Step::vLockDropWrite(void)
 {
 ENTRY("vLockDropWrite"_Stz);
 
   Object* pPtrLock;;
-  if ( ! pForth->m_pDataStack->bPop(pPtrLock) )
+  if ( ! m_pDataStack->bPop(pPtrLock) )
     THROW_DSTACK();
   
   Lock* pLock = _pLock(pPtrLock);
@@ -59,12 +59,12 @@ ENTRY("vLockDropWrite"_Stz);
 /*----------------------------------------------------------------------------*/
 /* lock.grabread -- grab read lock                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vLockGrabRead(Forth* pForth)
+void Step::vLockGrabRead(void)
 {
 ENTRY("vLockGrabRead"_Stz);
 
   Object* pPtrLock;;
-  if ( ! pForth->m_pDataStack->bPop(pPtrLock) )
+  if ( ! m_pDataStack->bPop(pPtrLock) )
     THROW_DSTACK();
   
   Lock* pLock = _pLock(pPtrLock);
@@ -79,12 +79,12 @@ ENTRY("vLockGrabRead"_Stz);
 /*----------------------------------------------------------------------------*/
 /* lock.grabwrite -- grab write lock                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vLockGrabWrite(Forth* pForth)
+void Step::vLockGrabWrite(void)
 {
 ENTRY("vLockGrabWrite"_Stz);
 
   Object* pPtrLock;;
-  if ( ! pForth->m_pDataStack->bPop(pPtrLock) )
+  if ( ! m_pDataStack->bPop(pPtrLock) )
     THROW_DSTACK();
   
   Lock* pLock = _pLock(pPtrLock);
@@ -99,12 +99,12 @@ ENTRY("vLockGrabWrite"_Stz);
 /*----------------------------------------------------------------------------*/
 /* lock.init -- initialise lock                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vLockInit(Forth* pForth)
+void Step::vLockInit(void)
 {
 ENTRY("vLockInit"_Stz);
   
   Object* pPtrLock;;
-  if ( ! pForth->m_pDataStack->bPop(pPtrLock) )
+  if ( ! m_pDataStack->bPop(pPtrLock) )
     THROW_DSTACK();
   
   Lock* pLock = _pLock(pPtrLock);

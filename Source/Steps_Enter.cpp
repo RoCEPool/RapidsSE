@@ -16,14 +16,14 @@ void Step::vAddSteps_Enter(void)
 /*----------------------------------------------------------------------------*/
 /* enterObject -- enter object routine   (this is the does step for a object) */
 /*----------------------------------------------------------------------------*/
-void Step::vEnterObject(Forth* pForth)
+void Step::vEnterObject(void)
 {
   ENTRY("vEnterObject"_Stz);
   
-  StepFp* afpEntryCell = (pForth->m_pTask->m_pForth->m_aInxPtr - 1)->m_afpIntrinsic + 1;
+  StepFp* afpEntryCell = (m_pTask->m_pForth->m_aInxPtr - 1)->m_afpIntrinsic + 1;
 
-  pForth->m_pReturnStack->vPushCell(pForth->m_pTask->m_pForth->m_aInxPtr);
-  pForth->m_pTask->m_pForth->m_aInxPtr = *(Cell**)afpEntryCell;
+  m_pReturnStack->vPushCell(m_pTask->m_pForth->m_aInxPtr);
+  m_pTask->m_pForth->m_aInxPtr = *(Cell**)afpEntryCell;
   
   Word* pWord = pAdd<Word*>((Object*)afpEntryCell,
                             -( sizeof(Word)
@@ -36,7 +36,7 @@ void Step::vEnterObject(Forth* pForth)
   ASSERT(WK_OBJECT == pWord->eKind());
   
   Object* pObject = (Object*)pWord->aFirstCell();
-  pForth->m_pDataStack->vPushPointer(pObject);
+  m_pDataStack->vPushPointer(pObject);
   
   EXIT();
 }
@@ -44,17 +44,17 @@ void Step::vEnterObject(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* enterRoutine -- enter word routine    (this is the does step for a : word) */
 /*----------------------------------------------------------------------------*/
-void Step::vEnterRoutine(Forth* pForth)
+void Step::vEnterRoutine(void)
 {
   ENTRY("vEnterRoutine"_Stz);
   
-  StepFp* afpEntryCell = (pForth->m_pTask->m_pForth->m_aInxPtr - 1)->m_afpIntrinsic + 1;
+  StepFp* afpEntryCell = (m_pTask->m_pForth->m_aInxPtr - 1)->m_afpIntrinsic + 1;
   
-  pForth->m_pReturnStack->vPushCell(pForth->m_pTask->m_pForth->m_aInxPtr);
-  pForth->m_pTask->m_pForth->m_aInxPtr = *(Cell**)afpEntryCell;
+  m_pReturnStack->vPushCell(m_pTask->m_pForth->m_aInxPtr);
+  m_pTask->m_pForth->m_aInxPtr = *(Cell**)afpEntryCell;
 
-   if ( (pForth->m_pTask->m_iTracing & C_TRACE_ROUTINES) )
-    pForth->m_pTask->vTracePoint(">"_Stz);
+   if ( (m_pTask->m_iTracing & C_TRACE_ROUTINES) )
+    m_pTask->vTracePoint(">"_Stz);
   
   EXIT();
 }

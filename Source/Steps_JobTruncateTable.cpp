@@ -18,16 +18,16 @@ void Step::vAddSteps_JobTruncateTable(void)
 /*----------------------------------------------------------------------------*/
 /* job_subTruncate.slot@ -- fetch the job slot                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubTruncateSlotFetch(Forth* pForth)
+void Step::vJob_SubTruncateSlotFetch(void)
 {
   ENTRY("vJob_SubTruncateSlotFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
-  pForth->m_pDataStack->vPushI8(pJob->m_i_Slot);
+  m_pDataStack->vPushI8(pJob->m_i_Slot);
   
   EXIT();
 }
@@ -35,16 +35,16 @@ void Step::vJob_SubTruncateSlotFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subTruncate.truncateJobId@ -- fetch the truncate job id                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubTruncateTruncateJobIdFetch(Forth* pForth)
+void Step::vJob_SubTruncateTruncateJobIdFetch(void)
 {
   ENTRY("vJob_SubTruncateTruncateJobIdFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
-  pForth->m_pDataStack->vPushI8(pJob->m_iTruncateJobId);
+  m_pDataStack->vPushI8(pJob->m_iTruncateJobId);
   
   EXIT();
 }
@@ -52,17 +52,17 @@ void Step::vJob_SubTruncateTruncateJobIdFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_truncateTable.spawnSub -- spawn sub truncate job                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_TruncateTableSpawnSub(Forth* pForth)
+void Step::vJob_TruncateTableSpawnSub(void)
 {
   ENTRY("vJob_TruncateTableSpawnSub"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJobPtr);
   
   i8 iSlot;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iSlot) )
+  if ( ! m_pDataStack->bPopAsInt(iSlot) )
     THROW_DSTACK();
   
   i8 iRequestId = pJob_TruncateTable->m_xReqTuple.m_iReqId;

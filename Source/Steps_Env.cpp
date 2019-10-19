@@ -15,13 +15,13 @@ void Step::vAddSteps_Env(void)
 /*----------------------------------------------------------------------------*/
 /* env@ -- get environment variable                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vEnvGet(Forth* pForth)
+void Step::vEnvGet(void)
 {
   ENTRY("vEnvGet"_Stz);
   
   s32 sEnvName;
   
-  if ( ! pForth->m_pDataStack->bPop(sEnvName) )
+  if ( ! m_pDataStack->bPop(sEnvName) )
     THROW_DSTACK();
   
   s256 sEnvVal;
@@ -29,7 +29,7 @@ void Step::vEnvGet(Forth* pForth)
   if (! Env::bGet(sEnvName,sEnvVal))
     sEnvVal = ""_Stz;
   
-  pForth->m_pDataStack->vPushS256(sEnvVal);
+  m_pDataStack->vPushS256(sEnvVal);
   
   EXIT();
 }

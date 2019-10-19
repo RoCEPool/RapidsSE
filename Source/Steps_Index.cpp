@@ -41,26 +41,26 @@ void Step::vAddSteps_Index(void)
 /*----------------------------------------------------------------------------*/
 /* index.analyze -- analyze index                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexAnalyze(Forth* pForth)
+void Step::vIndexAnalyze(void)
 {
   ENTRY("vIndexAnalyze"_Stz);
   
   Object* pPtrIndex;
   i8 iDetailed;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  if ( ! pForth->m_pDataStack->bPop(iDetailed) )
+  if ( ! m_pDataStack->bPop(iDetailed) )
     THROW_DSTACK();
   
   s48K sAnalysis;
   i8 nRows;
   sAnalysis = (Stz*)pIndex->pTable()->pAnalyzeIndex(pIndex, iDetailed == 1 ? true : false, nRows);
-  pForth->m_pDataStack->vPushS48K(sAnalysis);
+  m_pDataStack->vPushS48K(sAnalysis);
   
   EXIT();
 }
@@ -68,24 +68,24 @@ void Step::vIndexAnalyze(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.column@ -- get the column from the index                             */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexColumnFetch(Forth* pForth)
+void Step::vIndexColumnFetch(void)
 {
   ENTRY("vIndexColumnFetch"_Stz);
   
   Object* pPtrIndex;
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iColumnNo;
-  if ( ! pForth->m_pDataStack->bPop(iColumnNo) )
+  if ( ! m_pDataStack->bPop(iColumnNo) )
     THROW_DSTACK();
   
   ASSERT(iColumnNo < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iColumnNo);
   
-  pForth->m_pDataStack->vPushPointer(pColumn);
+  m_pDataStack->vPushPointer(pColumn);
   
   EXIT();
 }
@@ -93,17 +93,17 @@ void Step::vIndexColumnFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.columnCount@ -- fetch index column count                             */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexColumnCountFetch(Forth* pForth)
+void Step::vIndexColumnCountFetch(void)
 {
   ENTRY("vIndexColumnCountFetch"_Stz);
   
   Object* pPtrIndex;
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  pForth->m_pDataStack->vPushI8(pIndex->pIdxColVec()->nItems());
+  m_pDataStack->vPushI8(pIndex->pIdxColVec()->nItems());
   
   EXIT();
 }
@@ -111,24 +111,24 @@ void Step::vIndexColumnCountFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.columnName -- get column name                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexColumnName(Forth* pForth)
+void Step::vIndexColumnName(void)
 {
   ENTRY("vIndexColumnName"_Stz);
   
   Object* pPtrIndex;
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIndex;
-  if ( ! pForth->m_pDataStack->bPop(iIndex) )
+  if ( ! m_pDataStack->bPop(iIndex) )
     THROW_DSTACK();
   
   ASSERT(iIndex < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
   
-  pForth->m_pDataStack->vPushS32(pColumn->sColumnName());
+  m_pDataStack->vPushS32(pColumn->sColumnName());
   
   EXIT();
 }
@@ -136,25 +136,25 @@ void Step::vIndexColumnName(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.columnType -- get column type                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexColumnType(Forth* pForth)
+void Step::vIndexColumnType(void)
 {
   ENTRY("vIndexColumnType"_Stz);
   
   Object* pPtrIndex;
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIndex;
-  if ( ! pForth->m_pDataStack->bPop(iIndex) )
+  if ( ! m_pDataStack->bPop(iIndex) )
     THROW_DSTACK();
   
   ASSERT(iIndex < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
   s32 sColumnType = aCT[pColumn->eColumnType()];
   
-  pForth->m_pDataStack->vPushS32(sColumnType);
+  m_pDataStack->vPushS32(sColumnType);
   
   EXIT();
 }
@@ -162,14 +162,14 @@ void Step::vIndexColumnType(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.compact -- index compaction                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexCompact(Forth* pForth)
+void Step::vIndexCompact(void)
 {
   ENTRY("vIndexCompact"_Stz);
   
   Object* pPtrIndex;
   i8 iDetailed;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -183,18 +183,18 @@ void Step::vIndexCompact(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.createColumnVecR -- create column vector from job_createIndex        */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexCreateColumnVec(Forth* pForth)
+void Step::vIndexCreateColumnVec(void)
 {
   ENTRY("vIndexCreateColumnVec"_Stz);
   
   Object* pPtrIndex;
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   Object* pPtrJob;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob) )
+  if ( ! m_pDataStack->bPop(pPtrJob) )
     THROW_DSTACK();
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pPtrJob);
   ASSERT(CN_JOB_CREATEINDEX == pJob_CreateIndex->eClass());
@@ -207,12 +207,12 @@ void Step::vIndexCreateColumnVec(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.dump -- dump the index                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexDump(Forth* pForth)
+void Step::vIndexDump(void)
 {
   ENTRY("vIndexDump"_Stz);
   
   Object* pPtrIndex;
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -235,12 +235,12 @@ void Step::vIndexDump(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.init -- initialize the index                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexInit(Forth* pForth)
+void Step::vIndexInit(void)
 {
   ENTRY("vIndexInit"_Stz);
   Object* pPtrIndex = nullptr;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -254,13 +254,13 @@ void Step::vIndexInit(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.isPrimaryKey@ -- fetch isPrimaryKey from index                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsPrimaryKeyFetch(Forth* pForth)
+void Step::vIndexIsPrimaryKeyFetch(void)
 {
   ENTRY("vIndexIsPrimaryKeyFetch"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -268,7 +268,7 @@ void Step::vIndexIsPrimaryKeyFetch(Forth* pForth)
   
   bool bIsPrimaryKey = pIndex->bIsPrimaryKey();
   
-  pForth->m_pDataStack->vPushI8(bIsPrimaryKey);
+  m_pDataStack->vPushI8(bIsPrimaryKey);
   
   EXIT();
 }
@@ -276,20 +276,20 @@ void Step::vIndexIsPrimaryKeyFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.isPrimaryKey! -- store isPrimaryKey into index                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsPrimaryKeyStore(Forth* pForth)
+void Step::vIndexIsPrimaryKeyStore(void)
 {
   ENTRY("vIndexIsPrimaryKeyStore"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIsPrimaryKey;
-  if ( ! pForth->m_pDataStack->bPop(iIsPrimaryKey) )
+  if ( ! m_pDataStack->bPop(iIsPrimaryKey) )
     THROW_DSTACK();
   
   pIndex->vIsPrimaryKey(iIsPrimaryKey ? true : false);
@@ -300,13 +300,13 @@ void Step::vIndexIsPrimaryKeyStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.isUnique@ -- fetch isUnique from index                               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsUniqueFetch(Forth* pForth)
+void Step::vIndexIsUniqueFetch(void)
 {
   ENTRY("vIndexIsUniqueFetch"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -314,7 +314,7 @@ void Step::vIndexIsUniqueFetch(Forth* pForth)
   
   bool bIsUnique = pIndex->bIsUnique();
   
-  pForth->m_pDataStack->vPushI8(bIsUnique);
+  m_pDataStack->vPushI8(bIsUnique);
   
   EXIT();
 }
@@ -322,20 +322,20 @@ void Step::vIndexIsUniqueFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.isUnique! -- store isUnique into index                               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsUniqueStore(Forth* pForth)
+void Step::vIndexIsUniqueStore(void)
 {
   ENTRY("vIndexIsUniqueStore"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIsUnique;
-  if ( ! pForth->m_pDataStack->bPop(iIsUnique) )
+  if ( ! m_pDataStack->bPop(iIsUnique) )
     THROW_DSTACK();
   
   pIndex->vIsUnique(iIsUnique ? true : false);
@@ -346,13 +346,13 @@ void Step::vIndexIsUniqueStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.isValidUniqueIndex -- is it a valid unqiue index                     */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsValidUniqueIndex(Forth* pForth)
+void Step::vIndexIsValidUniqueIndex(void)
 {
   ENTRY("vIndexIsValidUniqueIndex"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -377,7 +377,7 @@ void Step::vIndexIsValidUniqueIndex(Forth* pForth)
     }
   }
   
-  pForth->m_pDataStack->vPushI8(bValid ? 1 : 0);
+  m_pDataStack->vPushI8(bValid ? 1 : 0);
   
   EXIT();
 }
@@ -385,11 +385,11 @@ void Step::vIndexIsValidUniqueIndex(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.lowerBound -- return rows with lower bound                           */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexLowerBound(Forth* pForth)
+void Step::vIndexLowerBound(void)
 {
   ENTRY("vIndexLowerBound"_Stz);
   
-  Session* pSession = pForth->m_pTask->m_pSession;
+  Session* pSession = m_pTask->m_pSession;
   Object* pPtrIndex = nullptr;
   FetchBuffer* pFetchBuffer;
   
@@ -397,21 +397,21 @@ void Step::vIndexLowerBound(Forth* pForth)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   Object* pPtrJob;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob) )
+  if ( ! m_pDataStack->bPop(pPtrJob) )
     THROW_DSTACK();
   
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the key
-  if ( ! pForth->m_pDataStack->bPop(xVariable) )
+  if ( ! m_pDataStack->bPop(xVariable) )
     THROW_DSTACK();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -531,13 +531,13 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 /* index.name@ -- fetch index name                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexNameFetch(Forth* pForth)
+void Step::vIndexNameFetch(void)
 {
   ENTRY("vIndexNameFetch"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -545,7 +545,7 @@ void Step::vIndexNameFetch(Forth* pForth)
   
   s32 sIndexName = pIndex->sIndexName();
   
-  pForth->m_pDataStack->vPushS32(sIndexName);
+  m_pDataStack->vPushS32(sIndexName);
   
   EXIT();
 }
@@ -553,12 +553,12 @@ void Step::vIndexNameFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.populate -- populate the index                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexPopulate(Forth* pForth)
+void Step::vIndexPopulate(void)
 {
   ENTRY("vIndexPopulate"_Stz);
   Object* pPtrIndex = nullptr;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -569,7 +569,7 @@ void Step::vIndexPopulate(Forth* pForth)
   
   bool bPopulated = pTable->bPopulateIndex(iIndexNo);
   
-  pForth->m_pDataStack->vPushI8(bPopulated ? 1 : 0);
+  m_pDataStack->vPushI8(bPopulated ? 1 : 0);
   
   EXIT();
 }
@@ -577,37 +577,37 @@ void Step::vIndexPopulate(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.range -- return rows within given range                              */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexRange(Forth* pForth)
+void Step::vIndexRange(void)
 {
   ENTRY("vIndexRange"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Session* pSession = pForth->m_pTask->m_pSession;
+  Session* pSession = m_pTask->m_pSession;
   
   GenVar xValWrkLwr;
   GenVar xValWrkUpr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   Object* pPtrJob;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob) )
+  if ( ! m_pDataStack->bPop(pPtrJob) )
     THROW_DSTACK();
   
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the lower key
-  if ( ! pForth->m_pDataStack->bPop(xValWrkLwr) )
+  if ( ! m_pDataStack->bPop(xValWrkLwr) )
     THROW_DSTACK();
   
   // get the upper key
-  if ( ! pForth->m_pDataStack->bPop(xValWrkUpr) )
+  if ( ! m_pDataStack->bPop(xValWrkUpr) )
     THROW_DSTACK();
   
   FetchBuffer* pFetchBuffer;
@@ -804,12 +804,12 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 /* index.showColumnVec -- show column vector                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexShowColumnVec(Forth* pForth)
+void Step::vIndexShowColumnVec(void)
 {
   ENTRY("vIndexShowColumnVec"_Stz);
   
   Object* pPtrIndex;
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -822,12 +822,12 @@ void Step::vIndexShowColumnVec(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.space -- push space used by index                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexSpace(Forth* pForth)
+void Step::vIndexSpace(void)
 {
   ENTRY("vIndexSpace"_Stz);
   
   Object* pPtrIndex;
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -835,7 +835,7 @@ void Step::vIndexSpace(Forth* pForth)
   
   i8 iBuffers = pIndex->pTable()->nIndexBuffers(pIndex->iIndexNo());
   i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
-  pForth->m_pDataStack->vPushI8(iSpace);
+  m_pDataStack->vPushI8(iSpace);
   
   EXIT();
 }
@@ -843,12 +843,12 @@ void Step::vIndexSpace(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.subDic -- get table sub dictionary                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexSubDic(Forth* pForth)
+void Step::vIndexSubDic(void)
 {
   ENTRY("vIndexSubDic"_Stz);
   
   Object* pPtrIndex;
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -856,7 +856,7 @@ void Step::vIndexSubDic(Forth* pForth)
   
   Dic* pDic = pIndex->pSubDic();
   
-  pForth->m_pDataStack->vPushPointer(pDic);
+  m_pDataStack->vPushPointer(pDic);
   
   EXIT();
 }
@@ -864,13 +864,13 @@ void Step::vIndexSubDic(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.table@ -- fetch table in index                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTableFetch(Forth* pForth)
+void Step::vIndexTableFetch(void)
 {
   ENTRY("vIndexTableFetch"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -879,7 +879,7 @@ void Step::vIndexTableFetch(Forth* pForth)
   Table* pTable = pIndex->pTable();
   ASSERT(CN_TABLE == pTable->eClass());
   
-  pForth->m_pDataStack->vPushPointer(pTable);
+  m_pDataStack->vPushPointer(pTable);
   
   EXIT();
 }
@@ -887,20 +887,20 @@ void Step::vIndexTableFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.table! -- store table in index                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTableStore(Forth* pForth)
+void Step::vIndexTableStore(void)
 {
   ENTRY("vIndexTableStore"_Stz);
   
   Object* pPtrIndex = nullptr;
   Object* pPtrTable = nullptr;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrTable) )
+  if ( ! m_pDataStack->bPop(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -914,13 +914,13 @@ void Step::vIndexTableStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.truncate -- truncate the index                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTruncate(Forth* pForth)
+void Step::vIndexTruncate(void)
 {
   ENTRY("vIndexTruncate"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -938,31 +938,31 @@ void Step::vIndexTruncate(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.upperBound -- return rows with upper bound                           */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexUpperBound(Forth* pForth)
+void Step::vIndexUpperBound(void)
 {
   ENTRY("vIndexUpperBound"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Session* pSession = pForth->m_pTask->m_pSession;
+  Session* pSession = m_pTask->m_pSession;
   GenVar xVariable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   Object* pPtrJob;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob) )
+  if ( ! m_pDataStack->bPop(pPtrJob) )
     THROW_DSTACK();
   
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the key
-  if ( ! pForth->m_pDataStack->bPop(xVariable) )
+  if ( ! m_pDataStack->bPop(xVariable) )
     THROW_DSTACK();
   
   FetchBuffer* pFetchBuffer;
@@ -1107,13 +1107,13 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 /* index.verify -- verify index                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexVerify(Forth* pForth)
+void Step::vIndexVerify(void)
 {
   ENTRY("vIndexVerify"_Stz);
   
   Object* pPtrIndex;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -1121,7 +1121,7 @@ void Step::vIndexVerify(Forth* pForth)
   
   bool bVerified = pIndex->pTable()->bVerifyIndex(pIndex);
   s256 s = bVerified ? "Valid"_Stz : "Invalid"_Stz;
-  pForth->m_pDataStack->vPushS256(s);
+  m_pDataStack->vPushS256(s);
   
   EXIT();
 }
@@ -1129,12 +1129,12 @@ void Step::vIndexVerify(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* index.visualize -- visualize the index                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexVisualize(Forth* pForth)
+void Step::vIndexVisualize(void)
 {
   ENTRY("vIndexVisualize"_Stz);
   
   Object* pPtrIndex;
-  if ( ! pForth->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! m_pDataStack->bPop(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);

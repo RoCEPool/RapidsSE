@@ -15,20 +15,20 @@ void Step::vAddSteps_Shell(void)
 /*----------------------------------------------------------------------------*/
 /* shell::execute -- execute given shell command                              */
 /*----------------------------------------------------------------------------*/
-void Step::vShellExecute(Forth* pForth)
+void Step::vShellExecute(void)
 {
   ENTRY("vShellExecute"_Stz);
   
   GenVar xCommand;
   
-  if ( ! pForth->m_pDataStack->bPop(xCommand) )
+  if ( ! m_pDataStack->bPop(xCommand) )
     THROW_DSTACK();
   
   SysCall oSysCall;
   
   i8 iExitStatus = Shell::iExecute(xCommand.szStz(),oSysCall);
   
-  pForth->m_pDataStack->vPushI8(iExitStatus);
+  m_pDataStack->vPushI8(iExitStatus);
   
   EXIT();
 }

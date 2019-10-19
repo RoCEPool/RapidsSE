@@ -21,12 +21,12 @@ void Step::vAddSteps_JobGeneric(void)
 /*----------------------------------------------------------------------------*/
 /* job_begun::new -- new a job__begun for this job                            */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__BegunNew(Forth* pForth)
+void Step::vJob__BegunNew(void)
 {
   ENTRY("vJob__BegunNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pDistJobPtr) )
+  if ( ! m_pDataStack->bPop(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -37,9 +37,9 @@ void Step::vJob__BegunNew(Forth* pForth)
   JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
   pJobBegun->m_aJobClass = pJobClass__Begun;
   
-  //ActLog::vAdd(pForth->m_pTask->pJob(),AN_NEW_JOB,pJobBegun);
+  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobBegun);
   
-  pForth->m_pDataStack->vPushPointer(pJobBegun);
+  m_pDataStack->vPushPointer(pJobBegun);
   
   EXIT();
 }
@@ -47,12 +47,12 @@ void Step::vJob__BegunNew(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job__cancel::new -- new a job__cancel for this job                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__CancelNew(Forth* pForth)
+void Step::vJob__CancelNew(void)
 {
   ENTRY("vJob__CancelNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pDistJobPtr) )
+  if ( ! m_pDataStack->bPop(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -63,9 +63,9 @@ void Step::vJob__CancelNew(Forth* pForth)
   JobClass* pJobClass__Cancel = JobClass::pFind(CN_JOB__CANCEL);
   pJobCancel->m_aJobClass = pJobClass__Cancel;
   
-  //ActLog::vAdd(pForth->m_pTask->pJob(),AN_NEW_JOB,pJobCancel);
+  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancel);
   
-  pForth->m_pDataStack->vPushPointer(pJobCancel);
+  m_pDataStack->vPushPointer(pJobCancel);
   
   EXIT();
 }
@@ -73,12 +73,12 @@ void Step::vJob__CancelNew(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job__cancelled::new -- new a job__cancelled for this job                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__CancelledNew(Forth* pForth)
+void Step::vJob__CancelledNew(void)
 {
   ENTRY("vJob__CancelledNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pDistJobPtr) )
+  if ( ! m_pDataStack->bPop(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -89,9 +89,9 @@ void Step::vJob__CancelledNew(Forth* pForth)
   JobClass* pJobClass__Cancelled = JobClass::pFind(CN_JOB__CANCELLED);
   pJobCancelled->m_aJobClass = pJobClass__Cancelled;
   
-  //ActLog::vAdd(pForth->m_pTask->pJob(),AN_NEW_JOB,pJobCancelled);
+  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancelled);
   
-  pForth->m_pDataStack->vPushPointer(pJobCancelled);
+  m_pDataStack->vPushPointer(pJobCancelled);
   
   EXIT();
 }
@@ -99,12 +99,12 @@ void Step::vJob__CancelledNew(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job__end::new - new a job__end for this job                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__EndNew(Forth* pForth)
+void Step::vJob__EndNew(void)
 {
   ENTRY("vJob__EndNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pDistJobPtr) )
+  if ( ! m_pDataStack->bPop(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -115,9 +115,9 @@ void Step::vJob__EndNew(Forth* pForth)
   JobClass* pJobClass__End = JobClass::pFind(CN_JOB__END);
   pJobEnd->m_aJobClass = pJobClass__End;
   
-  //ActLog::vAdd(pForth->m_pTask->pJob(),AN_NEW_JOB,pJobEnd);
+  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnd);
   
-  pForth->m_pDataStack->vPushPointer(pJobEnd);
+  m_pDataStack->vPushPointer(pJobEnd);
   
   EXIT();
 }
@@ -125,12 +125,12 @@ void Step::vJob__EndNew(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job__ended::new -- new a job__ended for this job                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__EndedNew(Forth* pForth)
+void Step::vJob__EndedNew(void)
 {
   ENTRY("vJob__EndedNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pDistJobPtr) )
+  if ( ! m_pDataStack->bPop(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -141,9 +141,9 @@ void Step::vJob__EndedNew(Forth* pForth)
   JobClass* pJobClass__Ended = JobClass::pFind(CN_JOB__ENDED);
   pJobEnded->m_aJobClass = pJobClass__Ended;
   
-  //ActLog::vAdd(pForth->m_pTask->pJob(),AN_NEW_JOB,pJobEnded);
+  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnded);
   
-  pForth->m_pDataStack->vPushPointer(pJobEnded);
+  m_pDataStack->vPushPointer(pJobEnded);
   
   EXIT();
 }
@@ -151,12 +151,12 @@ void Step::vJob__EndedNew(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job__execute::new -- new a job__execute for this job                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__ExecuteNew(Forth* pForth)
+void Step::vJob__ExecuteNew(void)
 {
   ENTRY("vJob__ExecuteNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pDistJobPtr) )
+  if ( ! m_pDataStack->bPop(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -167,9 +167,9 @@ void Step::vJob__ExecuteNew(Forth* pForth)
   JobClass* pJobClass__Execute = JobClass::pFind(CN_JOB__EXECUTE);
   pJobExecute->m_aJobClass = pJobClass__Execute;
   
-  //ActLog::vAdd(pForth->m_pTask->pJob(),AN_NEW_JOB,pJobExecute);
+  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecute);
   
-  pForth->m_pDataStack->vPushPointer(pJobExecute);
+  m_pDataStack->vPushPointer(pJobExecute);
   
   EXIT();
 }
@@ -177,12 +177,12 @@ void Step::vJob__ExecuteNew(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job__executed::new -- new a job__executed for this job                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__ExecutedNew(Forth* pForth)
+void Step::vJob__ExecutedNew(void)
 {
   ENTRY("vJob__ExecutedNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pDistJobPtr) )
+  if ( ! m_pDataStack->bPop(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -193,9 +193,9 @@ void Step::vJob__ExecutedNew(Forth* pForth)
   JobClass* pJobClass__Executed = JobClass::pFind(CN_JOB__EXECUTED);
   pJobExecuted->m_aJobClass = pJobClass__Executed;
   
-  //ActLog::vAdd(pForth->m_pTask->pJob(),AN_NEW_JOB,pJobExecuted);
+  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecuted);
   
-  pForth->m_pDataStack->vPushPointer(pJobExecuted);
+  m_pDataStack->vPushPointer(pJobExecuted);
   
   EXIT();
 }

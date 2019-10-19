@@ -32,7 +32,7 @@ void Step::vAddSteps_Planner(void)
 /*----------------------------------------------------------------------------*/
 /* planner.choosePaths -- choose an access path for each phrase               */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerChoosePaths(Forth* pForth)
+void Step::vPlannerChoosePaths(void)
 {
   //! refer:  https://en.cppreference.com/w/c/language/function_definition
   
@@ -40,7 +40,7 @@ void Step::vPlannerChoosePaths(Forth* pForth)
   
   Object* mpPtrPlanner;
   
-  if ( ! pForth->m_pDataStack->bPop(mpPtrPlanner) )
+  if ( ! m_pDataStack->bPop(mpPtrPlanner) )
     THROW_DSTACK();
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
@@ -53,21 +53,21 @@ void Step::vPlannerChoosePaths(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* planner.chosenPath -- push chosen access path for given phrase             */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerChosenPath(Forth* pForth)
+void Step::vPlannerChosenPath(void)
 {
   ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
   
   Object* mpPtrPlanner;
-  if ( ! pForth->m_pDataStack->bPop(mpPtrPlanner) )
+  if ( ! m_pDataStack->bPop(mpPtrPlanner) )
     THROW_DSTACK();
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! pForth->m_pDataStack->bPop(i_Phrase) )
+  if ( ! m_pDataStack->bPop(i_Phrase) )
     THROW_DSTACK();
   AccessPath* pChosenPlan = mpPlanner->pChosenPath(i_Phrase);
   
-  pForth->m_pDataStack->vPushPointer(pChosenPlan);
+  m_pDataStack->vPushPointer(pChosenPlan);
   
   EXIT();
 }
@@ -75,12 +75,12 @@ void Step::vPlannerChosenPath(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* planner.delete -- delete the plan ( planner -- )                           */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerDelete(Forth* pForth)
+void Step::vPlannerDelete(void)
 {
 ENTRY("vPlannerDelete"_Stz);
   
   Object* pPtrPlanner;
-  if ( ! pForth->m_pDataStack->bPop(pPtrPlanner) )
+  if ( ! m_pDataStack->bPop(pPtrPlanner) )
     THROW_DSTACK();
   Planner* pPlanner = _pPlanner(pPtrPlanner);
 
@@ -92,21 +92,21 @@ ENTRY("vPlannerDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 /* planner.fetchTechnique@ -- fetch the fetch technique for given phrase( -- )*/
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerFetchTechniqueFetch(Forth* pForth)
+void Step::vPlannerFetchTechniqueFetch(void)
 {
   ENTRY("vPlannerDelete"_Stz);
   
   Object* pPtrPlanner;
-  if ( ! pForth->m_pDataStack->bPop(pPtrPlanner) )
+  if ( ! m_pDataStack->bPop(pPtrPlanner) )
     THROW_DSTACK();
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! pForth->m_pDataStack->bPop(i_Phrase) )
+  if ( ! m_pDataStack->bPop(i_Phrase) )
     THROW_DSTACK();
   eAT eFetchTechnique = mpPlanner->pChosenPath(i_Phrase)->eAccess();
   
-  pForth->m_pDataStack->vPushI8(eFetchTechnique);
+  m_pDataStack->vPushI8(eFetchTechnique);
   
   EXIT();
 }
@@ -114,13 +114,13 @@ void Step::vPlannerFetchTechniqueFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* planner.genPaths -- generate all access paths for table                    */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerGenPaths(Forth* pForth)
+void Step::vPlannerGenPaths(void)
 {
   ENTRY("vPlannerGenPaths"_Stz);
   
   Object* pPtrPlanner;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrPlanner) )
+  if ( ! m_pDataStack->bPop(pPtrPlanner) )
     THROW_DSTACK();
   
   Planner* pPlanner = _pPlanner(pPtrPlanner);
@@ -133,17 +133,17 @@ void Step::vPlannerGenPaths(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* planner.highKey@ -- fetch high key for given phrase ( -- )                 */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerHighKeyFetch(Forth* pForth)
+void Step::vPlannerHighKeyFetch(void)
 {
   ENTRY("vPlannerHighKeyFetch"_Stz);
   
   Object* pPtrPlanner;
-  if ( ! pForth->m_pDataStack->bPop(pPtrPlanner) )
+  if ( ! m_pDataStack->bPop(pPtrPlanner) )
     THROW_DSTACK();
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! pForth->m_pDataStack->bPop(i_Phrase) )
+  if ( ! m_pDataStack->bPop(i_Phrase) )
     THROW_DSTACK();
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
@@ -151,7 +151,7 @@ void Step::vPlannerHighKeyFetch(Forth* pForth)
   Predicate* mpUpperPredicate = mpUpperPredicates->pGet(0);
   s256 sHighKey = mpUpperPredicate->pArg2()->sArgVal();
   
-  pForth->m_pDataStack->vPushS256(sHighKey);
+  m_pDataStack->vPushS256(sHighKey);
   
   EXIT();
 }
@@ -159,24 +159,24 @@ void Step::vPlannerHighKeyFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* planner.indexNm@ -- fetch index name for given phrase ( -- )               */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerIndexNmFetch(Forth* pForth)
+void Step::vPlannerIndexNmFetch(void)
 {
   ENTRY("vPlannerIndexFetch"_Stz);
   
   Object* pPtrPlanner;
-  if ( ! pForth->m_pDataStack->bPop(pPtrPlanner) )
+  if ( ! m_pDataStack->bPop(pPtrPlanner) )
     THROW_DSTACK();
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! pForth->m_pDataStack->bPop(i_Phrase) )
+  if ( ! m_pDataStack->bPop(i_Phrase) )
     THROW_DSTACK();
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
   Index* pChosenIndex = mpChosenPath->pIndex();
   
   s32 sIndexNm = pChosenIndex->aIndexName();
-  pForth->m_pDataStack->vPushS32(sIndexNm);
+  m_pDataStack->vPushS32(sIndexNm);
   
   EXIT();
 }
@@ -184,17 +184,17 @@ void Step::vPlannerIndexNmFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* planner.key@ -- fetch key for given phrase ( -- )                          */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerKeyFetch(Forth* pForth)
+void Step::vPlannerKeyFetch(void)
 {
   ENTRY("vPlannerKeyFetch"_Stz);
   
   Object* pPtrPlanner;
-  if ( ! pForth->m_pDataStack->bPop(pPtrPlanner) )
+  if ( ! m_pDataStack->bPop(pPtrPlanner) )
     THROW_DSTACK();
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! pForth->m_pDataStack->bPop(i_Phrase) )
+  if ( ! m_pDataStack->bPop(i_Phrase) )
     THROW_DSTACK();
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
@@ -202,7 +202,7 @@ void Step::vPlannerKeyFetch(Forth* pForth)
   Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
   s256 sEqlKey = mpLowerPredicate->pArg2()->sArgVal();
   
-  pForth->m_pDataStack->vPushS256(sEqlKey);
+  m_pDataStack->vPushS256(sEqlKey);
   
   EXIT();
 }
@@ -210,17 +210,17 @@ void Step::vPlannerKeyFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* planner.lowKey@ -- fetch low key for given phrase ( -- )                   */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerLowKeyFetch(Forth* pForth)
+void Step::vPlannerLowKeyFetch(void)
 {
   ENTRY("vPlannerLowKeyFetch"_Stz);
   
   Object* pPtrPlanner;
-  if ( ! pForth->m_pDataStack->bPop(pPtrPlanner) )
+  if ( ! m_pDataStack->bPop(pPtrPlanner) )
     THROW_DSTACK();
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! pForth->m_pDataStack->bPop(i_Phrase) )
+  if ( ! m_pDataStack->bPop(i_Phrase) )
     THROW_DSTACK();
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
@@ -228,7 +228,7 @@ void Step::vPlannerLowKeyFetch(Forth* pForth)
   Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
   s256 sLowKey = mpLowerPredicate->pArg2()->sArgVal();
   
-  pForth->m_pDataStack->vPushS256(sLowKey);
+  m_pDataStack->vPushS256(sLowKey);
   
   EXIT();
 }
@@ -236,13 +236,13 @@ void Step::vPlannerLowKeyFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* planner.matchPaths -- attempt to match predicates with paths               */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerMatchPaths(Forth* pForth)
+void Step::vPlannerMatchPaths(void)
 {
   ENTRY("vPlannerMatchnPaths"_Stz);
   
   Object* pPtrPlanner;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrPlanner) )
+  if ( ! m_pDataStack->bPop(pPtrPlanner) )
     THROW_DSTACK();
   
   Planner* pPlanner = _pPlanner(pPtrPlanner);
@@ -255,13 +255,13 @@ void Step::vPlannerMatchPaths(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* planner::new -- new a planner ( -- planner )                               */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerNew(Forth* pForth)
+void Step::vPlannerNew(void)
 {
 ENTRY("vPlannerNew"_Stz);
   
   Planner* pPlanner = new Planner;
   
-  pForth->m_pDataStack->vPushPointer(pPlanner);
+  m_pDataStack->vPushPointer(pPlanner);
   
   EXIT();
 }
@@ -269,17 +269,17 @@ ENTRY("vPlannerNew"_Stz);
 /*----------------------------------------------------------------------------*/
 /* planner.parseWhere -- parse a where clause                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerParseWhere(Forth* pForth)
+void Step::vPlannerParseWhere(void)
 {
   ENTRY("vPlannerParseWhere"_Stz);
   
   Object* pPtrPlanner;
-  if ( ! pForth->m_pDataStack->bPop(pPtrPlanner) )
+  if ( ! m_pDataStack->bPop(pPtrPlanner) )
     THROW_DSTACK();
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   s48K sWhere;
-  if ( ! pForth->m_pDataStack->bPop(sWhere) )
+  if ( ! m_pDataStack->bPop(sWhere) )
     THROW_DSTACK();
   
   pPlanner->vParseWhere(sWhere);
@@ -293,7 +293,7 @@ void Step::vPlannerParseWhere(Forth* pForth)
 //  else
 //    nLastBuffers = gxArguments.m_nSlotsPerNode;
 //  
-//  pForth->m_pTask->m_pSession->vLastBuffers(nLastBuffers);
+//  m_pTask->m_pSession->vLastBuffers(nLastBuffers);
   
   EXIT();
 }
@@ -301,18 +301,18 @@ void Step::vPlannerParseWhere(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* planner.phrases@ -- fetch number of phrases ( -- nPhrases )                */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerPhrasesFetch(Forth* pForth)
+void Step::vPlannerPhrasesFetch(void)
 {
   ENTRY("vPlannerPhrasesFetch"_Stz);
   
   Object* pPtrPlanner;
-  if ( ! pForth->m_pDataStack->bPop(pPtrPlanner) )
+  if ( ! m_pDataStack->bPop(pPtrPlanner) )
     THROW_DSTACK();
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 nPhrases = mpPlanner->nPhrases();
   
-  pForth->m_pDataStack->vPushI8(nPhrases);
+  m_pDataStack->vPushI8(nPhrases);
   
   EXIT();
 }
@@ -320,12 +320,12 @@ void Step::vPlannerPhrasesFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* planner.scorePaths -- score the generated set of paths                     */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerScorePaths(Forth* pForth)
+void Step::vPlannerScorePaths(void)
 {
   ENTRY("vPlannerScorePaths"_Stz);
   
   Object* pPtrPlanner;
-  if ( ! pForth->m_pDataStack->bPop(pPtrPlanner) )
+  if ( ! m_pDataStack->bPop(pPtrPlanner) )
     THROW_DSTACK();
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
@@ -337,12 +337,12 @@ void Step::vPlannerScorePaths(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* planner.showPaths -- show generated paths                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerShowPaths(Forth* pForth)
+void Step::vPlannerShowPaths(void)
 {
   ENTRY("vPlannerShowPaths"_Stz);
   
   Object* pPtrPlanner;
-  if ( ! pForth->m_pDataStack->bPop(pPtrPlanner) )
+  if ( ! m_pDataStack->bPop(pPtrPlanner) )
     THROW_DSTACK();
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
@@ -354,18 +354,18 @@ void Step::vPlannerShowPaths(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* planner.table@ -- fetch table from access path                             */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerTableFetch(Forth* pForth)
+void Step::vPlannerTableFetch(void)
 {
   ENTRY("vPlannerTableFetch"_Stz);
   
   Object* pPtrPlanner;
-  if ( ! pForth->m_pDataStack->bPop(pPtrPlanner) )
+  if ( ! m_pDataStack->bPop(pPtrPlanner) )
     THROW_DSTACK();
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   Table* pTable = pPlanner->pTable();
 
-  pForth->m_pDataStack->vPushPointer(pTable);
+  m_pDataStack->vPushPointer(pTable);
   
   EXIT();
 }
@@ -373,17 +373,17 @@ void Step::vPlannerTableFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* planner.table! -- store table into access path                             */
 /*----------------------------------------------------------------------------*/
-void Step::vPlannerTableStore(Forth* pForth)
+void Step::vPlannerTableStore(void)
 {
   ENTRY("vPlannerTableStore"_Stz);
   
   Object* pPtrPlanner;
-  if ( ! pForth->m_pDataStack->bPop(pPtrPlanner) )
+  if ( ! m_pDataStack->bPop(pPtrPlanner) )
     THROW_DSTACK();
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   Object* pPtrTable;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTable) )
+  if ( ! m_pDataStack->bPop(pPtrTable) )
     THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
   

@@ -17,12 +17,12 @@ void Step::vAddSteps_JobSelect(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Select.begin -- begin                                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SelectBegin(Forth* pForth)
+void Step::vJob_SelectBegin(void)
 {
   ENTRY("vJob_SelectBegin"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Select* pJob_Select = _pJob_Select(pJobPtr);
   
@@ -34,12 +34,12 @@ void Step::vJob_SelectBegin(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_Select.end -- end                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SelectEnd(Forth* pForth)
+void Step::vJob_SelectEnd(void)
 {
   ENTRY("vJob_SelectEnd"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Select* pJob_Select = _pJob_Select(pJobPtr);
 
@@ -51,12 +51,12 @@ void Step::vJob_SelectEnd(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_Select.execute -- execute                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SelectExecute(Forth* pForth)
+void Step::vJob_SelectExecute(void)
 {
   ENTRY("vJob_SelectExecute"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Select* pJob_Select = _pJob_Select(pJobPtr);
   

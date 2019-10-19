@@ -21,19 +21,19 @@ void Step::vAddSteps_TablePartition(void)
 /*----------------------------------------------------------------------------*/
 /* tablePtn.attemptGrabRead -- attempt to grabp read lock on table partition  */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePtnAttemptGrabRead(Forth* pForth)
+void Step::vTablePtnAttemptGrabRead(void)
 {
   ENTRY("vTablePtnAttemptGrabRead"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTablePtn) )
+  if ( ! m_pDataStack->bPop(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
   // attempt to grab the read lock
   bool bSuccess = pTablePtn->bGrabRead();
   
-  pForth->m_pDataStack->vPushI8(bSuccess);
+  m_pDataStack->vPushI8(bSuccess);
   
   EXIT();
 }
@@ -41,19 +41,19 @@ void Step::vTablePtnAttemptGrabRead(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tablePtn.attemptGrabWrite -- attempt to grab write lock on table partition */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePtnAttemptGrabWrite(Forth* pForth)
+void Step::vTablePtnAttemptGrabWrite(void)
 {
   ENTRY("vTablePtnAttemptGrabWrite"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTablePtn) )
+  if ( ! m_pDataStack->bPop(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
   // attempt to grab the write lock
   bool bSuccess = pTablePtn->bGrabWrite();
   
-  pForth->m_pDataStack->vPushI8(bSuccess);
+  m_pDataStack->vPushI8(bSuccess);
   
   EXIT();
 }
@@ -61,12 +61,12 @@ void Step::vTablePtnAttemptGrabWrite(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tablePtn.dropRead -- drop a read lock on the partition of a table          */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePtnDropRead(Forth* pForth)
+void Step::vTablePtnDropRead(void)
 {
   ENTRY("vTablePtnDropRead"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTablePtn) )
+  if ( ! m_pDataStack->bPop(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
     
@@ -79,16 +79,16 @@ void Step::vTablePtnDropRead(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tablePtn.dump -- dump partition id                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePtnDump(Forth* pForth)
+void Step::vTablePtnDump(void)
 {
   ENTRY("vTablePtnDump"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTablePtn) )
+  if ( ! m_pDataStack->bPop(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
-  pForth->m_pDataStack->vPushI8(pTablePtn->iPartitionId());
+  m_pDataStack->vPushI8(pTablePtn->iPartitionId());
   
   EXIT();
 }
@@ -96,12 +96,12 @@ void Step::vTablePtnDump(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tablePtn.dropWrite -- drop a write lock on the partition of a table        */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePtnDropWrite(Forth* pForth)
+void Step::vTablePtnDropWrite(void)
 {
   ENTRY("vTablePtnDropWrite"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTablePtn) )
+  if ( ! m_pDataStack->bPop(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
@@ -114,18 +114,18 @@ void Step::vTablePtnDropWrite(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tablePtn.isLocked -- test if a table partition is locked                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTablePtnIsLocked(Forth* pForth)
+void Step::vTablePtnIsLocked(void)
 {
   ENTRY("vTablePtnIsLocked"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTablePtn) )
+  if ( ! m_pDataStack->bPop(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
   bool bIsLocked = pTablePtn->bIsLocked();
   
-  pForth->m_pDataStack->vPushI8(bIsLocked);
+  m_pDataStack->vPushI8(bIsLocked);
 
   EXIT();
 }

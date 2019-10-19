@@ -17,12 +17,12 @@ void Step::vAddSteps_DicPath(void)
 /*----------------------------------------------------------------------------*/
 /* dicPath.depth -- get number of dictionaries in dictionary path             */
 /*----------------------------------------------------------------------------*/
-void Step::vDicPathDepth(Forth* pForth)
+void Step::vDicPathDepth(void)
 {
   ENTRY("vDicStackDepth"_Stz);
   
   Object* pPtrDicPath;
-  if ( ! pForth->m_pDataStack->bPop(pPtrDicPath) )
+  if ( ! m_pDataStack->bPop(pPtrDicPath) )
     THROW_DSTACK();
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
@@ -30,7 +30,7 @@ void Step::vDicPathDepth(Forth* pForth)
   
   i8 iDepth = pDicPath->nDicNames();
   
-  pForth->m_pDataStack->vPushI8(iDepth);
+  m_pDataStack->vPushI8(iDepth);
   
   EXIT();
 }
@@ -38,12 +38,12 @@ void Step::vDicPathDepth(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dicPath.dump -- dump dictionary path                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vDicPathDump(Forth* pForth)
+void Step::vDicPathDump(void)
 {
   ENTRY("vDicPathDump"_Stz);
   
   Object* pPtrDicPath;
-  if ( ! pForth->m_pDataStack->bPop(pPtrDicPath) )
+  if ( ! m_pDataStack->bPop(pPtrDicPath) )
     THROW_DSTACK();
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
@@ -57,22 +57,22 @@ void Step::vDicPathDump(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dicPath.pick -- pick a dic from dic path and push onto data stack          */
 /*----------------------------------------------------------------------------*/
-void Step::vDicPathPick(Forth* pForth)
+void Step::vDicPathPick(void)
 {
   ENTRY("vDicPathPick"_Stz);
   
   Object* pPtrDicPath;
-  if ( ! pForth->m_pDataStack->bPop(pPtrDicPath) )
+  if ( ! m_pDataStack->bPop(pPtrDicPath) )
     THROW_DSTACK();
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
   ASSERT(CN_DICPATH == pDicPath->eClass());
   
   i8 iDic;
-  if ( ! pForth->m_pDataStack->bPop(iDic) )
+  if ( ! m_pDataStack->bPop(iDic) )
     THROW_DSTACK();
 
-  pForth->m_pDataStack->vPushS32(pDicPath->sDicName(iDic));
+  m_pDataStack->vPushS32(pDicPath->sDicName(iDic));
   
   EXIT();
 }

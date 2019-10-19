@@ -18,17 +18,17 @@ void Step::vAddSteps_Dot(void)
 /*----------------------------------------------------------------------------*/
 /* . -- print top value on stack                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vDot(Forth* pForth)
+void Step::vDot(void)
 {
   ENTRY("vDot"_Stz);
   
   GenVar xVariable;
-  if ( ! pForth->m_pDataStack->bPop(xVariable) )
+  if ( ! m_pDataStack->bPop(xVariable) )
     THROW_DSTACK();
   
   vTrace("[%s %s] %s\n"_Stz,
          AM::pGrid()->pThisNode()->szNodeName(),
-         pForth->m_pTask->m_pJob ? (Stz*)pForth->m_pTask->szJobName() : "<no job>"_Stz,
+         m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
          xVariable.szStz());
 
   
@@ -38,12 +38,12 @@ void Step::vDot(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* .put -- print top value on stack (no new line)                             */
 /*----------------------------------------------------------------------------*/
-void Step::vDotPut(Forth* pForth)
+void Step::vDotPut(void)
 {
   ENTRY("vDotPut"_Stz);
   
   GenVar xVariable;
-  if ( ! pForth->m_pDataStack->bPop(xVariable) )
+  if ( ! m_pDataStack->bPop(xVariable) )
     THROW_DSTACK();
   
   vTrace("%s"_Stz,xVariable.szStz());
@@ -54,7 +54,7 @@ void Step::vDotPut(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* .\n -- print new line                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vDotNewline(Forth* pForth)
+void Step::vDotNewline(void)
 {
   ENTRY("vDotNewline"_Stz);
   
@@ -66,18 +66,18 @@ void Step::vDotNewline(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* .verbose -- print top value on stack if arg.m_bVerbose                     */
 /*----------------------------------------------------------------------------*/
-void Step::vDotVerbose(Forth* pForth)
+void Step::vDotVerbose(void)
 {
   ENTRY("vDotVerbose"_Stz);
   
   GenVar xVariable;
-  if ( ! pForth->m_pDataStack->bPop(xVariable) )
+  if ( ! m_pDataStack->bPop(xVariable) )
     THROW_DSTACK();
   
   if (AM::bVerbose()) {
     vTrace("[%p %s] %s\n"_Stz,
-           pForth->m_pTask,
-           pForth->m_pTask->szJobName(),
+           m_pTask,
+           m_pTask->szJobName(),
            xVariable.szStz());
   }
   

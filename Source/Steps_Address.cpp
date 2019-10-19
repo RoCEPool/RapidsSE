@@ -17,14 +17,14 @@ void Step::vAddSteps_Address(void)
 /*----------------------------------------------------------------------------*/
 /* eql -- test top two address on data stack for equality                     */
 /*----------------------------------------------------------------------------*/
-void Step::vAddressEqual(Forth* pForth)
+void Step::vAddressEqual(void)
 {
   ENTRY("vAddressEql"_Stz);
   
   GenVar xAddressA;
   GenVar xAddressB;
   
-  if ( ! pForth->m_pDataStack->bPop(xAddressA,xAddressB) )
+  if ( ! m_pDataStack->bPop(xAddressA,xAddressB) )
     THROW_DSTACK();
   
   i8 iA = xAddressA.iInt();
@@ -32,7 +32,7 @@ void Step::vAddressEqual(Forth* pForth)
   
   i8 r = iA == iB;
   
-  pForth->m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -40,12 +40,12 @@ void Step::vAddressEqual(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* @ -- fetch value using pointer on stack                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vAddressFetch(Forth* pForth)
+void Step::vAddressFetch(void)
 {
   ENTRY("vAddressFetch"_Stz);
   
   Object* pObject;
-  if ( ! pForth->m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   
   GenVar xValFetched;
@@ -75,7 +75,7 @@ void Step::vAddressFetch(Forth* pForth)
       vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Invalid eClass %lld",eClass);
   }
   
-  pForth->m_pDataStack->vPushGenVar(xValFetched);
+  m_pDataStack->vPushGenVar(xValFetched);
   
   EXIT();
 }
@@ -83,16 +83,16 @@ void Step::vAddressFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* ! -- store value using pointer on stack                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vAddressStore(Forth* pForth)
+void Step::vAddressStore(void)
 {
   ENTRY("vAddressStore"_Stz);
   
   Object* pObject;
-  if ( ! pForth->m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   
   GenVar xValStored;
-  if ( ! pForth->m_pDataStack->bPop(xValStored) )
+  if ( ! m_pDataStack->bPop(xValStored) )
     THROW_DSTACK();
   
   ForthValue* aValue = reinterpret_cast<ForthValue*>(pObject);

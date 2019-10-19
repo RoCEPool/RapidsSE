@@ -16,7 +16,7 @@ void Step::vAddSteps_Cursor(void)
 /*----------------------------------------------------------------------------*/
 /* cursor@ -- fetch cursor from return stack onto data stack                  */
 /*----------------------------------------------------------------------------*/
-void Step::vCursorFetch(Forth* pForth)
+void Step::vCursorFetch(void)
 {
   ENTRY("vCursorFetch"_Stz);
   
@@ -24,9 +24,9 @@ void Step::vCursorFetch(Forth* pForth)
   
   GenVar xCursorVar;
   
-  pForth->m_pReturnStack->vPeekValue(iPeek,xCursorVar);
+  m_pReturnStack->vPeekValue(iPeek,xCursorVar);
   
-  pForth->m_pDataStack->vPushGenVar(xCursorVar);
+  m_pDataStack->vPushGenVar(xCursorVar);
   
   EXIT();
 }
@@ -34,17 +34,17 @@ void Step::vCursorFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* cursor! -- replace cursor on return stack from data stack                  */
 /*----------------------------------------------------------------------------*/
-void Step::vCursorStore(Forth* pForth)
+void Step::vCursorStore(void)
 {
   ENTRY("vCursorStore"_Stz);
   
   i8 iPoke = 1;
   
   GenVar xCursorVar;
-  if ( ! pForth->m_pDataStack->bPop(xCursorVar) )
+  if ( ! m_pDataStack->bPop(xCursorVar) )
     THROW_DSTACK();
   
-  pForth->m_pReturnStack->vPokeGenVar(iPoke,xCursorVar);
+  m_pReturnStack->vPokeGenVar(iPoke,xCursorVar);
   
   EXIT();
 }

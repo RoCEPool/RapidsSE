@@ -26,19 +26,19 @@ void Step::vAddSteps_JobClass(void)
 /*----------------------------------------------------------------------------*/
 /* jobClass::find -- find job class                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassFind(Forth* pForth)
+void Step::vJobClassFind(void)
 {
   ENTRY("vJobClassFind"_Stz);
   
   i8 iJobClass;
-  if ( ! pForth->m_pDataStack->bPop(iJobClass) )
+  if ( ! m_pDataStack->bPop(iJobClass) )
     THROW_DSTACK();
   
   eCN eClass = (eCN)iJobClass;
   
   JobClass* pJobClass = JobClass::pFind(eClass);
   
-  pForth->m_pDataStack->vPushI8((i8)pJobClass);
+  m_pDataStack->vPushI8((i8)pJobClass);
 
   EXIT();
 }
@@ -46,18 +46,18 @@ void Step::vJobClassFind(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jobClass.buffer@ -- get JobClass::m_bBuffer                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassBuffer(Forth* pForth)
+void Step::vJobClassBuffer(void)
 {
   ENTRY("vJobClassBuffer"_Stz);
   
   i8 iJobClass_p;
-  if ( ! pForth->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! m_pDataStack->bPop(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   bool bBuffer = pJobClass->m_bBuffer;
   
-  pForth->m_pDataStack->vPushBool(bBuffer);
+  m_pDataStack->vPushBool(bBuffer);
   
   EXIT();
 }
@@ -65,18 +65,18 @@ void Step::vJobClassBuffer(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jobClass.name -- get the name of the job class                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassName(Forth* pForth)
+void Step::vJobClassName(void)
 {
   ENTRY("vJobClassName"_Stz);
   
   i8 iJobClass_p;
-  if ( ! pForth->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! m_pDataStack->bPop(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sName(aCN[pJobClass->m_eClass]);
   
-  pForth->m_pDataStack->vPushS256(sName);
+  m_pDataStack->vPushS256(sName);
   
   EXIT();
 }
@@ -84,18 +84,18 @@ void Step::vJobClassName(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jobClass.new -- create a new job by running the new-function               */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassNew(Forth* pForth)
+void Step::vJobClassNew(void)
 {
   ENTRY("vJobClassNew"_Stz);
   
   i8 iJobClass_p;
-  if ( ! pForth->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! m_pDataStack->bPop(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
 
   Job* pJob = pJobClass->pNewJob();
   
-  pForth->m_pDataStack->vPushPointer(pJob);
+  m_pDataStack->vPushPointer(pJob);
   
   EXIT();
 }
@@ -103,18 +103,18 @@ void Step::vJobClassNew(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jobClass.seedRun -- get the run seed of the job class                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassSeedRun(Forth* pForth)
+void Step::vJobClassSeedRun(void)
 {
   ENTRY("vJobClassSeedRun"_Stz);
   
   i8 iJobClass_p;
-  if ( ! pForth->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! m_pDataStack->bPop(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)pJobClass->m_aSeedRun);
   
-  pForth->m_pDataStack->vPushS256(sSeed);
+  m_pDataStack->vPushS256(sSeed);
   
   EXIT();
 }
@@ -122,18 +122,18 @@ void Step::vJobClassSeedRun(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jobClass.seedReq -- get the req seed of the job class                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassSeedReq(Forth* pForth)
+void Step::vJobClassSeedReq(void)
 {
   ENTRY("vJobClassSeedReq"_Stz);
   
   i8 iJobClass_p;
-  if ( ! pForth->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! m_pDataStack->bPop(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedReq);
   
-  pForth->m_pDataStack->vPushS256(sSeed);
+  m_pDataStack->vPushS256(sSeed);
   
   EXIT();
 }
@@ -141,18 +141,18 @@ void Step::vJobClassSeedReq(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jobClass.seedRcv -- get the rcv seed of the job class                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassSeedRcv(Forth* pForth)
+void Step::vJobClassSeedRcv(void)
 {
   ENTRY("vJobClassSeedRcv"_Stz);
   
   i8 iJobClass_p;
-  if ( ! pForth->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! m_pDataStack->bPop(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedRcv);
   
-  pForth->m_pDataStack->vPushS256(sSeed);
+  m_pDataStack->vPushS256(sSeed);
   
   EXIT();
 }
@@ -160,18 +160,18 @@ void Step::vJobClassSeedRcv(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jobClass.seedExe -- get the exe seed of the job class                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassSeedExe(Forth* pForth)
+void Step::vJobClassSeedExe(void)
 {
   ENTRY("vJobClassSeedExe"_Stz);
   
   i8 iJobClass_p;
-  if ( ! pForth->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! m_pDataStack->bPop(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedExe);
   
-  pForth->m_pDataStack->vPushS256(sSeed);
+  m_pDataStack->vPushS256(sSeed);
   
   EXIT();
 }
@@ -179,18 +179,18 @@ void Step::vJobClassSeedExe(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jobClass.seedEnd -- get the end seed of the job class                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassSeedEnd(Forth* pForth)
+void Step::vJobClassSeedEnd(void)
 {
   ENTRY("vJobClassSeedEnd"_Stz);
   
   i8 iJobClass_p;
-  if ( ! pForth->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! m_pDataStack->bPop(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedEnd);
   
-  pForth->m_pDataStack->vPushS256(sSeed);
+  m_pDataStack->vPushS256(sSeed);
   
   EXIT();
 }
@@ -198,18 +198,18 @@ void Step::vJobClassSeedEnd(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jobClass.seedCan -- get the can seed of the job class                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJobClassSeedCan(Forth* pForth)
+void Step::vJobClassSeedCan(void)
 {
   ENTRY("vJobClassSeedCan"_Stz);
   
   i8 iJobClass_p;
-  if ( ! pForth->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! m_pDataStack->bPop(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedCan);
   
-  pForth->m_pDataStack->vPushS256(sSeed);
+  m_pDataStack->vPushS256(sSeed);
   
   EXIT();
 }

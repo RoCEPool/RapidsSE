@@ -18,11 +18,11 @@ void Step::vAddSteps_Trace(void)
 /*----------------------------------------------------------------------------*/
 /* turn tracing off                                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vTraceOff(Forth* pForth)
+void Step::vTraceOff(void)
 {
   ENTRY("vTraceOff"_Stz);
   
-  pForth->m_pTask->m_iTracing = 0;
+  m_pTask->m_iTracing = 0;
   
   EXIT();
 }
@@ -30,11 +30,11 @@ void Step::vTraceOff(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* turn tracing on                                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vTraceOn(Forth* pForth)
+void Step::vTraceOn(void)
 {
   ENTRY("vTraceOn"_Stz);
   
-  pForth->m_pTask->m_iTracing = C_TRACE_STEPS;
+  m_pTask->m_iTracing = C_TRACE_STEPS;
   
   EXIT();
 }
@@ -42,17 +42,17 @@ void Step::vTraceOn(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* trace point                                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vTracePoint(Forth* pForth)
+void Step::vTracePoint(void)
 {
   ENTRY("vTracePoint"_Stz);
   
   s256 sPointName;
   
-  if ( ! pForth->m_pDataStack->bPop(sPointName) )
+  if ( ! m_pDataStack->bPop(sPointName) )
     THROW_DSTACK();
   
   if (AM::bTracepoint())
-    pForth->m_pTask->vTracePoint(sPointName);
+    m_pTask->vTracePoint(sPointName);
   
   EXIT();
 }
@@ -60,16 +60,16 @@ void Step::vTracePoint(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* set tracing                                                                */
 /*----------------------------------------------------------------------------*/
-void Step::vTraceSet(Forth* pForth)
+void Step::vTraceSet(void)
 {
   ENTRY("vTraceSet"_Stz);
   
   i8 iTrace;
   
-  if ( ! pForth->m_pDataStack->bPop(iTrace) )
+  if ( ! m_pDataStack->bPop(iTrace) )
     THROW_DSTACK();
   
-  pForth->m_pTask->m_iTracing = iTrace;
+  m_pTask->m_iTracing = iTrace;
   
   EXIT();
 }

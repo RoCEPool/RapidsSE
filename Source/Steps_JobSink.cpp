@@ -17,18 +17,18 @@ void Step::vAddSteps_JobSink(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Sink.begin -- begin sink                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SinkBegin(Forth* pForth)
+void Step::vJob_SinkBegin(void)
 {
   ENTRY("vJob_SinkBegin"_Stz);
   
   Object* pPtrJob_Sink;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Sink) )
+  if ( ! m_pDataStack->bPop(pPtrJob_Sink) )
     THROW_DSTACK();
   Job_Sink* pJob_Sink = _pJob_Sink(pPtrJob_Sink);
   
   bool bBegun = pJob_Sink->bBegin();
   
-  pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -36,18 +36,18 @@ void Step::vJob_SinkBegin(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_sink.chunk -- sink data from pipe                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SinkChunk(Forth* pForth)
+void Step::vJob_SinkChunk(void)
 {
   ENTRY("vJob_SinkChunk"_Stz);
   
   Object* pPtrJob_Sink;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Sink) )
+  if ( ! m_pDataStack->bPop(pPtrJob_Sink) )
     THROW_DSTACK();
   Job_Sink* pJob_Sink = _pJob_Sink(pPtrJob_Sink);
   
   bool bCallAgain = pJob_Sink->bChunk();
   
-  pForth->m_pDataStack->vPushBool(bCallAgain);
+  m_pDataStack->vPushBool(bCallAgain);
   
   EXIT();
 }
@@ -55,12 +55,12 @@ void Step::vJob_SinkChunk(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_sink.end -- end sink                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SinkEnd(Forth* pForth)
+void Step::vJob_SinkEnd(void)
 {
   ENTRY("vJob_SinkEnd"_Stz);
   
   Object* pPtrJob_Sink;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Sink) )
+  if ( ! m_pDataStack->bPop(pPtrJob_Sink) )
     THROW_DSTACK();
   Job_Sink* pJob_Sink = _pJob_Sink(pPtrJob_Sink);
   

@@ -18,13 +18,13 @@ void Step::vAddSteps_Push(void)
 /*----------------------------------------------------------------------------*/
 /* i -- copy loop index from return stack onto data stack                     */
 /*----------------------------------------------------------------------------*/
-void Step::vPushI(Forth* pForth)
+void Step::vPushI(void)
 {
   ENTRY("vPushI"_Stz);
   
-  ForthValue* aLoopIndex_I = pForth->m_pReturnStack->aPeekValue();
+  ForthValue* aLoopIndex_I = m_pReturnStack->aPeekValue();
   
-  pForth->m_pDataStack->vPushValue(aLoopIndex_I);
+  m_pDataStack->vPushValue(aLoopIndex_I);
   
   EXIT();
 }
@@ -32,13 +32,13 @@ void Step::vPushI(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* j -- copy 2nd loop index from return stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vPushJ(Forth* pForth)
+void Step::vPushJ(void)
 {
   ENTRY("vPushJ"_Stz);
   
-  ForthValue* aLoopIndex_J = pForth->m_pReturnStack->aPeekValue(3);
+  ForthValue* aLoopIndex_J = m_pReturnStack->aPeekValue(3);
   
-  pForth->m_pDataStack->vPushValue(aLoopIndex_J);
+  m_pDataStack->vPushValue(aLoopIndex_J);
   
   EXIT();
 }
@@ -46,14 +46,14 @@ void Step::vPushJ(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* nullPtr -- push a nullptr                                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vPushNullPtr(Forth* pForth)
+void Step::vPushNullPtr(void)
 {
   ENTRY("vPushNullPtr"_Stz);
   
   PtrVal xPtrVal;
   xPtrVal = (Object*)nullptr;
   
-  pForth->m_pDataStack->vPushValue(xPtrVal);
+  m_pDataStack->vPushValue(xPtrVal);
   
   EXIT();
 }
@@ -61,19 +61,19 @@ void Step::vPushNullPtr(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* pushValue -- push value arg onto stack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vPushValue(Forth* pForth)
+void Step::vPushValue(void)
 {
   ENTRY("vPushValue"_Stz);
   
-  if (pForth->m_pTask->m_iTracing) {
-    ASSERT(pForth->m_pTask->m_iTracing);
+  if (m_pTask->m_iTracing) {
+    ASSERT(m_pTask->m_iTracing);
   }
   
-  ForthValue* aValue = &pForth->m_pTask->m_pForth->m_aInxPtr->m_xEmbValue;
+  ForthValue* aValue = &m_pTask->m_pForth->m_aInxPtr->m_xEmbValue;
   
-  pForth->m_pDataStack->vPushValue(aValue);
+  m_pDataStack->vPushValue(aValue);
   
-  pForth->m_pTask->vAdjustFIP(aValue->nSize());
+  m_pTask->vAdjustFIP(aValue->nSize());
   
   EXIT();
 }

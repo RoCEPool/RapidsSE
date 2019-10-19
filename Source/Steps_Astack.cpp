@@ -37,21 +37,21 @@ void Step::vAddSteps_Astack(void)
 /*----------------------------------------------------------------------------*/
 /* astack.class -- get class of nth value on aux stack                        */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackClass(Forth* pForth)
+void Step::vAstackClass(void)
 {
   ENTRY("vAstackClass"_Stz);
   
   i8 nTh;
-  if ( ! pForth->m_pDataStack->bPop(nTh) )
+  if ( ! m_pDataStack->bPop(nTh) )
     THROW_DSTACK();
   
   GenVar xVariable;
   
-  pForth->m_pAuxStack->vPeekValue(nTh,xVariable);
+  m_pAuxStack->vPeekValue(nTh,xVariable);
   
   eCN eClass = xVariable.eClass();
   
-  pForth->m_pAuxStack->vPushI8(eClass);
+  m_pAuxStack->vPushI8(eClass);
   
   EXIT();
 }
@@ -59,13 +59,13 @@ void Step::vAstackClass(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* adepth -- put number of values in aux stack onto data stack                */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackDepth(Forth* pForth)
+void Step::vAstackDepth(void)
 {
   ENTRY("vAstackDepth"_Stz);
   
-  i8 iDepth = pForth->m_pAuxStack->nValues();
+  i8 iDepth = m_pAuxStack->nValues();
   
-  pForth->m_pDataStack->vPushI8(iDepth);
+  m_pDataStack->vPushI8(iDepth);
   
   EXIT();
 }
@@ -73,14 +73,14 @@ void Step::vAstackDepth(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* adrop -- discard top value off astack                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackDrop(Forth* pForth)
+void Step::vAstackDrop(void)
 {
   ENTRY("vAstackDrop"_Stz);
   
   // should just discard on stack
   
   GenVar xValA;
-  if ( ! pForth->m_pAuxStack->bPop(xValA) )
+  if ( ! m_pAuxStack->bPop(xValA) )
     THROW_ASTACK();
   
   EXIT();
@@ -89,18 +89,18 @@ void Step::vAstackDrop(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* adup -- dup top of aux stack                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackDup(Forth* pForth)
+void Step::vAstackDup(void)
 {
   ENTRY("vAstackDup"_Stz);
   
   // could just copy from stack back into stack
   
   GenVar xValA;
-  if ( ! pForth->m_pAuxStack->bPop(xValA) )
+  if ( ! m_pAuxStack->bPop(xValA) )
   THROW_DSTACK();
   
-  pForth->m_pAuxStack->vPushGenVar(xValA);
-  pForth->m_pAuxStack->vPushGenVar(xValA);
+  m_pAuxStack->vPushGenVar(xValA);
+  m_pAuxStack->vPushGenVar(xValA);
   
   EXIT();
 }
@@ -108,7 +108,7 @@ void Step::vAstackDup(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* a@ -- place copy of top value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackFetch(Forth* pForth)
+void Step::vAstackFetch(void)
 {
   ENTRY("vAstackFetch"_Stz);
   
@@ -116,9 +116,9 @@ void Step::vAstackFetch(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pAuxStack->vPeekValue(0,xVariable);
+  m_pAuxStack->vPeekValue(0,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -126,17 +126,17 @@ void Step::vAstackFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* nip -- drop the 2nd value from the aux stack ( B A -- A )                  */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackNip(Forth* pForth)
+void Step::vAstackNip(void)
 {
   ENTRY("vAstackNip"_Stz);
   
   GenVar xValA;
   GenVar xValB;
   
-  if ( ! pForth->m_pAuxStack->bPop(xValA,xValB) )
+  if ( ! m_pAuxStack->bPop(xValA,xValB) )
   THROW_ASTACK();
   
-  pForth->m_pAuxStack->vPushGenVar(xValA);
+  m_pAuxStack->vPushGenVar(xValA);
   
   EXIT();
 }
@@ -144,21 +144,21 @@ void Step::vAstackNip(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* apick -- place copy of nth value in aux stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackPick(Forth* pForth)
+void Step::vAstackPick(void)
 {
   ENTRY("vAstackPick"_Stz);
   
   i8 iPick;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iPick) )
+  if ( ! m_pDataStack->bPopAsInt(iPick) )
     THROW_DSTACK();
   
   // could do this directly on stack
   
   GenVar xVariable;
   
-  pForth->m_pAuxStack->vPeekValue(iPick,xVariable);
+  m_pAuxStack->vPeekValue(iPick,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -166,7 +166,7 @@ void Step::vAstackPick(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* areverse -- reverse astack values ( ... D C B A n -- A B C D ... )         */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackReverse(Forth* pForth)
+void Step::vAstackReverse(void)
 {
   ENTRY("vAstackReverse"_Stz);
   
@@ -184,28 +184,28 @@ void Step::vAstackReverse(Forth* pForth)
   };
   
   i8 nValues;
-  if ( ! pForth->m_pDataStack->bPop(nValues) )
+  if ( ! m_pDataStack->bPop(nValues) )
     THROW_DSTACK();
   
   for (i8 i = 0; i < nValues; i++) {
-    if ( ! pForth->m_pAuxStack->bPop(apValWrk[i]) )
+    if ( ! m_pAuxStack->bPop(apValWrk[i]) )
       THROW_ASTACK();
   }
   
   for (i8 i = 0; i < nValues; i++) {
-    pForth->m_pAuxStack->vPushGenVar(apValWrk[i]);
+    m_pAuxStack->vPushGenVar(apValWrk[i]);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* astk -- dump the aux stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackStk(Forth* pForth)
+void Step::vAstackStk(void)
 {
   ENTRY("vAstackStk"_Stz);
   
-  pForth->m_pAuxStack->vContentDump(
-    (Stz*)pForth->m_pTask->szJobName(),
+  m_pAuxStack->vContentDump(
+    (Stz*)m_pTask->szJobName(),
     "AuxStack:"_Stz);
   
   EXIT();
@@ -214,18 +214,18 @@ void Step::vAstackStk(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* swap -- swap top two values on aux stack                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackSwap(Forth* pForth)
+void Step::vAstackSwap(void)
 {
   ENTRY("vAstackSwap"_Stz);
   
   GenVar xValA;
   GenVar xValB;
   
-  if ( ! pForth->m_pAuxStack->bPop(xValA,xValB) )
+  if ( ! m_pAuxStack->bPop(xValA,xValB) )
   THROW_ASTACK();
   
-  pForth->m_pAuxStack->vPushGenVar(xValA);
-  pForth->m_pAuxStack->vPushGenVar(xValB);
+  m_pAuxStack->vPushGenVar(xValA);
+  m_pAuxStack->vPushGenVar(xValB);
   
   EXIT();
 }
@@ -233,15 +233,15 @@ void Step::vAstackSwap(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >a -- move value from dstack to astack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackToA(Forth* pForth)
+void Step::vAstackToA(void)
 {
   ENTRY("vAstackToA"_Stz);
   
   GenVar xValOpaque;
-  if ( ! pForth->m_pDataStack->bPop(xValOpaque) )
+  if ( ! m_pDataStack->bPop(xValOpaque) )
     THROW_DSTACK();
   
-  pForth->m_pAuxStack->vPushGenVar(xValOpaque);
+  m_pAuxStack->vPushGenVar(xValOpaque);
   
   EXIT();
 }
@@ -249,15 +249,15 @@ void Step::vAstackToA(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* a> -- move value from astack to dstack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackToD(Forth* pForth)
+void Step::vAstackToD(void)
 {
   ENTRY("vAstackToD"_Stz);
   
   GenVar xVal;
-  if ( ! pForth->m_pAuxStack->bPop(xVal) )
+  if ( ! m_pAuxStack->bPop(xVal) )
     THROW_ASTACK();
   
-  pForth->m_pDataStack->vPushGenVar(xVal);
+  m_pDataStack->vPushGenVar(xVal);
   
   EXIT();
 }
@@ -265,17 +265,17 @@ void Step::vAstackToD(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >auxStack -- pop stack of this task and push onto aux stack of that task   */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackTransfer(Forth* pForth)
+void Step::vAstackTransfer(void)
 {
   ENTRY("vAstackTransfer"_Stz);
   
   Object* pPtrTask;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTask) )
+  if ( ! m_pDataStack->bPop(pPtrTask) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pPtrTask);
   
   GenVar xVariable;
-  if ( ! pForth->m_pDataStack->bPop(xVariable) )
+  if ( ! m_pDataStack->bPop(xVariable) )
     THROW_DSTACK();
   
   pThatTask->m_okLock.vGrabWrite();
@@ -288,7 +288,7 @@ void Step::vAstackTransfer(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* a0 -- place copy of 0th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack0(Forth* pForth)
+void Step::vAstack0(void)
 {
   ENTRY("vAstack0"_Stz);
   
@@ -296,9 +296,9 @@ void Step::vAstack0(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pAuxStack->vPeekValue(0,xVariable);
+  m_pAuxStack->vPeekValue(0,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -306,7 +306,7 @@ void Step::vAstack0(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* a1 -- place copy of 1st value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack1(Forth* pForth)
+void Step::vAstack1(void)
 {
   ENTRY("vAstack1"_Stz);
   
@@ -314,9 +314,9 @@ void Step::vAstack1(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pAuxStack->vPeekValue(1,xVariable);
+  m_pAuxStack->vPeekValue(1,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -324,7 +324,7 @@ void Step::vAstack1(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r2 -- place copy of 2nd value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack2(Forth* pForth)
+void Step::vAstack2(void)
 {
   ENTRY("vAstack2"_Stz);
   
@@ -332,9 +332,9 @@ void Step::vAstack2(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pAuxStack->vPeekValue(2,xVariable);
+  m_pAuxStack->vPeekValue(2,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -342,7 +342,7 @@ void Step::vAstack2(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r3 -- place copy of 3rd value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack3(Forth* pForth)
+void Step::vAstack3(void)
 {
   ENTRY("vAstack3"_Stz);
   
@@ -350,9 +350,9 @@ void Step::vAstack3(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pAuxStack->vPeekValue(3,xVariable);
+  m_pAuxStack->vPeekValue(3,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -360,7 +360,7 @@ void Step::vAstack3(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r4 -- place copy of 4th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack4(Forth* pForth)
+void Step::vAstack4(void)
 {
   ENTRY("vAstack4"_Stz);
   
@@ -368,9 +368,9 @@ void Step::vAstack4(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pAuxStack->vPeekValue(4,xVariable);
+  m_pAuxStack->vPeekValue(4,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -378,7 +378,7 @@ void Step::vAstack4(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r5 -- place copy of 0th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack5(Forth* pForth)
+void Step::vAstack5(void)
 {
   ENTRY("vAstack5"_Stz);
   
@@ -386,9 +386,9 @@ void Step::vAstack5(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pAuxStack->vPeekValue(5,xVariable);
+  m_pAuxStack->vPeekValue(5,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -396,7 +396,7 @@ void Step::vAstack5(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r6 -- place copy of 6th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack6(Forth* pForth)
+void Step::vAstack6(void)
 {
   ENTRY("vAstack6"_Stz);
   
@@ -404,9 +404,9 @@ void Step::vAstack6(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pAuxStack->vPeekValue(6,xVariable);
+  m_pAuxStack->vPeekValue(6,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -414,7 +414,7 @@ void Step::vAstack6(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r7 -- place copy of 7th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack7(Forth* pForth)
+void Step::vAstack7(void)
 {
   ENTRY("vAstack7"_Stz);
   
@@ -422,9 +422,9 @@ void Step::vAstack7(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pAuxStack->vPeekValue(7,xVariable);
+  m_pAuxStack->vPeekValue(7,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -432,7 +432,7 @@ void Step::vAstack7(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r8 -- place copy of 8th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack8(Forth* pForth)
+void Step::vAstack8(void)
 {
   ENTRY("vAstack8"_Stz);
   
@@ -440,9 +440,9 @@ void Step::vAstack8(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pAuxStack->vPeekValue(8,xVariable);
+  m_pAuxStack->vPeekValue(8,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -450,7 +450,7 @@ void Step::vAstack8(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* r9 -- place copy of 9th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack9(Forth* pForth)
+void Step::vAstack9(void)
 {
   ENTRY("vAstack9"_Stz);
   
@@ -458,9 +458,9 @@ void Step::vAstack9(Forth* pForth)
   
   GenVar xVariable;
   
-  pForth->m_pAuxStack->vPeekValue(9,xVariable);
+  m_pAuxStack->vPeekValue(9,xVariable);
   
-  pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }

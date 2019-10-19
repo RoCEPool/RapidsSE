@@ -40,16 +40,16 @@ void Step::vAddSteps_Task(void)
 /*----------------------------------------------------------------------------*/
 /* task.ack -- acknowledge that task of this tasks completion                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskAck(Forth* pForth)
+void Step::vTaskAck(void)
 {
   ENTRY("vTaskAck"_Stz);
   
   Object* pTaskObject;
-  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pTaskWaiting = _pTask(pTaskObject);
   
-  bool bWasQueued = Scheduler::bAckWaitingTask(pTaskWaiting,pForth->m_pTask);
+  bool bWasQueued = Scheduler::bAckWaitingTask(pTaskWaiting,m_pTask);
   
 #ifdef WITH_STATISTICS_COUNTERS
   if (bWasQueued)
@@ -62,17 +62,17 @@ void Step::vTaskAck(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.acks! -- store value into given tasks m_oAcksRmg                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskAcksStore(Forth* pForth)
+void Step::vTaskAcksStore(void)
 {
   ENTRY("vTaskAcksStore"_Stz);
   
   Object* pPtrTask;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTask) )
+  if ( ! m_pDataStack->bPop(pPtrTask) )
     THROW_DSTACK();
   Task* pGivenTask = _pTask(pPtrTask);
   
   i8 nAcksRequired;
-  if ( ! pForth->m_pDataStack->bPopAsInt(nAcksRequired) )
+  if ( ! m_pDataStack->bPopAsInt(nAcksRequired) )
     THROW_DSTACK();
   
   ASSERT(0 == pGivenTask->m_oAcksRmg.iPrintOnlyValue());
@@ -97,7 +97,7 @@ void Step::vTaskAcksStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.breakPoint -- break point so we can examine task & thread state       */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskBreakPoint(Forth* pForth)
+void Step::vTaskBreakPoint(void)
 {
   ENTRY("vTaskBreakPoint"_Stz);
     
@@ -107,12 +107,12 @@ void Step::vTaskBreakPoint(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.dicStack -- push task dictionary onto data stack                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskDicStack(Forth* pForth)
+void Step::vTaskDicStack(void)
 {
   ENTRY("vTaskDicStack"_Stz);
   
   Object* pPtrTask;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTask) )
+  if ( ! m_pDataStack->bPop(pPtrTask) )
     THROW_DSTACK();
   
   Task* pThatTask = _pTask(pPtrTask);
@@ -120,7 +120,7 @@ void Step::vTaskDicStack(Forth* pForth)
   
   Object* pPtrDicStack = &pThatTask->m_oDicStack;
   
-  pForth->m_pDataStack->vPushPointer(pPtrDicStack);
+  m_pDataStack->vPushPointer(pPtrDicStack);
   
   EXIT();
 }
@@ -128,12 +128,12 @@ void Step::vTaskDicStack(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.dropLock -- drop lock of task on data stack                           */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskDropLock(Forth* pForth)
+void Step::vTaskDropLock(void)
 {
   ENTRY("vTaskDrop"_Stz);
   
   Object* pObject;
-  if ( ! pForth->m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pObject);
   
@@ -146,12 +146,12 @@ void Step::vTaskDropLock(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.dump -- dump of task on data stack                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskDump(Forth* pForth)
+void Step::vTaskDump(void)
 {
 ENTRY("vTaskDump"_Stz);
   
   Object* pObject;
-  if ( ! pForth->m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pObject);
   
@@ -163,13 +163,13 @@ ENTRY("vTaskDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* task::delete -- remove task from scheduler and delete                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskDelete(Forth* pForth)
+void Step::vTaskDelete(void)
 {
   ENTRY("vTaskDelete"_Stz);
   
-  pForth->m_pTask->vUnlinkJob();
+  m_pTask->vUnlinkJob();
   
-  pForth->m_pTask->vTransition(TR_DELETE);
+  m_pTask->vTransition(TR_DELETE);
 
   EXIT();
 }
@@ -177,12 +177,12 @@ void Step::vTaskDelete(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.grabLock -- grab lock of task on data stack                           */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskGrabLock(Forth* pForth)
+void Step::vTaskGrabLock(void)
 {
   ENTRY("vTaskGrab"_Stz);
   
   Object* pObject;
-  if ( ! pForth->m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pObject);
   
@@ -194,12 +194,12 @@ void Step::vTaskGrabLock(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.isAckSet -- is task ack set?                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskIsAckSet(Forth* pForth)
+void Step::vTaskIsAckSet(void)
 {
   ENTRY("vTaskIsAckSet"_Stz);
   
   Object* pTaskObject;
-  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pTaskBeingAcked = _pTask(pTaskObject);
   
@@ -212,7 +212,7 @@ void Step::vTaskIsAckSet(Forth* pForth)
                        iIsAckSet);
   }
   
-  pForth->m_pDataStack->vPushI8(iIsAckSet);
+  m_pDataStack->vPushI8(iIsAckSet);
 
   EXIT();
 }
@@ -220,18 +220,18 @@ void Step::vTaskIsAckSet(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.job@ -- push job of given task                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskJobFetch(Forth* pForth)
+void Step::vTaskJobFetch(void)
 {
   ENTRY("vTaskJobFetch"_Stz);
   
   Object* pTaskObject;
-  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
   
   Job* pJob = pThatTask->m_pJob;
   
-  pForth->m_pDataStack->vPushPointer(pJob);
+  m_pDataStack->vPushPointer(pJob);
   
   EXIT();
 }
@@ -239,17 +239,17 @@ void Step::vTaskJobFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.job! -- store job into given task                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskJobStore(Forth* pForth)
+void Step::vTaskJobStore(void)
 {
   ENTRY("vTaskJobStore"_Stz);
   
   Object* pTaskObject;
-  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pJobObject;
-  if ( ! pForth->m_pDataStack->bPop(pJobObject) )
+  if ( ! m_pDataStack->bPop(pJobObject) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobObject);
   
@@ -261,18 +261,18 @@ void Step::vTaskJobStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.name@ -- fetch task name                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskNameFetch(Forth* pForth)
+void Step::vTaskNameFetch(void)
 {
 ENTRY("vTaskNameFetch"_Stz);
   
   Object* pTaskObject;
-  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
   
   s256 sName((Stz*)pThatTask->szJobName());
   
-  pForth->m_pDataStack->vPushS256(sName);
+  m_pDataStack->vPushS256(sName);
   
   EXIT();
 }
@@ -280,42 +280,42 @@ ENTRY("vTaskNameFetch"_Stz);
 /*----------------------------------------------------------------------------*/
 /* task.seed -- set seed word and args of task                                */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSeed(Forth* pForth)
+void Step::vTaskSeed(void)
 {
 ENTRY("vTaskSeed"_Stz);
   
 //  //                                   sSeed     nTaskArgs
-//  if ( ! pForth->m_pDataStack->bGuard(CN_STRVAL,CN_INTVAL) )
+//  if ( ! m_pDataStack->bGuard(CN_STRVAL,CN_INTVAL) )
 //    THROW_DSTACK();
   
   Object* pTaskObject;
-  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
   
   s32 sSeed;
-  if ( ! pForth->m_pDataStack->bPop(sSeed) )
+  if ( ! m_pDataStack->bPop(sSeed) )
     THROW_DSTACK();
 
 
   i8 nTaskArgs;
-  if ( ! pForth->m_pDataStack->bPop(nTaskArgs) )
+  if ( ! m_pDataStack->bPop(nTaskArgs) )
     THROW_DSTACK();
   //ASSERT(! nTaskArgs);
   
-  if ( ! pForth->m_pDataStack->bGuard(nTaskArgs) )
+  if ( ! m_pDataStack->bGuard(nTaskArgs) )
     THROW_DSTACK();
   
   // copy task arguments to given task (preserving stack order)
   GenVar xVariable;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    pForth->m_pDataStack->vPeekValue(iTaskArg,xVariable);
+    m_pDataStack->vPeekValue(iTaskArg,xVariable);
     pThatTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
   }
   
   // discard original task arguments
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    bool bPopped = pForth->m_pDataStack->bPop(xVariable);
+    bool bPopped = m_pDataStack->bPop(xVariable);
     ASSERT(bPopped);
   }
   
@@ -325,18 +325,18 @@ ENTRY("vTaskSeed"_Stz);
 /*----------------------------------------------------------------------------*/
 /* task.session@ -- fetch session of task on data stack                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSessionFetch(Forth* pForth)
+void Step::vTaskSessionFetch(void)
 {
   ENTRY("vTaskSessionFetch"_Stz);
   
   Object* pObject;
-  if ( ! pForth->m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pObject);
   
   Session* pSession = pThatTask->m_pSession;
   
-  pForth->m_pDataStack->vPushPointer(pSession);
+  m_pDataStack->vPushPointer(pSession);
   
   EXIT();
 }
@@ -344,18 +344,18 @@ void Step::vTaskSessionFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.session! -- store session on data stack into task on data stack       */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSessionStore(Forth* pForth)
+void Step::vTaskSessionStore(void)
 {
   ENTRY("vTaskSessionStore"_Stz);
   
   Object* pTaskObject;
-  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pPtrSession;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPop(pPtrSession) )
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
@@ -369,12 +369,12 @@ void Step::vTaskSessionStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.sendNode@ -- fetch send node of task on data stack                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSendNodeFetch(Forth* pForth)
+void Step::vTaskSendNodeFetch(void)
 {
   ENTRY("vTaskSendNodeFetch"_Stz);
   
   Object* pObject;
-  if ( ! pForth->m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pObject);
   
@@ -382,7 +382,7 @@ void Step::vTaskSendNodeFetch(Forth* pForth)
   
   Object* pPtrSendNode = pSendNode;
   
-  pForth->m_pDataStack->vPushPointer(pPtrSendNode);
+  m_pDataStack->vPushPointer(pPtrSendNode);
   
   EXIT();
 }
@@ -390,17 +390,17 @@ void Step::vTaskSendNodeFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.sendNode! -- store send node on data stack into task on data stack    */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSendNodeStore(Forth* pForth)
+void Step::vTaskSendNodeStore(void)
 {
   ENTRY("vTaskSendNodeStore"_Stz);
   
   Object* pTaskObject;
-  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pPtrSendNode;
-  if ( ! pForth->m_pDataStack->bPop(pPtrSendNode) )
+  if ( ! m_pDataStack->bPop(pPtrSendNode) )
     THROW_DSTACK();
   Node* pSendNode = _pNode(pPtrSendNode);
   
@@ -412,19 +412,19 @@ void Step::vTaskSendNodeStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task::sleepMsec -- this task sleeps for given milliseconds                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSleepMsec(Forth* pForth)
+void Step::vTaskSleepMsec(void)
 {
   ENTRY("vTaskSleepMsec"_Stz);
   
   i8 nMilliSeconds;
   
-  if ( ! pForth->m_pDataStack->bPop(nMilliSeconds) )
+  if ( ! m_pDataStack->bPop(nMilliSeconds) )
     THROW_DSTACK();
   
   i8 nMicroSeconds = nMilliSeconds * C_1K;
   
-  pForth->m_pTask->vSleepUsec(nMicroSeconds);
-  pForth->m_pTask->vTransition(TR_SLEEP);
+  m_pTask->vSleepUsec(nMicroSeconds);
+  m_pTask->vTransition(TR_SLEEP);
 
   EXIT();
 }
@@ -432,19 +432,19 @@ void Step::vTaskSleepMsec(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task::sleepSsec -- this task sleeps for given seconds                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSleepSsec(Forth* pForth)
+void Step::vTaskSleepSsec(void)
 {
   ENTRY("vTaskSleepSsec"_Stz);
   
   i8 nSeconds;
   
-  if ( ! pForth->m_pDataStack->bPop(nSeconds) )
+  if ( ! m_pDataStack->bPop(nSeconds) )
     THROW_DSTACK();
   
   i8 nMicroSeconds = nSeconds * C_1M;
   
-  pForth->m_pTask->vSleepUsec(nMicroSeconds);
-  pForth->m_pTask->vTransition(TR_SLEEP);
+  m_pTask->vSleepUsec(nMicroSeconds);
+  m_pTask->vTransition(TR_SLEEP);
 
   EXIT();
 }
@@ -452,17 +452,17 @@ void Step::vTaskSleepSsec(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task::sleepUsec -- this task sleeps for given microseconds                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskSleepUsec(Forth* pForth)
+void Step::vTaskSleepUsec(void)
 {
   ENTRY("vTaskSleepUsec"_Stz);
   
   i8 nMicroSeconds;
   
-  if ( ! pForth->m_pDataStack->bPop(nMicroSeconds) )
+  if ( ! m_pDataStack->bPop(nMicroSeconds) )
     THROW_DSTACK();
   
-  pForth->m_pTask->vSleepUsec(nMicroSeconds);
-  pForth->m_pTask->vTransition(TR_SLEEP);
+  m_pTask->vSleepUsec(nMicroSeconds);
+  m_pTask->vTransition(TR_SLEEP);
 
   EXIT();
 }
@@ -470,18 +470,18 @@ void Step::vTaskSleepUsec(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.state@ -- fetch state of task                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskStateFetch(Forth* pForth)
+void Step::vTaskStateFetch(void)
 {
 ENTRY("vTaskStateFetch"_Stz);
   
   Object* pTaskObject;
-  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
   
   eTS eState = pThatTask->m_eState;
   
-  pForth->m_pDataStack->vPushI8((i8)eState);
+  m_pDataStack->vPushI8((i8)eState);
   
   EXIT();
 }
@@ -489,13 +489,13 @@ ENTRY("vTaskStateFetch"_Stz);
 /*----------------------------------------------------------------------------*/
 /* task::this -- push this task                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskThis(Forth* pForth)
+void Step::vTaskThis(void)
 {
 ENTRY("vTaskThis"_Stz);
   
-  Object* pTask = pForth->m_pTask;
+  Object* pTask = m_pTask;
   
-  pForth->m_pDataStack->vPushPointer(pTask);
+  m_pDataStack->vPushPointer(pTask);
   
   EXIT();
 }
@@ -503,17 +503,17 @@ ENTRY("vTaskThis"_Stz);
 /*----------------------------------------------------------------------------*/
 /* task.thread -- push given tasks thread                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskThread(Forth* pForth)
+void Step::vTaskThread(void)
 {
   ENTRY("vTaskThread"_Stz);
   
   Object* pTaskObject;
-  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
 
   Thread* pThread = pThatTask->m_pThread;
-  pForth->m_pDataStack->vPushPointer(pThread);
+  m_pDataStack->vPushPointer(pThread);
   ASSERT(pThread);
   
   EXIT();
@@ -522,11 +522,11 @@ void Step::vTaskThread(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task.wait -- this task waits for signal                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskWait(Forth* pForth)
+void Step::vTaskWait(void)
 {
   ENTRY("vTaskWait"_Stz);
   
-  pForth->m_pTask->vTransition(TR_WAIT);
+  m_pTask->vTransition(TR_WAIT);
 
   EXIT();
 }
@@ -534,11 +534,11 @@ void Step::vTaskWait(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* task::yield -- this task yields                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskYield(Forth* pForth)
+void Step::vTaskYield(void)
 {
   ENTRY("vTaskYield"_Stz);
     
-  pForth->m_pTask->vTransition(TR_YIELD);
+  m_pTask->vTransition(TR_YIELD);
 
   EXIT();
 }

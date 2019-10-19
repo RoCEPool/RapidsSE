@@ -16,12 +16,12 @@ void Step::vAddSteps_JobGenData(void)
 /*----------------------------------------------------------------------------*/
 /* job_genData.generate -- generate data for a table                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_GenerateGenerate(Forth* pForth)
+void Step::vJob_GenerateGenerate(void)
 {
   ENTRY("vJob_GenerateGenerate"_Stz);
   
   Object* pPtrJob_Generate;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Generate) )
+  if ( ! m_pDataStack->bPop(pPtrJob_Generate) )
     THROW_DSTACK();
   Job_Generate* pJob_Generate = _pJob_Generate(pPtrJob_Generate);
   
@@ -33,13 +33,13 @@ void Step::vJob_GenerateGenerate(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_genData.table! -- store table into job_genData                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_GenerateTableStore(Forth* pForth)
+void Step::vJob_GenerateTableStore(void)
 {
   ENTRY("vJob_GenerateTableStore"_Stz);
   
   Object* pPtrTable;
   Object* pPtrJob_Generate;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Generate,pPtrTable) )
+  if ( ! m_pDataStack->bPop(pPtrJob_Generate,pPtrTable) )
     THROW_DSTACK();
   
   Job_Generate* pJob_Generate = _pJob_Generate(pPtrJob_Generate);

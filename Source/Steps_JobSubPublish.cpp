@@ -21,18 +21,18 @@ void Step::vAddSteps_JobSubPublish(void)
 /*----------------------------------------------------------------------------*/
 /* job_subPublish.begin -- begin subpublish                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPublishBegin(Forth* pForth)
+void Step::vJob_SubPublishBegin(void)
 {
   ENTRY("vJob_SubPublishBegin"_Stz);
   
   Object* pPtrJobSubPublish;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJobSubPublish) )
+  if ( ! m_pDataStack->bPop(pPtrJobSubPublish) )
     THROW_DSTACK();
   Job_SubPublish* pJob_SubPupublish = _pJob_SubPublish(pPtrJobSubPublish);
   
   bool bBegun = pJob_SubPupublish->bBegin();
   
-  pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -40,22 +40,22 @@ void Step::vJob_SubPublishBegin(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subPublish.chunk -- chunk subpublish                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPublishChunk(Forth* pForth)
+void Step::vJob_SubPublishChunk(void)
 {
   ENTRY("vJob_SubPublishChunk"_Stz);
   
   Object* pPtrJobSubPublish;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJobSubPublish) )
+  if ( ! m_pDataStack->bPop(pPtrJobSubPublish) )
     THROW_DSTACK();
   Job_SubPublish* pJob_SubPupublish = _pJob_SubPublish(pPtrJobSubPublish);
   
   bool bBufferPublished = pJob_SubPupublish->bChunk();
   
-  pForth->m_pDataStack->vPushBool(true);
+  m_pDataStack->vPushBool(true);
   
   if (! bBufferPublished) {
-    pForth->m_pTask->vSleepUsec(C_100K);
-    pForth->m_pTask->vTransition(TR_SLEEP);
+    m_pTask->vSleepUsec(C_100K);
+    m_pTask->vTransition(TR_SLEEP);
   }
   
   EXIT();
@@ -64,12 +64,12 @@ void Step::vJob_SubPublishChunk(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subPublish.end -- end subpublish                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPublishEnd(Forth* pForth)
+void Step::vJob_SubPublishEnd(void)
 {
   ENTRY("vJob_SubPublishEnd"_Stz);
   
   Object* pPtrJobSubPublish;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJobSubPublish) )
+  if ( ! m_pDataStack->bPop(pPtrJobSubPublish) )
     THROW_DSTACK();
   Job_SubPublish* pJob_SubPupublish = _pJob_SubPublish(pPtrJobSubPublish);
 
@@ -82,16 +82,16 @@ void Step::vJob_SubPublishEnd(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subPublish.publishJobId@ -- fetch the publish job id                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPublishPublishJobIdFetch(Forth* pForth)
+void Step::vJob_SubPublishPublishJobIdFetch(void)
 {
   ENTRY("vJob_SubPublishPublishJobIdFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_SubPublish* pJob = _pJob_SubPublish(pJobPtr);
   
-  pForth->m_pDataStack->vPushI8(pJob->m_iPublishJobId);
+  m_pDataStack->vPushI8(pJob->m_iPublishJobId);
   
   EXIT();
 }
@@ -99,16 +99,16 @@ void Step::vJob_SubPublishPublishJobIdFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subPublish.slot@ -- fetch the job slot                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPublishSlotFetch(Forth* pForth)
+void Step::vJob_SubPublishSlotFetch(void)
 {
   ENTRY("vJob_SubPublishSlotFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_SubPublish* pJob = _pJob_SubPublish(pJobPtr);
   
-  pForth->m_pDataStack->vPushI8(pJob->m_i_Slot);
+  m_pDataStack->vPushI8(pJob->m_i_Slot);
   
   EXIT();
 }
@@ -116,13 +116,13 @@ void Step::vJob_SubPublishSlotFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subPublish.table! -- store table into job subPublish                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPublishTableStore(Forth* pForth)
+void Step::vJob_SubPublishTableStore(void)
 {
   ENTRY("vJob_SubPublishTableStore"_Stz);
   
   Object* pPtrTable;
   Object* pPtrJob_SubPublish;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_SubPublish,pPtrTable) )
+  if ( ! m_pDataStack->bPop(pPtrJob_SubPublish,pPtrTable) )
     THROW_DSTACK();
   
   Job_SubPublish* pJob_SubPublish = _pJob_SubPublish(pPtrJob_SubPublish);

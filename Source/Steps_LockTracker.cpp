@@ -16,7 +16,7 @@ void Step::vAddSteps_LockTracker(void)
 /*----------------------------------------------------------------------------*/
 /* lockTracker::list -- list lock stats                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vLockTrackerList(Forth* pForth)
+void Step::vLockTrackerList(void)
 {
 ENTRY("vLockTrackerList"_Stz);
 
@@ -27,7 +27,7 @@ ENTRY("vLockTrackerList"_Stz);
 /*----------------------------------------------------------------------------*/
 /* lockTracker::reset -- reset locks                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vLockTrackerReset(Forth* pForth)
+void Step::vLockTrackerReset(void)
 {
   ENTRY("vLockTrackerReset"_Stz);
   

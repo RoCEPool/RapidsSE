@@ -20,12 +20,12 @@ void Step::vAddSteps_JobSubIngester(void)
 /*----------------------------------------------------------------------------*/
 /* job_subIngesterr::spawn -- spawn a new subIngester                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubIngesterSpawn(Forth* pForth)
+void Step::vJob_SubIngesterSpawn(void)
 {
   ENTRY("vJob_SubIngesterSpawn"_Stz);
   
   Object* pPtrJob_Ingest;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Ingest) )
+  if ( ! m_pDataStack->bPop(pPtrJob_Ingest) )
     THROW_DSTACK();
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
   
@@ -62,18 +62,18 @@ void Step::vJob_SubIngesterSpawn(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subIngester.begin -- begin ingesting                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubIngesterBegin(Forth* pForth)
+void Step::vJob_SubIngesterBegin(void)
 {
   ENTRY("vSubIngesterBegin"_Stz);
   
   Object* pPtrJob_SubIngester;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_SubIngester) )
+  if ( ! m_pDataStack->bPop(pPtrJob_SubIngester) )
     THROW_DSTACK();
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
 
   bool bBegun = pJob_SubIngester->bBegin();
   
-  pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -81,30 +81,30 @@ void Step::vJob_SubIngesterBegin(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subIngester.chunk -- read & process rows till buffer full / eof        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubIngesterChunk(Forth* pForth)
+void Step::vJob_SubIngesterChunk(void)
 {
   ENTRY("vJob_SubIngesterChunk"_Stz);
   
   Object* pPtrJob_SubIngester;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_SubIngester) )
+  if ( ! m_pDataStack->bPop(pPtrJob_SubIngester) )
     THROW_DSTACK();
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
   
   bool bCallAgain = pJob_SubIngester->bChunk();
   
   if (bCallAgain) {
-    pForth->m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushBool(true);
   }
   else {
     if ( 0 == pJob_SubIngester->m_pJob_Ingest->nIngestChunks() &&
         -1 != pJob_SubIngester->m_pJob_Ingest->m_iLastChunk) {
-      pForth->m_pDataStack->vPushBool(false);
+      m_pDataStack->vPushBool(false);
     }
     else {
       // sleep for 0.010 second
-      pForth->m_pTask->vSleepUsec(C_1K * 10);
-      pForth->m_pTask->vTransition(TR_SLEEP);
-      pForth->m_pDataStack->vPushBool(true);
+      m_pTask->vSleepUsec(C_1K * 10);
+      m_pTask->vTransition(TR_SLEEP);
+      m_pDataStack->vPushBool(true);
     }
   }
   
@@ -114,12 +114,12 @@ void Step::vJob_SubIngesterChunk(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subIngester.end -- end ingesting                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubIngesterEnd(Forth* pForth)
+void Step::vJob_SubIngesterEnd(void)
 {
   ENTRY("vSubIngesterEnd"_Stz);
   
   Object* pPtrJob_SubIngester;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_SubIngester) )
+  if ( ! m_pDataStack->bPop(pPtrJob_SubIngester) )
     THROW_DSTACK();
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
   
@@ -131,16 +131,16 @@ void Step::vJob_SubIngesterEnd(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.jobIngest -- get job_ingest                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubIngesterJobIngest(Forth* pForth)
+void Step::vJob_SubIngesterJobIngest(void)
 {
   ENTRY("vJob_SubIngesterJobIngest"_Stz);
   
   Object* pPtrJob_SubIngester;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_SubIngester) )
+  if ( ! m_pDataStack->bPop(pPtrJob_SubIngester) )
   THROW_DSTACK();
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
   
-  pForth->m_pDataStack->vPushPointer(pJob_SubIngester->m_pJob_Ingest);
+  m_pDataStack->vPushPointer(pJob_SubIngester->m_pJob_Ingest);
 
   EXIT();
 }

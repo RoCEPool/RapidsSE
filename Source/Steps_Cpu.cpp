@@ -15,13 +15,13 @@ void Step::vAddSteps_Cpu(void)
 /*----------------------------------------------------------------------------*/
 /* cpu.rdtscp -- read cpu time stamp counter                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vCpuRdtscp(Forth* pForth)
+void Step::vCpuRdtscp(void)
 {
   ENTRY("vCpuRdtscp"_Stz);
   
   i8 iTscp = Tick::iRdClock();
   
-  pForth->m_pDataStack->vPushI8(iTscp);
+  m_pDataStack->vPushI8(iTscp);
   
   EXIT();
 }

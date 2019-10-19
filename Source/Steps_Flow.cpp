@@ -25,11 +25,11 @@ void Step::vAddSteps_Flow(void)
 /*----------------------------------------------------------------------------*/
 /* begin_ -- begin of the docol loop : docol (used only in docol)   immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowBegin_(Forth* pForth)
+void Step::vFlowBegin_(void)
 {
   ENTRY("vBegin_"_Stz);
   
-  pForth->m_pTask->m_pCompiler->m_pBeginIP = pForth->m_pTask->m_pForth->m_aInxPtr;
+  m_pTask->m_pCompiler->m_pBeginIP = m_pTask->m_pForth->m_aInxPtr;
   
   EXIT();
 }
@@ -37,29 +37,29 @@ void Step::vFlowBegin_(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* execute -- execute word on data stack                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowExecute(Forth* pForth)
+void Step::vFlowExecute(void)
 {
   ENTRY("vFlowExecute"_Stz);
   
   Object* pWordObject;
-  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   if (WK_INTRINSIC == pWord->eKind()) {
     StepFp fpStep = pWord->fpEntryStep();
-    ((Step*)pForth->*fpStep)(pForth);
+    ((Step*)this->*fpStep)();
   }
   else if (WK_OBJECT == pWord->eKind()) {
-    pForth->m_pReturnStack->vPushCell(pForth->m_pTask->m_pForth->m_aInxPtr);
-    pForth->m_pTask->m_pForth->m_aInxPtr = pWord->aEntryCell();
+    m_pReturnStack->vPushCell(m_pTask->m_pForth->m_aInxPtr);
+    m_pTask->m_pForth->m_aInxPtr = pWord->aEntryCell();
     
     Object* pObject = (Object*)pWord->aFirstCell();
-    pForth->m_pDataStack->vPushPointer(pObject);
+    m_pDataStack->vPushPointer(pObject);
   }
   else if (WK_ROUTINE == pWord->eKind()){
-    pForth->m_pReturnStack->vPushCell(pForth->m_pTask->m_pForth->m_aInxPtr);
-    pForth->m_pTask->m_pForth->m_aInxPtr = pWord->aEntryCell();
+    m_pReturnStack->vPushCell(m_pTask->m_pForth->m_aInxPtr);
+    m_pTask->m_pForth->m_aInxPtr = pWord->aEntryCell();
   }
   else {
     NEVER_REACH;
@@ -71,7 +71,7 @@ void Step::vFlowExecute(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* hazard -- should never be called                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowHazard(Forth* pForth)
+void Step::vFlowHazard(void)
 {
   ENTRY("vFlowHazard"_Stz);
   
@@ -83,11 +83,11 @@ void Step::vFlowHazard(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jump -- jump to location                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowJump(Forth* pForth)
+void Step::vFlowJump(void)
 {
   ENTRY("vJump"_Stz);
   
-  pForth->m_pTask->m_pForth->m_aInxPtr = pForth->m_pTask->m_pForth->m_aInxPtr->m_aJumpTo;
+  m_pTask->m_pForth->m_aInxPtr = m_pTask->m_pForth->m_aInxPtr->m_aJumpTo;
   
   EXIT();
 }
@@ -95,11 +95,11 @@ void Step::vFlowJump(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jumpBegin_ -- jump to begin_ (used only in : docol)              immediate */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowJumpBegin_(Forth* pForth)
+void Step::vFlowJumpBegin_(void)
 {
   ENTRY("vFlowJumpBegin_"_Stz);
   
-  pForth->m_pTask->m_pForth->m_aInxPtr = pForth->m_pTask->m_pCompiler->m_pBeginIP;
+  m_pTask->m_pForth->m_aInxPtr = m_pTask->m_pCompiler->m_pBeginIP;
   
   EXIT();
 }
@@ -107,7 +107,7 @@ void Step::vFlowJumpBegin_(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jumpFalse -- jump on false to location                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowJumpFalse(Forth* pForth)
+void Step::vFlowJumpFalse(void)
 {
   ENTRY("vJumpFalse"_Stz);
   
@@ -115,7 +115,7 @@ void Step::vFlowJumpFalse(Forth* pForth)
   //  THROW_DSTACK();
   
   // get pointer to value on the top of the stack
-  Stack* pDataStack = pForth->m_pDataStack;
+  Stack* pDataStack = m_pDataStack;
   ForthValue* aTopValue = reinterpret_cast<ForthValue*>(pDataStack->m_aTop);
 
   eCN eClassNo = aTopValue->eClass(); // inline
@@ -140,10 +140,10 @@ void Step::vFlowJumpFalse(Forth* pForth)
   
   if (iVal)
     // do not jump, skip over argument
-    pForth->m_pTask->m_pForth->m_aInxPtr++;
+    m_pTask->m_pForth->m_aInxPtr++;
   else
     // jump to location
-    pForth->m_pTask->m_pForth->m_aInxPtr = pForth->m_pTask->m_pForth->m_aInxPtr->m_aJumpTo;
+    m_pTask->m_pForth->m_aInxPtr = m_pTask->m_pForth->m_aInxPtr->m_aJumpTo;
   
   EXIT();
 }
@@ -151,22 +151,22 @@ void Step::vFlowJumpFalse(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jumpTrue -- jump on true to location                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowJumpTrue(Forth* pForth)
+void Step::vFlowJumpTrue(void)
 {
   ENTRY("vJumpTrue"_Stz);
   
   i8 iVal;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iVal) )
+  if ( ! m_pDataStack->bPopAsInt(iVal) )
     THROW_DSTACK();
   
   // n.b. the IP points to the jump arg
   
   if (iVal)
     // jump to location
-    pForth->m_pTask->m_pForth->m_aInxPtr = pForth->m_pTask->m_pForth->m_aInxPtr->m_aJumpTo;
+    m_pTask->m_pForth->m_aInxPtr = m_pTask->m_pForth->m_aInxPtr->m_aJumpTo;
   else
     // do not jump, skip over argument
-    pForth->m_pTask->m_pForth->m_aInxPtr++;
+    m_pTask->m_pForth->m_aInxPtr++;
   
   EXIT();
 }
@@ -174,7 +174,7 @@ void Step::vFlowJumpTrue(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* nop -- no op                                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowNop(Forth* pForth)
+void Step::vFlowNop(void)
 {
   ENTRY("vFlowNop"_Stz);
   
@@ -184,15 +184,15 @@ void Step::vFlowNop(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* retryPoint -- mark retry point                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowRetryPoint(Forth* pForth)
+void Step::vFlowRetryPoint(void)
 {
   ENTRY("vFlowRetryPoint"_Stz);
   
-  pForth->m_pTask->m_pCompiler->m_pRetryIP = pForth->m_pTask->m_pForth->m_aInxPtr;
+  m_pTask->m_pCompiler->m_pRetryIP = m_pTask->m_pForth->m_aInxPtr;
   
-  pForth->m_pDataStack->vRetryPoint();
+  m_pDataStack->vRetryPoint();
   
-  pForth->m_pReturnStack->vRetryPoint();
+  m_pReturnStack->vRetryPoint();
   
   EXIT();
 }
@@ -200,11 +200,11 @@ void Step::vFlowRetryPoint(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* test -- print test                                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowTest(Forth* pForth)
+void Step::vFlowTest(void)
 {
   ENTRY("vFlowTest"_Stz);
   
-  vTrace("[%s] Test\n"_Stz,pForth->m_pTask->szJobName());
+  vTrace("[%s] Test\n"_Stz,m_pTask->szJobName());
   
   EXIT();
 }
@@ -212,7 +212,7 @@ void Step::vFlowTest(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* throw -- throw c++ exception (for testing purposes)                        */
 /*----------------------------------------------------------------------------*/
-void Step::vFlowThrow(Forth* pForth)
+void Step::vFlowThrow(void)
 {
   ENTRY("vFlowThrow"_Stz);
   

@@ -17,18 +17,18 @@ void Step::vAddSteps_JobCat(void)
 /*----------------------------------------------------------------------------*/
 /* job_cat.begin -- begin cat                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_CatBegin(Forth* pForth)
+void Step::vJob_CatBegin(void)
 {
   ENTRY("vJob_CatBegin"_Stz);
   
   Object* pPtrJobCat;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJobCat) )
+  if ( ! m_pDataStack->bPop(pPtrJobCat) )
     THROW_DSTACK();
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJobCat);
   
   bool bBegun = pJob_Cat->bBegin();
   
-  pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -36,18 +36,18 @@ void Step::vJob_CatBegin(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_cat.chunk -- cat data from pipe                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_CatChunk(Forth* pForth)
+void Step::vJob_CatChunk(void)
 {
   ENTRY("vJob_CatChunk"_Stz);
   
   Object* pPtrJobCat;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJobCat) )
+  if ( ! m_pDataStack->bPop(pPtrJobCat) )
     THROW_DSTACK();
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJobCat);
   
   bool bCallAgain = pJob_Cat->bChunk();
   
-  pForth->m_pDataStack->vPushBool(bCallAgain);
+  m_pDataStack->vPushBool(bCallAgain);
   
   EXIT();
 }
@@ -55,12 +55,12 @@ void Step::vJob_CatChunk(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_cat.end -- end cat                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_CatEnd(Forth* pForth)
+void Step::vJob_CatEnd(void)
 {
   ENTRY("vJob_CatEnd"_Stz);
   
   Object* pPtrJob_Cat;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Cat) )
+  if ( ! m_pDataStack->bPop(pPtrJob_Cat) )
     THROW_DSTACK();
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJob_Cat);
   

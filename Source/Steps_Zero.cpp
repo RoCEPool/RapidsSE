@@ -20,18 +20,18 @@ void Step::vAddSteps_Zero(void)
 /*----------------------------------------------------------------------------*/
 /* 0< -- test if top value is less than zero                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroLess(Forth* pForth)
+void Step::vZeroLess(void)
 {
   ENTRY("vZeroLess"_Stz);
   
   i8 iZero;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! m_pDataStack->bPopAsInt(iZero) )
     THROW_DSTACK();
   
   if (iZero < 0)
-    pForth->m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushBool(true);
   else
-    pForth->m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -39,18 +39,18 @@ void Step::vZeroLess(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* 0<= -- test if top value is less than or equal to zero                     */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroLessEqual(Forth* pForth)
+void Step::vZeroLessEqual(void)
 {
   ENTRY("vZeroLessEqual"_Stz);
   
   i8 iZero;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! m_pDataStack->bPopAsInt(iZero) )
     THROW_DSTACK();
   
   if (iZero <= 0)
-    pForth->m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushBool(true);
   else
-    pForth->m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -58,18 +58,18 @@ void Step::vZeroLessEqual(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* 0== -- test if top value is equal to zero / nullptr                        */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroEqual(Forth* pForth)
+void Step::vZeroEqual(void)
 {
   ENTRY("vZeroEqual"_Stz);
   
   i8 iZero;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! m_pDataStack->bPopAsInt(iZero) )
     THROW_DSTACK();
   
   if (iZero == 0)
-    pForth->m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushBool(true);
   else
-    pForth->m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -77,18 +77,18 @@ void Step::vZeroEqual(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* 0!= -- test if top value is not equal to zero                              */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroNotEqual(Forth* pForth)
+void Step::vZeroNotEqual(void)
 {
   ENTRY("vZeroNotEqual"_Stz);
   
   i8 iZero;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! m_pDataStack->bPopAsInt(iZero) )
     THROW_DSTACK();
   
   if (iZero != 0)
-    pForth->m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushBool(true);
   else
-    pForth->m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -96,18 +96,18 @@ void Step::vZeroNotEqual(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* zeroGreaterEqual -- test if top value is greater than or equal to zero     */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroGreaterEqual(Forth* pForth)
+void Step::vZeroGreaterEqual(void)
 {
   ENTRY("vZeroGreaterEqual"_Stz);
   
   i8 iZero;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! m_pDataStack->bPopAsInt(iZero) )
     THROW_DSTACK();
   
   if (iZero >= 0)
-    pForth->m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushBool(true);
   else
-    pForth->m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -115,18 +115,18 @@ void Step::vZeroGreaterEqual(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* 0> -- test if top value is greater than zero                              */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroGreater(Forth* pForth)
+void Step::vZeroGreater(void)
 {
   ENTRY("vZeroGreater"_Stz);
   
   i8 iZero;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! m_pDataStack->bPopAsInt(iZero) )
     THROW_DSTACK();
   
   if (iZero > 0)
-    pForth->m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushBool(true);
   else
-    pForth->m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushBool(false);
   
   EXIT();
 }

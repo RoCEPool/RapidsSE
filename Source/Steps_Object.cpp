@@ -20,18 +20,18 @@ void Step::vAddSteps_Object(void)
 /*----------------------------------------------------------------------------*/
 /* object.class@ -- fetch class number from object                            */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectClassFetch(Forth* pForth)
+void Step::vObjectClassFetch(void)
 {
   ENTRY("vObjectClassFetch"_Stz);
   
   Object* pObject;
-  if ( ! pForth->m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   
   eCN eClassNo;
   eClassNo = pObject->eClass();
   
-  pForth->m_pDataStack->vPushI8(eClassNo);
+  m_pDataStack->vPushI8(eClassNo);
   
   EXIT();
 }
@@ -39,16 +39,16 @@ void Step::vObjectClassFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* object.class! -- store class number into object                            */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectClassStore(Forth* pForth)
+void Step::vObjectClassStore(void)
 {
   ENTRY("vObjectClassStore"_Stz);
   
   Object* pObject;
-  if ( ! pForth->m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   
   eCN eClassNo;
-  if ( ! pForth->m_pDataStack->bPop(eClassNo) )
+  if ( ! m_pDataStack->bPop(eClassNo) )
     THROW_DSTACK();
   
   pObject->vSetClass(eClassNo);
@@ -59,12 +59,12 @@ void Step::vObjectClassStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* object.dump -- dump the given object                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectDump(Forth* pForth)
+void Step::vObjectDump(void)
 {
   ENTRY("vObjectDump"_Stz);
   
   Object* pObject;
-  if ( ! pForth->m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   
   eCN eClass = pObject->eClass();
@@ -79,7 +79,7 @@ void Step::vObjectDump(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* object@ -- fetch object from return stack onto data stack                  */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectFetch(Forth* pForth)
+void Step::vObjectFetch(void)
 {
   ENTRY("vObjectFetch"_Stz);
   
@@ -87,9 +87,9 @@ void Step::vObjectFetch(Forth* pForth)
   
   GenVar xObjectVar;
   
-  pForth->m_pReturnStack->vPeekValue(iPick,xObjectVar);
+  m_pReturnStack->vPeekValue(iPick,xObjectVar);
   
-  pForth->m_pDataStack->vPushGenVar(xObjectVar);
+  m_pDataStack->vPushGenVar(xObjectVar);
   
   EXIT();
 }
@@ -97,12 +97,12 @@ void Step::vObjectFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* object.magic! -- put magic number into object                             */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectMagicMark(Forth* pForth)
+void Step::vObjectMagicMark(void)
 {
   ENTRY("vObjectMagicMark"_Stz);
   
   Object* pObject;
-  if ( ! pForth->m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPop(pObject) )
     THROW_RSTACK();
   
   pObject->vSetMagic();
@@ -113,7 +113,7 @@ void Step::vObjectMagicMark(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* object! -- replace object on return stack from data stack                  */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectStore(Forth* pForth)
+void Step::vObjectStore(void)
 {
   ENTRY("vObjectStore"_Stz);
   
@@ -121,10 +121,10 @@ void Step::vObjectStore(Forth* pForth)
   
   GenVar xObjectVar;
   
-  if ( ! pForth->m_pDataStack->bPop(xObjectVar) )
+  if ( ! m_pDataStack->bPop(xObjectVar) )
     THROW_DSTACK();
   
-  pForth->m_pReturnStack->vPokeGenVar(iPeek,xObjectVar);
+  m_pReturnStack->vPokeGenVar(iPeek,xObjectVar);
   
   EXIT();
 }
@@ -132,16 +132,16 @@ void Step::vObjectStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* object.wordbody! -- mark object as a part of a wordbody                    */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectWordBodySet(Forth* pForth)
+void Step::vObjectWordBodySet(void)
 {
   ENTRY("vObjectWordBodySet"_Stz);
   
   Object* pObject;
-  if ( ! pForth->m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   
   i8 iIsBody;
-  if ( ! pForth->m_pDataStack->bPop(iIsBody) )
+  if ( ! m_pDataStack->bPop(iIsBody) )
     THROW_DSTACK();
   
   pObject->vWordBody(iIsBody);

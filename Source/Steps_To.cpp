@@ -20,12 +20,12 @@ void Step::vAddSteps_To(void)
 /*----------------------------------------------------------------------------*/
 /* >body -- convert word pointer to body pointer                              */
 /*----------------------------------------------------------------------------*/
-void Step::vToBody(Forth* pForth)
+void Step::vToBody(void)
 {
   ENTRY("vToBody"_Stz);
   
   Object* pWordObject;
-  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
@@ -34,7 +34,7 @@ void Step::vToBody(Forth* pForth)
   
   Object* pPtrBody = reinterpret_cast<Object*>(pBody);
   
-  pForth->m_pDataStack->vPushPointer(pPtrBody);
+  m_pDataStack->vPushPointer(pPtrBody);
   
   EXIT();
 }
@@ -42,17 +42,17 @@ void Step::vToBody(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >int -- convert value to int                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vToInt(Forth* pForth)
+void Step::vToInt(void)
 {
   ENTRY("vToInt"_Stz);
   
   s32 sInt;
-  if ( ! pForth->m_pDataStack->bPop(sInt) )
+  if ( ! m_pDataStack->bPop(sInt) )
     THROW_DSTACK();
   
   i8 i = sInt.iToI8();
   
-  pForth->m_pDataStack->vPushI8(i);
+  m_pDataStack->vPushI8(i);
   
   EXIT();
 }
@@ -60,17 +60,17 @@ void Step::vToInt(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >ptr -- convert int to ptr                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vToPtr(Forth* pForth)
+void Step::vToPtr(void)
 {
   ENTRY("vToPtr"_Stz);
   
   i8 iPtr;
-  if ( ! pForth->m_pDataStack->bPop(iPtr) )
+  if ( ! m_pDataStack->bPop(iPtr) )
     THROW_DSTACK();
   
   Object* pPtr = (Object*)iPtr;
   
-  pForth->m_pDataStack->vPushPointer(pPtr);
+  m_pDataStack->vPushPointer(pPtr);
   
   EXIT();
 }
@@ -78,19 +78,19 @@ void Step::vToPtr(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >str -- convert value to str                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vToStr(Forth* pForth)
+void Step::vToStr(void)
 {
   ENTRY("vToStr"_Stz);
   
   GenVar xVal;
-  if ( ! pForth->m_pDataStack->bPop(xVal) )
+  if ( ! m_pDataStack->bPop(xVal) )
     THROW_DSTACK();
   
   s48K sString;
   
   xVal.aNestedValue()->vToString(sString);
   
-  pForth->m_pDataStack->vPushS48K(sString);
+  m_pDataStack->vPushS48K(sString);
   
   EXIT();
 }
@@ -98,17 +98,17 @@ void Step::vToStr(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* >task -- convert int to task ptr                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vToTask(Forth* pForth)
+void Step::vToTask(void)
 {
   ENTRY("vToTask"_Stz);
   
   i8 iVal;
-  if ( ! pForth->m_pDataStack->bPop(iVal) )
+  if ( ! m_pDataStack->bPop(iVal) )
     THROW_DSTACK();
   
   Object* pPtrTask = _pTask(iVal);
   
-  pForth->m_pDataStack->vPushPointer(pPtrTask);
+  m_pDataStack->vPushPointer(pPtrTask);
   
   EXIT();
 }

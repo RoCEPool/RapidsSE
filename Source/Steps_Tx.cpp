@@ -28,7 +28,7 @@ void Step::vAddSteps_Tx(void)
 /*----------------------------------------------------------------------------*/
 /* tx::begin -- begin a tx                                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTxBegin(Forth* pForth)
+void Step::vTxBegin(void)
 {
   ENTRY("vTxBegin"_Stz);
   
@@ -39,7 +39,7 @@ void Step::vTxBegin(Forth* pForth)
 //         pTx->iDistTxNode(), pTx->iDistTxNo(),
 //         pTx->aDecode());
   
-  pForth->m_pDataStack->vPushPointer(pTx);
+  m_pDataStack->vPushPointer(pTx);
   
   EXIT();
 }
@@ -47,12 +47,12 @@ void Step::vTxBegin(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.commit -- commit a tx                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTxCommit(Forth* pForth)
+void Step::vTxCommit(void)
 {
   ENTRY("vTxCommit"_Stz);
   
   Object* pPtrTx;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -69,12 +69,12 @@ void Step::vTxCommit(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.counterDec -- decrement tx general counter                              */
 /*----------------------------------------------------------------------------*/
-void Step::vTxCounterDec(Forth* pForth)
+void Step::vTxCounterDec(void)
 {
   ENTRY("vTxCounterDec"_Stz);
   
   Object* pPtrTx;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -86,7 +86,7 @@ void Step::vTxCounterDec(Forth* pForth)
 //         pTx->aDecode(),
 //         iCounter);
   
-  pForth->m_pDataStack->vPushI8(iCounter);
+  m_pDataStack->vPushI8(iCounter);
   
   EXIT();
 }
@@ -94,18 +94,18 @@ void Step::vTxCounterDec(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.counter@ -- fetch tx general counter                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTxCounterFetch(Forth* pForth)
+void Step::vTxCounterFetch(void)
 {
   ENTRY("vTxCounterFetch"_Stz);
   
   Object* pPtrTx;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iCounter = pTx->iCounterGet();
   
-  pForth->m_pDataStack->vPushI8(iCounter);
+  m_pDataStack->vPushI8(iCounter);
   
   EXIT();
 }
@@ -113,17 +113,17 @@ void Step::vTxCounterFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.counter! -- store tx general counter                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vTxCounterStore(Forth* pForth)
+void Step::vTxCounterStore(void)
 {
   ENTRY("vTxCounterStore"_Stz);
   
   Object* pPtrTx;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iCounter;
-  if ( ! pForth->m_pDataStack->bPop(iCounter) )
+  if ( ! m_pDataStack->bPop(iCounter) )
     THROW_DSTACK();
   
   pTx->vCounterSet(iCounter);
@@ -134,24 +134,24 @@ void Step::vTxCounterStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.distMember@ -- fetch if given node is a distributed member of tx        */
 /*----------------------------------------------------------------------------*/
-void Step::vTxDistMemberFetch(Forth* pForth)
+void Step::vTxDistMemberFetch(void)
 {
   ENTRY("vTxDistMemberFetch"_Stz);
   
   Object* pPtrTx;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
   ASSERT(pTx->bLocalTx());
   
   i8 i_Node;
-  if ( ! pForth->m_pDataStack->bPop(i_Node) )
+  if ( ! m_pDataStack->bPop(i_Node) )
     THROW_DSTACK();
   
   bool bDistMember = pTx->bDistMember(i_Node);
   
-  pForth->m_pDataStack->vPushI8(bDistMember);
+  m_pDataStack->vPushI8(bDistMember);
   
   EXIT();
 }
@@ -159,23 +159,23 @@ void Step::vTxDistMemberFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.distMember! -- store if given node is a distributed member of tx        */
 /*----------------------------------------------------------------------------*/
-void Step::vTxDistMemberStore(Forth* pForth)
+void Step::vTxDistMemberStore(void)
 {
   ENTRY("vTxDistMemberStore"_Stz);
   
   Object* pPtrTx;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
   ASSERT(pTx->bLocalTx());
   
   i8 i_Node;
-  if ( ! pForth->m_pDataStack->bPop(i_Node) )
+  if ( ! m_pDataStack->bPop(i_Node) )
     THROW_DSTACK();
 
   i8 iDistMember;
-  if ( ! pForth->m_pDataStack->bPop(iDistMember) )
+  if ( ! m_pDataStack->bPop(iDistMember) )
     THROW_DSTACK();
   
   pTx->vDistMember(i_Node,iDistMember);
@@ -186,13 +186,13 @@ void Step::vTxDistMemberStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.dump -- dump a tx                                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTxDump(Forth* pForth)
+void Step::vTxDump(void)
 {
 ENTRY("vTxDump"_Stz);
   
   Object* pPtrTx;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -204,7 +204,7 @@ ENTRY("vTxDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* tx::dumpAll -- dump all tx's                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vTxDumpAll(Forth* pForth)
+void Step::vTxDumpAll(void)
 {
   ENTRY("vTxDumpAll"_Stz);
   
@@ -216,13 +216,13 @@ void Step::vTxDumpAll(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.free -- free a tx                                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vTxFree(Forth* pForth)
+void Step::vTxFree(void)
 {
   ENTRY("vTxFree"_Stz);
   
   Object* pPtrTx;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -239,18 +239,18 @@ void Step::vTxFree(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.id -- get tx id from tx on data stack                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTxId(Forth* pForth)
+void Step::vTxId(void)
 {
   ENTRY("vTxId"_Stz);
   
   Object* pPtrTx;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iTxId = pTx->iLocalTxId();
   
-  pForth->m_pDataStack->vPushI8(iTxId);
+  m_pDataStack->vPushI8(iTxId);
   
   EXIT();
 }
@@ -258,12 +258,12 @@ void Step::vTxId(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.prepare -- prepare a tx                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vTxPrepare(Forth* pForth)
+void Step::vTxPrepare(void)
 {
   ENTRY("vTxPrepare"_Stz);
   
   Object* pPtrTx;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -280,12 +280,12 @@ void Step::vTxPrepare(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx.rollback -- rollback a tx                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vTxRollback(Forth* pForth)
+void Step::vTxRollback(void)
 {
   ENTRY("vTxRollback"_Stz);
   
   Object* pPtrTx;
-  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -302,12 +302,12 @@ void Step::vTxRollback(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* tx::testDist -- test for a distributed tx and create if it doesnt exist    */
 /*----------------------------------------------------------------------------*/
-void Step::vTxTestDist(Forth* pForth)
+void Step::vTxTestDist(void)
 {
   ENTRY("vTxTestDist"_Stz);
   
   i8 iDistTxId;
-  if ( ! pForth->m_pDataStack->bPop(iDistTxId) )
+  if ( ! m_pDataStack->bPop(iDistTxId) )
     THROW_DSTACK();
   
   Tx* pTx = Tx::pTestDistTx(iDistTxId);
@@ -317,7 +317,7 @@ void Step::vTxTestDist(Forth* pForth)
 //         pTx->iDistTxNode(), pTx->iDistTxNo(),
 //         pTx->aDecode());
   
-  pForth->m_pDataStack->vPushPointer(pTx);
+  m_pDataStack->vPushPointer(pTx);
   
   EXIT();
 }

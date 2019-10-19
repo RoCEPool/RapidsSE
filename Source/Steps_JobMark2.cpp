@@ -17,17 +17,17 @@ void Step::vAddSteps_JobMark2(void)
 /*----------------------------------------------------------------------------*/
 /* jobMark2.index! -- store index pointer                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJobMark2IndexStore(Forth* pForth)
+void Step::vJobMark2IndexStore(void)
 {
   ENTRY("vJobMark2IndexStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
   
   Object* pIndexPtr;
-  if ( ! pForth->m_pDataStack->bPop(pIndexPtr) )
+  if ( ! m_pDataStack->bPop(pIndexPtr) )
     THROW_DSTACK();
   Index* pIndex = _pIndex(pIndexPtr);
   
@@ -39,19 +39,19 @@ void Step::vJobMark2IndexStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jobMark2.tableName@ -- fetch table name                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJobMark2TableNameFetch(Forth* pForth)
+void Step::vJobMark2TableNameFetch(void)
 {
   ENTRY("vJobMark2TableNameFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
   
   s32 sTableNm;
   sTableNm = pJobMark2->szObjectName();
   
-  pForth->m_pDataStack->vPushS32(sTableNm);
+  m_pDataStack->vPushS32(sTableNm);
 
   EXIT();
 }
@@ -59,17 +59,17 @@ void Step::vJobMark2TableNameFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* jobMark2.table! -- store table pointer                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJobMark2TableStore(Forth* pForth)
+void Step::vJobMark2TableStore(void)
 {
   ENTRY("vJobMark2TableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
 
   Object* pTablePtr;
-  if ( ! pForth->m_pDataStack->bPop(pTablePtr) )
+  if ( ! m_pDataStack->bPop(pTablePtr) )
     THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   

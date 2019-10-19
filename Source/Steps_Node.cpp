@@ -31,7 +31,7 @@ void Step::vAddSteps_Node(void)
 /*----------------------------------------------------------------------------*/
 /* node::new -- create a new node                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeNew(Forth* pForth)
+void Step::vNodeNew(void)
 {
   ENTRY("vNodeNew"_Stz);
   
@@ -47,7 +47,7 @@ void Step::vNodeNew(Forth* pForth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s32 sNodeNm;
   
-  if (! pForth->m_pDataStack->bPop(sNodeNm))
+  if (! m_pDataStack->bPop(sNodeNm))
     THROW_DSTACK();
 
   Node* pNode = new Node(pNode_copy->iNodeNo() + 1,
@@ -59,7 +59,7 @@ void Step::vNodeNew(Forth* pForth)
 
   AM::pGrid()->vAddNode(pNode);
   
-  pForth->m_pDataStack->vPushPointer(pNode);
+  m_pDataStack->vPushPointer(pNode);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -77,13 +77,13 @@ void Step::vNodeNew(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* node.forget -- remove node from node list and delete                       */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeForget(Forth* pForth)
+void Step::vNodeForget(void)
 {
   ENTRY("vNodeForget"_Stz);
   
   Object* pPtrNode;
   
-  if (! pForth->m_pDataStack->bPop(pPtrNode))
+  if (! m_pDataStack->bPop(pPtrNode))
     THROW_DSTACK();
   
   Node* pNode = _pNode(pPtrNode);
@@ -103,13 +103,13 @@ void Step::vNodeForget(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* node.IP -- push IP of node                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeIP(Forth* pForth)
+void Step::vNodeIP(void)
 {
   ENTRY("vNodeIP"_Stz);
   
   Object* pPtrNode;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrNode) )
+  if ( ! m_pDataStack->bPop(pPtrNode) )
     THROW_DSTACK();
   
   Node* pNode = _pNode(pPtrNode);
@@ -117,7 +117,7 @@ void Step::vNodeIP(Forth* pForth)
   
   s256 sIP;
   sIP = pNode->szIPAddr();
-  pForth->m_pDataStack->vPushS256(sIP);
+  m_pDataStack->vPushS256(sIP);
   
   EXIT();
 }
@@ -125,13 +125,13 @@ void Step::vNodeIP(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* node.name -- push name of node                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeName(Forth* pForth)
+void Step::vNodeName(void)
 {
   ENTRY("vNodeName"_Stz);
   
   Object* pPtrNode;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrNode) )
+  if ( ! m_pDataStack->bPop(pPtrNode) )
     THROW_DSTACK();
   
   Node* pNode = _pNode(pPtrNode);
@@ -139,7 +139,7 @@ void Step::vNodeName(Forth* pForth)
   
   s256 sName;
   sName = pNode->szNodeName();
-  pForth->m_pDataStack->vPushS256(sName);
+  m_pDataStack->vPushS256(sName);
   
   EXIT();
 }
@@ -147,19 +147,19 @@ void Step::vNodeName(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* node.no -- push node number of node (of a grid)                            */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeNo(Forth* pForth)
+void Step::vNodeNo(void)
 {
 ENTRY("vNodeNo"_Stz);
   
   Object* pPtrNode;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrNode) )
+  if ( ! m_pDataStack->bPop(pPtrNode) )
     THROW_DSTACK();
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
   
-  pForth->m_pDataStack->vPushI8(pNode->iNodeNo());
+  m_pDataStack->vPushI8(pNode->iNodeNo());
   
   EXIT();
 }
@@ -167,11 +167,11 @@ ENTRY("vNodeNo"_Stz);
 /*----------------------------------------------------------------------------*/
 /* node.partitions -- get no of partitions of this node (of a grid)           */
 /*----------------------------------------------------------------------------*/
-void Step::vNodePartitions(Forth* pForth)
+void Step::vNodePartitions(void)
 {
   ENTRY("vNodePartitions"_Stz);
   
-  pForth->m_pDataStack->vPushI8(AM::pGrid()->nSlotsPerNode());
+  m_pDataStack->vPushI8(AM::pGrid()->nSlotsPerNode());
   
   EXIT();
 }
@@ -179,16 +179,16 @@ void Step::vNodePartitions(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* node.port -- push port number of node (of a grid)                          */
 /*----------------------------------------------------------------------------*/
-void Step::vNodePort(Forth* pForth)
+void Step::vNodePort(void)
 {
   ENTRY("vNodeNo"_Stz);
   
   Object* pPtrNode;
-  if ( ! pForth->m_pDataStack->bPop(pPtrNode) )
+  if ( ! m_pDataStack->bPop(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
-  pForth->m_pDataStack->vPushI8(pNode->iPortNo());
+  m_pDataStack->vPushI8(pNode->iPortNo());
   
   EXIT();
 }
@@ -196,17 +196,17 @@ void Step::vNodePort(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* node.recvSocket! -- set receive socket for node                            */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeRecvSocketStore(Forth* pForth)
+void Step::vNodeRecvSocketStore(void)
 {
   ENTRY("vNodeRecvSocketStore"_Stz);
   
   Object* pPtrNode;
-  if ( ! pForth->m_pDataStack->bPop(pPtrNode) )
+  if ( ! m_pDataStack->bPop(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
   Object* pSocketPtr;
-  if ( ! pForth->m_pDataStack->bPop(pSocketPtr) )
+  if ( ! m_pDataStack->bPop(pSocketPtr) )
     THROW_DSTACK();
   Socket* pSocket = _pSocket(pSocketPtr);
   
@@ -218,18 +218,18 @@ void Step::vNodeRecvSocketStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* node.recvSocket@ -- get receive socket for node                            */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeRecvSocketFetch(Forth* pForth)
+void Step::vNodeRecvSocketFetch(void)
 {
   ENTRY("vNodeRecvSocketFetch"_Stz);
   
   Object* pPtrNode;
-  if ( ! pForth->m_pDataStack->bPop(pPtrNode) )
+  if ( ! m_pDataStack->bPop(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
   Socket* pSocket = pNode->pRecvSocket();
   
-  pForth->m_pDataStack->vPushPointer(pSocket);
+  m_pDataStack->vPushPointer(pSocket);
   
   EXIT();
 }
@@ -237,17 +237,17 @@ void Step::vNodeRecvSocketFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* node.sendSocket! -- set send socket for node                               */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeSendSocketStore(Forth* pForth)
+void Step::vNodeSendSocketStore(void)
 {
   ENTRY("vNodeSendSocketStore"_Stz);
   
   Object* pPtrNode;
-  if ( ! pForth->m_pDataStack->bPop(pPtrNode) )
+  if ( ! m_pDataStack->bPop(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
 
   Object* pSocketPtr;
-  if ( ! pForth->m_pDataStack->bPop(pSocketPtr) )
+  if ( ! m_pDataStack->bPop(pSocketPtr) )
     THROW_DSTACK();
   Socket* pSocket = _pSocket(pSocketPtr);
     
@@ -259,18 +259,18 @@ void Step::vNodeSendSocketStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* node.sendSocket@ -- get send socket for node                               */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeSendSocketFetch(Forth* pForth)
+void Step::vNodeSendSocketFetch(void)
 {
   ENTRY("vNodeSendSocketFetch"_Stz);
   
   Object* pPtrNode;
-  if ( ! pForth->m_pDataStack->bPop(pPtrNode) )
+  if ( ! m_pDataStack->bPop(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
   Socket* pSocket = pNode->pSendSocket();
   
-  pForth->m_pDataStack->vPushPointer(pSocket);
+  m_pDataStack->vPushPointer(pSocket);
   
   EXIT();
 }
@@ -278,11 +278,11 @@ void Step::vNodeSendSocketFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* node.size -- get size of this node (of a grid)                             */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeSize(Forth* pForth)
+void Step::vNodeSize(void)
 {
   ENTRY("vNodeSize"_Stz);
   
-  pForth->m_pDataStack->vPushI8(AM::iRegionSize());
+  m_pDataStack->vPushI8(AM::iRegionSize());
   
   EXIT();
 }
@@ -290,16 +290,16 @@ void Step::vNodeSize(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* node.start -- start node                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeStartNode(Forth* pForth)
+void Step::vNodeStartNode(void)
 {
   ENTRY("vNodeStartNode"_Stz);
   
   Object* pPtrNode;
-  if ( ! pForth->m_pDataStack->bPop(pPtrNode) )
+  if ( ! m_pDataStack->bPop(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
-  pForth->m_pDataStack->vPushBool(true);
+  m_pDataStack->vPushBool(true);
 
   EXIT();
 }
@@ -307,17 +307,17 @@ void Step::vNodeStartNode(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* node.state! -- set state of node                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeStateStore(Forth* pForth)
+void Step::vNodeStateStore(void)
 {
   ENTRY("vNodeStateStore"_Stz);
   
   Object* pPtrNode;
-  if ( ! pForth->m_pDataStack->bPop(pPtrNode) )
+  if ( ! m_pDataStack->bPop(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
   i8 iState;
-  if ( ! pForth->m_pDataStack->bPop(iState) )
+  if ( ! m_pDataStack->bPop(iState) )
     THROW_DSTACK();
   
   pNode->vState((eNS)iState);
@@ -328,18 +328,18 @@ void Step::vNodeStateStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* node.state@ -- get state of node                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeStateFetch(Forth* pForth)
+void Step::vNodeStateFetch(void)
 {
   ENTRY("vNodeStateFetch"_Stz);
   
   Object* pPtrNode;
-  if ( ! pForth->m_pDataStack->bPop(pPtrNode) )
+  if ( ! m_pDataStack->bPop(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
   eNS eState = pNode->eState();
   
-  pForth->m_pDataStack->vPushI8(eState);
+  m_pDataStack->vPushI8(eState);
   
   EXIT();
 }
@@ -347,7 +347,7 @@ void Step::vNodeStateFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* node.status -- get status of this node (of a grid)                         */
 /*----------------------------------------------------------------------------*/
-void Step::vNodeStatus(Forth* pForth)
+void Step::vNodeStatus(void)
 {
   ENTRY("vNodeStatus"_Stz);
 
@@ -366,7 +366,7 @@ void Step::vNodeStatus(Forth* pForth)
             pGrid->pThisNode()->szNodeName(),
             sRegionNm.azChar());
   
-  pForth->m_pDataStack->vPushS256(s);
+  m_pDataStack->vPushS256(s);
   
   EXIT();
 }

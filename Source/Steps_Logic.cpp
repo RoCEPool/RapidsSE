@@ -17,21 +17,21 @@ void Step::vAddSteps_Logic(void)
 /*----------------------------------------------------------------------------*/
 /* and -- logical and of top two values                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vLogicAnd(Forth* pForth)
+void Step::vLogicAnd(void)
 {
   ENTRY("vLogicAnd"_Stz);
   
   i8 iArgB;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iArgB) )
+  if ( ! m_pDataStack->bPopAsInt(iArgB) )
     THROW_DSTACK();
   
   i8 iArgA;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iArgA) )
+  if ( ! m_pDataStack->bPopAsInt(iArgA) )
     THROW_DSTACK();
   
   i8 iArgR = (iArgA && iArgB) ? 1 : 0;
   
-  pForth->m_pDataStack->vPushI8(iArgR);
+  m_pDataStack->vPushI8(iArgR);
   
   EXIT();
 }
@@ -39,17 +39,17 @@ void Step::vLogicAnd(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* not -- not of top value                                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vLogicNot(Forth* pForth)
+void Step::vLogicNot(void)
 {
   ENTRY("vLogicNot"_Stz);
   
   i8 iValA;
-  if ( ! pForth->m_pDataStack->bPopAsI8_Inline(iValA) )
+  if ( ! m_pDataStack->bPopAsI8_Inline(iValA) )
     THROW_DSTACK();
   
   i8 iNotA = iValA ? 0 : 1;
   
-  pForth->m_pDataStack->vPushI8(iNotA);
+  m_pDataStack->vPushI8(iNotA);
   
   EXIT();
 }
@@ -57,21 +57,21 @@ void Step::vLogicNot(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* or -- logical or of top two values                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vLogicOr(Forth* pForth)
+void Step::vLogicOr(void)
 {
   ENTRY("vLogicOr"_Stz);
   
   i8 iArgB;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iArgB) )
+  if ( ! m_pDataStack->bPopAsInt(iArgB) )
     THROW_DSTACK();
   
   i8 iArgA;
-  if ( ! pForth->m_pDataStack->bPopAsInt(iArgA) )
+  if ( ! m_pDataStack->bPopAsInt(iArgA) )
     THROW_DSTACK();
   
   i8 iArgR = (iArgA || iArgB) ? 1 : 0;
   
-  pForth->m_pDataStack->vPushI8(iArgR);
+  m_pDataStack->vPushI8(iArgR);
   
   EXIT();
 }

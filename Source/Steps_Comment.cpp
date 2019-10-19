@@ -15,13 +15,13 @@ void Step::vAddSteps_Comment(void)
 /*----------------------------------------------------------------------------*/
 /* comment -- comment                                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vComment(Forth* pForth)
+void Step::vComment(void)
 {
   ENTRY("vComment"_Stz);
   
   for (;;) {
-    pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
-    if (pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken().bEqual(")"_Stz))
+    m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+    if (m_pTask->m_pCompiler->m_pTokeniser->sToken().bEqual(")"_Stz))
       break;
   }
   

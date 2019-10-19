@@ -20,17 +20,17 @@ void Step::vAddSteps_JobReceiver(void)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.connNo@ -- fetch connNo from job_receiver                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReceiverConnNoFetch(Forth* pForth)
+void Step::vJob_ReceiverConnNoFetch(void)
 {
   ENTRY("vJob_ReceiverConnNoFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   i8 iConnNo = pJob_Receiver->iConnNo();
-  pForth->m_pDataStack->vPushI8(iConnNo);
+  m_pDataStack->vPushI8(iConnNo);
   
   EXIT();
 }
@@ -38,12 +38,12 @@ void Step::vJob_ReceiverConnNoFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.jobReceived -- job has been recieved                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReceiverJobReceived(Forth* pForth)
+void Step::vJob_ReceiverJobReceived(void)
 {
   ENTRY("vJob_ReceiverJobReceived"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
 
@@ -51,7 +51,7 @@ void Step::vJob_ReceiverJobReceived(Forth* pForth)
     Job__Executed* pJob__Executed = _pJob__Executed(pJob);
     Stz* szResponse = pJob__Executed->szResponse();
     if (szResponse->iLength())
-      AM::vLogSvc(SL_INF,pForth->m_pTask->m_pJob,VA_SVC_RESPONSE_JOB,
+      AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_RESPONSE_JOB,
                   "%s >>%s<<"_Stz, //!format-LogSvc
                   aCN[pJob->eClass()],
                   szResponse);
@@ -59,7 +59,7 @@ void Step::vJob_ReceiverJobReceived(Forth* pForth)
     return;
   }
 
-  AM::vLogSvc(SL_INF,pForth->m_pTask->m_pJob,VA_SVC_RECEIVED_JOB,
+  AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_RECEIVED_JOB,
               "%s"_Stz, //!format-LogSvc
               aCN[pJob->eClass()]);
   
@@ -69,17 +69,17 @@ void Step::vJob_ReceiverJobReceived(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.connNo! -- store connNo into job_receiver                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReceiverConnNoStore(Forth* pForth)
+void Step::vJob_ReceiverConnNoStore(void)
 {
   ENTRY("vJob_ReceiverConnNoStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   i8 iConnNo;
-  if ( ! pForth->m_pDataStack->bPop(iConnNo) )
+  if ( ! m_pDataStack->bPop(iConnNo) )
     THROW_DSTACK();
   
   pJob_Receiver->vConnNo(iConnNo);
@@ -90,17 +90,17 @@ void Step::vJob_ReceiverConnNoStore(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.node@ -- fetch node from job_receiver                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReceiverNodeFetch(Forth* pForth)
+void Step::vJob_ReceiverNodeFetch(void)
 {
   ENTRY("vJob_ReceiverNodeFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   Node* pNode = pJob_Receiver->pNode();
-  pForth->m_pDataStack->vPushPointer(pNode);
+  m_pDataStack->vPushPointer(pNode);
   
   EXIT();
 }
@@ -108,17 +108,17 @@ void Step::vJob_ReceiverNodeFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.node! -- store node into job_receiver                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReceiverNodeStore(Forth* pForth)
+void Step::vJob_ReceiverNodeStore(void)
 {
   ENTRY("vJob_ReceiverNodeStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   Object* pNodePtr;
-  if ( ! pForth->m_pDataStack->bPop(pNodePtr) )
+  if ( ! m_pDataStack->bPop(pNodePtr) )
     THROW_DSTACK();
   Node* pNode = _pNode(pNodePtr);
   

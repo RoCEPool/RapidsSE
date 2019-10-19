@@ -18,17 +18,17 @@ void Step::vAddSteps_Slots(void)
 /*----------------------------------------------------------------------------*/
 /* slots.columnCount -- get column count                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vSlotsColumnCount(Forth* pForth)
+void Step::vSlotsColumnCount(void)
 {
   ENTRY("vSlotsColumnCount"_Stz);
   
   Object* pPtrSlots;
-  if ( ! pForth->m_pDataStack->bPop(pPtrSlots) )
+  if ( ! m_pDataStack->bPop(pPtrSlots) )
     THROW_DSTACK();
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
   
-  pForth->m_pDataStack->vPushI8(pSlots->pPtnColVec()->nItems());
+  m_pDataStack->vPushI8(pSlots->pPtnColVec()->nItems());
   
   EXIT();
 }
@@ -36,24 +36,24 @@ void Step::vSlotsColumnCount(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* slots.columnName -- get column name                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vSlotsColumnName(Forth* pForth)
+void Step::vSlotsColumnName(void)
 {
   ENTRY("vSlotsColumnName"_Stz);
   
   Object* pPtrSlots;
-  if ( ! pForth->m_pDataStack->bPop(pPtrSlots) )
+  if ( ! m_pDataStack->bPop(pPtrSlots) )
     THROW_DSTACK();
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
   
   i8 iIndex;
-  if ( ! pForth->m_pDataStack->bPop(iIndex) )
+  if ( ! m_pDataStack->bPop(iIndex) )
     THROW_DSTACK();
   
   ASSERT(iIndex < pSlots->pPtnColVec()->nItems());
   Column* pColumn = pSlots->pPtnColVec()->pGet(iIndex);
   
-  pForth->m_pDataStack->vPushS32(pColumn->sColumnName());
+  m_pDataStack->vPushS32(pColumn->sColumnName());
   
   EXIT();
 }
@@ -61,12 +61,12 @@ void Step::vSlotsColumnName(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* slots.createColumnVec -- create slots column vector from subdic         */
 /*----------------------------------------------------------------------------*/
-void Step::vSlotsCreateColumnVec(Forth* pForth)
+void Step::vSlotsCreateColumnVec(void)
 {
   ENTRY("vSlotsCreateColumnVec"_Stz);
   
   Object* pPtrSlots;
-  if ( ! pForth->m_pDataStack->bPop(pPtrSlots) )
+  if ( ! m_pDataStack->bPop(pPtrSlots) )
     THROW_DSTACK();
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
@@ -79,12 +79,12 @@ void Step::vSlotsCreateColumnVec(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* slots.subDic -- get slots sub dictionary                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vSlotsSubDic(Forth* pForth)
+void Step::vSlotsSubDic(void)
 {
   ENTRY("vSlotsSubDic"_Stz);
   
   Object* pSlotsPtr;
-  if ( ! pForth->m_pDataStack->bPop(pSlotsPtr) )
+  if ( ! m_pDataStack->bPop(pSlotsPtr) )
     THROW_DSTACK();
   
   Slots* pSlots = _pSlots(pSlotsPtr);
@@ -92,7 +92,7 @@ void Step::vSlotsSubDic(Forth* pForth)
   
   Dic* pDic = pSlots->pSubDic();
   
-  pForth->m_pDataStack->vPushPointer(pDic);
+  m_pDataStack->vPushPointer(pDic);
   
   EXIT();
 }

@@ -22,13 +22,13 @@ void Step::vAddSteps_Dic(void)
 /*----------------------------------------------------------------------------*/
 /* dic.init -- initialise a dictionary                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vDicInit(Forth* pForth)
+void Step::vDicInit(void)
 {
 ENTRY("vDicInit"_Stz);
   
   Object* pPtrDic;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDic) )
+  if ( ! m_pDataStack->bPop(pPtrDic) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
@@ -44,13 +44,13 @@ ENTRY("vDicInit"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dic.kind@ -- get dictionary kind                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vDicKindGet(Forth* pForth)
+void Step::vDicKindGet(void)
 {
   ENTRY("vDicFrozenGet"_Stz);
   
   Object* pPtrDic;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDic) )
+  if ( ! m_pDataStack->bPop(pPtrDic) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
@@ -58,7 +58,7 @@ void Step::vDicKindGet(Forth* pForth)
   Object* pPtrKind;
   pPtrKind = pDic->pDicKind();
   
-  pForth->m_pDataStack->vPushPointer(pPtrKind);
+  m_pDataStack->vPushPointer(pPtrKind);
   
   EXIT();
 }
@@ -66,14 +66,14 @@ void Step::vDicKindGet(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dic.kind! -- set dictionary kind                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vDicKindSet(Forth* pForth)
+void Step::vDicKindSet(void)
 {
   ENTRY("vDicKindSet"_Stz);
   
   Object* pPtrKind;
   Object* pPtrDic;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDic,pPtrKind) )
+  if ( ! m_pDataStack->bPop(pPtrDic,pPtrKind) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
@@ -88,20 +88,20 @@ void Step::vDicKindSet(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dic.lastWord -- get last word of dictionary                                */
 /*----------------------------------------------------------------------------*/
-void Step::vDicLastWord(Forth* pForth)
+void Step::vDicLastWord(void)
 {
 ENTRY("vDicLastWord"_Stz);
   
   Object* pPtrDic;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDic) )
+  if ( ! m_pDataStack->bPop(pPtrDic) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
   
   Word* pLastWord = pDic->pLastWord();
   
-  pForth->m_pDataStack->vPushPointer(pLastWord);
+  m_pDataStack->vPushPointer(pLastWord);
   
   EXIT();
 }
@@ -109,19 +109,19 @@ ENTRY("vDicLastWord"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dic.name -- push name of dictionary onto stack                             */
 /*----------------------------------------------------------------------------*/
-void Step::vDicName(Forth* pForth)
+void Step::vDicName(void)
 {
 ENTRY("vDicName"_Stz);
  
   Object* pPtrDic;
-  if ( ! pForth->m_pDataStack->bPop(pPtrDic) )
+  if ( ! m_pDataStack->bPop(pPtrDic) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
 
   s32 sName(pDic->szName());
   
-  pForth->m_pDataStack->vPushS32(sName);
+  m_pDataStack->vPushS32(sName);
   
   EXIT();
 }
@@ -129,20 +129,20 @@ ENTRY("vDicName"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dic.ref -- has dictionary got references                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vDicRef(Forth* pForth)
+void Step::vDicRef(void)
 {
   ENTRY("vDicRef"_Stz);
   
   Object* pPtrDic;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDic) )
+  if ( ! m_pDataStack->bPop(pPtrDic) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
 
   bool bRef = pDic->bRefOut();
   
-  pForth->m_pDataStack->vPushI8(bRef);
+  m_pDataStack->vPushI8(bRef);
   
   EXIT();
 }
@@ -150,12 +150,12 @@ void Step::vDicRef(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dic.root -- push root dictionary onto stack                                */
 /*----------------------------------------------------------------------------*/
-void Step::vDicRoot(Forth* pForth)
+void Step::vDicRoot(void)
 {
   ENTRY("vDicRoot"_Stz);
   
   Dic* pRootDic = AM::pRootDic();
-  pForth->m_pDataStack->vPushPointer(pRootDic);
+  m_pDataStack->vPushPointer(pRootDic);
   
   EXIT();
 }
@@ -163,20 +163,20 @@ void Step::vDicRoot(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* dic.wordCount -- get number of words in dictionary                         */
 /*----------------------------------------------------------------------------*/
-void Step::vDicWordCount(Forth* pForth)
+void Step::vDicWordCount(void)
 {
   ENTRY("vDicWordCount"_Stz);
   
   Object* pPtrDic;
   
-  if ( ! pForth->m_pDataStack->bPop(pPtrDic) )
+  if ( ! m_pDataStack->bPop(pPtrDic) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
   
   i8 nWords = pDic->nWords();
   
-  pForth->m_pDataStack->vPushI8(nWords);
+  m_pDataStack->vPushI8(nWords);
   
   EXIT();
 }

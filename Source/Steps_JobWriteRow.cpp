@@ -19,19 +19,19 @@ void Step::vAddSteps_JobWriteRow(void)
 /*----------------------------------------------------------------------------*/
 /* job_WriteRow.parentJobId@ -- fetch parent jobid from job                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteRowParentJobIdFetch(Forth* pForth)
+void Step::vJob_WriteRowParentJobIdFetch(void)
 {
   ENTRY("vJob_WriteRowParentJobIdFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   i8 iParentJobId = pJob_WriteRow->m_iParentJobId;
   RASSERT(C_UNKNOWN != iParentJobId);
   
-  pForth->m_pDataStack->vPushI8(iParentJobId);
+  m_pDataStack->vPushI8(iParentJobId);
   
   EXIT();
 }
@@ -39,17 +39,17 @@ void Step::vJob_WriteRowParentJobIdFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_writeRow.encodeRow -- hash row to a partition                            */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteRowEncodeRow(Forth* pForth)
+void Step::vJob_WriteRowEncodeRow(void)
 {
   ENTRY("vJob_WriteRowEncodeRow"_Stz);
   
   Object* pJobWriteRowPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobWriteRowPtr) )
+  if ( ! m_pDataStack->bPop(pJobWriteRowPtr) )
     THROW_DSTACK();
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobWriteRowPtr);
   
   Object* pJobInsertRowPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobInsertRowPtr) )
+  if ( ! m_pDataStack->bPop(pJobInsertRowPtr) )
     THROW_DSTACK();
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobInsertRowPtr);
   
@@ -61,7 +61,7 @@ void Step::vJob_WriteRowEncodeRow(Forth* pForth)
                                             bBlankLine);
   
   if ( ! bResult )
-    pForth->m_pDataStack->vPushI8(0);
+    m_pDataStack->vPushI8(0);
   else {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // use row hash to get partition
@@ -80,7 +80,7 @@ void Step::vJob_WriteRowEncodeRow(Forth* pForth)
       pJob_WriteRow->m_paRowCompactor[i_Ptn] = nullptr;
     }
     
-    pForth->m_pDataStack->vPushI8(1);
+    m_pDataStack->vPushI8(1);
   }
   EXIT();
 }
@@ -88,12 +88,12 @@ void Step::vJob_WriteRowEncodeRow(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_WriteRow.insertRow -- insert row into the table                        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteRowInsertRow(Forth* pForth)
+void Step::vJob_WriteRowInsertRow(void)
 {
   ENTRY("vJob_WriteRowInsertRow"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
@@ -105,17 +105,17 @@ void Step::vJob_WriteRowInsertRow(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_WriteRow.partition@ -- fetch partition no. from job_WriteRow           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteRowPartitionFetch(Forth* pForth)
+void Step::vJob_WriteRowPartitionFetch(void)
 {
   ENTRY("vJob_WriteRowPartitionFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   i8 i_Partition = pJob_WriteRow->m_iPartitionId;
-  pForth->m_pDataStack->vPushI8(i_Partition);
+  m_pDataStack->vPushI8(i_Partition);
   
   EXIT();
 }
@@ -123,17 +123,17 @@ void Step::vJob_WriteRowPartitionFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_WriteRow.table! -- store table into job_WriteRow                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteRowTableStore(Forth* pForth)
+void Step::vJob_WriteRowTableStore(void)
 {
   ENTRY("vJob_WriteRowTableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   Object* pTablePtr;
-  if ( ! pForth->m_pDataStack->bPop(pTablePtr) )
+  if ( ! m_pDataStack->bPop(pTablePtr) )
     THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   

@@ -17,12 +17,12 @@ void Step::vAddSteps_JobDynamic(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Dynamic.begin -- begin the dynamic job                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_DynamicBegin(Forth* pForth)
+void Step::vJob_DynamicBegin(void)
 {
   ENTRY("vJob_DynamicBegin"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
   
@@ -34,12 +34,12 @@ void Step::vJob_DynamicBegin(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_Dynamic.end -- end the dynamic job                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_DynamicEnd(Forth* pForth)
+void Step::vJob_DynamicEnd(void)
 {
   ENTRY("vJob_DynamicEnd"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
   
@@ -51,12 +51,12 @@ void Step::vJob_DynamicEnd(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* Job_Dynamic.execute -- execute                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_DynamicExecute(Forth* pForth)
+void Step::vJob_DynamicExecute(void)
 {
   ENTRY("vJob_DynamicExecute"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
   

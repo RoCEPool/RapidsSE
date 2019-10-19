@@ -15,12 +15,12 @@ void Step::vAddSteps_JobOperand(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Operand.pipeOut -- pipe out the operand                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_OperandPipeOut(Forth* pForth)
+void Step::vJob_OperandPipeOut(void)
 {
   ENTRY("vJob_OperandPipeOut"_Stz);
   
   Object* pJobPtr;
-  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Operand* pJob_Operand = _pJob_Operand(pJobPtr);
   

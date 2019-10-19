@@ -27,11 +27,11 @@ void Step::vAddSteps_Input(void)
 /*----------------------------------------------------------------------------*/
 /* input.close -- close current input stream                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vInputClose(Forth* pForth)
+void Step::vInputClose(void)
 {
 ENTRY("vInputClose"_Stz);
   
-  pForth->m_pTask->m_pCompiler->m_pTokeniser->vUseEnd();
+  m_pTask->m_pCompiler->m_pTokeniser->vUseEnd();
   
   EXIT();
 }
@@ -39,13 +39,13 @@ ENTRY("vInputClose"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.depth -- push current depth of input stream onto data stack         */
 /*----------------------------------------------------------------------------*/
-void Step::vInputDepth(Forth* pForth)
+void Step::vInputDepth(void)
 {
 ENTRY("vInputDepth"_Stz);
   
-  i8 iDepth = pForth->m_pTask->m_pCompiler->m_pTokeniser->iDepth();
+  i8 iDepth = m_pTask->m_pCompiler->m_pTokeniser->iDepth();
   
-  pForth->m_pDataStack->vPushI8(iDepth);
+  m_pDataStack->vPushI8(iDepth);
   
   EXIT();
 }
@@ -53,17 +53,17 @@ ENTRY("vInputDepth"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.next -- get next input token from current input stream               */
 /*----------------------------------------------------------------------------*/
-void Step::vInputNext(Forth* pForth)
+void Step::vInputNext(void)
 {
 ENTRY("vInputNext"_Stz);
   
-  if (pForth->m_pTask->m_iTracing) {
-    ASSERT(pForth->m_pTask->m_iTracing);
+  if (m_pTask->m_iTracing) {
+    ASSERT(m_pTask->m_iTracing);
   }
   
-  char* aToken = pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar();
+  char* aToken = m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar();
   
-  eTN eToken = pForth->m_pTask->m_pCompiler->m_pTokeniser->eNextToken(aToken);
+  eTN eToken = m_pTask->m_pCompiler->m_pTokeniser->eNextToken(aToken);
   
   EXIT();
 }
@@ -71,16 +71,16 @@ ENTRY("vInputNext"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.open -- open new input using filepath on data stack                  */
 /*----------------------------------------------------------------------------*/
-void Step::vInputOpen(Forth* pForth)
+void Step::vInputOpen(void)
 {
 ENTRY("vInputOpen"_Stz);
   
   s256 sFilePath;
   
-  if ( ! pForth->m_pDataStack->bPop(sFilePath) )
+  if ( ! m_pDataStack->bPop(sFilePath) )
     THROW_DSTACK();
   
-  bool bOpened = pForth->m_pTask->m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
+  bool bOpened = m_pTask->m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
   
   if ( ! bOpened )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
@@ -92,11 +92,11 @@ ENTRY("vInputOpen"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.pop -- pop to previous input stream                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vInputPop(Forth* pForth)
+void Step::vInputPop(void)
 {
 ENTRY("vInputPop"_Stz);
   
-  bool bPopped = pForth->m_pTask->m_pCompiler->m_pTokeniser->bPop();
+  bool bPopped = m_pTask->m_pCompiler->m_pTokeniser->bPop();
   ASSERT(bPopped);
   
   EXIT();
@@ -105,14 +105,14 @@ ENTRY("vInputPop"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.push -- push input stream, allowing for new input stream             */
 /*----------------------------------------------------------------------------*/
-void Step::vInputPush(Forth* pForth)
+void Step::vInputPush(void)
 {
 ENTRY("vInputPush"_Stz);
   
-  if ( ! pForth->m_pTask->m_pCompiler )
-    pForth->m_pTask->m_pCompiler = new Compiler;
+  if ( ! m_pTask->m_pCompiler )
+    m_pTask->m_pCompiler = new Compiler;
   
-  pForth->m_pTask->m_pCompiler->m_pTokeniser->vPush();
+  m_pTask->m_pCompiler->m_pTokeniser->vPush();
   
   EXIT();
 }
@@ -120,14 +120,14 @@ ENTRY("vInputPush"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.stdin -- use stdin as new input stream                               */
 /*----------------------------------------------------------------------------*/
-void Step::vInputStdin(Forth* pForth)
+void Step::vInputStdin(void)
 {
 ENTRY("vInputStdin"_Stz);
   
-  if ( ! pForth->m_pTask->m_pCompiler )
-    pForth->m_pTask->m_pCompiler = new Compiler;
+  if ( ! m_pTask->m_pCompiler )
+    m_pTask->m_pCompiler = new Compiler;
   
-  pForth->m_pTask->m_pCompiler->m_pTokeniser->vUseStdin();
+  m_pTask->m_pCompiler->m_pTokeniser->vUseStdin();
   
   EXIT();
 }
@@ -135,20 +135,20 @@ ENTRY("vInputStdin"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.text -- use string as new input stream                               */
 /*----------------------------------------------------------------------------*/
-void Step::vInputText(Forth* pForth)
+void Step::vInputText(void)
 {
 ENTRY("vInputText"_Stz);
   
-  if (pForth->m_pTask->m_iTracing) {
-    ASSERT(pForth->m_pTask->m_iTracing);
+  if (m_pTask->m_iTracing) {
+    ASSERT(m_pTask->m_iTracing);
   }
   
   s48K sInput;                                             //! NEED STACK CHECKS
   
-  if ( ! pForth->m_pDataStack->bPop(sInput) )
+  if ( ! m_pDataStack->bPop(sInput) )
     THROW_DSTACK();
     
-  pForth->m_pTask->m_pCompiler->m_pTokeniser->vUseString(sInput);
+  m_pTask->m_pCompiler->m_pTokeniser->vUseString(sInput);
   
   EXIT();
 }
@@ -156,11 +156,11 @@ ENTRY("vInputText"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.token -- push current token of input stream onto data stack          */
 /*----------------------------------------------------------------------------*/
-void Step::vInputToken(Forth* pForth)
+void Step::vInputToken(void)
 {
 ENTRY("vInputToken"_Stz);
   
-  pForth->m_pDataStack->vPushS48K(pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken());
+  m_pDataStack->vPushS48K(m_pTask->m_pCompiler->m_pTokeniser->sToken());
   
   EXIT();
 }
@@ -168,13 +168,13 @@ ENTRY("vInputToken"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.type -- push current token type onto data stack                      */
 /*----------------------------------------------------------------------------*/
-void Step::vInputType(Forth* pForth)
+void Step::vInputType(void)
 {
 ENTRY("vInputType"_Stz);
   
-  eTN eTokenType = pForth->m_pTask->m_pCompiler->m_pTokeniser->eToken();
+  eTN eTokenType = m_pTask->m_pCompiler->m_pTokeniser->eToken();
   
-  pForth->m_pDataStack->vPushI8(eTokenType);
+  m_pDataStack->vPushI8(eTokenType);
   
   EXIT();
 }
@@ -182,13 +182,13 @@ ENTRY("vInputType"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.unknown -- unknown current token                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vInputUnknown(Forth* pForth)
+void Step::vInputUnknown(void)
 {
   ENTRY("vInputUnknown"_Stz);
   
   vTrace("\n"_Stz);
   vTrace("Unknown token: %s\n"_Stz,
-         pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar()
+         m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar()
          );
   vTrace("\n"_Stz);
 
@@ -200,13 +200,13 @@ void Step::vInputUnknown(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* next-token -- token colon                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTokenColon(Forth* pForth)
+void Step::vTokenColon(void)
 {
   ENTRY("vTokenColon"_Stz);
   
-  pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+  m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
   
-  pForth->m_pDataStack->vPushS48K(pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken());
+  m_pDataStack->vPushS48K(m_pTask->m_pCompiler->m_pTokeniser->sToken());
   
   EXIT();
 }

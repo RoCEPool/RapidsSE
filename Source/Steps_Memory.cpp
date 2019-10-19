@@ -18,16 +18,16 @@ void Step::vAddSteps_Memory(void)
 /*----------------------------------------------------------------------------*/
 /* memory.bytedump -- byte-oriented dump                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vMemoryByteDump(Forth* pForth)
+void Step::vMemoryByteDump(void)
 {
 ENTRY("vMemoryByteDump"_Stz);
   
   i8 iSize;
-  if ( ! pForth->m_pDataStack->bPop(iSize) )
+  if ( ! m_pDataStack->bPop(iSize) )
     THROW_DSTACK();
   
   Object* pWordObject;
-  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
@@ -40,7 +40,7 @@ ENTRY("vMemoryByteDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* memory.reset -- reset memory statistics                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vMemoryReset(Forth* pForth)
+void Step::vMemoryReset(void)
 {
   ENTRY("vMemoryReset"_Stz);
   
@@ -52,7 +52,7 @@ void Step::vMemoryReset(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* memory.statistics-- trace memory statistics                                */
 /*----------------------------------------------------------------------------*/
-void Step::vMemoryStatistics(Forth* pForth)
+void Step::vMemoryStatistics(void)
 {
   ENTRY("vMemoryStatistics"_Stz);
 
@@ -63,16 +63,16 @@ void Step::vMemoryStatistics(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* memory.worddump -- word-oriented dump                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vMemoryWordDump(Forth* pForth)
+void Step::vMemoryWordDump(void)
 {
 ENTRY("vMemoryWordDump"_Stz);
   
   i8 iSize;
-  if ( ! pForth->m_pDataStack->bPop(iSize) )
+  if ( ! m_pDataStack->bPop(iSize) )
     THROW_DSTACK();
   
   Object* pWordObject;
-  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   

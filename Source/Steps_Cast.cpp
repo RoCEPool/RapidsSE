@@ -16,15 +16,15 @@ void Step::vAddSteps_Cast(void)
 /*----------------------------------------------------------------------------*/
 /* (int) -- cast ptr to int                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vCastInt(Forth* pForth)
+void Step::vCastInt(void)
 {
   ENTRY("vCastInt"_Stz);
   
   Object* pPtr;
-  if ( ! pForth->m_pDataStack->bPop(pPtr) )
+  if ( ! m_pDataStack->bPop(pPtr) )
     THROW_DSTACK();
   
-  pForth->m_pDataStack->vPushI8((i8)pPtr);
+  m_pDataStack->vPushI8((i8)pPtr);
   
   EXIT();
 }
@@ -32,15 +32,15 @@ void Step::vCastInt(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* (ptr) -- cast int to ptr                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vCastPtr(Forth* pForth)
+void Step::vCastPtr(void)
 {
   ENTRY("vCastPtr"_Stz);
   
   i8 iInt;
-  if ( ! pForth->m_pDataStack->bPop(iInt) )
+  if ( ! m_pDataStack->bPop(iInt) )
     THROW_DSTACK();
   
-  pForth->m_pDataStack->vPushPointer((Object*)iInt);
+  m_pDataStack->vPushPointer((Object*)iInt);
   
   EXIT();
 }

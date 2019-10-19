@@ -24,7 +24,7 @@ void Step::vAddSteps_Log(void)
 /*----------------------------------------------------------------------------*/
 /* log::dump -- dump the log                                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vLogDump(Forth* pForth)
+void Step::vLogDump(void)
 {
   ENTRY("vActivityLogDump"_Stz);
   
@@ -36,17 +36,17 @@ void Step::vLogDump(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* log::mark -- write a log entry into the log                                */
 /*----------------------------------------------------------------------------*/
-void Step::vLogMark(Forth* pForth)
+void Step::vLogMark(void)
 {
   ENTRY("vActivityLogMark"_Stz);
   
   s256 sMark;
 
-  if ( ! pForth->m_pDataStack->bPop(sMark) )
+  if ( ! m_pDataStack->bPop(sMark) )
     THROW_DSTACK();
 
-  //i8 iJobId = pForth->m_pTask->m_pJob->m_iUniqueId;
-  JobLog::vNote(pForth->m_pTask->m_pJob,sMark);
+  //i8 iJobId = m_pTask->m_pJob->m_iUniqueId;
+  JobLog::vNote(m_pTask->m_pJob,sMark);
   
   EXIT();
 }
@@ -54,16 +54,16 @@ void Step::vLogMark(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* log::markEntry -- write an log entry for word entry                        */
 /*----------------------------------------------------------------------------*/
-void Step::vLogMarkEntry(Forth* pForth)
+void Step::vLogMarkEntry(void)
 {
   ENTRY("vActivityLogMarkEntry"_Stz);
   
   s256 sWordNm;
   
-  if ( ! pForth->m_pDataStack->bPop(sWordNm) )
+  if ( ! m_pDataStack->bPop(sWordNm) )
     THROW_DSTACK();
   
-  Job* pJob = pForth->m_pTask->m_pJob;
+  Job* pJob = m_pTask->m_pJob;
   AM::vLogJob(SL_INF,pJob,JA_JOB_ENTER,
               "%s"_Stz, //!format-LogJob
               sWordNm.szStz());
@@ -74,16 +74,16 @@ void Step::vLogMarkEntry(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* log::mark -- write an log entry for word exit                              */
 /*----------------------------------------------------------------------------*/
-void Step::vLogMarkExit(Forth* pForth)
+void Step::vLogMarkExit(void)
 {
   ENTRY("vActivityLogMarkExit"_Stz);
   
   s256 sWordNm;
   
-  if ( ! pForth->m_pDataStack->bPop(sWordNm) )
+  if ( ! m_pDataStack->bPop(sWordNm) )
     THROW_DSTACK();
   
-  Job* pJob = pForth->m_pTask->m_pJob;
+  Job* pJob = m_pTask->m_pJob;
 
   AM::vLogJob(SL_INF,pJob,JA_JOB_EXIT,
               "%s"_Stz, //!format-LogJob
@@ -95,15 +95,15 @@ void Step::vLogMarkExit(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* log::mark -- write an log entry for word exit                              */
 /*----------------------------------------------------------------------------*/
-void Step::vLogMarkPhase(Forth* pForth)
+void Step::vLogMarkPhase(void)
 {
   ENTRY("vActivityLogMarkPhase"_Stz);
   
   i8 i_Phase;
-  if ( ! pForth->m_pDataStack->bPop(i_Phase) )
+  if ( ! m_pDataStack->bPop(i_Phase) )
     THROW_DSTACK();
   
-  Job* pJob = pForth->m_pTask->m_pJob;
+  Job* pJob = m_pTask->m_pJob;
   
   AM::vLogJob(SL_INF,pJob,JA_JOB_PHASE,
               "%s"_Stz,
@@ -117,19 +117,19 @@ void Step::vLogMarkPhase(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* log::markSeed -- write a seed mark into the action sequence                */
 /*----------------------------------------------------------------------------*/
-void Step::vLogMarkSeed(Forth* pForth)
+void Step::vLogMarkSeed(void)
 {
   ENTRY("vLogMarkSeed"_Stz);
   
   i8 iSeed;
-  if ( ! pForth->m_pDataStack->bPop(iSeed) )
+  if ( ! m_pDataStack->bPop(iSeed) )
     THROW_DSTACK();
   
   s32 sWordNm;
-  if ( ! pForth->m_pDataStack->bPop(sWordNm) )
+  if ( ! m_pDataStack->bPop(sWordNm) )
     THROW_DSTACK();
   
-  //ActLog::vAdd(pForth->m_pTask->m_pJob,(eAN)iSeed,sWordNm.szStz());
+  //ActLog::vAdd(m_pTask->m_pJob,(eAN)iSeed,sWordNm.szStz());
   
   EXIT();
 }
@@ -137,19 +137,19 @@ void Step::vLogMarkSeed(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* log::markWord -- write a word mark into the action sequence                */
 /*----------------------------------------------------------------------------*/
-void Step::vLogMarkWord(Forth* pForth)
+void Step::vLogMarkWord(void)
 {
   ENTRY("vLogMarkWord"_Stz);
   
   i8 iAN;
-  if ( ! pForth->m_pDataStack->bPop(iAN) )
+  if ( ! m_pDataStack->bPop(iAN) )
     THROW_DSTACK();
   
   s32 sWordNm;
-  if ( ! pForth->m_pDataStack->bPop(sWordNm) )
+  if ( ! m_pDataStack->bPop(sWordNm) )
     THROW_DSTACK();
   
-  //ActLog::vAdd(pForth->m_pTask->m_pJob,(eAN)iAN,sWordNm.szStz());
+  //ActLog::vAdd(m_pTask->m_pJob,(eAN)iAN,sWordNm.szStz());
   
   EXIT();
 }
@@ -157,15 +157,15 @@ void Step::vLogMarkWord(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* log::jobSeed -- add a job seed entry into log                              */
 /*----------------------------------------------------------------------------*/
-void Step::vLogJobSeed(Forth* pForth)
+void Step::vLogJobSeed(void)
 {
   ENTRY("vLogJobSeed"_Stz);
   
   i8 i_Seed;
-  if ( ! pForth->m_pDataStack->bPop(i_Seed) )
+  if ( ! m_pDataStack->bPop(i_Seed) )
     THROW_DSTACK();
   
-  Job* pJob = pForth->m_pTask->m_pJob;
+  Job* pJob = m_pTask->m_pJob;
   AM::vLogJob(SL_INF,pJob,JA_JOB_SEED,
               "%s"_Stz, //!format-LogJob
               aSS[i_Seed]);

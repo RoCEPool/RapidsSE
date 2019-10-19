@@ -21,17 +21,17 @@ void Step::vAddSteps_JobSubExporter(void)
 /*----------------------------------------------------------------------------*/
 /* job_subExporter::spawn -- spawn a new subexporter                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubExporterSpawn(Forth* pForth)
+void Step::vJob_SubExporterSpawn(void)
 {
   ENTRY("vJob_SubExporterSpawn"_Stz);
   
   Object* pPtrJob_Export;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Export) )
+  if ( ! m_pDataStack->bPop(pPtrJob_Export) )
     THROW_DSTACK();
   Job_Export* pJob_Export = _pJob_Export(pPtrJob_Export);
   
   i8 i_Slot;
-  if ( ! pForth->m_pDataStack->bPop(i_Slot) )
+  if ( ! m_pDataStack->bPop(i_Slot) )
     THROW_DSTACK();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -64,16 +64,16 @@ void Step::vJob_SubExporterSpawn(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subExporter.exportJob@ -- get export job                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubExporterExportJobFetch(Forth* pForth)
+void Step::vJob_SubExporterExportJobFetch(void)
 {
   ENTRY("vJob_SubExporterSpawn"_Stz);
   
   Object* pPtrJob_SubExporter;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJob_SubExporter) )
+  if ( ! m_pDataStack->bPop(pPtrJob_SubExporter) )
     THROW_DSTACK();
   Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pPtrJob_SubExporter);
   
-  pForth->m_pDataStack->vPushPointer(pJob_SubExporter->m_pJobExport);
+  m_pDataStack->vPushPointer(pJob_SubExporter->m_pJobExport);
   
   EXIT();
 }
@@ -82,18 +82,18 @@ void Step::vJob_SubExporterExportJobFetch(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subExporter.begin -- begin sub-exporter                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubExporterBegin(Forth* pForth)
+void Step::vJob_SubExporterBegin(void)
 {
   ENTRY("vJob_SubExporterBegin"_Stz);
   
   Object* pPtrJobSubExporter;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJobSubExporter) )
+  if ( ! m_pDataStack->bPop(pPtrJobSubExporter) )
     THROW_DSTACK();
   Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pPtrJobSubExporter);
   
   bool bBegun = pJob_SubExporter->bBegin();
   
-  pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -101,18 +101,18 @@ void Step::vJob_SubExporterBegin(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subExporter.chunk -- chunk sub-exporter                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubExporterChunk(Forth* pForth)
+void Step::vJob_SubExporterChunk(void)
 {
   ENTRY("vJob_SubExporterChunk"_Stz);
   
   Object* pPtrJobSubExporter;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJobSubExporter) )
+  if ( ! m_pDataStack->bPop(pPtrJobSubExporter) )
     THROW_DSTACK();
   Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pPtrJobSubExporter);
   
   bool bCallAgain = pJob_SubExporter->bChunk();
   
-  pForth->m_pDataStack->vPushBool(bCallAgain);
+  m_pDataStack->vPushBool(bCallAgain);
   
   EXIT();
 }
@@ -120,12 +120,12 @@ void Step::vJob_SubExporterChunk(Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* job_subExporter.end -- end sub-exporter                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubExporterEnd(Forth* pForth)
+void Step::vJob_SubExporterEnd(void)
 {
   ENTRY("vJob_SubExporterEnd"_Stz);
   
   Object* pPtrJobSubExporter;
-  if ( ! pForth->m_pDataStack->bPop(pPtrJobSubExporter) )
+  if ( ! m_pDataStack->bPop(pPtrJobSubExporter) )
     THROW_DSTACK();
   Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pPtrJobSubExporter);
   
