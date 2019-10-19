@@ -45,7 +45,7 @@ void Step::vSocketAccept(MP_Task mpTask, Forth* pForth)
   bool bResult = pSocket->bAcceptClient(iSocketId, oSysCall);
   
   if ( ! bResult )
-    vThrow(__func__,__FILE__,__LINE__,
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
            "Unable to accept connection: Errno %d"_Stz, oSysCall.iError());
   
   // return the new socket
@@ -77,7 +77,7 @@ void Step::vSocketClose(MP_Task mpTask, Forth* pForth)
   bool bResult = pSocket->bClose(oSysCall);
   
   if ( ! bResult )
-    vThrow(__func__,__FILE__,__LINE__,
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
            "Unable to close socket: Errno %d!"_Stz, oSysCall.iError());
   
   EXIT();
@@ -206,7 +206,7 @@ void Step::vSocketConnect(MP_Task mpTask, Forth* pForth)
 //      vTrace("Unable to connect: Errno %d %s\n"_Stz,
 //             iError, strerror((int)iError));
 //      AM::vNap(1000, CN_SOCKET);
-//      //vThrow(__func__,__FILE__,__LINE__,"Unable to connect: Errno %d"_Stz, iError);
+//      //vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Unable to connect: Errno %d"_Stz, iError);
 //    }
 //  }
 //
@@ -270,13 +270,13 @@ void Step::vSocketListen(MP_Task mpTask, Forth* pForth)
   
   if ( ! bResult ) {
     if (oSysCall.iError() == EADDRINUSE) {
-      vThrow(__func__,__FILE__,__LINE__,
+      vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
              "Address in use (port: %lld). "
              "Check if another instance of RAPIDSSE is running!"_Stz,
       iPort);
     }
     else
-      vThrow(__func__,__FILE__,__LINE__,
+      vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
              "Unable to listen for connections: Errno %d!"_Stz, oSysCall.iError());
   }
   
@@ -301,7 +301,7 @@ void Step::vSocketOpen(MP_Task mpTask, Forth* pForth)
   bool bResult = pSocket->bSocket(oSysCall);
   
   if ( ! bResult )
-    vThrow(__func__,__FILE__,__LINE__,
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
            "Unable to create socket: Errno %d!"_Stz, oSysCall.iError());
   
   Object* pPtrSocket = pSocket;

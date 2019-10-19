@@ -24,30 +24,29 @@ namespace Correctness
 
   // refer: https://en.cppreference.com/w/cpp/language/attributes/noreturn
   
-  [[ noreturn ]] void vAssert(const char* azFunc,
+  [[ noreturn ]] void vAssert(eFK eKind, const char* azFunc,
                               const char* azFilePath, i8 iLineNo,
                               const char* azCondition);
   
-  [[ noreturn ]] void vThrow(const char* azFunc,
-                             const char* azFilePath, i8 iLineNo,
-                             Stz* szFormat,...);
-
   [[ noreturn ]] void vThrow(eFK eKind, const char* azFunc,
                              const char* azFilePath, i8 iLineNo);
   
+  [[ noreturn ]] void vThrow(eFK eKind, const char* azFunc,
+                             const char* azFilePath, i8 iLineNo,
+                             Stz* szFormat,...);
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // invalid auxiliary stack
 
 #define THROW(azDescription) \
-  Correctness::vAssert(__func__,__FILE__,__LINE__,azDescription);
+  Correctness::vAssert(FK_FAILED,__func__,__FILE__,__LINE__,azDescription);
 
 /*--------------------------------------------------------------------------*/
 /* NEVER_REACH macro (point in code which should never be reached           */
 /*--------------------------------------------------------------------------*/
 #define NEVER_REACH \
-  Correctness::vAssert(__func__,__FILE__,__LINE__,"NEVER_REACH");
+  Correctness::vAssert(FK_ASSERT,__func__,__FILE__,__LINE__,"NEVER_REACH");
 
 
 /*============================================================================*/
