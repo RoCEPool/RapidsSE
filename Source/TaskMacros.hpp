@@ -42,9 +42,6 @@
 }
 */
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// invalid auxiliary stack
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // invalid data stack
@@ -53,16 +50,6 @@
 { \
   char zDescription[1024]; \
   StrLib::vSprint(zDescription,"Invalid data stack for: %s"_Stz,azStepNm); \
-  Correctness::vAssertFailed(zDescription,__FILE__,__LINE__); \
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// invalid return stack
-
-#define THROW_INVALID_RSTACK(azStepNm) \
-{ \
-  char zDescription[1024]; \
-  StrLib::vSprint(zDescription,"Invalid return stack for: %s"_Stz,azStepNm); \
   Correctness::vAssertFailed(zDescription,__FILE__,__LINE__); \
 }
 

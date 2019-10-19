@@ -103,7 +103,7 @@ void Step::vObjectMagicMark(MP_Task mpTask, Forth* pForth)
   
   Object* pObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_RSTACK("object.magic!"_Stz);
+    vThrow(__FILE__,__LINE__,FK_RSTACK,__STEP__);
   
   pObject->vSetMagic();
   

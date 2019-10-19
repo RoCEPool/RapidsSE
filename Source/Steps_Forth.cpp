@@ -336,7 +336,7 @@ void Step::vExit_RT(MP_Task mpTask, Forth* pForth)
   
   Cell* aCell;
   if ( ! mpTask->m_pForth->m_pReturnStack->bPop(aCell) )
-    THROW_INVALID_RSTACK("exit_rt"_Stz);
+    vThrow(__FILE__,__LINE__,FK_RSTACK,__STEP__);
   
   mpTask->m_pForth->m_aInxPtr = aCell;
   
