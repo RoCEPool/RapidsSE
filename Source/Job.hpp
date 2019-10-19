@@ -30,7 +30,8 @@ namespace Jobs
     Decider m_oAcksRmg;  // acks remaining
   
     Task* m_pOriginatingTask; // originating task of the request
-  
+    i8    m_iOriginatingId;   // job id of originating job
+
     i8  m_iParticipantNode;    // participant node no (FromNodeNo?)
   
     Operand*   m_pOperand;

@@ -80,7 +80,8 @@ Job::Job(eCN eClassNo)
   m_aJobClass        = nullptr;
   m_pTaskJ = nullptr;
   m_pOriginatingTask = nullptr;
-  
+  m_iOriginatingId = C_UNKNOWN;
+
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRmg.vCheckInit();
   
@@ -122,7 +123,8 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
   
   m_pTaskJ = nullptr;
   m_pOriginatingTask = nullptr;
-  
+  m_iOriginatingId = C_UNKNOWN;
+
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRmg.vCheckInit();
   
