@@ -494,6 +494,8 @@ public:
   void vJobNoWaitFetch(void);
 
   void vJobObjectNameFetch(void);
+  void vJobOriginatingIdFetch(void);
+  void vJobOriginatingIdStore(void);
   void vJobOriginatingTaskFetch(void);
   void vJobOriginatingTaskStore(void);
   void vJobOriginatorFetch(void);
