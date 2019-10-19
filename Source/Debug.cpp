@@ -203,9 +203,36 @@ void Correctness::vExceptionCaught(Exception xException)
 
 
 /*----------------------------------------------------------------------------*/
-/* throw an exception of given kind                                           */
+/* throw an exception of given kind (step-form)                               */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vThrow(eFK eKind, const char* azFilePath, i8 iLineNo,
+[[ noreturn ]] void Correctness::vThrow(eFK eKind, Stz* szFormat,...)
+{
+  // put a breakpoint here to trap throws
+  sleep(0);
+  
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  char zCondition[256];
+  StrLib::vSprint(zCondition,xArgs,szFormat->azChar());
+  va_end(xArgs);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Exception xException(eKind,zCondition);
+  
+  xException.vPrint();
+  
+  // dump the call stack
+  vStackDump();
+  
+  throw xException;
+}
+
+/*----------------------------------------------------------------------------*/
+/* throw an exception of given kind (long-form)                               */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void Correctness::vThrow(eFK eKind,
+                                        i8 iLineNo, const char* azFilePath,
                                         Stz* szFormat,...)
 {
   // put a breakpoint here to trap throws
@@ -225,14 +252,6 @@ void Correctness::vExceptionCaught(Exception xException)
   Exception xException(eKind,zCondition,zFileNm,iLineNo);
   
   xException.vPrint();
-//  printf("Exception : %s of (%s) in job %s failed (file %s line %lld)\n",
-//         aFK[xException.eKind()]->azChar(),
-//         xException.azText(),
-//         xException.pJob()
-//         ? aCN[((Object*)xException.pJob())->eClass()]->azChar()
-//         : "<null>",
-//         xException.azFileNm(),
-//         xException.iLineNo());
   
   // dump the call stack
   vStackDump();

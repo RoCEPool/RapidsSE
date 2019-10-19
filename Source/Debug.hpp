@@ -27,7 +27,9 @@ namespace Correctness
   
   void vExceptionCaught(Exception xException);
   
-  [[ noreturn ]] void vThrow(eFK eKind, const char* azFilePath, i8 iLineNo,
+  [[ noreturn ]] void vThrow(eFK eKind, Stz* szFormat,...);
+  
+  [[ noreturn ]] void vThrow(eFK eKind, i8 iLineNo, const char* azFilePath, 
                              Stz* szFormat,...);
 
 };

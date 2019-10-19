@@ -17,6 +17,9 @@ namespace Correctness
   
   public:
     Exception(eFK   eKind,
+              const char* azText);
+  
+    Exception(eFK   eKind,
               const char* azText,
               const char* azFileNm,
               i8    iLineNo);
