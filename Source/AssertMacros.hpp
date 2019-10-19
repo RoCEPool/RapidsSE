@@ -19,7 +19,7 @@
   #ifdef WITH_ASSERT_MACRO
     #define ASSERT(condition) \
       if (! (condition)) \
-        Correctness::vAssert((const char*)__FILE__,__LINE__,(const char*)#condition);
+        Correctness::vAssert(__FILE__,__LINE__,#condition);
   #else
     #define ASSERT(condition)
   #endif
@@ -27,7 +27,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #define RASSERT(condition) \
     if (! (condition)) \
-      Correctness::vAssert((const char*)__FILE__,__LINE__,(const char*)#condition);
+      Correctness::vAssert(__FILE__,__LINE__,#condition);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #define RASSERT_TYPE(pARG,eCLASS) \
