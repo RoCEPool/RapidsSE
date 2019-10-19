@@ -9,7 +9,6 @@ namespace Correctness
 
   void vAssertTrap(void);
   void vAssertType(void* aObject, eCN eExpectingClass);
-  void vAssertWarn(void);
   void vDebugPoint(void);
   void vStackDump(void);
   

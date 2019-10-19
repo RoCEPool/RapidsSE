@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Correctness.h"
+#include "AM.hpp"
 
 /*
  Notes:
@@ -146,7 +147,16 @@ void Exception::vCaught(void)
   // dump the call stack
   vStackDump();
   
-  Correctness::vAssertTrap();
+  // add activity dump and api state dump
+  AM::vWriteLog();
+  
+  AM::vDumpApi();
+  
+  // put a breakpoint here to trap asserts
+  sleep(0);
+  
+  // generate a core
+  abort();
 }
 
 

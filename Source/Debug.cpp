@@ -54,17 +54,6 @@ void Correctness::vAssertType(void* aObject, eCN eExpectingClass)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assert warning                                                             */
-/*----------------------------------------------------------------------------*/
-void Correctness::vAssertWarn(void)
-{
-  // dump the call stack
-  vStackDump();
-  
-  // put a breakpoint here to trap asserts
-  sleep(0);
-}
-
 /*----------------------------------------------------------------------------*/
 /* debug point                                                                */
 /*----------------------------------------------------------------------------*/
