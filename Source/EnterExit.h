@@ -12,25 +12,27 @@
 /*----------------------------------------------------------------------------*/
 /* step entry macro                                                           */
 /*----------------------------------------------------------------------------*/
-#define ENTRY(aStepNm) \
+#define ENTRY(szStepNm) \
   \
   static StepAccum* _pStepAccum = nullptr; \
   i8 _iEnterCycles = 0; \
   i8 _iEnterMisses = 0; \
+  \
+  Stz* __STEP__ = szStepNm; \
   \
   if (AM::pStepTiming()) { \
     if (! _pStepAccum) { \
       StepTiming* pStepTiming = AM::pStepTiming(); \
       pStepTiming->vGrabWrite(); \
       if (! _pStepAccum) \
-        _pStepAccum = pStepTiming->pAllocAccum(aStepNm); \
+        _pStepAccum = pStepTiming->pAllocAccum(szStepNm); \
       pStepTiming->vDropWrite(); \
     } \
     _pStepAccum->vEnter(_iEnterCycles,_iEnterMisses); \
   } \
   \
   if (C_TRACE_STEPS && mpTask->m_iTracing) \
-    mpTask->vTraceStep(aStepNm);
+    mpTask->vTraceStep(szStepNm);
 
 /*----------------------------------------------------------------------------*/
 /* step exit macro                                                            */
