@@ -23,7 +23,7 @@ void Step::vJob_SelectBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_Select* pJob_Select = _pJob_Select(pJobPtr);
   
   pJob_Select->vBegin();
@@ -40,7 +40,7 @@ void Step::vJob_SelectEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_Select* pJob_Select = _pJob_Select(pJobPtr);
 
   pJob_Select->vEnd();
@@ -57,7 +57,7 @@ void Step::vJob_SelectExecute(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_Select* pJob_Select = _pJob_Select(pJobPtr);
   
   pJob_Select->vExecute();

@@ -32,9 +32,8 @@ namespace Correctness
                              const char* azFilePath, i8 iLineNo,
                              Stz* szFormat,...);
 
-  [[ noreturn ]] void vThrow(const char* azFunc,
-                             const char* azFilePath, i8 iLineNo,
-                             eFK eKind);
+  [[ noreturn ]] void vThrow(eFK eKind, const char* azFunc,
+                             const char* azFilePath, i8 iLineNo);
   
 };
 

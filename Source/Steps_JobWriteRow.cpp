@@ -25,7 +25,7 @@ void Step::vJob_WriteRowParentJobIdFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   i8 iParentJobId = pJob_WriteRow->m_iParentJobId;
@@ -45,12 +45,12 @@ void Step::vJob_WriteRowEncodeRow(MP_Task mpTask, Forth* pForth)
   
   Object* pJobWriteRowPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobWriteRowPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobWriteRowPtr);
   
   Object* pJobInsertRowPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobInsertRowPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobInsertRowPtr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -94,7 +94,7 @@ void Step::vJob_WriteRowInsertRow(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   pJob_WriteRow->vInsertRow();
@@ -111,7 +111,7 @@ void Step::vJob_WriteRowPartitionFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   i8 i_Partition = pJob_WriteRow->m_iPartitionId;
@@ -129,12 +129,12 @@ void Step::vJob_WriteRowTableStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   Object* pTablePtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   
   pJob_WriteRow->m_pTable = pTable;

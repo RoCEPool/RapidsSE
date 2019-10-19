@@ -37,7 +37,7 @@ void Step::vAssert(MP_Task mpTask, Forth* pForth)
   
   i8 iTrue;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iTrue) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   RASSERT(iTrue);
   
@@ -53,7 +53,7 @@ void Step::vAssertClass(MP_Task mpTask, Forth* pForth)
   
   i8 iAssertClassNo;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   ForthValue* aValue = mpTask->m_pForth->m_pDataStack->aPeekValue();
   
@@ -80,7 +80,7 @@ void Step::vAssertClass_0(MP_Task mpTask, Forth* pForth)
   
   i8 iAssertClassNo;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   ForthValue* aValue = mpTask->m_pForth->m_pDataStack->aPeekValue(0);
   
@@ -107,7 +107,7 @@ void Step::vAssertClass_1(MP_Task mpTask, Forth* pForth)
   
   i8 iAssertClassNo;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   ForthValue* aValue = mpTask->m_pForth->m_pDataStack->aPeekValue(1);
   
@@ -134,7 +134,7 @@ void Step::vAssertClass_2(MP_Task mpTask, Forth* pForth)
   
   i8 iAssertClassNo;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   ForthValue* aValue = mpTask->m_pForth->m_pDataStack->aPeekValue(2);
   
@@ -161,7 +161,7 @@ void Step::vAssertClass_3(MP_Task mpTask, Forth* pForth)
   
   i8 iAssertClassNo;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   ForthValue* aValue = mpTask->m_pForth->m_pDataStack->aPeekValue(3);
   
@@ -188,7 +188,7 @@ void Step::vAssertClass_4(MP_Task mpTask, Forth* pForth)
   
   i8 iAssertClassNo;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   ForthValue* aValue = mpTask->m_pForth->m_pDataStack->aPeekValue(4);
   

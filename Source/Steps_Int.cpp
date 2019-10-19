@@ -37,7 +37,7 @@ void Step::vIntAdd(MP_Task mpTask, Forth* pForth)
   i8 r, j, i;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   r = i + j;
   
@@ -69,7 +69,7 @@ void Step::vIntDivide(MP_Task mpTask, Forth* pForth)
   i8 r, j, i;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   r = DIV(i,j);
   
@@ -88,7 +88,7 @@ void Step::vIntEqual(MP_Task mpTask, Forth* pForth)
   i8 r, j, i;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   r = i == j;
   
@@ -107,7 +107,7 @@ void Step::vIntGreater(MP_Task mpTask, Forth* pForth)
   i8 r, j, i;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   r = i > j;
   
@@ -126,7 +126,7 @@ void Step::vIntGreaterEqual(MP_Task mpTask, Forth* pForth)
   i8 r, j, i;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   r = i >= j;
   
@@ -144,7 +144,7 @@ void Step::vIntHash(MP_Task mpTask, Forth* pForth)
   
   s48K sString;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   i8 nLength = sString.nLength();
   
@@ -164,7 +164,7 @@ void Step::vIntHo16(MP_Task mpTask, Forth* pForth)
   
   i8 i;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   mpTask->m_pForth->m_pDataStack->vPushI8(i >> 48);
   
@@ -181,7 +181,7 @@ void Step::vIntLess(MP_Task mpTask, Forth* pForth)
   i8 r, j, i;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   r = i < j;
   
@@ -200,7 +200,7 @@ void Step::vIntLessEqual(MP_Task mpTask, Forth* pForth)
   i8 r, j, i;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   r = i <= j;
   
@@ -219,7 +219,7 @@ void Step::vIntModulo(MP_Task mpTask, Forth* pForth)
   i8 r, j, i;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   r = MOD(i,j);
   
@@ -238,7 +238,7 @@ void Step::vIntMultiply(MP_Task mpTask, Forth* pForth)
   i8 r, j, i;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   r = i * j;
   
@@ -257,7 +257,7 @@ void Step::vIntNeg(MP_Task mpTask, Forth* pForth)
   i8 r, i;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   r = -1 * i;
   
@@ -276,7 +276,7 @@ void Step::vIntNotEqual(MP_Task mpTask, Forth* pForth)
   i8 r, j, i;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   r = i != j;
   
@@ -294,11 +294,11 @@ void Step::vIntRandom(MP_Task mpTask, Forth* pForth)
   
   i8 iHigh;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iHigh) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   i8 iLow;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iLow) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   i8 iRandom = Random::iInteger(iLow,iHigh);
   
@@ -317,7 +317,7 @@ void Step::vIntSubtract(MP_Task mpTask, Forth* pForth)
   i8 r, j, i;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   r = i - j;
   
@@ -335,11 +335,11 @@ void Step::vUnsignedIntRandom(MP_Task mpTask, Forth* pForth)
   
   i8 iHigh;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iHigh) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   i8 iLow;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iLow) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   u8 uRandom = Random::uInteger(iLow,iHigh);
   

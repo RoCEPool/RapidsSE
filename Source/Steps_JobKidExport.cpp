@@ -23,7 +23,7 @@ void Step::vJob_KidExportExportJobId(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_KidExport;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_KidExport) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pPtrJob_KidExport);
     
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob_KidExport->m_iExportJobId);
@@ -40,7 +40,7 @@ void Step::vJob_KidExportExportOrigin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_KidExport;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_KidExport) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pPtrJob_KidExport);
   
   i8 i_OriginNodeNo = Job::iNodeNo(pJob_KidExport->m_iExportJobId);
@@ -59,12 +59,12 @@ void Step::vJob_KidExportWriteExportBuffer(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_KidExport;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_KidExport) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pPtrJob_KidExport);
   
   Object* pPtrJob_Export;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Export) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_Export* pJob_Export = _pJob_Export(pPtrJob_Export);
   
   bool bHasCompleted = pJob_KidExport->bWriteBuffer(pJob_Export);

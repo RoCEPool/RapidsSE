@@ -31,7 +31,7 @@ void Step::vJob_CopyBufferCopy(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrCopyBuffer;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrCopyBuffer) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_CopyBuffer* pJob_CopyBuffer = _pJob_CopyBuffer(pPtrCopyBuffer);
   
   pJob_CopyBuffer->vCopy();
@@ -48,12 +48,12 @@ void Step::vJob_InsertRowNewJobWriteRow(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
   
   Object* pTablePtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   
   Session* pSession = pJob_InsertRow->m_pSession;
@@ -83,7 +83,7 @@ void Step::vJob_InsertRowPartitionFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob_InsertRow->m_iPartitionId);
@@ -100,12 +100,12 @@ void Step::vJob_InsertRowRecordStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
   
   Object* pRecordObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pRecordObject) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Record* pRecord = _pRecord(pRecordObject);
   
   pJob_InsertRow->m_pRecord = pRecord;
@@ -122,12 +122,12 @@ void Step::vJob_InsertRowSpawnJobWriteRow(MP_Task mpTask, Forth* pForth)
   
   Object* pJobInsertRowPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobInsertRowPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobInsertRowPtr);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   // spawn a writeRow job
@@ -145,7 +145,7 @@ void Step::vJob_InsertTableSubInserterJobFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushPointer(pJob_InsertTable->m_pJobSubInserter);
@@ -162,12 +162,12 @@ void Step::vJob_SubInserterBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrSubInserter;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSubInserter) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pPtrSubInserter);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
   
   pJob_SubInserter->vBegin(pTable);
@@ -184,7 +184,7 @@ void Step::vJob_SubInserterEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrSubInserter;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSubInserter) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pPtrSubInserter);
   
   pJob_SubInserter->vEnd();

@@ -22,12 +22,12 @@ void Step::vJob_PublishSpawnSub(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_Publish* pJob_Publish = _pJob_Publish(pJobPtr);
   
   i8 iSlot;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iSlot) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   i8 iRequestId = pJob_Publish->m_xReqTuple.m_iReqId;
   Session* pSession = pJob_Publish->m_pSession;
@@ -64,7 +64,7 @@ void Step::vJob_PublishTableStore(MP_Task mpTask, Forth* pForth)
   Object* pPtrTable;
   Object* pPtrJob_Publish;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Publish,pPtrTable) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Job_Publish* pJob_Publish = _pJob_Publish(pPtrJob_Publish);
   

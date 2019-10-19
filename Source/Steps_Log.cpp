@@ -43,7 +43,7 @@ void Step::vLogMark(MP_Task mpTask, Forth* pForth)
   s256 sMark;
 
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sMark) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
 
   //i8 iJobId = mpTask->m_pJob->m_iUniqueId;
   JobLog::vNote(mpTask->m_pJob,sMark);
@@ -61,7 +61,7 @@ void Step::vLogMarkEntry(MP_Task mpTask, Forth* pForth)
   s256 sWordNm;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sWordNm) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Job* pJob = mpTask->m_pJob;
   AM::vLogJob(SL_INF,pJob,JA_JOB_ENTER,
@@ -81,7 +81,7 @@ void Step::vLogMarkExit(MP_Task mpTask, Forth* pForth)
   s256 sWordNm;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sWordNm) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Job* pJob = mpTask->m_pJob;
 
@@ -101,7 +101,7 @@ void Step::vLogMarkPhase(MP_Task mpTask, Forth* pForth)
   
   i8 i_Phase;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Phase) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Job* pJob = mpTask->m_pJob;
   
@@ -123,11 +123,11 @@ void Step::vLogMarkSeed(MP_Task mpTask, Forth* pForth)
   
   i8 iSeed;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iSeed) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   s32 sWordNm;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sWordNm) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   //ActLog::vAdd(mpTask->m_pJob,(eAN)iSeed,sWordNm.szStz());
   
@@ -143,11 +143,11 @@ void Step::vLogMarkWord(MP_Task mpTask, Forth* pForth)
   
   i8 iAN;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iAN) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   s32 sWordNm;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sWordNm) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   //ActLog::vAdd(mpTask->m_pJob,(eAN)iAN,sWordNm.szStz());
   
@@ -163,7 +163,7 @@ void Step::vLogJobSeed(MP_Task mpTask, Forth* pForth)
   
   i8 i_Seed;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Seed) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Job* pJob = mpTask->m_pJob;
   AM::vLogJob(SL_INF,pJob,JA_JOB_SEED,

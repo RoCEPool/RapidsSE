@@ -36,7 +36,7 @@ void Step::vSocketAccept(MP_Task mpTask, Forth* pForth)
   ENTRY("vSocketAccept"_Stz);
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -68,7 +68,7 @@ void Step::vSocketClose(MP_Task mpTask, Forth* pForth)
   ENTRY("vSocketClose"_Stz);
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -98,13 +98,13 @@ void Step::vSocketConnect(MP_Task mpTask, Forth* pForth)
   ENTRY("vSocketConnect"_Stz);
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xNodeVar) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPort) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   // get address of node
   Stz* sAddr = xNodeVar.szStz();
@@ -159,13 +159,13 @@ void Step::vSocketConnect(MP_Task mpTask, Forth* pForth)
 //  ENTRY("vSocketConnect"_Stz);
 //
 //  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-//    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+//    THROW_DSTACK();
 //
 //  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xNodeVar) )
-//    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+//    THROW_DSTACK();
 //
 //  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPort) )
-//    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+//    THROW_DSTACK();
 //
 //  // get address of node
 //  Stz* sAddr = xNodeVar.szStz();
@@ -226,7 +226,7 @@ void Step::vSocketDropWrite(MP_Task mpTask, Forth* pForth)
   
   Object* pSocketPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pSocketPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Socket* pSocket = _pSocket(pSocketPtr);
   
   pSocket->vDropWrite();
@@ -243,7 +243,7 @@ void Step::vSocketGrabWrite(MP_Task mpTask, Forth* pForth)
   
   Object* pSocketPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pSocketPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Socket* pSocket = _pSocket(pSocketPtr);
   
   pSocket->vGrabWrite();
@@ -263,7 +263,7 @@ void Step::vSocketListen(MP_Task mpTask, Forth* pForth)
   ENTRY("vSocketListen"_Stz);
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPort) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   pSocket = new Socket;
   bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
@@ -330,7 +330,7 @@ void Step::vSocketRecvObject(MP_Task mpTask, Forth* pForth)
   
   Object* pSocketPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pSocketPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Socket* pSocket = _pSocket(pSocketPtr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -558,7 +558,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask, Forth* pForth)
   
   Object* pSocketPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pSocketPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Socket* pSocket = _pSocket(pSocketPtr);
   
   void* aLowBuff = pSocket->m_aLowBuff;
@@ -810,12 +810,12 @@ void Step::vSocketSendObject(MP_Task mpTask, Forth* pForth)
   
   Object* pSocketPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pSocketPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Socket* pSocket = _pSocket(pSocketPtr);
   
   Object* pObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-  vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+  THROW_DSTACK();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

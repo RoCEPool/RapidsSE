@@ -22,7 +22,7 @@ void Step::vShellExecute(MP_Task mpTask, Forth* pForth)
   GenVar xCommand;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xCommand) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   SysCall oSysCall;
   

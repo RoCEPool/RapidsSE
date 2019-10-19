@@ -22,9 +22,9 @@ static Stz* aFK[]
   
   /* 1 */ "ASSERT"_Stz,
   
-  /* 2 */ "ASTACK"_Stz,
-  /* 3 */ "DSTACK"_Stz,
-  /* 4 */ "RSTACK"_Stz,
+  /* 2 */ "THROW_ASTACK"_Stz,
+  /* 3 */ "THROW_DSTACK"_Stz,
+  /* 4 */ "THROW_RSTACK"_Stz,
 
   /* 5 */ "ENUMS"_Stz
 };

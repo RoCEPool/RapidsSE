@@ -28,7 +28,7 @@ void Step::vSessionCommand(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrSession;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
@@ -47,7 +47,7 @@ void Step::vSessionDicStack(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrSession;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
@@ -66,7 +66,7 @@ ENTRY("vSessionDump"_Stz);
   
   Object* pPtrSession;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
@@ -85,7 +85,7 @@ void Step::vSessionIsExiting(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrSession;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
@@ -104,7 +104,7 @@ void Step::vSessionPid(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrSession;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
@@ -123,7 +123,7 @@ void Step::vSessionSlotFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrSession;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
@@ -142,7 +142,7 @@ void Step::vSessionTxFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrSession;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Session* pSession = _pSession(pPtrSession);
   
   Tx* pTx = pSession->pTx();
@@ -161,12 +161,12 @@ void Step::vSessionTxStore(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrSession;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Session* pSession = _pSession(pPtrSession);
   
   Object* pPtrTx;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
   pSession->vTx(pTx);

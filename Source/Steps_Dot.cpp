@@ -24,7 +24,7 @@ void Step::vDot(MP_Task mpTask, Forth* pForth)
   
   GenVar xVariable;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xVariable) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   vTrace("[%s %s] %s\n"_Stz,
          AM::pGrid()->pThisNode()->szNodeName(),
@@ -44,7 +44,7 @@ void Step::vDotPut(MP_Task mpTask, Forth* pForth)
   
   GenVar xVariable;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xVariable) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   vTrace("%s"_Stz,xVariable.szStz());
   
@@ -72,7 +72,7 @@ void Step::vDotVerbose(MP_Task mpTask, Forth* pForth)
   
   GenVar xVariable;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xVariable) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   if (AM::bVerbose()) {
     vTrace("[%p %s] %s\n"_Stz,

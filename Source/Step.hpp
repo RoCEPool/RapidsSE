@@ -160,6 +160,14 @@ namespace Steps
   };
 }
 
+#define THROW_ASTACK() \
+  Correctness::vThrow(FK_ASTACK,__func__,__FILE__,__LINE__);
+
+#define THROW_DSTACK() \
+  Correctness::vThrow(FK_DSTACK,__func__,__FILE__,__LINE__);
+
+#define THROW_RSTACK() \
+  Correctness::vThrow(FK_RSTACK,__func__,__FILE__,__LINE__);
 
 /*============================================================================*/
 /* end                                                                        */

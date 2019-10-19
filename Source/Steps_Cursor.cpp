@@ -42,7 +42,7 @@ void Step::vCursorStore(MP_Task mpTask, Forth* pForth)
   
   GenVar xCursorVar;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xCursorVar) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   mpTask->m_pForth->m_pReturnStack->vPokeGenVar(iPoke,xCursorVar);
   

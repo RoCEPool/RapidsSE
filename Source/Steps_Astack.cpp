@@ -43,7 +43,7 @@ void Step::vAstackClass(MP_Task mpTask, Forth* pForth)
   
   i8 nTh;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(nTh) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   GenVar xVariable;
   
@@ -81,7 +81,7 @@ void Step::vAstackDrop(MP_Task mpTask, Forth* pForth)
   
   GenVar xValA;
   if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xValA) )
-    vThrow(__func__,__FILE__,__LINE__,FK_ASTACK);
+    THROW_ASTACK();
   
   EXIT();
 }
@@ -97,7 +97,7 @@ void Step::vAstackDup(MP_Task mpTask, Forth* pForth)
   
   GenVar xValA;
   if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xValA) )
-  vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+  THROW_DSTACK();
   
   mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValA);
   mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValA);
@@ -134,7 +134,7 @@ void Step::vAstackNip(MP_Task mpTask, Forth* pForth)
   GenVar xValB;
   
   if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xValA,xValB) )
-  vThrow(__func__,__FILE__,__LINE__,FK_ASTACK);
+  THROW_ASTACK();
   
   mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValA);
   
@@ -150,7 +150,7 @@ void Step::vAstackPick(MP_Task mpTask, Forth* pForth)
   
   i8 iPick;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iPick) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   // could do this directly on stack
   
@@ -185,11 +185,11 @@ void Step::vAstackReverse(MP_Task mpTask, Forth* pForth)
   
   i8 nValues;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(nValues) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   for (i8 i = 0; i < nValues; i++) {
     if ( ! mpTask->m_pForth->m_pAuxStack->bPop(apValWrk[i]) )
-      vThrow(__func__,__FILE__,__LINE__,FK_ASTACK);
+      THROW_ASTACK();
   }
   
   for (i8 i = 0; i < nValues; i++) {
@@ -222,7 +222,7 @@ void Step::vAstackSwap(MP_Task mpTask, Forth* pForth)
   GenVar xValB;
   
   if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xValA,xValB) )
-  vThrow(__func__,__FILE__,__LINE__,FK_ASTACK);
+  THROW_ASTACK();
   
   mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValA);
   mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValB);
@@ -239,7 +239,7 @@ void Step::vAstackToA(MP_Task mpTask, Forth* pForth)
   
   GenVar xValOpaque;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValOpaque) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValOpaque);
   
@@ -255,7 +255,7 @@ void Step::vAstackToD(MP_Task mpTask, Forth* pForth)
   
   GenVar xVal;
   if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xVal) )
-    vThrow(__func__,__FILE__,__LINE__,FK_ASTACK);
+    THROW_ASTACK();
   
   mpTask->m_pForth->m_pDataStack->vPushGenVar(xVal);
   
@@ -271,12 +271,12 @@ void Step::vAstackTransfer(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTask;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTask) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Task* pThatTask = _pTask(pPtrTask);
   
   GenVar xVariable;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xVariable) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   pThatTask->m_okLock.vGrabWrite();
   pThatTask->m_pForth->m_pAuxStack->vPushGenVar(xVariable);

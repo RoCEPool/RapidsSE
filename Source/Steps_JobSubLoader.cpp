@@ -26,7 +26,7 @@ void Step::vJob_SubLoaderSpawn(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_LoadTable;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -70,7 +70,7 @@ void Step::vJob_SubLoaderBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_SubLoader;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
 
   bool bBegun = pJob_SubLoader->bBegin();
@@ -89,7 +89,7 @@ void Step::vJob_SubLoaderChunk(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_SubLoader;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -117,7 +117,7 @@ void Step::vJob_SubLoaderEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_SubLoader;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
   pJob_SubLoader->vEnd();
@@ -134,7 +134,7 @@ void Step::vJob_SubLoaderTerminate(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_SubLoader;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
   i8 iTerminate = pJob_SubLoader->bTerminate();

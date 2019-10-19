@@ -23,7 +23,7 @@ void Step::vJob_SinkBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Sink;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Sink) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_Sink* pJob_Sink = _pJob_Sink(pPtrJob_Sink);
   
   bool bBegun = pJob_Sink->bBegin();
@@ -42,7 +42,7 @@ void Step::vJob_SinkChunk(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Sink;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Sink) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_Sink* pJob_Sink = _pJob_Sink(pPtrJob_Sink);
   
   bool bCallAgain = pJob_Sink->bChunk();
@@ -61,7 +61,7 @@ void Step::vJob_SinkEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Sink;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Sink) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_Sink* pJob_Sink = _pJob_Sink(pPtrJob_Sink);
   
   pJob_Sink->vEnd();

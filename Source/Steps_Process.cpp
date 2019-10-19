@@ -51,7 +51,7 @@ ENTRY("vProcessTestPid"_Stz);
 
   i8 iPid;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPid) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   i8 iExists = Process::bTestPid(iPid);
   

@@ -47,12 +47,12 @@ void Step::vJob_FetchRowsColumnStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
   Object* pColumnPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pColumnPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Column* pColumn = _pColumn(pColumnPtr);
   
   pJob_FetchRows->m_pColumn = pColumn;
@@ -69,7 +69,7 @@ void Step::vJob_FetchRowsColumnNameFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushS256(pJob_FetchRows->m_sColumnName);
@@ -86,12 +86,12 @@ void Step::vJob_FetchRowsLastBuffersStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
   i8 nLastBuffers;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(nLastBuffers) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   pJob_FetchRows->m_nLastBuffers = nLastBuffers;
   
@@ -107,7 +107,7 @@ void Step::vJob_FetchRowsPartitionFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
 
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob_FetchRows->m_iPartition);
@@ -124,12 +124,12 @@ void Step::vJob_FetchRowsPlannerStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
   Object* pPlannerPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPlannerPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Planner* pPlanner = _pPlanner(pPlannerPtr);
   
   pJob_FetchRows->m_pPlanner = pPlanner;
@@ -150,22 +150,22 @@ void Step::vJob_FetchRowsSpawnSub(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
 
   Object* pPlannerPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPlannerPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Planner* pPlanner = _pPlanner(pPlannerPtr);
   ASSERT(CN_PLANNER == pPlanner->eClass());
   
   i8 iPhrase;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iPhrase) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   i8 iSlot;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iSlot) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   i8 iRequestId = pJob_FetchRows->m_xReqTuple.m_iReqId;
   Session* pSession = pJob_FetchRows->m_pSession;
@@ -203,12 +203,12 @@ void Step::vJob_FetchRowsTableStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
   Object* pTablePtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   
   pJob_FetchRows->m_pTable = pTable;
@@ -225,7 +225,7 @@ void Step::vJob_FetchRowsWhereFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushS256(pJob_FetchRows->m_sWhere);
@@ -242,7 +242,7 @@ void Step::vJob_InflateRowsColumnNameFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushS256(pJob_InflateRows->m_sColumnName);
@@ -259,12 +259,12 @@ void Step::vJob_InflateRowsColumnStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJobPtr);
   
   Object* pColumnPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pColumnPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Column* pColumn = _pColumn(pColumnPtr);
   
   pJob_InflateRows->m_pColumn = pColumn;
@@ -281,12 +281,12 @@ void Step::vJob_InflateRowsSpawnSub(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJobPtr);
   
   i8 iSlot;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iSlot) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   i8 iRequestId = pJob_InflateRows->m_xReqTuple.m_iReqId;
   Session* pSession = pJob_InflateRows->m_pSession;
@@ -322,7 +322,7 @@ void Step::vJob_InflateRowsSpawnSubInflate(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJobPtr);
   ReqTuple* aReqTuple = &pJob_InflateRows->m_xReqTuple;
 
@@ -355,7 +355,7 @@ void Step::vJob_InflateRowsSubInfTasksFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJobPtr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -374,12 +374,12 @@ void Step::vJob_InflateRowsTableStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJobPtr);
   
   Object* pTablePtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   
   pJob_InflateRows->m_pTable = pTable;
@@ -396,7 +396,7 @@ void Step::vJob_InflateRowsWhereFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushS256(pJob_InflateRows->m_sWhere);
@@ -413,7 +413,7 @@ void Step::vJob_SubFetchBufferQueueFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushPointer(pJob->m_pBufferQueue);
@@ -430,7 +430,7 @@ void Step::vJob_SubFetchPhraseFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_iPhrase);
@@ -447,7 +447,7 @@ void Step::vJob_SubFetchPlannerFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushPointer(pJob->m_pPlanner);
@@ -465,7 +465,7 @@ void Step::vJob_SubFetchSlotFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_i_Slot);
@@ -482,7 +482,7 @@ void Step::vJob_SubInflateJobInflateRowsFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_SubInflate* pJob = _pJob_SubInflate(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushPointer(pJob->m_pJobInflateRows);
@@ -499,7 +499,7 @@ void Step::vJob_SubInflateInflateRows(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_SubInflate* pJob_SubInflate = _pJob_SubInflate(pJobPtr);
   
   // get the fetch job
@@ -554,7 +554,7 @@ void Step::vJob_SubScanBufferQueueFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_SubScan* pJob = _pJob_SubScan(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushPointer(pJob->m_pBufferQueue);
@@ -571,7 +571,7 @@ void Step::vJob_SubScanSlotFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   Job_SubScan* pJob = _pJob_SubScan(pJobPtr);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_i_Slot);

@@ -34,7 +34,7 @@ void Step::vEncodeAgain(MP_Task mpTask, Forth* pForth)
   // cstack: pop known backward address
   Cell* pKnownDestination;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pKnownDestination) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   // append : jump to known backward address
   pCurrentWord->vEncode("jump"_Stz,pKnownDestination);
@@ -73,7 +73,7 @@ void Step::vEncodeContinue(MP_Task mpTask, Forth* pForth)
   // cstack: pop known backward address
   Cell* pKnownBackward;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pKnownBackward) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   // append : jump on true to known backward address
   pCurrentWord->vEncode("jumpTrue"_Stz,pKnownBackward);
@@ -132,12 +132,12 @@ void Step::vEncodeIfAgain(MP_Task mpTask, Forth* pForth)
   // cstack: pop known if address
   Cell* pIfDestination;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pIfDestination) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   // cstack: pop known backward address
   Cell* pKnownDestination;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pKnownDestination) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   // append : jump to known backward address
   pCurrentWord->vEncode("jump"_Stz,pKnownDestination);
@@ -168,13 +168,13 @@ void Step::vEncodeLoop(MP_Task mpTask, Forth* pForth)
   i8 iIsDo;
   // cstack: is do ?
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iIsDo) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Cell* pDoLimitTest = nullptr;
   if (! iIsDo) {
     // cstack: pop destination address of backward jump
     if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDoLimitTest) )
-      vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+      THROW_DSTACK();
     pDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   }
   
@@ -186,7 +186,7 @@ void Step::vEncodeLoop(MP_Task mpTask, Forth* pForth)
     Cell* pDoHere;
     // cstack: pop destination address of backward jump
     if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDoHere) )
-      vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+      THROW_DSTACK();
     pCurrentWord->vEncode("jumpTrue"_Stz,pDoHere);
   }
   else {
@@ -216,13 +216,13 @@ void Step::vEncodeLoopPlus(MP_Task mpTask, Forth* pForth)
   i8 iIsDo;
   // cstack: is do ?
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iIsDo) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Cell* pDoLimitTest = nullptr;
   if (! iIsDo) {
     // cstack: pop destination address of backward jump
     if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDoLimitTest) )
-      vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+      THROW_DSTACK();
     pDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   }
   
@@ -234,7 +234,7 @@ void Step::vEncodeLoopPlus(MP_Task mpTask, Forth* pForth)
     Cell* pDoHere;
     // cstack: pop destination address of backward jump
     if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDoHere) )
-      vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+      THROW_DSTACK();
     pCurrentWord->vEncode("jumpTrue"_Stz,pDoHere);
   }
   else {
@@ -259,7 +259,7 @@ void Step::vEncodeNext(MP_Task mpTask, Forth* pForth)
   Cell* pDoLimitTest = nullptr;
   // cstack: pop destination address of backward jump
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDoLimitTest) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   pDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   
   pCurrentWord->vEncode("r@"_Stz); // copy index limit to dstack
@@ -284,7 +284,7 @@ void Step::vEncodeThen(MP_Task mpTask, Forth* pForth)
   // cstack: pop unknown forward address
   Cell* pUnknownOrigin;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pUnknownOrigin) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   // resolve forward branch to this point in routine
   pUnknownOrigin->m_aJumpTo = pCurrentWord->aLastCell();
@@ -304,7 +304,7 @@ void Step::vEncodeUntil(MP_Task mpTask, Forth* pForth)
   // cstack: pop known backward address
   Cell* pKnownDestination;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pKnownDestination) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   // append : jump on false to known backward address
   pCurrentWord->vEncode("jumpFalse"_Stz,pKnownDestination);

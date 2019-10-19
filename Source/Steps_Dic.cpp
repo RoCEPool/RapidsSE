@@ -29,7 +29,7 @@ ENTRY("vDicInit"_Stz);
   Object* pPtrDic;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -51,7 +51,7 @@ void Step::vDicKindGet(MP_Task mpTask, Forth* pForth)
   Object* pPtrDic;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -74,7 +74,7 @@ void Step::vDicKindSet(MP_Task mpTask, Forth* pForth)
   Object* pPtrDic;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic,pPtrKind) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -95,7 +95,7 @@ ENTRY("vDicLastWord"_Stz);
   Object* pPtrDic;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -115,7 +115,7 @@ ENTRY("vDicName"_Stz);
  
   Object* pPtrDic;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -136,7 +136,7 @@ void Step::vDicRef(MP_Task mpTask, Forth* pForth)
   Object* pPtrDic;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -170,7 +170,7 @@ void Step::vDicWordCount(MP_Task mpTask, Forth* pForth)
   Object* pPtrDic;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
   
