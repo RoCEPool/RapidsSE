@@ -5,7 +5,7 @@
 
 namespace Steps
 {
-  class Step
+  class Step : public Forth
   {
   friend class StorageEngine::AttachMap;
   friend class Tasks::Task;
