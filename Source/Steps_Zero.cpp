@@ -25,13 +25,13 @@ void Step::vZeroLess(MP_Task mpTask, Forth* pForth)
   ENTRY("vZeroLess"_Stz);
   
   i8 iZero;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iZero) )
     THROW_DSTACK();
   
   if (iZero < 0)
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    pForth->m_pDataStack->vPushBool(true);
   else
-    mpTask->m_pForth->m_pDataStack->vPushBool(false);
+    pForth->m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -44,13 +44,13 @@ void Step::vZeroLessEqual(MP_Task mpTask, Forth* pForth)
   ENTRY("vZeroLessEqual"_Stz);
   
   i8 iZero;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iZero) )
     THROW_DSTACK();
   
   if (iZero <= 0)
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    pForth->m_pDataStack->vPushBool(true);
   else
-    mpTask->m_pForth->m_pDataStack->vPushBool(false);
+    pForth->m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -63,13 +63,13 @@ void Step::vZeroEqual(MP_Task mpTask, Forth* pForth)
   ENTRY("vZeroEqual"_Stz);
   
   i8 iZero;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iZero) )
     THROW_DSTACK();
   
   if (iZero == 0)
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    pForth->m_pDataStack->vPushBool(true);
   else
-    mpTask->m_pForth->m_pDataStack->vPushBool(false);
+    pForth->m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -82,13 +82,13 @@ void Step::vZeroNotEqual(MP_Task mpTask, Forth* pForth)
   ENTRY("vZeroNotEqual"_Stz);
   
   i8 iZero;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iZero) )
     THROW_DSTACK();
   
   if (iZero != 0)
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    pForth->m_pDataStack->vPushBool(true);
   else
-    mpTask->m_pForth->m_pDataStack->vPushBool(false);
+    pForth->m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -101,13 +101,13 @@ void Step::vZeroGreaterEqual(MP_Task mpTask, Forth* pForth)
   ENTRY("vZeroGreaterEqual"_Stz);
   
   i8 iZero;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iZero) )
     THROW_DSTACK();
   
   if (iZero >= 0)
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    pForth->m_pDataStack->vPushBool(true);
   else
-    mpTask->m_pForth->m_pDataStack->vPushBool(false);
+    pForth->m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -120,13 +120,13 @@ void Step::vZeroGreater(MP_Task mpTask, Forth* pForth)
   ENTRY("vZeroGreater"_Stz);
   
   i8 iZero;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iZero) )
     THROW_DSTACK();
   
   if (iZero > 0)
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    pForth->m_pDataStack->vPushBool(true);
   else
-    mpTask->m_pForth->m_pDataStack->vPushBool(false);
+    pForth->m_pDataStack->vPushBool(false);
   
   EXIT();
 }

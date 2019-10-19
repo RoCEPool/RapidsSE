@@ -21,10 +21,10 @@ void Step::vCastInt(MP_Task mpTask, Forth* pForth)
   ENTRY("vCastInt"_Stz);
   
   Object* pPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pPtr) )
     THROW_DSTACK();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8((i8)pPtr);
+  pForth->m_pDataStack->vPushI8((i8)pPtr);
   
   EXIT();
 }
@@ -37,10 +37,10 @@ void Step::vCastPtr(MP_Task mpTask, Forth* pForth)
   ENTRY("vCastPtr"_Stz);
   
   i8 iInt;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iInt) )
+  if ( ! pForth->m_pDataStack->bPop(iInt) )
     THROW_DSTACK();
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer((Object*)iInt);
+  pForth->m_pDataStack->vPushPointer((Object*)iInt);
   
   EXIT();
 }

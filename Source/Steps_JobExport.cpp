@@ -24,11 +24,11 @@ void Step::vJob_ExportAuxAckDecidedFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_ExportAuxAckDecidedFetch"_Stz);
   
   Object* pPtrJobExport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobExport) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobExport) )
     THROW_DSTACK();
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pJob_Export->m_bAuxAckDecided);
+  pForth->m_pDataStack->vPushI8(pJob_Export->m_bAuxAckDecided);
   
   EXIT();
 }
@@ -41,12 +41,12 @@ void Step::vJob_ExportAuxAckDecidedStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_ExportAuxAckDecidedStore"_Stz);
   
   Object* pPtrJobExport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobExport) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobExport) )
     THROW_DSTACK();
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
   
   i8 iAuxAckDecided;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iAuxAckDecided) )
+  if ( ! pForth->m_pDataStack->bPop(iAuxAckDecided) )
     THROW_DSTACK();
   
   pJob_Export->m_bAuxAckDecided = (bool)iAuxAckDecided;
@@ -62,13 +62,13 @@ void Step::vJob_ExportBegin(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_ExportBegin"_Stz);
   
   Object* pPtrJobExport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobExport) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobExport) )
     THROW_DSTACK();
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
   
   bool bBegun = pJob_Export->bBegin();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bBegun);
+  pForth->m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -81,7 +81,7 @@ void Step::vJob_ExportEnd(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_ExportEnd"_Stz);
   
   Object* pPtrJobExport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobExport) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobExport) )
     THROW_DSTACK();
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
   
@@ -98,12 +98,12 @@ void Step::vJob_ExportTableStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_ExportTableStore"_Stz);
   
   Object* pPtrJobExport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobExport) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobExport) )
     THROW_DSTACK();
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
   
   Object* pTablePtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
+  if ( ! pForth->m_pDataStack->bPop(pTablePtr) )
     THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   

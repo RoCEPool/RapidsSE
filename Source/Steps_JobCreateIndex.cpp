@@ -20,11 +20,11 @@ void Step::vJob_CreateIndexIsUniqueFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_CreateIndexIsUniqueFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJobPtr);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pJob_CreateIndex->m_bIsUnique);
+  pForth->m_pDataStack->vPushI8(pJob_CreateIndex->m_bIsUnique);
   
   EXIT();
 }

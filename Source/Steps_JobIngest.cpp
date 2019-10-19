@@ -23,13 +23,13 @@ void Step::vJob_IngestBegin(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_IngestBegin"_Stz);
   
   Object* pPtrJob_Ingest;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Ingest) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Ingest) )
     THROW_DSTACK();
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
   
   bool bBegun = pJob_Ingest->bBegin();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bBegun);
+  pForth->m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -42,13 +42,13 @@ void Step::vJob_IngestChunk(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_IngestChunk"_Stz);
   
   Object* pPtrJobIngest;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobIngest) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobIngest) )
     THROW_DSTACK();
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJobIngest);
   
   bool bCallAgain = pJob_Ingest->bChunk();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bCallAgain);
+  pForth->m_pDataStack->vPushBool(bCallAgain);
   
 //  if (! bCallAgain) {
 //    // sleep for 10 seconds
@@ -67,7 +67,7 @@ void Step::vJob_IngestEnd(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_IngestEnd"_Stz);
   
   Object* pPtrJob_Ingest;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Ingest) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Ingest) )
     THROW_DSTACK();
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
   
@@ -85,7 +85,7 @@ void Step::vJob_IngestTableStore(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTable;
   Object* pPtrJob_Ingest;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Ingest,pPtrTable) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Ingest,pPtrTable) )
     THROW_DSTACK();
   
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);

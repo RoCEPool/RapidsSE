@@ -34,7 +34,7 @@ ENTRY("vTimeDelete"_Stz);
   
   Object* pPtrTimer;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -57,7 +57,7 @@ void Step::vTimerInit(MP_Task mpTask, Forth* pForth)
 ENTRY("vTimerInit"_Stz);
   
   Object* pPtrTimer;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -76,7 +76,7 @@ void Step::vTimerMicrosecs(MP_Task mpTask, Forth* pForth)
 ENTRY("vTimerMicrosecs"_Stz);
   
   Object* pPtrTimer;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -84,7 +84,7 @@ ENTRY("vTimerMicrosecs"_Stz);
   
   i8 iMicroseconds = pTimer->iMicroseconds();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iMicroseconds);
+  pForth->m_pDataStack->vPushI8(iMicroseconds);
   
   EXIT();
 }
@@ -97,7 +97,7 @@ void Step::vTimerMillisecs(MP_Task mpTask, Forth* pForth)
 ENTRY("vTimerMillisecs"_Stz);
   
   Object* pPtrTimer;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -105,7 +105,7 @@ ENTRY("vTimerMillisecs"_Stz);
   
   i8 iMilliseconds = pTimer->iMilliseconds();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iMilliseconds);
+  pForth->m_pDataStack->vPushI8(iMilliseconds);
   
   EXIT();
 }
@@ -118,7 +118,7 @@ void Step::vTimerNanosecs(MP_Task mpTask, Forth* pForth)
 ENTRY("vTimerNanosecs"_Stz);
   
   Object* pPtrTimer;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -126,7 +126,7 @@ ENTRY("vTimerNanosecs"_Stz);
   
   i8 iNanoseconds = pTimer->iNanoseconds();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iNanoseconds);
+  pForth->m_pDataStack->vPushI8(iNanoseconds);
   
   EXIT();
 }
@@ -146,7 +146,7 @@ ENTRY("vTimerNew"_Stz);
   
   Object* pPtrTimer = pTimer;
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrTimer);
+  pForth->m_pDataStack->vPushPointer(pPtrTimer);
   
   EXIT();
 }
@@ -159,7 +159,7 @@ void Step::vTimerReset(MP_Task mpTask, Forth* pForth)
 ENTRY("vTimerReset"_Stz);
   
   Object* pPtrTimer;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -178,7 +178,7 @@ void Step::vTimerSecs(MP_Task mpTask, Forth* pForth)
 ENTRY("vTimerSecs"_Stz);
   
   Object* pPtrTimer;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -186,7 +186,7 @@ ENTRY("vTimerSecs"_Stz);
   
   i8 iSeconds = pTimer->iSeconds();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iSeconds);
+  pForth->m_pDataStack->vPushI8(iSeconds);
   
   EXIT();
 }
@@ -199,7 +199,7 @@ void Step::vTimerStart(MP_Task mpTask, Forth* pForth)
 ENTRY("vTimerStart"_Stz);
   
   Object* pPtrTimer;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -218,7 +218,7 @@ void Step::vTimerTicks(MP_Task mpTask, Forth* pForth)
 ENTRY("vTimerTicks"_Stz);
   
   Object* pPtrTimer;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -226,7 +226,7 @@ ENTRY("vTimerTicks"_Stz);
   
   i8 iTicks = pTimer->iTicks();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iTicks);
+  pForth->m_pDataStack->vPushI8(iTicks);
   
   EXIT();
 }
@@ -239,7 +239,7 @@ void Step::vTimerUpdate(MP_Task mpTask, Forth* pForth)
 ENTRY("vTimerUpdate"_Stz);
   
   Object* pPtrTimer;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTimer) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTimer) )
     THROW_DSTACK();
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -262,7 +262,7 @@ void Step::vTimeCurrent(MP_Task mpTask, Forth* pForth)
   
   s32 s = xNow.sz();
   
-  mpTask->m_pForth->m_pDataStack->vPushS32(s);
+  pForth->m_pDataStack->vPushS32(s);
   
   EXIT();
 }

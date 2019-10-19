@@ -21,7 +21,7 @@ void Step::vCompilerCurrent(MP_Task mpTask, Forth* pForth)
   
   Word* pWord = mpTask->m_pCompiler->m_pCurrent;
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pWord);
+  pForth->m_pDataStack->vPushPointer(pWord);
   
   EXIT();
 }

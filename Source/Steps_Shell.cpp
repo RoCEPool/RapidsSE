@@ -21,14 +21,14 @@ void Step::vShellExecute(MP_Task mpTask, Forth* pForth)
   
   GenVar xCommand;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xCommand) )
+  if ( ! pForth->m_pDataStack->bPop(xCommand) )
     THROW_DSTACK();
   
   SysCall oSysCall;
   
   i8 iExitStatus = Shell::iExecute(xCommand.szStz(),oSysCall);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iExitStatus);
+  pForth->m_pDataStack->vPushI8(iExitStatus);
   
   EXIT();
 }

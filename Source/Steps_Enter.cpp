@@ -22,7 +22,7 @@ void Step::vEnterObject(MP_Task mpTask, Forth* pForth)
   
   StepFp* afpEntryCell = (mpTask->m_pForth->m_aInxPtr - 1)->m_afpIntrinsic + 1;
 
-  mpTask->m_pForth->m_pReturnStack->vPushCell(mpTask->m_pForth->m_aInxPtr);
+  pForth->m_pReturnStack->vPushCell(mpTask->m_pForth->m_aInxPtr);
   mpTask->m_pForth->m_aInxPtr = *(Cell**)afpEntryCell;
   
   Word* pWord = pAdd<Word*>((Object*)afpEntryCell,
@@ -36,7 +36,7 @@ void Step::vEnterObject(MP_Task mpTask, Forth* pForth)
   ASSERT(WK_OBJECT == pWord->eKind());
   
   Object* pObject = (Object*)pWord->aFirstCell();
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pObject);
+  pForth->m_pDataStack->vPushPointer(pObject);
   
   EXIT();
 }
@@ -50,7 +50,7 @@ void Step::vEnterRoutine(MP_Task mpTask, Forth* pForth)
   
   StepFp* afpEntryCell = (mpTask->m_pForth->m_aInxPtr - 1)->m_afpIntrinsic + 1;
   
-  mpTask->m_pForth->m_pReturnStack->vPushCell(mpTask->m_pForth->m_aInxPtr);
+  pForth->m_pReturnStack->vPushCell(mpTask->m_pForth->m_aInxPtr);
   mpTask->m_pForth->m_aInxPtr = *(Cell**)afpEntryCell;
 
    if ( (mpTask->m_iTracing & C_TRACE_ROUTINES) )

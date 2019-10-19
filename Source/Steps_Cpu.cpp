@@ -21,7 +21,7 @@ void Step::vCpuRdtscp(MP_Task mpTask, Forth* pForth)
   
   i8 iTscp = Tick::iRdClock();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iTscp);
+  pForth->m_pDataStack->vPushI8(iTscp);
   
   EXIT();
 }

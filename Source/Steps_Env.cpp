@@ -21,7 +21,7 @@ void Step::vEnvGet(MP_Task mpTask, Forth* pForth)
   
   s32 sEnvName;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sEnvName) )
+  if ( ! pForth->m_pDataStack->bPop(sEnvName) )
     THROW_DSTACK();
   
   s256 sEnvVal;
@@ -29,7 +29,7 @@ void Step::vEnvGet(MP_Task mpTask, Forth* pForth)
   if (! Env::bGet(sEnvName,sEnvVal))
     sEnvVal = ""_Stz;
   
-  mpTask->m_pForth->m_pDataStack->vPushS256(sEnvVal);
+  pForth->m_pDataStack->vPushS256(sEnvVal);
   
   EXIT();
 }

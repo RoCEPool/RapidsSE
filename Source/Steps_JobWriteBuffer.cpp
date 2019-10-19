@@ -26,7 +26,7 @@ void Step::vJob_WriteBufferParentJobIdFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_WriteBufferParentJobIdFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
@@ -34,7 +34,7 @@ void Step::vJob_WriteBufferParentJobIdFetch(MP_Task mpTask, Forth* pForth)
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
   RASSERT(DS_INGEST== eDataSource || C_UNKNOWN != iParentJobId);
-  mpTask->m_pForth->m_pDataStack->vPushI8(iParentJobId);
+  pForth->m_pDataStack->vPushI8(iParentJobId);
   
   EXIT();
 }
@@ -47,13 +47,13 @@ void Step::vJob_WriteBufferInsertRows(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_WriteBufferInsertRows"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   bool bAllBuffersWritten = pJob_WriteBuffer->bInsertRows();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bAllBuffersWritten);
+  pForth->m_pDataStack->vPushI8(bAllBuffersWritten);
   
   EXIT();
 }
@@ -66,13 +66,13 @@ void Step::vJob_WriteBufferIsIngesting(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_WriteBufferIsIngesting"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(eDataSource == DS_INGEST ? true : false);
+  pForth->m_pDataStack->vPushI8(eDataSource == DS_INGEST ? true : false);
   
   EXIT();
 }
@@ -85,13 +85,13 @@ void Step::vJob_WriteBufferIsInserting(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_WriteBufferIsInserting"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(eDataSource == DS_INSERT ? true : false);
+  pForth->m_pDataStack->vPushI8(eDataSource == DS_INSERT ? true : false);
   
   EXIT();
 }
@@ -104,13 +104,13 @@ void Step::vJob_WriteBufferIsLoading(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_WriteBufferIsLoading"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(eDataSource == DS_LOAD ? true : false);
+  pForth->m_pDataStack->vPushI8(eDataSource == DS_LOAD ? true : false);
   
   EXIT();
 }
@@ -123,12 +123,12 @@ void Step::vJob_WriteBufferPartitionFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_WriteBufferPartitionFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   i8 i_Partition = pJob_WriteBuffer->m_iPartitionId;
-  mpTask->m_pForth->m_pDataStack->vPushI8(i_Partition);
+  pForth->m_pDataStack->vPushI8(i_Partition);
   
   EXIT();
 }
@@ -141,12 +141,12 @@ void Step::vJob_WriteBufferTableStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_WriteBufferTableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   Object* pTablePtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
+  if ( ! pForth->m_pDataStack->bPop(pTablePtr) )
     THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   

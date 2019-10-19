@@ -21,7 +21,7 @@ void Step::vErrorMsg(MP_Task mpTask, Forth* pForth)
   
   
   i8 iErrorCode;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iErrorCode) )
+  if ( ! pForth->m_pDataStack->bPop(iErrorCode) )
     THROW_DSTACK();
   
   if (iErrorCode < EC_NONE || iErrorCode > EC_ENUMS)
@@ -30,7 +30,7 @@ void Step::vErrorMsg(MP_Task mpTask, Forth* pForth)
   s256 sErrorMsg;
   sErrorMsg = aEC[iErrorCode];
   
-  mpTask->m_pForth->m_pDataStack->vPushS256(sErrorMsg);
+  pForth->m_pDataStack->vPushS256(sErrorMsg);
   
   EXIT();
 }

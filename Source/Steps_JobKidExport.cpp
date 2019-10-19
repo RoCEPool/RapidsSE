@@ -22,11 +22,11 @@ void Step::vJob_KidExportExportJobId(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_KidExportExportJobId"_Stz);
   
   Object* pPtrJob_KidExport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_KidExport) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJob_KidExport) )
     THROW_DSTACK();
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pPtrJob_KidExport);
     
-  mpTask->m_pForth->m_pDataStack->vPushI8(pJob_KidExport->m_iExportJobId);
+  pForth->m_pDataStack->vPushI8(pJob_KidExport->m_iExportJobId);
   
   EXIT();
 }
@@ -39,13 +39,13 @@ void Step::vJob_KidExportExportOrigin(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_KidExportExportOrigin"_Stz);
   
   Object* pPtrJob_KidExport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_KidExport) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJob_KidExport) )
     THROW_DSTACK();
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pPtrJob_KidExport);
   
   i8 i_OriginNodeNo = Job::iNodeNo(pJob_KidExport->m_iExportJobId);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(i_OriginNodeNo);
+  pForth->m_pDataStack->vPushI8(i_OriginNodeNo);
   
   EXIT();
 }
@@ -58,12 +58,12 @@ void Step::vJob_KidExportWriteExportBuffer(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_KidExportWriteExportBuffer"_Stz);
   
   Object* pPtrJob_KidExport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_KidExport) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJob_KidExport) )
     THROW_DSTACK();
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pPtrJob_KidExport);
   
   Object* pPtrJob_Export;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Export) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Export) )
     THROW_DSTACK();
   Job_Export* pJob_Export = _pJob_Export(pPtrJob_Export);
   
@@ -72,7 +72,7 @@ void Step::vJob_KidExportWriteExportBuffer(MP_Task mpTask, Forth* pForth)
   if (bHasCompleted)
     vTrace("COMPLETED\n"_Stz);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bHasCompleted);
+  pForth->m_pDataStack->vPushI8(bHasCompleted);
 
   EXIT();
 }

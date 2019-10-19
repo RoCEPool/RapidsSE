@@ -28,7 +28,7 @@ ENTRY("vDicInit"_Stz);
   
   Object* pPtrDic;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDic) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
@@ -50,7 +50,7 @@ void Step::vDicKindGet(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrDic;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDic) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
@@ -58,7 +58,7 @@ void Step::vDicKindGet(MP_Task mpTask, Forth* pForth)
   Object* pPtrKind;
   pPtrKind = pDic->pDicKind();
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrKind);
+  pForth->m_pDataStack->vPushPointer(pPtrKind);
   
   EXIT();
 }
@@ -73,7 +73,7 @@ void Step::vDicKindSet(MP_Task mpTask, Forth* pForth)
   Object* pPtrKind;
   Object* pPtrDic;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic,pPtrKind) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDic,pPtrKind) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
@@ -94,14 +94,14 @@ ENTRY("vDicLastWord"_Stz);
   
   Object* pPtrDic;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDic) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
   
   Word* pLastWord = pDic->pLastWord();
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pLastWord);
+  pForth->m_pDataStack->vPushPointer(pLastWord);
   
   EXIT();
 }
@@ -114,14 +114,14 @@ void Step::vDicName(MP_Task mpTask, Forth* pForth)
 ENTRY("vDicName"_Stz);
  
   Object* pPtrDic;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDic) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
 
   s32 sName(pDic->szName());
   
-  mpTask->m_pForth->m_pDataStack->vPushS32(sName);
+  pForth->m_pDataStack->vPushS32(sName);
   
   EXIT();
 }
@@ -135,14 +135,14 @@ void Step::vDicRef(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrDic;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDic) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
 
   bool bRef = pDic->bRefOut();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bRef);
+  pForth->m_pDataStack->vPushI8(bRef);
   
   EXIT();
 }
@@ -155,7 +155,7 @@ void Step::vDicRoot(MP_Task mpTask, Forth* pForth)
   ENTRY("vDicRoot"_Stz);
   
   Dic* pRootDic = AM::pRootDic();
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pRootDic);
+  pForth->m_pDataStack->vPushPointer(pRootDic);
   
   EXIT();
 }
@@ -169,14 +169,14 @@ void Step::vDicWordCount(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrDic;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDic) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
   
   i8 nWords = pDic->nWords();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(nWords);
+  pForth->m_pDataStack->vPushI8(nWords);
   
   EXIT();
 }

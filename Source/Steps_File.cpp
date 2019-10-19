@@ -28,7 +28,7 @@ ENTRY("vFileClose"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrFile) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrFile) )
     THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
@@ -47,7 +47,7 @@ ENTRY("vFileDelete"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrFile) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrFile) )
     THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
@@ -69,7 +69,7 @@ ENTRY("vFileNew"_Stz);
   Object* pPtrFile;
   pPtrFile = (Object*)pFile;
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrFile);
+  pForth->m_pDataStack->vPushPointer(pPtrFile);
   
   EXIT();
 }
@@ -83,21 +83,21 @@ ENTRY("vFileOpen"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrFile) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrFile) )
     THROW_DSTACK();
   File* pFile = _pFile(pPtrFile);
   
   s32 sMode;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sMode) )
+  if ( ! pForth->m_pDataStack->bPop(sMode) )
     THROW_DSTACK();
 
   s256 sPath;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sPath) )
+  if ( ! pForth->m_pDataStack->bPop(sPath) )
     THROW_DSTACK();
   
   bool bOpened = pFile->bOpenMode(sPath,sMode);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bOpened);
+  pForth->m_pDataStack->vPushI8(bOpened);
   
   EXIT();
 }
@@ -111,14 +111,14 @@ ENTRY("vFilePathGet"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrFile) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrFile) )
     THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
 
   s256 sPath = pFile->sFilePath();
   
-  mpTask->m_pForth->m_pDataStack->vPushS256(sPath);
+  pForth->m_pDataStack->vPushS256(sPath);
   
   EXIT();
 }
@@ -132,7 +132,7 @@ void Step::vFileRead(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrFile;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrFile) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrFile) )
     THROW_DSTACK();
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
@@ -142,11 +142,11 @@ void Step::vFileRead(MP_Task mpTask, Forth* pForth)
   bool bResult = pFile->bReadLine(sLine);
   
   if (bResult) {
-    mpTask->m_pForth->m_pDataStack->vPushS48K(sLine);
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    pForth->m_pDataStack->vPushS48K(sLine);
+    pForth->m_pDataStack->vPushBool(true);
   }
   else {
-    mpTask->m_pForth->m_pDataStack->vPushBool(false);
+    pForth->m_pDataStack->vPushBool(false);
   }
 
   EXIT();
@@ -161,7 +161,7 @@ ENTRY("vFileWrite"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrFile) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrFile) )
     THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
@@ -169,7 +169,7 @@ ENTRY("vFileWrite"_Stz);
   
   s48K sLine;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sLine) )
+  if ( ! pForth->m_pDataStack->bPop(sLine) )
     THROW_DSTACK();
   
   Stz* wStr = sLine;

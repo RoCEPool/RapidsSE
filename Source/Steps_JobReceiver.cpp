@@ -25,12 +25,12 @@ void Step::vJob_ReceiverConnNoFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_ReceiverConnNoFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   i8 iConnNo = pJob_Receiver->iConnNo();
-  mpTask->m_pForth->m_pDataStack->vPushI8(iConnNo);
+  pForth->m_pDataStack->vPushI8(iConnNo);
   
   EXIT();
 }
@@ -43,7 +43,7 @@ void Step::vJob_ReceiverJobReceived(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_ReceiverJobReceived"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
 
@@ -74,12 +74,12 @@ void Step::vJob_ReceiverConnNoStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_ReceiverConnNoStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   i8 iConnNo;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iConnNo) )
+  if ( ! pForth->m_pDataStack->bPop(iConnNo) )
     THROW_DSTACK();
   
   pJob_Receiver->vConnNo(iConnNo);
@@ -95,12 +95,12 @@ void Step::vJob_ReceiverNodeFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_ReceiverNodeFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   Node* pNode = pJob_Receiver->pNode();
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pNode);
+  pForth->m_pDataStack->vPushPointer(pNode);
   
   EXIT();
 }
@@ -113,12 +113,12 @@ void Step::vJob_ReceiverNodeStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_ReceiverNodeStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   Object* pNodePtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pNodePtr) )
+  if ( ! pForth->m_pDataStack->bPop(pNodePtr) )
     THROW_DSTACK();
   Node* pNode = _pNode(pNodePtr);
   

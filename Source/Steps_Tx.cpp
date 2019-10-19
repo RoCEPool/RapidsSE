@@ -39,7 +39,7 @@ void Step::vTxBegin(MP_Task mpTask, Forth* pForth)
 //         pTx->iDistTxNode(), pTx->iDistTxNo(),
 //         pTx->aDecode());
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pTx);
+  pForth->m_pDataStack->vPushPointer(pTx);
   
   EXIT();
 }
@@ -52,7 +52,7 @@ void Step::vTxCommit(MP_Task mpTask, Forth* pForth)
   ENTRY("vTxCommit"_Stz);
   
   Object* pPtrTx;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -74,7 +74,7 @@ void Step::vTxCounterDec(MP_Task mpTask, Forth* pForth)
   ENTRY("vTxCounterDec"_Stz);
   
   Object* pPtrTx;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -86,7 +86,7 @@ void Step::vTxCounterDec(MP_Task mpTask, Forth* pForth)
 //         pTx->aDecode(),
 //         iCounter);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iCounter);
+  pForth->m_pDataStack->vPushI8(iCounter);
   
   EXIT();
 }
@@ -99,13 +99,13 @@ void Step::vTxCounterFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vTxCounterFetch"_Stz);
   
   Object* pPtrTx;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iCounter = pTx->iCounterGet();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iCounter);
+  pForth->m_pDataStack->vPushI8(iCounter);
   
   EXIT();
 }
@@ -118,12 +118,12 @@ void Step::vTxCounterStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vTxCounterStore"_Stz);
   
   Object* pPtrTx;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iCounter;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iCounter) )
+  if ( ! pForth->m_pDataStack->bPop(iCounter) )
     THROW_DSTACK();
   
   pTx->vCounterSet(iCounter);
@@ -139,19 +139,19 @@ void Step::vTxDistMemberFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vTxDistMemberFetch"_Stz);
   
   Object* pPtrTx;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
   ASSERT(pTx->bLocalTx());
   
   i8 i_Node;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Node) )
+  if ( ! pForth->m_pDataStack->bPop(i_Node) )
     THROW_DSTACK();
   
   bool bDistMember = pTx->bDistMember(i_Node);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bDistMember);
+  pForth->m_pDataStack->vPushI8(bDistMember);
   
   EXIT();
 }
@@ -164,18 +164,18 @@ void Step::vTxDistMemberStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vTxDistMemberStore"_Stz);
   
   Object* pPtrTx;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
   ASSERT(pTx->bLocalTx());
   
   i8 i_Node;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Node) )
+  if ( ! pForth->m_pDataStack->bPop(i_Node) )
     THROW_DSTACK();
 
   i8 iDistMember;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iDistMember) )
+  if ( ! pForth->m_pDataStack->bPop(iDistMember) )
     THROW_DSTACK();
   
   pTx->vDistMember(i_Node,iDistMember);
@@ -192,7 +192,7 @@ ENTRY("vTxDump"_Stz);
   
   Object* pPtrTx;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -222,7 +222,7 @@ void Step::vTxFree(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTx;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -244,13 +244,13 @@ void Step::vTxId(MP_Task mpTask, Forth* pForth)
   ENTRY("vTxId"_Stz);
   
   Object* pPtrTx;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iTxId = pTx->iLocalTxId();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iTxId);
+  pForth->m_pDataStack->vPushI8(iTxId);
   
   EXIT();
 }
@@ -263,7 +263,7 @@ void Step::vTxPrepare(MP_Task mpTask, Forth* pForth)
   ENTRY("vTxPrepare"_Stz);
   
   Object* pPtrTx;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -285,7 +285,7 @@ void Step::vTxRollback(MP_Task mpTask, Forth* pForth)
   ENTRY("vTxRollback"_Stz);
   
   Object* pPtrTx;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -307,7 +307,7 @@ void Step::vTxTestDist(MP_Task mpTask, Forth* pForth)
   ENTRY("vTxTestDist"_Stz);
   
   i8 iDistTxId;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iDistTxId) )
+  if ( ! pForth->m_pDataStack->bPop(iDistTxId) )
     THROW_DSTACK();
   
   Tx* pTx = Tx::pTestDistTx(iDistTxId);
@@ -317,7 +317,7 @@ void Step::vTxTestDist(MP_Task mpTask, Forth* pForth)
 //         pTx->iDistTxNode(), pTx->iDistTxNo(),
 //         pTx->aDecode());
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pTx);
+  pForth->m_pDataStack->vPushPointer(pTx);
   
   EXIT();
 }

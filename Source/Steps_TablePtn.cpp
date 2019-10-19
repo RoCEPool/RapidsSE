@@ -26,14 +26,14 @@ void Step::vTablePtnAttemptGrabRead(MP_Task mpTask, Forth* pForth)
   ENTRY("vTablePtnAttemptGrabRead"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTablePtn) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
   // attempt to grab the read lock
   bool bSuccess = pTablePtn->bGrabRead();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bSuccess);
+  pForth->m_pDataStack->vPushI8(bSuccess);
   
   EXIT();
 }
@@ -46,14 +46,14 @@ void Step::vTablePtnAttemptGrabWrite(MP_Task mpTask, Forth* pForth)
   ENTRY("vTablePtnAttemptGrabWrite"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTablePtn) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
   // attempt to grab the write lock
   bool bSuccess = pTablePtn->bGrabWrite();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bSuccess);
+  pForth->m_pDataStack->vPushI8(bSuccess);
   
   EXIT();
 }
@@ -66,7 +66,7 @@ void Step::vTablePtnDropRead(MP_Task mpTask, Forth* pForth)
   ENTRY("vTablePtnDropRead"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTablePtn) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
     
@@ -84,11 +84,11 @@ void Step::vTablePtnDump(MP_Task mpTask, Forth* pForth)
   ENTRY("vTablePtnDump"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTablePtn) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pTablePtn->iPartitionId());
+  pForth->m_pDataStack->vPushI8(pTablePtn->iPartitionId());
   
   EXIT();
 }
@@ -101,7 +101,7 @@ void Step::vTablePtnDropWrite(MP_Task mpTask, Forth* pForth)
   ENTRY("vTablePtnDropWrite"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTablePtn) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
@@ -119,13 +119,13 @@ void Step::vTablePtnIsLocked(MP_Task mpTask, Forth* pForth)
   ENTRY("vTablePtnIsLocked"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTablePtn) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
   bool bIsLocked = pTablePtn->bIsLocked();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bIsLocked);
+  pForth->m_pDataStack->vPushI8(bIsLocked);
 
   EXIT();
 }

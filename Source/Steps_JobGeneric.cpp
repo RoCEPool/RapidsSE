@@ -26,7 +26,7 @@ void Step::vJob__BegunNew(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob__BegunNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDistJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -39,7 +39,7 @@ void Step::vJob__BegunNew(MP_Task mpTask, Forth* pForth)
   
   //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobBegun);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJobBegun);
+  pForth->m_pDataStack->vPushPointer(pJobBegun);
   
   EXIT();
 }
@@ -52,7 +52,7 @@ void Step::vJob__CancelNew(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob__CancelNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDistJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -65,7 +65,7 @@ void Step::vJob__CancelNew(MP_Task mpTask, Forth* pForth)
   
   //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobCancel);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJobCancel);
+  pForth->m_pDataStack->vPushPointer(pJobCancel);
   
   EXIT();
 }
@@ -78,7 +78,7 @@ void Step::vJob__CancelledNew(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob__CancelledNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDistJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -91,7 +91,7 @@ void Step::vJob__CancelledNew(MP_Task mpTask, Forth* pForth)
   
   //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobCancelled);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJobCancelled);
+  pForth->m_pDataStack->vPushPointer(pJobCancelled);
   
   EXIT();
 }
@@ -104,7 +104,7 @@ void Step::vJob__EndNew(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob__EndNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDistJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -117,7 +117,7 @@ void Step::vJob__EndNew(MP_Task mpTask, Forth* pForth)
   
   //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobEnd);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJobEnd);
+  pForth->m_pDataStack->vPushPointer(pJobEnd);
   
   EXIT();
 }
@@ -130,7 +130,7 @@ void Step::vJob__EndedNew(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob__EndedNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDistJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -143,7 +143,7 @@ void Step::vJob__EndedNew(MP_Task mpTask, Forth* pForth)
   
   //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobEnded);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJobEnded);
+  pForth->m_pDataStack->vPushPointer(pJobEnded);
   
   EXIT();
 }
@@ -156,7 +156,7 @@ void Step::vJob__ExecuteNew(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob__ExecuteNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDistJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -169,7 +169,7 @@ void Step::vJob__ExecuteNew(MP_Task mpTask, Forth* pForth)
   
   //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobExecute);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJobExecute);
+  pForth->m_pDataStack->vPushPointer(pJobExecute);
   
   EXIT();
 }
@@ -182,7 +182,7 @@ void Step::vJob__ExecutedNew(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob__ExecutedNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDistJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -195,7 +195,7 @@ void Step::vJob__ExecutedNew(MP_Task mpTask, Forth* pForth)
   
   //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobExecuted);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJobExecuted);
+  pForth->m_pDataStack->vPushPointer(pJobExecuted);
   
   EXIT();
 }

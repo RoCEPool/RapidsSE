@@ -26,12 +26,12 @@ void Step::vJob_SubWalkerSpawn(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_SubWalkerSpawn"_Stz);
   
   Object* pPtrJob_Walk;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Walk) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Walk) )
     THROW_DSTACK();
   Job_Walk* pJob_Walk = _pJob_Walk(pPtrJob_Walk);
   
   i8 i_Slot;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Slot) )
+  if ( ! pForth->m_pDataStack->bPop(i_Slot) )
     THROW_DSTACK();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -68,11 +68,11 @@ void Step::vJob_SubWalkerWalkJobFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_SubWalkerSpawn"_Stz);
   
   Object* pPtrJob_SubWalker;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubWalker) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJob_SubWalker) )
     THROW_DSTACK();
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJob_SubWalker);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJob_SubWalker->m_pJobWalk);
+  pForth->m_pDataStack->vPushPointer(pJob_SubWalker->m_pJobWalk);
   
   EXIT();
 }
@@ -86,13 +86,13 @@ void Step::vJob_SubWalkerBegin(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_SubWalkerBegin"_Stz);
   
   Object* pPtrJobSubWalker;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubWalker) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobSubWalker) )
     THROW_DSTACK();
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJobSubWalker);
   
   bool bBegun = pJob_SubWalker->bBegin();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bBegun);
+  pForth->m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -105,13 +105,13 @@ void Step::vJob_SubWalkerChunk(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_SubWalkerChunk"_Stz);
   
   Object* pPtrJobSubWalker;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubWalker) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobSubWalker) )
     THROW_DSTACK();
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJobSubWalker);
   
   bool bCallAgain = pJob_SubWalker->bChunk();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bCallAgain);
+  pForth->m_pDataStack->vPushBool(bCallAgain);
   
   EXIT();
 }
@@ -124,7 +124,7 @@ void Step::vJob_SubWalkerEnd(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_SubWalkerEnd"_Stz);
   
   Object* pPtrJobSubWalker;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubWalker) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobSubWalker) )
     THROW_DSTACK();
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJobSubWalker);
   

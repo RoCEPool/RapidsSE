@@ -26,12 +26,12 @@ void Step::vJob_SubExporterSpawn(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_SubExporterSpawn"_Stz);
   
   Object* pPtrJob_Export;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Export) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Export) )
     THROW_DSTACK();
   Job_Export* pJob_Export = _pJob_Export(pPtrJob_Export);
   
   i8 i_Slot;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Slot) )
+  if ( ! pForth->m_pDataStack->bPop(i_Slot) )
     THROW_DSTACK();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -69,11 +69,11 @@ void Step::vJob_SubExporterExportJobFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_SubExporterSpawn"_Stz);
   
   Object* pPtrJob_SubExporter;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubExporter) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJob_SubExporter) )
     THROW_DSTACK();
   Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pPtrJob_SubExporter);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJob_SubExporter->m_pJobExport);
+  pForth->m_pDataStack->vPushPointer(pJob_SubExporter->m_pJobExport);
   
   EXIT();
 }
@@ -87,13 +87,13 @@ void Step::vJob_SubExporterBegin(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_SubExporterBegin"_Stz);
   
   Object* pPtrJobSubExporter;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubExporter) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobSubExporter) )
     THROW_DSTACK();
   Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pPtrJobSubExporter);
   
   bool bBegun = pJob_SubExporter->bBegin();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bBegun);
+  pForth->m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -106,13 +106,13 @@ void Step::vJob_SubExporterChunk(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_SubExporterChunk"_Stz);
   
   Object* pPtrJobSubExporter;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubExporter) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobSubExporter) )
     THROW_DSTACK();
   Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pPtrJobSubExporter);
   
   bool bCallAgain = pJob_SubExporter->bChunk();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bCallAgain);
+  pForth->m_pDataStack->vPushBool(bCallAgain);
   
   EXIT();
 }
@@ -125,7 +125,7 @@ void Step::vJob_SubExporterEnd(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_SubExporterEnd"_Stz);
   
   Object* pPtrJobSubExporter;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubExporter) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobSubExporter) )
     THROW_DSTACK();
   Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pPtrJobSubExporter);
   

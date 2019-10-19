@@ -21,12 +21,12 @@ void Step::vJob_PurgeSpawnSub(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_PurgeSpawnSub"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Purge* pJob_Purge = _pJob_Purge(pJobPtr);
   
   i8 iSlot;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iSlot) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iSlot) )
     THROW_DSTACK();
   
   i8 iPurgeJobId = pJob_Purge->m_iUniqueId;
@@ -61,7 +61,7 @@ void Step::vJob_PurgeTableStore(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTable;
   Object* pPtrJob_Purge;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Purge,pPtrTable) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Purge,pPtrTable) )
     THROW_DSTACK();
   
   Job_Purge* pJob_Purge = _pJob_Purge(pPtrJob_Purge);

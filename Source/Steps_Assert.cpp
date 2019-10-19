@@ -36,7 +36,7 @@ void Step::vAssert(MP_Task mpTask, Forth* pForth)
   ENTRY("vAssert"_Stz);
   
   i8 iTrue;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iTrue) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iTrue) )
     THROW_DSTACK();
   
   RASSERT(iTrue);
@@ -52,10 +52,10 @@ void Step::vAssertClass(MP_Task mpTask, Forth* pForth)
   ENTRY("vAssertClass"_Stz);
   
   i8 iAssertClassNo;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  ForthValue* aValue = mpTask->m_pForth->m_pDataStack->aPeekValue();
+  ForthValue* aValue = pForth->m_pDataStack->aPeekValue();
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aValue->eClass();
@@ -79,10 +79,10 @@ void Step::vAssertClass_0(MP_Task mpTask, Forth* pForth)
   ENTRY("vAssertClass_0"_Stz);
   
   i8 iAssertClassNo;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  ForthValue* aValue = mpTask->m_pForth->m_pDataStack->aPeekValue(0);
+  ForthValue* aValue = pForth->m_pDataStack->aPeekValue(0);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aValue->eClass();
@@ -106,10 +106,10 @@ void Step::vAssertClass_1(MP_Task mpTask, Forth* pForth)
   ENTRY("vAssertClass_1"_Stz);
   
   i8 iAssertClassNo;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  ForthValue* aValue = mpTask->m_pForth->m_pDataStack->aPeekValue(1);
+  ForthValue* aValue = pForth->m_pDataStack->aPeekValue(1);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aValue->eClass();
@@ -133,10 +133,10 @@ void Step::vAssertClass_2(MP_Task mpTask, Forth* pForth)
   ENTRY("vAssertClass_2"_Stz);
   
   i8 iAssertClassNo;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  ForthValue* aValue = mpTask->m_pForth->m_pDataStack->aPeekValue(2);
+  ForthValue* aValue = pForth->m_pDataStack->aPeekValue(2);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aValue->eClass();
@@ -160,10 +160,10 @@ void Step::vAssertClass_3(MP_Task mpTask, Forth* pForth)
   ENTRY("vAssertClass_3"_Stz);
   
   i8 iAssertClassNo;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  ForthValue* aValue = mpTask->m_pForth->m_pDataStack->aPeekValue(3);
+  ForthValue* aValue = pForth->m_pDataStack->aPeekValue(3);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aValue->eClass();
@@ -187,10 +187,10 @@ void Step::vAssertClass_4(MP_Task mpTask, Forth* pForth)
   ENTRY("vAssertClass_4"_Stz);
   
   i8 iAssertClassNo;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  ForthValue* aValue = mpTask->m_pForth->m_pDataStack->aPeekValue(4);
+  ForthValue* aValue = pForth->m_pDataStack->aPeekValue(4);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aValue->eClass();
@@ -213,7 +213,7 @@ void Step::vAssertStack_0(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vAssertStack_0"_Stz);
 
-  i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
+  i8 iStackValues = pForth->m_pDataStack->nValues();
   
   if ( ! (0 == iStackValues)  )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_0 in word");
@@ -228,7 +228,7 @@ void Step::vAssertStack_0more(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vAssertStack_0more"_Stz);
   
-  i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
+  i8 iStackValues = pForth->m_pDataStack->nValues();
   
   if ( ! (0 <= iStackValues) )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_0+ in word");
@@ -243,7 +243,7 @@ void Step::vAssertStack_1(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vAssertStack_1"_Stz);
   
-  i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
+  i8 iStackValues = pForth->m_pDataStack->nValues();
   
   if ( ! (1 == iStackValues)  )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_1 in word");
@@ -258,7 +258,7 @@ void Step::vAssertStack_1more(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vAssertStack_1more"_Stz);
   
-  i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
+  i8 iStackValues = pForth->m_pDataStack->nValues();
   
   if ( ! (1 <= iStackValues) )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_1+ in word");
@@ -273,7 +273,7 @@ void Step::vAssertStack_2(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vAssertStack_2"_Stz);
   
-  i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
+  i8 iStackValues = pForth->m_pDataStack->nValues();
   
   if ( ! (2 == iStackValues)  )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_2 in word");
@@ -288,7 +288,7 @@ void Step::vAssertStack_2more(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vAssertStack_2more"_Stz);
   
-  i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
+  i8 iStackValues = pForth->m_pDataStack->nValues();
   
   if ( ! (2 <= iStackValues) )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_2+ in word");
@@ -303,7 +303,7 @@ void Step::vAssertStack_3(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vAssertStack_3"_Stz);
   
-  i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
+  i8 iStackValues = pForth->m_pDataStack->nValues();
   
   if ( ! (3 == iStackValues)  )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_3 in word");
@@ -318,7 +318,7 @@ void Step::vAssertStack_3more(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vAssertStack_3more"_Stz);
   
-  i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
+  i8 iStackValues = pForth->m_pDataStack->nValues();
   
   if ( ! (3 <= iStackValues) )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_3+ in word");
@@ -333,7 +333,7 @@ void Step::vAssertStack_4(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vAssertStack_4"_Stz);
   
-  i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
+  i8 iStackValues = pForth->m_pDataStack->nValues();
   
   if ( ! (4 == iStackValues)  )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_4 in word");
@@ -348,7 +348,7 @@ void Step::vAssertStack_4more(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vAssertStack_4more"_Stz);
   
-  i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
+  i8 iStackValues = pForth->m_pDataStack->nValues();
   
   if ( ! (4 <= iStackValues) )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_4+ in word");

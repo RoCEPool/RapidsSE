@@ -19,7 +19,7 @@ void Step::vAttachMapTenantsFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vAttachMapTenantsFetch"_Stz);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(AM::pTenants());
+  pForth->m_pDataStack->vPushPointer(AM::pTenants());
 }
 
 /*============================================================================*/

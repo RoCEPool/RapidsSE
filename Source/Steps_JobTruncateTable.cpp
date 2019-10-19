@@ -23,11 +23,11 @@ void Step::vJob_SubTruncateSlotFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_SubTruncateSlotFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_i_Slot);
+  pForth->m_pDataStack->vPushI8(pJob->m_i_Slot);
   
   EXIT();
 }
@@ -40,11 +40,11 @@ void Step::vJob_SubTruncateTruncateJobIdFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_SubTruncateTruncateJobIdFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_iTruncateJobId);
+  pForth->m_pDataStack->vPushI8(pJob->m_iTruncateJobId);
   
   EXIT();
 }
@@ -57,12 +57,12 @@ void Step::vJob_TruncateTableSpawnSub(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_TruncateTableSpawnSub"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJobPtr);
   
   i8 iSlot;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iSlot) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iSlot) )
     THROW_DSTACK();
   
   i8 iRequestId = pJob_TruncateTable->m_xReqTuple.m_iReqId;

@@ -22,13 +22,13 @@ void Step::vJob_ReportBegin(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_ReportBegin"_Stz);
   
   Object* pPtrJobReport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobReport) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobReport) )
     THROW_DSTACK();
   Job_Report* pJob_Report = _pJob_Report(pPtrJobReport);
   
   bool bBegun = pJob_Report->bBegin();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bBegun);
+  pForth->m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -41,13 +41,13 @@ void Step::vJob_ReportTake(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_ReportTake"_Stz);
   
   Object* pPtrJobReport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobReport) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobReport) )
     THROW_DSTACK();
   Job_Report* pJob_Report = _pJob_Report(pPtrJobReport);
   
   bool bCallAgain = pJob_Report->bTake();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bCallAgain);
+  pForth->m_pDataStack->vPushBool(bCallAgain);
   
 //  if (bCallAgain) {
 //    mpTask->vSleepUs(C_1M);
@@ -65,7 +65,7 @@ void Step::vJob_ReportEnd(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_ReportEnd"_Stz);
   
   Object* pPtrJob_Report;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Report) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Report) )
     THROW_DSTACK();
   Job_Report* pJob_Report = _pJob_Report(pPtrJob_Report);
   

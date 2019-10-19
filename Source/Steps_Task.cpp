@@ -45,7 +45,7 @@ void Step::vTaskAck(MP_Task mpTask, Forth* pForth)
   ENTRY("vTaskAck"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pTaskWaiting = _pTask(pTaskObject);
   
@@ -67,12 +67,12 @@ void Step::vTaskAcksStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vTaskAcksStore"_Stz);
   
   Object* pPtrTask;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTask) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTask) )
     THROW_DSTACK();
   Task* pGivenTask = _pTask(pPtrTask);
   
   i8 nAcksRequired;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(nAcksRequired) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(nAcksRequired) )
     THROW_DSTACK();
   
   ASSERT(0 == pGivenTask->m_oAcksRmg.iPrintOnlyValue());
@@ -112,7 +112,7 @@ void Step::vTaskDicStack(MP_Task mpTask, Forth* pForth)
   ENTRY("vTaskDicStack"_Stz);
   
   Object* pPtrTask;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTask) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrTask) )
     THROW_DSTACK();
   
   Task* pThatTask = _pTask(pPtrTask);
@@ -120,7 +120,7 @@ void Step::vTaskDicStack(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrDicStack = &pThatTask->m_oDicStack;
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrDicStack);
+  pForth->m_pDataStack->vPushPointer(pPtrDicStack);
   
   EXIT();
 }
@@ -133,7 +133,7 @@ void Step::vTaskDropLock(MP_Task mpTask, Forth* pForth)
   ENTRY("vTaskDrop"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
+  if ( ! pForth->m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pObject);
   
@@ -151,7 +151,7 @@ void Step::vTaskDump(MP_Task mpTask, Forth* pForth)
 ENTRY("vTaskDump"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
+  if ( ! pForth->m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pObject);
   
@@ -182,7 +182,7 @@ void Step::vTaskGrabLock(MP_Task mpTask, Forth* pForth)
   ENTRY("vTaskGrab"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
+  if ( ! pForth->m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pObject);
   
@@ -199,7 +199,7 @@ void Step::vTaskIsAckSet(MP_Task mpTask, Forth* pForth)
   ENTRY("vTaskIsAckSet"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pTaskBeingAcked = _pTask(pTaskObject);
   
@@ -212,7 +212,7 @@ void Step::vTaskIsAckSet(MP_Task mpTask, Forth* pForth)
                        iIsAckSet);
   }
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iIsAckSet);
+  pForth->m_pDataStack->vPushI8(iIsAckSet);
 
   EXIT();
 }
@@ -225,13 +225,13 @@ void Step::vTaskJobFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vTaskJobFetch"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
   
   Job* pJob = pThatTask->m_pJob;
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJob);
+  pForth->m_pDataStack->vPushPointer(pJob);
   
   EXIT();
 }
@@ -244,12 +244,12 @@ void Step::vTaskJobStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vTaskJobStore"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pJobObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobObject) )
+  if ( ! pForth->m_pDataStack->bPop(pJobObject) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobObject);
   
@@ -266,13 +266,13 @@ void Step::vTaskNameFetch(MP_Task mpTask, Forth* pForth)
 ENTRY("vTaskNameFetch"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
   
   s256 sName((Stz*)pThatTask->szJobName());
   
-  mpTask->m_pForth->m_pDataStack->vPushS256(sName);
+  pForth->m_pDataStack->vPushS256(sName);
   
   EXIT();
 }
@@ -285,37 +285,37 @@ void Step::vTaskSeed(MP_Task mpTask, Forth* pForth)
 ENTRY("vTaskSeed"_Stz);
   
 //  //                                   sSeed     nTaskArgs
-//  if ( ! mpTask->m_pForth->m_pDataStack->bGuard(CN_STRVAL,CN_INTVAL) )
+//  if ( ! pForth->m_pDataStack->bGuard(CN_STRVAL,CN_INTVAL) )
 //    THROW_DSTACK();
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
   
   s32 sSeed;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sSeed) )
+  if ( ! pForth->m_pDataStack->bPop(sSeed) )
     THROW_DSTACK();
 
 
   i8 nTaskArgs;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(nTaskArgs) )
+  if ( ! pForth->m_pDataStack->bPop(nTaskArgs) )
     THROW_DSTACK();
   //ASSERT(! nTaskArgs);
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bGuard(nTaskArgs) )
+  if ( ! pForth->m_pDataStack->bGuard(nTaskArgs) )
     THROW_DSTACK();
   
   // copy task arguments to given task (preserving stack order)
   GenVar xVariable;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    mpTask->m_pForth->m_pDataStack->vPeekValue(iTaskArg,xVariable);
+    pForth->m_pDataStack->vPeekValue(iTaskArg,xVariable);
     pThatTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
   }
   
   // discard original task arguments
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    bool bPopped = mpTask->m_pForth->m_pDataStack->bPop(xVariable);
+    bool bPopped = pForth->m_pDataStack->bPop(xVariable);
     ASSERT(bPopped);
   }
   
@@ -330,13 +330,13 @@ void Step::vTaskSessionFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vTaskSessionFetch"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
+  if ( ! pForth->m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pObject);
   
   Session* pSession = pThatTask->m_pSession;
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pSession);
+  pForth->m_pDataStack->vPushPointer(pSession);
   
   EXIT();
 }
@@ -349,13 +349,13 @@ void Step::vTaskSessionStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vTaskSessionStore"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pPtrSession;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrSession) )
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
@@ -374,7 +374,7 @@ void Step::vTaskSendNodeFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vTaskSendNodeFetch"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
+  if ( ! pForth->m_pDataStack->bPop(pObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pObject);
   
@@ -382,7 +382,7 @@ void Step::vTaskSendNodeFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrSendNode = pSendNode;
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrSendNode);
+  pForth->m_pDataStack->vPushPointer(pPtrSendNode);
   
   EXIT();
 }
@@ -395,12 +395,12 @@ void Step::vTaskSendNodeStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vTaskSendNodeStore"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pPtrSendNode;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSendNode) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrSendNode) )
     THROW_DSTACK();
   Node* pSendNode = _pNode(pPtrSendNode);
   
@@ -418,7 +418,7 @@ void Step::vTaskSleepMsec(MP_Task mpTask, Forth* pForth)
   
   i8 nMilliSeconds;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(nMilliSeconds) )
+  if ( ! pForth->m_pDataStack->bPop(nMilliSeconds) )
     THROW_DSTACK();
   
   i8 nMicroSeconds = nMilliSeconds * C_1K;
@@ -438,7 +438,7 @@ void Step::vTaskSleepSsec(MP_Task mpTask, Forth* pForth)
   
   i8 nSeconds;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(nSeconds) )
+  if ( ! pForth->m_pDataStack->bPop(nSeconds) )
     THROW_DSTACK();
   
   i8 nMicroSeconds = nSeconds * C_1M;
@@ -458,7 +458,7 @@ void Step::vTaskSleepUsec(MP_Task mpTask, Forth* pForth)
   
   i8 nMicroSeconds;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(nMicroSeconds) )
+  if ( ! pForth->m_pDataStack->bPop(nMicroSeconds) )
     THROW_DSTACK();
   
   mpTask->vSleepUsec(nMicroSeconds);
@@ -475,13 +475,13 @@ void Step::vTaskStateFetch(MP_Task mpTask, Forth* pForth)
 ENTRY("vTaskStateFetch"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
   
   eTS eState = pThatTask->m_eState;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8((i8)eState);
+  pForth->m_pDataStack->vPushI8((i8)eState);
   
   EXIT();
 }
@@ -495,7 +495,7 @@ ENTRY("vTaskThis"_Stz);
   
   Object* pTask = *mpTask;
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pTask);
+  pForth->m_pDataStack->vPushPointer(pTask);
   
   EXIT();
 }
@@ -508,12 +508,12 @@ void Step::vTaskThread(MP_Task mpTask, Forth* pForth)
   ENTRY("vTaskThread"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
+  if ( ! pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pTaskObject);
 
   Thread* pThread = pThatTask->m_pThread;
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pThread);
+  pForth->m_pDataStack->vPushPointer(pThread);
   ASSERT(pThread);
   
   EXIT();

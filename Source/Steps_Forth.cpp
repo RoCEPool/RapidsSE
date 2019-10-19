@@ -46,7 +46,7 @@ void Step::vAllot(MP_Task mpTask, Forth* pForth)
   
   i8 iBytes;
   
-  if ( !  mpTask->m_pForth->m_pDataStack->bPop(iBytes) )
+  if ( !  pForth->m_pDataStack->bPop(iBytes) )
     THROW_DSTACK();
   
   RASSERT(iBytes);
@@ -68,7 +68,7 @@ void Step::vCell(MP_Task mpTask, Forth* pForth)
   
   i8 nBytes = sizeof(void*);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(nBytes);
+  pForth->m_pDataStack->vPushI8(nBytes);
   
   EXIT();
 }
@@ -113,7 +113,7 @@ void Step::vComma(MP_Task mpTask, Forth* pForth)
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
   
   GenVar xValue;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValue) )
+  if ( ! pForth->m_pDataStack->bPop(xValue) )
     THROW_DSTACK();
   
   pCurrentWord->vEncode("pushValue"_Stz,&xValue);
@@ -129,7 +129,7 @@ void Step::vCompileComma(MP_Task mpTask, Forth* pForth)
   ENTRY("vCompileComma"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pCalledWord = _pWord(pWordObject);
   
@@ -199,7 +199,7 @@ void Step::vCreateFrom(MP_Task mpTask, Forth* pForth)
   ENTRY("vCreateFrom"_Stz);
   
   s32 sName;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
+  if ( ! pForth->m_pDataStack->bPop(sName) )
     THROW_DSTACK();
   
   Dic* pDic;
@@ -227,7 +227,7 @@ void Step::vCreateFromPersistent(MP_Task mpTask, Forth* pForth)
   ENTRY("vCreateFrom"_Stz);
   
   s32 sName;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
+  if ( ! pForth->m_pDataStack->bPop(sName) )
     THROW_DSTACK();
   
   Dic* pDic;
@@ -252,7 +252,7 @@ void Step::vCreateFromInRoot(MP_Task mpTask, Forth* pForth)
   ENTRY("vCreateFromInRoot"_Stz);
   
   s32 sName;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
+  if ( ! pForth->m_pDataStack->bPop(sName) )
     THROW_DSTACK();
   
   Dic* pDic = AM::pRootDic();
@@ -324,18 +324,18 @@ void Step::vExit_RT(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vExit_RT"_Stz);
   
-  //vTrace("Exit: r eturn stack %lld\n"_Stz, mpTask->m_pForth->m_pReturnStack->iValues());
+  //vTrace("Exit: r eturn stack %lld\n"_Stz, pForth->m_pReturnStack->iValues());
   
   if ( (mpTask->m_iTracing & C_TRACE_ROUTINES) )
     mpTask->vTracePoint("<"_Stz);
   
   if (mpTask->m_pForth->m_pLocalsFrame
       && mpTask->m_pForth->m_pLocalsFrame->aDiscardPoint() ==
-      mpTask->m_pForth->m_pReturnStack->aPeekValue())
+      pForth->m_pReturnStack->aPeekValue())
     mpTask->vLocalsPop();
   
   Cell* aCell;
-  if ( ! mpTask->m_pForth->m_pReturnStack->bPop(aCell) )
+  if ( ! pForth->m_pReturnStack->bPop(aCell) )
     THROW_RSTACK();
   
   mpTask->m_pForth->m_aInxPtr = aCell;
@@ -351,7 +351,7 @@ void Step::vFind(MP_Task mpTask, Forth* pForth)
   ENTRY("vFind"_Stz);
   
   s256 sName;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
+  if ( ! pForth->m_pDataStack->bPop(sName) )
     THROW_DSTACK();
   
   if (mpTask->m_iTracing) {
@@ -360,7 +360,7 @@ void Step::vFind(MP_Task mpTask, Forth* pForth)
   
   Word* pWord = mpTask->m_oDicStack.pFindWord(sName);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pWord);
+  pForth->m_pDataStack->vPushPointer(pWord);
   
   EXIT();
 }
@@ -373,7 +373,7 @@ void Step::vFindInCurrent(MP_Task mpTask, Forth* pForth)
   ENTRY("vFindInCurrent"_Stz);
   
   s256 sName;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
+  if ( ! pForth->m_pDataStack->bPop(sName) )
     THROW_DSTACK();
   
   if (mpTask->m_iTracing) {
@@ -382,7 +382,7 @@ void Step::vFindInCurrent(MP_Task mpTask, Forth* pForth)
   
   Word* pWord = mpTask->m_oDicStack.pFindInCurrent(sName);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pWord);
+  pForth->m_pDataStack->vPushPointer(pWord);
   
   EXIT();
 }
@@ -439,7 +439,7 @@ void Step::vLocate(MP_Task mpTask, Forth* pForth)
   ENTRY("vLocate"_Stz);
   
   i8 iAddrAsInt;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAddrAsInt) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iAddrAsInt) )
     THROW_DSTACK();
   
   void* aCellVoid = (void*)iAddrAsInt;
@@ -450,11 +450,11 @@ void Step::vLocate(MP_Task mpTask, Forth* pForth)
   if (pLocatedWord) {
     s32 sName;
     sName = pLocatedWord->sName();
-    mpTask->m_pForth->m_pDataStack->vPushS32(sName);
+    pForth->m_pDataStack->vPushS32(sName);
   }
   else {
     i8 iZero = 0;
-    mpTask->m_pForth->m_pDataStack->vPushI8(iZero);
+    pForth->m_pDataStack->vPushI8(iZero);
   }
   
   EXIT();
@@ -657,7 +657,7 @@ void Step::vSeriesName(Tasks::MP_Task mpTask, Forth* pForth)
   ENTRY("vSeriesName"_Stz);
   
   s32 sName;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
+  if ( ! pForth->m_pDataStack->bPop(sName) )
     THROW_DSTACK();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -689,7 +689,7 @@ void Step::vSeriesName(Tasks::MP_Task mpTask, Forth* pForth)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  mpTask->m_pForth->m_pDataStack->vPushS32(sNextName);
+  pForth->m_pDataStack->vPushS32(sNextName);
 
   EXIT();
 }
@@ -743,7 +743,7 @@ void Step::vTick(MP_Task mpTask, Forth* pForth)
     pCurrentWord->vEncode("pushValue"_Stz,pWord);
   }
   else {
-    mpTask->m_pForth->m_pDataStack->vPushPointer(pWord);
+    pForth->m_pDataStack->vPushPointer(pWord);
   }
   
   EXIT();

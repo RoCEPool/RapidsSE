@@ -25,7 +25,7 @@ void Step::vDicStackDepth(MP_Task mpTask, Forth* pForth)
   ENTRY("vDicStackDepth"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDicStack) )
     THROW_DSTACK();
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
@@ -33,7 +33,7 @@ void Step::vDicStackDepth(MP_Task mpTask, Forth* pForth)
   
   i8 iDepth = pDicStack->iCount();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iDepth);
+  pForth->m_pDataStack->vPushI8(iDepth);
   
   EXIT();
 }
@@ -46,7 +46,7 @@ void Step::vDicStackDrop(MP_Task mpTask, Forth* pForth)
   ENTRY("vDicStackDrop"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDicStack) )
     THROW_DSTACK();
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
@@ -65,7 +65,7 @@ void Step::vDicStackDump(MP_Task mpTask, Forth* pForth)
   ENTRY("vDicStackDump"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDicStack) )
     THROW_DSTACK();
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
@@ -84,19 +84,19 @@ void Step::vDicStackPick(MP_Task mpTask, Forth* pForth)
   ENTRY("vDicStackPick"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDicStack) )
     THROW_DSTACK();
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
   
   i8 iDic;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iDic) )
+  if ( ! pForth->m_pDataStack->bPop(iDic) )
     THROW_DSTACK();
   
   Object* pPtrDic = pDicStack->pPick(iDic);
 
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrDic);
+  pForth->m_pDataStack->vPushPointer(pPtrDic);
   
   EXIT();
 }
@@ -109,7 +109,7 @@ void Step::vDicStackPop(MP_Task mpTask, Forth* pForth)
   ENTRY("vDicStackPop"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDicStack) )
     THROW_DSTACK();
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
@@ -128,7 +128,7 @@ void Step::vDicStackPush(MP_Task mpTask, Forth* pForth)
   ENTRY("vDicStackPush"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDicStack) )
     THROW_DSTACK();
   
   DicStack* pDicStack = DicStack::_pDicStack(pPtrDicStack);
@@ -136,7 +136,7 @@ void Step::vDicStackPush(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrDic;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDic) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);

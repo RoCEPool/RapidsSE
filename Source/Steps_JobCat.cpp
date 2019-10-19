@@ -22,13 +22,13 @@ void Step::vJob_CatBegin(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_CatBegin"_Stz);
   
   Object* pPtrJobCat;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobCat) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobCat) )
     THROW_DSTACK();
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJobCat);
   
   bool bBegun = pJob_Cat->bBegin();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bBegun);
+  pForth->m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -41,13 +41,13 @@ void Step::vJob_CatChunk(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_CatChunk"_Stz);
   
   Object* pPtrJobCat;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobCat) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJobCat) )
     THROW_DSTACK();
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJobCat);
   
   bool bCallAgain = pJob_Cat->bChunk();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bCallAgain);
+  pForth->m_pDataStack->vPushBool(bCallAgain);
   
   EXIT();
 }
@@ -60,7 +60,7 @@ void Step::vJob_CatEnd(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_CatEnd"_Stz);
   
   Object* pPtrJob_Cat;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Cat) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrJob_Cat) )
     THROW_DSTACK();
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJob_Cat);
   

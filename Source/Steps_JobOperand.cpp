@@ -20,7 +20,7 @@ void Step::vJob_OperandPipeOut(MP_Task mpTask, Forth* pForth)
   ENTRY("vJob_OperandPipeOut"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+  if ( ! pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_DSTACK();
   Job_Operand* pJob_Operand = _pJob_Operand(pJobPtr);
   

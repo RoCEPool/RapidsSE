@@ -22,7 +22,7 @@ void Step::vDicPathDepth(MP_Task mpTask, Forth* pForth)
   ENTRY("vDicStackDepth"_Stz);
   
   Object* pPtrDicPath;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicPath) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDicPath) )
     THROW_DSTACK();
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
@@ -30,7 +30,7 @@ void Step::vDicPathDepth(MP_Task mpTask, Forth* pForth)
   
   i8 iDepth = pDicPath->nDicNames();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iDepth);
+  pForth->m_pDataStack->vPushI8(iDepth);
   
   EXIT();
 }
@@ -43,7 +43,7 @@ void Step::vDicPathDump(MP_Task mpTask, Forth* pForth)
   ENTRY("vDicPathDump"_Stz);
   
   Object* pPtrDicPath;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicPath) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDicPath) )
     THROW_DSTACK();
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
@@ -62,17 +62,17 @@ void Step::vDicPathPick(MP_Task mpTask, Forth* pForth)
   ENTRY("vDicPathPick"_Stz);
   
   Object* pPtrDicPath;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicPath) )
+  if ( ! pForth->m_pDataStack->bPop(pPtrDicPath) )
     THROW_DSTACK();
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
   ASSERT(CN_DICPATH == pDicPath->eClass());
   
   i8 iDic;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iDic) )
+  if ( ! pForth->m_pDataStack->bPop(iDic) )
     THROW_DSTACK();
 
-  mpTask->m_pForth->m_pDataStack->vPushS32(pDicPath->sDicName(iDic));
+  pForth->m_pDataStack->vPushS32(pDicPath->sDicName(iDic));
   
   EXIT();
 }

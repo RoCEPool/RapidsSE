@@ -42,7 +42,7 @@ void Step::vFlowExecute(MP_Task mpTask, Forth* pForth)
   ENTRY("vFlowExecute"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
@@ -51,14 +51,14 @@ void Step::vFlowExecute(MP_Task mpTask, Forth* pForth)
     (fpStepFp)(mpTask,pForth);
   }
   else if (WK_OBJECT == pWord->eKind()) {
-    mpTask->m_pForth->m_pReturnStack->vPushCell(mpTask->m_pForth->m_aInxPtr);
+    pForth->m_pReturnStack->vPushCell(mpTask->m_pForth->m_aInxPtr);
     mpTask->m_pForth->m_aInxPtr = pWord->aEntryCell();
     
     Object* pObject = (Object*)pWord->aFirstCell();
-    mpTask->m_pForth->m_pDataStack->vPushPointer(pObject);
+    pForth->m_pDataStack->vPushPointer(pObject);
   }
   else if (WK_ROUTINE == pWord->eKind()){
-    mpTask->m_pForth->m_pReturnStack->vPushCell(mpTask->m_pForth->m_aInxPtr);
+    pForth->m_pReturnStack->vPushCell(mpTask->m_pForth->m_aInxPtr);
     mpTask->m_pForth->m_aInxPtr = pWord->aEntryCell();
   }
   else {
@@ -115,7 +115,7 @@ void Step::vFlowJumpFalse(MP_Task mpTask, Forth* pForth)
   //  THROW_DSTACK();
   
   // get pointer to value on the top of the stack
-  Stack* pDataStack = mpTask->m_pForth->m_pDataStack;
+  Stack* pDataStack = pForth->m_pDataStack;
   ForthValue* aTopValue = reinterpret_cast<ForthValue*>(pDataStack->m_aTop);
 
   eCN eClassNo = aTopValue->eClass(); // inline
@@ -156,7 +156,7 @@ void Step::vFlowJumpTrue(MP_Task mpTask, Forth* pForth)
   ENTRY("vJumpTrue"_Stz);
   
   i8 iVal;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iVal) )
+  if ( ! pForth->m_pDataStack->bPopAsInt(iVal) )
     THROW_DSTACK();
   
   // n.b. the IP points to the jump arg
@@ -190,9 +190,9 @@ void Step::vFlowRetryPoint(MP_Task mpTask, Forth* pForth)
   
   mpTask->m_pCompiler->m_pRetryIP = mpTask->m_pForth->m_aInxPtr;
   
-  mpTask->m_pForth->m_pDataStack->vRetryPoint();
+  pForth->m_pDataStack->vRetryPoint();
   
-  mpTask->m_pForth->m_pReturnStack->vRetryPoint();
+  pForth->m_pReturnStack->vRetryPoint();
   
   EXIT();
 }

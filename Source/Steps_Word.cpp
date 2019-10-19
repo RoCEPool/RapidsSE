@@ -45,13 +45,13 @@ void Step::vWordCategoryFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vWordKindGet"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   Word* pCategory = pWord->pCategory();
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pCategory);
+  pForth->m_pDataStack->vPushPointer(pCategory);
   
   EXIT();
 }
@@ -64,12 +64,12 @@ void Step::vWordCategoryStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vWordKindSet"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   Object* pCategoryObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pCategoryObject) )
+  if ( ! pForth->m_pDataStack->bPop(pCategoryObject) )
     THROW_DSTACK();
   Word* pCategory = _pWord(pCategoryObject);
   
@@ -86,7 +86,7 @@ void Step::vWordDump(MP_Task mpTask, Forth* pForth)
 ENTRY("vWordDump"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
@@ -103,13 +103,13 @@ void Step::vWordEnmSetFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vWordEnmSetFetch"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   EnameSet* pEnameSet = pWord->pEnameSet();
   
-   mpTask->m_pForth->m_pDataStack->vPushPointer(pEnameSet);
+   pForth->m_pDataStack->vPushPointer(pEnameSet);
   
   EXIT();
 }
@@ -122,12 +122,12 @@ void Step::vWordEnmSetStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vWordEnmSetStore"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   Object* pEnameSet_obj;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pEnameSet_obj) )
+  if ( ! pForth->m_pDataStack->bPop(pEnameSet_obj) )
     THROW_DSTACK();
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
@@ -144,13 +144,13 @@ void Step::vWordExitHookGet(MP_Task mpTask, Forth* pForth)
   ENTRY("vWordExitHookGet"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   s32 sExitHook(pWord->szExitHook());
   
-  mpTask->m_pForth->m_pDataStack->vPushS32(sExitHook);
+  pForth->m_pDataStack->vPushS32(sExitHook);
   
   EXIT();
 }
@@ -163,12 +163,12 @@ void Step::vWordExitHookSet(MP_Task mpTask, Forth* pForth)
   ENTRY("vWordExitHookSet"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   s32 sExitHook;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sExitHook) )
+  if ( ! pForth->m_pDataStack->bPop(sExitHook) )
     THROW_DSTACK();
   
   pWord->vExitHook(sExitHook);
@@ -184,7 +184,7 @@ void Step::vWordForget(MP_Task mpTask, Forth* pForth)
   ENTRY("vWordForget"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
@@ -204,13 +204,13 @@ void Step::vWordImmediateGet(MP_Task mpTask, Forth* pForth)
   ENTRY("vWordImmediateGet"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   i8 iImmediate = pWord->bImmediate();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iImmediate);
+  pForth->m_pDataStack->vPushI8(iImmediate);
   
   EXIT();
 }
@@ -223,12 +223,12 @@ void Step::vWordImmediateSet(MP_Task mpTask, Forth* pForth)
   ENTRY("vWordImmediateSet"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   i8 iImmediate;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iImmediate) )
+  if ( ! pForth->m_pDataStack->bPop(iImmediate) )
     THROW_DSTACK();
   
   pWord->vImmediate(iImmediate);
@@ -246,13 +246,13 @@ void Step::vWordIsImmediate(MP_Task mpTask, Forth* pForth)
   // we should just modify the pointers rather than actually pop
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   i8 iIsImmediate = pWord->bImmediate() ? 1 : 0;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iIsImmediate);
+  pForth->m_pDataStack->vPushI8(iIsImmediate);
   
   EXIT();
 }
@@ -265,13 +265,13 @@ void Step::vWordIsIntrinsic(MP_Task mpTask, Forth* pForth)
   ENTRY("vWordIsIntrinsic"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   i8 iIsPrimitive = WK_INTRINSIC == pWord->eKind() ? 1 : 0;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iIsPrimitive);
+  pForth->m_pDataStack->vPushI8(iIsPrimitive);
   
   EXIT();
 }
@@ -284,13 +284,13 @@ void Step::vWordKindFetch(MP_Task mpTask, Forth* pForth)
   ENTRY("vWordKindFetch"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   eWK eKind = pWord->eKind();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(eKind);
+  pForth->m_pDataStack->vPushI8(eKind);
   
   EXIT();
 }
@@ -303,13 +303,13 @@ void Step::vWordKindStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vWordKindStore"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   i8 iKind;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iKind) )
+  if ( ! pForth->m_pDataStack->bPop(iKind) )
     THROW_DSTACK();
   
   pWord->vKind((eWK)iKind);
@@ -325,13 +325,13 @@ void Step::vWordNameFetch(MP_Task mpTask, Forth* pForth)
 ENTRY("vWordName"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   s32 sWordName(pWord->sName());
   
-  mpTask->m_pForth->m_pDataStack->vPushS32(sWordName);
+  pForth->m_pDataStack->vPushS32(sWordName);
   
   EXIT();
 }
@@ -344,12 +344,12 @@ void Step::vWordNameStore(MP_Task mpTask, Forth* pForth)
   ENTRY("vWordName"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
 
   s32 sName;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
+  if ( ! pForth->m_pDataStack->bPop(sName) )
     THROW_DSTACK();
 
   pWord->vName(sName);
@@ -365,13 +365,13 @@ void Step::vWordPrev(MP_Task mpTask, Forth* pForth)
   ENTRY("vWordPrev"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
+  if ( ! pForth->m_pDataStack->bPop(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   Word* pPrevWord = pWord->pPrevWord();
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pPrevWord);
+  pForth->m_pDataStack->vPushPointer(pPrevWord);
   
   EXIT();
 }
