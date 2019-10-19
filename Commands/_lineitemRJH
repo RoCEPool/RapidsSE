@@ -57,6 +57,12 @@ space;
 sztbl lineitem;
 fetch lineitem limit 10;
 
+dynamic pipeline lineItem_dyn
+begin
+  stage stageA on all partitions:
+   scan lineitem | output
+end ;
+
 //dynamic scan lineitem | output;
 
 /*
