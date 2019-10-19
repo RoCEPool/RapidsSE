@@ -20,6 +20,9 @@ namespace Correctness
   void vThrowTrap(void);
     
 
+  // the [[ noreturn ]] attribute is the C++11 standard for indicating a
+  // function never returns
+  //
   // refer: https://en.cppreference.com/w/cpp/language/attributes/noreturn
   
   [[ noreturn ]] void vThrow(eFK eKind, const char* azFunc,
