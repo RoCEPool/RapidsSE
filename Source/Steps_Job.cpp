@@ -59,14 +59,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
   
   vAddStep("job.objectName@"_Stz,      &Step::vJobObjectNameFetch);
-  
   vAddStep("job.operand@"_Stz,         &Step::vJobOperandFetch);
   vAddStep("job.operand!"_Stz,         &Step::vJobOperandStore);
-  
-  vAddStep("job.originatingId@"_Stz,   &Step::vJobOriginatingIdFetch);
-  vAddStep("job.originatingId!"_Stz,   &Step::vJobOriginatingIdStore);
-  vAddStep("job.originatingTask@"_Stz, &Step::vJobOriginatingTaskFetch);
-  vAddStep("job.originatingTask!"_Stz, &Step::vJobOriginatingTaskStore);
   vAddStep("job::originator@"_Stz,     &Step::vJobOriginatorFetch);
 
   vAddStep("job.parentId@"_Stz,        &Step::vJobParentIdFetch);
@@ -1025,84 +1019,6 @@ void Step::vJobObjectNameFetch(void)
   sObjectName = pJob->szObjectName();
   
   m_pDataStack->vPushS32(sObjectName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.originatingId@ -- fetch originating id from job                        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOriginatingIdFetch(void)
-{
-  ENTRY("vJobOriginatingIdFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
-    THROW_DSTACK();
-  Job* pJob = _pJob(pJobPtr);
-  
-  m_pDataStack->vPushI8(pJob->m_iOriginatingId);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.originatingId! -- store originating id into job                        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOriginatingIdStore(void)
-{
-  ENTRY("vJobOriginatingIdStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
-    THROW_DSTACK();
-  Job* pJob = _pJob(pJobPtr);
-  
-  i8 iOriginatingId;
-  if ( ! m_pDataStack->bPop(iOriginatingId) )
-    THROW_DSTACK();
-  
-  pJob->m_iOriginatingId = iOriginatingId;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.originatingTask@ -- fetch the originating task from the job            */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOriginatingTaskFetch(void)
-{
-  ENTRY("vJobOriginatingTaskFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
-    THROW_DSTACK();
-  Job* pJob = _pJob(pJobPtr);
-  
-  m_pDataStack->vPushPointer(pJob->m_pOriginatingTask);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.originatingTask! -- store the originating task in the job              */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOriginatingTaskStore(void)
-{
-  ENTRY("vJobOriginatingTaskStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
-    THROW_DSTACK();
-  Job* pJob = _pJob(pJobPtr);
-  
-  Object* pOriginatingTaskPtr;
-  if ( ! m_pDataStack->bPop(pOriginatingTaskPtr) )
-    THROW_DSTACK();
-  Task* pOriginatingTask = _pTask(pOriginatingTaskPtr);
-  ASSERT(CN_TASK == pOriginatingTask->eClass());
-  
-  pJob->m_pOriginatingTask = pOriginatingTask;
   
   EXIT();
 }
