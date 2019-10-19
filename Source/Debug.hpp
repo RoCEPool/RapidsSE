@@ -23,18 +23,6 @@ namespace Correctness
                              const char* azFormat,...);
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// invalid auxiliary stack
-
-#define THROW(azDescription) \
-  Correctness::vThrow(FK_FAILED,__func__,__FILE__,__LINE__,azDescription);
-
-/*--------------------------------------------------------------------------*/
-/* NEVER_REACH macro (point in code which should never be reached           */
-/*--------------------------------------------------------------------------*/
-#define NEVER_REACH \
-  Correctness::vThrow(FK_REACHED,__func__,__FILE__,__LINE__,"NEVER_REACH point reached");
-
 
 /*============================================================================*/
 /* end                                                                        */
