@@ -93,7 +93,7 @@ void Step::vStrClip(MP_Task mpTask, Forth* pForth)
   i8 iHasLength = sString.nLength();
   
   if ( iLength < 0 || llabs(iLength) >= iHasLength)
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Invalid length for: str.clip"_Stz);
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Invalid length for: str.clip");
   
   char* pStart;
   
@@ -215,7 +215,8 @@ void Step::vStrLeft(MP_Task mpTask, Forth* pForth)
   i8 iHasLength = sString.nLength();
   
   if ( iLength < 0)
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Invalid length for: str.left"_Stz);
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
+           "Invalid length for: str.left");
   
   char* pStart = sString.azChar();
   
@@ -407,7 +408,7 @@ void Step::vStrRight(MP_Task mpTask, Forth* pForth)
   i8 iHasLength = sString.nLength();
   
   if ( iLength < 0)
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Invalid length for: str.right"_Stz);
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Invalid length for: str.right");
 
   if (iLength > iHasLength)
     iLength = iHasLength;
@@ -441,14 +442,16 @@ void Step::vStrSub(MP_Task mpTask, Forth* pForth)
   
   // validate start index
   if ( iStart < 0 || iStart >= iHasLength)
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Invalid start index of %lld for: str.sub"_Stz,iStart);
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
+           "Invalid start index of %lld for: str.sub",iStart);
   
   // handle to end of string case
   if (-1 == iLength)
     iLength = iHasLength - iStart;
   
   if ( iLength <= 0 || iStart + iLength > iHasLength)
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Invalid length of %lld for: str.sub"_Stz,iLength);
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
+           "Invalid length of %lld for: str.sub",iLength);
   
   char* pStart = sString.azChar() + iStart;
   

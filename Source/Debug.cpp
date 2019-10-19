@@ -224,7 +224,7 @@ void Correctness::vExceptionCaught(Exception xException)
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void Correctness::vThrow(eFK eKind, const char* azFunc,
                                         const char* azFilePath, i8 iLineNo,
-                                        Stz* szFormat,...)
+                                        const char* azFormat,...)
 {
   // put a breakpoint here to trap throws
   sleep(0);
@@ -233,9 +233,9 @@ void Correctness::vExceptionCaught(Exception xException)
   StrLib::vSubPath(zFileNm,(char*)azFilePath);
 
   va_list xArgs;
-  va_start(xArgs,szFormat);
+  va_start(xArgs,azFormat);
   char zCondition[256];
-  StrLib::vSprint(zCondition,xArgs,szFormat->azChar());
+  StrLib::vSprint(zCondition,xArgs,azFormat);
   va_end(xArgs);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

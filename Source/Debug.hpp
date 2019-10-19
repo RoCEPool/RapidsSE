@@ -33,20 +33,20 @@ namespace Correctness
   
   [[ noreturn ]] void vThrow(eFK eKind, const char* azFunc,
                              const char* azFilePath, i8 iLineNo,
-                             Stz* szFormat,...);
+                             const char* azFormat,...);
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // invalid auxiliary stack
 
 #define THROW(azDescription) \
-  Correctness::vAssert(FK_FAILED,__func__,__FILE__,__LINE__,azDescription);
+  Correctness::vThrow(FK_FAILED,__func__,__FILE__,__LINE__,azDescription);
 
 /*--------------------------------------------------------------------------*/
 /* NEVER_REACH macro (point in code which should never be reached           */
 /*--------------------------------------------------------------------------*/
 #define NEVER_REACH \
-  Correctness::vAssert(FK_ASSERT,__func__,__FILE__,__LINE__,"NEVER_REACH");
+  Correctness::vThrow(FK_ASSERT,__func__,__FILE__,__LINE__,"NEVER_REACH");
 
 
 /*============================================================================*/
