@@ -9,6 +9,7 @@ namespace Correctness
   {
   private:
     eFK  m_eKind;         // kind of exception
+    char m_zFuncNm[256];  // functin name
     char m_zText[1024];   // descriptive text
     char m_zFileNm[256];  // file name/path
     i8   m_iLineNo;       // line number
@@ -20,6 +21,7 @@ namespace Correctness
               const char* azText);
   
     Exception(eFK   eKind,
+              const char* azFuncNm,
               const char* azText,
               const char* azFileNm,
               i8    iLineNo);

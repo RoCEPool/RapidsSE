@@ -161,7 +161,7 @@ void Correctness::vThrowTrap(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Exception xException(eKind,azFunc,zFileNm,iLineNo);
+  Exception xException(eKind,azFunc,"throw",zFileNm,iLineNo);
 
   xException.vPrint();
   
@@ -192,7 +192,7 @@ void Correctness::vThrowTrap(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Exception xException(FK_ASSERT,zCondition,zFileNm,iLineNo);
+  Exception xException(FK_ASSERT,azFunc,zCondition,zFileNm,iLineNo);
   
   xException.vPrint();
   
