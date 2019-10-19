@@ -27,11 +27,12 @@ namespace Correctness
   
   void vExceptionCaught(Exception xException);
   
-  [[ noreturn ]] void vThrow(eFK eKind, Stz* szFormat,...);
-  
-  [[ noreturn ]] void vThrow(const char* azFilePath, i8 iLineNo, 
+  [[ noreturn ]] void vThrow(const char* azFilePath, i8 iLineNo,
                              Stz* szFormat,...);
 
+  [[ noreturn ]] void vThrow(eFK eKind, char* azStepNm,
+                             const char* azFilePath, i8 iLineNo);
+  
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

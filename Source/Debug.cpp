@@ -205,21 +205,20 @@ void Correctness::vExceptionCaught(Exception xException)
 /*----------------------------------------------------------------------------*/
 /* throw an exception of given kind (step-form)                               */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vThrow(eFK eKind, Stz* szFormat,...)
+[[ noreturn ]] void Correctness::vThrow(eFK eKind, char* azStepNm,
+                                        const char* azFilePath, i8 iLineNo)
 {
   // put a breakpoint here to trap throws
   sleep(0);
   
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-  char zCondition[256];
-  StrLib::vSprint(zCondition,xArgs,szFormat->azChar());
-  va_end(xArgs);
+  char zFileNm[256];
+  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Exception xException(eKind,zCondition);
-  
+  Exception xException(eKind,azStepNm,zFileNm,iLineNo);
+
   xException.vPrint();
   
   // dump the call stack
