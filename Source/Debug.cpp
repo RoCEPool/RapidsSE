@@ -147,38 +147,6 @@ void Correctness::vThrowTrap(void)
 /*----------------------------------------------------------------------------*/
 /* handle an assertion failure                                                */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vAssert(const char* azFilePath, i8 iLineNo,
-                                         const char* azCondition)
-{
-  // put a breakpoint here to trap throws
-  sleep(0);
-  
-  char zFileNm[256];
-  
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
-
-  Exception xException(FK_ASSERT,azCondition,zFileNm,iLineNo);
-  
-  printf("Exception : %s of (%s) in job %s failed (file %s line %lld)\n",
-         aFK[xException.eKind()]->azChar(),
-         xException.azText(),
-         xException.pJob()
-         ? aCN[((Object*)xException.pJob())->eClass()]->azChar()
-         : "<null>",
-         xException.azFileNm(),
-         xException.iLineNo());
-  
-  // dump the call stack
-  vStackDump();
-  
-
-  
-  throw xException;
-}
-
-/*----------------------------------------------------------------------------*/
-/* handle an assertion failure                                                */
-/*----------------------------------------------------------------------------*/
 void Correctness::vExceptionCaught(Exception xException)
 {
   // put a breakpoint here to trap throws
@@ -201,6 +169,30 @@ void Correctness::vExceptionCaught(Exception xException)
 }
 
 
+
+/*----------------------------------------------------------------------------*/
+/* handle an assertion failure                                                */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void Correctness::vAssert(const char* azFunc,
+                                         const char* azFilePath, i8 iLineNo,
+                                         const char* azCondition)
+{
+  // put a breakpoint here to trap throws
+  sleep(0);
+  
+  char zFileNm[256];
+  
+  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  
+  Exception xException(FK_ASSERT,azCondition,zFileNm,iLineNo);
+  
+  // dump the call stack
+  vStackDump();
+  
+  
+  
+  throw xException;
+}
 
 /*----------------------------------------------------------------------------*/
 /* throw an exception of given kind (step-form)                               */

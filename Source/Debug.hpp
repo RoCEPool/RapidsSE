@@ -19,14 +19,14 @@ namespace Correctness
   void vStackDump(void);
   void vThrowTrap(void);
   
+  void vExceptionCaught(Exception xException);
   
-  [[ noreturn ]] void vAssert(const char* azFilePath, i8 iLineNo,
-                              const char* azCondition);
-  
+
   // refer: https://en.cppreference.com/w/cpp/language/attributes/noreturn
   
-  
-  void vExceptionCaught(Exception xException);
+  [[ noreturn ]] void vAssert(const char* azFunc,
+                              const char* azFilePath, i8 iLineNo,
+                              const char* azCondition);
   
   [[ noreturn ]] void vThrow(const char* azFilePath, i8 iLineNo,
                              Stz* szFormat,...);
@@ -40,13 +40,13 @@ namespace Correctness
 // invalid auxiliary stack
 
 #define THROW(azDescription) \
-  Correctness::vAssert(__FILE__,__LINE__,azDescription);
+  Correctness::vAssert(__func__,__FILE__,__LINE__,azDescription);
 
 /*--------------------------------------------------------------------------*/
 /* NEVER_REACH macro (point in code which should never be reached           */
 /*--------------------------------------------------------------------------*/
 #define NEVER_REACH \
-  Correctness::vAssert(__FILE__,__LINE__,"NEVER_REACH");
+  Correctness::vAssert(__func__,__FILE__,__LINE__,"NEVER_REACH");
 
 
 /*============================================================================*/
