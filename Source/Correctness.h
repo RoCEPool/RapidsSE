@@ -27,7 +27,7 @@ namespace Correctness
 
 #include "MemLib.hpp"
 
-#include "AssertMacros.hpp"
+#include "AssertMacros.h"
 
 #include "Object.hpp"
 
