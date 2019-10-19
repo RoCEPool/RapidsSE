@@ -85,7 +85,8 @@
 
 
   // notify the originating task
-  pJobOriginator job.originatingTask@ task.ack
+  //pJobOriginator job.originatingTask@ task.ack
+  pJobOriginator job.task@ task.ack
 
   // delete this completed __ended job
   job::deleteThis

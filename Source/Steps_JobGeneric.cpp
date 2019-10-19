@@ -19,7 +19,7 @@ void Step::vAddSteps_JobGeneric(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_begun::new -- new a job__begun for this job                            */
+/* job_begun::new -- new a job__begun for this distributed 2pc job            */
 /*----------------------------------------------------------------------------*/
 void Step::vJob__BegunNew(void)
 {
@@ -45,7 +45,7 @@ void Step::vJob__BegunNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__cancel::new -- new a job__cancel for this job                         */
+/* job__cancel::new -- new a job__cancel for this distributed 2pc job         */
 /*----------------------------------------------------------------------------*/
 void Step::vJob__CancelNew(void)
 {
@@ -71,7 +71,7 @@ void Step::vJob__CancelNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__cancelled::new -- new a job__cancelled for this job                   */
+/* job__cancelled::new -- new a job__cancelled for this distributed 2pc job   */
 /*----------------------------------------------------------------------------*/
 void Step::vJob__CancelledNew(void)
 {
@@ -97,7 +97,7 @@ void Step::vJob__CancelledNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__end::new - new a job__end for this job                                */
+/* job__end::new - new a job__end for this distributed 2pc job                */
 /*----------------------------------------------------------------------------*/
 void Step::vJob__EndNew(void)
 {
@@ -123,7 +123,7 @@ void Step::vJob__EndNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__ended::new -- new a job__ended for this job                           */
+/* job__ended::new -- new a job__ended for this distributed 2pc job           */
 /*----------------------------------------------------------------------------*/
 void Step::vJob__EndedNew(void)
 {
@@ -149,7 +149,7 @@ void Step::vJob__EndedNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__execute::new -- new a job__execute for this job                       */
+/* job__execute::new -- new a job__execute for this distributed 2pc job       */
 /*----------------------------------------------------------------------------*/
 void Step::vJob__ExecuteNew(void)
 {
@@ -175,7 +175,7 @@ void Step::vJob__ExecuteNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__executed::new -- new a job__executed for this job                     */
+/* job__executed::new -- new a job__executed for this distributed 2pc job     */
 /*----------------------------------------------------------------------------*/
 void Step::vJob__ExecutedNew(void)
 {
