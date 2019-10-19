@@ -22,7 +22,7 @@ void Step::vJob_SelectTablePartitionFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(pJobPtr);
 
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob_SelectTable->m_iPartition);
@@ -40,12 +40,12 @@ void Step::vJob_SelectTableTableStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(pJobPtr);
   
   Object* pTablePtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Table* pTable = _pTable(pTablePtr);
   
   pJob_SelectTable->m_pTable = pTable;

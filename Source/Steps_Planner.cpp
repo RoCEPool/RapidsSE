@@ -41,7 +41,7 @@ void Step::vPlannerChoosePaths(MP_Task mpTask, Forth* pForth)
   Object* mpPtrPlanner;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(mpPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
   for (i8 i_Phrase = 0; i_Phrase < mpPlanner->nPhrases(); i_Phrase++)
@@ -59,12 +59,12 @@ void Step::vPlannerChosenPath(MP_Task mpTask, Forth* pForth)
   
   Object* mpPtrPlanner;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(mpPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
   i8 i_Phrase;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Phrase) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   AccessPath* pChosenPlan = mpPlanner->pChosenPath(i_Phrase);
   
   mpTask->m_pForth->m_pDataStack->vPushPointer(pChosenPlan);
@@ -81,7 +81,7 @@ ENTRY("vPlannerDelete"_Stz);
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
 
   delete pPlanner;
@@ -98,12 +98,12 @@ void Step::vPlannerFetchTechniqueFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Phrase) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   eAT eFetchTechnique = mpPlanner->pChosenPath(i_Phrase)->eAccess();
   
   mpTask->m_pForth->m_pDataStack->vPushI8(eFetchTechnique);
@@ -121,7 +121,7 @@ void Step::vPlannerGenPaths(MP_Task mpTask, Forth* pForth)
   Object* pPtrPlanner;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
@@ -139,12 +139,12 @@ void Step::vPlannerHighKeyFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Phrase) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
   PredicateVec* mpUpperPredicates = mpChosenPath->pUpperPredicates();
@@ -165,12 +165,12 @@ void Step::vPlannerIndexNmFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Phrase) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
   Index* pChosenIndex = mpChosenPath->pIndex();
@@ -190,12 +190,12 @@ void Step::vPlannerKeyFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Phrase) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
@@ -216,12 +216,12 @@ void Step::vPlannerLowKeyFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Phrase) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
@@ -243,7 +243,7 @@ void Step::vPlannerMatchPaths(MP_Task mpTask, Forth* pForth)
   Object* pPtrPlanner;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
@@ -275,12 +275,12 @@ void Step::vPlannerParseWhere(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   s48K sWhere;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sWhere) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pPlanner->vParseWhere(sWhere);
   pPlanner->vParsePhrases();
@@ -307,7 +307,7 @@ void Step::vPlannerPhrasesFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 nPhrases = mpPlanner->nPhrases();
@@ -326,7 +326,7 @@ void Step::vPlannerScorePaths(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   pPlanner->vScorePaths();
@@ -343,7 +343,7 @@ void Step::vPlannerShowPaths(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   pPlanner->vShowPaths();
@@ -360,7 +360,7 @@ void Step::vPlannerTableFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   Table* pTable = pPlanner->pTable();
@@ -379,12 +379,12 @@ void Step::vPlannerTableStore(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrPlanner;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrPlanner) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   Object* pPtrTable;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Table* pTable = _pTable(pPtrTable);
   
   pPlanner->vTable(pTable);

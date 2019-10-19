@@ -22,10 +22,10 @@ void Step::vErrorMsg(MP_Task mpTask, Forth* pForth)
   
   i8 iErrorCode;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iErrorCode) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if (iErrorCode < EC_NONE || iErrorCode > EC_ENUMS)
-    vThrow(__FILE__,__LINE__,"error.msg"_Stz);
+    vThrow(__func__,__FILE__,__LINE__,"error.msg"_Stz);
 
   s256 sErrorMsg;
   sErrorMsg = aEC[iErrorCode];

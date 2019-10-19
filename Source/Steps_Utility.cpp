@@ -34,7 +34,7 @@ void Step::vUtilitySchemaTest(MP_Task mpTask, Forth* pForth)
   
   s32 sStream;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sStream) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
 
   SchemaTest::vRun(sStream);
   

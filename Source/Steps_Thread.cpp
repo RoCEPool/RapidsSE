@@ -36,10 +36,10 @@ ENTRY("vThreadBind"_Stz);
   Object* pObject;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iCpu) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -60,7 +60,7 @@ ENTRY("vThreadCpu"_Stz);
   Object* pObject;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -80,7 +80,7 @@ void Step::vThreadDedicatedFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pThreadObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pThreadObject) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Thread* pThread = _pThread(pThreadObject);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pThread->m_eDedicated);
@@ -97,12 +97,12 @@ void Step::vThreadDedicatedStore(MP_Task mpTask, Forth* pForth)
   
   Object* pThreadObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pThreadObject) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Thread* pThread = _pThread(pThreadObject);
   
   i8 iDedicated;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iDedicated) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
 
   pThread->m_eDedicated = (eCN)iDedicated;
   
@@ -133,7 +133,7 @@ ENTRY("vThreadDump"_Stz);
   Object* pObject;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -168,7 +168,7 @@ ENTRY("vThreadId"_Stz);
   Object* pObject;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -190,7 +190,7 @@ ENTRY("vThreadSleepMsec"_Stz);
   i8 nMilliseconds;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(nMilliseconds) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -209,7 +209,7 @@ void Step::vThreadSleepNsec(MP_Task mpTask, Forth* pForth)
   i8 nNanoseconds;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(nNanoseconds) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -228,7 +228,7 @@ void Step::vThreadSleepSsec(MP_Task mpTask, Forth* pForth)
   i8 nSeconds;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(nSeconds) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -247,7 +247,7 @@ ENTRY("vThreadSleepUsec"_Stz);
   i8 nMicroseconds;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(nMicroseconds) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Thread* pThread = Thread::pThisTLSThread();
   

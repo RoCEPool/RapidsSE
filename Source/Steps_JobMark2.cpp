@@ -23,12 +23,12 @@ void Step::vJobMark2IndexStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
   
   Object* pIndexPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pIndexPtr) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Index* pIndex = _pIndex(pIndexPtr);
   
   pJobMark2->m_pIndex = pIndex;
@@ -45,7 +45,7 @@ void Step::vJobMark2TableNameFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
   
   s32 sTableNm;
@@ -65,12 +65,12 @@ void Step::vJobMark2TableStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
 
   Object* pTablePtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Table* pTable = _pTable(pTablePtr);
   
   pJobMark2->m_pTable = pTable;

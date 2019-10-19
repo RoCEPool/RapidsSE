@@ -22,7 +22,7 @@ void Step::vJob_AnalyzeIndexIsDetailed(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Job_AnalyzeIndex* pJoAnalyzeIndex = _pJob_AnalyzeIndex(pJobPtr);
   ASSERT(pJoAnalyzeIndex->eClass() == CN_JOB_ANALYZEINDEX);
@@ -41,7 +41,7 @@ void Step::vJob_AnalyzeTableIsDetailed(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Job_AnalyzeTable* pJoAnalyzeTable = _pJob_AnalyzeTable(pJobPtr);
   ASSERT(pJoAnalyzeTable->eClass() == CN_JOB_ANALYZETABLE);

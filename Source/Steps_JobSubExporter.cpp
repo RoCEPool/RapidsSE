@@ -27,12 +27,12 @@ void Step::vJob_SubExporterSpawn(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Export;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Export) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Export* pJob_Export = _pJob_Export(pPtrJob_Export);
   
   i8 i_Slot;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Slot) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -70,7 +70,7 @@ void Step::vJob_SubExporterExportJobFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_SubExporter;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubExporter) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pPtrJob_SubExporter);
   
   mpTask->m_pForth->m_pDataStack->vPushPointer(pJob_SubExporter->m_pJobExport);
@@ -88,7 +88,7 @@ void Step::vJob_SubExporterBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobSubExporter;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubExporter) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pPtrJobSubExporter);
   
   bool bBegun = pJob_SubExporter->bBegin();
@@ -107,7 +107,7 @@ void Step::vJob_SubExporterChunk(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobSubExporter;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubExporter) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pPtrJobSubExporter);
   
   bool bCallAgain = pJob_SubExporter->bChunk();
@@ -126,7 +126,7 @@ void Step::vJob_SubExporterEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobSubExporter;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubExporter) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pPtrJobSubExporter);
   
   pJob_SubExporter->vEnd();

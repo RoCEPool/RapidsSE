@@ -21,7 +21,7 @@ void Step::vJob_NetHogHogNoFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_NetHog;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_NetHog) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_NetHog* pJob_NetHog = _pJob_NetHog(pPtrJob_NetHog);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob_NetHog->m_iHogNo);

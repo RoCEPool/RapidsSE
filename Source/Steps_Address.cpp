@@ -25,7 +25,7 @@ void Step::vAddressEqual(MP_Task mpTask, Forth* pForth)
   GenVar xAddressB;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xAddressA,xAddressB) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   i8 iA = xAddressA.iInt();
   i8 iB = xAddressB.iInt();
@@ -46,7 +46,7 @@ void Step::vAddressFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   GenVar xValFetched;
   
@@ -72,7 +72,7 @@ void Step::vAddressFetch(MP_Task mpTask, Forth* pForth)
       break;
   
     default:
-      vThrow(__FILE__,__LINE__,"Invalid eClass %lld"_Stz,eClass);
+      vThrow(__func__,__FILE__,__LINE__,"Invalid eClass %lld"_Stz,eClass);
   }
   
   mpTask->m_pForth->m_pDataStack->vPushGenVar(xValFetched);
@@ -89,11 +89,11 @@ void Step::vAddressStore(MP_Task mpTask, Forth* pForth)
   
   Object* pObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   GenVar xValStored;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValStored) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   ForthValue* aValue = reinterpret_cast<ForthValue*>(pObject);
   
@@ -117,7 +117,7 @@ void Step::vAddressStore(MP_Task mpTask, Forth* pForth)
       break;
       
     default:
-      vThrow(__FILE__,__LINE__,"Invalid eClass %lld"_Stz,eClass);
+      vThrow(__func__,__FILE__,__LINE__,"Invalid eClass %lld"_Stz,eClass);
   }
   
   EXIT();

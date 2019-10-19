@@ -23,7 +23,7 @@ void Step::vJob_ReportBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobReport;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobReport) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Report* pJob_Report = _pJob_Report(pPtrJobReport);
   
   bool bBegun = pJob_Report->bBegin();
@@ -42,7 +42,7 @@ void Step::vJob_ReportTake(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobReport;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobReport) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Report* pJob_Report = _pJob_Report(pPtrJobReport);
   
   bool bCallAgain = pJob_Report->bTake();
@@ -66,7 +66,7 @@ void Step::vJob_ReportEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Report;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Report) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Job_Report* pJob_Report = _pJob_Report(pPtrJob_Report);
   
   pJob_Report->vEnd();

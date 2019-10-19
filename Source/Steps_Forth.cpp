@@ -47,7 +47,7 @@ void Step::vAllot(MP_Task mpTask, Forth* pForth)
   i8 iBytes;
   
   if ( !  mpTask->m_pForth->m_pDataStack->bPop(iBytes) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   RASSERT(iBytes);
   
@@ -114,7 +114,7 @@ void Step::vComma(MP_Task mpTask, Forth* pForth)
   
   GenVar xValue;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValue) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pCurrentWord->vEncode("pushValue"_Stz,&xValue);
     
@@ -130,7 +130,7 @@ void Step::vCompileComma(MP_Task mpTask, Forth* pForth)
   
   Object* pWordObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Word* pCalledWord = _pWord(pWordObject);
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
@@ -200,7 +200,7 @@ void Step::vCreateFrom(MP_Task mpTask, Forth* pForth)
   
   s32 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Dic* pDic;
   if (mpTask->m_oDicStack.iCount())
@@ -228,7 +228,7 @@ void Step::vCreateFromPersistent(MP_Task mpTask, Forth* pForth)
   
   s32 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Dic* pDic;
   if (mpTask->m_oDicStack.iCount())
@@ -253,7 +253,7 @@ void Step::vCreateFromInRoot(MP_Task mpTask, Forth* pForth)
   
   s32 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Dic* pDic = AM::pRootDic();
   
@@ -336,7 +336,7 @@ void Step::vExit_RT(MP_Task mpTask, Forth* pForth)
   
   Cell* aCell;
   if ( ! mpTask->m_pForth->m_pReturnStack->bPop(aCell) )
-    vThrow(__FILE__,__LINE__,FK_RSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_RSTACK,__STEP__);
   
   mpTask->m_pForth->m_aInxPtr = aCell;
   
@@ -352,7 +352,7 @@ void Step::vFind(MP_Task mpTask, Forth* pForth)
   
   s256 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if (mpTask->m_iTracing) {
     i8 i = 0;
@@ -374,7 +374,7 @@ void Step::vFindInCurrent(MP_Task mpTask, Forth* pForth)
   
   s256 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if (mpTask->m_iTracing) {
     i8 i = 0; i++;
@@ -399,7 +399,7 @@ void Step::vForget(MP_Task mpTask, Forth* pForth)
   Word* pWord = mpTask->m_oDicStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
   if ( ! pWord )
-    vThrow(__FILE__,__LINE__,"No such word: %s"_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().azChar());
+    vThrow(__func__,__FILE__,__LINE__,"No such word: %s"_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().azChar());
   
   s32 sName;
   
@@ -438,7 +438,7 @@ void Step::vLocate(MP_Task mpTask, Forth* pForth)
   
   i8 iAddrAsInt;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAddrAsInt) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   void* aCellVoid = (void*)iAddrAsInt;
   Cell* aHasCell = _aCell(aCellVoid);
@@ -473,7 +473,7 @@ void Step::vPostpone(MP_Task mpTask, Forth* pForth)
   // find the word in dic stack
   Word* pCalledWord = mpTask->m_oDicStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
   if ( ! pCalledWord )
-    vThrow(__FILE__,__LINE__,"No word: %s "_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().azChar());
+    vThrow(__func__,__FILE__,__LINE__,"No word: %s "_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().azChar());
   
   if (pCalledWord->bImmediate()) {
     
@@ -654,7 +654,7 @@ void Step::vSeriesName(Tasks::MP_Task mpTask, Forth* pForth)
   
   s32 sName;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -704,7 +704,7 @@ void Step::vSubDic(MP_Task mpTask, Forth* pForth)
   
   Word* pWordSubDic = mpTask->m_oDicStack.pFindWord(sNameSubDic);
   if ( ! pWordSubDic )
-    vThrow(__FILE__,__LINE__,"No such subDic: %s"_Stz,sNameSubDic.azChar());
+    vThrow(__func__,__FILE__,__LINE__,"No such subDic: %s"_Stz,sNameSubDic.azChar());
   
   Dic* pDic = _pDic(pWordSubDic->aWspArea());
   

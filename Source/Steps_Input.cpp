@@ -78,12 +78,12 @@ ENTRY("vInputOpen"_Stz);
   s256 sFilePath;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sFilePath) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   bool bOpened = mpTask->m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
   
   if ( ! bOpened )
-    vThrow(__FILE__,__LINE__,"No such file: %s"_Stz,sFilePath.azChar());
+    vThrow(__func__,__FILE__,__LINE__,"No such file: %s"_Stz,sFilePath.azChar());
   
   EXIT();
 }
@@ -145,7 +145,7 @@ ENTRY("vInputText"_Stz);
   s48K sInput;                                             //! NEED STACK CHECKS
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sInput) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
     
   mpTask->m_pCompiler->m_pTokeniser->vUseString(sInput);
   

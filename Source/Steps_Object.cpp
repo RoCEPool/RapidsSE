@@ -26,7 +26,7 @@ void Step::vObjectClassFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   eCN eClassNo;
   eClassNo = pObject->eClass();
@@ -45,11 +45,11 @@ void Step::vObjectClassStore(MP_Task mpTask, Forth* pForth)
   
   Object* pObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   eCN eClassNo;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(eClassNo) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pObject->vSetClass(eClassNo);
   
@@ -65,7 +65,7 @@ void Step::vObjectDump(MP_Task mpTask, Forth* pForth)
   
   Object* pObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   eCN eClass = pObject->eClass();
   
@@ -103,7 +103,7 @@ void Step::vObjectMagicMark(MP_Task mpTask, Forth* pForth)
   
   Object* pObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    vThrow(__FILE__,__LINE__,FK_RSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_RSTACK,__STEP__);
   
   pObject->vSetMagic();
   
@@ -122,7 +122,7 @@ void Step::vObjectStore(MP_Task mpTask, Forth* pForth)
   GenVar xObjectVar;
   
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xObjectVar) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   mpTask->m_pForth->m_pReturnStack->vPokeGenVar(iPeek,xObjectVar);
   
@@ -138,11 +138,11 @@ void Step::vObjectWordBodySet(MP_Task mpTask, Forth* pForth)
   
   Object* pObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   i8 iIsBody;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iIsBody) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   pObject->vWordBody(iIsBody);
   

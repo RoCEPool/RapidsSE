@@ -197,7 +197,8 @@ void Correctness::vExceptionCaught(Exception xException)
 /*----------------------------------------------------------------------------*/
 /* throw an exception of given kind (step-form)                               */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vThrow(const char* azFilePath, i8 iLineNo,
+[[ noreturn ]] void Correctness::vThrow(const char* azFunc,
+                                        const char* azFilePath, i8 iLineNo,
                                         eFK eKind, Stz* szStepNm)
 {
   // put a breakpoint here to trap throws
@@ -222,7 +223,8 @@ void Correctness::vExceptionCaught(Exception xException)
 /*----------------------------------------------------------------------------*/
 /* throw an FK_ASSERT exception (long-form)                                   */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vThrow(const char* azFilePath, i8 iLineNo,
+[[ noreturn ]] void Correctness::vThrow(const char* azFunc,
+                                        const char* azFilePath, i8 iLineNo,
                                         Stz* szFormat,...)
 {
   // put a breakpoint here to trap throws

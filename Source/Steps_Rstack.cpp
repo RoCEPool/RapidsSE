@@ -48,7 +48,7 @@ void Step::vRstackCsPick(MP_Task mpTask, Forth* pForth)
   // pop which value
   i8 nThValue;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(nThValue) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   // pop one return address
 //  GenVar xRtnWsp;
@@ -76,23 +76,23 @@ void Step::vRstackCsRoll(MP_Task mpTask, Forth* pForth)
   // pop n values
   i8 nValues;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(nValues) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   GenVar xValMid;
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValMid) )
-      vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+      vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
     
     mpTask->m_pForth->m_pReturnStack->vPushGenVar(xValMid);
   }
   
   Cell* aCellZ;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(aCellZ) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     if ( ! mpTask->m_pForth->m_pReturnStack->bPop(xValMid) )
-      vThrow(__FILE__,__LINE__,FK_RSTACK,__STEP__);
+      vThrow(__func__,__FILE__,__LINE__,FK_RSTACK,__STEP__);
     
     mpTask->m_pForth->m_pDataStack->vPushGenVar(xValMid);
   }
@@ -128,7 +128,7 @@ void Step::vRstackDrop(MP_Task mpTask, Forth* pForth)
   
   GenVar xValA;
   if ( ! mpTask->m_pForth->m_pReturnStack->bPop(xValA) )
-    vThrow(__FILE__,__LINE__,FK_RSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_RSTACK,__STEP__);
   
   EXIT();
 }
@@ -181,7 +181,7 @@ void Step::vRstackPick(MP_Task mpTask, Forth* pForth)
   
   i8 iPick;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iPick) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   // could do this directly on stack
   
@@ -216,11 +216,11 @@ void Step::vRstackReverse(MP_Task mpTask, Forth* pForth)
   
   i8 nValues;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(nValues) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   for (i8 i = 0; i < nValues; i++) {
     if ( ! mpTask->m_pForth->m_pReturnStack->bPop(apValWrk[i]) )
-      vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+      vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   }
   
   for (i8 i = 0; i < nValues; i++) {
@@ -240,14 +240,14 @@ void Step::vRstackRoll(MP_Task mpTask, Forth* pForth)
   
   i8 nValues;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(nValues) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   if ( ! mpTask->m_pForth->m_pReturnStack->bPop(xValA) )
-    vThrow(__FILE__,__LINE__,FK_RSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_RSTACK,__STEP__);
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     if ( ! mpTask->m_pForth->m_pReturnStack->bPop(xValX) )
-      vThrow(__FILE__,__LINE__,FK_RSTACK,__STEP__);
+      vThrow(__func__,__FILE__,__LINE__,FK_RSTACK,__STEP__);
     
     mpTask->m_pForth->m_pDataStack->vPushGenVar(xValX);
   }
@@ -256,7 +256,7 @@ void Step::vRstackRoll(MP_Task mpTask, Forth* pForth)
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValX) )
-      vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+      vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
     
     mpTask->m_pForth->m_pReturnStack->vPushGenVar(xValX);
   }
@@ -276,22 +276,22 @@ void Step::vRstackRollInv(MP_Task mpTask, Forth* pForth)
   
   i8 nValues;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(nValues) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     if ( ! mpTask->m_pForth->m_pReturnStack->bPop(xValX) )
-      vThrow(__FILE__,__LINE__,FK_RSTACK,__STEP__);
+      vThrow(__func__,__FILE__,__LINE__,FK_RSTACK,__STEP__);
     
     mpTask->m_pForth->m_pDataStack->vPushGenVar(xValX);
   }
   
   if ( ! mpTask->m_pForth->m_pReturnStack->bPop(xValZ) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValX) )
-      vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+      vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
     
     mpTask->m_pForth->m_pReturnStack->vPushGenVar(xValX);
   }
@@ -326,7 +326,7 @@ void Step::vRstackSwap(MP_Task mpTask, Forth* pForth)
   GenVar xValB;
   
   if ( ! mpTask->m_pForth->m_pReturnStack->bPop(xValA,xValB) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   mpTask->m_pForth->m_pReturnStack->vPushGenVar(xValA);
   mpTask->m_pForth->m_pReturnStack->vPushGenVar(xValB);
@@ -343,7 +343,7 @@ void Step::vRstackToP(MP_Task mpTask, Forth* pForth)
   
   GenVar xVal;
   if ( ! mpTask->m_pForth->m_pReturnStack->bPop(xVal) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   mpTask->m_pForth->m_pDataStack->vPushGenVar(xVal);
   
@@ -359,7 +359,7 @@ void Step::vRstackToR(MP_Task mpTask, Forth* pForth)
   
   GenVar xValOpaque;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValOpaque) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   mpTask->m_pForth->m_pReturnStack->vPushGenVar(xValOpaque);
   
@@ -376,7 +376,7 @@ void Step::vRstackToRTwo(MP_Task mpTask, Forth* pForth)
   GenVar xValX0;
   GenVar xValX1;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValX0,xValX1) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   mpTask->m_pForth->m_pReturnStack->vPushGenVar(xValX1);
   mpTask->m_pForth->m_pReturnStack->vPushGenVar(xValX0);

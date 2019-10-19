@@ -26,7 +26,7 @@ void Step::vToBody(MP_Task mpTask, Forth* pForth)
   
   Object* pWordObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   Word* pWord = _pWord(pWordObject);
   
   //  char* pBody = pAdd<char*>(pWord,sizeof(Word));
@@ -48,7 +48,7 @@ void Step::vToInt(MP_Task mpTask, Forth* pForth)
   
   s32 sInt;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sInt) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   i8 i = sInt.iToI8();
   
@@ -66,7 +66,7 @@ void Step::vToPtr(MP_Task mpTask, Forth* pForth)
   
   i8 iPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPtr) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Object* pPtr = (Object*)iPtr;
   
@@ -84,7 +84,7 @@ void Step::vToStr(MP_Task mpTask, Forth* pForth)
   
   GenVar xVal;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xVal) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   s48K sString;
   
@@ -104,7 +104,7 @@ void Step::vToTask(MP_Task mpTask, Forth* pForth)
   
   i8 iVal;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iVal) )
-    vThrow(__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
   
   Object* pPtrTask = _pTask(iVal);
   
