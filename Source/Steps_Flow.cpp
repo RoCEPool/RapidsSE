@@ -29,7 +29,7 @@ void Step::vFlowBegin_(void)
 {
   ENTRY("vBegin_"_Stz);
   
-  m_pTask->m_pCompiler->m_pBeginIP = m_pTask->m_pForth->m_aInxPtr;
+  m_pTask->m_pCompiler->m_pBeginIP = m_aInxPtr;
   
   EXIT();
 }
@@ -51,15 +51,15 @@ void Step::vFlowExecute(void)
     ((Step*)this->*fpStep)();
   }
   else if (WK_OBJECT == pWord->eKind()) {
-    m_pReturnStack->vPushCell(m_pTask->m_pForth->m_aInxPtr);
-    m_pTask->m_pForth->m_aInxPtr = pWord->aEntryCell();
+    m_pReturnStack->vPushCell(m_aInxPtr);
+    m_aInxPtr = pWord->aEntryCell();
     
     Object* pObject = (Object*)pWord->aFirstCell();
     m_pDataStack->vPushPointer(pObject);
   }
   else if (WK_ROUTINE == pWord->eKind()){
-    m_pReturnStack->vPushCell(m_pTask->m_pForth->m_aInxPtr);
-    m_pTask->m_pForth->m_aInxPtr = pWord->aEntryCell();
+    m_pReturnStack->vPushCell(m_aInxPtr);
+    m_aInxPtr = pWord->aEntryCell();
   }
   else {
     NEVER_REACH;
@@ -87,7 +87,7 @@ void Step::vFlowJump(void)
 {
   ENTRY("vJump"_Stz);
   
-  m_pTask->m_pForth->m_aInxPtr = m_pTask->m_pForth->m_aInxPtr->m_aJumpTo;
+  m_aInxPtr = m_aInxPtr->m_aJumpTo;
   
   EXIT();
 }
@@ -99,7 +99,7 @@ void Step::vFlowJumpBegin_(void)
 {
   ENTRY("vFlowJumpBegin_"_Stz);
   
-  m_pTask->m_pForth->m_aInxPtr = m_pTask->m_pCompiler->m_pBeginIP;
+  m_aInxPtr = m_pTask->m_pCompiler->m_pBeginIP;
   
   EXIT();
 }
@@ -140,10 +140,10 @@ void Step::vFlowJumpFalse(void)
   
   if (iVal)
     // do not jump, skip over argument
-    m_pTask->m_pForth->m_aInxPtr++;
+    m_aInxPtr++;
   else
     // jump to location
-    m_pTask->m_pForth->m_aInxPtr = m_pTask->m_pForth->m_aInxPtr->m_aJumpTo;
+    m_aInxPtr = m_aInxPtr->m_aJumpTo;
   
   EXIT();
 }
@@ -163,10 +163,10 @@ void Step::vFlowJumpTrue(void)
   
   if (iVal)
     // jump to location
-    m_pTask->m_pForth->m_aInxPtr = m_pTask->m_pForth->m_aInxPtr->m_aJumpTo;
+    m_aInxPtr = m_aInxPtr->m_aJumpTo;
   else
     // do not jump, skip over argument
-    m_pTask->m_pForth->m_aInxPtr++;
+    m_aInxPtr++;
   
   EXIT();
 }
@@ -188,7 +188,7 @@ void Step::vFlowRetryPoint(void)
 {
   ENTRY("vFlowRetryPoint"_Stz);
   
-  m_pTask->m_pCompiler->m_pRetryIP = m_pTask->m_pForth->m_aInxPtr;
+  m_pTask->m_pCompiler->m_pRetryIP = m_aInxPtr;
   
   m_pDataStack->vRetryPoint();
   

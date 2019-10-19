@@ -312,7 +312,7 @@ void Step::vDoes_RT(void)
   Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
   
   pCurrentWord->vEntryStep(&Step::vEnterObject);
-  pCurrentWord->vEntryCell(m_pTask->m_pForth->m_aInxPtr + 1);
+  pCurrentWord->vEntryCell(m_aInxPtr + 1);
   
   EXIT();
 }
@@ -329,8 +329,8 @@ void Step::vExit_RT(void)
   if ( (m_pTask->m_iTracing & C_TRACE_ROUTINES) )
     m_pTask->vTracePoint("<"_Stz);
   
-  if (m_pTask->m_pForth->m_pLocalsFrame
-      && m_pTask->m_pForth->m_pLocalsFrame->aDiscardPoint() ==
+  if (m_pLocalsFrame
+      && m_pLocalsFrame->aDiscardPoint() ==
       m_pReturnStack->aPeekValue())
     m_pTask->vLocalsPop();
   
@@ -338,7 +338,7 @@ void Step::vExit_RT(void)
   if ( ! m_pReturnStack->bPop(aCell) )
     THROW_RSTACK();
   
-  m_pTask->m_pForth->m_aInxPtr = aCell;
+  m_aInxPtr = aCell;
   
   EXIT();
 }

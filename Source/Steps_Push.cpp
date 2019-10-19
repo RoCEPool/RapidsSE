@@ -69,7 +69,7 @@ void Step::vPushValue(void)
     ASSERT(m_pTask->m_iTracing);
   }
   
-  ForthValue* aValue = &m_pTask->m_pForth->m_aInxPtr->m_xEmbValue;
+  ForthValue* aValue = &m_aInxPtr->m_xEmbValue;
   
   m_pDataStack->vPushValue(aValue);
   
