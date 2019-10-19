@@ -147,31 +147,6 @@ void Correctness::vThrowTrap(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* throw an exception of given kind (step-form)                               */
-/*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vThrow(eFK eKind, const char* azFunc,
-                                        const char* azFilePath, i8 iLineNo)
-{
-  // put a breakpoint here to trap throws
-  sleep(0);
-  
-  char zFileNm[256];
-  StrLib::vSubPath(zFileNm,(char*)azFilePath);
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Exception xException(eKind,azFunc,"throw",zFileNm,iLineNo);
-
-  xException.vPrint();
-  
-  // dump the call stack
-  vStackDump();
-  
-  throw xException;
-}
-
-/*----------------------------------------------------------------------------*/
 /* throw an FK_ASSERT exception (long-form)                                   */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void Correctness::vThrow(eFK eKind, const char* azFunc,

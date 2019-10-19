@@ -23,9 +23,6 @@ namespace Correctness
   // refer: https://en.cppreference.com/w/cpp/language/attributes/noreturn
   
   [[ noreturn ]] void vThrow(eFK eKind, const char* azFunc,
-                             const char* azFilePath, i8 iLineNo);
-  
-  [[ noreturn ]] void vThrow(eFK eKind, const char* azFunc,
                              const char* azFilePath, i8 iLineNo,
                              const char* azFormat,...);
 };
