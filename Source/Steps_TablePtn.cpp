@@ -27,7 +27,7 @@ void Step::vTablePtnAttemptGrabRead(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTablePtn;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTablePtn) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
   // attempt to grab the read lock
@@ -47,7 +47,7 @@ void Step::vTablePtnAttemptGrabWrite(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTablePtn;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTablePtn) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
   // attempt to grab the write lock
@@ -67,7 +67,7 @@ void Step::vTablePtnDropRead(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTablePtn;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTablePtn) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
     
   // drop the read lock
@@ -85,7 +85,7 @@ void Step::vTablePtnDump(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTablePtn;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTablePtn) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pTablePtn->iPartitionId());
@@ -102,7 +102,7 @@ void Step::vTablePtnDropWrite(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTablePtn;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTablePtn) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
   // drop the write lock
@@ -120,7 +120,7 @@ void Step::vTablePtnIsLocked(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrTablePtn;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTablePtn) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
   bool bIsLocked = pTablePtn->bIsLocked();

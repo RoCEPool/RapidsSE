@@ -23,7 +23,7 @@ void Step::vDicPathDepth(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrDicPath;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicPath) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
   ASSERT(CN_DICPATH == pDicPath->eClass());
@@ -44,7 +44,7 @@ void Step::vDicPathDump(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrDicPath;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicPath) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
   ASSERT(CN_DICPATH == pDicPath->eClass());
@@ -63,14 +63,14 @@ void Step::vDicPathPick(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrDicPath;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicPath) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
   ASSERT(CN_DICPATH == pDicPath->eClass());
   
   i8 iDic;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iDic) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
 
   mpTask->m_pForth->m_pDataStack->vPushS32(pDicPath->sDicName(iDic));
   

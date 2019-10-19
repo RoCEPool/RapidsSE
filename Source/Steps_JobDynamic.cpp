@@ -23,7 +23,7 @@ void Step::vJob_DynamicBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
   
   pJob_Dynamic->vBegin();
@@ -40,7 +40,7 @@ void Step::vJob_DynamicEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
   
   pJob_Dynamic->vEnd();
@@ -57,7 +57,7 @@ void Step::vJob_DynamicExecute(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
   
   pJob_Dynamic->vExecute();

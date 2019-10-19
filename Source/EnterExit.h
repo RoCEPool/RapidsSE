@@ -18,8 +18,6 @@
   i8 _iEnterCycles = 0; \
   i8 _iEnterMisses = 0; \
   \
-  Stz* __STEP__ = szStepNm; \
-  \
   if (AM::pStepTiming()) { \
     if (! _pStepAccum) { \
       StepTiming* pStepTiming = AM::pStepTiming(); \

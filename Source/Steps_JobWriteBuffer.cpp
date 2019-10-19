@@ -27,7 +27,7 @@ void Step::vJob_WriteBufferParentJobIdFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   i8 iParentJobId = pJob_WriteBuffer->m_iParentJobId;
@@ -48,7 +48,7 @@ void Step::vJob_WriteBufferInsertRows(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   bool bAllBuffersWritten = pJob_WriteBuffer->bInsertRows();
@@ -67,7 +67,7 @@ void Step::vJob_WriteBufferIsIngesting(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
@@ -86,7 +86,7 @@ void Step::vJob_WriteBufferIsInserting(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
@@ -105,7 +105,7 @@ void Step::vJob_WriteBufferIsLoading(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
@@ -124,7 +124,7 @@ void Step::vJob_WriteBufferPartitionFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   i8 i_Partition = pJob_WriteBuffer->m_iPartitionId;
@@ -142,12 +142,12 @@ void Step::vJob_WriteBufferTableStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   Object* pTablePtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Table* pTable = _pTable(pTablePtr);
   
   pJob_WriteBuffer->m_pTable = pTable;

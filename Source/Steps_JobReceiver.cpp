@@ -26,7 +26,7 @@ void Step::vJob_ReceiverConnNoFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   i8 iConnNo = pJob_Receiver->iConnNo();
@@ -44,7 +44,7 @@ void Step::vJob_ReceiverJobReceived(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job* pJob = _pJob(pJobPtr);
 
   if (CN_JOB__EXECUTED == pJob->eClass()) {
@@ -75,12 +75,12 @@ void Step::vJob_ReceiverConnNoStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   i8 iConnNo;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iConnNo) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   pJob_Receiver->vConnNo(iConnNo);
   
@@ -96,7 +96,7 @@ void Step::vJob_ReceiverNodeFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   Node* pNode = pJob_Receiver->pNode();
@@ -114,12 +114,12 @@ void Step::vJob_ReceiverNodeStore(MP_Task mpTask, Forth* pForth)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   Object* pNodePtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pNodePtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Node* pNode = _pNode(pNodePtr);
   
   pJob_Receiver->vNode(pNode);

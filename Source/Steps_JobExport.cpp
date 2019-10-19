@@ -25,7 +25,7 @@ void Step::vJob_ExportAuxAckDecidedFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobExport;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobExport) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob_Export->m_bAuxAckDecided);
@@ -42,12 +42,12 @@ void Step::vJob_ExportAuxAckDecidedStore(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobExport;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobExport) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
   
   i8 iAuxAckDecided;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iAuxAckDecided) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   pJob_Export->m_bAuxAckDecided = (bool)iAuxAckDecided;
   
@@ -63,7 +63,7 @@ void Step::vJob_ExportBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobExport;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobExport) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
   
   bool bBegun = pJob_Export->bBegin();
@@ -82,7 +82,7 @@ void Step::vJob_ExportEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobExport;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobExport) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
   
   pJob_Export->vEnd();
@@ -99,12 +99,12 @@ void Step::vJob_ExportTableStore(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobExport;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobExport) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
   
   Object* pTablePtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Table* pTable = _pTable(pTablePtr);
   
   pJob_Export->m_pTable = pTable;

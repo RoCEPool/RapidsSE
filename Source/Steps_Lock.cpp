@@ -25,7 +25,7 @@ ENTRY("vLockDropRead"_Stz);
   
   Object* pPtrLock;;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrLock) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -45,7 +45,7 @@ ENTRY("vLockDropWrite"_Stz);
 
   Object* pPtrLock;;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrLock) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -65,7 +65,7 @@ ENTRY("vLockGrabRead"_Stz);
 
   Object* pPtrLock;;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrLock) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -85,7 +85,7 @@ ENTRY("vLockGrabWrite"_Stz);
 
   Object* pPtrLock;;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrLock) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -105,7 +105,7 @@ ENTRY("vLockInit"_Stz);
   
   Object* pPtrLock;;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrLock) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   Lock* pLock = _pLock(pPtrLock);
   

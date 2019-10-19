@@ -24,7 +24,7 @@ void Step::vSlotsColumnCount(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrSlots;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSlots) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
   
@@ -42,13 +42,13 @@ void Step::vSlotsColumnName(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrSlots;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSlots) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
   
   i8 iIndex;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iIndex) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   ASSERT(iIndex < pSlots->pPtnColVec()->nItems());
   Column* pColumn = pSlots->pPtnColVec()->pGet(iIndex);
@@ -67,7 +67,7 @@ void Step::vSlotsCreateColumnVec(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrSlots;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSlots) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
   
@@ -85,7 +85,7 @@ void Step::vSlotsSubDic(MP_Task mpTask, Forth* pForth)
   
   Object* pSlotsPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pSlotsPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   Slots* pSlots = _pSlots(pSlotsPtr);
   ASSERT(CN_SLOTS == pSlots->eClass());

@@ -24,7 +24,7 @@ void Step::vJob_WalkBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobWalk;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobWalk) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Walk* pJob_Walk = _pJob_Walk(pPtrJobWalk);
   
   bool bBegun = pJob_Walk->bBegin();
@@ -43,7 +43,7 @@ void Step::vJob_WalkEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobWalk;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobWalk) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Walk* pJob_Walk = _pJob_Walk(pPtrJobWalk);
   
   pJob_Walk->vEnd();
@@ -60,12 +60,12 @@ void Step::vJob_WalkIndexStore(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobWalk;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobWalk) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Walk* pJob_Walk = _pJob_Walk(pPtrJobWalk);
   
   Object* pIndexPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pIndexPtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Index* pIndex = _pIndex(pIndexPtr);
   
   pJob_Walk->m_pIndex = pIndex;
@@ -84,12 +84,12 @@ void Step::vJob_WalkTableStore(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobWalk;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobWalk) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Walk* pJob_Walk = _pJob_Walk(pPtrJobWalk);
   
   Object* pTablePtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Table* pTable = _pTable(pTablePtr);
   
   pJob_Walk->m_pTable = pTable;

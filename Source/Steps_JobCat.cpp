@@ -23,7 +23,7 @@ void Step::vJob_CatBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobCat;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobCat) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJobCat);
   
   bool bBegun = pJob_Cat->bBegin();
@@ -42,7 +42,7 @@ void Step::vJob_CatChunk(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJobCat;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobCat) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJobCat);
   
   bool bCallAgain = pJob_Cat->bChunk();
@@ -61,7 +61,7 @@ void Step::vJob_CatEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_Cat;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Cat) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJob_Cat);
   
   pJob_Cat->vEnd();

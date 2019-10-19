@@ -32,7 +32,7 @@ void Step::vJobClassFind(MP_Task mpTask, Forth* pForth)
   
   i8 iJobClass;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   eCN eClass = (eCN)iJobClass;
   
@@ -52,7 +52,7 @@ void Step::vJobClassBuffer(MP_Task mpTask, Forth* pForth)
   
   i8 iJobClass_p;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   bool bBuffer = pJobClass->m_bBuffer;
@@ -71,7 +71,7 @@ void Step::vJobClassName(MP_Task mpTask, Forth* pForth)
   
   i8 iJobClass_p;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sName(aCN[pJobClass->m_eClass]);
@@ -90,7 +90,7 @@ void Step::vJobClassNew(MP_Task mpTask, Forth* pForth)
   
   i8 iJobClass_p;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
 
   Job* pJob = pJobClass->pNewJob();
@@ -109,7 +109,7 @@ void Step::vJobClassSeedRun(MP_Task mpTask, Forth* pForth)
   
   i8 iJobClass_p;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)pJobClass->m_aSeedRun);
@@ -128,7 +128,7 @@ void Step::vJobClassSeedReq(MP_Task mpTask, Forth* pForth)
   
   i8 iJobClass_p;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedReq);
@@ -147,7 +147,7 @@ void Step::vJobClassSeedRcv(MP_Task mpTask, Forth* pForth)
   
   i8 iJobClass_p;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedRcv);
@@ -166,7 +166,7 @@ void Step::vJobClassSeedExe(MP_Task mpTask, Forth* pForth)
   
   i8 iJobClass_p;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedExe);
@@ -185,7 +185,7 @@ void Step::vJobClassSeedEnd(MP_Task mpTask, Forth* pForth)
   
   i8 iJobClass_p;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedEnd);
@@ -204,7 +204,7 @@ void Step::vJobClassSeedCan(MP_Task mpTask, Forth* pForth)
   
   i8 iJobClass_p;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedCan);

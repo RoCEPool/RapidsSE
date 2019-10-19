@@ -23,11 +23,11 @@ void Step::vLogicAnd(MP_Task mpTask, Forth* pForth)
   
   i8 iArgB;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iArgB) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   i8 iArgA;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iArgA) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   i8 iArgR = (iArgA && iArgB) ? 1 : 0;
   
@@ -45,7 +45,7 @@ void Step::vLogicNot(MP_Task mpTask, Forth* pForth)
   
   i8 iValA;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsI8_Inline(iValA) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   i8 iNotA = iValA ? 0 : 1;
   
@@ -63,11 +63,11 @@ void Step::vLogicOr(MP_Task mpTask, Forth* pForth)
   
   i8 iArgB;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iArgB) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   i8 iArgA;
   if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iArgA) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   i8 iArgR = (iArgA || iArgB) ? 1 : 0;
   

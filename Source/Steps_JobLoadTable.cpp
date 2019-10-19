@@ -26,7 +26,7 @@ void Step::vJob_LoadTableBegin(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_LoadTable;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   bool bBegun = pJob_LoadTable->bBegin();
@@ -45,7 +45,7 @@ void Step::vJob_LoadTableChunk(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_LoadTable;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
   bool bCallAgain = pJob_LoadTable->bChunk();
@@ -64,7 +64,7 @@ void Step::vJob_LoadTableDumpMap(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_LoadTable;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
   pJob_LoadTable->vDumpMap();
@@ -81,7 +81,7 @@ void Step::vJob_LoadTableEnd(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_LoadTable;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   pJob_LoadTable->vEnd();
@@ -98,7 +98,7 @@ void Step::vJob_LoadTableFilePathFetch(MP_Task mpTask, Forth* pForth)
   
   Object* pPtrJob_LoadTable;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   s256 sFilePath = pJob_LoadTable->szFilePath();
@@ -117,7 +117,7 @@ void Step::vJob_LoadTableTableStore(MP_Task mpTask, Forth* pForth)
   Object* pPtrTable;
   Object* pPtrJob_LoadTable;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_LoadTable,pPtrTable) )
-    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK,__STEP__);
+    vThrow(__func__,__FILE__,__LINE__,FK_DSTACK);
   
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   

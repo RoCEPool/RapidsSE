@@ -34,7 +34,7 @@ namespace Correctness
 
   [[ noreturn ]] void vThrow(const char* azFunc,
                              const char* azFilePath, i8 iLineNo,
-                             eFK eKind, Stz* szStepNm);
+                             eFK eKind);
   
 };
 
