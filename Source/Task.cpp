@@ -249,15 +249,7 @@ void Task::vTaskLoop_job(void)
       fpIntrinsic(this,m_pForth);
     }
     
-    catch (eFK eFailure) {
-      vTrace("[%s] %s : in file %s line %lld\n"_Stz,
-             szJobName(),
-             m_sException.azChar(),
-             m_sFileNm.azChar(),
-             m_iLineNo);
-      vRetry();
-    }
-    
+    // catch any exception
     catch (Exception xException) {
       xException.vJob(m_pJob);
       Correctness::vExceptionCaught(xException);
