@@ -19,7 +19,7 @@ void Step::vAddSteps_Astack(void)
   vAddStep("areverse"_Stz,        &Step::vAstackReverse);
   vAddStep("astk"_Stz,            &Step::vAstackStk);
   vAddStep(">a"_Stz,              &Step::vAstackToA);
-  vAddStep("a>"_Stz,              &Step::vAstackToP);
+  vAddStep("a>"_Stz,              &Step::vAstackToD);
   vAddStep(">auxStack"_Stz,       &Step::vAstackTransfer);
   vAddStep("aswap"_Stz,           &Step::vAstackSwap);
   vAddStep("a0"_Stz,              &Step::vAstack0);
@@ -249,9 +249,9 @@ void Step::vAstackToA(MP_Task mpTask, Forth* pForth)
 /*----------------------------------------------------------------------------*/
 /* a> -- move value from astack to dstack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackToP(MP_Task mpTask, Forth* pForth)
+void Step::vAstackToD(MP_Task mpTask, Forth* pForth)
 {
-  ENTRY("vAstackToP"_Stz);
+  ENTRY("vAstackToD"_Stz);
   
   GenVar xVal;
   if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xVal) )

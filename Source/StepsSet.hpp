@@ -78,7 +78,7 @@ public:
   static void vAstackStk(Tasks::MP_Task mpTask, Forth* pForth);
   static void vAstackSwap(Tasks::MP_Task mpTask, Forth* pForth);
   static void vAstackToA(Tasks::MP_Task mpTask, Forth* pForth);
-  static void vAstackToP(Tasks::MP_Task mpTask, Forth* pForth);
+  static void vAstackToD(Tasks::MP_Task mpTask, Forth* pForth);
   static void vAstackTransfer(Tasks::MP_Task mpTask, Forth* pForth);
   static void vAstack0(Tasks::MP_Task mpTask, Forth* pForth);
   static void vAstack1(Tasks::MP_Task mpTask, Forth* pForth);
