@@ -6,1286 +6,1286 @@
 public:
 
   // access path
-  static void vAccessPathTableFetch(Forth* pForth);
-  static void vAccessPathTableStore(Forth* pForth);
+  void vAccessPathTableFetch(Forth* pForth);
+  void vAccessPathTableStore(Forth* pForth);
 
   // accum
-  static void vAccumDelete(Forth* pForth);
-  static void vAccumNew(Forth* pForth);
+  void vAccumDelete(Forth* pForth);
+  void vAccumNew(Forth* pForth);
 
-  static void vAccumAccumBuffer(Forth* pForth);
-  static void vAccumCountFetch(Forth* pForth);
-  static void vAccumCountStore(Forth* pForth);
-  static void vAccumGroupFetch(Forth* pForth);
-  static void vAccumGroupStore(Forth* pForth);
-  static void vAccumMaxFetch(Forth* pForth);
-  static void vAccumMaxStore(Forth* pForth);
-  static void vAccumMinFetch(Forth* pForth);
-  static void vAccumMinStore(Forth* pForth);
-  static void vAccumSumFetch(Forth* pForth);
-  static void vAccumSumStore(Forth* pForth);
+  void vAccumAccumBuffer(Forth* pForth);
+  void vAccumCountFetch(Forth* pForth);
+  void vAccumCountStore(Forth* pForth);
+  void vAccumGroupFetch(Forth* pForth);
+  void vAccumGroupStore(Forth* pForth);
+  void vAccumMaxFetch(Forth* pForth);
+  void vAccumMaxStore(Forth* pForth);
+  void vAccumMinFetch(Forth* pForth);
+  void vAccumMinStore(Forth* pForth);
+  void vAccumSumFetch(Forth* pForth);
+  void vAccumSumStore(Forth* pForth);
 
   // address
-  static void vAddressEqual(Forth* pForth);
-  static void vAddressFetch(Forth* pForth);
-  static void vAddressStore(Forth* pForth);
+  void vAddressEqual(Forth* pForth);
+  void vAddressFetch(Forth* pForth);
+  void vAddressStore(Forth* pForth);
 
   // apiState
-  static void vApiStateIncBegun(Forth* pForth);
-  static void vApiStateIncCancelled(Forth* pForth);
-  static void vApiStateIncEnded(Forth* pForth);
-  static void vApiStateIncExecuted(Forth* pForth);
-  static void vApiStateSenLoc(Forth* pForth);
-  static void vApiStateTraceSession(Forth* pForth);
+  void vApiStateIncBegun(Forth* pForth);
+  void vApiStateIncCancelled(Forth* pForth);
+  void vApiStateIncEnded(Forth* pForth);
+  void vApiStateIncExecuted(Forth* pForth);
+  void vApiStateSenLoc(Forth* pForth);
+  void vApiStateTraceSession(Forth* pForth);
 
   // args
-  static void vArgsOscillate(Forth* pForth);
-  static void vArgsPrint(Forth* pForth);
+  void vArgsOscillate(Forth* pForth);
+  void vArgsPrint(Forth* pForth);
 
   // article
-  static void vArticleDump(Forth* pForth);
+  void vArticleDump(Forth* pForth);
 
   // assert
-  static void vAssert(Forth* pForth);
+  void vAssert(Forth* pForth);
 
-  static void vAssertClass(Forth* pForth);
-  static void vAssertClass_0(Forth* pForth);
-  static void vAssertClass_1(Forth* pForth);
-  static void vAssertClass_2(Forth* pForth);
-  static void vAssertClass_3(Forth* pForth);
-  static void vAssertClass_4(Forth* pForth);
+  void vAssertClass(Forth* pForth);
+  void vAssertClass_0(Forth* pForth);
+  void vAssertClass_1(Forth* pForth);
+  void vAssertClass_2(Forth* pForth);
+  void vAssertClass_3(Forth* pForth);
+  void vAssertClass_4(Forth* pForth);
 
-  static void vAssertStack_0(Forth* pForth);
-  static void vAssertStack_0more(Forth* pForth);
-  static void vAssertStack_1(Forth* pForth);
-  static void vAssertStack_1more(Forth* pForth);
-  static void vAssertStack_2(Forth* pForth);
-  static void vAssertStack_2more(Forth* pForth);
-  static void vAssertStack_3(Forth* pForth);
-  static void vAssertStack_3more(Forth* pForth);
-  static void vAssertStack_4(Forth* pForth);
-  static void vAssertStack_4more(Forth* pForth);
+  void vAssertStack_0(Forth* pForth);
+  void vAssertStack_0more(Forth* pForth);
+  void vAssertStack_1(Forth* pForth);
+  void vAssertStack_1more(Forth* pForth);
+  void vAssertStack_2(Forth* pForth);
+  void vAssertStack_2more(Forth* pForth);
+  void vAssertStack_3(Forth* pForth);
+  void vAssertStack_3more(Forth* pForth);
+  void vAssertStack_4(Forth* pForth);
+  void vAssertStack_4more(Forth* pForth);
 
   // astack
-  static void vAstackClass(Forth* pForth);
-  static void vAstackDepth(Forth* pForth);
-  static void vAstackDrop(Forth* pForth);
-  static void vAstackDup(Forth* pForth);
-  static void vAstackFetch(Forth* pForth);
-  static void vAstackNip(Forth* pForth);
-  static void vAstackPick(Forth* pForth);
-  static void vAstackReverse(Forth* pForth);
-  static void vAstackStk(Forth* pForth);
-  static void vAstackSwap(Forth* pForth);
-  static void vAstackToA(Forth* pForth);
-  static void vAstackToD(Forth* pForth);
-  static void vAstackTransfer(Forth* pForth);
-  static void vAstack0(Forth* pForth);
-  static void vAstack1(Forth* pForth);
-  static void vAstack2(Forth* pForth);
-  static void vAstack3(Forth* pForth);
-  static void vAstack4(Forth* pForth);
-  static void vAstack5(Forth* pForth);
-  static void vAstack6(Forth* pForth);
-  static void vAstack7(Forth* pForth);
-  static void vAstack8(Forth* pForth);
-  static void vAstack9(Forth* pForth);
+  void vAstackClass(Forth* pForth);
+  void vAstackDepth(Forth* pForth);
+  void vAstackDrop(Forth* pForth);
+  void vAstackDup(Forth* pForth);
+  void vAstackFetch(Forth* pForth);
+  void vAstackNip(Forth* pForth);
+  void vAstackPick(Forth* pForth);
+  void vAstackReverse(Forth* pForth);
+  void vAstackStk(Forth* pForth);
+  void vAstackSwap(Forth* pForth);
+  void vAstackToA(Forth* pForth);
+  void vAstackToD(Forth* pForth);
+  void vAstackTransfer(Forth* pForth);
+  void vAstack0(Forth* pForth);
+  void vAstack1(Forth* pForth);
+  void vAstack2(Forth* pForth);
+  void vAstack3(Forth* pForth);
+  void vAstack4(Forth* pForth);
+  void vAstack5(Forth* pForth);
+  void vAstack6(Forth* pForth);
+  void vAstack7(Forth* pForth);
+  void vAstack8(Forth* pForth);
+  void vAstack9(Forth* pForth);
 
   // attachmap
-  static void vAttachMapTenantsFetch(Forth* pForth);
+  void vAttachMapTenantsFetch(Forth* pForth);
 
   // bp
-  static void vBpAnalyze(Forth* pForth);
-  static void vBpDump(Forth* pForth);
-  static void vBpEpochDump(Forth* pForth);
-  static void vBpEpochTake(Forth* pForth);
-  static void vBpReadBufferPool(Forth* pForth);
-  static void vBpWriteBufferPool(Forth* pForth);
-  static void vBpFreeBuffers(Forth* pForth);
-  static void vBpFreePercent(Forth* pForth);
-  static void vBpFreeSpace(Forth* pForth);
-  static void vBpInUseSpace(Forth* pForth);
-  static void vBpTotalSpace(Forth* pForth);
+  void vBpAnalyze(Forth* pForth);
+  void vBpDump(Forth* pForth);
+  void vBpEpochDump(Forth* pForth);
+  void vBpEpochTake(Forth* pForth);
+  void vBpReadBufferPool(Forth* pForth);
+  void vBpWriteBufferPool(Forth* pForth);
+  void vBpFreeBuffers(Forth* pForth);
+  void vBpFreePercent(Forth* pForth);
+  void vBpFreeSpace(Forth* pForth);
+  void vBpInUseSpace(Forth* pForth);
+  void vBpTotalSpace(Forth* pForth);
 
   // cast
-  static void vCastInt(Forth* pForth);
-  static void vCastPtr(Forth* pForth);
+  void vCastInt(Forth* pForth);
+  void vCastPtr(Forth* pForth);
 
   // class
-  static void vClassName(Forth* pForth);
+  void vClassName(Forth* pForth);
 
   // column
-  static void vColumnIsNullableFetch(Forth* pForth);
-  static void vColumnIsPartitionKeyFetch(Forth* pForth);
-  static void vColumnLengthFetch(Forth* pForth);
-  static void vColumnNameFetch(Forth* pForth);
-  static void vColumnScaleFetch(Forth* pForth);
-  static void vColumnTypeFetch(Forth* pForth);
+  void vColumnIsNullableFetch(Forth* pForth);
+  void vColumnIsPartitionKeyFetch(Forth* pForth);
+  void vColumnLengthFetch(Forth* pForth);
+  void vColumnNameFetch(Forth* pForth);
+  void vColumnScaleFetch(Forth* pForth);
+  void vColumnTypeFetch(Forth* pForth);
 
   // command processor
-  static void vCommandBlankLine(Forth* pForth);
-  static void vCommandDeleteJob(Forth* pForth);
-  static void vCommandExecuteFile(Forth* pForth);
-  static void vCommandFindJobClass(Forth* pForth);
-  static void vCommandGetCommand(Forth* pForth);
-  static void vCommandJobClass(Forth* pForth);
-  static void vCommandPostJob(Forth* pForth);
-  static void vCommandPreJob(Forth* pForth);
-  static void vCommandSpawnJob(Forth* pForth);
+  void vCommandBlankLine(Forth* pForth);
+  void vCommandDeleteJob(Forth* pForth);
+  void vCommandExecuteFile(Forth* pForth);
+  void vCommandFindJobClass(Forth* pForth);
+  void vCommandGetCommand(Forth* pForth);
+  void vCommandJobClass(Forth* pForth);
+  void vCommandPostJob(Forth* pForth);
+  void vCommandPreJob(Forth* pForth);
+  void vCommandSpawnJob(Forth* pForth);
 
   // comment
-  static void vComment(Forth* pForth);
+  void vComment(Forth* pForth);
 
   // comment
-  static void vCompilerCurrent(Forth* pForth);
+  void vCompilerCurrent(Forth* pForth);
 
   // cpu
-  static void vCpuRdtscp(Forth* pForth);
+  void vCpuRdtscp(Forth* pForth);
 
   // cursor
-  static void vCursorFetch(Forth* pForth);
-  static void vCursorStore(Forth* pForth);
+  void vCursorFetch(Forth* pForth);
+  void vCursorStore(Forth* pForth);
 
   // ddllock
-  static void vDdlLockDropRead(Forth* pForth);
-  static void vDdlLockDropWrite(Forth* pForth);
-  static void vDdlLockGrabRead(Forth* pForth);
-  static void vDdlLockGrabWrite(Forth* pForth);
-  static void vDdlLockTestDrop(Forth* pForth);
+  void vDdlLockDropRead(Forth* pForth);
+  void vDdlLockDropWrite(Forth* pForth);
+  void vDdlLockGrabRead(Forth* pForth);
+  void vDdlLockGrabWrite(Forth* pForth);
+  void vDdlLockTestDrop(Forth* pForth);
 
   // debug
-  static void vDebugTrap(Forth* pForth);
+  void vDebugTrap(Forth* pForth);
 
   // dic
-  static void vDicInit(Forth* pForth);
-  static void vDicKindGet(Forth* pForth);
-  static void vDicKindSet(Forth* pForth);
-  static void vDicLastWord(Forth* pForth);
-  static void vDicName(Forth* pForth);
-  static void vDicRef(Forth* pForth);
-  static void vDicRoot(Forth* pForth);
-  static void vDicWordCount(Forth* pForth);
+  void vDicInit(Forth* pForth);
+  void vDicKindGet(Forth* pForth);
+  void vDicKindSet(Forth* pForth);
+  void vDicLastWord(Forth* pForth);
+  void vDicName(Forth* pForth);
+  void vDicRef(Forth* pForth);
+  void vDicRoot(Forth* pForth);
+  void vDicWordCount(Forth* pForth);
 
   // dicLock
-  static void vDicLockDropWrite(Forth* pForth);
-  static void vDicLockGrabWrite(Forth* pForth);
+  void vDicLockDropWrite(Forth* pForth);
+  void vDicLockGrabWrite(Forth* pForth);
 
   // dicPath
-  static void vDicPathDepth(Forth* pForth);
-  static void vDicPathDump(Forth* pForth);
-  static void vDicPathPick(Forth* pForth);
+  void vDicPathDepth(Forth* pForth);
+  void vDicPathDump(Forth* pForth);
+  void vDicPathPick(Forth* pForth);
 
   // dicStack
-  static void vDicStackDepth(Forth* pForth);
-  static void vDicStackDrop(Forth* pForth);
-  static void vDicStackDump(Forth* pForth);
-  static void vDicStackPick(Forth* pForth);
-  static void vDicStackPop(Forth* pForth);
-  static void vDicStackPush(Forth* pForth);
+  void vDicStackDepth(Forth* pForth);
+  void vDicStackDrop(Forth* pForth);
+  void vDicStackDump(Forth* pForth);
+  void vDicStackPick(Forth* pForth);
+  void vDicStackPop(Forth* pForth);
+  void vDicStackPush(Forth* pForth);
 
   // dir
-  static void vDirChangeCurrent(Forth* pForth);
-  static void vDirGetCurrent(Forth* pForth);
-  static void vDirExists(Forth* pForth);
-  static void vDirMake(Forth* pForth);
-  static void vDirRemove(Forth* pForth);
+  void vDirChangeCurrent(Forth* pForth);
+  void vDirGetCurrent(Forth* pForth);
+  void vDirExists(Forth* pForth);
+  void vDirMake(Forth* pForth);
+  void vDirRemove(Forth* pForth);
 
-  static void vDirClose(Forth* pForth);
-  static void vDirDelete(Forth* pForth);
-  static void vDirEntryName(Forth* pForth);
-  static void vDirEntryType(Forth* pForth);
-  static void vDirIsClosed(Forth* pForth);
-  static void vDirIsOpen(Forth* pForth);
-  static void vDirNew(Forth* pForth);
-  static void vDirOpen(Forth* pForth);
-  static void vDirPathGet(Forth* pForth);
-  static void vDirRead(Forth* pForth);
-  static void vDirRewind(Forth* pForth);
-  static void vDirSeek(Forth* pForth);
-  static void vDirTell(Forth* pForth);
+  void vDirClose(Forth* pForth);
+  void vDirDelete(Forth* pForth);
+  void vDirEntryName(Forth* pForth);
+  void vDirEntryType(Forth* pForth);
+  void vDirIsClosed(Forth* pForth);
+  void vDirIsOpen(Forth* pForth);
+  void vDirNew(Forth* pForth);
+  void vDirOpen(Forth* pForth);
+  void vDirPathGet(Forth* pForth);
+  void vDirRead(Forth* pForth);
+  void vDirRewind(Forth* pForth);
+  void vDirSeek(Forth* pForth);
+  void vDirTell(Forth* pForth);
 
   // docol
-  static void vDocolCompiling(Forth* pForth);
-  static void vDocolInterpreting(Forth* pForth);
-  static void vDocolIsCompiling(Forth* pForth);
-  static void vDocolIsInterpreting(Forth* pForth);
+  void vDocolCompiling(Forth* pForth);
+  void vDocolInterpreting(Forth* pForth);
+  void vDocolIsCompiling(Forth* pForth);
+  void vDocolIsInterpreting(Forth* pForth);
 
   // dot
-  static void vDot(Forth* pForth);
-  static void vDotPut(Forth* pForth);
-  static void vDotNewline(Forth* pForth);
-  static void vDotVerbose(Forth* pForth);
+  void vDot(Forth* pForth);
+  void vDotPut(Forth* pForth);
+  void vDotNewline(Forth* pForth);
+  void vDotVerbose(Forth* pForth);
 
   // dstack
-  static void vDstackClass(Forth* pForth);                 //! DUP OF class@
-  static void vDstackDepth(Forth* pForth);
-  static void vDstackDrop(Forth* pForth);
-  static void vDstackDropTwo(Forth* pForth);
-  static void vDstackDup(Forth* pForth);
-  static void vDstackDupNonZero(Forth* pForth);
-  static void vDstackNip(Forth* pForth);
-  static void vDstackOver(Forth* pForth);
-  static void vDstackPick(Forth* pForth);
-  static void vDstackReverse(Forth* pForth);
-  static void vDstackRoll(Forth* pForth);
-  static void vDstackRollInv(Forth* pForth);
-  static void vDstackRot(Forth* pForth);
-  static void vDstackRotInv(Forth* pForth);
-  static void vDstackStk(Forth* pForth);
-  static void vDstackSwap(Forth* pForth);
-  static void vDstackTransfer(Forth* pForth);
-  static void vDstackTuck(Forth* pForth);
+  void vDstackClass(Forth* pForth);                 //! DUP OF class@
+  void vDstackDepth(Forth* pForth);
+  void vDstackDrop(Forth* pForth);
+  void vDstackDropTwo(Forth* pForth);
+  void vDstackDup(Forth* pForth);
+  void vDstackDupNonZero(Forth* pForth);
+  void vDstackNip(Forth* pForth);
+  void vDstackOver(Forth* pForth);
+  void vDstackPick(Forth* pForth);
+  void vDstackReverse(Forth* pForth);
+  void vDstackRoll(Forth* pForth);
+  void vDstackRollInv(Forth* pForth);
+  void vDstackRot(Forth* pForth);
+  void vDstackRotInv(Forth* pForth);
+  void vDstackStk(Forth* pForth);
+  void vDstackSwap(Forth* pForth);
+  void vDstackTransfer(Forth* pForth);
+  void vDstackTuck(Forth* pForth);
 
   // encode
-  static void vEncodeAgain(Forth* pForth);
-  static void vEncodeAhead(Forth* pForth);
-  static void vEncodeContinue(Forth* pForth);
-  static void vEncodeHere(Forth* pForth);
-  static void vEncodeIf(Forth* pForth);
-  static void vEncodeIfAgain(Forth* pForth);
-  static void vEncodeLoop(Forth* pForth);
-  static void vEncodeLoopPlus(Forth* pForth);
-  static void vEncodeNext(Forth* pForth);
-  static void vEncodeThen(Forth* pForth);
-  static void vEncodeUntil(Forth* pForth);
+  void vEncodeAgain(Forth* pForth);
+  void vEncodeAhead(Forth* pForth);
+  void vEncodeContinue(Forth* pForth);
+  void vEncodeHere(Forth* pForth);
+  void vEncodeIf(Forth* pForth);
+  void vEncodeIfAgain(Forth* pForth);
+  void vEncodeLoop(Forth* pForth);
+  void vEncodeLoopPlus(Forth* pForth);
+  void vEncodeNext(Forth* pForth);
+  void vEncodeThen(Forth* pForth);
+  void vEncodeUntil(Forth* pForth);
 
   // ename-set
-  static void vEnmSetAddInt(Forth* pForth);
-  static void vEnmSetAddStr(Forth* pForth);
-  static void vEnmSetAsStr(Forth* pForth);
-  static void vEnmSetGetStr(Forth* pForth);
-  static void vEnmSetHasName(Forth* pForth);
-  static void vEnmSetNew(Forth* pForth);
+  void vEnmSetAddInt(Forth* pForth);
+  void vEnmSetAddStr(Forth* pForth);
+  void vEnmSetAsStr(Forth* pForth);
+  void vEnmSetGetStr(Forth* pForth);
+  void vEnmSetHasName(Forth* pForth);
+  void vEnmSetNew(Forth* pForth);
 
   // enter
-  static void vEnterObject(Forth* pForth);
-  static void vEnterRoutine(Forth* pForth);
+  void vEnterObject(Forth* pForth);
+  void vEnterRoutine(Forth* pForth);
 
   // entry
-  static void vEntryMatches(Forth* pForth);
-  static void vEntrySame(Forth* pForth);
-  static void vEntryToDataRow(Forth* pForth);
+  void vEntryMatches(Forth* pForth);
+  void vEntrySame(Forth* pForth);
+  void vEntryToDataRow(Forth* pForth);
 
   // entry buffer
-  static void vEntBufferDump(Forth* pForth);
-  static void vEntBufferIndexFetch(Forth* pForth);
-  static void vEntBufferIndexStore(Forth* pForth);
-  static void vEntBufferIsLastFetch(Forth* pForth);
-  static void vEntBufferIsLastStore(Forth* pForth);
-  static void vEntBufferNextBuffer(Forth* pForth);
-  static void vEntBufferPartitionFetch(Forth* pForth);
-  static void vEntBufferPartitionStore(Forth* pForth);
-  static void vEntBufferToEntBuffer(Forth* pForth);
+  void vEntBufferDump(Forth* pForth);
+  void vEntBufferIndexFetch(Forth* pForth);
+  void vEntBufferIndexStore(Forth* pForth);
+  void vEntBufferIsLastFetch(Forth* pForth);
+  void vEntBufferIsLastStore(Forth* pForth);
+  void vEntBufferNextBuffer(Forth* pForth);
+  void vEntBufferPartitionFetch(Forth* pForth);
+  void vEntBufferPartitionStore(Forth* pForth);
+  void vEntBufferToEntBuffer(Forth* pForth);
 
   // env
-  static void vEnvGet(Forth* pForth);
+  void vEnvGet(Forth* pForth);
 
   // errors
-  static void vErrorMsg(Forth* pForth);
+  void vErrorMsg(Forth* pForth);
 
   // file
-  static void vFileClose(Forth* pForth);
-  static void vFileDelete(Forth* pForth);
-  static void vFileNew(Forth* pForth);
-  static void vFileOpen(Forth* pForth);
-  static void vFilePathGet(Forth* pForth);
-  static void vFileRead(Forth* pForth);
-  static void vFileReadRecord(Forth* pForth);
-  static void vFileWrite(Forth* pForth);
+  void vFileClose(Forth* pForth);
+  void vFileDelete(Forth* pForth);
+  void vFileNew(Forth* pForth);
+  void vFileOpen(Forth* pForth);
+  void vFilePathGet(Forth* pForth);
+  void vFileRead(Forth* pForth);
+  void vFileReadRecord(Forth* pForth);
+  void vFileWrite(Forth* pForth);
 
   // flow
-  static void vFlowBegin_(Forth* pForth);
-  static void vFlowExecute(Forth* pForth);
-  static void vFlowHazard(Forth* pForth);
-  static void vFlowJump(Forth* pForth);
-  static void vFlowJumpBegin_(Forth* pForth);
-  static void vFlowJumpFalse(Forth* pForth);
-  static void vFlowJumpTrue(Forth* pForth);
-  static void vFlowNop(Forth* pForth);
-  static void vFlowRetryPoint(Forth* pForth);
-  static void vFlowTest(Forth* pForth);
-  static void vFlowThrow(Forth* pForth);
+  void vFlowBegin_(Forth* pForth);
+  void vFlowExecute(Forth* pForth);
+  void vFlowHazard(Forth* pForth);
+  void vFlowJump(Forth* pForth);
+  void vFlowJumpBegin_(Forth* pForth);
+  void vFlowJumpFalse(Forth* pForth);
+  void vFlowJumpTrue(Forth* pForth);
+  void vFlowNop(Forth* pForth);
+  void vFlowRetryPoint(Forth* pForth);
+  void vFlowTest(Forth* pForth);
+  void vFlowThrow(Forth* pForth);
 
   // forth
-  static void vAllot(Forth* pForth);
-  static void vCell(Forth* pForth);
-  static void vColon(Forth* pForth);
-  static void vComma(Forth* pForth);
-  static void vCompileComma(Forth* pForth);
-  static void vCreate(Forth* pForth);
-  static void vCreateFrom(Forth* pForth);
-  static void vCreateFromInRoot(Forth* pForth);
-  static void vCreateFromPersistent(Forth* pForth);
-  static void vCreatePersistent(Forth* pForth);
-  static void vCreateTenants(Forth* pForth);
-  static void vDoes(Forth* pForth);
-  static void vDoes_RT(Forth* pForth);
-  static void vExit_RT(Forth* pForth);
-  static void vFind(Forth* pForth);
-  static void vFindInCurrent(Forth* pForth);
-  static void vForget(Forth* pForth);
-  static void vImmediate(Forth* pForth);
-  static void vLocate(Forth* pForth);
-  static void vPostpone(Forth* pForth);
-  static void vPrompt(Forth* pForth);
-  static void vSee(Forth* pForth);
-  static void vSemicolon(Forth* pForth);
-  static void vSeriesName(Forth* pForth);
-  static void vSubDic(Forth* pForth);
-  static void vTick(Forth* pForth);
+  void vAllot(Forth* pForth);
+  void vCell(Forth* pForth);
+  void vColon(Forth* pForth);
+  void vComma(Forth* pForth);
+  void vCompileComma(Forth* pForth);
+  void vCreate(Forth* pForth);
+  void vCreateFrom(Forth* pForth);
+  void vCreateFromInRoot(Forth* pForth);
+  void vCreateFromPersistent(Forth* pForth);
+  void vCreatePersistent(Forth* pForth);
+  void vCreateTenants(Forth* pForth);
+  void vDoes(Forth* pForth);
+  void vDoes_RT(Forth* pForth);
+  void vExit_RT(Forth* pForth);
+  void vFind(Forth* pForth);
+  void vFindInCurrent(Forth* pForth);
+  void vForget(Forth* pForth);
+  void vImmediate(Forth* pForth);
+  void vLocate(Forth* pForth);
+  void vPostpone(Forth* pForth);
+  void vPrompt(Forth* pForth);
+  void vSee(Forth* pForth);
+  void vSemicolon(Forth* pForth);
+  void vSeriesName(Forth* pForth);
+  void vSubDic(Forth* pForth);
+  void vTick(Forth* pForth);
 
   // grid
-  static void vGridConnectedNodes(Forth* pForth);
-  static void vGridDefinedNodes(Forth* pForth);
-  static void vGridFindNode(Forth* pForth);
-  static void vGridIncConnectedNodes(Forth* pForth);
-  static void vGridNode(Forth* pForth);
-  static void vGridPartitions(Forth* pForth);
-  static void vGridShow(Forth* pForth);
-  static void vGridSlots(Forth* pForth);
-  static void vGridStartedStore(Forth* pForth);
-  static void vGridStartedFetch(Forth* pForth);
-  static void vGridStartNodeStore(Forth* pForth);
-  static void vGridStartNodeFetch(Forth* pForth);
-  static void vGridThisNodeFetch(Forth* pForth);
-  static void vGridThisNodeNameFetch(Forth* pForth);
-  static void vGridToNode(Forth* pForth);
-  static void vGridToPartition(Forth* pForth);
-  static void vGridToSlot(Forth* pForth);
+  void vGridConnectedNodes(Forth* pForth);
+  void vGridDefinedNodes(Forth* pForth);
+  void vGridFindNode(Forth* pForth);
+  void vGridIncConnectedNodes(Forth* pForth);
+  void vGridNode(Forth* pForth);
+  void vGridPartitions(Forth* pForth);
+  void vGridShow(Forth* pForth);
+  void vGridSlots(Forth* pForth);
+  void vGridStartedStore(Forth* pForth);
+  void vGridStartedFetch(Forth* pForth);
+  void vGridStartNodeStore(Forth* pForth);
+  void vGridStartNodeFetch(Forth* pForth);
+  void vGridThisNodeFetch(Forth* pForth);
+  void vGridThisNodeNameFetch(Forth* pForth);
+  void vGridToNode(Forth* pForth);
+  void vGridToPartition(Forth* pForth);
+  void vGridToSlot(Forth* pForth);
 
   // group by
-  static void vGroupByApplyBuffer(Forth* pForth);
-  static void vGroupByApplyEntry(Forth* pForth);
-  static void vGroupByApplyPartial(Forth* pForth);
-  static void vGroupByDelete(Forth* pForth);
-  static void vGroupByEnd(Forth* pForth);
-  static void vGroupByNew(Forth* pForth);
-  static void vGroupByStart(Forth* pForth);
+  void vGroupByApplyBuffer(Forth* pForth);
+  void vGroupByApplyEntry(Forth* pForth);
+  void vGroupByApplyPartial(Forth* pForth);
+  void vGroupByDelete(Forth* pForth);
+  void vGroupByEnd(Forth* pForth);
+  void vGroupByNew(Forth* pForth);
+  void vGroupByStart(Forth* pForth);
 
   // handler
-  static void vHandlerServiceSleepQueue(Forth* pForth);
+  void vHandlerServiceSleepQueue(Forth* pForth);
 
   // index
-  static void vIndexAnalyze(Forth* pForth);
-  static void vIndexColumnFetch(Forth* pForth);
-  static void vIndexColumnCountFetch(Forth* pForth);
-  static void vIndexColumnName(Forth* pForth);
-  static void vIndexColumnType(Forth* pForth);
-  static void vIndexCompact(Forth* pForth);
-  static void vIndexCreateColumnVec(Forth* pForth);
-  static void vIndexDump(Forth* pForth);
-  static void vIndexInit(Forth* pForth);
-  static void vIndexIsPrimaryKeyFetch(Forth* pForth);
-  static void vIndexIsPrimaryKeyStore(Forth* pForth);
-  static void vIndexIsUniqueFetch(Forth* pForth);
-  static void vIndexIsUniqueStore(Forth* pForth);
-  static void vIndexIsValidUniqueIndex(Forth* pForth);
-  static void vIndexLowerBound(Forth* pForth);
-  static void vIndexNameFetch(Forth* pForth);
-  static void vIndexPopulate(Forth* pForth);
-  static void vIndexRange(Forth* pForth);
-  static void vIndexShowColumnVec(Forth* pForth);
-  static void vIndexSpace(Forth* pForth);
-  static void vIndexSubDic(Forth* pForth);
-  static void vIndexTableFetch(Forth* pForth);
-  static void vIndexTableStore(Forth* pForth);
-  static void vIndexTruncate(Forth* pForth);
-  static void vIndexUpperBound(Forth* pForth);
-  static void vIndexVerify(Forth* pForth);
-  static void vIndexVisualize(Forth* pForth);
+  void vIndexAnalyze(Forth* pForth);
+  void vIndexColumnFetch(Forth* pForth);
+  void vIndexColumnCountFetch(Forth* pForth);
+  void vIndexColumnName(Forth* pForth);
+  void vIndexColumnType(Forth* pForth);
+  void vIndexCompact(Forth* pForth);
+  void vIndexCreateColumnVec(Forth* pForth);
+  void vIndexDump(Forth* pForth);
+  void vIndexInit(Forth* pForth);
+  void vIndexIsPrimaryKeyFetch(Forth* pForth);
+  void vIndexIsPrimaryKeyStore(Forth* pForth);
+  void vIndexIsUniqueFetch(Forth* pForth);
+  void vIndexIsUniqueStore(Forth* pForth);
+  void vIndexIsValidUniqueIndex(Forth* pForth);
+  void vIndexLowerBound(Forth* pForth);
+  void vIndexNameFetch(Forth* pForth);
+  void vIndexPopulate(Forth* pForth);
+  void vIndexRange(Forth* pForth);
+  void vIndexShowColumnVec(Forth* pForth);
+  void vIndexSpace(Forth* pForth);
+  void vIndexSubDic(Forth* pForth);
+  void vIndexTableFetch(Forth* pForth);
+  void vIndexTableStore(Forth* pForth);
+  void vIndexTruncate(Forth* pForth);
+  void vIndexUpperBound(Forth* pForth);
+  void vIndexVerify(Forth* pForth);
+  void vIndexVisualize(Forth* pForth);
 
   // input
-  static void vInputClose(Forth* pForth);
-  static void vInputDepth(Forth* pForth);
-  static void vInputNext(Forth* pForth);
-  static void vInputOpen(Forth* pForth);
-  static void vInputPop(Forth* pForth);
-  static void vInputPush(Forth* pForth);
-  static void vInputStdin(Forth* pForth);
-  static void vInputText(Forth* pForth);
-  static void vInputToken(Forth* pForth);
-  static void vInputType(Forth* pForth);
-  static void vInputUnknown(Forth* pForth);
+  void vInputClose(Forth* pForth);
+  void vInputDepth(Forth* pForth);
+  void vInputNext(Forth* pForth);
+  void vInputOpen(Forth* pForth);
+  void vInputPop(Forth* pForth);
+  void vInputPush(Forth* pForth);
+  void vInputStdin(Forth* pForth);
+  void vInputText(Forth* pForth);
+  void vInputToken(Forth* pForth);
+  void vInputType(Forth* pForth);
+  void vInputUnknown(Forth* pForth);
 
   // int
-  static void vIntAdd(Forth* pForth);
-  static void vIntDivide(Forth* pForth);
-  static void vIntEqual(Forth* pForth);
-  static void vIntGreater(Forth* pForth);
-  static void vIntGreaterEqual(Forth* pForth);
-  static void vIntHash(Forth* pForth);
-  static void vIntHo16(Forth* pForth);
-  static void vIntLess(Forth* pForth);
-  static void vIntLessEqual(Forth* pForth);
-  static void vIntModulo(Forth* pForth);
-  static void vIntMultiply(Forth* pForth);
-  static void vIntNeg(Forth* pForth);
-  static void vIntNotEqual(Forth* pForth);
-  static void vIntRandom(Forth* pForth);
-  static void vIntSubtract(Forth* pForth);
-  static void vUnsignedIntRandom(Forth* pForth);
+  void vIntAdd(Forth* pForth);
+  void vIntDivide(Forth* pForth);
+  void vIntEqual(Forth* pForth);
+  void vIntGreater(Forth* pForth);
+  void vIntGreaterEqual(Forth* pForth);
+  void vIntHash(Forth* pForth);
+  void vIntHo16(Forth* pForth);
+  void vIntLess(Forth* pForth);
+  void vIntLessEqual(Forth* pForth);
+  void vIntModulo(Forth* pForth);
+  void vIntMultiply(Forth* pForth);
+  void vIntNeg(Forth* pForth);
+  void vIntNotEqual(Forth* pForth);
+  void vIntRandom(Forth* pForth);
+  void vIntSubtract(Forth* pForth);
+  void vUnsignedIntRandom(Forth* pForth);
 
   // jobClass
-  static void vJobClassBuffer(Forth* pForth);
-  static void vJobClassFind(Forth* pForth);
-  static void vJobClassName(Forth* pForth);
-  static void vJobClassNew(Forth* pForth);
+  void vJobClassBuffer(Forth* pForth);
+  void vJobClassFind(Forth* pForth);
+  void vJobClassName(Forth* pForth);
+  void vJobClassNew(Forth* pForth);
 
-  static void vJobClassSeedRun(Forth* pForth);
-  static void vJobClassSeedReq(Forth* pForth);
-  static void vJobClassSeedRcv(Forth* pForth);
-  static void vJobClassSeedExe(Forth* pForth);
-  static void vJobClassSeedEnd(Forth* pForth);
-  static void vJobClassSeedCan(Forth* pForth);
+  void vJobClassSeedRun(Forth* pForth);
+  void vJobClassSeedReq(Forth* pForth);
+  void vJobClassSeedRcv(Forth* pForth);
+  void vJobClassSeedExe(Forth* pForth);
+  void vJobClassSeedEnd(Forth* pForth);
+  void vJobClassSeedCan(Forth* pForth);
 
   // job
-  static void vJobAcksRemaining(Forth* pForth);
-  static void vJobAddOriginator(Forth* pForth);
-  static void vJobAddParticipant(Forth* pForth);
-  static void vJobAssertBegin(Forth* pForth);
-  static void vJobAssertNeutral(Forth* pForth);
-  static void vJobAssertOriginator(Forth* pForth);
-  static void vJobAssertParticipant(Forth* pForth);
-  static void vJobAssertReceived(Forth* pForth);
+  void vJobAcksRemaining(Forth* pForth);
+  void vJobAddOriginator(Forth* pForth);
+  void vJobAddParticipant(Forth* pForth);
+  void vJobAssertBegin(Forth* pForth);
+  void vJobAssertNeutral(Forth* pForth);
+  void vJobAssertOriginator(Forth* pForth);
+  void vJobAssertParticipant(Forth* pForth);
+  void vJobAssertReceived(Forth* pForth);
 
   // job mark 2
-  static void vJobMark2IndexStore(Forth* pForth);
-  static void vJobMark2TableNameFetch(Forth* pForth);
-  static void vJobMark2TableStore(Forth* pForth);
+  void vJobMark2IndexStore(Forth* pForth);
+  void vJobMark2TableNameFetch(Forth* pForth);
+  void vJobMark2TableStore(Forth* pForth);
 
-  static void vJobCatalogNameFetch(Forth* pForth);
-  static void vJobClass(Forth* pForth);
-  static void vJobColumnCountFetch(Forth* pForth);
-  static void vJobColumnNameFetch(Forth* pForth);
-  static void vJobColumnIsPartKey(Forth* pForth);
-  static void vJobColumnTypeFetch(Forth* pForth);
-  static void vJobCompleted(Forth* pForth);
-  static void vJobCreateResponseVec(Forth* pForth);
-  static void vJobOperandFetch(Forth* pForth);
-  static void vJobOperandStore(Forth* pForth);
+  void vJobCatalogNameFetch(Forth* pForth);
+  void vJobClass(Forth* pForth);
+  void vJobColumnCountFetch(Forth* pForth);
+  void vJobColumnNameFetch(Forth* pForth);
+  void vJobColumnIsPartKey(Forth* pForth);
+  void vJobColumnTypeFetch(Forth* pForth);
+  void vJobCompleted(Forth* pForth);
+  void vJobCreateResponseVec(Forth* pForth);
+  void vJobOperandFetch(Forth* pForth);
+  void vJobOperandStore(Forth* pForth);
 
-  static void vJobDecAcksRemaining(Forth* pForth);
-  static void vJobDelete(Forth* pForth);
-  static void vJobDicPath(Forth* pForth);
+  void vJobDecAcksRemaining(Forth* pForth);
+  void vJobDelete(Forth* pForth);
+  void vJobDicPath(Forth* pForth);
 
-  static void vJobEnameFetch(Forth* pForth);
-  static void vJobEnameStore(Forth* pForth);
-  static void vJobErrorStore(Forth* pForth);
-  static void vJobErrorFetch(Forth* pForth);
-  static void vJobExecuteFetch(Forth* pForth);
+  void vJobEnameFetch(Forth* pForth);
+  void vJobEnameStore(Forth* pForth);
+  void vJobErrorStore(Forth* pForth);
+  void vJobErrorFetch(Forth* pForth);
+  void vJobExecuteFetch(Forth* pForth);
 
-  static void vJobFindOriginator(Forth* pForth);
-  static void vJobFindParticipant(Forth* pForth);
-  static void vJobFolderNameFetch(Forth* pForth);
+  void vJobFindOriginator(Forth* pForth);
+  void vJobFindParticipant(Forth* pForth);
+  void vJobFolderNameFetch(Forth* pForth);
 
-  static void vJobHasError(Forth* pForth);
-  static void vJobHasOperand(Forth* pForth);
+  void vJobHasError(Forth* pForth);
+  void vJobHasOperand(Forth* pForth);
 
-  static void vJobIdFetch(Forth* pForth);
-  static void vJobIndexNameFetch(Forth* pForth);
-  static void vJobIsExecuting(Forth* pForth);
+  void vJobIdFetch(Forth* pForth);
+  void vJobIndexNameFetch(Forth* pForth);
+  void vJobIsExecuting(Forth* pForth);
 
-  static void vJobJobClass(Forth* pForth);
-  static void vJobJobListFetch(Forth* pForth);
+  void vJobJobClass(Forth* pForth);
+  void vJobJobListFetch(Forth* pForth);
 
-  static void vJobMetadataStore(Forth* pForth);
+  void vJobMetadataStore(Forth* pForth);
 
-  static void vJobNodeNameFetch(Forth* pForth);
-  static void vJobNoWaitFetch(Forth* pForth);
+  void vJobNodeNameFetch(Forth* pForth);
+  void vJobNoWaitFetch(Forth* pForth);
 
-  static void vJobObjectNameFetch(Forth* pForth);
-  static void vJobOriginatingTaskFetch(Forth* pForth);
-  static void vJobOriginatingTaskStore(Forth* pForth);
-  static void vJobOriginatorFetch(Forth* pForth);
+  void vJobObjectNameFetch(Forth* pForth);
+  void vJobOriginatingTaskFetch(Forth* pForth);
+  void vJobOriginatingTaskStore(Forth* pForth);
+  void vJobOriginatorFetch(Forth* pForth);
 
-  static void vJobParentIdFetch(Forth* pForth);
-  static void vJobParticipantFetch(Forth* pForth);
-  static void vJobParticipantStore(Forth* pForth);
-  static void vJobParticipantResponseStore(Forth* pForth);
-  static void vJobParticipantHasError(Forth* pForth);
-  static void vJobPartitionsFetch(Forth* pForth);
-  static void vJobPhaseFetch(Forth* pForth);
-  static void vJobPhaseStore(Forth* pForth);
-  static void vJobPostRecv(Forth* pForth);
-  static void vJobPreSend(Forth* pForth);
+  void vJobParentIdFetch(Forth* pForth);
+  void vJobParticipantFetch(Forth* pForth);
+  void vJobParticipantStore(Forth* pForth);
+  void vJobParticipantResponseStore(Forth* pForth);
+  void vJobParticipantHasError(Forth* pForth);
+  void vJobPartitionsFetch(Forth* pForth);
+  void vJobPhaseFetch(Forth* pForth);
+  void vJobPhaseStore(Forth* pForth);
+  void vJobPostRecv(Forth* pForth);
+  void vJobPreSend(Forth* pForth);
 
-  static void vJobRecv(Forth* pForth);
-  static void vJobRegionSizeFetch(Forth* pForth);
-  static void vJobRemoveOriginator(Forth* pForth);
-  static void vJobRemoveParticipant(Forth* pForth);
-  static void vJobReseed(Forth* pForth);
-  static void vJobResponseStore(Forth* pForth);
-  static void vJobResponseFetch(Forth* pForth);
-  static void vJobRoutineNameFetch(Forth* pForth);
-  static void vJobRowsInvalidFetch(Forth* pForth);
-  static void vJobRowsInvalidStore(Forth* pForth);
-  static void vJobRowsProcessedFetch(Forth* pForth);
-  static void vJobRowsProcessedStore(Forth* pForth);
-  static void vJobRowsSkippedFetch(Forth* pForth);
-  static void vJobRowsSkippedStore(Forth* pForth);
+  void vJobRecv(Forth* pForth);
+  void vJobRegionSizeFetch(Forth* pForth);
+  void vJobRemoveOriginator(Forth* pForth);
+  void vJobRemoveParticipant(Forth* pForth);
+  void vJobReseed(Forth* pForth);
+  void vJobResponseStore(Forth* pForth);
+  void vJobResponseFetch(Forth* pForth);
+  void vJobRoutineNameFetch(Forth* pForth);
+  void vJobRowsInvalidFetch(Forth* pForth);
+  void vJobRowsInvalidStore(Forth* pForth);
+  void vJobRowsProcessedFetch(Forth* pForth);
+  void vJobRowsProcessedStore(Forth* pForth);
+  void vJobRowsSkippedFetch(Forth* pForth);
+  void vJobRowsSkippedStore(Forth* pForth);
 
-  static void vJobSchemaNameFetch(Forth* pForth);
-  static void vJobSeedFetch(Forth* pForth);
-  static void vJobSend(Forth* pForth);
-  static void vJobSessionStateFetch(Forth* pForth);
-  static void vJobShow(Forth* pForth);
-  static void vJobSignalWaiter(Forth* pForth);
-  static void vJobSlotFetch(Forth* pForth);
-  static void vJobSpawn(Forth* pForth);
-  static void vJobSpawnDedicated(Forth* pForth);
-  static void vJobStateDiagram(Forth* pForth);
+  void vJobSchemaNameFetch(Forth* pForth);
+  void vJobSeedFetch(Forth* pForth);
+  void vJobSend(Forth* pForth);
+  void vJobSessionStateFetch(Forth* pForth);
+  void vJobShow(Forth* pForth);
+  void vJobSignalWaiter(Forth* pForth);
+  void vJobSlotFetch(Forth* pForth);
+  void vJobSpawn(Forth* pForth);
+  void vJobSpawnDedicated(Forth* pForth);
+  void vJobStateDiagram(Forth* pForth);
 
-  static void vJobTaskFetch(Forth* pForth);
-  static void vJobTaskStore(Forth* pForth);
-  static void vJobTenantNameFetch(Forth* pForth);
-  static void vJobThis(Forth* pForth);
+  void vJobTaskFetch(Forth* pForth);
+  void vJobTaskStore(Forth* pForth);
+  void vJobTenantNameFetch(Forth* pForth);
+  void vJobThis(Forth* pForth);
 
-  static void vJobWaitParticipant(Forth* pForth);
+  void vJobWaitParticipant(Forth* pForth);
 
   // job generic
-  static void vJob__BegunNew(Forth* pForth);
-  static void vJob__CancelNew(Forth* pForth);
-  static void vJob__CancelledNew(Forth* pForth);
-  static void vJob__EndNew(Forth* pForth);
-  static void vJob__EndedNew(Forth* pForth);
-  static void vJob__ExecuteNew(Forth* pForth);
-  static void vJob__ExecutedNew(Forth* pForth);
+  void vJob__BegunNew(Forth* pForth);
+  void vJob__CancelNew(Forth* pForth);
+  void vJob__CancelledNew(Forth* pForth);
+  void vJob__EndNew(Forth* pForth);
+  void vJob__EndedNew(Forth* pForth);
+  void vJob__ExecuteNew(Forth* pForth);
+  void vJob__ExecutedNew(Forth* pForth);
 
   // job analyzeIndex
-  static void vJob_AnalyzeIndexIsDetailed(Forth* pForth);
-  static void vJob_AnalyzeTableIsDetailed(Forth* pForth);
+  void vJob_AnalyzeIndexIsDetailed(Forth* pForth);
+  void vJob_AnalyzeTableIsDetailed(Forth* pForth);
 
   // job Cat
-  static void vJob_CatBegin(Forth* pForth);
-  static void vJob_CatChunk(Forth* pForth);
-  static void vJob_CatEnd(Forth* pForth);
+  void vJob_CatBegin(Forth* pForth);
+  void vJob_CatChunk(Forth* pForth);
+  void vJob_CatEnd(Forth* pForth);
 
   // job CreateIndex
-  static void vJob_CreateIndexIsUniqueFetch(Forth* pForth);
+  void vJob_CreateIndexIsUniqueFetch(Forth* pForth);
 
   // job Dynamic
-  static void vJob_DynamicBegin(Forth* pForth);
-  static void vJob_DynamicEnd(Forth* pForth);
-  static void vJob_DynamicExecute(Forth* pForth);
+  void vJob_DynamicBegin(Forth* pForth);
+  void vJob_DynamicEnd(Forth* pForth);
+  void vJob_DynamicExecute(Forth* pForth);
 
   // job Export
-  static void vJob_ExportAuxAckDecidedFetch(Forth* pForth);
-  static void vJob_ExportAuxAckDecidedStore(Forth* pForth);
-  static void vJob_ExportBegin(Forth* pForth);
-  static void vJob_ExportEnd(Forth* pForth);
-  static void vJob_ExportTableStore(Forth* pForth);
+  void vJob_ExportAuxAckDecidedFetch(Forth* pForth);
+  void vJob_ExportAuxAckDecidedStore(Forth* pForth);
+  void vJob_ExportBegin(Forth* pForth);
+  void vJob_ExportEnd(Forth* pForth);
+  void vJob_ExportTableStore(Forth* pForth);
 
   // job FetchRows
-  static void vJob_FetchRowsColumnNameFetch(Forth* pForth);
-  static void vJob_FetchRowsColumnStore(Forth* pForth);
-  static void vJob_FetchRowsLastBuffersStore(Forth* pForth);
-  static void vJob_FetchRowsPartitionFetch(Forth* pForth);
-  static void vJob_FetchRowsPlannerStore(Forth* pForth);
-  static void vJob_FetchRowsSpawnSub(Forth* pForth);
-  static void vJob_FetchRowsSpawnSubInflate(Forth* pForth);
-  static void vJob_FetchRowsTableStore(Forth* pForth);
-  static void vJob_FetchRowsWhereFetch(Forth* pForth);
+  void vJob_FetchRowsColumnNameFetch(Forth* pForth);
+  void vJob_FetchRowsColumnStore(Forth* pForth);
+  void vJob_FetchRowsLastBuffersStore(Forth* pForth);
+  void vJob_FetchRowsPartitionFetch(Forth* pForth);
+  void vJob_FetchRowsPlannerStore(Forth* pForth);
+  void vJob_FetchRowsSpawnSub(Forth* pForth);
+  void vJob_FetchRowsSpawnSubInflate(Forth* pForth);
+  void vJob_FetchRowsTableStore(Forth* pForth);
+  void vJob_FetchRowsWhereFetch(Forth* pForth);
 
   // job GenData
-  static void vJob_GenerateGenerate(Forth* pForth);
-  static void vJob_GenerateTableStore(Forth* pForth);
+  void vJob_GenerateGenerate(Forth* pForth);
+  void vJob_GenerateTableStore(Forth* pForth);
 
   // job IndexJoin
-  static void vJob_IndexJoinLastBuffersStore(Forth* pForth);
-  static void vJob_IndexJoinLeftIndexStore(Forth* pForth);
-  static void vJob_IndexJoinLeftTableStore(Forth* pForth);
-  static void vJob_IndexJoinRightIndexStore(Forth* pForth);
-  static void vJob_IndexJoinRightIndexNameFetch(Forth* pForth);
-  static void vJob_IndexJoinRightTableStore(Forth* pForth);
-  static void vJob_IndexJoinRightTableNameFetch(Forth* pForth);
-  static void vJob_IndexJoinSpawnSub(Forth* pForth);
-  static void vJob_SubIndexJoinIndexJoin(Forth* pForth);
+  void vJob_IndexJoinLastBuffersStore(Forth* pForth);
+  void vJob_IndexJoinLeftIndexStore(Forth* pForth);
+  void vJob_IndexJoinLeftTableStore(Forth* pForth);
+  void vJob_IndexJoinRightIndexStore(Forth* pForth);
+  void vJob_IndexJoinRightIndexNameFetch(Forth* pForth);
+  void vJob_IndexJoinRightTableStore(Forth* pForth);
+  void vJob_IndexJoinRightTableNameFetch(Forth* pForth);
+  void vJob_IndexJoinSpawnSub(Forth* pForth);
+  void vJob_SubIndexJoinIndexJoin(Forth* pForth);
 
   // job inflate
-  static void vJob_InflateRowsColumnNameFetch(Forth* pForth);
-  static void vJob_InflateRowsColumnStore(Forth* pForth);
-  static void vJob_InflateRowsSpawnSub(Forth* pForth);
-  static void vJob_InflateRowsSpawnSubInflate(Forth* pForth);
-  static void vJob_InflateRowsSubInfTasksFetch(Forth* pForth);
-  static void vJob_InflateRowsTableStore(Forth* pForth);
-  static void vJob_InflateRowsWhereFetch(Forth* pForth);
+  void vJob_InflateRowsColumnNameFetch(Forth* pForth);
+  void vJob_InflateRowsColumnStore(Forth* pForth);
+  void vJob_InflateRowsSpawnSub(Forth* pForth);
+  void vJob_InflateRowsSpawnSubInflate(Forth* pForth);
+  void vJob_InflateRowsSubInfTasksFetch(Forth* pForth);
+  void vJob_InflateRowsTableStore(Forth* pForth);
+  void vJob_InflateRowsWhereFetch(Forth* pForth);
 
   // job Ingest
-  static void vJob_IngestBegin(Forth* pForth);
-  static void vJob_IngestChunk(Forth* pForth);
-  static void vJob_IngestEnd(Forth* pForth);
-  static void vJob_IngestTableStore(Forth* pForth);
+  void vJob_IngestBegin(Forth* pForth);
+  void vJob_IngestChunk(Forth* pForth);
+  void vJob_IngestEnd(Forth* pForth);
+  void vJob_IngestTableStore(Forth* pForth);
 
   // job InsertRows
-  static void vJob_CopyBufferCopy(Forth* pForth);
+  void vJob_CopyBufferCopy(Forth* pForth);
 
-  static void vJob_InsertRowPartitionFetch(Forth* pForth);
-  static void vJob_InsertRowRecordStore(Forth* pForth);
-  static void vJob_InsertRowNewJobWriteRow(Forth* pForth);
-  static void vJob_InsertRowSpawnJobWriteRow(Forth* pForth);
+  void vJob_InsertRowPartitionFetch(Forth* pForth);
+  void vJob_InsertRowRecordStore(Forth* pForth);
+  void vJob_InsertRowNewJobWriteRow(Forth* pForth);
+  void vJob_InsertRowSpawnJobWriteRow(Forth* pForth);
 
-  static void vJob_InsertTableSubInserterJobFetch(Forth* pForth);
+  void vJob_InsertTableSubInserterJobFetch(Forth* pForth);
 
-  static void vJob_SubInserterBegin(Forth* pForth);
-  static void vJob_SubInserterEnd(Forth* pForth);
+  void vJob_SubInserterBegin(Forth* pForth);
+  void vJob_SubInserterEnd(Forth* pForth);
 
   // job KidExport
-  static void vJob_KidExportExportOrigin(Forth* pForth);
-  static void vJob_KidExportExportJobId(Forth* pForth);
-  static void vJob_KidExportWriteExportBuffer(Forth* pForth);
+  void vJob_KidExportExportOrigin(Forth* pForth);
+  void vJob_KidExportExportJobId(Forth* pForth);
+  void vJob_KidExportWriteExportBuffer(Forth* pForth);
 
   // job LoadTable
-  static void vJob_LoadTableBegin(Forth* pForth);
-  static void vJob_LoadTableChunk(Forth* pForth);
-  static void vJob_LoadTableDumpMap(Forth* pForth);
-  static void vJob_LoadTableEnd(Forth* pForth);
-  static void vJob_LoadTableFilePathFetch(Forth* pForth);
-  static void vJob_LoadTableTableStore(Forth* pForth);
+  void vJob_LoadTableBegin(Forth* pForth);
+  void vJob_LoadTableChunk(Forth* pForth);
+  void vJob_LoadTableDumpMap(Forth* pForth);
+  void vJob_LoadTableEnd(Forth* pForth);
+  void vJob_LoadTableFilePathFetch(Forth* pForth);
+  void vJob_LoadTableTableStore(Forth* pForth);
 
   // job Monitor
-  static void vJob_MonitorBegin(Forth* pForth);
-  static void vJob_MonitorTake(Forth* pForth);
-  static void vJob_MonitorEnd(Forth* pForth);
+  void vJob_MonitorBegin(Forth* pForth);
+  void vJob_MonitorTake(Forth* pForth);
+  void vJob_MonitorEnd(Forth* pForth);
 
   // job NetHog
-  static void vJob_NetHogHogNoFetch(Forth* pForth);
+  void vJob_NetHogHogNoFetch(Forth* pForth);
 
   // job NodeInfo
-  static void vJob_NodeInfoNodeNameFetch(Forth* pForth);
+  void vJob_NodeInfoNodeNameFetch(Forth* pForth);
 
   // job publish
-  static void vJob_PublishSpawnSub(Forth* pForth);
-  static void vJob_PublishTableStore(Forth* pForth);
+  void vJob_PublishSpawnSub(Forth* pForth);
+  void vJob_PublishTableStore(Forth* pForth);
 
   // job Purge
-  static void vJob_PurgeSpawnSub(Forth* pForth);
-  static void vJob_PurgeTableStore(Forth* pForth);
+  void vJob_PurgeSpawnSub(Forth* pForth);
+  void vJob_PurgeTableStore(Forth* pForth);
 
   // job Query
-  static void vJob_QueryBegin(Forth* pForth);
-  static void vJob_QueryEnd(Forth* pForth);
-  static void vJob_QueryExecute(Forth* pForth);
+  void vJob_QueryBegin(Forth* pForth);
+  void vJob_QueryEnd(Forth* pForth);
+  void vJob_QueryExecute(Forth* pForth);
 
   // job Receiver
-  static void vJob_ReceiverConnNoFetch(Forth* pForth);
-  static void vJob_ReceiverConnNoStore(Forth* pForth);
-  static void vJob_ReceiverJobReceived(Forth* pForth);
-  static void vJob_ReceiverNodeFetch(Forth* pForth);
-  static void vJob_ReceiverNodeStore(Forth* pForth);
+  void vJob_ReceiverConnNoFetch(Forth* pForth);
+  void vJob_ReceiverConnNoStore(Forth* pForth);
+  void vJob_ReceiverJobReceived(Forth* pForth);
+  void vJob_ReceiverNodeFetch(Forth* pForth);
+  void vJob_ReceiverNodeStore(Forth* pForth);
 
 
 
   // job Repeater
-  static void vJob_RepeaterBegin(Forth* pForth);
-  static void vJob_RepeaterChunk(Forth* pForth);
-  static void vJob_RepeaterEnd(Forth* pForth);
+  void vJob_RepeaterBegin(Forth* pForth);
+  void vJob_RepeaterChunk(Forth* pForth);
+  void vJob_RepeaterEnd(Forth* pForth);
 
   // job Report
-  static void vJob_ReportBegin(Forth* pForth);
-  static void vJob_ReportTake(Forth* pForth);
-  static void vJob_ReportEnd(Forth* pForth);
+  void vJob_ReportBegin(Forth* pForth);
+  void vJob_ReportTake(Forth* pForth);
+  void vJob_ReportEnd(Forth* pForth);
 
   // job Select
-  static void vJob_SelectBegin(Forth* pForth);
-  static void vJob_SelectEnd(Forth* pForth);
-  static void vJob_SelectExecute(Forth* pForth);
+  void vJob_SelectBegin(Forth* pForth);
+  void vJob_SelectEnd(Forth* pForth);
+  void vJob_SelectExecute(Forth* pForth);
 
   // job SelectTable
-  static void vJob_SelectTablePartitionFetch(Forth* pForth);
-  static void vJob_SelectTableTableStore(Forth* pForth);
+  void vJob_SelectTablePartitionFetch(Forth* pForth);
+  void vJob_SelectTableTableStore(Forth* pForth);
 
   // job Sink
-  static void vJob_SinkBegin(Forth* pForth);
-  static void vJob_SinkChunk(Forth* pForth);
-  static void vJob_SinkEnd(Forth* pForth);
+  void vJob_SinkBegin(Forth* pForth);
+  void vJob_SinkChunk(Forth* pForth);
+  void vJob_SinkEnd(Forth* pForth);
 
   // job Sort
-  static void vJob_SortBegin(Forth* pForth);
-  static void vJob_SortEnd(Forth* pForth);
-  static void vJob_SortExecute(Forth* pForth);
+  void vJob_SortBegin(Forth* pForth);
+  void vJob_SortEnd(Forth* pForth);
+  void vJob_SortExecute(Forth* pForth);
 
   // job SubExporter
-  static void vJob_SubExporterBegin(Forth* pForth);
-  static void vJob_SubExporterChunk(Forth* pForth);
-  static void vJob_SubExporterEnd(Forth* pForth);
-  static void vJob_SubExporterSpawn(Forth* pForth);
-  static void vJob_SubExporterExportJobFetch(Forth* pForth);
+  void vJob_SubExporterBegin(Forth* pForth);
+  void vJob_SubExporterChunk(Forth* pForth);
+  void vJob_SubExporterEnd(Forth* pForth);
+  void vJob_SubExporterSpawn(Forth* pForth);
+  void vJob_SubExporterExportJobFetch(Forth* pForth);
 
   // job SubFetch
-  static void vJob_SubFetchBufferQueueFetch(Forth* pForth);
-  static void vJob_SubFetchPhraseFetch(Forth* pForth);
-  static void vJob_SubFetchPlannerFetch(Forth* pForth);
-  static void vJob_SubFetchSlotFetch(Forth* pForth);
+  void vJob_SubFetchBufferQueueFetch(Forth* pForth);
+  void vJob_SubFetchPhraseFetch(Forth* pForth);
+  void vJob_SubFetchPlannerFetch(Forth* pForth);
+  void vJob_SubFetchSlotFetch(Forth* pForth);
 
   // job SubInflate
-  static void vJob_SubInflateJobInflateRowsFetch(Forth* pForth);
-  static void vJob_SubInflateInflateRows(Forth* pForth);
+  void vJob_SubInflateJobInflateRowsFetch(Forth* pForth);
+  void vJob_SubInflateInflateRows(Forth* pForth);
 
   // job SubIngester
-  static void vJob_SubIngesterBegin(Forth* pForth);
-  static void vJob_SubIngesterChunk(Forth* pForth);
-  static void vJob_SubIngesterEnd(Forth* pForth);
-  static void vJob_SubIngesterJobIngest(Forth* pForth);
-  static void vJob_SubIngesterSpawn(Forth* pForth);
+  void vJob_SubIngesterBegin(Forth* pForth);
+  void vJob_SubIngesterChunk(Forth* pForth);
+  void vJob_SubIngesterEnd(Forth* pForth);
+  void vJob_SubIngesterJobIngest(Forth* pForth);
+  void vJob_SubIngesterSpawn(Forth* pForth);
 
   // job SubLoader
-  static void vJob_SubLoaderBegin(Forth* pForth);
-  static void vJob_SubLoaderChunk(Forth* pForth);
-  static void vJob_SubLoaderEnd(Forth* pForth);
-  static void vJob_SubLoaderSpawn(Forth* pForth);
-  static void vJob_SubLoaderTerminate(Forth* pForth);
+  void vJob_SubLoaderBegin(Forth* pForth);
+  void vJob_SubLoaderChunk(Forth* pForth);
+  void vJob_SubLoaderEnd(Forth* pForth);
+  void vJob_SubLoaderSpawn(Forth* pForth);
+  void vJob_SubLoaderTerminate(Forth* pForth);
 
   // job SubPublish
-  static void vJob_SubPublishBegin(Forth* pForth);
-  static void vJob_SubPublishChunk(Forth* pForth);
-  static void vJob_SubPublishEnd(Forth* pForth);
-  static void vJob_SubPublishSlotFetch(Forth* pForth);
-  static void vJob_SubPublishTableStore(Forth* pForth);
-  static void vJob_SubPublishPublishJobIdFetch(Forth* pForth);
+  void vJob_SubPublishBegin(Forth* pForth);
+  void vJob_SubPublishChunk(Forth* pForth);
+  void vJob_SubPublishEnd(Forth* pForth);
+  void vJob_SubPublishSlotFetch(Forth* pForth);
+  void vJob_SubPublishTableStore(Forth* pForth);
+  void vJob_SubPublishPublishJobIdFetch(Forth* pForth);
 
   // job SubPurger
-  static void vJob_SubPurgerBegin(Forth* pForth);
-  static void vJob_SubPurgerChunk(Forth* pForth);
-  static void vJob_SubPurgerEnd(Forth* pForth);
+  void vJob_SubPurgerBegin(Forth* pForth);
+  void vJob_SubPurgerChunk(Forth* pForth);
+  void vJob_SubPurgerEnd(Forth* pForth);
 
-  static void vJob_SubPurgerSlotFetch(Forth* pForth);
-  static void vJob_SubPurgerPurgeJobIdFetch(Forth* pForth);
+  void vJob_SubPurgerSlotFetch(Forth* pForth);
+  void vJob_SubPurgerPurgeJobIdFetch(Forth* pForth);
 
   // job SubScan
-  static void vJob_SubScanBufferQueueFetch(Forth* pForth);
-  static void vJob_SubScanSlotFetch(Forth* pForth);
+  void vJob_SubScanBufferQueueFetch(Forth* pForth);
+  void vJob_SubScanSlotFetch(Forth* pForth);
 
   // Job SubTruncate
-  static void vJob_SubTruncateSlotFetch(Forth* pForth);
-  static void vJob_SubTruncateTruncateJobIdFetch(Forth* pForth);
+  void vJob_SubTruncateSlotFetch(Forth* pForth);
+  void vJob_SubTruncateTruncateJobIdFetch(Forth* pForth);
 
   // job SubWalker
-  static void vJob_SubWalkerBegin(Forth* pForth);
-  static void vJob_SubWalkerChunk(Forth* pForth);
-  static void vJob_SubWalkerEnd(Forth* pForth);
-  static void vJob_SubWalkerWalkJobFetch(Forth* pForth);
-  static void vJob_SubWalkerSpawn(Forth* pForth);
+  void vJob_SubWalkerBegin(Forth* pForth);
+  void vJob_SubWalkerChunk(Forth* pForth);
+  void vJob_SubWalkerEnd(Forth* pForth);
+  void vJob_SubWalkerWalkJobFetch(Forth* pForth);
+  void vJob_SubWalkerSpawn(Forth* pForth);
 
   // Job Truncate
-  static void vJob_TruncateTableSpawnSub(Forth* pForth);
+  void vJob_TruncateTableSpawnSub(Forth* pForth);
 
   // job Walk
-  static void vJob_WalkBegin(Forth* pForth);
-  static void vJob_WalkEnd(Forth* pForth);
-  static void vJob_WalkIndexStore(Forth* pForth);
-  static void vJob_WalkTableStore(Forth* pForth);
+  void vJob_WalkBegin(Forth* pForth);
+  void vJob_WalkEnd(Forth* pForth);
+  void vJob_WalkIndexStore(Forth* pForth);
+  void vJob_WalkTableStore(Forth* pForth);
 
   // Job WriteBuffer
-  static void vJob_WriteBufferParentJobIdFetch(Forth* pForth);
-  static void vJob_WriteBufferInsertRows(Forth* pForth);
-  static void vJob_WriteBufferIsIngesting(Forth* pForth);
-  static void vJob_WriteBufferIsInserting(Forth* pForth);
-  static void vJob_WriteBufferIsLoading(Forth* pForth);
-  static void vJob_WriteBufferPartitionFetch(Forth* pForth);
-  static void vJob_WriteBufferTableStore(Forth* pForth);
+  void vJob_WriteBufferParentJobIdFetch(Forth* pForth);
+  void vJob_WriteBufferInsertRows(Forth* pForth);
+  void vJob_WriteBufferIsIngesting(Forth* pForth);
+  void vJob_WriteBufferIsInserting(Forth* pForth);
+  void vJob_WriteBufferIsLoading(Forth* pForth);
+  void vJob_WriteBufferPartitionFetch(Forth* pForth);
+  void vJob_WriteBufferTableStore(Forth* pForth);
 
   // Job WriteRow
-  static void vJob_WriteRowParentJobIdFetch(Forth* pForth);
-  static void vJob_WriteRowEncodeRow(Forth* pForth);
-  static void vJob_WriteRowInsertRow(Forth* pForth);
-  static void vJob_WriteRowPartitionFetch(Forth* pForth);
-  static void vJob_WriteRowTableStore(Forth* pForth);
+  void vJob_WriteRowParentJobIdFetch(Forth* pForth);
+  void vJob_WriteRowEncodeRow(Forth* pForth);
+  void vJob_WriteRowInsertRow(Forth* pForth);
+  void vJob_WriteRowPartitionFetch(Forth* pForth);
+  void vJob_WriteRowTableStore(Forth* pForth);
 
   // Job Operand
-  static void vJob_OperandPipeOut(Forth* pForth);
+  void vJob_OperandPipeOut(Forth* pForth);
 
   // load table
-  static void vLoadTableChunkFile(Forth* pForth);
-  static void vLoadTableDelete(Forth* pForth);
-  static void vLoadTableDumpMap(Forth* pForth);
-  static void vLoadTableNew(Forth* pForth);
-  static void vLoadTableTableStore(Forth* pForth);
+  void vLoadTableChunkFile(Forth* pForth);
+  void vLoadTableDelete(Forth* pForth);
+  void vLoadTableDumpMap(Forth* pForth);
+  void vLoadTableNew(Forth* pForth);
+  void vLoadTableTableStore(Forth* pForth);
 
   // locals
-  static void vLocalFetch(Forth* pForth);
-  static void vLocalStore(Forth* pForth);
-  static void vLocalsBar(Forth* pForth);
-  static void vLocalsPop(Forth* pForth);
-  static void vLocalsPush(Forth* pForth);
-  static void vLocalsTo(Forth* pForth);
+  void vLocalFetch(Forth* pForth);
+  void vLocalStore(Forth* pForth);
+  void vLocalsBar(Forth* pForth);
+  void vLocalsPop(Forth* pForth);
+  void vLocalsPush(Forth* pForth);
+  void vLocalsTo(Forth* pForth);
 
   // lock
-  static void vLockDropRead(Forth* pForth);
-  static void vLockDropWrite(Forth* pForth);
-  static void vLockGrabRead(Forth* pForth);
-  static void vLockGrabWrite(Forth* pForth);
-  static void vLockInit(Forth* pForth);
+  void vLockDropRead(Forth* pForth);
+  void vLockDropWrite(Forth* pForth);
+  void vLockGrabRead(Forth* pForth);
+  void vLockGrabWrite(Forth* pForth);
+  void vLockInit(Forth* pForth);
 
   // locks
-  static void vLockTrackerList(Forth* pForth);
-  static void vLockTrackerReset(Forth* pForth);
+  void vLockTrackerList(Forth* pForth);
+  void vLockTrackerReset(Forth* pForth);
 
   // log
-  static void vLogDump(Forth* pForth);
-  static void vLogMark(Forth* pForth);
-  static void vLogMarkEntry(Forth* pForth);
-  static void vLogMarkExit(Forth* pForth);
-  static void vLogMarkPhase(Forth* pForth);
+  void vLogDump(Forth* pForth);
+  void vLogMark(Forth* pForth);
+  void vLogMarkEntry(Forth* pForth);
+  void vLogMarkExit(Forth* pForth);
+  void vLogMarkPhase(Forth* pForth);
 
-  static void vLogMarkWord(Forth* pForth);
-  static void vLogMarkSeed(Forth* pForth);
+  void vLogMarkWord(Forth* pForth);
+  void vLogMarkSeed(Forth* pForth);
 
-  static void vLogJobSeed(Forth* pForth);
+  void vLogJobSeed(Forth* pForth);
 
   // logic
-  static void vLogicAnd(Forth* pForth);
-  static void vLogicNot(Forth* pForth);
-  static void vLogicOr(Forth* pForth);
+  void vLogicAnd(Forth* pForth);
+  void vLogicNot(Forth* pForth);
+  void vLogicOr(Forth* pForth);
 
   // magnitude
-  static void vBytesMagnitude(Forth* pForth);
-  static void vNumberMagnitude(Forth* pForth);
-  static void vToDigitName(Forth* pForth);
+  void vBytesMagnitude(Forth* pForth);
+  void vNumberMagnitude(Forth* pForth);
+  void vToDigitName(Forth* pForth);
 
   // memory
-  static void vMemoryByteDump(Forth* pForth);
-  static void vMemoryReset(Forth* pForth);
-  static void vMemoryStatistics(Forth* pForth);
-  static void vMemoryWordDump(Forth* pForth);
+  void vMemoryByteDump(Forth* pForth);
+  void vMemoryReset(Forth* pForth);
+  void vMemoryStatistics(Forth* pForth);
+  void vMemoryWordDump(Forth* pForth);
 
   // node (of grid)
-  static void vNodeForget(Forth* pForth);
-  static void vNodeIP(Forth* pForth);
-  static void vNodeName(Forth* pForth);
-  static void vNodeNew(Forth* pForth);
-  static void vNodeNo(Forth* pForth);
-  static void vNodePartitions(Forth* pForth);
-  static void vNodePort(Forth* pForth);
-  static void vNodeRecvSocketStore(Forth* pForth);
-  static void vNodeRecvSocketFetch(Forth* pForth);
-  static void vNodeSendSocketStore(Forth* pForth);
-  static void vNodeSendSocketFetch(Forth* pForth);
-  static void vNodeSize(Forth* pForth);
-  static void vNodeStartNode(Forth* pForth);
-  static void vNodeStateStore(Forth* pForth);
-  static void vNodeStateFetch(Forth* pForth);
-  static void vNodeStatus(Forth* pForth);
+  void vNodeForget(Forth* pForth);
+  void vNodeIP(Forth* pForth);
+  void vNodeName(Forth* pForth);
+  void vNodeNew(Forth* pForth);
+  void vNodeNo(Forth* pForth);
+  void vNodePartitions(Forth* pForth);
+  void vNodePort(Forth* pForth);
+  void vNodeRecvSocketStore(Forth* pForth);
+  void vNodeRecvSocketFetch(Forth* pForth);
+  void vNodeSendSocketStore(Forth* pForth);
+  void vNodeSendSocketFetch(Forth* pForth);
+  void vNodeSize(Forth* pForth);
+  void vNodeStartNode(Forth* pForth);
+  void vNodeStateStore(Forth* pForth);
+  void vNodeStateFetch(Forth* pForth);
+  void vNodeStatus(Forth* pForth);
 
   // object
-  static void vObjectClassFetch(Forth* pForth);
-  static void vObjectClassStore(Forth* pForth);
-  static void vObjectDump(Forth* pForth);
-  static void vObjectFetch(Forth* pForth);
-  static void vObjectMagicMark(Forth* pForth);
-  static void vObjectStore(Forth* pForth);
-  static void vObjectWordBodySet(Forth* pForth);
+  void vObjectClassFetch(Forth* pForth);
+  void vObjectClassStore(Forth* pForth);
+  void vObjectDump(Forth* pForth);
+  void vObjectFetch(Forth* pForth);
+  void vObjectMagicMark(Forth* pForth);
+  void vObjectStore(Forth* pForth);
+  void vObjectWordBodySet(Forth* pForth);
 
   // persistence
-  static void vPersistenceCheckpoint(Forth* pForth);
-  static void vPersistenceReload(Forth* pForth);
+  void vPersistenceCheckpoint(Forth* pForth);
+  void vPersistenceReload(Forth* pForth);
 
   // plan
-  static void vPlanCompile(Forth* pForth);
-  static void vPlanDelete(Forth* pForth);
-  static void vPlanDic(Forth* pForth);
-  static void vPlanExecutingTaskFetch(Forth* pForth);
-  static void vPlanExecutingTaskStore(Forth* pForth);
-  static void vPlanFinished(Forth* pForth);
-  static void vPlanIdFetch(Forth* pForth);
-  static void vPlanLambdaAppend(Forth* pForth);
-  static void vPlanLambdaFetch(Forth* pForth);
-  static void vPlanLambdaStore(Forth* pForth);
-  static void vPlanNew(Forth* pForth);
-  static void vPlanNameFetch(Forth* pForth);
-  static void vPlanNameStore(Forth* pForth);
-  static void vPlanShow(Forth* pForth);
+  void vPlanCompile(Forth* pForth);
+  void vPlanDelete(Forth* pForth);
+  void vPlanDic(Forth* pForth);
+  void vPlanExecutingTaskFetch(Forth* pForth);
+  void vPlanExecutingTaskStore(Forth* pForth);
+  void vPlanFinished(Forth* pForth);
+  void vPlanIdFetch(Forth* pForth);
+  void vPlanLambdaAppend(Forth* pForth);
+  void vPlanLambdaFetch(Forth* pForth);
+  void vPlanLambdaStore(Forth* pForth);
+  void vPlanNew(Forth* pForth);
+  void vPlanNameFetch(Forth* pForth);
+  void vPlanNameStore(Forth* pForth);
+  void vPlanShow(Forth* pForth);
 
   // planner
-  static void vPlannerChoosePaths(Forth* pForth);
-  static void vPlannerChosenPath(Forth* pForth);
-  static void vPlannerDelete(Forth* pForth);
-  static void vPlannerFetchTechniqueFetch(Forth* pForth);
-  static void vPlannerGenPaths(Forth* pForth);
-  static void vPlannerHighKeyFetch(Forth* pForth);
-  static void vPlannerIndexNmFetch(Forth* pForth);
-  static void vPlannerKeyFetch(Forth* pForth);
-  static void vPlannerLowKeyFetch(Forth* pForth);
-  static void vPlannerMatchPaths(Forth* pForth);
-  static void vPlannerNew(Forth* pForth);
-  static void vPlannerParseWhere(Forth* pForth);
-  static void vPlannerPhrasesFetch(Forth* pForth);
-  static void vPlannerScorePaths(Forth* pForth);
-  static void vPlannerShowPaths(Forth* pForth);
-  static void vPlannerTableFetch(Forth* pForth);
-  static void vPlannerTableStore(Forth* pForth);
+  void vPlannerChoosePaths(Forth* pForth);
+  void vPlannerChosenPath(Forth* pForth);
+  void vPlannerDelete(Forth* pForth);
+  void vPlannerFetchTechniqueFetch(Forth* pForth);
+  void vPlannerGenPaths(Forth* pForth);
+  void vPlannerHighKeyFetch(Forth* pForth);
+  void vPlannerIndexNmFetch(Forth* pForth);
+  void vPlannerKeyFetch(Forth* pForth);
+  void vPlannerLowKeyFetch(Forth* pForth);
+  void vPlannerMatchPaths(Forth* pForth);
+  void vPlannerNew(Forth* pForth);
+  void vPlannerParseWhere(Forth* pForth);
+  void vPlannerPhrasesFetch(Forth* pForth);
+  void vPlannerScorePaths(Forth* pForth);
+  void vPlannerShowPaths(Forth* pForth);
+  void vPlannerTableFetch(Forth* pForth);
+  void vPlannerTableStore(Forth* pForth);
 
   // process
-  static void vProcessGetPid(Forth* pForth);
-  static void vProcessQuit(Forth* pForth);
-  static void vProcessTestPid(Forth* pForth);
+  void vProcessGetPid(Forth* pForth);
+  void vProcessQuit(Forth* pForth);
+  void vProcessTestPid(Forth* pForth);
 
   // prompt
-  static void vPromptContinue(Forth* pForth);
-  static void vPromptExecuteFunction(Forth* pForth);
-  static void vPromptGetCommand(Forth* pForth);
-  static void vPromptNew(Forth* pForth);
-  static void vPromptSession(Forth* pForth);
+  void vPromptContinue(Forth* pForth);
+  void vPromptExecuteFunction(Forth* pForth);
+  void vPromptGetCommand(Forth* pForth);
+  void vPromptNew(Forth* pForth);
+  void vPromptSession(Forth* pForth);
 
   // push
-  static void vPushI(Forth* pForth);
-  static void vPushJ(Forth* pForth);
-  static void vPushNullPtr(Forth* pForth);
-  static void vPushValue(Forth* pForth);
+  void vPushI(Forth* pForth);
+  void vPushJ(Forth* pForth);
+  void vPushNullPtr(Forth* pForth);
+  void vPushValue(Forth* pForth);
 
   // queue
-  static void vQueueAppend(Forth* pForth);
-  static void vQueueDelete(Forth* pForth);
-  static void vQueueDump(Forth* pForth);
-  static void vQueueInit(Forth* pForth);
-  static void vQueueNew(Forth* pForth);
-  static void vQueuePop(Forth* pForth);
+  void vQueueAppend(Forth* pForth);
+  void vQueueDelete(Forth* pForth);
+  void vQueueDump(Forth* pForth);
+  void vQueueInit(Forth* pForth);
+  void vQueueNew(Forth* pForth);
+  void vQueuePop(Forth* pForth);
 
   // queues
-  static void vQueuesCheckSleeping(Forth* pForth);
-  static void vQueuesExecutingLength(Forth* pForth);
-  static void vQueuesReadyLength(Forth* pForth);
-  static void vQueuesSleepingLength(Forth* pForth);
-  static void vQueuesWaitingLength(Forth* pForth);
+  void vQueuesCheckSleeping(Forth* pForth);
+  void vQueuesExecutingLength(Forth* pForth);
+  void vQueuesReadyLength(Forth* pForth);
+  void vQueuesSleepingLength(Forth* pForth);
+  void vQueuesWaitingLength(Forth* pForth);
 
   // rbCursor
-  static void vRbCursorBegin(Forth* pForth);
-  static void vRbCursorDelete(Forth* pForth);
-  static void vRbCursorEnd(Forth* pForth);
-  static void vRbCursorFirst(Forth* pForth);
-  static void vRbCursorGet(Forth* pForth);
-  static void vRbCursorInit(Forth* pForth);
-  static void vRbCursorNew(Forth* pForth);
-  static void vRbCursorNext(Forth* pForth);
-  static void vRbCursorTableFetch(Forth* pForth);
-  static void vRbCursorTableStore(Forth* pForth);
+  void vRbCursorBegin(Forth* pForth);
+  void vRbCursorDelete(Forth* pForth);
+  void vRbCursorEnd(Forth* pForth);
+  void vRbCursorFirst(Forth* pForth);
+  void vRbCursorGet(Forth* pForth);
+  void vRbCursorInit(Forth* pForth);
+  void vRbCursorNew(Forth* pForth);
+  void vRbCursorNext(Forth* pForth);
+  void vRbCursorTableFetch(Forth* pForth);
+  void vRbCursorTableStore(Forth* pForth);
 
   // rowCursor
-  static void vRowCursorBegin(Forth* pForth);
-  static void vRowCursorDelete(Forth* pForth);
-  static void vRowCursorEnd(Forth* pForth);
-  static void vRowCursorEntBufferFetch(Forth* pForth);
-  static void vRowCursorEntBufferStore(Forth* pForth);
-  static void vRowCursorFirst(Forth* pForth);
-  static void vRowCursorInit(Forth* pForth);
-  static void vRowCursorNew(Forth* pForth);
-  static void vRowCursorNext(Forth* pForth);
-  static void vRowCursorRow(Forth* pForth);
-  static void vRowCursorTableFetch(Forth* pForth);
-  static void vRowCursorTableStore(Forth* pForth);
+  void vRowCursorBegin(Forth* pForth);
+  void vRowCursorDelete(Forth* pForth);
+  void vRowCursorEnd(Forth* pForth);
+  void vRowCursorEntBufferFetch(Forth* pForth);
+  void vRowCursorEntBufferStore(Forth* pForth);
+  void vRowCursorFirst(Forth* pForth);
+  void vRowCursorInit(Forth* pForth);
+  void vRowCursorNew(Forth* pForth);
+  void vRowCursorNext(Forth* pForth);
+  void vRowCursorRow(Forth* pForth);
+  void vRowCursorTableFetch(Forth* pForth);
+  void vRowCursorTableStore(Forth* pForth);
 
   // rstack
-  static void vRstackCsPick(Forth* pForth);
-  static void vRstackCsRoll(Forth* pForth);
-  static void vRstackDepth(Forth* pForth);
-  static void vRstackDrop(Forth* pForth);
-  static void vRstackFetch(Forth* pForth);
-  static void vRstackFetchTwo(Forth* pForth);
-  static void vRstackPick(Forth* pForth);
-  static void vRstackReverse(Forth* pForth);
-  static void vRstackRoll(Forth* pForth);
-  static void vRstackRollInv(Forth* pForth);
-  static void vRstackStk(Forth* pForth);
-  static void vRstackSwap(Forth* pForth);
-  static void vRstackToP(Forth* pForth);
-  static void vRstackToR(Forth* pForth);
-  static void vRstackToRTwo(Forth* pForth);
-  static void vRstack0(Forth* pForth);
-  static void vRstack1(Forth* pForth);
-  static void vRstack2(Forth* pForth);
-  static void vRstack3(Forth* pForth);
-  static void vRstack4(Forth* pForth);
-  static void vRstack5(Forth* pForth);
-  static void vRstack6(Forth* pForth);
-  static void vRstack7(Forth* pForth);
-  static void vRstack8(Forth* pForth);
-  static void vRstack9(Forth* pForth);
+  void vRstackCsPick(Forth* pForth);
+  void vRstackCsRoll(Forth* pForth);
+  void vRstackDepth(Forth* pForth);
+  void vRstackDrop(Forth* pForth);
+  void vRstackFetch(Forth* pForth);
+  void vRstackFetchTwo(Forth* pForth);
+  void vRstackPick(Forth* pForth);
+  void vRstackReverse(Forth* pForth);
+  void vRstackRoll(Forth* pForth);
+  void vRstackRollInv(Forth* pForth);
+  void vRstackStk(Forth* pForth);
+  void vRstackSwap(Forth* pForth);
+  void vRstackToP(Forth* pForth);
+  void vRstackToR(Forth* pForth);
+  void vRstackToRTwo(Forth* pForth);
+  void vRstack0(Forth* pForth);
+  void vRstack1(Forth* pForth);
+  void vRstack2(Forth* pForth);
+  void vRstack3(Forth* pForth);
+  void vRstack4(Forth* pForth);
+  void vRstack5(Forth* pForth);
+  void vRstack6(Forth* pForth);
+  void vRstack7(Forth* pForth);
+  void vRstack8(Forth* pForth);
+  void vRstack9(Forth* pForth);
 
   // schLock
-  static void vSchLockDropWrite(Forth* pForth);
-  static void vSchLockGrabWrite(Forth* pForth);
+  void vSchLockDropWrite(Forth* pForth);
+  void vSchLockGrabWrite(Forth* pForth);
 
   // session
-  static void vSessionCommand(Forth* pForth);
-  static void vSessionDicStack(Forth* pForth);
-  static void vSessionDump(Forth* pForth);
-  static void vSessionIsExiting(Forth* pForth);
-  static void vSessionPid(Forth* pForth);
-  static void vSessionSlotFetch(Forth* pForth);
-  static void vSessionTxFetch(Forth* pForth);
-  static void vSessionTxStore(Forth* pForth);
+  void vSessionCommand(Forth* pForth);
+  void vSessionDicStack(Forth* pForth);
+  void vSessionDump(Forth* pForth);
+  void vSessionIsExiting(Forth* pForth);
+  void vSessionPid(Forth* pForth);
+  void vSessionSlotFetch(Forth* pForth);
+  void vSessionTxFetch(Forth* pForth);
+  void vSessionTxStore(Forth* pForth);
 
   // shell
-  static void vShellExecute(Forth* pForth);
+  void vShellExecute(Forth* pForth);
 
   // slots
-  static void vSlotsColumnCount(Forth* pForth);
-  static void vSlotsColumnName(Forth* pForth);
-  static void vSlotsCreateColumnVec(Forth* pForth);
-  static void vSlotsSubDic(Forth* pForth);
+  void vSlotsColumnCount(Forth* pForth);
+  void vSlotsColumnName(Forth* pForth);
+  void vSlotsCreateColumnVec(Forth* pForth);
+  void vSlotsSubDic(Forth* pForth);
 
   // socket
-  static void vSocketAccept(Forth* pForth);
-  static void vSocketClose(Forth* pForth);
-  static void vSocketConnect(Forth* pForth);
-  static void vSocketDropWrite(Forth* pForth);
-  static void vSocketGrabWrite(Forth* pForth);
-  static void vSocketListen(Forth* pForth);
-  static void vSocketOpen(Forth* pForth);
-  static void vSocketRecvObject(Forth* pForth);
-  static void vSocketRecvObject_LowMem(Forth* pForth);
-  static void vSocketSendObject(Forth* pForth);
+  void vSocketAccept(Forth* pForth);
+  void vSocketClose(Forth* pForth);
+  void vSocketConnect(Forth* pForth);
+  void vSocketDropWrite(Forth* pForth);
+  void vSocketGrabWrite(Forth* pForth);
+  void vSocketListen(Forth* pForth);
+  void vSocketOpen(Forth* pForth);
+  void vSocketRecvObject(Forth* pForth);
+  void vSocketRecvObject_LowMem(Forth* pForth);
+  void vSocketSendObject(Forth* pForth);
 
   // steps
-  static void vStepTimingReset(Forth* pForth);
-  static void vStepTimingStart(Forth* pForth);
-  static void vStepTimingWrite(Forth* pForth);
+  void vStepTimingReset(Forth* pForth);
+  void vStepTimingStart(Forth* pForth);
+  void vStepTimingWrite(Forth* pForth);
 
   // string
-  static void vStrAlgebra(Forth* pForth);
-  static void vStrCat(Forth* pForth);
-  static void vStrClip(Forth* pForth);
-  static void vStrEqual(Forth* pForth);
-  static void vStrEscape(Forth* pForth);
-  static void vStrFirstCsv(Forth* pForth);
-  static void vStrFormat(Forth* pForth);
-  static void vStrLeft(Forth* pForth);
-  static void vStrLength(Forth* pForth);
-  static void vStrPrepend(Forth* pForth);
-  static void vStrRandom(Forth* pForth);
-  static void vStrRemovePrefix(Forth* pForth);
-  static void vStrRemoveSuffix(Forth* pForth);
-  static void vStrReplace(Forth* pForth);
-  static void vStrRight(Forth* pForth);
-  static void vStrSub(Forth* pForth);
-  static void vStrTailInt(Forth* pForth);
+  void vStrAlgebra(Forth* pForth);
+  void vStrCat(Forth* pForth);
+  void vStrClip(Forth* pForth);
+  void vStrEqual(Forth* pForth);
+  void vStrEscape(Forth* pForth);
+  void vStrFirstCsv(Forth* pForth);
+  void vStrFormat(Forth* pForth);
+  void vStrLeft(Forth* pForth);
+  void vStrLength(Forth* pForth);
+  void vStrPrepend(Forth* pForth);
+  void vStrRandom(Forth* pForth);
+  void vStrRemovePrefix(Forth* pForth);
+  void vStrRemoveSuffix(Forth* pForth);
+  void vStrReplace(Forth* pForth);
+  void vStrRight(Forth* pForth);
+  void vStrSub(Forth* pForth);
+  void vStrTailInt(Forth* pForth);
 
   // sub loader
-  static void vSubLoaderDelete(Forth* pForth);
+  void vSubLoaderDelete(Forth* pForth);
 
   // table
-  static void vTableAddIndex(Forth* pForth);
-  static void vTableAnalyze(Forth* pForth);
-  static void vTableColumnCountFetch(Forth* pForth);
-  static void vTableCreateColumnVec(Forth* pForth);
-  static void vTableDrop(Forth* pForth);
-  static void vTableDump(Forth* pForth);
-  static void vTableFindColumn(Forth* pForth);
-  static void vTableFirstBuffer(Forth* pForth);
-  static void vTableGenData(Forth* pForth);
-  static void vTableGetColumnsAsString(Forth* pForth);
-  static void vTableColumnFetch(Forth* pForth);
-  static void vTableGetPtn(Forth* pForth);
-  static void vTableInflateScan(Forth* pForth);
-  static void vTableIndexCount(Forth* pForth);
-  static void vTableInit(Forth* pForth);
-  static void vTableIsColumn(Forth* pForth);
-  static void vTableIsLoadingStore(Forth* pForth);
-  static void vTableLazyBuildIndexes(Forth* pForth);
-  static void vTableList(Forth* pForth);
-  static void vTableName(Forth* pForth);
-  static void vTablePublish(Forth* pForth);
-  static void vTablePurge(Forth* pForth);
-  static void vTableRemoveIndex(Forth* pForth);
-  static void vTableScan(Forth* pForth);
-  static void vTableShowColumnVec(Forth* pForth);
-  static void vTableSlots(Forth* pForth);
-  static void vTableSpace(Forth* pForth);
-  static void vTableSubDic(Forth* pForth);
-  static void vTableSubLoaders(Forth* pForth);
-  static void vTableTruncate(Forth* pForth);
-  static void vTableIsValidIndexColumns(Forth* pForth);
-  static void vTableVerify(Forth* pForth);
-  static void vTableVisualize(Forth* pForth);
+  void vTableAddIndex(Forth* pForth);
+  void vTableAnalyze(Forth* pForth);
+  void vTableColumnCountFetch(Forth* pForth);
+  void vTableCreateColumnVec(Forth* pForth);
+  void vTableDrop(Forth* pForth);
+  void vTableDump(Forth* pForth);
+  void vTableFindColumn(Forth* pForth);
+  void vTableFirstBuffer(Forth* pForth);
+  void vTableGenData(Forth* pForth);
+  void vTableGetColumnsAsString(Forth* pForth);
+  void vTableColumnFetch(Forth* pForth);
+  void vTableGetPtn(Forth* pForth);
+  void vTableInflateScan(Forth* pForth);
+  void vTableIndexCount(Forth* pForth);
+  void vTableInit(Forth* pForth);
+  void vTableIsColumn(Forth* pForth);
+  void vTableIsLoadingStore(Forth* pForth);
+  void vTableLazyBuildIndexes(Forth* pForth);
+  void vTableList(Forth* pForth);
+  void vTableName(Forth* pForth);
+  void vTablePublish(Forth* pForth);
+  void vTablePurge(Forth* pForth);
+  void vTableRemoveIndex(Forth* pForth);
+  void vTableScan(Forth* pForth);
+  void vTableShowColumnVec(Forth* pForth);
+  void vTableSlots(Forth* pForth);
+  void vTableSpace(Forth* pForth);
+  void vTableSubDic(Forth* pForth);
+  void vTableSubLoaders(Forth* pForth);
+  void vTableTruncate(Forth* pForth);
+  void vTableIsValidIndexColumns(Forth* pForth);
+  void vTableVerify(Forth* pForth);
+  void vTableVisualize(Forth* pForth);
 
   // table partition
-  static void vTablePtnAttemptGrabRead(Forth* pForth);
-  static void vTablePtnAttemptGrabWrite(Forth* pForth);
-  static void vTablePtnDropRead(Forth* pForth);
-  static void vTablePtnDropWrite(Forth* pForth);
-  static void vTablePtnDump(Forth* pForth);
-  static void vTablePtnIsLocked(Forth* pForth);
+  void vTablePtnAttemptGrabRead(Forth* pForth);
+  void vTablePtnAttemptGrabWrite(Forth* pForth);
+  void vTablePtnDropRead(Forth* pForth);
+  void vTablePtnDropWrite(Forth* pForth);
+  void vTablePtnDump(Forth* pForth);
+  void vTablePtnIsLocked(Forth* pForth);
 
   // task
-  static void vTaskAck(Forth* pForth);
-  static void vTaskAcksStore(Forth* pForth);
-  static void vTaskBreakPoint(Forth* pForth);
-  static void vTaskDestructorTraceFetch(Forth* pForth);
-  static void vTaskDestructorTraceStore(Forth* pForth);
-  static void vTaskDicStack(Forth* pForth);
-  static void vTaskDropLock(Forth* pForth);
-  static void vTaskDump(Forth* pForth);
-  static void vTaskDelete(Forth* pForth);
-  static void vTaskGrabLock(Forth* pForth);
-  static void vTaskIsAckSet(Forth* pForth);
-  static void vTaskJobFetch(Forth* pForth);
-  static void vTaskJobStore(Forth* pForth);
-  static void vTaskNameFetch(Forth* pForth);
-  static void vTaskThis(Forth* pForth);
-  static void vTaskSeed(Forth* pForth);
-  static void vTaskSessionFetch(Forth* pForth);
-  static void vTaskSessionStore(Forth* pForth);
-  static void vTaskSendNodeFetch(Forth* pForth);
-  static void vTaskSendNodeStore(Forth* pForth);
-  static void vTaskSleepMsec(Forth* pForth);
-  static void vTaskSleepNsec(Forth* pForth);
-  static void vTaskSleepSsec(Forth* pForth);
-  static void vTaskSleepUsec(Forth* pForth);
-  static void vTaskStateFetch(Forth* pForth);
-  static void vTaskThread(Forth* pForth);
-  static void vTaskWait(Forth* pForth);
-  static void vTaskYield(Forth* pForth);
+  void vTaskAck(Forth* pForth);
+  void vTaskAcksStore(Forth* pForth);
+  void vTaskBreakPoint(Forth* pForth);
+  void vTaskDestructorTraceFetch(Forth* pForth);
+  void vTaskDestructorTraceStore(Forth* pForth);
+  void vTaskDicStack(Forth* pForth);
+  void vTaskDropLock(Forth* pForth);
+  void vTaskDump(Forth* pForth);
+  void vTaskDelete(Forth* pForth);
+  void vTaskGrabLock(Forth* pForth);
+  void vTaskIsAckSet(Forth* pForth);
+  void vTaskJobFetch(Forth* pForth);
+  void vTaskJobStore(Forth* pForth);
+  void vTaskNameFetch(Forth* pForth);
+  void vTaskThis(Forth* pForth);
+  void vTaskSeed(Forth* pForth);
+  void vTaskSessionFetch(Forth* pForth);
+  void vTaskSessionStore(Forth* pForth);
+  void vTaskSendNodeFetch(Forth* pForth);
+  void vTaskSendNodeStore(Forth* pForth);
+  void vTaskSleepMsec(Forth* pForth);
+  void vTaskSleepNsec(Forth* pForth);
+  void vTaskSleepSsec(Forth* pForth);
+  void vTaskSleepUsec(Forth* pForth);
+  void vTaskStateFetch(Forth* pForth);
+  void vTaskThread(Forth* pForth);
+  void vTaskWait(Forth* pForth);
+  void vTaskYield(Forth* pForth);
 
   // test
-  static void vTestTest0(Forth* pForth);
-  static void vTestTest1(Forth* pForth);
-  static void vTestTest2(Forth* pForth);
-  static void vTestTest3(Forth* pForth);
-  static void vTestTest4(Forth* pForth);
-  static void vTestTest5(Forth* pForth);
-  static void vTestTest6(Forth* pForth);
-  static void vTestTest7(Forth* pForth);
-  static void vTestTest8(Forth* pForth);
-  static void vTestTest9(Forth* pForth);
-  static void vTestTest10(Forth* pForth);
-  static void vTestTest11(Forth* pForth);
-  static void vTestTest12(Forth* pForth);
-  static void vTestTest13(Forth* pForth);
-  static void vTestTest14(Forth* pForth);
-  static void vTestTest15(Forth* pForth);
-  static void vTestTest16(Forth* pForth);
-  static void vTestTest17(Forth* pForth);
-  static void vTestTest18(Forth* pForth);
-  static void vTestTest19(Forth* pForth);
-  static void vTestTest20(Forth* pForth);
-  static void vTestTest21(Forth* pForth);
-  static void vTestTest22(Forth* pForth);
-  static void vTestTest23(Forth* pForth);
-  static void vTestTest24(Forth* pForth);
-  static void vTestTest25(Forth* pForth);
+  void vTestTest0(Forth* pForth);
+  void vTestTest1(Forth* pForth);
+  void vTestTest2(Forth* pForth);
+  void vTestTest3(Forth* pForth);
+  void vTestTest4(Forth* pForth);
+  void vTestTest5(Forth* pForth);
+  void vTestTest6(Forth* pForth);
+  void vTestTest7(Forth* pForth);
+  void vTestTest8(Forth* pForth);
+  void vTestTest9(Forth* pForth);
+  void vTestTest10(Forth* pForth);
+  void vTestTest11(Forth* pForth);
+  void vTestTest12(Forth* pForth);
+  void vTestTest13(Forth* pForth);
+  void vTestTest14(Forth* pForth);
+  void vTestTest15(Forth* pForth);
+  void vTestTest16(Forth* pForth);
+  void vTestTest17(Forth* pForth);
+  void vTestTest18(Forth* pForth);
+  void vTestTest19(Forth* pForth);
+  void vTestTest20(Forth* pForth);
+  void vTestTest21(Forth* pForth);
+  void vTestTest22(Forth* pForth);
+  void vTestTest23(Forth* pForth);
+  void vTestTest24(Forth* pForth);
+  void vTestTest25(Forth* pForth);
 
   // thread
-  static void vThreadBind(Forth* pForth);
-  static void vThreadCpu(Forth* pForth);
-  static void vThreadDedicatedFetch(Forth* pForth);
-  static void vThreadDedicatedStore(Forth* pForth);
-  static void vThreadDisableRealtime(Forth* pForth);
-  static void vThreadDump(Forth* pForth);
-  static void vThreadEnableRealtime(Forth* pForth);
-  static void vThreadId(Forth* pForth);
-  static void vThreadSleepMsec(Forth* pForth);
-  static void vThreadSleepNsec(Forth* pForth);
-  static void vThreadSleepSsec(Forth* pForth);
-  static void vThreadSleepUsec(Forth* pForth);
+  void vThreadBind(Forth* pForth);
+  void vThreadCpu(Forth* pForth);
+  void vThreadDedicatedFetch(Forth* pForth);
+  void vThreadDedicatedStore(Forth* pForth);
+  void vThreadDisableRealtime(Forth* pForth);
+  void vThreadDump(Forth* pForth);
+  void vThreadEnableRealtime(Forth* pForth);
+  void vThreadId(Forth* pForth);
+  void vThreadSleepMsec(Forth* pForth);
+  void vThreadSleepNsec(Forth* pForth);
+  void vThreadSleepSsec(Forth* pForth);
+  void vThreadSleepUsec(Forth* pForth);
 
   // timer
-  static void vTimerDelete(Forth* pForth);
-  static void vTimerInit(Forth* pForth);
-  static void vTimerMicrosecs(Forth* pForth);
-  static void vTimerMillisecs(Forth* pForth);
-  static void vTimerNanosecs(Forth* pForth);
-  static void vTimerNew(Forth* pForth);
-  static void vTimerReset(Forth* pForth);
-  static void vTimerSecs(Forth* pForth);
-  static void vTimerStart(Forth* pForth);
-  static void vTimerTicks(Forth* pForth);
-  static void vTimerUpdate(Forth* pForth);
+  void vTimerDelete(Forth* pForth);
+  void vTimerInit(Forth* pForth);
+  void vTimerMicrosecs(Forth* pForth);
+  void vTimerMillisecs(Forth* pForth);
+  void vTimerNanosecs(Forth* pForth);
+  void vTimerNew(Forth* pForth);
+  void vTimerReset(Forth* pForth);
+  void vTimerSecs(Forth* pForth);
+  void vTimerStart(Forth* pForth);
+  void vTimerTicks(Forth* pForth);
+  void vTimerUpdate(Forth* pForth);
 
-  static void vTimeCurrent(Forth* pForth);
+  void vTimeCurrent(Forth* pForth);
 
   // to
-  static void vToBody(Forth* pForth);
-  static void vToInt(Forth* pForth);
-  static void vToPtr(Forth* pForth);
-  static void vToStr(Forth* pForth);
-  static void vToTask(Forth* pForth);
+  void vToBody(Forth* pForth);
+  void vToInt(Forth* pForth);
+  void vToPtr(Forth* pForth);
+  void vToStr(Forth* pForth);
+  void vToTask(Forth* pForth);
 
   // token
-  static void vTokenColon(Forth* pForth);
+  void vTokenColon(Forth* pForth);
 
   // trace
-  static void vTraceOff(Forth* pForth);
-  static void vTraceOn(Forth* pForth);
-  static void vTracePoint(Forth* pForth);
-  static void vTraceSet(Forth* pForth);
+  void vTraceOff(Forth* pForth);
+  void vTraceOn(Forth* pForth);
+  void vTracePoint(Forth* pForth);
+  void vTraceSet(Forth* pForth);
 
   // tx
-  static void vTxBegin(Forth* pForth);
-  static void vTxCommit(Forth* pForth);
-  static void vTxCounterDec(Forth* pForth);
-  static void vTxCounterFetch(Forth* pForth);
-  static void vTxCounterStore(Forth* pForth);
-  static void vTxDistMemberFetch(Forth* pForth);
-  static void vTxDistMemberStore(Forth* pForth);
-  static void vTxDump(Forth* pForth);
-  static void vTxDumpAll(Forth* pForth);
-  static void vTxFree(Forth* pForth);
-  static void vTxId(Forth* pForth);
-  static void vTxPrepare(Forth* pForth);
-  static void vTxRollback(Forth* pForth);
-  static void vTxTestDist(Forth* pForth);
+  void vTxBegin(Forth* pForth);
+  void vTxCommit(Forth* pForth);
+  void vTxCounterDec(Forth* pForth);
+  void vTxCounterFetch(Forth* pForth);
+  void vTxCounterStore(Forth* pForth);
+  void vTxDistMemberFetch(Forth* pForth);
+  void vTxDistMemberStore(Forth* pForth);
+  void vTxDump(Forth* pForth);
+  void vTxDumpAll(Forth* pForth);
+  void vTxFree(Forth* pForth);
+  void vTxId(Forth* pForth);
+  void vTxPrepare(Forth* pForth);
+  void vTxRollback(Forth* pForth);
+  void vTxTestDist(Forth* pForth);
 
   // txCollection
-  static void vTxCollectionDump(Forth* pForth);
-  static void vTxCollectionInit(Forth* pForth);
+  void vTxCollectionDump(Forth* pForth);
+  void vTxCollectionInit(Forth* pForth);
 
   // txCursor
-  static void vTxCursorBegin(Forth* pForth);
-  static void vTxCursorDelete(Forth* pForth);
-  static void vTxCursorEnd(Forth* pForth);
-  static void vTxCursorFirst(Forth* pForth);
-  static void vTxCursorGet(Forth* pForth);
-  static void vTxCursorInit(Forth* pForth);
-  static void vTxCursorNew(Forth* pForth);
-  static void vTxCursorNext(Forth* pForth);
+  void vTxCursorBegin(Forth* pForth);
+  void vTxCursorDelete(Forth* pForth);
+  void vTxCursorEnd(Forth* pForth);
+  void vTxCursorFirst(Forth* pForth);
+  void vTxCursorGet(Forth* pForth);
+  void vTxCursorInit(Forth* pForth);
+  void vTxCursorNew(Forth* pForth);
+  void vTxCursorNext(Forth* pForth);
 
   // txMap
-  static void vTxMapInit(Forth* pForth);
+  void vTxMapInit(Forth* pForth);
 
   // txRef
-  static void vTxRefBegin(Forth* pForth);
-  static void vTxRefCheckDistId(Forth* pForth);
-  static void vTxRefCommit(Forth* pForth);
-  static void vTxRefDump(Forth* pForth);
-  static void vTxRefEnd(Forth* pForth);
-  static void vTxRefId(Forth* pForth);
-  static void vTxRefInit(Forth* pForth);
-  static void vTxRefNew(Forth* pForth);
-  static void vTxRefRollback(Forth* pForth);
+  void vTxRefBegin(Forth* pForth);
+  void vTxRefCheckDistId(Forth* pForth);
+  void vTxRefCommit(Forth* pForth);
+  void vTxRefDump(Forth* pForth);
+  void vTxRefEnd(Forth* pForth);
+  void vTxRefId(Forth* pForth);
+  void vTxRefInit(Forth* pForth);
+  void vTxRefNew(Forth* pForth);
+  void vTxRefRollback(Forth* pForth);
 
   // utility
-  static void vUtilityPrefetch(Forth* pForth);
-  static void vUtilitySchemaTest(Forth* pForth);
+  void vUtilityPrefetch(Forth* pForth);
+  void vUtilitySchemaTest(Forth* pForth);
 
   // vector
-  static void vVectorDifference(Forth* pForth);
+  void vVectorDifference(Forth* pForth);
 
   // word
-  static void vWord(Forth* pForth);
-  static void vWordCategoryFetch(Forth* pForth);
-  static void vWordCategoryStore(Forth* pForth);
-  static void vWordDump(Forth* pForth);
-  static void vWordEnmSetFetch(Forth* pForth);
-  static void vWordEnmSetStore(Forth* pForth);
-  static void vWordExitHookGet(Forth* pForth);
-  static void vWordExitHookSet(Forth* pForth);
-  static void vWordForget(Forth* pForth);
-  static void vWordImmediateGet(Forth* pForth);
-  static void vWordImmediateSet(Forth* pForth);
-  static void vWordIsImmediate(Forth* pForth);
-  static void vWordIsIntrinsic(Forth* pForth);
-  static void vWordKindFetch(Forth* pForth);
-  static void vWordKindStore(Forth* pForth);
-  static void vWordNameFetch(Forth* pForth);
-  static void vWordNameStore(Forth* pForth);
-  static void vWordPrev(Forth* pForth);
+  void vWord(Forth* pForth);
+  void vWordCategoryFetch(Forth* pForth);
+  void vWordCategoryStore(Forth* pForth);
+  void vWordDump(Forth* pForth);
+  void vWordEnmSetFetch(Forth* pForth);
+  void vWordEnmSetStore(Forth* pForth);
+  void vWordExitHookGet(Forth* pForth);
+  void vWordExitHookSet(Forth* pForth);
+  void vWordForget(Forth* pForth);
+  void vWordImmediateGet(Forth* pForth);
+  void vWordImmediateSet(Forth* pForth);
+  void vWordIsImmediate(Forth* pForth);
+  void vWordIsIntrinsic(Forth* pForth);
+  void vWordKindFetch(Forth* pForth);
+  void vWordKindStore(Forth* pForth);
+  void vWordNameFetch(Forth* pForth);
+  void vWordNameStore(Forth* pForth);
+  void vWordPrev(Forth* pForth);
 
   // zero
-  static void vZeroLess(Forth* pForth);
-  static void vZeroLessEqual(Forth* pForth);
-  static void vZeroEqual(Forth* pForth);
-  static void vZeroNotEqual(Forth* pForth);
-  static void vZeroGreaterEqual(Forth* pForth);
-  static void vZeroGreater(Forth* pForth);
+  void vZeroLess(Forth* pForth);
+  void vZeroLessEqual(Forth* pForth);
+  void vZeroEqual(Forth* pForth);
+  void vZeroNotEqual(Forth* pForth);
+  void vZeroGreaterEqual(Forth* pForth);
+  void vZeroGreater(Forth* pForth);
 
 /*============================================================================*/
 /* end                                                                        */

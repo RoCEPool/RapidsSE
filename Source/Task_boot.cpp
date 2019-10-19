@@ -259,7 +259,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
         if (WK_INTRINSIC == pCalledWord->eKind()) {
           fpStep = pCalledWord->fpEntryStep();
           if (pCalledWord->bImmediate())
-            (*fpStep)(m_pForth);
+            ((Step*)m_pForth->*fpStep)(m_pForth);
           else {
             pNewWord->vAppend(pCalledWord->afpEntryStep());
           }

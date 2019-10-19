@@ -47,8 +47,8 @@ void Step::vFlowExecute(Forth* pForth)
   Word* pWord = _pWord(pWordObject);
   
   if (WK_INTRINSIC == pWord->eKind()) {
-    StepFp fpStepFp = pWord->fpEntryStep();
-    (fpStepFp)(pForth);
+    StepFp fpStep = pWord->fpEntryStep();
+    ((Step*)pForth->*fpStep)(pForth);
   }
   else if (WK_OBJECT == pWord->eKind()) {
     pForth->m_pReturnStack->vPushCell(pForth->m_pTask->m_pForth->m_aInxPtr);

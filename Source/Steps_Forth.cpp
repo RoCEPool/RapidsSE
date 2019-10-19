@@ -546,9 +546,9 @@ void Step::vSee(Forth* pForth)
     Word* pCallsWord = pForth->m_pTask->m_oDicStack.pLocateWord(fpHasStep);
     
     // jumps
-    if (*aDoesCell->m_afpIntrinsic == Step::vFlowJump ||
-        *aDoesCell->m_afpIntrinsic == Step::vFlowJumpFalse ||
-        *aDoesCell->m_afpIntrinsic == Step::vFlowJumpTrue ) {
+    if (*aDoesCell->m_afpIntrinsic == &Step::vFlowJump ||
+        *aDoesCell->m_afpIntrinsic == &Step::vFlowJumpFalse ||
+        *aDoesCell->m_afpIntrinsic == &Step::vFlowJumpTrue ) {
       
       vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->sName().azChar());
       
@@ -562,7 +562,7 @@ void Step::vSee(Forth* pForth)
     }
     
     // push
-    if ( *aDoesCell->m_afpIntrinsic == Step::vPushValue ) {
+    if ( *aDoesCell->m_afpIntrinsic == &Step::vPushValue ) {
       
       vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->sName().azChar());
       
@@ -585,7 +585,7 @@ void Step::vSee(Forth* pForth)
     }
     
     // enterRoutine
-    if ( *aDoesCell->m_afpIntrinsic == Step::vEnterRoutine ) {
+    if ( *aDoesCell->m_afpIntrinsic == &Step::vEnterRoutine ) {
       
       Word* pCallsWord = (Word*)( ((u8)aDoesCell->m_afpIntrinsic & (u8)~0xFFFF)
                                            + sizeof(HeapBuffer));

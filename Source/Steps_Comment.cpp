@@ -15,7 +15,7 @@ void Step::vAddSteps_Comment(void)
 /*----------------------------------------------------------------------------*/
 /* comment -- comment                                                         */
 /*----------------------------------------------------------------------------*/
-INTRINSIC(vComment)
+void Step::vComment(Forth* pForth)
 {
   ENTRY("vComment"_Stz);
   

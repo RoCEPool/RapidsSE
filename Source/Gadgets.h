@@ -45,7 +45,8 @@ namespace Tasks {
   
   typedef MP<Task,CN_TASK> MP_Task;
   
-  typedef void (*StepFp)(Forth* pForth);
+  //typedef void (*StepFp)(Forth* pForth);
+  typedef void (Step::*StepFp)(Forth* pForth);
 
   typedef void (Forth::*ForthFp)(Forth* pForth);
 }
