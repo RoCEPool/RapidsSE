@@ -19,7 +19,7 @@ void Step::vDebugTrap(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vDebugTrap"_Stz);
 
-  Correctness::vDebugTrap();
+  Correctness::vDebugPoint();
   
   EXIT();
 }

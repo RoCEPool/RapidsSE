@@ -171,7 +171,7 @@ bool HashMap::bExists(byte* aKey, i8 nBytes, i8 iValue)
 void HashMap::vInsert(byte* yaKey, i8 nBytes, i8 iValue, bool bDebug)
 {
   if (bDebug)
-    vDebugTrap();
+    vDebugPoint();
   if (341225 == iValue)
     vDebugPoint();
 
