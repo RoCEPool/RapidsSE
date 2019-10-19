@@ -54,8 +54,8 @@ void Step::vJob_SubPublishChunk(MP_Task mpTask, Forth* pForth)
   pForth->m_pDataStack->vPushBool(true);
   
   if (! bBufferPublished) {
-    mpTask->vSleepUsec(C_100K);
-    mpTask->vTransition(TR_SLEEP);
+    pForth->m_pTask->vSleepUsec(C_100K);
+    pForth->m_pTask->vTransition(TR_SLEEP);
   }
   
   EXIT();

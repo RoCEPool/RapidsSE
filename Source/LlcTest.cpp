@@ -15,7 +15,7 @@ void LlcTest::vTest(MP_Task mpTask, Forth* pForth)
 {
 #ifdef WITH_APPLE
   
-  Pthread* pPthread = mpTask->pThread()->m_pPthread;
+  Pthread* pPthread = pForth->m_pTask->pThread()->m_pPthread;
   
   pPthread->vEnableRealtime_2();
   

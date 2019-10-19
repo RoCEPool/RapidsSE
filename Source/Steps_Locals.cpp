@@ -26,14 +26,14 @@ void Step::vLocalFetch(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vLocalFetch"_Stz);
   
-  if ( ! mpTask->m_pForth->m_pLocalsFrame )
+  if ( ! pForth->m_pTask->m_pForth->m_pLocalsFrame )
     THROW_DSTACK();
   
   i8 iLocal;
   if ( ! pForth->m_pDataStack->bPop(iLocal) )
     THROW_DSTACK();
   
-  Local* pLocal = mpTask->m_pForth->m_pLocalsFrame->pLocal(iLocal);
+  Local* pLocal = pForth->m_pTask->m_pForth->m_pLocalsFrame->pLocal(iLocal);
   
   pForth->m_pDataStack->vPushLocal(pLocal);
   
@@ -47,14 +47,14 @@ void Step::vLocalStore(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vLocalStore"_Stz);
   
-  if ( ! mpTask->m_pForth->m_pLocalsFrame )
+  if ( ! pForth->m_pTask->m_pForth->m_pLocalsFrame )
     THROW_DSTACK();
   
   i8 iLocal;
   if ( ! pForth->m_pDataStack->bPop(iLocal) )
     THROW_DSTACK();
   
-  Local* pLocal = mpTask->m_pForth->m_pLocalsFrame->pLocal(iLocal);
+  Local* pLocal = pForth->m_pTask->m_pForth->m_pLocalsFrame->pLocal(iLocal);
   
   pForth->m_pDataStack->bPop(pLocal);
   
@@ -68,43 +68,43 @@ void Step::vLocalsBar(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vLocalsBar"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
   
-  Dic* pDic = mpTask->m_oDicStack.pPick(0);
+  Dic* pDic = pForth->m_pTask->m_oDicStack.pPick(0);
 
   GenVar xVariable;
   
   for (;;) {
     
     // get name of local variable
-    mpTask->m_pCompiler->m_pTokeniser->vNextToken();
+    pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
     
     // end of locals declaration?
-    if (mpTask->m_pCompiler->m_pTokeniser->sToken().bEqual("|"_Stz))
+    if (pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken().bEqual("|"_Stz))
       break;
 
     // test for first use of locals|
-    if ( ! mpTask->m_pCompiler->m_nLocals ) {
+    if ( ! pForth->m_pTask->m_pCompiler->m_nLocals ) {
       
       // create a locals dictionary
       pDic = new Dic;
       pDic->vName("<localsDic>"_Stz);
-      mpTask->m_oDicStack.vPush(pDic);
+      pForth->m_pTask->m_oDicStack.vPush(pDic);
       
       // enocde locals frame push
       pCurrentWord->vEncode("locals.push"_Stz);
     }
     
     // create new word for local variable in current dictionary
-    Word* pWordLocal = new(pDic) Word(mpTask->m_pCompiler->m_pTokeniser->sToken());
+    Word* pWordLocal = new(pDic) Word(pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken());
     // ** do not set as current word **
     
     // set word as local variable
     pWordLocal->vKind(WK_LOCAL);
-    pWordLocal->vLocalNo(mpTask->m_pCompiler->m_nLocals);
+    pWordLocal->vLocalNo(pForth->m_pTask->m_pCompiler->m_nLocals);
     
     // encode the word
-    xVariable = mpTask->m_pCompiler->m_nLocals;
+    xVariable = pForth->m_pTask->m_pCompiler->m_nLocals;
     pWordLocal->vEncode("pushValue"_Stz,&xVariable);
     pWordLocal->vEncode("local.fetch"_Stz);
     pWordLocal->vEncode("exit_rt"_Stz);
@@ -113,7 +113,7 @@ ENTRY("vLocalsBar"_Stz);
     pCurrentWord->vEncode("pushValue"_Stz,&xVariable);
     pCurrentWord->vEncode("local.store"_Stz);
     
-    mpTask->m_pCompiler->m_nLocals++;
+    pForth->m_pTask->m_pCompiler->m_nLocals++;
   }
   
   EXIT();
@@ -126,12 +126,12 @@ void Step::vLocalsPop(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vLocalsPop"_Stz);
   
-  LocalSet* pLocalsFrame = mpTask->m_pForth->m_pLocalsFrame;
+  LocalSet* pLocalsFrame = pForth->m_pTask->m_pForth->m_pLocalsFrame;
   
   if ( ! pLocalsFrame )
     THROW_DSTACK();
   
-  mpTask->m_pForth->m_pLocalsFrame = mpTask->m_pForth->m_pLocalsFrame->pNext();
+  pForth->m_pTask->m_pForth->m_pLocalsFrame = pForth->m_pTask->m_pForth->m_pLocalsFrame->pNext();
   
   delete pLocalsFrame;
   
@@ -149,9 +149,9 @@ ENTRY("vLocalsPush"_Stz);
   
   pLocalsFrame->vDiscardPoint(pForth->m_pReturnStack->aPeekValue());
   
-  pLocalsFrame->vNext(mpTask->m_pForth->m_pLocalsFrame);
+  pLocalsFrame->vNext(pForth->m_pTask->m_pForth->m_pLocalsFrame);
   
-  mpTask->m_pForth->m_pLocalsFrame = pLocalsFrame;
+  pForth->m_pTask->m_pForth->m_pLocalsFrame = pLocalsFrame;
   
   EXIT();
 }
@@ -163,15 +163,15 @@ void Step::vLocalsTo(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vLocalsTo"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = pForth->m_pTask->m_pCompiler->m_pCurrent;
   
   // get name of local from token stream
-  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
+  pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
 
-  s32 sLocalName(mpTask->m_pCompiler->m_pTokeniser->sToken());
+  s32 sLocalName(pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken());
   
   // find the word describing the local
-  Word* pLocalWord = mpTask->m_oDicStack.pFindWord(sLocalName);
+  Word* pLocalWord = pForth->m_pTask->m_oDicStack.pFindWord(sLocalName);
   if (! pLocalWord)
     vFatal("No such local: %s\n"_Stz,sLocalName.azChar());
   

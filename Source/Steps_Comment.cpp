@@ -20,8 +20,8 @@ INTRINSIC(vComment)
   ENTRY("vComment"_Stz);
   
   for (;;) {
-    mpTask->m_pCompiler->m_pTokeniser->vNextToken();
-    if (mpTask->m_pCompiler->m_pTokeniser->sToken().bEqual(")"_Stz))
+    pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+    if (pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken().bEqual(")"_Stz))
       break;
   }
   

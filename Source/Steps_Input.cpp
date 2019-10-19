@@ -31,7 +31,7 @@ void Step::vInputClose(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vInputClose"_Stz);
   
-  mpTask->m_pCompiler->m_pTokeniser->vUseEnd();
+  pForth->m_pTask->m_pCompiler->m_pTokeniser->vUseEnd();
   
   EXIT();
 }
@@ -43,7 +43,7 @@ void Step::vInputDepth(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vInputDepth"_Stz);
   
-  i8 iDepth = mpTask->m_pCompiler->m_pTokeniser->iDepth();
+  i8 iDepth = pForth->m_pTask->m_pCompiler->m_pTokeniser->iDepth();
   
   pForth->m_pDataStack->vPushI8(iDepth);
   
@@ -57,13 +57,13 @@ void Step::vInputNext(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vInputNext"_Stz);
   
-  if (mpTask->m_iTracing) {
-    ASSERT(mpTask->m_iTracing);
+  if (pForth->m_pTask->m_iTracing) {
+    ASSERT(pForth->m_pTask->m_iTracing);
   }
   
-  char* aToken = mpTask->m_pCompiler->m_pTokeniser->sToken().azChar();
+  char* aToken = pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar();
   
-  eTN eToken = mpTask->m_pCompiler->m_pTokeniser->eNextToken(aToken);
+  eTN eToken = pForth->m_pTask->m_pCompiler->m_pTokeniser->eNextToken(aToken);
   
   EXIT();
 }
@@ -80,7 +80,7 @@ ENTRY("vInputOpen"_Stz);
   if ( ! pForth->m_pDataStack->bPop(sFilePath) )
     THROW_DSTACK();
   
-  bool bOpened = mpTask->m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
+  bool bOpened = pForth->m_pTask->m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
   
   if ( ! bOpened )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
@@ -96,7 +96,7 @@ void Step::vInputPop(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vInputPop"_Stz);
   
-  bool bPopped = mpTask->m_pCompiler->m_pTokeniser->bPop();
+  bool bPopped = pForth->m_pTask->m_pCompiler->m_pTokeniser->bPop();
   ASSERT(bPopped);
   
   EXIT();
@@ -109,10 +109,10 @@ void Step::vInputPush(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vInputPush"_Stz);
   
-  if ( ! mpTask->m_pCompiler )
-    mpTask->m_pCompiler = new Compiler;
+  if ( ! pForth->m_pTask->m_pCompiler )
+    pForth->m_pTask->m_pCompiler = new Compiler;
   
-  mpTask->m_pCompiler->m_pTokeniser->vPush();
+  pForth->m_pTask->m_pCompiler->m_pTokeniser->vPush();
   
   EXIT();
 }
@@ -124,10 +124,10 @@ void Step::vInputStdin(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vInputStdin"_Stz);
   
-  if ( ! mpTask->m_pCompiler )
-    mpTask->m_pCompiler = new Compiler;
+  if ( ! pForth->m_pTask->m_pCompiler )
+    pForth->m_pTask->m_pCompiler = new Compiler;
   
-  mpTask->m_pCompiler->m_pTokeniser->vUseStdin();
+  pForth->m_pTask->m_pCompiler->m_pTokeniser->vUseStdin();
   
   EXIT();
 }
@@ -139,8 +139,8 @@ void Step::vInputText(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vInputText"_Stz);
   
-  if (mpTask->m_iTracing) {
-    ASSERT(mpTask->m_iTracing);
+  if (pForth->m_pTask->m_iTracing) {
+    ASSERT(pForth->m_pTask->m_iTracing);
   }
   
   s48K sInput;                                             //! NEED STACK CHECKS
@@ -148,7 +148,7 @@ ENTRY("vInputText"_Stz);
   if ( ! pForth->m_pDataStack->bPop(sInput) )
     THROW_DSTACK();
     
-  mpTask->m_pCompiler->m_pTokeniser->vUseString(sInput);
+  pForth->m_pTask->m_pCompiler->m_pTokeniser->vUseString(sInput);
   
   EXIT();
 }
@@ -160,7 +160,7 @@ void Step::vInputToken(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vInputToken"_Stz);
   
-  pForth->m_pDataStack->vPushS48K(mpTask->m_pCompiler->m_pTokeniser->sToken());
+  pForth->m_pDataStack->vPushS48K(pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken());
   
   EXIT();
 }
@@ -172,7 +172,7 @@ void Step::vInputType(MP_Task mpTask, Forth* pForth)
 {
 ENTRY("vInputType"_Stz);
   
-  eTN eTokenType = mpTask->m_pCompiler->m_pTokeniser->eToken();
+  eTN eTokenType = pForth->m_pTask->m_pCompiler->m_pTokeniser->eToken();
   
   pForth->m_pDataStack->vPushI8(eTokenType);
   
@@ -188,7 +188,7 @@ void Step::vInputUnknown(MP_Task mpTask, Forth* pForth)
   
   vTrace("\n"_Stz);
   vTrace("Unknown token: %s\n"_Stz,
-         mpTask->m_pCompiler->m_pTokeniser->sToken().azChar()
+         pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar()
          );
   vTrace("\n"_Stz);
 
@@ -204,9 +204,9 @@ void Step::vTokenColon(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTokenColon"_Stz);
   
-  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
+  pForth->m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
   
-  pForth->m_pDataStack->vPushS48K(mpTask->m_pCompiler->m_pTokeniser->sToken());
+  pForth->m_pDataStack->vPushS48K(pForth->m_pTask->m_pCompiler->m_pTokeniser->sToken());
   
   EXIT();
 }

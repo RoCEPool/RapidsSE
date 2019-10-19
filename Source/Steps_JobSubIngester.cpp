@@ -102,8 +102,8 @@ void Step::vJob_SubIngesterChunk(MP_Task mpTask, Forth* pForth)
     }
     else {
       // sleep for 0.010 second
-      mpTask->vSleepUsec(C_1K * 10);
-      mpTask->vTransition(TR_SLEEP);
+      pForth->m_pTask->vSleepUsec(C_1K * 10);
+      pForth->m_pTask->vTransition(TR_SLEEP);
       pForth->m_pDataStack->vPushBool(true);
     }
   }

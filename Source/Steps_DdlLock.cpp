@@ -23,9 +23,9 @@ void Step::vDdlLockDropRead(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDdlLockDropRead"_Stz);
   
-  ASSERT(LH_HAVE_READ_LOCK == mpTask->m_eDdlLocked);
+  ASSERT(LH_HAVE_READ_LOCK == pForth->m_pTask->m_eDdlLocked);
   
-  RASSERT(DL_NONE != mpTask->pJob()->m_aJobClass->m_eDdlLock);
+  RASSERT(DL_NONE != pForth->m_pTask->pJob()->m_aJobClass->m_eDdlLock);
 
   AM::vDdlDropRead(* mpTask);
   
@@ -39,9 +39,9 @@ void Step::vDdlLockDropWrite(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDdlLockDropWrite"_Stz);
   
-  ASSERT(LH_HAVE_WRITE_LOCK == mpTask->m_eDdlLocked);
+  ASSERT(LH_HAVE_WRITE_LOCK == pForth->m_pTask->m_eDdlLocked);
   
-  RASSERT(DL_GRAB_WRITE == mpTask->pJob()->m_aJobClass->m_eDdlLock);
+  RASSERT(DL_GRAB_WRITE == pForth->m_pTask->pJob()->m_aJobClass->m_eDdlLock);
   
   AM::vDdlDropWrite(* mpTask);
 
@@ -55,9 +55,9 @@ void Step::vDdlLockGrabRead(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDdlLockGrabRead"_Stz);
   
-  ASSERT(! mpTask->m_eDdlLocked);
+  ASSERT(! pForth->m_pTask->m_eDdlLocked);
   
-  RASSERT(DL_NONE != mpTask->pJob()->m_aJobClass->m_eDdlLock);
+  RASSERT(DL_NONE != pForth->m_pTask->pJob()->m_aJobClass->m_eDdlLock);
   
   AM::vDdlGrabRead(* mpTask);
 
@@ -71,9 +71,9 @@ void Step::vDdlLockGrabWrite(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDdlLockGrabWrite"_Stz);
   
-  ASSERT(! mpTask->m_eDdlLocked);
+  ASSERT(! pForth->m_pTask->m_eDdlLocked);
 
-  RASSERT(DL_GRAB_WRITE == mpTask->pJob()->m_aJobClass->m_eDdlLock);
+  RASSERT(DL_GRAB_WRITE == pForth->m_pTask->pJob()->m_aJobClass->m_eDdlLock);
   
   AM::vDdlGrabWrite(* mpTask);
 
@@ -87,13 +87,13 @@ void Step::vDdlLockTestDrop(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDdlLockTestDrop"_Stz);
   
-  if (LH_HAVE_READ_LOCK == mpTask->m_eDdlLocked) {
+  if (LH_HAVE_READ_LOCK == pForth->m_pTask->m_eDdlLocked) {
     
     AM::vDdlDropRead(* mpTask);
 
   }
   else
-  if (LH_HAVE_WRITE_LOCK == mpTask->m_eDdlLocked) {
+  if (LH_HAVE_WRITE_LOCK == pForth->m_pTask->m_eDdlLocked) {
     
     AM::vDdlDropWrite(* mpTask);
 

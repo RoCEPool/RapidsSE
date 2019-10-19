@@ -29,7 +29,7 @@ void Step::vFlowBegin_(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vBegin_"_Stz);
   
-  mpTask->m_pCompiler->m_pBeginIP = mpTask->m_pForth->m_aInxPtr;
+  pForth->m_pTask->m_pCompiler->m_pBeginIP = pForth->m_pTask->m_pForth->m_aInxPtr;
   
   EXIT();
 }
@@ -51,15 +51,15 @@ void Step::vFlowExecute(MP_Task mpTask, Forth* pForth)
     (fpStepFp)(mpTask,pForth);
   }
   else if (WK_OBJECT == pWord->eKind()) {
-    pForth->m_pReturnStack->vPushCell(mpTask->m_pForth->m_aInxPtr);
-    mpTask->m_pForth->m_aInxPtr = pWord->aEntryCell();
+    pForth->m_pReturnStack->vPushCell(pForth->m_pTask->m_pForth->m_aInxPtr);
+    pForth->m_pTask->m_pForth->m_aInxPtr = pWord->aEntryCell();
     
     Object* pObject = (Object*)pWord->aFirstCell();
     pForth->m_pDataStack->vPushPointer(pObject);
   }
   else if (WK_ROUTINE == pWord->eKind()){
-    pForth->m_pReturnStack->vPushCell(mpTask->m_pForth->m_aInxPtr);
-    mpTask->m_pForth->m_aInxPtr = pWord->aEntryCell();
+    pForth->m_pReturnStack->vPushCell(pForth->m_pTask->m_pForth->m_aInxPtr);
+    pForth->m_pTask->m_pForth->m_aInxPtr = pWord->aEntryCell();
   }
   else {
     NEVER_REACH;
@@ -87,7 +87,7 @@ void Step::vFlowJump(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJump"_Stz);
   
-  mpTask->m_pForth->m_aInxPtr = mpTask->m_pForth->m_aInxPtr->m_aJumpTo;
+  pForth->m_pTask->m_pForth->m_aInxPtr = pForth->m_pTask->m_pForth->m_aInxPtr->m_aJumpTo;
   
   EXIT();
 }
@@ -99,7 +99,7 @@ void Step::vFlowJumpBegin_(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vFlowJumpBegin_"_Stz);
   
-  mpTask->m_pForth->m_aInxPtr = mpTask->m_pCompiler->m_pBeginIP;
+  pForth->m_pTask->m_pForth->m_aInxPtr = pForth->m_pTask->m_pCompiler->m_pBeginIP;
   
   EXIT();
 }
@@ -140,10 +140,10 @@ void Step::vFlowJumpFalse(MP_Task mpTask, Forth* pForth)
   
   if (iVal)
     // do not jump, skip over argument
-    mpTask->m_pForth->m_aInxPtr++;
+    pForth->m_pTask->m_pForth->m_aInxPtr++;
   else
     // jump to location
-    mpTask->m_pForth->m_aInxPtr = mpTask->m_pForth->m_aInxPtr->m_aJumpTo;
+    pForth->m_pTask->m_pForth->m_aInxPtr = pForth->m_pTask->m_pForth->m_aInxPtr->m_aJumpTo;
   
   EXIT();
 }
@@ -163,10 +163,10 @@ void Step::vFlowJumpTrue(MP_Task mpTask, Forth* pForth)
   
   if (iVal)
     // jump to location
-    mpTask->m_pForth->m_aInxPtr = mpTask->m_pForth->m_aInxPtr->m_aJumpTo;
+    pForth->m_pTask->m_pForth->m_aInxPtr = pForth->m_pTask->m_pForth->m_aInxPtr->m_aJumpTo;
   else
     // do not jump, skip over argument
-    mpTask->m_pForth->m_aInxPtr++;
+    pForth->m_pTask->m_pForth->m_aInxPtr++;
   
   EXIT();
 }
@@ -188,7 +188,7 @@ void Step::vFlowRetryPoint(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vFlowRetryPoint"_Stz);
   
-  mpTask->m_pCompiler->m_pRetryIP = mpTask->m_pForth->m_aInxPtr;
+  pForth->m_pTask->m_pCompiler->m_pRetryIP = pForth->m_pTask->m_pForth->m_aInxPtr;
   
   pForth->m_pDataStack->vRetryPoint();
   
@@ -204,7 +204,7 @@ void Step::vFlowTest(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vFlowTest"_Stz);
   
-  vTrace("[%s] Test\n"_Stz,mpTask->szJobName());
+  vTrace("[%s] Test\n"_Stz,pForth->m_pTask->szJobName());
   
   EXIT();
 }

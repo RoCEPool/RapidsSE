@@ -309,7 +309,7 @@ void Step::vRstackStk(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vRstackStk"_Stz);
   
-  pForth->m_pReturnStack->vDump(mpTask->m_sName.s(),"ReturnStack:");
+  pForth->m_pReturnStack->vDump(pForth->m_pTask->m_sName.s(),"ReturnStack:");
   
   EXIT();
 }

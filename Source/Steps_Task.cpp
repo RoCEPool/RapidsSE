@@ -167,9 +167,9 @@ void Step::vTaskDelete(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskDelete"_Stz);
   
-  mpTask->vUnlinkJob();
+  pForth->m_pTask->vUnlinkJob();
   
-  mpTask->vTransition(TR_DELETE);
+  pForth->m_pTask->vTransition(TR_DELETE);
 
   EXIT();
 }
@@ -423,8 +423,8 @@ void Step::vTaskSleepMsec(MP_Task mpTask, Forth* pForth)
   
   i8 nMicroSeconds = nMilliSeconds * C_1K;
   
-  mpTask->vSleepUsec(nMicroSeconds);
-  mpTask->vTransition(TR_SLEEP);
+  pForth->m_pTask->vSleepUsec(nMicroSeconds);
+  pForth->m_pTask->vTransition(TR_SLEEP);
 
   EXIT();
 }
@@ -443,8 +443,8 @@ void Step::vTaskSleepSsec(MP_Task mpTask, Forth* pForth)
   
   i8 nMicroSeconds = nSeconds * C_1M;
   
-  mpTask->vSleepUsec(nMicroSeconds);
-  mpTask->vTransition(TR_SLEEP);
+  pForth->m_pTask->vSleepUsec(nMicroSeconds);
+  pForth->m_pTask->vTransition(TR_SLEEP);
 
   EXIT();
 }
@@ -461,8 +461,8 @@ void Step::vTaskSleepUsec(MP_Task mpTask, Forth* pForth)
   if ( ! pForth->m_pDataStack->bPop(nMicroSeconds) )
     THROW_DSTACK();
   
-  mpTask->vSleepUsec(nMicroSeconds);
-  mpTask->vTransition(TR_SLEEP);
+  pForth->m_pTask->vSleepUsec(nMicroSeconds);
+  pForth->m_pTask->vTransition(TR_SLEEP);
 
   EXIT();
 }
@@ -526,7 +526,7 @@ void Step::vTaskWait(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskWait"_Stz);
   
-  mpTask->vTransition(TR_WAIT);
+  pForth->m_pTask->vTransition(TR_WAIT);
 
   EXIT();
 }
@@ -538,7 +538,7 @@ void Step::vTaskYield(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTaskYield"_Stz);
     
-  mpTask->vTransition(TR_YIELD);
+  pForth->m_pTask->vTransition(TR_YIELD);
 
   EXIT();
 }

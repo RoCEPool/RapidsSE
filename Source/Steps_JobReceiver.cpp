@@ -51,7 +51,7 @@ void Step::vJob_ReceiverJobReceived(MP_Task mpTask, Forth* pForth)
     Job__Executed* pJob__Executed = _pJob__Executed(pJob);
     Stz* szResponse = pJob__Executed->szResponse();
     if (szResponse->iLength())
-      AM::vLogSvc(SL_INF,mpTask->m_pJob,VA_SVC_RESPONSE_JOB,
+      AM::vLogSvc(SL_INF,pForth->m_pTask->m_pJob,VA_SVC_RESPONSE_JOB,
                   "%s >>%s<<"_Stz, //!format-LogSvc
                   aCN[pJob->eClass()],
                   szResponse);
@@ -59,7 +59,7 @@ void Step::vJob_ReceiverJobReceived(MP_Task mpTask, Forth* pForth)
     return;
   }
 
-  AM::vLogSvc(SL_INF,mpTask->m_pJob,VA_SVC_RECEIVED_JOB,
+  AM::vLogSvc(SL_INF,pForth->m_pTask->m_pJob,VA_SVC_RECEIVED_JOB,
               "%s"_Stz, //!format-LogSvc
               aCN[pJob->eClass()]);
   

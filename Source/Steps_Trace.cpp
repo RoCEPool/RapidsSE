@@ -22,7 +22,7 @@ void Step::vTraceOff(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTraceOff"_Stz);
   
-  mpTask->m_iTracing = 0;
+  pForth->m_pTask->m_iTracing = 0;
   
   EXIT();
 }
@@ -34,7 +34,7 @@ void Step::vTraceOn(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTraceOn"_Stz);
   
-  mpTask->m_iTracing = C_TRACE_STEPS;
+  pForth->m_pTask->m_iTracing = C_TRACE_STEPS;
   
   EXIT();
 }
@@ -52,7 +52,7 @@ void Step::vTracePoint(MP_Task mpTask, Forth* pForth)
     THROW_DSTACK();
   
   if (AM::bTracepoint())
-    mpTask->vTracePoint(sPointName);
+    pForth->m_pTask->vTracePoint(sPointName);
   
   EXIT();
 }
@@ -69,7 +69,7 @@ void Step::vTraceSet(MP_Task mpTask, Forth* pForth)
   if ( ! pForth->m_pDataStack->bPop(iTrace) )
     THROW_DSTACK();
   
-  mpTask->m_iTracing = iTrace;
+  pForth->m_pTask->m_iTracing = iTrace;
   
   EXIT();
 }

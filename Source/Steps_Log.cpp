@@ -45,8 +45,8 @@ void Step::vLogMark(MP_Task mpTask, Forth* pForth)
   if ( ! pForth->m_pDataStack->bPop(sMark) )
     THROW_DSTACK();
 
-  //i8 iJobId = mpTask->m_pJob->m_iUniqueId;
-  JobLog::vNote(mpTask->m_pJob,sMark);
+  //i8 iJobId = pForth->m_pTask->m_pJob->m_iUniqueId;
+  JobLog::vNote(pForth->m_pTask->m_pJob,sMark);
   
   EXIT();
 }
@@ -63,7 +63,7 @@ void Step::vLogMarkEntry(MP_Task mpTask, Forth* pForth)
   if ( ! pForth->m_pDataStack->bPop(sWordNm) )
     THROW_DSTACK();
   
-  Job* pJob = mpTask->m_pJob;
+  Job* pJob = pForth->m_pTask->m_pJob;
   AM::vLogJob(SL_INF,pJob,JA_JOB_ENTER,
               "%s"_Stz, //!format-LogJob
               sWordNm.szStz());
@@ -83,7 +83,7 @@ void Step::vLogMarkExit(MP_Task mpTask, Forth* pForth)
   if ( ! pForth->m_pDataStack->bPop(sWordNm) )
     THROW_DSTACK();
   
-  Job* pJob = mpTask->m_pJob;
+  Job* pJob = pForth->m_pTask->m_pJob;
 
   AM::vLogJob(SL_INF,pJob,JA_JOB_EXIT,
               "%s"_Stz, //!format-LogJob
@@ -103,7 +103,7 @@ void Step::vLogMarkPhase(MP_Task mpTask, Forth* pForth)
   if ( ! pForth->m_pDataStack->bPop(i_Phase) )
     THROW_DSTACK();
   
-  Job* pJob = mpTask->m_pJob;
+  Job* pJob = pForth->m_pTask->m_pJob;
   
   AM::vLogJob(SL_INF,pJob,JA_JOB_PHASE,
               "%s"_Stz,
@@ -129,7 +129,7 @@ void Step::vLogMarkSeed(MP_Task mpTask, Forth* pForth)
   if ( ! pForth->m_pDataStack->bPop(sWordNm) )
     THROW_DSTACK();
   
-  //ActLog::vAdd(mpTask->m_pJob,(eAN)iSeed,sWordNm.szStz());
+  //ActLog::vAdd(pForth->m_pTask->m_pJob,(eAN)iSeed,sWordNm.szStz());
   
   EXIT();
 }
@@ -149,7 +149,7 @@ void Step::vLogMarkWord(MP_Task mpTask, Forth* pForth)
   if ( ! pForth->m_pDataStack->bPop(sWordNm) )
     THROW_DSTACK();
   
-  //ActLog::vAdd(mpTask->m_pJob,(eAN)iAN,sWordNm.szStz());
+  //ActLog::vAdd(pForth->m_pTask->m_pJob,(eAN)iAN,sWordNm.szStz());
   
   EXIT();
 }
@@ -165,7 +165,7 @@ void Step::vLogJobSeed(MP_Task mpTask, Forth* pForth)
   if ( ! pForth->m_pDataStack->bPop(i_Seed) )
     THROW_DSTACK();
   
-  Job* pJob = mpTask->m_pJob;
+  Job* pJob = pForth->m_pTask->m_pJob;
   AM::vLogJob(SL_INF,pJob,JA_JOB_SEED,
               "%s"_Stz, //!format-LogJob
               aSS[i_Seed]);

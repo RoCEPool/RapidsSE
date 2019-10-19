@@ -19,7 +19,7 @@ void Step::vHandlerServiceSleepQueue(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vHandlerServiceSleepQueue"_Stz);
   
-  mpTask->m_pThread->m_pPthread->vSleepSsec(1,CN_WORD);
+  pForth->m_pTask->m_pThread->m_pPthread->vSleepSsec(1,CN_WORD);
   
   EXIT();
 }

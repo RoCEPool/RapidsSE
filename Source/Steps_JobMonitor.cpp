@@ -50,8 +50,8 @@ void Step::vJob_MonitorTake(MP_Task mpTask, Forth* pForth)
   pForth->m_pDataStack->vPushBool(bCallAgain);
   
   if (bCallAgain) {
-    mpTask->vSleepUsec(pJob_Monitor->m_iInterval * C_1M);
-    mpTask->vTransition(TR_SLEEP);
+    pForth->m_pTask->vSleepUsec(pJob_Monitor->m_iInterval * C_1M);
+    pForth->m_pTask->vTransition(TR_SLEEP);
   }
   
   EXIT();

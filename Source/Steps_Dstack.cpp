@@ -130,8 +130,8 @@ void Step::vDstackDup(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vDstackDup"_Stz);
   
-  if (mpTask->m_iTracing) {
-    ASSERT(mpTask->m_iTracing);
+  if (pForth->m_pTask->m_iTracing) {
+    ASSERT(pForth->m_pTask->m_iTracing);
   }
 
   // could just copy from stack back into stack
@@ -384,7 +384,7 @@ void Step::vDstackStk(MP_Task mpTask, Forth* pForth)
   ENTRY("vDstackStk"_Stz);
   
   pForth->m_pDataStack->vContentDump(
-    (Stz*)mpTask->szJobName(),
+    (Stz*)pForth->m_pTask->szJobName(),
     "DataStack:"_Stz);
   
   EXIT();

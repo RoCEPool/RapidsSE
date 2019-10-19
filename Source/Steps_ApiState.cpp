@@ -120,7 +120,7 @@ void Step::vApiStateSenLoc(MP_Task mpTask, Forth* pForth)
   if ( ! pForth->m_pDataStack->bPop(iPosition) )
     THROW_DSTACK();
   
-  Session* pSession = mpTask->m_pSession;
+  Session* pSession = pForth->m_pTask->m_pSession;
   
   ApiState::vMarkSenLoc(pSession,iPosition);
   

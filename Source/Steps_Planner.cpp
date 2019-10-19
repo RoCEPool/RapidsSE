@@ -293,7 +293,7 @@ void Step::vPlannerParseWhere(MP_Task mpTask, Forth* pForth)
 //  else
 //    nLastBuffers = gxArguments.m_nSlotsPerNode;
 //  
-//  mpTask->m_pSession->vLastBuffers(nLastBuffers);
+//  pForth->m_pTask->m_pSession->vLastBuffers(nLastBuffers);
   
   EXIT();
 }

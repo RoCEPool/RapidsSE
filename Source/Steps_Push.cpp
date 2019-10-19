@@ -65,15 +65,15 @@ void Step::vPushValue(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vPushValue"_Stz);
   
-  if (mpTask->m_iTracing) {
-    ASSERT(mpTask->m_iTracing);
+  if (pForth->m_pTask->m_iTracing) {
+    ASSERT(pForth->m_pTask->m_iTracing);
   }
   
-  ForthValue* aValue = &mpTask->m_pForth->m_aInxPtr->m_xEmbValue;
+  ForthValue* aValue = &pForth->m_pTask->m_pForth->m_aInxPtr->m_xEmbValue;
   
   pForth->m_pDataStack->vPushValue(aValue);
   
-  mpTask->vAdjustFIP(aValue->nSize());
+  pForth->m_pTask->vAdjustFIP(aValue->nSize());
   
   EXIT();
 }

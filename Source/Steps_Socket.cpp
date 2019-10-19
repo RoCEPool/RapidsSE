@@ -406,7 +406,7 @@ void Step::vSocketRecvObject(MP_Task mpTask, Forth* pForth)
       pJob->vMarkJob();
     }
     
-    //ActLog::vAdd(pJob,AN_RECV_JOB,mpTask->pJob(),nObjectSize);
+    //ActLog::vAdd(pJob,AN_RECV_JOB,pForth->m_pTask->pJob(),nObjectSize);
 
     pJob->m_i_Focal = C_UNKNOWN;
                          
@@ -666,7 +666,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask, Forth* pForth)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pJob,eClass,aCN[eClass],nObjectSize);
     
-    //ActLog::vAdd(pJob,AN_RECV_JOB,mpTask->pJob(),nObjectSize);
+    //ActLog::vAdd(pJob,AN_RECV_JOB,pForth->m_pTask->pJob(),nObjectSize);
     //ActLog::vAdd(pJob,AN_RECV_JOB_LOW_MEMORY);
     
     pJob->m_i_Focal = C_UNKNOWN;
@@ -839,7 +839,7 @@ void Step::vSocketSendObject(MP_Task mpTask, Forth* pForth)
                          pJob,
                          pSocket);
     
-    //ActLog::vAdd(pJob,AN_SEND_JOB,mpTask->pJob(),nObjectSize);
+    //ActLog::vAdd(pJob,AN_SEND_JOB,pForth->m_pTask->pJob(),nObjectSize);
   }
 
   RASSERT(_bIsValidJob(eClass) ||
@@ -856,7 +856,7 @@ void Step::vSocketSendObject(MP_Task mpTask, Forth* pForth)
               "Object %s %lldB to node %s"_Stz, //!format-LogRes
               aCN[eClass],
               nObjectSize,
-              mpTask->m_pSendNode ? mpTask->m_pSendNode->szNodeName() : "<unknown>"_Stz,
+              pForth->m_pTask->m_pSendNode ? pForth->m_pTask->m_pSendNode->szNodeName() : "<unknown>"_Stz,
               C_ENDARGS);
 
     

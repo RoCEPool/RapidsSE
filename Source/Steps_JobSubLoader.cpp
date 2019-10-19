@@ -96,8 +96,8 @@ void Step::vJob_SubLoaderChunk(MP_Task mpTask, Forth* pForth)
   // stall if ready queue LP is building up (to discuss with Ray)
   if (AM::pQueues()->m_pReadyQueueLP->nTasks() >
       AM::nMaxReadyLP()) {
-    mpTask->vSleepUsec(1000);
-    mpTask->vTransition(TR_SLEEP);
+    pForth->m_pTask->vSleepUsec(1000);
+    pForth->m_pTask->vTransition(TR_SLEEP);
     pForth->m_pDataStack->vPushBool(true);
   }
   else {

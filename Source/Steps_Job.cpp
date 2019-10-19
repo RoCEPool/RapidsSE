@@ -502,11 +502,11 @@ void Step::vJobCompleted(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobCompleted"_Stz);
   
-  Job* pJob = mpTask->pJob();
+  Job* pJob = pForth->m_pTask->pJob();
   
   pJob->m_eJobState = JS_COMPLETED;
   
-  mpTask->vTransition(TR_DELETE);
+  pForth->m_pTask->vTransition(TR_DELETE);
   
   EXIT();
 }
@@ -1312,7 +1312,7 @@ void Step::vJobPostRecv(MP_Task mpTask, Forth* pForth)
     pJob->vMarkJob();
   }
   
-  //ActLog::vAdd(pJob,AN_POST_RECV,mpTask->pJob());
+  //ActLog::vAdd(pJob,AN_POST_RECV,pForth->m_pTask->pJob());
 
   EXIT();
 }
@@ -1331,7 +1331,7 @@ void Step::vJobPreSend(MP_Task mpTask, Forth* pForth)
   
   JobClass* pJobClass = pJob->m_aJobClass;
   
-  //ActLog::vAdd(pJob,AN_PRE_SEND,mpTask->pJob());
+  //ActLog::vAdd(pJob,AN_PRE_SEND,pForth->m_pTask->pJob());
   if (pJobClass->m_fpSend)
     (*pJobClass->m_fpSend)(pJob);
   
@@ -1466,10 +1466,10 @@ void Step::vJobReseed(MP_Task mpTask, Forth* pForth)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  AM::vLogSvc(SL_INF,mpTask->m_pJob,VA_SVC_SPAWN_JOB,
+  AM::vLogSvc(SL_INF,pForth->m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
               "%s spawned by %s"_Stz, //!format-LogSvc
               aCN[pJob->eClass()],
-              aCN[mpTask->m_pJob->eClass()],
+              aCN[pForth->m_pTask->m_pJob->eClass()],
               C_ENDARGS);
   
   pJob->vSeed((eSS)i_Seed);
@@ -1802,7 +1802,7 @@ void Step::vJobSignalWaiter(MP_Task mpTask, Forth* pForth)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  mpTask->vTransition(TR_SIGNAL);
+  pForth->m_pTask->vTransition(TR_SIGNAL);
   
   EXIT();
 }
@@ -1887,10 +1887,10 @@ void Step::vJobSpawn(MP_Task mpTask, Forth* pForth)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  AM::vLogSvc(SL_INF,mpTask->m_pJob,VA_SVC_SPAWN_JOB,
+  AM::vLogSvc(SL_INF,pForth->m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
               "%s spawned by %s"_Stz, //!format-LogSvc
               aCN[pJob->eClass()],
-              aCN[mpTask->m_pJob->eClass()],
+              aCN[pForth->m_pTask->m_pJob->eClass()],
               C_ENDARGS);
 
   pJob->vSeed((eSS)i_Seed);
@@ -1915,10 +1915,10 @@ void Step::vJobSpawnDedicated(MP_Task mpTask, Forth* pForth)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  AM::vLogSvc(SL_INF,mpTask->m_pJob,VA_SVC_SPAWN_JOB,
+  AM::vLogSvc(SL_INF,pForth->m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
               "%s spawned by %s"_Stz, //!format-LogSvc
               aCN[pJob->eClass()],
-              aCN[mpTask->m_pJob->eClass()],
+              aCN[pForth->m_pTask->m_pJob->eClass()],
               C_ENDARGS);
 
   pJob->vSeed((eSS)i_Seed);
@@ -2016,7 +2016,7 @@ void Step::vJobThis(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vJobThis"_Stz);
   
-  Job* pJob = mpTask->m_pJob;
+  Job* pJob = pForth->m_pTask->m_pJob;
   
   pForth->m_pDataStack->vPushPointer(pJob);
 

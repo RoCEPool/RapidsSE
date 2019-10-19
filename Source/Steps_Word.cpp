@@ -188,7 +188,7 @@ void Step::vWordForget(MP_Task mpTask, Forth* pForth)
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
-  Word* pRemovedWord = mpTask->m_oDicStack.pRemoveWord(pWord->sName());
+  Word* pRemovedWord = pForth->m_pTask->m_oDicStack.pRemoveWord(pWord->sName());
   ASSERT(pRemovedWord);
   
   delete pRemovedWord;

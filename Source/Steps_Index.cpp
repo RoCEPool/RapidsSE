@@ -389,7 +389,7 @@ void Step::vIndexLowerBound(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vIndexLowerBound"_Stz);
   
-  Session* pSession = mpTask->m_pSession;
+  Session* pSession = pForth->m_pTask->m_pSession;
   Object* pPtrIndex = nullptr;
   FetchBuffer* pFetchBuffer;
   
@@ -582,7 +582,7 @@ void Step::vIndexRange(MP_Task mpTask, Forth* pForth)
   ENTRY("vIndexRange"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Session* pSession = mpTask->m_pSession;
+  Session* pSession = pForth->m_pTask->m_pSession;
   
   GenVar xValWrkLwr;
   GenVar xValWrkUpr;
@@ -943,7 +943,7 @@ void Step::vIndexUpperBound(MP_Task mpTask, Forth* pForth)
   ENTRY("vIndexUpperBound"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Session* pSession = mpTask->m_pSession;
+  Session* pSession = pForth->m_pTask->m_pSession;
   GenVar xVariable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

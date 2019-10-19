@@ -360,7 +360,7 @@ void Step::vTableInflateScan(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTableInflateScan"_Stz);
   
-  Session* pSession = mpTask->m_pSession;
+  Session* pSession = pForth->m_pTask->m_pSession;
   Object* pPtrTable = nullptr;
   FetchBuffer* pFetchBuffer;
   GenVar xVariable;
@@ -642,7 +642,7 @@ void Step::vTableScan(MP_Task mpTask, Forth* pForth)
 {
   ENTRY("vTableScan"_Stz);
   
-  Session* pSession = mpTask->m_pSession;
+  Session* pSession = pForth->m_pTask->m_pSession;
   Object* pPtrTable = nullptr;
   FetchBuffer* pFetchBuffer;
   GenVar xVariable;

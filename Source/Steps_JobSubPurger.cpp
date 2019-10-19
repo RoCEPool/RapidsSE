@@ -61,10 +61,10 @@ void Step::vJob_SubPurgerChunk(MP_Task mpTask, Forth* pForth)
   if (! bCallAgain) {
     i8 iOlderThanSeconds = pJob_SubPurger->m_pJob_Purge->m_iOlderThanSeconds;
     if (iOlderThanSeconds < 10)
-      mpTask->vSleepUsec(C_1M);
+      pForth->m_pTask->vSleepUsec(C_1M);
     else
-      mpTask->vSleepUsec(C_1M * 10);
-    mpTask->vTransition(TR_SLEEP);
+      pForth->m_pTask->vSleepUsec(C_1M * 10);
+    pForth->m_pTask->vTransition(TR_SLEEP);
   }
     
   EXIT();
