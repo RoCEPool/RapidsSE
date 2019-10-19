@@ -7,11 +7,11 @@ namespace Correctness
 {
   static const i8 C_STACK_BACKTRACE = 16;
 
-  void vAssertTrap(void);
-  void vAssertType(void* aObject, eCN eExpectingClass);
+  void vAbortProcess(void);
   void vDebugPoint(void);
   void vStackDump(void);
-  
+  void vTypeFatal(void* aObject, eCN eExpectingClass);
+
 
   // the [[ noreturn ]] attribute is the C++11 standard for indicating a
   // function never returns

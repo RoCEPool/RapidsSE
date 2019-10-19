@@ -7,53 +7,26 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* assert trap                                                                */
+/* abort the process                                                          */
 /*----------------------------------------------------------------------------*/
-void Correctness::vAssertTrap(void)
+void Correctness::vAbortProcess(void)
 {
   // dump the call stack
   vStackDump();
   
-  // add activity dump and api state dump
+  // write activity log
   AM::vWriteLog();
   
+  // dump api state
   AM::vDumpApi();
   
-  // put a breakpoint here to trap asserts
+  // put a breakpoint here
   sleep(0);
   
   // generate a core
   abort();
 }
 
-/*----------------------------------------------------------------------------*/
-/* handle an rassert                                                          */
-/*----------------------------------------------------------------------------*/
-void Correctness::vAssertType(void* aObject, eCN eExpectingClass)
-{
-  Object* pObject = static_cast<Object*>(aObject);
-  eCN eGotClass = pObject->eClass();
-  
-  if (eGotClass >= CN_NONE && eGotClass < CN_ENUMS)
-    printf("  Expecting class %d %s; Got %d %s\n",
-           eExpectingClass, aCN[eExpectingClass]->azChar(),
-           eGotClass,       aCN[eGotClass]->azChar());
-  else
-    printf("  Expecting class %d %s; Got %d\n",
-           eExpectingClass, aCN[eExpectingClass]->azChar(),
-           eGotClass);
-
-//  if (CN_FREECHUNK == eGotClass) {
-//    FreeChunk* aFreeChunk = static_cast<FreeChunk*>(aObject);
-//    eCN eWasClass = aFreeChunk->eWasClass();
-//    
-//    printf("  FreeChunk was %d\n",eWasClass);
-//  }
-  
-  vAssertTrap();
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /* debug point                                                                */
 /*----------------------------------------------------------------------------*/
@@ -73,6 +46,33 @@ void Correctness::vStackDump(void)
   
   // print out all the frames to stderr
   backtrace_symbols_fd(aaFramePtr,nPtrs,STDERR_FILENO);
+}
+
+/*----------------------------------------------------------------------------*/
+/* have a fatal type error                                                    */
+/*----------------------------------------------------------------------------*/
+void Correctness::vTypeFatal(void* aObject, eCN eExpectingClass)
+{
+  Object* pObject = static_cast<Object*>(aObject);
+  eCN eGotClass = pObject->eClass();
+  
+  if (eGotClass >= CN_NONE && eGotClass < CN_ENUMS)
+    printf("  Expecting class %d %s; Got %d %s\n",
+           eExpectingClass, aCN[eExpectingClass]->azChar(),
+           eGotClass,       aCN[eGotClass]->azChar());
+  else
+    printf("  Expecting class %d %s; Got %d\n",
+           eExpectingClass, aCN[eExpectingClass]->azChar(),
+           eGotClass);
+  
+  //  if (CN_FREECHUNK == eGotClass) {
+  //    FreeChunk* aFreeChunk = static_cast<FreeChunk*>(aObject);
+  //    eCN eWasClass = aFreeChunk->eWasClass();
+  //
+  //    printf("  FreeChunk was %d\n",eWasClass);
+  //  }
+  
+  vAbortProcess();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

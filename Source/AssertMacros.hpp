@@ -34,7 +34,7 @@
   { \
     if ( pARG && eCLASS != pARG->eClass()  ) { \
       printf("RASSERT_TYPE in %s at %d\n",__FILE__,__LINE__); \
-      Correctness::vAssertType(pARG,eCLASS); \
+      Correctness::vTypeFatal(pARG,eCLASS); \
     } \
   }
         

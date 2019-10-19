@@ -144,19 +144,7 @@ void Exception::vCaught(void)
   
   vPrint();
   
-  // dump the call stack
-  vStackDump();
-  
-  // add activity dump and api state dump
-  AM::vWriteLog();
-  
-  AM::vDumpApi();
-  
-  // put a breakpoint here to trap asserts
-  sleep(0);
-  
-  // generate a core
-  abort();
+  vAbortProcess();
 }
 
 
