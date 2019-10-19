@@ -23,7 +23,7 @@ namespace Correctness
 #include "Footer.hpp"
 #include "Header.hpp"
 
-#include "Debug.hpp"
+#include "Correct.hpp"
 
 #include "MemLib.hpp"
 
