@@ -48,7 +48,7 @@ void Step::vTracePoint(void)
   
   s256 sPointName;
   
-  if ( ! m_pDataStack->bPop(sPointName) )
+  if ( ! m_pDataStack->bPopS256(sPointName) )
     THROW_DSTACK();
   
   if (AM::bTracepoint())

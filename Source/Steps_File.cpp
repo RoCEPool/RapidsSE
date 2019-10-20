@@ -92,7 +92,7 @@ ENTRY("vFileOpen"_Stz);
     THROW_DSTACK();
 
   s256 sPath;
-  if ( ! m_pDataStack->bPop(sPath) )
+  if ( ! m_pDataStack->bPopS256(sPath) )
     THROW_DSTACK();
   
   bool bOpened = pFile->bOpenMode(sPath,sMode);

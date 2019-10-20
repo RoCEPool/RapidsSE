@@ -77,7 +77,7 @@ ENTRY("vInputOpen"_Stz);
   
   s256 sFilePath;
   
-  if ( ! m_pDataStack->bPop(sFilePath) )
+  if ( ! m_pDataStack->bPopS256(sFilePath) )
     THROW_DSTACK();
   
   bool bOpened = m_pTask->m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
