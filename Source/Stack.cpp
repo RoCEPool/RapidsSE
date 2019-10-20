@@ -354,7 +354,7 @@ bool Stack::bPopCN(eCN& eClassNo)
 /*----------------------------------------------------------------------------*/
 /* pop value from value stack into given variable                             */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(GenVar* pVariable)
+bool Stack::bPopGenVar(GenVar* pVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

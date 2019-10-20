@@ -179,7 +179,7 @@ void Step::vAstackReverse(void)
   GenVar xVal6;
   GenVar xVal7;
   
-  GenVar* apValWrk[8] = {
+  GenVar* paVal[8] = {
     &xVal0, &xVal1, &xVal2, &xVal3, &xVal4, &xVal5, &xVal6, &xVal7
   };
   
@@ -188,12 +188,12 @@ void Step::vAstackReverse(void)
     THROW_DSTACK();
   
   for (i8 i = 0; i < nValues; i++) {
-    if ( ! m_pAuxStack->bPop(apValWrk[i]) )
+    if ( ! m_pAuxStack->bPopGenVar(paVal[i]) )
       THROW_ASTACK();
   }
   
   for (i8 i = 0; i < nValues; i++) {
-    m_pAuxStack->vPushGenVar(apValWrk[i]);
+    m_pAuxStack->vPushGenVar(paVal[i]);
   }
 }
 
