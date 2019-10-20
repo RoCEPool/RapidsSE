@@ -238,7 +238,7 @@ void Op::vAppendLeft(Operand* pOperand)
   
   vGrabTaskLock();
   
-  m_pQueueLeft->vAppendOperand(pOperand);
+  pQueueLeft()->vAppendOperand(pOperand);
 
   if (TS_BIDING != (eTS)AM::iTaskState(m_pTask)) {
     vDropTaskLock();
@@ -265,7 +265,7 @@ void Op::vAppendRight(Operand* pOperand)
   
   vGrabTaskLock();
   
-  m_pQueueRight->vAppendOperand(pOperand);
+  pQueueRight()->vAppendOperand(pOperand);
   
   if (TS_BIDING != (eTS)AM::iTaskState(m_pTask)) {
     vDropTaskLock();
@@ -545,7 +545,7 @@ Operand* Op::pPopQueue(void)
   
   vGrabTaskLock();
   
-  pOperand = m_pQueueLeft->pPopQueue();
+  pOperand = pQueueLeft()->pPopQueue();
   
   if (pOperand)
     AM::vLogOpr(SL_INF,this,OA_OP_POP,
@@ -584,7 +584,7 @@ Operand* Op::pPopQueueLeft(void)
   
   vGrabTaskLock();
   
-  pOperand = m_pQueueLeft->pPopQueue();
+  pOperand = pQueueLeft()->pPopQueue();
   
   if (pOperand)
     vDropTaskLock();
@@ -625,7 +625,7 @@ Operand* Op::pPopQueueRight(void)
   
   vGrabTaskLock();
   
-  pOperand = m_pQueueRight->pPopQueue();
+  pOperand = pQueueRight()->pPopQueue();
   
   if (pOperand)
     vDropTaskLock();
