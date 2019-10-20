@@ -7,8 +7,12 @@ namespace Registers
 {
   class RegSet : public Object
   {
-  private:
+  friend class Tasks::Task;
+  
+  public:
     Task* m_pTask;  // which task
+  
+    OperandQueue* m_pOperandQueue;
 
     // must be last
     Footer m_xFooter;

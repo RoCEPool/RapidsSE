@@ -385,7 +385,8 @@ Object* Task::pArgObject(void)
 void Task::vBeginOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
+  
+  m_pRegSet->m_pOperandQueue = new OperandQueue;
 }
 
 /*----------------------------------------------------------------------------*/
