@@ -71,7 +71,6 @@ namespace SenVM
     bool bPop(s32&  sArg1);
     bool bPop(s256& sArg1);
     bool bPop(s4K&  sArg1);
-    bool bPop(s16KB& sArg1);
     bool bPopS48K(s48K& sArg1);
     bool bPopS48K(s48K& sArg1, i8& iArg2);
     bool bPopS48K(s48K& sArg1, i8& iArg2, i8& iArg3);

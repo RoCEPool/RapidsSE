@@ -707,24 +707,6 @@ bool Stack::bPop(s4K& sArg)
 /*----------------------------------------------------------------------------*/
 /* pop s from value stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s16KB& sArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_STRVAL) )
-    return false;
-  
-  GenVar xGenVar;
-  vPopVal(xGenVar.aNestedValue());
-  
-  sArg = _aStrVal(xGenVar.aNestedValue())->szStz();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop s from value stack                                                     */
-/*----------------------------------------------------------------------------*/
 bool Stack::bPopS48K(s48K& sArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
