@@ -1,0 +1,78 @@
+/*============================================================================*/
+/* job_CancelQuery.sen -- Job Cancel Query                                    */
+/*============================================================================*/
+
+" job_CancelQuery.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check resources for cancelQuery               (on each participating node) */
+/*----------------------------------------------------------------------------*/
+: cancelQuery::checkResources _eeh ( -- )
+
+  //----------------------------------------------------------------------------
+  // grab a ddl lock
+  //ddlLock::grabRead
+
+  //----------------------------------------------------------------------------
+  // check if we can find the query associated with the job
+ // <jobId> job::findParticipant not if job::this <ERROR_JOB> !!logError exit then
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for cancelQuery                       (on each participating node) */
+/*----------------------------------------------------------------------------*/
+: cancelQuery::execute _eeh ( -- )
+
+  >>logEntry <SEED_EXE>
+
+  job::this locals| pJob_CancelQuery |
+
+  0 0 locals| sJobId iJobId |
+
+  tp: cancelQuery_exe
+
+  //----------------------------------------------------------------------------
+  // grab a ddl lock
+  //ddlLock::grabWrite
+
+  //----------------------------------------------------------------------------
+  // set task's dictionary stack from path in job
+  pJob_CancelQuery job.pushPath
+  task::dicStack.set
+
+  //----------------------------------------------------------------------------
+  // cancel the query
+  <jobId> to sJobId
+
+  sJobId str.tailInt drop to iJobId
+  iJobId  job::findParticipant locals| pJobParticipant |
+
+  // execute the cancel
+  pJobParticipant job_dynamic.cancel
+
+  pJob_CancelQuery job::participantExecuted
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobSyntax: 
+  cancelQuery :: cancel query <jobId> {name:value}
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobInfo: cancelQuery
+{
+  jobKind      = JK_DIST2PC
+  responseKind = RS_NODE_ZERO
+  
+  exeLock      = DL_GRAB_WRITE
+  preCheck     = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
