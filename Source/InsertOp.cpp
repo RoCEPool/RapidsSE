@@ -156,156 +156,42 @@ eOR InsertOp::eOpLoop(void)
   
       // -- -- -- -- -- --
         
-      case CN_CRWBUFFER: {
-        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-        
-        // are we done ?
-        if (bLimitDone()) {
-          break;
-        }
-        
-        // do we have a srtbuffer ?
-        if ( ! m_pSrtBuffer ) {
-          m_pSrtBuffer = new SrtBuffer(1, -1);
-        }
-        
-        // copy limit no of rows from crwBuffer
-        
-        i8 nRows = pCrwBuffer->nRowCount();
-        
-        for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-          
-          if (m_iWorkDone < m_nLimit) {
-            SrtSet* aSrt = m_pSrtBuffer->aAllotSrtSet();
-            
-            if ( ! aSrt ) {
-              vPipeOut(m_pSrtBuffer);
-              m_pSrtBuffer = new SrtBuffer(1, -1);
-              aSrt = m_pSrtBuffer->aAllotSrtSet();
-            }
-            
-            Crw* aRowData = (Crw*)pCrwBuffer->m_oRowTray.pNub()->aGetHead(i_Row);
-            aSrt->vRowRef(0, (i8)aRowData);
-            m_iWorkDone++;
-          }
-        }
-          
+      case CN_CRWBUFFER:
         break;
-      }
         
       // -- -- -- -- -- --
         
       case CN_ENDMARKER:
-        if (--m_nLeftEndMarkers == 0) {
-          
-          // pipeout dangling srtbuffer
-          if (m_pSrtBuffer) {
-            vPipeOut(m_pSrtBuffer);
-            m_pSrtBuffer = nullptr;
-          }
-          
-          // pipeout the end marker
-          vPipeOut(pOperand);
-          goto L_EXIT;
-        }
-        else
-          delete (EndMarker*)pOperand;
+        // pipeout the end marker
+        vPipeOut(pOperand);
+        goto L_EXIT;
+        
         break;
 
       // -- -- -- -- -- --
         
-      case CN_ENTBUFFER: {
-        EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
-        
-        // are we done ?
-        if (bLimitDone()) {
-          break;
-        }
-        
-        // do we have a buffer ?
-        if ( ! m_pSrtBuffer ) {
-          m_pSrtBuffer = new SrtBuffer(1, -1);
-        }
-        
-        // copy limit no of rows from entryBuffer
-        Ent* pEnt = pEntBuffer->aLeadEntry();
-        while (pEnt && m_iWorkDone < m_nLimit) {
-          SrtSet* aSrt = m_pSrtBuffer->aAllotSrtSet();
-          
-          if ( ! aSrt ) {
-            vPipeOut(m_pSrtBuffer);
-            m_pSrtBuffer = new SrtBuffer(1, -1);
-            aSrt = m_pSrtBuffer->aAllotSrtSet();
-          }
-          CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(pEnt->xRef());
-          Crw* aRowData = pCrwBuffer->pCrw(pEnt->xRef().iItem());
-          aSrt->vRowRef(0, (i8)aRowData);
-          pEnt = pEntBuffer->aGetNextEntry(&pEntBuffer, pEnt);
-          m_iWorkDone++;
-        }
-        
+      case CN_ENTBUFFER:
+        NEVER_REACH;
         break;
-      }
-      
+
       // -- -- -- -- -- --
         
-      case CN_IRWBUFFER: {
-        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-        
-        // are we done ?
-        if (bLimitDone()) {
-          delete pIrwBuffer;
-          break;
-        }
-        
-        // are rows in SrtBuffer lessthan what we need ?
-        if (pIrwBuffer->nItems() <  m_nLimit - m_iWorkDone) {
-          m_iWorkDone += pIrwBuffer->nItems();
-          vPipeOut(pIrwBuffer);
-        }
-        else {
-          // almost done - just trim the srtBuffer
-          pIrwBuffer->vItems(m_nLimit - m_iWorkDone);
-          m_iWorkDone += pIrwBuffer->nItems();
-          vPipeOut(pIrwBuffer);
-        }
-        
+      case CN_IRWBUFFER:
+        NEVER_REACH;
         break;
-      }
-        
+
       // -- -- -- -- -- --
         
       case CN_PAUSEMARKER:
-        AM::vPulseTask(m_pPipeline->pOpToPulse()->pTask());
-        vPipeOut(pOperand);
+        NEVER_REACH;
         break;
-     
+
       // -- -- -- -- -- --
         
-      case CN_SRTBUFFER: {
-        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        
-        // are we done ?
-        if (bLimitDone()) {
-          delete pSrtBuffer;
-          break;
-        }
-        
-        // are rows in SrtBuffer lessthan what we need ?
-        if (pSrtBuffer->nItems() <  m_nLimit - m_iWorkDone) {
-          m_iWorkDone += pSrtBuffer->nItems();
-          vPipeOut(pSrtBuffer);
-        }
-        else {
-          // almost done - just trim the srtBuffer
-          pSrtBuffer->vItems(m_nLimit - m_iWorkDone);
-          m_iWorkDone += pSrtBuffer->nItems();
-          vPipeOut(pSrtBuffer);
-        }
-        
+      case CN_SRTBUFFER:
+        NEVER_REACH;
         break;
-      }
-        
+
       // -- -- -- -- -- --
         
       case CN_STREAMDEF:
