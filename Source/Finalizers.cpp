@@ -130,6 +130,7 @@ pFINALIZE *gpFinalize[]
   /* 54 */ &Finalize::vUndefined,         // CN_IDXCOLVEC
   /* 55 */ &Finalize::vUndefined,         // CN_IDXVEC
   /*    */ &Finalize::vUndefined,         // CN_INGESTCHUNK
+  /*    */ &Finalize::vUndefined,         // CN_INSERTOP
   /*    */ &Finalize::vUndefined,         // CN_INTBUFFER
   /*    */ &Finalize::vUndefined,         // CN_INTERSECTOP
   /*    */ &Finalize::vUndefined,         // CN_IOCHUNK
