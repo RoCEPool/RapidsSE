@@ -75,6 +75,8 @@ InsertOp::InsertOp(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INSERTOP,_FOOTER_);
   
+  m_sTableNm = C_NO_NAME;
+
   m_fpCall = InsertOp::eCall;
   
   _checkInitialised_(CN_INSERTOP);
@@ -99,9 +101,10 @@ InsertOp::~InsertOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* InsertOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
-
   InsertOp* pInsertOp = new InsertOp(pOpSpec,pPipeline);
-  
+ 
+  pInsertOp->m_sTableNm = pInsertOp->m_pOpSpec->pEnameSet()->szValue((i8)0);
+
   return pInsertOp;
 }
 

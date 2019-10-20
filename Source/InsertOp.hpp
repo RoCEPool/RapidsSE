@@ -8,7 +8,8 @@ namespace DataOperators
   class InsertOp : public Op
   {
   private:
-    
+    s256       m_sTableNm;
+
     // must be last
     Footer m_xFooter;
 
