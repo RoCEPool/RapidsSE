@@ -143,7 +143,7 @@ void Step::vIntHash(void)
   ENTRY("vIntHash"_Stz);
   
   s48K sString;
-  if ( ! m_pDataStack->bPop(sString) )
+  if ( ! m_pDataStack->bPopS48K(sString) )
     THROW_DSTACK();
   
   i8 nLength = sString.nLength();

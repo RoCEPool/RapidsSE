@@ -51,7 +51,7 @@ namespace SenVM
     void vPeekValue(i8 i_Value, GenVar& xGenVar);
     bool bPeekZero(void);
   
-    bool bPop(Cell*& aCell);
+    bool bPopCell(Cell*& aCell);
     bool bPop(eCN& eClassNo);
     bool bPop(GenVar* pGenVar);
     bool bPop(GenVar& xGenVar);
@@ -72,10 +72,10 @@ namespace SenVM
     bool bPop(s256& sArg1);
     bool bPop(s4K&  sArg1);
     bool bPop(s16KB& sArg1);
-    bool bPop(s48K& sArg1);
-    bool bPop(s48K& sArg1, i8& iArg2);
-    bool bPop(s48K& sArg1, i8& iArg2, i8& iArg3);
-    bool bPop(s48K& sArg1, s48K& sArg2);
+    bool bPopS48K(s48K& sArg1);
+    bool bPopS48K(s48K& sArg1, i8& iArg2);
+    bool bPopS48K(s48K& sArg1, i8& iArg2, i8& iArg3);
+    bool bPopS48K(s48K& sArg1, s48K& sArg2);
     bool bPopAsInt(i8& iArg1);
     bool bPopAsI8_Inline(i8& iArg1);
     bool bPopAsInt_Quick(i8& iArg1);

@@ -169,7 +169,7 @@ ENTRY("vFileWrite"_Stz);
   
   s48K sLine;
   
-  if ( ! m_pDataStack->bPop(sLine) )
+  if ( ! m_pDataStack->bPopS48K(sLine) )
     THROW_DSTACK();
   
   Stz* wStr = sLine;

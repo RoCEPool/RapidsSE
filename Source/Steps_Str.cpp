@@ -62,7 +62,7 @@ void Step::vStrCat(void)
   s48K sStrB;
   s48K sStrA;
   
-  if ( ! m_pDataStack->bPop(sStrB,sStrA) )
+  if ( ! m_pDataStack->bPopS48K(sStrB,sStrA) )
     THROW_DSTACK();
   
   sStrR = sStrA;
@@ -86,7 +86,7 @@ void Step::vStrClip(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPop(sString,iLength) )
+  if ( ! m_pDataStack->bPopS48K(sString,iLength) )
     THROW_DSTACK();
   
   // validate length
@@ -143,7 +143,7 @@ void Step::vStrEscape(void)
   s48K xEscaped;
   
   // get the arguments
-  if ( ! m_pDataStack->bPop(xArg) )
+  if ( ! m_pDataStack->bPopS48K(xArg) )
     THROW_DSTACK();
   
   StrLib::vEscape(xArg.azChar(),xEscaped.azChar());
@@ -161,7 +161,7 @@ void Step::vStrFirstCsv(void)
   ENTRY("vStrFirstCsv"_Stz);
   
   s48K sStr;
-  if ( ! m_pDataStack->bPop(sStr) )
+  if ( ! m_pDataStack->bPopS48K(sStr) )
     THROW_DSTACK();
   
   s48K sFirstValue;
@@ -184,7 +184,7 @@ void Step::vStrFormat(void)
   ENTRY("vStrFormat"_Stz);
   
   s48K sFormat;
-  if ( ! m_pDataStack->bPop(sFormat) )
+  if ( ! m_pDataStack->bPopS48K(sFormat) )
     THROW_DSTACK();
   
   s48K sString;
@@ -208,7 +208,7 @@ void Step::vStrLeft(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPop(sString,iLength) )
+  if ( ! m_pDataStack->bPopS48K(sString,iLength) )
     THROW_DSTACK();
   
   // validate length
@@ -238,7 +238,7 @@ void Step::vStrLength(void)
   s48K sString;
   
   // get the arguments
-  if ( ! m_pDataStack->bPop(sString) )
+  if ( ! m_pDataStack->bPopS48K(sString) )
     THROW_DSTACK();
   
   iLength = sString.nLength();
@@ -324,7 +324,7 @@ void Step::vStrRemovePrefix(void)
   ENTRY("vStrRemovePrefix"_Stz);
   
   s48K sString;
-  if ( ! m_pDataStack->bPop(sString) )
+  if ( ! m_pDataStack->bPopS48K(sString) )
     THROW_DSTACK();
   
   s32 sIntro;
@@ -346,7 +346,7 @@ void Step::vStrRemoveSuffix(void)
   ENTRY("vStrRemoveSuffix"_Stz);
   
   s48K sString;
-  if ( ! m_pDataStack->bPop(sString) )
+  if ( ! m_pDataStack->bPopS48K(sString) )
     THROW_DSTACK();
   
   s32 sIntro;
@@ -371,13 +371,13 @@ void Step::vStrReplace(void)
   s48K sThat;
   s48K sThis;
   
-  if ( ! m_pDataStack->bPop(sString) )
+  if ( ! m_pDataStack->bPopS48K(sString) )
     THROW_DSTACK();
 
-  if ( ! m_pDataStack->bPop(sThat) )
+  if ( ! m_pDataStack->bPopS48K(sThat) )
     THROW_DSTACK();
   
-  if ( ! m_pDataStack->bPop(sThis) )
+  if ( ! m_pDataStack->bPopS48K(sThis) )
     THROW_DSTACK();
   
   s48K sReplaced;
@@ -401,7 +401,7 @@ void Step::vStrRight(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPop(sString,iLength) )
+  if ( ! m_pDataStack->bPopS48K(sString,iLength) )
     THROW_DSTACK();
   
   // validate length
@@ -435,7 +435,7 @@ void Step::vStrSub(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPop(sString,iStart,iLength) )
+  if ( ! m_pDataStack->bPopS48K(sString,iStart,iLength) )
     THROW_DSTACK();
   
   i8 iHasLength = sString.nLength();
@@ -471,7 +471,7 @@ void Step::vStrTailInt(void)
   
   // get the string
   s48K sString;
-  if ( ! m_pDataStack->bPop(sString) )
+  if ( ! m_pDataStack->bPopS48K(sString) )
     THROW_DSTACK();
   
   // get last char in string

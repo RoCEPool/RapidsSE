@@ -317,7 +317,7 @@ bool Stack::bPeekZero(void)
 /*----------------------------------------------------------------------------*/
 /* pop aCell from value stack                                                 */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Cell*& aCell)
+bool Stack::bPopCell(Cell*& aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -725,7 +725,7 @@ bool Stack::bPop(s16KB& sArg)
 /*----------------------------------------------------------------------------*/
 /* pop s from value stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s48K& sArg)
+bool Stack::bPopS48K(s48K& sArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -743,7 +743,7 @@ bool Stack::bPop(s48K& sArg)
 /*----------------------------------------------------------------------------*/
 /* pop s,i8 from value stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s48K& sArg, i8& iArg)
+bool Stack::bPopS48K(s48K& sArg, i8& iArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -766,7 +766,7 @@ bool Stack::bPop(s48K& sArg, i8& iArg)
 /*----------------------------------------------------------------------------*/
 /* pop s,i8,i8 from value stack                                               */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s48K& sArg, i8& iArg1, i8& iArg2)
+bool Stack::bPopS48K(s48K& sArg, i8& iArg1, i8& iArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -791,7 +791,7 @@ bool Stack::bPop(s48K& sArg, i8& iArg1, i8& iArg2)
 /*----------------------------------------------------------------------------*/
 /* pop s,s from value stack                                                   */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s48K& sArg1, s48K& sArg2)
+bool Stack::bPopS48K(s48K& sArg1, s48K& sArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

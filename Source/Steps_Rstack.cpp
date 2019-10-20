@@ -87,7 +87,7 @@ void Step::vRstackCsRoll(void)
   }
   
   Cell* aCellZ;
-  if ( ! m_pDataStack->bPop(aCellZ) )
+  if ( ! m_pDataStack->bPopCell(aCellZ) )
     THROW_DSTACK();
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {

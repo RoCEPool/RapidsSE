@@ -145,7 +145,7 @@ ENTRY("vInputText"_Stz);
   
   s48K sInput;                                             //! NEED STACK CHECKS
   
-  if ( ! m_pDataStack->bPop(sInput) )
+  if ( ! m_pDataStack->bPopS48K(sInput) )
     THROW_DSTACK();
     
   m_pTask->m_pCompiler->m_pTokeniser->vUseString(sInput);
