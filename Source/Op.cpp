@@ -651,7 +651,7 @@ OperandQueue* Op::pQueueLeft(void)
   
   RegSet* pRegSet = AM::pTaskRegSet(m_pTask);
   
-  OperandQueue* pQueLeft = pRegSet->m_pOpQueLeft;
+  OperandQueue* pQueLeft = pRegSet->m_pOperandQueueLeft;
   
   return pQueLeft;
 }
@@ -665,7 +665,7 @@ OperandQueue* Op::pQueueRight(void)
   
   RegSet* pRegSet = AM::pTaskRegSet(m_pTask);
   
-  OperandQueue* pQueRight = pRegSet->m_pOpQueRight;
+  OperandQueue* pQueRight = pRegSet->m_pOperandQueueRight;
 
   return pQueRight;
 }

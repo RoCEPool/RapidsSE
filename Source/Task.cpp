@@ -398,11 +398,11 @@ void Task::vBeginOp(void)
   if (! m_pRegSet)
     m_pRegSet = new RegSet(this);
   
-  if (! m_pRegSet->m_pOpQueLeft)
-    m_pRegSet->m_pOpQueLeft  = new OperandQueue;
+  if (! m_pRegSet->m_pOperandQueueLeft)
+    m_pRegSet->m_pOperandQueueLeft  = new OperandQueue;
   
-  if (! m_pRegSet->m_pOpQueRight)
-    m_pRegSet->m_pOpQueRight = new OperandQueue;
+  if (! m_pRegSet->m_pOperandQueueRight)
+    m_pRegSet->m_pOperandQueueRight = new OperandQueue;
   
   vDropTaskLock();
 }

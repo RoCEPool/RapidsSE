@@ -12,8 +12,8 @@ namespace Registers
   public:
     Task* m_pTask;  // which task
   
-    OperandQueue* m_pOpQueLeft;
-    OperandQueue* m_pOpQueRight;
+    OperandQueue* m_pOperandQueueLeft;
+    OperandQueue* m_pOperandQueueRight;
 
     // must be last
     Footer m_xFooter;
