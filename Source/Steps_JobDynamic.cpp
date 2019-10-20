@@ -35,13 +35,13 @@ void Step::vJob_DynamicBegin(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Dynamic.cancel -- cancel the dynamic job                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_DynamicCancel(MP_Task mpTask)
+void Step::vJob_DynamicCancel(void)
 {
   ENTRY("vJob_DynamicCancel"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_Dynamic.cancel"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
   
   pJob_Dynamic->vCancel();

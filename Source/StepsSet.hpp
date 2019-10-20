@@ -566,10 +566,10 @@ public:
   void vJob_CreateIndexIsUniqueFetch(void);
 
   // job Dynamic
-  static void vJob_DynamicBegin(Tasks::MP_Task mpTask);
-  static void vJob_DynamicCancel(Tasks::MP_Task mpTask);
-  static void vJob_DynamicEnd(Tasks::MP_Task mpTask);
-  static void vJob_DynamicExecute(Tasks::MP_Task mpTask);
+  void vJob_DynamicBegin(void);
+  void vJob_DynamicCancel(void);
+  void vJob_DynamicEnd(void);
+  void vJob_DynamicExecute(void);
 
   // job Export
   void vJob_ExportAuxAckDecidedFetch(void);

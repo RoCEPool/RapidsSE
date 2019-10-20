@@ -391,7 +391,6 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
         
       case CN_ENDMARKER: {
         // print the responses received
-        AM::pThisTLSPthread()->vSleepUsec(1000000,CN_JOB_DYNAMIC);
         vTrace("success: %lld rows fetched\n"_Stz, *pJob_Dynamic->m_xResponse.m_ixRowsProcessed);
         delete (EndMarker*)pOperand;
         goto L_EXIT;
