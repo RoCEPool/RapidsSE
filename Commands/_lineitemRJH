@@ -47,8 +47,8 @@ lsidx lineitem;
 space;
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
-//time ld lineitem "/tpch/SF0/lineitem_10.csv" max_errors 100;
-//.time ld lineitem "/tpch/SF0/lineitem_100.csv" max_errors 100;
+time ld lineitem "/tpch/SF0/lineitem_10.csv" max_errors 100;
+//time ld lineitem "/tpch/SF0/lineitem_100.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_1k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
@@ -60,7 +60,7 @@ fetch lineitem limit 10;
 dynamic pipeline lineItem_dyn
 begin
   stage stageA on all partitions:
-   scan lineitem | output
+   scan lineitem | insert | output
 end ;
 
 //dynamic scan lineitem | output;

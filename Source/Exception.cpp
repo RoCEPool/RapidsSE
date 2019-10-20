@@ -107,6 +107,8 @@ void Exception::vPrint(void)
   vSprint(zIntoBuf);
   
   printf("%s\n",zIntoBuf);
+  
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

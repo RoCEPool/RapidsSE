@@ -76,9 +76,6 @@ InsertOp::InsertOp(OpSpec* pOpSpec, Pipeline* pPipeline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INSERTOP,_FOOTER_);
   
   m_fpCall = InsertOp::eCall;
-
-  m_nLimit     = C_UNKNOWN;
-  m_pSrtBuffer = nullptr;
   
   _checkInitialised_(CN_INSERTOP);
 
@@ -104,8 +101,6 @@ Op* InsertOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
 
   InsertOp* pInsertOp = new InsertOp(pOpSpec,pPipeline);
-  
-  pInsertOp->m_nLimit = pInsertOp->m_pOpSpec->pEnameSet()->iValue((i8)0);
   
   return pInsertOp;
 }
@@ -211,28 +206,6 @@ eOR InsertOp::eOpLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
   return OR_EXIT;
-}
-
-/*----------------------------------------------------------------------------*/
-/* has the limit been reached ?                                               */
-/*----------------------------------------------------------------------------*/
-bool InsertOp::bLimitDone(void)
-{
-  if (m_iWorkDone == m_nLimit) {
-    if (AM::bVerbose())
-      vTrace("%s::!CANCELLING : after popping %lld buffers\n"_Stz,
-             m_sName.szStz(),
-             m_iWorkDone);
-      m_pPipeline->vCancelling(true);
-    
-    if (m_pSrtBuffer) {
-      vPipeOut(m_pSrtBuffer);
-      m_pSrtBuffer = nullptr;
-    }
-    return true;
-  }
-  
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

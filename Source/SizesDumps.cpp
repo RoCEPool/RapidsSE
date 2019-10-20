@@ -558,7 +558,7 @@ i8 giClassSize[]
   /* 54 */ sizeof(IdxColVec),          // CN_IDXCOLVEC
   /* 55 */ sizeof(IdxVec),             // CN_IDXVEC
   /*    */ sizeof(IngestChunk),        // CN_INGESTCHUNK
-  /*    */ 0,//sizeof(InsertOp),          // CN_INSERTOP
+  /*    */ sizeof(InsertOp),           // CN_INSERTOP
   /*    */ sizeof(IntBuffer),          // CN_INTBUFFER
   /*    */ sizeof(IntersectOp),        // CN_INTERSECTOP
   /*    */ sizeof(IoChunk),            // CN_IOCHUNK

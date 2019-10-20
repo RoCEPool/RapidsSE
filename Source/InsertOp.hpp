@@ -8,10 +8,7 @@ namespace DataOperators
   class InsertOp : public Op
   {
   private:
-  
-    i8         m_nLimit;     // what is the limit?
-    SrtBuffer* m_pSrtBuffer; // sort buffer
-  
+    
     // must be last
     Footer m_xFooter;
 
@@ -27,7 +24,6 @@ namespace DataOperators
     static eOR eDrain(void* aThis);
 
     eOR  eOpLoop(void);
-    bool bLimitDone(void);
     eOR  eDrainLoop(void);
 
   private:
