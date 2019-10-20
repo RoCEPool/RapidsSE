@@ -318,7 +318,7 @@ bool RowExtractor::bExtractBcdSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   try {
     pDtmVal->m_wDtm.m_iBcd = snBcd.i(aacRecCrs,pColumn,pFormatters);
   }
-  catch (i8 eThrow) {
+  catch (Exception xException) {
     return false;
   }
 
@@ -371,7 +371,7 @@ bool RowExtractor::bExtractBolSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   try {
     pDtmVal->m_wDtm.m_iBol = snBol.i(aacRecCrs,pColumn,pFormatters);
   }
-  catch (i8 eThrow) {
+  catch (Exception xException) {
     return false;
   }
   
@@ -426,7 +426,7 @@ bool RowExtractor::bExtractDteSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   try {
     pDtmVal->m_wDtm.m_iDte = snDte.i(aacRecCrs,pColumn,pFormatters);
   }
-  catch (i8 eThrow) {
+  catch (Exception xException) {
     return false;
   }
 
@@ -479,7 +479,7 @@ bool RowExtractor::bExtractFltSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   try {
     pDtmVal->m_wDtm.m_dFlt = snFlt.d(aacRecCrs,pColumn,pFormatters);
   }
-  catch (i8 eThrow) {
+  catch (Exception xException) {
     return false;
   }
 
@@ -532,7 +532,7 @@ bool RowExtractor::bExtractIntSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   try {
     pDtmVal->m_wDtm.m_iInt = snInt.i(aacRecCrs,pColumn,pFormatters);
   }
-  catch (i8 eThrow) {
+  catch (Exception xException) {
     return false;
   }
   
@@ -594,7 +594,7 @@ bool RowExtractor::bExtractIvlSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   try {
     pDtmVal->m_wDtm.m_iIvl = snIvl.i(aacRecCrs,pColumn,pFormatters);
   }
-  catch (i8 eThrow) {
+  catch (Exception xException) {
     return false;
   }
 
@@ -649,7 +649,7 @@ bool RowExtractor::bExtractTmeSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   try {
     pDtmVal->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
   }
-  catch (i8 eThrow) {
+  catch (Exception xException) {
     return false;
   }
 
@@ -704,7 +704,7 @@ bool RowExtractor::bExtractTspSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   try {
     pDtmVal->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
   }
-  catch (i8 eThrow) {
+  catch (Exception xException) {
     return false;
   }
 
@@ -756,7 +756,7 @@ bool RowExtractor::bExtractVchSupplied(DtmVal* pDtmVal, char** aacRecCrs,
     pDtmVal->m_sVch = snVch.sz(aacRecCrs,pColumn,pFormatters,
                               bSawEnclosedLeading,pDtmVal->m_nChars);
   }
-  catch (i8 eThrow) {
+  catch (Exception xException) {
     return false;
   }
 

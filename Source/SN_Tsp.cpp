@@ -44,8 +44,8 @@ i8 SN_Tsp::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
                                     iHour, iMinute, iSecond, iMicro,
                                     pScnFmt->m_eDateComponent,
                                     pScnFmt->m_cDateSeparator) )
-    throw C_UNKNOWN;
-  
+    THROW("StrLib::bExtractTimestamp2");
+
   m_wDtm.xTsp.m_uYearDelta = iYear - C_YEAR_BASE;
   m_wDtm.xTsp.m_uMonth     = iMonth;
   m_wDtm.xTsp.m_uDay       = iDay;

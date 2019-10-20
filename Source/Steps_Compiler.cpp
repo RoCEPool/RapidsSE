@@ -15,13 +15,13 @@ void Step::vAddSteps_Compiler(void)
 /*----------------------------------------------------------------------------*/
 /* compiler::current -- push word being compiled                              */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerCurrent(MP_Task mpTask)
+void Step::vCompilerCurrent(void)
 {
   ENTRY("vCompilerCurrent"_Stz);
   
-  Word* pWord = mpTask->m_pCompiler->m_pCurrent;
+  Word* pWord = m_pTask->m_pCompiler->m_pCurrent;
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pWord);
+  m_pDataStack->vPushPointer(pWord);
   
   EXIT();
 }

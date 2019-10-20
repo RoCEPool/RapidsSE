@@ -17,18 +17,18 @@ void Step::vAddSteps_JobReport(void)
 /*----------------------------------------------------------------------------*/
 /* job_report.begin -- begin monitor                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReportBegin(MP_Task mpTask)
+void Step::vJob_ReportBegin(void)
 {
   ENTRY("vJob_ReportBegin"_Stz);
   
   Object* pPtrJobReport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobReport) )
-    THROW_INVALID_DSTACK("job_report.begin"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJobReport) )
+    THROW_DSTACK();
   Job_Report* pJob_Report = _pJob_Report(pPtrJobReport);
   
   bool bBegun = pJob_Report->bBegin();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -36,22 +36,22 @@ void Step::vJob_ReportBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_report.take -- monitor take                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReportTake(MP_Task mpTask)
+void Step::vJob_ReportTake(void)
 {
   ENTRY("vJob_ReportTake"_Stz);
   
   Object* pPtrJobReport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobReport) )
-    THROW_INVALID_DSTACK("job_report.take"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJobReport) )
+    THROW_DSTACK();
   Job_Report* pJob_Report = _pJob_Report(pPtrJobReport);
   
   bool bCallAgain = pJob_Report->bTake();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bCallAgain);
+  m_pDataStack->vPushBool(bCallAgain);
   
 //  if (bCallAgain) {
-//    mpTask->vSleepUs(C_1M);
-//    mpTask->vTransition(TR_SLEEP);
+//    m_pTask->vSleepUs(C_1M);
+//    m_pTask->vTransition(TR_SLEEP);
 //  }
   
   EXIT();
@@ -60,13 +60,13 @@ void Step::vJob_ReportTake(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_report.end -- end monitor                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_ReportEnd(MP_Task mpTask)
+void Step::vJob_ReportEnd(void)
 {
   ENTRY("vJob_ReportEnd"_Stz);
   
   Object* pPtrJob_Report;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Report) )
-    THROW_INVALID_DSTACK("job_report.end"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Report) )
+    THROW_DSTACK();
   Job_Report* pJob_Report = _pJob_Report(pPtrJob_Report);
   
   pJob_Report->vEnd();

@@ -20,13 +20,13 @@ void Step::vAddSteps_JobSubLoader(void)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader::spawn -- spawn a new subloader                              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderSpawn(MP_Task mpTask)
+void Step::vJob_SubLoaderSpawn(void)
 {
   ENTRY("vJob_SubLoaderSpawn"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
-    THROW_INVALID_DSTACK("job_subLoader::spawn"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_LoadTable) )
+    THROW_DSTACK();
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -64,18 +64,18 @@ void Step::vJob_SubLoaderSpawn(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.begin -- begin loading                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderBegin(MP_Task mpTask)
+void Step::vJob_SubLoaderBegin(void)
 {
   ENTRY("vJob_SubLoaderBegin"_Stz);
   
   Object* pPtrJob_SubLoader;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    THROW_INVALID_DSTACK("job_subLoader.begin"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_SubLoader) )
+    THROW_DSTACK();
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
 
   bool bBegun = pJob_SubLoader->bBegin();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -83,26 +83,26 @@ void Step::vJob_SubLoaderBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.chunk -- read & process rows till buffer full / eof          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderChunk(MP_Task mpTask)
+void Step::vJob_SubLoaderChunk(void)
 {
   ENTRY("vJob_SubLoaderChunk"_Stz);
   
   Object* pPtrJob_SubLoader;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    THROW_INVALID_DSTACK("job_subLoader.chunk"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_SubLoader) )
+    THROW_DSTACK();
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // stall if ready queue LP is building up (to discuss with Ray)
   if (AM::pQueues()->m_pReadyQueueLP->nTasks() >
       AM::nMaxReadyLP()) {
-    mpTask->vSleepUsec(1000);
-    mpTask->vTransition(TR_SLEEP);
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    m_pTask->vSleepUsec(1000);
+    m_pTask->vTransition(TR_SLEEP);
+    m_pDataStack->vPushBool(true);
   }
   else {
     bool bCallAgain = pJob_SubLoader->bChunk();
-    mpTask->m_pForth->m_pDataStack->vPushBool(bCallAgain);
+    m_pDataStack->vPushBool(bCallAgain);
   }
   
   EXIT();
@@ -111,13 +111,13 @@ void Step::vJob_SubLoaderChunk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.end -- end loading                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderEnd(MP_Task mpTask)
+void Step::vJob_SubLoaderEnd(void)
 {
   ENTRY("vJob_SubLoaderEnd"_Stz);
   
   Object* pPtrJob_SubLoader;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    THROW_INVALID_DSTACK("subLoader.end"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_SubLoader) )
+    THROW_DSTACK();
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
   pJob_SubLoader->vEnd();
@@ -128,18 +128,18 @@ void Step::vJob_SubLoaderEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.terminate -- test early termination                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderTerminate(MP_Task mpTask)
+void Step::vJob_SubLoaderTerminate(void)
 {
   ENTRY("vJob_SubLoaderTerminate"_Stz);
   
   Object* pPtrJob_SubLoader;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    THROW_INVALID_DSTACK("job_subLoader.terminate"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_SubLoader) )
+    THROW_DSTACK();
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
   i8 iTerminate = pJob_SubLoader->bTerminate();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iTerminate);
+  m_pDataStack->vPushI8(iTerminate);
   
   EXIT();
 }

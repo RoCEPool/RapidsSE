@@ -17,18 +17,18 @@ void Step::vAddSteps_JobMark2(void)
 /*----------------------------------------------------------------------------*/
 /* jobMark2.index! -- store index pointer                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJobMark2IndexStore(MP_Task mpTask)
+void Step::vJobMark2IndexStore(void)
 {
   ENTRY("vJobMark2IndexStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobMark2indextable!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
   
   Object* pIndexPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pIndexPtr) )
-    THROW_INVALID_DSTACK("jobMark2indextable!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pIndexPtr) )
+    THROW_DSTACK();
   Index* pIndex = _pIndex(pIndexPtr);
   
   pJobMark2->m_pIndex = pIndex;
@@ -39,19 +39,19 @@ void Step::vJobMark2IndexStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobMark2.tableName@ -- fetch table name                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJobMark2TableNameFetch(MP_Task mpTask)
+void Step::vJobMark2TableNameFetch(void)
 {
   ENTRY("vJobMark2TableNameFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobMark2.tableName@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
   
   s32 sTableNm;
   sTableNm = pJobMark2->szObjectName();
   
-  mpTask->m_pForth->m_pDataStack->vPushS32(sTableNm);
+  m_pDataStack->vPushS32(sTableNm);
 
   EXIT();
 }
@@ -59,18 +59,18 @@ void Step::vJobMark2TableNameFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobMark2.table! -- store table pointer                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJobMark2TableStore(MP_Task mpTask)
+void Step::vJobMark2TableStore(void)
 {
   ENTRY("vJobMark2TableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobMark2.table!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
 
   Object* pTablePtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
-    THROW_INVALID_DSTACK("jobMark2.table!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pTablePtr) )
+    THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   
   pJobMark2->m_pTable = pTable;

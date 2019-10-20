@@ -17,13 +17,13 @@ void Step::vAddSteps_Process(void)
 /*----------------------------------------------------------------------------*/
 /* process.getpid -- get pid of this process                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vProcessGetPid(MP_Task mpTask)
+void Step::vProcessGetPid(void)
 {
 ENTRY("vProcessGetPid"_Stz);
   
   i8 iPid = Process::iGetPid();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iPid);
+  m_pDataStack->vPushI8(iPid);
   
   EXIT();
 }
@@ -31,7 +31,7 @@ ENTRY("vProcessGetPid"_Stz);
 /*----------------------------------------------------------------------------*/
 /* process::quit -- process exits early                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vProcessQuit(MP_Task mpTask)
+void Step::vProcessQuit(void)
 {
   ENTRY("vProcessQuit"_Stz);
   
@@ -45,17 +45,17 @@ void Step::vProcessQuit(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* process.testpid -- test pid on stack                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vProcessTestPid(MP_Task mpTask)
+void Step::vProcessTestPid(void)
 {
 ENTRY("vProcessTestPid"_Stz);
 
   i8 iPid;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPid) )
-    THROW_INVALID_DSTACK("process.testpid"_Stz);
+  if ( ! m_pDataStack->bPopI8(iPid) )
+    THROW_DSTACK();
   
   i8 iExists = Process::bTestPid(iPid);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iExists);
+  m_pDataStack->vPushI8(iExists);
   
   EXIT();
 }

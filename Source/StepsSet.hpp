@@ -6,562 +6,564 @@
 public:
 
   // access path
-  static void vAccessPathTableFetch(Tasks::MP_Task mpTask);
-  static void vAccessPathTableStore(Tasks::MP_Task mpTask);
+  void vAccessPathTableFetch(void);
+  void vAccessPathTableStore(void);
 
   // accum
-  static void vAccumDelete(Tasks::MP_Task mpTask);
-  static void vAccumNew(Tasks::MP_Task mpTask);
+  void vAccumDelete(void);
+  void vAccumNew(void);
 
-  static void vAccumAccumBuffer(Tasks::MP_Task mpTask);
-  static void vAccumCountFetch(Tasks::MP_Task mpTask);
-  static void vAccumCountStore(Tasks::MP_Task mpTask);
-  static void vAccumGroupFetch(Tasks::MP_Task mpTask);
-  static void vAccumGroupStore(Tasks::MP_Task mpTask);
-  static void vAccumMaxFetch(Tasks::MP_Task mpTask);
-  static void vAccumMaxStore(Tasks::MP_Task mpTask);
-  static void vAccumMinFetch(Tasks::MP_Task mpTask);
-  static void vAccumMinStore(Tasks::MP_Task mpTask);
-  static void vAccumSumFetch(Tasks::MP_Task mpTask);
-  static void vAccumSumStore(Tasks::MP_Task mpTask);
+  void vAccumAccumBuffer(void);
+  void vAccumCountFetch(void);
+  void vAccumCountStore(void);
+  void vAccumGroupFetch(void);
+  void vAccumGroupStore(void);
+  void vAccumMaxFetch(void);
+  void vAccumMaxStore(void);
+  void vAccumMinFetch(void);
+  void vAccumMinStore(void);
+  void vAccumSumFetch(void);
+  void vAccumSumStore(void);
 
   // address
-  static void vAddressEqual(Tasks::MP_Task mpTask);
-  static void vAddressFetch(Tasks::MP_Task mpTask);
-  static void vAddressStore(Tasks::MP_Task mpTask);
+  void vAddressEqual(void);
+  void vAddressFetch(void);
+  void vAddressStore(void);
 
   // apiState
-  static void vApiStateIncBegun(Tasks::MP_Task mpTask);
-  static void vApiStateIncCancelled(Tasks::MP_Task mpTask);
-  static void vApiStateIncEnded(Tasks::MP_Task mpTask);
-  static void vApiStateIncExecuted(Tasks::MP_Task mpTask);
-  static void vApiStateSenLoc(Tasks::MP_Task mpTask);
-  static void vApiStateTraceSession(Tasks::MP_Task mpTask);
+  void vApiStateIncBegun(void);
+  void vApiStateIncCancelled(void);
+  void vApiStateIncEnded(void);
+  void vApiStateIncExecuted(void);
+  void vApiStateSenLoc(void);
+  void vApiStateTraceSession(void);
 
   // args
-  static void vArgsOscillate(Tasks::MP_Task mpTask);
-  static void vArgsPrint(Tasks::MP_Task mpTask);
+  void vArgsOscillate(void);
+  void vArgsPrint(void);
 
   // article
-  static void vArticleDump(Tasks::MP_Task mpTask);
+  void vArticleDump(void);
 
   // assert
-  static void vAssert(Tasks::MP_Task mpTask);
+  void vAssert(void);
 
-  static void vAssertClass(Tasks::MP_Task mpTask);
-  static void vAssertClass_0(Tasks::MP_Task mpTask);
-  static void vAssertClass_1(Tasks::MP_Task mpTask);
-  static void vAssertClass_2(Tasks::MP_Task mpTask);
-  static void vAssertClass_3(Tasks::MP_Task mpTask);
-  static void vAssertClass_4(Tasks::MP_Task mpTask);
+  void vAssertClass(void);
+  void vAssertClass_0(void);
+  void vAssertClass_1(void);
+  void vAssertClass_2(void);
+  void vAssertClass_3(void);
+  void vAssertClass_4(void);
 
-  static void vAssertStack_0(Tasks::MP_Task mpTask);
-  static void vAssertStack_0more(Tasks::MP_Task mpTask);
-  static void vAssertStack_1(Tasks::MP_Task mpTask);
-  static void vAssertStack_1more(Tasks::MP_Task mpTask);
-  static void vAssertStack_2(Tasks::MP_Task mpTask);
-  static void vAssertStack_2more(Tasks::MP_Task mpTask);
-  static void vAssertStack_3(Tasks::MP_Task mpTask);
-  static void vAssertStack_3more(Tasks::MP_Task mpTask);
-  static void vAssertStack_4(Tasks::MP_Task mpTask);
-  static void vAssertStack_4more(Tasks::MP_Task mpTask);
+  void vAssertStack_0(void);
+  void vAssertStack_0more(void);
+  void vAssertStack_1(void);
+  void vAssertStack_1more(void);
+  void vAssertStack_2(void);
+  void vAssertStack_2more(void);
+  void vAssertStack_3(void);
+  void vAssertStack_3more(void);
+  void vAssertStack_4(void);
+  void vAssertStack_4more(void);
 
   // astack
-  static void vAstackClass(Tasks::MP_Task mpTask);
-  static void vAstackDepth(Tasks::MP_Task mpTask);
-  static void vAstackDrop(Tasks::MP_Task mpTask);
-  static void vAstackDup(Tasks::MP_Task mpTask);
-  static void vAstackFetch(Tasks::MP_Task mpTask);
-  static void vAstackNip(Tasks::MP_Task mpTask);
-  static void vAstackPick(Tasks::MP_Task mpTask);
-  static void vAstackReverse(Tasks::MP_Task mpTask);
-  static void vAstackStk(Tasks::MP_Task mpTask);
-  static void vAstackSwap(Tasks::MP_Task mpTask);
-  static void vAstackToA(Tasks::MP_Task mpTask);
-  static void vAstackToP(Tasks::MP_Task mpTask);
-  static void vAstackTransfer(Tasks::MP_Task mpTask);
-  static void vAstack0(Tasks::MP_Task mpTask);
-  static void vAstack1(Tasks::MP_Task mpTask);
-  static void vAstack2(Tasks::MP_Task mpTask);
-  static void vAstack3(Tasks::MP_Task mpTask);
-  static void vAstack4(Tasks::MP_Task mpTask);
-  static void vAstack5(Tasks::MP_Task mpTask);
-  static void vAstack6(Tasks::MP_Task mpTask);
-  static void vAstack7(Tasks::MP_Task mpTask);
-  static void vAstack8(Tasks::MP_Task mpTask);
-  static void vAstack9(Tasks::MP_Task mpTask);
+  void vAstackClass(void);
+  void vAstackDepth(void);
+  void vAstackDrop(void);
+  void vAstackDup(void);
+  void vAstackFetch(void);
+  void vAstackNip(void);
+  void vAstackPick(void);
+  void vAstackReverse(void);
+  void vAstackStk(void);
+  void vAstackSwap(void);
+  void vAstackToA(void);
+  void vAstackToD(void);
+  void vAstackTransfer(void);
+  void vAstack0(void);
+  void vAstack1(void);
+  void vAstack2(void);
+  void vAstack3(void);
+  void vAstack4(void);
+  void vAstack5(void);
+  void vAstack6(void);
+  void vAstack7(void);
+  void vAstack8(void);
+  void vAstack9(void);
 
   // attachmap
-  static void vAttachMapTenantsFetch(Tasks::MP_Task mpTask);
+  void vAttachMapTenantsFetch(void);
 
   // bp
-  static void vBpAnalyze(Tasks::MP_Task mpTask);
-  static void vBpDump(Tasks::MP_Task mpTask);
-  static void vBpEpochDump(Tasks::MP_Task mpTask);
-  static void vBpEpochTake(Tasks::MP_Task mpTask);
-  static void vBpReadBufferPool(Tasks::MP_Task mpTask);
-  static void vBpWriteBufferPool(Tasks::MP_Task mpTask);
-  static void vBpFreeBuffers(Tasks::MP_Task mpTask);
-  static void vBpFreePercent(Tasks::MP_Task mpTask);
-  static void vBpFreeSpace(Tasks::MP_Task mpTask);
-  static void vBpInUseSpace(Tasks::MP_Task mpTask);
-  static void vBpTotalSpace(Tasks::MP_Task mpTask);
+  void vBpAnalyze(void);
+  void vBpDump(void);
+  void vBpEpochDump(void);
+  void vBpEpochTake(void);
+  void vBpReadBufferPool(void);
+  void vBpWriteBufferPool(void);
+  void vBpFreeBuffers(void);
+  void vBpFreePercent(void);
+  void vBpFreeSpace(void);
+  void vBpInUseSpace(void);
+  void vBpTotalSpace(void);
 
   // cast
-  static void vCastInt(Tasks::MP_Task mpTask);
-  static void vCastPtr(Tasks::MP_Task mpTask);
+  void vCastInt(void);
+  void vCastPtr(void);
 
   // class
-  static void vClassName(Tasks::MP_Task mpTask);
+  void vClassName(void);
 
   // column
-  static void vColumnIsNullableFetch(Tasks::MP_Task mpTask);
-  static void vColumnIsPartitionKeyFetch(Tasks::MP_Task mpTask);
-  static void vColumnLengthFetch(Tasks::MP_Task mpTask);
-  static void vColumnNameFetch(Tasks::MP_Task mpTask);
-  static void vColumnScaleFetch(Tasks::MP_Task mpTask);
-  static void vColumnTypeFetch(Tasks::MP_Task mpTask);
+  void vColumnIsNullableFetch(void);
+  void vColumnIsPartitionKeyFetch(void);
+  void vColumnLengthFetch(void);
+  void vColumnNameFetch(void);
+  void vColumnScaleFetch(void);
+  void vColumnTypeFetch(void);
 
   // command processor
-  static void vCommandBlankLine(Tasks::MP_Task mpTask);
-  static void vCommandDeleteJob(Tasks::MP_Task mpTask);
-  static void vCommandExecuteFile(Tasks::MP_Task mpTask);
-  static void vCommandFindJobClass(Tasks::MP_Task mpTask);
-  static void vCommandGetCommand(Tasks::MP_Task mpTask);
-  static void vCommandJobClass(Tasks::MP_Task mpTask);
-  static void vCommandPostJob(Tasks::MP_Task mpTask);
-  static void vCommandPreJob(Tasks::MP_Task mpTask);
-  static void vCommandSpawnJob(Tasks::MP_Task mpTask);
+  void vCommandBlankLine(void);
+  void vCommandDeleteJob(void);
+  void vCommandExecuteFile(void);
+  void vCommandFindJobClass(void);
+  void vCommandGetCommand(void);
+  void vCommandJobClass(void);
+  void vCommandPostJob(void);
+  void vCommandPreJob(void);
+  void vCommandSpawnJob(void);
 
   // comment
-  static void vComment(Tasks::MP_Task mpTask);
+  void vComment(void);
 
   // comment
-  static void vCompilerCurrent(Tasks::MP_Task mpTask);
+  void vCompilerCurrent(void);
 
   // cpu
-  static void vCpuRdtscp(Tasks::MP_Task mpTask);
+  void vCpuRdtscp(void);
 
   // cursor
-  static void vCursorFetch(Tasks::MP_Task mpTask);
-  static void vCursorStore(Tasks::MP_Task mpTask);
+  void vCursorFetch(void);
+  void vCursorStore(void);
 
   // ddllock
-  static void vDdlLockDropRead(Tasks::MP_Task mpTask);
-  static void vDdlLockDropWrite(Tasks::MP_Task mpTask);
-  static void vDdlLockGrabRead(Tasks::MP_Task mpTask);
-  static void vDdlLockGrabWrite(Tasks::MP_Task mpTask);
-  static void vDdlLockTestDrop(Tasks::MP_Task mpTask);
+  void vDdlLockDropRead(void);
+  void vDdlLockDropWrite(void);
+  void vDdlLockGrabRead(void);
+  void vDdlLockGrabWrite(void);
+  void vDdlLockTestDrop(void);
 
   // debug
-  static void vDebugTrap(Tasks::MP_Task mpTask);
+  void vDebugTrap(void);
 
   // dic
-  static void vDicInit(Tasks::MP_Task mpTask);
-  static void vDicKindGet(Tasks::MP_Task mpTask);
-  static void vDicKindSet(Tasks::MP_Task mpTask);
-  static void vDicLastWord(Tasks::MP_Task mpTask);
-  static void vDicName(Tasks::MP_Task mpTask);
-  static void vDicRef(Tasks::MP_Task mpTask);
-  static void vDicRoot(Tasks::MP_Task mpTask);
-  static void vDicWordCount(Tasks::MP_Task mpTask);
+  void vDicInit(void);
+  void vDicKindGet(void);
+  void vDicKindSet(void);
+  void vDicLastWord(void);
+  void vDicName(void);
+  void vDicRef(void);
+  void vDicRoot(void);
+  void vDicWordCount(void);
 
   // dicLock
-  static void vDicLockDropWrite(Tasks::MP_Task mpTask);
-  static void vDicLockGrabWrite(Tasks::MP_Task mpTask);
+  void vDicLockDropWrite(void);
+  void vDicLockGrabWrite(void);
 
   // dicPath
-  static void vDicPathDepth(Tasks::MP_Task mpTask);
-  static void vDicPathDump(Tasks::MP_Task mpTask);
-  static void vDicPathPick(Tasks::MP_Task mpTask);
+  void vDicPathDepth(void);
+  void vDicPathDump(void);
+  void vDicPathPick(void);
 
   // dicStack
-  static void vDicStackDepth(Tasks::MP_Task mpTask);
-  static void vDicStackDrop(Tasks::MP_Task mpTask);
-  static void vDicStackDump(Tasks::MP_Task mpTask);
-  static void vDicStackPick(Tasks::MP_Task mpTask);
-  static void vDicStackPop(Tasks::MP_Task mpTask);
-  static void vDicStackPush(Tasks::MP_Task mpTask);
+  void vDicStackDepth(void);
+  void vDicStackDrop(void);
+  void vDicStackDump(void);
+  void vDicStackPick(void);
+  void vDicStackPop(void);
+  void vDicStackPush(void);
 
   // dir
-  static void vDirChangeCurrent(Tasks::MP_Task mpTask);
-  static void vDirGetCurrent(Tasks::MP_Task mpTask);
-  static void vDirExists(Tasks::MP_Task mpTask);
-  static void vDirMake(Tasks::MP_Task mpTask);
-  static void vDirRemove(Tasks::MP_Task mpTask);
+  void vDirChangeCurrent(void);
+  void vDirGetCurrent(void);
+  void vDirExists(void);
+  void vDirMake(void);
+  void vDirRemove(void);
 
-  static void vDirClose(Tasks::MP_Task mpTask);
-  static void vDirDelete(Tasks::MP_Task mpTask);
-  static void vDirEntryName(Tasks::MP_Task mpTask);
-  static void vDirEntryType(Tasks::MP_Task mpTask);
-  static void vDirIsClosed(Tasks::MP_Task mpTask);
-  static void vDirIsOpen(Tasks::MP_Task mpTask);
-  static void vDirNew(Tasks::MP_Task mpTask);
-  static void vDirOpen(Tasks::MP_Task mpTask);
-  static void vDirPathGet(Tasks::MP_Task mpTask);
-  static void vDirRead(Tasks::MP_Task mpTask);
-  static void vDirRewind(Tasks::MP_Task mpTask);
-  static void vDirSeek(Tasks::MP_Task mpTask);
-  static void vDirTell(Tasks::MP_Task mpTask);
+  void vDirClose(void);
+  void vDirDelete(void);
+  void vDirEntryName(void);
+  void vDirEntryType(void);
+  void vDirIsClosed(void);
+  void vDirIsOpen(void);
+  void vDirNew(void);
+  void vDirOpen(void);
+  void vDirPathGet(void);
+  void vDirRead(void);
+  void vDirRewind(void);
+  void vDirSeek(void);
+  void vDirTell(void);
 
   // docol
-  static void vDocolCompiling(Tasks::MP_Task mpTask);
-  static void vDocolInterpreting(Tasks::MP_Task mpTask);
-  static void vDocolIsCompiling(Tasks::MP_Task mpTask);
-  static void vDocolIsInterpreting(Tasks::MP_Task mpTask);
+  void vDocolCompiling(void);
+  void vDocolInterpreting(void);
+  void vDocolIsCompiling(void);
+  void vDocolIsInterpreting(void);
 
   // dot
-  static void vDot(Tasks::MP_Task mpTask);
-  static void vDotPut(Tasks::MP_Task mpTask);
-  static void vDotNewline(Tasks::MP_Task mpTask);
-  static void vDotVerbose(Tasks::MP_Task mpTask);
+  void vDot(void);
+  void vDotPut(void);
+  void vDotNewline(void);
+  void vDotVerbose(void);
 
   // dstack
-  static void vDstackClass(Tasks::MP_Task mpTask);                 //! DUP OF class@
-  static void vDstackDepth(Tasks::MP_Task mpTask);
-  static void vDstackDrop(Tasks::MP_Task mpTask);
-  static void vDstackDropTwo(Tasks::MP_Task mpTask);
-  static void vDstackDup(Tasks::MP_Task mpTask);
-  static void vDstackDupNonZero(Tasks::MP_Task mpTask);
-  static void vDstackNip(Tasks::MP_Task mpTask);
-  static void vDstackOver(Tasks::MP_Task mpTask);
-  static void vDstackPick(Tasks::MP_Task mpTask);
-  static void vDstackReverse(Tasks::MP_Task mpTask);
-  static void vDstackRoll(Tasks::MP_Task mpTask);
-  static void vDstackRollInv(Tasks::MP_Task mpTask);
-  static void vDstackRot(Tasks::MP_Task mpTask);
-  static void vDstackRotInv(Tasks::MP_Task mpTask);
-  static void vDstackStk(Tasks::MP_Task mpTask);
-  static void vDstackSwap(Tasks::MP_Task mpTask);
-  static void vDstackTransfer(Tasks::MP_Task mpTask);
-  static void vDstackTuck(Tasks::MP_Task mpTask);
+  void vDstackClass(void);                 //! DUP OF class@
+  void vDstackDepth(void);
+  void vDstackDrop(void);
+  void vDstackDropTwo(void);
+  void vDstackDup(void);
+  void vDstackDupNonZero(void);
+  void vDstackNip(void);
+  void vDstackOver(void);
+  void vDstackPick(void);
+  void vDstackReverse(void);
+  void vDstackRoll(void);
+  void vDstackRollInv(void);
+  void vDstackRot(void);
+  void vDstackRotInv(void);
+  void vDstackStk(void);
+  void vDstackSwap(void);
+  void vDstackTransfer(void);
+  void vDstackTuck(void);
 
   // encode
-  static void vEncodeAgain(Tasks::MP_Task mpTask);
-  static void vEncodeAhead(Tasks::MP_Task mpTask);
-  static void vEncodeContinue(Tasks::MP_Task mpTask);
-  static void vEncodeHere(Tasks::MP_Task mpTask);
-  static void vEncodeIf(Tasks::MP_Task mpTask);
-  static void vEncodeIfAgain(Tasks::MP_Task mpTask);
-  static void vEncodeLoop(Tasks::MP_Task mpTask);
-  static void vEncodeLoopPlus(Tasks::MP_Task mpTask);
-  static void vEncodeNext(Tasks::MP_Task mpTask);
-  static void vEncodeThen(Tasks::MP_Task mpTask);
-  static void vEncodeUntil(Tasks::MP_Task mpTask);
+  void vEncodeAgain(void);
+  void vEncodeAhead(void);
+  void vEncodeContinue(void);
+  void vEncodeHere(void);
+  void vEncodeIf(void);
+  void vEncodeIfAgain(void);
+  void vEncodeLoop(void);
+  void vEncodeLoopPlus(void);
+  void vEncodeNext(void);
+  void vEncodeThen(void);
+  void vEncodeUntil(void);
 
   // ename-set
-  static void vEnmSetAddInt(Tasks::MP_Task mpTask);
-  static void vEnmSetAddStr(Tasks::MP_Task mpTask);
-  static void vEnmSetAsStr(Tasks::MP_Task mpTask);
-  static void vEnmSetGetStr(Tasks::MP_Task mpTask);
-  static void vEnmSetHasName(Tasks::MP_Task mpTask);
-  static void vEnmSetNew(Tasks::MP_Task mpTask);
+  void vEnmSetAddInt(void);
+  void vEnmSetAddStr(void);
+  void vEnmSetAsStr(void);
+  void vEnmSetGetStr(void);
+  void vEnmSetHasName(void);
+  void vEnmSetNew(void);
 
   // enter
-  static void vEnterObject(Tasks::MP_Task mpTask);
-  static void vEnterRoutine(Tasks::MP_Task mpTask);
+  void vEnterObject(void);
+  void vEnterRoutine(void);
 
   // entry
-  static void vEntryMatches(Tasks::MP_Task mpTask);
-  static void vEntrySame(Tasks::MP_Task mpTask);
-  static void vEntryToDataRow(Tasks::MP_Task mpTask);
+  void vEntryMatches(void);
+  void vEntrySame(void);
+  void vEntryToDataRow(void);
 
   // entry buffer
-  static void vEntBufferDump(Tasks::MP_Task mpTask);
-  static void vEntBufferIndexFetch(Tasks::MP_Task mpTask);
-  static void vEntBufferIndexStore(Tasks::MP_Task mpTask);
-  static void vEntBufferIsLastFetch(Tasks::MP_Task mpTask);
-  static void vEntBufferIsLastStore(Tasks::MP_Task mpTask);
-  static void vEntBufferNextBuffer(Tasks::MP_Task mpTask);
-  static void vEntBufferPartitionFetch(Tasks::MP_Task mpTask);
-  static void vEntBufferPartitionStore(Tasks::MP_Task mpTask);
-  static void vEntBufferToEntBuffer(Tasks::MP_Task mpTask);
+  void vEntBufferDump(void);
+  void vEntBufferIndexFetch(void);
+  void vEntBufferIndexStore(void);
+  void vEntBufferIsLastFetch(void);
+  void vEntBufferIsLastStore(void);
+  void vEntBufferNextBuffer(void);
+  void vEntBufferPartitionFetch(void);
+  void vEntBufferPartitionStore(void);
+  void vEntBufferToEntBuffer(void);
 
   // env
-  static void vEnvGet(Tasks::MP_Task mpTask);
+  void vEnvGet(void);
 
   // errors
-  static void vErrorMsg(Tasks::MP_Task mpTask);
+  void vErrorMsg(void);
 
   // file
-  static void vFileClose(Tasks::MP_Task mpTask);
-  static void vFileDelete(Tasks::MP_Task mpTask);
-  static void vFileNew(Tasks::MP_Task mpTask);
-  static void vFileOpen(Tasks::MP_Task mpTask);
-  static void vFilePathGet(Tasks::MP_Task mpTask);
-  static void vFileRead(Tasks::MP_Task mpTask);
-  static void vFileReadRecord(Tasks::MP_Task mpTask);
-  static void vFileWrite(Tasks::MP_Task mpTask);
+  void vFileClose(void);
+  void vFileDelete(void);
+  void vFileNew(void);
+  void vFileOpen(void);
+  void vFilePathGet(void);
+  void vFileRead(void);
+  void vFileReadRecord(void);
+  void vFileWrite(void);
 
   // flow
-  static void vFlowBegin_(Tasks::MP_Task mpTask);
-  static void vFlowExecute(Tasks::MP_Task mpTask);
-  static void vFlowHazard(Tasks::MP_Task mpTask);
-  static void vFlowJump(Tasks::MP_Task mpTask);
-  static void vFlowJumpBegin_(Tasks::MP_Task mpTask);
-  static void vFlowJumpFalse(Tasks::MP_Task mpTask);
-  static void vFlowJumpTrue(Tasks::MP_Task mpTask);
-  static void vFlowNop(Tasks::MP_Task mpTask);
-  static void vFlowRetryPoint(Tasks::MP_Task mpTask);
-  static void vFlowTest(Tasks::MP_Task mpTask);
-  static void vFlowThrow(Tasks::MP_Task mpTask);
+  void vFlowBegin_(void);
+  void vFlowExecute(void);
+  void vFlowHazard(void);
+  void vFlowJump(void);
+  void vFlowJumpBegin_(void);
+  void vFlowJumpFalse(void);
+  void vFlowJumpTrue(void);
+  void vFlowNop(void);
+  void vFlowRetryPoint(void);
+  void vFlowTest(void);
+  void vFlowThrow(void);
 
   // forth
-  static void vAllot(Tasks::MP_Task mpTask);
-  static void vCell(Tasks::MP_Task mpTask);
-  static void vColon(Tasks::MP_Task mpTask);
-  static void vComma(Tasks::MP_Task mpTask);
-  static void vCompileComma(Tasks::MP_Task mpTask);
-  static void vCreate(Tasks::MP_Task mpTask);
-  static void vCreateFrom(Tasks::MP_Task mpTask);
-  static void vCreateFromInRoot(Tasks::MP_Task mpTask);
-  static void vCreateFromPersistent(Tasks::MP_Task mpTask);
-  static void vCreatePersistent(Tasks::MP_Task mpTask);
-  static void vCreateTenants(Tasks::MP_Task mpTask);
-  static void vDoes(Tasks::MP_Task mpTask);
-  static void vDoes_RT(Tasks::MP_Task mpTask);
-  static void vExit_RT(Tasks::MP_Task mpTask);
-  static void vFind(Tasks::MP_Task mpTask);
-  static void vFindInCurrent(Tasks::MP_Task mpTask);
-  static void vForget(Tasks::MP_Task mpTask);
-  static void vImmediate(Tasks::MP_Task mpTask);
-  static void vLocate(Tasks::MP_Task mpTask);
-  static void vPostpone(Tasks::MP_Task mpTask);
-  static void vPrompt(Tasks::MP_Task mpTask);
-  static void vSee(Tasks::MP_Task mpTask);
-  static void vSemicolon(Tasks::MP_Task mpTask);
-  static void vSeriesName(Tasks::MP_Task mpTask);
-  static void vSubDic(Tasks::MP_Task mpTask);
-  static void vTick(Tasks::MP_Task mpTask);
+  void vAllot(void);
+  void vCell(void);
+  void vColon(void);
+  void vComma(void);
+  void vCompileComma(void);
+  void vCreate(void);
+  void vCreateFrom(void);
+  void vCreateFromInRoot(void);
+  void vCreateFromPersistent(void);
+  void vCreatePersistent(void);
+  void vCreateTenants(void);
+  void vDoes(void);
+  void vDoes_RT(void);
+  void vExit_RT(void);
+  void vFind(void);
+  void vFindInCurrent(void);
+  void vForget(void);
+  void vImmediate(void);
+  void vLocate(void);
+  void vPostpone(void);
+  void vPrompt(void);
+  void vSee(void);
+  void vSemicolon(void);
+  void vSeriesName(void);
+  void vSubDic(void);
+  void vTick(void);
 
   // grid
-  static void vGridConnectedNodes(Tasks::MP_Task mpTask);
-  static void vGridDefinedNodes(Tasks::MP_Task mpTask);
-  static void vGridFindNode(Tasks::MP_Task mpTask);
-  static void vGridIncConnectedNodes(Tasks::MP_Task mpTask);
-  static void vGridNode(Tasks::MP_Task mpTask);
-  static void vGridPartitions(Tasks::MP_Task mpTask);
-  static void vGridShow(Tasks::MP_Task mpTask);
-  static void vGridSlots(Tasks::MP_Task mpTask);
-  static void vGridStartedStore(Tasks::MP_Task mpTask);
-  static void vGridStartedFetch(Tasks::MP_Task mpTask);
-  static void vGridStartNodeStore(Tasks::MP_Task mpTask);
-  static void vGridStartNodeFetch(Tasks::MP_Task mpTask);
-  static void vGridThisNodeFetch(Tasks::MP_Task mpTask);
-  static void vGridThisNodeNameFetch(Tasks::MP_Task mpTask);
-  static void vGridToNode(Tasks::MP_Task mpTask);
-  static void vGridToPartition(Tasks::MP_Task mpTask);
-  static void vGridToSlot(Tasks::MP_Task mpTask);
+  void vGridConnectedNodes(void);
+  void vGridDefinedNodes(void);
+  void vGridFindNode(void);
+  void vGridIncConnectedNodes(void);
+  void vGridNode(void);
+  void vGridPartitions(void);
+  void vGridShow(void);
+  void vGridSlots(void);
+  void vGridStartedStore(void);
+  void vGridStartedFetch(void);
+  void vGridStartNodeStore(void);
+  void vGridStartNodeFetch(void);
+  void vGridThisNodeFetch(void);
+  void vGridThisNodeNameFetch(void);
+  void vGridToNode(void);
+  void vGridToPartition(void);
+  void vGridToSlot(void);
 
   // group by
-  static void vGroupByApplyBuffer(Tasks::MP_Task mpTask);
-  static void vGroupByApplyEntry(Tasks::MP_Task mpTask);
-  static void vGroupByApplyPartial(Tasks::MP_Task mpTask);
-  static void vGroupByDelete(Tasks::MP_Task mpTask);
-  static void vGroupByEnd(Tasks::MP_Task mpTask);
-  static void vGroupByNew(Tasks::MP_Task mpTask);
-  static void vGroupByStart(Tasks::MP_Task mpTask);
+  void vGroupByApplyBuffer(void);
+  void vGroupByApplyEntry(void);
+  void vGroupByApplyPartial(void);
+  void vGroupByDelete(void);
+  void vGroupByEnd(void);
+  void vGroupByNew(void);
+  void vGroupByStart(void);
 
   // handler
-  static void vHandlerServiceSleepQueue(Tasks::MP_Task mpTask);
+  void vHandlerServiceSleepQueue(void);
 
   // index
-  static void vIndexAnalyze(Tasks::MP_Task mpTask);
-  static void vIndexColumnFetch(Tasks::MP_Task mpTask);
-  static void vIndexColumnCountFetch(Tasks::MP_Task mpTask);
-  static void vIndexColumnName(Tasks::MP_Task mpTask);
-  static void vIndexColumnType(Tasks::MP_Task mpTask);
-  static void vIndexCompact(Tasks::MP_Task mpTask);
-  static void vIndexCreateColumnVec(Tasks::MP_Task mpTask);
-  static void vIndexDump(Tasks::MP_Task mpTask);
-  static void vIndexInit(Tasks::MP_Task mpTask);
-  static void vIndexIsPrimaryKeyFetch(Tasks::MP_Task mpTask);
-  static void vIndexIsPrimaryKeyStore(Tasks::MP_Task mpTask);
-  static void vIndexIsUniqueFetch(Tasks::MP_Task mpTask);
-  static void vIndexIsUniqueStore(Tasks::MP_Task mpTask);
-  static void vIndexIsValidUniqueIndex(Tasks::MP_Task mpTask);
-  static void vIndexLowerBound(Tasks::MP_Task mpTask);
-  static void vIndexNameFetch(Tasks::MP_Task mpTask);
-  static void vIndexPopulate(Tasks::MP_Task mpTask);
-  static void vIndexRange(Tasks::MP_Task mpTask);
-  static void vIndexShowColumnVec(Tasks::MP_Task mpTask);
-  static void vIndexSpace(Tasks::MP_Task mpTask);
-  static void vIndexSubDic(Tasks::MP_Task mpTask);
-  static void vIndexTableFetch(Tasks::MP_Task mpTask);
-  static void vIndexTableStore(Tasks::MP_Task mpTask);
-  static void vIndexTruncate(Tasks::MP_Task mpTask);
-  static void vIndexUpperBound(Tasks::MP_Task mpTask);
-  static void vIndexVerify(Tasks::MP_Task mpTask);
-  static void vIndexVisualize(Tasks::MP_Task mpTask);
+  void vIndexAnalyze(void);
+  void vIndexColumnFetch(void);
+  void vIndexColumnCountFetch(void);
+  void vIndexColumnName(void);
+  void vIndexColumnType(void);
+  void vIndexCompact(void);
+  void vIndexCreateColumnVec(void);
+  void vIndexDump(void);
+  void vIndexInit(void);
+  void vIndexIsPrimaryKeyFetch(void);
+  void vIndexIsPrimaryKeyStore(void);
+  void vIndexIsUniqueFetch(void);
+  void vIndexIsUniqueStore(void);
+  void vIndexIsValidUniqueIndex(void);
+  void vIndexLowerBound(void);
+  void vIndexNameFetch(void);
+  void vIndexPopulate(void);
+  void vIndexRange(void);
+  void vIndexShowColumnVec(void);
+  void vIndexSpace(void);
+  void vIndexSubDic(void);
+  void vIndexTableFetch(void);
+  void vIndexTableStore(void);
+  void vIndexTruncate(void);
+  void vIndexUpperBound(void);
+  void vIndexVerify(void);
+  void vIndexVisualize(void);
 
   // input
-  static void vInputClose(Tasks::MP_Task mpTask);
-  static void vInputDepth(Tasks::MP_Task mpTask);
-  static void vInputNext(Tasks::MP_Task mpTask);
-  static void vInputOpen(Tasks::MP_Task mpTask);
-  static void vInputPop(Tasks::MP_Task mpTask);
-  static void vInputPush(Tasks::MP_Task mpTask);
-  static void vInputStdin(Tasks::MP_Task mpTask);
-  static void vInputText(Tasks::MP_Task mpTask);
-  static void vInputToken(Tasks::MP_Task mpTask);
-  static void vInputType(Tasks::MP_Task mpTask);
-  static void vInputUnknown(Tasks::MP_Task mpTask);
+  void vInputClose(void);
+  void vInputDepth(void);
+  void vInputNext(void);
+  void vInputOpen(void);
+  void vInputPop(void);
+  void vInputPush(void);
+  void vInputStdin(void);
+  void vInputText(void);
+  void vInputToken(void);
+  void vInputType(void);
+  void vInputUnknown(void);
 
   // int
-  static void vIntAdd(Tasks::MP_Task mpTask);
-  static void vIntDivide(Tasks::MP_Task mpTask);
-  static void vIntEqual(Tasks::MP_Task mpTask);
-  static void vIntGreater(Tasks::MP_Task mpTask);
-  static void vIntGreaterEqual(Tasks::MP_Task mpTask);
-  static void vIntHash(Tasks::MP_Task mpTask);
-  static void vIntHo16(Tasks::MP_Task mpTask);
-  static void vIntLess(Tasks::MP_Task mpTask);
-  static void vIntLessEqual(Tasks::MP_Task mpTask);
-  static void vIntModulo(Tasks::MP_Task mpTask);
-  static void vIntMultiply(Tasks::MP_Task mpTask);
-  static void vIntNeg(Tasks::MP_Task mpTask);
-  static void vIntNotEqual(Tasks::MP_Task mpTask);
-  static void vIntRandom(Tasks::MP_Task mpTask);
-  static void vIntSubtract(Tasks::MP_Task mpTask);
-  static void vUnsignedIntRandom(Tasks::MP_Task mpTask);
+  void vIntAdd(void);
+  void vIntDivide(void);
+  void vIntEqual(void);
+  void vIntGreater(void);
+  void vIntGreaterEqual(void);
+  void vIntHash(void);
+  void vIntHo16(void);
+  void vIntLess(void);
+  void vIntLessEqual(void);
+  void vIntModulo(void);
+  void vIntMultiply(void);
+  void vIntNeg(void);
+  void vIntNotEqual(void);
+  void vIntRandom(void);
+  void vIntSubtract(void);
+  void vUnsignedIntRandom(void);
 
   // jobClass
-  static void vJobClassBuffer(Tasks::MP_Task mpTask);
-  static void vJobClassFind(Tasks::MP_Task mpTask);
-  static void vJobClassName(Tasks::MP_Task mpTask);
-  static void vJobClassNew(Tasks::MP_Task mpTask);
+  void vJobClassBuffer(void);
+  void vJobClassFind(void);
+  void vJobClassName(void);
+  void vJobClassNew(void);
 
-  static void vJobClassSeedRun(Tasks::MP_Task mpTask);
-  static void vJobClassSeedReq(Tasks::MP_Task mpTask);
-  static void vJobClassSeedRcv(Tasks::MP_Task mpTask);
-  static void vJobClassSeedExe(Tasks::MP_Task mpTask);
-  static void vJobClassSeedEnd(Tasks::MP_Task mpTask);
-  static void vJobClassSeedCan(Tasks::MP_Task mpTask);
+  void vJobClassSeedRun(void);
+  void vJobClassSeedReq(void);
+  void vJobClassSeedRcv(void);
+  void vJobClassSeedExe(void);
+  void vJobClassSeedEnd(void);
+  void vJobClassSeedCan(void);
 
   // job
-  static void vJobAcksRemaining(Tasks::MP_Task mpTask);
-  static void vJobAddOriginator(Tasks::MP_Task mpTask);
-  static void vJobAddParticipant(Tasks::MP_Task mpTask);
-  static void vJobAssertBegin(Tasks::MP_Task mpTask);
-  static void vJobAssertNeutral(Tasks::MP_Task mpTask);
-  static void vJobAssertOriginator(Tasks::MP_Task mpTask);
-  static void vJobAssertParticipant(Tasks::MP_Task mpTask);
-  static void vJobAssertReceived(Tasks::MP_Task mpTask);
+  void vJobAcksRemaining(void);
+  void vJobAddOriginator(void);
+  void vJobAddParticipant(void);
+  void vJobAssertBegin(void);
+  void vJobAssertNeutral(void);
+  void vJobAssertOriginator(void);
+  void vJobAssertParticipant(void);
+  void vJobAssertReceived(void);
 
   // job mark 2
-  static void vJobMark2IndexStore(Tasks::MP_Task mpTask);
-  static void vJobMark2TableNameFetch(Tasks::MP_Task mpTask);
-  static void vJobMark2TableStore(Tasks::MP_Task mpTask);
+  void vJobMark2IndexStore(void);
+  void vJobMark2TableNameFetch(void);
+  void vJobMark2TableStore(void);
 
-  static void vJobCatalogNameFetch(Tasks::MP_Task mpTask);
-  static void vJobClass(Tasks::MP_Task mpTask);
-  static void vJobColumnCountFetch(Tasks::MP_Task mpTask);
-  static void vJobColumnNameFetch(Tasks::MP_Task mpTask);
-  static void vJobColumnIsPartKey(Tasks::MP_Task mpTask);
-  static void vJobColumnTypeFetch(Tasks::MP_Task mpTask);
-  static void vJobCompleted(Tasks::MP_Task mpTask);
-  static void vJobCreateResponseVec(Tasks::MP_Task mpTask);
-  static void vJobOperandFetch(Tasks::MP_Task mpTask);
-  static void vJobOperandStore(Tasks::MP_Task mpTask);
+  void vJobCatalogNameFetch(void);
+  void vJobClass(void);
+  void vJobColumnCountFetch(void);
+  void vJobColumnNameFetch(void);
+  void vJobColumnIsPartKey(void);
+  void vJobColumnTypeFetch(void);
+  void vJobCompleted(void);
+  void vJobCreateResponseVec(void);
+  void vJobOperandFetch(void);
+  void vJobOperandStore(void);
 
-  static void vJobDecAcksRemaining(Tasks::MP_Task mpTask);
-  static void vJobDelete(Tasks::MP_Task mpTask);
-  static void vJobDicPath(Tasks::MP_Task mpTask);
+  void vJobDecAcksRemaining(void);
+  void vJobDelete(void);
+  void vJobDicPath(void);
 
-  static void vJobEnameFetch(Tasks::MP_Task mpTask);
-  static void vJobEnameStore(Tasks::MP_Task mpTask);
-  static void vJobErrorStore(Tasks::MP_Task mpTask);
-  static void vJobErrorFetch(Tasks::MP_Task mpTask);
-  static void vJobExecuteFetch(Tasks::MP_Task mpTask);
+  void vJobEnameFetch(void);
+  void vJobEnameStore(void);
+  void vJobErrorStore(void);
+  void vJobErrorFetch(void);
+  void vJobExecuteFetch(void);
 
-  static void vJobFindOriginator(Tasks::MP_Task mpTask);
-  static void vJobFindParticipant(Tasks::MP_Task mpTask);
-  static void vJobFolderNameFetch(Tasks::MP_Task mpTask);
+  void vJobFindOriginator(void);
+  void vJobFindParticipant(void);
+  void vJobFolderNameFetch(void);
 
-  static void vJobHasError(Tasks::MP_Task mpTask);
-  static void vJobHasOperand(Tasks::MP_Task mpTask);
+  void vJobHasError(void);
+  void vJobHasOperand(void);
 
-  static void vJobIdFetch(Tasks::MP_Task mpTask);
-  static void vJobIndexNameFetch(Tasks::MP_Task mpTask);
-  static void vJobIsExecuting(Tasks::MP_Task mpTask);
+  void vJobIdFetch(void);
+  void vJobIndexNameFetch(void);
+  void vJobIsExecuting(void);
 
-  static void vJobJobClass(Tasks::MP_Task mpTask);
-  static void vJobJobListFetch(Tasks::MP_Task mpTask);
+  void vJobJobClass(void);
+  void vJobJobListFetch(void);
 
-  static void vJobMetadataStore(Tasks::MP_Task mpTask);
+  void vJobMetadataStore(void);
 
-  static void vJobNodeNameFetch(Tasks::MP_Task mpTask);
-  static void vJobNoWaitFetch(Tasks::MP_Task mpTask);
+  void vJobNodeNameFetch(void);
+  void vJobNoWaitFetch(void);
 
-  static void vJobObjectNameFetch(Tasks::MP_Task mpTask);
-  static void vJobOriginatingTaskFetch(Tasks::MP_Task mpTask);
-  static void vJobOriginatingTaskStore(Tasks::MP_Task mpTask);
-  static void vJobOriginatorFetch(Tasks::MP_Task mpTask);
+  void vJobObjectNameFetch(void);
+  void vJobOriginatingIdFetch(void);
+  void vJobOriginatingIdStore(void);
+  void vJobOriginatingTaskFetch(void);
+  void vJobOriginatingTaskStore(void);
+  void vJobOriginatorFetch(void);
 
-  static void vJobParentIdFetch(Tasks::MP_Task mpTask);
-  static void vJobParticipantFetch(Tasks::MP_Task mpTask);
-  static void vJobParticipantStore(Tasks::MP_Task mpTask);
-  static void vJobParticipantResponseStore(Tasks::MP_Task mpTask);
-  static void vJobParticipantHasError(Tasks::MP_Task mpTask);
-  static void vJobPartitionsFetch(Tasks::MP_Task mpTask);
-  static void vJobPhaseFetch(Tasks::MP_Task mpTask);
-  static void vJobPhaseStore(Tasks::MP_Task mpTask);
-  static void vJobPostRecv(Tasks::MP_Task mpTask);
-  static void vJobPreSend(Tasks::MP_Task mpTask);
+  void vJobParentIdFetch(void);
+  void vJobParticipantFetch(void);
+  void vJobParticipantStore(void);
+  void vJobParticipantResponseStore(void);
+  void vJobParticipantHasError(void);
+  void vJobPartitionsFetch(void);
+  void vJobPhaseFetch(void);
+  void vJobPhaseStore(void);
+  void vJobPostRecv(void);
+  void vJobPreSend(void);
 
-  static void vJobRecv(Tasks::MP_Task mpTask);
-  static void vJobRegionSizeFetch(Tasks::MP_Task mpTask);
-  static void vJobRemoveOriginator(Tasks::MP_Task mpTask);
-  static void vJobRemoveParticipant(Tasks::MP_Task mpTask);
-  static void vJobReseed(Tasks::MP_Task mpTask);
-  static void vJobResponseStore(Tasks::MP_Task mpTask);
-  static void vJobResponseFetch(Tasks::MP_Task mpTask);
-  static void vJobRoutineNameFetch(Tasks::MP_Task mpTask);
-  static void vJobRowsInvalidFetch(Tasks::MP_Task mpTask);
-  static void vJobRowsInvalidStore(Tasks::MP_Task mpTask);
-  static void vJobRowsProcessedFetch(Tasks::MP_Task mpTask);
-  static void vJobRowsProcessedStore(Tasks::MP_Task mpTask);
-  static void vJobRowsSkippedFetch(Tasks::MP_Task mpTask);
-  static void vJobRowsSkippedStore(Tasks::MP_Task mpTask);
+  void vJobRecv(void);
+  void vJobRegionSizeFetch(void);
+  void vJobRemoveOriginator(void);
+  void vJobRemoveParticipant(void);
+  void vJobReseed(void);
+  void vJobResponseStore(void);
+  void vJobResponseFetch(void);
+  void vJobRoutineNameFetch(void);
+  void vJobRowsInvalidFetch(void);
+  void vJobRowsInvalidStore(void);
+  void vJobRowsProcessedFetch(void);
+  void vJobRowsProcessedStore(void);
+  void vJobRowsSkippedFetch(void);
+  void vJobRowsSkippedStore(void);
 
-  static void vJobSchemaNameFetch(Tasks::MP_Task mpTask);
-  static void vJobSeedFetch(Tasks::MP_Task mpTask);
-  static void vJobSend(Tasks::MP_Task mpTask);
-  static void vJobSessionStateFetch(Tasks::MP_Task mpTask);
-  static void vJobShow(Tasks::MP_Task mpTask);
-  static void vJobSignalWaiter(Tasks::MP_Task mpTask);
-  static void vJobSlotFetch(Tasks::MP_Task mpTask);
-  static void vJobSpawn(Tasks::MP_Task mpTask);
-  static void vJobSpawnDedicated(Tasks::MP_Task mpTask);
-  static void vJobStateDiagram(Tasks::MP_Task mpTask);
+  void vJobSchemaNameFetch(void);
+  void vJobSeedFetch(void);
+  void vJobSend(void);
+  void vJobSessionStateFetch(void);
+  void vJobShow(void);
+  void vJobSignalWaiter(void);
+  void vJobSlotFetch(void);
+  void vJobSpawn(void);
+  void vJobSpawnDedicated(void);
+  void vJobStateDiagram(void);
 
-  static void vJobTaskFetch(Tasks::MP_Task mpTask);
-  static void vJobTaskStore(Tasks::MP_Task mpTask);
-  static void vJobTenantNameFetch(Tasks::MP_Task mpTask);
-  static void vJobThis(Tasks::MP_Task mpTask);
+  void vJobTaskFetch(void);
+  void vJobTaskStore(void);
+  void vJobTenantNameFetch(void);
+  void vJobThis(void);
 
-  static void vJobWaitParticipant(Tasks::MP_Task mpTask);
+  void vJobWaitParticipant(void);
 
   // job generic
-  static void vJob__BegunNew(Tasks::MP_Task mpTask);
-  static void vJob__CancelNew(Tasks::MP_Task mpTask);
-  static void vJob__CancelledNew(Tasks::MP_Task mpTask);
-  static void vJob__EndNew(Tasks::MP_Task mpTask);
-  static void vJob__EndedNew(Tasks::MP_Task mpTask);
-  static void vJob__ExecuteNew(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedNew(Tasks::MP_Task mpTask);
+  void vJob__BegunNew(void);
+  void vJob__CancelNew(void);
+  void vJob__CancelledNew(void);
+  void vJob__EndNew(void);
+  void vJob__EndedNew(void);
+  void vJob__ExecuteNew(void);
+  void vJob__ExecutedNew(void);
 
   // job analyzeIndex
-  static void vJob_AnalyzeIndexIsDetailed(Tasks::MP_Task mpTask);
-  static void vJob_AnalyzeTableIsDetailed(Tasks::MP_Task mpTask);
+  void vJob_AnalyzeIndexIsDetailed(void);
+  void vJob_AnalyzeTableIsDetailed(void);
 
   // job Cat
-  static void vJob_CatBegin(Tasks::MP_Task mpTask);
-  static void vJob_CatChunk(Tasks::MP_Task mpTask);
-  static void vJob_CatEnd(Tasks::MP_Task mpTask);
+  void vJob_CatBegin(void);
+  void vJob_CatChunk(void);
+  void vJob_CatEnd(void);
 
   // job CreateIndex
-  static void vJob_CreateIndexIsUniqueFetch(Tasks::MP_Task mpTask);
+  void vJob_CreateIndexIsUniqueFetch(void);
 
   // job Dynamic
   static void vJob_DynamicBegin(Tasks::MP_Task mpTask);
@@ -570,723 +572,723 @@ public:
   static void vJob_DynamicExecute(Tasks::MP_Task mpTask);
 
   // job Export
-  static void vJob_ExportAuxAckDecidedFetch(Tasks::MP_Task mpTask);
-  static void vJob_ExportAuxAckDecidedStore(Tasks::MP_Task mpTask);
-  static void vJob_ExportBegin(Tasks::MP_Task mpTask);
-  static void vJob_ExportEnd(Tasks::MP_Task mpTask);
-  static void vJob_ExportTableStore(Tasks::MP_Task mpTask);
+  void vJob_ExportAuxAckDecidedFetch(void);
+  void vJob_ExportAuxAckDecidedStore(void);
+  void vJob_ExportBegin(void);
+  void vJob_ExportEnd(void);
+  void vJob_ExportTableStore(void);
 
   // job FetchRows
-  static void vJob_FetchRowsColumnNameFetch(Tasks::MP_Task mpTask);
-  static void vJob_FetchRowsColumnStore(Tasks::MP_Task mpTask);
-  static void vJob_FetchRowsLastBuffersStore(Tasks::MP_Task mpTask);
-  static void vJob_FetchRowsPartitionFetch(Tasks::MP_Task mpTask);
-  static void vJob_FetchRowsPlannerStore(Tasks::MP_Task mpTask);
-  static void vJob_FetchRowsSpawnSub(Tasks::MP_Task mpTask);
-  static void vJob_FetchRowsSpawnSubInflate(Tasks::MP_Task mpTask);
-  static void vJob_FetchRowsTableStore(Tasks::MP_Task mpTask);
-  static void vJob_FetchRowsWhereFetch(Tasks::MP_Task mpTask);
+  void vJob_FetchRowsColumnNameFetch(void);
+  void vJob_FetchRowsColumnStore(void);
+  void vJob_FetchRowsLastBuffersStore(void);
+  void vJob_FetchRowsPartitionFetch(void);
+  void vJob_FetchRowsPlannerStore(void);
+  void vJob_FetchRowsSpawnSub(void);
+  void vJob_FetchRowsSpawnSubInflate(void);
+  void vJob_FetchRowsTableStore(void);
+  void vJob_FetchRowsWhereFetch(void);
 
   // job GenData
-  static void vJob_GenerateGenerate(Tasks::MP_Task mpTask);
-  static void vJob_GenerateTableStore(Tasks::MP_Task mpTask);
+  void vJob_GenerateGenerate(void);
+  void vJob_GenerateTableStore(void);
 
   // job IndexJoin
-  static void vJob_IndexJoinLastBuffersStore(Tasks::MP_Task mpTask);
-  static void vJob_IndexJoinLeftIndexStore(Tasks::MP_Task mpTask);
-  static void vJob_IndexJoinLeftTableStore(Tasks::MP_Task mpTask);
-  static void vJob_IndexJoinRightIndexStore(Tasks::MP_Task mpTask);
-  static void vJob_IndexJoinRightIndexNameFetch(Tasks::MP_Task mpTask);
-  static void vJob_IndexJoinRightTableStore(Tasks::MP_Task mpTask);
-  static void vJob_IndexJoinRightTableNameFetch(Tasks::MP_Task mpTask);
-  static void vJob_IndexJoinSpawnSub(Tasks::MP_Task mpTask);
-  static void vJob_SubIndexJoinIndexJoin(Tasks::MP_Task mpTask);
+  void vJob_IndexJoinLastBuffersStore(void);
+  void vJob_IndexJoinLeftIndexStore(void);
+  void vJob_IndexJoinLeftTableStore(void);
+  void vJob_IndexJoinRightIndexStore(void);
+  void vJob_IndexJoinRightIndexNameFetch(void);
+  void vJob_IndexJoinRightTableStore(void);
+  void vJob_IndexJoinRightTableNameFetch(void);
+  void vJob_IndexJoinSpawnSub(void);
+  void vJob_SubIndexJoinIndexJoin(void);
 
   // job inflate
-  static void vJob_InflateRowsColumnNameFetch(Tasks::MP_Task mpTask);
-  static void vJob_InflateRowsColumnStore(Tasks::MP_Task mpTask);
-  static void vJob_InflateRowsSpawnSub(Tasks::MP_Task mpTask);
-  static void vJob_InflateRowsSpawnSubInflate(Tasks::MP_Task mpTask);
-  static void vJob_InflateRowsSubInfTasksFetch(Tasks::MP_Task mpTask);
-  static void vJob_InflateRowsTableStore(Tasks::MP_Task mpTask);
-  static void vJob_InflateRowsWhereFetch(Tasks::MP_Task mpTask);
+  void vJob_InflateRowsColumnNameFetch(void);
+  void vJob_InflateRowsColumnStore(void);
+  void vJob_InflateRowsSpawnSub(void);
+  void vJob_InflateRowsSpawnSubInflate(void);
+  void vJob_InflateRowsSubInfTasksFetch(void);
+  void vJob_InflateRowsTableStore(void);
+  void vJob_InflateRowsWhereFetch(void);
 
   // job Ingest
-  static void vJob_IngestBegin(Tasks::MP_Task mpTask);
-  static void vJob_IngestChunk(Tasks::MP_Task mpTask);
-  static void vJob_IngestEnd(Tasks::MP_Task mpTask);
-  static void vJob_IngestTableStore(Tasks::MP_Task mpTask);
+  void vJob_IngestBegin(void);
+  void vJob_IngestChunk(void);
+  void vJob_IngestEnd(void);
+  void vJob_IngestTableStore(void);
 
   // job InsertRows
-  static void vJob_CopyBufferCopy(Tasks::MP_Task mpTask);
+  void vJob_CopyBufferCopy(void);
 
-  static void vJob_InsertRowPartitionFetch(Tasks::MP_Task mpTask);
-  static void vJob_InsertRowRecordStore(Tasks::MP_Task mpTask);
-  static void vJob_InsertRowNewJobWriteRow(Tasks::MP_Task mpTask);
-  static void vJob_InsertRowSpawnJobWriteRow(Tasks::MP_Task mpTask);
+  void vJob_InsertRowPartitionFetch(void);
+  void vJob_InsertRowRecordStore(void);
+  void vJob_InsertRowNewJobWriteRow(void);
+  void vJob_InsertRowSpawnJobWriteRow(void);
 
-  static void vJob_InsertTableSubInserterJobFetch(Tasks::MP_Task mpTask);
+  void vJob_InsertTableSubInserterJobFetch(void);
 
-  static void vJob_SubInserterBegin(Tasks::MP_Task mpTask);
-  static void vJob_SubInserterEnd(Tasks::MP_Task mpTask);
+  void vJob_SubInserterBegin(void);
+  void vJob_SubInserterEnd(void);
 
   // job KidExport
-  static void vJob_KidExportExportOrigin(Tasks::MP_Task mpTask);
-  static void vJob_KidExportExportJobId(Tasks::MP_Task mpTask);
-  static void vJob_KidExportWriteExportBuffer(Tasks::MP_Task mpTask);
+  void vJob_KidExportExportOrigin(void);
+  void vJob_KidExportExportJobId(void);
+  void vJob_KidExportWriteExportBuffer(void);
 
   // job LoadTable
-  static void vJob_LoadTableBegin(Tasks::MP_Task mpTask);
-  static void vJob_LoadTableChunk(Tasks::MP_Task mpTask);
-  static void vJob_LoadTableDumpMap(Tasks::MP_Task mpTask);
-  static void vJob_LoadTableEnd(Tasks::MP_Task mpTask);
-  static void vJob_LoadTableFilePathFetch(Tasks::MP_Task mpTask);
-  static void vJob_LoadTableTableStore(Tasks::MP_Task mpTask);
+  void vJob_LoadTableBegin(void);
+  void vJob_LoadTableChunk(void);
+  void vJob_LoadTableDumpMap(void);
+  void vJob_LoadTableEnd(void);
+  void vJob_LoadTableFilePathFetch(void);
+  void vJob_LoadTableTableStore(void);
 
   // job Monitor
-  static void vJob_MonitorBegin(Tasks::MP_Task mpTask);
-  static void vJob_MonitorTake(Tasks::MP_Task mpTask);
-  static void vJob_MonitorEnd(Tasks::MP_Task mpTask);
+  void vJob_MonitorBegin(void);
+  void vJob_MonitorTake(void);
+  void vJob_MonitorEnd(void);
 
   // job NetHog
-  static void vJob_NetHogHogNoFetch(Tasks::MP_Task mpTask);
+  void vJob_NetHogHogNoFetch(void);
 
   // job NodeInfo
-  static void vJob_NodeInfoNodeNameFetch(Tasks::MP_Task mpTask);
+  void vJob_NodeInfoNodeNameFetch(void);
 
   // job publish
-  static void vJob_PublishSpawnSub(Tasks::MP_Task mpTask);
-  static void vJob_PublishTableStore(Tasks::MP_Task mpTask);
+  void vJob_PublishSpawnSub(void);
+  void vJob_PublishTableStore(void);
 
   // job Purge
-  static void vJob_PurgeSpawnSub(Tasks::MP_Task mpTask);
-  static void vJob_PurgeTableStore(Tasks::MP_Task mpTask);
+  void vJob_PurgeSpawnSub(void);
+  void vJob_PurgeTableStore(void);
 
   // job Query
-  static void vJob_QueryBegin(Tasks::MP_Task mpTask);
-  static void vJob_QueryEnd(Tasks::MP_Task mpTask);
-  static void vJob_QueryExecute(Tasks::MP_Task mpTask);
+  void vJob_QueryBegin(void);
+  void vJob_QueryEnd(void);
+  void vJob_QueryExecute(void);
 
   // job Receiver
-  static void vJob_ReceiverConnNoFetch(Tasks::MP_Task mpTask);
-  static void vJob_ReceiverConnNoStore(Tasks::MP_Task mpTask);
-  static void vJob_ReceiverJobReceived(Tasks::MP_Task mpTask);
-  static void vJob_ReceiverNodeFetch(Tasks::MP_Task mpTask);
-  static void vJob_ReceiverNodeStore(Tasks::MP_Task mpTask);
+  void vJob_ReceiverConnNoFetch(void);
+  void vJob_ReceiverConnNoStore(void);
+  void vJob_ReceiverJobReceived(void);
+  void vJob_ReceiverNodeFetch(void);
+  void vJob_ReceiverNodeStore(void);
 
 
 
   // job Repeater
-  static void vJob_RepeaterBegin(Tasks::MP_Task mpTask);
-  static void vJob_RepeaterChunk(Tasks::MP_Task mpTask);
-  static void vJob_RepeaterEnd(Tasks::MP_Task mpTask);
+  void vJob_RepeaterBegin(void);
+  void vJob_RepeaterChunk(void);
+  void vJob_RepeaterEnd(void);
 
   // job Report
-  static void vJob_ReportBegin(Tasks::MP_Task mpTask);
-  static void vJob_ReportTake(Tasks::MP_Task mpTask);
-  static void vJob_ReportEnd(Tasks::MP_Task mpTask);
+  void vJob_ReportBegin(void);
+  void vJob_ReportTake(void);
+  void vJob_ReportEnd(void);
 
   // job Select
-  static void vJob_SelectBegin(Tasks::MP_Task mpTask);
-  static void vJob_SelectEnd(Tasks::MP_Task mpTask);
-  static void vJob_SelectExecute(Tasks::MP_Task mpTask);
+  void vJob_SelectBegin(void);
+  void vJob_SelectEnd(void);
+  void vJob_SelectExecute(void);
 
   // job SelectTable
-  static void vJob_SelectTablePartitionFetch(Tasks::MP_Task mpTask);
-  static void vJob_SelectTableTableStore(Tasks::MP_Task mpTask);
+  void vJob_SelectTablePartitionFetch(void);
+  void vJob_SelectTableTableStore(void);
 
   // job Sink
-  static void vJob_SinkBegin(Tasks::MP_Task mpTask);
-  static void vJob_SinkChunk(Tasks::MP_Task mpTask);
-  static void vJob_SinkEnd(Tasks::MP_Task mpTask);
+  void vJob_SinkBegin(void);
+  void vJob_SinkChunk(void);
+  void vJob_SinkEnd(void);
 
   // job Sort
-  static void vJob_SortBegin(Tasks::MP_Task mpTask);
-  static void vJob_SortEnd(Tasks::MP_Task mpTask);
-  static void vJob_SortExecute(Tasks::MP_Task mpTask);
+  void vJob_SortBegin(void);
+  void vJob_SortEnd(void);
+  void vJob_SortExecute(void);
 
   // job SubExporter
-  static void vJob_SubExporterBegin(Tasks::MP_Task mpTask);
-  static void vJob_SubExporterChunk(Tasks::MP_Task mpTask);
-  static void vJob_SubExporterEnd(Tasks::MP_Task mpTask);
-  static void vJob_SubExporterSpawn(Tasks::MP_Task mpTask);
-  static void vJob_SubExporterExportJobFetch(Tasks::MP_Task mpTask);
+  void vJob_SubExporterBegin(void);
+  void vJob_SubExporterChunk(void);
+  void vJob_SubExporterEnd(void);
+  void vJob_SubExporterSpawn(void);
+  void vJob_SubExporterExportJobFetch(void);
 
   // job SubFetch
-  static void vJob_SubFetchBufferQueueFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubFetchPhraseFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubFetchPlannerFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubFetchSlotFetch(Tasks::MP_Task mpTask);
+  void vJob_SubFetchBufferQueueFetch(void);
+  void vJob_SubFetchPhraseFetch(void);
+  void vJob_SubFetchPlannerFetch(void);
+  void vJob_SubFetchSlotFetch(void);
 
   // job SubInflate
-  static void vJob_SubInflateJobInflateRowsFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubInflateInflateRows(Tasks::MP_Task mpTask);
+  void vJob_SubInflateJobInflateRowsFetch(void);
+  void vJob_SubInflateInflateRows(void);
 
   // job SubIngester
-  static void vJob_SubIngesterBegin(Tasks::MP_Task mpTask);
-  static void vJob_SubIngesterChunk(Tasks::MP_Task mpTask);
-  static void vJob_SubIngesterEnd(Tasks::MP_Task mpTask);
-  static void vJob_SubIngesterJobIngest(Tasks::MP_Task mpTask);
-  static void vJob_SubIngesterSpawn(Tasks::MP_Task mpTask);
+  void vJob_SubIngesterBegin(void);
+  void vJob_SubIngesterChunk(void);
+  void vJob_SubIngesterEnd(void);
+  void vJob_SubIngesterJobIngest(void);
+  void vJob_SubIngesterSpawn(void);
 
   // job SubLoader
-  static void vJob_SubLoaderBegin(Tasks::MP_Task mpTask);
-  static void vJob_SubLoaderChunk(Tasks::MP_Task mpTask);
-  static void vJob_SubLoaderEnd(Tasks::MP_Task mpTask);
-  static void vJob_SubLoaderSpawn(Tasks::MP_Task mpTask);
-  static void vJob_SubLoaderTerminate(Tasks::MP_Task mpTask);
+  void vJob_SubLoaderBegin(void);
+  void vJob_SubLoaderChunk(void);
+  void vJob_SubLoaderEnd(void);
+  void vJob_SubLoaderSpawn(void);
+  void vJob_SubLoaderTerminate(void);
 
   // job SubPublish
-  static void vJob_SubPublishBegin(Tasks::MP_Task mpTask);
-  static void vJob_SubPublishChunk(Tasks::MP_Task mpTask);
-  static void vJob_SubPublishEnd(Tasks::MP_Task mpTask);
-  static void vJob_SubPublishSlotFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubPublishTableStore(Tasks::MP_Task mpTask);
-  static void vJob_SubPublishPublishJobIdFetch(Tasks::MP_Task mpTask);
+  void vJob_SubPublishBegin(void);
+  void vJob_SubPublishChunk(void);
+  void vJob_SubPublishEnd(void);
+  void vJob_SubPublishSlotFetch(void);
+  void vJob_SubPublishTableStore(void);
+  void vJob_SubPublishPublishJobIdFetch(void);
 
   // job SubPurger
-  static void vJob_SubPurgerBegin(Tasks::MP_Task mpTask);
-  static void vJob_SubPurgerChunk(Tasks::MP_Task mpTask);
-  static void vJob_SubPurgerEnd(Tasks::MP_Task mpTask);
+  void vJob_SubPurgerBegin(void);
+  void vJob_SubPurgerChunk(void);
+  void vJob_SubPurgerEnd(void);
 
-  static void vJob_SubPurgerSlotFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubPurgerPurgeJobIdFetch(Tasks::MP_Task mpTask);
+  void vJob_SubPurgerSlotFetch(void);
+  void vJob_SubPurgerPurgeJobIdFetch(void);
 
   // job SubScan
-  static void vJob_SubScanBufferQueueFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubScanSlotFetch(Tasks::MP_Task mpTask);
+  void vJob_SubScanBufferQueueFetch(void);
+  void vJob_SubScanSlotFetch(void);
 
   // Job SubTruncate
-  static void vJob_SubTruncateSlotFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubTruncateTruncateJobIdFetch(Tasks::MP_Task mpTask);
+  void vJob_SubTruncateSlotFetch(void);
+  void vJob_SubTruncateTruncateJobIdFetch(void);
 
   // job SubWalker
-  static void vJob_SubWalkerBegin(Tasks::MP_Task mpTask);
-  static void vJob_SubWalkerChunk(Tasks::MP_Task mpTask);
-  static void vJob_SubWalkerEnd(Tasks::MP_Task mpTask);
-  static void vJob_SubWalkerWalkJobFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubWalkerSpawn(Tasks::MP_Task mpTask);
+  void vJob_SubWalkerBegin(void);
+  void vJob_SubWalkerChunk(void);
+  void vJob_SubWalkerEnd(void);
+  void vJob_SubWalkerWalkJobFetch(void);
+  void vJob_SubWalkerSpawn(void);
 
   // Job Truncate
-  static void vJob_TruncateTableSpawnSub(Tasks::MP_Task mpTask);
+  void vJob_TruncateTableSpawnSub(void);
 
   // job Walk
-  static void vJob_WalkBegin(Tasks::MP_Task mpTask);
-  static void vJob_WalkEnd(Tasks::MP_Task mpTask);
-  static void vJob_WalkIndexStore(Tasks::MP_Task mpTask);
-  static void vJob_WalkTableStore(Tasks::MP_Task mpTask);
+  void vJob_WalkBegin(void);
+  void vJob_WalkEnd(void);
+  void vJob_WalkIndexStore(void);
+  void vJob_WalkTableStore(void);
 
   // Job WriteBuffer
-  static void vJob_WriteBufferParentJobIdFetch(Tasks::MP_Task mpTask);
-  static void vJob_WriteBufferInsertRows(Tasks::MP_Task mpTask);
-  static void vJob_WriteBufferIsIngesting(Tasks::MP_Task mpTask);
-  static void vJob_WriteBufferIsInserting(Tasks::MP_Task mpTask);
-  static void vJob_WriteBufferIsLoading(Tasks::MP_Task mpTask);
-  static void vJob_WriteBufferPartitionFetch(Tasks::MP_Task mpTask);
-  static void vJob_WriteBufferTableStore(Tasks::MP_Task mpTask);
+  void vJob_WriteBufferParentJobIdFetch(void);
+  void vJob_WriteBufferInsertRows(void);
+  void vJob_WriteBufferIsIngesting(void);
+  void vJob_WriteBufferIsInserting(void);
+  void vJob_WriteBufferIsLoading(void);
+  void vJob_WriteBufferPartitionFetch(void);
+  void vJob_WriteBufferTableStore(void);
 
   // Job WriteRow
-  static void vJob_WriteRowParentJobIdFetch(Tasks::MP_Task mpTask);
-  static void vJob_WriteRowEncodeRow(Tasks::MP_Task mpTask);
-  static void vJob_WriteRowInsertRow(Tasks::MP_Task mpTask);
-  static void vJob_WriteRowPartitionFetch(Tasks::MP_Task mpTask);
-  static void vJob_WriteRowTableStore(Tasks::MP_Task mpTask);
+  void vJob_WriteRowParentJobIdFetch(void);
+  void vJob_WriteRowEncodeRow(void);
+  void vJob_WriteRowInsertRow(void);
+  void vJob_WriteRowPartitionFetch(void);
+  void vJob_WriteRowTableStore(void);
 
   // Job Operand
-  static void vJob_OperandPipeOut(Tasks::MP_Task mpTask);
+  void vJob_OperandPipeOut(void);
 
   // load table
-  static void vLoadTableChunkFile(Tasks::MP_Task mpTask);
-  static void vLoadTableDelete(Tasks::MP_Task mpTask);
-  static void vLoadTableDumpMap(Tasks::MP_Task mpTask);
-  static void vLoadTableNew(Tasks::MP_Task mpTask);
-  static void vLoadTableTableStore(Tasks::MP_Task mpTask);
+  void vLoadTableChunkFile(void);
+  void vLoadTableDelete(void);
+  void vLoadTableDumpMap(void);
+  void vLoadTableNew(void);
+  void vLoadTableTableStore(void);
 
   // locals
-  static void vLocalFetch(Tasks::MP_Task mpTask);
-  static void vLocalStore(Tasks::MP_Task mpTask);
-  static void vLocalsBar(Tasks::MP_Task mpTask);
-  static void vLocalsPop(Tasks::MP_Task mpTask);
-  static void vLocalsPush(Tasks::MP_Task mpTask);
-  static void vLocalsTo(Tasks::MP_Task mpTask);
+  void vLocalFetch(void);
+  void vLocalStore(void);
+  void vLocalsBar(void);
+  void vLocalsPop(void);
+  void vLocalsPush(void);
+  void vLocalsTo(void);
 
   // lock
-  static void vLockDropRead(Tasks::MP_Task mpTask);
-  static void vLockDropWrite(Tasks::MP_Task mpTask);
-  static void vLockGrabRead(Tasks::MP_Task mpTask);
-  static void vLockGrabWrite(Tasks::MP_Task mpTask);
-  static void vLockInit(Tasks::MP_Task mpTask);
+  void vLockDropRead(void);
+  void vLockDropWrite(void);
+  void vLockGrabRead(void);
+  void vLockGrabWrite(void);
+  void vLockInit(void);
 
   // locks
-  static void vLockTrackerList(Tasks::MP_Task mpTask);
-  static void vLockTrackerReset(Tasks::MP_Task mpTask);
+  void vLockTrackerList(void);
+  void vLockTrackerReset(void);
 
   // log
-  static void vLogDump(Tasks::MP_Task mpTask);
-  static void vLogMark(Tasks::MP_Task mpTask);
-  static void vLogMarkEntry(Tasks::MP_Task mpTask);
-  static void vLogMarkExit(Tasks::MP_Task mpTask);
-  static void vLogMarkPhase(Tasks::MP_Task mpTask);
+  void vLogDump(void);
+  void vLogMark(void);
+  void vLogMarkEntry(void);
+  void vLogMarkExit(void);
+  void vLogMarkPhase(void);
 
-  static void vLogMarkWord(Tasks::MP_Task mpTask);
-  static void vLogMarkSeed(Tasks::MP_Task mpTask);
+  void vLogMarkWord(void);
+  void vLogMarkSeed(void);
 
-  static void vLogJobSeed(Tasks::MP_Task mpTask);
+  void vLogJobSeed(void);
 
   // logic
-  static void vLogicAnd(Tasks::MP_Task mpTask);
-  static void vLogicNot(Tasks::MP_Task mpTask);
-  static void vLogicOr(Tasks::MP_Task mpTask);
+  void vLogicAnd(void);
+  void vLogicNot(void);
+  void vLogicOr(void);
 
   // magnitude
-  static void vBytesMagnitude(Tasks::MP_Task mpTask);
-  static void vNumberMagnitude(Tasks::MP_Task mpTask);
-  static void vToDigitName(Tasks::MP_Task mpTask);
+  void vBytesMagnitude(void);
+  void vNumberMagnitude(void);
+  void vToDigitName(void);
 
   // memory
-  static void vMemoryByteDump(Tasks::MP_Task mpTask);
-  static void vMemoryReset(Tasks::MP_Task mpTask);
-  static void vMemoryStatistics(Tasks::MP_Task mpTask);
-  static void vMemoryWordDump(Tasks::MP_Task mpTask);
+  void vMemoryByteDump(void);
+  void vMemoryReset(void);
+  void vMemoryStatistics(void);
+  void vMemoryWordDump(void);
 
   // node (of grid)
-  static void vNodeForget(Tasks::MP_Task mpTask);
-  static void vNodeIP(Tasks::MP_Task mpTask);
-  static void vNodeName(Tasks::MP_Task mpTask);
-  static void vNodeNew(Tasks::MP_Task mpTask);
-  static void vNodeNo(Tasks::MP_Task mpTask);
-  static void vNodePartitions(Tasks::MP_Task mpTask);
-  static void vNodePort(Tasks::MP_Task mpTask);
-  static void vNodeRecvSocketStore(Tasks::MP_Task mpTask);
-  static void vNodeRecvSocketFetch(Tasks::MP_Task mpTask);
-  static void vNodeSendSocketStore(Tasks::MP_Task mpTask);
-  static void vNodeSendSocketFetch(Tasks::MP_Task mpTask);
-  static void vNodeSize(Tasks::MP_Task mpTask);
-  static void vNodeStartNode(Tasks::MP_Task mpTask);
-  static void vNodeStateStore(Tasks::MP_Task mpTask);
-  static void vNodeStateFetch(Tasks::MP_Task mpTask);
-  static void vNodeStatus(Tasks::MP_Task mpTask);
+  void vNodeForget(void);
+  void vNodeIP(void);
+  void vNodeName(void);
+  void vNodeNew(void);
+  void vNodeNo(void);
+  void vNodePartitions(void);
+  void vNodePort(void);
+  void vNodeRecvSocketStore(void);
+  void vNodeRecvSocketFetch(void);
+  void vNodeSendSocketStore(void);
+  void vNodeSendSocketFetch(void);
+  void vNodeSize(void);
+  void vNodeStartNode(void);
+  void vNodeStateStore(void);
+  void vNodeStateFetch(void);
+  void vNodeStatus(void);
 
   // object
-  static void vObjectClassFetch(Tasks::MP_Task mpTask);
-  static void vObjectClassStore(Tasks::MP_Task mpTask);
-  static void vObjectDump(Tasks::MP_Task mpTask);
-  static void vObjectFetch(Tasks::MP_Task mpTask);
-  static void vObjectMagicMark(Tasks::MP_Task mpTask);
-  static void vObjectStore(Tasks::MP_Task mpTask);
-  static void vObjectWordBodySet(Tasks::MP_Task mpTask);
+  void vObjectClassFetch(void);
+  void vObjectClassStore(void);
+  void vObjectDump(void);
+  void vObjectFetch(void);
+  void vObjectMagicMark(void);
+  void vObjectStore(void);
+  void vObjectWordBodySet(void);
 
   // persistence
-  static void vPersistenceCheckpoint(Tasks::MP_Task mpTask);
-  static void vPersistenceReload(Tasks::MP_Task mpTask);
+  void vPersistenceCheckpoint(void);
+  void vPersistenceReload(void);
 
   // plan
-  static void vPlanCompile(Tasks::MP_Task mpTask);
-  static void vPlanDelete(Tasks::MP_Task mpTask);
-  static void vPlanDic(Tasks::MP_Task mpTask);
-  static void vPlanExecutingTaskFetch(Tasks::MP_Task mpTask);
-  static void vPlanExecutingTaskStore(Tasks::MP_Task mpTask);
-  static void vPlanFinished(Tasks::MP_Task mpTask);
-  static void vPlanIdFetch(Tasks::MP_Task mpTask);
-  static void vPlanLambdaAppend(Tasks::MP_Task mpTask);
-  static void vPlanLambdaFetch(Tasks::MP_Task mpTask);
-  static void vPlanLambdaStore(Tasks::MP_Task mpTask);
-  static void vPlanNew(Tasks::MP_Task mpTask);
-  static void vPlanNameFetch(Tasks::MP_Task mpTask);
-  static void vPlanNameStore(Tasks::MP_Task mpTask);
-  static void vPlanShow(Tasks::MP_Task mpTask);
+  void vPlanCompile(void);
+  void vPlanDelete(void);
+  void vPlanDic(void);
+  void vPlanExecutingTaskFetch(void);
+  void vPlanExecutingTaskStore(void);
+  void vPlanFinished(void);
+  void vPlanIdFetch(void);
+  void vPlanLambdaAppend(void);
+  void vPlanLambdaFetch(void);
+  void vPlanLambdaStore(void);
+  void vPlanNew(void);
+  void vPlanNameFetch(void);
+  void vPlanNameStore(void);
+  void vPlanShow(void);
 
   // planner
-  static void vPlannerChoosePaths(Tasks::MP_Task mpTask);
-  static void vPlannerChosenPath(Tasks::MP_Task mpTask);
-  static void vPlannerDelete(Tasks::MP_Task mpTask);
-  static void vPlannerFetchTechniqueFetch(Tasks::MP_Task mpTask);
-  static void vPlannerGenPaths(Tasks::MP_Task mpTask);
-  static void vPlannerHighKeyFetch(Tasks::MP_Task mpTask);
-  static void vPlannerIndexNmFetch(Tasks::MP_Task mpTask);
-  static void vPlannerKeyFetch(Tasks::MP_Task mpTask);
-  static void vPlannerLowKeyFetch(Tasks::MP_Task mpTask);
-  static void vPlannerMatchPaths(Tasks::MP_Task mpTask);
-  static void vPlannerNew(Tasks::MP_Task mpTask);
-  static void vPlannerParseWhere(Tasks::MP_Task mpTask);
-  static void vPlannerPhrasesFetch(Tasks::MP_Task mpTask);
-  static void vPlannerScorePaths(Tasks::MP_Task mpTask);
-  static void vPlannerShowPaths(Tasks::MP_Task mpTask);
-  static void vPlannerTableFetch(Tasks::MP_Task mpTask);
-  static void vPlannerTableStore(Tasks::MP_Task mpTask);
+  void vPlannerChoosePaths(void);
+  void vPlannerChosenPath(void);
+  void vPlannerDelete(void);
+  void vPlannerFetchTechniqueFetch(void);
+  void vPlannerGenPaths(void);
+  void vPlannerHighKeyFetch(void);
+  void vPlannerIndexNmFetch(void);
+  void vPlannerKeyFetch(void);
+  void vPlannerLowKeyFetch(void);
+  void vPlannerMatchPaths(void);
+  void vPlannerNew(void);
+  void vPlannerParseWhere(void);
+  void vPlannerPhrasesFetch(void);
+  void vPlannerScorePaths(void);
+  void vPlannerShowPaths(void);
+  void vPlannerTableFetch(void);
+  void vPlannerTableStore(void);
 
   // process
-  static void vProcessGetPid(Tasks::MP_Task mpTask);
-  static void vProcessQuit(Tasks::MP_Task mpTask);
-  static void vProcessTestPid(Tasks::MP_Task mpTask);
+  void vProcessGetPid(void);
+  void vProcessQuit(void);
+  void vProcessTestPid(void);
 
   // prompt
-  static void vPromptContinue(Tasks::MP_Task mpTask);
-  static void vPromptExecuteFunction(Tasks::MP_Task mpTask);
-  static void vPromptGetCommand(Tasks::MP_Task mpTask);
-  static void vPromptNew(Tasks::MP_Task mpTask);
-  static void vPromptSession(Tasks::MP_Task mpTask);
+  void vPromptContinue(void);
+  void vPromptExecuteFunction(void);
+  void vPromptGetCommand(void);
+  void vPromptNew(void);
+  void vPromptSession(void);
 
   // push
-  static void vPushI(Tasks::MP_Task mpTask);
-  static void vPushJ(Tasks::MP_Task mpTask);
-  static void vPushNullPtr(Tasks::MP_Task mpTask);
-  static void vPushValue(Tasks::MP_Task mpTask);
+  void vPushI(void);
+  void vPushJ(void);
+  void vPushNullPtr(void);
+  void vPushValue(void);
 
   // queue
-  static void vQueueAppend(Tasks::MP_Task mpTask);
-  static void vQueueDelete(Tasks::MP_Task mpTask);
-  static void vQueueDump(Tasks::MP_Task mpTask);
-  static void vQueueInit(Tasks::MP_Task mpTask);
-  static void vQueueNew(Tasks::MP_Task mpTask);
-  static void vQueuePop(Tasks::MP_Task mpTask);
+  void vQueueAppend(void);
+  void vQueueDelete(void);
+  void vQueueDump(void);
+  void vQueueInit(void);
+  void vQueueNew(void);
+  void vQueuePop(void);
 
   // queues
-  static void vQueuesCheckSleeping(Tasks::MP_Task mpTask);
-  static void vQueuesExecutingLength(Tasks::MP_Task mpTask);
-  static void vQueuesReadyLength(Tasks::MP_Task mpTask);
-  static void vQueuesSleepingLength(Tasks::MP_Task mpTask);
-  static void vQueuesWaitingLength(Tasks::MP_Task mpTask);
+  void vQueuesCheckSleeping(void);
+  void vQueuesExecutingLength(void);
+  void vQueuesReadyLength(void);
+  void vQueuesSleepingLength(void);
+  void vQueuesWaitingLength(void);
 
   // rbCursor
-  static void vRbCursorBegin(Tasks::MP_Task mpTask);
-  static void vRbCursorDelete(Tasks::MP_Task mpTask);
-  static void vRbCursorEnd(Tasks::MP_Task mpTask);
-  static void vRbCursorFirst(Tasks::MP_Task mpTask);
-  static void vRbCursorGet(Tasks::MP_Task mpTask);
-  static void vRbCursorInit(Tasks::MP_Task mpTask);
-  static void vRbCursorNew(Tasks::MP_Task mpTask);
-  static void vRbCursorNext(Tasks::MP_Task mpTask);
-  static void vRbCursorTableFetch(Tasks::MP_Task mpTask);
-  static void vRbCursorTableStore(Tasks::MP_Task mpTask);
+  void vRbCursorBegin(void);
+  void vRbCursorDelete(void);
+  void vRbCursorEnd(void);
+  void vRbCursorFirst(void);
+  void vRbCursorGet(void);
+  void vRbCursorInit(void);
+  void vRbCursorNew(void);
+  void vRbCursorNext(void);
+  void vRbCursorTableFetch(void);
+  void vRbCursorTableStore(void);
 
   // rowCursor
-  static void vRowCursorBegin(Tasks::MP_Task mpTask);
-  static void vRowCursorDelete(Tasks::MP_Task mpTask);
-  static void vRowCursorEnd(Tasks::MP_Task mpTask);
-  static void vRowCursorEntBufferFetch(Tasks::MP_Task mpTask);
-  static void vRowCursorEntBufferStore(Tasks::MP_Task mpTask);
-  static void vRowCursorFirst(Tasks::MP_Task mpTask);
-  static void vRowCursorInit(Tasks::MP_Task mpTask);
-  static void vRowCursorNew(Tasks::MP_Task mpTask);
-  static void vRowCursorNext(Tasks::MP_Task mpTask);
-  static void vRowCursorRow(Tasks::MP_Task mpTask);
-  static void vRowCursorTableFetch(Tasks::MP_Task mpTask);
-  static void vRowCursorTableStore(Tasks::MP_Task mpTask);
+  void vRowCursorBegin(void);
+  void vRowCursorDelete(void);
+  void vRowCursorEnd(void);
+  void vRowCursorEntBufferFetch(void);
+  void vRowCursorEntBufferStore(void);
+  void vRowCursorFirst(void);
+  void vRowCursorInit(void);
+  void vRowCursorNew(void);
+  void vRowCursorNext(void);
+  void vRowCursorRow(void);
+  void vRowCursorTableFetch(void);
+  void vRowCursorTableStore(void);
 
   // rstack
-  static void vRstackCsPick(Tasks::MP_Task mpTask);
-  static void vRstackCsRoll(Tasks::MP_Task mpTask);
-  static void vRstackDepth(Tasks::MP_Task mpTask);
-  static void vRstackDrop(Tasks::MP_Task mpTask);
-  static void vRstackFetch(Tasks::MP_Task mpTask);
-  static void vRstackFetchTwo(Tasks::MP_Task mpTask);
-  static void vRstackPick(Tasks::MP_Task mpTask);
-  static void vRstackReverse(Tasks::MP_Task mpTask);
-  static void vRstackRoll(Tasks::MP_Task mpTask);
-  static void vRstackRollInv(Tasks::MP_Task mpTask);
-  static void vRstackStk(Tasks::MP_Task mpTask);
-  static void vRstackSwap(Tasks::MP_Task mpTask);
-  static void vRstackToP(Tasks::MP_Task mpTask);
-  static void vRstackToR(Tasks::MP_Task mpTask);
-  static void vRstackToRTwo(Tasks::MP_Task mpTask);
-  static void vRstack0(Tasks::MP_Task mpTask);
-  static void vRstack1(Tasks::MP_Task mpTask);
-  static void vRstack2(Tasks::MP_Task mpTask);
-  static void vRstack3(Tasks::MP_Task mpTask);
-  static void vRstack4(Tasks::MP_Task mpTask);
-  static void vRstack5(Tasks::MP_Task mpTask);
-  static void vRstack6(Tasks::MP_Task mpTask);
-  static void vRstack7(Tasks::MP_Task mpTask);
-  static void vRstack8(Tasks::MP_Task mpTask);
-  static void vRstack9(Tasks::MP_Task mpTask);
+  void vRstackCsPick(void);
+  void vRstackCsRoll(void);
+  void vRstackDepth(void);
+  void vRstackDrop(void);
+  void vRstackFetch(void);
+  void vRstackFetchTwo(void);
+  void vRstackPick(void);
+  void vRstackReverse(void);
+  void vRstackRoll(void);
+  void vRstackRollInv(void);
+  void vRstackStk(void);
+  void vRstackSwap(void);
+  void vRstackToP(void);
+  void vRstackToR(void);
+  void vRstackToRTwo(void);
+  void vRstack0(void);
+  void vRstack1(void);
+  void vRstack2(void);
+  void vRstack3(void);
+  void vRstack4(void);
+  void vRstack5(void);
+  void vRstack6(void);
+  void vRstack7(void);
+  void vRstack8(void);
+  void vRstack9(void);
 
   // schLock
-  static void vSchLockDropWrite(Tasks::MP_Task mpTask);
-  static void vSchLockGrabWrite(Tasks::MP_Task mpTask);
+  void vSchLockDropWrite(void);
+  void vSchLockGrabWrite(void);
 
   // session
-  static void vSessionCommand(Tasks::MP_Task mpTask);
-  static void vSessionDicStack(Tasks::MP_Task mpTask);
-  static void vSessionDump(Tasks::MP_Task mpTask);
-  static void vSessionIsExiting(Tasks::MP_Task mpTask);
-  static void vSessionPid(Tasks::MP_Task mpTask);
-  static void vSessionSlotFetch(Tasks::MP_Task mpTask);
-  static void vSessionTxFetch(Tasks::MP_Task mpTask);
-  static void vSessionTxStore(Tasks::MP_Task mpTask);
+  void vSessionCommand(void);
+  void vSessionDicStack(void);
+  void vSessionDump(void);
+  void vSessionIsExiting(void);
+  void vSessionPid(void);
+  void vSessionSlotFetch(void);
+  void vSessionTxFetch(void);
+  void vSessionTxStore(void);
 
   // shell
-  static void vShellExecute(Tasks::MP_Task mpTask);
+  void vShellExecute(void);
 
   // slots
-  static void vSlotsColumnCount(Tasks::MP_Task mpTask);
-  static void vSlotsColumnName(Tasks::MP_Task mpTask);
-  static void vSlotsCreateColumnVec(Tasks::MP_Task mpTask);
-  static void vSlotsSubDic(Tasks::MP_Task mpTask);
+  void vSlotsColumnCount(void);
+  void vSlotsColumnName(void);
+  void vSlotsCreateColumnVec(void);
+  void vSlotsSubDic(void);
 
   // socket
-  static void vSocketAccept(Tasks::MP_Task mpTask);
-  static void vSocketClose(Tasks::MP_Task mpTask);
-  static void vSocketConnect(Tasks::MP_Task mpTask);
-  static void vSocketDropWrite(Tasks::MP_Task mpTask);
-  static void vSocketGrabWrite(Tasks::MP_Task mpTask);
-  static void vSocketListen(Tasks::MP_Task mpTask);
-  static void vSocketOpen(Tasks::MP_Task mpTask);
-  static void vSocketRecvObject(Tasks::MP_Task mpTask);
-  static void vSocketRecvObject_LowMem(Tasks::MP_Task mpTask);
-  static void vSocketSendObject(Tasks::MP_Task mpTask);
+  void vSocketAccept(void);
+  void vSocketClose(void);
+  void vSocketConnect(void);
+  void vSocketDropWrite(void);
+  void vSocketGrabWrite(void);
+  void vSocketListen(void);
+  void vSocketOpen(void);
+  void vSocketRecvObject(void);
+  void vSocketRecvObject_LowMem(void);
+  void vSocketSendObject(void);
 
   // steps
-  static void vStepTimingReset(Tasks::MP_Task mpTask);
-  static void vStepTimingStart(Tasks::MP_Task mpTask);
-  static void vStepTimingWrite(Tasks::MP_Task mpTask);
+  void vStepTimingReset(void);
+  void vStepTimingStart(void);
+  void vStepTimingWrite(void);
 
   // string
-  static void vStrAlgebra(Tasks::MP_Task mpTask);
-  static void vStrCat(Tasks::MP_Task mpTask);
-  static void vStrClip(Tasks::MP_Task mpTask);
-  static void vStrEqual(Tasks::MP_Task mpTask);
-  static void vStrEscape(Tasks::MP_Task mpTask);
-  static void vStrFirstCsv(Tasks::MP_Task mpTask);
-  static void vStrFormat(Tasks::MP_Task mpTask);
-  static void vStrLeft(Tasks::MP_Task mpTask);
-  static void vStrLength(Tasks::MP_Task mpTask);
-  static void vStrPrepend(Tasks::MP_Task mpTask);
-  static void vStrRandom(Tasks::MP_Task mpTask);
-  static void vStrRemovePrefix(Tasks::MP_Task mpTask);
-  static void vStrRemoveSuffix(Tasks::MP_Task mpTask);
-  static void vStrReplace(Tasks::MP_Task mpTask);
-  static void vStrRight(Tasks::MP_Task mpTask);
-  static void vStrSub(Tasks::MP_Task mpTask);
-  static void vStrTailInt(Tasks::MP_Task mpTask);
+  void vStrAlgebra(void);
+  void vStrCat(void);
+  void vStrClip(void);
+  void vStrEqual(void);
+  void vStrEscape(void);
+  void vStrFirstCsv(void);
+  void vStrFormat(void);
+  void vStrLeft(void);
+  void vStrLength(void);
+  void vStrPrepend(void);
+  void vStrRandom(void);
+  void vStrRemovePrefix(void);
+  void vStrRemoveSuffix(void);
+  void vStrReplace(void);
+  void vStrRight(void);
+  void vStrSub(void);
+  void vStrTailInt(void);
 
   // sub loader
-  static void vSubLoaderDelete(Tasks::MP_Task mpTask);
+  void vSubLoaderDelete(void);
 
   // table
-  static void vTableAddIndex(Tasks::MP_Task mpTask);
-  static void vTableAnalyze(Tasks::MP_Task mpTask);
-  static void vTableColumnCountFetch(Tasks::MP_Task mpTask);
-  static void vTableCreateColumnVec(Tasks::MP_Task mpTask);
-  static void vTableDrop(Tasks::MP_Task mpTask);
-  static void vTableDump(Tasks::MP_Task mpTask);
-  static void vTableFindColumn(Tasks::MP_Task mpTask);
-  static void vTableFirstBuffer(Tasks::MP_Task mpTask);
-  static void vTableGenData(Tasks::MP_Task mpTask);
-  static void vTableGetColumnsAsString(Tasks::MP_Task mpTask);
-  static void vTableColumnFetch(Tasks::MP_Task mpTask);
-  static void vTableGetPtn(Tasks::MP_Task mpTask);
-  static void vTableInflateScan(Tasks::MP_Task mpTask);
-  static void vTableIndexCount(Tasks::MP_Task mpTask);
-  static void vTableInit(Tasks::MP_Task mpTask);
-  static void vTableIsColumn(Tasks::MP_Task mpTask);
-  static void vTableIsLoadingStore(Tasks::MP_Task mpTask);
-  static void vTableLazyBuildIndexes(Tasks::MP_Task mpTask);
-  static void vTableList(Tasks::MP_Task mpTask);
-  static void vTableName(Tasks::MP_Task mpTask);
-  static void vTablePublish(Tasks::MP_Task mpTask);
-  static void vTablePurge(Tasks::MP_Task mpTask);
-  static void vTableRemoveIndex(Tasks::MP_Task mpTask);
-  static void vTableScan(Tasks::MP_Task mpTask);
-  static void vTableShowColumnVec(Tasks::MP_Task mpTask);
-  static void vTableSlots(Tasks::MP_Task mpTask);
-  static void vTableSpace(Tasks::MP_Task mpTask);
-  static void vTableSubDic(Tasks::MP_Task mpTask);
-  static void vTableSubLoaders(Tasks::MP_Task mpTask);
-  static void vTableTruncate(Tasks::MP_Task mpTask);
-  static void vTableIsValidIndexColumns(Tasks::MP_Task mpTask);
-  static void vTableVerify(Tasks::MP_Task mpTask);
-  static void vTableVisualize(Tasks::MP_Task mpTask);
+  void vTableAddIndex(void);
+  void vTableAnalyze(void);
+  void vTableColumnCountFetch(void);
+  void vTableCreateColumnVec(void);
+  void vTableDrop(void);
+  void vTableDump(void);
+  void vTableFindColumn(void);
+  void vTableFirstBuffer(void);
+  void vTableGenData(void);
+  void vTableGetColumnsAsString(void);
+  void vTableColumnFetch(void);
+  void vTableGetPtn(void);
+  void vTableInflateScan(void);
+  void vTableIndexCount(void);
+  void vTableInit(void);
+  void vTableIsColumn(void);
+  void vTableIsLoadingStore(void);
+  void vTableLazyBuildIndexes(void);
+  void vTableList(void);
+  void vTableName(void);
+  void vTablePublish(void);
+  void vTablePurge(void);
+  void vTableRemoveIndex(void);
+  void vTableScan(void);
+  void vTableShowColumnVec(void);
+  void vTableSlots(void);
+  void vTableSpace(void);
+  void vTableSubDic(void);
+  void vTableSubLoaders(void);
+  void vTableTruncate(void);
+  void vTableIsValidIndexColumns(void);
+  void vTableVerify(void);
+  void vTableVisualize(void);
 
   // table partition
-  static void vTablePtnAttemptGrabRead(Tasks::MP_Task mpTask);
-  static void vTablePtnAttemptGrabWrite(Tasks::MP_Task mpTask);
-  static void vTablePtnDropRead(Tasks::MP_Task mpTask);
-  static void vTablePtnDropWrite(Tasks::MP_Task mpTask);
-  static void vTablePtnDump(Tasks::MP_Task mpTask);
-  static void vTablePtnIsLocked(Tasks::MP_Task mpTask);
+  void vTablePtnAttemptGrabRead(void);
+  void vTablePtnAttemptGrabWrite(void);
+  void vTablePtnDropRead(void);
+  void vTablePtnDropWrite(void);
+  void vTablePtnDump(void);
+  void vTablePtnIsLocked(void);
 
   // task
-  static void vTaskAck(Tasks::MP_Task mpTask);
-  static void vTaskAcksStore(Tasks::MP_Task mpTask);
-  static void vTaskBreakPoint(Tasks::MP_Task mpTask);
-  static void vTaskDestructorTraceFetch(Tasks::MP_Task mpTask);
-  static void vTaskDestructorTraceStore(Tasks::MP_Task mpTask);
-  static void vTaskDicStack(Tasks::MP_Task mpTask);
-  static void vTaskDropLock(Tasks::MP_Task mpTask);
-  static void vTaskDump(Tasks::MP_Task mpTask);
-  static void vTaskDelete(Tasks::MP_Task mpTask);
-  static void vTaskGrabLock(Tasks::MP_Task mpTask);
-  static void vTaskIsAckSet(Tasks::MP_Task mpTask);
-  static void vTaskJobFetch(Tasks::MP_Task mpTask);
-  static void vTaskJobStore(Tasks::MP_Task mpTask);
-  static void vTaskNameFetch(Tasks::MP_Task mpTask);
-  static void vTaskThis(Tasks::MP_Task mpTask);
-  static void vTaskSeed(Tasks::MP_Task mpTask);
-  static void vTaskSessionFetch(Tasks::MP_Task mpTask);
-  static void vTaskSessionStore(Tasks::MP_Task mpTask);
-  static void vTaskSendNodeFetch(Tasks::MP_Task mpTask);
-  static void vTaskSendNodeStore(Tasks::MP_Task mpTask);
-  static void vTaskSleepMsec(Tasks::MP_Task mpTask);
-  static void vTaskSleepNsec(Tasks::MP_Task mpTask);
-  static void vTaskSleepSsec(Tasks::MP_Task mpTask);
-  static void vTaskSleepUsec(Tasks::MP_Task mpTask);
-  static void vTaskStateFetch(Tasks::MP_Task mpTask);
-  static void vTaskThread(Tasks::MP_Task mpTask);
-  static void vTaskWait(Tasks::MP_Task mpTask);
-  static void vTaskYield(Tasks::MP_Task mpTask);
+  void vTaskAck(void);
+  void vTaskAcksStore(void);
+  void vTaskBreakPoint(void);
+  void vTaskDestructorTraceFetch(void);
+  void vTaskDestructorTraceStore(void);
+  void vTaskDicStack(void);
+  void vTaskDropLock(void);
+  void vTaskDump(void);
+  void vTaskDelete(void);
+  void vTaskGrabLock(void);
+  void vTaskIsAckSet(void);
+  void vTaskJobFetch(void);
+  void vTaskJobStore(void);
+  void vTaskNameFetch(void);
+  void vTaskThis(void);
+  void vTaskSeed(void);
+  void vTaskSessionFetch(void);
+  void vTaskSessionStore(void);
+  void vTaskSendNodeFetch(void);
+  void vTaskSendNodeStore(void);
+  void vTaskSleepMsec(void);
+  void vTaskSleepNsec(void);
+  void vTaskSleepSsec(void);
+  void vTaskSleepUsec(void);
+  void vTaskStateFetch(void);
+  void vTaskThread(void);
+  void vTaskWait(void);
+  void vTaskYield(void);
 
   // test
-  static void vTestTest0(Tasks::MP_Task mpTask);
-  static void vTestTest1(Tasks::MP_Task mpTask);
-  static void vTestTest2(Tasks::MP_Task mpTask);
-  static void vTestTest3(Tasks::MP_Task mpTask);
-  static void vTestTest4(Tasks::MP_Task mpTask);
-  static void vTestTest5(Tasks::MP_Task mpTask);
-  static void vTestTest6(Tasks::MP_Task mpTask);
-  static void vTestTest7(Tasks::MP_Task mpTask);
-  static void vTestTest8(Tasks::MP_Task mpTask);
-  static void vTestTest9(Tasks::MP_Task mpTask);
-  static void vTestTest10(Tasks::MP_Task mpTask);
-  static void vTestTest11(Tasks::MP_Task mpTask);
-  static void vTestTest12(Tasks::MP_Task mpTask);
-  static void vTestTest13(Tasks::MP_Task mpTask);
-  static void vTestTest14(Tasks::MP_Task mpTask);
-  static void vTestTest15(Tasks::MP_Task mpTask);
-  static void vTestTest16(Tasks::MP_Task mpTask);
-  static void vTestTest17(Tasks::MP_Task mpTask);
-  static void vTestTest18(Tasks::MP_Task mpTask);
-  static void vTestTest19(Tasks::MP_Task mpTask);
-  static void vTestTest20(Tasks::MP_Task mpTask);
-  static void vTestTest21(Tasks::MP_Task mpTask);
-  static void vTestTest22(Tasks::MP_Task mpTask);
-  static void vTestTest23(Tasks::MP_Task mpTask);
-  static void vTestTest24(Tasks::MP_Task mpTask);
-  static void vTestTest25(Tasks::MP_Task mpTask);
+  void vTestTest0(void);
+  void vTestTest1(void);
+  void vTestTest2(void);
+  void vTestTest3(void);
+  void vTestTest4(void);
+  void vTestTest5(void);
+  void vTestTest6(void);
+  void vTestTest7(void);
+  void vTestTest8(void);
+  void vTestTest9(void);
+  void vTestTest10(void);
+  void vTestTest11(void);
+  void vTestTest12(void);
+  void vTestTest13(void);
+  void vTestTest14(void);
+  void vTestTest15(void);
+  void vTestTest16(void);
+  void vTestTest17(void);
+  void vTestTest18(void);
+  void vTestTest19(void);
+  void vTestTest20(void);
+  void vTestTest21(void);
+  void vTestTest22(void);
+  void vTestTest23(void);
+  void vTestTest24(void);
+  void vTestTest25(void);
 
   // thread
-  static void vThreadBind(Tasks::MP_Task mpTask);
-  static void vThreadCpu(Tasks::MP_Task mpTask);
-  static void vThreadDedicatedFetch(Tasks::MP_Task mpTask);
-  static void vThreadDedicatedStore(Tasks::MP_Task mpTask);
-  static void vThreadDisableRealtime(Tasks::MP_Task mpTask);
-  static void vThreadDump(Tasks::MP_Task mpTask);
-  static void vThreadEnableRealtime(Tasks::MP_Task mpTask);
-  static void vThreadId(Tasks::MP_Task mpTask);
-  static void vThreadSleepMsec(Tasks::MP_Task mpTask);
-  static void vThreadSleepNsec(Tasks::MP_Task mpTask);
-  static void vThreadSleepSsec(Tasks::MP_Task mpTask);
-  static void vThreadSleepUsec(Tasks::MP_Task mpTask);
+  void vThreadBind(void);
+  void vThreadCpu(void);
+  void vThreadDedicatedFetch(void);
+  void vThreadDedicatedStore(void);
+  void vThreadDisableRealtime(void);
+  void vThreadDump(void);
+  void vThreadEnableRealtime(void);
+  void vThreadId(void);
+  void vThreadSleepMsec(void);
+  void vThreadSleepNsec(void);
+  void vThreadSleepSsec(void);
+  void vThreadSleepUsec(void);
 
   // timer
-  static void vTimerDelete(Tasks::MP_Task mpTask);
-  static void vTimerInit(Tasks::MP_Task mpTask);
-  static void vTimerMicrosecs(Tasks::MP_Task mpTask);
-  static void vTimerMillisecs(Tasks::MP_Task mpTask);
-  static void vTimerNanosecs(Tasks::MP_Task mpTask);
-  static void vTimerNew(Tasks::MP_Task mpTask);
-  static void vTimerReset(Tasks::MP_Task mpTask);
-  static void vTimerSecs(Tasks::MP_Task mpTask);
-  static void vTimerStart(Tasks::MP_Task mpTask);
-  static void vTimerTicks(Tasks::MP_Task mpTask);
-  static void vTimerUpdate(Tasks::MP_Task mpTask);
+  void vTimerDelete(void);
+  void vTimerInit(void);
+  void vTimerMicrosecs(void);
+  void vTimerMillisecs(void);
+  void vTimerNanosecs(void);
+  void vTimerNew(void);
+  void vTimerReset(void);
+  void vTimerSecs(void);
+  void vTimerStart(void);
+  void vTimerTicks(void);
+  void vTimerUpdate(void);
 
-  static void vTimeCurrent(Tasks::MP_Task mpTask);
+  void vTimeCurrent(void);
 
   // to
-  static void vToBody(Tasks::MP_Task mpTask);
-  static void vToInt(Tasks::MP_Task mpTask);
-  static void vToPtr(Tasks::MP_Task mpTask);
-  static void vToStr(Tasks::MP_Task mpTask);
-  static void vToTask(Tasks::MP_Task mpTask);
+  void vToBody(void);
+  void vToInt(void);
+  void vToPtr(void);
+  void vToStr(void);
+  void vToTask(void);
 
   // token
-  static void vTokenColon(Tasks::MP_Task mpTask);
+  void vTokenColon(void);
 
   // trace
-  static void vTraceOff(Tasks::MP_Task mpTask);
-  static void vTraceOn(Tasks::MP_Task mpTask);
-  static void vTracePoint(Tasks::MP_Task mpTask);
-  static void vTraceSet(Tasks::MP_Task mpTask);
+  void vTraceOff(void);
+  void vTraceOn(void);
+  void vTracePoint(void);
+  void vTraceSet(void);
 
   // tx
-  static void vTxBegin(Tasks::MP_Task mpTask);
-  static void vTxCommit(Tasks::MP_Task mpTask);
-  static void vTxCounterDec(Tasks::MP_Task mpTask);
-  static void vTxCounterFetch(Tasks::MP_Task mpTask);
-  static void vTxCounterStore(Tasks::MP_Task mpTask);
-  static void vTxDistMemberFetch(Tasks::MP_Task mpTask);
-  static void vTxDistMemberStore(Tasks::MP_Task mpTask);
-  static void vTxDump(Tasks::MP_Task mpTask);
-  static void vTxDumpAll(Tasks::MP_Task mpTask);
-  static void vTxFree(Tasks::MP_Task mpTask);
-  static void vTxId(Tasks::MP_Task mpTask);
-  static void vTxPrepare(Tasks::MP_Task mpTask);
-  static void vTxRollback(Tasks::MP_Task mpTask);
-  static void vTxTestDist(Tasks::MP_Task mpTask);
+  void vTxBegin(void);
+  void vTxCommit(void);
+  void vTxCounterDec(void);
+  void vTxCounterFetch(void);
+  void vTxCounterStore(void);
+  void vTxDistMemberFetch(void);
+  void vTxDistMemberStore(void);
+  void vTxDump(void);
+  void vTxDumpAll(void);
+  void vTxFree(void);
+  void vTxId(void);
+  void vTxPrepare(void);
+  void vTxRollback(void);
+  void vTxTestDist(void);
 
   // txCollection
-  static void vTxCollectionDump(Tasks::MP_Task mpTask);
-  static void vTxCollectionInit(Tasks::MP_Task mpTask);
+  void vTxCollectionDump(void);
+  void vTxCollectionInit(void);
 
   // txCursor
-  static void vTxCursorBegin(Tasks::MP_Task mpTask);
-  static void vTxCursorDelete(Tasks::MP_Task mpTask);
-  static void vTxCursorEnd(Tasks::MP_Task mpTask);
-  static void vTxCursorFirst(Tasks::MP_Task mpTask);
-  static void vTxCursorGet(Tasks::MP_Task mpTask);
-  static void vTxCursorInit(Tasks::MP_Task mpTask);
-  static void vTxCursorNew(Tasks::MP_Task mpTask);
-  static void vTxCursorNext(Tasks::MP_Task mpTask);
+  void vTxCursorBegin(void);
+  void vTxCursorDelete(void);
+  void vTxCursorEnd(void);
+  void vTxCursorFirst(void);
+  void vTxCursorGet(void);
+  void vTxCursorInit(void);
+  void vTxCursorNew(void);
+  void vTxCursorNext(void);
 
   // txMap
-  static void vTxMapInit(Tasks::MP_Task mpTask);
+  void vTxMapInit(void);
 
   // txRef
-  static void vTxRefBegin(Tasks::MP_Task mpTask);
-  static void vTxRefCheckDistId(Tasks::MP_Task mpTask);
-  static void vTxRefCommit(Tasks::MP_Task mpTask);
-  static void vTxRefDump(Tasks::MP_Task mpTask);
-  static void vTxRefEnd(Tasks::MP_Task mpTask);
-  static void vTxRefId(Tasks::MP_Task mpTask);
-  static void vTxRefInit(Tasks::MP_Task mpTask);
-  static void vTxRefNew(Tasks::MP_Task mpTask);
-  static void vTxRefRollback(Tasks::MP_Task mpTask);
+  void vTxRefBegin(void);
+  void vTxRefCheckDistId(void);
+  void vTxRefCommit(void);
+  void vTxRefDump(void);
+  void vTxRefEnd(void);
+  void vTxRefId(void);
+  void vTxRefInit(void);
+  void vTxRefNew(void);
+  void vTxRefRollback(void);
 
   // utility
-  static void vUtilityPrefetch(Tasks::MP_Task mpTask);
-  static void vUtilitySchemaTest(Tasks::MP_Task mpTask);
+  void vUtilityPrefetch(void);
+  void vUtilitySchemaTest(void);
 
   // vector
-  static void vVectorDifference(Tasks::MP_Task mpTask);
+  void vVectorDifference(void);
 
   // word
-  static void vWord(Tasks::MP_Task mpTask);
-  static void vWordCategoryFetch(Tasks::MP_Task mpTask);
-  static void vWordCategoryStore(Tasks::MP_Task mpTask);
-  static void vWordDump(Tasks::MP_Task mpTask);
-  static void vWordEnmSetFetch(Tasks::MP_Task mpTask);
-  static void vWordEnmSetStore(Tasks::MP_Task mpTask);
-  static void vWordExitHookGet(Tasks::MP_Task mpTask);
-  static void vWordExitHookSet(Tasks::MP_Task mpTask);
-  static void vWordForget(Tasks::MP_Task mpTask);
-  static void vWordImmediateGet(Tasks::MP_Task mpTask);
-  static void vWordImmediateSet(Tasks::MP_Task mpTask);
-  static void vWordIsImmediate(Tasks::MP_Task mpTask);
-  static void vWordIsIntrinsic(Tasks::MP_Task mpTask);
-  static void vWordKindFetch(Tasks::MP_Task mpTask);
-  static void vWordKindStore(Tasks::MP_Task mpTask);
-  static void vWordNameFetch(Tasks::MP_Task mpTask);
-  static void vWordNameStore(Tasks::MP_Task mpTask);
-  static void vWordPrev(Tasks::MP_Task mpTask);
+  void vWord(void);
+  void vWordCategoryFetch(void);
+  void vWordCategoryStore(void);
+  void vWordDump(void);
+  void vWordEnmSetFetch(void);
+  void vWordEnmSetStore(void);
+  void vWordExitHookGet(void);
+  void vWordExitHookSet(void);
+  void vWordForget(void);
+  void vWordImmediateGet(void);
+  void vWordImmediateSet(void);
+  void vWordIsImmediate(void);
+  void vWordIsIntrinsic(void);
+  void vWordKindFetch(void);
+  void vWordKindStore(void);
+  void vWordNameFetch(void);
+  void vWordNameStore(void);
+  void vWordPrev(void);
 
   // zero
-  static void vZeroLess(Tasks::MP_Task mpTask);
-  static void vZeroLessEqual(Tasks::MP_Task mpTask);
-  static void vZeroEqual(Tasks::MP_Task mpTask);
-  static void vZeroNotEqual(Tasks::MP_Task mpTask);
-  static void vZeroGreaterEqual(Tasks::MP_Task mpTask);
-  static void vZeroGreater(Tasks::MP_Task mpTask);
+  void vZeroLess(void);
+  void vZeroLessEqual(void);
+  void vZeroEqual(void);
+  void vZeroNotEqual(void);
+  void vZeroGreaterEqual(void);
+  void vZeroGreater(void);
 
 /*============================================================================*/
 /* end                                                                        */

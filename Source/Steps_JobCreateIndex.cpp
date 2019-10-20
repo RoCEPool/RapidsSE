@@ -15,16 +15,16 @@ void Step::vAddSteps_JobCreateIndex(void)
 /*----------------------------------------------------------------------------*/
 /* job_createIndex.isUnique@ -- fetch column type from create table job       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_CreateIndexIsUniqueFetch(MP_Task mpTask)
+void Step::vJob_CreateIndexIsUniqueFetch(void)
 {
   ENTRY("vJob_CreateIndexIsUniqueFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_createIndex.isUnique@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJobPtr);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pJob_CreateIndex->m_bIsUnique);
+  m_pDataStack->vPushI8(pJob_CreateIndex->m_bIsUnique);
   
   EXIT();
 }

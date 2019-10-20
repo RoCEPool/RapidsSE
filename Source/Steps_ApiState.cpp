@@ -20,13 +20,13 @@ void Step::vAddSteps_ApiState(void)
 /*----------------------------------------------------------------------------*/
 /* c -- increment the number of __begun received                              */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncBegun(MP_Task mpTask)
+void Step::vApiStateIncBegun(void)
 {
   ENTRY("vApiIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("apiState::incBegun"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
   
@@ -43,13 +43,13 @@ void Step::vApiStateIncBegun(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* apiState::incCancelled -- increment the number of __cancelled received     */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncCancelled(MP_Task mpTask)
+void Step::vApiStateIncCancelled(void)
 {
   ENTRY("vApiIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("apiState::incBegun"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
   
@@ -66,13 +66,13 @@ void Step::vApiStateIncCancelled(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* apiState::incEnded -- increment the number of __ended received             */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncEnded(MP_Task mpTask)
+void Step::vApiStateIncEnded(void)
 {
   ENTRY("vApiIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("apiState::incBegun"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
   
@@ -89,13 +89,13 @@ void Step::vApiStateIncEnded(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* apiState::incExecuted-- increment the number of __executed received        */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncExecuted(MP_Task mpTask)
+void Step::vApiStateIncExecuted(void)
 {
   ENTRY("vApiIncExecuted"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("apiState::incBegun"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
   
@@ -112,15 +112,15 @@ void Step::vApiStateIncExecuted(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* apiState::senLoc -- set last reported sen location                         */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateSenLoc(MP_Task mpTask)
+void Step::vApiStateSenLoc(void)
 {
   ENTRY("vApiStateSenLoc"_Stz);
   
   i8 iPosition;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPosition) )
-    THROW_INVALID_DSTACK("apiState::senLoc"_Stz);
+  if ( ! m_pDataStack->bPopI8(iPosition) )
+    THROW_DSTACK();
   
-  Session* pSession = mpTask->m_pSession;
+  Session* pSession = m_pTask->m_pSession;
   
   ApiState::vMarkSenLoc(pSession,iPosition);
   
@@ -130,13 +130,13 @@ void Step::vApiStateSenLoc(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* apiState::traceSession -- trace the api state for this session             */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateTraceSession(MP_Task mpTask)
+void Step::vApiStateTraceSession(void)
 {
   ENTRY("vApiStateTraceSession"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("apiState::traceSession"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
   

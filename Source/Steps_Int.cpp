@@ -30,28 +30,28 @@ void Step::vAddSteps_Int(void)
 /*----------------------------------------------------------------------------*/
 /* + -- add top two integers on stack                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vIntAdd(MP_Task mpTask)
+void Step::vIntAdd(void)
 {
   ENTRY("vIntAdd"_Stz);
   /*
   i8 r, j, i;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("+"_Stz);
+  if ( ! m_pDataStack->bPop(j,i) )
+    THROW_DSTACK();
   
   r = i + j;
   
-  mpTask->m_pForth->m_pDataStack->vPush(r);
+  m_pDataStack->vPush(r);
   */
   
   // get pointer to value on the top of the stack
-  ForthValue* j = mpTask->m_pForth->m_pDataStack->aPeekValue();
+  ForthValue* j = m_pDataStack->aPeekValue();
   
   // discard the value
-  mpTask->m_pForth->m_pDataStack->vDiscard();
+  m_pDataStack->vDiscard();
   
   // get pointer to value on the top of the stack
-  ForthValue* i = mpTask->m_pForth->m_pDataStack->aPeekValue();
+  ForthValue* i = m_pDataStack->aPeekValue();
   
   // add the two values and leave the result on the stack
   *_aIntVal(i) = _aIntVal(j)->iInt() + _aIntVal(i)->iInt();
@@ -62,18 +62,18 @@ void Step::vIntAdd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* / -- divide top integer by second integer on stack                         */
 /*----------------------------------------------------------------------------*/
-void Step::vIntDivide(MP_Task mpTask)
+void Step::vIntDivide(void)
 {
   ENTRY("vIntDivide"_Stz);
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("/"_Stz);
+  if ( ! m_pDataStack->bPopI8(j,i) )
+    THROW_DSTACK();
   
   r = DIV(i,j);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -81,18 +81,18 @@ void Step::vIntDivide(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* == -- test top two integers on data stack for equality                     */
 /*----------------------------------------------------------------------------*/
-void Step::vIntEqual(MP_Task mpTask)
+void Step::vIntEqual(void)
 {
   ENTRY("vIntEqual"_Stz);
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("=="_Stz);
+  if ( ! m_pDataStack->bPopI8(j,i) )
+    THROW_DSTACK();
   
   r = i == j;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -100,18 +100,18 @@ void Step::vIntEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* > -- test top two integers on data stack for greater than                  */
 /*----------------------------------------------------------------------------*/
-void Step::vIntGreater(MP_Task mpTask)
+void Step::vIntGreater(void)
 {
   ENTRY("vIntGreater"_Stz);
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK(">"_Stz);
+  if ( ! m_pDataStack->bPopI8(j,i) )
+    THROW_DSTACK();
   
   r = i > j;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -119,18 +119,18 @@ void Step::vIntGreater(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >= -- test top two integers on data stack for greater than equal to        */
 /*----------------------------------------------------------------------------*/
-void Step::vIntGreaterEqual(MP_Task mpTask)
+void Step::vIntGreaterEqual(void)
 {
   ENTRY("vIntGreaterEqual"_Stz);
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK(">="_Stz);
+  if ( ! m_pDataStack->bPopI8(j,i) )
+    THROW_DSTACK();
   
   r = i >= j;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -138,19 +138,19 @@ void Step::vIntGreaterEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* hash -- get hash of string                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vIntHash(MP_Task mpTask)
+void Step::vIntHash(void)
 {
   ENTRY("vIntHash"_Stz);
   
   s48K sString;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("hash"_Stz);
+  if ( ! m_pDataStack->bPopS48K(sString) )
+    THROW_DSTACK();
   
   i8 nLength = sString.nLength();
   
   i8 iHash = HshLib::iHash(sString.ayByte(),nLength);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iHash);
+  m_pDataStack->vPushI8(iHash);
   
   EXIT();
 }
@@ -158,15 +158,15 @@ void Step::vIntHash(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* ho16 -- get high order 16 bits of int                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vIntHo16(MP_Task mpTask)
+void Step::vIntHo16(void)
 {
   ENTRY("vIntHash"_Stz);
   
   i8 i;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(i) )
-    THROW_INVALID_DSTACK(">="_Stz);
+  if ( ! m_pDataStack->bPopI8(i) )
+    THROW_DSTACK();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(i >> 48);
+  m_pDataStack->vPushI8(i >> 48);
   
   EXIT();
 }
@@ -174,18 +174,18 @@ void Step::vIntHo16(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* < -- test top two integers on data stack for less than                     */
 /*----------------------------------------------------------------------------*/
-void Step::vIntLess(MP_Task mpTask)
+void Step::vIntLess(void)
 {
   ENTRY("vIntLess"_Stz);
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("<"_Stz);
+  if ( ! m_pDataStack->bPopI8(j,i) )
+    THROW_DSTACK();
   
   r = i < j;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -193,18 +193,18 @@ void Step::vIntLess(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* <= -- test top two integers on data stack for less than equal to           */
 /*----------------------------------------------------------------------------*/
-void Step::vIntLessEqual(MP_Task mpTask)
+void Step::vIntLessEqual(void)
 {
   ENTRY("vIntLessEqual"_Stz);
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("<="_Stz);
+  if ( ! m_pDataStack->bPopI8(j,i) )
+    THROW_DSTACK();
   
   r = i <= j;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -212,18 +212,18 @@ void Step::vIntLessEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* % -- modulo of top integer by second integer on stack                      */
 /*----------------------------------------------------------------------------*/
-void Step::vIntModulo(MP_Task mpTask)
+void Step::vIntModulo(void)
 {
   ENTRY("vIntModulo"_Stz);
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("%"_Stz);
+  if ( ! m_pDataStack->bPopI8(j,i) )
+    THROW_DSTACK();
   
   r = MOD(i,j);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -231,18 +231,18 @@ void Step::vIntModulo(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* * multiply second integer by top integer on stack                          */
 /*----------------------------------------------------------------------------*/
-void Step::vIntMultiply(MP_Task mpTask)
+void Step::vIntMultiply(void)
 {
   ENTRY("vIntMultiply"_Stz);
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("*"_Stz);
+  if ( ! m_pDataStack->bPopI8(j,i) )
+    THROW_DSTACK();
   
   r = i * j;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -250,18 +250,18 @@ void Step::vIntMultiply(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* neg -- gegate top integer on stack                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vIntNeg(MP_Task mpTask)
+void Step::vIntNeg(void)
 {
   ENTRY("vIntNeg"_Stz);
   
   i8 r, i;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(i) )
-    THROW_INVALID_DSTACK("neg"_Stz);
+  if ( ! m_pDataStack->bPopI8(i) )
+    THROW_DSTACK();
   
   r = -1 * i;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -269,18 +269,18 @@ void Step::vIntNeg(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* != -- test top two integers on data stack for not equal                    */
 /*----------------------------------------------------------------------------*/
-void Step::vIntNotEqual(MP_Task mpTask)
+void Step::vIntNotEqual(void)
 {
   ENTRY("vIntNotEqual"_Stz);
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("!="_Stz);
+  if ( ! m_pDataStack->bPopI8(j,i) )
+    THROW_DSTACK();
   
   r = i != j;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -288,21 +288,21 @@ void Step::vIntNotEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* int.random -- generate a random number in the given range                  */
 /*----------------------------------------------------------------------------*/
-void Step::vIntRandom(MP_Task mpTask)
+void Step::vIntRandom(void)
 {
   ENTRY("vIntRandom"_Stz);
   
   i8 iHigh;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iHigh) )
-    THROW_INVALID_DSTACK("int.random"_Stz);
+  if ( ! m_pDataStack->bPopI8(iHigh) )
+    THROW_DSTACK();
   
   i8 iLow;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iLow) )
-    THROW_INVALID_DSTACK("int.random"_Stz);
+  if ( ! m_pDataStack->bPopI8(iLow) )
+    THROW_DSTACK();
   
   i8 iRandom = Random::iInteger(iLow,iHigh);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iRandom);
+  m_pDataStack->vPushI8(iRandom);
   
   EXIT();
 }
@@ -310,18 +310,18 @@ void Step::vIntRandom(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* - -- subtract second integer from top integer on stack                     */
 /*----------------------------------------------------------------------------*/
-void Step::vIntSubtract(MP_Task mpTask)
+void Step::vIntSubtract(void)
 {
   ENTRY("vIntSubtract"_Stz);
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
-    THROW_INVALID_DSTACK("-"_Stz);
+  if ( ! m_pDataStack->bPopI8(j,i) )
+    THROW_DSTACK();
   
   r = i - j;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -329,21 +329,21 @@ void Step::vIntSubtract(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* uint.random -- generate a random number in the given range                  */
 /*----------------------------------------------------------------------------*/
-void Step::vUnsignedIntRandom(MP_Task mpTask)
+void Step::vUnsignedIntRandom(void)
 {
   ENTRY("vUnsignedIntRandom"_Stz);
   
   i8 iHigh;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iHigh) )
-    THROW_INVALID_DSTACK("uint.random"_Stz);
+  if ( ! m_pDataStack->bPopI8(iHigh) )
+    THROW_DSTACK();
   
   i8 iLow;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iLow) )
-    THROW_INVALID_DSTACK("uint.random"_Stz);
+  if ( ! m_pDataStack->bPopI8(iLow) )
+    THROW_DSTACK();
   
   u8 uRandom = Random::uInteger(iLow,iHigh);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(uRandom);
+  m_pDataStack->vPushI8(uRandom);
   
   EXIT();
 }

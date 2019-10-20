@@ -221,43 +221,34 @@ void Task::vTaskLoop_job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  RASSERT(TK_JOB == eKind());
+          
   // TODO: shouldn't have to refind it everytime!!!
   vRefindJobClass();
   
-  if (TK_JOB == m_eKind && ! bSeeded() ) {
-    if (! m_pForth)
-      vNewStacks();
-    vSeedJob();
-  }
-  else {
-    // op??
-  }
-
-  if (! m_pForth) {
+  if (! m_pForth)
     vNewStacks();
-  }
+
+  if (! bSeeded())
+    vSeedJob();
   
   while (TR_NONE == m_eTransition) {
     
     // UNUSUAL CODE:
     //   get address of member containing intinsic function pointer and
     //   dereference it to get the intrinsic function to be called
-    StepFp fpIntrinsic = * ( (m_pForth->m_aInxPtr ++)->m_afpIntrinsic );
+    StepFp fpStep = * ( (m_pForth->m_aInxPtr ++)->m_afpIntrinsic );
     
     // call the intinsic
     try {
-      fpIntrinsic(this);
+      ((Step*)m_pForth->*fpStep)();
     }
     
-    catch (eFK eFailure) {
-      vTrace("[%s] %s : in file %s line %lld\n"_Stz,
-             szJobName(),
-             m_sException.azChar(),
-             m_sFileNm.azChar(),
-             m_iLineNo);
-      vRetry();
+    // catch any exception
+    catch (Exception xException) {
+      xException.vJob(m_pJob);
+      xException.vCaught();
     }
-    
   }
   
   if (m_pJob && m_pJob->m_xReqTuple.m_iDetail)
@@ -275,9 +266,10 @@ void Task::vTaskLoop_op(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  while (TR_NONE == m_eTransition) {
+  RASSERT(TK_OPERATOR == eKind());
+  
+  while (TR_NONE == m_eTransition)
     m_pOp->vOpLoop();
-  }
   
   if (TR_DELETE == m_eTransition) {
     // the op is deleted by the job
@@ -1244,7 +1236,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       //*pf = 's';                                                    //! Defect??
       
       s48K sValue;
-      m_pForth->m_pDataStack->bPop(sValue);
+      m_pForth->m_pDataStack->bPopS48K(sValue);
       
       if ('V' == *pf)
         *ps++ = '"';
@@ -1266,7 +1258,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       //*pf = 'i';                                                    //! Defect??
       
       i8 iValue;
-      m_pForth->m_pDataStack->bPop(iValue);
+      m_pForth->m_pDataStack->bPopI8(iValue);
       
       char caValue[32];
       StrLib::wToString(iValue,caValue);
@@ -1285,7 +1277,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       //*pf = 'i';                                                    //! Defect??
       
       Object* pValue;
-      m_pForth->m_pDataStack->bPop(pValue);
+      m_pForth->m_pDataStack->bPopObject(pValue);
       
       char caValue[32];
       StrLib::wToPointer(pValue,caValue);

@@ -41,26 +41,26 @@ void Step::vAddSteps_Index(void)
 /*----------------------------------------------------------------------------*/
 /* index.analyze -- analyze index                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexAnalyze(MP_Task mpTask)
+void Step::vIndexAnalyze(void)
 {
   ENTRY("vIndexAnalyze"_Stz);
   
   Object* pPtrIndex;
   i8 iDetailed;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.analyze"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iDetailed) )
-    THROW_INVALID_DSTACK("index.analyze"_Stz);
+  if ( ! m_pDataStack->bPopI8(iDetailed) )
+    THROW_DSTACK();
   
   s48K sAnalysis;
   i8 nRows;
   sAnalysis = (Stz*)pIndex->pTable()->pAnalyzeIndex(pIndex, iDetailed == 1 ? true : false, nRows);
-  mpTask->m_pForth->m_pDataStack->vPushS48K(sAnalysis);
+  m_pDataStack->vPushS48K(sAnalysis);
   
   EXIT();
 }
@@ -68,24 +68,24 @@ void Step::vIndexAnalyze(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.column@ -- get the column from the index                             */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexColumnFetch(MP_Task mpTask)
+void Step::vIndexColumnFetch(void)
 {
   ENTRY("vIndexColumnFetch"_Stz);
   
   Object* pPtrIndex;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.column@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iColumnNo;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iColumnNo) )
-    THROW_INVALID_DSTACK("index.column@"_Stz);
+  if ( ! m_pDataStack->bPopI8(iColumnNo) )
+    THROW_DSTACK();
   
   ASSERT(iColumnNo < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iColumnNo);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pColumn);
+  m_pDataStack->vPushPointer(pColumn);
   
   EXIT();
 }
@@ -93,17 +93,17 @@ void Step::vIndexColumnFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.columnCount@ -- fetch index column count                             */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexColumnCountFetch(MP_Task mpTask)
+void Step::vIndexColumnCountFetch(void)
 {
   ENTRY("vIndexColumnCountFetch"_Stz);
   
   Object* pPtrIndex;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.columnCount"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pIndex->pIdxColVec()->nItems());
+  m_pDataStack->vPushI8(pIndex->pIdxColVec()->nItems());
   
   EXIT();
 }
@@ -111,24 +111,24 @@ void Step::vIndexColumnCountFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.columnName -- get column name                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexColumnName(MP_Task mpTask)
+void Step::vIndexColumnName(void)
 {
   ENTRY("vIndexColumnName"_Stz);
   
   Object* pPtrIndex;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.columnName"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIndex;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iIndex) )
-    THROW_INVALID_DSTACK("index.columnName"_Stz);
+  if ( ! m_pDataStack->bPopI8(iIndex) )
+    THROW_DSTACK();
   
   ASSERT(iIndex < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
   
-  mpTask->m_pForth->m_pDataStack->vPushS32(pColumn->sColumnName());
+  m_pDataStack->vPushS32(pColumn->sColumnName());
   
   EXIT();
 }
@@ -136,25 +136,25 @@ void Step::vIndexColumnName(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.columnType -- get column type                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexColumnType(MP_Task mpTask)
+void Step::vIndexColumnType(void)
 {
   ENTRY("vIndexColumnType"_Stz);
   
   Object* pPtrIndex;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.columnType"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIndex;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iIndex) )
-    THROW_INVALID_DSTACK("index.columnType"_Stz);
+  if ( ! m_pDataStack->bPopI8(iIndex) )
+    THROW_DSTACK();
   
   ASSERT(iIndex < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
   s32 sColumnType = aCT[pColumn->eColumnType()];
   
-  mpTask->m_pForth->m_pDataStack->vPushS32(sColumnType);
+  m_pDataStack->vPushS32(sColumnType);
   
   EXIT();
 }
@@ -162,15 +162,15 @@ void Step::vIndexColumnType(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.compact -- index compaction                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexCompact(MP_Task mpTask)
+void Step::vIndexCompact(void)
 {
   ENTRY("vIndexCompact"_Stz);
   
   Object* pPtrIndex;
   i8 iDetailed;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.compact"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -183,19 +183,19 @@ void Step::vIndexCompact(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.createColumnVecR -- create column vector from job_createIndex        */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexCreateColumnVec(MP_Task mpTask)
+void Step::vIndexCreateColumnVec(void)
 {
   ENTRY("vIndexCreateColumnVec"_Stz);
   
   Object* pPtrIndex;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.createColumnVec"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   Object* pPtrJob;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob) )
-    THROW_INVALID_DSTACK("index.createColumnVec"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob) )
+    THROW_DSTACK();
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pPtrJob);
   ASSERT(CN_JOB_CREATEINDEX == pJob_CreateIndex->eClass());
   
@@ -207,13 +207,13 @@ void Step::vIndexCreateColumnVec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.dump -- dump the index                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexDump(MP_Task mpTask)
+void Step::vIndexDump(void)
 {
   ENTRY("vIndexDump"_Stz);
   
   Object* pPtrIndex;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.dump"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -235,13 +235,13 @@ void Step::vIndexDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.init -- initialize the index                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexInit(MP_Task mpTask)
+void Step::vIndexInit(void)
 {
   ENTRY("vIndexInit"_Stz);
   Object* pPtrIndex = nullptr;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.init"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -254,21 +254,21 @@ void Step::vIndexInit(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isPrimaryKey@ -- fetch isPrimaryKey from index                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsPrimaryKeyFetch(MP_Task mpTask)
+void Step::vIndexIsPrimaryKeyFetch(void)
 {
   ENTRY("vIndexIsPrimaryKeyFetch"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.isPrimaryKey@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   bool bIsPrimaryKey = pIndex->bIsPrimaryKey();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bIsPrimaryKey);
+  m_pDataStack->vPushI8(bIsPrimaryKey);
   
   EXIT();
 }
@@ -276,21 +276,21 @@ void Step::vIndexIsPrimaryKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isPrimaryKey! -- store isPrimaryKey into index                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsPrimaryKeyStore(MP_Task mpTask)
+void Step::vIndexIsPrimaryKeyStore(void)
 {
   ENTRY("vIndexIsPrimaryKeyStore"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.isPrimaryKey!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIsPrimaryKey;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iIsPrimaryKey) )
-    THROW_INVALID_DSTACK("index.isPrimaryKey!"_Stz);
+  if ( ! m_pDataStack->bPopI8(iIsPrimaryKey) )
+    THROW_DSTACK();
   
   pIndex->vIsPrimaryKey(iIsPrimaryKey ? true : false);
   
@@ -300,21 +300,21 @@ void Step::vIndexIsPrimaryKeyStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isUnique@ -- fetch isUnique from index                               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsUniqueFetch(MP_Task mpTask)
+void Step::vIndexIsUniqueFetch(void)
 {
   ENTRY("vIndexIsUniqueFetch"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.isUnique@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   bool bIsUnique = pIndex->bIsUnique();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bIsUnique);
+  m_pDataStack->vPushI8(bIsUnique);
   
   EXIT();
 }
@@ -322,21 +322,21 @@ void Step::vIndexIsUniqueFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isUnique! -- store isUnique into index                               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsUniqueStore(MP_Task mpTask)
+void Step::vIndexIsUniqueStore(void)
 {
   ENTRY("vIndexIsUniqueStore"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.isUnique!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIsUnique;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iIsUnique) )
-    THROW_INVALID_DSTACK("index.isUnique!"_Stz);
+  if ( ! m_pDataStack->bPopI8(iIsUnique) )
+    THROW_DSTACK();
   
   pIndex->vIsUnique(iIsUnique ? true : false);
   
@@ -346,14 +346,14 @@ void Step::vIndexIsUniqueStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isValidUniqueIndex -- is it a valid unqiue index                     */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexIsValidUniqueIndex(MP_Task mpTask)
+void Step::vIndexIsValidUniqueIndex(void)
 {
   ENTRY("vIndexIsValidUniqueIndex"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.isValidUniqueIndex"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -377,7 +377,7 @@ void Step::vIndexIsValidUniqueIndex(MP_Task mpTask)
     }
   }
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bValid ? 1 : 0);
+  m_pDataStack->vPushI8(bValid ? 1 : 0);
   
   EXIT();
 }
@@ -385,11 +385,11 @@ void Step::vIndexIsValidUniqueIndex(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.lowerBound -- return rows with lower bound                           */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexLowerBound(MP_Task mpTask)
+void Step::vIndexLowerBound(void)
 {
   ENTRY("vIndexLowerBound"_Stz);
   
-  Session* pSession = mpTask->m_pSession;
+  Session* pSession = m_pTask->m_pSession;
   Object* pPtrIndex = nullptr;
   FetchBuffer* pFetchBuffer;
   
@@ -397,22 +397,22 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.lowerBound"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   Object* pPtrJob;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob) )
-    THROW_INVALID_DSTACK("index.lowerBound"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob) )
+    THROW_DSTACK();
   
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the key
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xVariable) )
-    THROW_INVALID_DSTACK("index.lowerBound"_Stz);
+  if ( ! m_pDataStack->bPopGenVar(xVariable) )
+    THROW_DSTACK();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
@@ -531,21 +531,21 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 /* index.name@ -- fetch index name                                            */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexNameFetch(MP_Task mpTask)
+void Step::vIndexNameFetch(void)
 {
   ENTRY("vIndexNameFetch"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.name@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   s32 sIndexName = pIndex->sIndexName();
   
-  mpTask->m_pForth->m_pDataStack->vPushS32(sIndexName);
+  m_pDataStack->vPushS32(sIndexName);
   
   EXIT();
 }
@@ -553,13 +553,13 @@ void Step::vIndexNameFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.populate -- populate the index                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexPopulate(MP_Task mpTask)
+void Step::vIndexPopulate(void)
 {
   ENTRY("vIndexPopulate"_Stz);
   Object* pPtrIndex = nullptr;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.populate"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -569,7 +569,7 @@ void Step::vIndexPopulate(MP_Task mpTask)
   
   bool bPopulated = pTable->bPopulateIndex(iIndexNo);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bPopulated ? 1 : 0);
+  m_pDataStack->vPushI8(bPopulated ? 1 : 0);
   
   EXIT();
 }
@@ -577,38 +577,38 @@ void Step::vIndexPopulate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.range -- return rows within given range                              */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexRange(MP_Task mpTask)
+void Step::vIndexRange(void)
 {
   ENTRY("vIndexRange"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Session* pSession = mpTask->m_pSession;
+  Session* pSession = m_pTask->m_pSession;
   
   GenVar xValWrkLwr;
   GenVar xValWrkUpr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.range"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   Object* pPtrJob;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob) )
-    THROW_INVALID_DSTACK("index.range"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob) )
+    THROW_DSTACK();
   
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the lower key
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValWrkLwr) )
-    THROW_INVALID_DSTACK("index.range"_Stz);
+  if ( ! m_pDataStack->bPopGenVar(xValWrkLwr) )
+    THROW_DSTACK();
   
   // get the upper key
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValWrkUpr) )
-    THROW_INVALID_DSTACK("index.range"_Stz);
+  if ( ! m_pDataStack->bPopGenVar(xValWrkUpr) )
+    THROW_DSTACK();
   
   FetchBuffer* pFetchBuffer;
   EntBuffer* aLowerEntBuffer;
@@ -804,13 +804,13 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 /* index.showColumnVec -- show column vector                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexShowColumnVec(MP_Task mpTask)
+void Step::vIndexShowColumnVec(void)
 {
   ENTRY("vIndexShowColumnVec"_Stz);
   
   Object* pPtrIndex;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.showColumnVec"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
@@ -822,20 +822,20 @@ void Step::vIndexShowColumnVec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.space -- push space used by index                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexSpace(MP_Task mpTask)
+void Step::vIndexSpace(void)
 {
   ENTRY("vIndexSpace"_Stz);
   
   Object* pPtrIndex;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.space"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iBuffers = pIndex->pTable()->nIndexBuffers(pIndex->iIndexNo());
   i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
-  mpTask->m_pForth->m_pDataStack->vPushI8(iSpace);
+  m_pDataStack->vPushI8(iSpace);
   
   EXIT();
 }
@@ -843,20 +843,20 @@ void Step::vIndexSpace(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.subDic -- get table sub dictionary                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexSubDic(MP_Task mpTask)
+void Step::vIndexSubDic(void)
 {
   ENTRY("vIndexSubDic"_Stz);
   
   Object* pPtrIndex;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.subDic"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   Dic* pDic = pIndex->pSubDic();
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pDic);
+  m_pDataStack->vPushPointer(pDic);
   
   EXIT();
 }
@@ -864,14 +864,14 @@ void Step::vIndexSubDic(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.table@ -- fetch table in index                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTableFetch(MP_Task mpTask)
+void Step::vIndexTableFetch(void)
 {
   ENTRY("vIndexTableFetch"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.table@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -879,7 +879,7 @@ void Step::vIndexTableFetch(MP_Task mpTask)
   Table* pTable = pIndex->pTable();
   ASSERT(CN_TABLE == pTable->eClass());
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pTable);
+  m_pDataStack->vPushPointer(pTable);
   
   EXIT();
 }
@@ -887,21 +887,21 @@ void Step::vIndexTableFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.table! -- store table in index                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTableStore(MP_Task mpTask)
+void Step::vIndexTableStore(void)
 {
   ENTRY("vIndexTableStore"_Stz);
   
   Object* pPtrIndex = nullptr;
   Object* pPtrTable = nullptr;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.table!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("index.table!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+    THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -914,14 +914,14 @@ void Step::vIndexTableStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.truncate -- truncate the index                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexTruncate(MP_Task mpTask)
+void Step::vIndexTruncate(void)
 {
   ENTRY("vIndexTruncate"_Stz);
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.truncate"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -938,32 +938,32 @@ void Step::vIndexTruncate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.upperBound -- return rows with upper bound                           */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexUpperBound(MP_Task mpTask)
+void Step::vIndexUpperBound(void)
 {
   ENTRY("vIndexUpperBound"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Session* pSession = mpTask->m_pSession;
+  Session* pSession = m_pTask->m_pSession;
   GenVar xVariable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.upperBound"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   Object* pPtrJob;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob) )
-    THROW_INVALID_DSTACK("index.upperBound"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob) )
+    THROW_DSTACK();
   
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the key
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xVariable) )
-    THROW_INVALID_DSTACK("index.upperBound"_Stz);
+  if ( ! m_pDataStack->bPopGenVar(xVariable) )
+    THROW_DSTACK();
   
   FetchBuffer* pFetchBuffer;
   EntBuffer* pEntBuffer;
@@ -1107,21 +1107,21 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 /* index.verify -- verify index                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexVerify(MP_Task mpTask)
+void Step::vIndexVerify(void)
 {
   ENTRY("vIndexVerify"_Stz);
   
   Object* pPtrIndex;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.verify"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   bool bVerified = pIndex->pTable()->bVerifyIndex(pIndex);
   s256 s = bVerified ? "Valid"_Stz : "Invalid"_Stz;
-  mpTask->m_pForth->m_pDataStack->vPushS256(s);
+  m_pDataStack->vPushS256(s);
   
   EXIT();
 }
@@ -1129,13 +1129,13 @@ void Step::vIndexVerify(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.visualize -- visualize the index                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vIndexVisualize(MP_Task mpTask)
+void Step::vIndexVisualize(void)
 {
   ENTRY("vIndexVisualize"_Stz);
   
   Object* pPtrIndex;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.visualize"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());

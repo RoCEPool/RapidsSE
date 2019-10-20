@@ -15,16 +15,16 @@ void Step::vAddSteps_JobNodeInfo(void)
 /*----------------------------------------------------------------------------*/
 /* job_nodeInfo.nodeName@ -- fetch node name                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_NodeInfoNodeNameFetch(MP_Task mpTask)
+void Step::vJob_NodeInfoNodeNameFetch(void)
 {
   ENTRY("vJob_NodeInfoNodeNameFetch"_Stz);
   
   Object* pPtrJob_NodeInfo;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_NodeInfo) )
-    THROW_INVALID_DSTACK("job_nodeInfo.nodeName@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_NodeInfo) )
+    THROW_DSTACK();
   Job_NodeInfo* pJob_NodeInfo = _pJob_NodeInfo(pPtrJob_NodeInfo);
   
-  mpTask->m_pForth->m_pDataStack->vPushS32(pJob_NodeInfo->m_sNodeName);
+  m_pDataStack->vPushS32(pJob_NodeInfo->m_sNodeName);
   
   EXIT();
 }

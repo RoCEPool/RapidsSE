@@ -17,18 +17,18 @@ void Step::vAddSteps_JobCat(void)
 /*----------------------------------------------------------------------------*/
 /* job_cat.begin -- begin cat                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_CatBegin(MP_Task mpTask)
+void Step::vJob_CatBegin(void)
 {
   ENTRY("vJob_CatBegin"_Stz);
   
   Object* pPtrJobCat;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobCat) )
-    THROW_INVALID_DSTACK("job_cat.begin"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJobCat) )
+    THROW_DSTACK();
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJobCat);
   
   bool bBegun = pJob_Cat->bBegin();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -36,18 +36,18 @@ void Step::vJob_CatBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_cat.chunk -- cat data from pipe                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_CatChunk(MP_Task mpTask)
+void Step::vJob_CatChunk(void)
 {
   ENTRY("vJob_CatChunk"_Stz);
   
   Object* pPtrJobCat;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobCat) )
-    THROW_INVALID_DSTACK("job_cat.chunk"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJobCat) )
+    THROW_DSTACK();
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJobCat);
   
   bool bCallAgain = pJob_Cat->bChunk();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bCallAgain);
+  m_pDataStack->vPushBool(bCallAgain);
   
   EXIT();
 }
@@ -55,13 +55,13 @@ void Step::vJob_CatChunk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_cat.end -- end cat                                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_CatEnd(MP_Task mpTask)
+void Step::vJob_CatEnd(void)
 {
   ENTRY("vJob_CatEnd"_Stz);
   
   Object* pPtrJob_Cat;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Cat) )
-    THROW_INVALID_DSTACK("job_cat.end"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Cat) )
+    THROW_DSTACK();
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJob_Cat);
   
   pJob_Cat->vEnd();

@@ -221,6 +221,8 @@
    // set originating task
   task::this job::this job.originatingTask!
 
+  job::this job.id@ job::this job.originatingId!
+
   // add job to originator jobs
   job::this job.addOriginator
 ;
@@ -234,6 +236,8 @@
 
   // set originating task
   task::this pJob job.originatingTask!
+
+  job::this job.id@ job::this job.originatingId!
 
   // add job to originator jobs
   pJob job.addOriginator

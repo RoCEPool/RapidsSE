@@ -22,14 +22,14 @@ void Step::vAddSteps_File(void)
 /*----------------------------------------------------------------------------*/
 /* file.close -- close a file ( file -- )                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vFileClose(MP_Task mpTask)
+void Step::vFileClose(void)
 {
 ENTRY("vFileClose"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.close"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrFile) )
+    THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
   
@@ -41,14 +41,14 @@ ENTRY("vFileClose"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.delete -- delete a file ( file -- )                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vFileDelete(MP_Task mpTask)
+void Step::vFileDelete(void)
 {
 ENTRY("vFileDelete"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.delete"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrFile) )
+    THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
 
@@ -60,7 +60,7 @@ ENTRY("vFileDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file::new -- new a file ( -- file )                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vFileNew(MP_Task mpTask)
+void Step::vFileNew(void)
 {
 ENTRY("vFileNew"_Stz);
   
@@ -69,7 +69,7 @@ ENTRY("vFileNew"_Stz);
   Object* pPtrFile;
   pPtrFile = (Object*)pFile;
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrFile);
+  m_pDataStack->vPushPointer(pPtrFile);
   
   EXIT();
 }
@@ -77,27 +77,27 @@ ENTRY("vFileNew"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.open -- open a file ( mode file -- bool )                             */
 /*----------------------------------------------------------------------------*/
-void Step::vFileOpen(MP_Task mpTask)
+void Step::vFileOpen(void)
 {
 ENTRY("vFileOpen"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.open"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrFile) )
+    THROW_DSTACK();
   File* pFile = _pFile(pPtrFile);
   
   s32 sMode;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sMode) )
-    THROW(FK_ASSERT,"file.open"_Stz);
-  
+  if ( ! m_pDataStack->bPopS32(sMode) )
+    THROW_DSTACK();
+
   s256 sPath;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sPath) )
-    THROW_INVALID_DSTACK("file.open"_Stz);
+  if ( ! m_pDataStack->bPopS256(sPath) )
+    THROW_DSTACK();
   
   bool bOpened = pFile->bOpenMode(sPath,sMode);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bOpened);
+  m_pDataStack->vPushI8(bOpened);
   
   EXIT();
 }
@@ -105,20 +105,20 @@ ENTRY("vFileOpen"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.path@ -- get file path ( file -- "<path>" )                           */
 /*----------------------------------------------------------------------------*/
-void Step::vFilePathGet(MP_Task mpTask)
+void Step::vFilePathGet(void)
 {
 ENTRY("vFilePathGet"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.path@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrFile) )
+    THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
 
   s256 sPath = pFile->sFilePath();
   
-  mpTask->m_pForth->m_pDataStack->vPushS256(sPath);
+  m_pDataStack->vPushS256(sPath);
   
   EXIT();
 }
@@ -126,14 +126,14 @@ ENTRY("vFilePathGet"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.read -- read line from a file ( file -- "<line>" 1 | 0 )              */
 /*----------------------------------------------------------------------------*/
-void Step::vFileRead(MP_Task mpTask)
+void Step::vFileRead(void)
 {
   ENTRY("vFileRead"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.read"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrFile) )
+    THROW_DSTACK();
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
   
@@ -142,11 +142,11 @@ void Step::vFileRead(MP_Task mpTask)
   bool bResult = pFile->bReadLine(sLine);
   
   if (bResult) {
-    mpTask->m_pForth->m_pDataStack->vPushS48K(sLine);
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushS48K(sLine);
+    m_pDataStack->vPushBool(true);
   }
   else {
-    mpTask->m_pForth->m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushBool(false);
   }
 
   EXIT();
@@ -155,22 +155,22 @@ void Step::vFileRead(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* file.write -- write to a file ( "<line>" file -- )                         */
 /*----------------------------------------------------------------------------*/
-void Step::vFileWrite(MP_Task mpTask)
+void Step::vFileWrite(void)
 {
 ENTRY("vFileWrite"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.write"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrFile) )
+    THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
   
   s48K sLine;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sLine) )
-    THROW_INVALID_DSTACK("file.write"_Stz);
+  if ( ! m_pDataStack->bPopS48K(sLine) )
+    THROW_DSTACK();
   
   Stz* wStr = sLine;
   

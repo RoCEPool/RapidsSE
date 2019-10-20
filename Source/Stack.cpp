@@ -317,7 +317,7 @@ bool Stack::bPeekZero(void)
 /*----------------------------------------------------------------------------*/
 /* pop aCell from value stack                                                 */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Cell*& aCell)
+bool Stack::bPopCell(Cell*& aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -336,7 +336,7 @@ bool Stack::bPop(Cell*& aCell)
 /*----------------------------------------------------------------------------*/
 /* pop eClassNo from value stack                                              */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(eCN& eClassNo)
+bool Stack::bPopCN(eCN& eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -354,7 +354,7 @@ bool Stack::bPop(eCN& eClassNo)
 /*----------------------------------------------------------------------------*/
 /* pop value from value stack into given variable                             */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(GenVar* pVariable)
+bool Stack::bPopGenVar(GenVar* pVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -369,7 +369,7 @@ bool Stack::bPop(GenVar* pVariable)
 /*----------------------------------------------------------------------------*/
 /* pop value from value stack into given variable                             */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(GenVar& xVar)
+bool Stack::bPopGenVar(GenVar& xVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -384,7 +384,7 @@ bool Stack::bPop(GenVar& xVar)
 /*----------------------------------------------------------------------------*/
 /* pop values from value stack into given variables                           */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(GenVar& xVar1, GenVar& xVar2)
+bool Stack::bPopGenVar(GenVar& xVar1, GenVar& xVar2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -401,7 +401,7 @@ bool Stack::bPop(GenVar& xVar1, GenVar& xVar2)
 /*----------------------------------------------------------------------------*/
 /* pop values from value stack into given variables                           */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
+bool Stack::bPopGenVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -420,7 +420,7 @@ bool Stack::bPop(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
 /*----------------------------------------------------------------------------*/
 /* pop i8 from value stack                                                    */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(i8& iArg)
+bool Stack::bPopI8(i8& iArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -442,7 +442,7 @@ bool Stack::bPop(i8& iArg)
 /*----------------------------------------------------------------------------*/
 /* pop i8,i8 from value stack                                                 */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(i8& iArg1, i8& iArg2)
+bool Stack::bPopI8(i8& iArg1, i8& iArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -465,7 +465,7 @@ bool Stack::bPop(i8& iArg1, i8& iArg2)
 /*----------------------------------------------------------------------------*/
 /* pop i8,pObject from value stack                                            */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(i8& iArg, Object*& pObject)
+bool Stack::bPopI8(i8& iArg, Object*& pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -488,7 +488,7 @@ bool Stack::bPop(i8& iArg, Object*& pObject)
 /*----------------------------------------------------------------------------*/
 /* pop i8,val from value stack                                                */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(i8& iArg, GenVar& xGenVar)
+bool Stack::bPopI8(i8& iArg, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -508,7 +508,7 @@ bool Stack::bPop(i8& iArg, GenVar& xGenVar)
 /*----------------------------------------------------------------------------*/
 /* pop i8,s from value stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(i8& iArg, s48K& sArg)
+bool Stack::bPopI8(i8& iArg, s48K& sArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -531,7 +531,7 @@ bool Stack::bPop(i8& iArg, s48K& sArg)
 /*----------------------------------------------------------------------------*/
 /* pop i8,i8,val from value stack                                             */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(i8& iArg1, i8& iArg2, GenVar& xGenVar)
+bool Stack::bPopI8(i8& iArg1, i8& iArg2, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -556,7 +556,7 @@ bool Stack::bPop(i8& iArg1, i8& iArg2, GenVar& xGenVar)
 /*----------------------------------------------------------------------------*/
 /* pop Object* from value stack                                               */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Object*& pObject)
+bool Stack::bPopObject(Object*& pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -574,7 +574,7 @@ bool Stack::bPop(Object*& pObject)
 /*----------------------------------------------------------------------------*/
 /* pop Object*, i8 from value stack                                           */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Object*& pObject, i8& iArg)
+bool Stack::bPopObject(Object*& pObject, i8& iArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -597,7 +597,7 @@ bool Stack::bPop(Object*& pObject, i8& iArg)
 /*----------------------------------------------------------------------------*/
 /* pop Object*, Object* from value stack                                      */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Object*& pObject1, Object*& pObject2)
+bool Stack::bPopObject(Object*& pObject1, Object*& pObject2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -620,7 +620,7 @@ bool Stack::bPop(Object*& pObject1, Object*& pObject2)
 /*----------------------------------------------------------------------------*/
 /* pop Object* from value stack                                               */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Object*& pObject, GenVar& xGenVar)
+bool Stack::bPopObject(Object*& pObject, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -632,13 +632,13 @@ bool Stack::bPop(Object*& pObject, GenVar& xGenVar)
   
   pObject = xPtrVal1.pObj();
   
-  return bPop(xGenVar);
+  return bPopGenVar(xGenVar);
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop register from value stack                                              */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Local*& pLocal)
+bool Stack::bPopLocal(Local*& pLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -653,7 +653,7 @@ bool Stack::bPop(Local*& pLocal)
 /*----------------------------------------------------------------------------*/
 /* pop s from value stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s32& sArg)
+bool Stack::bPopS32(s32& sArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -671,7 +671,7 @@ bool Stack::bPop(s32& sArg)
 /*----------------------------------------------------------------------------*/
 /* pop s from value stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s256& sArg)
+bool Stack::bPopS256(s256& sArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -689,7 +689,7 @@ bool Stack::bPop(s256& sArg)
 /*----------------------------------------------------------------------------*/
 /* pop s from value stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s4K& sArg)
+bool Stack::bPopS4K(s4K& sArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -707,25 +707,7 @@ bool Stack::bPop(s4K& sArg)
 /*----------------------------------------------------------------------------*/
 /* pop s from value stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s16KB& sArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_STRVAL) )
-    return false;
-  
-  GenVar xGenVar;
-  vPopVal(xGenVar.aNestedValue());
-  
-  sArg = _aStrVal(xGenVar.aNestedValue())->szStz();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop s from value stack                                                     */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPop(s48K& sArg)
+bool Stack::bPopS48K(s48K& sArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -743,7 +725,7 @@ bool Stack::bPop(s48K& sArg)
 /*----------------------------------------------------------------------------*/
 /* pop s,i8 from value stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s48K& sArg, i8& iArg)
+bool Stack::bPopS48K(s48K& sArg, i8& iArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -766,7 +748,7 @@ bool Stack::bPop(s48K& sArg, i8& iArg)
 /*----------------------------------------------------------------------------*/
 /* pop s,i8,i8 from value stack                                               */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s48K& sArg, i8& iArg1, i8& iArg2)
+bool Stack::bPopS48K(s48K& sArg, i8& iArg1, i8& iArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -791,7 +773,7 @@ bool Stack::bPop(s48K& sArg, i8& iArg1, i8& iArg2)
 /*----------------------------------------------------------------------------*/
 /* pop s,s from value stack                                                   */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s48K& sArg1, s48K& sArg2)
+bool Stack::bPopS48K(s48K& sArg1, s48K& sArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

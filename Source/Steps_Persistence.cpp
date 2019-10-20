@@ -16,13 +16,13 @@ void Step::vAddSteps_Persistence(void)
 /*----------------------------------------------------------------------------*/
 /* persistence::checkpoint -- take a checkpoint                               */
 /*----------------------------------------------------------------------------*/
-void Step::vPersistenceCheckpoint(MP_Task mpTask)
+void Step::vPersistenceCheckpoint(void)
 {
   ENTRY("vPersistenceCheckpoint"_Stz);
   
   s256 sFilePath;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sFilePath) )
-    THROW_INVALID_DSTACK("persistence::checkpoint"_Stz);
+  if ( ! m_pDataStack->bPopS256(sFilePath) )
+    THROW_DSTACK();
   
   vTrace("\nTaking checkpoint into file : '%s'\n"_Stz, sFilePath.azChar());
 
@@ -38,13 +38,13 @@ void Step::vPersistenceCheckpoint(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* persistence::reload -- reload                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vPersistenceReload(MP_Task mpTask)
+void Step::vPersistenceReload(void)
 {
   ENTRY("vPersistenceReload"_Stz);
   
   s256 sFilePath;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sFilePath) )
-    THROW_INVALID_DSTACK("persistence::reload"_Stz);
+  if ( ! m_pDataStack->bPopS256(sFilePath) )
+    THROW_DSTACK();
   
   vTrace("\nReloading from file : '%s'\n"_Stz, sFilePath.azChar());
   

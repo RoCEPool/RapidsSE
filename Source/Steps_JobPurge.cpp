@@ -16,18 +16,18 @@ void Step::vAddSteps_JobPurge(void)
 /*----------------------------------------------------------------------------*/
 /* Job_purge.spawnSub -- spawn sub purge job                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_PurgeSpawnSub(MP_Task mpTask)
+void Step::vJob_PurgeSpawnSub(void)
 {
   ENTRY("vJob_PurgeSpawnSub"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_purge.spawnSub"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_Purge* pJob_Purge = _pJob_Purge(pJobPtr);
   
   i8 iSlot;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iSlot) )
-    THROW_INVALID_DSTACK("Job_purge.spawnSub"_Stz);
+  if ( ! m_pDataStack->bPopAsInt(iSlot) )
+    THROW_DSTACK();
   
   i8 iPurgeJobId = pJob_Purge->m_iUniqueId;
   ReqTuple* aReqTuple = &pJob_Purge->m_xReqTuple;
@@ -55,14 +55,14 @@ void Step::vJob_PurgeSpawnSub(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_purge.table! -- store table into job_purge                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_PurgeTableStore(MP_Task mpTask)
+void Step::vJob_PurgeTableStore(void)
 {
   ENTRY("vJob_PurgeTableStore"_Stz);
   
   Object* pPtrTable;
   Object* pPtrJob_Purge;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Purge,pPtrTable) )
-    THROW_INVALID_DSTACK("job_purge.tableStore"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Purge,pPtrTable) )
+    THROW_DSTACK();
   
   Job_Purge* pJob_Purge = _pJob_Purge(pPtrJob_Purge);
   

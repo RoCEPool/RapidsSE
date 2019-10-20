@@ -7,6 +7,7 @@
 
 : chuck  prompt false assert ;
 : chuck2 prompt throw ;
+: chuck3 prompt a> . ;
 
 : iftest if "yes" . then ;
 

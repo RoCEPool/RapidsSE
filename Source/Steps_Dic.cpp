@@ -22,14 +22,14 @@ void Step::vAddSteps_Dic(void)
 /*----------------------------------------------------------------------------*/
 /* dic.init -- initialise a dictionary                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vDicInit(MP_Task mpTask)
+void Step::vDicInit(void)
 {
 ENTRY("vDicInit"_Stz);
   
   Object* pPtrDic;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.init"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrDic) )
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -44,21 +44,21 @@ ENTRY("vDicInit"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dic.kind@ -- get dictionary kind                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vDicKindGet(MP_Task mpTask)
+void Step::vDicKindGet(void)
 {
   ENTRY("vDicFrozenGet"_Stz);
   
   Object* pPtrDic;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.kind@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrDic) )
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
   
   Object* pPtrKind;
   pPtrKind = pDic->pDicKind();
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrKind);
+  m_pDataStack->vPushPointer(pPtrKind);
   
   EXIT();
 }
@@ -66,15 +66,15 @@ void Step::vDicKindGet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dic.kind! -- set dictionary kind                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vDicKindSet(MP_Task mpTask)
+void Step::vDicKindSet(void)
 {
   ENTRY("vDicKindSet"_Stz);
   
   Object* pPtrKind;
   Object* pPtrDic;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic,pPtrKind) )
-    THROW_INVALID_DSTACK("dic.kind@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrDic,pPtrKind) )
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -88,20 +88,20 @@ void Step::vDicKindSet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dic.lastWord -- get last word of dictionary                                */
 /*----------------------------------------------------------------------------*/
-void Step::vDicLastWord(MP_Task mpTask)
+void Step::vDicLastWord(void)
 {
 ENTRY("vDicLastWord"_Stz);
   
   Object* pPtrDic;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.lastWord"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrDic) )
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
   
   Word* pLastWord = pDic->pLastWord();
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pLastWord);
+  m_pDataStack->vPushPointer(pLastWord);
   
   EXIT();
 }
@@ -109,19 +109,19 @@ ENTRY("vDicLastWord"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dic.name -- push name of dictionary onto stack                             */
 /*----------------------------------------------------------------------------*/
-void Step::vDicName(MP_Task mpTask)
+void Step::vDicName(void)
 {
 ENTRY("vDicName"_Stz);
  
   Object* pPtrDic;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.name"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrDic) )
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
 
   s32 sName(pDic->szName());
   
-  mpTask->m_pForth->m_pDataStack->vPushS32(sName);
+  m_pDataStack->vPushS32(sName);
   
   EXIT();
 }
@@ -129,20 +129,20 @@ ENTRY("vDicName"_Stz);
 /*----------------------------------------------------------------------------*/
 /* dic.ref -- has dictionary got references                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vDicRef(MP_Task mpTask)
+void Step::vDicRef(void)
 {
   ENTRY("vDicRef"_Stz);
   
   Object* pPtrDic;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.ref"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrDic) )
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
 
   bool bRef = pDic->bRefOut();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bRef);
+  m_pDataStack->vPushI8(bRef);
   
   EXIT();
 }
@@ -150,12 +150,12 @@ void Step::vDicRef(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dic.root -- push root dictionary onto stack                                */
 /*----------------------------------------------------------------------------*/
-void Step::vDicRoot(MP_Task mpTask)
+void Step::vDicRoot(void)
 {
   ENTRY("vDicRoot"_Stz);
   
   Dic* pRootDic = AM::pRootDic();
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pRootDic);
+  m_pDataStack->vPushPointer(pRootDic);
   
   EXIT();
 }
@@ -163,20 +163,20 @@ void Step::vDicRoot(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dic.wordCount -- get number of words in dictionary                         */
 /*----------------------------------------------------------------------------*/
-void Step::vDicWordCount(MP_Task mpTask)
+void Step::vDicWordCount(void)
 {
   ENTRY("vDicWordCount"_Stz);
   
   Object* pPtrDic;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.ref"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrDic) )
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
   
   i8 nWords = pDic->nWords();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(nWords);
+  m_pDataStack->vPushI8(nWords);
   
   EXIT();
 }

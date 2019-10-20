@@ -18,7 +18,7 @@ void Task::vAddBaseWords(void)
   
 #ifdef WITH_MUNGED_SEN
   if (AM::bMunged())
-    vAddMunged(mpTask);
+    vAddMunged(m_pForth);
 #endif
 }
 
@@ -259,7 +259,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
         if (WK_INTRINSIC == pCalledWord->eKind()) {
           fpStep = pCalledWord->fpEntryStep();
           if (pCalledWord->bImmediate())
-            (*fpStep)(this);
+            ((Step*)m_pForth->*fpStep)();
           else {
             pNewWord->vAppend(pCalledWord->afpEntryStep());
           }
@@ -269,7 +269,8 @@ Word* Task::pCompileColon(s48K& sDefinition)
           pNewWord->vEncode(afpCalledEntryStep);
         }
         else {
-          THROW(FK_ASSERT,"Invalid eWordType %lld"_Stz,pCalledWord->eKind());
+          vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
+                 "Invalid eWordType %lld",pCalledWord->eKind());
         }
         break;
         
@@ -280,7 +281,8 @@ Word* Task::pCompileColon(s48K& sDefinition)
       }
         
       default:
-        THROW(FK_ASSERT,"Invalid m_eToken %lld"_Stz,m_pCompiler->m_pTokeniser->eToken());
+        vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
+               "Invalid m_eToken %lld",m_pCompiler->m_pTokeniser->eToken());
     }
     
     m_pCompiler->m_pTokeniser->vNextToken();

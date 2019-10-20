@@ -19,7 +19,7 @@ void Step::vAddSteps_Astack(void)
   vAddStep("areverse"_Stz,        &Step::vAstackReverse);
   vAddStep("astk"_Stz,            &Step::vAstackStk);
   vAddStep(">a"_Stz,              &Step::vAstackToA);
-  vAddStep("a>"_Stz,              &Step::vAstackToP);
+  vAddStep("a>"_Stz,              &Step::vAstackToD);
   vAddStep(">auxStack"_Stz,       &Step::vAstackTransfer);
   vAddStep("aswap"_Stz,           &Step::vAstackSwap);
   vAddStep("a0"_Stz,              &Step::vAstack0);
@@ -37,21 +37,21 @@ void Step::vAddSteps_Astack(void)
 /*----------------------------------------------------------------------------*/
 /* astack.class -- get class of nth value on aux stack                        */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackClass(MP_Task mpTask)
+void Step::vAstackClass(void)
 {
   ENTRY("vAstackClass"_Stz);
   
   i8 nTh;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(nTh) )
-    THROW_INVALID_DSTACK("astack.class"_Stz);
+  if ( ! m_pDataStack->bPopI8(nTh) )
+    THROW_DSTACK();
   
   GenVar xVariable;
   
-  mpTask->m_pForth->m_pAuxStack->vPeekValue(nTh,xVariable);
+  m_pAuxStack->vPeekValue(nTh,xVariable);
   
   eCN eClass = xVariable.eClass();
   
-  mpTask->m_pForth->m_pAuxStack->vPushI8(eClass);
+  m_pAuxStack->vPushI8(eClass);
   
   EXIT();
 }
@@ -59,13 +59,13 @@ void Step::vAstackClass(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* adepth -- put number of values in aux stack onto data stack                */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackDepth(MP_Task mpTask)
+void Step::vAstackDepth(void)
 {
   ENTRY("vAstackDepth"_Stz);
   
-  i8 iDepth = mpTask->m_pForth->m_pAuxStack->nValues();
+  i8 iDepth = m_pAuxStack->nValues();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iDepth);
+  m_pDataStack->vPushI8(iDepth);
   
   EXIT();
 }
@@ -73,15 +73,15 @@ void Step::vAstackDepth(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* adrop -- discard top value off astack                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackDrop(MP_Task mpTask)
+void Step::vAstackDrop(void)
 {
   ENTRY("vAstackDrop"_Stz);
   
   // should just discard on stack
   
   GenVar xValA;
-  if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xValA) )
-    THROW_INVALID_ASTACK("adrop"_Stz);
+  if ( ! m_pAuxStack->bPopGenVar(xValA) )
+    THROW_ASTACK();
   
   EXIT();
 }
@@ -89,18 +89,18 @@ void Step::vAstackDrop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* adup -- dup top of aux stack                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackDup(MP_Task mpTask)
+void Step::vAstackDup(void)
 {
   ENTRY("vAstackDup"_Stz);
   
   // could just copy from stack back into stack
   
   GenVar xValA;
-  if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xValA) )
-  THROW_INVALID_DSTACK("adup"_Stz);
+  if ( ! m_pAuxStack->bPopGenVar(xValA) )
+  THROW_DSTACK();
   
-  mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValA);
-  mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValA);
+  m_pAuxStack->vPushGenVar(xValA);
+  m_pAuxStack->vPushGenVar(xValA);
   
   EXIT();
 }
@@ -108,7 +108,7 @@ void Step::vAstackDup(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* a@ -- place copy of top value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackFetch(MP_Task mpTask)
+void Step::vAstackFetch(void)
 {
   ENTRY("vAstackFetch"_Stz);
   
@@ -116,9 +116,9 @@ void Step::vAstackFetch(MP_Task mpTask)
   
   GenVar xVariable;
   
-  mpTask->m_pForth->m_pAuxStack->vPeekValue(0,xVariable);
+  m_pAuxStack->vPeekValue(0,xVariable);
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -126,17 +126,17 @@ void Step::vAstackFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* nip -- drop the 2nd value from the aux stack ( B A -- A )                  */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackNip(MP_Task mpTask)
+void Step::vAstackNip(void)
 {
   ENTRY("vAstackNip"_Stz);
   
   GenVar xValA;
   GenVar xValB;
   
-  if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xValA,xValB) )
-  THROW_INVALID_ASTACK("anip"_Stz);
+  if ( ! m_pAuxStack->bPopGenVar(xValA,xValB) )
+  THROW_ASTACK();
   
-  mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValA);
+  m_pAuxStack->vPushGenVar(xValA);
   
   EXIT();
 }
@@ -144,21 +144,21 @@ void Step::vAstackNip(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* apick -- place copy of nth value in aux stack onto data stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackPick(MP_Task mpTask)
+void Step::vAstackPick(void)
 {
   ENTRY("vAstackPick"_Stz);
   
   i8 iPick;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iPick) )
-    THROW_INVALID_DSTACK("apick"_Stz);
+  if ( ! m_pDataStack->bPopAsInt(iPick) )
+    THROW_DSTACK();
   
   // could do this directly on stack
   
   GenVar xVariable;
   
-  mpTask->m_pForth->m_pAuxStack->vPeekValue(iPick,xVariable);
+  m_pAuxStack->vPeekValue(iPick,xVariable);
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -166,7 +166,7 @@ void Step::vAstackPick(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* areverse -- reverse astack values ( ... D C B A n -- A B C D ... )         */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackReverse(MP_Task mpTask)
+void Step::vAstackReverse(void)
 {
   ENTRY("vAstackReverse"_Stz);
   
@@ -179,33 +179,33 @@ void Step::vAstackReverse(MP_Task mpTask)
   GenVar xVal6;
   GenVar xVal7;
   
-  GenVar* apValWrk[8] = {
+  GenVar* paVal[8] = {
     &xVal0, &xVal1, &xVal2, &xVal3, &xVal4, &xVal5, &xVal6, &xVal7
   };
   
   i8 nValues;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(nValues) )
-    THROW_INVALID_DSTACK("areverse"_Stz);
+  if ( ! m_pDataStack->bPopI8(nValues) )
+    THROW_DSTACK();
   
   for (i8 i = 0; i < nValues; i++) {
-    if ( ! mpTask->m_pForth->m_pAuxStack->bPop(apValWrk[i]) )
-      THROW_INVALID_ASTACK("areverse"_Stz);
+    if ( ! m_pAuxStack->bPopGenVar(paVal[i]) )
+      THROW_ASTACK();
   }
   
   for (i8 i = 0; i < nValues; i++) {
-    mpTask->m_pForth->m_pAuxStack->vPushGenVar(apValWrk[i]);
+    m_pAuxStack->vPushGenVar(paVal[i]);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* astk -- dump the aux stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackStk(MP_Task mpTask)
+void Step::vAstackStk(void)
 {
   ENTRY("vAstackStk"_Stz);
   
-  mpTask->m_pForth->m_pAuxStack->vContentDump(
-    (Stz*)mpTask->szJobName(),
+  m_pAuxStack->vContentDump(
+    (Stz*)m_pTask->szJobName(),
     "AuxStack:"_Stz);
   
   EXIT();
@@ -214,18 +214,18 @@ void Step::vAstackStk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* swap -- swap top two values on aux stack                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackSwap(MP_Task mpTask)
+void Step::vAstackSwap(void)
 {
   ENTRY("vAstackSwap"_Stz);
   
   GenVar xValA;
   GenVar xValB;
   
-  if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xValA,xValB) )
-  THROW_INVALID_ASTACK("aswap"_Stz);
+  if ( ! m_pAuxStack->bPopGenVar(xValA,xValB) )
+  THROW_ASTACK();
   
-  mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValA);
-  mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValB);
+  m_pAuxStack->vPushGenVar(xValA);
+  m_pAuxStack->vPushGenVar(xValB);
   
   EXIT();
 }
@@ -233,15 +233,15 @@ void Step::vAstackSwap(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >a -- move value from dstack to astack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackToA(MP_Task mpTask)
+void Step::vAstackToA(void)
 {
   ENTRY("vAstackToA"_Stz);
   
   GenVar xValOpaque;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValOpaque) )
-    THROW_INVALID_DSTACK(">a"_Stz);
+  if ( ! m_pDataStack->bPopGenVar(xValOpaque) )
+    THROW_DSTACK();
   
-  mpTask->m_pForth->m_pAuxStack->vPushGenVar(xValOpaque);
+  m_pAuxStack->vPushGenVar(xValOpaque);
   
   EXIT();
 }
@@ -249,15 +249,15 @@ void Step::vAstackToA(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* a> -- move value from astack to dstack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackToP(MP_Task mpTask)
+void Step::vAstackToD(void)
 {
-  ENTRY("vAstackToP"_Stz);
+  ENTRY("vAstackToD"_Stz);
   
   GenVar xVal;
-  if ( ! mpTask->m_pForth->m_pAuxStack->bPop(xVal) )
-    THROW_INVALID_ASTACK("a>"_Stz);
+  if ( ! m_pAuxStack->bPopGenVar(xVal) )
+    THROW_ASTACK();
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xVal);
+  m_pDataStack->vPushGenVar(xVal);
   
   EXIT();
 }
@@ -265,18 +265,18 @@ void Step::vAstackToP(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >auxStack -- pop stack of this task and push onto aux stack of that task   */
 /*----------------------------------------------------------------------------*/
-void Step::vAstackTransfer(MP_Task mpTask)
+void Step::vAstackTransfer(void)
 {
   ENTRY("vAstackTransfer"_Stz);
   
   Object* pPtrTask;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK(">auxStack"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrTask) )
+    THROW_DSTACK();
   Task* pThatTask = _pTask(pPtrTask);
   
   GenVar xVariable;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xVariable) )
-    THROW_INVALID_DSTACK(">auxStack"_Stz);
+  if ( ! m_pDataStack->bPopGenVar(xVariable) )
+    THROW_DSTACK();
   
   pThatTask->m_okLock.vGrabWrite();
   pThatTask->m_pForth->m_pAuxStack->vPushGenVar(xVariable);
@@ -288,7 +288,7 @@ void Step::vAstackTransfer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* a0 -- place copy of 0th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack0(MP_Task mpTask)
+void Step::vAstack0(void)
 {
   ENTRY("vAstack0"_Stz);
   
@@ -296,9 +296,9 @@ void Step::vAstack0(MP_Task mpTask)
   
   GenVar xVariable;
   
-  mpTask->m_pForth->m_pAuxStack->vPeekValue(0,xVariable);
+  m_pAuxStack->vPeekValue(0,xVariable);
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -306,7 +306,7 @@ void Step::vAstack0(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* a1 -- place copy of 1st value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack1(MP_Task mpTask)
+void Step::vAstack1(void)
 {
   ENTRY("vAstack1"_Stz);
   
@@ -314,9 +314,9 @@ void Step::vAstack1(MP_Task mpTask)
   
   GenVar xVariable;
   
-  mpTask->m_pForth->m_pAuxStack->vPeekValue(1,xVariable);
+  m_pAuxStack->vPeekValue(1,xVariable);
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -324,7 +324,7 @@ void Step::vAstack1(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r2 -- place copy of 2nd value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack2(MP_Task mpTask)
+void Step::vAstack2(void)
 {
   ENTRY("vAstack2"_Stz);
   
@@ -332,9 +332,9 @@ void Step::vAstack2(MP_Task mpTask)
   
   GenVar xVariable;
   
-  mpTask->m_pForth->m_pAuxStack->vPeekValue(2,xVariable);
+  m_pAuxStack->vPeekValue(2,xVariable);
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -342,7 +342,7 @@ void Step::vAstack2(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r3 -- place copy of 3rd value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack3(MP_Task mpTask)
+void Step::vAstack3(void)
 {
   ENTRY("vAstack3"_Stz);
   
@@ -350,9 +350,9 @@ void Step::vAstack3(MP_Task mpTask)
   
   GenVar xVariable;
   
-  mpTask->m_pForth->m_pAuxStack->vPeekValue(3,xVariable);
+  m_pAuxStack->vPeekValue(3,xVariable);
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -360,7 +360,7 @@ void Step::vAstack3(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r4 -- place copy of 4th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack4(MP_Task mpTask)
+void Step::vAstack4(void)
 {
   ENTRY("vAstack4"_Stz);
   
@@ -368,9 +368,9 @@ void Step::vAstack4(MP_Task mpTask)
   
   GenVar xVariable;
   
-  mpTask->m_pForth->m_pAuxStack->vPeekValue(4,xVariable);
+  m_pAuxStack->vPeekValue(4,xVariable);
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -378,7 +378,7 @@ void Step::vAstack4(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r5 -- place copy of 0th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack5(MP_Task mpTask)
+void Step::vAstack5(void)
 {
   ENTRY("vAstack5"_Stz);
   
@@ -386,9 +386,9 @@ void Step::vAstack5(MP_Task mpTask)
   
   GenVar xVariable;
   
-  mpTask->m_pForth->m_pAuxStack->vPeekValue(5,xVariable);
+  m_pAuxStack->vPeekValue(5,xVariable);
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -396,7 +396,7 @@ void Step::vAstack5(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r6 -- place copy of 6th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack6(MP_Task mpTask)
+void Step::vAstack6(void)
 {
   ENTRY("vAstack6"_Stz);
   
@@ -404,9 +404,9 @@ void Step::vAstack6(MP_Task mpTask)
   
   GenVar xVariable;
   
-  mpTask->m_pForth->m_pAuxStack->vPeekValue(6,xVariable);
+  m_pAuxStack->vPeekValue(6,xVariable);
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -414,7 +414,7 @@ void Step::vAstack6(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r7 -- place copy of 7th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack7(MP_Task mpTask)
+void Step::vAstack7(void)
 {
   ENTRY("vAstack7"_Stz);
   
@@ -422,9 +422,9 @@ void Step::vAstack7(MP_Task mpTask)
   
   GenVar xVariable;
   
-  mpTask->m_pForth->m_pAuxStack->vPeekValue(7,xVariable);
+  m_pAuxStack->vPeekValue(7,xVariable);
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -432,7 +432,7 @@ void Step::vAstack7(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r8 -- place copy of 8th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack8(MP_Task mpTask)
+void Step::vAstack8(void)
 {
   ENTRY("vAstack8"_Stz);
   
@@ -440,9 +440,9 @@ void Step::vAstack8(MP_Task mpTask)
   
   GenVar xVariable;
   
-  mpTask->m_pForth->m_pAuxStack->vPeekValue(8,xVariable);
+  m_pAuxStack->vPeekValue(8,xVariable);
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }
@@ -450,7 +450,7 @@ void Step::vAstack8(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* r9 -- place copy of 9th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vAstack9(MP_Task mpTask)
+void Step::vAstack9(void)
 {
   ENTRY("vAstack9"_Stz);
   
@@ -458,9 +458,9 @@ void Step::vAstack9(MP_Task mpTask)
   
   GenVar xVariable;
   
-  mpTask->m_pForth->m_pAuxStack->vPeekValue(9,xVariable);
+  m_pAuxStack->vPeekValue(9,xVariable);
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushGenVar(xVariable);
   
   EXIT();
 }

@@ -20,20 +20,20 @@ void Step::vAddSteps_DicStack(void)
 /*----------------------------------------------------------------------------*/
 /* dicStack.depth -- get number of dictionaries on dictionary stack           */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackDepth(MP_Task mpTask)
+void Step::vDicStackDepth(void)
 {
   ENTRY("vDicStackDepth"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicStack.depth"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
+    THROW_DSTACK();
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
   
   i8 iDepth = pDicStack->iCount();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iDepth);
+  m_pDataStack->vPushI8(iDepth);
   
   EXIT();
 }
@@ -41,13 +41,13 @@ void Step::vDicStackDepth(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.drop -- discard top of dictionary stack                           */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackDrop(MP_Task mpTask)
+void Step::vDicStackDrop(void)
 {
   ENTRY("vDicStackDrop"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicStack.drop"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
+    THROW_DSTACK();
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
@@ -60,13 +60,13 @@ void Step::vDicStackDrop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.dump -- dump dictionary stack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackDump(MP_Task mpTask)
+void Step::vDicStackDump(void)
 {
   ENTRY("vDicStackDump"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicStack.dump"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
+    THROW_DSTACK();
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
@@ -79,24 +79,24 @@ void Step::vDicStackDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.pick -- pick a dic from dic stack and push onto data stack        */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackPick(MP_Task mpTask)
+void Step::vDicStackPick(void)
 {
   ENTRY("vDicStackPick"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicStack.pick"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
+    THROW_DSTACK();
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
   
   i8 iDic;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iDic) )
-    THROW_INVALID_DSTACK("dicStack.pick"_Stz);
+  if ( ! m_pDataStack->bPopI8(iDic) )
+    THROW_DSTACK();
   
   Object* pPtrDic = pDicStack->pPick(iDic);
 
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrDic);
+  m_pDataStack->vPushPointer(pPtrDic);
   
   EXIT();
 }
@@ -104,13 +104,13 @@ void Step::vDicStackPick(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.pop -- pop top of dictionary stack                                */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackPop(MP_Task mpTask)
+void Step::vDicStackPop(void)
 {
   ENTRY("vDicStackPop"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicStack.pop"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
+    THROW_DSTACK();
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
@@ -123,21 +123,21 @@ void Step::vDicStackPop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.push -- push a dictionary onto given dictionary stack             */
 /*----------------------------------------------------------------------------*/
-void Step::vDicStackPush(MP_Task mpTask)
+void Step::vDicStackPush(void)
 {
   ENTRY("vDicStackPush"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicStack.push"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
+    THROW_DSTACK();
   
   DicStack* pDicStack = DicStack::_pDicStack(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
   
   Object* pPtrDic;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dicStack.push"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrDic) )
+    THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
   

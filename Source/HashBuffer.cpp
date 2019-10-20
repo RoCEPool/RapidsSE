@@ -256,7 +256,7 @@ void HashBuffer::vInsertEntry(HashInsert* pHi)
   // test if the entry is already in use
   if (m_xHashEntry[i_Entry].m_uSignature) {
     if (pHi->m_bDebug)
-      vDebugTrap();
+      vDebugPoint();
     vHandleOccupied(pHi,i_Entry);
     if (pHi->m_bArcTrc)
       vDumpEntry(i_Entry,'A');
@@ -269,7 +269,7 @@ void HashBuffer::vInsertEntry(HashInsert* pHi)
   
   if (pHi->m_bDebug || m_pHashMap->m_bTrace) {
     vDumpEntry(i_Entry,'I');
-    vDebugTrap();
+    vDebugPoint();
   }
   
   if (m_iDepth > m_pHashMap->m_iMaxDepth) {
@@ -318,7 +318,7 @@ Footer* HashBuffer::aFooter(void)
 i8 HashBuffer::iArc(byte* yaKey, i8 nBytes, u8 uSignature)
 {
   if (m_iDepth > 6)
-    vDebugTrap();
+    vDebugPoint();
 
   u8 uArcHash = uSignature;//HashEntry::iHashArc(yaKey,nBytes,m_iDepth+1);
 

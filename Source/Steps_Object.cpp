@@ -20,18 +20,18 @@ void Step::vAddSteps_Object(void)
 /*----------------------------------------------------------------------------*/
 /* object.class@ -- fetch class number from object                            */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectClassFetch(MP_Task mpTask)
+void Step::vObjectClassFetch(void)
 {
   ENTRY("vObjectClassFetch"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("object.class@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pObject) )
+    THROW_DSTACK();
   
   eCN eClassNo;
   eClassNo = pObject->eClass();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(eClassNo);
+  m_pDataStack->vPushI8(eClassNo);
   
   EXIT();
 }
@@ -39,17 +39,17 @@ void Step::vObjectClassFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* object.class! -- store class number into object                            */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectClassStore(MP_Task mpTask)
+void Step::vObjectClassStore(void)
 {
   ENTRY("vObjectClassStore"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("object.object.class!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pObject) )
+    THROW_DSTACK();
   
   eCN eClassNo;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(eClassNo) )
-    THROW_INVALID_DSTACK("object.object.class!"_Stz);
+  if ( ! m_pDataStack->bPopCN(eClassNo) )
+    THROW_DSTACK();
   
   pObject->vSetClass(eClassNo);
   
@@ -59,13 +59,13 @@ void Step::vObjectClassStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* object.dump -- dump the given object                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectDump(MP_Task mpTask)
+void Step::vObjectDump(void)
 {
   ENTRY("vObjectDump"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("object.dump"_Stz);
+  if ( ! m_pDataStack->bPopObject(pObject) )
+    THROW_DSTACK();
   
   eCN eClass = pObject->eClass();
   
@@ -79,7 +79,7 @@ void Step::vObjectDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* object@ -- fetch object from return stack onto data stack                  */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectFetch(MP_Task mpTask)
+void Step::vObjectFetch(void)
 {
   ENTRY("vObjectFetch"_Stz);
   
@@ -87,9 +87,9 @@ void Step::vObjectFetch(MP_Task mpTask)
   
   GenVar xObjectVar;
   
-  mpTask->m_pForth->m_pReturnStack->vPeekValue(iPick,xObjectVar);
+  m_pReturnStack->vPeekValue(iPick,xObjectVar);
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xObjectVar);
+  m_pDataStack->vPushGenVar(xObjectVar);
   
   EXIT();
 }
@@ -97,13 +97,13 @@ void Step::vObjectFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* object.magic! -- put magic number into object                             */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectMagicMark(MP_Task mpTask)
+void Step::vObjectMagicMark(void)
 {
   ENTRY("vObjectMagicMark"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_RSTACK("object.magic!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pObject) )
+    THROW_RSTACK();
   
   pObject->vSetMagic();
   
@@ -113,7 +113,7 @@ void Step::vObjectMagicMark(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* object! -- replace object on return stack from data stack                  */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectStore(MP_Task mpTask)
+void Step::vObjectStore(void)
 {
   ENTRY("vObjectStore"_Stz);
   
@@ -121,10 +121,10 @@ void Step::vObjectStore(MP_Task mpTask)
   
   GenVar xObjectVar;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xObjectVar) )
-    THROW_INVALID_DSTACK("object!"_Stz);
+  if ( ! m_pDataStack->bPopGenVar(xObjectVar) )
+    THROW_DSTACK();
   
-  mpTask->m_pForth->m_pReturnStack->vPokeGenVar(iPeek,xObjectVar);
+  m_pReturnStack->vPokeGenVar(iPeek,xObjectVar);
   
   EXIT();
 }
@@ -132,17 +132,17 @@ void Step::vObjectStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* object.wordbody! -- mark object as a part of a wordbody                    */
 /*----------------------------------------------------------------------------*/
-void Step::vObjectWordBodySet(MP_Task mpTask)
+void Step::vObjectWordBodySet(void)
 {
   ENTRY("vObjectWordBodySet"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("object.wordbody!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pObject) )
+    THROW_DSTACK();
   
   i8 iIsBody;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iIsBody) )
-    THROW_INVALID_DSTACK("object.object.class!"_Stz);
+  if ( ! m_pDataStack->bPopI8(iIsBody) )
+    THROW_DSTACK();
   
   pObject->vWordBody(iIsBody);
   

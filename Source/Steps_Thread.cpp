@@ -28,18 +28,18 @@ void Step::vAddSteps_Thread(void)
 /*----------------------------------------------------------------------------*/
 /* thread.bind -- bind this thread to a cpu                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadBind(MP_Task mpTask)
+void Step::vThreadBind(void)
 {
 ENTRY("vThreadBind"_Stz);
   
   i8 iCpu;
   Object* pObject;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iCpu) )
-    THROW_INVALID_DSTACK("thread.bind"_Stz);
+  if ( ! m_pDataStack->bPopI8(iCpu) )
+    THROW_DSTACK();
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("thread.bind"_Stz);
+  if ( ! m_pDataStack->bPopObject(pObject) )
+    THROW_DSTACK();
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -53,20 +53,20 @@ ENTRY("vThreadBind"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.cpu -- get the cpu this thread is running on                        */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadCpu(MP_Task mpTask)
+void Step::vThreadCpu(void)
 {
 ENTRY("vThreadCpu"_Stz);
   
   Object* pObject;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("thread.cpu"_Stz);
+  if ( ! m_pDataStack->bPopObject(pObject) )
+    THROW_DSTACK();
   
   ASSERT(CN_THREAD == pObject->eClass());
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pThread->iCpu());
+  m_pDataStack->vPushI8(pThread->iCpu());
   
   EXIT();
 }
@@ -74,16 +74,16 @@ ENTRY("vThreadCpu"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.dedicated@ -- fetch m_eDedicated                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadDedicatedFetch(MP_Task mpTask)
+void Step::vThreadDedicatedFetch(void)
 {
   ENTRY("vThreadDedicatedFetch"_Stz);
   
   Object* pThreadObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pThreadObject) )
-    THROW_INVALID_DSTACK("thread.dedicated@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pThreadObject) )
+    THROW_DSTACK();
   Thread* pThread = _pThread(pThreadObject);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pThread->m_eDedicated);
+  m_pDataStack->vPushI8(pThread->m_eDedicated);
 
   EXIT();
 }
@@ -91,18 +91,18 @@ void Step::vThreadDedicatedFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.dedicated! -- store m_eDedicated                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadDedicatedStore(MP_Task mpTask)
+void Step::vThreadDedicatedStore(void)
 {
   ENTRY("vThreadDedicatedStore"_Stz);
   
   Object* pThreadObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pThreadObject) )
-    THROW_INVALID_DSTACK("thread.dedicated!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pThreadObject) )
+    THROW_DSTACK();
   Thread* pThread = _pThread(pThreadObject);
   
   i8 iDedicated;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iDedicated) )
-    THROW_INVALID_DSTACK("thread.dedicated!"_Stz);
+  if ( ! m_pDataStack->bPopAsInt(iDedicated) )
+    THROW_DSTACK();
 
   pThread->m_eDedicated = (eCN)iDedicated;
   
@@ -112,7 +112,7 @@ void Step::vThreadDedicatedStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.disableRealtime -- disable realtime                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadDisableRealtime(MP_Task mpTask)
+void Step::vThreadDisableRealtime(void)
 {
   ENTRY("vThreadDisableRealtime"_Stz);
   
@@ -126,14 +126,14 @@ void Step::vThreadDisableRealtime(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.dump -- thread dump                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadDump(MP_Task mpTask)
+void Step::vThreadDump(void)
 {
 ENTRY("vThreadDump"_Stz);
   
   Object* pObject;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("thread.dump"_Stz);
+  if ( ! m_pDataStack->bPopObject(pObject) )
+    THROW_DSTACK();
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -147,7 +147,7 @@ ENTRY("vThreadDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.enableRealtime -- enable realtime                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadEnableRealtime(MP_Task mpTask)
+void Step::vThreadEnableRealtime(void)
 {
   ENTRY("vThreadEnableRealtime"_Stz);
   
@@ -161,20 +161,20 @@ void Step::vThreadEnableRealtime(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.id -- get the id of thread                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadId(MP_Task mpTask)
+void Step::vThreadId(void)
 {
 ENTRY("vThreadId"_Stz);
   
   Object* pObject;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("thread.id"_Stz);
+  if ( ! m_pDataStack->bPopObject(pObject) )
+    THROW_DSTACK();
   
   ASSERT(CN_THREAD == pObject->eClass());
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pThread->m_pPthread->m_iOpSysThreadId);
+  m_pDataStack->vPushI8(pThread->m_pPthread->m_iOpSysThreadId);
   
   EXIT();
 }
@@ -183,14 +183,14 @@ ENTRY("vThreadId"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread::sleepMsec -- sleep for n milliseconds                                */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadSleepMsec(MP_Task mpTask)
+void Step::vThreadSleepMsec(void)
 {
 ENTRY("vThreadSleepMsec"_Stz);
   
   i8 nMilliseconds;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(nMilliseconds) )
-    THROW_INVALID_DSTACK("sleepMsec"_Stz);
+  if ( ! m_pDataStack->bPopI8(nMilliseconds) )
+    THROW_DSTACK();
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -202,14 +202,14 @@ ENTRY("vThreadSleepMsec"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread::sleepNsec -- sleep for n nanoseconds                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadSleepNsec(MP_Task mpTask)
+void Step::vThreadSleepNsec(void)
 {
   ENTRY("vThreadSleepNsec"_Stz);
   
   i8 nNanoseconds;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(nNanoseconds) )
-    THROW_INVALID_DSTACK("sleepNsec"_Stz);
+  if ( ! m_pDataStack->bPopI8(nNanoseconds) )
+    THROW_DSTACK();
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -221,14 +221,14 @@ void Step::vThreadSleepNsec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.sleepSsec -- sleep for n seconds                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadSleepSsec(MP_Task mpTask)
+void Step::vThreadSleepSsec(void)
 {
   ENTRY("vThreadSleepSsec"_Stz);
   
   i8 nSeconds;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(nSeconds) )
-    THROW_INVALID_DSTACK("sleepSsec"_Stz);
+  if ( ! m_pDataStack->bPopI8(nSeconds) )
+    THROW_DSTACK();
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -240,14 +240,14 @@ void Step::vThreadSleepSsec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread::sleepUsec -- sleep for n microseconds                                */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadSleepUsec(MP_Task mpTask)
+void Step::vThreadSleepUsec(void)
 {
 ENTRY("vThreadSleepUsec"_Stz);
   
   i8 nMicroseconds;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(nMicroseconds) )
-    THROW_INVALID_DSTACK("sleepUsec"_Stz);
+  if ( ! m_pDataStack->bPopI8(nMicroseconds) )
+    THROW_DSTACK();
   
   Thread* pThread = Thread::pThisTLSThread();
   

@@ -15,20 +15,20 @@ void Step::vAddSteps_Shell(void)
 /*----------------------------------------------------------------------------*/
 /* shell::execute -- execute given shell command                              */
 /*----------------------------------------------------------------------------*/
-void Step::vShellExecute(MP_Task mpTask)
+void Step::vShellExecute(void)
 {
   ENTRY("vShellExecute"_Stz);
   
   GenVar xCommand;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xCommand) )
-    THROW_INVALID_DSTACK("shell::execute"_Stz);
+  if ( ! m_pDataStack->bPopGenVar(xCommand) )
+    THROW_DSTACK();
   
   SysCall oSysCall;
   
   i8 iExitStatus = Shell::iExecute(xCommand.szStz(),oSysCall);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iExitStatus);
+  m_pDataStack->vPushI8(iExitStatus);
   
   EXIT();
 }

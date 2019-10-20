@@ -20,18 +20,18 @@ void Step::vAddSteps_Zero(void)
 /*----------------------------------------------------------------------------*/
 /* 0< -- test if top value is less than zero                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroLess(MP_Task mpTask)
+void Step::vZeroLess(void)
 {
   ENTRY("vZeroLess"_Stz);
   
   i8 iZero;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0<"_Stz);
+  if ( ! m_pDataStack->bPopAsInt(iZero) )
+    THROW_DSTACK();
   
   if (iZero < 0)
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushBool(true);
   else
-    mpTask->m_pForth->m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -39,18 +39,18 @@ void Step::vZeroLess(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* 0<= -- test if top value is less than or equal to zero                     */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroLessEqual(MP_Task mpTask)
+void Step::vZeroLessEqual(void)
 {
   ENTRY("vZeroLessEqual"_Stz);
   
   i8 iZero;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0<="_Stz);
+  if ( ! m_pDataStack->bPopAsInt(iZero) )
+    THROW_DSTACK();
   
   if (iZero <= 0)
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushBool(true);
   else
-    mpTask->m_pForth->m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -58,18 +58,18 @@ void Step::vZeroLessEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* 0== -- test if top value is equal to zero / nullptr                        */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroEqual(MP_Task mpTask)
+void Step::vZeroEqual(void)
 {
   ENTRY("vZeroEqual"_Stz);
   
   i8 iZero;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0=="_Stz);
+  if ( ! m_pDataStack->bPopAsInt(iZero) )
+    THROW_DSTACK();
   
   if (iZero == 0)
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushBool(true);
   else
-    mpTask->m_pForth->m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -77,18 +77,18 @@ void Step::vZeroEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* 0!= -- test if top value is not equal to zero                              */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroNotEqual(MP_Task mpTask)
+void Step::vZeroNotEqual(void)
 {
   ENTRY("vZeroNotEqual"_Stz);
   
   i8 iZero;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0!="_Stz);
+  if ( ! m_pDataStack->bPopAsInt(iZero) )
+    THROW_DSTACK();
   
   if (iZero != 0)
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushBool(true);
   else
-    mpTask->m_pForth->m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -96,18 +96,18 @@ void Step::vZeroNotEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* zeroGreaterEqual -- test if top value is greater than or equal to zero     */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroGreaterEqual(MP_Task mpTask)
+void Step::vZeroGreaterEqual(void)
 {
   ENTRY("vZeroGreaterEqual"_Stz);
   
   i8 iZero;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0>="_Stz);
+  if ( ! m_pDataStack->bPopAsInt(iZero) )
+    THROW_DSTACK();
   
   if (iZero >= 0)
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushBool(true);
   else
-    mpTask->m_pForth->m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushBool(false);
   
   EXIT();
 }
@@ -115,18 +115,18 @@ void Step::vZeroGreaterEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* 0> -- test if top value is greater than zero                              */
 /*----------------------------------------------------------------------------*/
-void Step::vZeroGreater(MP_Task mpTask)
+void Step::vZeroGreater(void)
 {
   ENTRY("vZeroGreater"_Stz);
   
   i8 iZero;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iZero) )
-    THROW_INVALID_DSTACK("0>"_Stz);
+  if ( ! m_pDataStack->bPopAsInt(iZero) )
+    THROW_DSTACK();
   
   if (iZero > 0)
-    mpTask->m_pForth->m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushBool(true);
   else
-    mpTask->m_pForth->m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushBool(false);
   
   EXIT();
 }

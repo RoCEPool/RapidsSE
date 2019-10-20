@@ -17,13 +17,13 @@ void Step::vAddSteps_JobSelect(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Select.begin -- begin                                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SelectBegin(MP_Task mpTask)
+void Step::vJob_SelectBegin(void)
 {
   ENTRY("vJob_SelectBegin"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_Select.begin"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_Select* pJob_Select = _pJob_Select(pJobPtr);
   
   pJob_Select->vBegin();
@@ -34,13 +34,13 @@ void Step::vJob_SelectBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_Select.end -- end                                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SelectEnd(MP_Task mpTask)
+void Step::vJob_SelectEnd(void)
 {
   ENTRY("vJob_SelectEnd"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_Select.end"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_Select* pJob_Select = _pJob_Select(pJobPtr);
 
   pJob_Select->vEnd();
@@ -51,13 +51,13 @@ void Step::vJob_SelectEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_Select.execute -- execute                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SelectExecute(MP_Task mpTask)
+void Step::vJob_SelectExecute(void)
 {
   ENTRY("vJob_SelectExecute"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_Select.execute"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_Select* pJob_Select = _pJob_Select(pJobPtr);
   
   pJob_Select->vExecute();

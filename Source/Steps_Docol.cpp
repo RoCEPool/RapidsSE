@@ -18,11 +18,11 @@ void Step::vAddSteps_Docol(void)
 /*----------------------------------------------------------------------------*/
 /* ] -- enter compiler state                                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vDocolCompiling(MP_Task mpTask)
+void Step::vDocolCompiling(void)
 {
   ENTRY("vDocolCompiling"_Stz);
   
-  mpTask->m_pCompiler->m_bCompiling = true;
+  m_pTask->m_pCompiler->m_bCompiling = true;
   
   EXIT();
 }
@@ -30,11 +30,11 @@ void Step::vDocolCompiling(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* [ -- enter interpreter state                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vDocolInterpreting(MP_Task mpTask)
+void Step::vDocolInterpreting(void)
 {
   ENTRY("vDocolInterpreting"_Stz);
   
-  mpTask->m_pCompiler->m_bCompiling = false;
+  m_pTask->m_pCompiler->m_bCompiling = false;
   
   EXIT();
 }
@@ -42,13 +42,13 @@ void Step::vDocolInterpreting(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* docol.isCompiling -- currently in compiling mode?                          */
 /*----------------------------------------------------------------------------*/
-void Step::vDocolIsCompiling(MP_Task mpTask)
+void Step::vDocolIsCompiling(void)
 {
   ENTRY("vDocolIsCompiling"_Stz);
   
-  i8 iIsCompiling = mpTask->m_pCompiler->m_bCompiling ? 1 : 0;
+  i8 iIsCompiling = m_pTask->m_pCompiler->m_bCompiling ? 1 : 0;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iIsCompiling);
+  m_pDataStack->vPushI8(iIsCompiling);
   
   EXIT();
 }
@@ -56,13 +56,13 @@ void Step::vDocolIsCompiling(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* docol.isInterpreting -- currently in interpreting mode?                    */
 /*----------------------------------------------------------------------------*/
-void Step::vDocolIsInterpreting(MP_Task mpTask)
+void Step::vDocolIsInterpreting(void)
 {
   ENTRY("vDocolIsInterpreting"_Stz);
   
-  i8 iIsInterpreting = mpTask->m_pCompiler->m_bCompiling ? 0 : 1;
+  i8 iIsInterpreting = m_pTask->m_pCompiler->m_bCompiling ? 0 : 1;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iIsInterpreting);
+  m_pDataStack->vPushI8(iIsInterpreting);
   
   EXIT();
 }

@@ -23,7 +23,7 @@ void Api::vDeleteJobs(Session* pSession)
 
   SessionState* pState = pSession->m_pSessionState;
 
-  while (pJobStack->bPop(pJobObject)) {
+  while (pJobStack->bPopObject(pJobObject)) {
     
     Job* aJob = (Job*)pJobObject;
     

@@ -22,18 +22,18 @@ void Step::vAddSteps_Session(void)
 /*----------------------------------------------------------------------------*/
 /* session.commandProcessor -- get session command processor                  */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionCommand(MP_Task mpTask)
+void Step::vSessionCommand(void)
 {
   ENTRY("vSessionDicStack"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    THROW_INVALID_DSTACK("session.dicStack"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
+    THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pSession->m_pInput);
+  m_pDataStack->vPushPointer(pSession->m_pInput);
   
   EXIT();
 }
@@ -41,18 +41,18 @@ void Step::vSessionCommand(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* session.dicStack -- get session dic stack                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionDicStack(MP_Task mpTask)
+void Step::vSessionDicStack(void)
 {
   ENTRY("vSessionDicStack"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    THROW_INVALID_DSTACK("session.dicStack"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
+    THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pSession->pPathStack());
+  m_pDataStack->vPushPointer(pSession->pPathStack());
   
   EXIT();
 }
@@ -60,13 +60,13 @@ void Step::vSessionDicStack(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* session.dump -- dump of SE interface                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionDump(MP_Task mpTask)
+void Step::vSessionDump(void)
 {
 ENTRY("vSessionDump"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    THROW_INVALID_DSTACK("session.dump"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
+    THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
@@ -79,18 +79,18 @@ ENTRY("vSessionDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* session.isExiting -- is session exiting                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionIsExiting(MP_Task mpTask)
+void Step::vSessionIsExiting(void)
 {
   ENTRY("vSessionIsExiting"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    THROW_INVALID_DSTACK("session.isExiting"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
+    THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pSession->m_bSessionExiting);
+  m_pDataStack->vPushI8(pSession->m_bSessionExiting);
   
   EXIT();
 }
@@ -98,18 +98,18 @@ void Step::vSessionIsExiting(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* session.pid -- get pid of SE session                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionPid(MP_Task mpTask)
+void Step::vSessionPid(void)
 {
   ENTRY("vSessionPid"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    THROW_INVALID_DSTACK("session.pid"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
+    THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pSession->m_iPid);
+  m_pDataStack->vPushI8(pSession->m_iPid);
   
   EXIT();
 }
@@ -117,18 +117,18 @@ void Step::vSessionPid(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* session.slot@ -- fetch slot of SE session                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionSlotFetch(MP_Task mpTask)
+void Step::vSessionSlotFetch(void)
 {
   ENTRY("vSessionSlotFetch"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    THROW_INVALID_DSTACK("session.slot@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
+    THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pSession->iSlot());
+  m_pDataStack->vPushI8(pSession->iSlot());
   
   EXIT();
 }
@@ -136,18 +136,18 @@ void Step::vSessionSlotFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* session.tx@ -- fetch tx of SE session                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionTxFetch(MP_Task mpTask)
+void Step::vSessionTxFetch(void)
 {
   ENTRY("vSessionTxFetch"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    THROW_INVALID_DSTACK("session.tx@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
+    THROW_DSTACK();
   Session* pSession = _pSession(pPtrSession);
   
   Tx* pTx = pSession->pTx();
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pTx);
+  m_pDataStack->vPushPointer(pTx);
   
   EXIT();
 }
@@ -155,18 +155,18 @@ void Step::vSessionTxFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* session.tx! -- store tx of SE session                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionTxStore(MP_Task mpTask)
+void Step::vSessionTxStore(void)
 {
   ENTRY("vSessionTxStore"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
-    THROW_INVALID_DSTACK("session.tx!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
+    THROW_DSTACK();
   Session* pSession = _pSession(pPtrSession);
   
   Object* pPtrTx;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
-    THROW_INVALID_DSTACK("session.tx!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrTx) )
+    THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
   pSession->vTx(pTx);

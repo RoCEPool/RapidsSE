@@ -37,7 +37,7 @@ namespace Gadgets
     CLASS* operator -> (void)
     {
       if (! m_pObject)
-        throw (i8)__LINE__;
+        THROW("HV::m_pObject is null");
     
       return m_pObject;
     }

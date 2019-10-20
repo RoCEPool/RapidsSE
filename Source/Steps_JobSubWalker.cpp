@@ -21,18 +21,18 @@ void Step::vAddSteps_JobSubWalker(void)
 /*----------------------------------------------------------------------------*/
 /* job_subWalker::spawn -- spawn a new subexporter                            */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubWalkerSpawn(MP_Task mpTask)
+void Step::vJob_SubWalkerSpawn(void)
 {
   ENTRY("vJob_SubWalkerSpawn"_Stz);
   
   Object* pPtrJob_Walk;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Walk) )
-    THROW_INVALID_DSTACK("Job_subWalker::spawn"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Walk) )
+    THROW_DSTACK();
   Job_Walk* pJob_Walk = _pJob_Walk(pPtrJob_Walk);
   
   i8 i_Slot;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Slot) )
-    THROW_INVALID_DSTACK("Job_subWalker::spawn"_Stz);
+  if ( ! m_pDataStack->bPopI8(i_Slot) )
+    THROW_DSTACK();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -63,16 +63,16 @@ void Step::vJob_SubWalkerSpawn(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subWalker.exportJob@ -- get export job                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubWalkerWalkJobFetch(MP_Task mpTask)
+void Step::vJob_SubWalkerWalkJobFetch(void)
 {
   ENTRY("vJob_SubWalkerSpawn"_Stz);
   
   Object* pPtrJob_SubWalker;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_SubWalker) )
-    THROW_INVALID_DSTACK("Job_subWalker.exportJob@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_SubWalker) )
+    THROW_DSTACK();
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJob_SubWalker);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJob_SubWalker->m_pJobWalk);
+  m_pDataStack->vPushPointer(pJob_SubWalker->m_pJobWalk);
   
   EXIT();
 }
@@ -81,18 +81,18 @@ void Step::vJob_SubWalkerWalkJobFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subWalker.begin -- begin sub-exporter                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubWalkerBegin(MP_Task mpTask)
+void Step::vJob_SubWalkerBegin(void)
 {
   ENTRY("vJob_SubWalkerBegin"_Stz);
   
   Object* pPtrJobSubWalker;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubWalker) )
-    THROW_INVALID_DSTACK("job_subWalker.begin"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJobSubWalker) )
+    THROW_DSTACK();
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJobSubWalker);
   
   bool bBegun = pJob_SubWalker->bBegin();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -100,18 +100,18 @@ void Step::vJob_SubWalkerBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subWalker.chunk -- chunk sub-exporter                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubWalkerChunk(MP_Task mpTask)
+void Step::vJob_SubWalkerChunk(void)
 {
   ENTRY("vJob_SubWalkerChunk"_Stz);
   
   Object* pPtrJobSubWalker;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubWalker) )
-    THROW_INVALID_DSTACK("job_subWalker.chunk"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJobSubWalker) )
+    THROW_DSTACK();
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJobSubWalker);
   
   bool bCallAgain = pJob_SubWalker->bChunk();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bCallAgain);
+  m_pDataStack->vPushBool(bCallAgain);
   
   EXIT();
 }
@@ -119,13 +119,13 @@ void Step::vJob_SubWalkerChunk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subWalker.end -- end sub-exporter                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubWalkerEnd(MP_Task mpTask)
+void Step::vJob_SubWalkerEnd(void)
 {
   ENTRY("vJob_SubWalkerEnd"_Stz);
   
   Object* pPtrJobSubWalker;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubWalker) )
-    THROW_INVALID_DSTACK("job_subexporter.end"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJobSubWalker) )
+    THROW_DSTACK();
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJobSubWalker);
   
   pJob_SubWalker->vEnd();

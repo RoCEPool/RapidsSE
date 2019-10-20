@@ -20,13 +20,13 @@ void Step::vAddSteps_To(void)
 /*----------------------------------------------------------------------------*/
 /* >body -- convert word pointer to body pointer                              */
 /*----------------------------------------------------------------------------*/
-void Step::vToBody(MP_Task mpTask)
+void Step::vToBody(void)
 {
   ENTRY("vToBody"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK(">body"_Stz);
+  if ( ! m_pDataStack->bPopObject(pWordObject) )
+    THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   //  char* pBody = pAdd<char*>(pWord,sizeof(Word));
@@ -34,7 +34,7 @@ void Step::vToBody(MP_Task mpTask)
   
   Object* pPtrBody = reinterpret_cast<Object*>(pBody);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrBody);
+  m_pDataStack->vPushPointer(pPtrBody);
   
   EXIT();
 }
@@ -42,17 +42,17 @@ void Step::vToBody(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >int -- convert value to int                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vToInt(MP_Task mpTask)
+void Step::vToInt(void)
 {
   ENTRY("vToInt"_Stz);
   
   s32 sInt;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sInt) )
-    THROW_INVALID_DSTACK(">int"_Stz);
+  if ( ! m_pDataStack->bPopS32(sInt) )
+    THROW_DSTACK();
   
   i8 i = sInt.iToI8();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(i);
+  m_pDataStack->vPushI8(i);
   
   EXIT();
 }
@@ -60,17 +60,17 @@ void Step::vToInt(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >ptr -- convert int to ptr                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vToPtr(MP_Task mpTask)
+void Step::vToPtr(void)
 {
   ENTRY("vToPtr"_Stz);
   
   i8 iPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPtr) )
-    THROW_INVALID_DSTACK(">str"_Stz);
+  if ( ! m_pDataStack->bPopI8(iPtr) )
+    THROW_DSTACK();
   
   Object* pPtr = (Object*)iPtr;
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtr);
+  m_pDataStack->vPushPointer(pPtr);
   
   EXIT();
 }
@@ -78,19 +78,19 @@ void Step::vToPtr(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >str -- convert value to str                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vToStr(MP_Task mpTask)
+void Step::vToStr(void)
 {
   ENTRY("vToStr"_Stz);
   
   GenVar xVal;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xVal) )
-    THROW_INVALID_DSTACK(">str"_Stz);
+  if ( ! m_pDataStack->bPopGenVar(xVal) )
+    THROW_DSTACK();
   
   s48K sString;
   
   xVal.aNestedValue()->vToString(sString);
   
-  mpTask->m_pForth->m_pDataStack->vPushS48K(sString);
+  m_pDataStack->vPushS48K(sString);
   
   EXIT();
 }
@@ -98,17 +98,17 @@ void Step::vToStr(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >task -- convert int to task ptr                                           */
 /*----------------------------------------------------------------------------*/
-void Step::vToTask(MP_Task mpTask)
+void Step::vToTask(void)
 {
   ENTRY("vToTask"_Stz);
   
   i8 iVal;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iVal) )
-    THROW_INVALID_DSTACK(">task"_Stz);
+  if ( ! m_pDataStack->bPopI8(iVal) )
+    THROW_DSTACK();
   
   Object* pPtrTask = _pTask(iVal);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrTask);
+  m_pDataStack->vPushPointer(pPtrTask);
   
   EXIT();
 }

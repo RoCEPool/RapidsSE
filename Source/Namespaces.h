@@ -60,7 +60,8 @@ namespace Resources     { class Resource; class ResourceTracker;
 namespace Rows          { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
-namespace SenVM         { class Cell; class Dic; class DicStack; class Word;  }
+namespace SenVM         { class Cell; class Dic; class DicStack;
+                          class Forth; class Word;                            }
 namespace Services      {                                                     }
 namespace Sessions      { class Request; class Session; class SessionState;   }
 namespace Steps         { class Step; class StepTiming;                       }

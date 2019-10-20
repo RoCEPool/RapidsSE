@@ -21,20 +21,20 @@ void Step::vAddSteps_JobWriteBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* job_WriteBuffer.parentJobId@ -- fetch parent jobid from job                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferParentJobIdFetch(MP_Task mpTask)
+void Step::vJob_WriteBufferParentJobIdFetch(void)
 {
   ENTRY("vJob_WriteBufferParentJobIdFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_WriteBuffer.parentJobId@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   i8 iParentJobId = pJob_WriteBuffer->m_iParentJobId;
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
   RASSERT(DS_INGEST== eDataSource || C_UNKNOWN != iParentJobId);
-  mpTask->m_pForth->m_pDataStack->vPushI8(iParentJobId);
+  m_pDataStack->vPushI8(iParentJobId);
   
   EXIT();
 }
@@ -42,18 +42,18 @@ void Step::vJob_WriteBufferParentJobIdFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_WriteBuffer.insertRows -- insert rows from working buffer into table   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferInsertRows(MP_Task mpTask)
+void Step::vJob_WriteBufferInsertRows(void)
 {
   ENTRY("vJob_WriteBufferInsertRows"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_WriteBuffer.insertRows!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   bool bAllBuffersWritten = pJob_WriteBuffer->bInsertRows();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bAllBuffersWritten);
+  m_pDataStack->vPushI8(bAllBuffersWritten);
   
   EXIT();
 }
@@ -61,18 +61,18 @@ void Step::vJob_WriteBufferInsertRows(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_WriteBuffer.isIngesting -- is writebuffer being ingesting              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferIsIngesting(MP_Task mpTask)
+void Step::vJob_WriteBufferIsIngesting(void)
 {
   ENTRY("vJob_WriteBufferIsIngesting"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_WriteBuffer.isIngesting"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(eDataSource == DS_INGEST ? true : false);
+  m_pDataStack->vPushI8(eDataSource == DS_INGEST ? true : false);
   
   EXIT();
 }
@@ -80,18 +80,18 @@ void Step::vJob_WriteBufferIsIngesting(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_WriteBuffer.isInserting -- is writebuffer being inserted               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferIsInserting(MP_Task mpTask)
+void Step::vJob_WriteBufferIsInserting(void)
 {
   ENTRY("vJob_WriteBufferIsInserting"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_WriteBuffer.isInserting"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(eDataSource == DS_INSERT ? true : false);
+  m_pDataStack->vPushI8(eDataSource == DS_INSERT ? true : false);
   
   EXIT();
 }
@@ -99,18 +99,18 @@ void Step::vJob_WriteBufferIsInserting(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_WriteBuffer.isLoading -- is writebuffer being loaded                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferIsLoading(MP_Task mpTask)
+void Step::vJob_WriteBufferIsLoading(void)
 {
   ENTRY("vJob_WriteBufferIsLoading"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_WriteBuffer.isLoading"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(eDataSource == DS_LOAD ? true : false);
+  m_pDataStack->vPushI8(eDataSource == DS_LOAD ? true : false);
   
   EXIT();
 }
@@ -118,17 +118,17 @@ void Step::vJob_WriteBufferIsLoading(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_WriteBuffer.partition@ -- fetch partition no. from job_writeBuffer     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferPartitionFetch(MP_Task mpTask)
+void Step::vJob_WriteBufferPartitionFetch(void)
 {
   ENTRY("vJob_WriteBufferPartitionFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_WriteBuffer.partition@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   i8 i_Partition = pJob_WriteBuffer->m_iPartitionId;
-  mpTask->m_pForth->m_pDataStack->vPushI8(i_Partition);
+  m_pDataStack->vPushI8(i_Partition);
   
   EXIT();
 }
@@ -136,18 +136,18 @@ void Step::vJob_WriteBufferPartitionFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_WriteBuffer.table! -- store table into job_writeBuffer                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferTableStore(MP_Task mpTask)
+void Step::vJob_WriteBufferTableStore(void)
 {
   ENTRY("vJob_WriteBufferTableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_WriteBuffer.table!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   Object* pTablePtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
-    THROW_INVALID_DSTACK("job_WriteBuffer.table!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pTablePtr) )
+    THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   
   pJob_WriteBuffer->m_pTable = pTable;

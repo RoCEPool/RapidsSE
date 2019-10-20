@@ -11,11 +11,11 @@ i8 xArray[C_ELEMENTS];
 /*----------------------------------------------------------------------------*/
 /* test                                                                       */
 /*----------------------------------------------------------------------------*/
-void LlcTest::vTest(MP_Task mpTask)
+void LlcTest::vTest(Forth* pForth)
 {
 #ifdef WITH_APPLE
   
-  Pthread* pPthread = mpTask->pThread()->m_pPthread;
+  Pthread* pPthread = pForth->m_pTask->pThread()->m_pPthread;
   
   pPthread->vEnableRealtime_2();
   

@@ -19,15 +19,15 @@ void Step::vAddSteps_JobGeneric(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_begun::new -- new a job__begun for this job                            */
+/* job_begun::new -- new a job__begun for this distributed 2pc job            */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__BegunNew(MP_Task mpTask)
+void Step::vJob__BegunNew(void)
 {
   ENTRY("vJob__BegunNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDistJobPtr) )
-    THROW_INVALID_DSTACK("vJob__Begun::new"_Stz);
+  if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
+    THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
   Job* pJobBegun = new Job__Begun(pDistJob);
@@ -37,23 +37,23 @@ void Step::vJob__BegunNew(MP_Task mpTask)
   JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
   pJobBegun->m_aJobClass = pJobClass__Begun;
   
-  //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobBegun);
+  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobBegun);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJobBegun);
+  m_pDataStack->vPushPointer(pJobBegun);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__cancel::new -- new a job__cancel for this job                         */
+/* job__cancel::new -- new a job__cancel for this distributed 2pc job         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__CancelNew(MP_Task mpTask)
+void Step::vJob__CancelNew(void)
 {
   ENTRY("vJob__CancelNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDistJobPtr) )
-    THROW_INVALID_DSTACK("job__cancel::new"_Stz);
+  if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
+    THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
   Job* pJobCancel = new Job__Cancel(pDistJob);
@@ -63,23 +63,23 @@ void Step::vJob__CancelNew(MP_Task mpTask)
   JobClass* pJobClass__Cancel = JobClass::pFind(CN_JOB__CANCEL);
   pJobCancel->m_aJobClass = pJobClass__Cancel;
   
-  //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobCancel);
+  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancel);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJobCancel);
+  m_pDataStack->vPushPointer(pJobCancel);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__cancelled::new -- new a job__cancelled for this job                   */
+/* job__cancelled::new -- new a job__cancelled for this distributed 2pc job   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__CancelledNew(MP_Task mpTask)
+void Step::vJob__CancelledNew(void)
 {
   ENTRY("vJob__CancelledNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDistJobPtr) )
-    THROW_INVALID_DSTACK("job__cancelled::new"_Stz);
+  if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
+    THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
   Job* pJobCancelled = new Job__Cancelled(pDistJob);
@@ -89,23 +89,23 @@ void Step::vJob__CancelledNew(MP_Task mpTask)
   JobClass* pJobClass__Cancelled = JobClass::pFind(CN_JOB__CANCELLED);
   pJobCancelled->m_aJobClass = pJobClass__Cancelled;
   
-  //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobCancelled);
+  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancelled);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJobCancelled);
+  m_pDataStack->vPushPointer(pJobCancelled);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__end::new - new a job__end for this job                                */
+/* job__end::new - new a job__end for this distributed 2pc job                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__EndNew(MP_Task mpTask)
+void Step::vJob__EndNew(void)
 {
   ENTRY("vJob__EndNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDistJobPtr) )
-    THROW_INVALID_DSTACK("job__end::new"_Stz);
+  if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
+    THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
   Job* pJobEnd = new Job__End(pDistJob);
@@ -115,23 +115,23 @@ void Step::vJob__EndNew(MP_Task mpTask)
   JobClass* pJobClass__End = JobClass::pFind(CN_JOB__END);
   pJobEnd->m_aJobClass = pJobClass__End;
   
-  //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobEnd);
+  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnd);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJobEnd);
+  m_pDataStack->vPushPointer(pJobEnd);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__ended::new -- new a job__ended for this job                           */
+/* job__ended::new -- new a job__ended for this distributed 2pc job           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__EndedNew(MP_Task mpTask)
+void Step::vJob__EndedNew(void)
 {
   ENTRY("vJob__EndedNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDistJobPtr) )
-    THROW_INVALID_DSTACK("job__ended::new"_Stz);
+  if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
+    THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
   Job* pJobEnded = new Job__Ended(pDistJob);
@@ -141,23 +141,23 @@ void Step::vJob__EndedNew(MP_Task mpTask)
   JobClass* pJobClass__Ended = JobClass::pFind(CN_JOB__ENDED);
   pJobEnded->m_aJobClass = pJobClass__Ended;
   
-  //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobEnded);
+  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnded);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJobEnded);
+  m_pDataStack->vPushPointer(pJobEnded);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__execute::new -- new a job__execute for this job                       */
+/* job__execute::new -- new a job__execute for this distributed 2pc job       */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__ExecuteNew(MP_Task mpTask)
+void Step::vJob__ExecuteNew(void)
 {
   ENTRY("vJob__ExecuteNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDistJobPtr) )
-    THROW_INVALID_DSTACK("job__execute::new"_Stz);
+  if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
+    THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
   Job* pJobExecute = new Job__Execute(pDistJob);
@@ -167,23 +167,23 @@ void Step::vJob__ExecuteNew(MP_Task mpTask)
   JobClass* pJobClass__Execute = JobClass::pFind(CN_JOB__EXECUTE);
   pJobExecute->m_aJobClass = pJobClass__Execute;
   
-  //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobExecute);
+  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecute);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJobExecute);
+  m_pDataStack->vPushPointer(pJobExecute);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job__executed::new -- new a job__executed for this job                     */
+/* job__executed::new -- new a job__executed for this distributed 2pc job     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob__ExecutedNew(MP_Task mpTask)
+void Step::vJob__ExecutedNew(void)
 {
   ENTRY("vJob__ExecutedNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pDistJobPtr) )
-    THROW_INVALID_DSTACK("job__executed::new"_Stz);
+  if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
+    THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
   Job* pJobExecuted = new Job__Executed(pDistJob);
@@ -193,9 +193,9 @@ void Step::vJob__ExecutedNew(MP_Task mpTask)
   JobClass* pJobClass__Executed = JobClass::pFind(CN_JOB__EXECUTED);
   pJobExecuted->m_aJobClass = pJobClass__Executed;
   
-  //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobExecuted);
+  //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecuted);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJobExecuted);
+  m_pDataStack->vPushPointer(pJobExecuted);
   
   EXIT();
 }

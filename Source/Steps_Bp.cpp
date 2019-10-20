@@ -31,7 +31,7 @@ void Step::vAddSteps_Bp(void)
 /*----------------------------------------------------------------------------*/
 /* bp.analyze -- buffer pool analyze                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vBpAnalyze(MP_Task mpTask)
+void Step::vBpAnalyze(void)
 {
   ENTRY("vBpa"_Stz);
   
@@ -43,7 +43,7 @@ void Step::vBpAnalyze(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp.dump -- dump of objects in the buffer pool                              */
 /*----------------------------------------------------------------------------*/
-void Step::vBpDump(MP_Task mpTask)
+void Step::vBpDump(void)
 {
   ENTRY("vBpDump"_Stz);
   
@@ -55,7 +55,7 @@ void Step::vBpDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* epochDump -- dump an epoch                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vBpEpochDump(MP_Task mpTask)
+void Step::vBpEpochDump(void)
 {
   ENTRY("vBpEpochDump"_Stz);
   
@@ -71,7 +71,7 @@ void Step::vBpEpochDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* epochTake -- take an epoch                                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vBpEpochTake(MP_Task mpTask)
+void Step::vBpEpochTake(void)
 {
   ENTRY("vBpEpochTake"_Stz);
   
@@ -83,7 +83,7 @@ void Step::vBpEpochTake(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp.readBufferPool -- read the buffers from the file                        */
 /*----------------------------------------------------------------------------*/
-void Step::vBpReadBufferPool(MP_Task mpTask)
+void Step::vBpReadBufferPool(void)
 {
   ENTRY("vBpReadBufferPool"_Stz);
   
@@ -95,7 +95,7 @@ void Step::vBpReadBufferPool(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp.writeBufferPool -- write the buffer pool buffers to a file              */
 /*----------------------------------------------------------------------------*/
-void Step::vBpWriteBufferPool(MP_Task mpTask)
+void Step::vBpWriteBufferPool(void)
 {
   ENTRY("vBpWriteBufferPool"_Stz);
   
@@ -107,13 +107,13 @@ void Step::vBpWriteBufferPool(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::freeBuffers -- push number of free buffers in buffer pool onto stack   */
 /*----------------------------------------------------------------------------*/
-void Step::vBpFreeBuffers(MP_Task mpTask)
+void Step::vBpFreeBuffers(void)
 {
   ENTRY("vBpFreeBuffers"_Stz);
   
   i8 nFreeBuffers = gpBufferPool->nFreeCount();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(nFreeBuffers);
+  m_pDataStack->vPushI8(nFreeBuffers);
   
   EXIT();
 }
@@ -121,13 +121,13 @@ void Step::vBpFreeBuffers(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::freePercent -- push free percent of buffer pool onto stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vBpFreePercent(MP_Task mpTask)
+void Step::vBpFreePercent(void)
 {
   ENTRY("vBpFreePercent"_Stz);
   
   i8 iFreePercent = gpBufferPool->iFreePercent();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iFreePercent);
+  m_pDataStack->vPushI8(iFreePercent);
   
   EXIT();
 }
@@ -135,14 +135,14 @@ void Step::vBpFreePercent(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::freeSpace -- push free space in buffer pool onto stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vBpFreeSpace(MP_Task mpTask)
+void Step::vBpFreeSpace(void)
 {
   ENTRY("vBpFreeSpace"_Stz);
   
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
   i8 iFreeSpaceInPool = BPA::iPoolFree();
 
-  mpTask->m_pForth->m_pDataStack->vPushI8(iFreeSpace + iFreeSpaceInPool);
+  m_pDataStack->vPushI8(iFreeSpace + iFreeSpaceInPool);
   
   EXIT();
 }
@@ -150,7 +150,7 @@ void Step::vBpFreeSpace(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::inUseSpace -- push in-use space in buffer pool onto stack              */
 /*----------------------------------------------------------------------------*/
-void Step::vBpInUseSpace(MP_Task mpTask)
+void Step::vBpInUseSpace(void)
 {
   ENTRY("vBpInUseSpace"_Stz);
   
@@ -159,7 +159,7 @@ void Step::vBpInUseSpace(MP_Task mpTask)
                      - gpBufferPool->iFreeSpace()
                      - BPA::iPoolFree();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iInUseSpace);
+  m_pDataStack->vPushI8(iInUseSpace);
   
   EXIT();
 }
@@ -167,14 +167,14 @@ void Step::vBpInUseSpace(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::totalSpace -- push total space in buffer pool onto stack               */
 /*----------------------------------------------------------------------------*/
-void Step::vBpTotalSpace(MP_Task mpTask)
+void Step::vBpTotalSpace(void)
 {
   ENTRY("vBpTotalSpace"_Stz);
   
   i8 iTotalSpace = AM::iRegionSize()
                      - AM::iJumboSize();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(iTotalSpace);
+  m_pDataStack->vPushI8(iTotalSpace);
   
   EXIT();
 }

@@ -17,16 +17,16 @@ void Step::vAddSteps_JobKidExport(void)
 /*----------------------------------------------------------------------------*/
 /* job_kidExport.exportJobId -- get the job id of the original export job     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_KidExportExportJobId(MP_Task mpTask)
+void Step::vJob_KidExportExportJobId(void)
 {
   ENTRY("vJob_KidExportExportJobId"_Stz);
   
   Object* pPtrJob_KidExport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_KidExport) )
-    THROW_INVALID_DSTACK("job_kidExport.exportJobId"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_KidExport) )
+    THROW_DSTACK();
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pPtrJob_KidExport);
     
-  mpTask->m_pForth->m_pDataStack->vPushI8(pJob_KidExport->m_iExportJobId);
+  m_pDataStack->vPushI8(pJob_KidExport->m_iExportJobId);
   
   EXIT();
 }
@@ -34,18 +34,18 @@ void Step::vJob_KidExportExportJobId(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_kidExport.exportOrigin -- get the node no where export began           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_KidExportExportOrigin(MP_Task mpTask)
+void Step::vJob_KidExportExportOrigin(void)
 {
   ENTRY("vJob_KidExportExportOrigin"_Stz);
   
   Object* pPtrJob_KidExport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_KidExport) )
-    THROW_INVALID_DSTACK("job_kidExport.exportOrigin"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_KidExport) )
+    THROW_DSTACK();
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pPtrJob_KidExport);
   
   i8 i_OriginNodeNo = Job::iNodeNo(pJob_KidExport->m_iExportJobId);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(i_OriginNodeNo);
+  m_pDataStack->vPushI8(i_OriginNodeNo);
   
   EXIT();
 }
@@ -53,18 +53,18 @@ void Step::vJob_KidExportExportOrigin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_kidExport.writeExportBuffer -- write buffer to export file             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_KidExportWriteExportBuffer(MP_Task mpTask)
+void Step::vJob_KidExportWriteExportBuffer(void)
 {
   ENTRY("vJob_KidExportWriteExportBuffer"_Stz);
   
   Object* pPtrJob_KidExport;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_KidExport) )
-    THROW_INVALID_DSTACK("job_kidExport.writeExportBuffer"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_KidExport) )
+    THROW_DSTACK();
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pPtrJob_KidExport);
   
   Object* pPtrJob_Export;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Export) )
-    THROW_INVALID_DSTACK("job_kidExport.writeExportBuffer"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Export) )
+    THROW_DSTACK();
   Job_Export* pJob_Export = _pJob_Export(pPtrJob_Export);
   
   bool bHasCompleted = pJob_KidExport->bWriteBuffer(pJob_Export);
@@ -72,7 +72,7 @@ void Step::vJob_KidExportWriteExportBuffer(MP_Task mpTask)
   if (bHasCompleted)
     vTrace("COMPLETED\n"_Stz);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(bHasCompleted);
+  m_pDataStack->vPushI8(bHasCompleted);
 
   EXIT();
 }

@@ -15,22 +15,22 @@ void Step::vAddSteps_Error(void)
 /*----------------------------------------------------------------------------*/
 /* error.msg -- get error message given the error code                        */
 /*----------------------------------------------------------------------------*/
-void Step::vErrorMsg(MP_Task mpTask)
+void Step::vErrorMsg(void)
 {
   ENTRY("vErrorMsg"_Stz);
   
   
   i8 iErrorCode;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iErrorCode) )
-    THROW_INVALID_DSTACK("error.msg"_Stz);
+  if ( ! m_pDataStack->bPopI8(iErrorCode) )
+    THROW_DSTACK();
   
   if (iErrorCode < EC_NONE || iErrorCode > EC_ENUMS)
-    THROW(FK_ASSERT,"error.msg"_Stz);
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"error.msg");
 
   s256 sErrorMsg;
   sErrorMsg = aEC[iErrorCode];
   
-  mpTask->m_pForth->m_pDataStack->vPushS256(sErrorMsg);
+  m_pDataStack->vPushS256(sErrorMsg);
   
   EXIT();
 }

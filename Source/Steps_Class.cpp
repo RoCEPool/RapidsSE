@@ -15,19 +15,19 @@ void Step::vAddSteps_Class(void)
 /*----------------------------------------------------------------------------*/
 /* class::name -- translate class no to name                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vClassName(MP_Task mpTask)
+void Step::vClassName(void)
 {
   ENTRY("vClassName"_Stz);
   
   i8 iClassNo;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iClassNo) )
-    THROW_INVALID_DSTACK("class::name"_Stz);
+  if ( ! m_pDataStack->bPopI8(iClassNo) )
+    THROW_DSTACK();
   
   s32 sClassName;
   
   sClassName = aCN[iClassNo];
   
-  mpTask->m_pForth->m_pDataStack->vPushS32(sClassName);
+  m_pDataStack->vPushS32(sClassName);
   
   EXIT();
 }

@@ -18,13 +18,13 @@ void Step::vAddSteps_Push(void)
 /*----------------------------------------------------------------------------*/
 /* i -- copy loop index from return stack onto data stack                     */
 /*----------------------------------------------------------------------------*/
-void Step::vPushI(MP_Task mpTask)
+void Step::vPushI(void)
 {
   ENTRY("vPushI"_Stz);
   
-  ForthValue* aLoopIndex_I = mpTask->m_pForth->m_pReturnStack->aPeekValue();
+  ForthValue* aLoopIndex_I = m_pReturnStack->aPeekValue();
   
-  mpTask->m_pForth->m_pDataStack->vPushValue(aLoopIndex_I);
+  m_pDataStack->vPushValue(aLoopIndex_I);
   
   EXIT();
 }
@@ -32,13 +32,13 @@ void Step::vPushI(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* j -- copy 2nd loop index from return stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Step::vPushJ(MP_Task mpTask)
+void Step::vPushJ(void)
 {
   ENTRY("vPushJ"_Stz);
   
-  ForthValue* aLoopIndex_J = mpTask->m_pForth->m_pReturnStack->aPeekValue(3);
+  ForthValue* aLoopIndex_J = m_pReturnStack->aPeekValue(3);
   
-  mpTask->m_pForth->m_pDataStack->vPushValue(aLoopIndex_J);
+  m_pDataStack->vPushValue(aLoopIndex_J);
   
   EXIT();
 }
@@ -46,14 +46,14 @@ void Step::vPushJ(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* nullPtr -- push a nullptr                                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vPushNullPtr(MP_Task mpTask)
+void Step::vPushNullPtr(void)
 {
   ENTRY("vPushNullPtr"_Stz);
   
   PtrVal xPtrVal;
   xPtrVal = (Object*)nullptr;
   
-  mpTask->m_pForth->m_pDataStack->vPushValue(xPtrVal);
+  m_pDataStack->vPushValue(xPtrVal);
   
   EXIT();
 }
@@ -61,19 +61,19 @@ void Step::vPushNullPtr(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* pushValue -- push value arg onto stack                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vPushValue(MP_Task mpTask)
+void Step::vPushValue(void)
 {
   ENTRY("vPushValue"_Stz);
   
-  if (mpTask->m_iTracing) {
-    ASSERT(mpTask->m_iTracing);
+  if (m_pTask->m_iTracing) {
+    ASSERT(m_pTask->m_iTracing);
   }
   
-  ForthValue* aValue = &mpTask->m_pForth->m_aInxPtr->m_xEmbValue;
+  ForthValue* aValue = &m_aInxPtr->m_xEmbValue;
   
-  mpTask->m_pForth->m_pDataStack->vPushValue(aValue);
+  m_pDataStack->vPushValue(aValue);
   
-  mpTask->vAdjustFIP(aValue->nSize());
+  m_pTask->vAdjustFIP(aValue->nSize());
   
   EXIT();
 }

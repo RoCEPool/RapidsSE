@@ -16,14 +16,14 @@ void Step::vAddSteps_Enter(void)
 /*----------------------------------------------------------------------------*/
 /* enterObject -- enter object routine   (this is the does step for a object) */
 /*----------------------------------------------------------------------------*/
-void Step::vEnterObject(MP_Task mpTask)
+void Step::vEnterObject(void)
 {
   ENTRY("vEnterObject"_Stz);
   
-  StepFp* afpEntryCell = (mpTask->m_pForth->m_aInxPtr - 1)->m_afpIntrinsic + 1;
+  StepFp* afpEntryCell = (m_aInxPtr - 1)->m_afpIntrinsic + 1;
 
-  mpTask->m_pForth->m_pReturnStack->vPushCell(mpTask->m_pForth->m_aInxPtr);
-  mpTask->m_pForth->m_aInxPtr = *(Cell**)afpEntryCell;
+  m_pReturnStack->vPushCell(m_aInxPtr);
+  m_aInxPtr = *(Cell**)afpEntryCell;
   
   Word* pWord = pAdd<Word*>((Object*)afpEntryCell,
                             -( sizeof(Word)
@@ -36,7 +36,7 @@ void Step::vEnterObject(MP_Task mpTask)
   ASSERT(WK_OBJECT == pWord->eKind());
   
   Object* pObject = (Object*)pWord->aFirstCell();
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pObject);
+  m_pDataStack->vPushPointer(pObject);
   
   EXIT();
 }
@@ -44,17 +44,17 @@ void Step::vEnterObject(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* enterRoutine -- enter word routine    (this is the does step for a : word) */
 /*----------------------------------------------------------------------------*/
-void Step::vEnterRoutine(MP_Task mpTask)
+void Step::vEnterRoutine(void)
 {
   ENTRY("vEnterRoutine"_Stz);
   
-  StepFp* afpEntryCell = (mpTask->m_pForth->m_aInxPtr - 1)->m_afpIntrinsic + 1;
+  StepFp* afpEntryCell = (m_aInxPtr - 1)->m_afpIntrinsic + 1;
   
-  mpTask->m_pForth->m_pReturnStack->vPushCell(mpTask->m_pForth->m_aInxPtr);
-  mpTask->m_pForth->m_aInxPtr = *(Cell**)afpEntryCell;
+  m_pReturnStack->vPushCell(m_aInxPtr);
+  m_aInxPtr = *(Cell**)afpEntryCell;
 
-   if ( (mpTask->m_iTracing & C_TRACE_ROUTINES) )
-    mpTask->vTracePoint(">"_Stz);
+   if ( (m_pTask->m_iTracing & C_TRACE_ROUTINES) )
+    m_pTask->vTracePoint(">"_Stz);
   
   EXIT();
 }

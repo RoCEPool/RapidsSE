@@ -18,13 +18,13 @@ void Step::vAddSteps_JobDynamic(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Dynamic.begin -- begin the dynamic job                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_DynamicBegin(MP_Task mpTask)
+void Step::vJob_DynamicBegin(void)
 {
   ENTRY("vJob_DynamicBegin"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_Dynamic.begin"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
   
   pJob_Dynamic->vBegin();
@@ -52,13 +52,13 @@ void Step::vJob_DynamicCancel(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_Dynamic.end -- end the dynamic job                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_DynamicEnd(MP_Task mpTask)
+void Step::vJob_DynamicEnd(void)
 {
   ENTRY("vJob_DynamicEnd"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_Dynamic.end"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
   
   pJob_Dynamic->vEnd();
@@ -69,13 +69,13 @@ void Step::vJob_DynamicEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_Dynamic.execute -- execute                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_DynamicExecute(MP_Task mpTask)
+void Step::vJob_DynamicExecute(void)
 {
   ENTRY("vJob_DynamicExecute"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_Dynamic.execute"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
   
   pJob_Dynamic->vExecute();

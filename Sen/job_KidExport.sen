@@ -43,7 +43,8 @@
 
   params| pJob_[E] |
 
-  pJob_[E] job.originatingTask@ locals| pTask_[E] |
+  //pJob_[E] job.originatingTask@ locals| pTask_[E] |
+  pJob_[E] job.task@ locals| pTask_[E] |
 
   false locals| bAuxAck |
 

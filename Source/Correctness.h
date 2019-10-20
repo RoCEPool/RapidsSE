@@ -16,13 +16,18 @@ namespace Correctness
 //------------------------------------------------------------------------------
 
 
+#include "eFK.h"
+#include "Exception.hpp"
+
+
 #include "Footer.hpp"
 #include "Header.hpp"
-#include "Debug.hpp"
+
+#include "Correct.hpp"
 
 #include "MemLib.hpp"
 
-#include "AssertMacros.hpp"
+#include "AssertMacros.h"
 
 #include "Object.hpp"
 

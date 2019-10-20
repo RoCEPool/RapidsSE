@@ -15,13 +15,13 @@ void Step::vAddSteps_JobOperand(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Operand.pipeOut -- pipe out the operand                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_OperandPipeOut(MP_Task mpTask)
+void Step::vJob_OperandPipeOut(void)
 {
   ENTRY("vJob_OperandPipeOut"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_Operand.pipeOut"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_Operand* pJob_Operand = _pJob_Operand(pJobPtr);
   
   // find the parent participant job

@@ -17,18 +17,18 @@ void Step::vAddSteps_JobSink(void)
 /*----------------------------------------------------------------------------*/
 /* Job_Sink.begin -- begin sink                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SinkBegin(MP_Task mpTask)
+void Step::vJob_SinkBegin(void)
 {
   ENTRY("vJob_SinkBegin"_Stz);
   
   Object* pPtrJob_Sink;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Sink) )
-    THROW_INVALID_DSTACK("Job_Sink.begin"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Sink) )
+    THROW_DSTACK();
   Job_Sink* pJob_Sink = _pJob_Sink(pPtrJob_Sink);
   
   bool bBegun = pJob_Sink->bBegin();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -36,18 +36,18 @@ void Step::vJob_SinkBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_sink.chunk -- sink data from pipe                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SinkChunk(MP_Task mpTask)
+void Step::vJob_SinkChunk(void)
 {
   ENTRY("vJob_SinkChunk"_Stz);
   
   Object* pPtrJob_Sink;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Sink) )
-    THROW_INVALID_DSTACK("job_sink.chunk"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Sink) )
+    THROW_DSTACK();
   Job_Sink* pJob_Sink = _pJob_Sink(pPtrJob_Sink);
   
   bool bCallAgain = pJob_Sink->bChunk();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bCallAgain);
+  m_pDataStack->vPushBool(bCallAgain);
   
   EXIT();
 }
@@ -55,13 +55,13 @@ void Step::vJob_SinkChunk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_sink.end -- end sink                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SinkEnd(MP_Task mpTask)
+void Step::vJob_SinkEnd(void)
 {
   ENTRY("vJob_SinkEnd"_Stz);
   
   Object* pPtrJob_Sink;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_Sink) )
-    THROW_INVALID_DSTACK("job_sink.end"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Sink) )
+    THROW_DSTACK();
   Job_Sink* pJob_Sink = _pJob_Sink(pPtrJob_Sink);
   
   pJob_Sink->vEnd();

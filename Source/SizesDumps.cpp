@@ -135,6 +135,7 @@ pDUMPFUN *gpDump[]
   /* 54 */ &Dump::vDummy,           // CN_IDXCOLVEC
   /* 55 */ &Dump::vDummy,           // CN_IDXVEC
   /*    */ &Dump::vDummy,           // CN_INGESTCHUNK
+  /*    */ &Dump::vDummy,           // CN_INSERTOP
   /*    */ &Dump::vDummy,           // CN_INTBUFFER
   /*    */ &Dump::vDummy,           // CN_INTERSECTOP
   /*    */ &Dump::vDummy,           // CN_IOCHUNK
@@ -557,6 +558,7 @@ i8 giClassSize[]
   /* 54 */ sizeof(IdxColVec),          // CN_IDXCOLVEC
   /* 55 */ sizeof(IdxVec),             // CN_IDXVEC
   /*    */ sizeof(IngestChunk),        // CN_INGESTCHUNK
+  /*    */ sizeof(InsertOp),           // CN_INSERTOP
   /*    */ sizeof(IntBuffer),          // CN_INTBUFFER
   /*    */ sizeof(IntersectOp),        // CN_INTERSECTOP
   /*    */ sizeof(IoChunk),            // CN_IOCHUNK
@@ -978,6 +980,7 @@ eHT geWhichHeap[]
   /* 54 */ HT_TRANSIENT_MEDIUM,  // CN_IDXCOLVEC
   /* 55 */ HT_TRANSIENT_MEDIUM,  // CN_IDXVEC
   /*    */ HT_TRANSIENT_LARGE,   // CN_INGESTCHUNK
+  /*    */ HT_TRANSIENT_LARGE,   // CN_INSERTOP
   /*    */ HT_TRANSIENT_LARGE,   // CN_INTBUFFER
   /*    */ HT_TRANSIENT_SMALL,   // CN_INTERSECTOP
   /*    */ HT_TRANSIENT_LARGE,   // CN_IOCHUNK

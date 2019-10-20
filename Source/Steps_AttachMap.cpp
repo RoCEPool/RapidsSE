@@ -15,11 +15,11 @@ void Step::vAddSteps_AttachMap(void)
 /*----------------------------------------------------------------------------*/
 /* attachmap::tenants@ -- fetch word tenants from attachmap                   */
 /*----------------------------------------------------------------------------*/
-void Step::vAttachMapTenantsFetch(MP_Task mpTask)
+void Step::vAttachMapTenantsFetch(void)
 {
   ENTRY("vAttachMapTenantsFetch"_Stz);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(AM::pTenants());
+  m_pDataStack->vPushPointer(AM::pTenants());
 }
 
 /*============================================================================*/

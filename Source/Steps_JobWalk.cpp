@@ -18,18 +18,18 @@ void Step::vAddSteps_JobWalk(void)
 /*----------------------------------------------------------------------------*/
 /* job_walk.begin -- begin walk                                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WalkBegin(MP_Task mpTask)
+void Step::vJob_WalkBegin(void)
 {
   ENTRY("vJob_WalkBegin"_Stz);
   
   Object* pPtrJobWalk;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobWalk) )
-    THROW_INVALID_DSTACK("job_walk.begin"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJobWalk) )
+    THROW_DSTACK();
   Job_Walk* pJob_Walk = _pJob_Walk(pPtrJobWalk);
   
   bool bBegun = pJob_Walk->bBegin();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -37,13 +37,13 @@ void Step::vJob_WalkBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_walk.end -- end walk                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WalkEnd(MP_Task mpTask)
+void Step::vJob_WalkEnd(void)
 {
   ENTRY("vJob_WalkEnd"_Stz);
   
   Object* pPtrJobWalk;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobWalk) )
-    THROW_INVALID_DSTACK("job_walk.end"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJobWalk) )
+    THROW_DSTACK();
   Job_Walk* pJob_Walk = _pJob_Walk(pPtrJobWalk);
   
   pJob_Walk->vEnd();
@@ -54,18 +54,18 @@ void Step::vJob_WalkEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_walk.index! -- store index in the job                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WalkIndexStore(MP_Task mpTask)
+void Step::vJob_WalkIndexStore(void)
 {
   ENTRY("vJob_WalkIndexStore"_Stz);
   
   Object* pPtrJobWalk;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobWalk) )
-    THROW_INVALID_DSTACK("Job_walk.index"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJobWalk) )
+    THROW_DSTACK();
   Job_Walk* pJob_Walk = _pJob_Walk(pPtrJobWalk);
   
   Object* pIndexPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pIndexPtr) )
-    THROW_INVALID_DSTACK("Job_walk.index!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pIndexPtr) )
+    THROW_DSTACK();
   Index* pIndex = _pIndex(pIndexPtr);
   
   pJob_Walk->m_pIndex = pIndex;
@@ -78,18 +78,18 @@ void Step::vJob_WalkIndexStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_walk.table! -- store table in the job                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WalkTableStore(MP_Task mpTask)
+void Step::vJob_WalkTableStore(void)
 {
   ENTRY("vJob_WalkTableStore"_Stz);
   
   Object* pPtrJobWalk;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobWalk) )
-    THROW_INVALID_DSTACK("Job_walk.table!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJobWalk) )
+    THROW_DSTACK();
   Job_Walk* pJob_Walk = _pJob_Walk(pPtrJobWalk);
   
   Object* pTablePtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
-    THROW_INVALID_DSTACK("Job_walk.table!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pTablePtr) )
+    THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   
   pJob_Walk->m_pTable = pTable;

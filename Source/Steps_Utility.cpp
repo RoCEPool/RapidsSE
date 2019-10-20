@@ -16,7 +16,7 @@ void Step::vAddSteps_Utility(void)
 /*----------------------------------------------------------------------------*/
 /* utility::prefetch -- test prefetch                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vUtilityPrefetch(MP_Task mpTask)
+void Step::vUtilityPrefetch(void)
 {
   ENTRY("vUtilityPrefetch"_Stz);
   
@@ -28,13 +28,13 @@ void Step::vUtilityPrefetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* utility::schemaTest -- run schema test                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vUtilitySchemaTest(MP_Task mpTask)
+void Step::vUtilitySchemaTest(void)
 {
   ENTRY("vUtilitySchemaTest"_Stz);
   
   s32 sStream;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sStream) )
-    THROW_INVALID_DSTACK("task.seed"_Stz);
+  if ( ! m_pDataStack->bPopS32(sStream) )
+    THROW_DSTACK();
 
   SchemaTest::vRun(sStream);
   

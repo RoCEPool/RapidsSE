@@ -16,15 +16,15 @@ void Step::vAddSteps_Cast(void)
 /*----------------------------------------------------------------------------*/
 /* (int) -- cast ptr to int                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vCastInt(MP_Task mpTask)
+void Step::vCastInt(void)
 {
   ENTRY("vCastInt"_Stz);
   
   Object* pPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtr) )
-    THROW_INVALID_DSTACK("(int)"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtr) )
+    THROW_DSTACK();
   
-  mpTask->m_pForth->m_pDataStack->vPushI8((i8)pPtr);
+  m_pDataStack->vPushI8((i8)pPtr);
   
   EXIT();
 }
@@ -32,15 +32,15 @@ void Step::vCastInt(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* (ptr) -- cast int to ptr                                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vCastPtr(MP_Task mpTask)
+void Step::vCastPtr(void)
 {
   ENTRY("vCastPtr"_Stz);
   
   i8 iInt;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iInt) )
-    THROW_INVALID_DSTACK("(ptr)"_Stz);
+  if ( ! m_pDataStack->bPopI8(iInt) )
+    THROW_DSTACK();
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer((Object*)iInt);
+  m_pDataStack->vPushPointer((Object*)iInt);
   
   EXIT();
 }

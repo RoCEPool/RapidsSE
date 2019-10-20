@@ -15,11 +15,11 @@ void Step::vAddSteps_Debug(void)
 /*----------------------------------------------------------------------------*/
 /* debug::trap -- call debug trap                                              */
 /*----------------------------------------------------------------------------*/
-void Step::vDebugTrap(MP_Task mpTask)
+void Step::vDebugTrap(void)
 {
 ENTRY("vDebugTrap"_Stz);
 
-  Correctness::vDebugTrap();
+  Correctness::vDebugPoint();
   
   EXIT();
 }

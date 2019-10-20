@@ -19,18 +19,18 @@ void Step::vAddSteps_JobSubPurger(void)
 /*----------------------------------------------------------------------------*/
 /* job_subPurger.begin -- begin subpurger                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPurgerBegin(MP_Task mpTask)
+void Step::vJob_SubPurgerBegin(void)
 {
   ENTRY("vJob_SubPurgerBegin"_Stz);
   
   Object* pPtrJobSubPurger;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubPurger) )
-    THROW_INVALID_DSTACK("job_subPurger.begin"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJobSubPurger) )
+    THROW_DSTACK();
   Job_SubPurger* pJob_SubPurger = _pJob_SubPurger(pPtrJobSubPurger);
   
   bool bBegun = pJob_SubPurger->bBegin();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -38,33 +38,33 @@ void Step::vJob_SubPurgerBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subPurger.chunk -- chunk subpurger                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPurgerChunk(MP_Task mpTask)
+void Step::vJob_SubPurgerChunk(void)
 {
   ENTRY("vJob_SubPurgerChunk"_Stz);
   
   Object* pPtrJobSubPurger;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubPurger) )
-    THROW_INVALID_DSTACK("job_subPurger.chunk"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJobSubPurger) )
+    THROW_DSTACK();
   Job_SubPurger* pJob_SubPurger = _pJob_SubPurger(pPtrJobSubPurger);
 
   Object* pPtrTable;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
-  THROW_INVALID_DSTACK("job_subPurger.chunk"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
 
   pJob_SubPurger->m_pTable = pTable;
   
   bool bCallAgain = pJob_SubPurger->bChunk();
   
-  mpTask->m_pForth->m_pDataStack->vPushBool(true);
+  m_pDataStack->vPushBool(true);
   
   if (! bCallAgain) {
     i8 iOlderThanSeconds = pJob_SubPurger->m_pJob_Purge->m_iOlderThanSeconds;
     if (iOlderThanSeconds < 10)
-      mpTask->vSleepUsec(C_1M);
+      m_pTask->vSleepUsec(C_1M);
     else
-      mpTask->vSleepUsec(C_1M * 10);
-    mpTask->vTransition(TR_SLEEP);
+      m_pTask->vSleepUsec(C_1M * 10);
+    m_pTask->vTransition(TR_SLEEP);
   }
     
   EXIT();
@@ -73,13 +73,13 @@ void Step::vJob_SubPurgerChunk(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subPurger.end -- end subpurger                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPurgerEnd(MP_Task mpTask)
+void Step::vJob_SubPurgerEnd(void)
 {
   ENTRY("vJob_SubPurgerEnd"_Stz);
   
   Object* pPtrJobSubPurger;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJobSubPurger) )
-    THROW_INVALID_DSTACK("job_subPurger.end"_Stz);
+  if ( ! m_pDataStack->bPopObject(pPtrJobSubPurger) )
+    THROW_DSTACK();
   Job_SubPurger* pJob_SubPurger = _pJob_SubPurger(pPtrJobSubPurger);
   
   pJob_SubPurger->vEnd();
@@ -90,16 +90,16 @@ void Step::vJob_SubPurgerEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subPurger.purgeJobId@ -- fetch the purge job id                        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPurgerPurgeJobIdFetch(MP_Task mpTask)
+void Step::vJob_SubPurgerPurgeJobIdFetch(void)
 {
   ENTRY("vJob_SubPurgerPurgeJobIdFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_subPurger.purgeJobId@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_SubPurger* pJob = _pJob_SubPurger(pJobPtr);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_iPurgeJobId);
+  m_pDataStack->vPushI8(pJob->m_iPurgeJobId);
   
   EXIT();
 }
@@ -107,16 +107,16 @@ void Step::vJob_SubPurgerPurgeJobIdFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subPurger.slot@ -- fetch the job slot                                  */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubPurgerSlotFetch(MP_Task mpTask)
+void Step::vJob_SubPurgerSlotFetch(void)
 {
   ENTRY("vJob_SubPurgerSlotFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_subPurger.slot@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
   Job_SubPurger* pJob = _pJob_SubPurger(pJobPtr);
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(pJob->m_i_Slot);
+  m_pDataStack->vPushI8(pJob->m_i_Slot);
   
   EXIT();
 }

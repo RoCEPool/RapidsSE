@@ -17,22 +17,22 @@ void Step::vAddSteps_Address(void)
 /*----------------------------------------------------------------------------*/
 /* eql -- test top two address on data stack for equality                     */
 /*----------------------------------------------------------------------------*/
-void Step::vAddressEqual(MP_Task mpTask)
+void Step::vAddressEqual(void)
 {
   ENTRY("vAddressEql"_Stz);
   
   GenVar xAddressA;
   GenVar xAddressB;
   
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xAddressA,xAddressB) )
-    THROW_INVALID_DSTACK("eql"_Stz);
+  if ( ! m_pDataStack->bPopGenVar(xAddressA,xAddressB) )
+    THROW_DSTACK();
   
   i8 iA = xAddressA.iInt();
   i8 iB = xAddressB.iInt();
   
   i8 r = iA == iB;
   
-  mpTask->m_pForth->m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -40,13 +40,13 @@ void Step::vAddressEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* @ -- fetch value using pointer on stack                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vAddressFetch(MP_Task mpTask)
+void Step::vAddressFetch(void)
 {
   ENTRY("vAddressFetch"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("@"_Stz);
+  if ( ! m_pDataStack->bPopObject(pObject) )
+    THROW_DSTACK();
   
   GenVar xValFetched;
   
@@ -72,10 +72,10 @@ void Step::vAddressFetch(MP_Task mpTask)
       break;
   
     default:
-      THROW(FK_ASSERT,"Invalid eClass %lld"_Stz,eClass);
+      vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Invalid eClass %lld",eClass);
   }
   
-  mpTask->m_pForth->m_pDataStack->vPushGenVar(xValFetched);
+  m_pDataStack->vPushGenVar(xValFetched);
   
   EXIT();
 }
@@ -83,17 +83,17 @@ void Step::vAddressFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* ! -- store value using pointer on stack                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vAddressStore(MP_Task mpTask)
+void Step::vAddressStore(void)
 {
   ENTRY("vAddressStore"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("!"_Stz);
+  if ( ! m_pDataStack->bPopObject(pObject) )
+    THROW_DSTACK();
   
   GenVar xValStored;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValStored) )
-    THROW_INVALID_DSTACK("!"_Stz);
+  if ( ! m_pDataStack->bPopGenVar(xValStored) )
+    THROW_DSTACK();
   
   ForthValue* aValue = reinterpret_cast<ForthValue*>(pObject);
   
@@ -117,7 +117,7 @@ void Step::vAddressStore(MP_Task mpTask)
       break;
       
     default:
-      THROW(FK_ASSERT,"Invalid eClass %lld"_Stz,eClass);
+      vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Invalid eClass %lld",eClass);
   }
   
   EXIT();
