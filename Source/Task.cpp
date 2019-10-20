@@ -221,21 +221,16 @@ void Task::vTaskLoop_job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  RASSERT(TK_JOB == eKind());
+          
   // TODO: shouldn't have to refind it everytime!!!
   vRefindJobClass();
   
-  if (TK_JOB == m_eKind && ! bSeeded() ) {
-    if (! m_pForth)
-      vNewStacks();
-    vSeedJob();
-  }
-  else {
-    // op??
-  }
-
-  if (! m_pForth) {
+  if (! m_pForth)
     vNewStacks();
-  }
+
+  if (! bSeeded())
+    vSeedJob();
   
   while (TR_NONE == m_eTransition) {
     
@@ -254,7 +249,6 @@ void Task::vTaskLoop_job(void)
       xException.vJob(m_pJob);
       xException.vCaught();
     }
-    
   }
   
   if (m_pJob && m_pJob->m_xReqTuple.m_iDetail)
@@ -272,9 +266,10 @@ void Task::vTaskLoop_op(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  while (TR_NONE == m_eTransition) {
+  RASSERT(TK_OPERATOR == eKind());
+  
+  while (TR_NONE == m_eTransition)
     m_pOp->vOpLoop();
-  }
   
   if (TR_DELETE == m_eTransition) {
     // the op is deleted by the job
