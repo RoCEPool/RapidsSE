@@ -155,7 +155,8 @@ void Task::vInit(void)
   m_i_NextRnd    = AM::bDeveloper() ? 0 : C_UNKNOWN;
   
   m_pForth       = nullptr;
-  
+  m_pRegSet      = nullptr;
+
   m_pCompiler    = nullptr;
   m_pSendNode    = nullptr;
   
@@ -177,6 +178,7 @@ Task::~Task(void) noexcept(false)
   delete m_pJob;
   
   delete m_pForth;
+  delete m_pRegSet;
 
   delete m_pCompiler;
   
@@ -631,7 +633,8 @@ void Task::vNewStacks(void)
   if (m_pForth)
     return;
   
-  m_pForth       = new Forth(this);
+  m_pForth  = new Forth(this);
+  m_pRegSet = new RegSet;
 }
 
 /*----------------------------------------------------------------------------*/

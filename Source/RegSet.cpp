@@ -21,9 +21,19 @@ RegSet* Registers::_pRegSet(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* RegSet::operator new(size_t)
 {
-  vFatal("fatal: RegSet class cannot be new'd\n"_Stz);
+  RegSet* pRegSet = (RegSet*)(HeapMem::pAllocate(CN_REGSET));
   
-  NEVER_REACH;
+  return pRegSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void RegSet::operator delete(void* aAddress)
+{
+  RegSet* pRegSet = reinterpret_cast<RegSet*>(aAddress);
+  
+  HeapMem::vFree(pRegSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,6 +48,16 @@ RegSet::RegSet(void)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_REGSET,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+RegSet::~RegSet(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGSET,_FOOTER_);
+  
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

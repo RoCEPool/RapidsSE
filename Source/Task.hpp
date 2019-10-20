@@ -53,6 +53,7 @@ namespace Tasks
     Compiler* m_pCompiler;  // forth word compiler (Job boot, create table etc)
   
     Forth*    m_pForth;     // forth implementation
+    RegSet*   m_pRegSet;    // set of registers
   
     // exception
     s256  m_sException;
