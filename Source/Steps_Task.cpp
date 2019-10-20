@@ -315,7 +315,7 @@ ENTRY("vTaskSeed"_Stz);
   
   // discard original task arguments
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    bool bPopped = m_pDataStack->bPop(xVariable);
+    bool bPopped = m_pDataStack->bPopGenVar(xVariable);
     ASSERT(bPopped);
   }
   

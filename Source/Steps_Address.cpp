@@ -24,7 +24,7 @@ void Step::vAddressEqual(void)
   GenVar xAddressA;
   GenVar xAddressB;
   
-  if ( ! m_pDataStack->bPop(xAddressA,xAddressB) )
+  if ( ! m_pDataStack->bPopGenVar(xAddressA,xAddressB) )
     THROW_DSTACK();
   
   i8 iA = xAddressA.iInt();
@@ -92,7 +92,7 @@ void Step::vAddressStore(void)
     THROW_DSTACK();
   
   GenVar xValStored;
-  if ( ! m_pDataStack->bPop(xValStored) )
+  if ( ! m_pDataStack->bPopGenVar(xValStored) )
     THROW_DSTACK();
   
   ForthValue* aValue = reinterpret_cast<ForthValue*>(pObject);

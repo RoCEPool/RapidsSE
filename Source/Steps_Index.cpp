@@ -411,7 +411,7 @@ void Step::vIndexLowerBound(void)
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the key
-  if ( ! m_pDataStack->bPop(xVariable) )
+  if ( ! m_pDataStack->bPopGenVar(xVariable) )
     THROW_DSTACK();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -603,11 +603,11 @@ void Step::vIndexRange(void)
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the lower key
-  if ( ! m_pDataStack->bPop(xValWrkLwr) )
+  if ( ! m_pDataStack->bPopGenVar(xValWrkLwr) )
     THROW_DSTACK();
   
   // get the upper key
-  if ( ! m_pDataStack->bPop(xValWrkUpr) )
+  if ( ! m_pDataStack->bPopGenVar(xValWrkUpr) )
     THROW_DSTACK();
   
   FetchBuffer* pFetchBuffer;
@@ -962,7 +962,7 @@ void Step::vIndexUpperBound(void)
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the key
-  if ( ! m_pDataStack->bPop(xVariable) )
+  if ( ! m_pDataStack->bPopGenVar(xVariable) )
     THROW_DSTACK();
   
   FetchBuffer* pFetchBuffer;

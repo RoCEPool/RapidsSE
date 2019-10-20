@@ -54,9 +54,9 @@ namespace SenVM
     bool bPopCell(Cell*& aCell);
     bool bPopCN(eCN& eClassNo);
     bool bPopGenVar(GenVar* pGenVar);
-    bool bPop(GenVar& xGenVar);
-    bool bPop(GenVar& xVar1, GenVar& xVar2);
-    bool bPop(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3);
+    bool bPopGenVar(GenVar& xGenVar);
+    bool bPopGenVar(GenVar& xVar1, GenVar& xVar2);
+    bool bPopGenVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3);
     bool bPop(i8& iArg);
     bool bPop(i8& iArg1, i8& iArg2);
     bool bPop(i8& iArg1, i8& iArg2, GenVar& xGenVar);

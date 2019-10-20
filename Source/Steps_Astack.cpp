@@ -80,7 +80,7 @@ void Step::vAstackDrop(void)
   // should just discard on stack
   
   GenVar xValA;
-  if ( ! m_pAuxStack->bPop(xValA) )
+  if ( ! m_pAuxStack->bPopGenVar(xValA) )
     THROW_ASTACK();
   
   EXIT();
@@ -96,7 +96,7 @@ void Step::vAstackDup(void)
   // could just copy from stack back into stack
   
   GenVar xValA;
-  if ( ! m_pAuxStack->bPop(xValA) )
+  if ( ! m_pAuxStack->bPopGenVar(xValA) )
   THROW_DSTACK();
   
   m_pAuxStack->vPushGenVar(xValA);
@@ -133,7 +133,7 @@ void Step::vAstackNip(void)
   GenVar xValA;
   GenVar xValB;
   
-  if ( ! m_pAuxStack->bPop(xValA,xValB) )
+  if ( ! m_pAuxStack->bPopGenVar(xValA,xValB) )
   THROW_ASTACK();
   
   m_pAuxStack->vPushGenVar(xValA);
@@ -221,7 +221,7 @@ void Step::vAstackSwap(void)
   GenVar xValA;
   GenVar xValB;
   
-  if ( ! m_pAuxStack->bPop(xValA,xValB) )
+  if ( ! m_pAuxStack->bPopGenVar(xValA,xValB) )
   THROW_ASTACK();
   
   m_pAuxStack->vPushGenVar(xValA);
@@ -238,7 +238,7 @@ void Step::vAstackToA(void)
   ENTRY("vAstackToA"_Stz);
   
   GenVar xValOpaque;
-  if ( ! m_pDataStack->bPop(xValOpaque) )
+  if ( ! m_pDataStack->bPopGenVar(xValOpaque) )
     THROW_DSTACK();
   
   m_pAuxStack->vPushGenVar(xValOpaque);
@@ -254,7 +254,7 @@ void Step::vAstackToD(void)
   ENTRY("vAstackToD"_Stz);
   
   GenVar xVal;
-  if ( ! m_pAuxStack->bPop(xVal) )
+  if ( ! m_pAuxStack->bPopGenVar(xVal) )
     THROW_ASTACK();
   
   m_pDataStack->vPushGenVar(xVal);
@@ -275,7 +275,7 @@ void Step::vAstackTransfer(void)
   Task* pThatTask = _pTask(pPtrTask);
   
   GenVar xVariable;
-  if ( ! m_pDataStack->bPop(xVariable) )
+  if ( ! m_pDataStack->bPopGenVar(xVariable) )
     THROW_DSTACK();
   
   pThatTask->m_okLock.vGrabWrite();

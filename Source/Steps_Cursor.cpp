@@ -41,7 +41,7 @@ void Step::vCursorStore(void)
   i8 iPoke = 1;
   
   GenVar xCursorVar;
-  if ( ! m_pDataStack->bPop(xCursorVar) )
+  if ( ! m_pDataStack->bPopGenVar(xCursorVar) )
     THROW_DSTACK();
   
   m_pReturnStack->vPokeGenVar(iPoke,xCursorVar);

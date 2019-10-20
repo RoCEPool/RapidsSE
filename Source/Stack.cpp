@@ -369,7 +369,7 @@ bool Stack::bPopGenVar(GenVar* pVariable)
 /*----------------------------------------------------------------------------*/
 /* pop value from value stack into given variable                             */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(GenVar& xVar)
+bool Stack::bPopGenVar(GenVar& xVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -384,7 +384,7 @@ bool Stack::bPop(GenVar& xVar)
 /*----------------------------------------------------------------------------*/
 /* pop values from value stack into given variables                           */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(GenVar& xVar1, GenVar& xVar2)
+bool Stack::bPopGenVar(GenVar& xVar1, GenVar& xVar2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -401,7 +401,7 @@ bool Stack::bPop(GenVar& xVar1, GenVar& xVar2)
 /*----------------------------------------------------------------------------*/
 /* pop values from value stack into given variables                           */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
+bool Stack::bPopGenVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -632,7 +632,7 @@ bool Stack::bPop(Object*& pObject, GenVar& xGenVar)
   
   pObject = xPtrVal1.pObj();
   
-  return bPop(xGenVar);
+  return bPopGenVar(xGenVar);
 }
 
 /*----------------------------------------------------------------------------*/
