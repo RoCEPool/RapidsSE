@@ -229,7 +229,7 @@ void Task::vTaskLoop_job(void)
   vRefindJobClass();
   
   if (! m_pForth)
-    vNewStacks();
+    vInitExeContext();
 
   if (! bSeeded())
     vSeedJob();
@@ -474,6 +474,18 @@ void Task::vGrabTaskLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* initialise the execution context of this task                              */
+/*----------------------------------------------------------------------------*/
+void Task::vInitExeContext(void)
+{
+  if (m_pForth)
+    return;
+  
+  m_pForth  = new Forth(this);
+  m_pRegSet = new RegSet(this);
+}
+
+/*----------------------------------------------------------------------------*/
 /* is task locked?                                                            */
 /*----------------------------------------------------------------------------*/
 bool Task::bIsLocked(void)
@@ -632,18 +644,6 @@ void Task::vMutexWait(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_pMutex->vWait(this);
-}
-
-/*----------------------------------------------------------------------------*/
-/* new the stacks                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vNewStacks(void)
-{
-  if (m_pForth)
-    return;
-  
-  m_pForth  = new Forth(this);
-  m_pRegSet = new RegSet(this);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -98,7 +98,7 @@ void Engine::vCallBoot(void)
   pJob_Boot->vSeed(SS_SEED_RUN);
   
   Task* pBootTask = new Task(pJob_Boot,nullptr);
-  pBootTask->vNewStacks();
+  pBootTask->vInitExeContext();
 
   pBootTask->vAddBaseWords();
   

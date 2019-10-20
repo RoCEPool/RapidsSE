@@ -90,6 +90,7 @@ namespace Tasks
     void vException(Stz* szException, Stz* szFile, i8 iLineNo);
     void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
+    void vInitExeContext(void);
     bool bIsLocked(void);
     bool bIsTaskLocked(void);
     Job* pJob(void);
@@ -103,7 +104,6 @@ namespace Tasks
     void vMutexSignal(void);
     void vMutexUnlock(void);
     void vMutexWait(void);
-    void vNewStacks(void);
     i8&  i_NextRnd(void);
     Op*  pOp(void);
     eQK  eQueue(void);
