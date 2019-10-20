@@ -86,6 +86,8 @@ namespace Operators
     Operand* pPopQueue(void);
     Operand* pPopQueueLeft(void);
     Operand* pPopQueueRight(void);
+    OperandQueue* pQueueLeft(void);
+    OperandQueue* pQueueRight(void);
     Task* pTask(void);
     void vTask(Task* pTask);
     void vWorkQuanta(i8 iWorkQuanta);
