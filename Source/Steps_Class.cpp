@@ -20,7 +20,7 @@ void Step::vClassName(void)
   ENTRY("vClassName"_Stz);
   
   i8 iClassNo;
-  if ( ! m_pDataStack->bPop(iClassNo) )
+  if ( ! m_pDataStack->bPopI8(iClassNo) )
     THROW_DSTACK();
   
   s32 sClassName;

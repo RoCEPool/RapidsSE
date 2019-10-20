@@ -143,7 +143,7 @@ void Step::vEntBufferPartitionStore(void)
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
   i8 iPartitionNo;
-  if ( ! m_pDataStack->bPop(iPartitionNo) )
+  if ( ! m_pDataStack->bPopI8(iPartitionNo) )
     THROW_DSTACK();
   
   pIndexBuffer->vPartitionNo(iPartitionNo);

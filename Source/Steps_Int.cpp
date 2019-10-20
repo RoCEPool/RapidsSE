@@ -68,7 +68,7 @@ void Step::vIntDivide(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop(j,i) )
+  if ( ! m_pDataStack->bPopI8(j,i) )
     THROW_DSTACK();
   
   r = DIV(i,j);
@@ -87,7 +87,7 @@ void Step::vIntEqual(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop(j,i) )
+  if ( ! m_pDataStack->bPopI8(j,i) )
     THROW_DSTACK();
   
   r = i == j;
@@ -106,7 +106,7 @@ void Step::vIntGreater(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop(j,i) )
+  if ( ! m_pDataStack->bPopI8(j,i) )
     THROW_DSTACK();
   
   r = i > j;
@@ -125,7 +125,7 @@ void Step::vIntGreaterEqual(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop(j,i) )
+  if ( ! m_pDataStack->bPopI8(j,i) )
     THROW_DSTACK();
   
   r = i >= j;
@@ -163,7 +163,7 @@ void Step::vIntHo16(void)
   ENTRY("vIntHash"_Stz);
   
   i8 i;
-  if ( ! m_pDataStack->bPop(i) )
+  if ( ! m_pDataStack->bPopI8(i) )
     THROW_DSTACK();
   
   m_pDataStack->vPushI8(i >> 48);
@@ -180,7 +180,7 @@ void Step::vIntLess(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop(j,i) )
+  if ( ! m_pDataStack->bPopI8(j,i) )
     THROW_DSTACK();
   
   r = i < j;
@@ -199,7 +199,7 @@ void Step::vIntLessEqual(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop(j,i) )
+  if ( ! m_pDataStack->bPopI8(j,i) )
     THROW_DSTACK();
   
   r = i <= j;
@@ -218,7 +218,7 @@ void Step::vIntModulo(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop(j,i) )
+  if ( ! m_pDataStack->bPopI8(j,i) )
     THROW_DSTACK();
   
   r = MOD(i,j);
@@ -237,7 +237,7 @@ void Step::vIntMultiply(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop(j,i) )
+  if ( ! m_pDataStack->bPopI8(j,i) )
     THROW_DSTACK();
   
   r = i * j;
@@ -256,7 +256,7 @@ void Step::vIntNeg(void)
   
   i8 r, i;
   
-  if ( ! m_pDataStack->bPop(i) )
+  if ( ! m_pDataStack->bPopI8(i) )
     THROW_DSTACK();
   
   r = -1 * i;
@@ -275,7 +275,7 @@ void Step::vIntNotEqual(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop(j,i) )
+  if ( ! m_pDataStack->bPopI8(j,i) )
     THROW_DSTACK();
   
   r = i != j;
@@ -293,11 +293,11 @@ void Step::vIntRandom(void)
   ENTRY("vIntRandom"_Stz);
   
   i8 iHigh;
-  if ( ! m_pDataStack->bPop(iHigh) )
+  if ( ! m_pDataStack->bPopI8(iHigh) )
     THROW_DSTACK();
   
   i8 iLow;
-  if ( ! m_pDataStack->bPop(iLow) )
+  if ( ! m_pDataStack->bPopI8(iLow) )
     THROW_DSTACK();
   
   i8 iRandom = Random::iInteger(iLow,iHigh);
@@ -316,7 +316,7 @@ void Step::vIntSubtract(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop(j,i) )
+  if ( ! m_pDataStack->bPopI8(j,i) )
     THROW_DSTACK();
   
   r = i - j;
@@ -334,11 +334,11 @@ void Step::vUnsignedIntRandom(void)
   ENTRY("vUnsignedIntRandom"_Stz);
   
   i8 iHigh;
-  if ( ! m_pDataStack->bPop(iHigh) )
+  if ( ! m_pDataStack->bPopI8(iHigh) )
     THROW_DSTACK();
   
   i8 iLow;
-  if ( ! m_pDataStack->bPop(iLow) )
+  if ( ! m_pDataStack->bPopI8(iLow) )
     THROW_DSTACK();
   
   u8 uRandom = Random::uInteger(iLow,iHigh);

@@ -30,7 +30,7 @@ void Step::vLocalFetch(void)
     THROW_DSTACK();
   
   i8 iLocal;
-  if ( ! m_pDataStack->bPop(iLocal) )
+  if ( ! m_pDataStack->bPopI8(iLocal) )
     THROW_DSTACK();
   
   Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
@@ -51,7 +51,7 @@ void Step::vLocalStore(void)
     THROW_DSTACK();
   
   i8 iLocal;
-  if ( ! m_pDataStack->bPop(iLocal) )
+  if ( ! m_pDataStack->bPopI8(iLocal) )
     THROW_DSTACK();
   
   Local* pLocal = m_pLocalsFrame->pLocal(iLocal);

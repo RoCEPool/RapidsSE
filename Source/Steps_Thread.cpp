@@ -35,7 +35,7 @@ ENTRY("vThreadBind"_Stz);
   i8 iCpu;
   Object* pObject;
   
-  if ( ! m_pDataStack->bPop(iCpu) )
+  if ( ! m_pDataStack->bPopI8(iCpu) )
     THROW_DSTACK();
   
   if ( ! m_pDataStack->bPopObject(pObject) )
@@ -189,7 +189,7 @@ ENTRY("vThreadSleepMsec"_Stz);
   
   i8 nMilliseconds;
   
-  if ( ! m_pDataStack->bPop(nMilliseconds) )
+  if ( ! m_pDataStack->bPopI8(nMilliseconds) )
     THROW_DSTACK();
   
   Thread* pThread = Thread::pThisTLSThread();
@@ -208,7 +208,7 @@ void Step::vThreadSleepNsec(void)
   
   i8 nNanoseconds;
   
-  if ( ! m_pDataStack->bPop(nNanoseconds) )
+  if ( ! m_pDataStack->bPopI8(nNanoseconds) )
     THROW_DSTACK();
   
   Thread* pThread = Thread::pThisTLSThread();
@@ -227,7 +227,7 @@ void Step::vThreadSleepSsec(void)
   
   i8 nSeconds;
   
-  if ( ! m_pDataStack->bPop(nSeconds) )
+  if ( ! m_pDataStack->bPopI8(nSeconds) )
     THROW_DSTACK();
   
   Thread* pThread = Thread::pThisTLSThread();
@@ -246,7 +246,7 @@ ENTRY("vThreadSleepUsec"_Stz);
   
   i8 nMicroseconds;
   
-  if ( ! m_pDataStack->bPop(nMicroseconds) )
+  if ( ! m_pDataStack->bPopI8(nMicroseconds) )
     THROW_DSTACK();
   
   Thread* pThread = Thread::pThisTLSThread();

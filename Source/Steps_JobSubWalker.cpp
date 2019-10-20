@@ -31,7 +31,7 @@ void Step::vJob_SubWalkerSpawn(void)
   Job_Walk* pJob_Walk = _pJob_Walk(pPtrJob_Walk);
   
   i8 i_Slot;
-  if ( ! m_pDataStack->bPop(i_Slot) )
+  if ( ! m_pDataStack->bPopI8(i_Slot) )
     THROW_DSTACK();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

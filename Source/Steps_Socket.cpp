@@ -103,7 +103,7 @@ void Step::vSocketConnect(void)
   if ( ! m_pDataStack->bPopGenVar(xNodeVar) )
     THROW_DSTACK();
   
-  if ( ! m_pDataStack->bPop(iPort) )
+  if ( ! m_pDataStack->bPopI8(iPort) )
     THROW_DSTACK();
   
   // get address of node
@@ -164,7 +164,7 @@ void Step::vSocketConnect(void)
 //  if ( ! m_pDataStack->bPopGenVar(xNodeVar) )
 //    THROW_DSTACK();
 //
-//  if ( ! m_pDataStack->bPop(iPort) )
+//  if ( ! m_pDataStack->bPopI8(iPort) )
 //    THROW_DSTACK();
 //
 //  // get address of node
@@ -262,7 +262,7 @@ void Step::vSocketListen(void)
   
   ENTRY("vSocketListen"_Stz);
   
-  if ( ! m_pDataStack->bPop(iPort) )
+  if ( ! m_pDataStack->bPopI8(iPort) )
     THROW_DSTACK();
   
   pSocket = new Socket;

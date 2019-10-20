@@ -372,7 +372,7 @@ ENTRY("vDirSeek"_Stz);
   Dir* pDir = _pDir(pPtrDir);
   
   i8 iPosition;
-  if ( ! m_pDataStack->bPop(iPosition) )
+  if ( ! m_pDataStack->bPopI8(iPosition) )
     THROW_DSTACK();
   
   pDir->vSeek(iPosition);

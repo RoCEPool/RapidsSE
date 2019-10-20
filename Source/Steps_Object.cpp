@@ -141,7 +141,7 @@ void Step::vObjectWordBodySet(void)
     THROW_DSTACK();
   
   i8 iIsBody;
-  if ( ! m_pDataStack->bPop(iIsBody) )
+  if ( ! m_pDataStack->bPopI8(iIsBody) )
     THROW_DSTACK();
   
   pObject->vWordBody(iIsBody);

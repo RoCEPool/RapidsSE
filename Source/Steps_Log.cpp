@@ -100,7 +100,7 @@ void Step::vLogMarkPhase(void)
   ENTRY("vActivityLogMarkPhase"_Stz);
   
   i8 i_Phase;
-  if ( ! m_pDataStack->bPop(i_Phase) )
+  if ( ! m_pDataStack->bPopI8(i_Phase) )
     THROW_DSTACK();
   
   Job* pJob = m_pTask->m_pJob;
@@ -122,7 +122,7 @@ void Step::vLogMarkSeed(void)
   ENTRY("vLogMarkSeed"_Stz);
   
   i8 iSeed;
-  if ( ! m_pDataStack->bPop(iSeed) )
+  if ( ! m_pDataStack->bPopI8(iSeed) )
     THROW_DSTACK();
   
   s32 sWordNm;
@@ -142,7 +142,7 @@ void Step::vLogMarkWord(void)
   ENTRY("vLogMarkWord"_Stz);
   
   i8 iAN;
-  if ( ! m_pDataStack->bPop(iAN) )
+  if ( ! m_pDataStack->bPopI8(iAN) )
     THROW_DSTACK();
   
   s32 sWordNm;
@@ -162,7 +162,7 @@ void Step::vLogJobSeed(void)
   ENTRY("vLogJobSeed"_Stz);
   
   i8 i_Seed;
-  if ( ! m_pDataStack->bPop(i_Seed) )
+  if ( ! m_pDataStack->bPopI8(i_Seed) )
     THROW_DSTACK();
   
   Job* pJob = m_pTask->m_pJob;

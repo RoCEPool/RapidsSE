@@ -46,7 +46,7 @@ void Step::vAllot(void)
   
   i8 iBytes;
   
-  if ( !  m_pDataStack->bPop(iBytes) )
+  if ( !  m_pDataStack->bPopI8(iBytes) )
     THROW_DSTACK();
   
   RASSERT(iBytes);

@@ -46,7 +46,7 @@ void Step::vJob_ExportAuxAckDecidedStore(void)
   Job_Export* pJob_Export = _pJob_Export(pPtrJobExport);
   
   i8 iAuxAckDecided;
-  if ( ! m_pDataStack->bPop(iAuxAckDecided) )
+  if ( ! m_pDataStack->bPopI8(iAuxAckDecided) )
     THROW_DSTACK();
   
   pJob_Export->m_bAuxAckDecided = (bool)iAuxAckDecided;

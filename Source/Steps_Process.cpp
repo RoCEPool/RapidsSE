@@ -50,7 +50,7 @@ void Step::vProcessTestPid(void)
 ENTRY("vProcessTestPid"_Stz);
 
   i8 iPid;
-  if ( ! m_pDataStack->bPop(iPid) )
+  if ( ! m_pDataStack->bPopI8(iPid) )
     THROW_DSTACK();
   
   i8 iExists = Process::bTestPid(iPid);

@@ -42,7 +42,7 @@ void Step::vAstackClass(void)
   ENTRY("vAstackClass"_Stz);
   
   i8 nTh;
-  if ( ! m_pDataStack->bPop(nTh) )
+  if ( ! m_pDataStack->bPopI8(nTh) )
     THROW_DSTACK();
   
   GenVar xVariable;
@@ -184,7 +184,7 @@ void Step::vAstackReverse(void)
   };
   
   i8 nValues;
-  if ( ! m_pDataStack->bPop(nValues) )
+  if ( ! m_pDataStack->bPopI8(nValues) )
     THROW_DSTACK();
   
   for (i8 i = 0; i < nValues; i++) {

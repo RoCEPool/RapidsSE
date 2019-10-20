@@ -65,7 +65,7 @@ void Step::vToPtr(void)
   ENTRY("vToPtr"_Stz);
   
   i8 iPtr;
-  if ( ! m_pDataStack->bPop(iPtr) )
+  if ( ! m_pDataStack->bPopI8(iPtr) )
     THROW_DSTACK();
   
   Object* pPtr = (Object*)iPtr;
@@ -103,7 +103,7 @@ void Step::vToTask(void)
   ENTRY("vToTask"_Stz);
   
   i8 iVal;
-  if ( ! m_pDataStack->bPop(iVal) )
+  if ( ! m_pDataStack->bPopI8(iVal) )
     THROW_DSTACK();
   
   Object* pPtrTask = _pTask(iVal);

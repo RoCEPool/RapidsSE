@@ -24,7 +24,7 @@ void Step::vToDigitName(void)
   i8 iDigit;
   
   // get the arguments
-  if ( ! m_pDataStack->bPop(iDigit) )
+  if ( ! m_pDataStack->bPopI8(iDigit) )
     THROW_DSTACK();
   
   s32 sName;
@@ -56,7 +56,7 @@ void Step::vBytesMagnitude(void)
   ENTRY("vBytesMagnitude"_Stz);
   
   i8 iBytes;
-  if ( ! m_pDataStack->bPop(iBytes) )
+  if ( ! m_pDataStack->bPopI8(iBytes) )
     THROW_DSTACK();
   
   s256 sMag;
@@ -77,10 +77,10 @@ void Step::vNumberMagnitude(void)
   i8 iNumber;
   i8 iScale;
   
-  if ( ! m_pDataStack->bPop(iNumber) )
+  if ( ! m_pDataStack->bPopI8(iNumber) )
     THROW_DSTACK();
   
-  if ( ! m_pDataStack->bPop(iScale) )
+  if ( ! m_pDataStack->bPopI8(iScale) )
     THROW_DSTACK();
   
   s256 s;

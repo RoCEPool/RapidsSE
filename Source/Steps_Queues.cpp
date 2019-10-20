@@ -38,7 +38,7 @@ void Step::vQueuesExecutingLength(void)
   
   i8 iSlot;
   
-  if ( !  m_pDataStack->bPop(iSlot) )
+  if ( !  m_pDataStack->bPopI8(iSlot) )
     THROW_DSTACK();
   
   Queues* pQueues = AM::pQueues();
@@ -56,7 +56,7 @@ void Step::vQueuesReadyLength(void)
   
   i8 iSlot;
   
-  if ( !  m_pDataStack->bPop(iSlot) )
+  if ( !  m_pDataStack->bPopI8(iSlot) )
     THROW_DSTACK();
   
   Queues* pQueues = AM::pQueues();

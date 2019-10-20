@@ -48,7 +48,7 @@ void Step::vEnmSetAddInt(void)
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   i8 iValue;
-  if ( ! m_pDataStack->bPop(iValue) )
+  if ( ! m_pDataStack->bPopI8(iValue) )
     THROW_DSTACK();
   
   s32 sName;

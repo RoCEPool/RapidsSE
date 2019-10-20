@@ -228,7 +228,7 @@ void Step::vWordImmediateSet(void)
   Word* pWord = _pWord(pWordObject);
   
   i8 iImmediate;
-  if ( ! m_pDataStack->bPop(iImmediate) )
+  if ( ! m_pDataStack->bPopI8(iImmediate) )
     THROW_DSTACK();
   
   pWord->vImmediate(iImmediate);
@@ -309,7 +309,7 @@ void Step::vWordKindStore(void)
   
   i8 iKind;
   
-  if ( ! m_pDataStack->bPop(iKind) )
+  if ( ! m_pDataStack->bPopI8(iKind) )
     THROW_DSTACK();
   
   pWord->vKind((eWK)iKind);

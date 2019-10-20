@@ -127,7 +127,7 @@ void Step::vJobAcksRemaining(void)
   Job* pJob = _pJob(pJobPtr);
   
   i8 nAcksRemaining;
-  if ( ! m_pDataStack->bPop(nAcksRemaining) )
+  if ( ! m_pDataStack->bPopI8(nAcksRemaining) )
     THROW_DSTACK();
   
   pJob->vAcksRmg(nAcksRemaining);
@@ -1059,7 +1059,7 @@ void Step::vJobOriginatingIdStore(void)
   Job* pJob = _pJob(pJobPtr);
   
   i8 iOriginatingId;
-  if ( ! m_pDataStack->bPop(iOriginatingId) )
+  if ( ! m_pDataStack->bPopI8(iOriginatingId) )
     THROW_DSTACK();
   
   pJob->m_iOriginatingId = iOriginatingId;
@@ -1498,7 +1498,7 @@ void Step::vJobReseed(void)
   ENTRY("vJobReseed"_Stz);
   
   i8 i_Seed;
-  if ( ! m_pDataStack->bPop(i_Seed) )
+  if ( ! m_pDataStack->bPopI8(i_Seed) )
     THROW_DSTACK();
   
   Object* pJobPtr;
@@ -1609,7 +1609,7 @@ void Step::vJobRowsInvalidStore(void)
   Job* pJob = _pJob(pJobPtr);
   
   i8 iRowsInvalid;
-  if ( ! m_pDataStack->bPop(iRowsInvalid) )
+  if ( ! m_pDataStack->bPopI8(iRowsInvalid) )
     THROW_DSTACK();
   
   //pJob->m_xNode[iNode].m_ixRowsInvalid = iRowsInvalid;
@@ -1650,7 +1650,7 @@ void Step::vJobRowsProcessedStore(void)
   Job* pJob = _pJob(pJobPtr);
   
   i8 iRowsProcessed;
-  if ( ! m_pDataStack->bPop(iRowsProcessed) )
+  if ( ! m_pDataStack->bPopI8(iRowsProcessed) )
     THROW_DSTACK();
   
   //pJob->m_xNode[iNode].m_ixRowsProcessed = iRowsProcessed;
@@ -1713,7 +1713,7 @@ void Step::vJobRowsSkippedStore(void)
   Job* pJob = _pJob(pJobPtr);
   
   i8 iRowsSkipped;
-  if ( ! m_pDataStack->bPop(iRowsSkipped) )
+  if ( ! m_pDataStack->bPopI8(iRowsSkipped) )
     THROW_DSTACK();
   
   //pJob->m_xNode[iNode].m_ixRowsSkipped = iRowsSkipped;
@@ -1919,7 +1919,7 @@ void Step::vJobSpawn(void)
   ENTRY("vJobSpawn"_Stz);
   
   i8 i_Seed;
-  if ( ! m_pDataStack->bPop(i_Seed) )
+  if ( ! m_pDataStack->bPopI8(i_Seed) )
     THROW_DSTACK();
 
   Object* pJobPtr;
@@ -1947,7 +1947,7 @@ void Step::vJobSpawnDedicated(void)
   ENTRY("vJobSpawnDedicated"_Stz);
   
   i8 i_Seed;
-  if ( ! m_pDataStack->bPop(i_Seed) )
+  if ( ! m_pDataStack->bPopI8(i_Seed) )
     THROW_DSTACK();
   
   Object* pJobPtr;
@@ -1975,7 +1975,7 @@ void Step::vJobStateDiagram(void)
   ENTRY("vJobStateDiagram"_Stz);
   
   i8 iClassNo;
-  if ( ! m_pDataStack->bPop(iClassNo) )
+  if ( ! m_pDataStack->bPopI8(iClassNo) )
     THROW_DSTACK();
 
   s256 sDiagram;

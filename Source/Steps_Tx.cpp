@@ -123,7 +123,7 @@ void Step::vTxCounterStore(void)
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iCounter;
-  if ( ! m_pDataStack->bPop(iCounter) )
+  if ( ! m_pDataStack->bPopI8(iCounter) )
     THROW_DSTACK();
   
   pTx->vCounterSet(iCounter);
@@ -146,7 +146,7 @@ void Step::vTxDistMemberFetch(void)
   ASSERT(pTx->bLocalTx());
   
   i8 i_Node;
-  if ( ! m_pDataStack->bPop(i_Node) )
+  if ( ! m_pDataStack->bPopI8(i_Node) )
     THROW_DSTACK();
   
   bool bDistMember = pTx->bDistMember(i_Node);
@@ -171,11 +171,11 @@ void Step::vTxDistMemberStore(void)
   ASSERT(pTx->bLocalTx());
   
   i8 i_Node;
-  if ( ! m_pDataStack->bPop(i_Node) )
+  if ( ! m_pDataStack->bPopI8(i_Node) )
     THROW_DSTACK();
 
   i8 iDistMember;
-  if ( ! m_pDataStack->bPop(iDistMember) )
+  if ( ! m_pDataStack->bPopI8(iDistMember) )
     THROW_DSTACK();
   
   pTx->vDistMember(i_Node,iDistMember);
@@ -307,7 +307,7 @@ void Step::vTxTestDist(void)
   ENTRY("vTxTestDist"_Stz);
   
   i8 iDistTxId;
-  if ( ! m_pDataStack->bPop(iDistTxId) )
+  if ( ! m_pDataStack->bPopI8(iDistTxId) )
     THROW_DSTACK();
   
   Tx* pTx = Tx::pTestDistTx(iDistTxId);

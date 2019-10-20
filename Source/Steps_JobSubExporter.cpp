@@ -31,7 +31,7 @@ void Step::vJob_SubExporterSpawn(void)
   Job_Export* pJob_Export = _pJob_Export(pPtrJob_Export);
   
   i8 i_Slot;
-  if ( ! m_pDataStack->bPop(i_Slot) )
+  if ( ! m_pDataStack->bPopI8(i_Slot) )
     THROW_DSTACK();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

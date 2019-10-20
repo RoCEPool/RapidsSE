@@ -47,7 +47,7 @@ void Step::vSlotsColumnName(void)
   ASSERT(CN_SLOTS == pSlots->eClass());
   
   i8 iIndex;
-  if ( ! m_pDataStack->bPop(iIndex) )
+  if ( ! m_pDataStack->bPopI8(iIndex) )
     THROW_DSTACK();
   
   ASSERT(iIndex < pSlots->pPtnColVec()->nItems());

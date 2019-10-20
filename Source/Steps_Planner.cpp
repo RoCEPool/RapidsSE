@@ -63,7 +63,7 @@ void Step::vPlannerChosenPath(void)
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! m_pDataStack->bPop(i_Phrase) )
+  if ( ! m_pDataStack->bPopI8(i_Phrase) )
     THROW_DSTACK();
   AccessPath* pChosenPlan = mpPlanner->pChosenPath(i_Phrase);
   
@@ -102,7 +102,7 @@ void Step::vPlannerFetchTechniqueFetch(void)
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! m_pDataStack->bPop(i_Phrase) )
+  if ( ! m_pDataStack->bPopI8(i_Phrase) )
     THROW_DSTACK();
   eAT eFetchTechnique = mpPlanner->pChosenPath(i_Phrase)->eAccess();
   
@@ -143,7 +143,7 @@ void Step::vPlannerHighKeyFetch(void)
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! m_pDataStack->bPop(i_Phrase) )
+  if ( ! m_pDataStack->bPopI8(i_Phrase) )
     THROW_DSTACK();
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
@@ -169,7 +169,7 @@ void Step::vPlannerIndexNmFetch(void)
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! m_pDataStack->bPop(i_Phrase) )
+  if ( ! m_pDataStack->bPopI8(i_Phrase) )
     THROW_DSTACK();
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
@@ -194,7 +194,7 @@ void Step::vPlannerKeyFetch(void)
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! m_pDataStack->bPop(i_Phrase) )
+  if ( ! m_pDataStack->bPopI8(i_Phrase) )
     THROW_DSTACK();
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
@@ -220,7 +220,7 @@ void Step::vPlannerLowKeyFetch(void)
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! m_pDataStack->bPop(i_Phrase) )
+  if ( ! m_pDataStack->bPopI8(i_Phrase) )
     THROW_DSTACK();
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   

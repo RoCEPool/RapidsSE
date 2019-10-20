@@ -92,7 +92,7 @@ void Step::vGridNode(void)
   ENTRY("vGridNode"_Stz);
   
   i8 iNode;
-  if ( ! m_pDataStack->bPop(iNode) )
+  if ( ! m_pDataStack->bPopI8(iNode) )
     THROW_DSTACK();
   
   Node* pNode = AM::pGrid()->pGetNode(iNode);
@@ -196,7 +196,7 @@ void Step::vGridStartedStore(void)
   
   i8 iStarted;
   
-  if ( ! m_pDataStack->bPop(iStarted) )
+  if ( ! m_pDataStack->bPopI8(iStarted) )
     THROW_DSTACK();
   
   AM::pGrid()->vHasStarted(iStarted == 1 ? true : false);
@@ -225,7 +225,7 @@ void Step::vGridStartNodeStore(void)
   
   i8 iStartNode;
   
-  if ( ! m_pDataStack->bPop(iStartNode) )
+  if ( ! m_pDataStack->bPopI8(iStartNode) )
     THROW_DSTACK();
   
   AM::pGrid()->vStartNode(iStartNode);
@@ -253,7 +253,7 @@ void Step::vGridToNode(void)
   ENTRY("vGridToNode"_Stz);
   
   i8 iParitionId;
-  if ( ! m_pDataStack->bPop(iParitionId) )
+  if ( ! m_pDataStack->bPopI8(iParitionId) )
     THROW_DSTACK();
   
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
@@ -274,7 +274,7 @@ void Step::vGridToPartition(void)
   ENTRY("vGridToPartition"_Stz);
   
   i8 iSlot;
-  if ( ! m_pDataStack->bPop(iSlot) )
+  if ( ! m_pDataStack->bPopI8(iSlot) )
     THROW_DSTACK();
   
   i8 iPartitionId = TablePtn::iSlotToPartition(iSlot);
@@ -292,7 +292,7 @@ void Step::vGridToSlot(void)
   ENTRY("vGridToSlot"_Stz);
   
   i8 iPartitionId;
-  if ( ! m_pDataStack->bPop(iPartitionId) )
+  if ( ! m_pDataStack->bPopI8(iPartitionId) )
     THROW_DSTACK();
   
   i8 iSlot = TablePtn::iPartitionToSlot(iPartitionId);
