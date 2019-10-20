@@ -52,7 +52,7 @@ namespace SenVM
     bool bPeekZero(void);
   
     bool bPopCell(Cell*& aCell);
-    bool bPop(eCN& eClassNo);
+    bool bPopCN(eCN& eClassNo);
     bool bPop(GenVar* pGenVar);
     bool bPop(GenVar& xGenVar);
     bool bPop(GenVar& xVar1, GenVar& xVar2);

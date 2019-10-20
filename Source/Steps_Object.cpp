@@ -48,7 +48,7 @@ void Step::vObjectClassStore(void)
     THROW_DSTACK();
   
   eCN eClassNo;
-  if ( ! m_pDataStack->bPop(eClassNo) )
+  if ( ! m_pDataStack->bPopCN(eClassNo) )
     THROW_DSTACK();
   
   pObject->vSetClass(eClassNo);

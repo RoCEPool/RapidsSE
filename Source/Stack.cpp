@@ -336,7 +336,7 @@ bool Stack::bPopCell(Cell*& aCell)
 /*----------------------------------------------------------------------------*/
 /* pop eClassNo from value stack                                              */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(eCN& eClassNo)
+bool Stack::bPopCN(eCN& eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
