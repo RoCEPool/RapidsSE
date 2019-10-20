@@ -34,6 +34,7 @@ namespace Jobs
     void vShow(void);
 
     void vBegin(void);
+    void vCancel(void);
     void vEnd(void);
     void vExecute(void);
 

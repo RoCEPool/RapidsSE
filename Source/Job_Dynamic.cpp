@@ -241,6 +241,23 @@ void Job_Dynamic::vBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* query cancel (participant job executes this code)                          */
+/*----------------------------------------------------------------------------*/
+void Job_Dynamic::vCancel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  
+  // get the first stage of the pipeline
+  Stage* pStage = m_pPipeline->pStageVec()->pGet(0);
+  
+  // get the first op of the first stage
+  StartOp * pStartOp = _pStartOp(pStage->pOpVec()->pGet(0));
+  
+  // send a cancel marker to the stratOp
+  pStartOp->vAppendLeft(new CancelMarker);
+}
+
+/*----------------------------------------------------------------------------*/
 /* query end (participant job executes this code)                             */
 /*----------------------------------------------------------------------------*/
 void Job_Dynamic::vEnd(void)
@@ -374,6 +391,7 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
         
       case CN_ENDMARKER: {
         // print the responses received
+        AM::pThisTLSPthread()->vSleepUsec(1000000,CN_JOB_DYNAMIC);
         vTrace("success: %lld rows fetched\n"_Stz, *pJob_Dynamic->m_xResponse.m_ixRowsProcessed);
         delete (EndMarker*)pOperand;
         goto L_EXIT;
