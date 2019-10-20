@@ -39,10 +39,12 @@ void RegSet::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RegSet::RegSet(void)
+RegSet::RegSet(Task* pTask)
 : Object(CN_REGSET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGSET,_FOOTER_);
+  
+  m_pTask = pTask;
   
  _checkInitialised_(CN_REGSET);
   

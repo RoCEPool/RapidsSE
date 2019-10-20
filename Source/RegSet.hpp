@@ -8,6 +8,7 @@ namespace Registers
   class RegSet : public Object
   {
   private:
+    Task* m_pTask;  // which task
 
     // must be last
     Footer m_xFooter;
@@ -16,7 +17,7 @@ namespace Registers
     void* operator new(size_t);
     void  operator delete(void*);
 
-    RegSet(void);
+    RegSet(Task* pTask);
    ~RegSet(void) noexcept(false);
 
   private:

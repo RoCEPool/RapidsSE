@@ -643,7 +643,7 @@ void Task::vNewStacks(void)
     return;
   
   m_pForth  = new Forth(this);
-  m_pRegSet = new RegSet;
+  m_pRegSet = new RegSet(this);
 }
 
 /*----------------------------------------------------------------------------*/
