@@ -638,7 +638,7 @@ bool Stack::bPop(Object*& pObject, GenVar& xGenVar)
 /*----------------------------------------------------------------------------*/
 /* pop register from value stack                                              */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Local*& pLocal)
+bool Stack::bPopLocal(Local*& pLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

@@ -56,7 +56,7 @@ void Step::vLocalStore(void)
   
   Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
   
-  m_pDataStack->bPop(pLocal);
+  m_pDataStack->bPopLocal(pLocal);
   
   EXIT();
 }
