@@ -126,7 +126,7 @@ void Step::vLogMarkSeed(void)
     THROW_DSTACK();
   
   s32 sWordNm;
-  if ( ! m_pDataStack->bPop(sWordNm) )
+  if ( ! m_pDataStack->bPopS32(sWordNm) )
     THROW_DSTACK();
   
   //ActLog::vAdd(m_pTask->m_pJob,(eAN)iSeed,sWordNm.szStz());
@@ -146,7 +146,7 @@ void Step::vLogMarkWord(void)
     THROW_DSTACK();
   
   s32 sWordNm;
-  if ( ! m_pDataStack->bPop(sWordNm) )
+  if ( ! m_pDataStack->bPopS32(sWordNm) )
     THROW_DSTACK();
   
   //ActLog::vAdd(m_pTask->m_pJob,(eAN)iAN,sWordNm.szStz());

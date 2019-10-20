@@ -653,7 +653,7 @@ bool Stack::bPop(Local*& pLocal)
 /*----------------------------------------------------------------------------*/
 /* pop s from value stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s32& sArg)
+bool Stack::bPopS32(s32& sArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

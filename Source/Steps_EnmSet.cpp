@@ -52,7 +52,7 @@ void Step::vEnmSetAddInt(void)
     THROW_DSTACK();
   
   s32 sName;
-  if ( ! m_pDataStack->bPop(sName) )
+  if ( ! m_pDataStack->bPopS32(sName) )
     THROW_DSTACK();
   
   pEnameSet->vAdd(sName,iValue,TN_INTEGER);
@@ -74,11 +74,11 @@ void Step::vEnmSetAddStr(void)
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
 
   s32 sValue;
-  if ( ! m_pDataStack->bPop(sValue) )
+  if ( ! m_pDataStack->bPopS32(sValue) )
     THROW_DSTACK();
   
   s32 sName;
-  if ( ! m_pDataStack->bPop(sName) )
+  if ( ! m_pDataStack->bPopS32(sName) )
     THROW_DSTACK();
   
   pEnameSet->vAdd(sName,sValue,TN_STRING);
@@ -122,7 +122,7 @@ void Step::vEnmSetGetStr(void)
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s32 sName;
-  if ( ! m_pDataStack->bPop(sName) )
+  if ( ! m_pDataStack->bPopS32(sName) )
     THROW_DSTACK();
   
   s48K sValue;
@@ -146,7 +146,7 @@ void Step::vEnmSetHasName(void)
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s32 sName;
-  if ( ! m_pDataStack->bPop(sName) )
+  if ( ! m_pDataStack->bPopS32(sName) )
     THROW_DSTACK();
 
   bool bHas = pEnameSet->bHasName(sName);

@@ -294,7 +294,7 @@ ENTRY("vTaskSeed"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
   s32 sSeed;
-  if ( ! m_pDataStack->bPop(sSeed) )
+  if ( ! m_pDataStack->bPopS32(sSeed) )
     THROW_DSTACK();
 
 

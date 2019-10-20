@@ -199,7 +199,7 @@ void Step::vCreateFrom(void)
   ENTRY("vCreateFrom"_Stz);
   
   s32 sName;
-  if ( ! m_pDataStack->bPop(sName) )
+  if ( ! m_pDataStack->bPopS32(sName) )
     THROW_DSTACK();
   
   Dic* pDic;
@@ -227,7 +227,7 @@ void Step::vCreateFromPersistent(void)
   ENTRY("vCreateFrom"_Stz);
   
   s32 sName;
-  if ( ! m_pDataStack->bPop(sName) )
+  if ( ! m_pDataStack->bPopS32(sName) )
     THROW_DSTACK();
   
   Dic* pDic;
@@ -252,7 +252,7 @@ void Step::vCreateFromInRoot(void)
   ENTRY("vCreateFromInRoot"_Stz);
   
   s32 sName;
-  if ( ! m_pDataStack->bPop(sName) )
+  if ( ! m_pDataStack->bPopS32(sName) )
     THROW_DSTACK();
   
   Dic* pDic = AM::pRootDic();
@@ -657,7 +657,7 @@ void Step::vSeriesName(void)
   ENTRY("vSeriesName"_Stz);
   
   s32 sName;
-  if ( ! m_pDataStack->bPop(sName) )
+  if ( ! m_pDataStack->bPopS32(sName) )
     THROW_DSTACK();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

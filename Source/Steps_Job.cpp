@@ -644,7 +644,7 @@ void Step::vJobEnameFetch(void)
   Job* pJob = _pJob(pJobPtr);
   
   s32 sEname;
-  if ( ! m_pDataStack->bPop(sEname) )
+  if ( ! m_pDataStack->bPopS32(sEname) )
     THROW_DSTACK();
   
   s4K sValue ( pJob->m_oEnmSet.szValue(sEname) );
@@ -667,7 +667,7 @@ void Step::vJobEnameStore(void)
   Job* pJob = _pJob(pJobPtr);
   
   s32 sEname;
-  if ( ! m_pDataStack->bPop(sEname) )
+  if ( ! m_pDataStack->bPopS32(sEname) )
     THROW_DSTACK();
   
   s4K sValue;

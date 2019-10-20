@@ -33,7 +33,7 @@ void Step::vUtilitySchemaTest(void)
   ENTRY("vUtilitySchemaTest"_Stz);
   
   s32 sStream;
-  if ( ! m_pDataStack->bPop(sStream) )
+  if ( ! m_pDataStack->bPopS32(sStream) )
     THROW_DSTACK();
 
   SchemaTest::vRun(sStream);

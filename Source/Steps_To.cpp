@@ -47,7 +47,7 @@ void Step::vToInt(void)
   ENTRY("vToInt"_Stz);
   
   s32 sInt;
-  if ( ! m_pDataStack->bPop(sInt) )
+  if ( ! m_pDataStack->bPopS32(sInt) )
     THROW_DSTACK();
   
   i8 i = sInt.iToI8();

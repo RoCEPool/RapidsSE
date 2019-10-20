@@ -88,7 +88,7 @@ ENTRY("vFileOpen"_Stz);
   File* pFile = _pFile(pPtrFile);
   
   s32 sMode;
-  if ( ! m_pDataStack->bPop(sMode) )
+  if ( ! m_pDataStack->bPopS32(sMode) )
     THROW_DSTACK();
 
   s256 sPath;
