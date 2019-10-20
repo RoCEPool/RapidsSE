@@ -146,21 +146,12 @@ namespace Oblique
     static void vTriggerBidingTask(Task* pTask);
 
     //
-    static bool bAttached(void);
-    static void vDumpApi(void);
     static Task* pExecutingTask(Job* pJob);
     static bool bJobIsForeign(i8 iJobId);
-    static void vLogArguments(void);
     static void vPrintArguments(void);
     static void vPrintAttachMap(void);
     static void vPrintStartupInfo(void);
     static i8   nRandomLevels(void);
-    static void vTaskMutexLock(Task* pTask);
-    static void vTaskMutexSignal(Task* pTask);
-    static void vTaskMutexUnlock(Task* pTask);
-    static void vTaskMutexWait(Task* pTask);
-    static i8   iTaskQueue(Task* pTask);
-    static i8   iTaskState(Task* pTask);
     static Job* pThisTLSJob(void);
     static Op*  pThisTLSOp(void);
     static Session* pThisTLSSession(void);
@@ -170,29 +161,26 @@ namespace Oblique
     static i8   iThreadId(Thread* pThread);
     static void vWelcomeText(s256& sWelcome);
     static void vCopyrightText(s256& sCopyRight);
-    static void vWriteLog(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //
+    static bool bAttached(void);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vDdlDropRead(Task* pTask);
     static void vDdlDropWrite(Task* pTask);
     static void vDdlGrabRead(Task* pTask);
     static void vDdlGrabWrite(Task* pTask);
+    static void vDumpApi(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //
-    static bool bSpawnJob(Session* pSession, Job* pJob);
-    static bool bSpawnOp(Session* pSession, Op* pOp);
-    static void vStateDiagram(s256& sDiagram, eCN eJobClass);
-    static void vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs);
-
+    static void vLog(TokenVec* pTknVec);
     static void vLogAll(void);
-
+    static void vLogArguments(void);
     static void vLogHow(i8 iRequestId, i8 iDetail);
-
+  
     static void vLogFyi(Stz* szFormat, ...);
     static void vLogText(i8 iId, Stz* szText);
-
+  
     static void vLogDdl(eSL, Job*       pJob, eDA eDdlAct, Stz* szFormat, ...);
     static void vLogJob(eSL, Job*       pJob, eJA eJobAct, Stz* szFormat, ...);
     static void vLogLck(eSL, Lock*      pLck, eLA eLckAct, Stz* szFormat, ...);
@@ -209,6 +197,28 @@ namespace Oblique
     static void vLogThd(eSL, Thread*    pThd, eHA eThdAct, Stz* szFormat, ...);
     static void vLogTsk(eSL, Task*      pTsk, eTA eTskAct, Stz* szFormat, ...);
     static void vLogTxn(eSL, Tx*        pTxn, eXA eTxnAct, Stz* szFormat, ...);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    //
+    static bool bSpawnJob(Session* pSession, Job* pJob);
+    static bool bSpawnOp(Session* pSession, Op* pOp);
+    static void vStateDiagram(s256& sDiagram, eCN eJobClass);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static void vTaskBeginOp(Task* pTask);
+    static void vTaskMutexLock(Task* pTask);
+    static void vTaskMutexSignal(Task* pTask);
+    static void vTaskMutexUnlock(Task* pTask);
+    static void vTaskMutexWait(Task* pTask);
+    static i8   iTaskQueue(Task* pTask);
+    static i8   iTaskState(Task* pTask);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static void vWriteLog(void);
+    static void vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs);
+
+  
+  
   
     static void vNap(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMilliSeconds, eCN eCallingClass);
@@ -227,7 +237,6 @@ namespace Oblique
     static void vFocalRemove(Focal* pFocal);
 
     static void vMri(TokenVec* pTknVec);
-    static void vLog(TokenVec* pTknVec);
 
     static i8   iRdTimePoint(void);
     static i8   iAMTimePoint(void);

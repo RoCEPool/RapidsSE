@@ -95,6 +95,11 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_fpCall        = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
   m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Task* pTask = AM::pThisTLSTask();
+  AM::vTaskBeginOp(pTask);
+  
   ++ gixOp;
   AM::vLogOpr(SL_INF,this,OA_OP_CONSTRUCT,
               "Op construct : %p (%lld ops exist)"_Stz, //!format-LogOpr

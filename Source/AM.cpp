@@ -310,6 +310,8 @@ i8 AM::nRandomLevels(void) {
   i8 nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1,pTask->i_NextRnd()) + 1;
   return nLevels;
 }
+
+void AM::vTaskBeginOp(Task* pTask)     { pTask->vBeginOp();     }
 void AM::vTaskMutexLock(Task* pTask)   { pTask->vMutexLock();   }
 void AM::vTaskMutexSignal(Task* pTask) { pTask->vMutexSignal(); }
 void AM::vTaskMutexUnlock(Task* pTask) { pTask->vMutexUnlock(); }

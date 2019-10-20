@@ -82,6 +82,7 @@ namespace Tasks
     bool bAcksRmgDec(void);
     void vAdjustFIP(i8 nBytes);
     Object* pArgObject(void);
+    void vBeginOp(void);
     static void vDebug(void);
     Compiler* pCompiler(void);
     void vContentDump(void);
