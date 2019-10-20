@@ -57,6 +57,7 @@ namespace Oblique       { class AM;                                           }
 namespace Operators     { class Op; class Pipeline;                           }
 namespace Resources     { class Resource; class ResourceTracker;
                           class Pthread;                                      }
+namespace Registers     {                                                     }
 namespace Rows          { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
@@ -111,6 +112,7 @@ using namespace Persistence;
 using namespace Plans;
 using namespace Pool;
 using namespace Prompt;
+using namespace Registers;
 using namespace Resources;
 using namespace Rows;
 using namespace ScanSprint;

@@ -14,32 +14,35 @@ extern pFINALIZE *gpFinalize[];
 /*----------------------------------------------------------------------------*/
 void StorageEngine::vCheckAllAssumptions(void)
 {
-  // in reverse order of the namespaces in the project
-  Base::vCheckAssumptions();
+  Alignment::vCheckAssumptions();
   Assembler::vCheckAssumptions();
-  // third party??
-  Strings::vCheckAssumptions();
-  Correctness::vCheckAssumptions();
+  Base::vCheckAssumptions();
+  Chunks::vCheckAssumptions();
   ClassData::vCheckAssumptions();
-  Focals::vCheckAssumptions();
+  Commands::vCheckAssumptions();
+  ControlData::vCheckAssumptions();
+  Correctness::vCheckAssumptions();
   Enums::vCheckAssumptions();
   Esses::vCheckAssumptions();
-  Host::vCheckAssumptions();
-  Locking::vCheckAssumptions();
-  Alignment::vCheckAssumptions();
-  Pool::vCheckAssumptions();
-  Library::vCheckAssumptions();
+  Focals::vCheckAssumptions();
   Gadgets::vCheckAssumptions();
-  Resources::vCheckAssumptions();
+  Host::vCheckAssumptions();
+  Library::vCheckAssumptions();
+  Locking::vCheckAssumptions();
+  MetaData::vCheckAssumptions();
   Persistence::vCheckAssumptions();
-  Structures::vCheckAssumptions();
-  Chunks::vCheckAssumptions();
-  Transactions::vCheckAssumptions();
-  Commands::vCheckAssumptions();
+  Pipelines::vCheckAssumptions();
+  Pool::vCheckAssumptions();
+  Registers::vCheckAssumptions();
+  Resources::vCheckAssumptions();
   SenVM::vCheckAssumptions();
   Streams::vCheckAssumptions();
-  MetaData::vCheckAssumptions();
-  ControlData::vCheckAssumptions();
+  Strings::vCheckAssumptions();
+  Structures::vCheckAssumptions();
+  Transactions::vCheckAssumptions();
+
+  // third party??
+
   CompilerStream::vCheckAssumptions();
   Transform::vCheckAssumptions();
   ScanSprint::vCheckAssumptions();
@@ -65,7 +68,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   StorageEngine::vCheckAssumptions();
   
   
-  Pipelines::vCheckAssumptions();
 }
 
 /*----------------------------------------------------------------------------*/
