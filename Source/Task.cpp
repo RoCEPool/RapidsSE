@@ -270,6 +270,10 @@ void Task::vTaskLoop_op(void)
   
   RASSERT(TK_OPERATOR == eKind());
   
+  if (! m_pForth) {
+    vInitExeContext();
+  }
+  
   while (TR_NONE == m_eTransition)
     m_pOp->vOpLoop();
   
@@ -386,8 +390,21 @@ void Task::vBeginOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pRegSet->m_pOpQueLeft  = new OperandQueue;
-  m_pRegSet->m_pOpQueRight = new OperandQueue;
+  vGrabTaskLock();
+  
+  if (! m_pForth)
+    m_pForth = new Forth(this);
+  
+  if (! m_pRegSet)
+    m_pRegSet = new RegSet(this);
+  
+  if (! m_pRegSet->m_pOpQueLeft)
+    m_pRegSet->m_pOpQueLeft  = new OperandQueue;
+  
+  if (! m_pRegSet->m_pOpQueRight)
+    m_pRegSet->m_pOpQueRight = new OperandQueue;
+  
+  vDropTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -480,11 +497,15 @@ void Task::vGrabTaskLock(void)
 /*----------------------------------------------------------------------------*/
 void Task::vInitExeContext(void)
 {
-  if (m_pForth)
-    return;
+  vGrabTaskLock();
   
-  m_pForth  = new Forth(this);
-  m_pRegSet = new RegSet(this);
+  if (! m_pForth)
+    m_pForth  = new Forth(this);
+  
+  if (! m_pRegSet)
+    m_pRegSet = new RegSet(this);
+  
+  vDropTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -44,6 +44,8 @@ RegSet::RegSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGSET,_FOOTER_);
   
+  vTrace("  new RegSet %p for Task %p\n"_Stz,this,pTask);
+  
   m_pTask = pTask;
   
   m_pOpQueLeft  = nullptr;
