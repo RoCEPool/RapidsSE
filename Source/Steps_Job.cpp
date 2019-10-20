@@ -655,7 +655,7 @@ void Step::vJobEnameFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.ename! -- store given ename-value into job EnameSet                      */
+/* job.ename! -- store given ename-value into job EnameSet                    */
 /*----------------------------------------------------------------------------*/
 void Step::vJobEnameStore(void)
 {
@@ -671,7 +671,7 @@ void Step::vJobEnameStore(void)
     THROW_DSTACK();
   
   s4K sValue;
-  if ( ! m_pDataStack->bPop(sValue) )
+  if ( ! m_pDataStack->bPopS4K(sValue) )
     THROW_DSTACK();
 
   RASSERT(0);
@@ -962,7 +962,7 @@ void Step::vJobMetadataStore(void)
   Job* pJob = _pJob(pJobPtr);
   
   s4K sMetadata;
-  if ( ! m_pDataStack->bPop(sMetadata) )
+  if ( ! m_pDataStack->bPopS4K(sMetadata) )
     THROW_DSTACK();
   
   pJob->m_sMetadata = sMetadata;
@@ -1548,7 +1548,7 @@ void Step::vJobResponseStore(void)
   Job* pJob = _pJob(pJobPtr);
   
   s4K sResponse;
-  if ( ! m_pDataStack->bPop(sResponse) )
+  if ( ! m_pDataStack->bPopS4K(sResponse) )
     THROW_DSTACK();
   
   //pJob->m_xNode[iNode].m_sResponse = sResponse;

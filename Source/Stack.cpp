@@ -689,7 +689,7 @@ bool Stack::bPop(s256& sArg)
 /*----------------------------------------------------------------------------*/
 /* pop s from value stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s4K& sArg)
+bool Stack::bPopS4K(s4K& sArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
