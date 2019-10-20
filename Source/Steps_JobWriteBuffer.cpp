@@ -26,7 +26,7 @@ void Step::vJob_WriteBufferParentJobIdFetch(void)
   ENTRY("vJob_WriteBufferParentJobIdFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
@@ -47,7 +47,7 @@ void Step::vJob_WriteBufferInsertRows(void)
   ENTRY("vJob_WriteBufferInsertRows"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
@@ -66,7 +66,7 @@ void Step::vJob_WriteBufferIsIngesting(void)
   ENTRY("vJob_WriteBufferIsIngesting"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
@@ -85,7 +85,7 @@ void Step::vJob_WriteBufferIsInserting(void)
   ENTRY("vJob_WriteBufferIsInserting"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
@@ -104,7 +104,7 @@ void Step::vJob_WriteBufferIsLoading(void)
   ENTRY("vJob_WriteBufferIsLoading"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
@@ -123,7 +123,7 @@ void Step::vJob_WriteBufferPartitionFetch(void)
   ENTRY("vJob_WriteBufferPartitionFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
@@ -141,12 +141,12 @@ void Step::vJob_WriteBufferTableStore(void)
   ENTRY("vJob_WriteBufferTableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   Object* pTablePtr;
-  if ( ! m_pDataStack->bPop(pTablePtr) )
+  if ( ! m_pDataStack->bPopObject(pTablePtr) )
     THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   

@@ -22,7 +22,7 @@ void Step::vJob_MonitorBegin(void)
   ENTRY("vJob_MonitorBegin"_Stz);
   
   Object* pPtrJobMonitor;
-  if ( ! m_pDataStack->bPop(pPtrJobMonitor) )
+  if ( ! m_pDataStack->bPopObject(pPtrJobMonitor) )
     THROW_DSTACK();
   Job_Monitor* pJob_Monitor = _pJob_Monitor(pPtrJobMonitor);
   
@@ -41,7 +41,7 @@ void Step::vJob_MonitorTake(void)
   ENTRY("vJob_MonitorTake"_Stz);
   
   Object* pPtrJobMonitor;
-  if ( ! m_pDataStack->bPop(pPtrJobMonitor) )
+  if ( ! m_pDataStack->bPopObject(pPtrJobMonitor) )
     THROW_DSTACK();
   Job_Monitor* pJob_Monitor = _pJob_Monitor(pPtrJobMonitor);
   
@@ -65,7 +65,7 @@ void Step::vJob_MonitorEnd(void)
   ENTRY("vJob_MonitorEnd"_Stz);
   
   Object* pPtrJob_Monitor;
-  if ( ! m_pDataStack->bPop(pPtrJob_Monitor) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Monitor) )
     THROW_DSTACK();
   Job_Monitor* pJob_Monitor = _pJob_Monitor(pPtrJob_Monitor);
   

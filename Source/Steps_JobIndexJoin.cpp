@@ -30,7 +30,7 @@ void Step::vJob_IndexJoinLastBuffersStore(void)
   ENTRY("vJob_IndexJoinLastBuffersStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
   
@@ -51,12 +51,12 @@ void Step::vJob_IndexJoinLeftIndexStore(void)
   ENTRY("vJob_IndexJoinLeftIndexStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
   
   Object* pIndexPtr;
-  if ( ! m_pDataStack->bPop(pIndexPtr) )
+  if ( ! m_pDataStack->bPopObject(pIndexPtr) )
     THROW_DSTACK();
   Index* pIndex = _pIndex(pIndexPtr);
   
@@ -73,12 +73,12 @@ void Step::vJob_IndexJoinLeftTableStore(void)
   ENTRY("vJob_IndexJoinLeftTableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
   
   Object* pTablePtr;
-  if ( ! m_pDataStack->bPop(pTablePtr) )
+  if ( ! m_pDataStack->bPopObject(pTablePtr) )
     THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   
@@ -95,12 +95,12 @@ void Step::vJob_IndexJoinRightIndexStore(void)
   ENTRY("vJob_IndexJoinRightIndexStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
   
   Object* pIndexPtr;
-  if ( ! m_pDataStack->bPop(pIndexPtr) )
+  if ( ! m_pDataStack->bPopObject(pIndexPtr) )
     THROW_DSTACK();
   Index* pIndex = _pIndex(pIndexPtr);
   
@@ -117,7 +117,7 @@ void Step::vJob_IndexJoinRightIndexNameFetch(void)
   ENTRY("vJob_IndexJoinRightIndexNameFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
   
@@ -134,12 +134,12 @@ void Step::vJob_IndexJoinRightTableStore(void)
   ENTRY("vJob_IndexJoinRightTableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
   
   Object* pTablePtr;
-  if ( ! m_pDataStack->bPop(pTablePtr) )
+  if ( ! m_pDataStack->bPopObject(pTablePtr) )
     THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   
@@ -156,7 +156,7 @@ void Step::vJob_IndexJoinRightTableNameFetch(void)
   ENTRY("vJob_IndexJoinRightTableNameFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
   
@@ -173,7 +173,7 @@ void Step::vJob_IndexJoinSpawnSub(void)
   ENTRY("vJob_IndexJoinSpawnSub"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
 
@@ -213,7 +213,7 @@ void Step::vJob_SubIndexJoinIndexJoin(void)
   ENTRY("vJob_SubIndexJoinIndexJoin"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_SubIndexJoin* pJob_SubIndexJoin = _pJob_SubIndexJoin(pJobPtr);
   

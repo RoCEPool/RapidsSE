@@ -135,7 +135,7 @@ ENTRY("vDirClose"_Stz);
   
   Object* pPtrDir;
 
-  if ( ! m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPopObject(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -154,7 +154,7 @@ ENTRY("vDirDelete"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPopObject(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -173,7 +173,7 @@ ENTRY("vDirEntryName"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPopObject(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -196,7 +196,7 @@ ENTRY("vDirEntryType"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPopObject(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -219,7 +219,7 @@ ENTRY("vDirIsClosed"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPopObject(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -240,7 +240,7 @@ ENTRY("vDirIsOpen"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPopObject(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -278,7 +278,7 @@ ENTRY("vDirOpen"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPopObject(pPtrDir) )
     THROW_DSTACK();
   Dir* pDir = _pDir(pPtrDir);
   
@@ -302,7 +302,7 @@ ENTRY("vDirPathGet"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPopObject(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -326,7 +326,7 @@ ENTRY("vDirRead"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPopObject(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -347,7 +347,7 @@ ENTRY("vDirRewind"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPopObject(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -366,7 +366,7 @@ ENTRY("vDirSeek"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPopObject(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
@@ -389,7 +389,7 @@ ENTRY("vDirTell"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPop(pPtrDir) )
+  if ( ! m_pDataStack->bPopObject(pPtrDir) )
     THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);

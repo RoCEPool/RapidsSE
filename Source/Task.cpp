@@ -1277,7 +1277,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       //*pf = 'i';                                                    //! Defect??
       
       Object* pValue;
-      m_pForth->m_pDataStack->bPop(pValue);
+      m_pForth->m_pDataStack->bPopObject(pValue);
       
       char caValue[32];
       StrLib::wToPointer(pValue,caValue);

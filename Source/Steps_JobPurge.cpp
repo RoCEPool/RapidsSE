@@ -21,7 +21,7 @@ void Step::vJob_PurgeSpawnSub(void)
   ENTRY("vJob_PurgeSpawnSub"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_Purge* pJob_Purge = _pJob_Purge(pJobPtr);
   
@@ -61,7 +61,7 @@ void Step::vJob_PurgeTableStore(void)
   
   Object* pPtrTable;
   Object* pPtrJob_Purge;
-  if ( ! m_pDataStack->bPop(pPtrJob_Purge,pPtrTable) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Purge,pPtrTable) )
     THROW_DSTACK();
   
   Job_Purge* pJob_Purge = _pJob_Purge(pPtrJob_Purge);

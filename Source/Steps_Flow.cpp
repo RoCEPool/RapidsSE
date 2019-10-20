@@ -42,7 +42,7 @@ void Step::vFlowExecute(void)
   ENTRY("vFlowExecute"_Stz);
   
   Object* pWordObject;
-  if ( ! m_pDataStack->bPop(pWordObject) )
+  if ( ! m_pDataStack->bPopObject(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   

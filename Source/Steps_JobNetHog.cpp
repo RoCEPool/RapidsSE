@@ -20,7 +20,7 @@ void Step::vJob_NetHogHogNoFetch(void)
   ENTRY("vJob_NetHogHogNoFetch"_Stz);
   
   Object* pPtrJob_NetHog;
-  if ( ! m_pDataStack->bPop(pPtrJob_NetHog) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_NetHog) )
     THROW_DSTACK();
   Job_NetHog* pJob_NetHog = _pJob_NetHog(pPtrJob_NetHog);
   

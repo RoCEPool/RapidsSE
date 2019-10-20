@@ -27,7 +27,7 @@ ENTRY("vMemoryByteDump"_Stz);
     THROW_DSTACK();
   
   Object* pWordObject;
-  if ( ! m_pDataStack->bPop(pWordObject) )
+  if ( ! m_pDataStack->bPopObject(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
@@ -72,7 +72,7 @@ ENTRY("vMemoryWordDump"_Stz);
     THROW_DSTACK();
   
   Object* pWordObject;
-  if ( ! m_pDataStack->bPop(pWordObject) )
+  if ( ! m_pDataStack->bPopObject(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   

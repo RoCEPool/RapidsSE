@@ -25,7 +25,7 @@ void Step::vApiStateIncBegun(void)
   ENTRY("vApiIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
@@ -48,7 +48,7 @@ void Step::vApiStateIncCancelled(void)
   ENTRY("vApiIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
@@ -71,7 +71,7 @@ void Step::vApiStateIncEnded(void)
   ENTRY("vApiIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
@@ -94,7 +94,7 @@ void Step::vApiStateIncExecuted(void)
   ENTRY("vApiIncExecuted"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
@@ -135,7 +135,7 @@ void Step::vApiStateTraceSession(void)
   ENTRY("vApiStateTraceSession"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);

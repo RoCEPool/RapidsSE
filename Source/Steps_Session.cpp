@@ -27,7 +27,7 @@ void Step::vSessionCommand(void)
   ENTRY("vSessionDicStack"_Stz);
   
   Object* pPtrSession;
-  if ( ! m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
@@ -46,7 +46,7 @@ void Step::vSessionDicStack(void)
   ENTRY("vSessionDicStack"_Stz);
   
   Object* pPtrSession;
-  if ( ! m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
@@ -65,7 +65,7 @@ void Step::vSessionDump(void)
 ENTRY("vSessionDump"_Stz);
   
   Object* pPtrSession;
-  if ( ! m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
@@ -84,7 +84,7 @@ void Step::vSessionIsExiting(void)
   ENTRY("vSessionIsExiting"_Stz);
   
   Object* pPtrSession;
-  if ( ! m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
@@ -103,7 +103,7 @@ void Step::vSessionPid(void)
   ENTRY("vSessionPid"_Stz);
   
   Object* pPtrSession;
-  if ( ! m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
@@ -122,7 +122,7 @@ void Step::vSessionSlotFetch(void)
   ENTRY("vSessionSlotFetch"_Stz);
   
   Object* pPtrSession;
-  if ( ! m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
@@ -141,7 +141,7 @@ void Step::vSessionTxFetch(void)
   ENTRY("vSessionTxFetch"_Stz);
   
   Object* pPtrSession;
-  if ( ! m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
     THROW_DSTACK();
   Session* pSession = _pSession(pPtrSession);
   
@@ -160,12 +160,12 @@ void Step::vSessionTxStore(void)
   ENTRY("vSessionTxStore"_Stz);
   
   Object* pPtrSession;
-  if ( ! m_pDataStack->bPop(pPtrSession) )
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
     THROW_DSTACK();
   Session* pSession = _pSession(pPtrSession);
   
   Object* pPtrTx;
-  if ( ! m_pDataStack->bPop(pPtrTx) )
+  if ( ! m_pDataStack->bPopObject(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   

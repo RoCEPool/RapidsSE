@@ -28,7 +28,7 @@ ENTRY("vFileClose"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPop(pPtrFile) )
+  if ( ! m_pDataStack->bPopObject(pPtrFile) )
     THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
@@ -47,7 +47,7 @@ ENTRY("vFileDelete"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPop(pPtrFile) )
+  if ( ! m_pDataStack->bPopObject(pPtrFile) )
     THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
@@ -83,7 +83,7 @@ ENTRY("vFileOpen"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPop(pPtrFile) )
+  if ( ! m_pDataStack->bPopObject(pPtrFile) )
     THROW_DSTACK();
   File* pFile = _pFile(pPtrFile);
   
@@ -111,7 +111,7 @@ ENTRY("vFilePathGet"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPop(pPtrFile) )
+  if ( ! m_pDataStack->bPopObject(pPtrFile) )
     THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
@@ -132,7 +132,7 @@ void Step::vFileRead(void)
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPop(pPtrFile) )
+  if ( ! m_pDataStack->bPopObject(pPtrFile) )
     THROW_DSTACK();
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
@@ -161,7 +161,7 @@ ENTRY("vFileWrite"_Stz);
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPop(pPtrFile) )
+  if ( ! m_pDataStack->bPopObject(pPtrFile) )
     THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);

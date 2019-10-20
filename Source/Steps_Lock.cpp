@@ -24,7 +24,7 @@ void Step::vLockDropRead(void)
 ENTRY("vLockDropRead"_Stz);
   
   Object* pPtrLock;;
-  if ( ! m_pDataStack->bPop(pPtrLock) )
+  if ( ! m_pDataStack->bPopObject(pPtrLock) )
     THROW_DSTACK();
   
   Lock* pLock = _pLock(pPtrLock);
@@ -44,7 +44,7 @@ void Step::vLockDropWrite(void)
 ENTRY("vLockDropWrite"_Stz);
 
   Object* pPtrLock;;
-  if ( ! m_pDataStack->bPop(pPtrLock) )
+  if ( ! m_pDataStack->bPopObject(pPtrLock) )
     THROW_DSTACK();
   
   Lock* pLock = _pLock(pPtrLock);
@@ -64,7 +64,7 @@ void Step::vLockGrabRead(void)
 ENTRY("vLockGrabRead"_Stz);
 
   Object* pPtrLock;;
-  if ( ! m_pDataStack->bPop(pPtrLock) )
+  if ( ! m_pDataStack->bPopObject(pPtrLock) )
     THROW_DSTACK();
   
   Lock* pLock = _pLock(pPtrLock);
@@ -84,7 +84,7 @@ void Step::vLockGrabWrite(void)
 ENTRY("vLockGrabWrite"_Stz);
 
   Object* pPtrLock;;
-  if ( ! m_pDataStack->bPop(pPtrLock) )
+  if ( ! m_pDataStack->bPopObject(pPtrLock) )
     THROW_DSTACK();
   
   Lock* pLock = _pLock(pPtrLock);
@@ -104,7 +104,7 @@ void Step::vLockInit(void)
 ENTRY("vLockInit"_Stz);
   
   Object* pPtrLock;;
-  if ( ! m_pDataStack->bPop(pPtrLock) )
+  if ( ! m_pDataStack->bPopObject(pPtrLock) )
     THROW_DSTACK();
   
   Lock* pLock = _pLock(pPtrLock);

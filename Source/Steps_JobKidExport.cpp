@@ -22,7 +22,7 @@ void Step::vJob_KidExportExportJobId(void)
   ENTRY("vJob_KidExportExportJobId"_Stz);
   
   Object* pPtrJob_KidExport;
-  if ( ! m_pDataStack->bPop(pPtrJob_KidExport) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_KidExport) )
     THROW_DSTACK();
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pPtrJob_KidExport);
     
@@ -39,7 +39,7 @@ void Step::vJob_KidExportExportOrigin(void)
   ENTRY("vJob_KidExportExportOrigin"_Stz);
   
   Object* pPtrJob_KidExport;
-  if ( ! m_pDataStack->bPop(pPtrJob_KidExport) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_KidExport) )
     THROW_DSTACK();
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pPtrJob_KidExport);
   
@@ -58,12 +58,12 @@ void Step::vJob_KidExportWriteExportBuffer(void)
   ENTRY("vJob_KidExportWriteExportBuffer"_Stz);
   
   Object* pPtrJob_KidExport;
-  if ( ! m_pDataStack->bPop(pPtrJob_KidExport) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_KidExport) )
     THROW_DSTACK();
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pPtrJob_KidExport);
   
   Object* pPtrJob_Export;
-  if ( ! m_pDataStack->bPop(pPtrJob_Export) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Export) )
     THROW_DSTACK();
   Job_Export* pJob_Export = _pJob_Export(pPtrJob_Export);
   

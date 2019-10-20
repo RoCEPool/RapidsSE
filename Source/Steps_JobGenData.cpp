@@ -21,7 +21,7 @@ void Step::vJob_GenerateGenerate(void)
   ENTRY("vJob_GenerateGenerate"_Stz);
   
   Object* pPtrJob_Generate;
-  if ( ! m_pDataStack->bPop(pPtrJob_Generate) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Generate) )
     THROW_DSTACK();
   Job_Generate* pJob_Generate = _pJob_Generate(pPtrJob_Generate);
   
@@ -39,7 +39,7 @@ void Step::vJob_GenerateTableStore(void)
   
   Object* pPtrTable;
   Object* pPtrJob_Generate;
-  if ( ! m_pDataStack->bPop(pPtrJob_Generate,pPtrTable) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Generate,pPtrTable) )
     THROW_DSTACK();
   
   Job_Generate* pJob_Generate = _pJob_Generate(pPtrJob_Generate);

@@ -43,7 +43,7 @@ void Step::vEnmSetAddInt(void)
   ENTRY("vEnmSetAddInt"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! m_pDataStack->bPop(pEnameSet_obj) )
+  if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
     THROW_DSTACK();
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
@@ -69,7 +69,7 @@ void Step::vEnmSetAddStr(void)
   ENTRY("vEnmSetAddStr"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! m_pDataStack->bPop(pEnameSet_obj) )
+  if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
     THROW_DSTACK();
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
 
@@ -95,7 +95,7 @@ void Step::vEnmSetAsStr(void)
   ENTRY("vEnmSetAsStr"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! m_pDataStack->bPop(pEnameSet_obj) )
+  if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
     THROW_DSTACK();
   
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
@@ -117,7 +117,7 @@ void Step::vEnmSetGetStr(void)
   ENTRY("vEnmSetGetStr"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! m_pDataStack->bPop(pEnameSet_obj) )
+  if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
     THROW_DSTACK();
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
@@ -141,7 +141,7 @@ void Step::vEnmSetHasName(void)
   ENTRY("vEnmSetHasName"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! m_pDataStack->bPop(pEnameSet_obj) )
+  if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
     THROW_DSTACK();
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   

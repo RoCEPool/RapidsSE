@@ -22,12 +22,12 @@ void Step::vJobMark2IndexStore(void)
   ENTRY("vJobMark2IndexStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
   
   Object* pIndexPtr;
-  if ( ! m_pDataStack->bPop(pIndexPtr) )
+  if ( ! m_pDataStack->bPopObject(pIndexPtr) )
     THROW_DSTACK();
   Index* pIndex = _pIndex(pIndexPtr);
   
@@ -44,7 +44,7 @@ void Step::vJobMark2TableNameFetch(void)
   ENTRY("vJobMark2TableNameFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
   
@@ -64,12 +64,12 @@ void Step::vJobMark2TableStore(void)
   ENTRY("vJobMark2TableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
 
   Object* pTablePtr;
-  if ( ! m_pDataStack->bPop(pTablePtr) )
+  if ( ! m_pDataStack->bPopObject(pTablePtr) )
     THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   

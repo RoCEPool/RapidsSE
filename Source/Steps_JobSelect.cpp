@@ -22,7 +22,7 @@ void Step::vJob_SelectBegin(void)
   ENTRY("vJob_SelectBegin"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_Select* pJob_Select = _pJob_Select(pJobPtr);
   
@@ -39,7 +39,7 @@ void Step::vJob_SelectEnd(void)
   ENTRY("vJob_SelectEnd"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_Select* pJob_Select = _pJob_Select(pJobPtr);
 
@@ -56,7 +56,7 @@ void Step::vJob_SelectExecute(void)
   ENTRY("vJob_SelectExecute"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_Select* pJob_Select = _pJob_Select(pJobPtr);
   

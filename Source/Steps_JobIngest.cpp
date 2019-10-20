@@ -23,7 +23,7 @@ void Step::vJob_IngestBegin(void)
   ENTRY("vJob_IngestBegin"_Stz);
   
   Object* pPtrJob_Ingest;
-  if ( ! m_pDataStack->bPop(pPtrJob_Ingest) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Ingest) )
     THROW_DSTACK();
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
   
@@ -42,7 +42,7 @@ void Step::vJob_IngestChunk(void)
   ENTRY("vJob_IngestChunk"_Stz);
   
   Object* pPtrJobIngest;
-  if ( ! m_pDataStack->bPop(pPtrJobIngest) )
+  if ( ! m_pDataStack->bPopObject(pPtrJobIngest) )
     THROW_DSTACK();
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJobIngest);
   
@@ -67,7 +67,7 @@ void Step::vJob_IngestEnd(void)
   ENTRY("vJob_IngestEnd"_Stz);
   
   Object* pPtrJob_Ingest;
-  if ( ! m_pDataStack->bPop(pPtrJob_Ingest) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Ingest) )
     THROW_DSTACK();
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
   
@@ -85,7 +85,7 @@ void Step::vJob_IngestTableStore(void)
   
   Object* pPtrTable;
   Object* pPtrJob_Ingest;
-  if ( ! m_pDataStack->bPop(pPtrJob_Ingest,pPtrTable) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Ingest,pPtrTable) )
     THROW_DSTACK();
   
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);

@@ -22,7 +22,7 @@ void Step::vJob_RepeaterBegin(void)
   ENTRY("vJob_RepeaterBegin"_Stz);
   
   Object* pPtrJob_Repeater;
-  if ( ! m_pDataStack->bPop(pPtrJob_Repeater) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Repeater) )
     THROW_DSTACK();
   Job_Repeater* pJob_Repeater = _pJob_Repeater(pPtrJob_Repeater);
   
@@ -41,7 +41,7 @@ void Step::vJob_RepeaterChunk(void)
   ENTRY("vJob_RepeaterChunk"_Stz);
   
   Object* pPtrJob_Repeater;
-  if ( ! m_pDataStack->bPop(pPtrJob_Repeater) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Repeater) )
     THROW_DSTACK();
   Job_Repeater* pJob_Repeater = _pJob_Repeater(pPtrJob_Repeater);
   
@@ -60,7 +60,7 @@ void Step::vJob_RepeaterEnd(void)
   ENTRY("vJob_RepeaterEnd"_Stz);
   
   Object* pPtrJob_Repeater;
-  if ( ! m_pDataStack->bPop(pPtrJob_Repeater) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Repeater) )
     THROW_DSTACK();
   Job_Repeater* pJob_Repeater = _pJob_Repeater(pPtrJob_Repeater);
   

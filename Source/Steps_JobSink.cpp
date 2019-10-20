@@ -22,7 +22,7 @@ void Step::vJob_SinkBegin(void)
   ENTRY("vJob_SinkBegin"_Stz);
   
   Object* pPtrJob_Sink;
-  if ( ! m_pDataStack->bPop(pPtrJob_Sink) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Sink) )
     THROW_DSTACK();
   Job_Sink* pJob_Sink = _pJob_Sink(pPtrJob_Sink);
   
@@ -41,7 +41,7 @@ void Step::vJob_SinkChunk(void)
   ENTRY("vJob_SinkChunk"_Stz);
   
   Object* pPtrJob_Sink;
-  if ( ! m_pDataStack->bPop(pPtrJob_Sink) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Sink) )
     THROW_DSTACK();
   Job_Sink* pJob_Sink = _pJob_Sink(pPtrJob_Sink);
   
@@ -60,7 +60,7 @@ void Step::vJob_SinkEnd(void)
   ENTRY("vJob_SinkEnd"_Stz);
   
   Object* pPtrJob_Sink;
-  if ( ! m_pDataStack->bPop(pPtrJob_Sink) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Sink) )
     THROW_DSTACK();
   Job_Sink* pJob_Sink = _pJob_Sink(pPtrJob_Sink);
   

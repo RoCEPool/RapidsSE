@@ -25,7 +25,7 @@ void Step::vJob_SubIngesterSpawn(void)
   ENTRY("vJob_SubIngesterSpawn"_Stz);
   
   Object* pPtrJob_Ingest;
-  if ( ! m_pDataStack->bPop(pPtrJob_Ingest) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Ingest) )
     THROW_DSTACK();
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
   
@@ -67,7 +67,7 @@ void Step::vJob_SubIngesterBegin(void)
   ENTRY("vSubIngesterBegin"_Stz);
   
   Object* pPtrJob_SubIngester;
-  if ( ! m_pDataStack->bPop(pPtrJob_SubIngester) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_SubIngester) )
     THROW_DSTACK();
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
 
@@ -86,7 +86,7 @@ void Step::vJob_SubIngesterChunk(void)
   ENTRY("vJob_SubIngesterChunk"_Stz);
   
   Object* pPtrJob_SubIngester;
-  if ( ! m_pDataStack->bPop(pPtrJob_SubIngester) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_SubIngester) )
     THROW_DSTACK();
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
   
@@ -119,7 +119,7 @@ void Step::vJob_SubIngesterEnd(void)
   ENTRY("vSubIngesterEnd"_Stz);
   
   Object* pPtrJob_SubIngester;
-  if ( ! m_pDataStack->bPop(pPtrJob_SubIngester) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_SubIngester) )
     THROW_DSTACK();
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
   
@@ -136,7 +136,7 @@ void Step::vJob_SubIngesterJobIngest(void)
   ENTRY("vJob_SubIngesterJobIngest"_Stz);
   
   Object* pPtrJob_SubIngester;
-  if ( ! m_pDataStack->bPop(pPtrJob_SubIngester) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_SubIngester) )
   THROW_DSTACK();
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
   

@@ -22,7 +22,7 @@ void Step::vJob_CatBegin(void)
   ENTRY("vJob_CatBegin"_Stz);
   
   Object* pPtrJobCat;
-  if ( ! m_pDataStack->bPop(pPtrJobCat) )
+  if ( ! m_pDataStack->bPopObject(pPtrJobCat) )
     THROW_DSTACK();
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJobCat);
   
@@ -41,7 +41,7 @@ void Step::vJob_CatChunk(void)
   ENTRY("vJob_CatChunk"_Stz);
   
   Object* pPtrJobCat;
-  if ( ! m_pDataStack->bPop(pPtrJobCat) )
+  if ( ! m_pDataStack->bPopObject(pPtrJobCat) )
     THROW_DSTACK();
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJobCat);
   
@@ -60,7 +60,7 @@ void Step::vJob_CatEnd(void)
   ENTRY("vJob_CatEnd"_Stz);
   
   Object* pPtrJob_Cat;
-  if ( ! m_pDataStack->bPop(pPtrJob_Cat) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Cat) )
     THROW_DSTACK();
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJob_Cat);
   

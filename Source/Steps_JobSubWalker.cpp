@@ -26,7 +26,7 @@ void Step::vJob_SubWalkerSpawn(void)
   ENTRY("vJob_SubWalkerSpawn"_Stz);
   
   Object* pPtrJob_Walk;
-  if ( ! m_pDataStack->bPop(pPtrJob_Walk) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Walk) )
     THROW_DSTACK();
   Job_Walk* pJob_Walk = _pJob_Walk(pPtrJob_Walk);
   
@@ -68,7 +68,7 @@ void Step::vJob_SubWalkerWalkJobFetch(void)
   ENTRY("vJob_SubWalkerSpawn"_Stz);
   
   Object* pPtrJob_SubWalker;
-  if ( ! m_pDataStack->bPop(pPtrJob_SubWalker) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_SubWalker) )
     THROW_DSTACK();
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJob_SubWalker);
   
@@ -86,7 +86,7 @@ void Step::vJob_SubWalkerBegin(void)
   ENTRY("vJob_SubWalkerBegin"_Stz);
   
   Object* pPtrJobSubWalker;
-  if ( ! m_pDataStack->bPop(pPtrJobSubWalker) )
+  if ( ! m_pDataStack->bPopObject(pPtrJobSubWalker) )
     THROW_DSTACK();
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJobSubWalker);
   
@@ -105,7 +105,7 @@ void Step::vJob_SubWalkerChunk(void)
   ENTRY("vJob_SubWalkerChunk"_Stz);
   
   Object* pPtrJobSubWalker;
-  if ( ! m_pDataStack->bPop(pPtrJobSubWalker) )
+  if ( ! m_pDataStack->bPopObject(pPtrJobSubWalker) )
     THROW_DSTACK();
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJobSubWalker);
   
@@ -124,7 +124,7 @@ void Step::vJob_SubWalkerEnd(void)
   ENTRY("vJob_SubWalkerEnd"_Stz);
   
   Object* pPtrJobSubWalker;
-  if ( ! m_pDataStack->bPop(pPtrJobSubWalker) )
+  if ( ! m_pDataStack->bPopObject(pPtrJobSubWalker) )
     THROW_DSTACK();
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pPtrJobSubWalker);
   

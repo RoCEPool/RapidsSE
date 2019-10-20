@@ -22,7 +22,7 @@ void Step::vJob_ReportBegin(void)
   ENTRY("vJob_ReportBegin"_Stz);
   
   Object* pPtrJobReport;
-  if ( ! m_pDataStack->bPop(pPtrJobReport) )
+  if ( ! m_pDataStack->bPopObject(pPtrJobReport) )
     THROW_DSTACK();
   Job_Report* pJob_Report = _pJob_Report(pPtrJobReport);
   
@@ -41,7 +41,7 @@ void Step::vJob_ReportTake(void)
   ENTRY("vJob_ReportTake"_Stz);
   
   Object* pPtrJobReport;
-  if ( ! m_pDataStack->bPop(pPtrJobReport) )
+  if ( ! m_pDataStack->bPopObject(pPtrJobReport) )
     THROW_DSTACK();
   Job_Report* pJob_Report = _pJob_Report(pPtrJobReport);
   
@@ -65,7 +65,7 @@ void Step::vJob_ReportEnd(void)
   ENTRY("vJob_ReportEnd"_Stz);
   
   Object* pPtrJob_Report;
-  if ( ! m_pDataStack->bPop(pPtrJob_Report) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Report) )
     THROW_DSTACK();
   Job_Report* pJob_Report = _pJob_Report(pPtrJob_Report);
   

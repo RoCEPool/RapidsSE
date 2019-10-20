@@ -25,7 +25,7 @@ void Step::vObjectClassFetch(void)
   ENTRY("vObjectClassFetch"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPopObject(pObject) )
     THROW_DSTACK();
   
   eCN eClassNo;
@@ -44,7 +44,7 @@ void Step::vObjectClassStore(void)
   ENTRY("vObjectClassStore"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPopObject(pObject) )
     THROW_DSTACK();
   
   eCN eClassNo;
@@ -64,7 +64,7 @@ void Step::vObjectDump(void)
   ENTRY("vObjectDump"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPopObject(pObject) )
     THROW_DSTACK();
   
   eCN eClass = pObject->eClass();
@@ -102,7 +102,7 @@ void Step::vObjectMagicMark(void)
   ENTRY("vObjectMagicMark"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPopObject(pObject) )
     THROW_RSTACK();
   
   pObject->vSetMagic();
@@ -137,7 +137,7 @@ void Step::vObjectWordBodySet(void)
   ENTRY("vObjectWordBodySet"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPop(pObject) )
+  if ( ! m_pDataStack->bPopObject(pObject) )
     THROW_DSTACK();
   
   i8 iIsBody;

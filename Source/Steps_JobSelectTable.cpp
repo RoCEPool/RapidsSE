@@ -21,7 +21,7 @@ void Step::vJob_SelectTablePartitionFetch(void)
   ENTRY("vJob_FetchRowsPartitionFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(pJobPtr);
 
@@ -39,12 +39,12 @@ void Step::vJob_SelectTableTableStore(void)
   ENTRY("vJob_SelectTableTableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(pJobPtr);
   
   Object* pTablePtr;
-  if ( ! m_pDataStack->bPop(pTablePtr) )
+  if ( ! m_pDataStack->bPopObject(pTablePtr) )
     THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   

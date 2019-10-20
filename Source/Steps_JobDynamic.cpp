@@ -22,7 +22,7 @@ void Step::vJob_DynamicBegin(void)
   ENTRY("vJob_DynamicBegin"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
   
@@ -39,7 +39,7 @@ void Step::vJob_DynamicEnd(void)
   ENTRY("vJob_DynamicEnd"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
   
@@ -56,7 +56,7 @@ void Step::vJob_DynamicExecute(void)
   ENTRY("vJob_DynamicExecute"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
   

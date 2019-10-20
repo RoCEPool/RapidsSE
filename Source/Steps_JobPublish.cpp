@@ -21,7 +21,7 @@ void Step::vJob_PublishSpawnSub(void)
   ENTRY("vJob_PublishSpawnSub"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_Publish* pJob_Publish = _pJob_Publish(pJobPtr);
   
@@ -63,7 +63,7 @@ void Step::vJob_PublishTableStore(void)
   
   Object* pPtrTable;
   Object* pPtrJob_Publish;
-  if ( ! m_pDataStack->bPop(pPtrJob_Publish,pPtrTable) )
+  if ( ! m_pDataStack->bPopObject(pPtrJob_Publish,pPtrTable) )
     THROW_DSTACK();
   
   Job_Publish* pJob_Publish = _pJob_Publish(pPtrJob_Publish);

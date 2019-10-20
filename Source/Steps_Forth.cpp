@@ -129,7 +129,7 @@ void Step::vCompileComma(void)
   ENTRY("vCompileComma"_Stz);
   
   Object* pWordObject;
-  if ( ! m_pDataStack->bPop(pWordObject) )
+  if ( ! m_pDataStack->bPopObject(pWordObject) )
     THROW_DSTACK();
   Word* pCalledWord = _pWord(pWordObject);
   

@@ -20,7 +20,7 @@ void Step::vJob_CreateIndexIsUniqueFetch(void)
   ENTRY("vJob_CreateIndexIsUniqueFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJobPtr);
   

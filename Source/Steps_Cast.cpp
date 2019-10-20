@@ -21,7 +21,7 @@ void Step::vCastInt(void)
   ENTRY("vCastInt"_Stz);
   
   Object* pPtr;
-  if ( ! m_pDataStack->bPop(pPtr) )
+  if ( ! m_pDataStack->bPopObject(pPtr) )
     THROW_DSTACK();
   
   m_pDataStack->vPushI8((i8)pPtr);

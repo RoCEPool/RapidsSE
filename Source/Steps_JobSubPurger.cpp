@@ -24,7 +24,7 @@ void Step::vJob_SubPurgerBegin(void)
   ENTRY("vJob_SubPurgerBegin"_Stz);
   
   Object* pPtrJobSubPurger;
-  if ( ! m_pDataStack->bPop(pPtrJobSubPurger) )
+  if ( ! m_pDataStack->bPopObject(pPtrJobSubPurger) )
     THROW_DSTACK();
   Job_SubPurger* pJob_SubPurger = _pJob_SubPurger(pPtrJobSubPurger);
   
@@ -43,12 +43,12 @@ void Step::vJob_SubPurgerChunk(void)
   ENTRY("vJob_SubPurgerChunk"_Stz);
   
   Object* pPtrJobSubPurger;
-  if ( ! m_pDataStack->bPop(pPtrJobSubPurger) )
+  if ( ! m_pDataStack->bPopObject(pPtrJobSubPurger) )
     THROW_DSTACK();
   Job_SubPurger* pJob_SubPurger = _pJob_SubPurger(pPtrJobSubPurger);
 
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPop(pPtrTable) )
+  if ( ! m_pDataStack->bPopObject(pPtrTable) )
   THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
 
@@ -78,7 +78,7 @@ void Step::vJob_SubPurgerEnd(void)
   ENTRY("vJob_SubPurgerEnd"_Stz);
   
   Object* pPtrJobSubPurger;
-  if ( ! m_pDataStack->bPop(pPtrJobSubPurger) )
+  if ( ! m_pDataStack->bPopObject(pPtrJobSubPurger) )
     THROW_DSTACK();
   Job_SubPurger* pJob_SubPurger = _pJob_SubPurger(pPtrJobSubPurger);
   
@@ -95,7 +95,7 @@ void Step::vJob_SubPurgerPurgeJobIdFetch(void)
   ENTRY("vJob_SubPurgerPurgeJobIdFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_SubPurger* pJob = _pJob_SubPurger(pJobPtr);
   
@@ -112,7 +112,7 @@ void Step::vJob_SubPurgerSlotFetch(void)
   ENTRY("vJob_SubPurgerSlotFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPop(pJobPtr) )
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job_SubPurger* pJob = _pJob_SubPurger(pJobPtr);
   
