@@ -159,11 +159,17 @@ namespace Oblique
     static Thread* pThisTLSThread(void);
     static Pthread* pThisTLSPthread(void);
     static i8   iThreadId(Thread* pThread);
-    static void vWelcomeText(s256& sWelcome);
-    static void vCopyrightText(s256& sCopyRight);
 
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bAttached(void);
+    static i8   iAMTimePoint(void);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static void vBootCheck(void);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static void vCopyrightText(s256& sCopyRight);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vDdlDropRead(Task* pTask);
@@ -171,6 +177,14 @@ namespace Oblique
     static void vDdlGrabRead(Task* pTask);
     static void vDdlGrabWrite(Task* pTask);
     static void vDumpApi(void);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static void vFocalAdd(Focal* pFocal);
+    static void vFocalOutline(s4K& sString, Focal* pFocal);
+    static void vFocalRemove(Focal* pFocal);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static i8   iJobUniqueId(Job* pJob);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vLog(TokenVec* pTknVec);
@@ -197,9 +211,28 @@ namespace Oblique
     static void vLogThd(eSL, Thread*    pThd, eHA eThdAct, Stz* szFormat, ...);
     static void vLogTsk(eSL, Task*      pTsk, eTA eTskAct, Stz* szFormat, ...);
     static void vLogTxn(eSL, Tx*        pTxn, eXA eTxnAct, Stz* szFormat, ...);
+  
+    static void vLogOpenByApi(void);
+    static void vLogOpenBySE(bool bStarting);
+    static void vLogWriteCsv(bool bShortForm);
+    static bool bLogEntryExists(i8 i_Entry);
+    static i8   iLogEntryPrev(i8 i_Entry);
+    static void vLogEntrySprint(s4K& sString, i8 i_Entry);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //
+    static void vMri(TokenVec* pTknVec);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static void vNap(i8 nMilliSeconds, eCN eCallingClass);
+    static void vNapUsec(i8 nMilliSeconds, eCN eCallingClass);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static void vPrintGlobals(void);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static i8   iRdTimePoint(void);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bSpawnJob(Session* pSession, Job* pJob);
     static bool bSpawnOp(Session* pSession, Op* pOp);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
@@ -211,44 +244,15 @@ namespace Oblique
     static void vTaskMutexUnlock(Task* pTask);
     static void vTaskMutexWait(Task* pTask);
     static i8   iTaskQueue(Task* pTask);
+    static RegSet* pTaskRegSet(Task* pTask);
     static i8   iTaskState(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static void vWelcomeText(s256& sWelcome);
     static void vWriteLog(void);
     static void vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs);
 
-  
-  
-  
-    static void vNap(i8 nMilliSeconds, eCN eCallingClass);
-    static void vNapUsec(i8 nMilliSeconds, eCN eCallingClass);
-    
-    static void vBootCheck(void);
-  
-    static void vLogOpenByApi(void);
-    static void vLogOpenBySE(bool bStarting);
-    static void vLogWriteCsv(bool bShortForm);
-    static bool bLogEntryExists(i8 i_Entry);
-    static i8   iLogEntryPrev(i8 i_Entry);
-    static void vLogEntrySprint(s4K& sString, i8 i_Entry);
-  
-    static void vFocalAdd(Focal* pFocal);
-    static void vFocalOutline(s4K& sString, Focal* pFocal);
-    static void vFocalRemove(Focal* pFocal);
-
-    static void vMri(TokenVec* pTknVec);
-
-    static i8   iRdTimePoint(void);
-    static i8   iAMTimePoint(void);
-  
-    static i8   iJobUniqueId(Job* pJob);
-  
-    static void vPrintGlobals(void);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //
-
-   };
+  };
 }
 
 /*============================================================================*/

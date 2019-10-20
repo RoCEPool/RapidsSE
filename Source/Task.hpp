@@ -111,6 +111,7 @@ namespace Tasks
     void vQueueOrder(i8 iTaskOrder);
     i8   iQueueOrder(void);
     void vRefindJobClass(void);
+    RegSet* pRegSet(void);
     ReqTuple* aReqTuple(void);
     void vRenderPortrait(s256& sTaskPortrait);
     void vReseed(void);
