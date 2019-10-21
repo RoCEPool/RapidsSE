@@ -418,7 +418,11 @@ void SePrompt::vDeleteJob(void)
               "%s"_Stz, //!format-LogPrm
               spId.sz(IK_JOB,m_pJob->m_iUniqueId));
 
-
+  Task* pTask = m_pJob->pTask();
+  m_pJob->vTask(nullptr);
+  pTask->vJob(nullptr);
+  delete pTask;
+  
   // call the job delete function
   m_aJobClass->vDeleteJob(m_pJob);
 }

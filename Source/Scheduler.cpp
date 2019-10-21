@@ -1396,6 +1396,8 @@ void Scheduler::vThread_UnassignTask(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_UNASSIGN_TASK,
               "Thread unassigns its task"_Stz); //!format-LogThd
   
+  pThread->m_pTask->m_pThread = nullptr;
+  
   pThread->m_pTask = nullptr;
   pThread->m_eThreadState = HS_UNASSIGNED;
 }
