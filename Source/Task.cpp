@@ -169,7 +169,9 @@ void Task::vInit(void)
 Task::~Task(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
+
+  RASSERT(! m_pThread);
+
   RASSERT(TS_COMPLETED == m_eState);
   //RASSERT(! m_pJob);
   RASSERT(! m_eDdlLocked);

@@ -1,0 +1,74 @@
+/*============================================================================*/
+/* _dpr - dynamic plan ray                                                    */
+/*============================================================================*/
+
+print "dynamic plan ray..." ;
+
+
+dynamic pipeline ray1_dyn
+begin
+
+  stage stageA on all partitions:
+    scan lineitem | output
+
+end ;
+
+dynamic pipeline ray2_dyn
+begin
+
+  stage stageA on all partitions:
+    scan lineitem | insert lineitem | output
+
+end ;
+
+dynamic pipeline ray3_dyn
+begin
+
+  stage stageA on all partitions:
+    scan lineitem | output
+
+end ;
+
+/*
+dynamic pipeline load_dyn
+begin
+
+  stage stageA on all partitions:
+    read "lineitem.cvs"  .. | toRow | writeBehind | .. stageB
+
+  stage stageB on all partitions:
+    insert lineitem
+
+end ;
+
+
+
+stored pipeline copy_dyn
+
+parameters
+  $From,
+  $To
+
+begin
+
+  stage stageA on all partitions:
+    scan $From | insert $To
+
+end ;
+
+
+dynamic pipeline copyFuller_dyn
+begin
+
+  stage stageA on all partitions:
+    scan lineitem | ... | writeBehind | stageB
+
+  stage stageB on all partitions:
+    insert lineitem2
+
+end ;
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
