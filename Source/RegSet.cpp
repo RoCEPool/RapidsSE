@@ -48,8 +48,8 @@ RegSet::RegSet(Task* pTask)
   
   m_pTask = pTask;
   
-  m_pOperandQueueLeft  = nullptr;
-  m_pOperandQueueRight = nullptr;
+  m_pOpQueLeft  = nullptr;
+  m_pOpQueRight = nullptr;
 
  _checkInitialised_(CN_REGSET);
   
@@ -63,8 +63,8 @@ RegSet::~RegSet(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGSET,_FOOTER_);
   
-  delete m_pOperandQueueLeft;
-  delete m_pOperandQueueRight;
+  delete m_pOpQueLeft;
+  delete m_pOpQueRight;
 }
 
 
