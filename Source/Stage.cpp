@@ -107,9 +107,6 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
     // add the operator to the stages of the stageNdeVec
     for (i8 i_Index = 0; i_Index < m_oStageNdeVec.nItems(); i_Index++) {
       Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,pPipeLine);
-      
-      AM::vOpAddTask(pOp);
-      
       StageNde* pStageNde = m_oStageNdeVec.pGet(i_Index);
       
       pOp->m_nNode = pStageNde->iNode();
@@ -120,11 +117,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
     // add the operator to the stages of the stagePtnVec
     for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
       Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,pPipeLine);
-      
-      AM::vOpAddTask(pOp);
-      
       StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
-      
       pOp->m_nPartition = pStagePtn->iPartition();
       pStagePtn->pOpVec()->vAdd(pOp);
       m_oOpVec.vAdd(pOp);

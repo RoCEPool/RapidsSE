@@ -26,6 +26,9 @@ namespace Operators
     bool           m_bPulsed;        // is this a pulsed operand?
     i8             m_iWorkQuanta;    // quanta of work between pulses
     i8             m_iWorkDone;      // work done
+
+    OperandQueue*  m_pQueueLeft;     // the input queue being processed
+    OperandQueue*  m_pQueueRight;    // the input queue being processed
   
     Op*            m_pOpOut;         // to which op the results get piped
     bool           m_bAppendRight;   // append to right queue?

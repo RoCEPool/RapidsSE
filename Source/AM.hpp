@@ -227,9 +227,6 @@ namespace Oblique
     static void vNapUsec(i8 nMilliSeconds, eCN eCallingClass);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static void vOpAddTask(Op* pOp);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vPrintGlobals(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -74,6 +74,9 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_bPulsed       = false;
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
+
+  m_pQueueLeft    = new OperandQueue;
+  m_pQueueRight   = new OperandQueue;
   
   m_pOpOut        = nullptr;
   m_bAppendRight  = pOpSpec->bAppendRight();
@@ -93,7 +96,10 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
+  
+  Task* pTask = AM::pThisTLSTask();
+  AM::vTaskBeginOp(pTask);
+  
   ++ gixOp;
   AM::vLogOpr(SL_INF,this,OA_OP_CONSTRUCT,
               "Op construct : %p (%lld ops exist)"_Stz, //!format-LogOpr
@@ -106,6 +112,9 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
 Op::~Op(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  
+  delete m_pQueueLeft;
+  delete m_pQueueRight;
   
   if (m_pStreamDef)
     delete m_pStreamDef;
@@ -649,11 +658,7 @@ OperandQueue* Op::pQueueLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RegSet* pRegSet = AM::pTaskRegSet(m_pTask);
-  
-  OperandQueue* pQueLeft = pRegSet->m_pOpQueLeft;
-  
-  return pQueLeft;
+  return m_pQueueLeft;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -663,11 +668,7 @@ OperandQueue* Op::pQueueRight(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RegSet* pRegSet = AM::pTaskRegSet(m_pTask);
-  
-  OperandQueue* pQueRight = pRegSet->m_pOpQueRight;
-
-  return pQueRight;
+  return m_pQueueRight;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -688,8 +689,6 @@ void Op::vTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pTask = pTask;
-  
-  AM::vTaskBeginOp(m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/

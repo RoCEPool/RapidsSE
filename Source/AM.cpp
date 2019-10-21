@@ -1259,12 +1259,6 @@ void AM::vPrintGlobals(void)
   printf("gpTraceFile     @%p : %p\n",&gpTraceFile,  gpTraceFile);
 }
 
-void AM::vOpAddTask(Op* pOp)
-{
-  Task* pNewTask = new Task(pOp,nullptr);
-  pNewTask->vState(TS_ABLE);
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
