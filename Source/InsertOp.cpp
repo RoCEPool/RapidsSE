@@ -231,6 +231,12 @@ eOR InsertOp::eDrainLoop(void)
     
     switch (pOperand->eClass()) {
         
+      case CN_CRWBUFFER: {
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+        vInsertBuffer(pCrwBuffer);
+        break;
+      }
+        
       case CN_ENDMARKER:
         vPipeOut(pOperand);
         goto L_EXIT;
@@ -239,9 +245,6 @@ eOR InsertOp::eDrainLoop(void)
         
       case CN_PAUSEMARKER:
         delete (PauseMarker*)pOperand;
-        break;
-        
-      case CN_CRWBUFFER:
         break;
         
       case CN_STREAMDEF: {
@@ -260,6 +263,20 @@ eOR InsertOp::eDrainLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
   return OR_EXIT;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* insert buffer of rows into table                                           */
+/*----------------------------------------------------------------------------*/
+void InsertOp::vInsertBuffer(CrwBuffer* pCrwBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INSERTOP,_FOOTER_);
+  
 }
 
 /*----------------------------------------------------------------------------*/

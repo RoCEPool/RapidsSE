@@ -28,6 +28,8 @@ namespace DataOperators
     eOR  eDrainLoop(void);
 
   private:
+    void vInsertBuffer(CrwBuffer* pCrwBuffer);
+  
     Footer* aFooter(void);
   };
 
