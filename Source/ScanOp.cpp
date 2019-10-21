@@ -179,8 +179,8 @@ eOR ScanOp::eOpLoop(void)
           
           m_pCrwBuffer = m_pCrwBuffer->pNextBuffer();
           
-          vTrace("ScanOp napping...\n"_Stz);
-          AM::vNap(10 * C_1K,CN_SEPROMPT);
+          //vTrace("ScanOp napping...\n"_Stz);
+          //AM::vNap(10 * C_1K,CN_SEPROMPT);
           
 #ifdef WITH_PULSING
           if (bPause()) {
