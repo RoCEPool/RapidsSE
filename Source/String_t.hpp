@@ -51,6 +51,7 @@ namespace Esses
     i8   nSpace(void);
     void vSprint(Stz* szFormat, ...);
     void vSprintCat(Stz* szFormat, ...);
+    String* pString(void);
     Stz* szStz(void);
     i8   iToI8(void);
     void vToLower(void);
@@ -460,6 +461,17 @@ void String_t<SIZE>::vSprintCat(Stz* szFormat, ...)
   va_start(args,szFormat);
   StrLib::vSprintCat(azChar(),args,szFormat->azChar());
   va_end(args);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pString                                                                */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+String* String_t<SIZE>::pString(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  return (String*) this;
 }
 
 /*----------------------------------------------------------------------------*/

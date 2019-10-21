@@ -12,21 +12,19 @@ extern Arguments  gxArguments;
 int main(int argc, const char* argv[])
 {
   //ASSERT(1 == 0);
-  
-  printf("sizeof(Column)       %lld\n", (i8)sizeof(Column));
-  printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
-  printf("sizeof(HeapBuffer)   %lld\n", (i8)sizeof(HeapBuffer));
-  printf("sizeof(s32)          %lld\n", (i8)sizeof(s32));
-  printf("sizeof(s4K)          %lld\n", (i8)sizeof(s4K));
-  printf("sizeof(ShortCut)     %lld\n", (i8)sizeof(ShortCut));
 
-  s32 sRightTest;
-  StrLib::vRuler(sRightTest.azChar(),30);
-  vTrace("%s\n"_Stz,sRightTest.azChar());
+//  printf("sizeof(Column)       %lld\n", (i8)sizeof(Column));
+//  printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
+//  printf("sizeof(HeapBuffer)   %lld\n", (i8)sizeof(HeapBuffer));
+//  printf("sizeof(s32)          %lld\n", (i8)sizeof(s32));
+//  printf("sizeof(s4K)          %lld\n", (i8)sizeof(s4K));
+//  printf("sizeof(ShortCut)     %lld\n", (i8)sizeof(ShortCut));
 
-  StrLib::vRight(sRightTest.azChar(),(char*)"abcde"_Stz,29);
-  vTrace("%s\n"_Stz,sRightTest.azChar());
+  s32 sString;
   
+  sString.pString()->vCopy("abcd"_Stz);
+  printf("  %s\n",sString.azChar());
+
   Process::vEntry();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
