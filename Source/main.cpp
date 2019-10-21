@@ -16,7 +16,10 @@ int main(int argc, const char* argv[])
   printf("sizeof(Column)       %lld\n", (i8)sizeof(Column));
   printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
   printf("sizeof(HeapBuffer)   %lld\n", (i8)sizeof(HeapBuffer));
-  
+  printf("sizeof(s32)          %lld\n", (i8)sizeof(s32));
+  printf("sizeof(s4K)          %lld\n", (i8)sizeof(s4K));
+  printf("sizeof(ShortCut)     %lld\n", (i8)sizeof(ShortCut));
+
   s32 sRightTest;
   StrLib::vRuler(sRightTest.azChar(),30);
   vTrace("%s\n"_Stz,sRightTest.azChar());

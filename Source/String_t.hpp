@@ -9,6 +9,7 @@ namespace Esses
   class String_t : public Object
   {
   private:
+    i8   m_nSize;       // size of str
     char m_caStr[SIZE]; // str area
     
     // must be last
@@ -71,6 +72,8 @@ String_t<SIZE>::String_t(void)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
+  m_nSize = SIZE;
+  
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caStr,SIZE,CN_STRING_T);
 #else
@@ -89,6 +92,8 @@ String_t<SIZE>::String_t(Stz* szArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
+  m_nSize = SIZE;
+
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caStr,SIZE,CN_STRING_T);
 #endif
