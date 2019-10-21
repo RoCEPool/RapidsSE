@@ -23,6 +23,8 @@ namespace Focals
     i8    nSize(void);
     char* azStr(void);
     Stz*  szStz(void);
+  
+    Footer* aFooter(void);
   };
 }
 

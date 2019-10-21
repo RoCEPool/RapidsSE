@@ -42,7 +42,12 @@ String::~String(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void String::vCopy(Stz* szArg)
 {
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+
   StrLib::vCopyLen(m_caStr,szArg->azChar(),m_nSize - 1);
+
+  aFooter()->vAssertFooter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,7 +55,9 @@ void String::vCopy(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 i8 String::nSize(void)
 {
-  
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+
   return m_nSize;
 }
 
@@ -59,7 +66,9 @@ i8 String::nSize(void)
 /*----------------------------------------------------------------------------*/
 char* String::azStr(void)
 {
-  
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+
   return (char*) m_caStr;
 }
 
@@ -68,8 +77,28 @@ char* String::azStr(void)
 /*----------------------------------------------------------------------------*/
 Stz* String::szStz(void)
 {
-  
+  m_xHeader.vAssertHeader();
+  aFooter()->vAssertFooter();
+
   return (Stz*) m_caStr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* String::aFooter(void)
+{
+  m_xHeader.vAssertHeader();
+
+  i8 nSizeHeaderBody = sizeof(m_xHeader) + sizeof(m_nSize) + (m_nSize);
+  
+  Footer* aFooter = aAdd<Footer*>(this,nSizeHeaderBody);
+  
+  return aFooter;
 }
 
 /*============================================================================*/

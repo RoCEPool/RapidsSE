@@ -20,10 +20,12 @@ int main(int argc, const char* argv[])
 //  printf("sizeof(s4K)          %lld\n", (i8)sizeof(s4K));
 //  printf("sizeof(ShortCut)     %lld\n", (i8)sizeof(ShortCut));
 
-  s32 sString;
-  
-  sString.pString()->vCopy("abcd"_Stz);
-  printf("  %s\n",sString.azChar());
+//  s32 sString;
+//  
+//  sString.pString()->vCopy("abcd"_Stz);
+//  printf("  %s\n",sString.azChar());
+//  sString.pString()->vCopy("012345678901234567890123456789abcdefghijk"_Stz);
+//  printf("  %s\n",sString.azChar());
 
   Process::vEntry();
   
