@@ -94,7 +94,7 @@ Footer* String::aFooter(void)
 {
   m_xHeader.vAssertHeader();
 
-  i8 nSizeHeaderBody = sizeof(m_xHeader) + sizeof(m_nSize) + (m_nSize);
+  i8 nSizeHeaderBody = sizeof(m_xHeader) + sizeof(m_nSize) + m_nSize;
   
   Footer* aFooter = aAdd<Footer*>(this,nSizeHeaderBody);
   

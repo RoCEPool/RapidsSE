@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Focals
+namespace Esses
 {
   class String
   {
@@ -12,6 +12,9 @@ namespace Focals
     i8     m_nSize;       // size of str
     char   m_caStr[1];    // str area
 
+    // m_xFooter which is :
+    //   this + sizeof(m_xHeader) + sizeof(m_nSize) + m_nSize
+  
   public:
     void* operator new(size_t);
   
