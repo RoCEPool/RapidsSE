@@ -4,17 +4,16 @@
 
 "job_Boot.sen" .verbose
 
-"vocab.sen"     include
-"tasks.sen"     include
+"vocab.sen" include
+"tasks.sen" include
 "gridModel.sen" include
 "dbObjects.sen" include
-"jobModel.sen"  include
-"opModel.sen"   include
-"testing.sen"   include
-"prompt.sen"    include
+"jobModel.sen" include
+"testing.sen" include
+"prompt.sen" include
 
 // last
-"se.sen"        include
+"se.sen" include
 
 assert::stack_0
 
