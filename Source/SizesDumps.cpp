@@ -69,6 +69,7 @@ pDUMPFUN *gpDump[]
 
   /*    */ &Dump::vDummy,           // CN_DECACNT
   /*    */ &Dump::vDummy,           // CN_DECIDER
+  /*    */ &Dump::vDummy,           // CN_DELAYOP
   /* 33 */ &Dic::vDump,             // CN_DIC
   /*    */ &Dump::vDummy,           // CN_DICPATH
   /* 34 */ &DicStack::vDump,        // CN_DICSTACK
@@ -494,6 +495,7 @@ i8 giClassSize[]
 
   /*    */ sizeof(DecaCnt),            // CN_DECACNT
   /*    */ sizeof(Decider),            // CN_DECIDER
+  /*    */ sizeof(DelayOp),            // CN_DELAYOP
   /* 33 */ sizeof(Dic),                // CN_DIC
   /* 34 */ sizeof(DicPath),            // CN_DICPATH
   /* 34 */ sizeof(DicStack),           // CN_DICSTACK
@@ -917,6 +919,7 @@ eHT geWhichHeap[]
 
   /*    */ HT_TRANSIENT_SMALL,   // CN_DECACNT
   /*    */ HT_TRANSIENT_SMALL,   // CN_DECIDER
+  /*    */ HT_TRANSIENT_SMALL,   // CN_DELAYOP
   /* 33 */ HT_TRANSIENT_MEDIUM,  // CN_DIC
   /*    */ HT_TRANSIENT_SMALL,   // CN_DICPATH
   /* 34 */ HT_TRANSIENT_SMALL,   // CN_DICSTACK

@@ -68,6 +68,7 @@ enum eCN : u2 // Class Number
 
   /*                           */ CN_DECACNT,
   /*  28 0x1C       24B Heap:S */ CN_DECIDER,
+  /*                           */ CN_DELAYOP,
   /*  29 0x1D      248B Heap:M */ CN_DIC,
   /*  30 0x1E      792B Heap:S */ CN_DICPATH,
   /*  31 0x1F      152B Heap:S */ CN_DICSTACK,
@@ -489,6 +490,7 @@ static Stz* aCN[]
 
   /*          */ "DECACNT"_Stz,             // CN_DECACNT
   /*  28 0x1C */ "DECIDER"_Stz,             // CN_DECIDER
+  /*          */ "DELAOP"_Stz,              // CN_DELAYOP
   /*  29 0x1D */ "DIC"_Stz,                 // CN_DIC
   /*  30 0x1E */ "DICPATH"_Stz,             // CN_DICPATH
   /*  31 0x1F */ "DICSTACK"_Stz,            // CN_DICSTACK

@@ -22,6 +22,7 @@ namespace DataOperators
 #include "ConsumeOp.hpp"
 #include "CountOp.hpp"
 
+#include "DelayOp.hpp"
 #include "DistinctOp.hpp"
 
 #include "ExprOp.hpp"

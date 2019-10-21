@@ -148,6 +148,15 @@ eOR ScanOp::eOpLoop(void)
     switch (pOperand->eClass()) {
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      case CN_CANCELMARKER:
+        vTrace("%s::!CANCELED :   after piping %lld buffers\n"_Stz,
+               m_sName.szStz(),
+               m_iWorkDone);
+        delete _pCancelMarker(pOperand);
+        goto L_EXIT;
+        break;
+        
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case CN_STARTMARKER:
         
         if (m_bRunPrelim)
