@@ -9,6 +9,8 @@ namespace DataOperators
   {
   private:
     s256       m_sTableNm;
+    Table*     m_pTable;
+    TablePtn*  m_pTablePtn;
 
     // must be last
     Footer m_xFooter;
@@ -29,7 +31,8 @@ namespace DataOperators
 
   private:
     void vInsertBuffer(CrwBuffer* pCrwBuffer);
-  
+    void vPreliminary(void);
+
     Footer* aFooter(void);
   };
 

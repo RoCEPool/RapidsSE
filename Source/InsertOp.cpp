@@ -75,7 +75,9 @@ InsertOp::InsertOp(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INSERTOP,_FOOTER_);
   
-  m_sTableNm = C_NO_NAME;
+  m_sTableNm  = C_NO_NAME;
+  m_pTable    = nullptr;
+  m_pTablePtn = nullptr;
 
   m_fpCall = InsertOp::eCall;
   
@@ -139,6 +141,8 @@ eOR InsertOp::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INSERTOP,_FOOTER_);
   
+  vPreliminary();
+  
   for (;;) {
     
     Operand* pOperand = pPopQueue();
@@ -154,8 +158,11 @@ eOR InsertOp::eOpLoop(void)
   
       // -- -- -- -- -- --
         
-      case CN_CRWBUFFER:
+      case CN_CRWBUFFER: {
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+        vInsertBuffer(pCrwBuffer);
         break;
+      }
         
       // -- -- -- -- -- --
         
@@ -231,11 +238,8 @@ eOR InsertOp::eDrainLoop(void)
     
     switch (pOperand->eClass()) {
         
-      case CN_CRWBUFFER: {
-        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-        vInsertBuffer(pCrwBuffer);
+      case CN_CRWBUFFER:
         break;
-      }
         
       case CN_ENDMARKER:
         vPipeOut(pOperand);
@@ -278,6 +282,24 @@ void InsertOp::vInsertBuffer(CrwBuffer* pCrwBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INSERTOP,_FOOTER_);
   
 }
+
+/*----------------------------------------------------------------------------*/
+/* find table preliminary                                                     */
+/*----------------------------------------------------------------------------*/
+void InsertOp::vPreliminary(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INSERTOP,_FOOTER_);
+  
+  DicStack* pDicStack = new DicStack;
+  AM::vJobDicStack(m_pJob, pDicStack);
+  
+  // find the table in the session dictionary stack
+  m_pTable = Table::pFindTable(pDicStack, m_sTableNm);
+  
+  // get table ptn
+  m_pTablePtn = m_pTable->pSlots()->pPartition(TablePtn::iPartitionToSlot(m_nPartition));
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
