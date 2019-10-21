@@ -100,7 +100,7 @@ Op* DelayOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   DelayOp* pDelayOp = new DelayOp(pOpSpec,pPipeline);
   
-  pDelayOp->m_nDelay = pDelayOp->m_pOpSpec->pEnameSet()->iValue((i8)0);
+  pDelayOp->m_nDelay = StrLib::iToI8(pDelayOp->m_pOpSpec->pEnameSet()->szValue((i8)0)->azChar());
   
   return pDelayOp;
 }

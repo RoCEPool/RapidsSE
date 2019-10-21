@@ -94,7 +94,7 @@ pipeline lineItem_dyn
 begin
 
 stage stageA on all partitions:
-scan lineitem | stageB
+scan lineitem | delay 10 | stageB
 
 stage stageB on origin:
 output
