@@ -77,6 +77,7 @@ InsertOp::InsertOp(OpSpec* pOpSpec, Pipeline* pPipeline)
   
   m_sTableNm  = C_NO_NAME;
   m_pTable    = nullptr;
+  m_iSlot     = 0;
   m_pTablePtn = nullptr;
 
   m_fpCall = InsertOp::eCall;
@@ -281,6 +282,13 @@ void InsertOp::vInsertBuffer(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INSERTOP,_FOOTER_);
   
+  i8 iTxId = 0;
+
+  do {;} while (! m_pTablePtn->bGrabRead());
+  
+  m_pTable->vInsertEntries(iTxId,m_iSlot,pCrwBuffer);
+  
+  m_pTablePtn->vDropRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -296,8 +304,11 @@ void InsertOp::vPreliminary(void)
   // find the table in the session dictionary stack
   m_pTable = Table::pFindTable(pDicStack, m_sTableNm);
   
+  // convert partition to node slot
+  m_iSlot = TablePtn::iPartitionToSlot(m_nPartition);
+
   // get table ptn
-  m_pTablePtn = m_pTable->pSlots()->pPartition(TablePtn::iPartitionToSlot(m_nPartition));
+  m_pTablePtn = m_pTable->pSlots()->pPartition(m_iSlot);
 }
 
 

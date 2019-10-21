@@ -10,6 +10,7 @@ namespace DataOperators
   private:
     s256       m_sTableNm;
     Table*     m_pTable;
+    i8         m_iSlot;
     TablePtn*  m_pTablePtn;
 
     // must be last

@@ -17,7 +17,7 @@ dynamic pipeline ray2_dyn
 begin
 
   stage stageA on all partitions:
-    scan lineitem | insert lineitem | output
+    scan lineitem | insert lineitem2 | output
 
 end ;
 
@@ -25,7 +25,7 @@ dynamic pipeline ray3_dyn
 begin
 
   stage stageA on all partitions:
-    scan lineitem | output
+    scan lineitem2 | output
 
 end ;
 
