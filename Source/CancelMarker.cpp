@@ -47,6 +47,8 @@ CancelMarker::CancelMarker(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
 
+  m_iTotalOperands = C_UNKNOWN;
+  
   _checkInitialised_(CN_CANCELMARKER);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);

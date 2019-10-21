@@ -26,6 +26,7 @@ bool Streams::_bIsValidOperand(eCN eClass)
 {
   switch(eClass) {
     case CN_ENDMARKER:
+    case CN_CANCELMARKER:
     case CN_CRWBUFFER:
     case CN_IRWBUFFER:
     case CN_STREAMDEF:

@@ -149,12 +149,10 @@ eOR OutputOp::eOpLoop(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     switch (pOperand->eClass()) {
-        
+      
       // -- -- -- -- -- --
         
-      case CN_CSVBUFFER: {
-        CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
-        m_iWorkDone += pCsvBuffer->nRecords();
+      case CN_CANCELMARKER: {
         vPipeToJob(pOperand);
         break;
       }
@@ -164,6 +162,15 @@ eOR OutputOp::eOpLoop(void)
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
         m_iWorkDone += pCrwBuffer->nRowCount();
+        vPipeToJob(pOperand);
+        break;
+      }
+  
+      // -- -- -- -- -- --
+        
+      case CN_CSVBUFFER: {
+        CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+        m_iWorkDone += pCsvBuffer->nRecords();
         vPipeToJob(pOperand);
         break;
       }

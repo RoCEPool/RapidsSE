@@ -148,8 +148,9 @@ eOR StartOp::eStartLoop(void)
       case CN_CANCELMARKER:
         // pipe out the cancel marker
         vTrace("Query being cancelled\n"_Stz);
+        m_pPipeline->vCancelling(true);
         vPipeOut(pOperand);
-        goto L_EXIT;
+        break;
         
       case CN_STARTMARKER:
         vPipeOut(pOperand);

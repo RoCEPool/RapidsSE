@@ -423,6 +423,30 @@ void Step::vSocketRecvObject(void)
   i8 nRemainingBytes;
   
   switch(eClass) {
+    
+    case CN_CANCELMARKER: {
+      CancelMarker* pCancelMarker = new CancelMarker();
+      
+      MemLib::vCopy(pCancelMarker,pObject,sizeof(Object),CN_CANCELMARKER);
+      
+      aBody = aAdd<void*>(pCancelMarker,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_CANCELMARKER] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        m_pDataStack->vPushBool(false);
+        EXIT();
+        return;
+      }
+      
+      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+      
+      m_pDataStack->vPushPointer(pCancelMarker);
+      m_pDataStack->vPushBool(true);
+      EXIT();
+      return;
+    }
       
     case CN_CRWBUFFER: {
       

@@ -149,10 +149,7 @@ eOR ScanOp::eOpLoop(void)
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case CN_CANCELMARKER:
-        vTrace("%s::!CANCELED :   after piping %lld buffers\n"_Stz,
-               m_sName.szStz(),
-               m_iWorkDone);
-        delete _pCancelMarker(pOperand);
+        delete (_pCancelMarker(pOperand));
         goto L_EXIT;
         break;
         
@@ -168,9 +165,11 @@ eOR ScanOp::eOpLoop(void)
         while (m_pCrwBuffer) {
           
           if (bIsCancelling()) {
+            
             vTrace("%s::!CANCELED :   after piping %lld buffers\n"_Stz,
                    m_sName.szStz(),
                    m_iWorkDone);
+            vPipeOut(new CancelMarker());
             break;
           }
           
@@ -179,6 +178,9 @@ eOR ScanOp::eOpLoop(void)
           vIncWorkDone();
           
           m_pCrwBuffer = m_pCrwBuffer->pNextBuffer();
+          
+          vTrace("ScanOp napping...\n"_Stz);
+          AM::vNap(10 * C_1K,CN_SEPROMPT);
           
 #ifdef WITH_PULSING
           if (bPause()) {

@@ -7,8 +7,10 @@ namespace ControlData
 {
   class CancelMarker : public Operand
   {
-  private:
+  public:
   
+     i8 m_iTotalOperands;
+    
     // must be last
     Footer m_xFooter;
 

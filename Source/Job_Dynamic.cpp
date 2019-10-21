@@ -368,7 +368,18 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     switch (pOperand->eClass()) {
-       
+      
+     // -- -- -- -- -- --
+        
+      case CN_CANCELMARKER: {
+        vTrace("Query %lld cancelled!!! (rows fetched so far %lld)\n"_Stz, pJob_Dynamic->iJobId(),
+               *pJob_Dynamic->m_xResponse.m_ixRowsProcessed);
+        delete (_pCancelMarker(pOperand));
+        goto L_EXIT;
+        
+        break;
+      }
+        
       // -- -- -- -- -- --
         
       case CN_CRWBUFFER: {

@@ -21,6 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for cancelQuery                       (on each participating node) */
 /*----------------------------------------------------------------------------*/
+/*
 : cancelQuery::execute _eeh ( -- )
 
   >>logEntry <SEED_EXE>
@@ -51,6 +52,44 @@
   pJobParticipant job_dynamic.cancel
 
   pJob_CancelQuery job::participantExecuted
+;
+*/
+
+/*----------------------------------------------------------------------------*/
+/* execute for cancelQuery                       (on each participating node) */
+/*----------------------------------------------------------------------------*/
+ : cancelQuery_exe ( -- )
+ 
+   >>logEntry <SEED_EXE>
+
+   job::this locals| pJob_CancelQuery |
+
+   0 0 locals| sJobId iJobId |
+
+   tp: cancelQuery_exe
+
+   //----------------------------------------------------------------------------
+   // grab a ddl lock
+   ddlLock::grabRead
+
+   //----------------------------------------------------------------------------
+   // set task's dictionary stack from path in job
+   pJob_CancelQuery job.pushPath
+   task::dicStack.set
+
+   //----------------------------------------------------------------------------
+   // cancel the query
+   <jobId> to sJobId
+
+   sJobId str.tailInt drop to iJobId
+   iJobId  job::findParticipant locals| pJobParticipant |
+
+   // execute the cancel
+   pJobParticipant job_dynamic.cancel
+
+   pJob_CancelQuery job::participantExecuted
+
+   <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

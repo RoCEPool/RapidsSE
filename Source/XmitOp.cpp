@@ -149,9 +149,20 @@ eOR XmitOp::eXmitLoop(void)
       return OR_BIDE;
     }
     
+    if (CN_CANCELMARKER == pOperand->eClass()) {
+      CancelMarker* pCancelMarker =_pCancelMarker(pOperand);
+      pCancelMarker->m_iTotalOperands = iOperands;
+      AM::vSendJobOperand(m_pTask,
+                          pOperand,
+                          m_pPipeline->pJob(),
+                          this,
+                          m_iXmitNode);
+      
+      continue;
+    }
+    
     if (CN_ENDMARKER == pOperand->eClass()) {
       EndMarker* pEndMarker = _pEndMarker(pOperand);
-      //delete pEndMarker;
       pEndMarker->m_iTotalOperands = iOperands;
       AM::vSendJobOperand(m_pTask,
                           pOperand,
@@ -176,6 +187,11 @@ eOR XmitOp::eXmitLoop(void)
     RASSERT(CN_CRWBUFFER == pOperand->eClass() ||
             CN_IRWBUFFER == pOperand->eClass());
   
+    if (bIsCancelling()) {
+      if (pOperand->eClass() == CN_IRWBUFFER)
+        delete _pIrwBuffer(pOperand);
+      continue;
+    }
     iOperands++;
     
     if (AM::bVerbose())

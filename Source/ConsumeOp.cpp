@@ -164,6 +164,13 @@ eOR ConsumeOp::eOpLoop(void)
         
       // -- -- -- -- -- --
         
+      case CN_CANCELMARKER: {
+        vPipeOut(pOperand);
+        break;
+      }
+        
+      // -- -- -- -- -- --
+        
       case CN_ENDMARKER: {
         
         // received all expected end markers ?
@@ -197,7 +204,12 @@ eOR ConsumeOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       default:
-        vPipeOut(pOperand);
+        if (bIsCancelling()) {
+          if (pOperand->eClass() != CN_CRWBUFFER)
+            delete pOperand;
+        }
+        else
+          vPipeOut(pOperand);
         break;
     }
     
