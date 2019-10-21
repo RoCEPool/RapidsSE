@@ -105,7 +105,7 @@ namespace SenVM
   public:
     void vPopBy(i8 nBytes);
   private:
-    void vPopReg(Local* aLocal);
+    void vPopLocal(Local* aLocal);
     void vPopVal(ForthValue* aValue);
     void vPushBy(i8 nBytes);
     void vPushVal(ForthValue* aValue);

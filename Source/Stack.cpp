@@ -645,7 +645,7 @@ bool Stack::bPopLocal(Local*& pLocal)
   if ( ! bGuard(1) )
     return false;
   
-  vPopReg(pLocal);
+  vPopLocal(pLocal);
   
   return true;
 }
@@ -1093,9 +1093,9 @@ i8 Stack::nValues(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* pop value from value stack                                                 */
+/* pop local from value stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopReg(Local* aLocal)
+void Stack::vPopLocal(Local* aLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   //m_xHazard.vAssertFooter();
