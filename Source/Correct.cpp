@@ -104,7 +104,7 @@ void Correctness::vStackDump(void)
   xException.vPrint();
   
   // dump the call stack
-  vStackDump();
+  //vStackDump();
   
   throw xException;
 }
