@@ -118,7 +118,7 @@ void Exception::vSprint(char* azIntoBuf)
 {
   StrLib::vSprint((Stz*)azIntoBuf,
                   
-                  "Exception : %s of (%s) func %s"
+                  "Exception : %s of (%s) func %s "
                   "in job %s failed "
                   "(file %s line %lld)"_Stz,
          

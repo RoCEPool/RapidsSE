@@ -55,6 +55,7 @@ namespace Prompt
     void vCheckNoWait(void);
     i8   iCommandFocal(void);
     i8   iRequestId(void);
+    void vCompletedTask(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
     void vCutToken(i8 i_Tkn);

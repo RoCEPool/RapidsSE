@@ -201,6 +201,7 @@ void SePrompt::vPromptLoop(void)
       
       vPostJob();
       vDumpTokenVec();
+      vCompletedTask();
       vDeleteJob();
       continue;
     }
@@ -357,6 +358,18 @@ i8 SePrompt::iCommandFocal(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_i_RequestFocal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task as completed                                                      */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCompletedTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Task* pTask = m_pJob->pTask();
+  
+  pTask->vState(TS_COMPLETED);
 }
 
 /*----------------------------------------------------------------------------*/
