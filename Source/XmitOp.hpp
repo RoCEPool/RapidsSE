@@ -9,7 +9,8 @@ namespace DataOperators
   {
   private:
   
-    i8 m_iXmitNode;     // node to xmit to
+    i8 m_iXmitNode;        // node to xmit to
+    bool m_bCancelMarker;  // has the cancel marker been already sent ?
     
     // must be last
     Footer m_xFooter;

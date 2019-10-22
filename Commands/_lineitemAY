@@ -54,6 +54,9 @@ IndexEntries 4000;
 //time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
+time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
+time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
+time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 space;
@@ -88,22 +91,40 @@ print "*************************************************************************
 print "scan lineitem | output;";
 print "**************************************************************************";
 
+
 dynamic
 
 pipeline lineItem_dyn
 begin
 
 stage stageA on all partitions:
-scan lineitem | delay 10 | stageB
+scan lineitem | stageB
 
 stage stageB on origin:
 output
 
 end
 ;
-
-
 /*
+ dynamic
+ pipeline lineItem_dyn
+ begin
+ 
+ stage stageA on all partitions:
+ scan lineitem | count | stageB
+ 
+ stage stageB on all nodes:
+ superCount | stageC
+ 
+ stage stageC on origin:
+ superCount | stageD
+ 
+ stage stageD on origin:
+ output
+ 
+ end
+ ;
+
 dynamic
 pipeline lineItem_dyn
 begin

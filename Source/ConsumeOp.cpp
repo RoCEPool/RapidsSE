@@ -165,7 +165,7 @@ eOR ConsumeOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_CANCELMARKER: {
-        vPipeOut(pOperand);
+        m_pPipeline->vCancelling(true);
         break;
       }
         
@@ -205,8 +205,12 @@ eOR ConsumeOp::eOpLoop(void)
         
       default:
         if (bIsCancelling()) {
-          if (pOperand->eClass() != CN_CRWBUFFER)
-            delete pOperand;
+//          // ignore operands if query is being cancelled
+//          if (pOperand->eClass() != CN_CRWBUFFER)
+//            delete pOperand;
+          
+          // we shouldn't receive any operands if query is being cancelled
+          RASSERT(0);
         }
         else
           vPipeOut(pOperand);

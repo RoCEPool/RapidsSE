@@ -208,6 +208,7 @@ eOR CountOp::eOpLoop(void)
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand) ;
         m_nCount += pIrwBuffer->nItems();
+        delete pIrwBuffer;
         break;
       }
        

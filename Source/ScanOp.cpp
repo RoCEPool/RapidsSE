@@ -146,12 +146,6 @@ eOR ScanOp::eOpLoop(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     switch (pOperand->eClass()) {
-      
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      case CN_CANCELMARKER:
-        delete (_pCancelMarker(pOperand));
-        goto L_EXIT;
-        break;
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case CN_STARTMARKER:
@@ -169,7 +163,6 @@ eOR ScanOp::eOpLoop(void)
             vTrace("%s::!CANCELED :   after piping %lld buffers\n"_Stz,
                    m_sName.szStz(),
                    m_iWorkDone);
-            vPipeOut(new CancelMarker());
             break;
           }
           

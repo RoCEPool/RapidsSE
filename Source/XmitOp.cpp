@@ -77,6 +77,7 @@ XmitOp::XmitOp(OpSpec* pOpSpec, Pipeline* pPipeline)
   _precondition_(_MAGIC_,CN_XMITOP);
   
   m_iXmitNode = C_UNKNOWN;
+  m_bCancelMarker = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,72 +150,89 @@ eOR XmitOp::eXmitLoop(void)
       return OR_BIDE;
     }
     
-    if (CN_CANCELMARKER == pOperand->eClass()) {
-      CancelMarker* pCancelMarker =_pCancelMarker(pOperand);
-      pCancelMarker->m_iTotalOperands = iOperands;
-      AM::vSendJobOperand(m_pTask,
-                          pOperand,
-                          m_pPipeline->pJob(),
-                          this,
-                          m_iXmitNode);
+    switch (pOperand->eClass()) {
+        
+      // -- -- -- -- -- --
+      case CN_ENDMARKER:  {
+        EndMarker* pEndMarker = _pEndMarker(pOperand);
+        pEndMarker->m_iTotalOperands = iOperands;
+        AM::vSendJobOperand(m_pTask,
+                            pOperand,
+                            m_pPipeline->pJob(),
+                            this,
+                            m_iXmitNode);
+        
+        goto L_EXIT;
+      }
       
-      continue;
-    }
-    
-    if (CN_ENDMARKER == pOperand->eClass()) {
-      EndMarker* pEndMarker = _pEndMarker(pOperand);
-      pEndMarker->m_iTotalOperands = iOperands;
-      AM::vSendJobOperand(m_pTask,
-                          pOperand,
-                          m_pPipeline->pJob(),
-                          this,
-                          m_iXmitNode);
+      // -- -- -- -- -- --
+      case CN_STREAMDEF:  {
+        m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+        AM::vSendJobOperand(m_pTask,
+                            pOperand,
+                            m_pPipeline->pJob(),
+                            this,
+                            m_iXmitNode);
+        break;
+      }
+     
+      // -- -- -- -- -- --
+        
+      case CN_CRWBUFFER:
+      case CN_IRWBUFFER: {
+        
+        // check if query being cancelled
+        if (m_pPipeline->bCancelling()) {
+          
+          // has the CANCELMARKER already been transmitted ?
+          if ( ! m_bCancelMarker ) {
+            CancelMarker* pCancelMarker = new CancelMarker;
+            pCancelMarker->m_iTotalOperands = iOperands;
+            AM::vSendJobOperand(m_pTask,
+                                pOperand,
+                                m_pPipeline->pJob(),
+                                this,
+                                m_iXmitNode);
+          }
+          
+          // delete non-data operands
+          if (pOperand->eClass() != CN_CRWBUFFER)
+            delete _pIrwBuffer(pOperand);
+          break;
+        }
+        iOperands++;
+        
+        if (AM::bVerbose())
+          vTrace("%s::XmitOut :    %s %p (N%lld)\n"_Stz,
+                 m_sName.szStz(),
+                 aCN[pOperand->eClass()],
+                 pOperand,
+                 m_iXmitNode);
+        
+        AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                    "XmitOut operand %s to node %lld"_Stz, //!format-LogOpr
+                    aCN[pOperand->eClass()],
+                    m_iXmitNode);
+        
+        AM::vSendJobOperand(m_pTask,
+                            pOperand,
+                            m_pPipeline->pJob(),
+                            this,
+                            m_iXmitNode);
+        break;
+      }
       
-      break;
-    }
-  
-    if (CN_STREAMDEF == pOperand->eClass()) {
-      m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-      //vPipeOut(pOperand);
-      AM::vSendJobOperand(m_pTask,
-                          pOperand,
-                          m_pPipeline->pJob(),
-                          this,
-                          m_iXmitNode);
-      continue;
-    }
-  
-    RASSERT(CN_CRWBUFFER == pOperand->eClass() ||
-            CN_IRWBUFFER == pOperand->eClass());
-  
-    if (bIsCancelling()) {
-      if (pOperand->eClass() == CN_IRWBUFFER)
-        delete _pIrwBuffer(pOperand);
-      continue;
-    }
-    iOperands++;
+      // -- -- -- -- -- --
+      default:
+        RASSERT(0);
+        break;
+      }
     
-    if (AM::bVerbose())
-      vTrace("%s::XmitOut :    %s %p (N%lld)\n"_Stz,
-             m_sName.szStz(),
-             aCN[pOperand->eClass()],
-             pOperand,
-             m_iXmitNode);
-  
-    AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-                "XmitOut operand %s to node %lld"_Stz, //!format-LogOpr
-                aCN[pOperand->eClass()],
-                m_iXmitNode);
-  
-    AM::vSendJobOperand(m_pTask,
-                        pOperand,
-                        m_pPipeline->pJob(),
-                        this,
-                        m_iXmitNode);
-  }
-  
+    }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+L_EXIT:
   return OR_EXIT;
 }
 
