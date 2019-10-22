@@ -48,7 +48,6 @@ namespace Tasks
     i8      m_i_NextRnd;    // which next repeatable random nummber?
 
     Node*     m_pSendNode;  // node to send to
-    Compiler* m_pCompiler;  // forth word compiler (Job boot, create table etc)
   
     Forth*    m_pForth;     // forth implementation
     RegSet*   m_pRegSet;    // set of registers
@@ -154,7 +153,6 @@ namespace Tasks
   Task* _pTask(i8 iAddr);
 }
 
-bool bTaskCompareQueueOrder(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 bool bTaskCompareWakeupTime(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
 /*============================================================================*/

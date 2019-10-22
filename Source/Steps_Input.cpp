@@ -31,7 +31,7 @@ void Step::vInputClose(void)
 {
 ENTRY("vInputClose"_Stz);
   
-  m_pTask->m_pCompiler->m_pTokeniser->vUseEnd();
+  m_pTask->m_pForth->m_pCompiler->m_pTokeniser->vUseEnd();
   
   EXIT();
 }
@@ -43,7 +43,7 @@ void Step::vInputDepth(void)
 {
 ENTRY("vInputDepth"_Stz);
   
-  i8 iDepth = m_pTask->m_pCompiler->m_pTokeniser->iDepth();
+  i8 iDepth = m_pTask->m_pForth->m_pCompiler->m_pTokeniser->iDepth();
   
   m_pDataStack->vPushI8(iDepth);
   
@@ -61,9 +61,9 @@ ENTRY("vInputNext"_Stz);
     ASSERT(m_pTask->m_iTracing);
   }
   
-  char* aToken = m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar();
+  char* aToken = m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken().azChar();
   
-  eTN eToken = m_pTask->m_pCompiler->m_pTokeniser->eNextToken(aToken);
+  eTN eToken = m_pTask->m_pForth->m_pCompiler->m_pTokeniser->eNextToken(aToken);
   
   EXIT();
 }
@@ -80,7 +80,7 @@ ENTRY("vInputOpen"_Stz);
   if ( ! m_pDataStack->bPopS256(sFilePath) )
     THROW_DSTACK();
   
-  bool bOpened = m_pTask->m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
+  bool bOpened = m_pTask->m_pForth->m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
   
   if ( ! bOpened )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
@@ -96,7 +96,7 @@ void Step::vInputPop(void)
 {
 ENTRY("vInputPop"_Stz);
   
-  bool bPopped = m_pTask->m_pCompiler->m_pTokeniser->bPop();
+  bool bPopped = m_pTask->m_pForth->m_pCompiler->m_pTokeniser->bPop();
   ASSERT(bPopped);
   
   EXIT();
@@ -109,10 +109,10 @@ void Step::vInputPush(void)
 {
 ENTRY("vInputPush"_Stz);
   
-  if ( ! m_pTask->m_pCompiler )
-    m_pTask->m_pCompiler = new Compiler;
+  if ( ! m_pTask->m_pForth->m_pCompiler )
+    m_pTask->m_pForth->m_pCompiler = new Compiler;
   
-  m_pTask->m_pCompiler->m_pTokeniser->vPush();
+  m_pTask->m_pForth->m_pCompiler->m_pTokeniser->vPush();
   
   EXIT();
 }
@@ -124,10 +124,10 @@ void Step::vInputStdin(void)
 {
 ENTRY("vInputStdin"_Stz);
   
-  if ( ! m_pTask->m_pCompiler )
-    m_pTask->m_pCompiler = new Compiler;
+  if ( ! m_pTask->m_pForth->m_pCompiler )
+    m_pTask->m_pForth->m_pCompiler = new Compiler;
   
-  m_pTask->m_pCompiler->m_pTokeniser->vUseStdin();
+  m_pTask->m_pForth->m_pCompiler->m_pTokeniser->vUseStdin();
   
   EXIT();
 }
@@ -148,7 +148,7 @@ ENTRY("vInputText"_Stz);
   if ( ! m_pDataStack->bPopS48K(sInput) )
     THROW_DSTACK();
     
-  m_pTask->m_pCompiler->m_pTokeniser->vUseString(sInput);
+  m_pTask->m_pForth->m_pCompiler->m_pTokeniser->vUseString(sInput);
   
   EXIT();
 }
@@ -160,7 +160,7 @@ void Step::vInputToken(void)
 {
 ENTRY("vInputToken"_Stz);
   
-  m_pDataStack->vPushS48K(m_pTask->m_pCompiler->m_pTokeniser->sToken());
+  m_pDataStack->vPushS48K(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
   
   EXIT();
 }
@@ -172,7 +172,7 @@ void Step::vInputType(void)
 {
 ENTRY("vInputType"_Stz);
   
-  eTN eTokenType = m_pTask->m_pCompiler->m_pTokeniser->eToken();
+  eTN eTokenType = m_pTask->m_pForth->m_pCompiler->m_pTokeniser->eToken();
   
   m_pDataStack->vPushI8(eTokenType);
   
@@ -188,7 +188,7 @@ void Step::vInputUnknown(void)
   
   vTrace("\n"_Stz);
   vTrace("Unknown token: %s\n"_Stz,
-         m_pTask->m_pCompiler->m_pTokeniser->sToken().azChar()
+         m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken().azChar()
          );
   vTrace("\n"_Stz);
 
@@ -204,9 +204,9 @@ void Step::vTokenColon(void)
 {
   ENTRY("vTokenColon"_Stz);
   
-  m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+  m_pTask->m_pForth->m_pCompiler->m_pTokeniser->vNextToken();
   
-  m_pDataStack->vPushS48K(m_pTask->m_pCompiler->m_pTokeniser->sToken());
+  m_pDataStack->vPushS48K(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
   
   EXIT();
 }

@@ -70,7 +70,6 @@ Task::Task(Job* pJob, Session* pSession)
   m_eKind     = TK_JOB;
   m_pJob      = pJob;
   m_pSession  = pSession;
-  m_pCompiler = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
 
   _checkInitialised_(CN_TASK);
   
@@ -158,7 +157,6 @@ void Task::vInit(void)
   m_pForth       = nullptr;
   m_pRegSet      = nullptr;
 
-  m_pCompiler    = nullptr;
   m_pSendNode    = nullptr;
 }
 
@@ -181,8 +179,6 @@ Task::~Task(void) noexcept(false)
   
   delete m_pForth;
   delete m_pRegSet;
-
-  delete m_pCompiler;
   
   delete m_pMutex;
   
@@ -406,7 +402,7 @@ Compiler* Task::pCompiler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pCompiler;
+  return m_pForth->m_pCompiler;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -474,6 +470,9 @@ void Task::vInitExeContext(void)
   
   m_pForth  = new Forth(this);
   m_pRegSet = new RegSet(this);
+  
+  m_pForth->m_pCompiler = (CN_JOB_BOOT == m_pJob->eClass()) ? new Compiler : nullptr;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -793,16 +792,16 @@ void Task::vReseed(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rertry after exception                                                     */
+/* retry after exception                                                      */
 /*----------------------------------------------------------------------------*/
 void Task::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pForth->m_aInxPtr = m_pCompiler->m_pRetryIP;
-  m_pCompiler->m_pBeginIP = nullptr;
+  m_pForth->m_aInxPtr = m_pForth->m_pCompiler->m_pRetryIP;
+  m_pForth->m_pCompiler->m_pBeginIP = nullptr;
   
-  m_pCompiler->m_pTokeniser->sToken() = ""_Stz;
+  m_pForth->m_pCompiler->m_pTokeniser->sToken() = ""_Stz;
   
   m_pForth->m_pDataStack->vRetry();
   m_pForth->m_pReturnStack->vRetry();
@@ -1331,37 +1330,6 @@ Footer* Task::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- Compare -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* compare two tasks by their taskNo                                          */
-/*----------------------------------------------------------------------------*/
-bool bTaskCompareQueueOrder(void* pObjectInsert, void* pObjectScan, bool& bMatch)
-{
-  Task* pInsertEntry = _pTask(pObjectInsert);
-  Task* pScanEntry   = _pTask(pObjectScan);
-  
-  //RJH vTrace("bTaskCompareQueueOrder1\n"_Stz);
-  
-  RASSERT(pScanEntry->eClass() == CN_TASK);
-  RASSERT(pInsertEntry->eClass() == CN_TASK);
-  
-  if ( ! pObjectScan ) {
-    //RJH vTrace("bTaskCompareQueueOrder2\n"_Stz);
-    return false;
-  }
-  
-  if (pInsertEntry->iQueueOrder() == pScanEntry->iQueueOrder())
-    bMatch = true;
-  else
-    bMatch = false;
-  
-  //RJH vTrace("bTaskCompareQueueOrder3\n"_Stz);
-  
-  if (pInsertEntry->iQueueOrder() > pScanEntry->iQueueOrder())
-    return true;
-  else
-    return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /* compare two tasks by their wakeuptime                                      */

@@ -22,7 +22,7 @@ void Step::vDocolCompiling(void)
 {
   ENTRY("vDocolCompiling"_Stz);
   
-  m_pTask->m_pCompiler->m_bCompiling = true;
+  m_pTask->m_pForth->m_pCompiler->m_bCompiling = true;
   
   EXIT();
 }
@@ -34,7 +34,7 @@ void Step::vDocolInterpreting(void)
 {
   ENTRY("vDocolInterpreting"_Stz);
   
-  m_pTask->m_pCompiler->m_bCompiling = false;
+  m_pTask->m_pForth->m_pCompiler->m_bCompiling = false;
   
   EXIT();
 }
@@ -46,7 +46,7 @@ void Step::vDocolIsCompiling(void)
 {
   ENTRY("vDocolIsCompiling"_Stz);
   
-  i8 iIsCompiling = m_pTask->m_pCompiler->m_bCompiling ? 1 : 0;
+  i8 iIsCompiling = m_pTask->m_pForth->m_pCompiler->m_bCompiling ? 1 : 0;
   
   m_pDataStack->vPushI8(iIsCompiling);
   
@@ -60,7 +60,7 @@ void Step::vDocolIsInterpreting(void)
 {
   ENTRY("vDocolIsInterpreting"_Stz);
   
-  i8 iIsInterpreting = m_pTask->m_pCompiler->m_bCompiling ? 0 : 1;
+  i8 iIsInterpreting = m_pTask->m_pForth->m_pCompiler->m_bCompiling ? 0 : 1;
   
   m_pDataStack->vPushI8(iIsInterpreting);
   

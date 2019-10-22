@@ -68,7 +68,7 @@ void Step::vLocalsBar(void)
 {
 ENTRY("vLocalsBar"_Stz);
   
-  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pForth->m_pCompiler->m_pCurrent;
   
   Dic* pDic = m_pTask->m_oDicStack.pPick(0);
 
@@ -77,14 +77,14 @@ ENTRY("vLocalsBar"_Stz);
   for (;;) {
     
     // get name of local variable
-    m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+    m_pTask->m_pForth->m_pCompiler->m_pTokeniser->vNextToken();
     
     // end of locals declaration?
-    if (m_pTask->m_pCompiler->m_pTokeniser->sToken().bEqual("|"_Stz))
+    if (m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken().bEqual("|"_Stz))
       break;
 
     // test for first use of locals|
-    if ( ! m_pTask->m_pCompiler->m_nLocals ) {
+    if ( ! m_pTask->m_pForth->m_pCompiler->m_nLocals ) {
       
       // create a locals dictionary
       pDic = new Dic;
@@ -96,15 +96,15 @@ ENTRY("vLocalsBar"_Stz);
     }
     
     // create new word for local variable in current dictionary
-    Word* pWordLocal = new(pDic) Word(m_pTask->m_pCompiler->m_pTokeniser->sToken());
+    Word* pWordLocal = new(pDic) Word(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
     // ** do not set as current word **
     
     // set word as local variable
     pWordLocal->vKind(WK_LOCAL);
-    pWordLocal->vLocalNo(m_pTask->m_pCompiler->m_nLocals);
+    pWordLocal->vLocalNo(m_pTask->m_pForth->m_pCompiler->m_nLocals);
     
     // encode the word
-    xVariable = m_pTask->m_pCompiler->m_nLocals;
+    xVariable = m_pTask->m_pForth->m_pCompiler->m_nLocals;
     pWordLocal->vEncode("pushValue"_Stz,&xVariable);
     pWordLocal->vEncode("local.fetch"_Stz);
     pWordLocal->vEncode("exit_rt"_Stz);
@@ -113,7 +113,7 @@ ENTRY("vLocalsBar"_Stz);
     pCurrentWord->vEncode("pushValue"_Stz,&xVariable);
     pCurrentWord->vEncode("local.store"_Stz);
     
-    m_pTask->m_pCompiler->m_nLocals++;
+    m_pTask->m_pForth->m_pCompiler->m_nLocals++;
   }
   
   EXIT();
@@ -163,12 +163,12 @@ void Step::vLocalsTo(void)
 {
 ENTRY("vLocalsTo"_Stz);
   
-  Word* pCurrentWord = m_pTask->m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pTask->m_pForth->m_pCompiler->m_pCurrent;
   
   // get name of local from token stream
-  m_pTask->m_pCompiler->m_pTokeniser->vNextToken();
+  m_pTask->m_pForth->m_pCompiler->m_pTokeniser->vNextToken();
 
-  s32 sLocalName(m_pTask->m_pCompiler->m_pTokeniser->sToken());
+  s32 sLocalName(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
   
   // find the word describing the local
   Word* pLocalWord = m_pTask->m_oDicStack.pFindWord(sLocalName);
