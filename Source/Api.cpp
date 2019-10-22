@@ -368,11 +368,11 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
 //
 //  ASSERT(! pJob->pTask());
   
-  vTrace("Spawning %s %s %s\n"_Stz,
-         aCN[pJob->eClass()],
-         pJob->m_bWasReceived ? "wasReceived" : "notReceived",
-         pJob->pTask()        ? "hasTask"     : "noTask"
-         );
+//  vTrace("Spawning %s %s %s\n"_Stz,
+//         aCN[pJob->eClass()],
+//         pJob->m_bWasReceived ? "wasReceived" : "notReceived",
+//         pJob->pTask()        ? "hasTask"     : "noTask"
+//         );
   //if (CN_JOB_STARTCLUSTER == pJob->eClass())
   //  vDebugPoint();
 
