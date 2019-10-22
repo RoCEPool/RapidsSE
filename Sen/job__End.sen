@@ -66,9 +66,11 @@
   // execute the end seed of the job on this participating node
   pJobParticipant SEED_END job.spawn
 
-  job::deleteThis
+  //job::deleteThis
 
-  <DONE_RCV>
+  ddlLock::testDrop
+
+  job::completed
 ;
 
 /*============================================================================*/

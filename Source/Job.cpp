@@ -150,6 +150,8 @@ Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  vTrace("Deleteing job: %s\n"_Stz,aCN[eClass()]);
+  
   vIncActNo();
   if (m_bWasReceived) {
     // do not decrement gixJob
@@ -186,6 +188,16 @@ Job* Job::pThisTLSJob(void)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* delete given job using job class info                                      */
+/*----------------------------------------------------------------------------*/
+void Job::vDeleteJobViaClass(Job* pJob)
+{
+  RASSERT(pJob && pJob->m_aJobClass);
+  
+  pJob->m_aJobClass->vDeleteJob(pJob);
+}
 
 /*----------------------------------------------------------------------------*/
 /* is this a foreign job?                                                     */
