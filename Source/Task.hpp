@@ -27,10 +27,8 @@ namespace Tasks
   
     Lock    m_okLock;       // lock for this task
     eTK     m_eKind;        // task kind
-    union {
-      Job*  m_pJob;         // the job for this task [TK_JOB] or...
-      Op*   m_pOp;          // the op for this task  [TK_OP]
-    };
+    Job*    m_pJob;         // the job for this task [TK_JOB] or...
+    Op*     m_pOp;          // the op for this task  [TK_OP]
   
     Thread*   m_pThread;    // current thread
     Mutex*    m_pMutex;     // mutex

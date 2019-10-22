@@ -136,7 +136,8 @@ void Task::vInit(void)
   
   m_eKind        = TK_NONE;
   m_pJob         = nullptr;
-  
+  m_pOp          = nullptr;
+
   m_pThread      = nullptr;
   m_pMutex       = new Mutex(MK_TASK,this,&m_xReqTuple);
   
