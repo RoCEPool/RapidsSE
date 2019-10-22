@@ -675,26 +675,6 @@ void Task::vQueue(eQK eQueue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get task order no                                                          */
-/*----------------------------------------------------------------------------*/
-i8 Task::iQueueOrder(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_iQueueOrder;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set task order no                                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vQueueOrder(i8 iQueueOrder)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_iQueueOrder = iQueueOrder;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set task queue                                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vRefindJobClass(void)

@@ -163,11 +163,10 @@ void ThreadQueue::vContentDump(void)
 //       pThread;
 //       pThread = pThread->pNextNode()) {
 //
-//    vTrace("Thread %p %s %s order %lld\n"_Stz,
+//    vTrace("Thread %p %s %s\n"_Stz,
 //           pThread,
 //           aCN[pThread->pJob()->eClass()],
-//           aTS[pThread->eState()],
-//           pThread->iQueueOrder()
+//           aTS[pThread->eState()]
 //           );
 //
 //  }

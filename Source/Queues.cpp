@@ -221,7 +221,6 @@ void Queues::vAddBidingSet(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vQueue(QK_BIDING_SET);
-  pTask->vQueueOrder(++m_ixTaskArrival);
   
   m_pBidingSet->vGrabLock();
   
@@ -243,7 +242,6 @@ void Queues::vAddExecutingSet(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vQueue(QK_EXECUTING_SET);
-  pTask->vQueueOrder(++m_ixTaskArrival);
   
   m_pExecutingSet->vGrabLock();
   
@@ -269,7 +267,6 @@ void Queues::vAddPausedSet(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vQueue(QK_PAUSED_SET);
-  pTask->vQueueOrder(++m_ixTaskArrival);
   
   m_pPausedSet->vGrabLock();
     
@@ -320,7 +317,6 @@ void Queues::vAddWaitingSet(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vQueue(QK_WAITING_SET);
-  pTask->vQueueOrder(++m_ixTaskArrival);
   
   m_pWaitingSet->vGrabLock();
   
@@ -342,7 +338,6 @@ void Queues::vAppendReadyQueue(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vQueue(QK_READY_QUEUE);
-  pTask->vQueueOrder(++m_ixTaskArrival);
   
   m_pReadyQueue->vGrabLock();
   
@@ -364,7 +359,6 @@ void Queues::vAppendReadyQueueLP(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vQueue(QK_READY_QUEUE_LP);
-  pTask->vQueueOrder(++m_ixTaskArrival);
   
   m_pReadyQueueLP->vGrabLock();
   

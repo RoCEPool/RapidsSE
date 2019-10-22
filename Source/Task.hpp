@@ -99,8 +99,6 @@ namespace Tasks
     Op*  pOp(void);
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
-    void vQueueOrder(i8 iTaskOrder);
-    i8   iQueueOrder(void);
     void vRefindJobClass(void);
     RegSet* pRegSet(void);
     ReqTuple* aReqTuple(void);
