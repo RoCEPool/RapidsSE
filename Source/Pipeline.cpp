@@ -88,6 +88,9 @@ bool Pipeline::bCancelling(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
+  if (m_bCancelling)
+    vDebugPoint();
+  
   return m_bCancelling;
 }
 
@@ -273,7 +276,7 @@ void Pipeline::vSetupJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of ops to be excuted on given node                              */
+/* spawn operaators for the pipeline                                          */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vSpawnOperators(i8 iNode)
 {
