@@ -24,12 +24,11 @@ namespace Scheduling
   
     TaskList*  m_pReadyQueue;      // queue of tasks ready to be executed
     TaskList*  m_pReadyQueueLP;    // queue of low priority tasks ready to exe
-    TaskQueue* m_pSleepingQueue;   // queue of sleeping tasks
+    TaskQueue* m_pSleepingQueue;   // queue of sleeping tasks order by wakeup
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // task sets (ordered by arrival)
+    // task sets
   
-    Atomic     m_ixTaskArrival;    // task ordering within set
     TaskList*  m_pBidingSet;       // set of op tasks biding to be triggered
     TaskList*  m_pExecutingSet;    // set of tasks currently executing
     TaskList*  m_pPausedSet;       // set of op tasks paused to be continued

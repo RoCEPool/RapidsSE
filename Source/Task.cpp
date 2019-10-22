@@ -146,7 +146,6 @@ void Task::vInit(void)
   m_eState       = TS_NONE;
   m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
-  m_iQueueOrder  = C_UNKNOWN;
   m_oAcksRmg.vCheckInit();
   m_eDdlLocked   = LH_NONE;
   // m_oWakeup
@@ -728,11 +727,10 @@ void Task::vRenderPortrait(s256& sTaskPortrait)
                         );
   }
   else if (QK_NONE != m_eQueue) {
-    sTaskPortrait.vSprint("Task %p %s %s order %lld"_Stz,
+    sTaskPortrait.vSprint("Task %p %s %s"_Stz,
                           this,
                           aCN[m_pJob->eClass()],
-                          aTS[m_eState],
-                          m_iQueueOrder);
+                          aTS[m_eState]);
   }
   else {
     sTaskPortrait.vSprint("Task %p %s %s"_Stz,

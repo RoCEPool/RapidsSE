@@ -66,9 +66,7 @@ Queues::Queues(void)
                                    bTaskCompareWakeupTime);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // task sets ordered by arrival
-  
-  m_ixTaskArrival  = 0;
+  // task sets
   
   m_pBidingSet     = new TaskList(QK_BIDING_SET);
   m_pExecutingSet  = new TaskList(QK_EXECUTING_SET);
