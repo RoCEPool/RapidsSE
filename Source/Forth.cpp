@@ -46,7 +46,7 @@ Forth::Forth(Task* pTask)
   
   m_pTask        = pTask;
   
-  m_aInxPtr     = nullptr;
+  m_aInxPtr      = nullptr;
   
   m_pDataStack   = new Stack;
   m_pReturnStack = new Stack;
@@ -54,6 +54,8 @@ Forth::Forth(Task* pTask)
 
   m_pLocalsFrame = nullptr;
 
+  m_pCompiler    = nullptr;
+  
   _checkInitialised_(CN_FORTH);
  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);

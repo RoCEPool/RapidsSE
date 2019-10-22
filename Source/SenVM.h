@@ -30,11 +30,11 @@ namespace SenVM
 #include "LocalSet.hpp"
 #include "Routine.hpp"
 #include "Stack.hpp"
+#include "Compiler.hpp"
 #include "Forth.hpp"
 #include "Word.hpp"
 
 
-#include "Compiler.hpp"
 
 
 // -- -- -- -- -- -- -- --

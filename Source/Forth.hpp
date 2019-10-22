@@ -18,6 +18,8 @@ namespace SenVM
  
     LocalSet* m_pLocalsFrame; // local register frame chain
   
+    Compiler* m_pCompiler;    // word compiler (Job boot, create table etc)
+  
     // must be last
     Footer m_xFooter;
   
