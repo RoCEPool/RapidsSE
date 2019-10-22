@@ -28,7 +28,7 @@ namespace Operators
     i8           nOpsOnNode(i8 iNode);
     OpVec*       pOpVec(void);
     Op*          pPipeOutOp(ePX eTopologyX, i8 iNdeVec);
-    void         vSendStartMarkers(void);
+    void         vOperandToStartOps(Operand* pOperand);
     StageSpec*   pStageSpec(void);
     StageNde*    pStageNde(i8 i_Nde);
     StageNdeVec* pStageNdeVec(void);

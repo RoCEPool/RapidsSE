@@ -250,11 +250,8 @@ void Job_Dynamic::vCancel(void)
   // get the first stage of the pipeline
   Stage* pStage = m_pPipeline->pStageVec()->pGet(0);
   
-  // get the first op of the first stage
-  StartOp * pStartOp = _pStartOp(pStage->pOpVec()->pGet(0));
-  
-  // send a cancel marker to the stratOp
-  pStartOp->vAppendLeft(new CancelMarker);
+  // send cancelMarker to the startOps of the first stage of the pipeline
+  pStage->vOperandToStartOps(new CancelMarker);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,11 +264,8 @@ void Job_Dynamic::vEnd(void)
   // get the first stage of the pipeline
   Stage* pStage = m_pPipeline->pStageVec()->pGet(0);
   
-  // get the first op of the first stage
-  StartOp * pStartOp = _pStartOp(pStage->pOpVec()->pGet(0));
-  
-  // send an end marker to the stratOp
-  pStartOp->vAppendLeft(new EndMarker);
+  // send endMarker to the startOps of the first stage of the pipeline
+  pStage->vOperandToStartOps(new EndMarker);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -300,13 +294,8 @@ void Job_Dynamic::vExecute(void)
   // get the first stage of the pipeline
   Stage* pStage = m_pPipeline->pStageVec()->pGet(0);
   
-  // get the first op of the first stage
-  //StartOp * pStartOp = _pStartOp(pStage->pOpVec()->pGet(0));
-  
-  // send start markers to the startOps
-  //pStartOp->vAppendLeft(new StartMarker);
-  
-  pStage->vSendStartMarkers();
+  // send startMarker to the startOps of the first stage of the pipeline
+  pStage->vOperandToStartOps(new StartMarker);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -249,9 +249,9 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iFromNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* send startMarker to startops of the stage                                  */
+/* send operand to startops of the stage                                      */
 /*----------------------------------------------------------------------------*/
-void Stage::vSendStartMarkers(void)
+void Stage::vOperandToStartOps(Operand* pOperand)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
@@ -260,7 +260,7 @@ void Stage::vSendStartMarkers(void)
   
     Op* pOp = pStageNde->pOpVec()->pGet(0);
     RASSERT(pOp->eClass() == CN_STARTOP);
-    pOp->vAppendLeft(new StartMarker);
+    pOp->vAppendLeft(pOperand);
   }
   
   for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
@@ -268,7 +268,7 @@ void Stage::vSendStartMarkers(void)
     
     Op* pOp = pStagePtn->pOpVec()->pGet(0);
     RASSERT(pOp->eClass() == CN_STARTOP);
-    pOp->vAppendLeft(new StartMarker);
+    pOp->vAppendLeft(pOperand);
   }
   
 }
