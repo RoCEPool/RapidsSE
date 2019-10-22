@@ -24,7 +24,7 @@
   // set the no of acks expected in originator job
   grid::connectedNodes pJobOriginator job.acksRemaining!
 
-  // create a new job__execute
+  // create a temporary job__execute
   pJobOriginator job__Execute::new to pJob__Execute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -39,8 +39,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // now delete the execute job
-  //job::completed
+  // delete the temporary job__Execute
+  pJob__Execute job.delete
 ;
 
 /*----------------------------------------------------------------------------*/

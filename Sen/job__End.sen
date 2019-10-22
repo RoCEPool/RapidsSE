@@ -41,8 +41,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // now delete the end job
-  //job::completed
+  // delete the temporary Job__End
+  pJob__End job.delete
 ;
 
 /*----------------------------------------------------------------------------*/
