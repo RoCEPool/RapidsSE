@@ -53,11 +53,6 @@ namespace Tasks
     Forth*    m_pForth;     // forth implementation
     RegSet*   m_pRegSet;    // set of registers
   
-    // exception
-    s256  m_sException;
-    s256  m_sFileNm;
-    i8    m_iLineNo;
-
     // always last
     Footer m_xFooter;
 
@@ -85,7 +80,6 @@ namespace Tasks
     Compiler* pCompiler(void);
     void vContentDump(void);
     void vDropTaskLock(void);
-    void vException(Stz* szException, Stz* szFile, i8 iLineNo);
     void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     void vInitExeContext(void);

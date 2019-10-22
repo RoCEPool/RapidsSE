@@ -160,8 +160,6 @@ void Task::vInit(void)
 
   m_pCompiler    = nullptr;
   m_pSendNode    = nullptr;
-  
-  m_iLineNo = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -434,19 +432,6 @@ void Task::vDropTaskLock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set exception                                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vException(Stz* szException, Stz* szFileNm, i8 iLineNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  StrLib::vSubPath(m_sFileNm.azChar(),szFileNm->azChar());
-  m_sException = szException;
-  //m_sFileNm    = szFileNm;
-  m_iLineNo    = iLineNo;
 }
 
 /*----------------------------------------------------------------------------*/
