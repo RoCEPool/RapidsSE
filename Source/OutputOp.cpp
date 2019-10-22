@@ -152,13 +152,6 @@ eOR OutputOp::eOpLoop(void)
       
       // -- -- -- -- -- --
         
-      case CN_CANCELMARKER: {
-        vPipeToJob(pOperand);
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
         m_iWorkDone += pCrwBuffer->nRowCount();
@@ -180,7 +173,12 @@ eOR OutputOp::eOpLoop(void)
       case CN_ENDMARKER: {
         
         if (--m_nLeftEndMarkers == 0) {
-          vPipeToJob(pOperand);
+          if (bIsCancelling()) {
+            delete _pEndMarker(pOperand);
+            vPipeToJob(new CancelMarker);
+          }
+          else
+            vPipeToJob(pOperand);
           goto L_EXIT;
         }
         else

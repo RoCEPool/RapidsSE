@@ -205,12 +205,9 @@ eOR ConsumeOp::eOpLoop(void)
         
       default:
         if (bIsCancelling()) {
-//          // ignore operands if query is being cancelled
-//          if (pOperand->eClass() != CN_CRWBUFFER)
-//            delete pOperand;
-          
-          // we shouldn't receive any operands if query is being cancelled
-          RASSERT(0);
+          // ignore operands if query is being cancelled
+          if (pOperand->eClass() != CN_CRWBUFFER)
+            delete pOperand;
         }
         else
           vPipeOut(pOperand);
