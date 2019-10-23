@@ -69,7 +69,7 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_pPipeline     = pPipeline;
   m_pJobPipeline  = pPipeline->pJob();
   
-  m_pJobUniversal = AM::pNewUniversalJob();
+  m_pJobUniversal = nullptr;
   
   m_pTask         = nullptr;
   
