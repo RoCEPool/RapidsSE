@@ -66,8 +66,8 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_sNextLabel    = "<nil>"_Stz;
   
   m_aOpDefn       = pOpSpec->aOpDefn();
-  m_pPipeline       = pPipeline;
-  m_pJob          = pPipeline->pJob();
+  m_pPipeline     = pPipeline;
+  m_pJobPipeline  = pPipeline->pJob();
   m_pTask         = nullptr;
   
   m_bAckJobEnd    = true;
@@ -206,7 +206,7 @@ void Op::vAckJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Task* pTask = AM::pExecutingTask(m_pJob);
+  Task* pTask = AM::pExecutingTask(m_pJobPipeline);
   
   AM::vLogOpr(SL_INF,this,OA_OP_ACK,
               "Acking job task"_Stz); //!format-LogOpr
@@ -343,11 +343,11 @@ bool Op::bIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* set the job                                                                */
 /*----------------------------------------------------------------------------*/
-void Op::vJob(Job* pJob)
+void Op::vJobPipeline(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pJob = pJob;
+  m_pJobPipeline = pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -476,7 +476,7 @@ void Op::vPipeOut(Operand* pOperand)
            m_sName.szStz(),
            m_nPartition,
            m_nNode,
-           m_pJob,
+           m_pJobPipeline,
            aCN[pOperand->eClass()],
            pOperand);
 
@@ -503,14 +503,14 @@ void Op::vPipeToJob(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Queue* pBufferQueue = AM::pBufferQueue(m_pJob);
+  Queue* pBufferQueue = AM::pBufferQueue(m_pJobPipeline);
   
   if (AM::bVerbose())
     vTrace("%s (P%lld) (N%lld) ::vPipeToJob(%p):    %s %p\n"_Stz,
            m_sName.szStz(),
            m_nPartition,
            m_nNode,
-           m_pJob,
+           m_pJobPipeline,
            aCN[pOperand->eClass()],
            pOperand);
   
@@ -565,7 +565,7 @@ Operand* Op::pPopQueue(void)
            m_sName.szStz(),
            m_nPartition,
            m_nNode,
-           m_pJob,
+           m_pJobPipeline,
            aCN[pOperand->eClass()],
            pOperand);
   }

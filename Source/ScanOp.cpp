@@ -209,7 +209,7 @@ void ScanOp::vPreliminary(void)
   m_bRunPrelim = false;
   
   DicStack* pDicStack = new DicStack;
-  AM::vJobDicStack(m_pJob, pDicStack);
+  AM::vJobDicStack(m_pJobPipeline, pDicStack);
   
   // find the table in the session dictionary stack
   m_pTable = Table::pFindTable(pDicStack, m_sTableNm);
