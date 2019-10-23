@@ -11,7 +11,7 @@ namespace SenVM
     Task*     m_pTask;        // which task
   
     Word*     m_pSeedWord;      // seed
-    Word*     m_pExpectionWord; // seed
+    Word*     m_pExceptionWord; // seed
 
     Cell*     m_aInxPtr;      // instruction/cell pointer
   

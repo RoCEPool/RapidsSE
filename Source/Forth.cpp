@@ -47,7 +47,7 @@ Forth::Forth(Task* pTask)
   m_pTask        = pTask;
   
   m_pSeedWord       = nullptr;
-  m_pExpectionWord  = nullptr;
+  m_pExceptionWord  = nullptr;
 
   m_aInxPtr      = nullptr;
   

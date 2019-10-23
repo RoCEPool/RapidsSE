@@ -799,7 +799,7 @@ bool Task::bSeeded(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seed boot run job                                                          */
+/* seed job                                                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vSeedJob(void)
 {
@@ -809,13 +809,20 @@ void Task::vSeedJob(void)
   
   Dic* pRootDic = AM::pRootDic();
 
-  Word* pWord = pRootDic->pFindWord(szSeed);
+  Word* pSeedWord = pRootDic->pFindWord(szSeed);
   
-  if (! pWord)
+  if (! pSeedWord)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Unable to find seed word: %s\n"_Stz,szSeed);
   
-  m_pForth->m_aInxPtr = pWord->aFirstCell();
+  m_pForth->m_pSeedWord = pSeedWord;
+  m_pForth->m_aInxPtr   = pSeedWord->aFirstCell();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Word* pExceptionWord = pRootDic->pFindWord(pSeedWord->szExceptionHook());
+  if (pExceptionWord)
+    m_pForth->m_pExceptionWord = pExceptionWord;
 }
 
 /*----------------------------------------------------------------------------*/
