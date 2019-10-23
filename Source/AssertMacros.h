@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 #define RASSERT_TYPE(pARG,eCLASS) \
   if (pARG && eCLASS != pARG->eClass()) \
-    Correctness::vTypeFatal(pARG,eCLASS); 
+    Correctness::vTypeFatal(FK_FATAL,__func__,__FILE__,__LINE__,pARG,eCLASS); 
 
 /*----------------------------------------------------------------------------*/
 /* THROW macro                                                                */

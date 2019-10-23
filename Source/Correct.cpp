@@ -52,33 +52,6 @@ void Correctness::vStackDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* have a fatal type error                                                    */
-/*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vTypeFatal(void* aObject, eCN eExpectingClass)
-{
-  Object* pObject = static_cast<Object*>(aObject);
-  eCN eGotClass = pObject->eClass();
-  
-  if (eGotClass >= CN_NONE && eGotClass < CN_ENUMS)
-    printf("  Expecting class %d %s; Got %d %s\n",
-           eExpectingClass, aCN[eExpectingClass]->azChar(),
-           eGotClass,       aCN[eGotClass]->azChar());
-  else
-    printf("  Expecting class %d %s; Got %d\n",
-           eExpectingClass, aCN[eExpectingClass]->azChar(),
-           eGotClass);
-  
-  //  if (CN_FREECHUNK == eGotClass) {
-  //    FreeChunk* aFreeChunk = static_cast<FreeChunk*>(aObject);
-  //    eCN eWasClass = aFreeChunk->eWasClass();
-  //
-  //    printf("  FreeChunk was %d\n",eWasClass);
-  //  }
-  
-  vAbortProcess();
-}
-
-/*----------------------------------------------------------------------------*/
 /* throw an FK_ASSERT exception (long-form)                                   */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void Correctness::vThrow(eFK eKind, const char* azFunc,
@@ -109,6 +82,41 @@ void Correctness::vStackDump(void)
   throw xException;
 }
 
+/*----------------------------------------------------------------------------*/
+/* have a fatal type error                                                    */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void Correctness::vTypeFatal(eFK eKind, const char* azFunc,
+                                            const char* azFilePath, i8 iLineNo,
+                                            void* aObject, eCN eExpectingClass)
+{
+  Object* pObject = static_cast<Object*>(aObject);
+  eCN eGotClass = pObject->eClass();
+  
+  char zCondition[256];
+
+  // put a breakpoint here to trap throws
+  sleep(0);
+  
+  if (eGotClass >= CN_NONE && eGotClass < CN_ENUMS)
+    StrLib::vSprint(zCondition,
+                    "  Expecting class %d %s; Got %d %s\n"_Stz,
+                    eExpectingClass, aCN[eExpectingClass]->azChar(),
+                    eGotClass,       aCN[eGotClass]->azChar());
+  else
+    StrLib::vSprint(zCondition,
+                    "  Expecting class %d %s; Got %d\n"_Stz,
+                    eExpectingClass, aCN[eExpectingClass]->azChar(),
+                    eGotClass);
+  
+  //  if (CN_FREECHUNK == eGotClass) {
+  //    FreeChunk* aFreeChunk = static_cast<FreeChunk*>(aObject);
+  //    eCN eWasClass = aFreeChunk->eWasClass();
+  //
+  //    printf("  FreeChunk was %d\n",eWasClass);
+  //  }
+  
+  vThrow(eKind,azFunc,azFilePath,iLineNo,(Stz*)zCondition);
+}
 
 
 /*============================================================================*/
