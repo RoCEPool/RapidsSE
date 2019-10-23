@@ -318,8 +318,8 @@ bool Job_Ingest::bChunk(void)
   if (nIngestChunks() > 32) {
     m_nWaits++;
     while (nIngestChunks() > 32) {
-      Pthread* pPthread = AM::pThisTLSPthread();
-      pPthread->vSleepMsec(1,CN_JOB_INGEST);
+      PsxThd* pPsxThd = AM::pThisTLSPsxThd();
+      pPsxThd->vSleepMsec(1,CN_JOB_INGEST);
     }
   }
   

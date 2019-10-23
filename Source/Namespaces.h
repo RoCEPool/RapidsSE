@@ -56,7 +56,7 @@ namespace Prompt        { class SePrompt;                                     }
 namespace Oblique       { class AM;                                           }
 namespace Operators     { class Op; class Pipeline;                           }
 namespace Resources     { class Resource; class ResourceTracker;
-                          class Pthread;                                      }
+                          class PsxThd;                                      }
 namespace Registers     { class RegSet;                                       }
 namespace Rows          { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }

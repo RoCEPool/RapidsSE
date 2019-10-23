@@ -15,11 +15,11 @@ void LlcTest::vTest(Forth* pForth)
 {
 #ifdef WITH_APPLE
   
-  Pthread* pPthread = pForth->m_pTask->pThread()->m_pPthread;
+  PsxThd* pPsxThd = pForth->m_pTask->pThread()->m_pPsxThd;
   
-  pPthread->vEnableRealtime_2();
+  pPsxThd->vEnableRealtime_2();
   
-  pPthread->iGetInfo();
+  pPsxThd->iGetInfo();
   
   // create an identity array
   for (i8 i_Element = 0; i_Element < C_ELEMENTS; i_Element++)

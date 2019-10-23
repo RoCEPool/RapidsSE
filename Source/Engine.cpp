@@ -432,7 +432,7 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
-  Pthread::vMonitorPortrait(sPortrait);
+  PsxThd::vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
@@ -820,7 +820,7 @@ void Engine::vSpawnJobStart(void)
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Start Library Tasks\n*\n"_Stz);
   
-  Pthread::vMarkNonSeThread();
+  PsxThd::vMarkNonSeThread();
   
   JobClass* pJobClass_Start = JobClass::pFind(CN_JOB_START);
   
@@ -943,13 +943,13 @@ void Engine::vStartSystem(void)
   // spawn general threads
   for (i8 iThreads = 0; iThreads < gxArguments.m_nThreads; iThreads++) {
     Thread* pThread = new Thread;
-    pThread->vSpawnPthread_general();
+    pThread->vSpawnPsxThd_general();
   }
   
   // spawn dummy threads
   for (i8 iThreads = 0; iThreads < gxArguments.m_nDummyThreads; iThreads++) {
     Thread* pThread = new Thread;
-    pThread->vSpawnPthread_dummy();
+    pThread->vSpawnPsxThd_dummy();
   }
   
   // pause till all general threads are operational 

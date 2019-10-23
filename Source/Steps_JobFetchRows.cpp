@@ -528,8 +528,8 @@ void Step::vJob_SubInflateInflateRows(void)
     
     CrwBuffer = _pCrwBuffer(pJob_InflateRows->m_pBufferQueue->pPop());
     if (! CrwBuffer) {
-      //Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
-      AM::pThisTLSPthread()->vSleepUsec(250,CN_JOB_FETCHROWS);
+      //PsxThd::vSleepMilli(1,CN_JOB_FETCHROWS);
+      AM::pThisTLSPsxThd()->vSleepUsec(250,CN_JOB_FETCHROWS);
       continue;
     }
     

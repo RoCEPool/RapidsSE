@@ -69,7 +69,7 @@ Thread::Thread(void)
   m_pTask        = nullptr;
   m_nAssignedTasks = 0;
 
-  m_pPthread     = new Pthread;
+  m_pPsxThd     = new PsxThd;
   
   _checkInitialised_(CN_THREAD);
   
@@ -89,7 +89,7 @@ Thread::~Thread(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   delete m_pMutex;
-  delete m_pPthread;
+  delete m_pPsxThd;
   
   vIncActNo(); -- gixThread;
   AM::vLogThd(SL_INF,this,HA_THD_DESTRUCT,
@@ -109,7 +109,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
   Thread* pThread = static_cast<Thread*>(pArg);
   
   pThread->vThreadEntry();
-  pThread->m_pPthread->vThreadEntry();
+  pThread->m_pPsxThd->vThreadEntry();
   
   Scheduler::vAddDedicatedThread(pThread);
   
@@ -117,8 +117,8 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     vTrace("Thread::aEntryPoint_dedicated %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
-  pThread->m_pPthread->vIncActNo();
-  AM::vLogRes(SL_INF,pThread->m_pPthread,RA_THD_ENTRY,
+  pThread->m_pPsxThd->vIncActNo();
+  AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_ENTRY,
               "dedicated thead entry: %p"_Stz, //!format-LogRes
               pThread);
 
@@ -151,14 +151,14 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
-  pThread->m_pPthread->vIncActNo();
-  AM::vLogRes(SL_INF,pThread->m_pPthread,RA_THD_EXIT,
+  pThread->m_pPsxThd->vIncActNo();
+  AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_EXIT,
               "Thead exit (dedicated) : %p"_Stz, //!format-LogRes
               pThread);
   
   Scheduler::vRemoveDedicatedThread(pThread);
   
-  pThread->m_pPthread->vThreadExit();
+  pThread->m_pPsxThd->vThreadExit();
   
   delete pThread;
   
@@ -173,7 +173,7 @@ void* Thread::aEntryPoint_general(void* pArg)
   Thread* pThread = static_cast<Thread*>(pArg);
   
   pThread->vThreadEntry();
-  pThread->m_pPthread->vThreadEntry();
+  pThread->m_pPsxThd->vThreadEntry();
 
   Scheduler::vAddGeneralThread(pThread);
   
@@ -181,8 +181,8 @@ void* Thread::aEntryPoint_general(void* pArg)
     vTrace("Thread::aEntryPoint_general %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
-  pThread->m_pPthread->vIncActNo();
-  AM::vLogRes(SL_INF,pThread->m_pPthread,RA_THD_ENTRY,
+  pThread->m_pPsxThd->vIncActNo();
+  AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_ENTRY,
               "general thead entry: %p"_Stz, //!format-LogRes
               pThread);
   
@@ -215,14 +215,14 @@ void* Thread::aEntryPoint_general(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
-  pThread->m_pPthread->vIncActNo();
-  AM::vLogRes(SL_INF,pThread->m_pPthread,RA_THD_EXIT,
+  pThread->m_pPsxThd->vIncActNo();
+  AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_EXIT,
               "Thead exit (general) : %p"_Stz, //!format-LogRes
               pThread);
   
   Scheduler::vRemoveGeneralThread(pThread);
   
-  pThread->m_pPthread->vThreadExit();
+  pThread->m_pPsxThd->vThreadExit();
 
   delete pThread;
   
@@ -238,7 +238,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
   
   pThread->m_eThreadState = HS_IDLE;
   
-  pThread->m_pPthread->vThreadEntry();
+  pThread->m_pPsxThd->vThreadEntry();
   
   if (AM::bVerbose())
     vTrace("Thread::aEntryPoint_dummy %p %lld\n"_Stz,
@@ -247,7 +247,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
   while (true) {
     
     // sleep for a bit to generate a context switch
-    pThread->m_pPthread->vSleepUsec(AM::nDummySleep(),CN_THREAD);
+    pThread->m_pPsxThd->vSleepUsec(AM::nDummySleep(),CN_THREAD);
     
     // burn some cpu
     i8 iSum = 0;
@@ -255,7 +255,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
       iSum += Tick::iRdTscp();
   }
   
-  //pThread->m_pPthread->vThreadExit();
+  //pThread->m_pPsxThd->vThreadExit();
   
   //delete pThread;
   
@@ -267,7 +267,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
 /*----------------------------------------------------------------------------*/
 Thread* Thread::pThisTLSThread(void)
 {
-  Thread *pThread = static_cast<Thread*>(Pthread::pTlsGet(giTLS_ThreadKey));
+  Thread *pThread = static_cast<Thread*>(PsxThd::pTlsGet(giTLS_ThreadKey));
   
   return pThread;
 }
@@ -330,7 +330,7 @@ void Thread::vBind(i8 iCore)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPthread->bBindThread(iCore);
+  bool bResult = m_pPsxThd->bBindThread(iCore);
   ASSERT(bResult);
 }
 
@@ -357,7 +357,7 @@ i8 Thread::iCpu(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  return m_pPthread->iThreadCpu();
+  return m_pPsxThd->iThreadCpu();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -365,10 +365,10 @@ i8 Thread::iCpu(void)
 /*----------------------------------------------------------------------------*/
 void Thread::vContentDump(void) const
 {
-  vTrace("Thread %p: OpSysThreadId %lld PthreadId %llx\n"_Stz,
+  vTrace("Thread %p: OpSysThreadId %lld PsxThdId %llx\n"_Stz,
          this,
-         m_pPthread->m_iOpSysThreadId,
-         m_pPthread->m_iPthreadId);
+         m_pPsxThd->m_iOsThdId,
+         m_pPsxThd->m_iPsxThdId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -384,11 +384,11 @@ void Thread::vFocalOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 /* spawn the os/posix pthread associated with this thread                     */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawnPthread_dedicated(void)
+void Thread::vSpawnPsxThd_dedicated(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPoint_dedicated,this);
+  bool bResult = m_pPsxThd->bSpawnThread(Thread::aEntryPoint_dedicated,this);
   
   ASSERT(bResult);
 }
@@ -396,11 +396,11 @@ void Thread::vSpawnPthread_dedicated(void)
 /*----------------------------------------------------------------------------*/
 /* spawn the os/posix pthread associated with this dummy thread               */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawnPthread_dummy(void)
+void Thread::vSpawnPsxThd_dummy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPoint_dummy,this);
+  bool bResult = m_pPsxThd->bSpawnThread(Thread::aEntryPoint_dummy,this);
   
   ASSERT(bResult);
 }
@@ -408,11 +408,11 @@ void Thread::vSpawnPthread_dummy(void)
 /*----------------------------------------------------------------------------*/
 /* spawn the os/posix pthread associated with this thread                     */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawnPthread_general(void)
+void Thread::vSpawnPsxThd_general(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPoint_general,this);
+  bool bResult = m_pPsxThd->bSpawnThread(Thread::aEntryPoint_general,this);
   
   ASSERT(bResult);
 }
@@ -433,8 +433,8 @@ Task* Thread::pTask(void)
 void Thread::vThisTLSThread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  Pthread::vTlsSet(giTLS_ThreadKey,this);
-  ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
+  PsxThd::vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(PsxThd::pTlsGet(giTLS_ThreadKey) == this);
 }
 
 /*----------------------------------------------------------------------------*/

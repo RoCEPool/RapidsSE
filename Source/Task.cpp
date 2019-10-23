@@ -1018,7 +1018,7 @@ void Task::vTracePoint(Stz* aMark)
 {
 //  if (AM::nDefinedNodes() > 1) {
 //    i8 iPause = Random::iInteger(999,99999);
-//    Pthread::vSleepUsec(iPause,CN_TASK);
+//    PsxThd::vSleepUsec(iPause,CN_TASK);
 //  }
   
   s256 sRoutine;

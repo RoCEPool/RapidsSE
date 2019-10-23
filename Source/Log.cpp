@@ -48,7 +48,7 @@ Log::Log(void)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  if (0 != AM::iThisNodeNo() || Pthread::bIsJavaThread() )
+  if (0 != AM::iThisNodeNo() || PsxThd::bIsJavaThread() )
     RASSERT(0);
   
   for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {

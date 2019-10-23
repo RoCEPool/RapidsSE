@@ -354,10 +354,10 @@ Thread* AM::pThisTLSThread(void) {
   Thread* pThread = Thread::pThisTLSThread();
   return pThread;
 }
-Pthread* AM::pThisTLSPthread(void) {
+PsxThd* AM::pThisTLSPsxThd(void) {
   Thread* pThread = Thread::pThisTLSThread();
-  Pthread* pPthread =pThread->m_pPthread;
-  return pPthread;
+  PsxThd* pPsxThd =pThread->m_pPsxThd;
+  return pPsxThd;
 }
 i8 AM::iThreadId(Thread* pThread) {
   return pThread->m_iUniqueId;
@@ -1219,8 +1219,8 @@ void AM::vFocalOutline(s4K& sOutline, Focal* pFocal) {
   else if (CN_MUTEX == eClassNo)
     _pMutex(pFocal)->vFocalOutline(sOutline);
   
-  else if (CN_PTHREAD == eClassNo)
-    _pPthread(pFocal)->vFocalOutline(sOutline);
+  else if (CN_PSXTHD == eClassNo)
+    _pPsxThd(pFocal)->vFocalOutline(sOutline);
   
   else if (CN_SOCKET == eClassNo)
     _pSocket(pFocal)->vFocalOutline(sOutline);

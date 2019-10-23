@@ -157,7 +157,7 @@ namespace Oblique
     static Session* pThisTLSSession(void);
     static Task* pThisTLSTask(void);
     static Thread* pThisTLSThread(void);
-    static Pthread* pThisTLSPthread(void);
+    static PsxThd* pThisTLSPsxThd(void);
     static i8   iThreadId(Thread* pThread);
 
   

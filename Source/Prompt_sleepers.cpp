@@ -30,7 +30,7 @@ bool Prompt::bPrompt_sleepers(SePrompt* pPrompt)
   if (3 == iNumTokens)
     bReset = pTokenVec->pGet(2)->bSame("reset"_Stz);
 
-  Pthread::vSleepers();
+  PsxThd::vSleepers();
   
   if (bReset)
     MemLib::vReset();
