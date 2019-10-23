@@ -32,12 +32,17 @@ bool JobHelper::bParseCmd(EnameSet* pArgEnmSet,
     }
   }
   
+  if (! pSyntax) {
+    //vTrace("Unable to match job syntax\n"_Stz);
+    return false;
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   bool b = bExtractArgs(pArgEnmSet,pSyntax->pEnameSet(),pTknVec);
   if (! b) {
-    vTrace("Unable to match job syntax\n"_Stz);
-    return EC_INVALID_COMMAND;
+    //vTrace("Unable to match job syntax\n"_Stz);
+    return false;
   }
   
   pArgEnmSet->vPrint();
