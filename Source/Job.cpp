@@ -150,7 +150,7 @@ Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  vTrace("Deleteing job: %s\n"_Stz,aCN[eClass()]);
+  //vTrace("Deleting job: %s\n"_Stz,aCN[eClass()]);
   
   vIncActNo();
   if (m_bWasReceived) {
