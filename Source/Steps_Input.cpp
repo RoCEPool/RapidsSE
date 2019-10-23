@@ -84,7 +84,7 @@ ENTRY("vInputOpen"_Stz);
   
   if ( ! bOpened )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
-           "No such file: %s",sFilePath.azChar());
+           "No such file: %s"_Stz,sFilePath.azChar());
   
   EXIT();
 }

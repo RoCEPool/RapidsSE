@@ -91,14 +91,14 @@ Log* Log::pAttachCreate(void)
   bResult = Shm::bOpenCreate(iRegionFd,sLogRegionNm,oSysCall);
   if (! bResult)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Log::bOpenCreate: failed to create region %s\n",
+           "Log::bOpenCreate: failed to create region %s\n"_Stz,
            sLogRegionNm.azChar());
   
   // extend the shm region
   bResult = Shm::bExtend(iRegionFd,sizeof(Log),oSysCall);
   if (! bResult)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Log::bOpenCreate: failed to extend region %s\n",
+           "Log::bOpenCreate: failed to extend region %s\n"_Stz,
            sLogRegionNm.azChar());
   
   // map the shm region into a vm segment within this process address space
@@ -129,7 +129,7 @@ Log* Log::pAttachExisting(void)
   bool bResult = Shm::bOpenExisting(iFD,sLogRegionNm,oSysCall);
   if (! bResult)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Log::bOpenExisting: failed to open region: %s\n",
+           "Log::bOpenExisting: failed to open region: %s\n"_Stz,
            sLogRegionNm.azChar());
   
   // map the shm region into a vm segment within this process address space

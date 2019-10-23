@@ -37,7 +37,7 @@ namespace Gadgets
     CLASS* operator -> (void)
     {
       if (! m_pObject)
-        THROW("HV::m_pObject is null");
+        THROW("HV::m_pObject is null"_Stz);
     
       return m_pObject;
     }

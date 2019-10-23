@@ -89,7 +89,7 @@ void ShmUtility::vAttach(void)
 
   if ( ! bResult ) {
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "ShmUtility::vAttach: failed to open region: %s\n",
+           "ShmUtility::vAttach: failed to open region: %s\n"_Stz,
            msRegionName.azChar());
     NEVER_REACH;
   }
@@ -103,7 +103,7 @@ void ShmUtility::vAttach(void)
 
   if (! gaSeShmRegion)  {
     Shm::bClose(iFD,oSysCall);
-    THROW_FATAL("ShmUtility::vAttach failed to map\n");
+    THROW_FATAL("ShmUtility::vAttach failed to map\n"_Stz);
   }
 
   //memcpy(gaSeShmRegion,"ABCDEFGHIJKLMNOPQRSTUVWXYZ\0", 27);
@@ -127,14 +127,14 @@ void ShmUtility::vCreate(void)
   bResult = Shm::bOpenCreate(iFD,msRegionName,oSysCall);
   if (! bResult)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "ShmUtility::vCreate: failed to create region %s\n",
+           "ShmUtility::vCreate: failed to create region %s\n"_Stz,
            msRegionName.azChar());
   
   // extend the shm region
   bResult = Shm::bExtend(iFD,miRegionSize,oSysCall);
   if (! bResult)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "ShmUtility::vCreate: failed to extend region %s\n",
+           "ShmUtility::vCreate: failed to extend region %s\n"_Stz,
            msRegionName.azChar());
 
   
@@ -159,7 +159,7 @@ void ShmUtility::vDelete(void)
   
   if (! Shm::bUnlink(msRegionName,oSysCall)) {
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Region %s not unlinked\n",msRegionName.azChar());
+           "Region %s not unlinked\n"_Stz,msRegionName.azChar());
   }
   
   vTrace("Region %s unlinked\n"_Stz,msRegionName.azChar());

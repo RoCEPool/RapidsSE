@@ -77,7 +77,7 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
   switch(eHeap) {
     case HT_INVALID:
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "HeapMem::pAllocate: Invalid heap allocation: class %lld %s\n",
+             "HeapMem::pAllocate: Invalid heap allocation: class %lld %s\n"_Stz,
              eAllocClass,aCN[eAllocClass]);
       
     case HT_PERSISTENT_SMALL:
@@ -114,7 +114,7 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
       
     default:
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "HeapMem::pAllocate: Invalid heap allocation: eHeap %lld\n",
+             "HeapMem::pAllocate: Invalid heap allocation: eHeap %lld\n"_Stz,
              eHeap);
   }
   

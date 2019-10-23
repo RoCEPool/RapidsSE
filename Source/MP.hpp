@@ -17,7 +17,7 @@ namespace Gadgets
     MP<OBJECT,eClassNo>(OBJECT* pObject)
     {
       if (!pObject || (pObject && pObject->eClass() != eClassNo)) {
-        THROW("MP::MP invalid pObject parameter");
+        THROW("MP::MP invalid pObject parameter"_Stz);
       }
       m_pPointer = pObject;
     }
@@ -28,7 +28,7 @@ namespace Gadgets
     void operator = (OBJECT* pObject)
     {
       if (!pObject || (pObject && pObject->eClass() != eClassNo)) {
-        THROW("MP::operator =() invalid pObject parameter");
+        THROW("MP::operator =() invalid pObject parameter"_Stz);
       }
       m_pPointer = pObject;
     }
@@ -39,7 +39,7 @@ namespace Gadgets
     OBJECT* operator -> (void)
     {
       if (m_pPointer == nullptr) {
-        THROW("MP::operator ->() m_pPointer member is null");
+        THROW("MP::operator ->() m_pPointer member is null"_Stz);
       }
       return m_pPointer;
     }
@@ -50,7 +50,7 @@ namespace Gadgets
     OBJECT* operator * (void)
     {
       if (m_pPointer == nullptr) {
-        THROW("MP::operator *() m_pPointer member is null");
+        THROW("MP::operator *() m_pPointer member is null"_Stz);
       }
       return m_pPointer;
     }

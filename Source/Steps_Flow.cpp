@@ -75,7 +75,7 @@ void Step::vFlowHazard(void)
 {
   ENTRY("vFlowHazard"_Stz);
   
-  vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Entered hazard");
+  vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Entered hazard"_Stz);
   
   EXIT();
 }
@@ -220,7 +220,7 @@ void Step::vFlowThrow(void)
   
   sException.vSprint("THROW TEST"_Stz);
   
-  vThrow(FK_FAILED,__func__,__FILE__,__LINE__,sException.azChar());
+  vThrow(FK_FAILED,__func__,__FILE__,__LINE__,sException);
   
   EXIT();
 }

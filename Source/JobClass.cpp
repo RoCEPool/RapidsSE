@@ -79,7 +79,7 @@ void JobClass::vDropDdlLock(void)
   switch (m_eDdlLock) {
     case DL_NONE:
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "No ddl lock specified for job class: %s\n",aCN[m_eClass]);
+             "No ddl lock specified for job class: %s\n"_Stz,aCN[m_eClass]);
       
     case DL_GRAB_READ:
       AM::pDdlLock()->vDropRead();
@@ -102,7 +102,7 @@ void JobClass::vGrabDdlLock(void)
   switch (m_eDdlLock) {
     case DL_NONE:
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "No ddl lock specified for job class: %s\n",aCN[m_eClass]);
+             "No ddl lock specified for job class: %s\n"_Stz,aCN[m_eClass]);
       
     case DL_GRAB_READ:
       AM::pDdlLock()->vGrabRead();
@@ -426,37 +426,37 @@ void JobClass::vVerifySeeds(void)
     if (pJobClass->m_aSeedRun &&
         ! pRootDic->pFindWord(pJobClass->m_aSeedRun))
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "Cannot find class %s run seed %s\n",
+             "Cannot find class %s run seed %s\n"_Stz,
              aCN[pJobClass->m_eClass],pJobClass->m_aSeedRun);
 
     if (pJobClass->m_aSeedReq &&
         ! pRootDic->pFindWord(pJobClass->m_aSeedReq))
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "Cannot find class %s req seed %s\n",
+             "Cannot find class %s req seed %s\n"_Stz,
              aCN[pJobClass->m_eClass],pJobClass->m_aSeedReq);
     
     if (pJobClass->m_aSeedRcv &&
         ! pRootDic->pFindWord(pJobClass->m_aSeedRcv))
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "Cannot find class %s rcv seed %s\n",
+             "Cannot find class %s rcv seed %s\n"_Stz,
              aCN[pJobClass->m_eClass],pJobClass->m_aSeedRcv);
     
     if (pJobClass->m_aSeedExe &&
         ! pRootDic->pFindWord(pJobClass->m_aSeedExe))
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "Cannot find class %s exe seed %s\n",
+             "Cannot find class %s exe seed %s\n"_Stz,
              aCN[pJobClass->m_eClass],pJobClass->m_aSeedExe);
     
     if (pJobClass->m_aSeedEnd &&
         ! pRootDic->pFindWord(pJobClass->m_aSeedEnd))
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "Cannot find class %s end seed %s\n",
+             "Cannot find class %s end seed %s\n"_Stz,
              aCN[pJobClass->m_eClass],pJobClass->m_aSeedEnd);
     
     if (pJobClass->m_aSeedCan &&
         ! pRootDic->pFindWord(pJobClass->m_aSeedCan))
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-            "Cannot find class %s can seed %s\n",
+            "Cannot find class %s can seed %s\n"_Stz,
              aCN[pJobClass->m_eClass],pJobClass->m_aSeedCan);
     
   }

@@ -38,7 +38,7 @@ i8 SN_Bcd::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
   
   if ( ! StrLib::bExtractDecimal(aacCrs,m_wDtm.m_iBcd,
                                  pCol->iColumnLength(),pCol->iColumnScale()) )
-    THROW("StrLib::bExtractDecimal");
+    THROW("StrLib::bExtractDecimal"_Stz);
   
   return m_wDtm.m_iBcd;
 }

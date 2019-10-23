@@ -19,7 +19,7 @@
 #ifdef WITH_ASSERT_MACRO
   #define ASSERT(condition) \
     if (! (condition)) \
-      Correctness::vThrow(FK_ASSERT,__func__,__FILE__,__LINE__,#condition);
+      Correctness::vThrow(FK_ASSERT,__func__,__FILE__,__LINE__,(Stz*)#condition);
 #else
   #define ASSERT(condition)
 #endif
@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 #define RASSERT(condition) \
   if (! (condition)) \
-    Correctness::vThrow(FK_ASSERT,__func__,__FILE__,__LINE__,#condition);
+    Correctness::vThrow(FK_ASSERT,__func__,__FILE__,__LINE__,(Stz*)#condition);
 
 /*----------------------------------------------------------------------------*/
 /* RASSERT_TYPE macro                                                         */
@@ -47,14 +47,15 @@
 /*----------------------------------------------------------------------------*/
 /* THROW_FATAL macro                                                          */
 /*----------------------------------------------------------------------------*/
-#define THROW_FATAL(azDescription) \
-Correctness::vThrow(FK_FATAL,__func__,__FILE__,__LINE__,(char*)azDescription);
+#define THROW_FATAL(szDescription) \
+Correctness::vThrow(FK_FATAL,__func__,__FILE__,__LINE__,szDescription);
 
 /*----------------------------------------------------------------------------*/
 /* NEVER_REACH macro (point in code which should never be reached             */
 /*----------------------------------------------------------------------------*/
 #define NEVER_REACH \
-  Correctness::vThrow(FK_REACHED,__func__,__FILE__,__LINE__,"NEVER_REACH point reached");
+  Correctness::vThrow(FK_REACHED,__func__,__FILE__,__LINE__, \
+                      (Stz*)"NEVER_REACH point reached");
 
 
 /*============================================================================*/

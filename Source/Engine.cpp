@@ -807,7 +807,7 @@ void Engine::vSignalHandler(int iSignal)
 {
   // print out all the frames to stderr
   vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-         "Error: signal %d:\n", iSignal);
+         "Error: signal %d:\n"_Stz, iSignal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -892,7 +892,7 @@ void Engine::vStartSystem(void)
   Node* pThisNode = AM::pGrid()->pFindNode(gxArguments.m_sNodeName);
   if (! pThisNode)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "Cannot fine Node %s in the cluster",
+           "Cannot fine Node %s in the cluster"_Stz,
            gxArguments.m_sNodeName.azChar());
   
   i8 iThisNodeNo = pThisNode->iNodeNo();
