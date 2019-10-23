@@ -91,19 +91,19 @@ int main(int argc, const char* argv[])
  
  a) start SE with at least:
  
- --start --prompt --metadata --partitionsPerNode 4 --node NODE1
+    --start --prompt --metadata --partitionsPerNode 4 --node NODE1
  
  b) start the cluster
  
- se> startCluster;
+    se> startCluster;
  
  c) For release, in ../Seth run (for example, to run all tests):
  
- $ ./allTestsRel
+    $ ./allTestsRel
  
  d) For release, in ../Seth run (for example, to run a specific set of tests):
  
- $ ./sethRel.sh tests/Tpch/customer.test
+    $ ./sethRel.sh tests/Tpch/customer.test
  
  */
 
