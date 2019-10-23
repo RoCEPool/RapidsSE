@@ -238,6 +238,7 @@ namespace Oblique
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static i8   iTaskAcksRmg_assert_only_(Task* pTask);
     static void vTaskBeginOp(Task* pTask);
     static void vTaskMutexLock(Task* pTask);
     static void vTaskMutexSignal(Task* pTask);

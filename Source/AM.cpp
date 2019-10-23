@@ -311,6 +311,7 @@ i8 AM::nRandomLevels(void) {
   return nLevels;
 }
 
+i8 AM::iTaskAcksRmg_assert_only_(Task* pTask) { return pTask->iAcksRmg_assert_only_(); }
 void AM::vTaskBeginOp(Task* pTask)     { pTask->vBeginOp();     }
 void AM::vTaskMutexLock(Task* pTask)   { pTask->vMutexLock();   }
 void AM::vTaskMutexSignal(Task* pTask) { pTask->vMutexSignal(); }
