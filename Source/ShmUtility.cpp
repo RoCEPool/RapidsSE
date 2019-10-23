@@ -72,7 +72,8 @@ void ShmUtility::vRun(int argc, Stz* argv[])
     vDelete();
   }
   else
-    THROW_FATAL("Unrecognised SHM command\n"_Stz);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Unrecognised SHM command\n"_Stz);
   
 }
 
@@ -103,7 +104,8 @@ void ShmUtility::vAttach(void)
 
   if (! gaSeShmRegion)  {
     Shm::bClose(iFD,oSysCall);
-    THROW_FATAL("ShmUtility::vAttach failed to map\n"_Stz);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "ShmUtility::vAttach failed to map\n"_Stz);
   }
 
   //memcpy(gaSeShmRegion,"ABCDEFGHIJKLMNOPQRSTUVWXYZ\0", 27);

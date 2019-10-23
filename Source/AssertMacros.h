@@ -41,14 +41,8 @@
 /*----------------------------------------------------------------------------*/
 /* THROW macro                                                                */
 /*----------------------------------------------------------------------------*/
-#define THROW(azDescription) \
-  Correctness::vThrow(FK_FAILED,__func__,__FILE__,__LINE__,azDescription);
-
-/*----------------------------------------------------------------------------*/
-/* THROW_FATAL macro                                                          */
-/*----------------------------------------------------------------------------*/
-#define THROW_FATAL(szDescription) \
-Correctness::vThrow(FK_FATAL,__func__,__FILE__,__LINE__,szDescription);
+#define THROW(szDescription) \
+  Correctness::vThrow(FK_FAILED,__func__,__FILE__,__LINE__,szDescription);
 
 /*----------------------------------------------------------------------------*/
 /* NEVER_REACH macro (point in code which should never be reached             */

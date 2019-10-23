@@ -731,7 +731,8 @@ void Engine::vRunCommandLine(void)
       case BO_UNLINK:       vStopSystem();                                break;
         
       default:
-        THROW_FATAL("Unknown command line argument\n"_Stz);
+        vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+               "Unknown command line argument\n"_Stz);
     }
   }
   

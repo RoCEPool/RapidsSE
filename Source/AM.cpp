@@ -1048,7 +1048,8 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    THROW_FATAL("Enum for CN_ENUM not found in aCN\n"_Stz);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Enum for CN_ENUM not found in aCN\n"_Stz);
   
   if (iEntriesECN != iEntriesPCN) {
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
@@ -1068,7 +1069,8 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    THROW_FATAL("Enum for CN_ENUM not found in gpDump\n"_Stz);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Enum for CN_ENUM not found in gpDump\n"_Stz);
   
   if (iEntriesECN != iEntriesGPDUMP) {
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
@@ -1088,7 +1090,8 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    THROW_FATAL("Enum for CN_ENUM not found in giClassSize\n"_Stz);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Enum for CN_ENUM not found in giClassSize\n"_Stz);
   
   if (iEntriesECN != iEntriesGCLASSSIZE) {
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,

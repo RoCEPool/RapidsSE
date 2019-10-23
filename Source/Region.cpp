@@ -130,7 +130,8 @@ void Region::vCreate(s32& sRegionName, bool bVerbose,
                                      C_NO_HUGE_PAGES,
                                      oSysCall);
   if (! gaSeShmRegion)
-    THROW_FATAL("Engine::vCreate failed to map region!\n"_Stz);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Engine::vCreate failed to map region!\n"_Stz);
   
   gpBufferPool = new(gaSeShmRegion) BufferPool(sRegionName, iRegionSize,
                                                iJumboTook, bTouch, bProgress,
@@ -144,7 +145,8 @@ void Region::vCreate(s32& sRegionName, bool bVerbose,
   if (bLock) {
     bResult = Shm::bLock(gaSeShmRegion,iRegionSize,oSysCall);
     if (! bResult)
-      THROW_FATAL("Engine::vAttach failed to lock\n"_Stz);
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+             "Engine::vAttach failed to lock\n"_Stz);
     
     if (bVerbose)
       vTrace("Shm pages locked in memory\n"_Stz);

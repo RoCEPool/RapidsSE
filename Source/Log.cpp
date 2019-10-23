@@ -108,7 +108,8 @@ Log* Log::pAttachCreate(void)
                              C_NO_HUGE_PAGES,
                              oSysCall);
   if (! aSegment)
-    THROW_FATAL("Log::bOpenCreate: failed to map region!\n"_Stz);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Log::bOpenCreate: failed to map region!\n"_Stz);
   
   Log* pLog = static_cast<Log*>(aSegment);
   
@@ -385,7 +386,8 @@ void Log::vOpenBySE(bool bStarting)
     return;
   
   if (gpLog)
-    THROW_FATAL("Log::vOpenBySE() -- activity map already opened\n"_Stz);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Log::vOpenBySE() -- activity map already opened\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
