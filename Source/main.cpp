@@ -49,6 +49,8 @@ int main(int argc, const char* argv[])
 
 /*
  
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
  Desktop/rapidsse/OS X/Build/Products/Debug
  
  ./SE --start --killPrev --verbose --subloaders 1 --size 10GB --name NODE0 --node NODE0 127.0.0.1 5550 --log
@@ -62,6 +64,46 @@ int main(int argc, const char* argv[])
  in /Users/ray/Desktop/rapidsse/OS X/RapidsSE.xcodeproj/project.xcworkspace/xcuserdata/rayh.xcuserdatad
  
  $ rm UserInterfaceState.xcuserstate
+ 
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ Seth Testing (debug):
+ 
+ a) start SE with at least:
+ 
+    --start --prompt --metadata --partitionsPerNode 4 --node NODE1
+ 
+ b) start the cluster
+ 
+    se> startCluster;
+ 
+ c) For debug, in ../Seth run (for example, to run all tests):
+ 
+    $ ./allTests
+ 
+ d) For debug, in ../Seth run (for example, to run a specific set of tests):
+ 
+    $ ./seth.sh tests/Tpch/customer.test
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+ Seth Testing (release):
+ 
+ a) start SE with at least:
+ 
+ --start --prompt --metadata --partitionsPerNode 4 --node NODE1
+ 
+ b) start the cluster
+ 
+ se> startCluster;
+ 
+ c) For release, in ../Seth run (for example, to run all tests):
+ 
+ $ ./allTestsRel
+ 
+ d) For release, in ../Seth run (for example, to run a specific set of tests):
+ 
+ $ ./sethRel.sh tests/Tpch/customer.test
  
  */
 
