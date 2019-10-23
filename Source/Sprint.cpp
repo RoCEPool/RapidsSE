@@ -101,7 +101,8 @@ void Sprint::vInto(Stz *szTgt, void *avSrc, Column *pCol)
     }
       
     default:
-      vFatal("Sprint::Into: Invalid eDatum: %lld\n"_Stz,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+             "Sprint::Into: Invalid eDatum: %lld\n"_Stz,
              eDatum);
   }
 

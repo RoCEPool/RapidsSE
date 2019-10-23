@@ -25,7 +25,7 @@ Wilderness* Structures::_aWilderness(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Wilderness::operator new(size_t)
 {
-  vFatal("fatal: Wilderness class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: Wilderness class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

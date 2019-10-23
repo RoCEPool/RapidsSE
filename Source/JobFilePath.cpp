@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* JobFilePath::operator new(size_t)
 {
-  vFatal("fatal: JobFilePath class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: JobFilePath class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

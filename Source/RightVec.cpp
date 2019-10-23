@@ -23,7 +23,7 @@ RightVec* Structures::_aRightVec(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* RightVec::operator new(size_t)
 {
-  vFatal("fatal: RightVec class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: RightVec class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

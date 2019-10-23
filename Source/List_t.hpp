@@ -50,7 +50,7 @@ using namespace Structures;
 template <class ITEM>
 void* List_t<ITEM>::operator new(size_t)
 {
-  vFatal("fatal: List_t class cannot be new'd"_Stz);
+  THROW_FATAL("fatal: List_t class cannot be new'd"_Stz);
   
   NEVER_REACH;
 }

@@ -141,7 +141,8 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     else {
       StrLib::vCopy(caFileName, pError->aFileName()->azChar());
     }
-    vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
            pError->aErrorMsg(),
            pError->iLineNo(),
            caFileName);
@@ -205,7 +206,8 @@ void* Thread::aEntryPoint_general(void* pArg)
     else {
       StrLib::vCopy(caFileName, pError->aFileName()->azChar());
     }
-    vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
            pError->aErrorMsg(),
            pError->iLineNo(),
            caFileName);

@@ -812,7 +812,8 @@ void Task::vSeedJob(void)
   Word* pWord = pRootDic->pFindWord(szSeed);
   
   if (! pWord)
-    vFatal("Unable to find seed word: %s\n"_Stz,szSeed);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Unable to find seed word: %s\n"_Stz,szSeed);
   
   m_pForth->m_aInxPtr = pWord->aFirstCell();
 }

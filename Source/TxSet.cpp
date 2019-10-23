@@ -75,7 +75,7 @@ void* TxSet::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void TxSet::operator delete(void*)
 {
-  vFatal("fatal: TxSet class cannot be deleted"_Stz);
+  THROW_FATAL("fatal: TxSet class cannot be deleted"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

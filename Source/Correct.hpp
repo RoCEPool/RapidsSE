@@ -22,6 +22,10 @@ namespace Correctness
                              const char* azFilePath, i8 iLineNo,
                              const char* azFormat,...);
   
+  [[ noreturn ]] void vThrow(eFK eKind, const char* azFunc,
+                             const char* azFilePath, i8 iLineNo,
+                             Stz* szFormat,...);
+  
   [[ noreturn ]] void vTypeFatal(void* aObject, eCN eExpectingClass);
 };
 

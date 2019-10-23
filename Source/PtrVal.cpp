@@ -21,7 +21,7 @@ PtrVal* SenVM::_aPtrVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* PtrVal::operator new(size_t)
 {
-  vFatal("fatal: PtrVal class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: PtrVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

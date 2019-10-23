@@ -34,7 +34,7 @@ using namespace Structures;
 template <class OBJECT>
 void* ListItem_t<OBJECT>::operator new(size_t)
 {
-  vFatal("fatal: ListItem_t class cannot be new'd"_Stz);
+  THROW_FATAL("fatal: ListItem_t class cannot be new'd"_Stz);
   
   NEVER_REACH;
 }

@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* Stz::operator new(size_t)
 {
-  vFatal("fatal: Stz class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: Stz class cannot be new'd\n"_Stz);
   
   return (void*)C_UNKNOWN;
 }

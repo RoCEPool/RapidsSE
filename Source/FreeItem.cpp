@@ -23,7 +23,7 @@ FreeItem* Structures::_aFreeItem(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* FreeItem::operator new(size_t)
 {
-  vFatal("fatal: FreeItem class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: FreeItem class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

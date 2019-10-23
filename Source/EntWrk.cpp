@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 void* EntWrk::operator new(size_t)
 {
-  vFatal("fatal: EntWrk class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: EntWrk class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

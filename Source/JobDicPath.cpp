@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* JobDicPath::operator new(size_t)
 {
-  vFatal("fatal: JobDicPath class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: JobDicPath class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

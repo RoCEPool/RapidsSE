@@ -25,7 +25,7 @@ Key* Transform::_aKey(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Key::operator new(size_t)
 {
-  vFatal("fatal: Key class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: Key class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

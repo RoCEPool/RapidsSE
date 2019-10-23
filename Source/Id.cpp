@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* Id::operator new(size_t)
 {
-  vFatal("fatal: Id class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: Id class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

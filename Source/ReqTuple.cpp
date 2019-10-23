@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* ReqTuple::operator new(size_t)
 {
-  vFatal("fatal: ReqTuple class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: ReqTuple class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

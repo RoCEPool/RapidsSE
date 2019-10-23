@@ -35,7 +35,7 @@ void* JobList::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void JobList::operator delete(void*)
 {
-  vFatal("fatal: JobList class cannot be deleted"_Stz);
+  THROW_FATAL("fatal: JobList class cannot be deleted"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

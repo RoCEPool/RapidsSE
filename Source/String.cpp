@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* String::operator new(size_t)
 {
-  vFatal("fatal: String class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: String class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

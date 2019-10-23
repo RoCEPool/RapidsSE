@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* JobExtractRow::operator new(size_t)
 {
-  vFatal("fatal: JobExtractRow class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: JobExtractRow class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

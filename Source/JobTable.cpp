@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* JobTable::operator new(size_t)
 {
-  vFatal("fatal: JobTable class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: JobTable class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

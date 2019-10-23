@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* JobWriteBehind::operator new(size_t)
 {
-  vFatal("fatal: JobWriteBehind class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: JobWriteBehind class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

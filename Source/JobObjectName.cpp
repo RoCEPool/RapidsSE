@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* JobObjectName::operator new(size_t)
 {
-  vFatal("fatal: JobObjectName class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: JobObjectName class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

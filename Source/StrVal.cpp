@@ -25,7 +25,7 @@ StrVal* SenVM::_aStrVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* StrVal::operator new(size_t)
 {
-  vFatal("fatal: StrVal class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: StrVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

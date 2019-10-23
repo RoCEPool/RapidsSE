@@ -617,7 +617,8 @@ bool Dynamo::bPhase4_opdefn(void)
       
       //! HOW DO WE HANDLE ERRORS?
       if (! aOpDefn) {
-        vFatal("Unable to find %s in op catalog"_Stz,pOpSpec->szName());
+        vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+               "Unable to find %s in op catalog"_Stz,pOpSpec->szName());
       }
       
       pOpSpec->vOpDefn(aOpDefn);

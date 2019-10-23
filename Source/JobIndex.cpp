@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* JobIndex::operator new(size_t)
 {
-  vFatal("fatal: JobIndex class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: JobIndex class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

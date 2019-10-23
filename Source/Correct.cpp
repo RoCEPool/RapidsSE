@@ -109,6 +109,38 @@ void Correctness::vStackDump(void)
   throw xException;
 }
 
+/*----------------------------------------------------------------------------*/
+/* throw an FK_ASSERT exception (long-form)                                   */
+/*----------------------------------------------------------------------------*/
+[[ noreturn ]] void Correctness::vThrow(eFK eKind, const char* azFunc,
+                                        const char* azFilePath, i8 iLineNo,
+                                        Stz* szFormat,...)
+{
+  // put a breakpoint here to trap throws
+  sleep(0);
+  
+  char zFileNm[256];
+  StrLib::vSubPath(zFileNm,(char*)azFilePath);
+  
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  char zCondition[256];
+  StrLib::vSprint(zCondition,xArgs,(char*)szFormat);
+  va_end(xArgs);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Exception xException(FK_ASSERT,azFunc,zCondition,zFileNm,iLineNo);
+  
+  xException.vPrint();
+  
+  // dump the call stack
+  //vStackDump();
+  
+  throw xException;
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */

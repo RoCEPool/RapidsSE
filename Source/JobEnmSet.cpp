@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* JobEnmSet::operator new(size_t)
 {
-  vFatal("fatal: JobEnmSet class cannot be new'd\n"_Stz);
+  THROW_FATAL("fatal: JobEnmSet class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
