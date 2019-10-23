@@ -19,7 +19,7 @@ namespace Operators
   
     s32            m_sNextLabel;     // label of this op
   
-    Job*           m_pJob;           // job this operator belongs to
+    Job*           m_pJobPipeline;   // pipeline job this operator belongs to
     Task*          m_pTask;          // task running this op
   
     bool           m_bAckJobEnd;     // ack job on end marker
@@ -72,7 +72,7 @@ namespace Operators
     void vIncWorkDone(void);
     bool bIsCancelling(void);
     bool bIsLocked(void);
-    void vJob(Job* pJob);
+    void vJobPipeline(Job* pJob);
     void vLinkToStage(Stage* pStage);
     Stz* szName(void);
     Stz* szNextLabel(void);
