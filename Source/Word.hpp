@@ -21,6 +21,7 @@ namespace SenVM
     EnameSet* m_pEnameSet;    // optional ename set
     i8        m_iEpoch;       // epoch no. used by bp analyzer
     s32       m_sExitHook;    // routine to be called on exit
+    s32       m_sExceptionHook;    // routine to be called on exit
     bool      m_bImmediate;   // immediate execution during compile?
     eWK       m_eKind;        // kind of word
     i8        m_iLocalNo;     // local number (for a local variable)
@@ -91,6 +92,8 @@ namespace SenVM
     void  vEncode(Stz* aWordNm, GenVar* pGenVar);
     void  vEncode(StepFp* afpEntryStep);
     i8    iEpoch(void);
+    Stz*  szExceptionHook(void);
+    void  vExceptionHook(Stz* szExceptionHook);
     Stz*  szExitHook(void);
     void  vExitHook(Stz* szExitHook);
     Cell* aFirstCell(void);

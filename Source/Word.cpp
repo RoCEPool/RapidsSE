@@ -525,6 +525,26 @@ void Word::vEnameSet(EnameSet* pEnameSet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get exception hook                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Word::szExceptionHook(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_sExceptionHook.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set exception hook                                                         */
+/*----------------------------------------------------------------------------*/
+void Word::vExceptionHook(Stz* szExceptionHook)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_sExceptionHook = szExceptionHook;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get exit hook                                                              */
 /*----------------------------------------------------------------------------*/
 Stz* Word::szExitHook(void)
