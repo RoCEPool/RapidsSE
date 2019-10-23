@@ -79,6 +79,8 @@ Forth::~Forth(void) noexcept(false)
     
     delete pLocalsFrame;
   }
+  
+  delete m_pCompiler;
 }
 
 /*----------------------------------------------------------------------------*/
