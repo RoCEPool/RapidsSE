@@ -68,6 +68,9 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_aOpDefn       = pOpSpec->aOpDefn();
   m_pPipeline     = pPipeline;
   m_pJobPipeline  = pPipeline->pJob();
+  
+  m_pJobUniversal = AM::pNewUniversalJob();
+  
   m_pTask         = nullptr;
   
   m_bAckJobEnd    = true;
