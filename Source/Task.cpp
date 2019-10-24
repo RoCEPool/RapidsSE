@@ -236,15 +236,15 @@ void Task::vTaskLoop_job(void)
     StepFp fpStep = * ( (m_pForth->m_aInxPtr ++)->m_afpIntrinsic );
     
     // call the intinsic
-    try {
+//    try {
       ((Step*)m_pForth->*fpStep)();
-    }
+//    }
     
     // catch any exception
-    catch (Exception xException) {
-      xException.vJob(m_pJob);
-      vCaught(xException);
-    }
+//    catch (Exception xException) {
+//      xException.vJob(m_pJob);
+//      vCaught(xException);
+//    }
   }
   
   if (m_pJob && m_pJob->m_xReqTuple.m_iDetail)

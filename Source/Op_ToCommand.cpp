@@ -243,7 +243,7 @@ void Op_ToCommand::vCollectFilter(Filter* pFilter)
   pFilter->vAsString(sFilter);
   
   if (! *m_sCmd.azChar()) {
-    m_sCmd = "dynamic "_Stz;
+    m_sCmd = "pipeline "_Stz;
     m_sCmd.vConcat(sFilter);
     return;
   }

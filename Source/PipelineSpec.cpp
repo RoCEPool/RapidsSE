@@ -126,8 +126,6 @@ void PipelineSpec::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  vTrace("dynamic\n"_Stz);
-  vTrace("\n"_Stz);
   vTrace("pipeline %s\n"_Stz,m_sName.szStz());
   vTrace("begin\n"_Stz);
   

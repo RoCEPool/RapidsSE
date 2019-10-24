@@ -40,7 +40,7 @@ namespace Pipelines
     bool bCollectPipe(void);
     bool bCollectOp();
     bool bCollectEnd(void);
-    void vDynamicSpec(PipelineSpec* pPipelineSpec);
+    void vPipelineSpec(PipelineSpec* pPipelineSpec);
     bool bIsOperator(Token* pTkn);
     bool bPhase1_collect(void);
     bool bPhase2_staging(void);

@@ -193,7 +193,7 @@ bool Dynamo::bPhase1_collect(void)
   
   bool bResult = true;
   
-  vBeginToken(1);
+  vBeginToken(0);
   
   if (m_pTkn->bSame("pipeline"_Stz)) {
     bResult = bCollectName();
@@ -674,7 +674,7 @@ PipelineSpec* Dynamo::pPipelineSpec(void)
 /*----------------------------------------------------------------------------*/
 /* set the pipeline spec                                                       */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vDynamicSpec(PipelineSpec* pPipelineSpec)
+void Dynamo::vPipelineSpec(PipelineSpec* pPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   

@@ -91,8 +91,6 @@ print "*************************************************************************
 print "scan lineitem | output;";
 print "**************************************************************************";
 
-dynamic
-
 pipeline lineItem_dyn
 begin
 
@@ -102,8 +100,6 @@ scan lineitem | output
 end
 ;
 /*
-
-dynamic
 
 pipeline lineItem_dyn
 begin
@@ -117,7 +113,6 @@ output
 end
 ;
 
- dynamic
  pipeline lineItem_dyn
  begin
  
@@ -136,7 +131,6 @@ end
  end
  ;
 
-dynamic
 pipeline lineItem_dyn
 begin
 
@@ -155,7 +149,6 @@ stage stageD on origin:
 end
 ;
 
-dynamic
 pipeline lineItem_dyn
 begin
 
@@ -170,11 +163,6 @@ superCount | output
 
 end
 ;
-
-
-
- 
- dynamic
 
   pipeline lineItem_dyn
   begin
@@ -194,7 +182,6 @@ end
  print "**************************************************************************";
  print "scan lineitem | output;";
  print "**************************************************************************";
- dynamic
  
  pipeline lineItem_dyn
  begin
@@ -208,7 +195,6 @@ end
 print "**************************************************************************";
 print "scan lineitem | agg L_ORDERKEY | superAgg | output;";
 print "**************************************************************************";
-dynamic
 
   pipeline lineItem_dyn
   begin
@@ -216,15 +202,14 @@ dynamic
   stage stageA:
   scan lineitem | agg L_ORDERKEY | superAgg | output
 
-end
+   end
 ;
 
 print "**************************************************************************";
 print "scan lineitem | count | superCount | output;";
 print "**************************************************************************";
-dynamic
 
-  pipeline lineItem_dyn
+pipeline lineItem_dyn
   begin
 
   stage stageA:
@@ -236,7 +221,6 @@ end
 print "**************************************************************************";
 print "fetch lineitem lineitem_idx1 | output;";
 print "**************************************************************************";
-dynamic
 
   pipeline lineItem_dyn
   begin
@@ -250,7 +234,6 @@ end
 print "**************************************************************************";
 print "fetch lineitem lineitem_idx1  1 | limit 1 | output;";
 print "**************************************************************************";
-dynamic
 
   pipeline lineItem_dyn
   begin
@@ -264,7 +247,6 @@ end
 print "**************************************************************************";
 print "fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMerge | output;";
 print "**************************************************************************";
-dynamic
 
   pipeline lineItem_dyn
   begin
@@ -278,7 +260,6 @@ end
 print "**************************************************************************";
 print "fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMerge 1 | limit 1 | output;";
 print "**************************************************************************";
-dynamic
 
   pipeline lineItem_dyn
   begin
@@ -292,7 +273,6 @@ end
 print "**************************************************************************";
 print "fetch lineitem lineitem_idx1 | project L_PARTKEY, L_SHIPDATE | output;";
 print "**************************************************************************";
-dynamic
 
   pipeline lineItem_dyn
   begin
@@ -306,7 +286,6 @@ end
 print "**************************************************************************";
 print "scan lineitem | toCsv | toFile "/tmp/lineitem.csv"  | output;";
 print "**************************************************************************";
-dynamic
 
   pipeline lineItem_dyn
   begin
@@ -322,7 +301,6 @@ end
 print "**************************************************************************";
 print "fetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output;";
 print "**************************************************************************";
-dynamic
 
   pipeline lineItem_dyn
   begin
@@ -336,7 +314,6 @@ end
 print "**************************************************************************";
 print "fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | output;";
 print "**************************************************************************";
-dynamic
 
   pipeline lineItem_dyn
   begin

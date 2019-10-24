@@ -9,8 +9,8 @@ JobClass xJobClass_Pipeline =
   CN_JOB_PIPELINE,        // class number
   JK_DIST2PC,            // job kind
   RS_DATA_ROWS,          // response kind
-  "dynamic"_Stz,         // comment about the job
-  "dynamic"_Stz,         // the prompt command
+  "pipeline"_Stz,        // comment about the job
+  "pipeline"_Stz,        // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
   "pipeline_req"_Stz,    // the _req task seed
@@ -36,8 +36,8 @@ JobClass xJobClass_Pipeline =
   
   // help and example
   true,
-  "dynamic"_Stz,
-  "dynamic;"_Stz,
+  "pipeline"_Stz,
+  "pipeline;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
@@ -156,11 +156,8 @@ bool Job_Pipeline::bPopulateJob(Session* pSession, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE,_FOOTER_);
   
-  // first token should be "dynamic"
-  ASSERT(pTknVec->pGet(0)->bSame("dynamic"_Stz));
-  
-  // second token should be "pipeline"
-  if ( ! pTknVec->pGet(1)->bSame("pipeline"_Stz) )
+  // first token should be "pipeline"
+  if ( ! pTknVec->pGet(0)->bSame("pipeline"_Stz) )
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -176,7 +173,7 @@ bool Job_Pipeline::bPopulateJob(Session* pSession, TokenVec* pTknVec)
   PipelineSpec* pPipelineSpec = pDynamo->pPipelineSpec();
   StageSpec*   pStageSpec     = pPipelineSpec->pStageSpec(0);
   
-  s4K sPipe("dynamic "_Stz);
+  s4K sPipe("pipeline "_Stz);
   pStageSpec->vToPipeStr(sPipe.szStz());
 
 #ifdef WITH_TRACE_DYNAMO
