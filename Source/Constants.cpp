@@ -300,7 +300,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_LOADCHUNK"_Stz,    CN_LOADCHUNK);
   /* 35 */ vAddConstant("CN_LOADMAP"_Stz,      CN_LOADMAP);
   /*    */ vAddConstant("CN_LOCAL"_Stz,        CN_LOCAL);
-  /* 47 */ vAddConstant("CN_LOCALSET"_Stz,     CN_LOCALSET);
+  /* 47 */ vAddConstant("CN_LOCALSCHAIN"_Stz,     CN_LOCALSCHAIN);
   /* 36 */ vAddConstant("CN_LOCK"_Stz,         CN_LOCK);
   
   /*    */ vAddConstant("CN_MEDIUMPERSISTENT"_Stz, CN_MEDIUMPERSISTENT);

@@ -79,7 +79,7 @@ Forth::~Forth(void) noexcept(false)
   
   while (m_pLocalsFrame) {
     
-    LocalSet* pLocalsFrame = m_pLocalsFrame;
+    LocalChain* pLocalsFrame = m_pLocalsFrame;
     m_pLocalsFrame = m_pLocalsFrame->pNext();
     
     delete pLocalsFrame;
@@ -103,7 +103,7 @@ void Forth::vReset(void)
   
   while (m_pLocalsFrame) {
     
-    LocalSet* pLocalsFrame = m_pLocalsFrame;
+    LocalChain* pLocalsFrame = m_pLocalsFrame;
     m_pLocalsFrame = m_pLocalsFrame->pNext();
     
     delete pLocalsFrame;

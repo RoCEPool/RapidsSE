@@ -126,7 +126,7 @@ void Step::vLocalsPop(void)
 {
 ENTRY("vLocalsPop"_Stz);
   
-  LocalSet* pLocalsFrame = m_pLocalsFrame;
+  LocalChain* pLocalsFrame = m_pLocalsFrame;
   
   if ( ! pLocalsFrame )
     THROW_DSTACK();
@@ -145,7 +145,7 @@ void Step::vLocalsPush(void)
 {
 ENTRY("vLocalsPush"_Stz);
   
-  LocalSet* pLocalsFrame = new LocalSet;
+  LocalChain* pLocalsFrame = new LocalChain;
   
   pLocalsFrame->vDiscardPoint(m_pReturnStack->aPeekValue());
   

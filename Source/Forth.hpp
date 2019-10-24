@@ -21,7 +21,7 @@ namespace SenVM
     Stack*    m_pDataStack;   // data stack
     Stack*    m_pReturnStack; // return stack
  
-    LocalSet* m_pLocalsFrame; // local register frame chain
+    LocalChain* m_pLocalsFrame; // local register frame chain
   
     Compiler* m_pCompiler;    // word compiler (Job boot, create table etc)
   

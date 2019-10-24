@@ -27,15 +27,12 @@ namespace SenVM
 #include "DicStack.hpp"
 #include "GenVar.hpp"
 #include "Local.hpp"
-#include "LocalSet.hpp"
+#include "LocalChain.hpp"
 #include "Routine.hpp"
 #include "Stack.hpp"
 #include "Compiler.hpp"
 #include "Forth.hpp"
 #include "Word.hpp"
-
-
-
 
 // -- -- -- -- -- -- -- --
 

@@ -559,7 +559,7 @@ void Task::vLocalsPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  LocalSet* pLocalsframe = m_pForth->m_pLocalsFrame;
+  LocalChain* pLocalsframe = m_pForth->m_pLocalsFrame;
   
   m_pForth->m_pLocalsFrame = m_pForth->m_pLocalsFrame->pNext();
   
@@ -571,7 +571,7 @@ void Task::vLocalsPop(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsPush(void)
 {
-  LocalSet* pLocalsframe = new LocalSet;
+  LocalChain* pLocalsframe = new LocalChain;
   
   pLocalsframe->vNext(m_pForth->m_pLocalsFrame);
   
