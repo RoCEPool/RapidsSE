@@ -92,6 +92,31 @@ Forth::~Forth(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* reset forth execution context                                              */
+/*----------------------------------------------------------------------------*/
+void Forth::vReset(void)
+{
+  while (m_pAuxStack->nValues())
+    m_pAuxStack->vDiscard();
+
+  while (m_pDataStack->nValues())
+    m_pDataStack->vDiscard();
+
+  while (m_pReturnStack->nValues())
+    m_pReturnStack->vDiscard();
+  
+  while (m_pLocalsFrame) {
+    
+    LocalSet* pLocalsFrame = m_pLocalsFrame;
+    m_pLocalsFrame = m_pLocalsFrame->pNext();
+    
+    delete pLocalsFrame;
+  }
+  
+  m_aInxPtr = nullptr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

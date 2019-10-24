@@ -34,6 +34,8 @@ namespace SenVM
 
     Forth(Task* pTask);
    ~Forth(void) noexcept(false);
+  
+    void vReset(void);
 
   private:
     Footer* aFooter(void);
