@@ -137,6 +137,9 @@ bool CLASS::bCorrectLayout(void) \
   if (! bIsClass(CN)) \
     return false; \
   \
+  if (! aFooter()->bValidFooter()) \
+    return false; \
+  \
   return true; \
 }
 
