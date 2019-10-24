@@ -128,9 +128,11 @@ eOR SuperCountOp::eSuperCountLoop(void)
     
     Operand* pOperand = pPopQueue();
     
+    //! HACK: TaskLoop_Op
     if (! pOperand) {
-      ASSERT(bIsLocked());
-      return OR_BIDE;
+      //ASSERT(bIsLocked());
+      //return OR_BIDE;
+      continue;
     }
     
     if (CN_ENDMARKER == pOperand->eClass()) {

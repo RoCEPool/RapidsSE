@@ -4,84 +4,85 @@
 
 "job_Set.sen" .verbose
 
-"job__Ended.sen" include
-"job__End.sen" include
-"job__Cancelled.sen" include
-"job__Cancel.sen" include
-"job__Executed.sen" include
-"job__Execute.sen" include
-"job__Begun.sen" include
+"job__Ended.sen"         include
+"job__End.sen"           include
+"job__Cancelled.sen"     include
+"job__Cancel.sen"        include
+"job__Executed.sen"      include
+"job__Execute.sen"       include
+"job__Begun.sen"         include
 
-"job_Receiver.sen" include
-"job_Connector.sen" include
-"Job_Answer.sen" include
+"job_Receiver.sen"       include
+"job_Connector.sen"      include
+"Job_Answer.sen"         include
 
-"job_Alarm.sen" include
-"job_AnalyzeIndex.sen" include
-"job_AnalyzeTable.sen" include
+"job_Alarm.sen"          include
+"job_AnalyzeIndex.sen"   include
+"job_AnalyzeTable.sen"   include
 
-"job_CancelQuery.sen" include
-"job_Cat.sen" include
-"job_Cf.sen" include
-"job_CompactIndex.sen" include
+"job_CancelQuery.sen"    include
+"job_Cat.sen"            include
+"job_Cf.sen"             include
+"job_CompactIndex.sen"   include
 "job_ConnectCluster.sen" include
-"job_consumeOp.sen" include
-"Job_CopyBuffer.sen" include
-"job_CreateCatalog.sen" include
-"job_CreateIndex.sen" include
-"job_CreateSchema.sen" include
-"job_CreateTenant.sen" include
-"job_CreateTable.sen" include
+"job_consumeOp.sen"      include
+"Job_CopyBuffer.sen"     include
+"Job_CountOp.sen"        include
+"job_CreateCatalog.sen"  include
+"job_CreateIndex.sen"    include
+"job_CreateSchema.sen"   include
+"job_CreateTenant.sen"   include
+"job_CreateTable.sen"    include
 
-"job_DefineNode.sen" include
-"job_Docol.sen" include
-"job_DropCatalog.sen" include
-"job_DropIndex.sen" include
-"job_DropSchema.sen" include
-"job_DropTable.sen" include
-"job_DropTenant.sen" include
-"job_DumpIndex.sen" include
-"job_DumpTable.sen" include
+"job_DefineNode.sen"     include
+"job_Docol.sen"          include
+"job_DropCatalog.sen"    include
+"job_DropIndex.sen"      include
+"job_DropSchema.sen"     include
+"job_DropTable.sen"      include
+"job_DropTenant.sen"     include
+"job_DumpIndex.sen"      include
+"job_DumpTable.sen"      include
 
-"job_ForgetNode.sen" include
-"job_Export.sen" include
+"job_ForgetNode.sen"     include
+"job_Export.sen"         include
 
-"job_FetchRows.sen" include
+"job_FetchRows.sen"      include
 
-"job_Generate.sen" include
+"job_Generate.sen"       include
 
-"job_IndexJoin.sen" include
-"job_InflateRows.sen" include
-"job_Ingest.sen" include
-"job_InsertRow.sen" include
-"job_InsertTable.sen" include
+"job_IndexJoin.sen"      include
+"job_InflateRows.sen"    include
+"job_Ingest.sen"         include
+"job_InsertRow.sen"      include
+"job_InsertTable.sen"    include
 
-"job_KidExport.sen" include
+"job_KidExport.sen"      include
 
-"Job_Lf.sen" include
-"Job_ListColumns.sen" include
-"Job_ListCatalogs.sen" include
+"Job_Lf.sen"             include
+"Job_ListColumns.sen"    include
+"Job_ListCatalogs.sen"   include
 "Job_ListIdxColumns.sen" include
-"Job_ListIndexes.sen" include
+"Job_ListIndexes.sen"    include
 "Job_ListPartColumns.sen" include
 "Job_ListPartitions.sen" include
-"Job_ListSchemas.sen" include
-"Job_ListTables.sen" include
-"Job_ListTenants.sen" include
-"Job_LoadTable.sen" include
+"Job_ListSchemas.sen"    include
+"Job_ListTables.sen"     include
+"Job_ListTenants.sen"    include
+"Job_LoadTable.sen"      include
 
-"Job_Monitor.sen" include
+"Job_Monitor.sen"        include
 
-"Job_NetHog.sen" include
+"Job_NetHog.sen"         include
 
-"Job_OutputOp.sen" include
+"Job_OutputOp.sen"       include
 
-"Job_Periodic.sen" include
-"Job_Ping.sen" include
-"Job_Pipeline.sen" include
-"Job_Publish.sen" include
-"Job_Purge.sen" include
-"Job_Pwf.sen" include
+"Job_Periodic.sen"       include
+"Job_Ping.sen"           include
+"Job_Pipeline.sen"       include
+"Job_Publish.sen"        include
+"Job_Purge.sen"          include
+"Job_Pwf.sen"            include
 
 "Job_Repeater.sen"       include
 "Job_Report.sen"         include
@@ -111,6 +112,7 @@
 "job_SubScan.sen"        include
 "job_SubTruncate.sen"    include
 "job_SubWalker.sen"      include
+"job_SuperCountOp.sen"   include
 "job_Supervisor.sen"     include
 
 "job_TableSizes.sen"     include
