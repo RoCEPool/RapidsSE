@@ -26,6 +26,7 @@ namespace Gadgets
 #include "NextId.hpp"
 #include "Now.hpp"
 #include "SeeMe.hpp"
+#include "Sleep.hpp"
 #include "TempName.hpp"
 #include "Tick.hpp"
 #include "Timer.hpp"

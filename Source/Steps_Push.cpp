@@ -65,8 +65,8 @@ void Step::vPushValue(void)
 {
   ENTRY("vPushValue"_Stz);
   
-  if (m_pTask->m_iTracing) {
-    ASSERT(m_pTask->m_iTracing);
+  if (m_pTask->m_iTraceMask) {
+    ASSERT(m_pTask->m_iTraceMask);
   }
   
   ForthValue* aValue = &m_aInxPtr->m_xEmbValue;

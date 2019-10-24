@@ -880,7 +880,8 @@ void Step::vSocketSendObject(void)
               "Object %s %lldB to node %s"_Stz, //!format-LogRes
               aCN[eClass],
               nObjectSize,
-              m_pTask->m_pSendNode ? m_pTask->m_pSendNode->szNodeName() : "<unknown>"_Stz,
+              m_pTask->m_pRegSet->m_pSendNode ?
+                m_pTask->m_pRegSet->m_pSendNode->szNodeName() : "<unknown>"_Stz,
               C_ENDARGS);
 
     

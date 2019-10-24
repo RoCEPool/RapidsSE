@@ -124,29 +124,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
 
   //pThread->vBindCore();
   
-  try {
-    pThread->vLoop_dedicated();
-  }
-  
-  catch (Error* pError) {
-    
-    char caFileName[256];
-    char* ps;
-    
-    ps = StrLib::sLast(pError->aFileName()->azChar());
-    bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
-    if (bBackSlash) {
-      StrLib::vCopy(caFileName,ps+1);
-    }
-    else {
-      StrLib::vCopy(caFileName, pError->aFileName()->azChar());
-    }
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
-           pError->aErrorMsg(),
-           pError->iLineNo(),
-           caFileName);
-  }
+  pThread->vLoop_dedicated();
   
   if (AM::bVerbose())
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
@@ -189,29 +167,8 @@ void* Thread::aEntryPoint_general(void* pArg)
   
   //pThread->vBindCore();
     
-  try {
-    pThread->vLoop_general();
-  }
+  pThread->vLoop_general();
   
-  catch (Error* pError) {
-    
-    char caFileName[256];
-    char* ps;
-    
-    ps = StrLib::sLast(pError->aFileName()->azChar());
-    bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
-    if (bBackSlash) {
-      StrLib::vCopy(caFileName,ps+1);
-    }
-    else {
-      StrLib::vCopy(caFileName, pError->aFileName()->azChar());
-    }
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-           "ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
-           pError->aErrorMsg(),
-           pError->iLineNo(),
-           caFileName);
-  }
   
   if (AM::bVerbose())
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,

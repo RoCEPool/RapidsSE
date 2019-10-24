@@ -378,7 +378,7 @@ void Step::vTaskSendNodeFetch(void)
     THROW_DSTACK();
   Task* pThatTask = _pTask(pObject);
   
-  Node* pSendNode = pThatTask->m_pSendNode;
+  Node* pSendNode = pThatTask->pSendNode();
   
   Object* pPtrSendNode = pSendNode;
   
@@ -404,7 +404,7 @@ void Step::vTaskSendNodeStore(void)
     THROW_DSTACK();
   Node* pSendNode = _pNode(pPtrSendNode);
   
-  pThatTask->m_pSendNode = pSendNode;
+  pThatTask->vSendNode(pSendNode);
   
   EXIT();
 }

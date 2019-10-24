@@ -29,7 +29,7 @@
     _pStepAccum->vEnter(_iEnterCycles,_iEnterMisses); \
   } \
   \
-  if (C_TRACE_STEPS && m_pTask->m_iTracing) \
+  if (C_TRACE_STEPS && m_pTask->m_iTraceMask) \
     m_pTask->vTraceStep(szStepNm);
 
 /*----------------------------------------------------------------------------*/

@@ -326,7 +326,7 @@ void Step::vExit_RT(void)
   
   //vTrace("Exit: r eturn stack %lld\n"_Stz, m_pReturnStack->iValues());
   
-  if ( (m_pTask->m_iTracing & C_TRACE_ROUTINES) )
+  if ( (m_pTask->m_iTraceMask & C_TRACE_ROUTINES) )
     m_pTask->vTracePoint("<"_Stz);
   
   if (m_pLocalsFrame
@@ -354,7 +354,7 @@ void Step::vFind(void)
   if ( ! m_pDataStack->bPopS256(sName) )
     THROW_DSTACK();
   
-  if (m_pTask->m_iTracing) {
+  if (m_pTask->m_iTraceMask) {
     i8 i = 0;
   }
   
@@ -376,7 +376,7 @@ void Step::vFindInCurrent(void)
   if ( ! m_pDataStack->bPopS256(sName) )
     THROW_DSTACK();
   
-  if (m_pTask->m_iTracing) {
+  if (m_pTask->m_iTraceMask) {
     i8 i = 0; i++;
   }
   

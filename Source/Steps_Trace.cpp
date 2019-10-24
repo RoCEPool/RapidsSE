@@ -22,7 +22,7 @@ void Step::vTraceOff(void)
 {
   ENTRY("vTraceOff"_Stz);
   
-  m_pTask->m_iTracing = 0;
+  m_pTask->m_iTraceMask = 0;
   
   EXIT();
 }
@@ -34,7 +34,7 @@ void Step::vTraceOn(void)
 {
   ENTRY("vTraceOn"_Stz);
   
-  m_pTask->m_iTracing = C_TRACE_STEPS;
+  m_pTask->m_iTraceMask = C_TRACE_STEPS;
   
   EXIT();
 }
@@ -69,7 +69,7 @@ void Step::vTraceSet(void)
   if ( ! m_pDataStack->bPopI8(iTrace) )
     THROW_DSTACK();
   
-  m_pTask->m_iTracing = iTrace;
+  m_pTask->m_iTraceMask = iTrace;
   
   EXIT();
 }

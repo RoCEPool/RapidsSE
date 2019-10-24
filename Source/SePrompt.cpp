@@ -820,6 +820,9 @@ void SePrompt::vPreJob(void)
   m_pJob = m_aJobClass->pPreJob(m_pSession,&m_pRequest->m_xReqTuple,
                                 this->m_iUniqueId);
   
+  if (m_pJob)
+    m_pJob->m_bByPrompt = true;
+  
 //  if (m_pJob && m_pJob->m_bMarkTrace)
 //    m_pJob->m_aJobClass->vShowJob(m_pJob);
 }

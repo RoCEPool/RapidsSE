@@ -9,6 +9,7 @@
 : chuck1 prompt false assert ;
 : chuck3 prompt a> . ;
 : chuck4 prompt rstk 0 1 2 3 stk throw ;
+: chuck5 prompt rstk 0 1 2 3 stk task::this task.dicStack dicStack.dump throw ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

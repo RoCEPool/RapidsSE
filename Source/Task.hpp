@@ -27,9 +27,10 @@ namespace Tasks
   
     Lock      m_okLock;       // lock for this task
     eTK       m_eKind;        // task kind
+    i8        m_iTraceMask;   // tracing mask
+
     Job*      m_pJob;         // the job for this task [TK_JOB] or...
     Op*       m_pOp;          // the op for this task  [TK_OP]
-  
     Thread*   m_pThread;      // current thread
     Mutex*    m_pMutex;       // mutex
   
@@ -37,18 +38,14 @@ namespace Tasks
 
     eTS       m_eState;       // state (running, sleeping, ...)
     eTR       m_eTransition;  // state transition request
-    eQK       m_eQueue;       // which queue the task is in
-    Decider   m_oAcksRmg;     // number of acks still waiting for
+    eQK       m_eQueue;       // which queue the task is currently in
     eLH       m_eDdlLocked;   // this task has the ddl lock?
+  
+    Decider   m_oAcksRmg;     // number of acks still waiting for
     Sleep     m_oWakeup;      // wakeup time from sleeping
 
-    i8        m_iTracing;     // tracing mask
-    i8        m_i_NextRnd;    // which next repeatable random nummber?
-
-    Node*     m_pSendNode;    // node to send to
-  
-    Forth*    m_pForth;       // forth implementation
-    RegSet*   m_pRegSet;      // set of registers
+    Forth*    m_pForth;       // forth execution context
+    RegSet*   m_pRegSet;      // set of registers for the task steps
   
     // always last
     Footer m_xFooter;
