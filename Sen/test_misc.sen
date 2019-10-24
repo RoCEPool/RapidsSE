@@ -8,6 +8,9 @@
 : chuck prompt throw ;
 : chuck1 prompt false assert ;
 : chuck3 prompt a> . ;
+: chuck4 prompt rstk throw ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 : iftest if "yes" . then ;
 

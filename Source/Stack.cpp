@@ -103,7 +103,7 @@ void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
 {
-  vTrace("[%s]%s:\n"_Stz,aPrefix,aTitle);
+  vTrace("[%s] %s:\n"_Stz,aPrefix,aTitle);
   
   GenVar xVariable;
   

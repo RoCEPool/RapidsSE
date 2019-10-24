@@ -19,7 +19,7 @@ void Step::vAddSteps_Rstack(void)
   vAddStep("rreverse"_Stz,        &Step::vRstackReverse);
   vAddStep("rroll"_Stz,           &Step::vRstackRoll);
   vAddStep("-rroll"_Stz,          &Step::vRstackRollInv);
-//  vAddStep("rstk"_Stz,            &Step::vRstackStk);
+  vAddStep("rstk"_Stz,            &Step::vRstackStk);
   vAddStep("rswap"_Stz,           &Step::vRstackSwap);
   vAddStep("r>"_Stz,              &Step::vRstackToP);
   vAddStep(">r"_Stz,              &Step::vRstackToR);
@@ -304,16 +304,14 @@ void Step::vRstackRollInv(void)
 /*----------------------------------------------------------------------------*/
 /* rstk -- dump the return stack                                              */
 /*----------------------------------------------------------------------------*/
-/*
 void Step::vRstackStk(void)
 {
   ENTRY("vRstackStk"_Stz);
   
-  m_pReturnStack->vDump(m_pTask->m_sName.s(),"ReturnStack:");
+  m_pReturnStack->vContentDump((Stz*)m_pTask->szJobName(),"ReturnStack:"_Stz);
   
   EXIT();
 }
-*/
 
 /*----------------------------------------------------------------------------*/
 /* rswap -- swap top two values on return stack                               */

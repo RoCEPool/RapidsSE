@@ -383,9 +383,8 @@ void Step::vDstackStk(void)
 {
   ENTRY("vDstackStk"_Stz);
   
-  m_pDataStack->vContentDump(
-    (Stz*)m_pTask->szJobName(),
-    "DataStack:"_Stz);
+  m_pDataStack->vContentDump((Stz*)m_pTask->szJobName(),
+                             "DataStack:"_Stz);
   
   EXIT();
 }
