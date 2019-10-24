@@ -255,19 +255,6 @@ void AM::vTakeBytes(i8 nTakeBytes) {
 void AM::vTakenBytes(i8 nTakenBytes) {
   gpAttachMap->m_nTakenBytes += nTakenBytes;
 }
-Task* AM::pTaskNew(Job* pJob, Session* pSession) {
-  return new Task(pJob,pSession);
-}
-void AM::vTaskTransition(Tasks::Task* pTask, i8 iTransition) {
-  pTask->vTransition((eTR)iTransition);
-}
-void AM::vTaskDelete(Task* pTask) {
-  delete pTask;
-}
-bool AM::bTaskIsLocked(Task* pTask) {
-  bool bLocked = pTask->bIsLocked();
-  return bLocked;
-}
 void AM::vTenants(Word *pTenants) {
   gpAttachMap->m_pTenants = pTenants;
 }
@@ -1288,6 +1275,25 @@ void AM::vPrintGlobals(void)
   printf("gpLog           @%p : %p\n",&gpLog,        gpLog);
   printf("gaSeShmRegion   @%p : %p\n",&gaSeShmRegion,gaSeShmRegion);
   printf("gpTraceFile     @%p : %p\n",&gpTraceFile,  gpTraceFile);
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+Task* AM::pTaskNew(Job* pJob, Session* pSession) {
+  return new Task(pJob,pSession);
+}
+void AM::vTaskTransition(Tasks::Task* pTask, i8 iTransition) {
+  pTask->vTransition((eTR)iTransition);
+}
+void AM::vTaskDelete(Task* pTask) {
+  delete pTask;
+}
+bool AM::bTaskIsLocked(Task* pTask) {
+  bool bLocked = pTask->bIsLocked();
+  return bLocked;
 }
 
 /*============================================================================*/

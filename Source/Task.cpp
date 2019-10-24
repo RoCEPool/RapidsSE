@@ -246,7 +246,7 @@ void Task::vTaskLoop_job(void)
     // catch any exception
     catch (Exception xException) {
       xException.vJob(m_pJob);
-      xException.vCaught();
+      vCaught(xException);
     }
   }
   
@@ -366,6 +366,45 @@ void Task::vBeginOp(void)
   
   m_pRegSet->m_pOpQueLeft  = new OperandQueue;
   m_pRegSet->m_pOpQueRight = new OperandQueue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* caught an exception in catch                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vCaught(Exception xException)
+{
+  xException.vCaught();
+
+  // dump the call stack
+  vStackDump();
+  
+  // write activity log
+  AM::vWriteLog();
+  
+  // dump api state
+  AM::vDumpApi();
+
+  if (m_pForth) {
+    while (m_pForth->m_pAuxStack->nValues())
+      m_pForth->m_pAuxStack->vDiscard();
+    while (m_pForth->m_pDataStack->nValues())
+      m_pForth->m_pDataStack->vDiscard();
+    while (m_pForth->m_pReturnStack->nValues())
+      m_pForth->m_pReturnStack->vDiscard();
+    
+    while (m_pForth->m_pLocalsFrame) {
+      
+      LocalSet* pLocalsFrame = m_pForth->m_pLocalsFrame;
+      m_pForth->m_pLocalsFrame = m_pForth->m_pLocalsFrame->pNext();
+      
+      delete pLocalsFrame;
+    }
+    
+  }
+  
+  m_pForth->m_aInxPtr = m_pForth->m_pExceptionWord->aFirstCell();
+
+  //vAbortProcess();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -802,8 +841,18 @@ void Task::vSeedJob(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Word* pExceptionWord = pRootDic->pFindWord(pSeedWord->szExceptionHook());
-  if (pExceptionWord)
+  if (pExceptionWord) {
     m_pForth->m_pExceptionWord = pExceptionWord;
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Word* pExceptionDef = pRootDic->pFindWord("std_exceptionHook"_Stz);
+  if (pExceptionDef) {
+    m_pForth->m_pExceptionWord = pExceptionDef;
+    return;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

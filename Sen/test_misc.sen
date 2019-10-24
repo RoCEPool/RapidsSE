@@ -5,8 +5,8 @@
 " test_misc.sen" .verbose
 
 
-: chuck  prompt false assert ;
-: chuck2 prompt throw ;
+: chuck prompt throw ;
+: chuck1 prompt false assert ;
 : chuck3 prompt a> . ;
 
 : iftest if "yes" . then ;
