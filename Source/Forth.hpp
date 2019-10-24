@@ -35,6 +35,7 @@ namespace SenVM
     Forth(Task* pTask);
    ~Forth(void) noexcept(false);
   
+    bool bCorrectLayout(void);
     void vReset(void);
 
   private:

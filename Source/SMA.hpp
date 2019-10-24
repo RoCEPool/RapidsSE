@@ -82,17 +82,17 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* equal to operator ==                                                   */
     /*------------------------------------------------------------------------*/
-    bool operator == (CLASS* object)
+    bool operator == (CLASS* pObject)
     {
-      return m_pObject == object;
+      return m_pObject == pObject;
     }
     
     /*------------------------------------------------------------------------*/
     /* not equal to operator !=                                               */
     /*------------------------------------------------------------------------*/
-    bool operator != (CLASS* object)
+    bool operator != (CLASS* pObject)
     {
-      return m_pObject != object;
+      return m_pObject != pObject;
     }
     
     /*------------------------------------------------------------------------*/

@@ -71,6 +71,7 @@ namespace Tasks
     void vAssertStructure(void);
     void vBeginOp(void);
     void vCaught(Exception xException);
+    bool bCorrectLayout(void);
     static void vDebug(void);
     Compiler* pCompiler(void);
     void vContentDump(void);

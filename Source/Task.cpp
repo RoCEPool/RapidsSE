@@ -269,10 +269,10 @@ void Task::vAssertStructure(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   // must have these
-  RASSERT(m_pForth);    // RASSERT(m_pForth  && m_pForth->bStructurallyCorrect());
-  RASSERT(m_pJob);      // RASSERT(m_pJob    && m_pJob->bStructurallyCorrect());
-  RASSERT(m_pMutex);    // RASSERT(m_pMutex  && m_pMutex->bStructurallyCorrect());
-  RASSERT(m_pRegSet);   // RASSERT(m_pRegSet && m_pRegSet->bStructurallyCorrect());
+  RASSERT(m_pForth);
+  RASSERT(m_pJob);
+  RASSERT(m_pMutex);
+  RASSERT(m_pRegSet);
   
   RASSERT((m_pJob->eClass() == CN_JOB_BOOT && ! m_pThread) || m_pThread);
   // RASSERT((m_pJob->eClass() == CN_JOB_BOOT && ! m_pThread) || false);
@@ -1327,14 +1327,15 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* test for correct layout                                                    */
+/*----------------------------------------------------------------------------*/
+__bCorrectLayout(Task,CN_TASK)
+
+/*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Task::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(Task);
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Compare -----------------------------------------------------------------*/
