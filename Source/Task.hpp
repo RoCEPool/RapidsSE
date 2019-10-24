@@ -23,30 +23,29 @@ namespace Tasks
   friend Scheduler;
 
   private:
-    ReqTuple  m_xReqTuple;    // request tuple
+    ReqTuple     m_xReqTuple;    // request tuple
   
-    Lock      m_okLock;       // lock for this task
-    eTK       m_eKind;        // task kind
-    i8        m_iTraceMask;   // tracing mask
+    Lock         m_okLock;       // lock for this task
+    eTK          m_eKind;        // task kind
+    i8           m_iTraceMask;   // tracing mask
 
-    Job*      m_pJob;         // the job for this task
-    Thread*   m_pThread;      // current thread
-    Mutex*    m_pMutex;       // mutex
-  
-    Session*  m_pSession;     // session for this task
+    SMA<Job>     m_pJob;         // the job for this task
+    SMA<Thread>  m_pThread;      // current thread
+    SMA<Mutex>   m_pMutex;       // mutex
 
-    eTS       m_eState;       // state (running, sleeping, ...)
-    eTR       m_eTransition;  // state transition request
-    eQK       m_eQueue;       // which queue the task is currently in
-    eLH       m_eDdlLocked;   // this task has the ddl lock?
+    eTS          m_eState;       // state (running, sleeping, ...)
+    eTR          m_eTransition;  // state transition request
+    eQK          m_eQueue;       // which queue the task is currently in
+    eLH          m_eDdlLocked;   // this task has the ddl lock?
   
-    Decider   m_oAcksRmg;     // number of acks still waiting for
-    Sleep     m_oWakeup;      // wakeup time from sleeping
+    Decider      m_oAcksRmg;     // number of acks still waiting for
+    Sleep        m_oWakeup;      // wakeup time from sleeping
 
-    Forth*    m_pForth;       // forth execution context
-    Op*       m_pOp;          // the op for this task
-    RegSet*   m_pRegSet;      // set of registers for the task steps
-  
+    SMA<Forth>   m_pForth;       // forth execution context
+    SMA<Op>      m_pOp;          // the op for this task
+    SMA<RegSet>  m_pRegSet;      // set of registers for the task steps
+    SMA<Session> m_pSession;     // session for this task
+
     // always last
     Footer m_xFooter;
 

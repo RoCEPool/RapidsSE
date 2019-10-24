@@ -12,7 +12,16 @@ namespace Correctness
   {
   public:
     CLASS* m_pObject;
-    
+  
+    /*------------------------------------------------------------------------*/
+    /* auto conversion operator                                               */
+    /*------------------------------------------------------------------------*/
+    // auto conversion
+    operator CLASS*(void)
+    {
+      return (CLASS*)m_pObject;
+    }
+
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
@@ -37,7 +46,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     void operator = (CLASS* pObject)
     {
-      if ( pObject && ! AM::bInBufferPool(pObject) )
+      if ( pObject && ! AM::bInBufferPool((Object*)pObject) )
         THROW("SMA::operator =()  : invalid pObject parameter"_Stz);
     
       m_pObject = pObject;
