@@ -268,12 +268,20 @@ void Thread::vLoop_general(void)
     // wait for task to be assigned to this thread
     if (! m_pTask)
       Scheduler::vWaitForTaskAssignment(this);
+    ASSERT(m_pTask);
     
-    // call the task
+    // ensure the task has this thread
+    m_pTask->vThread(this);
+    
+    // call the task loop
     m_pTask->vTaskLoop();
 
     // handle task return event
     Scheduler::vTaskLoopTransition(this);
+    
+    // either this thread no longer has a task
+    //     or the task no longer has this thread
+    ASSERT( (! m_pTask) || (! m_pTask->pThread()) );
   }
   
   NEVER_REACH;

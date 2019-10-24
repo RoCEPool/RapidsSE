@@ -274,7 +274,7 @@ void Task::vAssertStructure(void)
   RASSERT(m_pMutex);    // RASSERT(m_pMutex  && m_pMutex->bStructurallyCorrect());
   RASSERT(m_pRegSet);   // RASSERT(m_pRegSet && m_pRegSet->bStructurallyCorrect());
   
-  // RASSERT((m_pJob->eClass() == CN_JOB_BOOT && ! m_pThread) || m_pThread);
+  RASSERT((m_pJob->eClass() == CN_JOB_BOOT && ! m_pThread) || m_pThread);
   // RASSERT(m_pThread && m_pThread->bStructurallyCorrect());
 
   // might have these
