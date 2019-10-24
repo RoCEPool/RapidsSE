@@ -267,7 +267,7 @@ void Task::vTaskLoop(void)
 void Task::vAssertStructure(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
+  
   // must have these
   RASSERT(m_pForth);    // RASSERT(m_pForth  && m_pForth->bStructurallyCorrect());
   RASSERT(m_pJob);      // RASSERT(m_pJob    && m_pJob->bStructurallyCorrect());
@@ -275,6 +275,7 @@ void Task::vAssertStructure(void)
   RASSERT(m_pRegSet);   // RASSERT(m_pRegSet && m_pRegSet->bStructurallyCorrect());
   
   RASSERT((m_pJob->eClass() == CN_JOB_BOOT && ! m_pThread) || m_pThread);
+  // RASSERT((m_pJob->eClass() == CN_JOB_BOOT && ! m_pThread) || false);
   // RASSERT(m_pThread && m_pThread->bStructurallyCorrect());
 
   // might have these

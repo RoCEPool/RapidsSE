@@ -149,42 +149,60 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
 /*----------------------------------------------------------------------------*/
 void* Thread::aEntryPoint_general(void* pArg)
 {
-  Thread* pThread = static_cast<Thread*>(pArg);
-  
-  pThread->vThreadEntry();
-  pThread->m_pPsxThd->vThreadEntry();
-
-  Scheduler::vAddGeneralThread(pThread);
-  
-  if (AM::bVerbose())
-    vTrace("Thread::aEntryPoint_general %p %lld\n"_Stz,
-           pThread,pThread->iThreadNo());
-  
-  pThread->m_pPsxThd->vIncActNo();
-  AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_ENTRY,
-              "general thead entry: %p"_Stz, //!format-LogRes
-              pThread);
-  
-  //pThread->vBindCore();
+  try {
+    Thread* pThread = static_cast<Thread*>(pArg);
     
-  pThread->vLoop_general();
-  
-  
-  if (AM::bVerbose())
-    vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
-           pThread,pThread->iThreadNo());
-  
-  pThread->m_pPsxThd->vIncActNo();
-  AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_EXIT,
-              "Thead exit (general) : %p"_Stz, //!format-LogRes
-              pThread);
-  
-  Scheduler::vRemoveGeneralThread(pThread);
-  
-  pThread->m_pPsxThd->vThreadExit();
+    pThread->vThreadEntry();
+    pThread->m_pPsxThd->vThreadEntry();
 
-  delete pThread;
+    Scheduler::vAddGeneralThread(pThread);
+    
+    if (AM::bVerbose())
+      vTrace("Thread::aEntryPoint_general %p %lld\n"_Stz,
+             pThread,pThread->iThreadNo());
+    
+    pThread->m_pPsxThd->vIncActNo();
+    AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_ENTRY,
+                "general thead entry: %p"_Stz, //!format-LogRes
+                pThread);
+    
+    //pThread->vBindCore();
+    
+    // -- -- -- -- -- -- -- -- -- --
+    
+    pThread->vLoop_general();
+    
+    // -- -- -- -- -- -- -- -- -- --
+
+    if (AM::bVerbose())
+      vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
+             pThread,pThread->iThreadNo());
+    
+    pThread->m_pPsxThd->vIncActNo();
+    AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_EXIT,
+                "Thead exit (general) : %p"_Stz, //!format-LogRes
+                pThread);
+    
+    Scheduler::vRemoveGeneralThread(pThread);
+    
+    pThread->m_pPsxThd->vThreadExit();
+
+    delete pThread;
+  }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  catch (Exception xException) {
+    
+        fflush(stderr); fflush(stdout);
+    printf("Thread Level Exception\n");
+        fflush(stderr); fflush(stdout);
+    xException.vPrint();
+        fflush(stderr); fflush(stdout);
+    
+    Process::vExitFailure();
+  }
+
   return nullptr;
 }
 
