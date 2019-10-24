@@ -566,12 +566,6 @@ public:
   // job CreateIndex
   void vJob_CreateIndexIsUniqueFetch(void);
 
-  // job Dynamic
-  void vJob_DynamicBegin(void);
-  void vJob_DynamicCancel(void);
-  void vJob_DynamicEnd(void);
-  void vJob_DynamicExecute(void);
-
   // job Export
   void vJob_ExportAuxAckDecidedFetch(void);
   void vJob_ExportAuxAckDecidedStore(void);
@@ -657,6 +651,12 @@ public:
   // job NodeInfo
   void vJob_NodeInfoNodeNameFetch(void);
 
+  // job Pipeline
+  void vJob_PipelineBegin(void);
+  void vJob_PipelineCancel(void);
+  void vJob_PipelineEnd(void);
+  void vJob_PipelineExecute(void);
+
   // job publish
   void vJob_PublishSpawnSub(void);
   void vJob_PublishTableStore(void);
@@ -676,8 +676,6 @@ public:
   void vJob_ReceiverJobReceived(void);
   void vJob_ReceiverNodeFetch(void);
   void vJob_ReceiverNodeStore(void);
-
-
 
   // job Repeater
   void vJob_RepeaterBegin(void);

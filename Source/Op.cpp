@@ -500,7 +500,7 @@ void Op::vPipeOut(Operand* pOperand)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append operand to the dynamic job's buffer queue                           */
+/* append operand to the pipeline job's buffer queue                          */
 /*----------------------------------------------------------------------------*/
 void Op::vPipeToJob(Operand* pOperand)
 {
@@ -518,7 +518,7 @@ void Op::vPipeToJob(Operand* pOperand)
            pOperand);
   
   AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-              "vPipeToJob operand %s to queue of dynamic job"_Stz, //!format-LogOpr
+              "vPipeToJob operand %s to queue of pipeline job"_Stz, //!format-LogOpr
               aCN[pOperand->eClass()]);
   
   pBufferQueue->vAppend(pOperand);

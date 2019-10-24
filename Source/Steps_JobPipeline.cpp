@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_JobDynamic.cpp - JobDynamic step group                               */
+/* Steps_JobPipeline.cpp - JobPipeline step group                             */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -7,78 +7,78 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_JobDynamic(void)
+void Step::vAddSteps_JobPipeline(void)
 {
-  vAddStep("Job_Dynamic.begin"_Stz,    &Step::vJob_DynamicBegin);
-  vAddStep("Job_Dynamic.cancel"_Stz,   &Step::vJob_DynamicCancel);
-  vAddStep("Job_Dynamic.end"_Stz,      &Step::vJob_DynamicEnd);
-  vAddStep("Job_Dynamic.execute"_Stz,  &Step::vJob_DynamicExecute);
+  vAddStep("Job_Pipeline.begin"_Stz,    &Step::vJob_PipelineBegin);
+  vAddStep("Job_Pipeline.cancel"_Stz,   &Step::vJob_PipelineCancel);
+  vAddStep("Job_Pipeline.end"_Stz,      &Step::vJob_PipelineEnd);
+  vAddStep("Job_Pipeline.execute"_Stz,  &Step::vJob_PipelineExecute);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Dynamic.begin -- begin the dynamic job                                 */
+/* Job_Pipeline.begin -- begin the Pipeline job                               */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_DynamicBegin(void)
+void Step::vJob_PipelineBegin(void)
 {
-  ENTRY("vJob_DynamicBegin"_Stz);
+  ENTRY("vJob_PipelineBegin"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
-  Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
+  Job_Pipeline* pJob_Pipeline = _pJob_Pipeline(pJobPtr);
   
-  pJob_Dynamic->vBegin();
+  pJob_Pipeline->vBegin();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Dynamic.cancel -- cancel the dynamic job                               */
+/* Job_Pipeline.cancel -- cancel the Pipeline job                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_DynamicCancel(void)
+void Step::vJob_PipelineCancel(void)
 {
-  ENTRY("vJob_DynamicCancel"_Stz);
+  ENTRY("vJob_PipelineCancel"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
-  Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
+  Job_Pipeline* pJob_Pipeline = _pJob_Pipeline(pJobPtr);
   
-  pJob_Dynamic->vCancel();
+  pJob_Pipeline->vCancel();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Dynamic.end -- end the dynamic job                                     */
+/* Job_Pipeline.end -- end the Pipeline job                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_DynamicEnd(void)
+void Step::vJob_PipelineEnd(void)
 {
-  ENTRY("vJob_DynamicEnd"_Stz);
+  ENTRY("vJob_PipelineEnd"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
-  Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
+  Job_Pipeline* pJob_Pipeline = _pJob_Pipeline(pJobPtr);
   
-  pJob_Dynamic->vEnd();
+  pJob_Pipeline->vEnd();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Dynamic.execute -- execute                                             */
+/* Job_Pipeline.execute -- execute                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_DynamicExecute(void)
+void Step::vJob_PipelineExecute(void)
 {
-  ENTRY("vJob_DynamicExecute"_Stz);
+  ENTRY("vJob_PipelineExecute"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
-  Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJobPtr);
+  Job_Pipeline* pJob_Pipeline = _pJob_Pipeline(pJobPtr);
   
-  pJob_Dynamic->vExecute();
+  pJob_Pipeline->vExecute();
   
   EXIT();
 }

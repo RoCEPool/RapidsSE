@@ -62,7 +62,7 @@ namespace Prompt
     void vDeleteJob(void);
     void vDumpTokenVec(void);
     void vEndRequest(void);
-    bool bExecuteDynamic(void);
+    bool bExecutePipeline(void);
     bool bExecuteFile(void);
     bool bExecuteFunction(void);
     bool bFindJobClass(void);

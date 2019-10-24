@@ -133,8 +133,8 @@ void AM::vAttachMap(Header* aHeader) {
   gpAttachMap = static_cast<AttachMap*>(aHeader);
 }
 Queue* AM::pBufferQueue(Job* pJob) {
-  Job_Dynamic* pJob_Originating = _pJob_Dynamic(pJob->m_pOriginatingTask->pJob());
-  return _pJob_Dynamic(pJob_Originating)->m_pBufferQueue;
+  Job_Pipeline* pJob_Originating = _pJob_Pipeline(pJob->m_pOriginatingTask->pJob());
+  return pJob_Originating->m_pBufferQueue;
 }
 void AM::vBootError(bool bBootError) {
   gpAttachMap->m_bBootError = bBootError;
@@ -189,10 +189,10 @@ void AM::vGrabTaskLock(Task* pTask) {
 void AM::vIndexEntries(i8 nIndexEntries) {
   gpAttachMap->m_nIndexEntries = nIndexEntries;
 }
-void AM::vIndexName(Job_Dynamic* pJob, Stz* szIndexNm) {
+void AM::vIndexName(Job_Pipeline* pJob, Stz* szIndexNm) {
   pJob->vIndexName(szIndexNm);
 }
-Index* AM::pIndex(Job_Dynamic* pJob) {
+Index* AM::pIndex(Job_Pipeline* pJob) {
   return pJob->m_pIndex;
 }
 void AM::vMonitorPortrait(s48K& sPortrait) {
@@ -240,10 +240,10 @@ void AM::vStepTiming(StepTiming* pStepTiming) {
 void AM::vSubInserters(i8 nSubInserters) {
   gpAttachMap->Arg.m_nSubInserters = nSubInserters;
 }
-void AM::vTableName(Job_Dynamic* pJob, Stz* szTableNm) {
+void AM::vTableName(Job_Pipeline* pJob, Stz* szTableNm) {
   pJob->vObjectName(szTableNm);
 }
-Table* AM::pTable(Job_Dynamic* pJob) {
+Table* AM::pTable(Job_Pipeline* pJob) {
   return pJob->m_pTable;
 }
 void AM::vTakenBuffers(PoolBuffer* pTakenBuffers) {

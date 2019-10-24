@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Job_Dynamic.hpp -- Dynamic Job                                             */
+/* Job_Pipeline.hpp -- Pipeline Job                                           */
 /*============================================================================*/
 #pragma once
 
 namespace Jobs
 {
-  class Job_Dynamic : public JobMark2
+  class Job_Pipeline : public JobMark2
   {
   public:
     Pipeline*      m_pPipeline;
@@ -24,8 +24,8 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Dynamic(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
-   ~Job_Dynamic(void) noexcept(false);
+    Job_Pipeline(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
+   ~Job_Pipeline(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
@@ -44,14 +44,14 @@ namespace Jobs
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Job_Dynamic* _pJob_Dynamic(void* aAddr);
+  Job_Pipeline* _pJob_Pipeline(void* aAddr);
   
-  Job* pJob_Dynamic_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_Dynamic_post(Job* pJob);
-  void vJob_Dynamic_delete(Job* pJob);
-  void vJob_Dynamic_show(Job* pJob);
+  Job* pJob_Pipeline_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+  void vJob_Pipeline_post(Job* pJob);
+  void vJob_Pipeline_delete(Job* pJob);
+  void vJob_Pipeline_show(Job* pJob);
   
-  JobClass* pJob_Dynamic_class(pFUN** aaFun);
+  JobClass* pJob_Pipeline_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

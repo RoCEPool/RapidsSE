@@ -41,7 +41,6 @@
 "job_DropTenant.sen" include
 "job_DumpIndex.sen" include
 "job_DumpTable.sen" include
-"job_Dynamic.sen" include
 
 "job_ForgetNode.sen" include
 "job_Export.sen" include
@@ -78,6 +77,7 @@
 
 "Job_Periodic.sen" include
 "Job_Ping.sen" include
+"Job_Pipeline.sen" include
 "Job_Publish.sen" include
 "Job_Purge.sen" include
 "Job_Pwf.sen" include

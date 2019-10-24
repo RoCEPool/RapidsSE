@@ -47,7 +47,7 @@ JobClass xJobClass_DumpTable =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_DumpTable_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Dynamic_class;
+  *pNextFun = (pFUN*)pJob_Pipeline_class;
 
   return &xJobClass_DumpTable;
 }
