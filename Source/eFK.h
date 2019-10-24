@@ -13,12 +13,13 @@ enum eFK // failure kind
   /* 4 */ FK_RASSERT,
   /* 5 */ FK_REACHED,
   /* 6 */ FK_THROW,
+  /* 7 */ FK_TYPE,
 
-  /* 7 */ FK_ASTACK,
-  /* 8 */ FK_DSTACK,
-  /* 9 */ FK_RSTACK,
+  /* 8 */ FK_ASTACK,
+  /* 9 */ FK_DSTACK,
+  /*10 */ FK_RSTACK,
   
-  /*10 */ FK_ENUMS
+  /*11 */ FK_ENUMS
 };
 
 static Stz* aFK[]
@@ -31,12 +32,13 @@ static Stz* aFK[]
   /* 4 */ "RASSERT"_Stz,
   /* 5 */ "REACHED"_Stz,
   /* 6 */ "THROW"_Stz,
+  /* 7 */ "TYPE"_Stz,
 
-  /* 7 */ "ASTACK"_Stz,
-  /* 8 */ "DSTACK"_Stz,
-  /* 9 */ "RSTACK"_Stz,
+  /* 8 */ "ASTACK"_Stz,
+  /* 9 */ "DSTACK"_Stz,
+  /*10 */ "RSTACK"_Stz,
 
-  /*10 */ "ENUMS"_Stz
+  /*11 */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

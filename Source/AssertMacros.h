@@ -34,9 +34,9 @@
 /*----------------------------------------------------------------------------*/
 /* RASSERT_TYPE macro                                                         */
 /*----------------------------------------------------------------------------*/
-#define RASSERT_TYPE(pARG,eCLASS) \
-  if (pARG && eCLASS != pARG->eClass()) \
-    Correctness::vTypeFatal(FK_FATAL,__func__,__FILE__,__LINE__,pARG,eCLASS);
+#define RASSERT_TYPE(pOBJECT,eCLASS) \
+  if (pOBJECT && eCLASS != pOBJECT->eClass()) \
+    Correctness::vTypeFatal(FK_TYPE,__func__,__FILE__,__LINE__,pOBJECT,eCLASS);
 
 /*----------------------------------------------------------------------------*/
 /* THROW macro                                                                */
