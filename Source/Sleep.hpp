@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Tasks
+namespace Gadgets
 {
   class Sleep : public Object
   {
