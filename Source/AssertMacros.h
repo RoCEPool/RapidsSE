@@ -29,14 +29,14 @@
 /*----------------------------------------------------------------------------*/
 #define RASSERT(condition) \
   if (! (condition)) \
-    Correctness::vThrow(FK_ASSERT,__func__,__FILE__,__LINE__,(Stz*)#condition);
+    Correctness::vThrow(FK_RASSERT,__func__,__FILE__,__LINE__,(Stz*)#condition);
 
 /*----------------------------------------------------------------------------*/
 /* RASSERT_TYPE macro                                                         */
 /*----------------------------------------------------------------------------*/
 #define RASSERT_TYPE(pARG,eCLASS) \
   if (pARG && eCLASS != pARG->eClass()) \
-    Correctness::vTypeFatal(FK_FATAL,__func__,__FILE__,__LINE__,pARG,eCLASS); 
+    Correctness::vTypeFatal(FK_FATAL,__func__,__FILE__,__LINE__,pARG,eCLASS);
 
 /*----------------------------------------------------------------------------*/
 /* THROW macro                                                                */

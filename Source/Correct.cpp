@@ -72,7 +72,7 @@ void Correctness::vStackDump(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Exception xException(FK_ASSERT,azFunc,zCondition,zFileNm,iLineNo);
+  Exception xException(eKind,azFunc,zCondition,zFileNm,iLineNo);
   
   //xException.vPrint();
   

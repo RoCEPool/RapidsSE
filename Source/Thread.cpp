@@ -107,6 +107,7 @@ Thread::~Thread(void) noexcept(false)
 void* Thread::aEntryPoint_dedicated(void* pArg)
 {
   try {
+    
     Thread* pThread = _pThread(pArg);
     RASSERT(pThread);
     
@@ -153,7 +154,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
   catch (Exception xException) {
     
         fflush(stderr); fflush(stdout);
-    printf("Thread Level Exception caught in %s file %s line %d\n",
+    printf("Thread-level exception caught in func %s() file %s line %d\n",
            __func__,__FILE__,__LINE__);
         fflush(stderr); fflush(stdout);
     xException.vPrint();
@@ -171,6 +172,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
 void* Thread::aEntryPoint_general(void* pArg)
 {
   try {
+    
     Thread* pThread = _pThread(pArg);
     RASSERT(pThread);
 
@@ -217,7 +219,7 @@ void* Thread::aEntryPoint_general(void* pArg)
   catch (Exception xException) {
     
         fflush(stderr); fflush(stdout);
-    printf("Thread Level Exception caught in %s file %s line %d\n",
+    printf("Thread-level exception caught in func %s() file %s line %d\n",
            __func__,__FILE__,__LINE__);
         fflush(stderr); fflush(stdout);
     xException.vPrint();
@@ -235,6 +237,7 @@ void* Thread::aEntryPoint_general(void* pArg)
 void* Thread::aEntryPoint_dummy(void* pArg)
 {
   try {
+    
     Thread* pThread = _pThread(pArg);
     RASSERT(pThread);
 
@@ -267,7 +270,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
   catch (Exception xException) {
     
         fflush(stderr); fflush(stdout);
-    printf("Thread Level Exception caught in %s file %s line %d\n",
+    printf("Thread-level exception caught in func %s() file %s line %d\n",
            __func__,__FILE__,__LINE__);
         fflush(stderr); fflush(stdout);
     xException.vPrint();

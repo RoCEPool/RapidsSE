@@ -118,18 +118,18 @@ void Exception::vSprint(char* azIntoBuf)
 {
   StrLib::vSprint((Stz*)azIntoBuf,
                   
-                  "Exception : %s of (%s) func %s "
-                  "in job %s failed "
-                  "(file %s line %lld)"_Stz,
+                  "Exception : %s of condition (%s) "
+                  "for job %s "
+                  "thrown in func %s() file %s line %lld"_Stz,
          
                   aFK[eKind()]->azChar(),
                   azText(),
-                  m_zFuncNm,
-
+                  
                   pJob()
-                  ? aCN[((Object*)pJob())->eClass()]->azChar()
-                  : "<null>",
+                    ? aCN[((Object*)pJob())->eClass()]->azChar()
+                    : "<null>",
 
+                  m_zFuncNm,
                   azFileNm(),
                   iLineNo()
                   );

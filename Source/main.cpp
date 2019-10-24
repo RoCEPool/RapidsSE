@@ -27,22 +27,38 @@ int main(int argc, const char* argv[])
 //  sString.pString()->vCopy("012345678901234567890123456789abcdefghijk"_Stz);
 //  printf("  %s\n",sString.azChar());
 
-  Process::vEntry();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // parse the command line arguments
-  if (! gxArguments.bParse(argc,(Stz**)argv))
+  try {
+    
+    RASSERT(0);
+    
+    Process::vEntry();
+    
+    // parse the command line arguments
+    if (! gxArguments.bParse(argc,(Stz**)argv))
+      Process::vExitFailure();
+    
+    // potentially run utilities
+    if (Engine::bRunUtilities(argc,(Stz**)argv))
+      Process::vExitSuccess();
+    
+    // execute
+    Engine::vMainEntry();
+  }
+  
+  catch (Exception xException) {
+    
+        fflush(stderr); fflush(stdout);
+    printf("Main-level exception caught in func %s() file %s line %d\n",
+           __func__,__FILE__,__LINE__);
+        fflush(stderr); fflush(stdout);
+    xException.vPrint();
+        fflush(stderr); fflush(stdout);
+    
     Process::vExitFailure();
-  
-  // potentially run utilities
-  if (Engine::bRunUtilities(argc,(Stz**)argv))
-    Process::vExitSuccess();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // execute
-  Engine::vMainEntry();
+  }
 
   return EXIT_SUCCESS;
 }
