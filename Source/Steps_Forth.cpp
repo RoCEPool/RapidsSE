@@ -88,8 +88,8 @@ void Step::vColon(void)
   sName = m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken();
   
   Dic* pDic;
-  if (m_pTask->m_oDicStack.iCount())
-    pDic = m_pTask->m_oDicStack.pTop();
+  if (m_pTask->m_pForth->m_oDicStack.iCount())
+    pDic = m_pTask->m_pForth->m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
   
@@ -152,8 +152,8 @@ void Step::vCreate(void)
   m_pTask->m_pForth->m_pCompiler->m_pTokeniser->vNextToken();
   
   Dic* pDic;
-  if (m_pTask->m_oDicStack.iCount())
-    pDic = m_pTask->m_oDicStack.pTop();
+  if (m_pTask->m_pForth->m_oDicStack.iCount())
+    pDic = m_pTask->m_pForth->m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
   
@@ -177,8 +177,8 @@ void Step::vCreatePersistent(void)
   m_pTask->m_pForth->m_pCompiler->m_pTokeniser->vNextToken();
   
   Dic* pDic;
-  if (m_pTask->m_oDicStack.iCount())
-    pDic = m_pTask->m_oDicStack.pTop();
+  if (m_pTask->m_pForth->m_oDicStack.iCount())
+    pDic = m_pTask->m_pForth->m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
   
@@ -203,8 +203,8 @@ void Step::vCreateFrom(void)
     THROW_DSTACK();
   
   Dic* pDic;
-  if (m_pTask->m_oDicStack.iCount())
-    pDic = m_pTask->m_oDicStack.pTop();
+  if (m_pTask->m_pForth->m_oDicStack.iCount())
+    pDic = m_pTask->m_pForth->m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
   
@@ -231,8 +231,8 @@ void Step::vCreateFromPersistent(void)
     THROW_DSTACK();
   
   Dic* pDic;
-  if (m_pTask->m_oDicStack.iCount())
-    pDic = m_pTask->m_oDicStack.pTop();
+  if (m_pTask->m_pForth->m_oDicStack.iCount())
+    pDic = m_pTask->m_pForth->m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
   
@@ -358,7 +358,7 @@ void Step::vFind(void)
     i8 i = 0;
   }
   
-  Word* pWord = m_pTask->m_oDicStack.pFindWord(sName);
+  Word* pWord = m_pTask->m_pForth->m_oDicStack.pFindWord(sName);
   
   m_pDataStack->vPushPointer(pWord);
   
@@ -380,7 +380,7 @@ void Step::vFindInCurrent(void)
     i8 i = 0; i++;
   }
   
-  Word* pWord = m_pTask->m_oDicStack.pFindInCurrent(sName);
+  Word* pWord = m_pTask->m_pForth->m_oDicStack.pFindInCurrent(sName);
   
   m_pDataStack->vPushPointer(pWord);
   
@@ -396,7 +396,7 @@ void Step::vForget(void)
   
   m_pTask->m_pForth->m_pCompiler->m_pTokeniser->vNextToken();
   
-  Word* pWord = m_pTask->m_oDicStack.pFindWord(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
+  Word* pWord = m_pTask->m_pForth->m_oDicStack.pFindWord(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
   
   if ( ! pWord )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
@@ -407,7 +407,7 @@ void Step::vForget(void)
   
   sName = m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken();
   
-  Word* pRemovedWord = m_pTask->m_oDicStack.pRemoveWord(sName);
+  Word* pRemovedWord = m_pTask->m_pForth->m_oDicStack.pRemoveWord(sName);
   ASSERT(pRemovedWord);
   
   delete pRemovedWord;
@@ -445,7 +445,7 @@ void Step::vLocate(void)
   void* aCellVoid = (void*)iAddrAsInt;
   Cell* aHasCell = _aCell(aCellVoid);
   
-  Word* pLocatedWord = m_pTask->m_oDicStack.pLocateWord(aHasCell);
+  Word* pLocatedWord = m_pTask->m_pForth->m_oDicStack.pLocateWord(aHasCell);
   
   if (pLocatedWord) {
     s32 sName;
@@ -473,7 +473,7 @@ void Step::vPostpone(void)
   m_pTask->m_pForth->m_pCompiler->m_pTokeniser->vNextToken();
   
   // find the word in dic stack
-  Word* pCalledWord = m_pTask->m_oDicStack.pFindWord(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
+  Word* pCalledWord = m_pTask->m_pForth->m_oDicStack.pFindWord(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
   if ( ! pCalledWord )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
            "No word: %s "_Stz,
@@ -526,7 +526,7 @@ void Step::vSee(void)
   
   m_pTask->m_pForth->m_pCompiler->m_pTokeniser->vNextToken();
   
-  Word* pWord = m_pTask->m_oDicStack.pFindWord(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
+  Word* pWord = m_pTask->m_pForth->m_oDicStack.pFindWord(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
   if ( ! pWord ) {
     vTrace("See: %s unknown\n"_Stz,m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken().azChar());
     return;
@@ -543,7 +543,7 @@ void Step::vSee(void)
     
     StepFp fpHasStep = *aDoesCell->m_afpIntrinsic;
     
-    Word* pCallsWord = m_pTask->m_oDicStack.pLocateWord(fpHasStep);
+    Word* pCallsWord = m_pTask->m_pForth->m_oDicStack.pLocateWord(fpHasStep);
     
     // jumps
     if (*aDoesCell->m_afpIntrinsic == &Step::vFlowJump ||
@@ -619,16 +619,16 @@ void Step::vSemicolon(void)
     m_pTask->m_pForth->m_pCompiler->m_nLocals = 0;
     
     // pop top dictionary
-    m_pTask->m_oDicStack.vDiscard();
+    m_pTask->m_pForth->m_oDicStack.vDiscard();
     
     // enocde locals frame pop
     pCurrentWord->vEncode("locals.pop"_Stz);
   }
   
   if (! pCurrentWord->sName().bSame("exit"_Stz) &&
-      m_pTask->m_oDicStack.pFindWord("exit"_Stz)) {
+      m_pTask->m_pForth->m_oDicStack.pFindWord("exit"_Stz)) {
     
-    if (m_pTask->m_oDicStack.pFindWord(pCurrentWord->szExitHook())) {
+    if (m_pTask->m_pForth->m_oDicStack.pFindWord(pCurrentWord->szExitHook())) {
       pCurrentWord->vEncode(pCurrentWord->szExitHook());
       pCurrentWord->vEncode("exit_rt"_Stz);
     }
@@ -642,7 +642,7 @@ void Step::vSemicolon(void)
   
   // discard subDic use
   for ( ; m_pTask->m_pForth->m_pCompiler->m_nSubDic; m_pTask->m_pForth->m_pCompiler->m_nSubDic--)
-    m_pTask->m_oDicStack.vDiscard();
+    m_pTask->m_pForth->m_oDicStack.vDiscard();
   
   m_pTask->m_pForth->m_pCompiler->m_pCurrent = nullptr;
   
@@ -706,7 +706,7 @@ void Step::vSubDic(void)
   s32 sNameSubDic;
   sNameSubDic = m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken();
   
-  Word* pWordSubDic = m_pTask->m_oDicStack.pFindWord(sNameSubDic);
+  Word* pWordSubDic = m_pTask->m_pForth->m_oDicStack.pFindWord(sNameSubDic);
   if ( ! pWordSubDic )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
            "No such subDic: %s"_Stz,
@@ -714,7 +714,7 @@ void Step::vSubDic(void)
   
   Dic* pDic = _pDic(pWordSubDic->aWspArea());
   
-  m_pTask->m_oDicStack.vPush(pDic);
+  m_pTask->m_pForth->m_oDicStack.vPush(pDic);
   
   m_pTask->m_pForth->m_pCompiler->m_nSubDic++;
   
@@ -733,7 +733,7 @@ void Step::vTick(void)
   s32 sWordNm;
   sWordNm = m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken();
   
-  Word* pWord = m_pTask->m_oDicStack.pFindWord(sWordNm);
+  Word* pWord = m_pTask->m_pForth->m_oDicStack.pFindWord(sWordNm);
   
   if (! pWord)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
