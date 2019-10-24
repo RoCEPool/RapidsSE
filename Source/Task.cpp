@@ -213,7 +213,7 @@ Task* Task::pThisTLSTask(void)
 /*----------------------------------------------------------------------------*/
 /* task loop (job)                                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskLoop_job(void)
+void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
