@@ -311,10 +311,7 @@ void Thread::vLoop_general(void)
       Scheduler::vWaitForTaskAssignment(this);
     
     // call the task
-    if (TK_JOB == m_pTask->eKind())
-      m_pTask->vTaskLoop_job();
-    else
-      m_pTask->vTaskLoop_op();
+    m_pTask->vTaskLoop_job();
 
     // handle task return event
     Scheduler::vTaskLoopTransition(this);

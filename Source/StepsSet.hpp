@@ -463,6 +463,7 @@ public:
   void vJobCreateResponseVec(void);
   void vJobOperandFetch(void);
   void vJobOperandStore(void);
+  void vJobOpLoop(void);
 
   void vJobDecAcksRemaining(void);
   void vJobDelete(void);

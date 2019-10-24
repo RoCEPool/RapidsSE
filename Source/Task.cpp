@@ -259,25 +259,6 @@ void Task::vTaskLoop_job(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task loop (operator)                                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskLoop_op(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  RASSERT(TK_OPERATOR == eKind());
-  
-  while (TR_NONE == m_eTransition)
-    m_pOp->vOpLoop();
-  
-  if (TR_DELETE == m_eTransition) {
-    // the op is deleted by the job
-    m_pOp = nullptr;
-  }
-}
-
-
-/*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

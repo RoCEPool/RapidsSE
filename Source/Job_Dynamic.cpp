@@ -289,7 +289,7 @@ void Job_Dynamic::vExecute(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operaotors for this node
   
-  m_pPipeline->vSpawnOperators(iThisNode);
+  m_pPipeline->vSpawnOperatorJobs(iThisNode);
   
   // get the first stage of the pipeline
   Stage* pStage = m_pPipeline->pStageVec()->pGet(0);

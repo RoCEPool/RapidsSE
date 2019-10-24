@@ -63,6 +63,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.operand@"_Stz,         &Step::vJobOperandFetch);
   vAddStep("job.operand!"_Stz,         &Step::vJobOperandStore);
   
+  vAddStep("job.opLoop"_Stz,           &Step::vJobOpLoop);
+  
   vAddStep("job.originatingId@"_Stz,   &Step::vJobOriginatingIdFetch);
   vAddStep("job.originatingId!"_Stz,   &Step::vJobOriginatingIdStore);
   vAddStep("job.originatingTask@"_Stz, &Step::vJobOriginatingTaskFetch);
@@ -566,6 +568,24 @@ void Step::vJobOperandStore(void)
   Operand* pOperand = _pOperand(pOperandPtr);
   
   pJob->m_pOperand = pOperand;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.opLoop -- execute the job's op loop                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vJobOpLoop(void)
+{
+  ENTRY("vJobOperandStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
+  
+  Op* pOp = pJob_Universal->m_pOp;
+  pOp->vOpLoop();
   
   EXIT();
 }

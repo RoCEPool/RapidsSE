@@ -39,7 +39,7 @@ namespace Operators
     void      vSession(Session* pSession);
     Session*  pSession(void);
     void      vSetupJob(void);
-    void      vSpawnOperators(i8 iNode);
+    void      vSpawnOperatorJobs(i8 iNode);
     StageVec* pStageVec(void);
 
     Footer* aFooter(void);

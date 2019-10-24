@@ -33,7 +33,8 @@ namespace Jobs
     i8    m_iOriginatingId;   // job id of originating job
 
     i8  m_iParticipantNode;    // participant node no (FromNodeNo?)
-  
+    
+    Op*        m_pOp;          // Op this job is executing
     Operand*   m_pOperand;
         
   private:

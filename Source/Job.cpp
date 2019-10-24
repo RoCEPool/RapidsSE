@@ -85,6 +85,7 @@ Job::Job(eCN eClassNo)
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRmg.vCheckInit();
   
+  m_pOp = nullptr;
   m_pOperand   = nullptr;
   
   // -- -- -- -- -- --
@@ -128,6 +129,7 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRmg.vCheckInit();
   
+  m_pOp = nullptr;
   m_pOperand   = nullptr;
   
 
@@ -574,15 +576,16 @@ JOBS_fn(vJob_send)
 }
 
 /*----------------------------------------------------------------------------*/
-/* post-recv job function                                                     */
+/* post-recv job function  (when is this run ????)                            */
 /*----------------------------------------------------------------------------*/
 JOBS_fn(vJob_recv)
 {
   pJob->m_bWasReceived   = true;
   
   pJob->m_eJobList       = JL_NONE;
+  
   pJob->vTask(nullptr);
-
+  
   pJob->m_i_Focal        = C_UNKNOWN;
 }
 

@@ -117,7 +117,6 @@ namespace Tasks
     void vState(eTS eState);
     i8   iTaskId(void);
     void vTaskLoop_job(void);
-    void vTaskLoop_op(void);
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Stz* aMark);

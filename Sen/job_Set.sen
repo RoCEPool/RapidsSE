@@ -74,6 +74,8 @@
 
 "Job_NetHog.sen" include
 
+"Job_OutputOp.sen" include
+
 "Job_Periodic.sen" include
 "Job_Ping.sen" include
 "Job_Publish.sen" include
@@ -84,6 +86,7 @@
 "Job_Report.sen"         include
 
 "Job_Sanity.sen"         include
+"Job_ScanOp.sen"         include
 "Job_Select.sen"         include
 "Job_SelectTable.sen"    include
 "Job_ShowCluster.sen"    include
@@ -93,6 +96,7 @@
 "job_Space.sen"          include
 "job_StartCluster.sen"   include
 "job_StartNode.sen"      include
+"job_StartOp.sen"        include
 "job_Status.sen"         include
 "job_SubExporter.sen"    include
 "job_SubFetch.sen"       include

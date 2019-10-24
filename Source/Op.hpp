@@ -90,6 +90,7 @@ namespace Operators
     Operand* pPopQueueRight(void);
     OperandQueue* pQueueLeft(void);
     OperandQueue* pQueueRight(void);
+    bool bSpawnJob(Session* pSession);
     Task* pTask(void);
     void vTask(Task* pTask);
     void vWorkQuanta(i8 iWorkQuanta);
