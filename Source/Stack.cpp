@@ -101,7 +101,7 @@ void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* dump contents of the value stack                                           */
 /*----------------------------------------------------------------------------*/
-void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
+void Stack::vContentDump(DicStack* pDicStack,Stz* aPrefix, Stz* aTitle)
 {
   vTrace("[%s] %s:\n"_Stz,aPrefix,aTitle);
   
@@ -120,9 +120,12 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
       case CN_FIPVAL: {
         FipVal* aFipVal = _aFipVal(aNestedValue);
         Cell* aFip = aFipVal->aFipPtr();
+        Word* pWord = pDicStack->pLocateWord(aFip);
 
-        vTrace("[%s] [%2lld] [%s] %p\n"_Stz,
-               aPrefix,iVal,aCN[eClass],aFip);
+
+        vTrace("[%s] [%2lld] [%s] %16s %p\n"_Stz,
+               aPrefix,iVal,aCN[eClass],
+               pWord ? pWord->sName().azChar() : "<none>",aFip);
         break;
       }
         
