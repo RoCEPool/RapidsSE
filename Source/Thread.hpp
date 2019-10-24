@@ -16,7 +16,7 @@ namespace Threads
     Task*    m_pTask;         // task current being executed
     i8       m_nAssignedTasks;// number of tasks scheduled to this thread
 
-    PsxThd* m_pPsxThd;      // its posix structure
+    PsxThd*  m_pPsxThd;       // its posix structure
   
     // must be last
     Footer m_xFooter;

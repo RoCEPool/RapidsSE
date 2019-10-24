@@ -106,40 +106,61 @@ Thread::~Thread(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void* Thread::aEntryPoint_dedicated(void* pArg)
 {
-  Thread* pThread = static_cast<Thread*>(pArg);
-  
-  pThread->vThreadEntry();
-  pThread->m_pPsxThd->vThreadEntry();
-  
-  Scheduler::vAddDedicatedThread(pThread);
-  
-  if (AM::bVerbose())
-    vTrace("Thread::aEntryPoint_dedicated %p %lld\n"_Stz,
-           pThread,pThread->iThreadNo());
-  
-  pThread->m_pPsxThd->vIncActNo();
-  AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_ENTRY,
-              "dedicated thead entry: %p"_Stz, //!format-LogRes
-              pThread);
+  try {
+    Thread* pThread = _pThread(pArg);
+    RASSERT(pThread);
+    
+    pThread->vThreadEntry();
+    pThread->m_pPsxThd->vThreadEntry();
+    
+    Scheduler::vAddDedicatedThread(pThread);
+    
+    if (AM::bVerbose())
+      vTrace("Thread::aEntryPoint_dedicated %p %lld\n"_Stz,
+             pThread,pThread->iThreadNo());
+    
+    pThread->m_pPsxThd->vIncActNo();
+    AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_ENTRY,
+                "dedicated thead entry: %p"_Stz, //!format-LogRes
+                pThread);
 
-  //pThread->vBindCore();
+    //pThread->vBindCore();
+    
+    // -- -- -- -- -- -- -- -- -- --
+
+    pThread->vLoop_dedicated();
+    
+    // -- -- -- -- -- -- -- -- -- --
+    
+    if (AM::bVerbose())
+      vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
+             pThread,pThread->iThreadNo());
+    
+    pThread->m_pPsxThd->vIncActNo();
+    AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_EXIT,
+                "Thead exit (dedicated) : %p"_Stz, //!format-LogRes
+                pThread);
+    
+    Scheduler::vRemoveDedicatedThread(pThread);
+    
+    pThread->m_pPsxThd->vThreadExit();
+    
+    delete pThread;
+  }
   
-  pThread->vLoop_dedicated();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (AM::bVerbose())
-    vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
-           pThread,pThread->iThreadNo());
-  
-  pThread->m_pPsxThd->vIncActNo();
-  AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_EXIT,
-              "Thead exit (dedicated) : %p"_Stz, //!format-LogRes
-              pThread);
-  
-  Scheduler::vRemoveDedicatedThread(pThread);
-  
-  pThread->m_pPsxThd->vThreadExit();
-  
-  delete pThread;
+  catch (Exception xException) {
+    
+        fflush(stderr); fflush(stdout);
+    printf("Thread Level Exception caught in %s file %s line %d\n",
+           __func__,__FILE__,__LINE__);
+        fflush(stderr); fflush(stdout);
+    xException.vPrint();
+        fflush(stderr); fflush(stdout);
+    
+    Process::vExitFailure();
+  }
   
   return nullptr;
 }
@@ -150,8 +171,9 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
 void* Thread::aEntryPoint_general(void* pArg)
 {
   try {
-    Thread* pThread = static_cast<Thread*>(pArg);
-    
+    Thread* pThread = _pThread(pArg);
+    RASSERT(pThread);
+
     pThread->vThreadEntry();
     pThread->m_pPsxThd->vThreadEntry();
 
@@ -195,7 +217,8 @@ void* Thread::aEntryPoint_general(void* pArg)
   catch (Exception xException) {
     
         fflush(stderr); fflush(stdout);
-    printf("Thread Level Exception\n");
+    printf("Thread Level Exception caught in %s file %s line %d\n",
+           __func__,__FILE__,__LINE__);
         fflush(stderr); fflush(stdout);
     xException.vPrint();
         fflush(stderr); fflush(stdout);
@@ -211,30 +234,47 @@ void* Thread::aEntryPoint_general(void* pArg)
 /*----------------------------------------------------------------------------*/
 void* Thread::aEntryPoint_dummy(void* pArg)
 {
-  Thread* pThread = static_cast<Thread*>(pArg);
-  
-  pThread->m_eThreadState = HS_IDLE;
-  
-  pThread->m_pPsxThd->vThreadEntry();
-  
-  if (AM::bVerbose())
-    vTrace("Thread::aEntryPoint_dummy %p %lld\n"_Stz,
-           pThread,pThread->iThreadNo());
-  
-  while (true) {
+  try {
+    Thread* pThread = _pThread(pArg);
+    RASSERT(pThread);
+
+    pThread->m_eThreadState = HS_IDLE;
     
-    // sleep for a bit to generate a context switch
-    pThread->m_pPsxThd->vSleepUsec(AM::nDummySleep(),CN_THREAD);
+    pThread->m_pPsxThd->vThreadEntry();
     
-    // burn some cpu
-    i8 iSum = 0;
-    for (i8 i_Loop = 0; i_Loop < AM::nDummyLoop(); i_Loop++)
-      iSum += Tick::iRdTscp();
+    if (AM::bVerbose())
+      vTrace("Thread::aEntryPoint_dummy %p %lld\n"_Stz,
+             pThread,pThread->iThreadNo());
+    
+    while (true) {
+      
+      // sleep for a bit to generate a context switch
+      pThread->m_pPsxThd->vSleepUsec(AM::nDummySleep(),CN_THREAD);
+      
+      // burn some cpu
+      i8 iSum = 0;
+      for (i8 i_Loop = 0; i_Loop < AM::nDummyLoop(); i_Loop++)
+        iSum += Tick::iRdTscp();
+    }
+    
+    //pThread->m_pPsxThd->vThreadExit();
+    
+    //delete pThread;
   }
   
-  //pThread->m_pPsxThd->vThreadExit();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //delete pThread;
+  catch (Exception xException) {
+    
+        fflush(stderr); fflush(stdout);
+    printf("Thread Level Exception caught in %s file %s line %d\n",
+           __func__,__FILE__,__LINE__);
+        fflush(stderr); fflush(stdout);
+    xException.vPrint();
+        fflush(stderr); fflush(stdout);
+    
+    Process::vExitFailure();
+  }
   
   return nullptr;
 }
