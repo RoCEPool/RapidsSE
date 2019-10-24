@@ -374,6 +374,37 @@ void Task::vBeginOp(void)
 void Task::vCaught(Exception xException)
 {
   xException.vCaught();
+
+  // dump the call stack
+  vStackDump();
+  
+  // write activity log
+  AM::vWriteLog();
+  
+  // dump api state
+  AM::vDumpApi();
+
+  if (m_pForth) {
+    while (m_pForth->m_pAuxStack->nValues())
+      m_pForth->m_pAuxStack->vDiscard();
+    while (m_pForth->m_pDataStack->nValues())
+      m_pForth->m_pDataStack->vDiscard();
+    while (m_pForth->m_pReturnStack->nValues())
+      m_pForth->m_pReturnStack->vDiscard();
+    
+    while (m_pForth->m_pLocalsFrame) {
+      
+      LocalSet* pLocalsFrame = m_pForth->m_pLocalsFrame;
+      m_pForth->m_pLocalsFrame = m_pForth->m_pLocalsFrame->pNext();
+      
+      delete pLocalsFrame;
+    }
+    
+  }
+  
+  m_pForth->m_aInxPtr = m_pForth->m_pExceptionWord->aFirstCell();
+
+  //vAbortProcess();
 }
 
 /*----------------------------------------------------------------------------*/

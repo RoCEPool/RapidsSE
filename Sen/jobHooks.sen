@@ -170,8 +170,6 @@
 
   "std_exceptionHook" .
 
-  r@ locate log::markExit
-
   process::quit
 ;
 

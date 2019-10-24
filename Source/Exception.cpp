@@ -146,7 +146,6 @@ void Exception::vCaught(void)
   
   vPrint();
   
-  vAbortProcess();
 }
 
 
