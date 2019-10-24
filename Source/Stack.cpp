@@ -49,10 +49,12 @@ void Stack::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stack::Stack(void)
+Stack::Stack(eKK eKind)
 : Object(CN_STACK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  m_eKind   = eKind;
   
   m_aTop    = aStackBase();
   m_nValues = 0;
