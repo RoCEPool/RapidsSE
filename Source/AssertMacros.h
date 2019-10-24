@@ -42,7 +42,7 @@
 /* THROW macro                                                                */
 /*----------------------------------------------------------------------------*/
 #define THROW(szDescription) \
-  Correctness::vThrow(FK_FAILED,__func__,__FILE__,__LINE__,szDescription);
+  Correctness::vThrow(FK_THROW,__func__,__FILE__,__LINE__,szDescription);
 
 /*----------------------------------------------------------------------------*/
 /* NEVER_REACH macro (point in code which should never be reached             */
