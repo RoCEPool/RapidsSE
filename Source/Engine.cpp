@@ -123,7 +123,7 @@ void Engine::vCallImmmediate(Task* pImmediateTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* call the prompt task                                                       */
+/* call the prompt loop                                                       */
 /*----------------------------------------------------------------------------*/
 void Engine::vCallPrompt(void)
 {

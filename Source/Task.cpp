@@ -211,7 +211,7 @@ Task* Task::pThisTLSTask(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* task loop (job)                                                            */
+/* task loop                                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskLoop(void)
 {
@@ -227,8 +227,12 @@ void Task::vTaskLoop(void)
 
   if (! bSeeded())
     vSeedJob();
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vAssertStructure();
+  
   while (TR_NONE == m_eTransition) {
     
     // UNUSUAL CODE:
@@ -249,12 +253,33 @@ void Task::vTaskLoop(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (m_pJob && m_pJob->m_xReqTuple.m_iDetail)
     JobLog::vNote(m_pJob,
                           "Returned from task call: %s %p"_Stz,
                           aCN[m_pJob->eClass()],
                           m_pJob);
+}
 
+/*----------------------------------------------------------------------------*/
+/* assert task is structurally correct                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertStructure(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  // must have these
+  RASSERT(m_pForth);    // RASSERT(m_pForth  && m_pForth->bStructurallyCorrect());
+  RASSERT(m_pJob);      // RASSERT(m_pJob    && m_pJob->bStructurallyCorrect());
+  RASSERT(m_pMutex);    // RASSERT(m_pMutex  && m_pMutex->bStructurallyCorrect());
+  RASSERT(m_pRegSet);   // RASSERT(m_pRegSet && m_pRegSet->bStructurallyCorrect());
+  
+  // RASSERT((m_pJob->eClass() == CN_JOB_BOOT && ! m_pThread) || m_pThread);
+  // RASSERT(m_pThread && m_pThread->bStructurallyCorrect());
+
+  // might have these
+  // RASSERT(m_pOp      || (m_pOp && m_pOp->bStructurallyCorrect()));
+  // RASSERT(m_pSession || (m_pSession && m_pSession->bStructurallyCorrect()));
 }
 
 /*----------------------------------------------------------------------------*/

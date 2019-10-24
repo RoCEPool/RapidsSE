@@ -29,8 +29,7 @@ namespace Tasks
     eTK       m_eKind;        // task kind
     i8        m_iTraceMask;   // tracing mask
 
-    Job*      m_pJob;         // the job for this task [TK_JOB] or...
-    Op*       m_pOp;          // the op for this task  [TK_OP]
+    Job*      m_pJob;         // the job for this task
     Thread*   m_pThread;      // current thread
     Mutex*    m_pMutex;       // mutex
   
@@ -45,6 +44,7 @@ namespace Tasks
     Sleep     m_oWakeup;      // wakeup time from sleeping
 
     Forth*    m_pForth;       // forth execution context
+    Op*       m_pOp;          // the op for this task
     RegSet*   m_pRegSet;      // set of registers for the task steps
   
     // always last
@@ -69,6 +69,7 @@ namespace Tasks
     bool bAcksRmgDec(void);
     void vAdjustFIP(i8 nBytes);
     Object* pArgObject(void);
+    void vAssertStructure(void);
     void vBeginOp(void);
     void vCaught(Exception xException);
     static void vDebug(void);
