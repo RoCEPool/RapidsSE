@@ -124,6 +124,23 @@ namespace Correctness
 #define _magic_()
 #endif
 
+
+/*----------------------------------------------------------------------------*/
+/* macro for standard bCorrectLayout() function                               */
+/*----------------------------------------------------------------------------*/
+#define __bCorrectLayout(CLASS,CN) \
+bool CLASS::bCorrectLayout(void) \
+{ \
+  if (! bValidMagic()) \
+    return false; \
+  \
+  if (! bIsClass(CN)) \
+    return false; \
+  \
+  return true; \
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
