@@ -37,18 +37,16 @@ namespace Tasks
 
     eTS       m_eState;       // state (running, sleeping, ...)
     eTR       m_eTransition;  // state transition request
-    eQK       m_eQueue;       // which queue the task is in
+    eQK       m_eQueue;       // which queue the task is currently in
     Decider   m_oAcksRmg;     // number of acks still waiting for
     eLH       m_eDdlLocked;   // this task has the ddl lock?
     Sleep     m_oWakeup;      // wakeup time from sleeping
 
     i8        m_iTracing;     // tracing mask
     i8        m_i_NextRnd;    // which next repeatable random nummber?
-
-    Node*     m_pSendNode;    // node to send to
   
-    Forth*    m_pForth;       // forth implementation
-    RegSet*   m_pRegSet;      // set of registers
+    Forth*    m_pForth;       // forth execution context
+    RegSet*   m_pRegSet;      // set of registers for the task
   
     // always last
     Footer m_xFooter;

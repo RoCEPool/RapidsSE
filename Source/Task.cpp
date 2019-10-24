@@ -155,8 +155,6 @@ void Task::vInit(void)
   
   m_pForth       = nullptr;
   m_pRegSet      = nullptr;
-
-  m_pSendNode    = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -830,7 +828,7 @@ Grids::Node* Task::pSendNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pSendNode;
+  return m_pRegSet->m_pSendNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -840,7 +838,7 @@ void Task::vSendNode(Grids::Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pSendNode = pNode;
+  m_pRegSet->m_pSendNode = pNode;
 }
 
 /*----------------------------------------------------------------------------*/
