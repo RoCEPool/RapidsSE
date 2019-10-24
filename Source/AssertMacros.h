@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 #define RASSERT_TYPE(pOBJECT,eCLASS) \
   if (pOBJECT && eCLASS != pOBJECT->eClass()) \
-    Correctness::vTypeFatal(FK_TYPE,__func__,__FILE__,__LINE__,pOBJECT,eCLASS);
+    Correctness::vThrowType(FK_TYPE,__func__,__FILE__,__LINE__,pOBJECT,eCLASS);
 
 /*----------------------------------------------------------------------------*/
 /* THROW macro                                                                */

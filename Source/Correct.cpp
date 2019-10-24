@@ -52,7 +52,7 @@ void Correctness::vStackDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* throw an FK_ASSERT exception (long-form)                                   */
+/* throw anexception                                                          */
 /*----------------------------------------------------------------------------*/
 [[ noreturn ]] void Correctness::vThrow(eFK eKind, const char* azFunc,
                                         const char* azFilePath, i8 iLineNo,
@@ -83,9 +83,9 @@ void Correctness::vStackDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* have a fatal type error                                                    */
+/* have a type error                                                          */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vTypeFatal(eFK eKind, const char* azFunc,
+[[ noreturn ]] void Correctness::vThrowType(eFK eKind, const char* azFunc,
                                             const char* azFilePath, i8 iLineNo,
                                             void* aObject, eCN eExpectingClass)
 {
@@ -99,12 +99,12 @@ void Correctness::vStackDump(void)
   
   if (eGotClass >= CN_NONE && eGotClass < CN_ENUMS)
     StrLib::vSprint(zCondition,
-                    "  Expecting class %d %s; Got %d %s\n"_Stz,
+                    "Expecting class %d %s; Got %d %s\n"_Stz,
                     eExpectingClass, aCN[eExpectingClass]->azChar(),
                     eGotClass,       aCN[eGotClass]->azChar());
   else
     StrLib::vSprint(zCondition,
-                    "  Expecting class %d %s; Got %d\n"_Stz,
+                    "Expecting class %d %s; Got %d\n"_Stz,
                     eExpectingClass, aCN[eExpectingClass]->azChar(),
                     eGotClass);
   
