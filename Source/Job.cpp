@@ -72,6 +72,7 @@ Job::Job(eCN eClassNo)
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
+  m_bByPrompt = false;
   m_bNoWait   = false;
   m_bWasReceived = false;
   

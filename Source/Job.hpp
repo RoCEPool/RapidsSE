@@ -19,6 +19,7 @@ namespace Jobs
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
     eSS  m_eSeed;        // task seed
     i8   m_i_Slot;       // slot this job processes
+    bool m_bByPrompt;    // job was spawned by se> prompt?
     bool m_bNoWait;      // no wait
     bool m_bWasReceived; // job was received over a socket
 
