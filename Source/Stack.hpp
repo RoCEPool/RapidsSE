@@ -99,6 +99,7 @@ namespace SenVM
     void vPushValue(ForthValue* aValue);
     void vPushValue(ForthValue& xValue);
   
+    void vReset(void);
     void vRetry(void);
     void vRetryPoint(void);
   
@@ -106,6 +107,7 @@ namespace SenVM
   
   public:
     void vPopBy(i8 nBytes);
+  
   private:
     void vPopLocal(Local* aLocal);
     void vPopVal(ForthValue* aValue);

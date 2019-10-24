@@ -1063,6 +1063,19 @@ void Stack::vPushValue(ForthValue* aValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* completely reset stack                                                     */
+/*----------------------------------------------------------------------------*/
+void Stack::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  //! maybe this would be better as a re-init() ?
+  
+  while (nValues())
+    vDiscard();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set stack back to retry point                                              */
 /*----------------------------------------------------------------------------*/
 void Stack::vRetry(void)

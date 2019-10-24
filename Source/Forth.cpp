@@ -97,14 +97,9 @@ Forth::~Forth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Forth::vReset(void)
 {
-  while (m_pAuxStack->nValues())
-    m_pAuxStack->vDiscard();
-
-  while (m_pDataStack->nValues())
-    m_pDataStack->vDiscard();
-
-  while (m_pReturnStack->nValues())
-    m_pReturnStack->vDiscard();
+  m_pAuxStack->vReset();
+  m_pDataStack->vReset();
+  m_pReturnStack->vReset();
   
   while (m_pLocalsFrame) {
     
