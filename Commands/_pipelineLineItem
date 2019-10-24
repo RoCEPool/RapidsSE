@@ -1,8 +1,6 @@
 /*============================================================================*/
-/* _dynamicLineItem -- test dynamic plans                                     */
+/* _pipelineLineItem -- test pipeline plans                                   */
 /*============================================================================*/
-
-dynamic
 
 pipeline lineItem_dyn
 begin

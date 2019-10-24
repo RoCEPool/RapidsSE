@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* _dpr - dynamic plan ray                                                    */
+/* _plr - pipeline plan ray                                                   */
 /*============================================================================*/
 
-print "dynamic plan ray..." ;
+print "pipeline plan ray..." ;
 
 
-dynamic pipeline ray1_dyn
+pipeline ray1_dyn
 begin
 
   stage stageA on all partitions:
@@ -13,7 +13,7 @@ begin
 
 end ;
 
-dynamic pipeline ray2_dyn
+pipeline ray2_dyn
 begin
 
   stage stageA on all partitions:
@@ -21,7 +21,7 @@ begin
 
 end ;
 
-dynamic pipeline ray3_dyn
+pipeline ray3_dyn
 begin
 
   stage stageA on all partitions:
@@ -30,7 +30,7 @@ begin
 end ;
 
 /*
-dynamic pipeline load_dyn
+pipeline load_dyn
 begin
 
   stage stageA on all partitions:
@@ -57,7 +57,7 @@ begin
 end ;
 
 
-dynamic pipeline copyFuller_dyn
+pipeline copyFuller_dyn
 begin
 
   stage stageA on all partitions:
