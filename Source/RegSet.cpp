@@ -46,10 +46,12 @@ RegSet::RegSet(Task* pTask)
   
   m_pTask = pTask;
   
+  m_pSendNode   = nullptr;
+  
   m_pOpQueLeft  = nullptr;
   m_pOpQueRight = nullptr;
 
- _checkInitialised_(CN_REGSET);
+  _checkInitialised_(CN_REGSET);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_REGSET,_FOOTER_);
 }

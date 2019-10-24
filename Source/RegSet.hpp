@@ -12,6 +12,8 @@ namespace Registers
   public:
     Task* m_pTask;  // which task
   
+    Node* m_pSendNode;    // node to send to
+
     OperandQueue* m_pOpQueLeft;
     OperandQueue* m_pOpQueRight;
 
