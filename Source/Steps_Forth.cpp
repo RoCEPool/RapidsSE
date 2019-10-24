@@ -399,7 +399,7 @@ void Step::vForget(void)
   Word* pWord = m_pTask->m_pForth->m_oDicStack.pFindWord(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
   
   if ( ! pWord )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
+    vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
            "No such word: %s"_Stz,
            m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken().azChar());
   
@@ -475,7 +475,7 @@ void Step::vPostpone(void)
   // find the word in dic stack
   Word* pCalledWord = m_pTask->m_pForth->m_oDicStack.pFindWord(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
   if ( ! pCalledWord )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
+    vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
            "No word: %s "_Stz,
            m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken().azChar());
   
@@ -708,7 +708,7 @@ void Step::vSubDic(void)
   
   Word* pWordSubDic = m_pTask->m_pForth->m_oDicStack.pFindWord(sNameSubDic);
   if ( ! pWordSubDic )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
+    vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
            "No such subDic: %s"_Stz,
            sNameSubDic.azChar());
   

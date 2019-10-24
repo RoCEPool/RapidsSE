@@ -32,8 +32,6 @@ int main(int argc, const char* argv[])
   
   try {
     
-    RASSERT(0);
-    
     Process::vEntry();
     
     // parse the command line arguments
