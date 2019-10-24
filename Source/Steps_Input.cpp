@@ -57,8 +57,8 @@ void Step::vInputNext(void)
 {
 ENTRY("vInputNext"_Stz);
   
-  if (m_pTask->m_iTracing) {
-    ASSERT(m_pTask->m_iTracing);
+  if (m_pTask->m_iTraceMask) {
+    ASSERT(m_pTask->m_iTraceMask);
   }
   
   char* aToken = m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken().azChar();
@@ -139,8 +139,8 @@ void Step::vInputText(void)
 {
 ENTRY("vInputText"_Stz);
   
-  if (m_pTask->m_iTracing) {
-    ASSERT(m_pTask->m_iTracing);
+  if (m_pTask->m_iTraceMask) {
+    ASSERT(m_pTask->m_iTraceMask);
   }
   
   s48K sInput;                                             //! NEED STACK CHECKS

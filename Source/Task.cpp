@@ -150,7 +150,7 @@ void Task::vInit(void)
   m_eDdlLocked   = LH_NONE;
   // m_oWakeup
   
-  m_iTracing     = C_TRACE_NONE;
+  m_iTraceMask     = C_TRACE_NONE;
   
   m_pForth       = nullptr;
   m_pRegSet      = nullptr;

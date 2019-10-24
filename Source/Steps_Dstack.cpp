@@ -130,8 +130,8 @@ void Step::vDstackDup(void)
 {
   ENTRY("vDstackDup"_Stz);
   
-  if (m_pTask->m_iTracing) {
-    ASSERT(m_pTask->m_iTracing);
+  if (m_pTask->m_iTraceMask) {
+    ASSERT(m_pTask->m_iTraceMask);
   }
 
   // could just copy from stack back into stack

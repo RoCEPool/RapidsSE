@@ -53,7 +53,7 @@ void Step::vEnterRoutine(void)
   m_pReturnStack->vPushCell(m_aInxPtr);
   m_aInxPtr = *(Cell**)afpEntryCell;
 
-   if ( (m_pTask->m_iTracing & C_TRACE_ROUTINES) )
+   if ( (m_pTask->m_iTraceMask & C_TRACE_ROUTINES) )
     m_pTask->vTracePoint(">"_Stz);
   
   EXIT();
