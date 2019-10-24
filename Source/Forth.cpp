@@ -49,6 +49,8 @@ Forth::Forth(Task* pTask)
   m_pSeedWord       = nullptr;
   m_pExceptionWord  = nullptr;
 
+  // m_oDicStack
+  
   m_aInxPtr      = nullptr;
   
   m_pAuxStack    = new Stack(KK_AUX_STACK);

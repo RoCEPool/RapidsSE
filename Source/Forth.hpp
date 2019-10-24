@@ -12,6 +12,8 @@ namespace SenVM
   
     Word*     m_pSeedWord;      // seed
     Word*     m_pExceptionWord; // seed
+  
+    DicStack  m_oDicStack;      // dictionary stack
 
     Cell*     m_aInxPtr;      // instruction/cell pointer
   

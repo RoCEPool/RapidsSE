@@ -120,6 +120,7 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
       case CN_FIPVAL: {
         FipVal* aFipVal = _aFipVal(aNestedValue);
         Cell* aFip = aFipVal->aFipPtr();
+
         vTrace("[%s] [%2lld] [%s] %p\n"_Stz,
                aPrefix,iVal,aCN[eClass],aFip);
         break;
