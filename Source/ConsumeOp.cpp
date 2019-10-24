@@ -146,9 +146,11 @@ eOR ConsumeOp::eOpLoop(void)
     
     Operand* pOperand = pPopQueue();
     
+    //! HACK: TaskLoop_Op
     if (! pOperand) {
-      ASSERT(bIsLocked());
-      return OR_BIDE;
+      //ASSERT(bIsLocked());
+      //return OR_BIDE;
+      continue;
     }
     
     // is this the first operand

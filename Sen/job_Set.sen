@@ -25,6 +25,7 @@
 "job_Cf.sen" include
 "job_CompactIndex.sen" include
 "job_ConnectCluster.sen" include
+"job_consumeOp.sen" include
 "Job_CopyBuffer.sen" include
 "job_CreateCatalog.sen" include
 "job_CreateIndex.sen" include
@@ -128,6 +129,7 @@
 "job_Walk.sen"           include
 "job_WriteBuffer.sen"    include
 "job_WriteRow.sen"       include
+"job_XmitOp.sen"         include
 
 "job_Start.sen"          include
 

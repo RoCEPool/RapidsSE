@@ -95,20 +95,20 @@ pipeline lineItem_dyn
 begin
 
 stage stageA on all partitions:
-scan lineitem | output
-
-end
-;
-/*
-
-pipeline lineItem_dyn
-begin
-
-stage stageA on all partitions:
 scan lineitem | stageB
 
 stage stageB on origin:
 output
+
+end
+;
+
+/*
+pipeline lineItem_dyn
+begin
+
+stage stageA on all partitions:
+scan lineitem | output
 
 end
 ;
