@@ -104,7 +104,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_DROPSCHEMA);
   nJobs++; JobClass::vJobCat(CN_JOB_DROPTABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_DROPTENANT);
-  nJobs++; JobClass::vJobCat(CN_Job_Pipeline);
+  nJobs++; JobClass::vJobCat(CN_JOB_PIPELINE);
   nJobs++; JobClass::vJobCat(CN_JOB_EXPORT);
   nJobs++; JobClass::vJobCat(CN_JOB_INSERTROW);
   nJobs++; JobClass::vJobCat(CN_JOB_INSERTTABLE);

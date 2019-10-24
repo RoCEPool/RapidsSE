@@ -171,7 +171,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPTENANT
   /*    */ &Finalize::vUndefined,         // CN_JOB_DUMPINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_DUMPTABLE
-  /*    */ &Finalize::vUndefined,         // CN_Job_Pipeline
   /*    */ &Finalize::vUndefined,         // CN_JOB_EXPORT
   /*    */ &Finalize::vUndefined,         // CN_JOB_FETCHROWS
   /*    */ &Finalize::vUndefined,         // CN_JOB_GENERATE
@@ -199,6 +198,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_OPERAND
   /*    */ &Finalize::vUndefined,         // CN_JOB_PERIODIC
   /*    */ &Finalize::vUndefined,         // CN_JOB_PING
+  /*    */ &Finalize::vUndefined,         // CN_JOB_PIPELINE
   /*    */ &Finalize::vUndefined,         // CN_JOB_PUBLISH
   /*    */ &Finalize::vUndefined,         // CN_JOB_PURGE
   /*    */ &Finalize::vUndefined,         // CN_JOB_PWF

@@ -177,7 +177,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_DROPTENANT
   /*    */ &Dump::vDummy,           // CN_JOB_DUMPINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_DUMPTABLE
-  /*    */ &Dump::vDummy,           // CN_Job_Pipeline
   /*    */ &Dump::vDummy,           // CN_JOB_EXPORT
   /*    */ &Dump::vDummy,           // CN_JOB_FETCHROWS
   /*    */ &Dump::vDummy,           // CN_JOB_GENERATE
@@ -205,6 +204,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_OPERAND
   /*    */ &Dump::vDummy,           // CN_JOB_PERIODIC
   /*    */ &Dump::vDummy,           // CN_JOB_PING
+  /*    */ &Dump::vDummy,           // CN_JOB_PIPELINE
   /*    */ &Dump::vDummy,           // CN_JOB_PUBLISH
   /*    */ &Dump::vDummy,           // CN_JOB_PURGE
   /*    */ &Dump::vDummy,           // CN_JOB_PWF
@@ -602,7 +602,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_DropTenant),     // CN_JOB_DROPTENANT
   /*    */ sizeof(Job_DumpIndex),      // CN_JOB_DUMPINDEX
   /*    */ sizeof(Job_DumpTable),      // CN_JOB_DUMPTABLE
-  /*    */ sizeof(Job_Pipeline),        // CN_Job_Pipeline
   /*    */ sizeof(Job_Export),         // CN_JOB_EXPORT
   /*    */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
   /*    */ sizeof(Job_Generate),       // CN_JOB_GENERATE
@@ -630,6 +629,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Operand),        // CN_JOB_OPERAND
   /*    */ sizeof(Job_Periodic),       // CN_JOB_PERIODIC
   /*    */ sizeof(Job_Ping),           // CN_JOB_PING
+  /*    */ sizeof(Job_Pipeline),        // CN_JOB_PIPELINE
   /*    */ sizeof(Job_Publish),        // CN_JOB_PUBLISH
   /*    */ sizeof(Job_Purge),          // CN_JOB_PURGE
   /*    */ sizeof(Job_Pwf),            // CN_JOB_PWF
@@ -1026,7 +1026,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPTENANT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DUMPINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DUMPTABLE
-  /*    */ HT_TRANSIENT_LARGE,   // CN_Job_Pipeline
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_EXPORT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_FETCHROWS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_GENERATE
@@ -1054,6 +1053,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_OPERAND
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PERIODIC
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PING
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PIPELINE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PUBLISH
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PURGE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PWF

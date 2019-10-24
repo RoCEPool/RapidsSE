@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Pipeline =
 {
-  CN_Job_Pipeline,        // class number
+  CN_JOB_PIPELINE,        // class number
   JK_DIST2PC,            // job kind
   RS_DATA_ROWS,          // response kind
   "dynamic"_Stz,         // comment about the job
@@ -47,7 +47,7 @@ JobClass xJobClass_Pipeline =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Pipeline_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Export_class;
+  *pNextFun = (pFUN*)pJob_Publish_class;
 
   return &xJobClass_Pipeline;
 }
@@ -63,7 +63,7 @@ Job_Pipeline* Jobs::_pJob_Pipeline(void* aAddress)
 {
   Job_Pipeline* pJob_Pipeline = reinterpret_cast<Job_Pipeline*>(aAddress);
   
-  RASSERT_TYPE(pJob_Pipeline,CN_Job_Pipeline);
+  RASSERT_TYPE(pJob_Pipeline,CN_JOB_PIPELINE);
   
   return pJob_Pipeline;
 }
@@ -74,7 +74,7 @@ Job_Pipeline* Jobs::_pJob_Pipeline(void* aAddress)
 void* Job_Pipeline::operator new(size_t)
 {
   Job_Pipeline* pJob_Pipeline =
-    static_cast<Job_Pipeline*>(HeapMem::pAllocate(CN_Job_Pipeline));
+    static_cast<Job_Pipeline*>(HeapMem::pAllocate(CN_JOB_PIPELINE));
   
   return pJob_Pipeline;
 }
@@ -103,7 +103,7 @@ void Job_Pipeline::operator delete(void* aAddress)
 Job_Pipeline::Job_Pipeline(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : JobMark2(aJobClass, aReqTuple, pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE,_FOOTER_);
   
   //m_oOpVec
   
@@ -113,9 +113,9 @@ Job_Pipeline::Job_Pipeline(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
   m_pBufferQueue  = new Queue;
   m_sRequest      = ""_Stz;
   
-  _checkInitialised_(CN_Job_Pipeline);
+  _checkInitialised_(CN_JOB_PIPELINE);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,7 +123,7 @@ Job_Pipeline::Job_Pipeline(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
 /*----------------------------------------------------------------------------*/
 Job_Pipeline::~Job_Pipeline(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE,_FOOTER_);
  
   //delete m_pPipeline;  // ALKA: ????
   delete m_pPipelineSpec;
@@ -154,7 +154,7 @@ void Job_Pipeline::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 bool Job_Pipeline::bPopulateJob(Session* pSession, TokenVec* pTknVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE,_FOOTER_);
   
   // first token should be "dynamic"
   ASSERT(pTknVec->pGet(0)->bSame("dynamic"_Stz));
@@ -209,7 +209,7 @@ bool Job_Pipeline::bPopulateJob(Session* pSession, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 void Job_Pipeline::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,7 +217,7 @@ void Job_Pipeline::vShow(void)
 /*----------------------------------------------------------------------------*/
 void Job_Pipeline::vBegin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE,_FOOTER_);
   
   m_pPipeline    = new Pipeline(this);
   m_pBufferQueue = nullptr;
@@ -245,7 +245,7 @@ void Job_Pipeline::vBegin(void)
 /*----------------------------------------------------------------------------*/
 void Job_Pipeline::vCancel(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE,_FOOTER_);
   
   // get the first stage of the pipeline
   Stage* pStage = m_pPipeline->pStageVec()->pGet(0);
@@ -259,7 +259,7 @@ void Job_Pipeline::vCancel(void)
 /*----------------------------------------------------------------------------*/
 void Job_Pipeline::vEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE,_FOOTER_);
   
   // get the first stage of the pipeline
   Stage* pStage = m_pPipeline->pStageVec()->pGet(0);
@@ -273,7 +273,7 @@ void Job_Pipeline::vEnd(void)
 /*----------------------------------------------------------------------------*/
 void Job_Pipeline::vExecute(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of operators to be executed on this node
@@ -307,7 +307,7 @@ void Job_Pipeline::vExecute(void)
 /*----------------------------------------------------------------------------*/
 Footer* Job_Pipeline::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE);
   
   return &m_xFooter;
 }
@@ -351,7 +351,7 @@ void Jobs::vJob_Pipeline_post(Job* pJob)
     Operand* pOperand = _pOperand(pJob_Pipeline->m_pBufferQueue->pPop());
     
     if (! pOperand) {
-      AM::vNapUsec(250,CN_Job_Pipeline);
+      AM::vNapUsec(250,CN_JOB_PIPELINE);
       continue;
     }
     

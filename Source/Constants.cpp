@@ -224,7 +224,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_DROPTENANT"_Stz,     CN_JOB_DROPTENANT);
   /*    */ vAddConstant("CN_JOB_DUMPINDEX"_Stz,      CN_JOB_DUMPINDEX);
   /*    */ vAddConstant("CN_JOB_DUMPTABLE"_Stz,      CN_JOB_DUMPTABLE);
-  /*    */ vAddConstant("CN_Job_Pipeline"_Stz,        CN_Job_Pipeline);
   /*    */ vAddConstant("CN_JOB_EXPORT"_Stz,         CN_JOB_EXPORT);
   /*    */ vAddConstant("CN_JOB_FETCHROWS"_Stz,      CN_JOB_FETCHROWS);
   /*    */ vAddConstant("CN_JOB_INDEXJOIN"_Stz,      CN_JOB_INDEXJOIN);
@@ -248,6 +247,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_OPERAND"_Stz,        CN_JOB_OPERAND);
   /*    */ vAddConstant("CN_JOB_PERIODIC"_Stz,       CN_JOB_PERIODIC);
   /*    */ vAddConstant("CN_JOB_PING"_Stz,           CN_JOB_PING);
+  /*    */ vAddConstant("CN_JOB_PIPELINE"_Stz,       CN_JOB_PIPELINE);
   /*    */ vAddConstant("CN_JOB_PUBLISH"_Stz,        CN_JOB_PUBLISH);
   /*    */ vAddConstant("CN_JOB_PURGE"_Stz,          CN_JOB_PURGE);
   /*    */ vAddConstant("CN_JOB_PWF"_Stz,            CN_JOB_PWF);

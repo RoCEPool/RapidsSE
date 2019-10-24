@@ -174,7 +174,6 @@ enum eCN : u2 // Class Number
   /*  84 0x54    70592B Heap:L */ CN_JOB_DROPTENANT,
   /*  85 0x55    70592B Heap:L */ CN_JOB_DUMPINDEX,
   /*                           */ CN_JOB_DUMPTABLE,
-  /*                           */ CN_Job_Pipeline,
   /*  86 0x56    70864B Heap:L */ CN_JOB_EXPORT,
   /*  87 0x57    70936B Heap:L */ CN_JOB_FETCHROWS,
   /*  88 0x58   122912B Heap:L */ CN_JOB_GENERATE,
@@ -202,6 +201,7 @@ enum eCN : u2 // Class Number
   /* 105 0x69    70640B Heap:L */ CN_JOB_OPERAND,
   /* 106 0x6A    70592B Heap:L */ CN_JOB_PERIODIC,
   /* 107 0x6B    70592B Heap:L */ CN_JOB_PING,
+  /*                           */ CN_JOB_PIPELINE,
   /* 108 0x6C    71000B Heap:L */ CN_JOB_PUBLISH,
   /* 109 0x6D    70880B Heap:L */ CN_JOB_PURGE,
   /* 110 0x6E    70592B Heap:L */ CN_JOB_PWF,
@@ -596,7 +596,6 @@ static Stz* aCN[]
   /*  84 0x54 */ "JOB_DROPTENANT"_Stz,      // CN_JOB_DROPTENANT
   /*  85 0x55 */ "JOB_DUMPINDEX"_Stz,       // CN_JOB_DUMPINDEX
   /*          */ "JOB_DUMPTABLE"_Stz,       // CN_JOB_DUMPTABLE
-  /*          */ "Job_Pipeline"_Stz,         // CN_Job_Pipeline
   /*  86 0x56 */ "JOB_EXPORT"_Stz,          // CN_JOB_EXPORT
   /*  87 0x57 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
   /*  88 0x58 */ "JOB_GENERATE"_Stz,        // CN_JOB_GENERATE
@@ -624,6 +623,7 @@ static Stz* aCN[]
   /* 105 0x69 */ "JOB_OPERAND"_Stz,         // CN_JOB_OPERAND
   /* 106 0x6A */ "JOB_PERIODIC"_Stz,        // CN_JOB_PERIODIC
   /* 107 0x6B */ "JOB_PING"_Stz,            // CN_JOB_PING
+  /*          */ "Job_PIPELINE"_Stz,        // CN_JOB_PIPELINE
   /* 108 0x6C */ "JOB_PUBLISH"_Stz,         // CN_JOB_PUBLISH
   /* 109 0x6D */ "JOB_PURGE"_Stz,           // CN_JOB_PURGE
   /* 110 0x6E */ "JOB_PWF"_Stz,             // CN_JOB_PWF
