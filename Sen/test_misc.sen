@@ -8,7 +8,7 @@
 : chuck prompt throw ;
 : chuck1 prompt false assert ;
 : chuck3 prompt a> . ;
-: chuck4 prompt rstk throw ;
+: chuck4 prompt rstk 0 1 2 3 stk throw ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
