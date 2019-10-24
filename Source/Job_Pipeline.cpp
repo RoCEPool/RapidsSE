@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Job_Dynamic.cpp -- Dynamic Job                                             */
+/* Job_Pipeline.cpp -- Pipeline Job                                           */
 /*============================================================================*/
 
 #include "Jobs.h"
 
-JobClass xJobClass_Dynamic =
+JobClass xJobClass_Pipeline =
 {
-  CN_JOB_DYNAMIC,        // class number
+  CN_Job_Pipeline,        // class number
   JK_DIST2PC,            // job kind
   RS_DATA_ROWS,          // response kind
   "dynamic"_Stz,         // comment about the job
   "dynamic"_Stz,         // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
-  "dynamic_req"_Stz,     // the _req task seed
-  "dynamic_beg"_Stz,     // the _rcv task seed
-  "dynamic_exe"_Stz,     // the _exe task seed
-  "dynamic_end"_Stz,     // the _end task seed
-  "dynamic_can"_Stz,     // the _can task seed
+  "pipeline_req"_Stz,    // the _req task seed
+  "pipeline_beg"_Stz,    // the _rcv task seed
+  "pipeline_exe"_Stz,    // the _exe task seed
+  "pipeline_end"_Stz,    // the _end task seed
+  "pipeline_can"_Stz,    // the _can task seed
   false,                 // check resources?
   false,                 // detached job?
   false,                 // buffer attached?
@@ -26,13 +26,13 @@ JobClass xJobClass_Dynamic =
   JF_NONE,               // flags
 
   eJob_checkCluster,     // prompt check function
-  pJob_Dynamic_pre,      // prompt pre-process function
-  vJob_Dynamic_post,     // prompt post-process function
+  pJob_Pipeline_pre,      // prompt pre-process function
+  vJob_Pipeline_post,     // prompt post-process function
   nullptr,               // job new function
-  vJob_Dynamic_delete,   // job delete function
+  vJob_Pipeline_delete,   // job delete function
   vJob_send,             // job pre-send function
   vJob_recv,             // job post-receive function
-  vJob_Dynamic_show,     // job show function
+  vJob_Pipeline_show,     // job show function
   
   // help and example
   true,
@@ -45,11 +45,11 @@ JobClass xJobClass_Dynamic =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* Jobs::pJob_Dynamic_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Pipeline_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Export_class;
 
-  return &xJobClass_Dynamic;
+  return &xJobClass_Pipeline;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,30 +59,30 @@ JobClass* Jobs::pJob_Dynamic_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Dynamic* Jobs::_pJob_Dynamic(void* aAddress)
+Job_Pipeline* Jobs::_pJob_Pipeline(void* aAddress)
 {
-  Job_Dynamic* pJob_Dynamic = reinterpret_cast<Job_Dynamic*>(aAddress);
+  Job_Pipeline* pJob_Pipeline = reinterpret_cast<Job_Pipeline*>(aAddress);
   
-  RASSERT_TYPE(pJob_Dynamic,CN_JOB_DYNAMIC);
+  RASSERT_TYPE(pJob_Pipeline,CN_Job_Pipeline);
   
-  return pJob_Dynamic;
+  return pJob_Pipeline;
 }
 
 /*----------------------------------------------------------------------------*/
 /* new                                                                        */
 /*----------------------------------------------------------------------------*/
-void* Job_Dynamic::operator new(size_t)
+void* Job_Pipeline::operator new(size_t)
 {
-  Job_Dynamic* pJob_Dynamic =
-    static_cast<Job_Dynamic*>(HeapMem::pAllocate(CN_JOB_DYNAMIC));
+  Job_Pipeline* pJob_Pipeline =
+    static_cast<Job_Pipeline*>(HeapMem::pAllocate(CN_Job_Pipeline));
   
-  return pJob_Dynamic;
+  return pJob_Pipeline;
 }
 
 /*----------------------------------------------------------------------------*/
 /* new                                                                        */
 /*----------------------------------------------------------------------------*/
-void* Job_Dynamic::operator new(size_t, void* aAddress)
+void* Job_Pipeline::operator new(size_t, void* aAddress)
 {
   return aAddress;
 }
@@ -90,20 +90,20 @@ void* Job_Dynamic::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* delete                                                                     */
 /*----------------------------------------------------------------------------*/
-void Job_Dynamic::operator delete(void* aAddress)
+void Job_Pipeline::operator delete(void* aAddress)
 {
-  Job_Dynamic* pJob_Dynamic = static_cast<Job_Dynamic*>(aAddress);
+  Job_Pipeline* pJob_Pipeline = static_cast<Job_Pipeline*>(aAddress);
   
-  HeapMem::vFree(pJob_Dynamic);
+  HeapMem::vFree(pJob_Pipeline);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Dynamic::Job_Dynamic(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_Pipeline::Job_Pipeline(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : JobMark2(aJobClass, aReqTuple, pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
   
   //m_oOpVec
   
@@ -113,17 +113,17 @@ Job_Dynamic::Job_Dynamic(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Se
   m_pBufferQueue  = new Queue;
   m_sRequest      = ""_Stz;
   
-  _checkInitialised_(CN_JOB_DYNAMIC);
+  _checkInitialised_(CN_Job_Pipeline);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_Dynamic::~Job_Dynamic(void) noexcept(false)
+Job_Pipeline::~Job_Pipeline(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
  
   //delete m_pPipeline;  // ALKA: ????
   delete m_pPipelineSpec;
@@ -138,11 +138,11 @@ Job_Dynamic::~Job_Dynamic(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_Dynamic::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Job_Pipeline::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pObject);
+  Job_Pipeline* pJob_Pipeline = _pJob_Pipeline(pObject);
 
-  pJob_Dynamic->vShow();
+  pJob_Pipeline->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,9 +152,9 @@ void Job_Dynamic::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
-bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
+bool Job_Pipeline::bPopulateJob(Session* pSession, TokenVec* pTknVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
   
   // first token should be "dynamic"
   ASSERT(pTknVec->pGet(0)->bSame("dynamic"_Stz));
@@ -207,17 +207,17 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_Dynamic::vShow(void)
+void Job_Pipeline::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* query begin (participant job executes this code)                           */
 /*----------------------------------------------------------------------------*/
-void Job_Dynamic::vBegin(void)
+void Job_Pipeline::vBegin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
   
   m_pPipeline    = new Pipeline(this);
   m_pBufferQueue = nullptr;
@@ -243,9 +243,9 @@ void Job_Dynamic::vBegin(void)
 /*----------------------------------------------------------------------------*/
 /* query cancel (participant job executes this code)                          */
 /*----------------------------------------------------------------------------*/
-void Job_Dynamic::vCancel(void)
+void Job_Pipeline::vCancel(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
   
   // get the first stage of the pipeline
   Stage* pStage = m_pPipeline->pStageVec()->pGet(0);
@@ -257,9 +257,9 @@ void Job_Dynamic::vCancel(void)
 /*----------------------------------------------------------------------------*/
 /* query end (participant job executes this code)                             */
 /*----------------------------------------------------------------------------*/
-void Job_Dynamic::vEnd(void)
+void Job_Pipeline::vEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
   
   // get the first stage of the pipeline
   Stage* pStage = m_pPipeline->pStageVec()->pGet(0);
@@ -271,9 +271,9 @@ void Job_Dynamic::vEnd(void)
 /*----------------------------------------------------------------------------*/
 /* query execute (participant job executes this code)                         */
 /*----------------------------------------------------------------------------*/
-void Job_Dynamic::vExecute(void)
+void Job_Pipeline::vExecute(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of operators to be executed on this node
@@ -305,9 +305,9 @@ void Job_Dynamic::vExecute(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Job_Dynamic::aFooter(void)
+Footer* Job_Pipeline::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_Job_Pipeline);
   
   return &m_xFooter;
 }
@@ -319,39 +319,39 @@ Footer* Job_Dynamic::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Dynamic_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_Pipeline_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job_Dynamic* pJob_Dynamic = new Job_Dynamic(aJobClass,aReqTuple,iForId,pSession);
+  Job_Pipeline* pJob_Pipeline = new Job_Pipeline(aJobClass,aReqTuple,iForId,pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   // convert tokenvec back to the request string
-  pTokenVec->vToString(pJob_Dynamic->m_sRequest);
+  pTokenVec->vToString(pJob_Pipeline->m_sRequest);
   
-  return pJob_Dynamic;
+  return pJob_Pipeline;
 }
 
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Dynamic_post(Job* pJob)
+void Jobs::vJob_Pipeline_post(Job* pJob)
 {
-  Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJob);
+  Job_Pipeline* pJob_Pipeline = _pJob_Pipeline(pJob);
 
-  if ( pJob_Dynamic->m_bHasError ) {
+  if ( pJob_Pipeline->m_bHasError ) {
 
     vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
-           aEC[pJob_Dynamic->m_xResponse.m_eErrorCode]);
+           aEC[pJob_Pipeline->m_xResponse.m_eErrorCode]);
 
     return;
   }
 
   for (;;) {
     
-    Operand* pOperand = _pOperand(pJob_Dynamic->m_pBufferQueue->pPop());
+    Operand* pOperand = _pOperand(pJob_Pipeline->m_pBufferQueue->pPop());
     
     if (! pOperand) {
-      AM::vNapUsec(250,CN_JOB_DYNAMIC);
+      AM::vNapUsec(250,CN_Job_Pipeline);
       continue;
     }
     
@@ -362,8 +362,8 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
      // -- -- -- -- -- --
         
       case CN_CANCELMARKER: {
-        vTrace("Query %lld cancelled!!! (rows fetched so far %lld)\n"_Stz, pJob_Dynamic->iJobId(),
-               *pJob_Dynamic->m_xResponse.m_ixRowsProcessed);
+        vTrace("Query %lld cancelled!!! (rows fetched so far %lld)\n"_Stz, pJob_Pipeline->iJobId(),
+               *pJob_Pipeline->m_xResponse.m_ixRowsProcessed);
         delete (_pCancelMarker(pOperand));
         goto L_EXIT;
         
@@ -374,8 +374,8 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
         
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-        pJob_Dynamic->m_xResponse.m_ixRowsProcessed += pCrwBuffer->nRowCount();
-        pCrwBuffer->vPrintRows(pJob_Dynamic->m_pStreamDef);
+        pJob_Pipeline->m_xResponse.m_ixRowsProcessed += pCrwBuffer->nRowCount();
+        pCrwBuffer->vPrintRows(pJob_Pipeline->m_pStreamDef);
         break;
       }
         
@@ -383,7 +383,7 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
         
       case CN_CSVBUFFER: {
         CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
-        pJob_Dynamic->m_xResponse.m_ixRowsProcessed += pCsvBuffer->nRecords();
+        pJob_Pipeline->m_xResponse.m_ixRowsProcessed += pCsvBuffer->nRecords();
         pCsvBuffer->vPrintRows();
         break;
       }
@@ -392,7 +392,7 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
         
       case CN_ENDMARKER: {
         // print the responses received
-        vTrace("success: %lld rows fetched\n"_Stz, *pJob_Dynamic->m_xResponse.m_ixRowsProcessed);
+        vTrace("success: %lld rows fetched\n"_Stz, *pJob_Pipeline->m_xResponse.m_ixRowsProcessed);
         delete (EndMarker*)pOperand;
         goto L_EXIT;
         
@@ -403,7 +403,7 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
         
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
-        pJob_Dynamic->m_xResponse.m_ixRowsProcessed += pEntBuffer->nItems();
+        pJob_Pipeline->m_xResponse.m_ixRowsProcessed += pEntBuffer->nItems();
         pEntBuffer->vPrintRows();
         break;
       }
@@ -412,8 +412,8 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
         
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-        pJob_Dynamic->m_xResponse.m_ixRowsProcessed += pIrwBuffer->nItems();
-        pIrwBuffer->vPrintRows(pJob_Dynamic->m_pStreamDef);
+        pJob_Pipeline->m_xResponse.m_ixRowsProcessed += pIrwBuffer->nItems();
+        pIrwBuffer->vPrintRows(pJob_Pipeline->m_pStreamDef);
         delete pIrwBuffer;
         break;
       }
@@ -422,8 +422,8 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        pJob_Dynamic->m_xResponse.m_ixRowsProcessed += pSrtBuffer->nItems();
-        pSrtBuffer->vPrintRows(pJob_Dynamic->m_pStreamDef);
+        pJob_Pipeline->m_xResponse.m_ixRowsProcessed += pSrtBuffer->nItems();
+        pSrtBuffer->vPrintRows(pJob_Pipeline->m_pStreamDef);
         delete pSrtBuffer;
         break;
       }
@@ -431,13 +431,13 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
       // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
-        if ( ! pJob_Dynamic->m_pStreamDef ) {
-          pJob_Dynamic->m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+        if ( ! pJob_Pipeline->m_pStreamDef ) {
+          pJob_Pipeline->m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
           
           // print the metadata
           if (AM::bMetadata()) {
-            pJob_Dynamic->m_pStreamDef->vToMetadata(pJob_Dynamic->m_sMetadata.szStz());
-            vTrace("%s\n"_Stz, pJob_Dynamic->m_sMetadata.szStz());
+            pJob_Pipeline->m_pStreamDef->vToMetadata(pJob_Pipeline->m_sMetadata.szStz());
+            vTrace("%s\n"_Stz, pJob_Pipeline->m_sMetadata.szStz());
           }
         }
         delete _pStreamDef(pOperand);
@@ -461,21 +461,21 @@ L_EXIT:
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Dynamic_delete(Job* pJob)
+void Jobs::vJob_Pipeline_delete(Job* pJob)
 {
-  Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJob);
+  Job_Pipeline* pJob_Pipeline = _pJob_Pipeline(pJob);
   
-  delete pJob_Dynamic;
+  delete pJob_Pipeline;
 }
 
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Dynamic_show(Job* pJob)
+void Jobs::vJob_Pipeline_show(Job* pJob)
 {
-  Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJob);
+  Job_Pipeline* pJob_Pipeline = _pJob_Pipeline(pJob);
 
-  pJob_Dynamic->vShow();
+  pJob_Pipeline->vShow();
 }
 
 /*============================================================================*/

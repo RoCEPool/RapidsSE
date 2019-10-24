@@ -82,7 +82,7 @@ namespace Jobs
 #include "Job_DropTenant.hpp"
 #include "Job_DumpIndex.hpp"
 #include "Job_DumpTable.hpp"
-#include "Job_Dynamic.hpp"
+#include "Job_Pipeline.hpp"
 
 #include "Job_Export.hpp"
 

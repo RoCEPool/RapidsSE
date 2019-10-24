@@ -158,7 +158,7 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
   
   if (AM::bVerbose()) {
     vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
-    vTrace("Dynamic Job:\n\n"_Stz);
+    vTrace("Pipeline Job:\n\n"_Stz);
   }
     
   // for each stage in the stageVec

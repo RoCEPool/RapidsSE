@@ -160,7 +160,7 @@ void SePrompt::vPromptLoop(void)
     if (bExecuteFunction())
       continue;
     
-    if (bExecuteDynamic())
+    if (bExecutePipeline())
       continue;
     
 //    if (! bFindJobClass()) {
@@ -192,8 +192,8 @@ void SePrompt::vPromptLoop(void)
       //vTrace("job has error (maybe syntax error)\n"_Stz);
       
       //! temp  // // // // // // // // // // // // // //
-      if (CN_JOB_DYNAMIC == m_pJob->eClass()) {
-        vTrace("deleting job_dynamic\n"_Stz);
+      if (CN_Job_Pipeline == m_pJob->eClass()) {
+        vTrace("deleting Job_Pipeline\n"_Stz);
         vDeleteJob();
         continue;
       }
@@ -465,9 +465,9 @@ void SePrompt::vEndRequest(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* potentially execute a dynamic job                                          */
+/* potentially execute a pipeline job                                         */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteDynamic(void)
+bool SePrompt::bExecutePipeline(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Dynamo.cpp -- Dynamo (dynamic plan compiler)                               */
+/* Dynamo.cpp -- Dynamo (pipeline plan compiler)                              */
 /*============================================================================*/
 
 #include "Pipelines.h"
@@ -662,7 +662,7 @@ void Dynamo::vBeginToken(i8 i_Tkn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the dynamic spec                                                       */
+/* get the pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
 PipelineSpec* Dynamo::pPipelineSpec(void)
 {
@@ -672,7 +672,7 @@ PipelineSpec* Dynamo::pPipelineSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the dynamic spec                                                       */
+/* set the pipeline spec                                                       */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vDynamicSpec(PipelineSpec* pPipelineSpec)
 {

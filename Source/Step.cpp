@@ -95,7 +95,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobCat();
   Step::vAddSteps_JobClass();
   Step::vAddSteps_JobCreateIndex();
-  Step::vAddSteps_JobDynamic();
   Step::vAddSteps_JobExport();
   Step::vAddSteps_JobFetchRows();
   Step::vAddSteps_JobGenData();
@@ -108,7 +107,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobMonitor();
   Step::vAddSteps_JobNetHog();
   Step::vAddSteps_JobNodeInfo();
-    Step::vAddSteps_JobOperand();
+  Step::vAddSteps_JobOperand();
+  Step::vAddSteps_JobPipeline();
   Step::vAddSteps_JobPublish();
   Step::vAddSteps_JobPurge();
   Step::vAddSteps_JobReceiver();

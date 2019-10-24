@@ -41,7 +41,7 @@ namespace Interface     { class ApiState;                                     }
 namespace Jobs          { class Job; struct JobClass;  class JobList;
                                      class Job_CreateTable;
                                      class Job_CreateIndex;
-                                     class Job_Dynamic;
+                                     class Job_Pipeline;
                                      class Job_Operand;
                                      class Job_Universal;                     }
 namespace Library       {                                                     }
