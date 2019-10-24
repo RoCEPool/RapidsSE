@@ -46,6 +46,7 @@ RegSet::RegSet(Task* pTask)
   
   m_pTask = pTask;
   
+  m_i_NextRnd   = AM::bDeveloper() ? 0 : C_UNKNOWN;
   m_pSendNode   = nullptr;
   
   m_pOpQueLeft  = nullptr;

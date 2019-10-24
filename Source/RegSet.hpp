@@ -12,6 +12,8 @@ namespace Registers
   public:
     Task* m_pTask;  // which task
   
+    i8    m_i_NextRnd;    // which next repeatable random nummber?
+
     Node* m_pSendNode;    // node to send to
 
     OperandQueue* m_pOpQueLeft;
