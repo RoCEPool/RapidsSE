@@ -187,6 +187,9 @@ namespace Oblique
     static i8   iJobUniqueId(Job* pJob);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static bool bInBufferPool(Object* pObject);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vLog(TokenVec* pTknVec);
     static void vLogAll(void);
     static void vLogArguments(void);

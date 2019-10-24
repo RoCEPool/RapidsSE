@@ -36,14 +36,10 @@ namespace Correctness
 #include "Report.hpp"
 #include "IntLib.hpp"
 
-
 #include "Statistics.hpp"
 #include "Focal.hpp"
+#include "SMA.hpp"
 
-
-
-
-#define IGNORE_RETURN(call) call
 
 
 typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Stz*);

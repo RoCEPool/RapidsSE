@@ -45,7 +45,7 @@ namespace Pool
     BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
                bool bTouch, bool bProgress,
                bool bDontFree, bool bFreeCB);
-    ~BufferPool(void) noexcept(false);
+   ~BufferPool(void) noexcept(false);
   
     static void vReport(void);
     
@@ -70,6 +70,7 @@ namespace Pool
     bool bFreeCB(void);
     i8   iFreeSpace(void);
     bool bHasDataSpace(void);
+    bool bInBufferPool(Object* pObject);
     void vInitialise(bool bTouch, bool bProgress);
     PoolBuffer* pLimit(void);
     bool bLowMemory(void);

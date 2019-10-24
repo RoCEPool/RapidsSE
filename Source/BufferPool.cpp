@@ -393,6 +393,23 @@ bool BufferPool::bHasDataSpace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check address is in pool                                                   */
+/*----------------------------------------------------------------------------*/
+bool BufferPool::bInBufferPool(Object* pObject)
+{
+  RASSERT(m_pBase);
+  RASSERT(m_pLimit);
+  
+  if (pObject < m_pBase)
+    return false;
+  
+  if (pObject >= m_pLimit)
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* initialise all buffers in the pool                                         */
 /*----------------------------------------------------------------------------*/
 void BufferPool::vInitialise(bool bTouch, bool bProgress)
