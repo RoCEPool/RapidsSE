@@ -151,7 +151,6 @@ void Task::vInit(void)
   // m_oWakeup
   
   m_iTracing     = C_TRACE_NONE;
-  m_i_NextRnd    = AM::bDeveloper() ? 0 : C_UNKNOWN;
   
   m_pForth       = nullptr;
   m_pRegSet      = nullptr;
@@ -642,7 +641,7 @@ void Task::vMutexWait(void)
 /*----------------------------------------------------------------------------*/
 i8& Task::i_NextRnd(void)
 {
-  return m_i_NextRnd;
+  return m_pRegSet->m_i_NextRnd;
 }
 
 /*----------------------------------------------------------------------------*/

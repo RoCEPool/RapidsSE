@@ -43,8 +43,7 @@ namespace Tasks
     Sleep     m_oWakeup;      // wakeup time from sleeping
 
     i8        m_iTracing;     // tracing mask
-    i8        m_i_NextRnd;    // which next repeatable random nummber?
-  
+ 
     Forth*    m_pForth;       // forth execution context
     RegSet*   m_pRegSet;      // set of registers for the task
   
