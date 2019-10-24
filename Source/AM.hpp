@@ -225,6 +225,7 @@ namespace Oblique
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNap(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMilliSeconds, eCN eCallingClass);
+    static Job* pNewJobUniversal(Session* pSession, Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vPrintGlobals(void);

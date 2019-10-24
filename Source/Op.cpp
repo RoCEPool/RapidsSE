@@ -558,7 +558,7 @@ Operand* Op::pPopQueue(void)
     AM::vLogOpr(SL_INF,this,OA_OP_POP,
                 "PopQueue no operand on left queue"_Stz); //!format-LogOpr
 
-  if (pOperand)
+  //if (pOperand)
     vDropTaskLock();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -672,6 +672,23 @@ OperandQueue* Op::pQueueRight(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_pQueueRight;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn a job for this operator                                              */
+/*----------------------------------------------------------------------------*/
+bool Op::bSpawnJob(Session* pSession)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  ReqTuple xReqTuple(m_sName,false);
+  m_pJobUniversal = AM::pNewJobUniversal(pSession, this, &xReqTuple,
+                                         this->m_iUniqueId);
+  bool bSpawned = AM::bSpawnJob(pSession, m_pJobUniversal);
+  
+  m_pTask = AM::pExecutingTask(m_pJobUniversal);
+  
+  return bSpawned;
 }
 
 /*----------------------------------------------------------------------------*/

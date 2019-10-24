@@ -276,9 +276,9 @@ void Pipeline::vSetupJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn operaators for the pipeline                                          */
+/* spawn operaator jobs for the pipeline                                      */
 /*----------------------------------------------------------------------------*/
-void Pipeline::vSpawnOperators(i8 iNode)
+void Pipeline::vSpawnOperatorJobs(i8 iNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
@@ -289,13 +289,13 @@ void Pipeline::vSpawnOperators(i8 iNode)
     for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
       StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
       
-      pStageNde->vSpawnOperators(m_pSession, iNode);
+      pStageNde->vSpawnOperatorJobs(m_pSession, iNode);
     }
     
     for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
       StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
       
-      pStagePtn->vSpawnOperators(m_pSession, iNode);
+      pStagePtn->vSpawnOperatorJobs(m_pSession, iNode);
     }
   }
   

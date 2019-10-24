@@ -32,7 +32,7 @@ namespace Esses         { template <int BYTES> class String_t;
                           typedef Bytes_t<256>     b256;
                           typedef Bytes_t<C_4K>    b4K;   // note this is 4K not 4KB
                                                                               }
-namespace Focals        {                                                     }
+namespace Focals        { class ReqTuple;                                     }
 namespace Gadgets       { class EnumFlags;                                    }
 namespace Grids         { class Grid; class Node;                             }
 namespace Host          {                                                     }
@@ -42,7 +42,8 @@ namespace Jobs          { class Job; struct JobClass;  class JobList;
                                      class Job_CreateTable;
                                      class Job_CreateIndex;
                                      class Job_Dynamic;
-                                     class Job_Operand;                       }
+                                     class Job_Operand;
+                                     class Job_Universal;                     }
 namespace Library       {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class Log; class LogEntry;                          }
