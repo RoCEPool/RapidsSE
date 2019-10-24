@@ -494,12 +494,17 @@ void Constants::vAddConstants(void)
   
   // JK_ : job kind
   /*  0 */ vAddConstant("JK_NONE"_Stz,      JK_NONE);
-  /*  1 */ vAddConstant("JK_CHILD"_Stz,     JK_CHILD);
-  /*  2 */ vAddConstant("JK_DIST2PC"_Stz,   JK_DIST2PC);
-  /*  3 */ vAddConstant("JK_GENERIC"_Stz,   JK_GENERIC);
-  /*  4 */ vAddConstant("JK_GRANDKID"_Stz,  JK_GRANDKID);
-  /*  5 */ vAddConstant("JK_LOCAL"_Stz,     JK_LOCAL);
-  /*  6 */ vAddConstant("JK_SERVICE"_Stz,   JK_SERVICE);
+  /*  1 */ vAddConstant("JK_BOOT"_Stz,      JK_BOOT);
+  /*  2 */ vAddConstant("JK_CHILD"_Stz,     JK_CHILD);
+  /*  3 */ vAddConstant("JK_DIST2PC"_Stz,   JK_DIST2PC);
+  /*  4 */ vAddConstant("JK_GENERIC"_Stz,   JK_GENERIC);
+  /*  5 */ vAddConstant("JK_GRANDKID"_Stz,  JK_GRANDKID);
+  /*  6 */ vAddConstant("JK_INFO"_Stz,      JK_INFO);
+  /*  7 */ vAddConstant("JK_LOCAL"_Stz,     JK_LOCAL);
+  /*  8 */ vAddConstant("JK_META"_Stz,      JK_META);
+  /*  9 */ vAddConstant("JK_OP"_Stz,        JK_OP);
+  /* 10 */ vAddConstant("JK_SERVICE"_Stz,   JK_SERVICE);
+  /* 11 */ vAddConstant("JK_OTHER"_Stz,     JK_OTHER);
 
   // JP_ : job phase
   /*  0 */ vAddConstant("JP_NONE"_Stz,      JP_NONE);

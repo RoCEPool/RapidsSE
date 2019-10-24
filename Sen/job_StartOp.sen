@@ -35,7 +35,7 @@ jobSyntax: start :: start ;
 /*----------------------------------------------------------------------------*/
 jobInfo: start
 {
-  jobKind      = JK_CHILD
+  jobKind      = JK_OP
   responseKind = RS_NODE_ZERO
   
   exeLock      = DL_GRAB_READ
