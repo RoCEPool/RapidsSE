@@ -72,7 +72,8 @@ void ShmUtility::vRun(int argc, Stz* argv[])
     vDelete();
   }
   else
-    vFatal("Unrecognised SHM command\n"_Stz);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Unrecognised SHM command\n"_Stz);
   
 }
 
@@ -88,7 +89,8 @@ void ShmUtility::vAttach(void)
   bool bResult = Shm::bOpenExisting(iFD,msRegionName,oSysCall);
 
   if ( ! bResult ) {
-    vFatal("ShmUtility::vAttach: failed to open region: %s\n"_Stz,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "ShmUtility::vAttach: failed to open region: %s\n"_Stz,
            msRegionName.azChar());
     NEVER_REACH;
   }
@@ -102,7 +104,8 @@ void ShmUtility::vAttach(void)
 
   if (! gaSeShmRegion)  {
     Shm::bClose(iFD,oSysCall);
-    vFatal("ShmUtility::vAttach failed to map\n"_Stz);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "ShmUtility::vAttach failed to map\n"_Stz);
   }
 
   //memcpy(gaSeShmRegion,"ABCDEFGHIJKLMNOPQRSTUVWXYZ\0", 27);
@@ -125,13 +128,15 @@ void ShmUtility::vCreate(void)
   // open a new shm region which will contain the activity map
   bResult = Shm::bOpenCreate(iFD,msRegionName,oSysCall);
   if (! bResult)
-    vFatal("ShmUtility::vCreate: failed to create region %s\n"_Stz,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "ShmUtility::vCreate: failed to create region %s\n"_Stz,
            msRegionName.azChar());
   
   // extend the shm region
   bResult = Shm::bExtend(iFD,miRegionSize,oSysCall);
   if (! bResult)
-    vFatal("ShmUtility::vCreate: failed to extend region %s\n"_Stz,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "ShmUtility::vCreate: failed to extend region %s\n"_Stz,
            msRegionName.azChar());
 
   
@@ -155,7 +160,8 @@ void ShmUtility::vDelete(void)
   SysCall oSysCall;
   
   if (! Shm::bUnlink(msRegionName,oSysCall)) {
-    vFatal("Region %s not unlinked\n"_Stz,msRegionName.azChar());
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Region %s not unlinked\n"_Stz,msRegionName.azChar());
   }
   
   vTrace("Region %s unlinked\n"_Stz,msRegionName.azChar());

@@ -37,7 +37,7 @@ i8 SN_Bol::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
   _precondition_(_MAGIC_,CN_SNBOL);
   
   if ( ! StrLib::bExtractBoolean(aacCrs,m_wDtm.m_iBol) )
-    THROW("StrLib::bExtractBoolean");
+    THROW("StrLib::bExtractBoolean"_Stz);
 
   return m_wDtm.m_iBol;
 }

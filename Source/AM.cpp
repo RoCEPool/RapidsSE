@@ -354,10 +354,10 @@ Thread* AM::pThisTLSThread(void) {
   Thread* pThread = Thread::pThisTLSThread();
   return pThread;
 }
-Pthread* AM::pThisTLSPthread(void) {
+PsxThd* AM::pThisTLSPsxThd(void) {
   Thread* pThread = Thread::pThisTLSThread();
-  Pthread* pPthread =pThread->m_pPthread;
-  return pPthread;
+  PsxThd* pPsxThd =pThread->m_pPsxThd;
+  return pPsxThd;
 }
 i8 AM::iThreadId(Thread* pThread) {
   return pThread->m_iUniqueId;
@@ -1066,10 +1066,13 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    vFatal("Enum for CN_ENUM not found in aCN\n"_Stz);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Enum for CN_ENUM not found in aCN\n"_Stz);
   
   if (iEntriesECN != iEntriesPCN) {
-    vFatal("\n!!!ALERT!!! No of entries in aCN (%lld) do not match the no in eCN (%lld)\n\n"_Stz,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "\n!!!ALERT!!! No of entries in aCN (%lld) "
+           "do not match the no in eCN (%lld)\n\n"_Stz,
            iEntriesPCN, iEntriesECN);
   }
   
@@ -1084,10 +1087,13 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    vFatal("Enum for CN_ENUM not found in gpDump\n"_Stz);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Enum for CN_ENUM not found in gpDump\n"_Stz);
   
   if (iEntriesECN != iEntriesGPDUMP) {
-    vFatal("\n!!!ALERT!!! No of entries in gpDump (%lld) do not match the no in eCN (%lld)\n\n"_Stz,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "\n!!!ALERT!!! No of entries in gpDump (%lld) "
+           "do not match the no in eCN (%lld)\n\n"_Stz,
            iEntriesECN, iEntriesGPDUMP);
   }
   
@@ -1102,10 +1108,13 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    vFatal("Enum for CN_ENUM not found in giClassSize\n"_Stz);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Enum for CN_ENUM not found in giClassSize\n"_Stz);
   
   if (iEntriesECN != iEntriesGCLASSSIZE) {
-    vFatal("\n!!!ALERT!!! No of entries in giClassSize (%lld) do not match the no in eCN (%lld)\n\n"_Stz,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "\n!!!ALERT!!! No of entries in giClassSize (%lld) "
+           "do not match the no in eCN (%lld)\n\n"_Stz,
            iEntriesGCLASSSIZE, iEntriesECN);
   }
   
@@ -1120,10 +1129,13 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    vFatal("Enum for CN_ENUM not found in gpDump\n"_Stz);
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Enum for CN_ENUM not found in gpDump\n"_Stz);
   
   if (iEntriesECN != iEntriesGPDUMP) {
-    vFatal("\n!!!ALERT!!! No of entries in gpDump (%lld) do not match the no in eCN (%lld)\n\n"_Stz,
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "\n!!!ALERT!!! No of entries in gpDump (%lld) "
+           "do not match the no in eCN (%lld)\n\n"_Stz,
            iEntriesECN, iEntriesGPDUMP);
   }
   
@@ -1237,8 +1249,8 @@ void AM::vFocalOutline(s4K& sOutline, Focal* pFocal) {
   else if (CN_MUTEX == eClassNo)
     _pMutex(pFocal)->vFocalOutline(sOutline);
   
-  else if (CN_PTHREAD == eClassNo)
-    _pPthread(pFocal)->vFocalOutline(sOutline);
+  else if (CN_PSXTHD == eClassNo)
+    _pPsxThd(pFocal)->vFocalOutline(sOutline);
   
   else if (CN_SOCKET == eClassNo)
     _pSocket(pFocal)->vFocalOutline(sOutline);

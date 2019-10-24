@@ -49,7 +49,7 @@ Stz* SN_Vch::sz(char** aacCrs, Column* pCol, Formatters* pScnFmt,
                                  pScnFmt->m_cRecordTerminator,
                                  pScnFmt->m_bAllowNonPrintable,
                                  nChars_) )
-    THROW("StrLib::bExtractVarchar");
+    THROW("StrLib::bExtractVarchar"_Stz);
 
   return (Stz*) &m_caVch[0];
 }

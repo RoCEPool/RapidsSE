@@ -76,7 +76,8 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
   
   switch(eHeap) {
     case HT_INVALID:
-      vFatal("HeapMem::pAllocate: Invalid heap allocation: class %lld %s\n"_Stz,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+             "HeapMem::pAllocate: Invalid heap allocation: class %lld %s\n"_Stz,
              eAllocClass,aCN[eAllocClass]);
       
     case HT_PERSISTENT_SMALL:
@@ -112,7 +113,8 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
       return pObject;
       
     default:
-      vFatal("HeapMem::pAllocate: Invalid heap allocation: eHeap %lld\n"_Stz,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+             "HeapMem::pAllocate: Invalid heap allocation: eHeap %lld\n"_Stz,
              eHeap);
   }
   
@@ -159,7 +161,8 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
   switch(eHeap) {
     case HT_INVALID:
       MemLib::vWordDump(pObject,256,0);
-      vFatal("HeapMem::vFree: Invalid heap free: class %lld %s\n"_Stz,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+             "HeapMem::vFree: Invalid heap free: class %lld %s\n"_Stz,
              eAllocClass,aCN[eAllocClass]);
       
     case HT_TRANSIENT_SMALL:
@@ -195,7 +198,8 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
       return;
       
     default:
-      vFatal("HeapMem::vFree: Invalid heap free: eHeap %lld\n"_Stz,
+      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+             "HeapMem::vFree: Invalid heap free: eHeap %lld\n"_Stz,
              eHeap);
   }
 }
@@ -367,78 +371,63 @@ void HeapMem::vValidateEnums(void)
         
       case HT_TRANSIENT_SMALL:
         if (iSize >= C_SIZE_SMALL_OBJECT)
-          vFatal("HeapMem::vValidateEnums: transient small class %lld %s is too big\n"_Stz,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: transient small class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
-        //if (!iSize)
-        //  vWarn("HeapMem::vValidateEnums: small class %lld %lls has 0 size\n"_Stz,
-        //         eClassNo,aCN[eClassNo]);
         break;
         
       case HT_TRANSIENT_MEDIUM:
         if (iSize >= C_SIZE_MEDIUM_OBJECT)
-          vFatal("HeapMem::vValidateEnums: transient medium class %lld %s is too big\n"_Stz,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: transient medium class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
-        //if (!iSize)
-        // vWarn("HeapMem::vValidateEnums: medium class %lld %lls has 0 size\n"_Stz,
-        //        eClassNo,aCN[eClassNo]);
         break;
         
       case HT_TRANSIENT_LARGE:
         if (iSize >= C_SIZE_LARGE_OBJECT)
-          vFatal("HeapMem::vValidateEnums: transient large class %lld %s is too big\n"_Stz,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: transient large class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
-        //if (!iSize)
-        // vWarn("HeapMem::vValidateEnums: large class %lld %lls has 0 size\n"_Stz,
-        //        eClassNo,aCN[eClassNo]);
         break;
         
       case HT_TRANSIENT_JUMBO:
         if (iSize >= C_SIZE_JUMBO_OBJECT)
-          vFatal("HeapMem::vValidateEnums: transient jumbo class %lld %s is too big\n"_Stz,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: transient jumbo class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
-        //if (!iSize)
-        //  vWarn("HeapMem::vValidateEnums: jumbo class %lld %lls has 0 size\n"_Stz,
-        //        eClassNo,aCN[eClassNo]);
         break;
         
       case HT_PERSISTENT_SMALL:
         if (iSize >= C_SIZE_SMALL_OBJECT)
-          vFatal("HeapMem::vValidateEnums: persistent small class %lld %s is too big\n"_Stz,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: persistent small class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
-        //if (!iSize)
-        //  vWarn("HeapMem::vValidateEnums: small class %lld %lls has 0 size\n"_Stz,
-        //         eClassNo,aCN[eClassNo]);
         break;
         
       case HT_PERSISTENT_MEDIUM:
         if (iSize >= C_SIZE_MEDIUM_OBJECT)
-          vFatal("HeapMem::vValidateEnums: persistent medium class %lld %s is too big\n"_Stz,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: persistent medium class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
-        //if (!iSize)
-        // vWarn("HeapMem::vValidateEnums: medium class %lld %lls has 0 size\n"_Stz,
-        //        eClassNo,aCN[eClassNo]);
         break;
         
       case HT_PERSISTENT_LARGE:
         if (iSize >= C_SIZE_LARGE_OBJECT)
-          vFatal("HeapMem::vValidateEnums: persistent large class %lld %s is too big\n"_Stz,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: persistent large class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
-        //if (!iSize)
-        // vWarn("HeapMem::vValidateEnums: large class %lld %lls has 0 size\n"_Stz,
-        //        eClassNo,aCN[eClassNo]);
         break;
         
       case HT_PERSISTENT_JUMBO:
         if (iSize >= C_SIZE_JUMBO_OBJECT)
-          vFatal("HeapMem::vValidateEnums: persistent jumbo class %lld %s is too big\n"_Stz,
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+                 "HeapMem::vValidateEnums: persistent jumbo class %lld %s is too big\n"_Stz,
                  eClass,aCN[eClass]);
-        //if (!iSize)
-        //  vWarn("HeapMem::vValidateEnums: jumbo class %lld %lls has 0 size\n"_Stz,
-        //        eClassNo,aCN[eClassNo]);
         break;
         
       default:
-        vFatal("HeapMem::vValidateEnums: Invalid which heap: eHeap %lld\n"_Stz,
+        vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+               "HeapMem::vValidateEnums: Invalid which heap: eHeap %lld\n"_Stz,
                eHeap);
     }
   }

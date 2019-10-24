@@ -37,7 +37,8 @@ void* Queues::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void Queues::operator delete(void* aAddr)
 {
-  vFatal("fatal: Queues class cannot be deleted"_Stz);
+  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+         "fatal: Queues class cannot be deleted"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,7 +118,7 @@ void Queues::vThreadsReport(void)
     
     Thread* pThread = pQueues->m_pGeneralThreadVec->pGet(i_Thread);
     
-    pThread->m_pPthread->bGetCpu(iUserTime,iSystemTime,
+    pThread->m_pPsxThd->bGetCpu(iUserTime,iSystemTime,
                                  iPercentageUsage,iSleepSsec);
     
     vTrace("  Gen Thread %2lld %p"
@@ -128,8 +129,8 @@ void Queues::vThreadsReport(void)
            pThread->iThreadNo(),
            pThread,
            
-           pThread->m_pPthread->m_aStackBase,
-           pThread->m_pPthread->m_iStackSize,
+           pThread->m_pPsxThd->m_aStackBase,
+           pThread->m_pPsxThd->m_iStackSize,
            
            iUserTime,
            iSystemTime,
@@ -154,7 +155,7 @@ void Queues::vThreadsReport(void)
     
     Thread* pThread = pQueues->m_pDedicatedThreadVec->pGet(i_Thread);
     
-    pThread->m_pPthread->bGetCpu(iUserTime,iSystemTime,
+    pThread->m_pPsxThd->bGetCpu(iUserTime,iSystemTime,
                                  iPercentageUsage,iSleepSsec);
     
     vTrace("  Ded Thread %2lld %p"
@@ -165,8 +166,8 @@ void Queues::vThreadsReport(void)
            pThread->iThreadNo(),
            pThread,
            
-           pThread->m_pPthread->m_aStackBase,
-           pThread->m_pPthread->m_iStackSize,
+           pThread->m_pPsxThd->m_aStackBase,
+           pThread->m_pPsxThd->m_iStackSize,
            
            iUserTime,
            iSystemTime,

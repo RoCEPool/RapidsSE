@@ -11,7 +11,7 @@ extern pthread_key_t giTLS_ThreadKey;
 /*----------------------------------------------------------------------------*/
 void TlsKeys::vInit(void)
 {
-  bool b = Pthread::bTlsCreate(&giTLS_ThreadKey);
+  bool b = PsxThd::bTlsCreate(&giTLS_ThreadKey);
   ASSERT(b);
 }
 

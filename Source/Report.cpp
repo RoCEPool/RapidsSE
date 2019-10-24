@@ -6,22 +6,6 @@
 #include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
-/* report a non-recoverable fatal message                                     */
-/*----------------------------------------------------------------------------*/
-void Correctness::vFatal(Stz* aFormat, ...)
-{
-  vStackDump();
-  
-  va_list xVaArgs;
-  
-  va_start(xVaArgs,aFormat);
-  AM::vWriteTrace(YA_SYS_FATAL,aFormat,xVaArgs);
-  va_end(xVaArgs);
-  
-  AM::vProcessExit();
-}
-
-/*----------------------------------------------------------------------------*/
 /* report an information message                                              */
 /*----------------------------------------------------------------------------*/
 void Correctness::vInfo(Stz* aFormat, ...)

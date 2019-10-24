@@ -46,7 +46,7 @@ void Step::vSocketAccept(void)
   
   if ( ! bResult )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
-           "Unable to accept connection: Errno %d", oSysCall.iError());
+           "Unable to accept connection: Errno %d"_Stz, oSysCall.iError());
   
   // return the new socket
   Socket* pNewSocket = new Socket(iSocketId);
@@ -78,7 +78,7 @@ void Step::vSocketClose(void)
   
   if ( ! bResult )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
-           "Unable to close socket: Errno %d!", oSysCall.iError());
+           "Unable to close socket: Errno %d!"_Stz, oSysCall.iError());
   
   EXIT();
 }
@@ -272,12 +272,12 @@ void Step::vSocketListen(void)
     if (oSysCall.iError() == EADDRINUSE) {
       vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
              "Address in use (port: %lld). "
-             "Check if another instance of RAPIDSSE is running!",
+             "Check if another instance of RAPIDSSE is running!"_Stz,
              iPort);
     }
     else
       vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
-             "Unable to listen for connections: Errno %d", oSysCall.iError());
+             "Unable to listen for connections: Errno %d"_Stz, oSysCall.iError());
   }
   
   // return new socket
@@ -302,7 +302,7 @@ void Step::vSocketOpen(void)
   
   if ( ! bResult )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
-           "Unable to create socket: Errno %d", oSysCall.iError());
+           "Unable to create socket: Errno %d"_Stz, oSysCall.iError());
   
   Object* pPtrSocket = pSocket;
   m_pDataStack->vPushPointer(pPtrSocket);

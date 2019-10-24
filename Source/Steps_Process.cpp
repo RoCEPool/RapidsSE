@@ -35,7 +35,8 @@ void Step::vProcessQuit(void)
 {
   ENTRY("vProcessQuit"_Stz);
   
-  vFatal("Process quitting\n"_Stz);
+//  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+//         "Process quitting\n"_Stz);
   
   Process::vExitFailure();
   

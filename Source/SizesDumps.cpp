@@ -306,7 +306,7 @@ pDUMPFUN *gpDump[]
   /* 89 */ &Dump::vUndefined,       // CN_PREDICATE
   /* 90 */ &Dump::vUndefined,       // CN_PREDVEC
   /* 90 */ &Dump::vUndefined,       // CN_PROJECTOP
-  /* 91 */ &Dump::vUndefined,       // CN_PTHREAD
+  /* 91 */ &Dump::vUndefined,       // CN_PSXTHD
   /* 94 */ &Dump::vDummy,           // CN_PTNCOLVEC
   
   /* 95 */ &Queue::vDump,           // CN_QUEUE
@@ -730,7 +730,7 @@ i8 giClassSize[]
   /* 90 */ sizeof(Predicate),          // CN_PREDICATE
   /* 91 */ sizeof(PredicateVec),       // CN_PREDICATEVEC
   /* 91 */ sizeof(ProjectOp),          // CN_PROJECTOP
-  /* 89 */ sizeof(Pthread),            // CN_PTHREAD
+  /* 89 */ sizeof(PsxThd),            // CN_PSXTHD
   /* 94 */ sizeof(PtnColVec),          // CN_PTNCOLVEC
   
   /* 95 */ sizeof(Queue),              // CN_QUEUE
@@ -1154,7 +1154,7 @@ eHT geWhichHeap[]
   /* 89 */ HT_TRANSIENT_SMALL,   // CN_PREDICATE
   /* 90 */ HT_TRANSIENT_MEDIUM,  // CN_PREDICATEVEC
   /* 90 */ HT_TRANSIENT_SMALL,   // CN_PROJECTOP
-  /* 91 */ HT_TRANSIENT_SMALL,   // CN_PTHREAD
+  /* 91 */ HT_TRANSIENT_SMALL,   // CN_PSXTHD
   /* 94 */ HT_TRANSIENT_MEDIUM,  // CN_PTNCOLVEC
 
   /* 95 */ HT_TRANSIENT_SMALL,   // CN_QUEUE

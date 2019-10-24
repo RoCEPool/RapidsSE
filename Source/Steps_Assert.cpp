@@ -66,7 +66,7 @@ void Step::vAssertClass(void)
   }
   
   if ( eClassNo != eAssertClassNo )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::class in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::class in word"_Stz);
   
   EXIT();
 }
@@ -93,7 +93,7 @@ void Step::vAssertClass_0(void)
   }
   
   if ( eClassNo != eAssertClassNo )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::class_0 in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::class_0 in word"_Stz);
   
   EXIT();
 }
@@ -120,7 +120,7 @@ void Step::vAssertClass_1(void)
   }
   
   if ( eClassNo != eAssertClassNo )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::class_1 in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::class_1 in word"_Stz);
   
   EXIT();
 }
@@ -147,7 +147,7 @@ void Step::vAssertClass_2(void)
   }
   
   if ( eClassNo != eAssertClassNo )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::class_2 in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::class_2 in word"_Stz);
   
   EXIT();
 }
@@ -174,7 +174,7 @@ void Step::vAssertClass_3(void)
   }
   
   if ( eClassNo != eAssertClassNo )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::class_3 in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::class_3 in word"_Stz);
   
   EXIT();
 }
@@ -201,7 +201,7 @@ void Step::vAssertClass_4(void)
   }
   
   if ( eClassNo != eAssertClassNo )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::class_4 in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::class_4 in word"_Stz);
   
   EXIT();
 }
@@ -216,7 +216,7 @@ ENTRY("vAssertStack_0"_Stz);
   i8 iStackValues = m_pDataStack->nValues();
   
   if ( ! (0 == iStackValues)  )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_0 in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_0 in word"_Stz);
   
   EXIT();
 }
@@ -231,7 +231,7 @@ ENTRY("vAssertStack_0more"_Stz);
   i8 iStackValues = m_pDataStack->nValues();
   
   if ( ! (0 <= iStackValues) )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_0+ in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_0+ in word"_Stz);
   
   EXIT();
 }
@@ -246,7 +246,7 @@ ENTRY("vAssertStack_1"_Stz);
   i8 iStackValues = m_pDataStack->nValues();
   
   if ( ! (1 == iStackValues)  )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_1 in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_1 in word"_Stz);
   
   EXIT();
 }
@@ -261,7 +261,7 @@ ENTRY("vAssertStack_1more"_Stz);
   i8 iStackValues = m_pDataStack->nValues();
   
   if ( ! (1 <= iStackValues) )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_1+ in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_1+ in word"_Stz);
   
   EXIT();
 }
@@ -276,7 +276,7 @@ ENTRY("vAssertStack_2"_Stz);
   i8 iStackValues = m_pDataStack->nValues();
   
   if ( ! (2 == iStackValues)  )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_2 in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_2 in word"_Stz);
   
   EXIT();
 }
@@ -291,7 +291,7 @@ ENTRY("vAssertStack_2more"_Stz);
   i8 iStackValues = m_pDataStack->nValues();
   
   if ( ! (2 <= iStackValues) )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_2+ in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_2+ in word"_Stz);
   
   EXIT();
 }
@@ -306,7 +306,7 @@ ENTRY("vAssertStack_3"_Stz);
   i8 iStackValues = m_pDataStack->nValues();
   
   if ( ! (3 == iStackValues)  )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_3 in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_3 in word"_Stz);
   
   EXIT();
 }
@@ -321,7 +321,7 @@ ENTRY("vAssertStack_3more"_Stz);
   i8 iStackValues = m_pDataStack->nValues();
   
   if ( ! (3 <= iStackValues) )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_3+ in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_3+ in word"_Stz);
   
   EXIT();
 }
@@ -336,7 +336,7 @@ ENTRY("vAssertStack_4"_Stz);
   i8 iStackValues = m_pDataStack->nValues();
   
   if ( ! (4 == iStackValues)  )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_4 in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_4 in word"_Stz);
   
   EXIT();
 }
@@ -351,7 +351,7 @@ ENTRY("vAssertStack_4more"_Stz);
   i8 iStackValues = m_pDataStack->nValues();
   
   if ( ! (4 <= iStackValues) )
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_4+ in word");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"assert::stack_4+ in word"_Stz);
   
   EXIT();
 }

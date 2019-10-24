@@ -299,7 +299,7 @@ pFINALIZE *gpFinalize[]
   /* 90 */ &Finalize::vUndefined,         // CN_PREDICATE
   /* 91 */ &Finalize::vUndefined,         // CN_PREDICATEVEC
   /* 91 */ &Finalize::vUndefined,         // CN_PROJECTOP
-  /* 89 */ &Finalize::vUndefined,         // CN_PTHREAD
+  /* 89 */ &Finalize::vUndefined,         // CN_PSXTHD
   /* 94 */ &Finalize::vUndefined,         // CN_PTNCOLVEC
   
   /* 95 */ &Finalize::vUndefined,         // CN_QUEUE

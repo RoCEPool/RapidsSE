@@ -16,7 +16,7 @@ namespace Threads
     Task*    m_pTask;         // task current being executed
     i8       m_nAssignedTasks;// number of tasks scheduled to this thread
 
-    Pthread* m_pPthread;      // its posix structure
+    PsxThd* m_pPsxThd;      // its posix structure
   
     // must be last
     Footer m_xFooter;
@@ -42,9 +42,9 @@ namespace Threads
     void vFocalOutline(s4K& sOutline);
     void vLoop_dedicated(void);
     void vLoop_general(void);
-    void vSpawnPthread_dedicated(void);
-    void vSpawnPthread_general(void);
-    void vSpawnPthread_dummy(void);
+    void vSpawnPsxThd_dedicated(void);
+    void vSpawnPsxThd_general(void);
+    void vSpawnPsxThd_dummy(void);
     Task* pTask(void);
     void vThisTLSThread(void);
     void vThreadEntry(void);

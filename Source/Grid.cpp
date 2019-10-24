@@ -35,7 +35,8 @@ void* Grid::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void Grid::operator delete(void*)
 {
-  vFatal("fatal: Grids class cannot be deleted"_Stz);
+  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+         "fatal: Grids class cannot be deleted"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

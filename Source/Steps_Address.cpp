@@ -72,7 +72,8 @@ void Step::vAddressFetch(void)
       break;
   
     default:
-      vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Invalid eClass %lld",eClass);
+      vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
+             "Invalid eClass %lld"_Stz,eClass);
   }
   
   m_pDataStack->vPushGenVar(xValFetched);
@@ -117,7 +118,8 @@ void Step::vAddressStore(void)
       break;
       
     default:
-      vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"Invalid eClass %lld",eClass);
+      vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
+             "Invalid eClass %lld"_Stz,eClass);
   }
   
   EXIT();

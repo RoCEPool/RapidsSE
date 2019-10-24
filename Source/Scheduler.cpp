@@ -1225,7 +1225,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   pThread->m_pMutex->vSignal(pTask);
   pThread->m_pMutex->vUnlock(pTask);
   
-  // mutex can now be acquired by the m_pPthread of pThread
+  // mutex can now be acquired by the m_pPsxThd of pThread
   
   // DO NOT TOUCH TASK
   return true;
@@ -1384,7 +1384,7 @@ void Scheduler::vThread_SpawnDedicated(Task* pTask)
   pThread->m_pTask = pTask;
   pThread->m_eDedicated = pTask->pJob()->eClass();
   
-  pThread->vSpawnPthread_dedicated();
+  pThread->vSpawnPsxThd_dedicated();
 }
 
 /*----------------------------------------------------------------------------*/

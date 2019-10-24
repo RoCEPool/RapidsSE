@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Pthread.hpp - posix thread                                                 */
+/* PsxThd.hpp - posix thread                                                  */
 /*============================================================================*/
 #pragma once
 
@@ -7,23 +7,24 @@ namespace Resources
 {
   static const i8 C_THREAD_BOOST = 8;
   
-  class Pthread : public Resource
+  class PsxThd : public Resource
   {
   public:
-    i8        m_iOpSysThreadId; // thread id as known by os
-    pthread_t m_iPthreadId;     // posix thread id
+    pthread_t m_iPsxThdId;  // posix thread id
   
-    void*     m_aStackBase;    // stack base address
-    i8        m_iStackSize;    // stack size
+    void*     m_aStackBase; // stack base address
+    i8        m_iStackSize; // stack size
 
+    i8        m_iOsThdId;   // thread id as known by os
+  
     // must be last
     Footer m_xFooter;
   
     void* operator new(size_t);
-    void operator delete(void* pPthreadAddress);
+    void operator delete(void* pPsxThdAddress);
 
-    Pthread(void);
-    ~Pthread(void) noexcept(false);
+    PsxThd(void);
+    ~PsxThd(void) noexcept(false);
   
   
     bool bBindThread(i8 i_Core);
@@ -70,7 +71,7 @@ namespace Resources
     Footer* aFooter(void);
   };
   
-  Pthread* _pPthread(void* aAddr);
+  PsxThd* _pPsxThd(void* aAddr);
 }
 
 /*============================================================================*/

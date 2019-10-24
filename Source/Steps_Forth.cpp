@@ -400,7 +400,7 @@ void Step::vForget(void)
   
   if ( ! pWord )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
-           "No such word: %s",
+           "No such word: %s"_Stz,
            m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken().azChar());
   
   s32 sName;
@@ -476,7 +476,7 @@ void Step::vPostpone(void)
   Word* pCalledWord = m_pTask->m_oDicStack.pFindWord(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
   if ( ! pCalledWord )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
-           "No word: %s ",
+           "No word: %s "_Stz,
            m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken().azChar());
   
   if (pCalledWord->bImmediate()) {
@@ -709,7 +709,7 @@ void Step::vSubDic(void)
   Word* pWordSubDic = m_pTask->m_oDicStack.pFindWord(sNameSubDic);
   if ( ! pWordSubDic )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
-           "No such subDic: %s",
+           "No such subDic: %s"_Stz,
            sNameSubDic.azChar());
   
   Dic* pDic = _pDic(pWordSubDic->aWspArea());
@@ -736,7 +736,8 @@ void Step::vTick(void)
   Word* pWord = m_pTask->m_oDicStack.pFindWord(sWordNm);
   
   if (! pWord)
-    vFatal("No word: %s "_Stz,sWordNm.azChar());
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "No word: %s "_Stz,sWordNm.azChar());
   
   if (m_pTask->m_pForth->m_pCompiler->m_bCompiling) {
     Word* pCurrentWord = m_pTask->m_pForth->m_pCompiler->m_pCurrent;

@@ -10,6 +10,9 @@ namespace SenVM
   public:
     Task*     m_pTask;        // which task
   
+    Word*     m_pSeedWord;      // seed
+    Word*     m_pExceptionWord; // seed
+
     Cell*     m_aInxPtr;      // instruction/cell pointer
   
     Stack*    m_pAuxStack;    // auxiliary stack

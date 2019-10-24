@@ -17,12 +17,14 @@ namespace Correctness
   // refer: https://en.cppreference.com/w/cpp/language/attributes/noreturn
   
   [[ noreturn ]] void vAbortProcess(void);
-  
+    
   [[ noreturn ]] void vThrow(eFK eKind, const char* azFunc,
                              const char* azFilePath, i8 iLineNo,
-                             const char* azFormat,...);
+                             Stz* szFormat,...);
   
-  [[ noreturn ]] void vTypeFatal(void* aObject, eCN eExpectingClass);
+  [[ noreturn ]] void vTypeFatal(eFK eKind, const char* azFunc,
+                                 const char* azFilePath, i8 iLineNo,
+                                 void* aObject, eCN eExpectingClass);
 };
 
 

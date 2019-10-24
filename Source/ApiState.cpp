@@ -326,8 +326,8 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
   pState->m_bRunning   = true;
   pState->m_bSignalled = false;
 
-  pState->m_aStackBase = Pthread::aGetStackBase();
-  pState->m_aStackPtr  = Pthread::aGetStackPointer();
+  pState->m_aStackBase = PsxThd::aGetStackBase();
+  pState->m_aStackPtr  = PsxThd::aGetStackPointer();
 
   pState->m_eJobClass  = CN_NONE;
   pState->m_iJobLoc  = 0;

@@ -44,7 +44,7 @@ void Step::vDirChangeCurrent(void)
   
   if ( ! Dir::bChangeCurrent(sDir) )
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
-           "Unable to change current directory");
+           "Unable to change current directory"_Stz);
   
   EXIT();
 }
@@ -84,7 +84,7 @@ void Step::vDirGetCurrent(void)
   }
   else {
     vThrow(FK_FAILED,__func__,__FILE__,__LINE__,
-           "Unable to get current directory");
+           "Unable to get current directory"_Stz);
   }
   
   EXIT();

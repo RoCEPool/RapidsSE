@@ -301,7 +301,7 @@ enum eCN : u2 // Class Number
   /* 164 0xA4       48B Heap:S */ CN_PREDICATE,
   /* 165 0xA5      184B Heap:M */ CN_PREDICATEVEC,
   /*                           */ CN_PROJECTOP,
-  /* 166 0xA6       32B Heap:S */ CN_PTHREAD,
+  /* 166 0xA6       32B Heap:S */ CN_PSXTHD,
   /* 167 0xA7     8216B Heap:M */ CN_PTNCOLVEC,
   
   /* 168 0xA8      168B Heap:S */ CN_QUEUE,
@@ -723,7 +723,7 @@ static Stz* aCN[]
   /* 164 0xA4 */ "PREDICATE"_Stz,           // CN_PREDICATE
   /* 165 0xA5 */ "PREDICATEVEC"_Stz,        // CN_PREDICATEVEC
   /*          */ "PROJECTOP"_Stz,           // CN_PROJECTOP
-  /* 166 0xA6 */ "PTHREAD"_Stz,             // CN_PTHREAD
+  /* 166 0xA6 */ "PSXTHD"_Stz,              // CN_PSXTHD
   /* 167 0xA7 */ "PTNCOLVEC"_Stz,           // CN_PTNCOLVEC
   
   /* 168 0xA8 */ "QUEUE"_Stz,               // CN_QUEUE

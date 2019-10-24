@@ -9,7 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void* ForthValue::operator new(size_t)
 {
-  vFatal("fatal: ForthValue class cannot be new'd\n"_Stz);
+  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+         "fatal: ForthValue class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

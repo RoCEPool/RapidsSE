@@ -21,7 +21,8 @@ Local* SenVM::_pLocal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Local::operator new(size_t)
 {
-  vFatal("fatal: Local class cannot be new'd\n"_Stz);
+  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+         "fatal: Local class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

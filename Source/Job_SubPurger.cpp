@@ -188,7 +188,7 @@ bool Job_SubPurger::bChunk(void)
   }
   
 //  if (! bPurged) {
-//    Pthread::vSleepMilli(10);
+//    PsxThd::vSleepMilli(10);
 //    return true;
 //  }
 

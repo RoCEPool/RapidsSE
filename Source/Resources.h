@@ -21,7 +21,7 @@ namespace Resources
 #include "Fifo.hpp"
 #include "File.hpp"
 #include "Mutex.hpp"
-#include "Pthread.hpp"
+#include "PsxThd.hpp"
 #include "Socket.hpp"
 
 #include "SP_Mutex.hpp"

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Pthread - a posix thread                                                   */
+/* PsxThd - a posix thread                                                    */
 /*============================================================================*/
 
 #include "Resources.h"
 #include "AM.hpp"
 
-Atomic gixPthread;
+Atomic gixPsxThd;
 
 extern pthread_key_t giTLS_ThreadKey;
 
@@ -16,31 +16,31 @@ extern pthread_key_t giTLS_ThreadKey;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Pthread* Resources::_pPthread(void* aAddr)
+PsxThd* Resources::_pPsxThd(void* aAddr)
 {
-  Pthread* pPthread = reinterpret_cast<Pthread*>(aAddr);
+  PsxThd* pPsxThd = reinterpret_cast<PsxThd*>(aAddr);
   
-  RASSERT_TYPE(pPthread,CN_PTHREAD);
+  RASSERT_TYPE(pPsxThd,CN_PSXTHD);
   
-  return pPthread;
+  return pPsxThd;
 }
 
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Pthread::operator new(size_t)
+void* PsxThd::operator new(size_t)
 {
-  void* pPthread = HeapMem::pAllocate(CN_PTHREAD);
+  void* pPsxThd = HeapMem::pAllocate(CN_PSXTHD);
   
-  return pPthread;
+  return pPsxThd;
 }
 
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-void Pthread::operator delete(void* pPthreadAddress)
+void PsxThd::operator delete(void* pPsxThdAddress)
 {
-  Object* pObject = reinterpret_cast<Object*>(pPthreadAddress);
+  Object* pObject = reinterpret_cast<Object*>(pPsxThdAddress);
   
   HeapMem::vFree(pObject);
 }
@@ -48,38 +48,38 @@ void Pthread::operator delete(void* pPthreadAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pthread::Pthread()
-: Resource(CN_PTHREAD,nullptr)
+PsxThd::PsxThd()
+: Resource(CN_PSXTHD,nullptr)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
-  m_iOpSysThreadId = 0;
-  m_iPthreadId = 0;
+  m_iOsThdId = 0;
+  m_iPsxThdId = 0;
   
   m_aStackBase   = nullptr;
   m_iStackSize   = 0;
 
-  _checkInitialised_(CN_PTHREAD);
+  _checkInitialised_(CN_PSXTHD);
 
-  ++ gixPthread;
+  ++ gixPsxThd;
   AM::vLogRes(SL_INF,this,RA_THD_CONSTRUCT,
-              "Pthread construct : %p (%lld pthreads exist)"_Stz, //!format-LogRes
-              this,* gixPthread);
+              "PsxThd construct : %p (%lld pthreads exist)"_Stz, //!format-LogRes
+              this,* gixPsxThd);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Pthread::~Pthread(void) noexcept(false)
+PsxThd::~PsxThd(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
-  -- gixPthread;
+  -- gixPsxThd;
   AM::vLogRes(SL_INF,this,RA_THD_DESTRUCT,
-              "Pthread destruct : %p (%lld pthreads exist)"_Stz, //!format-LogRes
-              this,* gixPthread);
+              "PsxThd destruct : %p (%lld pthreads exist)"_Stz, //!format-LogRes
+              this,* gixPsxThd);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,22 +89,22 @@ Pthread::~Pthread(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* mark thread as not being an SE thread                                      */
 /*----------------------------------------------------------------------------*/
-void Pthread::vMarkNonSeThread(void)
+void PsxThd::vMarkNonSeThread(void)
 {
-  Pthread::vTlsSet(giTLS_ThreadKey,(void*)-1);
+  PsxThd::vTlsSet(giTLS_ThreadKey,(void*)-1);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set standard scheduling policy for thread                                  */
 /*----------------------------------------------------------------------------*/
-void Pthread::vMonitorPortrait(s48K& sPortrait)
+void PsxThd::vMonitorPortrait(s48K& sPortrait)
 {
   s32 sUnitMag;
   s32 sTimeMag;
 
   Statistics* pStats = AM::pStatistics();
   
-  sPortrait.vSprint("Pthread: sleeps %lld"_Stz,
+  sPortrait.vSprint("PsxThd: sleeps %lld"_Stz,
                     pStats->Thread.m_nSleeps);
   
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
@@ -126,9 +126,9 @@ void Pthread::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* bind thread to a core                                                      */
 /*----------------------------------------------------------------------------*/
-bool Pthread::bBindThread(i8 i_Core)
+bool PsxThd::bBindThread(i8 i_Core)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
 //
 // refer: https://developer.apple.com/library/archive/releasenotes/Performance/RN-AffinityAPI/
@@ -144,10 +144,10 @@ bool Pthread::bBindThread(i8 i_Core)
 #ifdef WITH_APPLE
   int iReturn = 0;
   thread_affinity_policy_data_t xPolicy = { (int)i_Core };
-  thread_port_t uMachThread = pthread_mach_thread_np(m_iPthreadId);
+  thread_port_t uMachThread = pthread_mach_thread_np(m_iPsxThdId);
 
   vTrace("binding thread with posix id %d to core %d\n"_Stz,
-         m_iPthreadId, (int)i_Core);
+         m_iPsxThdId, (int)i_Core);
 
 //  mach_msg_type_number_t policy_infoCnt = 1;
 //  boolean_t get_default;
@@ -179,9 +179,9 @@ bool Pthread::bBindThread(i8 i_Core)
 //  CPU_ZERO(&xAffinity);
 //  CPU_SET(iCpu, &xAffinity);
 //
-//  ASSERT(pthread_self() == m_iPthreadId);
+//  ASSERT(pthread_self() == m_iPsxThdId);
 //
-//  iResult = pthread_setafffinity_np(m_iPthreadId,
+//  iResult = pthread_setafffinity_np(m_iPsxThdId,
 //                                    sizeof(cpu_set_t), &xAffinity);
 //  if (iResult == -1) {
 //    vWarn("Error in pthread_setafffinity_np() : %lld\n"_Stz, errno);
@@ -194,9 +194,9 @@ bool Pthread::bBindThread(i8 i_Core)
 /*----------------------------------------------------------------------------*/
 /* set standard scheduling policy for thread                                  */
 /*----------------------------------------------------------------------------*/
-void Pthread::vDisableRealtime(void)
+void PsxThd::vDisableRealtime(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
 #ifdef WITH_APPLE
   
@@ -210,7 +210,7 @@ void Pthread::vDisableRealtime(void)
                                  THREAD_STANDARD_POLICY_COUNT);
   
   if (iReturn != KERN_SUCCESS) {
-    vTrace("Pthread::vDisableRealtime: thread_policy_set() failed %lld.\n"_Stz,
+    vTrace("PsxThd::vDisableRealtime: thread_policy_set() failed %lld.\n"_Stz,
            iReturn);
     return;
   }
@@ -223,9 +223,9 @@ void Pthread::vDisableRealtime(void)
 /*----------------------------------------------------------------------------*/
 /* set realtime scheduling policy for thread                                  */
 /*----------------------------------------------------------------------------*/
-void Pthread::vEnableRealtime(void)
+void PsxThd::vEnableRealtime(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
 #ifdef WITH_APPLE
 
@@ -257,7 +257,7 @@ void Pthread::vEnableRealtime(void)
                                  THREAD_TIME_CONSTRAINT_POLICY_COUNT);
   
   if (iReturn != KERN_SUCCESS) {
-    vTrace("Pthread::vEnableRealtime: thread_policy_set() failed %lld.\n"_Stz,
+    vTrace("PsxThd::vEnableRealtime: thread_policy_set() failed %lld.\n"_Stz,
            iReturn);
     return;
   }
@@ -269,9 +269,9 @@ void Pthread::vEnableRealtime(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void Pthread::vEnableRealtime_2(void)
+void PsxThd::vEnableRealtime_2(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
 #ifdef WITH_APPLE
   
@@ -319,7 +319,7 @@ void Pthread::vEnableRealtime_2(void)
                               THREAD_TIME_CONSTRAINT_POLICY_COUNT);
   
   if (iReturn != KERN_SUCCESS) {
-    vTrace("Pthread::vEnableRealtime: thread_policy_set() failed %lld.\n"_Stz,
+    vTrace("PsxThd::vEnableRealtime: thread_policy_set() failed %lld.\n"_Stz,
            iReturn);
     return;
   }
@@ -332,9 +332,9 @@ void Pthread::vEnableRealtime_2(void)
 /*----------------------------------------------------------------------------*/
 /* focal outline                                                              */
 /*----------------------------------------------------------------------------*/
-void Pthread::vFocalOutline(s4K& sOutline)
+void PsxThd::vFocalOutline(s4K& sOutline)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
 
   sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
 }
@@ -342,12 +342,12 @@ void Pthread::vFocalOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 /* get cpu and sleep info                                                     */
 /*----------------------------------------------------------------------------*/
-bool Pthread::bGetCpu(i8& iUser, i8& iSystem, i8& iUsage, i8& iSleep)
+bool PsxThd::bGetCpu(i8& iUser, i8& iSystem, i8& iUsage, i8& iSleep)
 {
   
 #ifdef WITH_APPLE
   
-  thread_port_t uThreadPort = pthread_mach_thread_np(m_iPthreadId);  
+  thread_port_t uThreadPort = pthread_mach_thread_np(m_iPsxThdId);  
   thread_extended_info_data_t xInfoExtended;
   mach_msg_type_number_t iCount = THREAD_EXTENDED_INFO_COUNT;
 
@@ -373,9 +373,9 @@ bool Pthread::bGetCpu(i8& iUser, i8& iSystem, i8& iUsage, i8& iSleep)
 /*----------------------------------------------------------------------------*/
 /* get current thread info                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Pthread::iGetInfo(void)
+i8 PsxThd::iGetInfo(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
 #ifdef WITH_APPLE
   
@@ -391,7 +391,7 @@ i8 Pthread::iGetInfo(void)
                         &Count);
   
   if (iReturn != KERN_SUCCESS) {
-    vTrace("Pthread::vGetInfo: thread_info() failed %lld.\n"_Stz,
+    vTrace("PsxThd::vGetInfo: thread_info() failed %lld.\n"_Stz,
            iReturn);
     return -1;
   }
@@ -410,9 +410,9 @@ i8 Pthread::iGetInfo(void)
 /*----------------------------------------------------------------------------*/
 /* get current thread policy                                                  */
 /*----------------------------------------------------------------------------*/
-void Pthread::vGetPolicy(void)
+void PsxThd::vGetPolicy(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
 #ifdef WITH_APPLE
 
@@ -440,9 +440,9 @@ void Pthread::vGetPolicy(void)
 /*----------------------------------------------------------------------------*/
 /* get os thread id                                                           */
 /*----------------------------------------------------------------------------*/
-void Pthread::vSetOSThreadId(void)
+void PsxThd::vSetOSThreadId(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
 #ifdef WITH_APPLE
   i8 iOpSysThreadId = syscall(SYS_thread_selfid);
@@ -453,7 +453,7 @@ void Pthread::vSetOSThreadId(void)
   if (-1 == iOpSysThreadId)
     vWarn("syscall(SYS_gettid) error; errno=%d\n"_Stz,errno);
   else
-    m_iOpSysThreadId = iOpSysThreadId;
+    m_iOsThdId = iOpSysThreadId;
 }
 
 
@@ -462,7 +462,7 @@ void Pthread::vSetOSThreadId(void)
 /*----------------------------------------------------------------------------*/
 /* sleep indefinite                                                           */
 /*----------------------------------------------------------------------------*/
-void Pthread::vSleepInfinite(void)
+void PsxThd::vSleepInfinite(void)
 {
   AM::vLogRes(SL_INF,this,RA_THD_SLEEP_INDEF,
               "Thead sleeps indefinitely"_Stz); //!format-LogRes
@@ -473,7 +473,7 @@ void Pthread::vSleepInfinite(void)
 /*----------------------------------------------------------------------------*/
 /* sleep for given number of milliseconds                                     */
 /*----------------------------------------------------------------------------*/
-void Pthread::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
+void PsxThd::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
 {
   struct timespec xReq;
   struct timespec xRem;
@@ -495,23 +495,23 @@ void Pthread::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
 #endif
   
   AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "Pthread sleeps for %lldms via nanosleep()"_Stz, //!format-LogRes
+              "PsxThd sleeps for %lldms via nanosleep()"_Stz, //!format-LogRes
               nMilliSeconds);
   
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("Pthread::vSleepMsec error; errno=%lld\n"_Stz,errno);
+    vWarn("PsxThd::vSleepMsec error; errno=%lld\n"_Stz,errno);
   }
   
   AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "Pthread is awake"_Stz); //!format-LogRes
+              "PsxThd is awake"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
 /* sleep for given number of nanoseconds                                      */
 /*----------------------------------------------------------------------------*/
-void Pthread::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
+void PsxThd::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
 {
   struct timespec xReq;
   struct timespec xRem;
@@ -533,22 +533,22 @@ void Pthread::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
 #endif
   
   AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "Pthread sleeps for %lldns via nanosleep()"_Stz, //!format-LogRes
+              "PsxThd sleeps for %lldns via nanosleep()"_Stz, //!format-LogRes
               nNanoSeconds);
   
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("Pthread::vSleepNsec error; errno=%lld\n"_Stz,errno);
+    vWarn("PsxThd::vSleepNsec error; errno=%lld\n"_Stz,errno);
   }
   AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "Pthread is awake"_Stz); //!format-LogRes
+              "PsxThd is awake"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
 /* sleep for given number of seconds                                          */
 /*----------------------------------------------------------------------------*/
-void Pthread::vSleepSsec(i8 nSeconds, eCN eCallingClass)
+void PsxThd::vSleepSsec(i8 nSeconds, eCN eCallingClass)
 {
   
 #ifdef WITH_STATISTICS_COUNTERS
@@ -565,13 +565,13 @@ void Pthread::vSleepSsec(i8 nSeconds, eCN eCallingClass)
   sleep((unsigned)nSeconds);
   
   AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "Pthread is awake"_Stz); //!format-LogRes
+              "PsxThd is awake"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
 /* sleep for given number of microseconds                                     */
 /*----------------------------------------------------------------------------*/
-void Pthread::vSleepUsec(i8 nMicroSeconds, eCN eCallingClass)
+void PsxThd::vSleepUsec(i8 nMicroSeconds, eCN eCallingClass)
 {
   struct timespec xReq;
   struct timespec xRem;
@@ -593,17 +593,17 @@ void Pthread::vSleepUsec(i8 nMicroSeconds, eCN eCallingClass)
 #endif
   
   AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "Pthread sleeps for %lldus via nanosleep()"_Stz, //!format-LogRes
+              "PsxThd sleeps for %lldus via nanosleep()"_Stz, //!format-LogRes
               nMicroSeconds);
   
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("Pthread::vSleepMicro error; errno=%lld\n"_Stz,errno);
+    vWarn("PsxThd::vSleepMicro error; errno=%lld\n"_Stz,errno);
   }
   
   AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "Pthread is awake"_Stz); //!format-LogRes
+              "PsxThd is awake"_Stz); //!format-LogRes
 }
 
 
@@ -611,14 +611,14 @@ void Pthread::vSleepUsec(i8 nMicroSeconds, eCN eCallingClass)
 /*----------------------------------------------------------------------------*/
 /* create thread, passing it function to execute                              */
 /*----------------------------------------------------------------------------*/
-bool Pthread::bSpawnThread(void* pFun(void*), void* pArg)
+bool PsxThd::bSpawnThread(void* pFun(void*), void* pArg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
   // we shouldnt have a thread yet
-  ASSERT( ! m_iPthreadId );
+  ASSERT( ! m_iPsxThdId );
   
-  i8 rCode = pthread_create(&m_iPthreadId,
+  i8 rCode = pthread_create(&m_iPsxThdId,
                              nullptr,
                              pFun,
                              pArg
@@ -633,10 +633,10 @@ bool Pthread::bSpawnThread(void* pFun(void*), void* pArg)
   
   AM::vLogRes(SL_INF,this,RA_THD_SPAWNED,
               "Thread spawned : %lld"_Stz, //!format-LogRes
-              m_iPthreadId);
+              m_iPsxThdId);
 
   // this is important otherwise resources are not released
-  pthread_detach(m_iPthreadId);
+  pthread_detach(m_iPsxThdId);
   
   return true;
 }
@@ -644,9 +644,9 @@ bool Pthread::bSpawnThread(void* pFun(void*), void* pArg)
 /*----------------------------------------------------------------------------*/
 /* get cpu of this thread                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Pthread::iThreadCpu(void)
+i8 PsxThd::iThreadCpu(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
 #ifdef WITH_APPLE
   
@@ -661,9 +661,9 @@ i8 Pthread::iThreadCpu(void)
   
   CPU_ZERO(&xAffinity);
   
-  ASSERT(pthread_self() == m_iPthreadId);
+  ASSERT(pthread_self() == m_iPsxThdId);
   
-  iResult = pthread_getafffinity_np(m_iPthreadId, sizeof(cpu_set_t), &xAffinity);
+  iResult = pthread_getafffinity_np(m_iPsxThdId, sizeof(cpu_set_t), &xAffinity);
   if (iResult == -1) {
     vWarn("Error in pthread_getafffinity_np() : %lld\n"_Stz, errno);
   }
@@ -684,21 +684,21 @@ i8 Pthread::iThreadCpu(void)
 /*----------------------------------------------------------------------------*/
 /* thread has begun executing                                                 */
 /*----------------------------------------------------------------------------*/
-void Pthread::vThreadEntry(void)
+void PsxThd::vThreadEntry(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
-  m_aStackBase = Pthread::aGetStackBase();
-  m_iStackSize = Pthread::iGetStackSize();
+  m_aStackBase = PsxThd::aGetStackBase();
+  m_iStackSize = PsxThd::iGetStackSize();
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* thread notifies its exiting                                                */
 /*----------------------------------------------------------------------------*/
-void Pthread::vThreadExit(void)
+void PsxThd::vThreadExit(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
   if (AM::bAttached()) AM::pResourceTracker()->vDecThreadOpen();
 }
@@ -706,16 +706,16 @@ void Pthread::vThreadExit(void)
 /*----------------------------------------------------------------------------*/
 /* get thread priority                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Pthread::iThreadPriority(void)
+i8 PsxThd::iThreadPriority(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
 #ifdef WITH_APPLE
   
   int iPolicy;
   struct sched_param xSched;
   
-  i8 iError = pthread_getschedparam(m_iPthreadId,&iPolicy,&xSched);
+  i8 iError = pthread_getschedparam(m_iPsxThdId,&iPolicy,&xSched);
   ASSERT(! iError);
   
   return xSched.sched_priority;
@@ -730,20 +730,20 @@ i8 Pthread::iThreadPriority(void)
 /*----------------------------------------------------------------------------*/
 /* boost thread priority                                                      */
 /*----------------------------------------------------------------------------*/
-void Pthread::vThreadBoost(i8 nPoints)
+void PsxThd::vThreadBoost(i8 nPoints)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
 #ifdef WITH_APPLE
   
   int iPolicy;
   struct sched_param xSched;
   
-  i8 iError = pthread_getschedparam(m_iPthreadId,&iPolicy,&xSched);
+  i8 iError = pthread_getschedparam(m_iPsxThdId,&iPolicy,&xSched);
   ASSERT(! iError);
   
   xSched.sched_priority += (int)nPoints;
-  iError = pthread_setschedparam(m_iPthreadId,iPolicy,&xSched);
+  iError = pthread_setschedparam(m_iPsxThdId,iPolicy,&xSched);
   ASSERT(! iError);
   
 #else
@@ -756,19 +756,19 @@ void Pthread::vThreadBoost(i8 nPoints)
 /*----------------------------------------------------------------------------*/
 /* set thread priority                                                        */
 /*----------------------------------------------------------------------------*/
-void Pthread::vThreadPriority(i8 iPriority)
+void PsxThd::vThreadPriority(i8 iPriority)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PSXTHD,_FOOTER_);
   
 #ifdef WITH_APPLE
   int iPolicy;
   struct sched_param xSched;
   
-  i8 iError = pthread_getschedparam(m_iPthreadId,&iPolicy,&xSched);
+  i8 iError = pthread_getschedparam(m_iPsxThdId,&iPolicy,&xSched);
   ASSERT(! iError);
   
   xSched.sched_priority = (int)iPriority;
-  iError = pthread_setschedparam(m_iPthreadId,iPolicy,&xSched);
+  iError = pthread_setschedparam(m_iPsxThdId,iPolicy,&xSched);
   ASSERT(! iError);
   
 #else
@@ -785,7 +785,7 @@ void Pthread::vThreadPriority(i8 iPriority)
 /*----------------------------------------------------------------------------*/
 /* test for C++ thread                                                        */
 /*----------------------------------------------------------------------------*/
-bool Pthread::bIsCppThread(void)
+bool PsxThd::bIsCppThread(void)
 {
   if (C_UNKNOWN != (int)giTLS_ThreadKey)
     return true;
@@ -796,7 +796,7 @@ bool Pthread::bIsCppThread(void)
 /*----------------------------------------------------------------------------*/
 /* test for Java thread                                                       */
 /*----------------------------------------------------------------------------*/
-bool Pthread::bIsJavaThread(void)
+bool PsxThd::bIsJavaThread(void)
 {
   if (C_UNKNOWN == (int)giTLS_ThreadKey)
     return true;
@@ -807,7 +807,7 @@ bool Pthread::bIsJavaThread(void)
 /*----------------------------------------------------------------------------*/
 /* sleeper statistics                                                         */
 /*----------------------------------------------------------------------------*/
-void Pthread::vSleepers(void)
+void PsxThd::vSleepers(void)
 {
   s32 sUnitMag;
   s32 sTimeMag;
@@ -815,7 +815,7 @@ void Pthread::vSleepers(void)
   Statistics* pStats = AM::pStatistics();
   
   MagLib::vUnitMag(pStats->Thread.m_nSleeps,sUnitMag);
-  vTrace("Pthread::vSleep() total %s\n"_Stz,sUnitMag.szStz());
+  vTrace("PsxThd::vSleep() total %s\n"_Stz,sUnitMag.szStz());
   
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (pStats->Thread.m_iaSleeps[i_Class]) {
@@ -830,7 +830,7 @@ void Pthread::vSleepers(void)
 /*----------------------------------------------------------------------------*/
 /* get stack base address                                                     */
 /*----------------------------------------------------------------------------*/
-void* Pthread::aGetStackBase(void)
+void* PsxThd::aGetStackBase(void)
 {
   void* aAddress;
   
@@ -864,7 +864,7 @@ void* Pthread::aGetStackBase(void)
 /*----------------------------------------------------------------------------*/
 /* get current stack pointer                                                  */
 /*----------------------------------------------------------------------------*/
-void* Pthread::aGetStackPointer(void)
+void* PsxThd::aGetStackPointer(void)
 {
   void* aPointer = &aPointer;
   
@@ -874,7 +874,7 @@ void* Pthread::aGetStackPointer(void)
 /*----------------------------------------------------------------------------*/
 /* get stack size                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Pthread::iGetStackSize(void)
+i8 PsxThd::iGetStackSize(void)
 {
   pthread_t tThread = pthread_self();
   i8 iSize;
@@ -910,7 +910,7 @@ i8 Pthread::iGetStackSize(void)
 /*----------------------------------------------------------------------------*/
 /* create a tls slot                                                          */
 /*----------------------------------------------------------------------------*/
-bool Pthread::bTlsCreate(pthread_key_t* aTlsKey)
+bool PsxThd::bTlsCreate(pthread_key_t* aTlsKey)
 {
   i8 iResult = pthread_key_create(aTlsKey,nullptr);
   
@@ -925,7 +925,7 @@ bool Pthread::bTlsCreate(pthread_key_t* aTlsKey)
 /*----------------------------------------------------------------------------*/
 /* get value from tls slot                                                    */
 /*----------------------------------------------------------------------------*/
-void* Pthread::pTlsGet(pthread_key_t iTlsKey)
+void* PsxThd::pTlsGet(pthread_key_t iTlsKey)
 {
   RASSERT(-1 != (int)iTlsKey);
   
@@ -937,7 +937,7 @@ void* Pthread::pTlsGet(pthread_key_t iTlsKey)
 /*----------------------------------------------------------------------------*/
 /* set value in tls slot                                                      */
 /*----------------------------------------------------------------------------*/
-void Pthread::vTlsSet(pthread_key_t iTlsKey, void* pArg)
+void PsxThd::vTlsSet(pthread_key_t iTlsKey, void* pArg)
 {
   RASSERT(-1 != (int)iTlsKey);
   
@@ -947,7 +947,7 @@ void Pthread::vTlsSet(pthread_key_t iTlsKey, void* pArg)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(Pthread);
+__aFooterFunction(PsxThd);
 
 /*============================================================================*/
 /* end                                                                        */

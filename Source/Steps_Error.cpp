@@ -25,7 +25,7 @@ void Step::vErrorMsg(void)
     THROW_DSTACK();
   
   if (iErrorCode < EC_NONE || iErrorCode > EC_ENUMS)
-    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"error.msg");
+    vThrow(FK_FAILED,__func__,__FILE__,__LINE__,"error.msg"_Stz);
 
   s256 sErrorMsg;
   sErrorMsg = aEC[iErrorCode];

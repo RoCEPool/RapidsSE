@@ -432,7 +432,7 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
-  Pthread::vMonitorPortrait(sPortrait);
+  PsxThd::vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
@@ -604,7 +604,7 @@ void Engine::vOpenPool(void)
                             gxArguments.m_aRegionAddr);
   ASSERT(bResult);
   vAttachRegion();
-  //vFatal("Error: Engine missing arguments\n"_Stz);
+  //THROW_FATAL("Error: Engine missing arguments\n"_Stz);
   //Process::vExitFailure();
 }
 
@@ -731,7 +731,8 @@ void Engine::vRunCommandLine(void)
       case BO_UNLINK:       vStopSystem();                                break;
         
       default:
-        vFatal("Unknown command line argument\n"_Stz);
+        vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+               "Unknown command line argument\n"_Stz);
     }
   }
   
@@ -768,7 +769,7 @@ void Engine::vRunCommandLine(void)
 //    else if (gxArguments.m_bUnlink)  vUnlinkSystem();
 //    else if (gxArguments.m_bSethScript)  { ASSERT(gpBufferPool); vCallPrompt(); }
 //    else {
-//      vFatal("Unknown command line argument\n"_Stz);
+//      THROW_FATAL("Unknown command line argument\n"_Stz);
 //    }
 //
 //  }
@@ -806,10 +807,8 @@ void Engine::vSanityCheck(void)
 void Engine::vSignalHandler(int iSignal)
 {
   // print out all the frames to stderr
-  vFatal("Error: signal %d:\n"_Stz, iSignal);
-  
-  Correctness::vStackDump();
-  Process::vExit(1);
+  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+         "Error: signal %d:\n"_Stz, iSignal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -820,7 +819,7 @@ void Engine::vSpawnJobStart(void)
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Start Library Tasks\n*\n"_Stz);
   
-  Pthread::vMarkNonSeThread();
+  PsxThd::vMarkNonSeThread();
   
   JobClass* pJobClass_Start = JobClass::pFind(CN_JOB_START);
   
@@ -893,8 +892,9 @@ void Engine::vStartSystem(void)
   
   Node* pThisNode = AM::pGrid()->pFindNode(gxArguments.m_sNodeName);
   if (! pThisNode)
-    vFatal("Cannot fine Node %s in the cluster"_Stz,
-          gxArguments.m_sNodeName.azChar());
+    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+           "Cannot fine Node %s in the cluster"_Stz,
+           gxArguments.m_sNodeName.azChar());
   
   i8 iThisNodeNo = pThisNode->iNodeNo();
   AM::pGrid()->vThisNode(iThisNodeNo);
@@ -943,13 +943,13 @@ void Engine::vStartSystem(void)
   // spawn general threads
   for (i8 iThreads = 0; iThreads < gxArguments.m_nThreads; iThreads++) {
     Thread* pThread = new Thread;
-    pThread->vSpawnPthread_general();
+    pThread->vSpawnPsxThd_general();
   }
   
   // spawn dummy threads
   for (i8 iThreads = 0; iThreads < gxArguments.m_nDummyThreads; iThreads++) {
     Thread* pThread = new Thread;
-    pThread->vSpawnPthread_dummy();
+    pThread->vSpawnPsxThd_dummy();
   }
   
   // pause till all general threads are operational 
