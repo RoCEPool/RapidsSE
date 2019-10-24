@@ -246,7 +246,7 @@ void Task::vTaskLoop_job(void)
     // catch any exception
     catch (Exception xException) {
       xException.vJob(m_pJob);
-      xException.vCaught();
+      vCaught(xException);
     }
   }
   
@@ -385,6 +385,14 @@ void Task::vBeginOp(void)
   
   m_pRegSet->m_pOpQueLeft  = new OperandQueue;
   m_pRegSet->m_pOpQueRight = new OperandQueue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* caught an exception in catch                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vCaught(Exception xException)
+{
+  xException.vCaught();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -821,8 +829,18 @@ void Task::vSeedJob(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Word* pExceptionWord = pRootDic->pFindWord(pSeedWord->szExceptionHook());
-  if (pExceptionWord)
+  if (pExceptionWord) {
     m_pForth->m_pExceptionWord = pExceptionWord;
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Word* pExceptionDef = pRootDic->pFindWord("std_exceptionHook"_Stz);
+  if (pExceptionDef) {
+    m_pForth->m_pExceptionWord = pExceptionDef;
+    return;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
