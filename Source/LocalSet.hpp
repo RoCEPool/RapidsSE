@@ -29,8 +29,8 @@ namespace SenVM
     LocalSet* pNext(void);
     void      vNext(LocalSet* pLocalSet);
     
-    ForthValue*    aDiscardPoint(void);
-    void      vDiscardPoint(ForthValue* aDiscardPoint);
+    ForthValue* aDiscardPoint(void);
+    void        vDiscardPoint(ForthValue* aDiscardPoint);
     
     Local*    pLocal(i8 i_Local);
   

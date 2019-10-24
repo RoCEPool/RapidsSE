@@ -74,10 +74,10 @@ void Correctness::vStackDump(void)
   
   Exception xException(FK_ASSERT,azFunc,zCondition,zFileNm,iLineNo);
   
-  xException.vPrint();
+  //xException.vPrint();
   
   // dump the call stack
-  vStackDump();
+  //vStackDump();
   
   throw xException;
 }

@@ -227,8 +227,8 @@ Word* Task::pCompileColon(s48K& sDefinition)
   //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
   
   Dic* pDic;
-  if (m_oDicStack.iCount())
-    pDic = m_oDicStack.pTop();
+  if (m_pForth->m_oDicStack.iCount())
+    pDic = m_pForth->m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
 ;
@@ -255,7 +255,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
         break;
         
       case TN_NAME:
-        pCalledWord = m_oDicStack.pFindWord(m_pForth->m_pCompiler->m_pTokeniser->sToken());
+        pCalledWord = m_pForth->m_oDicStack.pFindWord(m_pForth->m_pCompiler->m_pTokeniser->sToken());
         if (WK_INTRINSIC == pCalledWord->eKind()) {
           fpStep = pCalledWord->fpEntryStep();
           if (pCalledWord->bImmediate())

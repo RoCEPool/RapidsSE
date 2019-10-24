@@ -49,10 +49,12 @@ void Stack::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stack::Stack(void)
+Stack::Stack(eKK eKind)
 : Object(CN_STACK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  m_eKind   = eKind;
   
   m_aTop    = aStackBase();
   m_nValues = 0;
@@ -99,9 +101,9 @@ void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* dump contents of the value stack                                           */
 /*----------------------------------------------------------------------------*/
-void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
+void Stack::vContentDump(DicStack* pDicStack,Stz* aPrefix, Stz* aTitle)
 {
-  vTrace("[%s]%s:\n"_Stz,aPrefix,aTitle);
+  vTrace("[%s] %s:\n"_Stz,aPrefix,aTitle);
   
   GenVar xVariable;
   
@@ -118,8 +120,12 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
       case CN_FIPVAL: {
         FipVal* aFipVal = _aFipVal(aNestedValue);
         Cell* aFip = aFipVal->aFipPtr();
-        vTrace("[%s] [%2lld] [%s] %p\n"_Stz,
-               aPrefix,iVal,aCN[eClass],aFip);
+        Word* pWord = pDicStack->pLocateWord(aFip);
+
+
+        vTrace("[%s] [%2lld] [%s] %16s %p\n"_Stz,
+               aPrefix,iVal,aCN[eClass],
+               pWord ? pWord->sName().azChar() : "<none>",aFip);
         break;
       }
         
@@ -1054,6 +1060,19 @@ void Stack::vPushValue(ForthValue* aValue)
   vPushVal(aValue);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* completely reset stack                                                     */
+/*----------------------------------------------------------------------------*/
+void Stack::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  //! maybe this would be better as a re-init() ?
+  
+  while (nValues())
+    vDiscard();
 }
 
 /*----------------------------------------------------------------------------*/

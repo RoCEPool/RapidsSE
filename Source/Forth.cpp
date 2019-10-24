@@ -49,11 +49,13 @@ Forth::Forth(Task* pTask)
   m_pSeedWord       = nullptr;
   m_pExceptionWord  = nullptr;
 
+  // m_oDicStack
+  
   m_aInxPtr      = nullptr;
   
-  m_pDataStack   = new Stack;
-  m_pReturnStack = new Stack;
-  m_pAuxStack    = new Stack;
+  m_pAuxStack    = new Stack(KK_AUX_STACK);
+  m_pDataStack   = new Stack(KK_DATA_STACK);
+  m_pReturnStack = new Stack(KK_RETURN_STACK);
 
   m_pLocalsFrame = nullptr;
 
@@ -77,7 +79,7 @@ Forth::~Forth(void) noexcept(false)
   
   while (m_pLocalsFrame) {
     
-    LocalSet* pLocalsFrame = m_pLocalsFrame;
+    LocalChain* pLocalsFrame = m_pLocalsFrame;
     m_pLocalsFrame = m_pLocalsFrame->pNext();
     
     delete pLocalsFrame;
@@ -89,6 +91,26 @@ Forth::~Forth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* reset forth execution context                                              */
+/*----------------------------------------------------------------------------*/
+void Forth::vReset(void)
+{
+  m_pAuxStack->vReset();
+  m_pDataStack->vReset();
+  m_pReturnStack->vReset();
+  
+  while (m_pLocalsFrame) {
+    
+    LocalChain* pLocalsFrame = m_pLocalsFrame;
+    m_pLocalsFrame = m_pLocalsFrame->pNext();
+    
+    delete pLocalsFrame;
+  }
+  
+  m_aInxPtr = nullptr;
+}
 
 
 /*----------------------------------------------------------------------------*/

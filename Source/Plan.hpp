@@ -15,7 +15,7 @@ namespace Plans
     Dic    m_xDic;     // private dictionary of this plan       //# may not need
     s48K   m_sLambda;  // generated text of words
     
-    LocalSet* m_pRegList; // set of register frames for use by operators
+    LocalChain* m_pRegList; // set of register frames for use by operators
     Tasks::Task* m_pExecutingTask; // task on the originating node executing the plan
     
     // always last
@@ -51,8 +51,8 @@ namespace Plans
     
     void vNullifyPointers(void);
     
-    void      vLocalSetPush(LocalSet* pLocalSet);
-    LocalSet* pLocalSetTop(void);
+    void      vLocalSetPush(LocalChain* pLocalSet);
+    LocalChain* pLocalSetTop(void);
     
     void vShow(void);
     

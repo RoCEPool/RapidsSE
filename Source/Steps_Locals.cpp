@@ -70,7 +70,7 @@ ENTRY("vLocalsBar"_Stz);
   
   Word* pCurrentWord = m_pTask->m_pForth->m_pCompiler->m_pCurrent;
   
-  Dic* pDic = m_pTask->m_oDicStack.pPick(0);
+  Dic* pDic = m_pTask->m_pForth->m_oDicStack.pPick(0);
 
   GenVar xVariable;
   
@@ -89,7 +89,7 @@ ENTRY("vLocalsBar"_Stz);
       // create a locals dictionary
       pDic = new Dic;
       pDic->vName("<localsDic>"_Stz);
-      m_pTask->m_oDicStack.vPush(pDic);
+      m_pTask->m_pForth->m_oDicStack.vPush(pDic);
       
       // enocde locals frame push
       pCurrentWord->vEncode("locals.push"_Stz);
@@ -126,7 +126,7 @@ void Step::vLocalsPop(void)
 {
 ENTRY("vLocalsPop"_Stz);
   
-  LocalSet* pLocalsFrame = m_pLocalsFrame;
+  LocalChain* pLocalsFrame = m_pLocalsFrame;
   
   if ( ! pLocalsFrame )
     THROW_DSTACK();
@@ -145,7 +145,7 @@ void Step::vLocalsPush(void)
 {
 ENTRY("vLocalsPush"_Stz);
   
-  LocalSet* pLocalsFrame = new LocalSet;
+  LocalChain* pLocalsFrame = new LocalChain;
   
   pLocalsFrame->vDiscardPoint(m_pReturnStack->aPeekValue());
   
@@ -171,7 +171,7 @@ ENTRY("vLocalsTo"_Stz);
   s32 sLocalName(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
   
   // find the word describing the local
-  Word* pLocalWord = m_pTask->m_oDicStack.pFindWord(sLocalName);
+  Word* pLocalWord = m_pTask->m_pForth->m_oDicStack.pFindWord(sLocalName);
   if (! pLocalWord)
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "No such local: %s\n"_Stz,sLocalName.azChar());

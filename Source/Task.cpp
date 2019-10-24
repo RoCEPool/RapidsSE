@@ -384,23 +384,7 @@ void Task::vCaught(Exception xException)
   // dump api state
   AM::vDumpApi();
 
-  if (m_pForth) {
-    while (m_pForth->m_pAuxStack->nValues())
-      m_pForth->m_pAuxStack->vDiscard();
-    while (m_pForth->m_pDataStack->nValues())
-      m_pForth->m_pDataStack->vDiscard();
-    while (m_pForth->m_pReturnStack->nValues())
-      m_pForth->m_pReturnStack->vDiscard();
-    
-    while (m_pForth->m_pLocalsFrame) {
-      
-      LocalSet* pLocalsFrame = m_pForth->m_pLocalsFrame;
-      m_pForth->m_pLocalsFrame = m_pForth->m_pLocalsFrame->pNext();
-      
-      delete pLocalsFrame;
-    }
-    
-  }
+  m_pForth->vReset();
   
   m_pForth->m_aInxPtr = m_pForth->m_pExceptionWord->aFirstCell();
 
@@ -575,7 +559,7 @@ void Task::vLocalsPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  LocalSet* pLocalsframe = m_pForth->m_pLocalsFrame;
+  LocalChain* pLocalsframe = m_pForth->m_pLocalsFrame;
   
   m_pForth->m_pLocalsFrame = m_pForth->m_pLocalsFrame->pNext();
   
@@ -587,7 +571,7 @@ void Task::vLocalsPop(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsPush(void)
 {
-  LocalSet* pLocalsframe = new LocalSet;
+  LocalChain* pLocalsframe = new LocalChain;
   
   pLocalsframe->vNext(m_pForth->m_pLocalsFrame);
   
@@ -768,24 +752,8 @@ void Task::vReseed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-  if (m_pForth) {
-    while (m_pForth->m_pAuxStack->nValues())
-      m_pForth->m_pAuxStack->vDiscard();
-    while (m_pForth->m_pDataStack->nValues())
-      m_pForth->m_pDataStack->vDiscard();
-    while (m_pForth->m_pReturnStack->nValues())
-      m_pForth->m_pReturnStack->vDiscard();
-    
-    while (m_pForth->m_pLocalsFrame) {
-      
-      LocalSet* pLocalsFrame = m_pForth->m_pLocalsFrame;
-      m_pForth->m_pLocalsFrame = m_pForth->m_pLocalsFrame->pNext();
-      
-      delete pLocalsFrame;
-    }
+  m_pForth->vReset();
 
-  }
-  
   vSeedJob();
 }
 
@@ -1063,7 +1031,7 @@ void Task::vTracePoint(Stz* aMark)
   
   Cell* aHasCell = m_pForth->m_aInxPtr;
   
-  Word* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
+  Word* pLocatedWord = m_pForth->m_oDicStack.pLocateWord(aHasCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->sName();
   else
@@ -1106,7 +1074,7 @@ void Task::vTraceStep(Stz* aStepNm)
   s256 sRoutine;
   
   Cell* aHasCell = m_pForth->m_aInxPtr;
-  Word* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
+  Word* pLocatedWord = m_pForth->m_oDicStack.pLocateWord(aHasCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->sName();
   else

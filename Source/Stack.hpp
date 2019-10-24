@@ -14,8 +14,10 @@ namespace SenVM
   friend class Steps::Step;
 
   private:
-    ForthValue* m_aTop;    // current top of stack
-    i8     m_nValues; // number of values currently on stack
+    eKK    m_eKind; // kind of stack
+  
+    ForthValue* m_aTop;   // current top of stack
+    i8     m_nValues;     // number of values currently on stack
 
     ForthValue* m_aRetryTop;    // reset to this top of stack
     i8     m_nRetryValues; // reset with this many values on stack
@@ -31,13 +33,13 @@ namespace SenVM
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Stack(void);
-    ~Stack(void) noexcept(false);
+    Stack(eKK eKind);
+  ~Stack(void) noexcept(false);
     
     static Stack* _pStack(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    void vContentDump(Stz* aPrefix, Stz* aTitle);
+    void vContentDump(DicStack* pDicStack, Stz* aPrefix, Stz* aTitle);
   
     void vDiscard(void);
   
@@ -97,6 +99,7 @@ namespace SenVM
     void vPushValue(ForthValue* aValue);
     void vPushValue(ForthValue& xValue);
   
+    void vReset(void);
     void vRetry(void);
     void vRetryPoint(void);
   
@@ -104,6 +107,7 @@ namespace SenVM
   
   public:
     void vPopBy(i8 nBytes);
+  
   private:
     void vPopLocal(Local* aLocal);
     void vPopVal(ForthValue* aValue);

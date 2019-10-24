@@ -81,7 +81,7 @@ Session::Session(i8 iPartition)
   m_pJob            = nullptr;
   m_pTx             = nullptr;
   m_bSessionExiting = false;
-  m_pJobStack       = new Stack;
+  m_pJobStack       = new Stack(KK_JOB_STACK);
 
   m_pSessionState   = AM::pApiState()->pAllocState(this);
   m_pInput          = new Input;

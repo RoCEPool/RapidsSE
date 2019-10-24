@@ -258,7 +258,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_LOADCHUNK
   /* 71 */ &Finalize::vUndefined,         // CN_LOADMAP
   /*    */ &Finalize::vUndefined,         // CN_LOCAL
-  /*    */ &Finalize::vUndefined,         // CN_LOCALSET
+  /*    */ &Finalize::vUndefined,         // CN_LOCALSCHAIN
   /* 72 */ &Finalize::vUndefined,         // CN_LOCK
   /*    */ &Finalize::vUndefined,         // CN_LOG
   /*    */ &Finalize::vUndefined,         // CN_LOGENTRY

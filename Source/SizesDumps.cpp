@@ -265,7 +265,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_LOADCHUNK
   /* 71 */ &LoadMap::vDump,         // CN_LOADMAP
   /*    */ &Dump::vInvalid,         // CN_LOCAL
-  /*    */ &LocalSet::vDump,        // CN_LOCALSET
+  /*    */ &LocalChain::vDump,        // CN_LOCALSCHAIN
   /* 72 */ &Dump::vInvalid,         // CN_LOCK
   /*    */ &Dump::vInvalid,         // CN_LOG
   /*    */ &Dump::vInvalid,         // CN_LOGENTRY
@@ -321,7 +321,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_REGSET
   /* 77 */ &Dump::vUndefined,       // CN_RELOP
   /* 77 */ &Dump::vUndefined,       // CN_REQUEST
-  /*    */ &LocalSet::vDump,        // CN_RESOURCETRACKER
+  /*    */ &LocalChain::vDump,        // CN_RESOURCETRACKER
   /*    */ &Dump::vUndefined,       // CN_RESPONSE
   /*    */ &Dump::vUndefined,       // CN_RESPONSEVEC
   /*    */ &Dump::vUndefined,       // CN_ROW
@@ -689,7 +689,7 @@ i8 giClassSize[]
   /*    */ sizeof(LoadChunk),          // CN_LOADCHUNK
   /* 71 */ sizeof(LoadMap),            // CN_LOADMAP
   /*    */ sizeof(Local),              // CN_LOCAL
-  /*    */ sizeof(LocalSet),           // CN_LOCALSET
+  /*    */ sizeof(LocalChain),           // CN_LOCALSCHAIN
   /* 72 */ sizeof(Lock),               // CN_LOCK
   /*    */ sizeof(Log),                // CN_LOG
   /*    */ sizeof(LogEntry),           // CN_LOGENTRY
@@ -1113,7 +1113,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
   /* 71 */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP
   /*    */ HT_INVALID,           // CN_LOCAL
-  /*    */ HT_TRANSIENT_LARGE,   // CN_LOCALSET
+  /*    */ HT_TRANSIENT_LARGE,   // CN_LOCALSCHAIN
   /* 72 */ HT_INVALID,           // CN_LOCK
   /* 72 */ HT_INVALID,           // CN_LOG
   /* 72 */ HT_INVALID,           // CN_LOGENTRY

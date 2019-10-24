@@ -12,6 +12,8 @@ namespace SenVM
   
     Word*     m_pSeedWord;      // seed
     Word*     m_pExceptionWord; // seed
+  
+    DicStack  m_oDicStack;      // dictionary stack
 
     Cell*     m_aInxPtr;      // instruction/cell pointer
   
@@ -19,7 +21,7 @@ namespace SenVM
     Stack*    m_pDataStack;   // data stack
     Stack*    m_pReturnStack; // return stack
  
-    LocalSet* m_pLocalsFrame; // local register frame chain
+    LocalChain* m_pLocalsFrame; // local register frame chain
   
     Compiler* m_pCompiler;    // word compiler (Job boot, create table etc)
   
@@ -32,6 +34,8 @@ namespace SenVM
 
     Forth(Task* pTask);
    ~Forth(void) noexcept(false);
+  
+    void vReset(void);
 
   private:
     Footer* aFooter(void);
