@@ -86,6 +86,7 @@ namespace Enums
 
 #include "eRA.h"
 #include "eRE.h"
+#include "eRG.h"
 #include "eRO.h"
 #include "eRS.h"
 #include "eRU.h"
