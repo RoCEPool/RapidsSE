@@ -39,6 +39,7 @@ namespace Correctness
 #include "Statistics.hpp"
 #include "Focal.hpp"
 #include "SMA.hpp"
+#include "REG.hpp"
 
 
 
