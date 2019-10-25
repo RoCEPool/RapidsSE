@@ -12,7 +12,8 @@ namespace Jobs
               public JobDicPath,
               public JobObjectName,
               public JobEnmSet,
-              public JobResult
+              public JobResult,
+              public CRM<Job>
   {                                  // ⋗ parent ⋗ child ⋗ prompt ⋗ api
   public:
   
