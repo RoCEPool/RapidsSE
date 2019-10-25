@@ -531,6 +531,16 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("file[1]"_Stz,      RG_FILE1);
   /*  0 */ vAddConstant("file[2]"_Stz,      RG_FILE2);
 
+  // SS_ : seed strings
+  /*  0 */ vAddConstant("SS_SEED_RUN"_Stz,    SS_SEED_RUN);
+  /*  1 */ vAddConstant("SS_SEED_REQ"_Stz,    SS_SEED_REQ);
+  /*  2 */ vAddConstant("SS_SEED_RCV"_Stz,    SS_SEED_RCV);
+  /*  3 */ vAddConstant("SS_SEED_EXE"_Stz,    SS_SEED_EXE);
+  /*  4 */ vAddConstant("SS_SEED_END"_Stz,    SS_SEED_END);
+  /*  5 */ vAddConstant("SS_SEED_CAN"_Stz,    SS_SEED_CAN);
+  /*  6 */ vAddConstant("SS_SEED_BEG"_Stz,    SS_SEED_BEG);
+  /*  7 */ vAddConstant("SS_SEED_KID"_Stz,    SS_SEED_KID);
+  
   // TN_ : token types
   /*  0 */ vAddConstant("TN_NONE"_Stz,      TN_NONE);
   /*  1 */ vAddConstant("TN_NAME"_Stz,      TN_NAME);
@@ -548,15 +558,13 @@ void Constants::vAddConstants(void)
   /*  6 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);
   /*  7 */ vAddConstant("TS_ENUMS"_Stz,      TS_ENUMS);
 
-  // SS_ : seed strings
-  /*  0 */ vAddConstant("SS_SEED_RUN"_Stz,    SS_SEED_RUN);
-  /*  1 */ vAddConstant("SS_SEED_REQ"_Stz,    SS_SEED_REQ);
-  /*  2 */ vAddConstant("SS_SEED_RCV"_Stz,    SS_SEED_RCV);
-  /*  3 */ vAddConstant("SS_SEED_EXE"_Stz,    SS_SEED_EXE);
-  /*  4 */ vAddConstant("SS_SEED_END"_Stz,    SS_SEED_END);
-  /*  5 */ vAddConstant("SS_SEED_CAN"_Stz,    SS_SEED_CAN);
-  /*  6 */ vAddConstant("SS_SEED_BEG"_Stz,    SS_SEED_BEG);
-  /*  7 */ vAddConstant("SS_SEED_KID"_Stz,    SS_SEED_KID);
+  // WK_ : word type
+  /*  0 */ vAddConstant("WK_NONE"_Stz,      WK_NONE);
+  /*  0 */ vAddConstant("WK_LOCAL"_Stz,     WK_LOCAL);
+  /*  0 */ vAddConstant("WK_OBJECT"_Stz,    WK_OBJECT);
+  /*  0 */ vAddConstant("WK_INTRINSIC"_Stz, WK_INTRINSIC);
+  /*  0 */ vAddConstant("WK_ROUTINE"_Stz,   WK_ROUTINE);
+  /*  0 */ vAddConstant("WK_ENUMS"_Stz,     WK_ENUMS);
   
   // XP_ : transaction phase
   /*  0 */ vAddConstant("XP_NONE"_Stz,        XP_NONE);
@@ -568,14 +576,6 @@ void Constants::vAddConstants(void)
   /*  6 */ vAddConstant("XP_ROLLINGBACK"_Stz, XP_ROLLINGBACK);
   /*  7 */ vAddConstant("XP_ROLLEDBACK"_Stz,  XP_ROLLEDBACK);
   /*  8 */ vAddConstant("XP_ENUMS"_Stz,       XP_ENUMS);
-
-  // WK_ : word type
-  /*  0 */ vAddConstant("WK_NONE"_Stz,      WK_NONE);
-  /*  0 */ vAddConstant("WK_LOCAL"_Stz,     WK_LOCAL);
-  /*  0 */ vAddConstant("WK_OBJECT"_Stz,    WK_OBJECT);
-  /*  0 */ vAddConstant("WK_INTRINSIC"_Stz, WK_INTRINSIC);
-  /*  0 */ vAddConstant("WK_ROUTINE"_Stz,   WK_ROUTINE);
-  /*  0 */ vAddConstant("WK_ENUMS"_Stz,     WK_ENUMS);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
