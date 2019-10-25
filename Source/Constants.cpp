@@ -523,6 +523,14 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("NS_ACTIVE"_Stz,    NS_ACTIVE);
   /*  0 */ vAddConstant("NS_INACTIVE"_Stz,  NS_INACTIVE);
 
+  // RG_ : register
+  /*  0 */ vAddConstant("dir[0]"_Stz,       RG_DIR0);
+  /*  0 */ vAddConstant("dir[1]"_Stz,       RG_DIR1);
+  /*  0 */ vAddConstant("dir[2]"_Stz,       RG_DIR2);
+  /*  0 */ vAddConstant("file[0]"_Stz,      RG_FILE0);
+  /*  0 */ vAddConstant("file[1]"_Stz,      RG_FILE1);
+  /*  0 */ vAddConstant("file[2]"_Stz,      RG_FILE2);
+
   // TN_ : token types
   /*  0 */ vAddConstant("TN_NONE"_Stz,      TN_NONE);
   /*  1 */ vAddConstant("TN_NAME"_Stz,      TN_NAME);

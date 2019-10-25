@@ -8,8 +8,13 @@ enum eRG // registers
   /* 0 */ RG_NONE,
   
   /*   */ RG_DIR0,   // dir 0
-  /*   */ RG_FILE0,  // file 0
+  /*   */ RG_DIR1,   // dir 1
+  /*   */ RG_DIR2,   // dir 2
   
+  /*   */ RG_FILE0,  // file 0
+  /*   */ RG_FILE1,  // file 1
+  /*   */ RG_FILE2,  // file 2
+
   /*   */ RG_ENUMS
 };
 
