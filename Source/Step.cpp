@@ -148,6 +148,7 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Queues();
   
+  Step::vAddSteps_RegSet();
   Step::vAddSteps_Rstack();
   
   Step::vAddSteps_Session();

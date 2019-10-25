@@ -975,6 +975,9 @@ public:
   void vRowCursorTableFetch(void);
   void vRowCursorTableStore(void);
 
+  // regset
+  void vRegSetFun(void);
+
   // rstack
   void vRstackCsPick(void);
   void vRstackCsRoll(void);
