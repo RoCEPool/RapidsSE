@@ -5,7 +5,7 @@
 
 #include "AM.hpp"
 
-namespace Correctness
+namespace Gadgets
 {
   template <class CLASS>
   class CRM
@@ -13,6 +13,8 @@ namespace Correctness
   public:
   
     CLASS* m_pThis; // pointer to the object
+  
+    Atomic m_nxReferences; // number of references
   
   public:
   
@@ -28,19 +30,43 @@ namespace Correctness
     }
     
     /*------------------------------------------------------------------------*/
+    /* destructor                                                             */
     /*------------------------------------------------------------------------*/
-  
-  
-    /*------------------------------------------------------------------------*/
-    /* is pointer valid?                                (nullptr not allowed) */
-    /*------------------------------------------------------------------------*/
-    bool bIsValid(void)
+    ~CRM<CLASS>(void)
     {
-      if ( ! m_pThis || (m_pThis && AM::bInBufferPool(m_pThis)) )
-        return true;
-      else
-        return false;
+      RASSERT(! m_nxReferences.iVal());
     }
+  
+    /*------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
+  
+  
+    /*------------------------------------------------------------------------*/
+    /* borrow a reference to this object                                      */
+    /*------------------------------------------------------------------------*/
+    bool bBorrowRef(REF<CLASS>* pBorrowingRef)
+    {
+       RASSERT(pBorrowingRef);
+       RASSERT(! pBorrowingRef->m_pObject);
+
+       ++ m_nxReferences;
+    
+       pBorrowingRef->m_pObject = this;
+    }
+  
+    /*------------------------------------------------------------------------*/
+    /* return a reference to this object                                      */
+    /*------------------------------------------------------------------------*/
+    bool bReturnRef(REF<CLASS>* pReturningRef)
+    {
+      RASSERT(pReturningRef);
+      RASSERT(pReturningRef->m_pObject);
+
+      pReturningRef->m_pObject = nullptr;
+    
+      -- m_nxReferences;
+    }
+  
   };
 }
 

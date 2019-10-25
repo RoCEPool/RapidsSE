@@ -26,9 +26,10 @@ namespace Locking
     void vCheckInit(void);
     
     i8   iAdd(i8 iValue); // add
-    i8   iInc(void);      // increment
     i8   iDec(void);      // decrement
-    
+    i8   iInc(void);      // increment
+    i8   iVal(void);      // get value
+
     void operator =(i8 iInt); // assignment
     i8 operator *(void);  // dereference
     i8 operator ++(void); // increment (prefix form)

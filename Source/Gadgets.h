@@ -15,6 +15,7 @@ namespace Gadgets
 //------------------------------------------------------------------------------
 
 #include "Birth.hpp"
+#include "CRM.hpp"
 #include "DecaCnt.hpp"
 #include "Decider.hpp"
 #include "EnameSet.hpp"
