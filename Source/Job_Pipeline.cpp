@@ -248,7 +248,8 @@ void Job_Pipeline::vCancel(void)
   Stage* pStage = m_pPipeline->pStageVec()->pGet(0);
   
   // send cancelMarker to the startOps of the first stage of the pipeline
-  pStage->vOperandToStartOps(new CancelMarker);
+  i8 iThisNode = AM::pGrid()->iThisNode();
+  pStage->vOperandToStartOps(new CancelMarker, iThisNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -262,7 +263,8 @@ void Job_Pipeline::vEnd(void)
   Stage* pStage = m_pPipeline->pStageVec()->pGet(0);
   
   // send endMarker to the startOps of the first stage of the pipeline
-  pStage->vOperandToStartOps(new EndMarker);
+  i8 iThisNode = AM::pGrid()->iThisNode();
+  pStage->vOperandToStartOps(new EndMarker, iThisNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -292,7 +294,7 @@ void Job_Pipeline::vExecute(void)
   Stage* pStage = m_pPipeline->pStageVec()->pGet(0);
   
   // send startMarker to the startOps of the first stage of the pipeline
-  pStage->vOperandToStartOps(new StartMarker);
+  pStage->vOperandToStartOps(new StartMarker, iThisNode);
 }
 
 /*----------------------------------------------------------------------------*/
