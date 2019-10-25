@@ -443,6 +443,7 @@ public:
   void vJobAddOriginator(void);
   void vJobAddParticipant(void);
   void vJobAssertBegin(void);
+  void vJobAssertCorrectness(void);
   void vJobAssertNeutral(void);
   void vJobAssertOriginator(void);
   void vJobAssertParticipant(void);

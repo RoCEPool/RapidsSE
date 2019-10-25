@@ -9,8 +9,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Job(void)
 {
-  vAddStep("job::this"_Stz,            &Step::vJobThis);
-  vAddStep("job::completed"_Stz,       &Step::vJobCompleted);
+  vAddStep("job::this"_Stz,              &Step::vJobThis);
+  vAddStep("job::assertCorrectness"_Stz, &Step::vJobAssertCorrectness);
+  vAddStep("job::completed"_Stz,         &Step::vJobCompleted);
 
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
@@ -269,6 +270,20 @@ void Step::vJobAssertBegin(void)
            "job.assertBegin: "
            "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job::assertCorrectness -- assert correctness                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobAssertCorrectness(void)
+{
+  ENTRY("vJobAssertCorrectness"_Stz);
+  
+  //Job* pJob = m_pTask->m_pJob;
+  
+  m_pTask->vAssertStructure();
   
   EXIT();
 }
