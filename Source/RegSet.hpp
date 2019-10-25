@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RegSet.hpp -- Task RegSet                                                  */
+/* RegSet.hpp -- Task Register Set                                            */
 /*============================================================================*/
 #pragma once
 
@@ -16,8 +16,11 @@ namespace Registers
 
     Node* m_pSendNode;    // node to send to
   
+    REF<Dir>  m_rpJob;    // job
+  
     REG<Dir>  m_rpDir0;   // dir 0
     REG<File> m_rpFile0;  // file 0
+  
 
     // must be last
     Footer m_xFooter;
