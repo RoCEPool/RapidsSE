@@ -19,9 +19,6 @@ namespace Registers
     REG<Dir>  m_rpDir0;   // dir 0
     REG<File> m_rpFile0;  // file 0
 
-    OperandQueue* m_pOpQueLeft;
-    OperandQueue* m_pOpQueRight;
-
     // must be last
     Footer m_xFooter;
   

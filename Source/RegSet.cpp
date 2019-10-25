@@ -49,9 +49,6 @@ RegSet::RegSet(Task* pTask)
   m_i_NextRnd   = AM::bDeveloper() ? 0 : C_UNKNOWN;
   m_pSendNode   = nullptr;
   
-  m_pOpQueLeft  = nullptr;
-  m_pOpQueRight = nullptr;
-
   _checkInitialised_(CN_REGSET);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_REGSET,_FOOTER_);
@@ -63,9 +60,7 @@ RegSet::RegSet(Task* pTask)
 RegSet::~RegSet(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGSET,_FOOTER_);
-  
-  delete m_pOpQueLeft;
-  delete m_pOpQueRight;
+
 }
 
 
