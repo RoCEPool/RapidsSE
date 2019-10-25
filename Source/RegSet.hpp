@@ -16,7 +16,8 @@ namespace Registers
 
     Node* m_pSendNode;    // node to send to
   
-    REG<File> m_rpFile;   // file
+    REG<Dir>  m_rpDir0;   // dir 0
+    REG<File> m_rpFile0;  // file 0
 
     OperandQueue* m_pOpQueLeft;
     OperandQueue* m_pOpQueRight;
