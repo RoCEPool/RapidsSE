@@ -852,6 +852,14 @@ void Step::vJobFindParticipant(void)
   
   m_pDataStack->vPushPointer(pJobFound);
   
+//  // temp by ray
+//  {
+//    pJobFound->vBorrowRefBy(&m_pTask->m_pRegSet->m_rpJob);
+//
+//    pJobFound->vReturnRefBy(&m_pTask->m_pRegSet->m_rpJob);
+//
+//  } // end temp
+  
   EXIT();
 }
 

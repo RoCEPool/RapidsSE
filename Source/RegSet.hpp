@@ -16,7 +16,7 @@ namespace Registers
 
     Node* m_pSendNode;    // node to send to
   
-    REF<Dir>  m_rpJob;    // job
+    REF<Job>  m_rpJob;    // job
   
     REG<Dir>  m_rpDir0;   // dir 0
     REG<File> m_rpFile0;  // file 0

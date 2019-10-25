@@ -5,12 +5,18 @@
 
 #include "AM.hpp"
 
+namespace Gadgets {
+  template <class CLASS> class CRM;
+}
+
 namespace Correctness
 {
   template <class CLASS>
   class REF
   {
-  public:
+    friend class CRM<CLASS>;
+  
+  private:
   
     CLASS* m_pObject; // pointer to the object
   
@@ -25,29 +31,28 @@ namespace Correctness
     }
   
     /*------------------------------------------------------------------------*/
-    /* parameterized constructor                            (nullptr allowed) */
+    /* parameterized constructor                        (nullptr not allowed) */
     /*------------------------------------------------------------------------*/
-    REF<CLASS>(CLASS* pObject)
-    {
-      if ( pObject && ! AM::bInBufferPool(pObject) )
-        THROW("REF::REF(pObject) : invalid pObject parameter"_Stz);
-    
-      m_pObject = pObject;
-    }
-    
-    /*------------------------------------------------------------------------*/
-    /*------------------------------------------------------------------------*/
+//    REF<CLASS>(CRM<CLASS>* pReferenceTo)
+//    {
+//      if ( ! pReferenceTo || ! AM::bInBufferPool(pReferenceTo) )
+//        THROW("REF::REF(pReferenceTo) : invalid pReferenceTo parameter"_Stz);
+//
+//      m_pObject = nullptr;
+//
+//      pReferenceTo->vBorrowRefBy(this);
+//    }
   
     /*------------------------------------------------------------------------*/
-    /* assignment operator =                                (nullptr allowed) */
+    /* destructor                                                             */
     /*------------------------------------------------------------------------*/
-    void operator = (CLASS* pObject)
+    ~REF<CLASS>(void)
     {
-      if ( pObject && ! AM::bInBufferPool((Object*)pObject) )
-        THROW("REF::operator =(pObject) : invalid pObject parameter"_Stz);
-    
-      m_pObject = pObject;
+      RASSERT(! m_pObject);
     }
+
+    /*------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
   
     /*------------------------------------------------------------------------*/
     /* member operator ->                               (nullptr not allowed) */

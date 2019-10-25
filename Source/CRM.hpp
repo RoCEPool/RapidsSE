@@ -44,20 +44,20 @@ namespace Gadgets
     /*------------------------------------------------------------------------*/
     /* borrow a reference to this object                                      */
     /*------------------------------------------------------------------------*/
-    bool bBorrowRef(REF<CLASS>* pBorrowingRef)
+    void vBorrowRefBy(REF<CLASS>* pBorrowingRef)
     {
        RASSERT(pBorrowingRef);
        RASSERT(! pBorrowingRef->m_pObject);
 
        ++ m_nxReferences;
     
-       pBorrowingRef->m_pObject = this;
+       pBorrowingRef->m_pObject = ( CLASS *)this;
     }
   
     /*------------------------------------------------------------------------*/
     /* return a reference to this object                                      */
     /*------------------------------------------------------------------------*/
-    bool bReturnRef(REF<CLASS>* pReturningRef)
+    void vReturnRefBy(REF<CLASS>* pReturningRef)
     {
       RASSERT(pReturningRef);
       RASSERT(pReturningRef->m_pObject);
