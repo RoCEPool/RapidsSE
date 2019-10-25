@@ -19,6 +19,8 @@
   r@ locate log::markEntry
 
   SS_SEED_REQ log::jobSeed
+
+  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -31,6 +33,8 @@
   r@ locate log::markEntry
 
   SS_SEED_BEG log::jobSeed
+
+  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -43,6 +47,8 @@
   r@ locate log::markEntry
 
   SS_SEED_EXE log::jobSeed
+
+  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -55,6 +61,8 @@
   r@ locate log::markEntry
 
   SS_SEED_END log::jobSeed
+
+  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -67,6 +75,8 @@
   r@ locate log::markEntry
 
   SS_SEED_CAN log::jobSeed
+
+  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -77,6 +87,8 @@
   "std_entryHook" .
 
   r@ locate log::markEntry
+
+  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -93,6 +105,8 @@
   r@ locate log::markExit
 
   ddlLock::testDrop
+
+  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -107,6 +121,8 @@
   ddlLock::testDrop
 
   task::delete
+
+  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -121,6 +137,8 @@
   ddlLock::testDrop
 
   task::delete
+
+  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -135,6 +153,8 @@
   ddlLock::testDrop
 
   job::completed
+
+  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -147,6 +167,8 @@
   r@ locate log::markExit
 
   job::completed
+
+  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -157,6 +179,8 @@
   "std_exitHook" .
 
   r@ locate log::markExit
+
+  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -283,6 +283,8 @@ void Step::vJobAssertCorrectness(void)
   
   //Job* pJob = m_pTask->m_pJob;
   
+  vTrace("job::assertCorrectness\n"_Stz);
+  
   m_pTask->vAssertStructure();
   
   EXIT();
