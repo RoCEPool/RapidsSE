@@ -12,7 +12,7 @@ namespace Correctness
   {
   public:
   
-    CLASS* m_pObject;
+    CLASS* m_pObject; // pointer to the object
   
   public:
   
@@ -25,7 +25,7 @@ namespace Correctness
     }
   
     /*------------------------------------------------------------------------*/
-    /* constructor                                          (nullptr allowed) */
+    /* parameterized constructor                            (nullptr allowed) */
     /*------------------------------------------------------------------------*/
     REG<CLASS>(CLASS* pObject)
     {
@@ -44,7 +44,7 @@ namespace Correctness
     void operator = (CLASS* pObject)
     {
       if ( pObject && ! AM::bInBufferPool((Object*)pObject) )
-        THROW("REG::operator =(pObject)  : invalid pObject parameter"_Stz);
+        THROW("REG::operator =(pObject) : invalid pObject parameter"_Stz);
     
       m_pObject = pObject;
     }
@@ -70,7 +70,6 @@ namespace Correctness
       else
         return false;
     }
-  
   };
 }
 
