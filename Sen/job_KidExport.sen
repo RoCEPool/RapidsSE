@@ -100,7 +100,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // KE` finds export job [E] on this originator node
   pJob_KE` job_kidExport.exportJobId locals| i_ExportJobId |
-  i_ExportJobId job::findOriginator locals| pJob_[E] |
+  i_ExportJobId olist::findJob locals| pJob_[E] |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // KE` writes its ExportBuffer to [E].m_oCsvFile

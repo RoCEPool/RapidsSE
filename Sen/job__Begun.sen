@@ -77,7 +77,7 @@
   // get the context of this __begun job
 
   // find the originating job
-  iJobId job::findOriginator to pJobOriginator
+  iJobId olist::findJob to pJobOriginator
 
   // get the participant node from where this job__begun started
   pJob__Begun job.participant@ to iParticipantNode

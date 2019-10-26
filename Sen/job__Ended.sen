@@ -56,7 +56,7 @@
   // get the context of this __ended job
 
   // find the originating job
-  iJobId job::findOriginator to pJobOriginator
+  iJobId olist::findJob to pJobOriginator
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __ended job on this originating node
