@@ -884,6 +884,9 @@ public:
   void vObjectStore(void);
   void vObjectWordBodySet(void);
 
+  // olist (originator list)
+  void vOlistFindJob(void);
+
   // persistence
   void vPersistenceCheckpoint(void);
   void vPersistenceReload(void);
@@ -922,6 +925,9 @@ public:
   void vPlannerShowPaths(void);
   void vPlannerTableFetch(void);
   void vPlannerTableStore(void);
+
+  // plist (participant list)
+  void vPlistFindJob(void);
 
   // process
   void vProcessGetPid(void);

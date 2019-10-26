@@ -34,6 +34,8 @@ namespace Gadgets
     /*------------------------------------------------------------------------*/
     ~CRM<CLASS>(void)
     {
+      //! this assert may fail if a job completes before its references
+      //! are completely returned
       RASSERT(! m_nxReferences.iVal());
     }
   

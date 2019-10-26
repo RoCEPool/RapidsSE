@@ -121,9 +121,11 @@ namespace Steps
     static void vAddSteps_Node(void);
   
     static void vAddSteps_Object(void);
-  
+    static void vAddSteps_Olist(void);
+
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Planner(void);
+    static void vAddSteps_Plist(void);
     static void vAddSteps_Process(void);
     static void vAddSteps_Push(void);
   

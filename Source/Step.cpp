@@ -141,9 +141,11 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Node();
   
   Step::vAddSteps_Object();
-  
+  Step::vAddSteps_Olist();
+
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Planner();
+  Step::vAddSteps_Plist();
   Step::vAddSteps_Process();
   Step::vAddSteps_Push();
   
