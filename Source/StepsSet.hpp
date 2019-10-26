@@ -546,6 +546,13 @@ public:
 
   void vJobWaitParticipant(void);
 
+  // job ref
+  void vJobRefOriginator(void);
+  void vJobRefParticipant(void);
+  void vJobRefReturn(void);
+
+
+
   // job generic
   void vJob__BegunNew(void);
   void vJob__CancelNew(void);
@@ -652,6 +659,9 @@ public:
   // job NodeInfo
   void vJob_NodeInfoNodeNameFetch(void);
 
+  // Job Operand
+  void vJob_OperandPipeOut(void);
+
   // job Pipeline
   void vJob_PipelineBegin(void);
   void vJob_PipelineCancel(void);
@@ -678,7 +688,7 @@ public:
   void vJob_ReceiverNodeFetch(void);
   void vJob_ReceiverNodeStore(void);
 
-  // job Repeater
+ // job Repeater
   void vJob_RepeaterBegin(void);
   void vJob_RepeaterChunk(void);
   void vJob_RepeaterEnd(void);
@@ -793,9 +803,6 @@ public:
   void vJob_WriteRowInsertRow(void);
   void vJob_WriteRowPartitionFetch(void);
   void vJob_WriteRowTableStore(void);
-
-  // Job Operand
-  void vJob_OperandPipeOut(void);
 
   // load table
   void vLoadTableChunkFile(void);

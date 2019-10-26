@@ -18,7 +18,7 @@ namespace Correctness
   
   private:
   
-    CLASS* m_pObject; // pointer to the object
+    CLASS* m_pReferencedObject; // pointer to the referenced object
   
   public:
   
@@ -27,7 +27,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     REF<CLASS>(void)
     {
-      m_pObject = nullptr;
+      m_pReferencedObject = nullptr;
     }
   
     /*------------------------------------------------------------------------*/
@@ -38,7 +38,7 @@ namespace Correctness
 //      if ( ! pReferenceTo || ! AM::bInBufferPool(pReferenceTo) )
 //        THROW("REF::REF(pReferenceTo) : invalid pReferenceTo parameter"_Stz);
 //
-//      m_pObject = nullptr;
+//      m_pReferencedObject = nullptr;
 //
 //      pReferenceTo->vBorrowRefBy(this);
 //    }
@@ -48,7 +48,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     ~REF<CLASS>(void)
     {
-      RASSERT(! m_pObject);
+      RASSERT(! m_pReferencedObject);
     }
 
     /*------------------------------------------------------------------------*/
@@ -59,10 +59,21 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     CLASS* operator -> (void)
     {
-      if (! m_pObject)
+      if (! m_pReferencedObject)
         THROW("REF::operator ->(void) : m_pObject member is null"_Stz);
    
-      return m_pObject;
+      return m_pReferencedObject;
+    }
+  
+    /*------------------------------------------------------------------------*/
+    /* is there a reference?                                                  */
+    /*------------------------------------------------------------------------*/
+    bool bHasReference(void)
+    {
+      if (m_pReferencedObject)
+        return true;
+      else
+        return false;
     }
   
     /*------------------------------------------------------------------------*/
@@ -70,11 +81,22 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     bool bIsValid(void)
     {
-      if ( ! m_pObject || (m_pObject && AM::bInBufferPool(m_pObject)) )
+      if ( ! m_pReferencedObject ||
+           (m_pReferencedObject && AM::bInBufferPool(m_pReferencedObject)) )
         return true;
       else
         return false;
     }
+  
+    /*------------------------------------------------------------------------*/
+    /* return reference                                                       */
+    /*------------------------------------------------------------------------*/
+    void vReturnRef(void)
+    {
+      RASSERT(m_pReferencedObject);
+      m_pReferencedObject->vReturnRefBy(this);
+    }
+  
   };
 }
 

@@ -51,7 +51,7 @@ namespace Gadgets
 
        ++ m_nxReferences;
     
-       pBorrowingRef->m_pObject = ( CLASS *)this;
+       pBorrowingRef->m_pReferencedObject = (CLASS*)this;
     }
   
     /*------------------------------------------------------------------------*/
@@ -60,9 +60,9 @@ namespace Gadgets
     void vReturnRefBy(REF<CLASS>* pReturningRef)
     {
       RASSERT(pReturningRef);
-      RASSERT(pReturningRef->m_pObject);
+      RASSERT(pReturningRef->m_pReferencedObject);
 
-      pReturningRef->m_pObject = nullptr;
+      pReturningRef->m_pReferencedObject = nullptr;
     
       -- m_nxReferences;
     }

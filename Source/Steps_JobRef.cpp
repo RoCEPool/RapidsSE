@@ -9,18 +9,21 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobRef(void)
 {
-  //vAddStep("Job_Operand.pipeOut"_Stz,       &Step::vJob_OperandPipeOut);
+  vAddStep("JobRef::return"_Stz,     &Step::vJobRefReturn);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Operand.pipeOut -- pipe out the operand                                */
+/* JobRef::return -- return the job reference                                 */
 /*----------------------------------------------------------------------------*/
-//void Step::vJob_OperandPipeOut(void)
-//{
-//  ENTRY("vJob_OperandPipeOut"_Stz);
-//  
-//  EXIT();
-//}
+void Step::vJobRefReturn(void)
+{
+  ENTRY("vJobRefReturn"_Stz);
+  
+  if (m_pTask->m_pRegSet->m_xpJobRef.bHasReference())
+    m_pTask->m_pRegSet->m_xpJobRef.vReturnRef();
+
+  EXIT();
+}
 
 /*============================================================================*/
 /* end                                                                        */
