@@ -29,10 +29,10 @@
 
   //----------------------------------------------------------------------------
   // check if we can find the query associated with the job
-  // <jobId> job::findParticipant not if job::this <ERROR_JOB> !!logError exit then
+  // <jobId> plist::findJob not if job::this <ERROR_JOB> !!logError exit then
 
   sJobId str.tailInt drop to iJobId
-  iJobId  job::findParticipant locals| pJobParticipant |
+  iJobId  plist::findJob locals| pJobParticipant |
 
   //----------------------------------------------------------------------------
   // cancel the query
