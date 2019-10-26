@@ -832,7 +832,7 @@ void Step::vJobFindOriginator(void)
   RASSERT(pJobFound);
   
   
-  // borrow the job ref [ this needs to be done under lock ]
+  //! borrow the job ref [ this needs to be done under lock ]
   pJobFound->vBorrowRefBy(&m_pTask->m_pRegSet->m_xpJobRef);
   
   
@@ -855,15 +855,12 @@ void Step::vJobFindParticipant(void)
   Job* pJobFound = Scheduler::pFindParticipatingJob(iJobId);
   RASSERT(pJobFound);
   
-  m_pDataStack->vPushPointer(pJobFound);
   
-//  // temp by ray
-//  {
-//    pJobFound->vBorrowRefBy(&m_pTask->m_pRegSet->m_rpJob);
-//
-//    pJobFound->vReturnRefBy(&m_pTask->m_pRegSet->m_rpJob);
-//
-//  } // end temp
+  //! borrow the job ref [ this needs to be done under lock ]
+  pJobFound->vBorrowRefBy(&m_pTask->m_pRegSet->m_xpJobRef);
+  
+  
+  m_pDataStack->vPushPointer(pJobFound);
   
   EXIT();
 }
