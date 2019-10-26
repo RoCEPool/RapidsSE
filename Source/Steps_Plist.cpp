@@ -19,6 +19,20 @@ void Step::vPlistFindJob(void)
 {
   ENTRY("vPlistFindJob"_Stz);
   
+  i8 iJobId;
+  if ( ! m_pDataStack->bPopAsInt(iJobId) )
+    THROW_DSTACK();
+  
+  Job* pJobFound = Scheduler::pFindParticipatingJob(iJobId);
+  RASSERT(pJobFound);
+  
+  
+  //! borrow the job ref [ this needs to be done under lock ]
+  pJobFound->vBorrowRefBy(&m_pTask->m_pRegSet->m_xpJobRef);
+  
+  
+  m_pDataStack->vPushPointer(pJobFound);
+  
   EXIT();
 }
 
