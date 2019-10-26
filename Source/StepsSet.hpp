@@ -547,8 +547,7 @@ public:
   void vJobWaitParticipant(void);
 
   // job ref
-  void vJobRefOriginator(void);
-  void vJobRefParticipant(void);
+  void vJobRefPointer(void);
   void vJobRefReturn(void);
 
 
