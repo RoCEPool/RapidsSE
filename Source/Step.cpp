@@ -112,6 +112,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobPublish();
   Step::vAddSteps_JobPurge();
   Step::vAddSteps_JobReceiver();
+  Step::vAddSteps_JobRef();
   Step::vAddSteps_JobRepeater();
   Step::vAddSteps_JobReport();
   Step::vAddSteps_JobSelect();
