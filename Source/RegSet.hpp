@@ -16,11 +16,15 @@ namespace Registers
 
     Node* m_pSendNode;    // node to send to
   
-    REF<Job>  m_rpJob;    // job
+    REF<Job>  m_xpJobRef; // job reference
   
-    REG<Dir>  m_rpDir0;   // dir 0
-    REG<File> m_rpFile0;  // file 0
-  
+    REG<Dir>  m_xpDir0;   // dir0[]
+    REG<Dir>  m_xpDir1;   // dir1[]
+    REG<Dir>  m_xpDir2;   // dir2[]
+    REG<File> m_xpFile0;  // file0[]
+    REG<File> m_xpFile1;  // file1[]
+    REG<File> m_xpFile2;  // file2[]
+
 
     // must be last
     Footer m_xFooter;
