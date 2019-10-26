@@ -66,6 +66,8 @@
   // execute the cancel seed of the job on this participating node
   pJobParticipant SEED_CAN job.spawn
 
+  JobRef[].return
+
   job::deleteThis
 
   <DONE_RCV>

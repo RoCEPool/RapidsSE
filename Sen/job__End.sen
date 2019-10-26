@@ -68,6 +68,8 @@
 
   //job::deleteThis
 
+  JobRef[].return
+
   ddlLock::testDrop
 
   job::completed

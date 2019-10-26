@@ -40,6 +40,8 @@
 
   pJob_CancelQuery job::participantExecuted
 
+  JobRef[].return
+
   <<logExit <DONE_EXE>
 ;
 
