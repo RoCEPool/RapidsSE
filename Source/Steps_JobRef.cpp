@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobRef(void)
 {
-  vAddStep("JobRef::return"_Stz,     &Step::vJobRefReturn);
+  vAddStep("JobRef[].return"_Stz,     &Step::vJobRefReturn);
 }
 
 /*----------------------------------------------------------------------------*/
-/* JobRef::return -- return the job reference                                 */
+/* JobRef[].return -- return the job reference                                */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRefReturn(void)
 {

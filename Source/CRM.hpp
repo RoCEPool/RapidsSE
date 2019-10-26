@@ -47,7 +47,7 @@ namespace Gadgets
     void vBorrowRefBy(REF<CLASS>* pBorrowingRef)
     {
        RASSERT(pBorrowingRef);
-       RASSERT(! pBorrowingRef->m_pObject);
+       RASSERT(! pBorrowingRef->m_pReferencedObject);
 
        ++ m_nxReferences;
     

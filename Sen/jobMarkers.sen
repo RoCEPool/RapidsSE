@@ -77,6 +77,8 @@
 
   ddlLock::testDrop
 
+  JobRef[].return
+
   task::delete
 ;
 
