@@ -88,7 +88,8 @@
   pJob__Executed job.participant@ to iParticipantNode
 
   // set the participant response in the originator job
-  pJob__Executed iParticipantNode pJobOriginator job.participantResponse!
+  //pJob__Executed iParticipantNode pJobOriginator job.participantResponse!
+  pJob__Executed pJobOriginator job.participantResponse!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __executed job on this originating node

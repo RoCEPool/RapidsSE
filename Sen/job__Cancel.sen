@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* distribute Job__Cancel to all participants                                 */
 /*----------------------------------------------------------------------------*/
-: Job__Cancel::distribute ( pJobOriginator -- )
+: Job__Cancel::distribute params| pJobOriginator |
 
   //
   // where:  On the originator node.
@@ -19,17 +19,15 @@
 
   JP_CANCELING log::markPhase
 
-  params| pJobOriginator |
-
   0 locals| pJob__Cancel |
-
-  // set the no of acks expected in originator job
-  grid::connectedNodes pJobOriginator job.acksRemaining!
 
   // create a temporary Job__Cancel
   pJobOriginator job__cancel::new to pJob__Cancel
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // set the no of acks expected in originator job
+  grid::connectedNodes pJobOriginator job.acksRemaining!
 
   // send job__cancel to all nodes
   grid::definedNodes 0

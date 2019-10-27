@@ -88,7 +88,8 @@
   error EC_NONE != if
     // set the error code in pJobOriginator for this partcipant
     //error iParticipantNode pJobOriginator job.error!
-    pJob__Begun iParticipantNode pJobOriginator job.participantResponse!
+    //pJob__Begun iParticipantNode pJobOriginator job.participantResponse!
+    pJob__Begun pJobOriginator job.participantResponse!
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

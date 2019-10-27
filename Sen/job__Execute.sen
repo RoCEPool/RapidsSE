@@ -11,23 +11,21 @@
 /*----------------------------------------------------------------------------*/
 /* distribute Job__Execute to all participants                                */
 /*----------------------------------------------------------------------------*/
-: Job__Execute::distribute ( pJobOriginator -- )
+: Job__Execute::distribute params| pJobOriginator |
 
   //
   // where: on the originator node
   //
 
-  params| pJobOriginator |
-
   0 locals| pJob__Execute |
-
-  // set the no of acks expected in originator job
-  grid::connectedNodes pJobOriginator job.acksRemaining!
 
   // create a temporary job__execute
   pJobOriginator job__Execute::new to pJob__Execute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // set the no of acks expected in originator job
+  grid::connectedNodes pJobOriginator job.acksRemaining!
 
   // send job__execute to all nodes
   grid::definedNodes 0
@@ -39,7 +37,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // delete the temporary job__Execute
+  // delete the temporary job__execute
   pJob__Execute job.delete
 ;
 

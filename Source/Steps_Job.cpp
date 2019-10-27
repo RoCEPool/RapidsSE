@@ -1270,7 +1270,7 @@ void Step::vJobParticipantHasError(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.participantResponse! -- store the job response for the partcipant node */
+/* job.participantResponse! -- store a job response for the participant       */
 /*----------------------------------------------------------------------------*/
 void Step::vJobParticipantResponseStore(void)
 {
@@ -1281,9 +1281,9 @@ void Step::vJobParticipantResponseStore(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iNode;
-  if ( ! m_pDataStack->bPopAsInt(iNode) )
-    THROW_DSTACK();
+//  i8 iNode;
+//  if ( ! m_pDataStack->bPopAsInt(iNode) )
+//    THROW_DSTACK();
   
   Object* pParticipantJobPtr;
   if ( ! m_pDataStack->bPopObject(pParticipantJobPtr) )
@@ -1297,7 +1297,8 @@ void Step::vJobParticipantResponseStore(void)
   Response* pResponse = new Response;
   
   // set node and error in the response
-  pResponse->m_iNode           = iNode;
+  //RASSERT(iNode == pParticipantJob->m_iParticipantNode);
+  pResponse->m_iNode           = pParticipantJob->m_iParticipantNode;
   pResponse->m_sResponse       = pParticipantJob->m_xResponse.m_sResponse;
   pResponse->m_ixRowsProcessed = pParticipantJob->m_xResponse.m_ixRowsProcessed;
   pResponse->m_ixRowsInvalid   = pParticipantJob->m_xResponse.m_ixRowsInvalid;
@@ -1310,7 +1311,7 @@ void Step::vJobParticipantResponseStore(void)
   // add the response to the vector of responses
   pJob->m_pResponseVec->vAdd(pResponse);
   
-  if (pResponse->m_eErrorCode != EC_NONE)
+  //if (pResponse->m_eErrorCode != EC_NONE)
     //ActLog::vAdd(pJob,AN_ERROR_CODE,pResponse->m_eErrorCode);
   
   EXIT();
