@@ -35,7 +35,6 @@ void Engine::vMainEntry(void)
   
   StorageEngine::vCheckAllAssumptions();
 
-  vTrace("SessionArray: %lld\n"_Stz, sizeof(SessionArray));
   AM::vBootCheck();
   
   vSanityCheck();

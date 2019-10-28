@@ -325,7 +325,6 @@ void Constants::vAddConstants(void)
 
   /* 57 */ vAddConstant("CN_SESSION"_Stz,      CN_SESSION);
   /*    */ vAddConstant("CN_SESSIONARRAY"_Stz, CN_SESSIONARRAY);
-  /* 57 */ vAddConstant("CN_SESSIONSTATE"_Stz, CN_SESSIONSTATE);
   /* 60 */ vAddConstant("CN_SEPROMPT"_Stz,     CN_SEPROMPT);
   /* 61 */ vAddConstant("CN_SHORTCUT"_Stz,     CN_SHORTCUT);
   /* 61 */ vAddConstant("CN_SHORTCUTVEC"_Stz,  CN_SHORTCUTVEC);
