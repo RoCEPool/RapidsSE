@@ -38,7 +38,7 @@ namespace Jobs
         
   private:
     Decider m_oAcksRmg_2pc;  // acks remaining for coordinating 2pc job 
-    eSS     m_eSeed;         // spawn seed
+    eSS     m_eSeed;         // seed to spawn
     i8      m_i_Slot;        // slot on its node this job processes
     Task*   m_pTaskJ;        // task executing the job
 
