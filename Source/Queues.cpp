@@ -37,7 +37,7 @@ void* Queues::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void Queues::operator delete(void* aAddr)
 {
-  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
          "fatal: Queues class cannot be deleted"_Stz);
 }
 

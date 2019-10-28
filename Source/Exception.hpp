@@ -3,13 +3,16 @@
 /*============================================================================*/
 #pragma once
 
+#include "eVL.h"
+
 namespace Correctness
 {
   class Exception
   {
   private:
     eFK  m_eKind;         // kind of exception
-    char m_zFuncNm[256];  // functin name
+    eVL  m_eSeverity;     // severity
+    char m_zFuncNm[256];  // function name
     char m_zText[1024];   // descriptive text
     char m_zFileNm[256];  // file name/path
     i8   m_iLineNo;       // line number
@@ -18,6 +21,7 @@ namespace Correctness
   
   public:
     Exception(eFK   eKind,
+              eVL   eSeverity,
               const char* azFuncNm,
               const char* azText,
               const char* azFileNm,

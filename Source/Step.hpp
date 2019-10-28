@@ -165,15 +165,18 @@ namespace Steps
 }
 
 #define THROW_ASTACK() \
-  Correctness::vThrow(FK_ASTACK,__func__,__FILE__,__LINE__, \
+  Correctness::vThrow(FK_ASTACK,VL_FATAL,\
+                      __func__,__FILE__,__LINE__, \
                       "Invalid a-stack"_Stz);
 
 #define THROW_DSTACK() \
-  Correctness::vThrow(FK_DSTACK,__func__,__FILE__,__LINE__, \
+  Correctness::vThrow(FK_DSTACK,VL_FATAL,\
+                      __func__,__FILE__,__LINE__, \
                       "Invalid d-stack"_Stz);
 
 #define THROW_RSTACK() \
-  Correctness::vThrow(FK_RSTACK,__func__,__FILE__,__LINE__, \
+  Correctness::vThrow(FK_RSTACK,VL_FATAL,\
+                      __func__,__FILE__,__LINE__, \
                       "Invalid r-stack"_Stz);
 
 /*============================================================================*/

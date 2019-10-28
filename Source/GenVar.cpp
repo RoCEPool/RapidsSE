@@ -25,7 +25,7 @@ GenVar* SenVM::_pGenVar(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* GenVar::operator new(size_t)
 {
-  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
          "fatal: GenVar class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

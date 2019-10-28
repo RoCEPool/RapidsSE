@@ -67,14 +67,14 @@ void* ShmLog::aOpenCreate(s32 sRegionNm, i8 nRegionSz)
   // open a new shm region which will contain the activity map
   bResult = Shm::bOpenCreate(iRegionFd,sRegionNm,oSysCall);
   if (! bResult)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "ShmLog::aCreateNew: failed to create region %s\n"_Stz,
            sRegionNm.azChar());
   
   // extend the shm region
   bResult = Shm::bExtend(iRegionFd,nRegionSz,oSysCall);
   if (! bResult)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "ShmLog::aCreateNew: failed to extend region %s to %lldB\n"_Stz,
            sRegionNm.azChar(),nRegionSz);
   
@@ -85,7 +85,7 @@ void* ShmLog::aOpenCreate(s32 sRegionNm, i8 nRegionSz)
                              C_NO_HUGE_PAGES,
                              oSysCall);
   if (! aSegment)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "ShmLog::aCreateNew: failed to map region %s\n"_Stz,
            sRegionNm.azChar());
   
@@ -103,7 +103,7 @@ void* ShmLog::aOpenExisting(s32 sRegionNm, i8 nRegionSz)
   // open existing shm region
   bool bResult = Shm::bOpenExisting(iFD,sRegionNm,oSysCall);
   if (! bResult)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "ShmLog::aOpenExisting: failed to open region: %s\n"_Stz,
            sRegionNm.azChar());
   
@@ -114,7 +114,7 @@ void* ShmLog::aOpenExisting(s32 sRegionNm, i8 nRegionSz)
                              C_NO_HUGE_PAGES,
                              oSysCall);
   if (! aSegment)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "ShmLog::aOpenExisting: failed to map region %s\n"_Stz,
            sRegionNm.azChar());
   

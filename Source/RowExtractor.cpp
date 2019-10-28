@@ -134,7 +134,7 @@ Column* RowExtractor::pExtractRow(Row* pRow, char** aacRecCrs,
       case DM_TSP: b = bExtractTspSupplied(&oDatum,aacRecCrs,pRecFmt); break;
       case DM_VCH: b = bExtractVchSupplied(&oDatum,aacRecCrs,pRecFmt); break;
       default:
-        vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                "RowExtractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
     }
     
@@ -279,7 +279,7 @@ bool RowExtractor::bExtractElement(DtmVal* pDtmVal, char** aacRecCrs,
       break;
       
     default:
-      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "RowExtractor::bExtractElement: Invalid eDatum : %lld\n"_Stz,eDatum);
   }
   

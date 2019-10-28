@@ -267,7 +267,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
           pNewWord->vEncode(afpCalledEntryStep);
         }
         else {
-          vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
+          vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
                  "Invalid eWordType %lld"_Stz,pCalledWord->eKind());
         }
         break;
@@ -279,8 +279,9 @@ Word* Task::pCompileColon(s48K& sDefinition)
       }
         
       default:
-        vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
-               "Invalid m_eToken %lld"_Stz,m_pForth->m_pCompiler->m_pTokeniser->eToken());
+        vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+               "Invalid m_eToken %lld"_Stz,
+               m_pForth->m_pCompiler->m_pTokeniser->eToken());
     }
     
     m_pForth->m_pCompiler->m_pTokeniser->vNextToken();

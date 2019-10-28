@@ -764,7 +764,7 @@ void Task::vSeedTask(void)
   Word* pSeedWord = pRootDic->pFindWord(szSeed);
   
   if (! pSeedWord)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Unable to find seed word: %s\n"_Stz,szSeed);
   
   m_pForth->vSeedForth(pSeedWord);

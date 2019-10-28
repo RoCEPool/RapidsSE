@@ -72,7 +72,7 @@ void Step::vAddressFetch(void)
       break;
   
     default:
-      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
+      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
              "Invalid eClass %lld"_Stz,eClass);
   }
   
@@ -118,7 +118,7 @@ void Step::vAddressStore(void)
       break;
       
     default:
-      vThrow(FK_CHECK,__func__,__FILE__,__LINE__,
+      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
              "Invalid eClass %lld"_Stz,eClass);
   }
   

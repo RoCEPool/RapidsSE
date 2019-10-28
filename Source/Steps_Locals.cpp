@@ -173,7 +173,7 @@ ENTRY("vLocalsTo"_Stz);
   // find the word describing the local
   Word* pLocalWord = m_pTask->m_pForth->m_oDicStack.pFindWord(sLocalName);
   if (! pLocalWord)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "No such local: %s\n"_Stz,sLocalName.azChar());
   
   GenVar xVar_LocalNo;

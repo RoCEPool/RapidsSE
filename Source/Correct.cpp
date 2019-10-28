@@ -54,9 +54,12 @@ void Correctness::vStackDump(void)
 /*----------------------------------------------------------------------------*/
 /* throw anexception                                                          */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vThrow(eFK eKind, const char* azFunc,
-                                        const char* azFilePath, i8 iLineNo,
-                                        Stz* szFormat,...)
+[[ noreturn ]] void Correctness::vThrow(eFK   eKind,
+                                        eVL   eSeverity,
+                                        const char* azFunc,
+                                        const char* azFilePath,
+                                        i8    iLineNo,
+                                        Stz*  szFormat,...)
 {
   // put a breakpoint here to trap throws
   sleep(0);
@@ -72,7 +75,7 @@ void Correctness::vStackDump(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Exception xException(eKind,azFunc,zCondition,zFileNm,iLineNo);
+  Exception xException(eKind,eSeverity,azFunc,zCondition,zFileNm,iLineNo);
   
   //xException.vPrint();
   
@@ -85,9 +88,13 @@ void Correctness::vStackDump(void)
 /*----------------------------------------------------------------------------*/
 /* have a type error                                                          */
 /*----------------------------------------------------------------------------*/
-[[ noreturn ]] void Correctness::vThrowType(eFK eKind, const char* azFunc,
-                                            const char* azFilePath, i8 iLineNo,
-                                            void* aObject, eCN eExpectingClass)
+[[ noreturn ]] void Correctness::vThrowType(eFK   eKind,
+                                            eVL   eSeverity,
+                                            const char* azFunc,
+                                            const char* azFilePath,
+                                            i8    iLineNo,
+                                            void* aObject,
+                                            eCN   eExpectingClass)
 {
   Object* pObject = static_cast<Object*>(aObject);
   eCN eGotClass = pObject->eClass();
@@ -115,7 +122,7 @@ void Correctness::vStackDump(void)
   //    printf("  FreeChunk was %d\n",eWasClass);
   //  }
   
-  vThrow(eKind,azFunc,azFilePath,iLineNo,(Stz*)zCondition);
+  vThrow(eKind,eSeverity,azFunc,azFilePath,iLineNo,(Stz*)zCondition);
 }
 
 

@@ -17,7 +17,7 @@ void* FreeChunk::operator new(size_t, FreeChunk* aFreeChunk)
 /*----------------------------------------------------------------------------*/
 void FreeChunk::operator delete(void*)
 {
-  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
          "fatal: FreeChunk class cannot be deleted"_Stz);
 }
 
@@ -35,7 +35,7 @@ FreeChunk::FreeChunk(void)
 /*----------------------------------------------------------------------------*/
 FreeChunk::~FreeChunk(void) noexcept(false)
 {
-  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
          "fatal: FreeChunk class cannot be deleted"_Stz);
   
   NEVER_REACH;

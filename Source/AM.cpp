@@ -1051,11 +1051,11 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Enum for CN_ENUM not found in aCN\n"_Stz);
   
   if (iEntriesECN != iEntriesPCN) {
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "\n!!!ALERT!!! No of entries in aCN (%lld) "
            "do not match the no in eCN (%lld)\n\n"_Stz,
            iEntriesPCN, iEntriesECN);
@@ -1072,11 +1072,11 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Enum for CN_ENUM not found in gpDump\n"_Stz);
   
   if (iEntriesECN != iEntriesGPDUMP) {
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "\n!!!ALERT!!! No of entries in gpDump (%lld) "
            "do not match the no in eCN (%lld)\n\n"_Stz,
            iEntriesECN, iEntriesGPDUMP);
@@ -1093,11 +1093,11 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Enum for CN_ENUM not found in giClassSize\n"_Stz);
   
   if (iEntriesECN != iEntriesGCLASSSIZE) {
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "\n!!!ALERT!!! No of entries in giClassSize (%lld) "
            "do not match the no in eCN (%lld)\n\n"_Stz,
            iEntriesGCLASSSIZE, iEntriesECN);
@@ -1114,11 +1114,11 @@ void AM::vBootCheck(void)
   }
   
   if (!bFoundEnum)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Enum for CN_ENUM not found in gpDump\n"_Stz);
   
   if (iEntriesECN != iEntriesGPDUMP) {
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "\n!!!ALERT!!! No of entries in gpDump (%lld) "
            "do not match the no in eCN (%lld)\n\n"_Stz,
            iEntriesECN, iEntriesGPDUMP);

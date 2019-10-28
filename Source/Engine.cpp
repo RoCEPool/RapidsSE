@@ -732,7 +732,7 @@ void Engine::vRunCommandLine(void)
       case BO_UNLINK:       vStopSystem();                                break;
         
       default:
-        vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                "Unknown command line argument\n"_Stz);
     }
   }
@@ -808,7 +808,7 @@ void Engine::vSanityCheck(void)
 void Engine::vSignalHandler(int iSignal)
 {
   // print out all the frames to stderr
-  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
          "Error: signal %d:\n"_Stz, iSignal);
 }
 
@@ -893,7 +893,7 @@ void Engine::vStartSystem(void)
   
   Node* pThisNode = AM::pGrid()->pFindNode(gxArguments.m_sNodeName);
   if (! pThisNode)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Cannot fine Node %s in the cluster"_Stz,
            gxArguments.m_sNodeName.azChar());
   

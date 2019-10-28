@@ -90,14 +90,14 @@ Log* Log::pAttachCreate(void)
   // open a new shm region
   bResult = Shm::bOpenCreate(iRegionFd,sLogRegionNm,oSysCall);
   if (! bResult)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Log::bOpenCreate: failed to create region %s\n"_Stz,
            sLogRegionNm.azChar());
   
   // extend the shm region
   bResult = Shm::bExtend(iRegionFd,sizeof(Log),oSysCall);
   if (! bResult)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Log::bOpenCreate: failed to extend region %s\n"_Stz,
            sLogRegionNm.azChar());
   
@@ -108,7 +108,7 @@ Log* Log::pAttachCreate(void)
                              C_NO_HUGE_PAGES,
                              oSysCall);
   if (! aSegment)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Log::bOpenCreate: failed to map region!\n"_Stz);
   
   Log* pLog = static_cast<Log*>(aSegment);
@@ -129,7 +129,7 @@ Log* Log::pAttachExisting(void)
   // open existing shm region
   bool bResult = Shm::bOpenExisting(iFD,sLogRegionNm,oSysCall);
   if (! bResult)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Log::bOpenExisting: failed to open region: %s\n"_Stz,
            sLogRegionNm.azChar());
   
@@ -386,7 +386,7 @@ void Log::vOpenBySE(bool bStarting)
     return;
   
   if (gpLog)
-    vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Log::vOpenBySE() -- activity map already opened\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

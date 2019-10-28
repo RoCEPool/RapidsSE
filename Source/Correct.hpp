@@ -18,13 +18,20 @@ namespace Correctness
   
   [[ noreturn ]] void vAbortProcess(void);
     
-  [[ noreturn ]] void vThrow(eFK eKind, const char* azFunc,
-                             const char* azFilePath, i8 iLineNo,
-                             Stz* szFormat,...);
+  [[ noreturn ]] void vThrow(eFK   eKind,
+                             eVL   eSeverity,
+                             const char* azFunc,
+                             const char* azFilePath,
+                             i8    iLineNo,
+                             Stz*  szFormat,...);
   
-  [[ noreturn ]] void vThrowType(eFK eKind, const char* azFunc,
-                                 const char* azFilePath, i8 iLineNo,
-                                 void* aObject, eCN eExpectingClass);
+  [[ noreturn ]] void vThrowType(eFK   eKind,
+                                 eVL   eSeverity,
+                                 const char* azFunc,
+                                 const char* azFilePath,
+                                 i8    iLineNo,
+                                 void* aObject,
+                                 eCN   eExpectingClass);
 };
 
 

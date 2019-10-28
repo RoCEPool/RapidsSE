@@ -22,12 +22,14 @@
 /* constructor (long-form)                                                    */
 /*----------------------------------------------------------------------------*/
 Exception::Exception(eFK   eKind,
+                     eVL   eSeverity,
                      const char* azFuncNm,
                      const char* azText,
                      const char* azFileNm,
                      i8    iLineNo)
 {
   m_eKind = eKind;
+  m_eSeverity = eSeverity;
   StrLib::vCopy(m_zFuncNm,azFuncNm);
   StrLib::vCopy(m_zText,azText);   //! #030 this should be length delimited copy
   StrLib::vCopy(m_zFileNm,azFileNm);
