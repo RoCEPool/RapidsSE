@@ -18,6 +18,7 @@ namespace Jobs
   public:
   
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
+    
     bool m_bByPrompt;    // job was spawned by se> prompt?
     bool m_bNoWait;      // no wait
     bool m_bWasReceived; // job was received over a socket

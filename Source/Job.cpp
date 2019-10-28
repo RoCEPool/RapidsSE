@@ -379,6 +379,23 @@ void Job::vContentDump(void)
   vTrace("Job\n"_Stz);
   vTrace("--------\n"_Stz);
 
+  vTrace("%p:\n"
+         "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
+         "m_bByPrompt=%d m_bNoWait=%d m_bWasReceived=%d\n"_Stz,
+
+         this,
+         
+         aJL[m_eJobList],
+         aJP[m_eJobPhase],
+         aJS[m_eJobState],
+         
+         m_bByPrompt,
+         m_bNoWait,
+         m_bWasReceived,
+         
+         C_ENDARGS
+         );
+
 }
 
 /*----------------------------------------------------------------------------*/
