@@ -26,7 +26,6 @@ namespace Tasks
     ReqTuple     m_xReqTuple;    // request tuple
   
     Lock         m_okLock;       // lock for this task
-    eTK          m_eKind;        // task kind
     i8           m_iTraceMask;   // tracing mask
 
     SMA<Job>     m_pJob;         // the job for this task
@@ -82,7 +81,6 @@ namespace Tasks
     Job* pJob(void);
     void vJob(Job* pJob);
     Stz* szJobName(void);
-    eTK  eKind(void);
     void vLocalsPop(void);
     void vLocalsPush(void);
     void vMonitorPortrait(s48K& sPortrait);

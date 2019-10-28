@@ -67,7 +67,6 @@ Task::Task(Job* pJob)
   
   vInit();
   
-  m_eKind     = TK_JOB;
   m_pJob      = pJob;
 
   _checkInitialised_(CN_TASK);
@@ -99,7 +98,6 @@ void Task::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_eKind        = TK_NONE;
   m_pJob         = nullptr;
   m_pOp          = nullptr;
 
@@ -146,18 +144,10 @@ Task::~Task(void) noexcept(false)
 
   
   -- gixTask;
-  if (TK_OPERATOR == m_eKind) {
-    vIncActNo();
-    AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCT,
-                "Task destruct |gixTask=%lld|"_Stz, //!format-LogTsk
-                * gixTask);
-  }
-  else {
-    vIncActNo();
-    AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCT,
-                "Task destruct |gixTask=%lld|"_Stz, //!format-LogTsk
-                * gixTask);
-  }
+  vIncActNo();
+  AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCT,
+              "Task destruct |gixTask=%lld|"_Stz, //!format-LogTsk
+              * gixTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,9 +171,7 @@ Task* Task::pThisTLSTask(void)
 void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  RASSERT(TK_JOB == eKind());
-          
+            
   // TODO: shouldn't have to refind it everytime!!!
   vRefindJobClass();
   
@@ -430,9 +418,8 @@ void Task::vFocalOutline(s4K& sOutline)
   
   vGrabTaskLock();
   
-  sOutline.vSprint("%s %s %s%s"_Stz,
+  sOutline.vSprint("%s %s%s"_Stz,
                                       
-                   aTK[m_eKind],
                    aTS[m_eState],
                    aQK[m_eQueue],
                    m_eDdlLocked ? " DdlLocked"_Stz : ""_Stz
@@ -528,16 +515,6 @@ Stz* Task::szJobName(void)
     return "<no job>"_Stz;
   else
     return "<no jobClass>"_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the kind of this task                                                  */
-/*----------------------------------------------------------------------------*/
-eTK Task::eKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_eKind;
 }
 
 /*----------------------------------------------------------------------------*/
