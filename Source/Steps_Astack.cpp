@@ -204,8 +204,7 @@ void Step::vAstackStk(void)
 {
   ENTRY("vAstackStk"_Stz);
   
-  m_pAuxStack->vContentDump(&m_oDicStack,
-                            (Stz*)m_pTask->szJobName(),"AuxStack:"_Stz);
+  m_pAuxStack->vContentDump(&m_oDicStack,"AuxStack:"_Stz);
   
   EXIT();
 }

@@ -39,7 +39,7 @@ namespace SenVM
     static Stack* _pStack(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    void vContentDump(DicStack* pDicStack, Stz* aPrefix, Stz* aTitle);
+    void vContentDump(DicStack* pDicStack, Stz* szTitle);
   
     void vDiscard(void);
   

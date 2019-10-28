@@ -308,8 +308,7 @@ void Step::vRstackStk(void)
 {
   ENTRY("vRstackStk"_Stz);
   
-  m_pReturnStack->vContentDump(&m_oDicStack,
-                               (Stz*)m_pTask->szJobName(),"ReturnStack:"_Stz);
+  m_pReturnStack->vContentDump(&m_oDicStack,"ReturnStack:"_Stz);
   
   EXIT();
 }

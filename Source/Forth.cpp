@@ -102,16 +102,15 @@ void Forth::vDumpContext(void)
   vTrace("Execution Context\n"_Stz);
   vTrace("-----------------\n"_Stz);
 
-  vTrace("[%s] %s = %s %p\n"_Stz,
+  vTrace("%s = %s %p\n"_Stz,
          
-         "???"_Stz,
          "m_aInxPtr"_Stz,
          pWord ? pWord->sName().azChar() : "<none>",
          m_aInxPtr);
 
-  m_pAuxStack->vContentDump(&m_oDicStack,   (Stz*)"???", "m_pAuxStack:"_Stz);
-  m_pDataStack->vContentDump(&m_oDicStack,  (Stz*)"???", "m_pDataStack:"_Stz);
-  m_pReturnStack->vContentDump(&m_oDicStack,(Stz*)"???", "m_pReturnStack:"_Stz);
+  m_pAuxStack->vContentDump(&m_oDicStack,   "m_pAuxStack:"_Stz);
+  m_pDataStack->vContentDump(&m_oDicStack,  "m_pDataStack:"_Stz);
+  m_pReturnStack->vContentDump(&m_oDicStack,"m_pReturnStack:"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

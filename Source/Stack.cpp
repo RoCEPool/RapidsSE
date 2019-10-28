@@ -101,9 +101,9 @@ void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* dump contents of the value stack                                           */
 /*----------------------------------------------------------------------------*/
-void Stack::vContentDump(DicStack* pDicStack,Stz* aPrefix, Stz* aTitle)
+void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
 {
-  vTrace("[%s] %s:\n"_Stz,aPrefix,aTitle);
+  vTrace("%s:\n"_Stz,aTitle);
   
   GenVar xVariable;
   
@@ -123,8 +123,8 @@ void Stack::vContentDump(DicStack* pDicStack,Stz* aPrefix, Stz* aTitle)
         Word* pWord = pDicStack->pLocateWord(aFip);
 
 
-        vTrace("[%s] [%2lld] [%s] %16s %p\n"_Stz,
-               aPrefix,iVal,aCN[eClass],
+        vTrace("[%2lld] [%s] %16s %p\n"_Stz,
+               iVal,aCN[eClass],
                pWord ? pWord->sName().azChar() : "<none>",aFip);
         break;
       }
@@ -132,8 +132,8 @@ void Stack::vContentDump(DicStack* pDicStack,Stz* aPrefix, Stz* aTitle)
       case CN_INTVAL: {
         IntVal *aIntVal = _aIntVal(aNestedValue); //xVariable.iInt();
         i8 iInt = aIntVal->iInt();
-        vTrace("[%s] [%2lld] [%s] %lld\n"_Stz,
-               aPrefix,iVal,aCN[eClass],iInt);
+        vTrace("[%2lld] [%s] %lld\n"_Stz,
+               iVal,aCN[eClass],iInt);
         break;
       }
         
@@ -141,21 +141,21 @@ void Stack::vContentDump(DicStack* pDicStack,Stz* aPrefix, Stz* aTitle)
         PtrVal* aPtrVal = _aPtrVal(aNestedValue);
         Object* pObject = aPtrVal->pObj();
         eCN ePtdClass   = pObject->eClass();
-        vTrace("[%s] [%2lld] [%s] %p (%s)\n"_Stz,
-               aPrefix,iVal,aCN[eClass],pObject,aCN[ePtdClass]);
+        vTrace("[%2lld] [%s] %p (%s)\n"_Stz,
+               iVal,aCN[eClass],pObject,aCN[ePtdClass]);
         break;
       }
         
       case CN_STRVAL: {
         StrVal* aStrVal = _aStrVal(aNestedValue);
-        vTrace("[%s] [%2lld] [%s] %s\n"_Stz,
-               aPrefix,iVal,aCN[eClass],aStrVal->azChar());
+        vTrace("[%2lld] [%s] %s\n"_Stz,
+               iVal,aCN[eClass],aStrVal->azChar());
         break;
       }
         
       default: {
-        vTrace("[%s] [%2lld] [%s]\n"_Stz,
-               aPrefix,iVal,aCN[eClass]);
+        vTrace("[%2lld] [%s]\n"_Stz,
+               iVal,aCN[eClass]);
         break;
       }
         
