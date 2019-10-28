@@ -112,6 +112,19 @@ Job_Universal::Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job_Universal::Job_Universal(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+: Job(pParentJob, aJobClass, aReqTuple)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
+  
+  _checkInitialised_(CN_JOB_UNIVERSAL);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Job_Universal::~Job_Universal(void) noexcept(false)

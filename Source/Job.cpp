@@ -57,7 +57,7 @@ bool Jobs::_bIsValidJob(eCN eClass)
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
 : JobBase(eClassNo)
-, JobDicPath(nullptr)
+, JobDicPath((Session*)nullptr)
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -131,6 +131,52 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_pOriginatingTask = nullptr;
   m_iOriginatingId = C_UNKNOWN;
 
+  m_iParticipantNode  = C_UNKNOWN;
+  m_oAcksRmg_2pc.vCheckInit();
+  
+  m_pOp = nullptr;
+  m_pOperand   = nullptr;
+  
+  
+  // -- -- -- -- -- --
+  
+  SP_Id spId;
+  
+  vIncActNo(); ++ gixJob;
+  AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
+              "|gixJob=%lld|"_Stz, //!format-LogJob
+              * gixJob);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
+: JobBase(aJobClass,aReqTuple,AM::iNextJobId())
+, JobDicPath(pParentJob)
+, CRM<Job>(this)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
+  
+  // m_xReqTuple
+  
+  m_iParentId = C_UNKNOWN;
+  m_eSeed     = SS_ENUMS;
+  m_i_Slot    = C_UNKNOWN;
+  m_eJobPhase = JP_NONE;
+  m_eJobList  = JL_NONE;
+  m_eJobState = JS_RUNNING;
+  m_bNoWait   = false;
+  m_bWasReceived = false;
+  
+  //m_oAcksRmg
+  
+  m_pTaskJ = nullptr;
+  m_pOriginatingTask = nullptr;
+  m_iOriginatingId = C_UNKNOWN;
+  
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRmg_2pc.vCheckInit();
   

@@ -14,6 +14,7 @@ namespace Jobs
     void* operator new(size_t);
   
     JobDicPath(void);
+    JobDicPath(Job* pJob);
     JobDicPath(Session* pSession);
    ~JobDicPath(void) noexcept(false);
   

@@ -1015,7 +1015,7 @@ Job* AM::pNewJobUniversal( Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId)
 {
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
 
-  Job_Universal* pJobUniversal = new Job_Universal(pJobClass_Universal,pReqTuple,iUniqueId);
+  Job_Universal* pJobUniversal = new Job_Universal(pOp->m_pJobPipeline, pJobClass_Universal,pReqTuple,iUniqueId);
   
   pJobUniversal->m_pOp = pOp;
   pJobUniversal->m_oEnmSet.vAdd("<jobNm>"_Stz,pOp->m_sName,TN_STRING);

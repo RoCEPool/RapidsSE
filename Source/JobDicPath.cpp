@@ -30,6 +30,24 @@ JobDicPath::JobDicPath(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+JobDicPath::JobDicPath(Job* pJob)
+{
+  s32 sDicName;
+  
+  i8 nDicNames = pJob->m_oDicPath.nDicNames();
+  for (i8 i_Name = 0; i_Name < nDicNames; i_Name++) {
+    sDicName = pJob->m_oDicPath.sDicName(i_Name);
+    m_oDicPath.vDicName(i_Name,sDicName);
+  }
+
+  //  s256 sDicPath;
+  //  m_oDicPath.vAsString(sDicPath);
+  //  vTrace("DicPath: %s\n"_Stz,sDicPath.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 JobDicPath::JobDicPath(Session* pSession)
 {
   s32 sDicName;
