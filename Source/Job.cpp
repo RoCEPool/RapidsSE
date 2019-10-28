@@ -108,7 +108,7 @@ Job::Job(eCN eClassNo)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
-: JobBase(aJobClass,aReqTuple,AM::iNextJobId(),pSession ? pSession->m_iUniqueId : C_UNKNOWN)
+: JobBase(aJobClass,aReqTuple,AM::iNextJobId())
 , JobDicPath(AM::pSessionGet(aReqTuple))
 , CRM<Job>(this)
 {
