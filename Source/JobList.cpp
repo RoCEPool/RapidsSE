@@ -234,8 +234,8 @@ void JobList::vLogJobs(i8 iJobId)
                 
                  aJP[pJob->m_eJobPhase],
                  aJS[pJob->m_eJobState],
-                 pJob->m_oAcksRmg_2pc.iPrintOnlyValue(),
-                 pJob->m_oAcksRmg_2pc.nOriginalAcks(),
+                 pJob->iAcksRmg_printOnlyValue(),
+                 pJob->iAcksOriginal(),
                  pJob->m_iParticipantNode);
     
     pNode = m_pJobsSkipList->pNext(pNode, iLevel);

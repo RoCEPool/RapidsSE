@@ -29,7 +29,6 @@ namespace Jobs
     eJS  m_eJobState;    // current state of the job
     
     Atomic  m_ixErrors;
-    Decider m_oAcksRmg_2pc;   // acks remaining
   
     Task* m_pOriginatingTask; // originating task of the request
     i8    m_iOriginatingId;   // job id of originating job
@@ -40,7 +39,8 @@ namespace Jobs
     Operand*   m_pOperand;
         
   private:
-    Task* m_pTaskJ;            // task executing the job
+    Decider m_oAcksRmg_2pc;  // acks remaining for coordinating 2pc job 
+    Task*   m_pTaskJ;        // task executing the job
 
   public:
     Job(eCN eClassNo);
@@ -57,7 +57,10 @@ namespace Jobs
     static i8   iOriginatorNode(i8 iJobId);
     static i8   iAsNodeNo_Bits(i8 iNodeNo);
 
+    i8   iAcksOriginal(void);
+    i8   iAcksRmg_printOnlyValue(void);
     void vAcksRmg(i8 nAcks);
+    bool bAcksRmgDec();
     void vFocalOutline(s4K& sOutline);
     Stz* sJobSeed(void);
     i8   iJobId(void);

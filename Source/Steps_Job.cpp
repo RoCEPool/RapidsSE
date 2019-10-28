@@ -651,7 +651,7 @@ void Step::vJobDelete(void)
   
 
 /*----------------------------------------------------------------------------*/
-/* job.dec2pcAcksRmg -- decrement acks remaining for this job              */
+/* job.dec2pcAcksRmg -- decrement acks remaining for this job                 */
 /*----------------------------------------------------------------------------*/
 void Step::vJobDec2pcAcksRmg(void)
 {
@@ -662,7 +662,7 @@ void Step::vJobDec2pcAcksRmg(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  bool bAmDecider = pJob->m_oAcksRmg_2pc.bDecAndDecide();
+  bool bAmDecider = pJob->bAcksRmgDec();
   
   m_pDataStack->vPushI8(bAmDecider);
   

@@ -269,6 +269,34 @@ i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get the number of acks originally required by the job                      */
+/*----------------------------------------------------------------------------*/
+i8 Job::iAcksOriginal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTaskJ));
+  
+  i8 iAcksOriginal = m_oAcksRmg_2pc.nOriginalAcks();
+  
+  return iAcksOriginal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the number of acks required by the job                                 */
+/*----------------------------------------------------------------------------*/
+i8 Job::iAcksRmg_printOnlyValue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTaskJ));
+  
+  i8 iAcksRmg = m_oAcksRmg_2pc.iPrintOnlyValue();
+  
+  return iAcksRmg;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set the number of acks required by the job                                 */
 /*----------------------------------------------------------------------------*/
 void Job::vAcksRmg(i8 nAcks)
@@ -278,6 +306,18 @@ void Job::vAcksRmg(i8 nAcks)
   //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTaskJ));
   
   m_oAcksRmg_2pc.vSetRemaining(nAcks);
+}
+
+/*----------------------------------------------------------------------------*/
+/* decrement+decide acks remaining for this job                               */
+/*----------------------------------------------------------------------------*/
+bool Job::bAcksRmgDec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  bool bAmDecider = m_oAcksRmg_2pc.bDecAndDecide();
+  
+  return bAmDecider;
 }
 
 /*----------------------------------------------------------------------------*/
