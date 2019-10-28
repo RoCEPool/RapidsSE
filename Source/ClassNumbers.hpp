@@ -751,7 +751,7 @@ static Stz* aCN[]
   /*          */ "SEEME"_Stz,               // CN_SEEME
   /* 177 0xB1 */ "SEPROMPT"_Stz,            // CN_SEPROMPT
   /* 178 0xB2 */ "SESSION"_Stz,             // CN_SESSION
-  /*          */ "SESSION"_Stz,             // CN_SESSIONARRAY
+  /*          */ "SESSIONARRAY"_Stz,        // CN_SESSIONARRAY
   /* 180 0xB4 */ "SHORTCUT"_Stz,            // CN_SHORTCUT
   /* 180 0xB4 */ "SHORTCUTVEC"_Stz,         // CN_SHORTCUTVEC
   /* 180 0xB4 */ "SINCE"_Stz,               // CN_SINCE

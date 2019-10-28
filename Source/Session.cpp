@@ -368,6 +368,106 @@ void Session::vTx(Tx* pTx)
 }
 
 /*----------------------------------------------------------------------------*/
+/* free the session state                                                     */
+/*----------------------------------------------------------------------------*/
+void Session::vFreeSession(i8 i_NextFree)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  RASSERT(m_i_Session >= 0 && m_i_Session < C_MAX_SESSIONS);
+  m_i_NextFree = i_NextFree;
+  
+  m_eApiFun    = AC_NONE;
+  m_iApiLoc    = 0;
+  m_eApiError  = EC_NONE;
+  m_bRunning   = false;
+  m_bSignalled = false;
+  
+  m_aStackBase = nullptr;
+  m_aStackPtr  = nullptr;
+  
+  m_eJobClass  = CN_NONE;
+  m_iJobLoc    = 0;
+  m_iSenLoc    = 0;
+  
+  m_oTimer.vReset();
+  m_iTotalMsec = 0;
+  
+  m_nBegun     = 0;
+  m_nExecuted  = 0;
+  m_nCancelled = 0;
+  m_nEnded     = 0;
+  
+  m_nApiCalls  = 0;
+  m_nApiErrors = 0;
+  m_nJobNew    = 0;
+  m_nJobDelete = 0;
+  
+  m_sResponse       = ""_Stz;
+  m_pJob            = nullptr;
+  m_pTx             = nullptr;
+  m_bSessionExiting = false;
+  
+  RASSERT(0 == m_pJobStack->nValues());
+  
+  m_pNmStrLst = nullptr;
+  delete m_pNmStrLst;
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace                                                                      */
+/*----------------------------------------------------------------------------*/
+void Session::vTraceSession(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  if (m_bRunning)
+    m_oTimer.vUpdate();
+  
+  i8 nBytes;
+  if (m_aStackBase >= m_aStackPtr)
+    nBytes = nSub(m_aStackBase,m_aStackPtr);
+  else
+    nBytes = nSub(m_aStackPtr,m_aStackBase);
+  
+  vTrace("  %lld: session %p base %llx ptr %llx (%lldB)\n"
+         "     apiFun %s apiLoc %lld job %s jobLoc %lld senLoc %lld \n"
+         "     %s %s apiError %s time %lldus\n"
+         "     dist2PC: begun %lld executed %lld cancelled %lld ended %lld\n"
+         "     #calls %lld, #errors %lld, #jobNew %lld #jobDelete %lld total %lldus\n"_Stz,
+         
+         m_i_Session,
+         this,
+         m_aStackBase,
+         m_aStackPtr,
+         nBytes,
+         
+         aAC[m_eApiFun],
+         m_iApiLoc,
+         aCN[m_eJobClass],
+         m_iJobLoc,
+         m_iSenLoc,
+         
+         m_bRunning   ? "running"   : "completed",
+         m_bSignalled ? "signalled" : "not signalled",
+         aEC[m_eApiError],
+         m_oTimer.iMicroseconds(),
+         
+         m_nBegun,
+         m_nExecuted,
+         m_nCancelled,
+         m_nEnded,
+         
+         m_nApiCalls,
+         m_nApiErrors,
+         m_nJobNew,
+         m_nJobDelete,
+         m_iTotalMsec
+         );
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
