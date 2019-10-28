@@ -96,8 +96,8 @@
   // process __begun job on this originating node
 
   // increment the number of __begun jobs received in api state
-  pJobOriginator ApiState::incBegun
-  pJobOriginator ApiState::traceSession
+  pJobOriginator ssn::incBegun
+  pJobOriginator ssn::traceSession
 
   // decrement the acks remaining in the originating job
   pJobOriginator job.dec2pcAcksRmg to bAmDecider

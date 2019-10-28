@@ -12,7 +12,7 @@
   >>logEntry <SEED_REQ>
   //">>pwf_req" log::mark
 
-  100 apiState::senLoc
+  100 ssn::senLoc
 
   0 0 0 0 locals| pJob_Pwf pTask |
 
@@ -57,7 +57,7 @@
   pJob_Pwf job.response!
   1 pJob_Pwf job.rowsProcessed!
 
-  900 apiState::senLoc
+  900 ssn::senLoc
 
   //"<<pwf_req" log::mark
     <<logExit <DONE_REQ>

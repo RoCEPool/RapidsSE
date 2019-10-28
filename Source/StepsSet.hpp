@@ -30,14 +30,6 @@ public:
   void vAddressFetch(void);
   void vAddressStore(void);
 
-  // apiState
-  void vApiStateIncBegun(void);
-  void vApiStateIncCancelled(void);
-  void vApiStateIncEnded(void);
-  void vApiStateIncExecuted(void);
-  void vApiStateSenLoc(void);
-  void vApiStateTraceSession(void);
-
   // args
   void vArgsOscillate(void);
   void vArgsPrint(void);
@@ -1052,6 +1044,14 @@ public:
   void vSocketRecvObject(void);
   void vSocketRecvObject_LowMem(void);
   void vSocketSendObject(void);
+
+  // ssn
+  void vSsnIncBegun(void);
+  void vSsnIncCancelled(void);
+  void vSsnIncEnded(void);
+  void vSsnIncExecuted(void);
+  void vSsnSenLoc(void);
+  void vSsnTraceSession(void);
 
   // steps
   void vStepTimingReset(void);

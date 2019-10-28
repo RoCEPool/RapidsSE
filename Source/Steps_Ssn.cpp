@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ApiState.cpp - AoiState step group                                   */
+/* Steps_SsnState.cpp - SsnState step group                                   */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -7,22 +7,22 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_ApiState(void)
+void Step::vAddSteps_SsnState(void)
 {
-  vAddStep("apiState::incBegun"_Stz,     &Step::vApiStateIncBegun);
-  vAddStep("apiState::incCancelled"_Stz, &Step::vApiStateIncCancelled);
-  vAddStep("apiState::incEnded"_Stz,     &Step::vApiStateIncEnded);
-  vAddStep("apiState::incExecuted"_Stz,  &Step::vApiStateIncExecuted);
-  vAddStep("apiState::senLoc"_Stz,       &Step::vApiStateSenLoc);
-  vAddStep("apiState::traceSession"_Stz, &Step::vApiStateTraceSession);
+  vAddStep("ssn::incBegun"_Stz,     &Step::vSsnIncBegun);
+  vAddStep("ssn::incCancelled"_Stz, &Step::vSsnIncCancelled);
+  vAddStep("ssn::incEnded"_Stz,     &Step::vSsnIncEnded);
+  vAddStep("ssn::incExecuted"_Stz,  &Step::vSsnIncExecuted);
+  vAddStep("ssn::senLoc"_Stz,       &Step::vSsnSenLoc);
+  vAddStep("ssn::traceSession"_Stz, &Step::vSsnTraceSession);
 }
 
 /*----------------------------------------------------------------------------*/
-/* c -- increment the number of __begun received                              */
+/* ssn::incBegun -- increment the number of __begun received                  */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncBegun(void)
+void Step::vSsnIncBegun(void)
 {
-  ENTRY("vApiIncBegun"_Stz);
+  ENTRY("vSsnIncBegun"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -40,11 +40,11 @@ void Step::vApiStateIncBegun(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* apiState::incCancelled -- increment the number of __cancelled received     */
+/* ssn::incCancelled -- increment the number of __cancelled received          */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncCancelled(void)
+void Step::vSsnIncCancelled(void)
 {
-  ENTRY("vApiIncBegun"_Stz);
+  ENTRY("vSsnIncBegun"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -62,11 +62,11 @@ void Step::vApiStateIncCancelled(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* apiState::incEnded -- increment the number of __ended received             */
+/* ssn::incEnded -- increment the number of __ended received                  */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncEnded(void)
+void Step::vSsnIncEnded(void)
 {
-  ENTRY("vApiIncBegun"_Stz);
+  ENTRY("vSsnIncBegun"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -84,11 +84,11 @@ void Step::vApiStateIncEnded(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* apiState::incExecuted-- increment the number of __executed received        */
+/* ssn::incExecuted-- increment the number of __executed received             */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateIncExecuted(void)
+void Step::vSsnIncExecuted(void)
 {
-  ENTRY("vApiIncExecuted"_Stz);
+  ENTRY("vSsnIncExecuted"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -106,11 +106,11 @@ void Step::vApiStateIncExecuted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* apiState::senLoc -- set last reported sen location                         */
+/* ssn::senLoc -- set last reported sen location                              */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateSenLoc(void)
+void Step::vSsnSenLoc(void)
 {
-  ENTRY("vApiStateSenLoc"_Stz);
+  ENTRY("vSsnSenLoc"_Stz);
   
   i8 iPosition;
   if ( ! m_pDataStack->bPopI8(iPosition) )
@@ -126,11 +126,11 @@ void Step::vApiStateSenLoc(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* apiState::traceSession -- trace the api state for this session             */
+/* ssn::traceSession -- trace the api state for this session                  */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateTraceSession(void)
+void Step::vSsnTraceSession(void)
 {
-  ENTRY("vApiStateTraceSession"_Stz);
+  ENTRY("vSsnTraceSession"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -142,7 +142,7 @@ void Step::vApiStateTraceSession(void)
   
   Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
   
-  //pState->vTraceState();
+  //pSession->vTraceState();
   
   EXIT();
 }

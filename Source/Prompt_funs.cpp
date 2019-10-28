@@ -28,7 +28,7 @@ extern PromptDesc __Prompt_actionSequence;
 bool Prompt::bPrompt_funs(SePrompt* pPrompt)
 {
   gxPromptCatalog.vFuns(PF_LOGSECTION);
-  gxPromptCatalog.vFuns(PF_APISTATE);
+  gxPromptCatalog.vFuns(PF_SSNSTATE);
   gxPromptCatalog.vFuns(PF_ARGS);
   gxPromptCatalog.vFuns(PF_ASCII);
   gxPromptCatalog.vFuns(PF_ATTACHMAP);

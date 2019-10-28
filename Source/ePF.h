@@ -7,7 +7,6 @@ enum ePF // prompt function
 {
   /*  0 */ PF_NONE=0,
   
-  /*    */ PF_APISTATE,
   /*    */ PF_ARGS,
   /*    */ PF_ASCII,
   /*    */ PF_ATTACHMAP,
@@ -87,6 +86,7 @@ enum ePF // prompt function
   /*    */ PF_SO,
   /*    */ PF_SOCKET,
   /*    */ PF_SSN,
+  /*    */ PF_SSNSTATE,
   /*    */ PF_ST,
   /*    */ PF_TAKEMEM,
   /*    */ PF_TASKQUEUES,
@@ -105,7 +105,6 @@ enum ePF // prompt function
 static Stz* aPF[]
 {
   /*  0 */ "NONE"_Stz,
-  /*    */ "APISTATE"_Stz,
   /*    */ "ARGS"_Stz,
   /*    */ "ASCII"_Stz,
   /*    */ "ATTACHMAP"_Stz,
@@ -185,6 +184,7 @@ static Stz* aPF[]
   /*    */ "SO"_Stz,
   /*    */ "SOCKET"_Stz,
   /*    */ "SSN"_Stz,
+  /*    */ "SSNSTATE"_Stz,
   /*    */ "ST"_Stz,
   /*    */ "TAKEMEM"_Stz,
   /*    */ "TASKQUEUES"_Stz,

@@ -1,29 +1,29 @@
 /*============================================================================*/
-/* Prompt_apiState.hpp -- Print Api State Information                         */
+/* Prompt_ssnState.hpp -- Print Session State Information                     */
 /*============================================================================*/
 
 #include "Prompt.h"
 #include "AM.hpp"
 
 
-PromptDesc __Prompt_apiState (
-  PF_APISTATE,            // prompt function
-  "Prompt_apiState"_Stz,  // name of the prompt function
+PromptDesc __Prompt_ssnState (
+  PF_SSNSTATE,            // prompt function
+  "Prompt_ssnState"_Stz,  // name of the prompt function
   "comment"_Stz,          // comment about the function
-  "apiState"_Stz,         // the prompt command
+  "ssnState"_Stz,         // the prompt command
   nullptr,                // the second word
-  bPrompt_apiState,       // prompt function
+  bPrompt_ssnState,       // prompt function
   true,                   // enabled
 
   true,                   // visible
-  "apiState"_Stz,         // help
+  "ssnState"_Stz,         // help
   ""_Stz                  // description
 );
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_apiState(SePrompt* pPrompt)
+bool Prompt::bPrompt_ssnState(SePrompt* pPrompt)
 {
   Token* pArg = nullptr;
   

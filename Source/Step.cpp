@@ -41,7 +41,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_AccessPath();
   Step::vAddSteps_Log();
   Step::vAddSteps_Address();
-  Step::vAddSteps_ApiState();
   Step::vAddSteps_Args();
   Step::vAddSteps_Article();
   Step::vAddSteps_Assert();
@@ -158,6 +157,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Shell();
   Step::vAddSteps_Slots();
   Step::vAddSteps_Socket();
+  Step::vAddSteps_SsnState();
   Step::vAddSteps_StepTiming();
   Step::vAddSteps_Str();
   

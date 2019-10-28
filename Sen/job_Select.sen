@@ -11,7 +11,7 @@
 
   >>logEntry <SEED_REQ>
 
-  100 apiState::senLoc
+  100 ssn::senLoc
 
   ": select_req" .
 
@@ -40,7 +40,7 @@
 
   ": select_req END" .
 
-  900 apiState::senLoc
+  900 ssn::senLoc
 
   <<logExit <DONE_REQ>
 ;

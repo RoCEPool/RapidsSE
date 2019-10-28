@@ -19,7 +19,6 @@ namespace Steps
 
     static void vAddSteps_AccessPath(void);
     static void vAddSteps_Address(void);
-    static void vAddSteps_ApiState(void);
     static void vAddSteps_Args(void);
     static void vAddSteps_Article(void);
     static void vAddSteps_Assert(void);
@@ -138,6 +137,7 @@ namespace Steps
     static void vAddSteps_Shell(void);
     static void vAddSteps_Slots(void);
     static void vAddSteps_Socket(void);
+    static void vAddSteps_SsnState(void);
     static void vAddSteps_StepTiming(void);
     static void vAddSteps_Str(void);
   

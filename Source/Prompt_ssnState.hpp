@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Prompt_apiState.hpp -- Print Api State information                        */
+/* Prompt_ssnState.hpp -- Print Session State information                     */
 /*============================================================================*/
 #pragma once
 
 namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bool bPrompt_apiState(SePrompt* pPrompt);
+  bool bPrompt_ssnState(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

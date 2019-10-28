@@ -71,7 +71,7 @@
 
   >>logEntry <SEED_REQ>
 
-  100 apiState::senLoc
+  100 ssn::senLoc
 
   0 0 0 0 locals| iPhrases sTableNm sColumnNm sWhere |
   0 0 0 0 locals| pJob_InflateRows pTask pPlanner pTable |
@@ -148,7 +148,7 @@
 
   pJob_InflateRows job.notice
 
-  900 apiState::senLoc
+  900 ssn::senLoc
  
   <<logExit <DONE_REQ>
 ;

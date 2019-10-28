@@ -2,7 +2,7 @@
 /* _tools -- the set of promt tools                                           */
 /*============================================================================*/
 
-apiState;     // show session api call state
+ssnState;     // show session api call state
 args;         // show command line args
 attachMap;    // dump the attach map
 bp;           // show buffer pool
