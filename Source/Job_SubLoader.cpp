@@ -196,7 +196,7 @@ bool Job_SubLoader::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
-  Session* pSession = m_pJob_LoadTable->m_pSession;
+  Session* pSession = m_pJob_LoadTable->pSession();
   Table* pTable = m_pJob_LoadTable->m_pTable;
   i8 iParentJobId = m_pJob_LoadTable->m_iUniqueId;
   Formatters* pFormatters = &m_pJob_LoadTable->m_oFormatters;

@@ -36,7 +36,7 @@ void Step::vJob_SubWalkerSpawn(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Session* pSession = pJob_Walk->m_pSession;
+  Session* pSession = pJob_Walk->pSession();
   ReqTuple* aReqTuple = &pJob_Walk->m_xReqTuple;
 
   //! this needs to be optimised

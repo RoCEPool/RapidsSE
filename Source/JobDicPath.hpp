@@ -10,6 +10,7 @@ namespace Jobs
   public:
     DicPath m_oDicPath; // dictionary path
   
+  private:
     Session* m_pSession;
   
   public:

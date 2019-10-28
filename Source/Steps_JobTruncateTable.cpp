@@ -66,7 +66,7 @@ void Step::vJob_TruncateTableSpawnSub(void)
     THROW_DSTACK();
   
   i8 iRequestId = pJob_TruncateTable->m_xReqTuple.m_iReqId;
-  Session* pSession = pJob_TruncateTable->m_pSession;
+  Session* pSession = pJob_TruncateTable->pSession();
   i8 iTruncateJobId = pJob_TruncateTable->m_iUniqueId;
   ReqTuple* aReqTuple = &pJob_TruncateTable->m_xReqTuple;
   

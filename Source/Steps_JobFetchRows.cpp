@@ -168,7 +168,7 @@ void Step::vJob_FetchRowsSpawnSub(void)
     THROW_DSTACK();
   
   i8 iRequestId = pJob_FetchRows->m_xReqTuple.m_iReqId;
-  Session* pSession = pJob_FetchRows->m_pSession;
+  Session* pSession = pJob_FetchRows->pSession();
   ReqTuple* aReqTuple = &pJob_FetchRows->m_xReqTuple;
 
   JobClass* pJobClass_SubFetch = JobClass::pFind(CN_JOB_SUBFETCH);
@@ -289,7 +289,7 @@ void Step::vJob_InflateRowsSpawnSub(void)
     THROW_DSTACK();
   
   i8 iRequestId = pJob_InflateRows->m_xReqTuple.m_iReqId;
-  Session* pSession = pJob_InflateRows->m_pSession;
+  Session* pSession = pJob_InflateRows->pSession();
   ReqTuple* aReqTuple = &pJob_InflateRows->m_xReqTuple;
 
   JobClass* pJobClass_SubScan = JobClass::pFind(CN_JOB_SUBSCAN);

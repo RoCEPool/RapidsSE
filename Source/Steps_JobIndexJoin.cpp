@@ -181,7 +181,7 @@ void Step::vJob_IndexJoinSpawnSub(void)
   if ( ! m_pDataStack->bPopAsInt(iSlot) )
     THROW_DSTACK();
   
-  Session* pSession = pJob_IndexJoin->m_pSession;
+  Session* pSession = pJob_IndexJoin->pSession();
   ReqTuple* aReqTuple = &pJob_IndexJoin->m_xReqTuple;
 
   JobClass* pJobClass_SubIndexJoin = JobClass::pFind(CN_JOB_SUBINDEXJOIN);

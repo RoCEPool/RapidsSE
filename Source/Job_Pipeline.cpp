@@ -230,7 +230,7 @@ void Job_Pipeline::vBegin(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the job
   
-  bool bResult = bPopulateJob(m_pSession, pTokenVec);
+  bool bResult = bPopulateJob(pSession(), pTokenVec);
   if ( ! bResult ) {
     vAddError(EC_INVALID_COMMAND);
     return;
