@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CompactIndex* _pJob_CompactIndex(void* aAddr);
   
-  Job* pJob_CompactIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+  Job* pJob_CompactIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
   void vJob_CompactIndex_delete(Job* pJob);
   void vJob_CompactIndex_show(Job* pJob);
   

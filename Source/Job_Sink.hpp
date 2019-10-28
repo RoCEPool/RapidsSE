@@ -40,7 +40,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Sink* _pJob_Sink(void* aAddr);
   
-  Job* pJob_Sink_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+  Job* pJob_Sink_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
   Job* pJob_Sink_new(JobClass* aJobClass);
   void vJob_Sink_delete(Job* pJob);
   void vJob_Sink_show(Job* pJob);

@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ListTables* _pJob_ListTables(void* aAddr);
   
-  Job* pJob_ListTables_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+  Job* pJob_ListTables_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
   void vJob_ListTables_delete(Job* pJob);
   void vJob_ListTables_show(Job* pJob);
   

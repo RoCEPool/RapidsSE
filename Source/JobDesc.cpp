@@ -32,7 +32,7 @@ JobDesc::JobDesc(
                  eJF  eFlags,     // job flags
                  
                  eEC  (*fpCheck)(Session* pSession),
-                 Job* (*fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession),
+                 Job* (*fpPre)(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId),
                  void (*fpPost)(Job* pJob),
                  Job* (*fpNew)(JobClass* aJobClass),
                  void (*fpDelete)(Job* pJob),
