@@ -359,8 +359,9 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 /* get pSession given i_Session                                               */
 /*----------------------------------------------------------------------------*/
-Session* AM::pSessionGet(i8 i_Session)
+Session* AM::pSessionGet(ReqTuple* aReqTuple)
 {
+  
   Session* pSession = nullptr; // some f(i_Session)
 
   return pSession;

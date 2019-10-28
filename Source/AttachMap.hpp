@@ -139,7 +139,8 @@ namespace StorageEngine
                           bool bTracepoint,
                           bool bVerbose
                          );
-  
+    SessionArray* pSessionArray(void);
+
     Footer* aFooter(void);
   };
   
