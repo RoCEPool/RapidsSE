@@ -154,7 +154,7 @@ void StagePtn::vSpawnOperatorJobs(Session* pSession, i8 iNode)
       
       Op* pOp = m_oOpVec.pGet(i_Op);
       
-      bool bSpawned = pOp->bSpawnJob(pSession);
+      bool bSpawned = pOp->bSpawnJob();
       
       ASSERT(bSpawned);
     }

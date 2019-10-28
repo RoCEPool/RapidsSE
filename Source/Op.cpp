@@ -677,12 +677,13 @@ OperandQueue* Op::pQueueRight(void)
 /*----------------------------------------------------------------------------*/
 /* spawn a job for this operator                                              */
 /*----------------------------------------------------------------------------*/
-bool Op::bSpawnJob(Session* pSession)
+bool Op::bSpawnJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
   ReqTuple xReqTuple(m_sName,false);
   m_pJobUniversal = AM::pNewJobUniversal(this, &xReqTuple, this->m_iUniqueId);
+  
   bool bSpawned = AM::bSpawnJob(m_pJobUniversal);
   
   m_pTask = AM::pExecutingTask(m_pJobUniversal);
