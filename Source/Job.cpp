@@ -109,7 +109,7 @@ Job::Job(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 : JobBase(aJobClass,aReqTuple,AM::iNextJobId(),pSession ? pSession->m_iUniqueId : C_UNKNOWN)
-, JobDicPath(pSession)
+, JobDicPath(AM::pSessionGet(aReqTuple))
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
