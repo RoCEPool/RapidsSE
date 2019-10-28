@@ -685,6 +685,7 @@ bool Op::bSpawnJob(void)
 
   m_pJobUniversal = AM::pNewJobUniversal(this, &xReqTuple,
                                          this->m_iUniqueId);
+
   bool bSpawned = AM::bSpawnJob(m_pJobUniversal);
   
   m_pTask = AM::pExecutingTask(m_pJobUniversal);
