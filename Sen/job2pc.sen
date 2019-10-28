@@ -5,7 +5,7 @@
 " job2pc.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* distribute current job to all participating nodes                          */
+/* distribute current originating job to all participating nodes              */
 /*----------------------------------------------------------------------------*/
 : job::distributeConnected ( -- )
 
@@ -21,12 +21,12 @@
   // set acks for originator task
   1 task::acks!
 
-  // send the job to each node in the grid
+  // send the job to each connected node in the grid
   grid::definedNodes 0 do
 
-  I grid::node node.sendSocket@ if
-    I pJob job.forward
-  then
+    I grid::node node.sendSocket@ if
+      I pJob job.forward
+    then
 
   loop
 

@@ -90,7 +90,6 @@
 
   // delete this completed __ended job
   job::deleteThis
-
   <DONE_RCV>
 ;
 

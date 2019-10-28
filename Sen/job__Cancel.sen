@@ -67,7 +67,6 @@
   JobRef[].return
 
   job::deleteThis
-
   <DONE_RCV>
 ;
 

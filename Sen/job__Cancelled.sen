@@ -112,7 +112,6 @@
 
   // delete this completed __cancelled job
   job::deleteThis
-
   <DONE_RCV>
 ;
 

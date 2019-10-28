@@ -132,7 +132,6 @@
 
   // delete this completed __begun job
   job::deleteThis
-
   <DONE_RCV>
 ;
 
