@@ -107,15 +107,13 @@ Job::Job(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
+Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
 : JobBase(aJobClass,aReqTuple,AM::iNextJobId())
 , JobDicPath(AM::pSessionGet(aReqTuple))
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
-  
-  ASSERT(!pSession || pSession == AM::pSessionGet(aReqTuple));
-  
+    
   // m_xReqTuple
   
   m_iParentId = C_UNKNOWN;

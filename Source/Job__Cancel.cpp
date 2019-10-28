@@ -100,7 +100,7 @@ void Job__Cancel::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job__Cancel::Job__Cancel(Job* pDistJob)
-: Job(JobClass::pFind(CN_JOB__CANCEL),&pDistJob->m_xReqTuple,nullptr)
+: Job(JobClass::pFind(CN_JOB__CANCEL),&pDistJob->m_xReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCEL,_FOOTER_);
   
