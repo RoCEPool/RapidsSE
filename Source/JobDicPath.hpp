@@ -18,6 +18,8 @@ namespace Jobs
     JobDicPath(void);
     JobDicPath(Session* pSession);
    ~JobDicPath(void) noexcept(false);
+  
+    Session* pSession(void);
   };
 }
 
