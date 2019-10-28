@@ -90,8 +90,6 @@ Job::Job(eCN eClassNo)
   m_pOp = nullptr;
   m_pOperand   = nullptr;
   
-  m_pSession = nullptr;
-  
 
   
   // -- -- -- -- -- --
@@ -116,6 +114,8 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
   
+  ASSERT(!pSession || pSession == AM::pSessionGet(aReqTuple));
+  
   // m_xReqTuple
   
   m_iParentId = C_UNKNOWN;
@@ -139,9 +139,7 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
   m_pOp = nullptr;
   m_pOperand   = nullptr;
   
-  m_pSession = pSession;
   
-
   // -- -- -- -- -- --
   
   SP_Id spId;
@@ -534,8 +532,9 @@ void Job::vSeed(eSS eSeed)
 /*----------------------------------------------------------------------------*/
 Session* Job::pSession(void)
 {
-  
-  return m_pSession;
+  Session* pSession = AM::pSessionGet(&m_xReqTuple);
+
+  return pSession;
 }
 
 /*----------------------------------------------------------------------------*/

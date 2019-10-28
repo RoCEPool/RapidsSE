@@ -327,6 +327,14 @@ void AttachMap::vRecordArguments(
 }
 
 /*----------------------------------------------------------------------------*/
+/* get session array                                                          */
+/*----------------------------------------------------------------------------*/
+SessionArray* AttachMap::pSessionArray(void)
+{
+  return m_pSessionArray;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump this attachmap                                                        */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)

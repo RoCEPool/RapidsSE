@@ -359,9 +359,15 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 /* get pSession given i_Session                                               */
 /*----------------------------------------------------------------------------*/
-Session* AM::pSessionGet(i8 i_Session)
+Session* AM::pSessionGet(ReqTuple* aReqTuple)
 {
-  Session* pSession = nullptr; // some f(i_Session)
+  if (aReqTuple->m_i_Origin != AM::iThisNodeNo())
+    return nullptr;
+  
+  if (C_UNKNOWN == aReqTuple->m_i_Session)
+    return nullptr;
+  
+  Session* pSession = AM::pSessionArray()->pGetSession(aReqTuple->m_i_Origin);
 
   return pSession;
 }
