@@ -364,7 +364,7 @@ Session* AM::pSessionGet(ReqTuple* aReqTuple)
   if (aReqTuple->m_i_Origin != AM::iThisNodeNo())
     return nullptr;
   
-  if (C_UNKNOWN == aReqTuple->m_i_Origin)
+  if (C_UNKNOWN == aReqTuple->m_i_Session)
     return nullptr;
   
   Session* pSession = AM::pSessionArray()->pGetSession(aReqTuple->m_i_Origin);

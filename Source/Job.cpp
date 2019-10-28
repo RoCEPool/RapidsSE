@@ -141,7 +141,8 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
   
   m_pSession = pSession;
   
-
+  ASSERT((! m_pSession) || m_pSession == AM::pSessionGet(aReqTuple));
+  
   // -- -- -- -- -- --
   
   SP_Id spId;

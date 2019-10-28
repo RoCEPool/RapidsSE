@@ -363,6 +363,7 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   JobClass* pJobClass_WriteBuffer = JobClass::pFind(CN_JOB_WRITEBUFFER);
   
   ReqTuple xReqTuple("!!WRITE_BUFFER"_Stz,false);
+  xReqTuple.m_i_Session = pSession->m_i_Session;
   
   Job_WriteBuffer* pJob_WriteBuffer =
     static_cast<Job_WriteBuffer*>

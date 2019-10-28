@@ -54,6 +54,9 @@ Request::Request(Session* p_Session, Stz* szPurpose, i8 iClassSeq)
   
   m_xReqTuple.m_sPurpose.vSprint("%s-%03lld"_Stz,szPurpose,iClassSeq);
   
+  m_xReqTuple.m_i_Origin  = AM::iThisNodeNo();
+  m_xReqTuple.m_i_Session = p_Session->m_i_Session;
+
   m_xReqTuple.m_iReqId = m_iUniqueId;
   m_xReqTuple.m_iForId = p_Session->m_iUniqueId;
 
