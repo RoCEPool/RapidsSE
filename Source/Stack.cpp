@@ -123,9 +123,9 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
         Word* pWord = pDicStack->pLocateWord(aFip);
 
 
-        vTrace("[%2lld] [%s] %16s %p\n"_Stz,
-               iVal,aCN[eClass],
-               pWord ? pWord->sName().azChar() : "<none>",aFip);
+        vTrace("[%2lld] [%s] %p word %s \n"_Stz,
+               iVal,aCN[eClass],aFip,
+               pWord ? pWord->sName().azChar() : "<none>");
         break;
       }
         
