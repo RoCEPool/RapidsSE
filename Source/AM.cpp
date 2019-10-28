@@ -1284,6 +1284,8 @@ void AM::vPrintGlobals(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+void AM::vJobContentDump(Job* pJob) { pJob->vContentDump(); }
+
 Task* AM::pTaskNew(Job* pJob) {
   return new Task(pJob);
 }

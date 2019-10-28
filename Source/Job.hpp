@@ -61,6 +61,7 @@ namespace Jobs
     i8   iAcksRmg_printOnlyValue(void);
     void vAcksRmg(i8 nAcks);
     bool bAcksRmgDec();
+    void vContentDump(void);
     void vFocalOutline(s4K& sOutline);
     i8   iJobId(void);
     void vMarkJob(void);

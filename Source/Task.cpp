@@ -369,6 +369,8 @@ void Task::vCaught(Exception xException)
   
   m_xReqTuple.vContentDump();
 
+  AM::vJobContentDump(m_pJob);
+  
   m_pForth->vDumpContext();
   
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
