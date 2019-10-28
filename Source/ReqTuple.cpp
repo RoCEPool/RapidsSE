@@ -50,21 +50,24 @@ ReqTuple::~ReqTuple(void) noexcept(false)
 void ReqTuple::vSet(ReqTuple* aReqTuple)
 {
   if (aReqTuple) {
+    m_i_Origin   = aReqTuple->m_i_Origin;
+    m_i_Session  = aReqTuple->m_i_Session;
     m_iReqId     = aReqTuple->m_iReqId;
     m_iForId     = aReqTuple->m_iForId;
     m_i_Session  = aReqTuple->m_i_Session;
 
-    m_iDetail  = aReqTuple->m_iDetail;
+    m_iDetail    = aReqTuple->m_iDetail;
     m_sPurpose   = aReqTuple->m_sPurpose;
     
     return;
   }
   
+  m_i_Origin   = AM::bAttached() && AM::pGrid() ? AM::iThisNodeNo() : C_UNKNOWN;
+  m_i_Session  = C_UNKNOWN;
   m_iReqId     = C_UNKNOWN;
   m_iForId     = C_UNKNOWN;
-  m_i_Session  = C_UNKNOWN;
 
-  m_iDetail  = 0;
+  m_iDetail    = 0;
   
   //m_sPurpose   = "?"_Stz;
 }
