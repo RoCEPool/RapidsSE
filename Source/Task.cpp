@@ -816,7 +816,7 @@ void Task::vSeedJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Stz* szSeed = m_pJob->sJobSeed();
+  Stz* szSeed = m_pJob->szSeed();
   
   Dic* pRootDic = AM::pRootDic();
 

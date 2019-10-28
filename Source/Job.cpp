@@ -331,18 +331,6 @@ void Job::vFocalOutline(s4K& sOutline)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the job seed to be executed                                            */
-/*----------------------------------------------------------------------------*/
-Stz* Job::sJobSeed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Stz* sSeed = m_aJobClass->sSeed(m_eSeed);
-  
-  return sSeed;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the job id                                                             */
 /*----------------------------------------------------------------------------*/
 i8 Job::iJobId(void)
@@ -509,6 +497,18 @@ eSS Job::eSeed(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_eSeed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the seed to be executed                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Job::szSeed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Stz* szSeed = m_aJobClass->sSeed(m_eSeed);
+  
+  return szSeed;
 }
 
 /*----------------------------------------------------------------------------*/

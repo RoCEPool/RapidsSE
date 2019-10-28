@@ -62,7 +62,6 @@ namespace Jobs
     void vAcksRmg(i8 nAcks);
     bool bAcksRmgDec();
     void vFocalOutline(s4K& sOutline);
-    Stz* sJobSeed(void);
     i8   iJobId(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
@@ -76,6 +75,7 @@ namespace Jobs
     void vParticipantNode(i8 iNode);
     void vReport(void);
     eSS  eSeed(void);
+    Stz* szSeed(void);
     void vSeed(eSS eSeed);
     void vShow(void);
     Task* pTask(void);
