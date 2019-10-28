@@ -375,7 +375,7 @@ Session* AM::pSessionGet(ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 /* state diagram                                                              */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnJob(Session* pSession, Job* pJob)
+bool AM::bSpawnJob(Job* pJob)
 {
   bool bResult = Api::bSpawnJob(pJob);
   
@@ -1011,7 +1011,7 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
 /*----------------------------------------------------------------------------*/
 /* new a universal job                                                        */
 /*----------------------------------------------------------------------------*/
-Job* AM::pNewJobUniversal(Session* pSession, Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId)
+Job* AM::pNewJobUniversal( Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId)
 {
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
 //  Job* pJobUniversal = pJobClass_Universal->pPreJob(pSession,

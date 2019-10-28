@@ -25,7 +25,7 @@ namespace Operators
     void       vLinkOperators(StageVec* pStageVec);
     i8         iNode(void);
     OpVec*     pOpVec(void);
-    void       vSpawnOperatorJobs(Session* pSession, i8 iNode);
+    void       vSpawnOperatorJobs(i8 iNode);
     StageSpec* pStageSpec(void);
   
     Footer* aFooter(void);

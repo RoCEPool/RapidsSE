@@ -390,7 +390,7 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the write buffer job
   
-  IGNORE_RETURN(AM::bSpawnJob(pSession,pJob_WriteBuffer));
+  IGNORE_RETURN(AM::bSpawnJob(pJob_WriteBuffer));
 }
 
 /*----------------------------------------------------------------------------*/

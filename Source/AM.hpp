@@ -227,7 +227,7 @@ namespace Oblique
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNap(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMilliSeconds, eCN eCallingClass);
-    static Job* pNewJobUniversal(Session* pSession, Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId);
+    static Job* pNewJobUniversal(Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vPrintGlobals(void);
@@ -237,7 +237,7 @@ namespace Oblique
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Session* pSessionGet(ReqTuple* aReqTuple);
-    static bool bSpawnJob(Session* pSession, Job* pJob);
+    static bool bSpawnJob(Job* pJob);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
