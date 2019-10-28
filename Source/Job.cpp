@@ -114,6 +114,8 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
   
+  ASSERT(!pSession || pSession == AM::pSessionGet(aReqTuple));
+  
   // m_xReqTuple
   
   m_iParentId = C_UNKNOWN;
