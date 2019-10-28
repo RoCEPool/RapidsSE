@@ -135,7 +135,7 @@ OpVec* StageNde::pOpVec(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operators for given node                                             */
 /*----------------------------------------------------------------------------*/
-void StageNde::vSpawnOperatorJobs(Session* pSession, i8 iNode)
+void StageNde::vSpawnOperatorJobs(i8 iNode)
 {
   _precondition_(_MAGIC_,CN_STAGENDE,_FOOTER_);
   

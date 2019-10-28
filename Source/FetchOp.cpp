@@ -203,10 +203,10 @@ void FetchOp::vPreliminary(void)
   m_bRunPrelim = false;
   
   // find the table in the session dictionary stack
-  m_pTable = Table::pFindTable(m_pPipeline->pSession()->pPathStack(), m_sTableNm);
+  //m_pTable = Table::pFindTable(m_pPipeline->pSession()->pPathStack(), m_sTableNm);
   
   // find the index in the session dictionary stack
-  m_pIndex = Table::pFindIndex(m_pPipeline->pSession()->pPathStack(), m_sTableNm, m_sIndexNm);
+  //m_pIndex = Table::pFindIndex(m_pPipeline->pSession()->pPathStack(), m_sTableNm, m_sIndexNm);
   
   // get table ptn
   m_pTablePtn = m_pTable->pSlots()->pPartition(TablePtn::iPartitionToSlot(m_nPartition));

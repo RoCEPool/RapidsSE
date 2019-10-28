@@ -192,7 +192,6 @@ bool Job_Pipeline::bPopulateJob(Session* pSession, TokenVec* pTknVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the pipeline
   
-  m_pPipeline->vSession(pSession);
   m_pPipeline->vPopulateOpVec(pPipelineSpec);
   m_pPipeline->vSetupJob();
   

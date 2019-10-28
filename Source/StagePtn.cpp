@@ -142,7 +142,7 @@ StageSpec* StagePtn::pStageSpec(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operators for partitions of given node                               */
 /*----------------------------------------------------------------------------*/
-void StagePtn::vSpawnOperatorJobs(Session* pSession, i8 iNode)
+void StagePtn::vSpawnOperatorJobs(i8 iNode)
 {
   _precondition_(_MAGIC_,CN_STAGEPTN,_FOOTER_);
   

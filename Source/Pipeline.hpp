@@ -8,7 +8,6 @@ namespace Operators
   class Pipeline : public Object
   {
   private:
-    Session*    m_pSession;
     Job*        m_pJob;
     bool        m_bPulsed;
     Op*         m_pOpToPulse;
@@ -36,8 +35,6 @@ namespace Operators
     Op*       pOpToPulse(void);
     void      vPopulateOpVec(PipelineSpec* pPipelineSpec);
     bool      bPulsed(void);
-    void      vSession(Session* pSession);
-    Session*  pSession(void);
     void      vSetupJob(void);
     void      vSpawnOperatorJobs(i8 iNode);
     StageVec* pStageVec(void);

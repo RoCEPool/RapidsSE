@@ -44,7 +44,6 @@ Pipeline::Pipeline(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
-  m_pSession   = nullptr;
   m_pJob       = pJob;
   m_bPulsed    = false;
   m_pOpToPulse = nullptr;
@@ -220,26 +219,6 @@ bool Pipeline::bPulsed(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the session                                                            */
-/*----------------------------------------------------------------------------*/
-Session* Pipeline::pSession(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
-  
-  return m_pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the session                                                            */
-/*----------------------------------------------------------------------------*/
-void Pipeline::vSession(Session* pSession)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
-  
-  m_pSession = pSession;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set up the job                                                             */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vSetupJob(void)
@@ -289,13 +268,13 @@ void Pipeline::vSpawnOperatorJobs(i8 iNode)
     for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
       StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
       
-      pStageNde->vSpawnOperatorJobs(m_pSession, iNode);
+      pStageNde->vSpawnOperatorJobs(iNode);
     }
     
     for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
       StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
       
-      pStagePtn->vSpawnOperatorJobs(m_pSession, iNode);
+      pStagePtn->vSpawnOperatorJobs(iNode);
     }
   }
   
