@@ -150,7 +150,7 @@ void Job_CreateIndex::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_CreateIndex::Job_CreateIndex(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
-: Job(aJobClass, aReqTuple, pSession)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX,_FOOTER_);
   
@@ -341,7 +341,7 @@ Footer* Job_CreateIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_CreateIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
   Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

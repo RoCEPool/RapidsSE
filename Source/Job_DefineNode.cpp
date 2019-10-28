@@ -103,7 +103,7 @@ void Job_DefineNode::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_DefineNode::Job_DefineNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
-: Job(aJobClass, aReqTuple, pSession)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
   
@@ -233,7 +233,7 @@ Footer* Job_DefineNode::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DefineNode_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_DefineNode_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
   Job_DefineNode* pJob_CreateNode = new Job_DefineNode(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

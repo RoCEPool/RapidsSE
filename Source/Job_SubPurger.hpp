@@ -44,7 +44,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubPurger* _pJob_SubPurger(void* aAddr);
   
-  Job* pJob_SubPurger_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+  Job* pJob_SubPurger_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
   void vJob_SubPurger_delete(Job* pJob);
   void vJob_SubPurger_show(Job* pJob);
   

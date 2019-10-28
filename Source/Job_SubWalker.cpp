@@ -105,7 +105,7 @@ void Job_SubWalker::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubWalker::Job_SubWalker(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
-: Job(aJobClass, aReqTuple, pSession)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
     
@@ -458,7 +458,7 @@ Footer* Job_SubWalker::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubWalker_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_SubWalker_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
   Job_SubWalker* pJob_SubWalker = new Job_SubWalker(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

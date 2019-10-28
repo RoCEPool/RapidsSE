@@ -102,7 +102,7 @@ void Job_VisualizeTable::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_VisualizeTable::Job_VisualizeTable(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
-: Job(aJobClass, aReqTuple, pSession)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZETABLE,_FOOTER_);
     
@@ -192,7 +192,7 @@ Footer* Job_VisualizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_VisualizeTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_VisualizeTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
   Job_VisualizeTable* pJob_VisualizeTable = new Job_VisualizeTable(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

@@ -102,7 +102,7 @@ void Job_Export::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Export::Job_Export(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
-: Job(aJobClass, aReqTuple, pSession)
+: Job(aJobClass, aReqTuple)
 , m_okLock(LK_EXPORT,C_NO_REQTUPLE,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
@@ -274,7 +274,7 @@ Footer* Job_Export::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Export_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_Export_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
   Job_Export* pJob_Export = new Job_Export(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

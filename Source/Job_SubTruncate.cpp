@@ -102,7 +102,7 @@ void Job_SubTruncate::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubTruncate::Job_SubTruncate(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
-: Job(aJobClass, aReqTuple, pSession)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBTRUNCATE,_FOOTER_);
     
@@ -168,7 +168,7 @@ Footer* Job_SubTruncate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubTruncate_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_SubTruncate_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
   Job_SubTruncate* pJob_SubTruncate = new Job_SubTruncate(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

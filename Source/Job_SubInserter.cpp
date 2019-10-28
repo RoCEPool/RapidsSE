@@ -102,7 +102,7 @@ void Job_SubInserter::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubInserter::Job_SubInserter(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
-: Job(aJobClass, aReqTuple, pSession)
+: Job(aJobClass, aReqTuple)
 , JobWriteBehind(DS_INSERT)
 , m_okLock(LK_SUBINSERTER,C_NO_REQTUPLE,this)
 {
@@ -253,7 +253,7 @@ Footer* Job_SubInserter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubInserter_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_SubInserter_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
   Job_SubInserter* pJob_SubInserter = new Job_SubInserter(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

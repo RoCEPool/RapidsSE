@@ -83,7 +83,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Generate* _pJob_Generate(void* aAddr);
   
-  Job* pJob_Generate_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+  Job* pJob_Generate_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
   Job* pJob_Generate_new(JobClass* aJobClass);
   void vJob_Generate_delete(Job* pJob);
   void vJob_Generate_show(Job* pJob);

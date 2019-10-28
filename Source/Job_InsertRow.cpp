@@ -102,7 +102,7 @@ void Job_InsertRow::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_InsertRow::Job_InsertRow(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
-: Job(aJobClass, aReqTuple, pSession)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
   m_pTable = nullptr;
@@ -225,7 +225,7 @@ Footer* Job_InsertRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InsertRow_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_InsertRow_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
   Job_InsertRow* pJob_InsertRow = new Job_InsertRow(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

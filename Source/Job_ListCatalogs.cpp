@@ -102,7 +102,7 @@ void Job_ListCatalogs::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_ListCatalogs::Job_ListCatalogs(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
-: Job(aJobClass, aReqTuple, pSession)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCATALOGS,_FOOTER_);
   
@@ -191,7 +191,7 @@ Footer* Job_ListCatalogs::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListCatalogs_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_ListCatalogs_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
   Job_ListCatalogs* pJob_ListCatalogs = new Job_ListCatalogs(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

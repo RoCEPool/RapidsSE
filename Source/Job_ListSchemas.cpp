@@ -102,7 +102,7 @@ void Job_ListSchemas::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_ListSchemas::Job_ListSchemas(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
-: Job(aJobClass, aReqTuple, pSession)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTSCHEMAS,_FOOTER_);
   
@@ -191,7 +191,7 @@ Footer* Job_ListSchemas::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListSchemas_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_ListSchemas_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
   Job_ListSchemas* pJob_ListSchemas = new Job_ListSchemas(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

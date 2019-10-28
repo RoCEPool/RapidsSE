@@ -36,7 +36,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_StartNode* _pJob_StartNode(void* aAddr);
   
-  Job* pJob_StartNode_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+  Job* pJob_StartNode_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
   void vJob_StartNode_post(Job* pJob);
   Job* pJob_StartNode_new(JobClass* aJobClass);
   void vJob_StartNode_delete(Job* pJob);

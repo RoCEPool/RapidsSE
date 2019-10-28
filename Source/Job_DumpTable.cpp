@@ -102,7 +102,7 @@ void Job_DumpTable::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_DumpTable::Job_DumpTable(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
-: Job(aJobClass, aReqTuple, pSession)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DUMPTABLE,_FOOTER_);
     
@@ -192,7 +192,7 @@ Footer* Job_DumpTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DumpTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_DumpTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
   Job_DumpTable* pJob_DumpTable = new Job_DumpTable(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

@@ -102,7 +102,7 @@ void Job_SizeIndex::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SizeIndex::Job_SizeIndex(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
-: Job(aJobClass, aReqTuple, pSession)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SIZEINDEX,_FOOTER_);
     
@@ -196,7 +196,7 @@ Footer* Job_SizeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SizeIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_SizeIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
   Job_SizeIndex* pJob_SizeIndex = new Job_SizeIndex(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

@@ -102,7 +102,7 @@ void Job_CompactIndex::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_CompactIndex::Job_CompactIndex(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
-: Job(aJobClass, aReqTuple, pSession)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_COMPACTINDEX,_FOOTER_);
     
@@ -196,7 +196,7 @@ Footer* Job_CompactIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CompactIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_CompactIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
   Job_CompactIndex* pJob_CompactIndex = new Job_CompactIndex(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

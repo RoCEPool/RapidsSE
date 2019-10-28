@@ -40,7 +40,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_KidExport* _pJob_KidExport(void* aAddr);
   
-  Job* pJob_KidExport_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+  Job* pJob_KidExport_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
   Job* pJob_KidExport_new(JobClass* aJobClass);
   void vJob_KidExport_delete(Job* pJob);
   void vJob_KidExport_show(Job* pJob);
