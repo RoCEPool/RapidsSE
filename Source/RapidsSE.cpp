@@ -545,7 +545,7 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn the job
     //vTrace("Spawning copyBuffer job\n"_Stz);
-    IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_CopyBuffer));
+    IGNORE_RETURN(Api::bSpawnJob(pJob_CopyBuffer));
     API_LOC(390);
   }
   catch (Error* pError) { API_CATCH(pError); }

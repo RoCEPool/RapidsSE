@@ -14,7 +14,7 @@ namespace Interface
   static void vIncStatistics(eAC eApiCall);
   static void vMonitorPortrait(s48K& sPortrait);
   static bool bReseedJob(Session* pSession, Job* pJob);
-  static bool bSpawnJob(Session* pSession, Job* pJob);
+  static bool bSpawnJob(Job* pJob);
   static void vSpawnJobAndWait(Job* pJob, Session* pSession);
   static bool bSpawnJobDedicated(Job* pJob);
   static bool bSpawnOp(Session* pSession, Op* pOp);

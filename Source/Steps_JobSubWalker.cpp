@@ -54,7 +54,7 @@ void Step::vJob_SubWalkerSpawn(void)
   
   pJob_SubWalker->vSeed(SS_SEED_RUN);
 
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubWalker));
+  IGNORE_RETURN(Api::bSpawnJob(pJob_SubWalker));
   
   EXIT();
 }

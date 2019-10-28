@@ -50,7 +50,7 @@ void Step::vJob_SubIngesterSpawn(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubIngester));
+  IGNORE_RETURN(Api::bSpawnJob(pJob_SubIngester));
   
   EXIT();
 }

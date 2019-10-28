@@ -131,7 +131,7 @@ void Step::vJob_InsertRowSpawnJobWriteRow(void)
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   // spawn a writeRow job
-  IGNORE_RETURN(Api::bSpawnJob(pJob_InsertRow->m_pSession,pJob_WriteRow));
+  IGNORE_RETURN(Api::bSpawnJob(pJob_WriteRow));
   
   EXIT();
 }

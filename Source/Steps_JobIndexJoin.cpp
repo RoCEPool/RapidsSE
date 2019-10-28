@@ -200,7 +200,7 @@ void Step::vJob_IndexJoinSpawnSub(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubIndexJoin));
+  IGNORE_RETURN(Api::bSpawnJob(pJob_SubIndexJoin));
 
   EXIT();
 }

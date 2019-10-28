@@ -361,7 +361,7 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 bool AM::bSpawnJob(Session* pSession, Job* pJob)
 {
-  bool bResult = Api::bSpawnJob(pSession,pJob);
+  bool bResult = Api::bSpawnJob(pJob);
   
   return bResult;
 }

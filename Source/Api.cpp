@@ -343,7 +343,7 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob(Session* pSession, Job* pJob)
+bool Api::bSpawnJob(Job* pJob)
 {
   ASSERT(pJob->m_aJobClass);
   ASSERT(SS_ENUMS != pJob->eSeed());
@@ -355,8 +355,6 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
   i8 iPid = AM::iPid();
   if (!Process::bTestPid(iPid)) {
     // SE is not running anymore!
-    if (pSession)
-      vWarn("Cannot find pid %lld\n"_Stz, iPid);
     vWarn("Cannot find pid %lld\n"_Stz, iPid);
     return false;
   }
@@ -384,10 +382,10 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
     pNewTask->vState(TS_ABLE);
   }
   
-  AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
-              "pJob=%p"_Stz, //!format-LogPrm
-              pJob,
-              C_ENDARGS);
+//  AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
+//              "pJob=%p"_Stz, //!format-LogPrm
+//              pJob,
+//              C_ENDARGS);
 
 
   Scheduler::vAddTaskGeneral(pJob->pTask());
@@ -414,7 +412,7 @@ void Api::vSpawnJobAndWait(Job* pJob, Session* pSession)
   pJob->vSeed(SS_SEED_REQ);
   
   // spawn the insertTable job
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob));
+  IGNORE_RETURN(Api::bSpawnJob(pJob));
   ApiState::vMarkApiLoc(pSession,107);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

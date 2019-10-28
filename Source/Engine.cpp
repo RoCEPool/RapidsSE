@@ -828,7 +828,7 @@ void Engine::vSpawnJobStart(void)
     
   pJob_Start->vSeed(SS_SEED_RUN);
   
-  Api::bSpawnJob(nullptr,pJob_Start);
+  Api::bSpawnJob(pJob_Start);
 }
 
 /*----------------------------------------------------------------------------*/
