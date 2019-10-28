@@ -69,7 +69,6 @@ Task::Task(Job* pJob, Session* pSession)
   
   m_eKind     = TK_JOB;
   m_pJob      = pJob;
-  m_pSession  = pSession;
 
   _checkInitialised_(CN_TASK);
   
@@ -107,7 +106,6 @@ Task::Task(Op* pOp, Session* pSession)
   
   m_eKind     = TK_OPERATOR;
   m_pOp       = pOp;
-  m_pSession  = pSession;
 
   _checkInitialised_(CN_TASK);
 
@@ -140,7 +138,6 @@ void Task::vInit(void)
   m_pThread      = nullptr;
   m_pMutex       = new Mutex(MK_TASK,this,&m_xReqTuple);
   
-  m_pSession     = nullptr;
   // m_oDicStack
 
   m_eState       = TS_NONE;
@@ -847,26 +844,6 @@ void Task::vSendNode(Grids::Node* pNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_pRegSet->m_pSendNode = pNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get session                                                                */
-/*----------------------------------------------------------------------------*/
-Session* Task::pSession(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set session                                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vSession(Session* pSession)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_pSession = pSession;
 }
 
 /*----------------------------------------------------------------------------*/

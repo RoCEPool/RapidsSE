@@ -44,7 +44,6 @@ namespace Tasks
     SMA<Forth>   m_pForth;       // forth execution context
     SMA<Op>      m_pOp;          // the op for this task
     SMA<RegSet>  m_pRegSet;      // set of registers for the task steps
-    SMA<Session> m_pSession;     // session for this task
 
     // always last
     Footer m_xFooter;
@@ -106,8 +105,6 @@ namespace Tasks
     void vSeedTask(void);
     Grids::Node* pSendNode(void);
     void vSendNode(Grids::Node* pSendNode);
-    Session* pSession(void);
-    void vSession(Session* pSession);
     void vSleepUsec(i8 iMicroSeconds);
     void vSprint(s48K& sFormat, s48K& sString);
     void vStackContents(Stack* pStack, s48K& sStackContents);

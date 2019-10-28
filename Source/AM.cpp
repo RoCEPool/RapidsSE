@@ -326,12 +326,6 @@ Op* AM::pThisTLSOp(void) {
   Op* pOp = pTask->pOp();
   return pOp;
 }
-Session* AM::pThisTLSSession(void) {
-  Thread* pThread = Thread::pThisTLSThread();
-  Task* pTask = pThread->pTask();
-  Session* pSession = pTask->pSession();
-  return pSession;
-}
 Tasks::Task* AM::pThisTLSTask(void) {
   Thread* pThread = Thread::pThisTLSThread();
   Task* pTask = pThread->pTask();

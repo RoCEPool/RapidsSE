@@ -230,9 +230,9 @@ void Op_ToDo::vPromptHandOff(Cmd_Select* pCmd_Select)
   if (AM::bVerbose())
     vTrace("  vPromptHandOff: %s\n"_Stz,pCmd_Select->szCmd());
   
-  Session* pSession = AM::pThisTLSSession();
-  
-  pSession->m_sToDo = pCmd_Select->szCmd();
+//  Session* pSession = AM::pThisTLSSession();
+//  
+//  pSession->m_sToDo = pCmd_Select->szCmd();
 }
 
 /*----------------------------------------------------------------------------*/

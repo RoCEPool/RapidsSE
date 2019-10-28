@@ -389,7 +389,6 @@ void Step::vIndexLowerBound(void)
 {
   ENTRY("vIndexLowerBound"_Stz);
   
-  Session* pSession = m_pTask->m_pSession;
   Object* pPtrIndex = nullptr;
   FetchBuffer* pFetchBuffer;
   
@@ -511,8 +510,8 @@ void Step::vIndexLowerBound(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if session exiting
-    if (pSession->m_bSessionExiting)
-      aLowerEntry = nullptr;
+    //if (pSession->m_bSessionExiting)
+    //  aLowerEntry = nullptr;
   }
   
 LastBuffer:
@@ -582,7 +581,6 @@ void Step::vIndexRange(void)
   ENTRY("vIndexRange"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Session* pSession = m_pTask->m_pSession;
   
   GenVar xValWrkLwr;
   GenVar xValWrkUpr;
@@ -774,8 +772,8 @@ void Step::vIndexRange(void)
       }
       else {
         // check if session exiting
-        if (pSession->m_bSessionExiting)
-          aLowerEntry = nullptr;
+        //if (pSession->m_bSessionExiting)
+        //  aLowerEntry = nullptr;
       }
     }
     else {
@@ -784,8 +782,8 @@ void Step::vIndexRange(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if session exiting
-    if (pSession->m_bSessionExiting)
-      aLowerEntry = nullptr;
+    //if (pSession->m_bSessionExiting)
+    //  aLowerEntry = nullptr;
   }
   
 LastBuffer:
@@ -943,7 +941,6 @@ void Step::vIndexUpperBound(void)
   ENTRY("vIndexUpperBound"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Session* pSession = m_pTask->m_pSession;
   GenVar xVariable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1087,8 +1084,8 @@ void Step::vIndexUpperBound(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if session exiting
-    if (pSession->m_bSessionExiting)
-      aItem = nullptr;
+    //if (pSession->m_bSessionExiting)
+    //  aItem = nullptr;
   }
   
 LastBuffer:

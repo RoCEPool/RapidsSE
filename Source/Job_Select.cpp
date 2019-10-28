@@ -202,15 +202,15 @@ void Job_Select::vBegin(void)
   
   AM::vSetAcksRmg(pTask(),5);
   
-  Session* pSession = AM::pThisTLSSession();
-  
-  bool bSpawned;
-  
-  bSpawned = AM::bSpawnOp(pSession,m_pZed);        ASSERT(bSpawned);
-  bSpawned = AM::bSpawnOp(pSession,m_pToDo);       ASSERT(bSpawned);
-  bSpawned = AM::bSpawnOp(pSession,m_pToCommand);  ASSERT(bSpawned);
-  bSpawned = AM::bSpawnOp(pSession,m_pToFilter);   ASSERT(bSpawned);
-  bSpawned = AM::bSpawnOp(pSession,m_pToClause);   ASSERT(bSpawned);
+//  Session* pSession = AM::pThisTLSSession();
+//  
+//  bool bSpawned;
+//  
+//  bSpawned = AM::bSpawnOp(pSession,m_pZed);        ASSERT(bSpawned);
+//  bSpawned = AM::bSpawnOp(pSession,m_pToDo);       ASSERT(bSpawned);
+//  bSpawned = AM::bSpawnOp(pSession,m_pToCommand);  ASSERT(bSpawned);
+//  bSpawned = AM::bSpawnOp(pSession,m_pToFilter);   ASSERT(bSpawned);
+//  bSpawned = AM::bSpawnOp(pSession,m_pToClause);   ASSERT(bSpawned);
 }
 
 /*----------------------------------------------------------------------------*/
