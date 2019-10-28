@@ -380,7 +380,7 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
     pJob->pTask()->vState(TS_ABLE);
   }
   else {
-    Task* pNewTask = new Task(pJob,pSession);
+    Task* pNewTask = new Task(pJob);
     pNewTask->vState(TS_ABLE);
   }
   
@@ -484,7 +484,7 @@ bool Api::bSpawnJobDedicated(Job* pJob)
     AM::vLogWriteCsv(false);
   
   ASSERT(! pJob->pTask());
-  Task* pNewTask = new Task(pJob,nullptr);
+  Task* pNewTask = new Task(pJob);
   pNewTask->vState(TS_ABLE);
   
   Scheduler::vAddTaskDedicated(pNewTask);
