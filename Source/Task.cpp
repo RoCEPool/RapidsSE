@@ -58,7 +58,7 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(Job* pJob, Session* pSession)
+Task::Task(Job* pJob)
 : Focal(CN_TASK,AM::iNextTaskId(),pJob->m_iUniqueId)
 , m_xReqTuple(&pJob->m_xReqTuple)
 , m_okLock(LK_TASK,&pJob->m_xReqTuple,this)
@@ -67,9 +67,7 @@ Task::Task(Job* pJob, Session* pSession)
   
   vInit();
   
-  m_eKind     = TK_JOB;
   m_pJob      = pJob;
-  m_pSession  = pSession;
 
   _checkInitialised_(CN_TASK);
   
@@ -94,53 +92,18 @@ Task::Task(Job* pJob, Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Task::Task(Op* pOp, Session* pSession)
-: Focal(CN_TASK,AM::iNextTaskId(),pOp->m_iUniqueId)
-, m_xReqTuple(C_NO_REQTUPLE)
-, m_okLock(LK_TASK,C_NO_REQTUPLE,this)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vInit();
-  
-  m_eKind     = TK_OPERATOR;
-  m_pOp       = pOp;
-  m_pSession  = pSession;
-
-  _checkInitialised_(CN_TASK);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the executing task in job
-  
-  m_pOp->vTask(this);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vIncActNo(); ++ gixTask;
-  AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
-              "Task (op) |gixTask=%lld|"_Stz, //!format-LogTsk
-              * gixTask);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* init task                                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_eKind        = TK_NONE;
   m_pJob         = nullptr;
   m_pOp          = nullptr;
 
   m_pThread      = nullptr;
   m_pMutex       = new Mutex(MK_TASK,this,&m_xReqTuple);
   
-  m_pSession     = nullptr;
   // m_oDicStack
 
   m_eState       = TS_NONE;
@@ -181,18 +144,10 @@ Task::~Task(void) noexcept(false)
 
   
   -- gixTask;
-  if (TK_OPERATOR == m_eKind) {
-    vIncActNo();
-    AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCT,
-                "Task destruct |gixTask=%lld|"_Stz, //!format-LogTsk
-                * gixTask);
-  }
-  else {
-    vIncActNo();
-    AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCT,
-                "Task destruct |gixTask=%lld|"_Stz, //!format-LogTsk
-                * gixTask);
-  }
+  vIncActNo();
+  AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCT,
+              "Task destruct |gixTask=%lld|"_Stz, //!format-LogTsk
+              * gixTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,9 +171,7 @@ Task* Task::pThisTLSTask(void)
 void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  RASSERT(TK_JOB == eKind());
-          
+            
   // TODO: shouldn't have to refind it everytime!!!
   vRefindJobClass();
   
@@ -280,7 +233,6 @@ void Task::vAssertStructure(void)
 
   // might have these
   // RASSERT(m_pOp      || (m_pOp && m_pOp->bStructurallyCorrect()));
-  // RASSERT(m_pSession || (m_pSession && m_pSession->bStructurallyCorrect()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -465,9 +417,8 @@ void Task::vFocalOutline(s4K& sOutline)
   
   vGrabTaskLock();
   
-  sOutline.vSprint("%s %s %s%s"_Stz,
+  sOutline.vSprint("%s %s%s"_Stz,
                                       
-                   aTK[m_eKind],
                    aTS[m_eState],
                    aQK[m_eQueue],
                    m_eDdlLocked ? " DdlLocked"_Stz : ""_Stz
@@ -563,16 +514,6 @@ Stz* Task::szJobName(void)
     return "<no job>"_Stz;
   else
     return "<no jobClass>"_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the kind of this task                                                  */
-/*----------------------------------------------------------------------------*/
-eTK Task::eKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_eKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -847,26 +788,6 @@ void Task::vSendNode(Grids::Node* pNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_pRegSet->m_pSendNode = pNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get session                                                                */
-/*----------------------------------------------------------------------------*/
-Session* Task::pSession(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set session                                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vSession(Session* pSession)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_pSession = pSession;
 }
 
 /*----------------------------------------------------------------------------*/

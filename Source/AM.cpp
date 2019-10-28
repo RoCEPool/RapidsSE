@@ -326,12 +326,6 @@ Op* AM::pThisTLSOp(void) {
   Op* pOp = pTask->pOp();
   return pOp;
 }
-Session* AM::pThisTLSSession(void) {
-  Thread* pThread = Thread::pThisTLSThread();
-  Task* pTask = pThread->pTask();
-  Session* pSession = pTask->pSession();
-  return pSession;
-}
 Tasks::Task* AM::pThisTLSTask(void) {
   Thread* pThread = Thread::pThisTLSThread();
   Task* pTask = pThread->pTask();
@@ -363,21 +357,21 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* state diagram                                                              */
+/* get pSession given i_Session                                               */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnJob(Session* pSession, Job* pJob)
+Session* AM::pSessionGet(i8 i_Session)
 {
-  bool bResult = Api::bSpawnJob(pSession,pJob);
-  
-  return bResult;
+  Session* pSession = nullptr; // some f(i_Session)
+
+  return pSession;
 }
 
 /*----------------------------------------------------------------------------*/
 /* state diagram                                                              */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnOp(Session* pSession, Op* pOp)
+bool AM::bSpawnJob(Session* pSession, Job* pJob)
 {
-  bool bResult = Api::bSpawnOp(pSession,pOp);
+  bool bResult = Api::bSpawnJob(pJob);
   
   return bResult;
 }
@@ -1286,8 +1280,8 @@ void AM::vPrintGlobals(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-Task* AM::pTaskNew(Job* pJob, Session* pSession) {
-  return new Task(pJob,pSession);
+Task* AM::pTaskNew(Job* pJob) {
+  return new Task(pJob);
 }
 void AM::vTaskTransition(Tasks::Task* pTask, i8 iTransition) {
   pTask->vTransition((eTR)iTransition);

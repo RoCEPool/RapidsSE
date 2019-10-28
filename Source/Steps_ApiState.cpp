@@ -115,11 +115,13 @@ void Step::vApiStateSenLoc(void)
   i8 iPosition;
   if ( ! m_pDataStack->bPopI8(iPosition) )
     THROW_DSTACK();
+
+  //  Session* pSession = m_i_Session->m_pSession;
+  //  ApiState::vMarkSenLoc(pSession,iPosition);
   
-  Session* pSession = m_pTask->m_pSession;
-  
-  SessionArray::vMarkSenLoc(pSession,iPosition);
-  
+  //! need to pass m_i_Session
+  //  ApiState::vMarkSenLoc(m_i_Session->m_i_Session,iPosition);
+
   EXIT();
 }
 

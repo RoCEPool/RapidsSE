@@ -360,7 +360,6 @@ void Step::vTableInflateScan(void)
 {
   ENTRY("vTableInflateScan"_Stz);
   
-  Session* pSession = m_pTask->m_pSession;
   Object* pPtrTable = nullptr;
   FetchBuffer* pFetchBuffer;
   GenVar xVariable;
@@ -642,7 +641,6 @@ void Step::vTableScan(void)
 {
   ENTRY("vTableScan"_Stz);
   
-  Session* pSession = m_pTask->m_pSession;
   Object* pPtrTable = nullptr;
   FetchBuffer* pFetchBuffer;
   GenVar xVariable;
@@ -718,8 +716,8 @@ void Step::vTableScan(void)
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // check if session exiting
-      if (pSession->m_bSessionExiting)
-        pCrwBuffer = nullptr;
+      //if (pSession->m_bSessionExiting)
+      //  pCrwBuffer = nullptr;
     }
     
     // get next buffer from the current indexBuffer

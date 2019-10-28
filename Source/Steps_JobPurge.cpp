@@ -47,7 +47,7 @@ void Step::vJob_PurgeSpawnSub(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob_SubPurger));
+  IGNORE_RETURN(Api::bSpawnJob(pJob_SubPurger));
 
   EXIT();
 }

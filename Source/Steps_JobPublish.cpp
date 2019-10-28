@@ -49,7 +49,7 @@ void Step::vJob_PublishSpawnSub(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob_SubPublish));
+  IGNORE_RETURN(Api::bSpawnJob(pJob_SubPublish));
   
   EXIT();
 }

@@ -140,7 +140,7 @@ namespace Oblique
     static void vTakenBytes(i8 nTakenBytes);
     static void vTaskDelete(Task* pTask);
     static bool bTaskIsLocked(Task* pTask);
-    static Task* pTaskNew(Job* pJob, Session* pSession);
+    static Task* pTaskNew(Job* pJob);
     static void vTaskTransition(Task* pTask, i8 iTransition);
     static void vTenants(Word* pTenants);
     static void vTriggerBidingTask(Task* pTask);
@@ -154,7 +154,6 @@ namespace Oblique
     static i8   nRandomLevels(void);
     static Job* pThisTLSJob(void);
     static Op*  pThisTLSOp(void);
-    static Session* pThisTLSSession(void);
     static Task* pThisTLSTask(void);
     static Thread* pThisTLSThread(void);
     static PsxThd* pThisTLSPsxThd(void);
@@ -237,8 +236,8 @@ namespace Oblique
     static i8   iRdTimePoint(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static Session* pSessionGet(i8 i_Session);
     static bool bSpawnJob(Session* pSession, Job* pJob);
-    static bool bSpawnOp(Session* pSession, Op* pOp);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

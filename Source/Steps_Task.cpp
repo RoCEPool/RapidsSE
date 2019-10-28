@@ -334,7 +334,7 @@ void Step::vTaskSessionFetch(void)
     THROW_DSTACK();
   Task* pThatTask = _pTask(pObject);
   
-  Session* pSession = pThatTask->m_pSession;
+  Session* pSession = nullptr;//pThatTask->m_pSession;
   
   m_pDataStack->vPushPointer(pSession);
   
@@ -361,7 +361,7 @@ void Step::vTaskSessionStore(void)
   Session* pSession = _pSession(pPtrSession);
   ASSERT(! pSession || CN_SESSION == pSession->eClass());
   
-  pThatTask->m_pSession = pSession;
+  //pThatTask->m_pSession = pSession;
   
   EXIT();
 }

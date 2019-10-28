@@ -379,7 +379,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn and wait for the job
-    Api::vSpawnJobAndWait(pJob_InsertRow,pSession);
+    Api::vSpawnJobAndWait(pJob_InsertRow);
     API_LOC(380);
     
     // check if job had an error
@@ -547,7 +547,7 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn the job
     //vTrace("Spawning copyBuffer job\n"_Stz);
-    IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_CopyBuffer));
+    IGNORE_RETURN(Api::bSpawnJob(pJob_CopyBuffer));
     API_LOC(390);
   }
   catch (Error* pError) { API_CATCH(pError); }
@@ -573,7 +573,7 @@ eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn and wait for job
-    Api::vSpawnJobAndWait(pJob_InsertTable,pSession);
+    Api::vSpawnJobAndWait(pJob_InsertTable);
     API_LOC(320);
 
     // check if job had an error

@@ -2000,7 +2000,7 @@ void Step::vJobSpawn(void)
               C_ENDARGS);
 
   pJob->vSeed((eSS)i_Seed);
-  IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob));
+  IGNORE_RETURN(Api::bSpawnJob(pJob));
   
   EXIT();
 }

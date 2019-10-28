@@ -122,7 +122,7 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn and wait for job
   
-  Api::vSpawnJobAndWait(pJob,pSession);
+  Api::vSpawnJobAndWait(pJob);
   
   // run post ?
   if (bPostJob)
@@ -341,7 +341,7 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob(Session* pSession, Job* pJob)
+bool Api::bSpawnJob(Job* pJob)
 {
   ASSERT(pJob->m_aJobClass);
   ASSERT(SS_ENUMS != pJob->eSeed());
@@ -353,8 +353,6 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
   i8 iPid = AM::iPid();
   if (!Process::bTestPid(iPid)) {
     // SE is not running anymore!
-    if (pSession)
-      vWarn("Cannot find pid %lld\n"_Stz, iPid);
     vWarn("Cannot find pid %lld\n"_Stz, iPid);
     return false;
   }
@@ -378,14 +376,14 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
     pJob->pTask()->vState(TS_ABLE);
   }
   else {
-    Task* pNewTask = new Task(pJob,pSession);
+    Task* pNewTask = new Task(pJob);
     pNewTask->vState(TS_ABLE);
   }
   
-  AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
-              "pJob=%p"_Stz, //!format-LogPrm
-              pJob,
-              C_ENDARGS);
+//  AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
+//              "pJob=%p"_Stz, //!format-LogPrm
+//              pJob,
+//              C_ENDARGS);
 
 
   Scheduler::vAddTaskGeneral(pJob->pTask());
@@ -396,7 +394,7 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* Spawn amd wait for job to complete                                         */
 /*----------------------------------------------------------------------------*/
-void Api::vSpawnJobAndWait(Job* pJob, Session* pSession)
+void Api::vSpawnJobAndWait(Job* pJob)
 {
   // lock this job's mutex
   pJob->vLockJobMutex();
@@ -404,7 +402,7 @@ void Api::vSpawnJobAndWait(Job* pJob, Session* pSession)
   //  if (0 != rCode)
   //    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
   
-  SessionArray::vMarkApiLoc(pSession,106);
+  //! ApiState::vMarkApiLoc(pSession,106);
   
   // set the job state to be locked
   pJob->m_eJobState = JS_LOCKED;
@@ -412,8 +410,8 @@ void Api::vSpawnJobAndWait(Job* pJob, Session* pSession)
   pJob->vSeed(SS_SEED_REQ);
   
   // spawn the insertTable job
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob));
-  SessionArray::vMarkApiLoc(pSession,107);
+  IGNORE_RETURN(Api::bSpawnJob(pJob));
+  //! ApiState::vMarkApiLoc(pSession,107);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for condition & state
@@ -445,7 +443,7 @@ void Api::vSpawnJobAndWait(Job* pJob, Session* pSession)
   
   RASSERT( _bIsValidJob(pJob->eClass()) );
   
-  SessionArray::vMarkApiLoc(pSession,108);
+  //! ApiState::vMarkApiLoc(pSession,108);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -482,51 +480,10 @@ bool Api::bSpawnJobDedicated(Job* pJob)
     AM::vLogWriteCsv(false);
   
   ASSERT(! pJob->pTask());
-  Task* pNewTask = new Task(pJob,nullptr);
+  Task* pNewTask = new Task(pJob);
   pNewTask->vState(TS_ABLE);
   
   Scheduler::vAddTaskDedicated(pNewTask);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn operator                                                              */
-/*----------------------------------------------------------------------------*/
-bool Api::bSpawnOp(Session* pSession, Op* pOp)
-{
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Before appending request for se, ensure that se is running
-  // get the se pid from the attachmap
-  i8 iPid = AM::iPid();
-  if (!Process::bTestPid(iPid)) {
-    // SE is not running anymore!
-    if (pSession)
-      vWarn("Cannot find pid %lld\n"_Stz, iPid);
-    vWarn("Cannot find pid %lld\n"_Stz, iPid);
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-//  if (pOp->m_pTask)
-//    AM::vLogWriteCsv(false);
-//
-//  ASSERT(! pOp->m_pTask);
-  
-//  Task* pNewTask = new Task(pOp,pSession);
-//  pNewTask->vState(TS_ABLE);
-//  pOp->vTask(pNewTask);
-  
-  if (pOp->pTask()) {
-    pOp->pTask()->vState(TS_ABLE);
-  }
-  else {
-    Task* pNewTask = new Task(pOp,pSession);
-    pNewTask->vState(TS_ABLE);
-  }
-  
-  Scheduler::vAddTaskGeneral(pOp->pTask());
   
   return true;
 }

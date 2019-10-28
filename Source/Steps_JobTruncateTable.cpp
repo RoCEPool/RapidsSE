@@ -85,7 +85,7 @@ void Step::vJob_TruncateTableSpawnSub(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob_SubTruncate));
+  IGNORE_RETURN(Api::bSpawnJob(pJob_SubTruncate));
   
   EXIT();
 }

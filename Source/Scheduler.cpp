@@ -848,15 +848,10 @@ void Scheduler::vTask_Ready(Task* pTask)
   
   pTask->vState(TS_READY);
 
-  if (TK_JOB == pTask->eKind()) {
-    if (pTask->pJob()->m_aJobClass->m_ePriority == PY_NORMAL)
-      pQueues->vAppendReadyQueue(pTask);
-    else
-      pQueues->vAppendReadyQueueLP(pTask);
-  }
-  else {
+  if (pTask->pJob()->m_aJobClass->m_ePriority == PY_NORMAL)
     pQueues->vAppendReadyQueue(pTask);
-  }
+  else
+    pQueues->vAppendReadyQueueLP(pTask);
   // **do not touch task**
 }
 

@@ -51,7 +51,7 @@ void Step::vJob_SubLoaderSpawn(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubLoader));
+  IGNORE_RETURN(Api::bSpawnJob(pJob_SubLoader));
   
   EXIT();
 }
