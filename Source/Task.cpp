@@ -93,38 +93,6 @@ Task::Task(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Task::Task(Op* pOp, Session* pSession)
-: Focal(CN_TASK,AM::iNextTaskId(),pOp->m_iUniqueId)
-, m_xReqTuple(C_NO_REQTUPLE)
-, m_okLock(LK_TASK,C_NO_REQTUPLE,this)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vInit();
-  
-  m_eKind     = TK_OPERATOR;
-  m_pOp       = pOp;
-
-  _checkInitialised_(CN_TASK);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the executing task in job
-  
-  m_pOp->vTask(this);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vIncActNo(); ++ gixTask;
-  AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
-              "Task (op) |gixTask=%lld|"_Stz, //!format-LogTsk
-              * gixTask);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* init task                                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vInit(void)

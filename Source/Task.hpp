@@ -53,7 +53,6 @@ namespace Tasks
     void  operator delete(void*);
     
     Task(Job* pJob);
-    Task(Op* pOp, Session* pSession);
     void vInit(void);
     ~Task(void) noexcept(false);
     
