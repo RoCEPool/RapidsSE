@@ -113,6 +113,33 @@ void Forth::vReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* seet forth execution context                                               */
+/*----------------------------------------------------------------------------*/
+void Forth::vSeedForth(Word* pSeedWord)
+{
+  m_pSeedWord = pSeedWord;
+  m_aInxPtr   = pSeedWord->aFirstCell();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Dic* pRootDic = AM::pRootDic();
+
+  Word* pExceptionWord = pRootDic->pFindWord(pSeedWord->szExceptionHook());
+  if (pExceptionWord) {
+    m_pExceptionWord = pExceptionWord;
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Word* pExceptionDef = pRootDic->pFindWord("std_exceptionHook"_Stz);
+  if (pExceptionDef) {
+    m_pExceptionWord = pExceptionDef;
+    return;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for correct layout                                                    */
 /*----------------------------------------------------------------------------*/
 __bCorrectLayout(Forth,CN_FORTH)

@@ -37,6 +37,7 @@ namespace SenVM
   
     bool bCorrectLayout(void);
     void vReset(void);
+    void vSeedForth(Word* pSeedWord);
 
   private:
     Footer* aFooter(void);
