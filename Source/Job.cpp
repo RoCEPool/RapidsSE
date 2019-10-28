@@ -85,7 +85,7 @@ Job::Job(eCN eClassNo)
   m_iOriginatingId = C_UNKNOWN;
 
   m_iParticipantNode  = C_UNKNOWN;
-  m_oAcksRmg.vCheckInit();
+  m_oAcksRmg_2pc.vCheckInit();
   
   m_pOp = nullptr;
   m_pOperand   = nullptr;
@@ -130,7 +130,7 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
   m_iOriginatingId = C_UNKNOWN;
 
   m_iParticipantNode  = C_UNKNOWN;
-  m_oAcksRmg.vCheckInit();
+  m_oAcksRmg_2pc.vCheckInit();
   
   m_pOp = nullptr;
   m_pOperand   = nullptr;
@@ -277,7 +277,7 @@ void Job::vAcksRmg(i8 nAcks)
   
   //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTaskJ));
   
-  m_oAcksRmg.vSetRemaining(nAcks);
+  m_oAcksRmg_2pc.vSetRemaining(nAcks);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -458,7 +458,7 @@ void Job::vReport(void)
   vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
          this,
          m_iUniqueId,
-         m_oAcksRmg.iPrintOnlyValue());
+         m_oAcksRmg_2pc.iPrintOnlyValue());
 }
 
 /*----------------------------------------------------------------------------*/

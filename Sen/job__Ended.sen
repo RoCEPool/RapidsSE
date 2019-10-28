@@ -66,7 +66,7 @@
   pJobOriginator ApiState::traceSession
 
   // decrement the acks remaining
-  pJobOriginator job.decAcksRemaining to bAmDecider
+  pJobOriginator job.dec2pcAcksRmg to bAmDecider
 
   // if there are acks remaining just exit
   bAmDecider not if

@@ -30,7 +30,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.columnType@"_Stz,      &Step::vJobColumnTypeFetch);
   vAddStep("job.createResponseVec"_Stz,&Step::vJobCreateResponseVec);
   
-  vAddStep("job.decAcksRemaining"_Stz, &Step::vJobDecAcksRemaining);
+  vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   vAddStep("job.dicPath"_Stz,          &Step::vJobDicPath);
   
@@ -651,18 +651,18 @@ void Step::vJobDelete(void)
   
 
 /*----------------------------------------------------------------------------*/
-/* job.decAcksRemaining -- decrement acks remaining for this job              */
+/* job.dec2pcAcksRmg -- decrement acks remaining for this job              */
 /*----------------------------------------------------------------------------*/
-void Step::vJobDecAcksRemaining(void)
+void Step::vJobDec2pcAcksRmg(void)
 {
-  ENTRY("vJobDecAcksRemaining"_Stz);
+  ENTRY("vJobDec2pcAcksRmg"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  bool bAmDecider = pJob->m_oAcksRmg.bDecAndDecide();
+  bool bAmDecider = pJob->m_oAcksRmg_2pc.bDecAndDecide();
   
   m_pDataStack->vPushI8(bAmDecider);
   

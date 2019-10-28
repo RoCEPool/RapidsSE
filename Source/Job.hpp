@@ -29,7 +29,7 @@ namespace Jobs
     eJS  m_eJobState;    // current state of the job
     
     Atomic  m_ixErrors;
-    Decider m_oAcksRmg;  // acks remaining
+    Decider m_oAcksRmg_2pc;   // acks remaining
   
     Task* m_pOriginatingTask; // originating task of the request
     i8    m_iOriginatingId;   // job id of originating job

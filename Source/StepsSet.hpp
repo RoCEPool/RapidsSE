@@ -466,7 +466,7 @@ public:
   void vJobOperandStore(void);
   void vJobOpLoop(void);
 
-  void vJobDecAcksRemaining(void);
+  void vJobDec2pcAcksRmg(void);
   void vJobDelete(void);
   void vJobDicPath(void);
 

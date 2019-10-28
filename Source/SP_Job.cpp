@@ -43,7 +43,7 @@ Stz* SP_Job::sz_log(Job* pJob)
                   
                   aCN[pJob->eClass()],
                   pJob->m_i_Slot,
-                  pJob->m_oAcksRmg.iPrintOnlyValue(),
+                  pJob->m_oAcksRmg_2pc.iPrintOnlyValue(),
 
                   aSS[pJob->m_eSeed],
                   aJL[pJob->m_eJobList],
