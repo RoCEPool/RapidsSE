@@ -42,8 +42,6 @@ namespace Jobs
     i8      m_i_Slot;        // slot on its node this job processes
     Task*   m_pTaskJ;        // task executing the job
 
-    Session* m_pSession;     //! TEMPORARY
-
   public:
     Job(eCN eClassNo);
     Job(JobClass* aJobClass,

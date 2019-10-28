@@ -90,8 +90,6 @@ Job::Job(eCN eClassNo)
   m_pOp = nullptr;
   m_pOperand   = nullptr;
   
-  m_pSession = nullptr;
-  
 
   
   // -- -- -- -- -- --
@@ -139,9 +137,6 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
   m_pOp = nullptr;
   m_pOperand   = nullptr;
   
-  m_pSession = pSession;
-  
-  ASSERT((! m_pSession) || m_pSession == AM::pSessionGet(aReqTuple));
   
   // -- -- -- -- -- --
   
@@ -535,9 +530,9 @@ void Job::vSeed(eSS eSeed)
 /*----------------------------------------------------------------------------*/
 Session* Job::pSession(void)
 {
-  ASSERT((! m_pSession) || m_pSession == AM::pSessionGet(&m_xReqTuple));
+  Session* pSession = AM::pSessionGet(&m_xReqTuple);
 
-  return m_pSession;
+  return pSession;
 }
 
 /*----------------------------------------------------------------------------*/
