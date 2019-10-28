@@ -598,7 +598,7 @@ void Scheduler::vTask_DdlDropRead(Task* pTask)
   SP_Id spId;
   
   AM::pDdlLock()->vDropRead();
-  pTask->m_eDdlLocked = LH_NONE;
+  pTask->m_eDdlLocked = LH_HAVE_NO_LOCK;
   
   pTask->vIncActNo();
   AM::vLogTsk(SL_INF,pTask,TA_DDL_READ_DROPPED,
@@ -615,7 +615,7 @@ void Scheduler::vTask_DdlDropWrite(Task* pTask)
   SP_Id spId;
   
   AM::pDdlLock()->vDropWrite();
-  pTask->m_eDdlLocked = LH_NONE;
+  pTask->m_eDdlLocked = LH_HAVE_NO_LOCK;
   
   pTask->vIncActNo();
   AM::vLogTsk(SL_INF,pTask,TA_DDL_WRITE_DROPPED,

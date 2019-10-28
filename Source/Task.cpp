@@ -110,7 +110,7 @@ void Task::vInit(void)
   m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
   m_oAcksRmg.vCheckInit();
-  m_eDdlLocked   = LH_NONE;
+  m_eDdlLocked   = LH_HAVE_NO_LOCK;
   // m_oWakeup
   
   m_iTraceMask     = C_TRACE_NONE;
@@ -365,6 +365,8 @@ void Task::vCaught(Exception xException)
   // dump api state
   AM::vDumpApi();
 
+  vContentDump();
+  
   m_pForth->vDumpContext();
   
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
@@ -401,11 +403,18 @@ void Task::vContentDump(void)
 {
   _poolAddress_(this);
   
-  vTrace("%sTask %p: %16s state %8s txId %lld\n"_Stz,
-         Stz::szTab(2),
+  vTrace("Task\n"_Stz);
+  vTrace("----\n"_Stz);
+
+  vTrace("%p: m_eState=%s m_eTransition=%s m_eQueue=%s m_eDdlLock=%s\n"_Stz,
          this,
-         szJobName(),
-         aTS[m_eState]->azChar()
+         
+         aTS[m_eState]->azChar(),
+         aTR[m_eTransition]->azChar(),
+         aQK[m_eQueue]->azChar(),
+         aLH[m_eDdlLocked]->azChar(),
+
+         C_ENDARGS
          );
 }
 

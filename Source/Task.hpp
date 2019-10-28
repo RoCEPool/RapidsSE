@@ -26,7 +26,6 @@ namespace Tasks
     ReqTuple     m_xReqTuple;    // request tuple
   
     Lock         m_okLock;       // lock for this task
-    i8           m_iTraceMask;   // tracing mask
 
     SMA<Job>     m_pJob;         // the job for this task
     SMA<Thread>  m_pThread;      // current thread
@@ -43,6 +42,8 @@ namespace Tasks
     SMA<Forth>   m_pForth;       // forth execution context
     SMA<Op>      m_pOp;          // the op for this task
     SMA<RegSet>  m_pRegSet;      // set of registers for the task steps
+
+    i8           m_iTraceMask;   // tracing mask
 
     // always last
     Footer m_xFooter;
