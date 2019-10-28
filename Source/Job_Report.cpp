@@ -101,7 +101,7 @@ void Job_Report::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Report::Job_Report(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_Report::Job_Report(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPORT,_FOOTER_);
@@ -187,7 +187,7 @@ Job* Jobs::pJob_Report_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aRe
 {
   i8 nTokens;
 
-  Job_Report* pJob_Report = new Job_Report(aJobClass,aReqTuple,iForId,pSession);
+  Job_Report* pJob_Report = new Job_Report(aJobClass,aReqTuple,iForId);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
@@ -220,7 +220,7 @@ Job* Jobs::pJob_Report_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aRe
 Job* Jobs::pJob_Report_new(JobClass* aJobClass)
 {
   Job_Report* pJob_Report =
-    new Job_Report(aJobClass,nullptr,C_UNKNOWN,nullptr);
+    new Job_Report(aJobClass,nullptr,C_UNKNOWN);
   
   return pJob_Report;
 }

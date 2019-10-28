@@ -101,7 +101,7 @@ void Job_Periodic::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Periodic::Job_Periodic(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_Periodic::Job_Periodic(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PERIODIC,_FOOTER_);
@@ -173,7 +173,7 @@ Job* Jobs::pJob_Periodic_new(JobClass* aJobClass)
   ReqTuple xReqTuple("**PERIODIC"_Stz,false);
   
   Job_Periodic* pJob_Periodic =
-    new Job_Periodic(aJobClass,&xReqTuple,C_UNKNOWN,nullptr);
+    new Job_Periodic(aJobClass,&xReqTuple,C_UNKNOWN);
   
   return pJob_Periodic;
 }

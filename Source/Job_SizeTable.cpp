@@ -101,7 +101,7 @@ void Job_SizeTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SizeTable::Job_SizeTable(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_SizeTable::Job_SizeTable(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SIZETABLE,_FOOTER_);
@@ -193,7 +193,7 @@ Footer* Job_SizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SizeTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_SizeTable* pJob_SizeTable = new Job_SizeTable(aJobClass,aReqTuple,iForId,pSession);
+  Job_SizeTable* pJob_SizeTable = new Job_SizeTable(aJobClass,aReqTuple,iForId);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

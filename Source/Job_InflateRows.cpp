@@ -101,7 +101,7 @@ void Job_InflateRows::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_InflateRows::Job_InflateRows(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_InflateRows::Job_InflateRows(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INFLATEROWS,_FOOTER_);
@@ -275,7 +275,7 @@ Footer* Job_InflateRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InflateRows_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_InflateRows* pJob_InflateRows = new Job_InflateRows(aJobClass,aReqTuple,iForId,pSession);
+  Job_InflateRows* pJob_InflateRows = new Job_InflateRows(aJobClass,aReqTuple,iForId);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

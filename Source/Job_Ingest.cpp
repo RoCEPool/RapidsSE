@@ -101,7 +101,7 @@ void Job_Ingest::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Ingest::Job_Ingest(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_Ingest::Job_Ingest(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
@@ -184,7 +184,7 @@ Job* Jobs::pJob_Ingest_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aRe
 {
   i8 nTokens;
 
-  Job_Ingest* pJob_Ingest = new Job_Ingest(aJobClass,aReqTuple,iForId,pSession);
+  Job_Ingest* pJob_Ingest = new Job_Ingest(aJobClass,aReqTuple,iForId);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
@@ -217,7 +217,7 @@ Job* Jobs::pJob_Ingest_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aRe
 Job* Jobs::pJob_Ingest_new(JobClass* aJobClass)
 {
   Job_Ingest* pJob_Ingest =
-    new Job_Ingest(aJobClass,nullptr,C_UNKNOWN,nullptr);
+    new Job_Ingest(aJobClass,nullptr,C_UNKNOWN);
   
   return pJob_Ingest;
 }

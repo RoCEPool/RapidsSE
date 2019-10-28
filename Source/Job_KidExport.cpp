@@ -101,7 +101,7 @@ void Job_KidExport::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_KidExport::Job_KidExport(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_KidExport::Job_KidExport(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
@@ -147,7 +147,7 @@ void Job_KidExport::vSpawn(i8 iExportJobId,
                           ExportBuffer* pExportBuffer)
 {
   Job_KidExport* pJob_KidExport =
-    new Job_KidExport(JobClass::pFind(CN_JOB_KIDEXPORT),nullptr,C_UNKNOWN,nullptr);
+    new Job_KidExport(JobClass::pFind(CN_JOB_KIDEXPORT),nullptr,C_UNKNOWN);
   
   pJob_KidExport->m_iExportJobId = iExportJobId;
   //pJob_KidExport->m_pSendWith = pExportBuffer;
@@ -216,7 +216,7 @@ Footer* Job_KidExport::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_KidExport_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_KidExport* pJob_KidExport = new Job_KidExport(aJobClass,aReqTuple,iForId,pSession);
+  Job_KidExport* pJob_KidExport = new Job_KidExport(aJobClass,aReqTuple,iForId);
   //pJob->vDicPath(pSession);
 
   return pJob_KidExport;
@@ -228,7 +228,7 @@ Job* Jobs::pJob_KidExport_pre(Session* pSession, JobClass* aJobClass, ReqTuple* 
 Job* Jobs::pJob_KidExport_new(JobClass* aJobClass)
 {
   Job_KidExport* pJob_KidExport =
-    new Job_KidExport(aJobClass,nullptr,C_UNKNOWN,nullptr);
+    new Job_KidExport(aJobClass,nullptr,C_UNKNOWN);
   
   return pJob_KidExport;
 }

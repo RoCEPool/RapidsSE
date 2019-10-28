@@ -100,8 +100,8 @@ void Job_Pipeline::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Pipeline::Job_Pipeline(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
-: JobMark2(aJobClass, aReqTuple, pSession)
+Job_Pipeline::Job_Pipeline(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+: JobMark2(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE,_FOOTER_);
   
@@ -320,7 +320,7 @@ Footer* Job_Pipeline::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Pipeline_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_Pipeline* pJob_Pipeline = new Job_Pipeline(aJobClass,aReqTuple,iForId,pSession);
+  Job_Pipeline* pJob_Pipeline = new Job_Pipeline(aJobClass,aReqTuple,iForId);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

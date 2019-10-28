@@ -101,7 +101,7 @@ void Job_WriteBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WriteBuffer::Job_WriteBuffer(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_WriteBuffer::Job_WriteBuffer(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
@@ -432,7 +432,7 @@ Footer* Job_WriteBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(aJobClass,aReqTuple,iForId,pSession);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(aJobClass,aReqTuple,iForId);
   //pJob->vDicPath(pSession);
 
   return pJob_WriteBuffer;
@@ -444,7 +444,7 @@ Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, JobClass* aJobClass, ReqTuple
 Job* Jobs::pJob_WriteBuffer_new(JobClass* aJobClass)
 {
   Job_WriteBuffer* pJob_WriteBuffer =
-    new Job_WriteBuffer(aJobClass,nullptr,C_UNKNOWN,nullptr);
+    new Job_WriteBuffer(aJobClass,nullptr,C_UNKNOWN);
   
   return pJob_WriteBuffer;
 }

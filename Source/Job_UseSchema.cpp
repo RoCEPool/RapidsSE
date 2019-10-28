@@ -101,7 +101,7 @@ void Job_UseSchema::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_UseSchema::Job_UseSchema(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_UseSchema::Job_UseSchema(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_USESCHEMA,_FOOTER_);
@@ -199,7 +199,7 @@ Footer* Job_UseSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_UseSchema_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_UseSchema* pJob_UseSchema = new Job_UseSchema(aJobClass,aReqTuple,iForId,pSession);
+  Job_UseSchema* pJob_UseSchema = new Job_UseSchema(aJobClass,aReqTuple,iForId);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

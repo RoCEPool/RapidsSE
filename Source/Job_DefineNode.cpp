@@ -102,7 +102,7 @@ void Job_DefineNode::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DefineNode::Job_DefineNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_DefineNode::Job_DefineNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
@@ -235,7 +235,7 @@ Footer* Job_DefineNode::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DefineNode_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_DefineNode* pJob_CreateNode = new Job_DefineNode(aJobClass,aReqTuple,iForId,pSession);
+  Job_DefineNode* pJob_CreateNode = new Job_DefineNode(aJobClass,aReqTuple,iForId);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
@@ -276,7 +276,7 @@ void Jobs::vJob_DefineNode_post(Job* pJob)
 Job* Jobs::pJob_DefineNode_new(JobClass* aJobClass)
 {
   Job_DefineNode* pJob_CreateNode =
-    new Job_DefineNode(aJobClass,nullptr,C_UNKNOWN,nullptr);
+    new Job_DefineNode(aJobClass,nullptr,C_UNKNOWN);
   
   return pJob_CreateNode;
 }

@@ -101,7 +101,7 @@ void Job_Sink::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Sink::Job_Sink(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_Sink::Job_Sink(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
@@ -177,7 +177,7 @@ Job* Jobs::pJob_Sink_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqT
 {
   i8 nTokens;
 
-  Job_Sink* pJob_Sink = new Job_Sink(aJobClass,aReqTuple,iForId,pSession);
+  Job_Sink* pJob_Sink = new Job_Sink(aJobClass,aReqTuple,iForId);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
@@ -207,7 +207,7 @@ Job* Jobs::pJob_Sink_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqT
 Job* Jobs::pJob_Sink_new(JobClass* aJobClass)
 {
   Job_Sink* pJob_Sink =
-    new Job_Sink(aJobClass,nullptr,C_UNKNOWN,nullptr);
+    new Job_Sink(aJobClass,nullptr,C_UNKNOWN);
   
   return pJob_Sink;
 }

@@ -101,7 +101,7 @@ void Job_VerifyTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_VerifyTable::Job_VerifyTable(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_VerifyTable::Job_VerifyTable(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VERIFYTABLE,_FOOTER_);
@@ -194,7 +194,7 @@ Footer* Job_VerifyTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_VerifyTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_VerifyTable* pJob_VerifyTable = new Job_VerifyTable(aJobClass,aReqTuple,iForId,pSession);
+  Job_VerifyTable* pJob_VerifyTable = new Job_VerifyTable(aJobClass,aReqTuple,iForId);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

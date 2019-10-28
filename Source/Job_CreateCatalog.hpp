@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_CreateCatalog(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
+    Job_CreateCatalog(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);//=C_UNKNOWN);
     ~Job_CreateCatalog(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

@@ -101,7 +101,7 @@ void Job_Supervisor::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Supervisor::Job_Supervisor(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_Supervisor::Job_Supervisor(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUPERVISOR,_FOOTER_);
@@ -173,7 +173,7 @@ Job* Jobs::pJob_Supervisor_new(JobClass* aJobClass)
   ReqTuple xReqTuple("**SUPERVISOR"_Stz,false);
   
   Job_Supervisor* pJob_Supervisor =
-    new Job_Supervisor(aJobClass,&xReqTuple,C_UNKNOWN,nullptr);
+    new Job_Supervisor(aJobClass,&xReqTuple,C_UNKNOWN);
   
   return pJob_Supervisor;
 }

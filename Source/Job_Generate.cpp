@@ -101,7 +101,7 @@ void Job_Generate::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Generate::Job_Generate(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_Generate::Job_Generate(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
@@ -192,7 +192,7 @@ Job* Jobs::pJob_Generate_pre(Session* pSession, JobClass* aJobClass, ReqTuple* a
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 nTokens;
 
-  Job_Generate* pJob_Generate = new Job_Generate(aJobClass,aReqTuple,iForId,pSession);
+  Job_Generate* pJob_Generate = new Job_Generate(aJobClass,aReqTuple,iForId);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
@@ -235,7 +235,7 @@ Job* Jobs::pJob_Generate_pre(Session* pSession, JobClass* aJobClass, ReqTuple* a
 Job* Jobs::pJob_Generate_new(JobClass* aJobClass)
 {
   Job_Generate* pJob_Generate =
-    new Job_Generate(aJobClass,nullptr,C_UNKNOWN,nullptr);
+    new Job_Generate(aJobClass,nullptr,C_UNKNOWN);
   
   return pJob_Generate;
 }
