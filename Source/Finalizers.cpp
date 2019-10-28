@@ -329,7 +329,6 @@ pFINALIZE *gpFinalize[]
   /*115 */ &Finalize::vUndefined,         // CN_SEPROMPT
   /*    */ &Finalize::vUndefined,         // CN_SESSION
   /*    */ &Finalize::vUndefined,         // CN_SESSIONARRAY
-  /*    */ &Finalize::vUndefined,         // CN_SESSIONSTATE
   /*116 */ &Finalize::vUndefined,         // CN_SHORTCUT
   /*116 */ &Finalize::vUndefined,         // CN_SHORTCUTVEC
   /*116 */ &Finalize::vUndefined,         // CN_SINCE

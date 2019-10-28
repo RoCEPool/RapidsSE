@@ -15,7 +15,6 @@ namespace Sessions
 //------------------------------------------------------------------------------
 
 #include "Session.hpp"
-#include "SessionState.hpp"
 
 #include "Request.hpp"
 
