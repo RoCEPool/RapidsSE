@@ -17,7 +17,6 @@ namespace Interface
   static bool bSpawnJob(Job* pJob);
   static void vSpawnJobAndWait(Job* pJob);
   static bool bSpawnJobDedicated(Job* pJob);
-  static bool bSpawnOp(Session* pSession, Op* pOp);
   static eEC  eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall);
   };
 }

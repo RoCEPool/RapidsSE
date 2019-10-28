@@ -369,16 +369,6 @@ bool AM::bSpawnJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* state diagram                                                              */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnOp(Session* pSession, Op* pOp)
-{
-  bool bResult = Api::bSpawnOp(pSession,pOp);
-  
-  return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* state diagram                                                              */
-/*----------------------------------------------------------------------------*/
 void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
 {
   TaskList* pExecuting     = AM::pQueues()->m_pExecutingSet;

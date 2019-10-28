@@ -491,47 +491,6 @@ bool Api::bSpawnJobDedicated(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn operator                                                              */
-/*----------------------------------------------------------------------------*/
-bool Api::bSpawnOp(Session* pSession, Op* pOp)
-{
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Before appending request for se, ensure that se is running
-  // get the se pid from the attachmap
-  i8 iPid = AM::iPid();
-  if (!Process::bTestPid(iPid)) {
-    // SE is not running anymore!
-    if (pSession)
-      vWarn("Cannot find pid %lld\n"_Stz, iPid);
-    vWarn("Cannot find pid %lld\n"_Stz, iPid);
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-//  if (pOp->m_pTask)
-//    AM::vLogWriteCsv(false);
-//
-//  ASSERT(! pOp->m_pTask);
-  
-//  Task* pNewTask = new Task(pOp,pSession);
-//  pNewTask->vState(TS_ABLE);
-//  pOp->vTask(pNewTask);
-  
-  if (pOp->pTask()) {
-    pOp->pTask()->vState(TS_ABLE);
-  }
-  else {
-    Task* pNewTask = new Task(pOp,pSession);
-    pNewTask->vState(TS_ABLE);
-  }
-  
-  Scheduler::vAddTaskGeneral(pOp->pTask());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate the SE session                                                    */
 /*----------------------------------------------------------------------------*/
 eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
