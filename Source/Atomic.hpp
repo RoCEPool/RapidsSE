@@ -31,11 +31,11 @@ namespace Locking
     i8   iVal(void);      // get value
 
     void operator =(i8 iInt); // assignment
-    i8 operator *(void);  // dereference
-    i8 operator ++(void); // increment (prefix form)
-    i8 operator --(void); // decrement (prefix form)
-    i8 operator +=(i8 iInt); // add assign
-    i8 operator -=(i8 iInt); // subtract assign
+    i8 operator *(void);      // dereference
+    i8 operator ++(void);     // increment (prefix form)
+    i8 operator --(void);     // decrement (prefix form)
+    i8 operator +=(i8 iInt);  // add assign
+    i8 operator -=(i8 iInt);  // subtract assign
 
     Footer* aFooter(void);
   };
