@@ -13,8 +13,6 @@ void Task::vAddBaseWords(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   vAddRoutines();
-
-  MP_Task mpTask(this);
   
 #ifdef WITH_MUNGED_SEN
   if (AM::bMunged())

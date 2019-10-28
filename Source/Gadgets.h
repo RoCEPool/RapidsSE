@@ -22,7 +22,6 @@ namespace Gadgets
 #include "EnumFlags.hpp"
 #include "FreqDist.hpp"
 #include "HV.hpp"
-#include "MP.hpp"
 #include "NmVal.hpp"
 #include "NextId.hpp"
 #include "Now.hpp"
@@ -44,9 +43,7 @@ namespace Gadgets
 #include "SP_String.hpp"
 
 namespace Tasks {
-  
-  typedef MP<Task,CN_TASK> MP_Task;
-  
+    
   //typedef void (*StepFp)(Forth* pForth);
   typedef void (Step::*StepFp)(void);
 }
