@@ -55,11 +55,13 @@ SessionArray::SessionArray(void)
   m_iFirstFree = 0;
 
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
-    Session* pSession = &m_oSession[i_Session];
+    Session* pSession = new Session;
+    
+    m_paSession[i_Session] = pSession;
     pSession->m_i_Session = i_Session;
     pSession->m_i_NextFree = i_Session + 1;
   }
-  m_oSession[C_MAX_SESSIONS - 1].m_i_NextFree = -1;
+  m_paSession[C_MAX_SESSIONS - 1]->m_i_NextFree = -1;
   
   m_iFirstFree = 0;
 
@@ -193,7 +195,7 @@ Session* SessionArray::pAllocSession(void)
   RASSERT(-1 != m_iFirstFree);
   
   i8 i_Session = m_iFirstFree;
-  Session* pSession = &m_oSession[i_Session];
+  Session* pSession = m_paSession[i_Session];
   
   m_iFirstFree = pSession->m_i_NextFree;
   
@@ -223,7 +225,7 @@ void SessionArray::vDump(void)
   
   i8 iSessions = 0;
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
-    Session* pSession = &m_oSession[i_Session];
+    Session* pSession = m_paSession[i_Session];
     if (pSession)
       pSession->vTraceSession();
     
@@ -258,13 +260,13 @@ void SessionArray::vFreeSession(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get an api state entry                                                     */
+/* get a session                                                              */
 /*----------------------------------------------------------------------------*/
 Session* SessionArray::pGetSession(i8 i_Session)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
   
-  Session* pSession = &m_oSession[i_Session];
+  Session* pSession = m_paSession[i_Session];
   
   return pSession;
 }
@@ -285,7 +287,7 @@ void SessionArray::vMonitorPortrait(s48K& sPortrait)
   
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     
-    Session* pSession = &m_oSession[i_Session];
+    Session* pSession = m_paSession[i_Session];
     if (! pSession)
       continue;
     

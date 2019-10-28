@@ -13,7 +13,7 @@ namespace Interface
     i8   m_nSessionsSoFar;
     i8   m_iFirstFree;
   
-    Session m_oSession[C_MAX_SESSIONS];
+    Session* m_paSession[C_MAX_SESSIONS];
   
     Footer m_xFooter;
     
@@ -23,7 +23,7 @@ namespace Interface
     void  operator delete(void*);
     
     SessionArray(void);
-    ~SessionArray(void) noexcept(false);
+   ~SessionArray(void) noexcept(false);
   
     static void vMarkApiLoc(Session* pSession, i8 iApiLoc);
     static void vMarkCall(Session* pSession, eAC eApiCall);
