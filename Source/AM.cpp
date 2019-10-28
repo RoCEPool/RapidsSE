@@ -1011,12 +1011,10 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
 /*----------------------------------------------------------------------------*/
 /* new a universal job                                                        */
 /*----------------------------------------------------------------------------*/
-Job* AM::pNewJobUniversal(Session* pSession, Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId)
+Job* AM::pNewJobUniversal(Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId)
 {
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
-//  Job* pJobUniversal = pJobClass_Universal->pPreJob(pSession,
-//                                                    pReqTuple,
-//                                                    iUniqueId);
+
   Job_Universal* pJobUniversal = new Job_Universal(pJobClass_Universal,pReqTuple,iUniqueId);
   
   pJobUniversal->m_pOp = pOp;

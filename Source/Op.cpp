@@ -682,8 +682,7 @@ bool Op::bSpawnJob(Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   ReqTuple xReqTuple(m_sName,false);
-  m_pJobUniversal = AM::pNewJobUniversal(pSession, this, &xReqTuple,
-                                         this->m_iUniqueId);
+  m_pJobUniversal = AM::pNewJobUniversal(this, &xReqTuple, this->m_iUniqueId);
   bool bSpawned = AM::bSpawnJob(pSession, m_pJobUniversal);
   
   m_pTask = AM::pExecutingTask(m_pJobUniversal);
