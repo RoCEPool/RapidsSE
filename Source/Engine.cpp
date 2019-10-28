@@ -35,6 +35,7 @@ void Engine::vMainEntry(void)
   
   StorageEngine::vCheckAllAssumptions();
 
+  vTrace("SessionArray: %lld\n"_Stz, sizeof(SessionArray));
   AM::vBootCheck();
   
   vSanityCheck();
@@ -452,7 +453,7 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
-  AM::pApiState()->vMonitorPortrait(sPortrait);
+  AM::pSessionArray()->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.szStz());
   
   if (1 == ++ gpAttachMap->m_inNextMonitor)
@@ -910,7 +911,7 @@ void Engine::vStartSystem(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  gpAttachMap->m_pApiState = new ApiState;
+  gpAttachMap->m_pSessionArray = new SessionArray;
   
   // create the tx sets
   gpAttachMap->m_pTxSet = new TxSet(AM::pGrid()->iThisNode());

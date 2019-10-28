@@ -347,10 +347,10 @@ void Job::vMarkJob(void)
 {
   s48K sJobMark;
   
-  sJobMark.vSprintCat("Job %03lld %s state %lld slot %lld\n"_Stz,
+  sJobMark.vSprintCat("Job %03lld %s session %lld slot %lld\n"_Stz,
                       m_iUniqueId,
                       aCN[eClass()],
-                      m_xReqTuple.m_i_State,
+                      m_xReqTuple.m_i_Session,
                       m_i_Slot);
   sJobMark.vSprintCat("  phase %s state %s list %s"_Stz,
                       aJP[m_eJobPhase],
@@ -569,13 +569,13 @@ void Job::vShow(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   vTrace("%s %s parentId %03lld seed %s "
-         "i_State %03lld i_Slot %lld WasReceived %lld\n"_Stz,
+         "i_Session %03lld i_Slot %lld WasReceived %lld\n"_Stz,
          aCN[eClass()],
          m_aJobClass ? aCN[m_aJobClass->m_eClass] : "<no jobClass>"_Stz,
          m_iParentId,
          aSS[m_eSeed],
          
-         m_xReqTuple.m_i_State,
+         m_xReqTuple.m_i_Session,
          m_i_Slot,
          (i8)m_bWasReceived
          );

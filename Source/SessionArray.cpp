@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ApiState.cpp - ApiState                                                    */
+/* SessionArray.cpp - SessionArray                                                    */
 /*============================================================================*/
 
 #include "Interface.h"
@@ -13,21 +13,21 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ApiState* Interface::_pApiState(void* aAddr)
+SessionArray* Interface::_pSessionArray(void* aAddr)
 {
-  ApiState* pApiState = reinterpret_cast<ApiState*>(aAddr);
+  SessionArray* pSessionArray = reinterpret_cast<SessionArray*>(aAddr);
   
-  RASSERT_TYPE(pApiState,CN_APISTATE);
+  RASSERT_TYPE(pSessionArray,CN_SESSIONARRAY);
  
-  return pApiState;
+  return pSessionArray;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ApiState::operator new(size_t)
+void* SessionArray::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_APISTATE);
+  void* pObject = HeapMem::pAllocate(CN_SESSIONARRAY);
   
   return pObject;
 }
@@ -35,45 +35,45 @@ void* ApiState::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void ApiState::operator delete(void* aAddress)
+void SessionArray::operator delete(void* aAddress)
 {
-  ApiState* pApiState = reinterpret_cast<ApiState*>(aAddress);
+  SessionArray* pSessionArray = reinterpret_cast<SessionArray*>(aAddress);
   
-  HeapMem::vFree(pApiState);
+  HeapMem::vFree(pSessionArray);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ApiState::ApiState(void)
-: Object(CN_APISTATE)
+SessionArray::SessionArray(void)
+: Object(CN_SESSIONARRAY)
 , m_okLock(LK_API_STATE,this)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
   
   m_nSessionsSoFar = 0;
   m_iFirstFree = 0;
 
-  for (i8 i_State = 0; i_State < C_MAX_SESSIONS; i_State++) {
-    SessionState* pState = &m_oSessionState[i_State];
-    pState->m_i_State = i_State;
-    pState->m_i_NextFree = i_State + 1;
+  for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
+    Session* pSession = &m_oSession[i_Session];
+    pSession->m_i_Session = i_Session;
+    pSession->m_i_NextFree = i_Session + 1;
   }
-  m_oSessionState[C_MAX_SESSIONS - 1].m_i_NextFree = -1;
+  m_oSession[C_MAX_SESSIONS - 1].m_i_NextFree = -1;
   
   m_iFirstFree = 0;
 
-  _checkInitialised_(CN_APISTATE);
+  _checkInitialised_(CN_SESSIONARRAY);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ApiState::~ApiState(void) noexcept(false)
+SessionArray::~SessionArray(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,97 +83,97 @@ ApiState::~ApiState(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* mark location of an api                                                    */
 /*----------------------------------------------------------------------------*/
-void ApiState::vMarkApiLoc(Session* pSession, i8 iApiLoc)
+void SessionArray::vMarkApiLoc(Session* pSession, i8 iApiLoc)
 {
-  AM::pApiState()->vApiLoc(pSession,iApiLoc);
+  AM::pSessionArray()->vApiLoc(pSession,iApiLoc);
 }
 
 /*----------------------------------------------------------------------------*/
 /* mark call of an api                                                        */
 /*----------------------------------------------------------------------------*/
-void ApiState::vMarkCall(Session* pSession, eAC eApiCall)
+void SessionArray::vMarkCall(Session* pSession, eAC eApiCall)
 {
-  AM::pApiState()->vApiCall(pSession,eApiCall);
+  AM::pSessionArray()->vApiCall(pSession,eApiCall);
 }
 
 /*----------------------------------------------------------------------------*/
 /* mark error of an api                                                       */
 /*----------------------------------------------------------------------------*/
-void ApiState::vMarkError(Session* pSession, eEC eError)
+void SessionArray::vMarkError(Session* pSession, eEC eError)
 {
-  AM::pApiState()->vApiError(pSession,eError);
+  AM::pSessionArray()->vApiError(pSession,eError);
 }
 
 /*----------------------------------------------------------------------------*/
 /* mark another __begun job has been received                                 */
 /*----------------------------------------------------------------------------*/
-void ApiState::vMarkIncBegun(Session* pSession)
+void SessionArray::vMarkIncBegun(Session* pSession)
 {
-  AM::pApiState()->vIncBegun(pSession);
+  AM::pSessionArray()->vIncBegun(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
 /* mark another __cancelled job has been received                             */
 /*----------------------------------------------------------------------------*/
-void ApiState::vMarkIncCancelled(Session* pSession)
+void SessionArray::vMarkIncCancelled(Session* pSession)
 {
-  AM::pApiState()->vIncCancelled(pSession);
+  AM::pSessionArray()->vIncCancelled(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
 /* mark another __ended job has been received                                 */
 /*----------------------------------------------------------------------------*/
-void ApiState::vMarkIncEnded(Session* pSession)
+void SessionArray::vMarkIncEnded(Session* pSession)
 {
-  AM::pApiState()->vIncEnded(pSession);
+  AM::pSessionArray()->vIncEnded(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
 /* mark another __executed job has been received                              */
 /*----------------------------------------------------------------------------*/
-void ApiState::vMarkIncExecuted(Session* pSession)
+void SessionArray::vMarkIncExecuted(Session* pSession)
 {
-  AM::pApiState()->vIncExecuted(pSession);
+  AM::pSessionArray()->vIncExecuted(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
 /* mark job of an api                                                         */
 /*----------------------------------------------------------------------------*/
-void ApiState::vMarkJob(Session* pSession, Job* pJob)
+void SessionArray::vMarkJob(Session* pSession, Job* pJob)
 {
-  AM::pApiState()->vApiJob(pSession,pJob);
+  AM::pSessionArray()->vApiJob(pSession,pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* mark job location of an api                                                */
 /*----------------------------------------------------------------------------*/
-void ApiState::vMarkJobLoc(Session* pSession, i8 iJobLoc)
+void SessionArray::vMarkJobLoc(Session* pSession, i8 iJobLoc)
 {
-  AM::pApiState()->vJobLoc(pSession,iJobLoc);
+  AM::pSessionArray()->vJobLoc(pSession,iJobLoc);
 }
 
 /*----------------------------------------------------------------------------*/
 /* mark return of an api                                                      */
 /*----------------------------------------------------------------------------*/
-void ApiState::vMarkReturn(Session* pSession)
+void SessionArray::vMarkReturn(Session* pSession)
 {
-  AM::pApiState()->vApiReturn(pSession);
+  AM::pSessionArray()->vApiReturn(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
 /* mark sen location of an api                                                */
 /*----------------------------------------------------------------------------*/
-void ApiState::vMarkSenLoc(Session* pSession, i8 iSenLoc)
+void SessionArray::vMarkSenLoc(Session* pSession, i8 iSenLoc)
 {
-  AM::pApiState()->vApiLoc(pSession,iSenLoc);
+  AM::pSessionArray()->vApiLoc(pSession,iSenLoc);
 }
 
 /*----------------------------------------------------------------------------*/
 /* mark that job has had its mutex signalled                                  */
 /*----------------------------------------------------------------------------*/
-void ApiState::vMarkSignalled(Session* pSession)
+void SessionArray::vMarkSignalled(Session* pSession)
 {
-  AM::pApiState()->vSignalled(pSession);
+  AM::pSessionArray()->vSignalled(pSession);
 }
 
 
@@ -182,46 +182,49 @@ void ApiState::vMarkSignalled(Session* pSession)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allocate an api state entry                                                */
+/* allocate a session                                                         */
 /*----------------------------------------------------------------------------*/
-SessionState* ApiState::pAllocState(Session* pSession)
+Session* SessionArray::pAllocSession(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
   
   m_okLock.vGrabWrite();
   
   RASSERT(-1 != m_iFirstFree);
   
-  i8 i_State = m_iFirstFree;
-  SessionState* pState = &m_oSessionState[i_State];
+  i8 i_Session = m_iFirstFree;
+  Session* pSession = &m_oSession[i_Session];
   
-  m_iFirstFree = pState->m_i_NextFree;
-    
-  pState->vAllocState(pSession);
+  m_iFirstFree = pSession->m_i_NextFree;
   
   m_nSessionsSoFar++;
   
   m_okLock.vDropWrite();
   
-  return pState;
+  return pSession;
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void ApiState::vDump(void)
+void SessionArray::vDump(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
   
   m_okLock.vGrabRead();
   
-  vTrace("ApiState %p SessionsSoFar %lld:\n"_Stz,this,m_nSessionsSoFar);
+  vTrace("SessionArray %p SessionsSoFar %lld:\n"_Stz,this,m_nSessionsSoFar);
   
+  i8 iSessions = 0;
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
-    SessionState* pState = &m_oSessionState[i_Session];
-    Session* pSession = pState->m_pSession;
+    Session* pSession = &m_oSession[i_Session];
     if (pSession)
-      pState->vTraceState();
+      pSession->vTraceSession();
+    
+    iSessions++;
+    
+    if (iSessions == m_nSessionsSoFar)
+      break;
   }
   
   vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);
@@ -231,21 +234,19 @@ void ApiState::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free an api state entry                                                    */
+/* free a session                                                             */
 /*----------------------------------------------------------------------------*/
-void ApiState::vFreeState(Session* pSession)
+void SessionArray::vFreeSession(Session* pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
   
-  SessionState* pState = pSession->m_pSessionState;
-  
-  i8 i_FreedState = pState->m_i_State;
+  i8 i_FreedSession = pSession->m_i_Session;
   
   m_okLock.vGrabWrite();
   
-  pState->vFreeState(m_iFirstFree);
+  pSession->vFreeSession(m_iFirstFree);
   
-  m_iFirstFree = i_FreedState;
+  m_iFirstFree = i_FreedSession;
   
   m_okLock.vDropWrite();
 }
@@ -253,51 +254,51 @@ void ApiState::vFreeState(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* get an api state entry                                                     */
 /*----------------------------------------------------------------------------*/
-SessionState* ApiState::pGetState(i8 i_State)
+Session* SessionArray::pGetSession(i8 i_Session)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
   
-  SessionState* pState = &m_oSessionState[i_State];
+  Session* pSession = &m_oSession[i_Session];
   
-  return pState;
+  return pSession;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a portrait of the apistate vector                                      */
+/* get a portrait of the SessionArray vector                                  */
 /*----------------------------------------------------------------------------*/
-void ApiState::vMonitorPortrait(s48K& sPortrait)
+void SessionArray::vMonitorPortrait(s48K& sPortrait)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY);
   
   s48K sTasksPortrait;
   
   sPortrait = ""_Stz;
-  sPortrait.vConcat("ApiState:\n"_Stz);
+  sPortrait.vConcat("SessionArray:\n"_Stz);
   
   m_okLock.vGrabRead();
   
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     
-    SessionState* aSessionState = &m_oSessionState[i_Session];
-    if (! aSessionState->m_pSession)
+    Session* pSession = &m_oSession[i_Session];
+    if (! pSession)
       continue;
     
-    if (aSessionState->m_bRunning)
-      aSessionState->m_oTimer.vUpdate();
+    if (pSession->m_bRunning)
+      pSession->m_oTimer.vUpdate();
     
     sPortrait.vCatSprint("  [%2lld] #calls %lld job %s call %s (%s); "
                          "loc %lld seq %lld pos %lld\n"_Stz,
                          
                          i_Session,
                          
-                         aSessionState->m_nApiCalls,
-                         aCN[aSessionState->m_eJobClass],
-                         aAC[aSessionState->m_eApiFun],
-                         aSessionState->m_bRunning ? "running" : "completed",
+                         pSession->m_nApiCalls,
+                         aCN[pSession->m_eJobClass],
+                         aAC[pSession->m_eApiFun],
+                         pSession->m_bRunning ? "running" : "completed",
                          
-                         aSessionState->m_iApiLoc,
-                         aSessionState->m_iJobLoc,
-                         aSessionState->m_iSenLoc
+                         pSession->m_iApiLoc,
+                         pSession->m_iJobLoc,
+                         pSession->m_iSenLoc
                          
                          );
   }
@@ -314,91 +315,81 @@ void ApiState::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* mark call of an api                                                        */
 /*----------------------------------------------------------------------------*/
-void ApiState::vApiCall(Session* pSession, eAC eApiCall)
+void SessionArray::vApiCall(Session* pSession, eAC eApiCall)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  SessionState* pState = pSession->m_pSessionState;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
 
-  pState->m_eApiFun    = eApiCall;
-  pState->m_iApiLoc    = 0;
-  pState->m_eApiError  = EC_NONE;
-  pState->m_bRunning   = true;
-  pState->m_bSignalled = false;
+  pSession->m_eApiFun    = eApiCall;
+  pSession->m_iApiLoc    = 0;
+  pSession->m_eApiError  = EC_NONE;
+  pSession->m_bRunning   = true;
+  pSession->m_bSignalled = false;
 
-  pState->m_aStackBase = PsxThd::aGetStackBase();
-  pState->m_aStackPtr  = PsxThd::aGetStackPointer();
+  pSession->m_aStackBase = PsxThd::aGetStackBase();
+  pSession->m_aStackPtr  = PsxThd::aGetStackPointer();
 
-  pState->m_eJobClass  = CN_NONE;
-  pState->m_iJobLoc  = 0;
-  pState->m_iSenLoc  = 0;
+  pSession->m_eJobClass  = CN_NONE;
+  pSession->m_iJobLoc  = 0;
+  pSession->m_iSenLoc  = 0;
   
-  pState->m_oTimer.vStart();
+  pSession->m_oTimer.vStart();
   
-  pState->m_nApiCalls++;
+  pSession->m_nApiCalls++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* mark error return of an api                                                */
 /*----------------------------------------------------------------------------*/
-void ApiState::vApiError(Session* pSession, eEC eError)
+void SessionArray::vApiError(Session* pSession, eEC eError)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  SessionState* pState = pSession->m_pSessionState;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
 
-  pState->m_bRunning  = false;
-  pState->m_eApiError = eError;
+  pSession->m_bRunning  = false;
+  pSession->m_eApiError = eError;
   
-  pState->m_oTimer.vUpdate();
-  pState->m_iTotalMsec += pState->m_oTimer.iMicroseconds();
+  pSession->m_oTimer.vUpdate();
+  pSession->m_iTotalMsec += pSession->m_oTimer.iMicroseconds();
 
-  pState->m_nApiErrors++;
+  pSession->m_nApiErrors++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* mark job of an api                                                         */
 /*----------------------------------------------------------------------------*/
-void ApiState::vApiJob(Session* pSession, Job* pJob)
+void SessionArray::vApiJob(Session* pSession, Job* pJob)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  SessionState* pState = pSession->m_pSessionState;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
 
-  pState->m_eJobClass = pJob->eClass();
+  pSession->m_eJobClass = pJob->eClass();
 
-  pState->m_nJobNew++;
+  pSession->m_nJobNew++;
   
-  pJob->m_xReqTuple.m_i_State = pState->m_i_State;
+  pJob->m_xReqTuple.m_i_Session = pSession->m_i_Session;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set last API location                                                      */
 /*----------------------------------------------------------------------------*/
-void ApiState::vApiLoc(Session* pSession, i8 iLocation)
+void SessionArray::vApiLoc(Session* pSession, i8 iLocation)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
   
   if (! pSession)
     return;
   
-  SessionState* pState = pSession->m_pSessionState;
-  
-  pState->m_iApiLoc = iLocation;
+  pSession->m_iApiLoc = iLocation;
 }
 
 /*----------------------------------------------------------------------------*/
 /* mark return of an api                                                      */
 /*----------------------------------------------------------------------------*/
-void ApiState::vApiReturn(Session* pSession)
+void SessionArray::vApiReturn(Session* pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
   
-  SessionState* pState = pSession->m_pSessionState;
-
-  pState->m_bRunning = false;
-  pState->m_oTimer.vUpdate();
-  pState->m_iTotalMsec += pState->m_oTimer.iMicroseconds();
+  pSession->m_bRunning = false;
+  pSession->m_oTimer.vUpdate();
+  pSession->m_iTotalMsec += pSession->m_oTimer.iMicroseconds();
 
 //  if (xState[i_Session].m_eApiFun == AC_FetchNextBuffer)
 //    vTrace("Timer start: %lld; Timer update: %lld Time: %lldus\n"_Stz,
@@ -410,85 +401,161 @@ void ApiState::vApiReturn(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* increment number of __begun received                                       */
 /*----------------------------------------------------------------------------*/
-void ApiState::vIncBegun(Session* pSession)
+void SessionArray::vIncBegun(Session* pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
   
-  SessionState* pState = pSession->m_pSessionState;
-  
-  pState->m_nBegun++;
+  pSession->m_nBegun++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* increment number of __cancelled received                                   */
 /*----------------------------------------------------------------------------*/
-void ApiState::vIncCancelled(Session* pSession)
+void SessionArray::vIncCancelled(Session* pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  SessionState* pState = pSession->m_pSessionState;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
 
-  pState->m_nCancelled++;
+  pSession->m_nCancelled++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* increment number of __ended received                                       */
 /*----------------------------------------------------------------------------*/
-void ApiState::vIncEnded(Session* pSession)
+void SessionArray::vIncEnded(Session* pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  SessionState* pState = pSession->m_pSessionState;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
 
-  pState->m_nEnded++;
+  pSession->m_nEnded++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* increment number of executed received                                      */
 /*----------------------------------------------------------------------------*/
-void ApiState::vIncExecuted(Session* pSession)
+void SessionArray::vIncExecuted(Session* pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  SessionState* pState = pSession->m_pSessionState;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
 
-  pState->m_nExecuted++;
+  pSession->m_nExecuted++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set last job location                                                      */
 /*----------------------------------------------------------------------------*/
-void ApiState::vJobLoc(Session* pSession, i8 iJobLoc)
+void SessionArray::vJobLoc(Session* pSession, i8 iJobLoc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
   
-  SessionState* pState = pSession->m_pSessionState;
-  
-  pState->m_iJobLoc = iJobLoc;
+  pSession->m_iJobLoc = iJobLoc;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set last SEN location                                                      */
 /*----------------------------------------------------------------------------*/
-void ApiState::vSenLoc(Session* pSession, i8 iSenLoc)
+void SessionArray::vSenLoc(Session* pSession, i8 iSenLoc)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  SessionState* pState = pSession->m_pSessionState;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
 
-  pState->m_iSenLoc = iSenLoc;
+  pSession->m_iSenLoc = iSenLoc;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set that job has had its mutex signalled                                   */
 /*----------------------------------------------------------------------------*/
-void ApiState::vSignalled(Session* pSession)
+void SessionArray::vSignalled(Session* pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  SessionState* pState = pSession->m_pSessionState;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
 
-  pState->m_bSignalled = true;
+  pSession->m_bSignalled = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free the session state                                                     */
+/*----------------------------------------------------------------------------*/
+void Session::vFreeSession(i8 i_NextFree)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  RASSERT(m_i_Session >= 0 && m_i_Session < C_MAX_SESSIONS);
+  m_i_NextFree = i_NextFree;
+  
+  m_eApiFun    = AC_NONE;
+  m_iApiLoc    = 0;
+  m_eApiError  = EC_NONE;
+  m_bRunning   = false;
+  m_bSignalled = false;
+  
+  m_aStackBase = nullptr;
+  m_aStackPtr  = nullptr;
+  
+  m_eJobClass  = CN_NONE;
+  m_iJobLoc    = 0;
+  m_iSenLoc    = 0;
+  
+  m_oTimer.vReset();
+  m_iTotalMsec = 0;
+  
+  m_nBegun     = 0;
+  m_nExecuted  = 0;
+  m_nCancelled = 0;
+  m_nEnded     = 0;
+  
+  m_nApiCalls  = 0;
+  m_nApiErrors = 0;
+  m_nJobNew    = 0;
+  m_nJobDelete = 0;
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace                                                                      */
+/*----------------------------------------------------------------------------*/
+void Session::vTraceSession(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  if (m_bRunning)
+    m_oTimer.vUpdate();
+  
+  i8 nBytes;
+  if (m_aStackBase >= m_aStackPtr)
+    nBytes = nSub(m_aStackBase,m_aStackPtr);
+  else
+    nBytes = nSub(m_aStackPtr,m_aStackBase);
+  
+  vTrace("  %lld: session %p base %llx ptr %llx (%lldB)\n"
+         "     apiFun %s apiLoc %lld job %s jobLoc %lld senLoc %lld \n"
+         "     %s %s apiError %s time %lldus\n"
+         "     dist2PC: begun %lld executed %lld cancelled %lld ended %lld\n"
+         "     #calls %lld, #errors %lld, #jobNew %lld #jobDelete %lld total %lldus\n"_Stz,
+         
+         m_i_Session,
+         this,
+         m_aStackBase,
+         m_aStackPtr,
+         nBytes,
+         
+         aAC[m_eApiFun],
+         m_iApiLoc,
+         aCN[m_eJobClass],
+         m_iJobLoc,
+         m_iSenLoc,
+         
+         m_bRunning   ? "running"   : "completed",
+         m_bSignalled ? "signalled" : "not signalled",
+         aEC[m_eApiError],
+         m_oTimer.iMicroseconds(),
+         
+         m_nBegun,
+         m_nExecuted,
+         m_nCancelled,
+         m_nEnded,
+         
+         m_nApiCalls,
+         m_nApiErrors,
+         m_nJobNew,
+         m_nJobDelete,
+         m_iTotalMsec
+         );
 }
 
 
@@ -496,7 +563,7 @@ void ApiState::vSignalled(Session* pSession)
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aFooterFunction(ApiState);
+__aFooterFunction(SessionArray);
 
 /*============================================================================*/
 /* end                                                                        */

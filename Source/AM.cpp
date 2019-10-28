@@ -38,7 +38,7 @@ i8   AM::nSubLoaders(void)    { return gpAttachMap->Arg.m_nSubLoaders;        }
 i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 
 //
-ApiState* AM::pApiState(void) { return gpAttachMap->m_pApiState;              }
+SessionArray* AM::pSessionArray(void) { return gpAttachMap->m_pSessionArray;  }
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 CarryOver* AM::pCarryOver(void)   { return gpAttachMap->m_pCarryOver;         }
@@ -270,7 +270,7 @@ bool AM::bAttached(void) {
     return false;
 }
 void AM::vDumpApi(void) {
-  pApiState()->vDump();
+  pSessionArray()->vDump();
 }
 Task* AM::pExecutingTask(Job* pJob) {
   Task* pTask = pJob->pTask();

@@ -8,7 +8,7 @@ namespace Focals
   class ReqTuple
   {
   public:
-    i8   m_i_State;    // which session state
+    i8   m_i_Session;  // which session
     i8   m_iReqId;     // the id of the request
     i8   m_iForId;     // id of prompt or api
   

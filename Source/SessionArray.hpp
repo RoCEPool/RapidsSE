@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* ApiState.hpp - Api State                                                   */
+/* SessionArray.hpp - Session Array                                           */
 /*============================================================================*/
 #pragma once
 
 namespace Interface
 {
-  class ApiState : public Object
+  class SessionArray : public Object
   {
   public:
   
@@ -13,7 +13,7 @@ namespace Interface
     i8   m_nSessionsSoFar;
     i8   m_iFirstFree;
   
-    SessionState m_oSessionState[C_MAX_SESSIONS];
+    Session m_oSession[C_MAX_SESSIONS];
   
     Footer m_xFooter;
     
@@ -22,8 +22,8 @@ namespace Interface
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ApiState(void);
-    ~ApiState(void) noexcept(false);
+    SessionArray(void);
+    ~SessionArray(void) noexcept(false);
   
     static void vMarkApiLoc(Session* pSession, i8 iApiLoc);
     static void vMarkCall(Session* pSession, eAC eApiCall);
@@ -38,12 +38,13 @@ namespace Interface
     static void vMarkSenLoc(Session* pSession, i8 iSenLoc);
     static void vMarkSignalled(Session* pSession);
   
-    SessionState* pAllocState(Session* pSession);
+    Session* pAllocSession(void);
     void vDump(void);
-    void vFreeState(Session* pSession);
-    SessionState* pGetState(i8 i_State);
+    void vFreeSession(Session* pSession);
+    Session* pGetSession(i8 i_Session);
     void vMonitorPortrait(s48K& sPortrait);
 
+    
   private:
     void vApiCall(Session* pSession, eAC eApiCall);
     void vApiError(Session* pSession, eEC eError);
@@ -61,7 +62,7 @@ namespace Interface
     Footer* aFooter(void);
   };
   
-  ApiState* _pApiState(void* aAddr);
+  SessionArray* _pSessionArray(void* aAddr);
 }
 
 /*============================================================================*/

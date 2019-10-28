@@ -52,7 +52,7 @@ void ReqTuple::vSet(ReqTuple* aReqTuple)
   if (aReqTuple) {
     m_iReqId     = aReqTuple->m_iReqId;
     m_iForId     = aReqTuple->m_iForId;
-    m_i_State    = aReqTuple->m_i_State;
+    m_i_Session  = aReqTuple->m_i_Session;
 
     m_iDetail  = aReqTuple->m_iDetail;
     m_sPurpose   = aReqTuple->m_sPurpose;
@@ -62,7 +62,7 @@ void ReqTuple::vSet(ReqTuple* aReqTuple)
   
   m_iReqId     = C_UNKNOWN;
   m_iForId     = C_UNKNOWN;
-  m_i_State    = C_UNKNOWN;
+  m_i_Session  = C_UNKNOWN;
 
   m_iDetail  = 0;
   

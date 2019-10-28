@@ -33,7 +33,7 @@ bool Prompt::bPrompt_apiState(SePrompt* pPrompt)
   if (nTokens == 2)
     pArg = pTokenVec->pGet(1);
   
-  AM::pApiState()->vDump();
+  AM::pSessionArray()->vDump();
   
   return true;
 }

@@ -30,12 +30,11 @@ void Step::vApiStateIncBegun(void)
   
   Job* pJob = _pJob(pJobPtr);
   
-  i8 i_State = pJob->m_xReqTuple.m_i_State;
+  i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
-  SessionState* pState = AM::pApiState()->pGetState(i_State);
-  Session* pSession = pState->m_pSession;
+  Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
   
-  ApiState::vMarkIncBegun(pSession);
+  SessionArray::vMarkIncBegun(pSession);
   
   EXIT();
 }
@@ -53,12 +52,11 @@ void Step::vApiStateIncCancelled(void)
   
   Job* pJob = _pJob(pJobPtr);
   
-  i8 i_State = pJob->m_xReqTuple.m_i_State;
+  i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
-  SessionState* pState = AM::pApiState()->pGetState(i_State);
-  Session* pSession = pState->m_pSession;
+  Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
 
-  ApiState::vMarkIncCancelled(pSession);
+  SessionArray::vMarkIncCancelled(pSession);
   
   EXIT();
 }
@@ -76,12 +74,11 @@ void Step::vApiStateIncEnded(void)
   
   Job* pJob = _pJob(pJobPtr);
   
-  i8 i_State = pJob->m_xReqTuple.m_i_State;
+  i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
-  SessionState* pState = AM::pApiState()->pGetState(i_State);
-  Session* pSession = pState->m_pSession;
+  Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
 
-  ApiState::vMarkIncEnded(pSession);
+  SessionArray::vMarkIncEnded(pSession);
   
   EXIT();
 }
@@ -99,12 +96,11 @@ void Step::vApiStateIncExecuted(void)
   
   Job* pJob = _pJob(pJobPtr);
   
-  i8 i_State = pJob->m_xReqTuple.m_i_State;
+  i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
-  SessionState* pState = AM::pApiState()->pGetState(i_State);
-  Session* pSession = pState->m_pSession;
+  Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
 
-  ApiState::vMarkIncExecuted(pSession);
+  SessionArray::vMarkIncExecuted(pSession);
   
   EXIT();
 }
@@ -122,7 +118,7 @@ void Step::vApiStateSenLoc(void)
   
   Session* pSession = m_pTask->m_pSession;
   
-  ApiState::vMarkSenLoc(pSession,iPosition);
+  SessionArray::vMarkSenLoc(pSession,iPosition);
   
   EXIT();
 }
@@ -140,9 +136,9 @@ void Step::vApiStateTraceSession(void)
   
   Job* pJob = _pJob(pJobPtr);
   
-  i8 i_State = pJob->m_xReqTuple.m_i_State;
+  i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
-  SessionState* pState = AM::pApiState()->pGetState(i_State);
+  Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
   
   //pState->vTraceState();
   

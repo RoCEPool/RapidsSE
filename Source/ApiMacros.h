@@ -27,7 +27,7 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
   Job* pJob = _pJob(aJob);
 
 #define API_LOC(iLocation) \
-  ApiState::vMarkApiLoc(pSession,iLocation);
+  SessionArray::vMarkApiLoc(pSession,iLocation);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
 /*----------------------------------------------------------------------------*/
 #define API_BEGIN() \
   if (pSession) \
-    ApiState::vMarkApiLoc(pSession,200);
+    SessionArray::vMarkApiLoc(pSession,200);
 
 /*----------------------------------------------------------------------------*/
 /* catch an error in an API function                                          */
@@ -50,8 +50,8 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
   \
   Engine::vErrorHandler(pError); \
   \
-  ApiState::vMarkError(pSession,eErrorCode); \
-  ApiState::vMarkApiLoc(pSession,888); \
+  SessionArray::vMarkError(pSession,eErrorCode); \
+  SessionArray::vMarkApiLoc(pSession,888); \
   AM::vLogSsn(SL_INF,pSession,AA_API_ERROR,"Api %s Error %lld"_Stz,eApiCall,eErrorCode); \
   \
   TRACE_API_ERROR("catch"_Stz,eErrorCode); \
@@ -90,8 +90,8 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
     if (eError != EC_NONE) \
       API_RETURN_ERROR(EC_INVALID_INTERFACE); \
     \
-    ApiState::vMarkCall(pSession,eApiCall); \
-    ApiState::vMarkApiLoc(pSession,100); \
+    SessionArray::vMarkCall(pSession,eApiCall); \
+    SessionArray::vMarkApiLoc(pSession,100); \
   } \
   \
   TRACE_API("enter"_Stz);
@@ -102,8 +102,8 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
 #define API_EXITING() \
 { \
   if (pSession) { \
-    ApiState::vMarkReturn(pSession); \
-    ApiState::vMarkApiLoc(pSession,990); \
+    SessionArray::vMarkReturn(pSession); \
+    SessionArray::vMarkApiLoc(pSession,990); \
   } \
   \
   AM::vLogSsn(SL_INF,pSession,AA_API_EXIT,"Api %s exit"_Stz,eApiCall); \
@@ -146,8 +146,8 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
 #define API_RETURN() \
 { \
   if (pSession) { \
-    ApiState::vMarkReturn(pSession); \
-    ApiState::vMarkApiLoc(pSession,999); \
+    SessionArray::vMarkReturn(pSession); \
+    SessionArray::vMarkApiLoc(pSession,999); \
   } \
   \
   AM::vLogSsn(SL_INF,pSession,AA_API_EXIT,"Api %s exit"_Stz,eApiCall); \
@@ -162,8 +162,8 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
 /*----------------------------------------------------------------------------*/
 #define API_RETURN_ERROR(eErrorCode) \
 { \
-  ApiState::vMarkError(pSession,eErrorCode); \
-  ApiState::vMarkApiLoc(pSession,880); \
+  SessionArray::vMarkError(pSession,eErrorCode); \
+  SessionArray::vMarkApiLoc(pSession,880); \
   AM::vLogSsn(SL_INF,pSession,AA_API_ERROR,"Api %s Error %lld"_Stz,eApiCall,eErrorCode); \
   \
   TRACE_API_ERROR("return error"_Stz,eErrorCode); \

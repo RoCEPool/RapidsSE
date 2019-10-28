@@ -51,7 +51,7 @@ namespace Oblique
     static i8   nThreads(void);
 
     //
-    static ApiState* pApiState(void);
+    static SessionArray* pSessionArray(void);
     static bool bBootError(void);
     static BufferPool* pBufferPool(void);
     static CarryOver* pCarryOver(void);

@@ -39,7 +39,7 @@ namespace StorageEngine
     
     i8            m_nObjectsInPool[CN_ENUMS];
   
-    ApiState*     m_pApiState;
+    SessionArray* m_pSessionArray;
     bool          m_bBootError;
     BufferPool*   m_pBufferPool;
     CarryOver*    m_pCarryOver;

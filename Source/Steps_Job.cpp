@@ -1840,7 +1840,7 @@ void Step::vJobSessionStateFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_xReqTuple.m_i_State);
+  m_pDataStack->vPushI8(pJob->m_xReqTuple.m_i_Session);
   
   EXIT();
 }
@@ -1900,10 +1900,10 @@ void Step::vJobSignalWaiter(void)
   
   pJob->m_eJobState = JS_SIGNALLED;
 
-  i8 i_State = pJob->m_xReqTuple.m_i_State;
+  i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
-  SessionState* pState = AM::pApiState()->pGetState(i_State);
-  ApiState::vMarkSignalled(pState->m_pSession);
+  Session* pSession = AM::pSessionArray()->pGetSession(i_Session);
+  SessionArray::vMarkSignalled(pSession);
   RASSERT( _bIsValidJob(pJob->eClass()) );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

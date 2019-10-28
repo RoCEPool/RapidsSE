@@ -67,14 +67,44 @@ void Session::operator delete(void* pSEinterfaceAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Session::Session(i8 iPartition)
+Session::Session(void)
 : Focal(CN_SESSION, AM::iNextSessionId(), C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
+  m_i_Session  = -1;
+  
+  m_eApiFun    = AC_NONE;
+  m_iApiLoc    = 0;
+  m_eApiError  = EC_NONE;
+  m_bRunning   = false;
+  m_bSignalled = false;
+  
+  m_aStackBase = nullptr;
+  m_aStackPtr  = nullptr;
+  
+  m_eJobClass  = CN_NONE;
+  m_iJobLoc    = 0;
+  m_iSenLoc    = 0;
+  
+  m_oTimer.vReset();
+  m_iTotalMsec = 0;
+  
+  m_nBegun     = 0;
+  m_nExecuted  = 0;
+  m_nCancelled = 0;
+  m_nEnded     = 0;
+  
+  m_nApiCalls  = 0;
+  m_nApiErrors = 0;
+  m_nJobNew    = 0;
+  m_nJobDelete = 0;
+  
+  m_i_NextFree  = -1;
+  
   m_iPid = Process::iGetPid();
 
-  m_iPartition      = iPartition;
+  m_iPartition      = C_UNKNOWN;
   
   //m_oDicStack;
   m_sResponse       = ""_Stz;
@@ -83,7 +113,6 @@ Session::Session(i8 iPartition)
   m_bSessionExiting = false;
   m_pJobStack       = new Stack(KK_JOB_STACK);
 
-  m_pSessionState   = AM::pApiState()->pAllocState(this);
   m_pInput          = new Input;
   
   m_sToDo           = ""_Stz;
@@ -107,7 +136,7 @@ Session::~Session(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  AM::pApiState()->vFreeState(this);
+  AM::pSessionArray()->vFreeSession(this);
   
   RASSERT(0 == m_pJobStack->nValues());
   delete m_pJobStack;
@@ -264,6 +293,16 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set partition                                                            */
+/*----------------------------------------------------------------------------*/
+void Session::vPartition(i8 iPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  m_iPartition = iPartition;
 }
 
 /*----------------------------------------------------------------------------*/

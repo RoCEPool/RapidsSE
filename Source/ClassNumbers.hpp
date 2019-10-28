@@ -27,7 +27,6 @@ enum eCN : u2 // Class Number
 
   /*  12 0x0C       80B Heap:M */ CN_ACCESSPATH,
   /*                           */ CN_AGGOP,
-  /*  15 0x0F   213152B Heap:L */ CN_APISTATE,
   /*  16 0x10      296B Heap:S */ CN_ARG,
   /*  17 0x11     2808B Heap:I */ CN_ARGUMENTS,
   /*                           */ CN_ARTICLE,
@@ -331,6 +330,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_SEEME,
   /* 177 0xB1       88B Heap:L */ CN_SEPROMPT,
   /* 178 0xB2    48248B Heap:M */ CN_SESSION,
+  /*                           */ CN_SESSIONARRAY,
   /* 179 0xB3      208B Heap:S */ CN_SESSIONSTATE,
   /* 180 0xB4       80B Heap:I */ CN_SHORTCUT,
   /* 180 0xB4       80B Heap:I */ CN_SHORTCUTVEC,
@@ -449,7 +449,6 @@ static Stz* aCN[]
 
   /*  12 0x0C */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
   /*          */ "AGGOP"_Stz,               // CN_AGGOP
-  /*  15 0x0F */ "APISTATE"_Stz,            // CN_APISTATE
   /*  16 0x10 */ "ARG"_Stz,                 // CN_ARG
   /*  17 0x11 */ "ARGUMENTS"_Stz,           // CN_ARGUMENTS
   /*          */ "ARTICLE"_Stz,             // CN_ARTICLE
@@ -753,6 +752,7 @@ static Stz* aCN[]
   /*          */ "SEEME"_Stz,               // CN_SEEME
   /* 177 0xB1 */ "SEPROMPT"_Stz,            // CN_SEPROMPT
   /* 178 0xB2 */ "SESSION"_Stz,             // CN_SESSION
+  /*          */ "SESSION"_Stz,             // CN_SESSIONARRAY
   /* 179 0xB3 */ "SESSIONSTATE"_Stz,        // CN_SESSIONSTATE
   /* 180 0xB4 */ "SHORTCUT"_Stz,            // CN_SHORTCUT
   /* 180 0xB4 */ "SHORTCUTVEC"_Stz,         // CN_SHORTCUTVEC

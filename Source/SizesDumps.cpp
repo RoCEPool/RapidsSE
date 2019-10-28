@@ -28,7 +28,6 @@ pDUMPFUN *gpDump[]
 
   /* 19 */ &Dump::vInvalid,         // CN_ACCESSPATH
   /*    */ &Dump::vDummy,           // CN_AGGOP
-  /* 21 */ &Dump::vInvalid,         // CN_APISTATE
   /* 22 */ &Dump::vInvalid,         // CN_ARG
   /* 23 */ &Dump::vInvalid,         // CN_ARGUMENTS
   /*    */ &Dump::vUndefined,       // CN_ARTICLE
@@ -336,6 +335,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_SEEME
   /*115 */ &SePrompt::vDump,        // CN_SEPROMPT
   /*    */ &Session::vDump,         // CN_SESSION
+  /*    */ &Dump::vUndefined,       // CN_SESSIONARRAY
   /*116 */ &Dump::vUndefined,       // CN_SESSIONSTATE
   /*116 */ &Dump::vUndefined,       // CN_SHORTCUT
   /*116 */ &Dump::vUndefined,       // CN_SHORTCUTVEC
@@ -454,7 +454,6 @@ i8 giClassSize[]
 
   /* 19 */ sizeof(AccessPath),         // CN_ACCESSPATH
   /*    */ sizeof(AggOp),              // CN_AGGOP
-  /*    */ sizeof(ApiState),           // CN_APISTATE
   /* 22 */ sizeof(Arg),                // CN_ARG
   /* 23 */ sizeof(Arguments),          // CN_ARGUMENTS
   /*    */ sizeof(Article),            // CN_ARTICLE
@@ -760,6 +759,7 @@ i8 giClassSize[]
   /*    */ sizeof(SeeMe),              // CN_SEEME
   /*115 */ sizeof(SePrompt),           // CN_SEPROMPT
   /*    */ sizeof(Session),            // CN_SESSION
+  /*    */ sizeof(SessionArray),       // CN_SESSIONARRAY
   /*    */ sizeof(SessionState),       // CN_SESSIONSTATE
   /*116 */ sizeof(ShortCut),           // CN_SHORTCUT
   /*116 */ sizeof(ShortCutVec),        // CN_SHORTCUTVEC
@@ -878,7 +878,6 @@ eHT geWhichHeap[]
 
   /* 19 */ HT_TRANSIENT_MEDIUM,  // CN_ACCESSPATH
   /*    */ HT_TRANSIENT_SMALL,   // CN_AGGOP
-  /*    */ HT_TRANSIENT_LARGE,   // CN_APISTATE
   /* 22 */ HT_TRANSIENT_SMALL,   // CN_ARG
   /* 23 */ HT_INVALID,           // CN_ARGUMENTS
   /*    */ HT_TRANSIENT_SMALL,   // CN_ARTICLE
@@ -1184,6 +1183,7 @@ eHT geWhichHeap[]
   /*    */ HT_INVALID,           // CN_SEEME
   /*115 */ HT_TRANSIENT_LARGE,   // CN_SEPROMPT
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_SESSION
+  /*    */ HT_TRANSIENT_LARGE,   // CN_SESSIONARRAY
   /*    */ HT_TRANSIENT_SMALL,   // CN_SESSIONSTATE
   /*116 */ HT_TRANSIENT_MEDIUM,  // CN_SHORTCUT
   /*116 */ HT_TRANSIENT_MEDIUM,  // CN_SHORTCUTVEC
