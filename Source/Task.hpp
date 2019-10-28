@@ -103,7 +103,7 @@ namespace Tasks
     void vReseed(void);
     void vRetry(void);
     bool bSeeded(void);
-    void vSeedJob(void);
+    void vSeedTask(void);
     Grids::Node* pSendNode(void);
     void vSendNode(Grids::Node* pSendNode);
     Session* pSession(void);

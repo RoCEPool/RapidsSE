@@ -226,7 +226,7 @@ void Task::vTaskLoop(void)
     vInitExeContext();
 
   if (! bSeeded())
-    vSeedJob();
+    vSeedTask();
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -777,7 +777,7 @@ void Task::vReseed(void)
     
   m_pForth->vReset();
 
-  vSeedJob();
+  vSeedTask();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -810,9 +810,9 @@ bool Task::bSeeded(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seed job                                                                   */
+/* seed task                                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vSeedJob(void)
+void Task::vSeedTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

@@ -115,7 +115,7 @@ void Engine::vCallBoot(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vCallImmmediate(Task* pImmediateTask)
 {
-  pImmediateTask->vSeedJob();
+  pImmediateTask->vSeedTask();
   
   pImmediateTask->vState(TS_EXECUTING);
   
