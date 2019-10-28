@@ -535,7 +535,8 @@ void Job::vSeed(eSS eSeed)
 /*----------------------------------------------------------------------------*/
 Session* Job::pSession(void)
 {
-  
+  ASSERT((! m_pSession) || m_pSession == AM::pSessionGet(&m_xReqTuple));
+
   return m_pSession;
 }
 
