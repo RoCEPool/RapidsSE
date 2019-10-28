@@ -90,6 +90,10 @@ Job::Job(eCN eClassNo)
   m_pOp = nullptr;
   m_pOperand   = nullptr;
   
+  m_pSession = nullptr;
+  
+
+  
   // -- -- -- -- -- --
   
   SP_Id spId;
@@ -134,6 +138,8 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
   
   m_pOp = nullptr;
   m_pOperand   = nullptr;
+  
+  m_pSession = pSession;
   
 
   // -- -- -- -- -- --
@@ -521,6 +527,15 @@ void Job::vSeed(eSS eSeed)
   m_eSeed = eSeed;
     
   m_aJobClass->m_bSeedsSpawned[eSeed] = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pSession                                                               */
+/*----------------------------------------------------------------------------*/
+Session* Job::pSession(void)
+{
+  
+  return m_pSession;
 }
 
 /*----------------------------------------------------------------------------*/
