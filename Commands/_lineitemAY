@@ -90,7 +90,7 @@ time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
 print "**************************************************************************";
 print "scan lineitem | output;";
 print "**************************************************************************";
-
+/*
 pipeline lineItem_dyn
 begin
 
@@ -102,7 +102,7 @@ output
 
 end
 ;
-/*
+
 pipeline lineItem_dyn
 begin
 

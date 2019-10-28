@@ -61,8 +61,6 @@ namespace Sessions
     Footer m_xFooter;
     
   public:
-    void* operator new(size_t);
-    void  operator delete(void*);
     
     Session(void);
     ~Session(void) noexcept(false);

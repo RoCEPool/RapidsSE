@@ -45,26 +45,6 @@ Session* Sessions::_pSession(i8 iAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* Session::operator new(size_t)
-{
-  Object* pObject = HeapMem::pAllocate(CN_SESSION);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void Session::operator delete(void* pSEinterfaceAddress)
-{
-  Session* pSession = reinterpret_cast<Session*>(pSEinterfaceAddress);
-  
-  HeapMem::vFree(pSession);
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Session::Session(void)
