@@ -116,7 +116,7 @@ void Step::vJob_SubPurgerSlotFetch(void)
     THROW_DSTACK();
   Job_SubPurger* pJob = _pJob_SubPurger(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_i_Slot);
+  m_pDataStack->vPushI8(pJob->i_Slot());
   
   EXIT();
 }

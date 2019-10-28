@@ -49,7 +49,7 @@ void Step::vJob_SubExporterSpawn(void)
   
   pJob_SubExporter->m_iParentId    = pJob_Export->m_iUniqueId;
   pJob_SubExporter->m_pJobExport   = pJob_Export;
-  pJob_SubExporter->m_i_Slot       = i_Slot;
+  pJob_SubExporter->vSlot(i_Slot);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -156,7 +156,7 @@ bool Job_SubExporter::bBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
   
   Table* pTable = m_pJobExport->m_pTable;
-  TablePtn* pTblPtn = pTable->pPartition(m_i_Slot);
+  TablePtn* pTblPtn = pTable->pPartition(i_Slot());
   
   m_pCrwBuffer = pTblPtn->pRootCrwBuffer();
   m_nCrwBuffers = pTblPtn->nCrwBuffers();
@@ -164,7 +164,7 @@ bool Job_SubExporter::bBegin(void)
   if (m_xReqTuple.m_iDetail)
     JobLog::vNote(this,
                           "TableTpn[%lld] for table %s has %lld buffers"_Stz,
-                          m_i_Slot,
+                          i_Slot(),
                           pTable->aTableName(),
                           m_nCrwBuffers);
   
@@ -225,7 +225,7 @@ void Job_SubExporter::vShow(void)
   vTrace("  Job_SubExport %p %03lld "
          "i_Slot %lld\n"_Stz,
          m_pJobExport, m_pJobExport->m_iUniqueId,
-         m_i_Slot
+         i_Slot()
          );
 }
 

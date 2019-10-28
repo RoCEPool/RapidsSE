@@ -48,7 +48,7 @@ void Step::vJob_SubWalkerSpawn(void)
   
   pJob_SubWalker->m_iParentId    = pJob_Walk->m_iUniqueId;
   pJob_SubWalker->m_pJobWalk     = pJob_Walk;
-  pJob_SubWalker->m_i_Slot       = i_Slot;
+  pJob_SubWalker->vSlot(i_Slot);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -61,7 +61,7 @@ void Step::vJob_SubWalkerSpawn(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* job_subWalker.exportJob@ -- get export job                               */
+/* job_subWalker.exportJob@ -- get export job                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubWalkerWalkJobFetch(void)
 {

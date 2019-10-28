@@ -108,7 +108,7 @@ void Step::vJob_SubPublishSlotFetch(void)
     THROW_DSTACK();
   Job_SubPublish* pJob = _pJob_SubPublish(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_i_Slot);
+  m_pDataStack->vPushI8(pJob->i_Slot());
   
   EXIT();
 }

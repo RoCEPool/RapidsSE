@@ -382,7 +382,7 @@ void Step::vTableInflateScan(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
-  i8 iSlot = pJob_SubScan->m_i_Slot;
+  i8 iSlot = pJob_SubScan->i_Slot();
   Queue* pQueue = pJob_SubScan->m_pBufferQueue;
   
   TablePtn* pPartition = pTable->pPartition(iSlot);
@@ -664,7 +664,7 @@ void Step::vTableScan(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
-  i8 iSlot = pJob_SubFetch->m_i_Slot;
+  i8 iSlot = pJob_SubFetch->i_Slot();
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
   TablePtn* pPartition = pTable->pPartition(iSlot);

@@ -42,7 +42,7 @@ Stz* SP_Job::sz_log(Job* pJob)
                   "{%s %lld %lld %s %s %s %s%s%s}%s"_Stz,
                   
                   aCN[pJob->eClass()],
-                  pJob->m_i_Slot,
+                  pJob->i_Slot(),
                   pJob->iAcksRmg_printOnlyValue(),
 
                   aSS[pJob->eSeed()],

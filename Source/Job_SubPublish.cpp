@@ -174,7 +174,7 @@ bool Job_SubPublish::bChunk(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
   
   if (! m_pCrwBuffer) {
-    TablePtn* pPartition = m_pTable->pPartition(m_i_Slot);
+    TablePtn* pPartition = m_pTable->pPartition(i_Slot());
     m_pCrwBuffer = pPartition->pRootCrwBuffer();
     if (! m_pCrwBuffer)
       return false;
@@ -185,7 +185,7 @@ bool Job_SubPublish::bChunk(void)
     m_pCrwBuffer = m_pCrwBuffer->pNextBuffer();
   }
  
-  m_pRowAgg->vAggregate(m_i_Slot, m_pCrwBuffer);
+  m_pRowAgg->vAggregate(i_Slot(), m_pCrwBuffer);
   
   //vTrace("publish writing %p\n"_Stz,m_pEntBuffer);
   m_pJob_Publish->m_okLock.vGrabWrite();

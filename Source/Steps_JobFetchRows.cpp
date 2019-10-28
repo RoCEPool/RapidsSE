@@ -184,7 +184,7 @@ void Step::vJob_FetchRowsSpawnSub(void)
   pJob_SubFetch->vObjectName(pJob_FetchRows->szObjectName());
   pJob_SubFetch->m_pPlanner     = pPlanner;
   pJob_SubFetch->m_iPhrase      = iPhrase;
-  pJob_SubFetch->m_i_Slot       = iSlot;
+  pJob_SubFetch->vSlot(iSlot);
   pJob_SubFetch->m_pBufferQueue = pJob_FetchRows->m_pBufferQueue;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -303,7 +303,7 @@ void Step::vJob_InflateRowsSpawnSub(void)
   pJob_SubScan->m_iParentId    = pJob_InflateRows->m_iUniqueId;
   pJob_SubScan->m_pParentJob   = pJob_InflateRows;
   pJob_SubScan->vObjectName(pJob_InflateRows->szObjectName());
-  pJob_SubScan->m_i_Slot       = iSlot;
+  pJob_SubScan->vSlot(iSlot);
   pJob_SubScan->m_pBufferQueue = pJob_InflateRows->m_pBufferQueue;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -468,7 +468,7 @@ void Step::vJob_SubFetchSlotFetch(void)
     THROW_DSTACK();
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_i_Slot);
+  m_pDataStack->vPushI8(pJob->i_Slot());
   
   EXIT();
 }
@@ -574,7 +574,7 @@ void Step::vJob_SubScanSlotFetch(void)
     THROW_DSTACK();
   Job_SubScan* pJob = _pJob_SubScan(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_i_Slot);
+  m_pDataStack->vPushI8(pJob->i_Slot());
   
   EXIT();
 }

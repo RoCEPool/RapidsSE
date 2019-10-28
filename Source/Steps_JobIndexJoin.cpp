@@ -195,7 +195,7 @@ void Step::vJob_IndexJoinSpawnSub(void)
   pJob_SubIndexJoin->m_iParentId    = pJob_IndexJoin->m_iUniqueId;
   pJob_SubIndexJoin->m_pParentJob   = pJob_IndexJoin;
   pJob_SubIndexJoin->vObjectName(pJob_IndexJoin->szObjectName());
-  pJob_SubIndexJoin->m_i_Slot       = iSlot;
+  pJob_SubIndexJoin->vSlot(iSlot);
   pJob_SubIndexJoin->m_pBufferQueue = pJob_IndexJoin->m_pBufferQueue;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -218,7 +218,7 @@ void Step::vJob_SubIndexJoinIndexJoin(void)
   Job_SubIndexJoin* pJob_SubIndexJoin = _pJob_SubIndexJoin(pJobPtr);
   
   // get the slot we are working in
-  i8 iSlot = pJob_SubIndexJoin->m_i_Slot;
+  i8 iSlot = pJob_SubIndexJoin->i_Slot();
   
   // get the buffer queue
   Queue* pQueue = pJob_SubIndexJoin->m_pBufferQueue;

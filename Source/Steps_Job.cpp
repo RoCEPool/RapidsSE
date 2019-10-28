@@ -1972,7 +1972,7 @@ void Step::vJobSlotFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_i_Slot);
+  m_pDataStack->vPushI8(pJob->i_Slot());
   
   EXIT();
 }

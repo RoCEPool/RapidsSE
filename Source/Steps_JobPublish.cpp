@@ -45,7 +45,7 @@ void Step::vJob_PublishSpawnSub(void)
   pJob_SubPublish->m_iParentId     = pJob_Publish->m_iUniqueId;
   pJob_SubPublish->m_iPublishJobId = iPublishJobId;
   pJob_SubPublish->vObjectName(pJob_Publish->szObjectName());
-  pJob_SubPublish->m_i_Slot        = iSlot;
+  pJob_SubPublish->vSlot(iSlot);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

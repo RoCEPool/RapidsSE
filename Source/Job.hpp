@@ -18,7 +18,6 @@ namespace Jobs
   public:
   
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
-    i8   m_i_Slot;       // slot this job processes
     bool m_bByPrompt;    // job was spawned by se> prompt?
     bool m_bNoWait;      // no wait
     bool m_bWasReceived; // job was received over a socket
@@ -40,6 +39,7 @@ namespace Jobs
   private:
     Decider m_oAcksRmg_2pc;  // acks remaining for coordinating 2pc job 
     eSS     m_eSeed;         // spawn seed
+    i8      m_i_Slot;        // slot on its node this job processes
     Task*   m_pTaskJ;        // task executing the job
 
   public:
@@ -78,6 +78,8 @@ namespace Jobs
     Stz* szSeed(void);
     void vSeed(eSS eSeed);
     void vShow(void);
+    i8   i_Slot(void);
+    void vSlot(i8 i_Slot);
     Task* pTask(void);
     void vTask(Task* pTask);
 

@@ -27,7 +27,7 @@ void Step::vJob_SubTruncateSlotFetch(void)
     THROW_DSTACK();
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_i_Slot);
+  m_pDataStack->vPushI8(pJob->i_Slot());
   
   EXIT();
 }
@@ -81,7 +81,7 @@ void Step::vJob_TruncateTableSpawnSub(void)
   pJob_SubTruncate->m_iParentId  = pJob_TruncateTable->m_iUniqueId;
   pJob_SubTruncate->m_iTruncateJobId = iTruncateJobId;
   pJob_SubTruncate->vObjectName(pJob_TruncateTable->szObjectName());
-  pJob_SubTruncate->m_i_Slot = iSlot;
+  pJob_SubTruncate->vSlot(iSlot);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
