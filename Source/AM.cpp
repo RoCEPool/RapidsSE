@@ -1270,7 +1270,7 @@ void AM::vPrintGlobals(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-Task* AM::pTaskNew(Job* pJob, Session* pSession) {
+Task* AM::pTaskNew(Job* pJob) {
   return new Task(pJob);
 }
 void AM::vTaskTransition(Tasks::Task* pTask, i8 iTransition) {
