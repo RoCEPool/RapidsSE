@@ -540,7 +540,7 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
     //pSession->m_pJobStack->vPushPointer(pJob_CopyBuffer);
     //ApiState::vMarkJob(pSession,pJob_CopyBuffer);
     
-    pJob_CopyBuffer->m_eSeed = SS_SEED_REQ;
+    pJob_CopyBuffer->vSeed(SS_SEED_REQ);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn the job

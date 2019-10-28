@@ -305,7 +305,7 @@ void Api::vMonitorPortrait(s48K& sPortrait)
 bool Api::bReseedJob(Session* pSession, Job* pJob)
 {
   ASSERT(pJob->m_aJobClass);
-  ASSERT(SS_ENUMS != pJob->m_eSeed);
+  ASSERT(SS_ENUMS != pJob->eSeed());
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -346,7 +346,7 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
 bool Api::bSpawnJob(Session* pSession, Job* pJob)
 {
   ASSERT(pJob->m_aJobClass);
-  ASSERT(SS_ENUMS != pJob->m_eSeed);
+  ASSERT(SS_ENUMS != pJob->eSeed());
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -411,7 +411,7 @@ void Api::vSpawnJobAndWait(Job* pJob, Session* pSession)
   // set the job state to be locked
   pJob->m_eJobState = JS_LOCKED;
   
-  pJob->m_eSeed = SS_SEED_REQ;
+  pJob->vSeed(SS_SEED_REQ);
   
   // spawn the insertTable job
   IGNORE_RETURN(Api::bSpawnJob(pSession,pJob));
@@ -467,7 +467,7 @@ void Api::vSpawnJobAndWait(Job* pJob, Session* pSession)
 bool Api::bSpawnJobDedicated(Job* pJob)
 {
   ASSERT(pJob->m_aJobClass);
-  ASSERT(SS_ENUMS != pJob->m_eSeed);
+  ASSERT(SS_ENUMS != pJob->eSeed());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running

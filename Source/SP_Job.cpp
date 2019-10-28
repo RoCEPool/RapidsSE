@@ -45,7 +45,7 @@ Stz* SP_Job::sz_log(Job* pJob)
                   pJob->m_i_Slot,
                   pJob->iAcksRmg_printOnlyValue(),
 
-                  aSS[pJob->m_eSeed],
+                  aSS[pJob->eSeed()],
                   aJL[pJob->m_eJobList],
                   aJP[pJob->m_eJobPhase],
                   aJS[pJob->m_eJobState],

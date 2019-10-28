@@ -1021,7 +1021,7 @@ Job* AM::pNewJobUniversal(Session* pSession, Op* pOp, ReqTuple* pReqTuple, i8 iU
   
   pJobUniversal->m_pOp = pOp;
   pJobUniversal->m_oEnmSet.vAdd("<jobNm>"_Stz,pOp->m_sName,TN_STRING);
-  pJobUniversal->m_eSeed = SS_SEED_REQ;
+  pJobUniversal->vSeed(SS_SEED_REQ);
   
   return pJobUniversal;
 }

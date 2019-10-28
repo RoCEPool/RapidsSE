@@ -972,7 +972,7 @@ void Step::vJobIsExecuting(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iIsExecuting = pJob->m_eSeed == SS_SEED_EXE ? 1 : 0;
+  i8 iIsExecuting = pJob->eSeed() == SS_SEED_EXE ? 1 : 0;
   m_pDataStack->vPushI8(iIsExecuting);
   
   EXIT();
@@ -1801,7 +1801,7 @@ void Step::vJobSeedFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_eSeed);
+  m_pDataStack->vPushI8(pJob->eSeed());
   
   EXIT();
 }

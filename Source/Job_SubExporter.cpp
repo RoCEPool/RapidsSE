@@ -254,7 +254,7 @@ void Job_SubExporter::vSpawnKidExport(bool bLast)
 
   m_pExportBuffer = nullptr;
   
-  pJob_KidExport->m_eSeed = SS_SEED_RUN;
+  pJob_KidExport->vSeed(SS_SEED_RUN);
   
   IGNORE_RETURN(AM::bSpawnJob(nullptr,pJob_KidExport));
 }

@@ -957,7 +957,7 @@ void SePrompt::vSpawnJob(void)
   
   pInput->pTknVec()->vSetTokens();
   
-  m_pJob->m_eSeed = SS_SEED_REQ;
+  m_pJob->vSeed(SS_SEED_REQ);
   bool bSpawned = Api::bSpawnJob(m_pSession,m_pJob);
   RASSERT(bSpawned);
 }
