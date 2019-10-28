@@ -233,7 +233,6 @@ void Task::vAssertStructure(void)
 
   // might have these
   // RASSERT(m_pOp      || (m_pOp && m_pOp->bStructurallyCorrect()));
-  // RASSERT(m_pSession || (m_pSession && m_pSession->bStructurallyCorrect()));
 }
 
 /*----------------------------------------------------------------------------*/

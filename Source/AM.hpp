@@ -236,6 +236,7 @@ namespace Oblique
     static i8   iRdTimePoint(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static Session* pSessionGet(i8 i_Session);
     static bool bSpawnJob(Session* pSession, Job* pJob);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
   
