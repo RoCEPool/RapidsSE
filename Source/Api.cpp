@@ -124,7 +124,7 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn and wait for job
   
-  Api::vSpawnJobAndWait(pJob,pSession);
+  Api::vSpawnJobAndWait(pJob);
   
   // run post ?
   if (bPostJob)
@@ -396,7 +396,7 @@ bool Api::bSpawnJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* Spawn amd wait for job to complete                                         */
 /*----------------------------------------------------------------------------*/
-void Api::vSpawnJobAndWait(Job* pJob, Session* pSession)
+void Api::vSpawnJobAndWait(Job* pJob)
 {
   // lock this job's mutex
   pJob->vLockJobMutex();
@@ -404,7 +404,7 @@ void Api::vSpawnJobAndWait(Job* pJob, Session* pSession)
   //  if (0 != rCode)
   //    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
   
-  ApiState::vMarkApiLoc(pSession,106);
+  //! ApiState::vMarkApiLoc(pSession,106);
   
   // set the job state to be locked
   pJob->m_eJobState = JS_LOCKED;
@@ -413,7 +413,7 @@ void Api::vSpawnJobAndWait(Job* pJob, Session* pSession)
   
   // spawn the insertTable job
   IGNORE_RETURN(Api::bSpawnJob(pJob));
-  ApiState::vMarkApiLoc(pSession,107);
+  //! ApiState::vMarkApiLoc(pSession,107);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for condition & state
@@ -445,7 +445,7 @@ void Api::vSpawnJobAndWait(Job* pJob, Session* pSession)
   
   RASSERT( _bIsValidJob(pJob->eClass()) );
   
-  ApiState::vMarkApiLoc(pSession,108);
+  //! ApiState::vMarkApiLoc(pSession,108);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
