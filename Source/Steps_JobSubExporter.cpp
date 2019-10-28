@@ -37,7 +37,7 @@ void Step::vJob_SubExporterSpawn(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 iRequestId = pJob_Export->m_xReqTuple.m_iReqId;
-  Session* pSession = pJob_Export->m_pSession;
+  Session* pSession = pJob_Export->pSession();
   ReqTuple* aReqTuple = &pJob_Export->m_xReqTuple;
 
   //! this needs to be optimised

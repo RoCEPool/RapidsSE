@@ -10,6 +10,7 @@ namespace Jobs
   public:
     DicPath m_oDicPath; // dictionary path
   
+  private:
     Session* m_pSession;
   
   public:
@@ -18,6 +19,8 @@ namespace Jobs
     JobDicPath(void);
     JobDicPath(Session* pSession);
    ~JobDicPath(void) noexcept(false);
+  
+    Session* pSession(void);
   };
 }
 

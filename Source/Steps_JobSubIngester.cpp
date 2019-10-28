@@ -31,7 +31,7 @@ void Step::vJob_SubIngesterSpawn(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Session* pSession = pJob_Ingest->m_pSession;
+  Session* pSession = pJob_Ingest->pSession();
   ReqTuple* aReqTuple = &pJob_Ingest->m_xReqTuple;
   
   //! this needs to be optimised

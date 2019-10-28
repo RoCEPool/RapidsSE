@@ -31,7 +31,7 @@ void Step::vJob_SubLoaderSpawn(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Session* pSession = pJob_LoadTable->m_pSession;
+  Session* pSession = pJob_LoadTable->pSession();
   ReqTuple* aReqTuple = &pJob_LoadTable->m_xReqTuple;
 
   //! this needs to be optimised
