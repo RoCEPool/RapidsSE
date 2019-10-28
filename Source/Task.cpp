@@ -348,6 +348,12 @@ void Task::vBeginOp(void)
 /*----------------------------------------------------------------------------*/
 void Task::vCaught(Exception xException)
 {
+  vTrace("\n\n"_Stz);
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  vTrace("Task::vCaught(xException) for job %s\n"_Stz,
+         aCN[m_pJob->eClass()]
+         );
+  
   xException.vCaught();
 
   // dump the call stack
@@ -361,6 +367,7 @@ void Task::vCaught(Exception xException)
 
   m_pForth->vDumpContext();
   
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pForth->vReset();
