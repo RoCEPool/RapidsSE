@@ -23,6 +23,9 @@ void Correctness::vStackDump(void)
   void* aaFramePtr[C_STACK_BACKTRACE];
   int nPtrs = backtrace(aaFramePtr,C_STACK_BACKTRACE);
   
+  vTrace("Call Stack Backtrace\n"_Stz);
+  vTrace("--------------------\n"_Stz);
+
   // print out all the frames to stderr
   backtrace_symbols_fd(aaFramePtr,nPtrs,STDERR_FILENO);
 }

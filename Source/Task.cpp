@@ -344,7 +344,7 @@ void Task::vBeginOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* caught an exception in catch                                               */
+/* caught an exception in vTaskLoop catch(Exception xException) {...}         */
 /*----------------------------------------------------------------------------*/
 void Task::vCaught(Exception xException)
 {
@@ -359,6 +359,10 @@ void Task::vCaught(Exception xException)
   // dump api state
   AM::vDumpApi();
 
+  m_pForth->vDumpContext();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   m_pForth->vReset();
   
   m_pForth->m_aInxPtr = m_pForth->m_pExceptionWord->aFirstCell();

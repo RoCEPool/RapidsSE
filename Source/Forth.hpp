@@ -36,6 +36,7 @@ namespace SenVM
    ~Forth(void) noexcept(false);
   
     bool bCorrectLayout(void);
+    void vDumpContext(void);
     void vReset(void);
     void vSeedForth(Word* pSeedWord);
 
