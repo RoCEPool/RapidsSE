@@ -379,11 +379,14 @@ void Job::vContentDump(void)
   vTrace("Job\n"_Stz);
   vTrace("--------\n"_Stz);
 
-  vTrace("%p:\n"
+  vTrace("%p: %s\n"
          "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
-         "m_bByPrompt=%d m_bNoWait=%d m_bWasReceived=%d\n"_Stz,
+         "m_bByPrompt=%d m_bNoWait=%d m_bWasReceived=%d\n"
+         "m_iParentId=%lld m_iOriginatingId=%lld\n"
+         "m_nxReferences=%lld\n"_Stz,
 
          this,
+         aCN[eClass()],
          
          aJL[m_eJobList],
          aJP[m_eJobPhase],
@@ -392,6 +395,11 @@ void Job::vContentDump(void)
          m_bByPrompt,
          m_bNoWait,
          m_bWasReceived,
+         
+         m_iParentId,
+         m_iOriginatingId,
+         
+         nReferences(),
          
          C_ENDARGS
          );

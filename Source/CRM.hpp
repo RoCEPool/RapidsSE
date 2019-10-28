@@ -59,6 +59,14 @@ namespace Gadgets
     /*------------------------------------------------------------------------*/
     /* return a reference to this object                                      */
     /*------------------------------------------------------------------------*/
+    i8 nReferences(void)
+    {
+      return m_nxReferences.iVal();
+    }
+  
+    /*------------------------------------------------------------------------*/
+    /* return a reference to this object                                      */
+    /*------------------------------------------------------------------------*/
     void vReturnRefBy(REF<CLASS>* pReturningRef)
     {
       RASSERT(pReturningRef);
