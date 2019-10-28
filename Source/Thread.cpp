@@ -388,12 +388,19 @@ i8 Thread::iCpu(void)
 /*----------------------------------------------------------------------------*/
 /* thread dump                                                                */
 /*----------------------------------------------------------------------------*/
-void Thread::vContentDump(void) const
+void Thread::vContentDump(void)
 {
-  vTrace("Thread %p: OpSysThreadId %lld PsxThdId %llx\n"_Stz,
+  vTrace("Thread\n"_Stz);
+  vTrace("------\n"_Stz);
+         
+  vTrace("%p: m_eThreadState=%s m_eDedicated=%s m_nAssignedTasks=%lld\n"_Stz,
          this,
-         m_pPsxThd->m_iOsThdId,
-         m_pPsxThd->m_iPsxThdId);
+         
+         aHS[m_eThreadState],
+         aCN[m_eDedicated],
+         m_nAssignedTasks,
+         
+         C_ENDARGS );
 }
 
 /*----------------------------------------------------------------------------*/

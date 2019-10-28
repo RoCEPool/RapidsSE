@@ -99,12 +99,15 @@ void Forth::vDumpContext(void)
 {
   Word* pWord = m_oDicStack.pLocateWord(m_aInxPtr);
 
+  vTrace("\n"_Stz);
   vTrace("Execution Context\n"_Stz);
   vTrace("-----------------\n"_Stz);
 
-  vTrace("%s = %s %p\n"_Stz,
+  vTrace("%p:\n"
+         "m_aInxPtr=%s %p\n"_Stz,
          
-         "m_aInxPtr"_Stz,
+         this,
+         
          pWord ? pWord->sName().azChar() : "<none>",
          m_aInxPtr);
 

@@ -23,6 +23,7 @@ namespace Focals
     ReqTuple(Stz* szService, bool bFlag);
    ~ReqTuple(void) noexcept(false);
 
+    void vContentDump(void);
     void vSet(ReqTuple* aReqTuple);
   };
   

@@ -213,7 +213,13 @@ void SessionArray::vDump(void)
   
   m_okLock.vGrabRead();
   
-  vTrace("SessionArray %p SessionsSoFar %lld:\n"_Stz,this,m_nSessionsSoFar);
+  vTrace("\n"_Stz);
+  vTrace("SessionArray\n"_Stz);
+  vTrace("------------\n"_Stz);
+
+  vTrace("%p: SessionsSoFar %lld:\n"_Stz,
+         this,
+         m_nSessionsSoFar);
   
   i8 iSessions = 0;
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {

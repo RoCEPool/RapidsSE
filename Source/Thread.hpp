@@ -14,7 +14,7 @@ namespace Threads
     Mutex*   m_pMutex;        // this threads mutex
 
     Task*    m_pTask;         // task current being executed
-    i8       m_nAssignedTasks;// number of tasks scheduled to this thread
+    i8       m_nAssignedTasks;// no of tasks scheduled so far to this thread
 
     PsxThd*  m_pPsxThd;       // its posix structure
   
@@ -38,7 +38,7 @@ namespace Threads
     void vBind(i8 iCore);
     void vBindCore(void);
     i8   iCpu(void);
-    void vContentDump(void) const;
+    void vContentDump(void);
     void vFocalOutline(s4K& sOutline);
     void vLoop_dedicated(void);
     void vLoop_general(void);

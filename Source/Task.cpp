@@ -367,6 +367,8 @@ void Task::vCaught(Exception xException)
 
   vContentDump();
   
+  m_xReqTuple.vContentDump();
+
   m_pForth->vDumpContext();
   
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
@@ -403,10 +405,13 @@ void Task::vContentDump(void)
 {
   _poolAddress_(this);
   
+  vTrace("\n"_Stz);
   vTrace("Task\n"_Stz);
   vTrace("----\n"_Stz);
 
-  vTrace("%p: m_eState=%s m_eTransition=%s m_eQueue=%s m_eDdlLock=%s\n"_Stz,
+  vTrace("%p:\n"
+         "m_eState=%s m_eTransition=%s m_eQueue=%s m_eDdlLock=%s\n"_Stz,
+         
          this,
          
          aTS[m_eState]->azChar(),
@@ -416,6 +421,7 @@ void Task::vContentDump(void)
 
          C_ENDARGS
          );
+  
 }
 
 /*----------------------------------------------------------------------------*/
