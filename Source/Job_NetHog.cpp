@@ -192,7 +192,7 @@ Job* Jobs::pJob_NetHog_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aRe
     pJob_NetHog->m_bNoWait = true;
     
     pJob_NetHog->vSeed(SS_SEED_RCV);
-    bool bResult = AM::bSpawnJob(pSession,pJob_NetHog);
+    bool bResult = AM::bSpawnJob(pJob_NetHog);
     RASSERT(bResult);
   }
   

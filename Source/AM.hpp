@@ -237,7 +237,7 @@ namespace Oblique
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Session* pSessionGet(ReqTuple* aReqTuple);
-    static bool bSpawnJob(Session* pSession, Job* pJob);
+    static bool bSpawnJob(Job* pJob);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

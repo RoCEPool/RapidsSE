@@ -375,7 +375,7 @@ Session* AM::pSessionGet(ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 /* state diagram                                                              */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnJob(Session* pSession, Job* pJob)
+bool AM::bSpawnJob(Job* pJob)
 {
   bool bResult = Api::bSpawnJob(pJob);
   
