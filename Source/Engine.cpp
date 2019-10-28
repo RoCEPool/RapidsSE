@@ -249,7 +249,8 @@ void Engine::vDeleteImmmediate(Task** ppTask)
 /*----------------------------------------------------------------------------*/
 void Engine::vDeleteSession(Session* pSession)
 {
-  delete pSession;
+  //delete pSession;
+  AM::pSessionArray()->vFreeSession(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
