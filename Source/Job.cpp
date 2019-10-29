@@ -404,6 +404,7 @@ void Job::vContentDump(void)
          C_ENDARGS
          );
 
+  m_oEnmSet.vContentDump();
 }
 
 /*----------------------------------------------------------------------------*/

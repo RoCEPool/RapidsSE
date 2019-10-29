@@ -102,6 +102,20 @@ void EnameSet::vAdd(Stz* szName, Stz* szValue, eTN eToken)
 }
 
 /*----------------------------------------------------------------------------*/
+/* content dump                                                               */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vContentDump(void)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  vTrace("\n"_Stz);
+  vTrace("Ename Set\n"_Stz);
+  vTrace("---------\n"_Stz);
+
+  vPrint();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get nEnames                                                                */
 /*----------------------------------------------------------------------------*/
 i8 EnameSet::nEnames(void)
