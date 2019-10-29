@@ -5,19 +5,57 @@
 " job_ScanOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute for cancelQuery                            (on node where spawned) */
+/* check if word is a scannable table folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkScanTable ( "<tableNm>" -- true | errorCode false )
+
+  params| sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTable not if popTable false exit then
+  //sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+
+  // pop table folder
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for scanOp                                 (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : scan_req ( -- )
  
-   >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
-   job::this locals| pJob_ScanOp |
+  job::this locals| pJob_ScanOp |
 
-   tp: scanOp_run
+  tp: scanOp_run
 
-   pJob_ScanOp job.opLoop
+  ddlLock::grabRead
 
-   //pJob_ScanOp job::participantExecuted
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set task's dictionary stack from path in job
+  pJob_ScanOp job.pushPath
+  task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can remove the table
+  pJob_ScanOp job.objectName@
+  checkScanTable not if pJob_ScanOp <ERROR_JOB> !!logError then
+
+  pJob_ScanOp job.opLoop
 
   <<logExit <DONE_RUN>
 ;

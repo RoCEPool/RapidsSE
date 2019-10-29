@@ -71,6 +71,9 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   
   m_pJobUniversal = nullptr;
   
+  m_sObjectName   = ""_Stz;
+  m_sIndexName    = ""_Stz;
+  
   m_pTask         = nullptr;
   
   m_bAckJobEnd    = true;
@@ -685,7 +688,10 @@ bool Op::bSpawnJob(void)
 
   m_pJobUniversal = AM::pNewJobUniversal(this, &xReqTuple,
                                          this->m_iUniqueId);
-
+  
+  // copy objectName
+  AM::vJobObjectName(m_pJobUniversal, m_sObjectName);
+  
   bool bSpawned = AM::bSpawnJob(m_pJobUniversal);
   
   m_pTask = AM::pExecutingTask(m_pJobUniversal);

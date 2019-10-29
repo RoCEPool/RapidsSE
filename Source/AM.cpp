@@ -1300,6 +1300,14 @@ bool AM::bTaskIsLocked(Task* pTask) {
   return bLocked;
 }
 
+bool AM::bJobHasError(Job* pJob) {
+  return pJob->m_bHasError;
+}
+
+void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
+  pJob->vObjectName(szObjectName);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

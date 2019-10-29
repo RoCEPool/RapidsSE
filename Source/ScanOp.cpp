@@ -75,7 +75,6 @@ ScanOp::ScanOp(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANOP,_FOOTER_);
   
-  m_sTableNm   = ""_Stz;
   m_pTable     = nullptr;
   m_pTablePtn  = nullptr;
   m_pCrwBuffer = nullptr;
@@ -107,7 +106,7 @@ Op* ScanOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   ScanOp* pScanOp = new ScanOp(pOpSpec,pPipeline);
   
-  pScanOp->m_sTableNm = pScanOp->m_pOpSpec->pEnameSet()->szValue((i8)0);
+  pScanOp->m_sObjectName = pScanOp->m_pOpSpec->pEnameSet()->szValue((i8)0);
   
   return pScanOp;
 }
@@ -116,7 +115,8 @@ Op* ScanOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 /* call loop                                                                  */
 /*----------------------------------------------------------------------------*/
 eOR ScanOp::eCall(void* aThisOp)
-{  
+{
+  
   eOR eCallAgain = ((ScanOp*)aThisOp)->eOpLoop();
   
   return eCallAgain;
@@ -132,7 +132,12 @@ eOR ScanOp::eCall(void* aThisOp)
 eOR ScanOp::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANOP,_FOOTER_);
+
   
+  if (AM::bJobHasError(m_pJobUniversal)) {
+    vPipeOut(new EndMarker);
+    return OR_EXIT;
+  }
   
   for (;;) {
     
@@ -210,11 +215,11 @@ void ScanOp::vPreliminary(void)
   
   m_bRunPrelim = false;
   
-  DicStack* pDicStack = new DicStack;
-  AM::vJobDicStack(m_pJobPipeline, pDicStack);
+  //DicStack* pDicStack = new DicStack;
+  //AM::vJobDicStack(m_pJobPipeline, pDicStack);
   
   // find the table in the session dictionary stack
-  m_pTable = Table::pFindTable(pDicStack, m_sTableNm);
+  //m_pTable = Table::pFindTable(pDicStack, m_sTableNm);
   
   // get table ptn
   m_pTablePtn = m_pTable->pSlots()->pPartition(TablePtn::iPartitionToSlot(m_nPartition));
@@ -228,6 +233,7 @@ void ScanOp::vPreliminary(void)
   // get first buffer
   m_pCrwBuffer = m_pTablePtn->pRootCrwBuffer();
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

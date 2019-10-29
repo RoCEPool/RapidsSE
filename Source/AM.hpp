@@ -185,6 +185,8 @@ namespace Oblique
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static i8   iJobUniqueId(Job* pJob);
     static void vJobContentDump(Job* pJob);
+    static bool bJobHasError(Job* pJob);
+    static void vJobObjectName(Job* pJob, Stz* pObjectName);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bInBufferPool(Object* pObject);

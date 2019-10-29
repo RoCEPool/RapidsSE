@@ -58,7 +58,7 @@ SessionArray::SessionArray(void)
     Session* pSession = new Session;
     
     m_paSession[i_Session] = pSession;
-    pSession->m_i_Session = i_Session;
+    pSession->m_i_Session  = i_Session;
     pSession->m_i_NextFree = i_Session + 1;
   }
   m_paSession[C_MAX_SESSIONS - 1]->m_i_NextFree = -1;

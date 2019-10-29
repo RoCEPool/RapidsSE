@@ -8,7 +8,6 @@ namespace DataOperators
   class ScanOp : public Op
   {
   private:
-    s256       m_sTableNm;
     Table*     m_pTable;
     TablePtn*  m_pTablePtn;
     CrwBuffer* m_pCrwBuffer;
