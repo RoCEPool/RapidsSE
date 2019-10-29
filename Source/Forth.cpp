@@ -95,7 +95,7 @@ Forth::~Forth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump execution context                                                     */
 /*----------------------------------------------------------------------------*/
-void Forth::vDumpContext(void)
+void Forth::vContentDump(void)
 {
   Word* pWord = m_oDicStack.pLocateWord(m_aInxPtr);
 
@@ -121,6 +121,8 @@ void Forth::vDumpContext(void)
   m_pAuxStack->vContentDump(&m_oDicStack,   "m_pAuxStack:"_Stz);
   m_pDataStack->vContentDump(&m_oDicStack,  "m_pDataStack:"_Stz);
   m_pReturnStack->vContentDump(&m_oDicStack,"m_pReturnStack:"_Stz);
+  
+  m_oDicStack.vContentDump();
 }
 
 /*----------------------------------------------------------------------------*/
