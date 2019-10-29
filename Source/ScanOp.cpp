@@ -134,6 +134,7 @@ eOR ScanOp::eOpLoop(void)
 
   
   if (AM::bJobHasError(m_pJobUniversal)) {
+    AM::vSetJobLocalError(m_pJobUniversal, m_pPipeline->pJob());
     vPipeOut(new EndMarker);
     return OR_EXIT;
   }
@@ -158,6 +159,7 @@ eOR ScanOp::eOpLoop(void)
         
         if (m_bRunPrelim)
           vPreliminary();
+        
         if (m_pPipeline->bPulsed()) {
           vDebugPoint();
         }
@@ -213,12 +215,6 @@ void ScanOp::vPreliminary(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANOP,_FOOTER_);
   
   m_bRunPrelim = false;
-  
-  //DicStack* pDicStack = new DicStack;
-  //AM::vJobDicStack(m_pJobPipeline, pDicStack);
-  
-  // find the table in the session dictionary stack
-  //m_pTable = Table::pFindTable(pDicStack, m_sTableNm);
   
   // get table ptn
   m_pTablePtn = m_pTable->pSlots()->pPartition(TablePtn::iPartitionToSlot(m_nPartition));

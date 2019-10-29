@@ -338,9 +338,13 @@ void Jobs::vJob_Pipeline_post(Job* pJob)
 
   if ( pJob_Pipeline->m_bHasError ) {
 
-    vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
-           aEC[pJob_Pipeline->m_xResponse.m_eErrorCode]);
-
+//    vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
+//           aEC[pJob_Pipeline->m_xResponse.m_eErrorCode]);
+    i8 iResponses = pJob_Pipeline->m_pResponseVec->nItems();
+    RASSERT(iResponses == AM::nDefinedNodes());
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_Pipeline->m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+    }
     return;
   }
 

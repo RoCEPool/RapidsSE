@@ -52,17 +52,20 @@
   task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if we can remove the table
+  // check if we can scan the table
   pJob_ScanOp job.objectName@ to sTableNm
-  sTableNm checkScanTable not if pJob_ScanOp <ERROR_JOB> !!logError then
+  sTableNm checkScanTable not if
+    pJob_ScanOp <ERROR_JOB> !!logError
+  else
 
-  //----------------------------------------------------------------------------
-  // move to table folder
-  sTableNm pushTable assert
+    //----------------------------------------------------------------------------
+    // move to table folder
+    sTableNm pushTable assert
 
-  //----------------------------------------------------------------------------
-  // find the table
-  sTableNm find execute pJob_ScanOp job.opTable!
+    //----------------------------------------------------------------------------
+    // find the table
+    sTableNm find execute pJob_ScanOp job.opTable!
+  then
 
   pJob_ScanOp job.opLoop
 

@@ -1304,6 +1304,11 @@ bool AM::bJobHasError(Job* pJob) {
   return pJob->m_bHasError;
 }
 
+void AM::vSetJobLocalError(Job* pFromJob, Job* pToJob) {
+  pToJob->m_bHasError = pFromJob->m_bHasError;
+  pToJob->m_xResponse.m_eErrorCode = pFromJob->m_xResponse.m_eErrorCode;
+}
+
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
   pJob->vObjectName(szObjectName);
 }
