@@ -11,11 +11,11 @@ static const i8 C_MAX_KEY        = 256;    // max length of index entry key
 static const i8 C_MAX_NODES      = 128;    // max nodes in a grid
 static const i8 C_MAX_PATH       = 256;    // max length of file path
 static const i8 C_MAX_RECORD     = C_16KB; // max length of record
-static const i8 C_MAX_SESSIONS   = 16;     // max number of sessions
+static const i8 C_MAX_SESSIONS   = 128;    // max number of sessions
 static const i8 C_MAX_SLOTS      = 128;    // max slots per node
 static const i8 C_MAX_STREAMDEFS = 16;     // max stream definitions
 static const i8 C_MAX_VCH        = C_4KB;  // max practical length of vch value
-static const i8 C_MAX_VCH2       = C_32KB;  // max practical length of vch value
+static const i8 C_MAX_VCH2       = C_32KB; // max practical length of vch value
 
 // max partitions in a grid
 static const i8 C_MAX_PARTITIONS = C_MAX_SLOTS * C_MAX_NODES;
