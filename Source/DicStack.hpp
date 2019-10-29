@@ -23,16 +23,16 @@ namespace SenVM
     DicStack(void);
    ~DicStack(void) noexcept(false);
     
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* szTab);
 
     i8    iCount(void);
     void  vContentDump(void);
     void  vDiscard(void);
-    Word* pFindWord(Stz* aName);
-    Word* pFindInCurrent(Stz* aName);
+    Word* pFindWord(Stz* szWordNm);
+    Word* pFindInCurrent(Stz* szWordNm);
     Word* pLocateWord(Cell* aHasCell);
     Word* pLocateWord(StepFp fpHasStep);
-    Word* pRemoveWord(Stz* szName);
+    Word* pRemoveWord(Stz* szWordNm);
     Dic*  pPick(i8 iDic);
     void  vPop(void);
     void  vPush(Dic* pDic);

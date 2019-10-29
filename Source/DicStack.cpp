@@ -116,7 +116,7 @@ void DicStack::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void DicStack::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void DicStack::vDump(eCN eClass, Object* pObject, Stz* szTab)
 {
   DicStack* pDicStack = _pDicStack(pObject);
   
@@ -126,7 +126,7 @@ void DicStack::vDump(eCN eClass, Object* pObject, Stz* aTab)
            //pDicStack->m_pDic[i_Dic]->sName().s());
   
   for (i8 i_Dic = pDicStack->m_iTop; i_Dic >= 0; i_Dic--) {
-    vTrace(" dic %p %lld %s"_Stz,aTab, pDicStack->m_pDic[i_Dic],i_Dic,
+    vTrace(" dic %p %lld %s"_Stz,szTab, pDicStack->m_pDic[i_Dic],i_Dic,
            pDicStack->m_pDic[i_Dic]->szName());
     //Dic::vDump(CN_DIC, pDicStack->m_pDic[i], aTab);
   }
@@ -137,7 +137,7 @@ void DicStack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
-Word* DicStack::pFindWord(Stz* aName)
+Word* DicStack::pFindWord(Stz* szWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
@@ -147,13 +147,13 @@ Word* DicStack::pFindWord(Stz* aName)
     
     Dic* pDic = m_pDic[i_Dic];
     
-    if ( (pWord = pDic->pFindWord((Stz*)aName)) )
+    if ( (pWord = pDic->pFindWord((Stz*)szWordNm)) )
       return pWord;
   }
   
   Dic* pRootDic = AM::pRootDic();
 
-  if ( (pWord = pRootDic->pFindWord((Stz*)aName)) )
+  if ( (pWord = pRootDic->pFindWord((Stz*)szWordNm)) )
     return pWord;
   
   return nullptr;
@@ -162,7 +162,7 @@ Word* DicStack::pFindWord(Stz* aName)
 /*----------------------------------------------------------------------------*/
 /* find word in current dictionary                                            */
 /*----------------------------------------------------------------------------*/
-Word* DicStack::pFindInCurrent(Stz* aName)
+Word* DicStack::pFindInCurrent(Stz* szWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
@@ -170,7 +170,7 @@ Word* DicStack::pFindInCurrent(Stz* aName)
   
   Word* pWord;
   
-  if ( (pWord = m_pDic[m_iTop]->pFindWord((Stz*)aName)) )
+  if ( (pWord = m_pDic[m_iTop]->pFindWord((Stz*)szWordNm)) )
     return pWord;
   
   return nullptr;
