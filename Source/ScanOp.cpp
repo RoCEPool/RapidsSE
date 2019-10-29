@@ -150,6 +150,10 @@ eOR ScanOp::eOpLoop(void)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case CN_STARTMARKER:
         
+        // delete the startMarker
+        AM::vDeleteOperand(pOperand);
+        
+        // Did the scanOp job het an error (finding table ?)
         if (AM::bJobHasError(m_pJobUniversal)) {
           vPipeOut(new EndMarker);
           return OR_ERROR;
