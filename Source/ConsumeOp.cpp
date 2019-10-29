@@ -158,7 +158,7 @@ eOR ConsumeOp::eOpLoop(void)
       m_pFirstOperand = pOperand;
     
     // assert first operand is a stream def
-    ASSERT(m_pFirstOperand->eClass() == CN_STREAMDEF);
+    //ASSERT(m_pFirstOperand->eClass() == CN_STREAMDEF);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
