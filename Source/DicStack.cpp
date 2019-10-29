@@ -368,7 +368,20 @@ void DicStack::vToPathStr(Stz* szPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
 
-  szPath->vSprint("..boo .."_Stz);
+  szPath->vCopy(""_Stz);
+  
+  for (i8 i_Dic = 0; i_Dic <= m_iTop; i_Dic++) {
+    
+    Dic* pDic = m_pDic[i_Dic];
+    
+    //vTrace("[%02lld] %s\n"_Stz,i_Dic,pDic->szName());
+    
+    //if (i_Dic != m_iTop)
+    szPath->vConcat("/"_Stz);
+
+    szPath->vConcat(pDic->szName());
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
