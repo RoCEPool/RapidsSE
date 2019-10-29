@@ -168,22 +168,29 @@ ENTRY("vLocalsTo"_Stz);
   // get name of local from token stream
   m_pTask->m_pForth->m_pCompiler->m_pTokeniser->vNextToken();
 
-  s32 sLocalName(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
+  s32 sLocalNm(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
   
   // find the word describing the local
-  Word* pLocalWord = m_pTask->m_pForth->m_oDicStack.pFindWord(sLocalName);
-  if (! pLocalWord)
-    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-           "No such local: %s\n"_Stz,sLocalName.azChar());
+  Word* pLocalWord = m_pTask->m_pForth->m_oDicStack.pFindWord(sLocalNm);
   
-  GenVar xVar_LocalNo;
-  xVar_LocalNo = pLocalWord->iLocalNo();
-  
-  pCurrentWord->vEncode("pushValue"_Stz,&xVar_LocalNo);
-  pCurrentWord->vEncode("local.store"_Stz);
+  if (pLocalWord) {
 
-  EXIT();
-}
+    GenVar xVar_LocalNo;
+    xVar_LocalNo = pLocalWord->iLocalNo();
+    
+    pCurrentWord->vEncode("pushValue"_Stz,&xVar_LocalNo);
+    pCurrentWord->vEncode("local.store"_Stz);
+    
+    EXIT();
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+         "No such local: %s\n"_Stz,sLocalNm.azChar());
+  
+ }
 
 /*============================================================================*/
 /* end                                                                        */
