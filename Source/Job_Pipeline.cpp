@@ -125,7 +125,7 @@ Job_Pipeline::~Job_Pipeline(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE,_FOOTER_);
  
-  //delete m_pPipeline;  // ALKA: ????
+  delete m_pPipeline;
   delete m_pPipelineSpec;
   delete m_pStreamDef;
   delete m_pBufferQueue;
