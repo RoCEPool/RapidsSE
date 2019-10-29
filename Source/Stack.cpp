@@ -125,7 +125,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
 
         vTrace("[%2lld] [%s] %p word %s \n"_Stz,
                iVal,aCN[eClass],aFip,
-               pWord ? pWord->sName().azChar() : "<none>");
+               pWord ? pWord->szName() : "<none>"_Stz);
         break;
       }
         

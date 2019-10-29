@@ -69,7 +69,7 @@ Index::Index(void)
   Word* pWord = Word::pToWord(this);
   
   m_iIndexNo   = -1;
-  m_sIndexName = pWord->sName();;
+  m_sIndexName = pWord->szName();
   m_eIndexType = IT_SKIP_LIST;
   m_bIsPrimaryKey = false;
   m_bIsUnique     = false;

@@ -295,7 +295,7 @@ void DicStack::vPush(Dic* pDic)
 /*----------------------------------------------------------------------------*/
 /* forget word in stack of dictionaries                                       */
 /*----------------------------------------------------------------------------*/
-Word* DicStack::pRemoveWord(s32& sName)
+Word* DicStack::pRemoveWord(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
@@ -305,12 +305,12 @@ Word* DicStack::pRemoveWord(s32& sName)
     
     Dic* pDic = m_pDic[i_Dic];
     
-    if ( (pRemovedWord = pDic->pRemoveWord(sName)) )
+    if ( (pRemovedWord = pDic->pRemoveWord(szName)) )
       return pRemovedWord;
   }
   
   Dic* pRootDic = AM::pRootDic();
-  if ( (pRemovedWord = pRootDic->pRemoveWord(sName)) )
+  if ( (pRemovedWord = pRootDic->pRemoveWord(szName)) )
     return pRemovedWord;
   
   return nullptr;

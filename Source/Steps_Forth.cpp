@@ -449,7 +449,7 @@ void Step::vLocate(void)
   
   if (pLocatedWord) {
     s32 sName;
-    sName = pLocatedWord->sName();
+    sName = pLocatedWord->szName();
     m_pDataStack->vPushS32(sName);
   }
   else {
@@ -532,7 +532,7 @@ void Step::vSee(void)
     return;
   }
   
-  vTrace("See: %s\n"_Stz,pWord->sName().azChar());
+  vTrace("See: %s\n"_Stz,pWord->szName());
   
   Cell* aDoesCell = pWord->aEntryCell();
   
@@ -550,7 +550,7 @@ void Step::vSee(void)
         *aDoesCell->m_afpIntrinsic == &Step::vFlowJumpFalse ||
         *aDoesCell->m_afpIntrinsic == &Step::vFlowJumpTrue ) {
       
-      vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->sName().azChar());
+      vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->szName());
       
       aDoesCell++;
       
@@ -564,7 +564,7 @@ void Step::vSee(void)
     // push
     if ( *aDoesCell->m_afpIntrinsic == &Step::vPushValue ) {
       
-      vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->sName().azChar());
+      vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->szName());
       
       aDoesCell++;
       
@@ -590,13 +590,13 @@ void Step::vSee(void)
       Word* pCallsWord = (Word*)( ((u8)aDoesCell->m_afpIntrinsic & (u8)~0xFFFF)
                                            + sizeof(HeapBuffer));
       
-      vTrace("%p: %s\n"_Stz,aDoesCell,pCallsWord->sName().azChar());
+      vTrace("%p: %s\n"_Stz,aDoesCell,pCallsWord->szName());
       aDoesCell++;
       continue;
     }
     
     // other
-    vTrace("%p: %s\n"_Stz,aDoesCell,pCallsWord->sName().azChar());
+    vTrace("%p: %s\n"_Stz,aDoesCell,pCallsWord->szName());
     
     aDoesCell++;
   }
@@ -625,7 +625,7 @@ void Step::vSemicolon(void)
     pCurrentWord->vEncode("locals.pop"_Stz);
   }
   
-  if (! pCurrentWord->sName().bSame("exit"_Stz) &&
+  if (! pCurrentWord->szName()->bSame("exit"_Stz) &&
       m_pTask->m_pForth->m_oDicStack.pFindWord("exit"_Stz)) {
     
     if (m_pTask->m_pForth->m_oDicStack.pFindWord(pCurrentWord->szExitHook())) {
@@ -674,7 +674,7 @@ void Step::vSeriesName(void)
     s32 sStr;
     s32 sInt;
     
-    StrLib::vSplit_si(sStr.azChar(),sInt.azChar(),pWord->sName().azChar());
+    StrLib::vSplit_si(sStr.azChar(),sInt.azChar(),pWord->szName()->azChar());
     
     vTrace("  %s - %lld\n"_Stz,sStr.azChar(),sInt.iToI8());
     

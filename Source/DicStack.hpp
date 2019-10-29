@@ -33,7 +33,7 @@ namespace SenVM
     Word* pFindInCurrent(Stz* aName);
     Word* pLocateWord(Cell* aHasCell);
     Word* pLocateWord(StepFp fpHasStep);
-    Word* pRemoveWord(s32& sName);
+    Word* pRemoveWord(Stz* szName);
     Dic*  pPick(i8 iDic);
     void  vPop(void);
     void  vPush(Dic* pDic);
