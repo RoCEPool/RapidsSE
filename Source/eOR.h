@@ -7,8 +7,9 @@ enum eOR // op return
 {
   /*  0 */ OR_NONE = 0,
   /*  1 */ OR_BIDE,  // bid till operand
-  /*  2 */ OR_EXIT,  // exit
-  /*  3 */ OR_PAUSE, // pause till continued
+  /*  2 */ OR_ERROR, // error
+  /*  3 */ OR_EXIT,  // exit
+  /*  4 */ OR_PAUSE, // pause till continued
 };
 
 static Stz* aOR[]

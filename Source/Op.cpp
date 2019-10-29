@@ -188,7 +188,20 @@ void Op::vOpLoop(void)
       AM::vTaskTransition(m_pTask,TR_BIDE);
       return;
     
+    case OR_ERROR:
+      RASSERT(AM::bJobHasError(m_pJobUniversal));
+      AM::vSetJobLocalError(m_pJobUniversal, m_pPipeline->pJob());
+      
+      if (m_bAckJobEnd)
+        vAckJob();
+      
+      //AM::vTaskTransition(m_pTask,TR_DELETE);
+      return;
+      
     case OR_EXIT:
+      if (AM::bJobHasError(m_pJobUniversal)) {
+        AM::vSetJobLocalError(m_pJobUniversal, m_pPipeline->pJob());
+      }
       if (m_bAckJobEnd)
         vAckJob();
       //AM::vTaskTransition(m_pTask,TR_DELETE);

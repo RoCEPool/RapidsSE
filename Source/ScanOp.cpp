@@ -131,13 +131,6 @@ eOR ScanOp::eCall(void* aThisOp)
 eOR ScanOp::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANOP,_FOOTER_);
-
-  
-  if (AM::bJobHasError(m_pJobUniversal)) {
-    AM::vSetJobLocalError(m_pJobUniversal, m_pPipeline->pJob());
-    vPipeOut(new EndMarker);
-    return OR_EXIT;
-  }
   
   for (;;) {
     
@@ -156,6 +149,11 @@ eOR ScanOp::eOpLoop(void)
         
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       case CN_STARTMARKER:
+        
+        if (AM::bJobHasError(m_pJobUniversal)) {
+          vPipeOut(new EndMarker);
+          return OR_ERROR;
+        }
         
         if (m_bRunPrelim)
           vPreliminary();
