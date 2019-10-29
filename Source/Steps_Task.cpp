@@ -11,6 +11,7 @@ void Step::vAddSteps_Task(void)
 {
   vAddStep("task::breakPoint"_Stz, &Step::vTaskBreakPoint);
   vAddStep("task::delete"_Stz,     &Step::vTaskDelete);
+  vAddStep("task::dump"_Stz,       &Step::vTaskDump);
   vAddStep("task::sleepMsec"_Stz,  &Step::vTaskSleepMsec);
   vAddStep("task::sleepSsec"_Stz,  &Step::vTaskSleepSsec);
   vAddStep("task::sleepUsec"_Stz,  &Step::vTaskSleepUsec);
@@ -21,7 +22,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.ack"_Stz,         &Step::vTaskAck);
   vAddStep("task.acks!"_Stz,       &Step::vTaskAcksStore);
   vAddStep("task.dicStack"_Stz,    &Step::vTaskDicStack);
-  vAddStep("task.dump"_Stz,        &Step::vTaskDump);
   vAddStep("task.dropLock"_Stz,    &Step::vTaskDropLock);
   vAddStep("task.grabLock"_Stz,    &Step::vTaskGrabLock);
   vAddStep("task.isAckSet"_Stz,    &Step::vTaskIsAckSet);
@@ -148,15 +148,23 @@ void Step::vTaskDropLock(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDump(void)
 {
-ENTRY("vTaskDump"_Stz);
+  ENTRY("vTaskDump"_Stz);
   
-  Object* pObject;
-  if ( ! m_pDataStack->bPopObject(pObject) )
-    THROW_DSTACK();
-  Task* pThatTask = _pTask(pObject);
+  vTrace("\n"_Stz);
+  vTrace("== Task Dump ================================================\n"_Stz);
+
+  m_pTask->vContentDump();
   
-  pThatTask->vContentDump();
+  m_pTask->m_xReqTuple.vContentDump();
   
+  AM::vJobContentDump(m_pTask->m_pJob);
+  
+  m_pTask->m_pRegSet->vContentDump();
+  
+  m_pTask->m_pForth->vContentDump();
+
+  vTrace("== End Task Dump ============================================\n"_Stz);
+
   EXIT();
 }
 
