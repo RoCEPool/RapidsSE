@@ -111,6 +111,13 @@ void Forth::vDumpContext(void)
          pWord ? pWord->sName().azChar() : "<none>",
          m_aInxPtr);
 
+  vTrace("m_pSeedWord=%s %p\n"_Stz,
+         m_pSeedWord->sName().azChar(),
+         m_pSeedWord);
+  vTrace("m_pExceptionWord=%s %p\n"_Stz,
+         m_pExceptionWord->sName().azChar(),
+         m_pExceptionWord);
+
   m_pAuxStack->vContentDump(&m_oDicStack,   "m_pAuxStack:"_Stz);
   m_pDataStack->vContentDump(&m_oDicStack,  "m_pDataStack:"_Stz);
   m_pReturnStack->vContentDump(&m_oDicStack,"m_pReturnStack:"_Stz);
