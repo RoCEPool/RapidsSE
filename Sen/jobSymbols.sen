@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* the ename word kind                                                        */
 /*----------------------------------------------------------------------------*/
-: <<metaSymbol>>> immediate ( -- )
+: <<metaSymbol>> immediate ( -- )
 
   [ compiler::current , ]
 
@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <catalogNm> from job's ename-set                             */
 /*----------------------------------------------------------------------------*/
-: <catalogNm> <<metaSymbol>>> ( -- "<catalogNm>" )
+: <catalogNm> <<metaSymbol>> ( -- "<catalogNm>" )
 
   [ compiler::current word.name@ , ] job::this job.ename@
 ;
@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <folderNm> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <folderNm> <<metaSymbol>>> ( -- "<folderNm>" )
+: <folderNm> <<metaSymbol>> ( -- "<folderNm>" )
 
   [ compiler::current word.name@ , ] job::this job.ename@
 ;
@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <indexNm> from job's ename-set                               */
 /*----------------------------------------------------------------------------*/
-: <indexNm> <<metaSymbol>>> ( -- "<indexNm>" )
+: <indexNm> <<metaSymbol>> ( -- "<indexNm>" )
 
   [ compiler::current word.name@ , ] job::this job.ename@
 ;
@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <jobClass> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <jobClass> <<metaSymbol>>> ( -- "<jobClass>" )
+: <jobClass> <<metaSymbol>> ( -- "<jobClass>" )
 
   [ compiler::current word.name@ , ] job::this job.ename@
 ;
@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <jobNm> from job's ename-set                                 */
 /*----------------------------------------------------------------------------*/
-: <jobNm> <<metaSymbol>>> ( -- "<jobNm>" )
+: <jobNm> <<metaSymbol>> ( -- "<jobNm>" )
 
   [ compiler::current word.name@ , ] job::this job.ename@
 ;
@@ -57,7 +57,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <jobId> from job's ename-set                                 */
 /*----------------------------------------------------------------------------*/
-: <jobId> <<metaSymbol>>> ( -- "<jobId>" )
+: <jobId> <<metaSymbol>> ( -- "<jobId>" )
 
   [ compiler::current word.name@ , ] job::this job.ename@
 ;
@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <nodeNm> from job's ename-set                                */
 /*----------------------------------------------------------------------------*/
-: <nodeNm> <<metaSymbol>>> ( -- "<nodeNm>" )
+: <nodeNm> <<metaSymbol>> ( -- "<nodeNm>" )
 
   [ compiler::current word.name@ , ] job::this job.ename@
 ;
@@ -73,7 +73,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <path> from job's ename-set                                  */
 /*----------------------------------------------------------------------------*/
-: <path> <<metaSymbol>>> ( -- "<path>" )
+: <path> <<metaSymbol>> ( -- "<path>" )
 
   [ compiler::current word.name@ , ] job::this job.ename@
 ;
@@ -81,7 +81,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <routineNm> from job's ename-set                             */
 /*----------------------------------------------------------------------------*/
-: <routineNm> <<metaSymbol>>> ( -- "<routineNm>" )
+: <routineNm> <<metaSymbol>> ( -- "<routineNm>" )
 
   [ compiler::current word.name@ , ] job::this job.ename@
 ;
@@ -89,7 +89,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <schemaNm> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <schemaNm> <<metaSymbol>>> ( -- "<schemaNm>" )
+: <schemaNm> <<metaSymbol>> ( -- "<schemaNm>" )
 
   [ compiler::current word.name@ , ] job::this job.ename@
 ;
@@ -97,7 +97,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <tableNm> from job's ename-set                               */
 /*----------------------------------------------------------------------------*/
-: <tableNm> <<metaSymbol>>> ( -- "<tableNm>" )
+: <tableNm> <<metaSymbol>> ( -- "<tableNm>" )
 
   [ compiler::current word.name@ , ] job::this job.ename@
 ;
@@ -105,7 +105,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <tenantNm> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <tenantNm> <<metaSymbol>>> ( -- "<tenantNm>" )
+: <tenantNm> <<metaSymbol>> ( -- "<tenantNm>" )
 
   [ compiler::current word.name@ , ] job::this job.ename@
 ;

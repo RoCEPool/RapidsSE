@@ -170,7 +170,9 @@ ENTRY("vLocalsTo"_Stz);
 
   s32 sLocalNm(m_pTask->m_pForth->m_pCompiler->m_pTokeniser->sToken());
   
-  // find the word describing the local
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // attempt to find the word describing the local
+  
   Word* pLocalWord = m_pTask->m_pForth->m_oDicStack.pFindWord(sLocalNm);
   
   if (pLocalWord) {
@@ -186,6 +188,27 @@ ENTRY("vLocalsTo"_Stz);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // attempt to find a meta-symbol of that name
+  
+  Word* pMetaSymbol = AM::pRootDic()->pFindWord(sLocalNm);
+  if (pMetaSymbol
+        && pMetaSymbol->pCategory()
+        && pMetaSymbol->pCategory()->szName()->bSame("<<metaSymbol>>"_Stz)) {
+    
+    Word* pCurrentWord = m_pTask->m_pForth->m_pCompiler->m_pCurrent;
+    
+    // increment index:
+    pCurrentWord->vEncode("job::this"_Stz);
+    pCurrentWord->vEncode("job.enameSet"_Stz);
+    pCurrentWord->vEncode("enameSet.addStr"_Stz);
+
+    EXIT();
+    return;
+  }
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // no such local or <metaSymbol>
   
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
          "No such local: %s\n"_Stz,sLocalNm.azChar());
