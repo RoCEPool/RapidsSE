@@ -174,6 +174,7 @@ public:
   void vDicStackPick(void);
   void vDicStackPop(void);
   void vDicStackPush(void);
+  void vDicStackToPathStr(void);
 
   // dir
   void vDirChangeCurrent(void);

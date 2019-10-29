@@ -8,7 +8,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DicStack* DicStack::_pDicStack(void* aAddr)
+DicStack* SenVM::_pDicStack(void* aAddr)
 {
   DicStack* pDicStack = reinterpret_cast<DicStack*>(aAddr);
   
@@ -359,6 +359,16 @@ Dic* DicStack::pTop(void)
   Dic* pTop = m_pDic[m_iTop];
   
   return pTop;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get topmost dictionary                                                     */
+/*----------------------------------------------------------------------------*/
+void DicStack::vToPathStr(Stz* szPath)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+
+  szPath->vSprint("..boo .."_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

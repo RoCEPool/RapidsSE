@@ -21,9 +21,8 @@ namespace SenVM
     void  operator delete(void*);
     
     DicStack(void);
-    ~DicStack(void) noexcept(false);
+   ~DicStack(void) noexcept(false);
     
-    static DicStack* _pDicStack(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
     i8    iCount(void);
@@ -40,9 +39,12 @@ namespace SenVM
     void  vPush(Dic* pDic);
     void  vSetStack(DicPath* pDicPath);
     Dic*  pTop(void);
-    
+    void  vToPathStr(Stz* szPath);
+
     Footer* aFooter(void);
   };
+  
+  DicStack* _pDicStack(void* aAddr);
 }
 
 /*============================================================================*/

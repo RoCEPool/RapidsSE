@@ -9,12 +9,13 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_DicStack(void)
 {
-  vAddStep("dicStack.depth"_Stz,    &Step::vDicStackDepth);
-  vAddStep("dicStack.drop"_Stz,     &Step::vDicStackDrop);
-  vAddStep("dicStack.dump"_Stz,     &Step::vDicStackDump);
-  vAddStep("dicStack.pick"_Stz,     &Step::vDicStackPick);
-  vAddStep("dicStack.pop"_Stz,      &Step::vDicStackPop);
-  vAddStep("dicStack.push"_Stz,     &Step::vDicStackPush);
+  vAddStep("dicStack.depth"_Stz,     &Step::vDicStackDepth);
+  vAddStep("dicStack.drop"_Stz,      &Step::vDicStackDrop);
+  vAddStep("dicStack.dump"_Stz,      &Step::vDicStackDump);
+  vAddStep("dicStack.pick"_Stz,      &Step::vDicStackPick);
+  vAddStep("dicStack.pop"_Stz,       &Step::vDicStackPop);
+  vAddStep("dicStack.push"_Stz,      &Step::vDicStackPush);
+  vAddStep("dicStack.toPathStr"_Stz, &Step::vDicStackToPathStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -28,9 +29,8 @@ void Step::vDicStackDepth(void)
   if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
     THROW_DSTACK();
   
-  DicStack* pDicStack = (DicStack*)(pPtrDicStack);
-  ASSERT(CN_DICSTACK == pDicStack->eClass());
-  
+  DicStack* pDicStack = _pDicStack(pPtrDicStack);
+
   i8 iDepth = pDicStack->iCount();
   
   m_pDataStack->vPushI8(iDepth);
@@ -49,9 +49,8 @@ void Step::vDicStackDrop(void)
   if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
     THROW_DSTACK();
   
-  DicStack* pDicStack = (DicStack*)(pPtrDicStack);
-  ASSERT(CN_DICSTACK == pDicStack->eClass());
-  
+  DicStack* pDicStack = _pDicStack(pPtrDicStack);
+
   pDicStack->vDiscard();
   
   EXIT();
@@ -68,9 +67,8 @@ void Step::vDicStackDump(void)
   if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
     THROW_DSTACK();
   
-  DicStack* pDicStack = (DicStack*)(pPtrDicStack);
-  ASSERT(CN_DICSTACK == pDicStack->eClass());
-  
+  DicStack* pDicStack = _pDicStack(pPtrDicStack);
+
   pDicStack->vContentDump();
   
   EXIT();
@@ -112,9 +110,8 @@ void Step::vDicStackPop(void)
   if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
     THROW_DSTACK();
   
-  DicStack* pDicStack = (DicStack*)(pPtrDicStack);
-  ASSERT(CN_DICSTACK == pDicStack->eClass());
-  
+  DicStack* pDicStack = _pDicStack(pPtrDicStack);
+
   pDicStack->vPop();
   
   EXIT();
@@ -131,9 +128,8 @@ void Step::vDicStackPush(void)
   if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
     THROW_DSTACK();
   
-  DicStack* pDicStack = DicStack::_pDicStack(pPtrDicStack);
-  ASSERT(CN_DICSTACK == pDicStack->eClass());
-  
+  DicStack* pDicStack = _pDicStack(pPtrDicStack);
+
   Object* pPtrDic;
   
   if ( ! m_pDataStack->bPopObject(pPtrDic) )
@@ -143,6 +139,27 @@ void Step::vDicStackPush(void)
   
   pDicStack->vPush(pDic);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dicStack.toPathStr -- convert dictionary stack to path string              */
+/*----------------------------------------------------------------------------*/
+void Step::vDicStackToPathStr(void)
+{
+  ENTRY("vDicStackToPathStr"_Stz);
+  
+  Object* pPtrDicStack;
+  if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
+    THROW_DSTACK();
+  DicStack* pDicStack = _pDicStack(pPtrDicStack);
+  
+  s256 sPath;
+  
+  pDicStack->vToPathStr(sPath);
+  
+  m_pDataStack->vPushS256(sPath);
+
   EXIT();
 }
 
