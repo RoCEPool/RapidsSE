@@ -377,7 +377,7 @@ void Job::vContentDump(void)
   
   vTrace("\n"_Stz);
   vTrace("Job\n"_Stz);
-  vTrace("--------\n"_Stz);
+  vTrace("---\n"_Stz);
 
   vTrace("%p: %s\n"
          "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"

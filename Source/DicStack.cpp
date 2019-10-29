@@ -8,7 +8,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DicStack* DicStack::_pDicStack(void* aAddr)
+DicStack* SenVM::_pDicStack(void* aAddr)
 {
   DicStack* pDicStack = reinterpret_cast<DicStack*>(aAddr);
   
@@ -77,14 +77,20 @@ i8 DicStack::iCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump stack of dictionaries                                                 */
+/* dump content of dictionary stack                                           */
 /*----------------------------------------------------------------------------*/
 void DicStack::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
+  vTrace("\n"_Stz);
+  vTrace("Dictionary Stack\n"_Stz);
+  vTrace("----------------\n"_Stz);
+
+  vTrace("%p:\n"_Stz,this);
+
   for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
-    vTrace("Dic %p %lld %s\n"_Stz,m_pDic[i_Dic],i_Dic,m_pDic[i_Dic]->szName());
+    vTrace("[%02lld] %s\n"_Stz,i_Dic,m_pDic[i_Dic]->szName());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -353,6 +359,16 @@ Dic* DicStack::pTop(void)
   Dic* pTop = m_pDic[m_iTop];
   
   return pTop;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get topmost dictionary                                                     */
+/*----------------------------------------------------------------------------*/
+void DicStack::vToPathStr(Stz* szPath)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+
+  szPath->vSprint("..boo .."_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

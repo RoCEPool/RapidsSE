@@ -107,6 +107,13 @@
   pJob_CreateTable job.pushPath
   task::dicStack.set
 
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+  // debug
+  task::this task.dicStack dicStack.dump
+  task::this task.dicStack dicStack.toPathStr .
+  // end-debug
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+
   //----------------------------------------------------------------------------
   // make table
   pJob_CreateTable job.objectName@ to sTableNm
