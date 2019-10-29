@@ -137,18 +137,6 @@ void DicStack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
-Word* DicStack::pFindWord(s32& sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
-  
-  Word* pWord = pFindWord(sName.szStz());
-  
-  return pWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find word in stack of dictionaries                                         */
-/*----------------------------------------------------------------------------*/
 Word* DicStack::pFindWord(Stz* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);

@@ -28,7 +28,6 @@ namespace SenVM
     i8    iCount(void);
     void  vContentDump(void);
     void  vDiscard(void);
-    Word* pFindWord(s32& sName);
     Word* pFindWord(Stz* aName);
     Word* pFindInCurrent(Stz* aName);
     Word* pLocateWord(Cell* aHasCell);
