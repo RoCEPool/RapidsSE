@@ -73,6 +73,7 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   
   m_sObjectName   = ""_Stz;
   m_sIndexName    = ""_Stz;
+  m_pTable        = nullptr;
   
   m_pTask         = nullptr;
   
@@ -190,11 +191,11 @@ void Op::vOpLoop(void)
     case OR_EXIT:
       if (m_bAckJobEnd)
         vAckJob();
-      AM::vTaskTransition(m_pTask,TR_DELETE);
+      //AM::vTaskTransition(m_pTask,TR_DELETE);
       return;
     
     case OR_PAUSE:
-      AM::vTaskTransition(m_pTask,TR_PAUSE);
+      //AM::vTaskTransition(m_pTask,TR_PAUSE);
       return;
     
     default:

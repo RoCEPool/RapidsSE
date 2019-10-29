@@ -75,7 +75,6 @@ ScanOp::ScanOp(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANOP,_FOOTER_);
   
-  m_pTable     = nullptr;
   m_pTablePtn  = nullptr;
   m_pCrwBuffer = nullptr;
   m_bRunPrelim = true;

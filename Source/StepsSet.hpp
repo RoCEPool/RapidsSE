@@ -458,6 +458,7 @@ public:
   void vJobOperandFetch(void);
   void vJobOperandStore(void);
   void vJobOpLoop(void);
+  void vJobOpTableStore(void);
 
   void vJobDec2pcAcksRmg(void);
   void vJobDelete(void);

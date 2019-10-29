@@ -65,6 +65,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.operand!"_Stz,         &Step::vJobOperandStore);
   
   vAddStep("job.opLoop"_Stz,           &Step::vJobOpLoop);
+  vAddStep("job.opTable!"_Stz,         &Step::vJobOpTableStore);
   
   vAddStep("job.originatingId@"_Stz,   &Step::vJobOriginatingIdFetch);
   vAddStep("job.originatingId!"_Stz,   &Step::vJobOriginatingIdStore);
@@ -621,6 +622,29 @@ void Step::vJobOpLoop(void)
   
   Op* pOp = pJob_Universal->m_pOp;
   pOp->vOpLoop();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.opTable! -- store the table in the job's op                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobOpTableStore(void)
+{
+  ENTRY("vJobOpTableStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
+  
+  Object* pTablePtr;
+  if ( ! m_pDataStack->bPopObject(pTablePtr) )
+    THROW_DSTACK();
+  Table* pTable = _pTable(pTablePtr);
+  
+  Op* pOp = pJob_Universal->m_pOp;
+  pOp->m_pTable = pTable;
   
   EXIT();
 }

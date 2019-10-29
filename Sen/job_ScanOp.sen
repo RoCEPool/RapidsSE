@@ -40,6 +40,7 @@
   >>logEntry <SEED_REQ>
 
   job::this locals| pJob_ScanOp |
+  0 0 locals| sTableNm pTable |
 
   tp: scanOp_run
 
@@ -52,8 +53,16 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
-  pJob_ScanOp job.objectName@
-  checkScanTable not if pJob_ScanOp <ERROR_JOB> !!logError then
+  pJob_ScanOp job.objectName@ to sTableNm
+  sTableNm checkScanTable not if pJob_ScanOp <ERROR_JOB> !!logError then
+
+  //----------------------------------------------------------------------------
+  // move to table folder
+  sTableNm pushTable assert
+
+  //----------------------------------------------------------------------------
+  // find the table
+  sTableNm find execute pJob_ScanOp job.opTable!
 
   pJob_ScanOp job.opLoop
 

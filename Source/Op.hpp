@@ -22,6 +22,7 @@ namespace Operators
     //! ALKA: These should go into OpObjectName
     s32            m_sObjectName;    // object name (e.g. schema, table etc)
     s32            m_sIndexName;     // index name
+    Table*         m_pTable;         // table 
     
     Job*           m_pJobPipeline;   // pipeline job this operator belongs to
 
