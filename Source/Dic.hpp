@@ -33,19 +33,19 @@ namespace SenVM
     void  vDicKind(Word* pDicKind);
     Word* pEachWord(Word* pPrior);
     Word* pEachWord(Word* pCategory, Word* pPrior);
-    Word* pFindWord(Stz* szName);
+    Word* pFindWord(Stz* szWordNm);
     Word* pFindStep(StepFp fpStep);
     bool  bHasWords(void);
     void  vInit(void);
-    bool  bIsName(Stz* szName);
+    bool  bIsName(Stz* szDicNm);
     Word* pLastWord(void);
     void  vListWords(void);
     Stz*  szName(void);
-    void  vName(Stz* szName);
+    void  vName(Stz* szDicNm);
     void  vRefDec(void);
     void  vRefInc(void);
     bool  bRefOut(void);
-    Word* pRemoveWord(Stz* szName);
+    Word* pRemoveWord(Stz* szWordNm);
     i8    nWords(void);
     
     Footer* aFooter(void);

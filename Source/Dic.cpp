@@ -124,7 +124,7 @@ void Dic::vDicKind(Word* pDicKind)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void Dic::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Dic::vDump(eCN eClass, Object* pObject, Stz* szTab)
 {
   Dic* pDic = _pDic(pObject);
   
@@ -195,7 +195,7 @@ void Dic::vFinalize(eCN eClass, Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* find a word given name                                                     */
 /*----------------------------------------------------------------------------*/
-Word* Dic::pFindWord(Stz* aName)
+Word* Dic::pFindWord(Stz* szWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
@@ -205,11 +205,11 @@ Word* Dic::pFindWord(Stz* aName)
     
     //void* aEndWord = aAdd<void*>(pWord,sizeof(Word));
     
-    if (pWord->szName()->bSame(aName)) {
+    if (pWord->szName()->bSame(szWordNm)) {
       m_pArticle->vDropRead();
 
-      if (aName->bSame("whereAmI"_Stz))
-        vTrace(": %s is in dictionary %s ---\n"_Stz,aName,m_sName.szStz());
+      if (szWordNm->bSame("whereAmI"_Stz))
+        vTrace(": %s is in dictionary %s ---\n"_Stz,szWordNm,m_sName.szStz());
 
       return pWord;
     }
@@ -272,11 +272,11 @@ void Dic::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
-bool Dic::bIsName(Stz* szName)
+bool Dic::bIsName(Stz* szDicNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  bool b = m_sName.bSame(szName);
+  bool b = m_sName.bSame(szDicNm);
   
   return b;
 }
@@ -327,11 +327,11 @@ Stz* Dic::szName(void)
 /*----------------------------------------------------------------------------*/
 /* set name of this dictionary                                                */
 /*----------------------------------------------------------------------------*/
-void Dic::vName(Stz* szName)
+void Dic::vName(Stz* szDicNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_sName = szName;
+  m_sName = szDicNm;
   
   m_pArticle->vName(m_sName);
 }
@@ -371,11 +371,11 @@ bool Dic::bRefOut(void)
 /*----------------------------------------------------------------------------*/
 /* forget a word given name                                                   */
 /*----------------------------------------------------------------------------*/
-Word* Dic::pRemoveWord(Stz* szName)
+Word* Dic::pRemoveWord(Stz* szWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  Word* pWordRemove = pFindWord(szName);
+  Word* pWordRemove = pFindWord(szWordNm);
   if (! pWordRemove)
     return pWordRemove;
   
