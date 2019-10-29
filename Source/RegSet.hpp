@@ -10,11 +10,11 @@ namespace Registers
   friend class Tasks::Task;
   
   public:
-    Task* m_pTask;  // which task
+    Task* m_pTask; // which task
   
-    i8    m_i_NextRnd;     // which next repeatable random nummber?
+    i8        m_i_NextRnd; // which next repeatable random nummber?
 
-    Node* m_pSendNode;     // node to send to
+    Node*     m_pSendNode; // node to send to
   
     REF<Job>  m_xpJobRef;  // job reference
     REF<Node> m_xpNodeRef; // node reference
@@ -26,7 +26,6 @@ namespace Registers
     REG<File> m_xpFile1;   // file1[]
     REG<File> m_xpFile2;   // file2[]
 
-
     // must be last
     Footer m_xFooter;
   
@@ -36,6 +35,8 @@ namespace Registers
 
     RegSet(Task* pTask);
    ~RegSet(void) noexcept(false);
+  
+    void vContentDump(void);
 
   private:
     Footer* aFooter(void);

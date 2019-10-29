@@ -371,8 +371,10 @@ void Task::vCaught(Exception xException)
 
   AM::vJobContentDump(m_pJob);
   
+  m_pRegSet->vContentDump();
+
   m_pForth->vContentDump();
-  
+
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
