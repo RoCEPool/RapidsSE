@@ -19,7 +19,7 @@ void Step::vAddSteps_EnmSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* EnameSet::new -- new ename-set                                               */
+/* EnameSet::new -- new ename-set                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vEnmSetNew(void)
 {
@@ -36,7 +36,7 @@ void Step::vEnmSetNew(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* EnameSet.addInt -- add a name-integer pair to ename-set                      */
+/* EnameSet.addInt -- add a name-integer pair to ename-set                    */
 /*----------------------------------------------------------------------------*/
 void Step::vEnmSetAddInt(void)
 {
@@ -62,7 +62,7 @@ void Step::vEnmSetAddInt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* EnameSet.addStr -- add a name-string pair to ename-set                       */
+/* EnameSet.addStr -- add a name-string pair to ename-set                     */
 /*----------------------------------------------------------------------------*/
 void Step::vEnmSetAddStr(void)
 {
@@ -73,8 +73,8 @@ void Step::vEnmSetAddStr(void)
     THROW_DSTACK();
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
 
-  s32 sValue;
-  if ( ! m_pDataStack->bPopS32(sValue) )
+  s256 sValue;
+  if ( ! m_pDataStack->bPopS256(sValue) )
     THROW_DSTACK();
   
   s32 sName;
@@ -88,7 +88,7 @@ void Step::vEnmSetAddStr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* EnameSet.asStr -- get ename-set as a single string                           */
+/* EnameSet.asStr -- get ename-set as a single string                         */
 /*----------------------------------------------------------------------------*/
 void Step::vEnmSetAsStr(void)
 {

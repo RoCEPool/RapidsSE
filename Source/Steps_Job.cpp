@@ -34,6 +34,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   vAddStep("job.dicPath"_Stz,          &Step::vJobDicPath);
   
+  vAddStep("job.enameSet"_Stz,         &Step::vJobEnameSet);
   vAddStep("job.ename!"_Stz,           &Step::vJobEnameStore);
   vAddStep("job.ename@"_Stz,           &Step::vJobEnameFetch);
   vAddStep("job.error!"_Stz,           &Step::vJobErrorStore);
@@ -711,7 +712,7 @@ void Step::vJobDicPath(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.ename@ -- fetch/decode given ename from job EnameSet                     */
+/* job.ename@ -- fetch/decode given ename from job EnameSet                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJobEnameFetch(void)
 {
@@ -729,6 +730,23 @@ void Step::vJobEnameFetch(void)
   s4K sValue ( pJob->m_oEnmSet.szValue(sEname) );
   
   m_pDataStack->vPushS4K(sValue);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.enameSet -- push ptr to job EnameSet                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEnameSet(void)
+{
+  ENTRY("vJobEnameSet"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job* pJob = _pJob(pJobPtr);
+  
+  m_pDataStack->vPushPointer(&pJob->m_oEnmSet);
   
   EXIT();
 }

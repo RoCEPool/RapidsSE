@@ -74,6 +74,11 @@
   // get the job from the task
   pTask task.job@ to pJob
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // distribute the job
   pJob job.distribute
 
@@ -104,14 +109,21 @@
 
   //----------------------------------------------------------------------------
   // set task's dictionary stack from path in job
-  pJob_CreateTable job.pushPath
-  task::dicStack.set
+  pJob_CreateTable job.pushPath task::dicStack.set
 
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // debug
   task::this task.dicStack dicStack.dump
   task::this task.dicStack dicStack.toPathStr .
   // end-debug
+
+
+  "<path>"
+    task::this task.dicStack dicStack.toPathStr
+      job::this job.enameSet enameSet.addStr
+
+  throw
+
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
 
   //----------------------------------------------------------------------------

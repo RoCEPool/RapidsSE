@@ -465,6 +465,7 @@ public:
   void vJobDicPath(void);
 
   void vJobEnameFetch(void);
+  void vJobEnameSet(void);
   void vJobEnameStore(void);
   void vJobErrorStore(void);
   void vJobErrorFetch(void);
