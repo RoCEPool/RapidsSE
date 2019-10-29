@@ -175,25 +175,17 @@ ENTRY("vLocalsTo"_Stz);
   
   Word* pLocalWord = m_pTask->m_pForth->m_oDicStack.pFindWord(sLocalNm);
   
-  if (pLocalWord) {
-
-    GenVar xVar_LocalNo;
-    xVar_LocalNo = pLocalWord->iLocalNo();
-    
-    pCurrentWord->vEncode("pushValue"_Stz,&xVar_LocalNo);
-    pCurrentWord->vEncode("local.store"_Stz);
-    
-    EXIT();
-    return;
-  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // no such local or <metaSymbol>
+  
+  if (! pLocalWord)
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+           "No such local: %s\n"_Stz,sLocalNm.azChar());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // attempt to find a meta-symbol of that name
-  
-  Word* pMetaSymbol = AM::pRootDic()->pFindWord(sLocalNm);
-  if (pMetaSymbol
-        && pMetaSymbol->pCategory()
-        && pMetaSymbol->pCategory()->szName()->bSame("<<metaSymbol>>"_Stz)) {
+
+  if (pLocalWord->pCategory()
+      && pLocalWord->pCategory()->szName()->bSame("<<metaSymbol>>"_Stz)) {
     
     Word* pCurrentWord = m_pTask->m_pForth->m_pCompiler->m_pCurrent;
     
@@ -201,18 +193,19 @@ ENTRY("vLocalsTo"_Stz);
     pCurrentWord->vEncode("job::this"_Stz);
     pCurrentWord->vEncode("job.enameSet"_Stz);
     pCurrentWord->vEncode("enameSet.addStr"_Stz);
-
+    
     EXIT();
     return;
   }
   
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // no such local or <metaSymbol>
+  GenVar xVar_LocalNo;
+  xVar_LocalNo = pLocalWord->iLocalNo();
   
-  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-         "No such local: %s\n"_Stz,sLocalNm.azChar());
+  pCurrentWord->vEncode("pushValue"_Stz,&xVar_LocalNo);
+  pCurrentWord->vEncode("local.store"_Stz);
   
+  EXIT();
  }
 
 /*============================================================================*/

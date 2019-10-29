@@ -81,9 +81,9 @@
 
   "<path>"
     task::this task.dicStack dicStack.toPathStr
-      job::this job.enameSet enameSet.addStr
+      to <path>
 
-  //throw
+  task::dump
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -126,9 +126,9 @@
   // end-debug
 
 
-  "<path>"
-    task::this task.dicStack dicStack.toPathStr
-      job::this job.enameSet enameSet.addStr
+  // "<path>"
+  //  task::this task.dicStack dicStack.toPathStr
+  //    job::this job.enameSet enameSet.addStr
 
   //throw
 
