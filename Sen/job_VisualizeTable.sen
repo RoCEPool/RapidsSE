@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 : visualizeTable_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 0 0 0 locals| pTask pIndex sTableNm sIndexNm pjob_VisualizeTable |
 
@@ -58,8 +58,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pjob_VisualizeTable job.pushPath
-  task::dicStack.set
+  //pjob_VisualizeTable job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock

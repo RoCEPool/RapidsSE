@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
  : scan_req ( -- )
  
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   job::this locals| pJob_ScanOp |
   0 0 locals| sTableNm pTable |
@@ -48,8 +48,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_ScanOp job.pushPath
-  task::dicStack.set
+  //pJob_ScanOp job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can scan the table
