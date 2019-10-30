@@ -674,28 +674,6 @@ void Word::vLocalNo(i8 iLocalNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get word name                                                              */
-/*----------------------------------------------------------------------------*/
-Stz* Word::szWordNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_sWordNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set name                                                                   */
-/*----------------------------------------------------------------------------*/
-void Word::vName(Stz* szWordNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_sWordNm = szWordNm;
-  
-  m_pArticle->vName(szWordNm);
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump object word                                                           */
 /*----------------------------------------------------------------------------*/
 void Word::vObjectDump(Stz* aTab)
@@ -769,6 +747,28 @@ void Word::vPrompt(bool bPrompt)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_bPrompt = bPrompt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get word name                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Word::szWordNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_sWordNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set name                                                                   */
+/*----------------------------------------------------------------------------*/
+void Word::vWordNm(Stz* szWordNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_sWordNm = szWordNm;
+  
+  m_pArticle->vName(szWordNm);
 }
 
 /*----------------------------------------------------------------------------*/

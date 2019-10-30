@@ -106,8 +106,6 @@ namespace SenVM
     Cell* aLastCell(void);
     i8    iLocalNo(void);
     void  vLocalNo(i8 iLocalNo);
-    Stz*  szWordNm(void);
-    void  vName(Stz* szName);
     void  vObjectDump(Stz* aTab);
     void  vParams(i8 iParams);
     i8    iParams(void);
@@ -116,6 +114,8 @@ namespace SenVM
     void  vPrompt(bool bImmediate);
     void  vReset(void);
     i8    iSize(void);
+    Stz*  szWordNm(void);
+    void  vWordNm(Stz* szWordNm);
     char* aWspArea(void);
 
     Footer* aFooter(void);

@@ -352,7 +352,7 @@ void Step::vWordNameStore(void)
   if ( ! m_pDataStack->bPopS32(sName) )
     THROW_DSTACK();
 
-  pWord->vName(sName);
+  pWord->vWordNm(sName);
     
   EXIT();
 }
