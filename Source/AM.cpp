@@ -325,7 +325,13 @@ i8 AM::iTaskState(Task* pTask) {
 }
 Job* AM::pThisTLSJob(void) {
   Thread* pThread = Thread::pThisTLSThread();
+  if (! pThread)
+    return nullptr;
+  
   Task* pTask = pThread->pTask();
+  if (! pTask)
+    return nullptr;
+  
   Job* pJob = pTask->pJob();
   return pJob;
 }
@@ -1320,6 +1326,20 @@ void AM::vSetJobLocalError(Job* pFromJob, Job* pToJob) {
 
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
   pJob->vObjectName(szObjectName);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+ReqTuple* AM::aReqTuple_tls(void) {
+  
+  Job* pJob_tls = AM::pThisTLSJob();
+  
+  if (pJob_tls)
+    return &pJob_tls->m_xReqTuple;
+  else
+    return nullptr;
 }
 
 /*============================================================================*/

@@ -157,7 +157,6 @@ namespace Oblique
     static Task* pThisTLSTask(void);
     static Thread* pThisTLSThread(void);
     static PsxThd* pThisTLSPsxThd(void);
-    static i8   iThreadId(Thread* pThread);
 
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -240,6 +239,9 @@ namespace Oblique
     static i8   iRdTimePoint(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static ReqTuple* aReqTuple_tls(void);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static Session* pSessionGet(ReqTuple* aReqTuple);
     static bool bSpawnJob(Job* pJob);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
@@ -254,6 +256,9 @@ namespace Oblique
     static i8   iTaskQueue(Task* pTask);
     static RegSet* pTaskRegSet(Task* pTask);
     static i8   iTaskState(Task* pTask);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static i8   iThreadId(Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vWelcomeText(s256& sWelcome);
