@@ -12,9 +12,9 @@ void _LogEntryThd::vSet(LogEntry* pLogEntry, Thread* pThread, eHA eThdAct)
   pLogEntry->m_eKind = EK_THD;
   pLogEntry->m_cPrefix = 'H';
 
-  if (pThread->m_pTask && pThread->pTask()->pJob())
-    pLogEntry->m_xReqTuple.vSet(&pThread->pTask()->pJob()->m_xReqTuple);
-  
+  if (pThread->m_pTask && pThread->pTask()->pJob()) {
+    //pLogEntry->m_xReqTuple.vSet(&pThread->pTask()->pJob()->m_xReqTuple);
+  }
   else {
     SP_Id spId;
     

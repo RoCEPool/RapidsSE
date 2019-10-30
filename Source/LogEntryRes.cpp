@@ -12,7 +12,7 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, Resource* pResource, eRA eResAct)
   pLogEntry->m_eKind   = EK_RES;
   pLogEntry->m_cPrefix = 'R';
   pLogEntry->m_iAct    = pResource->iActNo();
-  pLogEntry->m_xReqTuple.vSet(pResource->aReqTuple());
+  //pLogEntry->m_xReqTuple.vSet(pResource->aReqTuple());
 
   m_eClass  = pResource->eClass();
 

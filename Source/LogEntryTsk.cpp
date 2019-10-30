@@ -12,7 +12,7 @@ void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
   pLogEntry->m_eKind   = EK_TSK;
   pLogEntry->m_cPrefix = 'F';
   pLogEntry->m_iAct    = pTask->iActNo();
-  pLogEntry->m_xReqTuple.vSet(pTask->aReqTuple());
+  //pLogEntry->m_xReqTuple.vSet(pTask->aReqTuple());
 
   m_iTskId  = pTask->m_iUniqueId;
   m_eTskAct = eTskAct;
