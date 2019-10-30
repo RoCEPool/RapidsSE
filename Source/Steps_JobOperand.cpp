@@ -35,6 +35,9 @@ void Step::vJob_OperandPipeOut(void)
   Op* pOp = pStage->pPipeOutOp(pJob_Operand->m_eTopologyX, pJob_Operand->m_iNode);
   pOp->vAppendLeft(pJob_Operand->m_pOperand);
   
+  // now delete the job_operand
+  delete pJob_Operand;
+  
   EXIT();
 }
 

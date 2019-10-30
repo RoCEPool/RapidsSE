@@ -236,6 +236,9 @@ void AM::vSendJobOperand(Task* pTask, Operand* pOperand,
   nObjectSize = giClassSize[pOperand->eClass()];
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
   
+  // now delet ethe job_operand
+  delete pJob_Operand;
+  
   // drop the socket write lock
   pSocket->vDropWrite();
 }
