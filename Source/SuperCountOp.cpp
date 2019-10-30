@@ -140,12 +140,15 @@ eOR SuperCountOp::eSuperCountLoop(void)
       if (--m_nLeftEndMarkers == 0) {
         IrwBuffer* pIrwBuffer = new IrwBuffer();
         
+        //! ALKA TO REVIEW : COLUMNV VECTOR
         // create a column vec from each row ref
         ColumnVec* pColumnVec = new ColumnVec;
         m_pStreamDef->vAddColumns(pColumnVec);
         
         Row* pRow = pIrwBuffer->aAllotRow(pColumnVec);
         pRow->m_waColVal[0] = m_nCount;
+        
+        delete pColumnVec;
         
         // pipe out the buffer with the count
         vPipeOut(pIrwBuffer);

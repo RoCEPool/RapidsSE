@@ -181,15 +181,12 @@ void SrtBuffer::vGetKeys(StreamDef* pStreamDef, i8 iKeyCol, i8 iColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
-  SrtSet* pSrtSet;
-  
   Crw* aCrw;
-  
+
   ColumnVec* pColVec = new ColumnVec;
 
   HV_Row hRow(pColVec);
-  
-  i8 iBaseOffset = RowCoder::iBaseOffset(pColVec);
+  pStreamDef->vAddColumns(pColVec);
   
   SrtSet* aSrtSet = aFirstSrtSet();
   while (aSrtSet) {
@@ -314,6 +311,7 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
   SrtSet* aSrtSet = aFirstSrtSet();
   ColumnVec* pColumnVec[C_MAX_STREAMDEFS];
   
+  //! ALKA TO REVIEW : COLUMNV VECTOR
   // create a column vec from each row ref
   for (i8 iRowRef = 0; iRowRef < m_nRowRefs; iRowRef++) {
     pColumnVec[iRowRef] = new ColumnVec;
@@ -356,6 +354,10 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
     vTrace(")\n"_Stz);
     
     aSrtSet = aNextSrtSet(aSrtSet);
+  }
+  
+  for (i8 iRowRef = 0; iRowRef < m_nRowRefs; iRowRef++) {
+    delete pColumnVec[iRowRef];
   }
   
 }

@@ -163,13 +163,13 @@ eOR XmitOp::eXmitLoop(void)
                             m_pPipeline->pJob(),
                             this,
                             m_iXmitNode);
-        
+        AM::vDeleteOperand(pOperand);
         goto L_EXIT;
       }
       
       // -- -- -- -- -- --
       case CN_STREAMDEF:  {
-        m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+        m_pStreamDef = _pStreamDef(pOperand);
         AM::vSendJobOperand(m_pTask,
                             pOperand,
                             m_pPipeline->pJob(),
