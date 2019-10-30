@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
  : cancelQuery_exe ( -- )
  
-   >>logEntry <SEED_EXE>
+   >>logEntry <SEED_EXE2>
 
    job::this locals| pJob_CancelQuery |
 
@@ -23,8 +23,8 @@
 
    //----------------------------------------------------------------------------
    // set task's dictionary stack from path in job
-   pJob_CancelQuery job.pushPath
-   task::dicStack.set
+   //pJob_CancelQuery job.pushPath
+   //task::dicStack.set
    <jobId> to sJobId
 
   //----------------------------------------------------------------------------
