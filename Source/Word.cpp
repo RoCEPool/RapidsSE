@@ -63,14 +63,14 @@ void Word::operator delete(void* pWordAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Word::Word(Stz* szName)
+Word::Word(Stz* szWordNm)
 : Object(CN_WORD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
-  m_pArticle   = new Article(szName,this,Word::vArtFun);
+  m_pArticle   = new Article(szWordNm,this,Word::vArtFun);
 
-  m_sName      = szName;
+  m_sWordNm    = szWordNm;
   m_eKind      = WK_ROUTINE;
   //m_bPersistent   = false;
   m_iTrace     = 0;
@@ -362,9 +362,9 @@ void Word::vContentDump(void)
   vTrace("Word %p: %s %s Category %s Immediate %d DataBytes %lld "_Stz
          "Step %p %s ..Rows.. %p\n"_Stz,
          this,
-         m_sName.azChar(),
+         m_sWordNm.azChar(),
          aWK[m_eKind]->azChar(),
-         m_pCategory->m_sName.azChar(),
+         m_pCategory->m_sWordNm.azChar(),
          m_bImmediate,
          m_xRoutine.nUsed(),
          m_fpIntrinsic,
@@ -616,7 +616,7 @@ bool Word::bIsName(s32& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  bool b = m_sName.bSame(sName);
+  bool b = m_sWordNm.bSame(sName);
   
   return b;
 }
@@ -680,19 +680,19 @@ Stz* Word::szName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_sName;
+  return m_sWordNm;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set name                                                                   */
 /*----------------------------------------------------------------------------*/
-void Word::vName(Stz* szName)
+void Word::vName(Stz* szWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_sName = szName;
+  m_sWordNm = szWordNm;
   
-  m_pArticle->vName(szName);
+  m_pArticle->vName(szWordNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -705,7 +705,7 @@ void Word::vObjectDump(Stz* aTab)
   vTrace("epoch %lld %s (%s) %s %s DataBytes %lld "_Stz
          "Step %p ..Rows.. %p\n"_Stz,
          m_iEpoch,
-         m_sName.azChar(),
+         m_sWordNm.azChar(),
          m_pDic ? m_pDic->szName() : C_NO_NAME,
          aWK[m_eKind]->azChar(),
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,

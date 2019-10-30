@@ -14,7 +14,7 @@ namespace SenVM
   private:
     Article*  m_pArticle;     // the word article
 
-    s32       m_sName;        // the name of this word
+    s32       m_sWordNm;      // the name of this word
   
     Word*     m_pCategory;    // category of word
     Dic*      m_pDic;         // which dictionary this word in
