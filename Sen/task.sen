@@ -37,9 +37,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* convert dictionary stack to path string                                    */
+/* convert task's dictionary stack to path string                             */
 /*----------------------------------------------------------------------------*/
-: task::dicStackToPathStr ( -- )
+: task::dicStackToPathStr ( -- "path" )
 
   task::this task.dicStack dicStack.toPathStr
 ;
