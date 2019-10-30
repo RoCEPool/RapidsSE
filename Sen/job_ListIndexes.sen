@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 : listIndexes_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 0 0 locals| sTableNm iCount pJob_ListIndexes pTask |
 
@@ -71,8 +71,8 @@
 
   //----------------------------------------------------------------------------
   // set task's dictionary stack from path in job
-  pJob_ListIndexes job.pushPath
-  task::dicStack.set
+  //pJob_ListIndexes job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab ddl read lock

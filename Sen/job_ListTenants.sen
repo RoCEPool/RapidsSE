@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : listTenants_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 locals| pJob_ListTenants pTask |
 
@@ -25,8 +25,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_ListTenants job.pushPath
-  task::dicStack.set
+  //pJob_ListTenants job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab ddl read lock

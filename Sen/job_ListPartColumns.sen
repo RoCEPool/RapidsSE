@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : listPartColumns_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 0 locals| sTableNm pJob_ListPartColumns pTask |
 
@@ -57,8 +57,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_ListPartColumns job.pushPath
-  task::dicStack.set
+  //pJob_ListPartColumns job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab ddl read lock

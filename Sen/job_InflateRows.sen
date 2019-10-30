@@ -69,7 +69,7 @@
 /*----------------------------------------------------------------------------*/
 : InflateRows_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   100 ssn::senLoc
 
@@ -90,8 +90,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_InflateRows job.pushPath
-  task::dicStack.set
+  //pJob_InflateRows job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock

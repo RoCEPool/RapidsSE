@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : pwf_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
   //">>pwf_req" log::mark
 
   100 ssn::senLoc
@@ -28,8 +28,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_Pwf job.pushPath
-  task::dicStack.set
+  //pJob_Pwf job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set metadata string in the job
