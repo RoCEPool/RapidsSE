@@ -348,11 +348,11 @@ void Step::vWordNameStore(void)
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
 
-  s32 sName;
-  if ( ! m_pDataStack->bPopS32(sName) )
+  s32 sWordNm;
+  if ( ! m_pDataStack->bPopS32(sWordNm) )
     THROW_DSTACK();
 
-  pWord->vWordNm(sName);
+  pWord->vWordNm(sWordNm);
     
   EXIT();
 }
