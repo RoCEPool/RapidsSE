@@ -28,6 +28,7 @@ void Step::vAddSteps_Str(void)
   vAddStep("str.right"_Stz,        &Step::vStrRight);
   vAddStep("str.sub"_Stz,          &Step::vStrSub);
   vAddStep("str.tailInt"_Stz,      &Step::vStrTailInt);
+  vAddStep("str.toStrVec"_Stz,     &Step::vStrToStrVec);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -504,6 +505,49 @@ void Step::vStrTailInt(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* str.toStrVec -- convert a (path) string to a str vector                    */
+/*----------------------------------------------------------------------------*/
+void Step::vStrToStrVec(void)
+{
+  ENTRY("vStrToStrVec"_Stz);
+  
+  // get the path string
+  s256 sPath;
+  if ( ! m_pDataStack->bPopS256(sPath) )
+    THROW_DSTACK();
+  
+  i8 nStrings = 0;
+  
+  s32 sDicNm;
+  
+  char* azPath  = sPath.azChar();
+  char* azDicNm = sDicNm.azChar();
+  
+  for (;; nStrings++) {
+    
+    if (! StrLib::bExtractName(&azPath,azDicNm))
+      break;
+    
+    m_pAuxStack->vPushS32(sDicNm);
+  }
+  
+  for (i8 iMove = 0; iMove < nStrings; iMove++) {
+    
+    if (! StrLib::bExtractName(&azPath,azDicNm))
+      break;
+    
+    RASSERT(m_pAuxStack->bPopS32(sDicNm));
+    m_pDataStack->vPushS32(sDicNm);
+  }
+
+  
+  m_pDataStack->vPushI8(nStrings);
+
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
