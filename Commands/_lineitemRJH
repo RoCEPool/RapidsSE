@@ -80,6 +80,10 @@ space;
 sztbl lineitem;
 fetch lineitem limit 10;
 
+ping;
+
+logWrite;
+
 //dynamic pipeline lineItem_dyn
 //begin
 //  stage stageA on all partitions:
@@ -142,9 +146,6 @@ ld orders "/tpch/SF1/orders.csv" ;
 //time dynamic scan lineitem | getkey L_PARTKEY | sort | merge | count | output;
 status;
 */
-ping;
-
-logWrite;
 
 /*
 time fetch lineitem

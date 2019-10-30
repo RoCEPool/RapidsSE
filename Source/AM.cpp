@@ -325,7 +325,7 @@ i8 AM::iTaskState(Task* pTask) {
 }
 Job* AM::pThisTLSJob(void) {
   Thread* pThread = Thread::pThisTLSThread();
-  if (! pThread)
+  if (! pThread || C_UNKNOWN == (i8)pThread)
     return nullptr;
   
   Task* pTask = pThread->pTask();

@@ -200,6 +200,10 @@ void LogEntry::vInit(eSL eSeverity, Focal *pFocal, Stz* szText)
   m_iForId = pFocal->m_iForId;
   
   m_iIndicator = C_UNKNOWN;
+  
+  ReqTuple* aReqTuple_tls = AM::aReqTuple_tls();
+  if (aReqTuple_tls)
+    m_xReqTuple.vSet(aReqTuple_tls);
 }
 
 /*----------------------------------------------------------------------------*/
