@@ -155,7 +155,7 @@ eOR ScanOp::eOpLoop(void)
         
         // Did the scanOp job het an error (finding table ?)
         if (AM::bJobHasError(m_pJobUniversal)) {
-          vPipeOut(new EndMarker);
+          vPipeOut_endMarker();
           return OR_ERROR;
         }
         
@@ -205,7 +205,7 @@ eOR ScanOp::eOpLoop(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
-  vPipeOut(new EndMarker);
+  vPipeOut_endMarker();
   return OR_EXIT;
 }
 

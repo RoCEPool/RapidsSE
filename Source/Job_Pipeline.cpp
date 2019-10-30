@@ -392,7 +392,7 @@ void Jobs::vJob_Pipeline_post(Job* pJob)
       case CN_ENDMARKER: {
         // print the responses received
         vTrace("success: %lld rows fetched\n"_Stz, *pJob_Pipeline->m_xResponse.m_ixRowsProcessed);
-        delete (EndMarker*)pOperand;
+        AM::vDeleteOperand(pOperand);
         goto L_EXIT;
         
         break;
