@@ -23,8 +23,6 @@ namespace Tasks
   friend Scheduler;
 
   private:
-    ReqTuple     m_xReqTuple;    // request tuple
-  
     Lock         m_okLock;       // lock for this task
 
     SMA<Job>     m_pJob;         // the job for this task
@@ -95,7 +93,6 @@ namespace Tasks
     void vQueue(eQK eQueue);
     void vRefindJobClass(void);
     RegSet* pRegSet(void);
-    ReqTuple* aReqTuple(void);
     void vRenderPortrait(s256& sTaskPortrait);
     void vReseed(void);
     void vRetry(void);

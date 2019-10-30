@@ -155,7 +155,7 @@ void Step::vTaskDump(void)
 
   m_pTask->vContentDump();
   
-  m_pTask->m_xReqTuple.vContentDump();
+  AM::aReqTuple_tls()->vContentDump();
   
   AM::vJobContentDump(m_pTask->m_pJob);
   

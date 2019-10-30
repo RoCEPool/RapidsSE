@@ -60,7 +60,6 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 Task::Task(Job* pJob)
 : Focal(CN_TASK,AM::iNextTaskId(),pJob->m_iUniqueId)
-, m_xReqTuple(&pJob->m_xReqTuple)
 , m_okLock(LK_TASK,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -367,7 +366,7 @@ void Task::vCaught(Exception xException)
 
   vContentDump();
   
-  m_xReqTuple.vContentDump();
+  AM::aReqTuple_tls()->vContentDump();
 
   AM::vJobContentDump(m_pJob);
   
@@ -694,16 +693,6 @@ RegSet* Task::pRegSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   return m_pRegSet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get request tuple                                                          */
-/*----------------------------------------------------------------------------*/
-ReqTuple* Task::aReqTuple(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return & m_xReqTuple;
 }
 
 /*----------------------------------------------------------------------------*/
