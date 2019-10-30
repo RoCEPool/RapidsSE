@@ -522,7 +522,7 @@ void Step::vStrToStrVec(void)
   
   s32 sDicNm;
   
-  char* azPath  = sPath.azChar();
+  char* azPath  = sPath.azChar() + 1;
   char* azDicNm = sDicNm.azChar();
   
   for (;; nStrings++) {
@@ -535,14 +535,10 @@ void Step::vStrToStrVec(void)
   
   for (i8 iMove = 0; iMove < nStrings; iMove++) {
     
-    if (! StrLib::bExtractName(&azPath,azDicNm))
-      break;
-    
     RASSERT(m_pAuxStack->bPopS32(sDicNm));
     m_pDataStack->vPushS32(sDicNm);
   }
 
-  
   m_pDataStack->vPushI8(nStrings);
 
   EXIT();
