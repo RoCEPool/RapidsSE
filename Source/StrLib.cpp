@@ -1415,7 +1415,7 @@ bool StrLib::bExtractMonth(char** aaSrc, i8& iMonth)
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractName(char** aazCursor, char* azName)
 {
-  if (! *aazCursor)
+  if (! **aazCursor)
     return false;
   
   char *aChar = azName;

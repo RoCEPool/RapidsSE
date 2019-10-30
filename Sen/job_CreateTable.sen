@@ -74,15 +74,11 @@
   // get the job from the task
   pTask task.job@ to pJob
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+  // set <path> from job
   job::this job.pushPath strVec::toPath to <path>
-
-
-  // set task's dictionary stack from path in job
-  //job::this job.pushPath task::dicStack.set
-
-  //task::dicStackToPathStr to <path>
+  <path> str.toStrVec task::dicStack.set
+  //task::dump
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -114,18 +110,11 @@
   // grab a ddl lock
   ddlLock::grabWrite
 
-  //----------------------------------------------------------------------------
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // set task's dictionary stack from path in job
-  pJob_CreateTable job.pushPath task::dicStack.set
 
-  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
-
-  "createTable_exe" .
-  <path> .
-
-  task::dump
-
-  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+  <path> str.toStrVec task::dicStack.set
+  //task::dump
 
   //----------------------------------------------------------------------------
   // make table
