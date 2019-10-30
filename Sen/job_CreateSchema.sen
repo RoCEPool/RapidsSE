@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_req ( -- )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 locals| pJob_CreateSchema pTask |
 
@@ -75,7 +75,7 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_exe ( pJob_CreateSchema -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry <SEED_EXE2>
 
   //params| pJob_CreateSchema |
   job::this locals| pJob_CreateSchema |
@@ -93,8 +93,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_CreateSchema job.pushPath
-  task::dicStack.set
+  //pJob_CreateSchema job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the schema

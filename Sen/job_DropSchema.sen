@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 locals| pJob pTask |
 
@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema_exe ( pJob_DropSchema -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry <SEED_EXE2>
 
   //params| pJob_DropSchema |
   job::this locals| pJob_DropSchema |
@@ -82,8 +82,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_DropSchema job.pushPath
-  task::dicStack.set
+  //pJob_DropSchema job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog

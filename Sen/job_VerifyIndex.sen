@@ -9,8 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : checkVerifyIndex ( "<tableNm>" "<indexNm>" -- true | errorCode false )
 
-  >>logEntry <SEED_REQ>
-
   params| sIndexNm sTableNm |
 
   // check in tables folder
@@ -51,6 +49,8 @@
 /*----------------------------------------------------------------------------*/
 : verifyIndex_req ( -- <R> )
 
+  >>logEntry <SEED_REQ2>
+
   0 0 locals| pJob pTask |
 
   tp: verifyIndex
@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyIndex_exe ( Job_VerifyIndex )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry <SEED_EXE2>
 
   //params| pJob_VerifyIndex |
   job::this locals| pJob_VerifyIndex |
@@ -97,8 +97,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_VerifyIndex job.pushPath
-  task::dicStack.set
+  //pJob_VerifyIndex job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names

@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeIndex_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 locals| pJob pTask |
 
@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeIndex_exe ( Job_SizeIndex -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry <SEED_EXE2>
 
   //params| pJob_SizeIndex |
   job::this locals| pJob_SizeIndex |
@@ -101,8 +101,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_SizeIndex job.pushPath
-  task::dicStack.set
+  //pJob_SizeIndex job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names

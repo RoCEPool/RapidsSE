@@ -112,7 +112,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTable_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 locals| pJob pTask |
 
@@ -135,7 +135,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTable_exe ( pJob_DropTable -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry <SEED_EXE2>
 
   //params| pJob_DropTable |
   job::this locals| pJob_DropTable |
@@ -152,8 +152,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_DropTable job.pushPath
-  task::dicStack.set
+  //pJob_DropTable job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the table

@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_req ( -- )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 locals| pJob_CreateCatalog pTask |
 
@@ -78,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_exe ( pJob_CreateCatalog -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry <SEED_EXE2>
 
   //params| pJob_CreateCatalog |
   job::this locals| pJob_CreateCatalog |
@@ -96,8 +96,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_CreateCatalog job.pushPath
-  task::dicStack.set
+  //pJob_CreateCatalog job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog

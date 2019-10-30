@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : truncateTable_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 locals| pJob pTask |
 
@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 : truncateTable_exe ( Job_TruncateTable -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry <SEED_EXE2>
 
   //params| pJob_TruncateTable |
   job::this locals| pJob_TruncateTable |
@@ -55,8 +55,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_TruncateTable job.pushPath
-  task::dicStack.set
+  //pJob_TruncateTable job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock

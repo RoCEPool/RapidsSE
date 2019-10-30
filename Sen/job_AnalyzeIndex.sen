@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 0 locals| pJob pTask bIsDetailed |
 
@@ -84,7 +84,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex_exe ( Job_AnalyzeIndex -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry <SEED_EXE2>
 
   //params| pJob_AnalyzeIndex |
   job::this locals| pJob_AnalyzeIndex |
@@ -103,8 +103,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_AnalyzeIndex job.pushPath
-  task::dicStack.set
+  //pJob_AnalyzeIndex job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table

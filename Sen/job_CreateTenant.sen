@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_req ( -- )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 locals| pJob_CreateTenant pTask |
 
@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_exe ( pJob_CreateTenant -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry <SEED_EXE2>
 
   //params| pJob_CreateTenant |
   job::this locals| pJob_CreateTenant |
@@ -92,8 +92,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_CreateTenant job.pushPath
-  task::dicStack.set
+  //pJob_CreateTenant job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog
