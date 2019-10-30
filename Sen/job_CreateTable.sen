@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_req (  -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   JP_BEGINNING log::markPhase
 
@@ -73,12 +73,6 @@
 
   // get the job from the task
   pTask task.job@ to pJob
-
-  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
-  // set <path> from job
-  job::this job.pushPath strVec::toPath to <path>
-  <path> str.toStrVec task::dicStack.set
-  //task::dump
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -93,7 +87,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_exe ( pJob_CreateTable -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry <SEED_EXE2>
 
   //params| pJob_CreateTable |
   job::this locals| pJob_CreateTable |
@@ -109,12 +103,6 @@
   //----------------------------------------------------------------------------
   // grab a ddl lock
   ddlLock::grabWrite
-
-  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
-  // set task's dictionary stack from path in job
-
-  <path> str.toStrVec task::dicStack.set
-  //task::dump
 
   //----------------------------------------------------------------------------
   // make table
