@@ -185,7 +185,7 @@ ENTRY("vLocalsTo"_Stz);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pLocalWord->pCategory()
-      && pLocalWord->pCategory()->szName()->bSame("<<metaSymbol>>"_Stz)) {
+      && pLocalWord->pCategory()->szWordNm()->bSame("<<metaSymbol>>"_Stz)) {
     
     Word* pCurrentWord = m_pTask->m_pForth->m_pCompiler->m_pCurrent;
     

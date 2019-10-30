@@ -188,7 +188,7 @@ void Step::vWordForget(void)
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
-  Word* pRemovedWord = m_pTask->m_pForth->m_oDicStack.pRemoveWord(pWord->szName());
+  Word* pRemovedWord = m_pTask->m_pForth->m_oDicStack.pRemoveWord(pWord->szWordNm());
   ASSERT(pRemovedWord);
   
   delete pRemovedWord;
@@ -329,7 +329,7 @@ ENTRY("vWordName"_Stz);
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
-  s32 sWordName(pWord->szName());
+  s32 sWordName(pWord->szWordNm());
   
   m_pDataStack->vPushS32(sWordName);
   

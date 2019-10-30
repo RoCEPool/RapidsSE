@@ -108,14 +108,14 @@ void Forth::vContentDump(void)
          
          this,
          
-         pWord ? pWord->szName() : "<none>"_Stz,
+         pWord ? pWord->szWordNm() : "<none>"_Stz,
          m_aInxPtr);
 
   vTrace("m_pSeedWord=%s %p\n"_Stz,
-         m_pSeedWord->szName(),
+         m_pSeedWord->szWordNm(),
          m_pSeedWord);
   vTrace("m_pExceptionWord=%s %p\n"_Stz,
-         m_pExceptionWord->szName(),
+         m_pExceptionWord->szWordNm(),
          m_pExceptionWord);
 
   m_pAuxStack->vContentDump(&m_oDicStack,   "m_pAuxStack:"_Stz);

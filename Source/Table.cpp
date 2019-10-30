@@ -68,7 +68,7 @@ Table::Table(void)
   
   Word* pWord = Word::pToWord(this);
   
-  m_sTableName = pWord->szName();
+  m_sTableName = pWord->szWordNm();
   m_eTableType = TT_NORMAL;
   //m_xSubDic
 

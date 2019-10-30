@@ -368,7 +368,7 @@ void Word::vContentDump(void)
          m_bImmediate,
          m_xRoutine.nUsed(),
          m_fpIntrinsic,
-         pStepWord ? pStepWord->szName() : "<not-found>"_Stz,
+         pStepWord ? pStepWord->szWordNm() : "<not-found>"_Stz,
          aFirstCell()
          );
 }
@@ -674,9 +674,9 @@ void Word::vLocalNo(i8 iLocalNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get name                                                                   */
+/* get word name                                                              */
 /*----------------------------------------------------------------------------*/
-Stz* Word::szName(void)
+Stz* Word::szWordNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
