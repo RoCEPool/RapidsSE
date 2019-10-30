@@ -22,9 +22,8 @@ Resource* Resources::_pResource(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Resource::Resource(eCN eClassNo, ReqTuple* aReqTuple)
+Resource::Resource(eCN eClassNo)
 : Focal(eClassNo,AM::iNextResourceId(),C_UNKNOWN)
-, m_xReqTuple(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
     
@@ -34,9 +33,8 @@ Resource::Resource(eCN eClassNo, ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Resource::Resource(eCN eClassNo, ReqTuple* aReqTuple, Focal* pFor)
+Resource::Resource(eCN eClassNo, Focal* pFor)
 : Focal(eClassNo,AM::iNextResourceId(),pFor->m_iUniqueId)
-, m_xReqTuple(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
@@ -65,17 +63,6 @@ i8 Resource::iResId(void)
   
   return m_iUniqueId;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get request tuple                                                          */
-/*----------------------------------------------------------------------------*/
-ReqTuple* Resource::aReqTuple(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  return & m_xReqTuple;
-}
-
 
 /*============================================================================*/
 /* end                                                                        */
