@@ -79,8 +79,7 @@
   // set task's dictionary stack from path in job
   job::this job.pushPath task::dicStack.set
 
-  task::this task.dicStack dicStack.toPathStr
-    to <path>
+  task::dicStackToPathStr to <path>
 
   task::dump
 
