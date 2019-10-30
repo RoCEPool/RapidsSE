@@ -47,7 +47,6 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 Lock::Lock(eLK eLockKind, Object* pFor)
 : Focal(CN_LOCK)
-, m_xReqTuple(nullptr)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -73,41 +72,6 @@ Lock::Lock(eLK eLockKind, Object* pFor)
   m_ixWriteCollisions.vCheckInit();
   
   _checkInitialised_(CN_LOCK);
-  
-  _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor (for focal case)                                               */
-/*----------------------------------------------------------------------------*/
-Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Focal* pFor)
-: Focal(CN_LOCK,AM::iNextLockId(),pFor->m_iUniqueId)
-, m_xReqTuple(aReqTuple)
-{
-  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  m_pFor   = pFor;
-  m_bFocal = true;
-
-  m_uLockWord = 0;
-  m_eLockKind = eLockKind;
-  
-  m_ixReadGrabs.vCheckInit();
-  m_ixReadCollisions.vCheckInit();
-  
-  m_ixWriteGrabs.vCheckInit();
-  m_ixWriteCollisions.vCheckInit();
-  
-  _checkInitialised_(CN_LOCK);
-  
-  SP_Id spId;
-  
-  vIncActNo(); ++ gixLock;
-  AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCT,
-              "Lock -%s construct ^For=%s |gixLock=%lld|"_Stz, //!format-LogLck
-              aLK[m_eLockKind],
-              spId.sz(((Focal*)m_pFor)->m_iUniqueId),
-              * gixLock);
   
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
 }
@@ -273,16 +237,6 @@ void Lock::vFocalOutline(s4K& sOutline)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get request tuple                                                          */
-/*----------------------------------------------------------------------------*/
-ReqTuple* Lock::aReqTuple(void)
-{
-  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  return & m_xReqTuple;
 }
 
 /*----------------------------------------------------------------------------*/

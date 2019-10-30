@@ -61,7 +61,7 @@ void Task::operator delete(void* pTaskAddress)
 Task::Task(Job* pJob)
 : Focal(CN_TASK,AM::iNextTaskId(),pJob->m_iUniqueId)
 , m_xReqTuple(&pJob->m_xReqTuple)
-, m_okLock(LK_TASK,&pJob->m_xReqTuple,this)
+, m_okLock(LK_TASK,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

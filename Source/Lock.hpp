@@ -11,7 +11,6 @@ namespace Locking
   {
   private:
     eLK      m_eLockKind;         // lock kind
-    ReqTuple m_xReqTuple;
     Object*  m_pFor;
     bool     m_bFocal;            // is a lock for a focal object
   
@@ -31,7 +30,6 @@ namespace Locking
     void  operator delete(void* pLockAddress);
     
     Lock(eLK eLockKind, Object* pFor);
-    Lock(eLK eLockKind, ReqTuple* aReqTuple, Focal* pFor);
    ~Lock(void) noexcept(false);
   
   private:
@@ -43,7 +41,6 @@ namespace Locking
 
   public:
     void vFocalOutline(s4K& sOutline);
-    ReqTuple* aReqTuple(void);
   
     bool bIsLocked(void);
     i8   iLockId(void);
