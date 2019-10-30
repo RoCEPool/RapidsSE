@@ -144,6 +144,7 @@ eOR StartOp::eStartLoop(void)
     switch (pOperand->eClass()) {
         
       case CN_ENDMARKER:
+        AM::vDeleteOperand(pOperand);
         goto L_EXIT;
         break;
         
