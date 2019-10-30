@@ -126,7 +126,7 @@ Op::~Op(void) noexcept(false)
   if (m_pStreamDef)
     delete m_pStreamDef;
   
-  delete m_pOpSpec;
+  m_pOpSpec = nullptr;
   
   -- gixOp;
   AM::vLogOpr(SL_INF,this,OA_OP_DESTRUCT,
@@ -189,7 +189,7 @@ void Op::vOpLoop(void)
       return;
     
     case OR_ERROR:
-      RASSERT(AM::bJobHasError(m_pJobUniversal));
+      ASSERT(AM::bJobHasError(m_pJobUniversal));
       AM::vSetJobLocalError(m_pJobUniversal, m_pPipeline->pJob());
       
       if (m_bAckJobEnd)

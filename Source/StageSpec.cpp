@@ -51,7 +51,11 @@ StageSpec::~StageSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  //delete m_pOpSpecVec;
+  // m_pOpSpecVec has duplicate OpSpec's from dynamo
+  // clear it here to avoid double delete
+  m_pOpSpecVec->vClear();
+  delete m_pOpSpecVec;
+  
 }
 
 
