@@ -189,9 +189,15 @@ ENTRY("vLocalsTo"_Stz);
     
     Word* pCurrentWord = m_pTask->m_pForth->m_pCompiler->m_pCurrent;
     
-    // increment index:
+    GenVar xMetaNm;
+    xMetaNm = sLocalNm;
+    
+    pCurrentWord->vEncode("pushValue"_Stz,&xMetaNm);
+    pCurrentWord->vEncode("swap"_Stz);
+
     pCurrentWord->vEncode("job::this"_Stz);
     pCurrentWord->vEncode("job.enameSet"_Stz);
+    
     pCurrentWord->vEncode("enameSet.addStr"_Stz);
     
     EXIT();
