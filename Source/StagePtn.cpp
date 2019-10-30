@@ -64,6 +64,10 @@ StagePtn::StagePtn(StageSpec* pStageSpec, i8 i_Ptn)
 StagePtn::~StagePtn(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEPTN,_FOOTER_);
+  
+  // opVec has duplicate Op's from Stage
+  // clear it here to avoid double delete
+  m_oOpVec.vClear();
 }
 
 /*----------------------------------------------------------------------------*/

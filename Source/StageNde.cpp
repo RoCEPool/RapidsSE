@@ -64,6 +64,10 @@ StageNde::StageNde(StageSpec* pStageSpec, i8 i_Nde)
 StageNde::~StageNde(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGENDE,_FOOTER_);
+  
+  // opVec has duplicate Op's from Stage
+  // clear it here to avoid double delete
+  m_oOpVec.vClear();
 }
 
 /*----------------------------------------------------------------------------*/

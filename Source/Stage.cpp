@@ -135,10 +135,6 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
 Stage::~Stage(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
-  
-  // opVec has duplicate Op's from StagePtnVec and StageNdeVec
-  // clear it here to avoid double delete
-  m_oOpVec.vClear();
 }
 
 /*----------------------------------------------------------------------------*/

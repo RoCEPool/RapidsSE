@@ -57,7 +57,7 @@ Dynamo::~Dynamo(void) noexcept(false)
   
   delete m_pPipelineSpec;
   //delete m_pStageSpec;
-  //delete m_pOpSpec;
+  delete m_pOpSpec;
 }
 
 /*----------------------------------------------------------------------------*/
