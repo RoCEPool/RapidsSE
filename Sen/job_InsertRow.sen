@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 locals| pJob_InsertRow pTask |
 
@@ -28,7 +28,7 @@
   pJob_InsertRow job.objectName@ locals| sTableNm |
 
   // push table dictionary
-  pJob_InsertRow job.pushPath task::dicStack.set
+  //pJob_InsertRow job.pushPath task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
@@ -38,7 +38,7 @@
   // path checks
 
   // set task's dictionary stack from path in job
-  pJob_InsertRow job.pushPath task::dicStack.set
+  //pJob_InsertRow job.pushPath task::dicStack.set
 
   // there should be a table folder
   sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> !!logError <DONE_REQ> then
@@ -80,7 +80,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_exe ( pJob_InsertRow -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry <SEED_EXE2>
 
   //params| pJob_Space |
   job::this locals| pJob_InsertRow |

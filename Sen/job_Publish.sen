@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 : publish_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 locals| pJob pTask |
 
@@ -57,7 +57,7 @@
 /*----------------------------------------------------------------------------*/
 : publish_exe (  Job_publish -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_EXE2>
 
   job::this locals| pJob_publish |
 
@@ -76,8 +76,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_publish job.pushPath
-  task::dicStack.set
+  //pJob_publish job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab ddl read lock

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : status_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 locals| pJob pTask |
 
@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 : status_exe ( pJob_Status -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry <SEED_EXE2>
 
   //params| pJob_Status |
   job::this locals| pJob_Status |

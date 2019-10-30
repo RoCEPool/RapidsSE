@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : SubInserter_req (  -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 locals| pThisTask |
   0 0 0 locals| pJob_SubInserter sTableNm pTable |
@@ -29,8 +29,8 @@
   pJob_SubInserter job.objectName@ to sTableNm
 
   // push table dictionary
-  pJob_SubInserter job.pushPath task::dicStack.set
-  sTableNm pushTable assert
+  //pJob_SubInserter job.pushPath task::dicStack.set
+  //sTableNm pushTable assert
   //pathDump
 
   sTableNm find execute locals| pTable |

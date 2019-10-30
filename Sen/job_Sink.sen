@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 : Sink_req (  -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   job::this locals| pJob_Sink |
 

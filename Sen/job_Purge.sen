@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 : purge_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 locals| pJob pTask |
 
@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 : purge_exe (  Job_Purge -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_EXE2>
 
   job::this locals| pJob_Purge |
 
@@ -74,8 +74,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_Purge job.pushPath
-  task::dicStack.set
+  //pJob_Purge job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab ddl read lock

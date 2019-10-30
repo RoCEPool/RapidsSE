@@ -73,8 +73,10 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     CLASS* operator -> (void)
     {
-      if (! m_pObject)
+      if (! m_pObject) {
+        vDebugPoint();
         THROW("SMA::operator ->() : m_pObject member is null"_Stz);
+      }
    
       return m_pObject;
     }
