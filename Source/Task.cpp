@@ -102,7 +102,7 @@ void Task::vInit(void)
   m_pOp          = nullptr;
 
   m_pThread      = nullptr;
-  m_pMutex       = new Mutex(MK_TASK,this,&m_xReqTuple);
+  m_pMutex       = new Mutex(MK_TASK,this);
   
   // m_oDicStack
 

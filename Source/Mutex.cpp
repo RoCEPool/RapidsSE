@@ -55,7 +55,7 @@ void Mutex::operator delete(void* pMutexAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Mutex::Mutex(eMK eKind, Focal* pIsFor, ReqTuple* aReqTuple)
+Mutex::Mutex(eMK eKind, Focal* pIsFor)
 : Resource(CN_MUTEX,pIsFor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);

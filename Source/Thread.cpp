@@ -64,7 +64,7 @@ Thread::Thread(void)
   
   m_eThreadState = HS_NONE;
   m_eDedicated   = CN_NONE;
-  m_pMutex       = new Mutex(MK_THREAD,this,nullptr);
+  m_pMutex       = new Mutex(MK_THREAD,this);
 
   m_pTask        = nullptr;
   m_nAssignedTasks = 0;
