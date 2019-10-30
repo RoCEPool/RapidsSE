@@ -1411,6 +1411,31 @@ bool StrLib::bExtractMonth(char** aaSrc, i8& iMonth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bExtractName: extract a name from substr                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractName(char** aazCursor, char* azName)
+{
+  if (! *aazCursor)
+    return false;
+  
+  char *aChar = azName;
+  
+  for ( ; **aazCursor; (*aazCursor)++) {
+    
+    if ('/' == **aazCursor) {
+      (*aazCursor)++;
+      break;
+    }
+    
+    *aChar++ = **aazCursor;
+  }
+  
+  *aChar = '\0';
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractPath: extract a path from substr                                   */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractPath(char** ps, char* pPath)

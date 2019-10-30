@@ -14,7 +14,7 @@ namespace SenVM
   private:
     Article*  m_pArticle;     // the word article
 
-    s32       m_sName;        // the name of this word
+    s32       m_sWordNm;      // the name of this word
   
     Word*     m_pCategory;    // category of word
     Dic*      m_pDic;         // which dictionary this word in
@@ -106,8 +106,6 @@ namespace SenVM
     Cell* aLastCell(void);
     i8    iLocalNo(void);
     void  vLocalNo(i8 iLocalNo);
-    Stz*  szName(void);
-    void  vName(Stz* szName);
     void  vObjectDump(Stz* aTab);
     void  vParams(i8 iParams);
     i8    iParams(void);
@@ -116,6 +114,8 @@ namespace SenVM
     void  vPrompt(bool bImmediate);
     void  vReset(void);
     i8    iSize(void);
+    Stz*  szWordNm(void);
+    void  vWordNm(Stz* szWordNm);
     char* aWspArea(void);
 
     Footer* aFooter(void);

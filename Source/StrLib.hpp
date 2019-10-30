@@ -86,6 +86,7 @@ namespace Strings
     static bool  bExtractItem(char** ps, char* pItem);
     static bool  bExtractItem(char** ps, char* pItem, char cDelimiter);
     static bool  bExtractMonth(char** ps, i8& iMonth);
+    static bool  bExtractName(char** aazCursor, char* azName);
     static bool  bExtractPath(char** ps, char* pPath);
     static bool  bExtractPort(char** ps, u2* pPort);
     static bool  bExtractString(char** ps, char* pString);

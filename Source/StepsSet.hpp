@@ -1079,6 +1079,7 @@ public:
   void vStrRight(void);
   void vStrSub(void);
   void vStrTailInt(void);
+  void vStrToStrVec(void);
 
   // sub loader
   void vSubLoaderDelete(void);

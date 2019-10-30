@@ -40,9 +40,9 @@ Stz* SP_Word::sz(Word* pWord)
                   "%s %s %s"
                   "%s%s"_Stz,
                   
-                  pWord->szName(),
+                  pWord->szWordNm(),
                   aWK[pWord->eKind()],
-                  pWord->pCategory()->szName(),
+                  pWord->pCategory()->szWordNm(),
                   
 
                   pWord->bImmediate() ? " immediate" : "",

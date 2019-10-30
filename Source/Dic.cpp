@@ -205,7 +205,7 @@ Word* Dic::pFindWord(Stz* szWordNm)
     
     //void* aEndWord = aAdd<void*>(pWord,sizeof(Word));
     
-    if (pWord->szName()->bSame(szWordNm)) {
+    if (pWord->szWordNm()->bSame(szWordNm)) {
       m_pArticle->vDropRead();
 
       if (szWordNm->bSame("whereAmI"_Stz))
@@ -264,7 +264,7 @@ void Dic::vInit(void)
   Word* pWord = Word::pToWord(this);
   
   //m_sName.vInit();
-  m_sName = pWord->szName();
+  m_sName = pWord->szWordNm();
   
   m_pArticle = new Article(m_sName,this,nullptr);
 }
@@ -307,7 +307,7 @@ void Dic::vListWords(void)
   for (Word* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
     
     vTrace(": %s (dictionary %s)"_Stz,
-           pWord->szName(),
+           pWord->szWordNm(),
            m_sName.szStz());
   }
   

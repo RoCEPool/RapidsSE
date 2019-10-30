@@ -864,7 +864,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
                                     pPtr,
-                                    ((Word*)pPtr)->szName());
+                                    ((Word*)pPtr)->szWordNm());
         else if (CN_QUEUE == ePtrClass) {
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
@@ -990,7 +990,7 @@ void Task::vTracePoint(Stz* aMark)
   
   Word* pLocatedWord = m_pForth->m_oDicStack.pLocateWord(aHasCell);
   if (pLocatedWord)
-    sRoutine = pLocatedWord->szName();
+    sRoutine = pLocatedWord->szWordNm();
   else
     sRoutine = "<unknown>"_Stz;
   
@@ -1033,7 +1033,7 @@ void Task::vTraceStep(Stz* aStepNm)
   Cell* aHasCell = m_pForth->m_aInxPtr;
   Word* pLocatedWord = m_pForth->m_oDicStack.pLocateWord(aHasCell);
   if (pLocatedWord)
-    sRoutine = pLocatedWord->szName();
+    sRoutine = pLocatedWord->szWordNm();
   else
     sRoutine = "<unknown>"_Stz;
   
