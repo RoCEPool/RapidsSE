@@ -13,7 +13,6 @@ namespace Pipelines
   
     PipelineSpec* m_pPipelineSpec;
     StageSpec*   m_pStageSpec;
-    OpSpec*      m_pOpSpec;
   
     i8           m_i_Tkn;
     Token*       m_pTkn;

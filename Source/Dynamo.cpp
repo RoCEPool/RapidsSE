@@ -38,7 +38,6 @@ Dynamo::Dynamo(TokenVec* pTknVec)
   
   m_pPipelineSpec = nullptr;
   m_pStageSpec   = nullptr;
-  m_pOpSpec      = nullptr;
   
   m_i_Tkn        = 0;
   m_pTkn         = nullptr;
@@ -57,7 +56,7 @@ Dynamo::~Dynamo(void) noexcept(false)
   
   delete m_pPipelineSpec;
   //delete m_pStageSpec;
-  delete m_pOpSpec;
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -459,8 +458,8 @@ bool Dynamo::bCollectOp(void)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pOpSpec = new OpSpec(m_pTkn->szText(),m_pStageSpec);
-  m_pStageSpec->vAddOpSpec(m_pOpSpec);
+  OpSpec* pOpSpec = new OpSpec(m_pTkn->szText(),m_pStageSpec);
+  m_pStageSpec->vAddOpSpec(pOpSpec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -481,7 +480,7 @@ bool Dynamo::bCollectOp(void)
     
     s256 sArgValue ( m_pTkn->szText() );
     
-    m_pOpSpec->vAddEnmPair(sArgName,sArgValue,TN_STRING);
+    pOpSpec->vAddEnmPair(sArgName,sArgValue,TN_STRING);
     
     vAcceptToken();
   }
