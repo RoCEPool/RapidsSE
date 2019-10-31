@@ -23,6 +23,8 @@ namespace Sessions
     Semantic(void);
    ~Semantic(void) noexcept(false);
   
+    EnameSet* pEnmSet(void);
+
   private:
     Footer* aFooter(void);
   };
