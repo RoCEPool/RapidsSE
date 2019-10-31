@@ -462,7 +462,6 @@ public:
 
   void vJobDec2pcAcksRmg(void);
   void vJobDelete(void);
-  void vJobDicPath(void);
 
   void vJobEnameFetch(void);
   void vJobEnameSet(void);

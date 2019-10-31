@@ -32,7 +32,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
-  vAddStep("job.dicPath"_Stz,          &Step::vJobDicPath);
   
   vAddStep("job.enameSet"_Stz,         &Step::vJobEnameSet);
   vAddStep("job.ename!"_Stz,           &Step::vJobEnameStore);
@@ -691,23 +690,6 @@ void Step::vJobDec2pcAcksRmg(void)
   bool bAmDecider = pJob->bAcksRmgDec();
   
   m_pDataStack->vPushI8(bAmDecider);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.dicPath -- get job dic path                                            */
-/*----------------------------------------------------------------------------*/
-void Step::vJobDicPath(void)
-{
-  ENTRY("vJobDicPath"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  Job* pJob = _pJob(pJobPtr);
-
-  m_pDataStack->vPushPointer(&pJob->m_oDicPath);
   
   EXIT();
 }
