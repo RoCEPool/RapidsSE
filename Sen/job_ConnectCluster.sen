@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 : connectCluster_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ2>
 
   0 0 locals| pJob pTask |
 
@@ -110,7 +110,7 @@
 /*----------------------------------------------------------------------------*/
 : connectCluster_exe ( -- )
 
-  >>logEntry <SEED_EXE>
+  >>logEntry <SEED_EXE2>
 
   //params| pJob_ConnectCluster |
   job::this locals| pJob_ConnectCluster |

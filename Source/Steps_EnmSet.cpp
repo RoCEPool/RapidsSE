@@ -82,7 +82,7 @@ void Step::vEnmSetAddStr(void)
     THROW_DSTACK();
   
   pEnameSet->vAdd(sName,sValue,TN_STRING);
-  pEnameSet->vPrint();
+  //pEnameSet->vPrint();
   
   EXIT();
 }
