@@ -106,8 +106,8 @@
 
   //----------------------------------------------------------------------------
   // make table
-  pJob_CreateTable job.objectName@ to sTableNm
-  sTableNm makeTable to pTable
+  //pJob_CreateTable job.objectName@ to sTableNm
+  <tableNm> makeTable to pTable
 
   //----------------------------------------------------------------------------
   // add table columns
