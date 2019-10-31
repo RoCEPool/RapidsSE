@@ -11,6 +11,8 @@ namespace Sessions
   
   private:
   
+    EnameSet m_oEnmSet; // ename-value set
+
     // must be last
     Footer m_xFooter;
     
