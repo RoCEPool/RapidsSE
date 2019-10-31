@@ -70,7 +70,7 @@ ENTRY("vLocalsBar"_Stz);
   
   Word* pCurrentWord = m_pCompiler->m_pCurrent;
   
-  Dic* pDic = m_pTask->m_pForth->m_oDicStack.pPick(0);
+  Dic* pDic = m_oDicStack.pPick(0);
 
   GenVar xVariable;
   
@@ -89,7 +89,7 @@ ENTRY("vLocalsBar"_Stz);
       // create a locals dictionary
       pDic = new Dic;
       pDic->vName("<localsDic>"_Stz);
-      m_pTask->m_pForth->m_oDicStack.vPush(pDic);
+      m_oDicStack.vPush(pDic);
       
       // enocde locals frame push
       pCurrentWord->vEncode("locals.push"_Stz);
@@ -173,7 +173,7 @@ ENTRY("vLocalsTo"_Stz);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // attempt to find the word describing the local
   
-  Word* pLocalWord = m_pTask->m_pForth->m_oDicStack.pFindWord(sLocalNm);
+  Word* pLocalWord = m_oDicStack.pFindWord(sLocalNm);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no such local or <metaSymbol>
