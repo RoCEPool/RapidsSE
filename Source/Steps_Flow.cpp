@@ -29,7 +29,7 @@ void Step::vFlowBegin_(void)
 {
   ENTRY("vBegin_"_Stz);
   
-  m_pTask->m_pForth->m_pCompiler->m_pBeginIP = m_aInxPtr;
+  m_pCompiler->m_pBeginIP = m_aInxPtr;
   
   EXIT();
 }
@@ -99,7 +99,7 @@ void Step::vFlowJumpBegin_(void)
 {
   ENTRY("vFlowJumpBegin_"_Stz);
   
-  m_aInxPtr = m_pTask->m_pForth->m_pCompiler->m_pBeginIP;
+  m_aInxPtr = m_pCompiler->m_pBeginIP;
   
   EXIT();
 }
@@ -188,7 +188,7 @@ void Step::vFlowRetryPoint(void)
 {
   ENTRY("vFlowRetryPoint"_Stz);
   
-  m_pTask->m_pForth->m_pCompiler->m_pRetryIP = m_aInxPtr;
+  m_pCompiler->m_pRetryIP = m_aInxPtr;
   
   m_pDataStack->vRetryPoint();
   
