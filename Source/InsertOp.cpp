@@ -298,8 +298,9 @@ void InsertOp::vPreliminary(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INSERTOP,_FOOTER_);
   
+  //! ALKA TO COME BACK TO THIS
   DicStack* pDicStack = new DicStack;
-  AM::vJobDicStack(m_pJobPipeline, pDicStack);
+  //AM::vJobDicStack(m_pJobPipeline, pDicStack);
   
   // find the table in the session dictionary stack
   m_pTable = Table::pFindTable(pDicStack, m_sTableNm);

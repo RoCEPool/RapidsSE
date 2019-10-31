@@ -52,10 +52,6 @@ Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
 bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->m_bHasStarted;   }
 HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
-void AM::vJobDicStack(Job* pJob, DicStack* pDicStack) {
-  pDicStack->vSetStack(&pJob->m_oDicPath);
-  return ;
-}
 LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }
 bool AM::bLogging(void)       { return gpLog ? true : false;                  }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }

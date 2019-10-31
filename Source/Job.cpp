@@ -57,7 +57,6 @@ bool Jobs::_bIsValidJob(eCN eClass)
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
 : JobBase(eClassNo)
-, JobDicPath((Session*)nullptr)
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -109,7 +108,6 @@ Job::Job(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
 : JobBase(aJobClass,aReqTuple,AM::iNextJobId())
-, JobDicPath(AM::pSessionGet(aReqTuple))
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
@@ -155,7 +153,6 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
 : JobBase(aJobClass,aReqTuple,AM::iNextJobId())
-, JobDicPath(pParentJob)
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);

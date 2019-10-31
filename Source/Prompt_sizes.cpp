@@ -50,7 +50,6 @@ bool Prompt::bPrompt_sizes(SePrompt* pPrompt)
   vTrace("  sizeof(s1M)    = %lu; \n"_Stz, sizeof(s1M));
   vTrace("\n"_Stz);
   
-  vTrace("  sizeof(JobDicPath)    = %lu; \n"_Stz, sizeof(JobDicPath));
   vTrace("  sizeof(JobFilePath)   = %lu; \n"_Stz, sizeof(JobFilePath));
   vTrace("  sizeof(JobResult)     = %lu; \n"_Stz, sizeof(JobResult));
   vTrace("  sizeof(JobObjectName) = %lu; \n"_Stz, sizeof(JobObjectName));

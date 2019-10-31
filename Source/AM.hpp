@@ -69,7 +69,6 @@ namespace Oblique
     static HeapMem* pHeapMem(void);
     static i8   nIndexEntries(void);
     static Article* pLexiconArticle(void);
-    static void vJobDicStack(Job* pJob, DicStack* pDicStack);
     static LockTracker* pLockTracker(void);
     static bool bLogging(void);
     static bool bMetadata(void);
