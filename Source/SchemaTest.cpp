@@ -48,6 +48,7 @@ void SchemaTest::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 SchemaTest::SchemaTest(Stz* sStream)
 : Object(CN_SCHEMATEST)
+, m_oFile(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEMATEST,_FOOTER_);
   

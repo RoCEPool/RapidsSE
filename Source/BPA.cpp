@@ -533,7 +533,7 @@ i8 BPA::iPoolFree(void)
 /*----------------------------------------------------------------------------*/
 void BPA::vReadBuffers(Stz* sFilePath)
 {
-  File* pFile = new File();
+  File* pFile = new File(nullptr);
   pFile->bOpenRead(sFilePath);
   
   PoolBuffer* pBuffer = new PoolBuffer(CN_HEAPBUFFER);
@@ -673,7 +673,7 @@ void BPA::vWordList(i8 iEpoch)
 /*----------------------------------------------------------------------------*/
 void BPA::vWriteBuffers(Stz* sFilePath)
 {
-  File* pFile = new File();
+  File* pFile = new File(nullptr);
   pFile->bOpenWrite(sFilePath);
   
   i8 iStart  = Tick::iRdClock();
@@ -733,7 +733,7 @@ void BPA::vWriteHeap(Heap* pHeap, File* pFile)
 /*----------------------------------------------------------------------------*/
 void BPA::vWritePersistentHeapMem(Stz* sFilePath)
 {
-  File* pFile = new File();
+  File* pFile = new File(nullptr);
   pFile->bOpenWrite(sFilePath);
   
   vTrace("Writing persistent small heap\n"_Stz);

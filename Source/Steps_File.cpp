@@ -64,7 +64,7 @@ void Step::vFileNew(void)
 {
 ENTRY("vFileNew"_Stz);
   
-  File* pFile = new File;
+  File* pFile = new File(m_pTask);
   
   Object* pPtrFile;
   pPtrFile = (Object*)pFile;

@@ -50,7 +50,7 @@ namespace Resources
     void* operator new(size_t);
     void operator delete(void* pFileAddress);
   
-    File(void);
+    File(Focal* pIsFor);
    ~File() noexcept(false);
     
     static bool bExists(Stz* aFilePath);

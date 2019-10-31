@@ -43,6 +43,7 @@ void FileChunk::operator delete(void* pFileChunkAddress)
 /*----------------------------------------------------------------------------*/
 FileChunk::FileChunk(eCN eClassNo, Formatters* pFormatters)
 : RecordExtractor(eClassNo,pFormatters)
+, m_oFile(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 

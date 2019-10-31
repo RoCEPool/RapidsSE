@@ -103,6 +103,7 @@ void Job_Ingest::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 Job_Ingest::Job_Ingest(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
+, m_oFile(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   

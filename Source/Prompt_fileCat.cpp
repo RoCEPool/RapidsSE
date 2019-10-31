@@ -32,7 +32,7 @@ bool Prompt::bPrompt_fileCat(SePrompt* pPrompt)
   sFile = (*pTokenVec)[1]->szText();
   i8 nLines = pTokenVec->pGet(2)->iToI8();
 
-  File oFile;
+  File oFile(pPrompt);
   
   if (! oFile.bOpenRead(sFile)) {
     vTrace("No such file\n"_Stz);

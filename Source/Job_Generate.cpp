@@ -103,6 +103,7 @@ void Job_Generate::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 Job_Generate::Job_Generate(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
+, m_oFile(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   

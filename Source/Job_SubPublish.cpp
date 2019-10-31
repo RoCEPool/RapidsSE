@@ -103,6 +103,7 @@ void Job_SubPublish::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 Job_SubPublish::Job_SubPublish(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
+, m_oOutputFile(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
     
