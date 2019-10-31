@@ -30,7 +30,7 @@
   0 0 locals| pDicStackSession pDicStackTask |
 
   // get session dic stack
-  task::this task.session@ session.dicStack to pDicStackSession
+  job::this job.session@ session.dicStack to pDicStackSession
 
   // get task dic stack
   task::this task.dicStack to pDicStackTask

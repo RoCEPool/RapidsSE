@@ -103,6 +103,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.schemaName@"_Stz,      &Step::vJobSchemaNameFetch);
   vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
   vAddStep("job.send"_Stz,             &Step::vJobSend);
+  vAddStep("job.session@"_Stz,         &Step::vJobSessionFetch);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
   vAddStep("job.signalWaiter"_Stz,     &Step::vJobSignalWaiter);
@@ -1866,6 +1867,26 @@ void Step::vJobSend(void)
   
   // call the job pre-send function
   pJobClass->vSendJob(pJob);  // come back to this, remove session as parameter to delete
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.session@ -- fetch job session                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSessionFetch(void)
+{
+  ENTRY("vJobSessionStateFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 iSessionId = pJob->m_xReqTuple.m_i_Session;
+  Session* pSession = AM::pSessionArray()->pGetSession(iSessionId);
+  
+  m_pDataStack->vPushPointer(pSession);
   
   EXIT();
 }

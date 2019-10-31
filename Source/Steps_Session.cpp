@@ -50,6 +50,7 @@ void Step::vSessionDicStack(void)
     THROW_DSTACK();
   
   Session* pSession = _pSession(pPtrSession);
+  ASSERT(pSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
   m_pDataStack->vPushPointer(pSession->pPathStack());

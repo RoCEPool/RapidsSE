@@ -526,6 +526,7 @@ public:
   void vJobSchemaNameFetch(void);
   void vJobSeedFetch(void);
   void vJobSend(void);
+  void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
   void vJobShow(void);
   void vJobSignalWaiter(void);
