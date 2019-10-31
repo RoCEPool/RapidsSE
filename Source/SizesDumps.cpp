@@ -320,7 +320,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_REGSET
   /* 77 */ &Dump::vUndefined,       // CN_RELOP
   /* 77 */ &Dump::vUndefined,       // CN_REQUEST
-  /*    */ &LocalChain::vDump,        // CN_RESOURCETRACKER
+  /*    */ &LocalChain::vDump,      // CN_RESOURCETRACKER
   /*    */ &Dump::vUndefined,       // CN_RESPONSE
   /*    */ &Dump::vUndefined,       // CN_RESPONSEVEC
   /*    */ &Dump::vUndefined,       // CN_ROW
@@ -333,6 +333,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_SCHEMA
   /*    */ &Dump::vUndefined,       // CN_SCHEMATEST
   /*    */ &Dump::vUndefined,       // CN_SEEME
+  /*    */ &Dump::vUndefined,       // CN_SEMANTIC
   /*115 */ &SePrompt::vDump,        // CN_SEPROMPT
   /*    */ &Session::vDump,         // CN_SESSION
   /*    */ &Dump::vUndefined,       // CN_SESSIONARRAY
@@ -756,6 +757,7 @@ i8 giClassSize[]
   /*    */ sizeof(Schema),             // CN_SCHEMA
   /*    */ sizeof(SchemaTest),         // CN_SCHEMATEST
   /*    */ sizeof(SeeMe),              // CN_SEEME
+  /*    */ sizeof(Semantic),           // CN_SEMANTIC
   /*115 */ sizeof(SePrompt),           // CN_SEPROMPT
   /*    */ sizeof(Session),            // CN_SESSION
   /*    */ sizeof(SessionArray),       // CN_SESSIONARRAY
@@ -1179,6 +1181,7 @@ eHT geWhichHeap[]
   /*107 */ HT_TRANSIENT_SMALL,   // CN_SCHEMA
   /*107 */ HT_TRANSIENT_LARGE,   // CN_SCHEMATEST
   /*    */ HT_INVALID,           // CN_SEEME
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_SEMANTIC
   /*115 */ HT_TRANSIENT_LARGE,   // CN_SEPROMPT
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_SESSION
   /*    */ HT_TRANSIENT_LARGE,   // CN_SESSIONARRAY

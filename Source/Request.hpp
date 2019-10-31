@@ -32,7 +32,7 @@ namespace Sessions
     Footer* aFooter(void);
   };
   
-  Request* _pCommand(void* aAddr);
+  Request* _pRequest(void* aAddr);
 }
 
 /*============================================================================*/
