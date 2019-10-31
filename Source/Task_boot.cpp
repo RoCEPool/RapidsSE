@@ -231,7 +231,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
     pDic = AM::pRootDic();
 ;
 
-  pNewWord = new(pDic) Word(m_pForth->m_pCompiler->m_pTokeniser->sToken());
+  pNewWord = new(pDic) Word(m_pForth->m_pCompiler->m_pTokeniser->szToken());
   
   m_pForth->m_pCompiler->m_pCurrent = pNewWord;
 
@@ -241,19 +241,19 @@ Word* Task::pCompileColon(s48K& sDefinition)
     
     //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
     
-//  if (StrLib::bEqualTo(";",m_pCompiler->m_pTokeniser->sToken().azChar()))
-    if (m_pForth->m_pCompiler->m_pTokeniser->sToken().bEqual(";"_Stz))
+//  if (StrLib::bEqualTo(";",m_pCompiler->m_pTokeniser->szToken()->azChar()))
+    if (m_pForth->m_pCompiler->m_pTokeniser->szToken()->bEqual(";"_Stz))
       break;
     
     switch (m_pForth->m_pCompiler->m_pTokeniser->eToken()) {
         
       case TN_INTEGER:
-        xVariable = m_pForth->m_pCompiler->m_pTokeniser->sToken().iToI8();
+        xVariable = m_pForth->m_pCompiler->m_pTokeniser->szToken()->iToI8();
         pNewWord->vEncode("pushValue"_Stz,&xVariable);
         break;
         
       case TN_NAME:
-        pCalledWord = m_pForth->m_oDicStack.pFindWord(m_pForth->m_pCompiler->m_pTokeniser->sToken());
+        pCalledWord = m_pForth->m_oDicStack.pFindWord(m_pForth->m_pCompiler->m_pTokeniser->szToken());
         if (WK_INTRINSIC == pCalledWord->eKind()) {
           fpStep = pCalledWord->fpEntryStep();
           if (pCalledWord->bImmediate())
@@ -273,7 +273,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
         break;
         
       case TN_STRING: {
-        xVariable = m_pForth->m_pCompiler->m_pTokeniser->sToken();
+        xVariable = m_pForth->m_pCompiler->m_pTokeniser->szToken();
         pNewWord->vEncode("pushValue"_Stz,&xVariable);
         break;
       }
@@ -312,19 +312,19 @@ void Task::vCompileConstant(s48K& sDefinition)
   
   if (AM::bVerbose())
     vTrace("CompileConstant: %s\n"_Stz,
-           m_pForth->m_pCompiler->m_pTokeniser->sToken().azChar());
+           m_pForth->m_pCompiler->m_pTokeniser->szToken()->azChar());
   
-  sValue = (Stz*)m_pForth->m_pCompiler->m_pTokeniser->sToken().azChar();
+  sValue = (Stz*)m_pForth->m_pCompiler->m_pTokeniser->szToken()->azChar();
   
   // get CONSTANT
   m_pForth->m_pCompiler->m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().azChar());
+  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->szToken()->azChar());
   
   // get name of word
   m_pForth->m_pCompiler->m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().azChar());
+  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->szToken()->azChar());
 
-  Stz* szName = (Stz*)m_pForth->m_pCompiler->m_pTokeniser->sToken().azChar();
+  Stz* szName = (Stz*)m_pForth->m_pCompiler->m_pTokeniser->szToken()->azChar();
 
   //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.azChar());
   

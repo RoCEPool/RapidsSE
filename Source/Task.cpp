@@ -750,7 +750,7 @@ void Task::vRetry(void)
   m_pForth->m_aInxPtr = m_pForth->m_pCompiler->m_pRetryIP;
   m_pForth->m_pCompiler->m_pBeginIP = nullptr;
   
-  m_pForth->m_pCompiler->m_pTokeniser->sToken() = ""_Stz;
+  m_pForth->m_pCompiler->m_pTokeniser->vToken(""_Stz);
   
   m_pForth->m_pDataStack->vRetry();
   m_pForth->m_pReturnStack->vRetry();

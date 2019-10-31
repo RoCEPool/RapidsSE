@@ -80,7 +80,7 @@ ENTRY("vLocalsBar"_Stz);
     m_pCompiler->m_pTokeniser->vNextToken();
     
     // end of locals declaration?
-    if (m_pCompiler->m_pTokeniser->sToken().bEqual("|"_Stz))
+    if (m_pCompiler->m_pTokeniser->szToken()->bEqual("|"_Stz))
       break;
 
     // test for first use of locals|
@@ -96,7 +96,7 @@ ENTRY("vLocalsBar"_Stz);
     }
     
     // create new word for local variable in current dictionary
-    Word* pWordLocal = new(pDic) Word(m_pCompiler->m_pTokeniser->sToken());
+    Word* pWordLocal = new(pDic) Word(m_pCompiler->m_pTokeniser->szToken());
     // ** do not set as current word **
     
     // set word as local variable
@@ -168,7 +168,7 @@ ENTRY("vLocalsTo"_Stz);
   // get name of local from token stream
   m_pCompiler->m_pTokeniser->vNextToken();
 
-  s32 sLocalNm(m_pCompiler->m_pTokeniser->sToken());
+  s32 sLocalNm(m_pCompiler->m_pTokeniser->szToken());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // attempt to find the word describing the local

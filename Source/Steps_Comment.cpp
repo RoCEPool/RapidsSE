@@ -21,7 +21,7 @@ void Step::vComment(void)
   
   for (;;) {
     m_pCompiler->m_pTokeniser->vNextToken();
-    if (m_pCompiler->m_pTokeniser->sToken().bEqual(")"_Stz))
+    if (m_pCompiler->m_pTokeniser->szToken()->bEqual(")"_Stz))
       break;
   }
   
