@@ -146,7 +146,7 @@ StageSpec* StagePtn::pStageSpec(void)
 /*----------------------------------------------------------------------------*/
 /* spawn operators for partitions of given node                               */
 /*----------------------------------------------------------------------------*/
-void StagePtn::vSpawnOperatorJobs(i8 iNode)
+void StagePtn::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
 {
   _precondition_(_MAGIC_,CN_STAGEPTN,_FOOTER_);
   
@@ -158,7 +158,7 @@ void StagePtn::vSpawnOperatorJobs(i8 iNode)
       
       Op* pOp = m_oOpVec.pGet(i_Op);
       
-      bool bSpawned = pOp->bSpawnJob();
+      bool bSpawned = pOp->bSpawnJob(iSessionId);
       
       ASSERT(bSpawned);
     }

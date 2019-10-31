@@ -36,7 +36,7 @@ namespace Operators
     void      vPopulateOpVec(PipelineSpec* pPipelineSpec);
     bool      bPulsed(void);
     void      vSetupJob(void);
-    void      vSpawnOperatorJobs(i8 iNode);
+    void      vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
     StageVec* pStageVec(void);
 
     Footer* aFooter(void);

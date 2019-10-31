@@ -694,11 +694,11 @@ OperandQueue* Op::pQueueRight(void)
 /*----------------------------------------------------------------------------*/
 /* spawn a job for this operator                                              */
 /*----------------------------------------------------------------------------*/
-bool Op::bSpawnJob(void)
+bool Op::bSpawnJob(i8 iSessionId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  ReqTuple xReqTuple(m_sName,false);
+  ReqTuple xReqTuple(m_sName,iSessionId, false);
 
   m_pJobUniversal = AM::pNewJobUniversal(this, &xReqTuple,
                                          this->m_iUniqueId);

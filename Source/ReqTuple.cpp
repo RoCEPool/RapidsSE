@@ -38,6 +38,17 @@ ReqTuple::ReqTuple(Stz* szService, bool bFlag)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+ReqTuple::ReqTuple(Stz* szService, i8 iSessionId, bool bFlag)
+{
+  vSet(nullptr);
+  
+  m_i_Session = iSessionId;
+  m_sPurpose  = szService;
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 ReqTuple::~ReqTuple(void) noexcept(false)

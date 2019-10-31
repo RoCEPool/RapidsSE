@@ -287,7 +287,7 @@ void Job_Pipeline::vExecute(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operaotors for this node
   
-  m_pPipeline->vSpawnOperatorJobs(iThisNode);
+  m_pPipeline->vSpawnOperatorJobs(m_xReqTuple.m_i_Session, iThisNode);
   
   // get the first stage of the pipeline
   Stage* pStage = m_pPipeline->pStageVec()->pGet(0);

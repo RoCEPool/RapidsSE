@@ -21,6 +21,7 @@ namespace Focals
   
     ReqTuple(ReqTuple* aReqTuple);
     ReqTuple(Stz* szService, bool bFlag);
+    ReqTuple(Stz* szService, i8 iSessionId, bool bFlag);
    ~ReqTuple(void) noexcept(false);
 
     void vContentDump(void);
