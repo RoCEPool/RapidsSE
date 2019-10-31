@@ -65,7 +65,9 @@
   // path checks
 
   // set task's dictionary stack from path in job
-  pJob_SubInserter job.pushPath task::dicStack.set
+  //pJob_SubInserter job.pushPath task::dicStack.set
+  pushPath strVec::toPath to <path>
+  <path> str.toStrVec task::dicStack.set
   //pathDump
 
   // there should be a table folder

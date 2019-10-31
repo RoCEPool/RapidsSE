@@ -43,7 +43,9 @@
 
   JP_BEGINNING job::this job.phase!
 
-  job::pathSet
+  //job::pathSet
+  pushPath strVec::toPath to <path>
+  <path> str.toStrVec task::dicStack.set
 
   job::becomeParticipant
 

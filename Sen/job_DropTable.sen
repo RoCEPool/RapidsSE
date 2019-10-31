@@ -185,8 +185,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_DropTable job.pushPath
-  task::dicStack.set
+  //pJob_DropTable job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
@@ -216,7 +216,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTable_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+  >>logEntry <SEED_BEG2>
 
   job::this locals| pJob_dropTable |
 

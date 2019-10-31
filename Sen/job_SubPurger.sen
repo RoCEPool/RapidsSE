@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 : SubPurger_run ( -- <R> )
 
-  >>logEntry <SEED_RUN>
+  >>logEntry <SEED_RUN2>
 
   0 0 locals| pJob_SubPurger pTask |
   0 0 locals| pTable sTableNm |
@@ -76,8 +76,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job from purge (sub has no session)
-  pTask_Purge task.job@ job.pushPath
-  task::dicStack.set
+  //pTask_Purge task.job@ job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table

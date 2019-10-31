@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 : SubPublish_run ( -- <R> )
 
-  >>logEntry <SEED_RUN>
+  >>logEntry <SEED_RUN2>
 
   0 0 locals| pJob_SubPublish pTask |
   0 0 0 locals| iSlot pTable sTableNm |
@@ -69,8 +69,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job from publish (sub has no session)
-  pTask_Publish task.job@ job.pushPath
-  task::dicStack.set
+  //pTask_Publish task.job@ job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table

@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : SubScan_run ( -- <R> )
 
-  >>logEntry <SEED_RUN>
+  >>logEntry <SEED_RUN2>
 
   0 0 locals| pTask pJob_SubScan |
 
@@ -64,8 +64,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_SubScan job.pushPath
-  task::dicStack.set
+  //pJob_SubScan job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute a table scan

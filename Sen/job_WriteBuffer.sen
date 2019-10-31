@@ -33,9 +33,8 @@
   pJob_WriteBuffer job.objectName@ to sTableNm
 
   // push table dictionary
-  pJob_WriteBuffer job.pushPath task::dicStack.set
+  //pJob_WriteBuffer job.pushPath task::dicStack.set
   sTableNm pushTable assert
-  //pathDump
 
   // use table name find and set target table
   sTableNm find execute locals| pTable |
@@ -111,7 +110,7 @@
 /*----------------------------------------------------------------------------*/
 : writeBuffer_kid ( -- )
 
-  >>logEntry <SEED_KID>
+  >>logEntry <SEED_KID2>
 
   job::this locals| pJob_WriteBuffer |
 

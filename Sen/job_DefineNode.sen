@@ -89,8 +89,8 @@
 
   //----------------------------------------------------------------------------
   // set task's dictionary stack from path in job
-  pJob_DefineNode job.pushPath
-  task::dicStack.set
+  //pJob_DefineNode job.pushPath
+  //task::dicStack.set
 
   //----------------------------------------------------------------------------
   // make Node
@@ -121,8 +121,8 @@
 
   //----------------------------------------------------------------------------
   // set task's dictionary stack from path in job
-  pJob_DefineNode job.pushPath
-  task::dicStack.set
+  //pJob_DefineNode job.pushPath
+  //task::dicStack.set
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers

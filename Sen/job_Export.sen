@@ -64,7 +64,8 @@
   // set path and table folder of E
 
   // set path
-  pJob_E job.pushPath task::dicStack.set
+  //! ALKA COME BACK TO THIS
+  //pJob_E job.pushPath task::dicStack.set
 
   // set table dictionary
   pJob_E job.objectName@ to sTableNm
@@ -94,7 +95,8 @@
   // set path and table folder of (E`)
 
   // set path
-  pJob_(E`) job.pushPath task::dicStack.set
+//! ALKA COME BACK TO THIS
+  //pJob_(E`) job.pushPath task::dicStack.set
 
   // set table folder
   pJob_(E`) job.objectName@ to sTableNm
@@ -148,8 +150,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_(E`) job.pushPath
-  task::dicStack.set
+  //! ALKA COME BACK TO THIS
+  //pJob_(E`) job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can export the table

@@ -135,7 +135,7 @@
   // path checks
 
   // set task's dictionary stack from path in job
-  pJob_InsertRow job.pushPath task::dicStack.set
+  //pJob_InsertRow job.pushPath task::dicStack.set
   //pathDump
 
   // there should be a table folder
@@ -181,7 +181,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+  >>logEntry <SEED_BEG2>
 
   job::this locals| pJob_InsertRow |
 

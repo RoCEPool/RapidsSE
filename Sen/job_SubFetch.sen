@@ -122,7 +122,7 @@
 /*----------------------------------------------------------------------------*/
 : SubFetch_run ( -- <R> )
 
-  >>logEntry <SEED_RUN>
+  >>logEntry <SEED_RUN2>
 
   0 0 locals| pTask pJob_SubFetch |
 
@@ -143,8 +143,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_SubFetch job.pushPath
-  task::dicStack.set
+  //pJob_SubFetch job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute fetch depending on the fetchTechnique in the planner

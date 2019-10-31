@@ -153,8 +153,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_SizeIndex job.pushPath
-  task::dicStack.set
+  //pJob_SizeIndex job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get index and table name
@@ -186,7 +186,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeIndex_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+  >>logEntry <SEED_BEG2>
 
   job::this locals| pJob_sizeIndex |
 

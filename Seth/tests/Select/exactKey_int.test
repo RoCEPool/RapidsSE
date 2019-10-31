@@ -4,7 +4,7 @@
 
 //IndexEntries 5;
 //success
-Loop 50 {
+//Loop 50 {
 // (1) create table jCdt
 create table jCdt (
   jA  INTEGER,
@@ -93,7 +93,7 @@ rows:
 
 drop table jCdt;
 success
-}
+//}
 CLEANUP {
 
   drop table jCdt;

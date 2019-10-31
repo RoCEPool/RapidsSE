@@ -40,7 +40,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set path
-  pJob_Walk job.pushPath task::dicStack.set
+  //pJob_Walk job.pushPath task::dicStack.set
 
   // set table dictionary
   pJob_Walk job.objectName@ to sTableNm
@@ -112,8 +112,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_Walk job.pushPath
-  task::dicStack.set
+  //pJob_Walk job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can walk the table
@@ -177,7 +177,7 @@
 /*----------------------------------------------------------------------------*/
 : walk_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+  >>logEntry <SEED_BEG2>
   actLog::seed_rcv
 
   job::this locals| pJob_Walk |

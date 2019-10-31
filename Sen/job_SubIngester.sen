@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 : subIngester_run ( -- )
 
-  >>logEntry <SEED_RUN>
+  >>logEntry <SEED_RUN2>
 
   task::this locals| pThisTask |
   job::this  locals| pJob_SubIngester |

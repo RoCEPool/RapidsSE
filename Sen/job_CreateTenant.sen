@@ -124,8 +124,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pJob_CreateTenant job.pushPath
-  task::dicStack.set
+  //pJob_CreateTenant job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
@@ -159,7 +159,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+  >>logEntry <SEED_BEG2>
 
   job::this locals| pJob_createTenant |
 

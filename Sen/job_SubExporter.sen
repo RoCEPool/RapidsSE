@@ -30,7 +30,7 @@
 /*----------------------------------------------------------------------------*/
 : subExporter_run ( -- )
 
-  >>logEntry <SEED_RUN>
+  >>logEntry <SEED_RUN2>
   actLog::seed_run
 
   job::this locals| pJob_SE |

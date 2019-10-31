@@ -138,8 +138,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-  pjob_VerifyTable job.pushPath
-  task::dicStack.set
+  //pjob_VerifyTable job.pushPath
+  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table name
@@ -166,7 +166,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyTable_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+  >>logEntry <SEED_BEG2>
 
   job::this locals| pjob_VerifyTable |
 
