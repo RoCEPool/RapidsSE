@@ -1145,8 +1145,6 @@ public:
   void vTaskNameFetch(void);
   void vTaskThis(void);
   void vTaskSeed(void);
-  void vTaskSessionFetch(void);
-  void vTaskSessionStore(void);
   void vTaskSendNodeFetch(void);
   void vTaskSendNodeStore(void);
   void vTaskSleepMsec(void);

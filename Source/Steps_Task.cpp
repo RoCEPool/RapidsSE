@@ -29,8 +29,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.job!"_Stz,        &Step::vTaskJobStore);
   vAddStep("task.name@"_Stz,       &Step::vTaskNameFetch);
   vAddStep("task.seed"_Stz,        &Step::vTaskSeed);
-  vAddStep("task.session@"_Stz,    &Step::vTaskSessionFetch);
-  vAddStep("task.session!"_Stz,    &Step::vTaskSessionStore);
   vAddStep("task.sendNode@"_Stz,   &Step::vTaskSendNodeFetch);
   vAddStep("task.sendNode!"_Stz,   &Step::vTaskSendNodeStore);
   vAddStep("task.state@"_Stz,      &Step::vTaskStateFetch);
@@ -326,50 +324,6 @@ ENTRY("vTaskSeed"_Stz);
     bool bPopped = m_pDataStack->bPopGenVar(xVariable);
     ASSERT(bPopped);
   }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.session@ -- fetch session of task on data stack                       */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskSessionFetch(void)
-{
-  ENTRY("vTaskSessionFetch"_Stz);
-  
-  Object* pObject;
-  if ( ! m_pDataStack->bPopObject(pObject) )
-    THROW_DSTACK();
-  Task* pThatTask = _pTask(pObject);
-  
-  Session* pSession = nullptr;//pThatTask->m_pSession;
-  
-  m_pDataStack->vPushPointer(pSession);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.session! -- store session on data stack into task on data stack       */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskSessionStore(void)
-{
-  ENTRY("vTaskSessionStore"_Stz);
-  
-  Object* pTaskObject;
-  if ( ! m_pDataStack->bPopObject(pTaskObject) )
-    THROW_DSTACK();
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  Object* pPtrSession;
-  
-  if ( ! m_pDataStack->bPopObject(pPtrSession) )
-    THROW_DSTACK();
-  
-  Session* pSession = _pSession(pPtrSession);
-  ASSERT(! pSession || CN_SESSION == pSession->eClass());
-  
-  //pThatTask->m_pSession = pSession;
   
   EXIT();
 }
