@@ -259,7 +259,7 @@ void Step::vDirNew(void)
 {
 ENTRY("vDirNew"_Stz);
   
-  Dir* pDir = new Dir;
+  Dir* pDir = new Dir(m_pTask);
   
   Object* pPtrDir;
   pPtrDir = (Object*)pDir;

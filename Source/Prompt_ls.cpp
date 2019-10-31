@@ -23,7 +23,7 @@ PromptDesc __Prompt_ls (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_ls(SePrompt* pPrompt)
 {
-  Dir  oDir;
+  Dir  oDir(pPrompt);
   s256 sDirPath;
   s256 sEntryName;
   i8 iEntryType;

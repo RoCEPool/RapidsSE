@@ -23,7 +23,7 @@ namespace Resources
     void* operator new(size_t);
     void operator delete(void* pDirAddress);
     
-    Dir(void);
+    Dir(Focal* pIsFor);
    ~Dir(void) noexcept(false);
 
     static bool bChangeCurrent(Stz* aDirPath);
