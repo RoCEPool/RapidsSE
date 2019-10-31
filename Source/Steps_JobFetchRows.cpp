@@ -167,7 +167,6 @@ void Step::vJob_FetchRowsSpawnSub(void)
   if ( ! m_pDataStack->bPopAsInt(iSlot) )
     THROW_DSTACK();
   
-  i8 iRequestId = pJob_FetchRows->m_xReqTuple.m_iReqId;
   Session* pSession = pJob_FetchRows->pSession();
   ReqTuple* aReqTuple = &pJob_FetchRows->m_xReqTuple;
 
@@ -288,7 +287,6 @@ void Step::vJob_InflateRowsSpawnSub(void)
   if ( ! m_pDataStack->bPopAsInt(iSlot) )
     THROW_DSTACK();
   
-  i8 iRequestId = pJob_InflateRows->m_xReqTuple.m_iReqId;
   Session* pSession = pJob_InflateRows->pSession();
   ReqTuple* aReqTuple = &pJob_InflateRows->m_xReqTuple;
 
