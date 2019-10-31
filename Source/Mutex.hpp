@@ -9,7 +9,6 @@ namespace Resources
   {
   public:
     eMK     m_eMutex;    // kind of mutex
-    Focal*  m_pIsFor;    // mutex is for a task or a thread
   
     Focal*  m_pLockedBy; // by whom is the mutex locked?
     Focal*  m_pWaitedBy; // for whom is the mutex being waited on?

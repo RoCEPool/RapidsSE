@@ -8,10 +8,11 @@ namespace Resources
   class Resource : public Focal
   {
   protected:
+    Focal* m_pIsFor;
   
   public:
     Resource(eCN eClass);
-    Resource(eCN eClass, Focal* pFor);
+    Resource(eCN eClass, Focal* pIsFor);
    ~Resource(void) noexcept(false);
   
     void vFocalOutline(s4K& sOutline);

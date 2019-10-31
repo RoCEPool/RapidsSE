@@ -61,7 +61,6 @@ Mutex::Mutex(eMK eKind, Focal* pIsFor)
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   m_eMutex    = eKind;
-  m_pIsFor    = pIsFor;
   
   m_pLockedBy = nullptr;
   m_pWaitedBy = nullptr;

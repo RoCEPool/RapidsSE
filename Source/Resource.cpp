@@ -26,18 +26,22 @@ Resource::Resource(eCN eClassNo)
 : Focal(eClassNo,AM::iNextResourceId(),C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-    
+  
+  m_pIsFor = nullptr;
+
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Resource::Resource(eCN eClassNo, Focal* pFor)
-: Focal(eClassNo,AM::iNextResourceId(),pFor->m_iUniqueId)
+Resource::Resource(eCN eClassNo, Focal* pIsFor)
+: Focal(eClassNo,AM::iNextResourceId(),pIsFor->m_iUniqueId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
+  m_pIsFor = pIsFor;
+
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
 
