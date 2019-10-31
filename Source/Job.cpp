@@ -221,6 +221,13 @@ Job::~Job(void) noexcept(false)
   
   // -- -- -- -- -- --
   
+  //! this assert may fail if a job completes before its references
+  //! are completely returned
+  while (nReferences()) {
+    vTrace("Napping\n"_Stz);
+    AM::vNap(10, eClass());
+  }
+  
   //if (m_pTaskJ)
   //  vDebugPoint();
   

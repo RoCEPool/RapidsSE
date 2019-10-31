@@ -36,7 +36,10 @@ namespace Gadgets
     {
       //! this assert may fail if a job completes before its references
       //! are completely returned
-      //RASSERT(! m_nxReferences.iVal());
+      if ( m_nxReferences.iVal() )
+        vDebugPoint();
+      
+      RASSERT(! m_nxReferences.iVal());
     }
   
     /*------------------------------------------------------------------------*/

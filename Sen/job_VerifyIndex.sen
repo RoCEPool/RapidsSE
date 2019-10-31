@@ -74,7 +74,7 @@
   // distribute the job
   pJob job.distribute
 
-  pJob <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
