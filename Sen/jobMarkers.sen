@@ -195,7 +195,8 @@
 
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // set <path> from job
-  job::this job.pushPath strVec::toPath to <path>
+  //job::this job.pushPath strVec::toPath to <path>
+  pushPath strVec::toPath to <path>
   <path> str.toStrVec task::dicStack.set
   //task::dump
 ;
