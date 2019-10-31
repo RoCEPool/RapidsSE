@@ -103,6 +103,8 @@ void Job_Report::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 Job_Report::Job_Report(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 : Job(aJobClass, aReqTuple)
+, m_oInFile(this)
+, m_oOutFile(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPORT,_FOOTER_);
   

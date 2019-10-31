@@ -55,6 +55,7 @@ void Parser::operator delete(void* pParserAddress)
 /*----------------------------------------------------------------------------*/
 Parser::Parser(Parser* pNext)
 : Object(CN_PARSER)
+, m_oFile(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   

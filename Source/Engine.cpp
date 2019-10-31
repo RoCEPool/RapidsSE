@@ -630,7 +630,7 @@ bool Engine::bOpenPool(s32& sPoolName)
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenTrace(void)
 {
-  gpTraceFile = new File;
+  gpTraceFile = new File(nullptr);
   
   bool bOpened = gpTraceFile->bOpenWrite(C_SE_TRACE);
   RASSERT(bOpened);
@@ -1023,7 +1023,7 @@ void Engine::vWriteRegionName(void)
   // write the regionName into a se.region file
   // used by shell script to start se prompt
   if (gxArguments.m_bStart) {
-    File oFile;
+    File oFile(nullptr);
     bool b = oFile.bOpenMode("./se.region"_Stz,C_OPEN_READ_WRITE_CREATE);
     ASSERT(b);
     oFile.vPrint("%s\n"_Stz,gxArguments.m_sRegionName.azChar());

@@ -238,7 +238,7 @@ bool Job_Monitor::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_MONITOR,_FOOTER_);
   
-  m_pOutFile = new File;
+  m_pOutFile = new File(this);
   
   if (m_bNamedFile) {
     if (! m_pOutFile->bOpenWrite(szFilePath()))

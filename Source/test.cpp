@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 void vTest1(void)
 {
-  File oFile;
+  File oFile(nullptr);
   i8 iChunk = C_32KB;
   char caChunk[iChunk];
   Timer oTimer;

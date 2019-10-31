@@ -120,7 +120,7 @@ void StepTiming::vReset(void)
 /*----------------------------------------------------------------------------*/
 void StepTiming::vWrite(void)
 {
-  File oFile;
+  File oFile(nullptr);
   
   Now oNow;
   

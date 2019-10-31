@@ -72,6 +72,7 @@ void ToFileOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 ToFileOp::ToFileOp(OpSpec* pOpSpec, Pipeline* pPipeline)
 : Op(CN_TOFILEOP,pOpSpec,pPipeline)
+, m_oOutFile(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOFILEOP,_FOOTER_);
   
