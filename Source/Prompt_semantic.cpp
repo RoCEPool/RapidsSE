@@ -31,7 +31,7 @@ bool Prompt::bPrompt_semantic(SePrompt* pPrompt)
   
   vTrace("Semantic:\n"_Stz);
 
-  EnameSet* pEnameSet = pSemantic->pEnmSet();
+  EnameSet* pEnameSet = pSemantic->pEnameSet();
 
   pEnameSet->vPrint();
 
