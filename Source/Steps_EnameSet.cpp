@@ -125,10 +125,10 @@ void Step::vEnameSetGetStr(void)
   if ( ! m_pDataStack->bPopS32(sName) )
     THROW_DSTACK();
   
-  s48K sValue;
+  s4K sValue;
   sValue = pEnameSet->szValue(sName);
   
-  m_pDataStack->vPushS48K(sValue);
+  m_pDataStack->vPushS4K(sValue);
   
   EXIT();
 }

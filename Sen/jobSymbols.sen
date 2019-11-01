@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 : <nodeNm> <<metaSymbol>> ( -- "<nodeNm>" )
 
-  [ compiler::current word.name@ , ] job::this job.ename@
+  [ compiler::current word.name@ , ] job::this job.enameSet enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
