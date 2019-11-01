@@ -49,20 +49,17 @@
   >>logEntry <SEED_RCV>
   actLog::seed_rcv
 
- //
+  //
   // where: on the participating node
   //
-
   job::this locals| pJob__Execute |
 
   // find the job to be executed in the participating jobs
   pJob__Execute job.id@ locals| iJobId |
-
   iJobId plist::findJob drop
 
   // execute the job on this participating node
   JobRef[] SEED_EXE job.spawn
-
   JobRef[].return
 
   job::deleteThis

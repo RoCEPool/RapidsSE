@@ -103,6 +103,7 @@
 
   // if there are acks remaining just exit
   bAmDecider not if
+    JobRef[].return
     job::deleteThis
     <DONE_RCV>
     exit                                                         // *EARLY EXIT*
@@ -118,9 +119,10 @@
   JobRef[] job.participantHasError true == if
     // distribute Job__Cancel to all participants
     JobRef[] Job__Cancel::distribute
+    JobRef[].return
     job::deleteThis
     <DONE_RCV>
-    exit                                                       // *EARLY EXIT*
+    exit                                                         // *EARLY EXIT*
   then
 
   // distribute Job__Execute to all participants
@@ -128,6 +130,7 @@
   JP_EXECUTING log::markPhase
 
   JobRef[] Job__Execute::distribute
+  JobRef[].return
 
   // delete this completed __begun job
   job::deleteThis

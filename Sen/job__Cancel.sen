@@ -54,7 +54,6 @@
   //
   // where: on the participating node
   //
-
   job::this locals| pJob__Cancel |
 
   // find the job to be executed in the participating jobs
@@ -63,7 +62,6 @@
 
   // execute the cancel seed of the job on this participating node
   JobRef[] SEED_CAN job.spawn
-
   JobRef[].return
 
   job::deleteThis

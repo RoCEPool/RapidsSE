@@ -63,9 +63,6 @@
 
   // execute the end seed of the job on this participating node
   JobRef[] SEED_END job.spawn
-
-  //job::deleteThis
-
   JobRef[].return
 
   ddlLock::testDrop

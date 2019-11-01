@@ -102,6 +102,7 @@
 
   // if there are acks remaining just exit
   bAmDecider not if
+    JobRef[].return
     job::deleteThis
     <DONE_RCV>
     exit                                                         // *EARLY EXIT*
@@ -115,6 +116,7 @@
 
   // send a job__end to all participants
   JobRef[] Job__End::distribute
+  JobRef[].return
 
   // delete this completed __executed job
   job::deleteThis

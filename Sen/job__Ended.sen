@@ -70,6 +70,7 @@
 
   // if there are acks remaining just exit
   bAmDecider not if
+    JobRef[].return
     job::deleteThis
     <DONE_RCV>
     exit                                                         // *EARLY EXIT*
@@ -87,6 +88,7 @@
   // notify the originating task
   //JobRef[] job.originatingTask@ task.ack
   JobRef[] job.task@ task.ack
+  JobRef[].return
 
   // delete this completed __ended job
   job::deleteThis
