@@ -217,7 +217,6 @@ bool Job_Export::bPopulateJob(TokenVec* pTokenVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // set the table name
-  //vObjectName(pTokenVec->pGet(1)->szText());
   m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(1)->szText(), TN_STRING);
   
   // set the file name

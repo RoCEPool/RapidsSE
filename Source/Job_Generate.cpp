@@ -206,7 +206,6 @@ Job* Jobs::pJob_Generate_pre(Session* pSession, JobClass* aJobClass, ReqTuple* a
     return pJob_Generate;
 
   // set the table name
-  //pJob_Generate->vObjectName(pTknVec->pGet(1)->szText());
   pJob_Generate->m_oEnmSet.vAdd("<tableNm>"_Stz, pTknVec->pGet(1)->szText(), TN_STRING);
   
   // set the file name

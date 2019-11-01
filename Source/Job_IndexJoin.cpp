@@ -174,12 +174,10 @@ bool Job_IndexJoin::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the left table name
-  //vObjectName(pTokenVec->pGet(1)->szText());
   m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(1)->szText(), TN_STRING);
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the left index name
-  //vIndexName(pTokenVec->pGet(2)->szText());
   m_oEnmSet.vAdd("<indexNm>"_Stz, pTokenVec->pGet(2)->szText(), TN_STRING);
   
   // - - - - - - - - - - - - - - - - - - - - -
