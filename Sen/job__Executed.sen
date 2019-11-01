@@ -75,31 +75,30 @@
   job::this locals| pJob__Executed |
   pJob__Executed job.id@ locals| iJobId |
 
-  0 locals| pJobOriginator  |
-  0 0 0 0 locals| iParticipantNode error bAmDecider |
+   0 0 0 locals| iParticipantNode error bAmDecider |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the context of this __executed job
 
   // find the originating job
-  iJobId olist::findJob to pJobOriginator
+  iJobId olist::findJob drop
 
   // get the participant node from where this job__begun started
   pJob__Executed job.participant@ to iParticipantNode
 
   // set the participant response in the originator job
-  //pJob__Executed iParticipantNode pJobOriginator job.participantResponse!
-  pJob__Executed pJobOriginator job.participantResponse!
+  //pJob__Executed iParticipantNode JobRef[] job.participantResponse!
+  pJob__Executed JobRef[] job.participantResponse!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __executed job on this originating node
 
   // increment the number of __executed jobs received in api state
-  pJobOriginator ssn::incExecuted
-  pJobOriginator ssn::traceSession
+  JobRef[] ssn::incExecuted
+  JobRef[] ssn::traceSession
 
   // decrement the acks remaining
-  pJobOriginator job.dec2pcAcksRmg to bAmDecider
+  JobRef[] job.dec2pcAcksRmg to bAmDecider
 
   // if there are acks remaining just exit
   bAmDecider not if
@@ -115,7 +114,7 @@
 
 
   // send a job__end to all participants
-  pJobOriginator Job__End::distribute
+  JobRef[] Job__End::distribute
 
   // delete this completed __executed job
   job::deleteThis
