@@ -53,7 +53,8 @@ namespace Commands
     bool bStdin(void);
     TokenVec* pTknVec(void);
     eTN  eToken(void);
-    s48K& sToken(void);
+    Stz* szToken(void);
+    void vToken(Stz* szStr);
     void vUseEnd(void);
     bool bUseFile(Stz* szPath);
     void vUseStdin(void);

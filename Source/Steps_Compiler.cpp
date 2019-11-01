@@ -19,7 +19,7 @@ void Step::vCompilerCurrent(void)
 {
   ENTRY("vCompilerCurrent"_Stz);
   
-  Word* pWord = m_pTask->m_pForth->m_pCompiler->m_pCurrent;
+  Word* pWord = m_pCompiler->m_pCurrent;
   
   m_pDataStack->vPushPointer(pWord);
   

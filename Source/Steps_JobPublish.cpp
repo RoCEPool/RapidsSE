@@ -29,7 +29,6 @@ void Step::vJob_PublishSpawnSub(void)
   if ( ! m_pDataStack->bPopAsInt(iSlot) )
     THROW_DSTACK();
   
-  i8 iRequestId = pJob_Publish->m_xReqTuple.m_iReqId;
   Session* pSession = pJob_Publish->pSession();
   i8 iPublishJobId = pJob_Publish->m_iUniqueId;
   ReqTuple* aReqTuple = &pJob_Publish->m_xReqTuple;

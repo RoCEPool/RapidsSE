@@ -56,6 +56,8 @@ namespace Sessions
     s4K      m_sToDo;            // prompt to do
   
     NmStrList* m_pNmStrLst;      // name-string list
+  
+    Semantic*  m_pSemantic;
 
     // must be last
     Footer m_xFooter;

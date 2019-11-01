@@ -119,6 +119,8 @@ Session::Session(void)
   
   m_pNmStrLst       = nullptr;
 
+  m_pSemantic       = new Semantic;
+  
   _checkInitialised_(CN_SESSION);
   
   ++ gixSession;
@@ -144,6 +146,8 @@ Session::~Session(void) noexcept(false)
   delete m_pInput;
   
   delete m_pNmStrLst;
+  
+  delete m_pSemantic;
   
   -- gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_DESTRUCT,

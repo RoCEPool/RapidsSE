@@ -14,6 +14,8 @@ namespace Sessions
 
 //------------------------------------------------------------------------------
 
+#include "Semantic.hpp"
+
 #include "Session.hpp"
 
 #include "Request.hpp"

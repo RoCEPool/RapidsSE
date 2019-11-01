@@ -138,7 +138,7 @@ TokenVec* Tokeniser::pTokenise(Stz* szString)
     
     Token* pToken = pTokenVec->pGet(i_Token);
     pToken->vToken(pTokeniser->eToken());
-    pToken->vCopy(pTokeniser->sToken().szStz());
+    pToken->vCopy(pTokeniser->szToken());
     
   }
   
@@ -167,7 +167,7 @@ void Tokeniser::vTokenise(TokenVec* pTokenVec, Stz* szString)
     
     Token* pToken = pTokenVec->pGet(i_Token);
     pToken->vToken(pTokeniser->eToken());
-    pToken->vCopy(pTokeniser->sToken().szStz());
+    pToken->vCopy(pTokeniser->szToken());
     
   }
   
@@ -473,11 +473,21 @@ eTN Tokeniser::eToken(void)
 /*----------------------------------------------------------------------------*/
 /* get token string                                                           */
 /*----------------------------------------------------------------------------*/
-s48K& Tokeniser::sToken(void)
+Stz* Tokeniser::szToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   return m_sToken;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set token string                                                           */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vToken(Stz* szStr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  m_sToken = szStr;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Request* Sessions::_pCommand(void* aAddr)
+Request* Sessions::_pRequest(void* aAddr)
 {
   Request* pRequest = reinterpret_cast<Request*>(aAddr);
   
