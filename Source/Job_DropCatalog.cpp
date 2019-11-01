@@ -162,7 +162,6 @@ bool Job_DropCatalog::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  //vCatalogName(pTokenVec->pGet(2)->szText());
   m_oEnmSet.vAdd("<catalogNm>"_Stz, pTokenVec->pGet(2)->szText(), TN_STRING);
   
   return true;
