@@ -532,6 +532,7 @@ public:
 
   // job ref
   void vJobRefPointer(void);
+  void vJobRefNone(void);
   void vJobRefReturn(void);
 
 

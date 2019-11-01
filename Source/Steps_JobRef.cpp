@@ -10,6 +10,7 @@
 void Step::vAddSteps_JobRef(void)
 {
   vAddStep("JobRef[]"_Stz,         &Step::vJobRefPointer);
+  vAddStep("JobRef[].none"_Stz,    &Step::vJobRefNone);
   vAddStep("JobRef[].return"_Stz,  &Step::vJobRefReturn);
 }
 
@@ -24,6 +25,19 @@ void Step::vJobRefPointer(void)
 
   m_pDataStack->vPushPointer(pJob);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* JobRef[].none -- check there is no job reference                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRefNone(void)
+{
+  ENTRY("vJobRefNone"_Stz);
+  
+  if (m_pRegSet->m_xpJobRef.pReferencedObject())
+    THROW("JobRef[].none : register still has reference to a job"_Stz);
+  
   EXIT();
 }
 
