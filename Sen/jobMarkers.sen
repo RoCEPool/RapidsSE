@@ -17,94 +17,103 @@
 /******************************************************************************/
 
 /*----------------------------------------------------------------------------*/
+/* done executing any seed                                                    */
+/*----------------------------------------------------------------------------*/
+: <done_finally> ( -- )
+
+  // check this task has no job reference
+  JobRef[].none
+;
+
+/*----------------------------------------------------------------------------*/
 /* done executing a beg seed                                                  */
 /*----------------------------------------------------------------------------*/
-: <DONE_BEG> ( --  )
+: <DONE_BEG> ( -- )
 
   ddlLock::testDrop
 
   JP_BEGUN job::this job.phase!
 
-  task::delete
+  <done_finally> task::delete
 ;
 
 /*----------------------------------------------------------------------------*/
 /* done executing a can seed                                                  */
 /*----------------------------------------------------------------------------*/
-: <DONE_CAN> ( --  )
+: <DONE_CAN> ( -- )
 
   ddlLock::testDrop
 
   JP_CANCELED job::this job.phase!
 
-  job::completed
+  <done_finally> job::completed
 ;
 
 /*----------------------------------------------------------------------------*/
 /* done executing a end seed                                                  */
 /*----------------------------------------------------------------------------*/
-: <DONE_END> ( --  )
+: <DONE_END> ( -- )
 
   ddlLock::testDrop
 
   JP_ENDED job::this job.phase!
 
-  job::completed
+  <done_finally> job::completed
 ;
 
 /*----------------------------------------------------------------------------*/
 /* return from job execution on node                                          */
 /*----------------------------------------------------------------------------*/
-: <DONE_EXE> ( --  )
+: <DONE_EXE> ( -- )
 
   ddlLock::testDrop
 
   JP_EXECUTED job::this job.phase!
 
-  task::delete
+  <done_finally> task::delete
 ;
 
 /*----------------------------------------------------------------------------*/
 /* done executing a kid seed                                                  */
 /*----------------------------------------------------------------------------*/
-: <DONE_KID> ( --  )
+: <DONE_KID> ( -- )
 
   ddlLock::testDrop
 
-  task::delete
+  <done_finally> task::delete
 ;
 
 /*----------------------------------------------------------------------------*/
 /* done executing a rcv seed                                                  */
 /*----------------------------------------------------------------------------*/
-: <DONE_RCV> ( --  )
+: <DONE_RCV> ( -- )
 
   ddlLock::testDrop
 
   JobRef[].return
 
-  task::delete
+  <done_finally> task::delete
 ;
 
 /*----------------------------------------------------------------------------*/
 /* done executing a req seed                                                  */
 /*----------------------------------------------------------------------------*/
-: <DONE_REQ> ( --  )
+: <DONE_REQ> ( -- )
 
   ddlLock::testDrop
 
   //"Signalling the thread waiting on job completion" .
-  job::this job.signalWaiter
+  <done_finally> job::this job.signalWaiter
 ;
 
 /*----------------------------------------------------------------------------*/
 /* done executing a run seed                                                  */
 /*----------------------------------------------------------------------------*/
-: <DONE_RUN> ( --  )
+: <DONE_RUN> ( -- )
 
   ddlLock::testDrop
 
-  task::delete
+  <done_finally> task::delete
 ;
 
 
@@ -133,7 +142,6 @@
 
   pushPath strVec::toPath to <path>
   <path> str.toStrVec task::dicStack.set
-
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -259,14 +267,14 @@
 /*----------------------------------------------------------------------------*/
 /* return from chcek resources                                                */
 /*----------------------------------------------------------------------------*/
-: <Check_Resources> ( --  )
+: <Check_Resources> ( -- )
 
 ;
 
 /*----------------------------------------------------------------------------*/
 /* return from chcek resources                                                */
 /*----------------------------------------------------------------------------*/
-: <Resources_Checked> ( --  )
+: <Resources_Checked> ( -- )
 
   ddlLock::testDrop
 ;
@@ -274,14 +282,14 @@
 /*----------------------------------------------------------------------------*/
 /* return from cehcek resources                                              */
 /*----------------------------------------------------------------------------*/
-: <Release_Resources> ( --  )
+: <Release_Resources> ( -- )
 
 ;
 
 /*----------------------------------------------------------------------------*/
 /* return from cehcek resources                                               */
 /*----------------------------------------------------------------------------*/
-: <Resources_Released> ( --  )
+: <Resources_Released> ( -- )
 
 ;
 
