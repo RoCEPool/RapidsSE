@@ -62,7 +62,7 @@ void Step::vLocalStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* locals| -- declare set of local variables                       immediate  */
+/* locals| -- encode code for: set of local variables              immediate  */
 /*----------------------------------------------------------------------------*/
 void Step::vLocalsBar(void)
 {
@@ -157,7 +157,7 @@ ENTRY("vLocalsPush"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* to -- compile store value into local variable                    immediate */
+/* to -- encode code for: store value into local variable           immediate */
 /*----------------------------------------------------------------------------*/
 void Step::vLocalsTo(void)
 {
