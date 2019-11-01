@@ -158,7 +158,6 @@ bool Job_SizeIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the index name
-  //vIndexName(pTokenVec->pGet(2)->szText());
   m_oEnmSet.vAdd("<indexNm>"_Stz, pTokenVec->pGet(2)->szText(), TN_STRING);
   
   // - - - - - - - - - - - - - - - - - - - - -
