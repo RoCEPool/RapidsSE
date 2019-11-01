@@ -31,7 +31,9 @@ namespace SenVM
     Compiler(void);
    ~Compiler(void) noexcept(false);
   
+    void vNextToken(void);
     Stz* szToken(void);
+
         
     Footer* aFooter(void);
   };
