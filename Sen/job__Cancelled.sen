@@ -58,14 +58,13 @@
   job::this locals| pJob__Cancelled |
   pJob__Cancelled job.id@ locals| iJobId |
 
-  0 locals| pJobOriginator |
   0 0 0 0 locals| bAmDecider error iParticipantNode |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the context of this __cancelled job
 
   // find the originating job
-  iJobId olist::findJob to pJobOriginator
+  iJobId olist::findJob drop
 
   // get the participant node from where this job__begun started
   pJob__Cancelled job.participant@ to iParticipantNode
@@ -73,22 +72,22 @@
   // get the error code from job__cancelled
   //pJob__Cancelled jobCancelled.error@ to error
 
-  // set the error code in pJobOriginator
-  //error iParticipantNode pJobOriginator job.error!
+  // set the error code in JobRef[]
+  //error iParticipantNode JobRef[] job.error!
   //error EC_NONE != if
     // set error in executed job
-    //pJob__Cancelled iParticipantNode pJobOriginator job.participantResponse!
+    //pJob__Cancelled iParticipantNode JobRef[] job.participantResponse!
   //then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __begun job on this originating node
 
   // increment the number of __cancelled jobs received in api state
-  pJobOriginator ssn::incCancelled
-  pJobOriginator ssn::traceSession
+  JobRef[] ssn::incCancelled
+  JobRef[] ssn::traceSession
 
   // decrement the acks remaining in the originating job
-  pJobOriginator job.dec2pcAcksRmg to bAmDecider
+  JobRef[] job.dec2pcAcksRmg to bAmDecider
 
   // if there are acks remaining just exit
   bAmDecider not if
@@ -102,13 +101,13 @@
   // all job__cancelled's have been received, so this job is the decider
 
   // remove the originating job from the originator jobs
-  pJobOriginator job.removeOriginator
+  JobRef[] job.removeOriginator
 
   JP_CANCELED log::markPhase
 
   // notify the originating task
-  //pJobOriginator job.originatingTask@ task.ack
-  pJobOriginator job.task@ task.ack
+  //JobRef[] job.originatingTask@ task.ack
+  JobRef[] job.task@ task.ack
 
   // delete this completed __cancelled job
   job::deleteThis
