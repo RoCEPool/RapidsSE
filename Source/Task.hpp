@@ -32,7 +32,6 @@ namespace Tasks
     eTS          m_eState;       // state (running, sleeping, ...)
     eTR          m_eTransition;  // state transition request
     eQK          m_eQueue;       // which queue the task is currently in
-    eLH          m_eDdlLocked;   // this task has the ddl lock?
   
     Decider      m_oAcksRmg;     // number of acks still waiting for
     Sleep        m_oWakeup;      // wakeup time from sleeping

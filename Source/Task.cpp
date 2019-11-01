@@ -109,7 +109,6 @@ void Task::vInit(void)
   m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
   m_oAcksRmg.vCheckInit();
-  m_eDdlLocked   = LH_HAVE_NO_LOCK;
   // m_oWakeup
   
   m_iTraceMask     = C_TRACE_NONE;
@@ -129,7 +128,6 @@ Task::~Task(void) noexcept(false)
 
   RASSERT(TS_COMPLETED == m_eState);
   //RASSERT(! m_pJob);
-  RASSERT(! m_eDdlLocked);
   RASSERT(! bWordBody());
 
   if (m_pJob)
@@ -413,14 +411,13 @@ void Task::vContentDump(void)
   vTrace("----\n"_Stz);
 
   vTrace("%p:\n"
-         "m_eState=%s m_eTransition=%s m_eQueue=%s m_eDdlLock=%s\n"_Stz,
+         "m_eState=%s m_eTransition=%s m_eQueue=%s\n"_Stz,
          
          this,
          
          aTS[m_eState]->azChar(),
          aTR[m_eTransition]->azChar(),
          aQK[m_eQueue]->azChar(),
-         aLH[m_eDdlLocked]->azChar(),
 
          C_ENDARGS
          );
@@ -450,7 +447,7 @@ void Task::vFocalOutline(s4K& sOutline)
                                       
                    aTS[m_eState],
                    aQK[m_eQueue],
-                   m_eDdlLocked ? " DdlLocked"_Stz : ""_Stz
+                   m_pRegSet->m_eDdlLocked ? " DdlLocked"_Stz : ""_Stz
                    );
   
   vDropTaskLock();
