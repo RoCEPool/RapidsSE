@@ -84,7 +84,7 @@ void Step::vColon(void)
   
   m_pCompiler->m_bCompiling = true;
   
-  m_pCompiler->m_pTokeniser->vNextToken();
+  m_pCompiler->vNextToken();
   sName = m_pCompiler->szToken();
   
   Dic* pDic;
@@ -149,7 +149,7 @@ void Step::vCreate(void)
 {
   ENTRY("vCreate"_Stz);
   
-  m_pCompiler->m_pTokeniser->vNextToken();
+  m_pCompiler->vNextToken();
   
   Dic* pDic;
   if (m_oDicStack.iCount())
@@ -174,7 +174,7 @@ void Step::vCreatePersistent(void)
 {
   ENTRY("vCreate"_Stz);
   
-  m_pCompiler->m_pTokeniser->vNextToken();
+  m_pCompiler->vNextToken();
   
   Dic* pDic;
   if (m_oDicStack.iCount())
@@ -272,7 +272,7 @@ void Step::vCreateTenants(void)
 {
   ENTRY("vCreateTenants"_Stz);
   
-  m_pCompiler->m_pTokeniser->vNextToken();
+  m_pCompiler->vNextToken();
     
   Dic* pDic = AM::pRootDic();
 
@@ -394,7 +394,7 @@ void Step::vForget(void)
 {
   ENTRY("vForget"_Stz);
   
-  m_pCompiler->m_pTokeniser->vNextToken();
+  m_pCompiler->vNextToken();
   
   Word* pWord = m_oDicStack.pFindWord(m_pCompiler->szToken());
   
@@ -470,7 +470,7 @@ void Step::vPostpone(void)
   Word* pCurrentWord = m_pCompiler->m_pCurrent;
   
   // get name of word to be called
-  m_pCompiler->m_pTokeniser->vNextToken();
+  m_pCompiler->vNextToken();
   
   // find the word in dic stack
   Word* pCalledWord = m_oDicStack.pFindWord(m_pCompiler->szToken());
@@ -524,7 +524,7 @@ void Step::vSee(void)
   
   s48K sString;
   
-  m_pCompiler->m_pTokeniser->vNextToken();
+  m_pCompiler->vNextToken();
   
   Word* pWord = m_oDicStack.pFindWord(m_pCompiler->szToken());
   if ( ! pWord ) {
@@ -701,7 +701,7 @@ void Step::vSubDic(void)
 {
   ENTRY("vSubDic"_Stz);
   
-  m_pCompiler->m_pTokeniser->vNextToken();
+  m_pCompiler->vNextToken();
   
   s32 sNameSubDic;
   sNameSubDic = m_pCompiler->szToken();
@@ -728,7 +728,7 @@ void Step::vTick(void)
 {
   ENTRY("vTick"_Stz);
   
-  m_pCompiler->m_pTokeniser->vNextToken();
+  m_pCompiler->vNextToken();
     
   s32 sWordNm;
   sWordNm = m_pCompiler->szToken();

@@ -77,7 +77,7 @@ ENTRY("vLocalsBar"_Stz);
   for (;;) {
     
     // get name of local variable
-    m_pCompiler->m_pTokeniser->vNextToken();
+    m_pCompiler->vNextToken();
     
     // end of locals declaration?
     if (m_pCompiler->szToken()->bEqual("|"_Stz))
@@ -166,7 +166,7 @@ ENTRY("vLocalsTo"_Stz);
   Word* pCurrentWord = m_pCompiler->m_pCurrent;
   
   // get name of local from token stream
-  m_pCompiler->m_pTokeniser->vNextToken();
+  m_pCompiler->vNextToken();
 
   s32 sLocalNm(m_pCompiler->szToken());
   

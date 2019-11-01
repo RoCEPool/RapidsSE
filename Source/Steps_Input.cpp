@@ -206,7 +206,7 @@ void Step::vTokenColon(void)
 {
   ENTRY("vTokenColon"_Stz);
   
-  m_pCompiler->m_pTokeniser->vNextToken();
+  m_pCompiler->vNextToken();
   
   s48K sTkn(m_pCompiler->szToken());
   

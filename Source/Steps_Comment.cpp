@@ -20,7 +20,7 @@ void Step::vComment(void)
   ENTRY("vComment"_Stz);
   
   for (;;) {
-    m_pCompiler->m_pTokeniser->vNextToken();
+    m_pCompiler->vNextToken();
     if (m_pCompiler->szToken()->bEqual(")"_Stz))
       break;
   }
