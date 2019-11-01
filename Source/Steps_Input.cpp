@@ -61,7 +61,7 @@ ENTRY("vInputNext"_Stz);
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  char* aToken = m_pCompiler->m_pTokeniser->szToken()->azChar();
+  char* aToken = m_pCompiler->szToken()->azChar();
   
   eTN eToken = m_pCompiler->m_pTokeniser->eNextToken(aToken);
   
@@ -160,7 +160,7 @@ void Step::vInputToken(void)
 {
 ENTRY("vInputToken"_Stz);
   
-  s48K sTkn(m_pCompiler->m_pTokeniser->szToken());
+  s48K sTkn(m_pCompiler->szToken());
   
   m_pDataStack->vPushS48K(sTkn);
   
@@ -190,7 +190,7 @@ void Step::vInputUnknown(void)
   
   vTrace("\n"_Stz);
   vTrace("Unknown token: %s\n"_Stz,
-         m_pCompiler->m_pTokeniser->szToken()->azChar()
+         m_pCompiler->szToken()->azChar()
          );
   vTrace("\n"_Stz);
 
@@ -208,7 +208,7 @@ void Step::vTokenColon(void)
   
   m_pCompiler->m_pTokeniser->vNextToken();
   
-  s48K sTkn(m_pCompiler->m_pTokeniser->szToken());
+  s48K sTkn(m_pCompiler->szToken());
   
   m_pDataStack->vPushS48K(sTkn);
   
