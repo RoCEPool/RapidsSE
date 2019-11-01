@@ -4,7 +4,7 @@
 
 // (1) create an index (syntax error)
 create unqiue index on T1 (key);
-failure contains: 'Unknown command'
+failure contains: 'invalid command'
 
 // (2) create an index (syntax error)
 create unique index idx T1 (key);

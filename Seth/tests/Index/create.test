@@ -16,7 +16,7 @@ failure contains: 'invalid command'
 
 // (4) create an index (syntax error)
 create idx on T1 (key);
-failure contains: 'Unknown command'
+failure contains: 'invalid command'
 
 // (5) create an index (syntax error)
 create index idx on T1;
