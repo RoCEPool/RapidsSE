@@ -159,7 +159,6 @@ bool Job_CreateCatalog::bPopulateJob(TokenVec* pTokenVec)
   return false;
   
   // set the catalog name
-  //vCatalogName(pTokenVec->pGet(2)->szText());
   m_oEnmSet.vAdd("<catalogNm>"_Stz, pTokenVec->pGet(2)->szText(), TN_STRING);
   
   return true;
