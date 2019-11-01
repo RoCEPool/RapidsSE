@@ -90,8 +90,6 @@
 
   ddlLock::testDrop
 
-  JobRef[].return
-
   <done_finally> task::delete
 ;
 
