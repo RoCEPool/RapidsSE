@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_EnmSet.cpp - ename-set step group                                    */
+/* Steps_EnameSet.cpp - ename-set step group                                  */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -7,23 +7,23 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_EnmSet(void)
+void Step::vAddSteps_EnameSet(void)
 {
-  vAddStep("EnameSet::new"_Stz,    &Step::vEnmSetNew);
+  vAddStep("enameSet::new"_Stz,    &Step::vEnameSetNew);
   
-  vAddStep("EnameSet.addInt"_Stz,  &Step::vEnmSetAddInt);
-  vAddStep("EnameSet.addStr"_Stz,  &Step::vEnmSetAddStr);
-  vAddStep("EnameSet.asStr"_Stz,   &Step::vEnmSetAsStr);
-  vAddStep("EnameSet.getStr"_Stz,  &Step::vEnmSetGetStr);
-  vAddStep("EnameSet.hasName"_Stz, &Step::vEnmSetHasName);
+  vAddStep("enameSet.addInt"_Stz,  &Step::vEnameSetAddInt);
+  vAddStep("enameSet.addStr"_Stz,  &Step::vEnameSetAddStr);
+  vAddStep("enameSet.asStr"_Stz,   &Step::vEnameSetAsStr);
+  vAddStep("enameSet.getStr"_Stz,  &Step::vEnameSetGetStr);
+  vAddStep("enameSet.hasName"_Stz, &Step::vEnameSetHasName);
 }
 
 /*----------------------------------------------------------------------------*/
 /* EnameSet::new -- new ename-set                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vEnmSetNew(void)
+void Step::vEnameSetNew(void)
 {
-  ENTRY("vEnmSetNew"_Stz);
+  ENTRY("vEnameSetNew"_Stz);
   
   EnameSet* pEnameSet = new EnameSet;
   
@@ -38,9 +38,9 @@ void Step::vEnmSetNew(void)
 /*----------------------------------------------------------------------------*/
 /* EnameSet.addInt -- add a name-integer pair to ename-set                    */
 /*----------------------------------------------------------------------------*/
-void Step::vEnmSetAddInt(void)
+void Step::vEnameSetAddInt(void)
 {
-  ENTRY("vEnmSetAddInt"_Stz);
+  ENTRY("vEnameSetAddInt"_Stz);
   
   Object* pEnameSet_obj;
   if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
@@ -64,9 +64,9 @@ void Step::vEnmSetAddInt(void)
 /*----------------------------------------------------------------------------*/
 /* EnameSet.addStr -- add a name-string pair to ename-set                     */
 /*----------------------------------------------------------------------------*/
-void Step::vEnmSetAddStr(void)
+void Step::vEnameSetAddStr(void)
 {
-  ENTRY("vEnmSetAddStr"_Stz);
+  ENTRY("vEnameSetAddStr"_Stz);
   
   Object* pEnameSet_obj;
   if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
@@ -90,9 +90,9 @@ void Step::vEnmSetAddStr(void)
 /*----------------------------------------------------------------------------*/
 /* EnameSet.asStr -- get ename-set as a single string                         */
 /*----------------------------------------------------------------------------*/
-void Step::vEnmSetAsStr(void)
+void Step::vEnameSetAsStr(void)
 {
-  ENTRY("vEnmSetAsStr"_Stz);
+  ENTRY("vEnameSetAsStr"_Stz);
   
   Object* pEnameSet_obj;
   if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
@@ -110,11 +110,11 @@ void Step::vEnmSetAsStr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* EnameSet.getStr -- get str value from ename-set with given name              */
+/* EnameSet.getStr -- get str value from ename-set with given name            */
 /*----------------------------------------------------------------------------*/
-void Step::vEnmSetGetStr(void)
+void Step::vEnameSetGetStr(void)
 {
-  ENTRY("vEnmSetGetStr"_Stz);
+  ENTRY("vEnameSetGetStr"_Stz);
   
   Object* pEnameSet_obj;
   if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
@@ -125,20 +125,20 @@ void Step::vEnmSetGetStr(void)
   if ( ! m_pDataStack->bPopS32(sName) )
     THROW_DSTACK();
   
-  s48K sValue;
+  s4K sValue;
   sValue = pEnameSet->szValue(sName);
   
-  m_pDataStack->vPushS48K(sValue);
+  m_pDataStack->vPushS4K(sValue);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* EnameSet.hasName -- test if ename-set has a pair with given name             */
+/* EnameSet.hasName -- test if ename-set has a pair with given name           */
 /*----------------------------------------------------------------------------*/
-void Step::vEnmSetHasName(void)
+void Step::vEnameSetHasName(void)
 {
-  ENTRY("vEnmSetHasName"_Stz);
+  ENTRY("vEnameSetHasName"_Stz);
   
   Object* pEnameSet_obj;
   if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )

@@ -62,7 +62,7 @@ void Step::vLocalStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* locals| -- declare set of local variables                       immediate  */
+/* locals| -- encode code for: set of local variables              immediate  */
 /*----------------------------------------------------------------------------*/
 void Step::vLocalsBar(void)
 {
@@ -157,22 +157,36 @@ ENTRY("vLocalsPush"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* to -- compile store value into local variable                    immediate */
+/* to -- encode code for: store value into local variable           immediate */
 /*----------------------------------------------------------------------------*/
 void Step::vLocalsTo(void)
 {
 ENTRY("vLocalsTo"_Stz);
   
+  bool bSemanticTo = false;
+  
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
-  // get name of local from token stream
+  // advance to token after "to"
   m_pCompiler->vNextToken();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // is is a semantic ename?
+  
+  if (m_pCompiler->szToken()->bSame("/semantic"_Stz) &&
+      m_pCompiler->szToken()->bSame("/session"_Stz)) {
+    
+    bSemanticTo = true;
+    m_pCompiler->vNextToken();
+  }
+      
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // get name of local from token stream
   s32 sLocalNm(m_pCompiler->szToken());
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // attempt to find the word describing the local
-  
   Word* pLocalWord = m_oDicStack.pFindWord(sLocalNm);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -183,7 +197,8 @@ ENTRY("vLocalsTo"_Stz);
            "No such local: %s\n"_Stz,sLocalNm.azChar());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // handle a meta-symbol
+  
   if (pLocalWord->pCategory()
       && pLocalWord->pCategory()->szWordNm()->bSame("<<metaSymbol>>"_Stz)) {
     
@@ -195,8 +210,15 @@ ENTRY("vLocalsTo"_Stz);
     pCurrentWord->vEncode("pushValue"_Stz,&xMetaNm);
     pCurrentWord->vEncode("swap"_Stz);
 
-    pCurrentWord->vEncode("job::this"_Stz);
-    pCurrentWord->vEncode("job.enameSet"_Stz);
+    if (bSemanticTo) {
+      pCurrentWord->vEncode("job::this"_Stz);
+      pCurrentWord->vEncode("job.session@"_Stz);
+      pCurrentWord->vEncode("session.enameSet@"_Stz);
+    }
+    else {
+      pCurrentWord->vEncode("job::this"_Stz);
+      pCurrentWord->vEncode("job.enameSet"_Stz);
+    }
     
     pCurrentWord->vEncode("enameSet.addStr"_Stz);
     
@@ -205,6 +227,8 @@ ENTRY("vLocalsTo"_Stz);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // handle a local
+
   GenVar xVar_LocalNo;
   xVar_LocalNo = pLocalWord->iLocalNo();
   

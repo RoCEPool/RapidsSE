@@ -243,12 +243,12 @@ public:
   void vEncodeUntil(void);
 
   // ename-set
-  void vEnmSetAddInt(void);
-  void vEnmSetAddStr(void);
-  void vEnmSetAsStr(void);
-  void vEnmSetGetStr(void);
-  void vEnmSetHasName(void);
-  void vEnmSetNew(void);
+  void vEnameSetAddInt(void);
+  void vEnameSetAddStr(void);
+  void vEnameSetAsStr(void);
+  void vEnameSetGetStr(void);
+  void vEnameSetHasName(void);
+  void vEnameSetNew(void);
 
   // enter
   void vEnterObject(void);
@@ -461,9 +461,7 @@ public:
   void vJobDec2pcAcksRmg(void);
   void vJobDelete(void);
 
-  void vJobEnameFetch(void);
   void vJobEnameSet(void);
-  void vJobEnameStore(void);
   void vJobErrorStore(void);
   void vJobErrorFetch(void);
   void vJobExecuteFetch(void);
@@ -1012,6 +1010,7 @@ public:
   void vSessionCommand(void);
   void vSessionDicStack(void);
   void vSessionDump(void);
+  void vSessionEnameSetFetch(void);
   void vSessionIsExiting(void);
   void vSessionPid(void);
   void vSessionSlotFetch(void);
