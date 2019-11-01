@@ -17,7 +17,7 @@ void Step::vAddStep(Stz* aName, StepFp fpStep, bool bImmediate)
   Dic* pRootDic = AM::pRootDic();
   Word* pNewWord = new(pRootDic) Word(aName);
   
-  //m_pCompiler->m_pCurrent = pNewWord;
+  //m_pCompiler->vCurrentWord(pNewWord);
   
   pNewWord->vKind(WK_INTRINSIC);
   pNewWord->vEntryStep(fpStep);
