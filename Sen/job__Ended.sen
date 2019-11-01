@@ -50,23 +50,23 @@
   job::this locals| pJob__Ended |
   pJob__Ended job.id@ locals| iJobId |
 
-  0 0 locals| pJobOriginator bAmDecider |
+  0 locals| bAmDecider |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the context of this __ended job
 
   // find the originating job
-  iJobId olist::findJob to pJobOriginator
+  iJobId olist::findJob drop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __ended job on this originating node
 
   // increment the number of __ended jobs received in api state
-  pJobOriginator ssn::incEnded
-  pJobOriginator ssn::traceSession
+  JobRef[] ssn::incEnded
+  JobRef[] ssn::traceSession
 
   // decrement the acks remaining
-  pJobOriginator job.dec2pcAcksRmg to bAmDecider
+  JobRef[] job.dec2pcAcksRmg to bAmDecider
 
   // if there are acks remaining just exit
   bAmDecider not if
@@ -79,14 +79,14 @@
   // all __ended jobs have been received, so this job is the decider
 
   // remove the originating job from the originator jobs
-  pJobOriginator job.removeOriginator
+  JobRef[] job.removeOriginator
 
   JP_ENDED log::markPhase
 
 
   // notify the originating task
-  //pJobOriginator job.originatingTask@ task.ack
-  pJobOriginator job.task@ task.ack
+  //JobRef[] job.originatingTask@ task.ack
+  JobRef[] job.task@ task.ack
 
   // delete this completed __ended job
   job::deleteThis
