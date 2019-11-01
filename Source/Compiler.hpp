@@ -31,8 +31,11 @@ namespace SenVM
     Compiler(void);
    ~Compiler(void) noexcept(false);
   
-    void vNextToken(void);
-    Stz* szToken(void);
+    Word* pCurrentWord(void);
+    void  vCurrentWord(Word* pWord);
+
+    void  vNextToken(void);
+    Stz*  szToken(void);
 
         
     Footer* aFooter(void);
