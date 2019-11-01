@@ -60,7 +60,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  pJob_SubTruncate job.objectName@ to sTableNm
+  //pJob_SubTruncate job.objectName@ to sTableNm
+  <tableNm> to sTableNm
   sTableNm pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

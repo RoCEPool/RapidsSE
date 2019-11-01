@@ -22,7 +22,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  pJob_SubFetch job.objectName@ to sTableNm
+  //pJob_SubFetch job.objectName@ to sTableNm
+  <tableNm> to sTableNm
   sTableNm pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

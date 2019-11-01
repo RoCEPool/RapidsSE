@@ -157,8 +157,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the table
-  pJob_DropTable job.objectName@
-  removeTable
+  //pJob_DropTable job.objectName@
+  <tableNm> removeTable
 
   pJob_DropTable job.notice
 
@@ -190,8 +190,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
-  pJob_DropTable job.objectName@
-  checkRemoveTable not if pJob_DropTable <ERROR_JOB> !!logError exit then
+  //pJob_DropTable job.objectName@
+  <tableNm> checkRemoveTable not if pJob_DropTable <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>
 ;

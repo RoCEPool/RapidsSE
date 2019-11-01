@@ -91,7 +91,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the tablen ame
-  pjob_VerifyTable job.objectName@ to sTableNm
+  //pjob_VerifyTable job.objectName@ to sTableNm
+  <tableNm> to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table folder
@@ -143,9 +144,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table name
-  pjob_VerifyTable job.objectName@ to sTableNm
+  //pjob_VerifyTable job.objectName@ to sTableNm
 
-  sTableNm checkverifyTable not if pjob_VerifyTable <ERROR_JOB> !!logError exit then
+  <tableNm> checkverifyTable not if pjob_VerifyTable <ERROR_JOB> !!logError exit then
 
   ddlLock::dropRead
 ;

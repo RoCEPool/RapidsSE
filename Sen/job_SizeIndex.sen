@@ -106,8 +106,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
-  pJob_SizeIndex job.indexName@ to sIndexNm
-  pJob_SizeIndex job.objectName@ to sTableNm
+  //pJob_SizeIndex job.indexName@ to sIndexNm
+  //pJob_SizeIndex job.objectName@ to sTableNm
+  <indexNm> to sIndexNm
+  <tableNm> to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
@@ -158,8 +160,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get index and table name
-  pJob_SizeIndex job.indexName@ to sIndexNm
-  pJob_SizeIndex job.objectName@ to sTableNm
+  //pJob_SizeIndex job.indexName@ to sIndexNm
+  //pJob_SizeIndex job.objectName@ to sTableNm
+  <indexNm> to sIndexNm
+  <tableNm> to sTableNm
 
   sTableNm sIndexNm checkSizeIndex not if pJob_SizeIndex <ERROR_JOB> !!logError exit then
 

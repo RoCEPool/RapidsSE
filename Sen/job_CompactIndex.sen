@@ -102,15 +102,15 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
-  pJob_CompactIndex job.indexName@ to sIndexNm
-  pJob_CompactIndex job.objectName@ to sTableNm
+  //pJob_CompactIndex job.indexName@ to sIndexNm
+  //pJob_CompactIndex job.objectName@ to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
-  sTableNm pushTable assert
+  <tableNm> pushTable assert
   pushIndexes assert
 
-  sIndexNm find execute to pIndex
+  <indexNm> find execute to pIndex
   pIndex index.compact
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -149,10 +149,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get index and table name
-  pJob_CompactIndex job.indexName@ to sIndexNm
-  pJob_CompactIndex job.objectName@ to sTableNm
+  //pJob_CompactIndex job.indexName@ to sIndexNm
+  //pJob_CompactIndex job.objectName@ to sTableNm
 
-  sTableNm sIndexNm checkCompactIndex not if pJob_CompactIndex <ERROR_JOB> !!logError exit then
+  <tableNm> <indexNm> checkCompactIndex not if pJob_CompactIndex <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>
 ;

@@ -159,7 +159,8 @@ bool Job_AnalyzeTable::bPopulateJob(TokenVec* pTokenVec)
     return false;
   
   // set the table name
-  vObjectName(pTokenVec->pGet(1)->szText());
+  //vObjectName(pTokenVec->pGet(1)->szText());
+  m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(1)->szText(), TN_STRING);
   
   if (iNumTokens == 3)
     m_bIsDetailed = pTokenVec->pGet(2)->bSame("true"_Stz) == 1 ? true : false;

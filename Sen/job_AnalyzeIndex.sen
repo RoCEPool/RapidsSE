@@ -108,7 +108,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  pJob_AnalyzeIndex job.objectName@ to sTableNm
+  //pJob_AnalyzeIndex job.objectName@ to sTableNm
+  <tableNm> to sTableNm
   sTableNm pushTable assert
 
   //
@@ -119,8 +120,8 @@
   // analyze the table
   pJob_AnalyzeIndex jobAnalyzeIndex.isDetailed to bIsDetailed
   bIsDetailed
-  pJob_AnalyzeIndex job.indexName@ find execute
-  index.analyze
+  //pJob_AnalyzeIndex job.indexName@ find execute
+  <indexNm> find execute index.analyze
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put response in the job
@@ -161,8 +162,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
-  pJob_AnalyzeIndex job.objectName@
-  pJob_AnalyzeIndex job.indexName@
+  //pJob_AnalyzeIndex job.objectName@
+  //pJob_AnalyzeIndex job.indexName@
+  <tableNm>
+  <indexNm> 
   checkAnalyzeIndex not if pJob_AnalyzeIndex <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>

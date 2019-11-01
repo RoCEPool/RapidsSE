@@ -97,7 +97,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  pJob_AnalyzeTable job.objectName@ to sTableNm
+  //pJob_AnalyzeTable job.objectName@ to sTableNm
+  <tableNm> to sTableNm
   sTableNm pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -146,7 +147,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
-  pJob_AnalyzeTable job.objectName@
+  //pJob_AnalyzeTable job.objectName@
+  <tableNm>
   checkAnalyzeTable not if pJob_AnalyzeTable <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>

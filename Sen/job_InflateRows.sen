@@ -99,7 +99,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table name, column name  and partition
-  pJob_InflateRows job.objectName@ to sTableNm
+  //pJob_InflateRows job.objectName@ to sTableNm
+  <tableNm> to sTableNm
   pJob_InflateRows Job_InflateRows.columnName@ to sColumnNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

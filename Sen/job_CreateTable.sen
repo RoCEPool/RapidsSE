@@ -160,8 +160,8 @@
 
   //----------------------------------------------------------------------------
   // check if we can make the table
-  pJob_CreateTable job.objectName@
-  checkMakeTable not if pJob_CreateTable <ERROR_JOB> !!logError exit then
+  //pJob_CreateTable job.objectName@
+  <tableNm> checkMakeTable not if pJob_CreateTable <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>
 ;

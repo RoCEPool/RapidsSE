@@ -43,7 +43,8 @@
   //pJob_Walk job.pushPath task::dicStack.set
 
   // set table dictionary
-  pJob_Walk job.objectName@ to sTableNm
+  //pJob_Walk job.objectName@ to sTableNm
+  <tableNm> to sTableNm
   sTableNm pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -52,9 +53,9 @@
   sTableNm table::find to pTable
   pTable pJob_Walk job_walk.table!
 
-  pJob_Walk job.indexName@ to sIndexNm
+  //pJob_Walk job.indexName@ to sIndexNm
   pushIndexes assert
-  sIndexNm find execute to pIndex
+  <indexNm> find execute to pIndex
   pIndex pJob_Walk job_walk.index!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -116,18 +117,21 @@
   //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get index and table name
+  0 0 locals| sIndexNm sTableNm |
+  //pJob_Walk job.indexName@ to sIndexNm
+  //pJob_Walk job.objectName@ to sTableNm
+  <indexNm> to sIndexNm
+  <tableNm> to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can walk the table
-  pJob_Walk job.objectName@ walk.checkTable
+  //pJob_Walk job.objectName@ walk.checkTable
+  sTableNm walk.checkTable
   not if
     pJob_Walk <ERROR_JOB>
     !!logError exit
   then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get index and table name
-  0 0 locals| sIndexNm sTableNm |
-  pJob_Walk job.indexName@ to sIndexNm
-  pJob_Walk job.objectName@ to sTableNm
 
   sTableNm sIndexNm checkSizeIndex
   not if

@@ -25,7 +25,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table name
-  pJob_InsertRow job.objectName@ locals| sTableNm |
+  //pJob_InsertRow job.objectName@ locals| sTableNm |
+  <tableNm> locals| sTableNm |
 
   // push table dictionary
   //pJob_InsertRow job.pushPath task::dicStack.set
@@ -88,7 +89,8 @@
   CN_JOB_INSERTROW pJob_InsertRow object.assertClass
 
   // get table name
-  pJob_InsertRow job.objectName@ locals| sTableNm |
+  //pJob_InsertRow job.objectName@ locals| sTableNm |
+  <tableNm> locals| sTableNm |
 
   // null the record in the insertJob
   // as its not a valid pointer (and is not needed) in the distributed jobs
@@ -122,7 +124,8 @@
 
   params| pJob_InsertRow  |
 
-  pJob_InsertRow job.objectName@ locals| sTableNm |
+  //pJob_InsertRow job.objectName@ locals| sTableNm |
+  <tableNm> locals| sTableNm |
 
   tp: insertRow.checkResources
   //checkResources received" .

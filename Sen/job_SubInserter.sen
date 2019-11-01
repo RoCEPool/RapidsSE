@@ -26,7 +26,8 @@
   // distribute the job
   //Job_InsertRow job.distribute
 
-  pJob_SubInserter job.objectName@ to sTableNm
+  //pJob_SubInserter job.objectName@ to sTableNm
+  <tableNm> to sTableNm
 
   // push table dictionary
   //pJob_SubInserter job.pushPath task::dicStack.set
@@ -52,7 +53,8 @@
 
   params| pJob_SubInserter  |
 
-  pJob_SubInserter job.objectName@ locals| sTableNm |
+  //pJob_SubInserter job.objectName@ locals| sTableNm |
+  <tableNm> locals| sTableNm |
 
   tp: SubInserter.checkResources
   //checkResources received" .
