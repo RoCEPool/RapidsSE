@@ -9,11 +9,12 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_DdlLock(void)
 {
-  vAddStep("ddlLock::dropRead"_Stz, &Step::vDdlLockDropRead);
-  vAddStep("ddlLock::dropWrite"_Stz,&Step::vDdlLockDropWrite);
-  vAddStep("ddlLock::grabRead"_Stz, &Step::vDdlLockGrabRead);
-  vAddStep("ddlLock::grabWrite"_Stz,&Step::vDdlLockGrabWrite);
-  vAddStep("ddlLock::testDrop"_Stz, &Step::vDdlLockTestDrop);
+  vAddStep("ddlLock::dropRead"_Stz,  &Step::vDdlLockDropRead);
+  vAddStep("ddlLock::dropWrite"_Stz, &Step::vDdlLockDropWrite);
+  vAddStep("ddlLock::grabRead"_Stz,  &Step::vDdlLockGrabRead);
+  vAddStep("ddlLock::grabWrite"_Stz, &Step::vDdlLockGrabWrite);
+  vAddStep("ddlLock::none"_Stz,      &Step::vDdlLockNone);
+  vAddStep("ddlLock::testDrop"_Stz,  &Step::vDdlLockTestDrop);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,6 +77,19 @@ void Step::vDdlLockGrabWrite(void)
   RASSERT(DL_GRAB_WRITE == m_pTask->pJob()->m_aJobClass->m_eDdlLock);
   
   AM::vDdlGrabWrite(m_pTask);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ddlLock::none -- check for no ddl lock                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vDdlLockNone(void)
+{
+  ENTRY("vDdlLockNone"_Stz);
+
+  if (LH_HAVE_NO_LOCK != m_pRegSet->m_eDdlLocked)
+    THROW("ddlLock::none : register still has ddl locked"_Stz);
 
   EXIT();
 }

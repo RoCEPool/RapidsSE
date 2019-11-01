@@ -143,6 +143,7 @@ public:
   void vDdlLockDropWrite(void);
   void vDdlLockGrabRead(void);
   void vDdlLockGrabWrite(void);
+  void vDdlLockNone(void);
   void vDdlLockTestDrop(void);
 
   // debug
