@@ -59,10 +59,10 @@
 
   // find the job to be executed in the participating jobs
   pJob__End job.id@ locals| iJobId |
-  iJobId plist::findJob locals| pJobParticipant |
+  iJobId plist::findJob drop
 
   // execute the end seed of the job on this participating node
-  pJobParticipant SEED_END job.spawn
+  JobRef[] SEED_END job.spawn
 
   //job::deleteThis
 
