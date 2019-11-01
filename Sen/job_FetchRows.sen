@@ -140,7 +140,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table name, column name  and partition
-  pJob_FetchRows job.objectName@ to sTableNm
+  //pJob_FetchRows job.objectName@ to sTableNm
+  <tableNm> to sTableNm
   pJob_FetchRows Job_FetchRows.columnName@ to sColumnNm
   pJob_FetchRows job_fetchRows.partition@ to iFetchPartition
 

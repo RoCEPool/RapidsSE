@@ -136,8 +136,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the left table name, left index name
-  pJob_IndexJoin job.objectName@ to sLeftTableNm
-  pJob_IndexJoin job.indexName@ to sLeftIndexNm
+  //pJob_IndexJoin job.objectName@ to sLeftTableNm
+  //pJob_IndexJoin job.indexName@ to sLeftIndexNm
+  <indexNm> to sLeftIndexNm
+  <tableNm> to sLeftTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the right table name, right index name

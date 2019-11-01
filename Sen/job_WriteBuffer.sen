@@ -30,7 +30,8 @@
   //pJob_WriteBuffer job.show
 
   // get table name
-  pJob_WriteBuffer job.objectName@ to sTableNm
+  //pJob_WriteBuffer job.objectName@ to sTableNm
+  <tableNm> to sTableNm
 
   // push table dictionary
   //pJob_WriteBuffer job.pushPath task::dicStack.set

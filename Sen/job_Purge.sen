@@ -124,7 +124,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there should be a table folder
-  pJob_Purge job.objectName@ to sTableNm
+  //pJob_Purge job.objectName@ to sTableNm
+  <tableNm> to sTableNm
   sTableNm checkIsTableFolder not if pJob_Purge <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

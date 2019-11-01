@@ -132,7 +132,6 @@ namespace Oblique
                                 Job* pParentJob, Op* pOp, i8 iNode);
     static void vStepTiming(StepTiming* pStepTiming);
     static void vSubInserters(i8 nSubInserters);
-    static void vTableName(Job_Pipeline* pJob, Stz* szTableNm);
     static Table* pTable(Job_Pipeline* pJob);
     static void vTakenBuffers(PoolBuffer* pTakenBuffers);
     static void vTakeBytes(i8 nTakeBytes);

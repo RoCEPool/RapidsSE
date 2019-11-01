@@ -245,9 +245,6 @@ void AM::vStepTiming(StepTiming* pStepTiming) {
 void AM::vSubInserters(i8 nSubInserters) {
   gpAttachMap->Arg.m_nSubInserters = nSubInserters;
 }
-void AM::vTableName(Job_Pipeline* pJob, Stz* szTableNm) {
-  pJob->vObjectName(szTableNm);
-}
 Table* AM::pTable(Job_Pipeline* pJob) {
   return pJob->m_pTable;
 }
@@ -1321,7 +1318,7 @@ void AM::vSetJobLocalError(Job* pFromJob, Job* pToJob) {
 }
 
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
-  pJob->vObjectName(szObjectName);
+  pJob->m_oEnmSet.vAdd("<tableNm>"_Stz,szObjectName,TN_STRING);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

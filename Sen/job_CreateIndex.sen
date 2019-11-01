@@ -23,8 +23,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
-  pJob_CreateIndex job.indexName@ to sIndexNm
-  pJob_CreateIndex job.objectName@ to sTableNm
+  //pJob_CreateIndex job.indexName@ to sIndexNm
+  //pJob_CreateIndex job.objectName@ to sTableNm
+  <tableNm> to sTableNm
+  <indexNm> to sIndexNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check in tables folder
@@ -80,8 +82,10 @@
   params| pJob_CreateIndex |
   0 0 0 0 locals| pTable pIndex sTableNm sIndexNm |
 
-  pJob_CreateIndex job.indexName@ to sIndexNm
-  pJob_CreateIndex job.objectName@ to sTableNm
+  //pJob_CreateIndex job.indexName@ to sIndexNm
+  //pJob_CreateIndex job.objectName@ to sTableNm
+  <indexNm> to sIndexNm
+  <tableNm> to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary

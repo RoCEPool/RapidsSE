@@ -39,7 +39,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table name
-  pJob_SelectTable job.objectName@ to sTableNm
+  //pJob_SelectTable job.objectName@ to sTableNm
+  <tableNm> to sTableNm
 
   pJob_SelectTable job_selectTable.partition@ to iPartition
 

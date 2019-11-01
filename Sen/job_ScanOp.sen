@@ -53,7 +53,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can scan the table
-  pJob_ScanOp job.objectName@ to sTableNm
+  //pJob_ScanOp job.objectName@ to sTableNm
+  <tableNm> to sTableNm
+
   sTableNm checkScanTable not if
     pJob_ScanOp <ERROR_JOB> !!logError
   else

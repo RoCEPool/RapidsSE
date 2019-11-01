@@ -78,8 +78,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
-  pJob_VisualizeIndex job.indexName@ to sIndexNm
-  pJob_VisualizeIndex job.objectName@ to sTableNm
+  //pJob_VisualizeIndex job.indexName@ to sIndexNm
+  //pJob_VisualizeIndex job.objectName@ to sTableNm
+  <indexNm> to sIndexNm
+  <tableNm> to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //check if we can visualize index

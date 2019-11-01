@@ -199,7 +199,8 @@ Job* Jobs::pJob_Ingest_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aRe
 
   // set the table name
   pJob_Ingest->vObjectName(pTknVec->pGet(1)->szText());
-
+  pJob_Ingest->m_oEnmSet.vAdd("<tableNm>"_Stz, pTknVec->pGet(1)->szText(), TN_STRING);
+  
   // set the file name
   pJob_Ingest->vFilePath(pTknVec->pGet(2)->szText());
   

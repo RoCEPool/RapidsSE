@@ -67,7 +67,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table name
-  pjob_VisualizeTable job.objectName@ to sTableNm
+  //pjob_VisualizeTable job.objectName@ to sTableNm
+  <tableNm> to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can visualize table

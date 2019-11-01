@@ -60,7 +60,8 @@
   //pJob_LoadTable job.pushPath task::dicStack.set
 
   // set table dictionary
-  pJob_LoadTable job.objectName@ to sTableNm
+  //pJob_LoadTable job.objectName@ to sTableNm
+  <tableNm> to sTableNm
   sTableNm pushTable assert
 
   // get table
@@ -143,7 +144,8 @@
   0 locals| pFile |
   0 locals| iOriginNode |
 
-  pJob_LoadTable job.objectName@ locals| sTableNm |
+  //pJob_LoadTable job.objectName@ locals| sTableNm |
+  <tableNm> locals| sTableNm |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for sufficient memory

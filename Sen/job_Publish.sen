@@ -126,7 +126,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there should be a table folder
-  pJob_publish job.objectName@ to sTableNm
+  //pJob_publish job.objectName@ to sTableNm
+  <tableNm> to sTableNm
   sTableNm checkIsTableFolder not if pJob_publish <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

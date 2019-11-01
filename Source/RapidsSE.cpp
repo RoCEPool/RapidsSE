@@ -371,7 +371,8 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     API_LOC(360);
     
     // set the row in the insertRow job
-    pJob_InsertRow->vObjectName(szTableNm);
+    //pJob_InsertRow->vObjectName(szTableNm);
+    pJob_InsertRow->m_oEnmSet.vAdd("<tableNm>"_Stz, szTableNm, TN_STRING);
     pJob_InsertRow->m_pRecord->vRecStr(szRecord);
     
     //pJob_InsertRow->m_nRawDataBytes = iRawDataLength;

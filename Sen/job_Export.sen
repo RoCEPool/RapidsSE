@@ -68,7 +68,8 @@
   //pJob_E job.pushPath task::dicStack.set
 
   // set table dictionary
-  pJob_E job.objectName@ to sTableNm
+  //pJob_E job.objectName@ to sTableNm
+  <tableNm> to sTableNm
   sTableNm pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -99,7 +100,8 @@
   //pJob_(E`) job.pushPath task::dicStack.set
 
   // set table folder
-  pJob_(E`) job.objectName@ to sTableNm
+  //pJob_(E`) job.objectName@ to sTableNm
+  <tableNm> to sTableNm
   sTableNm pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -156,7 +158,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can export the table
-   pJob_(E`) job.objectName@ (E`).checkTable
+   //pJob_(E`) job.objectName@ (E`).checkTable
+   <tableNm> (E`).checkTable
    not if
      pJob_(E`) <ERROR_JOB>
      !!logError exit

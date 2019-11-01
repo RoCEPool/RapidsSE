@@ -194,7 +194,8 @@ void Step::vJob_IndexJoinSpawnSub(void)
   
   pJob_SubIndexJoin->m_iParentId    = pJob_IndexJoin->m_iUniqueId;
   pJob_SubIndexJoin->m_pParentJob   = pJob_IndexJoin;
-  pJob_SubIndexJoin->vObjectName(pJob_IndexJoin->szObjectName());
+  //pJob_SubIndexJoin->vObjectName(pJob_IndexJoin->szObjectName());
+  pJob_SubIndexJoin->m_oEnmSet.vAdd("<tableNm>"_Stz, pJob_IndexJoin->m_oEnmSet.szValue("<tableNm>"_Stz), TN_STRING);
   pJob_SubIndexJoin->vSlot(iSlot);
   pJob_SubIndexJoin->m_pBufferQueue = pJob_IndexJoin->m_pBufferQueue;
   

@@ -43,8 +43,10 @@
   params| pJob_DropIndex |
   0 0 0 locals| pIndex sIndexNm sTableNm |
 
-  pJob_DropIndex job.indexName@ to sIndexNm
-  pJob_DropIndex job.objectName@ to sTableNm
+  //pJob_DropIndex job.indexName@ to sIndexNm
+  //pJob_DropIndex job.objectName@ to sTableNm
+  <indexNm> to sIndexNm
+  <tableNm> to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -160,8 +162,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
-  pJob_DropIndex job.indexName@ to sIndexNm
-  pJob_DropIndex job.objectName@ to sTableNm
+  //pJob_DropIndex job.indexName@ to sIndexNm
+  //pJob_DropIndex job.objectName@ to sTableNm
+  <indexNm> to sIndexNm
+  <tableNm> to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check remove index

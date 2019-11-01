@@ -54,7 +54,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table name from job
-  pJob_ListColumns job.objectName@ to sTableNm
+  //pJob_ListColumns job.objectName@ to sTableNm
+  <tableNm> to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there should be a table folder

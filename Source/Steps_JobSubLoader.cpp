@@ -45,7 +45,8 @@ void Step::vJob_SubLoaderSpawn(void)
   
   pJob_SubLoader->m_iParentId  = pJob_LoadTable->m_iUniqueId;
 
-  pJob_SubLoader->vObjectName(pJob_LoadTable->szObjectName());
+  //pJob_SubLoader->vObjectName(pJob_LoadTable->szObjectName());
+  pJob_SubLoader->m_oEnmSet.vAdd("<tableNm>"_Stz, pJob_LoadTable->m_oEnmSet.szValue("<tableNm>"_Stz), TN_STRING);
   pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);
   
   

@@ -102,8 +102,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
-  pJob_VerifyIndex job.indexName@ to sIndexNm
-  pJob_VerifyIndex job.objectName@ to sTableNm
+  //pJob_VerifyIndex job.indexName@ to sIndexNm
+  //pJob_VerifyIndex job.objectName@ to sTableNm
+  <indexNm> to sIndexNm
+  <tableNm> to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
@@ -156,8 +158,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get index and table name
-  pJob_VerifyIndex job.indexName@ to sIndexNm
-  pJob_VerifyIndex job.objectName@ to sTableNm
+  //pJob_VerifyIndex job.indexName@ to sIndexNm
+  //pJob_VerifyIndex job.objectName@ to sTableNm
+  <indexNm> to sIndexNm
+  <tableNm> to sTableNm
 
   sTableNm sIndexNm checkVerifyIndex not if pJob_VerifyIndex <ERROR_JOB> !!logError exit then
 

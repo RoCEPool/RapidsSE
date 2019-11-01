@@ -31,7 +31,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table name from job
-  pJob_Generate job.objectName@ to sTableNm
+  //pJob_Generate job.objectName@ to sTableNm
+  <tableNm> to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary

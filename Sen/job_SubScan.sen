@@ -20,7 +20,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  pJob_SubScan job.objectName@ to sTableNm
+  //pJob_SubScan job.objectName@ to sTableNm
+  <tableNm> to sTableNm
   sTableNm pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

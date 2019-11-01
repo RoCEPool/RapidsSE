@@ -84,7 +84,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table name from job
-  pJob_ListIndexes job.objectName@ to sTableNm
+  //pJob_ListIndexes job.objectName@ to sTableNm
+  <tableNm> to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there should be a table folder

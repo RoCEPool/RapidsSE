@@ -115,7 +115,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there should be a table folder
-  pJob_TruncateTable job.objectName@ to sTableNm
+  //pJob_TruncateTable job.objectName@ to sTableNm
+  <tableNm> to sTableNm
   sTableNm checkIsTableFolder not if pJob_TruncateTable <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
