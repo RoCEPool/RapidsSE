@@ -12,19 +12,19 @@ namespace Registers
   public:
     Task* m_pTask; // which task
   
-    i8        m_i_NextRnd; // which next repeatable random nummber?
-
-    Node*     m_pSendNode; // node to send to
+    eLH       m_eDdlLocked; // this task has the ddl lock?
+    i8        m_i_NextRnd;  // which next repeatable random nummber?
+    Node*     m_pSendNode;  // node to send to
   
-    REF<Job>  m_xpJobRef;  // job reference
-    REF<Node> m_xpNodeRef; // node reference
+    REF<Job>  m_xpJobRef;   // job reference
+    REF<Node> m_xpNodeRef;  // node reference
 
-    REG<Dir>  m_xpDir0;    // dir0[]
-    REG<Dir>  m_xpDir1;    // dir1[]
-    REG<Dir>  m_xpDir2;    // dir2[]
-    REG<File> m_xpFile0;   // file0[]
-    REG<File> m_xpFile1;   // file1[]
-    REG<File> m_xpFile2;   // file2[]
+    REG<Dir>  m_xpDir0;     // dir0[]
+    REG<Dir>  m_xpDir1;     // dir1[]
+    REG<Dir>  m_xpDir2;     // dir2[]
+    REG<File> m_xpFile0;    // file0[]
+    REG<File> m_xpFile1;    // file1[]
+    REG<File> m_xpFile2;    // file2[]
 
     // must be last
     Footer m_xFooter;
