@@ -14,6 +14,9 @@ namespace SenVM
     Word*     m_pSeedWord;      // seed
     Word*     m_pExceptionWord; // seed
   
+    bool      m_bSeedInitially; // seed_initially sentinel has been executed
+    bool      m_bDoneFinally;   // done_finally sentinel has been executed
+
     DicStack  m_oDicStack;      // dictionary stack
 
     Cell*     m_aInxPtr;      // instruction/cell pointer
