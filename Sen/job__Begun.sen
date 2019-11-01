@@ -70,14 +70,13 @@
 
   pJob__Begun job.id@ locals| iJobId |
 
-  0 locals| pJobOriginator  |
   0 0 0 0 locals| bAmDecider error iParticipantNode |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the context of this __begun job
 
   // find the originating job
-  iJobId olist::findJob to pJobOriginator
+  iJobId olist::findJob drop
 
   // get the participant node from where this job__begun started
   pJob__Begun job.participant@ to iParticipantNode
@@ -89,18 +88,18 @@
     // set the error code in pJobOriginator for this partcipant
     //error iParticipantNode pJobOriginator job.error!
     //pJob__Begun iParticipantNode pJobOriginator job.participantResponse!
-    pJob__Begun pJobOriginator job.participantResponse!
+    pJob__Begun JobRef[] job.participantResponse!
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process __begun job on this originating node
 
   // increment the number of __begun jobs received in api state
-  pJobOriginator ssn::incBegun
-  pJobOriginator ssn::traceSession
+  JobRef[] ssn::incBegun
+  JobRef[] ssn::traceSession
 
   // decrement the acks remaining in the originating job
-  pJobOriginator job.dec2pcAcksRmg to bAmDecider
+  JobRef[] job.dec2pcAcksRmg to bAmDecider
 
   // if there are acks remaining just exit
   bAmDecider not if
@@ -116,9 +115,9 @@
   // all job__begun's have been received, so this job is the decider
 
   // check if any node returned an error
-  pJobOriginator job.participantHasError true == if
+  JobRef[] job.participantHasError true == if
     // distribute Job__Cancel to all participants
-    pJobOriginator Job__Cancel::distribute
+    JobRef[] Job__Cancel::distribute
     job::deleteThis
     <DONE_RCV>
     exit                                                       // *EARLY EXIT*
@@ -128,7 +127,7 @@
 
   JP_EXECUTING log::markPhase
 
-  pJobOriginator Job__Execute::distribute
+  JobRef[] Job__Execute::distribute
 
   // delete this completed __begun job
   job::deleteThis

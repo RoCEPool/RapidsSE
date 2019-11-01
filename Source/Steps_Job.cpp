@@ -32,7 +32,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   
-  vAddStep("job.enameSet"_Stz,         &Step::vJobEnameSet);
+  vAddStep("job.enameSet@"_Stz,        &Step::vJobEnameSetFetch);
   vAddStep("job.error!"_Stz,           &Step::vJobErrorStore);
   vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("job.execute@"_Stz,         &Step::vJobExecuteFetch);
@@ -663,11 +663,11 @@ void Step::vJobDec2pcAcksRmg(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.enameSet -- push ptr to job EnameSet                                   */
+/* job.enameSet@ -- push ptr to job EnameSet                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJobEnameSet(void)
+void Step::vJobEnameSetFetch(void)
 {
-  ENTRY("vJobEnameSet"_Stz);
+  ENTRY("vJobEnameSetFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )

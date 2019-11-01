@@ -17108,7 +17108,7 @@ void Task::vAddMunged(Forth* pForth)
     "  0 0 locals| pDicStackSession pDicStackTask |\n"
     "\n"
     "  // get session dic stack\n"
-    "  task::this task.session@ session.dicStack to pDicStackSession\n"
+    "  task::this task.session@ session.dicStack@ to pDicStackSession\n"
     "\n"
     "  // get task dic stack\n"
     "  task::this task.dicStack to pDicStackTask\n"

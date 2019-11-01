@@ -461,7 +461,7 @@ public:
   void vJobDec2pcAcksRmg(void);
   void vJobDelete(void);
 
-  void vJobEnameSet(void);
+  void vJobEnameSetFetch(void);
   void vJobErrorStore(void);
   void vJobErrorFetch(void);
   void vJobExecuteFetch(void);
@@ -1008,7 +1008,7 @@ public:
 
   // session
   void vSessionCommand(void);
-  void vSessionDicStack(void);
+  void vSessionDicStackFetch(void);
   void vSessionDump(void);
   void vSessionEnameSetFetch(void);
   void vSessionIsExiting(void);
