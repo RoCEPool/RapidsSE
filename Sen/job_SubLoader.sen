@@ -38,6 +38,8 @@
 
   pJob_SubLoader SubLoader_process
 
+  <DONE_RUN>
+
   job::completed
 ;
 

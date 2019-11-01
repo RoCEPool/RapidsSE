@@ -153,6 +153,7 @@
 
   ddlLock::testDrop
 
+  <DONE_RUN>
   job::completed
 ;
 

@@ -77,8 +77,8 @@ Forth::~Forth(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
   
-  //RASSERT(m_bSeedInitially);
-  //RASSERT(m_bDoneFinally);
+  RASSERT(m_bSeedInitially);
+  RASSERT(m_bDoneFinally);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -66,7 +66,8 @@ Task::Task(Job* pJob)
   
   vInit();
   
-  m_pJob      = pJob;
+  m_pJob     = pJob;
+  m_eWhatJob = pJob->eClass();
 
   _checkInitialised_(CN_TASK);
   

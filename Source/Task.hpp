@@ -41,6 +41,7 @@ namespace Tasks
     SMA<RegSet>  m_pRegSet;      // set of registers for the task steps
 
     i8           m_iTraceMask;   // tracing mask
+    eCN          m_eWhatJob;     // what job this task is/was for (debugging)
 
     // always last
     Footer m_xFooter;

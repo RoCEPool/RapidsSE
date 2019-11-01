@@ -67,6 +67,7 @@
 
   ddlLock::testDrop
 
+  <DONE_RCV>
   job::completed
 ;
 
