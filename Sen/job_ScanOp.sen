@@ -71,7 +71,9 @@
 
   pJob_ScanOp job.opLoop
 
-  <<logExit <DONE_RUN>
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
 ;
 
 /*----------------------------------------------------------------------------*/

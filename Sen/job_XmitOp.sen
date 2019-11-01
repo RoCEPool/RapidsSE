@@ -19,7 +19,9 @@
 
    //pJob_XmitOp job::participantExecuted
 
-  <<logExit <DONE_RUN>
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
 ;
 
 /*----------------------------------------------------------------------------*/

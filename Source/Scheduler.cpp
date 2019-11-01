@@ -601,10 +601,10 @@ void Scheduler::vTask_DdlDropRead(Task* pTask)
   pTask->m_eDdlLocked = LH_HAVE_NO_LOCK;
   
   pTask->vIncActNo();
-  AM::vLogTsk(SL_INF,pTask,TA_DDL_READ_DROPPED,
-              "success by %s"_Stz, //!format-LogTsk
-              spId.sz(IK_JOB,pTask->pJob()->m_iUniqueId)
-              );
+//  AM::vLogTsk(SL_INF,pTask,TA_DDL_READ_DROPPED,
+//              "success by %s"_Stz, //!format-LogTsk
+//              spId.sz(IK_JOB,pTask->pJob()->m_iUniqueId)
+//              );
 }
 
 /*----------------------------------------------------------------------------*/
