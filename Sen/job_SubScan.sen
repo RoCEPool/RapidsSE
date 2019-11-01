@@ -61,7 +61,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  ddlLock::grabRead
+  DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
@@ -72,7 +72,7 @@
   // execute a table scan
   pJob_SubScan scanRows
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
 
   job::completed
 ;

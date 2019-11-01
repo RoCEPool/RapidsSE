@@ -310,7 +310,7 @@
   "DL_GRAB_WRITE"
   str.equal if
     "job::lockExe - grabbing ddl write lock" .
-    ddlLock::grabWrite
+    DdlLock[].grabWrite
   then
 ;
 

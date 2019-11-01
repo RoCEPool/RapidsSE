@@ -84,7 +84,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  ddlLock::grabWrite
+  DdlLock[].grabWrite
 
   CN_JOB_CREATESCHEMA pJob_CreateSchema object.assertClass
   //pJob_CreateSchema job.schemaName@ to sSchemaNm
@@ -119,7 +119,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  ddlLock::grabRead
+  DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job

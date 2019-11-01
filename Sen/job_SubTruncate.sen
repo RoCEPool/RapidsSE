@@ -28,7 +28,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  //ddlLock::grabWrite
+  //DdlLock[].grabWrite
 
   // get truncate job
   pJob_SubTruncate job_SubTruncate.truncateJobId@ to iTrucateJobId

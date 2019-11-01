@@ -65,7 +65,7 @@
   JobRef[] SEED_END job.spawn
   JobRef[].return
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
 
   <DONE_RCV>
   job::completed

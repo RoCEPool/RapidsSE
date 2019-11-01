@@ -83,7 +83,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  ddlLock::grabWrite
+  DdlLock[].grabWrite
 
   CN_JOB_CREATETENANT pJob_CreateTenant object.assertClass
   //pJob_CreateTenant job.tenantName@ to sTenantNm
@@ -118,7 +118,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  ddlLock::grabRead
+  DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job

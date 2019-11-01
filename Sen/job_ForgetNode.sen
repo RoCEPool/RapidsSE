@@ -15,7 +15,7 @@
 
   "forgetNode::checkResources" .
 
-  ddlLock::grabRead
+  DdlLock[].grabRead
 
   <nodeNm> grid::findNode not if
     EC_NO_SUCH_NODE job::this job.error! exit

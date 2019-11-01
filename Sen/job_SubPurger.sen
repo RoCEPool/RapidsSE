@@ -49,7 +49,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  //ddlLock::grabWrite
+  //DdlLock[].grabWrite
 
   // get purge job
   pJob_SubPurger job_subPurger.purgeJobId@ to iPurgeJobId

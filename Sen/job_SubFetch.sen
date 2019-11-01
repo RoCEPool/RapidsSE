@@ -140,7 +140,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  ddlLock::grabRead
+  DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
@@ -151,7 +151,7 @@
   // execute fetch depending on the fetchTechnique in the planner
   pJob_SubFetch fetchRows
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
 
   <DONE_RUN>
   job::completed

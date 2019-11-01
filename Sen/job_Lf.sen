@@ -30,7 +30,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab ddl read lock
-  ddlLock::grabRead
+  DdlLock[].grabRead
 
   args.metadata if
     "(name VARCHAR, type VARCHAR)" pJob_Lf job.metadata!

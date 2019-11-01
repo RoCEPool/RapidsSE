@@ -39,13 +39,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  //ddlLock::grabRead
+  //DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop fetch buffers from queue and inflate them
   pJob_SubInflate job_subInflate.inflateRows
 
-  //ddlLock::testDrop
+  //DdlLock[].testDrop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // notify the fetch job

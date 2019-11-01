@@ -114,7 +114,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  ddlLock::grabRead
+  DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // visualize
@@ -149,7 +149,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  ddlLock::grabRead
+  DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
@@ -165,7 +165,7 @@
 
   sTableNm sIndexNm checkVerifyIndex not if pJob_VerifyIndex <ERROR_JOB> !!logError exit then
 
-  ddlLock::dropRead
+  DdlLock[].dropRead
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -96,7 +96,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  ddlLock::grabRead
+  DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
@@ -107,7 +107,7 @@
   // execute index join
   pJob_SubIndexJoin indexJoin
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
 
   job::completed
 ;

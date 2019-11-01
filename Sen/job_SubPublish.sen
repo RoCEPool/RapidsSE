@@ -42,7 +42,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  //ddlLock::grabWrite
+  //DdlLock[].grabWrite
 
   // get publish job
   pJob_SubPublish Job_SubPublish.publishJobId@ to iPublishJobId

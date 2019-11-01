@@ -9,16 +9,16 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_DdlLock(void)
 {
-  vAddStep("ddlLock::dropRead"_Stz,  &Step::vDdlLockDropRead);
-  vAddStep("ddlLock::dropWrite"_Stz, &Step::vDdlLockDropWrite);
-  vAddStep("ddlLock::grabRead"_Stz,  &Step::vDdlLockGrabRead);
-  vAddStep("ddlLock::grabWrite"_Stz, &Step::vDdlLockGrabWrite);
-  vAddStep("ddlLock::none"_Stz,      &Step::vDdlLockNone);
-  vAddStep("ddlLock::testDrop"_Stz,  &Step::vDdlLockTestDrop);
+  vAddStep("DdlLock[].dropRead"_Stz,  &Step::vDdlLockDropRead);
+  vAddStep("DdlLock[].dropWrite"_Stz, &Step::vDdlLockDropWrite);
+  vAddStep("DdlLock[].grabRead"_Stz,  &Step::vDdlLockGrabRead);
+  vAddStep("DdlLock[].grabWrite"_Stz, &Step::vDdlLockGrabWrite);
+  vAddStep("DdlLock[].none"_Stz,      &Step::vDdlLockNone);
+  vAddStep("DdlLock[].testDrop"_Stz,  &Step::vDdlLockTestDrop);
 }
 
 /*----------------------------------------------------------------------------*/
-/* ddlLock::dropRead -- drop ddl lock for read                                */
+/* DdlLock[].dropRead -- drop ddl lock for read                               */
 /*----------------------------------------------------------------------------*/
 void Step::vDdlLockDropRead(void)
 {
@@ -34,7 +34,7 @@ void Step::vDdlLockDropRead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ddlLock::dropWrite -- drop ddl lock for write                              */
+/* DdlLock[].dropWrite -- drop ddl lock for write                             */
 /*----------------------------------------------------------------------------*/
 void Step::vDdlLockDropWrite(void)
 {
@@ -50,7 +50,7 @@ void Step::vDdlLockDropWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ddlLock::grabRead -- grab ddl lock for read                                */
+/* DdlLock[].grabRead -- grab ddl lock for read                               */
 /*----------------------------------------------------------------------------*/
 void Step::vDdlLockGrabRead(void)
 {
@@ -66,7 +66,7 @@ void Step::vDdlLockGrabRead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ddlLock::grabWrite -- grab ddl lock for write                              */
+/* DdlLock[].grabWrite -- grab ddl lock for write                             */
 /*----------------------------------------------------------------------------*/
 void Step::vDdlLockGrabWrite(void)
 {
@@ -82,20 +82,20 @@ void Step::vDdlLockGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ddlLock::none -- check for no ddl lock                                     */
+/* DdlLock[].none -- check for no ddl lock                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vDdlLockNone(void)
 {
   ENTRY("vDdlLockNone"_Stz);
 
   if (LH_HAVE_NO_LOCK != m_pRegSet->m_eDdlLocked)
-    THROW("ddlLock::none : register still has ddl locked"_Stz);
+    THROW("DdlLock[].none : register still has ddl locked"_Stz);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ddlLock::testDrop -- test for ddl lock and drop if locked by task          */
+/* DdlLock[].testDrop -- test for ddl lock and drop if locked by task         */
 /*----------------------------------------------------------------------------*/
 void Step::vDdlLockTestDrop(void)
 {
@@ -104,13 +104,11 @@ void Step::vDdlLockTestDrop(void)
   if (LH_HAVE_READ_LOCK == m_pRegSet->m_eDdlLocked) {
     
     AM::vDdlDropRead(m_pTask);
-
   }
   else
   if (LH_HAVE_WRITE_LOCK == m_pRegSet->m_eDdlLocked) {
     
     AM::vDdlDropWrite(m_pTask);
-
   }
   
   EXIT();

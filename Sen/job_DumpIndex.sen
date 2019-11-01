@@ -74,7 +74,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  ddlLock::grabRead
+  DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
@@ -119,7 +119,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  ddlLock::grabRead
+  DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
@@ -135,7 +135,7 @@
 
   sTableNm sIndexNm checkDumpIndex not if pJob_DumpIndex <ERROR_JOB> !!logError exit then
 
-  ddlLock::dropWrite
+  DdlLock[].dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/

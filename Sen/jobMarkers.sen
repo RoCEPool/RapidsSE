@@ -24,6 +24,9 @@
   // check this task has no job reference
   JobRef[].none
 
+  // check this task has no ddl lock
+  DdlLock[].none
+
   task::doneFinally
 ;
 
@@ -32,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 : <DONE_BEG> ( -- )
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
 
   JP_BEGUN job::this job.phase!
 
@@ -44,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 : <DONE_CAN> ( -- )
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
 
   JP_CANCELED job::this job.phase!
 
@@ -56,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 : <DONE_END> ( -- )
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
 
   JP_ENDED job::this job.phase!
 
@@ -68,7 +71,7 @@
 /*----------------------------------------------------------------------------*/
 : <DONE_EXE> ( -- )
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
 
   JP_EXECUTED job::this job.phase!
 
@@ -80,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 : <DONE_KID> ( -- )
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
 
   <done_finally> task::delete
 ;
@@ -90,7 +93,7 @@
 /*----------------------------------------------------------------------------*/
 : <DONE_RCV> ( -- )
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
 
   <done_finally> task::delete
 ;
@@ -100,7 +103,7 @@
 /*----------------------------------------------------------------------------*/
 : <DONE_REQ> ( -- )
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
 
   //"Signalling the thread waiting on job completion" .
   <done_finally> job::this job.signalWaiter
@@ -111,7 +114,7 @@
 /*----------------------------------------------------------------------------*/
 : <DONE_RUN> ( -- )
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
 
   <done_finally> task::delete
 ;
@@ -310,7 +313,7 @@
 /*----------------------------------------------------------------------------*/
 : <Resources_Checked> ( -- )
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -334,7 +337,7 @@
 
   params| pJob errorCode |
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
 
   //errorCode error.msg "Setting error '%v' in job" str.format .
   errorCode pJob job.error!
@@ -347,7 +350,7 @@
 
   params| pJob errorCode |
 
-  ddlLock::testDrop
+  DdlLock[].testDrop
  
   //errorCode error.msg "Setting error '%v' in job" str.format .
   errorCode pJob job.error!
