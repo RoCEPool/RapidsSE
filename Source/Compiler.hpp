@@ -9,9 +9,11 @@ namespace SenVM
   {
   friend class Task;
   
-  public:
+  private:
   
-    bool  m_bCompiling;    // currently compiling a word?
+    bool  m_bCompiling;    // currently in compilation state?
+  
+  public:
     Word* m_pCurrent;      // current word being compiled
     i8    m_nSubDic;       // number of sub dictionaries
     i8    m_nLocals;       // number of locals/params variables
@@ -31,6 +33,9 @@ namespace SenVM
     Compiler(void);
    ~Compiler(void) noexcept(false);
   
+    bool  bCompiling(void);
+    void  vCompiling(bool bCompiling);
+
     Word* pCurrentWord(void);
     void  vCurrentWord(Word* pWord);
 

@@ -82,7 +82,7 @@ void Step::vColon(void)
   
   s32 sName;
   
-  m_pCompiler->m_bCompiling = true;
+  m_pCompiler->vCompiling(true);
   
   m_pCompiler->vNextToken();
   sName = m_pCompiler->szToken();
@@ -638,7 +638,7 @@ void Step::vSemicolon(void)
   else
     pCurrentWord->vEncode("exit_rt"_Stz);
   
-  m_pCompiler->m_bCompiling = false;
+  m_pCompiler->vCompiling(false);
   
   // discard subDic use
   for ( ; m_pCompiler->m_nSubDic; m_pCompiler->m_nSubDic--)
@@ -739,7 +739,7 @@ void Step::vTick(void)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "No word: %s "_Stz,sWordNm.azChar());
   
-  if (m_pCompiler->m_bCompiling) {
+  if (m_pCompiler->bCompiling()) {
     Word* pCurrentWord = m_pCompiler->pCurrentWord();
     pCurrentWord->vEncode("pushValue"_Stz,pWord);
   }
