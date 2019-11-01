@@ -474,8 +474,8 @@ void Task::vInitExeContext(void)
   if (m_pForth)
     return;
   
-  m_pForth  = new Forth(this);
   m_pRegSet = new RegSet(this);
+  m_pForth  = new Forth(this,m_pRegSet);
   
   m_pForth->m_pCompiler = (CN_JOB_BOOT == m_pJob->eClass()) ? new Compiler : nullptr;
 
