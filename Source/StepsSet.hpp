@@ -461,9 +461,7 @@ public:
   void vJobDec2pcAcksRmg(void);
   void vJobDelete(void);
 
-  void vJobEnameFetch(void);
   void vJobEnameSet(void);
-  void vJobEnameStore(void);
   void vJobErrorStore(void);
   void vJobErrorFetch(void);
   void vJobExecuteFetch(void);

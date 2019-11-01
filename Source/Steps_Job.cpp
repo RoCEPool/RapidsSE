@@ -33,8 +33,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   
   vAddStep("job.enameSet"_Stz,         &Step::vJobEnameSet);
-  vAddStep("job.ename!"_Stz,           &Step::vJobEnameStore);
-  vAddStep("job.ename@"_Stz,           &Step::vJobEnameFetch);
   vAddStep("job.error!"_Stz,           &Step::vJobErrorStore);
   vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("job.execute@"_Stz,         &Step::vJobExecuteFetch);
@@ -665,29 +663,6 @@ void Step::vJobDec2pcAcksRmg(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.ename@ -- fetch/decode given ename from job EnameSet                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobEnameFetch(void)
-{
-  ENTRY("vJobEnameFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  Job* pJob = _pJob(pJobPtr);
-  
-  s32 sEname;
-  if ( ! m_pDataStack->bPopS32(sEname) )
-    THROW_DSTACK();
-  
-  s4K sValue ( pJob->m_oEnmSet.szValue(sEname) );
-  
-  m_pDataStack->vPushS4K(sValue);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.enameSet -- push ptr to job EnameSet                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJobEnameSet(void)
@@ -700,31 +675,6 @@ void Step::vJobEnameSet(void)
   Job* pJob = _pJob(pJobPtr);
   
   m_pDataStack->vPushPointer(&pJob->m_oEnmSet);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.ename! -- store given ename-value into job EnameSet                    */
-/*----------------------------------------------------------------------------*/
-void Step::vJobEnameStore(void)
-{
-  ENTRY("vJobEnameStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  Job* pJob = _pJob(pJobPtr);
-  
-  s32 sEname;
-  if ( ! m_pDataStack->bPopS32(sEname) )
-    THROW_DSTACK();
-  
-  s4K sValue;
-  if ( ! m_pDataStack->bPopS4K(sValue) )
-    THROW_DSTACK();
-
-  RASSERT(0);
   
   EXIT();
 }
