@@ -50,8 +50,8 @@ Forth::Forth(Task* pTask, RegSet* pRegSet)
   m_pSeedWord       = nullptr;
   m_pExceptionWord  = nullptr;
   
-  m_bSeedInitially  = true;
-  m_bDoneFinally    = true;
+  m_bSeedInitially  = false;
+  m_bDoneFinally    = false;
 
   // m_oDicStack
   
@@ -77,8 +77,8 @@ Forth::~Forth(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
   
-  RASSERT(m_bSeedInitially);
-  RASSERT(m_bDoneFinally);
+  //RASSERT(m_bSeedInitially);
+  //RASSERT(m_bDoneFinally);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

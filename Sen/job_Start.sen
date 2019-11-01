@@ -24,6 +24,7 @@
   snooze answer::spawn
   snooze connector::spawn
 
+  <DONE_RUN>
   job::completed
 ;
 

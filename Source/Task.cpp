@@ -130,10 +130,10 @@ Task::~Task(void) noexcept(false)
   //RASSERT(! m_pJob);
   RASSERT(! bWordBody());
 
+  delete m_pForth;
   if (m_pJob)
     Job::vDeleteJobViaClass(m_pJob);
   
-  delete m_pForth;
   delete m_pRegSet;
   
   delete m_pMutex;
