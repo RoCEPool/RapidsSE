@@ -174,7 +174,7 @@ ENTRY("vLocalsTo"_Stz);
   
   // is is a semantic ename?
   
-  if (m_pCompiler->szToken()->bSame("/semantic"_Stz) &&
+  if (m_pCompiler->szToken()->bSame("/semantic"_Stz) ||
       m_pCompiler->szToken()->bSame("/session"_Stz)) {
     
     bSemanticTo = true;
@@ -217,7 +217,7 @@ ENTRY("vLocalsTo"_Stz);
     }
     else {
       pCurrentWord->vEncode("job::this"_Stz);
-      pCurrentWord->vEncode("job.enameSet"_Stz);
+      pCurrentWord->vEncode("job.enameSet@"_Stz);
     }
     
     pCurrentWord->vEncode("enameSet.addStr"_Stz);

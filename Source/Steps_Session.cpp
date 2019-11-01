@@ -10,7 +10,7 @@
 void Step::vAddSteps_Session(void)
 {
   vAddStep("session.commandProcessor"_Stz, &Step::vSessionCommand);
-  vAddStep("session.dicStack"_Stz,         &Step::vSessionDicStack);
+  vAddStep("session.dicStack@"_Stz,        &Step::vSessionDicStackFetch);
   vAddStep("session.dump"_Stz,             &Step::vSessionDump);
   vAddStep("session.enameSet@"_Stz,        &Step::vSessionEnameSetFetch);
   vAddStep("session.isExiting"_Stz,        &Step::vSessionIsExiting);
@@ -25,7 +25,7 @@ void Step::vAddSteps_Session(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionCommand(void)
 {
-  ENTRY("vSessionDicStack"_Stz);
+  ENTRY("vSessionCommand"_Stz);
   
   Object* pPtrSession;
   if ( ! m_pDataStack->bPopObject(pPtrSession) )
@@ -40,11 +40,11 @@ void Step::vSessionCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.dicStack -- get session dic stack                                  */
+/* session.dicStack@ -- get session dic stack                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionDicStack(void)
+void Step::vSessionDicStackFetch(void)
 {
-  ENTRY("vSessionDicStack"_Stz);
+  ENTRY("vSessionDicStackFetch"_Stz);
   
   Object* pPtrSession;
   if ( ! m_pDataStack->bPopObject(pPtrSession) )

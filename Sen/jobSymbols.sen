@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : <catalogNm> <<metaSymbol>> ( -- "<catalogNm>" )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet enameSet.getStr
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -27,7 +27,7 @@
 /*----------------------------------------------------------------------------*/
 : <folderNm> <<metaSymbol>> ( -- "<folderNm>" )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet enameSet.getStr
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 : <indexNm> <<metaSymbol>> ( -- "<indexNm>" )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet enameSet.getStr
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : <jobClass> <<metaSymbol>> ( -- "<jobClass>" )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet enameSet.getStr
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 : <jobNm> <<metaSymbol>> ( -- "<jobNm>" )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet enameSet.getStr
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 : <jobId> <<metaSymbol>> ( -- "<jobId>" )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet enameSet.getStr
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 : <nodeNm> <<metaSymbol>> ( -- "<nodeNm>" )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet enameSet.getStr
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@
 /*----------------------------------------------------------------------------*/
 : <path> <<metaSymbol>> ( -- "<path>" )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet enameSet.getStr
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 : <routineNm> <<metaSymbol>> ( -- "<routineNm>" )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet enameSet.getStr
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -91,7 +91,7 @@
 /*----------------------------------------------------------------------------*/
 : <schemaNm> <<metaSymbol>> ( -- "<schemaNm>" )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet enameSet.getStr
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +99,7 @@
 /*----------------------------------------------------------------------------*/
 : <tableNm> <<metaSymbol>> ( -- "<tableNm>" )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet enameSet.getStr
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -107,7 +107,7 @@
 /*----------------------------------------------------------------------------*/
 : <tenantNm> <<metaSymbol>> ( -- "<tenantNm>" )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet enameSet.getStr
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*============================================================================*/
