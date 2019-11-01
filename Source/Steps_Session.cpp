@@ -12,6 +12,7 @@ void Step::vAddSteps_Session(void)
   vAddStep("session.commandProcessor"_Stz, &Step::vSessionCommand);
   vAddStep("session.dicStack"_Stz,         &Step::vSessionDicStack);
   vAddStep("session.dump"_Stz,             &Step::vSessionDump);
+  vAddStep("session.enameSet@"_Stz,        &Step::vSessionEnameSetFetch);
   vAddStep("session.isExiting"_Stz,        &Step::vSessionIsExiting);
   vAddStep("session.pid"_Stz,              &Step::vSessionPid);
   vAddStep("session.slot@"_Stz,            &Step::vSessionSlotFetch);
@@ -73,6 +74,25 @@ ENTRY("vSessionDump"_Stz);
   ASSERT(CN_SESSION == pSession->eClass());
   
   pSession->vContentDump();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* session.enameSet@ -- fetch ename-set of session semantic                   */
+/*----------------------------------------------------------------------------*/
+void Step::vSessionEnameSetFetch(void)
+{
+  ENTRY("vSessionEnameSetFetch"_Stz);
+  
+  Object* pPtrSession;
+  if ( ! m_pDataStack->bPopObject(pPtrSession) )
+    THROW_DSTACK();
+  Session* pSession = _pSession(pPtrSession);
+  
+  EnameSet* pEnameSet = pSession->m_pSemantic->pEnameSet();
+  
+  m_pDataStack->vPushPointer(pEnameSet);
   
   EXIT();
 }

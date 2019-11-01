@@ -1010,6 +1010,7 @@ public:
   void vSessionCommand(void);
   void vSessionDicStack(void);
   void vSessionDump(void);
+  void vSessionEnameSetFetch(void);
   void vSessionIsExiting(void);
   void vSessionPid(void);
   void vSessionSlotFetch(void);
