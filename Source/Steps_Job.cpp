@@ -778,7 +778,7 @@ void Step::vJobFindOriginator(void)
   
   
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pTask->m_pRegSet->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&m_pRegSet->m_xpJobRef);
   
   
   m_pDataStack->vPushPointer(pJobFound);
@@ -802,7 +802,7 @@ void Step::vJobFindParticipant(void)
   
   
   //! borrow the job ref [ this needs to be done under lock ]
-  pJobFound->vBorrowRefBy(&m_pTask->m_pRegSet->m_xpJobRef);
+  pJobFound->vBorrowRefBy(&m_pRegSet->m_xpJobRef);
   
   
   m_pDataStack->vPushPointer(pJobFound);

@@ -157,7 +157,7 @@ void Step::vTaskDump(void)
   
   AM::vJobContentDump(m_pTask->m_pJob);
   
-  m_pTask->m_pRegSet->vContentDump();
+  m_pRegSet->vContentDump();
   
   m_pTask->m_pForth->vContentDump();
 

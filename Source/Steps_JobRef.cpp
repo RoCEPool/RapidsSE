@@ -20,7 +20,7 @@ void Step::vJobRefPointer(void)
 {
   ENTRY("vJobRefPointer"_Stz);
   
-  Job* pJob = m_pTask->m_pRegSet->m_xpJobRef.pReferencedObject();
+  Job* pJob = m_pRegSet->m_xpJobRef.pReferencedObject();
 
   m_pDataStack->vPushPointer(pJob);
 
@@ -34,8 +34,8 @@ void Step::vJobRefReturn(void)
 {
   ENTRY("vJobRefReturn"_Stz);
   
-  if (m_pTask->m_pRegSet->m_xpJobRef.bHasReference())
-    m_pTask->m_pRegSet->m_xpJobRef.vReturnRef();
+  if (m_pRegSet->m_xpJobRef.bHasReference())
+    m_pRegSet->m_xpJobRef.vReturnRef();
 
   EXIT();
 }
