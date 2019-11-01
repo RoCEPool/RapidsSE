@@ -1125,6 +1125,7 @@ public:
   void vTaskDestructorTraceFetch(void);
   void vTaskDestructorTraceStore(void);
   void vTaskDicStack(void);
+  void vTaskDoneFinally(void);
   void vTaskDropLock(void);
   void vTaskDump(void);
   void vTaskDelete(void);
@@ -1135,6 +1136,7 @@ public:
   void vTaskNameFetch(void);
   void vTaskThis(void);
   void vTaskSeed(void);
+  void vTaskSeedInitially(void);
   void vTaskSendNodeFetch(void);
   void vTaskSendNodeStore(void);
   void vTaskSleepMsec(void);

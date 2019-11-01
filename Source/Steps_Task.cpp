@@ -9,15 +9,17 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Task(void)
 {
-  vAddStep("task::breakPoint"_Stz, &Step::vTaskBreakPoint);
-  vAddStep("task::delete"_Stz,     &Step::vTaskDelete);
-  vAddStep("task::dump"_Stz,       &Step::vTaskDump);
-  vAddStep("task::sleepMsec"_Stz,  &Step::vTaskSleepMsec);
-  vAddStep("task::sleepSsec"_Stz,  &Step::vTaskSleepSsec);
-  vAddStep("task::sleepUsec"_Stz,  &Step::vTaskSleepUsec);
-  vAddStep("task::this"_Stz,       &Step::vTaskThis);
-  vAddStep("task::wait"_Stz,       &Step::vTaskWait);
-  vAddStep("task::yield"_Stz,      &Step::vTaskYield);
+  vAddStep("task::breakPoint"_Stz,    &Step::vTaskBreakPoint);
+  vAddStep("task::delete"_Stz,        &Step::vTaskDelete);
+  vAddStep("task::doneFinally"_Stz,   &Step::vTaskDoneFinally);
+  vAddStep("task::dump"_Stz,          &Step::vTaskDump);
+  vAddStep("task::seedInitially"_Stz, &Step::vTaskSeedInitially);
+  vAddStep("task::sleepMsec"_Stz,     &Step::vTaskSleepMsec);
+  vAddStep("task::sleepSsec"_Stz,     &Step::vTaskSleepSsec);
+  vAddStep("task::sleepUsec"_Stz,     &Step::vTaskSleepUsec);
+  vAddStep("task::this"_Stz,          &Step::vTaskThis);
+  vAddStep("task::wait"_Stz,          &Step::vTaskWait);
+  vAddStep("task::yield"_Stz,         &Step::vTaskYield);
 
   vAddStep("task.ack"_Stz,         &Step::vTaskAck);
   vAddStep("task.acks!"_Stz,       &Step::vTaskAcksStore);
@@ -119,6 +121,18 @@ void Step::vTaskDicStack(void)
   Object* pPtrDicStack = &pThatTask->m_pForth->m_oDicStack;
   
   m_pDataStack->vPushPointer(pPtrDicStack);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::doneFinally -- set done finally as been executed                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskDoneFinally(void)
+{
+  ENTRY("vTaskDoneFinally"_Stz);
+  
+  m_bDoneFinally = true;
   
   EXIT();
 }
@@ -325,6 +339,18 @@ ENTRY("vTaskSeed"_Stz);
     ASSERT(bPopped);
   }
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::seedInitially -- set seed initially as been executed                 */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskSeedInitially(void)
+{
+  ENTRY("vTaskSeedInitially"_Stz);
+  
+  m_bSeedInitially = true;
+
   EXIT();
 }
 
