@@ -197,7 +197,6 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Session* pSession,
   pJob_WriteRow->vSeed(SS_SEED_RUN);
 
   pJob_WriteRow->m_iParentJobId = iParentJobId;
-  //pJob_WriteRow->vObjectName(sTableName);
   pJob_WriteRow->m_oEnmSet.vAdd("<tableNm>"_Stz, sTableName, TN_STRING);
   pJob_WriteRow->m_pTable       = pTable;
   pJob_WriteRow->m_pRecord      = pRecord;

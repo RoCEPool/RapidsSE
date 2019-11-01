@@ -187,7 +187,6 @@ Job* Jobs::pJob_Purge_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReq
     return pJob_Purge;
 
   // set the table name
-  //pJob_Purge->vObjectName(pTknVec->pGet(1)->szText());
   pJob_Purge->m_oEnmSet.vAdd("<tableNm>"_Stz, pTknVec->pGet(1)->szText(), TN_STRING);
   pJob_Purge->m_iOlderThanSeconds = pTknVec->pGet(2)->iToI8();
 
