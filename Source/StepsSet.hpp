@@ -243,12 +243,12 @@ public:
   void vEncodeUntil(void);
 
   // ename-set
-  void vEnmSetAddInt(void);
-  void vEnmSetAddStr(void);
-  void vEnmSetAsStr(void);
-  void vEnmSetGetStr(void);
-  void vEnmSetHasName(void);
-  void vEnmSetNew(void);
+  void vEnameSetAddInt(void);
+  void vEnameSetAddStr(void);
+  void vEnameSetAsStr(void);
+  void vEnameSetGetStr(void);
+  void vEnameSetHasName(void);
+  void vEnameSetNew(void);
 
   // enter
   void vEnterObject(void);
