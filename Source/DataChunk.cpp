@@ -24,7 +24,7 @@ DataChunk* Chunks::_pDataChunk(void* aAddr)
 void* DataChunk::operator new(size_t)
 {
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: JobObjectName class cannot be new'd\n"_Stz);
+         "fatal: DataChunk class cannot be new'd\n"_Stz);
 
   NEVER_REACH;
 }

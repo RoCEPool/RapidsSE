@@ -265,10 +265,10 @@ void Job_CreateIndex::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX,_FOOTER_);
   
-  vTrace("\n\nJob_CreateIndex: %s\n"_Stz, szIndexName());
+  vTrace("\n\nJob_CreateIndex: %s\n"_Stz, m_oEnmSet.szValue("<indexNm>"_Stz));
   
   //vTrace("m_sExecute = %s\n"_Stz,m_sExecute.azChar());
-  vTrace("TableName = %s\n"_Stz,szObjectName());
+  vTrace("TableName = %s\n"_Stz, m_oEnmSet.szValue("<tableNm>"_Stz));
   vTrace("m_iColumns = %lld\n"_Stz,m_iColumns);
   
   for (i8 i_Column = 0; i_Column < m_iColumns; i_Column++) {

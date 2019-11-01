@@ -24,7 +24,6 @@ namespace Jobs
 #include "JobExtractRow.hpp"
 #include "JobFilePath.hpp"
 #include "JobIndex.hpp"
-#include "JobObjectName.hpp"
 #include "JobResult.hpp"
 #include "JobTable.hpp"
 

@@ -87,8 +87,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
-  pJob_DropSchema job.schemaName@
-  removeSchema
+  //pJob_DropSchema job.schemaName@
+  <schemaNm> removeSchema
 
   pJob_DropSchema job.notice
 
@@ -120,8 +120,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the schema
-  pJob_DropSchema job.schemaName@
-  checkRemoveSchema not if pJob_DropSchema <ERROR_JOB> !!logError exit then
+  //pJob_DropSchema job.schemaName@
+  <schemaNm> checkRemoveSchema not if pJob_DropSchema <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>
 ;

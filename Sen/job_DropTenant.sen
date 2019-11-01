@@ -87,8 +87,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
-  pJob_DropTenant job.tenantName@
-  removeTenant
+  //pJob_DropTenant job.tenantName@
+  <tenantNm> removeTenant
 
   pJob_DropTenant job.notice
 
@@ -120,8 +120,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the tenant
-  pJob_DropTenant job.tenantName@
-  checkRemoveTenant not if pJob_DropTenant <ERROR_JOB> !!logError exit then
+  //pJob_DropTenant job.tenantName@
+  <tenantNm> checkRemoveTenant not if pJob_DropTenant <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>
 ;

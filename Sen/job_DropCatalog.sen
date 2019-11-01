@@ -87,8 +87,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
-  pJob_DropCatalog job.catalogName@   ( catalogNm )
-  removeCatalog
+  //pJob_DropCatalog job.catalogName@   ( catalogNm )
+  <catalogNm> removeCatalog
 
   pJob_DropCatalog job.notice
 
@@ -120,8 +120,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the catalog
-  pJob_DropCatalog job.catalogName@
-  checkRemoveCatalog not if pJob_DropCatalog <ERROR_JOB> !!logError exit then
+  //pJob_DropCatalog job.catalogName@
+  <catalogNm> checkRemoveCatalog not if pJob_DropCatalog <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>
 ;

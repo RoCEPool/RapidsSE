@@ -444,10 +444,8 @@ public:
 
   // job mark 2
   void vJobMark2IndexStore(void);
-  void vJobMark2TableNameFetch(void);
   void vJobMark2TableStore(void);
 
-  void vJobCatalogNameFetch(void);
   void vJobClass(void);
   void vJobColumnCountFetch(void);
   void vJobColumnNameFetch(void);
@@ -472,13 +470,11 @@ public:
 
   void vJobFindOriginator(void);
   void vJobFindParticipant(void);
-  void vJobFolderNameFetch(void);
 
   void vJobHasError(void);
   void vJobHasOperand(void);
 
   void vJobIdFetch(void);
-  void vJobIndexNameFetch(void);
   void vJobIsExecuting(void);
 
   void vJobJobClass(void);
@@ -486,10 +482,8 @@ public:
 
   void vJobMetadataStore(void);
 
-  void vJobNodeNameFetch(void);
   void vJobNoWaitFetch(void);
 
-  void vJobObjectNameFetch(void);
   void vJobOriginatingIdFetch(void);
   void vJobOriginatingIdStore(void);
   void vJobOriginatingTaskFetch(void);
@@ -514,7 +508,6 @@ public:
   void vJobReseed(void);
   void vJobResponseStore(void);
   void vJobResponseFetch(void);
-  void vJobRoutineNameFetch(void);
   void vJobRowsInvalidFetch(void);
   void vJobRowsInvalidStore(void);
   void vJobRowsProcessedFetch(void);
@@ -522,7 +515,6 @@ public:
   void vJobRowsSkippedFetch(void);
   void vJobRowsSkippedStore(void);
 
-  void vJobSchemaNameFetch(void);
   void vJobSeedFetch(void);
   void vJobSend(void);
   void vJobSessionFetch(void);
@@ -536,7 +528,6 @@ public:
 
   void vJobTaskFetch(void);
   void vJobTaskStore(void);
-  void vJobTenantNameFetch(void);
   void vJobThis(void);
 
   void vJobWaitParticipant(void);

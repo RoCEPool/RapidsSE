@@ -122,7 +122,6 @@ namespace Oblique
     static void vDropTaskLock(Task* pTask);
     static void vGrabTaskLock(Task* pTask);
     static void vIndexEntries(i8 nIndexEntries);
-    static void vIndexName(Job_Pipeline* pJob, Stz* szIndexNm);
     static Index* pIndex(Job_Pipeline* pJob);
     static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vNextTempName(s32& sName);

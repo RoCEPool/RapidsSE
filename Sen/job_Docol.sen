@@ -22,8 +22,8 @@
   pTask task.job@ to pJob_Docol
 
   // get the routine from the job
-  pJob_Docol job.routineName@
-
+  //pJob_Docol job.routineName@
+  <routineNm>
   >:
 
   begin

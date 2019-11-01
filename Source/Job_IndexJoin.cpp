@@ -174,7 +174,7 @@ bool Job_IndexJoin::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the left table name
-  vObjectName(pTokenVec->pGet(1)->szText());
+  //vObjectName(pTokenVec->pGet(1)->szText());
   m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(1)->szText(), TN_STRING);
   
   // - - - - - - - - - - - - - - - - - - - - -

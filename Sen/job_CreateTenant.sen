@@ -79,8 +79,6 @@
   //params| pJob_CreateTenant |
   job::this locals| pJob_CreateTenant |
 
-  0 locals| sTenantNm |
-
   tp: createTenant_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -88,7 +86,7 @@
   ddlLock::grabWrite
 
   CN_JOB_CREATETENANT pJob_CreateTenant object.assertClass
-  pJob_CreateTenant job.tenantName@ to sTenantNm
+  //pJob_CreateTenant job.tenantName@ to sTenantNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
@@ -97,7 +95,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog
-  sTenantNm makeTenant ( )
+  <tenantNm> makeTenant ( )
 
   pJob_CreateTenant job.notice
 
@@ -133,8 +131,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
-  pJob_CreateTenant job.tenantName@
-  checkMakeTenant not if pJob_CreateTenant <ERROR_JOB> !!logError exit then
+  //pJob_CreateTenant job.tenantName@
+  <tenantNm> checkMakeTenant not if pJob_CreateTenant <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>
 ;

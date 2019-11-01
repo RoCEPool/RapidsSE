@@ -161,7 +161,8 @@ bool Job_DropSchema::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the schema name
-  vSchemaName(pTokenVec->pGet(2)->szText());
+  //vSchemaName(pTokenVec->pGet(2)->szText());
+  m_oEnmSet.vAdd("<schemaNm>"_Stz, pTokenVec->pGet(2)->szText(), TN_STRING);
   
   return true;
 }

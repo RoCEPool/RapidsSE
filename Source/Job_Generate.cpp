@@ -617,8 +617,8 @@ void Job_Generate::vGenerate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  vTrace("Generating data for %s into %s\n"_Stz,
-         szObjectName(), szFilePath());
+  //vTrace("Generating data for %s into %s\n"_Stz,
+  //       szObjectName(), szFilePath());
   
   bool bOpened = m_oFile.bOpenWrite(szFilePath());
   if (! bOpened) {

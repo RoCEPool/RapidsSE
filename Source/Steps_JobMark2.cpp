@@ -10,7 +10,6 @@
 void Step::vAddSteps_JobMark2(void)
 {
   vAddStep("jobMark2.index!"_Stz,       &Step::vJobMark2IndexStore);
-  vAddStep("jobMark2.tableName@"_Stz,   &Step::vJobMark2TableNameFetch);
   vAddStep("jobMark2.table!"_Stz,       &Step::vJobMark2TableStore);
 }
 
@@ -33,26 +32,6 @@ void Step::vJobMark2IndexStore(void)
   
   pJobMark2->m_pIndex = pIndex;
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jobMark2.tableName@ -- fetch table name                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vJobMark2TableNameFetch(void)
-{
-  ENTRY("vJobMark2TableNameFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
-  
-  s32 sTableNm;
-  sTableNm = pJobMark2->szObjectName();
-  
-  m_pDataStack->vPushS32(sTableNm);
-
   EXIT();
 }
 

@@ -191,9 +191,6 @@ void AM::vGrabTaskLock(Task* pTask) {
 void AM::vIndexEntries(i8 nIndexEntries) {
   gpAttachMap->m_nIndexEntries = nIndexEntries;
 }
-void AM::vIndexName(Job_Pipeline* pJob, Stz* szIndexNm) {
-  pJob->vIndexName(szIndexNm);
-}
 Index* AM::pIndex(Job_Pipeline* pJob) {
   return pJob->m_pIndex;
 }

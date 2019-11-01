@@ -161,7 +161,8 @@ bool Job_DropTenant::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the tenant name
-  vTenantName(pTokenVec->pGet(2)->szText());
+  //vTenantName(pTokenVec->pGet(2)->szText());
+  m_oEnmSet.vAdd("<tenantNm>"_Stz, pTokenVec->pGet(2)->szText(), TN_STRING);
   
   return true;
 }

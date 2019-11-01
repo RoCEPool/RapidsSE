@@ -159,7 +159,8 @@ eEC Job_StartNode::ePopulateJob(TokenVec* pTokenVec)
   }
   
   // set the node name
-  vNodeName(pTokenVec->pGet(2)->szText());
+  //vNodeName(pTokenVec->pGet(2)->szText());
+  m_oEnmSet.vAdd("<nodeNm>"_Stz, pTokenVec->pGet(2)->szText(), TN_STRING);
   
   return EC_NONE;
 }

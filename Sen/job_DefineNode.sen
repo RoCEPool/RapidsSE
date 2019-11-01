@@ -130,8 +130,8 @@
 
   //----------------------------------------------------------------------------
   // check if we can make the Node
-  pJob_DefineNode job.nodeName@
-  checkMakeNode not if pJob_DefineNode <ERROR_JOB> !!logError exit then
+  //pJob_DefineNode job.nodeName@
+  <nodeNm> checkMakeNode not if pJob_DefineNode <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>
 ;

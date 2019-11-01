@@ -219,7 +219,7 @@ void Job_CreateTable::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
-  vTrace("\n\nJob_CreateTable: %s\n"_Stz, szObjectName());
+  vTrace("\n\nJob_CreateTable: %s\n"_Stz, m_oEnmSet.szValue("<tableNm>"_Stz));
   
   //vTrace("m_sExecute = %s\n"_Stz,m_sExecute.azChar());
   vTrace("m_eTableType = %s\n"_Stz,aTT[m_eTableType]);

@@ -9,7 +9,6 @@ namespace Jobs
               public JobLite,        // ⋗ scheduler  ⋗ recv  ⋗ post_recv
               public JobBody,
               public JobFull,
-              public JobObjectName,
               public JobEnmSet,
               public JobResult,
               public CRM<Job>

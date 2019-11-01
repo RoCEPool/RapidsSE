@@ -83,8 +83,6 @@
   //params| pJob_CreateCatalog |
   job::this locals| pJob_CreateCatalog |
 
-  0 locals| sCatalogNm |
-
   tp: createCatalog_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -92,7 +90,7 @@
   ddlLock::grabWrite
 
   CN_JOB_CREATECATALOG pJob_CreateCatalog object.assertClass
-  pJob_CreateCatalog job.catalogName@ to sCatalogNm
+  //pJob_CreateCatalog job.catalogName@ to sCatalogNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
@@ -101,7 +99,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog
-  sCatalogNm makeCatalog ( )
+  <catalogNm> makeCatalog ( )
 
   pJob_CreateCatalog job.notice
 
@@ -138,8 +136,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
-  pJob_CreateCatalog job.catalogName@
-  checkMakeCatalog not if pJob_CreateCatalog <ERROR_JOB> !!logError exit then
+  //pJob_CreateCatalog job.catalogName@
+  <catalogNm> checkMakeCatalog not if pJob_CreateCatalog <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>
 ;

@@ -10,7 +10,6 @@
 : useSchema ( job_UseSchema --  )
 
   params| pJob_UseSchema |
-  0 locals| sSchemaNm |
 
   tp: useSchema
 
@@ -37,9 +36,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get schema name from job
-  pJob_UseSchema job.schemaName@ to sSchemaNm
+  //pJob_UseSchema job.schemaName@ to sSchemaNm
 
-  sSchemaNm checkIsWord not if EC_NO_SUCH_SCHEMA pJob_UseSchema <ERROR_JOB> !!logError exit then
+  <schemaNm> checkIsWord not if EC_NO_SUCH_SCHEMA pJob_UseSchema <ERROR_JOB> !!logError exit then
   checkIsSchema not if pJob_UseSchema <ERROR_JOB> !!logError exit then
   execute pathPush
 
