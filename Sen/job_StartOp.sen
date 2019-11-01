@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_OutputOp.sen -- Job OutputOp                                           */
+/* job_StartOp.sen -- Job StartOp                                             */
 /*============================================================================*/
 
-" job_OutputOp.sen" .verbose
+" job_StartOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute for startOp request                        (on node where spawned) */
@@ -19,10 +19,9 @@
 
    //pJob_StartOp job::participantExecuted
 
-  <<logExit <DONE_RUN>
-;
-
-: start_rcv ( -- )
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
 ;
 
 /*----------------------------------------------------------------------------*/
