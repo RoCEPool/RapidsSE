@@ -211,8 +211,9 @@ ENTRY("vLocalsTo"_Stz);
     pCurrentWord->vEncode("swap"_Stz);
 
     if (bSemanticTo) {
-      pCurrentWord->vEncode("job::this"_Stz);                      //! NOT RIGHT
-      pCurrentWord->vEncode("job.enameSet"_Stz);
+      pCurrentWord->vEncode("job::this"_Stz);
+      pCurrentWord->vEncode("job.session@"_Stz);
+      pCurrentWord->vEncode("session.enameSet@"_Stz);
     }
     else {
       pCurrentWord->vEncode("job::this"_Stz);
