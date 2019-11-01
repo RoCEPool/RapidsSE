@@ -25,14 +25,16 @@ namespace Operators
   
     void vDump(void);
     
+    void         vCancelOperators(i8 iThisNode);
+    void         vEndOperators(i8 iThisNode);
     i8           nOpsOnNode(i8 iNode);
     OpVec*       pOpVec(void);
     Op*          pPipeOutOp(ePX eTopologyX, i8 iNdeVec);
-    void         vOperandToStartOps(Operand* pOperand, i8 iThisNode);
     StageSpec*   pStageSpec(void);
     StageNde*    pStageNde(i8 i_Nde);
     StageNdeVec* pStageNdeVec(void);
     StagePtnVec* pStagePtnVec(void);
+    void         vStartOperators(i8 iThisNode);
     
     Footer* aFooter(void);
   };

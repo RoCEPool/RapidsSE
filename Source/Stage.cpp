@@ -142,6 +142,37 @@ Stage::~Stage(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* send cancel marker to startops of the stage                                */
+/*----------------------------------------------------------------------------*/
+void Stage::vCancelOperators(i8 iThisNode)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
+    StageNde* pStageNde = m_oStageNdeVec.pGet(i_Nde);
+    
+    if (pStageNde->iNode() == iThisNode) {
+      Op* pOp = pStageNde->pOpVec()->pGet(0);
+      RASSERT(pOp->eClass() == CN_STARTOP);
+      pOp->vAppendLeft(new CancelMarker);
+    }
+  }
+  
+  for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
+    StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
+    
+    i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
+    
+    if (iPtnNode == iThisNode) {
+      Op* pOp = pStagePtn->pOpVec()->pGet(0);
+      RASSERT(pOp->eClass() == CN_STARTOP);
+      pOp->vAppendLeft(new CancelMarker);
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 void Stage::vDump(void)
@@ -167,6 +198,37 @@ void Stage::vDump(void)
            pOp->m_bAppendRight ? "appendRight"_Stz : "appendLeft "_Stz
            );
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* send end marker to startops of the stage                                   */
+/*----------------------------------------------------------------------------*/
+void Stage::vEndOperators(i8 iThisNode)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
+    StageNde* pStageNde = m_oStageNdeVec.pGet(i_Nde);
+    
+    if (pStageNde->iNode() == iThisNode) {
+      Op* pOp = pStageNde->pOpVec()->pGet(0);
+      RASSERT(pOp->eClass() == CN_STARTOP);
+      pOp->vAppendLeft(new EndMarker);
+    }
+  }
+  
+  for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
+    StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
+    
+    i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
+    
+    if (iPtnNode == iThisNode) {
+      Op* pOp = pStagePtn->pOpVec()->pGet(0);
+      RASSERT(pOp->eClass() == CN_STARTOP);
+      pOp->vAppendLeft(new EndMarker);
+    }
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -249,37 +311,6 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iFromNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* send operand to startops of the stage                                      */
-/*----------------------------------------------------------------------------*/
-void Stage::vOperandToStartOps(Operand* pOperand, i8 iThisNode)
-{
-  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
-  
-  for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
-    StageNde* pStageNde = m_oStageNdeVec.pGet(i_Nde);
-  
-    if (pStageNde->iNode() == iThisNode) {
-      Op* pOp = pStageNde->pOpVec()->pGet(0);
-      RASSERT(pOp->eClass() == CN_STARTOP);
-      pOp->vAppendLeft(pOperand);
-    }
-  }
-  
-  for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
-    StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
-    
-    i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
-    
-    if (iPtnNode == iThisNode) {
-      Op* pOp = pStagePtn->pOpVec()->pGet(0);
-      RASSERT(pOp->eClass() == CN_STARTOP);
-      pOp->vAppendLeft(pOperand);
-    }
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* Stage::pStageSpec(void)
@@ -327,6 +358,36 @@ StageNdeVec* Stage::pStageNdeVec(void)
   return &m_oStageNdeVec;
 }
 
+/*----------------------------------------------------------------------------*/
+/* send startmarker to startops of the stage                                  */
+/*----------------------------------------------------------------------------*/
+void Stage::vStartOperators(i8 iThisNode)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
+    StageNde* pStageNde = m_oStageNdeVec.pGet(i_Nde);
+    
+    if (pStageNde->iNode() == iThisNode) {
+      Op* pOp = pStageNde->pOpVec()->pGet(0);
+      RASSERT(pOp->eClass() == CN_STARTOP);
+      pOp->vAppendLeft(new StartMarker);
+    }
+  }
+  
+  for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
+    StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
+    
+    i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
+    
+    if (iPtnNode == iThisNode) {
+      Op* pOp = pStagePtn->pOpVec()->pGet(0);
+      RASSERT(pOp->eClass() == CN_STARTOP);
+      pOp->vAppendLeft(new StartMarker);
+    }
+  }
+  
+}
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
