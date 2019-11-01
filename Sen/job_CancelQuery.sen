@@ -32,11 +32,11 @@
   // <jobId> plist::findJob not if job::this <ERROR_JOB> !!logError exit then
 
   sJobId str.tailInt drop to iJobId
-  iJobId  plist::findJob locals| pJobParticipant |
+  iJobId  plist::findJob drop
 
   //----------------------------------------------------------------------------
   // cancel the query
-  pJobParticipant Job_Pipeline.cancel
+  JobRef[] Job_Pipeline.cancel
 
   pJob_CancelQuery job::participantExecuted
 
