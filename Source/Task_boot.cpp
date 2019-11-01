@@ -233,7 +233,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
 
   pNewWord = new(pDic) Word(m_pForth->m_pCompiler->szToken());
   
-  m_pForth->m_pCompiler->m_pCurrent = pNewWord;
+  m_pForth->m_pCompiler->vCurrentWord(pNewWord);
 
   m_pForth->m_pCompiler->vNextToken();
   

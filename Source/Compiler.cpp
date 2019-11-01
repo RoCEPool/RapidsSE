@@ -65,6 +65,46 @@ Compiler::~Compiler(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get compilation state                                                      */
+/*----------------------------------------------------------------------------*/
+bool Compiler::bCompiling(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  return m_bCompiling;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set compilation state                                                      */
+/*----------------------------------------------------------------------------*/
+void Compiler::vCompiling(bool bCompiling)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_bCompiling = bCompiling;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current word                                                           */
+/*----------------------------------------------------------------------------*/
+Word* Compiler::pCurrentWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  return m_pCurrent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set current word                                                           */
+/*----------------------------------------------------------------------------*/
+void Compiler::vCurrentWord(Word* pWord)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_pCurrent = pWord;
+}
+
+/*----------------------------------------------------------------------------*/
 /* advance to next token                                                      */
 /*----------------------------------------------------------------------------*/
 void Compiler::vNextToken(void)

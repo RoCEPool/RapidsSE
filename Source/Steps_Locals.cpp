@@ -68,7 +68,7 @@ void Step::vLocalsBar(void)
 {
 ENTRY("vLocalsBar"_Stz);
   
-  Word* pCurrentWord = m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   Dic* pDic = m_oDicStack.pPick(0);
 
@@ -163,7 +163,7 @@ void Step::vLocalsTo(void)
 {
 ENTRY("vLocalsTo"_Stz);
   
-  Word* pCurrentWord = m_pCompiler->m_pCurrent;
+  Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // get name of local from token stream
   m_pCompiler->vNextToken();
@@ -187,7 +187,7 @@ ENTRY("vLocalsTo"_Stz);
   if (pLocalWord->pCategory()
       && pLocalWord->pCategory()->szWordNm()->bSame("<<metaSymbol>>"_Stz)) {
     
-    Word* pCurrentWord = m_pCompiler->m_pCurrent;
+    Word* pCurrentWord = m_pCompiler->pCurrentWord();
     
     GenVar xMetaNm;
     xMetaNm = sLocalNm;
