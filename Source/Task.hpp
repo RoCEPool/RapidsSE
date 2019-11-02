@@ -6,20 +6,19 @@
 namespace Tasks
 {  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   // tracing masks
+  
   static const i8 C_TRACE_NONE     = 0x0;
   static const i8 C_TRACE_STEPS    = 0x1;
   static const i8 C_TRACE_ROUTINES = 0x2;
   
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   class Task : public Focal,
                public ListItem_t<Task>
   {
   friend class Steps::Step;
-  friend Scheduler;
+  //friend Scheduler;
 
   private:
     Lock         m_okLock;       // lock for this task

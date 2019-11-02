@@ -598,7 +598,7 @@ void Scheduler::vTask_DdlDropRead(Task* pTask)
   SP_Id spId;
   
   AM::pDdlLock()->vDropRead();
-  pTask->m_pRegSet->m_eDdlLocked = LH_HAVE_NO_LOCK;
+  pTask->pRegSet()->m_eDdlLocked = LH_HAVE_NO_LOCK;
   
   pTask->vIncActNo();
 //  AM::vLogTsk(SL_INF,pTask,TA_DDL_READ_DROPPED,
@@ -615,7 +615,7 @@ void Scheduler::vTask_DdlDropWrite(Task* pTask)
   SP_Id spId;
   
   AM::pDdlLock()->vDropWrite();
-  pTask->m_pRegSet->m_eDdlLocked = LH_HAVE_NO_LOCK;
+  pTask->pRegSet()->m_eDdlLocked = LH_HAVE_NO_LOCK;
   
   pTask->vIncActNo();
   AM::vLogTsk(SL_INF,pTask,TA_DDL_WRITE_DROPPED,
@@ -638,7 +638,7 @@ void Scheduler::vTask_DdlGrabRead(Task* pTask)
               );
   
   AM::pDdlLock()->vGrabRead();
-  pTask->m_pRegSet->m_eDdlLocked = LH_HAVE_READ_LOCK;
+  pTask->pRegSet()->m_eDdlLocked = LH_HAVE_READ_LOCK;
   
   AM::vLogTsk(SL_INF,pTask,TA_DDL_READ_GRABBED,
               "success by %s"_Stz, //!format-LogTsk
@@ -660,7 +660,7 @@ void Scheduler::vTask_DdlGrabWrite(Task* pTask)
               );
 
   AM::pDdlLock()->vGrabWrite();
-  pTask->m_pRegSet->m_eDdlLocked = LH_HAVE_WRITE_LOCK;
+  pTask->pRegSet()->m_eDdlLocked = LH_HAVE_WRITE_LOCK;
   
   AM::vLogTsk(SL_INF,pTask,TA_DDL_WRITE_GRABBED,
               "success by %s"_Stz, //!format-LogTsk
@@ -719,7 +719,7 @@ void Scheduler::vTask_Execute(Task* pTask)
   AM::vLogTsk(SL_INF,pTask,TA_TSK_EXECUTE,
               "Task to TS_EXECUTING state; added to ExecutingSet"_Stz); //!format-LogTsk
   
-  AM::vLogThd(SL_INF,pTask->m_pThread,HA_THD_EXECUTING,
+  AM::vLogThd(SL_INF,pTask->pThread(),HA_THD_EXECUTING,
               "thread returns from scheduler to its loop to execute task"_Stz); //!format-LogTsk
 }
 
@@ -1391,7 +1391,7 @@ void Scheduler::vThread_UnassignTask(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_UNASSIGN_TASK,
               "Thread unassigns its task"_Stz); //!format-LogThd
   
-  pThread->m_pTask->m_pThread = nullptr;
+  pThread->m_pTask->vThread(nullptr);
   
   pThread->m_pTask = nullptr;
   pThread->m_eThreadState = HS_UNASSIGNED;
