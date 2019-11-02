@@ -60,7 +60,7 @@ Tokeniser::Tokeniser(void)
   else {
   
     i8 nNodes = AM::nDefinedNodes();
-    Stz* szNodeNm = AM::szNodeName();
+    Stz* szNodeNm = AM::szNodeNm();
     i8  i_Node = AM::iThisNodeNo();
     
     m_sPrompt.vSprint("[N%lld/%lld %s %lld%s%s%s] se %s%c"_Stz,

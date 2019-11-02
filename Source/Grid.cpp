@@ -179,7 +179,7 @@ Node* Grid::pFindNode(Stz* sName)
   
   for (i8 i_Node = 0; i_Node < m_nDefinedNodes; i_Node++) {
     Node* pNode = m_pNodes[i_Node];
-    if (pNode && pNode->szNodeName()->bSame(sName))
+    if (pNode && pNode->szNodeNm()->bSame(sName))
       return pNode;
   }
   

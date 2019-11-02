@@ -12,7 +12,7 @@ namespace Grids
     Article* m_pArticle;
 
     i8    m_iNodeNo;    // node number
-    s32   m_sNodeName;  // name of the node
+    s32   m_sNodeNm;    // name of the node
     s32   m_sIPAddr;    // ip address of node
     i8    m_iPortNo;    // port number of node
   
@@ -33,7 +33,7 @@ namespace Grids
     void* operator new(size_t, Node* pNode);
     void  operator delete(void*);
     
-    Node(i8 iNodeNo, Stz* szName, Stz* szIPAddr, i8 iPortNo);
+    Node(i8 iNodeNo, Stz* szNodeNm, Stz* szIPAddr, i8 iPortNo);
     ~Node(void) noexcept(false);
     
     static void vArtFun(Object* pObject, SP& spObject);
@@ -43,7 +43,7 @@ namespace Grids
   
     void vInit(void);
     Stz* szIPAddr(void);
-    Stz* szNodeName(void);
+    Stz* szNodeNm(void);
     i8   iNodeNo(void);
     void vNodeNo(i8 iNodeNo);
     i8   iPortNo(void);

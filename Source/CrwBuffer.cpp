@@ -147,7 +147,7 @@ void CrwBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
     
     if (bDetailed)
       sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
-                           AM::szNodeName(),
+                           AM::szNodeNm(),
                            pNextBuffer->m_iPartitionNo,
                            iBuffers,
                            pNextBuffer->nRowCount());

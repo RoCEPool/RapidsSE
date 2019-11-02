@@ -55,8 +55,8 @@ i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
 LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }
 bool AM::bLogging(void)       { return gpLog ? true : false;                  }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
-Stz* AM::szNodeName(void)     {
-  return gpAttachMap->m_pGrid->m_pThisNode->szNodeName();  }
+Stz* AM::szNodeNm(void)       {
+  return gpAttachMap->m_pGrid->m_pThisNode->szNodeNm();  }
 JobList* AM::pOriginatingJobs(void) {
   return gpAttachMap->m_pQueues->m_pOriginatingJobs; }
 JobList* AM::pParticipatingJobs(void) {

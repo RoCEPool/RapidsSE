@@ -734,7 +734,7 @@ void SePrompt::vLogFreeSpace(void)
   AM::vLogPrm(SL_INF,this,PA_PRM_FREE_SPACE,
               "%s on node %s"_Stz, //!format-LogPrm
               sFreeSpaceMag.szStz(),
-              AM::szNodeName());
+              AM::szNodeNm());
 }
 
 /*----------------------------------------------------------------------------*/

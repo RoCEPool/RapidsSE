@@ -249,7 +249,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed, i8 &nRows)
     
     if ( ! bDetailed ) {
       sAnalysis.vCatSprint("row: ('%s',%lld,%lld,%lld)\n"_Stz,
-                           AM::szNodeName(),
+                           AM::szNodeNm(),
                            iPartition,
                            nBuffers,
                            nEntries);
@@ -301,7 +301,7 @@ Stz* Table::pAnalyzeTable(bool bDetailed, i8 &nRows)
     
     if ( ! bDetailed ) {
       sAnalysis.vCatSprint("row: ('%s',%lld,%lld,%lld)\n"_Stz,
-                           AM::szNodeName(),
+                           AM::szNodeNm(),
                            iPartition,
                            nBuffers,
                            nRows);

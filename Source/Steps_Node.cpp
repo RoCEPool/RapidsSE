@@ -138,7 +138,7 @@ void Step::vNodeName(void)
   ASSERT(CN_NODE == pNode->eClass());
   
   s256 sName;
-  sName = pNode->szNodeName();
+  sName = pNode->szNodeNm();
   m_pDataStack->vPushS256(sName);
   
   EXIT();
@@ -359,11 +359,11 @@ void Step::vNodeStatus(void)
   
   if (Region::bTest(sRegionNm))
     s.vSprint("row: ('%s', '%s', 'running')"_Stz,
-            pGrid->pThisNode()->szNodeName(),
+            pGrid->pThisNode()->szNodeNm(),
             sRegionNm.azChar());
   else
     s.vSprint("row: ('%s', '%s', 'not running')"_Stz,
-            pGrid->pThisNode()->szNodeName(),
+            pGrid->pThisNode()->szNodeNm(),
             sRegionNm.azChar());
   
   m_pDataStack->vPushS256(s);

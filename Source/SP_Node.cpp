@@ -40,7 +40,7 @@ Stz* SP_Node::sz(Node* pNode)
                   "[%lld] %8s %s %lld %8s send=%p recv=%pd"_Stz,
                   
                   pNode->iNodeNo(),
-                  pNode->szNodeName(),
+                  pNode->szNodeNm(),
                   pNode->szIPAddr(),
                   pNode->iPortNo(),
                   

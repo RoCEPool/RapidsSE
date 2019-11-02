@@ -51,15 +51,15 @@ void Node::operator delete(void* pNodeAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Node::Node(i8 iNodeNo, Stz* szName, Stz* szIpAddr, i8 iPortNo)
+Node::Node(i8 iNodeNo, Stz* szNodeNm, Stz* szIpAddr, i8 iPortNo)
 : Object(CN_NODE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  m_pArticle  = new Article(szName,this,Node::vArtFun);
+  m_pArticle  = new Article(szNodeNm,this,Node::vArtFun);
   
   m_iNodeNo   = iNodeNo;
-  m_sNodeName = szName;
+  m_sNodeNm   = szNodeNm;
   m_sIPAddr   = szIpAddr;
   m_iPortNo   = iPortNo;
   
@@ -143,11 +143,11 @@ Stz* Node::szIPAddr(void)
 /*----------------------------------------------------------------------------*/
 /* get node name                                                              */
 /*----------------------------------------------------------------------------*/
-Stz* Node::szNodeName(void)
+Stz* Node::szNodeNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  return m_sNodeName;
+  return m_sNodeNm;
 }
 
 /*----------------------------------------------------------------------------*/

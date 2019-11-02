@@ -106,7 +106,7 @@ Job_NodeInfo::Job_NodeInfo(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NODEINFO,_FOOTER_);
   
-  m_sNodeName = AM::szNodeName();
+  m_sNodeName = AM::szNodeNm();
   
   _checkInitialised_(CN_JOB_NODEINFO);
   

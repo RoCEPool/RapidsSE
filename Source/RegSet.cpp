@@ -90,7 +90,7 @@ void RegSet::vContentDump(void)
          m_i_NextRnd,
          
          m_pSendNode,
-         m_pSendNode ? m_pSendNode->szNodeName() : ""_Stz,
+         m_pSendNode ? m_pSendNode->szNodeNm() : ""_Stz,
          
          C_ENDARGS
          );

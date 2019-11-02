@@ -890,7 +890,7 @@ void Step::vSocketSendObject(void)
               aCN[eClass],
               nObjectSize,
               m_pRegSet->m_pSendNode ?
-                m_pRegSet->m_pSendNode->szNodeName() : "<unknown>"_Stz,
+                m_pRegSet->m_pSendNode->szNodeNm() : "<unknown>"_Stz,
               C_ENDARGS);
 
     
