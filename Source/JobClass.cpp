@@ -128,18 +128,25 @@ void JobClass::vPostJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the pre-function                               */
 /*----------------------------------------------------------------------------*/
-Job* JobClass::pPreJob( ReqTuple* aReqTuple, Session* pSession)
+Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession)
 {
+  // create the job
   Job* pJob = (*m_fpPre)(this,aReqTuple,pSession);
   
   ASSERT(this == pJob->m_aJobClass);
   pJob->m_xReqTuple.m_i_Session = pSession ? pSession->m_i_Session : -1;
   
+  // copy the semantic ename-set into the job
+  pJob->m_oEnmSet.vCopy(pSession->m_pSemantic->pEnameSet());
+  
 //  //ActLog::vAdd(pJob,AN_PRE_PROMPT,
 //                       pJob->m_aJobClass->m_eKind,_EG_JK);
   
+  // add a task
   AM::pTaskNew(pJob);
   
+  //AM::vJobContentDump(pJob);
+
   return pJob;
 }
 
