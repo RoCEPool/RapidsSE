@@ -26,10 +26,10 @@ JobClass xJobClass_SubLoader =
   JF_NONE,                // flags
 
   nullptr,                // prompt check function
-  vJob_SubLoader_pre,     // prompt pre-process function
+  nullptr,                // prompt pre-process function
   nullptr,                // prompt post-process function
-  pJob_SubLoader_new,     // job new function
-  vJob_SubLoader_delete,  // job delete function
+  nullptr,                // job new function
+  nullptr,                // job delete function
   nullptr,                // job pre-send function
   nullptr,                // job post-receive function
   vJob_SubLoader_show,    // job show function
@@ -333,37 +333,6 @@ Footer* Job_SubLoader::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- Catalog Functions -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* prompt pre execute function                                                */
-/*----------------------------------------------------------------------------*/
-Job* Jobs::vJob_SubLoader_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
-{
-  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(aJobClass,aReqTuple);
-  //pJob->vDicPath(pSession);
-
-  return pJob_SubLoader;
-}
-
-/*----------------------------------------------------------------------------*/
-/* job new function                                                           */
-/*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubLoader_new(JobClass* aJobClass, ReqTuple* aReqTuple)
-{
-  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(aJobClass,nullptr);
-  
-  return pJob_SubLoader;
-}
-
-/*----------------------------------------------------------------------------*/
-/* job delete function                                                        */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubLoader_delete(Job* pJob)
-{
-  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pJob);
-  
-  delete pJob_SubLoader;
-}
 
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
