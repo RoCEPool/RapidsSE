@@ -73,6 +73,11 @@
   pDicStackTask dicStack.depth 0 ?do
     pDicStackSession dicStack.push
   loop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // store path into the sessions <path>=<...>
+
+  pushPath strVec::toPath to /session <path>
 ;
 
 
