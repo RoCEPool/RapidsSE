@@ -167,7 +167,7 @@ void Engine::vCheckPort(void)
   if (gxArguments.m_bVerbose)
     vInfo("Looking for listeners on port %lld\n"_Stz, iPort);
   
-  pSocket = new Socket;
+  pSocket = new Socket(gpAttachMap);
   bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
   
   if ( ! bResult ) {

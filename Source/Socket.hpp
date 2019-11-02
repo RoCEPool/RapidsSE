@@ -8,11 +8,14 @@ namespace Resources
   class Socket : public Resource
   {
   public:
-    int   m_iSocketId;
-    bool  m_bBlocking;
-    Lock  m_okLock;
   
-    void* m_aLowBuff; // low memory read area
+    Object* m_pIsFor;
+  
+    int     m_iSocketId;                  //! i think this is m_iSocketFd -- ray
+    bool    m_bBlocking;
+    Lock    m_okLock;
+  
+    void*   m_aLowBuff; // low memory read area
 
     struct sockaddr_in m_xServAddr;
     
@@ -24,8 +27,8 @@ namespace Resources
     void* operator new(size_t, Socket* pSocket);
     void  operator delete(void*);
     
-    Socket(void);
-    Socket(int iSocketId);
+    Socket(Object* pIsFor);
+    Socket(Object* pIsFor, int iSocketId);
    ~Socket(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

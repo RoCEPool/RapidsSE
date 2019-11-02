@@ -51,16 +51,17 @@ void Socket::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Socket::Socket(void)
+Socket::Socket(Object* pIsFor)
 : Resource(CN_SOCKET)
 , m_okLock(LK_SOCKET,this)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
+  m_pIsFor    = pIsFor;
   m_iSocketId = -1;
   m_bBlocking = true;
   
-  m_aLowBuff = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
+  m_aLowBuff  = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   
   vAddrInit(&m_xServAddr,nullptr,0);
   
@@ -77,16 +78,21 @@ Socket::Socket(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Socket::Socket(int iSocketId)
+Socket::Socket(Object* pIsFor, int iSocketId)
 : Resource(CN_SOCKET)
 , m_okLock(LK_SOCKET,this)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
+  m_pIsFor    = pIsFor;
   m_iSocketId = iSocketId;
   m_bBlocking = true;
   
-  m_aLowBuff = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
+  m_aLowBuff  = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
+  
+  vAddrInit(&m_xServAddr,nullptr,0);
+  
+  _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
   AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCT,

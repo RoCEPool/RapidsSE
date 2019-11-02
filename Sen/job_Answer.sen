@@ -99,7 +99,7 @@
     pAcceptedSocket recvNodeInfo to pAnsweredNode
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // spawn receiver task for the new socket
+    // spawn receiver task for the socket
 
     // increment connection counter
     nConns 1 + to nConns

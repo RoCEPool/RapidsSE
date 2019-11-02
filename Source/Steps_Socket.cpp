@@ -28,12 +28,13 @@ void Step::vAddSteps_Socket(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketAccept(void)
 {
+  ENTRY("vSocketAccept"_Stz);
+  
   SysCall oSysCall;
   Socket* pSocket;
   int     iSocketId;
   Object* pObject;
   
-  ENTRY("vSocketAccept"_Stz);
   
   if ( ! m_pDataStack->bPopObject(pObject) )
     THROW_DSTACK();
@@ -48,8 +49,8 @@ void Step::vSocketAccept(void)
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
            "Unable to accept connection: Errno %d"_Stz, oSysCall.iError());
   
-  // return the new socket
-  Socket* pNewSocket = new Socket(iSocketId);
+  // return the socket
+  Socket* pNewSocket = new Socket(this,iSocketId);
   
   m_pDataStack->vPushPointer(pNewSocket);
   
@@ -61,11 +62,12 @@ void Step::vSocketAccept(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketClose(void)
 {
+  ENTRY("vSocketClose"_Stz);
+  
   SysCall oSysCall;
   Socket* pSocket;
   Object* pObject;
   
-  ENTRY("vSocketClose"_Stz);
   
   if ( ! m_pDataStack->bPopObject(pObject) )
     THROW_DSTACK();
@@ -88,6 +90,8 @@ void Step::vSocketClose(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketConnect(void)
 {
+  ENTRY("vSocketConnect"_Stz);
+  
   SysCall oSysCall;
   Socket* pSocket;
   Object* pObject;
@@ -95,7 +99,6 @@ void Step::vSocketConnect(void)
   
   i8 iPort;
   
-  ENTRY("vSocketConnect"_Stz);
   
   if ( ! m_pDataStack->bPopObject(pObject) )
     THROW_DSTACK();
@@ -256,16 +259,17 @@ void Step::vSocketGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketListen(void)
 {
+  ENTRY("vSocketListen"_Stz);
+  
   SysCall oSysCall;
   Socket* pSocket;
   i8      iPort;
   
-  ENTRY("vSocketListen"_Stz);
   
   if ( ! m_pDataStack->bPopI8(iPort) )
     THROW_DSTACK();
   
-  pSocket = new Socket;
+  pSocket = new Socket(this);
   bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
   
   if ( ! bResult ) {
@@ -280,7 +284,7 @@ void Step::vSocketListen(void)
              "Unable to listen for connections: Errno %d"_Stz, oSysCall.iError());
   }
   
-  // return new socket
+  // return socket
   Object* pPtrSocket = pSocket;
   m_pDataStack->vPushPointer(pPtrSocket);
   
@@ -292,12 +296,17 @@ void Step::vSocketListen(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketOpen(void)
 {
+  ENTRY("vSocketOpen"_Stz);
+  
   SysCall oSysCall;
   Socket* pSocket;
   
-  ENTRY("vSocketOpen"_Stz);
-  
-  pSocket = new Socket;
+  Object* pNodePtr;
+  if ( ! m_pDataStack->bPopObject(pNodePtr) )
+    THROW_DSTACK();
+  Node* pNode = _pNode(pNodePtr);
+
+  pSocket = new Socket(pNodePtr);
   bool bResult = pSocket->bSocket(oSysCall);
   
   if ( ! bResult )
