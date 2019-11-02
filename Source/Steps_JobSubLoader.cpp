@@ -31,15 +31,12 @@ void Step::vJob_SubLoaderSpawn(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Session* pSession = pJob_LoadTable->pSession();
   ReqTuple* aReqTuple = &pJob_LoadTable->m_xReqTuple;
 
   //! this needs to be optimised
   JobClass* pJobClass_SubLoader = JobClass::pFind(CN_JOB_SUBLOADER);
   
-  Job_SubLoader* pJob_SubLoader =
-    static_cast<Job_SubLoader*>
-      (pJobClass_SubLoader->pPreJob(aReqTuple,pSession));
+  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pJobClass_SubLoader,aReqTuple);
   
   pJob_SubLoader->vSeed(SS_SEED_RUN);
   
