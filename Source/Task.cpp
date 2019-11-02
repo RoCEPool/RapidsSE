@@ -426,6 +426,30 @@ void Task::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  _poolAddress_(this);
+  vTrace("\n"_Stz);
+  vTrace("== Task Dump ================================================\n"_Stz);
+  
+  vContentDump();
+  
+  AM::aReqTuple_tls()->vContentDump();
+  
+  AM::vJobContentDump(m_pJob);
+  
+  m_pRegSet->vContentDump();
+  
+  m_pForth->vContentDump();
+  
+  vTrace("== End Task Dump ============================================\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vDropTaskLock(void)

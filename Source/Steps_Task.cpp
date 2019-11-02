@@ -162,21 +162,8 @@ void Step::vTaskDump(void)
 {
   ENTRY("vTaskDump"_Stz);
   
-  vTrace("\n"_Stz);
-  vTrace("== Task Dump ================================================\n"_Stz);
-
-  m_pTask->vContentDump();
+  m_pTask->vDump();
   
-  AM::aReqTuple_tls()->vContentDump();
-  
-  AM::vJobContentDump(m_pTask->m_pJob);
-  
-  m_pRegSet->vContentDump();
-  
-  m_pTask->m_pForth->vContentDump();
-
-  vTrace("== End Task Dump ============================================\n"_Stz);
-
   EXIT();
 }
 

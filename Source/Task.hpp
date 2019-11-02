@@ -65,10 +65,11 @@ namespace Tasks
     void vBeginOp(void);
     void vCaught(Exception xException);
     bool bCorrectLayout(void);
-    static void vDebug(void);
     Compiler* pCompiler(void);
     void vContentDump(void);
+    static void vDebug(void);
     void vDropTaskLock(void);
+    void vDump(void);
     void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     void vInitExeContext(void);
