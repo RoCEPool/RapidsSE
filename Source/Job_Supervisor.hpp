@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Supervisor* _pJob_Supervisor(void* aAddr);
   
-  Job* pJob_Supervisor_new(JobClass* aJobClass);
+  Job* pJob_Supervisor_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Supervisor_delete(Job* pJob);
   void vJob_Supervisor_show(Job* pJob);
   

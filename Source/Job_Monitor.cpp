@@ -200,7 +200,7 @@ Job* Jobs::pJob_Monitor_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aR
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Monitor_new(JobClass* aJobClass)
+Job* Jobs::pJob_Monitor_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Monitor* pJob_Monitor = new Job_Monitor(aJobClass,nullptr);
   

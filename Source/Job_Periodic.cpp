@@ -168,7 +168,7 @@ Footer* Job_Periodic::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Periodic_new(JobClass* aJobClass)
+Job* Jobs::pJob_Periodic_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   ReqTuple xReqTuple("**PERIODIC"_Stz,false);
   

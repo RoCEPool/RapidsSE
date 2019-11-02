@@ -168,7 +168,7 @@ Footer* Job_Alarm::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Alarm_new(JobClass* aJobClass)
+Job* Jobs::pJob_Alarm_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   ReqTuple xReqTuple("**ALARM"_Stz,false);
   

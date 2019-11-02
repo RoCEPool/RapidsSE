@@ -54,9 +54,9 @@ void JobClass::vCmds(void)
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the new-function                               */
 /*----------------------------------------------------------------------------*/
-Job* JobClass::pNewJob(void)
+Job* JobClass::pNewJob(ReqTuple* aReqTuple)
 {
-  Job* pNewJob = (*m_fpNew)(this);
+  Job* pNewJob = (*m_fpNew)(this,aReqTuple);
   
   pNewJob->m_aJobClass = this;
   

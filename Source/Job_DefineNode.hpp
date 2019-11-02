@@ -38,7 +38,7 @@ namespace Jobs
   
   Job* pJob_DefineNode_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_DefineNode_post(Job* pJob);
-  Job* pJob_DefineNode_new(JobClass* aJobClass);
+  Job* pJob_DefineNode_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_DefineNode_delete(Job* pJob);
   void vJob_DefineNode_show(Job* pJob);
   

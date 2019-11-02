@@ -207,7 +207,7 @@ void Jobs::vJob_Publish_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Publish_new(JobClass* aJobClass)
+Job* Jobs::pJob_Publish_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Publish* pJob_Publish = new Job_Publish(aJobClass,nullptr);
   

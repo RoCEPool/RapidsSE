@@ -441,7 +441,7 @@ Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, JobClass* aJobClass, ReqTuple
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteBuffer_new(JobClass* aJobClass)
+Job* Jobs::pJob_WriteBuffer_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(aJobClass,nullptr);
   

@@ -219,7 +219,7 @@ Job* Jobs::pJob_Report_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aRe
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Report_new(JobClass* aJobClass)
+Job* Jobs::pJob_Report_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Report* pJob_Report = new Job_Report(aJobClass,nullptr);
   

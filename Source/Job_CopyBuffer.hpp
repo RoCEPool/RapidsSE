@@ -41,7 +41,7 @@ namespace Jobs
   Job_CopyBuffer* _pJob_CopyBuffer(void* aAddr);
   
   Job* pJob_CopyBuffer_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
-  Job* pJob_CopyBuffer_new(JobClass* aJobClass);
+  Job* pJob_CopyBuffer_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_CopyBuffer_delete(Job* pJob);
   void vJob_CopyBuffer_show(Job* pJob);
   

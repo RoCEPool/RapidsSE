@@ -41,7 +41,7 @@ namespace Jobs
   Job_Sink* _pJob_Sink(void* aAddr);
   
   Job* pJob_Sink_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
-  Job* pJob_Sink_new(JobClass* aJobClass);
+  Job* pJob_Sink_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Sink_delete(Job* pJob);
   void vJob_Sink_show(Job* pJob);
   

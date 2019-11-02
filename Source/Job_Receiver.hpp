@@ -41,7 +41,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Receiver* _pJob_Receiver(void* aAddr);
   
-  Job* pJob_Receiver_new(JobClass* aJobClass);
+  Job* pJob_Receiver_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Receiver_delete(Job* pJob);
   void vJob_Receiver_show(Job* pJob);
   

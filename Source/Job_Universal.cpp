@@ -269,7 +269,7 @@ void Jobs::vJob_Universal_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Universal_new(JobClass* aJobClass)
+Job* Jobs::pJob_Universal_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Universal* pJob_Universal = new Job_Universal(aJobClass,nullptr);
   

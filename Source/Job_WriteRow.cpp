@@ -253,7 +253,7 @@ Job* Jobs::pJob_WriteRow_pre(Session* pSession, JobClass* aJobClass, ReqTuple* a
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteRow_new(JobClass* aJobClass)
+Job* Jobs::pJob_WriteRow_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_WriteRow* pJob_WriteRow = new Job_WriteRow(aJobClass,nullptr);
   

@@ -46,7 +46,7 @@ namespace Jobs
   Job_SubLoader* _pJob_SubLoader(void* aAddr);
   
   Job* vJob_SubLoader_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
-  Job* pJob_SubLoader_new(JobClass* aJobClass);
+  Job* pJob_SubLoader_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_SubLoader_delete(Job* pJob);
   void vJob_SubLoader_show(Job* pJob);
   

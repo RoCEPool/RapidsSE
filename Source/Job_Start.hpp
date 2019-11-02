@@ -34,7 +34,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Start* _pJob_Start(void* aAddr);
   
-  Job* pJob_Start_new(JobClass* aJobClass);
+  Job* pJob_Start_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Start_delete(Job* pJob);
   void vJob_Start_show(Job* pJob);
   

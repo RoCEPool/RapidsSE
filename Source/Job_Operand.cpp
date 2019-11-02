@@ -226,7 +226,7 @@ Job* Jobs::pJob_Operand_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aR
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Operand_new(JobClass* aJobClass)
+Job* Jobs::pJob_Operand_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Operand* pJob_Operand = new Job_Operand(aJobClass,nullptr);
   

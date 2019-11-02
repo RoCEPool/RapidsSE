@@ -52,7 +52,7 @@ namespace Jobs
   Job_SubInserter* _pJob_SubInserter(void* aAddr);
   
   Job* pJob_SubInserter_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
-  Job* pJob_SubInserter_new(JobClass* aJobClass);
+  Job* pJob_SubInserter_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_SubInserter_delete(Job* pJob);
   void vJob_SubInserter_show(Job* pJob);
   

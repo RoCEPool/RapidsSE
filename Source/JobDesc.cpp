@@ -34,7 +34,7 @@ JobDesc::JobDesc(
                  eEC  (*fpCheck)(Session* pSession),
                  Job* (*fpPre)(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple),
                  void (*fpPost)(Job* pJob),
-                 Job* (*fpNew)(JobClass* aJobClass),
+                 Job* (*fpNew)(JobClass* aJobClass, ReqTuple* aReqTuple),
                  void (*fpDelete)(Job* pJob),
                  void (*fpSend)(Job* pJob),
                  void (*fpRecv)(Job* pJob),

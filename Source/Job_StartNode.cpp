@@ -257,7 +257,7 @@ void Jobs::vJob_StartNode_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_StartNode_new(JobClass* aJobClass)
+Job* Jobs::pJob_StartNode_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_StartNode* pJob_StartNode = new Job_StartNode(aJobClass,nullptr);
   

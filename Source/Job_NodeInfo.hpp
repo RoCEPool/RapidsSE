@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_NodeInfo* _pJob_NodeInfo(void* aAddr);
   
-  Job* pJob_NodeInfo_new(JobClass* aJobClass);
+  Job* pJob_NodeInfo_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_NodeInfo_delete(Job* pJob);
   void vJob_NodeInfo_show(Job* pJob);
   

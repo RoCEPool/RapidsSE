@@ -203,7 +203,7 @@ void Jobs::vJob_Purge_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Purge_new(JobClass* aJobClass)
+Job* Jobs::pJob_Purge_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Purge* pJob_Purge = new Job_Purge(aJobClass,nullptr);
   

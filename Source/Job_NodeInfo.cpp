@@ -169,7 +169,7 @@ Footer* Job_NodeInfo::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_NodeInfo_new(JobClass* aJobClass)
+Job* Jobs::pJob_NodeInfo_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   ReqTuple xReqTuple("**NODE_INFO"_Stz,false);
   

@@ -241,7 +241,7 @@ void Job_SubExporter::vSpawnKidExport(bool bLast)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
   
   JobClass* pJobClass_KidExport = JobClass::pFind(CN_JOB_KIDEXPORT);
-  Job* pNewJob = pJobClass_KidExport->pNewJob();
+  Job* pNewJob = pJobClass_KidExport->pNewJob(nullptr);
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pNewJob);
   
   pJob_KidExport->m_iExportJobId = m_pJobExport->m_iUniqueId;

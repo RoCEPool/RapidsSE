@@ -42,7 +42,7 @@ namespace Jobs
   Job_InsertTable* _pJob_InsertTable(void* aAddr);
   
   Job* pJob_InsertTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
-  Job* pJob_InsertTable_new(JobClass* aJobClass);
+  Job* pJob_InsertTable_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_InsertTable_delete(Job* pJob);
   void vJob_InsertTable_show(Job* pJob);
   

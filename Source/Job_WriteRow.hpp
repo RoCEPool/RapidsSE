@@ -46,7 +46,7 @@ namespace Jobs
   Job_WriteRow* _pJob_WriteRow(void* aAddr);
   
   Job* pJob_WriteRow_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
-  Job* pJob_WriteRow_new(JobClass* aJobClass);
+  Job* pJob_WriteRow_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_WriteRow_delete(Job* pJob);
   void vJob_WriteRow_show(Job* pJob);
   

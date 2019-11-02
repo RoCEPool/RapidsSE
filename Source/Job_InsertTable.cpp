@@ -189,7 +189,7 @@ Job* Jobs::pJob_InsertTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InsertTable_new(JobClass* aJobClass)
+Job* Jobs::pJob_InsertTable_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_InsertTable* pJob_InsertTable = new Job_InsertTable(aJobClass,nullptr);
   

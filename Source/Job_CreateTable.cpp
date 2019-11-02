@@ -650,7 +650,7 @@ void Jobs::vJob_CreateTable_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateTable_new(JobClass* aJobClass)
+Job* Jobs::pJob_CreateTable_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_CreateTable* pJob_CreateTable = new Job_CreateTable(aJobClass,nullptr);
   

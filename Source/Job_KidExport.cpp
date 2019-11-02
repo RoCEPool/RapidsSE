@@ -225,7 +225,7 @@ Job* Jobs::pJob_KidExport_pre(Session* pSession, JobClass* aJobClass, ReqTuple* 
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_KidExport_new(JobClass* aJobClass)
+Job* Jobs::pJob_KidExport_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_KidExport* pJob_KidExport = new Job_KidExport(aJobClass,nullptr);
   

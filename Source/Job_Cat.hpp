@@ -45,7 +45,7 @@ namespace Jobs
   Job_Cat* _pJob_Cat(void* aAddr);
   
   Job* pJob_Cat_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
-  Job* pJob_Cat_new(JobClass* aJobClass);
+  Job* pJob_Cat_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Cat_delete(Job* pJob);
   void vJob_Cat_show(Job* pJob);
   

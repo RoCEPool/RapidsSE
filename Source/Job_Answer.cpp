@@ -167,7 +167,7 @@ Footer* Job_Answer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Answer_new(JobClass* aJobClass)
+Job* Jobs::pJob_Answer_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   ReqTuple xReqTuple("**ANSWER"_Stz,false);
   

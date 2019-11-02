@@ -304,7 +304,7 @@ void Jobs::vJob_Export_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Export_new(JobClass* aJobClass)
+Job* Jobs::pJob_Export_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Export* pJob_Export = new Job_Export(aJobClass,nullptr);
   

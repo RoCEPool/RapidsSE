@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Periodic* _pJob_Periodic(void* aAddr);
   
-  Job* pJob_Periodic_new(JobClass* aJobClass);
+  Job* pJob_Periodic_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Periodic_delete(Job* pJob);
   void vJob_Periodic_show(Job* pJob);
   

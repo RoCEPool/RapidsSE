@@ -167,7 +167,7 @@ Footer* Job_Connector::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Connector_new(JobClass* aJobClass)
+Job* Jobs::pJob_Connector_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   ReqTuple xReqTuple("**CONNECTOR"_Stz,false);
   

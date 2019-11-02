@@ -233,7 +233,7 @@ Job* Jobs::pJob_Generate_pre(Session* pSession, JobClass* aJobClass, ReqTuple* a
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Generate_new(JobClass* aJobClass)
+Job* Jobs::pJob_Generate_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Generate* pJob_Generate = new Job_Generate(aJobClass,nullptr);
   

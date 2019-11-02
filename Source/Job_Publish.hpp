@@ -43,7 +43,7 @@ namespace Jobs
   
   Job* pJob_Publish_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Publish_post(Job* pJob);
-  Job* pJob_Publish_new(JobClass* aJobClass);
+  Job* pJob_Publish_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Publish_delete(Job* pJob);
   void vJob_Publish_show(Job* pJob);
   

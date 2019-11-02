@@ -37,7 +37,7 @@ namespace Jobs
   
   Job* pJob_Universal_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Universal_post(Job* pJob);
-  Job* pJob_Universal_new(JobClass* aJobClass);
+  Job* pJob_Universal_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Universal_delete(Job* pJob);
   void vJob_Universal_show(Job* pJob);
   

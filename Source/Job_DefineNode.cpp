@@ -272,7 +272,7 @@ void Jobs::vJob_DefineNode_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DefineNode_new(JobClass* aJobClass)
+Job* Jobs::pJob_DefineNode_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_DefineNode* pJob_CreateNode = new Job_DefineNode(aJobClass,nullptr);
   

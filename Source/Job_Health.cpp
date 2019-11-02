@@ -186,7 +186,7 @@ Job* Jobs::pJob_Health_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aRe
   for (i8 i_Hog = 0; i_Hog < nHogs; i_Hog++) {
     
     JobClass* pJobClass_Health = JobClass::pFind(CN_JOB_NETHOG);
-    Job_Health* pJob_Health = _pJob_Health(pJobClass_Health->pNewJob());
+    Job_Health* pJob_Health = _pJob_Health(pJobClass_Health->pNewJob(nullptr));
 
     pJob_Health->m_iHogNo  = i_Hog;
     pJob_Health->m_bNoWait = true;
@@ -210,7 +210,7 @@ void Jobs::vJob_Health_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Health_new(JobClass* aJobClass)
+Job* Jobs::pJob_Health_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Health* pJob_Health = new Job_Health(aJobClass,nullptr);
   

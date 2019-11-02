@@ -93,7 +93,7 @@ void Step::vJobClassNew(void)
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
 
-  Job* pJob = pJobClass->pNewJob();
+  Job* pJob = pJobClass->pNewJob(nullptr);
   
   m_pDataStack->vPushPointer(pJob);
   

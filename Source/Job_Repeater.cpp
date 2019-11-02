@@ -216,7 +216,7 @@ Job* Jobs::pJob_Repeater_pre(Session* pSession, JobClass* aJobClass, ReqTuple* a
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Repeater_new(JobClass* aJobClass)
+Job* Jobs::pJob_Repeater_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Repeater* pJob_Repeater = new Job_Repeater(aJobClass,nullptr);
   

@@ -257,7 +257,7 @@ Job* Jobs::pJob_CopyBuffer_pre(Session* pSession, JobClass* aJobClass, ReqTuple*
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CopyBuffer_new(JobClass* aJobClass)
+Job* Jobs::pJob_CopyBuffer_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(aJobClass,nullptr);
   

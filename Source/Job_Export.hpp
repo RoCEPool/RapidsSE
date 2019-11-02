@@ -52,7 +52,7 @@ namespace Jobs
   
   Job* pJob_Export_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Export_post(Job* pJob);
-  Job* pJob_Export_new(JobClass* aJobClass);
+  Job* pJob_Export_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Export_delete(Job* pJob);
   void vJob_Export_show(Job* pJob);
   

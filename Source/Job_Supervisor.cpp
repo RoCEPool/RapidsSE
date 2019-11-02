@@ -168,7 +168,7 @@ Footer* Job_Supervisor::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Supervisor_new(JobClass* aJobClass)
+Job* Jobs::pJob_Supervisor_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   ReqTuple xReqTuple("**SUPERVISOR"_Stz,false);
   

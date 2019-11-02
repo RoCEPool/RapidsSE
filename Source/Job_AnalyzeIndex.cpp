@@ -219,7 +219,7 @@ Job* Jobs::pJob_AnalyzeIndex_pre(Session* pSession, JobClass* aJobClass, ReqTupl
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_AnalyzeIndex_new(JobClass* aJobClass)
+Job* Jobs::pJob_AnalyzeIndex_new(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(aJobClass,nullptr);
   

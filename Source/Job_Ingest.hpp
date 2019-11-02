@@ -60,7 +60,7 @@ namespace Jobs
   Job_Ingest* _pJob_Ingest(void* aAddr);
   
   Job* pJob_Ingest_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
-  Job* pJob_Ingest_new(JobClass* aJobClass);
+  Job* pJob_Ingest_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Ingest_delete(Job* pJob);
   void vJob_Ingest_show(Job* pJob);
   
