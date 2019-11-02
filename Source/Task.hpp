@@ -18,7 +18,6 @@ namespace Tasks
                public ListItem_t<Task>
   {
   friend class Steps::Step;
-  //friend Scheduler;
 
   private:
     Lock         m_okLock;       // lock for this task
