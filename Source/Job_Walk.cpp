@@ -227,7 +227,7 @@ Footer* Job_Walk::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Walk_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Walk_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_Walk* pJob_Walk = new Job_Walk(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

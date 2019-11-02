@@ -430,7 +430,7 @@ Footer* Job_WriteBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_WriteBuffer_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

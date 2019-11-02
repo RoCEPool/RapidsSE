@@ -42,7 +42,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubIngester* _pJob_SubIngester(void* aAddr);
   
-  Job* vJob_SubIngester_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* vJob_SubIngester_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   Job* pJob_SubIngester_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_SubIngester_delete(Job* pJob);
   void vJob_SubIngester_show(Job* pJob);

@@ -188,7 +188,7 @@ Footer* Job_TableSizes::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_TableSizes_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_TableSizes_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_TableSizes* pJob_TableSizes = new Job_TableSizes(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

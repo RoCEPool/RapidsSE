@@ -214,7 +214,7 @@ Footer* Job_KidExport::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_KidExport_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_KidExport_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_KidExport* pJob_KidExport = new Job_KidExport(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

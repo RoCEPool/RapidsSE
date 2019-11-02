@@ -171,7 +171,7 @@ Footer* Job_Health::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Health_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Health_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_Health* pJob_Health = new Job_Health(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

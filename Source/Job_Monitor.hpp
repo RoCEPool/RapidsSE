@@ -41,7 +41,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Monitor* _pJob_Monitor(void* aAddr);
   
-  Job* pJob_Monitor_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_Monitor_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   Job* pJob_Monitor_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Monitor_delete(Job* pJob);
   void vJob_Monitor_show(Job* pJob);

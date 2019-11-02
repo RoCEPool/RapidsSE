@@ -623,7 +623,7 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_LoadTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_LoadTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_LoadTable* pJob_LoadTable = new Job_LoadTable(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

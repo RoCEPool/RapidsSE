@@ -313,7 +313,7 @@ Footer* Job_SubIngester::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::vJob_SubIngester_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::vJob_SubIngester_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_SubIngester* pJob_SubIngester = new Job_SubIngester(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

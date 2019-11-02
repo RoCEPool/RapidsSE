@@ -191,7 +191,7 @@ Footer* Job_ListPartitions::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListPartitions_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_ListPartitions_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_ListPartitions* pJob_ListPartitions = new Job_ListPartitions(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

@@ -36,7 +36,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_DefineNode* _pJob_CreateNode(void* aAddr);
   
-  Job* pJob_DefineNode_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_DefineNode_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_DefineNode_post(Job* pJob);
   Job* pJob_DefineNode_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_DefineNode_delete(Job* pJob);

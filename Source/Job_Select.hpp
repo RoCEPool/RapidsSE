@@ -50,7 +50,7 @@ namespace Jobs
   
   Job_Select* _pJob_Select(void* aAddr);
   
-  Job* pJob_Select_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_Select_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_Select_delete(Job* pJob);
   void vJob_Select_show(Job* pJob);
   

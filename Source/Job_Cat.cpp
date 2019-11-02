@@ -174,7 +174,7 @@ Footer* Job_Cat::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Cat_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Cat_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   i8 nTokens;
 

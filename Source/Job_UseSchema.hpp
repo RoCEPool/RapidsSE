@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_UseSchema* _pJob_UseSchema(void* aAddr);
   
-  Job* pJob_UseSchema_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_UseSchema_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_UseSchema_delete(Job* pJob);
   void vJob_UseSchema_show(Job* pJob);
   

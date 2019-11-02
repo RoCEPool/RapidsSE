@@ -191,7 +191,7 @@ Footer* Job_Lf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Lf_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Lf_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_Lf* pJob_Lf = new Job_Lf(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

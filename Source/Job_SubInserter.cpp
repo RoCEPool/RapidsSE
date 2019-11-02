@@ -253,7 +253,7 @@ Footer* Job_SubInserter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubInserter_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_SubInserter_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_SubInserter* pJob_SubInserter = new Job_SubInserter(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

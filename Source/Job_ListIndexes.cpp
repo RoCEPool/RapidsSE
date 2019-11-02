@@ -195,7 +195,7 @@ Footer* Job_ListIndexes::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListIndexes_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_ListIndexes_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_ListIndexes* pJob_ListIndexes = new Job_ListIndexes(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

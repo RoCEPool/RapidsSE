@@ -189,7 +189,7 @@ Footer* Job_DropTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_DropTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_DropTable* pJob_DropTable = new Job_DropTable(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

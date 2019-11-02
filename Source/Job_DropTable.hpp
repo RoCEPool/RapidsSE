@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_DropTable* _pJob_DropTable(void* aAddr);
   
-  Job* pJob_DropTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_DropTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_DropTable_delete(Job* pJob);
   void vJob_DropTable_show(Job* pJob);
   

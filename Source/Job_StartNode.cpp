@@ -217,7 +217,7 @@ Footer* Job_StartNode::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_StartNode_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_StartNode_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_StartNode* pJob_StartNode = new Job_StartNode(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

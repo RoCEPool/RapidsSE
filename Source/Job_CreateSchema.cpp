@@ -194,7 +194,7 @@ Footer* Job_CreateSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateSchema_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_CreateSchema_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

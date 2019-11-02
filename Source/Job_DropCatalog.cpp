@@ -196,7 +196,7 @@ Footer* Job_DropCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropCatalog_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_DropCatalog_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

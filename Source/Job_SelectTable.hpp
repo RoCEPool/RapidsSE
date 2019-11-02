@@ -39,7 +39,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SelectTable* _pJob_SelectTable(void* aAddr);
   
-  Job* pJob_SelectTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_SelectTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_SelectTable_delete(Job* pJob);
   void vJob_SelectTable_show(Job* pJob);
   

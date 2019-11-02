@@ -242,7 +242,7 @@ Footer* Job_WriteRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteRow_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_WriteRow_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_WriteRow* pJob_WriteRow = new Job_WriteRow(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

@@ -49,7 +49,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubExporter* _pJob_SubExporter(void* aAddr);
   
-  Job* pJob_SubExporter_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_SubExporter_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_SubExporter_delete(Job* pJob);
   void vJob_SubExporter_show(Job* pJob);
   

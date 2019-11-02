@@ -189,7 +189,7 @@ Footer* Job_Status::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Status_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Status_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_Status* pJob_Status = new Job_Status(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

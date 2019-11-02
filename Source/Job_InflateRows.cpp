@@ -273,7 +273,7 @@ Footer* Job_InflateRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InflateRows_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_InflateRows_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_InflateRows* pJob_InflateRows = new Job_InflateRows(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

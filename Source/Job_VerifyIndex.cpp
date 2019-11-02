@@ -196,7 +196,7 @@ Footer* Job_VerifyIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_VerifyIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_VerifyIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

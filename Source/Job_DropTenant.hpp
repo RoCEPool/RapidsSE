@@ -35,7 +35,7 @@ namespace Jobs
   
   Job_DropTenant* _pJob_DropTenant(void* aAddr);
   
-  Job* pJob_DropTenant_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_DropTenant_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_DropTenant_delete(Job* pJob);
   void vJob_DropTenant_show(Job* pJob);
   

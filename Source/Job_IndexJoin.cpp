@@ -230,7 +230,7 @@ Footer* Job_IndexJoin::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_IndexJoin_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_IndexJoin_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_IndexJoin* pJob_IndexJoin = new Job_IndexJoin(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

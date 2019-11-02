@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_DumpIndex* _pJob_DumpIndex(void* aAddr);
   
-  Job* pJob_DumpIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_DumpIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_DumpIndex_delete(Job* pJob);
   void vJob_DumpIndex_show(Job* pJob);
   

@@ -189,7 +189,7 @@ Footer* Job_ConnectCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ConnectCluster_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_ConnectCluster_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_ConnectCluster* pJob_ConnectCluster = new Job_ConnectCluster(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

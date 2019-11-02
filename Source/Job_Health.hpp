@@ -36,7 +36,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Health* _pJob_Health(void* aAddr);
   
-  Job* pJob_Health_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_Health_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_Health_post(Job* pJob);
   Job* pJob_Health_new(JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Health_delete(Job* pJob);

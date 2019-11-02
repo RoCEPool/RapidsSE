@@ -229,7 +229,7 @@ Footer* Job_Universal::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Universal_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Universal_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_Universal* pJob_Universal = new Job_Universal(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

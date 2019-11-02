@@ -46,7 +46,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Pipeline* _pJob_Pipeline(void* aAddr);
   
-  Job* pJob_Pipeline_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_Pipeline_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_Pipeline_post(Job* pJob);
   void vJob_Pipeline_delete(Job* pJob);
   void vJob_Pipeline_show(Job* pJob);

@@ -191,7 +191,7 @@ Footer* Job_ShowCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ShowCluster_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_ShowCluster_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_ShowCluster* pJob_ShowCluster = new Job_ShowCluster(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

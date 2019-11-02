@@ -37,7 +37,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_AnalyzeTable* _pJob_AnalyzeTable(void* aAddr);
   
-  Job* pJob_AnalyzeTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_AnalyzeTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_AnalyzeTable_delete(Job* pJob);
   void vJob_AnalyzeTable_show(Job* pJob);
   

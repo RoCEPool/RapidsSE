@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Cf* _pJob_Cf(void* aAddr);
   
-  Job* pJob_Cf_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_Cf_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_Cf_delete(Job* pJob);
   void vJob_Cf_show(Job* pJob);
   

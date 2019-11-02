@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateTenant* _pJob_CreateTenant(void* aAddr);
   
-  Job* pJob_CreateTenant_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_CreateTenant_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_CreateTenant_delete(Job* pJob);
   void vJob_CreateTenant_show(Job* pJob);
   

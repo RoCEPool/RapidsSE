@@ -185,7 +185,7 @@ Footer* Job_Report::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Report_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Report_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   i8 nTokens;
 

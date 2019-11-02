@@ -192,7 +192,7 @@ Footer* Job_TruncateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_TruncateTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_TruncateTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_TruncateTable* pJob_TruncateTable = new Job_TruncateTable(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

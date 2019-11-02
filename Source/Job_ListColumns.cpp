@@ -195,7 +195,7 @@ Footer* Job_ListColumns::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListColumns_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_ListColumns_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_ListColumns* pJob_ListColumns = new Job_ListColumns(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

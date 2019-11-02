@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ListPartitions* _pJob_ListPartitions(void* aAddr);
   
-  Job* pJob_ListPartitions_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
+  Job* pJob_ListPartitions_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
   void vJob_ListPartitions_delete(Job* pJob);
   void vJob_ListPartitions_show(Job* pJob);
   

@@ -187,7 +187,7 @@ Footer* Job_Generate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Generate_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Generate_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

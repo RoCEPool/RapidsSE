@@ -200,7 +200,7 @@ Footer* Job_AnalyzeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_AnalyzeIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_AnalyzeIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

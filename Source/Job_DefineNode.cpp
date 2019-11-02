@@ -232,7 +232,7 @@ Footer* Job_DefineNode::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DefineNode_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_DefineNode_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_DefineNode* pJob_CreateNode = new Job_DefineNode(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

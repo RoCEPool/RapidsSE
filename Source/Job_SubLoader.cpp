@@ -337,7 +337,7 @@ Footer* Job_SubLoader::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::vJob_SubLoader_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::vJob_SubLoader_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_SubLoader* pJob_SubLoader = new Job_SubLoader(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

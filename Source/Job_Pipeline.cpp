@@ -317,7 +317,7 @@ Footer* Job_Pipeline::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Pipeline_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Pipeline_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_Pipeline* pJob_Pipeline = new Job_Pipeline(aJobClass,aReqTuple);
 
