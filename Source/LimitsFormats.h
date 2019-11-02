@@ -79,6 +79,8 @@ static Stz* C_SE_TRACE = "/tmp/se_trace.txt"_Stz;
 
 static Stz* C_NO_NAME = "-- NO_NAME --"_Stz;
 
+static Stz* C_SE_PATH = "/tenants/boray/catalogs/rapidsse/schemas/public"_Stz;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 static const i8 C_LOG_ENTRIES = C_256K * 1;

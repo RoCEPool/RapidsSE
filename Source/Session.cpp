@@ -125,9 +125,8 @@ Session::Session(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pSemantic->pEnameSet()->vAdd("<path>"_Stz,
-                                 "/tenants/boray/catalogs/rapidsse/schemas/public"_Stz,
-                                 TN_STRING);
+  // set initial session <path>
+  m_pSemantic->pEnameSet()->vAdd("<path>"_Stz,C_SE_PATH,TN_STRING);
   
   ++ gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_CONSTRUCT,
