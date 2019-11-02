@@ -266,8 +266,7 @@ Job* Jobs::pJob_SubInserter_pre(Session* pSession, JobClass* aJobClass, ReqTuple
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubInserter_new(JobClass* aJobClass)
 {
-  Job_SubInserter* pJob_SubInserter =
-    new Job_SubInserter(aJobClass,nullptr);
+  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(aJobClass,nullptr);
   
   return pJob_SubInserter;
 }

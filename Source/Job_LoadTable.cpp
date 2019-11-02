@@ -644,8 +644,7 @@ Job* Jobs::pJob_LoadTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* 
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_LoadTable_new(JobClass* aJobClass)
 {
-  Job_LoadTable* pJob_LoadTable =
-    new Job_LoadTable(aJobClass,nullptr);
+  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(aJobClass,nullptr);
   
   return pJob_LoadTable;
 }

@@ -210,8 +210,7 @@ Job* Jobs::pJob_Cat_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTu
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Cat_new(JobClass* aJobClass)
 {
-  Job_Cat* pJob_Cat =
-  new Job_Cat(aJobClass,nullptr);
+  Job_Cat* pJob_Cat = new Job_Cat(aJobClass,nullptr);
   
   return pJob_Cat;
 }

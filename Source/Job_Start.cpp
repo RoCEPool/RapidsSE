@@ -171,8 +171,7 @@ Job* Jobs::pJob_Start_new(JobClass* aJobClass)
 {
   ReqTuple xReqTuple("**START"_Stz,false);
   
-  Job_Start* pJob_Start =
-    new Job_Start(aJobClass,&xReqTuple);
+  Job_Start* pJob_Start = new Job_Start(aJobClass,&xReqTuple);
   
   return pJob_Start;
 }

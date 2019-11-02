@@ -206,8 +206,7 @@ Job* Jobs::pJob_Sink_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqT
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Sink_new(JobClass* aJobClass)
 {
-  Job_Sink* pJob_Sink =
-    new Job_Sink(aJobClass,nullptr);
+  Job_Sink* pJob_Sink = new Job_Sink(aJobClass,nullptr);
   
   return pJob_Sink;
 }

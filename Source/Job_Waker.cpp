@@ -172,8 +172,7 @@ Job* Jobs::pJob_Waker_new(JobClass* aJobClass)
 {
   ReqTuple xReqTuple("**WAKER"_Stz,false);
   
-  Job_Waker* pJob_Waker =
-    new Job_Waker(aJobClass,&xReqTuple);
+  Job_Waker* pJob_Waker = new Job_Waker(aJobClass,&xReqTuple);
   
   return pJob_Waker;
 }

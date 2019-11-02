@@ -217,8 +217,7 @@ Job* Jobs::pJob_Ingest_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aRe
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Ingest_new(JobClass* aJobClass)
 {
-  Job_Ingest* pJob_Ingest =
-    new Job_Ingest(aJobClass,nullptr);
+  Job_Ingest* pJob_Ingest = new Job_Ingest(aJobClass,nullptr);
   
   return pJob_Ingest;
 }

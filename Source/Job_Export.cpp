@@ -306,8 +306,7 @@ void Jobs::vJob_Export_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Export_new(JobClass* aJobClass)
 {
-  Job_Export* pJob_Export =
-    new Job_Export(aJobClass,nullptr);
+  Job_Export* pJob_Export = new Job_Export(aJobClass,nullptr);
   
   return pJob_Export;
 }

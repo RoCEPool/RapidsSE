@@ -274,8 +274,7 @@ void Jobs::vJob_DefineNode_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DefineNode_new(JobClass* aJobClass)
 {
-  Job_DefineNode* pJob_CreateNode =
-    new Job_DefineNode(aJobClass,nullptr);
+  Job_DefineNode* pJob_CreateNode = new Job_DefineNode(aJobClass,nullptr);
   
   return pJob_CreateNode;
 }

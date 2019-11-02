@@ -172,8 +172,7 @@ Job* Jobs::pJob_Periodic_new(JobClass* aJobClass)
 {
   ReqTuple xReqTuple("**PERIODIC"_Stz,false);
   
-  Job_Periodic* pJob_Periodic =
-    new Job_Periodic(aJobClass,&xReqTuple);
+  Job_Periodic* pJob_Periodic = new Job_Periodic(aJobClass,&xReqTuple);
   
   return pJob_Periodic;
 }

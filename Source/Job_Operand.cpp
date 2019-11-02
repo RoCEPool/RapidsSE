@@ -228,8 +228,7 @@ Job* Jobs::pJob_Operand_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aR
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Operand_new(JobClass* aJobClass)
 {
-  Job_Operand* pJob_Operand =
-    new Job_Operand(aJobClass,nullptr);
+  Job_Operand* pJob_Operand = new Job_Operand(aJobClass,nullptr);
   
   return pJob_Operand;
 }

@@ -350,8 +350,7 @@ Job* Jobs::vJob_SubLoader_pre(Session* pSession, JobClass* aJobClass, ReqTuple* 
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubLoader_new(JobClass* aJobClass)
 {
-  Job_SubLoader* pJob_SubLoader =
-    new Job_SubLoader(aJobClass,nullptr);
+  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(aJobClass,nullptr);
   
   return pJob_SubLoader;
 }

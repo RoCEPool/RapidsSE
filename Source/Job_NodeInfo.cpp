@@ -173,8 +173,7 @@ Job* Jobs::pJob_NodeInfo_new(JobClass* aJobClass)
 {
   ReqTuple xReqTuple("**NODE_INFO"_Stz,false);
   
-  Job_NodeInfo* pJob_NodeInfo =
-    new Job_NodeInfo(aJobClass,&xReqTuple);
+  Job_NodeInfo* pJob_NodeInfo = new Job_NodeInfo(aJobClass,&xReqTuple);
   
   return pJob_NodeInfo;
 }

@@ -259,8 +259,7 @@ void Jobs::vJob_StartNode_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_StartNode_new(JobClass* aJobClass)
 {
-  Job_StartNode* pJob_StartNode =
-    new Job_StartNode(aJobClass,nullptr);
+  Job_StartNode* pJob_StartNode = new Job_StartNode(aJobClass,nullptr);
   
   return pJob_StartNode;
 }

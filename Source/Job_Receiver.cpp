@@ -213,8 +213,7 @@ Job* Jobs::pJob_Receiver_new(JobClass* aJobClass)
 {
   ReqTuple xReqTuple("**RECEIVER"_Stz,false);
   
-  Job_Receiver* pJob_Receiver =
-    new Job_Receiver(aJobClass,&xReqTuple);
+  Job_Receiver* pJob_Receiver = new Job_Receiver(aJobClass,&xReqTuple);
   
   return pJob_Receiver;
 }

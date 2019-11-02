@@ -212,8 +212,7 @@ void Jobs::vJob_Health_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Health_new(JobClass* aJobClass)
 {
-  Job_Health* pJob_Health =
-    new Job_Health(aJobClass,nullptr);
+  Job_Health* pJob_Health = new Job_Health(aJobClass,nullptr);
   
   return pJob_Health;
 }

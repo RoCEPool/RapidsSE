@@ -171,8 +171,7 @@ Job* Jobs::pJob_Answer_new(JobClass* aJobClass)
 {
   ReqTuple xReqTuple("**ANSWER"_Stz,false);
   
-  Job_Answer* pJob_Answer =
-    new Job_Answer(aJobClass,&xReqTuple);
+  Job_Answer* pJob_Answer = new Job_Answer(aJobClass,&xReqTuple);
   
   return pJob_Answer;
 }

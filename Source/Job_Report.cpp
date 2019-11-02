@@ -221,8 +221,7 @@ Job* Jobs::pJob_Report_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aRe
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Report_new(JobClass* aJobClass)
 {
-  Job_Report* pJob_Report =
-    new Job_Report(aJobClass,nullptr);
+  Job_Report* pJob_Report = new Job_Report(aJobClass,nullptr);
   
   return pJob_Report;
 }

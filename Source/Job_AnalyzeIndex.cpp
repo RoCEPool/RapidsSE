@@ -221,8 +221,7 @@ Job* Jobs::pJob_AnalyzeIndex_pre(Session* pSession, JobClass* aJobClass, ReqTupl
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_AnalyzeIndex_new(JobClass* aJobClass)
 {
-  Job_AnalyzeIndex* pJob_AnalyzeIndex =
-    new Job_AnalyzeIndex(aJobClass,nullptr);
+  Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(aJobClass,nullptr);
   
   return pJob_AnalyzeIndex;
 }

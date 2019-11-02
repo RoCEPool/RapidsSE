@@ -255,8 +255,7 @@ Job* Jobs::pJob_WriteRow_pre(Session* pSession, JobClass* aJobClass, ReqTuple* a
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteRow_new(JobClass* aJobClass)
 {
-  Job_WriteRow* pJob_WriteRow =
-    new Job_WriteRow(aJobClass,nullptr);
+  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(aJobClass,nullptr);
   
   return pJob_WriteRow;
 }

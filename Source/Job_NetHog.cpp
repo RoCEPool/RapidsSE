@@ -211,8 +211,7 @@ void Jobs::vJob_NetHog_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_NetHog_new(JobClass* aJobClass)
 {
-  Job_NetHog* pJob_NetHog =
-    new Job_NetHog(aJobClass,nullptr);
+  Job_NetHog* pJob_NetHog = new Job_NetHog(aJobClass,nullptr);
   
   return pJob_NetHog;
 }

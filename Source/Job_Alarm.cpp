@@ -172,8 +172,7 @@ Job* Jobs::pJob_Alarm_new(JobClass* aJobClass)
 {
   ReqTuple xReqTuple("**ALARM"_Stz,false);
   
-  Job_Alarm* pJob_Alarm =
-  new Job_Alarm(aJobClass,&xReqTuple);
+  Job_Alarm* pJob_Alarm = new Job_Alarm(aJobClass,&xReqTuple);
   
   return pJob_Alarm;
 }

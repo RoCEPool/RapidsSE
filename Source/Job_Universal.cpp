@@ -271,8 +271,7 @@ void Jobs::vJob_Universal_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Universal_new(JobClass* aJobClass)
 {
-  Job_Universal* pJob_Universal =
-    new Job_Universal(aJobClass,nullptr);
+  Job_Universal* pJob_Universal = new Job_Universal(aJobClass,nullptr);
   
   return pJob_Universal;
 }

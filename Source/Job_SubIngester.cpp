@@ -326,8 +326,7 @@ Job* Jobs::vJob_SubIngester_pre(Session* pSession, JobClass* aJobClass, ReqTuple
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubIngester_new(JobClass* aJobClass)
 {
-  Job_SubIngester* pJob_SubIngester =
-    new Job_SubIngester(aJobClass,nullptr);
+  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(aJobClass,nullptr);
   
   return pJob_SubIngester;
 }

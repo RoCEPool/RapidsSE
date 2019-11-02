@@ -209,8 +209,7 @@ void Jobs::vJob_Publish_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Publish_new(JobClass* aJobClass)
 {
-  Job_Publish* pJob_Publish =
-    new Job_Publish(aJobClass,nullptr);
+  Job_Publish* pJob_Publish = new Job_Publish(aJobClass,nullptr);
   
   return pJob_Publish;
 }
