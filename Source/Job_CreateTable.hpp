@@ -22,7 +22,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_CreateTable(JobClass* aJobClass, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_CreateTable(JobClass* aJobClass, ReqTuple* aReqTuple);
     ~Job_CreateTable(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

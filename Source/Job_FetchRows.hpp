@@ -39,7 +39,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_FetchRows(JobClass* aJobClass, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_FetchRows(JobClass* aJobClass, ReqTuple* aReqTuple);
     ~Job_FetchRows(void) noexcept(false);
   
     static bool   bAppendRow(FetchBuffer* pFetchBuffer, Ent* aItem,

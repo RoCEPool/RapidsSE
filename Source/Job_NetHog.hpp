@@ -19,7 +19,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_NetHog(JobClass* aJobClass, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_NetHog(JobClass* aJobClass, ReqTuple* aReqTuple);
     ~Job_NetHog(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

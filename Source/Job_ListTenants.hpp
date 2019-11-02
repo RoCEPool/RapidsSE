@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_ListTenants(JobClass* aJobClass, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_ListTenants(JobClass* aJobClass, ReqTuple* aReqTuple);
     ~Job_ListTenants(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

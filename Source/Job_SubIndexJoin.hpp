@@ -20,7 +20,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SubIndexJoin(JobClass* aJobClass, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_SubIndexJoin(JobClass* aJobClass, ReqTuple* aReqTuple);
     ~Job_SubIndexJoin(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

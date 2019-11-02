@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Boot(JobClass* aJobClass, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_Boot(JobClass* aJobClass, ReqTuple* aReqTuple);
    ~Job_Boot(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

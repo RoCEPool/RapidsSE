@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_UseSchema(JobClass* aJobClass, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_UseSchema(JobClass* aJobClass, ReqTuple* aReqTuple);
     ~Job_UseSchema(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

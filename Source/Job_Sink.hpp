@@ -21,7 +21,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Sink(JobClass* aJobClass, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_Sink(JobClass* aJobClass, ReqTuple* aReqTuple);
     ~Job_Sink(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
