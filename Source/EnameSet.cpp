@@ -111,8 +111,33 @@ void EnameSet::vContentDump(void)
   vTrace("\n"_Stz);
   vTrace("Ename Set\n"_Stz);
   vTrace("---------\n"_Stz);
-
+  
   vPrint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy source ename-set into this ename-set                                  */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vCopy(EnameSet* pScrEnameSet)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  for (i8 i_Ename = 0; i_Ename < pScrEnameSet->nEnames(); i_Ename++) {
+    
+    if (TN_STRING == pScrEnameSet->eToken(i_Ename)) {
+      vAdd(pScrEnameSet->szName(i_Ename),
+           pScrEnameSet->szValue(i_Ename),
+           TN_STRING
+      );
+    }
+    else {
+      vAdd(pScrEnameSet->szName(i_Ename),
+           pScrEnameSet->iValue(i_Ename),
+           TN_INTEGER
+           );
+
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/

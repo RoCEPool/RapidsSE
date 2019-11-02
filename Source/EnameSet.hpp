@@ -31,9 +31,10 @@ namespace Gadgets
     EnameSet(void);
    ~EnameSet() noexcept(false);
   
-    void vAdd(Stz* szName, i8 iValue, eTN eToken);
+    void vAdd(Stz* szName, i8 iValue,    eTN eToken);
     void vAdd(Stz* szName, Stz* szValue, eTN eToken);
     void vContentDump(void);
+    void vCopy(EnameSet* pSrcEnameSet);
     i8   nEnames(void);
     i8   i_Find(Stz* szName);
     bool bHasName(Stz* szName);
