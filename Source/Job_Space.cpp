@@ -190,7 +190,7 @@ Footer* Job_Space::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Space_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_Space_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Space* pJob_Space = new Job_Space(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

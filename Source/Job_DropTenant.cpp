@@ -196,7 +196,7 @@ Footer* Job_DropTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropTenant_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_DropTenant_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_DropTenant* pJob_DropTenant = new Job_DropTenant(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

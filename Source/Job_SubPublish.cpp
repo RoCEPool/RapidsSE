@@ -256,7 +256,7 @@ Footer* Job_SubPublish::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubPublish_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_SubPublish_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_SubPublish* pJob_SubPublish = new Job_SubPublish(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

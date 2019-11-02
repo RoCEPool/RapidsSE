@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateSchema* _pJob_CreateSchema(void* aAddr);
   
-  Job* pJob_CreateSchema_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
+  Job* pJob_CreateSchema_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_CreateSchema_delete(Job* pJob);
   void vJob_CreateSchema_show(Job* pJob);
   

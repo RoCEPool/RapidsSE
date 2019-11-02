@@ -36,7 +36,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubScan* _pJob_SubScan(void* aAddr);
   
-  Job* pJob_SubScan_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
+  Job* pJob_SubScan_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_SubScan_delete(Job* pJob);
   void vJob_SubScan_show(Job* pJob);
   

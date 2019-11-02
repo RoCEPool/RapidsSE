@@ -192,7 +192,7 @@ Footer* Job_VerifyTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_VerifyTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_VerifyTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_VerifyTable* pJob_VerifyTable = new Job_VerifyTable(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

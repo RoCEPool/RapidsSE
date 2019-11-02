@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ListCatalogs* _pJob_ListCatalogs(void* aAddr);
   
-  Job* pJob_ListCatalogs_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
+  Job* pJob_ListCatalogs_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_ListCatalogs_post(Job* pJob);
   void vJob_ListCatalogs_delete(Job* pJob);
   void vJob_ListCatalogs_show(Job* pJob);

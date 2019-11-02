@@ -45,7 +45,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubWalker* _pJob_SubWalker(void* aAddr);
   
-  Job* pJob_SubWalker_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
+  Job* pJob_SubWalker_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_SubWalker_delete(Job* pJob);
   void vJob_SubWalker_show(Job* pJob);
   

@@ -200,7 +200,7 @@ Footer* Job_SelectTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SelectTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_SelectTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_SelectTable* pJob_SelectTable = new Job_SelectTable(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

@@ -59,7 +59,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Ingest* _pJob_Ingest(void* aAddr);
   
-  Job* pJob_Ingest_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
+  Job* pJob_Ingest_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
   Job* pJob_Ingest_new(JobClass* aJobClass);
   void vJob_Ingest_delete(Job* pJob);
   void vJob_Ingest_show(Job* pJob);

@@ -169,7 +169,7 @@ Footer* Job_SubScan::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubScan_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_SubScan_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_SubScan* pJob_SubScan = new Job_SubScan(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

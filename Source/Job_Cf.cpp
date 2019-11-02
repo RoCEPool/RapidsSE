@@ -190,7 +190,7 @@ Footer* Job_Cf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Cf_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_Cf_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Cf* pJob_Cf = new Job_Cf(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

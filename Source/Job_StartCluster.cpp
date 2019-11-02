@@ -189,7 +189,7 @@ Footer* Job_StartCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_StartCluster_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_StartCluster_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_StartCluster* pJob_StartCluster = new Job_StartCluster(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

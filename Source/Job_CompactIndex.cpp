@@ -197,7 +197,7 @@ Footer* Job_CompactIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CompactIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_CompactIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_CompactIndex* pJob_CompactIndex = new Job_CompactIndex(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

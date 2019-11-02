@@ -196,7 +196,7 @@ Footer* Job_DumpIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DumpIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_DumpIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_DumpIndex* pJob_DumpIndex = new Job_DumpIndex(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

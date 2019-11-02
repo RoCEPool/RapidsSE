@@ -130,7 +130,7 @@ void JobClass::vPostJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* JobClass::pPreJob(Session* pSession, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job* pJob = (*m_fpPre)(pSession,this,aReqTuple,iForId);
+  Job* pJob = (*m_fpPre)(pSession,this,aReqTuple);
   
   ASSERT(this == pJob->m_aJobClass);
   pJob->m_xReqTuple.m_i_Session = pSession ? pSession->m_i_Session : -1;

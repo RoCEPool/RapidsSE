@@ -195,7 +195,7 @@ Footer* Job_DropSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropSchema_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_DropSchema_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_DropSchema* pJob_DropSchema = new Job_DropSchema(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

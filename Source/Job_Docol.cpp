@@ -194,7 +194,7 @@ Footer* Job_Docol::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Docol_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_Docol_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Docol* pJob_Docol = new Job_Docol(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

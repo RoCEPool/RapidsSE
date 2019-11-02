@@ -35,7 +35,7 @@ namespace Jobs
   
   Job_DropSchema* _pJob_DropSchema(void* aAddr);
   
-  Job* pJob_DropSchema_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
+  Job* pJob_DropSchema_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_DropSchema_delete(Job* pJob);
   void vJob_DropSchema_show(Job* pJob);
   

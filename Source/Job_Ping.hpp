@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Ping* _pJob_Ping(void* aAddr);
   
-  Job* pJob_Ping_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
+  Job* pJob_Ping_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_Ping_delete(Job* pJob);
   void vJob_Ping_show(Job* pJob);
   

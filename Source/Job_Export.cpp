@@ -275,7 +275,7 @@ Footer* Job_Export::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Export_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_Export_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Export* pJob_Export = new Job_Export(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

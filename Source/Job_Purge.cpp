@@ -170,7 +170,7 @@ Footer* Job_Purge::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Purge_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_Purge_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   i8 nTokens;
 

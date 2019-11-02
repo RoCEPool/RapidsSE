@@ -196,7 +196,7 @@ Footer* Job_SizeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SizeIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_SizeIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_SizeIndex* pJob_SizeIndex = new Job_SizeIndex(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

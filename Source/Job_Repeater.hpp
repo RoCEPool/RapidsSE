@@ -45,7 +45,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Repeater* _pJob_Repeater(void* aAddr);
   
-  Job* pJob_Repeater_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
+  Job* pJob_Repeater_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
   Job* pJob_Repeater_new(JobClass* aJobClass);
   void vJob_Repeater_delete(Job* pJob);
   void vJob_Repeater_show(Job* pJob);

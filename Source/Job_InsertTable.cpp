@@ -174,7 +174,7 @@ Footer* Job_InsertTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InsertTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_InsertTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_InsertTable* pJob_InsertTable = new Job_InsertTable(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

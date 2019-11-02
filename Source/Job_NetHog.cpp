@@ -171,7 +171,7 @@ Footer* Job_NetHog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_NetHog_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_NetHog_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_NetHog* pJob_NetHog = new Job_NetHog(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

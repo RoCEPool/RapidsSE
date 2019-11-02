@@ -191,7 +191,7 @@ Footer* Job_Ping::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Ping_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_Ping_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_Ping* pJob_Ping = new Job_Ping(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

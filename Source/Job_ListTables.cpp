@@ -191,7 +191,7 @@ Footer* Job_ListTables::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListTables_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_ListTables_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_ListTables* pJob_ListTables = new Job_ListTables(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

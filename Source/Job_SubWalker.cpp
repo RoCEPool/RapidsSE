@@ -458,7 +458,7 @@ Footer* Job_SubWalker::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubWalker_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_SubWalker_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_SubWalker* pJob_SubWalker = new Job_SubWalker(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

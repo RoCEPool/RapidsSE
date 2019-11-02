@@ -38,7 +38,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubFetch* _pJob_SubFetch(void* aAddr);
   
-  Job* pJob_SubFetch_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);
+  Job* pJob_SubFetch_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple);
   void vJob_SubFetch_delete(Job* pJob);
   void vJob_SubFetch_show(Job* pJob);
   

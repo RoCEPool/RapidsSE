@@ -341,7 +341,7 @@ Footer* Job_CreateIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_CreateIndex_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

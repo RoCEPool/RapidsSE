@@ -193,7 +193,7 @@ Footer* Job_CreateTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateTenant_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_CreateTenant_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);

@@ -192,7 +192,7 @@ Footer* Job_VisualizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_VisualizeTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job* Jobs::pJob_VisualizeTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   Job_VisualizeTable* pJob_VisualizeTable = new Job_VisualizeTable(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
