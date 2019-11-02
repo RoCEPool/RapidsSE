@@ -24,7 +24,7 @@ bool JobHelper::bParseCmd(EnameSet* pArgEnmSet,
     if (JobHelper::bMatchesSyntax(pTknVec,pSyntax->pEnameSet())) {
       vTrace("    matches\n"_Stz);
       
-      pArgEnmSet->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL,TN_INTEGER);
+      pArgEnmSet->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
       s32 sJobName(pSyntax->pEnameSet()->szValue("__Name__"_Stz));
       //StrLib::vRemoveSuffix(sJobName.azChar(),'_');
       pArgEnmSet->vAdd("<jobNm>"_Stz,sJobName);

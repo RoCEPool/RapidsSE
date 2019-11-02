@@ -55,7 +55,7 @@ void Step::vEnameSetAddInt(void)
   if ( ! m_pDataStack->bPopS32(sName) )
     THROW_DSTACK();
   
-  pEnameSet->vAdd(sName,iValue,TN_INTEGER);
+  pEnameSet->vAdd(sName,iValue);
   pEnameSet->vPrint();
   
   EXIT();
