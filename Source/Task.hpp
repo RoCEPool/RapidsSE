@@ -19,7 +19,6 @@ namespace Tasks
                public ListItem_t<Task>
   {
   friend class Steps::Step;
-  friend class Word;
   friend Scheduler;
 
   private:
