@@ -123,6 +123,12 @@ Session::Session(void)
   
   _checkInitialised_(CN_SESSION);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pSemantic->pEnameSet()->vAdd("<path>"_Stz,
+                                 "/tenants/boray/catalogs/rapidsse/schemas/public"_Stz,
+                                 TN_STRING);
+  
   ++ gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_CONSTRUCT,
               "Session construct : %p (%lld tasks exist)"_Stz, //!format-LogSsn
