@@ -101,7 +101,7 @@ void Job_Operand::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Operand::Job_Operand(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_Operand::Job_Operand(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_OPERAND,_FOOTER_);
@@ -217,7 +217,7 @@ Footer* Job_Operand::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Operand_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_Operand* pJob_Operand = new Job_Operand(aJobClass,aReqTuple,iForId);
+  Job_Operand* pJob_Operand = new Job_Operand(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
   return pJob_Operand;
@@ -229,7 +229,7 @@ Job* Jobs::pJob_Operand_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aR
 Job* Jobs::pJob_Operand_new(JobClass* aJobClass)
 {
   Job_Operand* pJob_Operand =
-    new Job_Operand(aJobClass,nullptr,C_UNKNOWN);
+    new Job_Operand(aJobClass,nullptr);
   
   return pJob_Operand;
 }

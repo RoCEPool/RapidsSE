@@ -101,7 +101,7 @@ void Job_SubInflate::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubInflate::Job_SubInflate(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_SubInflate::Job_SubInflate(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINFLATE,_FOOTER_);
@@ -174,7 +174,7 @@ Footer* Job_SubInflate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubInflate_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_SubInflate* pJob_SubInflate = new Job_SubInflate(aJobClass,aReqTuple,iForId);
+  Job_SubInflate* pJob_SubInflate = new Job_SubInflate(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
   return pJob_SubInflate;

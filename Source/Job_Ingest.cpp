@@ -101,7 +101,7 @@ void Job_Ingest::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Ingest::Job_Ingest(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_Ingest::Job_Ingest(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 , m_oFile(this)
 {
@@ -185,7 +185,7 @@ Job* Jobs::pJob_Ingest_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aRe
 {
   i8 nTokens;
 
-  Job_Ingest* pJob_Ingest = new Job_Ingest(aJobClass,aReqTuple,iForId);
+  Job_Ingest* pJob_Ingest = new Job_Ingest(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
@@ -218,7 +218,7 @@ Job* Jobs::pJob_Ingest_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aRe
 Job* Jobs::pJob_Ingest_new(JobClass* aJobClass)
 {
   Job_Ingest* pJob_Ingest =
-    new Job_Ingest(aJobClass,nullptr,C_UNKNOWN);
+    new Job_Ingest(aJobClass,nullptr);
   
   return pJob_Ingest;
 }

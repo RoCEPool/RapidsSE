@@ -101,7 +101,7 @@ void Job_Cat::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Cat::Job_Cat(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_Cat::Job_Cat(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
@@ -178,7 +178,7 @@ Job* Jobs::pJob_Cat_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTu
 {
   i8 nTokens;
 
-  Job_Cat* pJob_Cat = new Job_Cat(aJobClass,aReqTuple,iForId);
+  Job_Cat* pJob_Cat = new Job_Cat(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
@@ -211,7 +211,7 @@ Job* Jobs::pJob_Cat_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTu
 Job* Jobs::pJob_Cat_new(JobClass* aJobClass)
 {
   Job_Cat* pJob_Cat =
-  new Job_Cat(aJobClass,nullptr,C_UNKNOWN);
+  new Job_Cat(aJobClass,nullptr);
   
   return pJob_Cat;
 }

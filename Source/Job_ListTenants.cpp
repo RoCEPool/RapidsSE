@@ -101,7 +101,7 @@ void Job_ListTenants::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListTenants::Job_ListTenants(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_ListTenants::Job_ListTenants(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTTENANTS,_FOOTER_);
@@ -193,7 +193,7 @@ Footer* Job_ListTenants::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_ListTenants_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_ListTenants* pJob_ListTenants = new Job_ListTenants(aJobClass,aReqTuple,iForId);
+  Job_ListTenants* pJob_ListTenants = new Job_ListTenants(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

@@ -101,7 +101,7 @@ void Job_Monitor::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Monitor::Job_Monitor(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_Monitor::Job_Monitor(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_MONITOR,_FOOTER_);
@@ -177,7 +177,7 @@ Job* Jobs::pJob_Monitor_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aR
 {
   i8 nTokens;
 
-  Job_Monitor* pJob_Monitor = new Job_Monitor(aJobClass,aReqTuple,iForId);
+  Job_Monitor* pJob_Monitor = new Job_Monitor(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
@@ -202,7 +202,7 @@ Job* Jobs::pJob_Monitor_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aR
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Monitor_new(JobClass* aJobClass)
 {
-  Job_Monitor* pJob_Monitor = new Job_Monitor(aJobClass,nullptr,C_UNKNOWN);
+  Job_Monitor* pJob_Monitor = new Job_Monitor(aJobClass,nullptr);
   
   return pJob_Monitor;
 }

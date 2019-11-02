@@ -101,7 +101,7 @@ void Job_SubPurger::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubPurger::Job_SubPurger(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_SubPurger::Job_SubPurger(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPURGER,_FOOTER_);
@@ -228,7 +228,7 @@ Footer* Job_SubPurger::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubPurger_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_SubPurger* pJob_SubPurger = new Job_SubPurger(aJobClass,aReqTuple,iForId);
+  Job_SubPurger* pJob_SubPurger = new Job_SubPurger(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
   return pJob_SubPurger;

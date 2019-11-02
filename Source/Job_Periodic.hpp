@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Periodic(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId);//=C_UNKNOWN);
+    Job_Periodic(JobClass* aJobClass, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_Periodic(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

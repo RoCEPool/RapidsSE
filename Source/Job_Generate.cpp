@@ -101,7 +101,7 @@ void Job_Generate::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Generate::Job_Generate(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_Generate::Job_Generate(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 , m_oFile(this)
 {
@@ -193,7 +193,7 @@ Job* Jobs::pJob_Generate_pre(Session* pSession, JobClass* aJobClass, ReqTuple* a
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 nTokens;
 
-  Job_Generate* pJob_Generate = new Job_Generate(aJobClass,aReqTuple,iForId);
+  Job_Generate* pJob_Generate = new Job_Generate(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
@@ -236,7 +236,7 @@ Job* Jobs::pJob_Generate_pre(Session* pSession, JobClass* aJobClass, ReqTuple* a
 Job* Jobs::pJob_Generate_new(JobClass* aJobClass)
 {
   Job_Generate* pJob_Generate =
-    new Job_Generate(aJobClass,nullptr,C_UNKNOWN);
+    new Job_Generate(aJobClass,nullptr);
   
   return pJob_Generate;
 }

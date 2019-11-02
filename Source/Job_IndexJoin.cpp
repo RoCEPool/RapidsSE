@@ -101,7 +101,7 @@ void Job_IndexJoin::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_IndexJoin::Job_IndexJoin(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_IndexJoin::Job_IndexJoin(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INDEXJOIN,_FOOTER_);
@@ -232,7 +232,7 @@ Footer* Job_IndexJoin::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_IndexJoin_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_IndexJoin* pJob_IndexJoin = new Job_IndexJoin(aJobClass,aReqTuple,iForId);
+  Job_IndexJoin* pJob_IndexJoin = new Job_IndexJoin(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

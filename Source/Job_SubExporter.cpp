@@ -101,7 +101,7 @@ void Job_SubExporter::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubExporter::Job_SubExporter(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_SubExporter::Job_SubExporter(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
@@ -333,7 +333,7 @@ Footer* Job_SubExporter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubExporter_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_SubExporter* pJob_SubExporter = new Job_SubExporter(aJobClass,aReqTuple,iForId);
+  Job_SubExporter* pJob_SubExporter = new Job_SubExporter(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
   
   return pJob_SubExporter;

@@ -101,7 +101,7 @@ void Job_Boot::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Boot::Job_Boot(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_Boot::Job_Boot(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_BOOT,_FOOTER_);
@@ -172,7 +172,7 @@ Job* Jobs::pJob_Boot_new(JobClass* aJobClass)
   ReqTuple xReqTuple("**BOOT"_Stz,false);
 
   Job_Boot* pJob_Boot =
-    new Job_Boot(aJobClass,&xReqTuple,C_UNKNOWN);
+    new Job_Boot(aJobClass,&xReqTuple);
   
   return pJob_Boot;
 }

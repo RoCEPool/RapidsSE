@@ -102,7 +102,7 @@ void Job_StartNode::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_StartNode::Job_StartNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_StartNode::Job_StartNode(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTNODE,_FOOTER_);
@@ -219,7 +219,7 @@ Footer* Job_StartNode::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_StartNode_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_StartNode* pJob_StartNode = new Job_StartNode(aJobClass,aReqTuple,iForId);
+  Job_StartNode* pJob_StartNode = new Job_StartNode(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
@@ -260,7 +260,7 @@ void Jobs::vJob_StartNode_post(Job* pJob)
 Job* Jobs::pJob_StartNode_new(JobClass* aJobClass)
 {
   Job_StartNode* pJob_StartNode =
-    new Job_StartNode(aJobClass,nullptr,C_UNKNOWN);
+    new Job_StartNode(aJobClass,nullptr);
   
   return pJob_StartNode;
 }

@@ -98,7 +98,7 @@ void Job_DropTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DropTable::Job_DropTable(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_DropTable::Job_DropTable(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTABLE,_FOOTER_);
@@ -191,7 +191,7 @@ Footer* Job_DropTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DropTable_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_DropTable* pJob_DropTable = new Job_DropTable(aJobClass,aReqTuple,iForId);
+  Job_DropTable* pJob_DropTable = new Job_DropTable(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

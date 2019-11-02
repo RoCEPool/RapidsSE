@@ -101,7 +101,7 @@ void Job_Universal::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Universal::Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_Universal::Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
@@ -231,7 +231,7 @@ Footer* Job_Universal::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Universal_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_Universal* pJob_Universal = new Job_Universal(aJobClass,aReqTuple,iForId);
+  Job_Universal* pJob_Universal = new Job_Universal(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
@@ -272,7 +272,7 @@ void Jobs::vJob_Universal_post(Job* pJob)
 Job* Jobs::pJob_Universal_new(JobClass* aJobClass)
 {
   Job_Universal* pJob_Universal =
-    new Job_Universal(aJobClass,nullptr,C_UNKNOWN);
+    new Job_Universal(aJobClass,nullptr);
   
   return pJob_Universal;
 }

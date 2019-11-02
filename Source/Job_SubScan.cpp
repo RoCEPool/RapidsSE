@@ -101,7 +101,7 @@ void Job_SubScan::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubScan::Job_SubScan(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
+Job_SubScan::Job_SubScan(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBSCAN,_FOOTER_);
@@ -171,7 +171,7 @@ Footer* Job_SubScan::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubScan_pre(Session* pSession, JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId)
 {
-  Job_SubScan* pJob_SubScan = new Job_SubScan(aJobClass,aReqTuple,iForId);
+  Job_SubScan* pJob_SubScan = new Job_SubScan(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
   return pJob_SubScan;
