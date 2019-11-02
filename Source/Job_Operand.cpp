@@ -162,8 +162,8 @@ Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
   ReqTuple xReqTuple("!!XMIT"_Stz,false);
   
   Job_Operand* pJob_Operand =
-  static_cast<Job_Operand*>
-  (pJobClass_Xmit->pPreJob(pSession,&xReqTuple));
+    static_cast<Job_Operand*>
+      (pJobClass_Xmit->pPreJob(&xReqTuple,pSession));
   
   pJob_Operand->vSeed(SS_SEED_RUN);
   

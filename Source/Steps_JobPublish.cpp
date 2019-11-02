@@ -37,7 +37,7 @@ void Step::vJob_PublishSpawnSub(void)
 
   Job_SubPublish* pJob_SubPublish =
     static_cast<Job_SubPublish*>
-      (pJobClass_SubPublish->pPreJob(nullptr,aReqTuple));
+      (pJobClass_SubPublish->pPreJob(aReqTuple,nullptr));
 
   pJob_SubPublish->vSeed(SS_SEED_RUN);
 

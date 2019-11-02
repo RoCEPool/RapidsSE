@@ -39,7 +39,7 @@ void Step::vJob_SubIngesterSpawn(void)
   
   Job_SubIngester* pJob_SubIngester =
     static_cast<Job_SubIngester*>
-      (pJobClass_SubIngester->pPreJob(pSession,aReqTuple));
+      (pJobClass_SubIngester->pPreJob(aReqTuple,pSession));
   
   pJob_SubIngester->m_iParentId  = pJob_Ingest->m_iUniqueId;
   

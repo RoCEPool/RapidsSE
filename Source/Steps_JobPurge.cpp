@@ -36,7 +36,7 @@ void Step::vJob_PurgeSpawnSub(void)
   
   Job_SubPurger* pJob_SubPurger =
     static_cast<Job_SubPurger*>
-      (pJobClass_SubPurger->pPreJob(nullptr,aReqTuple));
+      (pJobClass_SubPurger->pPreJob(aReqTuple,nullptr));
   
   pJob_SubPurger->vSeed(SS_SEED_RUN);
   
