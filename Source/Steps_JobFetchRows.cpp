@@ -174,7 +174,7 @@ void Step::vJob_FetchRowsSpawnSub(void)
   
   Job_SubFetch* pJob_SubFetch =
     static_cast<Job_SubFetch*>
-      (pJobClass_SubFetch->pPreJob(pSession,aReqTuple,pJob_FetchRows->m_iUniqueId));
+      (pJobClass_SubFetch->pPreJob(pSession,aReqTuple));
   
   pJob_SubFetch->vSeed(SS_SEED_RUN);
   
@@ -296,7 +296,7 @@ void Step::vJob_InflateRowsSpawnSub(void)
   
   Job_SubScan* pJob_SubScan =
     static_cast<Job_SubScan*>
-      (pJobClass_SubScan->pPreJob(pSession,aReqTuple,pJob_InflateRows->m_iUniqueId));
+      (pJobClass_SubScan->pPreJob(pSession,aReqTuple));
   
   pJob_SubScan->vSeed(SS_SEED_RUN);
   
@@ -332,7 +332,7 @@ void Step::vJob_InflateRowsSpawnSubInflate(void)
   
   Job_SubInflate* pJob_SubInflate =
     static_cast<Job_SubInflate*>
-      (pJobClass_SubInflate->pPreJob(nullptr,aReqTuple,pJob_InflateRows->m_iUniqueId));
+      (pJobClass_SubInflate->pPreJob(nullptr,aReqTuple));
   
   pJob_SubInflate->vSeed(SS_SEED_RUN);
   

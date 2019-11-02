@@ -817,8 +817,7 @@ void SePrompt::vPreJob(void)
               spId.sz(EK_REQ,m_iRequestId),
               C_ENDARGS);
   
-  m_pJob = m_aJobClass->pPreJob(m_pSession,&m_pRequest->m_xReqTuple,
-                                this->m_iUniqueId);
+  m_pJob = m_aJobClass->pPreJob(m_pSession,&m_pRequest->m_xReqTuple);
   
   if (m_pJob)
     m_pJob->m_bByPrompt = true;

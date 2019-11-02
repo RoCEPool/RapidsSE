@@ -163,7 +163,7 @@ Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
   
   Job_Operand* pJob_Operand =
   static_cast<Job_Operand*>
-  (pJobClass_Xmit->pPreJob(pSession,&xReqTuple,iParentJobId));
+  (pJobClass_Xmit->pPreJob(pSession,&xReqTuple));
   
   pJob_Operand->vSeed(SS_SEED_RUN);
   

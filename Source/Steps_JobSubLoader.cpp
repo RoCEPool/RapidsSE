@@ -39,7 +39,7 @@ void Step::vJob_SubLoaderSpawn(void)
   
   Job_SubLoader* pJob_SubLoader =
     static_cast<Job_SubLoader*>
-      (pJobClass_SubLoader->pPreJob(pSession,aReqTuple,pJob_LoadTable->m_iUniqueId));
+      (pJobClass_SubLoader->pPreJob(pSession,aReqTuple));
   
   pJob_SubLoader->vSeed(SS_SEED_RUN);
   
