@@ -177,7 +177,7 @@ eEC Job_CreateTable::ePopulateJob(TokenVec* pTokenVec)
   }
   
   // set the table name
-  m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(2)->szText(), TN_STRING);
+  m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(2)->szText());
   
   // mark current token
   i8 iCurrentToken = 4;

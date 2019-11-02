@@ -162,7 +162,7 @@ bool Job_UseSchema::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the schema name
-  m_oEnmSet.vAdd("<schemaNm>"_Stz, pTokenVec->pGet(2)->szText(), TN_STRING);
+  m_oEnmSet.vAdd("<schemaNm>"_Stz, pTokenVec->pGet(2)->szText());
   
   return true;
 }

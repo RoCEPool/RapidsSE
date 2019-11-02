@@ -32,7 +32,7 @@ namespace Gadgets
    ~EnameSet() noexcept(false);
   
     void vAdd(Stz* szName, i8 iValue,    eTN eToken);
-    void vAdd(Stz* szName, Stz* szValue, eTN eToken);
+    void vAdd(Stz* szName, Stz* szValue);
     void vContentDump(void);
     void vCopy(EnameSet* pSrcEnameSet);
     i8   nEnames(void);

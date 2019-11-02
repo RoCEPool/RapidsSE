@@ -208,8 +208,7 @@ void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, i8 i_From, i8 
     i8 i_Value = i_Tkn++;
     
     pEnameSet->vAdd(pTknVec->pGet(i_Name)->szText(),
-                  pTknVec->pGet(i_Value)->szText(),
-                  pTknVec->pGet(i_Value)->eToken());
+                    pTknVec->pGet(i_Value)->szText());
     
     if (pTknVec->pGet(i_Tkn)->bSame(","_Stz))
       i_Tkn++;
@@ -233,8 +232,7 @@ void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, Stz* sDelimite
     i8 i_Value = i_Tkn++;
     
     pEnameSet->vAdd(pTknVec->pGet(i_Name)->szText(),
-                  pTknVec->pGet(i_Value)->szText(),
-                  pTknVec->pGet(i_Value)->eToken());
+                    pTknVec->pGet(i_Value)->szText());
     
     if (pTknVec->pGet(i_Tkn)->bSame(","_Stz))
     i_Tkn++;

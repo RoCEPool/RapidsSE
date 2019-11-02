@@ -81,7 +81,7 @@ void Step::vEnameSetAddStr(void)
   if ( ! m_pDataStack->bPopS32(sName) )
     THROW_DSTACK();
   
-  pEnameSet->vAdd(sName,sValue,TN_STRING);
+  pEnameSet->vAdd(sName,sValue);
   //pEnameSet->vPrint();
   
   EXIT();

@@ -223,7 +223,7 @@ bool Job_CreateIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the index name
-  m_oEnmSet.vAdd("<indexNm>"_Stz, pTokenVec->pGet(2 + iIfUnique)->szText(), TN_STRING);
+  m_oEnmSet.vAdd("<indexNm>"_Stz, pTokenVec->pGet(2 + iIfUnique)->szText());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // uniqueness
@@ -233,7 +233,7 @@ bool Job_CreateIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(4 + iIfUnique)->szText(), TN_STRING);
+  m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(4 + iIfUnique)->szText());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the index columns

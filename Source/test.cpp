@@ -1244,9 +1244,9 @@ void vTest25(void)
 
   EnameSet* pEnameSet = new EnameSet();
   
-  pEnameSet->vAdd("name1"_Stz,"value1"_Stz,TN_STRING);
-  pEnameSet->vAdd("name2"_Stz,"value2"_Stz,TN_STRING);
-  pEnameSet->vAdd("name3"_Stz,"value3"_Stz,TN_STRING);
+  pEnameSet->vAdd("name1"_Stz,"value1"_Stz);
+  pEnameSet->vAdd("name2"_Stz,"value2"_Stz);
+  pEnameSet->vAdd("name3"_Stz,"value3"_Stz);
 
   for (i8 i_Ename = 0; i_Ename < pEnameSet->nEnames(); i_Ename++)
     vTrace("  [%lld] %s,%s (%s)\n"_Stz,

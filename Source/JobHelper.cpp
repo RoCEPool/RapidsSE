@@ -27,7 +27,7 @@ bool JobHelper::bParseCmd(EnameSet* pArgEnmSet,
       pArgEnmSet->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL,TN_INTEGER);
       s32 sJobName(pSyntax->pEnameSet()->szValue("__Name__"_Stz));
       //StrLib::vRemoveSuffix(sJobName.azChar(),'_');
-      pArgEnmSet->vAdd("<jobNm>"_Stz,sJobName,TN_STRING);
+      pArgEnmSet->vAdd("<jobNm>"_Stz,sJobName);
       break;
     }
   }
@@ -129,8 +129,7 @@ bool JobHelper::bExtractJson(EnameSet*   pArgEnmSet,
     Token* pTkn_value = pTkn;
     
     pArgEnmSet->vAdd(pTkn_name->szText(),
-                     pTkn_value->szText(),
-                     TN_STRING);
+                     pTkn_value->szText());
     
     pArgEnmSet->vPrint();
 
@@ -160,8 +159,7 @@ bool JobHelper::bExtractMeta(EnameSet*   pArgEnmSet,
                              )
 {
   pArgEnmSet->vAdd(pSynEnmSet->szValue(i_Syn_),
-                   pTknVec->pGet(i_Tkn_)->szText(),
-                   TN_STRING);
+                   pTknVec->pGet(i_Tkn_)->szText());
   
   pArgEnmSet->vPrint();
   

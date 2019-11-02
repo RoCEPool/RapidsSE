@@ -68,7 +68,7 @@ void OpSpec::vAddEnmPair(Stz* sName, Stz* sValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oEnmSet.vAdd(sName, sValue, eToken);
+  m_oEnmSet.vAdd(sName, sValue);
 }
 
 /*----------------------------------------------------------------------------*/

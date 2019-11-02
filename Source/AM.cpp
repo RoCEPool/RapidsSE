@@ -1023,7 +1023,7 @@ Job* AM::pNewJobUniversal( Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId)
   Job_Universal* pJobUniversal = new Job_Universal(pOp->m_pJobPipeline, pJobClass_Universal,pReqTuple,iUniqueId);
   
   pJobUniversal->m_pOp = pOp;
-  pJobUniversal->m_oEnmSet.vAdd("<jobNm>"_Stz,pOp->m_sName,TN_STRING);
+  pJobUniversal->m_oEnmSet.vAdd("<jobNm>"_Stz,pOp->m_sName);
   pJobUniversal->vSeed(SS_SEED_REQ);
   
   return pJobUniversal;
@@ -1315,7 +1315,7 @@ void AM::vSetJobLocalError(Job* pFromJob, Job* pToJob) {
 }
 
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
-  pJob->m_oEnmSet.vAdd("<tableNm>"_Stz,szObjectName,TN_STRING);
+  pJob->m_oEnmSet.vAdd("<tableNm>"_Stz,szObjectName);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

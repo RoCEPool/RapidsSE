@@ -43,8 +43,7 @@ void Step::vJob_PurgeSpawnSub(void)
   pJob_SubPurger->m_iParentId   = pJob_Purge->m_iUniqueId;
   pJob_SubPurger->m_iPurgeJobId = iPurgeJobId;
   pJob_SubPurger->m_oEnmSet.vAdd("<tableNm>"_Stz,
-                                 pJob_Purge->m_oEnmSet.szValue("<tableNm>"_Stz),
-                                 TN_STRING);
+                                 pJob_Purge->m_oEnmSet.szValue("<tableNm>"_Stz));
   pJob_SubPurger->vSlot(iSlot);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -162,7 +162,7 @@ bool Job_SelectTable::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(1)->szText(), TN_STRING);
+  m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(1)->szText());
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the partition number

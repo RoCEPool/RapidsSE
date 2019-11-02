@@ -160,7 +160,7 @@ bool Job_Docol::bPopulateJob(TokenVec* pTokenVec)
   }
   
   // set the docol routine name
-  m_oEnmSet.vAdd("<routineNm>"_Stz, pTokenVec->pGet(1)->szText(), TN_STRING);
+  m_oEnmSet.vAdd("<routineNm>"_Stz, pTokenVec->pGet(1)->szText());
   
   return true;
 }

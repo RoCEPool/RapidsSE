@@ -88,7 +88,7 @@ void EnameSet::vAdd(Stz* szName, i8 iValue, eTN eToken)
 /*----------------------------------------------------------------------------*/
 /* add                                                                        */
 /*----------------------------------------------------------------------------*/
-void EnameSet::vAdd(Stz* szName, Stz* szValue, eTN eToken)
+void EnameSet::vAdd(Stz* szName, Stz* szValue)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -96,7 +96,7 @@ void EnameSet::vAdd(Stz* szName, Stz* szValue, eTN eToken)
   
   m_xEname[i_Ename].m_i_Name  = m_bStrings.iAppend(szName);
   m_xEname[i_Ename].m_i_Value = m_bStrings.iAppend(szValue);
-  m_xEname[i_Ename].m_eToken  = eToken;
+  m_xEname[i_Ename].m_eToken  = TN_STRING;
   
   m_nEnames++;
 }
@@ -125,10 +125,7 @@ void EnameSet::vCopy(EnameSet* pScrEnameSet)
   for (i8 i_Ename = 0; i_Ename < pScrEnameSet->nEnames(); i_Ename++) {
     
     if (TN_STRING == pScrEnameSet->eToken(i_Ename)) {
-      vAdd(pScrEnameSet->szName(i_Ename),
-           pScrEnameSet->szValue(i_Ename),
-           TN_STRING
-      );
+      vAdd(pScrEnameSet->szName(i_Ename),pScrEnameSet->szValue(i_Ename));
     }
     else {
       vAdd(pScrEnameSet->szName(i_Ename),

@@ -79,8 +79,7 @@ void Step::vJob_TruncateTableSpawnSub(void)
   pJob_SubTruncate->m_iParentId  = pJob_TruncateTable->m_iUniqueId;
   pJob_SubTruncate->m_iTruncateJobId = iTruncateJobId;
   pJob_SubTruncate->m_oEnmSet.vAdd("<tableNm>"_Stz,
-                                   pJob_TruncateTable->m_oEnmSet.szValue("<tableNm>"_Stz),
-                                   TN_STRING);
+                                   pJob_TruncateTable->m_oEnmSet.szValue("<tableNm>"_Stz));
   pJob_SubTruncate->vSlot(iSlot);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

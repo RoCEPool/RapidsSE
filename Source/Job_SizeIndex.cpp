@@ -158,11 +158,11 @@ bool Job_SizeIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the index name
-  m_oEnmSet.vAdd("<indexNm>"_Stz, pTokenVec->pGet(2)->szText(), TN_STRING);
+  m_oEnmSet.vAdd("<indexNm>"_Stz, pTokenVec->pGet(2)->szText());
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(1)->szText(), TN_STRING);
+  m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(1)->szText());
   
   return true;
 }
