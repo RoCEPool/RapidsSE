@@ -270,11 +270,11 @@
 
   SS_SEED_REQ log::jobSeed
 
-  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
-  // set <path> from job
-  //job::this job.pushPath strVec::toPath to <path>
-  pushPath strVec::toPath to <path>
+  //pushPath strVec::toPath to <path>
+
+  // use the <path> from <ename-set>
   <path> str.toStrVec task::dicStack.set
+
   //task::dump
 
   <seed_initially>

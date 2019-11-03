@@ -12,6 +12,7 @@ shortcut ad article_dump ;
 shortcut d  _pipeline ;
 shortcut dl _pipelineLineItem ;
 shortcut dn _defineNode ;
+shortcut en semantic ;
 shortcut lw logwrite ;
 shortcut fn forget node node9;
 shortcut ln show nodes ;
