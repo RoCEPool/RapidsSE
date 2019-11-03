@@ -11,6 +11,9 @@ namespace Jobs
   {
   public:
   
+    JobClass* m_aJobClass; // job class
+  
+
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
     
     bool m_bByPrompt;    // job was spawned by se> prompt?

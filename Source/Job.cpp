@@ -66,6 +66,8 @@ Job::Job(eCN eClassNo)
   
   // m_xReqTuple
   
+  m_aJobClass = nullptr;
+  
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
   m_i_Slot    = C_UNKNOWN;
@@ -114,6 +116,8 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
     
   // m_xReqTuple
   
+  m_aJobClass = aJobClass;
+
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
   m_i_Slot    = C_UNKNOWN;
@@ -159,6 +163,8 @@ Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
   
   // m_xReqTuple
   
+  m_aJobClass = aJobClass;
+
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
   m_i_Slot    = C_UNKNOWN;

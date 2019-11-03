@@ -20,7 +20,6 @@ JobBase::JobBase(eCN eClassNo)
 
   ASSERT(CN_JOB__FIND == eClassNo);
 
-  m_aJobClass = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
@@ -37,7 +36,6 @@ JobBase::JobBase(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iJobId)
   ASSERT(aReqTuple);
   ASSERT(aJobClass);
 
-  m_aJobClass = aJobClass;
   
   _postcondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
 }
