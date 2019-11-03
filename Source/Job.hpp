@@ -5,7 +5,7 @@
 
 namespace Jobs
 {
-  class Job : public JobBase,
+  class Job : public Focal,
               public JobResult,
               public CRM<Job>
   {
