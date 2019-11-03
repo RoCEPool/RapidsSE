@@ -5,11 +5,10 @@
 
 namespace Jobs
 {
-  class Job : public JobBase,        // ⋗ socket
-              public JobEnmSet,
+  class Job : public JobBase,
               public JobResult,
               public CRM<Job>
-  {                                  // ⋗ parent ⋗ child ⋗ prompt ⋗ api
+  {
   public:
   
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
@@ -17,6 +16,8 @@ namespace Jobs
     bool m_bByPrompt;    // job was spawned by se> prompt?
     bool m_bNoWait;      // no wait
     bool m_bWasReceived; // job was received over a socket
+
+    EnameSet m_oEnameSet;  // ename-value set
 
     eJL  m_eJobList;     // which job list the job is currently in
     eJP  m_eJobPhase;    // which job phase the job is currently in
