@@ -40,7 +40,7 @@ void Step::vNodeNew(void)
   Node* pNode_copy = AM::pGrid()->pGetNode(nNodes - 1);
 
   Job* pJob = AM::pThisTLSJob();
-  EnameSet* pEnameSet = & pJob->m_oEnmSet;
+  EnameSet* pEnameSet = & pJob->m_oEnameSet;
   
   pEnameSet->vPrint();
   

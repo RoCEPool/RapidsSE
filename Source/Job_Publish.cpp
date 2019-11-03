@@ -189,7 +189,7 @@ Job* Jobs::pJob_Publish_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* p
     return pJob_Publish;
 
   // set the table name
-  pJob_Publish->m_oEnmSet.vAdd("<tableNm>"_Stz, pTknVec->pGet(1)->szText());
+  pJob_Publish->m_oEnameSet.vAdd("<tableNm>"_Stz, pTknVec->pGet(1)->szText());
 
   // set the output file name
   pJob_Publish->vFilePath(pTknVec->pGet(2)->szText());

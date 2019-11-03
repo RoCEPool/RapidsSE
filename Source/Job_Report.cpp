@@ -202,7 +202,7 @@ Job* Jobs::pJob_Report_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pS
     return pJob_Report;
 
   // set the table name
-  pJob_Report->m_oEnmSet.vAdd("<tableNm>"_Stz, pTknVec->pGet(1)->szText());
+  pJob_Report->m_oEnameSet.vAdd("<tableNm>"_Stz, pTknVec->pGet(1)->szText());
   
   // set the input file name
   pJob_Report->vFilePath(pTknVec->pGet(2)->szText());

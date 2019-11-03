@@ -152,7 +152,7 @@ eEC Job_DefineNode::ePopulateJob(TokenVec* pTokenVec)
 
   Word* pWord_syn = pRootDic->pFindWord("defineNode_syn"_Stz);
 
-  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_syn->pEnameSet(),pTokenVec);
+  bool b = JobHelper::bExtractArgs(&m_oEnameSet,pWord_syn->pEnameSet(),pTokenVec);
   if (! b) {
     vTrace("Unable to match job syntax\n"_Stz);
     return EC_INVALID_COMMAND;
@@ -171,7 +171,7 @@ eEC Job_DefineNode::ePopulateJob(TokenVec* pTokenVec)
   }
   
   // set the node name
-  m_oEnmSet.vAdd("<nodeNm>"_Stz,pTokenVec->pGet(2)->szText());
+  m_oEnameSet.vAdd("<nodeNm>"_Stz,pTokenVec->pGet(2)->szText());
 
   return EC_NONE;
 }
@@ -204,9 +204,9 @@ bool Job_DefineNode::bValidateCreateNode(TokenVec* pTokenVec)
     return false;
   }
   
-  //Tokeniser::vToEnmSet(&m_oEnmSet,pTokenVec);
+  //Tokeniser::vToEnmSet(&m_oEnameSet,pTokenVec);
   
-  //m_oEnmSet.vPrint();
+  //m_oEnameSet.vPrint();
   
   return true;
 }

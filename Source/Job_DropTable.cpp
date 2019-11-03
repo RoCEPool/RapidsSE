@@ -155,7 +155,7 @@ bool Job_DropTable::bPopulateJob(TokenVec* pTokenVec)
     return false;
   
   // set the table name
-  m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(2)->szText());
+  m_oEnameSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(2)->szText());
   
   return true;
 }

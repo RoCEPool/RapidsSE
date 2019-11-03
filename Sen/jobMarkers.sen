@@ -297,7 +297,7 @@
 
   SS_SEED_RUN log::jobSeed
 
-  //pushPath strVec::toPath to <path>
+  pushPath strVec::toPath to <path>
   <path> str.toStrVec task::dicStack.set
 
   <seed_initially>

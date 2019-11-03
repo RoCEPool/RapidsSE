@@ -223,7 +223,7 @@ bool Job_CreateIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the index name
-  m_oEnmSet.vAdd("<indexNm>"_Stz, pTokenVec->pGet(2 + iIfUnique)->szText());
+  m_oEnameSet.vAdd("<indexNm>"_Stz, pTokenVec->pGet(2 + iIfUnique)->szText());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // uniqueness
@@ -233,7 +233,7 @@ bool Job_CreateIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(4 + iIfUnique)->szText());
+  m_oEnameSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(4 + iIfUnique)->szText());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the index columns
@@ -263,10 +263,10 @@ void Job_CreateIndex::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX,_FOOTER_);
   
-  vTrace("\n\nJob_CreateIndex: %s\n"_Stz, m_oEnmSet.szValue("<indexNm>"_Stz));
+  vTrace("\n\nJob_CreateIndex: %s\n"_Stz, m_oEnameSet.szValue("<indexNm>"_Stz));
   
   //vTrace("m_sExecute = %s\n"_Stz,m_sExecute.azChar());
-  vTrace("TableName = %s\n"_Stz, m_oEnmSet.szValue("<tableNm>"_Stz));
+  vTrace("TableName = %s\n"_Stz, m_oEnameSet.szValue("<tableNm>"_Stz));
   vTrace("m_iColumns = %lld\n"_Stz,m_iColumns);
   
   for (i8 i_Column = 0; i_Column < m_iColumns; i_Column++) {

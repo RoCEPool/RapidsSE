@@ -172,29 +172,29 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 //    if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pEnameSet())) {
 //      vTrace("    matches\n"_Stz);
 //
-//      m_oEnmSet.vAdd("<jobClass>"_Stz, CN_JOB_UNIVERSAL,TN_INTEGER);
+//      m_oEnameSet.vAdd("<jobClass>"_Stz, CN_JOB_UNIVERSAL,TN_INTEGER);
 //      s32 sJobName(pWord_jobdef->sName());
 //      StrLib::vRemoveSuffix(sJobName.azChar(),'_');
-//      m_oEnmSet.vAdd("<jobNm>"_Stz,sJobName);
+//      m_oEnameSet.vAdd("<jobNm>"_Stz,sJobName);
 //      break;
 //    }
 //  }
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_jobdef->pEnameSet(),pTknVec);
+//  bool b = JobHelper::bExtractArgs(&m_oEnameSet,pWord_jobdef->pEnameSet(),pTknVec);
 //  if (! b) {
 //    vTrace("Unable to match job syntax\n"_Stz);
 //    return EC_INVALID_COMMAND;
 //  }
 
-  bool b = JobHelper::bParseCmd(&m_oEnmSet,pTknVec);
+  bool b = JobHelper::bParseCmd(&m_oEnameSet,pTknVec);
   if (! b) {
     vTrace("Unable to match job syntax\n"_Stz);
     return EC_INVALID_COMMAND;
   }
 
-  m_oEnmSet.vPrint();
+  m_oEnameSet.vPrint();
   
   return EC_NONE;
 }

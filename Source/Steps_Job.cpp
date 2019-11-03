@@ -674,7 +674,7 @@ void Step::vJobEnameSetFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushPointer(&pJob->m_oEnmSet);
+  m_pDataStack->vPushPointer(&pJob->m_oEnameSet);
   
   EXIT();
 }
@@ -1257,7 +1257,7 @@ void Step::vJobPostRecv(void)
   eCN eClass = pJob->eClass();
   
   if (CN_JOB_UNIVERSAL == eClass) {
-    eClass = (eCN)pJob->m_oEnmSet.iValue("<jobClass>"_Stz);
+    eClass = (eCN)pJob->m_oEnameSet.iValue("<jobClass>"_Stz);
     aJobClass = JobClass::pFind(eClass);
   }
   else {

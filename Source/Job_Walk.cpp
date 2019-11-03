@@ -187,12 +187,12 @@ bool Job_Walk::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_oEnmSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(1)->szText());
+  m_oEnameSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(1)->szText());
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the index name
   if (iNumTokens == 3) {
-    m_oEnmSet.vAdd("<indexNm>"_Stz, pTokenVec->pGet(2)->szText());
+    m_oEnameSet.vAdd("<indexNm>"_Stz, pTokenVec->pGet(2)->szText());
   }
   
   return true;

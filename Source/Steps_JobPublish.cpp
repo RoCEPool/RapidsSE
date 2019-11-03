@@ -43,8 +43,8 @@ void Step::vJob_PublishSpawnSub(void)
 
   pJob_SubPublish->m_iParentId     = pJob_Publish->m_iUniqueId;
   pJob_SubPublish->m_iPublishJobId = iPublishJobId;
-  pJob_SubPublish->m_oEnmSet.vAdd("<tableNm>"_Stz,
-                                  pJob_Publish->m_oEnmSet.szValue("<tableNm>"_Stz));
+  pJob_SubPublish->m_oEnameSet.vAdd("<tableNm>"_Stz,
+                                  pJob_Publish->m_oEnameSet.szValue("<tableNm>"_Stz));
   pJob_SubPublish->vSlot(iSlot);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

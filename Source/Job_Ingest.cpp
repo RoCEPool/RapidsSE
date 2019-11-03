@@ -198,7 +198,7 @@ Job* Jobs::pJob_Ingest_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pS
     return pJob_Ingest;
 
   // set the table name
-  pJob_Ingest->m_oEnmSet.vAdd("<tableNm>"_Stz, pTknVec->pGet(1)->szText());
+  pJob_Ingest->m_oEnameSet.vAdd("<tableNm>"_Stz, pTknVec->pGet(1)->szText());
   
   // set the file name
   pJob_Ingest->vFilePath(pTknVec->pGet(2)->szText());
@@ -254,7 +254,7 @@ bool Job_Ingest::bBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
   vTrace("Ingesting data into %s from %s\n"_Stz,
-         m_oEnmSet.szValue("<tableNm>"_Stz), szFilePath());
+         m_oEnameSet.szValue("<tableNm>"_Stz), szFilePath());
   
   bool bOpened = m_oFile.bOpenRead(szFilePath());
   

@@ -39,7 +39,7 @@ OpSpec::OpSpec(Stz* szOpName, StageSpec* pStageSpec)
   m_i_OpSpec     = C_UNKNOWN;
   m_i_Slot = 0; // ALKA: C_UNKNOWN;
 
-  //m_oEnmSet
+  //m_oEnameSet
   
   m_aOpDefn = nullptr;
   
@@ -68,7 +68,7 @@ void OpSpec::vAddEnmPair(Stz* sName, Stz* sValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oEnmSet.vAdd(sName, sValue);
+  m_oEnameSet.vAdd(sName, sValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@ void OpSpec::vAddEnmPair(Stz* sName, i8 iValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_oEnmSet.vAdd(sName, iValue);
+  m_oEnameSet.vAdd(sName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,7 +98,7 @@ EnameSet* OpSpec::pEnameSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return &m_oEnmSet;
+  return &m_oEnameSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,7 +184,7 @@ void OpSpec::vPrint(void)
   
   vTrace("[%lld] %s opDefn=%p "_Stz,m_i_OpSpec,m_sName.szStz(),m_aOpDefn);
     
-  m_oEnmSet.vPrint();
+  m_oEnameSet.vPrint();
 }
 
 /*----------------------------------------------------------------------------*/

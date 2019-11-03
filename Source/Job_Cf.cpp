@@ -160,7 +160,7 @@ bool Job_Cf::bPopulateJob(TokenVec* pTokenVec)
   }
   
   // set the folder command name
-  m_oEnmSet.vAdd("<folderNm>"_Stz, pTokenVec->pGet(1)->szText());
+  m_oEnameSet.vAdd("<folderNm>"_Stz, pTokenVec->pGet(1)->szText());
   
   return true;
 }

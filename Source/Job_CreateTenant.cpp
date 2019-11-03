@@ -159,7 +159,7 @@ bool Job_CreateTenant::bPopulateJob(TokenVec* pTokenVec)
   return false;
   
   // set the tenant name
-  m_oEnmSet.vAdd("<tenantNm>"_Stz, pTokenVec->pGet(2)->szText());
+  m_oEnameSet.vAdd("<tenantNm>"_Stz, pTokenVec->pGet(2)->szText());
   
   return true;
 }

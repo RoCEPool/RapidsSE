@@ -15,7 +15,7 @@ namespace Pipelines
   
     i8   m_i_Slot;
 
-    EnameSet  m_oEnmSet;
+    EnameSet  m_oEnameSet;
     OpDefn* m_aOpDefn;
     
     // must be last
