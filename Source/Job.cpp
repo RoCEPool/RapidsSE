@@ -52,11 +52,14 @@ bool Jobs::_bIsValidJob(eCN eClass)
     return false;
 }
 
+
+
 /*----------------------------------------------------------------------------*/
 /* constructor (for job__find)                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
 : JobBase(eClassNo)
+, m_xReqTuple(nullptr)
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -110,6 +113,7 @@ Job::Job(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
 : JobBase(aJobClass,aReqTuple,AM::iNextJobId())
+, m_xReqTuple(aReqTuple)
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
@@ -157,6 +161,7 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
 : JobBase(aJobClass,aReqTuple,AM::iNextJobId())
+, m_xReqTuple(aReqTuple)
 , CRM<Job>(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);

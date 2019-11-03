@@ -13,6 +13,8 @@ namespace Jobs
   
     JobClass* m_aJobClass; // job class
   
+    ReqTuple  m_xReqTuple; // the request tuple
+
 
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
     

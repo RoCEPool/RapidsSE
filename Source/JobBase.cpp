@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 JobBase::JobBase(eCN eClassNo)
 : Focal(eClassNo,C_UNKNOWN,C_UNKNOWN)
-, m_xReqTuple(nullptr)
+//, m_xReqTuple(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
@@ -29,7 +29,7 @@ JobBase::JobBase(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 JobBase::JobBase(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iJobId)
 : Focal(aJobClass->m_eClass,iJobId,aReqTuple->m_iForId)
-, m_xReqTuple(aReqTuple)
+//, m_xReqTuple(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
   

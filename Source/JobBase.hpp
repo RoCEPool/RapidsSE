@@ -8,7 +8,7 @@ namespace Jobs
   class JobBase : public Focal
   {
   public:
-    ReqTuple  m_xReqTuple; // the request tuple
+    // ReqTuple  m_xReqTuple; // the request tuple
   
   public:
     JobBase(eCN eClassNo);
