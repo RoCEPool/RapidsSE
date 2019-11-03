@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_SubLoader.cpp -- Table SubLoader Job                                    */
+/* Job_SubLoader.cpp -- Table SubLoader Job                                   */
 /*============================================================================*/
 
 #include "Jobs.h"
@@ -8,7 +8,7 @@ JobClass xJobClass_SubLoader =
 {
   CN_JOB_SUBLOADER,       // class number
   JK_CHILD,               // job kind
-  RS_NONE,                  // response kind
+  RS_NONE,                // response kind
   "table sub-loader"_Stz, // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
@@ -316,19 +316,12 @@ void Job_SubLoader::vShow(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+__aFooterFunction(Job_SubLoader)
 
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Job_SubLoader::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER);
-  
-  return &m_xFooter;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Catalog Functions -------------------------------------------------------*/

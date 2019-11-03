@@ -38,13 +38,19 @@ void Step::vJob_SubLoaderSpawn(void)
   
   Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pJobClass_SubLoader,aReqTuple);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   pJob_SubLoader->vSeed(SS_SEED_RUN);
   
-  pJob_SubLoader->m_iParentId  = pJob_LoadTable->m_iUniqueId;
+  pJob_SubLoader->m_iParentId = pJob_LoadTable->m_iUniqueId;
 
-  pJob_SubLoader->m_oEnmSet.vAdd("<tableNm>"_Stz,
-                                 pJob_LoadTable->m_oEnmSet.szValue("<tableNm>"_Stz));
+  //pJob_SubLoader->m_oEnmSet.vAdd("<tableNm>"_Stz,
+  //                               pJob_LoadTable->m_oEnmSet.szValue("<tableNm>"_Stz));
+  
   pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);
+  
+  
+  pJob_SubLoader->m_oEnmSet.vCopy(&pJob_LoadTable->m_oEnmSet);
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
