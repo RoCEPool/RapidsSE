@@ -6,9 +6,6 @@
 namespace Jobs
 {
   class Job : public JobBase,        // ⋗ socket
-              public JobLite,        // ⋗ scheduler  ⋗ recv  ⋗ post_recv
-              public JobBody,
-              public JobFull,
               public JobEnmSet,
               public JobResult,
               public CRM<Job>

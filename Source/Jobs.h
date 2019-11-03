@@ -28,9 +28,6 @@ namespace Jobs
 #include "JobTable.hpp"
 
 #include "JobBase.hpp"
-#include "JobBody.hpp"
-#include "JobLite.hpp"
-#include "JobFull.hpp"
 #include "Job.hpp"
 #include "JobMark2.hpp"
 
