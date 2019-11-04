@@ -122,6 +122,8 @@
 
   task::delete
 
+  HAZARD
+
   job::assertCorrectness
 ;
 
@@ -137,6 +139,8 @@
   DdlLock[].testDrop
 
   task::delete
+
+  HAZARD
 
   job::assertCorrectness
 ;

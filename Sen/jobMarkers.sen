@@ -42,7 +42,10 @@
 
   JP_BEGUN job::this job.phase!
 
-  <done_finally> task::delete
+  <done_finally>
+  task::delete
+
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +81,10 @@
 
   JP_EXECUTED job::this job.phase!
 
-  <done_finally> task::delete
+  <done_finally>
+  task::delete
+
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -88,7 +94,10 @@
 
   DdlLock[].testDrop
 
-  <done_finally> task::delete
+  <done_finally>
+  task::delete
+
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -98,7 +107,10 @@
 
   DdlLock[].testDrop
 
-  <done_finally> task::delete
+  <done_finally>
+  task::delete
+
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -123,7 +135,10 @@
 
   DdlLock[].testDrop
 
-  <done_finally> task::delete
+  <done_finally>
+  task::delete
+
+  HAZARD
 ;
 
 
