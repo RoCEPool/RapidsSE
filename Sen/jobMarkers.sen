@@ -57,7 +57,10 @@
 
   JP_CANCELED job::this job.phase!
 
-  <done_finally> job::completed
+  <done_finally>
+  job::completed
+
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +72,10 @@
 
   JP_ENDED job::this job.phase!
 
-  <done_finally> job::completed
+  <done_finally>
+  job::completed
+
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

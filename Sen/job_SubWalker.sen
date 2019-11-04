@@ -37,6 +37,8 @@
 
   // null the job in the task and delete ended job
   job::completed
+
+  HAZARD
 ;
 
 /*============================================================================*/

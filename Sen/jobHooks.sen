@@ -158,6 +158,7 @@
 
   job::completed
 
+  HAZARD
   job::assertCorrectness
 ;
 
@@ -171,6 +172,8 @@
   r@ locate log::markExit
 
   job::completed
+
+  HAZARD
 
   job::assertCorrectness
 ;
@@ -199,6 +202,8 @@
   "std_exceptionHook" .
 
   process::quit
+
+  HAZARD
 ;
 
 /*============================================================================*/

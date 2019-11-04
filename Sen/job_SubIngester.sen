@@ -47,6 +47,8 @@
   pJob_SubIngester SubIngester_ackParent
 
   job::completed
+
+  HAZARD
 ;
 
 /*============================================================================*/
