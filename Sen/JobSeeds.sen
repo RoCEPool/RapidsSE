@@ -13,6 +13,8 @@
 /*----------------------------------------------------------------------------*/
 : defaultSeed _req ( -- )
 
+  task::seedInitially
+
   [ compiler::current word.name@ , ] .
 
   <jobNm> .
@@ -26,6 +28,8 @@
 
   //job::this job.removeOriginator  // this is currently being done by job_ended
 
+  task::doneFinally
+
   //"Signalling waiting thread" .
   job::this job.signalWaiter
 ;
@@ -38,6 +42,8 @@
 /* begin default                                 (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : defaultSeed _beg ( -- )
+
+  task::seedInitially
 
   [ compiler::current word.name@ , ] .
 
@@ -58,12 +64,16 @@
   JP_BEGUN job::this job.phase!
 
   2pcReply::job__begun
+
+  task::doneFinally
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute default                               (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : defaultSeed _exe
+
+  task::seedInitially
 
   [ compiler::current word.name@ , ] .
 
@@ -80,12 +90,16 @@
   JP_EXECUTED job::this job.phase!
 
   2pcReply::job__executed
+
+  task::doneFinally
 ;
 
 /*----------------------------------------------------------------------------*/
 /* end default                                   (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : defaultSeed _end ( -- )
+
+  task::seedInitially
 
   [ compiler::current word.name@ , ] .
 
@@ -102,12 +116,16 @@
   job::this job.removeParticipant
 
   2pcReply::job__ended
+
+  task::doneFinally
 ;
 
 /*----------------------------------------------------------------------------*/
 /* cancel default                                (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : defaultSeed _can ( -- )
+
+  task::seedInitially
 
   [ compiler::current word.name@ , ] .
 
@@ -124,6 +142,8 @@
   job::this job.removeParticipant
 
   2pcReply::job__cancelled
+
+  task::doneFinally
 ;
 
 /*============================================================================*/

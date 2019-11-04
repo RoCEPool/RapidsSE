@@ -5,21 +5,28 @@
 " job_Universal.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* translate seed ename, find word matching translated value and execute it   */
 /*----------------------------------------------------------------------------*/
-: .executeSeed params| sSeedNm |
+: .executeSeed params| sSeedEname |
 
-  0 locals| pEnameSet |
+  // get the job-class ename-set
+  <jobNm> findJobClassEnmSet locals| pEnameSet |
 
-  <jobNm> findJobClassEnmSet to pEnameSet
+  // translate seed ename
+  sSeedEname pEnameSet EnameSet.getStr locals| sWordNm |
 
-  sSeedNm pEnameSet EnameSet.getStr
+  // find the word mathcing the translated name
+  sWordNm find locals| pWord |
 
-  find execute
+  // execute the word
+  pWord execute
 ;
 
 /*----------------------------------------------------------------------------*/
-/* request on originating node                                                */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute the job's request seed-word on originating node                    */
 /*----------------------------------------------------------------------------*/
 : universal_req ( -- <R> )
 
@@ -27,7 +34,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* begin on each participating node                                           */
+/* execute the job's begin seed-word on each participating node               */
 /*----------------------------------------------------------------------------*/
 : universal_beg ( -- )
 
@@ -35,7 +42,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute on each participating node                                         */
+/* execute the job's execute seed-word on each participating node             */
 /*----------------------------------------------------------------------------*/
 : universal_exe ( pJob_Universal -- )
 
@@ -43,7 +50,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end on each participating node                                             */
+/* execute the job's end seed-word on each participating node                 */
 /*----------------------------------------------------------------------------*/
 : universal_end ( -- )
 
@@ -51,7 +58,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* cancel forget node (on each participating node)                            */
+/* execute the job's cancel seed-word on each participating node              */
 /*----------------------------------------------------------------------------*/
 : universal_can ( -- )
 
