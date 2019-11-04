@@ -314,8 +314,9 @@
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  "DL_GRAB_WRITE"
+  dup "DL_GRAB_WRITE"
   str.equal if
+    drop
     "job::acquireExeLock - grabbing ddl write lock" .
     DdlLock[].grabWrite
     exit
@@ -323,13 +324,59 @@
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  "DL_GRAB_READ"
+  dup "DL_GRAB_READ"
   str.equal if
+    drop
     "job::acquireExeLock - grabbing ddl read lock" .
     DdlLock[].grabRead
     exit
   then
+
+  drop
 ;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+: job::isLocalJob
+
+  "jobKind" <jobNm> findJobClassEnmSet EnameSet.getStr
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  "JK_LOCAL"
+    str.equal if
+    "job::isLocalJob - job is a local job" .
+    true
+    exit
+  then
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  "job::isLocalJob - job is not a local job" .
+  false
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+: job::isDistJob
+
+  "jobKind" <jobNm> findJobClassEnmSet EnameSet.getStr
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  "JK_DIST2PC"
+  str.equal if
+    "job::isDistJob - job is a distributed job" .
+  true
+  exit
+  then
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  "job::isDistJob - job is not a distributed job" .
+  false
+;
+
 
 /*============================================================================*/
 /* end                                                                        */
