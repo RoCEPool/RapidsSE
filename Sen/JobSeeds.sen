@@ -32,6 +32,8 @@
 
   //"Signalling waiting thread" .
   job::this job.signalWaiter
+
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -109,7 +109,11 @@
   DdlLock[].testDrop
 
   //"Signalling the thread waiting on job completion" .
-  <done_finally> job::this job.signalWaiter
+  <done_finally>
+
+  job::this job.signalWaiter
+
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -364,6 +368,8 @@
 
   //"Signalling the thread waiting on job completion" .
   pJob job.signalWaiter
+
+  HAZARD
 ;
 
 /*============================================================================*/
