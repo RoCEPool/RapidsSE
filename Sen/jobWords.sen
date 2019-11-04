@@ -312,13 +312,24 @@
 
   "exeLock" <jobNm> findJobClassEnmSet EnameSet.getStr
 
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
   "DL_GRAB_WRITE"
   str.equal if
-    "job::lockExe - grabbing ddl write lock" .
+    "job::acquireExeLock - grabbing ddl write lock" .
     DdlLock[].grabWrite
+    exit
+  then
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  "DL_GRAB_READ"
+  str.equal if
+    "job::acquireExeLock - grabbing ddl read lock" .
+    DdlLock[].grabRead
+    exit
   then
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */
