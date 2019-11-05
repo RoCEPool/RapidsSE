@@ -193,6 +193,14 @@ void JobResult::vPrintNodeRows(void)
 /*----------------------------------------------------------------------------*/
 void JobResult::vPrintNodeZero(void)
 {
+  //! RAY HACK 5 NOV 2109 re universal job cf
+  if (! m_pResponseVec) {
+    vTrace("success: 0 rows affected\n"_Stz);
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   i8 iResponses = m_pResponseVec->nItems();
   
   if (m_bHasError) {
