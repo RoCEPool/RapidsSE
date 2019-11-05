@@ -388,6 +388,11 @@ void Constants::vAddConstants(void)
   /* 10 */ vAddConstant("DE_LNK"_Stz,  DT_LNK);
   /* 12 */ vAddConstant("DE_SOCK"_Stz, DT_SOCK);
 
+  // DL_ : ddl lock
+  /*  0 */ vAddConstant("DL_NONE"_Stz,       DL_NONE);
+  /*  1 */ vAddConstant("DL_GRAB_READ"_Stz,  DL_GRAB_READ);
+  /*  2 */ vAddConstant("DL_GRAB_WRITE"_Stz, DL_GRAB_WRITE);
+
   // DM_ : datum type
   /*  1 */ vAddConstant("DM_BCD"_Stz, DM_BCD);
   /*  2 */ vAddConstant("DM_BOL"_Stz, DM_BOL);
