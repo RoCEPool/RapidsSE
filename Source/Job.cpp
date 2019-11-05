@@ -100,7 +100,7 @@ Job::Job(eCN eClassNo)
   
   SP_Id spId;
   
-  vIncActNo(); ++ gixJob;
+  vIncStepNo(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
               "|gixJob=%lld|"_Stz, //!format-LogJob
               * gixJob);
@@ -148,7 +148,7 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   
   SP_Id spId;
   
-  vIncActNo(); ++ gixJob;
+  vIncStepNo(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
               "|gixJob=%lld|"_Stz, //!format-LogJob
               * gixJob);
@@ -196,7 +196,7 @@ Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
   
   SP_Id spId;
   
-  vIncActNo(); ++ gixJob;
+  vIncStepNo(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
               "|gixJob=%lld|"_Stz, //!format-LogJob
               * gixJob);
@@ -213,7 +213,7 @@ Job::~Job(void) noexcept(false)
   
   //vTrace("Deleting job: %s\n"_Stz,aCN[eClass()]);
   
-  vIncActNo();
+  vIncStepNo();
   if (m_bWasReceived) {
     // do not decrement gixJob
     AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,

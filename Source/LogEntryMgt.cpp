@@ -11,7 +11,7 @@ void _LogEntryMgt::vSet(LogEntry* pLogEntry, Job* pJob, eMA eMgtAct)
 {
   pLogEntry->m_eKind   = EK_MGT;
   pLogEntry->m_cPrefix = 'M';
-  pLogEntry->m_iAct    = pJob->iActNo();
+  pLogEntry->m_iAct    = pJob->iStepNo();
   //pLogEntry->m_xReqTuple.vSet(&pJob->m_xReqTuple);
 
   m_iJobId  = pJob->m_iFocalId;

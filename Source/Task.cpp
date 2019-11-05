@@ -81,7 +81,7 @@ Task::Task(Job* pJob)
   //if (pJob->m_bWasReceived)
   //  vDebugPoint();
   
-  vIncActNo(); ++ gixTask;
+  vIncStepNo(); ++ gixTask;
   AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
               "Task -%s%s |gixTask=%lld|"_Stz, //!format-LogTsk
               aCN[m_pJob->eClass()],
@@ -142,7 +142,7 @@ Task::~Task(void) noexcept(false)
 
   
   -- gixTask;
-  vIncActNo();
+  vIncStepNo();
   AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCT,
               "Task destruct |gixTask=%lld|"_Stz, //!format-LogTsk
               * gixTask);

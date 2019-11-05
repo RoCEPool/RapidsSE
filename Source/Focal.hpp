@@ -15,16 +15,16 @@ namespace Correctness
     i8 m_i_Log;     // last log entry subscript
   
   private:
-    i8 m_iActNo;    // last action sequence number
-    i8 m_iActTk;    // time point that occurred
+    i8 m_iStepNo;   // last step sequence number
+    i8 m_iStepTk;   // time point that occurred
 
   public:
     Focal(eCN eClassNo);
     Focal(eCN eClassNo, i8 iUniqueId, i8 iForId);
    ~Focal(void) noexcept(false);
   
-    i8   iActNo(void);
-    void vIncActNo(void);
+    i8   iStepNo(void);
+    void vIncStepNo(void);
   };
 }
 

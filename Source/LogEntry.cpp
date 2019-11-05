@@ -187,7 +187,7 @@ void LogEntry::vInit(eSL eSeverity, Focal *pFocal, Stz* szText)
   m_caNote[0] = '\0';
   StrLib::vCopyLen(m_caNote,szText->azChar(),C_LOG_NOTE - 1);
   
-  m_iAct    = pFocal->iActNo();
+  m_iAct    = pFocal->iStepNo();
   m_eClass  = pFocal->eClass();
   m_pFocal  = pFocal;
   m_i_Focal = pFocal->m_i_Focal;

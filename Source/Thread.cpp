@@ -73,7 +73,7 @@ Thread::Thread(void)
   
   _checkInitialised_(CN_THREAD);
   
-  vIncActNo(); ++ gixThread;
+  vIncStepNo(); ++ gixThread;
   AM::vLogThd(SL_INF,this,HA_THD_CONSTRUCT,
               "Thread construct : %p (%lld threads exist)"_Stz, //!format-LogThd
               this,* gixThread);
@@ -91,7 +91,7 @@ Thread::~Thread(void) noexcept(false)
   delete m_pMutex;
   delete m_pPsxThd;
   
-  vIncActNo(); -- gixThread;
+  vIncStepNo(); -- gixThread;
   AM::vLogThd(SL_INF,this,HA_THD_DESTRUCT,
               "Thread destruct : %p (%lld threads exist)"_Stz, //!format-LogThd
               this,* gixThread);
@@ -120,7 +120,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
       vTrace("Thread::aEntryPoint_dedicated %p %lld\n"_Stz,
              pThread,pThread->iThreadNo());
     
-    pThread->m_pPsxThd->vIncActNo();
+    pThread->m_pPsxThd->vIncStepNo();
     AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_ENTRY,
                 "dedicated thead entry: %p"_Stz, //!format-LogRes
                 pThread);
@@ -137,7 +137,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
       vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
              pThread,pThread->iThreadNo());
     
-    pThread->m_pPsxThd->vIncActNo();
+    pThread->m_pPsxThd->vIncStepNo();
     AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_EXIT,
                 "Thead exit (dedicated) : %p"_Stz, //!format-LogRes
                 pThread);
@@ -185,7 +185,7 @@ void* Thread::aEntryPoint_general(void* pArg)
       vTrace("Thread::aEntryPoint_general %p %lld\n"_Stz,
              pThread,pThread->iThreadNo());
     
-    pThread->m_pPsxThd->vIncActNo();
+    pThread->m_pPsxThd->vIncStepNo();
     AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_ENTRY,
                 "general thead entry: %p"_Stz, //!format-LogRes
                 pThread);
@@ -202,7 +202,7 @@ void* Thread::aEntryPoint_general(void* pArg)
       vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
              pThread,pThread->iThreadNo());
     
-    pThread->m_pPsxThd->vIncActNo();
+    pThread->m_pPsxThd->vIncStepNo();
     AM::vLogRes(SL_INF,pThread->m_pPsxThd,RA_THD_EXIT,
                 "Thead exit (general) : %p"_Stz, //!format-LogRes
                 pThread);
