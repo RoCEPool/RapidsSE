@@ -47,7 +47,7 @@ JobClass xJobClass_Lf =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Lf_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_ListIdxColumns_class;
+  *pNextFun = (pFUN*)pJob_ListIndexes_class;
   
   return &xJobClass_Lf;
 }

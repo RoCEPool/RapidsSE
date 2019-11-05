@@ -44,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 /* List Index Columns requests (on the originating node)                      */
 /*----------------------------------------------------------------------------*/
-: listIdxColumns_req ( -- <R> )
+: lsidxcol_req ( -- <R> )
 
   >>logEntry <SEED_REQ2>
 
@@ -125,6 +125,24 @@
   assertInTables
 
   <<logExit <DONE_REQ>
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
+
+jobInfo: lsidxcol
+{
+  jobKind      = JK_LOCAL
+  responseKind = RS_LOCAL_ERRORS
+  
+  exeLock      = DL_GRAB_READ
+  preCheck     = bClusterStarted
+}
 ;
 
 /*============================================================================*/

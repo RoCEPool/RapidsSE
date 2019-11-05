@@ -106,7 +106,7 @@ Job_ListTables::Job_ListTables(JobClass* aJobClass, ReqTuple* aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTTABLES,_FOOTER_);
   
-  _checkInitialised_(CN_JOB_LF);
+  _checkInitialised_(CN_JOB_LISTTABLES);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTTABLES,_FOOTER_);
 }
