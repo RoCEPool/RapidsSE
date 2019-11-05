@@ -1,50 +1,71 @@
 /*============================================================================*/
-/* jobClass.sen -- Job Class Compiler                                         */
+/* jobInfo.sen -- Job Info Compiler                                           */
 /*============================================================================*/
 
-" jobClass.sen" .verbose
+" jobInfo.sen" .verbose
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 : seedExists?
 
   word::name_trunc swap str.cat
     find if true else false then
 ;
 
-: seedCheck params| sSuffix sSeedNm |
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: seedEnameAdd params| sSuffix sSeedEname |
 
   compiler::current word.EnameSet@ locals| pEnameSet |
 
-  sSeedNm
-    sSuffix seedExists? if word::name_trunc else "defaultSeed" then
-      sSuffix str.cat
-    pEnameSet EnameSet.addStr
+  sSuffix seedExists?
+    if word::name_trunc else "defaultSeed" then
+      sSuffix str.cat  locals| pWordName |
+
+  sSeedEname pWordName pEnameSet EnameSet.addStr
 ;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: .fillEnmSet params| pEnameSet |
+: .fillEnameSet_dist
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  "SeedReq" "_req" seedEnameAdd
+
+  "SeedRcv" "_beg" seedEnameAdd
+
+  "SeedExe" "_exe" seedEnameAdd
+
+  "SeedEnd" "_end" seedEnameAdd
+
+  "SeedCan" "_can" seedEnameAdd
+;
+
+/*----------------------------------------------------------------------------*/
+/* populate the JobInfo ename-set with the names of the seeds for the job     */
+/* being compiled.  Use default seeds where appropropriate                    */
+/*----------------------------------------------------------------------------*/
+: .fillEnameSet params| pEnameSet |
+
   "jobPriority" pEnameSet EnameSet.hasName not if
      "jobPriority" "PY_NORMAL" pEnameSet EnameSet.addStr
   then
 
-  "SeedReq" "_req" seedCheck
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "SeedRcv" "_beg" seedCheck
-
-  "SeedExe" "_exe" seedCheck
-
-  "SeedEnd" "_end" seedCheck
-
-  "SeedCan" "_can" seedCheck
+  .fillEnameSet_dist
 
   pEnameSet EnameSet.asStr .
 ;
 
+
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* the job info compiler                                                      */
 /*----------------------------------------------------------------------------*/
 : jobInfo:
 
@@ -58,6 +79,7 @@
 
   // attach an ename set to the word being created
   EnameSet::new to pEnameSet
+
   pEnameSet compiler::current word.EnameSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -86,9 +108,12 @@
   // get and drop ";"
   next-token drop
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // complete the ename-set
+
   pEnameSet EnameSet.asStr .
 
-  pEnameSet .fillEnmSet
+  pEnameSet .fillEnameSet
 
   pEnameSet EnameSet.asStr .
 ;
