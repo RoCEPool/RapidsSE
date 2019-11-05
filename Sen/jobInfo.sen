@@ -72,12 +72,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: seedEnameAdd params| sSuffix sSeedEname |
+: seedEnameAdd params| sDefaultSeed sSuffix sSeedEname |
 
   compiler::current word.EnameSet@ locals| pEnameSet |
 
   sSuffix seedExists?
-    if word::name_trunc else "defaultSeedDist" then
+    if word::name_trunc else sDefaultSeed then
       sSuffix str.cat  locals| pWordName |
 
   sSeedEname pWordName pEnameSet EnameSet.addStr
@@ -88,15 +88,15 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet_dist
 
-  "SeedReq" "_req" seedEnameAdd
+  "SeedReq" "_req" "defaultSeedDist" seedEnameAdd
 
-  "SeedRcv" "_beg" seedEnameAdd
+  "SeedRcv" "_beg" "defaultSeedDist" seedEnameAdd
 
-  "SeedExe" "_exe" seedEnameAdd
+  "SeedExe" "_exe" "defaultSeedDist" seedEnameAdd
 
-  "SeedEnd" "_end" seedEnameAdd
+  "SeedEnd" "_end" "defaultSeedDist" seedEnameAdd
 
-  "SeedCan" "_can" seedEnameAdd
+  "SeedCan" "_can" "defaultSeedDist" seedEnameAdd
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -104,7 +104,7 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet_local
 
-  "SeedReq" "_req" seedEnameAdd
+  "SeedReq" "_req" "defaultSeedLocal" seedEnameAdd
 ;
 
 /*----------------------------------------------------------------------------*/
