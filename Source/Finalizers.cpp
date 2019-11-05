@@ -151,7 +151,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANSWER
   /*    */ &Finalize::vUndefined,         // CN_JOB_BOOT
   /*    */ &Finalize::vUndefined,         // CN_JOB_CAT
-  /*    */ &Finalize::vUndefined,         // CN_JOB_CF
+
   /*    */ &Finalize::vUndefined,         // CN_JOB_COMPACTINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_CONNECTCLUSTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_CONNECTOR
@@ -181,7 +181,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_KIDEXPORT
   /*    */ &Finalize::vUndefined,         // CN_JOB_LF
-  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTCATALOGS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTCOLUMNS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTIDXCOLUMNS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTINDEXES

@@ -154,7 +154,6 @@ enum eCN : u2 // Class Number
   /*  66 0x42    70592B Heap:L */ CN_JOB_ANSWER,
   /*  67 0x43    70592B Heap:L */ CN_JOB_BOOT,
   /*  68 0x44    71160B Heap:L */ CN_JOB_CAT,
-  /*  69 0x45    70592B Heap:L */ CN_JOB_CF,
   /*  70 0x46    70592B Heap:L */ CN_JOB_COMPACTINDEX,
   /*  71 0x47    70592B Heap:L */ CN_JOB_CONNECTCLUSTER,
   /*  72 0x48    70592B Heap:L */ CN_JOB_CONNECTOR,
@@ -184,7 +183,6 @@ enum eCN : u2 // Class Number
   /*  91 0x5B    70608B Heap:L */ CN_JOB_INSERTTABLE,
   /* 139 0x8B        0B Heap:L */ CN_JOB_KIDEXPORT,
   /*  92 0x5C    70592B Heap:L */ CN_JOB_LF,
-  /*  93 0x5D    70592B Heap:L */ CN_JOB_LISTCATALOGS,
   /*  94 0x5E    70592B Heap:L */ CN_JOB_LISTCOLUMNS,
   /*  95 0x5F    70592B Heap:L */ CN_JOB_LISTIDXCOLUMNS,
   /*  96 0x60    70592B Heap:L */ CN_JOB_LISTINDEXES,
@@ -576,7 +574,6 @@ static Stz* aCN[]
   /*  66 0x42 */ "JOB_ANSWER"_Stz,          // CN_JOB_ANSWER
   /*  67 0x43 */ "JOB_BOOT"_Stz,            // CN_JOB_BOOT
   /*  68 0x44 */ "JOB_CAT"_Stz,             // CN_JOB_CAT
-  /*  69 0x45 */ "JOB_CF"_Stz,              // CN_JOB_CF
   /*  70 0x46 */ "JOB_COMPACTINDEX"_Stz,    // CN_JOB_COMPACTINDEX
   /*  71 0x47 */ "JOB_CONNECTCLUSTER"_Stz,  // CN_JOB_CONNECTCLUSTER
   /*  72 0x48 */ "JOB_CONNECTOR"_Stz,       // CN_JOB_CONNECTOR
@@ -606,7 +603,6 @@ static Stz* aCN[]
   /*  91 0x5B */ "JOB_INSERTTABLE"_Stz,     // CN_JOB_INSERTTABLE
   /* 139 0x8B */ "JOB_KIDEXPORT"_Stz,       // CN_JOB_KIDEXPORT
   /*  92 0x5C */ "JOB_LF"_Stz,              // CN_JOB_LF
-  /*  93 0x5D */ "JOB_LISTCATALOGS"_Stz,    // CN_JOB_LISTCATALOGS
   /*  94 0x5E */ "JOB_LISTCOLUMNS"_Stz,     // CN_JOB_LISTCOLUMNS
   /*  95 0x5F */ "JOB_LISTIDXCOLUMNS"_Stz,  // CN_JOB_LISTIDXCOLUMNS
   /*  96 0x60 */ "JOB_LISTINDEXES"_Stz,     // CN_JOB_LISTINDEXES

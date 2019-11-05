@@ -55,7 +55,6 @@ namespace Jobs
 #include "Job_Boot.hpp"
 
 #include "Job_Cat.hpp"
-#include "Job_Cf.hpp"
 #include "Job_CompactIndex.hpp"
 #include "Job_ConnectCluster.hpp"
 #include "Job_Connector.hpp"
@@ -95,7 +94,6 @@ namespace Jobs
 
 #include "Job_Lf.hpp"
 #include "Job_ListColumns.hpp"
-#include "Job_ListCatalogs.hpp"
 #include "Job_ListIdxColumns.hpp"
 #include "Job_ListIndexes.hpp"
 #include "Job_ListPartColumns.hpp"

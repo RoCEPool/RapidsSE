@@ -47,7 +47,7 @@ JobClass xJobClass_Cat =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Cat_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Cf_class;
+  *pNextFun = (pFUN*)pJob_CompactIndex_class;
   
   return &xJobClass_Cat;
 }

@@ -28,7 +28,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   
   // local
   JobClass::vCmds(CN_JOB_CAT);
-  JobClass::vCmds(CN_JOB_CF);
   JobClass::vCmds(CN_JOB_DOCOL);
   JobClass::vCmds(CN_JOB_DUMPINDEX);
   JobClass::vCmds(CN_JOB_DUMPTABLE);
@@ -39,7 +38,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_INFLATEROWS);
   JobClass::vCmds(CN_JOB_INGEST);
   JobClass::vCmds(CN_JOB_LF);
-  JobClass::vCmds(CN_JOB_LISTCATALOGS);
   JobClass::vCmds(CN_JOB_LISTCOLUMNS);
   JobClass::vCmds(CN_JOB_LISTIDXCOLUMNS);
   JobClass::vCmds(CN_JOB_LISTINDEXES);

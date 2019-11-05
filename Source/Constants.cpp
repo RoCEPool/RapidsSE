@@ -205,7 +205,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_ANSWER"_Stz,         CN_JOB_ANSWER);
   /*    */ vAddConstant("CN_JOB_BOOT"_Stz,           CN_JOB_BOOT);
   /*    */ vAddConstant("CN_JOB_CAT"_Stz,            CN_JOB_CAT);
-  /*    */ vAddConstant("CN_JOB_CF"_Stz,             CN_JOB_CF);
   /*    */ vAddConstant("CN_JOB_COMPACTINDEX"_Stz,   CN_JOB_COMPACTINDEX);
   /*    */ vAddConstant("CN_JOB_CONNECTCLUSTER"_Stz, CN_JOB_CONNECTCLUSTER);
   /*    */ vAddConstant("CN_JOB_CONNECTOR"_Stz,      CN_JOB_CONNECTOR);
@@ -231,7 +230,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_INSERTROW"_Stz,      CN_JOB_INSERTROW);
   /*    */ vAddConstant("CN_JOB_INSERTTABLE"_Stz,    CN_JOB_INSERTTABLE);
   /*    */ vAddConstant("CN_JOB_LF"_Stz,             CN_JOB_LF);
-  /*    */ vAddConstant("CN_JOB_LISTCATALOGS"_Stz,   CN_JOB_LISTCATALOGS);
   /*    */ vAddConstant("CN_JOB_LISTCOLUMNS"_Stz,    CN_JOB_LISTCOLUMNS);
   /*    */ vAddConstant("CN_JOB_LISTIDXCOLUMNS"_Stz, CN_JOB_LISTIDXCOLUMNS);
   /*    */ vAddConstant("CN_JOB_LISTINDEXES"_Stz,    CN_JOB_LISTINDEXES);

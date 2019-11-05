@@ -157,7 +157,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_ANSWER
   /*    */ &Dump::vDummy,           // CN_JOB_BOOT
   /*    */ &Dump::vDummy,           // CN_JOB_CAT
-  /*    */ &Dump::vDummy,           // CN_JOB_CF
   /*    */ &Dump::vDummy,           // CN_JOB_COMPACTINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_CONNECTCLUSTER
   /*    */ &Dump::vDummy,           // CN_JOB_CONNECTOR
@@ -187,7 +186,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_KIDEXPORT
   /*    */ &Dump::vDummy,           // CN_JOB_LF
-  /*    */ &Dump::vDummy,           // CN_JOB_LISTCATALOGS
   /*    */ &Dump::vDummy,           // CN_JOB_LISTCOLUMNS
   /*    */ &Dump::vDummy,           // CN_JOB_LISTIDXCOLUMNS
   /*    */ &Dump::vDummy,           // CN_JOB_LISTINDEXES
@@ -582,7 +580,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Answer),         // CN_JOB_ANSWER
   /*    */ sizeof(Job_Boot),           // CN_JOB_BOOT
   /*    */ sizeof(Job_Cat),            // CN_JOB_CAT
-  /*    */ sizeof(Job_Cf),             // CN_JOB_CF
   /*    */ sizeof(Job_CompactIndex),   // CN_JOB_COMPACTINDEX
   /*    */ sizeof(Job_ConnectCluster), // CN_JOB_CONNECTCLUSTER
   /*    */ sizeof(Job_Connector),      // CN_JOB_CONNECTOR
@@ -612,7 +609,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_InsertTable),    // CN_JOB_INSERTTABLE
   /*    */ sizeof(Job_KidExport),      // CN_JOB_KIDEXPORT
   /*    */ sizeof(Job_Lf),             // CN_JOB_LF
-  /*    */ sizeof(Job_ListCatalogs),   // CN_JOB_LISTCATALOGS
   /*    */ sizeof(Job_ListColumns),    // CN_JOB_LISTCOLUMNS
   /*    */ sizeof(Job_ListIdxColumns), // CN_JOB_LISTIDXCOLUMNS
   /*    */ sizeof(Job_ListIndexes),    // CN_JOB_LISTINDEXES
@@ -1006,7 +1002,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANSWER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_BOOT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CAT
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CF
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_COMPACTINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CONNECTCLUSTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CONNECTOR
@@ -1036,7 +1031,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_KIDEXPORT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LF
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTCATALOGS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTCOLUMNS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTIDXCOLUMNS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTINDEXES
