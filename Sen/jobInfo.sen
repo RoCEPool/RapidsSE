@@ -128,6 +128,16 @@
   pEnameSet EnameSet.asStr .
 ;
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: jobInfo::addEname params| sEvalue sEname |
+
+  compiler::current word.EnameSet@ locals| pEnameSet |
+
+  sEname sEvalue pEnameSet EnameSet.addStr
+;
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -167,7 +177,7 @@
     to sEname
     next-token drop
     next-token to sEvalue
-    sEname sEvalue pEnameSet EnameSet.addStr
+    sEname sEvalue jobInfo::addEname
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
