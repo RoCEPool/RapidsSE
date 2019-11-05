@@ -86,7 +86,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: .fillEnameSet_dist
+: .fillOutEnameSet_dist
 
   "SeedReq" "_req" seedEnameAdd
 
@@ -100,10 +100,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: .fillOutEnameSet_local
+
+  "SeedReq" "_req" seedEnameAdd
+;
+
+/*----------------------------------------------------------------------------*/
 /* populate the JobInfo ename-set with the names of the seeds for the job     */
 /* being compiled.  Use default seeds where appropropriate                    */
 /*----------------------------------------------------------------------------*/
-: .fillEnameSet params| pEnameSet |
+: .fillOutEnameSet params| pEnameSet |
 
   "jobPriority" pEnameSet EnameSet.hasName not if
      "jobPriority" "PY_NORMAL" pEnameSet EnameSet.addStr
@@ -112,10 +120,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   job::isDistJob if
-    .fillEnameSet_dist
+    .fillOutEnameSet_dist
   else
-    "           WARNING local jobs not yet supported" .
-    .fillEnameSet_dist
+    .fillOutEnameSet_local
   then
 
   pEnameSet EnameSet.asStr .
@@ -174,7 +181,7 @@
 
   pEnameSet EnameSet.asStr .
 
-  pEnameSet .fillEnameSet
+  pEnameSet .fillOutEnameSet
 
   pEnameSet EnameSet.asStr .
 ;
