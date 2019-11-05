@@ -488,15 +488,17 @@ void Lock::vGrabWrite(void)
   bool bReported = false;
   
   do {
-    oTimer.vUpdate();
-    if (oTimer.iMilliseconds() > 100 && ! bReported) {
-      bReported = true;
-      vIncStepNo();
-      AM::vLogLck(SL_INF,this,LA_LCK_WRITE_UNABLE,
-                 "Unable to grab write lock %p %s %p"_Stz, //!format-LogLck
-                         this,
-                         aLK[m_eLockKind],
-                         m_uLockWord);
+    if (m_pFor && CN_LOG != m_pFor->eClass()) {
+      oTimer.vUpdate();
+      if (oTimer.iMilliseconds() > 100 && ! bReported) {
+        bReported = true;
+        vIncStepNo();
+        AM::vLogLck(SL_INF,this,LA_LCK_WRITE_UNABLE,
+                   "Unable to grab write lock %p %s %p"_Stz, //!format-LogLck
+                           this,
+                           aLK[m_eLockKind],
+                           m_uLockWord);
+      }
     }
     
     iResult = Lock::iLockGrabWrite(&m_uLockWord);

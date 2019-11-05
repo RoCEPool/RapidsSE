@@ -10,7 +10,7 @@ JobClass xJobClass_Health =
   JK_OTHER,              // job kind
   RS_NONE,               // response kind
   "network hog"_Stz,     // comment about the job
-  "nethog"_Stz,          // the prompt command
+  "health"_Stz,          // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
   "netHog_req"_Stz,      // the _req task seed
