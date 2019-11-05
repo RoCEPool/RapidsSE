@@ -351,6 +351,8 @@ void Lock::vGrabRead(void)
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   ++m_ixReadCollisions;
   ++AM::pLockTracker()->m_ixReadCollisions[m_eLockKind];
   
@@ -359,18 +361,21 @@ void Lock::vGrabRead(void)
   bool bReported = false;
   
   do {
-    oTimer.vUpdate();
-    if (oTimer.iMilliseconds() > 100 && ! bReported) {
-      bReported = true;
-      vIncStepNo();
-      AM::vLogLck(SL_INF,this,LA_LCK_READ_UNABLE,
-                 "Unable to grab read lock %p %s %p"_Stz, //!format-LogLck
-                  this,
-                  aLK[m_eLockKind],
-                  m_uLockWord);
+    if (m_pFor && CN_LOG != m_pFor->eClass()) {
+      oTimer.vUpdate();
+      if (oTimer.iMilliseconds() > 100 && ! bReported) {
+        bReported = true;
+        vIncStepNo();
+        AM::vLogLck(SL_INF,this,LA_LCK_READ_UNABLE,
+                   "Unable to grab read lock %p %s %p"_Stz, //!format-LogLck
+                    this,
+                    aLK[m_eLockKind],
+                    m_uLockWord);
+      }
     }
     
     iResult = Lock::iLockGrabRead(&m_uLockWord);
+    
   } while ( ! iResult );
   
   if (bReported) {
@@ -479,6 +484,8 @@ void Lock::vGrabWrite(void)
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   ++m_ixWriteCollisions;
   ++AM::pLockTracker()->m_ixWriteCollisions[m_eLockKind];
   
@@ -502,6 +509,7 @@ void Lock::vGrabWrite(void)
     }
     
     iResult = Lock::iLockGrabWrite(&m_uLockWord);
+    
   } while ( ! iResult );
   
   if (bReported) {
