@@ -77,7 +77,7 @@
   compiler::current word.EnameSet@ locals| pEnameSet |
 
   sSuffix seedExists?
-    if word::name_trunc else "defaultSeed" then
+    if word::name_trunc else "defaultSeedDist" then
       sSuffix str.cat  locals| pWordName |
 
   sSeedEname pWordName pEnameSet EnameSet.addStr
