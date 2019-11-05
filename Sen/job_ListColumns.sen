@@ -17,13 +17,35 @@
   // get table
   sTableNm find execute to pTable
 
-  pTable >str pJob_ListColumns job.response!
+  pTable table.columnCount@ to iColumns
+
+  ""                             // initial ls string
+  iColumns 0 do
+    I pTable table.column@ to pColumn
+    pColumn column.isPartitionKey@
+    pColumn column.isNullable@
+    pColumn column.Scale@
+    pColumn column.Length@
+    pColumn column.type@
+    pColumn column.name@
+    "row: ( '%v','%v',%v,%v,%v,%v )\n" str.format
+    str.cat
+  loop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set response in the job
+  pJob_ListColumns job.response!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sent rows Processed in the job
+  iColumns pJob_ListColumns job.rowsProcessed!
+
 ;
 
 /*----------------------------------------------------------------------------*/
 /* List Columns requests (on the originating node)                            */
 /*----------------------------------------------------------------------------*/
-: listColumns_req ( -- <R> )
+: lscol_req ( -- <R> )
 
   >>logEntry <SEED_REQ2>
 
@@ -38,15 +60,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the job from the task
   pTask task.job@ to pJob_ListColumns
-
-  //----------------------------------------------------------------------------
-  // set task's dictionary stack from path in job
-  //pJob_ListColumns job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab ddl read lock
-  DdlLock[].grabRead
 
   //----------------------------------------------------------------------------
   // should be in the tables folder
@@ -84,6 +97,24 @@
   assertInTables
 
   <<logExit <DONE_REQ>
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: lscol :: lscol <tableNm> ;
+
+jobInfo: lscol
+{
+  jobKind      = JK_LOCAL
+  responseKind = RS_LOCAL_ERRORS
+  
+  exeLock      = DL_GRAB_READ
+  preCheck     = bClusterStarted
+}
 ;
 
 /*============================================================================*/

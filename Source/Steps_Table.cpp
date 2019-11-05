@@ -217,7 +217,7 @@ void Step::vTableColumnCountFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.createColumnVec -- create column vector from job_createTable     */
+/* table.createColumnVec -- create column vector from job_createTable         */
 /*----------------------------------------------------------------------------*/
 void Step::vTableCreateColumnVec(void)
 {

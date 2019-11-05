@@ -25,10 +25,6 @@
   pTask task.job@ to pJob_ListCatalogs
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab ddl read lock
-  DdlLock[].grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the catalogs folder
   checkInCatalogs not if pJob_ListCatalogs <ERROR_REQUEST> !!logError exit then
 
