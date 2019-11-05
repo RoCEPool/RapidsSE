@@ -730,10 +730,14 @@ eEC Jobs::eJob_checkCluster(Session* pSession)
 void Jobs::vJob_post(Job* pJob)
 {
   eCN eClass = pJob->eClass();
+  
+  //! why wouldn't this be set by now??
   JobClass* pJobClass = JobClass::pFind(eClass);
   pJob->m_aJobClass = pJobClass;
   
-  switch (pJob->m_aJobClass->m_eResponse) {
+  eRS eResponse = pJob->m_aJobClass->m_eResponse;
+  
+  switch (eResponse) {
       
     case RS_NONE         : /* do nothing */            break;
     case RS_DATA_ROWS    : RASSERT(0);                 break;
