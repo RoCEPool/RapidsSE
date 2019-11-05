@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* cf command request                                                         */
 /*----------------------------------------------------------------------------*/
-: cf_req ( -- <R> )
+: cf_req ( -- )
 
   >>logEntry <SEED_REQ2>
 
@@ -75,6 +75,8 @@
   pCurrentFolder execute pathPush
   savePath
   <<logExit <DONE_REQ>
+
+  HAZARD
 ;
 
 
