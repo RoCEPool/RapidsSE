@@ -41,7 +41,9 @@
 /*----------------------------------------------------------------------------*/
 : job::isDistJob
 
-  "jobKind" <jobNm> findJobClassEnmSet EnameSet.getStr
+  compiler::current word.EnameSet@ locals| pEnameSet |
+
+ "jobKind" pEnameSet EnameSet.getStr dup .
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -109,7 +111,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  .fillEnameSet_dist
+  job::isDistJob if
+    .fillEnameSet_dist
+  else
+    "           WARNING local jobs not yet supported" .
+    .fillEnameSet_dist
+  then
 
   pEnameSet EnameSet.asStr .
 ;
