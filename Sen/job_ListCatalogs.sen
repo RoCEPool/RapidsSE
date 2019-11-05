@@ -25,11 +25,6 @@
   pTask task.job@ to pJob_ListCatalogs
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_ListCatalogs job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab ddl read lock
   DdlLock[].grabRead
 
@@ -44,6 +39,24 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return
   <<logExit <DONE_REQ>
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: lscat :: lscat ;
+
+jobInfo: lscat
+{
+  jobKind      = JK_LOCAL
+  responseKind = RS_LOCAL_ERRORS
+  
+  exeLock      = DL_GRAB_READ
+  preCheck     = bClusterStarted
+}
 ;
 
 /*============================================================================*/

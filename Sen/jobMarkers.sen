@@ -387,6 +387,8 @@
   //errorCode error.msg "Setting error '%v' in job" str.format .
   errorCode pJob job.error!
 
+  <done_finally>
+
   //"Signalling the thread waiting on job completion" .
   pJob job.signalWaiter
 
