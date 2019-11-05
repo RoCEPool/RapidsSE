@@ -183,7 +183,6 @@ enum eCN : u2 // Class Number
   /*  91 0x5B    70608B Heap:L */ CN_JOB_INSERTTABLE,
   /* 139 0x8B        0B Heap:L */ CN_JOB_KIDEXPORT,
   /*  92 0x5C    70592B Heap:L */ CN_JOB_LF,
-  /*  96 0x60    70592B Heap:L */ CN_JOB_LISTINDEXES,
   /*  97 0x61    70592B Heap:L */ CN_JOB_LISTPARTCOLUMNS,
   /*  98 0x62    70592B Heap:L */ CN_JOB_LISTPARTITIONS,
   /*  99 0x63    70592B Heap:L */ CN_JOB_LISTSCHEMAS,
@@ -601,7 +600,6 @@ static Stz* aCN[]
   /*  91 0x5B */ "JOB_INSERTTABLE"_Stz,     // CN_JOB_INSERTTABLE
   /* 139 0x8B */ "JOB_KIDEXPORT"_Stz,       // CN_JOB_KIDEXPORT
   /*  92 0x5C */ "JOB_LF"_Stz,              // CN_JOB_LF
-  /*  96 0x60 */ "JOB_LISTINDEXES"_Stz,     // CN_JOB_LISTINDEXES
   /*  97 0x61 */ "JOB_LISTPARTCOLUMNS"_Stz, // CN_JOB_LISTPARTCOLUMNS
   /*  98 0x62 */ "JOB_LISTPARTITIONS"_Stz,  // CN_JOB_LISTPARTITIONS
   /*  99 0x63 */ "JOB_LISTSCHEMAS"_Stz,     // CN_JOB_LISTSCHEMAS

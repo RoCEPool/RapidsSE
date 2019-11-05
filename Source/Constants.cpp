@@ -230,7 +230,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_INSERTROW"_Stz,      CN_JOB_INSERTROW);
   /*    */ vAddConstant("CN_JOB_INSERTTABLE"_Stz,    CN_JOB_INSERTTABLE);
   /*    */ vAddConstant("CN_JOB_LF"_Stz,             CN_JOB_LF);
-  /*    */ vAddConstant("CN_JOB_LISTINDEXES"_Stz,    CN_JOB_LISTINDEXES);
   /*    */ vAddConstant("CN_JOB_LISTPARTCOLUMNS"_Stz,CN_JOB_LISTPARTCOLUMNS);
   /*    */ vAddConstant("CN_JOB_LISTPARTITIONS"_Stz, CN_JOB_LISTPARTITIONS);
   /*    */ vAddConstant("CN_JOB_LISTSCHEMAS"_Stz,    CN_JOB_LISTSCHEMAS);

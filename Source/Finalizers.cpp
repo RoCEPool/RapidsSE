@@ -181,7 +181,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_KIDEXPORT
   /*    */ &Finalize::vUndefined,         // CN_JOB_LF
-  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTINDEXES
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTPARTCOLUMNS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTPARTITIONS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTSCHEMAS

@@ -1,3 +1,5 @@
 
-pwf;
-bye;
+create table x (col0 integer);
+create index idx on x (col0);
+lsidxcol x idx;
+lsidx x;
