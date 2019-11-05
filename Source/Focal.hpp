@@ -9,12 +9,14 @@ namespace Correctness
   {
   public:
     i8 m_i_Focal;   // focal lattice subscript
-    i8 m_iUniqueId; // AM next id of this focal
     i8 m_i_Log;     // log entry subscript
-    i8 m_iTick_;    //
   
-    i8 m_iActNo;
-    i8 m_iForId;
+    i8 m_iUniqueId; // AM next id of this focal
+    i8 m_iForId;    // for which focal owner
+  
+  private:
+    i8 m_iActNo;    // last action sequence number
+    i8 m_iActTk;    // time point that occurred
 
   public:
     Focal(eCN eClassNo);
