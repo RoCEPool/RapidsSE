@@ -10,7 +10,7 @@ JobClass xJobClass_Cf =
   JK_LOCAL,            // job kind
   RS_LOCAL_ERRORS,     // response kind
   "change folder"_Stz, // comment about the job
-  "cf"_Stz,            // the prompt command
+  "-- cf"_Stz,            // the prompt command
   nullptr,             // the second word
   nullptr,             // the _run task seed
   "cf_req"_Stz,        // the _req task seed

@@ -1,50 +1,139 @@
 /*============================================================================*/
-/* jobClass.sen -- Job Class Compiler                                         */
+/* jobInfo.sen -- Job Info Compiler                                           */
 /*============================================================================*/
 
-" jobClass.sen" .verbose
+" jobInfo.sen" .verbose
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: findJobClassEnmSet ( sJobNm -- pEnameSet )
+
+  params| sJobNm |
+
+  sJobNm "_cls" str.cat find word.EnameSet@
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: job::isLocalJob
+
+  "jobKind" <jobNm> findJobClassEnmSet EnameSet.getStr
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  "JK_LOCAL"
+  str.equal if
+    "job::isLocalJob - job is a local job" .
+    true
+    exit
+  then
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  "job::isLocalJob - job is not a local job" .
+  false
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: job::isDistJob
+
+  compiler::current word.EnameSet@ locals| pEnameSet |
+
+ "jobKind" pEnameSet EnameSet.getStr dup .
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  "JK_DIST2PC"
+  str.equal if
+    "job::isDistJob - job is a distributed job" .
+    true
+    exit
+  then
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  "job::isDistJob - job is not a distributed job" .
+  false
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 : seedExists?
 
   word::name_trunc swap str.cat
     find if true else false then
 ;
 
-: seedCheck params| sSuffix sSeedNm |
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: seedEnameAdd params| sDefaultSeed sSuffix sSeedEname |
 
   compiler::current word.EnameSet@ locals| pEnameSet |
 
-  sSeedNm
-    sSuffix seedExists? if word::name_trunc else "defaultSeed" then
-      sSuffix str.cat
-    pEnameSet EnameSet.addStr
+  sSuffix seedExists?
+    if word::name_trunc else sDefaultSeed then
+      sSuffix str.cat  locals| pWordName |
+
+  sSeedEname pWordName pEnameSet EnameSet.addStr
 ;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: .fillEnmSet params| pEnameSet |
+: .fillOutEnameSet_dist
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  "SeedReq" "_req" "defaultSeedDist" seedEnameAdd
+
+  "SeedRcv" "_beg" "defaultSeedDist" seedEnameAdd
+
+  "SeedExe" "_exe" "defaultSeedDist" seedEnameAdd
+
+  "SeedEnd" "_end" "defaultSeedDist" seedEnameAdd
+
+  "SeedCan" "_can" "defaultSeedDist" seedEnameAdd
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: .fillOutEnameSet_local
+
+  "SeedReq" "_req" "defaultSeedLocal" seedEnameAdd
+;
+
+/*----------------------------------------------------------------------------*/
+/* populate the JobInfo ename-set with the names of the seeds for the job     */
+/* being compiled.  Use default seeds where appropropriate                    */
+/*----------------------------------------------------------------------------*/
+: .fillOutEnameSet params| pEnameSet |
+
   "jobPriority" pEnameSet EnameSet.hasName not if
      "jobPriority" "PY_NORMAL" pEnameSet EnameSet.addStr
   then
 
-  "SeedReq" "_req" seedCheck
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "SeedRcv" "_beg" seedCheck
-
-  "SeedExe" "_exe" seedCheck
-
-  "SeedEnd" "_end" seedCheck
-
-  "SeedCan" "_can" seedCheck
+  job::isDistJob if
+    .fillOutEnameSet_dist
+  else
+    .fillOutEnameSet_local
+  then
 
   pEnameSet EnameSet.asStr .
 ;
 
+
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* the job info compiler                                                      */
 /*----------------------------------------------------------------------------*/
 : jobInfo:
 
@@ -58,6 +147,7 @@
 
   // attach an ename set to the word being created
   EnameSet::new to pEnameSet
+
   pEnameSet compiler::current word.EnameSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -86,21 +176,14 @@
   // get and drop ";"
   next-token drop
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // complete the ename-set
+
   pEnameSet EnameSet.asStr .
 
-  pEnameSet .fillEnmSet
+  pEnameSet .fillOutEnameSet
 
   pEnameSet EnameSet.asStr .
-;
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-: findJobClassEnmSet ( sJobNm -- pEnameSet )
-
-  params| sJobNm |
-
-  sJobNm "_cls" str.cat find word.EnameSet@
 ;
 
 /*============================================================================*/

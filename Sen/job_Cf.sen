@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* cf command request                                                         */
 /*----------------------------------------------------------------------------*/
-: cf_req ( -- <R> )
+: cf_req ( -- )
 
   >>logEntry <SEED_REQ2>
 
@@ -75,16 +75,21 @@
   pCurrentFolder execute pathPush
   savePath
   <<logExit <DONE_REQ>
+
+  HAZARD
 ;
 
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-jobInfo: changeFolder
+
+jobSyntax: cf :: cf <folderNm> ;
+
+jobInfo: cf
 {
   jobKind      = JK_LOCAL
-  responseKind = RS_NODE_ZERO
+  responseKind = RS_LOCAL_ERRORS
   
   exeLock      = DL_GRAB_READ
   preCheck     = bClusterStarted
