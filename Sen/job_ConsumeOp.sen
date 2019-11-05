@@ -34,11 +34,11 @@ jobSyntax: Consume :: Consume ;
 /*----------------------------------------------------------------------------*/
 jobInfo: Consume
 {
-  jobKind      = JK_OP
-  responseKind = RS_NODE_ZERO
+  jobKind  = JK_OP
+  rspKind  = RS_NODE_ZERO
+  ddlLock  = DL_GRAB_READ
   
-  exeLock      = DL_GRAB_READ
-  preCheck     = bClusterStarted
+  preCheck = bClusterStarted
 }
 ;
 

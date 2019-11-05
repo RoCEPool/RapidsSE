@@ -137,11 +137,11 @@ jobSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
 
 jobInfo: lsidxcol
 {
-  jobKind      = JK_LOCAL
-  responseKind = RS_LOCAL_ERRORS
+  jobKind  = JK_LOCAL
+  rspKind  = RS_LOCAL_ERRORS
+  ddlLock  = DL_GRAB_READ
   
-  exeLock      = DL_GRAB_READ
-  preCheck     = bClusterStarted
+  preCheck = bClusterStarted
 }
 ;
 
