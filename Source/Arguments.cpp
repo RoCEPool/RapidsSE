@@ -504,7 +504,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
         return false;
       }
       if (m_bPrompt) {
-        vWarn("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
       m_bSethScript = true;

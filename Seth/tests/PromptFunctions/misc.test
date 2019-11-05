@@ -1,0 +1,31 @@
+/*----------------------------------------------------------------------------*/
+/* misc -- misc prompt functions                                              */
+/*----------------------------------------------------------------------------*/
+
+// get se version
+version;
+success
+
+// ping
+ping;
+rows:
+ ('pong')
+
+// cluster sanity
+sanity;
+rows:
+ (*, 'sanity check passed')
+
+// cluster status
+status;
+rows:
+  (*, *, 'running')
+
+olist;
+mute;
+
+CLEANUP {
+  bye;
+  mute
+}
+

@@ -1,0 +1,32 @@
+--------------------------------------------------------------------------------
+-- folder functions
+--------------------------------------------------------------------------------
+
+// present working folder
+pwf;
+rows:
+ ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+
+// change folder
+"cf ..";
+mute;
+
+// present working folder
+pwf;
+rows:
+  ('/public/schemas/rapidsse/catalogs/boray/tenants/')
+
+// change folder
+cf tables;
+mute;
+
+// present working folder
+pwf;
+rows:
+  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
+
+CLEANUP {
+  bye;
+  mute
+}
+
