@@ -342,6 +342,9 @@ void Lock::vGrabRead(void)
   
   ASSERT(m_eLockKind);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // attempt to grab the lock for read
+  
   ++m_ixReadGrabs;
   ++AM::pLockTracker()->m_ixReadGrabs[m_eLockKind];
   
@@ -352,32 +355,36 @@ void Lock::vGrabRead(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  // collision with a writer; spin till read lock is acquired
+
   ++m_ixReadCollisions;
   ++AM::pLockTracker()->m_ixReadCollisions[m_eLockKind];
   
   Timer oTimer;
   oTimer.vStart();
+  
   bool bReported = false;
-  
-  do {
-    if (m_pFor && CN_LOG != m_pFor->eClass()) {
-      oTimer.vUpdate();
-      if (oTimer.iMilliseconds() > 100 && ! bReported) {
-        bReported = true;
-        vIncStepNo();
-        AM::vLogLck(SL_INF,this,LA_LCK_READ_UNABLE,
-                   "Unable to grab read lock %p %s %p"_Stz, //!format-LogLck
-                    this,
-                    aLK[m_eLockKind],
-                    m_uLockWord);
-      }
-    }
+  while (! Lock::iLockGrabRead(&m_uLockWord) ) {
+
+    if (! m_pFor || CN_LOG == m_pFor->eClass())
+      continue;
     
-    iResult = Lock::iLockGrabRead(&m_uLockWord);
+    oTimer.vUpdate();
+    if (oTimer.iMilliseconds() < 100 || bReported)
+      continue;
     
-  } while ( ! iResult );
+    bReported = true;
+    vIncStepNo();
+    AM::vLogLck(SL_INF,this,LA_LCK_READ_UNABLE,
+                "Unable to grab read lock %p %s %p"_Stz, //!format-LogLck
+                this,
+                aLK[m_eLockKind],
+                 m_uLockWord);
+  }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read lock has been acquired
+
   if (bReported) {
     vIncStepNo();
     AM::vLogLck(SL_INF,this,LA_LCK_READ_ABLE,
@@ -467,13 +474,16 @@ bool Lock::bGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grab write lock                                                            */
+/* grab write lock (may block)                                                */
 /*----------------------------------------------------------------------------*/
 void Lock::vGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   ASSERT(m_eLockKind);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // attempt to grab the lock for write
   
   ++m_ixWriteGrabs;
   ++AM::pLockTracker()->m_ixWriteGrabs[m_eLockKind];
@@ -485,6 +495,7 @@ void Lock::vGrabWrite(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collision with another writer; spin till write lock is acquired
   
   ++m_ixWriteCollisions;
   ++AM::pLockTracker()->m_ixWriteCollisions[m_eLockKind];
@@ -493,25 +504,27 @@ void Lock::vGrabWrite(void)
   oTimer.vStart();
   
   bool bReported = false;
-  
-  do {
-    if (m_pFor && CN_LOG != m_pFor->eClass()) {
-      oTimer.vUpdate();
-      if (oTimer.iMilliseconds() > 100 && ! bReported) {
-        bReported = true;
-        vIncStepNo();
-        AM::vLogLck(SL_INF,this,LA_LCK_WRITE_UNABLE,
-                   "Unable to grab write lock %p %s %p"_Stz, //!format-LogLck
-                           this,
-                           aLK[m_eLockKind],
-                           m_uLockWord);
-      }
-    }
+  while (! Lock::iLockGrabWrite(&m_uLockWord)) {
+
+    if (! m_pFor || CN_LOG == m_pFor->eClass())
+      continue;
     
-    iResult = Lock::iLockGrabWrite(&m_uLockWord);
+    oTimer.vUpdate();
+    if (oTimer.iMilliseconds() < 100 || bReported)
+      continue;
     
-  } while ( ! iResult );
+    bReported = true;
+    vIncStepNo();
+    AM::vLogLck(SL_INF,this,LA_LCK_WRITE_UNABLE,
+                "Unable to grab write lock %p %s %p"_Stz, //!format-LogLck
+                this,
+                aLK[m_eLockKind],
+                m_uLockWord);
+  }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // write lock has been acquired
+
   if (bReported) {
     vIncStepNo();
     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_ABLE,
