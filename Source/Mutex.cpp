@@ -120,7 +120,7 @@ Mutex::Mutex(eMK eKind, Focal* pIsFor)
   AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCT,
               "Mutex -%s construct ^for=%s |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
               aMK[m_eMutex],
-              spId.sz(m_pIsFor->m_iUniqueId),
+              spId.sz(m_pIsFor->m_iFocalId),
               * gixMutex, * gixMutex_err);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
@@ -161,7 +161,7 @@ Mutex::~Mutex(void) noexcept(false)
   AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCT,
               "Mutex -%s destruct ^for=%s |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
               aMK[m_eMutex],
-              spId.sz(m_pIsFor->m_iUniqueId),
+              spId.sz(m_pIsFor->m_iFocalId),
               * gixMutex, * gixMutex_err);
 }
 
@@ -366,14 +366,14 @@ void Mutex::vLock(Focal* pLockFor)
       AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
                   "Mutex -%s %s locked by owner |m_ixLocked=%lld|"_Stz, //!format-LogRes
                   aMK[m_eMutex],
-                  spId.sz(m_pIsFor->m_iUniqueId),
+                  spId.sz(m_pIsFor->m_iFocalId),
                   * m_ixLocked,
                   C_ENDARGS);
     else
       AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
                   "Mutex -%s %s locked by %p |m_ixLocked=%lld|"_Stz, //!format-LogRes
                   aMK[m_eMutex],
-                  spId.sz(m_pIsFor->m_iUniqueId),
+                  spId.sz(m_pIsFor->m_iFocalId),
                   pLockFor,
                   * m_ixLocked,
                   C_ENDARGS);

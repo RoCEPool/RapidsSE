@@ -261,7 +261,7 @@ void SePrompt::vBeginRequest(void)
 
   m_i_RequestFocal = m_pRequest->m_i_Focal;
   
-  m_iRequestId = m_pRequest->m_iUniqueId;
+  m_iRequestId = m_pRequest->m_iFocalId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -429,7 +429,7 @@ void SePrompt::vDeleteJob(void)
   
   AM::vLogPrm(SL_INF,this,PA_PRM_DELETE_JOB,
               "%s"_Stz, //!format-LogPrm
-              spId.sz(IK_JOB,m_pJob->m_iUniqueId));
+              spId.sz(IK_JOB,m_pJob->m_iFocalId));
 
   Task* pTask = m_pJob->pTask();
   m_pJob->vTask(nullptr);
@@ -678,7 +678,7 @@ void SePrompt::vJobWaitCond(void)
   vIncActNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_WAITS,
               "for job mutex %s to be signaled (mutex is unlocked)"_Stz, //!format-LogPrm
-              spId.sz(IK_JOB,m_pJob->m_iUniqueId),
+              spId.sz(IK_JOB,m_pJob->m_iFocalId),
               C_ENDARGS);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -833,7 +833,7 @@ i8 SePrompt::iPromptId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_iUniqueId;
+  return m_iFocalId;
 }
 
 /*----------------------------------------------------------------------------*/

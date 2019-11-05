@@ -488,7 +488,7 @@ i8 Thread::iThreadNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
  
-  return BitLib::uMaskOffUpper16(m_iUniqueId);
+  return BitLib::uMaskOffUpper16(m_iFocalId);
 }
 
 /*----------------------------------------------------------------------------*/

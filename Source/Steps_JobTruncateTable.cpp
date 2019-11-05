@@ -65,7 +65,7 @@ void Step::vJob_TruncateTableSpawnSub(void)
   if ( ! m_pDataStack->bPopAsInt(iSlot) )
     THROW_DSTACK();
   
-  i8 iTruncateJobId = pJob_TruncateTable->m_iUniqueId;
+  i8 iTruncateJobId = pJob_TruncateTable->m_iFocalId;
   ReqTuple* aReqTuple = &pJob_TruncateTable->m_xReqTuple;
   
   JobClass* pJobClass_SubTruncate = JobClass::pFind(CN_JOB_SUBTRUNCATE);
@@ -76,7 +76,7 @@ void Step::vJob_TruncateTableSpawnSub(void)
   
   pJob_SubTruncate->vSeed(SS_SEED_RUN);
   
-  pJob_SubTruncate->m_iParentId  = pJob_TruncateTable->m_iUniqueId;
+  pJob_SubTruncate->m_iParentId  = pJob_TruncateTable->m_iFocalId;
   pJob_SubTruncate->m_iTruncateJobId = iTruncateJobId;
   pJob_SubTruncate->m_oEnameSet.vAdd("<tableNm>"_Stz,
                                    pJob_TruncateTable->m_oEnameSet.szValue("<tableNm>"_Stz));

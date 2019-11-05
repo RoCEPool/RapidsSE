@@ -12,7 +12,7 @@ void _LogEntryOp::vSet(LogEntry* pLogEntry, Op* pOp, eOA eOpAct)
   pLogEntry->m_eKind = EK_OPR;
   pLogEntry->m_cPrefix = 'O';
 
-  m_iOpId  = pOp->m_iUniqueId;
+  m_iOpId  = pOp->m_iFocalId;
   m_eOpAct = eOpAct;
   
   if (OA_OP_CONSTRUCT == eOpAct)

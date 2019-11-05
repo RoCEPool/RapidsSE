@@ -29,7 +29,7 @@ void Step::vJob_PurgeSpawnSub(void)
   if ( ! m_pDataStack->bPopAsInt(iSlot) )
     THROW_DSTACK();
   
-  i8 iPurgeJobId = pJob_Purge->m_iUniqueId;
+  i8 iPurgeJobId = pJob_Purge->m_iFocalId;
   ReqTuple* aReqTuple = &pJob_Purge->m_xReqTuple;
   
   JobClass* pJobClass_SubPurger = JobClass::pFind(CN_JOB_SUBPURGER);
@@ -40,7 +40,7 @@ void Step::vJob_PurgeSpawnSub(void)
   
   pJob_SubPurger->vSeed(SS_SEED_RUN);
   
-  pJob_SubPurger->m_iParentId   = pJob_Purge->m_iUniqueId;
+  pJob_SubPurger->m_iParentId   = pJob_Purge->m_iFocalId;
   pJob_SubPurger->m_iPurgeJobId = iPurgeJobId;
   pJob_SubPurger->m_oEnameSet.vAdd("<tableNm>"_Stz,
                                  pJob_Purge->m_oEnameSet.szValue("<tableNm>"_Stz));

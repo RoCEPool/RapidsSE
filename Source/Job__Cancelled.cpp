@@ -104,7 +104,7 @@ Job__Cancelled::Job__Cancelled(Job* pDistJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCELLED,_FOOTER_);
   
-  m_iParentId = pDistJob->m_iUniqueId;
+  m_iParentId = pDistJob->m_iFocalId;
 
   m_eErrorCode = EC_NONE;
   

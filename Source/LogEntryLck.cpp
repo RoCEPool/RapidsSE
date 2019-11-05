@@ -14,7 +14,7 @@ void _LogEntryLck::vSet(LogEntry* pLogEntry, Lock* pLock, eLA eLckAct)
   pLogEntry->m_iAct    = pLock->iActNo();
   //pLogEntry->m_xReqTuple.vSet(pLock->aReqTuple());
 
-  m_iLckId  = pLock->m_iUniqueId;
+  m_iLckId  = pLock->m_iFocalId;
   m_eLckAct = eLckAct;
   
        if (LA_LCK_CONSTRUCT == eLckAct)  pLogEntry->m_iIndicator = OC_CONSTRUCT;

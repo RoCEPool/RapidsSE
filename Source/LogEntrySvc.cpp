@@ -12,7 +12,7 @@ void _LogEntrySvc::vSet(LogEntry* pLogEntry, Job* pJob, eVA eSvcAct)
   pLogEntry->m_eKind = EK_SVC;
   pLogEntry->m_cPrefix = 'V';
 
-  m_iSvcId  = pJob->m_iUniqueId;
+  m_iSvcId  = pJob->m_iFocalId;
   m_eSvcAct = eSvcAct;
 }
 

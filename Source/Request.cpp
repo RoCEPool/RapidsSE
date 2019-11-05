@@ -44,7 +44,7 @@ void Request::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Request::Request(Session* p_Session, Stz* szPurpose, i8 iClassSeq)
-: Focal(CN_REQUEST,AM::iNextRequest(),p_Session->m_iUniqueId)
+: Focal(CN_REQUEST,AM::iNextRequest(),p_Session->m_iFocalId)
 , m_xReqTuple(nullptr)
 {
   _precondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
@@ -57,8 +57,8 @@ Request::Request(Session* p_Session, Stz* szPurpose, i8 iClassSeq)
   m_xReqTuple.m_i_Origin  = AM::iThisNodeNo();
   m_xReqTuple.m_i_Session = p_Session->m_i_Session;
 
-  m_xReqTuple.m_iReqId = m_iUniqueId;
-  m_xReqTuple.m_iForId = p_Session->m_iUniqueId;
+  m_xReqTuple.m_iReqId = m_iFocalId;
+  m_xReqTuple.m_iForId = p_Session->m_iFocalId;
 
   _checkInitialised_(CN_REQUEST);
   

@@ -439,7 +439,7 @@ i8 Job::iJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iUniqueId;
+  return m_iFocalId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -450,7 +450,7 @@ void Job::vMarkJob(void)
   s48K sJobMark;
   
   sJobMark.vSprintCat("Job %03lld %s session %lld slot %lld\n"_Stz,
-                      m_iUniqueId,
+                      m_iFocalId,
                       aCN[eClass()],
                       m_xReqTuple.m_i_Session,
                       m_i_Slot);
@@ -464,7 +464,7 @@ void Job::vMarkJob(void)
 
   sJobMark.vConcat("\n"_Stz);
 
-  AM::vLogText(m_iUniqueId,sJobMark);
+  AM::vLogText(m_iFocalId,sJobMark);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -552,7 +552,7 @@ i8 Job::iOriginatorNode(void)
   
   i8 iMaskOffLower48Bits = 0xFFFF000000000000;
   
-  i8 iOriginatorNode = m_iUniqueId & iMaskOffLower48Bits;
+  i8 iOriginatorNode = m_iFocalId & iMaskOffLower48Bits;
   iOriginatorNode >>= 48;
   
   return iOriginatorNode;
@@ -587,7 +587,7 @@ void Job::vReport(void)
   
   vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
          this,
-         m_iUniqueId,
+         m_iFocalId,
          m_oAcksRmg_2pc.iPrintOnlyValue());
 }
 

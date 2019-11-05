@@ -15,7 +15,7 @@ Focal::Focal(eCN eClassNo)
   m_i_Focal   = C_UNKNOWN;
   m_i_Log     = C_UNKNOWN;
   
-  m_iUniqueId = C_UNKNOWN;
+  m_iFocalId = C_UNKNOWN;
   m_iForId    = C_UNKNOWN;
   
   m_iActNo    = C_UNKNOWN;
@@ -31,7 +31,7 @@ Focal::Focal(eCN eClassNo, i8 iUniqueId, i8 iForId)
   m_i_Focal   = C_UNKNOWN;
   m_i_Log     = C_UNKNOWN;
   
-  m_iUniqueId = iUniqueId;
+  m_iFocalId = iUniqueId;
   m_iForId    = iForId;
   
   m_iActNo    = C_UNKNOWN;
@@ -55,7 +55,7 @@ Focal::~Focal(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* inc action sequence number                                                 */
+/* get last action sequence number                                            */
 /*----------------------------------------------------------------------------*/
 i8 Focal::iActNo(void)
 {

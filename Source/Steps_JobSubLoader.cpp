@@ -42,7 +42,7 @@ void Step::vJob_SubLoaderSpawn(void)
   
   pJob_SubLoader->vSeed(SS_SEED_RUN);
   
-  pJob_SubLoader->m_iParentId = pJob_LoadTable->m_iUniqueId;
+  pJob_SubLoader->m_iParentId = pJob_LoadTable->m_iFocalId;
 
   //pJob_SubLoader->m_oEnameSet.vAdd("<tableNm>"_Stz,
   //                               pJob_LoadTable->m_oEnameSet.szValue("<tableNm>"_Stz));

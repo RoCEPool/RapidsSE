@@ -16,7 +16,7 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, Resource* pResource, eRA eResAct)
 
   m_eClass  = pResource->eClass();
 
-  m_iResId  = pResource->m_iUniqueId;
+  m_iResId  = pResource->m_iFocalId;
   m_eResAct = eResAct;
   
        if (RA_DIR_CONSTRUCT  == eResAct) pLogEntry->m_iIndicator = OC_CONSTRUCT;

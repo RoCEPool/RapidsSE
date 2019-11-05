@@ -198,7 +198,7 @@ bool Job_SubLoader::bChunk(void)
   
   Session* pSession = m_pJob_LoadTable->pSession();
   Table* pTable = m_pJob_LoadTable->m_pTable;
-  i8 iParentJobId = m_pJob_LoadTable->m_iUniqueId;
+  i8 iParentJobId = m_pJob_LoadTable->m_iFocalId;
   Formatters* pFormatters = &m_pJob_LoadTable->m_oFormatters;
 
   i8 i_Seek;
@@ -264,7 +264,7 @@ void Job_SubLoader::vEnd(void)
   
   if (gpBufferPool->bLowMemory())
     vTrace("Job_SubLoader #%lld -- ending with low memory\n"_Stz,
-           m_iUniqueId);
+           m_iFocalId);
 
   // handle any dangling buffers
   vHandleDanglingBuffers();
@@ -295,13 +295,13 @@ bool Job_SubLoader::bTerminate(void)
   if (m_oFormatters.m_nMaxErrors &&
       *m_pJob_LoadTable->m_ixErrors >= m_oFormatters.m_nMaxErrors) {
     vTrace("Job_SubLoader #%lld -- terminating with max errors %lld %lld\n"_Stz,
-           m_iUniqueId,*m_pJob_LoadTable->m_ixErrors,m_oFormatters.m_nMaxErrors);
+           m_iFocalId,*m_pJob_LoadTable->m_ixErrors,m_oFormatters.m_nMaxErrors);
     return true;
   }
   
   if (gpBufferPool->bLowMemory()) {
     vTrace("Job_SubLoader #%lld -- terminating with low memory\n"_Stz,
-           m_iUniqueId);
+           m_iFocalId);
     return true;
   }
 

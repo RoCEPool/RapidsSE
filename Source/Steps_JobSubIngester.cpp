@@ -41,7 +41,7 @@ void Step::vJob_SubIngesterSpawn(void)
     static_cast<Job_SubIngester*>
       (pJobClass_SubIngester->pPreJob(aReqTuple,pSession));
   
-  pJob_SubIngester->m_iParentId  = pJob_Ingest->m_iUniqueId;
+  pJob_SubIngester->m_iParentId  = pJob_Ingest->m_iFocalId;
   
   pJob_SubIngester->vSeed(SS_SEED_RUN);
   

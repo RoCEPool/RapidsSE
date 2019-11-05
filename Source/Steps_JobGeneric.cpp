@@ -31,7 +31,7 @@ void Step::vJob__BegunNew(void)
   Job* pDistJob = _pJob(pDistJobPtr);
 
   Job* pJobBegun = new Job__Begun(pDistJob);
-  pJobBegun->m_iUniqueId = pDistJob->m_iUniqueId;
+  pJobBegun->m_iFocalId = pDistJob->m_iFocalId;
   pJobBegun->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
   JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
@@ -57,7 +57,7 @@ void Step::vJob__CancelNew(void)
   Job* pDistJob = _pJob(pDistJobPtr);
 
   Job* pJobCancel = new Job__Cancel(pDistJob);
-  pJobCancel->m_iUniqueId = pDistJob->m_iUniqueId;
+  pJobCancel->m_iFocalId = pDistJob->m_iFocalId;
   pJobCancel->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
   JobClass* pJobClass__Cancel = JobClass::pFind(CN_JOB__CANCEL);
@@ -83,7 +83,7 @@ void Step::vJob__CancelledNew(void)
   Job* pDistJob = _pJob(pDistJobPtr);
 
   Job* pJobCancelled = new Job__Cancelled(pDistJob);
-  pJobCancelled->m_iUniqueId = pDistJob->m_iUniqueId;
+  pJobCancelled->m_iFocalId = pDistJob->m_iFocalId;
   pJobCancelled->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
   JobClass* pJobClass__Cancelled = JobClass::pFind(CN_JOB__CANCELLED);
@@ -109,7 +109,7 @@ void Step::vJob__EndNew(void)
   Job* pDistJob = _pJob(pDistJobPtr);
 
   Job* pJobEnd = new Job__End(pDistJob);
-  pJobEnd->m_iUniqueId = pDistJob->m_iUniqueId;
+  pJobEnd->m_iFocalId = pDistJob->m_iFocalId;
   pJobEnd->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
   JobClass* pJobClass__End = JobClass::pFind(CN_JOB__END);
@@ -135,7 +135,7 @@ void Step::vJob__EndedNew(void)
   Job* pDistJob = _pJob(pDistJobPtr);
 
   Job* pJobEnded = new Job__Ended(pDistJob);
-  pJobEnded->m_iUniqueId = pDistJob->m_iUniqueId;
+  pJobEnded->m_iFocalId = pDistJob->m_iFocalId;
   pJobEnded->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
   JobClass* pJobClass__Ended = JobClass::pFind(CN_JOB__ENDED);
@@ -161,7 +161,7 @@ void Step::vJob__ExecuteNew(void)
   Job* pDistJob = _pJob(pDistJobPtr);
 
   Job* pJobExecute = new Job__Execute(pDistJob);
-  pJobExecute->m_iUniqueId = pDistJob->m_iUniqueId;
+  pJobExecute->m_iFocalId = pDistJob->m_iFocalId;
   pJobExecute->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
   JobClass* pJobClass__Execute = JobClass::pFind(CN_JOB__EXECUTE);
@@ -187,7 +187,7 @@ void Step::vJob__ExecutedNew(void)
   Job* pDistJob = _pJob(pDistJobPtr);
 
   Job* pJobExecuted = new Job__Executed(pDistJob);
-  pJobExecuted->m_iUniqueId = pDistJob->m_iUniqueId;
+  pJobExecuted->m_iFocalId = pDistJob->m_iFocalId;
   pJobExecuted->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
   JobClass* pJobClass__Executed = JobClass::pFind(CN_JOB__EXECUTED);

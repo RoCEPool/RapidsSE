@@ -59,7 +59,7 @@ void Task::operator delete(void* pTaskAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Task::Task(Job* pJob)
-: Focal(CN_TASK,AM::iNextTaskId(),pJob->m_iUniqueId)
+: Focal(CN_TASK,AM::iNextTaskId(),pJob->m_iFocalId)
 , m_okLock(LK_TASK,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -962,7 +962,7 @@ i8 Task::iTaskId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_iUniqueId;
+  return m_iFocalId;
 }
 
 /*----------------------------------------------------------------------------*/

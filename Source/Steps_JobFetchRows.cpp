@@ -178,7 +178,7 @@ void Step::vJob_FetchRowsSpawnSub(void)
   
   pJob_SubFetch->vSeed(SS_SEED_RUN);
   
-  pJob_SubFetch->m_iParentId    = pJob_FetchRows->m_iUniqueId;
+  pJob_SubFetch->m_iParentId    = pJob_FetchRows->m_iFocalId;
   pJob_SubFetch->m_pParentJob   = pJob_FetchRows;
   pJob_SubFetch->m_oEnameSet.vAdd("<tableNm>"_Stz,
                                 pJob_FetchRows->m_oEnameSet.szValue("<tableNm>"_Stz));
@@ -299,7 +299,7 @@ void Step::vJob_InflateRowsSpawnSub(void)
   
   pJob_SubScan->vSeed(SS_SEED_RUN);
   
-  pJob_SubScan->m_iParentId    = pJob_InflateRows->m_iUniqueId;
+  pJob_SubScan->m_iParentId    = pJob_InflateRows->m_iFocalId;
   pJob_SubScan->m_pParentJob   = pJob_InflateRows;
   pJob_SubScan->m_oEnameSet.vAdd("<tableNm>"_Stz,
                                pJob_InflateRows->m_oEnameSet.szValue("<tableNm>"_Stz));

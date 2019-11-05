@@ -15,7 +15,7 @@ void _LogEntryReq::vSet(LogEntry* pLogEntry, Request* pRequest, eCA eReqAct)
 
   //pLogEntry->m_xReqTuple.vSet(pRequest->aReqTuple());
 
-  m_iReqId  = pRequest->m_iUniqueId;
+  m_iReqId  = pRequest->m_iFocalId;
   m_eReqAct = eReqAct;
   
   if (CA_REQ_CONSTRUCT == eReqAct)

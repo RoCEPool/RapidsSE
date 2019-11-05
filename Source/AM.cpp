@@ -212,7 +212,7 @@ void AM::vSendJobOperand(Task* pTask, Operand* pOperand,
   
   // new a xmit job
   Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(
-                                  nullptr, pTask,pOperand, pParentJob->m_iUniqueId,pOp,iNode);
+                                  nullptr, pTask,pOperand, pParentJob->m_iFocalId,pOp,iNode);
   
   // set the send node in the task
   Node* pSendNode = pGrid()->pGetNode(iNode);
@@ -346,7 +346,7 @@ PsxThd* AM::pThisTLSPsxThd(void) {
   return pPsxThd;
 }
 i8 AM::iThreadId(Thread* pThread) {
-  return pThread->m_iUniqueId;
+  return pThread->m_iFocalId;
 }
 void AM::vWelcomeText(s256& sWelcome) {
   Engine::vGetWelcome(sWelcome);
@@ -1268,7 +1268,7 @@ bool AM::bInBufferPool(Object* pObject) {
   return gpBufferPool->bInBufferPool(pObject);
 }
 
-i8 AM::iJobUniqueId(Job* pJob) { return pJob->m_iUniqueId;                     }
+i8 AM::iJobUniqueId(Job* pJob) { return pJob->m_iFocalId;                     }
 
 void AM::vPrintGlobals(void)
 {

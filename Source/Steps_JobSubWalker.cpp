@@ -46,7 +46,7 @@ void Step::vJob_SubWalkerSpawn(void)
     static_cast<Job_SubWalker*>
       (pJobClass_SubWalker->pPreJob(aReqTuple,pSession));
   
-  pJob_SubWalker->m_iParentId    = pJob_Walk->m_iUniqueId;
+  pJob_SubWalker->m_iParentId    = pJob_Walk->m_iFocalId;
   pJob_SubWalker->m_pJobWalk     = pJob_Walk;
   pJob_SubWalker->vSlot(i_Slot);
 

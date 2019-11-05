@@ -192,7 +192,7 @@ void Step::vJob_IndexJoinSpawnSub(void)
   
   pJob_SubIndexJoin->vSeed(SS_SEED_RUN);
   
-  pJob_SubIndexJoin->m_iParentId    = pJob_IndexJoin->m_iUniqueId;
+  pJob_SubIndexJoin->m_iParentId    = pJob_IndexJoin->m_iFocalId;
   pJob_SubIndexJoin->m_pParentJob   = pJob_IndexJoin;
   pJob_SubIndexJoin->m_oEnameSet.vAdd("<tableNm>"_Stz,
                                     pJob_IndexJoin->m_oEnameSet.szValue("<tableNm>"_Stz));

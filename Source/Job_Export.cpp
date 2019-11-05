@@ -248,7 +248,7 @@ void Job_Export::vShow(void)
 //  vTrace("  Job_Export %03lld: "
 //         "Table %s File %s \n"_Stz,
 //
-//         m_iUniqueId,
+//         m_iFocalId,
 //         szObjectName(),
 //         szFilePath()
 //         );

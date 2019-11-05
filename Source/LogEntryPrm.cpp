@@ -13,7 +13,7 @@ void _LogEntryPrm::vSet(LogEntry* pLogEntry, SePrompt*  pPrompt, ePA ePrmAct)
   pLogEntry->m_cPrefix = 'P';
   pLogEntry->m_iAct    = pPrompt->iActNo();
 
-  m_iPrmId  = pPrompt->m_iUniqueId;
+  m_iPrmId  = pPrompt->m_iFocalId;
   m_ePrmAct = ePrmAct;
   
   if (PA_PRM_COMMAND == ePrmAct)
