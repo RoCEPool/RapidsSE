@@ -192,11 +192,9 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_NODEINFO
   /*    */ &Dump::vDummy,           // CN_JOB_OPERAND
   /*    */ &Dump::vDummy,           // CN_JOB_PERIODIC
-  /*    */ &Dump::vDummy,           // CN_JOB_PING
   /*    */ &Dump::vDummy,           // CN_JOB_PIPELINE
   /*    */ &Dump::vDummy,           // CN_JOB_PUBLISH
   /*    */ &Dump::vDummy,           // CN_JOB_PURGE
-  /*    */ &Dump::vDummy,           // CN_JOB_PWF
   /*    */ &Dump::vDummy,           // CN_JOB_RECEIVER
   /*    */ &Dump::vDummy,           // CN_JOB_REPEATER
   /*    */ &Dump::vDummy,           // CN_JOB_REPORT
@@ -607,11 +605,9 @@ i8 giClassSize[]
   /*    */ sizeof(Job_NodeInfo),       // CN_JOB_NODEINFO
   /*    */ sizeof(Job_Operand),        // CN_JOB_OPERAND
   /*    */ sizeof(Job_Periodic),       // CN_JOB_PERIODIC
-  /*    */ sizeof(Job_Ping),           // CN_JOB_PING
-  /*    */ sizeof(Job_Pipeline),        // CN_JOB_PIPELINE
+  /*    */ sizeof(Job_Pipeline),       // CN_JOB_PIPELINE
   /*    */ sizeof(Job_Publish),        // CN_JOB_PUBLISH
   /*    */ sizeof(Job_Purge),          // CN_JOB_PURGE
-  /*    */ sizeof(Job_Pwf),            // CN_JOB_PWF
   /*    */ sizeof(Job_Receiver),       // CN_JOB_RECEIVER
   /*    */ sizeof(Job_Repeater),       // CN_JOB_REPEATER
   /*    */ sizeof(Job_Repeater),       // CN_JOB_REPORT
@@ -1021,11 +1017,9 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_NODEINFO
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_OPERAND
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PERIODIC
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PING
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PIPELINE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PUBLISH
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PURGE
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PWF
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_RECEIVER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_REPEATER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_REPORT

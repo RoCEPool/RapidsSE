@@ -187,11 +187,9 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_NODEINFO
   /*    */ &Finalize::vUndefined,         // CN_JOB_OPERAND
   /*    */ &Finalize::vUndefined,         // CN_JOB_PERIODIC
-  /*    */ &Finalize::vUndefined,         // CN_JOB_PING
   /*    */ &Finalize::vUndefined,         // CN_JOB_PIPELINE
   /*    */ &Finalize::vUndefined,         // CN_JOB_PUBLISH
   /*    */ &Finalize::vUndefined,         // CN_JOB_PURGE
-  /*    */ &Finalize::vUndefined,         // CN_JOB_PWF
   /*    */ &Finalize::vUndefined,         // CN_JOB_RECEIVER
   /*    */ &Finalize::vUndefined,         // CN_JOB_REPEATER
   /*    */ &Finalize::vUndefined,         // CN_JOB_REPORT

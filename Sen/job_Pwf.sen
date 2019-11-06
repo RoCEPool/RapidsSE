@@ -27,11 +27,6 @@
   pTask task.job@ to pJob_Pwf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_Pwf job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set metadata string in the job
   args.metadata if
     "(path VARCHAR)" pJob_Pwf job.metadata!
@@ -61,6 +56,22 @@
 
   //"<<pwf_req" log::mark
     <<logExit <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: pwf :: pwf ;
+
+jobInfo: pwf
+{
+  jobKind  = JK_LOCAL
+  rspKind  = RS_LOCAL_ROWS
+  ddlLock  = DL_GRAB_READ
+  
+  preCheck = bClusterStarted
+}
 ;
 
 /*============================================================================*/

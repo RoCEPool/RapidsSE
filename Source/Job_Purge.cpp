@@ -47,7 +47,7 @@ JobClass xJobClass_Purge =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Purge_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Pwf_class;
+  *pNextFun = (pFUN*)pJob_Receiver_class;
   
   return &xJobClass_Purge;
 }
