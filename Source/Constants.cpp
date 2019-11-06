@@ -231,12 +231,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_INFLATEROWS"_Stz,    CN_JOB_INFLATEROWS);
   /*    */ vAddConstant("CN_JOB_INSERTROW"_Stz,      CN_JOB_INSERTROW);
   /*    */ vAddConstant("CN_JOB_INSERTTABLE"_Stz,    CN_JOB_INSERTTABLE);
-  /*    */ vAddConstant("CN_JOB_LF"_Stz,             CN_JOB_LF);
-  /*    */ vAddConstant("CN_JOB_LISTPARTCOLUMNS"_Stz,CN_JOB_LISTPARTCOLUMNS);
-  /*    */ vAddConstant("CN_JOB_LISTPARTITIONS"_Stz, CN_JOB_LISTPARTITIONS);
-  /*    */ vAddConstant("CN_JOB_LISTSCHEMAS"_Stz,    CN_JOB_LISTSCHEMAS);
-  /*    */ vAddConstant("CN_JOB_LISTTABLES"_Stz,     CN_JOB_LISTTABLES);
-  /*    */ vAddConstant("CN_JOB_LISTTENANTS"_Stz,    CN_JOB_LISTTENANTS);
   /*    */ vAddConstant("CN_JOB_LOADTABLE"_Stz,      CN_JOB_LOADTABLE);
   /*    */ vAddConstant("CN_JOB_MONITOR"_Stz,        CN_JOB_MONITOR);
   /*    */ vAddConstant("CN_JOB_NETHOG"_Stz,         CN_JOB_NETHOG);

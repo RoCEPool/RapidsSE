@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* List Tables requests (on the originating node)                             */
 /*----------------------------------------------------------------------------*/
-: listTables_req ( -- <R> )
+: lstbl_req ( -- <R> )
 
   >>logEntry <SEED_REQ2>
 
@@ -31,15 +31,6 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_ListTables job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab ddl read lock
-  DdlLock[].grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
   checkInTables not if pJob_ListTables <ERROR_REQUEST> !!logError exit then
 
@@ -50,6 +41,22 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return
   <<logExit <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: lstbl :: lstbl ;
+
+jobInfo: lstbl
+{
+  jobKind      = JK_LOCAL
+  responseKind = RS_LOCAL_ROWS
+  
+  exeLock      = DL_GRAB_READ
+  preCheck     = bClusterStarted
+}
 ;
 
 /*============================================================================*/

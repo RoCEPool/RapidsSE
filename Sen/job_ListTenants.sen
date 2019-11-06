@@ -5,9 +5,9 @@
 " job_ListTenants.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* List Tenants requests (on the originating node)                             */
+/* List Tenants requests (on the originating node)                            */
 /*----------------------------------------------------------------------------*/
-: listTenants_req ( -- <R> )
+: lsten_req ( -- <R> )
 
   >>logEntry <SEED_REQ2>
 
@@ -24,15 +24,6 @@
   pTask task.job@ to pJob_ListTenants
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_ListTenants job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab ddl read lock
-  DdlLock[].grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tenants folder
   checkInTenants not if pJob_ListTenants <ERROR_REQUEST> !!logError exit then
 
@@ -43,6 +34,22 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return
   <<logExit <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: lsten :: lsten ;
+
+jobInfo: lsten
+{
+  jobKind      = JK_LOCAL
+  responseKind = RS_LOCAL_ROWS
+  
+  exeLock      = DL_GRAB_READ
+  preCheck     = bClusterStarted
+}
 ;
 
 /*============================================================================*/

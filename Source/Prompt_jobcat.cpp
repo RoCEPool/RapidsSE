@@ -55,11 +55,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_INDEXJOIN);
   nJobs++; JobClass::vJobCat(CN_JOB_INFLATEROWS);
   nJobs++; JobClass::vJobCat(CN_JOB_INGEST);
-  nJobs++; JobClass::vJobCat(CN_JOB_LF);
-  nJobs++; JobClass::vJobCat(CN_JOB_LISTPARTCOLUMNS);
-  nJobs++; JobClass::vJobCat(CN_JOB_LISTSCHEMAS);
-  nJobs++; JobClass::vJobCat(CN_JOB_LISTTABLES);
-  nJobs++; JobClass::vJobCat(CN_JOB_LISTTENANTS);
   nJobs++; JobClass::vJobCat(CN_JOB_MONITOR);
   nJobs++; JobClass::vJobCat(CN_JOB_PING);
   nJobs++; JobClass::vJobCat(CN_JOB_PWF);
@@ -103,8 +98,8 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_EXPORT);
   nJobs++; JobClass::vJobCat(CN_JOB_INSERTROW);
   nJobs++; JobClass::vJobCat(CN_JOB_INSERTTABLE);
-  nJobs++; JobClass::vJobCat(CN_JOB_LOADTABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_LISTPARTITIONS);
+  nJobs++; JobClass::vJobCat(CN_JOB_LOADTABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_PUBLISH);
   nJobs++; JobClass::vJobCat(CN_JOB_PURGE);
   nJobs++; JobClass::vJobCat(CN_JOB_SANITY);

@@ -47,7 +47,7 @@ JobClass xJobClass_ListPartitions =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_ListPartitions_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_ListSchemas_class;
+  *pNextFun = (pFUN*)pJob_LoadTable_class;
   
   return &xJobClass_ListPartitions;
 }

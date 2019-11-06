@@ -185,12 +185,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTROW
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_KIDEXPORT
-  /*    */ &Dump::vDummy,           // CN_JOB_LF
-  /*    */ &Dump::vDummy,           // CN_JOB_LISTPARTCOLUMNS
   /*    */ &Dump::vDummy,           // CN_JOB_LISTPARTITIONS
-  /*    */ &Dump::vDummy,           // CN_JOB_LISTSCHEMAS
-  /*    */ &Dump::vDummy,           // CN_JOB_LISTTABLES
-  /*    */ &Dump::vDummy,           // CN_JOB_LISTTENANTS
   /*    */ &Dump::vDummy,           // CN_JOB_LOADTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_MONITOR
   /*    */ &Dump::vDummy,           // CN_JOB_NETHOG
@@ -605,12 +600,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_InsertRow),      // CN_JOB_INSERTROW
   /*    */ sizeof(Job_InsertTable),    // CN_JOB_INSERTTABLE
   /*    */ sizeof(Job_KidExport),      // CN_JOB_KIDEXPORT
-  /*    */ sizeof(Job_Lf),             // CN_JOB_LF
-  /*    */ sizeof(Job_ListPartColumns),// CN_JOB_LISTPARTCOLUMNS
   /*    */ sizeof(Job_ListPartitions), // CN_JOB_LISTPARTITIONS
-  /*    */ sizeof(Job_ListSchemas),    // CN_JOB_LISTSCHEMAS
-  /*    */ sizeof(Job_ListTables),     // CN_JOB_LISTTABLES
-  /*    */ sizeof(Job_ListTenants),    // CN_JOB_LISTTENANTS
   /*    */ sizeof(Job_LoadTable),      // CN_JOB_LOADTABLE
   /*    */ sizeof(Job_Monitor),        // CN_JOB_MONITOR
   /*    */ sizeof(Job_NetHog),         // CN_JOB_NETHOG
@@ -1024,12 +1014,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTROW
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_KIDEXPORT
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LF
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTPARTCOLUMNS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTPARTITIONS
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTSCHEMAS
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTTABLES
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTTENANTS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LOADTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_MONITOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_NETHOG
