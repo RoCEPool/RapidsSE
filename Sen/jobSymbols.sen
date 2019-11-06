@@ -79,6 +79,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* push value of <pipeNm> from job's ename-set                                */
+/*----------------------------------------------------------------------------*/
+: <pipeNm> <<metaSymbol>> ( -- "<pipeNm>" )
+
+[ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+;
+
+/*----------------------------------------------------------------------------*/
 /* push value of <routineNm> from job's ename-set                             */
 /*----------------------------------------------------------------------------*/
 : <routineNm> <<metaSymbol>> ( -- "<routineNm>" )
