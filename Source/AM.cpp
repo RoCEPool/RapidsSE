@@ -303,7 +303,7 @@ i8 AM::nRandomLevels(void) {
 
 i8 AM::iTaskAcksRmg_assert_only_(Task* pTask) { return pTask->iAcksRmg_assert_only_(); }
 void AM::vTaskBeginOp(Task* pTask)     { pTask->vBeginOp();     }
-void AM::vTaskDump(void)               { AM::pThisTLSTask()->vDump(); }
+void AM::vTaskDump(void)               { if (AM::pThisTLSTask()) AM::pThisTLSTask()->vDump(); }
 void AM::vTaskMutexLock(Task* pTask)   { pTask->vMutexLock();   }
 void AM::vTaskMutexSignal(Task* pTask) { pTask->vMutexSignal(); }
 void AM::vTaskMutexUnlock(Task* pTask) { pTask->vMutexUnlock(); }
@@ -338,6 +338,8 @@ Op* AM::pThisTLSOp(void) {
 }
 Tasks::Task* AM::pThisTLSTask(void) {
   Thread* pThread = Thread::pThisTLSThread();
+  if (! pThread)
+    return nullptr;
   Task* pTask = pThread->pTask();
   return pTask;
 }
