@@ -86,9 +86,9 @@ jobSyntax: useSchema :: use schema <schemaNm>;
 
 jobInfo: useSchema
 {
-  jobKind  = JK_LOCAL
-  rspKind  = RS_LOCAL_ERRORS
-  ddlLock  = DL_GRAB_READ
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_LOCAL_ERRORS
+  <?ddlLock?>  = DL_GRAB_READ
   
   preCheck = bClusterStarted
 }

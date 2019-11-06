@@ -44,8 +44,8 @@ jobSyntax: lssch :: lssch ;
 
 jobInfo: lssch
 {
-  jobKind = JK_LOCAL
-  rspKind = RS_LOCAL_ROWS
+  <?jobKind?> = JK_LOCAL
+  <?rspKind?> = RS_LOCAL_ROWS
   ddlLock = DL_GRAB_READ
   
   preCheck = bClusterStarted

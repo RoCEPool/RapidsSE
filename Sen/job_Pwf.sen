@@ -66,9 +66,9 @@ jobSyntax: pwf :: pwf ;
 
 jobInfo: pwf
 {
-  jobKind  = JK_LOCAL
-  rspKind  = RS_LOCAL_ROWS
-  ddlLock  = DL_GRAB_READ
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_LOCAL_ROWS
+  <?ddlLock?>  = DL_GRAB_READ
   
   preCheck = bClusterStarted
 }

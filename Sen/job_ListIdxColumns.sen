@@ -137,9 +137,9 @@ jobSyntax: lsidxcol :: lsidxcol <tableNm> <indexNm> ;
 
 jobInfo: lsidxcol
 {
-  jobKind  = JK_LOCAL
-  rspKind  = RS_LOCAL_ROWS
-  ddlLock  = DL_GRAB_READ
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_LOCAL_ROWS
+  <?ddlLock?>  = DL_GRAB_READ
   
   preCheck = bClusterStarted
 }

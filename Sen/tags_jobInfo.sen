@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <catalogNm> from job's ename-set                             */
 /*----------------------------------------------------------------------------*/
-: <?jobKind?> <<jobInfoTag>> ( -- translated "jobKind" )
+: <?<?jobKind?>?> <<jobInfoTag>> ( -- translated "<?jobKind?>" )
 
   [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;

@@ -102,9 +102,9 @@ jobSyntax: lspartcol :: lspartcol <tableNm> ;
 
 jobInfo: lspartcol
 {
-  jobKind  = JK_LOCAL
-  rspkind  = RS_LOCAL_ROWS
-  ddlLock  = DL_GRAB_READ
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_LOCAL_ROWS
+  <?ddlLock?>  = DL_GRAB_READ
   
   preCheck = bClusterStarted
 }

@@ -34,9 +34,9 @@ jobSyntax: output :: output ;
 /*----------------------------------------------------------------------------*/
 jobInfo: output
 {
-  jobKind  = JK_OP
-  rspKind  = RS_NODE_ZERO
-  ddlLock  = DL_GRAB_READ
+  <?jobKind?>  = JK_OP
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_READ
   
   preCheck = bClusterStarted
 }

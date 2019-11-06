@@ -99,9 +99,9 @@ jobSyntax: visualizeIndex :: visidx <tableNm> <indexNm> ;
 
 jobInfo: visualizeIndex
 {
-  jobKind  = JK_LOCAL
-  rspKind  = RS_LOCAL_ERRORS
-  ddlLock  = DL_GRAB_READ
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_LOCAL_ERRORS
+  <?ddlLock?>  = DL_GRAB_READ
   
   preCheck = bClusterStarted
 }

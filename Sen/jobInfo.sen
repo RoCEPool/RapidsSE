@@ -21,7 +21,7 @@
 
   compiler::current word.EnameSet@ locals| pEnameSet |
 
-  "jobKind" pEnameSet EnameSet.getInt dup .
+  "<?jobKind?>" pEnameSet EnameSet.getInt dup .
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -45,7 +45,7 @@
 
   compiler::current word.EnameSet@ locals| pEnameSet |
 
- "jobKind" pEnameSet EnameSet.getInt dup .
+ "<?jobKind?>" pEnameSet EnameSet.getInt dup .
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 

@@ -110,7 +110,7 @@
 
   JP_EXECUTING job::this job.phase!
 
-  job::acquireddlLock
+  job::acquireDdlLock
 
   <jobNm> "::execute" str.cat find dup if
     execute

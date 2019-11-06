@@ -289,16 +289,16 @@
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-: job::acquireddlLock
+: job::acquireDdlLock
 
-  "ddlLock" <jobNm> findJobClassEnmSet EnameSet.getInt
+  "<?ddlLock?>" <jobNm> findJobClassEnmSet EnameSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   dup DL_GRAB_WRITE
   == if
     drop
-    "job::acquireddlLock - grabbing ddl write lock" .
+    "job::acquireDdlLock - grabbing ddl write lock" .
     DdlLock[].grabWrite
     exit
   then
@@ -308,7 +308,7 @@
   dup DL_GRAB_READ
   == if
     drop
-    "job::acquireddlLock - grabbing ddl read lock" .
+    "job::acquireDdlLock - grabbing ddl read lock" .
     DdlLock[].grabRead
     exit
   then

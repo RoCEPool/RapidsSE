@@ -760,7 +760,7 @@ void Jobs::vJob_post(Job* pJob)
 
     EnameSet* pJobInfoEnameSet = pJobInfo->pEnameSet();
     
-    eResponse = (eRS) pJobInfoEnameSet->iValue("rspKind"_Stz);
+    eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
 
     //eResponse = pJob->m_aJobClass->m_eResponse;
   }

@@ -50,9 +50,9 @@ jobSyntax: ping :: ping ;
 
 jobInfo: ping
 {
-  jobKind  = JK_LOCAL
-  rspKind  = RS_LOCAL_ROWS
-  ddlLock  = DL_GRAB_READ
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_LOCAL_ROWS
+  <?ddlLock?>  = DL_GRAB_READ
   
   preCheck = bClusterStarted
 }

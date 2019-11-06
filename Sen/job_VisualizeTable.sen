@@ -86,9 +86,9 @@ jobSyntax: visualizeTable :: vistbl <tableNm> ;
 
 jobInfo: visualizeTable
 {
-  jobKind  = JK_LOCAL
-  rspKind  = RS_LOCAL_ERRORS
-  ddlLock  = DL_GRAB_READ
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_LOCAL_ERRORS
+  <?ddlLock?>  = DL_GRAB_READ
   
   preCheck = bClusterStarted
 }
