@@ -47,7 +47,7 @@ JobClass xJobClass_VerifyTable =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_VerifyTable_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_VisualizeIndex_class;
+  *pNextFun = (pFUN*)pJob_WaitCluster_class;
   
   return &xJobClass_VerifyTable;
 }

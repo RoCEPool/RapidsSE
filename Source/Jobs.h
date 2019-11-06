@@ -142,12 +142,9 @@ namespace Jobs
 #include "Job_TruncateTable.hpp"
 
 #include "Job_Universal.hpp"
-#include "Job_UseSchema.hpp"
 
 #include "Job_VerifyIndex.hpp"
 #include "Job_VerifyTable.hpp"
-#include "Job_VisualizeIndex.hpp"
-#include "Job_VisualizeTable.hpp"
 
 #include "Job_WaitCluster.hpp"
 #include "Job_Waker.hpp"

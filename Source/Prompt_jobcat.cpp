@@ -62,10 +62,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_SHOWCLUSTER);
   nJobs++; JobClass::vJobCat(CN_JOB_SINK);
   nJobs++; JobClass::vJobCat(CN_JOB_STARTNODE);
-  nJobs++; JobClass::vJobCat(CN_JOB_USESCHEMA);
-  nJobs++; JobClass::vJobCat(CN_JOB_VISUALIZEINDEX);
-  nJobs++; JobClass::vJobCat(CN_JOB_VISUALIZETABLE);
- 
+
   // generic
   nJobs++; JobClass::vJobCat(CN_JOB__BEGUN);
   nJobs++; JobClass::vJobCat(CN_JOB__CANCEL);

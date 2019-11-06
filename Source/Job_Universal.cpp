@@ -47,7 +47,7 @@ JobClass xJobClass_Universal =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Universal_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_UseSchema_class;
+  *pNextFun = (pFUN*)pJob_VerifyIndex_class;
   
   return &xJobClass_Universal;
 }

@@ -53,19 +53,6 @@
   pTask task.job@ to pjob_VisualizeTable
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_VISUALIZETABLE pjob_VisualizeTable object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pjob_VisualizeTable job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table name
   //pjob_VisualizeTable job.objectName@ to sTableNm
   <tableNm> to sTableNm
@@ -91,6 +78,21 @@
   <<logExit <DONE_REQ>
 ;
 
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: visualizeTable :: vistbl <tableNm> ;
+
+jobInfo: visualizeTable
+{
+  jobKind  = JK_LOCAL
+  rspKind  = RS_LOCAL_ERRORS
+  ddlLock  = DL_GRAB_READ
+  
+  preCheck = bClusterStarted
+}
+;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

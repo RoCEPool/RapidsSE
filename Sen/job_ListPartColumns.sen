@@ -105,6 +105,7 @@ jobInfo: lspartcol
   jobKind  = JK_LOCAL
   rspkind  = RS_LOCAL_ROWS
   ddlLock  = DL_GRAB_READ
+  
   preCheck = bClusterStarted
 }
 ;

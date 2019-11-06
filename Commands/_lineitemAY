@@ -61,6 +61,9 @@ time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
 space;
 sztbl lineitem;
 
+vistbl lineitem;
+visidx lineitem lineitem_idx1;
+
 //fetch lineitem limit 10;
 //dumpidx lineitem LineItem_Idx1;
 
