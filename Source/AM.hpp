@@ -124,7 +124,6 @@ namespace Oblique
     static void vDropTaskLock(Task* pTask);
     static void vGrabTaskLock(Task* pTask);
     static void vIndexEntries(i8 nIndexEntries);
-    static Index* pIndex(Job_Pipeline* pJob);
     static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vNextTempName(s32& sName);
     static void vPulseTask(Task* pTask);
@@ -133,7 +132,6 @@ namespace Oblique
                                 Job* pParentJob, Op* pOp, i8 iNode);
     static void vStepTiming(StepTiming* pStepTiming);
     static void vSubInserters(i8 nSubInserters);
-    static Table* pTable(Job_Pipeline* pJob);
     static void vTakenBuffers(PoolBuffer* pTakenBuffers);
     static void vTakeBytes(i8 nTakeBytes);
     static void vTakenBytes(i8 nTakenBytes);

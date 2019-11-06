@@ -195,9 +195,6 @@ void AM::vGrabTaskLock(Task* pTask) {
 void AM::vIndexEntries(i8 nIndexEntries) {
   gpAttachMap->m_nIndexEntries = nIndexEntries;
 }
-Index* AM::pIndex(Job_Pipeline* pJob) {
-  return pJob->m_pIndex;
-}
 void AM::vMonitorPortrait(s48K& sPortrait) {
   Engine::vMonitorPortrait(sPortrait);
 }
@@ -245,9 +242,6 @@ void AM::vStepTiming(StepTiming* pStepTiming) {
 }
 void AM::vSubInserters(i8 nSubInserters) {
   gpAttachMap->Arg.m_nSubInserters = nSubInserters;
-}
-Table* AM::pTable(Job_Pipeline* pJob) {
-  return pJob->m_pTable;
 }
 void AM::vTakenBuffers(PoolBuffer* pTakenBuffers) {
   gpAttachMap->m_pTakenBuffers = pTakenBuffers;
