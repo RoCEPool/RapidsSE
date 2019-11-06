@@ -45,7 +45,7 @@ jobSyntax: lsten :: lsten ;
 jobInfo: lsten
 {
   jobKind      = JK_LOCAL
-  responseKind = RS_LOCAL_ERRORS
+  responseKind = RS_LOCAL_ROWS
   
   exeLock      = DL_GRAB_READ
   preCheck     = bClusterStarted
