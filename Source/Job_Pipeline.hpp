@@ -5,7 +5,7 @@
 
 namespace Jobs
 {
-  class Job_Pipeline : public JobMark2
+  class Job_Pipeline : public Job
   {
   public:
     Pipeline*      m_pPipeline;

@@ -102,7 +102,7 @@ void Job_Select::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Select::Job_Select(JobClass* aJobClass, ReqTuple* aReqTuple)
-: JobMark2(aJobClass, aReqTuple)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
   

@@ -101,7 +101,7 @@ void Job_Pipeline::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Pipeline::Job_Pipeline(JobClass* aJobClass, ReqTuple* aReqTuple)
-: JobMark2(aJobClass, aReqTuple)
+: Job(aJobClass, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE,_FOOTER_);
   
