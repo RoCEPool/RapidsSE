@@ -195,7 +195,7 @@ bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, EnameSet* pSynEnmSet)
     if (pSynEnmSet->szName(i_Syn)->bEqual("__meta__"_Stz))
       return true;
     
-    if (! pTkn->szText()->bEqual((pSynEnmSet->szValue(i_Syn))))
+    if (! pTkn->szText()->bSame((pSynEnmSet->szValue(i_Syn))))
       return false;
     
     i_Syn++;
