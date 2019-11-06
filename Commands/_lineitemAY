@@ -89,7 +89,7 @@ time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
 print "**************************************************************************";
 print "scan lineitem | output;";
 print "**************************************************************************";
-
+/*
 docol epochTake;
 
 pipeline lineItem_dyn
@@ -106,7 +106,7 @@ end
 
 docol epochDump;
 
-/*
+
  pipeline lineItem_dyn
  begin
  

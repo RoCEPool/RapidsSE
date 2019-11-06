@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* List Schemas requests (on the originating node)                            */
 /*----------------------------------------------------------------------------*/
-: listSchemas_req ( -- <R> )
+: lssch_req ( -- <R> )
 
   >>logEntry <SEED_REQ2>
 
@@ -24,15 +24,6 @@
   pTask task.job@ to pJob_ListSchemas
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_ListSchemas job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab ddl read lock
-  DdlLock[].grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the schemas folder
   checkInSchemas not if pJob_ListSchemas <ERROR_REQUEST> !!logError exit then
 
@@ -43,6 +34,22 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return
   <<logExit <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: lssch :: lssch ;
+
+jobInfo: lssch
+{
+  jobKind      = JK_LOCAL
+  responseKind = RS_LOCAL_ERRORS
+  
+  exeLock      = DL_GRAB_READ
+  preCheck     = bClusterStarted
+}
 ;
 
 /*============================================================================*/

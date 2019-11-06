@@ -180,12 +180,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTROW
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_KIDEXPORT
-  /*    */ &Finalize::vUndefined,         // CN_JOB_LF
-  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTPARTCOLUMNS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTPARTITIONS
-  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTSCHEMAS
-  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTTABLES
-  /*    */ &Finalize::vUndefined,         // CN_JOB_LISTTENANTS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_MONITOR
   /*    */ &Finalize::vUndefined,         // CN_JOB_NETHOG

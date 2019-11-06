@@ -92,12 +92,7 @@ namespace Jobs
 
 #include "Job_KidExport.hpp"
 
-#include "Job_Lf.hpp"
-#include "Job_ListPartColumns.hpp"
 #include "Job_ListPartitions.hpp"
-#include "Job_ListSchemas.hpp"
-#include "Job_ListTables.hpp"
-#include "Job_ListTenants.hpp"
 #include "Job_LoadTable.hpp"
 
 #include "Job_Monitor.hpp"

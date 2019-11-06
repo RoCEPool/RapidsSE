@@ -37,11 +37,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_INDEXJOIN);
   JobClass::vCmds(CN_JOB_INFLATEROWS);
   JobClass::vCmds(CN_JOB_INGEST);
-  JobClass::vCmds(CN_JOB_LF);
-  JobClass::vCmds(CN_JOB_LISTPARTCOLUMNS);
-  JobClass::vCmds(CN_JOB_LISTSCHEMAS);
-  JobClass::vCmds(CN_JOB_LISTTABLES);
-  JobClass::vCmds(CN_JOB_LISTTENANTS);
   JobClass::vCmds(CN_JOB_MONITOR);
   JobClass::vCmds(CN_JOB_PING);
   JobClass::vCmds(CN_JOB_PWF);
