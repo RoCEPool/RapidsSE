@@ -14,6 +14,7 @@ void Step::vAddSteps_EnameSet(void)
   vAddStep("enameSet.addInt"_Stz,  &Step::vEnameSetAddInt);
   vAddStep("enameSet.addStr"_Stz,  &Step::vEnameSetAddStr);
   vAddStep("enameSet.asStr"_Stz,   &Step::vEnameSetAsStr);
+  vAddStep("enameSet.getInt"_Stz,  &Step::vEnameSetGetInt);
   vAddStep("enameSet.getStr"_Stz,  &Step::vEnameSetGetStr);
   vAddStep("enameSet.hasName"_Stz, &Step::vEnameSetHasName);
 }
@@ -105,6 +106,30 @@ void Step::vEnameSetAsStr(void)
   sStr = spEnameSet.sz(pEnameSet);
   
   m_pDataStack->vPushS4K(sStr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* EnameSet.getInt -- get int value from ename-set with given name            */
+/*----------------------------------------------------------------------------*/
+void Step::vEnameSetGetInt(void)
+{
+  ENTRY("vEnameSetGetInt"_Stz);
+  
+  Object* pEnameSet_obj;
+  if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
+    THROW_DSTACK();
+  EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
+  
+  s32 sName;
+  if ( ! m_pDataStack->bPopS32(sName) )
+    THROW_DSTACK();
+  
+  i8 iValue;
+  iValue = pEnameSet->iValue(sName);
+  
+  m_pDataStack->vPushI8(iValue);
   
   EXIT();
 }
