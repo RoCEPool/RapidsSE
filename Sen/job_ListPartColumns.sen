@@ -102,11 +102,10 @@ jobSyntax: lspartcol :: lspartcol <tableNm> ;
 
 jobInfo: lspartcol
 {
-  jobKind      = JK_LOCAL
-  responseKind = RS_LOCAL_ROWS
-  
-  exeLock      = DL_GRAB_READ
-  preCheck     = bClusterStarted
+  jobKind  = JK_LOCAL
+  rspkind  = RS_LOCAL_ROWS
+  ddlLock  = DL_GRAB_READ
+  preCheck = bClusterStarted
 }
 ;
 
