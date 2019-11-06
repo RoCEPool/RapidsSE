@@ -76,11 +76,11 @@ jobSyntax: lf :: lf ;
 
 jobInfo: lf
 {
-  jobKind      = JK_LOCAL
-  responseKind = RS_LOCAL_ROWS
+  jobKind  = JK_LOCAL
+  rspKind  = RS_LOCAL_ROWS
   
-  exeLock      = DL_GRAB_READ
-  preCheck     = bClusterStarted
+  ddlLock  = DL_GRAB_READ
+  preCheck = bClusterStarted
 }
 ;
 
