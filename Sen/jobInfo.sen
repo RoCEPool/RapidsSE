@@ -135,6 +135,20 @@
 
   compiler::current word.EnameSet@ locals| pEnameSet |
 
+  sEvalue find locals| pEvalueWord |
+
+  pEvalueWord if
+    pEvalueWord word.category@ tick rootConstant eql if
+
+      sEvalue "  %v is a constant" fmt.print
+      sEname sEvalue pEnameSet EnameSet.addStr
+      exit
+
+    then
+  then
+
+
+  // -- -- --
   sEname sEvalue pEnameSet EnameSet.addStr
 ;
 
