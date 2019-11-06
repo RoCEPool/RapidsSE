@@ -4,19 +4,20 @@
 
 "-jobModel.sen" .verbose
 
-"jobSymbols.sen" include
-"jobInfo.sen"    include
-"jobSyntax.sen"  include
-"jobWords.sen"   include
-"job2pc.sen"     include
+"jobSymbols.sen"   include
+"tags_jobInfo.sen" include
+"jobInfo.sen"      include
+"jobSyntax.sen"    include
+"jobWords.sen"     include
+"job2pc.sen"       include
 
-"jobMarkers.sen" include
+"jobMarkers.sen"   include
 
-"jobHooks.sen"   include
-"jobSuffix.sen"  include
+"jobHooks.sen"     include
+"jobSuffix.sen"    include
 
-"jobSeeds.sen"   include
-"job_Set.sen"    include
+"jobSeeds.sen"     include
+"job_Set.sen"      include
 
 /*============================================================================*/
 /* end                                                                        */
