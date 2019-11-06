@@ -531,6 +531,17 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("file[1]"_Stz,      RG_FILE1);
   /*  0 */ vAddConstant("file[2]"_Stz,      RG_FILE2);
 
+  // RS_ : response kind
+  /*  0 */ vAddConstant("RS_NONE"_Stz,         RS_NONE);
+  /*  0 */ vAddConstant("RS_DATA_ROWS"_Stz,    RS_DATA_ROWS);
+  /*  0 */ vAddConstant("RS_LOAD_ROWS"_Stz,    RS_LOAD_ROWS);
+  /*  0 */ vAddConstant("RS_LOCAL_ERRORS"_Stz, RS_LOCAL_ERRORS);
+  /*  0 */ vAddConstant("RS_LOCAL_ROWS"_Stz,   RS_LOCAL_ROWS);
+  /*  0 */ vAddConstant("RS_LOCAL_ZERO"_Stz,   RS_LOCAL_ZERO);
+  /*  0 */ vAddConstant("RS_NODE_ERRORS"_Stz,  RS_NODE_ERRORS);
+  /*  0 */ vAddConstant("RS_NODE_ROWS"_Stz,    RS_NODE_ROWS);
+  /*  0 */ vAddConstant("RS_NODE_ZERO"_Stz,    RS_NODE_ZERO);
+
   // SS_ : seed strings
   /*  0 */ vAddConstant("SS_SEED_RUN"_Stz,    SS_SEED_RUN);
   /*  1 */ vAddConstant("SS_SEED_REQ"_Stz,    SS_SEED_REQ);
