@@ -200,7 +200,7 @@ ENTRY("vLocalsTo"_Stz);
   // handle a meta-symbol
   
   if (pLocalWord->pCategory()
-      && pLocalWord->pCategory()->szWordNm()->bSame("<<metaSymbol>>"_Stz)) {
+      && pLocalWord->pCategory()->szWordNm()->bSame("<<jobArgTag>>"_Stz)) {
     
     Word* pCurrentWord = m_pCompiler->pCurrentWord();
     

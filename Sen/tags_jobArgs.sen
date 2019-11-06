@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* the ename word kind                                                        */
 /*----------------------------------------------------------------------------*/
-: <<metaSymbol>> immediate ( -- )
+: <<jobArgTag>> immediate ( -- )
 
   [ compiler::current , ]
 
@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <catalogNm> from job's ename-set                             */
 /*----------------------------------------------------------------------------*/
-: <catalogNm> <<metaSymbol>> ( -- "<catalogNm>" )
+: <catalogNm> <<jobArgTag>> ( -- "<catalogNm>" )
 
   [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
@@ -28,7 +28,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <folderNm> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <folderNm> <<metaSymbol>> ( -- "<folderNm>" )
+: <folderNm> <<jobArgTag>> ( -- "<folderNm>" )
 
   [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <indexNm> from job's ename-set                               */
 /*----------------------------------------------------------------------------*/
-: <indexNm> <<metaSymbol>> ( -- "<indexNm>" )
+: <indexNm> <<jobArgTag>> ( -- "<indexNm>" )
 
   [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
@@ -44,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <jobClass> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <jobClass> <<metaSymbol>> ( -- "<jobClass>" )
+: <jobClass> <<jobArgTag>> ( -- "<jobClass>" )
 
   [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <jobNm> from job's ename-set                                 */
 /*----------------------------------------------------------------------------*/
-: <jobNm> <<metaSymbol>> ( -- "<jobNm>" )
+: <jobNm> <<jobArgTag>> ( -- "<jobNm>" )
 
   [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <jobId> from job's ename-set                                 */
 /*----------------------------------------------------------------------------*/
-: <jobId> <<metaSymbol>> ( -- "<jobId>" )
+: <jobId> <<jobArgTag>> ( -- "<jobId>" )
 
   [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
@@ -68,7 +68,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <nodeNm> from job's ename-set                                */
 /*----------------------------------------------------------------------------*/
-: <nodeNm> <<metaSymbol>> ( -- "<nodeNm>" )
+: <nodeNm> <<jobArgTag>> ( -- "<nodeNm>" )
 
   [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <path> from job's ename-set                                  */
 /*----------------------------------------------------------------------------*/
-: <path> <<metaSymbol>> ( -- "<path>" )
+: <path> <<jobArgTag>> ( -- "<path>" )
 
   [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
@@ -84,15 +84,15 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <pipeNm> from job's ename-set                                */
 /*----------------------------------------------------------------------------*/
-: <pipeNm> <<metaSymbol>> ( -- "<pipeNm>" )
+: <pipeNm> <<jobArgTag>> ( -- "<pipeNm>" )
 
-[ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
 /* push value of <routineNm> from job's ename-set                             */
 /*----------------------------------------------------------------------------*/
-: <routineNm> <<metaSymbol>> ( -- "<routineNm>" )
+: <routineNm> <<jobArgTag>> ( -- "<routineNm>" )
 
   [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
@@ -100,7 +100,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <schemaNm> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <schemaNm> <<metaSymbol>> ( -- "<schemaNm>" )
+: <schemaNm> <<jobArgTag>> ( -- "<schemaNm>" )
 
   [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
@@ -108,15 +108,15 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <subPath> from job's ename-set                               */
 /*----------------------------------------------------------------------------*/
-: <subPath> <<metaSymbol>> ( -- "<subPath>" )
+: <subPath> <<jobArgTag>> ( -- "<subPath>" )
 
-[ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
 /* push value of <tableNm> from job's ename-set                               */
 /*----------------------------------------------------------------------------*/
-: <tableNm> <<metaSymbol>> ( -- "<tableNm>" )
+: <tableNm> <<jobArgTag>> ( -- "<tableNm>" )
 
   [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
@@ -124,7 +124,7 @@
 /*----------------------------------------------------------------------------*/
 /* push value of <tenantNm> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <tenantNm> <<metaSymbol>> ( -- "<tenantNm>" )
+: <tenantNm> <<jobArgTag>> ( -- "<tenantNm>" )
 
   [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
