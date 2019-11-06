@@ -90,7 +90,7 @@ jobInfo: useSchema
   <?rspKind?>  = RS_LOCAL_ERRORS
   <?ddlLock?>  = DL_GRAB_READ
   
-  preCheck = bClusterStarted
+  <?preCheck?> = bClusterStarted
 }
 ;
 

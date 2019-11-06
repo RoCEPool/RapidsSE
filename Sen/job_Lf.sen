@@ -80,7 +80,7 @@ jobInfo: lf
   <?rspKind?>  = RS_LOCAL_ROWS
   <?ddlLock?>  = DL_GRAB_READ
   
-  preCheck = bClusterStarted
+  <?preCheck?> = bClusterStarted
 }
 ;
 
