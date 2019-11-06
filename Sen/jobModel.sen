@@ -4,8 +4,9 @@
 
 "-jobModel.sen" .verbose
 
-"jobSymbols.sen"   include
+"tags_jobArgs.sen" include
 "tags_jobInfo.sen" include
+
 "jobInfo.sen"      include
 "jobSyntax.sen"    include
 "jobWords.sen"     include
