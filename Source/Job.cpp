@@ -735,7 +735,33 @@ void Jobs::vJob_post(Job* pJob)
   JobClass* pJobClass = JobClass::pFind(eClass);
   pJob->m_aJobClass = pJobClass;
   
-  eRS eResponse = pJob->m_aJobClass->m_eResponse;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  eRS eResponse = RS_NONE;
+  
+  if (CN_JOB_UNIVERSAL == eClass) {
+    
+    EnameSet* pJobEnameSet = & pJob->m_oEnameSet;
+    
+    Stz* szJobNm = pJobEnameSet->szValue("<jobNm>"_Stz);
+
+    s32 sJobInfoNm(szJobNm);
+    
+    StrLib::vConcat(sJobInfoNm.azChar(),(const char*)"_cls"_Stz);
+
+    Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
+
+    EnameSet* pJobInfoEnameSet = pJobInfo->pEnameSet();
+    
+    eResponse = (eRS) pJobInfoEnameSet->iValue("rspKind"_Stz);
+
+    //eResponse = pJob->m_aJobClass->m_eResponse;
+  }
+  else {
+    eResponse = pJob->m_aJobClass->m_eResponse;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   switch (eResponse) {
       
