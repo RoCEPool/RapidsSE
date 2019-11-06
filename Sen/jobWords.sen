@@ -5,25 +5,6 @@
 " jobWords.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* push dictionary path from job onto datastack                               */
-/*----------------------------------------------------------------------------*/
-/*
-: job.pushPath ( pJob -- )
-
-  0 locals| pDicPathJob pJob |
-
-  // get job dic path
-  pJob job.dicPath to pDicPathJob
-
-  // copy the path from job dic path onto data stack
-  pDicPathJob dicPath.depth 0 ?do
-    pDicPathJob dicPath.depth 1 - I - pDicPathJob dicPath.pick
-  loop
-
-  pDicPathJob dicPath.depth
-;
-*/
-/*----------------------------------------------------------------------------*/
 /* push dictionary path from session onto datastack                           */
 /*----------------------------------------------------------------------------*/
 : pushPath ( pJob -- )

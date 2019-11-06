@@ -17,6 +17,7 @@ void Step::vAddSteps_EnameSet(void)
   vAddStep("enameSet.getInt"_Stz,  &Step::vEnameSetGetInt);
   vAddStep("enameSet.getStr"_Stz,  &Step::vEnameSetGetStr);
   vAddStep("enameSet.hasName"_Stz, &Step::vEnameSetHasName);
+  vAddStep("enameSet.upsertStr"_Stz, &Step::vEnameSetUpsertStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,6 +182,39 @@ void Step::vEnameSetHasName(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* EnameSet.upsertStr -- replace/add a name-string pair to ename-set          */
+/*----------------------------------------------------------------------------*/
+void Step::vEnameSetUpsertStr(void)
+{
+  ENTRY("vEnameSetAddStr"_Stz);
+  
+  Object* pEnameSet_obj;
+  if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
+    THROW_DSTACK();
+  EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
+  
+  s256 sValue;
+  if ( ! m_pDataStack->bPopS256(sValue) )
+    THROW_DSTACK();
+  
+  s32 sName;
+  if ( ! m_pDataStack->bPopS32(sName) )
+    THROW_DSTACK();
+  
+  bool bHas = pEnameSet->bHasName(sName);
+  
+  if (bHas) {
+    pEnameSet->vReplace(sName,sValue);
+  }
+  else {
+    pEnameSet->vAdd(sName,sValue);
+  }
+  
+  pEnameSet->vPrint();
+  
+  EXIT();
+}
 
 /*============================================================================*/
 /* end                                                                        */

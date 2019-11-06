@@ -250,6 +250,7 @@ public:
   void vEnameSetGetInt(void);
   void vEnameSetGetStr(void);
   void vEnameSetHasName(void);
+  void vEnameSetUpsertStr(void);
   void vEnameSetNew(void);
 
   // enter

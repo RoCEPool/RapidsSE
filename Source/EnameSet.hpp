@@ -41,6 +41,7 @@ namespace Gadgets
     Stz* szName(i8 i_Ename);
     void vPrint(void);
     void vPrintDetailed(void);
+    void vReplace(Stz* szName, Stz* szValue);
     void vReset(void);
     void vSprint(Stz* sArgs);
     eTN  eToken(i8 i_Ename);

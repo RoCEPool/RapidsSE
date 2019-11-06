@@ -220,7 +220,7 @@ ENTRY("vLocalsTo"_Stz);
       pCurrentWord->vEncode("job.enameSet@"_Stz);
     }
     
-    pCurrentWord->vEncode("enameSet.addStr"_Stz);
+    pCurrentWord->vEncode("enameSet.upsertStr"_Stz);
     
     EXIT();
     return;
