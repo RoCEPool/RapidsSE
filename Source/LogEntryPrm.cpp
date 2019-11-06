@@ -11,9 +11,9 @@ void _LogEntryPrm::vSet(LogEntry* pLogEntry, SePrompt*  pPrompt, ePA ePrmAct)
 {
   pLogEntry->m_eKind   = EK_PRM;
   pLogEntry->m_cPrefix = 'P';
-  pLogEntry->m_iAct    = pPrompt->iActNo();
+  pLogEntry->m_iAct    = pPrompt->iStepNo();
 
-  m_iPrmId  = pPrompt->m_iUniqueId;
+  m_iPrmId  = pPrompt->m_iFocalId;
   m_ePrmAct = ePrmAct;
   
   if (PA_PRM_COMMAND == ePrmAct)

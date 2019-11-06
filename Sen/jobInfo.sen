@@ -19,12 +19,14 @@
 /*----------------------------------------------------------------------------*/
 : job::isLocalJob
 
-  "jobKind" <jobNm> findJobClassEnmSet EnameSet.getStr
+  compiler::current word.EnameSet@ locals| pEnameSet |
+
+  "jobKind" pEnameSet EnameSet.getInt dup .
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  "JK_LOCAL"
-  str.equal if
+  JK_LOCAL
+  == if
     "job::isLocalJob - job is a local job" .
     true
     exit
@@ -43,12 +45,12 @@
 
   compiler::current word.EnameSet@ locals| pEnameSet |
 
- "jobKind" pEnameSet EnameSet.getStr dup .
+ "jobKind" pEnameSet EnameSet.getInt dup .
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  "JK_DIST2PC"
-  str.equal if
+  JK_DIST2PC
+  == if
     "job::isDistJob - job is a distributed job" .
     true
     exit
@@ -128,6 +130,31 @@
   pEnameSet EnameSet.asStr .
 ;
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: jobInfo::addEname params| sEvalue sEname |
+
+  compiler::current word.EnameSet@ locals| pEnameSet |
+
+  sEvalue find locals| pEvalueWord |
+
+  pEvalueWord if
+    pEvalueWord word.category@ tick rootConstant eql if
+
+      sEvalue "  %v is a constant" fmt.print
+      //sEname sEvalue pEnameSet EnameSet.addStr
+      sEname pEvalueWord execute pEnameSet EnameSet.addInt
+      exit
+
+    then
+  then
+
+
+  // -- -- --
+  sEname sEvalue pEnameSet EnameSet.addStr
+;
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -137,7 +164,7 @@
 /*----------------------------------------------------------------------------*/
 : jobInfo:
 
-  0 locals| pEnameSet |
+  0 0 0 locals| sEname sEvalue pEnameSet |
 
   // create a word using next token from input source as the word name
   next-token "_cls" str.cat >create
@@ -164,8 +191,10 @@
     next-token
     dup "}" str.equal not
   while
-    next-token drop next-token
-    pEnameSet EnameSet.addStr
+    to sEname
+    next-token drop
+    next-token to sEvalue
+    sEname sEvalue jobInfo::addEname
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

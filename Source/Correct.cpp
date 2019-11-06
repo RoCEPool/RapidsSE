@@ -86,6 +86,11 @@ void Correctness::vStackDump(void)
   // dump the call stack
   //vStackDump();
   
+  if (AM::bDeveloper()) {
+    xException.vPrint();
+    AM::vTaskDump();
+  }
+  
   throw xException;
 }
 

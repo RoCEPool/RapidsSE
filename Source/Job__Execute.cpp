@@ -104,7 +104,7 @@ Job__Execute::Job__Execute(Job* pDistJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__EXECUTE,_FOOTER_);
   
-  m_iParentId = pDistJob->m_iUniqueId;
+  m_iParentId = pDistJob->m_iFocalId;
 
   _checkInitialised_(CN_JOB__EXECUTE);
   

@@ -257,11 +257,11 @@ void SePrompt::vBeginRequest(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   //m_pRequest = new Request(m_pSession,pTknVec());
-  m_pRequest = new Request(m_pSession,m_aJobClass->m_aComment,iActNo());
+  m_pRequest = new Request(m_pSession,m_aJobClass->m_aComment,iStepNo());
 
   m_i_RequestFocal = m_pRequest->m_i_Focal;
   
-  m_iRequestId = m_pRequest->m_iUniqueId;
+  m_iRequestId = m_pRequest->m_iFocalId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -429,7 +429,7 @@ void SePrompt::vDeleteJob(void)
   
   AM::vLogPrm(SL_INF,this,PA_PRM_DELETE_JOB,
               "%s"_Stz, //!format-LogPrm
-              spId.sz(IK_JOB,m_pJob->m_iUniqueId));
+              spId.sz(IK_JOB,m_pJob->m_iFocalId));
 
   Task* pTask = m_pJob->pTask();
   m_pJob->vTask(nullptr);
@@ -675,10 +675,10 @@ void SePrompt::vJobWaitCond(void)
   
   SP_Id spId;
   
-  vIncActNo();
+  vIncStepNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_WAITS,
               "for job mutex %s to be signaled (mutex is unlocked)"_Stz, //!format-LogPrm
-              spId.sz(IK_JOB,m_pJob->m_iUniqueId),
+              spId.sz(IK_JOB,m_pJob->m_iFocalId),
               C_ENDARGS);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -711,7 +711,7 @@ void SePrompt::vLogCommand(void)
   pTknVec->vToString(sCommand);
   sCommand.vSizeMax(C_LOG_NOTE / 2);
   
-  vIncActNo();
+  vIncStepNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_COMMAND,
               "%lld %s"_Stz, //!format-LogPrm
               m_iCmdNo++,sCommand.szStz());
@@ -730,7 +730,7 @@ void SePrompt::vLogFreeSpace(void)
   s32 sFreeSpaceMag;
   MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
   
-  vIncActNo();
+  vIncStepNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_FREE_SPACE,
               "%s on node %s"_Stz, //!format-LogPrm
               sFreeSpaceMag.szStz(),
@@ -811,7 +811,7 @@ void SePrompt::vPreJob(void)
     
   SP_Id spId;
   
-  vIncActNo();
+  vIncStepNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_NEW_JOB,
               "for request %s"_Stz, //!format-LogPrm
               spId.sz(EK_REQ,m_iRequestId),
@@ -833,7 +833,7 @@ i8 SePrompt::iPromptId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_iUniqueId;
+  return m_iFocalId;
 }
 
 /*----------------------------------------------------------------------------*/

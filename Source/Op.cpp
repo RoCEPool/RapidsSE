@@ -455,7 +455,7 @@ i8 Op::iOpId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iUniqueId;
+  return m_iFocalId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -701,7 +701,7 @@ bool Op::bSpawnJob(i8 iSessionId)
   ReqTuple xReqTuple(m_sName,iSessionId, false);
 
   m_pJobUniversal = AM::pNewJobUniversal(this, &xReqTuple,
-                                         this->m_iUniqueId);
+                                         this->m_iFocalId);
   
   // copy objectName
   AM::vJobObjectName(m_pJobUniversal, m_sObjectName);

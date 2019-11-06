@@ -11,10 +11,10 @@ void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
 {
   pLogEntry->m_eKind   = EK_TSK;
   pLogEntry->m_cPrefix = 'F';
-  pLogEntry->m_iAct    = pTask->iActNo();
+  pLogEntry->m_iAct    = pTask->iStepNo();
   //pLogEntry->m_xReqTuple.vSet(pTask->aReqTuple());
 
-  m_iTskId  = pTask->m_iUniqueId;
+  m_iTskId  = pTask->m_iFocalId;
   m_eTskAct = eTskAct;
   
        if (TA_TSK_CONSTRUCT == eTskAct)     pLogEntry->m_iIndicator = OC_CONSTRUCT;

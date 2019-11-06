@@ -54,7 +54,7 @@ Stz* SP_Thread::sz_log(Thread* pThread)
                   aHS[pThread->m_eThreadState],
                   
                   spTaskId.sz(pThread->m_pTask
-                                ? pThread->m_pTask->m_iUniqueId
+                                ? pThread->m_pTask->m_iFocalId
                                 : C_UNKNOWN),
                   
                   CN_NONE == pThread->m_eDedicated

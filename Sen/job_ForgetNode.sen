@@ -41,11 +41,11 @@ jobSyntax: forgetNode :: fgnde <nodeNm> ;
 
 jobInfo: forgetNode
 {
-  jobKind      = JK_DIST2PC
-  responseKind = RS_NODE_ZERO
+  jobKind  = JK_DIST2PC
+  rspKind  = RS_NODE_ZERO
+  ddlLock  = DL_GRAB_WRITE
   
-  exeLock      = DL_GRAB_WRITE
-  preCheck     = bClusterStarted
+  preCheck = bClusterStarted
 }
 ;
 

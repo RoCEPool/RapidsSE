@@ -52,7 +52,7 @@ namespace Logging
     bool m_bLine;      // draw line before?
   
     char m_cPrefix;
-    i8   m_iUniqueId;
+    i8   m_iFocalId;
     i8   m_iForId;
   
     i8   m_iIndicator;

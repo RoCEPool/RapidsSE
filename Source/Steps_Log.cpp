@@ -45,7 +45,7 @@ void Step::vLogMark(void)
   if ( ! m_pDataStack->bPopS256(sMark) )
     THROW_DSTACK();
 
-  //i8 iJobId = m_pTask->m_pJob->m_iUniqueId;
+  //i8 iJobId = m_pTask->m_pJob->m_iFocalId;
   JobLog::vNote(m_pTask->m_pJob,sMark);
   
   EXIT();

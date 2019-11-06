@@ -19,9 +19,9 @@ void _LogEntryThd::vSet(LogEntry* pLogEntry, Thread* pThread, eHA eThdAct)
     SP_Id spId;
     
     pLogEntry->m_xReqTuple.m_sPurpose.vSprint("~~THREAD-%s~~"_Stz,
-                                              spId.sz(pThread->m_iUniqueId));
+                                              spId.sz(pThread->m_iFocalId));
   };
-  m_iThdId  = pThread->m_iUniqueId;
+  m_iThdId  = pThread->m_iFocalId;
   m_eThdAct = eThdAct;
   
        if (HA_THD_CONSTRUCT   == eThdAct)   pLogEntry->m_iIndicator = OC_CONSTRUCT;

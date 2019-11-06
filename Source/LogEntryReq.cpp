@@ -11,11 +11,11 @@ void _LogEntryReq::vSet(LogEntry* pLogEntry, Request* pRequest, eCA eReqAct)
 {
   pLogEntry->m_eKind   = EK_REQ;
   pLogEntry->m_cPrefix = ' ';
-  pLogEntry->m_iAct    = pRequest->iActNo();
+  pLogEntry->m_iAct    = pRequest->iStepNo();
 
   //pLogEntry->m_xReqTuple.vSet(pRequest->aReqTuple());
 
-  m_iReqId  = pRequest->m_iUniqueId;
+  m_iReqId  = pRequest->m_iFocalId;
   m_eReqAct = eReqAct;
   
   if (CA_REQ_CONSTRUCT == eReqAct)

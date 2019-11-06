@@ -110,7 +110,7 @@ void Exception::vPrint(void)
   
   printf("%s\n",zIntoBuf);
   
-  vDebugPoint();
+  //vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

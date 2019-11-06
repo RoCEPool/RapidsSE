@@ -86,7 +86,7 @@ void Step::vTaskAcksStore(void)
                        aCN[pJob->eClass()],
                        pJob,
                        nAcksRequired);
-    AM::pOriginatingJobs()->vLogJobs(pJob->m_iUniqueId);
+    AM::pOriginatingJobs()->vLogJobs(pJob->m_iFocalId);
   }
   
   Scheduler::vTaskRequiresAcks(pGivenTask,nAcksRequired);

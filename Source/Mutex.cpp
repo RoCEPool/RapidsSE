@@ -116,11 +116,11 @@ Mutex::Mutex(eMK eKind, Focal* pIsFor)
   
   SP_Id spId;
   
-  vIncActNo(); ++ gixMutex;
+  vIncStepNo(); ++ gixMutex;
   AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCT,
               "Mutex -%s construct ^for=%s |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
               aMK[m_eMutex],
-              spId.sz(m_pIsFor->m_iUniqueId),
+              spId.sz(m_pIsFor->m_iFocalId),
               * gixMutex, * gixMutex_err);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
@@ -156,12 +156,12 @@ Mutex::~Mutex(void) noexcept(false)
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
 #endif
   
-  vIncActNo(); -- gixMutex;
+  vIncStepNo(); -- gixMutex;
   SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCT,
               "Mutex -%s destruct ^for=%s |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
               aMK[m_eMutex],
-              spId.sz(m_pIsFor->m_iUniqueId),
+              spId.sz(m_pIsFor->m_iFocalId),
               * gixMutex, * gixMutex_err);
 }
 
@@ -205,7 +205,7 @@ void Mutex::vBroadcast(void)
   gpAttachMap->m_oStatistics.Mutex.m_nBroadcasts++;
 #endif
   
-  vIncActNo(); ++ m_ixBroadcast;
+  vIncStepNo(); ++ m_ixBroadcast;
   AM::vLogRes(SL_INF,this,RA_MTX_BROADCAST,
               "Mutex -%s broadcast() |m_ixBroadcast=%lld|"_Stz, //!format-LogRes
               aMK[m_eMutex],
@@ -291,7 +291,7 @@ bool Mutex::bLock(Focal* pLockFor)
     RASSERT(! m_pLockedBy);
     m_pLockedBy = pLockFor;
 
-    vIncActNo(); ++ m_ixLock;
+    vIncStepNo(); ++ m_ixLock;
     AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
                 "Mutex -%s locked |m_ixLock=%lld|"_Stz, //!format-LogRes
                 aMK[m_eMutex],
@@ -304,7 +304,7 @@ bool Mutex::bLock(Focal* pLockFor)
   // success: busy -- mutex has not been locked by calling thread
   
   if (EBUSY == iRetVal) {
-    vIncActNo(); ++ m_ixBusy;
+    vIncStepNo(); ++ m_ixBusy;
     AM::vLogRes(SL_INF,this,RA_MTX_BUSY,
                 "Mutex -%s busy |m_ixBusy=%lld|"_Stz, //!format-LogRes
                 aMK[m_eMutex],
@@ -338,7 +338,7 @@ void Mutex::vLock(Focal* pLockFor)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vIncActNo(); ++ m_ixLock;
+  vIncStepNo(); ++ m_ixLock;
   AM::vLogRes(SL_INF,this,RA_MTX_LOCK,
               "Mutex -%s lock() |m_ixLock=%lld|"_Stz, //!format-LogRes
               aMK[m_eMutex],
@@ -358,7 +358,7 @@ void Mutex::vLock(Focal* pLockFor)
     RASSERT(! m_pLockedBy);
     m_pLockedBy = pLockFor;
     
-    vIncActNo(); ++ m_ixLocked;
+    vIncStepNo(); ++ m_ixLocked;
     
     SP_Id spId;
     
@@ -366,14 +366,14 @@ void Mutex::vLock(Focal* pLockFor)
       AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
                   "Mutex -%s %s locked by owner |m_ixLocked=%lld|"_Stz, //!format-LogRes
                   aMK[m_eMutex],
-                  spId.sz(m_pIsFor->m_iUniqueId),
+                  spId.sz(m_pIsFor->m_iFocalId),
                   * m_ixLocked,
                   C_ENDARGS);
     else
       AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
                   "Mutex -%s %s locked by %p |m_ixLocked=%lld|"_Stz, //!format-LogRes
                   aMK[m_eMutex],
-                  spId.sz(m_pIsFor->m_iUniqueId),
+                  spId.sz(m_pIsFor->m_iFocalId),
                   pLockFor,
                   * m_ixLocked,
                   C_ENDARGS);
@@ -424,7 +424,7 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
   gpAttachMap->m_oStatistics.Mutex.m_nTimedWaits++;
 #endif
   
-  vIncActNo(); ++ m_ixWaitTimed;
+  vIncStepNo(); ++ m_ixWaitTimed;
   AM::vLogRes(SL_INF,this,RA_MTX_WAIT_TIMED,
               "-%s wait for signal or timeout(%lldus) |m_ixWaitTimed=%lld|"_Stz, //!format-LogRes
               aMK[m_eMutex],
@@ -452,7 +452,7 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
 #endif
     
-    vIncActNo(); ++ m_ixSignaled;
+    vIncStepNo(); ++ m_ixSignaled;
     AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
                 "Mutex -%s owner was signaled; locked reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
                 aMK[m_eMutex],
@@ -473,7 +473,7 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nTimeOuts++;
 #endif
     
-    vIncActNo(); ++ m_ixTimedout;
+    vIncStepNo(); ++ m_ixTimedout;
     AM::vLogRes(SL_INF,this,RA_MTX_TIMEDOUT,
                 "Mutex -%s owner wait has timedout; locked reacquired |m_ixTimedout=%lld|"_Stz, //!format-LogRes
                 aMK[m_eMutex],
@@ -509,7 +509,7 @@ void Mutex::vSignal(Focal* pLockedBy)
   gpAttachMap->m_oStatistics.Mutex.m_nSignals++;
 #endif
   
-  vIncActNo(); ++ m_ixSignal;
+  vIncStepNo(); ++ m_ixSignal;
   AM::vLogRes(SL_INF,this,RA_MTX_SIGNAL,
               "Mutex -%s signal() |m_ixSignal=%lld|"_Stz, //!format-LogRes
               aMK[m_eMutex],
@@ -564,7 +564,7 @@ void Mutex::vUnlock(Focal* pLockedBy)
   // success -- mutex has been unlocked by calling thread
   
   if (0 == iRetVal) {
-    vIncActNo(); ++ m_ixUnlock;
+    vIncStepNo(); ++ m_ixUnlock;
     
     AM::vLogRes(SL_INF,this,RA_MTX_UNLOCKED,
                 "Mutex -%s unlocked by %s |m_ixUnlock=%lld|"_Stz, //!format-LogRes
@@ -610,7 +610,7 @@ void Mutex::vWait(Focal* pLockedBy)
   gpAttachMap->m_oStatistics.Mutex.m_nWaits++;
 #endif
   
-  vIncActNo(); ++ m_ixWaitIndef;
+  vIncStepNo(); ++ m_ixWaitIndef;
   AM::vLogRes(SL_INF,this,RA_MTX_WAIT_SIGNAL,
               "-%s wait for signal; mutex will be dropped |m_ixWaitIndef=%lld|"_Stz, //!format-LogRes
               aMK[m_eMutex],
@@ -635,7 +635,7 @@ void Mutex::vWait(Focal* pLockedBy)
     m_pLockedBy = m_pWaitedBy;
     m_pWaitedBy = nullptr;
 
-    vIncActNo(); ++ m_ixSignaled;
+    vIncStepNo(); ++ m_ixSignaled;
     AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
                 "Mutex -%s owner was signaled; mutex reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
                 aMK[m_eMutex],

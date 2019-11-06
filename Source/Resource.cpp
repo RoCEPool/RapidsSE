@@ -36,7 +36,7 @@ Resource::Resource(eCN eClassNo)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Resource::Resource(eCN eClassNo, Focal* pIsFor)
-: Focal(eClassNo,AM::iNextResourceId(),pIsFor ? pIsFor->m_iUniqueId : C_UNKNOWN)
+: Focal(eClassNo,AM::iNextResourceId(),pIsFor ? pIsFor->m_iFocalId : C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
@@ -65,7 +65,7 @@ i8 Resource::iResId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iUniqueId;
+  return m_iFocalId;
 }
 
 /*============================================================================*/

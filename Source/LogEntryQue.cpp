@@ -12,7 +12,7 @@ void _LogEntryQue::vSet(LogEntry* pLogEntry, Queues* pQueues, eQA eQueAct)
   pLogEntry->m_eKind = EK_QUE;
   pLogEntry->m_cPrefix = 'Q';
 
-  m_iQueId  = pQueues->m_iUniqueId;
+  m_iQueId  = pQueues->m_iFocalId;
   m_eQueAct = eQueAct;
   
        if (QA_QUE_FIND_ORIG  == eQueAct)     pLogEntry->m_iIndicator = OC_FIND;

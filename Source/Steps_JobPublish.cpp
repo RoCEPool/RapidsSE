@@ -30,7 +30,7 @@ void Step::vJob_PublishSpawnSub(void)
     THROW_DSTACK();
   
   Session* pSession = pJob_Publish->pSession();
-  i8 iPublishJobId = pJob_Publish->m_iUniqueId;
+  i8 iPublishJobId = pJob_Publish->m_iFocalId;
   ReqTuple* aReqTuple = &pJob_Publish->m_xReqTuple;
 
   JobClass* pJobClass_SubPublish = JobClass::pFind(CN_JOB_SUBPUBLISH);
@@ -41,7 +41,7 @@ void Step::vJob_PublishSpawnSub(void)
 
   pJob_SubPublish->vSeed(SS_SEED_RUN);
 
-  pJob_SubPublish->m_iParentId     = pJob_Publish->m_iUniqueId;
+  pJob_SubPublish->m_iParentId     = pJob_Publish->m_iFocalId;
   pJob_SubPublish->m_iPublishJobId = iPublishJobId;
   pJob_SubPublish->m_oEnameSet.vAdd("<tableNm>"_Stz,
                                   pJob_Publish->m_oEnameSet.szValue("<tableNm>"_Stz));

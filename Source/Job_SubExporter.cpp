@@ -224,7 +224,7 @@ void Job_SubExporter::vShow(void)
   
   vTrace("  Job_SubExport %p %03lld "
          "i_Slot %lld\n"_Stz,
-         m_pJobExport, m_pJobExport->m_iUniqueId,
+         m_pJobExport, m_pJobExport->m_iFocalId,
          i_Slot()
          );
 }
@@ -244,7 +244,7 @@ void Job_SubExporter::vSpawnKidExport(bool bLast)
   Job* pNewJob = pJobClass_KidExport->pNewJob(nullptr);
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pNewJob);
   
-  pJob_KidExport->m_iExportJobId = m_pJobExport->m_iUniqueId;
+  pJob_KidExport->m_iExportJobId = m_pJobExport->m_iFocalId;
   //pJob_KidExport->m_pSendWith    = m_pExportBuffer;
   
   if (bLast)

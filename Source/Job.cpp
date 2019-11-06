@@ -100,7 +100,7 @@ Job::Job(eCN eClassNo)
   
   SP_Id spId;
   
-  vIncActNo(); ++ gixJob;
+  vIncStepNo(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
               "|gixJob=%lld|"_Stz, //!format-LogJob
               * gixJob);
@@ -148,7 +148,7 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   
   SP_Id spId;
   
-  vIncActNo(); ++ gixJob;
+  vIncStepNo(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
               "|gixJob=%lld|"_Stz, //!format-LogJob
               * gixJob);
@@ -196,7 +196,7 @@ Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
   
   SP_Id spId;
   
-  vIncActNo(); ++ gixJob;
+  vIncStepNo(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
               "|gixJob=%lld|"_Stz, //!format-LogJob
               * gixJob);
@@ -213,7 +213,7 @@ Job::~Job(void) noexcept(false)
   
   //vTrace("Deleting job: %s\n"_Stz,aCN[eClass()]);
   
-  vIncActNo();
+  vIncStepNo();
   if (m_bWasReceived) {
     // do not decrement gixJob
     AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,
@@ -439,7 +439,7 @@ i8 Job::iJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iUniqueId;
+  return m_iFocalId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -450,7 +450,7 @@ void Job::vMarkJob(void)
   s48K sJobMark;
   
   sJobMark.vSprintCat("Job %03lld %s session %lld slot %lld\n"_Stz,
-                      m_iUniqueId,
+                      m_iFocalId,
                       aCN[eClass()],
                       m_xReqTuple.m_i_Session,
                       m_i_Slot);
@@ -464,7 +464,7 @@ void Job::vMarkJob(void)
 
   sJobMark.vConcat("\n"_Stz);
 
-  AM::vLogText(m_iUniqueId,sJobMark);
+  AM::vLogText(m_iFocalId,sJobMark);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -552,7 +552,7 @@ i8 Job::iOriginatorNode(void)
   
   i8 iMaskOffLower48Bits = 0xFFFF000000000000;
   
-  i8 iOriginatorNode = m_iUniqueId & iMaskOffLower48Bits;
+  i8 iOriginatorNode = m_iFocalId & iMaskOffLower48Bits;
   iOriginatorNode >>= 48;
   
   return iOriginatorNode;
@@ -587,7 +587,7 @@ void Job::vReport(void)
   
   vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
          this,
-         m_iUniqueId,
+         m_iFocalId,
          m_oAcksRmg_2pc.iPrintOnlyValue());
 }
 
@@ -730,10 +730,14 @@ eEC Jobs::eJob_checkCluster(Session* pSession)
 void Jobs::vJob_post(Job* pJob)
 {
   eCN eClass = pJob->eClass();
+  
+  //! why wouldn't this be set by now??
   JobClass* pJobClass = JobClass::pFind(eClass);
   pJob->m_aJobClass = pJobClass;
   
-  switch (pJob->m_aJobClass->m_eResponse) {
+  eRS eResponse = pJob->m_aJobClass->m_eResponse;
+  
+  switch (eResponse) {
       
     case RS_NONE         : /* do nothing */            break;
     case RS_DATA_ROWS    : RASSERT(0);                 break;

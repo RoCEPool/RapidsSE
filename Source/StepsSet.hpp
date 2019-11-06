@@ -247,6 +247,7 @@ public:
   void vEnameSetAddInt(void);
   void vEnameSetAddStr(void);
   void vEnameSetAsStr(void);
+  void vEnameSetGetInt(void);
   void vEnameSetGetStr(void);
   void vEnameSetHasName(void);
   void vEnameSetNew(void);

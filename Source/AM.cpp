@@ -99,6 +99,7 @@ Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
 ResourceTracker* AM::pResourceTracker(void) {
   return & gpAttachMap->m_oResourceTracker; }
 Article* AM::pRootArticle(void)     { return gpAttachMap->m_pRootArcticle;    }
+Word* AM::pRootConstant(void) { return gpAttachMap->m_pRootConstant;          }
 Dic* AM::pRootDic(void)       { return gpAttachMap->m_pRootDic;               }
 Word* AM::pRootWord(void)     { return gpAttachMap->m_pRootWord;              }
 Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
@@ -182,6 +183,9 @@ void AM::vDeleteOperand(Operand* pOperand)
 void AM::vDropTaskLock(Task* pTask) {
   Scheduler::vDropTaskLock(pTask);
 }
+void AM::vRootConstant(Word* pRootConstant) {
+  gpAttachMap->m_pRootConstant = pRootConstant;
+}
 void AM::vRootWord(Word* pRootWord) {
   gpAttachMap->m_pRootWord = pRootWord;
 }
@@ -212,7 +216,7 @@ void AM::vSendJobOperand(Task* pTask, Operand* pOperand,
   
   // new a xmit job
   Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(
-                                  nullptr, pTask,pOperand, pParentJob->m_iUniqueId,pOp,iNode);
+                                  nullptr, pTask,pOperand, pParentJob->m_iFocalId,pOp,iNode);
   
   // set the send node in the task
   Node* pSendNode = pGrid()->pGetNode(iNode);
@@ -299,6 +303,7 @@ i8 AM::nRandomLevels(void) {
 
 i8 AM::iTaskAcksRmg_assert_only_(Task* pTask) { return pTask->iAcksRmg_assert_only_(); }
 void AM::vTaskBeginOp(Task* pTask)     { pTask->vBeginOp();     }
+void AM::vTaskDump(void)               { if (AM::pThisTLSTask()) AM::pThisTLSTask()->vDump(); }
 void AM::vTaskMutexLock(Task* pTask)   { pTask->vMutexLock();   }
 void AM::vTaskMutexSignal(Task* pTask) { pTask->vMutexSignal(); }
 void AM::vTaskMutexUnlock(Task* pTask) { pTask->vMutexUnlock(); }
@@ -333,6 +338,8 @@ Op* AM::pThisTLSOp(void) {
 }
 Tasks::Task* AM::pThisTLSTask(void) {
   Thread* pThread = Thread::pThisTLSThread();
+  if (! pThread)
+    return nullptr;
   Task* pTask = pThread->pTask();
   return pTask;
 }
@@ -346,7 +353,7 @@ PsxThd* AM::pThisTLSPsxThd(void) {
   return pPsxThd;
 }
 i8 AM::iThreadId(Thread* pThread) {
-  return pThread->m_iUniqueId;
+  return pThread->m_iFocalId;
 }
 void AM::vWelcomeText(s256& sWelcome) {
   Engine::vGetWelcome(sWelcome);
@@ -1268,7 +1275,7 @@ bool AM::bInBufferPool(Object* pObject) {
   return gpBufferPool->bInBufferPool(pObject);
 }
 
-i8 AM::iJobUniqueId(Job* pJob) { return pJob->m_iUniqueId;                     }
+i8 AM::iJobUniqueId(Job* pJob) { return pJob->m_iFocalId;                     }
 
 void AM::vPrintGlobals(void)
 {

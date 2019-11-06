@@ -55,7 +55,7 @@ namespace SenVM
     void* operator new(size_t, Dic* pDic, bool bPersistent);
     void  operator delete(void* pWordAddress);
   
-    Word(Stz* sName);
+    Word(Stz* szName);
    ~Word(void) noexcept(false);
   
     static void vArtFun(Object* pObject, SP& spObject);

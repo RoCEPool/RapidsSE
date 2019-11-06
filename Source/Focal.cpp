@@ -12,13 +12,14 @@
 Focal::Focal(eCN eClassNo)
 : Object(eClassNo)
 {
-  m_i_Focal   = C_UNKNOWN;
-  m_iUniqueId = C_UNKNOWN;
-  m_i_Log     = C_UNKNOWN;
-  m_iTick_    = AM::iRdTimePoint();
+  m_i_Focal  = C_UNKNOWN;
+  m_i_Log    = C_UNKNOWN;
   
-  m_iActNo    = C_UNKNOWN;
-  m_iForId    = C_UNKNOWN;
+  m_iFocalId = C_UNKNOWN;
+  m_iForId   = C_UNKNOWN;
+  
+  m_iStepNo  = C_UNKNOWN;
+  m_iStepTk  = AM::iRdTimePoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -27,13 +28,14 @@ Focal::Focal(eCN eClassNo)
 Focal::Focal(eCN eClassNo, i8 iUniqueId, i8 iForId)
 : Object(eClassNo)
 {
-  m_i_Focal   = C_UNKNOWN;
-  m_iUniqueId = iUniqueId;
-  m_i_Log     = C_UNKNOWN;
-  m_iTick_    = AM::iRdTimePoint();
+  m_i_Focal  = C_UNKNOWN;
+  m_i_Log    = C_UNKNOWN;
   
-  m_iActNo    = C_UNKNOWN;
-  m_iForId    = iForId;
+  m_iFocalId = iUniqueId;
+  m_iForId   = iForId;
+  
+  m_iStepNo  = C_UNKNOWN;
+  m_iStepTk  = AM::iRdTimePoint();
 
   AM::vFocalAdd(this);
 }
@@ -53,21 +55,22 @@ Focal::~Focal(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* inc action sequence number                                                 */
+/* get last step sequence number                                              */
 /*----------------------------------------------------------------------------*/
-i8 Focal::iActNo(void)
+i8 Focal::iStepNo(void)
 {
-  return m_iActNo;
+  return m_iStepNo;
 }
 
 /*----------------------------------------------------------------------------*/
-/* inc action sequence number                                                 */
+/* inc last step sequence number                                              */
 /*----------------------------------------------------------------------------*/
-void Focal::vIncActNo(void)
+void Focal::vIncStepNo(void)
 {
-  m_iActNo++;
+  m_iStepNo++;
+  
+  m_iStepTk = AM::iRdTimePoint();
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

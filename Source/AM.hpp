@@ -97,6 +97,8 @@ namespace Oblique
     static Queues* pQueues(void);
     static ResourceTracker* pResourceTracker(void);
     static Article* pRootArticle(void);
+    static Word* pRootConstant(void);
+    static void vRootConstant(Word* pRootConstant);
     static Dic* pRootDic(void);
     static Word* pRootWord(void);
     static void vRootWord(Word* pRootWord);
@@ -246,6 +248,7 @@ namespace Oblique
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static i8   iTaskAcksRmg_assert_only_(Task* pTask);
     static void vTaskBeginOp(Task* pTask);
+    static void vTaskDump(void);
     static void vTaskMutexLock(Task* pTask);
     static void vTaskMutexSignal(Task* pTask);
     static void vTaskMutexUnlock(Task* pTask);

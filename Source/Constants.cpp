@@ -12,6 +12,8 @@ void Constants::vAddConstant(Stz* szName, i8 iVal)
 {
   Word* pNewWord = new(AM::pRootDic()) Word(szName);
   
+  pNewWord->vCategory(AM::pRootConstant());
+  
   GenVar xVar;
   xVar = iVal;
 
@@ -382,6 +384,11 @@ void Constants::vAddConstants(void)
   /* 10 */ vAddConstant("DE_LNK"_Stz,  DT_LNK);
   /* 12 */ vAddConstant("DE_SOCK"_Stz, DT_SOCK);
 
+  // DL_ : ddl lock
+  /*  0 */ vAddConstant("DL_NONE"_Stz,       DL_NONE);
+  /*  1 */ vAddConstant("DL_GRAB_READ"_Stz,  DL_GRAB_READ);
+  /*  2 */ vAddConstant("DL_GRAB_WRITE"_Stz, DL_GRAB_WRITE);
+
   // DM_ : datum type
   /*  1 */ vAddConstant("DM_BCD"_Stz, DM_BCD);
   /*  2 */ vAddConstant("DM_BOL"_Stz, DM_BOL);
@@ -519,6 +526,17 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("file[0]"_Stz,      RG_FILE0);
   /*  0 */ vAddConstant("file[1]"_Stz,      RG_FILE1);
   /*  0 */ vAddConstant("file[2]"_Stz,      RG_FILE2);
+
+  // RS_ : response kind
+  /*  0 */ vAddConstant("RS_NONE"_Stz,         RS_NONE);
+  /*  0 */ vAddConstant("RS_DATA_ROWS"_Stz,    RS_DATA_ROWS);
+  /*  0 */ vAddConstant("RS_LOAD_ROWS"_Stz,    RS_LOAD_ROWS);
+  /*  0 */ vAddConstant("RS_LOCAL_ERRORS"_Stz, RS_LOCAL_ERRORS);
+  /*  0 */ vAddConstant("RS_LOCAL_ROWS"_Stz,   RS_LOCAL_ROWS);
+  /*  0 */ vAddConstant("RS_LOCAL_ZERO"_Stz,   RS_LOCAL_ZERO);
+  /*  0 */ vAddConstant("RS_NODE_ERRORS"_Stz,  RS_NODE_ERRORS);
+  /*  0 */ vAddConstant("RS_NODE_ROWS"_Stz,    RS_NODE_ROWS);
+  /*  0 */ vAddConstant("RS_NODE_ZERO"_Stz,    RS_NODE_ZERO);
 
   // SS_ : seed strings
   /*  0 */ vAddConstant("SS_SEED_RUN"_Stz,    SS_SEED_RUN);
