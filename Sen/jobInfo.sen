@@ -142,6 +142,7 @@
 
       sEvalue "  %v is a constant" fmt.print
       sEname sEvalue pEnameSet EnameSet.addStr
+      //sEname pEvalueWord execute pEnameSet EnameSet.addInt
       exit
 
     then
