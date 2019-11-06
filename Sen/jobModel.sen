@@ -10,7 +10,6 @@
 "jobWords.sen"   include
 "job2pc.sen"     include
 
-"jobMark2.sen"   include
 "jobMarkers.sen" include
 
 "jobHooks.sen"   include
