@@ -89,7 +89,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Int();
   
   Step::vAddSteps_Job();
-  Step::vAddSteps_JobMark2();
   Step::vAddSteps_JobAnalyzeIndex();
   Step::vAddSteps_JobCat();
   Step::vAddSteps_JobClass();

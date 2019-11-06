@@ -444,10 +444,6 @@ public:
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
-  // job mark 2
-  void vJobMark2IndexStore(void);
-  void vJobMark2TableStore(void);
-
   void vJobClass(void);
   void vJobColumnCountFetch(void);
   void vJobColumnNameFetch(void);

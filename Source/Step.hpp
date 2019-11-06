@@ -68,7 +68,6 @@ namespace Steps
     static void vAddSteps_Int(void);
   
     static void vAddSteps_Job(void);
-    static void vAddSteps_JobMark2(void);
     static void vAddSteps_JobAnalyzeIndex(void);
     static void vAddSteps_JobCat(void);
     static void vAddSteps_JobClass(void);
