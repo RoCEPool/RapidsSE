@@ -77,9 +77,12 @@ AttachMap::AttachMap(void)
   
   m_pLexiconArticle->vAppend(m_pRootArcticle);
   
-  Step::vAddStep("word"_Stz,            &Step::vWord);
+  Step::vAddStep("word"_Stz,&Step::vWord);
   AM::vRootWord(m_pRootDic->pFindWord("word"_Stz));
 
+  Step::vAddStep("rootConstant"_Stz,nullptr);
+  AM::vRootConstant(m_pRootDic->pFindWord("rootConstant"_Stz));
+  
   // create the persistent heaps
   m_xHeapMem.Persistent.m_pJumbo  =
     new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);

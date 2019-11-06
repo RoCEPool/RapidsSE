@@ -71,6 +71,7 @@ namespace StorageEngine
     i8            m_iQuit;
     ResourceTracker m_oResourceTracker;
     Article*      m_pRootArcticle;
+    Word*         m_pRootConstant;
     Dic*          m_pRootDic;
     Word*         m_pRootWord;
     Statistics    m_oStatistics;

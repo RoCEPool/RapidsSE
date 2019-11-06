@@ -68,6 +68,8 @@ Word::Word(Stz* szWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
+  //vTrace("WORD: %s\n"_Stz,szWordNm);
+  
   m_pArticle   = new Article(szWordNm,this,Word::vArtFun);
 
   m_sWordNm    = szWordNm;

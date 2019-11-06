@@ -97,6 +97,8 @@ namespace Oblique
     static Queues* pQueues(void);
     static ResourceTracker* pResourceTracker(void);
     static Article* pRootArticle(void);
+    static Word* pRootConstant(void);
+    static void vRootConstant(Word* pRootConstant);
     static Dic* pRootDic(void);
     static Word* pRootWord(void);
     static void vRootWord(Word* pRootWord);

@@ -12,6 +12,8 @@ void Constants::vAddConstant(Stz* szName, i8 iVal)
 {
   Word* pNewWord = new(AM::pRootDic()) Word(szName);
   
+  pNewWord->vCategory(AM::pRootConstant());
+  
   GenVar xVar;
   xVar = iVal;
 
