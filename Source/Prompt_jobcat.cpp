@@ -47,9 +47,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
 
   // local
   nJobs++; JobClass::vJobCat(CN_JOB_CAT);
-  nJobs++; JobClass::vJobCat(CN_JOB_DOCOL);
-  nJobs++; JobClass::vJobCat(CN_JOB_DUMPINDEX);
-  nJobs++; JobClass::vJobCat(CN_JOB_DUMPTABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_FETCHROWS);
   nJobs++; JobClass::vJobCat(CN_JOB_GENERATE);
   nJobs++; JobClass::vJobCat(CN_JOB_INDEXJOIN);

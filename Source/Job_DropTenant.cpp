@@ -47,7 +47,7 @@ JobClass xJobClass_DropTenant =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_DropTenant_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_DumpIndex_class;
+  *pNextFun = (pFUN*)pJob_Export_class;
   
   return &xJobClass_DropTenant;
 }

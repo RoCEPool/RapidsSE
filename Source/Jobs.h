@@ -65,14 +65,11 @@ namespace Jobs
 #include "Job_CreateTenant.hpp"
 
 #include "Job_DefineNode.hpp"
-#include "Job_Docol.hpp"
 #include "Job_DropCatalog.hpp"
 #include "Job_DropIndex.hpp"
 #include "Job_DropSchema.hpp"
 #include "Job_DropTable.hpp"
 #include "Job_DropTenant.hpp"
-#include "Job_DumpIndex.hpp"
-#include "Job_DumpTable.hpp"
 #include "Job_Pipeline.hpp"
 
 #include "Job_Export.hpp"

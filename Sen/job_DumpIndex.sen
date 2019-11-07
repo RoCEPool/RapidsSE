@@ -64,19 +64,6 @@
   pTask task.job@ to pJob_DumpIndex
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_DUMPINDEX pJob_DumpIndex object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_DumpIndex job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
   //pJob_DumpIndex job.indexName@ to sIndexNm
   //pJob_DumpIndex job.objectName@ to sTableNm
@@ -107,48 +94,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_DumpIndex job check resources                                  */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: dumpIndex.checkResources ( Job_DumpIndex -- )
 
-  params| pJob_DumpIndex  |
-  0 0 locals| sIndexNm sTableNm |
+jobSyntax: dumpIndex :: dumpIndex <tableNm> <indexNm> ;
 
-  tp: dumpIndex.checkResources
-  //checkResources received" .
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_DumpIndex job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get index and table name
-  //pJob_DumpIndex job.indexName@ to sIndexNm
-  //pJob_DumpIndex job.objectName@ to sTableNm
-  <indexNm> to sIndexNm
-  <tableNm> to sTableNm
-
-  sTableNm sIndexNm checkDumpIndex not if pJob_DumpIndex <ERROR_JOB> !!logError exit then
-
-  DdlLock[].dropWrite
+jobInfo: dumpIndex
+{
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_LOCAL_ZERO
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
-
-/*----------------------------------------------------------------------------*/
-/* execute Job_DumpIndexTable job release resources                           */
-/*----------------------------------------------------------------------------*/
-: dumpIndex.releaseResources ( Job_DumpIndex -- )
-
-  params| pJob_DumpIndex  |
-
-  tp: dumpIndex.releaseResources
-  //releaseResources received" .
-;
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

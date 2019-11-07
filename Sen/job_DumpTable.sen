@@ -53,19 +53,6 @@
   pTask task.job@ to pJob_DumpTable
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_DUMPTABLE pJob_DumpTable object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_DumpTable job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table name
   //pJob_DumpTable job.objectName@ to sTableNm
   <tableNm> to sTableNm
@@ -92,44 +79,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_DumpTable job check resources                                  */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: dumpTable.checkResources ( pJob_DumpTable -- )
 
-  params| pJob_DumpTable  |
-  0 locals| sTableNm |
+jobSyntax: dumptable :: dumptable <tableNm> ;
 
-  tp: dumpTable.checkResources
-  //checkResources received" .
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_DumpTable job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get table name
-  //pJob_DumpTable job.objectName@ to sTableNm
-  <tableNm> to sTableNm
-
-  sTableNm checkDumpTable not if pJob_DumpTable <ERROR_JOB> !!logError exit then
-
-  DdlLock[].dropWrite
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute Job_DumpIndexTable job release resources                           */
-/*----------------------------------------------------------------------------*/
-: dumpTable.releaseResources ( Job_DumpTable -- )
-
-  params| pJob_DumpTable  |
-
-  tp: dumpTable.releaseResources
-  //releaseResources received" .
+jobInfo: dumptable
+{
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_LOCAL_ZERO
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/

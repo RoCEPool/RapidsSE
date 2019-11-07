@@ -164,14 +164,11 @@ enum eCN : u2 // Class Number
   /*  77 0x4D    83808B Heap:L */ CN_JOB_CREATETABLE,
   /*  78 0x4E    70592B Heap:L */ CN_JOB_CREATETENANT,
   /*  75 0x4B    77808B Heap:L */ CN_JOB_DEFINENODE,
-  /*  79 0x4F    70592B Heap:L */ CN_JOB_DOCOL,
   /*  80 0x50    70592B Heap:L */ CN_JOB_DROPCATALOG,
   /*  81 0x51    70592B Heap:L */ CN_JOB_DROPINDEX,
   /*  82 0x52    70592B Heap:L */ CN_JOB_DROPSCHEMA,
   /*  83 0x53    70592B Heap:L */ CN_JOB_DROPTABLE,
   /*  84 0x54    70592B Heap:L */ CN_JOB_DROPTENANT,
-  /*  85 0x55    70592B Heap:L */ CN_JOB_DUMPINDEX,
-  /*                           */ CN_JOB_DUMPTABLE,
   /*  86 0x56    70864B Heap:L */ CN_JOB_EXPORT,
   /*  87 0x57    70936B Heap:L */ CN_JOB_FETCHROWS,
   /*  88 0x58   122912B Heap:L */ CN_JOB_GENERATE,
@@ -571,14 +568,11 @@ static Stz* aCN[]
   /*  77 0x4D */ "JOB_CREATETABLE"_Stz,     // CN_JOB_CREATETABLE
   /*  78 0x4E */ "JOB_CREATETENANT"_Stz,    // CN_JOB_CREATETENANT
   /*  75 0x4B */ "JOB_CREATENODE"_Stz,      // CN_JOB_DEFINENODE
-  /*  79 0x4F */ "JOB_DOCOL"_Stz,           // CN_JOB_DOCOL
   /*  80 0x50 */ "JOB_DROPCATALOG"_Stz,     // CN_JOB_DROPCATALOG
   /*  81 0x51 */ "JOB_DROPINDEX"_Stz,       // CN_JOB_DROPINDEX
   /*  82 0x52 */ "JOB_DROPSCHEMA"_Stz,      // CN_JOB_DROPSCHEMA
   /*  83 0x53 */ "JOB_DROPTABLE"_Stz,       // CN_JOB_DROPTABLE
   /*  84 0x54 */ "JOB_DROPTENANT"_Stz,      // CN_JOB_DROPTENANT
-  /*  85 0x55 */ "JOB_DUMPINDEX"_Stz,       // CN_JOB_DUMPINDEX
-  /*          */ "JOB_DUMPTABLE"_Stz,       // CN_JOB_DUMPTABLE
   /*  86 0x56 */ "JOB_EXPORT"_Stz,          // CN_JOB_EXPORT
   /*  87 0x57 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
   /*  88 0x58 */ "JOB_GENERATE"_Stz,        // CN_JOB_GENERATE

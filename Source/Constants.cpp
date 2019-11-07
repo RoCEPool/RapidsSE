@@ -217,14 +217,11 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_CREATESCHEMA"_Stz,   CN_JOB_CREATESCHEMA);
   /*    */ vAddConstant("CN_JOB_CREATETABLE"_Stz,    CN_JOB_CREATETABLE);
   /*    */ vAddConstant("CN_JOB_CREATETENANT"_Stz,   CN_JOB_CREATETENANT);
-  /*    */ vAddConstant("CN_JOB_DOCOL"_Stz,          CN_JOB_DOCOL);
   /*    */ vAddConstant("CN_JOB_DROPCATALOG"_Stz,    CN_JOB_DROPCATALOG);
   /*    */ vAddConstant("CN_JOB_DROPINDEX"_Stz,      CN_JOB_DROPINDEX);
   /*    */ vAddConstant("CN_JOB_DROPSCHEMA"_Stz,     CN_JOB_DROPSCHEMA);
   /*    */ vAddConstant("CN_JOB_DROPTABLE"_Stz,      CN_JOB_DROPTABLE);
   /*    */ vAddConstant("CN_JOB_DROPTENANT"_Stz,     CN_JOB_DROPTENANT);
-  /*    */ vAddConstant("CN_JOB_DUMPINDEX"_Stz,      CN_JOB_DUMPINDEX);
-  /*    */ vAddConstant("CN_JOB_DUMPTABLE"_Stz,      CN_JOB_DUMPTABLE);
   /*    */ vAddConstant("CN_JOB_EXPORT"_Stz,         CN_JOB_EXPORT);
   /*    */ vAddConstant("CN_JOB_FETCHROWS"_Stz,      CN_JOB_FETCHROWS);
   /*    */ vAddConstant("CN_JOB_INDEXJOIN"_Stz,      CN_JOB_INDEXJOIN);

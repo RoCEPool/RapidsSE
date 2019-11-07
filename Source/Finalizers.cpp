@@ -162,14 +162,11 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATETENANT
   /*    */ &Finalize::vUndefined,         // CN_JOB_DEFINENODE
-  /*    */ &Finalize::vUndefined,         // CN_JOB_DOCOL
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPCATALOG
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPSCHEMA
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPTENANT
-  /*    */ &Finalize::vUndefined,         // CN_JOB_DUMPINDEX
-  /*    */ &Finalize::vUndefined,         // CN_JOB_DUMPTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_EXPORT
   /*    */ &Finalize::vUndefined,         // CN_JOB_FETCHROWS
   /*    */ &Finalize::vUndefined,         // CN_JOB_GENERATE
