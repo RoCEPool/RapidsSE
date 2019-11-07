@@ -201,7 +201,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_STATUS
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBEXPORTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBFETCH
-  /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINDEXJOIN
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINFLATE
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINGESTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINSERTER
