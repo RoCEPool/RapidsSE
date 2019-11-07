@@ -89,8 +89,6 @@ namespace Steps
     static void vAddSteps_JobRepeater(void);
     static void vAddSteps_JobReport(void);
     static void vAddSteps_JobSelect(void);
-    static void vAddSteps_JobSelectTable(void);
-    static void vAddSteps_JobSink(void);
     static void vAddSteps_JobSubExporter(void);
     static void vAddSteps_JobSubLoader(void);
     static void vAddSteps_JobSubPublish(void);

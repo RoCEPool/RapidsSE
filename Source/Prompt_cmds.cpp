@@ -32,8 +32,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_MONITOR);
   JobClass::vCmds(CN_JOB_REPEATER);
   JobClass::vCmds(CN_JOB_REPORT);
-  JobClass::vCmds(CN_JOB_SELECTTABLE);
-  JobClass::vCmds(CN_JOB_SINK);
   
   // dist2pc
   JobClass::vCmds(CN_JOB_ANALYZEINDEX);

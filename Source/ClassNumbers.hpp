@@ -189,8 +189,6 @@ enum eCN : u2 // Class Number
   /* 113 0x71    71168B Heap:L */ CN_JOB_REPORT,
   /* 115 0x73    70608B Heap:L */ CN_JOB_SANITY,
   /* 114 0x72    70608B Heap:L */ CN_JOB_SELECT,
-  /* 114 0x72    70608B Heap:L */ CN_JOB_SELECTTABLE,
-  /* 117 0x75    70880B Heap:L */ CN_JOB_SINK,
   /* 118 0x76    70592B Heap:L */ CN_JOB_SIZEINDEX,
   /* 119 0x77    70592B Heap:L */ CN_JOB_SIZETABLE,
   /* 120 0x78    70592B Heap:L */ CN_JOB_SPACE,
@@ -585,8 +583,6 @@ static Stz* aCN[]
   /* 113 0x71 */ "JOB_REPORT"_Stz,          // CN_JOB_REPORT
   /* 115 0x73 */ "JOB_SANITY"_Stz,          // CN_JOB_SANITY
   /* 114 0x72 */ "JOB_SELECT"_Stz,          // CN_JOB_SELECT
-  /* 114 0x72 */ "JOB_SELECTTABLE"_Stz,     // CN_JOB_SELECTTABLE
-  /* 117 0x75 */ "JOB_SINK"_Stz,            // CN_JOB_SINK
   /* 118 0x76 */ "JOB_SIZEINDEX"_Stz,       // CN_JOB_SIZEINDEX
   /* 119 0x77 */ "JOB_SIZETABLE"_Stz,       // CN_JOB_SIZETABLE
   /* 120 0x78 */ "JOB_SPACE"_Stz,           // CN_JOB_SPACE
