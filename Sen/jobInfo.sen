@@ -115,8 +115,8 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet params| pEnameSet |
 
-  "jobPriority" pEnameSet EnameSet.hasName not if
-     "jobPriority" "PY_NORMAL" pEnameSet EnameSet.addStr
+  "<?priority?>" pEnameSet EnameSet.hasName not if
+     "<?priority?>" "PY_NORMAL" pEnameSet EnameSet.addStr
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
