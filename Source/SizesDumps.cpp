@@ -176,7 +176,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_FETCHROWS
   /*    */ &Dump::vDummy,           // CN_JOB_GENERATE
   /*    */ &Dump::vDummy,           // CN_JOB_HEALTH
-  /*    */ &Dump::vDummy,           // CN_JOB_INDEXJOIN
   /*    */ &Dump::vDummy,           // CN_JOB_INFLATEROWS
   /*    */ &Dump::vDummy,           // CN_JOB_INGEST
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTROW
@@ -198,7 +197,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_SANITY
   /*    */ &Dump::vDummy,           // CN_JOB_SELECT
   /*    */ &Dump::vDummy,           // CN_JOB_SELECTTABLE
-  /*    */ &Dump::vDummy,           // CN_JOB_SHOWCLUSTER
   /*    */ &Dump::vDummy,           // CN_JOB_SPACE
   /*    */ &Dump::vDummy,           // CN_JOB_SINK
   /*    */ &Dump::vDummy,           // CN_JOB_SIZEINDEX
@@ -582,7 +580,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
   /*    */ sizeof(Job_Generate),       // CN_JOB_GENERATE
   /*    */ sizeof(Job_Health),         // CN_JOB_HEALTH
-  /*    */ sizeof(Job_IndexJoin),      // CN_JOB_INDEXJOIN
   /*    */ sizeof(Job_InflateRows),    // CN_JOB_INFLATEROWS
   /*    */ sizeof(Job_Ingest),         // CN_JOB_INGEST
   /*    */ sizeof(Job_InsertRow),      // CN_JOB_INSERTROW
@@ -604,7 +601,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Sanity),         // CN_JOB_SANITY
   /*    */ sizeof(Job_Select),         // CN_JOB_SELECT
   /*    */ sizeof(Job_SelectTable),    // CN_JOB_SELECTTABLE
-  /*    */ sizeof(Job_ShowCluster),    // CN_JOB_SHOWCLUSTER
   /*    */ sizeof(Job_Sink),           // CN_JOB_SINK
   /*    */ sizeof(Job_SizeIndex),      // CN_JOB_SIZEINDEX
   /*    */ sizeof(Job_SizeTable),      // CN_JOB_SIZETABLE
@@ -987,7 +983,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_FETCHROWS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_GENERATE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_HEALTH
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INDEXJOIN
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INFLATEROWS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INGEST
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTROW
@@ -1009,7 +1004,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SANITY
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SELECT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SELECTTABLE
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SHOWCLUSTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SINK
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SIZEINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SIZETABLE

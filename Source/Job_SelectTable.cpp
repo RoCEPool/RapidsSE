@@ -47,7 +47,7 @@ JobClass xJobClass_SelectTable =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_SelectTable_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_ShowCluster_class;
+  *pNextFun = (pFUN*)pJob_Sink_class;
   
   return &xJobClass_SelectTable;
 }

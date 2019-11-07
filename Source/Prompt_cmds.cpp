@@ -31,14 +31,12 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_PIPELINE);
   JobClass::vCmds(CN_JOB_FETCHROWS);
   JobClass::vCmds(CN_JOB_GENERATE);
-  JobClass::vCmds(CN_JOB_INDEXJOIN);
   JobClass::vCmds(CN_JOB_INFLATEROWS);
   JobClass::vCmds(CN_JOB_INGEST);
   JobClass::vCmds(CN_JOB_MONITOR);
   JobClass::vCmds(CN_JOB_REPEATER);
   JobClass::vCmds(CN_JOB_REPORT);
   JobClass::vCmds(CN_JOB_SELECTTABLE);
-  JobClass::vCmds(CN_JOB_SHOWCLUSTER);
   JobClass::vCmds(CN_JOB_SINK);
   
   // dist2pc

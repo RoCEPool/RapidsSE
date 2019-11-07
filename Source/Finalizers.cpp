@@ -171,7 +171,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_FETCHROWS
   /*    */ &Finalize::vUndefined,         // CN_JOB_GENERATE
   /*    */ &Finalize::vUndefined,         // CN_JOB_HEALTH
-  /*    */ &Finalize::vUndefined,         // CN_JOB_INDEXJOIN
   /*    */ &Finalize::vUndefined,         // CN_JOB_INFLATEROWS
   /*    */ &Finalize::vUndefined,         // CN_JOB_INGEST
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTROW
@@ -193,7 +192,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_SANITY
   /*    */ &Finalize::vUndefined,         // CN_JOB_SELECT
   /*    */ &Finalize::vUndefined,         // CN_JOB_SELECTTABLE
-  /*    */ &Finalize::vUndefined,         // CN_JOB_SHOWCLUSTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SINK
   /*    */ &Finalize::vUndefined,         // CN_JOB_SIZEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_SIZETABLE

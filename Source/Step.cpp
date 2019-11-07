@@ -98,8 +98,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobGenData();
   Step::vAddSteps_JobGeneric();
   Step::vAddSteps_JobIngest();
-  Step::vAddSteps_JobIndexJoin();
-  Step::vAddSteps_JobInsertRows();
   Step::vAddSteps_JobKidExport();
   Step::vAddSteps_JobLoadTable();
   Step::vAddSteps_JobMonitor();

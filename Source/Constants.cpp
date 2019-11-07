@@ -224,7 +224,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_DROPTENANT"_Stz,     CN_JOB_DROPTENANT);
   /*    */ vAddConstant("CN_JOB_EXPORT"_Stz,         CN_JOB_EXPORT);
   /*    */ vAddConstant("CN_JOB_FETCHROWS"_Stz,      CN_JOB_FETCHROWS);
-  /*    */ vAddConstant("CN_JOB_INDEXJOIN"_Stz,      CN_JOB_INDEXJOIN);
   /*    */ vAddConstant("CN_JOB_INFLATEROWS"_Stz,    CN_JOB_INFLATEROWS);
   /*    */ vAddConstant("CN_JOB_INSERTROW"_Stz,      CN_JOB_INSERTROW);
   /*    */ vAddConstant("CN_JOB_INSERTTABLE"_Stz,    CN_JOB_INSERTTABLE);
@@ -243,7 +242,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_SANITY"_Stz,         CN_JOB_SANITY);
   /*    */ vAddConstant("CN_JOB_SELECT"_Stz,         CN_JOB_SELECT);
   /*    */ vAddConstant("CN_JOB_SELECTTABLE"_Stz,    CN_JOB_SELECTTABLE);
-  /*    */ vAddConstant("CN_JOB_SHOWCLUSTER"_Stz,    CN_JOB_SHOWCLUSTER);
   /*    */ vAddConstant("CN_JOB_SINK"_Stz,           CN_JOB_SINK);
   /*    */ vAddConstant("CN_JOB_SIZEINDEX"_Stz,      CN_JOB_SIZEINDEX);
   /*    */ vAddConstant("CN_JOB_SIZETABLE"_Stz,      CN_JOB_SIZETABLE);

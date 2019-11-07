@@ -80,7 +80,6 @@ namespace Jobs
 
 #include "Job_Health.hpp"
 
-#include "Job_IndexJoin.hpp"
 #include "Job_InflateRows.hpp"
 #include "Job_Ingest.hpp"
 #include "Job_InsertRow.hpp"
@@ -114,7 +113,6 @@ namespace Jobs
 #include "Job_SizeIndex.hpp"
 #include "Job_SizeTable.hpp"
 #include "Job_Space.hpp"
-#include "Job_ShowCluster.hpp"
 #include "Job_Start.hpp"
 #include "Job_StartCluster.hpp"
 #include "Job_Status.hpp"

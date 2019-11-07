@@ -51,7 +51,6 @@
 
 "job_Generate.sen"       include
 
-"job_IndexJoin.sen"      include
 "job_InflateRows.sen"    include
 "job_Ingest.sen"         include
 "job_InsertRow.sen"      include
