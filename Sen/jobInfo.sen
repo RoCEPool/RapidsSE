@@ -90,15 +90,15 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet_dist
 
-  "SeedReq" "_req" "defaultSeedDist" seedEnameAdd
+  "<?SeedReq?>" "_req" "defaultSeedDist" seedEnameAdd
 
-  "SeedRcv" "_beg" "defaultSeedDist" seedEnameAdd
+  "<?SeedRcv?>" "_beg" "defaultSeedDist" seedEnameAdd
 
-  "SeedExe" "_exe" "defaultSeedDist" seedEnameAdd
+  "<?SeedExe?>" "_exe" "defaultSeedDist" seedEnameAdd
 
-  "SeedEnd" "_end" "defaultSeedDist" seedEnameAdd
+  "<?SeedEnd?>" "_end" "defaultSeedDist" seedEnameAdd
 
-  "SeedCan" "_can" "defaultSeedDist" seedEnameAdd
+  "<?SeedCan?>" "_can" "defaultSeedDist" seedEnameAdd
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -106,7 +106,7 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet_local
 
-  "SeedReq" "_req" "defaultSeedLocal" seedEnameAdd
+  "<?SeedReq?>" "_req" "defaultSeedLocal" seedEnameAdd
 ;
 
 /*----------------------------------------------------------------------------*/
