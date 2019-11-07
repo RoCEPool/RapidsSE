@@ -95,6 +95,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobExport();
   Step::vAddSteps_JobFetchRows();
   Step::vAddSteps_JobGeneric();
+  Step::vAddSteps_JobInsertRows();
   Step::vAddSteps_JobKidExport();
   Step::vAddSteps_JobLoadTable();
   Step::vAddSteps_JobNetHog();
