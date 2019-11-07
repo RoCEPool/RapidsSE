@@ -47,7 +47,7 @@ JobClass xJobClass_StartCluster =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_StartCluster_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_StartNode_class;
+  *pNextFun = (pFUN*)pJob_Status_class;
   
   return &xJobClass_StartCluster;
 }

@@ -200,7 +200,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_SPACE
   /*    */ &Finalize::vUndefined,         // CN_JOB_START
   /*    */ &Finalize::vUndefined,         // CN_JOB_STARTCLUSTER
-  /*    */ &Finalize::vUndefined,         // CN_JOB_STARTNODE
   /*    */ &Finalize::vUndefined,         // CN_JOB_STATUS
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBEXPORTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBFETCH
