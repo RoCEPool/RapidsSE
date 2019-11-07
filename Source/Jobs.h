@@ -119,7 +119,6 @@ namespace Jobs
 
 #include "Job_SubExporter.hpp"
 #include "Job_SubFetch.hpp"
-#include "Job_SubIndexJoin.hpp"
 #include "Job_SubInflate.hpp"
 #include "Job_SubIngester.hpp"
 #include "Job_SubInserter.hpp"
