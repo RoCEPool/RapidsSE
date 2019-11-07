@@ -179,7 +179,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "JobName" word::name_trunc pEnameSet EnameSet.addStr
+  "<?jobNm?>" word::name_trunc pEnameSet EnameSet.addStr
 
   // skip the "{" token from input source
   next-token drop
