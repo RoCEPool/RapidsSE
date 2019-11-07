@@ -27,12 +27,8 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
 {
   
   // local
-  JobClass::vCmds(CN_JOB_CAT);
   JobClass::vCmds(CN_JOB_PIPELINE);
   JobClass::vCmds(CN_JOB_FETCHROWS);
-  JobClass::vCmds(CN_JOB_GENERATE);
-  JobClass::vCmds(CN_JOB_INFLATEROWS);
-  JobClass::vCmds(CN_JOB_INGEST);
   JobClass::vCmds(CN_JOB_MONITOR);
   JobClass::vCmds(CN_JOB_REPEATER);
   JobClass::vCmds(CN_JOB_REPORT);

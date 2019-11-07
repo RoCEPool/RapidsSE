@@ -21,7 +21,6 @@
 "job_AnalyzeTable.sen"   include
 
 "job_CancelQuery.sen"    include
-"job_Cat.sen"            include
 "job_Cf.sen"             include
 "job_CompactIndex.sen"   include
 "job_ConnectCluster.sen" include
@@ -49,10 +48,6 @@
 
 "job_FetchRows.sen"      include
 
-"job_Generate.sen"       include
-
-"job_InflateRows.sen"    include
-"job_Ingest.sen"         include
 "job_InsertRow.sen"      include
 "job_InsertTable.sen"    include
 
@@ -101,8 +96,6 @@
 "job_Status.sen"         include
 "job_SubExporter.sen"    include
 "job_SubFetch.sen"       include
-"job_SubInflate.sen"     include
-"job_SubIngester.sen"    include
 "Job_SubInserter.sen"    include
 "job_SubPublish.sen"     include
 "job_SubPurger.sen"      include

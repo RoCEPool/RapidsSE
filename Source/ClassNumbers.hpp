@@ -153,7 +153,6 @@ enum eCN : u2 // Class Number
   /*  65 0x41    70600B Heap:L */ CN_JOB_ANALYZETABLE,
   /*  66 0x42    70592B Heap:L */ CN_JOB_ANSWER,
   /*  67 0x43    70592B Heap:L */ CN_JOB_BOOT,
-  /*  68 0x44    71160B Heap:L */ CN_JOB_CAT,
   /*  70 0x46    70592B Heap:L */ CN_JOB_COMPACTINDEX,
   /*  71 0x47    70592B Heap:L */ CN_JOB_CONNECTCLUSTER,
   /*  72 0x48    70592B Heap:L */ CN_JOB_CONNECTOR,
@@ -171,10 +170,7 @@ enum eCN : u2 // Class Number
   /*  84 0x54    70592B Heap:L */ CN_JOB_DROPTENANT,
   /*  86 0x56    70864B Heap:L */ CN_JOB_EXPORT,
   /*  87 0x57    70936B Heap:L */ CN_JOB_FETCHROWS,
-  /*  88 0x58   122912B Heap:L */ CN_JOB_GENERATE,
   /*                           */ CN_JOB_HEALTH,
-  /*                           */ CN_JOB_INFLATEROWS,
-  /*  89 0x59    71456B Heap:L */ CN_JOB_INGEST,
   /*  90 0x5A   118632B Heap:L */ CN_JOB_INSERTROW,
   /*  91 0x5B    70608B Heap:L */ CN_JOB_INSERTTABLE,
   /* 139 0x8B        0B Heap:L */ CN_JOB_KIDEXPORT,
@@ -553,7 +549,6 @@ static Stz* aCN[]
   /*  65 0x41 */ "JOB_ANALYZETABLE"_Stz,    // CN_JOB_ANALYZETABLE
   /*  66 0x42 */ "JOB_ANSWER"_Stz,          // CN_JOB_ANSWER
   /*  67 0x43 */ "JOB_BOOT"_Stz,            // CN_JOB_BOOT
-  /*  68 0x44 */ "JOB_CAT"_Stz,             // CN_JOB_CAT
   /*  70 0x46 */ "JOB_COMPACTINDEX"_Stz,    // CN_JOB_COMPACTINDEX
   /*  71 0x47 */ "JOB_CONNECTCLUSTER"_Stz,  // CN_JOB_CONNECTCLUSTER
   /*  72 0x48 */ "JOB_CONNECTOR"_Stz,       // CN_JOB_CONNECTOR
@@ -571,10 +566,7 @@ static Stz* aCN[]
   /*  84 0x54 */ "JOB_DROPTENANT"_Stz,      // CN_JOB_DROPTENANT
   /*  86 0x56 */ "JOB_EXPORT"_Stz,          // CN_JOB_EXPORT
   /*  87 0x57 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
-  /*  88 0x58 */ "JOB_GENERATE"_Stz,        // CN_JOB_GENERATE
   /*          */ "JOB_HEALTH"_Stz,          // CN_JOB_HEALTH
-  /*          */ "JOB_INFLATEROWS"_Stz,     // CN_JOB_INFLATEROWS
-  /*  89 0x59 */ "JOB_INGEST"_Stz,          // CN_JOB_INGEST
   /*  90 0x5A */ "JOB_INSERTROW"_Stz,       // CN_JOB_INSERTROW
   /*  91 0x5B */ "JOB_INSERTTABLE"_Stz,     // CN_JOB_INSERTTABLE
   /* 139 0x8B */ "JOB_KIDEXPORT"_Stz,       // CN_JOB_KIDEXPORT

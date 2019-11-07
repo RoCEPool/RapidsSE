@@ -328,7 +328,7 @@ bool Job_Repeater::bChunk(void)
 /*----------------------------------------------------------------------------*/
 void Job_Repeater::vEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
 
   m_pByteRate->vEndTiming();
 

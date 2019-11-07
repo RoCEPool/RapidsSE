@@ -590,15 +590,6 @@ public:
   void vJob_IndexJoinSpawnSub(void);
   void vJob_SubIndexJoinIndexJoin(void);
 
-  // job inflate
-  void vJob_InflateRowsColumnNameFetch(void);
-  void vJob_InflateRowsColumnStore(void);
-  void vJob_InflateRowsSpawnSub(void);
-  void vJob_InflateRowsSpawnSubInflate(void);
-  void vJob_InflateRowsSubInfTasksFetch(void);
-  void vJob_InflateRowsTableStore(void);
-  void vJob_InflateRowsWhereFetch(void);
-
   // job Ingest
   void vJob_IngestBegin(void);
   void vJob_IngestChunk(void);
@@ -712,17 +703,6 @@ public:
   void vJob_SubFetchPhraseFetch(void);
   void vJob_SubFetchPlannerFetch(void);
   void vJob_SubFetchSlotFetch(void);
-
-  // job SubInflate
-  void vJob_SubInflateJobInflateRowsFetch(void);
-  void vJob_SubInflateInflateRows(void);
-
-  // job SubIngester
-  void vJob_SubIngesterBegin(void);
-  void vJob_SubIngesterChunk(void);
-  void vJob_SubIngesterEnd(void);
-  void vJob_SubIngesterJobIngest(void);
-  void vJob_SubIngesterSpawn(void);
 
   // job SubLoader
   void vJob_SubLoaderBegin(void);

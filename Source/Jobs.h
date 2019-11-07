@@ -53,7 +53,6 @@ namespace Jobs
 
 #include "Job_Boot.hpp"
 
-#include "Job_Cat.hpp"
 #include "Job_CompactIndex.hpp"
 #include "Job_ConnectCluster.hpp"
 #include "Job_Connector.hpp"
@@ -76,12 +75,8 @@ namespace Jobs
 
 #include "Job_FetchRows.hpp"
 
-#include "Job_Generate.hpp"
-
 #include "Job_Health.hpp"
 
-#include "Job_InflateRows.hpp"
-#include "Job_Ingest.hpp"
 #include "Job_InsertRow.hpp"
 #include "Job_InsertTable.hpp"
 
@@ -119,8 +114,6 @@ namespace Jobs
 
 #include "Job_SubExporter.hpp"
 #include "Job_SubFetch.hpp"
-#include "Job_SubInflate.hpp"
-#include "Job_SubIngester.hpp"
 #include "Job_SubInserter.hpp"
 #include "Job_SubLoader.hpp"
 #include "Job_SubPublish.hpp"

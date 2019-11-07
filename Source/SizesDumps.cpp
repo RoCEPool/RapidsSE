@@ -156,7 +156,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_ANALYZETABLE
   /*    */ &Dump::vDummy,           // CN_JOB_ANSWER
   /*    */ &Dump::vDummy,           // CN_JOB_BOOT
-  /*    */ &Dump::vDummy,           // CN_JOB_CAT
   /*    */ &Dump::vDummy,           // CN_JOB_COMPACTINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_CONNECTCLUSTER
   /*    */ &Dump::vDummy,           // CN_JOB_CONNECTOR
@@ -174,10 +173,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_DROPTENANT
   /*    */ &Dump::vDummy,           // CN_JOB_EXPORT
   /*    */ &Dump::vDummy,           // CN_JOB_FETCHROWS
-  /*    */ &Dump::vDummy,           // CN_JOB_GENERATE
   /*    */ &Dump::vDummy,           // CN_JOB_HEALTH
-  /*    */ &Dump::vDummy,           // CN_JOB_INFLATEROWS
-  /*    */ &Dump::vDummy,           // CN_JOB_INGEST
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTROW
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_KIDEXPORT
@@ -559,7 +555,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_AnalyzeTable),   // CN_JOB_ANALYZETABLE
   /*    */ sizeof(Job_Answer),         // CN_JOB_ANSWER
   /*    */ sizeof(Job_Boot),           // CN_JOB_BOOT
-  /*    */ sizeof(Job_Cat),            // CN_JOB_CAT
   /*    */ sizeof(Job_CompactIndex),   // CN_JOB_COMPACTINDEX
   /*    */ sizeof(Job_ConnectCluster), // CN_JOB_CONNECTCLUSTER
   /*    */ sizeof(Job_Connector),      // CN_JOB_CONNECTOR
@@ -577,10 +572,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_DropTenant),     // CN_JOB_DROPTENANT
   /*    */ sizeof(Job_Export),         // CN_JOB_EXPORT
   /*    */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
-  /*    */ sizeof(Job_Generate),       // CN_JOB_GENERATE
   /*    */ sizeof(Job_Health),         // CN_JOB_HEALTH
-  /*    */ sizeof(Job_InflateRows),    // CN_JOB_INFLATEROWS
-  /*    */ sizeof(Job_Ingest),         // CN_JOB_INGEST
   /*    */ sizeof(Job_InsertRow),      // CN_JOB_INSERTROW
   /*    */ sizeof(Job_InsertTable),    // CN_JOB_INSERTTABLE
   /*    */ sizeof(Job_KidExport),      // CN_JOB_KIDEXPORT
@@ -609,8 +601,8 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Status),         // CN_JOB_STATUS
   /*    */ sizeof(Job_SubExporter),    // CN_JOB_SUBEXPORTER
   /*    */ sizeof(Job_SubFetch),       // CN_JOB_SUBFETCH
-  /*    */ sizeof(Job_SubInflate),     // CN_JOB_SUBINFLATE
-  /*    */ sizeof(Job_SubIngester),    // CN_JOB_SUBINGESTER
+  /*    */ sizeof(Job_SubFetch),     // CN_JOB_SUBINFLATE
+  /*    */ sizeof(Job_SubFetch),    // CN_JOB_SUBINGESTER
   /*    */ sizeof(Job_SubInserter),    // CN_JOB_SUBINSERTER
   /*    */ sizeof(Job_SubLoader),      // CN_JOB_SUBLOADER
   /*    */ sizeof(Job_SubPublish),     // CN_JOB_SUBPUBLISH
@@ -961,7 +953,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANALYZETABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANSWER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_BOOT
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CAT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_COMPACTINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CONNECTCLUSTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CONNECTOR
@@ -979,10 +970,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPTENANT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_EXPORT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_FETCHROWS
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_GENERATE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_HEALTH
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INFLATEROWS
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INGEST
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTROW
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_KIDEXPORT

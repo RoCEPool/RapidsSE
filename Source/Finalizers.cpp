@@ -150,7 +150,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANALYZETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANSWER
   /*    */ &Finalize::vUndefined,         // CN_JOB_BOOT
-  /*    */ &Finalize::vUndefined,         // CN_JOB_CAT
 
   /*    */ &Finalize::vUndefined,         // CN_JOB_COMPACTINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_CONNECTCLUSTER
@@ -169,10 +168,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPTENANT
   /*    */ &Finalize::vUndefined,         // CN_JOB_EXPORT
   /*    */ &Finalize::vUndefined,         // CN_JOB_FETCHROWS
-  /*    */ &Finalize::vUndefined,         // CN_JOB_GENERATE
   /*    */ &Finalize::vUndefined,         // CN_JOB_HEALTH
-  /*    */ &Finalize::vUndefined,         // CN_JOB_INFLATEROWS
-  /*    */ &Finalize::vUndefined,         // CN_JOB_INGEST
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTROW
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_KIDEXPORT
