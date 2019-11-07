@@ -174,7 +174,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_KIDEXPORT
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTPARTITIONS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
-  /*    */ &Finalize::vUndefined,         // CN_JOB_MONITOR
   /*    */ &Finalize::vUndefined,         // CN_JOB_NETHOG
   /*    */ &Finalize::vUndefined,         // CN_JOB_NODEINFO
   /*    */ &Finalize::vUndefined,         // CN_JOB_OPERAND
@@ -183,8 +182,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_PUBLISH
   /*    */ &Finalize::vUndefined,         // CN_JOB_PURGE
   /*    */ &Finalize::vUndefined,         // CN_JOB_RECEIVER
-  /*    */ &Finalize::vUndefined,         // CN_JOB_REPEATER
-  /*    */ &Finalize::vUndefined,         // CN_JOB_REPORT
   /*    */ &Finalize::vUndefined,         // CN_JOB_SANITY
   /*    */ &Finalize::vUndefined,         // CN_JOB_SELECT
   /*    */ &Finalize::vUndefined,         // CN_JOB_SIZEINDEX

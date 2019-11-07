@@ -85,8 +85,6 @@ namespace Jobs
 #include "Job_ListPartitions.hpp"
 #include "Job_LoadTable.hpp"
 
-#include "Job_Monitor.hpp"
-
 #include "Job_NetHog.hpp"
 #include "Job_NodeInfo.hpp"
 
@@ -98,8 +96,6 @@ namespace Jobs
 #include "Job_Purge.hpp"
 
 #include "Job_Receiver.hpp"
-#include "Job_Repeater.hpp"
-#include "Job_Report.hpp"
 
 #include "Job_Sanity.hpp"
 #include "Job_Select.hpp"

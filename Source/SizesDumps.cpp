@@ -179,7 +179,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_KIDEXPORT
   /*    */ &Dump::vDummy,           // CN_JOB_LISTPARTITIONS
   /*    */ &Dump::vDummy,           // CN_JOB_LOADTABLE
-  /*    */ &Dump::vDummy,           // CN_JOB_MONITOR
   /*    */ &Dump::vDummy,           // CN_JOB_NETHOG
   /*    */ &Dump::vDummy,           // CN_JOB_NODEINFO
   /*    */ &Dump::vDummy,           // CN_JOB_OPERAND
@@ -188,8 +187,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_PUBLISH
   /*    */ &Dump::vDummy,           // CN_JOB_PURGE
   /*    */ &Dump::vDummy,           // CN_JOB_RECEIVER
-  /*    */ &Dump::vDummy,           // CN_JOB_REPEATER
-  /*    */ &Dump::vDummy,           // CN_JOB_REPORT
   /*    */ &Dump::vDummy,           // CN_JOB_SANITY
   /*    */ &Dump::vDummy,           // CN_JOB_SELECT
   /*    */ &Dump::vDummy,           // CN_JOB_SIZEINDEX
@@ -576,7 +573,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_KidExport),      // CN_JOB_KIDEXPORT
   /*    */ sizeof(Job_ListPartitions), // CN_JOB_LISTPARTITIONS
   /*    */ sizeof(Job_LoadTable),      // CN_JOB_LOADTABLE
-  /*    */ sizeof(Job_Monitor),        // CN_JOB_MONITOR
   /*    */ sizeof(Job_NetHog),         // CN_JOB_NETHOG
   /*    */ sizeof(Job_NodeInfo),       // CN_JOB_NODEINFO
   /*    */ sizeof(Job_Operand),        // CN_JOB_OPERAND
@@ -585,8 +581,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Publish),        // CN_JOB_PUBLISH
   /*    */ sizeof(Job_Purge),          // CN_JOB_PURGE
   /*    */ sizeof(Job_Receiver),       // CN_JOB_RECEIVER
-  /*    */ sizeof(Job_Repeater),       // CN_JOB_REPEATER
-  /*    */ sizeof(Job_Repeater),       // CN_JOB_REPORT
   /*    */ sizeof(Job_Sanity),         // CN_JOB_SANITY
   /*    */ sizeof(Job_Select),         // CN_JOB_SELECT
   /*    */ sizeof(Job_SizeIndex),      // CN_JOB_SIZEINDEX
@@ -972,7 +966,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_KIDEXPORT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTPARTITIONS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LOADTABLE
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_MONITOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_NETHOG
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_NODEINFO
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_OPERAND
@@ -981,8 +974,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PUBLISH
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PURGE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_RECEIVER
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_REPEATER
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_REPORT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SANITY
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SELECT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SIZEINDEX

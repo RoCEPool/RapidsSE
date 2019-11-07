@@ -65,8 +65,6 @@
 "Job_ListTenants.sen"    include
 "Job_LoadTable.sen"      include
 
-"Job_Monitor.sen"        include
-
 "Job_NetHog.sen"         include
 
 "Job_OutputOp.sen"       include
@@ -77,9 +75,6 @@
 "Job_Publish.sen"        include
 "Job_Purge.sen"          include
 "Job_Pwf.sen"            include
-
-"Job_Repeater.sen"       include
-"Job_Report.sen"         include
 
 "Job_Sanity.sen"         include
 "Job_ScanOp.sen"         include

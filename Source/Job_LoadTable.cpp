@@ -47,7 +47,7 @@ JobClass xJobClass_LoadTable =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_LoadTable_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Monitor_class;
+  *pNextFun = (pFUN*)pJob_NetHog_class;
   
   return &xJobClass_LoadTable;
 }

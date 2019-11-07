@@ -77,7 +77,6 @@ namespace Steps
     static void vAddSteps_JobInsertRows(void);
     static void vAddSteps_JobKidExport(void);
     static void vAddSteps_JobLoadTable(void);
-    static void vAddSteps_JobMonitor(void);
     static void vAddSteps_JobNetHog(void);
     static void vAddSteps_JobNodeInfo(void);
     static void vAddSteps_JobOperand(void);
@@ -86,8 +85,6 @@ namespace Steps
     static void vAddSteps_JobPurge(void);
     static void vAddSteps_JobReceiver(void);
     static void vAddSteps_JobRef(void);
-    static void vAddSteps_JobRepeater(void);
-    static void vAddSteps_JobReport(void);
     static void vAddSteps_JobSelect(void);
     static void vAddSteps_JobSubExporter(void);
     static void vAddSteps_JobSubLoader(void);

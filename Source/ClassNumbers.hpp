@@ -176,7 +176,6 @@ enum eCN : u2 // Class Number
   /* 139 0x8B        0B Heap:L */ CN_JOB_KIDEXPORT,
   /* 139 0x8B        0B Heap:L */ CN_JOB_LISTPARTITIONS,
   /* 102 0x66    70928B Heap:L */ CN_JOB_LOADTABLE,
-  /* 103 0x67    70888B Heap:L */ CN_JOB_MONITOR,
   /* 104 0x68    70600B Heap:L */ CN_JOB_NETHOG,
   /* 105 0x69    70640B Heap:L */ CN_JOB_NODEINFO,
   /* 105 0x69    70640B Heap:L */ CN_JOB_OPERAND,
@@ -185,8 +184,6 @@ enum eCN : u2 // Class Number
   /* 108 0x6C    71000B Heap:L */ CN_JOB_PUBLISH,
   /* 109 0x6D    70880B Heap:L */ CN_JOB_PURGE,
   /* 111 0x6F    70608B Heap:L */ CN_JOB_RECEIVER,
-  /* 112 0x70    71168B Heap:L */ CN_JOB_REPEATER,
-  /* 113 0x71    71168B Heap:L */ CN_JOB_REPORT,
   /* 115 0x73    70608B Heap:L */ CN_JOB_SANITY,
   /* 114 0x72    70608B Heap:L */ CN_JOB_SELECT,
   /* 118 0x76    70592B Heap:L */ CN_JOB_SIZEINDEX,
@@ -570,7 +567,6 @@ static Stz* aCN[]
   /* 139 0x8B */ "JOB_KIDEXPORT"_Stz,       // CN_JOB_KIDEXPORT
   /* 139 0x8B */ "JOB_LISTPARTITIONS"_Stz,  // CN_JOB_LISTPARTITIONS
   /* 102 0x66 */ "JOB_LOADTABLE"_Stz,       // CN_JOB_LOADTABLE
-  /* 103 0x67 */ "JOB_MONITOR"_Stz,         // CN_JOB_MONITOR
   /* 104 0x68 */ "JOB_NETHOG"_Stz,          // CN_JOB_NETHOG
   /* 105 0x69 */ "JOB_NODEINFO"_Stz,        // CN_JOB_NODEINFO
   /* 105 0x69 */ "JOB_OPERAND"_Stz,         // CN_JOB_OPERAND
@@ -579,8 +575,6 @@ static Stz* aCN[]
   /* 108 0x6C */ "JOB_PUBLISH"_Stz,         // CN_JOB_PUBLISH
   /* 109 0x6D */ "JOB_PURGE"_Stz,           // CN_JOB_PURGE
   /* 111 0x6F */ "JOB_RECEIVER"_Stz,        // CN_JOB_RECEIVER
-  /* 112 0x70 */ "JOB_REPEATER"_Stz,        // CN_JOB_REPEATER
-  /* 113 0x71 */ "JOB_REPORT"_Stz,          // CN_JOB_REPORT
   /* 115 0x73 */ "JOB_SANITY"_Stz,          // CN_JOB_SANITY
   /* 114 0x72 */ "JOB_SELECT"_Stz,          // CN_JOB_SELECT
   /* 118 0x76 */ "JOB_SIZEINDEX"_Stz,       // CN_JOB_SIZEINDEX

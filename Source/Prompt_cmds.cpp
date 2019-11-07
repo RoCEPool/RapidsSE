@@ -29,9 +29,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   // local
   JobClass::vCmds(CN_JOB_PIPELINE);
   JobClass::vCmds(CN_JOB_FETCHROWS);
-  JobClass::vCmds(CN_JOB_MONITOR);
-  JobClass::vCmds(CN_JOB_REPEATER);
-  JobClass::vCmds(CN_JOB_REPORT);
   
   // dist2pc
   JobClass::vCmds(CN_JOB_ANALYZEINDEX);

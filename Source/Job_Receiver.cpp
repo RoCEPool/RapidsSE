@@ -47,7 +47,7 @@ JobClass xJobClass_Receiver =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Receiver_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Repeater_class;
+  *pNextFun = (pFUN*)pJob_Sanity_class;
   
   return &xJobClass_Receiver;
 }
