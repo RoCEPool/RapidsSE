@@ -128,6 +128,19 @@ i8 GenVar::iInt(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if nested value is an integer                                         */
+/*----------------------------------------------------------------------------*/
+bool GenVar::bIsInt(void)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  if (CN_INTVAL == xNestedValue.m_xHeader.eClass())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address of the nested value                                            */
 /*----------------------------------------------------------------------------*/
 ForthValue* GenVar::aNestedValue(void)

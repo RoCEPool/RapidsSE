@@ -5,6 +5,15 @@
 " tags_jobInfo.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: jobInfo::enameSet@ ( -- pEnameSet )
+
+  <jobNm> "_cls" str.cat find word.EnameSet@
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* the ename word kind                                                        */
 /*----------------------------------------------------------------------------*/
 : <<jobInfoTag>> immediate ( -- )
@@ -18,11 +27,11 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* push value of <catalogNm> from job's ename-set                             */
+/* push integer value of <?jobKind?> from job's jobInfo ename-set             */
 /*----------------------------------------------------------------------------*/
-: <?<?jobKind?>?> <<jobInfoTag>> ( -- translated "<?jobKind?>" )
+: <?jobKind?> <<jobInfoTag>> ( -- i )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current word.name@ , ] jobInfo::enameSet@ enameSet.getInt
 ;
 
 /*============================================================================*/

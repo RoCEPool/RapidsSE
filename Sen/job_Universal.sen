@@ -30,6 +30,11 @@
 /*----------------------------------------------------------------------------*/
 : universal_req ( -- <R> )
 
+"++++ universal_req ++++" .
+job::this job.enameSet@ enameSet.asStr .
+jobInfo::enameSet@ enameSet.asStr .
+<?jobKind?> .
+
   "SeedReq" .executeSeed
 ;
 

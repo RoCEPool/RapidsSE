@@ -9,9 +9,9 @@ namespace SenVM
   {
   private:
     struct {
-      Header m_xHeader;
+      Header       m_xHeader;
       SingleWord   m_wWord;
-      char   m_caStr[C_MAX_VCH2];
+      char         m_caStr[C_MAX_VCH2];
     } xNestedValue;
   
     // must be last
@@ -30,6 +30,7 @@ namespace SenVM
 
     Cell*   aFipPtr(void);
     i8      iInt(void);
+    bool    bIsInt(void);
     ForthValue*  aNestedValue(void);
     Object* pObject(void);
     i8      nSize(void);

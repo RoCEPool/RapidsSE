@@ -26,11 +26,18 @@ void Step::vDot(void)
   if ( ! m_pDataStack->bPopGenVar(xVariable) )
     THROW_DSTACK();
   
-  vTrace("[%s %s] %s\n"_Stz,
-         AM::pGrid()->pThisNode()->szNodeNm(),
-         m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
-         xVariable.szStz());
-
+  if (xVariable.bIsInt()) {
+    vTrace("[%s %s] %lld\n"_Stz,
+           AM::pGrid()->pThisNode()->szNodeNm(),
+           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
+           xVariable.iInt());
+  }
+  else {
+    vTrace("[%s %s] %s\n"_Stz,
+           AM::pGrid()->pThisNode()->szNodeNm(),
+           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
+           xVariable.szStz());
+  }
   
   EXIT();
 }
