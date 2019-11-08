@@ -1089,6 +1089,9 @@ public:
   void vTableVerify(void);
   void vTableVisualize(void);
 
+  // table definition
+  void vTableDefParse(void);
+
   // table partition
   void vTablePtnAttemptGrabRead(void);
   void vTablePtnAttemptGrabWrite(void);
