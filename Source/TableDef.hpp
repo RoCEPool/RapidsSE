@@ -30,6 +30,12 @@ namespace MetaData
   
     bool bParse(Stz* szCmd);
   
+  private:
+  
+    bool bExtractDecimal(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn);
+    bool bExtractFloat(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn);
+    bool bExtractVarchar(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn);
+
     Footer* aFooter(void);
   };
   

@@ -23,14 +23,14 @@ namespace Structures
     VectorNL_t(void);
     ~VectorNL_t(void) noexcept(false);
 
-    ITEM*& operator [](u8 nItemNo);
+    ITEM*& operator [](u8 i_Item);
 
     void  vAdd(ITEM* pObject);
     void  vClear(void);
     bool  bContains(ITEM* pObject);
     void  vInsert(ITEM* pObject);
     i8    nItems(void);
-    ITEM* pGet(u8 nItemNo);
+    ITEM* pGet(u8 i_Item);
     void  vRemove(ITEM* pObject);
   
     Footer* aFooter(void);
@@ -126,16 +126,16 @@ VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::~VectorNL_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* [] operator                                                                */
+/* subscript [] operator                                                      */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
-ITEM*& VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::operator [](u8 nItemNo)
+ITEM*& VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::operator [](u8 i_Item)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   //ASSERT(nItemNo >= 0 and nItemNo < MAX_ITEMS);
   
-  return m_pItem[nItemNo];
+  return m_pItem[i_Item];
 }
 
 /*----------------------------------------------------------------------------*/
