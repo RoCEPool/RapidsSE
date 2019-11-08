@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeIndex_exe ( Job_SizeIndex -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_SizeIndex |
   job::this locals| pJob_SizeIndex |

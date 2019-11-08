@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog_exe ( pJob_DropCatalog -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_DropCatalog |
   job::this locals| pJob_DropCatalog |

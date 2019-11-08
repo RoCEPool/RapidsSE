@@ -110,7 +110,7 @@
 /*----------------------------------------------------------------------------*/
 : connectCluster_exe ( -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_ConnectCluster |
   job::this locals| pJob_ConnectCluster |

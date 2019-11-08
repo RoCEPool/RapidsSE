@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema_exe ( pJob_DropSchema -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_DropSchema |
   job::this locals| pJob_DropSchema |

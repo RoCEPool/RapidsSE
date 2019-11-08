@@ -176,7 +176,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_exe ( Job_CreateIndex -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_CreateIndex |
   job::this locals| pJob_CreateIndex |

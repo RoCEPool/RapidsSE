@@ -200,7 +200,7 @@
 /*----------------------------------------------------------------------------*/
 : walk_exe ( pJob_Walk -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
   actLog::seed_exe
 
   job::this locals| pJob_Walk |

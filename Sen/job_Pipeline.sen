@@ -44,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline_exe ( Job_pipeline -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   task::this locals| pTask |
   job::this  locals| pJob_pipeline |

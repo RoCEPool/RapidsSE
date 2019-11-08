@@ -71,7 +71,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyTable_exe ( job_VerifyTable )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pjob_VerifyTable |
   job::this locals| pjob_VerifyTable |

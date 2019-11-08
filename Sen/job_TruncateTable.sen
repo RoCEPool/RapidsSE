@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 : truncateTable_exe ( Job_TruncateTable -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_TruncateTable |
   job::this locals| pJob_TruncateTable |

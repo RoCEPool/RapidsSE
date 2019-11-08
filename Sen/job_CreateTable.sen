@@ -87,7 +87,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_exe ( pJob_CreateTable -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_CreateTable |
   job::this locals| pJob_CreateTable |

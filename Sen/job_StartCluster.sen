@@ -129,7 +129,7 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_exe ( pJob_StartCluster -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_StartCluster |
   job::this locals| pJob_StartCluster |

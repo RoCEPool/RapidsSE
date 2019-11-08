@@ -78,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_exe ( pJob_CreateCatalog -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_CreateCatalog |
   job::this locals| pJob_CreateCatalog |

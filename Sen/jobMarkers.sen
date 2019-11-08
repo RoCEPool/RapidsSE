@@ -212,18 +212,6 @@
 
   JP_EXECUTING job::this job.phase!
 
-  <seed_initially>
-;
-
-/*----------------------------------------------------------------------------*/
-/* seed execute                                                               */
-/*----------------------------------------------------------------------------*/
-: <SEED_EXE2>
-
-  SS_SEED_EXE log::jobSeed
-
-  JP_EXECUTING job::this job.phase!
-
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // set task's dictionary stack from path in job
 

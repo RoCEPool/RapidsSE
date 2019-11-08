@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_exe ( Job_InsertTable -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   job::this locals| pJob_InsertTable |
 

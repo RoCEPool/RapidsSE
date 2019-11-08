@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 : sanity_exe ( pJob_Sanity -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_Sanity |
   job::this locals| pJob_Sanity |

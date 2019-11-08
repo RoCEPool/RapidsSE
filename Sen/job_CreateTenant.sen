@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_exe ( pJob_CreateTenant -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_CreateTenant |
   job::this locals| pJob_CreateTenant |

@@ -265,7 +265,7 @@
 /*----------------------------------------------------------------------------*/
 : export_exe ( -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
   actLog::seed_exe
 
   job::this locals| pJob_(E`) |
