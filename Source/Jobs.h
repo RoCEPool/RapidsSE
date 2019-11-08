@@ -67,7 +67,6 @@ namespace Jobs
 #include "Job_DropCatalog.hpp"
 #include "Job_DropIndex.hpp"
 #include "Job_DropSchema.hpp"
-#include "Job_DropTable.hpp"
 #include "Job_DropTenant.hpp"
 #include "Job_Pipeline.hpp"
 

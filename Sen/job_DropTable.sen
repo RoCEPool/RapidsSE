@@ -42,7 +42,7 @@
   //test::test7
 
   params| sTableNm |
-  0 0 locals| sIndexNm pTable |
+  0 locals| pTable |
 
   //----------------------------------------------------------------------------
   // move to table folder
@@ -51,30 +51,6 @@
   //----------------------------------------------------------------------------
   // find the table
   sTableNm find execute to pTable
-
-  //----------------------------------------------------------------------------
-  // push indexes folder
-  // pushIndexes assert
-
-  //----------------------------------------------------------------------------
-  // iterate thru all indexes and tidyUp
-  //pathCurrentFolder dic.lastWord dup
-  //iterate                        // setup iteration of words
-
-  //  object@ word.name@ to sIndexNm
-
-    //sIndexNm "Deleting index %v" str.format .
-
-    // forward reference :-(
- //   sIndexNm "indexTidyUp" find execute
-
- //   object@ word.prev object!     // step backwards thru words
-
- // next
-
-  //----------------------------------------------------------------------------
-  // pop indexes folder
- // popIndexes
 
   //----------------------------------------------------------------------------
   // truncate the table
@@ -108,159 +84,51 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop table request (on originating node)                                   */
+/* check resources for dropTable                 (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: dropTable_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob pTask |
-
-  tp: dropTable
-
-  // get the task
-  task::this to pTask
-
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute Job_DropTable job on a node                                        */
-/*----------------------------------------------------------------------------*/
-: dropTable_exe ( pJob_DropTable -- )
-
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_DropTable |
-  job::this locals| pJob_DropTable |
-
-  tp: dropTable_exe
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_DROPTABLE pJob_DropTable object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabWrite
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_DropTable job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove the table
-  //pJob_DropTable job.objectName@
-  <tableNm> removeTable
-
-  pJob_DropTable job.notice
-
-  pJob_DropTable job::participantExecuted
-
-  <<logExit <DONE_EXE>
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute Job_DropTable job check resources                                  */
-/*----------------------------------------------------------------------------*/
-: dropTable.checkResources ( Job_DropTable -- )
-
-  >>logEntry <Check_Resources>
-
-  params| pJob_DropTable  |
+: dropTable::checkResources __eeh ( -- )
 
   tp: dropTable.checkResources
-  //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
   DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_DropTable job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
-  //pJob_DropTable job.objectName@
-  <tableNm> checkRemoveTable not if pJob_DropTable <ERROR_JOB> !!logError exit then
+  <tableNm> checkRemoveTable not if job::this <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_DropTable job release resources                                */
+/* execute Job_DropTable job on a node                                        */
 /*----------------------------------------------------------------------------*/
-: dropTable.releaseResources ( Job_DropTable -- )
+: dropTable::execute _eeh ( -- )
 
-  >>logEntry <Release_Resources>
+  tp: dropTable_exe
 
-  params| pJob_DropTable  |
-
-  tp: dropTable.releaseResources
-  //releaseResources received" .
-
-  <<logExit <Resources_Released>
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove the table
+  <tableNm> removeTable
 ;
 
 /*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: dropTable_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+jobSyntax: dropTable :: drop table <tableNm> ;
 
-  job::this locals| pJob_dropTable |
-
-  pJob_dropTable job.becomeParticipant
-
-  // check resources
-  pJob_dropTable dropTable.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
+jobInfo: dropTable
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_WRITE
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: dropTable_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_dropTable |
-
-  pJob_dropTable dropTable.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: dropTable_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_dropTable |
-
-  pJob_dropTable dropTable.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
-;
 
 /*============================================================================*/
 /* end                                                                        */

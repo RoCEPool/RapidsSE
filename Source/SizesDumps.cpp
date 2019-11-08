@@ -563,7 +563,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_DropCatalog),    // CN_JOB_DROPCATALOG
   /*    */ sizeof(Job_DropIndex),      // CN_JOB_DROPINDEX
   /*    */ sizeof(Job_DropSchema),     // CN_JOB_DROPSCHEMA
-  /*    */ sizeof(Job_DropTable),      // CN_JOB_DROPTABLE
+  /*    */ sizeof(Job_DropSchema),      // CN_JOB_DROPTABLE
   /*    */ sizeof(Job_DropTenant),     // CN_JOB_DROPTENANT
   /*    */ sizeof(Job_Export),         // CN_JOB_EXPORT
   /*    */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
