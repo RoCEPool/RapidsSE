@@ -68,6 +68,8 @@ Table::Table(void)
   
   Word* pWord = Word::pToWord(this);
   
+  m_pTableDef  = nullptr;
+  
   m_sTableName = pWord->szWordNm();
   m_eTableType = TT_NORMAL;
   //m_xSubDic
@@ -773,6 +775,26 @@ void Table::vSubLoaders(i8 iSubLoaders)
   for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
     m_ixSubLoaders[i_Slot] = iSubLoaders;
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the table definition                                                   */
+/*----------------------------------------------------------------------------*/
+TableDef* Table::pTableDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  return m_pTableDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the table definition                                                   */
+/*----------------------------------------------------------------------------*/
+void Table::vTableDef(TableDef* pTableDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  m_pTableDef = pTableDef;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -16,9 +16,11 @@ namespace MetaData
   class Table : public Object
   {
   private:
-    s32 m_sTableName;   // table name
-    eTT m_eTableType;   // table type
-    Dic m_xSubDic;      // sub dictionary for this table
+    TableDef* m_pTableDef;   // definition of this table
+  
+    s32 m_sTableName;        // table name
+    eTT m_eTableType;        // table type
+    Dic m_xSubDic;           // sub dictionary for this table
   
     ColumnVec* m_pColumnVec; // column vector
     IdxVec*    m_pIdxVec;    // index vector
@@ -44,7 +46,7 @@ namespace MetaData
     void  operator delete(void*);
     
     Table(void);
-    ~Table(void) noexcept(false);
+   ~Table(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
@@ -82,6 +84,8 @@ namespace MetaData
     void vSubLoaders(i8 iSubLoaders);
     Slots* pSlots(void);
     StreamDef* pStreamDef(void);
+    TableDef* pTableDef(void);
+    void vTableDef(TableDef* pTableDef);
     Stz* aTableName(void);
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
