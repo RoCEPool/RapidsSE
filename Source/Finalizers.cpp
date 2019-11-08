@@ -161,7 +161,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATETENANT
   /*    */ &Finalize::vUndefined,         // CN_JOB_DEFINENODE
-  /*    */ &Finalize::vUndefined,         // CN_JOB_DROPCATALOG
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPSCHEMA
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPTENANT

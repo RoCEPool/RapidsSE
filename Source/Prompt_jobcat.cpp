@@ -69,7 +69,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_CREATESCHEMA);
   nJobs++; JobClass::vJobCat(CN_JOB_CREATETABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_CREATETENANT);
-  nJobs++; JobClass::vJobCat(CN_JOB_DROPCATALOG);
   nJobs++; JobClass::vJobCat(CN_JOB_DROPINDEX);
   nJobs++; JobClass::vJobCat(CN_JOB_DROPSCHEMA);
   nJobs++; JobClass::vJobCat(CN_JOB_DROPTENANT);

@@ -47,7 +47,7 @@ JobClass xJobClass_CreateTenant =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_CreateTenant_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_DropCatalog_class;
+  *pNextFun = (pFUN*)pJob_DropIndex_class;
   
   return &xJobClass_CreateTenant;
 }

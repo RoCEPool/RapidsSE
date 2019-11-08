@@ -12,8 +12,11 @@
   params| sCatalogNm |
 
   checkInCatalogs not if false exit then
+
   sCatalogNm checkIsWord not if EC_NO_SUCH_CATALOG false exit then
-  checkIsCatalog  not if false exit then
+
+  sCatalogNm checkIsCatalog  not if false exit then
+
   checkIsEmpty    not if false exit then
   checkNotUsed    not if false exit then
 
@@ -35,76 +38,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop catalog request (on originating node)                                 */
-/*----------------------------------------------------------------------------*/
-: dropCatalog_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob pTask |
-
-  tp: dropCatalog_req
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_DropCataloge job on a node                                     */
 /*----------------------------------------------------------------------------*/
-: dropCatalog_exe ( pJob_DropCatalog -- )
+: dropCatalog::execute _eeh ( -- )
 
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_DropCatalog |
   job::this locals| pJob_DropCatalog |
 
   tp: dropCatalog_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_DROPCATALOG pJob_DropCatalog object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabWrite
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_DropCatalog job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
-  //pJob_DropCatalog job.catalogName@   ( catalogNm )
   <catalogNm> removeCatalog
-
-  pJob_DropCatalog job.notice
-
-  pJob_DropCatalog job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropCatalog job check resources                                */
 /*----------------------------------------------------------------------------*/
-: dropCatalog.checkResources ( Job_DropCatalog -- )
-
-  >>logEntry <Check_Resources>
-
-  params| pJob_DropCatalog  |
+: dropCatalog::checkResources __eeh ( -- )
 
   tp: dropCatalog.checkResources
   //checkResources received" .
@@ -114,83 +64,27 @@
   DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_DropCatalog job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the catalog
   //pJob_DropCatalog job.catalogName@
-  <catalogNm> checkRemoveCatalog not if pJob_DropCatalog <ERROR_JOB> !!logError exit then
-
-  <<logExit <Resources_Checked>
+  //<catalogNm> checkRemoveCatalog not if job::this <ERROR_JOB> !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_DropCatalog job release resources                              */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: dropCatalog.releaseResources ( Job_DropCatalog -- )
 
-  >>logEntry <Release_Resources>
+jobSyntax: dropCatalog :: drop catalog <catalogNm> ;
 
-  params| pJob_DropCatalog  |
-
-  tp: dropCatalog.releaseResources
-  //releaseResources received" .
-
-  <<logExit <Resources_Released>
+jobInfo: dropCatalog
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_WRITE
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: dropCatalog_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_dropCatalog |
-
-  pJob_dropCatalog job.becomeParticipant
-
-  // check resources
-  pJob_dropCatalog dropCatalog.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: dropCatalog_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_dropCatalog |
-
-  pJob_dropCatalog dropCatalog.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: dropCatalog_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_dropCatalog |
-
-  pJob_dropCatalog dropCatalog.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
-;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -97,8 +97,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
   <tableNm> checkRemoveTable not if job::this <ERROR_JOB> !!logError exit then
-
-  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
