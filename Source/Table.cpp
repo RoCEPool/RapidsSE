@@ -71,7 +71,6 @@ Table::Table(void)
   m_pTableDef  = new TableDef;
   
   m_sTableName = pWord->szWordNm();
-  m_eTableType = TT_NORMAL;
   //m_xSubDic
 
   m_pColumnVec = new ColumnVec;
@@ -131,7 +130,7 @@ void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   vTrace("name %s type %s\n"_Stz,
          pTable->m_sTableName.azChar(),
-         aTT[pTable->m_eTableType]->azChar());
+         aTT[pTable->m_pTableDef->m_eTableType]->azChar());
 }
 
 /*----------------------------------------------------------------------------*/

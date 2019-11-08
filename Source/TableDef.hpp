@@ -7,6 +7,8 @@ namespace MetaData
 {
   class TableDef : public Object
   {
+  friend class Table;
+  
   private:
     s32 m_sTableName;     // table name
     eTT m_eTableType;     // table type

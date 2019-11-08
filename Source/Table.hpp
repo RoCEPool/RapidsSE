@@ -19,7 +19,7 @@ namespace MetaData
     TableDef* m_pTableDef;   // definition of this table
   
     s32 m_sTableName;        // table name
-    eTT m_eTableType;        // table type
+  
     Dic m_xSubDic;           // sub dictionary for this table
   
     ColumnVec* m_pColumnVec; // column vector
