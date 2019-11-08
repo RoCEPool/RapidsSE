@@ -219,7 +219,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_DROPCATALOG"_Stz,    CN_JOB_DROPCATALOG);
   /*    */ vAddConstant("CN_JOB_DROPINDEX"_Stz,      CN_JOB_DROPINDEX);
   /*    */ vAddConstant("CN_JOB_DROPSCHEMA"_Stz,     CN_JOB_DROPSCHEMA);
-  /*    */ vAddConstant("CN_JOB_DROPTABLE"_Stz,      CN_JOB_DROPTABLE);
   /*    */ vAddConstant("CN_JOB_DROPTENANT"_Stz,     CN_JOB_DROPTENANT);
   /*    */ vAddConstant("CN_JOB_EXPORT"_Stz,         CN_JOB_EXPORT);
   /*    */ vAddConstant("CN_JOB_FETCHROWS"_Stz,      CN_JOB_FETCHROWS);

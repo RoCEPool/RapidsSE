@@ -43,7 +43,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_DROPCATALOG);
   JobClass::vCmds(CN_JOB_DROPINDEX);
   JobClass::vCmds(CN_JOB_DROPSCHEMA);
-  JobClass::vCmds(CN_JOB_DROPTABLE);
   JobClass::vCmds(CN_JOB_DROPTENANT);
   JobClass::vCmds(CN_JOB_EXPORT);
   JobClass::vCmds(CN_JOB_INSERTROW);
