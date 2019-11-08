@@ -13,7 +13,8 @@ namespace MetaData
     s32 m_sTableNm;       // table name
     eTT m_eTableType;     // table type
   
-    ColumnVec* m_pColVec; // column vector
+    ColumnVec* m_pColVec;    // column vector
+    StreamDef* m_pStreamDef; // definition
 
     // must be last
     Footer m_xFooter;

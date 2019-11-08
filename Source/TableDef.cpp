@@ -51,6 +51,7 @@ TableDef::TableDef(void)
   m_eTableType = TT_NORMAL;
 
   m_pColVec    = new ColumnVec;
+  m_pStreamDef = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
