@@ -53,7 +53,7 @@
         // add ("*",json,TN_STRING) in ename set
         "__json__" swap pEnameSet EnameSet.addStr
 
-      else dup "etc" str.equal if
+      else dup "__etc__" str.equal if
         "__etc__"  swap pEnameSet EnameSet.addStr
 
       else
@@ -66,6 +66,8 @@
 
   // drop the ";" from dstack
   drop
+
+  pEnameSet EnameSet.asStr .
 
   does>
     // ..to be written
