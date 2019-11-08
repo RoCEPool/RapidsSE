@@ -131,6 +131,7 @@ void JobClass::vPostJob(Job* pJob)
 Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession)
 {
   // create the job
+  
   Job* pJob = (*m_fpPre)(this,aReqTuple,pSession);
   
   ASSERT(this == pJob->m_aJobClass);

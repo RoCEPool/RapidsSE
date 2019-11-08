@@ -51,10 +51,10 @@ bool JobHelper::bParseCmd(EnameSet* pArgEnmSet,
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse tokenvec of command and extract arguments                            */
+/* parse token vec of command and extract arguments                           */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bExtractArgs(EnameSet*   pArgEnmSet,
-                             EnameSet*   pSynEnmSet,
+bool JobHelper::bExtractArgs(EnameSet* pArgEnmSet,
+                             EnameSet* pSynEnmSet,
                              TokenVec* pTknVec
                              )
 {
@@ -91,7 +91,12 @@ bool JobHelper::bExtractArgs(EnameSet*   pArgEnmSet,
       pArgEnmSet->vPrint();
       continue;
     }
-   
+    
+    if (pSynEnmSet->szName(i_Syn)->bSame("__etc__"_Stz)) {
+
+      break;
+    }
+    
     i_Syn++;
     i_Tkn++;
   }
