@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* TableDef.hpp -- Table Definition                                           */
+/*============================================================================*/
+#pragma once
+
+namespace MetaData
+{
+  class TableDef : public Object
+  {
+  private:
+    s32 m_sTableName;     // table name
+    eTT m_eTableType;     // table type
+  
+    ColumnVec* m_pColVec; // column vector
+
+    // must be last
+    Footer m_xFooter;
+    
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+    
+    TableDef(void);
+   ~TableDef(void) noexcept(false);
+  
+    Footer* aFooter(void);
+  };
+  
+  TableDef* _pTableDef(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

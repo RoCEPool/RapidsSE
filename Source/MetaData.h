@@ -16,6 +16,7 @@ namespace MetaData
 
 #include "Column.hpp"
 #include "StreamDef.hpp"
+#include "TableDef.hpp"
 
 #include "Slots.hpp"
 #include "Table.hpp"
