@@ -181,7 +181,7 @@
 /*----------------------------------------------------------------------------*/
 : walk_beg ( -- )
 
-  >>logEntry <SEED_BEG2>
+  >>logEntry <SEED_BEG>
   actLog::seed_rcv
 
   job::this locals| pJob_Walk |

@@ -186,7 +186,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_beg ( -- )
 
-  >>logEntry <SEED_BEG2>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_CreateTable |
 

@@ -172,18 +172,6 @@
 
   JP_BEGINNING job::this job.phase!
 
-  <seed_initially>
-;
-
-/*----------------------------------------------------------------------------*/
-/* seed begin                                                                 */
-/*----------------------------------------------------------------------------*/
-: <SEED_BEG2>
-
-  SS_SEED_BEG log::jobSeed
-
-  JP_BEGINNING job::this job.phase!
-
   pushPath strVec::toPath to <path>
 <path> .
   <path> str.toStrVec task::dicStack.set
