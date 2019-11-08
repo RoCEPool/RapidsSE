@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : showCluster_req ( -- )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   "ShowCluster ..." .
 

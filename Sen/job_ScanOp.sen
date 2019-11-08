@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
  : scan_req ( -- )
  
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   job::this locals| pJob_ScanOp |
   0 0 locals| sTableNm pTable |

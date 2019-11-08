@@ -251,16 +251,6 @@
 
   SS_SEED_REQ log::jobSeed
 
-  <seed_initially>
-;
-
-/*----------------------------------------------------------------------------*/
-/* seed request                                                               */
-/*----------------------------------------------------------------------------*/
-: <SEED_REQ2>
-
-  SS_SEED_REQ log::jobSeed
-
   //pushPath strVec::toPath to <path>
 
   // use the <path> from <ename-set>

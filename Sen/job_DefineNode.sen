@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : defineNode_req (  -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   JP_BEGINNING log::markPhase
 

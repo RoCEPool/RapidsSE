@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : cf_req ( -- )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 0 0 locals| pCurrentFolder sFolderNm pJob_Cf pTask |
 

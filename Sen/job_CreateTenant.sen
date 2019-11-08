@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_req ( -- )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob_CreateTenant pTask |
 

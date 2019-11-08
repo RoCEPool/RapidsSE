@@ -164,7 +164,7 @@
 /*----------------------------------------------------------------------------*/
 : walk_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
   actLog::seed_req
 
   job::this locals| pJob_Walk |

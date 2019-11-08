@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 : lscat_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob_ListCatalogs pTask |
 
