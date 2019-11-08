@@ -22,7 +22,7 @@ namespace MetaData
   
     Dic m_xSubDic;           // sub dictionary for this table
   
-    ColumnVec* m_pColumnVec; // column vector
+    //ColumnVec* m_pColumnVec; // column vector
     IdxVec*    m_pIdxVec;    // index vector
     Atomic     m_ixIndexNo;  // next index no
 

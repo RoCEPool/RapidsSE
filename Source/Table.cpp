@@ -73,7 +73,6 @@ Table::Table(void)
   m_sTableName = pWord->szWordNm();
   //m_xSubDic
 
-  m_pColumnVec = new ColumnVec;
   m_pIdxVec    = new IdxVec;
   m_ixIndexNo.vCheckInit();
 
@@ -411,7 +410,7 @@ ColumnVec* Table::pColumnVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_pColumnVec;
+  return m_pTableDef->m_pColVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -465,8 +464,8 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
   
   for (i8 i_Col = 0; i_Col < pJob->m_iColumns; i_Col++) {
     pColumn = new Column(pJob,i_Col);
-    m_pColumnVec->vAdd(pColumn);
-    pColumn->vColVec(m_pColumnVec);
+    m_pTableDef->m_pColVec->vAdd(pColumn);
+    pColumn->vColVec(m_pTableDef->m_pColVec);
 
     // - - - - - - - - - - - - - - -
     m_pStreamDef->m_xaColumn[i_Col].vCopy(pColumn);
@@ -507,7 +506,7 @@ bool Table::bIsValidIndexColumns(Jobs::Job_CreateIndex* pJob)
   Column* pColumn = nullptr;
   
   // find the column from the table columnVector
-  i8 iColumns = m_pColumnVec->nItems();
+  i8 iColumns = m_pTableDef->m_pColVec->nItems();
   i8 iColumnsIndex = pJob->m_iColumns;
   s32 sColumnNm;
   
@@ -517,7 +516,7 @@ bool Table::bIsValidIndexColumns(Jobs::Job_CreateIndex* pJob)
     
     bool bFound = false;
     for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
-      pColumn = m_pColumnVec->pGet(i_Col);
+      pColumn = m_pTableDef->m_pColVec->pGet(i_Col);
       if (pColumn->sColumnName().bSame(sColumnNm)) {
         bFound = true;
         break;
@@ -580,11 +579,11 @@ void Table::vMarkTable(void)
   sTableMark.vSprintCat("Table %s\n"_Stz,
                         m_sTableName.szStz());
   
-  i8 nCols = m_pColumnVec->nItems();
+  i8 nCols = m_pTableDef->m_pColVec->nItems();
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    Column* pColumn = m_pColumnVec->pGet(i_Col);
+    Column* pColumn = m_pTableDef->m_pColVec->pGet(i_Col);
     sTableMark.vSprintCat("  Col %02lld %s %s(%lld,%lld) %s\n"_Stz,
                           i_Col,
                           pColumn->sColumnName().szStz(),
@@ -728,8 +727,8 @@ void Table::vShowColumnVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-  for (i8 iColumn = 0; iColumn < m_pColumnVec->nItems(); iColumn++) {
-    Column* pColumn = m_pColumnVec->pGet(iColumn);
+  for (i8 iColumn = 0; iColumn < m_pTableDef->m_pColVec->nItems(); iColumn++) {
+    Column* pColumn = m_pTableDef->m_pColVec->pGet(iColumn);
     pColumn->vShow();
   }
 }
@@ -816,7 +815,6 @@ void Table::vTidyUp(void)
   m_pIdxVec->vClear();
   
   delete m_pIdxVec;
-  delete m_pColumnVec;
   delete m_pBucketMap;
   
   delete m_pStreamDef;
