@@ -70,7 +70,9 @@ Table::Table(void)
   
   m_pTableDef  = new TableDef;
   
-  m_sTableName = pWord->szWordNm();
+  m_sTableNm = pWord->szWordNm();
+  m_pTableDef->m_sTableNm = m_sTableNm;
+  
   //m_xSubDic
 
   m_pIdxVec    = new IdxVec;
@@ -95,7 +97,7 @@ Table::Table(void)
   
   AM::vLogDdl(SL_INF,pJob,DA_DDL_CREATE_TABLE,
               "%s |gixTable=%lld|"_Stz, //!format-LogOpr
-              m_sTableName.szStz(),* gixTable);
+              m_sTableNm.szStz(),* gixTable);
 
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -128,7 +130,7 @@ void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Table* pTable = _pTable(pObject);
   
   vTrace("name %s type %s\n"_Stz,
-         pTable->m_sTableName.azChar(),
+         pTable->m_sTableNm.azChar(),
          aTT[pTable->m_pTableDef->m_eTableType]->azChar());
 }
 
@@ -431,7 +433,7 @@ void Table::vContentDump(void)
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 //  
 ////  vTrace("vCreateColumnVec: table %s column %s %s\n"_Stz,
-////         aTableName(),
+////         szTableNm(),
 ////         sColumnNm.szStz(),
 ////         sColumnDefn.szStz());
 //  
@@ -456,8 +458,8 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
   
   Column* pColumn = nullptr;
   
-  m_pStreamDef->m_sName = m_sTableName;
-  m_pStreamDef->m_sPath.vSprint("../%s"_Stz,m_sTableName.szStz());
+  m_pStreamDef->m_sName = m_sTableNm;
+  m_pStreamDef->m_sPath.vSprint("../%s"_Stz,m_sTableNm.szStz());
 
   m_pStreamDef->m_nDefSets = 1;
   m_pStreamDef->m_i_DefStart[0] = 0;
@@ -577,7 +579,7 @@ void Table::vMarkTable(void)
   s48K sTableMark;
   
   sTableMark.vSprintCat("Table %s\n"_Stz,
-                        m_sTableName.szStz());
+                        m_sTableNm.szStz());
   
   i8 nCols = m_pTableDef->m_pColVec->nItems();
   
@@ -670,7 +672,7 @@ void Table::vPublish(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  vTrace("Publishing table %s\n"_Stz, m_sTableName.azChar());
+  vTrace("Publishing table %s\n"_Stz, m_sTableNm.azChar());
   m_xSlots.vPublishTable(iPartition);
   
   // publish all other indices
@@ -687,7 +689,7 @@ bool Table::bPurge(i8 iPartition, i8 iOlderThanSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  //vTrace("Purging table %s\n"_Stz, m_sTableName.azChar());
+  //vTrace("Purging table %s\n"_Stz, m_sTableNm.azChar());
   bool bPurged = m_xSlots.bPurgeTable(iPartition, iOlderThanSeconds);
   
   // purge all other indexes
@@ -798,11 +800,11 @@ void Table::vTableDef(TableDef* pTableDef)
 /*----------------------------------------------------------------------------*/
 /* get the table name                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* Table::aTableName(void)
+Stz* Table::szTableNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_sTableName;
+  return m_sTableNm;
 }
 
 /*----------------------------------------------------------------------------*/

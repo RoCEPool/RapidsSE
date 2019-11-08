@@ -552,7 +552,7 @@ void Step::vTableName(void)
   
   s32 sName;
   
-  sName = (Stz*)pTable->aTableName();
+  sName = (Stz*)pTable->szTableNm();
   
   m_pDataStack->vPushS32(sName);
 

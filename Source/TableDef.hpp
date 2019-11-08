@@ -10,7 +10,7 @@ namespace MetaData
   friend class Table;
   
   private:
-    s32 m_sTableName;     // table name
+    s32 m_sTableNm;       // table name
     eTT m_eTableType;     // table type
   
     ColumnVec* m_pColVec; // column vector

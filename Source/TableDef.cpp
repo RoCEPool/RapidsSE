@@ -47,7 +47,7 @@ TableDef::TableDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
-  m_sTableName = C_NO_NAME;
+  m_sTableNm   = C_NO_NAME;
   m_eTableType = TT_NORMAL;
 
   m_pColVec    = new ColumnVec;

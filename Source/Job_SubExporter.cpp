@@ -165,7 +165,7 @@ bool Job_SubExporter::bBegin(void)
     JobLog::vNote(this,
                           "TableTpn[%lld] for table %s has %lld buffers"_Stz,
                           i_Slot(),
-                          pTable->aTableName(),
+                          pTable->szTableNm(),
                           m_nCrwBuffers);
   
   //ActLog::vAdd(this,AN_JOB_BEGIN,m_nCrwBuffers);
@@ -186,7 +186,7 @@ bool Job_SubExporter::bChunk(void)
   if (m_xReqTuple.m_iDetail)
     JobLog::vNote(this,
                           "Exporting Table %s CrwBuffer[%lld/%lld] %p"_Stz,
-                          m_pJobExport->m_pTable->aTableName(),
+                          m_pJobExport->m_pTable->szTableNm(),
                           m_iCrwBuffer,
                           m_nCrwBuffers,
                           m_pCrwBuffer);

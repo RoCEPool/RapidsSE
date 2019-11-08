@@ -18,11 +18,10 @@ namespace MetaData
   private:
     TableDef* m_pTableDef;   // definition of this table
   
-    s32 m_sTableName;        // table name
+    s32 m_sTableNm;          // table name
   
     Dic m_xSubDic;           // sub dictionary for this table
   
-    //ColumnVec* m_pColumnVec; // column vector
     IdxVec*    m_pIdxVec;    // index vector
     Atomic     m_ixIndexNo;  // next index no
 
@@ -86,7 +85,7 @@ namespace MetaData
     StreamDef* pStreamDef(void);
     TableDef* pTableDef(void);
     void vTableDef(TableDef* pTableDef);
-    Stz* aTableName(void);
+    Stz* szTableNm(void);
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
     i8   iToPartition(i8 iRowHash);

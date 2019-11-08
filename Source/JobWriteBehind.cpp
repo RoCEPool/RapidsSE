@@ -101,7 +101,7 @@ eEC JobWriteBehind::eAppendRow(void)
     pCrwBuffer->vAppendClose();
     
     Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->pSession(),
-                                          m_pTable->aTableName(),
+                                          m_pTable->szTableNm(),
                                           m_eDataSource,
                                           pCrwBuffer,
                                           m_pParentJob->iJobId(),
@@ -140,7 +140,7 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create a write buffer job for load
     Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->pSession(),
-                                          m_pTable->aTableName(),
+                                          m_pTable->szTableNm(),
                                           m_eDataSource,
                                           pCrwBuffer,
                                           m_pParentJob->iJobId(),
