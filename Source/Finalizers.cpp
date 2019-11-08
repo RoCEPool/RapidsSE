@@ -357,6 +357,7 @@ pFINALIZE *gpFinalize[]
   /*129 */ &Finalize::vUndefined,         // CN_SYSCALL
   
   /*130 */ &Table::vFinalize,             // CN_TABLE
+  /*    */ &Finalize::vUndefined,         // CN_TABLEDEF
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTN
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTNVEC
   /*    */ &Finalize::vUndefined,         // CN_TAKEAWAYOP

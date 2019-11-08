@@ -358,6 +358,7 @@ enum eCN : u2 // Class Number
   /* 194 0xC2       32B Heap:I */ CN_SYSCALL,
   
   /* 195 0xC3     3736B Heap:I */ CN_TABLE,
+  /* 195 0xC3     3736B Heap:I */ CN_TABLEDEF,
   /* 196 0xC4      208B Heap:S */ CN_TABLEPTN,
   /* 197 0xC5     1048B Heap:M */ CN_TABLEPTNVEC,
   /*                           */ CN_TAKEAWAYOP,
@@ -746,6 +747,7 @@ static Stz* aCN[]
   /* 194 0xC2 */ "SYSCALL"_Stz,             // CN_SYSCALL
   
   /* 195 0xC3 */ "TABLE"_Stz,               // CN_TABLE
+  /* 195 0xC3 */ "TABLEDEF"_Stz,            // CN_TABLEDEF
   /* 196 0xC4 */ "TABLEPTN"_Stz,            // CN_TABLEPTN
   /* 197 0xC5 */ "TABLEPTNVEC"_Stz,         // CN_TABLEPTNVEC
   /*          */ "TAKEAWAYOP"_Stz,          // CN_TAKEAWAYOP
