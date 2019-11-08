@@ -140,7 +140,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+  >>logEntry <SEED_BEG2>
 
   job::this locals| pJob_InsertTable |
 

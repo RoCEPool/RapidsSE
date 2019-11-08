@@ -151,7 +151,7 @@
 : startCluster_beg ( -- )
 
 "startCluster_beg 0" .
-  >>logEntry <SEED_BEG>
+  >>logEntry <SEED_BEG2>
 
 "startCluster_beg 1" .
   job::this locals| pJob_status |

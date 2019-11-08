@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : NetHog_rcv (  -- <R> )
 
-  >>logEntry <SEED_BEG>
+  >>logEntry <SEED_BEG2>
 
   0 locals| iHogNo  |
   0 locals| iNodeNo |

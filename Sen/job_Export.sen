@@ -231,7 +231,7 @@
 /*----------------------------------------------------------------------------*/
 : export_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+  >>logEntry <SEED_BEG2>
   actLog::seed_rcv
 
   job::this locals| pJob_E` |
