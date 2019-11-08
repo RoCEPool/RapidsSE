@@ -19,15 +19,17 @@ void Step::vTableDefParse(void)
 {
   ENTRY("vTableDefParse"_Stz);
   
-  s48K sStmt;
-  if (! m_pDataStack->bPopS48K(sStmt))
+  s4K sCmd;
+  if (! m_pDataStack->bPopS4K(sCmd))
     THROW_DSTACK();
 
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-  vTrace("Stmt: %s\n"_Stz,sStmt.szStz());
+  vTrace("Stmt: %s\n"_Stz,sCmd.szStz());
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
 
   TableDef* pTableDef = new TableDef;
+  
+  bool bResult = pTableDef->bParse(sCmd);
   
   delete pTableDef;
   pTableDef = nullptr;

@@ -10,11 +10,13 @@ namespace MetaData
   friend class Table;
   
   private:
-    s32 m_sTableNm;       // table name
-    eTT m_eTableType;     // table type
+    s32 m_sTableNm;          // table name
+    eTT m_eTableType;        // table type
   
     ColumnVec* m_pColVec;    // column vector
     StreamDef* m_pStreamDef; // definition
+  
+    s4K m_sCmd;              // the command which created this def
 
     // must be last
     Footer m_xFooter;
@@ -25,6 +27,8 @@ namespace MetaData
     
     TableDef(void);
    ~TableDef(void) noexcept(false);
+  
+    bool bParse(Stz* szCmd);
   
     Footer* aFooter(void);
   };
