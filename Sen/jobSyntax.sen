@@ -42,6 +42,7 @@
     next-token
     dup ";" str.equal not
     while
+
       dup str.isMetaToken if
         // dup "%v is a meta token" fmt.print
         // add ("*",meta,TN_STRING) in ename set
@@ -51,11 +52,16 @@
         // dup "%v is a json token" fmt.print
         // add ("*",json,TN_STRING) in ename set
         "__json__" swap pEnameSet EnameSet.addStr
+
+      else dup "etc" str.equal if
+        "__etc__"  swap pEnameSet EnameSet.addStr
+
       else
         // dup "%v is a normal token" fmt.print
         // add (word,"",TN_STRING) in ename set
         dup pEnameSet EnameSet.addStr
-      then then
+
+      then then then
   repeat
 
   // drop the ";" from dstack
