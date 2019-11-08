@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -129,7 +129,7 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_exe ( pJob_StartCluster -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_StartCluster |
   job::this locals| pJob_StartCluster |

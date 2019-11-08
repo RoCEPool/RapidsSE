@@ -98,7 +98,7 @@
 /*----------------------------------------------------------------------------*/
 : LoadTable_req (  -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   job::this locals| pJob_LoadTable |
 
@@ -113,7 +113,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_exe ( -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   job::this locals| pJob_LoadTable |
 
@@ -222,7 +222,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_beg ( -- )
 
-  >>logEntry <SEED_BEG2>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_LoadTable |
 

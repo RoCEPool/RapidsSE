@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
  : Xmit_req ( -- )
  
-   >>logEntry <SEED_REQ2>
+   >>logEntry <SEED_REQ>
 
    job::this locals| pJob_XmitOp |
 

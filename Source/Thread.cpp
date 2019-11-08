@@ -171,7 +171,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
 /*----------------------------------------------------------------------------*/
 void* Thread::aEntryPoint_general(void* pArg)
 {
-  try {
+  //try {
     
     Thread* pThread = _pThread(pArg);
     RASSERT(pThread);
@@ -212,21 +212,21 @@ void* Thread::aEntryPoint_general(void* pArg)
     pThread->m_pPsxThd->vThreadExit();
 
     delete pThread;
-  }
+  //}
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  catch (Exception xException) {
-    
-        fflush(stderr); fflush(stdout);
-    printf("Thread-level exception caught in func %s() file %s line %d\n",
-           __func__,__FILE__,__LINE__);
-        fflush(stderr); fflush(stdout);
-    xException.vPrint();
-        fflush(stderr); fflush(stdout);
-    
-    Process::vExitFailure();
-  }
+//  catch (Exception xException) {
+//
+//        fflush(stderr); fflush(stdout);
+//    printf("Thread-level exception caught in func %s() file %s line %d\n",
+//           __func__,__FILE__,__LINE__);
+//        fflush(stderr); fflush(stdout);
+//    xException.vPrint();
+//        fflush(stderr); fflush(stdout);
+//
+//    Process::vExitFailure();
+//  }
 
   return nullptr;
 }

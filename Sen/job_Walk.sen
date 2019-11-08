@@ -164,7 +164,7 @@
 /*----------------------------------------------------------------------------*/
 : walk_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
   actLog::seed_req
 
   job::this locals| pJob_Walk |
@@ -181,7 +181,7 @@
 /*----------------------------------------------------------------------------*/
 : walk_beg ( -- )
 
-  >>logEntry <SEED_BEG2>
+  >>logEntry <SEED_BEG>
   actLog::seed_rcv
 
   job::this locals| pJob_Walk |
@@ -200,7 +200,7 @@
 /*----------------------------------------------------------------------------*/
 : walk_exe ( pJob_Walk -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
   actLog::seed_exe
 
   job::this locals| pJob_Walk |

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : truncateTable_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 : truncateTable_exe ( Job_TruncateTable -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_TruncateTable |
   job::this locals| pJob_TruncateTable |
@@ -154,7 +154,7 @@
 /*----------------------------------------------------------------------------*/
 : truncateTable_beg ( -- )
 
-  >>logEntry <SEED_BEG2>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_truncateTable |
 

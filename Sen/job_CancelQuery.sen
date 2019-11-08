@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
  : cancelQuery_exe ( -- )
  
-   >>logEntry <SEED_EXE2>
+   >>logEntry <SEED_EXE>
 
    job::this locals| pJob_CancelQuery |
 

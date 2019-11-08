@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant_exe ( pJob_DropTenant -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_DropTenant |
   job::this locals| pJob_DropTenant |
@@ -146,7 +146,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant_beg ( -- )
 
-  >>logEntry <SEED_BEG2>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_dropTenant |
 

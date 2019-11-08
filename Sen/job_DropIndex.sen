@@ -80,7 +80,7 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -106,7 +106,7 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_exe ( Job_DropIndex -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_DropIndex |
   job::this locals| pJob_DropIndex |
@@ -208,7 +208,7 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_beg ( -- )
 
-  >>logEntry <SEED_BEG2>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_dropIndex |
 

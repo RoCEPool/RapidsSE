@@ -190,7 +190,7 @@
 /*----------------------------------------------------------------------------*/
 : export_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
   actLog::seed_req
 
   job::this locals| pJob_E |
@@ -265,7 +265,7 @@
 /*----------------------------------------------------------------------------*/
 : export_exe ( -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
   actLog::seed_exe
 
   job::this locals| pJob_(E`) |

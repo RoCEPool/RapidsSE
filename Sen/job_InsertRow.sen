@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob_InsertRow pTask |
 
@@ -81,7 +81,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_exe ( pJob_InsertRow -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_Space |
   job::this locals| pJob_InsertRow |
@@ -184,7 +184,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_beg ( -- )
 
-  >>logEntry <SEED_BEG2>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_InsertRow |
 

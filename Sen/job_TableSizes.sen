@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : tableSizes_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 : tableSizes_exe ( Job_TableSizes -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_TableSizes |
   job::this locals| pJob_TableSizes |
@@ -157,7 +157,7 @@
 /*----------------------------------------------------------------------------*/
 : tableSizes_beg ( -- )
 
-  >>logEntry <SEED_BEG2>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_tableSizes |
 

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : listPartitions_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob_ListPartitions pTask |
 
@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 : listPartitions_exe ( pJob_ListPartitions -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_Space |
   job::this locals| pJob_ListPartitions |

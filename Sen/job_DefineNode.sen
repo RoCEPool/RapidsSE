@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : defineNode_req (  -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   JP_BEGINNING log::markPhase
 
@@ -70,7 +70,7 @@
 /*----------------------------------------------------------------------------*/
 : defineNode_exe ( pJob_DefineNode -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_DefineNode |
   job::this locals| pJob_DefineNode |

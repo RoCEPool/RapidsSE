@@ -266,6 +266,7 @@ Session* SessionArray::pGetSession(i8 i_Session)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONARRAY,_FOOTER_);
   
+  ASSERT(i_Session >= 0 && i_Session < C_MAX_SESSIONS);
   Session* pSession = m_paSession[i_Session];
   
   return pSession;

@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_req ( -- )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob_CreateSchema pTask |
 
@@ -75,7 +75,7 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_exe ( pJob_CreateSchema -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_CreateSchema |
   job::this locals| pJob_CreateSchema |
@@ -159,7 +159,7 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_beg ( -- )
 
-  >>logEntry <SEED_BEG2>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_createSchema |
 

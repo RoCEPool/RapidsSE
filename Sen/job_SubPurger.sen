@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 : SubPurger_run ( -- <R> )
 
-  >>logEntry <SEED_RUN2>
+  >>logEntry <<SEED_RUN>
 
   0 0 locals| pJob_SubPurger pTask |
   0 0 locals| pTable sTableNm |

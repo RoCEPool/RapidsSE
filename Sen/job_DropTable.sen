@@ -112,7 +112,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTable_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -135,7 +135,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTable_exe ( pJob_DropTable -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_DropTable |
   job::this locals| pJob_DropTable |
@@ -216,7 +216,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTable_beg ( -- )
 
-  >>logEntry <SEED_BEG2>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_dropTable |
 

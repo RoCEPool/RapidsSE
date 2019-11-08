@@ -150,7 +150,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_req (  -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -176,7 +176,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_exe ( Job_CreateIndex -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_CreateIndex |
   job::this locals| pJob_CreateIndex |
@@ -266,7 +266,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_beg ( -- )
 
-  >>logEntry <SEED_BEG2>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_createIndex |
 

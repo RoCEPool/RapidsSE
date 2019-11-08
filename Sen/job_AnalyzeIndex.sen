@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 0 locals| pJob pTask bIsDetailed |
 
@@ -84,7 +84,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex_exe ( Job_AnalyzeIndex -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_AnalyzeIndex |
   job::this locals| pJob_AnalyzeIndex |
@@ -191,7 +191,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex_beg ( -- )
 
-  >>logEntry <SEED_BEG2>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_analyzeIndex |
 

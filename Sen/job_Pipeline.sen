@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   100 ssn::senLoc
 
@@ -44,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 : pipeline_exe ( Job_pipeline -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   task::this locals| pTask |
   job::this  locals| pJob_pipeline |

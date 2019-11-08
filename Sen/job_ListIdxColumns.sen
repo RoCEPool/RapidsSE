@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 : lsidxcol_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 0 0 locals| sTableNm sIndexNm pJob_ListIdxColumns pTask |
 

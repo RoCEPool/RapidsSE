@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : space_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 : space_exe ( pJob_Space -- )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_Space |
   job::this locals| pJob_Space |

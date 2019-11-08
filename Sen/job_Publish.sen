@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 : publish_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -57,7 +57,7 @@
 /*----------------------------------------------------------------------------*/
 : publish_exe (  Job_publish -- <R> )
 
-  >>logEntry <SEED_EXE2>
+  >>logEntry <SEED_EXE>
 
   job::this locals| pJob_publish |
 
@@ -165,7 +165,7 @@
 /*----------------------------------------------------------------------------*/
 : publish_beg ( -- )
 
-  >>logEntry <SEED_BEG2>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_publish |
 

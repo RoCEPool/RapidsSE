@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 : start_run ( -- <R> )
 
-  >>logEntry <SEED_RUN>
+  >>logEntry <<SEED_RUN>
 
   task::this           locals| pThisTask |
   pThisTask task.job@  locals| pThisJob  |

@@ -1663,7 +1663,11 @@ void Step::vJobSessionFetch(void)
   Job* pJob = _pJob(pJobPtr);
   
   i8 iSessionId = pJob->m_xReqTuple.m_i_Session;
-  Session* pSession = AM::pSessionArray()->pGetSession(iSessionId);
+  
+  Session* pSession = nullptr;
+  
+  if (iSessionId != C_UNKNOWN)
+    pSession = AM::pSessionArray()->pGetSession(iSessionId);
   
   m_pDataStack->vPushPointer(pSession);
   

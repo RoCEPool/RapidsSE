@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 : lscol_req ( -- <R> )
 
-  >>logEntry <SEED_REQ2>
+  >>logEntry <SEED_REQ>
 
   0 0 0 0 locals| sTableNm iCount pJob_ListColumns pTask |
 
