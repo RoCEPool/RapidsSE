@@ -7,6 +7,31 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+: jobInfo::addEname params| sEvalue sEname |
+
+  compiler::current word.EnameSet@ locals| pEnameSet |
+
+  sEvalue find locals| pEvalueWord |
+
+  pEvalueWord if
+    pEvalueWord word.category@ tick rootConstant eql if
+
+      sEvalue "  %v is a constant" fmt.print
+      //sEname sEvalue pEnameSet EnameSet.addStr
+      sEname pEvalueWord execute pEnameSet EnameSet.addInt
+      exit
+
+    then
+  then
+
+  // -- -- --
+  sEname sEvalue pEnameSet EnameSet.addStr
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 : findJobClassEnmSet ( sJobNm -- pEnameSet )
 
   params| sJobNm |
@@ -116,7 +141,7 @@
 : .fillOutEnameSet params| pEnameSet |
 
   "<?priority?>" pEnameSet EnameSet.hasName not if
-     "<?priority?>" "PY_NORMAL" pEnameSet EnameSet.addStr
+     "<?priority?>" "PY_NORMAL" jobInfo::addEname // pEnameSet EnameSet.addStr
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -128,31 +153,6 @@
   then
 
   pEnameSet EnameSet.asStr .
-;
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-: jobInfo::addEname params| sEvalue sEname |
-
-  compiler::current word.EnameSet@ locals| pEnameSet |
-
-  sEvalue find locals| pEvalueWord |
-
-  pEvalueWord if
-    pEvalueWord word.category@ tick rootConstant eql if
-
-      sEvalue "  %v is a constant" fmt.print
-      //sEname sEvalue pEnameSet EnameSet.addStr
-      sEname pEvalueWord execute pEnameSet EnameSet.addInt
-      exit
-
-    then
-  then
-
-
-  // -- -- --
-  sEname sEvalue pEnameSet EnameSet.addStr
 ;
 
 

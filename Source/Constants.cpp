@@ -501,6 +501,11 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("NS_ACTIVE"_Stz,    NS_ACTIVE);
   /*  0 */ vAddConstant("NS_INACTIVE"_Stz,  NS_INACTIVE);
 
+  // PY_ : priority
+  /*  0 */ vAddConstant("PY_NONE"_Stz,      PY_NONE);
+  /*  0 */ vAddConstant("PY_LOW"_Stz,       PY_LOW);
+  /*  0 */ vAddConstant("PY_NORMAL"_Stz,    PY_NORMAL);
+
   // RG_ : register
   /*  0 */ vAddConstant("dir[0]"_Stz,       RG_DIR0);
   /*  0 */ vAddConstant("dir[1]"_Stz,       RG_DIR1);

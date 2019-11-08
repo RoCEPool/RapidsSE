@@ -14,7 +14,7 @@ shortcut dl _pipelineLineItem ;
 shortcut dn _defineNode ;
 shortcut en semantic ;
 shortcut lw logwrite ;
-shortcut fn forget node node9;
+shortcut fn forget node node9 abc def;
 shortcut ln show nodes ;
 shortcut r  _lineitemrjh ;
 shortcut s  _select ;
