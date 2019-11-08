@@ -68,7 +68,7 @@ Table::Table(void)
   
   Word* pWord = Word::pToWord(this);
   
-  m_pTableDef  = nullptr;
+  m_pTableDef  = new TableDef;
   
   m_sTableName = pWord->szWordNm();
   m_eTableType = TT_NORMAL;
@@ -821,6 +821,8 @@ void Table::vTidyUp(void)
   delete m_pBucketMap;
   
   delete m_pStreamDef;
+  
+  delete m_pTableDef;
   
   m_xSlots.vTidyUp();
 }
