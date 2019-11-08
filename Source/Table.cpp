@@ -84,9 +84,7 @@ Table::Table(void)
   for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
     m_ixSubLoaders[i_Slot] = 0;
   m_bIsLoading = false;
-  
-  m_pStreamDef = new StreamDef;
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   _checkInitialised_(CN_TABLE);
@@ -458,11 +456,11 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
   
   Column* pColumn = nullptr;
   
-  m_pStreamDef->m_sName = m_sTableNm;
-  m_pStreamDef->m_sPath.vSprint("../%s"_Stz,m_sTableNm.szStz());
+  m_pTableDef->m_pStreamDef->m_sName = m_sTableNm;
+  m_pTableDef->m_pStreamDef->m_sPath.vSprint("../%s"_Stz,m_sTableNm.szStz());
 
-  m_pStreamDef->m_nDefSets = 1;
-  m_pStreamDef->m_i_DefStart[0] = 0;
+  m_pTableDef->m_pStreamDef->m_nDefSets = 1;
+  m_pTableDef->m_pStreamDef->m_i_DefStart[0] = 0;
   
   for (i8 i_Col = 0; i_Col < pJob->m_iColumns; i_Col++) {
     pColumn = new Column(pJob,i_Col);
@@ -470,8 +468,8 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
     pColumn->vColVec(m_pTableDef->m_pColVec);
 
     // - - - - - - - - - - - - - - -
-    m_pStreamDef->m_xaColumn[i_Col].vCopy(pColumn);
-    m_pStreamDef->m_nDefColumns[0]++;
+    m_pTableDef->m_pStreamDef->m_xaColumn[i_Col].vCopy(pColumn);
+    m_pTableDef->m_pStreamDef->m_nDefColumns[0]++;
   }
   
   if (pColumn)
@@ -752,7 +750,7 @@ StreamDef* Table::pStreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_pStreamDef;
+  return m_pTableDef->m_pStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -818,9 +816,7 @@ void Table::vTidyUp(void)
   
   delete m_pIdxVec;
   delete m_pBucketMap;
-  
-  delete m_pStreamDef;
-  
+    
   delete m_pTableDef;
   
   m_xSlots.vTidyUp();

@@ -51,7 +51,7 @@ TableDef::TableDef(void)
   m_eTableType = TT_NORMAL;
 
   m_pColVec    = new ColumnVec;
-  m_pStreamDef = nullptr;
+  m_pStreamDef = new StreamDef;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -68,6 +68,7 @@ TableDef::~TableDef(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   delete m_pColVec;
+  delete m_pStreamDef;
 }
 
 
