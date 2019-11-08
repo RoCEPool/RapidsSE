@@ -111,7 +111,7 @@
 /*----------------------------------------------------------------------------*/
 : writeBuffer_kid ( -- )
 
-  >>logEntry <SEED_KID2>
+  >>logEntry <SEED_KID>
 
   job::this locals| pJob_WriteBuffer |
 

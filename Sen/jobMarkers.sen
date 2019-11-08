@@ -228,16 +228,6 @@
 
   SS_SEED_KID log::jobSeed
 
-  <seed_initially>
-;
-
-/*----------------------------------------------------------------------------*/
-/* seed kid                                                                   */
-/*----------------------------------------------------------------------------*/
-: <SEED_KID2>
-
-  SS_SEED_KID log::jobSeed
-
   pushPath strVec::toPath to <path>
   <path> str.toStrVec task::dicStack.set
 
