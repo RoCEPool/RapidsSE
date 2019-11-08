@@ -16,11 +16,8 @@
 TableDef* MetaData::_pTableDef(void* aAddr)
 {
   TableDef* pTableDef = reinterpret_cast<TableDef*>(aAddr);
-  
-  if (pTableDef && CN_TABLE != pTableDef->eClass())
-    vTrace("_pTable got class %s\n"_Stz,aCN[pTableDef->eClass()]);
-  
-  RASSERT_TYPE(pTableDef,CN_TABLE);
+    
+  RASSERT_TYPE(pTableDef,CN_TABLEDEF);
   
   return pTableDef;
 }
@@ -30,7 +27,7 @@ TableDef* MetaData::_pTableDef(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TableDef::operator new(size_t)
 {
-  Object* pTableDef = HeapMem::pAllocate(CN_TABLE);
+  Object* pTableDef = HeapMem::pAllocate(CN_TABLEDEF);
   
   return pTableDef;
 }
@@ -46,9 +43,9 @@ void TableDef::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TableDef::TableDef(void)
-: Object(CN_TABLE)
+: Object(CN_TABLEDEF)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   m_sTableName = C_NO_NAME;
   m_eTableType = TT_NORMAL;
@@ -57,9 +54,9 @@ TableDef::TableDef(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  _checkInitialised_(CN_TABLE);
+  _checkInitialised_(CN_TABLEDEF);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,7 +64,7 @@ TableDef::TableDef(void)
 /*----------------------------------------------------------------------------*/
 TableDef::~TableDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   delete m_pColVec;
 }
