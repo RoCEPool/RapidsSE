@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 : subWalker_run ( -- )
 
-  >>logEntry <SEED_RUN2>
+  >>logEntry <<SEED_RUN>
   actLog::seed_run
 
   task::this locals| pThisTask |

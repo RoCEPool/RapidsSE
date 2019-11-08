@@ -9,19 +9,17 @@
 /*----------------------------------------------------------------------------*/
 : pushPath ( pJob -- )
 
-  0 locals| pDicStackSession |
+  0 0 locals| pDicStackSession pSession |
 
   // get session dic stack
-  job::this job.session@ session.dicStack@ to pDicStackSession
+  job::this job.session@ to pSession
 
-  // copy the path from job dic path onto data stack
-/*
-  pDicStackSession dicPath.depth 0 ?do
-    pDicStackSession dicPath.depth 1 - I - pDicStackSession dicPath.pick
-  loop
+  pSession not if
+    0 exit
+  then
+  pSession session.dicStack@ to pDicStackSession
 
-  pDicStackSession dicPath.depth
-*/
+  // copy the path from session dic stack onto data stack
   pDicStackSession dicStack.depth 0 ?do
     pDicStackSession dicStack.depth 1 - I - pDicStackSession dicStack.pick dic.name
   loop

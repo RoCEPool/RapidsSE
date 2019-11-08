@@ -139,7 +139,7 @@
 /*----------------------------------------------------------------------------*/
 : writeRow_run (  -- )
 
-  >>logEntry <SEED_RUN2>
+  >>logEntry <<SEED_RUN>
 
   job::this locals| pJob_WriteRow  |
 
