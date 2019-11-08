@@ -76,37 +76,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop index request (on originating node)                                   */
-/*----------------------------------------------------------------------------*/
-: dropIndex_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob pTask |
-
-  tp: dropIndex_req
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_DropIndex job on a node                                        */
 /*----------------------------------------------------------------------------*/
-: dropIndex_exe ( Job_DropIndex -- )
-
-  >>logEntry <SEED_EXE>
+: dropIndex::execute __eeh ( -- )
 
   //params| pJob_DropIndex |
   job::this locals| pJob_DropIndex |
@@ -114,56 +86,27 @@
   tp: dropIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_DROPINDEX pJob_DropIndex object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabWrite
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_DropIndex job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the table
   pJob_DropIndex removeIndex
   assertInTables
 
-  pJob_DropIndex job.notice
-
-  pJob_DropIndex job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropIndex job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: dropIndex.checkResources ( Job_DropIndex -- )
+: dropIndex::checkResources __eeh ( -- )
 
-  >>logEntry <Check_Resources>
-
-  params| pJob_DropIndex  |
   0 0 locals| sIndexNm sTableNm |
 
   tp: dropIndex.checkResources
-  //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
   DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_DropIndex job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
-  //pJob_DropIndex job.indexName@ to sIndexNm
-  //pJob_DropIndex job.objectName@ to sTableNm
   <indexNm> to sIndexNm
   <tableNm> to sTableNm
 
@@ -184,74 +127,21 @@
   sIndexNm checkIsIndex not if
     popIndexes popTable assertInTables pJob_DropIndex <ERROR_JOB> !!logError exit
   then
-
-  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_DropIndex job release resources                                */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: dropIndex.releaseResources ( Job_DropIndex -- )
+jobSyntax: dropIndex :: drop index <tableNm> <indexNm> ;
 
-  >>logEntry <Release_Resources>
-
-  params| pJob_DropIndex  |
-
-  tp: dropIndex.releaseResources
-  //releaseResources received" .
-
-  <<logExit <Resources_Released>
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: dropIndex_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_dropIndex |
-
-  pJob_dropIndex job.becomeParticipant
-
-  // check resources
-  pJob_dropIndex dropIndex.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: dropIndex_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_dropIndex |
-
-  pJob_dropIndex dropIndex.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: dropIndex_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_dropIndex |
-
-  pJob_dropIndex dropIndex.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+jobInfo: dropIndex
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_WRITE
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/
