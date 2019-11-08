@@ -110,6 +110,12 @@
 
   JP_EXECUTING job::this job.phase!
 
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+  // set task's dictionary stack from path in job
+
+  <path> str.toStrVec task::dicStack.set
+  //task::dump
+
   job::acquireDdlLock
 
   <jobNm> "::execute" str.cat find dup if
