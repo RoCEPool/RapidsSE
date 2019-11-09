@@ -163,8 +163,6 @@ enum eCN : u2 // Class Number
   /*  77 0x4D    83808B Heap:L */ CN_JOB_CREATETABLE,
   /*  78 0x4E    70592B Heap:L */ CN_JOB_CREATETENANT,
   /*  75 0x4B    77808B Heap:L */ CN_JOB_DEFINENODE,
-  /*  82 0x52    70592B Heap:L */ CN_JOB_DROPSCHEMA,
-  /*  84 0x54    70592B Heap:L */ CN_JOB_DROPTENANT,
   /*  86 0x56    70864B Heap:L */ CN_JOB_EXPORT,
   /*  87 0x57    70936B Heap:L */ CN_JOB_FETCHROWS,
   /*                           */ CN_JOB_HEALTH,
@@ -552,8 +550,6 @@ static Stz* aCN[]
   /*  77 0x4D */ "JOB_CREATETABLE"_Stz,     // CN_JOB_CREATETABLE
   /*  78 0x4E */ "JOB_CREATETENANT"_Stz,    // CN_JOB_CREATETENANT
   /*  75 0x4B */ "JOB_CREATENODE"_Stz,      // CN_JOB_DEFINENODE
-  /*  82 0x52 */ "JOB_DROPSCHEMA"_Stz,      // CN_JOB_DROPSCHEMA
-  /*  84 0x54 */ "JOB_DROPTENANT"_Stz,      // CN_JOB_DROPTENANT
   /*  86 0x56 */ "JOB_EXPORT"_Stz,          // CN_JOB_EXPORT
   /*  87 0x57 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
   /*          */ "JOB_HEALTH"_Stz,          // CN_JOB_HEALTH

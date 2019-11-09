@@ -35,76 +35,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop tenant request (on originating node)                                  */
-/*----------------------------------------------------------------------------*/
-: dropTenant_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob pTask |
-
-  tp: dropTenant_req
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_DropTenant job on a node                                       */
 /*----------------------------------------------------------------------------*/
-: dropTenant_exe ( pJob_DropTenant -- )
+: dropTenan::execute __eeh ( -- )
 
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_DropTenant |
   job::this locals| pJob_DropTenant |
 
   tp: dropTenant_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_DROPTENANT pJob_DropTenant object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabWrite
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_DropTenant job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
-  //pJob_DropTenant job.tenantName@
   <tenantNm> removeTenant
-
-  pJob_DropTenant job.notice
-
-  pJob_DropTenant job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTenant job check resources                                 */
 /*----------------------------------------------------------------------------*/
-: dropTenant.checkResources ( Job_DropTenant -- )
-
-  >>logEntry <Check_Resources>
-
-  params| pJob_DropTenant  |
+: dropTenant::checkResources __eeh( -- )
 
   tp: dropTenant.checkResources
   //checkResources received" .
@@ -114,83 +61,24 @@
   DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_DropTenant job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the tenant
-  //pJob_DropTenant job.tenantName@
-  <tenantNm> checkRemoveTenant not if pJob_DropTenant <ERROR_JOB> !!logError exit then
-
-  <<logExit <Resources_Checked>
+  <tenantNm> checkRemoveTenant not if job::this <ERROR_JOB> !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_DropCatalog job release resources                              */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: dropTenant.releaseResources ( Job_DropTenant -- )
 
-  >>logEntry <Release_Resources>
+jobSyntax: dropTenant :: drop tenant <tenantNm> ;
 
-  params| pJob_DropTenant  |
-
-  tp: dropTenant.releaseResources
-  //releaseResources received" .
-
-  <<logExit <Resources_Released>
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: dropTenant_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_dropTenant |
-
-  pJob_dropTenant job.becomeParticipant
-
-  // check resources
-  pJob_dropTenant dropTenant.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: dropTenant_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_dropTenant |
-
-  pJob_dropTenant dropTenant.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: dropTenant_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_dropTenant |
-
-  // check resources
-  pJob_dropTenant dropTable.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+jobInfo: dropTenant
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_WRITE
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/

@@ -35,64 +35,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop schema request (on originating node)                                  */
-/*----------------------------------------------------------------------------*/
-: dropSchema_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob pTask |
-
-  tp: dropSchema_req
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_DropSchema job on a node                                       */
 /*----------------------------------------------------------------------------*/
-: dropSchema_exe ( pJob_DropSchema -- )
+: dropSchem::execute __EEH ( -- )
 
   >>logEntry <SEED_EXE>
 
-  //params| pJob_DropSchema |
   job::this locals| pJob_DropSchema |
 
   tp: dropSchema_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_DROPSCHEMA pJob_DropSchema object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabWrite
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_DropSchema job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
-  //pJob_DropSchema job.schemaName@
   <schemaNm> removeSchema
-
-  pJob_DropSchema job.notice
-
-  pJob_DropSchema job::participantExecuted
 
   <<logExit <DONE_EXE>
 ;
@@ -100,11 +55,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropSchema job check resources                                 */
 /*----------------------------------------------------------------------------*/
-: dropSchema.checkResources ( Job_DropSchema -- )
-
-  >>logEntry <Check_Resources>
-
-  params| pJob_DropSchema  |
+: dropSchema::checkResources __eeh ( -- )
 
   tp: dropSchema.checkResources
   //checkResources received" .
@@ -114,82 +65,25 @@
   DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_DropSchema job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the schema
   //pJob_DropSchema job.schemaName@
-  <schemaNm> checkRemoveSchema not if pJob_DropSchema <ERROR_JOB> !!logError exit then
-
-  <<logExit <Resources_Checked>
+  <schemaNm> checkRemoveSchema not if job::this <ERROR_JOB> !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_DropSchema job release resources                               */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: dropSchema.releaseResources ( Job_DropSchema -- )
 
-  >>logEntry <Release_Resources>
+jobSyntax: dropSchema :: drop schema <schemaNm> ;
 
-  params| pJob_DropSchema  |
-
-  tp: dropSchema.releaseResources
-  //releaseResources received" .
-
-  <<logExit <Resources_Released>
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: dropSchema_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_dropSchema |
-
-  pJob_dropSchema job.becomeParticipant
-
-  // check resources
-  pJob_dropSchema dropSchema.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: dropSchema_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_dropSchema |
-
-  pJob_dropSchema dropSchema.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: dropSchema_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_dropSchema |
-
-  pJob_dropSchema dropSchema.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+jobInfo: dropSchema
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_WRITE
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/
