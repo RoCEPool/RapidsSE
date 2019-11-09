@@ -74,7 +74,6 @@ namespace Jobs
 
 #include "Job_KidExport.hpp"
 
-#include "Job_ListPartitions.hpp"
 #include "Job_LoadTable.hpp"
 
 #include "Job_NetHog.hpp"

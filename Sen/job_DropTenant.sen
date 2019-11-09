@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTenant job check resources                                 */
 /*----------------------------------------------------------------------------*/
-: dropTenant::checkResources __eeh( -- )
+: dropTenant::checkResources __eeh ( -- )
 
   tp: dropTenant.checkResources
   //checkResources received" .

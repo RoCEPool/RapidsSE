@@ -169,7 +169,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTROW
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_KIDEXPORT
-  /*    */ &Dump::vDummy,           // CN_JOB_LISTPARTITIONS
   /*    */ &Dump::vDummy,           // CN_JOB_LOADTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_NETHOG
   /*    */ &Dump::vDummy,           // CN_JOB_NODEINFO
@@ -556,7 +555,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_InsertRow),      // CN_JOB_INSERTROW
   /*    */ sizeof(Job_InsertTable),    // CN_JOB_INSERTTABLE
   /*    */ sizeof(Job_KidExport),      // CN_JOB_KIDEXPORT
-  /*    */ sizeof(Job_ListPartitions), // CN_JOB_LISTPARTITIONS
   /*    */ sizeof(Job_LoadTable),      // CN_JOB_LOADTABLE
   /*    */ sizeof(Job_NetHog),         // CN_JOB_NETHOG
   /*    */ sizeof(Job_NodeInfo),       // CN_JOB_NODEINFO
@@ -942,7 +940,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTROW
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_KIDEXPORT
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTPARTITIONS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LOADTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_NETHOG
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_NODEINFO

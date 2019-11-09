@@ -5,49 +5,11 @@
 " job_ListPartitions.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* list partitions requests (on originating node)                             */
-/*----------------------------------------------------------------------------*/
-: listPartitions_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob_ListPartitions pTask |
-
-  tp: listPartitions_req
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob_ListPartitions
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set metadata string in the job
-  args.metadata if
-    "(NodeName VARCHAR, partitionNumber INTEGER)"
-    pJob_ListPartitions job.metadata!
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
-  pJob_ListPartitions job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* get space in the pool (executed on all nodes)                              */
 /*----------------------------------------------------------------------------*/
-: listPartitions_exe ( pJob_ListPartitions -- )
+: listPartitions::execute __EEH ( -- )
 
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_Space |
   job::this locals| pJob_ListPartitions |
-
-  CN_JOB_LISTPARTITIONS pJob_ListPartitions object.assertClass
 
   ""   // intialize the string
   grid::slots 0 do
@@ -62,57 +24,23 @@
   pJob_ListPartitions job.response!
   grid::slots pJob_ListPartitions job.rowsProcessed!
 
-  pJob_ListPartitions job.notice
-
-  pJob_ListPartitions job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: listPartitions_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+jobSyntax: listPartitions :: lspart ;
 
-  job::this locals| pJob_ListPartitions |
-
-  pJob_ListPartitions job.becomeParticipant
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
+jobInfo: listPartitions
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ROWS
+  <?ddlLock?>  = DL_NONE
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: listPartitions_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  ">> listPartitions_end <<" .verbose
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: listPartitions_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  ">> listPartitions_can <<" .verbose
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
-;
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
