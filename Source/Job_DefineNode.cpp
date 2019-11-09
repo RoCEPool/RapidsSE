@@ -48,7 +48,7 @@ JobClass xJobClass_DefineNode =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_DefineNode_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_CreateSchema_class;
+  *pNextFun = (pFUN*)pJob_CreateTable_class;
   
   return &xJobClass_DefineNode;
 }

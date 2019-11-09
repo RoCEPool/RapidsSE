@@ -35,11 +35,8 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_ANALYZETABLE);
   JobClass::vCmds(CN_JOB_COMPACTINDEX);
   JobClass::vCmds(CN_JOB_CONNECTCLUSTER);
-  JobClass::vCmds(CN_JOB_CREATECATALOG);
   JobClass::vCmds(CN_JOB_CREATEINDEX);
-  JobClass::vCmds(CN_JOB_CREATESCHEMA);
   JobClass::vCmds(CN_JOB_CREATETABLE);
-  JobClass::vCmds(CN_JOB_CREATETENANT);
   JobClass::vCmds(CN_JOB_EXPORT);
   JobClass::vCmds(CN_JOB_INSERTROW);
   //JobClass::vCmds(CN_JOB_INSERTTABLE);

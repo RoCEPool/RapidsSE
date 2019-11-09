@@ -57,11 +57,8 @@ namespace Jobs
 #include "Job_ConnectCluster.hpp"
 #include "Job_Connector.hpp"
 #include "Job_CopyBuffer.hpp"
-#include "Job_CreateCatalog.hpp"
 #include "Job_CreateIndex.hpp"
-#include "Job_CreateSchema.hpp"
 #include "Job_CreateTable.hpp"
-#include "Job_CreateTenant.hpp"
 
 #include "Job_DefineNode.hpp"
 #include "Job_Pipeline.hpp"

@@ -37,19 +37,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropSchema job on a node                                       */
 /*----------------------------------------------------------------------------*/
-: dropSchem::execute __EEH ( -- )
-
-  >>logEntry <SEED_EXE>
-
-  job::this locals| pJob_DropSchema |
+: dropSchema::execute __EEH ( -- )
 
   tp: dropSchema_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
   <schemaNm> removeSchema
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

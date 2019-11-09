@@ -46,76 +46,22 @@
   sCatalogNm makeSchemas ( )
 ;
 
-
-/*----------------------------------------------------------------------------*/
-/* create catalog request (on originating node)                               */
-/*----------------------------------------------------------------------------*/
-: createCatalog_req ( -- )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob_CreateCatalog pTask |
-
-  tp: createCatalog_req
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob_CreateCatalog
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
-  pJob_CreateCatalog job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateCatalog job on a node                                    */
 /*----------------------------------------------------------------------------*/
-: createCatalog_exe ( pJob_CreateCatalog -- )
-
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_CreateCatalog |
-  job::this locals| pJob_CreateCatalog |
+: createCatalog::execute __eeh ( -- )
 
   tp: createCatalog_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabWrite
-
-  CN_JOB_CREATECATALOG pJob_CreateCatalog object.assertClass
-  //pJob_CreateCatalog job.catalogName@ to sCatalogNm
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_CreateCatalog job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog
   <catalogNm> makeCatalog ( )
-
-  pJob_CreateCatalog job.notice
-
-  pJob_CreateCatalog job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateCatalog job check resources                              */
 /*----------------------------------------------------------------------------*/
-: createCatalog.checkResources ( pJob_CreateCatalog -- )
-
-  >>logEntry <Check_Resources>
-
-  params| pJob_CreateCatalog  |
+: createCatalog::checkResources __eeh ( -- )
 
   tp: createCatalog.checkResources
   //"checkResources received" .
@@ -125,71 +71,12 @@
   DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_CreateCatalog job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
-  node::checkEnoughBuffers not if pJob_CreateCatalog <ERROR_JOB> !!logError exit then
-
+  node::checkEnoughBuffers not if job::this <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
-  //pJob_CreateCatalog job.catalogName@
-  <catalogNm> checkMakeCatalog not if pJob_CreateCatalog <ERROR_JOB> !!logError exit then
-
-  <<logExit <Resources_Checked>
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute Job_CreateCatalog job release resources                            */
-/*----------------------------------------------------------------------------*/
-: createCatalog.releaseResources ( pJob_CreateCatalog -- )
-
-  >>logEntry <Release_Resources>
-
-  params| pJob_CreateCatalog  |
-
-  tp: createCatalog.releaseResources
-  //"releaseResources received" .
-
-  <<logExit <Resources_Released>
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: createCatalog_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_createCatalog |
-
-  pJob_createCatalog job.becomeParticipant
-
-  // check resources
-  pJob_createCatalog createCatalog.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: createCatalog_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_createCatalog |
-
-  pJob_createCatalog createCatalog.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
+  <catalogNm> checkMakeCatalog not if job::this <ERROR_JOB> !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -206,6 +93,22 @@
   job::participantCancelled
 
   <<logExit <DONE_CAN>
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: createCatalog :: create catalog <catalogNm> ;
+
+jobInfo: createCatalog
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_WRITE
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/

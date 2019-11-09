@@ -56,7 +56,7 @@ JobClass xJobClass_CreateTable =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_CreateTable_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_CreateTenant_class;
+  *pNextFun = (pFUN*)pJob_Export_class;
   
   return &xJobClass_CreateTable;
 }

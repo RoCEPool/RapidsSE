@@ -48,71 +48,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create schema request (on originating node)                                */
-/*----------------------------------------------------------------------------*/
-: createSchema_req ( -- )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob_CreateSchema pTask |
-
-  tp: createSchema_req
-
-  // get the task
-  task::this to pTask
-
-  // get the job from the task
-  pTask task.job@ to pJob_CreateSchema
-
-  // distribute the job
-  pJob_CreateSchema job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_CreateCatalog job on a node                                    */
 /*----------------------------------------------------------------------------*/
-: createSchema_exe ( pJob_CreateSchema -- )
-
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_CreateSchema |
-  job::this locals| pJob_CreateSchema |
+: createSchema::execute __eeh ( -- )
 
   tp: createSchema_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabWrite
-
-  CN_JOB_CREATESCHEMA pJob_CreateSchema object.assertClass
-  //pJob_CreateSchema job.schemaName@ to sSchemaNm
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_CreateSchema job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the schema
   <schemaNm> makeSchema ( )
-
-  pJob_CreateSchema job.notice
-
-  pJob_CreateSchema job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateSchema job check resources                              */
 /*----------------------------------------------------------------------------*/
-: createSchema.checkResources ( pJob_CreateSchema -- )
-
-  >>logEntry <Check_Resources>
-
-  params| pJob_CreateSchema  |
+: createSchema::checkResources __eeh ( -- )
 
   tp: createSchema.checkResources
   //"checkResources received" .
@@ -122,87 +72,30 @@
   DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_CreateSchema job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
-  node::checkEnoughBuffers not if pJob_CreateSchema <ERROR_JOB> !!logError exit then
-
+  node::checkEnoughBuffers not if job::this <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
   //pJob_CreateSchema job.schemaName@
-  <schemaNm> checkMakeSchema not if pJob_CreateSchema <ERROR_JOB> !!logError exit then
+  <schemaNm> checkMakeSchema not if job::this <ERROR_JOB> !!logError exit then
 
-  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateSchema job release resources                             */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: createSchema.releaseResources ( pJob_CreateSchema -- )
 
-  >>logEntry <Release_Resources>
+jobSyntax: createSchema :: create schema <schemaNm> ;
 
-  params| pJob_CreateSchema  |
-
-  tp: createSchema.releaseResources
-  //"releaseResources received" .
-
-  <<logExit <Resources_Released>
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: createSchema_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_createSchema |
-
-  pJob_createSchema job.becomeParticipant
-
-  // check resources
-  pJob_createSchema createSchema.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: createSchema_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_createSchema |
-
-  pJob_createSchema createSchema.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: createSchema_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_createSchema |
-
-  pJob_createSchema createSchema.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+jobInfo: createSchema
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_WRITE
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/

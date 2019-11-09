@@ -65,7 +65,6 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the catalog
-  //pJob_DropCatalog job.catalogName@
   //<catalogNm> checkRemoveCatalog not if job::this <ERROR_JOB> !!logError exit then
 ;
 
