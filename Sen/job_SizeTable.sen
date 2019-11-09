@@ -33,46 +33,10 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* size table request (on originating node)                                   */
-/*----------------------------------------------------------------------------*/
-: sizeTable_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob pTask |
-
-  tp: sizeTable
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set metadata string in the job
-  args.metadata if
-    "(nodeName VARCHAR, size VARCHAR)" 
-    pJob job.metadata!
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_SizeTable job on a node                                        */
 /*----------------------------------------------------------------------------*/
-: sizeTable_exe ( Job_SizeTable -- )
+: sizeTable::execute _eeh ( -- )
 
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_SizeTable |
   job::this locals| pJob_SizeTable |
 
   0 0 0 locals| sTableNm pTable iSize |
@@ -80,21 +44,7 @@
   tp: sizeTable_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_SIZETABLE pJob_SizeTable object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_SizeTable job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove the table
-  //pJob_SizeTable job.objectName@ to sTableNm
+  // get the table name
   <tableNm> to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -112,22 +62,12 @@
 
   pJob_SizeTable job.response!
   1 pJob_SizeTable job.rowsProcessed!
-
-  pJob_SizeTable job.notice
-
-  pJob_SizeTable job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_SizeTable job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: sizeTable.checkResources ( Job_SizeTable -- )
-
-  >>logEntry <Check_Resources>
-
-  params| pJob_SizeTable  |
+: sizeTable::checkResources _eeh ( -- )
 
   tp: sizeTable.checkResources
   //checkResources received" .
@@ -137,82 +77,28 @@
   DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_SizeTable job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
-  //pJob_SizeTable job.objectName@
   <tableNm>
-  checkSizeTable not if pJob_SizeTable <ERROR_JOB> !!logError exit then
+  checkSizeTable not if job::this <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_SizeTable job release resources                                */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: sizeTable.releaseResources ( Job_SizeTable -- )
 
-  >>logEntry <Release_Resources>
+jobSyntax: sizeTable :: sizeTable <tableNm> ;
+jobSyntax: sizeTable :: szTbl <tableNm> ;
 
-  params| pJob_SizeTable  |
-
-  tp: sizeTable.releaseResources
-  //releaseResources received" .
-
-  <<logExit <Resources_Released>
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: sizeTable_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
- job::this locals| pJob_sizeTable |
-
-  pJob_sizeTable job.becomeParticipant
-
-  pJob_sizeTable sizeTable.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: sizeTable_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_sizeTable |
-
-  pJob_sizeTable sizeTable.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: sizeTable_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_sizeTable |
-
-  pJob_sizeTable sizeTable.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+jobInfo: sizeTable
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ROWS
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/

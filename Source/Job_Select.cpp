@@ -47,7 +47,7 @@ JobClass xJobClass_Select =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Select_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_SizeTable_class;
+  *pNextFun = (pFUN*)pJob_Space_class;
   
   return &xJobClass_Select;
 }
