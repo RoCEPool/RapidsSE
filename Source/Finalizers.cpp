@@ -192,7 +192,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBTRUNCATE
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBWALKER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUPERVISOR
-  /*    */ &Finalize::vUndefined,         // CN_JOB_TABLESIZES
   /*    */ &Finalize::vUndefined,         // CN_JOB_TRUNCATETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_UNIVERSAL
   /*    */ &Finalize::vUndefined,         // CN_JOB_VERIFYINDEX

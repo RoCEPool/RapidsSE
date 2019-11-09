@@ -193,7 +193,6 @@ enum eCN : u2 // Class Number
   /* 131 0x83    70608B Heap:L */ CN_JOB_SUBTRUNCATE,
   /*                           */ CN_JOB_SUBWALKER,
   /*                           */ CN_JOB_SUPERVISOR,
-  /* 132 0x84    70592B Heap:L */ CN_JOB_TABLESIZES,
   /* 133 0x85    70592B Heap:L */ CN_JOB_TRUNCATETABLE,
   /* 133 0x85    70592B Heap:L */ CN_JOB_UNIVERSAL,
   /* 135 0x87    70592B Heap:L */ CN_JOB_VERIFYINDEX,
@@ -574,7 +573,6 @@ static Stz* aCN[]
   /* 131 0x83 */ "JOB_SUBTRUNCATE"_Stz,     // CN_JOB_SUBTRUNCATE
   /*          */ "JOB_SUBWALKER"_Stz,       // CN_JOB_SUBWALKER
   /*          */ "JOB_SUPERVISOR"_Stz,      // CN_JOB_SUPERVISOR
-  /* 132 0x84 */ "JOB_TABLESIZES"_Stz,      // CN_JOB_TABLESIZES
   /* 133 0x85 */ "JOB_TRUNCATETABLE"_Stz,   // CN_JOB_TRUNCATETABLE
   /* 133 0x85 */ "JOB_UNIVERSAL"_Stz,       // CN_JOB_UNIVERSAL
   /* 135 0x87 */ "JOB_VERIFYINDEX"_Stz,     // CN_JOB_VERIFYINDEX

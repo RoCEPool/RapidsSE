@@ -106,7 +106,6 @@ namespace Jobs
 #include "Job_SubWalker.hpp"
 #include "Job_Supervisor.hpp"
 
-#include "Job_TableSizes.hpp"
 #include "Job_TruncateTable.hpp"
 
 #include "Job_Universal.hpp"

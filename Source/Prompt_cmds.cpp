@@ -47,7 +47,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_SPACE);
   JobClass::vCmds(CN_JOB_STARTCLUSTER);
   JobClass::vCmds(CN_JOB_STATUS);
-  JobClass::vCmds(CN_JOB_TABLESIZES);
   JobClass::vCmds(CN_JOB_TRUNCATETABLE);
   JobClass::vCmds(CN_JOB_VERIFYINDEX);
   JobClass::vCmds(CN_JOB_VERIFYTABLE);
