@@ -43,8 +43,6 @@
   params| pJob_DropIndex |
   0 0 0 locals| pIndex sIndexNm sTableNm |
 
-  //pJob_DropIndex job.indexName@ to sIndexNm
-  //pJob_DropIndex job.objectName@ to sTableNm
   <indexNm> to sIndexNm
   <tableNm> to sTableNm
 
@@ -80,7 +78,6 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex::execute _eeh ( -- )
 
-  //params| pJob_DropIndex |
   job::this locals| pJob_DropIndex |
 
   tp: dropIndex_exe
@@ -112,7 +109,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check remove index
-  sTableNm checkRemoveIndex not if pJob_DropIndex <ERROR_JOB> !!logError exit then
+sTableNm checkRemoveIndex not if job::this <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -125,7 +122,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm checkIsIndex not if
-    popIndexes popTable assertInTables pJob_DropIndex <ERROR_JOB> !!logError exit
+popIndexes popTable assertInTables job::this <ERROR_JOB> !!logError exit
   then
 ;
 
