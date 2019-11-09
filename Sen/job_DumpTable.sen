@@ -83,6 +83,7 @@
 /*----------------------------------------------------------------------------*/
 
 jobSyntax: dumptable :: dumptable <tableNm> ;
+jobSyntax: dumptable :: dumptbl <tableNm> ;
 
 jobInfo: dumptable
 {
