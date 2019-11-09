@@ -180,7 +180,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_RECEIVER
   /*    */ &Dump::vDummy,           // CN_JOB_SANITY
   /*    */ &Dump::vDummy,           // CN_JOB_SELECT
-  /*    */ &Dump::vDummy,           // CN_JOB_SIZEINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_SIZETABLE
   
   /*    */ &Dump::vDummy,           // CN_JOB_SPACE
@@ -566,7 +565,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Receiver),       // CN_JOB_RECEIVER
   /*    */ sizeof(Job_Sanity),         // CN_JOB_SANITY
   /*    */ sizeof(Job_Select),         // CN_JOB_SELECT
-  /*    */ sizeof(Job_SizeIndex),      // CN_JOB_SIZEINDEX
   /*    */ sizeof(Job_SizeTable),      // CN_JOB_SIZETABLE
   /*    */ sizeof(Job_Space),          // CN_JOB_SPACE
   /*    */ sizeof(Job_Start),          // CN_JOB_START
@@ -951,7 +949,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_RECEIVER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SANITY
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SELECT
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SIZEINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SIZETABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SPACE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_START

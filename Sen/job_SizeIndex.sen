@@ -45,44 +45,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* size index request (on originating node)                                   */
-/*----------------------------------------------------------------------------*/
-: sizeIndex_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob pTask |
-
-  tp: sizeIndex
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set metadata string in the job
-  args.metadata if
-    "(nodeName VARCHAR, size VARCHAR)" 
-    pJob job.metadata!
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_SizeIndex job on a node                                        */
 /*----------------------------------------------------------------------------*/
-: sizeIndex_exe ( Job_SizeIndex -- )
-
-  >>logEntry <SEED_EXE>
+: sizeIndex::execute _eeh ( -- )
 
   //params| pJob_SizeIndex |
   job::this locals| pJob_SizeIndex |
@@ -92,22 +57,7 @@
   tp: sizeIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_SIZEINDEX pJob_SizeIndex object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_SizeIndex job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
-  //pJob_SizeIndex job.indexName@ to sIndexNm
-  //pJob_SizeIndex job.objectName@ to sTableNm
   <indexNm> to sIndexNm
   <tableNm> to sTableNm
 
@@ -128,22 +78,13 @@
 
   pJob_SizeIndex job.response!
   1 pJob_SizeIndex job.rowsProcessed!
-
-  pJob_SizeIndex job.notice
-
-  pJob_SizeIndex job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_SizeIndex job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: sizeIndex.checkResources ( Job_SizeIndex -- )
+: sizeIndex::checkResources _eeh ( -- )
 
-  >>logEntry <Check_Resources>
-
-  params| pJob_SizeIndex  |
   0 0 locals| sIndexNm sTableNm |
 
   tp: sizeIndex.checkResources
@@ -154,86 +95,28 @@
   DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_SizeIndex job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get index and table name
-  //pJob_SizeIndex job.indexName@ to sIndexNm
-  //pJob_SizeIndex job.objectName@ to sTableNm
+  // get the table and index names
   <indexNm> to sIndexNm
   <tableNm> to sTableNm
 
-  sTableNm sIndexNm checkSizeIndex not if pJob_SizeIndex <ERROR_JOB> !!logError exit then
-
-  <<logExit <Resources_Checked>
+  sTableNm sIndexNm checkSizeIndex not if job::this <ERROR_JOB> !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_SizeTable job release resources                                */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: sizeIndex.releaseResources ( Job_SizeIndex -- )
 
-  >>logEntry <Release_Resources>
+jobSyntax: sizeIndex :: sizeIndex <tableNm> <indexNm> ;
+jobSyntax: sizeIndex :: szIdx <tableNm> <indexNm> ;
 
-  params| pJob_SizeIndex  |
-
-  tp: sizeIndex.releaseResources
-  //releaseResources received" .
-
-  <<logExit <Resources_Released>
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: sizeIndex_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_sizeIndex |
-
-  pJob_sizeIndex job.becomeParticipant
-
-  // check resources
-  pJob_sizeIndex sizeIndex.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: sizeIndex_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_sizeIndex |
-
-  pJob_sizeIndex sizeIndex.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: sizeIndex_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_sizeIndex |
-
-  pJob_sizeIndex sizeIndex.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+jobInfo: sizeIndex
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ROWS
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/

@@ -44,7 +44,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_PUBLISH);
   JobClass::vCmds(CN_JOB_PURGE);
   JobClass::vCmds(CN_JOB_SANITY);
-  JobClass::vCmds(CN_JOB_SIZEINDEX);
   JobClass::vCmds(CN_JOB_SIZETABLE);
   JobClass::vCmds(CN_JOB_SPACE);
   JobClass::vCmds(CN_JOB_STARTCLUSTER);
