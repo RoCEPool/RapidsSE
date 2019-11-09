@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTenant job on a node                                     */
 /*----------------------------------------------------------------------------*/
-: createTenant::execute __eeh ( -- )
+: createTenant::execute _eeh ( -- )
 
   tp: createTenant_exe
 
@@ -61,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTenant job check resources                               */
 /*----------------------------------------------------------------------------*/
-: createTenant::checkResources __eeh ( -- )
+: createTenant::checkResources _eeh ( -- )
 
   tp: createTenant.checkResources
   //checkResources received" .

@@ -86,7 +86,7 @@
 /*----------------------------------------------------------------------------*/
 /* check resources for dropTable                 (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: dropTable::checkResources __eeh ( -- )
+: dropTable::checkResources _eeh ( -- )
 
   tp: dropTable.checkResources
 

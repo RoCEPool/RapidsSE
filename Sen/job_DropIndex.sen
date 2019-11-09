@@ -78,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropIndex job on a node                                        */
 /*----------------------------------------------------------------------------*/
-: dropIndex::execute __eeh ( -- )
+: dropIndex::execute _eeh ( -- )
 
   //params| pJob_DropIndex |
   job::this locals| pJob_DropIndex |
@@ -95,7 +95,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropIndex job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: dropIndex::checkResources __eeh ( -- )
+: dropIndex::checkResources _eeh ( -- )
 
   0 0 locals| sIndexNm sTableNm |
 

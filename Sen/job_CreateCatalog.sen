@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateCatalog job on a node                                    */
 /*----------------------------------------------------------------------------*/
-: createCatalog::execute __eeh ( -- )
+: createCatalog::execute _eeh ( -- )
 
   tp: createCatalog_exe
 
@@ -61,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateCatalog job check resources                              */
 /*----------------------------------------------------------------------------*/
-: createCatalog::checkResources __eeh ( -- )
+: createCatalog::checkResources _eeh ( -- )
 
   tp: createCatalog.checkResources
   //"checkResources received" .

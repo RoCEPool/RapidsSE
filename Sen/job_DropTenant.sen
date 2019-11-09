@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTenant job on a node                                       */
 /*----------------------------------------------------------------------------*/
-: dropTenan::execute __eeh ( -- )
+: dropTenan::execute _eeh ( -- )
 
   job::this locals| pJob_DropTenant |
 
@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropTenant job check resources                                 */
 /*----------------------------------------------------------------------------*/
-: dropTenant::checkResources __eeh ( -- )
+: dropTenant::checkResources _eeh ( -- )
 
   tp: dropTenant.checkResources
   //checkResources received" .

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* get space in the pool (executed on all nodes)                              */
 /*----------------------------------------------------------------------------*/
-: listPartitions::execute __EEH ( -- )
+: listPartitions::execute _eeh ( -- )
 
   job::this locals| pJob_ListPartitions |
 

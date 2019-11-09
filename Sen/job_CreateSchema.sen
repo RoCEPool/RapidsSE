@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateCatalog job on a node                                    */
 /*----------------------------------------------------------------------------*/
-: createSchema::execute __eeh ( -- )
+: createSchema::execute _eeh ( -- )
 
   tp: createSchema_exe
 
@@ -62,7 +62,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateSchema job check resources                              */
 /*----------------------------------------------------------------------------*/
-: createSchema::checkResources __eeh ( -- )
+: createSchema::checkResources _eeh ( -- )
 
   tp: createSchema.checkResources
   //"checkResources received" .

@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DropCatalog job check resources                                */
 /*----------------------------------------------------------------------------*/
-: dropCatalog::checkResources __eeh ( -- )
+: dropCatalog::checkResources _eeh ( -- )
 
   tp: dropCatalog.checkResources
   //checkResources received" .
