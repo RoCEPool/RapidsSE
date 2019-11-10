@@ -106,9 +106,6 @@ namespace Jobs
 
 #include "Job_Universal.hpp"
 
-#include "Job_VerifyIndex.hpp"
-#include "Job_VerifyTable.hpp"
-
 #include "Job_WaitCluster.hpp"
 #include "Job_Waker.hpp"
 #include "Job_Walk.hpp"

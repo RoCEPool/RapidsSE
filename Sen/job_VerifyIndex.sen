@@ -45,46 +45,10 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* verify index request (on originating node)                                 */
-/*----------------------------------------------------------------------------*/
-: verifyIndex_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob pTask |
-
-  tp: verifyIndex
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set metadata string in the job
-  args.metadata if
-    "(nodeName VARCHAR, tableName VARCHAR, indexName VARCHAR, isValid VARCHAR)"
-    pJob job.metadata!
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* verify index request on a node                                             */
 /*----------------------------------------------------------------------------*/
-: verifyIndex_exe ( Job_VerifyIndex )
+: verifyIndex::execute _eeh ( -- )
 
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_VerifyIndex |
   job::this locals| pJob_VerifyIndex |
 
   0 0 0 0 locals| pTask pIndex sTableNm sIndexNm  |
@@ -92,18 +56,7 @@
   tp: verifyIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_VERIFYINDEX pJob_VerifyIndex object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_VerifyIndex job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
-  //pJob_VerifyIndex job.indexName@ to sIndexNm
-  //pJob_VerifyIndex job.objectName@ to sTableNm
   <indexNm> to sIndexNm
   <tableNm> to sTableNm
 
@@ -111,10 +64,6 @@
   // push table and indexes folder
   sTableNm pushTable assert
   pushIndexes assert
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // visualize
@@ -128,20 +77,13 @@
   // pop indexes and table folder
   popIndexes
   popTable
-
-  pJob_VerifyIndex job.notice
-
-  pJob_VerifyIndex job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_VerifyIndex job check resources                                */
 /*----------------------------------------------------------------------------*/
-: verifyIndex.checkResources ( Job_VerifyIndex -- )
+: verifyIndex::checkResources _eeh ( -- )
 
-  params| pJob_VerifyIndex  |
   0 0 locals| sIndexNm sTableNm |
 
   tp: verifyIndex.checkResources
@@ -151,83 +93,28 @@
   // grab a ddl lock
   DdlLock[].grabRead
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_VerifyIndex job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get index and table name
-  //pJob_VerifyIndex job.indexName@ to sIndexNm
-  //pJob_VerifyIndex job.objectName@ to sTableNm
   <indexNm> to sIndexNm
   <tableNm> to sTableNm
 
-  sTableNm sIndexNm checkVerifyIndex not if pJob_VerifyIndex <ERROR_JOB> !!logError exit then
+  sTableNm sIndexNm checkVerifyIndex not if job::this <ERROR_JOB> !!logError exit then
 
   DdlLock[].dropRead
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_VisualizeIndexTable job release resources                      */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: verifyIndex.releaseResources ( Job_VerifyIndex -- )
+jobSyntax: verifyIndex :: verifyIndex <tableNm> <indexNm> ;
+jobSyntax: verifyIndex :: vfyIdx <tableNm> <indexNm> ;
 
-  params| pJob_VerifyIndex  |
-
-  tp: verifyIndex.releaseResources
-  //releaseResources received" .
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: verifyIndex_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_VerifyIndex |
-
-  pJob_VerifyIndex job.becomeParticipant
-
-  // check resources
-  pJob_VerifyIndex verifyIndex.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: verifyIndex_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_VerifyIndex |
-
-  pJob_VerifyIndex verifyIndex.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: verifyIndex_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_VerifyIndex |
-
-  pJob_VerifyIndex verifyIndex.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+jobInfo: verifyIndex
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ROWS
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/

@@ -109,7 +109,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check remove index
-sTableNm checkRemoveIndex not if job::this <ERROR_JOB> !!logError exit then
+  sTableNm checkRemoveIndex not if job::this <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
