@@ -244,7 +244,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_SUBTRUNCATE"_Stz,    CN_JOB_SUBTRUNCATE);
   /*    */ vAddConstant("CN_JOB_SUBWALKER"_Stz,      CN_JOB_SUBWALKER);
   /*    */ vAddConstant("CN_JOB_SUPERVISOR"_Stz,     CN_JOB_SUPERVISOR);
-  /*    */ vAddConstant("CN_JOB_TRUNCATETABLE"_Stz,  CN_JOB_TRUNCATETABLE);
   /*    */ vAddConstant("CN_JOB_UNIVERSAL"_Stz,      CN_JOB_UNIVERSAL);
   /*    */ vAddConstant("CN_JOB_VERIFYINDEX"_Stz,    CN_JOB_VERIFYINDEX);
   /*    */ vAddConstant("CN_JOB_VERIFYTABLE"_Stz,    CN_JOB_VERIFYTABLE);

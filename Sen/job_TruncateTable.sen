@@ -5,39 +5,10 @@
 " job_TruncateTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* truncate table request (on originating node)                               */
-/*----------------------------------------------------------------------------*/
-: truncateTable_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob pTask |
-
-  tp: truncateTable
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_TruncateTable job on a node                                    */
 /*----------------------------------------------------------------------------*/
-: truncateTable_exe ( Job_TruncateTable -- )
+: truncateTable::execute _eeh ( -- )
 
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_TruncateTable |
   job::this locals| pJob_TruncateTable |
 
   0 0 locals| sTableNm pThisTask |
@@ -45,22 +16,9 @@
   tp: truncateTable_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_TRUNCATETABLE pJob_TruncateTable object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
   task::this to pThisTask
   //pJob_TruncateTable pThisTask "truncateTable_exe task: %v Job_TruncateTable %v" fmt.print
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_TruncateTable job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab this task's lock
@@ -79,22 +37,14 @@
   //"truncateTable ack waiting" .
   task::wait
   //"truncateTable acked" .
-
-  pJob_TruncateTable job.notice
-
-  pJob_TruncateTable job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_TruncateTable job check resources                              */
 /*----------------------------------------------------------------------------*/
-: truncateTable.checkResources ( Job_TruncateTable -- )
+: truncateTable::checkResources _eeh ( -- )
 
-  >>logEntry <Check_Resources>
-
-  params| pJob_TruncateTable  |
+  job::this locals| pJob_TruncateTable |
   0 locals| sTableNm |
 
   tp: truncateTable.checkResources
@@ -105,17 +55,11 @@
   DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_TruncateTable job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
   checkInTables not if pJob_TruncateTable <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there should be a table folder
-  //pJob_TruncateTable job.objectName@ to sTableNm
   <tableNm> to sTableNm
   sTableNm checkIsTableFolder not if pJob_TruncateTable <ERROR_JOB> !!logError exit then
 
@@ -130,74 +74,23 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
   popTable
-
-  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_truncateTable job release resources                            */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: truncateTable.releaseResources ( Job_TruncateTable -- )
 
-  >>logEntry <Release_Resources>
+jobSyntax: truncateTable :: truncateTable <tableNm> ;
+jobSyntax: truncateTable :: trtbl <tableNm> ;
 
-  params| pJob_TruncateTable  |
-
-  tp: truncateTable.releaseResources
-  //releaseResources received" .
-
-  <<logExit <Resources_Released>
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: truncateTable_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_truncateTable |
-
-  pJob_truncateTable job.becomeParticipant
-
-  // check resources
-  pJob_truncateTable truncateTable.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: truncateTable_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_truncateTable |
-
-  pJob_truncateTable truncateTable.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: truncateTable_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_truncateTable |
-
-  pJob_truncateTable truncateTable.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+jobInfo: truncateTable
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ROWS
+  <?ddlLock?>  = DL_GRAB_WRITE
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/

@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : SubTruncate_run ( -- <R> )
 
+<path> .
   >>logEntry <<SEED_RUN>
 
   0 0 locals| pJob_SubTruncate pTask |
@@ -25,10 +26,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the job from the task
   pTask task.job@ to pJob_SubTruncate
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  //DdlLock[].grabWrite
 
   // get truncate job
   pJob_SubTruncate job_SubTruncate.truncateJobId@ to iTrucateJobId
@@ -54,14 +51,9 @@
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job from truncate (sub has no session)
-  //pTask_TruncateTable task.job@ job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  //pJob_SubTruncate job.objectName@ to sTableNm
   <tableNm> to sTableNm
+
   sTableNm pushTable assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -85,6 +77,8 @@
   pTask_TruncateTable task.grabLock
   pTask_TruncateTable task.dropLock
   pTask_TruncateTable task.ack
+
+  <DONE_RUN>
 
   job::completed
 

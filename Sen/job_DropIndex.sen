@@ -122,7 +122,7 @@ sTableNm checkRemoveIndex not if job::this <ERROR_JOB> !!logError exit then
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm checkIsIndex not if
-popIndexes popTable assertInTables job::this <ERROR_JOB> !!logError exit
+  popIndexes popTable assertInTables job::this <ERROR_JOB> !!logError exit
   then
 ;
 

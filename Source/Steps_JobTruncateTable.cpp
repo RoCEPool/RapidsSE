@@ -59,27 +59,27 @@ void Step::vJob_TruncateTableSpawnSub(void)
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
-  Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJobPtr);
+  Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
   
   i8 iSlot;
   if ( ! m_pDataStack->bPopAsInt(iSlot) )
     THROW_DSTACK();
   
-  i8 iTruncateJobId = pJob_TruncateTable->m_iFocalId;
-  ReqTuple* aReqTuple = &pJob_TruncateTable->m_xReqTuple;
+  i8 iTruncateJobId = pJob_Universal->m_iFocalId;
+  ReqTuple* aReqTuple = &pJob_Universal->m_xReqTuple;
   
   JobClass* pJobClass_SubTruncate = JobClass::pFind(CN_JOB_SUBTRUNCATE);
   
   Job_SubTruncate* pJob_SubTruncate =
     static_cast<Job_SubTruncate*>
-      (pJobClass_SubTruncate->pPreJob(aReqTuple,nullptr));
+      (pJobClass_SubTruncate->pPreJob(aReqTuple,pJob_Universal->pSession()));
   
   pJob_SubTruncate->vSeed(SS_SEED_RUN);
   
-  pJob_SubTruncate->m_iParentId  = pJob_TruncateTable->m_iFocalId;
+  pJob_SubTruncate->m_iParentId  = pJob_Universal->m_iFocalId;
   pJob_SubTruncate->m_iTruncateJobId = iTruncateJobId;
   pJob_SubTruncate->m_oEnameSet.vAdd("<tableNm>"_Stz,
-                                   pJob_TruncateTable->m_oEnameSet.szValue("<tableNm>"_Stz));
+                                   pJob_Universal->m_oEnameSet.szValue("<tableNm>"_Stz));
   pJob_SubTruncate->vSlot(iSlot);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
