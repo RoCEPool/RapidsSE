@@ -820,7 +820,7 @@ void Step::vJobHasError(void)
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
-  Job_Space* pJob = _pJob_Space(pJobPtr);
+  Job* pJob = _pJob(pJobPtr);
   
   m_pDataStack->vPushI8(pJob->m_bHasError);
   

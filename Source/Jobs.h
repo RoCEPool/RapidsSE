@@ -90,7 +90,6 @@ namespace Jobs
 
 #include "Job_Sanity.hpp"
 #include "Job_Select.hpp"
-#include "Job_Space.hpp"
 #include "Job_Start.hpp"
 #include "Job_StartCluster.hpp"
 #include "Job_Status.hpp"

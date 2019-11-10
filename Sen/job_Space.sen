@@ -5,49 +5,11 @@
 " job_Space.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* request to get space in the pool (on originating node)                     */
-/*----------------------------------------------------------------------------*/
-: space_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob pTask |
-
-  tp: space_req
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set metadata string in the job
-  args.metadata if
-    "(nodeName VARCHAR, poolSize VARCHAR, inUse VARCHAR, free VARCHAR)"
-    pJob job.metadata!
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* get space in the pool (executed on all nodes)                              */
 /*----------------------------------------------------------------------------*/
-: space_exe ( pJob_Space -- )
+: space::execute _eeh ( -- )
 
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_Space |
   job::this locals| pJob_Space |
-
-  CN_JOB_SPACE pJob_Space object.assertClass
 
   "GETTING SPACE on NODE " grid::thisNode@ >str str.cat .verbose
 //
@@ -63,56 +25,22 @@
 
   pJob_Space job.response!
   1 pJob_Space job.rowsProcessed!
-
-  pJob_Space job.notice
-
-  pJob_Space job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: space_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+jobSyntax: space :: space ;
 
-  job::this locals| pJob_space |
-
-  pJob_space job.becomeParticipant
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: space_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  ">> space_end <<" .verbose
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: space_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  ">> space_can <<" .verbose
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+jobInfo: space
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ROWS
+  <?ddlLock?>  = DL_NONE
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/
