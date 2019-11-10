@@ -81,7 +81,7 @@ TableDef::~TableDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* convert string into column type                                            */
 /*----------------------------------------------------------------------------*/
-eCT TableDef::eToCT(Stz* szType)
+eCT TableDef::eColumn(Stz* szType)
 {
   i8 nEntries = sizeof(aCT) / sizeof (Stz*);
   
@@ -175,17 +175,17 @@ bool TableDef::bParse(Stz* szCmd)
     // column type -- -- -- -- -- --
     pTkn = pTknVec->pNextToken(); PT();
     
-    eCT eColumn = eToCT(pTkn->szText());
+    eCT eColumn = TableDef::eColumn(pTkn->szText());
     
     switch (eColumn) {
       case CT_BOOLEAN:
-        pCol->vColumnType(CT_BOOLEAN);
-        pCol->vDatumType(DM_BOL);
+        if ( ! bExtractBoolean(pCol,pTknVec) )
+          return EC_INVALID_COMMAND;
         break;
         
       case CT_DATE:
-        pCol->vColumnType(CT_DATE);
-        pCol->vDatumType(DM_DTE);
+        if ( ! bExtractDate(pCol,pTknVec) )
+          return EC_INVALID_COMMAND;
         break;
         
       case CT_DECIMAL:
@@ -199,24 +199,23 @@ bool TableDef::bParse(Stz* szCmd)
         break;
         
       case CT_INTEGER:
-        pCol->vColumnType(CT_INTEGER);
-        pCol->vDatumType(DM_INT);
-        pCol->vColumnLength(C_MAX_PRECISION_INT);
+        if ( ! bExtractInteger(pCol,pTknVec) )
+          return EC_INVALID_COMMAND;
         break;
         
       case CT_INTERVAL:
-        pCol->vColumnType(CT_INTERVAL);
-        pCol->vDatumType(DM_IVL);
+        if ( ! bExtractInterval(pCol,pTknVec) )
+          return EC_INVALID_COMMAND;
         break;
         
       case CT_TIME:
-        pCol->vColumnType(CT_TIME);
-        pCol->vDatumType(DM_TME);
+        if ( ! bExtractTime(pCol,pTknVec) )
+          return EC_INVALID_COMMAND;
         break;
         
       case CT_TIMESTAMP:
-        pCol->vColumnType(CT_TIMESTAMP);
-        pCol->vDatumType(DM_TSP);
+        if ( ! bExtractTimestamp(pCol,pTknVec) )
+          return EC_INVALID_COMMAND;
         break;
         
       case CT_VARCHAR:
@@ -234,60 +233,6 @@ bool TableDef::bParse(Stz* szCmd)
         
     }
  
-    /*
-    if (pTkn->bSame("boolean"_Stz)) {
-      pCol->vColumnType(CT_BOOLEAN);
-      pCol->vDatumType(DM_BOL);
-    }
-    
-    else if (pTkn->bSame("date"_Stz)) {
-      pCol->vColumnType(CT_DATE);
-      pCol->vDatumType(DM_DTE);
-    }
-    
-    else if (pTkn->bSame("decimal"_Stz)) {
-      if ( ! bExtractDecimal(pCol,pTknVec) )
-        return EC_INVALID_COMMAND;
-    }
-    
-    else if (pTkn->bSame("float"_Stz)) {
-      if ( ! bExtractFloat(pCol,pTknVec) )
-        return EC_INVALID_COMMAND;
-    }
-    
-    else if (pTkn->bSame("integer"_Stz)) {
-      pCol->vColumnType(CT_INTEGER);
-      pCol->vDatumType(DM_INT);
-      pCol->vColumnLength(C_MAX_PRECISION_INT);
-    }
-    
-    else if (pTkn->bSame("interval"_Stz)) {
-      pCol->vColumnType(CT_INTERVAL);
-      pCol->vDatumType(DM_IVL);
-    }
-    
-    else if (pTkn->bSame("time"_Stz)) {
-      pCol->vColumnType(CT_TIME);
-      pCol->vDatumType(DM_TME);
-    }
-    
-    else if (pTkn->bSame("timestamp"_Stz)) {
-      pCol->vColumnType(CT_TIMESTAMP);
-      pCol->vDatumType(DM_TSP);
-     }
-    
-    else if (pTkn->bSame("varchar"_Stz)   ||
-             pTkn->bSame("varbinary"_Stz) ||
-             pTkn->bSame("char"_Stz)) {
-      if ( ! bExtractVarchar(pCol, pTknVec) )
-        return EC_INVALID_COMMAND;
-    }
-    
-    else {
-      return EC_INVALID_COMMAND;
-    }
-    */
-    
     
     pTkn = pTknVec->pNextToken(); PT();
 
@@ -339,6 +284,32 @@ L_INVALID:
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* extract boolean                                                            */
+/*----------------------------------------------------------------------------*/
+bool TableDef::bExtractBoolean(Column* pCol, TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  pCol->vColumnType(CT_BOOLEAN);
+  pCol->vDatumType(DM_BOL);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract date                                                               */
+/*----------------------------------------------------------------------------*/
+bool TableDef::bExtractDate(Column* pCol, TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  pCol->vColumnType(CT_DATE);
+  pCol->vDatumType(DM_DTE);
+  
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* extract float                                                              */
@@ -438,6 +409,59 @@ bool TableDef::bExtractFloat(Column* pCol, TokenVec* pTknVec)
   
   // set size in column
   pCol->vColumnLength(iSize);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract integer                                                            */
+/*----------------------------------------------------------------------------*/
+bool TableDef::bExtractInteger(Column* pCol, TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  pCol->vColumnType(CT_INTEGER);
+  pCol->vDatumType(DM_INT);
+  pCol->vColumnLength(C_MAX_PRECISION_INT);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract interval                                                           */
+/*----------------------------------------------------------------------------*/
+bool TableDef::bExtractInterval(Column* pCol, TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  pCol->vColumnType(CT_INTERVAL);
+  pCol->vDatumType(DM_IVL);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract time                                                               */
+/*----------------------------------------------------------------------------*/
+bool TableDef::bExtractTime(Column* pCol, TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  pCol->vColumnType(CT_TIME);
+  pCol->vDatumType(DM_TME);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract timestamp                                                          */
+/*----------------------------------------------------------------------------*/
+bool TableDef::bExtractTimestamp(Column* pCol, TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  pCol->vColumnType(CT_TIMESTAMP);
+  pCol->vDatumType(DM_TSP);
   
   return true;
 }

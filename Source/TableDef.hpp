@@ -28,15 +28,21 @@ namespace MetaData
     TableDef(void);
    ~TableDef(void) noexcept(false);
   
-    static eCT eToCT(Stz* szType);
+    static eCT eColumn(Stz* szType);
   
     bool bParse(Stz* szCmd);
   
   private:
   
-    bool bExtractDecimal(Column* pCol, TokenVec* pTknVec);
-    bool bExtractFloat  (Column* pCol, TokenVec* pTknVec);
-    bool bExtractVarchar(Column* pCol, TokenVec* pTknVec);
+    bool bExtractBoolean  (Column* pCol, TokenVec* pTknVec);
+    bool bExtractDate     (Column* pCol, TokenVec* pTknVec);
+    bool bExtractDecimal  (Column* pCol, TokenVec* pTknVec);
+    bool bExtractFloat    (Column* pCol, TokenVec* pTknVec);
+    bool bExtractInteger  (Column* pCol, TokenVec* pTknVec);
+    bool bExtractInterval (Column* pCol, TokenVec* pTknVec);
+    bool bExtractTime     (Column* pCol, TokenVec* pTknVec);
+    bool bExtractTimestamp(Column* pCol, TokenVec* pTknVec);
+    bool bExtractVarchar  (Column* pCol, TokenVec* pTknVec);
 
     Footer* aFooter(void);
   };
