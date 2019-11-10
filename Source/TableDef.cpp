@@ -109,6 +109,7 @@ eEC TableDef::eParse(Stz* szCmd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
  
+  i8 i_Col = 0;
   eEC eError = EC_NONE;
 
   // retain the Create Table command
@@ -116,36 +117,42 @@ eEC TableDef::eParse(Stz* szCmd)
   
   // tokenise the command
   TokenVec* pTknVec = Tokeniser::pTokenise(szCmd);
-  
-  // assert we got a create table
-  ASSERT(pTknVec->pFirstToken()->bSame("create"_Stz));
-  ASSERT(pTknVec->pNextToken()->bSame("table"_Stz));
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  i8 i_Col = 0;
-  i8 i_StartToken = C_UNKNOWN;
-
+  // assert we got a create table
+  
+  Token* pTkn = pTknVec->pFirstToken();
+  ASSERT(pTkn->bSame("create"_Stz));
+  
+  pTkn = pTknVec->pNextToken();
+  ASSERT(pTkn->bSame("table"_Stz));
+  
   // -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // table name
-  Token* pTkn = pTknVec->pNextToken(); PT();
+  
+  pTkn = pTknVec->pNextToken(); PT();
   m_sTableNm = pTkn->szText();
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // open parenth (
+  
   pTkn = pTknVec->pNextToken(); PT();
   if (! pTkn->bSame("("_Stz)) {
     eError = EC_INVALID_COMMAND;
     goto L_RETURN;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // column name
+  // iterate from first column name till )
+  
   pTkn = pTknVec->pNextToken(); PT();
   
-  i_StartToken = pTknVec->iCurrToken();
-
   while (! pTkn->bSame(")"_Stz)) {
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // exceeded column limit?
     
     if (i_Col >= C_MAX_COLUMNS) {
       eError = EC_MAX_COLUMNS;
@@ -153,8 +160,9 @@ eEC TableDef::eParse(Stz* szCmd)
     }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // column name
-    if (pTknVec->iCurrToken() != i_StartToken) {
+    // subsequent column names, skipping over comma
+    
+    if (i_Col) {
       if (pTkn->bSame(","_Stz)) {
         pTkn = pTknVec->pNextToken(); PT();
       }
@@ -163,6 +171,9 @@ eEC TableDef::eParse(Stz* szCmd)
         goto L_RETURN;
       }
     }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // add column
     
     Column* pCol = new Column;
     m_pColVec->vAdd(pCol);
@@ -177,17 +188,16 @@ eEC TableDef::eParse(Stz* szCmd)
     for (i8 i_Search = 0; i_Search < i_Col - 1; i_Search++) {
       Column* pCol_search = m_pColVec->pGet(i_Search++);
       if (pCol_search->sColumnName().bSame(pCol->sColumnName())) {
-        eError =  EC_DUPLICATE_COLUMN;
+        eError = EC_DUPLICATE_COLUMN;
         goto L_RETURN;
       }
     }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // column type
+    
     pTkn = pTknVec->pNextToken(); PT();
-    
     eCT eColumn = TableDef::eColumn(pTkn->szText());
-    
     
     switch (eColumn) {
         
@@ -202,8 +212,7 @@ eEC TableDef::eParse(Stz* szCmd)
       case CT_VARCHAR:   eError = eExtractVarchar(pCol,pTknVec);     break;
         
       default:
-        if (
-            pTkn->bSame("char"_Stz) ||
+        if (pTkn->bSame("char"_Stz) ||
             pTkn->bSame("varbinary"_Stz)) {
           eError = eExtractVarchar(pCol,pTknVec);
         }
@@ -216,6 +225,7 @@ eEC TableDef::eParse(Stz* szCmd)
  
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // not null
     
     pTkn = pTknVec->pNextToken(); PT();
 
@@ -247,7 +257,6 @@ eEC TableDef::eParse(Stz* szCmd)
 //      pTkn = pTknVec->pNextToken(); PT();
 //    }
 
-    
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
