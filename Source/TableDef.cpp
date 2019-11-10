@@ -125,19 +125,19 @@ bool TableDef::bParse(Stz* szCmd)
   i8 i_Col = 0;
   i8 i_StartToken = C_UNKNOWN;
 
-  // table name -- -- -- -- -- --
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // table name
   Token* pTkn = pTknVec->pNextToken(); PT();
-
   m_sTableNm = pTkn->szText();
 
-  // open parenth ( -- -- -- -- -- --
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // open parenth (
   pTkn = pTknVec->pNextToken(); PT();
-
   if (! pTkn->bSame("("_Stz))
     goto L_INVALID;
   
-  
-  // column name -- -- -- -- -- --
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // column name
   pTkn = pTknVec->pNextToken(); PT();
   
   i_StartToken = pTknVec->iCurrToken();
@@ -147,9 +147,10 @@ bool TableDef::bParse(Stz* szCmd)
     if (i_Col >= C_MAX_COLUMNS)
       return EC_MAX_COLUMNS;
     
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // column name
     if (pTknVec->iCurrToken() != i_StartToken) {
       if (pTkn->bSame(","_Stz)) {
-        // column name -- -- -- -- -- --
         pTkn = pTknVec->pNextToken(); PT();
       }
       else
@@ -172,7 +173,8 @@ bool TableDef::bParse(Stz* szCmd)
         return EC_DUPLICATE_COLUMN;
     }
     
-    // column type -- -- -- -- -- --
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // column type
     pTkn = pTknVec->pNextToken(); PT();
     
     eCT eColumn = TableDef::eColumn(pTkn->szText());
@@ -219,7 +221,7 @@ bool TableDef::bParse(Stz* szCmd)
         break;
         
       case CT_VARCHAR:
-        if ( ! bExtractVarchar(pCol, pTknVec) )
+        if ( ! bExtractVarchar(pCol,pTknVec) )
           return EC_INVALID_COMMAND;
         break;
         
@@ -236,7 +238,8 @@ bool TableDef::bParse(Stz* szCmd)
     
     pTkn = pTknVec->pNextToken(); PT();
 
-    // check for NOT NULL  -- -- -- -- -- --
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // check for NOT NULL
     if (pTkn->bSame("not"_Stz)) {
       pTkn = pTknVec->pNextToken(); PT();
       if (! pTkn->bSame("null"_Stz))
