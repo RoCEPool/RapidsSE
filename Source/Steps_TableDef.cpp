@@ -29,7 +29,7 @@ void Step::vTableDefParse(void)
 
   TableDef* pTableDef = new TableDef;
   
-  bool bResult = pTableDef->bParse(sCmd);
+  eEC eResult = pTableDef->eParse(sCmd);
   
   delete pTableDef;
   pTableDef = nullptr;

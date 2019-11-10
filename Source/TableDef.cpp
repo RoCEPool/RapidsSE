@@ -105,10 +105,12 @@ eCT TableDef::eColumn(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* parse Create Table command                                                 */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bParse(Stz* szCmd)
+eEC TableDef::eParse(Stz* szCmd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
-  
+ 
+  eEC eError = EC_NONE;
+
   // retain the Create Table command
   m_sCmd = szCmd;
   
@@ -121,7 +123,6 @@ bool TableDef::bParse(Stz* szCmd)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  i8 i_Tkn = 2;
   i8 i_Col = 0;
   i8 i_StartToken = C_UNKNOWN;
 
@@ -133,8 +134,10 @@ bool TableDef::bParse(Stz* szCmd)
   // -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // open parenth (
   pTkn = pTknVec->pNextToken(); PT();
-  if (! pTkn->bSame("("_Stz))
-    goto L_INVALID;
+  if (! pTkn->bSame("("_Stz)) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
   
   // -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // column name
@@ -142,19 +145,23 @@ bool TableDef::bParse(Stz* szCmd)
   
   i_StartToken = pTknVec->iCurrToken();
 
-  while ( ! pTkn->bSame(")"_Stz)) {
+  while (! pTkn->bSame(")"_Stz)) {
     
-    if (i_Col >= C_MAX_COLUMNS)
-      return EC_MAX_COLUMNS;
-    
+    if (i_Col >= C_MAX_COLUMNS) {
+      eError = EC_MAX_COLUMNS;
+      goto L_RETURN;
+    }
+
     // -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // column name
     if (pTknVec->iCurrToken() != i_StartToken) {
       if (pTkn->bSame(","_Stz)) {
         pTkn = pTknVec->pNextToken(); PT();
       }
-      else
-        return EC_INVALID_COMMAND;
+      else {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
     }
     
     Column* pCol = new Column;
@@ -169,8 +176,10 @@ bool TableDef::bParse(Stz* szCmd)
     // check if column name already added
     for (i8 i_Search = 0; i_Search < i_Col - 1; i_Search++) {
       Column* pCol_search = m_pColVec->pGet(i_Search++);
-      if (pCol_search->sColumnName().bSame(pCol->sColumnName()))
-        return EC_DUPLICATE_COLUMN;
+      if (pCol_search->sColumnName().bSame(pCol->sColumnName())) {
+        eError =  EC_DUPLICATE_COLUMN;
+        goto L_RETURN;
+      }
     }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -179,48 +188,23 @@ bool TableDef::bParse(Stz* szCmd)
     
     eCT eColumn = TableDef::eColumn(pTkn->szText());
     
-    eEC eError = EC_NONE;
     
     switch (eColumn) {
-      case CT_BOOLEAN:
-        eError = eExtractBoolean(pCol,pTknVec);
-        break;
         
-      case CT_DATE:
-        eError = eExtractDate(pCol,pTknVec);
-        break;
-        
-      case CT_DECIMAL:
-        eError = eExtractDecimal(pCol,pTknVec);
-        break;
-        
-      case CT_FLOAT:
-        eError = eExtractFloat(pCol,pTknVec);
-        break;
-        
-      case CT_INTEGER:
-        eError = eExtractInteger(pCol,pTknVec);
-        break;
-        
-      case CT_INTERVAL:
-        eError = eExtractInterval(pCol,pTknVec);
-        break;
-        
-      case CT_TIME:
-        eError = eExtractTime(pCol,pTknVec);
-        break;
-        
-      case CT_TIMESTAMP:
-        eError = eExtractTimestamp(pCol,pTknVec);
-        break;
-        
-      case CT_VARCHAR:
-        eError = eExtractVarchar(pCol,pTknVec);
-        break;
+      case CT_BOOLEAN:   eError = eExtractBoolean(pCol,pTknVec);     break;
+      case CT_DATE:      eError = eExtractDate(pCol,pTknVec);        break;
+      case CT_DECIMAL:   eError = eExtractDecimal(pCol,pTknVec);     break;
+      case CT_FLOAT:     eError = eExtractFloat(pCol,pTknVec);       break;
+      case CT_INTEGER:   eError = eExtractInteger(pCol,pTknVec);     break;
+      case CT_INTERVAL:  eError = eExtractInterval(pCol,pTknVec);    break;
+      case CT_TIME:      eError = eExtractTime(pCol,pTknVec);        break;
+      case CT_TIMESTAMP: eError = eExtractTimestamp(pCol,pTknVec);   break;
+      case CT_VARCHAR:   eError = eExtractVarchar(pCol,pTknVec);     break;
         
       default:
-        if (pTkn->bSame("varbinary"_Stz) ||
-            pTkn->bSame("char"_Stz)) {
+        if (
+            pTkn->bSame("char"_Stz) ||
+            pTkn->bSame("varbinary"_Stz)) {
           eError = eExtractVarchar(pCol,pTknVec);
         }
         break;
@@ -228,12 +212,13 @@ bool TableDef::bParse(Stz* szCmd)
     }
     
     if (EC_NONE != eError)
-      return false;
+      goto L_RETURN;
  
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
     pTkn = pTknVec->pNextToken(); PT();
 
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // check for NOT NULL
     if (pTkn->bSame("not"_Stz)) {
       pTkn = pTknVec->pNextToken(); PT();
@@ -264,19 +249,14 @@ bool TableDef::bParse(Stz* szCmd)
 
     
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  delete pTknVec;
-  
-  return true;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-L_INVALID:
+L_RETURN:
+  
   delete pTknVec;
   
-  return false;
+  return eError;
 }
 
 /*----------------------------------------------------------------------------*/

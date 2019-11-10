@@ -30,7 +30,7 @@ namespace MetaData
   
     static eCT eColumn(Stz* szType);
   
-    bool bParse(Stz* szCmd);
+    eEC eParse(Stz* szCmd);
   
   private:
   
