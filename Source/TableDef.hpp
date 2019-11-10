@@ -28,6 +28,8 @@ namespace MetaData
     TableDef(void);
    ~TableDef(void) noexcept(false);
   
+    static eCT eToCT(Stz* szType);
+  
     bool bParse(Stz* szCmd);
   
   private:
