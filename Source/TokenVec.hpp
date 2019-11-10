@@ -27,6 +27,7 @@ namespace Commands
     void vAppendVector(TokenVec* pTokenVec);
     i8   iCountTokens(void);
     void vCopyVector(TokenVec* pTokenVec);
+    i8   iCurrToken(void);
     Token* pCurrToken(void);
     void vCutToken(i8 i_Tkn);
     void vDumpTokens(void);

@@ -129,6 +129,16 @@ void TokenVec::vCopyVector(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* return current token                                                       */
 /*----------------------------------------------------------------------------*/
+i8 TokenVec::iCurrToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  return m_iCurTkn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return current token                                                       */
+/*----------------------------------------------------------------------------*/
 Token* TokenVec::pCurrToken(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);

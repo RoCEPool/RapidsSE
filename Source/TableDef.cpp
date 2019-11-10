@@ -94,8 +94,8 @@ bool TableDef::bParse(Stz* szCmd)
   TokenVec* pTknVec = Tokeniser::pTokenise(szCmd);
   
   // assert we got a create table
-  ASSERT(pTknVec->pGet(0)->bSame("create"_Stz));
-  ASSERT(pTknVec->pGet(1)->bSame("table"_Stz));
+  ASSERT(pTknVec->pFirstToken()->bSame("create"_Stz));
+  ASSERT(pTknVec->pNextToken()->bSame("table"_Stz));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -104,31 +104,31 @@ bool TableDef::bParse(Stz* szCmd)
   i8 i_StartToken = C_UNKNOWN;
 
   // table name -- -- -- -- -- --
-  Token* pTkn = pTknVec->pGet(i_Tkn++); PT();
+  Token* pTkn = pTknVec->pNextToken(); PT();
 
   m_sTableNm = pTkn->szText();
 
   // open parenth ( -- -- -- -- -- --
-  pTkn = pTknVec->pGet(i_Tkn++); PT();
+  pTkn = pTknVec->pNextToken(); PT();
 
   if (! pTkn->bSame("("_Stz))
     goto L_INVALID;
   
   
   // column name -- -- -- -- -- --
-  pTkn = pTknVec->pGet(i_Tkn++); PT();
+  pTkn = pTknVec->pNextToken(); PT();
   
-  i_StartToken = i_Tkn;
+  i_StartToken = pTknVec->iCurrToken();
 
   while ( ! pTkn->bSame(")"_Stz)) {
     
     if (i_Col >= C_MAX_COLUMNS)
       return EC_MAX_COLUMNS;
     
-    if (i_Tkn != i_StartToken) {
+    if (pTknVec->iCurrToken() != i_StartToken) {
       if (pTkn->bSame(","_Stz)) {
         // column name -- -- -- -- -- --
-        pTkn = pTknVec->pGet(i_Tkn++); PT();
+        pTkn = pTknVec->pNextToken(); PT();
       }
       else
         return EC_INVALID_COMMAND;
@@ -151,7 +151,7 @@ bool TableDef::bParse(Stz* szCmd)
     }
     
     // column type -- -- -- -- -- --
-    pTkn = pTknVec->pGet(i_Tkn++); PT();
+    pTkn = pTknVec->pNextToken(); PT();
     
     if (pTkn->bSame("boolean"_Stz)) {
       pCol->vColumnType(CT_BOOLEAN);
@@ -164,12 +164,12 @@ bool TableDef::bParse(Stz* szCmd)
     }
     
     else if (pTkn->bSame("decimal"_Stz)) {
-      if ( ! bExtractDecimal(pCol,pTknVec, i_Tkn) )
+      if ( ! bExtractDecimal(pCol,pTknVec) )
         return EC_INVALID_COMMAND;
     }
     
     else if (pTkn->bSame("float"_Stz)) {
-      if ( ! bExtractFloat(pCol,pTknVec, i_Tkn) )
+      if ( ! bExtractFloat(pCol,pTknVec) )
         return EC_INVALID_COMMAND;
     }
     
@@ -197,7 +197,7 @@ bool TableDef::bParse(Stz* szCmd)
     else if (pTkn->bSame("varchar"_Stz)   ||
              pTkn->bSame("varbinary"_Stz) ||
              pTkn->bSame("char"_Stz)) {
-      if ( ! bExtractVarchar(pCol, pTknVec, i_Tkn) )
+      if ( ! bExtractVarchar(pCol, pTknVec) )
         return EC_INVALID_COMMAND;
     }
     
@@ -207,16 +207,16 @@ bool TableDef::bParse(Stz* szCmd)
     
     
     
-    pTkn = pTknVec->pGet(i_Tkn++); PT();
+    pTkn = pTknVec->pNextToken(); PT();
 
     // check for NOT NULL  -- -- -- -- -- --
     if (pTkn->bSame("not"_Stz)) {
-      pTkn = pTknVec->pGet(i_Tkn++); PT();
+      pTkn = pTknVec->pNextToken(); PT();
       if (! pTkn->bSame("null"_Stz))
         return EC_INVALID_COMMAND;
       pCol->vIsNullable(false);
       
-      pTkn = pTknVec->pGet(i_Tkn++); PT();
+      pTkn = pTknVec->pNextToken(); PT();
     }
     
     // check for PRIMARY KEY
@@ -234,7 +234,7 @@ bool TableDef::bParse(Stz* szCmd)
 //    if (pTkn->bSame("unique"_Stz)) {
 //      pCol->vIsUnique(true);
 //
-//      pTkn = pTknVec->pGet(i_Tkn++); PT();
+//      pTkn = pTknVec->pNextToken(); PT();
 //    }
 
     
@@ -261,7 +261,7 @@ L_INVALID:
 /*----------------------------------------------------------------------------*/
 /* extract float                                                              */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractDecimal(Column* pCol, TokenVec* pTknVec, i8& i_Tkn)
+bool TableDef::bExtractDecimal(Column* pCol, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -272,30 +272,36 @@ bool TableDef::bExtractDecimal(Column* pCol, TokenVec* pTknVec, i8& i_Tkn)
   // set column type in column
   pCol->vColumnType(CT_DECIMAL);
   pCol->vDatumType(DM_BCD);
-  i_Tkn++;
   
+  Token* pTkn = pTknVec->pNextToken(); PT();
+
   // extract scale and precison if specified
-  if (pTknVec->pGet(i_Tkn)->bSame("("_Stz)) {
+  if (pTkn->bSame("("_Stz)) {
     
-    i_Tkn++;
-    
-    // check if it was numeric
-    if ( ! pTknVec->pGet(i_Tkn)->bIsNumeric() )
-      return false;
-    
-    iPrecision = pTknVec->pGet(i_Tkn++)->iToI8();
-    
-    if (!pTknVec->pGet(i_Tkn++)->bSame(","_Stz))
-      return false;
+    pTkn = pTknVec->pNextToken(); PT();
     
     // check if it was numeric
-    if ( ! pTknVec->pGet(i_Tkn)->bIsNumeric() )
+    if ( ! pTkn->bIsNumeric() )
+      return false;
+    
+    iPrecision = pTkn->iToI8();
+    
+    pTkn = pTknVec->pNextToken(); PT();
+    
+    if (!pTkn->bSame(","_Stz))
+      return false;
+    
+    pTkn = pTknVec->pNextToken(); PT();
+    
+    // check if it was numeric
+    if ( ! pTkn->bIsNumeric() )
       return false;
     
     // get the scale
-    iScale = pTknVec->pGet(i_Tkn++)->iToI8();
+    iScale = pTkn->iToI8();
     
-    if (!pTknVec->pGet(i_Tkn++)->bSame(")"_Stz))
+    pTkn = pTknVec->pNextToken(); PT();
+    if (! pTkn->bSame(")"_Stz))
       return false;
     
     if (! Column::bValidBcd(iPrecision, iScale))
@@ -312,7 +318,7 @@ bool TableDef::bExtractDecimal(Column* pCol, TokenVec* pTknVec, i8& i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* extract float                                                              */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractFloat(Column* pCol, TokenVec* pTknVec, i8& i_Tkn)
+bool TableDef::bExtractFloat(Column* pCol, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -322,20 +328,24 @@ bool TableDef::bExtractFloat(Column* pCol, TokenVec* pTknVec, i8& i_Tkn)
   // set column type
   pCol->vColumnType(CT_FLOAT);
   pCol->vDatumType(DM_FLT);
-  i_Tkn++;
   
+  Token* pTkn = pTknVec->pNextToken(); PT();
+
   // extract size if specified
-  if (pTknVec->pGet(i_Tkn)->bSame("("_Stz)) {
+  if (pTkn->bSame("("_Stz)) {
     
+    pTkn = pTknVec->pNextToken(); PT();
+
     // check if it was numeric
-    if ( ! pTknVec->pGet(i_Tkn++)->bIsNumeric() ) {
+    if ( ! pTkn->bIsNumeric() ) {
       return false;
     }
     
     // get size
-    iSize = pTknVec->pGet(i_Tkn++)->iToI8();
+    iSize = pTknVec->pNextToken()->iToI8();
     
-    if (!pTknVec->pGet(i_Tkn++)->bSame(")"_Stz)) {
+    pTkn = pTknVec->pNextToken(); PT();
+    if (!pTkn->bSame(")"_Stz)) {
       return false;
     }
     
@@ -353,38 +363,41 @@ bool TableDef::bExtractFloat(Column* pCol, TokenVec* pTknVec, i8& i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* extract varchar                                                            */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractVarchar(Column* pCol, TokenVec* pTknVec, i8& i_Tkn)
+bool TableDef::bExtractVarchar(Column* pCol, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
-  
-  // set column type
-  pCol->vColumnType(CT_VARCHAR);
-  pCol->vDatumType(DM_VCH);
-  i_Tkn++;
   
   // set default size
   i8 iSize = C_64K;
   
+  // set column type
+  pCol->vColumnType(CT_VARCHAR);
+  pCol->vDatumType(DM_VCH);
+  
+  Token* pTkn = pTknVec->pNextToken(); PT();
+
   // extract size if specified
-  if (pTknVec->pGet(i_Tkn)->bSame("("_Stz)) {
+  if (pTkn->bSame("("_Stz)) {
     
-    pCol->vColumnLength(pTknVec->pGet(i_Tkn++)->iToI8());
+    //pCol->vColumnLength(pTknVec->pNextToken()->iToI8());
     
-    
+    pTkn = pTknVec->pNextToken(); PT();
+
     // check if it was numeric
-    if ( ! pTknVec->pGet(i_Tkn)->bIsNumeric() )
+    if (! pTkn->bIsNumeric())
       return false;
     
     // get size
-    iSize = pTknVec->pGet(i_Tkn++)->iToI8();
+    iSize = pTkn->iToI8();
     
-    if (!pTknVec->pGet(i_Tkn++)->bSame(")"_Stz))
+    pTkn = pTknVec->pNextToken(); PT();
+    
+    if (! pTkn->bSame(")"_Stz))
       return false;
     
     // valid the size
-    if (! Column::bValidVch(iSize)) {
+    if (! Column::bValidVch(iSize))
       return false;
-    }
   }
   
   // set size in column
