@@ -5,58 +5,11 @@
 " job_Status.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* request to get status of all the nodes (on originating node)               */
-/*----------------------------------------------------------------------------*/
-: status_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob pTask |
-
-  tp: status_req
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set metadata string in the job
-  args.metadata if
-    "(nodeName VARCHAR, instanceName VARCHAR, status VARCHAR)"
-    pJob job.metadata!
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* get status of a node (executed on all nodes)                               */
 /*----------------------------------------------------------------------------*/
-: status_exe ( pJob_Status -- )
+: status::execute _eeh ( -- )
 
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_Status |
   job::this locals| pJob_Status |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert its the status job
-  CN_JOB_STATUS pJob_Status object.assertClass
-
-  //"GETTING STATUS on NODE " grid::thisNode@ >str str.cat .
-
-
-  // temp
-  // "status sleeping" .
-  //100 task::sleepSsec
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the status of this node
@@ -66,54 +19,22 @@
   // set the status string in job response
   pJob_Status job.response!
   1 pJob_Status job.rowsProcessed!
-
-  pJob_Status job.notice
-
-  pJob_Status job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: status_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+jobSyntax: status :: status ;
 
-  job::this locals| pJob_status |
-
-  pJob_status job.becomeParticipant
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: status_end ( -- )
-
- >>logEntry <SEED_END>
-
- job::this locals| pJob_status |
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: status_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_status |
-
-  <<logExit <DONE_CAN>
+jobInfo: status
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ROWS
+  <?ddlLock?>  = DL_NONE
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/

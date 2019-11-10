@@ -45,7 +45,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_PURGE);
   JobClass::vCmds(CN_JOB_SANITY);
   JobClass::vCmds(CN_JOB_STARTCLUSTER);
-  JobClass::vCmds(CN_JOB_STATUS);
   JobClass::vCmds(CN_JOB_VERIFYINDEX);
   JobClass::vCmds(CN_JOB_VERIFYTABLE);
   JobClass::vCmds(CN_JOB_WAITCLUSTER);

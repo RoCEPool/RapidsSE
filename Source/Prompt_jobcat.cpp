@@ -75,7 +75,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_PURGE);
   nJobs++; JobClass::vJobCat(CN_JOB_SANITY);
   nJobs++; JobClass::vJobCat(CN_JOB_STARTCLUSTER);
-  nJobs++; JobClass::vJobCat(CN_JOB_STATUS);
   nJobs++; JobClass::vJobCat(CN_JOB_VERIFYINDEX);
   nJobs++; JobClass::vJobCat(CN_JOB_VERIFYTABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_WAITCLUSTER);

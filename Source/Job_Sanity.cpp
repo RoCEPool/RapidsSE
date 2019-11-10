@@ -109,7 +109,7 @@ Job_Sanity::Job_Sanity(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_iRegionSize = AM::iRegionSize();
   m_iPartitions = AM::pGrid()->nSlotsPerNode();
   
-  _checkInitialised_(CN_JOB_STATUS);
+  _checkInitialised_(CN_JOB_SANITY);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
 }
