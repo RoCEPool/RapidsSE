@@ -78,6 +78,8 @@ TableDef::~TableDef(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+#define PT() vTrace("tkn=%s\n"_Stz,pTkn->szText());
+
 /*----------------------------------------------------------------------------*/
 /* parse Create Table command                                                 */
 /*----------------------------------------------------------------------------*/
@@ -94,139 +96,148 @@ bool TableDef::bParse(Stz* szCmd)
   // assert we got a create table
   ASSERT(pTknVec->pGet(0)->bSame("create"_Stz));
   ASSERT(pTknVec->pGet(1)->bSame("table"_Stz));
-
-  return true;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8 i_Tkn = 2;
   i8 i_Col = 0;
-  i8 i_StartToken = i_Tkn;
+  i8 i_StartToken = C_UNKNOWN;
 
-  Token* pTkn = pTknVec->pGet(i_Tkn++);
+  // table name -- -- -- -- -- --
+  Token* pTkn = pTknVec->pGet(i_Tkn++); PT();
+
+  m_sTableNm = pTkn->szText();
+
+  // open parenth ( -- -- -- -- -- --
+  pTkn = pTknVec->pGet(i_Tkn++); PT();
 
   if (! pTkn->bSame("("_Stz))
     goto L_INVALID;
   
   
-  pTkn = pTknVec->pGet(i_Tkn++);
+  // column name -- -- -- -- -- --
+  pTkn = pTknVec->pGet(i_Tkn++); PT();
   
+  i_StartToken = i_Tkn;
+
   while ( ! pTkn->bSame(")"_Stz)) {
     
-    if (i_Col >= C_MAX_COLUMNS) {
+    if (i_Col >= C_MAX_COLUMNS)
       return EC_MAX_COLUMNS;
+    
+    if (i_Tkn != i_StartToken) {
+      if (pTkn->bSame(","_Stz)) {
+        // column name -- -- -- -- -- --
+        pTkn = pTknVec->pGet(i_Tkn++); PT();
+      }
+      else
+        return EC_INVALID_COMMAND;
     }
     
-    Token* pTkn = pTknVec->pGet(i_Tkn++);
-    
-    Column* pCol = m_pColVec->pGet(i_Col++);
+    Column* pCol = new Column;
+    m_pColVec->vAdd(pCol);
 
-    if (i_Tkn != i_StartToken && ! pTkn->bSame(","_Stz)) {
-      return EC_INVALID_COMMAND;
-    }
-    
-    
     // set column number
-    pCol->vColumnNo(i_Col);
+    pCol->vColumnNo(i_Col++);
     
     // set column name
     pCol->vColumnName(pTkn->szText());
     
     // check if column name already added
-    for (i8 i_Search = 0; i_Search < i_Col; i_Search++) {
+    for (i8 i_Search = 0; i_Search < i_Col - 1; i_Search++) {
       Column* pCol_search = m_pColVec->pGet(i_Search++);
       if (pCol_search->sColumnName().bSame(pCol->sColumnName()))
         return EC_DUPLICATE_COLUMN;
     }
     
-    if (pTkn->bSame("varchar"_Stz) ||
-        pTkn->bSame("varbinary"_Stz) ||
-        pTkn->bSame("char"_Stz)) {
-      
-      // extract varchar
-      if ( ! bExtractVarchar(pTknVec, i_Col, i_Tkn) )
-        return EC_INVALID_COMMAND;
+    // column type -- -- -- -- -- --
+    pTkn = pTknVec->pGet(i_Tkn++); PT();
+    
+    if (pTkn->bSame("boolean"_Stz)) {
+      pCol->vColumnType(CT_BOOLEAN);
+      pCol->vDatumType(DM_BOL);
     }
-    else if (pTkn->bSame("float"_Stz)) {
-      
-      // extract float
-      if ( ! bExtractFloat(pTknVec, i_Col, i_Tkn) )
-        return EC_INVALID_COMMAND;
+    
+    else if (pTkn->bSame("date"_Stz)) {
+      pCol->vColumnType(CT_DATE);
+      pCol->vDatumType(DM_DTE);
     }
+    
     else if (pTkn->bSame("decimal"_Stz)) {
-      
-      // extract decimal
-      if ( ! bExtractDecimal(pTknVec, i_Col, i_Tkn) )
+      if ( ! bExtractDecimal(pCol,pTknVec, i_Tkn) )
         return EC_INVALID_COMMAND;
     }
+    
+    else if (pTkn->bSame("float"_Stz)) {
+      if ( ! bExtractFloat(pCol,pTknVec, i_Tkn) )
+        return EC_INVALID_COMMAND;
+    }
+    
     else if (pTkn->bSame("integer"_Stz)) {
       pCol->vColumnType(CT_INTEGER);
       pCol->vDatumType(DM_INT);
       pCol->vColumnLength(C_MAX_PRECISION_INT);
-      i_Tkn++;
-    }
-    else if (pTkn->bSame("date"_Stz)) {
-      pCol->vColumnType(CT_DATE);
-      pCol->vDatumType(DM_DTE);
-      i_Tkn++;
-    }
-    
-    else if (pTkn->bSame("boolean"_Stz)) {
-      pCol->vColumnType(CT_BOOLEAN);
-      pCol->vDatumType(DM_BOL);
-      i_Tkn++;
     }
     
     else if (pTkn->bSame("interval"_Stz)) {
       pCol->vColumnType(CT_INTERVAL);
       pCol->vDatumType(DM_IVL);
-      i_Tkn++;
     }
     
     else if (pTkn->bSame("time"_Stz)) {
       pCol->vColumnType(CT_TIME);
       pCol->vDatumType(DM_TME);
-      i_Tkn++;
     }
     
     else if (pTkn->bSame("timestamp"_Stz)) {
       pCol->vColumnType(CT_TIMESTAMP);
       pCol->vDatumType(DM_TSP);
-      i_Tkn++;
+     }
+    
+    else if (pTkn->bSame("varchar"_Stz)   ||
+             pTkn->bSame("varbinary"_Stz) ||
+             pTkn->bSame("char"_Stz)) {
+      if ( ! bExtractVarchar(pCol, pTknVec, i_Tkn) )
+        return EC_INVALID_COMMAND;
     }
     
     else {
       return EC_INVALID_COMMAND;
     }
     
-    // check for NOT NULL
+    
+    
+    pTkn = pTknVec->pGet(i_Tkn++); PT();
+
+    // check for NOT NULL  -- -- -- -- -- --
     if (pTkn->bSame("not"_Stz)) {
-      i_Tkn++;
-      if (!pTknVec->pGet(i_Tkn++)->bSame("null"_Stz)) {
+      pTkn = pTknVec->pGet(i_Tkn++); PT();
+      if (! pTkn->bSame("null"_Stz))
         return EC_INVALID_COMMAND;
-      }
       pCol->vIsNullable(false);
+      
+      pTkn = pTknVec->pGet(i_Tkn++); PT();
     }
     
     // check for PRIMARY KEY
-    //    if (m_xTokenVec[i_Tkn]->bSame("primary"_Stz)) {
-    //
-    //      pJob->pCol->m_sPrimaryKey = m_xTokenVec[i_Tkn++]->aText();
-    //
-    //      if (!m_xTokenVec[i_Tkn]->bSame("key"_Stz)) {
-    //        m_pSession->vSetLastError(EC_INVALID_COMMAND);
-    //        return false;
-    //      }
-    //    }
+//    if (m_xTokenVec[i_Tkn]->bSame("primary"_Stz)) {
+//
+//      pJob->pCol->m_sPrimaryKey = m_xTokenVec[i_Tkn++]->aText();
+//
+//      if (!m_xTokenVec[i_Tkn]->bSame("key"_Stz)) {
+//        m_pSession->vSetLastError(EC_INVALID_COMMAND);
+//        return false;
+//      }
+//    }
     
     // check for UNIQUE
-    if (pTkn->bSame("unique"_Stz)) {
-      i_Tkn++;
-      pCol->vIsUnique(true);
-    }
+//    if (pTkn->bSame("unique"_Stz)) {
+//      pCol->vIsUnique(true);
+//
+//      pTkn = pTknVec->pGet(i_Tkn++); PT();
+//    }
 
     
-    pTkn = pTknVec->pGet(i_Tkn++);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -250,7 +261,7 @@ L_INVALID:
 /*----------------------------------------------------------------------------*/
 /* extract float                                                              */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractDecimal(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn)
+bool TableDef::bExtractDecimal(Column* pCol, TokenVec* pTknVec, i8& i_Tkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -259,8 +270,8 @@ bool TableDef::bExtractDecimal(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn)
   i8 iScale = 0;
   
   // set column type in column
-  m_pColVec->pGet(i_Col)->vColumnType(CT_DECIMAL);
-  m_pColVec->pGet(i_Col)->vDatumType(DM_BCD);
+  pCol->vColumnType(CT_DECIMAL);
+  pCol->vDatumType(DM_BCD);
   i_Tkn++;
   
   // extract scale and precison if specified
@@ -292,8 +303,8 @@ bool TableDef::bExtractDecimal(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn)
   }
   
   // set scale and length in column
-  m_pColVec->pGet(i_Col)->vColumnLength(iPrecision);
-  m_pColVec->pGet(i_Col)->vColumnScale(iScale);
+  pCol->vColumnLength(iPrecision);
+  pCol->vColumnScale(iScale);
   
   return true;
 }
@@ -301,7 +312,7 @@ bool TableDef::bExtractDecimal(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* extract float                                                              */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractFloat(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn)
+bool TableDef::bExtractFloat(Column* pCol, TokenVec* pTknVec, i8& i_Tkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -309,8 +320,8 @@ bool TableDef::bExtractFloat(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn)
   i8 iSize = C_MAX_PRECISION_FLT;
   
   // set column type
-  m_pColVec->pGet(i_Col)->vColumnType(CT_FLOAT);
-  m_pColVec->pGet(i_Col)->vDatumType(DM_FLT);
+  pCol->vColumnType(CT_FLOAT);
+  pCol->vDatumType(DM_FLT);
   i_Tkn++;
   
   // extract size if specified
@@ -334,7 +345,7 @@ bool TableDef::bExtractFloat(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn)
   }
   
   // set size in column
-  m_pColVec->pGet(i_Col)->vColumnLength(iSize);
+  pCol->vColumnLength(iSize);
   
   return true;
 }
@@ -342,13 +353,13 @@ bool TableDef::bExtractFloat(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* extract varchar                                                            */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractVarchar(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn)
+bool TableDef::bExtractVarchar(Column* pCol, TokenVec* pTknVec, i8& i_Tkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   // set column type
-  m_pColVec->pGet(i_Col)->vColumnType(CT_VARCHAR);
-  m_pColVec->pGet(i_Col)->vDatumType(DM_VCH);
+  pCol->vColumnType(CT_VARCHAR);
+  pCol->vDatumType(DM_VCH);
   i_Tkn++;
   
   // set default size
@@ -357,7 +368,7 @@ bool TableDef::bExtractVarchar(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn)
   // extract size if specified
   if (pTknVec->pGet(i_Tkn)->bSame("("_Stz)) {
     
-    m_pColVec->pGet(i_Col)->vColumnLength(pTknVec->pGet(i_Tkn++)->iToI8());
+    pCol->vColumnLength(pTknVec->pGet(i_Tkn++)->iToI8());
     
     
     // check if it was numeric
@@ -375,12 +386,14 @@ bool TableDef::bExtractVarchar(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn)
       return false;
     }
   }
+  
   // set size in column
-  m_pColVec->pGet(i_Col)->vColumnLength(iSize);
+  pCol->vColumnLength(iSize);
   
   return true;
 }
 
+#undef PT
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

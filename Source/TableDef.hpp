@@ -32,9 +32,9 @@ namespace MetaData
   
   private:
   
-    bool bExtractDecimal(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn);
-    bool bExtractFloat(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn);
-    bool bExtractVarchar(TokenVec* pTknVec, i8 i_Col, i8& i_Tkn);
+    bool bExtractDecimal(Column* pCol, TokenVec* pTknVec, i8& i_Tkn);
+    bool bExtractFloat  (Column* pCol, TokenVec* pTknVec, i8& i_Tkn);
+    bool bExtractVarchar(Column* pCol, TokenVec* pTknVec, i8& i_Tkn);
 
     Footer* aFooter(void);
   };

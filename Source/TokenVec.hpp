@@ -9,6 +9,8 @@ namespace Commands
   {
   private:
   
+    i8 m_iCurTkn;
+  
     // must be last
     Footer m_xFooter;    
     
@@ -25,12 +27,15 @@ namespace Commands
     void vAppendVector(TokenVec* pTokenVec);
     i8   iCountTokens(void);
     void vCopyVector(TokenVec* pTokenVec);
+    Token* pCurrToken(void);
     void vCutToken(i8 i_Tkn);
     void vDumpTokens(void);
     i8   iFindToken(Stz* pLookFor);
     Token* pFindToken(Stz* aText, i8& i_Token);
-    i8   nTokens(void);
+    Token* pFirstToken(void);
     void vIncTokens(void);
+    Token* pNextToken(void);
+    i8   nTokens(void);
     void vPrint(void);
     void vReset(void);
     void vSetAllTokens(void);

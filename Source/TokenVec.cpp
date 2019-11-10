@@ -53,6 +53,8 @@ TokenVec::TokenVec(bool bNewTokens)
       m_pItem[i_Token] = nullptr;
   }
   
+  m_iCurTkn = C_UNKNOWN;
+  
   _checkInitialised_(CN_TOKENVEC);
   
   _postcondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
@@ -122,6 +124,20 @@ void TokenVec::vCopyVector(TokenVec* pTokenVec)
     
     vAdd(pNewToken);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* return current token                                                       */
+/*----------------------------------------------------------------------------*/
+Token* TokenVec::pCurrToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  if (C_UNKNOWN == m_iCurTkn)
+    return nullptr;
+  
+  Token* pTkn = pGet(m_iCurTkn);
+  return pTkn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,6 +214,23 @@ Token* TokenVec::pFindToken(Stz* aText, i8& i_Token)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return first token                                                         */
+/*----------------------------------------------------------------------------*/
+Token* TokenVec::pFirstToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  if (nTokens()) {
+    m_iCurTkn = 0;
+    Token* pTkn = pGet(m_iCurTkn);
+    return pTkn;
+  }
+  
+  m_iCurTkn = C_UNKNOWN;
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of tokens                                                       */
 /*----------------------------------------------------------------------------*/
 i8 TokenVec::nTokens(void)
@@ -215,6 +248,24 @@ void TokenVec::vIncTokens(void)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   m_nItems++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return next token                                                          */
+/*----------------------------------------------------------------------------*/
+Token* TokenVec::pNextToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  m_iCurTkn++;
+  
+  if (m_iCurTkn >= nTokens()) {
+    m_iCurTkn = C_UNKNOWN;
+    return nullptr;
+  }
+  
+  Token* pTkn = pGet(m_iCurTkn);
+  return pTkn;
 }
 
 /*----------------------------------------------------------------------------*/
