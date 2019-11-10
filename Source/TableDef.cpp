@@ -175,6 +175,66 @@ bool TableDef::bParse(Stz* szCmd)
     // column type -- -- -- -- -- --
     pTkn = pTknVec->pNextToken(); PT();
     
+    eCT eColumn = eToCT(pTkn->szText());
+    
+    switch (eColumn) {
+      case CT_BOOLEAN:
+        pCol->vColumnType(CT_BOOLEAN);
+        pCol->vDatumType(DM_BOL);
+        break;
+        
+      case CT_DATE:
+        pCol->vColumnType(CT_DATE);
+        pCol->vDatumType(DM_DTE);
+        break;
+        
+      case CT_DECIMAL:
+        if ( ! bExtractDecimal(pCol,pTknVec) )
+          return EC_INVALID_COMMAND;
+        break;
+        
+      case CT_FLOAT:
+        if ( ! bExtractFloat(pCol,pTknVec) )
+          return EC_INVALID_COMMAND;
+        break;
+        
+      case CT_INTEGER:
+        pCol->vColumnType(CT_INTEGER);
+        pCol->vDatumType(DM_INT);
+        pCol->vColumnLength(C_MAX_PRECISION_INT);
+        break;
+        
+      case CT_INTERVAL:
+        pCol->vColumnType(CT_INTERVAL);
+        pCol->vDatumType(DM_IVL);
+        break;
+        
+      case CT_TIME:
+        pCol->vColumnType(CT_TIME);
+        pCol->vDatumType(DM_TME);
+        break;
+        
+      case CT_TIMESTAMP:
+        pCol->vColumnType(CT_TIMESTAMP);
+        pCol->vDatumType(DM_TSP);
+        break;
+        
+      case CT_VARCHAR:
+        if ( ! bExtractVarchar(pCol, pTknVec) )
+          return EC_INVALID_COMMAND;
+        break;
+        
+      default:
+        if (pTkn->bSame("varbinary"_Stz) ||
+            pTkn->bSame("char"_Stz)) {
+          if ( ! bExtractVarchar(pCol, pTknVec) )
+            return EC_INVALID_COMMAND;
+        }
+        break;
+        
+    }
+ 
+    /*
     if (pTkn->bSame("boolean"_Stz)) {
       pCol->vColumnType(CT_BOOLEAN);
       pCol->vDatumType(DM_BOL);
@@ -226,7 +286,7 @@ bool TableDef::bParse(Stz* szCmd)
     else {
       return EC_INVALID_COMMAND;
     }
-    
+    */
     
     
     pTkn = pTknVec->pNextToken(); PT();
