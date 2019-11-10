@@ -179,61 +179,56 @@ bool TableDef::bParse(Stz* szCmd)
     
     eCT eColumn = TableDef::eColumn(pTkn->szText());
     
+    eEC eError = EC_NONE;
+    
     switch (eColumn) {
       case CT_BOOLEAN:
-        if ( ! bExtractBoolean(pCol,pTknVec) )
-          return EC_INVALID_COMMAND;
+        eError = eExtractBoolean(pCol,pTknVec);
         break;
         
       case CT_DATE:
-        if ( ! bExtractDate(pCol,pTknVec) )
-          return EC_INVALID_COMMAND;
+        eError = eExtractDate(pCol,pTknVec);
         break;
         
       case CT_DECIMAL:
-        if ( ! bExtractDecimal(pCol,pTknVec) )
-          return EC_INVALID_COMMAND;
+        eError = eExtractDecimal(pCol,pTknVec);
         break;
         
       case CT_FLOAT:
-        if ( ! bExtractFloat(pCol,pTknVec) )
-          return EC_INVALID_COMMAND;
+        eError = eExtractFloat(pCol,pTknVec);
         break;
         
       case CT_INTEGER:
-        if ( ! bExtractInteger(pCol,pTknVec) )
-          return EC_INVALID_COMMAND;
+        eError = eExtractInteger(pCol,pTknVec);
         break;
         
       case CT_INTERVAL:
-        if ( ! bExtractInterval(pCol,pTknVec) )
-          return EC_INVALID_COMMAND;
+        eError = eExtractInterval(pCol,pTknVec);
         break;
         
       case CT_TIME:
-        if ( ! bExtractTime(pCol,pTknVec) )
-          return EC_INVALID_COMMAND;
+        eError = eExtractTime(pCol,pTknVec);
         break;
         
       case CT_TIMESTAMP:
-        if ( ! bExtractTimestamp(pCol,pTknVec) )
-          return EC_INVALID_COMMAND;
+        eError = eExtractTimestamp(pCol,pTknVec);
         break;
         
       case CT_VARCHAR:
-        if ( ! bExtractVarchar(pCol,pTknVec) )
-          return EC_INVALID_COMMAND;
+        eError = eExtractVarchar(pCol,pTknVec);
         break;
         
       default:
         if (pTkn->bSame("varbinary"_Stz) ||
             pTkn->bSame("char"_Stz)) {
-          if ( ! bExtractVarchar(pCol, pTknVec) )
-            return EC_INVALID_COMMAND;
+          eError = eExtractVarchar(pCol,pTknVec);
         }
         break;
         
     }
+    
+    if (EC_NONE != eError)
+      return false;
  
     
     pTkn = pTknVec->pNextToken(); PT();
@@ -291,33 +286,33 @@ L_INVALID:
 /*----------------------------------------------------------------------------*/
 /* extract boolean                                                            */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractBoolean(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eExtractBoolean(Column* pCol, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   pCol->vColumnType(CT_BOOLEAN);
   pCol->vDatumType(DM_BOL);
   
-  return true;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract date                                                               */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractDate(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eExtractDate(Column* pCol, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   pCol->vColumnType(CT_DATE);
   pCol->vDatumType(DM_DTE);
   
-  return true;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract float                                                              */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractDecimal(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eExtractDecimal(Column* pCol, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -338,43 +333,43 @@ bool TableDef::bExtractDecimal(Column* pCol, TokenVec* pTknVec)
     
     // check if it was numeric
     if ( ! pTkn->bIsNumeric() )
-      return false;
+      return EC_INVALID_COMMAND;
     
     iPrecision = pTkn->iToI8();
     
     pTkn = pTknVec->pNextToken(); PT();
     
     if (!pTkn->bSame(","_Stz))
-      return false;
+      return EC_INVALID_COMMAND;
     
     pTkn = pTknVec->pNextToken(); PT();
     
     // check if it was numeric
     if ( ! pTkn->bIsNumeric() )
-      return false;
+      return EC_INVALID_COMMAND;
     
     // get the scale
     iScale = pTkn->iToI8();
     
     pTkn = pTknVec->pNextToken(); PT();
     if (! pTkn->bSame(")"_Stz))
-      return false;
+      return EC_INVALID_COMMAND;
     
     if (! Column::bValidBcd(iPrecision, iScale))
-      return false;
+      return EC_INVALID_COMMAND;
   }
   
   // set scale and length in column
   pCol->vColumnLength(iPrecision);
   pCol->vColumnScale(iScale);
   
-  return true;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract float                                                              */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractFloat(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eExtractFloat(Column* pCol, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -394,7 +389,7 @@ bool TableDef::bExtractFloat(Column* pCol, TokenVec* pTknVec)
 
     // check if it was numeric
     if ( ! pTkn->bIsNumeric() ) {
-      return false;
+      return EC_INVALID_COMMAND;
     }
     
     // get size
@@ -402,24 +397,24 @@ bool TableDef::bExtractFloat(Column* pCol, TokenVec* pTknVec)
     
     pTkn = pTknVec->pNextToken(); PT();
     if (!pTkn->bSame(")"_Stz)) {
-      return false;
+      return EC_INVALID_COMMAND;
     }
     
     if (! Column::bValidFlt(iSize)) {
-      return false;
+      return EC_INVALID_COMMAND;
     }
   }
   
   // set size in column
   pCol->vColumnLength(iSize);
   
-  return true;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract integer                                                            */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractInteger(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eExtractInteger(Column* pCol, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -427,52 +422,52 @@ bool TableDef::bExtractInteger(Column* pCol, TokenVec* pTknVec)
   pCol->vDatumType(DM_INT);
   pCol->vColumnLength(C_MAX_PRECISION_INT);
 
-  return true;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract interval                                                           */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractInterval(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eExtractInterval(Column* pCol, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   pCol->vColumnType(CT_INTERVAL);
   pCol->vDatumType(DM_IVL);
   
-  return true;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract time                                                               */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractTime(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eExtractTime(Column* pCol, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   pCol->vColumnType(CT_TIME);
   pCol->vDatumType(DM_TME);
   
-  return true;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract timestamp                                                          */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractTimestamp(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eExtractTimestamp(Column* pCol, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   pCol->vColumnType(CT_TIMESTAMP);
   pCol->vDatumType(DM_TSP);
   
-  return true;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* extract varchar                                                            */
 /*----------------------------------------------------------------------------*/
-bool TableDef::bExtractVarchar(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eExtractVarchar(Column* pCol, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -494,7 +489,7 @@ bool TableDef::bExtractVarchar(Column* pCol, TokenVec* pTknVec)
 
     // check if it was numeric
     if (! pTkn->bIsNumeric())
-      return false;
+      return EC_INVALID_COMMAND;
     
     // get size
     iSize = pTkn->iToI8();
@@ -502,17 +497,17 @@ bool TableDef::bExtractVarchar(Column* pCol, TokenVec* pTknVec)
     pTkn = pTknVec->pNextToken(); PT();
     
     if (! pTkn->bSame(")"_Stz))
-      return false;
+      return EC_INVALID_COMMAND;
     
     // valid the size
     if (! Column::bValidVch(iSize))
-      return false;
+      return EC_INVALID_COMMAND;
   }
   
   // set size in column
   pCol->vColumnLength(iSize);
   
-  return true;
+  return EC_NONE;
 }
 
 #undef PT

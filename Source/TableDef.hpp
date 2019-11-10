@@ -34,15 +34,15 @@ namespace MetaData
   
   private:
   
-    bool bExtractBoolean  (Column* pCol, TokenVec* pTknVec);
-    bool bExtractDate     (Column* pCol, TokenVec* pTknVec);
-    bool bExtractDecimal  (Column* pCol, TokenVec* pTknVec);
-    bool bExtractFloat    (Column* pCol, TokenVec* pTknVec);
-    bool bExtractInteger  (Column* pCol, TokenVec* pTknVec);
-    bool bExtractInterval (Column* pCol, TokenVec* pTknVec);
-    bool bExtractTime     (Column* pCol, TokenVec* pTknVec);
-    bool bExtractTimestamp(Column* pCol, TokenVec* pTknVec);
-    bool bExtractVarchar  (Column* pCol, TokenVec* pTknVec);
+    eEC eExtractBoolean  (Column* pCol, TokenVec* pTknVec);
+    eEC eExtractDate     (Column* pCol, TokenVec* pTknVec);
+    eEC eExtractDecimal  (Column* pCol, TokenVec* pTknVec);
+    eEC eExtractFloat    (Column* pCol, TokenVec* pTknVec);
+    eEC eExtractInteger  (Column* pCol, TokenVec* pTknVec);
+    eEC eExtractInterval (Column* pCol, TokenVec* pTknVec);
+    eEC eExtractTime     (Column* pCol, TokenVec* pTknVec);
+    eEC eExtractTimestamp(Column* pCol, TokenVec* pTknVec);
+    eEC eExtractVarchar  (Column* pCol, TokenVec* pTknVec);
 
     Footer* aFooter(void);
   };
