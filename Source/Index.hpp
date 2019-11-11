@@ -10,6 +10,8 @@ namespace MetaData
   class Index : public Object
   {
   private:
+    IndexDef*    m_pIndexDef;     // definition of this index
+
     i8           m_iIndexNo;      //
     s32          m_sIndexName;    //
     eIT          m_eIndexType;    //

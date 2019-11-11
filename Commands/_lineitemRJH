@@ -60,8 +60,8 @@ lscol lineitem;
 // 1,155190,7706,1,17,21168.23,0.04,0.02,N,O,1996-03-13,1996-02-12,1996-03-22,
 //   DELIVER IN PERSON,TRUCK,egular courts above the,
 
-//create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
-//lsidx lineitem;
+create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
+lsidx lineitem;
 //create index Lineitem_idx2 ON LineItem(L_SHIPDATE);
 //create index Lineitem_idx3 ON LineItem(L_SUPPKEY);
 

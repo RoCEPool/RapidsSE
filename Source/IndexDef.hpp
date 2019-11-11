@@ -25,10 +25,8 @@ namespace MetaData
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, IndexDef* pIndex);
     void  operator delete(void*);
     
-
     IndexDef(void);
    ~IndexDef(void) noexcept(false);
   

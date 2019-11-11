@@ -35,8 +35,11 @@ void* TableDef::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void TableDef::operator delete(void*)
+void TableDef::operator delete(void* pAddress)
 {
+  TableDef* pTableDef = reinterpret_cast<TableDef*>(pAddress);
+  
+  HeapMem::vFree(pTableDef);
 }
 
 /*----------------------------------------------------------------------------*/

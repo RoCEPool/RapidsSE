@@ -68,6 +68,8 @@ Index::Index(void)
   
   Word* pWord = Word::pToWord(this);
   
+  m_pIndexDef = new IndexDef;
+  
   m_iIndexNo   = -1;
   m_sIndexName = pWord->szWordNm();
   m_eIndexType = IT_SKIP_LIST;
@@ -98,6 +100,7 @@ Index::~Index(void) noexcept(false)
 #endif
   
   vTidyUp();
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -390,6 +393,8 @@ void Index::vTidyUp(void)
   m_pIdxColVec->vClear();
   
   delete m_pIdxColVec;
+  
+  delete m_pIndexDef;
 }
 
 /*----------------------------------------------------------------------------*/

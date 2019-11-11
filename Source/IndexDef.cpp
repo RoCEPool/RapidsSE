@@ -34,24 +34,19 @@ IndexDef* MetaData::_pIndexDef(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* IndexDef::operator new(size_t)
 {
-  IndexDef* pIndex = nullptr;
+  Object* pIndexDef = HeapMem::pAllocate(CN_INDEXDEF);
   
-  return pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* IndexDef::operator new(size_t, IndexDef* pIndex)
-{
-  return pIndex;
+  return pIndexDef;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void IndexDef::operator delete(void*)
+void IndexDef::operator delete(void* pAddress)
 {
+  IndexDef* pIndexDef = reinterpret_cast<IndexDef*>(pAddress);
+  
+  HeapMem::vFree(pIndexDef);
 }
 
 /*----------------------------------------------------------------------------*/
