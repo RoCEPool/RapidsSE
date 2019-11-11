@@ -13,7 +13,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.analyze"_Stz,            &Step::vTableAnalyze);
   vAddStep("table.columnCount@"_Stz,       &Step::vTableColumnCountFetch);
   vAddStep("table.column@"_Stz,            &Step::vTableColumnFetch);
-  vAddStep("table.createColumnVec"_Stz,    &Step::vTableCreateColumnVec);
   vAddStep("table.drop"_Stz,               &Step::vTableDrop);
   vAddStep("table.dump"_Stz,               &Step::vTableDump);
   vAddStep("table.findColumn"_Stz,         &Step::vTableFindColumn);
@@ -214,30 +213,6 @@ void Step::vTableColumnCountFetch(void)
   i8 nColumns = pColVec->nItems();
   
   m_pDataStack->vPushI8(nColumns);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.createColumnVec -- create column vector from job_createTable         */
-/*----------------------------------------------------------------------------*/
-void Step::vTableCreateColumnVec(void)
-{
-  ENTRY("vTableCreateColumnVec"_Stz);
-  
-//  Object* pPtrTable;
-//  if ( ! m_pDataStack->bPopObject(pPtrTable) )
-//    THROW_DSTACK();
-//  Table* pTable = _pTable(pPtrTable);
-//  ASSERT(CN_TABLE == pTable->eClass());
-//
-//  Object* pPtrJob;
-//  if ( ! m_pDataStack->bPopObject(pPtrJob) )
-//    THROW_DSTACK();
-//  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pPtrJob);
-//  //ASSERT(CN_JOB_CREATETABLE == pJob_CreateTable->eClass());
-//
-//  //pTable->vCreateColumnVec(pJob_CreateTable);
   
   EXIT();
 }

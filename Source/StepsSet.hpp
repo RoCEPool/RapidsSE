@@ -1058,7 +1058,6 @@ public:
   void vTableAddIndex(void);
   void vTableAnalyze(void);
   void vTableColumnCountFetch(void);
-  void vTableCreateColumnVec(void);
   void vTableDrop(void);
   void vTableDump(void);
   void vTableFindColumn(void);
