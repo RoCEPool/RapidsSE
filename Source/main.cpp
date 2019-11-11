@@ -71,7 +71,7 @@ int main(int argc, const char* argv[])
  
  to run prompt:
 
- ./SE --prompt --name NODE0 --log
+ ./SE --prompt --name NODE2 --log --developer
  
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  

@@ -68,7 +68,7 @@
 
   // set task's dictionary stack from path in job
   //pJob_SubInserter job.pushPath task::dicStack.set
-  pushPath strVec::toPath to <path>
+  //pushPath strVec::toPath to <path>
   <path> str.toStrVec task::dicStack.set
   //pathDump
 
