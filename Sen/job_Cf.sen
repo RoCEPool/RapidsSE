@@ -38,7 +38,7 @@
   // pop up one folder, but not into tenants
   sFolderNm ".." str.equal if
     pathCurrentFolder dic.name "tenants" str.equal not if pathDrop then
-    savePath
+    setPath
     <<logExit <DONE_REQ>
     exit                                                         // *EARLY EXIT*
   then
@@ -49,7 +49,7 @@
   // pop up to tenants
   sFolderNm "~" str.equal if
     begin pathCurrentFolder dic.name "tenants" str.equal not while pathDrop repeat
-    savePath
+    setPath
     <<logExit <DONE_REQ>
     exit                                                         // *EARLY EXIT*
   then
@@ -61,7 +61,7 @@
   sFolderNm "tenants" str.equal if
     pathDropAll
     attachmap::tenants@ execute pathPush
-    savePath
+    setPath
     <<logExit <DONE_REQ>
     exit                                                         // *EARLY EXIT*
   then
@@ -73,7 +73,7 @@
   sFolderNm findInCurrent to pCurrentFolder
   pCurrentFolder checkIsDic not if pJob_Cf <ERROR_REQUEST> !!logError exit then
   pCurrentFolder execute pathPush
-  savePath
+  setPath
   <<logExit <DONE_REQ>
 
   HAZARD

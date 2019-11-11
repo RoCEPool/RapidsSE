@@ -30,34 +30,7 @@
 /*----------------------------------------------------------------------------*/
 /* set dictionary path of this task back into session                         */
 /*----------------------------------------------------------------------------*/
-: savePath ( -- )
-/*
-  0 0 locals| pDicStackSession pDicStackTask |
-
-  // get session dic stack
-  job::this job.session@ session.dicStack@ to pDicStackSession
-
-  // get task dic stack
-  task::this task.dicStack to pDicStackTask
-
-  // copy the path from task dic stack onto data stack
-  pDicStackTask dicStack.depth 0 ?do
-    pDicStackTask dicStack.depth 1 - I - pDicStackTask dicStack.pick
-  loop
-
-  // clear session dic stack
-  pDicStackSession dicStack.dropAll
-
-  // copy the path from data stack onto session dic stack
-  pDicStackTask dicStack.depth 0 ?do
-    pDicStackSession dicStack.push
-  loop
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // store path into the sessions <path>=<...>
-
-  pushPath strVec::toPath to /session <path>
- */
+: setPath ( -- )
 
   0 0 locals| pDicStackTask |
 
