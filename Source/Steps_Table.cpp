@@ -37,8 +37,8 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.space"_Stz,              &Step::vTableSpace);
   vAddStep("table.subDic"_Stz,             &Step::vTableSubDic);
   vAddStep("table.subLoaders"_Stz,         &Step::vTableSubLoaders);
-  vAddStep("table.tableDef@"_Stz,          &Step::vTableTableDefStore);
-  vAddStep("table.tableDef!"_Stz,          &Step::vTableTableDefFetch);
+  vAddStep("table.tableDef@"_Stz,          &Step::vTableTableDefFetch);
+  vAddStep("table.tableDef!"_Stz,          &Step::vTableTableDefStore);
   vAddStep("table.truncate"_Stz,           &Step::vTableTruncate);
   vAddStep("table.verify"_Stz,             &Step::vTableVerify);
   vAddStep("table.visualize"_Stz,          &Step::vTableVisualize);

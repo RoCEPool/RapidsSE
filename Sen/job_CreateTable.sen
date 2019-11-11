@@ -121,7 +121,7 @@
 
   //----------------------------------------------------------------------------
   // add table columns
-  pJob_CreateTable pTable table.createColumnVec
+  //pJob_CreateTable pTable table.createColumnVec
 
   //----------------------------------------------------------------------------
   // add partition columns

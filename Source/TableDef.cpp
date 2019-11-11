@@ -271,6 +271,9 @@ eEC TableDef::eParse(Stz* szCmd)
 //      pTkn = pTknVec->pNextToken(); PT();
 //    }
 
+    m_pStreamDef->m_xaColumn[i_Col].vCopy(pCol);
+    m_pStreamDef->m_nDefColumns[0]++;
+    
   }
   
   
