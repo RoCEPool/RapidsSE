@@ -109,7 +109,7 @@
 /*----------------------------------------------------------------------------*/
 : writeBuffer_kid ( -- )
 
-  >>logEntry <SEED_KID>
+  >>logEntry <SEED_RUN>
 
   job::this locals| pJob_WriteBuffer |
 

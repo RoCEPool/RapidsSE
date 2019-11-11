@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 : kidExport_kid ( -- )
 
-  >>logEntry <SEED_KID>
+  >>logEntry <SEED_RUN>
 
   job::this locals| pJob_KE |
   pJob_KE job.assertNeutral

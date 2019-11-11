@@ -184,7 +184,7 @@
 
   SS_SEED_CAN log::jobSeed
 
-  JP_BEGINNING job::this job.phase!
+  JP_CANCELING job::this job.phase!
 
   <seed_initially>
 ;
@@ -196,7 +196,7 @@
 
   SS_SEED_END log::jobSeed
 
-  JP_CANCELING job::this job.phase!
+  JP_ENDING job::this job.phase!
 
   <seed_initially>
 ;
@@ -215,18 +215,6 @@
 
   <path> str.toStrVec task::dicStack.set
   //task::dump
-
-  <seed_initially>
-;
-
-/*----------------------------------------------------------------------------*/
-/* seed kid                                                                   */
-/*----------------------------------------------------------------------------*/
-: <SEED_KID>
-
-  SS_SEED_KID log::jobSeed
-
-  <path> str.toStrVec task::dicStack.set
 
   <seed_initially>
 ;
