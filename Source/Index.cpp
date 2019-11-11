@@ -72,7 +72,6 @@ Index::Index(void)
   
   m_iIndexNo   = -1;
   m_sIndexName = pWord->szWordNm();
-  m_eIndexType = IT_SKIP_LIST;
   m_bIsPrimaryKey = false;
   m_bIsUnique     = false;
   m_pTable        = nullptr;

@@ -14,7 +14,7 @@ namespace MetaData
 
     i8           m_iIndexNo;      //
     s32          m_sIndexName;    //
-    eIT          m_eIndexType;    //
+    //eIT          m_eIndexType;    //
     bool         m_bIsPrimaryKey; //
     bool         m_bIsUnique;     //
     Table*       m_pTable;        //
