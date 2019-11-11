@@ -156,7 +156,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_ANALYZETABLE
   /*    */ &Dump::vDummy,           // CN_JOB_ANSWER
   /*    */ &Dump::vDummy,           // CN_JOB_BOOT
-  /*    */ &Dump::vDummy,           // CN_JOB_COMPACTINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_CONNECTCLUSTER
   /*    */ &Dump::vDummy,           // CN_JOB_CONNECTOR
   /*    */ &Dump::vDummy,           // CN_JOB_COPYBUFFER
@@ -533,7 +532,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_AnalyzeTable),   // CN_JOB_ANALYZETABLE
   /*    */ sizeof(Job_Answer),         // CN_JOB_ANSWER
   /*    */ sizeof(Job_Boot),           // CN_JOB_BOOT
-  /*    */ sizeof(Job_CompactIndex),   // CN_JOB_COMPACTINDEX
   /*    */ sizeof(Job_ConnectCluster), // CN_JOB_CONNECTCLUSTER
   /*    */ sizeof(Job_Connector),      // CN_JOB_CONNECTOR
   /*    */ sizeof(Job_CopyBuffer),     // CN_JOB_COPYBUFFER
@@ -910,7 +908,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANALYZETABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANSWER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_BOOT
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_COMPACTINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CONNECTCLUSTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CONNECTOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_COPYBUFFER

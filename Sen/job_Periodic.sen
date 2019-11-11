@@ -34,7 +34,7 @@
 /*----------------------------------------------------------------------------*/
 : periodic_run ( -- )
 
-  >>logEntry <<SEED_RUN>
+  >>logEntry <SEED_RUN>
 
   "Periodic Job Started" .
 

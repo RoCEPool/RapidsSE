@@ -53,7 +53,6 @@ namespace Jobs
 
 #include "Job_Boot.hpp"
 
-#include "Job_CompactIndex.hpp"
 #include "Job_ConnectCluster.hpp"
 #include "Job_Connector.hpp"
 #include "Job_CopyBuffer.hpp"

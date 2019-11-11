@@ -10,7 +10,7 @@
 : SubTruncate_run ( -- <R> )
 
 <path> .
-  >>logEntry <<SEED_RUN>
+  >>logEntry <SEED_RUN>
 
   0 0 locals| pJob_SubTruncate pTask |
   0 0 0 locals| iSlot pTable sTableNm |

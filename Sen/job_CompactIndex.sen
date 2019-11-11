@@ -48,62 +48,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* size index request (on originating node)                                   */
-/*----------------------------------------------------------------------------*/
-: compactIndex_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob pTask |
-
-  tp: compactIndex
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_CompactIndex job on a node                                     */
 /*----------------------------------------------------------------------------*/
-: compactIndex_exe ( Job_CompactIndex -- )
+: compactIndex::execute _eeh ( -- )
 
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_CompactIndex |
   job::this locals| pJob_CompactIndex |
 
   0 0 0 0 locals| pIndex iSize sTableNm sIndexNm |
 
   tp: compactIndex_exe
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_COMPACTINDEX pJob_CompactIndex object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabWrite
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_CompactIndex job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the table and index names
-  //pJob_CompactIndex job.indexName@ to sIndexNm
-  //pJob_CompactIndex job.objectName@ to sTableNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
@@ -117,110 +70,39 @@
   // pop indexes and table folder
   popIndexes
   popTable
-
-  pJob_CompactIndex job.notice
-
-  pJob_CompactIndex job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_CompactIndex job check resources                               */
 /*----------------------------------------------------------------------------*/
-: compactIndex.checkResources ( Job_CompactIndex -- )
+: compactIndex::checkResources _eeh ( -- )
 
-  >>logEntry <Check_Resources>
-
-  params| pJob_CompactIndex  |
   0 0 locals| sIndexNm sTableNm |
 
   tp: compactIndex.checkResources
   //checkResources received" .
-//
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
   DdlLock[].grabRead
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_CompactIndex job.pushPath
-  //task::dicStack.set
+  <tableNm> <indexNm> checkCompactIndex not if job::this <ERROR_JOB> !!logError exit then
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get index and table name
-  //pJob_CompactIndex job.indexName@ to sIndexNm
-  //pJob_CompactIndex job.objectName@ to sTableNm
-
-  <tableNm> <indexNm> checkCompactIndex not if pJob_CompactIndex <ERROR_JOB> !!logError exit then
-
-  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_SizeTable job release resources                                */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: compactIndex.releaseResources ( Job_CompactIndex -- )
+jobSyntax: compactIndex :: compactIndex <tableNm> <indexNm> ;
 
-  >>logEntry <Release_Resources>
-
-  params| pJob_CompactIndex  |
-
-  tp: compactIndex.releaseResources
-  //"releaseResources received" .
-
-  <<logExit <Resources_Released>
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: compactIndex_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_compactIndex |
-
-  pJob_compactIndex job.becomeParticipant
-
-  // check resources
-  pJob_compactIndex compactIndex.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: compactIndex_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_compactIndex |
-
-  pJob_compactIndex compactIndex.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: compactIndex_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_compactIndex |
-
-  pJob_compactIndex compactIndex.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+jobInfo: compactIndex
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ROWS
+  <?ddlLock?>  = DL_GRAB_WRITE
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/

@@ -47,7 +47,7 @@ JobClass xJobClass_Boot =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Boot_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_CompactIndex_class;
+  *pNextFun = (pFUN*)pJob_ConnectCluster_class;
   
   return &xJobClass_Boot;
 }
