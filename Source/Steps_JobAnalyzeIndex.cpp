@@ -24,10 +24,10 @@ void Step::vJob_AnalyzeIndexIsDetailed(void)
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   
-  Job_AnalyzeIndex* pJoAnalyzeIndex = _pJob_AnalyzeIndex(pJobPtr);
-  ASSERT(pJoAnalyzeIndex->eClass() == CN_JOB_ANALYZEINDEX);
+//  Job_AnalyzeIndex* pJoAnalyzeIndex = _pJob_AnalyzeIndex(pJobPtr);
+//  ASSERT(pJoAnalyzeIndex->eClass() == CN_JOB_ANALYZEINDEX);
   
-  m_pDataStack->vPushI8(pJoAnalyzeIndex->m_bIsDetailed);
+//  m_pDataStack->vPushI8(pJoAnalyzeIndex->m_bIsDetailed);
   
   EXIT();
 }
@@ -43,10 +43,10 @@ void Step::vJob_AnalyzeTableIsDetailed(void)
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   
-  Job_AnalyzeTable* pJoAnalyzeTable = _pJob_AnalyzeTable(pJobPtr);
-  ASSERT(pJoAnalyzeTable->eClass() == CN_JOB_ANALYZETABLE);
+  //Job_AnalyzeTable* pJoAnalyzeTable = _pJob_AnalyzeTable(pJobPtr);
+  //ASSERT(pJoAnalyzeTable->eClass() == CN_JOB_ANALYZETABLE);
   
-  m_pDataStack->vPushI8(pJoAnalyzeTable->m_bIsDetailed);
+  //m_pDataStack->vPushI8(pJoAnalyzeTable->m_bIsDetailed);
   
   EXIT();
 }

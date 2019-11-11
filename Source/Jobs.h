@@ -47,8 +47,6 @@ namespace Jobs
 #include "Job__Find.hpp"
 
 #include "Job_Alarm.hpp"
-#include "Job_AnalyzeTable.hpp"
-#include "Job_AnalyzeIndex.hpp"
 #include "Job_Answer.hpp"
 
 #include "Job_Boot.hpp"

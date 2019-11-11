@@ -202,8 +202,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB__EXECUTED"_Stz,      CN_JOB__EXECUTED);
   
   /*    */ vAddConstant("CN_JOB_ALARM"_Stz,          CN_JOB_ALARM);
-  /*    */ vAddConstant("CN_JOB_ANALYZEINDEX"_Stz,   CN_JOB_ANALYZEINDEX);
-  /*    */ vAddConstant("CN_JOB_ANALYZETABLE"_Stz,   CN_JOB_ANALYZETABLE);
   /*    */ vAddConstant("CN_JOB_ANSWER"_Stz,         CN_JOB_ANSWER);
   /*    */ vAddConstant("CN_JOB_BOOT"_Stz,           CN_JOB_BOOT);
   /*    */ vAddConstant("CN_JOB_CONNECTCLUSTER"_Stz, CN_JOB_CONNECTCLUSTER);

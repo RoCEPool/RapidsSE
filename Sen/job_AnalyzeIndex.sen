@@ -45,102 +45,56 @@
 /*----------------------------------------------------------------------------*/
 /* anakyze index request (on originating node)                                */
 /*----------------------------------------------------------------------------*/
-: analyzeIndex_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 0 locals| pJob pTask bIsDetailed |
+: analyzeIndex::request _eeh ( -- <R> )
 
   tp: analyzeIndex
-
-  // get the task
-  task::this to pTask
-
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  pJob jobAnalyzeIndex.isDetailed to bIsDetailed
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set metadata string in the job
   args.metadata if
-    bIsDetailed 1 == if
+    <detailed> 1 == if
       "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, bufferLevel VARCHAR, entries INTEGER)"
     else
       "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, entries INTEGER)"
     then
-    pJob job.metadata!
+    job::this job.metadata!
 
   then
-
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeIndex job on a node                                     */
 /*----------------------------------------------------------------------------*/
-: analyzeIndex_exe ( Job_AnalyzeIndex -- )
-
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_AnalyzeIndex |
-  job::this locals| pJob_AnalyzeIndex |
-
-  0 0 locals| sTableNm bIsDetailed |
+: analyzeIndex::execute _eeh ( -- )
 
   tp: analyzeIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_ANALYZEINDEX pJob_AnalyzeIndex object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  <tableNm> to sTableNm
-  sTableNm pushTable assert
+  <tableNm> pushTable assert
 
-  //
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes
   pushIndexes assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyze the table
-  pJob_AnalyzeIndex jobAnalyzeIndex.isDetailed to bIsDetailed
-  bIsDetailed
-  //pJob_AnalyzeIndex job.indexName@ find execute
-  <indexNm> find execute index.analyze
+  <detailed> <indexNm> find execute index.analyze
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put response in the job
-  pJob_AnalyzeIndex job.response!
-  grid::slots pJob_AnalyzeIndex job.rowsProcessed!
+  job::this job.response!
+  grid::slots job::this job.rowsProcessed!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
   popTable
-
-  pJob_AnalyzeIndex job.notice
-
-  pJob_AnalyzeIndex job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeIndex job check resources                               */
 /*----------------------------------------------------------------------------*/
-: analyzeIndex.checkResources ( Job_AnalyzeIndex -- )
-
-  >>logEntry <Check_Resources>
-
-  params| pJob_AnalyzeIndex  |
+: analyzeIndex::checkResources _eeh ( -- )
 
   tp: analyzeIndex.checkResources
   //"checkResources received" .
@@ -153,75 +107,25 @@
   // check if we can remove the table
   <tableNm>
   <indexNm> 
-  checkAnalyzeIndex not if pJob_AnalyzeIndex <ERROR_JOB> !!logError exit then
-
-  <<logExit <Resources_Checked>
+  checkAnalyzeIndex not if job::this <ERROR_JOB> !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_AnalyzeIndex job release resources                             */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: analyzeIndex.releaseResources ( Job_AnalyzeIndex -- )
+jobSyntax: analyzeIndex :: analyzeIndex <tableNm> <indexNm> ;
+jobSyntax: analyzeIndex :: analyzeIndex <tableNm> <indexNm> <detailed> ;
+jobSyntax: analyzeIndex :: anidx <tableNm> <indexNm> ;
+jobSyntax: analyzeIndex :: anidx <tableNm> <indexNm> <detailed> ;
 
-  >>logEntry <Release_Resources>
-
-  params| pJob_AnalyzeIndex  |
-
-  tp: analyzeIndex.releaseResources
-  //"releaseResources received" .
-
-  <<logExit <Resources_Released>
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: analyzeIndex_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_analyzeIndex |
-
-  pJob_analyzeIndex job.becomeParticipant
-
-  // check resources
-  pJob_analyzeIndex analyzeIndex.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: analyzeIndex_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_analyzeIndex |
-
-  pJob_analyzeIndex analyzeIndex.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: analyzeIndex_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_analyzeIndex |
-
-  pJob_analyzeIndex analyzeIndex.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+jobInfo: analyzeIndex
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ROWS
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/

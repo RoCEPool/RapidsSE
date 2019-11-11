@@ -34,61 +34,33 @@
 /*----------------------------------------------------------------------------*/
 /* anakyze table request (on originating node)                                */
 /*----------------------------------------------------------------------------*/
-: analyzeTable_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 0 locals| pJob pTask bIsDetailed |
+: analyzeTable::request _eeh ( -- <R> )
 
   tp: analyzeTable
-
-  // get the task
-  task::this to pTask
-
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  pJob jobAnalyzeTable.isDetailed to bIsDetailed
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set metadata string in the job
   args.metadata if
-    bIsDetailed 1 == if
+    <detailed> 1 == if
       "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, bufferLevel VARCHAR, entries INTEGER)"
     else
       "(nodeName VARCHAR, partition INTEGER, buffers INTEGER, entries INTEGER)"
     then
-    pJob job.metadata!
+    job::this job.metadata!
 
   then
-
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeTable job on a node                                     */
 /*----------------------------------------------------------------------------*/
-: analyzeTable_exe ( Job_AnalyzeTable -- )
+: analyzeTable::execute _eeh ( -- )
 
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_AnalyzeTable |
   job::this locals| pJob_AnalyzeTable |
 
   0 0 locals| sTableNm bIsDetailed |
 
   tp: analyzeTable_exe
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_ANALYZETABLE pJob_AnalyzeTable object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
@@ -97,10 +69,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyze the table
-  pJob_AnalyzeTable jobAnalyzeTable.isDetailed to bIsDetailed
-  bIsDetailed
-  sTableNm find execute
-  table.analyze
+  <detailed> sTableNm find execute table.analyze
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put response in the job
@@ -110,22 +79,12 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
   popTable
-
-  pJob_AnalyzeTable job.notice
-
-  pJob_AnalyzeTable job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_AnalyzeTable job check resources                               */
 /*----------------------------------------------------------------------------*/
-: analyzeTable.checkResources ( Job_AnalyzeTable -- )
-
-  >>logEntry <Check_Resources>
-
-  params| pJob_AnalyzeTable  |
+: analyzeTable::checkResources _eeh ( -- )
 
   tp: analyzeTable.checkResources
   //"checkResources received" .
@@ -137,75 +96,25 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
   <tableNm>
-  checkAnalyzeTable not if pJob_AnalyzeTable <ERROR_JOB> !!logError exit then
-
-  <<logExit <Resources_Checked>
+  checkAnalyzeTable not if job::this <ERROR_JOB> !!logError exit then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_AnalyzeTable job release resources                             */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: analyzeTable.releaseResources ( Job_AnalyzeTable -- )
+jobSyntax: analyzeTable :: analyzeTable <tableNm> ;
+jobSyntax: analyzeTable :: analyzeTable <tableNm> <detailed> ;
+jobSyntax: analyzeTable :: antbl <tableNm> ;
+jobSyntax: analyzeTable :: antbl <tableNm> <detailed> ;
 
-  >>logEntry <Release_Resources>
-
-  params| pJob_AnalyzeTable  |
-
-  tp: analyzeTable.releaseResources
-  //"releaseResources received" .
-
-  <<logExit <Resources_Released>
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: analyzeTable_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_analyzeTable |
-
-  pJob_analyzeTable job.becomeParticipant
-
-  // check resources
-  pJob_analyzeTable analyzeTable.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: analyzeTable_end ( -- )
-
-  >>logEntry <SEED_END>
-
- job::this locals| pJob_analyzeTable |
-
-  pJob_analyzeTable analyzeTable.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: analyzeTable_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_analyzeTable |
-
-  pJob_analyzeTable analyzeTable.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+jobInfo: analyzeTable
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ROWS
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/
