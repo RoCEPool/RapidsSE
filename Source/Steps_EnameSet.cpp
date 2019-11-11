@@ -151,6 +151,9 @@ void Step::vEnameSetGetStr(void)
   if ( ! m_pDataStack->bPopS32(sName) )
     THROW_DSTACK();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // translate name into value
+  
   s4K sValue = ""_Stz;
   
   if (pEnameSet->bHasName(sName)) {

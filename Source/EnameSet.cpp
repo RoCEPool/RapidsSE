@@ -376,7 +376,7 @@ Stz* EnameSet::szValue(Stz *szName)
   i8 i_Ename = i_Find(szName);
   
   if (C_UNKNOWN == i_Ename)
-    return nullptr;
+    return ""_Stz;
   
   ASSERT(TN_INTEGER != m_xEname[i_Ename].m_eToken);
   Stz* szValue = m_bStrings.szGet(m_xEname[i_Ename].m_i_Value);

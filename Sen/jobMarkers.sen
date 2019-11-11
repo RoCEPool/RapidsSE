@@ -172,8 +172,6 @@
 
   JP_BEGINNING job::this job.phase!
 
-  pushPath strVec::toPath to <path>
-<path> .
   <path> str.toStrVec task::dicStack.set
 
   <seed_initially>
