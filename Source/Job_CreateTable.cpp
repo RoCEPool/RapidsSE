@@ -179,34 +179,34 @@ eEC Job_CreateTable::ePopulateJob(TokenVec* pTokenVec)
   // set the table name
   m_oEnameSet.vAdd("<tableNm>"_Stz, pTokenVec->pGet(2)->szText());
   
-  // mark current token
-  i8 iCurrentToken = 4;
-  
-  // add columns to the table
-  eError = eAddTableColumns(pTokenVec, iCurrentToken);
-    
-  if (eError != EC_NONE) {
-    return eError;
-  }
-  
-  // current token should be at ')'
-  if ( ! pTokenVec->pGet(iCurrentToken++)->bSame(")"_Stz)) {
-    return EC_INVALID_COMMAND;
-  }
-  
-  // check if we have a partition by clause
-  if ( iCurrentToken < iNumTokens && pTokenVec->pGet(iCurrentToken++)->bSame("partition"_Stz)) {
-    
-    if ( ! bPartitionTable(pTokenVec, iCurrentToken) )
-      return EC_INVALID_COMMAND;
-  }
-  else {
-    // no partition by clause
-    // we will create partitioning using the first column
-    m_xColumns[0].vIsPtnKey(true);
-  }
-  
-  //vShow();
+//  // mark current token
+//  i8 iCurrentToken = 4;
+//  
+//  // add columns to the table
+//  eError = eAddTableColumns(pTokenVec, iCurrentToken);
+//    
+//  if (eError != EC_NONE) {
+//    return eError;
+//  }
+//  
+//  // current token should be at ')'
+//  if ( ! pTokenVec->pGet(iCurrentToken++)->bSame(")"_Stz)) {
+//    return EC_INVALID_COMMAND;
+//  }
+//  
+//  // check if we have a partition by clause
+//  if ( iCurrentToken < iNumTokens && pTokenVec->pGet(iCurrentToken++)->bSame("partition"_Stz)) {
+//    
+//    if ( ! bPartitionTable(pTokenVec, iCurrentToken) )
+//      return EC_INVALID_COMMAND;
+//  }
+//  else {
+//    // no partition by clause
+//    // we will create partitioning using the first column
+//    m_xColumns[0].vIsPtnKey(true);
+//  }
+//  
+//  //vShow();
   
   return EC_NONE;
 }
