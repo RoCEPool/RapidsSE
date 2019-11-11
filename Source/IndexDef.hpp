@@ -5,10 +5,10 @@
 
 namespace MetaData
 {
-  class Table;
-  
   class IndexDef : public Object
   {
+  friend class Index;
+  
   private:
     s32  m_sIndexName;    //
     eIT  m_eIndexType;    //

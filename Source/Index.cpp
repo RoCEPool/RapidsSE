@@ -72,7 +72,6 @@ Index::Index(void)
   
   m_iIndexNo   = -1;
   m_sIndexName = pWord->szWordNm();
-  m_bIsPrimaryKey = false;
   m_bIsUnique     = false;
   m_pTable        = nullptr;
   m_pIdxColVec    = new IdxColVec;
@@ -403,7 +402,7 @@ bool Index::bIsPrimaryKey(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  return m_bIsPrimaryKey;
+  return m_pIndexDef->m_bIsPrimaryKey;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -413,7 +412,7 @@ void Index::vIsPrimaryKey(bool bPrimaryKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  m_bIsPrimaryKey = bPrimaryKey;
+  m_pIndexDef->m_bIsPrimaryKey = bPrimaryKey;
 }
 
 /*----------------------------------------------------------------------------*/
