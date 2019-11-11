@@ -87,7 +87,7 @@ eCT TableDef::eColumn(Stz* szType)
   
   for (i8 i_Type = 0; i_Type < nEntries ; i_Type++) {
     
-    if ( aCT[i_Type]->bSame(szType) )
+    if (aCT[i_Type]->bSame(szType))
       return (eCT)i_Type;
 
   }
@@ -109,7 +109,6 @@ eEC TableDef::eParse(Stz* szCmd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
  
-  i8 i_Col = 0;
   eEC eError = EC_NONE;
 
   // retain the Create Table command
@@ -118,23 +117,34 @@ eEC TableDef::eParse(Stz* szCmd)
   // tokenise the command
   TokenVec* pTknVec = Tokeniser::pTokenise(szCmd);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert we got a create table
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: Create Table <tableNm>
+  
+  // -- -- -- -- -- -- -- -- -- --
+  // assert we got a create table
+  // -- -- -- -- -- -- -- -- -- --
+
   Token* pTkn = pTknVec->pFirstToken();
   ASSERT(pTkn->bSame("create"_Stz));
   
   pTkn = pTknVec->pNextToken();
   ASSERT(pTkn->bSame("table"_Stz));
   
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // -- -- -- --
   // table name
-  
+  // -- -- -- --
+
   pTkn = pTknVec->pNextToken(); PT();
   m_sTableNm = pTkn->szText();
 
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: ( <columnDef> ,... )
+  
+  // -- -- -- -- --
   // open parenth (
+  // -- -- -- -- --
   
   pTkn = pTknVec->pNextToken(); PT();
   if (! pTkn->bSame("("_Stz)) {
@@ -142,26 +152,26 @@ eEC TableDef::eParse(Stz* szCmd)
     goto L_RETURN;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // -- -- -- -- -- -- -- -- -- -- --
+  // iterate from first column till )
+  // -- -- -- -- -- -- -- -- -- -- --
 
-  // -- -- -- -- -- -- -- -- -- -- -- -- -- --
-  // iterate from first column name till )
-  
   pTkn = pTknVec->pNextToken(); PT();
-  
-  while (! pTkn->bSame(")"_Stz)) {
+  for (i8 i_Col = 0; ! pTkn->bSame(")"_Stz); i_Col++) {
     
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // -- -- -- -- -- -- -- --
     // exceeded column limit?
-    
+    // -- -- -- -- -- -- -- --
+
     if (i_Col >= C_MAX_COLUMNS) {
       eError = EC_MAX_COLUMNS;
       goto L_RETURN;
     }
 
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // subsequent column names, skipping over comma
-    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
     if (i_Col) {
       if (pTkn->bSame(","_Stz)) {
         pTkn = pTknVec->pNextToken(); PT();
@@ -172,19 +182,23 @@ eEC TableDef::eParse(Stz* szCmd)
       }
     }
     
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // -- -- -- --
     // add column
-    
+    // -- -- -- --
+
     Column* pCol = new Column;
     m_pColVec->vAdd(pCol);
 
     // set column number
-    pCol->vColumnNo(i_Col++);
+    pCol->vColumnNo(i_Col);
     
     // set column name
     pCol->vColumnName(pTkn->szText());
     
-    // check if column name already added
+    // -- -- -- -- -- -- -- -- -- -- --
+    // check for duplicate column name
+    // -- -- -- -- -- -- -- -- -- -- --
+
     for (i8 i_Search = 0; i_Search < i_Col - 1; i_Search++) {
       Column* pCol_search = m_pColVec->pGet(i_Search++);
       if (pCol_search->sColumnName().bSame(pCol->sColumnName())) {
@@ -193,23 +207,24 @@ eEC TableDef::eParse(Stz* szCmd)
       }
     }
     
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // -- -- -- --
     // column type
-    
+    // -- -- -- --
+
     pTkn = pTknVec->pNextToken(); PT();
     eCT eColumn = TableDef::eColumn(pTkn->szText());
     
     switch (eColumn) {
         
-      case CT_BOOLEAN:   eError = eExtractBoolean(pCol,pTknVec);     break;
-      case CT_DATE:      eError = eExtractDate(pCol,pTknVec);        break;
-      case CT_DECIMAL:   eError = eExtractDecimal(pCol,pTknVec);     break;
-      case CT_FLOAT:     eError = eExtractFloat(pCol,pTknVec);       break;
-      case CT_INTEGER:   eError = eExtractInteger(pCol,pTknVec);     break;
-      case CT_INTERVAL:  eError = eExtractInterval(pCol,pTknVec);    break;
-      case CT_TIME:      eError = eExtractTime(pCol,pTknVec);        break;
-      case CT_TIMESTAMP: eError = eExtractTimestamp(pCol,pTknVec);   break;
-      case CT_VARCHAR:   eError = eExtractVarchar(pCol,pTknVec);     break;
+      case CT_BOOLEAN:   eError = eExtractBoolean   (pCol,pTknVec);  break;
+      case CT_DATE:      eError = eExtractDate      (pCol,pTknVec);  break;
+      case CT_DECIMAL:   eError = eExtractDecimal   (pCol,pTknVec);  break;
+      case CT_FLOAT:     eError = eExtractFloat     (pCol,pTknVec);  break;
+      case CT_INTEGER:   eError = eExtractInteger   (pCol,pTknVec);  break;
+      case CT_INTERVAL:  eError = eExtractInterval  (pCol,pTknVec);  break;
+      case CT_TIME:      eError = eExtractTime      (pCol,pTknVec);  break;
+      case CT_TIMESTAMP: eError = eExtractTimestamp (pCol,pTknVec);  break;
+      case CT_VARCHAR:   eError = eExtractVarchar   (pCol,pTknVec);  break;
         
       default:
         if (pTkn->bSame("char"_Stz) ||
@@ -224,12 +239,11 @@ eEC TableDef::eParse(Stz* szCmd)
       goto L_RETURN;
  
     
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // -- -- --
     // not null
-    
-    pTkn = pTknVec->pNextToken(); PT();
+    // -- -- --
 
-    // check for NOT NULL
+    pTkn = pTknVec->pNextToken(); PT();
     if (pTkn->bSame("not"_Stz)) {
       pTkn = pTknVec->pNextToken(); PT();
       if (! pTkn->bSame("null"_Stz))
@@ -258,6 +272,7 @@ eEC TableDef::eParse(Stz* szCmd)
 //    }
 
   }
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -299,7 +314,7 @@ eEC TableDef::eExtractDate(Column* pCol, TokenVec* pTknVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract float                                                              */
+/* extract decimal                                                            */
 /*----------------------------------------------------------------------------*/
 eEC TableDef::eExtractDecimal(Column* pCol, TokenVec* pTknVec)
 {
@@ -500,6 +515,7 @@ eEC TableDef::eExtractVarchar(Column* pCol, TokenVec* pTknVec)
 }
 
 #undef PT
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
