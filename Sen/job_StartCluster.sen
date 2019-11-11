@@ -140,6 +140,8 @@
   // wait till all nodes connected
   grid::pause
 
+  true grid::started!
+
   pJob_StartCluster job::participantExecuted
 
   <<logExit <DONE_EXE>
