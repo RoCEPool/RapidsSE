@@ -19,7 +19,7 @@ IndexDef* MetaData::_pIndexDef(void* pAddr)
 {
   IndexDef* pIndex = reinterpret_cast<IndexDef*>(pAddr);
   
-  RASSERT_TYPE(pIndex,CN_INDEX);
+  RASSERT_TYPE(pIndex,CN_INDEXDEF);
   
   return pIndex;
 }
@@ -58,9 +58,9 @@ void IndexDef::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IndexDef::IndexDef(void)
-: Object(CN_INDEX)
+: Object(CN_INDEXDEF)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   m_sIndexName    = C_NO_NAME;
   m_eIndexType    = IT_SKIP_LIST;
@@ -72,9 +72,9 @@ IndexDef::IndexDef(void)
   
   m_sCmd          = ""_Stz;
 
-  _checkInitialised_(CN_INDEX);
+  _checkInitialised_(CN_INDEXDEF);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,7 +82,7 @@ IndexDef::IndexDef(void)
 /*----------------------------------------------------------------------------*/
 IndexDef::~IndexDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   delete m_pIdxColVec;
 }
@@ -101,7 +101,7 @@ IndexDef::~IndexDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 //void IndexDef::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 //{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
 //
 //  //vTrace("vCreateColumnVec: index %s column %s %s\n"_Stz,
 //  //        m_sIndexName.s(),
@@ -131,7 +131,7 @@ IndexDef::~IndexDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 //void IndexDef::vCreateColumnVec(Jobs::Job_CreateIndex* pJob)
 //{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
 //
 //  Column* pColumn = nullptr;
 //  
@@ -163,7 +163,7 @@ IndexDef::~IndexDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* IndexDef::aIndexName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   return m_sIndexName;
 }
@@ -173,7 +173,7 @@ Stz* IndexDef::aIndexName(void)
 /*----------------------------------------------------------------------------*/
 s32 IndexDef::sIndexName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   return m_sIndexName;
 }
@@ -183,7 +183,7 @@ s32 IndexDef::sIndexName(void)
 /*----------------------------------------------------------------------------*/
 //void IndexDef::vIndexNo(i8 iIndexNo)
 //{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
 //
 //  m_iIndexNo = iIndexNo;
 //}
@@ -193,7 +193,7 @@ s32 IndexDef::sIndexName(void)
 /*----------------------------------------------------------------------------*/
 //i8 IndexDef::iIndexNo(void)
 //{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
 //
 //  return m_iIndexNo;
 //}
@@ -203,7 +203,7 @@ s32 IndexDef::sIndexName(void)
 /*----------------------------------------------------------------------------*/
 void IndexDef::vShowColumnVec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   for (i8 i_Column = 0; i_Column < m_pIdxColVec->nItems(); i_Column++) {
     Column* pColumn = m_pIdxColVec->pGet(i_Column);
@@ -216,7 +216,7 @@ void IndexDef::vShowColumnVec(void)
 /*----------------------------------------------------------------------------*/
 //Table* IndexDef::pTable(void)
 //{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
 //
 //  return m_pTable;
 //}
@@ -226,7 +226,7 @@ void IndexDef::vShowColumnVec(void)
 /*----------------------------------------------------------------------------*/
 //void IndexDef::vTable(Table* pTable)
 //{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
 //
 //  m_pTable = pTable;
 //}
@@ -236,7 +236,7 @@ void IndexDef::vShowColumnVec(void)
 /*----------------------------------------------------------------------------*/
 //void IndexDef::vTidyUp(void)
 //{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
 //
 //  // tidyup the index from the table partitions
 //  m_pTable->vTidyUpIndex(m_iIndexNo);
@@ -253,7 +253,7 @@ void IndexDef::vShowColumnVec(void)
 /*----------------------------------------------------------------------------*/
 bool IndexDef::bIsPrimaryKey(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   return m_bIsPrimaryKey;
 }
@@ -263,7 +263,7 @@ bool IndexDef::bIsPrimaryKey(void)
 /*----------------------------------------------------------------------------*/
 void IndexDef::vIsPrimaryKey(bool bPrimaryKey)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   m_bIsPrimaryKey = bPrimaryKey;
 }
@@ -273,7 +273,7 @@ void IndexDef::vIsPrimaryKey(bool bPrimaryKey)
 /*----------------------------------------------------------------------------*/
 bool IndexDef::bIsUnique(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   return m_bIsUnique;
 }
@@ -283,7 +283,7 @@ bool IndexDef::bIsUnique(void)
 /*----------------------------------------------------------------------------*/
 void IndexDef::vIsUnique(bool bUnique)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   m_bIsUnique = bUnique;
 }
@@ -293,7 +293,7 @@ void IndexDef::vIsUnique(bool bUnique)
 /*----------------------------------------------------------------------------*/
 IdxColVec* IndexDef::pIdxColVec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   return m_pIdxColVec;
 }
@@ -303,7 +303,7 @@ IdxColVec* IndexDef::pIdxColVec(void)
 /*----------------------------------------------------------------------------*/
 i8 IndexDef::iSortKeyDatum(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   i8 nKeyDatumSize = 0;
   for (i8 i_IdxCol = 0; i_IdxCol < m_pIdxColVec->nItems(); i_IdxCol++) {
@@ -317,16 +317,7 @@ i8 IndexDef::iSortKeyDatum(void)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* IndexDef::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(IndexDef)
 
 /*============================================================================*/
 /* end                                                                        */

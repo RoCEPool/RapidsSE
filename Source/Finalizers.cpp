@@ -123,6 +123,7 @@ pFINALIZE *gpFinalize[]
   /* 50 */ &Finalize::vUndefined,         // CN_HPROW
 
   /* 51 */ &Index::vFinalize,             // CN_INDEX
+  /* 52 */ &Finalize::vUndefined,         // CN_INDEXDEF
   /* 52 */ &Finalize::vUndefined,         // CN_INDEXTREE
   /* 53 */ &Finalize::vUndefined,         // CN_INDEXTREEVEC
   /*    */ &Finalize::vUndefined,         // CN_INFLATEOP

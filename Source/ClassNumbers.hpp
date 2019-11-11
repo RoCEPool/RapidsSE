@@ -126,6 +126,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_HPROW,
 
   /*  45 0x2D      368B Heap:I */ CN_INDEX,
+  /*  45 0x2D      368B Heap:I */ CN_INDEXDEF,
   /*  46 0x2E      184B Heap:S */ CN_INDEXTREE,
   /*  47 0x2F     8224B Heap:M */ CN_INDEXTREEVEC,
   /*                           */ CN_INFLATEOP,
@@ -496,6 +497,7 @@ static Stz* aCN[]
   /*          */ "HPROW"_Stz,               // CN_HPROW
 
   /*  45 0x2D */ "INDEX"_Stz,               // CN_INDEX
+  /*  45 0x2D */ "INDEXDEF"_Stz,            // CN_INDEXDEF
   /*  46 0x2E */ "INDEXTREE"_Stz,           // CN_INDEXTREE
   /*  47 0x2F */ "INDEXTREEVEC"_Stz,        // CN_INDEXTREEVEC
   /*          */ "INFLATEOP"_Stz,           // CN_INFLATEOP
