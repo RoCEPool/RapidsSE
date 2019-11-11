@@ -31,8 +31,8 @@ void Step::vTableDefParse(void)
   
   eEC eResult = pTableDef->eParse(sCmd);
   
-  delete pTableDef;
-  pTableDef = nullptr;
+//  delete pTableDef;
+//  pTableDef = nullptr;
   
   m_pDataStack->vPushPointer(pTableDef);
 
