@@ -9,8 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : SubTruncate_run ( -- <R> )
 
-<path> .
-  >>logEntry <SEED_RUN>
+  >>logEntry <SUB_SEED_RUN>
 
   0 0 locals| pJob_SubTruncate pTask |
   0 0 0 locals| iSlot pTable sTableNm |
@@ -24,8 +23,8 @@
   task::this to pTask
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob_SubTruncate
+  // get the job
+  job::this to pJob_SubTruncate
 
   // get truncate job
   pJob_SubTruncate job_SubTruncate.truncateJobId@ to iTrucateJobId
