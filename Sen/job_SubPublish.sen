@@ -68,13 +68,7 @@
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job from publish (sub has no session)
-  //pTask_Publish task.job@ job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  //pJob_SubPublish job.objectName@ to sTableNm
   <tableNm> to sTableNm
   sTableNm pushTable assert
 

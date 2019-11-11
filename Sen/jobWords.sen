@@ -5,30 +5,6 @@
 " jobWords.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* push dictionary path from session onto datastack                           */
-/*----------------------------------------------------------------------------*/
-/*
-: pushPath ( pJob -- )
-
-  0 0 locals| pDicStackSession pSession |
-
-  // get session dic stack
-  job::this job.session@ to pSession
-
-  pSession not if
-    0 exit
-  then
-  pSession session.dicStack@ to pDicStackSession
-
-  // copy the path from session dic stack onto data stack
-  pDicStackSession dicStack.depth 0 ?do
-    pDicStackSession dicStack.depth 1 - I - pDicStackSession dicStack.pick dic.name
-  loop
-
-  pDicStackSession dicStack.depth
-;
-*/
-/*----------------------------------------------------------------------------*/
 /* set dictionary path of this task back into session                         */
 /*----------------------------------------------------------------------------*/
 : setPath ( -- )
@@ -266,13 +242,6 @@
   // wait for ack from deciding job__Ended
   task::wait
 ;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-//: job::pathSet
-
-//  job::this job.pushPath task::dicStack.set
-//;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

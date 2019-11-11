@@ -39,11 +39,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // set path
-  //pJob_Walk job.pushPath task::dicStack.set
-
   // set table dictionary
-  //pJob_Walk job.objectName@ to sTableNm
   <tableNm> to sTableNm
   sTableNm pushTable assert
 
@@ -110,11 +106,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
   DdlLock[].grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_Walk job.pushPath
-  //task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get index and table name

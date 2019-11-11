@@ -158,11 +158,6 @@
   DdlLock[].grabRead
 
   //----------------------------------------------------------------------------
-  // set task's dictionary stack from path in job
-  //pJob_CreateTable job.pushPath
-  //task::dicStack.set
-
-  //----------------------------------------------------------------------------
   // check if we have enough buffers
   node::checkEnoughBuffers not if pJob_CreateTable <ERROR_JOB> !!logError exit then
 

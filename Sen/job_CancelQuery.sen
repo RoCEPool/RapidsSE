@@ -21,10 +21,6 @@
    // grab a ddl lock
    DdlLock[].grabRead
 
-   //----------------------------------------------------------------------------
-   // set task's dictionary stack from path in job
-   //pJob_CancelQuery job.pushPath
-   //task::dicStack.set
    <jobId> to sJobId
 
   //----------------------------------------------------------------------------

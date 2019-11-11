@@ -60,11 +60,6 @@
   // get the job from the task
   pTask task.job@ to pJob_ListIdxColumns
 
-  //----------------------------------------------------------------------------
-  // set task's dictionary stack from path in job
-  //pJob_ListIdxColumns job.pushPath
-  //task::dicStack.set
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab ddl read lock
   DdlLock[].grabRead

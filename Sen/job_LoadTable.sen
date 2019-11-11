@@ -56,11 +56,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // initialise
 
-  // set path
-  //pJob_LoadTable job.pushPath task::dicStack.set
-
   // set table dictionary
-  //pJob_LoadTable job.objectName@ to sTableNm
   <tableNm> to sTableNm
   sTableNm pushTable assert
 
@@ -174,13 +170,6 @@
   // grab a ddl lock
 
   DdlLock[].grabRead
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // path checks
-
-  // set task's dictionary stack from path in job
-  //pJob_LoadTable job.pushPath task::dicStack.set
-  //pathDump
 
   // there should be a table folder
   sTableNm checkIsTableFolder not if pJob_LoadTable <ERROR_JOB> !!logError exit then

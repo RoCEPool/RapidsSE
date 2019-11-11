@@ -29,11 +29,6 @@
   //pJob_SubInserter job.objectName@ to sTableNm
   <tableNm> to sTableNm
 
-  // push table dictionary
-  //pJob_SubInserter job.pushPath task::dicStack.set
-  //sTableNm pushTable assert
-  //pathDump
-
   sTableNm find execute locals| pTable |
 
   pTable pJob_SubInserter Job_SubInserter.begin
