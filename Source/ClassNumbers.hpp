@@ -153,7 +153,6 @@ enum eCN : u2 // Class Number
   /*  65 0x41    70600B Heap:L */ CN_JOB_ANALYZETABLE,
   /*  66 0x42    70592B Heap:L */ CN_JOB_ANSWER,
   /*  67 0x43    70592B Heap:L */ CN_JOB_BOOT,
-  /*  70 0x46    70592B Heap:L */ CN_JOB_COMPACTINDEX,
   /*  71 0x47    70592B Heap:L */ CN_JOB_CONNECTCLUSTER,
   /*  72 0x48    70592B Heap:L */ CN_JOB_CONNECTOR,
   /*  73 0x49   118688B Heap:L */ CN_JOB_COPYBUFFER,
@@ -528,7 +527,6 @@ static Stz* aCN[]
   /*  65 0x41 */ "JOB_ANALYZETABLE"_Stz,    // CN_JOB_ANALYZETABLE
   /*  66 0x42 */ "JOB_ANSWER"_Stz,          // CN_JOB_ANSWER
   /*  67 0x43 */ "JOB_BOOT"_Stz,            // CN_JOB_BOOT
-  /*  70 0x46 */ "JOB_COMPACTINDEX"_Stz,    // CN_JOB_COMPACTINDEX
   /*  71 0x47 */ "JOB_CONNECTCLUSTER"_Stz,  // CN_JOB_CONNECTCLUSTER
   /*  72 0x48 */ "JOB_CONNECTOR"_Stz,       // CN_JOB_CONNECTOR
   /*  73 0x49 */ "JOB_COPYBUFFER"_Stz,      // CN_JOB_COPYBUFFER

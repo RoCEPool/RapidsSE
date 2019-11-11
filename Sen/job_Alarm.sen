@@ -24,7 +24,7 @@
 /*----------------------------------------------------------------------------*/
 : alarm_run ( -- )
 
-  >>logEntry <<SEED_RUN>
+  >>logEntry <SEED_RUN>
 
   "Alarm Job Started" .
 
