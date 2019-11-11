@@ -37,6 +37,8 @@ void Step::vJob__BegunNew(void)
   JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
   pJobBegun->m_aJobClass = pJobClass__Begun;
   
+  pJobBegun->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
+
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobBegun);
   
   m_pDataStack->vPushPointer(pJobBegun);
@@ -62,7 +64,9 @@ void Step::vJob__CancelNew(void)
   
   JobClass* pJobClass__Cancel = JobClass::pFind(CN_JOB__CANCEL);
   pJobCancel->m_aJobClass = pJobClass__Cancel;
-  
+
+  pJobCancel->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
+
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancel);
   
   m_pDataStack->vPushPointer(pJobCancel);
@@ -91,6 +95,8 @@ void Step::vJob__CancelledNew(void)
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancelled);
   
+  pJobCancelled->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
+  
   m_pDataStack->vPushPointer(pJobCancelled);
   
   EXIT();
@@ -117,6 +123,8 @@ void Step::vJob__EndNew(void)
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnd);
   
+  pJobEnd->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
+  
   m_pDataStack->vPushPointer(pJobEnd);
   
   EXIT();
@@ -140,6 +148,8 @@ void Step::vJob__EndedNew(void)
   
   JobClass* pJobClass__Ended = JobClass::pFind(CN_JOB__ENDED);
   pJobEnded->m_aJobClass = pJobClass__Ended;
+  
+  pJobEnded->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnded);
   
@@ -169,6 +179,8 @@ void Step::vJob__ExecuteNew(void)
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecute);
   
+  pJobExecute->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
+  
   m_pDataStack->vPushPointer(pJobExecute);
   
   EXIT();
@@ -192,6 +204,8 @@ void Step::vJob__ExecutedNew(void)
   
   JobClass* pJobClass__Executed = JobClass::pFind(CN_JOB__EXECUTED);
   pJobExecuted->m_aJobClass = pJobClass__Executed;
+  
+  pJobExecuted->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecuted);
   
