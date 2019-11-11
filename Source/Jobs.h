@@ -102,7 +102,6 @@ namespace Jobs
 
 #include "Job_Universal.hpp"
 
-#include "Job_WaitCluster.hpp"
 #include "Job_Waker.hpp"
 #include "Job_Walk.hpp"
 #include "Job_WriteBuffer.hpp"

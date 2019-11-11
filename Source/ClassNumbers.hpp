@@ -188,7 +188,6 @@ enum eCN : u2 // Class Number
   /*                           */ CN_JOB_SUBWALKER,
   /*                           */ CN_JOB_SUPERVISOR,
   /* 133 0x85    70592B Heap:L */ CN_JOB_UNIVERSAL,
-  /* 137 0x89    70592B Heap:L */ CN_JOB_WAITCLUSTER,
   /*                           */ CN_JOB_WAKER,
   /*                           */ CN_JOB_WALK,
   /* 138 0x8A    70648B Heap:L */ CN_JOB_WRITEBUFFER,
@@ -559,7 +558,6 @@ static Stz* aCN[]
   /*          */ "JOB_SUBWALKER"_Stz,       // CN_JOB_SUBWALKER
   /*          */ "JOB_SUPERVISOR"_Stz,      // CN_JOB_SUPERVISOR
   /* 133 0x85 */ "JOB_UNIVERSAL"_Stz,       // CN_JOB_UNIVERSAL
-  /* 137 0x89 */ "JOB_WAITCLUSTER"_Stz,     // CN_JOB_WAITCLUSTER
   /*          */ "JOB_WAKER"_Stz,           // CN_JOB_WAKER
   /* 137 0x89 */ "JOB_WALK"_Stz,            // CN_JOB_WALK
   /* 138 0x8A */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER

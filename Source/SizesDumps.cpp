@@ -191,7 +191,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_SUBWALKER
   /*    */ &Dump::vDummy,           // CN_JOB_SUPERVISOR
   /*    */ &Dump::vDummy,           // CN_JOB_UNIVERSAL
-  /*    */ &Dump::vDummy,           // CN_JOB_WAITCLUSTER
   /*    */ &Dump::vDummy,           // CN_JOB_WAKER
   /*    */ &Dump::vDummy,           // CN_JOB_WALK
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEBUFFER
@@ -564,7 +563,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_SubWalker),      // CN_JOB_SUBWALKER
   /*    */ sizeof(Job_Supervisor),     // CN_JOB_SUPERVISOR
   /*    */ sizeof(Job_Universal),      // CN_JOB_UNIVERSAL
-  /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
   /*    */ sizeof(Job_Waker),          // CN_JOB_WAKER
   /*    */ sizeof(Job_Walk),           // CN_JOB_WALK
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
@@ -937,7 +935,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBWALKER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUPERVISOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_UNIVERSAL
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WAITCLUSTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WAKER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WALK
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEBUFFER
