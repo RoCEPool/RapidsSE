@@ -23,10 +23,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.assertReceived"_Stz,   &Step::vJobAssertReceived);
 
   vAddStep("job.class"_Stz,            &Step::vJobClass);
-  vAddStep("job.columnCount@"_Stz,     &Step::vJobColumnCountFetch);
-  vAddStep("job.columnIsPartKey"_Stz,  &Step::vJobColumnIsPartKey);
-  vAddStep("job.columnName@"_Stz,      &Step::vJobColumnNameFetch);
-  vAddStep("job.columnType@"_Stz,      &Step::vJobColumnTypeFetch);
   vAddStep("job.createResponseVec"_Stz,&Step::vJobCreateResponseVec);
   
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
@@ -420,86 +416,6 @@ void Step::vJobClass(void)
   eCN eClass = pJob->eClass();
   
   m_pDataStack->vPushI8(eClass);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.columnCount@ -- fetch the no of columns of the create table job        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobColumnCountFetch(void)
-{
-  ENTRY("vJobColumnCountFetch"_Stz);
-  
-//  Object* pJobPtr;
-//  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-//    THROW_DSTACK();
-//  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
-//
-//  m_pDataStack->vPushI8(pJob_CreateTable->m_iColumns);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.columnIsPartKey -- return true if column is a partition by key        */
-/*----------------------------------------------------------------------------*/
-void Step::vJobColumnIsPartKey(void)
-{
-  ENTRY("vJobColumnIsPartKey"_Stz);
-  
-//  Object* pJobPtr;
-//  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-//    THROW_DSTACK();
-//  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
-//
-//  i8 iColumnNo;
-//  if ( ! m_pDataStack->bPopAsInt(iColumnNo) )
-//    THROW_DSTACK();
-//
-//  m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].bIsPtnKey());
-//
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.columnName@ -- fetch the name of the column of the create table job    */
-/*----------------------------------------------------------------------------*/
-void Step::vJobColumnNameFetch(void)
-{
-  ENTRY("vJobColumnNameFetch"_Stz);
-  
-//  Object* pJobPtr;
-//  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-//    THROW_DSTACK();
-//  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
-//
-//  i8 iColumnNo;
-//  if ( ! m_pDataStack->bPopAsInt(iColumnNo) )
-//    THROW_DSTACK();
-//
-//  m_pDataStack->vPushS32(pJob_CreateTable->m_xColumns[iColumnNo].sColumnName());
-//
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.columnType@ -- fetch column type from create table job                 */
-/*----------------------------------------------------------------------------*/
-void Step::vJobColumnTypeFetch(void)
-{
-  ENTRY("vJobColumnTypeFetch"_Stz);
-  
-//  Object* pJobPtr;
-//  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-//    THROW_DSTACK();
-//  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
-//
-//  i8 iColumnNo;
-//  if ( ! m_pDataStack->bPopAsInt(iColumnNo) )
-//    THROW_DSTACK();
-//
-//  m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].eColumnType());
   
   EXIT();
 }

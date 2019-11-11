@@ -446,10 +446,6 @@ public:
   void vJobAssertReceived(void);
 
   void vJobClass(void);
-  void vJobColumnCountFetch(void);
-  void vJobColumnNameFetch(void);
-  void vJobColumnIsPartKey(void);
-  void vJobColumnTypeFetch(void);
   void vJobCompleted(void);
   void vJobCreateResponseVec(void);
   void vJobOperandFetch(void);
