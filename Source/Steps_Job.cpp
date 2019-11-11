@@ -431,12 +431,12 @@ void Step::vJobColumnCountFetch(void)
 {
   ENTRY("vJobColumnCountFetch"_Stz);
   
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
-  
-  m_pDataStack->vPushI8(pJob_CreateTable->m_iColumns);
+//  Object* pJobPtr;
+//  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+//    THROW_DSTACK();
+//  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
+//
+//  m_pDataStack->vPushI8(pJob_CreateTable->m_iColumns);
   
   EXIT();
 }
@@ -448,17 +448,17 @@ void Step::vJobColumnIsPartKey(void)
 {
   ENTRY("vJobColumnIsPartKey"_Stz);
   
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
-  
-  i8 iColumnNo;
-  if ( ! m_pDataStack->bPopAsInt(iColumnNo) )
-    THROW_DSTACK();
-  
-  m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].bIsPtnKey());
-  
+//  Object* pJobPtr;
+//  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+//    THROW_DSTACK();
+//  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
+//
+//  i8 iColumnNo;
+//  if ( ! m_pDataStack->bPopAsInt(iColumnNo) )
+//    THROW_DSTACK();
+//
+//  m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].bIsPtnKey());
+//
   EXIT();
 }
 
@@ -469,17 +469,17 @@ void Step::vJobColumnNameFetch(void)
 {
   ENTRY("vJobColumnNameFetch"_Stz);
   
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
-  
-  i8 iColumnNo;
-  if ( ! m_pDataStack->bPopAsInt(iColumnNo) )
-    THROW_DSTACK();
-  
-  m_pDataStack->vPushS32(pJob_CreateTable->m_xColumns[iColumnNo].sColumnName());
-  
+//  Object* pJobPtr;
+//  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+//    THROW_DSTACK();
+//  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
+//
+//  i8 iColumnNo;
+//  if ( ! m_pDataStack->bPopAsInt(iColumnNo) )
+//    THROW_DSTACK();
+//
+//  m_pDataStack->vPushS32(pJob_CreateTable->m_xColumns[iColumnNo].sColumnName());
+//
   EXIT();
 }
 
@@ -490,16 +490,16 @@ void Step::vJobColumnTypeFetch(void)
 {
   ENTRY("vJobColumnTypeFetch"_Stz);
   
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
-  
-  i8 iColumnNo;
-  if ( ! m_pDataStack->bPopAsInt(iColumnNo) )
-    THROW_DSTACK();
-  
-  m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].eColumnType());
+//  Object* pJobPtr;
+//  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+//    THROW_DSTACK();
+//  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
+//
+//  i8 iColumnNo;
+//  if ( ! m_pDataStack->bPopAsInt(iColumnNo) )
+//    THROW_DSTACK();
+//
+//  m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].eColumnType());
   
   EXIT();
 }

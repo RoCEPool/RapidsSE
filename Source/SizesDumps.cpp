@@ -158,7 +158,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_CONNECTOR
   /*    */ &Dump::vDummy,           // CN_JOB_COPYBUFFER
   /*    */ &Dump::vDummy,           // CN_JOB_CREATEINDEX
-  /*    */ &Dump::vDummy,           // CN_JOB_CREATETABLE
   /*    */ &Dump::vDummy,           // CN_JOB_DEFINENODE
   /*    */ &Dump::vDummy,           // CN_JOB_EXPORT
   /*    */ &Dump::vDummy,           // CN_JOB_FETCHROWS
@@ -532,7 +531,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Connector),      // CN_JOB_CONNECTOR
   /*    */ sizeof(Job_CopyBuffer),     // CN_JOB_COPYBUFFER
   /*    */ sizeof(Job_CreateIndex),    // CN_JOB_CREATEINDEX
-  /*    */ sizeof(Job_CreateTable),    // CN_JOB_CREATETABLE
   /*    */ sizeof(Job_DefineNode),     // CN_JOB_DEFINENODE
   /*    */ sizeof(Job_Export),         // CN_JOB_EXPORT
   /*    */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
@@ -906,7 +904,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CONNECTOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_COPYBUFFER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATEINDEX
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATETABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DEFINENODE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_EXPORT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_FETCHROWS

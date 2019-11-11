@@ -73,27 +73,27 @@ Column::Column(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Column::Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo)
-: Object(CN_COLUMN)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  m_iColumnNo     = iColumnNo;
-  m_sColumnName   = pJob->m_xColumns[iColumnNo].m_sColumnName;
-  m_eColumnType   = pJob->m_xColumns[iColumnNo].m_eColumnType;
-  m_iColumnLength = pJob->m_xColumns[iColumnNo].m_iColumnLength;
-  m_iColumnScale  = pJob->m_xColumns[iColumnNo].m_iColumnScale;
-  m_eDatumType    = pJob->m_xColumns[iColumnNo].m_eDatumType;
-  m_bIsNullable   = pJob->m_xColumns[iColumnNo].m_bIsNullable;
-  m_bIsUnique     = pJob->m_xColumns[iColumnNo].m_bIsUnique;
-  m_bIsPtnKey     = pJob->m_xColumns[iColumnNo].m_bIsPtnKey;
-  m_bIsLastColumn = false;
-  m_pColVec       = nullptr;
-
-  _checkInitialised_(CN_COLUMN);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-}
+//Column::Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo)
+//: Object(CN_COLUMN)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+//
+//  m_iColumnNo     = iColumnNo;
+//  m_sColumnName   = pJob->m_xColumns[iColumnNo].m_sColumnName;
+//  m_eColumnType   = pJob->m_xColumns[iColumnNo].m_eColumnType;
+//  m_iColumnLength = pJob->m_xColumns[iColumnNo].m_iColumnLength;
+//  m_iColumnScale  = pJob->m_xColumns[iColumnNo].m_iColumnScale;
+//  m_eDatumType    = pJob->m_xColumns[iColumnNo].m_eDatumType;
+//  m_bIsNullable   = pJob->m_xColumns[iColumnNo].m_bIsNullable;
+//  m_bIsUnique     = pJob->m_xColumns[iColumnNo].m_bIsUnique;
+//  m_bIsPtnKey     = pJob->m_xColumns[iColumnNo].m_bIsPtnKey;
+//  m_bIsLastColumn = false;
+//  m_pColVec       = nullptr;
+//
+//  _checkInitialised_(CN_COLUMN);
+//
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */

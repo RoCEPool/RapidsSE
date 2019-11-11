@@ -56,72 +56,27 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* Job_CreateTable request (on originating node)                              */
-/*----------------------------------------------------------------------------*/
-: createTable_req (  -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  JP_BEGINNING log::markPhase
-
-  0 0 locals| pJob pTask |
-
-  tp: createTable
-
-  // get the task
-  task::this to pTask
-
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job on each node                                   */
 /*----------------------------------------------------------------------------*/
-: createTable_exe ( pJob_CreateTable -- )
+: createTable::execute _eeh ( -- )
 
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_CreateTable |
   job::this locals| pJob_CreateTable |
 
-  0 0 locals| pTable sTableNm |
+  0 locals| pTable |
 
   tp: createTable_exe
-
-  //----------------------------------------------------------------------------
-  // assert correct job
-  CN_JOB_CREATETABLE pJob_CreateTable object.assertClass
-
-  //----------------------------------------------------------------------------
-  // grab a ddl lock
-  DdlLock[].grabWrite
-
 
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   <cmd> tableDef::parse locals| pTableDef |
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
   //----------------------------------------------------------------------------
   // make table
-  //pJob_CreateTable job.objectName@ to sTableNm
   <tableNm> makeTable to pTable
 
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   pTableDef pTable table.tableDef!
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-  //----------------------------------------------------------------------------
-  // add table columns
-  //pJob_CreateTable pTable table.createColumnVec
 
   //----------------------------------------------------------------------------
   // add partition columns
@@ -134,26 +89,17 @@
   //----------------------------------------------------------------------------
   // should be in tables
   assertInTables
-  pJob_CreateTable job.notice
-
-  // job::deleteThis
-
-  pJob_CreateTable job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateTable job check resources                                */
 /*----------------------------------------------------------------------------*/
-: createTable.checkResources ( pJob_CreateTable -- )
-
-  >>logEntry <Check_Resources>
-
-  params| pJob_CreateTable  |
+: createTable::checkResources _eeh ( -- )
 
   tp: createTable.checkResources
   //"checkResources received" .
+
+  job::this locals| pJob_CreateTable |
 
   //----------------------------------------------------------------------------
   // grab a ddl lock
@@ -167,81 +113,21 @@
   // check if we can make the table
   //pJob_CreateTable job.objectName@
   <tableNm> checkMakeTable not if pJob_CreateTable <ERROR_JOB> !!logError exit then
-
-  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateTable job release resources                              */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: createTable.releaseResources ( pJob_CreateTable -- )
+jobSyntax: createTable :: create table <tableNm> etc ;
 
-  >>logEntry <Release_Resources>
-
-  params| pJob_CreateTable  |
-
-  tp: createTable.releaseResources
-  //"releaseResources received" .
-
-  <<logExit <Resources_Released>
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: createTable_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_CreateTable |
-
-  //">> createTable_beg <<" .
-
-  // add this job to the participants list
-  pJob_CreateTable job.becomeParticipant
-
-  // check resources
-  pJob_CreateTable createTable.checkResources
-
-  // this job has begun
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: createTable_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_CreateTable |
-
-  //">> createTable_end <<" .
-
-  // release resources
-  pJob_CreateTable createTable.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: createTable_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_CreateTable |
-
-  pJob_CreateTable createTable.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+jobInfo: createTable
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_WRITE
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/

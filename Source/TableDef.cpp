@@ -270,13 +270,26 @@ eEC TableDef::eParse(Stz* szCmd)
 //
 //      pTkn = pTknVec->pNextToken(); PT();
 //    }
-
+    if (i_Col == 0)
+      pCol->vIsPtnKey(true);
     m_pStreamDef->m_xaColumn[i_Col].vCopy(pCol);
     m_pStreamDef->m_nDefColumns[0]++;
     
+   
   }
   
-  
+//  // check if we have a partition by clause
+//  if ( iCurrentToken < iNumTokens && pTokenVec->pGet(iCurrentToken++)->bSame("partition"_Stz)) {
+//
+//    if ( ! bPartitionTable(pTokenVec, iCurrentToken) )
+//      return EC_INVALID_COMMAND;
+//  }
+//  else {
+//    // no partition by clause
+//    // we will create partitioning using the first column
+//    m_xColumns[0].vIsPtnKey(true);
+//  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 L_RETURN:

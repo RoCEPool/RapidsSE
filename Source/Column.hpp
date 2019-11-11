@@ -49,7 +49,7 @@ namespace MetaData
     void  operator delete(void*);
     
     Column(void);
-    Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo);
+    //Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo);
     ~Column(void) noexcept(false);
   
     static bool bValidBcd(i8 iPrecision, i8 iScale);

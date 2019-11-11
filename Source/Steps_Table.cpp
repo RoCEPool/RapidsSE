@@ -225,19 +225,19 @@ void Step::vTableCreateColumnVec(void)
 {
   ENTRY("vTableCreateColumnVec"_Stz);
   
-  Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
-    THROW_DSTACK();
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  Object* pPtrJob;
-  if ( ! m_pDataStack->bPopObject(pPtrJob) )
-    THROW_DSTACK();
-  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pPtrJob);
-  ASSERT(CN_JOB_CREATETABLE == pJob_CreateTable->eClass());
-  
-  pTable->vCreateColumnVec(pJob_CreateTable);
+//  Object* pPtrTable;
+//  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+//    THROW_DSTACK();
+//  Table* pTable = _pTable(pPtrTable);
+//  ASSERT(CN_TABLE == pTable->eClass());
+//
+//  Object* pPtrJob;
+//  if ( ! m_pDataStack->bPopObject(pPtrJob) )
+//    THROW_DSTACK();
+//  Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pPtrJob);
+//  //ASSERT(CN_JOB_CREATETABLE == pJob_CreateTable->eClass());
+//
+//  //pTable->vCreateColumnVec(pJob_CreateTable);
   
   EXIT();
 }
