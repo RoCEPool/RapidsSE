@@ -194,11 +194,6 @@
   DdlLock[].grabWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_CreateIndex job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the index
   pJob_CreateIndex makeIndex
 
@@ -229,11 +224,6 @@
   //----------------------------------------------------------------------------
   // grab a ddl lock
   DdlLock[].grabRead
-
-  //----------------------------------------------------------------------------
-  // set task's dictionary stack from path in job
-  //pJob_CreateIndex job.pushPath
-  //task::dicStack.set
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers

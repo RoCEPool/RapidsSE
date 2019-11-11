@@ -33,8 +33,6 @@
   //pJob_WriteBuffer job.objectName@ to sTableNm
   <tableNm> to sTableNm
 
-  // push table dictionary
-  //pJob_WriteBuffer job.pushPath task::dicStack.set
   sTableNm pushTable assert
 
   // use table name find and set target table

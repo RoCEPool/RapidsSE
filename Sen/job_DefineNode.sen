@@ -88,11 +88,6 @@
   DdlLock[].grabWrite
 
   //----------------------------------------------------------------------------
-  // set task's dictionary stack from path in job
-  //pJob_DefineNode job.pushPath
-  //task::dicStack.set
-
-  //----------------------------------------------------------------------------
   // make Node
   <nodeNm> to sNodeNm
   sNodeNm makeNode to pNode
@@ -118,11 +113,6 @@
   //----------------------------------------------------------------------------
   // grab a ddl lock
   DdlLock[].grabRead
-
-  //----------------------------------------------------------------------------
-  // set task's dictionary stack from path in job
-  //pJob_DefineNode job.pushPath
-  //task::dicStack.set
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers

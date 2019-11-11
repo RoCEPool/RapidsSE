@@ -30,13 +30,7 @@
   //pJob_WriteRow job.show
 
   // get table name
-  //pJob_WriteRow job.objectName@ to sTableNm
   <tableNm> to sTableNm
-
-  // push table dictionary
-  //pJob_WriteRow job.pushPath task::dicStack.set
-  //sTableNm pushTable assert
-  //pathDump
 
   // use table name find and set target table
   sTableNm find execute locals| pTable |

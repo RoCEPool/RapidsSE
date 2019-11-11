@@ -102,13 +102,7 @@
   DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_AnalyzeIndex job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  //pJob_AnalyzeIndex job.objectName@ to sTableNm
   <tableNm> to sTableNm
   sTableNm pushTable assert
 
@@ -156,14 +150,7 @@
   DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job
-  //pJob_AnalyzeIndex job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
-  //pJob_AnalyzeIndex job.objectName@
-  //pJob_AnalyzeIndex job.indexName@
   <tableNm>
   <indexNm> 
   checkAnalyzeIndex not if pJob_AnalyzeIndex <ERROR_JOB> !!logError exit then

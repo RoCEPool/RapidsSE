@@ -27,10 +27,6 @@
   //pJob_Cf job.folderName@ to sFolderNm
   <folderNm> to sFolderNm
 
-  // set task's dictionary stack from path in job
-  //pJob_Cf job.pushPath
-  //task::dicStack.set
-
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // test for a ".." which will go up one folder

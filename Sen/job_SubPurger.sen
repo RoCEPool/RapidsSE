@@ -75,13 +75,7 @@
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set task's dictionary stack from path in job from purge (sub has no session)
-  //pTask_Purge task.job@ job.pushPath
-  //task::dicStack.set
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
-  //pJob_SubPurger job.objectName@ to sTableNm
   <tableNm> to sTableNm
   sTableNm pushTable assert
 

@@ -226,7 +226,6 @@
 
   SS_SEED_KID log::jobSeed
 
-  //pushPath strVec::toPath to <path>
   <path> str.toStrVec task::dicStack.set
 
   <seed_initially>
@@ -249,12 +248,8 @@
 
   SS_SEED_REQ log::jobSeed
 
-  //pushPath strVec::toPath to <path>
-
   // use the <path> from <ename-set>
   <path> str.toStrVec task::dicStack.set
-
-  //task::dump
 
   <seed_initially>
 ;
@@ -266,7 +261,6 @@
 
   SS_SEED_RUN log::jobSeed
 
-  //pushPath strVec::toPath to <path>
   <path> str.toStrVec task::dicStack.set
 
   <seed_initially>

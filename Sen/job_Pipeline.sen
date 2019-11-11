@@ -56,11 +56,6 @@
   // grab a ddl lock
   DdlLock[].grabRead
 
-  //----------------------------------------------------------------------------
-  // set task's dictionary stack from path in job
-  //pJob_pipeline job.pushPath
-  //task::dicStack.set
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pTask task.grabLock
