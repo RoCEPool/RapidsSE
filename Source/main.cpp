@@ -68,7 +68,9 @@ int main(int argc, const char* argv[])
  Desktop/rapidsse/OS X/Build/Products/Debug
  
  ./SE --start --killPrev --verbose --subloaders 1 --size 10GB --name NODE0 --node NODE0 127.0.0.1 5550 --log
- 
+
+ ./SE --start --killPrev --verbose --subloaders 1 --size 10GB --name NODE1 --node NODE1 127.0.0.1 5551 --node NODE2 127.0.0.1 5552 --log --prompt --developer
+
  to run prompt:
 
  ./SE --prompt --name NODE2 --log --developer
