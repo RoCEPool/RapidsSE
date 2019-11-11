@@ -106,9 +106,7 @@
 
 
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-  //<cmd> tableDef::parse
-
+  <cmd> tableDef::parse locals| pTableDef |
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
@@ -117,9 +115,13 @@
   //pJob_CreateTable job.objectName@ to sTableNm
   <tableNm> makeTable to pTable
 
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  pTableDef pTable table.tableDef!
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
   //----------------------------------------------------------------------------
   // add table columns
-  pJob_CreateTable pTable table.createColumnVec
+  //pJob_CreateTable pTable table.createColumnVec
 
   //----------------------------------------------------------------------------
   // add partition columns

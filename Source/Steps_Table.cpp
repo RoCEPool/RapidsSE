@@ -37,6 +37,8 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.space"_Stz,              &Step::vTableSpace);
   vAddStep("table.subDic"_Stz,             &Step::vTableSubDic);
   vAddStep("table.subLoaders"_Stz,         &Step::vTableSubLoaders);
+  vAddStep("table.tableDef@"_Stz,          &Step::vTableTableDefFetch);
+  vAddStep("table.tableDef!"_Stz,          &Step::vTableTableDefStore);
   vAddStep("table.truncate"_Stz,           &Step::vTableTruncate);
   vAddStep("table.verify"_Stz,             &Step::vTableVerify);
   vAddStep("table.visualize"_Stz,          &Step::vTableVisualize);
@@ -833,6 +835,45 @@ void Step::vTableSpace(void)
   i8 iBuffers = pTable->nCrwBuffers();
   i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
   m_pDataStack->vPushI8(iSpace);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.tableDef@ -- fetch table definition                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vTableTableDefFetch(void)
+{
+  ENTRY("vTableTableDefFetch"_Stz);
+
+  Object* pPtrTable;
+  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+    THROW_DSTACK();
+  Table* pTable = _pTable(pPtrTable);
+  
+  m_pDataStack->vPushPointer(pTable->pTableDef());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.tableDef! -- store table definition                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vTableTableDefStore(void)
+{
+  ENTRY("vTableTableDefStore"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+    THROW_DSTACK();
+  Table* pTable = _pTable(pPtrTable);
+  
+  Object* pPtrTableDef;
+  if ( ! m_pDataStack->bPopObject(pPtrTableDef) )
+    THROW_DSTACK();
+  TableDef* pTableDef = _pTableDef(pPtrTableDef);
+
+  pTable->vTableDef(pTableDef);
   
   EXIT();
 }
