@@ -31,7 +31,7 @@
 /* set dictionary path of this task back into session                         */
 /*----------------------------------------------------------------------------*/
 : savePath ( -- )
-
+/*
   0 0 locals| pDicStackSession pDicStackTask |
 
   // get session dic stack
@@ -57,6 +57,21 @@
   // store path into the sessions <path>=<...>
 
   pushPath strVec::toPath to /session <path>
+ */
+
+  0 0 locals| pDicStackTask |
+
+  // get task dic stack
+  task::this task.dicStack to pDicStackTask
+
+  // copy the path from task dic stack onto data stack
+  pDicStackTask dicStack.depth 0 ?do
+    pDicStackTask dicStack.depth 1 - I - pDicStackTask dicStack.pick dic.name
+  loop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // store path into the sessions <path>=<...>
+  pDicStackTask dicStack.depth strVec::toPath to /session <path>
 ;
 
 

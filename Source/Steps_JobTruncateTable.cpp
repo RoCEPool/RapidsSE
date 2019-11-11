@@ -77,9 +77,9 @@ void Step::vJob_TruncateTableSpawnSub(void)
   //! ALKA: We need to separate out preJob and preNew
   //! preJob to be called only from prompt
   //! copy enameSet from parent job here (to be moved to pNew)
-  pJob_Universal->m_oEnameSet.vPrint();
+  //pJob_Universal->m_oEnameSet.vPrint();
   pJob_SubTruncate->m_oEnameSet.vCopy(&pJob_Universal->m_oEnameSet);
-  pJob_SubTruncate->m_oEnameSet.vPrint();
+  //pJob_SubTruncate->m_oEnameSet.vPrint();
   //!
   
   pJob_SubTruncate->vSeed(SS_SEED_RUN);
