@@ -2,8 +2,6 @@
 /* _lineitemRJH - create and load TPC-H LineItem table                        */
 /*============================================================================*/
 
-print "Starting cluster..." ;
-
 startCluster;
 
 logSection createTable;
