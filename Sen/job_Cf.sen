@@ -84,6 +84,7 @@ jobSyntax: cf :: cf <folderNm> ;
 
 jobInfo: cf
 {
+  <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_LOCAL_ERRORS
   <?ddlLock?>  = DL_GRAB_READ

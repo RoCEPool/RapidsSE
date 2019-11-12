@@ -52,6 +52,7 @@ jobSyntax:
 /*----------------------------------------------------------------------------*/
 jobInfo: cancelQuery
 {
+  <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NODE_ZERO
   <?ddlLock?>  = DL_GRAB_WRITE

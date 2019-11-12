@@ -122,6 +122,7 @@ jobSyntax: createTable :: create table <tableNm> etc ;
 
 jobInfo: createTable
 {
+  <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NODE_ZERO
   <?ddlLock?>  = DL_GRAB_WRITE

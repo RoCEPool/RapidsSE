@@ -102,6 +102,7 @@ jobSyntax: dumpIndex :: dumpIdx <tableNm> <indexNm> ;
 
 jobInfo: dumpIndex
 {
+  <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_LOCAL_ZERO
   <?ddlLock?>  = DL_GRAB_READ

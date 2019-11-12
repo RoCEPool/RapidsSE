@@ -102,6 +102,7 @@ jobSyntax: lspartcol :: lspartcol <tableNm> ;
 
 jobInfo: lspartcol
 {
+  <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_LOCAL_ROWS
   <?ddlLock?>  = DL_GRAB_READ
