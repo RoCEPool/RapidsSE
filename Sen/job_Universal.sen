@@ -25,17 +25,33 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+: bClusterStarted
+
+  grid::started@ if
+    true
+  else
+    EC_CLUSTER_NOT_CONNECTED false
+  then
+;
+
 /*----------------------------------------------------------------------------*/
 /* execute the job's request seed-word on originating node                    */
 /*----------------------------------------------------------------------------*/
 : universal_req ( -- <R> )
 
-"++++ universal_req ++++" .
-job::this job.enameSet@ enameSet.asStr .
-jobInfo::enameSet@ enameSet.asStr .
-<?jobKind?> .
-<?rspKind?> .
-<?ddlLock?> .
+  "++++ universal_req ++++" .
+  job::this job.enameSet@ enameSet.asStr .
+  jobInfo::enameSet@ enameSet.asStr .
+  <?jobKind?> .
+  <?rspKind?> .
+  <?ddlLock?> .
+
+  "<?preCheck?>" jobInfo::enameSet@ enameSet.hasName if
+    <?preCheck?> find execute not if
+      task::seedInitially task::doneFinally
+      job::this <ERROR_REQUEST>
+    then
+  then
 
   "<?SeedReq?>" .executeSeed
 ;
