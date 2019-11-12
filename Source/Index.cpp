@@ -72,7 +72,6 @@ Index::Index(void)
   
   m_iIndexNo   = -1;
   m_sIndexName = pWord->szWordNm();
-  m_bIsUnique     = false;
   m_pTable        = nullptr;
   m_pIdxColVec    = new IdxColVec;
   
@@ -422,7 +421,7 @@ bool Index::bIsUnique(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  return m_bIsUnique;
+  return m_pIndexDef->m_bIsUnique;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -432,7 +431,7 @@ void Index::vIsUnique(bool bUnique)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  m_bIsUnique = bUnique;
+  m_pIndexDef->m_bIsUnique = bUnique;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -5,8 +5,6 @@
 
 namespace MetaData
 {
-  class Table;
-  
   class Index : public Object
   {
   private:
@@ -16,7 +14,7 @@ namespace MetaData
     s32          m_sIndexName;    //
     //eIT          m_eIndexType;    //
     //bool         m_bIsPrimaryKey; //
-    bool         m_bIsUnique;     //
+    //bool         m_bIsUnique;     //
     Table*       m_pTable;        //
     Dic          m_xSubDic;       // sub dictionary for this index
     IdxColVec*   m_pIdxColVec;    //
