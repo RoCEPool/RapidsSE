@@ -117,7 +117,7 @@ Op* FilterOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 //  }
 //
 //  // add ename pair for expression
-//  pFilterOp->m_pOpSpec->vAddEnmPair("Filter"_Stz,
+//  pFilterOp->m_pOpSpec->vAddEnamePair("Filter"_Stz,
 //                                    sExpr,
 //                                    TN_STRING);
 //

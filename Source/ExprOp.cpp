@@ -131,7 +131,7 @@ Op* ExprOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 //    StrLib::vSprint(sExprNm,"Expr%lld"_Stz,iExpr++);
 //
 //    // add ename pair for expression
-//    pExprOp->m_pOpSpec->vAddEnmPair(sExprNm,
+//    pExprOp->m_pOpSpec->vAddEnamePair(sExprNm,
 //                                     sExpr,
 //                                     TN_STRING);
 //

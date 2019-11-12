@@ -151,7 +151,7 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX)
       RASSERT(0);
   }
   
-  pOpSpec->vAddEnmPair("<arg_0>"_Stz,iConsumeArg,TN_INTEGER);
+  pOpSpec->vAddEnamePair("<arg_0>"_Stz,iConsumeArg,TN_INTEGER);
   m_pOpSpecVec->vInsert(pOpSpec);
   
   // rework the m_i_OpSpec

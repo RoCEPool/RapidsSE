@@ -480,7 +480,7 @@ bool Dynamo::bCollectOp(void)
     
     s256 sArgValue ( m_pTkn->szText() );
     
-    pOpSpec->vAddEnmPair(sArgName,sArgValue,TN_STRING);
+    pOpSpec->vAddEnamePair(sArgName,sArgValue,TN_STRING);
     
     vAcceptToken();
   }
@@ -564,10 +564,10 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage)
   pOpSpec->vName("xmit"_Stz);
   
   // arg-0 is the cross topology of the xmit op
-  pOpSpec->vAddEnmPair("<arg_0>"_Stz,(i8)eTopologyX,TN_INTEGER);
+  pOpSpec->vAddEnamePair("<arg_0>"_Stz,(i8)eTopologyX,TN_INTEGER);
   
   // arg-1 is the next stage for the xmit
-  pOpSpec->vAddEnmPair("<arg_1>"_Stz,(i8)i_Stage,TN_INTEGER);
+  pOpSpec->vAddEnamePair("<arg_1>"_Stz,(i8)i_Stage,TN_INTEGER);
 }
 
 /*----------------------------------------------------------------------------*/

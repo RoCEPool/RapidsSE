@@ -28,8 +28,8 @@ namespace Pipelines
     OpSpec(Stz* szOpName, StageSpec* pStageSpec);
    ~OpSpec(void) noexcept(false);
   
-    void vAddEnmPair(Stz* sName, Stz* sValue, eTN eToken);
-    void vAddEnmPair(Stz* sName, i8 iValue, eTN eToken);
+    void vAddEnamePair(Stz* sName, Stz* sValue, eTN eToken);
+    void vAddEnamePair(Stz* sName, i8 iValue, eTN eToken);
     bool bAppendRight(void);
     EnameSet* pEnameSet(void);
     Stz* szName(void);
