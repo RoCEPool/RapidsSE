@@ -23,9 +23,9 @@ void Step::vTableDefParse(void)
   if (! m_pDataStack->bPopS4K(sCmd))
     THROW_DSTACK();
 
-  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-  vTrace("Stmt: %s\n"_Stz,sCmd.szStz());
-  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  //vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  //vTrace("Stmt: %s\n"_Stz,sCmd.szStz());
+  //vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
 
   TableDef* pTableDef = new TableDef;
   
