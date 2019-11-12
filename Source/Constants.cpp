@@ -204,17 +204,14 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_ALARM"_Stz,          CN_JOB_ALARM);
   /*    */ vAddConstant("CN_JOB_ANSWER"_Stz,         CN_JOB_ANSWER);
   /*    */ vAddConstant("CN_JOB_BOOT"_Stz,           CN_JOB_BOOT);
-  /*    */ vAddConstant("CN_JOB_CONNECTCLUSTER"_Stz, CN_JOB_CONNECTCLUSTER);
   /*    */ vAddConstant("CN_JOB_CONNECTOR"_Stz,      CN_JOB_CONNECTOR);
   /*    */ vAddConstant("CN_JOB_COPYBUFFER"_Stz,     CN_JOB_COPYBUFFER);
   /*    */ vAddConstant("CN_JOB_CREATEINDEX"_Stz,    CN_JOB_CREATEINDEX);
-  /*    */ vAddConstant("CN_JOB_DEFINENODE"_Stz,     CN_JOB_DEFINENODE);
   /*    */ vAddConstant("CN_JOB_EXPORT"_Stz,         CN_JOB_EXPORT);
   /*    */ vAddConstant("CN_JOB_FETCHROWS"_Stz,      CN_JOB_FETCHROWS);
   /*    */ vAddConstant("CN_JOB_INSERTROW"_Stz,      CN_JOB_INSERTROW);
   /*    */ vAddConstant("CN_JOB_INSERTTABLE"_Stz,    CN_JOB_INSERTTABLE);
   /*    */ vAddConstant("CN_JOB_LOADTABLE"_Stz,      CN_JOB_LOADTABLE);
-  /*    */ vAddConstant("CN_JOB_NETHOG"_Stz,         CN_JOB_NETHOG);
   /*    */ vAddConstant("CN_JOB_NODEINFO"_Stz,       CN_JOB_NODEINFO);
   /*    */ vAddConstant("CN_JOB_OPERAND"_Stz,        CN_JOB_OPERAND);
   /*    */ vAddConstant("CN_JOB_PERIODIC"_Stz,       CN_JOB_PERIODIC);

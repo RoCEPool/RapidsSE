@@ -152,19 +152,15 @@ enum eCN : u2 // Class Number
   /*  63 0x3F    70592B Heap:L */ CN_JOB_ALARM,
   /*  66 0x42    70592B Heap:L */ CN_JOB_ANSWER,
   /*  67 0x43    70592B Heap:L */ CN_JOB_BOOT,
-  /*  71 0x47    70592B Heap:L */ CN_JOB_CONNECTCLUSTER,
   /*  72 0x48    70592B Heap:L */ CN_JOB_CONNECTOR,
   /*  73 0x49   118688B Heap:L */ CN_JOB_COPYBUFFER,
   /*  75 0x4B    77808B Heap:L */ CN_JOB_CREATEINDEX,
-  /*  75 0x4B    77808B Heap:L */ CN_JOB_DEFINENODE,
   /*  86 0x56    70864B Heap:L */ CN_JOB_EXPORT,
   /*  87 0x57    70936B Heap:L */ CN_JOB_FETCHROWS,
-  /*                           */ CN_JOB_HEALTH,
   /*  90 0x5A   118632B Heap:L */ CN_JOB_INSERTROW,
   /*  91 0x5B    70608B Heap:L */ CN_JOB_INSERTTABLE,
   /* 139 0x8B        0B Heap:L */ CN_JOB_KIDEXPORT,
   /* 102 0x66    70928B Heap:L */ CN_JOB_LOADTABLE,
-  /* 104 0x68    70600B Heap:L */ CN_JOB_NETHOG,
   /* 105 0x69    70640B Heap:L */ CN_JOB_NODEINFO,
   /* 105 0x69    70640B Heap:L */ CN_JOB_OPERAND,
   /* 106 0x6A    70592B Heap:L */ CN_JOB_PERIODIC,
@@ -523,19 +519,15 @@ static Stz* aCN[]
   /*  63 0x3F */ "JOB_ALARM"_Stz,           // CN_JOB_ALARM
   /*  66 0x42 */ "JOB_ANSWER"_Stz,          // CN_JOB_ANSWER
   /*  67 0x43 */ "JOB_BOOT"_Stz,            // CN_JOB_BOOT
-  /*  71 0x47 */ "JOB_CONNECTCLUSTER"_Stz,  // CN_JOB_CONNECTCLUSTER
   /*  72 0x48 */ "JOB_CONNECTOR"_Stz,       // CN_JOB_CONNECTOR
   /*  73 0x49 */ "JOB_COPYBUFFER"_Stz,      // CN_JOB_COPYBUFFER
   /*  75 0x4B */ "JOB_CREATEINDEX"_Stz,     // CN_JOB_CREATEINDEX
-  /*  75 0x4B */ "JOB_CREATENODE"_Stz,      // CN_JOB_DEFINENODE
   /*  86 0x56 */ "JOB_EXPORT"_Stz,          // CN_JOB_EXPORT
   /*  87 0x57 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
-  /*          */ "JOB_HEALTH"_Stz,          // CN_JOB_HEALTH
   /*  90 0x5A */ "JOB_INSERTROW"_Stz,       // CN_JOB_INSERTROW
   /*  91 0x5B */ "JOB_INSERTTABLE"_Stz,     // CN_JOB_INSERTTABLE
   /* 139 0x8B */ "JOB_KIDEXPORT"_Stz,       // CN_JOB_KIDEXPORT
   /* 102 0x66 */ "JOB_LOADTABLE"_Stz,       // CN_JOB_LOADTABLE
-  /* 104 0x68 */ "JOB_NETHOG"_Stz,          // CN_JOB_NETHOG
   /* 105 0x69 */ "JOB_NODEINFO"_Stz,        // CN_JOB_NODEINFO
   /* 105 0x69 */ "JOB_OPERAND"_Stz,         // CN_JOB_OPERAND
   /* 106 0x6A */ "JOB_PERIODIC"_Stz,        // CN_JOB_PERIODIC

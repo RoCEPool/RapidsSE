@@ -98,7 +98,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobInsertRows();
   Step::vAddSteps_JobKidExport();
   Step::vAddSteps_JobLoadTable();
-  Step::vAddSteps_JobNetHog();
   Step::vAddSteps_JobNodeInfo();
   Step::vAddSteps_JobOperand();
   Step::vAddSteps_JobPipeline();

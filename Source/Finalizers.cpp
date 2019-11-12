@@ -150,20 +150,16 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANSWER
   /*    */ &Finalize::vUndefined,         // CN_JOB_BOOT
 
-  /*    */ &Finalize::vUndefined,         // CN_JOB_CONNECTCLUSTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_CONNECTOR
   /*    */ &Finalize::vUndefined,         // CN_JOB_COPYBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATEINDEX
-  /*    */ &Finalize::vUndefined,         // CN_JOB_DEFINENODE
   /*    */ &Finalize::vUndefined,         // CN_JOB_EXPORT
   /*    */ &Finalize::vUndefined,         // CN_JOB_FETCHROWS
-  /*    */ &Finalize::vUndefined,         // CN_JOB_HEALTH
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTROW
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_KIDEXPORT
 
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
-  /*    */ &Finalize::vUndefined,         // CN_JOB_NETHOG
   /*    */ &Finalize::vUndefined,         // CN_JOB_NODEINFO
   /*    */ &Finalize::vUndefined,         // CN_JOB_OPERAND
   /*    */ &Finalize::vUndefined,         // CN_JOB_PERIODIC

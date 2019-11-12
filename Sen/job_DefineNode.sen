@@ -25,90 +25,38 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make a Node (run by all participants)                                      */
-/*----------------------------------------------------------------------------*/
-: makeNode ( "<NodeNm>" )
-
-  params| sNodeNm |
-  0 locals| pNode |
-
-  sNodeNm node::new to pNode
-
-  // return Node pointer
-  pNode
-;
-
-/*----------------------------------------------------------------------------*/
 /* Job_DefineNode request (on originating node)                               */
 /*----------------------------------------------------------------------------*/
-: defineNode_req (  -- <R> )
+: defineNode::request _eeh (  -- <R> )
 
-  >>logEntry <SEED_REQ>
-
-  JP_BEGINNING log::markPhase
-
-  0 0 locals| pJob pTask |
-
-  tp: createNode
-
-  // get the task
-  task::this to pTask
-
-  // get the job from the task
-  pTask task.job@ to pJob
+  tp: defineNode
 
   <nodeNm> "<nodeNm> : %v" fmt.print
-
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_DefineNode job on each node                                    */
 /*----------------------------------------------------------------------------*/
-: defineNode_exe ( pJob_DefineNode -- )
+: defineNode::execute _eeh ( -- )
 
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_DefineNode |
-  job::this locals| pJob_DefineNode |
-
-  0 0 locals| pNode sNodeNm |
+  0 locals| pNode |
 
   tp: defineNode_exe
 
   //----------------------------------------------------------------------------
-  // assert correct job
-  //CN_JOB_DEFINENODE pJob_DefineNode object.assertClass
-
-  //----------------------------------------------------------------------------
-  // grab a ddl lock
-  DdlLock[].grabWrite
-
-  //----------------------------------------------------------------------------
   // make Node
-  <nodeNm> to sNodeNm
-  sNodeNm makeNode to pNode
-
-
-  pJob_DefineNode job::participantExecuted
-
-  <<logExit <DONE_EXE>
+  <nodeNm> node::new to pNode
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_DefineNode job check resources                                 */
 /*----------------------------------------------------------------------------*/
-: createNode.checkResources ( pJob_DefineNode -- )
-
-  >>logEntry <Check_Resources>
-
-  params| pJob_DefineNode  |
+: defineNode::checkResources _eeh ( -- )
 
   tp: createNode.checkResources
   //"checkResources received" .
+
+  job::this locals| pJob_DefineNode |
 
   //----------------------------------------------------------------------------
   // grab a ddl lock
@@ -122,93 +70,14 @@
   // check if we can make the Node
   //pJob_DefineNode job.nodeName@
   <nodeNm> checkMakeNode not if pJob_DefineNode <ERROR_JOB> !!logError exit then
-
-  <<logExit <Resources_Checked>
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute Job_DefineNode job release resources                               */
-/*----------------------------------------------------------------------------*/
-: createNode.releaseResources ( pJob_DefineNode -- )
-
-  >>logEntry <Release_Resources>
-
-  params| pJob_DefineNode  |
-
-  tp: createNode.releaseResources
-  //"releaseResources received" .
-
-  <<logExit <Resources_Released>
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: defineNode_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_DefineNode |
-
-  //">> defineNode_beg <<" .
-
-  // add this job to the participants list
-  pJob_DefineNode job.becomeParticipant
-
-  // check resources
-  pJob_DefineNode createNode.checkResources
-
-  // this job has begun
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: defineNode_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_DefineNode |
-
-  //">> defineNode_end <<" .
-
-  // release resources
-  pJob_DefineNode createNode.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: defineNode_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_DefineNode |
-
-  pJob_DefineNode createNode.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
 ;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: 
-  defineNode :: define node <nodeNm> {name:value}
-;
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
+jobSyntax: defineNode :: define node <nodeNm> {name:value} ;
+
 jobInfo: defineNode
 {
   <?jobKind?>  = JK_DIST2PC
