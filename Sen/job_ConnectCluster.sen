@@ -12,9 +12,9 @@
   grid::definedNodes 0
   do
     I grid::node node.isConnected not if
-      args.verbose if
-        I "Node no %v not connected" fmt.print
-      then
+    args.verbose if
+      I "Node no %v not connected" fmt.print
+    then
       unloop
       false
       exit
@@ -74,13 +74,6 @@
 /*----------------------------------------------------------------------------*/
 : connectCluster_req ( -- <R> )
 
-  task::seedInitially
-
-  [ compiler::current word.name@ , ] .
-
-  <jobNm> .
-
-  job::becomeOriginator
 
   tp: connectCluster_req
 
@@ -93,20 +86,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till all nodes connected
   grid::pause
-
-  job::distributeConnected
-
-  // wait for the signal from deciding job__ended/cancelled
-  task::wait
-
-  //job::this job.removeOriginator  // this is currently being done by job_ended
-
-  task::doneFinally
-
-  //"Signalling waiting thread" .
-  job::this job.signalWaiter
-
-  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -114,12 +93,12 @@
 /*----------------------------------------------------------------------------*/
 : connectCluster::execute _eeh ( -- )
 
-  job::this locals| pJob_ConnectCluster |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till all nodes connected
   grid::pause
+
 ;
+
 
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
@@ -130,7 +109,7 @@ jobInfo: connectCluster
 {
   <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_DIST2PC
-  <?rspKind?>  = RS_NODE_ROWS
+  <?rspKind?>  = RS_NONE
   <?ddlLock?>  = DL_NONE
 }
 ;
