@@ -171,7 +171,6 @@ enum eCN : u2 // Class Number
   /* 115 0x73    70608B Heap:L */ CN_JOB_SANITY,
   /* 114 0x72    70608B Heap:L */ CN_JOB_SELECT,
   /* 121 0x79    70592B Heap:L */ CN_JOB_START,
-  /* 122 0x7A    70592B Heap:L */ CN_JOB_STARTCLUSTER,
   /* 124 0x7C    70632B Heap:L */ CN_JOB_SUBEXPORTER,
   /* 125 0x7D    70632B Heap:L */ CN_JOB_SUBFETCH,
   /*                           */ CN_JOB_SUBINFLATE,
@@ -538,7 +537,6 @@ static Stz* aCN[]
   /* 115 0x73 */ "JOB_SANITY"_Stz,          // CN_JOB_SANITY
   /* 114 0x72 */ "JOB_SELECT"_Stz,          // CN_JOB_SELECT
   /* 121 0x79 */ "JOB_START"_Stz,           // CN_JOB_START
-  /* 122 0x7A */ "JOB_STARTCLUSTER"_Stz,    // CN_JOB_STARTCLUSTER
   /* 124 0x7C */ "JOB_SUBEXPORTER"_Stz,     // CN_JOB_SUBEXPORTER
   /* 125 0x7D */ "JOB_SUBFETCH"_Stz,        // CN_JOB_SUBFETCH
   /*          */ "JOB_SUBINFLATE"_Stz,      // CN_JOB_SUBINFLATE

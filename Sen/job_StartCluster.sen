@@ -77,17 +77,15 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_req ( -- <R> )
 
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob pTask |
-
   tp: startCluster_req
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get task and job
+  task::seedInitially
 
-  task::this to pTask
-  pTask task.job@ to pJob
+  [ compiler::current word.name@ , ] .
+
+  <jobNm> .
+
+  job::becomeOriginator
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // has cluster already been started?
@@ -112,87 +110,50 @@
 
   grid::pause
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute the start cluster job
 
-  pJob job.distribute
+  job::distributeConnected
+
+  // wait for the signal from deciding job__ended/cancelled
+  task::wait
 
   // set grid as started
   true grid::started!
   "Cluster started" .
 
-  <<logExit <DONE_REQ>
+  task::doneFinally
+
+  //"Signalling waiting thread" .
+  job::this job.signalWaiter
+
+  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute job_StartCluster (on participating node)                           */
 /*----------------------------------------------------------------------------*/
-: startCluster_exe ( pJob_StartCluster -- )
-
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_StartCluster |
-  job::this locals| pJob_StartCluster |
-
-  pJob_StartCluster job.notice
+: startCluster::execute _eeh ( -- )
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till all nodes connected
   grid::pause
 
   true grid::started!
-
-  pJob_StartCluster job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: startCluster_beg ( -- )
 
-"startCluster_beg 0" .
-  >>logEntry <SEED_BEG>
+jobSyntax: startCluster :: startCluster ;
 
-"startCluster_beg 1" .
-  job::this locals| pJob_status |
-
-"startCluster_beg 2" .
-  pJob_status job.becomeParticipant
-
-"startCluster_beg 3" .
-  job::participantBegun
-
-"startCluster_beg calling <DONE_BEG>" .
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: startCluster_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_status |
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: startCluster_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_status |
-
-  <<logExit <DONE_CAN>
+jobInfo: startCluster
+{
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NONE
+  <?ddlLock?>  = DL_NONE
+}
 ;
 
 /*============================================================================*/
