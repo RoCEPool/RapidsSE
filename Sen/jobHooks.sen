@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 : req_entryHook
 
-  "req_entryHook" .
+  // "req_entryHook" .
 
   r@ locate log::markEntry
 
@@ -28,7 +28,7 @@
 /*----------------------------------------------------------------------------*/
 : beg_entryHook
 
-  "beg_entryHook" .
+  // "beg_entryHook" .
 
   r@ locate log::markEntry
 
@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 : exe_entryHook
 
-  "exe_entryHook" .
+  // "exe_entryHook" .
 
   r@ locate log::markEntry
 
@@ -56,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 : end_entryHook
 
-  "end_entryHook" .
+  // "end_entryHook" .
 
   r@ locate log::markEntry
 
@@ -70,7 +70,7 @@
 /*----------------------------------------------------------------------------*/
 : can_entryHook
 
-  "can_entryHook" .
+  // "can_entryHook" .
 
   r@ locate log::markEntry
 
@@ -84,7 +84,7 @@
 /*----------------------------------------------------------------------------*/
 : std_entryHook
 
-  "std_entryHook" .
+  // "std_entryHook" .
 
   r@ locate log::markEntry
 
@@ -100,7 +100,7 @@
 /*----------------------------------------------------------------------------*/
 : req_exitHook
 
-  "req_exitHook" .
+  // "req_exitHook" .
 
   r@ locate log::markExit
 
@@ -114,7 +114,7 @@
 /*----------------------------------------------------------------------------*/
 : beg_exitHook
 
-   "beg_exitHook" .
+  // "beg_exitHook" .
 
   r@ locate log::markExit
 
@@ -132,7 +132,7 @@
 /*----------------------------------------------------------------------------*/
 : exe_exitHook
 
-  "exe_exitHook" .
+  // "exe_exitHook" .
 
   r@ locate log::markExit
 
@@ -150,7 +150,7 @@
 /*----------------------------------------------------------------------------*/
 : end_exitHook
 
-  "end_exitHook" .
+  // "end_exitHook" .
 
   r@ locate log::markExit
 
@@ -167,7 +167,7 @@
 /*----------------------------------------------------------------------------*/
 : can_exitHook
 
-  "can_exitHook" .
+  // "can_exitHook" .
 
   r@ locate log::markExit
 
@@ -183,7 +183,7 @@
 /*----------------------------------------------------------------------------*/
 : std_exitHook
 
-  "std_exitHook" .
+  // "std_exitHook" .
 
   r@ locate log::markExit
 
@@ -199,7 +199,7 @@
 /*----------------------------------------------------------------------------*/
 : std_exceptionHook
 
-  "std_exceptionHook" .
+  // "std_exceptionHook" .
 
   process::quit
 
