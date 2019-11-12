@@ -96,7 +96,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
 
   //other
   nJobs++; JobClass::vJobCat(CN_JOB_HEALTH);
-  nJobs++; JobClass::vJobCat(CN_JOB_NETHOG);
   nJobs++; JobClass::vJobCat(CN_JOB_UNIVERSAL);
 
   vTrace("\n"_Stz);

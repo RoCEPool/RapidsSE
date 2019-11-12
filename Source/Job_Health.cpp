@@ -65,7 +65,7 @@ Job_Health* Jobs::_pJob_Health(void* aAddress)
 {
   Job_Health* pJob_Health = reinterpret_cast<Job_Health*>(aAddress);
   
-  RASSERT_TYPE(pJob_Health,CN_JOB_NETHOG);
+  RASSERT_TYPE(pJob_Health,CN_JOB_HEALTH);
   
   return pJob_Health;
 }
@@ -76,7 +76,7 @@ Job_Health* Jobs::_pJob_Health(void* aAddress)
 void* Job_Health::operator new(size_t)
 {
   Job_Health* pJob_Health =
-    static_cast<Job_Health*>(HeapMem::pAllocate(CN_JOB_NETHOG));
+    static_cast<Job_Health*>(HeapMem::pAllocate(CN_JOB_HEALTH));
   
   return pJob_Health;
 }
@@ -105,13 +105,13 @@ void Job_Health::operator delete(void* aAddress)
 Job_Health::Job_Health(JobClass* aJobClass, ReqTuple* aReqTuple)
 : Job(aJobClass, aReqTuple)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NETHOG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_HEALTH,_FOOTER_);
   
   m_iHogNo = -1;
   
-  _checkInitialised_(CN_JOB_NETHOG);
+  _checkInitialised_(CN_JOB_HEALTH);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_NETHOG,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_HEALTH,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -119,7 +119,7 @@ Job_Health::Job_Health(JobClass* aJobClass, ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 Job_Health::~Job_Health(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NETHOG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_HEALTH,_FOOTER_);
   
 }
 
@@ -147,7 +147,7 @@ void Job_Health::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Job_Health::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NETHOG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_HEALTH,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +159,7 @@ void Job_Health::vShow(void)
 /*----------------------------------------------------------------------------*/
 Footer* Job_Health::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NETHOG);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_HEALTH);
   
   return &m_xFooter;
 }
@@ -185,7 +185,7 @@ Job* Jobs::pJob_Health_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pS
   
   for (i8 i_Hog = 0; i_Hog < nHogs; i_Hog++) {
     
-    JobClass* pJobClass_Health = JobClass::pFind(CN_JOB_NETHOG);
+    JobClass* pJobClass_Health = JobClass::pFind(CN_JOB_HEALTH);
     Job_Health* pJob_Health = _pJob_Health(pJobClass_Health->pNewJob(nullptr));
 
     pJob_Health->m_iHogNo  = i_Hog;

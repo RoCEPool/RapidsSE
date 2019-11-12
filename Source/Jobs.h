@@ -71,7 +71,6 @@ namespace Jobs
 
 #include "Job_LoadTable.hpp"
 
-#include "Job_NetHog.hpp"
 #include "Job_NodeInfo.hpp"
 
 #include "Job_Operand.hpp"

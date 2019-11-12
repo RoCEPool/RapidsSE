@@ -162,7 +162,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_KIDEXPORT
 
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
-  /*    */ &Finalize::vUndefined,         // CN_JOB_NETHOG
   /*    */ &Finalize::vUndefined,         // CN_JOB_NODEINFO
   /*    */ &Finalize::vUndefined,         // CN_JOB_OPERAND
   /*    */ &Finalize::vUndefined,         // CN_JOB_PERIODIC
