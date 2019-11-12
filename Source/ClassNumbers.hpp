@@ -172,7 +172,6 @@ enum eCN : u2 // Class Number
   /* 126 0x7E   151464B Heap:L */ CN_JOB_SUBINGESTER,
   /* 127 0x7F   151648B Heap:L */ CN_JOB_SUBINSERTER,
   /* 128 0x80   151472B Heap:L */ CN_JOB_SUBLOADER,
-  /*                           */ CN_JOB_SUBSCAN,
   /* 131 0x83    70608B Heap:L */ CN_JOB_SUBTRUNCATE,
   /*                           */ CN_JOB_SUPERVISOR,
   /* 133 0x85    70592B Heap:L */ CN_JOB_UNIVERSAL,
@@ -529,7 +528,6 @@ static Stz* aCN[]
   /* 126 0x7E */ "JOB_SUBINGESTER"_Stz,     // CN_JOB_SUBINGESTER
   /* 127 0x7F */ "JOB_SUBINSERTER"_Stz,     // CN_JOB_SUBINSERTER
   /* 128 0x80 */ "JOB_SUBLOADER"_Stz,       // CN_JOB_SUBLOADER
-  /*          */ "JOB_SUBSCAN"_Stz,         // CN_JOB_SUBSCAN
   /* 131 0x83 */ "JOB_SUBTRUNCATE"_Stz,     // CN_JOB_SUBTRUNCATE
   /*          */ "JOB_SUPERVISOR"_Stz,      // CN_JOB_SUPERVISOR
   /* 133 0x85 */ "JOB_UNIVERSAL"_Stz,       // CN_JOB_UNIVERSAL

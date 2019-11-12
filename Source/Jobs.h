@@ -79,7 +79,6 @@ namespace Jobs
 #include "Job_SubFetch.hpp"
 #include "Job_SubInserter.hpp"
 #include "Job_SubLoader.hpp"
-#include "Job_SubScan.hpp"
 #include "Job_SubTruncate.hpp"
 #include "Job_Supervisor.hpp"
 

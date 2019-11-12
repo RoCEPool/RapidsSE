@@ -224,7 +224,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_SUBINGESTER"_Stz,    CN_JOB_SUBINGESTER);
   /*    */ vAddConstant("CN_JOB_SUBINSERTER"_Stz,    CN_JOB_SUBINSERTER);
   /*    */ vAddConstant("CN_JOB_SUBLOADER"_Stz,      CN_JOB_SUBLOADER);
-  /*    */ vAddConstant("CN_JOB_SUBSCAN"_Stz,        CN_JOB_SUBSCAN);
   /*    */ vAddConstant("CN_JOB_SUBTRUNCATE"_Stz,    CN_JOB_SUBTRUNCATE);
   /*    */ vAddConstant("CN_JOB_SUPERVISOR"_Stz,     CN_JOB_SUPERVISOR);
   /*    */ vAddConstant("CN_JOB_UNIVERSAL"_Stz,      CN_JOB_UNIVERSAL);

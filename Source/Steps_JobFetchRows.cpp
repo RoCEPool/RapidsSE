@@ -22,9 +22,6 @@ void Step::vAddSteps_JobFetchRows(void)
   vAddStep("Job_subFetch.phrase@"_Stz,       &Step::vJob_SubFetchPhraseFetch);
   vAddStep("Job_subFetch.Planner@"_Stz,      &Step::vJob_SubFetchPlannerFetch);
   vAddStep("Job_subFetch.slot@"_Stz,         &Step::vJob_SubFetchSlotFetch);
-  
-  vAddStep("Job_subScan.bufferQueue@"_Stz,  &Step::vJob_SubScanBufferQueueFetch);
-  vAddStep("Job_subScan.slot@"_Stz,         &Step::vJob_SubScanSlotFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -292,39 +289,6 @@ void Step::vJob_SubFetchSlotFetch(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* job_subScan.bufferQueue@ -- fetch the job buffer queue                    */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_SubScanBufferQueueFetch(void)
-{
-  ENTRY("vJob_SubScanBufferQueueFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  Job_SubScan* pJob = _pJob_SubScan(pJobPtr);
-  
-  m_pDataStack->vPushPointer(pJob->m_pBufferQueue);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_subScan.slot@ -- fetch the job slot                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_SubScanSlotFetch(void)
-{
-  ENTRY("vJob_SubScanSlotFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  Job_SubScan* pJob = _pJob_SubScan(pJobPtr);
-  
-  m_pDataStack->vPushI8(pJob->i_Slot());
-  
-  EXIT();
-}
 
 /*============================================================================*/
 /* end                                                                        */

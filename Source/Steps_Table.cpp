@@ -20,7 +20,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.getColumnsAsString"_Stz, &Step::vTableGetColumnsAsString);
   vAddStep("table.getPtn"_Stz,             &Step::vTableGetPtn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
-  vAddStep("table.inflateScan"_Stz,        &Step::vTableInflateScan);
   vAddStep("table.init"_Stz,               &Step::vTableInit);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
   vAddStep("table.isLoading!"_Stz,         &Step::vTableIsLoadingStore);
@@ -326,72 +325,6 @@ void Step::vTableGetPtn(void)
   TablePtn* pTablePtn = pTable->pPartition(i_Slot);
 
   m_pDataStack->vPushPointer(pTablePtn);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.inflateScan -- scan the table for inflation                          */
-/*----------------------------------------------------------------------------*/
-void Step::vTableInflateScan(void)
-{
-  ENTRY("vTableInflateScan"_Stz);
-  
-  Object* pPtrTable = nullptr;
-  FetchBuffer* pFetchBuffer;
-  GenVar xVariable;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get parameters for the primitive
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
-    THROW_DSTACK();
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  Object* pPtrJob;
-  if ( ! m_pDataStack->bPopObject(pPtrJob) )
-    THROW_DSTACK();
-  
-  Job_SubScan* pJob_SubScan = _pJob_SubScan(pPtrJob);
-  ASSERT(CN_JOB_SUBSCAN == pJob_SubScan->eClass());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get members from subFetch
-  i8 iSlot = pJob_SubScan->i_Slot();
-  Queue* pQueue = pJob_SubScan->m_pBufferQueue;
-  
-  TablePtn* pPartition = pTable->pPartition(iSlot);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set buffer count in the inflate job
-  //Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJob_SubScan->m_pParentJob);
-  //pJob_InflateRows->m_inBufferCount += pPartition->nCrwBuffers();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the first row buffer
- CrwBuffer* pCrwBuffer = pPartition->pRootCrwBuffer();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // did we get an entryBuffer ?
-  if (! pCrwBuffer) {
-    
-    EXIT();
-    return;
-  }
-  
-  i8 nBufferCount = 0;
-  
-  while (pCrwBuffer) {
-    
-    // put this FetchBuffer in session bufferQueue
-    pQueue->vAppend(pCrwBuffer);
-    nBufferCount++;
-    
-    // get next buffer from the current indexBuffer
-    pCrwBuffer = pCrwBuffer->pNextBuffer();
-    
-  }
   
   EXIT();
 }

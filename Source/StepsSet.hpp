@@ -723,10 +723,6 @@ public:
   void vJob_SubPurgerSlotFetch(void);
   void vJob_SubPurgerPurgeJobIdFetch(void);
 
-  // job SubScan
-  void vJob_SubScanBufferQueueFetch(void);
-  void vJob_SubScanSlotFetch(void);
-
   // Job SubTruncate
   void vJob_SubTruncateSlotFetch(void);
   void vJob_SubTruncateTruncateJobIdFetch(void);
@@ -1062,7 +1058,6 @@ public:
   void vTableGetColumnsAsString(void);
   void vTableColumnFetch(void);
   void vTableGetPtn(void);
-  void vTableInflateScan(void);
   void vTableIndexCount(void);
   void vTableInit(void);
   void vTableIsColumn(void);

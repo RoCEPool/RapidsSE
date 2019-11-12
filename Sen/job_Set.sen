@@ -83,7 +83,6 @@
 "job_SubFetch.sen"       include
 "Job_SubInserter.sen"    include
 "job_SubLoader.sen"      include
-"job_SubScan.sen"        include
 "job_SubTruncate.sen"    include
 "job_SuperCountOp.sen"   include
 "job_Supervisor.sen"     include
