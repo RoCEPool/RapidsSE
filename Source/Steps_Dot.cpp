@@ -53,7 +53,10 @@ void Step::vDotPut(void)
   if ( ! m_pDataStack->bPopGenVar(xVariable) )
     THROW_DSTACK();
   
-  vTrace("%s"_Stz,xVariable.szStz());
+  if (xVariable.bIsInt())
+    vTrace("%lld"_Stz,xVariable.iInt());
+  else
+    vTrace("%s"_Stz,xVariable.szStz());
   
   EXIT();
 }

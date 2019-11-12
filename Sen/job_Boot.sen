@@ -4,16 +4,16 @@
 
 "job_Boot.sen" .verbose
 
-"vocab.sen" include
-"tasks.sen" include
-"gridModel.sen" include
-"dbObjects.sen" include
-"jobModel.sen" include
-"testing.sen" include
-"prompt.sen" include
-
-// last
-"se.sen" include
+9 .put
+8 .put  "vocab.sen"     include
+7 .put  "tasks.sen"     include
+6 .put  "gridModel.sen" include
+5 .put  "dbObjects.sen" include
+4 .put  "jobModel.sen"  include
+3 .put  "testing.sen"   include
+2 .put  "prompt.sen"    include
+1 .put  "se.sen"        include  // last
+0 .put .\n
 
 assert::stack_0
 
