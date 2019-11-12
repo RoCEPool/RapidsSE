@@ -74,6 +74,9 @@ Job::Job(eCN eClassNo)
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
   m_i_Slot    = C_UNKNOWN;
+  
+  m_eJobType  = JT_NONE;
+  m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
@@ -125,6 +128,9 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
   m_i_Slot    = C_UNKNOWN;
+  
+  m_eJobType  = JT_NONE;
+  m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
@@ -173,6 +179,9 @@ Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
   m_i_Slot    = C_UNKNOWN;
+  
+  m_eJobType  = JT_NONE;
+  m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;

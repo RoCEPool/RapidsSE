@@ -196,6 +196,9 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 
   m_oEnameSet.vPrint();
   
+  m_eJobType = (eJT) m_oEnameSet.iValue("<?jobType?>"_Stz);
+  m_eJobKind = (eJK) m_oEnameSet.iValue("<?jobKind?>"_Stz);
+
   return EC_NONE;
 }
 

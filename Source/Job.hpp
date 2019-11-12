@@ -15,7 +15,6 @@ namespace Jobs
   
     ReqTuple  m_xReqTuple; // the request tuple
 
-
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
     
     bool m_bByPrompt;    // job was spawned by se> prompt?
@@ -24,6 +23,8 @@ namespace Jobs
 
     EnameSet m_oEnameSet;  // ename-value set
 
+    eJT  m_eJobType;     // type of job
+    eJK  m_eJobKind;     // kind of job
     eJL  m_eJobList;     // which job list the job is currently in
     eJP  m_eJobPhase;    // which job phase the job is currently in
     eJS  m_eJobState;    // current state of the job
