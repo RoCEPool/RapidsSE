@@ -6,7 +6,13 @@
 enum eJT // job type
 {
   /*  0 */ JT_NONE=0,
-  
+  /*    */ JT_CONSUMEOP,
+  /*    */ JT_COUNTOP,
+  /*    */ JT_OUTPUTOP,
+  /*    */ JT_SCANOP,
+  /*    */ JT_STARTOP,
+  /*    */ JT_SUPERCOUNTOP,
+  /*    */ JT_XMITOP,
   /*    */ JT_ENUMS
 };
 

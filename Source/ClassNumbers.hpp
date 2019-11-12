@@ -59,7 +59,6 @@ enum eCN : u2 // Class Number
   /*                           */ CN_COMBINEOP,
   /*  26 0x1A       24B Heap:M */ CN_COMMAND,
   /*  27 0x1B       64B Heap:M */ CN_COMPILER,
-  /*                           */ CN_COMPLETER,
   /*                           */ CN_CONSUMEOP,
   /*                           */ CN_COUNTOP,
   /*                    Heap:L */ CN_CRWBUFFER,
@@ -414,7 +413,6 @@ static Stz* aCN[]
   /*          */ "COMBINEOP"_Stz,           // CN_COMBINEOP
   /*  26 0x1A */ "COMMAND"_Stz,             // CN_COMMAND
   /*  27 0x1B */ "COMPILER"_Stz,            // CN_COMPILER
-  /*          */ "COMPLETER"_Stz,           // CN_COMPLETER
   /*          */ "CONSUMEOP"_Stz,           // CN_CONSUMEOP
   /*          */ "COUNTOP"_Stz,             // CN_COUNTOP
   /*          */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER

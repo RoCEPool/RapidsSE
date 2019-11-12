@@ -14,7 +14,6 @@ namespace Jobs
 
 //------------------------------------------------------------------------------
 
-#include "Completer.hpp"
 #include "FetchBuffer.hpp"
 
 #include "Response.hpp"
