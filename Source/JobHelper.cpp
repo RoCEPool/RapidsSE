@@ -19,10 +19,12 @@ bool JobHelper::bParseCmd(EnameSet* pArgEnmSet,
   Word* pSyntax = nullptr;
   
   while ( (pSyntax = pRootDic->pEachWord(pCategory,pSyntax)) ) {
-    vTrace("  jobSyntax: %s\n"_Stz,pSyntax->szWordNm());
+    
+    //vTrace("  jobSyntax: %s\n"_Stz,pSyntax->szWordNm());
     
     if (JobHelper::bMatchesSyntax(pTknVec,pSyntax->pEnameSet())) {
-      vTrace("    matches\n"_Stz);
+      
+      //vTrace("    matches\n"_Stz);
       
       pArgEnmSet->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
       s32 sJobName(pSyntax->pEnameSet()->szValue("__Name__"_Stz));
