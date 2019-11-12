@@ -103,7 +103,8 @@ eCT TableDef::eColumn(Stz* szType)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-#define PT() vTrace("tkn=%s\n"_Stz,pTkn->szText());
+//#define dPT() vTrace("tkn=%s\n"_Stz,pTkn->szText());
+#define dPT()
 
 /*----------------------------------------------------------------------------*/
 /* parse Create Table command                                                 */
@@ -138,7 +139,7 @@ eEC TableDef::eParse(Stz* szCmd)
   // table name
   // -- -- -- --
 
-  pTkn = pTknVec->pNextToken(); PT();
+  pTkn = pTknVec->pNextToken(); dPT();
   m_sTableNm = pTkn->szText();
 
   
@@ -149,7 +150,7 @@ eEC TableDef::eParse(Stz* szCmd)
   // open parenth (
   // -- -- -- -- --
   
-  pTkn = pTknVec->pNextToken(); PT();
+  pTkn = pTknVec->pNextToken(); dPT();
   if (! pTkn->bSame("("_Stz)) {
     eError = EC_INVALID_COMMAND;
     goto L_RETURN;
@@ -159,7 +160,7 @@ eEC TableDef::eParse(Stz* szCmd)
   // iterate from first column till )
   // -- -- -- -- -- -- -- -- -- -- --
 
-  pTkn = pTknVec->pNextToken(); PT();
+  pTkn = pTknVec->pNextToken(); dPT();
   for (i8 i_Col = 0; ! pTkn->bSame(")"_Stz); i_Col++) {
     
     // -- -- -- -- -- -- -- --
@@ -177,7 +178,7 @@ eEC TableDef::eParse(Stz* szCmd)
 
     if (i_Col) {
       if (pTkn->bSame(","_Stz)) {
-        pTkn = pTknVec->pNextToken(); PT();
+        pTkn = pTknVec->pNextToken(); dPT();
       }
       else {
         eError = EC_INVALID_COMMAND;
@@ -214,7 +215,7 @@ eEC TableDef::eParse(Stz* szCmd)
     // column type
     // -- -- -- --
 
-    pTkn = pTknVec->pNextToken(); PT();
+    pTkn = pTknVec->pNextToken(); dPT();
     eCT eColumn = TableDef::eColumn(pTkn->szText());
     
     switch (eColumn) {
@@ -246,14 +247,14 @@ eEC TableDef::eParse(Stz* szCmd)
     // not null
     // -- -- --
 
-    pTkn = pTknVec->pNextToken(); PT();
+    pTkn = pTknVec->pNextToken(); dPT();
     if (pTkn->bSame("not"_Stz)) {
-      pTkn = pTknVec->pNextToken(); PT();
+      pTkn = pTknVec->pNextToken(); dPT();
       if (! pTkn->bSame("null"_Stz))
         return EC_INVALID_COMMAND;
       pCol->vIsNullable(false);
       
-      pTkn = pTknVec->pNextToken(); PT();
+      pTkn = pTknVec->pNextToken(); dPT();
     }
     
     // check for PRIMARY KEY
@@ -271,7 +272,7 @@ eEC TableDef::eParse(Stz* szCmd)
 //    if (pTkn->bSame("unique"_Stz)) {
 //      pCol->vIsUnique(true);
 //
-//      pTkn = pTknVec->pNextToken(); PT();
+//      pTkn = pTknVec->pNextToken(); dPT();
 //    }
     if (i_Col == 0)
       pCol->vIsPtnKey(true);
@@ -347,12 +348,12 @@ eEC TableDef::eExtractDecimal(Column* pCol, TokenVec* pTknVec)
   pCol->vColumnType(CT_DECIMAL);
   pCol->vDatumType(DM_BCD);
   
-  Token* pTkn = pTknVec->pNextToken(); PT();
+  Token* pTkn = pTknVec->pNextToken(); dPT();
 
   // extract scale and precison if specified
   if (pTkn->bSame("("_Stz)) {
     
-    pTkn = pTknVec->pNextToken(); PT();
+    pTkn = pTknVec->pNextToken(); dPT();
     
     // check if it was numeric
     if ( ! pTkn->bIsNumeric() )
@@ -360,12 +361,12 @@ eEC TableDef::eExtractDecimal(Column* pCol, TokenVec* pTknVec)
     
     iPrecision = pTkn->iToI8();
     
-    pTkn = pTknVec->pNextToken(); PT();
+    pTkn = pTknVec->pNextToken(); dPT();
     
     if (!pTkn->bSame(","_Stz))
       return EC_INVALID_COMMAND;
     
-    pTkn = pTknVec->pNextToken(); PT();
+    pTkn = pTknVec->pNextToken(); dPT();
     
     // check if it was numeric
     if ( ! pTkn->bIsNumeric() )
@@ -374,7 +375,7 @@ eEC TableDef::eExtractDecimal(Column* pCol, TokenVec* pTknVec)
     // get the scale
     iScale = pTkn->iToI8();
     
-    pTkn = pTknVec->pNextToken(); PT();
+    pTkn = pTknVec->pNextToken(); dPT();
     if (! pTkn->bSame(")"_Stz))
       return EC_INVALID_COMMAND;
     
@@ -403,12 +404,12 @@ eEC TableDef::eExtractFloat(Column* pCol, TokenVec* pTknVec)
   pCol->vColumnType(CT_FLOAT);
   pCol->vDatumType(DM_FLT);
   
-  Token* pTkn = pTknVec->pNextToken(); PT();
+  Token* pTkn = pTknVec->pNextToken(); dPT();
 
   // extract size if specified
   if (pTkn->bSame("("_Stz)) {
     
-    pTkn = pTknVec->pNextToken(); PT();
+    pTkn = pTknVec->pNextToken(); dPT();
 
     // check if it was numeric
     if ( ! pTkn->bIsNumeric() ) {
@@ -418,7 +419,7 @@ eEC TableDef::eExtractFloat(Column* pCol, TokenVec* pTknVec)
     // get size
     iSize = pTknVec->pNextToken()->iToI8();
     
-    pTkn = pTknVec->pNextToken(); PT();
+    pTkn = pTknVec->pNextToken(); dPT();
     if (!pTkn->bSame(")"_Stz)) {
       return EC_INVALID_COMMAND;
     }
@@ -501,14 +502,14 @@ eEC TableDef::eExtractVarchar(Column* pCol, TokenVec* pTknVec)
   pCol->vColumnType(CT_VARCHAR);
   pCol->vDatumType(DM_VCH);
   
-  Token* pTkn = pTknVec->pNextToken(); PT();
+  Token* pTkn = pTknVec->pNextToken(); dPT();
 
   // extract size if specified
   if (pTkn->bSame("("_Stz)) {
     
     //pCol->vColumnLength(pTknVec->pNextToken()->iToI8());
     
-    pTkn = pTknVec->pNextToken(); PT();
+    pTkn = pTknVec->pNextToken(); dPT();
 
     // check if it was numeric
     if (! pTkn->bIsNumeric())
@@ -517,7 +518,7 @@ eEC TableDef::eExtractVarchar(Column* pCol, TokenVec* pTknVec)
     // get size
     iSize = pTkn->iToI8();
     
-    pTkn = pTknVec->pNextToken(); PT();
+    pTkn = pTknVec->pNextToken(); dPT();
     
     if (! pTkn->bSame(")"_Stz))
       return EC_INVALID_COMMAND;
@@ -533,7 +534,7 @@ eEC TableDef::eExtractVarchar(Column* pCol, TokenVec* pTknVec)
   return EC_NONE;
 }
 
-#undef PT
+#undef dPT
 
 
 /*----------------------------------------------------------------------------*/
