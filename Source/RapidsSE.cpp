@@ -986,7 +986,7 @@ eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
   
   sprintf(pSession->m_sResponse.azChar(),"%lld,%s,%s,%lld,%lld,%s,%s",
           pColumn->iColumnNo(),
-          pColumn->sColumnName().azChar(),
+          pColumn->szColNm()->azChar(),
           aCT[pColumn->eColumnType()]->azChar(),
           pColumn->iColumnLength(),
           pColumn->iColumnScale(),

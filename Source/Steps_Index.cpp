@@ -128,7 +128,8 @@ void Step::vIndexColumnName(void)
   ASSERT(iIndex < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
   
-  m_pDataStack->vPushS32(pColumn->sColumnName());
+  s32 sColNm(pColumn->szColNm());
+  m_pDataStack->vPushS32(sColNm);
   
   EXIT();
 }

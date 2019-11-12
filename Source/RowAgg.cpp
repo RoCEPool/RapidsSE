@@ -236,7 +236,7 @@ void RowAgg::vPrintOut(File& oOutputFile)
     
     Column* pAggColumn = m_pAggColVec->pGet(i_AggCol);
     vTrace("  %18s: min: %4lld (key=%4lld); max: %4lld (key=%4lld); avg: %6lld\n"_Stz,
-           pAggColumn->sColumnName().azChar(),
+           pAggColumn->szColNm(),
            m_iaMinVal[i_AggCol], m_iaMinKey[i_AggCol],
            m_iaMaxVal[i_AggCol], m_iaMaxKey[i_AggCol],
            m_iaAvgVal[i_AggCol]

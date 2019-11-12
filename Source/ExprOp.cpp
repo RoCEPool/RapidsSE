@@ -429,7 +429,7 @@ Column* ExprOp::pCreateColumn(i8 i_ExprCol, Stz* sColumnNm, i8 iStartTkn, i8 iEn
 
   // find the expression column in the original Stream
   m_iWhichCol[i_ExprCol] =
-  m_pOriginalStreamDef->iFindColumn(pExprColumn->sColumnName().azChar(),m_iWhichVec[0]);
+  m_pOriginalStreamDef->iFindColumn(pExprColumn->szColNm()->azChar(),m_iWhichVec[0]);
 
   // set the column and datum type in the expression column
 // ALKA_TO_REVIEW

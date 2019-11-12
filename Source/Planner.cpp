@@ -266,7 +266,7 @@ void Planner::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)
         // add column arg to predicate
         Column* pColumn = pIdxColVec->pGet(i_IdxCol);
         Arg* pColumnArg = new Arg;
-        s256 sColumnNm = pColumn->sColumnName().szStz();
+        s256 sColumnNm = pColumn->szColNm();
         pColumnArg->vArgVal(sColumnNm);
         pLowerPredicate->vArg1(pColumnArg);
       }
@@ -288,7 +288,7 @@ void Planner::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)
         // add column arg to predicate
         Column* pColumn = pIdxColVec->pGet(i_IdxCol);
         Arg* pColumnArg = new Arg;
-        s256 sColumnNm = pColumn->sColumnName().szStz();
+        s256 sColumnNm = pColumn->szColNm();
         pColumnArg->vArgVal(sColumnNm);
         pUpperPredicate->vArg1(pColumnArg);
       }

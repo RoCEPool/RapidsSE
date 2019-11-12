@@ -517,7 +517,7 @@ bool Table::bIsValidIndexColumns(Jobs::Job_CreateIndex* pJob)
     bool bFound = false;
     for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
       pColumn = m_pTableDef->m_pColVec->pGet(i_Col);
-      if (pColumn->sColumnName().bSame(sColumnNm)) {
+      if (pColumn->szColNm()->bSame(sColumnNm)) {
         bFound = true;
         break;
       }
@@ -586,7 +586,7 @@ void Table::vMarkTable(void)
     Column* pColumn = m_pTableDef->m_pColVec->pGet(i_Col);
     sTableMark.vSprintCat("  Col %02lld %s %s(%lld,%lld) %s\n"_Stz,
                           i_Col,
-                          pColumn->sColumnName().szStz(),
+                          pColumn->szColNm(),
                           
                           aCT[pColumn->eColumnType()],
                           pColumn->iColumnLength(),

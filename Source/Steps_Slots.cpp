@@ -53,7 +53,9 @@ void Step::vSlotsColumnName(void)
   ASSERT(iIndex < pSlots->pPtnColVec()->nItems());
   Column* pColumn = pSlots->pPtnColVec()->pGet(iIndex);
   
-  m_pDataStack->vPushS32(pColumn->sColumnName());
+  s32 sColNm(pColumn->szColNm());
+  
+  m_pDataStack->vPushS32(sColNm);
   
   EXIT();
 }

@@ -205,7 +205,7 @@ eEC TableDef::eParse(Stz* szCmd)
 
     for (i8 i_Search = 0; i_Search < i_Col - 1; i_Search++) {
       Column* pCol_search = m_pColVec->pGet(i_Search++);
-      if (pCol_search->sColumnName().bSame(pCol->sColumnName())) {
+      if (pCol_search->szColNm()->bSame(pCol->szColNm())) {
         eError = EC_DUPLICATE_COLUMN;
         goto L_RETURN;
       }

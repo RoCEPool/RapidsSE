@@ -98,7 +98,9 @@ void Step::vColumnNameFetch(void)
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
   
-  m_pDataStack->vPushS32(pColumn->sColumnName());
+  s32 sColNm(pColumn->szColNm());
+  
+  m_pDataStack->vPushS32(sColNm);
   
   EXIT();
 }

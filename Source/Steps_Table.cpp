@@ -291,9 +291,9 @@ void Step::vTableGetColumnsAsString(void)
     s.vConcat(","_Stz);
     
     if (i_Column == 0)
-    s.vCopy(pColVec->pGet(i_Column)->sColumnName());
+    s.vCopy(pColVec->pGet(i_Column)->szColNm());
     else
-    s.vConcat(pColVec->pGet(i_Column)->sColumnName());
+    s.vConcat(pColVec->pGet(i_Column)->szColNm());
     
     s.vConcat(" "_Stz);
     s.vConcat(aCT[pColVec->pGet(i_Column)->eColumnType()]);
@@ -395,7 +395,7 @@ void Step::vTableFindColumn(void)
     
     pColumn = pColVec->pGet(i_Col);
     
-    if (pColumn->sColumnName().bSame(sColumnName)) {
+    if (pColumn->szColNm()->bSame(sColumnName)) {
       bFound = true;
       break;
     }
@@ -435,7 +435,7 @@ void Step::vTableIsColumn(void)
     
     pColumn = pColVec->pGet(i_Col);
     
-    if (pColumn->sColumnName().bSame(sColumnName)) {
+    if (pColumn->szColNm()->bSame(sColumnName)) {
       bFound = true;
       break;
     }

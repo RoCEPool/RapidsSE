@@ -206,7 +206,7 @@ void StreamDef::vToMetadata(Stz* sMetadata)
         if (i_DefColumn != 0)
           sMetadata->vConcat(","_Stz);
         
-        sMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].sColumnName().azChar(),
+        sMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].szColNm(),
                               aCT[m_xaColumn[i_DefColumn].eColumnType()]);
       }
     }
