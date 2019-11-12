@@ -57,14 +57,10 @@ namespace Jobs
 
 #include "Job_Pipeline.hpp"
 
-#include "Job_Export.hpp"
-
 #include "Job_FetchRows.hpp"
 
 #include "Job_InsertRow.hpp"
 #include "Job_InsertTable.hpp"
-
-#include "Job_KidExport.hpp"
 
 #include "Job_LoadTable.hpp"
 
@@ -83,7 +79,6 @@ namespace Jobs
 #include "Job_Select.hpp"
 #include "Job_Start.hpp"
 
-#include "Job_SubExporter.hpp"
 #include "Job_SubFetch.hpp"
 #include "Job_SubInserter.hpp"
 #include "Job_SubLoader.hpp"

@@ -155,11 +155,9 @@ enum eCN : u2 // Class Number
   /*  72 0x48    70592B Heap:L */ CN_JOB_CONNECTOR,
   /*  73 0x49   118688B Heap:L */ CN_JOB_COPYBUFFER,
   /*  75 0x4B    77808B Heap:L */ CN_JOB_CREATEINDEX,
-  /*  86 0x56    70864B Heap:L */ CN_JOB_EXPORT,
   /*  87 0x57    70936B Heap:L */ CN_JOB_FETCHROWS,
   /*  90 0x5A   118632B Heap:L */ CN_JOB_INSERTROW,
   /*  91 0x5B    70608B Heap:L */ CN_JOB_INSERTTABLE,
-  /* 139 0x8B        0B Heap:L */ CN_JOB_KIDEXPORT,
   /* 102 0x66    70928B Heap:L */ CN_JOB_LOADTABLE,
   /* 105 0x69    70640B Heap:L */ CN_JOB_NODEINFO,
   /* 105 0x69    70640B Heap:L */ CN_JOB_OPERAND,
@@ -171,7 +169,6 @@ enum eCN : u2 // Class Number
   /* 115 0x73    70608B Heap:L */ CN_JOB_SANITY,
   /* 114 0x72    70608B Heap:L */ CN_JOB_SELECT,
   /* 121 0x79    70592B Heap:L */ CN_JOB_START,
-  /* 124 0x7C    70632B Heap:L */ CN_JOB_SUBEXPORTER,
   /* 125 0x7D    70632B Heap:L */ CN_JOB_SUBFETCH,
   /*                           */ CN_JOB_SUBINFLATE,
   /* 126 0x7E   151464B Heap:L */ CN_JOB_SUBINGESTER,
@@ -519,11 +516,9 @@ static Stz* aCN[]
   /*  72 0x48 */ "JOB_CONNECTOR"_Stz,       // CN_JOB_CONNECTOR
   /*  73 0x49 */ "JOB_COPYBUFFER"_Stz,      // CN_JOB_COPYBUFFER
   /*  75 0x4B */ "JOB_CREATEINDEX"_Stz,     // CN_JOB_CREATEINDEX
-  /*  86 0x56 */ "JOB_EXPORT"_Stz,          // CN_JOB_EXPORT
   /*  87 0x57 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
   /*  90 0x5A */ "JOB_INSERTROW"_Stz,       // CN_JOB_INSERTROW
   /*  91 0x5B */ "JOB_INSERTTABLE"_Stz,     // CN_JOB_INSERTTABLE
-  /* 139 0x8B */ "JOB_KIDEXPORT"_Stz,       // CN_JOB_KIDEXPORT
   /* 102 0x66 */ "JOB_LOADTABLE"_Stz,       // CN_JOB_LOADTABLE
   /* 105 0x69 */ "JOB_NODEINFO"_Stz,        // CN_JOB_NODEINFO
   /* 105 0x69 */ "JOB_OPERAND"_Stz,         // CN_JOB_OPERAND
@@ -535,7 +530,6 @@ static Stz* aCN[]
   /* 115 0x73 */ "JOB_SANITY"_Stz,          // CN_JOB_SANITY
   /* 114 0x72 */ "JOB_SELECT"_Stz,          // CN_JOB_SELECT
   /* 121 0x79 */ "JOB_START"_Stz,           // CN_JOB_START
-  /* 124 0x7C */ "JOB_SUBEXPORTER"_Stz,     // CN_JOB_SUBEXPORTER
   /* 125 0x7D */ "JOB_SUBFETCH"_Stz,        // CN_JOB_SUBFETCH
   /*          */ "JOB_SUBINFLATE"_Stz,      // CN_JOB_SUBINFLATE
   /* 126 0x7E */ "JOB_SUBINGESTER"_Stz,     // CN_JOB_SUBINGESTER

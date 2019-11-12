@@ -47,7 +47,7 @@ JobClass xJobClass_EndInsert =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_InsertTable_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_KidExport_class;
+  *pNextFun = (pFUN*)pJob_LoadTable_class;
   
   return &xJobClass_EndInsert;
 }

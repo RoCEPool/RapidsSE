@@ -32,7 +32,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   
   // dist2pc
   JobClass::vCmds(CN_JOB_CREATEINDEX);
-  JobClass::vCmds(CN_JOB_EXPORT);
   JobClass::vCmds(CN_JOB_INSERTROW);
   //JobClass::vCmds(CN_JOB_INSERTTABLE);
   JobClass::vCmds(CN_JOB_LOADTABLE);

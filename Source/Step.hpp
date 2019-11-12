@@ -71,11 +71,9 @@ namespace Steps
     static void vAddSteps_JobAnalyzeIndex(void);
     static void vAddSteps_JobClass(void);
     static void vAddSteps_JobCreateIndex(void);
-    static void vAddSteps_JobExport(void);
     static void vAddSteps_JobFetchRows(void);
     static void vAddSteps_JobGeneric(void);
     static void vAddSteps_JobInsertRows(void);
-    static void vAddSteps_JobKidExport(void);
     static void vAddSteps_JobLoadTable(void);
     static void vAddSteps_JobNodeInfo(void);
     static void vAddSteps_JobOperand(void);
@@ -85,7 +83,6 @@ namespace Steps
     static void vAddSteps_JobReceiver(void);
     static void vAddSteps_JobRef(void);
     static void vAddSteps_JobSelect(void);
-    static void vAddSteps_JobSubExporter(void);
     static void vAddSteps_JobSubLoader(void);
     static void vAddSteps_JobSubPublish(void);
     static void vAddSteps_JobSubPurger(void);

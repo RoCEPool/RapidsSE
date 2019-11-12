@@ -400,7 +400,7 @@ void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
   sDiagram = ""_Stz;
   
   switch (eJobClass) {
-      
+/*
       // generate state diagram for export job
     case CN_JOB_EXPORT: {
       
@@ -436,7 +436,7 @@ void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
       
       return;
     }
-      
+*/
     default:
       sDiagram.vSprint("Warning: No diagram for class %lld %s"_Stz,
                        eJobClass,aCN[eJobClass]);
