@@ -61,7 +61,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   // dist2pc
   nJobs++; JobClass::vJobCat(CN_JOB_CONNECTCLUSTER);
   nJobs++; JobClass::vJobCat(CN_JOB_CREATEINDEX);
-  nJobs++; JobClass::vJobCat(CN_JOB_DEFINENODE);
   nJobs++; JobClass::vJobCat(CN_JOB_PIPELINE);
   nJobs++; JobClass::vJobCat(CN_JOB_EXPORT);
   nJobs++; JobClass::vJobCat(CN_JOB_INSERTROW);
