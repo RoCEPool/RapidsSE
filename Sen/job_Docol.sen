@@ -41,6 +41,8 @@ jobSyntax: docol :: docol <routineNm> ;
 
 jobInfo: docol
 {
+  <?jobDesc?>  = "--description of job--"
+  
   <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_LOCAL_ERRORS

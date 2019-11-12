@@ -102,6 +102,8 @@ jobSyntax: dumpIndex :: dumpIdx <tableNm> <indexNm> ;
 
 jobInfo: dumpIndex
 {
+  <?jobDesc?>  = "--description of job--"
+  
   <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_LOCAL_ZERO

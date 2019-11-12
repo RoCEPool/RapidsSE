@@ -93,6 +93,8 @@ jobSyntax: sizeTable :: szTbl <tableNm> ;
 
 jobInfo: sizeTable
 {
+  <?jobDesc?>  = "--description of job--"
+  
   <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NODE_ROWS

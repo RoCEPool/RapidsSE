@@ -76,6 +76,8 @@ jobSyntax: lf :: lf ;
 
 jobInfo: lf
 {
+  <?jobDesc?>  = "--description of job--"
+  
   <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_LOCAL_ROWS

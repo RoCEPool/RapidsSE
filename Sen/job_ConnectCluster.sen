@@ -107,6 +107,8 @@ jobSyntax: connectCluster :: connectCluster ;
 
 jobInfo: connectCluster
 {
+  <?jobDesc?>  = "--description of job--"
+  
   <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NONE

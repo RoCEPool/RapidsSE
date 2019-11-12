@@ -80,6 +80,8 @@ jobSyntax: defineNode :: define node <nodeNm> {name:value} ;
 
 jobInfo: defineNode
 {
+  <?jobDesc?>  = "--description of job--"
+  
   <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NODE_ZERO

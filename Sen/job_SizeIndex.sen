@@ -111,6 +111,8 @@ jobSyntax: sizeIndex :: szIdx <tableNm> <indexNm> ;
 
 jobInfo: sizeIndex
 {
+  <?jobDesc?>  = "--description of job--"
+  
   <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NODE_ROWS

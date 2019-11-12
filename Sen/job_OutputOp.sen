@@ -34,6 +34,8 @@ jobSyntax: output :: output ;
 /*----------------------------------------------------------------------------*/
 jobInfo: output
 {
+  <?jobDesc?>  = "--description of job--"
+  
   <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_OP
   <?rspKind?>  = RS_NODE_ZERO

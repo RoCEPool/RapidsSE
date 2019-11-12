@@ -109,6 +109,8 @@ jobSyntax: analyzeTable :: antbl <tableNm> <detailed> ;
 
 jobInfo: analyzeTable
 {
+  <?jobDesc?>  = "--description of job--"
+  
   <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NODE_ROWS

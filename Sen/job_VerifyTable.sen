@@ -92,6 +92,8 @@ jobSyntax: verifyTable :: vfyTbl <tableNm> ;
 
 jobInfo: verifyTable
 {
+  <?jobDesc?>  = "--description of job--"
+  
   <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NODE_ROWS

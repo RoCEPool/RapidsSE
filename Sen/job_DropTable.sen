@@ -119,6 +119,8 @@ jobSyntax: dropTable :: drop table <tableNm> ;
 
 jobInfo: dropTable
 {
+  <?jobDesc?>  = "--description of job--"
+  
   <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NODE_ZERO

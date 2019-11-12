@@ -73,6 +73,8 @@ jobSyntax: dropTenant :: drop tenant <tenantNm> ;
 
 jobInfo: dropTenant
 {
+  <?jobDesc?>  = "--description of job--"
+  
   <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NODE_ZERO

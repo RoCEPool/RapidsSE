@@ -87,6 +87,8 @@ jobSyntax: dumptable :: dumptbl <tableNm> ;
 
 jobInfo: dumptable
 {
+  <?jobDesc?>  = "--description of job--"
+  
   <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_LOCAL_ZERO
