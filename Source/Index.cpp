@@ -66,17 +66,14 @@ Index::Index(void)
   gpAttachMap->m_oStatistics.Index.m_nCreates++;
 #endif
   
-  Word* pWord = Word::pToWord(this);
+  Word* pWord  = Word::pToWord(this);
   
-  m_pIndexDef = new IndexDef;
+  m_pIndexDef  = new IndexDef;
   
   m_iIndexNo   = -1;
   m_sIndexName = pWord->szWordNm();
-  m_pTable        = nullptr;
   
-//  m_fGreaterEqual = nullptr;
-//  m_fGreaterThan  = nullptr;
-  
+  m_pTable     = nullptr;
   // m_xSubDic
   
   _checkInitialised_(CN_INDEX);
@@ -96,7 +93,6 @@ Index::~Index(void) noexcept(false)
 #endif
   
   vTidyUp();
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -209,87 +205,7 @@ void Index::vCreateColumnVec(Jobs::Job_CreateIndex* pJob)
 void Index::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-/*
-  IndexBuffer* pIndexBuffer = m_pIndexLevels->pFirstH0Buffer();
-
-  while (pIndexBuffer) {
-    pIndexBuffer->vShow();
-    
-    EntrySeq* aItem = pIndexBuffer->pFirstEntry();
-    
-    while (aItem) {
-      aItem->vContentDump();
-      
-      aItem = pIndexBuffer->pNextEntry(aItem);
-    }
-    pIndexBuffer = pIndexBuffer->pNextBuffer();
-  }
- 
-  pIndexBuffer->vShow();
- */
 }
-
-/*----------------------------------------------------------------------------*/
-/* is single value keyA greater than or equal to keyB?                        */
-/*----------------------------------------------------------------------------*/
-//bool Index::bGreaterEqual(char* aDatumA, char* aDatumB)
-//{
-//  bool bIsGreaterEqual = (*m_fGreaterEqual)(aDatumA,aDatumB);
-//
-//  return bIsGreaterEqual;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* is single value keyA greater than keyB?                                    */
-/*----------------------------------------------------------------------------*/
-//bool Index::bGreaterThan(char* aDatumA, char* aDatumB)
-//{
-//  bool bIsGreaterThan = (*m_fGreaterThan)(aDatumA,aDatumB);
-//
-//  return bIsGreaterThan;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* compute the index form                                                     */
-/*----------------------------------------------------------------------------*/
-//eIF Index::eIndexForm(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-//
-//  Column* pColumn0;
-//  Column* pColumn1;
-//  Column* pColumn2;
-//  
-//  if (1 == m_pIdxColVec->nItems()) {
-//    pColumn0 = m_pIdxColVec->pGet(0);
-//    if (DM_INT == pColumn0->eDatumType())
-//      return IF_I8;
-//    if (DM_VCH == pColumn0->eDatumType())
-//      return IF_STZ;
-//    return IF_COMPLEX;
-//  }
-//  
-//  if (2 == m_pIdxColVec->nItems()) {
-//    pColumn0 = m_pIdxColVec->pGet(0);
-//    pColumn1 = m_pIdxColVec->pGet(1);
-//    if (DM_INT == pColumn0->eDatumType() && DM_INT == pColumn1->eDatumType() )
-//      return IF_I8_I8;
-//    return IF_COMPLEX;
-//  }
-//  
-//  if (3 == m_pIdxColVec->nItems()) {
-//    pColumn0 = m_pIdxColVec->pGet(0);
-//    pColumn1 = m_pIdxColVec->pGet(1);
-//    pColumn2 = m_pIdxColVec->pGet(2);
-//    if (DM_INT == pColumn0->eDatumType() &&
-//        DM_INT == pColumn1->eDatumType() &&
-//        DM_INT == pColumn2->eDatumType())
-//      return IF_I8_I8_I8;
-//    return IF_COMPLEX;
-//  }
-//
-//  return IF_COMPLEX;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get the index name                                                         */

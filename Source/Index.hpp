@@ -12,15 +12,9 @@ namespace MetaData
 
     i8           m_iIndexNo;      //
     s32          m_sIndexName;    //
-    //eIT          m_eIndexType;    //
-    //bool         m_bIsPrimaryKey; //
-    //bool         m_bIsUnique;     //
+  
     Table*       m_pTable;        //
     Dic          m_xSubDic;       // sub dictionary for this index
-    //IdxColVec*   m_pIdxColVec;    //
-  
-//    bool         (*m_fGreaterEqual)(char* aArgA, char* aArgB);
-//    bool         (*m_fGreaterThan)(char* aArgA, char* aArgB);
   
     // must be last
     Footer m_xFooter;
@@ -42,10 +36,6 @@ namespace MetaData
     void   vCreateColumnVec(Jobs::Job_CreateIndex* pJob);
     void   vDump(void);
   
-//    bool   bGreaterEqual(char* aDatumA, char* aDatumB);
-//    bool   bGreaterThan(char* aDatumA, char* aDatumB);
-  
-//    eIF    eIndexForm(void);
     Stz*   aIndexName(void);
     s32    sIndexName(void);
     void   vIndexNo(i8 iIndexNo);
