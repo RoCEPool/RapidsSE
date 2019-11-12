@@ -162,7 +162,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_OPERAND
   /*    */ &Finalize::vUndefined,         // CN_JOB_PERIODIC
   /*    */ &Finalize::vUndefined,         // CN_JOB_PIPELINE
-  /*    */ &Finalize::vUndefined,         // CN_JOB_PUBLISH
   /*    */ &Finalize::vUndefined,         // CN_JOB_RECEIVER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SANITY
   /*    */ &Finalize::vUndefined,         // CN_JOB_SELECT
@@ -172,7 +171,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINGESTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBINSERTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBLOADER
-  /*    */ &Finalize::vUndefined,         // CN_JOB_SUBPUBLISH
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBSCAN
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBTRUNCATE
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUPERVISOR

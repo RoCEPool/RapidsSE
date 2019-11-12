@@ -78,12 +78,10 @@ namespace Steps
     static void vAddSteps_JobNodeInfo(void);
     static void vAddSteps_JobOperand(void);
     static void vAddSteps_JobPipeline(void);
-    static void vAddSteps_JobPublish(void);
     static void vAddSteps_JobReceiver(void);
     static void vAddSteps_JobRef(void);
     static void vAddSteps_JobSelect(void);
     static void vAddSteps_JobSubLoader(void);
-    static void vAddSteps_JobSubPublish(void);
     static void vAddSteps_JobTruncateTable(void);
     static void vAddSteps_JobWriteBuffer(void);
     static void vAddSteps_JobWriteRecord(void);

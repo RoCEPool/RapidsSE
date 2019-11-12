@@ -99,12 +99,10 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobNodeInfo();
   Step::vAddSteps_JobOperand();
   Step::vAddSteps_JobPipeline();
-  Step::vAddSteps_JobPublish();
   Step::vAddSteps_JobReceiver();
   Step::vAddSteps_JobRef();
   Step::vAddSteps_JobSelect();
   Step::vAddSteps_JobSubLoader();
-  Step::vAddSteps_JobSubPublish();
   Step::vAddSteps_JobTruncateTable();
   Step::vAddSteps_JobWriteBuffer();
   Step::vAddSteps_JobWriteRecord();

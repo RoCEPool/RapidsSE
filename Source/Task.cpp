@@ -545,11 +545,6 @@ Job* Task::pJob(void)
 void Task::vJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (pJob && pJob->eClass() == CN_JOB_PUBLISH) {
-    vTrace("Task::vJob: CN_JOB_PUBLISH task %p job %p\n"_Stz,
-           this,pJob);
-  }
 
   m_pJob = pJob;
 }

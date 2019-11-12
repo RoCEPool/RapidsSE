@@ -47,7 +47,7 @@ JobClass xJobClass_Pipeline =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Pipeline_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Publish_class;
+  *pNextFun = (pFUN*)pJob_Receiver_class;
 
   return &xJobClass_Pipeline;
 }

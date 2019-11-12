@@ -69,7 +69,6 @@ namespace Jobs
 #include "Job_Operand.hpp"
 
 #include "Job_Periodic.hpp"
-#include "Job_Publish.hpp"
 
 #include "Job_Receiver.hpp"
 
@@ -80,7 +79,6 @@ namespace Jobs
 #include "Job_SubFetch.hpp"
 #include "Job_SubInserter.hpp"
 #include "Job_SubLoader.hpp"
-#include "Job_SubPublish.hpp"
 #include "Job_SubScan.hpp"
 #include "Job_SubTruncate.hpp"
 #include "Job_Supervisor.hpp"
