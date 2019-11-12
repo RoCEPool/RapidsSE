@@ -67,6 +67,7 @@ namespace Jobs
     void vContentDump(void);
     void vFocalOutline(s4K& sOutline);
     i8   iJobId(void);
+    EnameSet* pJobInfoEnameSet(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
     void vLockJobMutex(void);

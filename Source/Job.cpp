@@ -457,6 +457,33 @@ i8 Job::iJobId(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the job id                                                             */
+/*----------------------------------------------------------------------------*/
+EnameSet* Job::pJobInfoEnameSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Stz* szJobNm = m_oEnameSet.szValue("<jobNm>"_Stz);
+  
+  // did we get a job name ?
+  if ( szJobNm->bEqual(""_Stz) ) {
+    // would have been a startup problem (unable to match job syntax !!!)
+    ASSERT(m_bHasError);
+    return nullptr;
+  }
+  
+  s32 sJobInfoNm(szJobNm);
+  
+  StrLib::vConcat(sJobInfoNm.azChar(),(const char*)"_cls"_Stz);
+  
+  Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
+  
+  EnameSet* pJobInfoEnameSet = pJobInfo->pEnameSet();
+
+  return pJobInfoEnameSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* write an activity map string about this job                                */
 /*----------------------------------------------------------------------------*/
 void Job::vMarkJob(void)
@@ -773,6 +800,9 @@ void Jobs::vJob_post(Job* pJob)
     Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
 
     EnameSet* pJobInfoEnameSet = pJobInfo->pEnameSet();
+    
+    //! CROSS-CHECK
+    ASSERT(pJobInfoEnameSet == pJob->pJobInfoEnameSet());
     
     eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
 
