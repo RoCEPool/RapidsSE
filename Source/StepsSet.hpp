@@ -390,6 +390,9 @@ public:
   void vIndexVerify(void);
   void vIndexVisualize(void);
 
+  // index definition
+  void vIndexDefParse(void);
+
   // input
   void vInputClose(void);
   void vInputDepth(void);
@@ -595,11 +598,13 @@ public:
   // job InsertRows
   void vJob_CopyBufferCopy(void);
 
+  // insert row
   void vJob_InsertRowPartitionFetch(void);
   void vJob_InsertRowRecordStore(void);
   void vJob_InsertRowNewJobWriteRow(void);
   void vJob_InsertRowSpawnJobWriteRow(void);
 
+  // insert table
   void vJob_InsertTableSubInserterJobFetch(void);
 
   void vJob_SubInserterBegin(void);

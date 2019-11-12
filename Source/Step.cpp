@@ -85,6 +85,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Handler();
   
   Step::vAddSteps_Index();
+  Step::vAddSteps_IndexDef();
   Step::vAddSteps_Input();
   Step::vAddSteps_Int();
   
