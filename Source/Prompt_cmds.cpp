@@ -39,9 +39,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_PUBLISH);
   JobClass::vCmds(CN_JOB_PURGE);
   JobClass::vCmds(CN_JOB_SANITY);
-  JobClass::vCmds(CN_JOB_WALK);
-  
-
   
   return true;
 }

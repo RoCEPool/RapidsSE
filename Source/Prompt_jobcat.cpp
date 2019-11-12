@@ -68,7 +68,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_PUBLISH);
   nJobs++; JobClass::vJobCat(CN_JOB_PURGE);
   nJobs++; JobClass::vJobCat(CN_JOB_SANITY);
-  nJobs++; JobClass::vJobCat(CN_JOB_WALK);
 
   // child
   nJobs++; JobClass::vJobCat(CN_JOB_SUBEXPORTER);
@@ -81,7 +80,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_SUBPURGER);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBSCAN);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBTRUNCATE);
-  nJobs++; JobClass::vJobCat(CN_JOB_SUBWALKER);
 
   // grankid
   nJobs++; JobClass::vJobCat(CN_JOB_COPYBUFFER);

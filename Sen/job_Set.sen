@@ -93,7 +93,6 @@
 "job_SubLoader.sen"      include
 "job_SubScan.sen"        include
 "job_SubTruncate.sen"    include
-"job_SubWalker.sen"      include
 "job_SuperCountOp.sen"   include
 "job_Supervisor.sen"     include
 
@@ -109,7 +108,6 @@
 "job_VerifyTable.sen"    include
 
 "job_Waker.sen"          include
-"job_Walk.sen"           include
 "job_WriteBuffer.sen"    include
 "job_WriteRow.sen"       include
 "job_XmitOp.sen"         include

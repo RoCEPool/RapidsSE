@@ -232,11 +232,9 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_SUBPURGER"_Stz,      CN_JOB_SUBPURGER);
   /*    */ vAddConstant("CN_JOB_SUBSCAN"_Stz,        CN_JOB_SUBSCAN);
   /*    */ vAddConstant("CN_JOB_SUBTRUNCATE"_Stz,    CN_JOB_SUBTRUNCATE);
-  /*    */ vAddConstant("CN_JOB_SUBWALKER"_Stz,      CN_JOB_SUBWALKER);
   /*    */ vAddConstant("CN_JOB_SUPERVISOR"_Stz,     CN_JOB_SUPERVISOR);
   /*    */ vAddConstant("CN_JOB_UNIVERSAL"_Stz,      CN_JOB_UNIVERSAL);
   /*    */ vAddConstant("CN_JOB_WAKER"_Stz,          CN_JOB_WAKER);
-  /*    */ vAddConstant("CN_JOB_WALK"_Stz,           CN_JOB_WALK);
 
   /*    */ vAddConstant("CN_JUMBOPERSISTENT"_Stz, CN_JUMBOPERSISTENT);
   /*    */ vAddConstant("CN_JUMBOTRANSIENT"_Stz,  CN_JUMBOTRANSIENT);

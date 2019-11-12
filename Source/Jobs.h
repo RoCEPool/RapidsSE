@@ -91,13 +91,11 @@ namespace Jobs
 #include "Job_SubPurger.hpp"
 #include "Job_SubScan.hpp"
 #include "Job_SubTruncate.hpp"
-#include "Job_SubWalker.hpp"
 #include "Job_Supervisor.hpp"
 
 #include "Job_Universal.hpp"
 
 #include "Job_Waker.hpp"
-#include "Job_Walk.hpp"
 #include "Job_WriteBuffer.hpp"
 #include "Job_WriteRow.hpp"
 

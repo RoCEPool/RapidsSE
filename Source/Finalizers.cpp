@@ -180,10 +180,8 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBPURGER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBSCAN
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBTRUNCATE
-  /*    */ &Finalize::vUndefined,         // CN_JOB_SUBWALKER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUPERVISOR
   /*    */ &Finalize::vUndefined,         // CN_JOB_UNIVERSAL
-  /*    */ &Finalize::vUndefined,         // CN_JOB_WALK
   /*    */ &Finalize::vUndefined,         // CN_JOB_WAKER
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEROW
