@@ -16,9 +16,8 @@
   pEvalueWord if
     pEvalueWord word.category@ tick rootConstant eql if
 
-      sEvalue "  %v is a constant" fmt.print
-      //sEname sEvalue pEnameSet EnameSet.addStr
-      sEname pEvalueWord execute pEnameSet EnameSet.addInt
+      // sEvalue "  %v is a constant" fmt.print
+       sEname pEvalueWord execute pEnameSet EnameSet.addInt
       exit
 
     then
@@ -152,7 +151,7 @@
     .fillOutEnameSet_local
   then
 
-  pEnameSet EnameSet.asStr .
+  // pEnameSet EnameSet.asStr .
 ;
 
 
@@ -208,11 +207,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // complete the ename-set
 
-  pEnameSet EnameSet.asStr .
+  //pEnameSet EnameSet.asStr .
 
   pEnameSet .fillOutEnameSet
 
-  pEnameSet EnameSet.asStr .
+  //pEnameSet EnameSet.asStr .
 ;
 
 /*============================================================================*/
