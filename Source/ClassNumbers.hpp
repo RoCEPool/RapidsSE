@@ -157,7 +157,6 @@ enum eCN : u2 // Class Number
   /*  75 0x4B    77808B Heap:L */ CN_JOB_CREATEINDEX,
   /*  86 0x56    70864B Heap:L */ CN_JOB_EXPORT,
   /*  87 0x57    70936B Heap:L */ CN_JOB_FETCHROWS,
-  /*                           */ CN_JOB_HEALTH,
   /*  90 0x5A   118632B Heap:L */ CN_JOB_INSERTROW,
   /*  91 0x5B    70608B Heap:L */ CN_JOB_INSERTTABLE,
   /* 139 0x8B        0B Heap:L */ CN_JOB_KIDEXPORT,
@@ -525,7 +524,6 @@ static Stz* aCN[]
   /*  75 0x4B */ "JOB_CREATEINDEX"_Stz,     // CN_JOB_CREATEINDEX
   /*  86 0x56 */ "JOB_EXPORT"_Stz,          // CN_JOB_EXPORT
   /*  87 0x57 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
-  /*          */ "JOB_HEALTH"_Stz,          // CN_JOB_HEALTH
   /*  90 0x5A */ "JOB_INSERTROW"_Stz,       // CN_JOB_INSERTROW
   /*  91 0x5B */ "JOB_INSERTTABLE"_Stz,     // CN_JOB_INSERTTABLE
   /* 139 0x8B */ "JOB_KIDEXPORT"_Stz,       // CN_JOB_KIDEXPORT
