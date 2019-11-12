@@ -404,6 +404,8 @@ void Job::vContentDump(void)
   vTrace("---\n"_Stz);
 
   vTrace("%p: %s\n"
+         
+         "m_eJobType=%s m_eJobKind=%s\n"
          "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
          "m_bByPrompt=%d m_bNoWait=%d m_bWasReceived=%d\n"
          "m_iParentId=%lld m_iOriginatingId=%lld\n"
@@ -411,6 +413,9 @@ void Job::vContentDump(void)
 
          this,
          aCN[eClass()],
+         
+         aJT[m_eJobType]->azChar(),
+         aJK[m_eJobKind]->azChar(),
          
          aJL[m_eJobList],
          aJP[m_eJobPhase],
