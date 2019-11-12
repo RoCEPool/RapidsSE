@@ -782,28 +782,7 @@ void Jobs::vJob_post(Job* pJob)
   
   if (CN_JOB_UNIVERSAL == eClass) {
     
-    EnameSet* pJobEnameSet = & pJob->m_oEnameSet;
-    
-    Stz* szJobNm = pJobEnameSet->szValue("<jobNm>"_Stz);
-
-    // did we get a job name ?
-    if ( szJobNm->bEqual(""_Stz) ) {
-      // would have been a startup problem (unable to match job syntax !!!)
-      ASSERT(pJob->m_bHasError);
-      return;
-    }
-    
-    s32 sJobInfoNm(szJobNm);
-    
-    StrLib::vConcat(sJobInfoNm.azChar(),(const char*)"_cls"_Stz);
-
-    Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
-
-    EnameSet* pJobInfoEnameSet = pJobInfo->pEnameSet();
-    
-    //! CROSS-CHECK
-    ASSERT(pJobInfoEnameSet == pJob->pJobInfoEnameSet());
-    
+    EnameSet* pJobInfoEnameSet = pJob->pJobInfoEnameSet();
     eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
 
     //eResponse = pJob->m_aJobClass->m_eResponse;
