@@ -45,20 +45,20 @@
 
   compiler::current word.EnameSet@ locals| pEnameSet |
 
-  "<?jobKind?>" pEnameSet EnameSet.getInt dup .
+  "<?jobKind?>" pEnameSet EnameSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   JK_LOCAL
   == if
-    "job::isLocalJob - job is a local job" .
+    // "job::isLocalJob - job is a local job" .
     true
     exit
   then
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  "job::isLocalJob - job is not a local job" .
+  // "job::isLocalJob - job is not a local job" .
   false
 ;
 
@@ -69,20 +69,20 @@
 
   compiler::current word.EnameSet@ locals| pEnameSet |
 
- "<?jobKind?>" pEnameSet EnameSet.getInt dup .
+ "<?jobKind?>" pEnameSet EnameSet.getInt
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   JK_DIST2PC
   == if
-    "job::isDistJob - job is a distributed job" .
+    // "job::isDistJob - job is a distributed job" .
     true
     exit
   then
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  "job::isDistJob - job is not a distributed job" .
+  // "job::isDistJob - job is not a distributed job" .
   false
 ;
 
