@@ -29,19 +29,17 @@ namespace MetaData
     static void vMonitorPortrait(s48K& sPortrait);
 
     Index(void);
-    ~Index(void) noexcept(false);
+   ~Index(void) noexcept(false);
   
     Stz*   pAnalyze(void);
     void   vCreateColumnVec(s32& sName, s48K& sDefinition);
     void   vCreateColumnVec(Jobs::Job_CreateIndex* pJob);
-    void   vDump(void);
-  
     Stz*   aIndexName(void);
     s32    sIndexName(void);
     void   vIndexNo(i8 iIndexNo);
     i8     iIndexNo(void);
     bool   bIsPrimaryKey(void);
-    void   vIsPrimaryKey(bool bUnique);
+    void   vIsPrimaryKey(bool bPrimaryKey);
     bool   bIsUnique(void);
     void   vIsUnique(bool bUnique);
     void   vShowColumnVec(void);
