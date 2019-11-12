@@ -23,18 +23,18 @@ void Step::vIndexDefParse(void)
   if (! m_pDataStack->bPopS4K(sCmd))
     THROW_DSTACK();
 
-  //vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-  //vTrace("Stmt: %s\n"_Stz,sCmd.szStz());
-  //vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  vTrace("Stmt: %s\n"_Stz,sCmd.szStz());
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
 
-  TableDef* pTableDef = new TableDef;
+  IndexDef* pIndexDef = new IndexDef;
   
-  eEC eResult = pTableDef->eParse(sCmd);
+  //eEC eResult = pIndexDef->eParse(sCmd);
   
-//  delete pTableDef;
-//  pTableDef = nullptr;
+  delete pIndexDef;
+  pIndexDef = nullptr;
   
-  m_pDataStack->vPushPointer(pTableDef);
+  m_pDataStack->vPushPointer(pIndexDef);
 
   EXIT();
 }
