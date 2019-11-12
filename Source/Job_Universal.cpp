@@ -25,14 +25,14 @@ JobClass xJobClass_Universal =
   PY_NORMAL,              // priority
   JF_LOWMEM,              // flags
 
-  eJob_checkCluster,      // prompt check function
-  pJob_Universal_pre,    // prompt pre-process function
+  nullptr,                // prompt check function
+  pJob_Universal_pre,     // prompt pre-process function
   vJob_post,              // prompt post-process function
-  pJob_Universal_new,    // job new function
-  vJob_Universal_delete, // job delete function
+  pJob_Universal_new,     // job new function
+  vJob_Universal_delete,  // job delete function
   vJob_send,              // job pre-send function
   vJob_recv,              // job post-receive function
-  vJob_Universal_show,   // job show function
+  vJob_Universal_show,    // job show function
   
   // help
   false,

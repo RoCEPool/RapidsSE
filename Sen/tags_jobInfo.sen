@@ -50,6 +50,14 @@
   [ compiler::current word.name@ , ] jobInfo::enameSet@ enameSet.getInt
 ;
 
+/*----------------------------------------------------------------------------*/
+/* push string value of <?preCheck?> from job's jobInfo ename-set             */
+/*----------------------------------------------------------------------------*/
+: <?preCheck?> <<jobInfoTag>> ( -- s )
+
+  [ compiler::current word.name@ , ] jobInfo::enameSet@ enameSet.getStr
+;
+
 
 /*============================================================================*/
 /* end                                                                        */
