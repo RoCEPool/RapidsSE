@@ -746,7 +746,7 @@ void Jobs::vJob_post(Job* pJob)
     Stz* szJobNm = pJobEnameSet->szValue("<jobNm>"_Stz);
 
     // did we get a job name ?
-    if ( ! szJobNm ) {
+    if ( szJobNm->bEqual(""_Stz) ) {
       // would have been a startup problem (unable to match job syntax !!!)
       ASSERT(pJob->m_bHasError);
       return;
