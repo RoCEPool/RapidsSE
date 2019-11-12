@@ -6,8 +6,6 @@ print "Starting cluster..." ;
 
 startCluster;
 
-print "Cluster started" ;
-
 logSection createTable;
 
 time create table LineItem                 // SF * 6,000,000 rows
