@@ -51,7 +51,6 @@ namespace Jobs
 
 #include "Job_Boot.hpp"
 
-#include "Job_ConnectCluster.hpp"
 #include "Job_Connector.hpp"
 #include "Job_CopyBuffer.hpp"
 #include "Job_CreateIndex.hpp"
@@ -61,8 +60,6 @@ namespace Jobs
 #include "Job_Export.hpp"
 
 #include "Job_FetchRows.hpp"
-
-#include "Job_Health.hpp"
 
 #include "Job_InsertRow.hpp"
 #include "Job_InsertTable.hpp"

@@ -155,7 +155,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_ALARM
   /*    */ &Dump::vDummy,           // CN_JOB_ANSWER
   /*    */ &Dump::vDummy,           // CN_JOB_BOOT
-  /*    */ &Dump::vDummy,           // CN_JOB_CONNECTCLUSTER
   /*    */ &Dump::vDummy,           // CN_JOB_CONNECTOR
   /*    */ &Dump::vDummy,           // CN_JOB_COPYBUFFER
   /*    */ &Dump::vDummy,           // CN_JOB_CREATEINDEX
@@ -526,13 +525,12 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Alarm),          // CN_JOB_ALARM
   /*    */ sizeof(Job_Answer),         // CN_JOB_ANSWER
   /*    */ sizeof(Job_Boot),           // CN_JOB_BOOT
-  /*    */ sizeof(Job_ConnectCluster), // CN_JOB_CONNECTCLUSTER
   /*    */ sizeof(Job_Connector),      // CN_JOB_CONNECTOR
   /*    */ sizeof(Job_CopyBuffer),     // CN_JOB_COPYBUFFER
   /*    */ sizeof(Job_CreateIndex),    // CN_JOB_CREATEINDEX
   /*    */ sizeof(Job_Export),         // CN_JOB_EXPORT
   /*    */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
-  /*    */ sizeof(Job_Health),         // CN_JOB_HEALTH
+  /*    */ sizeof(Job_FetchRows),         // CN_JOB_HEALTH
   /*    */ sizeof(Job_InsertRow),      // CN_JOB_INSERTROW
   /*    */ sizeof(Job_InsertTable),    // CN_JOB_INSERTTABLE
   /*    */ sizeof(Job_KidExport),      // CN_JOB_KIDEXPORT
@@ -897,7 +895,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ALARM
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANSWER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_BOOT
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CONNECTCLUSTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CONNECTOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_COPYBUFFER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATEINDEX
