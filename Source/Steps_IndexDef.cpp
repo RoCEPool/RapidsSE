@@ -29,7 +29,7 @@ void Step::vIndexDefParse(void)
 
   IndexDef* pIndexDef = new IndexDef;
   
-  //eEC eResult = pIndexDef->eParse(sCmd);
+  eEC eResult = pIndexDef->eParse(sCmd);
   
   delete pIndexDef;
   pIndexDef = nullptr;

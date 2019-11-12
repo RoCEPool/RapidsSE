@@ -32,6 +32,7 @@ namespace MetaData
   
     Stz*   pAnalyze(void);
     Stz*   szIndexNm(void);
+    eEC    eParse(Stz* szCmd);
     bool   bIsPrimaryKey(void);
     void   vIsPrimaryKey(bool bUnique);
     bool   bIsUnique(void);

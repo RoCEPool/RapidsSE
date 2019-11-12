@@ -98,6 +98,18 @@ Stz* IndexDef::szIndexNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse Create Index command                                                 */
+/*----------------------------------------------------------------------------*/
+eEC IndexDef::eParse(Stz* szCmd)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  eEC eError = EC_NONE;
+  
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show column vector                                                         */
 /*----------------------------------------------------------------------------*/
 void IndexDef::vShowColumnVec(void)
