@@ -425,7 +425,7 @@ Column* ExprOp::pCreateColumn(i8 i_ExprCol, Stz* sColumnNm, i8 iStartTkn, i8 iEn
   // create a column
   Column* pExprColumn = new Column();
   pExprColumn->vColumnNo(i_ExprCol);
-  pExprColumn->vColumnName(sColumnNm);
+  pExprColumn->vColumnNm(sColumnNm);
 
   // find the expression column in the original Stream
   m_iWhichCol[i_ExprCol] =

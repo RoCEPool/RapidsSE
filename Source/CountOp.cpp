@@ -81,7 +81,7 @@ CountOp::CountOp(OpSpec* pOpSpec, Pipeline* pPipeline)
   
   // create an integer column
   m_pStreamDef->m_xaColumn[0].vColumnNo(0);
-  m_pStreamDef->m_xaColumn[0].vColumnName("count"_Stz);
+  m_pStreamDef->m_xaColumn[0].vColumnNm("count"_Stz);
   m_pStreamDef->m_xaColumn[0].vColumnType(CT_INTEGER);
   m_pStreamDef->m_xaColumn[0].vDatumType(DM_INT);
   

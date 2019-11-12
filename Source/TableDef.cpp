@@ -197,7 +197,7 @@ eEC TableDef::eParse(Stz* szCmd)
     pCol->vColumnNo(i_Col);
     
     // set column name
-    pCol->vColumnName(pTkn->szText());
+    pCol->vColumnNm(pTkn->szText());
     
     // -- -- -- -- -- -- -- -- -- -- --
     // check for duplicate column name

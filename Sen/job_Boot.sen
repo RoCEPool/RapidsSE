@@ -4,6 +4,7 @@
 
 "job_Boot.sen" .verbose
 
+"SEN: " .put
 9 .put
 8 .put  "vocab.sen"     include
 7 .put  "tasks.sen"     include
@@ -13,7 +14,7 @@
 3 .put  "testing.sen"   include
 2 .put  "prompt.sen"    include
 1 .put  "se.sen"        include  // last
-0 .put .\n
+0 .put  .\n
 
 assert::stack_0
 

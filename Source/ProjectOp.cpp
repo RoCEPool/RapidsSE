@@ -120,7 +120,7 @@ Op* ProjectOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
     // create a column
     Column oColumn = pProjectOp->m_pStreamDef->m_xaColumn[i_Column];
     oColumn.vColumnNo(i_Column);
-    oColumn.vColumnName(pEnameSet->szValue((i8)i_Column));
+    oColumn.vColumnNm(pEnameSet->szValue((i8)i_Column));
     pProjectOp->m_pStreamDef->m_nDefColumns[0]++;
     
   }

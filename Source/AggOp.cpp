@@ -110,7 +110,7 @@ Op* AggOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
   // create a column
   Column oColumn = pAggOp->m_pStreamDef->m_xaColumn[0];
   oColumn.vColumnNo(0);
-  oColumn.vColumnName(pAggOp->m_pOpSpec->pEnameSet()->szValue((i8)0));
+  oColumn.vColumnNm(pAggOp->m_pOpSpec->pEnameSet()->szValue((i8)0));
   
   return pAggOp;
 }

@@ -27,7 +27,7 @@ namespace MetaData
   {
     private:
     i8    m_iColumnNo;
-    s32   m_sColumnName;
+    s32   m_sColumnNm;
   //s32   m_sAlias;
     eCT   m_eColumnType;
     i8    m_iColumnLength;
@@ -67,7 +67,7 @@ namespace MetaData
   
     Stz* szColNm(void);
     s32& sColumnName(void);
-    void vColumnName(Stz* sColumnName);
+    void vColumnNm(Stz* sColumnNm);
   
     eCT  eColumnType(void);
     void vColumnType(eCT eColumnType);

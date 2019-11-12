@@ -52,7 +52,7 @@ Column::Column(void)
   
   s32 sName = ""_Stz;
   m_iColumnNo     = -1;
-  m_sColumnName   = sName;
+  m_sColumnNm   = sName;
   m_eColumnType   = CT_NONE;
   m_iColumnLength = 0;
   m_iColumnScale  = 0;
@@ -79,7 +79,7 @@ Column::Column(void)
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 //
 //  m_iColumnNo     = iColumnNo;
-//  m_sColumnName   = pJob->m_xColumns[iColumnNo].m_sColumnName;
+//  m_sColumnNm   = pJob->m_xColumns[iColumnNo].m_sColumnNm;
 //  m_eColumnType   = pJob->m_xColumns[iColumnNo].m_eColumnType;
 //  m_iColumnLength = pJob->m_xColumns[iColumnNo].m_iColumnLength;
 //  m_iColumnScale  = pJob->m_xColumns[iColumnNo].m_iColumnScale;
@@ -210,7 +210,7 @@ Stz* Column::szColNm(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  return m_sColumnName.szStz();
+  return m_sColumnNm.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -220,17 +220,17 @@ s32& Column::sColumnName(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  return m_sColumnName;
+  return m_sColumnNm;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set column name                                                            */
 /*----------------------------------------------------------------------------*/
-void Column::vColumnName(Stz* aColumnName)
+void Column::vColumnNm(Stz* aColumnName)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  m_sColumnName = aColumnName;
+  m_sColumnNm = aColumnName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -271,7 +271,7 @@ void Column::vCopy(Column* pCol)
   //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   m_iColumnNo       = pCol->m_iColumnNo;
-  m_sColumnName     = pCol->m_sColumnName;
+  m_sColumnNm     = pCol->m_sColumnNm;
   m_eColumnType     = pCol->m_eColumnType;
   m_iColumnLength   = pCol->m_iColumnLength;
   m_iColumnScale    = pCol->m_iColumnScale;
@@ -324,7 +324,7 @@ bool Column::bIsName(s32& sName)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  bool b = m_sColumnName.bSame(sName);
+  bool b = m_sColumnNm.bSame(sName);
   
   return b;
 }
@@ -398,7 +398,7 @@ void Column::vShow(void)
   
   vTrace("Column %02lld %s type %s length %lld scale %lld datum %s %s %s\n"_Stz,
          m_iColumnNo,
-         m_sColumnName.szStz(),
+         m_sColumnNm.szStz(),
          aCT[m_eColumnType],
          m_iColumnLength,
          m_iColumnScale,

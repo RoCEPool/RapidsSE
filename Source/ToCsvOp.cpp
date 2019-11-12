@@ -81,7 +81,7 @@ ToCsvOp::ToCsvOp(OpSpec* pOpSpec, Pipeline* pPipeline)
   // create an integer column
   Column oColumn = m_pStreamDef->m_xaColumn[0];
   oColumn.vColumnNo(0);
-  oColumn.vColumnName("row"_Stz);
+  oColumn.vColumnNm("row"_Stz);
   oColumn.vColumnType(CT_VARCHAR);
   oColumn.vDatumType(DM_VCH);
   
