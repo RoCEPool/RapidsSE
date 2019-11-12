@@ -47,7 +47,7 @@ bool JobHelper::bParseCmd(EnameSet* pArgEnmSet,
     return false;
   }
   
-  pArgEnmSet->vPrint();
+  // pArgEnmSet->vPrint();
   
   return true;
 }
@@ -168,7 +168,7 @@ bool JobHelper::bExtractMeta(EnameSet*   pArgEnmSet,
   pArgEnmSet->vAdd(pSynEnmSet->szValue(i_Syn_),
                    pTknVec->pGet(i_Tkn_)->szText());
   
-  pArgEnmSet->vPrint();
+  // pArgEnmSet->vPrint();
   
   i_Tkn_++;
   i_Syn_++;

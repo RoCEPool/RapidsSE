@@ -194,7 +194,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
     return EC_INVALID_COMMAND;
   }
 
-  m_oEnameSet.vPrint();
+  // m_oEnameSet.vPrint();
   
   EnameSet* pEnameSet_ji = pJobInfoEnameSet();
   
