@@ -71,8 +71,6 @@ namespace Jobs
 #include "Job_Periodic.hpp"
 #include "Job_Publish.hpp"
 
-#include "Job_Purge.hpp"
-
 #include "Job_Receiver.hpp"
 
 #include "Job_Sanity.hpp"
@@ -83,7 +81,6 @@ namespace Jobs
 #include "Job_SubInserter.hpp"
 #include "Job_SubLoader.hpp"
 #include "Job_SubPublish.hpp"
-#include "Job_SubPurger.hpp"
 #include "Job_SubScan.hpp"
 #include "Job_SubTruncate.hpp"
 #include "Job_Supervisor.hpp"

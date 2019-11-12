@@ -216,7 +216,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_PERIODIC"_Stz,       CN_JOB_PERIODIC);
   /*    */ vAddConstant("CN_JOB_PIPELINE"_Stz,       CN_JOB_PIPELINE);
   /*    */ vAddConstant("CN_JOB_PUBLISH"_Stz,        CN_JOB_PUBLISH);
-  /*    */ vAddConstant("CN_JOB_PURGE"_Stz,          CN_JOB_PURGE);
   /*    */ vAddConstant("CN_JOB_RECEIVER"_Stz,       CN_JOB_RECEIVER);
   /*    */ vAddConstant("CN_JOB_SANITY"_Stz,         CN_JOB_SANITY);
   /*    */ vAddConstant("CN_JOB_SELECT"_Stz,         CN_JOB_SELECT);
@@ -227,7 +226,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_SUBINSERTER"_Stz,    CN_JOB_SUBINSERTER);
   /*    */ vAddConstant("CN_JOB_SUBLOADER"_Stz,      CN_JOB_SUBLOADER);
   /*    */ vAddConstant("CN_JOB_SUBPUBLISH"_Stz,     CN_JOB_SUBPUBLISH);
-  /*    */ vAddConstant("CN_JOB_SUBPURGER"_Stz,      CN_JOB_SUBPURGER);
   /*    */ vAddConstant("CN_JOB_SUBSCAN"_Stz,        CN_JOB_SUBSCAN);
   /*    */ vAddConstant("CN_JOB_SUBTRUNCATE"_Stz,    CN_JOB_SUBTRUNCATE);
   /*    */ vAddConstant("CN_JOB_SUPERVISOR"_Stz,     CN_JOB_SUPERVISOR);

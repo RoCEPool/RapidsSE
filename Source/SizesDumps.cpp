@@ -167,7 +167,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_PERIODIC
   /*    */ &Dump::vDummy,           // CN_JOB_PIPELINE
   /*    */ &Dump::vDummy,           // CN_JOB_PUBLISH
-  /*    */ &Dump::vDummy,           // CN_JOB_PURGE
   /*    */ &Dump::vDummy,           // CN_JOB_RECEIVER
   /*    */ &Dump::vDummy,           // CN_JOB_SANITY
   /*    */ &Dump::vDummy,           // CN_JOB_SELECT
@@ -178,7 +177,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_SUBINSERTER
   /*    */ &Dump::vDummy,           // CN_JOB_SUBLOADER
   /*    */ &Dump::vDummy,           // CN_JOB_SUBPUBLISH
-  /*    */ &Dump::vDummy,           // CN_JOB_SUBPURGER
   /*    */ &Dump::vDummy,           // CN_JOB_SUBSCAN
   /*    */ &Dump::vDummy,           // CN_JOB_SUBTRUNCATE
   /*    */ &Dump::vDummy,           // CN_JOB_SUPERVISOR
@@ -530,7 +528,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Periodic),       // CN_JOB_PERIODIC
   /*    */ sizeof(Job_Pipeline),       // CN_JOB_PIPELINE
   /*    */ sizeof(Job_Publish),        // CN_JOB_PUBLISH
-  /*    */ sizeof(Job_Purge),          // CN_JOB_PURGE
   /*    */ sizeof(Job_Receiver),       // CN_JOB_RECEIVER
   /*    */ sizeof(Job_Sanity),         // CN_JOB_SANITY
   /*    */ sizeof(Job_Select),         // CN_JOB_SELECT
@@ -541,7 +538,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_SubInserter),    // CN_JOB_SUBINSERTER
   /*    */ sizeof(Job_SubLoader),      // CN_JOB_SUBLOADER
   /*    */ sizeof(Job_SubPublish),     // CN_JOB_SUBPUBLISH
-  /*    */ sizeof(Job_SubPurger),      // CN_JOB_SUBPURGER
   /*    */ sizeof(Job_SubScan),        // CN_JOB_SUBSCAN
   /*    */ sizeof(Job_SubTruncate),    // CN_JOB_SUBTRUNCATE
   /*    */ sizeof(Job_Supervisor),     // CN_JOB_SUPERVISOR
@@ -893,7 +889,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PERIODIC
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PIPELINE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PUBLISH
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PURGE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_RECEIVER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SANITY
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SELECT
@@ -904,7 +899,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBINSERTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBLOADER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBPUBLISH
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBPURGER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBSCAN
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBTRUNCATE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUPERVISOR

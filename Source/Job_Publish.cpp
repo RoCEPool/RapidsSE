@@ -47,7 +47,7 @@ JobClass xJobClass_Publish =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Publish_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Purge_class;
+  *pNextFun = (pFUN*)pJob_Receiver_class;
   
   return &xJobClass_Publish;
 }

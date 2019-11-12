@@ -47,7 +47,7 @@ JobClass xJobClass_SubPublish =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_SubPublish_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_SubPurger_class;
+  *pNextFun = (pFUN*)pJob_SubScan_class;
   
   return &xJobClass_SubPublish;
 }
