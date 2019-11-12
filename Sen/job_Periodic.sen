@@ -36,7 +36,7 @@
 
   >>logEntry <SEED_RUN>
 
-  "Periodic Job Started" .
+  // "Periodic Job Started" .
 
   begin
 
