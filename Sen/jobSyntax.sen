@@ -67,7 +67,7 @@
   // drop the ";" from dstack
   drop
 
-  pEnameSet EnameSet.asStr .
+  // pEnameSet EnameSet.asStr .
 
   does>
     // ..to be written

@@ -676,7 +676,7 @@ void Step::vSeriesName(void)
     
     StrLib::vSplit_si(sStr.azChar(),sInt.azChar(),pWord->szWordNm()->azChar());
     
-    vTrace("  %s - %lld\n"_Stz,sStr.azChar(),sInt.iToI8());
+    // vTrace("  %s - %lld\n"_Stz,sStr.azChar(),sInt.iToI8());
     
     if (sStr.bSame(sName)) {
       iNext = sInt.iToI8() + 1;
