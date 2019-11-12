@@ -35,6 +35,7 @@ jobSyntax: space :: space ;
 
 jobInfo: space
 {
+  <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NODE_ROWS
   <?ddlLock?>  = DL_NONE

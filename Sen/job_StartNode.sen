@@ -38,6 +38,7 @@ jobSyntax: startNode :: start node <nodeNm> ;
 
 jobInfo: startNode
 {
+  <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_NONE
   <?ddlLock?>  = DL_NONE

@@ -470,6 +470,10 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("JP_CANCELED"_Stz,  JP_CANCELED);
   /*  0 */ vAddConstant("JP_ENUMS"_Stz,     JP_ENUMS);
 
+  // JT_ : job types
+  /*  0 */ vAddConstant("JT_NONE"_Stz,      JT_NONE);
+  /*  1 */ vAddConstant("JT_ENUMS"_Stz,     JT_ENUMS);
+  
   // NS_ : node state
   /*  0 */ vAddConstant("NS_NONE"_Stz,      NS_NONE);
   /*  0 */ vAddConstant("NS_ACTIVE"_Stz,    NS_ACTIVE);

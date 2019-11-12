@@ -87,6 +87,7 @@ jobSyntax: dumptable :: dumptbl <tableNm> ;
 
 jobInfo: dumptable
 {
+  <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_LOCAL_ZERO
   <?ddlLock?>  = DL_GRAB_READ

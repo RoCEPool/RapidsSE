@@ -89,7 +89,10 @@ void Step::vJob_TruncateTableSpawnSub(void)
   pJob_SubTruncate->m_oEnameSet.vAdd("<tableNm>"_Stz,
                                    pJob_Universal->m_oEnameSet.szValue("<tableNm>"_Stz));
   pJob_SubTruncate->vSlot(iSlot);
-  
+ 
+  pJob_SubTruncate->m_eJobType = pJob_Universal->m_eJobType;
+  pJob_SubTruncate->m_eJobKind = pJob_Universal->m_eJobKind;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   IGNORE_RETURN(Api::bSpawnJob(pJob_SubTruncate));

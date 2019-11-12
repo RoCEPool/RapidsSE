@@ -35,6 +35,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* push integer value of <?jobType?> from job's jobInfo ename-set             */
+/*----------------------------------------------------------------------------*/
+: <?jobType?> <<jobInfoTag>> ( -- i )
+
+  [ compiler::current word.name@ , ] jobInfo::enameSet@ enameSet.getInt
+;
+
+/*----------------------------------------------------------------------------*/
 /* push integer value of <?rspKind?> from job's jobInfo ename-set             */
 /*----------------------------------------------------------------------------*/
 : <?rspKind?> <<jobInfoTag>> ( -- i )

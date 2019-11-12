@@ -74,6 +74,9 @@ Job::Job(eCN eClassNo)
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
   m_i_Slot    = C_UNKNOWN;
+  
+  m_eJobType  = JT_NONE;
+  m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
@@ -125,6 +128,9 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
   m_i_Slot    = C_UNKNOWN;
+  
+  m_eJobType  = JT_NONE;
+  m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
@@ -173,6 +179,9 @@ Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
   m_i_Slot    = C_UNKNOWN;
+  
+  m_eJobType  = JT_NONE;
+  m_eJobKind  = JK_NONE;
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
@@ -395,6 +404,8 @@ void Job::vContentDump(void)
   vTrace("---\n"_Stz);
 
   vTrace("%p: %s\n"
+         
+         "m_eJobType=%s m_eJobKind=%s\n"
          "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
          "m_bByPrompt=%d m_bNoWait=%d m_bWasReceived=%d\n"
          "m_iParentId=%lld m_iOriginatingId=%lld\n"
@@ -402,6 +413,9 @@ void Job::vContentDump(void)
 
          this,
          aCN[eClass()],
+         
+         aJT[m_eJobType]->azChar(),
+         aJK[m_eJobKind]->azChar(),
          
          aJL[m_eJobList],
          aJP[m_eJobPhase],
@@ -440,6 +454,33 @@ i8 Job::iJobId(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_iFocalId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the job id                                                             */
+/*----------------------------------------------------------------------------*/
+EnameSet* Job::pJobInfoEnameSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Stz* szJobNm = m_oEnameSet.szValue("<jobNm>"_Stz);
+  
+  // did we get a job name ?
+  if ( szJobNm->bEqual(""_Stz) ) {
+    // would have been a startup problem (unable to match job syntax !!!)
+    ASSERT(m_bHasError);
+    return nullptr;
+  }
+  
+  s32 sJobInfoNm(szJobNm);
+  
+  StrLib::vConcat(sJobInfoNm.azChar(),(const char*)"_cls"_Stz);
+  
+  Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
+  
+  EnameSet* pJobInfoEnameSet = pJobInfo->pEnameSet();
+
+  return pJobInfoEnameSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -741,25 +782,7 @@ void Jobs::vJob_post(Job* pJob)
   
   if (CN_JOB_UNIVERSAL == eClass) {
     
-    EnameSet* pJobEnameSet = & pJob->m_oEnameSet;
-    
-    Stz* szJobNm = pJobEnameSet->szValue("<jobNm>"_Stz);
-
-    // did we get a job name ?
-    if ( szJobNm->bEqual(""_Stz) ) {
-      // would have been a startup problem (unable to match job syntax !!!)
-      ASSERT(pJob->m_bHasError);
-      return;
-    }
-    
-    s32 sJobInfoNm(szJobNm);
-    
-    StrLib::vConcat(sJobInfoNm.azChar(),(const char*)"_cls"_Stz);
-
-    Word* pJobInfo = AM::pRootDic()->pFindWord(sJobInfoNm);
-
-    EnameSet* pJobInfoEnameSet = pJobInfo->pEnameSet();
-    
+    EnameSet* pJobInfoEnameSet = pJob->pJobInfoEnameSet();
     eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
 
     //eResponse = pJob->m_aJobClass->m_eResponse;

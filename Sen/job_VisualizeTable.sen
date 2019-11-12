@@ -86,6 +86,7 @@ jobSyntax: visualizeTable :: vistbl <tableNm> ;
 
 jobInfo: visualizeTable
 {
+  <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_LOCAL_ERRORS
   <?ddlLock?>  = DL_GRAB_READ

@@ -81,6 +81,7 @@ jobSyntax: scan :: scan ;
 /*----------------------------------------------------------------------------*/
 jobInfo: scan
 {
+  <?jobType?>  = JT_NONE
   <?jobKind?>  = JK_OP
   <?rspKind?>  = RS_NODE_ZERO
   <?ddlLock?>  = DL_GRAB_READ
