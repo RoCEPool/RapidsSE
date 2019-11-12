@@ -73,7 +73,6 @@ Index::Index(void)
   m_iIndexNo   = -1;
   m_sIndexName = pWord->szWordNm();
   m_pTable        = nullptr;
-  m_pIdxColVec    = new IdxColVec;
   
 //  m_fGreaterEqual = nullptr;
 //  m_fGreaterThan  = nullptr;
@@ -169,7 +168,7 @@ void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
   }
   RASSERT(bFound);
   
-  m_pIdxColVec->vInsert(pColumn);
+  m_pIndexDef->m_pIdxColVec->vInsert(pColumn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,7 +199,7 @@ void Index::vCreateColumnVec(Jobs::Job_CreateIndex* pJob)
     }
     RASSERT(bFound);
     
-    m_pIdxColVec->vAdd(pColumn);
+    m_pIndexDef->m_pIdxColVec->vAdd(pColumn);
   }
 }
 
@@ -339,8 +338,8 @@ void Index::vShowColumnVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  for (i8 i_Column = 0; i_Column < m_pIdxColVec->nItems(); i_Column++) {
-    Column* pColumn = m_pIdxColVec->pGet(i_Column);
+  for (i8 i_Column = 0; i_Column < m_pIndexDef->m_pIdxColVec->nItems(); i_Column++) {
+    Column* pColumn = m_pIndexDef->m_pIdxColVec->pGet(i_Column);
     pColumn->vShow();
   }
 }
@@ -387,9 +386,7 @@ void Index::vTidyUp(void)
   
   // Since the column is picked from the ColVec of table
   // we need to just remove it from the IdxColVec before deleting it
-  m_pIdxColVec->vClear();
-  
-  delete m_pIdxColVec;
+  m_pIndexDef->m_pIdxColVec->vClear();
   
   delete m_pIndexDef;
 }
@@ -441,7 +438,7 @@ IdxColVec* Index::pIdxColVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  return m_pIdxColVec;
+  return m_pIndexDef->m_pIdxColVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -452,8 +449,8 @@ i8 Index::iSortKeyDatum(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   i8 nKeyDatumSize = 0;
-  for (i8 i_IdxCol = 0; i_IdxCol < m_pIdxColVec->nItems(); i_IdxCol++) {
-    Column* pColumn = m_pIdxColVec->pGet(i_IdxCol);
+  for (i8 i_IdxCol = 0; i_IdxCol < m_pIndexDef->m_pIdxColVec->nItems(); i_IdxCol++) {
+    Column* pColumn = m_pIndexDef->m_pIdxColVec->pGet(i_IdxCol);
     nKeyDatumSize += sizeof(i8);
   }
   

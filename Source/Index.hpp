@@ -17,7 +17,7 @@ namespace MetaData
     //bool         m_bIsUnique;     //
     Table*       m_pTable;        //
     Dic          m_xSubDic;       // sub dictionary for this index
-    IdxColVec*   m_pIdxColVec;    //
+    //IdxColVec*   m_pIdxColVec;    //
   
 //    bool         (*m_fGreaterEqual)(char* aArgA, char* aArgB);
 //    bool         (*m_fGreaterThan)(char* aArgA, char* aArgB);
