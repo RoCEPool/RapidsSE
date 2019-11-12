@@ -68,12 +68,12 @@ Index::Index(void)
   
   Word* pWord  = Word::pToWord(this);
   
-  m_pIndexDef  = new IndexDef;
+  m_pIndexDef = new IndexDef;
   
-  m_iIndexNo   = -1;
-  m_sIndexName = pWord->szWordNm();
+  m_iIndexNo  = -1;
+  m_sIndexNm  = pWord->szWordNm();
   
-  m_pTable     = nullptr;
+  m_pTable    = nullptr;
   // m_xSubDic
   
   _checkInitialised_(CN_INDEX);
@@ -202,21 +202,11 @@ void Index::vCreateColumnVec(Jobs::Job_CreateIndex* pJob)
 /*----------------------------------------------------------------------------*/
 /* get the index name                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* Index::aIndexName(void)
+Stz* Index::szIndexNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
-  return m_sIndexName;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the index name                                                         */
-/*----------------------------------------------------------------------------*/
-s32 Index::sIndexName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  return m_sIndexName;
+  return m_sIndexNm;
 }
 
 /*----------------------------------------------------------------------------*/

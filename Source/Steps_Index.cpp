@@ -542,7 +542,7 @@ void Step::vIndexNameFetch(void)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  s32 sIndexName = pIndex->sIndexName();
+  s32 sIndexName = pIndex->szIndexNm();
   
   m_pDataStack->vPushS32(sIndexName);
   

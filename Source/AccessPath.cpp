@@ -250,7 +250,7 @@ void AccessPath::vShow(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   
   vTrace("Path %12s %s %s score %d\n"_Stz,
-         m_pIndex->aIndexName(),
+         m_pIndex->szIndexNm(),
          aAT[m_eAccess],
          m_bIsCandidate ? "cdt"_Stz : "not"_Stz,
          m_iPathScore);

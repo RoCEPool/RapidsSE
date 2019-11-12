@@ -175,7 +175,7 @@ void Step::vPlannerIndexNmFetch(void)
   
   Index* pChosenIndex = mpChosenPath->pIndex();
   
-  s32 sIndexNm = pChosenIndex->aIndexName();
+  s32 sIndexNm = pChosenIndex->szIndexNm();
   m_pDataStack->vPushS32(sIndexNm);
   
   EXIT();

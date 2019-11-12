@@ -8,13 +8,13 @@ namespace MetaData
   class Index : public Object
   {
   private:
-    IndexDef*    m_pIndexDef;     // definition of this index
+    IndexDef*  m_pIndexDef;  // definition of this index
 
-    i8           m_iIndexNo;      //
-    s32          m_sIndexName;    //
+    i8         m_iIndexNo;   //
+    s32        m_sIndexNm;   //
   
-    Table*       m_pTable;        //
-    Dic          m_xSubDic;       // sub dictionary for this index
+    Table*     m_pTable;     //
+    Dic        m_xSubDic;    // sub dictionary for this index
   
     // must be last
     Footer m_xFooter;
@@ -34,8 +34,7 @@ namespace MetaData
     Stz*   pAnalyze(void);
     void   vCreateColumnVec(s32& sName, s48K& sDefinition);
     void   vCreateColumnVec(Jobs::Job_CreateIndex* pJob);
-    Stz*   aIndexName(void);
-    s32    sIndexName(void);
+    Stz*   szIndexNm(void);
     void   vIndexNo(i8 iIndexNo);
     i8     iIndexNo(void);
     bool   bIsPrimaryKey(void);
