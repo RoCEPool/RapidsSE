@@ -10,7 +10,7 @@ namespace MetaData
   friend class Index;
   
   private:
-    s32  m_sIndexName;    //
+    s32  m_sIndexNm;    //
     eIT  m_eIndexType;    //
   
     bool m_bIsPrimaryKey; //
@@ -33,8 +33,7 @@ namespace MetaData
     Stz*   pAnalyze(void);
 //    void   vCreateColumnVec(s32& sName, s48K& sDefinition);
 //    void   vCreateColumnVec(Jobs::Job_CreateIndex* pJob);
-    Stz*   aIndexName(void);
-    s32    sIndexName(void);
+    Stz*   szIndexNm(void);
 //    void   vIndexNo(i8 iIndexNo);
 //    i8     iIndexNo(void);
     bool   bIsPrimaryKey(void);

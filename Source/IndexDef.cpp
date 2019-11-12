@@ -57,7 +57,7 @@ IndexDef::IndexDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
-  m_sIndexName    = C_NO_NAME;
+  m_sIndexNm      = C_NO_NAME;
   m_eIndexType    = IT_SKIP_LIST;
   
   m_bIsPrimaryKey = false;
@@ -156,21 +156,11 @@ IndexDef::~IndexDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get the index name                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* IndexDef::aIndexName(void)
+Stz* IndexDef::szIndexNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
-  return m_sIndexName;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the index name                                                         */
-/*----------------------------------------------------------------------------*/
-s32 IndexDef::sIndexName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
-  
-  return m_sIndexName;
+  return m_sIndexNm;
 }
 
 /*----------------------------------------------------------------------------*/
