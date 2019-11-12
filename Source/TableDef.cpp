@@ -129,10 +129,10 @@ eEC TableDef::eParse(Stz* szCmd)
   // assert we got a create table
   // -- -- -- -- -- -- -- -- -- --
 
-  Token* pTkn = pTknVec->pFirstToken();
+  Token* pTkn = pTknVec->pFirstToken(); dPT();
   ASSERT(pTkn->bSame("create"_Stz));
   
-  pTkn = pTknVec->pNextToken();
+  pTkn = pTknVec->pNextToken(); dPT();
   ASSERT(pTkn->bSame("table"_Stz));
   
   // -- -- -- --
@@ -243,11 +243,15 @@ eEC TableDef::eParse(Stz* szCmd)
       goto L_RETURN;
  
     
+    // -- -- -- --
+    // next token
+    // -- -- -- --
+    pTkn = pTknVec->pNextToken(); dPT();
+    
     // -- -- --
     // not null
     // -- -- --
 
-    pTkn = pTknVec->pNextToken(); dPT();
     if (pTkn->bSame("not"_Stz)) {
       pTkn = pTknVec->pNextToken(); dPT();
       if (! pTkn->bSame("null"_Stz))

@@ -58,6 +58,7 @@ IndexDef::IndexDef(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   m_sIndexNm      = C_NO_NAME;
+  m_sTableNm      = C_NO_NAME;
   m_eIndexType    = IT_SKIP_LIST;
   
   m_bIsPrimaryKey = false;
@@ -97,6 +98,9 @@ Stz* IndexDef::szIndexNm(void)
   return m_sIndexNm;
 }
 
+#define dPT() vTrace("tkn=%s\n"_Stz,pTkn->szText());
+//#define dPT()
+
 /*----------------------------------------------------------------------------*/
 /* parse Create Index command                                                 */
 /*----------------------------------------------------------------------------*/
@@ -105,6 +109,96 @@ eEC IndexDef::eParse(Stz* szCmd)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   eEC eError = EC_NONE;
+  
+  // retain the Create Index command
+  m_sCmd = szCmd;
+
+  // tokenise the command
+  TokenVec* pTknVec = Tokeniser::pTokenise(szCmd);
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: Create Index <indexNm>
+  
+  // -- -- -- -- -- -- -- -- -- --
+  // assert we got an index table
+  // -- -- -- -- -- -- -- -- -- --
+  
+  Token* pTkn = pTknVec->pFirstToken(); dPT();
+  ASSERT(pTkn->bSame("create"_Stz));
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  ASSERT(pTkn->bSame("index"_Stz));
+  
+  // -- -- -- --
+  // index name
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  m_sIndexNm = pTkn->szText();
+  
+  // -- -- -- --
+  // ON
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  ASSERT(pTkn->bSame("on"_Stz));
+
+  // -- -- -- --
+  // table name
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  m_sTableNm = pTkn->szText();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: ( <columnDef> ,... )
+  
+  // -- -- -- -- --
+  // open parenth (
+  // -- -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if (! pTkn->bSame("("_Stz)) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+
+  // -- -- -- -- -- -- -- -- -- -- --
+  // iterate from first column till )
+  // -- -- -- -- -- -- -- -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  for (i8 i_Col = 0; ! pTkn->bSame(")"_Stz); i_Col++) {
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // subsequent column names, skipping over comma
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+    if (i_Col) {
+      if (pTkn->bSame(","_Stz)) {
+        pTkn = pTknVec->pNextToken(); dPT();
+      }
+      else {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+    }
+    
+    
+    // -- -- -- --
+    // next token
+    // -- -- -- --
+    pTkn = pTknVec->pNextToken(); dPT();
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+L_RETURN:
+  
+  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+
+  delete pTknVec;
   
   return eError;
 }
@@ -187,6 +281,9 @@ i8 IndexDef::iSortKeyDatum(void)
   
   return nKeyDatumSize;
 }
+
+#undef dPT
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

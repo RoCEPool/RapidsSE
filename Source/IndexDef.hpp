@@ -11,6 +11,7 @@ namespace MetaData
   
   private:
     s32  m_sIndexNm;      //
+    s32  m_sTableNm;      //
     eIT  m_eIndexType;    //
   
     bool m_bIsPrimaryKey; //
