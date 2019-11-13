@@ -368,7 +368,6 @@ public:
   void vIndexColumnName(void);
   void vIndexColumnType(void);
   void vIndexCompact(void);
-  void vIndexCreateColumnVec(void);
   void vIndexDump(void);
   void vIndexIndexDefFetch(void);
   void vIndexIndexDefStore(void);

@@ -15,7 +15,6 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.columnName"_Stz,      &Step::vIndexColumnName);
   vAddStep("index.columnType"_Stz,      &Step::vIndexColumnType);
   vAddStep("index.compact"_Stz,         &Step::vIndexCompact);
-  vAddStep("index.createColumnVec"_Stz, &Step::vIndexCreateColumnVec);
   vAddStep("index.dump"_Stz,            &Step::vIndexDump);
   vAddStep("index.indexDef@"_Stz,       &Step::vIndexIndexDefFetch);
   vAddStep("index.indexDef!"_Stz,       &Step::vIndexIndexDefStore);
@@ -179,30 +178,6 @@ void Step::vIndexCompact(void)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   pIndex->pTable()->vCompactIndex(pIndex);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.createColumnVecR -- create column vector from job_createIndex        */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexCreateColumnVec(void)
-{
-  ENTRY("vIndexCreateColumnVec"_Stz);
-  
-  Object* pPtrIndex;
-  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
-    THROW_DSTACK();
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  Object* pPtrJob;
-  if ( ! m_pDataStack->bPopObject(pPtrJob) )
-    THROW_DSTACK();
-  Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pPtrJob);
-  ASSERT(CN_JOB_CREATEINDEX == pJob_CreateIndex->eClass());
-  
-  pIndex->vCreateColumnVec(pJob_CreateIndex);
   
   EXIT();
 }

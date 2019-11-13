@@ -126,8 +126,6 @@
   pJob_CreateIndex job_createIndex.isUnique@ pIndex index.isUnique!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the column vector of the index
-  //pJob_CreateIndex pIndex index.createColumnVec
 
   // validate the unqiue index columns are a subset of the partition keys
   pIndex index.isUnique@ if
