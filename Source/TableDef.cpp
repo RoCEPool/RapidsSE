@@ -302,6 +302,16 @@ eEC TableDef::eParse(Stz* szCmd)
 
 L_RETURN:
   
+  // now create the streamDef for this table def
+  m_pStreamDef->m_nDefSets = 1;
+  m_pStreamDef->m_i_DefStart[0] = 0;
+  m_pStreamDef->m_nDefColumns[0] = 0;
+  
+  for (i8 i_Col = 0; i_Col < m_pColVec->nItems(); i_Col++) {
+    m_pStreamDef->m_xaColumn[i_Col].vCopy(m_pColVec->pGet(i_Col));
+    m_pStreamDef->m_nDefColumns[0]++;
+  }
+  
   delete pTknVec;
   
   return eError;
