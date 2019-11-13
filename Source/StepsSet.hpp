@@ -370,6 +370,8 @@ public:
   void vIndexCompact(void);
   void vIndexCreateColumnVec(void);
   void vIndexDump(void);
+  void vIndexIndexDefFetch(void);
+  void vIndexIndexDefStore(void);
   void vIndexInit(void);
   void vIndexIsPrimaryKeyFetch(void);
   void vIndexIsPrimaryKeyStore(void);
