@@ -104,7 +104,7 @@ Stz* IndexDef::szIndexNm(void)
 /*----------------------------------------------------------------------------*/
 /* parse Create Index command                                                 */
 /*----------------------------------------------------------------------------*/
-eEC IndexDef::eParse(Stz* szCmd)
+eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
@@ -185,6 +185,10 @@ eEC IndexDef::eParse(Stz* szCmd)
       }
     }
     
+    // -- -- -- -- --
+    // process column
+    // -- -- -- -- --
+    vAddIdxCol(pTable,pTkn->szText());
     
     // -- -- -- --
     // next token
@@ -283,6 +287,23 @@ i8 IndexDef::iSortKeyDatum(void)
 }
 
 #undef dPT
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add column to the                                                            */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vAddIdxCol(Table* pTable, Stz* szColNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  Column* pColumn = nullptr;
+
+  //m_pIdxColVec->vAdd(pColumn);
+}
 
 
 /*----------------------------------------------------------------------------*/

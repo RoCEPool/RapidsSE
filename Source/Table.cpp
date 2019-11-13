@@ -477,6 +477,26 @@ void Table::vContentDump(void)
 //}
 
 /*----------------------------------------------------------------------------*/
+/* find column by name                                                        */
+/*----------------------------------------------------------------------------*/
+Column* Table::pFindColumn(Stz* szColNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  Column* pColumn = nullptr;
+  
+  i8 nColumns = m_pTableDef->m_pColVec->nItems();
+
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    pColumn = m_pTableDef->m_pColVec->pGet(i_Col);
+    if (pColumn->szColNm()->bSame(szColNm))
+      break;
+  }
+  
+  return pColumn;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the index vector from the table                                        */
 /*----------------------------------------------------------------------------*/
 IdxVec* Table::pIdxVec(void)
