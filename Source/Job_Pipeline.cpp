@@ -111,7 +111,6 @@ Job_Pipeline::Job_Pipeline(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_pPipelineSpec = nullptr;
   m_pStreamDef    = nullptr;
   m_pBufferQueue  = new Queue;
-  m_sRequest      = ""_Stz;
   
   _checkInitialised_(CN_JOB_PIPELINE);
 
@@ -223,7 +222,7 @@ void Job_Pipeline::vBegin(void)
   
   Tokeniser* pTokenizer = new Tokeniser;
   TokenVec* pTokenVec = new TokenVec;
-  pTokenizer->vTokenise(pTokenVec, m_sRequest);
+  pTokenizer->vTokenise(pTokenVec, m_oEnameSet.szValue("<cmd>"_Stz));
   pTokenVec->vCutToken(pTokenVec->nTokens());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -320,11 +319,6 @@ Footer* Job_Pipeline::aFooter(void)
 Job* Jobs::pJob_Pipeline_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
 {
   Job_Pipeline* pJob_Pipeline = new Job_Pipeline(aJobClass,aReqTuple);
-
-  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
-  
-  // convert tokenvec back to the request string
-  pTokenVec->vToString(pJob_Pipeline->m_sRequest);
   
   return pJob_Pipeline;
 }

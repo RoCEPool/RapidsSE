@@ -14,8 +14,6 @@ namespace Jobs
     StreamDef*     m_pStreamDef;
     Queue*         m_pBufferQueue;
     
-    s4K            m_sRequest;
-    
     // must be last
     Footer m_xFooter;
   
