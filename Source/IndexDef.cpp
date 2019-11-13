@@ -294,14 +294,17 @@ i8 IndexDef::iSortKeyDatum(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add column to the                                                            */
+/* add column to the index column vector                                      */
 /*----------------------------------------------------------------------------*/
 void IndexDef::vAddIdxCol(Table* pTable, Stz* szColNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
-  Column* pColumn = nullptr;
+  Column* pColumn = pTable->pFindColumn(szColNm);
 
+  if (! pColumn)
+    return;
+  
   //m_pIdxColVec->vAdd(pColumn);
 }
 
