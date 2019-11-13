@@ -89,6 +89,8 @@
   r@ locate log::markEntry
 
   job::assertCorrectness
+
+  <seed_initially>
 ;
 
 /*----------------------------------------------------------------------------*/
