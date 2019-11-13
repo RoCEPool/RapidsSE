@@ -25,7 +25,7 @@ bool Prompt::bPrompt_ls(SePrompt* pPrompt)
 {
   Dir  oDir(pPrompt);
   s256 sDirPath;
-  s256 sEntryName;
+  s256 sEntryNm;
   i8 iEntryType;
   
   TokenVec* pTokenVec = pPrompt->pTknVec();
@@ -42,9 +42,9 @@ bool Prompt::bPrompt_ls(SePrompt* pPrompt)
   
   // read the current directory and list contents
   while (oDir.bRead()) {
-    sEntryName = oDir.sEntryName();
+    sEntryNm = oDir.szEntryNm();
     iEntryType = oDir.iEntryType();
-    vTrace("%c %s\n"_Stz, iEntryType == DT_DIR ? 'd' : 'f', sEntryName.azChar());
+    vTrace("%c %s\n"_Stz, iEntryType == DT_DIR ? 'd' : 'f', sEntryNm.azChar());
   }
   
   // close the current directory

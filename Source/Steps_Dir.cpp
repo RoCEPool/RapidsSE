@@ -178,11 +178,9 @@ ENTRY("vDirEntryName"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
-  s256 sEntryName;
+  s256 sEntryNm = pDir->szEntryNm();
   
-  sEntryName = pDir->sEntryName();
-  
-  m_pDataStack->vPushS256(sEntryName);
+  m_pDataStack->vPushS256(sEntryNm);
   
   EXIT();
 }
@@ -307,9 +305,7 @@ ENTRY("vDirPathGet"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
-  s256 sPath;
-  
-  sPath = pDir->sPath();
+  s256 sPath = pDir->szPath();
   
   m_pDataStack->vPushS256(sPath);
 

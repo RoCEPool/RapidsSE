@@ -11,7 +11,8 @@ namespace Resources
     s256    m_sDirPath;   // the path of the directory
    
     DIR*    m_aDir;       // dir pointer/descriptor
-    s256    m_sEntryName; // name of entry just read
+  
+    s256    m_sEntryNm;   // name of entry just read
     i8      m_iEntryType; // type of entry just read
  
     SysCall m_oSysCall;   // system call handler
@@ -26,20 +27,20 @@ namespace Resources
     Dir(Focal* pIsFor);
    ~Dir(void) noexcept(false);
 
-    static bool bChangeCurrent(Stz* aDirPath);
-    static bool bGetCurrent(Stz* aDirPath);
-    static bool bExists(Stz* aDirPath);
-    static bool bMake(Stz* aDirPath);
-    static bool bRemove(Stz* aDirPath);
+    static bool bChangeCurrent(Stz* szDirPath);
+    static bool bGetCurrent(Stz* szDirPath);
+    static bool bExists(Stz* szDirPath);
+    static bool bMake(Stz* szDirPath);
+    static bool bRemove(Stz* szDirPath);
     
     void vClose(void);
-    s256& sEntryName(void);
+    Stz* szEntryNm(void);
     i8   iEntryType(void);
     void vFocalOutline(s4K& sOutline);
     bool bIsClosed(void);
     bool bIsOpen(void);
     bool bOpen(Stz* aDirPath);
-    s256& sPath(void);
+    Stz* szPath(void);
     bool bRead(void);
     void vRewind(void);
     void vSeek(i8 iPosition);

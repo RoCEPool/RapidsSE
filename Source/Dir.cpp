@@ -54,7 +54,7 @@ Dir::Dir(Focal* pIsFor)
   m_sDirPath   = C_NO_NAME;
   
   m_aDir       = nullptr;
-  m_sEntryName = C_NO_NAME;
+  m_sEntryNm   = C_NO_NAME;
   m_iEntryType = 0;
   
   //m_oSysCall
@@ -207,11 +207,11 @@ void Dir::vClose(void)
 /*----------------------------------------------------------------------------*/
 /* get dir entry name                                                         */
 /*----------------------------------------------------------------------------*/
-s256& Dir::sEntryName(void)
+Stz* Dir::szEntryNm(void)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  return m_sEntryName;
+  return m_sEntryNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -295,7 +295,7 @@ bool Dir::bOpen(Stz* aDirPath)
 /*----------------------------------------------------------------------------*/
 /* get directory path                                                         */
 /*----------------------------------------------------------------------------*/
-s256& Dir::sPath(void)
+Stz* Dir::szPath(void)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
@@ -317,13 +317,13 @@ bool Dir::bRead(void)
   pDirEnt = readdir(m_aDir);
   
   if ( ! pDirEnt ) {
-    m_sEntryName = C_NO_NAME;
+    m_sEntryNm   = C_NO_NAME;
     m_iEntryType = 0;
     m_oSysCall.vSuccess();
     return false;
   }
   
-  m_sEntryName = (Stz*)pDirEnt->d_name;
+  m_sEntryNm = (Stz*)pDirEnt->d_name;
   
   m_iEntryType = pDirEnt->d_type;
   
