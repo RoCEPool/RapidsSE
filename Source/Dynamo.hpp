@@ -24,6 +24,7 @@ namespace Pipelines
     void* operator new(size_t);
     void  operator delete(void*);
   
+    Dynamo(Stz* sCmd);
     Dynamo(TokenVec* pTknVec);
    ~Dynamo(void) noexcept(false);
   
@@ -48,7 +49,8 @@ namespace Pipelines
 
     PipelineSpec* pPipelineSpec(void);
     void vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage);
-
+    void vShow(void);
+    
     Footer* aFooter(void);
   };
 }

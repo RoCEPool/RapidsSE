@@ -29,6 +29,33 @@ void Dynamo::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Dynamo::Dynamo(Stz* sCmd)
+: Object(CN_DYNAMO)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenize the pipeline
+  
+  Tokeniser* pTokenizer = new Tokeniser;
+  m_p_TknVec = new TokenVec;
+  pTokenizer->vTokenise(m_p_TknVec, sCmd);
+  m_p_TknVec->vCutToken(m_p_TknVec->nTokens());
+  
+  m_pPipelineSpec = nullptr;
+  m_pStageSpec   = nullptr;
+  
+  m_i_Tkn        = 0;
+  m_pTkn         = nullptr;
+  
+  _checkInitialised_(CN_DYNAMO);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Dynamo::Dynamo(TokenVec* pTknVec)
 : Object(CN_DYNAMO)
 {
@@ -508,7 +535,6 @@ bool Dynamo::bCollectEnd(void)
   return true;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -568,6 +594,30 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage)
   
   // arg-1 is the next stage for the xmit
   pOpSpec->vAddEnamePair("<arg_1>"_Stz,(i8)i_Stage,TN_INTEGER);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find stage matching given name                                             */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  StageSpec* pStageSpec = m_pPipelineSpec->pStageSpec(0);
+  
+  s4K sPipe("pipeline "_Stz);
+  pStageSpec->vToPipeStr(sPipe.szStz());
+  
+#ifdef WITH_TRACE_DYNAMO
+  vTrace("Restated stage 0: ]]%s[[\n"_Stz,sPipe.szStz());
+  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+#endif
+  
+  Tokeniser::vTokenise(m_p_TknVec,sPipe);
+  
+  SP_TknVecStr spTknVecStr;
+  vTrace("TknVecStr ]]%s[[\n"_Stz,spTknVecStr.sz(m_p_TknVec));
+  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

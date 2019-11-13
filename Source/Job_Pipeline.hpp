@@ -8,9 +8,7 @@ namespace Jobs
   class Job_Pipeline : public Job
   {
   public:
-    Pipeline*      m_pPipeline;
-    PipelineSpec*  m_pPipelineSpec;
-  
+    Pipeline*      m_pPipeline;  
     StreamDef*     m_pStreamDef;
     Queue*         m_pBufferQueue;
     

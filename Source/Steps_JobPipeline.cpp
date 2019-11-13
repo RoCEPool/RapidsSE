@@ -13,6 +13,7 @@ void Step::vAddSteps_JobPipeline(void)
   vAddStep("Job_Pipeline.cancel"_Stz,   &Step::vJob_PipelineCancel);
   vAddStep("Job_Pipeline.end"_Stz,      &Step::vJob_PipelineEnd);
   vAddStep("Job_Pipeline.execute"_Stz,  &Step::vJob_PipelineExecute);
+  vAddStep("Job_Pipeline::compile"_Stz,   &Step::vJob_Pipelinecompile);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,9 +26,21 @@ void Step::vJob_PipelineBegin(void)
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
+  
   Job_Pipeline* pJob_Pipeline = _pJob_Pipeline(pJobPtr);
   
-  pJob_Pipeline->vBegin();
+  //pJob_Pipeline->vBegin();
+  
+  pJob_Pipeline->m_pPipeline = new Pipeline(pJob_Pipeline);
+  pJob_Pipeline->m_pBufferQueue = nullptr;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the pipeline
+  
+  pJob_Pipeline->m_pPipeline->vPopulateOpVec(m_pRegSet->m_pDynamo->pPipelineSpec());
+  pJob_Pipeline->m_pPipeline->vSetupJob();
+  
+  delete m_pRegSet->m_pDynamo;
+  m_pRegSet->m_pDynamo = nullptr;
   
   EXIT();
 }
@@ -44,7 +57,14 @@ void Step::vJob_PipelineCancel(void)
     THROW_DSTACK();
   Job_Pipeline* pJob_Pipeline = _pJob_Pipeline(pJobPtr);
   
-  pJob_Pipeline->vCancel();
+  //pJob_Pipeline->vCancel();
+  
+  // get the first stage of the pipeline
+  Stage* pStage = pJob_Pipeline->m_pPipeline->pStageVec()->pGet(0);
+  
+  // send cancelMarker to the startOps of the first stage of the pipeline
+  i8 iThisNode = AM::pGrid()->iThisNode();
+  pStage->vCancelOperators(iThisNode);
   
   EXIT();
 }
@@ -61,7 +81,14 @@ void Step::vJob_PipelineEnd(void)
     THROW_DSTACK();
   Job_Pipeline* pJob_Pipeline = _pJob_Pipeline(pJobPtr);
   
-  pJob_Pipeline->vEnd();
+  //pJob_Pipeline->vEnd();
+  
+  // get the first stage of the pipeline
+  Stage* pStage = pJob_Pipeline->m_pPipeline->pStageVec()->pGet(0);
+  
+  // send endMarker to the startOps of the first stage of the pipeline
+  i8 iThisNode = AM::pGrid()->iThisNode();
+  pStage->vEndOperators(iThisNode);
   
   EXIT();
 }
@@ -78,11 +105,60 @@ void Step::vJob_PipelineExecute(void)
     THROW_DSTACK();
   Job_Pipeline* pJob_Pipeline = _pJob_Pipeline(pJobPtr);
   
-  pJob_Pipeline->vExecute();
+  //pJob_Pipeline->vExecute();
+  
+  Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get no of operators to be executed on this node
+  
+  i8 iThisNode = AM::pGrid()->iThisNode();
+  i8 nOps = pPipeline->nOpsOnNode(iThisNode);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set acks remaining equal to no of operators to be executed on this node
+  
+  AM::vSetAcksRmg(pJob_Pipeline->pTask(),nOps);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn operaotors for this node
+  
+  pPipeline->vSpawnOperatorJobs(pJob_Pipeline->m_xReqTuple.m_i_Session, iThisNode);
+  
+  // get the first stage of the pipeline
+  Stage* pStage = pPipeline->pStageVec()->pGet(0);
+  
+  // send startMarker to the startOps of the first stage of the pipeline
+  pStage->vStartOperators(iThisNode);
   
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Job_Pipeline::compile -- compile the command                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_PipelineCompile(void)
+{
+  ENTRY("vJob_PipelineCompile"_Stz);
+  
+  s4K sCmd;
+  if (! m_pDataStack->bPopS4K(sCmd))
+    THROW_DSTACK();
+
+  m_pRegSet->m_pDynamo = new Dynamo(sCmd);
+  
+  bool bResult = m_pRegSet->m_pDynamo->bCompile();
+  RASSERT( bResult );
+  
+//  if ( ! bResult) {
+//    vAddError(EC_INVALID_COMMAND);
+//  }
+  
+  if (AM::bVerbose()) {
+    m_pRegSet->m_pDynamo->vShow();
+  }
+  
+  EXIT();
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
