@@ -115,7 +115,6 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
 
   // tokenise the command
   TokenVec* pTknVec = Tokeniser::pTokenise(szCmd);
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: Create Index <indexNm>
@@ -152,7 +151,7 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
   m_sTableNm = pTkn->szText();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Parse: ( <columnDef> ,... )
+  // Parse: ( <colNm> ,... )
   
   // -- -- -- -- --
   // open parenth (
@@ -305,7 +304,7 @@ void IndexDef::vAddIdxCol(Table* pTable, Stz* szColNm)
   if (! pColumn)
     return;
   
-  //m_pIdxColVec->vAdd(pColumn);
+  m_pIdxColVec->vAdd(pColumn);
 }
 
 
