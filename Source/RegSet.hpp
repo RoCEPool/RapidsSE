@@ -26,11 +26,11 @@ namespace Registers
     REG<File> m_xpFile1;    // file1[]
     REG<File> m_xpFile2;    // file2[]
 
-    // pipeline registers
-    REG<Pipeline>     m_xpPipeline;      // pipeline[]
-    REG<PipelineSpec> m_xpPipelineSpec;  // pipelineSpec[]
-    REG<StreamDef>    m_xpStreamDef;     // streamDef[]
-    REG<Queue>        m_xpBufferQueue;   // Queue[]
+    // pipeline members
+    Pipeline*   m_pPipeline;      // pipeline[]
+    Dynamo*     m_pDynamo;        // dynamo[]
+    StreamDef*  m_pStreamDef;     // streamDef[]
+    Queue*      m_pBufferQueue;   // Queue[]
     
     // must be last
     Footer m_xFooter;
