@@ -59,6 +59,31 @@ jobInfo: service
 }
 ;
 
+/*----------------------------------------------------------------------------*/
+/***                              - Command -                               ***/
+/*----------------------------------------------------------------------------*/
+: service& immediate
+
+  0 locals| nArgs |
+
+  begin
+    next-token
+    dup "&" str.equal not
+  while
+    nArgs ++ to nArgs
+  repeat
+
+  // drop the "&" from dstack
+  drop
+
+  nArgs
+
+  "would spawn service" .
+
+  DropN
+
+  assert::stack_0
+;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -72,8 +72,8 @@
   // handle expty stack case
   depth not if exit_rt then
 
-  // drop everything else
-  0 do
+  // drop n values
+  0 ?do
     drop
   loop
 ;

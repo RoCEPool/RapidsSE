@@ -102,9 +102,10 @@
 "job_Waker.sen"          include
 "job_WriteBuffer.sen"    include
 "job_WriteRow.sen"       include
+
 "job_XmitOp.sen"         include
 
-"job_Start.sen"          include
+"job_Start.sen"          include // last
 
 
 /*============================================================================*/
