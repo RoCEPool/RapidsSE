@@ -19,6 +19,11 @@ void Step::vIndexDefParse(void)
 {
   ENTRY("vIndexDefParse"_Stz);
   
+  Object* pPtrTable;
+  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+    THROW_DSTACK();
+  Table* pTable = _pTable(pPtrTable);
+
   s4K sCmd;
   if (! m_pDataStack->bPopS4K(sCmd))
     THROW_DSTACK();
@@ -29,7 +34,7 @@ void Step::vIndexDefParse(void)
 
   IndexDef* pIndexDef = new IndexDef;
   
-  eEC eResult = pIndexDef->eParse(sCmd);
+  eEC eResult = pIndexDef->eParse(pTable,sCmd);
   
   delete pIndexDef;
   pIndexDef = nullptr;

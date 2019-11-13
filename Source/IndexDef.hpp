@@ -33,7 +33,7 @@ namespace MetaData
   
     Stz*   pAnalyze(void);
     Stz*   szIndexNm(void);
-    eEC    eParse(Stz* szCmd);
+    eEC    eParse(Table* pTable, Stz* szCmd);
     bool   bIsPrimaryKey(void);
     void   vIsPrimaryKey(bool bUnique);
     bool   bIsUnique(void);
@@ -42,6 +42,9 @@ namespace MetaData
     i8     iSortKeyDatum(void);
   
     IdxColVec* pIdxColVec(void);
+  
+  private:
+    void   vAddIdxCol(Table* pTable, Stz* szColNm);
   
     Footer* aFooter(void);
   };

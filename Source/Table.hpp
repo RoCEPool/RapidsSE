@@ -57,6 +57,7 @@ namespace MetaData
     void vContentDump(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
     //void vCreateColumnVec(Jobs::Job_CreateTable* pJob);
+    Column* pFindColumn(Stz* szColNm);
     IdxVec* pIdxVec(void);
     i8   nIndexBuffers(i8 iIndexNo);
     void vInsertEntries(i8 iTxId, i8 iPartition,
