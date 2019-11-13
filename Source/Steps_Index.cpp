@@ -17,6 +17,8 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.compact"_Stz,         &Step::vIndexCompact);
   vAddStep("index.createColumnVec"_Stz, &Step::vIndexCreateColumnVec);
   vAddStep("index.dump"_Stz,            &Step::vIndexDump);
+  vAddStep("index.indexDef@"_Stz,       &Step::vIndexIndexDefFetch);
+  vAddStep("index.indexDef!"_Stz,       &Step::vIndexIndexDefStore);
   vAddStep("index.init"_Stz,            &Step::vIndexInit);
   vAddStep("index.isPrimaryKey@"_Stz,   &Step::vIndexIsPrimaryKeyFetch);
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
@@ -229,6 +231,45 @@ void Step::vIndexDump(void)
     
     pIndexTree->vDump(false);
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.indexDef@ -- fetch index definition                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexIndexDefFetch(void)
+{
+  ENTRY("vIndexIndexDefFetch"_Stz);
+  
+  Object* pPtrIndex;
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
+  Index* pIndex = _pIndex(pPtrIndex);
+  
+  m_pDataStack->vPushPointer(pIndex->pIndexDef());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index.indexDef! -- store index definition                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexIndexDefStore(void)
+{
+  ENTRY("vIndexIndexDefStore"_Stz);
+  
+  Object* pPtrIndex;
+  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+    THROW_DSTACK();
+  Index* pIndex = _pIndex(pPtrIndex);
+  
+  Object* pPtrIndexDef;
+  if ( ! m_pDataStack->bPopObject(pPtrIndexDef) )
+    THROW_DSTACK();
+  IndexDef* pIndexDef = _pIndexDef(pPtrIndexDef);
+  
+  pIndex->vIndexDef(pIndexDef);
   
   EXIT();
 }

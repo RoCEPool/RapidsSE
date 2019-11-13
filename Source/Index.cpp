@@ -200,6 +200,26 @@ void Index::vCreateColumnVec(Jobs::Job_CreateIndex* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the index definition                                                   */
+/*----------------------------------------------------------------------------*/
+IndexDef* Index::pIndexDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  return m_pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the index definition                                                   */
+/*----------------------------------------------------------------------------*/
+void Index::vIndexDef(IndexDef* pIndexDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  m_pIndexDef = pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the index name                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* Index::szIndexNm(void)
