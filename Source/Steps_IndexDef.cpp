@@ -36,8 +36,8 @@ void Step::vIndexDefParse(void)
   
   eEC eResult = pIndexDef->eParse(pTable,sCmd);
   
-  delete pIndexDef;
-  pIndexDef = nullptr;
+  //delete pIndexDef;
+  //pIndexDef = nullptr;
   
   m_pDataStack->vPushPointer(pIndexDef);
 

@@ -68,7 +68,7 @@ Index::Index(void)
   
   Word* pWord  = Word::pToWord(this);
   
-  m_pIndexDef = new IndexDef;
+  m_pIndexDef = nullptr; // new IndexDef;
   
   m_iIndexNo  = -1;
   m_sIndexNm  = pWord->szWordNm();

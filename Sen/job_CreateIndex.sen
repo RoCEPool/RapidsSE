@@ -118,6 +118,8 @@
   <cmd> pTable IndexDef::parse locals| pIndexDef |
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+  pIndexDef pIndex index.indexDef!
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark index as unique
