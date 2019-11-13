@@ -1024,9 +1024,8 @@ Job* AM::pNewJobUniversal( Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId)
   Job_Universal* pJobUniversal = new Job_Universal(pOp->m_pJobPipeline, pJobClass_Universal,pReqTuple,iUniqueId);
   
   pJobUniversal->m_pOp = pOp;
+  pJobUniversal->m_oEnameSet.vCopy(&pOp->m_pJobPipeline->m_oEnameSet);
   pJobUniversal->m_oEnameSet.vAdd("<jobNm>"_Stz,pOp->m_sName);
-  pJobUniversal->m_oEnameSet.vAdd("<path>"_Stz,
-                                  pOp->m_pJobPipeline->m_oEnameSet.szValue("<path>"_Stz));
   pJobUniversal->vSeed(SS_SEED_REQ);
 
   pJobUniversal->m_oEnameSet.vPrint();

@@ -38,7 +38,7 @@ time create table LineItem                 // SF * 6,000,000 rows
 // 1,155190,7706,1,17,21168.23,0.04,0.02,N,O,1996-03-13,1996-02-12,1996-03-22,
 //   DELIVER IN PERSON,TRUCK,egular courts above the,
 
-create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
+//create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 //create index Lineitem_idx2 ON LineItem(L_SHIPDATE);
 //create index Lineitem_idx3 ON LineItem(L_SUPPKEY);
 
@@ -50,9 +50,9 @@ IndexEntries 4000;
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
-//time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
+time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
-time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
+//time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
@@ -78,7 +78,7 @@ O_CLERK           CHAR(15) NOT NULL,
 O_SHIPPRIORITY    INTEGER NOT NULL,
 O_COMMENT         VARCHAR(79) NOT NULL
 );
-CREATE INDEX orders_idx1 ON orders(O_ORDERKEY);
+//CREATE INDEX orders_idx1 ON orders(O_ORDERKEY);
 
 print "loading orders..." ;
 time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
@@ -92,8 +92,8 @@ time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
 print "**************************************************************************";
 print "scan lineitem | output;";
 print "**************************************************************************";
-/*
-docol epochTake;
+
+//docol epochTake;
 
 pipeline lineItem_dyn
 begin
@@ -107,8 +107,8 @@ output
 end
 ;
 
-docol epochDump;
-
+//docol epochDump;
+/*
 
  pipeline lineItem_dyn
  begin
