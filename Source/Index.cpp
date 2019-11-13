@@ -240,10 +240,6 @@ void Index::vTidyUp(void)
   // tidyup the index from the table partitions
   m_pTable->vTidyUpIndex(m_iIndexNo);
   
-  // Since the column is picked from the ColVec of table
-  // we need to just remove it from the IdxColVec before deleting it
-  m_pIndexDef->m_pIdxColVec->vClear();
-  
   delete m_pIndexDef;
 }
 
@@ -306,7 +302,7 @@ i8 Index::iSortKeyDatum(void)
   
   i8 nKeyDatumSize = 0;
   for (i8 i_IdxCol = 0; i_IdxCol < m_pIndexDef->m_pIdxColVec->nItems(); i_IdxCol++) {
-    Column* pColumn = m_pIndexDef->m_pIdxColVec->pGet(i_IdxCol);
+    // Column* pColumn = m_pIndexDef->m_pIdxColVec->pGet(i_IdxCol);
     nKeyDatumSize += sizeof(i8);
   }
   

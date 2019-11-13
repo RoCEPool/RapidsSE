@@ -80,6 +80,10 @@ IndexDef::~IndexDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
+  // Since the column is picked from the ColVec of table
+  // we need to just remove it from the IdxColVec before deleting it
+  m_pIdxColVec->vClear();
+  
   delete m_pIdxColVec;
 }
 
