@@ -140,36 +140,6 @@ void Index::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* create column vector                                                       */
 /*----------------------------------------------------------------------------*/
-void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  //vTrace("vCreateColumnVec: index %s column %s %s\n"_Stz,
-  //        m_sIndexName.s(),
-  //         sColumnNm.szStz(),
-  //         sColumnDefn.szStz());
-  
-  Column* pColumn = nullptr;
-  
-  // find the column from the table columnVector
-  i8 iColumns = m_pTable->pColumnVec()->nItems();
-  
-  bool bFound = false;
-  for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
-    pColumn = m_pTable->pColumnVec()->pGet(i_Col);
-    if (pColumn->szColNm()->bSame(sColumnNm)) {
-      bFound = true;
-      break;
-    }
-  }
-  RASSERT(bFound);
-  
-  m_pIndexDef->m_pIdxColVec->vInsert(pColumn);
-}
-
-/*----------------------------------------------------------------------------*/
-/* create column vector                                                       */
-/*----------------------------------------------------------------------------*/
 void Index::vCreateColumnVec(Jobs::Job_CreateIndex* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);

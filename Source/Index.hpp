@@ -32,7 +32,6 @@ namespace MetaData
    ~Index(void) noexcept(false);
   
     Stz*   pAnalyze(void);
-    void   vCreateColumnVec(s32& sName, s48K& sDefinition);
     void   vCreateColumnVec(Jobs::Job_CreateIndex* pJob);
     IndexDef* pIndexDef(void);
     void   vIndexDef(IndexDef* pIndexDef);
