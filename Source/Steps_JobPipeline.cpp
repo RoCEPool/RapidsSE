@@ -13,7 +13,7 @@ void Step::vAddSteps_JobPipeline(void)
   vAddStep("Job_Pipeline.cancel"_Stz,   &Step::vJob_PipelineCancel);
   vAddStep("Job_Pipeline.end"_Stz,      &Step::vJob_PipelineEnd);
   vAddStep("Job_Pipeline.execute"_Stz,  &Step::vJob_PipelineExecute);
-  vAddStep("Job_Pipeline::compile"_Stz,   &Step::vJob_Pipelinecompile);
+  vAddStep("Job_Pipeline::compile"_Stz, &Step::vJob_PipelineCompile);
 }
 
 /*----------------------------------------------------------------------------*/

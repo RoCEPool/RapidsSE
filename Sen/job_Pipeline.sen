@@ -61,8 +61,8 @@
   pTask task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // parse the pipeline command
-  <cmd> job_Pipeline::parse
+  // compile the pipeline command
+  <cmd> job_Pipeline::compile
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job
