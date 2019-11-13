@@ -24,7 +24,7 @@
   snooze answer::spawn
   snooze connector::spawn
 
-  service& &
+  nullptr service& & drop
 
   <DONE_RUN>
   job::completed

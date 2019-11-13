@@ -9,9 +9,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Job(void)
 {
-  vAddStep("job::this"_Stz,              &Step::vJobThis);
   vAddStep("job::assertCorrectness"_Stz, &Step::vJobAssertCorrectness);
   vAddStep("job::completed"_Stz,         &Step::vJobCompleted);
+  vAddStep("job::spawnUniversal"_Stz,    &Step::vJobSpawnUniversal);
+  vAddStep("job::this"_Stz,              &Step::vJobThis);
 
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
@@ -1791,6 +1792,17 @@ void Step::vJobSpawnDedicated(void)
 
   pJob->vSeed((eSS)i_Seed);
   IGNORE_RETURN(Api::bSpawnJobDedicated(pJob));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.spawnUniversal -- spawn a universal job                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSpawnUniversal(void)
+{
+  ENTRY("vJobSpawnUniversal"_Stz);
+  
   
   EXIT();
 }

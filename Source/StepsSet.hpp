@@ -521,6 +521,7 @@ public:
   void vJobSlotFetch(void);
   void vJobSpawn(void);
   void vJobSpawnDedicated(void);
+  void vJobSpawnUniversal(void);
   void vJobStateDiagram(void);
 
   void vJobTaskFetch(void);

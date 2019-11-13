@@ -80,7 +80,7 @@ jobInfo: service
 
   "would spawn service" .
 
-  DropN
+  dropN
 
   assert::stack_0
 ;
