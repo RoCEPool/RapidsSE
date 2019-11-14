@@ -183,19 +183,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* generate the word which parses and spawns a service                        */
+/* generate two words, one which parses and another which spawns a service    */
 /*----------------------------------------------------------------------------*/
 : .generateService
 
   // calc the name of the service
   "_" compiler::current word.name@ str.removeSuffix locals| sServiceNm |
 
-  // create a word by that name
-  sServiceNm >create
+  // calc the name of the spawner
+  sServiceNm "_spawner" str.cat locals| sSpawnerNm |
+
+
+  //----------------------------------------------------------------------------
+  // SPAWNER
+
+  // create a word by the spawner name
+  sSpawnerNm >create
 
   // debug
-  compiler::current locals| pServiceWd |
-  pServiceWd word.dump
+  compiler::current locals| pSpawnerWd |
+  pSpawnerWd word.dump
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // -- encode the service spawning word -- -- -- -- -- --
@@ -204,6 +211,32 @@
   sServiceNm , "++ this is service spawner for: %v" , POSTPONE fmt.print
 
   sServiceNm , POSTPONE job::spawnUniversal
+
+  POSTPONE exit
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  pSpawnerWd word.dump
+
+
+  //----------------------------------------------------------------------------
+  // PARSER
+
+  // create a word by the service name
+
+  sServiceNm >create 
+
+  // debug
+  compiler::current locals| pServiceWd |
+  pServiceWd word.dump
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // -- encode the service parsing word  -- -- -- -- -- --
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  sServiceNm , "++ this is the service parser for: %v" , POSTPONE fmt.print
+
+  pSpawnerWd compile,
 
   POSTPONE exit
 
