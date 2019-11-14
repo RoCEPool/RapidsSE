@@ -108,7 +108,6 @@ Job_Pipeline::Job_Pipeline(JobClass* aJobClass, ReqTuple* aReqTuple)
   //m_oOpVec
   
   m_pPipeline     = nullptr;
-  m_pStreamDef    = nullptr;
   
   _checkInitialised_(CN_JOB_PIPELINE);
 
@@ -123,7 +122,6 @@ Job_Pipeline::~Job_Pipeline(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PIPELINE,_FOOTER_);
  
   delete m_pPipeline;
-  delete m_pStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
