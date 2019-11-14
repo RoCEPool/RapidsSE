@@ -199,7 +199,7 @@ jobInfo: createIndex
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_NONE
+  <?jobType?>  = JT_CREATEINDEX
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NODE_ZERO
   <?ddlLock?>  = DL_GRAB_WRITE

@@ -122,7 +122,7 @@ jobInfo: analyzeIndex
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_NONE
+  <?jobType?>  = JT_ANALYZEINDEX
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NODE_ROWS
   <?ddlLock?>  = DL_GRAB_READ
