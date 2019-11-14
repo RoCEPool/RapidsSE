@@ -56,6 +56,8 @@ jobInfo: service
   <?ddlLock?>  = DL_NONE
   
   // <?preCheck?> = bClusterStarted
+  
+  <?cmdKind?>  = CK_SERVICE
 }
 ;
 
