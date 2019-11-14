@@ -11,6 +11,8 @@
 
   >>logEntry <SEED_REQ>
 
+  <jobNm> "Job Info for %v" fmt.print
+
   <<logExit <DONE_REQ>
 
   HAZARD

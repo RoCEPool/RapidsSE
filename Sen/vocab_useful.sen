@@ -97,7 +97,47 @@
 /*----------------------------------------------------------------------------*/
 : include-subdir
 
-  "Would include sub-dir %v" fmt.print
+  params| sSubDir |
+
+  0 locals| sFilePath |
+
+  input.push
+
+  args.senDir sSubDir str.cat dup
+
+  "Would include .sen files from sub-dir %v" fmt.print
+
+  dir::new locals| pSubDir |
+
+  pSubDir dir.open if
+
+    begin
+      pSubDir dir.read
+    while
+      pSubDir dir.entryName "Entry %v" fmt.print
+
+      4 pSubDir dir.entryName str.right ".sen" str.equal if
+        pSubDir dir.entryName "Would parse %v" fmt.print
+
+        args.senDir sSubDir str.cat
+          "/" str.cat
+          pSubDir dir.entryName str.cat
+          to sFilePath
+        sFilePath "Would open %v" fmt.print
+
+        sFilePath input.open docol input.close
+
+      then
+
+    repeat
+
+    pSubDir dir.close
+  then
+
+  pSubDir dir.delete
+
+  input.pop
+
 ;
 
 /*============================================================================*/
