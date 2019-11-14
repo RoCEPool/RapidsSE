@@ -5,7 +5,7 @@
 
 enum eRS // response kind
 {
-  /* 0 */ RS_NONE=0,
+  /* 0  */ RS_NONE=0,
   
   /*  1 */ RS_DATA_ROWS,
   /*  2 */ RS_LOAD_ROWS,
