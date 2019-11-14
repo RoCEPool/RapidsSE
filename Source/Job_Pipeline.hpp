@@ -8,7 +8,6 @@ namespace Jobs
   class Job_Pipeline : public Job
   {
   public:
-    Pipeline*      m_pPipeline;  
     
     // must be last
     Footer m_xFooter;
@@ -22,15 +21,6 @@ namespace Jobs
    ~Job_Pipeline(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-
-  public:
-    bool bPopulateJob(Session* pSession, TokenVec* pTokenVec);
-    void vShow(void);
-
-    void vBegin(void);
-    void vCancel(void);
-    void vEnd(void);
-    void vExecute(void);
 
   public:
     Footer* aFooter(void);

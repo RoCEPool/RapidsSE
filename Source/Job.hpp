@@ -36,6 +36,7 @@ namespace Jobs
 
     i8  m_iParticipantNode;    // participant node no (FromNodeNo?)
     
+    Pipeline*  m_pPipeline;    // pipeline
     Op*        m_pOp;          // Op this job is executing
     Operand*   m_pOperand;
         

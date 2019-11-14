@@ -94,6 +94,7 @@ Job::Job(eCN eClassNo)
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRmg_2pc.vCheckInit();
   
+  m_pPipeline = nullptr;
   m_pOp = nullptr;
   m_pOperand   = nullptr;
   
@@ -146,8 +147,9 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRmg_2pc.vCheckInit();
   
-  m_pOp = nullptr;
-  m_pOperand   = nullptr;
+  m_pPipeline = nullptr;
+  m_pOp       = nullptr;
+  m_pOperand  = nullptr;
   
   
   // -- -- -- -- -- --
@@ -197,9 +199,9 @@ Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRmg_2pc.vCheckInit();
   
-  m_pOp = nullptr;
-  m_pOperand   = nullptr;
-  
+  m_pPipeline = nullptr;
+  m_pOp       = nullptr;
+  m_pOperand  = nullptr;
   
   // -- -- -- -- -- --
   
