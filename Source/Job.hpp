@@ -61,7 +61,7 @@ namespace Jobs
     static i8   iOriginatorNode(i8 iJobId);
     static i8   iAsNodeNo_Bits(i8 iNodeNo);
   
-    static EnameSet* JobInfo_enameSet(Stz* szJobNm);
+    static EnameSet* pJobInfo_enameSet(Stz* szJobNm);
 
     i8   iAcksOriginal(void);
     i8   iAcksRmg_printOnlyValue(void);

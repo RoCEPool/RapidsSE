@@ -1813,7 +1813,32 @@ void Step::vJobSpawnUniversal(void)
     THROW_DSTACK();
   Job* pJob_parent = _pJob(pJobPtr);
   
+  EnameSet* pEnameSet_jobInfo = Job::pJobInfo_enameSet(sJobNm);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // find the job class
+  JobClass* aJobClass = JobClass::pFind(CN_JOB_UNIVERSAL);
+
+  // new the universal job
+  ReqTuple xReqTuple("!!vJobSpawnUniversal"_Stz,false);
+  Job_Universal* pJob_Universal = new Job_Universal(aJobClass,&xReqTuple);
+
+  // ranslate job type and kind
+  pJob_Universal->m_eJobType = (eJT) pEnameSet_jobInfo->iValue("<?jobType?>"_Stz);
+  pJob_Universal->m_eJobKind = (eJK) pEnameSet_jobInfo->iValue("<?jobKind?>"_Stz);
+
+  // add the necessary ename tags
+  EnameSet* pEnameSet_job = & pJob_Universal->m_oEnameSet;
+  pEnameSet_job->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
+  pEnameSet_job->vAdd("<jobNm>"_Stz,sJobNm);
+  pEnameSet_job->vAdd("<path>"_Stz,"/"_Stz);
+
+  // seed the job for request
+  pJob_Universal->vSeed(SS_SEED_REQ);
+
+  // spawn the job
+  IGNORE_RETURN(Api::bSpawnJob(pJob_Universal));
 
   EXIT();
 }

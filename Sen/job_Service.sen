@@ -78,7 +78,7 @@ jobInfo: service
 
   nArgs
 
-  "would spawn service" .
+  // "would spawn service" .
 
   dropN
 

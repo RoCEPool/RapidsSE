@@ -12,8 +12,7 @@
 
   >>logEntry <SEED_RUN>
 
-  task::this           locals| pThisTask |
-  pThisTask task.job@  locals| pThisJob  |
+  nullptr locals| pParentJob |
 
   "start_run" .verbose
 
@@ -24,7 +23,7 @@
   snooze answer::spawn
   snooze connector::spawn
 
-  nullptr service ;&
+  pParentJob service ;&
 
   <DONE_RUN>
   job::completed

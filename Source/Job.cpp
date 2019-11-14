@@ -344,7 +344,7 @@ i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 /* get the ename set of the named (universal) job                             */
 /*----------------------------------------------------------------------------*/
-EnameSet* Job::JobInfo_enameSet(Stz* szJobNm)
+EnameSet* Job::pJobInfo_enameSet(Stz* szJobNm)
 {
   s32 sJobNm_cls = szJobNm;
   sJobNm_cls.vConcat("_cls"_Stz);
