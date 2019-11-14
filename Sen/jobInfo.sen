@@ -163,13 +163,36 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet params| pEnameSet |
 
-  "<?priority?>" pEnameSet EnameSet.hasName not if
-     "<?priority?>" "PY_NORMAL" jobInfo::addEname
-  then
-
+  // default for command kind
   "<?cmdKind?>" pEnameSet EnameSet.hasName not if
     "<?cmdKind?>" "CK_COMMAND" jobInfo::addEname
   then
+
+  // default for ddl lock
+  "<?ddlLock?>" pEnameSet EnameSet.hasName not if
+    "<?ddlLock?>" "DL_NONE" jobInfo::addEname
+  then
+
+  // default for job kind
+  "<?jobKind?>" pEnameSet EnameSet.hasName not if
+    "<?jobKind?>" "JK_LOCAL" jobInfo::addEname
+  then
+
+  // default for job type
+  "<?jobType?>" pEnameSet EnameSet.hasName not if
+    "<?jobType?>" "JT_NONE" jobInfo::addEname
+  then
+
+  // default for priority
+  "<?priority?>" pEnameSet EnameSet.hasName not if
+    "<?priority?>" "PY_NORMAL" jobInfo::addEname
+  then
+
+  // default for response kind
+  "<?rspKind?>" pEnameSet EnameSet.hasName not if
+    "<?rspKind?>" "RS_NONE" jobInfo::addEname
+  then
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -179,7 +202,7 @@
     .fillOutEnameSet_local
   then
 
-  // pEnameSet EnameSet.asStr .
+  pEnameSet EnameSet.asStr .
 ;
 
 /*----------------------------------------------------------------------------*/

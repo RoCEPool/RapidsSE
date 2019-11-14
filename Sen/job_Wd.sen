@@ -33,11 +33,6 @@ jobSyntax: wd :: wd <wordNm> ;
 jobInfo: wd
 {
   <?jobDesc?>  = "dump word"
-  
-  <?jobType?>  = JT_NONE
-  <?jobKind?>  = JK_LOCAL
-  <?rspKind?>  = RS_NONE
-  <?ddlLock?>  = DL_NONE
 }
 ;
 
