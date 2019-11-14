@@ -52,8 +52,6 @@ bool Jobs::_bIsValidJob(eCN eClass)
     return false;
 }
 
-
-
 /*----------------------------------------------------------------------------*/
 /* constructor (for job__find)                                                */
 /*----------------------------------------------------------------------------*/
@@ -247,10 +245,14 @@ Job::~Job(void) noexcept(false)
     AM::vNap(10, eClass());
   }
   
+  if (m_pPipeline)
+    delete m_pPipeline;
+  
   //if (m_pTaskJ)
   //  vDebugPoint();
   
   //AM::vTaskDelete(m_pTaskJ);
+
 }
 
 /*----------------------------------------------------------------------------*/
