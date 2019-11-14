@@ -11,12 +11,11 @@
 
   >>logEntry <SEED_REQ>
 
-<wordNm> "Dumping word: %v" fmt.print
-
   <wordNm> find dup if
     word.see
   else
     drop
+    <wordNm> "No such word: %v" fmt.print
   then
 
   <<logExit <DONE_REQ>
@@ -32,7 +31,7 @@ jobSyntax: wd :: wd <wordNm> ;
 
 jobInfo: wd
 {
-  // <?jobDesc?>  = "dump word"
+  <?jobDesc?>  = "dump word"
 }
 ;
 

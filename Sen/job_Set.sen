@@ -100,7 +100,6 @@
 "job_VerifyTable.sen"    include
 
 "job_Waker.sen"          include
-"job_Wd.sen"             include
 "job_WriteBuffer.sen"    include
 "job_WriteRow.sen"       include
 
