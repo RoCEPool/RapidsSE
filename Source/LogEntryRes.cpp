@@ -63,7 +63,7 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, Resource* pResource, eRA eResAct)
     Mutex* pMutex = _pMutex(pResource);
     
     SP_Mutex spMutex;
-    StrLib::vSprintCat(pLogEntry->m_caNote," %s",spMutex.sz_log(pMutex));
+    StrLib::vSprintCat((Stz*)pLogEntry->m_caNote," %s"_Stz,spMutex.sz_log(pMutex));
   }
 }
 

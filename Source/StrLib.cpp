@@ -2789,14 +2789,14 @@ void StrLib::vSprint(char* sDst, va_list args, const char* sFormat)
 /*----------------------------------------------------------------------------*/
 /* vSprintCat: formatted concatenated sprint                                  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprintCat(char* sDst, const char* sFormat, ...)
+void StrLib::vSprintCat(Stz* sDst, Stz* sFormat, ...)
 {
   va_list args;
   
-  char* sEnd = sDst + iLength(sDst);
+  char* sEnd = sDst->azChar() + iLength(sDst->azChar());
   
   va_start(args,sFormat);
-  vsprintf(sEnd,sFormat,args);
+  vsprintf(sEnd,sFormat->azChar(),args);
   va_end(args);
 }
 

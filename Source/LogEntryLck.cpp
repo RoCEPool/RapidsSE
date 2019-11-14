@@ -21,7 +21,7 @@ void _LogEntryLck::vSet(LogEntry* pLogEntry, Lock* pLock, eLA eLckAct)
   else if (LA_LCK_DESTRUCT == eLckAct)   pLogEntry->m_iIndicator = OC_DESTRUCT;
   
   SP_Lock spLock;
-  StrLib::vSprintCat(pLogEntry->m_caNote," %s",spLock.sz_log(pLock));
+  StrLib::vSprintCat((Stz*)pLogEntry->m_caNote," %s"_Stz,spLock.sz_log(pLock));
 }
 
 /*----------------------------------------------------------------------------*/

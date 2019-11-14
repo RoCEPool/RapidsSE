@@ -52,7 +52,7 @@ void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
       pLogEntry->m_iIndicator = OC_SERVICE;
   
   SP_Task spTask;
-  StrLib::vSprintCat(pLogEntry->m_caNote," %s",spTask.sz_log(pTask));
+  StrLib::vSprintCat((Stz*)pLogEntry->m_caNote," %s"_Stz,spTask.sz_log(pTask));
 }
 
 /*----------------------------------------------------------------------------*/

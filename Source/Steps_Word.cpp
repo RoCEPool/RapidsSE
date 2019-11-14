@@ -26,6 +26,7 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.name@"_Stz,       &Step::vWordNameFetch);
   vAddStep("word.name!"_Stz,       &Step::vWordNameStore);
   vAddStep("word.prev"_Stz,        &Step::vWordPrev);
+  vAddStep("word.see"_Stz,         &Step::vWordSee);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -372,6 +373,23 @@ void Step::vWordPrev(void)
   Word* pPrevWord = pWord->pPrevWord();
   
   m_pDataStack->vPushPointer(pPrevWord);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.see -- see the encoding of a routine                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vWordSee(void)
+{
+  ENTRY("vWordSee"_Stz);
+  
+  Object* pWordObject;
+  if ( ! m_pDataStack->bPopObject(pWordObject) )
+    THROW_DSTACK();
+  Word* pWord = _pWord(pWordObject);
+  
+  AM::vWordSee(pWord,&m_oDicStack);
   
   EXIT();
 }

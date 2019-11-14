@@ -20,7 +20,7 @@ void _LogEntrySsn::vSet(LogEntry* pLogEntry, Session* pSession, eAA eSsnAct)
   else if (AA_API_SPAWN_JOB == eSsnAct) pLogEntry->m_iIndicator = OC_SPAWN;
   
   SP_Session spSession;
-  StrLib::vSprintCat(pLogEntry->m_caNote," %s",spSession.sz_log(pSession));
+  StrLib::vSprintCat((Stz*)pLogEntry->m_caNote," %s"_Stz,spSession.sz_log(pSession));
 }
 
 /*----------------------------------------------------------------------------*/

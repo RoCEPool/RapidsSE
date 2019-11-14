@@ -345,7 +345,7 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
     StrLib::vConcat(caMembers,"{");
     for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
       if (pTx->bDistMember(i_Node))
-        StrLib::vSprintCat(caMembers," %lld",i_Node);
+        StrLib::vSprintCat((Stz*)caMembers," %lld"_Stz,i_Node);
     StrLib::vConcat(caMembers," }");
   }
   

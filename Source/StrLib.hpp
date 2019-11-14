@@ -173,7 +173,7 @@ namespace Strings
     static void  vSprint(Stz* sDst, Stz* sFormat, ...);
     static void  vSprint(char* sDst, Stz* sFormat, ...);
     static void  vSprint(char* sDst, va_list args, const char* sFormat);
-    static void  vSprintCat(char* sDst, const char* sFormat, ...);
+    static void  vSprintCat(Stz*  sDst, Stz* sFormat, ...);
     static void  vSprintCat(char* sDst, va_list args, const char* sFormat);
     static void  vStrip(char* s, char cTrailing);
     static void  vSubPath(char* azDst, char* azSrc);

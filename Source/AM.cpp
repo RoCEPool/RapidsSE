@@ -1337,6 +1337,86 @@ ReqTuple* AM::aReqTuple_tls(void) {
     return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* dump routine of word                                                       */
+/*----------------------------------------------------------------------------*/
+void AM::vWordSee(Word* pWord, DicStack* pDicStack)
+{
+  s48K sString;
+  
+  SP_Word spWord;
+  vTrace("Word: %s\n"_Stz,spWord.sz(pWord));
+
+  Cell* aDoesCell = pWord->aEntryCell();
+  
+  Word* pDoesWord = (Word*)( ((u8)aDoesCell & (u8)~0xFFFF)
+                            + sizeof(HeapBuffer));
+  
+  while (aDoesCell < pDoesWord->aLastCell()) {
+    
+    StepFp fpHasStep = *aDoesCell->m_afpIntrinsic;
+    
+    Word* pCallsWord = pDicStack->pLocateWord(fpHasStep);
+    
+    // jumps
+    if (*aDoesCell->m_afpIntrinsic == &Step::vFlowJump ||
+        *aDoesCell->m_afpIntrinsic == &Step::vFlowJumpFalse ||
+        *aDoesCell->m_afpIntrinsic == &Step::vFlowJumpTrue ) {
+      
+      vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->szWordNm());
+      
+      aDoesCell++;
+      
+      vTrace(" %p\n"_Stz,aDoesCell->m_aJumpTo);
+      
+      aDoesCell++;
+      
+      continue;
+    }
+    
+    // push
+    if ( *aDoesCell->m_afpIntrinsic == &Step::vPushValue ) {
+      
+      vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->szWordNm());
+      
+      aDoesCell++;
+      
+      ForthValue* aValue = reinterpret_cast<ForthValue*>(aDoesCell);
+      
+      if (CN_STRVAL == aValue->eClass()) {
+        vTrace(" \"%s\"\n"_Stz,_aStrVal(aValue)->azChar());
+      }
+      else {
+        aValue->vToString(sString);
+        vTrace(" %s\n"_Stz,sString.azChar());
+      }
+      
+      i8 iBytes = aValue->nSize();
+      aDoesCell = aAdd<Cell*>(aDoesCell,iBytes);
+      
+      continue;
+    }
+    
+    // enterRoutine
+    if ( *aDoesCell->m_afpIntrinsic == &Step::vEnterRoutine ) {
+      
+      Word* pCallsWord = (Word*)( ((u8)aDoesCell->m_afpIntrinsic & (u8)~0xFFFF)
+                                 + sizeof(HeapBuffer));
+      
+      vTrace("%p: %s\n"_Stz,aDoesCell,pCallsWord->szWordNm());
+      aDoesCell++;
+      continue;
+    }
+    
+    // other
+    vTrace("%p: %s\n"_Stz,aDoesCell,pCallsWord->szWordNm());
+    
+    aDoesCell++;
+  }
+  
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

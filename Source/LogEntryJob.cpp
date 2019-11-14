@@ -29,7 +29,7 @@ void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct)
   else if (JA_JOB_SEED == eJobAct)          pLogEntry->m_iIndicator = OC_SEED;
   
   SP_Job spJob;
-  StrLib::vSprintCat(pLogEntry->m_caNote," %s",spJob.sz_log(pJob));
+  StrLib::vSprintCat((Stz*)pLogEntry->m_caNote," %s"_Stz,spJob.sz_log(pJob));
 }
 
 /*----------------------------------------------------------------------------*/

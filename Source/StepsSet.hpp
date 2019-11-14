@@ -1275,6 +1275,7 @@ public:
   void vWordNameFetch(void);
   void vWordNameStore(void);
   void vWordPrev(void);
+  void vWordSee(void);
 
   // zero
   void vZeroLess(void);
