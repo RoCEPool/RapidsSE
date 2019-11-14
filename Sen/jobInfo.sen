@@ -182,6 +182,29 @@
   // pEnameSet EnameSet.asStr .
 ;
 
+/*----------------------------------------------------------------------------*/
+/* generate the word which parses and spawns a service                        */
+/*----------------------------------------------------------------------------*/
+: .generateService
+
+  "_" compiler::current word.name@ str.removeSuffix locals| sServiceNm |
+
+  sServiceNm >create
+
+  compiler::current locals| pServiceWd |
+
+  pServiceWd word.dump
+
+  // -- -- -- -- -- --
+
+  "++ this is a service spawner" , POSTPONE .
+
+  POSTPONE exit
+
+  // -- -- -- -- -- --
+  pServiceWd word.dump
+;
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -240,6 +263,8 @@
   pEnameSet .fillOutEnameSet
 
   //pEnameSet EnameSet.asStr .
+
+  job::isServiceCmd if .generateService then
 ;
 
 /*============================================================================*/
