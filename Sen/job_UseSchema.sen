@@ -88,7 +88,7 @@ jobInfo: useSchema
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_NONE
+  <?jobType?>  = JT_USESCHEMA
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_LOCAL_ERRORS
   <?ddlLock?>  = DL_GRAB_READ

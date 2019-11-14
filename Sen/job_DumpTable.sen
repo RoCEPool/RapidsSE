@@ -89,7 +89,7 @@ jobInfo: dumptable
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_NONE
+  <?jobType?>  = JT_DUMPTABLE
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_LOCAL_ZERO
   <?ddlLock?>  = DL_GRAB_READ
