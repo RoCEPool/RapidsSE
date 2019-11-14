@@ -131,7 +131,15 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
   ASSERT(pTkn->bSame("create"_Stz));
   
   pTkn = pTknVec->pNextToken(); dPT();
-  ASSERT(pTkn->bSame("index"_Stz));
+  ASSERT(pTkn->bSame("unique"_Stz) || pTkn->bSame("index"_Stz));
+  
+  if (pTkn->bSame("unique"_Stz)) {
+    
+    m_bIsUnique = true;
+    
+    pTkn = pTknVec->pNextToken(); dPT();
+    ASSERT(pTkn->bSame("index"_Stz));
+  }
   
   // -- -- -- --
   // index name
