@@ -183,6 +183,30 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* consume service arguments                                                  */
+/*----------------------------------------------------------------------------*/
+: .consumeArgs
+
+  0 locals| nArgs |
+
+  begin
+    next-token
+    dup ";&" str.equal not
+  while
+    nArgs ++ to nArgs
+  repeat
+
+  // drop the ";&" from dstack
+  drop
+
+  nArgs
+
+  // "would spawn service" .
+
+  dropN
+;
+
+/*----------------------------------------------------------------------------*/
 /* generate two words, one which parses and another which spawns a service    */
 /*----------------------------------------------------------------------------*/
 : .generateService
@@ -224,7 +248,8 @@
 
   // create a word by the service name
 
-  sServiceNm >create 
+  sServiceNm >create
+  true compiler::current word.immediate!
 
   // debug
   compiler::current locals| pServiceWd |
@@ -235,6 +260,8 @@
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   sServiceNm , "++ this is the service parser for: %v" , POSTPONE fmt.print
+
+  POSTPONE .consumeArgs
 
   pSpawnerWd compile,
 
