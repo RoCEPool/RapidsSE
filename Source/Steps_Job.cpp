@@ -1804,7 +1804,17 @@ void Step::vJobSpawnUniversal(void)
 {
   ENTRY("vJobSpawnUniversal"_Stz);
   
+  s32 sJobNm;
+  if ( ! m_pDataStack->bPopS32(sJobNm) )
+    THROW_DSTACK();
+
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job* pJob_parent = _pJob(pJobPtr);
   
+  
+
   EXIT();
 }
 

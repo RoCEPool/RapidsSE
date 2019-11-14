@@ -62,18 +62,18 @@ jobInfo: service
 /*----------------------------------------------------------------------------*/
 /***                              - Command -                               ***/
 /*----------------------------------------------------------------------------*/
-: service& immediate
+: service immediate
 
   0 locals| nArgs |
 
   begin
     next-token
-    dup "&" str.equal not
+  dup ";&" str.equal not
   while
     nArgs ++ to nArgs
   repeat
 
-  // drop the "&" from dstack
+  // drop the ";&" from dstack
   drop
 
   nArgs
@@ -81,6 +81,14 @@ jobInfo: service
   "would spawn service" .
 
   dropN
+
+  //compiler::current word.name@ ,
+
+  "service" ,
+
+  tick job::spawnUniversal compile,
+
+  //tick drop compile,
 
   assert::stack_0
 ;
