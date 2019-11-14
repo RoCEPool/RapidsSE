@@ -173,6 +173,11 @@
     "<?ddlLock?>" "DL_NONE" jobInfo::addEname
   then
 
+  // default for job desc
+  "<?jobDesc?>" pEnameSet EnameSet.hasName not if
+    "<?jobDesc?>" "--description of job--" jobInfo::addEname
+  then
+
   // default for job kind
   "<?jobKind?>" pEnameSet EnameSet.hasName not if
     "<?jobKind?>" "JK_LOCAL" jobInfo::addEname
