@@ -187,21 +187,28 @@
 /*----------------------------------------------------------------------------*/
 : .generateService
 
+  // calc the name of the service
   "_" compiler::current word.name@ str.removeSuffix locals| sServiceNm |
 
+  // create a word by that name
   sServiceNm >create
 
+  // debug
   compiler::current locals| pServiceWd |
-
   pServiceWd word.dump
 
-  // -- -- -- -- -- --
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // -- encode the service spawning word -- -- -- -- -- --
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  "++ this is a service spawner" , POSTPONE .
+  sServiceNm , "++ this is service spawner for: %v" , POSTPONE fmt.print
+
+  sServiceNm , POSTPONE job::spawnUniversal
 
   POSTPONE exit
 
-  // -- -- -- -- -- --
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
   pServiceWd word.dump
 ;
 

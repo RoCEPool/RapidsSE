@@ -23,7 +23,7 @@
   snooze answer::spawn
   snooze connector::spawn
 
-  // service ;&
+  service // ;&
 
   <DONE_RUN>
   job::completed
