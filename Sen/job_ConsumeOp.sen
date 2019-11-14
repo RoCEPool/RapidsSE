@@ -33,7 +33,7 @@ jobInfo: Consume
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_NONE
+  <?jobType?>  = JT_CONSUMEOP
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_NODE_ZERO
   <?ddlLock?>  = DL_GRAB_READ

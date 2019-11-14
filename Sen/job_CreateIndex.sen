@@ -23,8 +23,6 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
-  //pJob_CreateIndex job.indexName@ to sIndexNm
-  //pJob_CreateIndex job.objectName@ to sTableNm
   <tableNm> to sTableNm
   <indexNm> to sIndexNm
 
@@ -120,11 +118,6 @@
 
   pIndexDef pIndex index.indexDef!
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // mark index as unique
-  pJob_CreateIndex job_createIndex.isUnique@ pIndex index.isUnique!
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // validate the unqiue index columns are a subset of the partition keys
@@ -152,54 +145,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* Job_CreateIndex request (on originating node)                              */
-/*----------------------------------------------------------------------------*/
-: createIndex_req (  -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  0 0 locals| pJob pTask |
-
-  tp: createIndex_req
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_CreateIndex job on each node                                   */
 /*----------------------------------------------------------------------------*/
-: createIndex_exe ( Job_CreateIndex -- )
+: createIndex::execute _eeh ( -- )
 
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_CreateIndex |
   job::this locals| pJob_CreateIndex |
 
   0 0 locals| pTable sTableNm sIndexNm |
 
   tp: createIndex_exe
-
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert correct job
-  CN_JOB_CREATEINDEX pJob_CreateIndex object.assertClass
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the index
@@ -209,21 +163,14 @@
   // should be in tables
   assertInTables
 
-  pJob_CreateIndex job.notice
-
-  pJob_CreateIndex job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute Job_CreateIndex job check resources                                */
 /*----------------------------------------------------------------------------*/
-: createIndex.checkResources ( Job_CreateIndex -- )
+: createIndex::checkResources _eeh ( -- )
 
-  >>logEntry <Check_Resources>
-
-  params| pJob_CreateIndex  |
+  job::this locals| pJob_CreateIndex |
   0 0 locals| sTableNm sIndexNm |
 
   tp: createIndex.checkResources
@@ -240,74 +187,25 @@
   //----------------------------------------------------------------------------
   // check ok to make index
   pJob_CreateIndex checkMakeIndex not if pJob_CreateIndex <ERROR_JOB> !!logError exit then
-
-  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateTable job release resources                              */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: createIndex.releaseResources ( Job_CreateIndex -- )
+jobSyntax: createIndex :: create index <indexNm> on <tableNm> etc ;
+jobSyntax: createIndex :: create unique index <indexNm> on <tableNm> etc ;
 
-  >>logEntry <Release_Resources>
-
-  params| pJob_CreateIndex  |
-
-  tp: createIndex.releaseResources
-  //"releaseResources received" .
-
-  <<logExit <Resources_Released>
-;
-
-/*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
-/*----------------------------------------------------------------------------*/
-: createIndex_beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  job::this locals| pJob_createIndex |
-
-  pJob_createIndex job.becomeParticipant
-
-  pJob_createIndex createIndex.checkResources
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
-;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: createIndex_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_createIndex |
-
-  pJob_createIndex createIndex.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: createIndex_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_createIndex |
-
-  // check resources
-  pJob_createIndex createIndex.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+jobInfo: createIndex
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobType?>  = JT_CREATEINDEX
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_WRITE
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
 
 /*============================================================================*/

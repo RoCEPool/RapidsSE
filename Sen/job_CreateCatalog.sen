@@ -89,7 +89,7 @@ jobInfo: createCatalog
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_NONE
+  <?jobType?>  = JT_CREATECATALOG
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NODE_ZERO
   <?ddlLock?>  = DL_GRAB_WRITE

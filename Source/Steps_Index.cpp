@@ -22,7 +22,6 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.isPrimaryKey@"_Stz,   &Step::vIndexIsPrimaryKeyFetch);
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
   vAddStep("index.isUnique@"_Stz,       &Step::vIndexIsUniqueFetch);
-  vAddStep("index.isUnique!"_Stz,       &Step::vIndexIsUniqueStore);
   vAddStep("index.isValidUniqueIndex"_Stz,&Step::vIndexIsValidUniqueIndex);
   vAddStep("index.lowerBound"_Stz,      &Step::vIndexLowerBound);
   vAddStep("index.name@"_Stz,           &Step::vIndexNameFetch);
@@ -332,30 +331,6 @@ void Step::vIndexIsUniqueFetch(void)
   bool bIsUnique = pIndex->bIsUnique();
   
   m_pDataStack->vPushI8(bIsUnique);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.isUnique! -- store isUnique into index                               */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexIsUniqueStore(void)
-{
-  ENTRY("vIndexIsUniqueStore"_Stz);
-  
-  Object* pPtrIndex = nullptr;
-  
-  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
-    THROW_DSTACK();
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  i8 iIsUnique;
-  if ( ! m_pDataStack->bPopI8(iIsUnique) )
-    THROW_DSTACK();
-  
-  pIndex->vIsUnique(iIsUnique ? true : false);
   
   EXIT();
 }

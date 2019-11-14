@@ -113,8 +113,9 @@ void Step::vTableIsValidIndexColumns(void)
   Object* pPtrJob;
   if ( ! m_pDataStack->bPopObject(pPtrJob) )
     THROW_DSTACK();
-  Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pPtrJob);
-  ASSERT(CN_JOB_CREATEINDEX == pJob_CreateIndex->eClass());
+  
+  Job_Universal* pJob_CreateIndex = _pJob_Universal(pPtrJob);
+  ASSERT(CN_JOB_UNIVERSAL == pJob_CreateIndex->eClass());
   
   m_pDataStack->vPushI8(pTable->bIsValidIndexColumns(pJob_CreateIndex));
   

@@ -36,7 +36,7 @@ jobInfo: listPartitions
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_NONE
+  <?jobType?>  = JT_LISTPARTITIONS
   <?jobKind?>  = JK_DIST2PC
   <?rspKind?>  = RS_NODE_ROWS
   <?ddlLock?>  = DL_NONE

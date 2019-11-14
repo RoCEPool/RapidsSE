@@ -150,7 +150,6 @@ pFINALIZE *gpFinalize[]
 
   /*    */ &Finalize::vUndefined,         // CN_JOB_CONNECTOR
   /*    */ &Finalize::vUndefined,         // CN_JOB_COPYBUFFER
-  /*    */ &Finalize::vUndefined,         // CN_JOB_CREATEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_FETCHROWS
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTROW
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTTABLE

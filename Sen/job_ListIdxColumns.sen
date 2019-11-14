@@ -134,7 +134,7 @@ jobInfo: lsidxcol
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_NONE
+  <?jobType?>  = JT_LISTIDXCOLUMNS
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_LOCAL_ROWS
   <?ddlLock?>  = DL_GRAB_READ

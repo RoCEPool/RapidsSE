@@ -28,7 +28,7 @@ jobInfo: showCluster
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_NONE
+  <?jobType?>  = JT_SHOWCLUSTER
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_NONE
   <?ddlLock?>  = DL_NONE
