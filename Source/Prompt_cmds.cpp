@@ -27,7 +27,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
 {
   
   // local
-  JobClass::vCmds(CN_JOB_PIPELINE);
   JobClass::vCmds(CN_JOB_FETCHROWS);
   
   // dist2pc

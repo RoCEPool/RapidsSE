@@ -94,7 +94,7 @@ print "scan lineitem | output;";
 print "**************************************************************************";
 
 //docol epochTake;
-
+/*
 pipeline lineItem_dyn
 begin
 
@@ -106,6 +106,7 @@ output
 
 end
 ;
+*/
 
 //docol epochDump;
 /*

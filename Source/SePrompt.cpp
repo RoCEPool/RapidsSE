@@ -192,11 +192,11 @@ void SePrompt::vPromptLoop(void)
       //vTrace("job has error (maybe syntax error)\n"_Stz);
       
       //! temp  // // // // // // // // // // // // // //
-      if (CN_JOB_PIPELINE == m_pJob->eClass()) {
-        vTrace("deleting Job_Pipeline\n"_Stz);
-        vDeleteJob();
-        continue;
-      }
+//      if (CN_JOB_PIPELINE == m_pJob->eClass()) {
+//        vTrace("deleting Job_Pipeline\n"_Stz);
+//        vDeleteJob();
+//        continue;
+//      }
       //! end temp // // // // // // // // // // // // //
       
       vPostJob();

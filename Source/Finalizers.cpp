@@ -158,7 +158,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_NODEINFO
   /*    */ &Finalize::vUndefined,         // CN_JOB_OPERAND
   /*    */ &Finalize::vUndefined,         // CN_JOB_PERIODIC
-  /*    */ &Finalize::vUndefined,         // CN_JOB_PIPELINE
   /*    */ &Finalize::vUndefined,         // CN_JOB_RECEIVER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SANITY
   /*    */ &Finalize::vUndefined,         // CN_JOB_SELECT

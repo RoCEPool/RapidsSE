@@ -219,7 +219,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_NODEINFO"_Stz,       CN_JOB_NODEINFO);
   /*    */ vAddConstant("CN_JOB_OPERAND"_Stz,        CN_JOB_OPERAND);
   /*    */ vAddConstant("CN_JOB_PERIODIC"_Stz,       CN_JOB_PERIODIC);
-  /*    */ vAddConstant("CN_JOB_PIPELINE"_Stz,       CN_JOB_PIPELINE);
   /*    */ vAddConstant("CN_JOB_RECEIVER"_Stz,       CN_JOB_RECEIVER);
   /*    */ vAddConstant("CN_JOB_SANITY"_Stz,         CN_JOB_SANITY);
   /*    */ vAddConstant("CN_JOB_SELECT"_Stz,         CN_JOB_SELECT);
@@ -548,6 +547,7 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("RS_NODE_ERRORS"_Stz,  RS_NODE_ERRORS);
   /*  0 */ vAddConstant("RS_NODE_ROWS"_Stz,    RS_NODE_ROWS);
   /*  0 */ vAddConstant("RS_NODE_ZERO"_Stz,    RS_NODE_ZERO);
+  /*  0 */ vAddConstant("RS_QUEUE_ROWS"_Stz,   RS_QUEUE_ROWS);
 
   // SS_ : seed strings
   /*  0 */ vAddConstant("SS_SEED_RUN"_Stz,    SS_SEED_RUN);
