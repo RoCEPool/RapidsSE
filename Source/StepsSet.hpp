@@ -130,6 +130,8 @@ public:
 
   // comment
   void vCompilerCurrent(void);
+  void vCompilerPop(void);
+  void vCompilerPush(void);
 
   // cpu
   void vCpuRdtscp(void);

@@ -23,7 +23,9 @@
   snooze answer::spawn
   snooze connector::spawn
 
-  service ;&
+  service egArgA egArgB egArgC ;&
+
+  "end start_run" . //verbose
 
   <DONE_RUN>
   job::completed

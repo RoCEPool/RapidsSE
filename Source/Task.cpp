@@ -440,7 +440,8 @@ void Task::vDump(void)
   
   vContentDump();
   
-  AM::aReqTuple_tls()->vContentDump();
+  if (AM::aReqTuple_tls())
+    AM::aReqTuple_tls()->vContentDump();
   
   AM::vJobContentDump(m_pJob);
   

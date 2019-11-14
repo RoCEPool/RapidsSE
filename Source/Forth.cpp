@@ -124,7 +124,7 @@ void Forth::vContentDump(void)
          m_pSeedWord->szWordNm(),
          m_pSeedWord);
   vTrace("m_pExceptionWord=%s %p\n"_Stz,
-         m_pExceptionWord->szWordNm(),
+         m_pExceptionWord ? m_pExceptionWord->szWordNm() : C_NO_NAME,
          m_pExceptionWord);
 
   m_pAuxStack->vContentDump(&m_oDicStack,   "m_pAuxStack:"_Stz);

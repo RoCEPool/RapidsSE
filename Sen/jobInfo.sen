@@ -189,11 +189,13 @@
 
   0 locals| nArgs |
 
+  //".consumeArgs" .
+
   begin
     next-token
     dup ";&" str.equal not
   while
-    nArgs ++ to nArgs
+    nArgs 1 + to nArgs
   repeat
 
   // drop the ";&" from dstack
@@ -223,9 +225,9 @@
 
   // create a word by the spawner name
   sSpawnerNm >create
+  compiler::current locals| pSpawnerWd |
 
   // debug
-  compiler::current locals| pSpawnerWd |
   pSpawnerWd word.dump
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -246,25 +248,29 @@
   //----------------------------------------------------------------------------
   // PARSER
 
-  // create a word by the service name
+  // create an immediate word by the service name
 
   sServiceNm >create
-  true compiler::current word.immediate!
+  compiler::current locals| pServiceWd |
+  true pServiceWd word.immediate!
 
   // debug
-  compiler::current locals| pServiceWd |
   pServiceWd word.dump
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // -- encode the service parsing word  -- -- -- -- -- --
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
+  // in : <serviceNm> add call(fmt.print)
   sServiceNm , "++ this is the service parser for: %v" , POSTPONE fmt.print
 
+  // in : <serviceNm> add call(.consumeArgs)
   POSTPONE .consumeArgs
 
-  pSpawnerWd compile,
+  // in : <serviceNm> add code which adds call(` pSpawnerWd) in caller of service
+  pSpawnerWd , POSTPONE compile,
 
+  // in : <serviceNm> add exit
   POSTPONE exit
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
