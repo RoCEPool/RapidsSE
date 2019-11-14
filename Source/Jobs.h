@@ -51,7 +51,6 @@ namespace Jobs
 
 #include "Job_Connector.hpp"
 #include "Job_CopyBuffer.hpp"
-#include "Job_CreateIndex.hpp"
 
 #include "Job_Pipeline.hpp"
 

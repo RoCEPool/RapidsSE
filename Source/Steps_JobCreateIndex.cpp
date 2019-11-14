@@ -22,9 +22,9 @@ void Step::vJob_CreateIndexIsUniqueFetch(void)
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
-  Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJobPtr);
+  Job_Universal* pJob_CreateIndex = _pJob_Universal(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob_CreateIndex->m_bIsUnique);
+  //m_pDataStack->vPushI8(pJob_CreateIndex->m_bIsUnique);
   
   EXIT();
 }

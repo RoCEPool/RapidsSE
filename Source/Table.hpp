@@ -64,7 +64,7 @@ namespace MetaData
                         Rows::CrwBuffer* pCrwBuffer);
     void vIsLoading(bool bIsLoading);
     bool bIsLoading(void);
-    bool bIsValidIndexColumns(Jobs::Job_CreateIndex* pJob);
+    bool bIsValidIndexColumns(Jobs::Job_Universal* pJob);
     void vLazyBuildIndexes(i8 iSlot);
     void vMarkTable(void);
     Partitioning::TablePtn* pPartition(i8 iSlot);
