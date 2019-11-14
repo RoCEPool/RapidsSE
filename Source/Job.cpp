@@ -336,6 +336,26 @@ i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
 }
 
 
+
+/*----------------------------------------------------------------------------*/
+/* get the ename set of the named (universal) job                             */
+/*----------------------------------------------------------------------------*/
+EnameSet* Job::JobInfo_enameSet(Stz* szJobNm)
+{
+  s32 sJobNm_cls = szJobNm;
+  sJobNm_cls.vConcat("_cls"_Stz);
+  
+  Word* pWord_jobInfo = AM::pRootDic()->pFindWord(sJobNm_cls);
+  
+  if (!pWord_jobInfo)
+    return nullptr;
+  
+  EnameSet* pEnameSet = pWord_jobInfo->pEnameSet();
+  
+  return pEnameSet;
+}
+
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
