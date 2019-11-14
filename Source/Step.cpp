@@ -92,7 +92,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Job();
   Step::vAddSteps_JobAnalyzeIndex();
   Step::vAddSteps_JobClass();
-  Step::vAddSteps_JobCreateIndex();
   Step::vAddSteps_JobFetchRows();
   Step::vAddSteps_JobGeneric();
   Step::vAddSteps_JobInsertRows();

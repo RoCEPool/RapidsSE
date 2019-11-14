@@ -118,11 +118,6 @@
 
   pIndexDef pIndex index.indexDef!
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // mark index as unique
-  //pJob_CreateIndex job_createIndex.isUnique@ pIndex index.isUnique!
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // validate the unqiue index columns are a subset of the partition keys
