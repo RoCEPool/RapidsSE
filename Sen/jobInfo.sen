@@ -89,6 +89,30 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+: job::isServiceCmd
+
+  compiler::current word.EnameSet@ locals| pEnameSet |
+
+  "<?cmdKind?>" pEnameSet EnameSet.getInt
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  JK_DIST2PC
+  == if
+   // "job::isDistJob - job is a distributed job" .
+   true
+   exit
+  then
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  // "job::isDistJob - job is not a distributed job" .
+  false
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 : seedExists?
 
   word::name_trunc swap str.cat
@@ -158,6 +182,96 @@
   // pEnameSet EnameSet.asStr .
 ;
 
+/*----------------------------------------------------------------------------*/
+/* consume service arguments                                                  */
+/*----------------------------------------------------------------------------*/
+: .consumeArgs
+
+  0 locals| nArgs |
+
+  begin
+    next-token
+    dup ";&" str.equal not
+  while
+    nArgs ++ to nArgs
+  repeat
+
+  // drop the ";&" from dstack
+  drop
+
+  nArgs
+
+  // "would spawn service" .
+
+  dropN
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate two words, one which parses and another which spawns a service    */
+/*----------------------------------------------------------------------------*/
+: .generateService
+
+  // calc the name of the service
+  "_" compiler::current word.name@ str.removeSuffix locals| sServiceNm |
+
+  // calc the name of the spawner
+  sServiceNm "_spawner" str.cat locals| sSpawnerNm |
+
+
+  //----------------------------------------------------------------------------
+  // SPAWNER
+
+  // create a word by the spawner name
+  sSpawnerNm >create
+
+  // debug
+  compiler::current locals| pSpawnerWd |
+  pSpawnerWd word.dump
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // -- encode the service spawning word -- -- -- -- -- --
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  sServiceNm , "++ this is service spawner for: %v" , POSTPONE fmt.print
+
+  sServiceNm , POSTPONE job::spawnUniversal
+
+  POSTPONE exit
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  pSpawnerWd word.dump
+
+
+  //----------------------------------------------------------------------------
+  // PARSER
+
+  // create a word by the service name
+
+  sServiceNm >create
+  true compiler::current word.immediate!
+
+  // debug
+  compiler::current locals| pServiceWd |
+  pServiceWd word.dump
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+  // -- encode the service parsing word  -- -- -- -- -- --
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  sServiceNm , "++ this is the service parser for: %v" , POSTPONE fmt.print
+
+  POSTPONE .consumeArgs
+
+  pSpawnerWd compile,
+
+  POSTPONE exit
+
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+  pServiceWd word.dump
+;
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -216,6 +330,8 @@
   pEnameSet .fillOutEnameSet
 
   //pEnameSet EnameSet.asStr .
+
+  job::isServiceCmd if .generateService then
 ;
 
 /*============================================================================*/

@@ -14,7 +14,7 @@
 
   nullptr locals| pParentJob |
 
-  "start_run" .verbose
+  "start_run" . //verbose
 
   snooze supervisor::spawn
   snooze periodic::spawn
