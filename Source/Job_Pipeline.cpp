@@ -109,7 +109,6 @@ Job_Pipeline::Job_Pipeline(JobClass* aJobClass, ReqTuple* aReqTuple)
   
   m_pPipeline     = nullptr;
   m_pStreamDef    = nullptr;
-  m_pBufferQueue  = new Queue;
   
   _checkInitialised_(CN_JOB_PIPELINE);
 
@@ -125,7 +124,6 @@ Job_Pipeline::~Job_Pipeline(void) noexcept(false)
  
   delete m_pPipeline;
   delete m_pStreamDef;
-  delete m_pBufferQueue;
 }
 
 /*----------------------------------------------------------------------------*/

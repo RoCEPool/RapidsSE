@@ -53,7 +53,6 @@ RegSet::RegSet(Task* pTask)
   m_pPipeline    = nullptr;
   m_pDynamo      = nullptr;
   m_pStreamDef   = nullptr;
-  m_pBufferQueue = nullptr;
   
   _checkInitialised_(CN_REGSET);
   

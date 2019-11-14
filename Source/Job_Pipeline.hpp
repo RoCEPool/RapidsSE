@@ -10,7 +10,6 @@ namespace Jobs
   public:
     Pipeline*      m_pPipeline;  
     StreamDef*     m_pStreamDef;
-    Queue*         m_pBufferQueue;
     
     // must be last
     Footer m_xFooter;

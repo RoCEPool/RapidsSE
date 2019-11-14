@@ -37,6 +37,7 @@ JobResult::JobResult(void)
   
   //m_xResponse
   m_pResponseVec = nullptr;
+  m_pBufferQueue = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,6 +47,7 @@ JobResult::~JobResult(void) noexcept(false)
 {
   if (m_pResponseVec)
     delete m_pResponseVec;
+  delete m_pBufferQueue;
 }
 
 
@@ -228,6 +230,138 @@ void JobResult::vPrintLocalZero(void)
   }
   
   vTrace("success: 0 rows affected\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print queue rows                                                            */
+/*----------------------------------------------------------------------------*/
+void JobResult::vPrintQueueRows(void)
+{
+  if ( m_bHasError ) {
+    i8 iResponses = m_pResponseVec->nItems();
+    RASSERT(iResponses == AM::nDefinedNodes());
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+    }
+    return;
+  }
+  
+  StreamDef* pStreamDef = nullptr;
+  
+  for (;;) {
+    
+    Operand* pOperand = _pOperand(m_pBufferQueue->pPop());
+    
+    if (! pOperand) {
+      AM::vNapUsec(250,CN_JOB_PIPELINE);
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    switch (pOperand->eClass()) {
+        
+        // -- -- -- -- -- --
+        
+      case CN_CANCELMARKER: {
+//        vTrace("Query %lld cancelled!!! (rows fetched so far %lld)\n"_Stz, iJobId(),
+//               *m_xResponse.m_ixRowsProcessed);
+        vTrace("Query cancelled!!! (rows fetched so far %lld)\n"_Stz,
+               *m_xResponse.m_ixRowsProcessed);
+        delete (_pCancelMarker(pOperand));
+        goto L_EXIT;
+        
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_CRWBUFFER: {
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+        m_xResponse.m_ixRowsProcessed += pCrwBuffer->nRowCount();
+        pCrwBuffer->vPrintRows(pStreamDef);
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_CSVBUFFER: {
+        CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+        m_xResponse.m_ixRowsProcessed += pCsvBuffer->nRecords();
+        pCsvBuffer->vPrintRows();
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_ENDMARKER: {
+        // print the responses received
+        vTrace("success: %lld rows fetched\n"_Stz, *m_xResponse.m_ixRowsProcessed);
+        AM::vDeleteOperand(pOperand);
+        goto L_EXIT;
+        
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_ENTBUFFER: {
+        EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
+        m_xResponse.m_ixRowsProcessed += pEntBuffer->nItems();
+        pEntBuffer->vPrintRows();
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_IRWBUFFER: {
+        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
+        m_xResponse.m_ixRowsProcessed += pIrwBuffer->nItems();
+        pIrwBuffer->vPrintRows(pStreamDef);
+        delete pIrwBuffer;
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_SRTBUFFER: {
+        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
+        m_xResponse.m_ixRowsProcessed += pSrtBuffer->nItems();
+        pSrtBuffer->vPrintRows(pStreamDef);
+        delete pSrtBuffer;
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_STREAMDEF: {
+        if ( ! pStreamDef ) {
+          pStreamDef = _pStreamDef(pOperand);
+          
+          // print the metadata
+          if (AM::bMetadata()) {
+            pStreamDef->vToMetadata(m_sMetadata.szStz());
+            vTrace("%s\n"_Stz, m_sMetadata.szStz());
+          }
+        }
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      default:
+        RASSERT(0);
+        break;
+    }
+    
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_EXIT:
+  
+  delete pStreamDef;
+  return;
+  
 }
 
 /*----------------------------------------------------------------------------*/

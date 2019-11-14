@@ -12,7 +12,8 @@ namespace Jobs
     bool         m_bHasError;    // has an error from one or more nodes
     Response     m_xResponse;    // response of this job
     ResponseVec* m_pResponseVec; // vector of responses from all the nodes
-  
+    Queue*       m_pBufferQueue; // buffer queue to receive the buffers of the result
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -29,6 +30,7 @@ namespace Jobs
     void vPrintNodeErrors(void);
     void vPrintNodeRows(void);
     void vPrintNodeZero(void);
+    void vPrintQueueRows(void);
   
     Stz* szResponse(void);
   };

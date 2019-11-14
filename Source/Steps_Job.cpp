@@ -451,6 +451,7 @@ void Step::vJobCreateResponseVec(void)
   
   RASSERT( ! pJob->m_pResponseVec );
   pJob->m_pResponseVec = new ResponseVec;
+  pJob->m_pBufferQueue = new Queue;
   
   EXIT();
 }

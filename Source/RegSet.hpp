@@ -30,7 +30,6 @@ namespace Registers
     Pipeline*   m_pPipeline;      // pipeline[]
     Dynamo*     m_pDynamo;        // dynamo[]
     StreamDef*  m_pStreamDef;     // streamDef[]
-    Queue*      m_pBufferQueue;   // Queue[]
     
     // must be last
     Footer m_xFooter;

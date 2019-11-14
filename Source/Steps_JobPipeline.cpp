@@ -32,7 +32,10 @@ void Step::vJob_PipelineBegin(void)
   //pJob_Pipeline->vBegin();
   
   pJob_Pipeline->m_pPipeline = new Pipeline(pJob_Pipeline);
-  pJob_Pipeline->m_pBufferQueue = nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  RASSERT( ! pJob_Pipeline->m_pBufferQueue );
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the pipeline
   
