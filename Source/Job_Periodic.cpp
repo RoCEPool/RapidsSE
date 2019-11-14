@@ -47,7 +47,7 @@ JobClass xJobClass_Periodic =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Periodic_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Pipeline_class;
+  *pNextFun = (pFUN*)pJob_Receiver_class;
   
   return &xJobClass_Periodic;
 }

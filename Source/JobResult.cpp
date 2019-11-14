@@ -253,7 +253,7 @@ void JobResult::vPrintQueueRows(void)
     Operand* pOperand = _pOperand(m_pBufferQueue->pPop());
     
     if (! pOperand) {
-      AM::vNapUsec(250,CN_JOB_PIPELINE);
+      AM::vNapUsec(250,CN_NONE);
       continue;
     }
     

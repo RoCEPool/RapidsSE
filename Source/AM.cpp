@@ -130,7 +130,7 @@ void AM::vAttachMap(Header* aHeader) {
   gpAttachMap = static_cast<AttachMap*>(aHeader);
 }
 Queue* AM::pBufferQueue(Job* pJob) {
-  Job_Pipeline* pJob_Originating = _pJob_Pipeline(pJob->m_pOriginatingTask->pJob());
+  Job* pJob_Originating = pJob->m_pOriginatingTask->pJob();
   return pJob_Originating->m_pBufferQueue;
 }
 void AM::vBootError(bool bBootError) {
@@ -1024,7 +1024,8 @@ Job* AM::pNewJobUniversal( Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId)
   Job_Universal* pJobUniversal = new Job_Universal(pOp->m_pJobPipeline, pJobClass_Universal,pReqTuple,iUniqueId);
   
   pJobUniversal->m_pOp = pOp;
-  pJobUniversal->m_oEnameSet.vCopy(&pOp->m_pJobPipeline->m_oEnameSet);
+  pJobUniversal->m_oEnameSet.vAdd("<path>"_Stz,
+                                  pOp->m_pJobPipeline->m_oEnameSet.szValue("<path>"_Stz));
   pJobUniversal->m_oEnameSet.vAdd("<jobNm>"_Stz,pOp->m_sName);
   pJobUniversal->vSeed(SS_SEED_REQ);
 

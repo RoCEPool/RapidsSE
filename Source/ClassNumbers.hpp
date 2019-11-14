@@ -159,7 +159,6 @@ enum eCN : u2 // Class Number
   /* 105 0x69    70640B Heap:L */ CN_JOB_NODEINFO,
   /* 105 0x69    70640B Heap:L */ CN_JOB_OPERAND,
   /* 106 0x6A    70592B Heap:L */ CN_JOB_PERIODIC,
-  /*                           */ CN_JOB_PIPELINE,
   /* 111 0x6F    70608B Heap:L */ CN_JOB_RECEIVER,
   /* 115 0x73    70608B Heap:L */ CN_JOB_SANITY,
   /* 114 0x72    70608B Heap:L */ CN_JOB_SELECT,
@@ -512,7 +511,6 @@ static Stz* aCN[]
   /* 105 0x69 */ "JOB_NODEINFO"_Stz,        // CN_JOB_NODEINFO
   /* 105 0x69 */ "JOB_OPERAND"_Stz,         // CN_JOB_OPERAND
   /* 106 0x6A */ "JOB_PERIODIC"_Stz,        // CN_JOB_PERIODIC
-  /*          */ "Job_PIPELINE"_Stz,        // CN_JOB_PIPELINE
   /* 111 0x6F */ "JOB_RECEIVER"_Stz,        // CN_JOB_RECEIVER
   /* 115 0x73 */ "JOB_SANITY"_Stz,          // CN_JOB_SANITY
   /* 114 0x72 */ "JOB_SELECT"_Stz,          // CN_JOB_SELECT

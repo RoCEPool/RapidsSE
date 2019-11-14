@@ -362,7 +362,7 @@ i8 EnameSet::iValue(Stz *szName)
   
   if (C_UNKNOWN == i_Ename)
     return 0;
-  
+  vPrint();
   ASSERT(TN_INTEGER == m_xEname[i_Ename].m_eToken);
   i8 iValue = m_xEname[i_Ename].m_i_Value;
 

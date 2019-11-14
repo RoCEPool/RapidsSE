@@ -5,56 +5,14 @@
 " job_Pipeline.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* Pipeline command request (on originating node)                             */
-/*----------------------------------------------------------------------------*/
-: pipeline_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  100 ssn::senLoc
-
-  0 0 locals| pJob_pipeline pTask |
-
-  //": pipeline_req" .
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
-  pTask task.job@ to pJob_pipeline
-
-  //pJob_pipeline "Job %v on originating node" str.format .
-
-  // distribute the job
-  pJob_pipeline job.distribute
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  ": pipeline_req END" .
-
-  900 ssn::senLoc
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute Job_Pipeline job on a node                                         */
 /*----------------------------------------------------------------------------*/
-: pipeline_exe ( Job_pipeline -- )
-
-  >>logEntry <SEED_EXE>
+: pipeline::execute _eeh ( -- )
 
   task::this locals| pTask |
   job::this  locals| pJob_pipeline |
 
-  //pJob_pipeline "Job %v on participant node" str.format .
   tp: pipeline_exe
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  DdlLock[].grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -79,54 +37,26 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // end the pipeline job
   pJob_pipeline job_Pipeline.end
-
-  pJob_pipeline job.notice
-
-  pJob_pipeline job::participantExecuted
-
-  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-: pipeline_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+jobSyntax: pipeline :: pipeline <pipelineNm> etc ;
 
-  job::this locals| pJob_pipeline |
-
-  pJob_pipeline job.becomeParticipant
-
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
+jobInfo: pipeline
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobType?>  = JT_NONE
+  <?jobKind?>  = JK_DIST2PC
+  <?rspKind?>  = RS_QUEUE_ROWS
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
 ;
-
-/*----------------------------------------------------------------------------*/
-/* end job                                                                    */
-/*----------------------------------------------------------------------------*/
-: pipeline_end ( -- )
-
-  >>logEntry <SEED_END>
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
-;
-
-/*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
-/*----------------------------------------------------------------------------*/
-: pipeline_can ( -- )
-
-  >>logEntry <SEED_CAN>
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
-;
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
