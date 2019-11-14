@@ -6,9 +6,9 @@
 
 JobClass xJobClass_Pipeline =
 {
-  CN_JOB_PIPELINE,        // class number
+  CN_JOB_PIPELINE,       // class number
   JK_DIST2PC,            // job kind
-  RS_DATA_ROWS,          // response kind
+  RS_QUEUE_ROWS,         // response kind
   "pipeline"_Stz,        // comment about the job
   "pipeline"_Stz,        // the prompt command
   nullptr,               // the second word
@@ -26,13 +26,13 @@ JobClass xJobClass_Pipeline =
   JF_NONE,               // flags
 
   eJob_checkCluster,     // prompt check function
-  pJob_Pipeline_pre,      // prompt pre-process function
-  vJob_Pipeline_post,     // prompt post-process function
+  pJob_Pipeline_pre,     // prompt pre-process function
+  vJob_post,             // prompt post-process function
   nullptr,               // job new function
-  vJob_Pipeline_delete,   // job delete function
+  vJob_Pipeline_delete,  // job delete function
   vJob_send,             // job pre-send function
   vJob_recv,             // job post-receive function
-  vJob_Pipeline_show,     // job show function
+  vJob_Pipeline_show,    // job show function
   
   // help and example
   true,
@@ -317,134 +317,6 @@ Job* Jobs::pJob_Pipeline_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* 
   Job_Pipeline* pJob_Pipeline = new Job_Pipeline(aJobClass,aReqTuple);
   
   return pJob_Pipeline;
-}
-
-/*----------------------------------------------------------------------------*/
-/* prompt post execute function                                               */
-/*----------------------------------------------------------------------------*/
-void Jobs::vJob_Pipeline_post(Job* pJob)
-{
-  Job_Pipeline* pJob_Pipeline = _pJob_Pipeline(pJob);
-
-  if ( pJob_Pipeline->m_bHasError ) {
-    i8 iResponses = pJob_Pipeline->m_pResponseVec->nItems();
-    RASSERT(iResponses == AM::nDefinedNodes());
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_Pipeline->m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
-    }
-    return;
-  }
-
-  for (;;) {
-    
-    Operand* pOperand = _pOperand(pJob_Pipeline->m_pBufferQueue->pPop());
-    
-    if (! pOperand) {
-      AM::vNapUsec(250,CN_JOB_PIPELINE);
-      continue;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-    switch (pOperand->eClass()) {
-      
-     // -- -- -- -- -- --
-        
-      case CN_CANCELMARKER: {
-        vTrace("Query %lld cancelled!!! (rows fetched so far %lld)\n"_Stz, pJob_Pipeline->iJobId(),
-               *pJob_Pipeline->m_xResponse.m_ixRowsProcessed);
-        delete (_pCancelMarker(pOperand));
-        goto L_EXIT;
-        
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_CRWBUFFER: {
-        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-        pJob_Pipeline->m_xResponse.m_ixRowsProcessed += pCrwBuffer->nRowCount();
-        pCrwBuffer->vPrintRows(pJob_Pipeline->m_pStreamDef);
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_CSVBUFFER: {
-        CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
-        pJob_Pipeline->m_xResponse.m_ixRowsProcessed += pCsvBuffer->nRecords();
-        pCsvBuffer->vPrintRows();
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_ENDMARKER: {
-        // print the responses received
-        vTrace("success: %lld rows fetched\n"_Stz, *pJob_Pipeline->m_xResponse.m_ixRowsProcessed);
-        AM::vDeleteOperand(pOperand);
-        goto L_EXIT;
-        
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_ENTBUFFER: {
-        EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
-        pJob_Pipeline->m_xResponse.m_ixRowsProcessed += pEntBuffer->nItems();
-        pEntBuffer->vPrintRows();
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_IRWBUFFER: {
-        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-        pJob_Pipeline->m_xResponse.m_ixRowsProcessed += pIrwBuffer->nItems();
-        pIrwBuffer->vPrintRows(pJob_Pipeline->m_pStreamDef);
-        delete pIrwBuffer;
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_SRTBUFFER: {
-        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        pJob_Pipeline->m_xResponse.m_ixRowsProcessed += pSrtBuffer->nItems();
-        pSrtBuffer->vPrintRows(pJob_Pipeline->m_pStreamDef);
-        delete pSrtBuffer;
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_STREAMDEF: {
-        if ( ! pJob_Pipeline->m_pStreamDef ) {
-          pJob_Pipeline->m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-          
-          // print the metadata
-          if (AM::bMetadata()) {
-            pJob_Pipeline->m_pStreamDef->vToMetadata(pJob_Pipeline->m_sMetadata.szStz());
-            vTrace("%s\n"_Stz, pJob_Pipeline->m_sMetadata.szStz());
-          }
-        }
-        delete _pStreamDef(pOperand);
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      default:
-        RASSERT(0);
-        break;
-    }
-    
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_EXIT:
-  return;
 }
 
 /*----------------------------------------------------------------------------*/

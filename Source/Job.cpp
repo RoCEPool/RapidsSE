@@ -824,6 +824,7 @@ void Jobs::vJob_post(Job* pJob)
     case RS_NODE_ERRORS  : pJob->vPrintNodeErrors();   break;
     case RS_NODE_ROWS    : pJob->vPrintNodeRows();     break;
     case RS_NODE_ZERO    : pJob->vPrintNodeZero();     break;
+    case RS_QUEUE_ROWS   : pJob->vPrintQueueRows();     break;
       
     default:
       vTrace("Invalid response in job %s : %s\n"_Stz,
