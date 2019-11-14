@@ -203,8 +203,7 @@
 
   nArgs
 
-  // "would spawn service" .
-
+  // for the moment we drop the arg vector from the data stack
   dropN
 ;
 
@@ -228,7 +227,7 @@
   compiler::current locals| pSpawnerWd |
 
   // debug
-  pSpawnerWd word.dump
+  //pSpawnerWd word.dump
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // -- encode the service spawning word -- -- -- -- -- --
@@ -242,7 +241,8 @@
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  pSpawnerWd word.dump
+  // debug
+  //pSpawnerWd word.dump
 
 
   //----------------------------------------------------------------------------
@@ -255,7 +255,7 @@
   true pServiceWd word.immediate!
 
   // debug
-  pServiceWd word.dump
+  //pServiceWd word.dump
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
   // -- encode the service parsing word  -- -- -- -- -- --
@@ -275,7 +275,8 @@
 
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  pServiceWd word.dump
+  // debug
+  //pServiceWd word.dump
 ;
 
 
