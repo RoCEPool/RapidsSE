@@ -1808,14 +1808,15 @@ void Step::vJobSpawnUniversal(void)
   if ( ! m_pDataStack->bPopS32(sJobNm) )
     THROW_DSTACK();
 
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  Job* pJob_parent = _pJob(pJobPtr);
-  
-  EnameSet* pEnameSet_jobInfo = Job::pJobInfo_enameSet(sJobNm);
+//  Object* pJobPtr;
+//  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+//    THROW_DSTACK();
+//  Job* pJob_parent = _pJob(pJobPtr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // get the ename set from the job info
+  EnameSet* pEnameSet_jobInfo = Job::pJobInfo_enameSet(sJobNm);
   
   // find the job class
   JobClass* aJobClass = JobClass::pFind(CN_JOB_UNIVERSAL);

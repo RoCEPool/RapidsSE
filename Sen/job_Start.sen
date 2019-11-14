@@ -23,7 +23,7 @@
   snooze answer::spawn
   snooze connector::spawn
 
-  pParentJob service ;&
+  service ;&
 
   <DONE_RUN>
   job::completed

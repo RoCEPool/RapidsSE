@@ -23,6 +23,7 @@ namespace Enums
 #include "eBO.h"
 
 #include "eCA.h"
+#include "eCK.h"
 #include "eCS.h"
 #include "eCT.h"
 
