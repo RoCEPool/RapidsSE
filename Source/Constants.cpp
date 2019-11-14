@@ -139,14 +139,20 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("AN_ENUMS"_Stz,              AN_ENUMS);
   
   // AT_ : fetch techniques
-  /*  0 */ vAddConstant("AT_NONE"_Stz,  AT_NONE);
-  /*  1 */ vAddConstant("AT_EXACT"_Stz, AT_EXACT);
-  /*  2 */ vAddConstant("AT_LOWER"_Stz, AT_LOWER);
-  /*  3 */ vAddConstant("AT_UPPER"_Stz, AT_UPPER);
-  /*  4 */ vAddConstant("AT_RANGE"_Stz, AT_RANGE);
-  /*  5 */ vAddConstant("AT_SCAN"_Stz,  AT_SCAN);
-  /*  6 */ vAddConstant("AT_ENUMS"_Stz, AT_ENUMS);
+  /*  0 */ vAddConstant("AT_NONE"_Stz,     AT_NONE);
+  /*  1 */ vAddConstant("AT_EXACT"_Stz,    AT_EXACT);
+  /*  2 */ vAddConstant("AT_LOWER"_Stz,    AT_LOWER);
+  /*  3 */ vAddConstant("AT_UPPER"_Stz,    AT_UPPER);
+  /*  4 */ vAddConstant("AT_RANGE"_Stz,    AT_RANGE);
+  /*  5 */ vAddConstant("AT_SCAN"_Stz,     AT_SCAN);
+  /*  6 */ vAddConstant("AT_ENUMS"_Stz,    AT_ENUMS);
   
+  // CK_ : command kind
+  /*  0 */ vAddConstant("CK_NONE"_Stz,     CK_NONE);
+  /*  0 */ vAddConstant("CK_COMMAND"_Stz,  CK_COMMAND);
+  /*  0 */ vAddConstant("CK_CHILD"_Stz,    CK_CHILD);
+  /*  0 */ vAddConstant("CK_SERVICE"_Stz,  CK_SERVICE);
+
   // CN_ : class numbers
   /*  0 */ vAddConstant("CN_NONE"_Stz,         CN_NONE);
 
@@ -162,7 +168,7 @@ void Constants::vAddConstants(void)
   /* 14 */ vAddConstant("CN_ATTACHMAP"_Stz,    CN_ATTACHMAP);
   
   /* 17 */ vAddConstant("CN_BPA"_Stz,          CN_BPA);
-  /*    */ vAddConstant("CN_BUFFERCURSOR"_Stz,   CN_BUFFERCURSOR);
+  /*    */ vAddConstant("CN_BUFFERCURSOR"_Stz, CN_BUFFERCURSOR);
   /* 16 */ vAddConstant("CN_BUFFERPOOL"_Stz,   CN_BUFFERPOOL);
   /* 16 */ vAddConstant("CN_BYTERATE"_Stz,     CN_BYTERATE);
 
@@ -172,7 +178,7 @@ void Constants::vAddConstants(void)
   /* 18 */ vAddConstant("CN_DIC"_Stz,          CN_DIC);
   /*    */ vAddConstant("CN_DICPATH"_Stz,      CN_DICPATH);
   /* 19 */ vAddConstant("CN_DICSTACK"_Stz,     CN_DICSTACK);
-  /* 19 */ vAddConstant("CN_PIPELINE"_Stz,       CN_PIPELINE);
+  /* 19 */ vAddConstant("CN_PIPELINE"_Stz,     CN_PIPELINE);
   /* 20 */ vAddConstant("CN_DIR"_Stz,          CN_DIR);
   
   /*    */ vAddConstant("CN_FETCHBUFFER"_Stz,  CN_FETCHBUFFER);

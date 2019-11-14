@@ -140,7 +140,11 @@
 : .fillOutEnameSet params| pEnameSet |
 
   "<?priority?>" pEnameSet EnameSet.hasName not if
-     "<?priority?>" "PY_NORMAL" jobInfo::addEname // pEnameSet EnameSet.addStr
+     "<?priority?>" "PY_NORMAL" jobInfo::addEname
+  then
+
+  "<?cmdKind?>" pEnameSet EnameSet.hasName not if
+    "<?cmdKind?>" "CK_COMMAND" jobInfo::addEname
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -151,7 +155,7 @@
     .fillOutEnameSet_local
   then
 
-  // pEnameSet EnameSet.asStr .
+  pEnameSet EnameSet.asStr .
 ;
 
 
