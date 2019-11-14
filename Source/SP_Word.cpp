@@ -53,13 +53,13 @@ Stz* SP_Word::sz(Word* pWord)
   
   if (* pWord->szExitHook()->azChar())
     StrLib::vSprintCat((Stz*)m_caResult,
-                      " exitHook %s "_Stz,
+                      " exitHook %s"_Stz,
                        pWord->szExitHook());
 
-  if (* pWord->szExitHook()->azChar())
+  if (* pWord->szExceptionHook()->azChar())
     StrLib::vSprintCat((Stz*)m_caResult,
-                       " exitHook %s "_Stz,
-                       pWord->szExitHook());
+                       " exceptionHook %s"_Stz,
+                       pWord->szExceptionHook());
   
 
   return (Stz*) &m_caResult[0];
