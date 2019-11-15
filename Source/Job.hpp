@@ -66,14 +66,15 @@ namespace Jobs
     i8   iAcksOriginal(void);
     i8   iAcksRmg_printOnlyValue(void);
     void vAcksRmg(i8 nAcks);
-    bool bAcksRmgDec();
+    bool bAcksRmgDec(void);
     void vContentDump(void);
     void vFocalOutline(s4K& sOutline);
     i8   iJobId(void);
     EnameSet* pJobInfoEnameSet(void);
+    void vLockJobMutex(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
-    void vLockJobMutex(void);
+    bool bNoWaitTag(void);
     void vSignalJobMutex(void);
     void vUnlockJobMutex(void);
     void vWaitJobMutex(void);

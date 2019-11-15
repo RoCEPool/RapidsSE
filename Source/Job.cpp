@@ -555,6 +555,20 @@ void Job::vMarkJob(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if this job is a /noWait job                                          */
+/*----------------------------------------------------------------------------*/
+bool Job::bNoWaitTag(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  if (m_oEnameSet.bHasName("</noWait/>"_Stz))
+    return true;
+  
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* lock the job mutex                                                         */
 /*----------------------------------------------------------------------------*/
 void Job::vLockJobMutex(void)

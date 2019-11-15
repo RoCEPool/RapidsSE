@@ -135,7 +135,6 @@ void SePrompt::vPromptLoop(void)
       {;}
 
     vCheckJobCtl();
-    
     vCheckTimed();
 
     vLogCommand();
@@ -712,10 +711,10 @@ bool SePrompt::bNoWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  if (! m_pJob->m_oEnameSet.bHasName("</noWait/>"_Stz))
-    return false;
+  if (m_pJob->bNoWaitTag())
+    return true;
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
