@@ -278,25 +278,29 @@ eEC TableDef::eParse(Stz* szCmd)
 //
 //      pTkn = pTknVec->pNextToken(); dPT();
 //    }
-    if (i_Col == 0)
-      pCol->vIsPtnKey(true);
     m_pStreamDef->m_xaColumn[i_Col].vCopy(pCol);
     m_pStreamDef->m_nDefColumns[0]++;
     
    
   }
   
-//  // check if we have a partition by clause
-//  if ( iCurrentToken < iNumTokens && pTokenVec->pGet(iCurrentToken++)->bSame("partition"_Stz)) {
-//
-//    if ( ! bPartitionTable(pTokenVec, iCurrentToken) )
-//      return EC_INVALID_COMMAND;
-//  }
-//  else {
-//    // no partition by clause
-//    // we will create partitioning using the first column
-//    m_xColumns[0].vIsPtnKey(true);
-//  }
+  // check if we have a partition by clause
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( pTkn->bSame("partition"_Stz)) {
+
+    eError = eExtractPartitionBy(pTknVec);
+    if (EC_NONE != eError)
+      return eError;
+  }
+  else {
+    
+    if ( ! pTkn->bSame(";"_Stz))
+      return EC_INVALID_COMMAND;
+      
+    // no partition by clause
+    // we will create partitioning using the first column
+    m_pColVec->pGet(0)->vIsPtnKey(true);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -546,6 +550,67 @@ eEC TableDef::eExtractVarchar(Column* pCol, TokenVec* pTknVec)
   pCol->vColumnLength(iSize);
   
   return EC_NONE;
+}
+
+  /*----------------------------------------------------------------------------*/
+  /* partition the table                                                        */
+  /*----------------------------------------------------------------------------*/
+  eEC TableDef::eExtractPartitionBy(TokenVec* pTknVec)
+  {
+    _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+    
+    // next token should be 'by'
+    Token* pTkn = pTknVec->pNextToken(); dPT();
+    if ( ! pTkn->bSame("by"_Stz) ) {
+      return EC_INVALID_COMMAND;
+    }
+    
+    // next token should be '('
+    pTkn = pTknVec->pNextToken(); dPT();
+    if ( ! pTkn->bSame("("_Stz)) {
+      return EC_INVALID_COMMAND;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // create the partition columns
+    
+    i8 iPartKeys = 0;
+    bool bFound = false;
+    
+    pTkn = pTknVec->pNextToken(); dPT();
+    while ( ! pTkn->bSame(")"_Stz) ) {
+      
+      iPartKeys++;
+      
+      // find column and set as partition column
+      for (i8 i_Col = 0; i_Col < m_pColVec->nItems(); i_Col++) {
+        Column* pCol = m_pColVec->pGet(i_Col);
+        if (pCol->szColNm()->bSame(pTkn->szText())) {
+          pCol->vIsPtnKey(true);
+          bFound = true;
+          break;
+        }
+      }
+      if ( ! bFound) {
+        return EC_INVALID_COMMAND;
+      }
+      pTkn = pTknVec->pNextToken(); dPT();
+      if ( ! pTkn->bSame(","_Stz)) {
+        continue;
+      }
+      pTkn = pTknVec->pNextToken(); dPT();
+      bFound = false;
+    }
+    
+    if ( ! iPartKeys ) {
+      return EC_INVALID_COMMAND;
+    }
+    
+    pTkn = pTknVec->pNextToken(); dPT();
+    if ( ! pTkn->bSame(";"_Stz))
+      return EC_INVALID_COMMAND;
+    
+    return EC_NONE;
 }
 
 #undef dPT
