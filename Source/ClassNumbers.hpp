@@ -155,7 +155,6 @@ enum eCN : u2 // Class Number
   /* 102 0x66    70928B Heap:L */ CN_JOB_LOADTABLE,
   /* 105 0x69    70640B Heap:L */ CN_JOB_NODEINFO,
   /* 105 0x69    70640B Heap:L */ CN_JOB_OPERAND,
-  /* 106 0x6A    70592B Heap:L */ CN_JOB_PERIODIC,
   /* 111 0x6F    70608B Heap:L */ CN_JOB_RECEIVER,
   /* 115 0x73    70608B Heap:L */ CN_JOB_SANITY,
   /* 114 0x72    70608B Heap:L */ CN_JOB_SELECT,

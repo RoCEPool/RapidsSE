@@ -59,8 +59,6 @@ namespace Jobs
 
 #include "Job_Operand.hpp"
 
-#include "Job_Periodic.hpp"
-
 #include "Job_Receiver.hpp"
 
 #include "Job_Sanity.hpp"

@@ -5,21 +5,6 @@
 " job_Periodic.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn the periodic job                                                     */
-/*----------------------------------------------------------------------------*/
-: periodic::spawn ( -- )
-
-  0 locals| pJobClass_Periodic |
-  0 locals| pJob_Periodic |
-
-  CN_JOB_PERIODIC jobClass::find to pJobClass_Periodic
-
-  pJobClass_Periodic jobClass.new to pJob_Periodic
-
-  pJob_Periodic SEED_RUN job.spawn
-;
-
-/*----------------------------------------------------------------------------*/
 /* add peridiodic activity here                                               */
 /*----------------------------------------------------------------------------*/
 : periodic_activity ( -- )
@@ -32,9 +17,9 @@
 /*----------------------------------------------------------------------------*/
 /* periodic loop:                                                             */
 /*----------------------------------------------------------------------------*/
-: periodic_run ( -- )
+: periodic_req ( -- )
 
-  >>logEntry <SEED_RUN>
+  std_entryHook
 
   // "Periodic Job Started" .
 
@@ -52,7 +37,27 @@
   // should never exit
   hazard
 
-  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: periodic :: periodic ;
+
+jobInfo: periodic
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobType?>  = JT_NONE
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_NONE
+  <?ddlLock?>  = DL_NONE
+  
+  //<?preCheck?> = bClusterStarted
+  
+  <?cmdKind?>  = CK_SERVICE
+}
 ;
 
 /*============================================================================*/

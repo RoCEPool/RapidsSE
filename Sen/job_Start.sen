@@ -17,7 +17,7 @@
   "start_run" .verbose
 
   //supervisor ;&
-  snooze periodic::spawn
+  periodic ;&
   snooze waker::spawn
 
   answer ;&
