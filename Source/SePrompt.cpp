@@ -862,7 +862,7 @@ void SePrompt::vReportTime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pJob->m_oEnameSet.vPrint();
+  //m_pJob->m_oEnameSet.vPrint();
   
   if (! m_pJob->m_oEnameSet.bHasName("</time/>"_Stz))
     return;
