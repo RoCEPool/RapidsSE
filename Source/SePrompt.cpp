@@ -312,7 +312,7 @@ void SePrompt::vCheckTimed(void)
   if (! pTkn0->bSame("time"_Stz))
     return;
   
-  m_oJobCtl.vAdd("</time/>"_Stz,1);
+  m_oJobCtl.vAdd(C_TAG_TIME,1);
 
   vCutToken(0);
 }
@@ -786,8 +786,9 @@ void SePrompt::vPreJob(void)
   
   m_pJob = m_aJobClass->pPreJob(&m_pRequest->m_xReqTuple,m_pSession);
   
-  if (m_pJob)
-    m_pJob->m_bByPrompt = true;
+  if (m_pJob) {
+    m_pJob->m_oEnameSet.vAdd(C_TAG_BYPROMPT,1);
+  }
   
 //  if (m_pJob && m_pJob->m_bMarkTrace)
 //    m_pJob->m_aJobClass->vShowJob(m_pJob);
@@ -844,7 +845,7 @@ void SePrompt::vReportTime(void)
   
   //m_pJob->m_oEnameSet.vPrint();
   
-  if (! m_pJob->m_oEnameSet.bHasName("</time/>"_Stz))
+  if (! m_pJob->bTimeTag())
     return;
   
   vTrace("time %lldms\n"_Stz,m_oTimer.iMilliseconds());
@@ -913,8 +914,8 @@ void SePrompt::vSpawnJob(void)
   
   RASSERT(JS_LOCKED == m_pJob->m_eJobState);
   
-  if (bNoWait())
-    m_pJob->m_bNoWait = true;
+  //if (bNoWait())
+  //  m_pJob->m_bNoWait = true;
   
   Input* pInput = this->pInput();
   

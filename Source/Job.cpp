@@ -78,8 +78,6 @@ Job::Job(eCN eClassNo)
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
-  m_bByPrompt = false;
-  m_bNoWait   = false;
   m_bWasReceived = false;
   
   //m_oAcksRmg
@@ -133,7 +131,6 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
-  m_bNoWait   = false;
   m_bWasReceived = false;
   
   //m_oAcksRmg
@@ -185,7 +182,6 @@ Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
-  m_bNoWait   = false;
   m_bWasReceived = false;
   
   //m_oAcksRmg
@@ -417,6 +413,18 @@ bool Job::bAcksRmgDec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if this job has a /byPrompt ename tag                                 */
+/*----------------------------------------------------------------------------*/
+bool Job::bByPromptTag(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  bool bByPrompt = bHasEnameTag(C_TAG_BYPROMPT);
+  
+  return bByPrompt;
+}
+
+/*----------------------------------------------------------------------------*/
 /* content dump                                                               */
 /*----------------------------------------------------------------------------*/
 void Job::vContentDump(void)
@@ -431,7 +439,7 @@ void Job::vContentDump(void)
          
          "m_eJobType=%s m_eJobKind=%s\n"
          "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
-         "m_bByPrompt=%d m_bNoWait=%d m_bWasReceived=%d\n"
+         "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
          "m_iParentId=%lld m_iOriginatingId=%lld\n"
          "m_nxReferences=%lld\n"_Stz,
 
@@ -445,8 +453,8 @@ void Job::vContentDump(void)
          aJP[m_eJobPhase],
          aJS[m_eJobState],
          
-         m_bByPrompt,
-         m_bNoWait,
+         bByPromptTag(),
+         bNoWaitTag(),
          m_bWasReceived,
          
          m_iParentId,
@@ -568,13 +576,13 @@ void Job::vMarkJob(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if this job is a /noWait job                                          */
+/* test if this job has a /noWait ename tag                                   */
 /*----------------------------------------------------------------------------*/
 bool Job::bNoWaitTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bNoWait = bHasEnameTag("</noWait/>"_Stz);
+  bool bNoWait = bHasEnameTag(C_TAG_NOWAIT);
   
   return bNoWait;
 }
@@ -793,6 +801,19 @@ void Job::vTask(Task* pTask)
   ASSERT(! pTask || ! m_pTaskJ);
   m_pTaskJ = pTask;
 }
+
+/*----------------------------------------------------------------------------*/
+/* test if this job has a /time ename tag                                     */
+/*----------------------------------------------------------------------------*/
+bool Job::bTimeTag(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  bool bTime = bHasEnameTag(C_TAG_TIME);
+  
+  return bTime;
+}
+
 
 
 /*----------------------------------------------------------------------------*/

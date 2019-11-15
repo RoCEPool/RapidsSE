@@ -3,6 +3,10 @@
 /*============================================================================*/
 #pragma once
 
+static Stz* C_TAG_BYPROMPT = "</byPrompt/>"_Stz;
+static Stz* C_TAG_NOWAIT   = "</noWait/>"_Stz;
+static Stz* C_TAG_TIME     = "</time/>"_Stz;
+
 namespace Jobs
 {
   class Job : public Focal,
@@ -17,8 +21,6 @@ namespace Jobs
 
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
     
-    bool m_bByPrompt;    // job was spawned by se> prompt?
-    bool m_bNoWait;      // no wait
     bool m_bWasReceived; // job was received over a socket
 
     EnameSet m_oEnameSet;  // ename-value set
@@ -67,6 +69,7 @@ namespace Jobs
     i8   iAcksRmg_printOnlyValue(void);
     void vAcksRmg(i8 nAcks);
     bool bAcksRmgDec(void);
+    bool bByPromptTag(void);
     void vContentDump(void);
     void vFocalOutline(s4K& sOutline);
     bool bHasEnameTag(Stz* szEnameTag);
@@ -93,6 +96,7 @@ namespace Jobs
     void vSlot(i8 i_Slot);
     Task* pTask(void);
     void vTask(Task* pTask);
+    bool bTimeTag(void);
 
   protected:
     //void vShow(s48K& s);

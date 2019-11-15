@@ -50,7 +50,7 @@ Stz* SP_Job::sz_log(Job* pJob)
                   aJP[pJob->m_eJobPhase],
                   aJS[pJob->m_eJobState],
                   
-                  pJob->m_bNoWait ? ""_Stz : " wait"_Stz,
+                  pJob->bNoWaitTag()   ? ""_Stz       : " wait"_Stz,
                   pJob->m_bWasReceived ? " recvd"_Stz : ""_Stz,
 
                   spReqTuple.sz(&pJob->m_xReqTuple),
