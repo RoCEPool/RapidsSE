@@ -5,21 +5,6 @@
 " job_Answer.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn the answer job (as a dedicated job)                                  */
-/*----------------------------------------------------------------------------*/
-: answer::spawn ( -- )
-
-  0 locals| pJobClass_Answer |
-  0 locals| pJob_Answer |
-
-  CN_JOB_ANSWER jobClass::find to pJobClass_Answer
-
-  pJobClass_Answer jobClass.new to pJob_Answer
-
-  pJob_Answer SEED_RUN job.spawn_dedicated
-;
-
-/*----------------------------------------------------------------------------*/
 /* receive node info from node we just answered                               */
 /*----------------------------------------------------------------------------*/
 : recvNodeInfo ( pSocket -- pAnsweredNode )
@@ -50,9 +35,9 @@
 /*----------------------------------------------------------------------------*/
 /* answer loop: accept new sockets, spawn receiver task                       */
 /*----------------------------------------------------------------------------*/
-: answer_run ( -- )
+: answer_req ( -- )
 
-  >>logEntry <SEED_RUN>
+  std_entryHook
 
   assertStackDepthZero
 
@@ -63,8 +48,6 @@
   0 locals| pConnectorTask |
 
   0 locals| nConns |
-
-  CN_JOB_ANSWER task::this task.thread thread.dedicated!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -123,6 +106,27 @@
   hazard
 
   <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: answer :: answer ;
+
+jobInfo: answer
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobType?>  = JT_NONE
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_NONE
+  <?ddlLock?>  = DL_NONE
+  
+  // <?preCheck?> = bClusterStarted
+  
+  <?cmdKind?>  = CK_SERVICE
+}
 ;
 
 /*============================================================================*/

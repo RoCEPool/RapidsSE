@@ -145,7 +145,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB__EXECUTED
   /*    */ &Finalize::vUndefined,         // CN_JOB__FIND
   /*    */ &Finalize::vUndefined,         // CN_JOB_ALARM
-  /*    */ &Finalize::vUndefined,         // CN_JOB_ANSWER
   /*    */ &Finalize::vUndefined,         // CN_JOB_BOOT
 
   /*    */ &Finalize::vUndefined,         // CN_JOB_CONNECTOR

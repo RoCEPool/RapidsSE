@@ -16,12 +16,11 @@
 
   "start_run" .verbose
 
-  //snooze supervisor::spawn
-  supervisor ;&
+  //supervisor ;&
   snooze periodic::spawn
   snooze waker::spawn
 
-  snooze answer::spawn
+  answer ;&
   snooze connector::spawn
 
   //service egArgA egArgB egArgC ;&

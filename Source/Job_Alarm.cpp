@@ -47,7 +47,7 @@ JobClass xJobClass_Alarm =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Alarm_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Answer_class;
+  *pNextFun = (pFUN*)pJob_Boot_class;
   
   return &xJobClass_Alarm;
 }
