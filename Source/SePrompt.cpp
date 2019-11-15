@@ -844,7 +844,7 @@ void SePrompt::vReportTime(void)
   
   //m_pJob->m_oEnameSet.vPrint();
   
-  if (! m_pJob->m_oEnameSet.bHasName("</time/>"_Stz))
+  if (! m_pJob->bTimeTag())
     return;
   
   vTrace("time %lldms\n"_Stz,m_oTimer.iMilliseconds());
