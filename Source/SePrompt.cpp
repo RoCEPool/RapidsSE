@@ -125,9 +125,7 @@ void SePrompt::vPromptLoop(void)
   
   while (bContinue()) {
     
-    vReportTime();
-    
-    vGetCommand();
+     vGetCommand();
        
     if (bBlankLine()) {
       if (AM::bDeveloper())
@@ -212,6 +210,8 @@ void SePrompt::vPromptLoop(void)
         
     vJobLockMutex();
     
+    m_oTimer.vStart();
+    
     vSpawnJob();
     
     if (bNoWait()) {
@@ -234,6 +234,8 @@ void SePrompt::vPromptLoop(void)
     if (m_pJob->m_bHasError) {
       vDumpTokenVec();
     }
+    
+    vReportTime();
     
     vDeleteJob();
     vEndRequest();
@@ -287,6 +289,8 @@ void SePrompt::vCheckJobCtl(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  m_oJobCtl.vReset();
+  
   Token* pTkn0 = pTkn(0);
   
   s32 sTag;
@@ -320,8 +324,6 @@ void SePrompt::vCheckTimed(void)
   
   m_bTimed = true;
   vCutToken(0);
-
-  m_oTimer.vStart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -903,7 +905,10 @@ void SePrompt::vReportTime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (! m_bTimed)
+  m_pJob->m_oEnameSet.vPrint();
+  
+  if (! (m_bTimed ||
+         m_pJob->m_oEnameSet.bHasName("</time/>"_Stz)) )
     return;
   
   m_oTimer.vUpdate();
@@ -942,6 +947,8 @@ void SePrompt::vSetJob(void)
   
   if (m_bMarked)
     m_pJob->m_xReqTuple.m_iDetail = true;
+  
+  m_pJob->m_oEnameSet.vCopy(&m_oJobCtl);
 }
 
 /*----------------------------------------------------------------------------*/
