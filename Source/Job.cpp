@@ -471,6 +471,19 @@ void Job::vFocalOutline(s4K& sOutline)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if this job has given ename tag                                       */
+/*----------------------------------------------------------------------------*/
+bool Job::bHasEnameTag(Stz* szEnameTag)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  if (m_oEnameSet.bHasName(szEnameTag))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the job id                                                             */
 /*----------------------------------------------------------------------------*/
 i8 Job::iJobId(void)
@@ -552,6 +565,18 @@ void Job::vMarkJob(Stz* szFormat, ...)
   va_end(xArgs);
 #endif
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if this job is a /noWait job                                          */
+/*----------------------------------------------------------------------------*/
+bool Job::bNoWaitTag(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  bool bNoWait = bHasEnameTag("</noWait/>"_Stz);
+  
+  return bNoWait;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -807,6 +832,8 @@ void Jobs::vJob_post(Job* pJob)
   if (CN_JOB_UNIVERSAL == eClass) {
     
     EnameSet* pJobInfoEnameSet = pJob->pJobInfoEnameSet();
+    if (! pJobInfoEnameSet)
+      return;
     eResponse = (eRS) pJobInfoEnameSet->iValue("<?rspKind?>"_Stz);
 
     //eResponse = pJob->m_aJobClass->m_eResponse;

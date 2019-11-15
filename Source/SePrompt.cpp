@@ -61,21 +61,14 @@ SePrompt::SePrompt(bool bOneCommand)
                                   (void**)&m_pSession);
   ASSERT(EC_NONE == eResult);
   
-  m_iCmdNo = 0;
-
+  m_bOneCommand = bOneCommand;
   m_bContinue = true;
+  
+  m_iCmdNo = 0;
   m_aJobClass = nullptr;
   m_pJob = nullptr;
-
   // m_oTimer
-  
-  m_bTimed   = false;
-  m_bTraced  = false;
-  m_bNoWait  = false;
-  m_bMarked  = false;
-  
-  m_bOneCommand = bOneCommand;
-  
+
   m_pSession->m_sToDo = "_shortcuts"_Stz;
   
   m_pRequest = nullptr;
@@ -125,9 +118,7 @@ void SePrompt::vPromptLoop(void)
   
   while (bContinue()) {
     
-    vReportTime();
-    
-    vGetCommand();
+     vGetCommand();
        
     if (bBlankLine()) {
       if (AM::bDeveloper())
@@ -143,10 +134,8 @@ void SePrompt::vPromptLoop(void)
     while (bSubLet())
       {;}
 
+    vCheckJobCtl();
     vCheckTimed();
-    vCheckMarked();
-    vCheckTraced();
-    vCheckNoWait();
 
     vLogCommand();
     
@@ -210,11 +199,12 @@ void SePrompt::vPromptLoop(void)
         
     vJobLockMutex();
     
+    m_oTimer.vStart();
+    
     vSpawnJob();
     
     if (bNoWait()) {
       vJobUnlockMutex();
-      m_bNoWait = false;
       continue;
     }
     
@@ -227,11 +217,15 @@ void SePrompt::vPromptLoop(void)
 //    sleep(10);
     
     vJobUnlockMutex();
+ 
+    m_oTimer.vUpdate();
     
     vPostJob();
     if (m_pJob->m_bHasError) {
       vDumpTokenVec();
     }
+    
+    vReportTime();
     
     vDeleteJob();
     vEndRequest();
@@ -279,6 +273,34 @@ bool SePrompt::bBlankLine(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check for job control options                                              */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCheckJobCtl(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_oJobCtl.vReset();
+  
+  Token* pTkn0 = pTkn(0);
+  
+  s32 sTag;
+  
+  while ('/' == * pTkn0->szText()->azChar() ) {
+    
+   Token* pTkn1 = pTkn(1);
+   sTag.vSprint("</%s/>"_Stz,pTkn1->szText());
+    
+    m_oJobCtl.vAdd(sTag,1);
+    
+    vCutToken(0);
+    vCutToken(0);
+  }
+  
+  if (m_oJobCtl.nEnames())
+    m_oJobCtl.vPrint();
+}
+
+/*----------------------------------------------------------------------------*/
 /* check for timed function                                                   */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vCheckTimed(void)
@@ -290,63 +312,8 @@ void SePrompt::vCheckTimed(void)
   if (! pTkn0->bSame("time"_Stz))
     return;
   
-  m_bTimed = true;
-  vCutToken(0);
+  m_oJobCtl.vAdd("</time/>"_Stz,1);
 
-  m_oTimer.vStart();
-}
-
-/*----------------------------------------------------------------------------*/
-/* check for mark                                                             */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vCheckMarked(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_bMarked = false;
-  
-  Token* pTkn0 = pTkn(0);
-  
-  if (! pTkn0->bSame("mark"_Stz))
-    return;
-  
-  m_bMarked = true;
-  vCutToken(0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* check for trace                                                            */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vCheckTraced(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_bTraced = false;
-  
-  Token* pTkn0 = pTkn(0);
-  
-  if (! pTkn0->bSame("trace"_Stz))
-    return;
-  
-  m_bTraced = true;
-  vCutToken(0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* check for nowait                                                           */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vCheckNoWait(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_bTraced = false;
-  
-  Token* pTkn0 = pTkn(0);
-  
-  if (! pTkn0->bSame("nowait"_Stz))
-    return;
-  
-  m_bNoWait = true;
   vCutToken(0);
 }
 
@@ -744,10 +711,10 @@ bool SePrompt::bNoWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  if (! m_bNoWait)
-    return false;
-  
-  return true;
+  if (m_pJob->bNoWaitTag())
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -875,14 +842,12 @@ void SePrompt::vReportTime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (! m_bTimed)
+  //m_pJob->m_oEnameSet.vPrint();
+  
+  if (! m_pJob->m_oEnameSet.bHasName("</time/>"_Stz))
     return;
   
-  m_oTimer.vUpdate();
-  
   vTrace("time %lldms\n"_Stz,m_oTimer.iMilliseconds());
-  
-  m_bTimed = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -912,8 +877,7 @@ void SePrompt::vSetJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (m_bMarked)
-    m_pJob->m_xReqTuple.m_iDetail = true;
+  m_pJob->m_oEnameSet.vCopy(&m_oJobCtl);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -949,7 +913,7 @@ void SePrompt::vSpawnJob(void)
   
   RASSERT(JS_LOCKED == m_pJob->m_eJobState);
   
-  if (m_bNoWait)
+  if (bNoWait())
     m_pJob->m_bNoWait = true;
   
   Input* pInput = this->pInput();

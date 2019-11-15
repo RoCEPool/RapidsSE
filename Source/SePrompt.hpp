@@ -10,27 +10,24 @@ namespace Prompt
   class SePrompt : public Focal
   {
   private:
-    Session* m_pSession;   // rapidsse session
-    i8       m_iCmdNo;     // command no
+    Session*  m_pSession;   // rapidsse session
 
-    bool     m_bContinue;  // continue processing commands?
-    Timer    m_oTimer;     // the timer
-    bool     m_bTimed;     // command is being timed
-    bool     m_bTraced;    // command is being traced
-    bool     m_bNoWait;    // dont wait for command
-    bool     m_bMarked;    // mark the job
+    bool      m_bOneCommand;// run one command only
+    bool      m_bContinue;  // continue processing commands?
 
-    JobClass* m_aJobClass; // job class
-    Job*      m_pJob;      // job
+    i8        m_iCmdNo;     // command no
+    JobClass* m_aJobClass;  // job class
+    Job*      m_pJob;       // job
+    Timer     m_oTimer;     // the timer
+
+    Request*  m_pRequest;   // current request being executed by SE
   
-    bool     m_bOneCommand; // run one command only
-  
-    Request* m_pRequest;    // current request being executed by SE
-  
-    i8       m_i_RequestFocal;  // focal subscript of last request
-    i8       m_iRequestId;      // id of last command
+    i8        m_i_RequestFocal; // focal subscript of last request
+    i8        m_iRequestId;     // id of last command
 
     ShortCutVec m_oShortCutVec; // vector of short cuts
+  
+    EnameSet  m_oJobCtl;
   
     // must be last
     Footer m_xFooter;
@@ -40,7 +37,7 @@ namespace Prompt
     void  operator delete(void*);
 
     SePrompt(bool bOneCommand);
-    ~SePrompt(void) noexcept(false);
+   ~SePrompt(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
@@ -49,10 +46,8 @@ namespace Prompt
     // these are the prompt.xyz task primitives
     void vBeginRequest(void);
     bool bBlankLine(void);
-    void vCheckMarked(void);
+    void vCheckJobCtl(void);
     void vCheckTimed(void);
-    void vCheckTraced(void);
-    void vCheckNoWait(void);
     i8   iCommandFocal(void);
     i8   iRequestId(void);
     void vCompletedTask(void);

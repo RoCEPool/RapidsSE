@@ -175,7 +175,7 @@ void Input::vGetCommand(void)
     return;
   
   // if its a command file just return
-  if (bTestFile(pTkn(0)->szText()))
+  if ( ! pTkn(0)->szText()->bSame("/"_Stz) && bTestFile(pTkn(0)->szText()))
     return;
   
   // collect till ;
