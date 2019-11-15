@@ -296,8 +296,8 @@ void SePrompt::vCheckJobCtl(void)
     vCutToken(0);
   }
   
-  if (m_oJobCtl.nEnames())
-    m_oJobCtl.vPrint();
+  //if (m_oJobCtl.nEnames())
+  //  m_oJobCtl.vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -913,15 +913,16 @@ void SePrompt::vSpawnJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   RASSERT(JS_LOCKED == m_pJob->m_eJobState);
-  
-  //if (bNoWait())
-  //  m_pJob->m_bNoWait = true;
-  
+    
   Input* pInput = this->pInput();
   
   pInput->pTknVec()->vSetTokens();
   
   m_pJob->vSeed(SS_SEED_REQ);
+  
+  if (m_pJob->bHasEnameTag(C_TAG_JE))
+    m_pJob->m_oEnameSet.vPrint();
+  
   bool bSpawned = Api::bSpawnJob(m_pJob);
   RASSERT(bSpawned);
 }
