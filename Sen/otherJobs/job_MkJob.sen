@@ -13,11 +13,11 @@
 
   <newNm> "making new job: %v" fmt.print
 
-      args.senDir      "%votherJobs" str.format locals| sSubDir  |     sSubDir .
+      args.senDir      "%votherJobs" str.format locals| sSubDir  | //  sSubDir .
 
-          sSubDir "%v/job_local.txt" str.format locals| sTxtFile |    sTxtFile .
+          sSubDir "%v/job_local.txt" str.format locals| sTxtFile | // sTxtFile .
 
-  <newNm> sSubDir    "%v/job_%v.sen" str.format locals| sSenFile |    sSenFile .
+  <newNm> sSubDir    "%v/job_%v.sen" str.format locals| sSenFile | // sSenFile .
 
   sSenFile <newNm> sTxtFile
     "cat %v | sed s/NAME_OF_JOB/%v/g > %v"
@@ -26,7 +26,7 @@
 
   sSedCmd .
 
-  //sSedCmd shell::execute drop
+  sSedCmd shell::execute drop
 
   sSenFile include
 

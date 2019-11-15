@@ -13,7 +13,7 @@
 
   // put your code here...
 
-  "NAME_OF_JOB has been made" .
+  "NAME_OF_JOB was created by mkjob" .
 
   <<logExit <DONE_REQ>
 
