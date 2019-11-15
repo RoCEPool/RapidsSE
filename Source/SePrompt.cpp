@@ -143,6 +143,8 @@ void SePrompt::vPromptLoop(void)
     while (bSubLet())
       {;}
 
+    vCheckJobCtl();
+    
     vCheckTimed();
     vCheckMarked();
     vCheckTraced();
@@ -276,6 +278,32 @@ bool SePrompt::bBlankLine(void)
   bool bBlankLine = pInput->bBlankLine();
 
   return bBlankLine;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check for job control options                                              */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCheckJobCtl(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Token* pTkn0 = pTkn(0);
+  
+  s32 sTag;
+  
+  while ('/' == * pTkn0->szText()->azChar() ) {
+    
+   Token* pTkn1 = pTkn(1);
+   sTag.vSprint("</%s/>"_Stz,pTkn1->szText());
+    
+    m_oJobCtl.vAdd(sTag,1);
+    
+    vCutToken(0);
+    vCutToken(0);
+  }
+  
+  if (m_oJobCtl.nEnames())
+    m_oJobCtl.vPrint();
 }
 
 /*----------------------------------------------------------------------------*/

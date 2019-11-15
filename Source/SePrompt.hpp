@@ -32,6 +32,9 @@ namespace Prompt
 
     ShortCutVec m_oShortCutVec; // vector of short cuts
   
+    EnameSet  m_oJobCtl;
+  
+  
     // must be last
     Footer m_xFooter;
   
@@ -49,6 +52,7 @@ namespace Prompt
     // these are the prompt.xyz task primitives
     void vBeginRequest(void);
     bool bBlankLine(void);
+    void vCheckJobCtl(void);
     void vCheckMarked(void);
     void vCheckTimed(void);
     void vCheckTraced(void);
