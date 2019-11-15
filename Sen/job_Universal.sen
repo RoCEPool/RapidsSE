@@ -39,12 +39,7 @@
 /*----------------------------------------------------------------------------*/
 : universal_req ( -- <R> )
 
-  // "++++ universal_req ++++" .
-  // job::this job.enameSet@ enameSet.asStr .
-  // jobInfo::enameSet@ enameSet.asStr .
-  // <?jobKind?> .
-  // <?rspKind?> .
-  // <?ddlLock?> .
+  job::</seeFlow/>
 
   "<?preCheck?>" jobInfo::enameSet@ enameSet.hasName if
     <?preCheck?> find execute not if
@@ -61,6 +56,8 @@
 /*----------------------------------------------------------------------------*/
 : universal_beg ( -- )
 
+  job::</seeFlow/>
+
   "<?SeedRcv?>" .executeSeed
 ;
 
@@ -68,6 +65,8 @@
 /* execute the job's execute seed-word on each participating node             */
 /*----------------------------------------------------------------------------*/
 : universal_exe ( pJob_Universal -- )
+
+  job::</seeFlow/>
 
   "<?SeedExe?>" .executeSeed
 ;
@@ -77,6 +76,8 @@
 /*----------------------------------------------------------------------------*/
 : universal_end ( -- )
 
+  job::</seeFlow/>
+
   "<?SeedEnd?>" .executeSeed
 ;
 
@@ -84,6 +85,8 @@
 /* execute the job's cancel seed-word on each participating node              */
 /*----------------------------------------------------------------------------*/
 : universal_can ( -- )
+
+  job::</seeFlow/>
 
   "<?SeedCan?>" .executeSeed
 ;
