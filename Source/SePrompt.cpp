@@ -913,8 +913,8 @@ void SePrompt::vSpawnJob(void)
   
   RASSERT(JS_LOCKED == m_pJob->m_eJobState);
   
-  if (bNoWait())
-    m_pJob->m_bNoWait = true;
+  //if (bNoWait())
+  //  m_pJob->m_bNoWait = true;
   
   Input* pInput = this->pInput();
   

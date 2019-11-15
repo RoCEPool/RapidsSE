@@ -79,7 +79,6 @@ Job::Job(eCN eClassNo)
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
   m_bByPrompt = false;
-  m_bNoWait   = false;
   m_bWasReceived = false;
   
   //m_oAcksRmg
@@ -133,7 +132,6 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
-  m_bNoWait   = false;
   m_bWasReceived = false;
   
   //m_oAcksRmg
@@ -185,7 +183,6 @@ Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
-  m_bNoWait   = false;
   m_bWasReceived = false;
   
   //m_oAcksRmg
@@ -446,7 +443,7 @@ void Job::vContentDump(void)
          aJS[m_eJobState],
          
          m_bByPrompt,
-         m_bNoWait,
+         bNoWaitTag(),
          m_bWasReceived,
          
          m_iParentId,

@@ -871,7 +871,7 @@ void Step::vJobNoWaitFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_bNoWait);
+  m_pDataStack->vPushI8(pJob->bNoWaitTag());
   
   EXIT();
 }
@@ -1648,7 +1648,7 @@ void Step::vJobSignalWaiter(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (pJob->m_bNoWait) {
+  if (pJob->bNoWaitTag()) {
     //! this is incomplete ... memory leak; job & task need to be deleted
     EXIT();
     return;
