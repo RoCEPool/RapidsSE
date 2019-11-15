@@ -15,7 +15,6 @@ namespace Prompt
 
     bool     m_bContinue;  // continue processing commands?
     Timer    m_oTimer;     // the timer
-    bool     m_bTimed;     // command is being timed
     bool     m_bTraced;    // command is being traced
     bool     m_bNoWait;    // dont wait for command
     bool     m_bMarked;    // mark the job

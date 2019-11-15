@@ -69,7 +69,6 @@ SePrompt::SePrompt(bool bOneCommand)
 
   // m_oTimer
   
-  m_bTimed   = false;
   m_bTraced  = false;
   m_bNoWait  = false;
   m_bMarked  = false;
@@ -229,6 +228,8 @@ void SePrompt::vPromptLoop(void)
 //    sleep(10);
     
     vJobUnlockMutex();
+ 
+    m_oTimer.vUpdate();
     
     vPostJob();
     if (m_pJob->m_bHasError) {
@@ -322,7 +323,8 @@ void SePrompt::vCheckTimed(void)
   if (! pTkn0->bSame("time"_Stz))
     return;
   
-  m_bTimed = true;
+  m_oJobCtl.vAdd("</time/>"_Stz,1);
+
   vCutToken(0);
 }
 
@@ -907,15 +909,10 @@ void SePrompt::vReportTime(void)
   
   m_pJob->m_oEnameSet.vPrint();
   
-  if (! (m_bTimed ||
-         m_pJob->m_oEnameSet.bHasName("</time/>"_Stz)) )
+  if (! m_pJob->m_oEnameSet.bHasName("</time/>"_Stz))
     return;
   
-  m_oTimer.vUpdate();
-  
   vTrace("time %lldms\n"_Stz,m_oTimer.iMilliseconds());
-  
-  m_bTimed = false;
 }
 
 /*----------------------------------------------------------------------------*/
