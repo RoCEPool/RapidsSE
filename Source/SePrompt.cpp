@@ -61,19 +61,15 @@ SePrompt::SePrompt(bool bOneCommand)
                                   (void**)&m_pSession);
   ASSERT(EC_NONE == eResult);
   
-  m_iCmdNo = 0;
-
+  m_bOneCommand = bOneCommand;
   m_bContinue = true;
+  
+  m_iCmdNo = 0;
   m_aJobClass = nullptr;
   m_pJob = nullptr;
-
   // m_oTimer
-  
   m_bNoWait  = false;
-  m_bMarked  = false;
-  
-  m_bOneCommand = bOneCommand;
-  
+
   m_pSession->m_sToDo = "_shortcuts"_Stz;
   
   m_pRequest = nullptr;
@@ -142,7 +138,6 @@ void SePrompt::vPromptLoop(void)
     vCheckJobCtl();
     
     vCheckTimed();
-    vCheckMarked();
     vCheckNoWait();
 
     vLogCommand();
@@ -323,24 +318,6 @@ void SePrompt::vCheckTimed(void)
   
   m_oJobCtl.vAdd("</time/>"_Stz,1);
 
-  vCutToken(0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* check for mark                                                             */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vCheckMarked(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_bMarked = false;
-  
-  Token* pTkn0 = pTkn(0);
-  
-  if (! pTkn0->bSame("mark"_Stz))
-    return;
-  
-  m_bMarked = true;
   vCutToken(0);
 }
 
@@ -919,9 +896,6 @@ Session* SePrompt::pSession(void)
 void SePrompt::vSetJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (m_bMarked)
-    m_pJob->m_xReqTuple.m_iDetail = true;
   
   m_pJob->m_oEnameSet.vCopy(&m_oJobCtl);
 }
