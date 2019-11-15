@@ -11,7 +11,12 @@
 
   >>logEntry <SEED_REQ>
 
-  <wordNm> "Job Info for %v" fmt.print
+  <WordNm> "_cls" str.cat find dup if
+    word.EnameSet@ EnameSet.asStr .
+  else
+    drop
+    <wordNm> "No such job: %v" fmt.print
+  then
 
   <<logExit <DONE_REQ>
 
