@@ -235,6 +235,8 @@ eEC TableDef::eParse(Stz* szCmd)
             pTkn->bSame("varbinary"_Stz)) {
           eError = eExtractVarchar(pCol,pTknVec);
         }
+        else
+          eError = EC_INVALID_COMMAND;
         break;
         
     }
