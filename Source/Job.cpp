@@ -414,6 +414,18 @@ bool Job::bAcksRmgDec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if this job has a /byPrompt ename tag                                 */
+/*----------------------------------------------------------------------------*/
+bool Job::bByPromptTag(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  bool bByPrompt = bHasEnameTag(C_TAG_BYPROMPT);
+  
+  return bByPrompt;
+}
+
+/*----------------------------------------------------------------------------*/
 /* content dump                                                               */
 /*----------------------------------------------------------------------------*/
 void Job::vContentDump(void)
@@ -798,9 +810,9 @@ bool Job::bTimeTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bNoWait = bHasEnameTag(C_TAG_TIME);
+  bool bTime = bHasEnameTag(C_TAG_TIME);
   
-  return bNoWait;
+  return bTime;
 }
 
 

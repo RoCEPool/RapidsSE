@@ -3,8 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-static Stz* C_TAG_NOWAIT = "</noWait/>"_Stz;
-static Stz* C_TAG_TIME   = "</time/>"_Stz;
+static Stz* C_TAG_BYPROMPT = "</byPrompt/>"_Stz;
+static Stz* C_TAG_NOWAIT   = "</noWait/>"_Stz;
+static Stz* C_TAG_TIME     = "</time/>"_Stz;
 
 namespace Jobs
 {
@@ -69,6 +70,7 @@ namespace Jobs
     i8   iAcksRmg_printOnlyValue(void);
     void vAcksRmg(i8 nAcks);
     bool bAcksRmgDec(void);
+    bool bByPromptTag(void);
     void vContentDump(void);
     void vFocalOutline(s4K& sOutline);
     bool bHasEnameTag(Stz* szEnameTag);
