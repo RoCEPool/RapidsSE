@@ -5,26 +5,11 @@
 " job_Alarm.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn the alarm job (as a dedicated job)                                   */
-/*----------------------------------------------------------------------------*/
-: alarm::spawn ( -- )
-
-  0 locals| pJobClass_Alarm |
-  0 locals| pJob_Alarm |
-
-  CN_JOB_ALARM jobClass::find to pJobClass_Alarm
-
-  pJobClass_Alarm jobClass.new to pJob_Alarm
-
-  pJob_Alarm SEED_RUN job.spawn_dedicated
-;
-
-/*----------------------------------------------------------------------------*/
 /* alarm loop:                                                                */
 /*----------------------------------------------------------------------------*/
-: alarm_run ( -- )
+: alarm_req ( -- )
 
-  >>logEntry <SEED_RUN>
+  std_entryHook
 
   "Alarm Job Started" .
 
@@ -41,7 +26,27 @@
   // should never exit
   hazard
 
-  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: alarm :: alarm ;
+
+jobInfo: alarm
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobType?>  = JT_NONE
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_NONE
+  <?ddlLock?>  = DL_NONE
+  
+  //<?preCheck?> = bClusterStarted
+  
+  <?cmdKind?>  = CK_SERVICE
+}
 ;
 
 /*============================================================================*/

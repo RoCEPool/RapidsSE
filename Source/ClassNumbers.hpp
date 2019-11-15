@@ -147,7 +147,6 @@ enum eCN : u2 // Class Number
   /*  60 0x3C    70592B Heap:L */ CN_JOB__EXECUTE,
   /*  61 0x3D    70896B Heap:L */ CN_JOB__EXECUTED,
   /*  62 0x3E    70592B Heap:L */ CN_JOB__FIND,
-  /*  63 0x3F    70592B Heap:L */ CN_JOB_ALARM,
   /*  67 0x43    70592B Heap:L */ CN_JOB_BOOT,
   /*  73 0x49   118688B Heap:L */ CN_JOB_COPYBUFFER,
   /*  87 0x57    70936B Heap:L */ CN_JOB_FETCHROWS,
@@ -496,7 +495,6 @@ static Stz* aCN[]
   /*  60 0x3C */ "JOB__EXECUTE"_Stz,        // CN_JOB__EXECUTE
   /*  61 0x3D */ "JOB__EXECUTED"_Stz,       // CN_JOB__EXECUTED
   /*  62 0x3E */ "JOB__FIND"_Stz,           // CN_JOB__FIND
-  /*  63 0x3F */ "JOB_ALARM"_Stz,           // CN_JOB_ALARM
   /*  67 0x43 */ "JOB_BOOT"_Stz,            // CN_JOB_BOOT
   /*  73 0x49 */ "JOB_COPYBUFFER"_Stz,      // CN_JOB_COPYBUFFER
   /*  87 0x57 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
