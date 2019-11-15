@@ -19,6 +19,11 @@ void Step::vTableDefParse(void)
 {
   ENTRY("vTableDefParse"_Stz);
   
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job* pJob_CreateTable = _pJob(pJobPtr);
+  
   s4K sCmd;
   if (! m_pDataStack->bPopS4K(sCmd))
     THROW_DSTACK();
@@ -31,8 +36,17 @@ void Step::vTableDefParse(void)
   
   eEC eResult = pTableDef->eParse(sCmd);
   
-//  delete pTableDef;
-//  pTableDef = nullptr;
+  if (eResult != EC_NONE) {
+    
+    // set the error code in the job
+    pJob_CreateTable->m_bHasError = true;
+    pJob_CreateTable->m_xResponse.m_eErrorCode = eResult;
+    
+    // delete tabledef
+    delete pTableDef;
+    
+    pTableDef = nullptr;
+  }
   
   m_pDataStack->vPushPointer(pTableDef);
 

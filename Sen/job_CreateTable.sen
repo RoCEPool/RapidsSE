@@ -67,8 +67,13 @@
   tp: createTable_exe
 
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  <cmd> tableDef::parse locals| pTableDef |
+  <cmd> pJob_CreateTable tableDef::parse locals| pTableDef |
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  //----------------------------------------------------------------------------
+  // check for error while creating tabledef
+  grid::thisNode@ pJob_CreateTable job.hasError if
+    pJob_CreateTable DdlLock[].testDrop !!logError exit then
 
   //----------------------------------------------------------------------------
   // make table
