@@ -68,7 +68,6 @@ SePrompt::SePrompt(bool bOneCommand)
   m_aJobClass = nullptr;
   m_pJob = nullptr;
   // m_oTimer
-  m_bNoWait  = false;
 
   m_pSession->m_sToDo = "_shortcuts"_Stz;
   
@@ -138,7 +137,6 @@ void SePrompt::vPromptLoop(void)
     vCheckJobCtl();
     
     vCheckTimed();
-    vCheckNoWait();
 
     vLogCommand();
     
@@ -208,7 +206,6 @@ void SePrompt::vPromptLoop(void)
     
     if (bNoWait()) {
       vJobUnlockMutex();
-      m_bNoWait = false;
       continue;
     }
     
@@ -318,22 +315,6 @@ void SePrompt::vCheckTimed(void)
   
   m_oJobCtl.vAdd("</time/>"_Stz,1);
 
-  vCutToken(0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* check for nowait                                                           */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vCheckNoWait(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  Token* pTkn0 = pTkn(0);
-  
-  if (! pTkn0->bSame("nowait"_Stz))
-    return;
-  
-  m_bNoWait = true;
   vCutToken(0);
 }
 
@@ -731,9 +712,9 @@ bool SePrompt::bNoWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  if (! m_bNoWait)
+  if (! m_pJob->m_oEnameSet.bHasName("</noWait/>"_Stz))
     return false;
-  
+
   return true;
 }
 
@@ -933,7 +914,7 @@ void SePrompt::vSpawnJob(void)
   
   RASSERT(JS_LOCKED == m_pJob->m_eJobState);
   
-  if (m_bNoWait)
+  if (bNoWait())
     m_pJob->m_bNoWait = true;
   
   Input* pInput = this->pInput();

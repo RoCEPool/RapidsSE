@@ -19,7 +19,6 @@ namespace Prompt
     JobClass* m_aJobClass;  // job class
     Job*      m_pJob;       // job
     Timer     m_oTimer;     // the timer
-    bool      m_bNoWait;    // dont wait for command
 
     Request*  m_pRequest;   // current request being executed by SE
   
@@ -49,7 +48,6 @@ namespace Prompt
     bool bBlankLine(void);
     void vCheckJobCtl(void);
     void vCheckTimed(void);
-    void vCheckNoWait(void);
     i8   iCommandFocal(void);
     i8   iRequestId(void);
     void vCompletedTask(void);
