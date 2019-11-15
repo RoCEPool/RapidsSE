@@ -161,7 +161,7 @@ void SePrompt::vPromptLoop(void)
 //      }
 //    }
 
-    if (! bFindRequest()) {
+    if (! bFindMatch()) {
       vUnknownCommand();
       vDumpTokenVec();
       continue;
@@ -494,7 +494,7 @@ bool SePrompt::bFindJobClass(void)
 /*----------------------------------------------------------------------------*/
 /* attempt to find a request which matches the command tokens                 */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bFindRequest(void)
+bool SePrompt::bFindMatch(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
@@ -913,7 +913,7 @@ void SePrompt::vSpawnJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   RASSERT(JS_LOCKED == m_pJob->m_eJobState);
-    
+  
   Input* pInput = this->pInput();
   
   pInput->pTknVec()->vSetTokens();
