@@ -719,7 +719,12 @@ void Job::vSeed(eSS eSeed)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_eSeed = eSeed;
-    
+  
+  if (m_oEnameSet.bHasName("<seed>"_Stz))
+    m_oEnameSet.vReplace("<seed>"_Stz,aSS[eSeed]);
+  else
+    m_oEnameSet.vAdd("<seed>"_Stz,aSS[eSeed]);
+
   m_aJobClass->m_bSeedsSpawned[eSeed] = true;
 }
 
