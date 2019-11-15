@@ -568,7 +568,7 @@ void Job::vMarkJob(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if this job is a /noWait job                                          */
+/* test if this job has a /noWait ename tag                                   */
 /*----------------------------------------------------------------------------*/
 bool Job::bNoWaitTag(void)
 {
@@ -793,6 +793,19 @@ void Job::vTask(Task* pTask)
   ASSERT(! pTask || ! m_pTaskJ);
   m_pTaskJ = pTask;
 }
+
+/*----------------------------------------------------------------------------*/
+/* test if this job has a /time ename tag                                     */
+/*----------------------------------------------------------------------------*/
+bool Job::bTimeTag(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  bool bNoWait = bHasEnameTag("</time/>"_Stz);
+  
+  return bNoWait;
+}
+
 
 
 /*----------------------------------------------------------------------------*/

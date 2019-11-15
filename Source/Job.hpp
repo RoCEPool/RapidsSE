@@ -93,6 +93,7 @@ namespace Jobs
     void vSlot(i8 i_Slot);
     Task* pTask(void);
     void vTask(Task* pTask);
+    bool bTimeTag(void);
 
   protected:
     //void vShow(s48K& s);
