@@ -13,6 +13,8 @@
 
   // put your code here...
 
+  "NAME_OF_JOB has been made" .
+
   <<logExit <DONE_REQ>
 
   HAZARD
