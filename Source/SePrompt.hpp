@@ -15,7 +15,6 @@ namespace Prompt
 
     bool     m_bContinue;  // continue processing commands?
     Timer    m_oTimer;     // the timer
-    bool     m_bTraced;    // command is being traced
     bool     m_bNoWait;    // dont wait for command
     bool     m_bMarked;    // mark the job
 
@@ -54,7 +53,6 @@ namespace Prompt
     void vCheckJobCtl(void);
     void vCheckMarked(void);
     void vCheckTimed(void);
-    void vCheckTraced(void);
     void vCheckNoWait(void);
     i8   iCommandFocal(void);
     i8   iRequestId(void);

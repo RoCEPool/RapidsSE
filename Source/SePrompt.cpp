@@ -69,7 +69,6 @@ SePrompt::SePrompt(bool bOneCommand)
 
   // m_oTimer
   
-  m_bTraced  = false;
   m_bNoWait  = false;
   m_bMarked  = false;
   
@@ -144,7 +143,6 @@ void SePrompt::vPromptLoop(void)
     
     vCheckTimed();
     vCheckMarked();
-    vCheckTraced();
     vCheckNoWait();
 
     vLogCommand();
@@ -347,31 +345,11 @@ void SePrompt::vCheckMarked(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check for trace                                                            */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vCheckTraced(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_bTraced = false;
-  
-  Token* pTkn0 = pTkn(0);
-  
-  if (! pTkn0->bSame("trace"_Stz))
-    return;
-  
-  m_bTraced = true;
-  vCutToken(0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* check for nowait                                                           */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vCheckNoWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_bTraced = false;
   
   Token* pTkn0 = pTkn(0);
   
