@@ -312,7 +312,7 @@ void SePrompt::vCheckTimed(void)
   if (! pTkn0->bSame("time"_Stz))
     return;
   
-  m_oJobCtl.vAdd("</time/>"_Stz,1);
+  m_oJobCtl.vAdd(C_TAG_TIME,1);
 
   vCutToken(0);
 }

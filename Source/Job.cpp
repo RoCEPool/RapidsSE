@@ -574,7 +574,7 @@ bool Job::bNoWaitTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bNoWait = bHasEnameTag("</noWait/>"_Stz);
+  bool bNoWait = bHasEnameTag(C_TAG_NOWAIT);
   
   return bNoWait;
 }
@@ -801,7 +801,7 @@ bool Job::bTimeTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bNoWait = bHasEnameTag("</time/>"_Stz);
+  bool bNoWait = bHasEnameTag(C_TAG_TIME);
   
   return bNoWait;
 }

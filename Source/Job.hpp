@@ -3,6 +3,9 @@
 /*============================================================================*/
 #pragma once
 
+static Stz* C_TAG_NOWAIT = "</noWait/>"_Stz;
+static Stz* C_TAG_TIME   = "</time/>"_Stz;
+
 namespace Jobs
 {
   class Job : public Focal,
