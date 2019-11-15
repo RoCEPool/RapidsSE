@@ -81,7 +81,7 @@
   grid::setStartNode
 
   //"connector::spawn..." .
-  connector::spawn
+  connector ;&
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till all nodes connected

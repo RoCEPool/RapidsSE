@@ -104,8 +104,6 @@
 
   // should never exit
   hazard
-
-  <DONE_RUN>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -123,7 +121,7 @@ jobInfo: answer
   <?rspKind?>  = RS_NONE
   <?ddlLock?>  = DL_NONE
   
-  // <?preCheck?> = bClusterStarted
+  //<?preCheck?> = bClusterStarted
   
   <?cmdKind?>  = CK_SERVICE
 }

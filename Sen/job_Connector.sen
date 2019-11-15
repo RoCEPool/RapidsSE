@@ -5,21 +5,6 @@
 " job_Connector.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn the connector job (as a dedicated job)                               */
-/*----------------------------------------------------------------------------*/
-: connector::spawn ( -- )
-
-  0 locals| pJobClass_Connector |
-  0 locals| pJob_Connector |
-
-  CN_JOB_CONNECTOR jobClass::find to pJobClass_Connector
-
-  pJobClass_Connector jobClass.new to pJob_Connector
-
-  pJob_Connector SEED_RUN job.spawn_dedicated
-;
-
-/*----------------------------------------------------------------------------*/
 /* send node info to node we just connected to                                */
 /*----------------------------------------------------------------------------*/
 : .sendNodeInfo ( pSocket -- )
@@ -113,9 +98,9 @@
 /*----------------------------------------------------------------------------*/
 /* connector loop: establish a connection to all nodes in the grid            */
 /*----------------------------------------------------------------------------*/
-: connector_run ( -- )
+: connector_req ( -- )
 
-  >>logEntry <SEED_RUN>
+  std_entryHook
 
   assertStackDepthZero
 
@@ -151,6 +136,27 @@
   job::completed
 
   HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: connector :: connector ;
+
+jobInfo: connector
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobType?>  = JT_NONE
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_NONE
+  <?ddlLock?>  = DL_NONE
+  
+  //<?preCheck?> = bClusterStarted
+  
+  <?cmdKind?>  = CK_SERVICE
+}
 ;
 
 /*============================================================================*/

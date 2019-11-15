@@ -21,7 +21,7 @@
   snooze waker::spawn
 
   answer ;&
-  snooze connector::spawn
+  connector ;&
 
   //service egArgA egArgB egArgC ;&
 
