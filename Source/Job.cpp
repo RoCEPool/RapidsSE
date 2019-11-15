@@ -471,6 +471,19 @@ void Job::vFocalOutline(s4K& sOutline)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if this job has given ename tag                                       */
+/*----------------------------------------------------------------------------*/
+bool Job::bHasEnameTag(Stz* szEnameTag)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  if (m_oEnameSet.bHasName(szEnameTag))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the job id                                                             */
 /*----------------------------------------------------------------------------*/
 i8 Job::iJobId(void)
@@ -561,12 +574,10 @@ bool Job::bNoWaitTag(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if (m_oEnameSet.bHasName("</noWait/>"_Stz))
-    return true;
+  bool bNoWait = bHasEnameTag("</noWait/>"_Stz);
   
-  return false;
+  return bNoWait;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* lock the job mutex                                                         */

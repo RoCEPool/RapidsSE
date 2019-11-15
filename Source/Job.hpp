@@ -69,6 +69,7 @@ namespace Jobs
     bool bAcksRmgDec(void);
     void vContentDump(void);
     void vFocalOutline(s4K& sOutline);
+    bool bHasEnameTag(Stz* szEnameTag);
     i8   iJobId(void);
     EnameSet* pJobInfoEnameSet(void);
     void vLockJobMutex(void);
