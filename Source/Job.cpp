@@ -78,7 +78,6 @@ Job::Job(eCN eClassNo)
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
-  m_bByPrompt = false;
   m_bWasReceived = false;
   
   //m_oAcksRmg
@@ -440,7 +439,7 @@ void Job::vContentDump(void)
          
          "m_eJobType=%s m_eJobKind=%s\n"
          "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
-         "m_bByPrompt=%d m_bNoWait=%d m_bWasReceived=%d\n"
+         "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
          "m_iParentId=%lld m_iOriginatingId=%lld\n"
          "m_nxReferences=%lld\n"_Stz,
 
@@ -454,7 +453,7 @@ void Job::vContentDump(void)
          aJP[m_eJobPhase],
          aJS[m_eJobState],
          
-         m_bByPrompt,
+         bByPromptTag(),
          bNoWaitTag(),
          m_bWasReceived,
          

@@ -786,8 +786,9 @@ void SePrompt::vPreJob(void)
   
   m_pJob = m_aJobClass->pPreJob(&m_pRequest->m_xReqTuple,m_pSession);
   
-  if (m_pJob)
-    m_pJob->m_bByPrompt = true;
+  if (m_pJob) {
+    m_pJob->m_oEnameSet.vAdd(C_TAG_BYPROMPT,1);
+  }
   
 //  if (m_pJob && m_pJob->m_bMarkTrace)
 //    m_pJob->m_aJobClass->vShowJob(m_pJob);
