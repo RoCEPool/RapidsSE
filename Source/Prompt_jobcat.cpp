@@ -42,7 +42,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_CONNECTOR);
   nJobs++; JobClass::vJobCat(CN_JOB_PERIODIC);
   nJobs++; JobClass::vJobCat(CN_JOB_RECEIVER);
-  nJobs++; JobClass::vJobCat(CN_JOB_SUPERVISOR);
   nJobs++; JobClass::vJobCat(CN_JOB_WAKER);
 
   // local

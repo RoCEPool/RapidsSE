@@ -5,24 +5,9 @@
 " job_Supervisor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn the supervisor job (as a dedicated job)                              */
-/*----------------------------------------------------------------------------*/
-: supervisor::spawn ( -- )
-
-  0 locals| pJobClass_Supervisor |
-  0 locals| pJob_Supervisor |
-
-  CN_JOB_SUPERVISOR jobClass::find to pJobClass_Supervisor
-
-  pJobClass_Supervisor jobClass.new to pJob_Supervisor
-
-  pJob_Supervisor SEED_RUN job.spawn_dedicated
-;
-
-/*----------------------------------------------------------------------------*/
 /* add peridiodic activity here                                               */
 /*----------------------------------------------------------------------------*/
-: supervisor_activity ( -- )
+: supervisor::activity ( -- )
 
   "Supervisor Activity" .
 
@@ -31,17 +16,15 @@
 /*----------------------------------------------------------------------------*/
 /* supervisor loop:                                                           */
 /*----------------------------------------------------------------------------*/
-: supervisor_run ( -- )
+: supervisor_req ( -- )
 
-  >>logEntry <SEED_RUN>
+  std_entryHook
 
-  // "Supervisor Job Started" .
-
-  CN_JOB_SUPERVISOR task::this task.thread thread.dedicated!
-
+   "Supervisor Job Started" .
 
   begin
 
+    supervisor::activity
     args.supervisorSleep thread::sleepSsec
 
   again
@@ -50,8 +33,27 @@
 
   // should never exit
   hazard
+;
 
-  <DONE_RUN>
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: supervisor :: supervisor ;
+
+jobInfo: supervisor
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobType?>  = JT_NONE
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_NONE
+  <?ddlLock?>  = DL_NONE
+  
+  //<?preCheck?> = bClusterStarted
+  
+  <?cmdKind?>  = CK_SERVICE
+}
 ;
 
 /*============================================================================*/

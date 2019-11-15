@@ -47,7 +47,7 @@ JobClass xJobClass_SubTruncate =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_SubTruncate_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Supervisor_class;
+  *pNextFun = (pFUN*)pJob_Universal_class;
   
   return &xJobClass_SubTruncate;
 }
