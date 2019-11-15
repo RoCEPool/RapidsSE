@@ -166,7 +166,6 @@ enum eCN : u2 // Class Number
   /* 128 0x80   151472B Heap:L */ CN_JOB_SUBLOADER,
   /* 131 0x83    70608B Heap:L */ CN_JOB_SUBTRUNCATE,
   /* 133 0x85    70592B Heap:L */ CN_JOB_UNIVERSAL,
-  /*                           */ CN_JOB_WAKER,
   /* 138 0x8A    70648B Heap:L */ CN_JOB_WRITEBUFFER,
   /* 140 0x8C   118688B Heap:L */ CN_JOB_WRITEROW,
   /* 141 0x8D      168B Heap:S */ CN_JOBLIST,
@@ -502,7 +501,6 @@ static Stz* aCN[]
   /* 102 0x66 */ "JOB_LOADTABLE"_Stz,       // CN_JOB_LOADTABLE
   /* 105 0x69 */ "JOB_NODEINFO"_Stz,        // CN_JOB_NODEINFO
   /* 105 0x69 */ "JOB_OPERAND"_Stz,         // CN_JOB_OPERAND
-  /* 106 0x6A */ "JOB_PERIODIC"_Stz,        // CN_JOB_PERIODIC
   /* 111 0x6F */ "JOB_RECEIVER"_Stz,        // CN_JOB_RECEIVER
   /* 115 0x73 */ "JOB_SANITY"_Stz,          // CN_JOB_SANITY
   /* 114 0x72 */ "JOB_SELECT"_Stz,          // CN_JOB_SELECT
@@ -514,7 +512,6 @@ static Stz* aCN[]
   /* 128 0x80 */ "JOB_SUBLOADER"_Stz,       // CN_JOB_SUBLOADER
   /* 131 0x83 */ "JOB_SUBTRUNCATE"_Stz,     // CN_JOB_SUBTRUNCATE
   /* 133 0x85 */ "JOB_UNIVERSAL"_Stz,       // CN_JOB_UNIVERSAL
-  /*          */ "JOB_WAKER"_Stz,           // CN_JOB_WAKER
   /* 138 0x8A */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER
   /* 140 0x8C */ "JOB_WRITEROW"_Stz,        // CN_JOB_WRITEROW
   /* 141 0x8D */ "JOBLIST"_Stz,             // CN_JOBLIST

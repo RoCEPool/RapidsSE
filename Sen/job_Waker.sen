@@ -5,26 +5,11 @@
 " job_Waker.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn the waker job (as a dedicated job)                                   */
-/*----------------------------------------------------------------------------*/
-: waker::spawn ( -- )
-
-  0 locals| pJobClass_Waker |
-  0 locals| pJob_Waker |
-
-  CN_JOB_WAKER jobClass::find to pJobClass_Waker
-
-  pJobClass_Waker jobClass.new to pJob_Waker
-
-  pJob_Waker SEED_RUN job.spawn_dedicated
-;
-
-/*----------------------------------------------------------------------------*/
 /* waker loop:                                                                */
 /*----------------------------------------------------------------------------*/
-: waker_run ( -- )
+: waker_req ( -- )
 
-  >>logEntry <SEED_RUN>
+  std_entryHook
 
   begin
 
@@ -40,8 +25,27 @@
 
   // should never exit
   hazard
+;
 
-  <DONE_RUN>
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+
+jobSyntax: waker :: waker ;
+
+jobInfo: waker
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobType?>  = JT_NONE
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_NONE
+  <?ddlLock?>  = DL_NONE
+  
+  //<?preCheck?> = bClusterStarted
+  
+  <?cmdKind?>  = CK_SERVICE
+}
 ;
 
 /*============================================================================*/

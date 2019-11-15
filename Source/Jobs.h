@@ -72,7 +72,6 @@ namespace Jobs
 
 #include "Job_Universal.hpp"
 
-#include "Job_Waker.hpp"
 #include "Job_WriteBuffer.hpp"
 #include "Job_WriteRow.hpp"
 
