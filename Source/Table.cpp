@@ -484,16 +484,18 @@ Column* Table::pFindColumn(Stz* szColNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   Column* pColumn = nullptr;
-  
+  bool bFound = false;
   i8 nColumns = m_pTableDef->m_pColVec->nItems();
 
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     pColumn = m_pTableDef->m_pColVec->pGet(i_Col);
-    if (pColumn->szColNm()->bSame(szColNm))
+    if (pColumn->szColNm()->bSame(szColNm)) {
+      bFound = true;
       break;
+    }
   }
   
-  return pColumn;
+  return bFound ? pColumn : nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

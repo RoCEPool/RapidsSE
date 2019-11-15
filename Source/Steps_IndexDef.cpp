@@ -19,6 +19,11 @@ void Step::vIndexDefParse(void)
 {
   ENTRY("vIndexDefParse"_Stz);
   
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job* pJob_CreateIndex = _pJob(pJobPtr);
+  
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
     THROW_DSTACK();
@@ -36,8 +41,17 @@ void Step::vIndexDefParse(void)
   
   eEC eResult = pIndexDef->eParse(pTable,sCmd);
   
-  //delete pIndexDef;
-  //pIndexDef = nullptr;
+  if (eResult != EC_NONE) {
+    
+    // set the error code in the job
+    pJob_CreateIndex->m_bHasError = true;
+    pJob_CreateIndex->m_xResponse.m_eErrorCode = eResult;
+    
+    // delete IndexDef
+    delete pIndexDef;
+    
+    pIndexDef = nullptr;
+  }
   
   m_pDataStack->vPushPointer(pIndexDef);
 

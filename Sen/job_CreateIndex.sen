@@ -103,6 +103,17 @@
   // find the table
   sTableNm find execute to pTable
 
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  <cmd> pTable pJob_CreateIndex IndexDef::parse locals| pIndexDef |
+  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  //----------------------------------------------------------------------------
+  // check for error while creating tabledef
+  grid::thisNode@ pJob_CreateIndex job.hasError if
+    pJob_CreateIndex DdlLock[].testDrop !!logError
+    sIndexNm :forget popIndexes popTable exit
+  then
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the table in the index
   pTable pIndex index.table!
@@ -110,11 +121,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add the index in the table
   pIndex pTable table.addIndex
-
-
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  <cmd> pTable IndexDef::parse locals| pIndexDef |
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   pIndexDef pIndex index.indexDef!
 

@@ -199,8 +199,11 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
     // -- -- -- -- --
     // process column
     // -- -- -- -- --
-    vAddIdxCol(pTable,pTkn->szText());
-    
+    bool bResult = bAddIdxCol(pTable,pTkn->szText());
+    if ( ! bResult ) {
+      eError = EC_INVALID_COMMAND;
+      goto L_RETURN;
+    }
     // -- -- -- --
     // next token
     // -- -- -- --
@@ -307,16 +310,18 @@ i8 IndexDef::iSortKeyDatum(void)
 /*----------------------------------------------------------------------------*/
 /* add column to the index column vector                                      */
 /*----------------------------------------------------------------------------*/
-void IndexDef::vAddIdxCol(Table* pTable, Stz* szColNm)
+bool IndexDef::bAddIdxCol(Table* pTable, Stz* szColNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   Column* pColumn = pTable->pFindColumn(szColNm);
 
   if (! pColumn)
-    return;
+    return false;
   
   m_pIdxColVec->vAdd(pColumn);
+  
+  return true;
 }
 
 

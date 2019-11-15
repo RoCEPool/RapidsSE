@@ -44,7 +44,7 @@ namespace MetaData
     IdxColVec* pIdxColVec(void);
   
   private:
-    void   vAddIdxCol(Table* pTable, Stz* szColNm);
+    bool bAddIdxCol(Table* pTable, Stz* szColNm);
   
     Footer* aFooter(void);
   };
