@@ -15,6 +15,8 @@ namespace Sessions
     Session*  m_p_Session;
     TokenVec* m_p_TknVec;
   
+    EnameSet  m_oEnameSet;
+  
     // must be last
     Footer m_xFooter;
     
