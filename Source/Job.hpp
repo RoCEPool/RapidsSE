@@ -25,8 +25,9 @@ namespace Jobs
               public CRM<Job>
   {
   public:
+    s32       m_sJobNm;    // name of job
   
-    JobClass* m_aJobClass; // job class
+    JobClass* m_aJobClass; // job class THIS WILL GO
   
     ReqTuple  m_xReqTuple; // the request tuple
 
