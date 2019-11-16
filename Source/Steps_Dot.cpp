@@ -41,6 +41,36 @@ void Step::vDot(void)
   
   EXIT();
 }
+/*----------------------------------------------------------------------------*/
+//void Step::vDot(void)
+//{
+//  ENTRY("vDot"_Stz);
+//
+//  GenVar xVariable;
+//  if ( ! m_pDataStack->bPopGenVar(xVariable) )
+//    THROW_DSTACK();
+//
+//  s32 sSide;
+//
+//  if (xVariable.bIsInt()) {
+//    vTrace("[%s%s %s] %lld\n"_Stz,
+//           AM::pGrid()->pThisNode()->szNodeNm(),
+//           m_pTask->m_pJob->m_bWasReceived ? "(partpt)" : "(origin)",
+//           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
+//
+//           xVariable.iInt());
+//  }
+//  else {
+//    vTrace("[%s%s %s] %s\n"_Stz,
+//           AM::pGrid()->pThisNode()->szNodeNm(),
+//           m_pTask->m_pJob->m_bWasReceived ? "(partpt)" : "(origin)",
+//           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
+//
+//           xVariable.szStz());
+//  }
+//
+//  EXIT();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* .put -- print top value on stack (no new line)                             */
