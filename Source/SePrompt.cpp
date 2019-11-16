@@ -791,6 +791,10 @@ void SePrompt::vPreJob(void)
   
   m_pJob->m_oEnameSet.vAdd(C_TAG_BYPROMPT,1);
   
+  m_pJob->m_oEnameSet.vAdd(C_TAG_DISTID,m_pJob->m_iFocalId);
+  m_pJob->m_oEnameSet.vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
+
+  
   if (m_oJobCtl.bHasName(C_TAG_JI)) {
     
     s32 sJobNm = m_pJob->m_oEnameSet.szValue(C_TAG_JOBNM);
