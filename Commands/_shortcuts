@@ -9,7 +9,7 @@ shortcut a _lineitemay ;
 // ray's - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 shortcut ad article_dump ;
-shortcut ct create table t (a integer);
+shortcut ct /flow create table t (a integer);
 shortcut d  _pipeline ;
 shortcut dl _pipelineLineItem ;
 shortcut dn _defineNode ;

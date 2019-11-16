@@ -4,12 +4,14 @@
 #pragma once
 
 static Stz* C_TAG_BYPROMPT = "</byPrompt/>"_Stz;
+static Stz* C_TAG_FLOW     = "</flow/>"_Stz;
 static Stz* C_TAG_JE       = "</je/>"_Stz;
 static Stz* C_TAG_JI       = "</ji/>"_Stz;
 static Stz* C_TAG_NOWAIT   = "</noWait/>"_Stz;
 static Stz* C_TAG_TIME     = "</time/>"_Stz;
 
 static Stz* C_TAG_JOBNM    = "<jobNm>"_Stz;
+static Stz* C_TAG_PATH     = "<path>"_Stz;
 
 
 namespace Jobs

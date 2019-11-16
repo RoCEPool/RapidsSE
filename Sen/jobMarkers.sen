@@ -175,6 +175,8 @@
   <path> str.toStrVec task::dicStack.set
 
   <seed_initially>
+
+  job::</seeFlow/>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -187,6 +189,8 @@
   JP_CANCELING job::this job.phase!
 
   <seed_initially>
+
+  job::</seeFlow/>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -199,6 +203,8 @@
   JP_ENDING job::this job.phase!
 
   <seed_initially>
+
+  job::</seeFlow/>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -217,6 +223,8 @@
   //task::dump
 
   <seed_initially>
+
+  job::</seeFlow/>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -227,6 +235,8 @@
   SS_SEED_RCV log::jobSeed
 
   <seed_initially>
+
+  job::</seeFlow/>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -240,6 +250,8 @@
   <path> str.toStrVec task::dicStack.set
 
   <seed_initially>
+
+  job::</seeFlow/>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -252,6 +264,8 @@
   <path> str.toStrVec task::dicStack.set
 
   <seed_initially>
+
+  job::</seeFlow/>
 ;
 
 

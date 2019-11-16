@@ -38,6 +38,9 @@ void Step::vJob__BegunNew(void)
   pJobBegun->m_aJobClass = pJobClass__Begun;
   
   pJobBegun->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
+  
+  if (pDistJob->bHasEnameTag(C_TAG_FLOW))
+    pJobBegun->m_oEnameSet.vAdd(C_TAG_FLOW,1);
 
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobBegun);
   
@@ -67,6 +70,9 @@ void Step::vJob__CancelNew(void)
 
   pJobCancel->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
 
+  if (pDistJob->bHasEnameTag(C_TAG_FLOW))
+    pJobCancel->m_oEnameSet.vAdd(C_TAG_FLOW,1);
+  
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancel);
   
   m_pDataStack->vPushPointer(pJobCancel);
@@ -97,6 +103,9 @@ void Step::vJob__CancelledNew(void)
   
   pJobCancelled->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
   
+  if (pDistJob->bHasEnameTag(C_TAG_FLOW))
+    pJobCancelled->m_oEnameSet.vAdd(C_TAG_FLOW,1);
+  
   m_pDataStack->vPushPointer(pJobCancelled);
   
   EXIT();
@@ -125,6 +134,9 @@ void Step::vJob__EndNew(void)
   
   pJobEnd->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
   
+  if (pDistJob->bHasEnameTag(C_TAG_FLOW))
+    pJobEnd->m_oEnameSet.vAdd(C_TAG_FLOW,1);
+  
   m_pDataStack->vPushPointer(pJobEnd);
   
   EXIT();
@@ -150,6 +162,9 @@ void Step::vJob__EndedNew(void)
   pJobEnded->m_aJobClass = pJobClass__Ended;
   
   pJobEnded->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
+  
+  if (pDistJob->bHasEnameTag(C_TAG_FLOW))
+    pJobEnded->m_oEnameSet.vAdd(C_TAG_FLOW,1);
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnded);
   
@@ -181,6 +196,9 @@ void Step::vJob__ExecuteNew(void)
   
   pJobExecute->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
   
+  if (pDistJob->bHasEnameTag(C_TAG_FLOW))
+    pJobExecute->m_oEnameSet.vAdd(C_TAG_FLOW,1);
+  
   m_pDataStack->vPushPointer(pJobExecute);
   
   EXIT();
@@ -208,6 +226,9 @@ void Step::vJob__ExecutedNew(void)
   pJobExecuted->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecuted);
+  
+  if (pDistJob->bHasEnameTag(C_TAG_FLOW))
+    pJobExecuted->m_oEnameSet.vAdd(C_TAG_FLOW,1);
   
   m_pDataStack->vPushPointer(pJobExecuted);
   
