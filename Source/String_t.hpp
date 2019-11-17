@@ -50,6 +50,7 @@ namespace Esses
     void vSizeMax(i8 nSIZE);
     i8   nSpace(void);
     void vSprint(Stz* szFormat, ...);
+    void vSprint(va_list vaArgs, Stz* szFormat);
     void vSprintCat(Stz* szFormat, ...);
     String* pString(void);
     Stz* szStz(void);
@@ -242,13 +243,13 @@ template <int SIZE>
 void String_t<SIZE>::vCatSprint(Stz* szFormat, ...)
 {
   _precondition_(_MAGIC_,_FOOTER_);
-  va_list args;
+  va_list vaArgs;
   
   char* aEnd = aAdd<char*>(azChar(),nLength());
   
-  va_start(args,szFormat);
-  vsprintf(aEnd,(char*)szFormat,args);
-  va_end(args);
+  va_start(vaArgs,szFormat);
+  vsprintf(aEnd,(char*)szFormat,vaArgs);
+  va_end(vaArgs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -443,11 +444,20 @@ i8 String_t<SIZE>::nSpace(void)
 template <int SIZE>
 void String_t<SIZE>::vSprint(Stz* szFormat, ...)
 {
-  va_list args;
+  va_list vaArgs;
   
-  va_start(args,szFormat);
-  StrLib::vSprint(azChar(),args,szFormat->azChar());
-  va_end(args);
+  va_start(vaArgs,szFormat);
+  StrLib::vSprint(azChar(),vaArgs,szFormat->azChar());
+  va_end(vaArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint                                                                     */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+void String_t<SIZE>::vSprint(va_list vaArgs, Stz* szFormat)
+{
+  StrLib::vSprint(azChar(),vaArgs,szFormat->azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -456,11 +466,11 @@ void String_t<SIZE>::vSprint(Stz* szFormat, ...)
 template <int SIZE>
 void String_t<SIZE>::vSprintCat(Stz* szFormat, ...)
 {
-  va_list args;
+  va_list vaArgs;
   
-  va_start(args,szFormat);
-  StrLib::vSprintCat(azChar(),args,szFormat->azChar());
-  va_end(args);
+  va_start(vaArgs,szFormat);
+  StrLib::vSprintCat(azChar(),vaArgs,szFormat->azChar());
+  va_end(vaArgs);
 }
 
 /*----------------------------------------------------------------------------*/

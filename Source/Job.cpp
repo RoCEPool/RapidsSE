@@ -219,8 +219,10 @@ Job::~Job(void) noexcept(false)
   //vTrace("Deleting job: %s\n"_Stz,aCN[eClass()]);
   
   if (bHasEnameTag(C_TAG_LIFE)) {
-    vPrint("Job Delete: "_Stz);
-    m_oEnameSet.vPrint();
+    
+    SP_EnmSet spEnameSet;
+    vPrint("Job Delete: %s\n"_Stz,spEnameSet.sz(&m_oEnameSet));
+    //m_oEnameSet.vPrint();
   }
 
   vIncStepNo();
@@ -698,12 +700,14 @@ void Job::vPrint(Stz* szFormat, ...)
   
   m_oTimer.vUpdate();
   
+  sFormatted.vSprint(args,szFormat);
+  
   vTrace("[%s %s %s] %s\n"_Stz,
          AM::pGrid()->pThisNode()->szNodeNm(),
          m_sJobNm.szStz(),
          spTimer.sz(&m_oTimer),
          
-         szFormat,
+         sFormatted.szStz(),
          
          C_ENDARGS);
 
