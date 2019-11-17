@@ -2757,24 +2757,24 @@ void StrLib::vSplit_si(char* azStr, char* azInt, char* azSrc)
 /*----------------------------------------------------------------------------*/
 /* vSprint: formatted sprint                                                  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprint(char* sDst, Stz* aFormat, ...)
+void StrLib::vSprint(char* sDst, Stz* szFormat, ...)
 {
   va_list args;
   
-  va_start(args,aFormat);
-  vsprintf(sDst,aFormat->azChar(),args);
+  va_start(args,szFormat);
+  vsprintf(sDst,szFormat->azChar(),args);
   va_end(args);
 }
 
 /*----------------------------------------------------------------------------*/
 /* vSprint: formatted sprint                                                  */
 /*----------------------------------------------------------------------------*/
-void StrLib::vSprint(Stz* sDst, Stz* aFormat, ...)
+void StrLib::vSprint(Stz* sDst, Stz* szFormat, ...)
 {
   va_list args;
   
-  va_start(args,aFormat);
-  vsprintf(sDst->azChar(),aFormat->azChar(),args);
+  va_start(args,szFormat);
+  vsprintf(sDst->azChar(),szFormat->azChar(),args);
   va_end(args);
 }
 

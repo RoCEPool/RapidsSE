@@ -102,6 +102,7 @@ namespace Jobs
     i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
+    void vPrint(Stz* szFormat, ...);
     void vReport(void);
     eSS  eSeed(void);
     Stz* szSeed(void);

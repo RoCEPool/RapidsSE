@@ -219,7 +219,7 @@ Job::~Job(void) noexcept(false)
   //vTrace("Deleting job: %s\n"_Stz,aCN[eClass()]);
   
   if (bHasEnameTag(C_TAG_LIFE)) {
-    vTrace("Job Delete: "_Stz);
+    vPrint("Job Delete: "_Stz);
     m_oEnameSet.vPrint();
   }
 
@@ -679,6 +679,35 @@ i8 Job::iParticipantNode(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_iParticipantNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void Job::vPrint(Stz* szFormat, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  s4K sFormatted;
+  
+  SP_Timer spTimer;
+  
+  va_list args;
+  
+  va_start(args,szFormat);
+  
+  m_oTimer.vUpdate();
+  
+  vTrace("[%s %s %s] %s\n"_Stz,
+         AM::pGrid()->pThisNode()->szNodeNm(),
+         m_sJobNm.szStz(),
+         spTimer.sz(&m_oTimer),
+         
+         szFormat,
+         
+         C_ENDARGS);
+
+  va_end(args);
 }
 
 /*----------------------------------------------------------------------------*/
