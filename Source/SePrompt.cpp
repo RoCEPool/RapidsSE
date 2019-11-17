@@ -908,6 +908,8 @@ void SePrompt::vSetJob(void)
 
   m_pJob->m_oEnameSet.vCopy(&m_oJobCtl);
   
+  m_pJob->m_oTimer.vStart();
+  
   if (m_pJob->bHasEnameTag(C_TAG_LIFE)) {
     vTrace("Job New: "_Stz);
     m_pJob->m_oEnameSet.vPrint();

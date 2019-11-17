@@ -22,7 +22,7 @@ namespace Gadgets
     void operator delete(void* pTimerAddress);
   
     Timer(void);
-   ~Timer() noexcept(false);
+   ~Timer(void) noexcept(false);
     
     void vReset(void);
     void vSet(i8 iStart, i8 iUpdate);

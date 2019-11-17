@@ -47,6 +47,8 @@ namespace Jobs
     
     Atomic  m_ixErrors;
   
+    Timer   m_oTimer;    // timer
+  
     Task* m_pOriginatingTask; // originating task of the request
     i8    m_iOriginatingId;   // job id of originating job
 
