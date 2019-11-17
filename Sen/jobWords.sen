@@ -93,6 +93,23 @@
   pJobParticipant "Job__Cancelled::send" find execute
 ;
 
+/*----------------------------------------------------------------------------*/
+/* test if this job has </flow/> and if so print the jobs ename set           */
+/*----------------------------------------------------------------------------*/
+: job::</seeXfer/>
+
+  "</xfer/>"
+  job::this job.enameSet@ enameSet.hasName
+  if
+
+   r@ locate .
+   job::this job.enameSet@ enameSet.asStr .
+
+  then
+;
+
+
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -149,6 +166,8 @@
   task::sendSocket@ locals| pSocket |
 
   pJob job.preSend
+
+  job::</seeXfer/>
 
   task::socketLock
 

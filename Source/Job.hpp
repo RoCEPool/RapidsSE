@@ -11,6 +11,7 @@ static Stz* C_TAG_JI       = "</ji/>"_Stz;
 static Stz* C_TAG_LIFE     = "</life/>"_Stz;
 static Stz* C_TAG_NOWAIT   = "</noWait/>"_Stz;
 static Stz* C_TAG_TIME     = "</time/>"_Stz;
+static Stz* C_TAG_XFER     = "</xfer/>"_Stz;
 
 // job tags
 static Stz* C_TAG_DISTID   = "<distId>"_Stz;
