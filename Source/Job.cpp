@@ -218,6 +218,11 @@ Job::~Job(void) noexcept(false)
   
   //vTrace("Deleting job: %s\n"_Stz,aCN[eClass()]);
   
+  if (bHasEnameTag(C_TAG_LIFE)) {
+    vTrace("Job Delete: "_Stz);
+    m_oEnameSet.vPrint();
+  }
+
   vIncStepNo();
   if (m_bWasReceived) {
     // do not decrement gixJob

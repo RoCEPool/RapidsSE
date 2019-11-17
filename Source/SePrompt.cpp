@@ -786,24 +786,24 @@ void SePrompt::vPreJob(void)
   
   m_pJob = m_aJobClass->pPreJob(&m_pRequest->m_xReqTuple,m_pSession);
   
-  if (! m_pJob)
-    return;
-  
-  s32 sJobNm = m_pJob->m_oEnameSet.szValue(C_TAG_JOBNM);
-  
-  m_pJob->m_sJobNm = sJobNm;
-  
-  m_pJob->m_oEnameSet.vAdd(C_TAG_BYPROMPT,1);
-  
-  m_pJob->m_oEnameSet.vAdd(C_TAG_DISTID,m_pJob->m_iFocalId);
-  m_pJob->m_oEnameSet.vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
-
-  if (m_oJobCtl.bHasName(C_TAG_JI)) {
-    
-    EnameSet* pJobInfo_es = Job::pJobInfo_enameSet(sJobNm);
-    if (pJobInfo_es)
-      pJobInfo_es->vPrint();
-  }
+//  if (! m_pJob)
+//    return;
+//
+//  s32 sJobNm = m_pJob->m_oEnameSet.szValue(C_TAG_JOBNM);
+//
+//  m_pJob->m_sJobNm = sJobNm;
+//
+//  m_pJob->m_oEnameSet.vAdd(C_TAG_BYPROMPT,1);
+//
+//  m_pJob->m_oEnameSet.vAdd(C_TAG_DISTID,m_pJob->m_iFocalId);
+//  m_pJob->m_oEnameSet.vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
+//
+//  if (m_oJobCtl.bHasName(C_TAG_JI)) {
+//
+//    EnameSet* pJobInfo_es = Job::pJobInfo_enameSet(sJobNm);
+//    if (pJobInfo_es)
+//      pJobInfo_es->vPrint();
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -890,7 +890,28 @@ void SePrompt::vSetJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  s32 sJobNm = m_pJob->m_oEnameSet.szValue(C_TAG_JOBNM);
+  
+  m_pJob->m_sJobNm = sJobNm;
+  
+  m_pJob->m_oEnameSet.vAdd(C_TAG_BYPROMPT,1);
+  
+  m_pJob->m_oEnameSet.vAdd(C_TAG_DISTID,m_pJob->m_iFocalId);
+  m_pJob->m_oEnameSet.vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
+  
+  if (m_oJobCtl.bHasName(C_TAG_JI)) {
+    
+    EnameSet* pJobInfo_es = Job::pJobInfo_enameSet(sJobNm);
+    if (pJobInfo_es)
+      pJobInfo_es->vPrint();
+  }
+
   m_pJob->m_oEnameSet.vCopy(&m_oJobCtl);
+  
+  if (m_pJob->bHasEnameTag(C_TAG_LIFE)) {
+    vTrace("Job New: "_Stz);
+    m_pJob->m_oEnameSet.vPrint();
+  }
 }
 
 /*----------------------------------------------------------------------------*/

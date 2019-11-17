@@ -64,7 +64,7 @@ namespace Prompt
     bool bFindMatch(void);
     void vFocalOutline(s4K& sOutline);
     void vGetCommand(void);
-    Input* pInput(void);
+     Input* pInput(void);
     bool bIsPromptWord(void);
     void vJobLockMutex(void);
     void vJobUnlockMutex(void);
