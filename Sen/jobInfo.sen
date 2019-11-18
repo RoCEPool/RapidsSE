@@ -233,11 +233,14 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  job::isgenericJob if
+    .fillOutEnameSet_generic
+  else
   job::isDistJob if
     .fillOutEnameSet_dist
   else
     .fillOutEnameSet_local
-  then
+  then then
 
   // pEnameSet EnameSet.asStr .
 ;
