@@ -124,6 +124,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* _act makes the word being compile a seed with name: <wordNm>_act           */
+/*----------------------------------------------------------------------------*/
+: _act immediate suffix
+
+  // append _beg to name of word being compiled
+  "_act" word::addSuffix
+
+  // the compiled word is a seed
+  tick seed compiler::current word.category!
+
+  word::seed#
+
+  // set exit hook of word being compiled
+  "act_exitHook" compiler::current word.exitHook!
+
+  // add call to beg_entryHook into word being compiled
+  POSTPONE act_entryHook
+;
+
+/*----------------------------------------------------------------------------*/
 /* adds a standard entry and exit hook to word being compiled                 */
 /*----------------------------------------------------------------------------*/
 : _eeh immediate suffix
