@@ -100,7 +100,7 @@
       pReceivedJob Job_operand.pipeOut
     else
       pReceivedJob job.seedDecode
-      pReceivedJob swap job.seed!
+        pReceivedJob job.seed!
       pReceivedJob job.spawn
    then
 

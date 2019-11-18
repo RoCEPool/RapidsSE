@@ -1562,14 +1562,14 @@ void Step::vJobSeedStore(void)
 {
   ENTRY("vJobSeedStore"_Stz);
   
-  i8 i_Seed;
-  if ( ! m_pDataStack->bPopI8(i_Seed) )
-    THROW_DSTACK();
-  
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
+  
+  i8 i_Seed;
+  if ( ! m_pDataStack->bPopI8(i_Seed) )
+    THROW_DSTACK();
   
   AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
               "%s spawned by %s"_Stz, //!format-LogSvc
