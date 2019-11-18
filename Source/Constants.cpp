@@ -199,7 +199,6 @@ void Constants::vAddConstants(void)
   /* 28 */ vAddConstant("CN_INDEX"_Stz,        CN_INDEX);
   /*    */ //vAddConstant("CN_INDEXDEFN"_Stz,    CN_INDEXDEFN);
 
-  /*    */ vAddConstant("CN_JOB__BEGUN"_Stz,         CN_JOB__BEGUN);
   /*    */ vAddConstant("CN_JOB__CANCEL"_Stz,        CN_JOB__CANCEL);
   /*    */ vAddConstant("CN_JOB__CANCELLED"_Stz,     CN_JOB__CANCELLED);
   /*    */ vAddConstant("CN_JOB__END"_Stz,           CN_JOB__END);

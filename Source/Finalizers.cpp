@@ -136,7 +136,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_IOCOPY
   /*    */ &Finalize::vUndefined,         // CN_IRWBUFFER
 
-  /*    */ &Finalize::vUndefined,         // CN_JOB__BEGUN
   /*    */ &Finalize::vUndefined,         // CN_JOB__CANCEL
   /*    */ &Finalize::vUndefined,         // CN_JOB__CANCELLED
   /*    */ &Finalize::vUndefined,         // CN_JOB__END

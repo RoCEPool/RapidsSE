@@ -659,7 +659,6 @@ void Step::vJobExecuteFetch(void)
 
   switch (pJob->eClass()) {
       
-    case CN_JOB__BEGUN:
     case CN_JOB__CANCEL:
     case CN_JOB__CANCELLED:
     case CN_JOB__END:
