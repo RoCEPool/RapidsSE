@@ -708,8 +708,9 @@ void Job::vPrint(Stz* szFormat, ...)
   
   sFormatted.vSprint(args,szFormat);
   
-  vTrace("[%s %s %s] %s\n"_Stz,
+  vTrace("[%s %s %s %s] %s\n"_Stz,
          AM::pGrid()->pThisNode()->szNodeNm(),
+         szSide(),
          m_sJobNm.szStz(),
          spTimer.sz(&m_oTimer),
          
