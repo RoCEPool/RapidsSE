@@ -30,15 +30,20 @@ void Step::vJob__BegunNew(void)
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
-  Job* pJobBegun = new Job__Begun(pDistJob);
+  JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
+
+  Job* pJobBegun = new Job_Universal(pJobClass_Universal,&pDistJob->m_xReqTuple); // new Job__Begun(pDistJob);
   pJobBegun->m_iFocalId = pDistJob->m_iFocalId;
   pJobBegun->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   pJobBegun->m_bNormalSides = false;
 
-  JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
-  pJobBegun->m_aJobClass = pJobClass__Begun;
-  
+  //JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
+  //pJobBegun->m_aJobClass = pJobClass__Begun;
+
+  pJobBegun->m_aJobClass = pJobClass_Universal;
+
   pJobBegun->m_sJobNm = "_begun"_Stz;
+  pJobBegun->m_oEnameSet.vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
   pJobBegun->m_oEnameSet.vAdd(C_TAG_JOBNM,"_begun"_Stz);
   pJobBegun->m_oEnameSet.vAdd(C_TAG_PATH,"/"_Stz);
   pJobBegun->m_oEnameSet.vAdd(C_TAG_DISTID,pDistJob->m_iFocalId);

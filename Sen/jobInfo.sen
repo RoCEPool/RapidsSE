@@ -186,7 +186,7 @@
 /*----------------------------------------------------------------------------*/
 : .fillOutEnameSet_generic
 
-  "<?SeedReq?>" "_req" "defaultSeedLocal" seedEnameAdd
+  "<?SeedRcv?>" "_beg" "defaultSeedLocal" seedEnameAdd
 ;
 
 /*----------------------------------------------------------------------------*/
