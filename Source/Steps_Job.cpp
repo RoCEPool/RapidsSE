@@ -88,6 +88,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.rowsSkipped!"_Stz,     &Step::vJobRowsSkippedStore);
 
   vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
+  vAddStep("job.seed!"_Stz,            &Step::vJobSeedStore);
   vAddStep("job.send"_Stz,             &Step::vJobSend);
   vAddStep("job.session@"_Stz,         &Step::vJobSessionFetch);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
@@ -1537,6 +1538,33 @@ void Step::vJobSeedFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.seed! -- seed the job                                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSeedStore(void)
+{
+  ENTRY("vJobSeedStore"_Stz);
+  
+  i8 i_Seed;
+  if ( ! m_pDataStack->bPopI8(i_Seed) )
+    THROW_DSTACK();
+  
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job* pJob = _pJob(pJobPtr);
+  
+  AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
+              "%s spawned by %s"_Stz, //!format-LogSvc
+              aCN[pJob->eClass()],
+              aCN[m_pTask->m_pJob->eClass()],
+              C_ENDARGS);
+  
+  pJob->vSeed((eSS)i_Seed);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.send -- pre-send of job                                                */
 /*----------------------------------------------------------------------------*/
 void Step::vJobSend(void)
@@ -1754,6 +1782,7 @@ void Step::vJobSpawn(void)
               C_ENDARGS);
 
   pJob->vSeed((eSS)i_Seed);
+  
   IGNORE_RETURN(Api::bSpawnJob(pJob));
   
   EXIT();
