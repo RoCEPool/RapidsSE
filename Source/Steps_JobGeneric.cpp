@@ -37,6 +37,8 @@ void Step::vJob__BegunNew(void)
   JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
   pJobBegun->m_aJobClass = pJobClass__Begun;
   
+  pJobBegun->m_sJobNm = "_begun"_Stz;
+  pJobBegun->m_oEnameSet.vAdd(C_TAG_JOBNM,"_begun"_Stz);
   pJobBegun->m_oEnameSet.vAdd(C_TAG_PATH,"/"_Stz);
   pJobBegun->m_oEnameSet.vAdd(C_TAG_DISTID,pDistJob->m_iFocalId);
   pJobBegun->m_oEnameSet.vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
@@ -70,6 +72,8 @@ void Step::vJob__CancelNew(void)
   JobClass* pJobClass__Cancel = JobClass::pFind(CN_JOB__CANCEL);
   pJobCancel->m_aJobClass = pJobClass__Cancel;
 
+  pJobCancel->m_sJobNm = "_cancel"_Stz;
+  pJobCancel->m_oEnameSet.vAdd(C_TAG_JOBNM,"_cancel"_Stz);
   pJobCancel->m_oEnameSet.vAdd(C_TAG_PATH,"/"_Stz);
   pJobCancel->m_oEnameSet.vAdd(C_TAG_DISTID,pDistJob->m_iFocalId);
   pJobCancel->m_oEnameSet.vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
@@ -105,6 +109,8 @@ void Step::vJob__CancelledNew(void)
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancelled);
   
+  pJobCancelled->m_sJobNm = "_cancelled"_Stz;
+  pJobCancelled->m_oEnameSet.vAdd(C_TAG_JOBNM,"_cancelled"_Stz);
   pJobCancelled->m_oEnameSet.vAdd(C_TAG_PATH,"/"_Stz);
   pJobCancelled->m_oEnameSet.vAdd(C_TAG_DISTID,pDistJob->m_iFocalId);
   pJobCancelled->m_oEnameSet.vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
@@ -138,6 +144,8 @@ void Step::vJob__EndNew(void)
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnd);
   
+  pJobEnd->m_sJobNm = "_end"_Stz;
+  pJobEnd->m_oEnameSet.vAdd(C_TAG_JOBNM,"_end"_Stz);
   pJobEnd->m_oEnameSet.vAdd(C_TAG_PATH,"/"_Stz);
   pJobEnd->m_oEnameSet.vAdd(C_TAG_DISTID,pDistJob->m_iFocalId);
   pJobEnd->m_oEnameSet.vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
@@ -169,6 +177,8 @@ void Step::vJob__EndedNew(void)
   JobClass* pJobClass__Ended = JobClass::pFind(CN_JOB__ENDED);
   pJobEnded->m_aJobClass = pJobClass__Ended;
   
+  pJobEnded->m_sJobNm = "_ended"_Stz;
+  pJobEnded->m_oEnameSet.vAdd(C_TAG_JOBNM,"_ended"_Stz);
   pJobEnded->m_oEnameSet.vAdd(C_TAG_PATH,"/"_Stz);
   pJobEnded->m_oEnameSet.vAdd(C_TAG_DISTID,pDistJob->m_iFocalId);
   pJobEnded->m_oEnameSet.vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
@@ -204,6 +214,8 @@ void Step::vJob__ExecuteNew(void)
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecute);
   
+  pJobExecute->m_sJobNm = "_execute"_Stz;
+  pJobExecute->m_oEnameSet.vAdd(C_TAG_JOBNM,"_execute"_Stz);
   pJobExecute->m_oEnameSet.vAdd(C_TAG_PATH,"/"_Stz);
   pJobExecute->m_oEnameSet.vAdd(C_TAG_DISTID,pDistJob->m_iFocalId);
   pJobExecute->m_oEnameSet.vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
@@ -235,6 +247,8 @@ void Step::vJob__ExecutedNew(void)
   JobClass* pJobClass__Executed = JobClass::pFind(CN_JOB__EXECUTED);
   pJobExecuted->m_aJobClass = pJobClass__Executed;
   
+  pJobExecuted->m_sJobNm = "_executed"_Stz;
+  pJobExecuted->m_oEnameSet.vAdd(C_TAG_JOBNM,"_executed"_Stz);
   pJobExecuted->m_oEnameSet.vAdd(C_TAG_PATH,"/"_Stz);
   pJobExecuted->m_oEnameSet.vAdd(C_TAG_DISTID,pDistJob->m_iFocalId);
   pJobExecuted->m_oEnameSet.vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
