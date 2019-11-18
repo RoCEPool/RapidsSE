@@ -796,10 +796,11 @@ void Task::vSeedTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  Dic* pRootDic = AM::pRootDic();
+  
   Stz* szSeed = m_pJob->szSeed();
   
-  Dic* pRootDic = AM::pRootDic();
-
+  vTrace("SEED %s\n"_Stz,szSeed);
   Word* pSeedWord = pRootDic->pFindWord(szSeed);
   
   if (! pSeedWord)

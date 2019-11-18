@@ -45,11 +45,11 @@
 : receiver_loop ( -- )
 
   0 locals| pReceivedJob |
-  0 locals| pOperand |
-  0 locals| pSendWith |
-  0 locals| pOtherNode |
-  0 locals| pSocket |
-  0 locals| bRecvd |
+  0 locals| pOperand     |
+  0 locals| pSendWith    |
+  0 locals| pOtherNode   |
+  0 locals| pSocket      |
+  0 locals| bRecvd       |
 
   job::this locals| pJob_Receiver |
 
