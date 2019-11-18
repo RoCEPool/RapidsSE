@@ -911,8 +911,9 @@ void SePrompt::vSetJob(void)
   m_pJob->m_oTimer.vStart();
   
   if (m_pJob->bHasEnameTag(C_TAG_LIFE)) {
-    m_pJob->vPrint("Job New: "_Stz);
-    m_pJob->m_oEnameSet.vPrint();
+    SP_EnmSet spEnameSet;
+    m_pJob->vPrint("Job New: %s"_Stz,spEnameSet.sz(&m_pJob->m_oEnameSet));
+    //m_pJob->m_oEnameSet.vPrint();
   }
 }
 
