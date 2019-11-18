@@ -9,7 +9,7 @@ namespace Jobs
   class Job__Begun : public Job
   {
   public:
-    eEC  m_eErrorCode;  // error code
+    //eEC  m_eErrorCode;  // error code
     
     // must be last
     Footer m_xFooter;

@@ -106,7 +106,7 @@ Job__Begun::Job__Begun(Job* pDistJob)
   
   m_iParentId = pDistJob->m_iFocalId;
 
-  m_eErrorCode = EC_NONE;
+  //m_eErrorCode = EC_NONE;
   
   _checkInitialised_(CN_JOB__BEGUN);
   
