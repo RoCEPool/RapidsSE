@@ -27,16 +27,20 @@ void Step::vDot(void)
     THROW_DSTACK();
   
   if (xVariable.bIsInt()) {
-    vTrace("[%s %s] %lld\n"_Stz,
-           AM::pGrid()->pThisNode()->szNodeNm(),
-           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
-           xVariable.iInt());
+//    vTrace("[%s %s] %lld\n"_Stz,
+//           AM::pGrid()->pThisNode()->szNodeNm(),
+//           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
+//           xVariable.iInt());
+    
+    m_pTask->m_pJob->vPrint("%lld"_Stz,xVariable.iInt());
+    
   }
   else {
-    vTrace("[%s %s] %s\n"_Stz,
-           AM::pGrid()->pThisNode()->szNodeNm(),
-           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
-           xVariable.szStz());
+//    vTrace("[%s %s] %s\n"_Stz,
+//           AM::pGrid()->pThisNode()->szNodeNm(),
+//           m_pTask->m_pJob ? (Stz*)m_pTask->szJobName() : "<no job>"_Stz,
+//           xVariable.szStz());
+    m_pTask->m_pJob->vPrint("%s"_Stz,xVariable.szStz());
   }
   
   EXIT();

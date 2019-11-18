@@ -107,6 +107,9 @@ void Engine::vCallBoot(void)
   if (AM::bVerbose())
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
+  
+  pJob_Boot->m_oTimer.vStart();
+  
   vCallImmmediate(pBootTask);
   
   vDeleteImmmediate(&pBootTask);
