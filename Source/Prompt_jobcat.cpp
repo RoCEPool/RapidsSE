@@ -43,12 +43,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_FETCHROWS);
 
   // generic
-  nJobs++; JobClass::vJobCat(CN_JOB__CANCEL);
-  nJobs++; JobClass::vJobCat(CN_JOB__CANCELLED);
-  nJobs++; JobClass::vJobCat(CN_JOB__END);
-  nJobs++; JobClass::vJobCat(CN_JOB__ENDED);
-  nJobs++; JobClass::vJobCat(CN_JOB__EXECUTE);
-  nJobs++; JobClass::vJobCat(CN_JOB__EXECUTED);
   nJobs++; JobClass::vJobCat(CN_JOB__FIND);
 
   // dist2pc
@@ -78,9 +72,9 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
 
   vTrace("\n"_Stz);
   
-  if (nJobs != CN_JOB_WRITEROW - CN_JOB__CANCEL + 1)
+  if (nJobs != CN_JOB_WRITEROW - CN_JOB_BOOT + 1)
     vTrace("\nWarning: Missing Jobs (%lld v. %lld)\n\n"_Stz,
-           nJobs, CN_JOB_WRITEROW - CN_JOB__CANCEL + 1);
+           nJobs, CN_JOB_WRITEROW - CN_JOB_BOOT + 1);
   
   return true;
 }

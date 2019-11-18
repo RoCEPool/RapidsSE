@@ -35,12 +35,6 @@ namespace Jobs
 
 #include "JobHelper.hpp"
 
-#include "Job__Cancel.hpp"
-#include "Job__Cancelled.hpp"
-#include "Job__End.hpp"
-#include "Job__Ended.hpp"
-#include "Job__Execute.hpp"
-#include "Job__Executed.hpp"
 #include "Job__Find.hpp"
 
 #include "Job_Boot.hpp"

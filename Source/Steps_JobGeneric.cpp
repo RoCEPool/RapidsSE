@@ -71,11 +71,13 @@ void Step::vJob__CancelNew(void)
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
-  Job* pJobCancel = new Job__Cancel(pDistJob);
+  JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
+  
+  Job* pJobCancel = new Job_Universal(pJobClass_Universal,&pDistJob->m_xReqTuple); // new Job__Cancel(pDistJob);
   pJobCancel->m_iFocalId = pDistJob->m_iFocalId;
   pJobCancel->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
-  JobClass* pJobClass__Cancel = JobClass::pFind(CN_JOB__CANCEL);
+  JobClass* pJobClass__Cancel = pJobClass_Universal;
   pJobCancel->m_aJobClass = pJobClass__Cancel;
 
   pJobCancel->m_sJobNm = "_cancel"_Stz;
@@ -109,12 +111,12 @@ void Step::vJob__CancelledNew(void)
 
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
 
-  Job* pJobCancelled = new Job__Cancelled(pDistJob);
+  Job* pJobCancelled = new Job_Universal(pJobClass_Universal,&pDistJob->m_xReqTuple); // new Job__Cancelled(pDistJob);
   pJobCancelled->m_iFocalId = pDistJob->m_iFocalId;
   pJobCancelled->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   pJobCancelled->m_bNormalSides = false;
 
-  JobClass* pJobClass__Cancelled = JobClass::pFind(CN_JOB__CANCELLED);
+  JobClass* pJobClass__Cancelled = pJobClass_Universal;
   pJobCancelled->m_aJobClass = pJobClass__Cancelled;
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancelled);
@@ -148,11 +150,11 @@ void Step::vJob__EndNew(void)
 
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
   
-  Job* pJobEnd = new Job__End(pDistJob);
+  Job* pJobEnd = new Job_Universal(pJobClass_Universal,&pDistJob->m_xReqTuple); // new Job__End(pDistJob);
   pJobEnd->m_iFocalId = pDistJob->m_iFocalId;
   pJobEnd->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
-  JobClass* pJobClass__End = JobClass::pFind(CN_JOB__END);
+  JobClass* pJobClass__End = pJobClass_Universal;
   pJobEnd->m_aJobClass = pJobClass__End;
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnd);
@@ -186,12 +188,12 @@ void Step::vJob__EndedNew(void)
 
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
   
-  Job* pJobEnded = new Job__Ended(pDistJob);
+  Job* pJobEnded = new Job_Universal(pJobClass_Universal,&pDistJob->m_xReqTuple); // new Job__Ended(pDistJob);
   pJobEnded->m_iFocalId = pDistJob->m_iFocalId;
   pJobEnded->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   pJobEnded->m_bNormalSides = false;
 
-  JobClass* pJobClass__Ended = JobClass::pFind(CN_JOB__ENDED);
+  JobClass* pJobClass__Ended = pJobClass_Universal;
   pJobEnded->m_aJobClass = pJobClass__Ended;
   
   pJobEnded->m_sJobNm = "_ended"_Stz;
@@ -225,11 +227,11 @@ void Step::vJob__ExecuteNew(void)
 
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
   
-  Job* pJobExecute = new Job__Execute(pDistJob);
+  Job* pJobExecute = new Job_Universal(pJobClass_Universal,&pDistJob->m_xReqTuple); // new Job__Execute(pDistJob);
   pJobExecute->m_iFocalId = pDistJob->m_iFocalId;
   pJobExecute->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
-  JobClass* pJobClass__Execute = JobClass::pFind(CN_JOB__EXECUTE);
+  JobClass* pJobClass__Execute = pJobClass_Universal;
   pJobExecute->m_aJobClass = pJobClass__Execute;
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecute);
@@ -263,12 +265,12 @@ void Step::vJob__ExecutedNew(void)
 
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
   
-  Job* pJobExecuted = new Job__Executed(pDistJob);
+  Job* pJobExecuted = new Job_Universal(pJobClass_Universal,&pDistJob->m_xReqTuple); // new Job__Executed(pDistJob);
   pJobExecuted->m_iFocalId = pDistJob->m_iFocalId;
   pJobExecuted->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   pJobExecuted->m_bNormalSides = false;
 
-  JobClass* pJobClass__Executed = JobClass::pFind(CN_JOB__EXECUTED);
+  JobClass* pJobClass__Executed = pJobClass_Universal;
   pJobExecuted->m_aJobClass = pJobClass__Executed;
   
   pJobExecuted->m_sJobNm = "_executed"_Stz;

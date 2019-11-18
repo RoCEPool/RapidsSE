@@ -29,7 +29,7 @@ bool Prompt::bPrompt_jobClass(SePrompt* pPrompt)
   JobClass* pJobClass = nullptr;
   
   i8 i_JobClass = 0;
-  for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob__Cancel_class; pfJobClass; ) {
+  for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob_Boot_class; pfJobClass; ) {
     
     pJobClass = pfJobClass((pFUN**)&pfJobClass);
     

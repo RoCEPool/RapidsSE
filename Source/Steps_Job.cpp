@@ -658,16 +658,7 @@ void Step::vJobExecuteFetch(void)
   s32 sExecute;
 
   switch (pJob->eClass()) {
-      
-    case CN_JOB__CANCEL:
-    case CN_JOB__CANCELLED:
-    case CN_JOB__END:
-    case CN_JOB__ENDED:
-    case CN_JOB__EXECUTED:
-    case CN_JOB__EXECUTE:
-      ASSERT(0);
-      break;
-      
+            
     default:
       StrLib::vCopy(sExecute.azChar(),pJob->m_aJobClass->m_aSeedExe->azChar());
       //sExecute.vConcat("_exe"_Stz);

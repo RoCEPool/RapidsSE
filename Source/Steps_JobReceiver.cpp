@@ -47,17 +47,17 @@ void Step::vJob_ReceiverJobReceived(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
 
-  if (CN_JOB__EXECUTED == pJob->eClass()) {
-    Job__Executed* pJob__Executed = _pJob__Executed(pJob);
-    Stz* szResponse = pJob__Executed->szResponse();
-    if (szResponse->iLength())
-      AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_RESPONSE_JOB,
-                  "%s >>%s<<"_Stz, //!format-LogSvc
-                  aCN[pJob->eClass()],
-                  szResponse);
-    EXIT();
-    return;
-  }
+//  if (CN_JOB__EXECUTED == pJob->eClass()) {
+//    Job__Executed* pJob__Executed = _pJob__Executed(pJob);
+//    Stz* szResponse = pJob__Executed->szResponse();
+//    if (szResponse->iLength())
+//      AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_RESPONSE_JOB,
+//                  "%s >>%s<<"_Stz, //!format-LogSvc
+//                  aCN[pJob->eClass()],
+//                  szResponse);
+//    EXIT();
+//    return;
+//  }
 
   AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_RECEIVED_JOB,
               "%s"_Stz, //!format-LogSvc

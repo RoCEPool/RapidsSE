@@ -141,12 +141,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_IOCOPY
   /*    */ &Dump::vDummy,           // CN_IRWBUFFER
 
-  /*    */ &Dump::vDummy,           // CN_JOB__CANCEL
-  /*    */ &Dump::vDummy,           // CN_JOB__CANCELLED
-  /*    */ &Dump::vDummy,           // CN_JOB__END
-  /*    */ &Dump::vDummy,           // CN_JOB__ENDED
-  /*    */ &Dump::vDummy,           // CN_JOB__EXECUTE
-  /*    */ &Dump::vDummy,           // CN_JOB__EXECUTED
   /*    */ &Dump::vDummy,           // CN_JOB__FIND
 
   /*    */ &Dump::vDummy,           // CN_JOB_BOOT
@@ -488,12 +482,6 @@ i8 giClassSize[]
   /*    */ sizeof(IoCopy),             // CN_IOCOPY
   /*    */ sizeof(IrwBuffer),          // CN_IRWBUFFER
 
-  /*    */ sizeof(Job__Cancel),        // CN_JOB__CANCEL
-  /*    */ sizeof(Job__Cancelled),     // CN_JOB__CANCELLED
-  /*    */ sizeof(Job__End),           // CN_JOB__END
-  /*    */ sizeof(Job__Ended),         // CN_JOB__ENDED
-  /*    */ sizeof(Job__Execute),       // CN_JOB__EXECUTE
-  /*    */ sizeof(Job__Executed),      // CN_JOB__EXECUTED
   /*    */ sizeof(Job__Find),          // CN_JOB__FIND
   
   /*    */ sizeof(Job_Boot),           // CN_JOB_BOOT
@@ -835,12 +823,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_IOCOPY
   /*    */ HT_TRANSIENT_LARGE,   // CN_IRWBUFFER
 
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB__CANCEL
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB__CANCELLED
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB__END
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB__ENDED
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB__EXECUTE
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB__EXECUTED
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB__FIND
 
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_BOOT
