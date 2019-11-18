@@ -790,10 +790,18 @@ Stz* Job::szSide(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if (m_bWasReceived)
-    return "partpt"_Stz;
-  else
-    return "origin"_Stz;
+  if (m_bWasReceived) {
+    if (m_bNormalSides)
+      return "partpt"_Stz;
+    else
+      return "origin"_Stz;
+  }  
+  else {
+    if (m_bNormalSides)
+      return "origin"_Stz;
+    else
+      return "partpt"_Stz;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

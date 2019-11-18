@@ -33,7 +33,8 @@ void Step::vJob__BegunNew(void)
   Job* pJobBegun = new Job__Begun(pDistJob);
   pJobBegun->m_iFocalId = pDistJob->m_iFocalId;
   pJobBegun->m_iParticipantNode = AM::pGrid()->m_iThisNode;
-  
+  pJobBegun->m_bNormalSides = false;
+
   JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
   pJobBegun->m_aJobClass = pJobClass__Begun;
   
@@ -103,7 +104,8 @@ void Step::vJob__CancelledNew(void)
   Job* pJobCancelled = new Job__Cancelled(pDistJob);
   pJobCancelled->m_iFocalId = pDistJob->m_iFocalId;
   pJobCancelled->m_iParticipantNode = AM::pGrid()->m_iThisNode;
-  
+  pJobCancelled->m_bNormalSides = false;
+
   JobClass* pJobClass__Cancelled = JobClass::pFind(CN_JOB__CANCELLED);
   pJobCancelled->m_aJobClass = pJobClass__Cancelled;
   
@@ -173,7 +175,8 @@ void Step::vJob__EndedNew(void)
   Job* pJobEnded = new Job__Ended(pDistJob);
   pJobEnded->m_iFocalId = pDistJob->m_iFocalId;
   pJobEnded->m_iParticipantNode = AM::pGrid()->m_iThisNode;
-  
+  pJobEnded->m_bNormalSides = false;
+
   JobClass* pJobClass__Ended = JobClass::pFind(CN_JOB__ENDED);
   pJobEnded->m_aJobClass = pJobClass__Ended;
   
@@ -243,7 +246,8 @@ void Step::vJob__ExecutedNew(void)
   Job* pJobExecuted = new Job__Executed(pDistJob);
   pJobExecuted->m_iFocalId = pDistJob->m_iFocalId;
   pJobExecuted->m_iParticipantNode = AM::pGrid()->m_iThisNode;
-  
+  pJobExecuted->m_bNormalSides = false;
+
   JobClass* pJobClass__Executed = JobClass::pFind(CN_JOB__EXECUTED);
   pJobExecuted->m_aJobClass = pJobClass__Executed;
   
