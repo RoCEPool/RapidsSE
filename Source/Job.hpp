@@ -35,6 +35,7 @@ namespace Jobs
 
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
     
+    bool m_bNormalSides; //
     bool m_bWasReceived; // job was received over a socket
 
     EnameSet m_oEnameSet;  // ename-value set

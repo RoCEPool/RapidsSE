@@ -78,6 +78,8 @@ Job::Job(eCN eClassNo)
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
+  
+  m_bNormalSides = true; //
   m_bWasReceived = false;
   
   //m_oAcksRmg
@@ -131,6 +133,8 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
+  
+  m_bNormalSides = true; //
   m_bWasReceived = false;
   
   //m_oAcksRmg
@@ -182,6 +186,8 @@ Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
   m_eJobState = JS_RUNNING;
+  
+  m_bNormalSides = true; //
   m_bWasReceived = false;
   
   //m_oAcksRmg
