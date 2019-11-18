@@ -783,6 +783,19 @@ Session* Job::pSession(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get which side the job is on (originator or participant)                   */
+/*----------------------------------------------------------------------------*/
+Stz* Job::szSide(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  if (m_bWasReceived)
+    return "partpt"_Stz;
+  else
+    return "origin"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get slot on this node this sub job processes                               */
 /*----------------------------------------------------------------------------*/
 i8 Job::i_Slot(void)

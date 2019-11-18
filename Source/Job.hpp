@@ -96,6 +96,7 @@ namespace Jobs
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
     bool bNoWaitTag(void);
+    Stz* szSide(void);
     void vSignalJobMutex(void);
     void vUnlockJobMutex(void);
     void vWaitJobMutex(void);
