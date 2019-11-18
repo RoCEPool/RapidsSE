@@ -1766,9 +1766,9 @@ void Step::vJobSpawn(void)
 {
   ENTRY("vJobSpawn"_Stz);
   
-  i8 i_Seed;
-  if ( ! m_pDataStack->bPopI8(i_Seed) )
-    THROW_DSTACK();
+//  i8 i_Seed;
+//  if ( ! m_pDataStack->bPopI8(i_Seed) )
+//    THROW_DSTACK();
 
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -1781,7 +1781,7 @@ void Step::vJobSpawn(void)
               aCN[m_pTask->m_pJob->eClass()],
               C_ENDARGS);
 
-  pJob->vSeed((eSS)i_Seed);
+//  pJob->vSeed((eSS)i_Seed);
   
   IGNORE_RETURN(Api::bSpawnJob(pJob));
   

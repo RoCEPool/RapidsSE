@@ -61,7 +61,8 @@
   iJobId plist::findJob drop
 
   // execute the cancel seed of the job on this participating node
-  JobRef[] SEED_CAN job.spawn
+  JobRef[] SEED_CAN job.seed!
+  JobRef[] job.spawn
   JobRef[].return
 
   job::deleteThis

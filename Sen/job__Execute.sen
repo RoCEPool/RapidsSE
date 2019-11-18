@@ -59,7 +59,8 @@
   iJobId plist::findJob drop
 
   // execute the job on this participating node
-  JobRef[] SEED_EXE job.spawn
+  JobRef[] SEED_EXE job.seed!
+  JobRef[] job.spawn
   JobRef[].return
 
   job::deleteThis

@@ -99,7 +99,8 @@
     pReceivedJob job.jobClass CN_JOB_OPERAND == if
       pReceivedJob Job_operand.pipeOut
     else
-      pReceivedJob SEED_RCV job.spawn
+      pReceivedJob SEED_RCV job.seed!
+      pReceivedJob job.spawn
    then
 
   again
