@@ -87,6 +87,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.rowsSkipped@"_Stz,     &Step::vJobRowsSkippedFetch);
   vAddStep("job.rowsSkipped!"_Stz,     &Step::vJobRowsSkippedStore);
 
+  vAddStep("job.seedDecode"_Stz,       &Step::vJobSeedDecode);
   vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
   vAddStep("job.seed!"_Stz,            &Step::vJobSeedStore);
   vAddStep("job.send"_Stz,             &Step::vJobSend);
@@ -1516,6 +1517,23 @@ void Step::vJobRowsSkippedStore(void)
   //pJob->m_xNode[iNode].m_ixRowsSkipped = iRowsSkipped;
   
   pJob->m_xResponse.m_ixRowsSkipped = iRowsSkipped;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.seedDecode -- decode seed for received job                             */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSeedDecode(void)
+{
+  ENTRY("vJobSeedDecode"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job* pJob = _pJob(pJobPtr);
+  
+  m_pDataStack->vPushI8(SS_SEED_RCV);
   
   EXIT();
 }

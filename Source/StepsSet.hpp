@@ -514,6 +514,7 @@ public:
   void vJobRowsSkippedFetch(void);
   void vJobRowsSkippedStore(void);
 
+  void vJobSeedDecode(void);
   void vJobSeedFetch(void);
   void vJobSeedStore(void);
   void vJobSend(void);
