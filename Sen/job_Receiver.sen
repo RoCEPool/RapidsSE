@@ -40,7 +40,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* receiver loop: receive a job, execute it                                   */
+/* receiver loop: receive a job (possibly with operand), dispatch it          */
 /*----------------------------------------------------------------------------*/
 : receiver_loop ( -- )
 
@@ -62,6 +62,9 @@
 
     assertStackDepthZero
 
+    // -- -- -- -- -- -- -- --
+    // recv job
+
     pSocket socket.recvObject
 
     not if
@@ -72,14 +75,26 @@
 
     to pReceivedJob
 
+    // -- -- -- -- -- -- -- --
+    // log received job
+
     pReceivedJob job_receiver::jobReceived
 
+    // -- -- -- -- -- -- -- --
+    // run post receive function
+
     pReceivedJob job.postRecv
+
+    // -- -- -- -- -- -- -- --
+    // recv operand
 
     pReceivedJob job.hasOperand if
       pSocket socket.recvObject drop to pOperand
       pOperand pReceivedJob job.operand!
     then
+
+    // -- -- -- -- -- -- -- --
+    // dispatch job
 
     pReceivedJob job.jobClass CN_JOB_OPERAND == if
       pReceivedJob Job_operand.pipeOut
