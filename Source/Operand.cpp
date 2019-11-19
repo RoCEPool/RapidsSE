@@ -30,6 +30,7 @@ bool Streams::_bIsValidOperand(eCN eClass)
     case CN_CRWBUFFER:
     case CN_IRWBUFFER:
     case CN_STREAMDEF:
+    case CN_CSVBUFFER:
       return true;
     default:
       return false;

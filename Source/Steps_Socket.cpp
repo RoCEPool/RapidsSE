@@ -536,6 +536,34 @@ void Step::vSocketRecvObject(void)
       EXIT();
       return;
     }
+     
+    case CN_CSVBUFFER: {
+      
+      CsvBuffer* pCsvBuffer = new CsvBuffer();
+      
+      MemLib::vCopy(pCsvBuffer,pObject,sizeof(Object),CN_CSVBUFFER);
+      
+      aBody = aAdd<void*>(pCsvBuffer,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_CSVBUFFER] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        m_pDataStack->vPushBool(false);
+        EXIT();
+        return;
+      }
+      
+      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+      
+      // restore the nub of the crwbuffer
+      //pIrwBuffer->vRestoreNub();
+      
+      m_pDataStack->vPushPointer(pCsvBuffer);
+      m_pDataStack->vPushBool(true);
+      EXIT();
+      return;
+    }
       
     case CN_STREAMDEF: {
       StreamDef* pStreamDef = new StreamDef();
