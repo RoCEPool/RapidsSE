@@ -479,6 +479,8 @@ public:
   void vJobJobClass(void);
   void vJobJobListFetch(void);
 
+  void vJobKindFetch(void);
+
   void vJobMetadataStore(void);
 
   void vJobNoWaitFetch(void);

@@ -94,6 +94,10 @@
     then
 
     // -- -- -- -- -- -- -- --
+    // examine job
+    job::this job.enameSet@ enameSet.asStr .
+
+    // -- -- -- -- -- -- -- --
     // dispatch job
 
     pReceivedJob job.jobClass CN_JOB_OPERAND == if

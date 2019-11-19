@@ -46,6 +46,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.jobClass"_Stz,         &Step::vJobJobClass);
   vAddStep("job.jobList@"_Stz,         &Step::vJobJobListFetch);
   
+  vAddStep("job.kind@"_Stz,            &Step::vJobKindFetch);
+  
   vAddStep("job.metadata!"_Stz,        &Step::vJobMetadataStore);
   
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
@@ -827,6 +829,24 @@ void Step::vJobJobListFetch(void)
   
   m_pDataStack->vPushI8(pJob->m_eJobList);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.kind@ -- fetch job kind                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobKindFetch(void)
+{
+  ENTRY("vJobKindFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job* pJob = _pJob(pJobPtr);
+  
+  
+  m_pDataStack->vPushI8(pJob->m_eJobKind);
+
   EXIT();
 }
 
