@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 : _Execute _run
 
-  >>logEntry <SEED_RCV>
+  >>logEntry <SEED_RUN>
   actLog::seed_rcv
 
   //

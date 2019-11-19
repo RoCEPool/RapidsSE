@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : _Cancelled _run
 
-  >>logEntry <SEED_RCV>
+  >>logEntry <SEED_RUN>
   actLog::seed_rcv
 
   job::this locals| pJob__Cancelled |
