@@ -51,7 +51,6 @@
 
   0 0 0 0 locals| sTableNm iCount pJob_ListColumns pTask |
 
-  tp: listColumns_req
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task

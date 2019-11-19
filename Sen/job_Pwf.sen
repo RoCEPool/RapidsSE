@@ -16,7 +16,6 @@
 
   0 0 0 0 locals| pJob_Pwf pTask |
 
-  tp: cf_req
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task

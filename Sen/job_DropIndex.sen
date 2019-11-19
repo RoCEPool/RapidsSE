@@ -80,7 +80,6 @@
 
   job::this locals| pJob_DropIndex |
 
-  tp: dropIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the table
@@ -96,7 +95,6 @@
 
   0 0 locals| sIndexNm sTableNm |
 
-  tp: dropIndex.checkResources
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock

@@ -42,7 +42,6 @@
 
   0 0 0 0 0 locals| pTask pIndex sTableNm sIndexNm pjob_VisualizeTable |
 
-  tp: visualizeTable
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task

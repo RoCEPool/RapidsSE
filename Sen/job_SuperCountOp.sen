@@ -13,7 +13,6 @@
 
    job::this locals| pJob_SuperCountOp |
 
-   tp: SuperCountOp_run
 
    pJob_SuperCountOp job.opLoop
 

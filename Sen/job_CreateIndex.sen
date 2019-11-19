@@ -159,7 +159,6 @@
 
   0 0 locals| pTable sTableNm sIndexNm |
 
-  tp: createIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the index
@@ -179,7 +178,6 @@
   job::this locals| pJob_CreateIndex |
   0 0 locals| sTableNm sIndexNm |
 
-  tp: createIndex.checkResources
   //"checkResources received" .
 
   //----------------------------------------------------------------------------

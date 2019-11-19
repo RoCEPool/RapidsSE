@@ -28,7 +28,6 @@
 /*----------------------------------------------------------------------------*/
 : makeTable ( "<tableNm>" )
 
-  tp: makingTable
 
   params| sTableNm |
   0 0 locals| pTable pIndex |
@@ -64,7 +63,6 @@
 
   0 locals| pTable |
 
-  tp: createTable_exe
 
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   <cmd> pJob_CreateTable tableDef::parse locals| pTableDef |
@@ -101,7 +99,6 @@
 /*----------------------------------------------------------------------------*/
 : createTable::checkResources _eeh ( -- )
 
-  tp: createTable.checkResources
   //"checkResources received" .
 
   job::this locals| pJob_CreateTable |

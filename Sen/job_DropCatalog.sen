@@ -28,7 +28,6 @@
 /*----------------------------------------------------------------------------*/
 : removeCatalog ( "<catalogNm>" --  )
 
-  tp: removeCatalog
 
   args.tracepoint if
   dup "REMOVING CATALOG " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
@@ -44,7 +43,6 @@
 
   job::this locals| pJob_DropCatalog |
 
-  tp: dropCatalog_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
@@ -56,7 +54,6 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog::checkResources _eeh ( -- )
 
-  tp: dropCatalog.checkResources
   //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

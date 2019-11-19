@@ -927,7 +927,6 @@ bool StrLib::bExtractBoolean(char** aaSrc, i8& iBoolean)
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
 {
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   u8 uSubField;
   
@@ -983,7 +982,6 @@ bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
 bool StrLib::bExtractDate2(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay,
                            eDC* pDateComponents, char cDateSeparator)
 {
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   for (i8 i_Component = 0; i_Component < 3; i_Component++) {
   
@@ -1517,7 +1515,6 @@ bool StrLib::bExtractString(char** ps, char* pString)
 bool StrLib::bExtractTime(char** aaSrc,
                           i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro)
 {
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   u8 uSubField;
   
@@ -1580,7 +1577,6 @@ bool StrLib::bExtractTimestamp(char** aaSrc,
                                i8& iYear, i8& iMonth,  i8& iDay,
                                i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro)
 {
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
     
   // - date portion
 
@@ -1615,7 +1611,6 @@ bool StrLib::bExtractTimestamp2(char** aaSrc,
                                 i8& iHour, i8& iMinute, i8& iSecond, i8& iMicro,
                                 eDC* pDateComponents, char cDateSeparator)
 {
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date portion

@@ -42,7 +42,6 @@
   job::this locals| pJob_ScanOp |
   0 0 locals| sTableNm pTable |
 
-  tp: scanOp_run
 
   DdlLock[].grabRead
 

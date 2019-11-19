@@ -13,7 +13,6 @@
 
   0 0 locals| pJob_ListTables pTask |
 
-  tp: listTables_req
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task

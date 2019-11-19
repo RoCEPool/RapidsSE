@@ -14,7 +14,6 @@
   0 locals| pThisTask |
   0 0 0 locals| pJob_SubInserter sTableNm pTable |
 
-  tp: SubInserter_req
 
   // get the task
   task::this to pThisTask
@@ -51,7 +50,6 @@
   //pJob_SubInserter job.objectName@ locals| sTableNm |
   <tableNm> locals| sTableNm |
 
-  tp: SubInserter.checkResources
   //checkResources received" .
 
   //----------------------------------------------------------------------------
@@ -100,7 +98,6 @@
 
   params| pJob_SubInserter  |
 
-  tp: SubInserter.releaseResources
   //releaseResources received" .
 
   <<logExit <Resources_Released>

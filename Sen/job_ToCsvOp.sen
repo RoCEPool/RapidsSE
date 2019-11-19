@@ -13,7 +13,6 @@
 
    job::this locals| pJob_ToCsvOp |
 
-   tp: ToCsv_req
 
    pJob_ToCsvOp job.opLoop
 

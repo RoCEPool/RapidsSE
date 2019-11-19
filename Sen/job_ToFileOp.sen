@@ -13,7 +13,6 @@
 
    job::this locals| pJob_ToFileOp |
 
-   tp: ToFile_req
 
    pJob_ToFileOp job.opLoop
 

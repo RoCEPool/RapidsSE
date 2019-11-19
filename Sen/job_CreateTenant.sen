@@ -28,7 +28,6 @@
 /*----------------------------------------------------------------------------*/
 : makeTenant ( "<tenantNm>" -- )
 
-  tp: makingTenant
 
   params| sTenantNm |
 
@@ -51,7 +50,6 @@
 /*----------------------------------------------------------------------------*/
 : createTenant::execute _eeh ( -- )
 
-  tp: createTenant_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog
@@ -63,7 +61,6 @@
 /*----------------------------------------------------------------------------*/
 : createTenant::checkResources _eeh ( -- )
 
-  tp: createTenant.checkResources
   //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

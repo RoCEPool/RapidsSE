@@ -75,7 +75,6 @@
 : connectCluster_req ( -- <R> )
 
 
-  tp: connectCluster_req
 
   //"grid::setStartNode..." .
   grid::setStartNode

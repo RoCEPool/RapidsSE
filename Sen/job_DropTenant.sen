@@ -25,7 +25,6 @@
 /*----------------------------------------------------------------------------*/
 : removeTenant ( "<tenantNm>" --  )
 
-  tp: removetenant
 
   args.tracepoint if
   dup "REMOVING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
@@ -41,7 +40,6 @@
 
   job::this locals| pJob_DropTenant |
 
-  tp: dropTenant_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
@@ -53,7 +51,6 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant::checkResources _eeh ( -- )
 
-  tp: dropTenant.checkResources
   //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --

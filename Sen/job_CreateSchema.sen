@@ -28,7 +28,6 @@
 /*----------------------------------------------------------------------------*/
 : makeSchema ( "<schemaNm>" --  )
  
-  tp: makingSchema
 
   params| sSchemaNm |
 
@@ -52,7 +51,6 @@
 /*----------------------------------------------------------------------------*/
 : createSchema::execute _eeh ( -- )
 
-  tp: createSchema_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the schema
@@ -64,7 +62,6 @@
 /*----------------------------------------------------------------------------*/
 : createSchema::checkResources _eeh ( -- )
 
-  tp: createSchema.checkResources
   //"checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

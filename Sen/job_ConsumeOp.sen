@@ -13,7 +13,6 @@
 
    job::this locals| pJob_ConsumeOp |
 
-   tp: Consume_req
 
    pJob_ConsumeOp job.opLoop
 

@@ -13,7 +13,6 @@
 
   0 0 locals| pJob pTask |
 
-  tp: sanity_req
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task

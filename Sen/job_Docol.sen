@@ -13,7 +13,6 @@
 
   0 0 locals| pJob_Docol pTask |
 
-  tp: docol_req
 
   // get the task
   task::this to pTask

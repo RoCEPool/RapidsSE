@@ -398,7 +398,6 @@ bool RowExtractor::bExtractBolSupplied(DtmVal* pDtmVal, char** aacRecCrs,
 bool RowExtractor::bExtractDteSupplied(DtmVal* pDtmVal, char** aacRecCrs,
                                     Formatters* pFormatters)
 {
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   Column* pColumn = pDtmVal->m_pCol;
   
@@ -621,7 +620,6 @@ bool RowExtractor::bExtractIvlSupplied(DtmVal* pDtmVal, char** aacRecCrs,
 bool RowExtractor::bExtractTmeSupplied(DtmVal* pDtmVal, char** aacRecCrs,
                                     Formatters* pFormatters)
 {
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   Column* pColumn = pDtmVal->m_pCol;
   
@@ -676,7 +674,6 @@ bool RowExtractor::bExtractTmeSupplied(DtmVal* pDtmVal, char** aacRecCrs,
 bool RowExtractor::bExtractTspSupplied(DtmVal* pDtmVal, char** aacRecCrs,
                                     Formatters* pFormatters)
 {
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   Column* pColumn = pDtmVal->m_pCol;
   

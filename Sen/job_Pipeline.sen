@@ -12,7 +12,6 @@
   task::this locals| pTask |
   job::this  locals| pJob_pipeline |
 
-  tp: pipeline_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

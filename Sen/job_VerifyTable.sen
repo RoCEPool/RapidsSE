@@ -42,7 +42,6 @@
 
   0 0 locals| pTask sTableNm  |
 
-  tp: verifyTable_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the tablen ame
@@ -72,7 +71,6 @@
 : verifyTable::checkResources _eeh ( -- )
   0 0 locals| sIndexNm sTableNm |
 
-  tp: verifyTable.checkResources
   //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

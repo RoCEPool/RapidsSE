@@ -231,7 +231,6 @@
   // this word puts the folder path on the stack into task dictionary stack
   // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
 
-  tp: task::dicStack.set
 
   task::dicStack.clear
 

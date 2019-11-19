@@ -13,7 +13,6 @@
 
    job::this locals| pJob_OutputOp |
 
-   tp: outputOp_req
 
    begin
      pJob_OutputOp job.LoopOutputOp

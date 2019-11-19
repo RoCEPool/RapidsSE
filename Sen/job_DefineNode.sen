@@ -29,7 +29,6 @@
 /*----------------------------------------------------------------------------*/
 : defineNode::request _eeh (  -- <R> )
 
-  tp: defineNode
 
   <nodeNm> "<nodeNm> : %v" fmt.print
 ;
@@ -41,7 +40,6 @@
 
   0 locals| pNode |
 
-  tp: defineNode_exe
 
   //----------------------------------------------------------------------------
   // make Node
@@ -53,7 +51,6 @@
 /*----------------------------------------------------------------------------*/
 : defineNode::checkResources _eeh ( -- )
 
-  tp: createNode.checkResources
   //"checkResources received" .
 
   job::this locals| pJob_DefineNode |

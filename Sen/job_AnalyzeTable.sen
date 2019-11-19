@@ -36,7 +36,6 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable::request _eeh ( -- <R> )
 
-  tp: analyzeTable
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set metadata string in the job
@@ -60,7 +59,6 @@
 
   0 0 locals| sTableNm bIsDetailed |
 
-  tp: analyzeTable_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table
@@ -86,7 +84,6 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable::checkResources _eeh ( -- )
 
-  tp: analyzeTable.checkResources
   //"checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

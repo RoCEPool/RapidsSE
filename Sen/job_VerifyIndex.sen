@@ -53,7 +53,6 @@
 
   0 0 0 0 locals| pTask pIndex sTableNm sIndexNm  |
 
-  tp: verifyIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
@@ -86,7 +85,6 @@
 
   0 0 locals| sIndexNm sTableNm |
 
-  tp: verifyIndex.checkResources
   //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -13,7 +13,6 @@
 
   0 0 locals| pJob_InsertRow pTask |
 
-  tp: insertRow_req
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
@@ -127,7 +126,6 @@
   //pJob_InsertRow job.objectName@ locals| sTableNm |
   <tableNm> locals| sTableNm |
 
-  tp: insertRow.checkResources
   //checkResources received" .
 
   //----------------------------------------------------------------------------
@@ -173,7 +171,6 @@
 
   params| pJob_InsertRow  |
 
-  tp: insertRow.releaseResources
   //releaseResources received" .
 
   <<logExit <Resources_Released>

@@ -59,7 +59,6 @@
 
   0 0 0 0 locals| sTableNm iCount pJob_ListIndexes pTask |
 
-  tp: listIndexes_req
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task

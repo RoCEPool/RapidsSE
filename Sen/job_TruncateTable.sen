@@ -13,7 +13,6 @@
 
   0 0 locals| sTableNm pThisTask |
 
-  tp: truncateTable_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
@@ -47,7 +46,6 @@
   job::this locals| pJob_TruncateTable |
   0 locals| sTableNm |
 
-  tp: truncateTable.checkResources
   //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

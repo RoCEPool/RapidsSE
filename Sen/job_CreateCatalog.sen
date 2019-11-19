@@ -28,7 +28,6 @@
 /*----------------------------------------------------------------------------*/
 : makeCatalog ( "<catalogNm>" -- )
 
-  tp: makeCatalog
 
   params| sCatalogNm |
 
@@ -51,7 +50,6 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog::execute _eeh ( -- )
 
-  tp: createCatalog_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the catalog
@@ -63,7 +61,6 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog::checkResources _eeh ( -- )
 
-  tp: createCatalog.checkResources
   //"checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

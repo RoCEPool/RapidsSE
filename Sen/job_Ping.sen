@@ -13,7 +13,6 @@
 
   0 0 locals| pJob_Ping pTask |
 
-  tp: ping_req
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   "ping sleeps" .

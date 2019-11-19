@@ -77,7 +77,6 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_req ( -- <R> )
 
-  tp: startCluster_req
 
   task::seedInitially
 

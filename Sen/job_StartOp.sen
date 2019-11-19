@@ -13,7 +13,6 @@
 
    job::this locals| pJob_StartOp |
 
-   tp: start_run
 
    pJob_StartOp job.opLoop
 

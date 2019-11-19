@@ -58,7 +58,6 @@
 
   0 0 locals| pJob pTask |
 
-  tp: createTable
 
   // get the task
   task::this to pTask
@@ -83,7 +82,6 @@
 
   0 0 locals| pTable sTableNm |
 
-  tp: insertTable_exe
 
   //----------------------------------------------------------------------------
   // assert correct job
@@ -122,7 +120,6 @@
 
   params| pJob_InsertTable  |
 
-  tp: insertTable.checkResources
   //checkResources received" .
 ;
 
@@ -131,7 +128,6 @@
 /*----------------------------------------------------------------------------*/
 : insertTable.releaseResources ( pJob_InsertTable -- )
 
-  tp: insertTable.releaseResources
   //releaseResources received" .
 ;
 

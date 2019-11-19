@@ -56,7 +56,6 @@
 
   0 0 0 0 locals| pIndex iSize sTableNm sIndexNm |
 
-  tp: compactIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
@@ -79,7 +78,6 @@
 
   0 0 locals| sIndexNm sTableNm |
 
-  tp: compactIndex.checkResources
   //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

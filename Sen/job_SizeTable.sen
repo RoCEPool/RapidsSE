@@ -41,7 +41,6 @@
 
   0 0 0 locals| sTableNm pTable iSize |
 
-  tp: sizeTable_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table name
@@ -69,7 +68,6 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable::checkResources _eeh ( -- )
 
-  tp: sizeTable.checkResources
   //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

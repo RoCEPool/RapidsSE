@@ -13,7 +13,6 @@
 
    job::this locals| pJob_XmitOp |
 
-   tp: XmitOp_run
 
    pJob_XmitOp job.opLoop
 

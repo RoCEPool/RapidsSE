@@ -25,7 +25,6 @@
 /*----------------------------------------------------------------------------*/
 : removeSchema ( "<schemaNm>" --  )
 
-  tp: removeSchema
 
   args.tracepoint if
   dup "REMOVING TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
@@ -39,7 +38,6 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema::execute _eeh ( -- )
 
-  tp: dropSchema_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
@@ -51,7 +49,6 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema::checkResources _eeh ( -- )
 
-  tp: dropSchema.checkResources
   //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --

@@ -15,7 +15,6 @@
   0 0 0 locals| iSlot pTable sTableNm |
   0 0 locals| iTrucateJobId pJob_TruncateTable |
 
-  tp: SubTruncate
   //"SubTruncate_run" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

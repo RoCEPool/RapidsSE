@@ -13,7 +13,6 @@
 
   0 0 0 0 locals| pIndex iSize iCount sTableNm |
 
-  tp: tableSizes_exe
 
   ""
   pathCurrentFolder dic.lastWord dup
@@ -55,7 +54,6 @@
 /*----------------------------------------------------------------------------*/
 : tableSizes::checkResources _eeh ( -- )
 
-  tp: tableSizes.checkResources
   //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

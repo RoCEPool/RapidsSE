@@ -14,7 +14,6 @@
 
   0 0 locals| pJob_ListCatalogs pTask |
 
-  tp: listCatalogs_req
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task

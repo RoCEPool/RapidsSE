@@ -54,7 +54,6 @@
 
   0 0 0 0 locals| pIndex iSize sTableNm sIndexNm |
 
-  tp: sizeIndex_exe
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table and index names
@@ -87,7 +86,6 @@
 
   0 0 locals| sIndexNm sTableNm |
 
-  tp: sizeIndex.checkResources
   //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
