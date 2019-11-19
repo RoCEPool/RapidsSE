@@ -44,9 +44,6 @@
 /*----------------------------------------------------------------------------*/
 : _Ended _run
 
-  >>logEntry <SEED_RUN>
-  actLog::seed_rcv
-
   job::this locals| pJob__Ended |
   pJob__Ended job.id@ locals| iJobId |
 
@@ -71,8 +68,6 @@
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].return
-    job::deleteThis
-    <DONE_RCV>
     exit                                                         // *EARLY EXIT*
   then
 
@@ -84,15 +79,10 @@
 
   JP_ENDED log::markPhase
 
-
   // notify the originating task
   //JobRef[] job.originatingTask@ task.ack
   JobRef[] job.task@ task.ack
   JobRef[].return
-
-  // delete this completed __ended job
-  job::deleteThis
-  <DONE_RCV>
 ;
 
 /*----------------------------------------------------------------------------*/
