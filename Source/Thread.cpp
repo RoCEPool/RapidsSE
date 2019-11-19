@@ -337,11 +337,13 @@ void Thread::vLoop_general(void)
     // ensure the task has this thread
     m_pTask->vThread(this);
     
-    // call the task loop
+    // call the task loop. will return when Task::m_eTransition is set
     m_pTask->vTaskLoop();
 
     // handle task return event
     Scheduler::vTaskLoopTransition(this);
+    
+    // note: task may not be null in case of yield
     
     // either this thread no longer has a task
     //     or the task no longer has this thread

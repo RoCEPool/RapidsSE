@@ -400,6 +400,9 @@ void TokenVec::vToString(Stz* szBuff, i8 iFromTkn)
         StrLib::vConcat(szBuff->azChar(),pToken->szText()->azChar());
         break;
         
+      case TN_NONE:
+        break;
+        
       case TN_OTHER:
         StrLib::vConcat(szBuff->azChar(),pToken->szText()->azChar());
         break;
