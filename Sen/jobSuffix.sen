@@ -131,9 +131,6 @@
   // append _beg to name of word being compiled
   "_run" word::addSuffix
 
-  // the compiled word is a seed
-  tick seed compiler::current word.category!
-
   word::seed#
 
   // set exit hook of word being compiled

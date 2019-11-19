@@ -21,6 +21,8 @@
   SS_SEED_REQ log::jobSeed
 
   job::assertCorrectness
+
+  <seed_initially>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,6 +37,8 @@
   SS_SEED_BEG log::jobSeed
 
   job::assertCorrectness
+
+  <seed_initially>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -49,6 +53,8 @@
   SS_SEED_EXE log::jobSeed
 
   job::assertCorrectness
+
+  <seed_initially>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -63,6 +69,8 @@
   SS_SEED_END log::jobSeed
 
   job::assertCorrectness
+
+  <seed_initially>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -77,6 +85,8 @@
   SS_SEED_CAN log::jobSeed
 
   job::assertCorrectness
+
+  <seed_initially>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -91,6 +101,8 @@
   SS_SEED_RUN log::jobSeed
 
   job::assertCorrectness
+
+  <seed_initially>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -205,6 +217,8 @@
   r@ locate log::markExit
 
   DdlLock[].testDrop
+
+  <done_finally>
 
   task::delete
 

@@ -48,12 +48,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job__Begun from partcipating node on originating node         */
+/* run this received Job__Begun on originating node                           */
 /*----------------------------------------------------------------------------*/
 : _Begun _run
 
-  >>logEntry <SEED_RUN>
-  actLog::seed_rcv
+  //>>logEntry <SEED_RUN>
+  //actLog::seed_rcv
 
   //
   // where:  On the originator node.
@@ -133,8 +133,8 @@
   JobRef[].return
 
   // delete this completed __begun job
-  job::deleteThis
-  <DONE_RCV>
+  //job::deleteThis
+  //<DONE_RCV>
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -82,19 +82,21 @@ Job::Job(eCN eClassNo)
   m_bNormalSides = true; //
   m_bWasReceived = false;
   
+  m_oTimer.vStart();
+  
   //m_oAcksRmg
   
   m_aJobClass        = nullptr;
-  m_pTaskJ = nullptr;
+  m_pTaskJ           = nullptr;
   m_pOriginatingTask = nullptr;
-  m_iOriginatingId = C_UNKNOWN;
+  m_iOriginatingId   = C_UNKNOWN;
 
-  m_iParticipantNode  = C_UNKNOWN;
+  m_iParticipantNode = C_UNKNOWN;
   m_oAcksRmg_2pc.vCheckInit();
   
   m_pPipeline = nullptr;
-  m_pOp = nullptr;
-  m_pOperand   = nullptr;
+  m_pOp       = nullptr;
+  m_pOperand  = nullptr;
   
 
   
@@ -137,6 +139,7 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_bNormalSides = true; //
   m_bWasReceived = false;
   
+  m_oTimer.vStart();
   //m_oAcksRmg
   
   m_pTaskJ = nullptr;
@@ -190,6 +193,7 @@ Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
   m_bNormalSides = true; //
   m_bWasReceived = false;
   
+  m_oTimer.vStart();
   //m_oAcksRmg
   
   m_pTaskJ = nullptr;
@@ -224,7 +228,7 @@ Job::~Job(void) noexcept(false)
   
   //vTrace("Deleting job: %s\n"_Stz,aCN[eClass()]);
   
-  if (bHasEnameTag(C_TAG_LIFE)) {
+  if (bHasEnameTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
     
     SP_EnmSet spEnameSet;
     vPrint("Job Delete: %s\n"_Stz,spEnameSet.sz(&m_oEnameSet));
