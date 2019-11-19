@@ -48,9 +48,6 @@
 /*----------------------------------------------------------------------------*/
 : _End _run
 
-  >>logEntry <SEED_RUN>
-  actLog::seed_rcv
-
   //
   // where: on the participating node
   //
@@ -65,13 +62,6 @@
   SEED_END JobRef[] job.seed!
   JobRef[] job.spawn
   JobRef[].return
-
-  DdlLock[].testDrop
-
-  <DONE_RCV>
-  job::completed
-
-  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
