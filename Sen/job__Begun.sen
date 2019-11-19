@@ -52,9 +52,6 @@
 /*----------------------------------------------------------------------------*/
 : _Begun _run
 
-  //>>logEntry <SEED_RUN>
-  //actLog::seed_rcv
-
   //
   // where:  On the originator node.
   // event:  A Job__Begun has been received from a participating node
@@ -104,37 +101,27 @@
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].return
-//    job::deleteThis
-//    <DONE_RCV>
     exit                                                         // *EARLY EXIT*
   then
 
-  JP_BEGUN log::markPhase
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all job__begun's have been received, so this job is the decider
+
+  JP_BEGUN log::markPhase
 
   // check if any node returned an error
   JobRef[] job.participantHasError true == if
     // distribute Job__Cancel to all participants
     JobRef[] Job__Cancel::distribute
     JobRef[].return
-//    job::deleteThis
-//    <DONE_RCV>
     exit                                                         // *EARLY EXIT*
   then
 
-  // distribute Job__Execute to all participants
-
   JP_EXECUTING log::markPhase
 
+  // distribute Job__Execute to all participants
   JobRef[] Job__Execute::distribute
   JobRef[].return
-
-  // delete this completed __begun job
-  //job::deleteThis
-  //<DONE_RCV>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -150,7 +137,6 @@ jobInfo: _Begun
   <?jobKind?>  = JK_GENERIC
 }
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */
