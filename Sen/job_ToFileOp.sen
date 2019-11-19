@@ -1,0 +1,47 @@
+/*============================================================================*/
+/* job_ToFileOp.sen -- Job ToFileOp                                           */
+/*============================================================================*/
+
+" job_ToFileOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute for toFileOp req                           (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : ToFile_req ( -- )
+ 
+   >>logEntry <SEED_REQ>
+
+   job::this locals| pJob_ToFileOp |
+
+   tp: ToFile_req
+
+   pJob_ToFileOp job.opLoop
+
+   //pJob_ConsumeOp job::participantExecuted
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobSyntax: ToFile :: ToFile ;
+
+jobInfo: ToFile
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  //<?jobType?>  = JT_CONSUMEOP
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

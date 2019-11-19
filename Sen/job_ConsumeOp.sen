@@ -5,7 +5,7 @@
 " job_ConsumeOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute for cancelQuery                            (on node where spawned) */
+/* execute for consumeOp req                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : Consume_req ( -- )
  
@@ -13,7 +13,7 @@
 
    job::this locals| pJob_ConsumeOp |
 
-   tp: ConsumeOp_run
+   tp: Consume_req
 
    pJob_ConsumeOp job.opLoop
 

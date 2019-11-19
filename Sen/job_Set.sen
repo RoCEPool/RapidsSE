@@ -89,6 +89,8 @@
 "job_Supervisor.sen"     include
 
 "job_TableSizes.sen"     include
+"job_ToCsvOp.sen"        include
+"job_ToFileOp.sen"       include
 "job_TruncateTable.sen"  include
 
 "job_Universal.sen"      include
