@@ -80,11 +80,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* entry hook for action seed                                                 */
+/* entry hook for run seed                                                    */
 /*----------------------------------------------------------------------------*/
-: act_entryHook
+: run_entryHook
 
-  "act_entryHook" .
+  "run_entryHook" .
 
   r@ locate log::markEntry
 
@@ -196,11 +196,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* exit hook for begin request                                                */
+/* exit hook for run request                                                  */
 /*----------------------------------------------------------------------------*/
-: act_exitHook
+: run_exitHook
 
-  "act_exitHook" .
+  "run_exitHook" .
 
   r@ locate log::markExit
 
