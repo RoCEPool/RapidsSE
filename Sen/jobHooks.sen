@@ -135,7 +135,7 @@
 
   DdlLock[].testDrop
 
-  job::assertCorrectness
+  <done_finally>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -152,8 +152,6 @@
   task::delete
 
   HAZARD
-
-  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -170,8 +168,6 @@
   task::delete
 
   HAZARD
-
-  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -185,10 +181,11 @@
 
   DdlLock[].testDrop
 
+  <done_finally>
+
   job::completed
 
   HAZARD
-  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -200,11 +197,11 @@
 
   r@ locate log::markExit
 
-  job::completed
+  <done_finally>
+
+ job::completed
 
   HAZARD
-
-  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -231,11 +228,9 @@
 /*----------------------------------------------------------------------------*/
 : std_exitHook
 
-  // "std_exitHook" .
+  "std_exitHook" .
 
   r@ locate log::markExit
-
-  job::assertCorrectness
 ;
 
 /*----------------------------------------------------------------------------*/
