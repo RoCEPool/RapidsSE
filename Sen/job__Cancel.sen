@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__Cancel on participating node                             */
 /*----------------------------------------------------------------------------*/
-: _Cancel _beg
+: _Cancel _run
 
   >>logEntry <SEED_RCV>
   actLog::seed_rcv

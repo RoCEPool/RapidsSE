@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /* run recieved Job__Cancelled on originating node                            */
 /*----------------------------------------------------------------------------*/
-: _Cancelled _beg
+: _Cancelled _run
 
   >>logEntry <SEED_RCV>
   actLog::seed_rcv

@@ -88,7 +88,7 @@
 
   r@ locate log::markEntry
 
-  SS_SEED_BEG log::jobSeed
+  SS_SEED_RUN log::jobSeed
 
   job::assertCorrectness
 ;

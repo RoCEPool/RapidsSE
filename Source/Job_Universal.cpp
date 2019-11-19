@@ -12,7 +12,7 @@ JobClass xJobClass_Universal =
   "universal"_Stz,        // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
-  nullptr,                // the _run task seed
+  "universal_run"_Stz,    // the _run task seed
   "universal_req"_Stz,    // the _req task seed
   "universal_beg"_Stz,    // the _rcv task seed
   "universal_exe"_Stz,    // the _exe task seed

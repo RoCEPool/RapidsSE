@@ -1558,9 +1558,9 @@ void Step::vJobSeedDecode(void)
   if (JK_GENERIC == pJob->m_eJobKind) {
     EnameSet* pEnameSet_ji = Job::pJobInfo_enameSet(pJob->m_sJobNm);
     
-    s32 sSeed = pEnameSet_ji->szValue(C_TAG_SEEDRCV);
+    s32 sSeed = pEnameSet_ji->szValue(C_TAG_SEEDRUN);
     
-    eSeed = SS_SEED_RCV;
+    eSeed = SS_SEED_RUN;
     
     vDebugPoint();
   }
