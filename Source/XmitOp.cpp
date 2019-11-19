@@ -181,7 +181,8 @@ eOR XmitOp::eXmitLoop(void)
       // -- -- -- -- -- --
         
       case CN_CRWBUFFER:
-      case CN_IRWBUFFER: {
+      case CN_IRWBUFFER:
+      case CN_CSVBUFFER: {
         
         // check if query being cancelled
         if (m_pPipeline->bCancelling()) {
@@ -198,8 +199,11 @@ eOR XmitOp::eXmitLoop(void)
           }
           
           // delete non-data operands
-          if (pOperand->eClass() != CN_CRWBUFFER)
+          if (pOperand->eClass() == CN_IRWBUFFER)
             delete _pIrwBuffer(pOperand);
+          if (pOperand->eClass() == CN_CSVBUFFER)
+            delete _pIrwBuffer(pOperand);
+            
           break;
         }
         iOperands++;
