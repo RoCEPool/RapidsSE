@@ -14,12 +14,12 @@ static Stz* C_TAG_TIME     = "</time/>"_Stz;
 static Stz* C_TAG_XFER     = "</xfer/>"_Stz;
 
 // job info tags
-static Stz* C_TAG_SEEDACT  = "<?SeedAct?>"_Stz;
 static Stz* C_TAG_SEEDCAN  = "<?SeedCan?>"_Stz;
 static Stz* C_TAG_SEEDEND  = "<?SeedEnd?>"_Stz;
 static Stz* C_TAG_SEEDEXE  = "<?SeedExe?>"_Stz;
 static Stz* C_TAG_SEEDRCV  = "<?SeedRcv?>"_Stz;
 static Stz* C_TAG_SEEDREQ  = "<?SeedReq?>"_Stz;
+static Stz* C_TAG_SEEDRUN  = "<?SeedRun?>"_Stz;
 
 // job tags
 static Stz* C_TAG_DISTID   = "<distId>"_Stz;
