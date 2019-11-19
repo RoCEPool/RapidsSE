@@ -9,7 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Debug(void)
 {
-  vAddStep("debug::trap"_Stz,      &Step::vDebugTrap);
+  vAddStep("debug::breakPoint"_Stz,  &Step::vDebugTrap);
+  vAddStep("debug::trap"_Stz,        &Step::vDebugTrap);
 }
 
 /*----------------------------------------------------------------------------*/

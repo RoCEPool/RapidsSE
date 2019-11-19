@@ -16,8 +16,22 @@
 
   task::seedInitially
 
-  // [ compiler::current word.name@ , ] .
-  // <jobNm> .
+  [ compiler::current word.name@ , ] .
+  <jobNm> .
+
+  //debug::breakPoint
+
+  <path> str.toStrVec task::dicStack.set
+
+  job::acquireDdlLock
+
+  <jobNm> "::request" str.cat find dup if
+    execute
+  else
+    drop
+  then
+
+  DdlLock[].testDrop
 
   task::doneFinally
 

@@ -7,9 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* list folders requests (on originating node)                                */
 /*----------------------------------------------------------------------------*/
-: lf_req ( -- <R> )
-
-  >>logEntry <SEED_REQ>
+: lf::request _eeh ( -- <R> )
 
   0 0 0 locals| iCount pJob_Lf pTask |
 
@@ -62,10 +60,6 @@
   // set response in job
   pJob_Lf job.response!
   iCount pJob_Lf job.rowsProcessed!
-
-  <<logExit <DONE_REQ>
-
-  HAZARD
 ;
 
 /*----------------------------------------------------------------------------*/
