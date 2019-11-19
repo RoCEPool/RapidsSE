@@ -945,6 +945,7 @@ void Engine::vStartSystem(void)
   vCallBoot();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // threading
   
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "spawning threads"_Stz); //!format-LogSys
