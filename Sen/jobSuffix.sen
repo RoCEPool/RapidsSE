@@ -124,12 +124,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* _act makes the word being compile a seed with name: <wordNm>_act           */
+/* _run makes the word being compile a seed with name: <wordNm>_run           */
 /*----------------------------------------------------------------------------*/
-: _act immediate suffix
+: _run immediate suffix
 
   // append _beg to name of word being compiled
-  "_act" word::addSuffix
+  "_run" word::addSuffix
 
   // the compiled word is a seed
   tick seed compiler::current word.category!
@@ -137,10 +137,10 @@
   word::seed#
 
   // set exit hook of word being compiled
-  "act_exitHook" compiler::current word.exitHook!
+  "run_exitHook" compiler::current word.exitHook!
 
   // add call to beg_entryHook into word being compiled
-  POSTPONE act_entryHook
+  POSTPONE run_entryHook
 ;
 
 /*----------------------------------------------------------------------------*/

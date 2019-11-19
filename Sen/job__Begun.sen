@@ -50,9 +50,9 @@
 /*----------------------------------------------------------------------------*/
 /* run received Job__Begun from partcipating node on originating node         */
 /*----------------------------------------------------------------------------*/
-: _Begun _beg
+: _Begun _run
 
-  >>logEntry <SEED_RCV>
+  >>logEntry <SEED_RUN>
   actLog::seed_rcv
 
   //

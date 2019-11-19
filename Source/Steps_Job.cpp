@@ -1681,7 +1681,20 @@ void Step::vJobSeedDecode(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(SS_SEED_RCV);
+  eSS eSeed = SS_SEED_RCV;
+  
+  if (JK_GENERIC == pJob->m_eJobKind) {
+    EnameSet* pEnameSet_ji = Job::pJobInfo_enameSet(pJob->m_sJobNm);
+    
+    s32 sSeed = pEnameSet_ji->szValue(C_TAG_SEEDRUN);
+    
+    eSeed = SS_SEED_RUN;
+    
+    vDebugPoint();
+  }
+  
+  
+  m_pDataStack->vPushI8(eSeed);
   
   EXIT();
 }

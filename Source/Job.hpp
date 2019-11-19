@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-// job info tags
+// job control tags
 static Stz* C_TAG_BYPROMPT = "</byPrompt/>"_Stz;
 static Stz* C_TAG_FLOW     = "</flow/>"_Stz;
 static Stz* C_TAG_JE       = "</je/>"_Stz;
@@ -12,6 +12,14 @@ static Stz* C_TAG_LIFE     = "</life/>"_Stz;
 static Stz* C_TAG_NOWAIT   = "</noWait/>"_Stz;
 static Stz* C_TAG_TIME     = "</time/>"_Stz;
 static Stz* C_TAG_XFER     = "</xfer/>"_Stz;
+
+// job info tags
+static Stz* C_TAG_SEEDCAN  = "<?SeedCan?>"_Stz;
+static Stz* C_TAG_SEEDEND  = "<?SeedEnd?>"_Stz;
+static Stz* C_TAG_SEEDEXE  = "<?SeedExe?>"_Stz;
+static Stz* C_TAG_SEEDRCV  = "<?SeedRcv?>"_Stz;
+static Stz* C_TAG_SEEDREQ  = "<?SeedReq?>"_Stz;
+static Stz* C_TAG_SEEDRUN  = "<?SeedRun?>"_Stz;
 
 // job tags
 static Stz* C_TAG_DISTID   = "<distId>"_Stz;
