@@ -46,9 +46,6 @@
 /*----------------------------------------------------------------------------*/
 : _Execute _run
 
-  >>logEntry <SEED_RUN>
-  actLog::seed_rcv
-
   //
   // where: on the participating node
   //
@@ -62,9 +59,6 @@
   SEED_EXE JobRef[] job.seed!
   JobRef[] job.spawn
   JobRef[].return
-
-  job::deleteThis
-  <DONE_RCV>
 ;
 
 /*----------------------------------------------------------------------------*/
