@@ -69,13 +69,10 @@
 /*----------------------------------------------------------------------------*/
 : _Executed _run
 
-  >>logEntry <SEED_RUN>
-  actLog::seed_rcv
-
   job::this locals| pJob__Executed |
   pJob__Executed job.id@ locals| iJobId |
 
-   0 0 0 locals| iParticipantNode error bAmDecider |
+  0 0 0 locals| iParticipantNode error bAmDecider |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the context of this __executed job
@@ -103,8 +100,6 @@
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].return
-    job::deleteThis
-    <DONE_RCV>
     exit                                                         // *EARLY EXIT*
   then
 
@@ -113,14 +108,9 @@
 
   JP_EXECUTED log::markPhase
 
-
   // send a job__end to all participants
   JobRef[] Job__End::distribute
   JobRef[].return
-
-  // delete this completed __executed job
-  job::deleteThis
-  <DONE_RCV>
 ;
 
 /*----------------------------------------------------------------------------*/
