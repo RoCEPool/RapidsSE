@@ -104,8 +104,8 @@
   // if there are acks remaining just exit
   bAmDecider not if
     JobRef[].return
-    job::deleteThis
-    <DONE_RCV>
+//    job::deleteThis
+//    <DONE_RCV>
     exit                                                         // *EARLY EXIT*
   then
 
@@ -120,8 +120,8 @@
     // distribute Job__Cancel to all participants
     JobRef[] Job__Cancel::distribute
     JobRef[].return
-    job::deleteThis
-    <DONE_RCV>
+//    job::deleteThis
+//    <DONE_RCV>
     exit                                                         // *EARLY EXIT*
   then
 
