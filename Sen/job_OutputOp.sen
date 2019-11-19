@@ -15,7 +15,13 @@
 
    tp: outputOp_req
 
-   pJob_OutputOp job.opLoop
+   begin
+     pJob_OutputOp job.LoopOutputOp
+     "biding" .
+   while
+     "continuing" .
+     pJob_OutputOp job.LoopOutputOp
+   repeat
 
    //pJob_OutputOp job::participantExecuted
 

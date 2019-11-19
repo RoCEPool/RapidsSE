@@ -594,6 +594,45 @@ Operand* Op::pPopQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop operand queue                                                          */
+/*----------------------------------------------------------------------------*/
+Operand* Op::pPopQueue2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Operand* pOperand = nullptr;
+  
+  vGrabTaskLock();
+  
+  pOperand = pQueueLeft()->pPopQueue();
+  
+  if (pOperand)
+    AM::vLogOpr(SL_INF,this,OA_OP_POP,
+                "PopQueue operand %s from left queue"_Stz, //!format-LogOpr
+                aCN[pOperand->eClass()]);
+  else
+    AM::vLogOpr(SL_INF,this,OA_OP_POP,
+                "PopQueue no operand on left queue"_Stz); //!format-LogOpr
+  
+  if (pOperand)
+    vDropTaskLock();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (AM::bVerbose() && pOperand) {
+    vTrace("%s (P%lld) (N%lld) (job:%p)::pPopQueue : %s %p\n"_Stz,
+           m_sName.szStz(),
+           m_nPartition,
+           m_nNode,
+           m_pJobPipeline,
+           aCN[pOperand->eClass()],
+           pOperand);
+  }
+  
+  return pOperand;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop operand queue A                                                        */
 /*----------------------------------------------------------------------------*/
 Operand* Op::pPopQueueLeft(void)

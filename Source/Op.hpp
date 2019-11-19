@@ -91,6 +91,7 @@ namespace Operators
     void vPipeOut_endMarker(void);
     void vPipeToJob(Operand* pOperand);
     Operand* pPopQueue(void);
+    Operand* pPopQueue2(void);
     Operand* pPopQueueLeft(void);
     Operand* pPopQueueRight(void);
     OperandQueue* pQueueLeft(void);

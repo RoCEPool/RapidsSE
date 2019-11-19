@@ -454,6 +454,7 @@ public:
   void vJobClass(void);
   void vJobCompleted(void);
   void vJobCreateResponseVec(void);
+  void vJobLoopOutputOp(void);
   void vJobOperandFetch(void);
   void vJobOperandStore(void);
   void vJobOpLoop(void);
