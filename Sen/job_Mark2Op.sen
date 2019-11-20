@@ -28,15 +28,17 @@
     Operand[].decode case
       ZK_CRWBUFFER of
         "Operand:- ZK_CRWBUFFER" .
-        pMark2Op job.dealOperand
+        //pMark2Op job.dealOperand
         Operand[].workDone
         Operand[].pipeOut
+        true
       endof
       ZK_CSVBUFFER of
         "Operand:- ZK_CSVBUFFER" .
-        pMark2Op job.dealOperand
+        //pMark2Op job.dealOperand
         Operand[].workDone
         Operand[].pipeOut
+        true
       endof
       ZK_ENDMARKER of
         "Operand:- ZK_ENDMARKER" .
@@ -47,27 +49,31 @@
       endof
       ZK_ENTBUFFER of
         "Operand:- ZK_ENTBUFFER" .
-        pMark2Op job.dealOperand
+        //pMark2Op job.dealOperand
         Operand[].workDone
         Operand[].pipeOut
+        true
       endof
       ZK_IRWBUFFER of
         "Operand:- ZK_IRWBUFFER" .
-        pMark2Op job.dealOperand
+        //pMark2Op job.dealOperand
         Operand[].workDone
         Operand[].pipeOut
+        true
       endof
       ZK_SRTBUFFER of
         "Operand:- ZK_SRTBUFFER" .
-        pMark2Op job.dealOperand
+        //pMark2Op job.dealOperand
         Operand[].workDone
         Operand[].pipeOut
+        true
       endof
       ZK_STREAMDEF of
         "Operand:- ZK_STREAMDEF" .
-        pMark2Op job.dealOperand
+        //pMark2Op job.dealOperand
         Operand[].workDone
         Operand[].pipeOut
+        true
       endof
     endcase
 
