@@ -429,7 +429,8 @@ void Step::vJobBideOperand(void)
   
   for (;;) {
     
-    Operand* pOperand = pOp->pPopQueue2();
+    m_pRegSet->m_pOperand = pOp->pPopQueue2();
+    Operand* pOperand = m_pRegSet->m_pOperand;
     
     if (! pOperand) {
       ASSERT(pOp->bIsLocked());
@@ -1269,8 +1270,9 @@ void Step::vJobNextOperand(void)
   
   for (;;) {
     
-    Operand* pOperand = pOp->pPopQueue2();
-    
+    m_pRegSet->m_pOperand = pOp->pPopQueue2();
+    Operand* pOperand = m_pRegSet->m_pOperand;
+
     if (! pOperand) {
       ASSERT(pOp->bIsLocked());
       AM::vTaskSchedulerAct(m_pTask,SA_BIDE);
