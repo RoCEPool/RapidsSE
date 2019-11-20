@@ -438,7 +438,7 @@ void Step::vJobCompleted(void)
   
   pJob->m_eJobState = JS_COMPLETED;
   
-  m_pTask->vTransition(SA_DELETE);
+  m_pTask->vSchedulerAct(SA_DELETE);
   
   EXIT();
 }
@@ -1869,7 +1869,7 @@ void Step::vJobSignalWaiter(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTask->vTransition(SA_SIGNAL);
+  m_pTask->vSchedulerAct(SA_SIGNAL);
   
   EXIT();
 }

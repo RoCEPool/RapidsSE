@@ -27,7 +27,7 @@ namespace Tasks
     SMA<Mutex>   m_pMutex;       // mutex
 
     eTS          m_eState;       // state (running, sleeping, ...)
-    eSA          m_eTransition;  // state transition request
+    eSA          m_eScheduler;   // schedulre transition action
     eQK          m_eQueue;       // which queue the task is currently in
   
     Decider      m_oAcksRmg;     // number of acks still waiting for
@@ -109,9 +109,9 @@ namespace Tasks
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Stz* aMark);
     void vTraceStep(Stz* aStepNm);
-    eSA  eTransition(void);
-    void vTransition(eSA eTransition);
-    void vTransitionClear(void);
+    eSA  eSchedulerAct(void);
+    void vSchedulerAct(eSA eSchedulerAct);
+    void vSchedulerActClear(void);
     void vUnlinkJob(void);
     void vWakeupClear(void);
     u8   uWakeupInUsec(void);

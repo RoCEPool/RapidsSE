@@ -107,7 +107,7 @@ void Task::vInit(void)
   // m_oDicStack
 
   m_eState       = TS_NONE;
-  m_eTransition  = SA_NONE;
+  m_eScheduler  = SA_NONE;
   m_eQueue       = QK_NONE;
   m_oAcksRmg.vCheckInit();
   // m_oWakeup
@@ -186,7 +186,7 @@ void Task::vTaskLoop(void)
   
   vAssertStructure();
   
-  while (SA_NONE == m_eTransition) {
+  while (SA_NONE == m_eScheduler) {
     
     // UNUSUAL CODE:
     //   get address of member containing intinsic function pointer and
@@ -414,12 +414,12 @@ void Task::vContentDump(void)
   vTrace("----\n"_Stz);
 
   vTrace("%p:\n"
-         "m_eState=%s m_eTransition=%s m_eQueue=%s\n"_Stz,
+         "m_eState=%s m_eScheduler=%s m_eQueue=%s\n"_Stz,
          
          this,
          
          aTS[m_eState]->azChar(),
-         aSA[m_eTransition]->azChar(),
+         aSA[m_eScheduler]->azChar(),
          aQK[m_eQueue]->azChar(),
 
          C_ENDARGS
@@ -1061,33 +1061,33 @@ void Task::vTraceStep(Stz* aStepNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transition request                                                     */
+/* get acheduler action                                                       */
 /*----------------------------------------------------------------------------*/
-eSA Task::eTransition(void)
+eSA Task::eSchedulerAct(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_eTransition;
+  return m_eScheduler;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set transition request                                                     */
+/* set scheduler action                                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vTransition(eSA eTransition)
+void Task::vSchedulerAct(eSA eSchedulerAct)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_eTransition = eTransition;
+  m_eScheduler = eSchedulerAct;
 }
 
 /*----------------------------------------------------------------------------*/
-/* clear transition request                                                   */
+/* clear scheduler action                                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vTransitionClear()
+void Task::vSchedulerActClear()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_eTransition = SA_NONE;
+  m_eScheduler = SA_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
