@@ -185,7 +185,7 @@ void Op::vOpLoop(void)
    
     case OR_BIDE:
       ASSERT(bIsLocked());
-      AM::vTaskTransition(m_pTask,SA_BIDE);
+      AM::vTaskSchedulerAct(m_pTask,SA_BIDE);
       return;
     
     case OR_ERROR:
@@ -195,7 +195,7 @@ void Op::vOpLoop(void)
       if (m_bAckJobEnd)
         vAckJob();
       
-      //AM::vTaskTransition(m_pTask,SA_DELETE);
+      //AM::vTaskSchedulerAct(m_pTask,SA_DELETE);
       return;
       
     case OR_EXIT:
@@ -204,11 +204,11 @@ void Op::vOpLoop(void)
       }
       if (m_bAckJobEnd)
         vAckJob();
-      //AM::vTaskTransition(m_pTask,SA_DELETE);
+      //AM::vTaskSchedulerAct(m_pTask,SA_DELETE);
       return;
     
     case OR_PAUSE:
-      //AM::vTaskTransition(m_pTask,SA_PAUSE);
+      //AM::vTaskSchedulerAct(m_pTask,SA_PAUSE);
       return;
     
     default:

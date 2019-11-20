@@ -138,7 +138,7 @@ namespace Oblique
     static void vTaskDelete(Task* pTask);
     static bool bTaskIsLocked(Task* pTask);
     static Task* pTaskNew(Job* pJob);
-    static void vTaskTransition(Task* pTask, i8 iTransition);
+    static void vTaskSchedulerAct(Task* pTask, i8 iSchedulerAct);
     static void vTenants(Word* pTenants);
     static void vTriggerBidingTask(Task* pTask);
 

@@ -874,7 +874,7 @@ void Step::vJobLoopOutputOp(void)
     
     if (! pOperand) {
       ASSERT(pOp->bIsLocked());
-      AM::vTaskTransition(m_pTask,SA_BIDE);
+      AM::vTaskSchedulerAct(m_pTask,SA_BIDE);
       goto L_EXIT;
     }
     
