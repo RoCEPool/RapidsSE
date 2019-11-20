@@ -18,6 +18,7 @@ shortcut fn forget node node9 abc def;
 shortcut ln show nodes ;
 shortcut lw logwrite ;
 shortcut o  olist;
+shortcut p  _pipeline2 ;
 shortcut r  _lineitemrjh ;
 shortcut s  _select ;
 shortcut sc startCluster ;
