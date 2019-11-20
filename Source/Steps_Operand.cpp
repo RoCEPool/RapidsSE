@@ -52,7 +52,9 @@ void Step::vOperandPipeOut(void)
   
   ASSERT(m_pRegSet->m_pOperand);
   
-  m_pTask->m_pOp->vPipeToJob(m_pRegSet->m_pOperand);
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+
+  pOp->vPipeToJob(m_pRegSet->m_pOperand);
   
   m_pRegSet->m_pOperand = nullptr;
   

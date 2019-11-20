@@ -616,7 +616,7 @@ void Step::vJobCreateResponseVec(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJobDealOperand(void)
 {
-  ENTRY("vJobNextOperand"_Stz);
+  ENTRY("vJobDealOperand"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -633,7 +633,7 @@ void Step::vJobDealOperand(void)
   
   Operand* pOperand = m_pRegSet->m_pOperand;
   
-  m_pRegSet->m_pOperand = nullptr;
+  //m_pRegSet->m_pOperand = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -646,7 +646,7 @@ void Step::vJobDealOperand(void)
     case CN_CRWBUFFER: {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
       pOp->m_iWorkDone += pCrwBuffer->nRowCount();
-      pOp->vPipeToJob(pOperand);
+      //pOp->vPipeToJob(pOperand);
       break;
     }
       
@@ -655,7 +655,7 @@ void Step::vJobDealOperand(void)
     case CN_CSVBUFFER: {
       CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
       pOp->m_iWorkDone += pCsvBuffer->nRecords();
-      pOp->vPipeToJob(pOperand);
+      //pOp->vPipeToJob(pOperand);
       break;
     }
       
@@ -691,7 +691,7 @@ void Step::vJobDealOperand(void)
     case CN_ENTBUFFER: {
       EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
       pOp->m_iWorkDone += pEntBuffer->nItems();
-      pOp->vPipeToJob(pOperand);
+      //pOp->vPipeToJob(pOperand);
       break;
     }
       
@@ -700,7 +700,7 @@ void Step::vJobDealOperand(void)
     case CN_IRWBUFFER: {
       IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
       pOp->m_iWorkDone += pIrwBuffer->nItems();
-      pOp->vPipeToJob(pOperand);
+      //pOp->vPipeToJob(pOperand);
       break;
     }
       
@@ -709,14 +709,14 @@ void Step::vJobDealOperand(void)
     case CN_SRTBUFFER: {
       SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
       pOp->m_iWorkDone += pSrtBuffer->nItems();
-      pOp->vPipeToJob(pOperand);
+      //pOp->vPipeToJob(pOperand);
       break;
     }
       
       // -- -- -- -- -- --
       
     case CN_STREAMDEF: {
-      pOp->vPipeToJob(pOperand);
+      //pOp->vPipeToJob(pOperand);
       break;
     }
       
