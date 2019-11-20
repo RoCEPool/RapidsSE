@@ -431,8 +431,6 @@ void Step::vJobBideOperand(void)
     m_pTask->vSchedulerAct(SA_BIDE);
   }
   
-  m_pDataStack->vPushI8(true);
-  
   EXIT();
 }
 /*----------------------------------------------------------------------------*/
@@ -614,86 +612,6 @@ void Step::vJobCreateResponseVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.operand@ -- fetch operand from job                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOperandFetch(void)
-{
-  ENTRY("vJobOperandFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  Job* pJob = _pJob(pJobPtr);
-  
-  m_pDataStack->vPushPointer(pJob->m_pOperand);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.operand! -- store operand in the job                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOperandStore(void)
-{
-  ENTRY("vJobOperandStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  Job* pJob = _pJob(pJobPtr);
-  
-  Object* pOperandPtr;
-  if ( ! m_pDataStack->bPopObject(pOperandPtr) )
-    THROW_DSTACK();
-  Operand* pOperand = _pOperand(pOperandPtr);
-  
-  pJob->m_pOperand = pOperand;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.opLoop -- execute the job's op loop                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOpLoop(void)
-{
-  ENTRY("vJobOperandStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
-  
-  Op* pOp = pJob_Universal->m_pOp;
-  pOp->vOpLoop();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.opTable! -- store the table in the job's op                            */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOpTableStore(void)
-{
-  ENTRY("vJobOpTableStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
-    THROW_DSTACK();
-  Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
-  
-  Object* pTablePtr;
-  if ( ! m_pDataStack->bPopObject(pTablePtr) )
-    THROW_DSTACK();
-  Table* pTable = _pTable(pTablePtr);
-  
-  Op* pOp = pJob_Universal->m_pOp;
-  pOp->m_pTable = pTable;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.dealOperand -- deal with operand                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJobDealOperand(void)
@@ -711,8 +629,6 @@ void Step::vJobDealOperand(void)
   
   Op* pOp = pJob_Universal->m_pOp;
   
-  if (! m_pRegSet->m_pOperand)
-    m_pRegSet->m_pOperand = pOp->pPopQueue2();
   ASSERT(m_pRegSet->m_pOperand);
   
   Operand* pOperand = m_pRegSet->m_pOperand;
@@ -1291,115 +1207,11 @@ void Step::vJobNextOperand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool bContinue = true;
-  
   Op* pOp = pJob_Universal->m_pOp;
   
   if (! m_pRegSet->m_pOperand)
     m_pRegSet->m_pOperand = pOp->pPopQueue2();
   ASSERT(m_pRegSet->m_pOperand);
-
-  Operand* pOperand = m_pRegSet->m_pOperand;
-
-  m_pRegSet->m_pOperand = nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  eCN eClass_op = pOperand->eClass();
-  
-  switch (eClass_op) {
-      
-    // -- -- -- -- -- --
-      
-    case CN_CRWBUFFER: {
-      CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-      pOp->m_iWorkDone += pCrwBuffer->nRowCount();
-      pOp->vPipeToJob(pOperand);
-      break;
-    }
-      
-    // -- -- -- -- -- --
-      
-    case CN_CSVBUFFER: {
-      CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
-      pOp->m_iWorkDone += pCsvBuffer->nRecords();
-      pOp->vPipeToJob(pOperand);
-      break;
-    }
-      
-    // -- -- -- -- -- --
-      
-    case CN_ENDMARKER: {
-      
-      if (--pOp->m_nLeftEndMarkers == 0) {
-        if (pOp->bIsCancelling()) {
-          delete _pEndMarker(pOperand);
-          pOp->vPipeToJob(new CancelMarker);
-        }
-        else
-          pOp->vPipeToJob(pOperand);
-        
-        if (AM::bJobHasError(pOp->m_pJobUniversal)) {
-          AM::vSetJobLocalError(pOp->m_pJobUniversal, pOp->m_pPipeline->pJob());
-        }
-        if (pOp->m_bAckJobEnd)
-          pOp->vAckJob();
-        
-        bContinue = false;
-        goto L_EXIT;
-      }
-      else
-        delete (EndMarker*)pOperand;
-      
-      break;
-    }
-      
-    // -- -- -- -- -- --
-      
-    case CN_ENTBUFFER: {
-      EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
-      pOp->m_iWorkDone += pEntBuffer->nItems();
-      pOp->vPipeToJob(pOperand);
-      break;
-    }
-      
-    // -- -- -- -- -- --
-      
-    case CN_IRWBUFFER: {
-      IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-      pOp->m_iWorkDone += pIrwBuffer->nItems();
-      pOp->vPipeToJob(pOperand);
-      break;
-    }
-      
-    // -- -- -- -- -- --
-      
-    case CN_SRTBUFFER: {
-      SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-      pOp->m_iWorkDone += pSrtBuffer->nItems();
-      pOp->vPipeToJob(pOperand);
-      break;
-    }
-      
-    // -- -- -- -- -- --
-      
-    case CN_STREAMDEF: {
-      pOp->vPipeToJob(pOperand);
-      break;
-    }
-      
-    // -- -- -- -- -- --
-      
-    default:
-      RASSERT(0);
-      break;
-  }
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_EXIT:
-  
-  m_pDataStack->vPushI8(bContinue);
   
   EXIT();
 }
@@ -1417,6 +1229,86 @@ void Step::vJobNoWaitFetch(void)
   Job* pJob = _pJob(pJobPtr);
   
   m_pDataStack->vPushI8(pJob->bNoWaitTag());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.operand@ -- fetch operand from job                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJobOperandFetch(void)
+{
+  ENTRY("vJobOperandFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job* pJob = _pJob(pJobPtr);
+  
+  m_pDataStack->vPushPointer(pJob->m_pOperand);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.operand! -- store operand in the job                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJobOperandStore(void)
+{
+  ENTRY("vJobOperandStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job* pJob = _pJob(pJobPtr);
+  
+  Object* pOperandPtr;
+  if ( ! m_pDataStack->bPopObject(pOperandPtr) )
+    THROW_DSTACK();
+  Operand* pOperand = _pOperand(pOperandPtr);
+  
+  pJob->m_pOperand = pOperand;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.opLoop -- execute the job's op loop                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vJobOpLoop(void)
+{
+  ENTRY("vJobOperandStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
+  
+  Op* pOp = pJob_Universal->m_pOp;
+  pOp->vOpLoop();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.opTable! -- store the table in the job's op                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobOpTableStore(void)
+{
+  ENTRY("vJobOpTableStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
+  
+  Object* pTablePtr;
+  if ( ! m_pDataStack->bPopObject(pTablePtr) )
+    THROW_DSTACK();
+  Table* pTable = _pTable(pTablePtr);
+  
+  Op* pOp = pJob_Universal->m_pOp;
+  pOp->m_pTable = pTable;
   
   EXIT();
 }

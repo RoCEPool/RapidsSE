@@ -18,11 +18,14 @@
      "bide operand" .
      pJob_Mark2Op job.bideOperand
 
-   while
-
      "next operand" .
      pJob_Mark2Op job.nextOperand
 
+     "deal operand" .
+     pJob_Mark2Op job.dealOperand
+
+   while
+     assert::stack_0
    repeat
 
   <<logExit
