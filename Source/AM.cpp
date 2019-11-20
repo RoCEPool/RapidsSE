@@ -1299,7 +1299,7 @@ void AM::vJobContentDump(Job* pJob) { pJob->vContentDump(); }
 Task* AM::pTaskNew(Job* pJob) {
   return new Task(pJob);
 }
-void AM::vTaskTransition(Tasks::Task* pTask, i8 iTransition) {
+void AM::vTaskSchedulerAct(Tasks::Task* pTask, i8 iTransition) {
   pTask->vSchedulerAct((eSA)iTransition);
 }
 void AM::vTaskDelete(Task* pTask) {
