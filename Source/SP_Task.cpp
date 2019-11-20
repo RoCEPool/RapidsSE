@@ -53,7 +53,7 @@ Stz* SP_Task::sz_log(Task* pTask)
 
                   aTS[pTask->eState()],
                   aQK[pTask->eQueue()],
-                  aTR[pTask->eTransition()],
+                  aSA[pTask->eTransition()],
                   
                   spThreadId.sz(pTask->pThread()
                                   ? AM::iThreadId(pTask->pThread())

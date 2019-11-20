@@ -438,7 +438,7 @@ void Step::vJobCompleted(void)
   
   pJob->m_eJobState = JS_COMPLETED;
   
-  m_pTask->vTransition(TR_DELETE);
+  m_pTask->vTransition(SA_DELETE);
   
   EXIT();
 }
@@ -874,7 +874,7 @@ void Step::vJobLoopOutputOp(void)
     
     if (! pOperand) {
       ASSERT(pOp->bIsLocked());
-      AM::vTaskTransition(m_pTask,TR_BIDE);
+      AM::vTaskTransition(m_pTask,SA_BIDE);
       goto L_EXIT;
     }
     
@@ -1869,7 +1869,7 @@ void Step::vJobSignalWaiter(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pTask->vTransition(TR_SIGNAL);
+  m_pTask->vTransition(SA_SIGNAL);
   
   EXIT();
 }

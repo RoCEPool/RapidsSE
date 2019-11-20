@@ -1300,7 +1300,7 @@ Task* AM::pTaskNew(Job* pJob) {
   return new Task(pJob);
 }
 void AM::vTaskTransition(Tasks::Task* pTask, i8 iTransition) {
-  pTask->vTransition((eTR)iTransition);
+  pTask->vTransition((eSA)iTransition);
 }
 void AM::vTaskDelete(Task* pTask) {
   delete pTask;

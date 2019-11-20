@@ -107,7 +107,7 @@ void Task::vInit(void)
   // m_oDicStack
 
   m_eState       = TS_NONE;
-  m_eTransition  = TR_NONE;
+  m_eTransition  = SA_NONE;
   m_eQueue       = QK_NONE;
   m_oAcksRmg.vCheckInit();
   // m_oWakeup
@@ -186,7 +186,7 @@ void Task::vTaskLoop(void)
   
   vAssertStructure();
   
-  while (TR_NONE == m_eTransition) {
+  while (SA_NONE == m_eTransition) {
     
     // UNUSUAL CODE:
     //   get address of member containing intinsic function pointer and
@@ -419,7 +419,7 @@ void Task::vContentDump(void)
          this,
          
          aTS[m_eState]->azChar(),
-         aTR[m_eTransition]->azChar(),
+         aSA[m_eTransition]->azChar(),
          aQK[m_eQueue]->azChar(),
 
          C_ENDARGS
@@ -1063,7 +1063,7 @@ void Task::vTraceStep(Stz* aStepNm)
 /*----------------------------------------------------------------------------*/
 /* get transition request                                                     */
 /*----------------------------------------------------------------------------*/
-eTR Task::eTransition(void)
+eSA Task::eTransition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1073,7 +1073,7 @@ eTR Task::eTransition(void)
 /*----------------------------------------------------------------------------*/
 /* set transition request                                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vTransition(eTR eTransition)
+void Task::vTransition(eSA eTransition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1087,7 +1087,7 @@ void Task::vTransitionClear()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_eTransition = TR_NONE;
+  m_eTransition = SA_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
