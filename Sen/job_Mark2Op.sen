@@ -15,20 +15,30 @@
 
    begin
 
-     // bide till next operand is available
-     "bide operand" .
-     pMark2Op job.bideOperand
+    // bide till next operand is available
+    "bide operand" .
+    pMark2Op job.bideOperand
 
-     // pop next operand from queue into Operand[]
-     "next operand" .
-     pMark2Op job.nextOperand
+    // pop next operand from queue into Operand[]
+    "next operand" .
+    pMark2Op job.nextOperand
 
-     // decode
-     Operand[].decode "Operand Kind: %v" .printf
+    // decode
+    Operand[].decode "Operand Kind: %v" .printf
+    Operand[].decode case
+      ZK_CRWBUFFER of "Operand:- ZK_CRWBUFFER" . pMark2Op job.dealOperand endof
+      ZK_CSVBUFFER of "Operand:- ZK_CSVBUFFER" . pMark2Op job.dealOperand endof
+      ZK_ENDMARKER of "Operand:- ZK_ENDMARKER" . pMark2Op job.dealOperand endof
+      ZK_ENTBUFFER of "Operand:- ZK_ENTBUFFER" . pMark2Op job.dealOperand endof
+      ZK_IRWBUFFER of "Operand:- ZK_IRWBUFFER" . pMark2Op job.dealOperand endof
+      ZK_SRTBUFFER of "Operand:- ZK_SRTBUFFER" . pMark2Op job.dealOperand endof
+      ZK_STREAMDEF of "Operand:- ZK_STREAMDEF" . pMark2Op job.dealOperand endof
 
-     // process operand
-     "deal operand" .
-     pMark2Op job.dealOperand
+    endcase
+
+    // process operand
+    // "deal operand" .
+    // pMark2Op job.dealOperand
 
    while assert::stack_0 repeat
 
