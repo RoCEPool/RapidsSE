@@ -93,6 +93,7 @@ namespace Enums
 #include "eRS.h"
 #include "eRU.h"
 
+#include "eSA.h"
 #include "eSC.h"
 #include "eSL.h"
 #include "eSS.h"
@@ -100,7 +101,6 @@ namespace Enums
 
 #include "eTA.h"
 #include "eTN.h"
-#include "eTR.h"
 #include "eTS.h"
 #include "eTT.h"
 
