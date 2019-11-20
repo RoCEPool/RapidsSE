@@ -1,0 +1,21 @@
+/*============================================================================*/
+/* _pipeline2 -- pipeline with mark II operators                              */
+/*============================================================================*/
+
+pipeline export_lineItem
+begin
+
+  stage stageA on all partitions:
+    scan lineitem | toCsv | stageB
+
+  stage stageB on origin:
+    // toFile "/tmp/lineitem.csv" | output
+    // mark2op | output
+    output
+
+end
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
