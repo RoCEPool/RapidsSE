@@ -865,6 +865,7 @@ public:
 
   // operand
   void vOperandDecode(void);
+  void vOperandPipeOut(void);
 
   // persistence
   void vPersistenceCheckpoint(void);

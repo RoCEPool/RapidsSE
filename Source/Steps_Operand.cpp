@@ -10,6 +10,7 @@
 void Step::vAddSteps_Operand(void)
 {
   vAddStep("Operand[].decode"_Stz,   &Step::vOperandDecode);
+  vAddStep("Operand[].pipeOut"_Stz,  &Step::vOperandPipeOut);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,6 +43,21 @@ void Step::vOperandDecode(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Operand[].pipeOut -- append operand onto output pipe                       */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandPipeOut(void)
+{
+  ENTRY("vOperandPipeOut"_Stz);
+  
+  ASSERT(m_pRegSet->m_pOperand);
+  
+  m_pTask->m_pOp->vPipeToJob(m_pRegSet->m_pOperand);
+  
+  m_pRegSet->m_pOperand = nullptr;
+  
+  EXIT();
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
