@@ -9,9 +9,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Operand(void)
 {
-  vAddStep("Operand[].decode"_Stz,   &Step::vOperandDecode);
-  vAddStep("Operand[].pipeOut"_Stz,  &Step::vOperandPipeOut);
-  vAddStep("Operand[].workDone"_Stz, &Step::vOperandWorkDone);
+  vAddStep("Operand[].decode"_Stz,    &Step::vOperandDecode);
+  vAddStep("Operand[].handleEnd"_Stz, &Step::vOperandHandleEnd);
+  vAddStep("Operand[].pipeOut"_Stz,   &Step::vOperandPipeOut);
+  vAddStep("Operand[].workDone"_Stz,  &Step::vOperandWorkDone);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,6 +42,38 @@ void Step::vOperandDecode(void)
 
   m_pDataStack->vPushI8(eOperand);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].handleEnd -- handle end marker                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandHandleEnd(void)
+{
+  ENTRY("vOperandHandleEnd"_Stz);
+  
+  ASSERT(m_pRegSet->m_pOperand);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  
+  if (--pOp->m_nLeftEndMarkers == 0) {
+    if (pOp->bIsCancelling()) {
+      delete _pEndMarker(m_pRegSet->m_pOperand);
+      pOp->vPipeToJob(new CancelMarker);
+    }
+    else
+      pOp->vPipeToJob(m_pRegSet->m_pOperand);
+    
+    if (AM::bJobHasError(pOp->m_pJobUniversal)) {
+      AM::vSetJobLocalError(pOp->m_pJobUniversal, pOp->m_pPipeline->pJob());
+    }
+    if (pOp->m_bAckJobEnd)
+      pOp->vAckJob();
+    
+  }
+  else
+    delete (EndMarker*)m_pRegSet->m_pOperand;
+
   EXIT();
 }
 

@@ -40,7 +40,9 @@
       endof
       ZK_ENDMARKER of
         "Operand:- ZK_ENDMARKER" .
-        pMark2Op job.dealOperand
+        //pMark2Op job.dealOperand
+        Operand[].handleEnd
+        false
         // *does not pipeout*
       endof
       ZK_ENTBUFFER of
