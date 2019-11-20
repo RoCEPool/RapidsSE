@@ -50,8 +50,9 @@ RegSet::RegSet(Task* pTask)
   m_i_NextRnd  = AM::bDeveloper() ? 0 : C_UNKNOWN;
   m_pSendNode  = nullptr;
   
-  m_pDynamo  = nullptr;
-  
+  m_pDynamo    = nullptr;
+  m_pOperand   = nullptr;
+
   _checkInitialised_(CN_REGSET);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_REGSET,_FOOTER_);

@@ -27,7 +27,9 @@ namespace Registers
     REG<File> m_xpFile2;    // file2[]
 
     // pipeline members
-    Dynamo* m_pDynamo;        // dynamo[]
+    Dynamo*   m_pDynamo;    // dynamo pipleine compiler
+  
+    Operand*  m_pOperand;   // operand
     
     // must be last
     Footer m_xFooter;
