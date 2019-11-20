@@ -14,11 +14,15 @@
    job::this locals| pJob_Mark2Op |
 
    begin
-     pJob_Mark2Op job.LoopOutputOp
-     "biding" .
+
+     "bide operand" .
+     pJob_Mark2Op job.bideOperand
+
    while
-     "continuing" .
-     pJob_Mark2Op job.LoopOutputOp
+
+     "next operand" .
+     pJob_Mark2Op job.nextOperand
+
    repeat
 
   <<logExit

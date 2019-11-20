@@ -23,6 +23,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.assertParticipant"_Stz,&Step::vJobAssertParticipant);
   vAddStep("job.assertReceived"_Stz,   &Step::vJobAssertReceived);
 
+  vAddStep("job.bideOperand"_Stz,      &Step::vJobBideOperand);
+
   vAddStep("job.class"_Stz,            &Step::vJobClass);
   vAddStep("job.createResponseVec"_Stz,&Step::vJobCreateResponseVec);
   
@@ -52,6 +54,7 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.metadata!"_Stz,        &Step::vJobMetadataStore);
   
+  vAddStep("job.nextOperand"_Stz,      &Step::vJobNextOperand);
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
   
   vAddStep("job.operand@"_Stz,         &Step::vJobOperandFetch);
@@ -404,6 +407,132 @@ void Step::vJobAssertReceived(void)
            "job.assertReceived: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.bideOperand -- get next operand                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobBideOperand(void)
+{
+  ENTRY("vJobBideOperand"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
+  
+  bool bContinue = true;
+  
+  Op* pOp = pJob_Universal->m_pOp;
+  
+  for (;;) {
+    
+    Operand* pOperand = pOp->pPopQueue2();
+    
+    if (! pOperand) {
+      ASSERT(pOp->bIsLocked());
+      AM::vTaskSchedulerAct(m_pTask,SA_BIDE);
+      goto L_EXIT;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    switch (pOperand->eClass()) {
+        
+        // -- -- -- -- -- --
+        
+      case CN_CRWBUFFER: {
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+        pOp->m_iWorkDone += pCrwBuffer->nRowCount();
+        pOp->vPipeToJob(pOperand);
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_CSVBUFFER: {
+        CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+        pOp->m_iWorkDone += pCsvBuffer->nRecords();
+        pOp->vPipeToJob(pOperand);
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_ENDMARKER: {
+        
+        if (--pOp->m_nLeftEndMarkers == 0) {
+          if (pOp->bIsCancelling()) {
+            delete _pEndMarker(pOperand);
+            pOp->vPipeToJob(new CancelMarker);
+          }
+          else
+            pOp->vPipeToJob(pOperand);
+          
+          if (AM::bJobHasError(pOp->m_pJobUniversal)) {
+            AM::vSetJobLocalError(pOp->m_pJobUniversal, pOp->m_pPipeline->pJob());
+          }
+          if (pOp->m_bAckJobEnd)
+            pOp->vAckJob();
+          
+          bContinue = false;
+          goto L_EXIT;
+        }
+        else
+          delete (EndMarker*)pOperand;
+        
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_ENTBUFFER: {
+        EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
+        pOp->m_iWorkDone += pEntBuffer->nItems();
+        pOp->vPipeToJob(pOperand);
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_IRWBUFFER: {
+        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
+        pOp->m_iWorkDone += pIrwBuffer->nItems();
+        pOp->vPipeToJob(pOperand);
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_SRTBUFFER: {
+        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
+        pOp->m_iWorkDone += pSrtBuffer->nItems();
+        pOp->vPipeToJob(pOperand);
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_STREAMDEF: {
+        pOp->vPipeToJob(pOperand);
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      default:
+        RASSERT(0);
+        break;
+    }
+    
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_EXIT:
+  
+  m_pDataStack->vPushI8(bContinue);
   
   EXIT();
 }
@@ -995,6 +1124,132 @@ void Step::vJobMetadataStore(void)
     THROW_DSTACK();
   
   pJob->m_sMetadata = sMetadata;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.nextOperand -- get next operand                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobNextOperand(void)
+{
+  ENTRY("vJobNextOperand"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+    THROW_DSTACK();
+  Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
+  
+  bool bContinue = true;
+  
+  Op* pOp = pJob_Universal->m_pOp;
+  
+  for (;;) {
+    
+    Operand* pOperand = pOp->pPopQueue2();
+    
+    if (! pOperand) {
+      ASSERT(pOp->bIsLocked());
+      AM::vTaskSchedulerAct(m_pTask,SA_BIDE);
+      goto L_EXIT;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    switch (pOperand->eClass()) {
+        
+        // -- -- -- -- -- --
+        
+      case CN_CRWBUFFER: {
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+        pOp->m_iWorkDone += pCrwBuffer->nRowCount();
+        pOp->vPipeToJob(pOperand);
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_CSVBUFFER: {
+        CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+        pOp->m_iWorkDone += pCsvBuffer->nRecords();
+        pOp->vPipeToJob(pOperand);
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_ENDMARKER: {
+        
+        if (--pOp->m_nLeftEndMarkers == 0) {
+          if (pOp->bIsCancelling()) {
+            delete _pEndMarker(pOperand);
+            pOp->vPipeToJob(new CancelMarker);
+          }
+          else
+            pOp->vPipeToJob(pOperand);
+          
+          if (AM::bJobHasError(pOp->m_pJobUniversal)) {
+            AM::vSetJobLocalError(pOp->m_pJobUniversal, pOp->m_pPipeline->pJob());
+          }
+          if (pOp->m_bAckJobEnd)
+            pOp->vAckJob();
+          
+          bContinue = false;
+          goto L_EXIT;
+        }
+        else
+          delete (EndMarker*)pOperand;
+        
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_ENTBUFFER: {
+        EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
+        pOp->m_iWorkDone += pEntBuffer->nItems();
+        pOp->vPipeToJob(pOperand);
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_IRWBUFFER: {
+        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
+        pOp->m_iWorkDone += pIrwBuffer->nItems();
+        pOp->vPipeToJob(pOperand);
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_SRTBUFFER: {
+        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
+        pOp->m_iWorkDone += pSrtBuffer->nItems();
+        pOp->vPipeToJob(pOperand);
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_STREAMDEF: {
+        pOp->vPipeToJob(pOperand);
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      default:
+        RASSERT(0);
+        break;
+    }
+    
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_EXIT:
+  
+  m_pDataStack->vPushI8(bContinue);
   
   EXIT();
 }

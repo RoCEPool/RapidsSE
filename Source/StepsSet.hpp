@@ -451,14 +451,11 @@ public:
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
+  void vJobBideOperand(void);
+
   void vJobClass(void);
   void vJobCompleted(void);
   void vJobCreateResponseVec(void);
-  void vJobLoopOutputOp(void);
-  void vJobOperandFetch(void);
-  void vJobOperandStore(void);
-  void vJobOpLoop(void);
-  void vJobOpTableStore(void);
 
   void vJobDec2pcAcksRmg(void);
   void vJobDelete(void);
@@ -482,10 +479,17 @@ public:
 
   void vJobKindFetch(void);
 
+  void vJobLoopOutputOp(void);
+
   void vJobMetadataStore(void);
 
+  void vJobNextOperand(void);
   void vJobNoWaitFetch(void);
 
+  void vJobOperandFetch(void);
+  void vJobOperandStore(void);
+  void vJobOpLoop(void);
+  void vJobOpTableStore(void);
   void vJobOriginatingIdFetch(void);
   void vJobOriginatingIdStore(void);
   void vJobOriginatingTaskFetch(void);

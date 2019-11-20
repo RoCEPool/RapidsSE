@@ -181,6 +181,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_LOG
   /*    */ &Finalize::vUndefined,         // CN_LOGENTRY
 
+  /* 73 */ &Finalize::vUndefined,         // CN_MARK2OP
   /* 73 */ &Finalize::vUndefined,         // CN_MEDIUMPERSISTENT
   /* 74 */ &Finalize::vUndefined,         // CN_MEDIUMTRANSIENT
   /*    */ &Finalize::vUndefined,         // CN_MEMTEST

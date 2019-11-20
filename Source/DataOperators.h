@@ -44,6 +44,7 @@ namespace DataOperators
 
 #include "LimitOp.hpp"
 
+#include "Mark2Op.hpp"
 #include "MergeOp.hpp"
 
 #include "OutputOp.hpp"

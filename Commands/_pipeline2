@@ -10,8 +10,8 @@ begin
 
   stage stageB on origin:
     // toFile "/tmp/lineitem.csv" | output
-    // mark2op | output
-    output
+    mark2op 
+    // output
 
 end
 ;

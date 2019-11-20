@@ -181,6 +181,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_LOG,
   /*                           */ CN_LOGENTRY,
 
+  /*                           */ CN_MARK2OP,
   /* 153 0x99      232B Heap:I */ CN_MEDIUMPERSISTENT,
   /* 154 0x9A      232B Heap:I */ CN_MEDIUMTRANSIENT,
   /*                           */ CN_MEMTEST,
@@ -521,6 +522,7 @@ static Stz* aCN[]
   /*          */ "LOG"_Stz,                 // CN_LOG
   /*          */ "LOGENTRY"_Stz,            // CN_LOGENTRY
 
+  /*          */ "MARK2OP"_Stz,             // CN_MARK2OP
   /* 153 0x99 */ "MEDIUMPERSISTENT"_Stz,    // CN_MEDIUMPERSISTENT
   /* 154 0x9A */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
   /*          */ "MEMTEST"_Stz,             // CN_MEMTEST
