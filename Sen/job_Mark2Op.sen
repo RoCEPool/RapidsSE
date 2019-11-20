@@ -11,18 +11,21 @@
  
    >>logEntry <SEED_REQ>
 
-   job::this locals| pJob_Mark2Op |
+   job::this locals| pMark2Op |
 
    begin
 
+     // bide till next operand is available
      "bide operand" .
-     pJob_Mark2Op job.bideOperand
+     pMark2Op job.bideOperand
 
+     // pop next operand from queue into Operand[]
      "next operand" .
-     pJob_Mark2Op job.nextOperand
+     pMark2Op job.nextOperand
 
+     // process operand
      "deal operand" .
-     pJob_Mark2Op job.dealOperand
+     pMark2Op job.dealOperand
 
    while
      assert::stack_0
