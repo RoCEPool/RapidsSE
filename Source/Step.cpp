@@ -120,6 +120,7 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Object();
   Step::vAddSteps_Olist();
+  Step::vAddSteps_Operand();
 
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Planner();

@@ -863,6 +863,9 @@ public:
   // olist (originator list)
   void vOlistFindJob(void);
 
+  // operand
+  void vOperandDecode(void);
+
   // persistence
   void vPersistenceCheckpoint(void);
   void vPersistenceReload(void);

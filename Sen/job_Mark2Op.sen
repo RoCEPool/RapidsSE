@@ -23,13 +23,14 @@
      "next operand" .
      pMark2Op job.nextOperand
 
+     // decode
+     Operand[].decode "Operand Kind: %v" fmt.print
+
      // process operand
      "deal operand" .
      pMark2Op job.dealOperand
 
-   while
-     assert::stack_0
-   repeat
+   while assert::stack_0 repeat
 
   <<logExit
   job::deleteThis
