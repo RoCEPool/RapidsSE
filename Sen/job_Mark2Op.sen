@@ -24,7 +24,7 @@
      pMark2Op job.nextOperand
 
      // decode
-     Operand[].decode "Operand Kind: %v" fmt.print
+     Operand[].decode "Operand Kind: %v" .printf
 
      // process operand
      "deal operand" .
