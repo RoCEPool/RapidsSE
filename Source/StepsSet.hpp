@@ -457,6 +457,7 @@ public:
   void vJobCompleted(void);
   void vJobCreateResponseVec(void);
 
+  void vJobDealOperand(void);
   void vJobDec2pcAcksRmg(void);
   void vJobDelete(void);
 
