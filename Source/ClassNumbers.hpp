@@ -45,6 +45,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_CANCELMARKER,
   /*  23 0x17       40B Heap:I */ CN_CARRYOVER,
   /*                           */ CN_CATALOG,
+  /*                           */ CN_CHUNKFILEOP,
   /*                           */ CN_CLAUSE_FROM,
   /*                           */ CN_CLAUSE_GROUPBY,
   /*                           */ CN_CLAUSE_JOIN,
@@ -384,6 +385,7 @@ static Stz* aCN[]
   /*          */ "CANCELMARKER"_Stz,        // CN_CANCELMARKER
   /*  23 0x17 */ "CARRYOVER"_Stz,           // CN_CARRYOVER
   /*          */ "CATALOG"_Stz,             // CN_CATALOG
+  /*          */ "CHUNKFILEOP"_Stz,         // CN_CHUNKFILEOP
   /*          */ "CLAUSE_FROM"_Stz,         // CN_CLAUSE_FROM
   /*          */ "CLAUSE_GROUPBY"_Stz,      // CN_CLAUSE_GROUPBY
   /*          */ "CLAUSE_JOIN"_Stz,         // CN_CLAUSE_JOIN

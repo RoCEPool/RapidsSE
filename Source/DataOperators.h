@@ -18,6 +18,7 @@ namespace DataOperators
 
 #include "BothOp.hpp"
 
+#include "ChunkFileOp.hpp"
 #include "CombineOp.hpp"
 #include "ConsumeOp.hpp"
 #include "CountOp.hpp"

@@ -5,7 +5,7 @@
 " job_CountOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute for cancelQuery                            (on node where spawned) */
+/* execute for countOp                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : Count_req ( -- )
  

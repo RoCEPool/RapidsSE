@@ -22,6 +22,7 @@
 
 "job_CancelQuery.sen"    include
 "job_Cf.sen"             include
+"job_ChunkFileOp.sen"    include
 "job_CompactIndex.sen"   include
 "job_ConnectCluster.sen" include
 "job_consumeOp.sen"      include

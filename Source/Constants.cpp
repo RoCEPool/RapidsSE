@@ -457,6 +457,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("JT_ANALYZETABLE"_Stz,    JT_ANALYZETABLE);
   /*    */ vAddConstant("JT_CANCELQUERY"_Stz,     JT_CANCELQUERY);
   /*    */ vAddConstant("JT_CF"_Stz,              JT_CF);
+  /*    */ vAddConstant("JT_CHUNKFILEOP"_Stz,     JT_CHUNKFILEOP);
   /*    */ vAddConstant("JT_COMPACTINDEX"_Stz,    JT_COMPACTINDEX);
   /*    */ vAddConstant("JT_CONNECTCLUSTER"_Stz,  JT_CONNECTCLUSTER);
   /*    */ vAddConstant("JT_CONSUMEOP"_Stz,       JT_CONSUMEOP);

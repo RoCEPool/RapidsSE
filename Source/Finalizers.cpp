@@ -42,6 +42,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_CANCELMARKER
   /* 30 */ &Finalize::vUndefined,         // CN_CARRYOVER
   /*    */ &Finalize::vUndefined,         // CN_CATALOG
+  /*    */ &Finalize::vUndefined,         // CN_CHUNKFILEOP
   /*    */ &Finalize::vUndefined,         // CN_CLAUSE_FROM
   /*    */ &Finalize::vUndefined,         // CN_CLAUSE_GROUPBY
   /*    */ &Finalize::vUndefined,         // CN_CLAUSE_JOIN

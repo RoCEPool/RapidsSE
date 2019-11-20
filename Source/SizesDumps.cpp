@@ -47,6 +47,7 @@ pDUMPFUN *gpDump[]
   /* 30 */ &Dump::vDummy,           // CN_CARRYOVER
   /*    */ &Dump::vDummy,           // CN_CATALOG
   /*    */ &Dump::vDummy,           // CN_CATALOG
+  /*    */ &Dump::vDummy,           // CN_CHUNKFILEOP
   /* 31 */ &Dump::vDummy,           // CN_CLAUSE_FROM
   /* 31 */ &Dump::vDummy,           // CN_CLAUSE_GROUPBY
   /* 31 */ &Dump::vDummy,           // CN_CLAUSE_JOIN
@@ -388,6 +389,7 @@ i8 giClassSize[]
   /*    */ sizeof(CancelMarker),       // CN_CANCELMARKER
   /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
   /*    */ sizeof(Catalog),            // CN_CATALOG
+  /*    */ sizeof(ChunkFileOp),        // CN_CHUNKFILEOP
   /*    */ sizeof(Clause_From),        // CN_CLAUSE_FROM
   /*    */ sizeof(Clause_GroupBy),     // CN_CLAUSE_GROUPBY
   /*    */ sizeof(Clause_Join),        // CN_CLAUSE_JOIN
@@ -729,6 +731,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_CANCELMARKER
   /* 30 */ HT_INVALID,           // CN_CARRYOVER
   /*    */ HT_INVALID,           // CN_CATALOG
+  /*    */ HT_INVALID,           // CN_CHUNKFILEOP
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_FROM
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_GROUPBY
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_JOIN
@@ -826,10 +829,12 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB__FIND
 
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_BOOT
+  
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_COPYBUFFER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_FETCHROWS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTROW
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTTABLE
+  
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LOADTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_NODEINFO
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_OPERAND
