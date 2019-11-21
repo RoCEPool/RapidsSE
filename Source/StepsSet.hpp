@@ -868,6 +868,7 @@ public:
   void vOperandKind(void);
   void vOperandNext(void);
   void vOperandPipeOut(void);
+  void vOperandSet(void);
   void vOperandWorkDone(void);
 
   // persistence
