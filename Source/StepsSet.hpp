@@ -866,6 +866,8 @@ public:
   void vOperandBide(void);
   void vOperandHandleEnd(void);
   void vOperandKind(void);
+  void vOperandNewEndMarker(void);
+  void vOperandNewStreamDef(void);
   void vOperandNext(void);
   void vOperandPipeOut(void);
   void vOperandSet(void);

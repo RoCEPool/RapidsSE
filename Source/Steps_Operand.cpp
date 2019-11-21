@@ -12,6 +12,8 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].bide"_Stz,      &Step::vOperandBide);
   vAddStep("Operand[].handleEnd"_Stz, &Step::vOperandHandleEnd);
   vAddStep("Operand[].kind"_Stz,      &Step::vOperandKind);
+  vAddStep("Operand[].newEndMarker"_Stz, &Step::vOperandNewEndMarker);
+  vAddStep("Operand[].newStreamDef"_Stz, &Step::vOperandNewStreamDef);
   vAddStep("Operand[].next"_Stz,      &Step::vOperandNext);
   vAddStep("Operand[].pipeOut"_Stz,   &Step::vOperandPipeOut);
   vAddStep("Operand[].set"_Stz,       &Step::vOperandSet);
@@ -79,13 +81,14 @@ void Step::vOperandKind(void)
   eCN eClass_op = m_pRegSet->m_pOperand->eClass();
   switch (eClass_op) {
       
-    case CN_CRWBUFFER: eOperand = ZK_CRWBUFFER; break;
-    case CN_CSVBUFFER: eOperand = ZK_CSVBUFFER; break;
-    case CN_ENDMARKER: eOperand = ZK_ENDMARKER; break;
-    case CN_ENTBUFFER: eOperand = ZK_ENTBUFFER; break;
-    case CN_IRWBUFFER: eOperand = ZK_IRWBUFFER; break;
-    case CN_SRTBUFFER: eOperand = ZK_SRTBUFFER; break;
-    case CN_STREAMDEF: eOperand = ZK_STREAMDEF; break;
+    case CN_CRWBUFFER:   eOperand = ZK_CRWBUFFER;   break;
+    case CN_CSVBUFFER:   eOperand = ZK_CSVBUFFER;   break;
+    case CN_ENDMARKER:   eOperand = ZK_ENDMARKER;   break;
+    case CN_ENTBUFFER:   eOperand = ZK_ENTBUFFER;   break;
+    case CN_IRWBUFFER:   eOperand = ZK_IRWBUFFER;   break;
+    case CN_SRTBUFFER:   eOperand = ZK_SRTBUFFER;   break;
+    case CN_STARTMARKER: eOperand = ZK_STARTMARKER; break;
+    case CN_STREAMDEF:   eOperand = ZK_STREAMDEF;   break;
       
     default:
       RASSERT(0);
@@ -107,6 +110,34 @@ void Step::vOperandNext(void)
   if (! m_pRegSet->m_pOperand)
     m_pRegSet->m_pOperand = m_pTask->m_pJob->m_pOp->pPopQueue2();
   ASSERT(m_pRegSet->m_pOperand);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newEndMarker -- new an end marker                                */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewEndMarker(void)
+{
+  ENTRY("vOperandNewEndMarker"_Stz);
+  
+  ASSERT (! m_pRegSet->m_pOperand);
+  
+  m_pRegSet->m_pOperand = new EndMarker;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newStreamDef -- new a stream def                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewStreamDef(void)
+{
+  ENTRY("vOperandNewStreamDef"_Stz);
+  
+  ASSERT (! m_pRegSet->m_pOperand);
+  
+  m_pRegSet->m_pOperand = new StreamDef(m_pRegSet->m_xpTable->pStreamDef());
   
   EXIT();
 }
