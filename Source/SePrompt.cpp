@@ -602,14 +602,14 @@ void SePrompt::vJobLockMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  RASSERT(JS_RUNNING == m_pJob->m_eJobState);
+  RASSERT(JS_RUNNING == m_pJob->eJobState());
   
   m_pJob->vLockJobMutex();
 //  i8 rCode = pthread_mutex_lock(&m_pJob->m_xThreadMutex);
 //  if (0 != rCode)
 //    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
   
-  m_pJob->m_eJobState = JS_LOCKED;
+  m_pJob->vJobState(JS_LOCKED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -620,7 +620,7 @@ void SePrompt::vJobUnlockMutex(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   // have to be locked, waiting or signalled
-  RASSERT(JS_RUNNING != m_pJob->m_eJobState);
+  RASSERT(JS_RUNNING != m_pJob->eJobState());
   
   AM::vLogPrm(SL_INF,this,PA_PRM_RESUMES,
               "unlocks job mutex and resumes running"_Stz, //!format-LogPrm
@@ -630,7 +630,7 @@ void SePrompt::vJobUnlockMutex(void)
 
   m_pJob->vUnlockJobMutex();
   
-  m_pJob->m_eJobState = JS_RUNNING;
+  m_pJob->vJobState(JS_RUNNING);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -650,14 +650,14 @@ void SePrompt::vJobWaitCond(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  RASSERT(JS_LOCKED == m_pJob->m_eJobState);
-  m_pJob->m_eJobState = JS_WAITING;
+  RASSERT(JS_LOCKED == m_pJob->eJobState());
+  m_pJob->vJobState(JS_WAITING);
   
   do {
     
     m_pJob->vWaitJobMutex();
     
-  } while (m_pJob->m_eJobState != JS_SIGNALLED);
+  } while (m_pJob->eJobState() != JS_SIGNALLED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -764,7 +764,7 @@ void SePrompt::vPostJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  RASSERT(JS_RUNNING == m_pJob->m_eJobState);
+  RASSERT(JS_RUNNING == m_pJob->eJobState());
   
   m_aJobClass->vPostJob(m_pJob);
 }
@@ -948,7 +948,7 @@ void SePrompt::vSpawnJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  RASSERT(JS_LOCKED == m_pJob->m_eJobState);
+  RASSERT(JS_LOCKED == m_pJob->eJobState());
   
   Input* pInput = this->pInput();
   

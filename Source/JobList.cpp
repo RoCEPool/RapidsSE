@@ -233,7 +233,7 @@ void JobList::vLogJobs(i8 iJobId)
                  pJob->i_Slot(),
                 
                  aJP[pJob->m_eJobPhase],
-                 aJS[pJob->m_eJobState],
+                 aJS[pJob->eJobState()],
                  pJob->iAcksRmg_printOnlyValue(),
                  pJob->iAcksOriginal(),
                  pJob->m_iParticipantNode);

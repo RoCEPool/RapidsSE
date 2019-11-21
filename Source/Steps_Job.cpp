@@ -584,7 +584,7 @@ void Step::vJobCompleted(void)
   
   Job* pJob = m_pTask->pJob();
   
-  pJob->m_eJobState = JS_COMPLETED;
+  pJob->vJobState(JS_COMPLETED);
   
   m_pTask->vSchedulerAct(SA_DELETE);
   
@@ -2030,7 +2030,7 @@ void Step::vJobSignalWaiter(void)
 
   RASSERT( _bIsValidJob(pJob->eClass()) );
   
-  pJob->m_eJobState = JS_SIGNALLED;
+  pJob->vJobState(JS_SIGNALLED);
 
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   

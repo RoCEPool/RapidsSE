@@ -48,7 +48,7 @@ Stz* SP_Job::sz_log(Job* pJob)
                   aSS[pJob->eSeed()],
                   aJL[pJob->m_eJobList],
                   aJP[pJob->m_eJobPhase],
-                  aJS[pJob->m_eJobState],
+                  aJS[pJob->eJobState()],
                   
                   pJob->bNoWaitTag()   ? ""_Stz       : " wait"_Stz,
                   pJob->m_bWasReceived ? " recvd"_Stz : ""_Stz,

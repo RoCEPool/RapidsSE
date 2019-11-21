@@ -47,8 +47,8 @@ namespace Jobs
     eJK       m_eJobKind;     // kind of job
     eJL       m_eJobList;     // which job list the job is currently in
     eJP       m_eJobPhase;    // which job phase the job is currently in
-    eJS       m_eJobState;    // current state of the job
   private:
+    eJS       m_eJobState;    // current state of the job
 
   
   public:
@@ -101,6 +101,8 @@ namespace Jobs
     void vFocalOutline(s4K& sOutline);
     bool bHasEnameTag(Stz* szEnameTag);
     i8   iJobId(void);
+    eJS  eJobState(void);
+    void vJobState(eJS eJobState);
     EnameSet* pJobInfoEnameSet(void);
     void vLockJobMutex(void);
     void vMarkJob(void);
