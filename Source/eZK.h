@@ -13,6 +13,7 @@ enum eZK // operand kind
   /*    */ ZK_ENTBUFFER,
   /*    */ ZK_IRWBUFFER,
   /*    */ ZK_SRTBUFFER,
+  /*    */ ZK_STARTMARKER,
   /*    */ ZK_STREAMDEF,
 
   /*    */ ZK_ENUMS
@@ -28,6 +29,7 @@ static Stz* aZK[]
   /*    */ "ZK_ENTBUFFER"_Stz,
   /*    */ "ZK_IRWBUFFER"_Stz,
   /*    */ "ZK_SRTBUFFER"_Stz,
+  /*    */ "ZK_STARTMARKER"_Stz,
   /*    */ "ZK_STREAMDEF"_Stz,
 
   /*    */ "ENUMS"_Stz
