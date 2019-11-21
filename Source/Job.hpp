@@ -35,43 +35,45 @@ namespace Jobs
               public CRM<Job>
   {
   public:
-    s32       m_sJobNm;    // name of job
-  
-    JobClass* m_aJobClass; // job class THIS WILL GO
-  
-    ReqTuple  m_xReqTuple; // the request tuple
+    s32       m_sJobNm;       // name of job
+    EnameSet  m_oEnameSet;    // ename-value set
+    Timer     m_oTimer;       // timer
+    i8        m_iParentId;    // job id of parent job which spawned this job
 
-    i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
-    
-    bool m_bNormalSides; // side semantics
-    bool m_bWasReceived; // job was received over a socket
+    bool      m_bWasReceived; // job was received over a socket
+    i8        m_iParticipantNode; // participant node no (FromNodeNo?)
+    bool      m_bNormalSides; // side semantics
 
-    EnameSet m_oEnameSet;  // ename-value set
-
-    eJT  m_eJobType;     // type of job
-    eJK  m_eJobKind;     // kind of job
-    eJL  m_eJobList;     // which job list the job is currently in
-    eJP  m_eJobPhase;    // which job phase the job is currently in
-    eJS  m_eJobState;    // current state of the job
-    
-    Atomic  m_ixErrors;
-  
-    Timer   m_oTimer;    // timer
-  
-    Task* m_pOriginatingTask; // originating task of the request
-    i8    m_iOriginatingId;   // job id of originating job
-
-    i8  m_iParticipantNode;    // participant node no (FromNodeNo?)
-    
-    Pipeline*  m_pPipeline;    // pipeline
-    Op*        m_pOp;          // Op this job is executing
-    Operand*   m_pOperand;
-        
+    eJK       m_eJobKind;     // kind of job
+    eJL       m_eJobList;     // which job list the job is currently in
+    eJP       m_eJobPhase;    // which job phase the job is currently in
+    eJS       m_eJobState;    // current state of the job
   private:
-    Decider m_oAcksRmg_2pc;  // acks remaining for coordinating 2pc job 
-    eSS     m_eSeed;         // seed to spawn
-    i8      m_i_Slot;        // slot on its node this job processes
-    Task*   m_pTaskJ;        // task executing the job
+
+  
+  public:
+
+    // into task? -------------
+    Pipeline*  m_pPipeline;   // pipeline
+    Op*        m_pOp;         // Op this job is executing
+    Operand*   m_pOperand;
+
+    // undecided --------------
+    ReqTuple  m_xReqTuple;    // the request tuple
+    Atomic    m_ixErrors;
+  
+    Task*     m_pOriginatingTask; // originating task of the request
+    i8        m_iOriginatingId;   // job id of originating job
+
+    // to go ------------------
+    JobClass* m_aJobClass;    // job class THIS WILL GO
+    eJT       m_eJobType;     // type of job
+  
+  private:
+    Decider m_oAcksRmg_2pc;   // acks remaining for coordinating 2pc job
+    eSS     m_eSeed;          // seed to spawn
+    i8      m_i_Slot;         // slot on its node this job processes
+    Task*   m_pTaskJ;         // task executing the job
 
   public:
     Job(eCN eClassNo);
