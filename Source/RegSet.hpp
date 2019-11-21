@@ -21,16 +21,20 @@ namespace Registers
 
     REG<Dir>  m_xpDir0;     // dir0[]
     REG<Dir>  m_xpDir1;     // dir1[]
-    REG<Dir>  m_xpDir2;     // dir2[]
+
     REG<File> m_xpFile0;    // file0[]
     REG<File> m_xpFile1;    // file1[]
-    REG<File> m_xpFile2;    // file2[]
-
+ 
     // pipeline members
     Dynamo*   m_pDynamo;    // dynamo pipleine compiler
   
     Operand*  m_pOperand;   // operand
-    
+  
+    REG<Object> m_xpObject0; // general purpose reg 0[]
+    REG<Object> m_xpObject1; // general purpose reg 1[]
+    REG<Object> m_xpObject2; // general purpose reg 2[]
+    REG<Object> m_xpObject3; // general purpose reg 3[]
+
     // must be last
     Footer m_xFooter;
   
