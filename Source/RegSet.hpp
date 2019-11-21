@@ -26,6 +26,8 @@ namespace Registers
     REG<File> m_xpFile1;    // file1[]
     REG<File> m_xpFile2;    // file2[]
 
+    REG<Table> m_xpTable;
+    
     // pipeline members
     Dynamo*   m_pDynamo;    // dynamo pipleine compiler
   

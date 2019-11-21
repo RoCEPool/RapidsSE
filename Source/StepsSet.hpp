@@ -1109,6 +1109,9 @@ public:
   void vTableVerify(void);
   void vTableVisualize(void);
 
+  // table2
+  void vTableSet(void);
+
   // table definition
   void vTableDefParse(void);
 

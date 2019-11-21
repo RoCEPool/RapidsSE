@@ -142,6 +142,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Str();
   
   Step::vAddSteps_Table();
+  Step::vAddSteps_Table2();
   Step::vAddSteps_TableDef();
   Step::vAddSteps_TablePartition();
   Step::vAddSteps_Task();
