@@ -180,7 +180,16 @@ ENTRY("vLocalsTo"_Stz);
     bSemanticTo = true;
     m_pCompiler->vNextToken();
   }
-      
+  else if (m_pCompiler->szToken()->bSame("Operand[]"_Stz)) {
+    pCurrentWord->vEncode("Operand[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (m_pCompiler->szToken()->bSame("Table[]"_Stz)) {
+    pCurrentWord->vEncode("Table[].set"_Stz);
+    EXIT();
+    return;
+  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get name of local from token stream

@@ -14,6 +14,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].kind"_Stz,      &Step::vOperandKind);
   vAddStep("Operand[].next"_Stz,      &Step::vOperandNext);
   vAddStep("Operand[].pipeOut"_Stz,   &Step::vOperandPipeOut);
+  vAddStep("Operand[].set"_Stz,       &Step::vOperandSet);
   vAddStep("Operand[].workDone"_Stz,  &Step::vOperandWorkDone);
 }
 
@@ -128,6 +129,21 @@ void Step::vOperandPipeOut(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Operand[].set -- set operand                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandSet(void)
+{
+  ENTRY("vOperandSet"_Stz);
+  
+  Object* pPtrObject;
+  if ( ! m_pDataStack->bPopObject(pPtrObject) )
+    THROW_DSTACK();
+  
+  m_pRegSet->m_pOperand = _pOperand(pPtrObject);
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* Operand[].workDone -- update work done                                     */
 /*----------------------------------------------------------------------------*/
