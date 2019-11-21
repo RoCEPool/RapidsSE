@@ -519,6 +519,46 @@ i8 Job::iJobId(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the job list                                                           */
+/*----------------------------------------------------------------------------*/
+eJL Job::eJobList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_eJobList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the job list                                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vJobList(eJL eJobList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_eJobList = eJobList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the job phase                                                          */
+/*----------------------------------------------------------------------------*/
+eJP Job::eJobPhase(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_eJobPhase;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the job phase                                                          */
+/*----------------------------------------------------------------------------*/
+void Job::vJobPhase(eJP eJobPhase)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_eJobPhase = eJobPhase;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the job state                                                          */
 /*----------------------------------------------------------------------------*/
 eJS Job::eJobState(void)
@@ -995,7 +1035,7 @@ JOBS_fn(vJob_recv)
 {
   pJob->m_bWasReceived   = true;
   
-  pJob->m_eJobList       = JL_NONE;
+  pJob->vJobList(JL_NONE);
   
   pJob->vTask(nullptr);
   

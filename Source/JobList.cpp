@@ -79,10 +79,10 @@ void JobList::vAddJob(Job* pJob)
   
   //vTrace("inserting job %p %s %lld\n"_Stz, pJob, aCN[pJob->eClass()], pJob->iJobId());
   
-  ASSERT(JL_NONE == pJob->m_eJobList);
+  ASSERT(JL_NONE == pJob->eJobList());
   ASSERT( (JL_ORIGINATING   == m_eJobsList && ! pJob->m_bWasReceived) ||
           (JL_PARTICIPATING == m_eJobsList &&   pJob->m_bWasReceived) );
-  pJob->m_eJobList = m_eJobsList;
+  pJob->vJobList(m_eJobsList);
   
   m_pJobsSkipList->bInsert(pJob);
 }
@@ -232,7 +232,7 @@ void JobList::vLogJobs(i8 iJobId)
                  pJob->m_iParentId,
                  pJob->i_Slot(),
                 
-                 aJP[pJob->m_eJobPhase],
+                 aJP[pJob->eJobPhase()],
                  aJS[pJob->eJobState()],
                  pJob->iAcksRmg_printOnlyValue(),
                  pJob->iAcksOriginal(),
@@ -256,11 +256,11 @@ bool JobList::bRemoveJob(Job* pJob)
   
   //vTrace("removing job %p %s %lld\n"_Stz, pJob, aCN[pJob->eClass()], pJob->iJobId());
   
-  ASSERT(m_eJobsList == pJob->m_eJobList);
+  ASSERT(m_eJobsList == pJob->eJobList());
   
   bRemoved = m_pJobsSkipList->bRemove(pJob);
   ASSERT(bRemoved);
-  pJob->m_eJobList = JL_NONE;
+  pJob->vJobList(JL_NONE);
 
   return bRemoved;
 }

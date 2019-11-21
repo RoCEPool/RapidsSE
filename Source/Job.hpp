@@ -45,9 +45,9 @@ namespace Jobs
     bool      m_bNormalSides; // side semantics
 
     eJK       m_eJobKind;     // kind of job
+  private:
     eJL       m_eJobList;     // which job list the job is currently in
     eJP       m_eJobPhase;    // which job phase the job is currently in
-  private:
     eJS       m_eJobState;    // current state of the job
 
   
@@ -101,6 +101,10 @@ namespace Jobs
     void vFocalOutline(s4K& sOutline);
     bool bHasEnameTag(Stz* szEnameTag);
     i8   iJobId(void);
+    eJL  eJobList(void);
+    void vJobList(eJL eJobList);
+    eJP  eJobPhase(void);
+    void vJobPhase(eJP eJobPhase);
     eJS  eJobState(void);
     void vJobState(eJS eJobState);
     EnameSet* pJobInfoEnameSet(void);
