@@ -190,6 +190,12 @@ ENTRY("vLocalsTo"_Stz);
     EXIT();
     return;
   }
+  else if (m_pCompiler->szToken()->bSame("TablePtn[]"_Stz)) {
+    pCurrentWord->vEncode("TablePtn[].set"_Stz);
+    EXIT();
+    return;
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get name of local from token stream

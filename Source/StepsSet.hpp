@@ -1111,6 +1111,7 @@ public:
 
   // table2
   void vTableSet(void);
+  void vTablePtnFetch(void);
 
   // table definition
   void vTableDefParse(void);
@@ -1122,6 +1123,9 @@ public:
   void vTablePtnDropWrite(void);
   void vTablePtnDump(void);
   void vTablePtnIsLocked(void);
+
+  // table partition
+  void vTablePtnSet(void);
 
   // task
   void vTaskAck(void);

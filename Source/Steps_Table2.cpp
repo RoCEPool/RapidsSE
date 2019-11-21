@@ -10,6 +10,7 @@
 void Step::vAddSteps_Table2(void)
 {
   vAddStep("table[].set"_Stz,                &Step::vTableSet);
+  vAddStep("table[].tablePtn@"_Stz,          &Step::vTablePtnFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -28,6 +29,28 @@ void Step::vTableSet(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* table[].tablePtn@ -- feth the table partition                              */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnFetch(void)
+{
+  ENTRY("vTableSet"_Stz);
+  
+  Object* pPtrObject;
+  if ( ! m_pDataStack->bPopObject(pPtrObject) )
+    THROW_DSTACK();
+  
+  Job_Universal* pJob = _pJob_Universal(pPtrObject);
+  
+  i8 iPtn = pJob->m_pOp->m_nPartition;
+  
+  i8 iSlot = TablePtn::iPartitionToSlot(iPtn);
+  TablePtn* pTablePtn = m_pRegSet->m_xpTable->pSlots()->pPartition(iSlot);
+  
+  m_pDataStack->vPushPointer(pTablePtn);
+  
+  EXIT();
+}
 
 /*============================================================================*/
 /* end                                                                        */

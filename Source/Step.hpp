@@ -125,6 +125,7 @@ namespace Steps
     static void vAddSteps_Table2(void);
     static void vAddSteps_TableDef(void);
     static void vAddSteps_TablePartition(void);
+    static void vAddSteps_TablePartition2(void);
     static void vAddSteps_Task(void);
     static void vAddSteps_Test(void);
     static void vAddSteps_Thread(void);
