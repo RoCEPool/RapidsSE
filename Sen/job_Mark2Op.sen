@@ -16,70 +16,64 @@
    begin
 
     // bide till next operand is available
-    "bide operand" .
-    pMark2Op job.bideOperand
+    Operand[].bide
 
     // pop next operand from queue into Operand[]
-    "next operand" .
-    pMark2Op job.nextOperand
+    Operand[].next
 
-    // decode
-    Operand[].decode "Operand Kind: %v" .printf
-    Operand[].decode case
+    // decode kind
+    Operand[].kind case
+
       ZK_CRWBUFFER of
         "Operand:- ZK_CRWBUFFER" .
-        //pMark2Op job.dealOperand
         Operand[].workDone
         Operand[].pipeOut
         true
       endof
+
       ZK_CSVBUFFER of
         "Operand:- ZK_CSVBUFFER" .
-        //pMark2Op job.dealOperand
         Operand[].workDone
         Operand[].pipeOut
         true
       endof
+
       ZK_ENDMARKER of
         "Operand:- ZK_ENDMARKER" .
-        //pMark2Op job.dealOperand
         Operand[].handleEnd
-        false
         // *does not pipeout*
+        false
       endof
+
       ZK_ENTBUFFER of
         "Operand:- ZK_ENTBUFFER" .
-        //pMark2Op job.dealOperand
         Operand[].workDone
         Operand[].pipeOut
         true
       endof
+
       ZK_IRWBUFFER of
         "Operand:- ZK_IRWBUFFER" .
-        //pMark2Op job.dealOperand
         Operand[].workDone
         Operand[].pipeOut
         true
       endof
+
       ZK_SRTBUFFER of
         "Operand:- ZK_SRTBUFFER" .
-        //pMark2Op job.dealOperand
         Operand[].workDone
         Operand[].pipeOut
         true
       endof
+
       ZK_STREAMDEF of
         "Operand:- ZK_STREAMDEF" .
-        //pMark2Op job.dealOperand
         Operand[].workDone
         Operand[].pipeOut
         true
       endof
-    endcase
 
-    // process operand
-    // "deal operand" .
-    // pMark2Op job.dealOperand
+    endcase
 
    while assert::stack_0 repeat
 

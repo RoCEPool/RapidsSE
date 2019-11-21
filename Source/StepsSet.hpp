@@ -863,8 +863,10 @@ public:
   void vOlistFindJob(void);
 
   // operand
-  void vOperandDecode(void);
+  void vOperandBide(void);
   void vOperandHandleEnd(void);
+  void vOperandKind(void);
+  void vOperandNext(void);
   void vOperandPipeOut(void);
   void vOperandWorkDone(void);
 

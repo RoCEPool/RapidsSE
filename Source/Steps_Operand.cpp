@@ -9,38 +9,27 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Operand(void)
 {
-  vAddStep("Operand[].decode"_Stz,    &Step::vOperandDecode);
+  vAddStep("Operand[].bide"_Stz,      &Step::vOperandBide);
   vAddStep("Operand[].handleEnd"_Stz, &Step::vOperandHandleEnd);
+  vAddStep("Operand[].kind"_Stz,      &Step::vOperandKind);
+  vAddStep("Operand[].next"_Stz,      &Step::vOperandNext);
   vAddStep("Operand[].pipeOut"_Stz,   &Step::vOperandPipeOut);
   vAddStep("Operand[].workDone"_Stz,  &Step::vOperandWorkDone);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].decode -- decode operand into its operand kind                   */
+/* Operand[].bide -- operand bide                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandDecode(void)
+void Step::vOperandBide(void)
 {
-  ENTRY("vOperandDecode"_Stz);
+  ENTRY("vOperandBide"_Stz);
   
-  eZK eOperand = ZK_NONE;
+  m_pRegSet->m_pOperand = m_pTask->m_pJob->m_pOp->pPopQueue2();
   
-  eCN eClass_op = m_pRegSet->m_pOperand->eClass();
-  switch (eClass_op) {
-      
-    case CN_CRWBUFFER: eOperand = ZK_CRWBUFFER; break;
-    case CN_CSVBUFFER: eOperand = ZK_CSVBUFFER; break;
-    case CN_ENDMARKER: eOperand = ZK_ENDMARKER; break;
-    case CN_ENTBUFFER: eOperand = ZK_ENTBUFFER; break;
-    case CN_IRWBUFFER: eOperand = ZK_IRWBUFFER; break;
-    case CN_SRTBUFFER: eOperand = ZK_SRTBUFFER; break;
-    case CN_STREAMDEF: eOperand = ZK_STREAMDEF; break;
-      
-    default:
-      RASSERT(0);
-      break;
+  if (! m_pRegSet->m_pOperand) {
+    ASSERT(m_pTask->bIsLocked());
+    m_pTask->vSchedulerAct(SA_BIDE);
   }
-
-  m_pDataStack->vPushI8(eOperand);
   
   EXIT();
 }
@@ -74,6 +63,50 @@ void Step::vOperandHandleEnd(void)
   else
     delete (EndMarker*)m_pRegSet->m_pOperand;
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].kind -- decode operand into its operand kind                     */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandKind(void)
+{
+  ENTRY("vOperandKind"_Stz);
+  
+  eZK eOperand = ZK_NONE;
+  
+  eCN eClass_op = m_pRegSet->m_pOperand->eClass();
+  switch (eClass_op) {
+      
+    case CN_CRWBUFFER: eOperand = ZK_CRWBUFFER; break;
+    case CN_CSVBUFFER: eOperand = ZK_CSVBUFFER; break;
+    case CN_ENDMARKER: eOperand = ZK_ENDMARKER; break;
+    case CN_ENTBUFFER: eOperand = ZK_ENTBUFFER; break;
+    case CN_IRWBUFFER: eOperand = ZK_IRWBUFFER; break;
+    case CN_SRTBUFFER: eOperand = ZK_SRTBUFFER; break;
+    case CN_STREAMDEF: eOperand = ZK_STREAMDEF; break;
+      
+    default:
+      RASSERT(0);
+      break;
+  }
+  
+  m_pDataStack->vPushI8(eOperand);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].next -- get next operand                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNext(void)
+{
+  ENTRY("vOperandNext"_Stz);
+  
+  if (! m_pRegSet->m_pOperand)
+    m_pRegSet->m_pOperand = m_pTask->m_pJob->m_pOp->pPopQueue2();
+  ASSERT(m_pRegSet->m_pOperand);
+  
   EXIT();
 }
 
