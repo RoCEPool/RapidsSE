@@ -4,8 +4,6 @@
 
 #include "Steps.h"
 
-#define m_xpTablePtn m_xpObject0
-
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -40,7 +38,7 @@ void Step::vTablePtnSet(void)
   if ( ! m_pDataStack->bPopObject(pPtrObject) )
     THROW_DSTACK();
   
-  m_pRegSet->m_xpTablePtn = pPtrObject;
+  m_pRegSet->m_xpTablePtn = _pTablePtn(pPtrObject);
   
   EXIT();
 }
