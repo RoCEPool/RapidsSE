@@ -170,7 +170,7 @@ void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  ASSERT(! m_pJob->m_oEnameSet.szValue("<path>"_Stz)->bSame(""_Stz));
+  ASSERT(! m_pJob->pEnameSet()->szValue("<path>"_Stz)->bSame(""_Stz));
   
   // TODO: shouldn't have to refind it everytime!!!
   vRefindJobClass();

@@ -94,7 +94,7 @@ void Step::vJobClassNew(void)
   JobClass* pJobClass = _pJobClass(iJobClass_p);
 
   Job* pJob = pJobClass->pNewJob(nullptr);
-  pJob->m_oEnameSet.vAdd("<path>"_Stz,"/"_Stz);
+  pJob->pEnameSet()->vAdd("<path>"_Stz,"/"_Stz);
 
   m_pDataStack->vPushPointer(pJob);
   

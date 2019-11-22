@@ -36,9 +36,9 @@ namespace Jobs
   {
   public:
     s32       m_sJobNm;       // name of job
-    EnameSet  m_oEnameSet;    // ename-value set
 
    private:
+    EnameSet  m_oEnameSet;    // ename-value set
     i8        m_iParentId;    // job id of parent job which spawned this job
     Timer     m_oTimer;       // timer
 
@@ -99,6 +99,7 @@ namespace Jobs
     bool bAcksRmgDec(void);
     bool bByPromptTag(void);
     void vContentDump(void);
+    EnameSet* pEnameSet(void);
     void vFocalOutline(s4K& sOutline);
     bool bHasEnameTag(Stz* szEnameTag);
     i8   iJobId(void);
