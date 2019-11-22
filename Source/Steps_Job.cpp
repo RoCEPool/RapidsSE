@@ -915,7 +915,7 @@ void Step::vJobKindFetch(void)
   Job* pJob = _pJob(pJobPtr);
   
   
-  m_pDataStack->vPushI8(pJob->m_eJobKind);
+  m_pDataStack->vPushI8(pJob->eJobKind());
 
   EXIT();
 }
@@ -1854,7 +1854,7 @@ void Step::vJobSeedDecode(void)
   
   eSS eSeed = SS_SEED_RCV;
   
-  if (JK_GENERIC == pJob->m_eJobKind) {
+  if (JK_GENERIC == pJob->eJobKind()) {
     EnameSet* pEnameSet_ji = Job::pJobInfo_enameSet(pJob->m_sJobNm);
     
     s32 sSeed = pEnameSet_ji->szValue(C_TAG_SEEDRUN);
@@ -2196,7 +2196,7 @@ void Step::vJobSpawnUniversal(void)
 
   // ranslate job type and kind
   pJob_Universal->m_eJobType = (eJT) pEnameSet_jobInfo->iValue("<?jobType?>"_Stz);
-  pJob_Universal->m_eJobKind = (eJK) pEnameSet_jobInfo->iValue("<?jobKind?>"_Stz);
+  pJob_Universal->vJobKind((eJK) pEnameSet_jobInfo->iValue("<?jobKind?>"_Stz));
 
   // add the necessary ename tags
   EnameSet* pEnameSet_job = & pJob_Universal->m_oEnameSet;
