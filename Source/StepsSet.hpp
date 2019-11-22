@@ -865,11 +865,14 @@ public:
   // operand
   void vOperandBide(void);
   void vOperandHandleEnd(void);
+  void vOperandIsNull(void);
   void vOperandKind(void);
   void vOperandNewEndMarker(void);
   void vOperandNewStreamDef(void);
   void vOperandNext(void);
+  void vOperandNextBuffer(void);
   void vOperandPipeOut(void);
+  void vOperandPipeToJob(void);
   void vOperandSet(void);
   void vOperandWorkDone(void);
 
@@ -1127,6 +1130,7 @@ public:
   void vTablePtnIsLocked(void);
 
   // table partition
+  void vTablePtnRoot(void);
   void vTablePtnSet(void);
 
   // task

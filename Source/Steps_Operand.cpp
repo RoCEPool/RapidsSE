@@ -11,11 +11,14 @@ void Step::vAddSteps_Operand(void)
 {
   vAddStep("Operand[].bide"_Stz,      &Step::vOperandBide);
   vAddStep("Operand[].handleEnd"_Stz, &Step::vOperandHandleEnd);
+  vAddStep("Operand[].isNull"_Stz,    &Step::vOperandIsNull);
   vAddStep("Operand[].kind"_Stz,      &Step::vOperandKind);
   vAddStep("Operand[].newEndMarker"_Stz, &Step::vOperandNewEndMarker);
   vAddStep("Operand[].newStreamDef"_Stz, &Step::vOperandNewStreamDef);
   vAddStep("Operand[].next"_Stz,      &Step::vOperandNext);
+  vAddStep("Operand[].nextBuffer"_Stz,&Step::vOperandNextBuffer);
   vAddStep("Operand[].pipeOut"_Stz,   &Step::vOperandPipeOut);
+  vAddStep("Operand[].pipeToJob"_Stz, &Step::vOperandPipeToJob);
   vAddStep("Operand[].set"_Stz,       &Step::vOperandSet);
   vAddStep("Operand[].workDone"_Stz,  &Step::vOperandWorkDone);
 }
@@ -51,10 +54,10 @@ void Step::vOperandHandleEnd(void)
   if (--pOp->m_nLeftEndMarkers == 0) {
     if (pOp->bIsCancelling()) {
       delete _pEndMarker(m_pRegSet->m_pOperand);
-      pOp->vPipeToJob(new CancelMarker);
+      pOp->vPipeOut(new CancelMarker);
     }
     else
-      pOp->vPipeToJob(m_pRegSet->m_pOperand);
+      pOp->vPipeOut(m_pRegSet->m_pOperand);
     
     if (AM::bJobHasError(pOp->m_pJobUniversal)) {
       AM::vSetJobLocalError(pOp->m_pJobUniversal, pOp->m_pPipeline->pJob());
@@ -66,6 +69,18 @@ void Step::vOperandHandleEnd(void)
   else
     delete (EndMarker*)m_pRegSet->m_pOperand;
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].isNull -- is operand null ?                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandIsNull(void)
+{
+  ENTRY("vOperandIsNull"_Stz);
+  
+  m_pDataStack->vPushI8(m_pRegSet->m_pOperand ? 1 : 0);
+  
   EXIT();
 }
 
@@ -115,6 +130,23 @@ void Step::vOperandNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Operand[].nextBuffer -- get next buffer                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNextBuffer(void)
+{
+  ENTRY("vOperandNextBuffer"_Stz);
+  
+  Operand* pNextOperand = nullptr;
+  
+  if (m_pRegSet->m_pOperand)
+    pNextOperand = m_pRegSet->m_pOperand->pNextItem();;
+  
+  m_pDataStack->vPushPointer(pNextOperand);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Operand[].newEndMarker -- new an end marker                                */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNewEndMarker(void)
@@ -143,7 +175,7 @@ void Step::vOperandNewStreamDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].pipeOut -- append operand onto output pipe                       */
+/* Operand[].pipeOut -- append operand onto next operator in pipeline         */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandPipeOut(void)
 {
@@ -153,6 +185,24 @@ void Step::vOperandPipeOut(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
 
+  pOp->vPipeOut(m_pRegSet->m_pOperand);
+  
+  m_pRegSet->m_pOperand = nullptr;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].pipeToJob -- append operand onto job's buffer queue              */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandPipeToJob(void)
+{
+  ENTRY("vOperandPipeToJob"_Stz);
+  
+  ASSERT(m_pRegSet->m_pOperand);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  
   pOp->vPipeToJob(m_pRegSet->m_pOperand);
   
   m_pRegSet->m_pOperand = nullptr;

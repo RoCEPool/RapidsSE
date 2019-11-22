@@ -4,18 +4,33 @@
 
 #include "Steps.h"
 
-#define m_xptablePtn m_xpObject0
+#define m_xpTablePtn m_xpObject0
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_TablePartition2(void)
 {
-  vAddStep("tablePtn[].set"_Stz , &Step::vTablePtnSet);
+  vAddStep("tablePtn[].root"_Stz , &Step::vTablePtnRoot);
+  vAddStep("tablePtn[].set"_Stz  , &Step::vTablePtnSet);
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn[].set -- set the tablePtn                                           */
+/* tablePtn[].root -- get the tablePtn root                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnRoot(void)
+{
+  ENTRY("vTablePtnSet"_Stz);
+  
+  TablePtn* pTablePtn = _pTablePtn(*m_pRegSet->m_xpTablePtn);
+  
+  m_pDataStack->vPushPointer(pTablePtn->pRootCrwBuffer());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tablePtn[].set -- set the tablePtn                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnSet(void)
 {
@@ -25,10 +40,11 @@ void Step::vTablePtnSet(void)
   if ( ! m_pDataStack->bPopObject(pPtrObject) )
     THROW_DSTACK();
   
-  m_pRegSet->m_xptablePtn = pPtrObject;
+  m_pRegSet->m_xpTablePtn = pPtrObject;
   
   EXIT();
 }
+
 
 /*============================================================================*/
 /* end                                                                        */
