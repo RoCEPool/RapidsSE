@@ -43,7 +43,7 @@ void Step::vJob__BegunNew(void)
 
   pJobBegun->m_aJobClass = pJobClass_Universal;
 
-  pJobBegun->m_sJobNm = "_begun"_Stz;
+  pJobBegun->vJobNm("_begun"_Stz);
   pJobBegun->pEnameSet()->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
   pJobBegun->pEnameSet()->vAdd(C_TAG_JOBNM,"_begun"_Stz);
   pJobBegun->pEnameSet()->vAdd(C_TAG_PATH,"/"_Stz);
@@ -82,7 +82,7 @@ void Step::vJob__CancelNew(void)
   JobClass* pJobClass__Cancel = pJobClass_Universal;
   pJobCancel->m_aJobClass = pJobClass__Cancel;
 
-  pJobCancel->m_sJobNm = "_cancel"_Stz;
+  pJobCancel->vJobNm("_cancel"_Stz);
   pJobCancel->pEnameSet()->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
   pJobCancel->pEnameSet()->vAdd(C_TAG_JOBNM,"_cancel"_Stz);
   pJobCancel->pEnameSet()->vAdd(C_TAG_PATH,"/"_Stz);
@@ -124,7 +124,7 @@ void Step::vJob__CancelledNew(void)
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancelled);
   
-  pJobCancelled->m_sJobNm = "_cancelled"_Stz;
+  pJobCancelled->vJobNm("_cancelled"_Stz);
   pJobCancelled->pEnameSet()->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
   pJobCancelled->pEnameSet()->vAdd(C_TAG_JOBNM,"_cancelled"_Stz);
   pJobCancelled->pEnameSet()->vAdd(C_TAG_PATH,"/"_Stz);
@@ -163,7 +163,7 @@ void Step::vJob__EndNew(void)
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnd);
   
-  pJobEnd->m_sJobNm = "_end"_Stz;
+  pJobEnd->vJobNm("_end"_Stz);
   pJobEnd->pEnameSet()->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
   pJobEnd->pEnameSet()->vAdd(C_TAG_JOBNM,"_end"_Stz);
   pJobEnd->pEnameSet()->vAdd(C_TAG_PATH,"/"_Stz);
@@ -201,7 +201,7 @@ void Step::vJob__EndedNew(void)
   JobClass* pJobClass__Ended = pJobClass_Universal;
   pJobEnded->m_aJobClass = pJobClass__Ended;
   
-  pJobEnded->m_sJobNm = "_ended"_Stz;
+  pJobEnded->vJobNm("_ended"_Stz);
   pJobEnded->pEnameSet()->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
   pJobEnded->pEnameSet()->vAdd(C_TAG_JOBNM,"_ended"_Stz);
   pJobEnded->pEnameSet()->vAdd(C_TAG_PATH,"/"_Stz);
@@ -242,7 +242,7 @@ void Step::vJob__ExecuteNew(void)
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecute);
   
-  pJobExecute->m_sJobNm = "_execute"_Stz;
+  pJobExecute->vJobNm("_execute"_Stz);
   pJobExecute->pEnameSet()->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
   pJobExecute->pEnameSet()->vAdd(C_TAG_JOBNM,"_execute"_Stz);
   pJobExecute->pEnameSet()->vAdd(C_TAG_PATH,"/"_Stz);
@@ -280,7 +280,7 @@ void Step::vJob__ExecutedNew(void)
   JobClass* pJobClass__Executed = pJobClass_Universal;
   pJobExecuted->m_aJobClass = pJobClass__Executed;
   
-  pJobExecuted->m_sJobNm = "_executed"_Stz;
+  pJobExecuted->vJobNm("_executed"_Stz);
   pJobExecuted->pEnameSet()->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
   pJobExecuted->pEnameSet()->vAdd(C_TAG_JOBNM,"_executed"_Stz);
   pJobExecuted->pEnameSet()->vAdd(C_TAG_PATH,"/"_Stz);

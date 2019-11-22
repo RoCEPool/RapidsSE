@@ -34,10 +34,8 @@ namespace Jobs
               public JobResult,
               public CRM<Job>
   {
-  public:
+  private:
     s32       m_sJobNm;       // name of job
-
-   private:
     EnameSet  m_oEnameSet;    // ename-value set
     i8        m_iParentId;    // job id of parent job which spawned this job
     Timer     m_oTimer;       // timer
@@ -107,6 +105,8 @@ namespace Jobs
     void vJobKind(eJK eJobKind);
     eJL  eJobList(void);
     void vJobList(eJL eJobList);
+    Stz* szJobNm(void);
+    void vJobNm(Stz* szJobNm);
     eJP  eJobPhase(void);
     void vJobPhase(eJP eJobPhase);
     eJS  eJobState(void);

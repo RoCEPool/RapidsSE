@@ -892,7 +892,7 @@ void SePrompt::vSetJob(void)
   
   s32 sJobNm = m_pJob->pEnameSet()->szValue(C_TAG_JOBNM);
   
-  m_pJob->m_sJobNm = sJobNm;
+  m_pJob->vJobNm(sJobNm);
   
   m_pJob->pEnameSet()->vAdd(C_TAG_BYPROMPT,1);
   
