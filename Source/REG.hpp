@@ -61,6 +61,17 @@ namespace Correctness
     }
   
     /*------------------------------------------------------------------------*/
+    /* member operator *                               (nullptr not allowed) */
+    /*------------------------------------------------------------------------*/
+    CLASS* operator * (void)
+    {
+      if (! m_pObject)
+        THROW("SMA::operator *() : m_pObject member is null"_Stz);
+      
+      return m_pObject;
+    }
+    
+    /*------------------------------------------------------------------------*/
     /* is pointer valid?                                (nullptr not allowed) */
     /*------------------------------------------------------------------------*/
     bool bIsValid(void)

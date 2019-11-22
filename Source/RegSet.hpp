@@ -31,7 +31,7 @@ namespace Registers
     Dynamo*   m_pDynamo;    // dynamo pipleine compiler
   
     Operand*  m_pOperand;   // operand
-  
+    
     REG<Object> m_xpObject0; // general purpose reg 0[]
     REG<Object> m_xpObject1; // general purpose reg 1[]
     REG<Object> m_xpObject2; // general purpose reg 2[]
