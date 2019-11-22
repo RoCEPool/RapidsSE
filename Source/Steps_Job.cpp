@@ -1310,7 +1310,7 @@ void Step::vJobParticipantFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_iParticipantNode);
+  m_pDataStack->vPushI8(pJob->iParticipantNode());
   
   EXIT();
 }
@@ -1331,7 +1331,7 @@ void Step::vJobParticipantStore(void)
   if ( ! m_pDataStack->bPopAsInt(iParticipantNode) )
     THROW_DSTACK();
   
-  pJob->m_iParticipantNode = iParticipantNode;
+  pJob->vParticipantNode(iParticipantNode);
   
   EXIT();
 }
@@ -1391,7 +1391,7 @@ void Step::vJobParticipantResponseStore(void)
   
   // set node and error in the response
   //RASSERT(iNode == pParticipantJob->m_iParticipantNode);
-  pResponse->m_iNode           = pParticipantJob->m_iParticipantNode;
+  pResponse->m_iNode           = pParticipantJob->iParticipantNode();
   pResponse->m_sResponse       = pParticipantJob->m_xResponse.m_sResponse;
   pResponse->m_ixRowsProcessed = pParticipantJob->m_xResponse.m_ixRowsProcessed;
   pResponse->m_ixRowsInvalid   = pParticipantJob->m_xResponse.m_ixRowsInvalid;

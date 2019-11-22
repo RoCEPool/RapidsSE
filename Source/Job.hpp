@@ -40,9 +40,9 @@ namespace Jobs
     Timer     m_oTimer;       // timer
     i8        m_iParentId;    // job id of parent job which spawned this job
 
-    i8        m_iParticipantNode; // participant node no (FromNodeNo?)
-  private:
+   private:
     bool      m_bWasReceived; // job was received over a socket
+    i8        m_iParticipantNode; // participant node no (FromNodeNo?)
     bool      m_bNormalSides; // side semantics
 
     eJK       m_eJobKind;     // kind of job
