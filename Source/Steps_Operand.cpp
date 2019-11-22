@@ -16,7 +16,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newEndMarker"_Stz, &Step::vOperandNewEndMarker);
   vAddStep("Operand[].newStreamDef"_Stz, &Step::vOperandNewStreamDef);
   vAddStep("Operand[].next"_Stz,      &Step::vOperandNext);
-  vAddStep("Operand[].nextBuffer"_Stz,&Step::vOperandNextBuffer);
   vAddStep("Operand[].pipeOut"_Stz,   &Step::vOperandPipeOut);
   vAddStep("Operand[].pipeToJob"_Stz, &Step::vOperandPipeToJob);
   vAddStep("Operand[].set"_Stz,       &Step::vOperandSet);
@@ -125,23 +124,6 @@ void Step::vOperandNext(void)
   if (! m_pRegSet->m_pOperand)
     m_pRegSet->m_pOperand = m_pTask->m_pJob->m_pOp->pPopQueue2();
   ASSERT(m_pRegSet->m_pOperand);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].nextBuffer -- get next buffer                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandNextBuffer(void)
-{
-  ENTRY("vOperandNextBuffer"_Stz);
-  
-  Operand* pNextOperand = nullptr;
-  
-  if (m_pRegSet->m_pOperand)
-    pNextOperand = m_pRegSet->m_pOperand->pNextItem();;
-  
-  m_pDataStack->vPushPointer(pNextOperand);
   
   EXIT();
 }

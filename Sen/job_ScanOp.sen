@@ -33,37 +33,68 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute for scanOp                                 (on node where spawned) */
+/* scanOp request                                     (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : scan_req ( -- )
- 
+: scanOp_req ( -- )
+
   >>logEntry <SEED_REQ>
 
   job::this locals| pJob_ScanOp |
   0 0 locals| sTableNm pTable |
 
-
-  DdlLock[].grabRead
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can scan the table
-  //pJob_ScanOp job.objectName@ to sTableNm
   <tableNm> to sTableNm
 
   sTableNm checkScanTable not if
-    pJob_ScanOp <ERROR_JOB> !!logError
-  else
-
-    //----------------------------------------------------------------------------
-    // move to table folder
-    sTableNm pushTable assert
-
-    //----------------------------------------------------------------------------
-    // find the table
-    sTableNm find execute pJob_ScanOp job.opTable!
+    pJob_ScanOp <ERROR_JOB> !!logError exit
   then
 
-  pJob_ScanOp job.opLoop
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move to table folder and find the table and tablePtn
+  sTableNm pushTable assert
+  sTableNm find execute to table[] //pJob_ScanOp job.opTable!
+
+  pJob_ScanOp table[].tablePtn@ to tablePtn[]
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // new a stream def
+  pTable Operand[].newStreamDef
+  Operand[].pipeOut
+
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_STARTMARKER of
+        "Operand:- ZK_STARTMARKER" .
+
+        // pipeout all subsets from tablePtn
+        tablePtn[].root to Subset[]
+        Subset[]@ to Operand[]
+        begin
+          not Operand[].isNull
+        while
+          Operand[].pipeOut
+          Subset[].next
+          not Operand[].isNull
+        repeat
+
+        Operand[].newEndMarker
+        Operand[].handleEnd
+        false
+      endof
+
+    endcase
+
+  while assert::stack_0 repeat
 
   <<logExit
   job::deleteThis
@@ -73,9 +104,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: scan :: scan ;
+jobSyntax: scanOp :: scanOp ;
 
-jobInfo: scan
+jobInfo: scanOp
 {
   <?jobDesc?>  = "--description of job--"
   
