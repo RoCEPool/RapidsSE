@@ -385,8 +385,7 @@ bool Api::bSpawnJob(Job* pJob)
 //              pJob,
 //              C_ENDARGS);
 
-  pJob->m_oTimer.vReset();
-  pJob->m_oTimer.vStart();
+   pJob->vTimerStart();
 
   Scheduler::vAddTaskGeneral(pJob->pTask());
   
@@ -411,8 +410,7 @@ void Api::vSpawnJobAndWait(Job* pJob)
   
   pJob->vSeed(SS_SEED_REQ);
   
-  pJob->m_oTimer.vReset();
-  pJob->m_oTimer.vStart();
+  pJob->vTimerStart();
   
 
   // spawn the insertTable job
@@ -489,10 +487,8 @@ bool Api::bSpawnJobDedicated(Job* pJob)
   Task* pNewTask = new Task(pJob);
   pNewTask->vState(TS_ABLE);
   
-  pJob->m_oTimer.vReset();
-  pJob->m_oTimer.vStart();
+  pJob->vTimerStart();
   
-
   Scheduler::vAddTaskDedicated(pNewTask);
   
   return true;

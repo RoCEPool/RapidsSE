@@ -37,10 +37,12 @@ namespace Jobs
   public:
     s32       m_sJobNm;       // name of job
     EnameSet  m_oEnameSet;    // ename-value set
-    Timer     m_oTimer;       // timer
     i8        m_iParentId;    // job id of parent job which spawned this job
 
    private:
+  
+    Timer     m_oTimer;       // timer
+
     bool      m_bWasReceived; // job was received over a socket
     i8        m_iParticipantNode; // participant node no (FromNodeNo?)
     bool      m_bNormalSides; // side semantics
@@ -135,6 +137,8 @@ namespace Jobs
     void vSlot(i8 i_Slot);
     Task* pTask(void);
     void vTask(Task* pTask);
+    void vTimerStart(void);
+    void vTimerUpdate(void);
     bool bTimeTag(void);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);

@@ -108,7 +108,7 @@ void Engine::vCallBoot(void)
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
   
-  pJob_Boot->m_oTimer.vStart();
+  pJob_Boot->vTimerStart();
   
   vCallImmmediate(pBootTask);
   

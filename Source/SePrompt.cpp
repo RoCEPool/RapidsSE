@@ -908,7 +908,7 @@ void SePrompt::vSetJob(void)
 
   m_pJob->m_oEnameSet.vCopy(&m_oJobCtl);
   
-  m_pJob->m_oTimer.vStart();
+  m_pJob->vTimerStart();
   
   if (m_pJob->bHasEnameTag(C_TAG_LIFE)) {
     SP_EnmSet spEnameSet;
