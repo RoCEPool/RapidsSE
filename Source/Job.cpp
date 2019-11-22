@@ -739,6 +739,26 @@ Stz* Job::szNodeNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return side semantics                                                      */
+/*----------------------------------------------------------------------------*/
+bool Job::bNormalSides(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_bNormalSides;
+}
+
+/*----------------------------------------------------------------------------*/
+/* wait for job mutex to be signalled                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vNormalSides(bool bNormalSides)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bNormalSides = bNormalSides;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
 i8 Job::iOriginatorNode(void)
