@@ -800,6 +800,34 @@ bool Stack::bPopS48K(s48K& sArg1, s48K& sArg2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop string from stack                                                      */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopString(String* pString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_STRVAL) )
+    return false;
+  
+  
+  _hazard_();
+  
+  StrVal* aStrVal = _aStrVal(aPeekValue());  
+  pString->vCopy((Stz*)aStrVal->azChar());
+  
+  i8 iSize = aPeekValue()->nSize();
+  vPopBy(iSize);
+  m_nValues--;
+  
+  //m_xHazard.vAssertFooter();
+  _hazard_();
+
+  
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop value from value stack  as integer                                     */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopAsInt(i8& iArg)
