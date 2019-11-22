@@ -46,9 +46,9 @@ Stz* SP_Job::sz_log(Job* pJob)
                   pJob->iAcksRmg_printOnlyValue(),
 
                   aSS[pJob->eSeed()],
-                  aJL[pJob->m_eJobList],
-                  aJP[pJob->m_eJobPhase],
-                  aJS[pJob->m_eJobState],
+                  aJL[pJob->eJobList()],
+                  aJP[pJob->eJobPhase()],
+                  aJS[pJob->eJobState()],
                   
                   pJob->bNoWaitTag()   ? ""_Stz       : " wait"_Stz,
                   pJob->m_bWasReceived ? " recvd"_Stz : ""_Stz,

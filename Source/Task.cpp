@@ -596,13 +596,13 @@ void Task::vLocalsPush(void)
 /*----------------------------------------------------------------------------*/
 void Task::vMonitorPortrait(s48K& sPortrait)
 {
-  if (JL_NONE == m_pJob->m_eJobList)
+  if (JL_NONE == m_pJob->eJobList())
     sPortrait.vSprint("%s"_Stz,aCN[m_pJob->eClass()]);
   else
-  if (JL_ORIGINATING == m_pJob->m_eJobList)
+  if (JL_ORIGINATING == m_pJob->eJobList())
     sPortrait.vSprint("%s:o"_Stz,aCN[m_pJob->eClass()]);
   else
-  if (JL_PARTICIPATING == m_pJob->m_eJobList)
+  if (JL_PARTICIPATING == m_pJob->eJobList())
     sPortrait.vSprint("%s:p"_Stz,aCN[m_pJob->eClass()]);
 
 

@@ -216,7 +216,7 @@ void Step::vJobAssertBegin(void)
              "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
              aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
     
-    if (JL_NONE != pJob->m_eJobList)
+    if (JL_NONE != pJob->eJobList())
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "job.assertBegin: "
              "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
@@ -248,7 +248,7 @@ void Step::vJobAssertBegin(void)
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
   
-  if (JL_NONE != pJob->m_eJobList)
+  if (JL_NONE != pJob->eJobList())
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "job.assertBegin: "
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
@@ -299,7 +299,7 @@ void Step::vJobAssertNeutral(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  if (JL_NONE != pJob->m_eJobList)
+  if (JL_NONE != pJob->eJobList())
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "job.assertNeutral: "
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
@@ -334,7 +334,7 @@ void Step::vJobAssertOriginator(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  if (JL_ORIGINATING != pJob->m_eJobList)
+  if (JL_ORIGINATING != pJob->eJobList())
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
            "Job::m_eJobList is not JL_ORIGINATING [Job %s on node %lld]\n"_Stz,
@@ -368,7 +368,7 @@ void Step::vJobAssertParticipant(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  if (JL_PARTICIPATING != pJob->m_eJobList)
+  if (JL_PARTICIPATING != pJob->eJobList())
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "job.assertParticipant: "
            "Job::m_eJobList is not JL_PARTICIPATING [Job %s on node %lld]\n"_Stz,
@@ -584,7 +584,7 @@ void Step::vJobCompleted(void)
   
   Job* pJob = m_pTask->pJob();
   
-  pJob->m_eJobState = JS_COMPLETED;
+  pJob->vJobState(JS_COMPLETED);
   
   m_pTask->vSchedulerAct(SA_DELETE);
   
@@ -897,7 +897,7 @@ void Step::vJobJobListFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_eJobList);
+  m_pDataStack->vPushI8(pJob->eJobList());
   
   EXIT();
 }
@@ -1439,7 +1439,7 @@ void Step::vJobPhaseFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_eJobPhase);
+  m_pDataStack->vPushI8(pJob->eJobPhase());
   
   EXIT();
 }
@@ -1460,7 +1460,7 @@ void Step::vJobPhaseStore(void)
   if ( ! m_pDataStack->bPopAsInt(iJobPhase) )
     THROW_DSTACK();
   
-  pJob->m_eJobPhase = (eJP)iJobPhase;
+  pJob->vJobPhase((eJP)iJobPhase);
   
   //ActLog::vAdd(pJob,AN_JOB_PHASE,iJobPhase,_EG_JP);
   
@@ -2030,7 +2030,7 @@ void Step::vJobSignalWaiter(void)
 
   RASSERT( _bIsValidJob(pJob->eClass()) );
   
-  pJob->m_eJobState = JS_SIGNALLED;
+  pJob->vJobState(JS_SIGNALLED);
 
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   

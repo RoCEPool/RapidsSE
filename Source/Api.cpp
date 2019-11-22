@@ -407,7 +407,7 @@ void Api::vSpawnJobAndWait(Job* pJob)
   //! ApiState::vMarkApiLoc(pSession,106);
   
   // set the job state to be locked
-  pJob->m_eJobState = JS_LOCKED;
+  pJob->vJobState(JS_LOCKED);
   
   pJob->vSeed(SS_SEED_REQ);
   
@@ -423,7 +423,7 @@ void Api::vSpawnJobAndWait(Job* pJob)
   // wait for condition & state
   
   // set the job state to be waiting
-  pJob->m_eJobState = JS_WAITING;
+  pJob->vJobState(JS_WAITING);
   
   // wait till signalled
   do {
@@ -445,7 +445,7 @@ void Api::vSpawnJobAndWait(Job* pJob)
     RASSERT( _bIsValidJob(pJob->eClass()) );
     
     
-  } while (pJob->m_eJobState != JS_SIGNALLED);
+  } while (pJob->eJobState() != JS_SIGNALLED);
   
   RASSERT( _bIsValidJob(pJob->eClass()) );
   
@@ -454,7 +454,7 @@ void Api::vSpawnJobAndWait(Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // set the job state back to running
-  pJob->m_eJobState = JS_RUNNING;
+  pJob->vJobState(JS_RUNNING);
   
   // unlock this job's mutex
   pJob->vUnlockJobMutex();
