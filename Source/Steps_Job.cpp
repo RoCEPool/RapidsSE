@@ -1293,7 +1293,7 @@ void Step::vJobParentIdFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_iParentId);
+  m_pDataStack->vPushI8(pJob->iParentId());
   
   EXIT();
 }

@@ -167,7 +167,7 @@ Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
   
   pJob_Operand->vSeed(SS_SEED_RUN);
   
-  pJob_Operand->m_iParentId = iParentJobId;
+  pJob_Operand->vParentId(iParentJobId);
   pJob_Operand->m_pOp       = pOp;
   pJob_Operand->m_iNode     = iNode;
   pJob_Operand->m_pOperand  = pOperand;

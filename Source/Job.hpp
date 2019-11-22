@@ -37,10 +37,9 @@ namespace Jobs
   public:
     s32       m_sJobNm;       // name of job
     EnameSet  m_oEnameSet;    // ename-value set
-    i8        m_iParentId;    // job id of parent job which spawned this job
 
    private:
-  
+    i8        m_iParentId;    // job id of parent job which spawned this job
     Timer     m_oTimer;       // timer
 
     bool      m_bWasReceived; // job was received over a socket
@@ -124,6 +123,8 @@ namespace Jobs
     bool bNormalSides(void);
     void vNormalSides(bool bNormalSides);
     i8   iOriginatorNode(void);
+    i8   iParentId(void);
+    void vParentId(i8 iParentId);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     void vPrint(Stz* szFormat, ...);
