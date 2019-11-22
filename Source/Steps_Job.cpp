@@ -210,7 +210,7 @@ void Step::vJobAssertBegin(void)
   
   if (Job::iNodeNo(pJob->m_iFocalId) == AM::pGrid()->m_iThisNode) {
     
-    if (! pJob->m_bWasReceived)
+    if (! pJob->bWasReceived())
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "job.assertOriginator: "
              "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
@@ -242,7 +242,7 @@ void Step::vJobAssertBegin(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (! pJob->m_bWasReceived)
+  if (! pJob->bWasReceived())
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
@@ -340,7 +340,7 @@ void Step::vJobAssertOriginator(void)
            "Job::m_eJobList is not JL_ORIGINATING [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
 
-  if (pJob->m_bWasReceived)
+  if (pJob->bWasReceived())
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
            "Job::m_bWasReceived is true [Job %s on node %lld]\n"_Stz,
@@ -374,7 +374,7 @@ void Step::vJobAssertParticipant(void)
            "Job::m_eJobList is not JL_PARTICIPATING [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
   
-  if (! pJob->m_bWasReceived)
+  if (! pJob->bWasReceived())
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "job.assertOriginator: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
@@ -402,7 +402,7 @@ void Step::vJobAssertReceived(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  if (! pJob->m_bWasReceived)
+  if (! pJob->bWasReceived())
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "job.assertReceived: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,

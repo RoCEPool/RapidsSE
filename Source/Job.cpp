@@ -929,6 +929,7 @@ void Job::vSlot(i8 i_Slot)
 }
 
 
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -987,6 +988,26 @@ bool Job::bTimeTag(void)
   bool bTime = bHasEnameTag(C_TAG_TIME);
   
   return bTime;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get was received flag                                                      */
+/*----------------------------------------------------------------------------*/
+bool Job::bWasReceived(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_bWasReceived;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set ws received flag                                                       */
+/*----------------------------------------------------------------------------*/
+void Job::vWasReceived(bool bWasReceived)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bWasReceived = bWasReceived;
 }
 
 
@@ -1073,7 +1094,7 @@ JOBS_fn(vJob_send)
 /*----------------------------------------------------------------------------*/
 JOBS_fn(vJob_recv)
 {
-  pJob->m_bWasReceived   = true;
+  pJob->vWasReceived(true);
   
   pJob->vJobList(JL_NONE);
   

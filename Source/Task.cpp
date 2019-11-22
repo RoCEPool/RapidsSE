@@ -85,7 +85,7 @@ Task::Task(Job* pJob)
   AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
               "Task -%s%s |gixTask=%lld|"_Stz, //!format-LogTsk
               aCN[m_pJob->eClass()],
-              pJob->m_bWasReceived ? " was-received"_Stz : ""_Stz,
+              pJob->bWasReceived() ? " was-received"_Stz : ""_Stz,
               * gixTask);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);

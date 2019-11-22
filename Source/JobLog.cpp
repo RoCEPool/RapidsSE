@@ -23,7 +23,7 @@ void JobLog::vNote(Jobs::Job* pJob, Stz* szFormat, ...)
   
   s4K szCombinedFormat;
   
-  if (pJob->m_bWasReceived) {
+  if (pJob->bWasReceived()) {
     
     s32 sNodeNm;
     sNodeNm = pJob->szNodeNm();
@@ -44,7 +44,7 @@ void JobLog::vNote(Jobs::Job* pJob, Stz* szFormat, ...)
   }
   
   i8 iJobId = pJob->iJobId();
-  bool bForeign = pJob->m_bWasReceived;
+  bool bForeign = pJob->bWasReceived();
 //  pJob->m_i_Activity = gpLog->iEntryJob_arg(iJobId,bForeign,
 //                                          szCombinedFormat,xVaArgs);
   
@@ -83,7 +83,7 @@ void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
                       aQK[AM::iTaskQueue(pJob->pTask())]
                       );
   
-  if (pJob->m_bWasReceived) {
+  if (pJob->bWasReceived()) {
     
     s32 sNodeNm;
     sNodeNm = pJob->szNodeNm();
@@ -92,7 +92,7 @@ void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
   }
 
   i8 iJobId = pJob->iJobId();
-  bool bForeign = pJob->m_bWasReceived;
+  bool bForeign = pJob->bWasReceived();
   //pJob->m_i_Activity = gpLog->iEntryJob(iJobId,bForeign,szEntryText);
 
 #endif
