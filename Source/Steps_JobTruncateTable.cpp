@@ -91,7 +91,7 @@ void Step::vJob_TruncateTableSpawnSub(void)
   pJob_SubTruncate->vSlot(iSlot);
  
   pJob_SubTruncate->m_eJobType = pJob_Universal->m_eJobType;
-  pJob_SubTruncate->m_eJobKind = pJob_Universal->m_eJobKind;
+  pJob_SubTruncate->vJobKind(pJob_Universal->eJobKind());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

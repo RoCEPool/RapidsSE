@@ -201,7 +201,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
   
   if (pEnameSet_ji) {
     m_eJobType = (eJT) pEnameSet_ji->iValue("<?jobType?>"_Stz);
-    m_eJobKind = (eJK) pEnameSet_ji->iValue("<?jobKind?>"_Stz);
+    vJobKind( (eJK) pEnameSet_ji->iValue("<?jobKind?>"_Stz) );
   }
   
   return EC_NONE;

@@ -42,10 +42,10 @@ namespace Jobs
 
     bool      m_bWasReceived; // job was received over a socket
     i8        m_iParticipantNode; // participant node no (FromNodeNo?)
+  private:
     bool      m_bNormalSides; // side semantics
 
     eJK       m_eJobKind;     // kind of job
-  private:
     eJL       m_eJobList;     // which job list the job is currently in
     eJP       m_eJobPhase;    // which job phase the job is currently in
     eJS       m_eJobState;    // current state of the job
@@ -101,6 +101,8 @@ namespace Jobs
     void vFocalOutline(s4K& sOutline);
     bool bHasEnameTag(Stz* szEnameTag);
     i8   iJobId(void);
+    eJK  eJobKind(void);
+    void vJobKind(eJK eJobKind);
     eJL  eJobList(void);
     void vJobList(eJL eJobList);
     eJP  eJobPhase(void);
@@ -117,6 +119,8 @@ namespace Jobs
     void vUnlockJobMutex(void);
     void vWaitJobMutex(void);
     Stz* szNodeNm(void);
+    bool bNormalSides(void);
+    void vNormalSides(bool bNormalSides);
     i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
