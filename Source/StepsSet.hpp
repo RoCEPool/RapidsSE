@@ -870,7 +870,6 @@ public:
   void vOperandNewEndMarker(void);
   void vOperandNewStreamDef(void);
   void vOperandNext(void);
-  void vOperandNextBuffer(void);
   void vOperandPipeOut(void);
   void vOperandPipeToJob(void);
   void vOperandSet(void);
@@ -1078,6 +1077,11 @@ public:
 
   // sub loader
   void vSubLoaderDelete(void);
+
+  // subset
+  void vSubsetFetch(void);
+  void vSubsetNext(void);
+  void vSubsetSet(void);
 
   // table
   void vTableAddIndex(void);

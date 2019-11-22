@@ -7,7 +7,7 @@
 OpDesc __Op_Scan (
   CN_SCANOP,          // class number
   OK_SOURCE,          // op kind
-  "Scan"_Stz,         // first word of prompt command
+  "ScanOp"_Stz,       // first word of prompt command
   "Scn"_Stz,          // prefix
                   
   true,               // partitioned
