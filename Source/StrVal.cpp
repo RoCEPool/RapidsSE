@@ -35,7 +35,7 @@ void* StrVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StrVal::StrVal(void)
-: ForthValue(CN_STRVAL)
+: StkVal(CN_STRVAL)
 {
   m_xHeader.vSetClass(CN_STRVAL);
 }

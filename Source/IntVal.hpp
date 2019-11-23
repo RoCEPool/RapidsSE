@@ -5,7 +5,7 @@
 
 namespace SenVM
 {
-  class IntVal : public ForthValue
+  class IntVal : public StkVal
   {
   private:
     i8  m_iInt;

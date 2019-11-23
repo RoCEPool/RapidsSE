@@ -19,7 +19,7 @@ namespace SenVM
     void* operator new(size_t);
     Local(void);
       
-    ForthValue* aLocalValue(void);
+    StkVal* aLocalValue(void);
   
   private:
     Footer* aFooter(void);

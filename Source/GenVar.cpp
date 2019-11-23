@@ -143,11 +143,11 @@ bool GenVar::bIsInt(void)
 /*----------------------------------------------------------------------------*/
 /* get address of the nested value                                            */
 /*----------------------------------------------------------------------------*/
-ForthValue* GenVar::aNestedValue(void)
+StkVal* GenVar::aNestedValue(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  ForthValue* aValue = reinterpret_cast<ForthValue*>(&xNestedValue);
+  StkVal* aValue = reinterpret_cast<StkVal*>(&xNestedValue);
   
   return aValue;
 }

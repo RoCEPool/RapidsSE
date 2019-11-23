@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IntVal.cpp - Integer ForthValue                                            */
+/* IntVal.cpp - Integer StkVal                                            */
 /*============================================================================*/
 
 #include "SenVM.h"
@@ -19,7 +19,7 @@ void* IntVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IntVal::IntVal(void)
-: ForthValue(CN_INTVAL)
+: StkVal(CN_INTVAL)
 {
   m_xHeader.vSetClass(CN_INTVAL);
   

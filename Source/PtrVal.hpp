@@ -5,7 +5,7 @@
 
 namespace SenVM
 {
-  class PtrVal : public ForthValue
+  class PtrVal : public StkVal
   {
   private:
     Object* m_pObj;

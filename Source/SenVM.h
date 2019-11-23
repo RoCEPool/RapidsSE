@@ -14,7 +14,7 @@ namespace SenVM
 
 //------------------------------------------------------------------------------
 
-#include "ForthValue.hpp"
+#include "StkVal.hpp"
 
 #include "FipVal.hpp"
 #include "IntVal.hpp"

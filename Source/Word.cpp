@@ -262,7 +262,7 @@ void* Word::aAppend(GenVar* pGenVar)
 /*----------------------------------------------------------------------------*/
 /* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
-void Word::vAppend(ForthValue* aValue)
+void Word::vAppend(StkVal* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -273,7 +273,7 @@ void Word::vAppend(ForthValue* aValue)
 /*----------------------------------------------------------------------------*/
 /* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
-void* Word::aAppend(ForthValue* aValue)
+void* Word::aAppend(StkVal* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 

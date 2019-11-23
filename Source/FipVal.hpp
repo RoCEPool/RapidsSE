@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* FipVal.hpp - Forth Instruction Pointer ForthValue                          */
+/* FipVal.hpp - Forth Instruction Pointer StkVal                          */
 /*============================================================================*/
 #pragma once
 
 namespace SenVM
 {
-  class FipVal : public ForthValue
+  class FipVal : public StkVal
   {
   private:
     Cell* m_aFip;

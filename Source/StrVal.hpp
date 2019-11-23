@@ -5,7 +5,7 @@
 
 namespace SenVM
 {
-  class StrVal : public ForthValue
+  class StrVal : public StkVal
   {
   protected:
     i8   m_nBytesFollowing;

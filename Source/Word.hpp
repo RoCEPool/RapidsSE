@@ -71,8 +71,8 @@ namespace SenVM
     void  vAppend(i8 iInt);
     void* aAppend(StepFp* afpStep);
     void  vAppend(StepFp* afpStep);
-    void* aAppend(ForthValue* aValue);
-    void  vAppend(ForthValue* aValue);
+    void* aAppend(StkVal* aValue);
+    void  vAppend(StkVal* aValue);
     Article* pArticle(void);
     void  vArticle(Article* pArticle);
     Word* pCategory(void);

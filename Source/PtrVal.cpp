@@ -31,7 +31,7 @@ void* PtrVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PtrVal::PtrVal(void)
-: ForthValue(CN_PTRVAL)
+: StkVal(CN_PTRVAL)
 {
   m_xHeader.vSetClass(CN_PTRVAL);
   

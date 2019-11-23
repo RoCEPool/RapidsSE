@@ -22,7 +22,7 @@ void Step::vPushI(void)
 {
   ENTRY(); // ENTRY("vPushI"_Stz);
   
-  ForthValue* aLoopIndex_I = m_pReturnStack->aTopVal();
+  StkVal* aLoopIndex_I = m_pReturnStack->aTopVal();
   
   m_pDataStack->vPushValue(aLoopIndex_I);
   
@@ -36,7 +36,7 @@ void Step::vPushJ(void)
 {
   ENTRY(); // ENTRY("vPushJ"_Stz);
   
-  ForthValue* aLoopIndex_J = m_pReturnStack->aPeekValue(3);
+  StkVal* aLoopIndex_J = m_pReturnStack->aPeekValue(3);
   
   m_pDataStack->vPushValue(aLoopIndex_J);
   
@@ -69,7 +69,7 @@ void Step::vPushValue(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  ForthValue* aValue = &m_aInxPtr->m_xEmbValue;
+  StkVal* aValue = &m_aInxPtr->m_xEmbValue;
   
   m_pDataStack->vPushValue(aValue);
   

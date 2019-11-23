@@ -52,7 +52,7 @@ void Step::vAddressFetch(void)
   
   eCN eClass = pObject->eClass();
   
-  ForthValue* aValue = reinterpret_cast<ForthValue*>(pObject);
+  StkVal* aValue = reinterpret_cast<StkVal*>(pObject);
   
   switch (eClass) {
     case CN_INTVAL:
@@ -96,7 +96,7 @@ void Step::vAddressStore(void)
   if ( ! m_pDataStack->bPopGenVar(xValStored) )
     THROW_DSTACK();
   
-  ForthValue* aValue = reinterpret_cast<ForthValue*>(pObject);
+  StkVal* aValue = reinterpret_cast<StkVal*>(pObject);
   
   eCN eClass = pObject->eClass();
   

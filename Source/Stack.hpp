@@ -16,10 +16,10 @@ namespace SenVM
   private:
     eKK    m_eKind; // kind of stack
   
-    ForthValue* m_aTop;   // current top of stack
+    StkVal* m_aTop;   // current top of stack
     i8     m_nValues;     // number of values currently on stack
 
-    ForthValue* m_aRetryTop;    // reset to this top of stack
+    StkVal* m_aRetryTop;    // reset to this top of stack
     i8     m_nRetryValues; // reset with this many values on stack
     
     Footer m_xHazard;
@@ -48,7 +48,7 @@ namespace SenVM
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    ForthValue* aPeekValue(i8 i_Value);
+    StkVal* aPeekValue(i8 i_Value);
     void vPeekValue(i8 i_Value, GenVar& xGenVar);
     bool bPeekZero(void);
   
@@ -96,14 +96,14 @@ namespace SenVM
     void vPushS4K(s4K& s4K);
     void vPushS16KB(s16KB& s16KB);
     void vPushS48K(s48K& s48K);
-    void vPushValue(ForthValue* aValue);
-    void vPushValue(ForthValue& xValue);
+    void vPushValue(StkVal* aValue);
+    void vPushValue(StkVal& xValue);
   
     void vReset(void);
     void vRetry(void);
     void vRetryPoint(void);
   
-    ForthValue* aTopVal(void);
+    StkVal* aTopVal(void);
   
     i8 nValues(void);
   
@@ -112,11 +112,11 @@ namespace SenVM
   
   private:
     void vPopLocal(Local* aLocal);
-    void vPopVal(ForthValue* aValue);
+    void vPopVal(StkVal* aValue);
     void vPushBy(i8 nBytes);
-    void vPushVal(ForthValue* aValue);
-    ForthValue* aStackBase(void);
-    ForthValue* aStackLimit(void);
+    void vPushVal(StkVal* aValue);
+    StkVal* aStackBase(void);
+    StkVal* aStackLimit(void);
     
     Footer* aFooter(void);
     Footer* aHazard(void);
@@ -133,7 +133,7 @@ namespace SenVM
     
     aTop += nBytes;
     
-    m_aTop = reinterpret_cast<ForthValue*>(aTop);
+    m_aTop = reinterpret_cast<StkVal*>(aTop);
   }
   
   /*----------------------------------------------------------------------------*/

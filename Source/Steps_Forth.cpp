@@ -568,7 +568,7 @@ void Step::vSee(void)
       
       aDoesCell++;
       
-      ForthValue* aValue = reinterpret_cast<ForthValue*>(aDoesCell);
+      StkVal* aValue = reinterpret_cast<StkVal*>(aDoesCell);
       
       if (CN_STRVAL == aValue->eClass()) {
         vTrace(" \"%s\"\n"_Stz,_aStrVal(aValue)->azChar());
