@@ -14,6 +14,7 @@ namespace SenVM
 
 //------------------------------------------------------------------------------
 
+#include "SenVar.hpp"
 #include "StkVal.hpp"
 
 #include "FipVal.hpp"
