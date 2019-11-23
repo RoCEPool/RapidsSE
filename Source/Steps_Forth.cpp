@@ -331,7 +331,7 @@ void Step::vExit_RT(void)
   
   if (m_pLocalsFrame
       && m_pLocalsFrame->aDiscardPoint() ==
-      m_pReturnStack->aPeekValue())
+      m_pReturnStack->aTopVal())
     m_pTask->vLocalsPop();
   
   Cell* aCell;

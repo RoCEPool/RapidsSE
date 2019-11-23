@@ -48,7 +48,6 @@ namespace SenVM
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    ForthValue* aPeekValue(void);
     ForthValue* aPeekValue(i8 i_Value);
     void vPeekValue(i8 i_Value, GenVar& xGenVar);
     bool bPeekZero(void);
@@ -103,6 +102,8 @@ namespace SenVM
     void vReset(void);
     void vRetry(void);
     void vRetryPoint(void);
+  
+    ForthValue* aTopVal(void);
   
     i8 nValues(void);
   

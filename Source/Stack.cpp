@@ -260,25 +260,13 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* peek at value on top of value stack                                        */
-/*----------------------------------------------------------------------------*/
-ForthValue* Stack::aPeekValue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  ForthValue* aValue = reinterpret_cast<ForthValue*>(m_aTop);
-  
-  return aValue;
-}
-
-/*----------------------------------------------------------------------------*/
 /* peek at given value on value stack                                         */
 /*----------------------------------------------------------------------------*/
 ForthValue* Stack::aPeekValue(i8 i_Value)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  ForthValue* aValue = aPeekValue();
+  ForthValue* aValue = aTopVal();
   while (i_Value--) {
     char* aAddress = reinterpret_cast<char*>(aValue);
     i8 iSize = aValue->nSize();
@@ -312,7 +300,7 @@ bool Stack::bPeekZero(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  ForthValue* aValue = aPeekValue();
+  ForthValue* aValue = aTopVal();
   
   if (CN_INTVAL == aValue->eClass() && 0 == _aIntVal(aValue)->iInt())
     return true;
@@ -811,11 +799,11 @@ bool Stack::bPopString(String* pString)
   
   _hazard_();
   
-  StrVal* aStrVal = _aStrVal(aPeekValue());
+  StrVal* aStrVal = _aStrVal(aTopVal());
   
   pString->vCopy(aStrVal->szStz());
   
-  i8 iSize = aPeekValue()->nSize();
+  i8 iSize = aTopVal()->nSize();
   vPopBy(iSize);
   m_nValues--;
   
@@ -856,7 +844,7 @@ bool Stack::bPopAsInt_Quick(i8& iArg)
     return false;
   
   // get pointer to value on the top of the stack
-  ForthValue* aTopValue = aPeekValue();
+  ForthValue* aTopValue = aTopVal();
 
   // discard the value
   vDiscard();
@@ -1148,7 +1136,7 @@ void Stack::vPopLocal(Local* aLocal)
   //m_xHazard.vAssertFooter();
   _hazard_();
   
-  i8 iSize = aPeekValue()->nSize();
+  i8 iSize = aTopVal()->nSize();
   
   MemLib::vCopy(aLocal->aLocalValue(),m_aTop,iSize,CN_STACK);
   vPopBy(iSize);
@@ -1167,7 +1155,7 @@ void Stack::vPopVal(ForthValue* aValue)
   //m_xHazard.vAssertFooter();
   _hazard_();
   
-  i8 iSize = aPeekValue()->nSize();
+  i8 iSize = aTopVal()->nSize();
   
   MemLib::vCopy(aValue,m_aTop,iSize,CN_STACK);
   vPopBy(iSize);
@@ -1235,6 +1223,18 @@ ForthValue* Stack::aStackLimit(void)
   char* aLimit = (char*)&m_xWsp.ayArea()[0];
   
   return pPoolCheck<ForthValue*>(aLimit);
+}
+
+/*----------------------------------------------------------------------------*/
+/* peek at value on top of value stack                                        */
+/*----------------------------------------------------------------------------*/
+ForthValue* Stack::aTopVal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  ForthValue* aValue = reinterpret_cast<ForthValue*>(m_aTop);
+  
+  return aValue;
 }
 
 /*----------------------------------------------------------------------------*/

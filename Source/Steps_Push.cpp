@@ -22,7 +22,7 @@ void Step::vPushI(void)
 {
   ENTRY(); // ENTRY("vPushI"_Stz);
   
-  ForthValue* aLoopIndex_I = m_pReturnStack->aPeekValue();
+  ForthValue* aLoopIndex_I = m_pReturnStack->aTopVal();
   
   m_pDataStack->vPushValue(aLoopIndex_I);
   
