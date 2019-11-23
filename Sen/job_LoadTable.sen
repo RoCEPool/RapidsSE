@@ -173,7 +173,7 @@
 
   // there should be a table folder
   sTableNm checkIsTableFolder not if pJob_LoadTable <ERROR_JOB> !!logError exit then
-  //sTableNm "In table folder: %v" fmt.print
+  //sTableNm "In table folder: %v" .printf
 
   // push table dictionary
   sTableNm pushTable assert

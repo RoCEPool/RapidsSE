@@ -30,7 +30,7 @@
 : defineNode::request _eeh (  -- <R> )
 
 
-  <nodeNm> "<nodeNm> : %v" fmt.print
+  <nodeNm> "<nodeNm> : %v" .printf
 ;
 
 /*----------------------------------------------------------------------------*/

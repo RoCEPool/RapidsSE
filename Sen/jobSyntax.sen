@@ -44,12 +44,12 @@
     while
 
       dup str.isMetaToken if
-        // dup "%v is a meta token" fmt.print
+        // dup "%v is a meta token" .printf
         // add ("*",meta,TN_STRING) in ename set
         "__meta__" swap pEnameSet EnameSet.addStr
 
       else dup str.isJsonToken if
-        // dup "%v is a json token" fmt.print
+        // dup "%v is a json token" .printf
         // add ("*",json,TN_STRING) in ename set
         "__json__" swap pEnameSet EnameSet.addStr
 
@@ -57,7 +57,7 @@
         "__etc__"  swap pEnameSet EnameSet.addStr
 
       else
-        // dup "%v is a normal token" fmt.print
+        // dup "%v is a normal token" .printf
         // add (word,"",TN_STRING) in ename set
         dup pEnameSet EnameSet.addStr
 

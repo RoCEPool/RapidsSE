@@ -35,7 +35,7 @@
  //   grid::thisNode@
  //   pJob object.class@ class::name
  //   "Participant Job %v Received Node %v "
- // fmt.print
+ // .printf
 
   // set participant node in job
   grid::thisNode@ pJob job.participant!
@@ -128,7 +128,7 @@
   // now delete the ended job
   nullptr pThisTask task.job!
 
-  //pThisJob job.id@ pThisJob "job::deleteThis %v %v" fmt.print
+  //pThisJob job.id@ pThisJob "job::deleteThis %v %v" .printf
 
   pThisJob job.delete
 ;
@@ -153,7 +153,7 @@
  //   pJob job.participant@
  //   pJob job.Id@
  //   pJob object.class@ class::name
- // "NOTICE: %v jobId %v executed on node %v" fmt.print
+ // "NOTICE: %v jobId %v executed on node %v" .printf
 ;
 
 /*----------------------------------------------------------------------------*/

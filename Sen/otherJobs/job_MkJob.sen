@@ -11,7 +11,7 @@
 
   >>logEntry <SEED_REQ>
 
-  <newNm> "making new job: %v" fmt.print
+  <newNm> "making new job: %v" .printf
 
       args.senDir      "%votherJobs" str.format locals| sSubDir  | //  sSubDir .
 

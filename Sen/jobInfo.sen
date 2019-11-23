@@ -16,7 +16,7 @@
   pEvalueWord if
     pEvalueWord word.category@ tick rootConstant eql if
 
-      // sEvalue "  %v is a constant" fmt.print
+      // sEvalue "  %v is a constant" .printf
        sEname pEvalueWord execute pEnameSet EnameSet.addInt
       exit
 
@@ -296,7 +296,7 @@
   // -- encode the service spawning word -- -- -- -- -- --
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  sServiceNm , "++ this is service spawner for: %v" , POSTPONE fmt.print
+  sServiceNm , "++ this is service spawner for: %v" , POSTPONE .printf
 
   sServiceNm , POSTPONE job::spawnUniversal
 
@@ -324,8 +324,8 @@
   // -- encode the service parsing word  -- -- -- -- -- --
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-  // in : <serviceNm> add call(fmt.print)
-  sServiceNm , "++ this is the service parser for: %v" , POSTPONE fmt.print
+  // in : <serviceNm> add call(.printf)
+  sServiceNm , "++ this is the service parser for: %v" , POSTPONE .printf
 
   // in : <serviceNm> add call(.consumeArgs)
   POSTPONE .consumeArgs

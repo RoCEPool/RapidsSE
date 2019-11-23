@@ -12,7 +12,7 @@
   params| nRecs |
   params| sFileNm |
 
-  nRecs sFileNm "File: %v nRecs %v" fmt.print
+  nRecs sFileNm "File: %v nRecs %v" .printf
 
   file::new locals| pFile |
 

@@ -93,7 +93,7 @@
   pJob_InsertTable job::originator@ locals| iOriginNode |
   grid::thisNode@ locals| iThisNode |
 
-  //iThisNode iOriginNode "Originating node %v; this node %v" fmt.print
+  //iThisNode iOriginNode "Originating node %v; this node %v" .printf
   
   iThisNode iOriginNode == if
     //"InsertTable is executing on this node" .

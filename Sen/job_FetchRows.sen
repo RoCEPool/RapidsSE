@@ -43,7 +43,7 @@
     // spawn a subFetch job for each partition
     grid::slots 0
     do
-      //I "Creating Job_SubFetch %v" fmt.print
+      //I "Creating Job_SubFetch %v" .printf
       I iPhrase pPlanner pJob_FetchRows job_fetchRows.spawnSub
     loop
   else
