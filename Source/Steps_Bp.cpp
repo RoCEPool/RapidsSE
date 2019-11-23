@@ -33,7 +33,7 @@ void Step::vAddSteps_Bp(void)
 /*----------------------------------------------------------------------------*/
 void Step::vBpAnalyze(void)
 {
-  ENTRY("vBpa"_Stz);
+  ENTRY(); // ENTRY("vBpa"_Stz);
   
   BPA::vPoolAnalyze();
   
@@ -45,7 +45,7 @@ void Step::vBpAnalyze(void)
 /*----------------------------------------------------------------------------*/
 void Step::vBpDump(void)
 {
-  ENTRY("vBpDump"_Stz);
+  ENTRY(); // ENTRY("vBpDump"_Stz);
   
   BPA::vPoolDump();
   
@@ -57,7 +57,7 @@ void Step::vBpDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vBpEpochDump(void)
 {
-  ENTRY("vBpEpochDump"_Stz);
+  ENTRY(); // ENTRY("vBpEpochDump"_Stz);
   
   s48K sPortrait;
   
@@ -73,7 +73,7 @@ void Step::vBpEpochDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vBpEpochTake(void)
 {
-  ENTRY("vBpEpochTake"_Stz);
+  ENTRY(); // ENTRY("vBpEpochTake"_Stz);
   
   BPA::vEpochTake();
 
@@ -85,7 +85,7 @@ void Step::vBpEpochTake(void)
 /*----------------------------------------------------------------------------*/
 void Step::vBpReadBufferPool(void)
 {
-  ENTRY("vBpReadBufferPool"_Stz);
+  ENTRY(); // ENTRY("vBpReadBufferPool"_Stz);
   
   BPA::vReadBuffers("/tmp/buffers.dmp"_Stz);
   
@@ -97,7 +97,7 @@ void Step::vBpReadBufferPool(void)
 /*----------------------------------------------------------------------------*/
 void Step::vBpWriteBufferPool(void)
 {
-  ENTRY("vBpWriteBufferPool"_Stz);
+  ENTRY(); // ENTRY("vBpWriteBufferPool"_Stz);
   
   BPA::vWritePersistentHeapMem("/tmp/persistentHeapMem.dmp"_Stz);
   
@@ -109,7 +109,7 @@ void Step::vBpWriteBufferPool(void)
 /*----------------------------------------------------------------------------*/
 void Step::vBpFreeBuffers(void)
 {
-  ENTRY("vBpFreeBuffers"_Stz);
+  ENTRY(); // ENTRY("vBpFreeBuffers"_Stz);
   
   i8 nFreeBuffers = gpBufferPool->nFreeCount();
   
@@ -123,7 +123,7 @@ void Step::vBpFreeBuffers(void)
 /*----------------------------------------------------------------------------*/
 void Step::vBpFreePercent(void)
 {
-  ENTRY("vBpFreePercent"_Stz);
+  ENTRY(); // ENTRY("vBpFreePercent"_Stz);
   
   i8 iFreePercent = gpBufferPool->iFreePercent();
   
@@ -137,7 +137,7 @@ void Step::vBpFreePercent(void)
 /*----------------------------------------------------------------------------*/
 void Step::vBpFreeSpace(void)
 {
-  ENTRY("vBpFreeSpace"_Stz);
+  ENTRY(); // ENTRY("vBpFreeSpace"_Stz);
   
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
   i8 iFreeSpaceInPool = BPA::iPoolFree();
@@ -152,7 +152,7 @@ void Step::vBpFreeSpace(void)
 /*----------------------------------------------------------------------------*/
 void Step::vBpInUseSpace(void)
 {
-  ENTRY("vBpInUseSpace"_Stz);
+  ENTRY(); // ENTRY("vBpInUseSpace"_Stz);
   
   i8 iInUseSpace = AM::iRegionSize()
                      - AM::iJumboSize()
@@ -169,7 +169,7 @@ void Step::vBpInUseSpace(void)
 /*----------------------------------------------------------------------------*/
 void Step::vBpTotalSpace(void)
 {
-  ENTRY("vBpTotalSpace"_Stz);
+  ENTRY(); // ENTRY("vBpTotalSpace"_Stz);
   
   i8 iTotalSpace = AM::iRegionSize()
                      - AM::iJumboSize();

@@ -23,7 +23,7 @@ void Step::vAddSteps_DicStack(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicStackDepth(void)
 {
-  ENTRY("vDicStackDepth"_Stz);
+  ENTRY(); // ENTRY("vDicStackDepth"_Stz);
   
   Object* pPtrDicStack;
   if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
@@ -43,7 +43,7 @@ void Step::vDicStackDepth(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicStackDrop(void)
 {
-  ENTRY("vDicStackDrop"_Stz);
+  ENTRY(); // ENTRY("vDicStackDrop"_Stz);
   
   Object* pPtrDicStack;
   if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
@@ -61,7 +61,7 @@ void Step::vDicStackDrop(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicStackDump(void)
 {
-  ENTRY("vDicStackDump"_Stz);
+  ENTRY(); // ENTRY("vDicStackDump"_Stz);
   
   Object* pPtrDicStack;
   if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
@@ -79,7 +79,7 @@ void Step::vDicStackDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicStackPick(void)
 {
-  ENTRY("vDicStackPick"_Stz);
+  ENTRY(); // ENTRY("vDicStackPick"_Stz);
   
   Object* pPtrDicStack;
   if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
@@ -104,7 +104,7 @@ void Step::vDicStackPick(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicStackPop(void)
 {
-  ENTRY("vDicStackPop"_Stz);
+  ENTRY(); // ENTRY("vDicStackPop"_Stz);
   
   Object* pPtrDicStack;
   if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
@@ -122,7 +122,7 @@ void Step::vDicStackPop(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicStackPush(void)
 {
-  ENTRY("vDicStackPush"_Stz);
+  ENTRY(); // ENTRY("vDicStackPush"_Stz);
   
   Object* pPtrDicStack;
   if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
@@ -147,7 +147,7 @@ void Step::vDicStackPush(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicStackToPathStr(void)
 {
-  ENTRY("vDicStackToPathStr"_Stz);
+  ENTRY(); // ENTRY("vDicStackToPathStr"_Stz);
   
   Object* pPtrDicStack;
   if ( ! m_pDataStack->bPopObject(pPtrDicStack) )

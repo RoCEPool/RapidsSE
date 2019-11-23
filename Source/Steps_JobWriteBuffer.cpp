@@ -23,7 +23,7 @@ void Step::vAddSteps_JobWriteBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferParentJobIdFetch(void)
 {
-  ENTRY("vJob_WriteBufferParentJobIdFetch"_Stz);
+  ENTRY(); // ENTRY("vJob_WriteBufferParentJobIdFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -44,7 +44,7 @@ void Step::vJob_WriteBufferParentJobIdFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferInsertRows(void)
 {
-  ENTRY("vJob_WriteBufferInsertRows"_Stz);
+  ENTRY(); // ENTRY("vJob_WriteBufferInsertRows"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -63,7 +63,7 @@ void Step::vJob_WriteBufferInsertRows(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferIsIngesting(void)
 {
-  ENTRY("vJob_WriteBufferIsIngesting"_Stz);
+  ENTRY(); // ENTRY("vJob_WriteBufferIsIngesting"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -82,7 +82,7 @@ void Step::vJob_WriteBufferIsIngesting(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferIsInserting(void)
 {
-  ENTRY("vJob_WriteBufferIsInserting"_Stz);
+  ENTRY(); // ENTRY("vJob_WriteBufferIsInserting"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -101,7 +101,7 @@ void Step::vJob_WriteBufferIsInserting(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferIsLoading(void)
 {
-  ENTRY("vJob_WriteBufferIsLoading"_Stz);
+  ENTRY(); // ENTRY("vJob_WriteBufferIsLoading"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -120,7 +120,7 @@ void Step::vJob_WriteBufferIsLoading(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferPartitionFetch(void)
 {
-  ENTRY("vJob_WriteBufferPartitionFetch"_Stz);
+  ENTRY(); // ENTRY("vJob_WriteBufferPartitionFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -138,7 +138,7 @@ void Step::vJob_WriteBufferPartitionFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferTableStore(void)
 {
-  ENTRY("vJob_WriteBufferTableStore"_Stz);
+  ENTRY(); // ENTRY("vJob_WriteBufferTableStore"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )

@@ -47,7 +47,7 @@ void Step::vAddSteps_Table(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableAddIndex(void)
 {
-  ENTRY("vTableAddIndex"_Stz);
+  ENTRY(); // ENTRY("vTableAddIndex"_Stz);
   
   Object* pPtrTable;
   Object* pPtrIndex;
@@ -74,7 +74,7 @@ void Step::vTableAddIndex(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableAnalyze(void)
 {
-  ENTRY("vTableAnalyze"_Stz);
+  ENTRY(); // ENTRY("vTableAnalyze"_Stz);
   
   Object* pPtrTable;
   i8 iDetailed;
@@ -102,7 +102,7 @@ void Step::vTableAnalyze(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableIsValidIndexColumns(void)
 {
-  ENTRY("vTableIsValidIndexColumns"_Stz);
+  ENTRY(); // ENTRY("vTableIsValidIndexColumns"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -127,7 +127,7 @@ void Step::vTableIsValidIndexColumns(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableLazyBuildIndexes(void)
 {
-  ENTRY("vTableLazyBuildIndexes"_Stz);
+  ENTRY(); // ENTRY("vTableLazyBuildIndexes"_Stz);
   i8 iSlot;
   i8 iTxId;
   s48K sString;
@@ -153,7 +153,7 @@ void Step::vTableLazyBuildIndexes(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableIsLoadingStore(void)
 {
-  ENTRY("vTableIsLoadingStore"_Stz);
+  ENTRY(); // ENTRY("vTableIsLoadingStore"_Stz);
   
   Object* pPtrTable;
   i8 iLoading;
@@ -177,7 +177,7 @@ void Step::vTableIsLoadingStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableColumnFetch(void)
 {
-  ENTRY("vTableColumnFetch"_Stz);
+  ENTRY(); // ENTRY("vTableColumnFetch"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -201,7 +201,7 @@ void Step::vTableColumnFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableColumnCountFetch(void)
 {
-  ENTRY("vTableColumnCountFetch"_Stz);
+  ENTRY(); // ENTRY("vTableColumnCountFetch"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -222,7 +222,7 @@ void Step::vTableColumnCountFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableDrop(void)
 {
-ENTRY("vTableDrop"_Stz);
+  ENTRY(); // ENTRY("vTableDrop"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -239,7 +239,7 @@ ENTRY("vTableDrop"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTableDump(void)
 {
-ENTRY("vTableDump"_Stz);
+  ENTRY(); // ENTRY("vTableDump"_Stz);
   
   vTrace("TableDump\n"_Stz);
   
@@ -264,7 +264,7 @@ ENTRY("vTableDump"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTableGenData(void)
 {
-  ENTRY("vTableGenData"_Stz);
+  ENTRY(); // ENTRY("vTableGenData"_Stz);
 
   EXIT();
 }
@@ -274,7 +274,7 @@ void Step::vTableGenData(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableGetColumnsAsString(void)
 {
-  ENTRY("vTableGetColumnsAsString"_Stz);
+  ENTRY(); // ENTRY("vTableGetColumnsAsString"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -310,7 +310,7 @@ void Step::vTableGetColumnsAsString(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableGetPtn(void)
 {
-  ENTRY("vTableGetPtn"_Stz);
+  ENTRY(); // ENTRY("vTableGetPtn"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -335,7 +335,7 @@ void Step::vTableGetPtn(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableIndexCount(void)
 {
-  ENTRY("vTableIndexCount"_Stz);
+  ENTRY(); // ENTRY("vTableIndexCount"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -354,7 +354,7 @@ void Step::vTableIndexCount(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableInit(void)
 {
-ENTRY("vTableInit"_Stz);
+  ENTRY(); // ENTRY("vTableInit"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -373,7 +373,7 @@ ENTRY("vTableInit"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTableFindColumn(void)
 {
-  ENTRY("vTableFindColumn"_Stz);
+  ENTRY(); // ENTRY("vTableFindColumn"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -413,7 +413,7 @@ void Step::vTableFindColumn(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableIsColumn(void)
 {
-  ENTRY("vTableInit"_Stz);
+  ENTRY(); // ENTRY("vTableInit"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -452,7 +452,7 @@ void Step::vTableIsColumn(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableName(void)
 {
-  ENTRY("vTableName"_Stz);
+  ENTRY(); // ENTRY("vTableName"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -475,7 +475,7 @@ void Step::vTableName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePublish(void)
 {
-  ENTRY("vTablePublish"_Stz);
+  ENTRY(); // ENTRY("vTablePublish"_Stz);
   
   Object* pPtrTable;
   i8 iSlot;
@@ -499,7 +499,7 @@ void Step::vTablePublish(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePurge(void)
 {
-  ENTRY("vTablePurge"_Stz);
+  ENTRY(); // ENTRY("vTablePurge"_Stz);
   
   Object* pPtrTable;
   
@@ -525,7 +525,7 @@ void Step::vTablePurge(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableRemoveIndex(void)
 {
-  ENTRY("vTableRef"_Stz);
+  ENTRY(); // ENTRY("vTableRef"_Stz);
   
   Object* pPtrTable;
   Object* pPtrIndex;
@@ -550,7 +550,7 @@ void Step::vTableRemoveIndex(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableScan(void)
 {
-  ENTRY("vTableScan"_Stz);
+  ENTRY(); // ENTRY("vTableScan"_Stz);
   
   Object* pPtrTable = nullptr;
   FetchBuffer* pFetchBuffer;
@@ -651,7 +651,7 @@ void Step::vTableScan(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableShowColumnVec(void)
 {
-  ENTRY("vTableShowColumnVec"_Stz);
+  ENTRY(); // ENTRY("vTableShowColumnVec"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -669,7 +669,7 @@ void Step::vTableShowColumnVec(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableSubDic(void)
 {
-  ENTRY("vTableSubDic"_Stz);
+  ENTRY(); // ENTRY("vTableSubDic"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -690,7 +690,7 @@ void Step::vTableSubDic(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableSubLoaders(void)
 {
-  ENTRY("vTableSubDic"_Stz);
+  ENTRY(); // ENTRY("vTableSubDic"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -713,7 +713,7 @@ void Step::vTableSubLoaders(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableSlots(void)
 {
-  ENTRY("vTableSlots"_Stz);
+  ENTRY(); // ENTRY("vTableSlots"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -732,7 +732,7 @@ void Step::vTableSlots(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableSpace(void)
 {
-  ENTRY("vTableSpace"_Stz);
+  ENTRY(); // ENTRY("vTableSpace"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -753,7 +753,7 @@ void Step::vTableSpace(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableTableDefFetch(void)
 {
-  ENTRY("vTableTableDefFetch"_Stz);
+  ENTRY(); // ENTRY("vTableTableDefFetch"_Stz);
 
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -770,7 +770,7 @@ void Step::vTableTableDefFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableTableDefStore(void)
 {
-  ENTRY("vTableTableDefStore"_Stz);
+  ENTRY(); // ENTRY("vTableTableDefStore"_Stz);
   
   Object* pPtrTable;
   if ( ! m_pDataStack->bPopObject(pPtrTable) )
@@ -792,7 +792,7 @@ void Step::vTableTableDefStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableTruncate(void)
 {
-  ENTRY("vTableTruncate"_Stz);
+  ENTRY(); // ENTRY("vTableTruncate"_Stz);
   
   Object* pPtrTable;
   i8 iSlot;
@@ -816,7 +816,7 @@ void Step::vTableTruncate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableVerify(void)
 {
-  ENTRY("vTableVerify"_Stz);
+  ENTRY(); // ENTRY("vTableVerify"_Stz);
   
   Object* pPtrTable;
   
@@ -839,7 +839,7 @@ void Step::vTableVerify(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableVisualize(void)
 {
-  ENTRY("vTableVisualize"_Stz);
+  ENTRY(); // ENTRY("vTableVisualize"_Stz);
   
   Object* pPtrTable;
   

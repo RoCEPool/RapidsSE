@@ -17,7 +17,7 @@ void Step::vAddSteps_Cpu(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCpuRdtscp(void)
 {
-  ENTRY("vCpuRdtscp"_Stz);
+  ENTRY(); // ENTRY("vCpuRdtscp"_Stz);
   
   i8 iTscp = Tick::iRdClock();
   

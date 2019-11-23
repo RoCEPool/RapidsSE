@@ -19,7 +19,7 @@ void Step::vAddSteps_Address(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAddressEqual(void)
 {
-  ENTRY("vAddressEql"_Stz);
+  ENTRY(); // ENTRY("vAddressEql"_Stz);
   
   GenVar xAddressA;
   GenVar xAddressB;
@@ -42,7 +42,7 @@ void Step::vAddressEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAddressFetch(void)
 {
-  ENTRY("vAddressFetch"_Stz);
+  ENTRY(); // ENTRY("vAddressFetch"_Stz);
   
   Object* pObject;
   if ( ! m_pDataStack->bPopObject(pObject) )
@@ -86,7 +86,7 @@ void Step::vAddressFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAddressStore(void)
 {
-  ENTRY("vAddressStore"_Stz);
+  ENTRY(); // ENTRY("vAddressStore"_Stz);
   
   Object* pObject;
   if ( ! m_pDataStack->bPopObject(pObject) )

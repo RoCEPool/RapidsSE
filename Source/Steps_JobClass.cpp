@@ -28,7 +28,7 @@ void Step::vAddSteps_JobClass(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJobClassFind(void)
 {
-  ENTRY("vJobClassFind"_Stz);
+  ENTRY(); // ENTRY("vJobClassFind"_Stz);
   
   i8 iJobClass;
   if ( ! m_pDataStack->bPopI8(iJobClass) )
@@ -48,7 +48,7 @@ void Step::vJobClassFind(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJobClassBuffer(void)
 {
-  ENTRY("vJobClassBuffer"_Stz);
+  ENTRY(); // ENTRY("vJobClassBuffer"_Stz);
   
   i8 iJobClass_p;
   if ( ! m_pDataStack->bPopI8(iJobClass_p) )
@@ -67,7 +67,7 @@ void Step::vJobClassBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJobClassName(void)
 {
-  ENTRY("vJobClassName"_Stz);
+  ENTRY(); // ENTRY("vJobClassName"_Stz);
   
   i8 iJobClass_p;
   if ( ! m_pDataStack->bPopI8(iJobClass_p) )
@@ -86,7 +86,7 @@ void Step::vJobClassName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJobClassNew(void)
 {
-  ENTRY("vJobClassNew"_Stz);
+  ENTRY(); // ENTRY("vJobClassNew"_Stz);
   
   i8 iJobClass_p;
   if ( ! m_pDataStack->bPopI8(iJobClass_p) )
@@ -106,7 +106,7 @@ void Step::vJobClassNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJobClassSeedRun(void)
 {
-  ENTRY("vJobClassSeedRun"_Stz);
+  ENTRY(); // ENTRY("vJobClassSeedRun"_Stz);
   
   i8 iJobClass_p;
   if ( ! m_pDataStack->bPopI8(iJobClass_p) )
@@ -125,7 +125,7 @@ void Step::vJobClassSeedRun(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJobClassSeedReq(void)
 {
-  ENTRY("vJobClassSeedReq"_Stz);
+  ENTRY(); // ENTRY("vJobClassSeedReq"_Stz);
   
   i8 iJobClass_p;
   if ( ! m_pDataStack->bPopI8(iJobClass_p) )
@@ -144,7 +144,7 @@ void Step::vJobClassSeedReq(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJobClassSeedRcv(void)
 {
-  ENTRY("vJobClassSeedRcv"_Stz);
+  ENTRY(); // ENTRY("vJobClassSeedRcv"_Stz);
   
   i8 iJobClass_p;
   if ( ! m_pDataStack->bPopI8(iJobClass_p) )
@@ -163,7 +163,7 @@ void Step::vJobClassSeedRcv(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJobClassSeedExe(void)
 {
-  ENTRY("vJobClassSeedExe"_Stz);
+  ENTRY(); // ENTRY("vJobClassSeedExe"_Stz);
   
   i8 iJobClass_p;
   if ( ! m_pDataStack->bPopI8(iJobClass_p) )
@@ -182,7 +182,7 @@ void Step::vJobClassSeedExe(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJobClassSeedEnd(void)
 {
-  ENTRY("vJobClassSeedEnd"_Stz);
+  ENTRY(); // ENTRY("vJobClassSeedEnd"_Stz);
   
   i8 iJobClass_p;
   if ( ! m_pDataStack->bPopI8(iJobClass_p) )
@@ -201,7 +201,7 @@ void Step::vJobClassSeedEnd(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJobClassSeedCan(void)
 {
-  ENTRY("vJobClassSeedCan"_Stz);
+  ENTRY(); // ENTRY("vJobClassSeedCan"_Stz);
   
   i8 iJobClass_p;
   if ( ! m_pDataStack->bPopI8(iJobClass_p) )

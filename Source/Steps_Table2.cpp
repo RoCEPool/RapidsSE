@@ -18,7 +18,7 @@ void Step::vAddSteps_Table2(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableSet(void)
 {
-  ENTRY("vTableSet"_Stz);
+  ENTRY(); // ENTRY("vTableSet"_Stz);
   
   Object* pPtrObject;
   if ( ! m_pDataStack->bPopObject(pPtrObject) )
@@ -34,7 +34,7 @@ void Step::vTableSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnFetch(void)
 {
-  ENTRY("vTableSet"_Stz);
+  ENTRY(); // ENTRY("vTableSet"_Stz);
   
   Object* pPtrObject;
   if ( ! m_pDataStack->bPopObject(pPtrObject) )

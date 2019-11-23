@@ -23,7 +23,7 @@ void Step::vAddSteps_JobGeneric(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob__BegunNew(void)
 {
-  ENTRY("vJob__BegunNew"_Stz);
+  ENTRY(); // ENTRY("vJob__BegunNew"_Stz);
   
   Object* pDistJobPtr;
   if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
@@ -65,7 +65,7 @@ void Step::vJob__BegunNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob__CancelNew(void)
 {
-  ENTRY("vJob__CancelNew"_Stz);
+  ENTRY(); // ENTRY("vJob__CancelNew"_Stz);
   
   Object* pDistJobPtr;
   if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
@@ -104,7 +104,7 @@ void Step::vJob__CancelNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob__CancelledNew(void)
 {
-  ENTRY("vJob__CancelledNew"_Stz);
+  ENTRY(); // ENTRY("vJob__CancelledNew"_Stz);
   
   Object* pDistJobPtr;
   if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
@@ -144,7 +144,7 @@ void Step::vJob__CancelledNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob__EndNew(void)
 {
-  ENTRY("vJob__EndNew"_Stz);
+  ENTRY(); // ENTRY("vJob__EndNew"_Stz);
   
   Object* pDistJobPtr;
   if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
@@ -183,7 +183,7 @@ void Step::vJob__EndNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob__EndedNew(void)
 {
-  ENTRY("vJob__EndedNew"_Stz);
+  ENTRY(); // ENTRY("vJob__EndedNew"_Stz);
   
   Object* pDistJobPtr;
   if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
@@ -223,7 +223,7 @@ void Step::vJob__EndedNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob__ExecuteNew(void)
 {
-  ENTRY("vJob__ExecuteNew"_Stz);
+  ENTRY(); // ENTRY("vJob__ExecuteNew"_Stz);
   
   Object* pDistJobPtr;
   if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
@@ -262,7 +262,7 @@ void Step::vJob__ExecuteNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob__ExecutedNew(void)
 {
-  ENTRY("vJob__ExecutedNew"_Stz);
+  ENTRY(); // ENTRY("vJob__ExecutedNew"_Stz);
   
   Object* pDistJobPtr;
   if ( ! m_pDataStack->bPopObject(pDistJobPtr) )

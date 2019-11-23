@@ -18,7 +18,7 @@ void Step::vAddSteps_LockTracker(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLockTrackerList(void)
 {
-ENTRY("vLockTrackerList"_Stz);
+  ENTRY(); // ENTRY("vLockTrackerList"_Stz);
 
   
   EXIT();
@@ -29,7 +29,7 @@ ENTRY("vLockTrackerList"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vLockTrackerReset(void)
 {
-  ENTRY("vLockTrackerReset"_Stz);
+  ENTRY(); // ENTRY("vLockTrackerReset"_Stz);
   
   AM::pLockTracker()->vReset();
   

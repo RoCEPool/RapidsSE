@@ -36,7 +36,7 @@ void Step::vPlannerChoosePaths(void)
 {
   //! refer:  https://en.cppreference.com/w/c/language/function_definition
   
-  ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
+  ENTRY(); // ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
   
   Object* mpPtrPlanner;
   
@@ -55,7 +55,7 @@ void Step::vPlannerChoosePaths(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerChosenPath(void)
 {
-  ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
+  ENTRY(); // ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
   
   Object* mpPtrPlanner;
   if ( ! m_pDataStack->bPopObject(mpPtrPlanner) )
@@ -77,7 +77,7 @@ void Step::vPlannerChosenPath(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerDelete(void)
 {
-ENTRY("vPlannerDelete"_Stz);
+  ENTRY(); // ENTRY("vPlannerDelete"_Stz);
   
   Object* pPtrPlanner;
   if ( ! m_pDataStack->bPopObject(pPtrPlanner) )
@@ -94,7 +94,7 @@ ENTRY("vPlannerDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerFetchTechniqueFetch(void)
 {
-  ENTRY("vPlannerDelete"_Stz);
+  ENTRY(); // ENTRY("vPlannerDelete"_Stz);
   
   Object* pPtrPlanner;
   if ( ! m_pDataStack->bPopObject(pPtrPlanner) )
@@ -116,7 +116,7 @@ void Step::vPlannerFetchTechniqueFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerGenPaths(void)
 {
-  ENTRY("vPlannerGenPaths"_Stz);
+  ENTRY(); // ENTRY("vPlannerGenPaths"_Stz);
   
   Object* pPtrPlanner;
   
@@ -135,7 +135,7 @@ void Step::vPlannerGenPaths(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerHighKeyFetch(void)
 {
-  ENTRY("vPlannerHighKeyFetch"_Stz);
+  ENTRY(); // ENTRY("vPlannerHighKeyFetch"_Stz);
   
   Object* pPtrPlanner;
   if ( ! m_pDataStack->bPopObject(pPtrPlanner) )
@@ -161,7 +161,7 @@ void Step::vPlannerHighKeyFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerIndexNmFetch(void)
 {
-  ENTRY("vPlannerIndexFetch"_Stz);
+  ENTRY(); // ENTRY("vPlannerIndexFetch"_Stz);
   
   Object* pPtrPlanner;
   if ( ! m_pDataStack->bPopObject(pPtrPlanner) )
@@ -186,7 +186,7 @@ void Step::vPlannerIndexNmFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerKeyFetch(void)
 {
-  ENTRY("vPlannerKeyFetch"_Stz);
+  ENTRY(); // ENTRY("vPlannerKeyFetch"_Stz);
   
   Object* pPtrPlanner;
   if ( ! m_pDataStack->bPopObject(pPtrPlanner) )
@@ -212,7 +212,7 @@ void Step::vPlannerKeyFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerLowKeyFetch(void)
 {
-  ENTRY("vPlannerLowKeyFetch"_Stz);
+  ENTRY(); // ENTRY("vPlannerLowKeyFetch"_Stz);
   
   Object* pPtrPlanner;
   if ( ! m_pDataStack->bPopObject(pPtrPlanner) )
@@ -238,7 +238,7 @@ void Step::vPlannerLowKeyFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerMatchPaths(void)
 {
-  ENTRY("vPlannerMatchnPaths"_Stz);
+  ENTRY(); // ENTRY("vPlannerMatchnPaths"_Stz);
   
   Object* pPtrPlanner;
   
@@ -257,7 +257,7 @@ void Step::vPlannerMatchPaths(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerNew(void)
 {
-ENTRY("vPlannerNew"_Stz);
+  ENTRY(); // ENTRY("vPlannerNew"_Stz);
   
   Planner* pPlanner = new Planner;
   
@@ -271,7 +271,7 @@ ENTRY("vPlannerNew"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerParseWhere(void)
 {
-  ENTRY("vPlannerParseWhere"_Stz);
+  ENTRY(); // ENTRY("vPlannerParseWhere"_Stz);
   
   Object* pPtrPlanner;
   if ( ! m_pDataStack->bPopObject(pPtrPlanner) )
@@ -303,7 +303,7 @@ void Step::vPlannerParseWhere(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerPhrasesFetch(void)
 {
-  ENTRY("vPlannerPhrasesFetch"_Stz);
+  ENTRY(); // ENTRY("vPlannerPhrasesFetch"_Stz);
   
   Object* pPtrPlanner;
   if ( ! m_pDataStack->bPopObject(pPtrPlanner) )
@@ -322,7 +322,7 @@ void Step::vPlannerPhrasesFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerScorePaths(void)
 {
-  ENTRY("vPlannerScorePaths"_Stz);
+  ENTRY(); // ENTRY("vPlannerScorePaths"_Stz);
   
   Object* pPtrPlanner;
   if ( ! m_pDataStack->bPopObject(pPtrPlanner) )
@@ -339,7 +339,7 @@ void Step::vPlannerScorePaths(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerShowPaths(void)
 {
-  ENTRY("vPlannerShowPaths"_Stz);
+  ENTRY(); // ENTRY("vPlannerShowPaths"_Stz);
   
   Object* pPtrPlanner;
   if ( ! m_pDataStack->bPopObject(pPtrPlanner) )
@@ -356,7 +356,7 @@ void Step::vPlannerShowPaths(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerTableFetch(void)
 {
-  ENTRY("vPlannerTableFetch"_Stz);
+  ENTRY(); // ENTRY("vPlannerTableFetch"_Stz);
   
   Object* pPtrPlanner;
   if ( ! m_pDataStack->bPopObject(pPtrPlanner) )
@@ -375,7 +375,7 @@ void Step::vPlannerTableFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlannerTableStore(void)
 {
-  ENTRY("vPlannerTableStore"_Stz);
+  ENTRY(); // ENTRY("vPlannerTableStore"_Stz);
   
   Object* pPtrPlanner;
   if ( ! m_pDataStack->bPopObject(pPtrPlanner) )

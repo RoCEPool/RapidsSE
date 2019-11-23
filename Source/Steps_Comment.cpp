@@ -17,7 +17,7 @@ void Step::vAddSteps_Comment(void)
 /*----------------------------------------------------------------------------*/
 void Step::vComment(void)
 {
-  ENTRY("vComment"_Stz);
+  ENTRY(); // ENTRY("vComment"_Stz);
   
   for (;;) {
     m_pCompiler->vNextToken();

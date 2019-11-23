@@ -27,7 +27,7 @@ void Step::vAddSteps_Flow(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowBegin_(void)
 {
-  ENTRY("vBegin_"_Stz);
+  ENTRY(); // ENTRY("vBegin_"_Stz);
   
   m_pCompiler->m_pBeginIP = m_aInxPtr;
   
@@ -39,7 +39,7 @@ void Step::vFlowBegin_(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowExecute(void)
 {
-  ENTRY("vFlowExecute"_Stz);
+  ENTRY(); // ENTRY("vFlowExecute"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -73,7 +73,7 @@ void Step::vFlowExecute(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowHazard(void)
 {
-  ENTRY("vFlowHazard"_Stz);
+  ENTRY(); // ENTRY("vFlowHazard"_Stz);
   
   vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,"Entered hazard"_Stz);
   
@@ -85,7 +85,7 @@ void Step::vFlowHazard(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowJump(void)
 {
-  ENTRY("vJump"_Stz);
+  ENTRY(); // ENTRY("vJump"_Stz);
   
   m_aInxPtr = m_aInxPtr->m_aJumpTo;
   
@@ -97,7 +97,7 @@ void Step::vFlowJump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowJumpBegin_(void)
 {
-  ENTRY("vFlowJumpBegin_"_Stz);
+  ENTRY(); // ENTRY("vFlowJumpBegin_"_Stz);
   
   m_aInxPtr = m_pCompiler->m_pBeginIP;
   
@@ -109,7 +109,7 @@ void Step::vFlowJumpBegin_(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowJumpFalse(void)
 {
-  ENTRY("vJumpFalse"_Stz);
+  ENTRY(); // ENTRY("vJumpFalse"_Stz);
   
   //if ( ! bGuard(1) )
   //  THROW_DSTACK();
@@ -153,7 +153,7 @@ void Step::vFlowJumpFalse(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowJumpTrue(void)
 {
-  ENTRY("vJumpTrue"_Stz);
+  ENTRY(); // ENTRY("vJumpTrue"_Stz);
   
   i8 iVal;
   if ( ! m_pDataStack->bPopAsInt(iVal) )
@@ -176,7 +176,7 @@ void Step::vFlowJumpTrue(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowNop(void)
 {
-  ENTRY("vFlowNop"_Stz);
+  ENTRY(); // ENTRY("vFlowNop"_Stz);
   
   EXIT();
 }
@@ -186,7 +186,7 @@ void Step::vFlowNop(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowRetryPoint(void)
 {
-  ENTRY("vFlowRetryPoint"_Stz);
+  ENTRY(); // ENTRY("vFlowRetryPoint"_Stz);
   
   m_pCompiler->m_pRetryIP = m_aInxPtr;
   
@@ -202,7 +202,7 @@ void Step::vFlowRetryPoint(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowTest(void)
 {
-  ENTRY("vFlowTest"_Stz);
+  ENTRY(); // ENTRY("vFlowTest"_Stz);
   
   vTrace("[%s] Test\n"_Stz,m_pTask->szJobName());
   
@@ -214,7 +214,7 @@ void Step::vFlowTest(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFlowThrow(void)
 {
-  ENTRY("vFlowThrow"_Stz);
+  ENTRY(); // ENTRY("vFlowThrow"_Stz);
   
   s256 sException;
   

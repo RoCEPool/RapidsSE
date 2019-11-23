@@ -17,7 +17,7 @@ void Step::vAddSteps_AttachMap(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAttachMapTenantsFetch(void)
 {
-  ENTRY("vAttachMapTenantsFetch"_Stz);
+  ENTRY(); // ENTRY("vAttachMapTenantsFetch"_Stz);
   
   m_pDataStack->vPushPointer(AM::pTenants());
 }

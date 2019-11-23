@@ -21,7 +21,7 @@ void Step::vAddSteps_JobWriteRow(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteRowParentJobIdFetch(void)
 {
-  ENTRY("vJob_WriteRowParentJobIdFetch"_Stz);
+  ENTRY(); // ENTRY("vJob_WriteRowParentJobIdFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -41,7 +41,7 @@ void Step::vJob_WriteRowParentJobIdFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteRowEncodeRow(void)
 {
-  ENTRY("vJob_WriteRowEncodeRow"_Stz);
+  ENTRY(); // ENTRY("vJob_WriteRowEncodeRow"_Stz);
   
   Object* pJobWriteRowPtr;
   if ( ! m_pDataStack->bPopObject(pJobWriteRowPtr) )
@@ -90,7 +90,7 @@ void Step::vJob_WriteRowEncodeRow(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteRowInsertRow(void)
 {
-  ENTRY("vJob_WriteRowInsertRow"_Stz);
+  ENTRY(); // ENTRY("vJob_WriteRowInsertRow"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -107,7 +107,7 @@ void Step::vJob_WriteRowInsertRow(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteRowPartitionFetch(void)
 {
-  ENTRY("vJob_WriteRowPartitionFetch"_Stz);
+  ENTRY(); // ENTRY("vJob_WriteRowPartitionFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -125,7 +125,7 @@ void Step::vJob_WriteRowPartitionFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteRowTableStore(void)
 {
-  ENTRY("vJob_WriteRowTableStore"_Stz);
+  ENTRY(); // ENTRY("vJob_WriteRowTableStore"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )

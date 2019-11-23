@@ -19,7 +19,7 @@ void Step::vAddSteps_JobRef(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJobRefPointer(void)
 {
-  ENTRY("vJobRefPointer"_Stz);
+  ENTRY(); // ENTRY("vJobRefPointer"_Stz);
   
   Job* pJob = m_pRegSet->m_xpJobRef.pReferencedObject();
 
@@ -33,7 +33,7 @@ void Step::vJobRefPointer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJobRefNone(void)
 {
-  ENTRY("vJobRefNone"_Stz);
+  ENTRY(); // ENTRY("vJobRefNone"_Stz);
   
   if (m_pRegSet->m_xpJobRef.pReferencedObject())
     THROW("JobRef[].none : register still has reference to a job"_Stz);
@@ -46,7 +46,7 @@ void Step::vJobRefNone(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJobRefReturn(void)
 {
-  ENTRY("vJobRefReturn"_Stz);
+  ENTRY(); // ENTRY("vJobRefReturn"_Stz);
   
   if (m_pRegSet->m_xpJobRef.bHasReference())
     m_pRegSet->m_xpJobRef.vReturnRef();

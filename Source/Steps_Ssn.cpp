@@ -22,7 +22,7 @@ void Step::vAddSteps_SsnState(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSsnIncBegun(void)
 {
-  ENTRY("vSsnIncBegun"_Stz);
+  ENTRY(); // ENTRY("vSsnIncBegun"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -44,7 +44,7 @@ void Step::vSsnIncBegun(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSsnIncCancelled(void)
 {
-  ENTRY("vSsnIncBegun"_Stz);
+  ENTRY(); // ENTRY("vSsnIncBegun"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -66,7 +66,7 @@ void Step::vSsnIncCancelled(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSsnIncEnded(void)
 {
-  ENTRY("vSsnIncBegun"_Stz);
+  ENTRY(); // ENTRY("vSsnIncBegun"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -88,7 +88,7 @@ void Step::vSsnIncEnded(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSsnIncExecuted(void)
 {
-  ENTRY("vSsnIncExecuted"_Stz);
+  ENTRY(); // ENTRY("vSsnIncExecuted"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -110,7 +110,7 @@ void Step::vSsnIncExecuted(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSsnSenLoc(void)
 {
-  ENTRY("vSsnSenLoc"_Stz);
+  ENTRY(); // ENTRY("vSsnSenLoc"_Stz);
   
   i8 iPosition;
   if ( ! m_pDataStack->bPopI8(iPosition) )
@@ -130,7 +130,7 @@ void Step::vSsnSenLoc(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSsnTraceSession(void)
 {
-  ENTRY("vSsnTraceSession"_Stz);
+  ENTRY(); // ENTRY("vSsnTraceSession"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )

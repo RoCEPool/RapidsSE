@@ -18,7 +18,7 @@ void Step::vAddSteps_AccessPath(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAccessPathTableStore(void)
 {
-  ENTRY("vAccessPathTableStore"_Stz);
+  ENTRY(); // ENTRY("vAccessPathTableStore"_Stz);
   
   Object* pPtrAccessPath;
   if ( ! m_pDataStack->bPopObject(pPtrAccessPath) )
@@ -40,7 +40,7 @@ void Step::vAccessPathTableStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAccessPathTableFetch(void)
 {
-  ENTRY("vAccessPathTableFetch"_Stz);
+  ENTRY(); // ENTRY("vAccessPathTableFetch"_Stz);
   
   Object* pPtrAccessPath;
   if ( ! m_pDataStack->bPopObject(pPtrAccessPath) )

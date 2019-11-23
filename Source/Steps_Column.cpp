@@ -22,7 +22,7 @@ void Step::vAddSteps_Column(void)
 /*----------------------------------------------------------------------------*/
 void Step::vColumnIsNullableFetch(void)
 {
-  ENTRY("vColumnIsNullableFetch"_Stz);
+  ENTRY(); // ENTRY("vColumnIsNullableFetch"_Stz);
   
   Object* pPtrColumn;
   
@@ -45,7 +45,7 @@ void Step::vColumnIsNullableFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vColumnIsPartitionKeyFetch(void)
 {
-  ENTRY("vColumnIsPartitionKeyFetch"_Stz);
+  ENTRY(); // ENTRY("vColumnIsPartitionKeyFetch"_Stz);
   
   Object* pPtrColumn;
   
@@ -68,7 +68,7 @@ void Step::vColumnIsPartitionKeyFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vColumnLengthFetch(void)
 {
-  ENTRY("vColumnLengthFetch"_Stz);
+  ENTRY(); // ENTRY("vColumnLengthFetch"_Stz);
   
   Object* pPtrColumn;
   
@@ -88,7 +88,7 @@ void Step::vColumnLengthFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vColumnNameFetch(void)
 {
-  ENTRY("vColumnNameFetch"_Stz);
+  ENTRY(); // ENTRY("vColumnNameFetch"_Stz);
   
   Object* pPtrColumn;
   
@@ -110,7 +110,7 @@ void Step::vColumnNameFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vColumnScaleFetch(void)
 {
-  ENTRY("vColumnScaleFetch"_Stz);
+  ENTRY(); // ENTRY("vColumnScaleFetch"_Stz);
   
   Object* pPtrColumn;
   
@@ -130,7 +130,7 @@ void Step::vColumnScaleFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vColumnTypeFetch(void)
 {
-  ENTRY("vColumnTypeFetch"_Stz);
+  ENTRY(); // ENTRY("vColumnTypeFetch"_Stz);
   
   Object* pPtrColumn;
   

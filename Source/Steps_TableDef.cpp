@@ -17,7 +17,7 @@ void Step::vAddSteps_TableDef(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTableDefParse(void)
 {
-  ENTRY("vTableDefParse"_Stz);
+  ENTRY(); // ENTRY("vTableDefParse"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )

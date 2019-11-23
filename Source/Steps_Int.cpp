@@ -32,7 +32,7 @@ void Step::vAddSteps_Int(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntAdd(void)
 {
-  ENTRY("vIntAdd"_Stz);
+  ENTRY(); // ENTRY("vIntAdd"_Stz);
   /*
   i8 r, j, i;
   
@@ -64,7 +64,7 @@ void Step::vIntAdd(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntDivide(void)
 {
-  ENTRY("vIntDivide"_Stz);
+  ENTRY(); // ENTRY("vIntDivide"_Stz);
   
   i8 r, j, i;
   
@@ -83,7 +83,7 @@ void Step::vIntDivide(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntEqual(void)
 {
-  ENTRY("vIntEqual"_Stz);
+  ENTRY(); // ENTRY("vIntEqual"_Stz);
   
   i8 r, j, i;
   
@@ -102,7 +102,7 @@ void Step::vIntEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntGreater(void)
 {
-  ENTRY("vIntGreater"_Stz);
+  ENTRY(); // ENTRY("vIntGreater"_Stz);
   
   i8 r, j, i;
   
@@ -121,7 +121,7 @@ void Step::vIntGreater(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntGreaterEqual(void)
 {
-  ENTRY("vIntGreaterEqual"_Stz);
+  ENTRY(); // ENTRY("vIntGreaterEqual"_Stz);
   
   i8 r, j, i;
   
@@ -140,7 +140,7 @@ void Step::vIntGreaterEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntHash(void)
 {
-  ENTRY("vIntHash"_Stz);
+  ENTRY(); // ENTRY("vIntHash"_Stz);
   
   s48K sString;
   if ( ! m_pDataStack->bPopS48K(sString) )
@@ -160,7 +160,7 @@ void Step::vIntHash(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntHo16(void)
 {
-  ENTRY("vIntHash"_Stz);
+  ENTRY(); // ENTRY("vIntHash"_Stz);
   
   i8 i;
   if ( ! m_pDataStack->bPopI8(i) )
@@ -176,7 +176,7 @@ void Step::vIntHo16(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntLess(void)
 {
-  ENTRY("vIntLess"_Stz);
+  ENTRY(); // ENTRY("vIntLess"_Stz);
   
   i8 r, j, i;
   
@@ -195,7 +195,7 @@ void Step::vIntLess(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntLessEqual(void)
 {
-  ENTRY("vIntLessEqual"_Stz);
+  ENTRY(); // ENTRY("vIntLessEqual"_Stz);
   
   i8 r, j, i;
   
@@ -214,7 +214,7 @@ void Step::vIntLessEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntModulo(void)
 {
-  ENTRY("vIntModulo"_Stz);
+  ENTRY(); // ENTRY("vIntModulo"_Stz);
   
   i8 r, j, i;
   
@@ -233,7 +233,7 @@ void Step::vIntModulo(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntMultiply(void)
 {
-  ENTRY("vIntMultiply"_Stz);
+  ENTRY(); // ENTRY("vIntMultiply"_Stz);
   
   i8 r, j, i;
   
@@ -252,7 +252,7 @@ void Step::vIntMultiply(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntNeg(void)
 {
-  ENTRY("vIntNeg"_Stz);
+  ENTRY(); // ENTRY("vIntNeg"_Stz);
   
   i8 r, i;
   
@@ -271,7 +271,7 @@ void Step::vIntNeg(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntNotEqual(void)
 {
-  ENTRY("vIntNotEqual"_Stz);
+  ENTRY(); // ENTRY("vIntNotEqual"_Stz);
   
   i8 r, j, i;
   
@@ -290,7 +290,7 @@ void Step::vIntNotEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntRandom(void)
 {
-  ENTRY("vIntRandom"_Stz);
+  ENTRY(); // ENTRY("vIntRandom"_Stz);
   
   i8 iHigh;
   if ( ! m_pDataStack->bPopI8(iHigh) )
@@ -312,7 +312,7 @@ void Step::vIntRandom(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIntSubtract(void)
 {
-  ENTRY("vIntSubtract"_Stz);
+  ENTRY(); // ENTRY("vIntSubtract"_Stz);
   
   i8 r, j, i;
   
@@ -331,7 +331,7 @@ void Step::vIntSubtract(void)
 /*----------------------------------------------------------------------------*/
 void Step::vUnsignedIntRandom(void)
 {
-  ENTRY("vUnsignedIntRandom"_Stz);
+  ENTRY(); // ENTRY("vUnsignedIntRandom"_Stz);
   
   i8 iHigh;
   if ( ! m_pDataStack->bPopI8(iHigh) )

@@ -24,7 +24,7 @@ void Step::vAddSteps_Locals(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLocalFetch(void)
 {
-  ENTRY("vLocalFetch"_Stz);
+  ENTRY(); // ENTRY("vLocalFetch"_Stz);
   
   if ( ! m_pLocalsFrame )
     THROW_DSTACK();
@@ -45,7 +45,7 @@ void Step::vLocalFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLocalStore(void)
 {
-  ENTRY("vLocalStore"_Stz);
+  ENTRY(); // ENTRY("vLocalStore"_Stz);
   
   if ( ! m_pLocalsFrame )
     THROW_DSTACK();
@@ -66,7 +66,7 @@ void Step::vLocalStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLocalsBar(void)
 {
-ENTRY("vLocalsBar"_Stz);
+  ENTRY(); // ENTRY("vLocalsBar"_Stz);
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -124,7 +124,7 @@ ENTRY("vLocalsBar"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vLocalsPop(void)
 {
-ENTRY("vLocalsPop"_Stz);
+  ENTRY(); // ENTRY("vLocalsPop"_Stz);
   
   LocalChain* pLocalsFrame = m_pLocalsFrame;
   
@@ -143,7 +143,7 @@ ENTRY("vLocalsPop"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vLocalsPush(void)
 {
-ENTRY("vLocalsPush"_Stz);
+  ENTRY(); // ENTRY("vLocalsPush"_Stz);
   
   LocalChain* pLocalsFrame = new LocalChain;
   
@@ -161,7 +161,7 @@ ENTRY("vLocalsPush"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vLocalsTo(void)
 {
-ENTRY("vLocalsTo"_Stz);
+  ENTRY(); // ENTRY("vLocalsTo"_Stz);
   
   bool bSemanticTo = false;
   

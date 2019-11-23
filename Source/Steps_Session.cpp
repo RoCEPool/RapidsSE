@@ -25,7 +25,7 @@ void Step::vAddSteps_Session(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionCommand(void)
 {
-  ENTRY("vSessionCommand"_Stz);
+  ENTRY(); // ENTRY("vSessionCommand"_Stz);
   
   Object* pPtrSession;
   if ( ! m_pDataStack->bPopObject(pPtrSession) )
@@ -44,7 +44,7 @@ void Step::vSessionCommand(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionDicStackFetch(void)
 {
-  ENTRY("vSessionDicStackFetch"_Stz);
+  ENTRY(); // ENTRY("vSessionDicStackFetch"_Stz);
   
   Object* pPtrSession;
   if ( ! m_pDataStack->bPopObject(pPtrSession) )
@@ -64,7 +64,7 @@ void Step::vSessionDicStackFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionDump(void)
 {
-ENTRY("vSessionDump"_Stz);
+  ENTRY(); // ENTRY("vSessionDump"_Stz);
   
   Object* pPtrSession;
   if ( ! m_pDataStack->bPopObject(pPtrSession) )
@@ -83,7 +83,7 @@ ENTRY("vSessionDump"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vSessionEnameSetFetch(void)
 {
-  ENTRY("vSessionEnameSetFetch"_Stz);
+  ENTRY(); // ENTRY("vSessionEnameSetFetch"_Stz);
   
   Object* pPtrSession;
   if ( ! m_pDataStack->bPopObject(pPtrSession) )
@@ -102,7 +102,7 @@ void Step::vSessionEnameSetFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionIsExiting(void)
 {
-  ENTRY("vSessionIsExiting"_Stz);
+  ENTRY(); // ENTRY("vSessionIsExiting"_Stz);
   
   Object* pPtrSession;
   if ( ! m_pDataStack->bPopObject(pPtrSession) )
@@ -121,7 +121,7 @@ void Step::vSessionIsExiting(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionPid(void)
 {
-  ENTRY("vSessionPid"_Stz);
+  ENTRY(); // ENTRY("vSessionPid"_Stz);
   
   Object* pPtrSession;
   if ( ! m_pDataStack->bPopObject(pPtrSession) )
@@ -140,7 +140,7 @@ void Step::vSessionPid(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionSlotFetch(void)
 {
-  ENTRY("vSessionSlotFetch"_Stz);
+  ENTRY(); // ENTRY("vSessionSlotFetch"_Stz);
   
   Object* pPtrSession;
   if ( ! m_pDataStack->bPopObject(pPtrSession) )
@@ -159,7 +159,7 @@ void Step::vSessionSlotFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionTxFetch(void)
 {
-  ENTRY("vSessionTxFetch"_Stz);
+  ENTRY(); // ENTRY("vSessionTxFetch"_Stz);
   
   Object* pPtrSession;
   if ( ! m_pDataStack->bPopObject(pPtrSession) )
@@ -178,7 +178,7 @@ void Step::vSessionTxFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSessionTxStore(void)
 {
-  ENTRY("vSessionTxStore"_Stz);
+  ENTRY(); // ENTRY("vSessionTxStore"_Stz);
   
   Object* pPtrSession;
   if ( ! m_pDataStack->bPopObject(pPtrSession) )

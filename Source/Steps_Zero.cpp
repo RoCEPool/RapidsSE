@@ -22,7 +22,7 @@ void Step::vAddSteps_Zero(void)
 /*----------------------------------------------------------------------------*/
 void Step::vZeroLess(void)
 {
-  ENTRY("vZeroLess"_Stz);
+  ENTRY(); // ENTRY("vZeroLess"_Stz);
   
   i8 iZero;
   if ( ! m_pDataStack->bPopAsInt(iZero) )
@@ -41,7 +41,7 @@ void Step::vZeroLess(void)
 /*----------------------------------------------------------------------------*/
 void Step::vZeroLessEqual(void)
 {
-  ENTRY("vZeroLessEqual"_Stz);
+  ENTRY(); // ENTRY("vZeroLessEqual"_Stz);
   
   i8 iZero;
   if ( ! m_pDataStack->bPopAsInt(iZero) )
@@ -60,7 +60,7 @@ void Step::vZeroLessEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vZeroEqual(void)
 {
-  ENTRY("vZeroEqual"_Stz);
+  ENTRY(); // ENTRY("vZeroEqual"_Stz);
   
   i8 iZero;
   if ( ! m_pDataStack->bPopAsInt(iZero) )
@@ -79,7 +79,7 @@ void Step::vZeroEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vZeroNotEqual(void)
 {
-  ENTRY("vZeroNotEqual"_Stz);
+  ENTRY(); // ENTRY("vZeroNotEqual"_Stz);
   
   i8 iZero;
   if ( ! m_pDataStack->bPopAsInt(iZero) )
@@ -98,7 +98,7 @@ void Step::vZeroNotEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vZeroGreaterEqual(void)
 {
-  ENTRY("vZeroGreaterEqual"_Stz);
+  ENTRY(); // ENTRY("vZeroGreaterEqual"_Stz);
   
   i8 iZero;
   if ( ! m_pDataStack->bPopAsInt(iZero) )
@@ -117,7 +117,7 @@ void Step::vZeroGreaterEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vZeroGreater(void)
 {
-  ENTRY("vZeroGreater"_Stz);
+  ENTRY(); // ENTRY("vZeroGreater"_Stz);
   
   i8 iZero;
   if ( ! m_pDataStack->bPopAsInt(iZero) )

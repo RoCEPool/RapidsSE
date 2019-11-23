@@ -19,7 +19,7 @@ void Step::vAddSteps_Magnitude(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToDigitName(void)
 {
-  ENTRY("vToDigitName"_Stz);
+  ENTRY(); // ENTRY("vToDigitName"_Stz);
   
   i8 iDigit;
   
@@ -53,7 +53,7 @@ void Step::vToDigitName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vBytesMagnitude(void)
 {
-  ENTRY("vBytesMagnitude"_Stz);
+  ENTRY(); // ENTRY("vBytesMagnitude"_Stz);
   
   i8 iBytes;
   if ( ! m_pDataStack->bPopI8(iBytes) )
@@ -72,7 +72,7 @@ void Step::vBytesMagnitude(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNumberMagnitude(void)
 {
-  ENTRY("vNumberMagnitude"_Stz);
+  ENTRY(); // ENTRY("vNumberMagnitude"_Stz);
   
   i8 iNumber;
   i8 iScale;

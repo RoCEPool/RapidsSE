@@ -17,7 +17,7 @@ void Step::vAddSteps_Article(void)
 /*----------------------------------------------------------------------------*/
 void Step::vArticleDump(void)
 {
-  ENTRY("vArticleDump"_Stz);
+  ENTRY(); // ENTRY("vArticleDump"_Stz);
   
   Article* pArticle = AM::pLexiconArticle();
   

@@ -27,7 +27,7 @@ void Step::vAddSteps_Encode(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeAgain(void)
 {
-  ENTRY("vEncodeAgain"_Stz); // ( dest -- / -- )
+  ENTRY(); // ENTRY("vEncodeAgain"_Stz); // ( dest -- / -- )
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -47,7 +47,7 @@ void Step::vEncodeAgain(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeAhead(void)
 {
-  ENTRY("vEncodeAhead"_Stz);// ( -- orig / -- )
+  ENTRY(); // ENTRY("vEncodeAhead"_Stz);// ( -- orig / -- )
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -66,7 +66,7 @@ void Step::vEncodeAhead(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeContinue(void)
 {
-  ENTRY("vEncodeContinue"_Stz); // ( -- orig / flag -- )
+  ENTRY(); // ENTRY("vEncodeContinue"_Stz); // ( -- orig / flag -- )
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -89,7 +89,7 @@ void Step::vEncodeContinue(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeHere(void)
 {
-  ENTRY("vEncodeHere"_Stz);
+  ENTRY(); // ENTRY("vEncodeHere"_Stz);
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -106,7 +106,7 @@ void Step::vEncodeHere(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeIf(void)
 {
-  ENTRY("vEncodeIf"_Stz); // ( -- orig / flag -- )
+  ENTRY(); // ENTRY("vEncodeIf"_Stz); // ( -- orig / flag -- )
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -125,7 +125,7 @@ void Step::vEncodeIf(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeIfAgain(void)
 {
-  ENTRY("vEncodeIfAgain"_Stz); // ( dest -- / -- )
+  ENTRY(); // ENTRY("vEncodeIfAgain"_Stz); // ( dest -- / -- )
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -156,7 +156,7 @@ void Step::vEncodeIfAgain(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeLoop(void)
 {
-  ENTRY("vEncodeLoop"_Stz);
+  ENTRY(); // ENTRY("vEncodeLoop"_Stz);
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -204,7 +204,7 @@ void Step::vEncodeLoop(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeLoopPlus(void)
 {
-  ENTRY("vEncodeLoopPlus"_Stz);
+  ENTRY(); // ENTRY("vEncodeLoopPlus"_Stz);
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -252,7 +252,7 @@ void Step::vEncodeLoopPlus(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeNext(void)
 {
-  ENTRY("vEncodeNext"_Stz);
+  ENTRY(); // ENTRY("vEncodeNext"_Stz);
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -277,7 +277,7 @@ void Step::vEncodeNext(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeThen(void)
 {
-  ENTRY("vEncodeThen"_Stz);  // ( orig -- / -- )
+  ENTRY(); // ENTRY("vEncodeThen"_Stz);  // ( orig -- / -- )
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -297,7 +297,7 @@ void Step::vEncodeThen(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeUntil(void)
 {
-  ENTRY("vEncodeUntil"_Stz); // ( dest -- / flag -- )
+  ENTRY(); // ENTRY("vEncodeUntil"_Stz); // ( dest -- / flag -- )
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   

@@ -36,7 +36,7 @@ void Step::vAddSteps_Dir(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirChangeCurrent(void)
 {
-  ENTRY("vDirChangeCurrent"_Stz);
+  ENTRY(); // ENTRY("vDirChangeCurrent"_Stz);
   
   s256 sDir;
   if ( ! m_pDataStack->bPopS256(sDir) )
@@ -54,7 +54,7 @@ void Step::vDirChangeCurrent(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirExists(void)
 {
-ENTRY("vDirExists"_Stz);
+  ENTRY(); // ENTRY("vDirExists"_Stz);
   
   s256 sDirPath;
   if ( ! m_pDataStack->bPopS256(sDirPath) )
@@ -72,7 +72,7 @@ ENTRY("vDirExists"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirGetCurrent(void)
 {
-  ENTRY("vDirGetCurrent"_Stz);
+  ENTRY(); // ENTRY("vDirGetCurrent"_Stz);
   
   GenVar xStrVal;
   
@@ -95,7 +95,7 @@ void Step::vDirGetCurrent(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDirMake(void)
 {
-ENTRY("vDirMake"_Stz);
+  ENTRY(); // ENTRY("vDirMake"_Stz);
   
   s256 sPath;
   if ( ! m_pDataStack->bPopS256(sPath) )
@@ -113,7 +113,7 @@ ENTRY("vDirMake"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirRemove(void)
 {
-ENTRY("vDirRemove"_Stz);
+  ENTRY(); // ENTRY("vDirRemove"_Stz);
   
   s256 sPath;
   if ( ! m_pDataStack->bPopS256(sPath) )
@@ -131,7 +131,7 @@ ENTRY("vDirRemove"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirClose(void)
 {
-ENTRY("vDirClose"_Stz);
+  ENTRY(); // ENTRY("vDirClose"_Stz);
   
   Object* pPtrDir;
 
@@ -150,7 +150,7 @@ ENTRY("vDirClose"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirDelete(void)
 {
-ENTRY("vDirDelete"_Stz);
+  ENTRY(); // ENTRY("vDirDelete"_Stz);
   
   Object* pPtrDir;
   
@@ -169,7 +169,7 @@ ENTRY("vDirDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirEntryName(void)
 {
-ENTRY("vDirEntryName"_Stz);
+  ENTRY(); // ENTRY("vDirEntryName"_Stz);
   
   Object* pPtrDir;
   
@@ -190,7 +190,7 @@ ENTRY("vDirEntryName"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirEntryType(void)
 {
-ENTRY("vDirEntryType"_Stz);
+  ENTRY(); // ENTRY("vDirEntryType"_Stz);
   
   Object* pPtrDir;
   
@@ -213,7 +213,7 @@ ENTRY("vDirEntryType"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirIsClosed(void)
 {
-ENTRY("vDirIsClosed"_Stz);
+  ENTRY(); // ENTRY("vDirIsClosed"_Stz);
   
   Object* pPtrDir;
   
@@ -234,7 +234,7 @@ ENTRY("vDirIsClosed"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirIsOpen(void)
 {
-ENTRY("vDirIsOpen"_Stz);
+  ENTRY(); // ENTRY("vDirIsOpen"_Stz);
   
   Object* pPtrDir;
   
@@ -255,7 +255,7 @@ ENTRY("vDirIsOpen"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirNew(void)
 {
-ENTRY("vDirNew"_Stz);
+  ENTRY(); // ENTRY("vDirNew"_Stz);
   
   Dir* pDir = new Dir(m_pTask);
   
@@ -272,7 +272,7 @@ ENTRY("vDirNew"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirOpen(void)
 {
-ENTRY("vDirOpen"_Stz);
+  ENTRY(); // ENTRY("vDirOpen"_Stz);
   
   Object* pPtrDir;
   
@@ -296,7 +296,7 @@ ENTRY("vDirOpen"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirPathGet(void)
 {
-ENTRY("vDirPathGet"_Stz);
+  ENTRY(); // ENTRY("vDirPathGet"_Stz);
   
   Object* pPtrDir;
   
@@ -318,7 +318,7 @@ ENTRY("vDirPathGet"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirRead(void)
 {
-ENTRY("vDirRead"_Stz);
+  ENTRY(); // ENTRY("vDirRead"_Stz);
   
   Object* pPtrDir;
   
@@ -339,7 +339,7 @@ ENTRY("vDirRead"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirRewind(void)
 {
-ENTRY("vDirRewind"_Stz);
+  ENTRY(); // ENTRY("vDirRewind"_Stz);
   
   Object* pPtrDir;
   
@@ -358,7 +358,7 @@ ENTRY("vDirRewind"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirSeek(void)
 {
-ENTRY("vDirSeek"_Stz);
+  ENTRY(); // ENTRY("vDirSeek"_Stz);
   
   Object* pPtrDir;
   
@@ -381,7 +381,7 @@ ENTRY("vDirSeek"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDirTell(void)
 {
-ENTRY("vDirTell"_Stz);
+  ENTRY(); // ENTRY("vDirTell"_Stz);
   
   Object* pPtrDir;
   

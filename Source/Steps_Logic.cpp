@@ -19,7 +19,7 @@ void Step::vAddSteps_Logic(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogicAnd(void)
 {
-  ENTRY("vLogicAnd"_Stz);
+  ENTRY(); // ENTRY("vLogicAnd"_Stz);
   
   i8 iArgB;
   if ( ! m_pDataStack->bPopAsInt(iArgB) )
@@ -41,7 +41,7 @@ void Step::vLogicAnd(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogicNot(void)
 {
-  ENTRY("vLogicNot"_Stz);
+  ENTRY(); // ENTRY("vLogicNot"_Stz);
   
   i8 iValA;
   if ( ! m_pDataStack->bPopAsI8_Inline(iValA) )
@@ -59,7 +59,7 @@ void Step::vLogicNot(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogicOr(void)
 {
-  ENTRY("vLogicOr"_Stz);
+  ENTRY(); // ENTRY("vLogicOr"_Stz);
   
   i8 iArgB;
   if ( ! m_pDataStack->bPopAsInt(iArgB) )

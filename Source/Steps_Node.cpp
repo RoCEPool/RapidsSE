@@ -33,7 +33,7 @@ void Step::vAddSteps_Node(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeNew(void)
 {
-  ENTRY("vNodeNew"_Stz);
+  ENTRY(); // ENTRY("vNodeNew"_Stz);
   
   i8 nNodes = AM::nDefinedNodes();
   
@@ -79,7 +79,7 @@ void Step::vNodeNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeForget(void)
 {
-  ENTRY("vNodeForget"_Stz);
+  ENTRY(); // ENTRY("vNodeForget"_Stz);
   
   Object* pPtrNode;
   
@@ -105,7 +105,7 @@ void Step::vNodeForget(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeIP(void)
 {
-  ENTRY("vNodeIP"_Stz);
+  ENTRY(); // ENTRY("vNodeIP"_Stz);
   
   Object* pPtrNode;
   
@@ -127,7 +127,7 @@ void Step::vNodeIP(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeName(void)
 {
-  ENTRY("vNodeName"_Stz);
+  ENTRY(); // ENTRY("vNodeName"_Stz);
   
   Object* pPtrNode;
   
@@ -149,7 +149,7 @@ void Step::vNodeName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeNo(void)
 {
-ENTRY("vNodeNo"_Stz);
+  ENTRY(); // ENTRY("vNodeNo"_Stz);
   
   Object* pPtrNode;
   
@@ -169,7 +169,7 @@ ENTRY("vNodeNo"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vNodePartitions(void)
 {
-  ENTRY("vNodePartitions"_Stz);
+  ENTRY(); // ENTRY("vNodePartitions"_Stz);
   
   m_pDataStack->vPushI8(AM::pGrid()->nSlotsPerNode());
   
@@ -181,7 +181,7 @@ void Step::vNodePartitions(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodePort(void)
 {
-  ENTRY("vNodeNo"_Stz);
+  ENTRY(); // ENTRY("vNodeNo"_Stz);
   
   Object* pPtrNode;
   if ( ! m_pDataStack->bPopObject(pPtrNode) )
@@ -198,7 +198,7 @@ void Step::vNodePort(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeRecvSocketStore(void)
 {
-  ENTRY("vNodeRecvSocketStore"_Stz);
+  ENTRY(); // ENTRY("vNodeRecvSocketStore"_Stz);
   
   Object* pPtrNode;
   if ( ! m_pDataStack->bPopObject(pPtrNode) )
@@ -220,7 +220,7 @@ void Step::vNodeRecvSocketStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeRecvSocketFetch(void)
 {
-  ENTRY("vNodeRecvSocketFetch"_Stz);
+  ENTRY(); // ENTRY("vNodeRecvSocketFetch"_Stz);
   
   Object* pPtrNode;
   if ( ! m_pDataStack->bPopObject(pPtrNode) )
@@ -239,7 +239,7 @@ void Step::vNodeRecvSocketFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeSendSocketStore(void)
 {
-  ENTRY("vNodeSendSocketStore"_Stz);
+  ENTRY(); // ENTRY("vNodeSendSocketStore"_Stz);
   
   Object* pPtrNode;
   if ( ! m_pDataStack->bPopObject(pPtrNode) )
@@ -261,7 +261,7 @@ void Step::vNodeSendSocketStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeSendSocketFetch(void)
 {
-  ENTRY("vNodeSendSocketFetch"_Stz);
+  ENTRY(); // ENTRY("vNodeSendSocketFetch"_Stz);
   
   Object* pPtrNode;
   if ( ! m_pDataStack->bPopObject(pPtrNode) )
@@ -280,7 +280,7 @@ void Step::vNodeSendSocketFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeSize(void)
 {
-  ENTRY("vNodeSize"_Stz);
+  ENTRY(); // ENTRY("vNodeSize"_Stz);
   
   m_pDataStack->vPushI8(AM::iRegionSize());
   
@@ -292,7 +292,7 @@ void Step::vNodeSize(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeStartNode(void)
 {
-  ENTRY("vNodeStartNode"_Stz);
+  ENTRY(); // ENTRY("vNodeStartNode"_Stz);
   
   Object* pPtrNode;
   if ( ! m_pDataStack->bPopObject(pPtrNode) )
@@ -309,7 +309,7 @@ void Step::vNodeStartNode(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeStateStore(void)
 {
-  ENTRY("vNodeStateStore"_Stz);
+  ENTRY(); // ENTRY("vNodeStateStore"_Stz);
   
   Object* pPtrNode;
   if ( ! m_pDataStack->bPopObject(pPtrNode) )
@@ -330,7 +330,7 @@ void Step::vNodeStateStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeStateFetch(void)
 {
-  ENTRY("vNodeStateFetch"_Stz);
+  ENTRY(); // ENTRY("vNodeStateFetch"_Stz);
   
   Object* pPtrNode;
   if ( ! m_pDataStack->bPopObject(pPtrNode) )
@@ -349,7 +349,7 @@ void Step::vNodeStateFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vNodeStatus(void)
 {
-  ENTRY("vNodeStatus"_Stz);
+  ENTRY(); // ENTRY("vNodeStatus"_Stz);
 
   s256 s;
   

@@ -22,7 +22,7 @@ void Step::vAddSteps_To(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToBody(void)
 {
-  ENTRY("vToBody"_Stz);
+  ENTRY(); // ENTRY("vToBody"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -44,7 +44,7 @@ void Step::vToBody(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToInt(void)
 {
-  ENTRY("vToInt"_Stz);
+  ENTRY(); // ENTRY("vToInt"_Stz);
   
   s32 sInt;
   
@@ -65,7 +65,7 @@ void Step::vToInt(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToPtr(void)
 {
-  ENTRY("vToPtr"_Stz);
+  ENTRY(); // ENTRY("vToPtr"_Stz);
   
   i8 iPtr;
   if ( ! m_pDataStack->bPopI8(iPtr) )
@@ -83,7 +83,7 @@ void Step::vToPtr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToStr(void)
 {
-  ENTRY("vToStr"_Stz);
+  ENTRY(); // ENTRY("vToStr"_Stz);
   
   GenVar xVal;
   if ( ! m_pDataStack->bPopGenVar(xVal) )
@@ -103,7 +103,7 @@ void Step::vToStr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToTask(void)
 {
-  ENTRY("vToTask"_Stz);
+  ENTRY(); // ENTRY("vToTask"_Stz);
   
   i8 iVal;
   if ( ! m_pDataStack->bPopI8(iVal) )

@@ -19,7 +19,7 @@ void Step::vAddSteps_StepTiming(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStepTimingReset(void)
 {
-  ENTRY("vStepTimingReset"_Stz);
+  ENTRY(); // ENTRY("vStepTimingReset"_Stz);
   
 #ifndef WITH_ENTRY_EXIT
   
@@ -41,7 +41,7 @@ void Step::vStepTimingReset(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStepTimingStart(void)
 {
-  ENTRY("vStepTimingStart"_Stz);
+  ENTRY(); // ENTRY("vStepTimingStart"_Stz);
   
 #ifndef WITH_ENTRY_EXIT
   
@@ -63,7 +63,7 @@ void Step::vStepTimingStart(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStepTimingWrite(void)
 {
-  ENTRY("vStepTimingWritevStepTimingWrite"_Stz);
+  ENTRY(); // ENTRY("vStepTimingWritevStepTimingWrite"_Stz);
 
 #ifndef WITH_ENTRY_EXIT
   

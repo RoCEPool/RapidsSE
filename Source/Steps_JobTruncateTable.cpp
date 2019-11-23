@@ -20,7 +20,7 @@ void Step::vAddSteps_JobTruncateTable(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubTruncateSlotFetch(void)
 {
-  ENTRY("vJob_SubTruncateSlotFetch"_Stz);
+  ENTRY(); // ENTRY("vJob_SubTruncateSlotFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -37,7 +37,7 @@ void Step::vJob_SubTruncateSlotFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubTruncateTruncateJobIdFetch(void)
 {
-  ENTRY("vJob_SubTruncateTruncateJobIdFetch"_Stz);
+  ENTRY(); // ENTRY("vJob_SubTruncateTruncateJobIdFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -54,7 +54,7 @@ void Step::vJob_SubTruncateTruncateJobIdFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_TruncateTableSpawnSub(void)
 {
-  ENTRY("vJob_TruncateTableSpawnSub"_Stz);
+  ENTRY(); // ENTRY("vJob_TruncateTableSpawnSub"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )

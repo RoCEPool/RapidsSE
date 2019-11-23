@@ -24,7 +24,7 @@ void Step::vAddSteps_File(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFileClose(void)
 {
-ENTRY("vFileClose"_Stz);
+  ENTRY(); // ENTRY("vFileClose"_Stz);
   
   Object* pPtrFile;
   
@@ -43,7 +43,7 @@ ENTRY("vFileClose"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vFileDelete(void)
 {
-ENTRY("vFileDelete"_Stz);
+  ENTRY(); // ENTRY("vFileDelete"_Stz);
   
   Object* pPtrFile;
   
@@ -62,7 +62,7 @@ ENTRY("vFileDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vFileNew(void)
 {
-ENTRY("vFileNew"_Stz);
+  ENTRY(); // ENTRY("vFileNew"_Stz);
   
   File* pFile = new File(m_pTask);
   
@@ -79,7 +79,7 @@ ENTRY("vFileNew"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vFileOpen(void)
 {
-ENTRY("vFileOpen"_Stz);
+  ENTRY(); // ENTRY("vFileOpen"_Stz);
   
   Object* pPtrFile;
   
@@ -107,7 +107,7 @@ ENTRY("vFileOpen"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vFilePathGet(void)
 {
-ENTRY("vFilePathGet"_Stz);
+  ENTRY(); // ENTRY("vFilePathGet"_Stz);
   
   Object* pPtrFile;
   
@@ -128,7 +128,7 @@ ENTRY("vFilePathGet"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vFileRead(void)
 {
-  ENTRY("vFileRead"_Stz);
+  ENTRY(); // ENTRY("vFileRead"_Stz);
   
   Object* pPtrFile;
   
@@ -157,7 +157,7 @@ void Step::vFileRead(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFileWrite(void)
 {
-ENTRY("vFileWrite"_Stz);
+  ENTRY(); // ENTRY("vFileWrite"_Stz);
   
   Object* pPtrFile;
   

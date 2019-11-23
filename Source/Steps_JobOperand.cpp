@@ -17,7 +17,7 @@ void Step::vAddSteps_JobOperand(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_OperandPipeOut(void)
 {
-  ENTRY("vJob_OperandPipeOut"_Stz);
+  ENTRY(); // ENTRY("vJob_OperandPipeOut"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )

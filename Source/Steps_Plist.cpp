@@ -17,7 +17,7 @@ void Step::vAddSteps_Plist(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPlistFindJob(void)
 {
-  ENTRY("vPlistFindJob"_Stz);
+  ENTRY(); // ENTRY("vPlistFindJob"_Stz);
   
   i8 iJobId;
   if ( ! m_pDataStack->bPopAsInt(iJobId) )

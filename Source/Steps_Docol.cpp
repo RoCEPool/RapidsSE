@@ -20,7 +20,7 @@ void Step::vAddSteps_Docol(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDocolCompiling(void)
 {
-  ENTRY("vDocolCompiling"_Stz);
+  ENTRY(); // ENTRY("vDocolCompiling"_Stz);
   
   m_pCompiler->vCompiling(true);
   
@@ -32,7 +32,7 @@ void Step::vDocolCompiling(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDocolInterpreting(void)
 {
-  ENTRY("vDocolInterpreting"_Stz);
+  ENTRY(); // ENTRY("vDocolInterpreting"_Stz);
   
   m_pCompiler->vCompiling(false);
   
@@ -44,7 +44,7 @@ void Step::vDocolInterpreting(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDocolIsCompiling(void)
 {
-  ENTRY("vDocolIsCompiling"_Stz);
+  ENTRY(); // ENTRY("vDocolIsCompiling"_Stz);
   
   i8 iIsCompiling = m_pCompiler->bCompiling() ? 1 : 0;
   
@@ -58,7 +58,7 @@ void Step::vDocolIsCompiling(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDocolIsInterpreting(void)
 {
-  ENTRY("vDocolIsInterpreting"_Stz);
+  ENTRY(); // ENTRY("vDocolIsInterpreting"_Stz);
   
   i8 iIsInterpreting = m_pCompiler->bCompiling() ? 0 : 1;
   

@@ -22,7 +22,7 @@ void Step::vAddSteps_JobLoadTable(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_LoadTableBegin(void)
 {
-  ENTRY("vJob_LoadTableBegin"_Stz);
+  ENTRY(); // ENTRY("vJob_LoadTableBegin"_Stz);
   
   Object* pPtrJob_LoadTable;
   if ( ! m_pDataStack->bPopObject(pPtrJob_LoadTable) )
@@ -41,7 +41,7 @@ void Step::vJob_LoadTableBegin(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_LoadTableChunk(void)
 {
-  ENTRY("vJob_LoadTableChunk"_Stz);
+  ENTRY(); // ENTRY("vJob_LoadTableChunk"_Stz);
   
   Object* pPtrJob_LoadTable;
   if ( ! m_pDataStack->bPopObject(pPtrJob_LoadTable) )
@@ -60,7 +60,7 @@ void Step::vJob_LoadTableChunk(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_LoadTableDumpMap(void)
 {
-  ENTRY("vJob_LoaderDUmpMap"_Stz);
+  ENTRY(); // ENTRY("vJob_LoaderDUmpMap"_Stz);
   
   Object* pPtrJob_LoadTable;
   if ( ! m_pDataStack->bPopObject(pPtrJob_LoadTable) )
@@ -77,7 +77,7 @@ void Step::vJob_LoadTableDumpMap(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_LoadTableEnd(void)
 {
-  ENTRY("vJob_LoadTableEnd"_Stz);
+  ENTRY(); // ENTRY("vJob_LoadTableEnd"_Stz);
   
   Object* pPtrJob_LoadTable;
   if ( ! m_pDataStack->bPopObject(pPtrJob_LoadTable) )
@@ -94,7 +94,7 @@ void Step::vJob_LoadTableEnd(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_LoadTableFilePathFetch(void)
 {
-  ENTRY("vJob_LoadTableFilePathFetch"_Stz);
+  ENTRY(); // ENTRY("vJob_LoadTableFilePathFetch"_Stz);
   
   Object* pPtrJob_LoadTable;
   if ( ! m_pDataStack->bPopObject(pPtrJob_LoadTable) )
@@ -112,7 +112,7 @@ void Step::vJob_LoadTableFilePathFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_LoadTableTableStore(void)
 {
-  ENTRY("vJob_LoaderTableStore"_Stz);
+  ENTRY(); // ENTRY("vJob_LoaderTableStore"_Stz);
   
   Object* pPtrTable;
   Object* pPtrJob_LoadTable;

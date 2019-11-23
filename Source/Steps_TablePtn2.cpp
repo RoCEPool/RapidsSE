@@ -18,7 +18,7 @@ void Step::vAddSteps_TablePartition2(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnRoot(void)
 {
-  ENTRY("vTablePtnSet"_Stz);
+  ENTRY(); // ENTRY("vTablePtnSet"_Stz);
   
   TablePtn* pTablePtn = _pTablePtn(*m_pRegSet->m_xpTablePtn);
   
@@ -32,7 +32,7 @@ void Step::vTablePtnRoot(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnSet(void)
 {
-  ENTRY("vTablePtnSet"_Stz);
+  ENTRY(); // ENTRY("vTablePtnSet"_Stz);
   
   Object* pPtrObject;
   if ( ! m_pDataStack->bPopObject(pPtrObject) )
