@@ -43,10 +43,12 @@ namespace Correctness
 #ifdef WITH_CORECTNESS_ALGEBRA
   #define _footer_()    aFooter()->vAssertFooter();
   #define _hazard_()    aHazard()->vAssertFooter();
+  #define _header_()    aHeader()->vAssertHeader();
   #define _setFooter_() aFooter()->vSetFooter();
 #else
   #define _footer_()
   #define _hazard_()
+  #define _header_()
   #define _setFooter_()
 #endif
 
