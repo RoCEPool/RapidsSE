@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Header.hpp -- Header for instances needing magic & class                   */
+/* Header.hpp -- Header for objects needing magic & class                     */
 /*============================================================================*/
 #pragma once
 
 namespace Correctness
 {
-  static const u4 C_MAGIC   = 0x4B696A4D; // speels MjiK
-                              //K i j M
+  static const u4 C_MAGIC = 0x4B696A4D; // spells MjiK
+                            //K i j M
   
   class Header
   {
@@ -72,7 +72,6 @@ namespace Correctness
       return false;
   }
   
-
   };
 }
 
