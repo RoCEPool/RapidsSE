@@ -809,11 +809,11 @@ bool Stack::bPopString(String* pString)
   if ( ! bGuard(CN_STRVAL) )
     return false;
   
-  
   _hazard_();
   
-  StrVal* aStrVal = _aStrVal(aPeekValue());  
-  pString->vCopy((Stz*)aStrVal->azChar());
+  StrVal* aStrVal = _aStrVal(aPeekValue());
+  
+  pString->vCopy(aStrVal->szStz());
   
   i8 iSize = aPeekValue()->nSize();
   vPopBy(iSize);
