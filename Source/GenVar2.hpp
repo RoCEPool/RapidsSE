@@ -40,9 +40,9 @@ namespace SenVM
     Cell*   aFipPtr(void);
     i8      iInt(void);
     bool    bIsInt(void);
-    StkVal* aNestedValue(void);
     Object* pObject(void);
     i8      nSize(void);
+    SenVar* aSenVar(void);
     Stz*    szStz(void);
   
   private:

@@ -11,7 +11,16 @@ namespace SenVM
     _Header m_xHeader;
 
   public:
-    void* operator new(size_t);  
+    void* operator new(size_t);
+  
+  /*--------------------------------------------------------------------------*/
+  /* get class                                                                */
+  /*--------------------------------------------------------------------------*/
+  inline eCN eClass(void)
+  {
+  return m_xHeader.m_eClass;
+  }
+
   };
 }
 

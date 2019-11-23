@@ -10,6 +10,7 @@ namespace Correctness
   
   class _Header
   {
+  public:
     union {
       u4   m_uMagic;
       char m_caMagic[4];

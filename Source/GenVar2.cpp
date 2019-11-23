@@ -110,7 +110,7 @@ Cell* GenVar2::aFipPtr(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Cell* aFip = (Cell*)xNestedValue.m_wWord.m_iI8;
+  Cell* aFip = u.m_xFipVar.aFipPtr();
   
   return aFip;
 }
@@ -122,7 +122,7 @@ i8 GenVar2::iInt(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  i8 iInt = xNestedValue.m_wWord;
+  i8 iInt = u.m_xIntVar.iInt();
   
   return iInt;
 }
@@ -134,22 +134,10 @@ bool GenVar2::bIsInt(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  if (CN_INTVAL == xNestedValue.m_xHeader.eClass())
+  if (CN_INTVAL == u.m_xSenVar.eClass())
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of the nested value                                            */
-/*----------------------------------------------------------------------------*/
-StkVal* GenVar2::aNestedValue(void)
-{
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
-  
-  StkVal* aValue = reinterpret_cast<StkVal*>(&xNestedValue);
-  
-  return aValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +147,7 @@ Object* GenVar2::pObject(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Object* pObj = (Object*)xNestedValue.m_wWord.m_iI8;
+  Object* pObj = u.m_xPtrVar.pObj();
   
   return pObj;
 }
@@ -177,13 +165,25 @@ i8 GenVar2::nSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of the nested sen variable                                     */
+/*----------------------------------------------------------------------------*/
+SenVar* GenVar2::aSenVar(void)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  SenVar* aSenVar = & u.m_xSenVar;
+  
+  return aSenVar;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stz from the nested value                                              */
 /*----------------------------------------------------------------------------*/
 Stz* GenVar2::szStz(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Stz* sz = (Stz*)xNestedValue.m_caStr;
+  Stz* sz = u.m_xStrVar.szStz();
   
   return sz;
 }
