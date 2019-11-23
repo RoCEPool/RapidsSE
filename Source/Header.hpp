@@ -8,6 +8,16 @@ namespace Correctness
   static const u4 C_MAGIC = 0x4B696A4D; // spells MjiK
                             //K i j M
   
+  class _Header
+  {
+    union {
+      u4   m_uMagic;
+      char m_caMagic[4];
+    };
+    eCN  m_eClass;
+    bool m_bWordBody;
+  };
+  
   class Header
   {
   protected:

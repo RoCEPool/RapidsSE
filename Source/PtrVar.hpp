@@ -5,18 +5,15 @@
 
 namespace SenVM
 {
-  class PtrVar : public Object
+  class PtrVar
   {
   private:
+    _Header m_xHeader;
     Object* m_pObj;
-    Footer  m_xFooter;
-
+ 
   public:
     void* operator new(size_t);
-    
-    PtrVar(void);
-   ~PtrVar(void) noexcept(false);
-
+  
     void operator =(Object* pObject);
  
     i8      iAsInt(void);

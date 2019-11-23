@@ -16,46 +16,18 @@ void* FipVar::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-FipVar::FipVar(void)
-: Object(CN_FIPVAR)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FIPVAR,_FOOTER_);
-
-  m_aFip = nullptr;
-  
-  _checkInitialised_(CN_FIPVAR);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FIPVAR,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                */
-/*----------------------------------------------------------------------------*/
-FipVar::~FipVar(void) noexcept(false)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FIPVAR,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
 void FipVar::operator =(Cell* aCell)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FIPVAR,_FOOTER_);
   m_aFip = aCell;
 }
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get instruction pointer                                                    */
 /*----------------------------------------------------------------------------*/
 Cell* FipVar::aFipPtr(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FIPVAR,_FOOTER_);
   return pPoolCheck<Cell*>(m_aFip);
 }
 
@@ -64,7 +36,6 @@ Cell* FipVar::aFipPtr(void)
 /*----------------------------------------------------------------------------*/
 i8 FipVar::nSize(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FIPVAR,_FOOTER_);
   return sizeof(FipVar);
 }
 
@@ -73,14 +44,8 @@ i8 FipVar::nSize(void)
 /*----------------------------------------------------------------------------*/
 void FipVar::vToString(Stz* szStz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FIPVAR,_FOOTER_);
   * szStz = reinterpret_cast<void*>(m_aFip);
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(FipVar)
 
 /*============================================================================*/
 /* end                                                                        */

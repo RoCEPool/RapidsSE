@@ -5,26 +5,20 @@
 
 namespace SenVM
 {
-  class FipVar : public Object
+  class FipVar
   {
   private:
-    Cell*  m_aFip;
-    Footer m_xFooter;
+    _Header m_xHeader;
+    Cell*   m_aFip;
 
   public:
     void* operator new(size_t);
     
-    FipVar(void);
-   ~FipVar(void) noexcept(false);
-
     void operator =(Cell* aCell);
     
     Cell* aFipPtr(void);
     i8    nSize(void);
     void  vToString(Stz* szStz);
-  
-  private:
-    Footer* aFooter(void);
   };
 }
 

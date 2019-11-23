@@ -16,34 +16,10 @@ void* IntVar::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-IntVar::IntVar(void)
-: Object(CN_INTVAR)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTVAR,_FOOTER_);
-  
-  m_iInt = 0;
-  
-  _checkInitialised_(CN_INTVAR);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_INTVAR,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                */
-/*----------------------------------------------------------------------------*/
-IntVar::~IntVar(void) noexcept(false)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTVAR,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
 void IntVar::operator =(i8 iInt)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTVAR,_FOOTER_);
   
   m_iInt = iInt;
 }
@@ -53,7 +29,6 @@ void IntVar::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 i8 IntVar::iInt(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTVAR,_FOOTER_);
   
   return m_iInt;
 }
@@ -63,7 +38,6 @@ i8 IntVar::iInt(void)
 /*----------------------------------------------------------------------------*/
 i8 IntVar::nSize(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTVAR,_FOOTER_);
   
   return sizeof(IntVar);
 }
@@ -73,7 +47,6 @@ i8 IntVar::nSize(void)
 /*----------------------------------------------------------------------------*/
 void IntVar::vToString(Stz* aWorkspace)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTVAR,_FOOTER_);
   
   if (C_DATUM_NULL == m_iInt) {
     aWorkspace->vConcat("null"_Stz);
@@ -82,11 +55,6 @@ void IntVar::vToString(Stz* aWorkspace)
   
   * aWorkspace = m_iInt;
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(IntVar)
 
 /*============================================================================*/
 /* end                                                                        */
