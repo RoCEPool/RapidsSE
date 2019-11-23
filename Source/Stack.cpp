@@ -173,6 +173,7 @@ void Stack::vDiscard(void)
   _hazard_();
   
   StkVal* aValue = reinterpret_cast<StkVal*>(m_aTop);
+  
   i8 iSize = aValue->nSize();
   
   vPopBy(iSize);

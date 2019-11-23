@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-namespace Esses
+namespace Correctness
 {
   class String
   {
   public:
     Header m_xHeader;
-    i8     m_nSize;       // size of str
+    i8     m_nSize;       // size of str area
     char   m_caStr[1];    // str area
 
     // m_xFooter which is :
