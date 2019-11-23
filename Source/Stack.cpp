@@ -70,7 +70,6 @@ Stack::Stack(eKK eKind)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  //m_xHazard.vAssertFooter();
   _hazard_();
 }
 
@@ -170,7 +169,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
 void Stack::vDiscard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  //m_xHazard.vAssertFooter();
+
   _hazard_();
   
   StkVal* aValue = reinterpret_cast<StkVal*>(m_aTop);
@@ -179,7 +178,6 @@ void Stack::vDiscard(void)
   vPopBy(iSize);
   m_nValues--;
   
-  //m_xHazard.vAssertFooter();
   _hazard_();
 }
 
@@ -807,11 +805,8 @@ bool Stack::bPopString(String* pString)
   vPopBy(iSize);
   m_nValues--;
   
-  //m_xHazard.vAssertFooter();
   _hazard_();
 
-  
-  
   return true;
 }
 
@@ -1133,7 +1128,7 @@ i8 Stack::nValues(void)
 void Stack::vPopLocal(Local* aLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  //m_xHazard.vAssertFooter();
+
   _hazard_();
   
   i8 iSize = aTopVal()->nSize();
@@ -1142,7 +1137,6 @@ void Stack::vPopLocal(Local* aLocal)
   vPopBy(iSize);
   m_nValues--;
   
-  //m_xHazard.vAssertFooter();
   _hazard_();
 }
 
@@ -1152,7 +1146,7 @@ void Stack::vPopLocal(Local* aLocal)
 void Stack::vPopVal(StkVal* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  //m_xHazard.vAssertFooter();
+
   _hazard_();
   
   i8 iSize = aTopVal()->nSize();
@@ -1161,7 +1155,6 @@ void Stack::vPopVal(StkVal* aValue)
   vPopBy(iSize);
   m_nValues--;
   
-  //m_xHazard.vAssertFooter();
   _hazard_();
 }
 
