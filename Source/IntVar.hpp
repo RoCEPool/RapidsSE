@@ -5,10 +5,9 @@
 
 namespace SenVM
 {
-  class IntVar
+  class IntVar : public SenVar
   {
   private:
-    _Header m_xHeader;
     i8      m_iInt;
 
   public:

@@ -5,10 +5,9 @@
 
 namespace SenVM
 {
-  class PtrVar
+  class PtrVar : public SenVar
   {
   private:
-    _Header m_xHeader;
     Object* m_pObj;
  
   public:

@@ -5,10 +5,9 @@
 
 namespace SenVM
 {
-  class FipVar
+  class FipVar : public SenVar
   {
   private:
-    _Header m_xHeader;
     Cell*   m_aFip;
 
   public:

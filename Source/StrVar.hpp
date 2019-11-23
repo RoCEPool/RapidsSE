@@ -5,10 +5,9 @@
 
 namespace SenVM
 {
-  class StrVar
+  class StrVar : public SenVar
   {
   private:
-    _Header m_xHeader;
     i8      m_nBytesFollowing;
     char    m_caStr[C_48K];
 
