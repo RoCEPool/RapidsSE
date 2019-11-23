@@ -30,6 +30,7 @@ namespace SenVM
 #include "LocalChain.hpp"
 #include "Routine.hpp"
 #include "Stack.hpp"
+
 #include "Compiler.hpp"
 #include "Forth.hpp"
 #include "Word.hpp"
