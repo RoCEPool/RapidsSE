@@ -15,6 +15,8 @@ namespace SenVM
     } xNestedValue;
   
     union {
+      SenVar  m_xSenVar;
+      
       FipVar  m_xFipVar;
       IntVar  m_xIntVar;
       PtrVar  m_xPtrVar;
