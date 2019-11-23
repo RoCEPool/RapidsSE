@@ -14,9 +14,10 @@ namespace SenVM
       char         m_caStr[C_MAX_VCH2];
     } xNestedValue;
   
+      FipVar  m_xFipVar;
       IntVar  m_xIntVar;
       PtrVar  m_xPtrVar;
-//      s48K    m_sStrVal;
+      s48K    m_sStrVar;
   
     // must be last
     Footer m_xFooter;
