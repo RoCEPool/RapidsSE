@@ -14,13 +14,13 @@ namespace SenVM
   friend class Steps::Step;
 
   private:
-    eKK    m_eKind; // kind of stack
+    eKK     m_eKind;        // kind of stack
   
-    StkVal* m_aTop;   // current top of stack
-    i8     m_nValues;     // number of values currently on stack
+    StkVal* m_aTop;         // current top of stack
+    i8      m_nValues;      // number of values currently on stack
 
     StkVal* m_aRetryTop;    // reset to this top of stack
-    i8     m_nRetryValues; // reset with this many values on stack
+    i8      m_nRetryValues; // reset with this many values on stack
     
     Footer m_xHazard;
     
@@ -48,8 +48,8 @@ namespace SenVM
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    StkVal* aPeekValue(i8 i_Value);
-    void vPeekValue(i8 i_Value, GenVar& xGenVar);
+    StkVal* aPeekVal(i8 i_Val);
+    void vPeekValue(i8 i_Val, GenVar& xGenVar);
     bool bPeekZero(void);
   
     bool bPopCell(Cell*& aCell);

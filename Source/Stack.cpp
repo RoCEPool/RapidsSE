@@ -107,9 +107,9 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
   GenVar xVariable;
   
   i8 nValues = this->nValues();
-  for (i8 iVal = 0; iVal < nValues; iVal++) {
+  for (i8 i_Val = 0; i_Val < nValues; i_Val++) {
     
-    vPeekValue(iVal,xVariable);
+    vPeekValue(i_Val,xVariable);
     
     StkVal* aNestedValue = xVariable.aNestedValue();
     eCN eClass = aNestedValue->eClass();
@@ -123,7 +123,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
 
 
         vTrace("[%2lld] [%s] %p word %s \n"_Stz,
-               iVal,aCN[eClass],aFip,
+               i_Val,aCN[eClass],aFip,
                pWord ? pWord->szWordNm() : "<none>"_Stz);
         break;
       }
@@ -132,7 +132,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
         IntVal *aIntVal = _aIntVal(aNestedValue); //xVariable.iInt();
         i8 iInt = aIntVal->iInt();
         vTrace("[%2lld] [%s] %lld\n"_Stz,
-               iVal,aCN[eClass],iInt);
+               i_Val,aCN[eClass],iInt);
         break;
       }
         
@@ -141,20 +141,20 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
         Object* pObject = aPtrVal->pObj();
         eCN ePtdClass   = pObject->eClass();
         vTrace("[%2lld] [%s] %p (%s)\n"_Stz,
-               iVal,aCN[eClass],pObject,aCN[ePtdClass]);
+               i_Val,aCN[eClass],pObject,aCN[ePtdClass]);
         break;
       }
         
       case CN_STRVAL: {
         StrVal* aStrVal = _aStrVal(aNestedValue);
         vTrace("[%2lld] [%s] %s\n"_Stz,
-               iVal,aCN[eClass],aStrVal->azChar());
+               i_Val,aCN[eClass],aStrVal->azChar());
         break;
       }
         
       default: {
         vTrace("[%2lld] [%s]\n"_Stz,
-               iVal,aCN[eClass]);
+               i_Val,aCN[eClass]);
         break;
       }
         
@@ -177,6 +177,7 @@ void Stack::vDiscard(void)
   i8 iSize = aValue->nSize();
   
   vPopBy(iSize);
+  
   m_nValues--;
   
   _hazard_();
@@ -205,7 +206,7 @@ bool Stack::bGuard(eCN eClass0)
   if (nValues() < 1)
     return false;
   
-  StkVal* aValue0 = aPeekValue(0);
+  StkVal* aValue0 = aPeekVal(0);
   if (eClass0 != aValue0->eClass())
     return false;
   
@@ -222,11 +223,11 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1)
   if (nValues() < 2)
     return false;
   
-  StkVal* aValue0 = aPeekValue(0);
+  StkVal* aValue0 = aPeekVal(0);
   if (eClass0 != aValue0->eClass())
     return false;
   
-  StkVal* aValue1 = aPeekValue(1);
+  StkVal* aValue1 = aPeekVal(1);
   if (eClass1 != aValue1->eClass())
     return false;
   
@@ -243,15 +244,15 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
   if (nValues() < 3)
     return false;
   
-  StkVal* aValue0 = aPeekValue(0);
+  StkVal* aValue0 = aPeekVal(0);
   if (eClass0 != aValue0->eClass())
     return false;
   
-  StkVal* aValue1 = aPeekValue(1);
+  StkVal* aValue1 = aPeekVal(1);
   if (eClass1 != aValue1->eClass())
     return false;
   
-  StkVal* aValue2 = aPeekValue(2);
+  StkVal* aValue2 = aPeekVal(2);
   if (eClass2 != aValue2->eClass())
     return false;
   
@@ -261,12 +262,12 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on value stack                                         */
 /*----------------------------------------------------------------------------*/
-StkVal* Stack::aPeekValue(i8 i_Value)
+StkVal* Stack::aPeekVal(i8 i_Val)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   StkVal* aValue = aTopVal();
-  while (i_Value--) {
+  while (i_Val--) {
     char* aAddress = reinterpret_cast<char*>(aValue);
     i8 iSize = aValue->nSize();
     aAddress += iSize;
@@ -279,11 +280,11 @@ StkVal* Stack::aPeekValue(i8 i_Value)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on value stack                                         */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekValue(i8 i_Value, GenVar& xVariable)
+void Stack::vPeekValue(i8 i_Val, GenVar& xVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aPeekedValue = aPeekValue(i_Value);
+  StkVal* aPeekedValue = aPeekVal(i_Val);
   
   i8 iSize = aPeekedValue->nSize();
   
@@ -802,9 +803,7 @@ bool Stack::bPopString(String* pString)
   
   pString->vCopy(aStrVal->szStz());
   
-  i8 iSize = aTopVal()->nSize();
-  vPopBy(iSize);
-  m_nValues--;
+  vDiscard();
   
   _hazard_();
 
@@ -884,13 +883,13 @@ i8 Stack::iPop(void)
 /*----------------------------------------------------------------------------*/
 /* poke given value into value stack                                          */
 /*----------------------------------------------------------------------------*/
-void Stack::vPokeGenVar(i8 i_Value, GenVar& xGenVar)
+void Stack::vPokeGenVar(i8 i_Val, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   i8 iSize = xGenVar.aNestedValue()->nSize();
   
-  StkVal* aPokeAddress = aPeekValue(i_Value);
+  StkVal* aPokeAddress = aPeekVal(i_Val);
   
   MemLib::vCopy(aPokeAddress,xGenVar.aNestedValue(),iSize,CN_STACK);
 }
