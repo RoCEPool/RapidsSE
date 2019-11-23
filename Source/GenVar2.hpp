@@ -15,7 +15,7 @@ namespace SenVM
     } xNestedValue;
   
       IntVar  m_xIntVar;
-//      PtrVal  m_xPtrVal;
+      PtrVar  m_xPtrVar;
 //      s48K    m_sStrVal;
   
     // must be last

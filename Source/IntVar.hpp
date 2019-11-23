@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IntVar.hpp - integer value                                                 */
+/* IntVar.hpp - integer sen variable                                          */
 /*============================================================================*/
 #pragma once
 
@@ -21,7 +21,7 @@ namespace SenVM
   
     i8   iInt(void);
     i8   nSize(void);
-    void vToString(Stz* aWorkspace);
+    void vToString(Stz* szStz);
   
   private:
     Footer* aFooter(void);

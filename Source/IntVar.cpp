@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IntVar.cpp - Integer Sen Value                                             */
+/* IntVar.cpp - Integer Sen Variable                                          */
 /*============================================================================*/
 
 #include "SenVM.h"
@@ -22,6 +22,8 @@ IntVar::IntVar(void)
 : Object(CN_INTVAR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTVAR,_FOOTER_);
+  
+  m_iInt = 0;
   
   _checkInitialised_(CN_INTVAR);
   
