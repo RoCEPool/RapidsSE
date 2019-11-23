@@ -311,6 +311,7 @@ pDUMPFUN *gpDump[]
   /* 13 */ &Dump::vInvalid,         // CN_STMT_SELECT
   /* 13 */ &Dump::vInvalid,         // CN_STREAMDEF
   /* 13 */ &Dump::vInvalid,         // CN_STRING_T
+  /* 13 */ &Dump::vInvalid,         // CN_STRVAR
   /*    */ &Dump::vInvalid,         // CN_SUPERAGGOP
   /*    */ &Dump::vInvalid,         // CN_SUPERCOUNTOP
   /*    */ &Dump::vInvalid,         // CN_SUPERMERGEOP
@@ -453,7 +454,7 @@ i8 giClassSize[]
   /*    */ sizeof(Filter_SubQry),      // CN_FILTER_SUBQRY
   /*    */ sizeof(Filter_Where),       // CN_FILTER_WHERE
   /*    */ sizeof(Filter_Zed),         // CN_FILTER_ZED
-  /*    */ sizeof(GenVar),             // CN_FIPVAR
+  /*    */ sizeof(FipVar),             // CN_FIPVAR
   /*    */ sizeof(FocalObjects),       // CN_FOCALOBJECTS
   /*    */ sizeof(Forth),              // CN_FORTH
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
@@ -485,7 +486,7 @@ i8 giClassSize[]
   /*    */ sizeof(InsertOp),           // CN_INSERTOP
   /*    */ sizeof(IntBuffer),          // CN_INTBUFFER
   /*    */ sizeof(IntersectOp),        // CN_INTERSECTOP
-  /*    */ sizeof(GenVar),             // CN_INTVAR
+  /*    */ sizeof(IntVar),             // CN_INTVAR
   /*    */ sizeof(IoChunk),            // CN_IOCHUNK
   /*    */ sizeof(IoCopy),             // CN_IOCOPY
   /*    */ sizeof(IrwBuffer),          // CN_IRWBUFFER
@@ -572,7 +573,7 @@ i8 giClassSize[]
   /* 91 */ sizeof(ProjectOp),          // CN_PROJECTOP
   /* 89 */ sizeof(PsxThd),             // CN_PSXTHD
   /* 94 */ sizeof(PtnColVec),          // CN_PTNCOLVEC
-  /*    */ sizeof(GenVar),             // CN_PTRVAR
+  /*    */ sizeof(PtrVar),             // CN_PTRVAR
 
   /* 95 */ sizeof(Queue),              // CN_QUEUE
   /* 96 */ sizeof(QueueBuffer),        // CN_QUEUEBUFFER
@@ -657,6 +658,7 @@ i8 giClassSize[]
   /*128 */ sizeof(Stmt_Select),        // CN_STMT_SELECT
   /* 13 */ sizeof(StreamDef),          // CN_STREAMDEF
   /* 13 */ sizeof(s32),                // CN_STRING_T
+  /* 13 */ sizeof(StrVar),             // CN_STRVAR
   /*    */ sizeof(SuperAggOp),         // CN_SUPERAGGOP
   /*    */ sizeof(SuperCountOp),       // CN_SUPERCOUNTOP
   /*    */ sizeof(SuperMergeOp),       // CN_SUPERMERGEOP
@@ -1005,7 +1007,8 @@ eHT geWhichHeap[]
   /*128 */ HT_TRANSIENT_LARGE,   // CN_STMT_SELECT
   /*128 */ HT_TRANSIENT_LARGE,   // CN_STREAMDEF
   /* 13 */ HT_INVALID,           // CN_STRING_T
-  /*    */ HT_TRANSIENT_SMALL,   // CN_SUPERAGGOP
+  /* 13 */ HT_INVALID,           // CN_STRVAR
+ /*    */ HT_TRANSIENT_SMALL,   // CN_SUPERAGGOP
   /*    */ HT_TRANSIENT_SMALL,   // CN_SUPERCOUNTOP
   /*    */ HT_TRANSIENT_SMALL,   // CN_SUPERMERGEOP
   /*129 */ HT_INVALID,           // CN_SYSCALL

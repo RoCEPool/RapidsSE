@@ -23,6 +23,7 @@ namespace SenVM
 #include "PtrVal.hpp"
 #include "PtrVar.hpp"
 #include "StrVal.hpp"
+#include "StrVar.hpp"
 
 #include "Cell.hpp"
 #include "Dic.hpp"
