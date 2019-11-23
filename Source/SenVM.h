@@ -18,6 +18,7 @@ namespace SenVM
 
 #include "FipVal.hpp"
 #include "IntVal.hpp"
+#include "IntVar.hpp"
 #include "PtrVal.hpp"
 #include "StrVal.hpp"
 
