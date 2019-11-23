@@ -106,6 +106,7 @@ pDUMPFUN *gpDump[]
   /* 31 */ &Dump::vDummy,           // CN_FILTER_SUBQRY
   /* 31 */ &Dump::vDummy,           // CN_FILTER_WHERE
   /* 31 */ &Dump::vDummy,           // CN_FILTER_ZED
+  /*    */ &Dump::vDummy,           // CN_FIPVAR
   /* 31 */ &Dump::vDummy,           // CN_FOCALOBJECTS
   /* 31 */ &Dump::vDummy,           // CN_FORTH
   /* 40 */ &Dump::vDummy,           // CN_FORMATTERS
@@ -138,6 +139,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_INSERTOP
   /*    */ &Dump::vDummy,           // CN_INTBUFFER
   /*    */ &Dump::vDummy,           // CN_INTERSECTOP
+  /*    */ &Dump::vDummy,           // CN_INTVAR
   /*    */ &Dump::vDummy,           // CN_IOCHUNK
   /*    */ &Dump::vDummy,           // CN_IOCOPY
   /*    */ &Dump::vDummy,           // CN_IRWBUFFER
@@ -224,7 +226,8 @@ pDUMPFUN *gpDump[]
   /* 90 */ &Dump::vUndefined,       // CN_PROJECTOP
   /* 91 */ &Dump::vUndefined,       // CN_PSXTHD
   /* 94 */ &Dump::vDummy,           // CN_PTNCOLVEC
-  
+  /*    */ &Dump::vDummy,           // CN_PTRVAR
+
   /* 95 */ &Queue::vDump,           // CN_QUEUE
   /* 96 */ &QueueBuffer::vDump,     // CN_QUEUEBUFFER
   /*    */ &Dump::vUndefined,       // CN_QUEUES
@@ -424,7 +427,7 @@ i8 giClassSize[]
   /*    */ sizeof(EarlyMarker),        // CN_EARLYMARKER
   /*    */ sizeof(Encoding),           // CN_ENCODING
   /*    */ sizeof(EndMarker),          // CN_ENDMARKER
-  /*    */ sizeof(EnameSet),             // CN_ENMSET
+  /*    */ sizeof(EnameSet),           // CN_ENMSET
   /* 36 */ sizeof(Ent),                // CN_ENT
   /* 37 */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* 64 */ sizeof(EntWrk),             // CN_ENTWRK
@@ -450,8 +453,9 @@ i8 giClassSize[]
   /*    */ sizeof(Filter_SubQry),      // CN_FILTER_SUBQRY
   /*    */ sizeof(Filter_Where),       // CN_FILTER_WHERE
   /*    */ sizeof(Filter_Zed),         // CN_FILTER_ZED
+  /*    */ sizeof(GenVar),             // CN_FIPVAR
   /*    */ sizeof(FocalObjects),       // CN_FOCALOBJECTS
-  /*    */ sizeof(Forth),         // CN_FORTH
+  /*    */ sizeof(Forth),              // CN_FORTH
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
   /* 41 */ sizeof(PoolBuffer),         // CN_FREEBUFFER
   /* 42 */ sizeof(FreeChunk),          // CN_FREECHUNK
@@ -481,6 +485,7 @@ i8 giClassSize[]
   /*    */ sizeof(InsertOp),           // CN_INSERTOP
   /*    */ sizeof(IntBuffer),          // CN_INTBUFFER
   /*    */ sizeof(IntersectOp),        // CN_INTERSECTOP
+  /*    */ sizeof(GenVar),             // CN_INTVAR
   /*    */ sizeof(IoChunk),            // CN_IOCHUNK
   /*    */ sizeof(IoCopy),             // CN_IOCOPY
   /*    */ sizeof(IrwBuffer),          // CN_IRWBUFFER
@@ -559,15 +564,16 @@ i8 giClassSize[]
   /*    */ sizeof(Peruse),             // CN_PERUSE
   /*    */ sizeof(Fifo),               // CN_PIPE
   /* 34 */ sizeof(Pipeline),           // CN_PIPELINE
-  /*    */ sizeof(PipelineSpec),        // CN_PIPELINESPEC
+  /*    */ sizeof(PipelineSpec),       // CN_PIPELINESPEC
   /* 86 */ sizeof(Plan),               // CN_PLAN
   /* 87 */ sizeof(Planner),            // CN_PLANNER
   /* 90 */ sizeof(Predicate),          // CN_PREDICATE
   /* 91 */ sizeof(PredicateVec),       // CN_PREDICATEVEC
   /* 91 */ sizeof(ProjectOp),          // CN_PROJECTOP
-  /* 89 */ sizeof(PsxThd),            // CN_PSXTHD
+  /* 89 */ sizeof(PsxThd),             // CN_PSXTHD
   /* 94 */ sizeof(PtnColVec),          // CN_PTNCOLVEC
-  
+  /*    */ sizeof(GenVar),             // CN_PTRVAR
+
   /* 95 */ sizeof(Queue),              // CN_QUEUE
   /* 96 */ sizeof(QueueBuffer),        // CN_QUEUEBUFFER
   /*    */ sizeof(Queues),             // CN_QUEUES
@@ -793,6 +799,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_SUBQRY
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_WHERE
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_ZED
+  /*    */ HT_INVALID,           // CN_FIPVAR
   /* 40 */ HT_TRANSIENT_LARGE,   // CN_FOCALOBJECTS
   /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORTH
   /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS
@@ -824,6 +831,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_INSERTOP
   /*    */ HT_TRANSIENT_LARGE,   // CN_INTBUFFER
   /*    */ HT_TRANSIENT_SMALL,   // CN_INTERSECTOP
+  /*    */ HT_INVALID,           // CN_INTVAR
   /*    */ HT_TRANSIENT_LARGE,   // CN_IOCHUNK
   /*    */ HT_TRANSIENT_SMALL,   // CN_IOCOPY
   /*    */ HT_TRANSIENT_LARGE,   // CN_IRWBUFFER
@@ -912,6 +920,7 @@ eHT geWhichHeap[]
   /* 90 */ HT_TRANSIENT_SMALL,   // CN_PROJECTOP
   /* 91 */ HT_TRANSIENT_SMALL,   // CN_PSXTHD
   /* 94 */ HT_TRANSIENT_MEDIUM,  // CN_PTNCOLVEC
+  /*    */ HT_INVALID,           // CN_PTRVAR
 
   /* 95 */ HT_TRANSIENT_SMALL,   // CN_QUEUE
   /* 96 */ HT_INVALID,           // CN_QUEUEBUFFER

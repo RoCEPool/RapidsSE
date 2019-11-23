@@ -105,6 +105,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_FILTER_SUBQRY,
   /*                           */ CN_FILTER_WHERE,
   /*                           */ CN_FILTER_ZED,
+  /*                           */ CN_FIPVAR,
   /*                           */ CN_FOCALOBJECTS,
   /*                           */ CN_FORTH,
   /*  37 0x25       48B Heap:S */ CN_FORMATTERS,
@@ -136,6 +137,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_INSERTOP,
   /*                           */ CN_INTBUFFER,
   /*                           */ CN_INTERSECTOP,
+  /*                           */ CN_INTVAR,
   /*  51 0x33  1000440B Heap:L */ CN_IOCHUNK,
   /*  52 0x34       32B Heap:S */ CN_IOCOPY,
   /*                           */ CN_IRWBUFFER,
@@ -220,7 +222,8 @@ enum eCN : u2 // Class Number
   /*                           */ CN_PROJECTOP,
   /* 166 0xA6       32B Heap:S */ CN_PSXTHD,
   /* 167 0xA7     8216B Heap:M */ CN_PTNCOLVEC,
-  
+  /*                           */ CN_PTRVAR,
+
   /* 168 0xA8      168B Heap:S */ CN_QUEUE,
   /* 169 0xA9       64B Heap:I */ CN_QUEUEBUFFER,
   /* 170 0xAA     1232B Heap:S */ CN_QUEUES,
@@ -446,8 +449,9 @@ static Stz* aCN[]
   /*          */ "FILTER_SUBQRY"_Stz,       // CN_FILTER_SUBQRY
   /*          */ "FILTER_WHERE"_Stz,        // CN_FILTER_WHERE
   /*          */ "FILTER_ZED"_Stz,          // CN_FILTER_ZED
+  /*          */ "FIPVAR"_Stz,              // CN_FIPVAR
   /*          */ "FOCALOBJECTS"_Stz,        // CN_FOCALOBJECTS
-  /*          */ "Forth"_Stz,          // CN_FORTH
+  /*          */ "FORTH"_Stz,               // CN_FORTH
   /*  37 0x25 */ "FORMATTERS"_Stz,          // CN_FORMATTERS
   /*  38 0x26 */ "FREEBUFFER"_Stz,          // CN_FREEBUFFER
   /*  39 0x27 */ "FREECHUNK"_Stz,           // CN_FREECHUNK
@@ -477,6 +481,7 @@ static Stz* aCN[]
   /*          */ "INSERTOP"_Stz,            // CN_INSERTOP
   /*          */ "INTBUFFER"_Stz,           // CN_INTBUFFER
   /*          */ "INTERSECTOP"_Stz,         // CN_INTERSECTOP
+  /*          */ "INTVAR"_Stz,              // CN_INTVAR
   /*  51 0x33 */ "IOCHUNK"_Stz,             // CN_IOCHUNK
   /*  52 0x34 */ "IOCOPY"_Stz,              // CN_IOCOPY
   /*          */ "IRWBUFFER"_Stz,           // CN_IRWBUFFER
@@ -561,7 +566,8 @@ static Stz* aCN[]
   /*          */ "PROJECTOP"_Stz,           // CN_PROJECTOP
   /* 166 0xA6 */ "PSXTHD"_Stz,              // CN_PSXTHD
   /* 167 0xA7 */ "PTNCOLVEC"_Stz,           // CN_PTNCOLVEC
-  
+  /*          */ "PTRVAR"_Stz,              // CN_PTRVAR
+
   /* 168 0xA8 */ "QUEUE"_Stz,               // CN_QUEUE
   /* 169 0xA9 */ "QUEUEBUFFER"_Stz,         // CN_QUEUEBUFFER
   /* 170 0xAA */ "QUEUES"_Stz,              // CN_QUEUES
