@@ -16,7 +16,7 @@ namespace SenVM
     void operator =(Cell* aCell);
     
     Cell* aFipPtr(void);
-    i8    nSize(void);
+    i8    nStackBytes(void);
     void  vToString(Stz* szStz);
   };
 }

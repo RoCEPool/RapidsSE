@@ -64,7 +64,7 @@ char* StrVal::azChar(void)
 /*----------------------------------------------------------------------------*/
 /* get size of this StrVal in bytes                                           */
 /*----------------------------------------------------------------------------*/
-i8 StrVal::nSize(void)
+i8 StrVal::nStackBytes(void)
 {
   i8 nBytes = sizeof(StrVal)
                 - sizeof(m_caStr)

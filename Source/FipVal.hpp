@@ -18,8 +18,8 @@ namespace SenVM
     void operator =(Cell* aCell);
     
     Cell* aFipPtr(void);
-    i8   nSize(void);
-    void vToString(Stz* aWorkspace);
+    i8    nStackBytes(void);
+    void  vToString(Stz* aWorkspace);
   };
   
   FipVal* _aFipVal(void* aAddr);

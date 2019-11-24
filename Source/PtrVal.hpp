@@ -17,7 +17,7 @@ namespace SenVM
     
     void operator =(Object* pObject);
  
-    i8      nSize(void) const;
+    i8      nStackBytes(void) const;
     Object* pObj(void) const;
     i8      iAsInt(void);
   

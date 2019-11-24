@@ -38,7 +38,7 @@ Cell* FipVar::aFipPtr(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 FipVar::nSize(void)
+i8 FipVar::nStackBytes(void)
 {
   ASSERT(CN_FIPVAR == eClass());
   return sizeof(FipVar);

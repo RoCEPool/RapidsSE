@@ -62,7 +62,7 @@ Cell* FipVal::aFipPtr(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 FipVal::nSize(void)
+i8 FipVal::nStackBytes(void)
 {
   return sizeof(FipVal);
 }

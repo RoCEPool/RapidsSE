@@ -59,7 +59,7 @@ i8 PtrVal::iAsInt(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 PtrVal::nSize(void) const
+i8 PtrVal::nStackBytes(void) const
 {
   return sizeof(PtrVal);
 }

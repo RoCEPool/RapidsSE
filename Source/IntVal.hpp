@@ -18,7 +18,7 @@ namespace SenVM
     void operator =(i8 iVal);
     
     i8   iInt(void) const;
-    i8   nSize(void) const;
+    i8   nStackBytes(void) const;
     void vToString(Stz* aWorkspace);
   };
   

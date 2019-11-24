@@ -578,7 +578,7 @@ void Step::vSee(void)
         vTrace(" %s\n"_Stz,sString.azChar());
       }
       
-      i8 iBytes = aValue->nSize();
+      i8 iBytes = aValue->nStackBytes();
       aDoesCell = aAdd<Cell*>(aDoesCell,iBytes);
       
       continue;

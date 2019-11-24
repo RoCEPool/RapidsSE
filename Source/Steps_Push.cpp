@@ -73,7 +73,7 @@ void Step::vPushValue(void)
   
   m_pDataStack->vPushValue(aValue);
   
-  m_pTask->vAdjustFIP(aValue->nSize());
+  m_pTask->vAdjustFIP(aValue->nStackBytes());
   
   EXIT();
 }

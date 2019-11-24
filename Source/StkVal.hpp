@@ -15,7 +15,7 @@ namespace SenVM
     StkVal(eCN eClass);
   
     eCN  eClass(void);
-    i8   nSize(void);
+    i8   nStackBytes(void);
     void vToString(Stz* aString);
   };
 }

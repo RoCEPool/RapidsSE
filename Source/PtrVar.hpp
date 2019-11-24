@@ -17,7 +17,7 @@ namespace SenVM
  
     i8      iAsInt(void);
     Object* pObj(void);
-    i8      nSize(void);
+    i8      nStackBytes(void);
     void    vToString(Stz* szStz);
   };
 }

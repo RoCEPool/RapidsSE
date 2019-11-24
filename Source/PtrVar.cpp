@@ -48,7 +48,7 @@ Object* PtrVar::pObj(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 PtrVar::nSize(void)
+i8 PtrVar::nStackBytes(void)
 {
   ASSERT(CN_PTRVAR == eClass());
 

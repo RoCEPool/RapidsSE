@@ -174,7 +174,7 @@ void Stack::vDiscard(void)
   
   StkVal* aValue = reinterpret_cast<StkVal*>(m_aTop);
   
-  i8 iSize = aValue->nSize();
+  i8 iSize = aValue->nStackBytes();
   
   vPopBy(iSize);
   
@@ -269,7 +269,7 @@ StkVal* Stack::aPeekVal(i8 i_Val)
   StkVal* aValue = aTopVal();
   while (i_Val--) {
     char* aAddress = reinterpret_cast<char*>(aValue);
-    i8 iSize = aValue->nSize();
+    i8 iSize = aValue->nStackBytes();
     aAddress += iSize;
     aValue = reinterpret_cast<StkVal*>(aAddress);
   }
@@ -286,7 +286,7 @@ void Stack::vPeekValue(i8 i_Val, GenVar& xVariable)
   
   StkVal* aPeekedValue = aPeekVal(i_Val);
   
-  i8 iSize = aPeekedValue->nSize();
+  i8 iSize = aPeekedValue->nStackBytes();
   
   //vTrace("Peek: %lld %p %lld\n"_Stz,iNthValue,pPeekedValue,iSize);
   
@@ -887,7 +887,7 @@ void Stack::vPokeGenVar(i8 i_Val, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  i8 iSize = xGenVar.aNestedValue()->nSize();
+  i8 iSize = xGenVar.aNestedValue()->nStackBytes();
   
   StkVal* aPokeAddress = aPeekVal(i_Val);
   
@@ -1131,7 +1131,7 @@ void Stack::vPopLocal(Local* aLocal)
 
   _hazard_();
   
-  i8 iSize = aTopVal()->nSize();
+  i8 iSize = aTopVal()->nStackBytes();
   
   MemLib::vCopy(aLocal->aLocalValue(),m_aTop,iSize,CN_STACK);
   vPopBy(iSize);
@@ -1149,7 +1149,7 @@ void Stack::vPopVal(StkVal* aValue)
 
   _hazard_();
   
-  i8 iSize = aTopVal()->nSize();
+  i8 iSize = aTopVal()->nStackBytes();
   
   MemLib::vCopy(aValue,m_aTop,iSize,CN_STACK);
   vPopBy(iSize);
@@ -1177,18 +1177,18 @@ void Stack::vPushBy(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushVal(StkVal* aValue)
+void Stack::vPushVal(StkVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
   _hazard_();
   
-  ASSERT(CN_GENVAR != aValue->eClass());
+  ASSERT(CN_GENVAR != aStkVal->eClass());
   
-  i8 iSize = aValue->nSize();
+  i8 iSize = aStkVal->nStackBytes();
   
   vPushBy(iSize);
-  MemLib::vCopy(m_aTop,aValue,iSize,CN_STACK);
+  MemLib::vCopy(m_aTop,aStkVal,iSize,CN_STACK);
   m_nValues++;
   
  _hazard_();

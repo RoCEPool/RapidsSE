@@ -277,7 +277,7 @@ void* Word::aAppend(StkVal* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  i8 iSize = aValue->nSize();
+  i8 iSize = aValue->nStackBytes();
   
   char* aValueAddress = (char*)ayAllot(iSize);
   

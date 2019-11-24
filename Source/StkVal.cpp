@@ -43,7 +43,7 @@ eCN StkVal::eClass(void)
 /*----------------------------------------------------------------------------*/
 /* get size (in bytes) of value                                               */
 /*----------------------------------------------------------------------------*/
-i8 StkVal::nSize(void)
+i8 StkVal::nStackBytes(void)
 {
   i8 nBytes = 0;
   
@@ -53,30 +53,30 @@ i8 StkVal::nSize(void)
       
     case CN_INTVAL: {
       IntVal* aIntVal = _aIntVal(this);
-      nBytes = aIntVal->nSize();
+      nBytes = aIntVal->nStackBytes();
       break;
     }
       
     case CN_FIPVAL: {
       FipVal* aFipVal = _aFipVal(this);
-      nBytes = aFipVal->nSize();
+      nBytes = aFipVal->nStackBytes();
       break;
     }
       
     case CN_PTRVAL: {
       PtrVal* aPtrVal = _aPtrVal(this);
-      nBytes = aPtrVal->nSize();
+      nBytes = aPtrVal->nStackBytes();
       break;
     }
       
     case CN_STRVAL: {
       StrVal* aStrVal = _aStrVal(this);
-      nBytes = aStrVal->nSize();
+      nBytes = aStrVal->nStackBytes();
       break;
     }
       
     default:
-      vTrace("StkVal::nSize -- invalid eClass %lld %s\n"_Stz,
+      vTrace("StkVal::nStackBytes -- invalid eClass %lld %s\n"_Stz,
              eClassNo,aCN[eClassNo]);
       NEVER_REACH;
       break;

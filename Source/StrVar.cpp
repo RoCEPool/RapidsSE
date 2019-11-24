@@ -38,7 +38,7 @@ Stz* StrVar::szStz(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 StrVar::nSize(void)
+i8 StrVar::nStackBytes(void)
 {
   ASSERT(CN_STRVAR == eClass());
 

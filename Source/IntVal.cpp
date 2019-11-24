@@ -47,7 +47,7 @@ i8 IntVal::iInt(void) const
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 IntVal::nSize(void) const
+i8 IntVal::nStackBytes(void) const
 {
   return sizeof(IntVal);
 }
