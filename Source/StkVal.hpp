@@ -8,7 +8,7 @@ namespace SenVM
   class StkVal
   {
   protected:
-    Header m_xHeader;
+    _Header m_xHeader;
   
   public:
     void* operator new(size_t);
