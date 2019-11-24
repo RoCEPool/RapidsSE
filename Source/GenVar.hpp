@@ -29,10 +29,11 @@ namespace SenVM
     void operator =(Stz* szStz);
 
     char*   azChar(void);
+    eCN     eEmbeddedClass(void);
+    StkVal* aEmbeddedStkVal(void);
     Cell*   aFipPtr(void);
     i8      iInt(void);
     bool    bIsInt(void);
-    StkVal* aEmbeddedStkVal(void);
     Object* pObject(void);
     i8      nSize(void);
     Stz*    szStz(void);

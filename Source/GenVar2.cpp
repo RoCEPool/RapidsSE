@@ -174,6 +174,20 @@ i8 GenVar2::nSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get class of embedded sen variable                                         */
+/*----------------------------------------------------------------------------*/
+eCN GenVar2::eEmbeddedClass(void)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  SenVar* aSenVar = aEmbeddedSenVar();
+  
+  eCN eClassNo = aSenVar->eClass();
+  
+  return eClassNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address of the embedded sen variable                                   */
 /*----------------------------------------------------------------------------*/
 SenVar* GenVar2::aEmbeddedSenVar(void)

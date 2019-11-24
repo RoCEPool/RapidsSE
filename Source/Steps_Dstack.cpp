@@ -69,7 +69,7 @@ void Step::vDstackClass(void)
   
   m_pDataStack->vPeekValue(nTh,xVariable);
   
-  eCN eClass = xVariable.aEmbeddedStkVal()->eClass();
+  eCN eClass = xVariable.eEmbeddedClass();
   
   m_pDataStack->vPushI8(eClass);
   
