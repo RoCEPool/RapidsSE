@@ -262,7 +262,7 @@ void* Word::aAppend(GenVar* pGenVar)
 /*----------------------------------------------------------------------------*/
 /* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
-void Word::vAppend(SenVar* aSenVar)
+void* Word::aAppend(SenVar* aSenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -271,6 +271,19 @@ void Word::vAppend(SenVar* aSenVar)
   byte* ayDst = ayAllot(nBytes);
   
   MemLib::vCopy(ayDst,aSenVar,nBytes,CN_WORD);
+  
+  return ayDst;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append a value  (the entire value, not the pointer to it)                  */
+/*----------------------------------------------------------------------------*/
+void Word::vAppend(SenVar* aSenVar)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  void* aAddress = aAppend(aSenVar);
+  ASSERT(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/
