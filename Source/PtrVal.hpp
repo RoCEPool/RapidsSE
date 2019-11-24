@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* PtrVal.hpp - pointer value                                                 */
+/* PtrVal.hpp -- Layout of a Pointer to a Proper Object when on Stack         */
 /*============================================================================*/
 #pragma once
 

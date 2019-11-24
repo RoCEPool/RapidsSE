@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FipVal.hpp - Forth Instruction Pointer StkVal                          */
+/* FipVal.hpp -- Layout of a Forth Instruction Pointer when on Stack          */
 /*============================================================================*/
 #pragma once
 

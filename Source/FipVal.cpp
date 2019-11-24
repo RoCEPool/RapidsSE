@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FipVal.cpp - Forth Instruction Pointer StkVal                          */
+/* FipVal.cpp -- Layout of a Forth Instruction Pointer when on Stack          */
 /*============================================================================*/
 
 #include "SenVM.h"
