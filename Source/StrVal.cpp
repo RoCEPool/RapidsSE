@@ -73,7 +73,7 @@ Stz* StrVal::szStz(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get size of this StrVal in bytes                                           */
+/* get how many bytes are needed to push this StrVal on stack                 */
 /*----------------------------------------------------------------------------*/
 i8 StrVal::nStackBytes(void)
 {
@@ -87,9 +87,9 @@ i8 StrVal::nStackBytes(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void StrVal::vToString(Stz* szStz)
+void StrVal::vToString(Stz* szDst)
 {
-  StrLib::vCopy(szStz->azChar(),m_caStr);
+  StrLib::vCopy(szDst->azChar(),m_caStr);
 }
 
 /*============================================================================*/

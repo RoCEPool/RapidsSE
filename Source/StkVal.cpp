@@ -41,7 +41,7 @@ eCN StkVal::eClass(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size (in bytes) of value                                               */
+/* get how many bytes are needed to push a StkVal on stack                    */
 /*----------------------------------------------------------------------------*/
 i8 StkVal::nStackBytes(void)
 {

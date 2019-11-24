@@ -68,7 +68,7 @@ i8 PtrVal::iAsInt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size in bytes                                                          */
+/* get how many bytes are needed to push a FipVal on stack                    */
 /*----------------------------------------------------------------------------*/
 i8 PtrVal::nStackBytes(void)
 {
@@ -78,9 +78,9 @@ i8 PtrVal::nStackBytes(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void PtrVal::vToString(Stz* szStz)
+void PtrVal::vToString(Stz* szDst)
 {
-  * szStz = reinterpret_cast<void*>(m_pObj);
+  * szDst = reinterpret_cast<void*>(m_pObj);
 }
 
 /*============================================================================*/

@@ -60,7 +60,7 @@ Cell* FipVal::aFip(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size in bytes                                                          */
+/* get how many bytes are needed to push a FipVal on stack                    */
 /*----------------------------------------------------------------------------*/
 i8 FipVal::nStackBytes(void)
 {
@@ -70,9 +70,9 @@ i8 FipVal::nStackBytes(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void FipVal::vToString(Stz* szStz)
+void FipVal::vToString(Stz* szDst)
 {
-  * szStz = reinterpret_cast<void*>(m_aFip);
+  * szDst = reinterpret_cast<void*>(m_aFip);
 }
 
 /*============================================================================*/

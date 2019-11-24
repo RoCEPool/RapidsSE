@@ -15,11 +15,11 @@ namespace SenVM
     
     FipVal(void);
     
-    void  operator =(Cell* aCell);
+    void  operator =(Cell* aFip);
     Cell* aFip(void);
   
     i8    nStackBytes(void);
-    void  vToString(Stz* aWorkspace);
+    void  vToString(Stz* szDst);
   };
   
   FipVal* _aFipVal(void* aAddr);
