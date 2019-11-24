@@ -14,8 +14,8 @@ namespace SenVM
     void* operator new(size_t);
   
     void operator =(i8 iVal);
-  
     i8   iInt(void);
+  
     i8   nStackBytes(void);
     void vToString(Stz* szStz);
   };
