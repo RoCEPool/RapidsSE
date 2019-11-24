@@ -49,7 +49,7 @@ void Step::vSubsetNext(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSubsetNextBuffer(void)
 {
-  ENTRY("vSubsetNext"_Stz);
+  ENTRY(); // ENTRY("vSubsetNext"_Stz);
   
   Operand* pNextOperand = nullptr;
   

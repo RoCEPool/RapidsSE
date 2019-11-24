@@ -46,7 +46,7 @@ void Step::vOperandBide(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOperandHandleAggEnd(void)
 {
-  ENTRY("vOperandHandleAggEnd"_Stz);
+  ENTRY(); // ENTRY("vOperandHandleAggEnd"_Stz);
   
   ASSERT(m_pRegSet->m_pOperand);
   
@@ -169,7 +169,7 @@ void Step::vOperandIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOperandItemCountFetch(void)
 {
-  ENTRY("vOperandItemCountFetch"_Stz);
+  ENTRY(); // ENTRY("vOperandItemCountFetch"_Stz);
   
   ASSERT(m_pRegSet->m_pOperand);
   IrwBuffer* pIrwBuffer = _pIrwBuffer(m_pRegSet->m_pOperand);
@@ -293,7 +293,7 @@ void Step::vOperandPipeToJob(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOperandRowCountFetch(void)
 {
-  ENTRY("vOperandRowCountFetch"_Stz);
+  ENTRY(); // ENTRY("vOperandRowCountFetch"_Stz);
   
   ASSERT(m_pRegSet->m_pOperand);
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pRegSet->m_pOperand);
