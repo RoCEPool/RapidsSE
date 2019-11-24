@@ -20,9 +20,9 @@ namespace SenVM
   {
   private:
 
-    //union {
+    union {
       _NestedValue  m_xNstVal;
-    //} u;
+    } u;
 
     // must be last
     Footer m_xFooter;
