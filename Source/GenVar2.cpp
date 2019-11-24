@@ -152,7 +152,7 @@ bool GenVar2::bIsInt(void)
 /*----------------------------------------------------------------------------*/
 /* get object address from nested value                                       */
 /*----------------------------------------------------------------------------*/
-Object* GenVar2::pObject(void)
+Object* GenVar2::pObj(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   

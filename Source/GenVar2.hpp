@@ -36,7 +36,7 @@ namespace SenVM
     Cell*   aFip(void);
     i8      iInt(void);
     bool    bIsInt(void);
-    Object* pObject(void);
+    Object* pObj(void);
     i8      nSize(void);
     SenVar* aEmbeddedSenVar(void);
     Stz*    szStz(void);

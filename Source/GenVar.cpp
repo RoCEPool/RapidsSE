@@ -181,7 +181,7 @@ StkVal* GenVar::aEmbeddedStkVal(void)
 /*----------------------------------------------------------------------------*/
 /* get object address from nested value                                       */
 /*----------------------------------------------------------------------------*/
-Object* GenVar::pObject(void)
+Object* GenVar::pObj(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
