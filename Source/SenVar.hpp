@@ -5,10 +5,9 @@
 
 namespace SenVM
 {
-  class SenVar
+  class SenVar : public _Header
   {
   private:
-    _Header m_xHeader;
 
   public:
     void* operator new(size_t);
@@ -24,7 +23,7 @@ namespace SenVM
   /*--------------------------------------------------------------------------*/
   inline eCN eClass(void)
   {
-    return m_xHeader.eGetClass();
+  return _Header::eGetClass();
   }
 
   /*--------------------------------------------------------------------------*/
@@ -32,7 +31,7 @@ namespace SenVM
   /*--------------------------------------------------------------------------*/
   inline void vClass(eCN eClass)
   {
-    m_xHeader.vSetClass(eClass);
+    _Header::vSetClass(eClass);
   }
   
   };
