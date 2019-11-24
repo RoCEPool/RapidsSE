@@ -20,6 +20,8 @@ void* FipVar::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void FipVar::operator =(Cell* aCell)
 {
+  vClass(CN_FIPVAR);
+  
   m_aFip = aCell;
 }
 
@@ -28,6 +30,8 @@ void FipVar::operator =(Cell* aCell)
 /*----------------------------------------------------------------------------*/
 Cell* FipVar::aFipPtr(void)
 {
+  ASSERT(CN_FIPVAR == eClass());
+         
   return pPoolCheck<Cell*>(m_aFip);
 }
 
@@ -36,6 +40,7 @@ Cell* FipVar::aFipPtr(void)
 /*----------------------------------------------------------------------------*/
 i8 FipVar::nSize(void)
 {
+  ASSERT(CN_FIPVAR == eClass());
   return sizeof(FipVar);
 }
 
@@ -44,6 +49,8 @@ i8 FipVar::nSize(void)
 /*----------------------------------------------------------------------------*/
 void FipVar::vToString(Stz* szStz)
 {
+  ASSERT(CN_FIPVAR == eClass());
+
   * szStz = reinterpret_cast<void*>(m_aFip);
 }
 

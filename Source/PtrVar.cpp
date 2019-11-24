@@ -20,7 +20,8 @@ void* PtrVar::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void PtrVar::operator =(Object* pObject)
 {
-  
+  vClass(CN_PTRVAR);
+
   m_pObj = pObject;
 }
 
@@ -29,7 +30,8 @@ void PtrVar::operator =(Object* pObject)
 /*----------------------------------------------------------------------------*/
 i8 PtrVar::iAsInt(void)
 {
-  
+  ASSERT(CN_PTRVAR == eClass());
+
   return (i8)m_pObj;
 }
 
@@ -38,7 +40,8 @@ i8 PtrVar::iAsInt(void)
 /*----------------------------------------------------------------------------*/
 Object* PtrVar::pObj(void)
 {
-  
+  ASSERT(CN_PTRVAR == eClass());
+
   return pPoolCheck<Object*>(m_pObj);
 }
 
@@ -47,7 +50,8 @@ Object* PtrVar::pObj(void)
 /*----------------------------------------------------------------------------*/
 i8 PtrVar::nSize(void)
 {
-  
+  ASSERT(CN_PTRVAR == eClass());
+
   return sizeof(PtrVar);
 }
 
@@ -56,6 +60,7 @@ i8 PtrVar::nSize(void)
 /*----------------------------------------------------------------------------*/
 void PtrVar::vToString(Stz* szStz)
 {
+  ASSERT(CN_PTRVAR == eClass());
 
   * szStz = reinterpret_cast<void*>(m_pObj);
 }

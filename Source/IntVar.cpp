@@ -20,7 +20,8 @@ void* IntVar::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void IntVar::operator =(i8 iInt)
 {
-  
+  vClass(CN_INTVAR);
+
   m_iInt = iInt;
 }
 
@@ -29,7 +30,8 @@ void IntVar::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 i8 IntVar::iInt(void)
 {
-  
+  ASSERT(CN_INTVAR == eClass());
+
   return m_iInt;
 }
 
@@ -38,6 +40,7 @@ i8 IntVar::iInt(void)
 /*----------------------------------------------------------------------------*/
 i8 IntVar::nSize(void)
 {
+  ASSERT(CN_INTVAR == eClass());
   
   return sizeof(IntVar);
 }
@@ -47,7 +50,8 @@ i8 IntVar::nSize(void)
 /*----------------------------------------------------------------------------*/
 void IntVar::vToString(Stz* aWorkspace)
 {
-  
+  ASSERT(CN_INTVAR == eClass());
+
   if (C_DATUM_NULL == m_iInt) {
     aWorkspace->vConcat("null"_Stz);
     return;

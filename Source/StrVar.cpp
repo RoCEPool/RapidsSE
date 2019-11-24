@@ -20,7 +20,8 @@ void* StrVar::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void StrVar::operator =(Stz* szStz)
 {
-  
+  vClass(CN_STRVAR);
+
   StrLib::vCopyLen(m_caStr,(char*)szStz,sizeof(m_caStr)-1);
 }
 
@@ -29,7 +30,8 @@ void StrVar::operator =(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 Stz* StrVar::szStz(void)
 {
-  
+  ASSERT(CN_STRVAR == eClass());
+
   return (Stz*) m_caStr;
 }
 
@@ -38,7 +40,8 @@ Stz* StrVar::szStz(void)
 /*----------------------------------------------------------------------------*/
 i8 StrVar::nSize(void)
 {
-  
+  ASSERT(CN_STRVAR == eClass());
+
   return sizeof(StrVar);
 }
 
@@ -47,7 +50,8 @@ i8 StrVar::nSize(void)
 /*----------------------------------------------------------------------------*/
 void StrVar::vToString(Stz* szStz)
 {
-  
+  ASSERT(CN_STRVAR == eClass());
+
   StrLib::vCopy((char*)szStz,m_caStr);
 }
 

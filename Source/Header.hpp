@@ -17,6 +17,16 @@ namespace Correctness
     };
     eCN  m_eClass;
     bool m_bWordBody;
+  
+  /*--------------------------------------------------------------------------*/
+  /* set class                                                                */
+  /*--------------------------------------------------------------------------*/
+  inline void vSetClass(eCN eClass)
+  {
+    m_eClass = eClass;
+  }
+  
+
   };
   
   class Header

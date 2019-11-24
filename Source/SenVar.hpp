@@ -18,9 +18,17 @@ namespace SenVM
   /*--------------------------------------------------------------------------*/
   inline eCN eClass(void)
   {
-  return m_xHeader.m_eClass;
+    return m_xHeader.m_eClass;
   }
 
+  /*--------------------------------------------------------------------------*/
+  /* get class                                                                */
+  /*--------------------------------------------------------------------------*/
+  inline void vClass(eCN eClass)
+  {
+    m_xHeader.vSetClass(eClass);
+  }
+  
   };
 }
 

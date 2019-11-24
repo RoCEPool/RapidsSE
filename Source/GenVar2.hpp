@@ -8,12 +8,6 @@ namespace SenVM
   class GenVar2 : public Object
   {
   private:
-    struct {
-      Header       m_xHeader;
-      SingleWord   m_wWord;
-      char         m_caStr[C_MAX_VCH2];
-    } xNestedValue;
-  
     union {
       SenVar  m_xSenVar;
       
