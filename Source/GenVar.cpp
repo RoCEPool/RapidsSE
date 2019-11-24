@@ -61,10 +61,10 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Cell* aFipPtr)
+void GenVar::operator =(Cell* aFip)
 {
   u.m_xNstVal.m_xHeader.vClass(CN_FIPVAL);
-  u.m_xNstVal.m_wWord = (w8)aFipPtr;
+  u.m_xNstVal.m_wWord = (w8)aFip;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,12 +81,12 @@ void GenVar::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a pointer to a proper object into workspace                    */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Object* pObject)
+void GenVar::operator =(Object* pObj)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
   u.m_xNstVal.m_xHeader.vClass(CN_PTRVAL);
-  u.m_xNstVal.m_wWord = (w8)pObject;
+  u.m_xNstVal.m_wWord = (w8)pObj;
 }
 
 /*----------------------------------------------------------------------------*/
