@@ -39,7 +39,7 @@ GenVar::GenVar(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  m_xNstVal.m_xHeader.vSetMagic();
+  m_xNstVal.m_xHeader.vMagic();
   m_xNstVal.m_xHeader.vSetClass(CN_NONE);
   
   _postcondition_(_MAGIC_,CN_GENVAR,_FOOTER_);

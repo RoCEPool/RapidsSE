@@ -27,7 +27,7 @@ void HeapMem::vInit(void)
   PoolBuffer* pJumbo = nullptr;
   while ( (pJumbo = gpBufferPool->pNextJumbo(pJumbo)) ) {
     
-    pJumbo->vSetMagic();
+    pJumbo->vMagic();
     pJumbo->vSetClass(CN_FREECHUNK);
     
     Transient.m_pJumbo->vAddFree((FreeChunk*)pJumbo);
@@ -209,7 +209,7 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
 /*----------------------------------------------------------------------------*/
 void HeapMem::vFree_NonObject(PoolBuffer* pBuffer)
 {
-  pBuffer->vSetMagic();
+  pBuffer->vMagic();
   
   AM::pHeapMem()->Transient.m_pLarge->vFreeObject(pBuffer);
 }

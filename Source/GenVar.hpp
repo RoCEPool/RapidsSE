@@ -25,8 +25,10 @@ namespace SenVM
 //      char         m_caStr[C_MAX_VCH2];
 //    } xNestedValue;
 
-    _NestedValue     m_xNstVal;
-  
+    //union {
+      _NestedValue     m_xNstVal;
+    //} u;
+
     // must be last
     Footer m_xFooter;
     

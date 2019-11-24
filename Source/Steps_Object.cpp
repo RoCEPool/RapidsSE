@@ -105,7 +105,7 @@ void Step::vObjectMagicMark(void)
   if ( ! m_pDataStack->bPopObject(pObject) )
     THROW_RSTACK();
   
-  pObject->vSetMagic();
+  pObject->vMagic();
   
   EXIT();
 }

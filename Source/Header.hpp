@@ -93,7 +93,7 @@ namespace Correctness
   /*--------------------------------------------------------------------------*/
   /* set magic                                                                */
   /*--------------------------------------------------------------------------*/
-  inline void vSetMagic(void)
+  inline void vMagic(void)
   {
     m_uMagic = C_MAGIC;
   }
