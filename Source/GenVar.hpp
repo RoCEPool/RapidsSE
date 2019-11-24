@@ -28,6 +28,7 @@ namespace SenVM
     void operator =(Object* pObject);
     void operator =(Stz* szStz);
 
+    char*   azChar(void);
     Cell*   aFipPtr(void);
     i8      iInt(void);
     bool    bIsInt(void);
