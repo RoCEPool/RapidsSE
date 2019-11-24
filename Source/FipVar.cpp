@@ -28,7 +28,7 @@ void FipVar::operator =(Cell* aCell)
 /*----------------------------------------------------------------------------*/
 /* get instruction pointer                                                    */
 /*----------------------------------------------------------------------------*/
-Cell* FipVar::aFipPtr(void)
+Cell* FipVar::aFip(void)
 {
   ASSERT(CN_FIPVAR == eClass());
          

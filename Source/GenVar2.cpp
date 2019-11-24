@@ -119,7 +119,7 @@ Cell* GenVar2::aFipPtr(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Cell* aFip = u.m_xFipVar.aFipPtr();
+  Cell* aFip = u.m_xFipVar.aFip();
   
   return aFip;
 }

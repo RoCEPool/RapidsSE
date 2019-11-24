@@ -14,7 +14,7 @@ namespace SenVM
     void* operator new(size_t);
     
     void  operator =(Cell* aFip);
-    Cell* aFipPtr(void);
+    Cell* aFip(void);
   
     i8    nStackBytes(void);
     void  vToString(Stz* szStz);

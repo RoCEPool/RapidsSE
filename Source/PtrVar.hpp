@@ -13,7 +13,7 @@ namespace SenVM
   public:
     void* operator new(size_t);
   
-    void    operator =(Object* pObject);
+    void    operator =(Object* pObj);
     Object* pObj(void);
 
     i8      iAsInt(void);
