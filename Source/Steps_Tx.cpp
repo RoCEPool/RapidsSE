@@ -30,7 +30,7 @@ void Step::vAddSteps_Tx(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTxBegin(void)
 {
-  ENTRY("vTxBegin"_Stz);
+  ENTRY(); // ENTRY("vTxBegin"_Stz);
   
   Tx* pTx = new Tx;
   
@@ -49,7 +49,7 @@ void Step::vTxBegin(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTxCommit(void)
 {
-  ENTRY("vTxCommit"_Stz);
+  ENTRY(); // ENTRY("vTxCommit"_Stz);
   
   Object* pPtrTx;
   if ( ! m_pDataStack->bPopObject(pPtrTx) )
@@ -71,7 +71,7 @@ void Step::vTxCommit(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTxCounterDec(void)
 {
-  ENTRY("vTxCounterDec"_Stz);
+  ENTRY(); // ENTRY("vTxCounterDec"_Stz);
   
   Object* pPtrTx;
   if ( ! m_pDataStack->bPopObject(pPtrTx) )
@@ -96,7 +96,7 @@ void Step::vTxCounterDec(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTxCounterFetch(void)
 {
-  ENTRY("vTxCounterFetch"_Stz);
+  ENTRY(); // ENTRY("vTxCounterFetch"_Stz);
   
   Object* pPtrTx;
   if ( ! m_pDataStack->bPopObject(pPtrTx) )
@@ -115,7 +115,7 @@ void Step::vTxCounterFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTxCounterStore(void)
 {
-  ENTRY("vTxCounterStore"_Stz);
+  ENTRY(); // ENTRY("vTxCounterStore"_Stz);
   
   Object* pPtrTx;
   if ( ! m_pDataStack->bPopObject(pPtrTx) )
@@ -136,7 +136,7 @@ void Step::vTxCounterStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTxDistMemberFetch(void)
 {
-  ENTRY("vTxDistMemberFetch"_Stz);
+  ENTRY(); // ENTRY("vTxDistMemberFetch"_Stz);
   
   Object* pPtrTx;
   if ( ! m_pDataStack->bPopObject(pPtrTx) )
@@ -161,7 +161,7 @@ void Step::vTxDistMemberFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTxDistMemberStore(void)
 {
-  ENTRY("vTxDistMemberStore"_Stz);
+  ENTRY(); // ENTRY("vTxDistMemberStore"_Stz);
   
   Object* pPtrTx;
   if ( ! m_pDataStack->bPopObject(pPtrTx) )
@@ -188,7 +188,7 @@ void Step::vTxDistMemberStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTxDump(void)
 {
-ENTRY("vTxDump"_Stz);
+  ENTRY(); // ENTRY("vTxDump"_Stz);
   
   Object* pPtrTx;
   
@@ -206,7 +206,7 @@ ENTRY("vTxDump"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTxDumpAll(void)
 {
-  ENTRY("vTxDumpAll"_Stz);
+  ENTRY(); // ENTRY("vTxDumpAll"_Stz);
   
   AM::pTxSet()->vDumpAll();
   
@@ -218,7 +218,7 @@ void Step::vTxDumpAll(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTxFree(void)
 {
-  ENTRY("vTxFree"_Stz);
+  ENTRY(); // ENTRY("vTxFree"_Stz);
   
   Object* pPtrTx;
   
@@ -241,7 +241,7 @@ void Step::vTxFree(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTxId(void)
 {
-  ENTRY("vTxId"_Stz);
+  ENTRY(); // ENTRY("vTxId"_Stz);
   
   Object* pPtrTx;
   if ( ! m_pDataStack->bPopObject(pPtrTx) )
@@ -260,7 +260,7 @@ void Step::vTxId(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTxPrepare(void)
 {
-  ENTRY("vTxPrepare"_Stz);
+  ENTRY(); // ENTRY("vTxPrepare"_Stz);
   
   Object* pPtrTx;
   if ( ! m_pDataStack->bPopObject(pPtrTx) )
@@ -282,7 +282,7 @@ void Step::vTxPrepare(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTxRollback(void)
 {
-  ENTRY("vTxRollback"_Stz);
+  ENTRY(); // ENTRY("vTxRollback"_Stz);
   
   Object* pPtrTx;
   if ( ! m_pDataStack->bPopObject(pPtrTx) )
@@ -304,7 +304,7 @@ void Step::vTxRollback(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTxTestDist(void)
 {
-  ENTRY("vTxTestDist"_Stz);
+  ENTRY(); // ENTRY("vTxTestDist"_Stz);
   
   i8 iDistTxId;
   if ( ! m_pDataStack->bPopI8(iDistTxId) )

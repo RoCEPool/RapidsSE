@@ -17,7 +17,7 @@ void Step::vAddSteps_Error(void)
 /*----------------------------------------------------------------------------*/
 void Step::vErrorMsg(void)
 {
-  ENTRY("vErrorMsg"_Stz);
+  ENTRY(); // ENTRY("vErrorMsg"_Stz);
   
   
   i8 iErrorCode;

@@ -229,14 +229,14 @@ void JobList::vLogJobs(i8 iJobId)
                  aCN[pJob->eClass()],
                  pJob,
                  pJob->m_iFocalId,
-                 pJob->m_iParentId,
+                 pJob->iParentId(),
                  pJob->i_Slot(),
                 
                  aJP[pJob->eJobPhase()],
                  aJS[pJob->eJobState()],
                  pJob->iAcksRmg_printOnlyValue(),
                  pJob->iAcksOriginal(),
-                 pJob->m_iParticipantNode);
+                 pJob->iParticipantNode());
     
     pNode = m_pJobsSkipList->pNext(pNode, iLevel);
   }
@@ -308,7 +308,7 @@ void JobList::vDump(eCN eClass, Object* pObject, Stz* aTab)
              pJob,
              aCN[pJob->eClass()],
              pJob->m_iFocalId,
-             pJob->m_iParticipantNode,
+             pJob->iParticipantNode(),
              pNode->m_nRight);
              
       pNode = pSkipList->pNext(pNode, iLevel);

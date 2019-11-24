@@ -30,7 +30,7 @@ void Step::vAddSteps_Timer(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTimerDelete(void)
 {
-ENTRY("vTimeDelete"_Stz);
+  ENTRY(); // ENTRY("vTimeDelete"_Stz);
   
   Object* pPtrTimer;
   
@@ -54,7 +54,7 @@ ENTRY("vTimeDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTimerInit(void)
 {
-ENTRY("vTimerInit"_Stz);
+  ENTRY(); // ENTRY("vTimerInit"_Stz);
   
   Object* pPtrTimer;
   if ( ! m_pDataStack->bPopObject(pPtrTimer) )
@@ -73,7 +73,7 @@ ENTRY("vTimerInit"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTimerMicrosecs(void)
 {
-ENTRY("vTimerMicrosecs"_Stz);
+  ENTRY(); // ENTRY("vTimerMicrosecs"_Stz);
   
   Object* pPtrTimer;
   if ( ! m_pDataStack->bPopObject(pPtrTimer) )
@@ -94,7 +94,7 @@ ENTRY("vTimerMicrosecs"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTimerMillisecs(void)
 {
-ENTRY("vTimerMillisecs"_Stz);
+  ENTRY(); // ENTRY("vTimerMillisecs"_Stz);
   
   Object* pPtrTimer;
   if ( ! m_pDataStack->bPopObject(pPtrTimer) )
@@ -115,7 +115,7 @@ ENTRY("vTimerMillisecs"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTimerNanosecs(void)
 {
-ENTRY("vTimerNanosecs"_Stz);
+  ENTRY(); // ENTRY("vTimerNanosecs"_Stz);
   
   Object* pPtrTimer;
   if ( ! m_pDataStack->bPopObject(pPtrTimer) )
@@ -136,7 +136,7 @@ ENTRY("vTimerNanosecs"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTimerNew(void)
 {
-ENTRY("vTimerNew"_Stz);
+  ENTRY(); // ENTRY("vTimerNew"_Stz);
 
   Timer* pTimer = _pTimer(HeapMem::pAllocate(CN_TIMER));
 
@@ -156,7 +156,7 @@ ENTRY("vTimerNew"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTimerReset(void)
 {
-ENTRY("vTimerReset"_Stz);
+  ENTRY(); // ENTRY("vTimerReset"_Stz);
   
   Object* pPtrTimer;
   if ( ! m_pDataStack->bPopObject(pPtrTimer) )
@@ -175,7 +175,7 @@ ENTRY("vTimerReset"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTimerSecs(void)
 {
-ENTRY("vTimerSecs"_Stz);
+  ENTRY(); // ENTRY("vTimerSecs"_Stz);
   
   Object* pPtrTimer;
   if ( ! m_pDataStack->bPopObject(pPtrTimer) )
@@ -196,7 +196,7 @@ ENTRY("vTimerSecs"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTimerStart(void)
 {
-ENTRY("vTimerStart"_Stz);
+  ENTRY(); // ENTRY("vTimerStart"_Stz);
   
   Object* pPtrTimer;
   if ( ! m_pDataStack->bPopObject(pPtrTimer) )
@@ -215,7 +215,7 @@ ENTRY("vTimerStart"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTimerTicks(void)
 {
-ENTRY("vTimerTicks"_Stz);
+  ENTRY(); // ENTRY("vTimerTicks"_Stz);
   
   Object* pPtrTimer;
   if ( ! m_pDataStack->bPopObject(pPtrTimer) )
@@ -236,7 +236,7 @@ ENTRY("vTimerTicks"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTimerUpdate(void)
 {
-ENTRY("vTimerUpdate"_Stz);
+  ENTRY(); // ENTRY("vTimerUpdate"_Stz);
   
   Object* pPtrTimer;
   if ( ! m_pDataStack->bPopObject(pPtrTimer) )
@@ -255,7 +255,7 @@ ENTRY("vTimerUpdate"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTimeCurrent(void)
 {
-  ENTRY("vTimeCurrent"_Stz);
+  ENTRY(); // ENTRY("vTimeCurrent"_Stz);
   
   Now xNow;
   xNow.vSetNow();

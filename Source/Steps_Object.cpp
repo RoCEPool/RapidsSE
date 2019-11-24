@@ -22,7 +22,7 @@ void Step::vAddSteps_Object(void)
 /*----------------------------------------------------------------------------*/
 void Step::vObjectClassFetch(void)
 {
-  ENTRY("vObjectClassFetch"_Stz);
+  ENTRY(); // ENTRY("vObjectClassFetch"_Stz);
   
   Object* pObject;
   if ( ! m_pDataStack->bPopObject(pObject) )
@@ -41,7 +41,7 @@ void Step::vObjectClassFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vObjectClassStore(void)
 {
-  ENTRY("vObjectClassStore"_Stz);
+  ENTRY(); // ENTRY("vObjectClassStore"_Stz);
   
   Object* pObject;
   if ( ! m_pDataStack->bPopObject(pObject) )
@@ -61,7 +61,7 @@ void Step::vObjectClassStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vObjectDump(void)
 {
-  ENTRY("vObjectDump"_Stz);
+  ENTRY(); // ENTRY("vObjectDump"_Stz);
   
   Object* pObject;
   if ( ! m_pDataStack->bPopObject(pObject) )
@@ -81,7 +81,7 @@ void Step::vObjectDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vObjectFetch(void)
 {
-  ENTRY("vObjectFetch"_Stz);
+  ENTRY(); // ENTRY("vObjectFetch"_Stz);
   
   i8 iPick = 0;
   
@@ -99,7 +99,7 @@ void Step::vObjectFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vObjectMagicMark(void)
 {
-  ENTRY("vObjectMagicMark"_Stz);
+  ENTRY(); // ENTRY("vObjectMagicMark"_Stz);
   
   Object* pObject;
   if ( ! m_pDataStack->bPopObject(pObject) )
@@ -115,7 +115,7 @@ void Step::vObjectMagicMark(void)
 /*----------------------------------------------------------------------------*/
 void Step::vObjectStore(void)
 {
-  ENTRY("vObjectStore"_Stz);
+  ENTRY(); // ENTRY("vObjectStore"_Stz);
   
   i8 iPeek = 0;
   
@@ -134,7 +134,7 @@ void Step::vObjectStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vObjectWordBodySet(void)
 {
-  ENTRY("vObjectWordBodySet"_Stz);
+  ENTRY(); // ENTRY("vObjectWordBodySet"_Stz);
   
   Object* pObject;
   if ( ! m_pDataStack->bPopObject(pObject) )

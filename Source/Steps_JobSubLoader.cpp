@@ -22,7 +22,7 @@ void Step::vAddSteps_JobSubLoader(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubLoaderSpawn(void)
 {
-  ENTRY("vJob_SubLoaderSpawn"_Stz);
+  ENTRY(); // ENTRY("vJob_SubLoaderSpawn"_Stz);
   
   Object* pPtrJob_LoadTable;
   if ( ! m_pDataStack->bPopObject(pPtrJob_LoadTable) )
@@ -42,7 +42,7 @@ void Step::vJob_SubLoaderSpawn(void)
   
   pJob_SubLoader->vSeed(SS_SEED_RUN);
   
-  pJob_SubLoader->m_iParentId = pJob_LoadTable->m_iFocalId;
+  pJob_SubLoader->vParentId(pJob_LoadTable->m_iFocalId);
 
   //pJob_SubLoader->m_oEnameSet.vAdd("<tableNm>"_Stz,
   //                               pJob_LoadTable->m_oEnameSet.szValue("<tableNm>"_Stz));
@@ -50,7 +50,7 @@ void Step::vJob_SubLoaderSpawn(void)
   pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);
   
   
-  pJob_SubLoader->m_oEnameSet.vCopy(&pJob_LoadTable->m_oEnameSet);
+  pJob_SubLoader->pEnameSet()->vCopy(pJob_LoadTable->pEnameSet());
   
   pJob_SubLoader->m_eJobType = pJob_LoadTable->m_eJobType;
   pJob_SubLoader->vJobKind(pJob_LoadTable->eJobKind());
@@ -73,7 +73,7 @@ void Step::vJob_SubLoaderSpawn(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubLoaderBegin(void)
 {
-  ENTRY("vJob_SubLoaderBegin"_Stz);
+  ENTRY(); // ENTRY("vJob_SubLoaderBegin"_Stz);
   
   Object* pPtrJob_SubLoader;
   if ( ! m_pDataStack->bPopObject(pPtrJob_SubLoader) )
@@ -92,7 +92,7 @@ void Step::vJob_SubLoaderBegin(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubLoaderChunk(void)
 {
-  ENTRY("vJob_SubLoaderChunk"_Stz);
+  ENTRY(); // ENTRY("vJob_SubLoaderChunk"_Stz);
   
   Object* pPtrJob_SubLoader;
   if ( ! m_pDataStack->bPopObject(pPtrJob_SubLoader) )
@@ -120,7 +120,7 @@ void Step::vJob_SubLoaderChunk(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubLoaderEnd(void)
 {
-  ENTRY("vJob_SubLoaderEnd"_Stz);
+  ENTRY(); // ENTRY("vJob_SubLoaderEnd"_Stz);
   
   Object* pPtrJob_SubLoader;
   if ( ! m_pDataStack->bPopObject(pPtrJob_SubLoader) )
@@ -137,7 +137,7 @@ void Step::vJob_SubLoaderEnd(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubLoaderTerminate(void)
 {
-  ENTRY("vJob_SubLoaderTerminate"_Stz);
+  ENTRY(); // ENTRY("vJob_SubLoaderTerminate"_Stz);
   
   Object* pPtrJob_SubLoader;
   if ( ! m_pDataStack->bPopObject(pPtrJob_SubLoader) )

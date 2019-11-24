@@ -21,7 +21,7 @@ void Step::vAddSteps_JobPipeline(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineBegin(void)
 {
-  ENTRY("vJob_PipelineBegin"_Stz);
+  ENTRY(); // ENTRY("vJob_PipelineBegin"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -53,7 +53,7 @@ void Step::vJob_PipelineBegin(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineCancel(void)
 {
-  ENTRY("vJob_PipelineCancel"_Stz);
+  ENTRY(); // ENTRY("vJob_PipelineCancel"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -78,7 +78,7 @@ void Step::vJob_PipelineCancel(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineEnd(void)
 {
-  ENTRY("vJob_PipelineEnd"_Stz);
+  ENTRY(); // ENTRY("vJob_PipelineEnd"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -103,7 +103,7 @@ void Step::vJob_PipelineEnd(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineExecute(void)
 {
-  ENTRY("vJob_PipelineExecute"_Stz);
+  ENTRY(); // ENTRY("vJob_PipelineExecute"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -145,7 +145,7 @@ void Step::vJob_PipelineExecute(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_PipelineCompile(void)
 {
-  ENTRY("vJob_PipelineCompile"_Stz);
+  ENTRY(); // ENTRY("vJob_PipelineCompile"_Stz);
   
   s4K sCmd;
   if (! m_pDataStack->bPopS4K(sCmd))

@@ -789,14 +789,14 @@ void SePrompt::vPreJob(void)
 //  if (! m_pJob)
 //    return;
 //
-//  s32 sJobNm = m_pJob->m_oEnameSet.szValue(C_TAG_JOBNM);
+//  s32 sJobNm = m_pJob->pEnameSet()->szValue(C_TAG_JOBNM);
 //
 //  m_pJob->m_sJobNm = sJobNm;
 //
-//  m_pJob->m_oEnameSet.vAdd(C_TAG_BYPROMPT,1);
+//  m_pJob->pEnameSet()->vAdd(C_TAG_BYPROMPT,1);
 //
-//  m_pJob->m_oEnameSet.vAdd(C_TAG_DISTID,m_pJob->m_iFocalId);
-//  m_pJob->m_oEnameSet.vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
+//  m_pJob->pEnameSet()->vAdd(C_TAG_DISTID,m_pJob->m_iFocalId);
+//  m_pJob->pEnameSet()->vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
 //
 //  if (m_oJobCtl.bHasName(C_TAG_JI)) {
 //
@@ -855,7 +855,7 @@ void SePrompt::vReportTime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  //m_pJob->m_oEnameSet.vPrint();
+  //m_pJob->pEnameSet()->vPrint();
   
   if (! m_pJob->bTimeTag())
     return;
@@ -890,14 +890,14 @@ void SePrompt::vSetJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  s32 sJobNm = m_pJob->m_oEnameSet.szValue(C_TAG_JOBNM);
+  s32 sJobNm = m_pJob->pEnameSet()->szValue(C_TAG_JOBNM);
   
-  m_pJob->m_sJobNm = sJobNm;
+  m_pJob->vJobNm(sJobNm);
   
-  m_pJob->m_oEnameSet.vAdd(C_TAG_BYPROMPT,1);
+  m_pJob->pEnameSet()->vAdd(C_TAG_BYPROMPT,1);
   
-  m_pJob->m_oEnameSet.vAdd(C_TAG_DISTID,m_pJob->m_iFocalId);
-  m_pJob->m_oEnameSet.vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
+  m_pJob->pEnameSet()->vAdd(C_TAG_DISTID,m_pJob->m_iFocalId);
+  m_pJob->pEnameSet()->vAdd(C_TAG_NODENO,AM::pGrid()->m_iThisNode);
   
   if (m_oJobCtl.bHasName(C_TAG_JI)) {
     
@@ -906,14 +906,14 @@ void SePrompt::vSetJob(void)
       pJobInfo_es->vPrint();
   }
 
-  m_pJob->m_oEnameSet.vCopy(&m_oJobCtl);
+  m_pJob->pEnameSet()->vCopy(&m_oJobCtl);
   
-  m_pJob->m_oTimer.vStart();
+  m_pJob->vTimerStart();
   
   if (m_pJob->bHasEnameTag(C_TAG_LIFE)) {
     SP_EnmSet spEnameSet;
-    m_pJob->vPrint("Job New: %s"_Stz,spEnameSet.sz(&m_pJob->m_oEnameSet));
-    //m_pJob->m_oEnameSet.vPrint();
+    m_pJob->vPrint("Job New: %s"_Stz,spEnameSet.sz(m_pJob->pEnameSet()));
+    //m_pJob->pEnameSet()->vPrint();
   }
 }
 
@@ -957,7 +957,7 @@ void SePrompt::vSpawnJob(void)
   m_pJob->vSeed(SS_SEED_REQ);
   
   if (m_pJob->bHasEnameTag(C_TAG_JE))
-    m_pJob->m_oEnameSet.vPrint();
+    m_pJob->pEnameSet()->vPrint();
   
   bool bSpawned = Api::bSpawnJob(m_pJob);
   RASSERT(bSpawned);

@@ -18,7 +18,7 @@ void Step::vAddSteps_JobAnalyzeIndex(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_AnalyzeIndexIsDetailed(void)
 {
-  ENTRY("vJob_AnalyzeIndexIsDetailed"_Stz);
+  ENTRY(); // ENTRY("vJob_AnalyzeIndexIsDetailed"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -37,7 +37,7 @@ void Step::vJob_AnalyzeIndexIsDetailed(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_AnalyzeTableIsDetailed(void)
 {
-  ENTRY("vJob_AnalyzeTableIsDetailed"_Stz);
+  ENTRY(); // ENTRY("vJob_AnalyzeTableIsDetailed"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )

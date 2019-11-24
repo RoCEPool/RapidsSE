@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ForthValue.cpp --Base Class for Self-Describing Values                     */
+/* StkVal.cpp -- Base Class for Self-Describing Values on Stack               */
 /*============================================================================*/
 
 #include "SenVM.h"
@@ -7,10 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ForthValue::operator new(size_t)
+void* StkVal::operator new(size_t)
 {
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: ForthValue class cannot be new'd\n"_Stz);
+         "fatal: StkVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -18,12 +18,12 @@ void* ForthValue::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ForthValue::ForthValue(eCN eClass)
+StkVal::StkVal(eCN eClass)
 //: Header(eClass)
 {
-  m_xHeader.vSetClass(eClass);
+  _Header::vClass(eClass);
   
-  _checkInitialisedSize_(sizeof(ForthValue));
+  _checkInitialisedSize_(sizeof(StkVal));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,9 +33,9 @@ ForthValue::ForthValue(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* get size (in bytes) of value                                               */
 /*----------------------------------------------------------------------------*/
-eCN ForthValue::eClass(void)
+eCN StkVal::eClass(void)
 {
-  eCN eClass = m_xHeader.eClass();
+  eCN eClass = _Header::eClass();
   
   return eClass;
 }
@@ -43,7 +43,7 @@ eCN ForthValue::eClass(void)
 /*----------------------------------------------------------------------------*/
 /* get size (in bytes) of value                                               */
 /*----------------------------------------------------------------------------*/
-i8 ForthValue::nSize(void)
+i8 StkVal::nStackBytes(void)
 {
   i8 nBytes = 0;
   
@@ -53,30 +53,30 @@ i8 ForthValue::nSize(void)
       
     case CN_INTVAL: {
       IntVal* aIntVal = _aIntVal(this);
-      nBytes = aIntVal->nSize();
+      nBytes = aIntVal->nStackBytes();
       break;
     }
       
     case CN_FIPVAL: {
       FipVal* aFipVal = _aFipVal(this);
-      nBytes = aFipVal->nSize();
+      nBytes = aFipVal->nStackBytes();
       break;
     }
       
     case CN_PTRVAL: {
       PtrVal* aPtrVal = _aPtrVal(this);
-      nBytes = aPtrVal->nSize();
+      nBytes = aPtrVal->nStackBytes();
       break;
     }
       
     case CN_STRVAL: {
       StrVal* aStrVal = _aStrVal(this);
-      nBytes = aStrVal->nSize();
+      nBytes = aStrVal->nStackBytes();
       break;
     }
       
     default:
-      vTrace("ForthValue::nSize -- invalid eClass %lld %s\n"_Stz,
+      vTrace("StkVal::nStackBytes -- invalid eClass %lld %s\n"_Stz,
              eClassNo,aCN[eClassNo]);
       NEVER_REACH;
       break;
@@ -88,7 +88,7 @@ i8 ForthValue::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void ForthValue::vToString(Stz* aString)
+void StkVal::vToString(Stz* aString)
 {
   eCN eClass = this->eClass();
   
@@ -119,7 +119,7 @@ void ForthValue::vToString(Stz* aString)
     }
             
     default:
-      vTrace("ForthValue::vToString -- invalid eClass %lld"_Stz,eClass);
+      vTrace("StkVal::vToString -- invalid eClass %lld"_Stz,eClass);
       NEVER_REACH;
       break;
   }

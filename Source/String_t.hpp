@@ -22,6 +22,7 @@ namespace Esses
   
     // auto conversion
     operator Stz*(void);
+    operator String*(void);
 
     void operator =(i8);
     void operator =(Stz* szArg);
@@ -119,7 +120,18 @@ String_t<SIZE>::~String_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* auto conversion operator : get address of str area                         */
+/* auto conversion operator : as String*                                      */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+String_t<SIZE>::operator String*(void)
+{
+  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
+  
+  return (String*)this;
+}
+
+/*----------------------------------------------------------------------------*/
+/* auto conversion operator : get address of m_castr area                     */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
 String_t<SIZE>::operator Stz*(void)

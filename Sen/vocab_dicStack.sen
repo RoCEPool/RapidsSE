@@ -238,7 +238,7 @@
 
   0 do
 
-    // dup "task::dicStack.set %v" fmt.print
+    // dup "task::dicStack.set %v" .printf
 
     dup "__dicRoot" str.equal if
       drop

@@ -29,7 +29,7 @@ void Step::vAddSteps_Input(void)
 /*----------------------------------------------------------------------------*/
 void Step::vInputClose(void)
 {
-ENTRY("vInputClose"_Stz);
+  ENTRY(); // ENTRY("vInputClose"_Stz);
   
   m_pCompiler->m_pTokeniser->vUseEnd();
   
@@ -41,7 +41,7 @@ ENTRY("vInputClose"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vInputDepth(void)
 {
-ENTRY("vInputDepth"_Stz);
+  ENTRY(); // ENTRY("vInputDepth"_Stz);
   
   i8 iDepth = m_pCompiler->m_pTokeniser->iDepth();
   
@@ -55,7 +55,7 @@ ENTRY("vInputDepth"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vInputNext(void)
 {
-ENTRY("vInputNext"_Stz);
+  ENTRY(); // ENTRY("vInputNext"_Stz);
   
   if (m_pTask->m_iTraceMask) {
     ASSERT(m_pTask->m_iTraceMask);
@@ -73,7 +73,7 @@ ENTRY("vInputNext"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vInputOpen(void)
 {
-ENTRY("vInputOpen"_Stz);
+  ENTRY(); // ENTRY("vInputOpen"_Stz);
   
   s256 sFilePath;
   
@@ -94,7 +94,7 @@ ENTRY("vInputOpen"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vInputPop(void)
 {
-ENTRY("vInputPop"_Stz);
+  ENTRY(); // ENTRY("vInputPop"_Stz);
   
   bool bPopped = m_pCompiler->m_pTokeniser->bPop();
   ASSERT(bPopped);
@@ -107,7 +107,7 @@ ENTRY("vInputPop"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vInputPush(void)
 {
-ENTRY("vInputPush"_Stz);
+  ENTRY(); // ENTRY("vInputPush"_Stz);
   
   if ( ! m_pCompiler )
     m_pCompiler = new Compiler;
@@ -122,7 +122,7 @@ ENTRY("vInputPush"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vInputStdin(void)
 {
-ENTRY("vInputStdin"_Stz);
+  ENTRY(); // ENTRY("vInputStdin"_Stz);
   
   if ( ! m_pCompiler )
     m_pCompiler = new Compiler;
@@ -137,7 +137,7 @@ ENTRY("vInputStdin"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vInputText(void)
 {
-ENTRY("vInputText"_Stz);
+  ENTRY(); // ENTRY("vInputText"_Stz);
   
   if (m_pTask->m_iTraceMask) {
     ASSERT(m_pTask->m_iTraceMask);
@@ -158,7 +158,7 @@ ENTRY("vInputText"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vInputToken(void)
 {
-ENTRY("vInputToken"_Stz);
+  ENTRY(); // ENTRY("vInputToken"_Stz);
   
   s48K sTkn(m_pCompiler->szToken());
   
@@ -172,7 +172,7 @@ ENTRY("vInputToken"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vInputType(void)
 {
-ENTRY("vInputType"_Stz);
+  ENTRY(); // ENTRY("vInputType"_Stz);
   
   eTN eTokenType = m_pCompiler->m_pTokeniser->eToken();
   
@@ -186,7 +186,7 @@ ENTRY("vInputType"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vInputUnknown(void)
 {
-  ENTRY("vInputUnknown"_Stz);
+  ENTRY(); // ENTRY("vInputUnknown"_Stz);
   
   vTrace("\n"_Stz);
   vTrace("Unknown token: %s\n"_Stz,
@@ -204,7 +204,7 @@ void Step::vInputUnknown(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTokenColon(void)
 {
-  ENTRY("vTokenColon"_Stz);
+  ENTRY(); // ENTRY("vTokenColon"_Stz);
   
   m_pCompiler->vNextToken();
   

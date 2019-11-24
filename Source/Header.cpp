@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Header.cpp -- Header for instances needing magic & class                   */
+/* Header.cpp -- Header for objects needing magic & class                     */
 /*============================================================================*/
 
 #include "Correctness.h"

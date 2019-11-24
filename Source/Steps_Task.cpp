@@ -42,7 +42,7 @@ void Step::vAddSteps_Task(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskAck(void)
 {
-  ENTRY("vTaskAck"_Stz);
+  ENTRY(); // ENTRY("vTaskAck"_Stz);
   
   Object* pTaskObject;
   if ( ! m_pDataStack->bPopObject(pTaskObject) )
@@ -64,7 +64,7 @@ void Step::vTaskAck(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskAcksStore(void)
 {
-  ENTRY("vTaskAcksStore"_Stz);
+  ENTRY(); // ENTRY("vTaskAcksStore"_Stz);
   
   Object* pPtrTask;
   if ( ! m_pDataStack->bPopObject(pPtrTask) )
@@ -99,7 +99,7 @@ void Step::vTaskAcksStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskBreakPoint(void)
 {
-  ENTRY("vTaskBreakPoint"_Stz);
+  ENTRY(); // ENTRY("vTaskBreakPoint"_Stz);
     
   EXIT();
 }
@@ -109,7 +109,7 @@ void Step::vTaskBreakPoint(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDicStack(void)
 {
-  ENTRY("vTaskDicStack"_Stz);
+  ENTRY(); // ENTRY("vTaskDicStack"_Stz);
   
   Object* pPtrTask;
   if ( ! m_pDataStack->bPopObject(pPtrTask) )
@@ -130,7 +130,7 @@ void Step::vTaskDicStack(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDoneFinally(void)
 {
-  ENTRY("vTaskDoneFinally"_Stz);
+  ENTRY(); // ENTRY("vTaskDoneFinally"_Stz);
   
   m_bDoneFinally = true;
   
@@ -142,7 +142,7 @@ void Step::vTaskDoneFinally(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDropLock(void)
 {
-  ENTRY("vTaskDrop"_Stz);
+  ENTRY(); // ENTRY("vTaskDrop"_Stz);
   
   Object* pObject;
   if ( ! m_pDataStack->bPopObject(pObject) )
@@ -160,7 +160,7 @@ void Step::vTaskDropLock(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDump(void)
 {
-  ENTRY("vTaskDump"_Stz);
+  ENTRY(); // ENTRY("vTaskDump"_Stz);
   
   m_pTask->vDump();
   
@@ -172,7 +172,7 @@ void Step::vTaskDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskDelete(void)
 {
-  ENTRY("vTaskDelete"_Stz);
+  ENTRY(); // ENTRY("vTaskDelete"_Stz);
   
   m_pTask->vUnlinkJob();
   
@@ -186,7 +186,7 @@ void Step::vTaskDelete(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskGrabLock(void)
 {
-  ENTRY("vTaskGrab"_Stz);
+  ENTRY(); // ENTRY("vTaskGrab"_Stz);
   
   Object* pObject;
   if ( ! m_pDataStack->bPopObject(pObject) )
@@ -203,7 +203,7 @@ void Step::vTaskGrabLock(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskIsAckSet(void)
 {
-  ENTRY("vTaskIsAckSet"_Stz);
+  ENTRY(); // ENTRY("vTaskIsAckSet"_Stz);
   
   Object* pTaskObject;
   if ( ! m_pDataStack->bPopObject(pTaskObject) )
@@ -229,7 +229,7 @@ void Step::vTaskIsAckSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskJobFetch(void)
 {
-  ENTRY("vTaskJobFetch"_Stz);
+  ENTRY(); // ENTRY("vTaskJobFetch"_Stz);
   
   Object* pTaskObject;
   if ( ! m_pDataStack->bPopObject(pTaskObject) )
@@ -248,7 +248,7 @@ void Step::vTaskJobFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskJobStore(void)
 {
-  ENTRY("vTaskJobStore"_Stz);
+  ENTRY(); // ENTRY("vTaskJobStore"_Stz);
   
   Object* pTaskObject;
   if ( ! m_pDataStack->bPopObject(pTaskObject) )
@@ -270,7 +270,7 @@ void Step::vTaskJobStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskNameFetch(void)
 {
-ENTRY("vTaskNameFetch"_Stz);
+  ENTRY(); // ENTRY("vTaskNameFetch"_Stz);
   
   Object* pTaskObject;
   if ( ! m_pDataStack->bPopObject(pTaskObject) )
@@ -289,7 +289,7 @@ ENTRY("vTaskNameFetch"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSeed(void)
 {
-ENTRY("vTaskSeed"_Stz);
+  ENTRY(); // ENTRY("vTaskSeed"_Stz);
   
 //  //                                   sSeed     nTaskArgs
 //  if ( ! m_pDataStack->bGuard(CN_STRVAL,CN_INTVAL) )
@@ -334,7 +334,7 @@ ENTRY("vTaskSeed"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSeedInitially(void)
 {
-  ENTRY("vTaskSeedInitially"_Stz);
+  ENTRY(); // ENTRY("vTaskSeedInitially"_Stz);
   
   m_bSeedInitially = true;
 
@@ -346,7 +346,7 @@ void Step::vTaskSeedInitially(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSendNodeFetch(void)
 {
-  ENTRY("vTaskSendNodeFetch"_Stz);
+  ENTRY(); // ENTRY("vTaskSendNodeFetch"_Stz);
   
   Object* pObject;
   if ( ! m_pDataStack->bPopObject(pObject) )
@@ -367,7 +367,7 @@ void Step::vTaskSendNodeFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSendNodeStore(void)
 {
-  ENTRY("vTaskSendNodeStore"_Stz);
+  ENTRY(); // ENTRY("vTaskSendNodeStore"_Stz);
   
   Object* pTaskObject;
   if ( ! m_pDataStack->bPopObject(pTaskObject) )
@@ -389,7 +389,7 @@ void Step::vTaskSendNodeStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSleepMsec(void)
 {
-  ENTRY("vTaskSleepMsec"_Stz);
+  ENTRY(); // ENTRY("vTaskSleepMsec"_Stz);
   
   i8 nMilliSeconds;
   
@@ -409,7 +409,7 @@ void Step::vTaskSleepMsec(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSleepSsec(void)
 {
-  ENTRY("vTaskSleepSsec"_Stz);
+  ENTRY(); // ENTRY("vTaskSleepSsec"_Stz);
   
   i8 nSeconds;
   
@@ -429,7 +429,7 @@ void Step::vTaskSleepSsec(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSleepUsec(void)
 {
-  ENTRY("vTaskSleepUsec"_Stz);
+  ENTRY(); // ENTRY("vTaskSleepUsec"_Stz);
   
   i8 nMicroSeconds;
   
@@ -447,7 +447,7 @@ void Step::vTaskSleepUsec(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskStateFetch(void)
 {
-ENTRY("vTaskStateFetch"_Stz);
+  ENTRY(); // ENTRY("vTaskStateFetch"_Stz);
   
   Object* pTaskObject;
   if ( ! m_pDataStack->bPopObject(pTaskObject) )
@@ -466,7 +466,7 @@ ENTRY("vTaskStateFetch"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTaskThis(void)
 {
-ENTRY("vTaskThis"_Stz);
+  ENTRY(); // ENTRY("vTaskThis"_Stz);
   
   Object* pTask = m_pTask;
   
@@ -480,7 +480,7 @@ ENTRY("vTaskThis"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vTaskThread(void)
 {
-  ENTRY("vTaskThread"_Stz);
+  ENTRY(); // ENTRY("vTaskThread"_Stz);
   
   Object* pTaskObject;
   if ( ! m_pDataStack->bPopObject(pTaskObject) )
@@ -499,7 +499,7 @@ void Step::vTaskThread(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskWait(void)
 {
-  ENTRY("vTaskWait"_Stz);
+  ENTRY(); // ENTRY("vTaskWait"_Stz);
   
   m_pTask->vSchedulerAct(SA_WAIT);
 
@@ -511,7 +511,7 @@ void Step::vTaskWait(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTaskYield(void)
 {
-  ENTRY("vTaskYield"_Stz);
+  ENTRY(); // ENTRY("vTaskYield"_Stz);
     
   m_pTask->vSchedulerAct(SA_YIELD);
 

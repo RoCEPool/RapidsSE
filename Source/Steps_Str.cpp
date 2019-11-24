@@ -38,7 +38,7 @@ void Step::vAddSteps_Str(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrAlgebra(void)
 {
-  ENTRY("vStrAlgebra"_Stz);
+  ENTRY(); // ENTRY("vStrAlgebra"_Stz);
  
   // (1) StrVal's cannot be declared as local variables
   //StrVal xStrval;  // uncommenting this line should produce a compile error
@@ -57,7 +57,7 @@ void Step::vStrAlgebra(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrCat(void)
 {
-  ENTRY("vStrCat"_Stz);
+  ENTRY(); // ENTRY("vStrCat"_Stz);
   
   s48K sStrR;
   s48K sStrB;
@@ -80,7 +80,7 @@ void Step::vStrCat(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrClip(void)
 {
-  ENTRY("vStrClip"_Stz);
+  ENTRY(); // ENTRY("vStrClip"_Stz);
   
   i8 iLength;
   s48K sString;
@@ -116,7 +116,7 @@ void Step::vStrClip(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrEqual(void)
 {
-  ENTRY("vStrEql"_Stz);
+  ENTRY(); // ENTRY("vStrEql"_Stz);
   
   GenVar xStringA;
   GenVar xStringB;
@@ -125,8 +125,8 @@ void Step::vStrEqual(void)
   if ( ! m_pDataStack->bPopGenVar(xStringB,xStringA) )
     THROW_DSTACK();
   
-  i8 iEqual = StrLib::bEqualTo(_aStrVal(xStringA.aNestedValue())->azChar(),
-                               _aStrVal(xStringB.aNestedValue())->azChar(),
+  i8 iEqual = StrLib::bEqualTo(xStringA.azChar(),
+                               xStringB.azChar(),
                                C_NO_CASE);
   
   m_pDataStack->vPushI8(iEqual);
@@ -139,7 +139,7 @@ void Step::vStrEqual(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrEscape(void)
 {
-  ENTRY("vStrEscape"_Stz);
+  ENTRY(); // ENTRY("vStrEscape"_Stz);
   
   s48K xArg;
   s48K xEscaped;
@@ -160,7 +160,7 @@ void Step::vStrEscape(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrFirstCsv(void)
 {
-  ENTRY("vStrFirstCsv"_Stz);
+  ENTRY(); // ENTRY("vStrFirstCsv"_Stz);
   
   s48K sStr;
   if ( ! m_pDataStack->bPopS48K(sStr) )
@@ -183,7 +183,7 @@ void Step::vStrFirstCsv(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrFormat(void)
 {
-  ENTRY("vStrFormat"_Stz);
+  ENTRY(); // ENTRY("vStrFormat"_Stz);
   
   s48K sFormat;
   if ( ! m_pDataStack->bPopS48K(sFormat) )
@@ -203,7 +203,7 @@ void Step::vStrFormat(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrLeft(void)
 {
-  ENTRY("vClip"_Stz);
+  ENTRY(); // ENTRY("vClip"_Stz);
   
   i8 iLength;
   s48K sString;
@@ -234,7 +234,7 @@ void Step::vStrLeft(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrLength(void)
 {
-  ENTRY("vStrLen"_Stz);
+  ENTRY(); // ENTRY("vStrLen"_Stz);
   
   i8 iLength;
   s48K sString;
@@ -255,7 +255,7 @@ void Step::vStrLength(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrPrepend(void)
 {
-  ENTRY("vStrPrepend"_Stz);
+  ENTRY(); // ENTRY("vStrPrepend"_Stz);
   
   s48K xStrR;
   s48K xStrB;
@@ -272,10 +272,10 @@ void Step::vStrPrepend(void)
     ASSERT(0);
 //    s48K xString;
 //    xValA.vGetString(xString);
-//    xStrA = _aStrVal(xValA.aNestedValue())->szStz();
+//    xStrA = _aStrVal(xValA.aEmbeddedStkVal())->szStz();
   }
   else {
-    xStrA = _aStrVal(xValA.aNestedValue())->szStz();                          //! need to simplify this
+    xStrA = _aStrVal(xValA.aEmbeddedStkVal())->szStz();                          //! need to simplify this
   }
   
   // If received INTEGER convert to STRING
@@ -286,7 +286,7 @@ void Step::vStrPrepend(void)
 //    xStrB = xString;
   }
   else {
-    xStrB = _aStrVal(xValB.aNestedValue())->szStz();
+    xStrB = _aStrVal(xValB.aEmbeddedStkVal())->szStz();
   }
   
   xStrR = xStrB;
@@ -303,7 +303,7 @@ void Step::vStrPrepend(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrRandom(void)
 {
-  ENTRY("vStrRandom"_Stz);
+  ENTRY(); // ENTRY("vStrRandom"_Stz);
   
   i8 iLength;
   if ( ! m_pDataStack->bPopI8(iLength) )
@@ -323,7 +323,7 @@ void Step::vStrRandom(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrRemovePrefix(void)
 {
-  ENTRY("vStrRemovePrefix"_Stz);
+  ENTRY(); // ENTRY("vStrRemovePrefix"_Stz);
   
   s48K sString;
   if ( ! m_pDataStack->bPopS48K(sString) )
@@ -345,7 +345,7 @@ void Step::vStrRemovePrefix(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrRemoveSuffix(void)
 {
-  ENTRY("vStrRemoveSuffix"_Stz);
+  ENTRY(); // ENTRY("vStrRemoveSuffix"_Stz);
   
   s48K sString;
   if ( ! m_pDataStack->bPopS48K(sString) )
@@ -367,7 +367,7 @@ void Step::vStrRemoveSuffix(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrReplace(void)
 {
-  ENTRY("vStrReplace"_Stz);
+  ENTRY(); // ENTRY("vStrReplace"_Stz);
   
   s48K sString;
   s48K sThat;
@@ -396,7 +396,7 @@ void Step::vStrReplace(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrRight(void)
 {
-  ENTRY("vStrRight"_Stz);
+  ENTRY(); // ENTRY("vStrRight"_Stz);
   
   i8 iLength;
   s48K sString;
@@ -430,7 +430,7 @@ void Step::vStrRight(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrSub(void)
 {
-  ENTRY("vStrSub"_Stz);
+  ENTRY(); // ENTRY("vStrSub"_Stz);
   
   i8 iLength;
   i8 iStart;
@@ -472,7 +472,7 @@ void Step::vStrSub(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrTailInt(void)
 {
-  ENTRY("vStrTailInt"_Stz);
+  ENTRY(); // ENTRY("vStrTailInt"_Stz);
   
   // get the string
   s48K sString;
@@ -511,7 +511,7 @@ void Step::vStrTailInt(void)
 /*----------------------------------------------------------------------------*/
 void Step::vStrToStrVec(void)
 {
-  ENTRY("vStrToStrVec"_Stz);
+  ENTRY(); // ENTRY("vStrToStrVec"_Stz);
   
   // get the path string
   s256 sPath;

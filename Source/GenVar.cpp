@@ -104,6 +104,18 @@ void GenVar::operator =(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get azChar from the nested value                                           */
+/*----------------------------------------------------------------------------*/
+char* GenVar::azChar(void)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  char* az = (char*)xNestedValue.m_caStr;
+  
+  return az;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get object address from nested value                                       */
 /*----------------------------------------------------------------------------*/
 Cell* GenVar::aFipPtr(void)
@@ -141,15 +153,29 @@ bool GenVar::bIsInt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of the nested value                                            */
+/* get class of embedded stack value                                          */
 /*----------------------------------------------------------------------------*/
-ForthValue* GenVar::aNestedValue(void)
+eCN GenVar::eEmbeddedClass(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  ForthValue* aValue = reinterpret_cast<ForthValue*>(&xNestedValue);
+  StkVal* aStkVal = aEmbeddedStkVal();
   
-  return aValue;
+  eCN eClassNo = aStkVal->eClass();
+  
+  return eClassNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of the nested value                                            */
+/*----------------------------------------------------------------------------*/
+StkVal* GenVar::aEmbeddedStkVal(void)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  StkVal* aStkVal = reinterpret_cast<StkVal*>(&xNestedValue);
+  
+  return aStkVal;
 }
 
 /*----------------------------------------------------------------------------*/

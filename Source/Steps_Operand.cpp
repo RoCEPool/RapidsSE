@@ -29,7 +29,7 @@ void Step::vAddSteps_Operand(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOperandBide(void)
 {
-  ENTRY("vOperandBide"_Stz);
+  ENTRY(); // ENTRY("vOperandBide"_Stz);
   
   m_pRegSet->m_pOperand = m_pTask->m_pJob->m_pOp->pPopQueue2();
   
@@ -114,7 +114,7 @@ void Step::vOperandHandleAggEnd(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOperandHandleEnd(void)
 {
-  ENTRY("vOperandHandleEnd"_Stz);
+  ENTRY(); // ENTRY("vOperandHandleEnd"_Stz);
   
   ASSERT(m_pRegSet->m_pOperand);
   
@@ -157,7 +157,7 @@ void Step::vOperandHandleEnd(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOperandIsNull(void)
 {
-  ENTRY("vOperandIsNull"_Stz);
+  ENTRY(); // ENTRY("vOperandIsNull"_Stz);
   
   m_pDataStack->vPushI8(m_pRegSet->m_pOperand ? 1 : 0);
   
@@ -184,7 +184,7 @@ void Step::vOperandItemCountFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOperandKind(void)
 {
-  ENTRY("vOperandKind"_Stz);
+  ENTRY(); // ENTRY("vOperandKind"_Stz);
   
   eZK eOperand = ZK_NONE;
   
@@ -215,7 +215,7 @@ void Step::vOperandKind(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNext(void)
 {
-  ENTRY("vOperandNext"_Stz);
+  ENTRY(); // ENTRY("vOperandNext"_Stz);
   
   if (! m_pRegSet->m_pOperand)
     m_pRegSet->m_pOperand = m_pTask->m_pJob->m_pOp->pPopQueue2();
@@ -229,7 +229,7 @@ void Step::vOperandNext(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNewEndMarker(void)
 {
-  ENTRY("vOperandNewEndMarker"_Stz);
+  ENTRY(); // ENTRY("vOperandNewEndMarker"_Stz);
   
   ASSERT (! m_pRegSet->m_pOperand);
   
@@ -243,7 +243,7 @@ void Step::vOperandNewEndMarker(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNewStreamDef(void)
 {
-  ENTRY("vOperandNewStreamDef"_Stz);
+  ENTRY(); // ENTRY("vOperandNewStreamDef"_Stz);
   
   ASSERT (! m_pRegSet->m_pOperand);
   
@@ -257,7 +257,7 @@ void Step::vOperandNewStreamDef(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOperandPipeOut(void)
 {
-  ENTRY("vOperandPipeOut"_Stz);
+  ENTRY(); // ENTRY("vOperandPipeOut"_Stz);
   
   ASSERT(m_pRegSet->m_pOperand);
   
@@ -275,7 +275,7 @@ void Step::vOperandPipeOut(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOperandPipeToJob(void)
 {
-  ENTRY("vOperandPipeToJob"_Stz);
+  ENTRY(); // ENTRY("vOperandPipeToJob"_Stz);
   
   ASSERT(m_pRegSet->m_pOperand);
   
@@ -308,7 +308,7 @@ void Step::vOperandRowCountFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOperandSet(void)
 {
-  ENTRY("vOperandSet"_Stz);
+  ENTRY(); // ENTRY("vOperandSet"_Stz);
   
   Object* pPtrObject;
   if ( ! m_pDataStack->bPopObject(pPtrObject) )
@@ -323,7 +323,7 @@ void Step::vOperandSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOperandWorkDone(void)
 {
-  ENTRY("vOperandWorkDone"_Stz);
+  ENTRY(); // ENTRY("vOperandWorkDone"_Stz);
   
   ASSERT(m_pRegSet->m_pOperand);
   

@@ -102,6 +102,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_FILTER_SUBQRY
   /*    */ &Finalize::vUndefined,         // CN_FILTER_WHERE
   /*    */ &Finalize::vUndefined,         // CN_FILTER_ZED
+  /*    */ &Finalize::vUndefined,         // CN_FIPVAR
   /*    */ &Finalize::vUndefined,         // CN_FOCALOBJECTS
   /*    */ &Finalize::vUndefined,         // CN_FORTH
   /* 39 */ &Finalize::vUndefined,         // CN_FORMATTERS
@@ -133,6 +134,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_INSERTOP
   /*    */ &Finalize::vUndefined,         // CN_INTBUFFER
   /*    */ &Finalize::vUndefined,         // CN_INTERSECTOP
+  /*    */ &Finalize::vUndefined,         // CN_INTVAR
   /*    */ &Finalize::vUndefined,         // CN_IOCHUNK
   /*    */ &Finalize::vUndefined,         // CN_IOCOPY
   /*    */ &Finalize::vUndefined,         // CN_IRWBUFFER
@@ -220,7 +222,8 @@ pFINALIZE *gpFinalize[]
   /* 91 */ &Finalize::vUndefined,         // CN_PROJECTOP
   /* 89 */ &Finalize::vUndefined,         // CN_PSXTHD
   /* 94 */ &Finalize::vUndefined,         // CN_PTNCOLVEC
-  
+  /*    */ &Finalize::vUndefined,         // CN_PTRVAR
+
   /* 95 */ &Finalize::vUndefined,         // CN_QUEUE
   /* 96 */ &Finalize::vUndefined,         // CN_QUEUEBUFFER
   /*    */ &Finalize::vUndefined,         // CN_QUEUES
@@ -304,6 +307,7 @@ pFINALIZE *gpFinalize[]
   /*128 */ &Finalize::vUndefined,         // CN_STMT_SELECT
   /* 13 */ &Finalize::vUndefined,         // CN_STREAMDEF
   /* 13 */ &Finalize::vUndefined,         // CN_STRING_T
+  /* 13 */ &Finalize::vUndefined,         // CN_STRVAR
   /*    */ &Finalize::vUndefined,         // CN_SUPERAGGOP
   /*    */ &Finalize::vUndefined,         // CN_SUPERCOUNTOP
   /*    */ &Finalize::vUndefined,         // CN_SUPERMERGEOP

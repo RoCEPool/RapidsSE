@@ -18,7 +18,7 @@ void Step::vAddSteps_Cursor(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCursorFetch(void)
 {
-  ENTRY("vCursorFetch"_Stz);
+  ENTRY(); // ENTRY("vCursorFetch"_Stz);
   
   i8 iPeek = 1;
   
@@ -36,7 +36,7 @@ void Step::vCursorFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCursorStore(void)
 {
-  ENTRY("vCursorStore"_Stz);
+  ENTRY(); // ENTRY("vCursorStore"_Stz);
   
   i8 iPoke = 1;
   

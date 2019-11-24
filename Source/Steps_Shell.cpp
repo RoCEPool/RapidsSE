@@ -17,7 +17,7 @@ void Step::vAddSteps_Shell(void)
 /*----------------------------------------------------------------------------*/
 void Step::vShellExecute(void)
 {
-  ENTRY("vShellExecute"_Stz);
+  ENTRY(); // ENTRY("vShellExecute"_Stz);
   
   GenVar xCommand;
   

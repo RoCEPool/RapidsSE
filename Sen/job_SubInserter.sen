@@ -20,7 +20,7 @@
 
   // get the job from the task
   pThisTask task.job@ to pJob_SubInserter
-  //pJob_SubInserter pThisTask "InsertRow_req task: %v job_InsertRow %v" fmt.print
+  //pJob_SubInserter pThisTask "InsertRow_req task: %v job_InsertRow %v" .printf
 
   // distribute the job
   //Job_InsertRow job.distribute
@@ -67,7 +67,7 @@
 
   // there should be a table folder
   sTableNm checkIsTableFolder not if pJob_SubInserter <ERROR_JOB> !!logError exit then
-  //sTableNm "In table folder: %v" fmt.print
+  //sTableNm "In table folder: %v" .printf
 
   // push table dictionary
   sTableNm pushTable assert

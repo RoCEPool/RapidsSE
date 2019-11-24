@@ -34,7 +34,7 @@ void Step::vAddSteps_Word(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWord(void)
 {
-  ENTRY("vWord"_Stz);
+  ENTRY(); // ENTRY("vWord"_Stz);
   EXIT();
 }
 
@@ -43,7 +43,7 @@ void Step::vWord(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordCategoryFetch(void)
 {
-  ENTRY("vWordKindGet"_Stz);
+  ENTRY(); // ENTRY("vWordKindGet"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -62,7 +62,7 @@ void Step::vWordCategoryFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordCategoryStore(void)
 {
-  ENTRY("vWordKindSet"_Stz);
+  ENTRY(); // ENTRY("vWordKindSet"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -84,7 +84,7 @@ void Step::vWordCategoryStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordDump(void)
 {
-ENTRY("vWordDump"_Stz);
+  ENTRY(); // ENTRY("vWordDump"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -101,7 +101,7 @@ ENTRY("vWordDump"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vWordEnmSetFetch(void)
 {
-  ENTRY("vWordEnmSetFetch"_Stz);
+  ENTRY(); // ENTRY("vWordEnmSetFetch"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -120,7 +120,7 @@ void Step::vWordEnmSetFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordEnmSetStore(void)
 {
-  ENTRY("vWordEnmSetStore"_Stz);
+  ENTRY(); // ENTRY("vWordEnmSetStore"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -142,7 +142,7 @@ void Step::vWordEnmSetStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordExitHookGet(void)
 {
-  ENTRY("vWordExitHookGet"_Stz);
+  ENTRY(); // ENTRY("vWordExitHookGet"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -161,7 +161,7 @@ void Step::vWordExitHookGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordExitHookSet(void)
 {
-  ENTRY("vWordExitHookSet"_Stz);
+  ENTRY(); // ENTRY("vWordExitHookSet"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -182,7 +182,7 @@ void Step::vWordExitHookSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordForget(void)
 {
-  ENTRY("vWordForget"_Stz);
+  ENTRY(); // ENTRY("vWordForget"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -202,7 +202,7 @@ void Step::vWordForget(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordImmediateGet(void)
 {
-  ENTRY("vWordImmediateGet"_Stz);
+  ENTRY(); // ENTRY("vWordImmediateGet"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -221,7 +221,7 @@ void Step::vWordImmediateGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordImmediateSet(void)
 {
-  ENTRY("vWordImmediateSet"_Stz);
+  ENTRY(); // ENTRY("vWordImmediateSet"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -242,7 +242,7 @@ void Step::vWordImmediateSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordIsImmediate(void)
 {
-  ENTRY("vWordIsImmediate"_Stz);
+  ENTRY(); // ENTRY("vWordIsImmediate"_Stz);
   
   // we should just modify the pointers rather than actually pop
   
@@ -263,7 +263,7 @@ void Step::vWordIsImmediate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordIsIntrinsic(void)
 {
-  ENTRY("vWordIsIntrinsic"_Stz);
+  ENTRY(); // ENTRY("vWordIsIntrinsic"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -282,7 +282,7 @@ void Step::vWordIsIntrinsic(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordKindFetch(void)
 {
-  ENTRY("vWordKindFetch"_Stz);
+  ENTRY(); // ENTRY("vWordKindFetch"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -301,7 +301,7 @@ void Step::vWordKindFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordKindStore(void)
 {
-  ENTRY("vWordKindStore"_Stz);
+  ENTRY(); // ENTRY("vWordKindStore"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -323,7 +323,7 @@ void Step::vWordKindStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordNameFetch(void)
 {
-ENTRY("vWordName"_Stz);
+  ENTRY(); // ENTRY("vWordName"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -342,7 +342,7 @@ ENTRY("vWordName"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vWordNameStore(void)
 {
-  ENTRY("vWordName"_Stz);
+  ENTRY(); // ENTRY("vWordName"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -363,7 +363,7 @@ void Step::vWordNameStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordPrev(void)
 {
-  ENTRY("vWordPrev"_Stz);
+  ENTRY(); // ENTRY("vWordPrev"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -382,7 +382,7 @@ void Step::vWordPrev(void)
 /*----------------------------------------------------------------------------*/
 void Step::vWordSee(void)
 {
-  ENTRY("vWordSee"_Stz);
+  ENTRY(); // ENTRY("vWordSee"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )

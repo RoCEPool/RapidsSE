@@ -18,7 +18,7 @@ void Step::vAddSteps_Utility(void)
 /*----------------------------------------------------------------------------*/
 void Step::vUtilityPrefetch(void)
 {
-  ENTRY("vUtilityPrefetch"_Stz);
+  ENTRY(); // ENTRY("vUtilityPrefetch"_Stz);
   
   Prefetch::vTest();
   
@@ -30,7 +30,7 @@ void Step::vUtilityPrefetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vUtilitySchemaTest(void)
 {
-  ENTRY("vUtilitySchemaTest"_Stz);
+  ENTRY(); // ENTRY("vUtilitySchemaTest"_Stz);
   
   s32 sStream;
   if ( ! m_pDataStack->bPopS32(sStream) )

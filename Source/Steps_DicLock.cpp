@@ -18,7 +18,7 @@ void Step::vAddSteps_DicLock(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicLockDropWrite(void)
 {
-  ENTRY("vDicLockDropWrite"_Stz);
+  ENTRY(); // ENTRY("vDicLockDropWrite"_Stz);
   
   AM::pDicLock()->vDropWrite();
   
@@ -30,7 +30,7 @@ void Step::vDicLockDropWrite(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicLockGrabWrite(void)
 {
-  ENTRY("vDicLockGrabWrite"_Stz);
+  ENTRY(); // ENTRY("vDicLockGrabWrite"_Stz);
   
   AM::pDicLock()->vGrabWrite();
     

@@ -33,7 +33,7 @@ void Step::vAddSteps_Assert(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssert(void)
 {
-  ENTRY("vAssert"_Stz);
+  ENTRY(); // ENTRY("vAssert"_Stz);
   
   i8 iTrue;
   if ( ! m_pDataStack->bPopAsInt(iTrue) )
@@ -49,19 +49,19 @@ void Step::vAssert(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertClass(void)
 {
-  ENTRY("vAssertClass"_Stz);
+  ENTRY(); // ENTRY("vAssertClass"_Stz);
   
   i8 iAssertClassNo;
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  ForthValue* aValue = m_pDataStack->aPeekValue();
+  StkVal* aStkVal = m_pDataStack->aTopVal();
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aValue->eClass();
+  eCN eClassNo = aStkVal->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* aPtrVal = _aPtrVal(aValue);
+    PtrVal* aPtrVal = _aPtrVal(aStkVal);
     eClassNo = aPtrVal->pObj()->eClass();
   }
   
@@ -77,19 +77,19 @@ void Step::vAssertClass(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertClass_0(void)
 {
-  ENTRY("vAssertClass_0"_Stz);
+  ENTRY(); // ENTRY("vAssertClass_0"_Stz);
   
   i8 iAssertClassNo;
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  ForthValue* aValue = m_pDataStack->aPeekValue(0);
+  StkVal* aStkVal = m_pDataStack->aPeekVal(0);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aValue->eClass();
+  eCN eClassNo = aStkVal->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* aPtrVal = _aPtrVal(aValue);
+    PtrVal* aPtrVal = _aPtrVal(aStkVal);
     eClassNo = aPtrVal->pObj()->eClass();
   }
   
@@ -105,19 +105,19 @@ void Step::vAssertClass_0(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertClass_1(void)
 {
-  ENTRY("vAssertClass_1"_Stz);
+  ENTRY(); // ENTRY("vAssertClass_1"_Stz);
   
   i8 iAssertClassNo;
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  ForthValue* aValue = m_pDataStack->aPeekValue(1);
+  StkVal* aStkVal = m_pDataStack->aPeekVal(1);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aValue->eClass();
+  eCN eClassNo = aStkVal->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* aPtrVal = _aPtrVal(aValue);
+    PtrVal* aPtrVal = _aPtrVal(aStkVal);
     eClassNo = aPtrVal->pObj()->eClass();
   }
   
@@ -133,19 +133,19 @@ void Step::vAssertClass_1(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertClass_2(void)
 {
-  ENTRY("vAssertClass_2"_Stz);
+  ENTRY(); // ENTRY("vAssertClass_2"_Stz);
   
   i8 iAssertClassNo;
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  ForthValue* aValue = m_pDataStack->aPeekValue(2);
+  StkVal* aStkVal = m_pDataStack->aPeekVal(2);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aValue->eClass();
+  eCN eClassNo = aStkVal->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* aPtrVal = _aPtrVal(aValue);
+    PtrVal* aPtrVal = _aPtrVal(aStkVal);
     eClassNo = aPtrVal->pObj()->eClass();
   }
   
@@ -161,19 +161,19 @@ void Step::vAssertClass_2(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertClass_3(void)
 {
-  ENTRY("vAssertClass_3"_Stz);
+  ENTRY(); // ENTRY("vAssertClass_3"_Stz);
   
   i8 iAssertClassNo;
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  ForthValue* aValue = m_pDataStack->aPeekValue(3);
+  StkVal* aStkVal = m_pDataStack->aPeekVal(3);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aValue->eClass();
+  eCN eClassNo = aStkVal->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* aPtrVal = _aPtrVal(aValue);
+    PtrVal* aPtrVal = _aPtrVal(aStkVal);
     eClassNo = aPtrVal->pObj()->eClass();
   }
   
@@ -189,19 +189,19 @@ void Step::vAssertClass_3(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertClass_4(void)
 {
-  ENTRY("vAssertClass_4"_Stz);
+  ENTRY(); // ENTRY("vAssertClass_4"_Stz);
   
   i8 iAssertClassNo;
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  ForthValue* aValue = m_pDataStack->aPeekValue(4);
+  StkVal* aStkVal = m_pDataStack->aPeekVal(4);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aValue->eClass();
+  eCN eClassNo = aStkVal->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* aPtrVal = _aPtrVal(aValue);
+    PtrVal* aPtrVal = _aPtrVal(aStkVal);
     eClassNo = aPtrVal->pObj()->eClass();
   }
   
@@ -217,7 +217,7 @@ void Step::vAssertClass_4(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_0(void)
 {
-ENTRY("vAssertStack_0"_Stz);
+  ENTRY(); // ENTRY("vAssertStack_0"_Stz);
 
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -233,7 +233,7 @@ ENTRY("vAssertStack_0"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_0more(void)
 {
-ENTRY("vAssertStack_0more"_Stz);
+  ENTRY(); // ENTRY("vAssertStack_0more"_Stz);
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -249,7 +249,7 @@ ENTRY("vAssertStack_0more"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_1(void)
 {
-ENTRY("vAssertStack_1"_Stz);
+  ENTRY(); // ENTRY("vAssertStack_1"_Stz);
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -265,7 +265,7 @@ ENTRY("vAssertStack_1"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_1more(void)
 {
-ENTRY("vAssertStack_1more"_Stz);
+  ENTRY(); // ENTRY("vAssertStack_1more"_Stz);
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -281,7 +281,7 @@ ENTRY("vAssertStack_1more"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_2(void)
 {
-ENTRY("vAssertStack_2"_Stz);
+  ENTRY(); // ENTRY("vAssertStack_2"_Stz);
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -297,7 +297,7 @@ ENTRY("vAssertStack_2"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_2more(void)
 {
-ENTRY("vAssertStack_2more"_Stz);
+  ENTRY(); // ENTRY("vAssertStack_2more"_Stz);
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -313,7 +313,7 @@ ENTRY("vAssertStack_2more"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_3(void)
 {
-ENTRY("vAssertStack_3"_Stz);
+  ENTRY(); // ENTRY("vAssertStack_3"_Stz);
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -329,7 +329,7 @@ ENTRY("vAssertStack_3"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_3more(void)
 {
-ENTRY("vAssertStack_3more"_Stz);
+  ENTRY(); // ENTRY("vAssertStack_3more"_Stz);
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -345,7 +345,7 @@ ENTRY("vAssertStack_3more"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_4(void)
 {
-ENTRY("vAssertStack_4"_Stz);
+  ENTRY(); // ENTRY("vAssertStack_4"_Stz);
   
   i8 iStackValues = m_pDataStack->nValues();
   
@@ -361,7 +361,7 @@ ENTRY("vAssertStack_4"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vAssertStack_4more(void)
 {
-ENTRY("vAssertStack_4more"_Stz);
+  ENTRY(); // ENTRY("vAssertStack_4more"_Stz);
   
   i8 iStackValues = m_pDataStack->nValues();
   

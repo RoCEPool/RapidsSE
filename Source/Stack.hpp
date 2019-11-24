@@ -14,13 +14,13 @@ namespace SenVM
   friend class Steps::Step;
 
   private:
-    eKK    m_eKind; // kind of stack
+    eKK     m_eKind;        // kind of stack
   
-    ForthValue* m_aTop;   // current top of stack
-    i8     m_nValues;     // number of values currently on stack
+    StkVal* m_aTop;         // current top of stack
+    i8      m_nValues;      // number of values currently on stack
 
-    ForthValue* m_aRetryTop;    // reset to this top of stack
-    i8     m_nRetryValues; // reset with this many values on stack
+    StkVal* m_aRetryTop;    // reset to this top of stack
+    i8      m_nRetryValues; // reset with this many values on stack
     
     Footer m_xHazard;
     
@@ -48,9 +48,8 @@ namespace SenVM
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    ForthValue* aPeekValue(void);
-    ForthValue* aPeekValue(i8 i_Value);
-    void vPeekValue(i8 i_Value, GenVar& xGenVar);
+    StkVal* aPeekVal(i8 i_Val);
+    void vPeekValue(i8 i_Val, GenVar& xGenVar);
     bool bPeekZero(void);
   
     bool bPopCell(Cell*& aCell);
@@ -77,6 +76,7 @@ namespace SenVM
     bool bPopS48K(s48K& sArg1, i8& iArg2);
     bool bPopS48K(s48K& sArg1, i8& iArg2, i8& iArg3);
     bool bPopS48K(s48K& sArg1, s48K& sArg2);
+    bool bPopString(String* pString);
     bool bPopAsInt(i8& iArg1);
     bool bPopAsI8_Inline(i8& iArg1);
     bool bPopAsInt_Quick(i8& iArg1);
@@ -96,12 +96,14 @@ namespace SenVM
     void vPushS4K(s4K& s4K);
     void vPushS16KB(s16KB& s16KB);
     void vPushS48K(s48K& s48K);
-    void vPushValue(ForthValue* aValue);
-    void vPushValue(ForthValue& xValue);
+    void vPushValue(StkVal* aStkVal);
+    void vPushValue(StkVal& xStkVal);
   
     void vReset(void);
     void vRetry(void);
     void vRetryPoint(void);
+  
+    StkVal* aTopVal(void);
   
     i8 nValues(void);
   
@@ -110,11 +112,11 @@ namespace SenVM
   
   private:
     void vPopLocal(Local* aLocal);
-    void vPopVal(ForthValue* aValue);
+    void vPopVal(StkVal* aStkVal);
     void vPushBy(i8 nBytes);
-    void vPushVal(ForthValue* aValue);
-    ForthValue* aStackBase(void);
-    ForthValue* aStackLimit(void);
+    void vPushVal(StkVal* aStkVal);
+    StkVal* aStackBase(void);
+    StkVal* aStackLimit(void);
     
     Footer* aFooter(void);
     Footer* aHazard(void);
@@ -131,7 +133,7 @@ namespace SenVM
     
     aTop += nBytes;
     
-    m_aTop = reinterpret_cast<ForthValue*>(aTop);
+    m_aTop = reinterpret_cast<StkVal*>(aTop);
   }
   
   /*----------------------------------------------------------------------------*/

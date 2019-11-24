@@ -20,7 +20,7 @@ void Step::vAddSteps_JobTruncateTable(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubTruncateSlotFetch(void)
 {
-  ENTRY("vJob_SubTruncateSlotFetch"_Stz);
+  ENTRY(); // ENTRY("vJob_SubTruncateSlotFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -37,7 +37,7 @@ void Step::vJob_SubTruncateSlotFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubTruncateTruncateJobIdFetch(void)
 {
-  ENTRY("vJob_SubTruncateTruncateJobIdFetch"_Stz);
+  ENTRY(); // ENTRY("vJob_SubTruncateTruncateJobIdFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -54,7 +54,7 @@ void Step::vJob_SubTruncateTruncateJobIdFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_TruncateTableSpawnSub(void)
 {
-  ENTRY("vJob_TruncateTableSpawnSub"_Stz);
+  ENTRY(); // ENTRY("vJob_TruncateTableSpawnSub"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -78,16 +78,16 @@ void Step::vJob_TruncateTableSpawnSub(void)
   //! preJob to be called only from prompt
   //! copy enameSet from parent job here (to be moved to pNew)
   //pJob_Universal->m_oEnameSet.vPrint();
-  pJob_SubTruncate->m_oEnameSet.vCopy(&pJob_Universal->m_oEnameSet);
+  pJob_SubTruncate->pEnameSet()->vCopy(pJob_Universal->pEnameSet());
   //pJob_SubTruncate->m_oEnameSet.vPrint();
   //!
   
   pJob_SubTruncate->vSeed(SS_SEED_RUN);
   
-  pJob_SubTruncate->m_iParentId  = pJob_Universal->m_iFocalId;
+  pJob_SubTruncate->vParentId(pJob_Universal->m_iFocalId);
   pJob_SubTruncate->m_iTruncateJobId = iTruncateJobId;
-  pJob_SubTruncate->m_oEnameSet.vAdd("<tableNm>"_Stz,
-                                   pJob_Universal->m_oEnameSet.szValue("<tableNm>"_Stz));
+  pJob_SubTruncate->pEnameSet()->vAdd("<tableNm>"_Stz,
+                        pJob_Universal->pEnameSet()->szValue("<tableNm>"_Stz));
   pJob_SubTruncate->vSlot(iSlot);
  
   pJob_SubTruncate->m_eJobType = pJob_Universal->m_eJobType;

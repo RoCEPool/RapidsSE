@@ -17,7 +17,7 @@ void Step::vAddSteps_Env(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnvGet(void)
 {
-  ENTRY("vEnvGet"_Stz);
+  ENTRY(); // ENTRY("vEnvGet"_Stz);
   
   s32 sEnvName;
   

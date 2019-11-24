@@ -92,31 +92,6 @@ bool QueueBuffer::bAppend(Object* pObject)
   
   return true;
 }
-/*----------------------------------------------------------------------------*/
-//bool QueueBuffer::bAppend(Object* pObject)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
-//
-//  PtrVal xPtrVal;
-//  xPtrVal = pObject;
-//
-//  ForthValue* aValue = &xPtrVal;
-//
-//  i8 nBytes = aValue->nSize();
-//
-//  Stz* aFinalByteOfValue = aAdd<Stz*>(m_aNextFree,nBytes-1);
-//
-//  if (aFinalByteOfValue > PoolBuffer::aLastUsableByte())
-//    return false;
-//
-//  MemLib::vCopy(m_aNextFree,aValue,nBytes,CN_QUEUEBUFFER);
-//
-//  m_aNextFree = aAdd<ForthValue*>(m_aNextFree,nBytes);
-//
-//  m_nPointers++;
-//
-//  return true;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get number of values in queue                                              */

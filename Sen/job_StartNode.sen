@@ -23,7 +23,7 @@
 
   //pJob_StartNode job.nodeName@ to sNodeNm
   <nodeNm> to sNodeNm
-  sNodeNm "Starting node %v" fmt.print
+  sNodeNm "Starting node %v" .printf
 
   sNodeNm grid::spawnAddingNode
 

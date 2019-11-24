@@ -18,7 +18,7 @@ void Step::vAddSteps_Cast(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCastInt(void)
 {
-  ENTRY("vCastInt"_Stz);
+  ENTRY(); // ENTRY("vCastInt"_Stz);
   
   Object* pPtr;
   if ( ! m_pDataStack->bPopObject(pPtr) )
@@ -34,7 +34,7 @@ void Step::vCastInt(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCastPtr(void)
 {
-  ENTRY("vCastPtr"_Stz);
+  ENTRY(); // ENTRY("vCastPtr"_Stz);
   
   i8 iInt;
   if ( ! m_pDataStack->bPopI8(iInt) )

@@ -42,7 +42,7 @@ void Step::vAddSteps_Forth(void)
 /*----------------------------------------------------------------------------*/
 void Step::vAllot(void)
 {
-  ENTRY("vAllot"_Stz);
+  ENTRY(); // ENTRY("vAllot"_Stz);
   
   i8 iBytes;
   
@@ -64,7 +64,7 @@ void Step::vAllot(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCell(void)
 {
-  ENTRY("vCell"_Stz);
+  ENTRY(); // ENTRY("vCell"_Stz);
   
   i8 nBytes = sizeof(void*);
   
@@ -78,7 +78,7 @@ void Step::vCell(void)
 /*----------------------------------------------------------------------------*/
 void Step::vColon(void)
 {
-  ENTRY("vColon"_Stz);
+  ENTRY(); // ENTRY("vColon"_Stz);
   
   s32 sName;
   
@@ -108,7 +108,7 @@ void Step::vColon(void)
 /*----------------------------------------------------------------------------*/
 void Step::vComma(void)
 {
-  ENTRY("vComma"_Stz);
+  ENTRY(); // ENTRY("vComma"_Stz);
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -126,7 +126,7 @@ void Step::vComma(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCompileComma(void)
 {
-  ENTRY("vCompileComma"_Stz);
+  ENTRY(); // ENTRY("vCompileComma"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -147,7 +147,7 @@ void Step::vCompileComma(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCreate(void)
 {
-  ENTRY("vCreate"_Stz);
+  ENTRY(); // ENTRY("vCreate"_Stz);
   
   m_pCompiler->vNextToken();
   
@@ -172,7 +172,7 @@ void Step::vCreate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCreatePersistent(void)
 {
-  ENTRY("vCreate"_Stz);
+  ENTRY(); // ENTRY("vCreate"_Stz);
   
   m_pCompiler->vNextToken();
   
@@ -196,7 +196,7 @@ void Step::vCreatePersistent(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCreateFrom(void)
 {
-  ENTRY("vCreateFrom"_Stz);
+  ENTRY(); // ENTRY("vCreateFrom"_Stz);
   
   s32 sName;
   if ( ! m_pDataStack->bPopS32(sName) )
@@ -224,7 +224,7 @@ void Step::vCreateFrom(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCreateFromPersistent(void)
 {
-  ENTRY("vCreateFrom"_Stz);
+  ENTRY(); // ENTRY("vCreateFrom"_Stz);
   
   s32 sName;
   if ( ! m_pDataStack->bPopS32(sName) )
@@ -249,7 +249,7 @@ void Step::vCreateFromPersistent(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCreateFromInRoot(void)
 {
-  ENTRY("vCreateFromInRoot"_Stz);
+  ENTRY(); // ENTRY("vCreateFromInRoot"_Stz);
   
   s32 sName;
   if ( ! m_pDataStack->bPopS32(sName) )
@@ -270,7 +270,7 @@ void Step::vCreateFromInRoot(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCreateTenants(void)
 {
-  ENTRY("vCreateTenants"_Stz);
+  ENTRY(); // ENTRY("vCreateTenants"_Stz);
   
   m_pCompiler->vNextToken();
     
@@ -290,7 +290,7 @@ void Step::vCreateTenants(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDoes(void)
 {
-  ENTRY("vDoes"_Stz);
+  ENTRY(); // ENTRY("vDoes"_Stz);
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -307,7 +307,7 @@ void Step::vDoes(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDoes_RT(void)
 {
-  ENTRY("vDoes_RT"_Stz);
+  ENTRY(); // ENTRY("vDoes_RT"_Stz);
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -322,7 +322,7 @@ void Step::vDoes_RT(void)
 /*----------------------------------------------------------------------------*/
 void Step::vExit_RT(void)
 {
-  ENTRY("vExit_RT"_Stz);
+  ENTRY(); // ENTRY("vExit_RT"_Stz);
   
   //vTrace("Exit: r eturn stack %lld\n"_Stz, m_pReturnStack->iValues());
   
@@ -331,7 +331,7 @@ void Step::vExit_RT(void)
   
   if (m_pLocalsFrame
       && m_pLocalsFrame->aDiscardPoint() ==
-      m_pReturnStack->aPeekValue())
+      m_pReturnStack->aTopVal())
     m_pTask->vLocalsPop();
   
   Cell* aCell;
@@ -348,7 +348,7 @@ void Step::vExit_RT(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFind(void)
 {
-  ENTRY("vFind"_Stz);
+  ENTRY(); // ENTRY("vFind"_Stz);
   
   s256 sName;
   if ( ! m_pDataStack->bPopS256(sName) )
@@ -370,7 +370,7 @@ void Step::vFind(void)
 /*----------------------------------------------------------------------------*/
 void Step::vFindInCurrent(void)
 {
-  ENTRY("vFindInCurrent"_Stz);
+  ENTRY(); // ENTRY("vFindInCurrent"_Stz);
   
   s256 sName;
   if ( ! m_pDataStack->bPopS256(sName) )
@@ -392,7 +392,7 @@ void Step::vFindInCurrent(void)
 /*----------------------------------------------------------------------------*/
 void Step::vForget(void)
 {
-  ENTRY("vForget"_Stz);
+  ENTRY(); // ENTRY("vForget"_Stz);
   
   m_pCompiler->vNextToken();
   
@@ -420,7 +420,7 @@ void Step::vForget(void)
 /*----------------------------------------------------------------------------*/
 void Step::vImmediate(void)
 {
-  ENTRY("vImmediate"_Stz);
+  ENTRY(); // ENTRY("vImmediate"_Stz);
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -436,7 +436,7 @@ void Step::vImmediate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLocate(void)
 {
-  ENTRY("vLocate"_Stz);
+  ENTRY(); // ENTRY("vLocate"_Stz);
   
   i8 iAddrAsInt;
   if ( ! m_pDataStack->bPopAsInt(iAddrAsInt) )
@@ -465,7 +465,7 @@ void Step::vLocate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPostpone(void)
 {
-  ENTRY("vPostpone"_Stz);
+  ENTRY(); // ENTRY("vPostpone"_Stz);
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -506,7 +506,7 @@ void Step::vPostpone(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPrompt(void)
 {
-  ENTRY("vImmediate"_Stz);
+  ENTRY(); // ENTRY("vImmediate"_Stz);
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -520,7 +520,7 @@ void Step::vPrompt(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSee(void)
 {
-  ENTRY("vSee"_Stz);
+  ENTRY(); // ENTRY("vSee"_Stz);
   
   s48K sString;
   
@@ -568,17 +568,17 @@ void Step::vSee(void)
       
       aDoesCell++;
       
-      ForthValue* aValue = reinterpret_cast<ForthValue*>(aDoesCell);
+      StkVal* aStkVal = reinterpret_cast<StkVal*>(aDoesCell);
       
-      if (CN_STRVAL == aValue->eClass()) {
-        vTrace(" \"%s\"\n"_Stz,_aStrVal(aValue)->azChar());
+      if (CN_STRVAL == aStkVal->eClass()) {
+        vTrace(" \"%s\"\n"_Stz,_aStrVal(aStkVal)->azChar());
       }
       else {
-        aValue->vToString(sString);
+        aStkVal->vToString(sString);
         vTrace(" %s\n"_Stz,sString.azChar());
       }
       
-      i8 iBytes = aValue->nSize();
+      i8 iBytes = aStkVal->nStackBytes();
       aDoesCell = aAdd<Cell*>(aDoesCell,iBytes);
       
       continue;
@@ -609,7 +609,7 @@ void Step::vSee(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSemicolon(void)
 {
-  ENTRY("vSemicolon"_Stz);
+  ENTRY(); // ENTRY("vSemicolon"_Stz);
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -654,7 +654,7 @@ void Step::vSemicolon(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSeriesName(void)
 {
-  ENTRY("vSeriesName"_Stz);
+  ENTRY(); // ENTRY("vSeriesName"_Stz);
   
   s32 sName;
   if ( ! m_pDataStack->bPopS32(sName) )
@@ -699,7 +699,7 @@ void Step::vSeriesName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSubDic(void)
 {
-  ENTRY("vSubDic"_Stz);
+  ENTRY(); // ENTRY("vSubDic"_Stz);
   
   m_pCompiler->vNextToken();
   
@@ -726,7 +726,7 @@ void Step::vSubDic(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTick(void)
 {
-  ENTRY("vTick"_Stz);
+  ENTRY(); // ENTRY("vTick"_Stz);
   
   m_pCompiler->vNextToken();
     

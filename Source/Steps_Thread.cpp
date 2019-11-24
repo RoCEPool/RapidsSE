@@ -30,7 +30,7 @@ void Step::vAddSteps_Thread(void)
 /*----------------------------------------------------------------------------*/
 void Step::vThreadBind(void)
 {
-ENTRY("vThreadBind"_Stz);
+  ENTRY(); // ENTRY("vThreadBind"_Stz);
   
   i8 iCpu;
   Object* pObject;
@@ -55,7 +55,7 @@ ENTRY("vThreadBind"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vThreadCpu(void)
 {
-ENTRY("vThreadCpu"_Stz);
+  ENTRY(); // ENTRY("vThreadCpu"_Stz);
   
   Object* pObject;
   
@@ -76,7 +76,7 @@ ENTRY("vThreadCpu"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vThreadDedicatedFetch(void)
 {
-  ENTRY("vThreadDedicatedFetch"_Stz);
+  ENTRY(); // ENTRY("vThreadDedicatedFetch"_Stz);
   
   Object* pThreadObject;
   if ( ! m_pDataStack->bPopObject(pThreadObject) )
@@ -93,7 +93,7 @@ void Step::vThreadDedicatedFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vThreadDedicatedStore(void)
 {
-  ENTRY("vThreadDedicatedStore"_Stz);
+  ENTRY(); // ENTRY("vThreadDedicatedStore"_Stz);
   
   Object* pThreadObject;
   if ( ! m_pDataStack->bPopObject(pThreadObject) )
@@ -114,7 +114,7 @@ void Step::vThreadDedicatedStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vThreadDisableRealtime(void)
 {
-  ENTRY("vThreadDisableRealtime"_Stz);
+  ENTRY(); // ENTRY("vThreadDisableRealtime"_Stz);
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -128,7 +128,7 @@ void Step::vThreadDisableRealtime(void)
 /*----------------------------------------------------------------------------*/
 void Step::vThreadDump(void)
 {
-ENTRY("vThreadDump"_Stz);
+  ENTRY(); // ENTRY("vThreadDump"_Stz);
   
   Object* pObject;
   
@@ -149,7 +149,7 @@ ENTRY("vThreadDump"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vThreadEnableRealtime(void)
 {
-  ENTRY("vThreadEnableRealtime"_Stz);
+  ENTRY(); // ENTRY("vThreadEnableRealtime"_Stz);
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -163,7 +163,7 @@ void Step::vThreadEnableRealtime(void)
 /*----------------------------------------------------------------------------*/
 void Step::vThreadId(void)
 {
-ENTRY("vThreadId"_Stz);
+  ENTRY(); // ENTRY("vThreadId"_Stz);
   
   Object* pObject;
   
@@ -185,7 +185,7 @@ ENTRY("vThreadId"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vThreadSleepMsec(void)
 {
-ENTRY("vThreadSleepMsec"_Stz);
+  ENTRY(); // ENTRY("vThreadSleepMsec"_Stz);
   
   i8 nMilliseconds;
   
@@ -204,7 +204,7 @@ ENTRY("vThreadSleepMsec"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vThreadSleepNsec(void)
 {
-  ENTRY("vThreadSleepNsec"_Stz);
+  ENTRY(); // ENTRY("vThreadSleepNsec"_Stz);
   
   i8 nNanoseconds;
   
@@ -223,7 +223,7 @@ void Step::vThreadSleepNsec(void)
 /*----------------------------------------------------------------------------*/
 void Step::vThreadSleepSsec(void)
 {
-  ENTRY("vThreadSleepSsec"_Stz);
+  ENTRY(); // ENTRY("vThreadSleepSsec"_Stz);
   
   i8 nSeconds;
   
@@ -242,7 +242,7 @@ void Step::vThreadSleepSsec(void)
 /*----------------------------------------------------------------------------*/
 void Step::vThreadSleepUsec(void)
 {
-ENTRY("vThreadSleepUsec"_Stz);
+  ENTRY(); // ENTRY("vThreadSleepUsec"_Stz);
   
   i8 nMicroseconds;
   

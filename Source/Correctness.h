@@ -38,6 +38,9 @@ namespace Correctness
 
 #include "Statistics.hpp"
 #include "Focal.hpp"
+
+#include "String.hpp"
+
 #include "PTR.hpp"
 #include "SMA.hpp"
 #include "REF.hpp"

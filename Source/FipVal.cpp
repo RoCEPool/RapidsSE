@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FipVal.cpp - Forth Instruction Pointer ForthValue                          */
+/* FipVal.cpp - Forth Instruction Pointer StkVal                          */
 /*============================================================================*/
 
 #include "SenVM.h"
@@ -31,9 +31,9 @@ void* FipVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 FipVal::FipVal(void)
-: ForthValue(CN_FIPVAL)
+: StkVal(CN_FIPVAL)
 {
-  m_xHeader.vSetClass(CN_FIPVAL);
+  _Header::vClass(CN_FIPVAL);
   
   m_aFip = nullptr;
   
@@ -62,7 +62,7 @@ Cell* FipVal::aFipPtr(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 FipVal::nSize(void)
+i8 FipVal::nStackBytes(void)
 {
   return sizeof(FipVal);
 }
@@ -70,9 +70,9 @@ i8 FipVal::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void FipVal::vToString(Stz* aWorkspace)
+void FipVal::vToString(Stz* szStz)
 {
-  * aWorkspace = reinterpret_cast<void*>(m_aFip);
+  * szStz = reinterpret_cast<void*>(m_aFip);
 }
 
 /*============================================================================*/

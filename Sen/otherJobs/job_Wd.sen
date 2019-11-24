@@ -15,7 +15,7 @@
     word.see
   else
     drop
-    <wordNm> "No such word: %v" fmt.print
+    <wordNm> "No such word: %v" .printf
   then
 
   <<logExit <DONE_REQ>

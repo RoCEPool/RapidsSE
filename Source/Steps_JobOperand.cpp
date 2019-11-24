@@ -17,7 +17,7 @@ void Step::vAddSteps_JobOperand(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_OperandPipeOut(void)
 {
-  ENTRY("vJob_OperandPipeOut"_Stz);
+  ENTRY(); // ENTRY("vJob_OperandPipeOut"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -25,7 +25,7 @@ void Step::vJob_OperandPipeOut(void)
   Job_Operand* pJob_Operand = _pJob_Operand(pJobPtr);
   
   // find the parent participant job
-  i8 iParentJob = pJob_Operand->m_iParentId;
+  i8 iParentJob = pJob_Operand->iParentId();
   Job* pParentJob = Scheduler::pFindParticipatingJob(iParentJob);
 
   // get the next stage the xmit is supposed to xmit to

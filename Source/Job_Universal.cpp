@@ -188,7 +188,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 //    return EC_INVALID_COMMAND;
 //  }
 
-  bool b = JobHelper::bParseCmd(&m_oEnameSet,pTknVec);
+  bool b = JobHelper::bParseCmd(pEnameSet(),pTknVec);
   if (! b) {
     vTrace("Unable to match job syntax\n"_Stz);
     m_bHasError = true;

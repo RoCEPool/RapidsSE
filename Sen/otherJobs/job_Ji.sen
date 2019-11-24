@@ -15,7 +15,7 @@
     word.EnameSet@ EnameSet.asStr .
   else
     drop
-    <wordNm> "No such job: %v" fmt.print
+    <wordNm> "No such job: %v" .printf
   then
 
   <<logExit <DONE_REQ>

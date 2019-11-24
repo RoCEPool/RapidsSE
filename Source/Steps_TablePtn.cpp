@@ -23,7 +23,7 @@ void Step::vAddSteps_TablePartition(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnAttemptGrabRead(void)
 {
-  ENTRY("vTablePtnAttemptGrabRead"_Stz);
+  ENTRY(); // ENTRY("vTablePtnAttemptGrabRead"_Stz);
   
   Object* pPtrTablePtn;
   if ( ! m_pDataStack->bPopObject(pPtrTablePtn) )
@@ -43,7 +43,7 @@ void Step::vTablePtnAttemptGrabRead(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnAttemptGrabWrite(void)
 {
-  ENTRY("vTablePtnAttemptGrabWrite"_Stz);
+  ENTRY(); // ENTRY("vTablePtnAttemptGrabWrite"_Stz);
   
   Object* pPtrTablePtn;
   if ( ! m_pDataStack->bPopObject(pPtrTablePtn) )
@@ -63,7 +63,7 @@ void Step::vTablePtnAttemptGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnDropRead(void)
 {
-  ENTRY("vTablePtnDropRead"_Stz);
+  ENTRY(); // ENTRY("vTablePtnDropRead"_Stz);
   
   Object* pPtrTablePtn;
   if ( ! m_pDataStack->bPopObject(pPtrTablePtn) )
@@ -81,7 +81,7 @@ void Step::vTablePtnDropRead(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnDump(void)
 {
-  ENTRY("vTablePtnDump"_Stz);
+  ENTRY(); // ENTRY("vTablePtnDump"_Stz);
   
   Object* pPtrTablePtn;
   if ( ! m_pDataStack->bPopObject(pPtrTablePtn) )
@@ -98,7 +98,7 @@ void Step::vTablePtnDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnDropWrite(void)
 {
-  ENTRY("vTablePtnDropWrite"_Stz);
+  ENTRY(); // ENTRY("vTablePtnDropWrite"_Stz);
   
   Object* pPtrTablePtn;
   if ( ! m_pDataStack->bPopObject(pPtrTablePtn) )
@@ -116,7 +116,7 @@ void Step::vTablePtnDropWrite(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnIsLocked(void)
 {
-  ENTRY("vTablePtnIsLocked"_Stz);
+  ENTRY(); // ENTRY("vTablePtnIsLocked"_Stz);
   
   Object* pPtrTablePtn;
   if ( ! m_pDataStack->bPopObject(pPtrTablePtn) )

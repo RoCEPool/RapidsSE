@@ -28,7 +28,7 @@ namespace SenVM
       
       Cell*   m_aJumpTo;      // a pointer to another cell within same routine
       
-      ForthValue   m_xEmbValue;    // or an embedded value (for PushValue)
+      StkVal   m_xEmbValue;    // or an embedded value (for PushValue)
     };
   };
   

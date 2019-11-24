@@ -18,7 +18,7 @@ void Step::vAddSteps_Persistence(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPersistenceCheckpoint(void)
 {
-  ENTRY("vPersistenceCheckpoint"_Stz);
+  ENTRY(); // ENTRY("vPersistenceCheckpoint"_Stz);
   
   s256 sFilePath;
   if ( ! m_pDataStack->bPopS256(sFilePath) )
@@ -40,7 +40,7 @@ void Step::vPersistenceCheckpoint(void)
 /*----------------------------------------------------------------------------*/
 void Step::vPersistenceReload(void)
 {
-  ENTRY("vPersistenceReload"_Stz);
+  ENTRY(); // ENTRY("vPersistenceReload"_Stz);
   
   s256 sFilePath;
   if ( ! m_pDataStack->bPopS256(sFilePath) )

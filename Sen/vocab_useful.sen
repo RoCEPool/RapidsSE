@@ -95,7 +95,7 @@
 
   depth 0 == if exit_rt then
 
-  task::this task.name@ "Stack of task %v has grown" fmt.print
+  task::this task.name@ "Stack of task %v has grown" .printf
 
   debug::trap
 ;
@@ -113,7 +113,7 @@
 
   args.senDir sSubDir str.cat dup
 
-  "Would include .sen files from sub-dir %v" fmt.print
+  "Would include .sen files from sub-dir %v" .printf
 
   dir::new locals| pSubDir |
 
@@ -122,16 +122,16 @@
     begin
       pSubDir dir.read
     while
-      pSubDir dir.entryName "Entry %v" fmt.print
+      pSubDir dir.entryName "Entry %v" .printf
 
       4 pSubDir dir.entryName str.right ".sen" str.equal if
-        pSubDir dir.entryName "Would parse %v" fmt.print
+        pSubDir dir.entryName "Would parse %v" .printf
 
         args.senDir sSubDir str.cat
           "/" str.cat
           pSubDir dir.entryName str.cat
           to sFilePath
-        sFilePath "Would open %v" fmt.print
+        sFilePath "Would open %v" .printf
 
         sFilePath input.open docol input.close
 

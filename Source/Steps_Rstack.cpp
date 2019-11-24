@@ -41,7 +41,7 @@ void Step::vAddSteps_Rstack(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackCsPick(void)
 {
-  ENTRY("vRstackCsPick"_Stz);
+  ENTRY(); // ENTRY("vRstackCsPick"_Stz);
   
   // could do this directly on stack
   
@@ -71,7 +71,7 @@ void Step::vRstackCsPick(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackCsRoll(void)
 {
-  ENTRY("vRstackCsRoll"_Stz);
+  ENTRY(); // ENTRY("vRstackCsRoll"_Stz);
   
   // pop n values
   i8 nValues;
@@ -108,7 +108,7 @@ void Step::vRstackCsRoll(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackDepth(void)
 {
-  ENTRY("vRstackDepth"_Stz);
+  ENTRY(); // ENTRY("vRstackDepth"_Stz);
   
   i8 iDepth = m_pReturnStack->nValues();
   
@@ -122,7 +122,7 @@ void Step::vRstackDepth(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackDrop(void)
 {
-  ENTRY("vRstackDrop"_Stz);
+  ENTRY(); // ENTRY("vRstackDrop"_Stz);
   
   // should just discard on stack
   
@@ -138,7 +138,7 @@ void Step::vRstackDrop(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackFetch(void)
 {
-  ENTRY("vRstackFetch"_Stz);
+  ENTRY(); // ENTRY("vRstackFetch"_Stz);
   
   // could do this directly on stack
   
@@ -156,7 +156,7 @@ void Step::vRstackFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackFetchTwo(void)
 {
-  ENTRY("vRstackFetchTwo"_Stz);
+  ENTRY(); // ENTRY("vRstackFetchTwo"_Stz);
   
   // could do this directly on stack
   
@@ -177,7 +177,7 @@ void Step::vRstackFetchTwo(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackPick(void)
 {
-  ENTRY("vRstackPick"_Stz);
+  ENTRY(); // ENTRY("vRstackPick"_Stz);
   
   i8 iPick;
   if ( ! m_pDataStack->bPopAsInt(iPick) )
@@ -199,7 +199,7 @@ void Step::vRstackPick(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackReverse(void)
 {
-  ENTRY("vRstackReverse"_Stz);
+  ENTRY(); // ENTRY("vRstackReverse"_Stz);
   
   GenVar xVal0;
   GenVar xVal1;
@@ -233,7 +233,7 @@ void Step::vRstackReverse(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackRoll(void)
 {
-  ENTRY("vRstackRoll"_Stz);
+  ENTRY(); // ENTRY("vRstackRoll"_Stz);
   
   GenVar xValA;
   GenVar xValX;
@@ -269,7 +269,7 @@ void Step::vRstackRoll(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackRollInv(void)
 {
-  ENTRY("vRstackRollInv"_Stz);
+  ENTRY(); // ENTRY("vRstackRollInv"_Stz);
   
   GenVar xValZ;
   GenVar xValX;
@@ -306,7 +306,7 @@ void Step::vRstackRollInv(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackStk(void)
 {
-  ENTRY("vRstackStk"_Stz);
+  ENTRY(); // ENTRY("vRstackStk"_Stz);
   
   m_pReturnStack->vContentDump(&m_oDicStack,"ReturnStack:"_Stz);
   
@@ -318,7 +318,7 @@ void Step::vRstackStk(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackSwap(void)
 {
-  ENTRY("vRstackSwap"_Stz);
+  ENTRY(); // ENTRY("vRstackSwap"_Stz);
   
   GenVar xValA;
   GenVar xValB;
@@ -337,7 +337,7 @@ void Step::vRstackSwap(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackToP(void)
 {
-  ENTRY("vRstackToP"_Stz);
+  ENTRY(); // ENTRY("vRstackToP"_Stz);
   
   GenVar xVal;
   if ( ! m_pReturnStack->bPopGenVar(xVal) )
@@ -353,7 +353,7 @@ void Step::vRstackToP(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackToR(void)
 {
-  ENTRY("vRstackToR"_Stz);
+  ENTRY(); // ENTRY("vRstackToR"_Stz);
   
   GenVar xValOpaque;
   if ( ! m_pDataStack->bPopGenVar(xValOpaque) )
@@ -369,7 +369,7 @@ void Step::vRstackToR(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstackToRTwo(void)
 {
-  ENTRY("vRstackToRTwo"_Stz);
+  ENTRY(); // ENTRY("vRstackToRTwo"_Stz);
   
   GenVar xValX0;
   GenVar xValX1;
@@ -387,7 +387,7 @@ void Step::vRstackToRTwo(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstack0(void)
 {
-  ENTRY("vRstack0"_Stz);
+  ENTRY(); // ENTRY("vRstack0"_Stz);
   
   // could do this directly on stack
   
@@ -405,7 +405,7 @@ void Step::vRstack0(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstack1(void)
 {
-  ENTRY("vRstack1"_Stz);
+  ENTRY(); // ENTRY("vRstack1"_Stz);
   
   // could do this directly on stack
   
@@ -423,7 +423,7 @@ void Step::vRstack1(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstack2(void)
 {
-  ENTRY("vRstack2"_Stz);
+  ENTRY(); // ENTRY("vRstack2"_Stz);
   
   // could do this directly on stack
   
@@ -441,7 +441,7 @@ void Step::vRstack2(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstack3(void)
 {
-  ENTRY("vRstack3"_Stz);
+  ENTRY(); // ENTRY("vRstack3"_Stz);
   
   // could do this directly on stack
   
@@ -459,7 +459,7 @@ void Step::vRstack3(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstack4(void)
 {
-  ENTRY("vRstack4"_Stz);
+  ENTRY(); // ENTRY("vRstack4"_Stz);
   
   // could do this directly on stack
   
@@ -477,7 +477,7 @@ void Step::vRstack4(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstack5(void)
 {
-  ENTRY("vRstack5"_Stz);
+  ENTRY(); // ENTRY("vRstack5"_Stz);
   
   // could do this directly on stack
   
@@ -495,7 +495,7 @@ void Step::vRstack5(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstack6(void)
 {
-  ENTRY("vRstack6"_Stz);
+  ENTRY(); // ENTRY("vRstack6"_Stz);
   
   // could do this directly on stack
   
@@ -513,7 +513,7 @@ void Step::vRstack6(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstack7(void)
 {
-  ENTRY("vRstack7"_Stz);
+  ENTRY(); // ENTRY("vRstack7"_Stz);
   
   // could do this directly on stack
   
@@ -531,7 +531,7 @@ void Step::vRstack7(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstack8(void)
 {
-  ENTRY("vRstack8"_Stz);
+  ENTRY(); // ENTRY("vRstack8"_Stz);
   
   // could do this directly on stack
   
@@ -549,7 +549,7 @@ void Step::vRstack8(void)
 /*----------------------------------------------------------------------------*/
 void Step::vRstack9(void)
 {
-  ENTRY("vRstack9"_Stz);
+  ENTRY(); // ENTRY("vRstack9"_Stz);
   
   // could do this directly on stack
   

@@ -22,7 +22,7 @@ void Step::vAddSteps_JobReceiver(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_ReceiverConnNoFetch(void)
 {
-  ENTRY("vJob_ReceiverConnNoFetch"_Stz);
+  ENTRY(); // ENTRY("vJob_ReceiverConnNoFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -40,7 +40,7 @@ void Step::vJob_ReceiverConnNoFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_ReceiverJobReceived(void)
 {
-  ENTRY("vJob_ReceiverJobReceived"_Stz);
+  ENTRY(); // ENTRY("vJob_ReceiverJobReceived"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -71,7 +71,7 @@ void Step::vJob_ReceiverJobReceived(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_ReceiverConnNoStore(void)
 {
-  ENTRY("vJob_ReceiverConnNoStore"_Stz);
+  ENTRY(); // ENTRY("vJob_ReceiverConnNoStore"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -92,7 +92,7 @@ void Step::vJob_ReceiverConnNoStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_ReceiverNodeFetch(void)
 {
-  ENTRY("vJob_ReceiverNodeFetch"_Stz);
+  ENTRY(); // ENTRY("vJob_ReceiverNodeFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )
@@ -110,7 +110,7 @@ void Step::vJob_ReceiverNodeFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vJob_ReceiverNodeStore(void)
 {
-  ENTRY("vJob_ReceiverNodeStore"_Stz);
+  ENTRY(); // ENTRY("vJob_ReceiverNodeStore"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )

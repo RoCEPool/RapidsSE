@@ -17,7 +17,7 @@ void Step::vAddSteps_Compiler(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerCurrent(void)
 {
-  ENTRY("vCompilerCurrent"_Stz);
+  ENTRY(); // ENTRY("vCompilerCurrent"_Stz);
   
   Word* pWord = m_pCompiler->pCurrentWord();
   

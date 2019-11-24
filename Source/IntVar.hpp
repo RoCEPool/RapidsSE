@@ -1,22 +1,23 @@
 /*============================================================================*/
-/* ForthValue.hpp -- Base Class for a Self-Describing ForthValue              */
+/* IntVar.hpp - integer sen variable                                          */
 /*============================================================================*/
 #pragma once
 
 namespace SenVM
 {
-  class ForthValue
+  class IntVar : public SenVar
   {
-  protected:
-    Header m_xHeader;
-  
+  private:
+    i8      m_iInt;
+
   public:
     void* operator new(size_t);
-    ForthValue(eCN eClass);
   
-    eCN  eClass(void);
-    i8   nSize(void);
-    void vToString(Stz* aString);
+    void operator =(i8 iVal);
+    i8   iInt(void);
+  
+    i8   nStackBytes(void);
+    void vToString(Stz* szStz);
   };
 }
 

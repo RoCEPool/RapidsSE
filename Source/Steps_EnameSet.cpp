@@ -25,7 +25,7 @@ void Step::vAddSteps_EnameSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetNew(void)
 {
-  ENTRY("vEnameSetNew"_Stz);
+  ENTRY(); // ENTRY("vEnameSetNew"_Stz);
   
   EnameSet* pEnameSet = new EnameSet;
   
@@ -42,7 +42,7 @@ void Step::vEnameSetNew(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetAddInt(void)
 {
-  ENTRY("vEnameSetAddInt"_Stz);
+  ENTRY(); // ENTRY("vEnameSetAddInt"_Stz);
   
   Object* pEnameSet_obj;
   if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
@@ -68,7 +68,7 @@ void Step::vEnameSetAddInt(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetAddStr(void)
 {
-  ENTRY("vEnameSetAddStr"_Stz);
+  ENTRY(); // ENTRY("vEnameSetAddStr"_Stz);
   
   Object* pEnameSet_obj;
   if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
@@ -94,7 +94,7 @@ void Step::vEnameSetAddStr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetAsStr(void)
 {
-  ENTRY("vEnameSetAsStr"_Stz);
+  ENTRY(); // ENTRY("vEnameSetAsStr"_Stz);
   
   Object* pEnameSet_obj;
   if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
@@ -116,7 +116,7 @@ void Step::vEnameSetAsStr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetGetInt(void)
 {
-  ENTRY("vEnameSetGetInt"_Stz);
+  ENTRY(); // ENTRY("vEnameSetGetInt"_Stz);
   
   Object* pEnameSet_obj;
   if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
@@ -140,7 +140,7 @@ void Step::vEnameSetGetInt(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetGetStr(void)
 {
-  ENTRY("vEnameSetGetStr"_Stz);
+  ENTRY(); // ENTRY("vEnameSetGetStr"_Stz);
   
   Object* pEnameSet_obj;
   if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
@@ -170,7 +170,7 @@ void Step::vEnameSetGetStr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetHasName(void)
 {
-  ENTRY("vEnameSetHasName"_Stz);
+  ENTRY(); // ENTRY("vEnameSetHasName"_Stz);
   
   Object* pEnameSet_obj;
   if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
@@ -193,7 +193,7 @@ void Step::vEnameSetHasName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vEnameSetUpsertStr(void)
 {
-  ENTRY("vEnameSetAddStr"_Stz);
+  ENTRY(); // ENTRY("vEnameSetAddStr"_Stz);
   
   Object* pEnameSet_obj;
   if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )

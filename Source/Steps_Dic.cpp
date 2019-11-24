@@ -24,7 +24,7 @@ void Step::vAddSteps_Dic(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicInit(void)
 {
-ENTRY("vDicInit"_Stz);
+  ENTRY(); // ENTRY("vDicInit"_Stz);
   
   Object* pPtrDic;
   
@@ -46,7 +46,7 @@ ENTRY("vDicInit"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDicKindGet(void)
 {
-  ENTRY("vDicFrozenGet"_Stz);
+  ENTRY(); // ENTRY("vDicFrozenGet"_Stz);
   
   Object* pPtrDic;
   
@@ -68,7 +68,7 @@ void Step::vDicKindGet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicKindSet(void)
 {
-  ENTRY("vDicKindSet"_Stz);
+  ENTRY(); // ENTRY("vDicKindSet"_Stz);
   
   Object* pPtrKind;
   Object* pPtrDic;
@@ -90,7 +90,7 @@ void Step::vDicKindSet(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicLastWord(void)
 {
-ENTRY("vDicLastWord"_Stz);
+  ENTRY(); // ENTRY("vDicLastWord"_Stz);
   
   Object* pPtrDic;
   
@@ -111,7 +111,7 @@ ENTRY("vDicLastWord"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDicName(void)
 {
-ENTRY("vDicName"_Stz);
+  ENTRY(); // ENTRY("vDicName"_Stz);
  
   Object* pPtrDic;
   if ( ! m_pDataStack->bPopObject(pPtrDic) )
@@ -131,7 +131,7 @@ ENTRY("vDicName"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vDicRef(void)
 {
-  ENTRY("vDicRef"_Stz);
+  ENTRY(); // ENTRY("vDicRef"_Stz);
   
   Object* pPtrDic;
   
@@ -152,7 +152,7 @@ void Step::vDicRef(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicRoot(void)
 {
-  ENTRY("vDicRoot"_Stz);
+  ENTRY(); // ENTRY("vDicRoot"_Stz);
   
   Dic* pRootDic = AM::pRootDic();
   m_pDataStack->vPushPointer(pRootDic);
@@ -165,7 +165,7 @@ void Step::vDicRoot(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDicWordCount(void)
 {
-  ENTRY("vDicWordCount"_Stz);
+  ENTRY(); // ENTRY("vDicWordCount"_Stz);
   
   Object* pPtrDic;
   

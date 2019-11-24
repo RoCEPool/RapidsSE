@@ -43,7 +43,7 @@ void Step::vAddSteps_Index(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexAnalyze(void)
 {
-  ENTRY("vIndexAnalyze"_Stz);
+  ENTRY(); // ENTRY("vIndexAnalyze"_Stz);
   
   Object* pPtrIndex;
   i8 iDetailed;
@@ -70,7 +70,7 @@ void Step::vIndexAnalyze(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexColumnFetch(void)
 {
-  ENTRY("vIndexColumnFetch"_Stz);
+  ENTRY(); // ENTRY("vIndexColumnFetch"_Stz);
   
   Object* pPtrIndex;
   if ( ! m_pDataStack->bPopObject(pPtrIndex) )
@@ -95,7 +95,7 @@ void Step::vIndexColumnFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexColumnCountFetch(void)
 {
-  ENTRY("vIndexColumnCountFetch"_Stz);
+  ENTRY(); // ENTRY("vIndexColumnCountFetch"_Stz);
   
   Object* pPtrIndex;
   if ( ! m_pDataStack->bPopObject(pPtrIndex) )
@@ -113,7 +113,7 @@ void Step::vIndexColumnCountFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexColumnName(void)
 {
-  ENTRY("vIndexColumnName"_Stz);
+  ENTRY(); // ENTRY("vIndexColumnName"_Stz);
   
   Object* pPtrIndex;
   if ( ! m_pDataStack->bPopObject(pPtrIndex) )
@@ -139,7 +139,7 @@ void Step::vIndexColumnName(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexColumnType(void)
 {
-  ENTRY("vIndexColumnType"_Stz);
+  ENTRY(); // ENTRY("vIndexColumnType"_Stz);
   
   Object* pPtrIndex;
   if ( ! m_pDataStack->bPopObject(pPtrIndex) )
@@ -165,7 +165,7 @@ void Step::vIndexColumnType(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexCompact(void)
 {
-  ENTRY("vIndexCompact"_Stz);
+  ENTRY(); // ENTRY("vIndexCompact"_Stz);
   
   Object* pPtrIndex;
   i8 iDetailed;
@@ -186,7 +186,7 @@ void Step::vIndexCompact(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDump(void)
 {
-  ENTRY("vIndexDump"_Stz);
+  ENTRY(); // ENTRY("vIndexDump"_Stz);
   
   Object* pPtrIndex;
   if ( ! m_pDataStack->bPopObject(pPtrIndex) )
@@ -214,7 +214,7 @@ void Step::vIndexDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIndexDefFetch(void)
 {
-  ENTRY("vIndexIndexDefFetch"_Stz);
+  ENTRY(); // ENTRY("vIndexIndexDefFetch"_Stz);
   
   Object* pPtrIndex;
   if ( ! m_pDataStack->bPopObject(pPtrIndex) )
@@ -231,7 +231,7 @@ void Step::vIndexIndexDefFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIndexDefStore(void)
 {
-  ENTRY("vIndexIndexDefStore"_Stz);
+  ENTRY(); // ENTRY("vIndexIndexDefStore"_Stz);
   
   Object* pPtrIndex;
   if ( ! m_pDataStack->bPopObject(pPtrIndex) )
@@ -253,7 +253,7 @@ void Step::vIndexIndexDefStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexInit(void)
 {
-  ENTRY("vIndexInit"_Stz);
+  ENTRY(); // ENTRY("vIndexInit"_Stz);
   Object* pPtrIndex = nullptr;
   
   if ( ! m_pDataStack->bPopObject(pPtrIndex) )
@@ -272,7 +272,7 @@ void Step::vIndexInit(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIsPrimaryKeyFetch(void)
 {
-  ENTRY("vIndexIsPrimaryKeyFetch"_Stz);
+  ENTRY(); // ENTRY("vIndexIsPrimaryKeyFetch"_Stz);
   
   Object* pPtrIndex = nullptr;
   
@@ -294,7 +294,7 @@ void Step::vIndexIsPrimaryKeyFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIsPrimaryKeyStore(void)
 {
-  ENTRY("vIndexIsPrimaryKeyStore"_Stz);
+  ENTRY(); // ENTRY("vIndexIsPrimaryKeyStore"_Stz);
   
   Object* pPtrIndex = nullptr;
   
@@ -318,7 +318,7 @@ void Step::vIndexIsPrimaryKeyStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIsUniqueFetch(void)
 {
-  ENTRY("vIndexIsUniqueFetch"_Stz);
+  ENTRY(); // ENTRY("vIndexIsUniqueFetch"_Stz);
   
   Object* pPtrIndex = nullptr;
   
@@ -340,7 +340,7 @@ void Step::vIndexIsUniqueFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexIsValidUniqueIndex(void)
 {
-  ENTRY("vIndexIsValidUniqueIndex"_Stz);
+  ENTRY(); // ENTRY("vIndexIsValidUniqueIndex"_Stz);
   
   Object* pPtrIndex = nullptr;
   
@@ -379,7 +379,7 @@ void Step::vIndexIsValidUniqueIndex(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexLowerBound(void)
 {
-  ENTRY("vIndexLowerBound"_Stz);
+  ENTRY(); // ENTRY("vIndexLowerBound"_Stz);
   
   Object* pPtrIndex = nullptr;
   FetchBuffer* pFetchBuffer;
@@ -524,7 +524,7 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 void Step::vIndexNameFetch(void)
 {
-  ENTRY("vIndexNameFetch"_Stz);
+  ENTRY(); // ENTRY("vIndexNameFetch"_Stz);
   
   Object* pPtrIndex = nullptr;
   
@@ -546,7 +546,7 @@ void Step::vIndexNameFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexPopulate(void)
 {
-  ENTRY("vIndexPopulate"_Stz);
+  ENTRY(); // ENTRY("vIndexPopulate"_Stz);
   Object* pPtrIndex = nullptr;
   
   if ( ! m_pDataStack->bPopObject(pPtrIndex) )
@@ -570,7 +570,7 @@ void Step::vIndexPopulate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexRange(void)
 {
-  ENTRY("vIndexRange"_Stz);
+  ENTRY(); // ENTRY("vIndexRange"_Stz);
   
   Object* pPtrIndex = nullptr;
   
@@ -796,7 +796,7 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 void Step::vIndexShowColumnVec(void)
 {
-  ENTRY("vIndexShowColumnVec"_Stz);
+  ENTRY(); // ENTRY("vIndexShowColumnVec"_Stz);
   
   Object* pPtrIndex;
   if ( ! m_pDataStack->bPopObject(pPtrIndex) )
@@ -814,7 +814,7 @@ void Step::vIndexShowColumnVec(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexSpace(void)
 {
-  ENTRY("vIndexSpace"_Stz);
+  ENTRY(); // ENTRY("vIndexSpace"_Stz);
   
   Object* pPtrIndex;
   if ( ! m_pDataStack->bPopObject(pPtrIndex) )
@@ -835,7 +835,7 @@ void Step::vIndexSpace(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexSubDic(void)
 {
-  ENTRY("vIndexSubDic"_Stz);
+  ENTRY(); // ENTRY("vIndexSubDic"_Stz);
   
   Object* pPtrIndex;
   if ( ! m_pDataStack->bPopObject(pPtrIndex) )
@@ -856,7 +856,7 @@ void Step::vIndexSubDic(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexTableFetch(void)
 {
-  ENTRY("vIndexTableFetch"_Stz);
+  ENTRY(); // ENTRY("vIndexTableFetch"_Stz);
   
   Object* pPtrIndex = nullptr;
   
@@ -879,7 +879,7 @@ void Step::vIndexTableFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexTableStore(void)
 {
-  ENTRY("vIndexTableStore"_Stz);
+  ENTRY(); // ENTRY("vIndexTableStore"_Stz);
   
   Object* pPtrIndex = nullptr;
   Object* pPtrTable = nullptr;
@@ -906,7 +906,7 @@ void Step::vIndexTableStore(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexTruncate(void)
 {
-  ENTRY("vIndexTruncate"_Stz);
+  ENTRY(); // ENTRY("vIndexTruncate"_Stz);
   
   Object* pPtrIndex = nullptr;
   
@@ -930,7 +930,7 @@ void Step::vIndexTruncate(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexUpperBound(void)
 {
-  ENTRY("vIndexUpperBound"_Stz);
+  ENTRY(); // ENTRY("vIndexUpperBound"_Stz);
   
   Object* pPtrIndex = nullptr;
   GenVar xVariable;
@@ -1098,7 +1098,7 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 void Step::vIndexVerify(void)
 {
-  ENTRY("vIndexVerify"_Stz);
+  ENTRY(); // ENTRY("vIndexVerify"_Stz);
   
   Object* pPtrIndex;
   
@@ -1120,7 +1120,7 @@ void Step::vIndexVerify(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexVisualize(void)
 {
-  ENTRY("vIndexVisualize"_Stz);
+  ENTRY(); // ENTRY("vIndexVisualize"_Stz);
   
   Object* pPtrIndex;
   if ( ! m_pDataStack->bPopObject(pPtrIndex) )

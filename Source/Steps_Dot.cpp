@@ -20,7 +20,7 @@ void Step::vAddSteps_Dot(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDot(void)
 {
-  ENTRY("vDot"_Stz);
+  ENTRY(); // ENTRY("vDot"_Stz);
   
   GenVar xVariable;
   if ( ! m_pDataStack->bPopGenVar(xVariable) )
@@ -48,7 +48,7 @@ void Step::vDot(void)
 /*----------------------------------------------------------------------------*/
 //void Step::vDot(void)
 //{
-//  ENTRY("vDot"_Stz);
+//  ENTRY(); // ENTRY("vDot"_Stz);
 //
 //  GenVar xVariable;
 //  if ( ! m_pDataStack->bPopGenVar(xVariable) )
@@ -81,7 +81,7 @@ void Step::vDot(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDotPut(void)
 {
-  ENTRY("vDotPut"_Stz);
+  ENTRY(); // ENTRY("vDotPut"_Stz);
   
   GenVar xVariable;
   if ( ! m_pDataStack->bPopGenVar(xVariable) )
@@ -100,7 +100,7 @@ void Step::vDotPut(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDotNewline(void)
 {
-  ENTRY("vDotNewline"_Stz);
+  ENTRY(); // ENTRY("vDotNewline"_Stz);
   
   vTrace("\n"_Stz);
   
@@ -112,7 +112,7 @@ void Step::vDotNewline(void)
 /*----------------------------------------------------------------------------*/
 void Step::vDotVerbose(void)
 {
-  ENTRY("vDotVerbose"_Stz);
+  ENTRY(); // ENTRY("vDotVerbose"_Stz);
   
   GenVar xVariable;
   if ( ! m_pDataStack->bPopGenVar(xVariable) )

@@ -39,7 +39,7 @@
 
   0 locals| pSocket |
 
-  pNode node.no grid::thisNode@ "Node %v connecting to node %v" fmt.print
+  pNode node.no grid::thisNode@ "Node %v connecting to node %v" .printf
 
   // get the nodes port and IP address
   pNode node.port ( port )
@@ -49,7 +49,7 @@
   pNode socket::open socket.connect to pSocket
 
   pSocket not if
-    pNode node.no grid::thisNode@ "Node %v unable to connect to node %v" fmt.print
+    pNode node.no grid::thisNode@ "Node %v unable to connect to node %v" .printf
     exit
   then
 
@@ -60,7 +60,7 @@
 
   // print connection message
   //args.verbose if
-    pNode node.no grid::thisNode@ "Node %v connected to node %v" fmt.print
+    pNode node.no grid::thisNode@ "Node %v connected to node %v" .printf
   //then
 
   // send this node's info to the node we just connected to
@@ -109,7 +109,7 @@
 
   //"connector_run" .
 
-  grid::thisNode@ job::this "Connector %v on node %v running" fmt.print
+  grid::thisNode@ job::this "Connector %v on node %v running" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -129,7 +129,7 @@
   again
 
   // print started message
-  //grid::thisNodeName@ "Node %v : SE cluster started" fmt.print
+  //grid::thisNodeName@ "Node %v : SE cluster started" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

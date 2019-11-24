@@ -144,7 +144,7 @@
   // convert i_Partition to i_ForwardNode
   i_Partition grid::toNode locals| i_ForwardNode |
 
-  //i_Partition i_ForwardNode "WriteBuffer.forward : Node %v Partition %v" fmt.print
+  //i_Partition i_ForwardNode "WriteBuffer.forward : Node %v Partition %v" .printf
 
   // send this job to the forward node
   //i_ForwardNode pJob_WriteBuffer job.forward

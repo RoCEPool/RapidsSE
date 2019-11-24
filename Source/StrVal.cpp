@@ -35,9 +35,9 @@ void* StrVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StrVal::StrVal(void)
-: ForthValue(CN_STRVAL)
+: StkVal(CN_STRVAL)
 {
-  m_xHeader.vSetClass(CN_STRVAL);
+  _Header::vClass(CN_STRVAL);
 }
 
 
@@ -64,7 +64,7 @@ char* StrVal::azChar(void)
 /*----------------------------------------------------------------------------*/
 /* get size of this StrVal in bytes                                           */
 /*----------------------------------------------------------------------------*/
-i8 StrVal::nSize(void)
+i8 StrVal::nStackBytes(void)
 {
   i8 nBytes = sizeof(StrVal)
                 - sizeof(m_caStr)

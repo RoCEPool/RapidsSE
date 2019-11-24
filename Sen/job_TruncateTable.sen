@@ -17,7 +17,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
   task::this to pThisTask
-  //pJob_TruncateTable pThisTask "truncateTable_exe task: %v Job_TruncateTable %v" fmt.print
+  //pJob_TruncateTable pThisTask "truncateTable_exe task: %v Job_TruncateTable %v" .printf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab this task's lock
@@ -29,7 +29,7 @@
 
   grid::slots 0
   do
-    //I "Creating Job_SubTruncate %v" fmt.print
+    //I "Creating Job_SubTruncate %v" .printf
     I pJob_TruncateTable job_truncateTable.spawnSub
   loop
 

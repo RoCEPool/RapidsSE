@@ -1024,12 +1024,12 @@ Job* AM::pNewJobUniversal( Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId)
   Job_Universal* pJobUniversal = new Job_Universal(pOp->m_pJobPipeline, pJobClass_Universal,pReqTuple,iUniqueId);
   
   pJobUniversal->m_pOp = pOp;
-  pJobUniversal->m_oEnameSet.vAdd("<path>"_Stz,
-                                  pOp->m_pJobPipeline->m_oEnameSet.szValue("<path>"_Stz));
-  pJobUniversal->m_oEnameSet.vAdd("<jobNm>"_Stz,pOp->m_sName);
+  pJobUniversal->pEnameSet()->vAdd("<path>"_Stz,
+                       pOp->m_pJobPipeline->pEnameSet()->szValue("<path>"_Stz));
+  pJobUniversal->pEnameSet()->vAdd("<jobNm>"_Stz,pOp->m_sName);
   pJobUniversal->vSeed(SS_SEED_REQ);
 
-  pJobUniversal->m_oEnameSet.vPrint();
+  pJobUniversal->pEnameSet()->vPrint();
   
   return pJobUniversal;
 }
@@ -1320,7 +1320,7 @@ void AM::vSetJobLocalError(Job* pFromJob, Job* pToJob) {
 }
 
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
-  pJob->m_oEnameSet.vAdd("<tableNm>"_Stz,szObjectName);
+  pJob->pEnameSet()->vAdd("<tableNm>"_Stz,szObjectName);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1381,17 +1381,17 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
       
       aDoesCell++;
       
-      ForthValue* aValue = reinterpret_cast<ForthValue*>(aDoesCell);
+      StkVal* aStkVal = reinterpret_cast<StkVal*>(aDoesCell);
       
-      if (CN_STRVAL == aValue->eClass()) {
-        vTrace(" \"%s\"\n"_Stz,_aStrVal(aValue)->azChar());
+      if (CN_STRVAL == aStkVal->eClass()) {
+        vTrace(" \"%s\"\n"_Stz,_aStrVal(aStkVal)->azChar());
       }
       else {
-        aValue->vToString(sString);
+        aStkVal->vToString(sString);
         vTrace(" %s\n"_Stz,sString.azChar());
       }
       
-      i8 iBytes = aValue->nSize();
+      i8 iBytes = aStkVal->nStackBytes();
       aDoesCell = aAdd<Cell*>(aDoesCell,iBytes);
       
       continue;

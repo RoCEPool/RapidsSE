@@ -26,7 +26,7 @@ void Step::vAddSteps_Log(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogDump(void)
 {
-  ENTRY("vActivityLogDump"_Stz);
+  ENTRY(); // ENTRY("vActivityLogDump"_Stz);
   
   AM::vLogWriteCsv(false);
   
@@ -38,7 +38,7 @@ void Step::vLogDump(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogMark(void)
 {
-  ENTRY("vActivityLogMark"_Stz);
+  ENTRY(); // ENTRY("vActivityLogMark"_Stz);
   
   s256 sMark;
 
@@ -56,7 +56,7 @@ void Step::vLogMark(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogMarkEntry(void)
 {
-  ENTRY("vActivityLogMarkEntry"_Stz);
+  ENTRY(); // ENTRY("vActivityLogMarkEntry"_Stz);
   
   s256 sWordNm;
   
@@ -76,7 +76,7 @@ void Step::vLogMarkEntry(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogMarkExit(void)
 {
-  ENTRY("vActivityLogMarkExit"_Stz);
+  ENTRY(); // ENTRY("vActivityLogMarkExit"_Stz);
   
   s256 sWordNm;
   
@@ -97,7 +97,7 @@ void Step::vLogMarkExit(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogMarkPhase(void)
 {
-  ENTRY("vActivityLogMarkPhase"_Stz);
+  ENTRY(); // ENTRY("vActivityLogMarkPhase"_Stz);
   
   i8 i_Phase;
   if ( ! m_pDataStack->bPopI8(i_Phase) )
@@ -119,7 +119,7 @@ void Step::vLogMarkPhase(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogMarkSeed(void)
 {
-  ENTRY("vLogMarkSeed"_Stz);
+  ENTRY(); // ENTRY("vLogMarkSeed"_Stz);
   
   i8 iSeed;
   if ( ! m_pDataStack->bPopI8(iSeed) )
@@ -139,7 +139,7 @@ void Step::vLogMarkSeed(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogMarkWord(void)
 {
-  ENTRY("vLogMarkWord"_Stz);
+  ENTRY(); // ENTRY("vLogMarkWord"_Stz);
   
   i8 iAN;
   if ( ! m_pDataStack->bPopI8(iAN) )
@@ -159,7 +159,7 @@ void Step::vLogMarkWord(void)
 /*----------------------------------------------------------------------------*/
 void Step::vLogJobSeed(void)
 {
-  ENTRY("vLogJobSeed"_Stz);
+  ENTRY(); // ENTRY("vLogJobSeed"_Stz);
   
   i8 i_Seed;
   if ( ! m_pDataStack->bPopI8(i_Seed) )

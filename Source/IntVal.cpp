@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IntVal.cpp - Integer ForthValue                                            */
+/* IntVal.cpp - Integer StkVal                                            */
 /*============================================================================*/
 
 #include "SenVM.h"
@@ -19,9 +19,9 @@ void* IntVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IntVal::IntVal(void)
-: ForthValue(CN_INTVAL)
+: StkVal(CN_INTVAL)
 {
-  m_xHeader.vSetClass(CN_INTVAL);
+  _Header::vClass(CN_INTVAL);
   
   m_iInt = 0;
   
@@ -39,15 +39,18 @@ void IntVal::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* get iInt                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 IntVal::iInt(void) const
+i8 IntVal::iInt(void)
 {
   return m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 IntVal::nSize(void) const
+i8 IntVal::nStackBytes(void)
 {
   return sizeof(IntVal);
 }
@@ -55,16 +58,15 @@ i8 IntVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void IntVal::vToString(Stz* aWorkspace)
+void IntVal::vToString(Stz* szStz)
 {
   if (C_DATUM_NULL == m_iInt) {
-    aWorkspace->vConcat("null"_Stz);
+    szStz->vConcat("null"_Stz);
     return;
   }
   
-  * aWorkspace = m_iInt;
+  * szStz = m_iInt;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

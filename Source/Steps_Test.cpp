@@ -44,7 +44,7 @@ void Step::vAddSteps_Test(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest0(void)
 {
-  ENTRY("vTestTest0"_Stz);
+  ENTRY(); // ENTRY("vTestTest0"_Stz);
   
   LlcTest::vTest(this);
   
@@ -56,7 +56,7 @@ void Step::vTestTest0(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest1(void)
 {
-  ENTRY("vTestTest1"_Stz);
+  ENTRY(); // ENTRY("vTestTest1"_Stz);
   
   EXIT();
 }
@@ -66,7 +66,7 @@ void Step::vTestTest1(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest2(void)
 {
-  ENTRY("vTestTest2"_Stz);
+  ENTRY(); // ENTRY("vTestTest2"_Stz);
   
   vTest2();
   
@@ -78,7 +78,7 @@ void Step::vTestTest2(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest3(void)
 {
-  ENTRY("vTestTest3"_Stz);
+  ENTRY(); // ENTRY("vTestTest3"_Stz);
   
   vTest3();
 
@@ -90,7 +90,7 @@ void Step::vTestTest3(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest4(void)
 {
-  ENTRY("vTestTest4"_Stz);
+  ENTRY(); // ENTRY("vTestTest4"_Stz);
   
   vTest4();
 
@@ -102,7 +102,7 @@ void Step::vTestTest4(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest5(void)
 {
-  ENTRY("vTestTest5"_Stz);
+  ENTRY(); // ENTRY("vTestTest5"_Stz);
   
   vTest5();
   
@@ -114,7 +114,7 @@ void Step::vTestTest5(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest6(void)
 {
-  ENTRY("vTestTest6"_Stz);
+  ENTRY(); // ENTRY("vTestTest6"_Stz);
   
   vTest6();
   
@@ -126,7 +126,7 @@ void Step::vTestTest6(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest7(void)
 {
-  ENTRY("vTestTest7"_Stz);
+  ENTRY(); // ENTRY("vTestTest7"_Stz);
   
   vTest7();
   
@@ -138,7 +138,7 @@ void Step::vTestTest7(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest8(void)
 {
-  ENTRY("vTestTest8"_Stz);
+  ENTRY(); // ENTRY("vTestTest8"_Stz);
   
   vTest8();
   
@@ -150,7 +150,7 @@ void Step::vTestTest8(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest9(void)
 {
-  ENTRY("vTestTest9 "_Stz);
+  ENTRY(); // ENTRY("vTestTest9 "_Stz);
   
   //vTest9();
   
@@ -162,7 +162,7 @@ void Step::vTestTest9(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest10(void)
 {
-  ENTRY("vTestTest10 "_Stz);
+  ENTRY(); // ENTRY("vTestTest10 "_Stz);
   
   vTest10();
   
@@ -174,7 +174,7 @@ void Step::vTestTest10(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest11(void)
 {
-  ENTRY("vTestTest11 "_Stz);
+  ENTRY(); // ENTRY("vTestTest11 "_Stz);
   
   vTest11();
   
@@ -186,7 +186,7 @@ void Step::vTestTest11(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest12(void)
 {
-  ENTRY("vTestTest12 "_Stz);
+  ENTRY(); // ENTRY("vTestTest12 "_Stz);
   
   vTest12();
   
@@ -198,7 +198,7 @@ void Step::vTestTest12(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest13(void)
 {
-  ENTRY("vTestTest13 "_Stz);
+  ENTRY(); // ENTRY("vTestTest13 "_Stz);
   
   vTest13();
   
@@ -210,7 +210,7 @@ void Step::vTestTest13(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest14(void)
 {
-  ENTRY("vTestTest14 "_Stz);
+  ENTRY(); // ENTRY("vTestTest14 "_Stz);
   
   vTest14();
   
@@ -222,7 +222,7 @@ void Step::vTestTest14(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest15(void)
 {
-  ENTRY("vTestTest15 "_Stz);
+  ENTRY(); // ENTRY("vTestTest15 "_Stz);
   
   vTest15();
   
@@ -234,7 +234,7 @@ void Step::vTestTest15(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest16(void)
 {
-  ENTRY("vTestTest16 "_Stz);
+  ENTRY(); // ENTRY("vTestTest16 "_Stz);
   
   vTest16();
   
@@ -246,7 +246,7 @@ void Step::vTestTest16(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest17(void)
 {
-  ENTRY("vTestTest17 "_Stz);
+  ENTRY(); // ENTRY("vTestTest17 "_Stz);
   
   vTest17();
   
@@ -258,7 +258,7 @@ void Step::vTestTest17(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest18(void)
 {
-  ENTRY("vTestTest18 "_Stz);
+  ENTRY(); // ENTRY("vTestTest18 "_Stz);
   
   vTest18();
   
@@ -270,7 +270,7 @@ void Step::vTestTest18(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest19(void)
 {
-  ENTRY("vTestTest19 "_Stz);
+  ENTRY(); // ENTRY("vTestTest19 "_Stz);
   
   vTest19();
   
@@ -282,7 +282,7 @@ void Step::vTestTest19(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest20(void)
 {
-  ENTRY("vTestTest20 "_Stz);
+  ENTRY(); // ENTRY("vTestTest20 "_Stz);
   
   vTest20();
   
@@ -294,7 +294,7 @@ void Step::vTestTest20(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest21(void)
 {
-  ENTRY("vTestTest21 "_Stz);
+  ENTRY(); // ENTRY("vTestTest21 "_Stz);
   
   vTest21();
   
@@ -306,7 +306,7 @@ void Step::vTestTest21(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest22(void)
 {
-  ENTRY("vTestTest22 "_Stz);
+  ENTRY(); // ENTRY("vTestTest22 "_Stz);
   
   vTest22();
   
@@ -318,7 +318,7 @@ void Step::vTestTest22(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest23(void)
 {
-  ENTRY("vTestTest23 "_Stz);
+  ENTRY(); // ENTRY("vTestTest23 "_Stz);
   
   vTest23();
   
@@ -330,7 +330,7 @@ void Step::vTestTest23(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest24(void)
 {
-  ENTRY("vTestTest24 "_Stz);
+  ENTRY(); // ENTRY("vTestTest24 "_Stz);
   
   vTest24();
   
@@ -342,7 +342,7 @@ void Step::vTestTest24(void)
 /*----------------------------------------------------------------------------*/
 void Step::vTestTest25(void)
 {
-  ENTRY("vTestTest25 "_Stz);
+  ENTRY(); // ENTRY("vTestTest25 "_Stz);
   
   vTest25();
   

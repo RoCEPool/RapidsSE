@@ -170,7 +170,7 @@ void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  ASSERT(! m_pJob->m_oEnameSet.szValue("<path>"_Stz)->bSame(""_Stz));
+  ASSERT(! m_pJob->pEnameSet()->szValue("<path>"_Stz)->bSame(""_Stz));
   
   // TODO: shouldn't have to refind it everytime!!!
   vRefindJobClass();
@@ -856,19 +856,19 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     
     sStackContents.vCatSprint(" "_Stz);
     
-    ForthValue* aValue = pStack->aPeekValue(iValue);
+    StkVal* aStkVal = pStack->aPeekVal(iValue);
     
-    eCN eClass = aValue->eClass();
+    eCN eClass = aStkVal->eClass();
     
     if (CN_INTVAL == eClass) {
-      sStackContents.vCatSprint("%lld"_Stz,_aIntVal(aValue)->iInt());
+      sStackContents.vCatSprint("%lld"_Stz,_aIntVal(aStkVal)->iInt());
     }
     else if (CN_PTRVAL == eClass) {
-      if (_aPtrVal(aValue)->pObj()) {
+      if (_aPtrVal(aStkVal)->pObj()) {
         
-        Object* pPtr = _aPtrVal(aValue)->pObj();
+        Object* pPtr = _aPtrVal(aStkVal)->pObj();
         
-        eCN ePtrClass = _aPtrVal(aValue)->pObj()->eClass();
+        eCN ePtrClass = _aPtrVal(aStkVal)->pObj()->eClass();
         
         if (CN_WORD == ePtrClass)
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
@@ -900,20 +900,20 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
       }
       else
         sStackContents.vCatSprint("^%s=%p"_Stz,
-                                  aCN[aValue->eClass()],
-                                  _aPtrVal(aValue)->pObj());
+                                  aCN[aStkVal->eClass()],
+                                  _aPtrVal(aStkVal)->pObj());
     }
     else if (CN_FIPVAL == eClass) {                                      
       sStackContents.vCatSprint("%p"_Stz,
-                                _aFipVal(aValue)->aFipPtr());
+                                _aFipVal(aStkVal)->aFipPtr());
     }
     else if (CN_STRVAL == eClass) {
       sStackContents.vCatSprint("\"%lls\""_Stz,
-                                _aStrVal(aValue)->azChar());
+                                _aStrVal(aStkVal)->azChar());
     }
     else {
       sStackContents.vCatSprint("<unknown:class=%lld>"_Stz,
-                                aValue->eClass());
+                                aStkVal->eClass());
     }
   }
   
@@ -1190,8 +1190,8 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     // should be %v or %V
     ASSERT('v' == *pf || 'V' == *pf);
     
-    ForthValue* aValue0 = m_pForth->m_pDataStack->aPeekValue(0);
-    eCN eClass = aValue0->eClass();
+    StkVal* aStkVal0 = m_pForth->m_pDataStack->aPeekVal(0);
+    eCN eClass = aStkVal0->eClass();
     
     // test for StrVal
     if (CN_STRVAL == eClass) {

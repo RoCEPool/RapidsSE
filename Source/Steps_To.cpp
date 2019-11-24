@@ -22,7 +22,7 @@ void Step::vAddSteps_To(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToBody(void)
 {
-  ENTRY("vToBody"_Stz);
+  ENTRY(); // ENTRY("vToBody"_Stz);
   
   Object* pWordObject;
   if ( ! m_pDataStack->bPopObject(pWordObject) )
@@ -44,12 +44,15 @@ void Step::vToBody(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToInt(void)
 {
-  ENTRY("vToInt"_Stz);
+  ENTRY(); // ENTRY("vToInt"_Stz);
   
   s32 sInt;
-  if ( ! m_pDataStack->bPopS32(sInt) )
-    THROW_DSTACK();
   
+  if ( ! m_pDataStack->bPopString(sInt) )
+    THROW_DSTACK();
+//  if ( ! m_pDataStack->bPopS32(sInt) )
+//    THROW_DSTACK();
+
   i8 i = sInt.iToI8();
   
   m_pDataStack->vPushI8(i);
@@ -62,7 +65,7 @@ void Step::vToInt(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToPtr(void)
 {
-  ENTRY("vToPtr"_Stz);
+  ENTRY(); // ENTRY("vToPtr"_Stz);
   
   i8 iPtr;
   if ( ! m_pDataStack->bPopI8(iPtr) )
@@ -80,7 +83,7 @@ void Step::vToPtr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToStr(void)
 {
-  ENTRY("vToStr"_Stz);
+  ENTRY(); // ENTRY("vToStr"_Stz);
   
   GenVar xVal;
   if ( ! m_pDataStack->bPopGenVar(xVal) )
@@ -88,7 +91,7 @@ void Step::vToStr(void)
   
   s48K sString;
   
-  xVal.aNestedValue()->vToString(sString);
+  xVal.aEmbeddedStkVal()->vToString(sString);
   
   m_pDataStack->vPushS48K(sString);
   
@@ -100,7 +103,7 @@ void Step::vToStr(void)
 /*----------------------------------------------------------------------------*/
 void Step::vToTask(void)
 {
-  ENTRY("vToTask"_Stz);
+  ENTRY(); // ENTRY("vToTask"_Stz);
   
   i8 iVal;
   if ( ! m_pDataStack->bPopI8(iVal) )

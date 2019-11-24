@@ -17,7 +17,7 @@ void Step::vAddSteps_IndexDef(void)
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefParse(void)
 {
-  ENTRY("vIndexDefParse"_Stz);
+  ENTRY(); // ENTRY("vIndexDefParse"_Stz);
   
   Object* pJobPtr;
   if ( ! m_pDataStack->bPopObject(pJobPtr) )

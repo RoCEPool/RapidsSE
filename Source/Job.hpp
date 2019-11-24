@@ -34,15 +34,14 @@ namespace Jobs
               public JobResult,
               public CRM<Job>
   {
-  public:
+  private:
     s32       m_sJobNm;       // name of job
     EnameSet  m_oEnameSet;    // ename-value set
-    Timer     m_oTimer;       // timer
     i8        m_iParentId;    // job id of parent job which spawned this job
+    Timer     m_oTimer;       // timer
 
-    i8        m_iParticipantNode; // participant node no (FromNodeNo?)
-  private:
     bool      m_bWasReceived; // job was received over a socket
+    i8        m_iParticipantNode; // participant node no (FromNodeNo?)
     bool      m_bNormalSides; // side semantics
 
     eJK       m_eJobKind;     // kind of job
@@ -98,6 +97,7 @@ namespace Jobs
     bool bAcksRmgDec(void);
     bool bByPromptTag(void);
     void vContentDump(void);
+    EnameSet* pEnameSet(void);
     void vFocalOutline(s4K& sOutline);
     bool bHasEnameTag(Stz* szEnameTag);
     i8   iJobId(void);
@@ -105,6 +105,8 @@ namespace Jobs
     void vJobKind(eJK eJobKind);
     eJL  eJobList(void);
     void vJobList(eJL eJobList);
+    Stz* szJobNm(void);
+    void vJobNm(Stz* szJobNm);
     eJP  eJobPhase(void);
     void vJobPhase(eJP eJobPhase);
     eJS  eJobState(void);
@@ -122,6 +124,8 @@ namespace Jobs
     bool bNormalSides(void);
     void vNormalSides(bool bNormalSides);
     i8   iOriginatorNode(void);
+    i8   iParentId(void);
+    void vParentId(i8 iParentId);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     void vPrint(Stz* szFormat, ...);
@@ -135,6 +139,8 @@ namespace Jobs
     void vSlot(i8 i_Slot);
     Task* pTask(void);
     void vTask(Task* pTask);
+    void vTimerStart(void);
+    void vTimerUpdate(void);
     bool bTimeTag(void);
     bool bWasReceived(void);
     void vWasReceived(bool bWasReceived);
