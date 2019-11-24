@@ -106,37 +106,6 @@ void Queue::vAppend(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append value to this queue                                                 */
-/*----------------------------------------------------------------------------*/
-//bool Queue::bAppend(StkVal* aValue)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
-//
-//  m_okLock.vGrabWrite();
-//
-//  if ( ! m_pEndBuffer ) {
-//    ASSERT(0 == m_iCount);
-//    // need to add first buffer
-//    vExpand();
-//  }
-//
-//  // atempt to add into
-//  bool bAppended = m_pEndBuffer->bAppend(aValue);
-//
-//  if ( ! bAppended ) {
-//    vExpand();
-//    bool b = m_pEndBuffer->bAppend(aValue);
-//    ASSERT(b);
-//  }
-//
-//  m_iCount++;
-//
-//  m_okLock.vDropWrite();
-//
-//  return true;
-//}
-
-/*----------------------------------------------------------------------------*/
 /* get number of values in queue                                              */
 /*----------------------------------------------------------------------------*/
 i8 Queue::iCount(void)

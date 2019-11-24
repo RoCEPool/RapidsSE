@@ -147,9 +147,9 @@ StkVal* GenVar::aEmbeddedStkVal(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  StkVal* aValue = reinterpret_cast<StkVal*>(&xNestedValue);
+  StkVal* aStkVal = reinterpret_cast<StkVal*>(&xNestedValue);
   
-  return aValue;
+  return aStkVal;
 }
 
 /*----------------------------------------------------------------------------*/

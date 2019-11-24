@@ -172,9 +172,9 @@ void Stack::vDiscard(void)
 
   _hazard_();
   
-  StkVal* aValue = reinterpret_cast<StkVal*>(m_aTop);
+  StkVal* aStkVal = reinterpret_cast<StkVal*>(m_aTop);
   
-  i8 iSize = aValue->nStackBytes();
+  i8 iSize = aStkVal->nStackBytes();
   
   vPopBy(iSize);
   
@@ -206,8 +206,8 @@ bool Stack::bGuard(eCN eClass0)
   if (nValues() < 1)
     return false;
   
-  StkVal* aValue0 = aPeekVal(0);
-  if (eClass0 != aValue0->eClass())
+  StkVal* aStkVal0 = aPeekVal(0);
+  if (eClass0 != aStkVal0->eClass())
     return false;
   
   return true;
@@ -223,12 +223,12 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1)
   if (nValues() < 2)
     return false;
   
-  StkVal* aValue0 = aPeekVal(0);
-  if (eClass0 != aValue0->eClass())
+  StkVal* aStkVal0 = aPeekVal(0);
+  if (eClass0 != aStkVal0->eClass())
     return false;
   
-  StkVal* aValue1 = aPeekVal(1);
-  if (eClass1 != aValue1->eClass())
+  StkVal* aStkVal1 = aPeekVal(1);
+  if (eClass1 != aStkVal1->eClass())
     return false;
   
   return true;
@@ -244,16 +244,16 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
   if (nValues() < 3)
     return false;
   
-  StkVal* aValue0 = aPeekVal(0);
-  if (eClass0 != aValue0->eClass())
+  StkVal* aStkVal0 = aPeekVal(0);
+  if (eClass0 != aStkVal0->eClass())
     return false;
   
-  StkVal* aValue1 = aPeekVal(1);
-  if (eClass1 != aValue1->eClass())
+  StkVal* aStkVal1 = aPeekVal(1);
+  if (eClass1 != aStkVal1->eClass())
     return false;
   
-  StkVal* aValue2 = aPeekVal(2);
-  if (eClass2 != aValue2->eClass())
+  StkVal* aSrkVal2 = aPeekVal(2);
+  if (eClass2 != aSrkVal2->eClass())
     return false;
   
   return true;
@@ -266,15 +266,15 @@ StkVal* Stack::aPeekVal(i8 i_Val)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aValue = aTopVal();
+  StkVal* aStkVal = aTopVal();
   while (i_Val--) {
-    char* aAddress = reinterpret_cast<char*>(aValue);
-    i8 iSize = aValue->nStackBytes();
+    char* aAddress = reinterpret_cast<char*>(aStkVal);
+    i8 iSize = aStkVal->nStackBytes();
     aAddress += iSize;
-    aValue = reinterpret_cast<StkVal*>(aAddress);
+    aStkVal = reinterpret_cast<StkVal*>(aAddress);
   }
   
-  return aValue;
+  return aStkVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -300,9 +300,9 @@ bool Stack::bPeekZero(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aValue = aTopVal();
+  StkVal* aStkVal = aTopVal();
   
-  if (CN_INTVAL == aValue->eClass() && 0 == _aIntVal(aValue)->iInt())
+  if (CN_INTVAL == aStkVal->eClass() && 0 == _aIntVal(aStkVal)->iInt())
     return true;
   
   return false;
@@ -979,9 +979,9 @@ void Stack::vPushLocal(Local* pLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aValue = pLocal->aLocalValue();
+  StkVal* aStkVal = pLocal->aLocalValue();
   
-  vPushValue(aValue);
+  vPushValue(aStkVal);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -1064,11 +1064,11 @@ void Stack::vPushValue(StkVal& xVal1)
 /*----------------------------------------------------------------------------*/
 /* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushValue(StkVal* aValue)
+void Stack::vPushValue(StkVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(aValue);
+  vPushVal(aStkVal);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -1143,7 +1143,7 @@ void Stack::vPopLocal(Local* aLocal)
 /*----------------------------------------------------------------------------*/
 /* pop value from value stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopVal(StkVal* aValue)
+void Stack::vPopVal(StkVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
@@ -1151,7 +1151,7 @@ void Stack::vPopVal(StkVal* aValue)
   
   i8 iSize = aTopVal()->nStackBytes();
   
-  MemLib::vCopy(aValue,m_aTop,iSize,CN_STACK);
+  MemLib::vCopy(aStkVal,m_aTop,iSize,CN_STACK);
   vPopBy(iSize);
   m_nValues--;
   
@@ -1225,9 +1225,9 @@ StkVal* Stack::aTopVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aValue = reinterpret_cast<StkVal*>(m_aTop);
+  StkVal* aStkVal = reinterpret_cast<StkVal*>(m_aTop);
   
-  return aValue;
+  return aStkVal;
 }
 
 /*----------------------------------------------------------------------------*/

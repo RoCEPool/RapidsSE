@@ -55,13 +55,13 @@ void Step::vAssertClass(void)
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  StkVal* aValue = m_pDataStack->aTopVal();
+  StkVal* aStkVal = m_pDataStack->aTopVal();
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aValue->eClass();
+  eCN eClassNo = aStkVal->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* aPtrVal = _aPtrVal(aValue);
+    PtrVal* aPtrVal = _aPtrVal(aStkVal);
     eClassNo = aPtrVal->pObj()->eClass();
   }
   
@@ -83,13 +83,13 @@ void Step::vAssertClass_0(void)
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  StkVal* aValue = m_pDataStack->aPeekVal(0);
+  StkVal* aStkVal = m_pDataStack->aPeekVal(0);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aValue->eClass();
+  eCN eClassNo = aStkVal->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* aPtrVal = _aPtrVal(aValue);
+    PtrVal* aPtrVal = _aPtrVal(aStkVal);
     eClassNo = aPtrVal->pObj()->eClass();
   }
   
@@ -111,13 +111,13 @@ void Step::vAssertClass_1(void)
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  StkVal* aValue = m_pDataStack->aPeekVal(1);
+  StkVal* aStkVal = m_pDataStack->aPeekVal(1);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aValue->eClass();
+  eCN eClassNo = aStkVal->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* aPtrVal = _aPtrVal(aValue);
+    PtrVal* aPtrVal = _aPtrVal(aStkVal);
     eClassNo = aPtrVal->pObj()->eClass();
   }
   
@@ -139,13 +139,13 @@ void Step::vAssertClass_2(void)
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  StkVal* aValue = m_pDataStack->aPeekVal(2);
+  StkVal* aStkVal = m_pDataStack->aPeekVal(2);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aValue->eClass();
+  eCN eClassNo = aStkVal->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* aPtrVal = _aPtrVal(aValue);
+    PtrVal* aPtrVal = _aPtrVal(aStkVal);
     eClassNo = aPtrVal->pObj()->eClass();
   }
   
@@ -167,13 +167,13 @@ void Step::vAssertClass_3(void)
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  StkVal* aValue = m_pDataStack->aPeekVal(3);
+  StkVal* aStkVal = m_pDataStack->aPeekVal(3);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aValue->eClass();
+  eCN eClassNo = aStkVal->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* aPtrVal = _aPtrVal(aValue);
+    PtrVal* aPtrVal = _aPtrVal(aStkVal);
     eClassNo = aPtrVal->pObj()->eClass();
   }
   
@@ -195,13 +195,13 @@ void Step::vAssertClass_4(void)
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  StkVal* aValue = m_pDataStack->aPeekVal(4);
+  StkVal* aStkVal = m_pDataStack->aPeekVal(4);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
-  eCN eClassNo = aValue->eClass();
+  eCN eClassNo = aStkVal->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* aPtrVal = _aPtrVal(aValue);
+    PtrVal* aPtrVal = _aPtrVal(aStkVal);
     eClassNo = aPtrVal->pObj()->eClass();
   }
   

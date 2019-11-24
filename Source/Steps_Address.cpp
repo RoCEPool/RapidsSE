@@ -52,23 +52,23 @@ void Step::vAddressFetch(void)
   
   eCN eClass = pObject->eClass();
   
-  StkVal* aValue = reinterpret_cast<StkVal*>(pObject);
+  StkVal* aStkVal = reinterpret_cast<StkVal*>(pObject);
   
   switch (eClass) {
     case CN_INTVAL:
-      xValFetched = _aIntVal(aValue)->iInt();
+      xValFetched = _aIntVal(aStkVal)->iInt();
       break;
       
     case CN_STRVAL:
-      xValFetched = _aStrVal(aValue)->szStz();
+      xValFetched = _aStrVal(aStkVal)->szStz();
       break;
       
     case CN_PTRVAL:
-      xValFetched = _aPtrVal(aValue)->pObj();
+      xValFetched = _aPtrVal(aStkVal)->pObj();
       break;
       
     case CN_FIPVAL:
-      xValFetched = (Object*)_aFipVal(aValue)->aFipPtr();
+      xValFetched = (Object*)_aFipVal(aStkVal)->aFipPtr();
       break;
   
     default:
@@ -96,25 +96,25 @@ void Step::vAddressStore(void)
   if ( ! m_pDataStack->bPopGenVar(xValStored) )
     THROW_DSTACK();
   
-  StkVal* aValue = reinterpret_cast<StkVal*>(pObject);
+  StkVal* aStkVal = reinterpret_cast<StkVal*>(pObject);
   
   eCN eClass = pObject->eClass();
   
   switch (eClass) {
     case CN_FIPVAL:
-      *_aFipVal(aValue) = _aFipVal(xValStored.aEmbeddedStkVal())->aFipPtr();
+      *_aFipVal(aStkVal) = _aFipVal(xValStored.aEmbeddedStkVal())->aFipPtr();
       break;
       
     case CN_INTVAL:
-      *_aIntVal(aValue) = _aIntVal(xValStored.aEmbeddedStkVal())->iInt();
+      *_aIntVal(aStkVal) = _aIntVal(xValStored.aEmbeddedStkVal())->iInt();
       break;
       
     case CN_PTRVAL:
-      *_aPtrVal(aValue) = _aPtrVal(xValStored.aEmbeddedStkVal())->pObj();
+      *_aPtrVal(aStkVal) = _aPtrVal(xValStored.aEmbeddedStkVal())->pObj();
       break;
       
    case CN_STRVAL:
-      _aStrVal(aValue)->vAssign( _aStrVal(xValStored.aEmbeddedStkVal())->szStz() );
+      _aStrVal(aStkVal)->vAssign( _aStrVal(xValStored.aEmbeddedStkVal())->szStz() );
       break;
       
     default:

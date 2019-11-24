@@ -568,17 +568,17 @@ void Step::vSee(void)
       
       aDoesCell++;
       
-      StkVal* aValue = reinterpret_cast<StkVal*>(aDoesCell);
+      StkVal* aStkVal = reinterpret_cast<StkVal*>(aDoesCell);
       
-      if (CN_STRVAL == aValue->eClass()) {
-        vTrace(" \"%s\"\n"_Stz,_aStrVal(aValue)->azChar());
+      if (CN_STRVAL == aStkVal->eClass()) {
+        vTrace(" \"%s\"\n"_Stz,_aStrVal(aStkVal)->azChar());
       }
       else {
-        aValue->vToString(sString);
+        aStkVal->vToString(sString);
         vTrace(" %s\n"_Stz,sString.azChar());
       }
       
-      i8 iBytes = aValue->nStackBytes();
+      i8 iBytes = aStkVal->nStackBytes();
       aDoesCell = aAdd<Cell*>(aDoesCell,iBytes);
       
       continue;

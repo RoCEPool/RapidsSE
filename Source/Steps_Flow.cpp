@@ -116,17 +116,17 @@ void Step::vFlowJumpFalse(void)
   
   // get pointer to value on the top of the stack
   Stack* pDataStack = m_pDataStack;
-  StkVal* aTopValue = reinterpret_cast<StkVal*>(pDataStack->m_aTop);
+  StkVal* aStkVal = reinterpret_cast<StkVal*>(pDataStack->m_aTop);
 
-  eCN eClassNo = aTopValue->eClass(); // inline
+  eCN eClassNo = aStkVal->eClass(); // inline
   
   i8 iVal;
   if (CN_INTVAL == eClassNo) {
-    iVal = _aIntVal(aTopValue)->iInt(); // inline
+    iVal = _aIntVal(aStkVal)->iInt(); // inline
   }
   else
   if (CN_PTRVAL == eClassNo) {
-    iVal = _aPtrVal(aTopValue)->pObj() ? 1 : 0; // inline
+    iVal = _aPtrVal(aStkVal)->pObj() ? 1 : 0; // inline
   }
   else {
     iVal = -1;

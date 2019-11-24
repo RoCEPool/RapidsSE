@@ -53,9 +53,9 @@ StkVal* Local::aLocalValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCAL,_FOOTER_);
   
-  StkVal* aValue = reinterpret_cast<StkVal*>(m_xWsp.ayArea());
+  StkVal* aStkVal = reinterpret_cast<StkVal*>(m_xWsp.ayArea());
   
-  return aValue;
+  return aStkVal;
 }
 
 /*----------------------------------------------------------------------------*/
