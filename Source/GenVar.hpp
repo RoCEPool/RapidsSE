@@ -19,11 +19,13 @@ namespace SenVM
   class GenVar : public Object
   {
   private:
-    struct {
-      Header       m_xHeader;
-      SingleWord   m_wWord;
-      char         m_caStr[C_MAX_VCH2];
-    } xNestedValue;
+//    struct {
+//      Header       m_xHeader;
+//      SingleWord   m_wWord;
+//      char         m_caStr[C_MAX_VCH2];
+//    } xNestedValue;
+
+    _NestedValue     m_xNstVal;
   
     // must be last
     Footer m_xFooter;
