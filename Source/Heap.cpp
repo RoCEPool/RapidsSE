@@ -438,7 +438,7 @@ void Heap::vPushFree(FreeChunk* aFreeChunk, eCN eWasClass)
   if (m_iObjectSize <= C_1MB && m_pFreeHead)
     vValidFree(m_pFreeHead);
   
-  aFreeChunk->vSetClass(CN_FREECHUNK);
+  aFreeChunk->vClass(CN_FREECHUNK);
   aFreeChunk->vNextFree(m_pFreeHead);
   
 #ifdef WITH_CHECK_INITIALISED

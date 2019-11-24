@@ -85,7 +85,7 @@ namespace Correctness
   /*--------------------------------------------------------------------------*/
   /* set class                                                                */
   /*--------------------------------------------------------------------------*/
-  inline void vSetClass(eCN eClass)
+  inline void vClass(eCN eClass)
   {
     m_eClass = eClass;
   }

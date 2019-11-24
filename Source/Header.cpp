@@ -22,7 +22,7 @@ Header::Header(void)
 Header::Header(eCN eClassNo)
 {
   vMagic();
-  vSetClass(eClassNo);
+  vClass(eClassNo);
   
   m_bWordBody = false;
 }

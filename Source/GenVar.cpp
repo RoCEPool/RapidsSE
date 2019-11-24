@@ -40,7 +40,7 @@ GenVar::GenVar(void)
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
   m_xNstVal.m_xHeader.vMagic();
-  m_xNstVal.m_xHeader.vSetClass(CN_NONE);
+  m_xNstVal.m_xHeader.vClass(CN_NONE);
   
   _postcondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
 }
@@ -63,7 +63,7 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Cell* aFipPtr)
 {
-  m_xNstVal.m_xHeader.vSetClass(CN_FIPVAL);
+  m_xNstVal.m_xHeader.vClass(CN_FIPVAL);
   m_xNstVal.m_wWord = (w8)aFipPtr;
 }
 
@@ -74,7 +74,7 @@ void GenVar::operator =(i8 iInt)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  m_xNstVal.m_xHeader.vSetClass(CN_INTVAL);
+  m_xNstVal.m_xHeader.vClass(CN_INTVAL);
   m_xNstVal.m_wWord = iInt;
 }
 
@@ -85,7 +85,7 @@ void GenVar::operator =(Object* pObject)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  m_xNstVal.m_xHeader.vSetClass(CN_PTRVAL);
+  m_xNstVal.m_xHeader.vClass(CN_PTRVAL);
   m_xNstVal.m_wWord = (w8)pObject;
 }
 
@@ -96,7 +96,7 @@ void GenVar::operator =(Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  m_xNstVal.m_xHeader.vSetClass(CN_STRVAL);
+  m_xNstVal.m_xHeader.vClass(CN_STRVAL);
   m_xNstVal.m_wWord = StrLib::nCopy(m_xNstVal.m_caStr,szStz->azChar()) + 1;
 }
 
