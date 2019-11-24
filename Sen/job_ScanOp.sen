@@ -83,7 +83,7 @@
           not Operand[].isNull
         while
           Operand[].pipeOut
-          Subset[].next
+          Subset[].nextBuffer to Operand[]
           not Operand[].isNull
         repeat
 

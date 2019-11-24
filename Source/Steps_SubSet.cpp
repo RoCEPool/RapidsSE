@@ -9,9 +9,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Subset(void)
 {
-  vAddStep("Subset[]@"_Stz,          &Step::vSubsetFetch);
-  vAddStep("Subset[].next"_Stz,      &Step::vSubsetNext);
-  vAddStep("Subset[].set"_Stz,       &Step::vSubsetSet);
+  vAddStep("Subset[]@"_Stz,           &Step::vSubsetFetch);
+  vAddStep("Subset[].next"_Stz,       &Step::vSubsetNext);
+  vAddStep("Subset[].nextBuffer"_Stz, &Step::vSubsetNextBuffer);
+  vAddStep("Subset[].set"_Stz,        &Step::vSubsetSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,6 +38,26 @@ void Step::vSubsetNext(void)
   
   if (*m_pRegSet->m_xpSubset)
     pNextOperand = m_pRegSet->m_xpSubset->pNextItem();
+  
+  m_pDataStack->vPushPointer(pNextOperand);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Subset[].nextBuffer -- get next subset buffer                              */
+/*----------------------------------------------------------------------------*/
+void Step::vSubsetNextBuffer(void)
+{
+  ENTRY("vSubsetNext"_Stz);
+  
+  Operand* pNextOperand = nullptr;
+  
+  if (*m_pRegSet->m_xpSubset) {
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpSubset);
+    pNextOperand = pCrwBuffer->pNextBuffer();
+    m_pRegSet->m_xpSubset = pNextOperand;
+  }
   
   m_pDataStack->vPushPointer(pNextOperand);
   

@@ -864,14 +864,17 @@ public:
 
   // operand
   void vOperandBide(void);
+  void vOperandHandleAggEnd(void);
   void vOperandHandleEnd(void);
   void vOperandIsNull(void);
+  void vOperandItemCountFetch(void);
   void vOperandKind(void);
   void vOperandNewEndMarker(void);
   void vOperandNewStreamDef(void);
   void vOperandNext(void);
   void vOperandPipeOut(void);
   void vOperandPipeToJob(void);
+  void vOperandRowCountFetch(void);
   void vOperandSet(void);
   void vOperandWorkDone(void);
 
@@ -1081,6 +1084,7 @@ public:
   // subset
   void vSubsetFetch(void);
   void vSubsetNext(void);
+  void vSubsetNextBuffer(void);
   void vSubsetSet(void);
 
   // table
