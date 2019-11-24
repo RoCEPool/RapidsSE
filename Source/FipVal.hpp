@@ -15,9 +15,9 @@ namespace SenVM
     
     FipVal(void);
     
-    void operator =(Cell* aCell);
-    
+    void  operator =(Cell* aCell);
     Cell* aFipPtr(void);
+  
     i8    nStackBytes(void);
     void  vToString(Stz* aWorkspace);
   };

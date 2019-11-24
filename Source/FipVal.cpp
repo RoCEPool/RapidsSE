@@ -70,9 +70,9 @@ i8 FipVal::nStackBytes(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void FipVal::vToString(Stz* aWorkspace)
+void FipVal::vToString(Stz* szStz)
 {
-  * aWorkspace = reinterpret_cast<void*>(m_aFip);
+  * szStz = reinterpret_cast<void*>(m_aFip);
 }
 
 /*============================================================================*/

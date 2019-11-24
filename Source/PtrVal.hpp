@@ -15,13 +15,12 @@ namespace SenVM
     
     PtrVal(void);
     
-    void operator =(Object* pObject);
- 
-    i8      nStackBytes(void) const;
-    Object* pObj(void) const;
+    void    operator =(Object* pObject);
+    Object* pObj(void);
+
     i8      iAsInt(void);
-  
-    void vToString(Stz* aStz);
+    i8      nStackBytes(void);
+    void    vToString(Stz* aStz);
   };
   
   PtrVal* _aPtrVal(void* aAddr);
