@@ -36,7 +36,7 @@ namespace SenVM
     bool    bIsInt(void);
     Object* pObject(void);
     i8      nSize(void);
-    SenVar* aSenVar(void);
+    SenVar* aEmbeddedSenVar(void);
     Stz*    szStz(void);
   
   private:

@@ -91,7 +91,7 @@ void Step::vToStr(void)
   
   s48K sString;
   
-  xVal.aNestedValue()->vToString(sString);
+  xVal.aEmbeddedStkVal()->vToString(sString);
   
   m_pDataStack->vPushS48K(sString);
   

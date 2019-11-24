@@ -102,19 +102,19 @@ void Step::vAddressStore(void)
   
   switch (eClass) {
     case CN_FIPVAL:
-      *_aFipVal(aValue) = _aFipVal(xValStored.aNestedValue())->aFipPtr();
+      *_aFipVal(aValue) = _aFipVal(xValStored.aEmbeddedStkVal())->aFipPtr();
       break;
       
     case CN_INTVAL:
-      *_aIntVal(aValue) = _aIntVal(xValStored.aNestedValue())->iInt();
+      *_aIntVal(aValue) = _aIntVal(xValStored.aEmbeddedStkVal())->iInt();
       break;
       
     case CN_PTRVAL:
-      *_aPtrVal(aValue) = _aPtrVal(xValStored.aNestedValue())->pObj();
+      *_aPtrVal(aValue) = _aPtrVal(xValStored.aEmbeddedStkVal())->pObj();
       break;
       
    case CN_STRVAL:
-      _aStrVal(aValue)->vAssign( _aStrVal(xValStored.aNestedValue())->szStz() );
+      _aStrVal(aValue)->vAssign( _aStrVal(xValStored.aEmbeddedStkVal())->szStz() );
       break;
       
     default:

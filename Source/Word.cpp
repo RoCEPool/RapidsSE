@@ -254,7 +254,7 @@ void* Word::aAppend(GenVar* pGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  void* aValueAddress = aAppend(pGenVar->aNestedValue());
+  void* aValueAddress = aAppend(pGenVar->aEmbeddedStkVal());
   
   return aValueAddress;
 }

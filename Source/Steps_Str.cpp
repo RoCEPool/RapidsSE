@@ -125,8 +125,8 @@ void Step::vStrEqual(void)
   if ( ! m_pDataStack->bPopGenVar(xStringB,xStringA) )
     THROW_DSTACK();
   
-  i8 iEqual = StrLib::bEqualTo(_aStrVal(xStringA.aNestedValue())->azChar(),
-                               _aStrVal(xStringB.aNestedValue())->azChar(),
+  i8 iEqual = StrLib::bEqualTo(_aStrVal(xStringA.aEmbeddedStkVal())->azChar(),
+                               _aStrVal(xStringB.aEmbeddedStkVal())->azChar(),
                                C_NO_CASE);
   
   m_pDataStack->vPushI8(iEqual);
@@ -272,10 +272,10 @@ void Step::vStrPrepend(void)
     ASSERT(0);
 //    s48K xString;
 //    xValA.vGetString(xString);
-//    xStrA = _aStrVal(xValA.aNestedValue())->szStz();
+//    xStrA = _aStrVal(xValA.aEmbeddedStkVal())->szStz();
   }
   else {
-    xStrA = _aStrVal(xValA.aNestedValue())->szStz();                          //! need to simplify this
+    xStrA = _aStrVal(xValA.aEmbeddedStkVal())->szStz();                          //! need to simplify this
   }
   
   // If received INTEGER convert to STRING
@@ -286,7 +286,7 @@ void Step::vStrPrepend(void)
 //    xStrB = xString;
   }
   else {
-    xStrB = _aStrVal(xValB.aNestedValue())->szStz();
+    xStrB = _aStrVal(xValB.aEmbeddedStkVal())->szStz();
   }
   
   xStrR = xStrB;

@@ -162,9 +162,9 @@ i8 GenVar2::nSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of the nested sen variable                                     */
+/* get address of the embedded sen variable                                   */
 /*----------------------------------------------------------------------------*/
-SenVar* GenVar2::aSenVar(void)
+SenVar* GenVar2::aEmbeddedSenVar(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   

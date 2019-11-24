@@ -143,7 +143,7 @@ bool GenVar::bIsInt(void)
 /*----------------------------------------------------------------------------*/
 /* get address of the nested value                                            */
 /*----------------------------------------------------------------------------*/
-StkVal* GenVar::aNestedValue(void)
+StkVal* GenVar::aEmbeddedStkVal(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
