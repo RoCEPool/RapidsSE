@@ -125,8 +125,8 @@ void Step::vStrEqual(void)
   if ( ! m_pDataStack->bPopGenVar(xStringB,xStringA) )
     THROW_DSTACK();
   
-  i8 iEqual = StrLib::bEqualTo(_aStrVal(xStringA.aEmbeddedStkVal())->azChar(),
-                               _aStrVal(xStringB.aEmbeddedStkVal())->azChar(),
+  i8 iEqual = StrLib::bEqualTo(xStringA.azChar(),
+                               xStringB.azChar(),
                                C_NO_CASE);
   
   m_pDataStack->vPushI8(iEqual);
