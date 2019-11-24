@@ -8,7 +8,7 @@ namespace SenVM
   class FipVar : public SenVar
   {
   private:
-    Cell*   m_aFip;
+    Cell* m_aFip;
 
   public:
     void* operator new(size_t);
