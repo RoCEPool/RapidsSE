@@ -118,7 +118,7 @@ char* GenVar::azChar(void)
 /*----------------------------------------------------------------------------*/
 /* get object address from nested value                                       */
 /*----------------------------------------------------------------------------*/
-Cell* GenVar::aFipPtr(void)
+Cell* GenVar::aFip(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   

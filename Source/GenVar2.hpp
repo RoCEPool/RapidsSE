@@ -33,7 +33,7 @@ namespace SenVM
 
     char*   azChar(void);
     eCN     eEmbeddedClass(void);
-    Cell*   aFipPtr(void);
+    Cell*   aFip(void);
     i8      iInt(void);
     bool    bIsInt(void);
     Object* pObject(void);
