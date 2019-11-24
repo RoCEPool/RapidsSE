@@ -864,6 +864,7 @@ public:
 
   // operand
   void vOperandBide(void);
+  void vOperandDelete(void);
   void vOperandHandleAggEnd(void);
   void vOperandHandleEnd(void);
   void vOperandIsNull(void);

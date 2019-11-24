@@ -7,7 +7,7 @@
 OpDesc __Op_Count (
   CN_COUNTOP,         // class number
   OK_SINGLE,          // op kind
-  "Count"_Stz,        // first word of prompt command
+  "CountOp"_Stz,      // first word of prompt command
   "Cnt"_Stz,          // prefix
                  
   true,               // partitioned
@@ -29,7 +29,7 @@ OpDesc __Op_Count (
   CountOp::eCall,     // function which calls the op loop
   CountOp::eDrain,    // function which calls the drain loop
 
-  "count"_Stz
+  "countOp"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

@@ -10,18 +10,20 @@
 void Step::vAddSteps_Operand(void)
 {
   vAddStep("Operand[].bide"_Stz,         &Step::vOperandBide);
+  vAddStep("Operand[].delete"_Stz,       &Step::vOperandDelete);
   vAddStep("Operand[].handleAggEnd"_Stz, &Step::vOperandHandleAggEnd);
   vAddStep("Operand[].handleEnd"_Stz,    &Step::vOperandHandleEnd);
   vAddStep("Operand[].isNull"_Stz,       &Step::vOperandIsNull);
+  vAddStep("Operand[].itemCount@"_Stz,   &Step::vOperandItemCountFetch);
   vAddStep("Operand[].kind"_Stz,         &Step::vOperandKind);
   vAddStep("Operand[].newEndMarker"_Stz, &Step::vOperandNewEndMarker);
   vAddStep("Operand[].newStreamDef"_Stz, &Step::vOperandNewStreamDef);
-  vAddStep("Operand[].next"_Stz,       &Step::vOperandNext);
-  vAddStep("Operand[].pipeOut"_Stz,    &Step::vOperandPipeOut);
-  vAddStep("Operand[].pipeToJob"_Stz,  &Step::vOperandPipeToJob);
-  vAddStep("Operand[].rowCount@"_Stz,  &Step::vOperandRowCountFetch);
-  vAddStep("Operand[].set"_Stz,        &Step::vOperandSet);
-  vAddStep("Operand[].workDone"_Stz,   &Step::vOperandWorkDone);
+  vAddStep("Operand[].next"_Stz,         &Step::vOperandNext);
+  vAddStep("Operand[].pipeOut"_Stz,      &Step::vOperandPipeOut);
+  vAddStep("Operand[].pipeToJob"_Stz,    &Step::vOperandPipeToJob);
+  vAddStep("Operand[].rowCount@"_Stz,    &Step::vOperandRowCountFetch);
+  vAddStep("Operand[].set"_Stz,          &Step::vOperandSet);
+  vAddStep("Operand[].workDone"_Stz,     &Step::vOperandWorkDone);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,6 +39,20 @@ void Step::vOperandBide(void)
     ASSERT(m_pTask->bIsLocked());
     m_pTask->vSchedulerAct(SA_BIDE);
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].delete -- operand delete                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandDelete(void)
+{
+  ENTRY(); // ENTRY("vOperandDelete"_Stz);
+  
+  AM::vDeleteOperand(m_pRegSet->m_pOperand);
+  
+  m_pRegSet->m_pOperand = nullptr;
   
   EXIT();
 }

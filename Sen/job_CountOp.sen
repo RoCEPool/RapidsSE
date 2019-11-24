@@ -7,16 +7,68 @@
 /*----------------------------------------------------------------------------*/
 /* execute for countOp                                (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : Count_req ( -- )
+ : CountOp_req ( -- )
  
-   >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ>
+  job::this locals| pJob_CountOp |
+  0 locals| nCount |
 
-   job::this locals| pJob_CountOp |
+  begin
 
+    // bide till next operand is available
+    Operand[].bide
 
-   pJob_CountOp job.opLoop
+    // pop next operand from queue into Operand[]
+    Operand[].next
 
-   //pJob_CountOp job::participantExecuted
+    // decode kind
+    Operand[].kind case
+
+    ZK_CRWBUFFER of
+      "Operand:- ZK_CRWBUFFER" .
+      nCount Operand[].rowCount@ + to nCount
+      true
+      endof
+
+    ZK_CSVBUFFER of
+      "Operand:- ZK_CSVBUFFER" .
+      nCount Operand[].itemCount@ + to nCount
+      true
+    endof
+
+    ZK_ENDMARKER of
+      "Operand:- ZK_ENDMARKER" .
+      nCount Operand[].handleAggEnd
+      false
+    endof
+
+    ZK_ENTBUFFER of
+      "Operand:- ZK_ENTBUFFER" .
+      nCount Operand[].itemCount@ + to nCount
+      true
+    endof
+
+    ZK_IRWBUFFER of
+      "Operand:- ZK_IRWBUFFER" .
+      nCount Operand[].itemCount@ + to nCount
+      true
+    endof
+
+    ZK_SRTBUFFER of
+      "Operand:- ZK_SRTBUFFER" .
+      nCount Operand[].itemCount@ + to nCount
+      true
+    endof
+
+    ZK_STREAMDEF of
+      "Operand:- ZK_STREAMDEF" .
+      Operand[].delete
+      true
+    endof
+
+    endcase
+
+    while assert::stack_0 repeat
 
   <<logExit
   job::deleteThis
@@ -26,9 +78,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: Count :: Count ;
+jobSyntax: CountOp :: CountOp ;
 
-jobInfo: Count
+jobInfo: CountOp
 {
   <?jobDesc?>  = "--description of job--"
   
