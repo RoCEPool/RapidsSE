@@ -33,7 +33,7 @@ void* FipVal::operator new(size_t)
 FipVal::FipVal(void)
 : StkVal(CN_FIPVAL)
 {
-  m_xHeader.vSetClass(CN_FIPVAL);
+  _Header::vClass(CN_FIPVAL);
   
   m_aFip = nullptr;
   

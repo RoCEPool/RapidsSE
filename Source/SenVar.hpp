@@ -23,7 +23,7 @@ namespace SenVM
   /*--------------------------------------------------------------------------*/
   inline eCN eClass(void)
   {
-  return _Header::eGetClass();
+  return _Header::eClass();
   }
 
   /*--------------------------------------------------------------------------*/
@@ -31,7 +31,7 @@ namespace SenVM
   /*--------------------------------------------------------------------------*/
   inline void vClass(eCN eClass)
   {
-    _Header::vSetClass(eClass);
+    _Header::vClass(eClass);
   }
   
   };

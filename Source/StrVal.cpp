@@ -37,7 +37,7 @@ void* StrVal::operator new(size_t)
 StrVal::StrVal(void)
 : StkVal(CN_STRVAL)
 {
-  m_xHeader.vSetClass(CN_STRVAL);
+  _Header::vClass(CN_STRVAL);
 }
 
 

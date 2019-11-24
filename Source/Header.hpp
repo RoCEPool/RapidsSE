@@ -24,17 +24,9 @@ namespace Correctness
   public:
 
   /*--------------------------------------------------------------------------*/
-  /* Get class                                                                */
-  /*--------------------------------------------------------------------------*/
-  inline eCN eGetClass(void)
-  {
-    return m_eClass;
-  }
-  
-  /*--------------------------------------------------------------------------*/
   /* set class                                                                */
   /*--------------------------------------------------------------------------*/
-  inline void vSetClass(eCN eClass)
+  inline void vClass(eCN eClass)
   {
     m_eClass = eClass;
   }
@@ -44,7 +36,7 @@ namespace Correctness
   /*--------------------------------------------------------------------------*/
   inline eCN eClass(void)
   {
-  return m_eClass;
+    return m_eClass;
   }
   
   };

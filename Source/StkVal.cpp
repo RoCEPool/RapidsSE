@@ -21,7 +21,7 @@ void* StkVal::operator new(size_t)
 StkVal::StkVal(eCN eClass)
 //: Header(eClass)
 {
-  m_xHeader.vSetClass(eClass);
+  _Header::vClass(eClass);
   
   _checkInitialisedSize_(sizeof(StkVal));
 }
@@ -35,7 +35,7 @@ StkVal::StkVal(eCN eClass)
 /*----------------------------------------------------------------------------*/
 eCN StkVal::eClass(void)
 {
-  eCN eClass = m_xHeader.eClass();
+  eCN eClass = _Header::eClass();
   
   return eClass;
 }

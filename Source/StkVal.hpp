@@ -5,11 +5,10 @@
 
 namespace SenVM
 {
-  class StkVal
+  class StkVal : public _Header
   {
   protected:
-    _Header m_xHeader;
-  
+   
   public:
     void* operator new(size_t);
     StkVal(eCN eClass);

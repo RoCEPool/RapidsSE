@@ -21,7 +21,7 @@ void* IntVal::operator new(size_t)
 IntVal::IntVal(void)
 : StkVal(CN_INTVAL)
 {
-  m_xHeader.vSetClass(CN_INTVAL);
+  _Header::vClass(CN_INTVAL);
   
   m_iInt = 0;
   
