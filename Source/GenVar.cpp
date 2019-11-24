@@ -122,7 +122,7 @@ Cell* GenVar::aFipPtr(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Cell* aFip = (Cell*)m_xNstVal.m_wWord.m_iI8;
+  Cell* aFip = (Cell*)m_xNstVal.m_wWord;
   
   return aFip;
 }
@@ -185,7 +185,7 @@ Object* GenVar::pObject(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Object* pObj = (Object*)m_xNstVal.m_wWord.m_iI8;
+  Object* pObj = (Object*)m_xNstVal.m_wWord;
   
   return pObj;
 }

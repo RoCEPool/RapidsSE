@@ -8,9 +8,9 @@ namespace SenVM
   class _NestedValue
   {
   public:
-    Header       m_xHeader;
-    SingleWord   m_wWord;
-    char         m_caStr[C_MAX_VCH2];
+    _Header  m_xHeader;
+    i8       m_wWord;
+    char     m_caStr[C_MAX_VCH2];
 
   };
   
@@ -19,14 +19,9 @@ namespace SenVM
   class GenVar : public Object
   {
   private:
-//    struct {
-//      Header       m_xHeader;
-//      SingleWord   m_wWord;
-//      char         m_caStr[C_MAX_VCH2];
-//    } xNestedValue;
 
     //union {
-      _NestedValue     m_xNstVal;
+      _NestedValue  m_xNstVal;
     //} u;
 
     // must be last
