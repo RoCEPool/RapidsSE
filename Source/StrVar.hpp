@@ -16,9 +16,10 @@ namespace SenVM
   
     void operator =(Stz* szStz);
   
-    Stz* szStz(void);
-    i8   nStackBytes(void);
-    void vToString(Stz* szStz);
+    char* azChar(void);
+    Stz*  szStz(void);
+    i8    nStackBytes(void);
+    void  vToString(Stz* szStz);
   };
 }
 
