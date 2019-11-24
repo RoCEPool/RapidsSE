@@ -118,7 +118,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
         
       case CN_FIPVAL: {
         FipVal* aFipVal = _aFipVal(aEmbeddedStkVal);
-        Cell* aFip = aFipVal->aFipPtr();
+        Cell* aFip = aFipVal->aFip();
         Word* pWord = pDicStack->pLocateWord(aFip);
 
 
@@ -311,7 +311,7 @@ bool Stack::bPeekZero(void)
 /*----------------------------------------------------------------------------*/
 /* pop aCell from value stack                                                 */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopCell(Cell*& aCell)
+bool Stack::bPopCell(Cell*& aFip)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -322,7 +322,7 @@ bool Stack::bPopCell(Cell*& aCell)
   
   vPopVal(&xFipVal);
   
-  aCell = xFipVal.aFipPtr();
+  aFip = xFipVal.aFip();
   
   return true;
 }

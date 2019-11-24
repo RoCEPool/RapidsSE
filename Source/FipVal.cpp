@@ -43,9 +43,9 @@ FipVal::FipVal(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void FipVal::operator =(Cell* aCell)
+void FipVal::operator =(Cell* aFip)
 {
-  m_aFip = aCell;
+  m_aFip = aFip;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +54,7 @@ void FipVal::operator =(Cell* aCell)
 /*----------------------------------------------------------------------------*/
 /* get instruction pointer                                                    */
 /*----------------------------------------------------------------------------*/
-Cell* FipVal::aFipPtr(void)
+Cell* FipVal::aFip(void)
 {
   return pPoolCheck<Cell*>(m_aFip);
 }

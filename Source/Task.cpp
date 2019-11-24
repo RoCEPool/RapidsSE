@@ -905,7 +905,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     }
     else if (CN_FIPVAL == eClass) {                                      
       sStackContents.vCatSprint("%p"_Stz,
-                                _aFipVal(aStkVal)->aFipPtr());
+                                _aFipVal(aStkVal)->aFip());
     }
     else if (CN_STRVAL == eClass) {
       sStackContents.vCatSprint("\"%lls\""_Stz,
