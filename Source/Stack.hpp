@@ -117,7 +117,8 @@ namespace SenVM
   private:
     StkVal* aAllotStkVal(i8 nBytes);
   
-    i8   iPopInt(void);
+    Cell* aPopFip(void);
+    i8    iPopInt(void);
   
     void vPopLocal(Local* aLocal);
     void vPopVal(StkVal* aStkVal);

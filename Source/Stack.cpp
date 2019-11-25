@@ -924,20 +924,6 @@ bool Stack::bPopAsInt_Quick(i8& iArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop integer from stack                                                     */
-/*----------------------------------------------------------------------------*/
-i8 Stack::iPopInt(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  i8 iInt = static_cast<IntVal*>(m_aTop)->iInt();
-  
-  vDiscard();
-
-  return iInt;
-}
-
-/*----------------------------------------------------------------------------*/
 /* poke given value into value stack                                          */
 /*----------------------------------------------------------------------------*/
 void Stack::vPokeGenVar(i8 i_Val, GenVar& xGenVar)
@@ -1201,6 +1187,34 @@ StkVal* Stack::aAllotStkVal(i8 nBytes)
   m_nValues++;
 
   return m_aTop;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop fip from stack                                                         */
+/*----------------------------------------------------------------------------*/
+Cell* Stack::aPopFip(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  Cell* aFip = static_cast<FipVal*>(m_aTop)->aFip();
+  
+  vDiscard();
+  
+  return aFip;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop integer from stack                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Stack::iPopInt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  i8 iInt = static_cast<IntVal*>(m_aTop)->iInt();
+  
+  vDiscard();
+  
+  return iInt;
 }
 
 /*----------------------------------------------------------------------------*/
