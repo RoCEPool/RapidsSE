@@ -137,6 +137,8 @@ eOR OutputOp::eOpLoop(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   s4K sMetaData;
   
+  RASSERT(0);
+  
   for (;;) {
     
     Operand* pOperand = pPopQueue();

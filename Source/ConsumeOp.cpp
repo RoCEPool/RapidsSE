@@ -7,7 +7,7 @@
 OpDesc __Op_Consume (
   CN_CONSUMEOP,        // class number
   OK_SINK,             // op kind
-  "Consume"_Stz,       // first word of prompt command
+  "ConsumeOp"_Stz,     // first word of prompt command
   "csm"_Stz,           // prefix
                   
   false,               // partitioned
@@ -29,7 +29,7 @@ OpDesc __Op_Consume (
   ConsumeOp::eCall,     // function which calls the op loop
   ConsumeOp::eDrain,    // function which calls the drain loop
 
-  "output"_Stz
+  "consume"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
@@ -141,6 +141,8 @@ eOR ConsumeOp::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEOP,_FOOTER_);
   s4K sMetaData;
+  
+  RASSERT(0);
   
   for (;;) {
     

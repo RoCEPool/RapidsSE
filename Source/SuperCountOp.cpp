@@ -124,6 +124,8 @@ eOR SuperCountOp::eSuperCountLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUPERCOUNTOP,_FOOTER_);
   
+  RASSERT(0);
+  
   for (;;) {
     
     Operand* pOperand = pPopQueue();

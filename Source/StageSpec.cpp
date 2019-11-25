@@ -127,7 +127,7 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX)
   OpSpec* pOpSpec;
   i8 iConsumeArg = C_UNKNOWN;
   
-  pOpSpec = new OpSpec("consume"_Stz,this);
+  pOpSpec = new OpSpec("consumeOp"_Stz,this);
   
   // add argument to the consumeOp depending on the topology
   switch (eTopologyX) {

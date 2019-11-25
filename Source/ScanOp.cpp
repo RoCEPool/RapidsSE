@@ -132,6 +132,8 @@ eOR ScanOp::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANOP,_FOOTER_);
   
+  RASSERT(0);
+  
   for (;;) {
     
     Operand* pOperand = pPopQueue();

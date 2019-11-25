@@ -148,6 +148,8 @@ eOR CountOp::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COUNTOP,_FOOTER_);
   
+  RASSERT(0);
+  
   for (;;) {
     
     Operand* pOperand = pPopQueue();
