@@ -7,22 +7,74 @@
 /*----------------------------------------------------------------------------*/
 /* execute for outputOp request                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : output_req ( -- )
- 
-   >>logEntry <SEED_REQ>
+: outputOp_req ( -- )
 
-   job::this locals| pJob_OutputOp |
+  >>logEntry <SEED_REQ>
 
+  job::this locals| pMark2Op |
 
-   begin
-     pJob_OutputOp job.LoopOutputOp
-     "biding" .
-   while
-     "continuing" .
-     pJob_OutputOp job.LoopOutputOp
-   repeat
+  begin
 
-   //pJob_OutputOp job::participantExecuted
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_CRWBUFFER of
+        "Operand:- ZK_CRWBUFFER" .
+        Operand[].workDone
+        Operand[].pipeToJob
+        true
+      endof
+
+      ZK_CSVBUFFER of
+        "Operand:- ZK_CSVBUFFER" .
+        Operand[].workDone
+        Operand[].pipeToJob
+        true
+      endof
+
+      ZK_ENDMARKER of
+        "Operand:- ZK_ENDMARKER" .
+        Operand[].handleEnd
+        false
+      endof
+
+      ZK_ENTBUFFER of
+        "Operand:- ZK_ENTBUFFER" .
+        Operand[].workDone
+        Operand[].pipeToJob
+        true
+      endof
+
+      ZK_IRWBUFFER of
+        "Operand:- ZK_IRWBUFFER" .
+        Operand[].workDone
+        Operand[].pipeToJob
+        true
+      endof
+
+      ZK_SRTBUFFER of
+        "Operand:- ZK_SRTBUFFER" .
+        Operand[].workDone
+        Operand[].pipeToJob
+        true
+      endof
+
+      ZK_STREAMDEF of
+        "Operand:- ZK_STREAMDEF" .
+        Operand[].workDone
+        Operand[].pipeToJob
+        true
+      endof
+
+    endcase
+
+  while assert::stack_0 repeat
 
   <<logExit
   job::deleteThis
@@ -30,11 +82,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-jobSyntax: output :: output ;
+jobSyntax: outputOp :: outputOp ;
 
-jobInfo: output
+jobInfo: outputOp
 {
   <?jobDesc?>  = "--description of job--"
   
@@ -46,6 +98,7 @@ jobInfo: output
   <?preCheck?> = bClusterStarted
 }
 ;
+
 
 /*============================================================================*/
 /* end                                                                        */

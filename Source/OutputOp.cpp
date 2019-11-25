@@ -7,7 +7,7 @@
 OpDesc __Op_Output (
   CN_OUTPUTOP,         // class number
   OK_SINK,             // op kind
-  "Output"_Stz,        // first word of prompt command
+  "OutputOp"_Stz,      // first word of prompt command
   "Out"_Stz,           // prefix
                   
   false,               // partitioned
@@ -29,7 +29,7 @@ OpDesc __Op_Output (
   OutputOp::eCall,     // function which calls the op loop
   OutputOp::eDrain,    // function which calls the drain loop
 
-  "output"_Stz
+  "outputOp"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

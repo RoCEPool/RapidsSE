@@ -103,7 +103,7 @@ print "*************************************************************************
    scanOp lineitem |  countOp | superCountOp | stageB
  
  stage stageB on origin:
-   superCountOp | output
+   superCountOp | outputOp
 
  end
  ;
