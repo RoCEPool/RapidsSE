@@ -84,9 +84,9 @@ Stack::~Stack(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump value stack                                                           */
 /*----------------------------------------------------------------------------*/
-void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Stack::vDump(eCN eClass, Object* pObj, Stz* aTab)
 {
-  Stack* pStack = _pStack(pObject);
+  Stack* pStack = _pStack(pObj);
   
   vTrace("values %lld top %p\n"_Stz,
          pStack->m_nValues,
@@ -138,10 +138,10 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
         
       case CN_PTRVAL: {
         PtrVal* aPtrVal = _aPtrVal(aEmbeddedStkVal);
-        Object* pObject = aPtrVal->pObj();
-        eCN ePtdClass   = pObject->eClass();
+        Object* pObj = aPtrVal->pObj();
+        eCN ePtdClass   = pObj->eClass();
         vTrace("[%2lld] [%s] %p (%s)\n"_Stz,
-               i_Val,aCN[eClass],pObject,aCN[ePtdClass]);
+               i_Val,aCN[eClass],pObj,aCN[ePtdClass]);
         break;
       }
         
@@ -421,9 +421,9 @@ bool Stack::bPopInt(i8& iInt1, i8& iInt2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop i8,pObject from value stack                                            */
+/* pop i8,pObj from value stack                                            */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopInt(i8& iInt, Object*& pObject)
+bool Stack::bPopInt(i8& iInt, Object*& pObj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -438,7 +438,7 @@ bool Stack::bPopInt(i8& iInt, Object*& pObject)
   PtrVal xPtrVal;
   vPopVal(&xPtrVal);
   
-  pObject = xPtrVal.pObj();
+  pObj = xPtrVal.pObj();
   
   return true;
 }
@@ -514,7 +514,7 @@ bool Stack::bPopInt(i8& iInt1, i8& iInt2, GenVar& xGenVar)
 /*----------------------------------------------------------------------------*/
 /* pop Object* from value stack                                               */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopPtr(Object*& pObject)
+bool Stack::bPopPtr(Object*& pObj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -524,7 +524,7 @@ bool Stack::bPopPtr(Object*& pObject)
   PtrVal xPtrVal;
   vPopVal(&xPtrVal);
   
-  pObject = xPtrVal.pObj();
+  pObj = xPtrVal.pObj();
   
   return true;
 }
@@ -532,7 +532,7 @@ bool Stack::bPopPtr(Object*& pObject)
 /*----------------------------------------------------------------------------*/
 /* pop Object*, i8 from value stack                                           */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopPtr(Object*& pObject, i8& iInt)
+bool Stack::bPopPtr(Object*& pObj, i8& iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -542,7 +542,7 @@ bool Stack::bPopPtr(Object*& pObject, i8& iInt)
   PtrVal xPtrVal;
   vPopVal(&xPtrVal);
   
-  pObject = xPtrVal.pObj();
+  pObj = xPtrVal.pObj();
   
   IntVal xIntVal;
   vPopVal(&xIntVal);
@@ -555,7 +555,7 @@ bool Stack::bPopPtr(Object*& pObject, i8& iInt)
 /*----------------------------------------------------------------------------*/
 /* pop Object*, Object* from value stack                                      */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopPtr(Object*& pObject1, Object*& pObject2)
+bool Stack::bPopPtr(Object*& pObj1, Object*& pObj2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -565,12 +565,12 @@ bool Stack::bPopPtr(Object*& pObject1, Object*& pObject2)
   PtrVal xPtrVal1;
   vPopVal(&xPtrVal1);
   
-  pObject1 = xPtrVal1.pObj();
+  pObj1 = xPtrVal1.pObj();
   
   PtrVal xPtrVal2;
   vPopVal(&xPtrVal2);
   
-  pObject2 = xPtrVal2.pObj();
+  pObj2 = xPtrVal2.pObj();
   
   return true;
 }
@@ -578,7 +578,7 @@ bool Stack::bPopPtr(Object*& pObject1, Object*& pObject2)
 /*----------------------------------------------------------------------------*/
 /* pop Object* from value stack                                               */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopPtr(Object*& pObject, GenVar& xGenVar)
+bool Stack::bPopPtr(Object*& pObj, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -588,7 +588,7 @@ bool Stack::bPopPtr(Object*& pObject, GenVar& xGenVar)
   PtrVal xPtrVal1;
   vPopVal(&xPtrVal1);
   
-  pObject = xPtrVal1.pObj();
+  pObj = xPtrVal1.pObj();
   
   return bPopGenVar(xGenVar);
 }
@@ -913,13 +913,13 @@ void Stack::vPushInt(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* push pointer to proper object onto value stack                             */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushPtr(Object* pObject)
+void Stack::vPushPtr(Object* pObj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   PtrVal xPtrObject;
   
-  xPtrObject = pObject;
+  xPtrObject = pObj;
   
   vPushStkVal(xPtrObject);
 }

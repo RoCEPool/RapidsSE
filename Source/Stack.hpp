@@ -37,7 +37,7 @@ namespace SenVM
    ~Stack(void) noexcept(false);
     
     static Stack* _pStack(void* aAddr);
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static void vDump(eCN eClass, Object* pObj, Stz* aTab);
   
     void vContentDump(DicStack* pDicStack, Stz* szTitle);
   
@@ -58,13 +58,13 @@ namespace SenVM
     bool bPopInt(i8& iInt);
     bool bPopInt(i8& iInt1, i8& iInt2);
     bool bPopInt(i8& iInt1, i8& iInt2, GenVar& xGenVar);
-    bool bPopInt(i8& iInt, Object*& pObject);
+    bool bPopInt(i8& iInt, Object*& pObj);
     bool bPopInt(i8& iInt, GenVar& xGenVar);
     bool bPopInt(i8& iInt, s48K& sArg);
-    bool bPopPtr(Object*& pObject);
-    bool bPopPtr(Object*& pObject, i8& iInt);
-    bool bPopPtr(Object*& pObject1, Object*& pObject2);
-    bool bPopPtr(Object*& pObject, GenVar& xGenVar);
+    bool bPopPtr(Object*& pObj);
+    bool bPopPtr(Object*& pObj, i8& iInt);
+    bool bPopPtr(Object*& pObj1, Object*& pObj2);
+    bool bPopPtr(Object*& pObj, GenVar& xGenVar);
     bool bPopLocal(Local*& pLocal);
     bool bPopS32(s32&  sArg1);
     bool bPopS256(s256& sArg1);
@@ -85,7 +85,7 @@ namespace SenVM
     void vPushGenVar(GenVar* pGenVar);
     void vPushGenVar(GenVar& xGenVar);
     void vPushInt(i8 iInt);
-    void vPushPtr(Object* pObject);
+    void vPushPtr(Object* pObj);
     void vPushLocal(Local* pLocal);
     void vPushS32(s32& s32);
     void vPushS256(s256& s256);
