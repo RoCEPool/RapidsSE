@@ -1150,9 +1150,7 @@ void Stack::vDiscard(void)
   
   _hazard_();
   
-  StkVal* aStkVal = reinterpret_cast<StkVal*>(m_xTop.pStkVal);
-  
-  i8 iSize = aStkVal->nStackBytes();
+  i8 iSize = m_xTop.pStkVal->nStackBytes();
   
   vPopBy(iSize);
   
@@ -1168,7 +1166,7 @@ Cell* Stack::aPopFip(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Cell* aFip = static_cast<FipVal*>(m_xTop.pStkVal)->aFip();
+  Cell* aFip = m_xTop.pFipVal->aFip();
   
   vDiscard();
   
@@ -1182,7 +1180,7 @@ i8 Stack::iPopInt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  i8 iInt = static_cast<IntVal*>(m_xTop.pStkVal)->iInt();
+  i8 iInt = m_xTop.pIntVal->iInt();
   
   vDiscard();
   
@@ -1196,7 +1194,7 @@ Object* Stack::pPopObj(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Object* pObj = static_cast<PtrVal*>(m_xTop.pStkVal)->pObj();
+  Object* pObj = m_xTop.pPtrVal->pObj();
   
   vDiscard();
   
@@ -1306,7 +1304,7 @@ bool Stack::bTopIsZero(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if (CN_INTVAL == m_xTop.pStkVal->eClass() && 0 == _aIntVal(m_xTop.pStkVal)->iInt())
+  if (CN_INTVAL == m_xTop.pStkVal->eClass() && 0 == m_xTop.pIntVal->iInt())
     return true;
   
   return false;
@@ -1318,10 +1316,8 @@ bool Stack::bTopIsZero(void)
 StkVal* Stack::aTopStkVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  StkVal* aStkVal = reinterpret_cast<StkVal*>(m_xTop.pStkVal);
-  
-  return aStkVal;
+    
+  return m_xTop.pStkVal;
 }
 
 /*----------------------------------------------------------------------------*/
