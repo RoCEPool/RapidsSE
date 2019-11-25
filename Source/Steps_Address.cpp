@@ -76,7 +76,7 @@ void Step::vAddressFetch(void)
              "Invalid eClass %lld"_Stz,eClass);
   }
   
-  m_pDataStack->vPushGenVar(xValFetched);
+  m_pDataStack->vPushVal(xValFetched);
   
   EXIT();
 }

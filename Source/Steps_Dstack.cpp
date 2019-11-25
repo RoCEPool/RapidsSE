@@ -140,8 +140,8 @@ void Step::vDstackDup(void)
   if ( ! m_pDataStack->bPopVal(xValA) )
     THROW_DSTACK();
   
-  m_pDataStack->vPushGenVar(xValA);
-  m_pDataStack->vPushGenVar(xValA);
+  m_pDataStack->vPushVal(xValA);
+  m_pDataStack->vPushVal(xValA);
   
   EXIT();
 }
@@ -160,8 +160,8 @@ void Step::vDstackDupNonZero(void)
     THROW_DSTACK();
   
   if (xValA.iInt()) {
-    m_pDataStack->vPushGenVar(xValA);
-    m_pDataStack->vPushGenVar(xValA);
+    m_pDataStack->vPushVal(xValA);
+    m_pDataStack->vPushVal(xValA);
   }
   else
     m_pDataStack->vPushInt(false);
@@ -182,7 +182,7 @@ void Step::vDstackNip(void)
   if ( ! m_pDataStack->bPopVal(xValA,xValB) )
     THROW_DSTACK();
   
-  m_pDataStack->vPushGenVar(xValA);
+  m_pDataStack->vPushVal(xValA);
   
   EXIT();
 }
@@ -200,7 +200,7 @@ void Step::vDstackOver(void)
   
   m_pDataStack->vPeekVar(1,xVariable);
   
-  m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushVal(xVariable);
   
   EXIT();
 }
@@ -222,7 +222,7 @@ void Step::vDstackPick(void)
   
   m_pDataStack->vPeekVar(iPick,xVariable);
   
-  m_pDataStack->vPushGenVar(xVariable);
+  m_pDataStack->vPushVal(xVariable);
   
   EXIT();
 }
@@ -282,16 +282,16 @@ void Step::vDstackRoll(void)
     if ( ! m_pDataStack->bPopVal(xValX) )
       THROW_DSTACK();
     
-    m_pReturnStack->vPushGenVar(xValX);
+    m_pReturnStack->vPushVal(xValX);
   }
   
-  m_pDataStack->vPushGenVar(xValA);
+  m_pDataStack->vPushVal(xValA);
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
     if ( ! m_pReturnStack->bPopVal(xValX) )
       THROW_DSTACK();
     
-    m_pDataStack->vPushGenVar(xValX);
+    m_pDataStack->vPushVal(xValX);
   }
   
   EXIT();
@@ -315,7 +315,7 @@ void Step::vDstackRollInv(void)
     if ( ! m_pDataStack->bPopVal(xValX) )
       THROW_DSTACK();
     
-    m_pReturnStack->vPushGenVar(xValX);
+    m_pReturnStack->vPushVal(xValX);
   }
   
   if ( ! m_pDataStack->bPopVal(xValZ) )
@@ -326,10 +326,10 @@ void Step::vDstackRollInv(void)
     if ( ! m_pReturnStack->bPopVal(xValX) )
       THROW_DSTACK();
     
-    m_pDataStack->vPushGenVar(xValX);
+    m_pDataStack->vPushVal(xValX);
   }
   
-  m_pDataStack->vPushGenVar(xValZ);
+  m_pDataStack->vPushVal(xValZ);
   
   EXIT();
 }
@@ -348,9 +348,9 @@ void Step::vDstackRot(void)
   if ( ! m_pDataStack->bPopVal(xValA,xValB,xValC) )
     THROW_DSTACK();
   
-  m_pDataStack->vPushGenVar(xValB);
-  m_pDataStack->vPushGenVar(xValA);
-  m_pDataStack->vPushGenVar(xValC);
+  m_pDataStack->vPushVal(xValB);
+  m_pDataStack->vPushVal(xValA);
+  m_pDataStack->vPushVal(xValC);
   
   EXIT();
 }
@@ -369,9 +369,9 @@ void Step::vDstackRotInv(void)
   if ( ! m_pDataStack->bPopVal(xValA,xValB,xValC) )
     THROW_DSTACK();
   
-  m_pDataStack->vPushGenVar(xValA);
-  m_pDataStack->vPushGenVar(xValC);
-  m_pDataStack->vPushGenVar(xValB);
+  m_pDataStack->vPushVal(xValA);
+  m_pDataStack->vPushVal(xValC);
+  m_pDataStack->vPushVal(xValB);
   
   EXIT();
 }
@@ -401,8 +401,8 @@ void Step::vDstackSwap(void)
   if ( ! m_pDataStack->bPopVal(xValA,xValB) )
     THROW_DSTACK();
   
-  m_pDataStack->vPushGenVar(xValA);
-  m_pDataStack->vPushGenVar(xValB);
+  m_pDataStack->vPushVal(xValA);
+  m_pDataStack->vPushVal(xValB);
   
   EXIT();
 }
@@ -420,9 +420,9 @@ void Step::vDstackTuck(void)
   if ( ! m_pDataStack->bPopVal(xValA,xValB) )
     THROW_DSTACK();
   
-  m_pDataStack->vPushGenVar(xValA);
-  m_pDataStack->vPushGenVar(xValB);
-  m_pDataStack->vPushGenVar(xValA);
+  m_pDataStack->vPushVal(xValA);
+  m_pDataStack->vPushVal(xValB);
+  m_pDataStack->vPushVal(xValA);
   
   EXIT();
 }

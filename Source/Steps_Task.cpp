@@ -317,7 +317,7 @@ void Step::vTaskSeed(void)
   GenVar xVariable;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
     m_pDataStack->vPeekVar(iTaskArg,xVariable);
-    pThatTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
+    pThatTask->m_pForth->m_pDataStack->vPushVal(xVariable);
   }
   
   // discard original task arguments

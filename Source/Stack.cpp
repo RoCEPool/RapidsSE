@@ -863,7 +863,7 @@ void Stack::vPushFip(Cell* aFip)
 /*----------------------------------------------------------------------------*/
 /* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushGenVar(GenVar* pVar)
+void Stack::vPushVal(GenVar* pVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -875,7 +875,7 @@ void Stack::vPushGenVar(GenVar* pVar)
 /*----------------------------------------------------------------------------*/
 /* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushGenVar(GenVar& xVar)
+void Stack::vPushVal(GenVar& xVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -935,7 +935,7 @@ void Stack::vPushS32(s32& sEss)
   GenVar xStrVar;
   xStrVar = sEss;
   
-  vPushGenVar(xStrVar);
+  vPushVal(xStrVar);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -948,7 +948,7 @@ void Stack::vPushS256(s256& sEss)
   GenVar xStrVar;
   xStrVar = sEss;
   
-  vPushGenVar(xStrVar);
+  vPushVal(xStrVar);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -961,7 +961,7 @@ void Stack::vPushS4K(s4K& sEss)
   GenVar xStrVar;
   xStrVar = sEss;
   
-  vPushGenVar(xStrVar);
+  vPushVal(xStrVar);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -974,7 +974,7 @@ void Stack::vPushS48K(s48K& sEss)
   GenVar xStrVar;
   xStrVar = sEss;
   
-  vPushGenVar(xStrVar);
+  vPushVal(xStrVar);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -987,7 +987,7 @@ void Stack::vPushS16KB(s16KB& sEss)
   GenVar xStrVar;
   xStrVar = sEss;
   
-  vPushGenVar(xStrVar);
+  vPushVal(xStrVar);
 }
 
 /*----------------------------------------------------------------------------*/

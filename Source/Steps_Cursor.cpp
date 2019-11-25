@@ -26,7 +26,7 @@ void Step::vCursorFetch(void)
   
   m_pReturnStack->vPeekVar(iPeek,xCursorVar);
   
-  m_pDataStack->vPushGenVar(xCursorVar);
+  m_pDataStack->vPushVal(xCursorVar);
   
   EXIT();
 }

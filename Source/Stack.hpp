@@ -91,8 +91,6 @@ namespace SenVM
     bool bPopVal(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3);
   
     void vPushFip(Cell* aCell);
-    void vPushGenVar(GenVar* pVar);
-    void vPushGenVar(GenVar& xVar);
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);
     void vPushLocal(Local* pLocal);
@@ -101,6 +99,8 @@ namespace SenVM
     void vPushS4K(s4K& sEss);
     void vPushS16KB(s16KB& sEss);
     void vPushS48K(s48K& sEss);
+    void vPushVal(GenVar* pVar);
+    void vPushVal(GenVar& xVar);
     void vPushVal(StkVal* aStkVal);
     void vPushVal(StkVal& xStkVal);
   
