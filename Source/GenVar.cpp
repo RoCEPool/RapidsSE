@@ -59,16 +59,18 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* assign a value                                                             */
+/* assign/copy a forth instruction pointer                                    */
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Cell* aFip)
 {
   u.m_xNstVal.m_xHeader.vClass(CN_FIPVAL);
   u.m_xNstVal.m_wWord = (w8)aFip;
+  
+//  u.m_xFipVar = aFipPtr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign/copy an integer into workspace                                      */
+/* assign/copy an integer                                                     */
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(i8 iInt)
 {
@@ -76,10 +78,12 @@ void GenVar::operator =(i8 iInt)
   
   u.m_xNstVal.m_xHeader.vClass(CN_INTVAL);
   u.m_xNstVal.m_wWord = iInt;
+  
+//  u.m_xIntVar = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign/copy a pointer to a proper object into workspace                    */
+/* assign/copy a pointer to a proper object                                   */
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Object* pObj)
 {
@@ -87,10 +91,12 @@ void GenVar::operator =(Object* pObj)
   
   u.m_xNstVal.m_xHeader.vClass(CN_PTRVAL);
   u.m_xNstVal.m_wWord = (w8)pObj;
+  
+//  u.m_xPtrVar = pObj;
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign/copy a string into workspace                                        */
+/* assign/copy a string                                                       */
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Stz* szStz)
 {
@@ -98,13 +104,15 @@ void GenVar::operator =(Stz* szStz)
   
   u.m_xNstVal.m_xHeader.vClass(CN_STRVAL);
   u.m_xNstVal.m_wWord = StrLib::nCopy(u.m_xNstVal.m_caStr,szStz->azChar()) + 1;
+  
+//  u.m_xStrVar = szStz;
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get azChar from the nested value                                           */
+/* get azChar                                                                 */
 /*----------------------------------------------------------------------------*/
 char* GenVar::azChar(void)
 {
@@ -112,11 +120,13 @@ char* GenVar::azChar(void)
   
   char* az = (char*)u.m_xNstVal.m_caStr;
   
+//  char* az = u.m_xStrVar.azChar();
+
   return az;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get object address from nested value                                       */
+/* get forth instruction pointer                                              */
 /*----------------------------------------------------------------------------*/
 Cell* GenVar::aFip(void)
 {
@@ -124,17 +134,21 @@ Cell* GenVar::aFip(void)
   
   Cell* aFip = (Cell*)u.m_xNstVal.m_wWord;
   
+//  Cell* aFip = u.m_xFipVar.aFip();
+
   return aFip;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get integer from nested value                                              */
+/* get integer                                                               */
 /*----------------------------------------------------------------------------*/
 i8 GenVar::iInt(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
   i8 iInt = u.m_xNstVal.m_wWord;
+  
+//  i8 iInt = u.m_xIntVar.iInt();
   
   return iInt;
 }
@@ -179,7 +193,7 @@ StkVal* GenVar::aEmbeddedStkVal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get object address from nested value                                       */
+/* get object address                                                         */
 /*----------------------------------------------------------------------------*/
 Object* GenVar::pObj(void)
 {
@@ -187,7 +201,21 @@ Object* GenVar::pObj(void)
   
   Object* pObj = (Object*)u.m_xNstVal.m_wWord;
   
+//  Object* pObj = u.m_xPtrVar.pObj();
+
   return pObj;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of the embedded sen variable                                   */
+/*----------------------------------------------------------------------------*/
+SenVar* GenVar::aEmbeddedSenVar(void)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  SenVar* aSenVar = & u.m_xSenVar;
+  
+  return aSenVar;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -203,7 +231,7 @@ i8 GenVar::nSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stz from the nested value                                              */
+/* get stz                                                                    */
 /*----------------------------------------------------------------------------*/
 Stz* GenVar::szStz(void)
 {
@@ -211,6 +239,8 @@ Stz* GenVar::szStz(void)
   
   Stz* sz = (Stz*)u.m_xNstVal.m_caStr;
   
+//  Stz* sz = u.m_xStrVar.szStz();
+
   return sz;
 }
 

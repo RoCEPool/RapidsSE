@@ -58,7 +58,7 @@ GenVar2::~GenVar2(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* assign a value                                                             */
+/* assign/copy a forth instruction pointer                                    */
 /*----------------------------------------------------------------------------*/
 void GenVar2::operator =(Cell* aFipPtr)
 {
@@ -68,7 +68,7 @@ void GenVar2::operator =(Cell* aFipPtr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign/copy an integer into workspace                                      */
+/* assign/copy an integer                                                     */
 /*----------------------------------------------------------------------------*/
 void GenVar2::operator =(i8 iInt)
 {
@@ -78,17 +78,17 @@ void GenVar2::operator =(i8 iInt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign/copy a pointer to a proper object into workspace                    */
+/* assign/copy a pointer to a proper object                                   */
 /*----------------------------------------------------------------------------*/
-void GenVar2::operator =(Object* pObject)
+void GenVar2::operator =(Object* pObj)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  u.m_xPtrVar = pObject;
+  u.m_xPtrVar = pObj;
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign/copy a string into workspace                                        */
+/* assign/copy a string                                                       */
 /*----------------------------------------------------------------------------*/
 void GenVar2::operator =(Stz* szStz)
 {
@@ -101,7 +101,7 @@ void GenVar2::operator =(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get azChar from the nested value                                           */
+/* get azChar                                                                 */
 /*----------------------------------------------------------------------------*/
 char* GenVar2::azChar(void)
 {
@@ -113,7 +113,7 @@ char* GenVar2::azChar(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get object address from nested value                                       */
+/* get forth instruction pointer                                              */
 /*----------------------------------------------------------------------------*/
 Cell* GenVar2::aFip(void)
 {
@@ -125,7 +125,7 @@ Cell* GenVar2::aFip(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get integer from nested value                                              */
+/* get integer                                                                */
 /*----------------------------------------------------------------------------*/
 i8 GenVar2::iInt(void)
 {
@@ -150,7 +150,7 @@ bool GenVar2::bIsInt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get object address from nested value                                       */
+/* get object address                                                         */
 /*----------------------------------------------------------------------------*/
 Object* GenVar2::pObj(void)
 {
