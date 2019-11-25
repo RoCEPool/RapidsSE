@@ -13,8 +13,6 @@ namespace SenVM
   public:
     void* operator new(size_t);
     
-    FipVal(void);
-    
     void  operator =(Cell* aFip);
     Cell* aFip(void);
   

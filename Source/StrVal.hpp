@@ -14,8 +14,6 @@ namespace SenVM
   public:
     void* operator new(size_t);
   
-    StrVal(void);
-  
   public:
     void  vAssign(Stz* szStr);
     char* azChar(void);

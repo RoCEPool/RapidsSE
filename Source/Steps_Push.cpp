@@ -50,10 +50,7 @@ void Step::vPushNullPtr(void)
 {
   ENTRY(); // ENTRY("vPushNullPtr"_Stz);
   
-  PtrVal xPtrVal;
-  xPtrVal = (Object*)nullptr;
-  
-  m_pDataStack->vPushVal(xPtrVal);
+  m_pDataStack->vPushPtr(nullptr);
   
   EXIT();
 }

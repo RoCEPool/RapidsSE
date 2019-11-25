@@ -13,8 +13,6 @@ namespace SenVM
   public:
     void* operator new(size_t);
     
-    PtrVal(void);
-    
     void    operator =(Object* pObject);
     Object* pObj(void);
 

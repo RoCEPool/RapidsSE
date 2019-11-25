@@ -13,8 +13,6 @@ namespace SenVM
   public:
     void* operator new(size_t);
     
-    IntVal(void);
-    
     void operator =(i8 iVal);
     i8   iInt(void);
   
