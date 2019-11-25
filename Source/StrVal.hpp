@@ -9,7 +9,7 @@ namespace SenVM
   {
   protected:
     i8   m_nBytesFollowing;
-    char m_caStr[256];
+    char m_caStr[1];
   
   public:
     void* operator new(size_t);

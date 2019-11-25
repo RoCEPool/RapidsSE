@@ -140,7 +140,7 @@ StrVal* Stack::aAllotStrVal(i8 nSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StrVal* aStrVal = static_cast<StrVal*>(aAllotStkVal(sizeof(StrVal) + nSize));
+  StrVal* aStrVal = static_cast<StrVal*>(aAllotStkVal(sizeof(StrVal) + nSize - 1));
   
   return aStrVal;
 }
