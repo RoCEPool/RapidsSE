@@ -221,12 +221,14 @@ SenVar* GenVar::aEmbeddedSenVar(void)
 /*----------------------------------------------------------------------------*/
 /* get size of string in nested value                                         */
 /*----------------------------------------------------------------------------*/
-i8 GenVar::nSize(void)
+i8 GenVar::nStzSize(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  i8 nSize = u.m_xNstVal.m_wWord;
+  //i8 nSize = u.m_xNstVal.m_wWord;
   
+  i8 nSize = u.m_xStrVar.nSize();
+
   return nSize;
 }
 

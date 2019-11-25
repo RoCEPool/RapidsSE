@@ -53,9 +53,9 @@ namespace SenVM
     bool    bIsInt(void);
     Object* pObj(void);
     SenVar* aEmbeddedSenVar(void);
-    i8      nSize(void);
     Stz*    szStz(void);
-  
+    i8      nStzSize(void);
+
   private:
     Footer* aFooter(void);
   };
