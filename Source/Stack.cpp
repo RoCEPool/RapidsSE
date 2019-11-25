@@ -867,7 +867,7 @@ void Stack::vPushGenVar(GenVar* pVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(pVar->aEmbeddedStkVal());
+  vPushStkVal(pVar->aEmbeddedStkVal());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -879,7 +879,7 @@ void Stack::vPushGenVar(GenVar& xVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(xVar.aEmbeddedStkVal());
+  vPushStkVal(xVar.aEmbeddedStkVal());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -997,7 +997,7 @@ void Stack::vPushStkVal(StkVal& xVal1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(&xVal1);
+  vPushStkVal(&xVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1030,6 +1030,7 @@ void Stack::vReset(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   //! maybe this would be better as a re-init() ?
+  //! that possibly would help with corruptions
   
   while (nValues())
     vDiscard();
@@ -1261,26 +1262,6 @@ void Stack::vPushBy(i8 nBytes)
   ASSERT(pTop >= (char*)aStackLimit());
   
   m_xTop.pStkVal = reinterpret_cast<StkVal*>(pTop);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto value stack                                                */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushVal(StkVal* aStkVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-
-  _hazard_();
-  
-  ASSERT(CN_GENVAR != aStkVal->eClass());
-  
-  i8 iSize = aStkVal->nStackBytes();
-  
-  vPushBy(iSize);
-  MemLib::vCopy(m_xTop.pStkVal,aStkVal,iSize,CN_STACK);
-  m_nValues++;
-  
- _hazard_();
 }
 
 /*----------------------------------------------------------------------------*/
