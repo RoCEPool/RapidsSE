@@ -52,6 +52,8 @@ namespace Operators
     ePX            m_eTopologyX;      // cross topology
     i8             m_iNextStage;      // next stage in the cross topology
     
+    i8             m_iXmitNode;       // xmit node (for xmitOp)
+    
     eOR (*m_fpCall) (void* aThisOp);  // function which calls the op loop
     eOR (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
 

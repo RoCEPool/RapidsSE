@@ -98,7 +98,8 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   
   m_eTopologyX = PX_NONE;
   m_iNextStage = C_UNKNOWN;
-
+  m_iXmitNode  = C_UNKNOWN;
+  
   m_fpCall        = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
   m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
   

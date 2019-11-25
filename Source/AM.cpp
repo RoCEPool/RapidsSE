@@ -114,8 +114,7 @@ bool AM::bTracepoint(void)    { return gpAttachMap->m_bTracepoint;            }
 TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 
 void AM::vXmitNode(Op* pOp, i8 i_XmitNde) {
-  XmitOp* pXmitOp = _pXmitOp(pOp);
-  pXmitOp->vXmitNode(i_XmitNde);
+  pOp->m_iXmitNode = i_XmitNde;
 }
 bool AM::bVerbose(void)       { return gpAttachMap->m_bVerbose;               }
 
