@@ -311,72 +311,6 @@ bool Stack::bPopFip(Cell*& aFip)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value from value stack into given variable                             */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopGenVar(GenVar* pVariable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  vPopVal(pVariable->aEmbeddedStkVal());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop value from value stack into given variable                             */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopGenVar(GenVar& xVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  vPopVal(xVar.aEmbeddedStkVal());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop values from value stack into given variables                           */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopGenVar(GenVar& xVar1, GenVar& xVar2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(2) )
-    return false;
-  
-  vPopVal(xVar1.aEmbeddedStkVal());
-  
-  vPopVal(xVar2.aEmbeddedStkVal());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop values from value stack into given variables                           */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopGenVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(3) )
-    return false;
-  
-  vPopVal(xVar1.aEmbeddedStkVal());
-  
-  vPopVal(xVar2.aEmbeddedStkVal());
-  
-  vPopVal(xVar3.aEmbeddedStkVal());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop i8 from value stack                                                    */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopInt(i8& iInt)
@@ -590,7 +524,7 @@ bool Stack::bPopPtr(Object*& pObj, GenVar& xVar)
   
   pObj = xPtrVal1.pObj();
   
-  return bPopGenVar(xVar);
+  return bPopVar(xVar);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -775,6 +709,72 @@ bool Stack::bPopStr(String* pString)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop value from value stack into given variable                             */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopVar(GenVar* pVariable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  vPopVal(pVariable->aEmbeddedStkVal());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from value stack into given variable                             */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopVar(GenVar& xVar)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  vPopVal(xVar.aEmbeddedStkVal());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop values from value stack into given variables                           */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopVar(GenVar& xVar1, GenVar& xVar2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(2) )
+    return false;
+  
+  vPopVal(xVar1.aEmbeddedStkVal());
+  
+  vPopVal(xVar2.aEmbeddedStkVal());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop values from value stack into given variables                           */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(3) )
+    return false;
+  
+  vPopVal(xVar1.aEmbeddedStkVal());
+  
+  vPopVal(xVar2.aEmbeddedStkVal());
+  
+  vPopVal(xVar3.aEmbeddedStkVal());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop value from value stack  as integer                                     */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopAsInt(i8& iInt)
@@ -863,11 +863,11 @@ void Stack::vPushFip(Cell* aFip)
 /*----------------------------------------------------------------------------*/
 /* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushGenVar(GenVar* pGenVar)
+void Stack::vPushGenVar(GenVar* pVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(pGenVar->aEmbeddedStkVal());
+  vPushVal(pVar->aEmbeddedStkVal());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }

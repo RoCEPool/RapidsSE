@@ -122,7 +122,7 @@ void Step::vStrEqual(void)
   GenVar xStringB;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopGenVar(xStringB,xStringA) )
+  if ( ! m_pDataStack->bPopVar(xStringB,xStringA) )
     THROW_DSTACK();
   
   i8 iEqual = StrLib::bEqualTo(xStringA.azChar(),
@@ -264,7 +264,7 @@ void Step::vStrPrepend(void)
   GenVar xValA;
   GenVar xValB;
   
-  if ( ! m_pDataStack->bPopGenVar(xValB,xValA) )
+  if ( ! m_pDataStack->bPopVar(xValB,xValA) )
     THROW_DSTACK();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

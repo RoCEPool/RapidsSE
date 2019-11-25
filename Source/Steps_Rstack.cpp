@@ -80,7 +80,7 @@ void Step::vRstackCsRoll(void)
   
   GenVar xValMid;
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
-    if ( ! m_pDataStack->bPopGenVar(xValMid) )
+    if ( ! m_pDataStack->bPopVar(xValMid) )
       THROW_DSTACK();
     
     m_pReturnStack->vPushGenVar(xValMid);
@@ -91,7 +91,7 @@ void Step::vRstackCsRoll(void)
     THROW_DSTACK();
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
-    if ( ! m_pReturnStack->bPopGenVar(xValMid) )
+    if ( ! m_pReturnStack->bPopVar(xValMid) )
       THROW_RSTACK();
     
     m_pDataStack->vPushGenVar(xValMid);
@@ -127,7 +127,7 @@ void Step::vRstackDrop(void)
   // should just discard on stack
   
   GenVar xValA;
-  if ( ! m_pReturnStack->bPopGenVar(xValA) )
+  if ( ! m_pReturnStack->bPopVar(xValA) )
     THROW_RSTACK();
   
   EXIT();
@@ -219,7 +219,7 @@ void Step::vRstackReverse(void)
     THROW_DSTACK();
   
   for (i8 i = 0; i < nValues; i++) {
-    if ( ! m_pReturnStack->bPopGenVar(paVal[i]) )
+    if ( ! m_pReturnStack->bPopVar(paVal[i]) )
       THROW_DSTACK();
   }
   
@@ -242,11 +242,11 @@ void Step::vRstackRoll(void)
   if ( ! m_pDataStack->bPopInt(nValues) )
     THROW_DSTACK();
   
-  if ( ! m_pReturnStack->bPopGenVar(xValA) )
+  if ( ! m_pReturnStack->bPopVar(xValA) )
     THROW_RSTACK();
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
-    if ( ! m_pReturnStack->bPopGenVar(xValX) )
+    if ( ! m_pReturnStack->bPopVar(xValX) )
       THROW_RSTACK();
     
     m_pDataStack->vPushGenVar(xValX);
@@ -255,7 +255,7 @@ void Step::vRstackRoll(void)
   m_pReturnStack->vPushGenVar(xValA);
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
-    if ( ! m_pDataStack->bPopGenVar(xValX) )
+    if ( ! m_pDataStack->bPopVar(xValX) )
       THROW_DSTACK();
     
     m_pReturnStack->vPushGenVar(xValX);
@@ -279,18 +279,18 @@ void Step::vRstackRollInv(void)
     THROW_DSTACK();
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
-    if ( ! m_pReturnStack->bPopGenVar(xValX) )
+    if ( ! m_pReturnStack->bPopVar(xValX) )
       THROW_RSTACK();
     
     m_pDataStack->vPushGenVar(xValX);
   }
   
-  if ( ! m_pReturnStack->bPopGenVar(xValZ) )
+  if ( ! m_pReturnStack->bPopVar(xValZ) )
     THROW_DSTACK();
   
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
-    if ( ! m_pDataStack->bPopGenVar(xValX) )
+    if ( ! m_pDataStack->bPopVar(xValX) )
       THROW_DSTACK();
     
     m_pReturnStack->vPushGenVar(xValX);
@@ -323,7 +323,7 @@ void Step::vRstackSwap(void)
   GenVar xValA;
   GenVar xValB;
   
-  if ( ! m_pReturnStack->bPopGenVar(xValA,xValB) )
+  if ( ! m_pReturnStack->bPopVar(xValA,xValB) )
     THROW_DSTACK();
   
   m_pReturnStack->vPushGenVar(xValA);
@@ -340,7 +340,7 @@ void Step::vRstackToP(void)
   ENTRY(); // ENTRY("vRstackToP"_Stz);
   
   GenVar xVal;
-  if ( ! m_pReturnStack->bPopGenVar(xVal) )
+  if ( ! m_pReturnStack->bPopVar(xVal) )
     THROW_DSTACK();
   
   m_pDataStack->vPushGenVar(xVal);
@@ -356,7 +356,7 @@ void Step::vRstackToR(void)
   ENTRY(); // ENTRY("vRstackToR"_Stz);
   
   GenVar xValOpaque;
-  if ( ! m_pDataStack->bPopGenVar(xValOpaque) )
+  if ( ! m_pDataStack->bPopVar(xValOpaque) )
     THROW_DSTACK();
   
   m_pReturnStack->vPushGenVar(xValOpaque);
@@ -373,7 +373,7 @@ void Step::vRstackToRTwo(void)
   
   GenVar xValX0;
   GenVar xValX1;
-  if ( ! m_pDataStack->bPopGenVar(xValX0,xValX1) )
+  if ( ! m_pDataStack->bPopVar(xValX0,xValX1) )
     THROW_DSTACK();
   
   m_pReturnStack->vPushGenVar(xValX1);

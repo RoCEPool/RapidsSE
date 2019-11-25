@@ -51,10 +51,6 @@ namespace SenVM
   
     bool bPopCN(eCN& eClassNo);
     bool bPopFip(Cell*& aFip);
-    bool bPopGenVar(GenVar* pGenVar);
-    bool bPopGenVar(GenVar& xVar);
-    bool bPopGenVar(GenVar& xVar1, GenVar& xVar2);
-    bool bPopGenVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3);
     bool bPopInt(i8& iInt);
     bool bPopInt(i8& iInt1, i8& iInt2);
     bool bPopInt(i8& iInt1, i8& iInt2, GenVar& xVar);
@@ -74,6 +70,10 @@ namespace SenVM
     bool bPopS48K(s48K& sArg1, i8& iInt2, i8& iInt3);
     bool bPopS48K(s48K& sArg1, s48K& sArg2);
     bool bPopStr(String* pStr);
+    bool bPopVar(GenVar* pVar);
+    bool bPopVar(GenVar& xVar);
+    bool bPopVar(GenVar& xVar1, GenVar& xVar2);
+    bool bPopVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3);
     bool bPopAsInt(i8& iInt1);
     bool bPopAsI8_Inline(i8& iInt1);
     bool bPopAsInt_Quick(i8& iInt1);
@@ -81,7 +81,7 @@ namespace SenVM
     void vPokeGenVar(i8 i_Val, GenVar& xVar);
   
     void vPushFip(Cell* aCell);
-    void vPushGenVar(GenVar* pGenVar);
+    void vPushGenVar(GenVar* pVar);
     void vPushGenVar(GenVar& xVar);
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);

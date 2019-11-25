@@ -322,7 +322,7 @@ void Step::vTaskSeed(void)
   
   // discard original task arguments
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    bool bPopped = m_pDataStack->bPopGenVar(xVariable);
+    bool bPopped = m_pDataStack->bPopVar(xVariable);
     ASSERT(bPopped);
   }
   
