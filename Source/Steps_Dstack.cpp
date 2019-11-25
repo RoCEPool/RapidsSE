@@ -257,7 +257,7 @@ void Step::vDstackReverse(void)
   }
 
   for (i8 i = 0; i < nValues; i++) {
-    m_pDataStack->vPushValue(paVal[i]->aEmbeddedStkVal());
+    m_pDataStack->vPushStkVal(paVal[i]->aEmbeddedStkVal());
   }
 }
 

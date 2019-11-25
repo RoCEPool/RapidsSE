@@ -852,7 +852,7 @@ void Stack::vPushBool(bool bArg)
   IntVal xIntVal;
   xIntVal = bArg;
   
-  vPushValue(xIntVal);
+  vPushStkVal(xIntVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -907,7 +907,7 @@ void Stack::vPushI8(i8 iArg)
   IntVal xIntVal1;
   xIntVal1 = iArg;
   
-  vPushValue(xIntVal1);
+  vPushStkVal(xIntVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -921,7 +921,7 @@ void Stack::vPushPointer(Object* pObject)
   
   xPtrObject = pObject;
   
-  vPushValue(xPtrObject);
+  vPushStkVal(xPtrObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -933,7 +933,7 @@ void Stack::vPushLocal(Local* pLocal)
   
   StkVal* aStkVal = pLocal->aLocalValue();
   
-  vPushValue(aStkVal);
+  vPushStkVal(aStkVal);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -1006,7 +1006,7 @@ void Stack::vPushS16KB(s16KB& sArg)
 /*----------------------------------------------------------------------------*/
 /* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushValue(StkVal& xVal1)
+void Stack::vPushStkVal(StkVal& xVal1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -1016,7 +1016,7 @@ void Stack::vPushValue(StkVal& xVal1)
 /*----------------------------------------------------------------------------*/
 /* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushValue(StkVal* aStkVal)
+void Stack::vPushStkVal(StkVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
