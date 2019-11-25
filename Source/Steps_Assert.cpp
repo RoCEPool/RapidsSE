@@ -55,7 +55,7 @@ void Step::vAssertClass(void)
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  StkVal* aStkVal = m_pDataStack->aTopStkVal();
+  StkVal* aStkVal = m_pDataStack->aTopVal();
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aStkVal->eClass();

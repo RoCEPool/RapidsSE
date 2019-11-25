@@ -113,7 +113,7 @@ void Step::vComma(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   GenVar xValue;
-  if ( ! m_pDataStack->bPopVar(xValue) )
+  if ( ! m_pDataStack->bPopVal(xValue) )
     THROW_DSTACK();
   
   pCurrentWord->vEncode("pushValue"_Stz,&xValue);
@@ -330,7 +330,7 @@ void Step::vExit_RT(void)
     m_pTask->vTracePoint("<"_Stz);
   
   if (m_pLocalsFrame
-      && m_pLocalsFrame->aDiscardPoint() == m_pReturnStack->aTopStkVal())
+      && m_pLocalsFrame->aDiscardPoint() == m_pReturnStack->aTopVal())
     m_pTask->vLocalsPop();
   
   Cell* aCell;

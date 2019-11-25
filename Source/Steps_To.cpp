@@ -86,7 +86,7 @@ void Step::vToStr(void)
   ENTRY(); // ENTRY("vToStr"_Stz);
   
   GenVar xVal;
-  if ( ! m_pDataStack->bPopVar(xVal) )
+  if ( ! m_pDataStack->bPopVal(xVal) )
     THROW_DSTACK();
   
   s48K sString;

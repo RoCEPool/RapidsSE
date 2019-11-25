@@ -121,7 +121,7 @@ void Step::vObjectStore(void)
   
   GenVar xObjectVar;
   
-  if ( ! m_pDataStack->bPopVar(xObjectVar) )
+  if ( ! m_pDataStack->bPopVal(xObjectVar) )
     THROW_DSTACK();
   
   m_pReturnStack->vPokeVar(iPeek,xObjectVar);

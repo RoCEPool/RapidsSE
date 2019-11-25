@@ -246,7 +246,7 @@ StkVal* Stack::aPeekVal(i8 i_Val)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aStkVal = aTopStkVal();
+  StkVal* aStkVal = aTopVal();
   while (i_Val--) {
     char* aAddress = reinterpret_cast<char*>(aStkVal);
     i8 iSize = aStkVal->nStackBytes();
@@ -316,7 +316,7 @@ bool Stack::bPopAsInt_Quick(i8& iInt)
     return false;
   
   // get pointer to value on the top of the stack
-  StkVal* aTopValue = aTopStkVal();
+  StkVal* aTopValue = aTopVal();
   
   // discard the value
   vDiscard();
@@ -592,7 +592,7 @@ bool Stack::bPopPtr(Object*& pObj, GenVar& xVar)
   
   pObj = xPtrVal1.pObj();
   
-  return bPopVar(xVar);
+  return bPopVal(xVar);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -765,7 +765,7 @@ bool Stack::bPopStr(String* pString)
   
   _hazard_();
   
-  StrVal* aStrVal = _aStrVal(aTopStkVal());
+  StrVal* aStrVal = _aStrVal(aTopVal());
   
   pString->vCopy(aStrVal->szStz());
   
@@ -779,7 +779,7 @@ bool Stack::bPopStr(String* pString)
 /*----------------------------------------------------------------------------*/
 /* pop value from value stack into given variable                             */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopVar(GenVar* pVariable)
+bool Stack::bPopVal(GenVar* pVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -794,7 +794,7 @@ bool Stack::bPopVar(GenVar* pVariable)
 /*----------------------------------------------------------------------------*/
 /* pop value from value stack into given variable                             */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopVar(GenVar& xVar)
+bool Stack::bPopVal(GenVar& xVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -809,7 +809,7 @@ bool Stack::bPopVar(GenVar& xVar)
 /*----------------------------------------------------------------------------*/
 /* pop values from value stack into given variables                           */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopVar(GenVar& xVar1, GenVar& xVar2)
+bool Stack::bPopVal(GenVar& xVar1, GenVar& xVar2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -826,7 +826,7 @@ bool Stack::bPopVar(GenVar& xVar1, GenVar& xVar2)
 /*----------------------------------------------------------------------------*/
 /* pop values from value stack into given variables                           */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
+bool Stack::bPopVal(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -1221,7 +1221,7 @@ void Stack::vPopLocal(Local* aLocal)
 
   _hazard_();
   
-  i8 iSize = aTopStkVal()->nStackBytes();
+  i8 iSize = aTopVal()->nStackBytes();
   
   MemLib::vCopy(aLocal->aLocalValue(),m_xTop.pStkVal,iSize,CN_STACK);
   vPopBy(iSize);
@@ -1239,7 +1239,7 @@ void Stack::vPopVal(StkVal* aStkVal)
 
   _hazard_();
   
-  i8 iSize = aTopStkVal()->nStackBytes();
+  i8 iSize = aTopVal()->nStackBytes();
   
   MemLib::vCopy(aStkVal,m_xTop.pStkVal,iSize,CN_STACK);
   vPopBy(iSize);
@@ -1304,7 +1304,7 @@ bool Stack::bTopIsZero(void)
 /*----------------------------------------------------------------------------*/
 /* peek at value on top of value stack                                        */
 /*----------------------------------------------------------------------------*/
-StkVal* Stack::aTopStkVal(void)
+StkVal* Stack::aTopVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
     

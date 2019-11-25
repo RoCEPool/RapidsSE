@@ -103,7 +103,7 @@ void Step::vSocketConnect(void)
   if ( ! m_pDataStack->bPopPtr(pObject) )
     THROW_DSTACK();
   
-  if ( ! m_pDataStack->bPopVar(xNodeVar) )
+  if ( ! m_pDataStack->bPopVal(xNodeVar) )
     THROW_DSTACK();
   
   if ( ! m_pDataStack->bPopInt(iPort) )
@@ -164,7 +164,7 @@ void Step::vSocketConnect(void)
 //  if ( ! m_pDataStack->bPopPtr(pObject) )
 //    THROW_DSTACK();
 //
-//  if ( ! m_pDataStack->bPopVar(xNodeVar) )
+//  if ( ! m_pDataStack->bPopVal(xNodeVar) )
 //    THROW_DSTACK();
 //
 //  if ( ! m_pDataStack->bPopInt(iPort) )

@@ -85,10 +85,10 @@ namespace SenVM
     bool bPopS48K(s48K& sEss1, i8& iInt2, i8& iInt3);
     bool bPopS48K(s48K& sEss1, s48K& sEss2);
     bool bPopStr(String* pStr);
-    bool bPopVar(GenVar* pVar);
-    bool bPopVar(GenVar& xVar);
-    bool bPopVar(GenVar& xVar1, GenVar& xVar2);
-    bool bPopVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3);
+    bool bPopVal(GenVar* pVar);
+    bool bPopVal(GenVar& xVar);
+    bool bPopVal(GenVar& xVar1, GenVar& xVar2);
+    bool bPopVal(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3);
   
     void vPushFip(Cell* aCell);
     void vPushGenVar(GenVar* pVar);
@@ -108,7 +108,7 @@ namespace SenVM
     void vRetry(void);
     void vRetryPoint(void);
   
-    StkVal* aTopStkVal(void);
+    StkVal* aTopVal(void);
   
     i8 nValues(void);
   
