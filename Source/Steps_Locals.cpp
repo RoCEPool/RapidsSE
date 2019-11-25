@@ -147,7 +147,7 @@ void Step::vLocalsPush(void)
   
   LocalChain* pLocalsFrame = new LocalChain;
   
-  pLocalsFrame->vDiscardPoint(m_pReturnStack->aTopVal());
+  pLocalsFrame->vDiscardPoint(m_pReturnStack->aTopStkVal());
   
   pLocalsFrame->vNext(m_pLocalsFrame);
   

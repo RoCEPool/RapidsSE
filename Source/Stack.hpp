@@ -99,7 +99,7 @@ namespace SenVM
     void vRetry(void);
     void vRetryPoint(void);
   
-    StkVal* aTopVal(void);
+    StkVal* aTopStkVal(void);
   
     i8 nValues(void);
   

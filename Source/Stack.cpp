@@ -246,7 +246,7 @@ StkVal* Stack::aPeekStkVal(i8 i_Val)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aStkVal = aTopVal();
+  StkVal* aStkVal = aTopStkVal();
   while (i_Val--) {
     char* aAddress = reinterpret_cast<char*>(aStkVal);
     i8 iSize = aStkVal->nStackBytes();
@@ -763,7 +763,7 @@ bool Stack::bPopString(String* pString)
   
   _hazard_();
   
-  StrVal* aStrVal = _aStrVal(aTopVal());
+  StrVal* aStrVal = _aStrVal(aTopStkVal());
   
   pString->vCopy(aStrVal->szStz());
   
@@ -803,7 +803,7 @@ bool Stack::bPopAsInt_Quick(i8& iArg)
     return false;
   
   // get pointer to value on the top of the stack
-  StkVal* aTopValue = aTopVal();
+  StkVal* aTopValue = aTopStkVal();
 
   // discard the value
   vDiscard();
@@ -1225,7 +1225,7 @@ void Stack::vPopLocal(Local* aLocal)
 
   _hazard_();
   
-  i8 iSize = aTopVal()->nStackBytes();
+  i8 iSize = aTopStkVal()->nStackBytes();
   
   MemLib::vCopy(aLocal->aLocalValue(),m_aTop,iSize,CN_STACK);
   vPopBy(iSize);
@@ -1243,7 +1243,7 @@ void Stack::vPopVal(StkVal* aStkVal)
 
   _hazard_();
   
-  i8 iSize = aTopVal()->nStackBytes();
+  i8 iSize = aTopStkVal()->nStackBytes();
   
   MemLib::vCopy(aStkVal,m_aTop,iSize,CN_STACK);
   vPopBy(iSize);
@@ -1328,7 +1328,7 @@ bool Stack::bTopIsZero(void)
 /*----------------------------------------------------------------------------*/
 /* peek at value on top of value stack                                        */
 /*----------------------------------------------------------------------------*/
-StkVal* Stack::aTopVal(void)
+StkVal* Stack::aTopStkVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

@@ -45,13 +45,13 @@ void Step::vIntAdd(void)
   */
   
   // get pointer to value on the top of the stack
-  StkVal* j = m_pDataStack->aTopVal();
+  StkVal* j = m_pDataStack->aTopStkVal();
   
   // discard the value
   m_pDataStack->vDiscard();
   
   // get pointer to value on the top of the stack
-  StkVal* i = m_pDataStack->aTopVal();
+  StkVal* i = m_pDataStack->aTopStkVal();
   
   // add the two values and leave the result on the stack
   *_aIntVal(i) = _aIntVal(j)->iInt() + _aIntVal(i)->iInt();
