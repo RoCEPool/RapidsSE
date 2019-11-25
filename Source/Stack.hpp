@@ -34,11 +34,16 @@ namespace SenVM
     void  operator delete(void*);
     
     Stack(eKK eKind);
-  ~Stack(void) noexcept(false);
+   ~Stack(void) noexcept(false);
     
     static Stack* _pStack(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
+  
+    FipVal* aAllotFipVal(void);
+    IntVal* aAllotIntVal(void);
+    PtrVal* aAllotPtrVal(void);
+    StrVal* aAllotStrVal(i8 nSize);
+
     void vContentDump(DicStack* pDicStack, Stz* szTitle);
   
     void vDiscard(void);
@@ -111,10 +116,13 @@ namespace SenVM
     void vPopBy(i8 nBytes);
   
   private:
+    StkVal* aAllotStkVal(i8 nBytes);
+  
     void vPopLocal(Local* aLocal);
     void vPopVal(StkVal* aStkVal);
     void vPushBy(i8 nBytes);
     void vPushVal(StkVal* aStkVal);
+  
     StkVal* aStackBase(void);
     StkVal* aStackLimit(void);
     

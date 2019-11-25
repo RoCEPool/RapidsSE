@@ -98,6 +98,16 @@ void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* allot a fip value on top of value stack                                    */
+/*----------------------------------------------------------------------------*/
+FipVal* Stack::aAllotFipVal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump contents of the value stack                                           */
 /*----------------------------------------------------------------------------*/
 void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
@@ -1121,6 +1131,26 @@ i8 Stack::nValues(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* pop StkVal on top of value stack, inc number of values on stack            */
+/*----------------------------------------------------------------------------*/
+StkVal* Stack::aAllotStkVal(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  char* aTop = reinterpret_cast<char*>(m_aTop);
+  
+  aTop -= nBytes;
+  
+  ASSERT(aTop >= (char*)aStackLimit());
+  
+  m_aTop = reinterpret_cast<StkVal*>(aTop);
+  
+  m_nValues++;
+
+  return m_aTop;
+}
 
 /*----------------------------------------------------------------------------*/
 /* pop local from value stack                                                 */
