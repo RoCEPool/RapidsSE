@@ -351,9 +351,6 @@ bool Stack::bPopCN(eCN& eClassNo)
   if ( ! bGuard(CN_INTVAL) )
     return false;
   
-//  IntVal xIntVal;
-//  vPopVal(&xIntVal);
-  
   i8 iInt = iPopInt();
 
   eClassNo = static_cast<eCN>(iInt);
@@ -371,12 +368,6 @@ bool Stack::bPopFip(Cell*& aFip)
   if ( ! bGuard(CN_FIPVAL) )
     return false;
   
-//  FipVal xFipVal;
-//
-//  vPopVal(&xFipVal);
-//
-//  aFip = xFipVal.aFip();
-
   aFip = aPopFip();
 
   return true;
@@ -392,12 +383,6 @@ bool Stack::bPopInt(i8& iInt)
   if ( ! bGuard(CN_INTVAL) )
     return false;
   
-//  IntVal xIntVal;
-//
-//  vPopVal(&xIntVal);
-//
-//  iInt = xIntVal.iInt();
-
   iInt = iPopInt();
   
   return true;
@@ -413,15 +398,9 @@ bool Stack::bPopInt(i8& iInt1, i8& iInt2)
   if ( ! bGuard(CN_INTVAL,CN_INTVAL) )
     return false;
   
-  IntVal xIntVal1;
-  vPopVal(&xIntVal1);
+  iInt1 = iPopInt();
   
-  iInt1 = xIntVal1.iInt();
-  
-  IntVal xIntVal2;
-  vPopVal(&xIntVal2);
-  
-  iInt2 = xIntVal2.iInt();
+  iInt2 = iPopInt();
   
   return true;
 }
@@ -436,15 +415,9 @@ bool Stack::bPopInt(i8& iInt, Object*& pObj)
   if ( ! bGuard(CN_INTVAL,CN_PTRVAL) )
     return false;
   
-  IntVal xIntVal;
-  vPopVal(&xIntVal);
+  iInt = iPopInt();
   
-  iInt = xIntVal.iInt();
-  
-  PtrVal xPtrVal;
-  vPopVal(&xPtrVal);
-  
-  pObj = xPtrVal.pObj();
+  pObj = pPopObj();
   
   return true;
 }
@@ -459,10 +432,7 @@ bool Stack::bPopInt(i8& iInt, GenVar& xVar)
   if ( ! bGuard(CN_INTVAL,CN_STRVAL) )
     return false;
   
-  IntVal xIntVal;
-  vPopVal(&xIntVal);
-  
-  iInt = xIntVal.iInt();
+  iInt = iPopInt();
   
   vPopVal(xVar.aEmbeddedStkVal());
   
@@ -479,10 +449,7 @@ bool Stack::bPopInt(i8& iInt, s48K& sEss)
   if ( ! bGuard(CN_INTVAL,CN_STRVAL) )
     return false;
   
-  IntVal xIntVal;
-  vPopVal(&xIntVal);
-  
-  iInt = xIntVal.iInt();
+  iInt = iPopInt();
   
   GenVar xVar;
   vPopVal(xVar.aEmbeddedStkVal());
@@ -502,15 +469,9 @@ bool Stack::bPopInt(i8& iInt1, i8& iInt2, GenVar& xVar)
   if ( ! bGuard(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
     return false;
   
-  IntVal xIntVal1;
-  vPopVal(&xIntVal1);
+  iInt1 = iPopInt();
   
-  iInt1 = xIntVal1.iInt();
-  
-  IntVal xIntVal2;
-  vPopVal(&xIntVal2);
-  
-  iInt2 = xIntVal2.iInt();
+  iInt2 = iPopInt();
   
   vPopVal(xVar.aEmbeddedStkVal());
 
@@ -550,10 +511,7 @@ bool Stack::bPopPtr(Object*& pObj, i8& iInt)
   
   pObj = xPtrVal.pObj();
   
-  IntVal xIntVal;
-  vPopVal(&xIntVal);
-  
-  iInt = xIntVal.iInt();
+  iInt = iPopInt();
   
   return true;
 }
@@ -701,10 +659,7 @@ bool Stack::bPopS48K(s48K& sEss, i8& iInt)
   
   sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
   
-  IntVal xIntVal;
-  vPopVal(&xIntVal);
-  
-  iInt = xIntVal.iInt();
+  iInt = iPopInt();
   
   return true;
 }
@@ -723,14 +678,10 @@ bool Stack::bPopS48K(s48K& sEss, i8& iInt1, i8& iInt2)
   vPopVal(xVar.aEmbeddedStkVal());
   sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
   
-  IntVal xIntVal1;
-  vPopVal(&xIntVal1);
-  iInt1 = xIntVal1.iInt();
+  iInt1 = iPopInt();
   
-
-  IntVal xIntVal2;
-  vPopVal(&xIntVal2);
-  iInt2 = xIntVal2.iInt();
+  iInt2 = iPopInt();
+  
   return true;
 }
 
