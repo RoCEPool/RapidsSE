@@ -26,7 +26,7 @@ void Step::vTablePtnAttemptGrabRead(void)
   ENTRY(); // ENTRY("vTablePtnAttemptGrabRead"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! m_pDataStack->bPopObject(pPtrTablePtn) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
@@ -46,7 +46,7 @@ void Step::vTablePtnAttemptGrabWrite(void)
   ENTRY(); // ENTRY("vTablePtnAttemptGrabWrite"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! m_pDataStack->bPopObject(pPtrTablePtn) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
@@ -66,7 +66,7 @@ void Step::vTablePtnDropRead(void)
   ENTRY(); // ENTRY("vTablePtnDropRead"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! m_pDataStack->bPopObject(pPtrTablePtn) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
     
@@ -84,7 +84,7 @@ void Step::vTablePtnDump(void)
   ENTRY(); // ENTRY("vTablePtnDump"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! m_pDataStack->bPopObject(pPtrTablePtn) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
@@ -101,7 +101,7 @@ void Step::vTablePtnDropWrite(void)
   ENTRY(); // ENTRY("vTablePtnDropWrite"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! m_pDataStack->bPopObject(pPtrTablePtn) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
@@ -119,7 +119,7 @@ void Step::vTablePtnIsLocked(void)
   ENTRY(); // ENTRY("vTablePtnIsLocked"_Stz);
   
   Object* pPtrTablePtn;
-  if ( ! m_pDataStack->bPopObject(pPtrTablePtn) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTablePtn) )
     THROW_DSTACK();
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   

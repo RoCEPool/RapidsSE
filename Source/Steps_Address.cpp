@@ -45,7 +45,7 @@ void Step::vAddressFetch(void)
   ENTRY(); // ENTRY("vAddressFetch"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPopObject(pObject) )
+  if ( ! m_pDataStack->bPopPtr(pObject) )
     THROW_DSTACK();
   
   GenVar xValFetched;
@@ -89,7 +89,7 @@ void Step::vAddressStore(void)
   ENTRY(); // ENTRY("vAddressStore"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPopObject(pObject) )
+  if ( ! m_pDataStack->bPopPtr(pObject) )
     THROW_DSTACK();
   
   GenVar xValStored;

@@ -83,7 +83,7 @@ void Step::vNodeForget(void)
   
   Object* pPtrNode;
   
-  if (! m_pDataStack->bPopObject(pPtrNode))
+  if (! m_pDataStack->bPopPtr(pPtrNode))
     THROW_DSTACK();
   
   Node* pNode = _pNode(pPtrNode);
@@ -109,7 +109,7 @@ void Step::vNodeIP(void)
   
   Object* pPtrNode;
   
-  if ( ! m_pDataStack->bPopObject(pPtrNode) )
+  if ( ! m_pDataStack->bPopPtr(pPtrNode) )
     THROW_DSTACK();
   
   Node* pNode = _pNode(pPtrNode);
@@ -131,7 +131,7 @@ void Step::vNodeName(void)
   
   Object* pPtrNode;
   
-  if ( ! m_pDataStack->bPopObject(pPtrNode) )
+  if ( ! m_pDataStack->bPopPtr(pPtrNode) )
     THROW_DSTACK();
   
   Node* pNode = _pNode(pPtrNode);
@@ -153,7 +153,7 @@ void Step::vNodeNo(void)
   
   Object* pPtrNode;
   
-  if ( ! m_pDataStack->bPopObject(pPtrNode) )
+  if ( ! m_pDataStack->bPopPtr(pPtrNode) )
     THROW_DSTACK();
   
   Node* pNode = _pNode(pPtrNode);
@@ -184,7 +184,7 @@ void Step::vNodePort(void)
   ENTRY(); // ENTRY("vNodeNo"_Stz);
   
   Object* pPtrNode;
-  if ( ! m_pDataStack->bPopObject(pPtrNode) )
+  if ( ! m_pDataStack->bPopPtr(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
@@ -201,12 +201,12 @@ void Step::vNodeRecvSocketStore(void)
   ENTRY(); // ENTRY("vNodeRecvSocketStore"_Stz);
   
   Object* pPtrNode;
-  if ( ! m_pDataStack->bPopObject(pPtrNode) )
+  if ( ! m_pDataStack->bPopPtr(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
   Object* pSocketPtr;
-  if ( ! m_pDataStack->bPopObject(pSocketPtr) )
+  if ( ! m_pDataStack->bPopPtr(pSocketPtr) )
     THROW_DSTACK();
   Socket* pSocket = _pSocket(pSocketPtr);
   
@@ -223,7 +223,7 @@ void Step::vNodeRecvSocketFetch(void)
   ENTRY(); // ENTRY("vNodeRecvSocketFetch"_Stz);
   
   Object* pPtrNode;
-  if ( ! m_pDataStack->bPopObject(pPtrNode) )
+  if ( ! m_pDataStack->bPopPtr(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
@@ -242,12 +242,12 @@ void Step::vNodeSendSocketStore(void)
   ENTRY(); // ENTRY("vNodeSendSocketStore"_Stz);
   
   Object* pPtrNode;
-  if ( ! m_pDataStack->bPopObject(pPtrNode) )
+  if ( ! m_pDataStack->bPopPtr(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
 
   Object* pSocketPtr;
-  if ( ! m_pDataStack->bPopObject(pSocketPtr) )
+  if ( ! m_pDataStack->bPopPtr(pSocketPtr) )
     THROW_DSTACK();
   Socket* pSocket = _pSocket(pSocketPtr);
     
@@ -264,7 +264,7 @@ void Step::vNodeSendSocketFetch(void)
   ENTRY(); // ENTRY("vNodeSendSocketFetch"_Stz);
   
   Object* pPtrNode;
-  if ( ! m_pDataStack->bPopObject(pPtrNode) )
+  if ( ! m_pDataStack->bPopPtr(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
@@ -295,7 +295,7 @@ void Step::vNodeStartNode(void)
   ENTRY(); // ENTRY("vNodeStartNode"_Stz);
   
   Object* pPtrNode;
-  if ( ! m_pDataStack->bPopObject(pPtrNode) )
+  if ( ! m_pDataStack->bPopPtr(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
@@ -312,7 +312,7 @@ void Step::vNodeStateStore(void)
   ENTRY(); // ENTRY("vNodeStateStore"_Stz);
   
   Object* pPtrNode;
-  if ( ! m_pDataStack->bPopObject(pPtrNode) )
+  if ( ! m_pDataStack->bPopPtr(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
@@ -333,7 +333,7 @@ void Step::vNodeStateFetch(void)
   ENTRY(); // ENTRY("vNodeStateFetch"_Stz);
   
   Object* pPtrNode;
-  if ( ! m_pDataStack->bPopObject(pPtrNode) )
+  if ( ! m_pDataStack->bPopPtr(pPtrNode) )
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   

@@ -26,7 +26,7 @@ void Step::vJob__BegunNew(void)
   ENTRY(); // ENTRY("vJob__BegunNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -68,7 +68,7 @@ void Step::vJob__CancelNew(void)
   ENTRY(); // ENTRY("vJob__CancelNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -107,7 +107,7 @@ void Step::vJob__CancelledNew(void)
   ENTRY(); // ENTRY("vJob__CancelledNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -147,7 +147,7 @@ void Step::vJob__EndNew(void)
   ENTRY(); // ENTRY("vJob__EndNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -186,7 +186,7 @@ void Step::vJob__EndedNew(void)
   ENTRY(); // ENTRY("vJob__EndedNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -226,7 +226,7 @@ void Step::vJob__ExecuteNew(void)
   ENTRY(); // ENTRY("vJob__ExecuteNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 
@@ -265,7 +265,7 @@ void Step::vJob__ExecutedNew(void)
   ENTRY(); // ENTRY("vJob__ExecutedNew"_Stz);
   
   Object* pDistJobPtr;
-  if ( ! m_pDataStack->bPopObject(pDistJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pDistJobPtr) )
     THROW_DSTACK();
   Job* pDistJob = _pJob(pDistJobPtr);
 

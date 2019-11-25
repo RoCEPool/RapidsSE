@@ -25,7 +25,7 @@ void Step::vToBody(void)
   ENTRY(); // ENTRY("vToBody"_Stz);
   
   Object* pWordObject;
-  if ( ! m_pDataStack->bPopObject(pWordObject) )
+  if ( ! m_pDataStack->bPopPtr(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   

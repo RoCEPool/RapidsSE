@@ -268,7 +268,7 @@ void Step::vAstackTransfer(void)
   ENTRY(); // ENTRY("vAstackTransfer"_Stz);
   
   Object* pPtrTask;
-  if ( ! m_pDataStack->bPopObject(pPtrTask) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTask) )
     THROW_DSTACK();
   Task* pThatTask = _pTask(pPtrTask);
   

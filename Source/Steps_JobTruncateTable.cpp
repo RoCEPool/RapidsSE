@@ -23,7 +23,7 @@ void Step::vJob_SubTruncateSlotFetch(void)
   ENTRY(); // ENTRY("vJob_SubTruncateSlotFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
@@ -40,7 +40,7 @@ void Step::vJob_SubTruncateTruncateJobIdFetch(void)
   ENTRY(); // ENTRY("vJob_SubTruncateTruncateJobIdFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
@@ -57,7 +57,7 @@ void Step::vJob_TruncateTableSpawnSub(void)
   ENTRY(); // ENTRY("vJob_TruncateTableSpawnSub"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
   

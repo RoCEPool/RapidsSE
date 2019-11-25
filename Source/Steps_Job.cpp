@@ -122,7 +122,7 @@ void Step::vJobAcksRemaining(void)
   ENTRY(); // ENTRY("vJobAcksRemaining"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -143,7 +143,7 @@ void Step::vJobAddOriginator(void)
   ENTRY(); // ENTRY("vJobAddOriginator"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
     
@@ -174,7 +174,7 @@ void Step::vJobAddParticipant(void)
   ENTRY(); // ENTRY("vJobAddParticipant"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -204,7 +204,7 @@ void Step::vJobAssertBegin(void)
   ENTRY(); // ENTRY("vJobAssertBegin"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -295,7 +295,7 @@ void Step::vJobAssertNeutral(void)
   ENTRY(); // ENTRY("vJobAssertNeutral"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -330,7 +330,7 @@ void Step::vJobAssertOriginator(void)
   ENTRY(); // ENTRY("vJobAssertOriginator"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -364,7 +364,7 @@ void Step::vJobAssertParticipant(void)
   ENTRY(); // ENTRY("vJobAssertParticipant"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -398,7 +398,7 @@ void Step::vJobAssertReceived(void)
   ENTRY(); // ENTRY("vJobAssertReceived"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -419,7 +419,7 @@ void Step::vJobBideOperand(void)
   ENTRY(); // ENTRY("vJobBideOperand"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
   
@@ -438,7 +438,7 @@ void Step::vJobBideOperand(void)
 //  ENTRY(); // ENTRY("vJobBideOperand"_Stz);
 //  
 //  Object* pJobPtr;
-//  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+//  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
 //    THROW_DSTACK();
 //  Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
 //  
@@ -564,7 +564,7 @@ void Step::vJobClass(void)
   ENTRY(); // ENTRY("vJobClass"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -599,7 +599,7 @@ void Step::vJobCreateResponseVec(void)
   ENTRY(); // ENTRY("vJobCreateResponseVec"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -618,7 +618,7 @@ void Step::vJobDelete(void)
   ENTRY(); // ENTRY("vJobDelete"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -643,7 +643,7 @@ void Step::vJobDec2pcAcksRmg(void)
   ENTRY(); // ENTRY("vJobDec2pcAcksRmg"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -662,7 +662,7 @@ void Step::vJobEnameSetFetch(void)
   ENTRY(); // ENTRY("vJobEnameSetFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -679,7 +679,7 @@ void Step::vJobErrorFetch(void)
   ENTRY(); // ENTRY("vJobErrorFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
 
@@ -700,7 +700,7 @@ void Step::vJobErrorStore(void)
   ENTRY(); // ENTRY("vJobErrorStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -725,7 +725,7 @@ void Step::vJobExecuteFetch(void)
   ENTRY(); // ENTRY("vJobExecuteFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -800,7 +800,7 @@ void Step::vJobHasError(void)
   ENTRY(); // ENTRY("vJobErrorFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -817,7 +817,7 @@ void Step::vJobHasOperand(void)
   ENTRY(); // ENTRY("vJobHasOperand"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -839,7 +839,7 @@ void Step::vJobIdFetch(void)
   ENTRY(); // ENTRY("vJobIdFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -856,7 +856,7 @@ void Step::vJobIsExecuting(void)
   ENTRY(); // ENTRY("vJobIsExecuting"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -874,7 +874,7 @@ void Step::vJobJobClass(void)
   ENTRY(); // ENTRY("vJobJobClass"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -893,7 +893,7 @@ void Step::vJobJobListFetch(void)
   ENTRY(); // ENTRY("vJobJobListFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -910,7 +910,7 @@ void Step::vJobKindFetch(void)
   ENTRY(); // ENTRY("vJobKindFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -928,7 +928,7 @@ void Step::vJobLoopOutputOp(void)
   ENTRY(); // ENTRY("vJobLoopOutputOp"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
   
@@ -1054,7 +1054,7 @@ void Step::vJobMetadataStore(void)
   ENTRY(); // ENTRY("vJobMetadataStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1075,7 +1075,7 @@ void Step::vJobNextOperand(void)
   ENTRY(); // ENTRY("vJobNextOperand"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
   
@@ -1098,7 +1098,7 @@ void Step::vJobNoWaitFetch(void)
   ENTRY(); // ENTRY("vJobNoWaitFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1115,7 +1115,7 @@ void Step::vJobOperandFetch(void)
   ENTRY(); // ENTRY("vJobOperandFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1132,12 +1132,12 @@ void Step::vJobOperandStore(void)
   ENTRY(); // ENTRY("vJobOperandStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
   Object* pOperandPtr;
-  if ( ! m_pDataStack->bPopObject(pOperandPtr) )
+  if ( ! m_pDataStack->bPopPtr(pOperandPtr) )
     THROW_DSTACK();
   Operand* pOperand = _pOperand(pOperandPtr);
   
@@ -1154,7 +1154,7 @@ void Step::vJobOpLoop(void)
   ENTRY(); // ENTRY("vJobOperandStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
   
@@ -1172,12 +1172,12 @@ void Step::vJobOpTableStore(void)
   ENTRY(); // ENTRY("vJobOpTableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
   
   Object* pTablePtr;
-  if ( ! m_pDataStack->bPopObject(pTablePtr) )
+  if ( ! m_pDataStack->bPopPtr(pTablePtr) )
     THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   
@@ -1195,7 +1195,7 @@ void Step::vJobOriginatingIdFetch(void)
   ENTRY(); // ENTRY("vJobOriginatingIdFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1212,7 +1212,7 @@ void Step::vJobOriginatingIdStore(void)
   ENTRY(); // ENTRY("vJobOriginatingIdStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1233,7 +1233,7 @@ void Step::vJobOriginatingTaskFetch(void)
   ENTRY(); // ENTRY("vJobOriginatingTaskFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1250,12 +1250,12 @@ void Step::vJobOriginatingTaskStore(void)
   ENTRY(); // ENTRY("vJobOriginatingTaskStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
   Object* pOriginatingTaskPtr;
-  if ( ! m_pDataStack->bPopObject(pOriginatingTaskPtr) )
+  if ( ! m_pDataStack->bPopPtr(pOriginatingTaskPtr) )
     THROW_DSTACK();
   Task* pOriginatingTask = _pTask(pOriginatingTaskPtr);
   ASSERT(CN_TASK == pOriginatingTask->eClass());
@@ -1289,7 +1289,7 @@ void Step::vJobParentIdFetch(void)
   ENTRY(); // ENTRY("vJobParentIdFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1306,7 +1306,7 @@ void Step::vJobParticipantFetch(void)
   ENTRY(); // ENTRY("vJobRemoveParticipant"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1323,7 +1323,7 @@ void Step::vJobParticipantStore(void)
   ENTRY(); // ENTRY("vJobParticipantStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1344,7 +1344,7 @@ void Step::vJobParticipantHasError(void)
   ENTRY(); // ENTRY("job.participantHasError"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1370,7 +1370,7 @@ void Step::vJobParticipantResponseStore(void)
   ENTRY(); // ENTRY("vJobParticipantResponseStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1379,7 +1379,7 @@ void Step::vJobParticipantResponseStore(void)
 //    THROW_DSTACK();
   
   Object* pParticipantJobPtr;
-  if ( ! m_pDataStack->bPopObject(pParticipantJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pParticipantJobPtr) )
     THROW_DSTACK();
   Job* pParticipantJob = _pJob(pParticipantJobPtr);
   
@@ -1418,7 +1418,7 @@ void Step::vJobPartitionsFetch(void)
   ENTRY(); // ENTRY("vJobPartitionsFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJobPtr);
   
@@ -1435,7 +1435,7 @@ void Step::vJobPhaseFetch(void)
   ENTRY(); // ENTRY("vJobPhaseFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1452,7 +1452,7 @@ void Step::vJobPhaseStore(void)
   ENTRY(); // ENTRY("vJobPhaseStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1475,7 +1475,7 @@ void Step::vJobPostRecv(void)
   ENTRY(); // ENTRY("vJobPostRecv"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
  
@@ -1524,7 +1524,7 @@ void Step::vJobPreSend(void)
   ENTRY(); // ENTRY("vJobPreSend"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1551,7 +1551,7 @@ void Step::vJobRecv(void)
   ENTRY(); // ENTRY("vJobRecv"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1573,7 +1573,7 @@ void Step::vJobRemoveOriginator(void)
   ENTRY(); // ENTRY("vJobRemoveOriginator"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1607,7 +1607,7 @@ void Step::vJobRemoveParticipant(void)
   ENTRY(); // ENTRY("vJobRemoveParticipant"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1640,7 +1640,7 @@ void Step::vJobRegionSizeFetch(void)
   ENTRY(); // ENTRY("vJobRegionSizeFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJobPtr);
   
@@ -1661,7 +1661,7 @@ void Step::vJobReseed(void)
     THROW_DSTACK();
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1685,7 +1685,7 @@ void Step::vJobResponseFetch(void)
   ENTRY(); // ENTRY("vJobResponseFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1702,7 +1702,7 @@ void Step::vJobResponseStore(void)
   ENTRY(); // ENTRY("vJobResponseStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1724,7 +1724,7 @@ void Step::vJobRowsInvalidFetch(void)
   ENTRY(); // ENTRY("vJobRowsInvalidFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1742,7 +1742,7 @@ void Step::vJobRowsInvalidStore(void)
   ENTRY(); // ENTRY("vJobRowsInvalidStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1765,7 +1765,7 @@ void Step::vJobRowsProcessedFetch(void)
   ENTRY(); // ENTRY("vJobRowsProcessedFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1783,7 +1783,7 @@ void Step::vJobRowsProcessedStore(void)
   ENTRY(); // ENTRY("vJobRowsProcessedStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1806,7 +1806,7 @@ void Step::vJobRowsSkippedFetch(void)
   ENTRY(); // ENTRY("vJobRowsSkippedFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
  
@@ -1825,7 +1825,7 @@ void Step::vJobRowsSkippedStore(void)
   ENTRY(); // ENTRY("vJobRowsSkippedStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1848,7 +1848,7 @@ void Step::vJobSeedDecode(void)
   ENTRY(); // ENTRY("vJobSeedDecode"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1878,7 +1878,7 @@ void Step::vJobSeedFetch(void)
   ENTRY(); // ENTRY("vJobSeedFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1895,7 +1895,7 @@ void Step::vJobSeedStore(void)
   ENTRY(); // ENTRY("vJobSeedStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1922,7 +1922,7 @@ void Step::vJobSend(void)
   ENTRY(); // ENTRY("vJobSend"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1944,7 +1944,7 @@ void Step::vJobSessionFetch(void)
   ENTRY(); // ENTRY("vJobSessionStateFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1968,7 +1968,7 @@ void Step::vJobSessionStateFetch(void)
   ENTRY(); // ENTRY("vJobSessionStateFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -1985,7 +1985,7 @@ void Step::vJobShow(void)
   ENTRY(); // ENTRY("vJobShow"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -2010,7 +2010,7 @@ void Step::vJobSignalWaiter(void)
   // this could be a prompt htread or a java thread via the connector
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
 
@@ -2053,7 +2053,7 @@ void Step::vJobSignalWaiter(void)
 //  // this could be a prompt htread or a java thread via the connector
 //
 //  Object* pJobPtr;
-//  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+//  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
 //  THROW_DSTACK();
 //  Job* pJob = _pJob(pJobPtr);
 //
@@ -2100,7 +2100,7 @@ void Step::vJobSlotFetch(void)
   ENTRY(); // ENTRY("vJobSessionSlotFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -2121,7 +2121,7 @@ void Step::vJobSpawn(void)
 //    THROW_DSTACK();
 
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -2150,7 +2150,7 @@ void Step::vJobSpawnDedicated(void)
     THROW_DSTACK();
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -2178,7 +2178,7 @@ void Step::vJobSpawnUniversal(void)
     THROW_DSTACK();
 
 //  Object* pJobPtr;
-//  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+//  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
 //    THROW_DSTACK();
 //  Job* pJob_parent = _pJob(pJobPtr);
   
@@ -2241,7 +2241,7 @@ void Step::vJobTaskFetch(void)
   ENTRY(); // ENTRY("vJobTaskFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
@@ -2258,12 +2258,12 @@ void Step::vJobTaskStore(void)
   ENTRY(); // ENTRY("vJobTaskStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
   Object* pTaskPtr;
-  if ( ! m_pDataStack->bPopObject(pTaskPtr) )
+  if ( ! m_pDataStack->bPopPtr(pTaskPtr) )
     THROW_DSTACK();
   Task* pTask = _pTask(pTaskPtr);
   
@@ -2300,7 +2300,7 @@ void Step::vJobWaitParticipant(void)
     THROW_DSTACK();
   
   Object* pJobObject;
-  if ( ! m_pDataStack->bPopObject(pJobObject) )
+  if ( ! m_pDataStack->bPopPtr(pJobObject) )
     THROW_DSTACK();
   
   //Job* pCallingJob = _pJob(pJobObject);

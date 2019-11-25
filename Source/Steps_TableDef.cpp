@@ -20,7 +20,7 @@ void Step::vTableDefParse(void)
   ENTRY(); // ENTRY("vTableDefParse"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   Job* pJob_CreateTable = _pJob(pJobPtr);
   

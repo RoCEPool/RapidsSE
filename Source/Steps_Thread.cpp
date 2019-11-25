@@ -38,7 +38,7 @@ void Step::vThreadBind(void)
   if ( ! m_pDataStack->bPopI8(iCpu) )
     THROW_DSTACK();
   
-  if ( ! m_pDataStack->bPopObject(pObject) )
+  if ( ! m_pDataStack->bPopPtr(pObject) )
     THROW_DSTACK();
   
   ASSERT(CN_THREAD == pObject->eClass());
@@ -59,7 +59,7 @@ void Step::vThreadCpu(void)
   
   Object* pObject;
   
-  if ( ! m_pDataStack->bPopObject(pObject) )
+  if ( ! m_pDataStack->bPopPtr(pObject) )
     THROW_DSTACK();
   
   ASSERT(CN_THREAD == pObject->eClass());
@@ -79,7 +79,7 @@ void Step::vThreadDedicatedFetch(void)
   ENTRY(); // ENTRY("vThreadDedicatedFetch"_Stz);
   
   Object* pThreadObject;
-  if ( ! m_pDataStack->bPopObject(pThreadObject) )
+  if ( ! m_pDataStack->bPopPtr(pThreadObject) )
     THROW_DSTACK();
   Thread* pThread = _pThread(pThreadObject);
   
@@ -96,7 +96,7 @@ void Step::vThreadDedicatedStore(void)
   ENTRY(); // ENTRY("vThreadDedicatedStore"_Stz);
   
   Object* pThreadObject;
-  if ( ! m_pDataStack->bPopObject(pThreadObject) )
+  if ( ! m_pDataStack->bPopPtr(pThreadObject) )
     THROW_DSTACK();
   Thread* pThread = _pThread(pThreadObject);
   
@@ -132,7 +132,7 @@ void Step::vThreadDump(void)
   
   Object* pObject;
   
-  if ( ! m_pDataStack->bPopObject(pObject) )
+  if ( ! m_pDataStack->bPopPtr(pObject) )
     THROW_DSTACK();
   
   ASSERT(CN_THREAD == pObject->eClass());
@@ -167,7 +167,7 @@ void Step::vThreadId(void)
   
   Object* pObject;
   
-  if ( ! m_pDataStack->bPopObject(pObject) )
+  if ( ! m_pDataStack->bPopPtr(pObject) )
     THROW_DSTACK();
   
   ASSERT(CN_THREAD == pObject->eClass());

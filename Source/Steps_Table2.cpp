@@ -21,7 +21,7 @@ void Step::vTableSet(void)
   ENTRY(); // ENTRY("vTableSet"_Stz);
   
   Object* pPtrObject;
-  if ( ! m_pDataStack->bPopObject(pPtrObject) )
+  if ( ! m_pDataStack->bPopPtr(pPtrObject) )
     THROW_DSTACK();
   
   m_pRegSet->m_xpTable = _pTable(pPtrObject);
@@ -37,7 +37,7 @@ void Step::vTablePtnFetch(void)
   ENTRY(); // ENTRY("vTableSet"_Stz);
   
   Object* pPtrObject;
-  if ( ! m_pDataStack->bPopObject(pPtrObject) )
+  if ( ! m_pDataStack->bPopPtr(pPtrObject) )
     THROW_DSTACK();
   
   Job_Universal* pJob = _pJob_Universal(pPtrObject);

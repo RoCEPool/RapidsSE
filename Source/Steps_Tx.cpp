@@ -52,7 +52,7 @@ void Step::vTxCommit(void)
   ENTRY(); // ENTRY("vTxCommit"_Stz);
   
   Object* pPtrTx;
-  if ( ! m_pDataStack->bPopObject(pPtrTx) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -74,7 +74,7 @@ void Step::vTxCounterDec(void)
   ENTRY(); // ENTRY("vTxCounterDec"_Stz);
   
   Object* pPtrTx;
-  if ( ! m_pDataStack->bPopObject(pPtrTx) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -99,7 +99,7 @@ void Step::vTxCounterFetch(void)
   ENTRY(); // ENTRY("vTxCounterFetch"_Stz);
   
   Object* pPtrTx;
-  if ( ! m_pDataStack->bPopObject(pPtrTx) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -118,7 +118,7 @@ void Step::vTxCounterStore(void)
   ENTRY(); // ENTRY("vTxCounterStore"_Stz);
   
   Object* pPtrTx;
-  if ( ! m_pDataStack->bPopObject(pPtrTx) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -139,7 +139,7 @@ void Step::vTxDistMemberFetch(void)
   ENTRY(); // ENTRY("vTxDistMemberFetch"_Stz);
   
   Object* pPtrTx;
-  if ( ! m_pDataStack->bPopObject(pPtrTx) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -164,7 +164,7 @@ void Step::vTxDistMemberStore(void)
   ENTRY(); // ENTRY("vTxDistMemberStore"_Stz);
   
   Object* pPtrTx;
-  if ( ! m_pDataStack->bPopObject(pPtrTx) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -192,7 +192,7 @@ void Step::vTxDump(void)
   
   Object* pPtrTx;
   
-  if ( ! m_pDataStack->bPopObject(pPtrTx) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -222,7 +222,7 @@ void Step::vTxFree(void)
   
   Object* pPtrTx;
   
-  if ( ! m_pDataStack->bPopObject(pPtrTx) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -244,7 +244,7 @@ void Step::vTxId(void)
   ENTRY(); // ENTRY("vTxId"_Stz);
   
   Object* pPtrTx;
-  if ( ! m_pDataStack->bPopObject(pPtrTx) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -263,7 +263,7 @@ void Step::vTxPrepare(void)
   ENTRY(); // ENTRY("vTxPrepare"_Stz);
   
   Object* pPtrTx;
-  if ( ! m_pDataStack->bPopObject(pPtrTx) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   
@@ -285,7 +285,7 @@ void Step::vTxRollback(void)
   ENTRY(); // ENTRY("vTxRollback"_Stz);
   
   Object* pPtrTx;
-  if ( ! m_pDataStack->bPopObject(pPtrTx) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTx) )
     THROW_DSTACK();
   Tx* pTx = _pTx(pPtrTx);
   

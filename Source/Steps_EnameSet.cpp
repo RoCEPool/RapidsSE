@@ -45,7 +45,7 @@ void Step::vEnameSetAddInt(void)
   ENTRY(); // ENTRY("vEnameSetAddInt"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
+  if ( ! m_pDataStack->bPopPtr(pEnameSet_obj) )
     THROW_DSTACK();
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
@@ -71,7 +71,7 @@ void Step::vEnameSetAddStr(void)
   ENTRY(); // ENTRY("vEnameSetAddStr"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
+  if ( ! m_pDataStack->bPopPtr(pEnameSet_obj) )
     THROW_DSTACK();
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
 
@@ -97,7 +97,7 @@ void Step::vEnameSetAsStr(void)
   ENTRY(); // ENTRY("vEnameSetAsStr"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
+  if ( ! m_pDataStack->bPopPtr(pEnameSet_obj) )
     THROW_DSTACK();
   
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
@@ -119,7 +119,7 @@ void Step::vEnameSetGetInt(void)
   ENTRY(); // ENTRY("vEnameSetGetInt"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
+  if ( ! m_pDataStack->bPopPtr(pEnameSet_obj) )
     THROW_DSTACK();
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
@@ -143,7 +143,7 @@ void Step::vEnameSetGetStr(void)
   ENTRY(); // ENTRY("vEnameSetGetStr"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
+  if ( ! m_pDataStack->bPopPtr(pEnameSet_obj) )
     THROW_DSTACK();
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
@@ -173,7 +173,7 @@ void Step::vEnameSetHasName(void)
   ENTRY(); // ENTRY("vEnameSetHasName"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
+  if ( ! m_pDataStack->bPopPtr(pEnameSet_obj) )
     THROW_DSTACK();
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
@@ -196,7 +196,7 @@ void Step::vEnameSetUpsertStr(void)
   ENTRY(); // ENTRY("vEnameSetAddStr"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! m_pDataStack->bPopObject(pEnameSet_obj) )
+  if ( ! m_pDataStack->bPopPtr(pEnameSet_obj) )
     THROW_DSTACK();
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   

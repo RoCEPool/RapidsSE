@@ -342,7 +342,7 @@ void Step::vOperandSet(void)
   ENTRY(); // ENTRY("vOperandSet"_Stz);
   
   Object* pPtrObject;
-  if ( ! m_pDataStack->bPopObject(pPtrObject) )
+  if ( ! m_pDataStack->bPopPtr(pPtrObject) )
     THROW_DSTACK();
   
   m_pRegSet->m_pOperand = _pOperand(pPtrObject);

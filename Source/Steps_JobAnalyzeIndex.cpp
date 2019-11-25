@@ -21,7 +21,7 @@ void Step::vJob_AnalyzeIndexIsDetailed(void)
   ENTRY(); // ENTRY("vJob_AnalyzeIndexIsDetailed"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   
 //  Job_AnalyzeIndex* pJoAnalyzeIndex = _pJob_AnalyzeIndex(pJobPtr);
@@ -40,7 +40,7 @@ void Step::vJob_AnalyzeTableIsDetailed(void)
   ENTRY(); // ENTRY("vJob_AnalyzeTableIsDetailed"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopObject(pJobPtr) )
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
     THROW_DSTACK();
   
   //Job_AnalyzeTable* pJoAnalyzeTable = _pJob_AnalyzeTable(pJobPtr);

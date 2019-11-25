@@ -26,7 +26,7 @@ void Step::vDicStackDepth(void)
   ENTRY(); // ENTRY("vDicStackDepth"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
+  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) )
     THROW_DSTACK();
   
   DicStack* pDicStack = _pDicStack(pPtrDicStack);
@@ -46,7 +46,7 @@ void Step::vDicStackDrop(void)
   ENTRY(); // ENTRY("vDicStackDrop"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
+  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) )
     THROW_DSTACK();
   
   DicStack* pDicStack = _pDicStack(pPtrDicStack);
@@ -64,7 +64,7 @@ void Step::vDicStackDump(void)
   ENTRY(); // ENTRY("vDicStackDump"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
+  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) )
     THROW_DSTACK();
   
   DicStack* pDicStack = _pDicStack(pPtrDicStack);
@@ -82,7 +82,7 @@ void Step::vDicStackPick(void)
   ENTRY(); // ENTRY("vDicStackPick"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
+  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) )
     THROW_DSTACK();
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
@@ -107,7 +107,7 @@ void Step::vDicStackPop(void)
   ENTRY(); // ENTRY("vDicStackPop"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
+  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) )
     THROW_DSTACK();
   
   DicStack* pDicStack = _pDicStack(pPtrDicStack);
@@ -125,14 +125,14 @@ void Step::vDicStackPush(void)
   ENTRY(); // ENTRY("vDicStackPush"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
+  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) )
     THROW_DSTACK();
   
   DicStack* pDicStack = _pDicStack(pPtrDicStack);
 
   Object* pPtrDic;
   
-  if ( ! m_pDataStack->bPopObject(pPtrDic) )
+  if ( ! m_pDataStack->bPopPtr(pPtrDic) )
     THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
@@ -150,7 +150,7 @@ void Step::vDicStackToPathStr(void)
   ENTRY(); // ENTRY("vDicStackToPathStr"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! m_pDataStack->bPopObject(pPtrDicStack) )
+  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) )
     THROW_DSTACK();
   DicStack* pDicStack = _pDicStack(pPtrDicStack);
   

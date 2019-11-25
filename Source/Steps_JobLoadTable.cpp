@@ -25,7 +25,7 @@ void Step::vJob_LoadTableBegin(void)
   ENTRY(); // ENTRY("vJob_LoadTableBegin"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! m_pDataStack->bPopObject(pPtrJob_LoadTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrJob_LoadTable) )
     THROW_DSTACK();
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
@@ -44,7 +44,7 @@ void Step::vJob_LoadTableChunk(void)
   ENTRY(); // ENTRY("vJob_LoadTableChunk"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! m_pDataStack->bPopObject(pPtrJob_LoadTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrJob_LoadTable) )
     THROW_DSTACK();
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
@@ -63,7 +63,7 @@ void Step::vJob_LoadTableDumpMap(void)
   ENTRY(); // ENTRY("vJob_LoaderDUmpMap"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! m_pDataStack->bPopObject(pPtrJob_LoadTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrJob_LoadTable) )
     THROW_DSTACK();
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
@@ -80,7 +80,7 @@ void Step::vJob_LoadTableEnd(void)
   ENTRY(); // ENTRY("vJob_LoadTableEnd"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! m_pDataStack->bPopObject(pPtrJob_LoadTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrJob_LoadTable) )
     THROW_DSTACK();
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
@@ -97,7 +97,7 @@ void Step::vJob_LoadTableFilePathFetch(void)
   ENTRY(); // ENTRY("vJob_LoadTableFilePathFetch"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! m_pDataStack->bPopObject(pPtrJob_LoadTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrJob_LoadTable) )
     THROW_DSTACK();
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
@@ -116,7 +116,7 @@ void Step::vJob_LoadTableTableStore(void)
   
   Object* pPtrTable;
   Object* pPtrJob_LoadTable;
-  if ( ! m_pDataStack->bPopObject(pPtrJob_LoadTable,pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrJob_LoadTable,pPtrTable) )
     THROW_DSTACK();
   
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);

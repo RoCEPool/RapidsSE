@@ -22,7 +22,7 @@ void Step::vDicPathDepth(void)
   ENTRY(); // ENTRY("vDicStackDepth"_Stz);
   
   Object* pPtrDicPath;
-  if ( ! m_pDataStack->bPopObject(pPtrDicPath) )
+  if ( ! m_pDataStack->bPopPtr(pPtrDicPath) )
     THROW_DSTACK();
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
@@ -43,7 +43,7 @@ void Step::vDicPathDump(void)
   ENTRY(); // ENTRY("vDicPathDump"_Stz);
   
   Object* pPtrDicPath;
-  if ( ! m_pDataStack->bPopObject(pPtrDicPath) )
+  if ( ! m_pDataStack->bPopPtr(pPtrDicPath) )
     THROW_DSTACK();
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
@@ -62,7 +62,7 @@ void Step::vDicPathPick(void)
   ENTRY(); // ENTRY("vDicPathPick"_Stz);
   
   Object* pPtrDicPath;
-  if ( ! m_pDataStack->bPopObject(pPtrDicPath) )
+  if ( ! m_pDataStack->bPopPtr(pPtrDicPath) )
     THROW_DSTACK();
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);

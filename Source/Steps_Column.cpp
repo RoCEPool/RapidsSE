@@ -26,7 +26,7 @@ void Step::vColumnIsNullableFetch(void)
   
   Object* pPtrColumn;
   
-  if ( ! m_pDataStack->bPopObject(pPtrColumn) )
+  if ( ! m_pDataStack->bPopPtr(pPtrColumn) )
   THROW_DSTACK();
   
   Column* pColumn = _pColumn(pPtrColumn);
@@ -49,7 +49,7 @@ void Step::vColumnIsPartitionKeyFetch(void)
   
   Object* pPtrColumn;
   
-  if ( ! m_pDataStack->bPopObject(pPtrColumn) )
+  if ( ! m_pDataStack->bPopPtr(pPtrColumn) )
   THROW_DSTACK();
   
   Column* pColumn = _pColumn(pPtrColumn);
@@ -72,7 +72,7 @@ void Step::vColumnLengthFetch(void)
   
   Object* pPtrColumn;
   
-  if ( ! m_pDataStack->bPopObject(pPtrColumn) )
+  if ( ! m_pDataStack->bPopPtr(pPtrColumn) )
   THROW_DSTACK();
   
   Column* pColumn = _pColumn(pPtrColumn);
@@ -92,7 +92,7 @@ void Step::vColumnNameFetch(void)
   
   Object* pPtrColumn;
   
-  if ( ! m_pDataStack->bPopObject(pPtrColumn) )
+  if ( ! m_pDataStack->bPopPtr(pPtrColumn) )
   THROW_DSTACK();
   
   Column* pColumn = _pColumn(pPtrColumn);
@@ -114,7 +114,7 @@ void Step::vColumnScaleFetch(void)
   
   Object* pPtrColumn;
   
-  if ( ! m_pDataStack->bPopObject(pPtrColumn) )
+  if ( ! m_pDataStack->bPopPtr(pPtrColumn) )
   THROW_DSTACK();
   
   Column* pColumn = _pColumn(pPtrColumn);
@@ -134,7 +134,7 @@ void Step::vColumnTypeFetch(void)
   
   Object* pPtrColumn;
   
-  if ( ! m_pDataStack->bPopObject(pPtrColumn) )
+  if ( ! m_pDataStack->bPopPtr(pPtrColumn) )
   THROW_DSTACK();
   
   Column* pColumn = _pColumn(pPtrColumn);

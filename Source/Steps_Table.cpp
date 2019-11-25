@@ -52,13 +52,13 @@ void Step::vTableAddIndex(void)
   Object* pPtrTable;
   Object* pPtrIndex;
   
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -79,7 +79,7 @@ void Step::vTableAnalyze(void)
   Object* pPtrTable;
   i8 iDetailed;
   
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -105,13 +105,13 @@ void Step::vTableIsValidIndexColumns(void)
   ENTRY(); // ENTRY("vTableIsValidIndexColumns"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   Object* pPtrJob;
-  if ( ! m_pDataStack->bPopObject(pPtrJob) )
+  if ( ! m_pDataStack->bPopPtr(pPtrJob) )
     THROW_DSTACK();
   
   Job_Universal* pJob_CreateIndex = _pJob_Universal(pPtrJob);
@@ -158,7 +158,7 @@ void Step::vTableIsLoadingStore(void)
   Object* pPtrTable;
   i8 iLoading;
 
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -180,7 +180,7 @@ void Step::vTableColumnFetch(void)
   ENTRY(); // ENTRY("vTableColumnFetch"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
   THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -204,7 +204,7 @@ void Step::vTableColumnCountFetch(void)
   ENTRY(); // ENTRY("vTableColumnCountFetch"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
   THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -225,7 +225,7 @@ void Step::vTableDrop(void)
   ENTRY(); // ENTRY("vTableDrop"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -244,7 +244,7 @@ void Step::vTableDump(void)
   vTrace("TableDump\n"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -277,7 +277,7 @@ void Step::vTableGetColumnsAsString(void)
   ENTRY(); // ENTRY("vTableGetColumnsAsString"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
   THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -313,7 +313,7 @@ void Step::vTableGetPtn(void)
   ENTRY(); // ENTRY("vTableGetPtn"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
   
@@ -338,7 +338,7 @@ void Step::vTableIndexCount(void)
   ENTRY(); // ENTRY("vTableIndexCount"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -357,7 +357,7 @@ void Step::vTableInit(void)
   ENTRY(); // ENTRY("vTableInit"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -376,7 +376,7 @@ void Step::vTableFindColumn(void)
   ENTRY(); // ENTRY("vTableFindColumn"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -416,7 +416,7 @@ void Step::vTableIsColumn(void)
   ENTRY(); // ENTRY("vTableInit"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -455,7 +455,7 @@ void Step::vTableName(void)
   ENTRY(); // ENTRY("vTableName"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -480,7 +480,7 @@ void Step::vTablePublish(void)
   Object* pPtrTable;
   i8 iSlot;
   
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -503,7 +503,7 @@ void Step::vTablePurge(void)
   
   Object* pPtrTable;
   
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
   
@@ -530,12 +530,12 @@ void Step::vTableRemoveIndex(void)
   Object* pPtrTable;
   Object* pPtrIndex;
   
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
   
-  if ( ! m_pDataStack->bPopObject(pPtrIndex) )
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
     THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -558,14 +558,14 @@ void Step::vTableScan(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   Object* pPtrJob;
-  if ( ! m_pDataStack->bPopObject(pPtrJob) )
+  if ( ! m_pDataStack->bPopPtr(pPtrJob) )
     THROW_DSTACK();
   
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
@@ -654,7 +654,7 @@ void Step::vTableShowColumnVec(void)
   ENTRY(); // ENTRY("vTableShowColumnVec"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -672,7 +672,7 @@ void Step::vTableSubDic(void)
   ENTRY(); // ENTRY("vTableSubDic"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -693,7 +693,7 @@ void Step::vTableSubLoaders(void)
   ENTRY(); // ENTRY("vTableSubDic"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -716,7 +716,7 @@ void Step::vTableSlots(void)
   ENTRY(); // ENTRY("vTableSlots"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -735,7 +735,7 @@ void Step::vTableSpace(void)
   ENTRY(); // ENTRY("vTableSpace"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -756,7 +756,7 @@ void Step::vTableTableDefFetch(void)
   ENTRY(); // ENTRY("vTableTableDefFetch"_Stz);
 
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
   
@@ -773,12 +773,12 @@ void Step::vTableTableDefStore(void)
   ENTRY(); // ENTRY("vTableTableDefStore"_Stz);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
   
   Object* pPtrTableDef;
-  if ( ! m_pDataStack->bPopObject(pPtrTableDef) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTableDef) )
     THROW_DSTACK();
   TableDef* pTableDef = _pTableDef(pPtrTableDef);
 
@@ -797,7 +797,7 @@ void Step::vTableTruncate(void)
   Object* pPtrTable;
   i8 iSlot;
   
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -820,7 +820,7 @@ void Step::vTableVerify(void)
   
   Object* pPtrTable;
   
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
@@ -843,7 +843,7 @@ void Step::vTableVisualize(void)
   
   Object* pPtrTable;
   
-  if ( ! m_pDataStack->bPopObject(pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
     THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);

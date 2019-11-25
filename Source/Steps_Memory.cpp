@@ -27,7 +27,7 @@ void Step::vMemoryByteDump(void)
     THROW_DSTACK();
   
   Object* pWordObject;
-  if ( ! m_pDataStack->bPopObject(pWordObject) )
+  if ( ! m_pDataStack->bPopPtr(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
@@ -72,7 +72,7 @@ void Step::vMemoryWordDump(void)
     THROW_DSTACK();
   
   Object* pWordObject;
-  if ( ! m_pDataStack->bPopObject(pWordObject) )
+  if ( ! m_pDataStack->bPopPtr(pWordObject) )
     THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
