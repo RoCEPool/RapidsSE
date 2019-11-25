@@ -239,7 +239,7 @@ i8 GenVar::nStzSize(void)
   
   //i8 nSize = u.m_xNstVal.m_wWord;
   
-  i8 nSize = u.m_xStrVar.nSize();
+  i8 nSize = u.m_xStrVal.nSize();
 
   return nSize;
 }
