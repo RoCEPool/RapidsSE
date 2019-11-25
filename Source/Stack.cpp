@@ -106,6 +106,9 @@ FipVal* Stack::aAllotFipVal(void)
   
   FipVal* aFipVal = static_cast<FipVal*>(aAllotStkVal(sizeof(FipVal)));
   
+  aFipVal->vClass(CN_FIPVAL);
+  aFipVal->vMagic();
+
   return aFipVal;
 }
 
@@ -118,11 +121,14 @@ IntVal* Stack::aAllotIntVal(void)
   
   IntVal* aIntVal = static_cast<IntVal*>(aAllotStkVal(sizeof(IntVal)));
   
+  aIntVal->vClass(CN_INTVAL);
+  aIntVal->vMagic();
+
   return aIntVal;
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot an ptr value on top of value stack                                   */
+/* allot a ptr value on top of value stack                                    */
 /*----------------------------------------------------------------------------*/
 PtrVal* Stack::aAllotPtrVal(void)
 {
@@ -130,11 +136,14 @@ PtrVal* Stack::aAllotPtrVal(void)
   
   PtrVal* aPtrVal = static_cast<PtrVal*>(aAllotStkVal(sizeof(PtrVal)));
   
+  aPtrVal->vClass(CN_PTRVAL);
+  aPtrVal->vMagic();
+
   return aPtrVal;
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot an str value on top of value stack                                   */
+/* allot a str value on top of value stack                                    */
 /*----------------------------------------------------------------------------*/
 StrVal* Stack::aAllotStrVal(i8 nSize)
 {
@@ -142,6 +151,9 @@ StrVal* Stack::aAllotStrVal(i8 nSize)
   
   StrVal* aStrVal = static_cast<StrVal*>(aAllotStkVal(sizeof(StrVal) + nSize - 1));
   
+  aStrVal->vClass(CN_STRVAL);
+  aStrVal->vMagic();
+
   return aStrVal;
 }
 
@@ -958,15 +970,19 @@ void Stack::vPushBool(bool bArg)
 /*----------------------------------------------------------------------------*/
 /* push Cell* onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushFip(Cell* aCell)
+void Stack::vPushFip(Cell* aFip)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  FipVal xFipVal;
+//  FipVal xFipVal;
+//
+//  xFipVal = aFip;
+//
+//  vPushValue(xFipVal);
   
-  xFipVal = aCell;
+  FipVal* aFipVal = aAllotFipVal();
   
-  vPushValue(xFipVal);
+  * aFipVal = aFip;
 }
 
 /*----------------------------------------------------------------------------*/
