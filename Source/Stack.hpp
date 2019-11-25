@@ -51,6 +51,9 @@ namespace SenVM
   
     void vPokeVar(i8 i_Val, GenVar& xVar);
   
+    bool bPopAsInt(i8& iInt1);
+    bool bPopAsInt_Inline(i8& iInt1);
+    bool bPopAsInt_Quick(i8& iInt1);
     bool bPopCN(eCN& eClassNo);
     bool bPopFip(Cell*& aFip);
     bool bPopInt(i8& iInt);
@@ -76,9 +79,6 @@ namespace SenVM
     bool bPopVar(GenVar& xVar);
     bool bPopVar(GenVar& xVar1, GenVar& xVar2);
     bool bPopVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3);
-    bool bPopAsInt(i8& iInt1);
-    bool bPopAsI8_Inline(i8& iInt1);
-    bool bPopAsInt_Quick(i8& iInt1);
   
     void vPushFip(Cell* aCell);
     void vPushGenVar(GenVar* pVar);
@@ -149,7 +149,7 @@ namespace SenVM
   /*----------------------------------------------------------------------------*/
   /* pop value from data stack  as integer                                      */
   /*----------------------------------------------------------------------------*/
-  inline bool Stack::bPopAsI8_Inline(i8& iInt)
+  inline bool Stack::bPopAsInt_Inline(i8& iInt)
   {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

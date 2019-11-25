@@ -288,6 +288,60 @@ void Stack::vPokeVar(i8 i_Val, GenVar& xVar)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop value from value stack  as integer                                     */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopAsInt(i8& iInt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  GenVar xVar;
+  vPopVal(xVar.aEmbeddedStkVal());
+  
+  iInt = xVar.iInt();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from value stack  as integer                                     */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopAsInt_Quick(i8& iInt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  // get pointer to value on the top of the stack
+  StkVal* aTopValue = aTopStkVal();
+  
+  // discard the value
+  vDiscard();
+  
+  eCN eClassNo = aTopValue->eClass();
+  
+  switch (eClassNo) {
+      
+    case CN_INTVAL:
+      iInt = _aIntVal(aTopValue)->iInt();
+      return true;
+      
+    case CN_PTRVAL:
+      iInt = _aPtrVal(aTopValue)->pObj() ? 1 : 0;
+      return true;
+      
+    default:
+      NEVER_REACH;
+  }
+  
+  NEVER_REACH;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop eClassNo from value stack                                              */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopCN(eCN& eClassNo)
@@ -786,60 +840,6 @@ bool Stack::bPopVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
   vPopVal(xVar3.aEmbeddedStkVal());
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop value from value stack  as integer                                     */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopAsInt(i8& iInt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  GenVar xVar;
-  vPopVal(xVar.aEmbeddedStkVal());
-  
-  iInt = xVar.iInt();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop value from value stack  as integer                                     */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopAsInt_Quick(i8& iInt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  // get pointer to value on the top of the stack
-  StkVal* aTopValue = aTopStkVal();
-
-  // discard the value
-  vDiscard();
-
-  eCN eClassNo = aTopValue->eClass();
-  
-  switch (eClassNo) {
-      
-    case CN_INTVAL:
-      iInt = _aIntVal(aTopValue)->iInt();
-      return true;
-      
-    case CN_PTRVAL:
-      iInt = _aPtrVal(aTopValue)->pObj() ? 1 : 0;
-      return true;
-      
-    default:
-      NEVER_REACH;
-  }
-
-  NEVER_REACH;
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

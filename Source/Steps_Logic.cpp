@@ -44,7 +44,7 @@ void Step::vLogicNot(void)
   ENTRY(); // ENTRY("vLogicNot"_Stz);
   
   i8 iValA;
-  if ( ! m_pDataStack->bPopAsI8_Inline(iValA) )
+  if ( ! m_pDataStack->bPopAsInt_Inline(iValA) )
     THROW_DSTACK();
   
   i8 iNotA = iValA ? 0 : 1;
