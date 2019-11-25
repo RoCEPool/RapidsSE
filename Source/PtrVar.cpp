@@ -18,11 +18,11 @@ void* PtrVar::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void PtrVar::operator =(Object* pObject)
+void PtrVar::operator =(Object* pObj)
 {
   vClass(CN_PTRVAR);
 
-  m_pObj = pObject;
+  m_pObj = pObj;
 }
 
 /*----------------------------------------------------------------------------*/

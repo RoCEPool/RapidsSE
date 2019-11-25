@@ -39,8 +39,8 @@ GenVar::GenVar(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  xNestedValue.m_xHeader.vSetMagic();
-  xNestedValue.m_xHeader.vSetClass(CN_NONE);
+  u.m_xNstVal.m_xHeader.vMagic();
+  u.m_xNstVal.m_xHeader.vClass(CN_NONE);
   
   _postcondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
 }
@@ -61,10 +61,10 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Cell* aFipPtr)
+void GenVar::operator =(Cell* aFip)
 {
-  xNestedValue.m_xHeader.vSetClass(CN_FIPVAL);
-  xNestedValue.m_wWord = (w8)aFipPtr;
+  u.m_xNstVal.m_xHeader.vClass(CN_FIPVAL);
+  u.m_xNstVal.m_wWord = (w8)aFip;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,19 +74,19 @@ void GenVar::operator =(i8 iInt)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  xNestedValue.m_xHeader.vSetClass(CN_INTVAL);
-  xNestedValue.m_wWord = iInt;
+  u.m_xNstVal.m_xHeader.vClass(CN_INTVAL);
+  u.m_xNstVal.m_wWord = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign/copy a pointer to a proper object into workspace                    */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Object* pObject)
+void GenVar::operator =(Object* pObj)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  xNestedValue.m_xHeader.vSetClass(CN_PTRVAL);
-  xNestedValue.m_wWord = (w8)pObject;
+  u.m_xNstVal.m_xHeader.vClass(CN_PTRVAL);
+  u.m_xNstVal.m_wWord = (w8)pObj;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,8 +96,8 @@ void GenVar::operator =(Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  xNestedValue.m_xHeader.vSetClass(CN_STRVAL);
-  xNestedValue.m_wWord = StrLib::nCopy(xNestedValue.m_caStr,szStz->azChar()) + 1;
+  u.m_xNstVal.m_xHeader.vClass(CN_STRVAL);
+  u.m_xNstVal.m_wWord = StrLib::nCopy(u.m_xNstVal.m_caStr,szStz->azChar()) + 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -110,7 +110,7 @@ char* GenVar::azChar(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  char* az = (char*)xNestedValue.m_caStr;
+  char* az = (char*)u.m_xNstVal.m_caStr;
   
   return az;
 }
@@ -118,11 +118,11 @@ char* GenVar::azChar(void)
 /*----------------------------------------------------------------------------*/
 /* get object address from nested value                                       */
 /*----------------------------------------------------------------------------*/
-Cell* GenVar::aFipPtr(void)
+Cell* GenVar::aFip(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Cell* aFip = (Cell*)xNestedValue.m_wWord.m_iI8;
+  Cell* aFip = (Cell*)u.m_xNstVal.m_wWord;
   
   return aFip;
 }
@@ -134,7 +134,7 @@ i8 GenVar::iInt(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  i8 iInt = xNestedValue.m_wWord;
+  i8 iInt = u.m_xNstVal.m_wWord;
   
   return iInt;
 }
@@ -146,7 +146,7 @@ bool GenVar::bIsInt(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  if (CN_INTVAL == xNestedValue.m_xHeader.eClass())
+  if (CN_INTVAL == u.m_xNstVal.m_xHeader.eClass())
     return true;
   else
     return false;
@@ -173,7 +173,7 @@ StkVal* GenVar::aEmbeddedStkVal(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  StkVal* aStkVal = reinterpret_cast<StkVal*>(&xNestedValue);
+  StkVal* aStkVal = reinterpret_cast<StkVal*>( & u.m_xNstVal );
   
   return aStkVal;
 }
@@ -181,11 +181,11 @@ StkVal* GenVar::aEmbeddedStkVal(void)
 /*----------------------------------------------------------------------------*/
 /* get object address from nested value                                       */
 /*----------------------------------------------------------------------------*/
-Object* GenVar::pObject(void)
+Object* GenVar::pObj(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Object* pObj = (Object*)xNestedValue.m_wWord.m_iI8;
+  Object* pObj = (Object*)u.m_xNstVal.m_wWord;
   
   return pObj;
 }
@@ -197,7 +197,7 @@ i8 GenVar::nSize(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  i8 nSize = xNestedValue.m_wWord;
+  i8 nSize = u.m_xNstVal.m_wWord;
   
   return nSize;
 }
@@ -209,7 +209,7 @@ Stz* GenVar::szStz(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Stz* sz = (Stz*)xNestedValue.m_caStr;
+  Stz* sz = (Stz*)u.m_xNstVal.m_caStr;
   
   return sz;
 }

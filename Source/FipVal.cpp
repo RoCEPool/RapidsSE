@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FipVal.cpp - Forth Instruction Pointer StkVal                          */
+/* FipVal.cpp -- Layout of a Forth Instruction Pointer when on Stack          */
 /*============================================================================*/
 
 #include "SenVM.h"
@@ -43,9 +43,9 @@ FipVal::FipVal(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void FipVal::operator =(Cell* aCell)
+void FipVal::operator =(Cell* aFip)
 {
-  m_aFip = aCell;
+  m_aFip = aFip;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,13 +54,13 @@ void FipVal::operator =(Cell* aCell)
 /*----------------------------------------------------------------------------*/
 /* get instruction pointer                                                    */
 /*----------------------------------------------------------------------------*/
-Cell* FipVal::aFipPtr(void)
+Cell* FipVal::aFip(void)
 {
   return pPoolCheck<Cell*>(m_aFip);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size in bytes                                                          */
+/* get how many bytes are needed to push a FipVal on stack                    */
 /*----------------------------------------------------------------------------*/
 i8 FipVal::nStackBytes(void)
 {
@@ -70,9 +70,9 @@ i8 FipVal::nStackBytes(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void FipVal::vToString(Stz* szStz)
+void FipVal::vToString(Stz* szDst)
 {
-  * szStz = reinterpret_cast<void*>(m_aFip);
+  * szDst = reinterpret_cast<void*>(m_aFip);
 }
 
 /*============================================================================*/

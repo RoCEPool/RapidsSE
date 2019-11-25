@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* PtrVal.hpp - pointer value                                                 */
+/* PtrVal.hpp -- Layout of a Pointer to a Proper Object when on Stack         */
 /*============================================================================*/
 #pragma once
 
@@ -20,7 +20,7 @@ namespace SenVM
 
     i8      iAsInt(void);
     i8      nStackBytes(void);
-    void    vToString(Stz* aStz);
+    void    vToString(Stz* szDst);
   };
   
   PtrVal* _aPtrVal(void* aAddr);

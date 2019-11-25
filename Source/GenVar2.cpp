@@ -115,11 +115,11 @@ char* GenVar2::azChar(void)
 /*----------------------------------------------------------------------------*/
 /* get object address from nested value                                       */
 /*----------------------------------------------------------------------------*/
-Cell* GenVar2::aFipPtr(void)
+Cell* GenVar2::aFip(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Cell* aFip = u.m_xFipVar.aFipPtr();
+  Cell* aFip = u.m_xFipVar.aFip();
   
   return aFip;
 }
@@ -152,7 +152,7 @@ bool GenVar2::bIsInt(void)
 /*----------------------------------------------------------------------------*/
 /* get object address from nested value                                       */
 /*----------------------------------------------------------------------------*/
-Object* GenVar2::pObject(void)
+Object* GenVar2::pObj(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   

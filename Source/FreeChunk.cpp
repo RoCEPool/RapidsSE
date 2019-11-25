@@ -46,8 +46,8 @@ FreeChunk::~FreeChunk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void FreeChunk::vInit(eCN eWasClass)
 {
-  vSetMagic();
-  vSetClass(CN_FREECHUNK);
+  vMagic();
+  vClass(CN_FREECHUNK);
   m_eWasClass = eWasClass;
 }
 

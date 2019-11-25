@@ -51,7 +51,7 @@ void Step::vObjectClassStore(void)
   if ( ! m_pDataStack->bPopCN(eClassNo) )
     THROW_DSTACK();
   
-  pObject->vSetClass(eClassNo);
+  pObject->vClass(eClassNo);
   
   EXIT();
 }
@@ -105,7 +105,7 @@ void Step::vObjectMagicMark(void)
   if ( ! m_pDataStack->bPopObject(pObject) )
     THROW_RSTACK();
   
-  pObject->vSetMagic();
+  pObject->vMagic();
   
   EXIT();
 }

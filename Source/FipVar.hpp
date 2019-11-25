@@ -14,11 +14,23 @@ namespace SenVM
     void* operator new(size_t);
     
     void  operator =(Cell* aFip);
-    Cell* aFipPtr(void);
+    Cell* aFip(void);
   
     i8    nStackBytes(void);
     void  vToString(Stz* szStz);
   };
+  
+  /*----------------------------------------------------------------------------*/
+  /* safe cast                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline FipVar* _aFipVar(void* aAddr)
+  {
+    FipVar* aFipVar = reinterpret_cast<FipVar*>(aAddr);
+  
+    ASSERT( !aFipVar || CN_FIPVAR == aFipVar->eClass() );
+  
+    return aFipVar;
+  }
 }
 
 /*============================================================================*/

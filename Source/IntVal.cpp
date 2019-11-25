@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IntVal.cpp - Integer StkVal                                            */
+/* IntVal.cpp -- Layout of an i8 Integer when on Stack                        */
 /*============================================================================*/
 
 #include "SenVM.h"
@@ -48,7 +48,7 @@ i8 IntVal::iInt(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get size in bytes                                                          */
+/* get how many bytes are needed to push a IntVal on stack                    */
 /*----------------------------------------------------------------------------*/
 i8 IntVal::nStackBytes(void)
 {
@@ -58,14 +58,14 @@ i8 IntVal::nStackBytes(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void IntVal::vToString(Stz* szStz)
+void IntVal::vToString(Stz* szDst)
 {
   if (C_DATUM_NULL == m_iInt) {
-    szStz->vConcat("null"_Stz);
+    szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szStz = m_iInt;
+  * szDst = m_iInt;
 }
 
 /*============================================================================*/

@@ -267,27 +267,30 @@ void Step::vStrPrepend(void)
   if ( ! m_pDataStack->bPopGenVar(xValB,xValA) )
     THROW_DSTACK();
   
-  // If received INTEGER convert to STRING
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // first string A
+  
+  // if received INTEGER convert to STRING
   if (xValA.eClass() == CN_INTVAL) {
     ASSERT(0);
-//    s48K xString;
-//    xValA.vGetString(xString);
-//    xStrA = _aStrVal(xValA.aEmbeddedStkVal())->szStz();
   }
   else {
-    xStrA = _aStrVal(xValA.aEmbeddedStkVal())->szStz();                          //! need to simplify this
+    xStrA = xValA.szStz();
   }
   
-  // If received INTEGER convert to STRING
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // second string B
+
+  // if received INTEGER convert to STRING
   if (xValB.eClass() == CN_INTVAL) {
     ASSERT(0);
-//    s48K xString;
-//    xValB.vGetString(xString);
-//    xStrB = xString;
   }
   else {
-    xStrB = _aStrVal(xValB.aEmbeddedStkVal())->szStz();
+    xStrB = xValB.szStz();
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // prepend
   
   xStrR = xStrB;
   

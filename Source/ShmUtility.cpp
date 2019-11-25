@@ -146,8 +146,8 @@ void ShmUtility::vCreate(void)
                                      miRegionSize,
                                      C_NO_HUGE_PAGES,
                                      oSysCall);
-  gaSeShmRegion->vSetMagic();
-  gaSeShmRegion->vSetClass(CN_NONE);
+  gaSeShmRegion->vMagic();
+  gaSeShmRegion->vClass(CN_NONE);
 
   vTrace("Region %s Created\n"_Stz,msRegionName.azChar());
 }

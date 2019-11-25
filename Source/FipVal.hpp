@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FipVal.hpp - Forth Instruction Pointer StkVal                          */
+/* FipVal.hpp -- Layout of a Forth Instruction Pointer when on Stack          */
 /*============================================================================*/
 #pragma once
 
@@ -15,11 +15,11 @@ namespace SenVM
     
     FipVal(void);
     
-    void  operator =(Cell* aCell);
-    Cell* aFipPtr(void);
+    void  operator =(Cell* aFip);
+    Cell* aFip(void);
   
     i8    nStackBytes(void);
-    void  vToString(Stz* aWorkspace);
+    void  vToString(Stz* szDst);
   };
   
   FipVal* _aFipVal(void* aAddr);

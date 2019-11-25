@@ -21,8 +21,8 @@ Header::Header(void)
 /*----------------------------------------------------------------------------*/
 Header::Header(eCN eClassNo)
 {
-  vSetMagic();
-  vSetClass(eClassNo);
+  vMagic();
+  vClass(eClassNo);
   
   m_bWordBody = false;
 }

@@ -26,17 +26,17 @@ namespace SenVM
     GenVar2(void);
    ~GenVar2(void) noexcept(false);
   
-    void operator =(Cell* aFipPtr);
+    void operator =(Cell* aFip);
     void operator =(i8 iInt);
-    void operator =(Object* pObject);
+    void operator =(Object* pObj);
     void operator =(Stz* szStz);
 
     char*   azChar(void);
     eCN     eEmbeddedClass(void);
-    Cell*   aFipPtr(void);
+    Cell*   aFip(void);
     i8      iInt(void);
     bool    bIsInt(void);
-    Object* pObject(void);
+    Object* pObj(void);
     i8      nSize(void);
     SenVar* aEmbeddedSenVar(void);
     Stz*    szStz(void);

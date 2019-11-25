@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* IntVal.hpp - integer value                                                 */
+/* IntVal.hpp -- Layout of an i8 Integer when on Stack                        */
 /*============================================================================*/
 #pragma once
 
@@ -19,7 +19,7 @@ namespace SenVM
     i8   iInt(void);
   
     i8   nStackBytes(void);
-    void vToString(Stz* szStz);
+    void vToString(Stz* szDst);
   };
   
   /*----------------------------------------------------------------------------*/

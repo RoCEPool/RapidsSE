@@ -5,15 +5,32 @@
 
 namespace SenVM
 {
+  class _NestedValue
+  {
+  public:
+    _Header  m_xHeader;
+    i8       m_wWord;
+    char     m_caStr[C_MAX_VCH2];
+
+  };
+  
+  //----------------------------------------------------------------------------
+  
   class GenVar : public Object
   {
   private:
-    struct {
-      Header       m_xHeader;
-      SingleWord   m_wWord;
-      char         m_caStr[C_MAX_VCH2];
-    } xNestedValue;
-  
+
+    union {
+      _NestedValue  m_xNstVal;
+      
+      SenVar  m_xSenVar;
+      
+      FipVar  m_xFipVar;
+      IntVar  m_xIntVar;
+      PtrVar  m_xPtrVar;
+      StrVar  m_xStrVar;
+    } u;
+
     // must be last
     Footer m_xFooter;
     
@@ -23,18 +40,18 @@ namespace SenVM
     GenVar(void);
    ~GenVar(void) noexcept(false);
   
-    void operator =(Cell* aFipPtr);
+    void operator =(Cell* aFip);
     void operator =(i8 iInt);
-    void operator =(Object* pObject);
+    void operator =(Object* pObj);
     void operator =(Stz* szStz);
 
     char*   azChar(void);
     eCN     eEmbeddedClass(void);
     StkVal* aEmbeddedStkVal(void);
-    Cell*   aFipPtr(void);
+    Cell*   aFip(void);
     i8      iInt(void);
     bool    bIsInt(void);
-    Object* pObject(void);
+    Object* pObj(void);
     i8      nSize(void);
     Stz*    szStz(void);
   
