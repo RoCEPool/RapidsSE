@@ -55,14 +55,14 @@ namespace SenVM
     bool bPopGenVar(GenVar& xGenVar);
     bool bPopGenVar(GenVar& xVar1, GenVar& xVar2);
     bool bPopGenVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3);
-    bool bPopInt(i8& iArg);
-    bool bPopInt(i8& iArg1, i8& iArg2);
-    bool bPopInt(i8& iArg1, i8& iArg2, GenVar& xGenVar);
-    bool bPopInt(i8& iArg, Object*& pObject);
-    bool bPopInt(i8& iArg, GenVar& xGenVar);
-    bool bPopInt(i8& iArg, s48K& sArg);
+    bool bPopInt(i8& iInt);
+    bool bPopInt(i8& iInt1, i8& iInt2);
+    bool bPopInt(i8& iInt1, i8& iInt2, GenVar& xGenVar);
+    bool bPopInt(i8& iInt, Object*& pObject);
+    bool bPopInt(i8& iInt, GenVar& xGenVar);
+    bool bPopInt(i8& iInt, s48K& sArg);
     bool bPopPtr(Object*& pObject);
-    bool bPopPtr(Object*& pObject, i8& iArg);
+    bool bPopPtr(Object*& pObject, i8& iInt);
     bool bPopPtr(Object*& pObject1, Object*& pObject2);
     bool bPopPtr(Object*& pObject, GenVar& xGenVar);
     bool bPopLocal(Local*& pLocal);
@@ -70,13 +70,13 @@ namespace SenVM
     bool bPopS256(s256& sArg1);
     bool bPopS4K(s4K&  sArg1);
     bool bPopS48K(s48K& sArg1);
-    bool bPopS48K(s48K& sArg1, i8& iArg2);
-    bool bPopS48K(s48K& sArg1, i8& iArg2, i8& iArg3);
+    bool bPopS48K(s48K& sArg1, i8& iInt2);
+    bool bPopS48K(s48K& sArg1, i8& iInt2, i8& iInt3);
     bool bPopS48K(s48K& sArg1, s48K& sArg2);
-    bool bPopStr(String* pString);
-    bool bPopAsInt(i8& iArg1);
-    bool bPopAsI8_Inline(i8& iArg1);
-    bool bPopAsInt_Quick(i8& iArg1);
+    bool bPopStr(String* pStr);
+    bool bPopAsInt(i8& iInt1);
+    bool bPopAsI8_Inline(i8& iInt1);
+    bool bPopAsInt_Quick(i8& iInt1);
   
     void vPokeGenVar(i8 i_Val, GenVar& xGenVar);
   
@@ -150,7 +150,7 @@ namespace SenVM
   /*----------------------------------------------------------------------------*/
   /* pop value from data stack  as integer                                      */
   /*----------------------------------------------------------------------------*/
-  inline bool Stack::bPopAsI8_Inline(i8& iArg)
+  inline bool Stack::bPopAsI8_Inline(i8& iInt)
   {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -160,12 +160,12 @@ namespace SenVM
   eCN eClassNo = m_aTop->eClass(); // inline
   
   if (CN_INTVAL == eClassNo)
-    iArg = _aIntVal(m_aTop)->iInt(); // inline
+    iInt = _aIntVal(m_aTop)->iInt(); // inline
   else
     if (CN_PTRVAL == eClassNo)
-      iArg = _aPtrVal(m_aTop)->pObj() ? 1 : 0; // inline
+      iInt = _aPtrVal(m_aTop)->pObj() ? 1 : 0; // inline
     else {
-      iArg = -1;
+      iInt = -1;
       NEVER_REACH;
     }
   

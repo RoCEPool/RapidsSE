@@ -379,7 +379,7 @@ bool Stack::bPopGenVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
 /*----------------------------------------------------------------------------*/
 /* pop i8 from value stack                                                    */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopInt(i8& iArg)
+bool Stack::bPopInt(i8& iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -390,9 +390,9 @@ bool Stack::bPopInt(i8& iArg)
 //
 //  vPopVal(&xIntVal);
 //
-//  iArg = xIntVal.iInt();
+//  iInt = xIntVal.iInt();
 
-  iArg = iPopInt();
+  iInt = iPopInt();
   
   return true;
 }
@@ -400,7 +400,7 @@ bool Stack::bPopInt(i8& iArg)
 /*----------------------------------------------------------------------------*/
 /* pop i8,i8 from value stack                                                 */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopInt(i8& iArg1, i8& iArg2)
+bool Stack::bPopInt(i8& iInt1, i8& iInt2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -410,12 +410,12 @@ bool Stack::bPopInt(i8& iArg1, i8& iArg2)
   IntVal xIntVal1;
   vPopVal(&xIntVal1);
   
-  iArg1 = xIntVal1.iInt();
+  iInt1 = xIntVal1.iInt();
   
   IntVal xIntVal2;
   vPopVal(&xIntVal2);
   
-  iArg2 = xIntVal2.iInt();
+  iInt2 = xIntVal2.iInt();
   
   return true;
 }
@@ -423,7 +423,7 @@ bool Stack::bPopInt(i8& iArg1, i8& iArg2)
 /*----------------------------------------------------------------------------*/
 /* pop i8,pObject from value stack                                            */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopInt(i8& iArg, Object*& pObject)
+bool Stack::bPopInt(i8& iInt, Object*& pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -433,7 +433,7 @@ bool Stack::bPopInt(i8& iArg, Object*& pObject)
   IntVal xIntVal;
   vPopVal(&xIntVal);
   
-  iArg = xIntVal.iInt();
+  iInt = xIntVal.iInt();
   
   PtrVal xPtrVal;
   vPopVal(&xPtrVal);
@@ -446,7 +446,7 @@ bool Stack::bPopInt(i8& iArg, Object*& pObject)
 /*----------------------------------------------------------------------------*/
 /* pop i8,val from value stack                                                */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopInt(i8& iArg, GenVar& xGenVar)
+bool Stack::bPopInt(i8& iInt, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -456,7 +456,7 @@ bool Stack::bPopInt(i8& iArg, GenVar& xGenVar)
   IntVal xIntVal;
   vPopVal(&xIntVal);
   
-  iArg = xIntVal.iInt();
+  iInt = xIntVal.iInt();
   
   vPopVal(xGenVar.aEmbeddedStkVal());
   
@@ -466,7 +466,7 @@ bool Stack::bPopInt(i8& iArg, GenVar& xGenVar)
 /*----------------------------------------------------------------------------*/
 /* pop i8,s from value stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopInt(i8& iArg, s48K& sArg)
+bool Stack::bPopInt(i8& iInt, s48K& sArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -476,7 +476,7 @@ bool Stack::bPopInt(i8& iArg, s48K& sArg)
   IntVal xIntVal;
   vPopVal(&xIntVal);
   
-  iArg = xIntVal.iInt();
+  iInt = xIntVal.iInt();
   
   GenVar xGenVar;
   vPopVal(xGenVar.aEmbeddedStkVal());
@@ -489,7 +489,7 @@ bool Stack::bPopInt(i8& iArg, s48K& sArg)
 /*----------------------------------------------------------------------------*/
 /* pop i8,i8,val from value stack                                             */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopInt(i8& iArg1, i8& iArg2, GenVar& xGenVar)
+bool Stack::bPopInt(i8& iInt1, i8& iInt2, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -499,12 +499,12 @@ bool Stack::bPopInt(i8& iArg1, i8& iArg2, GenVar& xGenVar)
   IntVal xIntVal1;
   vPopVal(&xIntVal1);
   
-  iArg1 = xIntVal1.iInt();
+  iInt1 = xIntVal1.iInt();
   
   IntVal xIntVal2;
   vPopVal(&xIntVal2);
   
-  iArg2 = xIntVal2.iInt();
+  iInt2 = xIntVal2.iInt();
   
   vPopVal(xGenVar.aEmbeddedStkVal());
 
@@ -532,7 +532,7 @@ bool Stack::bPopPtr(Object*& pObject)
 /*----------------------------------------------------------------------------*/
 /* pop Object*, i8 from value stack                                           */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopPtr(Object*& pObject, i8& iArg)
+bool Stack::bPopPtr(Object*& pObject, i8& iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -547,7 +547,7 @@ bool Stack::bPopPtr(Object*& pObject, i8& iArg)
   IntVal xIntVal;
   vPopVal(&xIntVal);
   
-  iArg = xIntVal.iInt();
+  iInt = xIntVal.iInt();
   
   return true;
 }
@@ -683,7 +683,7 @@ bool Stack::bPopS48K(s48K& sArg)
 /*----------------------------------------------------------------------------*/
 /* pop s,i8 from value stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopS48K(s48K& sArg, i8& iArg)
+bool Stack::bPopS48K(s48K& sArg, i8& iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -698,7 +698,7 @@ bool Stack::bPopS48K(s48K& sArg, i8& iArg)
   IntVal xIntVal;
   vPopVal(&xIntVal);
   
-  iArg = xIntVal.iInt();
+  iInt = xIntVal.iInt();
   
   return true;
 }
@@ -706,7 +706,7 @@ bool Stack::bPopS48K(s48K& sArg, i8& iArg)
 /*----------------------------------------------------------------------------*/
 /* pop s,i8,i8 from value stack                                               */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopS48K(s48K& sArg, i8& iArg1, i8& iArg2)
+bool Stack::bPopS48K(s48K& sArg, i8& iInt1, i8& iInt2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -719,12 +719,12 @@ bool Stack::bPopS48K(s48K& sArg, i8& iArg1, i8& iArg2)
   
   IntVal xIntVal1;
   vPopVal(&xIntVal1);
-  iArg1 = xIntVal1.iInt();
+  iInt1 = xIntVal1.iInt();
   
 
   IntVal xIntVal2;
   vPopVal(&xIntVal2);
-  iArg2 = xIntVal2.iInt();
+  iInt2 = xIntVal2.iInt();
   return true;
 }
 
@@ -777,7 +777,7 @@ bool Stack::bPopStr(String* pString)
 /*----------------------------------------------------------------------------*/
 /* pop value from value stack  as integer                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopAsInt(i8& iArg)
+bool Stack::bPopAsInt(i8& iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -787,7 +787,7 @@ bool Stack::bPopAsInt(i8& iArg)
   GenVar xGenVar;
   vPopVal(xGenVar.aEmbeddedStkVal());
   
-  iArg = xGenVar.iInt();
+  iInt = xGenVar.iInt();
   
   return true;
 }
@@ -795,7 +795,7 @@ bool Stack::bPopAsInt(i8& iArg)
 /*----------------------------------------------------------------------------*/
 /* pop value from value stack  as integer                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopAsInt_Quick(i8& iArg)
+bool Stack::bPopAsInt_Quick(i8& iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -813,11 +813,11 @@ bool Stack::bPopAsInt_Quick(i8& iArg)
   switch (eClassNo) {
       
     case CN_INTVAL:
-      iArg = _aIntVal(aTopValue)->iInt();
+      iInt = _aIntVal(aTopValue)->iInt();
       return true;
       
     case CN_PTRVAL:
-      iArg = _aPtrVal(aTopValue)->pObj() ? 1 : 0;
+      iInt = _aPtrVal(aTopValue)->pObj() ? 1 : 0;
       return true;
       
     default:
@@ -900,12 +900,12 @@ void Stack::vPushGenVar(GenVar& xGenVar)
 /*----------------------------------------------------------------------------*/
 /* push i8 onto value stack                                                   */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushInt(i8 iArg)
+void Stack::vPushInt(i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   IntVal xIntVal1;
-  xIntVal1 = iArg;
+  xIntVal1 = iInt;
   
   vPushStkVal(xIntVal1);
 }
