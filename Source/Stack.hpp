@@ -113,7 +113,6 @@ namespace SenVM
     i8 nValues(void);
   
   public:
-    void vPopBy(i8 nBytes);
   
   private:
     FipVal* aAllotFipVal(void);
@@ -122,20 +121,21 @@ namespace SenVM
     StkVal* aAllotStkVal(i8 nBytes);
     StrVal* aAllotStrVal(i8 nSize);
   
-    void vDiscard(void);
+    void    vDiscard(void);
   
+    void    vPopBy(i8 nBytes);
     Cell*   aPopFip(void);
     i8      iPopInt(void);
     Object* pPopObj(void);
 
-    void vPopLocal(Local* aLocal);
-    void vPopVal(StkVal* aStkVal);
-    void vPushBy(i8 nBytes);
+    void    vPopLocal(Local* aLocal);
+    void    vPopVal(StkVal* aStkVal);
+    void    vPushBy(i8 nBytes);
   
     StkVal* aStackBase(void);
     StkVal* aStackLimit(void);
     
-    bool bTopIsZero(void);
+    bool    bTopIsZero(void);
   
     Footer* aFooter(void);
     Footer* aHazard(void);

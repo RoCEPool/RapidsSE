@@ -111,42 +111,62 @@ void Step::vFlowJumpFalse(void)
 {
   ENTRY(); // ENTRY("vJumpFalse"_Stz);
   
-  //if ( ! bGuard(1) )
-  //  THROW_DSTACK();
-  
-  // get pointer to value on the top of the stack
-  Stack* pDataStack = m_pDataStack;
-  StkVal* aStkVal = reinterpret_cast<StkVal*>(pDataStack->m_xTop.pStkVal);
-
-  eCN eClassNo = aStkVal->eClass(); // inline
-  
   i8 iVal;
-  if (CN_INTVAL == eClassNo) {
-    iVal = _aIntVal(aStkVal)->iInt(); // inline
-  }
-  else
-  if (CN_PTRVAL == eClassNo) {
-    iVal = _aPtrVal(aStkVal)->pObj() ? 1 : 0; // inline
-  }
-  else {
-    iVal = -1;
-    NEVER_REACH;
-  }
-  
-  pDataStack->vPopBy(sizeof(IntVal)); // inline
-  pDataStack->m_nValues--;
+  if ( ! m_pDataStack->bPopAsInt(iVal) )
+    THROW_DSTACK();
   
   // n.b. the IP points to the jump arg
   
-  if (iVal)
-    // do not jump, skip over argument
-    m_aInxPtr++;
-  else
+  if (! iVal)
     // jump to location
     m_aInxPtr = m_aInxPtr->m_aJumpTo;
+  else
+    // do not jump, skip over argument
+    m_aInxPtr++;
   
   EXIT();
 }
+/*----------------------------------------------------------------------------*/
+//void Step::vFlowJumpFalse(void)
+//{
+//  ENTRY(); // ENTRY("vJumpFalse"_Stz);
+//
+//  //if ( ! bGuard(1) )
+//  //  THROW_DSTACK();
+//
+//  // get pointer to value on the top of the stack
+//  Stack* pDataStack = m_pDataStack;
+//  StkVal* aStkVal = reinterpret_cast<StkVal*>(pDataStack->m_xTop.pStkVal);
+//
+//  eCN eClassNo = aStkVal->eClass(); // inline
+//
+//  i8 iVal;
+//  if (CN_INTVAL == eClassNo) {
+//    iVal = _aIntVal(aStkVal)->iInt(); // inline
+//  }
+//  else
+//  if (CN_PTRVAL == eClassNo) {
+//    iVal = _aPtrVal(aStkVal)->pObj() ? 1 : 0; // inline
+//  }
+//  else {
+//    iVal = -1;
+//    NEVER_REACH;
+//  }
+//
+//  pDataStack->vPopBy(sizeof(IntVal)); // inline
+//  pDataStack->m_nValues--;
+//
+//  // n.b. the IP points to the jump arg
+//
+//  if (iVal)
+//    // do not jump, skip over argument
+//    m_aInxPtr++;
+//  else
+//    // jump to location
+//    m_aInxPtr = m_aInxPtr->m_aJumpTo;
+//
+//  EXIT();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* jumpTrue -- jump on true to location                                       */
