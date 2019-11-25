@@ -104,7 +104,45 @@ FipVal* Stack::aAllotFipVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  return nullptr;
+  FipVal* aFipVal = static_cast<FipVal*>(aAllotStkVal(sizeof(FipVal)));
+  
+  return aFipVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot an int value on top of value stack                                   */
+/*----------------------------------------------------------------------------*/
+IntVal* Stack::aAllotIntVal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  IntVal* aIntVal = static_cast<IntVal*>(aAllotStkVal(sizeof(IntVal)));
+  
+  return aIntVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot an ptr value on top of value stack                                   */
+/*----------------------------------------------------------------------------*/
+PtrVal* Stack::aAllotPtrVal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  PtrVal* aPtrVal = static_cast<PtrVal*>(aAllotStkVal(sizeof(PtrVal)));
+  
+  return aPtrVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot an str value on top of value stack                                   */
+/*----------------------------------------------------------------------------*/
+StrVal* Stack::aAllotStrVal(i8 nSize)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  StrVal* aStrVal = static_cast<StrVal*>(aAllotStkVal(sizeof(StrVal) + nSize));
+  
+  return aStrVal;
 }
 
 /*----------------------------------------------------------------------------*/
