@@ -87,7 +87,7 @@ void Step::vObjectFetch(void)
   
   GenVar xObjectVar;
   
-  m_pReturnStack->vPeekValue(iPick,xObjectVar);
+  m_pReturnStack->vPeekGenVar(iPick,xObjectVar);
   
   m_pDataStack->vPushGenVar(xObjectVar);
   

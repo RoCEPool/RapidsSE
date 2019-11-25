@@ -24,7 +24,7 @@ void Step::vCursorFetch(void)
   
   GenVar xCursorVar;
   
-  m_pReturnStack->vPeekValue(iPeek,xCursorVar);
+  m_pReturnStack->vPeekGenVar(iPeek,xCursorVar);
   
   m_pDataStack->vPushGenVar(xCursorVar);
   

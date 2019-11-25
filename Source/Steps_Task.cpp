@@ -316,7 +316,7 @@ void Step::vTaskSeed(void)
   // copy task arguments to given task (preserving stack order)
   GenVar xVariable;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    m_pDataStack->vPeekValue(iTaskArg,xVariable);
+    m_pDataStack->vPeekGenVar(iTaskArg,xVariable);
     pThatTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
   }
   

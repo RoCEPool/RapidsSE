@@ -109,7 +109,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
   i8 nValues = this->nValues();
   for (i8 i_Val = 0; i_Val < nValues; i_Val++) {
     
-    vPeekValue(i_Val,xVariable);
+    vPeekGenVar(i_Val,xVariable);
     
     StkVal* aEmbeddedStkVal = xVariable.aEmbeddedStkVal();
     eCN eClass = aEmbeddedStkVal->eClass();
@@ -164,13 +164,13 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
 }
 
 /*----------------------------------------------------------------------------*/
-/* guard value stack has nValues on it                                        */
+/* guard stack has at least nValues on it                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bGuard(i8 iCount)
+bool Stack::bGuard(i8 nValues)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if (nValues() < iCount)
+  if (m_nValues < nValues)
     return false;
   
   return true;
@@ -260,7 +260,7 @@ StkVal* Stack::aPeekVal(i8 i_Val)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on value stack                                         */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekValue(i8 i_Val, GenVar& xVariable)
+void Stack::vPeekGenVar(i8 i_Val, GenVar& xVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
