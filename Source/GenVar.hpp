@@ -34,7 +34,7 @@ namespace SenVM
       
       SenVar  m_xSenVar;
       
-      FipVar  m_xFipVar;
+//      FipVar  m_xFipVar;
       IntVar  m_xIntVar;
 //      PtrVar  m_xPtrVar;
 //      StrVar  m_xStrVar;
