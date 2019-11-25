@@ -26,7 +26,7 @@ namespace SenVM
   private:
     eKK     m_eKind;        // kind of stack
   
-    StkVal* m_aTop;         // current top of stack
+    StkPtr  m_xTop;         // current top of stack
     i8      m_nValues;      // number of values currently on stack
 
     StkVal* m_aRetryTop;    // reset to this top of stack
@@ -149,11 +149,11 @@ namespace SenVM
   {
     _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
     
-    char* aTop = reinterpret_cast<char*>(m_aTop);
+    char* aTop = reinterpret_cast<char*>(m_xTop.pStkVal);
     
     aTop += nBytes;
     
-    m_aTop = reinterpret_cast<StkVal*>(aTop);
+    m_xTop.pStkVal = reinterpret_cast<StkVal*>(aTop);
   }
   
   /*----------------------------------------------------------------------------*/
@@ -166,13 +166,13 @@ namespace SenVM
   if ( ! bGuard(1) )
     return false;
   
-  eCN eClassNo = m_aTop->eClass(); // inline
+  eCN eClassNo = m_xTop.pStkVal->eClass(); // inline
   
   if (CN_INTVAL == eClassNo)
-    iInt = _aIntVal(m_aTop)->iInt(); // inline
+    iInt = _aIntVal(m_xTop.pStkVal)->iInt(); // inline
   else
     if (CN_PTRVAL == eClassNo)
-      iInt = _aPtrVal(m_aTop)->pObj() ? 1 : 0; // inline
+      iInt = _aPtrVal(m_xTop.pStkVal)->pObj() ? 1 : 0; // inline
     else {
       iInt = -1;
       NEVER_REACH;
