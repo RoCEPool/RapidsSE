@@ -481,15 +481,14 @@ bool Stack::bPopI8(i8& iArg)
   if ( ! bGuard(CN_INTVAL) )
     return false;
   
-  IntVal xIntVal;
+//  IntVal xIntVal;
+//
+//  vPopVal(&xIntVal);
+//
+//  iArg = xIntVal.iInt();
+
+  iArg = iPopInt();
   
-  //xIntVal.vAssertHeader();
-  vPopVal(&xIntVal);
-  //xIntVal.vAssertHeader();
-
-  iArg = xIntVal.iInt();
-  //xIntVal.vAssertHeader();
-
   return true;
 }
 
@@ -927,17 +926,15 @@ bool Stack::bPopAsInt_Quick(i8& iArg)
 /*----------------------------------------------------------------------------*/
 /* pop integer from stack                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Stack::iPop(void)
+i8 Stack::iPopInt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  i8 iArg = _aIntVal(m_aTop)->iInt();
+  i8 iInt = static_cast<IntVal*>(m_aTop)->iInt();
   
-  vPopBy(sizeof(IntVal));
+  vDiscard();
 
-  m_nValues--;
-  
-  return iArg;
+  return iInt;
 }
 
 /*----------------------------------------------------------------------------*/

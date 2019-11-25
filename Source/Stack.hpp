@@ -85,7 +85,6 @@ namespace SenVM
     bool bPopAsInt(i8& iArg1);
     bool bPopAsI8_Inline(i8& iArg1);
     bool bPopAsInt_Quick(i8& iArg1);
-    i8   iPop(void);
   
     void vPokeGenVar(i8 i_Value, GenVar& xGenVar);
   
@@ -117,6 +116,8 @@ namespace SenVM
   
   private:
     StkVal* aAllotStkVal(i8 nBytes);
+  
+    i8   iPopInt(void);
   
     void vPopLocal(Local* aLocal);
     void vPopVal(StkVal* aStkVal);
