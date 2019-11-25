@@ -76,11 +76,11 @@ i8 StkVal::nStackBytes(void)
     }
       
     // -- -- -- -- -- --
-//    case CN_INTVAR: {
-//      IntVar* aIntVar = _aIntVar(this);
-//      nBytes = aIntVar->nStackBytes();
-//      break;
-//    }
+    case CN_INTVAR: {
+      IntVar* aIntVar = _aIntVar(this);
+      nBytes = aIntVar->nStackBytes();
+      break;
+    }
       
     // -- -- -- -- -- --
     default:
