@@ -86,7 +86,7 @@ void Step::vTxCounterDec(void)
 //         pTx->aDecode(),
 //         iCounter);
   
-  m_pDataStack->vPushI8(iCounter);
+  m_pDataStack->vPushInt(iCounter);
   
   EXIT();
 }
@@ -105,7 +105,7 @@ void Step::vTxCounterFetch(void)
   
   i8 iCounter = pTx->iCounterGet();
   
-  m_pDataStack->vPushI8(iCounter);
+  m_pDataStack->vPushInt(iCounter);
   
   EXIT();
 }
@@ -151,7 +151,7 @@ void Step::vTxDistMemberFetch(void)
   
   bool bDistMember = pTx->bDistMember(i_Node);
   
-  m_pDataStack->vPushI8(bDistMember);
+  m_pDataStack->vPushInt(bDistMember);
   
   EXIT();
 }
@@ -250,7 +250,7 @@ void Step::vTxId(void)
   
   i8 iTxId = pTx->iLocalTxId();
   
-  m_pDataStack->vPushI8(iTxId);
+  m_pDataStack->vPushInt(iTxId);
   
   EXIT();
 }

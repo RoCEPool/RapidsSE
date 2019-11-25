@@ -190,7 +190,7 @@ void Step::vOperandIsNull(void)
 {
   ENTRY(); // ENTRY("vOperandIsNull"_Stz);
   
-  m_pDataStack->vPushI8(m_pRegSet->m_pOperand ? 1 : 0);
+  m_pDataStack->vPushInt(m_pRegSet->m_pOperand ? 1 : 0);
   
   EXIT();
 }
@@ -205,7 +205,7 @@ void Step::vOperandItemCountFetch(void)
   ASSERT(m_pRegSet->m_pOperand);
   IrwBuffer* pIrwBuffer = _pIrwBuffer(m_pRegSet->m_pOperand);
   
-  m_pDataStack->vPushI8(pIrwBuffer->nItems());
+  m_pDataStack->vPushInt(pIrwBuffer->nItems());
   
   EXIT();
 }
@@ -236,7 +236,7 @@ void Step::vOperandKind(void)
       break;
   }
   
-  m_pDataStack->vPushI8(eOperand);
+  m_pDataStack->vPushInt(eOperand);
   
   EXIT();
 }
@@ -329,7 +329,7 @@ void Step::vOperandRowCountFetch(void)
   ASSERT(m_pRegSet->m_pOperand);
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pRegSet->m_pOperand);
   
-  m_pDataStack->vPushI8(pCrwBuffer->nRowCount());
+  m_pDataStack->vPushInt(pCrwBuffer->nRowCount());
   
   EXIT();
 }

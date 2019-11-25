@@ -33,7 +33,7 @@ void Step::vDicStackDepth(void)
 
   i8 iDepth = pDicStack->iCount();
   
-  m_pDataStack->vPushI8(iDepth);
+  m_pDataStack->vPushInt(iDepth);
   
   EXIT();
 }

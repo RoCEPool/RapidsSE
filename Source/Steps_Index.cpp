@@ -103,7 +103,7 @@ void Step::vIndexColumnCountFetch(void)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  m_pDataStack->vPushI8(pIndex->pIdxColVec()->nItems());
+  m_pDataStack->vPushInt(pIndex->pIdxColVec()->nItems());
   
   EXIT();
 }
@@ -284,7 +284,7 @@ void Step::vIndexIsPrimaryKeyFetch(void)
   
   bool bIsPrimaryKey = pIndex->bIsPrimaryKey();
   
-  m_pDataStack->vPushI8(bIsPrimaryKey);
+  m_pDataStack->vPushInt(bIsPrimaryKey);
   
   EXIT();
 }
@@ -330,7 +330,7 @@ void Step::vIndexIsUniqueFetch(void)
   
   bool bIsUnique = pIndex->bIsUnique();
   
-  m_pDataStack->vPushI8(bIsUnique);
+  m_pDataStack->vPushInt(bIsUnique);
   
   EXIT();
 }
@@ -369,7 +369,7 @@ void Step::vIndexIsValidUniqueIndex(void)
     }
   }
   
-  m_pDataStack->vPushI8(bValid ? 1 : 0);
+  m_pDataStack->vPushInt(bValid ? 1 : 0);
   
   EXIT();
 }
@@ -560,7 +560,7 @@ void Step::vIndexPopulate(void)
   
   bool bPopulated = pTable->bPopulateIndex(iIndexNo);
   
-  m_pDataStack->vPushI8(bPopulated ? 1 : 0);
+  m_pDataStack->vPushInt(bPopulated ? 1 : 0);
   
   EXIT();
 }
@@ -825,7 +825,7 @@ void Step::vIndexSpace(void)
   
   i8 iBuffers = pIndex->pTable()->nIndexBuffers(pIndex->iIndexNo());
   i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
-  m_pDataStack->vPushI8(iSpace);
+  m_pDataStack->vPushInt(iSpace);
   
   EXIT();
 }

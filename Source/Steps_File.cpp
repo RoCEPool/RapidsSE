@@ -97,7 +97,7 @@ void Step::vFileOpen(void)
   
   bool bOpened = pFile->bOpenMode(sPath,sMode);
   
-  m_pDataStack->vPushI8(bOpened);
+  m_pDataStack->vPushInt(bOpened);
   
   EXIT();
 }

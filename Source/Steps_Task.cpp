@@ -219,7 +219,7 @@ void Step::vTaskIsAckSet(void)
                        iIsAckSet);
   }
   
-  m_pDataStack->vPushI8(iIsAckSet);
+  m_pDataStack->vPushInt(iIsAckSet);
 
   EXIT();
 }
@@ -456,7 +456,7 @@ void Step::vTaskStateFetch(void)
   
   eTS eState = pThatTask->m_eState;
   
-  m_pDataStack->vPushI8((i8)eState);
+  m_pDataStack->vPushInt((i8)eState);
   
   EXIT();
 }

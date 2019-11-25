@@ -73,7 +73,7 @@ void Step::vIntDivide(void)
   
   r = DIV(i,j);
   
-  m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -92,7 +92,7 @@ void Step::vIntEqual(void)
   
   r = i == j;
   
-  m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -111,7 +111,7 @@ void Step::vIntGreater(void)
   
   r = i > j;
   
-  m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -130,7 +130,7 @@ void Step::vIntGreaterEqual(void)
   
   r = i >= j;
   
-  m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -150,7 +150,7 @@ void Step::vIntHash(void)
   
   i8 iHash = HshLib::iHash(sString.ayByte(),nLength);
   
-  m_pDataStack->vPushI8(iHash);
+  m_pDataStack->vPushInt(iHash);
   
   EXIT();
 }
@@ -166,7 +166,7 @@ void Step::vIntHo16(void)
   if ( ! m_pDataStack->bPopI8(i) )
     THROW_DSTACK();
   
-  m_pDataStack->vPushI8(i >> 48);
+  m_pDataStack->vPushInt(i >> 48);
   
   EXIT();
 }
@@ -185,7 +185,7 @@ void Step::vIntLess(void)
   
   r = i < j;
   
-  m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -204,7 +204,7 @@ void Step::vIntLessEqual(void)
   
   r = i <= j;
   
-  m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -223,7 +223,7 @@ void Step::vIntModulo(void)
   
   r = MOD(i,j);
   
-  m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -242,7 +242,7 @@ void Step::vIntMultiply(void)
   
   r = i * j;
   
-  m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -261,7 +261,7 @@ void Step::vIntNeg(void)
   
   r = -1 * i;
   
-  m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -280,7 +280,7 @@ void Step::vIntNotEqual(void)
   
   r = i != j;
   
-  m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -302,7 +302,7 @@ void Step::vIntRandom(void)
   
   i8 iRandom = Random::iInteger(iLow,iHigh);
   
-  m_pDataStack->vPushI8(iRandom);
+  m_pDataStack->vPushInt(iRandom);
   
   EXIT();
 }
@@ -321,7 +321,7 @@ void Step::vIntSubtract(void)
   
   r = i - j;
   
-  m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushInt(r);
   
   EXIT();
 }
@@ -343,7 +343,7 @@ void Step::vUnsignedIntRandom(void)
   
   u8 uRandom = Random::uInteger(iLow,iHigh);
   
-  m_pDataStack->vPushI8(uRandom);
+  m_pDataStack->vPushInt(uRandom);
   
   EXIT();
 }

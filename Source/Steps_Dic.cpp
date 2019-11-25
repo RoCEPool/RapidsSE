@@ -142,7 +142,7 @@ void Step::vDicRef(void)
 
   bool bRef = pDic->bRefOut();
   
-  m_pDataStack->vPushI8(bRef);
+  m_pDataStack->vPushInt(bRef);
   
   EXIT();
 }
@@ -176,7 +176,7 @@ void Step::vDicWordCount(void)
   
   i8 nWords = pDic->nWords();
   
-  m_pDataStack->vPushI8(nWords);
+  m_pDataStack->vPushInt(nWords);
   
   EXIT();
 }

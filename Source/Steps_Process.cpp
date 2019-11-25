@@ -23,7 +23,7 @@ void Step::vProcessGetPid(void)
   
   i8 iPid = Process::iGetPid();
   
-  m_pDataStack->vPushI8(iPid);
+  m_pDataStack->vPushInt(iPid);
   
   EXIT();
 }
@@ -56,7 +56,7 @@ void Step::vProcessTestPid(void)
   
   i8 iExists = Process::bTestPid(iPid);
   
-  m_pDataStack->vPushI8(iExists);
+  m_pDataStack->vPushInt(iExists);
   
   EXIT();
 }

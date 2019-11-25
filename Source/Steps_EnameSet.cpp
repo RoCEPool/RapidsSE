@@ -130,7 +130,7 @@ void Step::vEnameSetGetInt(void)
   i8 iValue;
   iValue = pEnameSet->iValue(sName);
   
-  m_pDataStack->vPushI8(iValue);
+  m_pDataStack->vPushInt(iValue);
   
   EXIT();
 }

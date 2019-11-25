@@ -96,7 +96,7 @@ void Step::vJob_FetchRowsPartitionFetch(void)
     THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
 
-  m_pDataStack->vPushI8(pJob_FetchRows->m_iPartition);
+  m_pDataStack->vPushInt(pJob_FetchRows->m_iPartition);
   
   EXIT();
 }
@@ -249,7 +249,7 @@ void Step::vJob_SubFetchPhraseFetch(void)
     THROW_DSTACK();
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_iPhrase);
+  m_pDataStack->vPushInt(pJob->m_iPhrase);
   
   EXIT();
 }
@@ -284,7 +284,7 @@ void Step::vJob_SubFetchSlotFetch(void)
     THROW_DSTACK();
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->i_Slot());
+  m_pDataStack->vPushInt(pJob->i_Slot());
   
   EXIT();
 }

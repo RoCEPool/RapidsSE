@@ -84,7 +84,7 @@ namespace SenVM
     void vPushFip(Cell* aCell);
     void vPushGenVar(GenVar* pGenVar);
     void vPushGenVar(GenVar& xGenVar);
-    void vPushI8(i8 iInt);
+    void vPushInt(i8 iInt);
     void vPushPtr(Object* pObject);
     void vPushLocal(Local* pLocal);
     void vPushS32(s32& s32);

@@ -51,7 +51,7 @@ void Step::vAstackClass(void)
   
   eCN eClass = xVariable.eClass();
   
-  m_pAuxStack->vPushI8(eClass);
+  m_pAuxStack->vPushInt(eClass);
   
   EXIT();
 }
@@ -65,7 +65,7 @@ void Step::vAstackDepth(void)
   
   i8 iDepth = m_pAuxStack->nValues();
   
-  m_pDataStack->vPushI8(iDepth);
+  m_pDataStack->vPushInt(iDepth);
   
   EXIT();
 }

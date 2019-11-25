@@ -66,7 +66,7 @@ void Step::vThreadCpu(void)
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
-  m_pDataStack->vPushI8(pThread->iCpu());
+  m_pDataStack->vPushInt(pThread->iCpu());
   
   EXIT();
 }
@@ -83,7 +83,7 @@ void Step::vThreadDedicatedFetch(void)
     THROW_DSTACK();
   Thread* pThread = _pThread(pThreadObject);
   
-  m_pDataStack->vPushI8(pThread->m_eDedicated);
+  m_pDataStack->vPushInt(pThread->m_eDedicated);
 
   EXIT();
 }
@@ -174,7 +174,7 @@ void Step::vThreadId(void)
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
-  m_pDataStack->vPushI8(pThread->m_pPsxThd->m_iOsThdId);
+  m_pDataStack->vPushInt(pThread->m_pPsxThd->m_iOsThdId);
   
   EXIT();
 }

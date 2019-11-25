@@ -21,7 +21,7 @@ void Step::vCpuRdtscp(void)
   
   i8 iTscp = Tick::iRdClock();
   
-  m_pDataStack->vPushI8(iTscp);
+  m_pDataStack->vPushInt(iTscp);
   
   EXIT();
 }

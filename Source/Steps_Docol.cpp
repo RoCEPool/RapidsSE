@@ -48,7 +48,7 @@ void Step::vDocolIsCompiling(void)
   
   i8 iIsCompiling = m_pCompiler->bCompiling() ? 1 : 0;
   
-  m_pDataStack->vPushI8(iIsCompiling);
+  m_pDataStack->vPushInt(iIsCompiling);
   
   EXIT();
 }
@@ -62,7 +62,7 @@ void Step::vDocolIsInterpreting(void)
   
   i8 iIsInterpreting = m_pCompiler->bCompiling() ? 0 : 1;
   
-  m_pDataStack->vPushI8(iIsInterpreting);
+  m_pDataStack->vPushInt(iIsInterpreting);
   
   EXIT();
 }

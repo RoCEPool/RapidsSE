@@ -37,7 +37,7 @@ void Step::vGridConnectedNodes(void)
   
   i8 nConnectedNodes = AM::pGrid()->nConnectedNodes();
 
-  m_pDataStack->vPushI8(nConnectedNodes);
+  m_pDataStack->vPushInt(nConnectedNodes);
   
   EXIT();
 }
@@ -49,7 +49,7 @@ void Step::vGridDefinedNodes(void)
 {
   ENTRY(); // ENTRY("vGridDefinedNodes"_Stz);
   
-  m_pDataStack->vPushI8(AM::pGrid()->nDefinedNodes());
+  m_pDataStack->vPushInt(AM::pGrid()->nDefinedNodes());
   
   EXIT();
 }
@@ -109,7 +109,7 @@ void Step::vGridPartitions(void)
 {
   ENTRY(); // ENTRY("vGridNode"_Stz);
   
-  m_pDataStack->vPushI8(AM::pGrid()->nPartitions());
+  m_pDataStack->vPushInt(AM::pGrid()->nPartitions());
   
   EXIT();
 }
@@ -151,7 +151,7 @@ void Step::vGridSlots(void)
 {
   ENTRY(); // ENTRY("vGridNode"_Stz);
   
-  m_pDataStack->vPushI8(AM::pGrid()->nSlotsPerNode());
+  m_pDataStack->vPushInt(AM::pGrid()->nSlotsPerNode());
   
   EXIT();
 }
@@ -167,7 +167,7 @@ void Step::vGridThisNodeFetch(void)
   
   i8 iNodeNo = AM::pGrid()->iThisNode();
   
-  m_pDataStack->vPushI8(iNodeNo);
+  m_pDataStack->vPushInt(iNodeNo);
   
   EXIT();
 }
@@ -211,7 +211,7 @@ void Step::vGridStartNodeFetch(void)
 {
   ENTRY(); // ENTRY("vGridStartNodeFetch"_Stz);
   
-  m_pDataStack->vPushI8(AM::pGrid()->iStartNode());
+  m_pDataStack->vPushInt(AM::pGrid()->iStartNode());
   
   EXIT();
 }
@@ -240,7 +240,7 @@ void Step::vGridStartedFetch(void)
 {
   ENTRY(); // ENTRY("vGridGetStarted"_Stz);
   
-  m_pDataStack->vPushI8(AM::pGrid()->bHasStarted());
+  m_pDataStack->vPushInt(AM::pGrid()->bHasStarted());
   
   EXIT();
 }
@@ -261,7 +261,7 @@ void Step::vGridToNode(void)
   
   i8 iNodeNo = TablePtn::iPartitionToNode(iParitionId);
   
-  m_pDataStack->vPushI8(iNodeNo);
+  m_pDataStack->vPushInt(iNodeNo);
   
   EXIT();
 }
@@ -279,7 +279,7 @@ void Step::vGridToPartition(void)
   
   i8 iPartitionId = TablePtn::iSlotToPartition(iSlot);
   
-  m_pDataStack->vPushI8(iPartitionId);              //! DISCUSS WITH ALKA
+  m_pDataStack->vPushInt(iPartitionId);              //! DISCUSS WITH ALKA
   
   EXIT();
 }
@@ -297,7 +297,7 @@ void Step::vGridToSlot(void)
   
   i8 iSlot = TablePtn::iPartitionToSlot(iPartitionId);
   
-  m_pDataStack->vPushI8(iSlot);                     //! DISCUSS WITH ALKA
+  m_pDataStack->vPushInt(iSlot);                     //! DISCUSS WITH ALKA
   
   EXIT();
 }

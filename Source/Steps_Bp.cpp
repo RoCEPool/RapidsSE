@@ -113,7 +113,7 @@ void Step::vBpFreeBuffers(void)
   
   i8 nFreeBuffers = gpBufferPool->nFreeCount();
   
-  m_pDataStack->vPushI8(nFreeBuffers);
+  m_pDataStack->vPushInt(nFreeBuffers);
   
   EXIT();
 }
@@ -127,7 +127,7 @@ void Step::vBpFreePercent(void)
   
   i8 iFreePercent = gpBufferPool->iFreePercent();
   
-  m_pDataStack->vPushI8(iFreePercent);
+  m_pDataStack->vPushInt(iFreePercent);
   
   EXIT();
 }
@@ -142,7 +142,7 @@ void Step::vBpFreeSpace(void)
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
   i8 iFreeSpaceInPool = BPA::iPoolFree();
 
-  m_pDataStack->vPushI8(iFreeSpace + iFreeSpaceInPool);
+  m_pDataStack->vPushInt(iFreeSpace + iFreeSpaceInPool);
   
   EXIT();
 }
@@ -159,7 +159,7 @@ void Step::vBpInUseSpace(void)
                      - gpBufferPool->iFreeSpace()
                      - BPA::iPoolFree();
   
-  m_pDataStack->vPushI8(iInUseSpace);
+  m_pDataStack->vPushInt(iInUseSpace);
   
   EXIT();
 }
@@ -174,7 +174,7 @@ void Step::vBpTotalSpace(void)
   i8 iTotalSpace = AM::iRegionSize()
                      - AM::iJumboSize();
   
-  m_pDataStack->vPushI8(iTotalSpace);
+  m_pDataStack->vPushInt(iTotalSpace);
   
   EXIT();
 }

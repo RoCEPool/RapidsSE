@@ -28,7 +28,7 @@ void Step::vSlotsColumnCount(void)
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
   
-  m_pDataStack->vPushI8(pSlots->pPtnColVec()->nItems());
+  m_pDataStack->vPushInt(pSlots->pPtnColVec()->nItems());
   
   EXIT();
 }

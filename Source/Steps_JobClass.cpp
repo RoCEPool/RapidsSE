@@ -38,7 +38,7 @@ void Step::vJobClassFind(void)
   
   JobClass* pJobClass = JobClass::pFind(eClass);
   
-  m_pDataStack->vPushI8((i8)pJobClass);
+  m_pDataStack->vPushInt((i8)pJobClass);
 
   EXIT();
 }

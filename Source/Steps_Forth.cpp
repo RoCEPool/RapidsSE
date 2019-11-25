@@ -68,7 +68,7 @@ void Step::vCell(void)
   
   i8 nBytes = sizeof(void*);
   
-  m_pDataStack->vPushI8(nBytes);
+  m_pDataStack->vPushInt(nBytes);
   
   EXIT();
 }
@@ -453,7 +453,7 @@ void Step::vLocate(void)
   }
   else {
     i8 iZero = 0;
-    m_pDataStack->vPushI8(iZero);
+    m_pDataStack->vPushInt(iZero);
   }
   
   EXIT();

@@ -28,7 +28,7 @@ void Step::vShellExecute(void)
   
   i8 iExitStatus = Shell::iExecute(xCommand.szStz(),oSysCall);
   
-  m_pDataStack->vPushI8(iExitStatus);
+  m_pDataStack->vPushInt(iExitStatus);
   
   EXIT();
 }

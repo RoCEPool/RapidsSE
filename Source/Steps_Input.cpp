@@ -45,7 +45,7 @@ void Step::vInputDepth(void)
   
   i8 iDepth = m_pCompiler->m_pTokeniser->iDepth();
   
-  m_pDataStack->vPushI8(iDepth);
+  m_pDataStack->vPushInt(iDepth);
   
   EXIT();
 }
@@ -176,7 +176,7 @@ void Step::vInputType(void)
   
   eTN eTokenType = m_pCompiler->m_pTokeniser->eToken();
   
-  m_pDataStack->vPushI8(eTokenType);
+  m_pDataStack->vPushInt(eTokenType);
   
   EXIT();
 }

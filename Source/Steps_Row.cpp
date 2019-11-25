@@ -26,7 +26,7 @@ void Step::vRowIntColumnFetch(void)
   
   Row* aRow = *m_pRegSet->m_xpRow;
   
-  m_pDataStack->vPushI8(aRow->m_waColVal[iColumn].m_iI8);
+  m_pDataStack->vPushInt(aRow->m_waColVal[iColumn].m_iI8);
   
   EXIT();
 }

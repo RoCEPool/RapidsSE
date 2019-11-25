@@ -32,7 +32,7 @@ void Step::vAddressEqual(void)
   
   i8 r = iA == iB;
   
-  m_pDataStack->vPushI8(r);
+  m_pDataStack->vPushInt(r);
   
   EXIT();
 }

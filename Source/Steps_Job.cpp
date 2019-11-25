@@ -551,7 +551,7 @@ void Step::vJobBideOperand(void)
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //L_EXIT:
 //  
-//  m_pDataStack->vPushI8(bContinue);
+//  m_pDataStack->vPushInt(bContinue);
 //  
 //  EXIT();
 //}
@@ -570,7 +570,7 @@ void Step::vJobClass(void)
   
   eCN eClass = pJob->eClass();
   
-  m_pDataStack->vPushI8(eClass);
+  m_pDataStack->vPushInt(eClass);
   
   EXIT();
 }
@@ -649,7 +649,7 @@ void Step::vJobDec2pcAcksRmg(void)
   
   bool bAmDecider = pJob->bAcksRmgDec();
   
-  m_pDataStack->vPushI8(bAmDecider);
+  m_pDataStack->vPushInt(bAmDecider);
   
   EXIT();
 }
@@ -687,7 +687,7 @@ void Step::vJobErrorFetch(void)
   if ( ! m_pDataStack->bPopAsInt(iNode) )
     THROW_DSTACK();
   
-  m_pDataStack->vPushI8(pJob->m_xResponse.m_eErrorCode);
+  m_pDataStack->vPushInt(pJob->m_xResponse.m_eErrorCode);
   
   EXIT();
 }
@@ -804,7 +804,7 @@ void Step::vJobHasError(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_bHasError);
+  m_pDataStack->vPushInt(pJob->m_bHasError);
   
   EXIT();
 }
@@ -826,7 +826,7 @@ void Step::vJobHasOperand(void)
   if (pJob->m_aJobClass->m_eClass == CN_JOB_WRITEBUFFER)
     int iDebug = 1;
   
-  m_pDataStack->vPushI8(bHas);
+  m_pDataStack->vPushInt(bHas);
   
   EXIT();
 }
@@ -843,7 +843,7 @@ void Step::vJobIdFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_iFocalId);
+  m_pDataStack->vPushInt(pJob->m_iFocalId);
   
   EXIT();
 }
@@ -861,7 +861,7 @@ void Step::vJobIsExecuting(void)
   Job* pJob = _pJob(pJobPtr);
   
   i8 iIsExecuting = pJob->eSeed() == SS_SEED_EXE ? 1 : 0;
-  m_pDataStack->vPushI8(iIsExecuting);
+  m_pDataStack->vPushInt(iIsExecuting);
   
   EXIT();
 }
@@ -880,7 +880,7 @@ void Step::vJobJobClass(void)
   
   i8 iJobClass_p = (i8)pJob->eClass();
   
-  m_pDataStack->vPushI8(iJobClass_p);
+  m_pDataStack->vPushInt(iJobClass_p);
   
   EXIT();
 }
@@ -897,7 +897,7 @@ void Step::vJobJobListFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->eJobList());
+  m_pDataStack->vPushInt(pJob->eJobList());
   
   EXIT();
 }
@@ -915,7 +915,7 @@ void Step::vJobKindFetch(void)
   Job* pJob = _pJob(pJobPtr);
   
   
-  m_pDataStack->vPushI8(pJob->eJobKind());
+  m_pDataStack->vPushInt(pJob->eJobKind());
 
   EXIT();
 }
@@ -1041,7 +1041,7 @@ void Step::vJobLoopOutputOp(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
   
-  m_pDataStack->vPushI8(bContinue);
+  m_pDataStack->vPushInt(bContinue);
   
   EXIT();
 }
@@ -1102,7 +1102,7 @@ void Step::vJobNoWaitFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->bNoWaitTag());
+  m_pDataStack->vPushInt(pJob->bNoWaitTag());
   
   EXIT();
 }
@@ -1199,7 +1199,7 @@ void Step::vJobOriginatingIdFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_iOriginatingId);
+  m_pDataStack->vPushInt(pJob->m_iOriginatingId);
   
   EXIT();
 }
@@ -1276,7 +1276,7 @@ void Step::vJobOriginatorFetch(void)
   if ( ! m_pDataStack->bPopAsInt(iJobId) )
     THROW_DSTACK();
   
-  m_pDataStack->vPushI8(Job::iOriginatorNode(iJobId));
+  m_pDataStack->vPushInt(Job::iOriginatorNode(iJobId));
   
   EXIT();
 }
@@ -1293,7 +1293,7 @@ void Step::vJobParentIdFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->iParentId());
+  m_pDataStack->vPushInt(pJob->iParentId());
   
   EXIT();
 }
@@ -1310,7 +1310,7 @@ void Step::vJobParticipantFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->iParticipantNode());
+  m_pDataStack->vPushInt(pJob->iParticipantNode());
   
   EXIT();
 }
@@ -1357,7 +1357,7 @@ void Step::vJobParticipantHasError(void)
       break;
     }
   }
-  m_pDataStack->vPushI8(bHasError);
+  m_pDataStack->vPushInt(bHasError);
   
   EXIT();
 }
@@ -1422,7 +1422,7 @@ void Step::vJobPartitionsFetch(void)
     THROW_DSTACK();
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob_Sanity->m_iPartitions);
+  m_pDataStack->vPushInt(pJob_Sanity->m_iPartitions);
   
   EXIT();
 }
@@ -1439,7 +1439,7 @@ void Step::vJobPhaseFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->eJobPhase());
+  m_pDataStack->vPushInt(pJob->eJobPhase());
   
   EXIT();
 }
@@ -1644,7 +1644,7 @@ void Step::vJobRegionSizeFetch(void)
     THROW_DSTACK();
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob_Sanity->m_iRegionSize);
+  m_pDataStack->vPushInt(pJob_Sanity->m_iRegionSize);
   
   EXIT();
 }
@@ -1729,7 +1729,7 @@ void Step::vJobRowsInvalidFetch(void)
   Job* pJob = _pJob(pJobPtr);
   
   i8 iRowsInvalid = *pJob->m_xResponse.m_ixRowsInvalid;
-  m_pDataStack->vPushI8(iRowsInvalid);
+  m_pDataStack->vPushInt(iRowsInvalid);
   
   EXIT();
 }
@@ -1770,7 +1770,7 @@ void Step::vJobRowsProcessedFetch(void)
   Job* pJob = _pJob(pJobPtr);
   
   i8 iRowsProcessed = *pJob->m_xResponse.m_ixRowsProcessed;
-  m_pDataStack->vPushI8(iRowsProcessed);
+  m_pDataStack->vPushInt(iRowsProcessed);
   
   EXIT();
 }
@@ -1812,7 +1812,7 @@ void Step::vJobRowsSkippedFetch(void)
  
   i8 iRowsSkipped = *pJob->m_xResponse.m_ixRowsSkipped;
 
-  m_pDataStack->vPushI8(iRowsSkipped);
+  m_pDataStack->vPushInt(iRowsSkipped);
   
   EXIT();
 }
@@ -1865,7 +1865,7 @@ void Step::vJobSeedDecode(void)
   }
   
   
-  m_pDataStack->vPushI8(eSeed);
+  m_pDataStack->vPushInt(eSeed);
   
   EXIT();
 }
@@ -1882,7 +1882,7 @@ void Step::vJobSeedFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->eSeed());
+  m_pDataStack->vPushInt(pJob->eSeed());
   
   EXIT();
 }
@@ -1972,7 +1972,7 @@ void Step::vJobSessionStateFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_xReqTuple.m_i_Session);
+  m_pDataStack->vPushInt(pJob->m_xReqTuple.m_i_Session);
   
   EXIT();
 }
@@ -2104,7 +2104,7 @@ void Step::vJobSlotFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->i_Slot());
+  m_pDataStack->vPushInt(pJob->i_Slot());
   
   EXIT();
 }

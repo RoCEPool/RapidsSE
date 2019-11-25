@@ -86,7 +86,7 @@ void Step::vJob_InsertRowPartitionFetch(void)
     THROW_DSTACK();
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob_InsertRow->m_iPartitionId);
+  m_pDataStack->vPushInt(pJob_InsertRow->m_iPartitionId);
   
   EXIT();
 }

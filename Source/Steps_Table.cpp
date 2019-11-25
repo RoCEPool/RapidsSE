@@ -117,7 +117,7 @@ void Step::vTableIsValidIndexColumns(void)
   Job_Universal* pJob_CreateIndex = _pJob_Universal(pPtrJob);
   ASSERT(CN_JOB_UNIVERSAL == pJob_CreateIndex->eClass());
   
-  m_pDataStack->vPushI8(pTable->bIsValidIndexColumns(pJob_CreateIndex));
+  m_pDataStack->vPushInt(pTable->bIsValidIndexColumns(pJob_CreateIndex));
   
   EXIT();
 }
@@ -212,7 +212,7 @@ void Step::vTableColumnCountFetch(void)
   ColumnVec* pColVec = pTable->pColumnVec();
   i8 nColumns = pColVec->nItems();
   
-  m_pDataStack->vPushI8(nColumns);
+  m_pDataStack->vPushInt(nColumns);
   
   EXIT();
 }
@@ -344,7 +344,7 @@ void Step::vTableIndexCount(void)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass())
   
-  m_pDataStack->vPushI8(pTable->pIdxVec()->nItems());
+  m_pDataStack->vPushInt(pTable->pIdxVec()->nItems());
   
   EXIT();
 }
@@ -442,7 +442,7 @@ void Step::vTableIsColumn(void)
     }
   }
   
-  m_pDataStack->vPushI8(bFound);
+  m_pDataStack->vPushInt(bFound);
   
   EXIT();
 }
@@ -743,7 +743,7 @@ void Step::vTableSpace(void)
   
   i8 iBuffers = pTable->nCrwBuffers();
   i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
-  m_pDataStack->vPushI8(iSpace);
+  m_pDataStack->vPushInt(iSpace);
   
   EXIT();
 }

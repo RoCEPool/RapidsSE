@@ -129,7 +129,7 @@ void Step::vStrEqual(void)
                                xStringB.azChar(),
                                C_NO_CASE);
   
-  m_pDataStack->vPushI8(iEqual);
+  m_pDataStack->vPushInt(iEqual);
   
   EXIT();
 }
@@ -245,7 +245,7 @@ void Step::vStrLength(void)
   
   iLength = sString.nLength();
   
-  m_pDataStack->vPushI8(iLength);
+  m_pDataStack->vPushInt(iLength);
   
   EXIT();
 }
@@ -503,7 +503,7 @@ void Step::vStrTailInt(void)
     iInt = (iInt * 10) + (*aDigit++ - '0');
   
   // return ( int true )
-  m_pDataStack->vPushI8(iInt);
+  m_pDataStack->vPushInt(iInt);
   m_pDataStack->vPushBool(true);
   
   EXIT();
@@ -542,7 +542,7 @@ void Step::vStrToStrVec(void)
     m_pDataStack->vPushS32(sDicNm);
   }
 
-  m_pDataStack->vPushI8(nStrings);
+  m_pDataStack->vPushInt(nStrings);
 
   EXIT();
 }

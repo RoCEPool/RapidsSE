@@ -159,7 +159,7 @@ void Step::vNodeNo(void)
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
   
-  m_pDataStack->vPushI8(pNode->iNodeNo());
+  m_pDataStack->vPushInt(pNode->iNodeNo());
   
   EXIT();
 }
@@ -171,7 +171,7 @@ void Step::vNodePartitions(void)
 {
   ENTRY(); // ENTRY("vNodePartitions"_Stz);
   
-  m_pDataStack->vPushI8(AM::pGrid()->nSlotsPerNode());
+  m_pDataStack->vPushInt(AM::pGrid()->nSlotsPerNode());
   
   EXIT();
 }
@@ -188,7 +188,7 @@ void Step::vNodePort(void)
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
-  m_pDataStack->vPushI8(pNode->iPortNo());
+  m_pDataStack->vPushInt(pNode->iPortNo());
   
   EXIT();
 }
@@ -282,7 +282,7 @@ void Step::vNodeSize(void)
 {
   ENTRY(); // ENTRY("vNodeSize"_Stz);
   
-  m_pDataStack->vPushI8(AM::iRegionSize());
+  m_pDataStack->vPushInt(AM::iRegionSize());
   
   EXIT();
 }
@@ -339,7 +339,7 @@ void Step::vNodeStateFetch(void)
   
   eNS eState = pNode->eState();
   
-  m_pDataStack->vPushI8(eState);
+  m_pDataStack->vPushInt(eState);
   
   EXIT();
 }

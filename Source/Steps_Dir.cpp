@@ -62,7 +62,7 @@ void Step::vDirExists(void)
   
   i8 iResult = Dir::bExists(sDirPath);
   
-  m_pDataStack->vPushI8(iResult);
+  m_pDataStack->vPushInt(iResult);
   
   EXIT();
 }
@@ -103,7 +103,7 @@ void Step::vDirMake(void)
   
   i8 iResult = Dir::bMake(sPath);
   
-  m_pDataStack->vPushI8(iResult);
+  m_pDataStack->vPushInt(iResult);
   
   EXIT();
 }
@@ -121,7 +121,7 @@ void Step::vDirRemove(void)
   
   i8 iResult = Dir::bRemove(sPath);
   
-  m_pDataStack->vPushI8(iResult);
+  m_pDataStack->vPushInt(iResult);
   
   EXIT();
 }
@@ -203,7 +203,7 @@ void Step::vDirEntryType(void)
   
   iEntryType = pDir->iEntryType();
   
-  m_pDataStack->vPushI8(iEntryType);
+  m_pDataStack->vPushInt(iEntryType);
   
   EXIT();
 }
@@ -224,7 +224,7 @@ void Step::vDirIsClosed(void)
   
   bool bIsClosed = pDir->bIsClosed();
   
-  m_pDataStack->vPushI8(bIsClosed);
+  m_pDataStack->vPushInt(bIsClosed);
   
   EXIT();
 }
@@ -245,7 +245,7 @@ void Step::vDirIsOpen(void)
   
   bool bIsOpen = pDir->bIsOpen();
   
-  m_pDataStack->vPushI8(bIsOpen);
+  m_pDataStack->vPushInt(bIsOpen);
   
   EXIT();
 }
@@ -286,7 +286,7 @@ void Step::vDirOpen(void)
   
   bool bOpened = pDir->bOpen(sPath);
   
-  m_pDataStack->vPushI8(bOpened);
+  m_pDataStack->vPushInt(bOpened);
   
   EXIT();
 }
@@ -329,7 +329,7 @@ void Step::vDirRead(void)
   
   bool bRead  = pDir->bRead();
   
-  m_pDataStack->vPushI8(bRead);
+  m_pDataStack->vPushInt(bRead);
   
   EXIT();
 }
@@ -392,7 +392,7 @@ void Step::vDirTell(void)
   
   i8 iPosition = pDir->iTell();
   
-  m_pDataStack->vPushI8(iPosition);
+  m_pDataStack->vPushInt(iPosition);
   
   EXIT();
 }

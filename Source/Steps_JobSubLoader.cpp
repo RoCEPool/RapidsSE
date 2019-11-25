@@ -146,7 +146,7 @@ void Step::vJob_SubLoaderTerminate(void)
   
   i8 iTerminate = pJob_SubLoader->bTerminate();
   
-  m_pDataStack->vPushI8(iTerminate);
+  m_pDataStack->vPushInt(iTerminate);
   
   EXIT();
 }

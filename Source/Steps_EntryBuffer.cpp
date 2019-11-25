@@ -122,7 +122,7 @@ void Step::vEntBufferPartitionFetch(void)
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
-  m_pDataStack->vPushI8(pIndexBuffer->iPartitionNo());
+  m_pDataStack->vPushInt(pIndexBuffer->iPartitionNo());
   
   EXIT();
 }

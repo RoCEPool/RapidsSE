@@ -31,7 +31,7 @@ void Step::vLogicAnd(void)
   
   i8 iArgR = (iArgA && iArgB) ? 1 : 0;
   
-  m_pDataStack->vPushI8(iArgR);
+  m_pDataStack->vPushInt(iArgR);
   
   EXIT();
 }
@@ -49,7 +49,7 @@ void Step::vLogicNot(void)
   
   i8 iNotA = iValA ? 0 : 1;
   
-  m_pDataStack->vPushI8(iNotA);
+  m_pDataStack->vPushInt(iNotA);
   
   EXIT();
 }
@@ -71,7 +71,7 @@ void Step::vLogicOr(void)
   
   i8 iArgR = (iArgA || iArgB) ? 1 : 0;
   
-  m_pDataStack->vPushI8(iArgR);
+  m_pDataStack->vPushInt(iArgR);
   
   EXIT();
 }

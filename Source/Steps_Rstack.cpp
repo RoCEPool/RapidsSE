@@ -112,7 +112,7 @@ void Step::vRstackDepth(void)
   
   i8 iDepth = m_pReturnStack->nValues();
   
-  m_pDataStack->vPushI8(iDepth);
+  m_pDataStack->vPushInt(iDepth);
   
   EXIT();
 }

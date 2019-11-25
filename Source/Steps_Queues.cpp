@@ -42,7 +42,7 @@ void Step::vQueuesExecutingLength(void)
     THROW_DSTACK();
   
   Queues* pQueues = AM::pQueues();
-  m_pDataStack->vPushI8(pQueues->nTasksExecuting());
+  m_pDataStack->vPushInt(pQueues->nTasksExecuting());
   
   EXIT();
 }
@@ -60,7 +60,7 @@ void Step::vQueuesReadyLength(void)
     THROW_DSTACK();
   
   Queues* pQueues = AM::pQueues();
-  m_pDataStack->vPushI8(pQueues->nTasksReady());
+  m_pDataStack->vPushInt(pQueues->nTasksReady());
   
   EXIT();
 }
@@ -73,7 +73,7 @@ void Step::vQueuesSleepingLength(void)
   ENTRY(); // ENTRY("vQueuesSleepingLength"_Stz);
   
   Queues* pQueues = AM::pQueues();
-  m_pDataStack->vPushI8(pQueues->nTasksSleeping());
+  m_pDataStack->vPushInt(pQueues->nTasksSleeping());
   
   EXIT();
 }
@@ -86,7 +86,7 @@ void Step::vQueuesWaitingLength(void)
   ENTRY(); // ENTRY("vQueuesWaitingLength"_Stz);
   
   Queues* pQueues = AM::pQueues();
-  m_pDataStack->vPushI8(pQueues->nTasksWaiting());
+  m_pDataStack->vPushInt(pQueues->nTasksWaiting());
   
   EXIT();
 }

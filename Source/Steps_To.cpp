@@ -55,7 +55,7 @@ void Step::vToInt(void)
 
   i8 i = sInt.iToI8();
   
-  m_pDataStack->vPushI8(i);
+  m_pDataStack->vPushInt(i);
   
   EXIT();
 }

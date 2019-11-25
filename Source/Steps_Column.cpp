@@ -78,7 +78,7 @@ void Step::vColumnLengthFetch(void)
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
   
-  m_pDataStack->vPushI8(pColumn->iColumnLength());
+  m_pDataStack->vPushInt(pColumn->iColumnLength());
   
   EXIT();
 }
@@ -120,7 +120,7 @@ void Step::vColumnScaleFetch(void)
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
   
-  m_pDataStack->vPushI8(pColumn->iColumnScale());
+  m_pDataStack->vPushInt(pColumn->iColumnScale());
   
   EXIT();
 }

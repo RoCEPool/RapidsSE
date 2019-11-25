@@ -24,7 +24,7 @@ void Step::vCastInt(void)
   if ( ! m_pDataStack->bPopPtr(pPtr) )
     THROW_DSTACK();
   
-  m_pDataStack->vPushI8((i8)pPtr);
+  m_pDataStack->vPushInt((i8)pPtr);
   
   EXIT();
 }

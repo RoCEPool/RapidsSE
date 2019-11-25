@@ -27,7 +27,7 @@ void Step::vJob_SubTruncateSlotFetch(void)
     THROW_DSTACK();
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->i_Slot());
+  m_pDataStack->vPushInt(pJob->i_Slot());
   
   EXIT();
 }
@@ -44,7 +44,7 @@ void Step::vJob_SubTruncateTruncateJobIdFetch(void)
     THROW_DSTACK();
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
-  m_pDataStack->vPushI8(pJob->m_iTruncateJobId);
+  m_pDataStack->vPushInt(pJob->m_iTruncateJobId);
   
   EXIT();
 }

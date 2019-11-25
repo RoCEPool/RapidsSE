@@ -111,7 +111,7 @@ void Step::vSessionIsExiting(void)
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  m_pDataStack->vPushI8(pSession->m_bSessionExiting);
+  m_pDataStack->vPushInt(pSession->m_bSessionExiting);
   
   EXIT();
 }
@@ -130,7 +130,7 @@ void Step::vSessionPid(void)
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  m_pDataStack->vPushI8(pSession->m_iPid);
+  m_pDataStack->vPushInt(pSession->m_iPid);
   
   EXIT();
 }
@@ -149,7 +149,7 @@ void Step::vSessionSlotFetch(void)
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  m_pDataStack->vPushI8(pSession->iSlot());
+  m_pDataStack->vPushInt(pSession->iSlot());
   
   EXIT();
 }

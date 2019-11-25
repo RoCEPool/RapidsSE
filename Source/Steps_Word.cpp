@@ -211,7 +211,7 @@ void Step::vWordImmediateGet(void)
   
   i8 iImmediate = pWord->bImmediate();
   
-  m_pDataStack->vPushI8(iImmediate);
+  m_pDataStack->vPushInt(iImmediate);
   
   EXIT();
 }
@@ -253,7 +253,7 @@ void Step::vWordIsImmediate(void)
   
   i8 iIsImmediate = pWord->bImmediate() ? 1 : 0;
   
-  m_pDataStack->vPushI8(iIsImmediate);
+  m_pDataStack->vPushInt(iIsImmediate);
   
   EXIT();
 }
@@ -272,7 +272,7 @@ void Step::vWordIsIntrinsic(void)
   
   i8 iIsPrimitive = WK_INTRINSIC == pWord->eKind() ? 1 : 0;
   
-  m_pDataStack->vPushI8(iIsPrimitive);
+  m_pDataStack->vPushInt(iIsPrimitive);
   
   EXIT();
 }
@@ -291,7 +291,7 @@ void Step::vWordKindFetch(void)
   
   eWK eKind = pWord->eKind();
   
-  m_pDataStack->vPushI8(eKind);
+  m_pDataStack->vPushInt(eKind);
   
   EXIT();
 }

@@ -106,7 +106,7 @@ void Step::vPlannerFetchTechniqueFetch(void)
     THROW_DSTACK();
   eAT eFetchTechnique = mpPlanner->pChosenPath(i_Phrase)->eAccess();
   
-  m_pDataStack->vPushI8(eFetchTechnique);
+  m_pDataStack->vPushInt(eFetchTechnique);
   
   EXIT();
 }
@@ -312,7 +312,7 @@ void Step::vPlannerPhrasesFetch(void)
   
   i8 nPhrases = mpPlanner->nPhrases();
   
-  m_pDataStack->vPushI8(nPhrases);
+  m_pDataStack->vPushInt(nPhrases);
   
   EXIT();
 }

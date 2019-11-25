@@ -84,7 +84,7 @@ void Step::vTimerMicrosecs(void)
   
   i8 iMicroseconds = pTimer->iMicroseconds();
   
-  m_pDataStack->vPushI8(iMicroseconds);
+  m_pDataStack->vPushInt(iMicroseconds);
   
   EXIT();
 }
@@ -105,7 +105,7 @@ void Step::vTimerMillisecs(void)
   
   i8 iMilliseconds = pTimer->iMilliseconds();
   
-  m_pDataStack->vPushI8(iMilliseconds);
+  m_pDataStack->vPushInt(iMilliseconds);
   
   EXIT();
 }
@@ -126,7 +126,7 @@ void Step::vTimerNanosecs(void)
   
   i8 iNanoseconds = pTimer->iNanoseconds();
   
-  m_pDataStack->vPushI8(iNanoseconds);
+  m_pDataStack->vPushInt(iNanoseconds);
   
   EXIT();
 }
@@ -186,7 +186,7 @@ void Step::vTimerSecs(void)
   
   i8 iSeconds = pTimer->iSeconds();
   
-  m_pDataStack->vPushI8(iSeconds);
+  m_pDataStack->vPushInt(iSeconds);
   
   EXIT();
 }
@@ -226,7 +226,7 @@ void Step::vTimerTicks(void)
   
   i8 iTicks = pTimer->iTicks();
   
-  m_pDataStack->vPushI8(iTicks);
+  m_pDataStack->vPushInt(iTicks);
   
   EXIT();
 }

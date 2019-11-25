@@ -900,7 +900,7 @@ void Stack::vPushGenVar(GenVar& xGenVar)
 /*----------------------------------------------------------------------------*/
 /* push i8 onto value stack                                                   */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushI8(i8 iArg)
+void Stack::vPushInt(i8 iArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
