@@ -867,7 +867,7 @@ void Stack::vPushGenVar(GenVar* pVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushStkVal(pVar->aEmbeddedStkVal());
+  vPushVal(pVar->aEmbeddedStkVal());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -879,7 +879,7 @@ void Stack::vPushGenVar(GenVar& xVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushStkVal(xVar.aEmbeddedStkVal());
+  vPushVal(xVar.aEmbeddedStkVal());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -894,7 +894,7 @@ void Stack::vPushInt(i8 iInt)
   IntVal xIntVal1;
   xIntVal1 = iInt;
   
-  vPushStkVal(xIntVal1);
+  vPushVal(xIntVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -908,7 +908,7 @@ void Stack::vPushPtr(Object* pObj)
   
   xPtrObject = pObj;
   
-  vPushStkVal(xPtrObject);
+  vPushVal(xPtrObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -920,7 +920,7 @@ void Stack::vPushLocal(Local* pLocal)
   
   StkVal* aStkVal = pLocal->aLocalValue();
   
-  vPushStkVal(aStkVal);
+  vPushVal(aStkVal);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -993,17 +993,17 @@ void Stack::vPushS16KB(s16KB& sEss)
 /*----------------------------------------------------------------------------*/
 /* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushStkVal(StkVal& xVal1)
+void Stack::vPushVal(StkVal& xVal1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushStkVal(&xVal1);
+  vPushVal(&xVal1);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushStkVal(StkVal* aStkVal)
+void Stack::vPushVal(StkVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

@@ -101,8 +101,8 @@ namespace SenVM
     void vPushS4K(s4K& sEss);
     void vPushS16KB(s16KB& sEss);
     void vPushS48K(s48K& sEss);
-    void vPushStkVal(StkVal* aStkVal);
-    void vPushStkVal(StkVal& xStkVal);
+    void vPushVal(StkVal* aStkVal);
+    void vPushVal(StkVal& xStkVal);
   
     void vReset(void);
     void vRetry(void);
