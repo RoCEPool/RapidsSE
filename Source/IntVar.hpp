@@ -19,6 +19,18 @@ namespace SenVM
     i8   nStackBytes(void);
     void vToString(Stz* szStz);
   };
+  
+  /*----------------------------------------------------------------------------*/
+  /* safe cast                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline IntVar* _aIntVar(void* aAddr)
+  {
+    IntVar* aIntVar = reinterpret_cast<IntVar*>(aAddr);
+  
+    ASSERT( !aIntVar || CN_INTVAR == aIntVar->eClass() );
+  
+    return aIntVar;
+  }
 }
 
 /*============================================================================*/

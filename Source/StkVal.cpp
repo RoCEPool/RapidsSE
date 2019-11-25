@@ -75,6 +75,14 @@ i8 StkVal::nStackBytes(void)
       break;
     }
       
+    // -- -- -- -- -- --
+//    case CN_INTVAR: {
+//      IntVar* aIntVar = _aIntVar(this);
+//      nBytes = aIntVar->nStackBytes();
+//      break;
+//    }
+      
+    // -- -- -- -- -- --
     default:
       vTrace("StkVal::nStackBytes -- invalid eClass %lld %s\n"_Stz,
              eClassNo,aCN[eClassNo]);

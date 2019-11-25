@@ -19,6 +19,18 @@ namespace SenVM
     i8    nStackBytes(void);
     void  vToString(Stz* szStz);
   };
+  
+  /*----------------------------------------------------------------------------*/
+  /* safe cast                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline FipVar* _aFipVar(void* aAddr)
+  {
+    FipVar* aFipVar = reinterpret_cast<FipVar*>(aAddr);
+  
+    ASSERT( !aFipVar || CN_FIPVAR == aFipVar->eClass() );
+  
+    return aFipVar;
+  }
 }
 
 /*============================================================================*/
