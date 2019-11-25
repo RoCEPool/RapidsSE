@@ -98,66 +98,6 @@ void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allot a fip value on top of value stack                                    */
-/*----------------------------------------------------------------------------*/
-FipVal* Stack::aAllotFipVal(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  FipVal* aFipVal = static_cast<FipVal*>(aAllotStkVal(sizeof(FipVal)));
-  
-  aFipVal->vClass(CN_FIPVAL);
-  aFipVal->vMagic();
-
-  return aFipVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot an int value on top of value stack                                   */
-/*----------------------------------------------------------------------------*/
-IntVal* Stack::aAllotIntVal(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  IntVal* aIntVal = static_cast<IntVal*>(aAllotStkVal(sizeof(IntVal)));
-  
-  aIntVal->vClass(CN_INTVAL);
-  aIntVal->vMagic();
-
-  return aIntVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a ptr value on top of value stack                                    */
-/*----------------------------------------------------------------------------*/
-PtrVal* Stack::aAllotPtrVal(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  PtrVal* aPtrVal = static_cast<PtrVal*>(aAllotStkVal(sizeof(PtrVal)));
-  
-  aPtrVal->vClass(CN_PTRVAL);
-  aPtrVal->vMagic();
-
-  return aPtrVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a str value on top of value stack                                    */
-/*----------------------------------------------------------------------------*/
-StrVal* Stack::aAllotStrVal(i8 nSize)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  StrVal* aStrVal = static_cast<StrVal*>(aAllotStkVal(sizeof(StrVal) + nSize - 1));
-  
-  aStrVal->vClass(CN_STRVAL);
-  aStrVal->vMagic();
-
-  return aStrVal;
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump contents of the value stack                                           */
 /*----------------------------------------------------------------------------*/
 void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
@@ -1170,6 +1110,51 @@ i8 Stack::nValues(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* allot a fip value on top of value stack                                    */
+/*----------------------------------------------------------------------------*/
+FipVal* Stack::aAllotFipVal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  FipVal* aFipVal = static_cast<FipVal*>(aAllotStkVal(sizeof(FipVal)));
+  
+  aFipVal->vClass(CN_FIPVAL);
+  aFipVal->vMagic();
+  
+  return aFipVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot an int value on top of value stack                                   */
+/*----------------------------------------------------------------------------*/
+IntVal* Stack::aAllotIntVal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  IntVal* aIntVal = static_cast<IntVal*>(aAllotStkVal(sizeof(IntVal)));
+  
+  aIntVal->vClass(CN_INTVAL);
+  aIntVal->vMagic();
+  
+  return aIntVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a ptr value on top of value stack                                    */
+/*----------------------------------------------------------------------------*/
+PtrVal* Stack::aAllotPtrVal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  PtrVal* aPtrVal = static_cast<PtrVal*>(aAllotStkVal(sizeof(PtrVal)));
+  
+  aPtrVal->vClass(CN_PTRVAL);
+  aPtrVal->vMagic();
+  
+  return aPtrVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop StkVal on top of value stack, inc number of values on stack            */
 /*----------------------------------------------------------------------------*/
 StkVal* Stack::aAllotStkVal(i8 nBytes)
@@ -1187,6 +1172,21 @@ StkVal* Stack::aAllotStkVal(i8 nBytes)
   m_nValues++;
 
   return m_aTop;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a str value on top of value stack                                    */
+/*----------------------------------------------------------------------------*/
+StrVal* Stack::aAllotStrVal(i8 nSize)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  StrVal* aStrVal = static_cast<StrVal*>(aAllotStkVal(sizeof(StrVal) + nSize - 1));
+  
+  aStrVal->vClass(CN_STRVAL);
+  aStrVal->vMagic();
+  
+  return aStrVal;
 }
 
 /*----------------------------------------------------------------------------*/

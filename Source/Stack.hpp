@@ -39,11 +39,6 @@ namespace SenVM
     static Stack* _pStack(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
-    FipVal* aAllotFipVal(void);
-    IntVal* aAllotIntVal(void);
-    PtrVal* aAllotPtrVal(void);
-    StrVal* aAllotStrVal(i8 nSize);
-
     void vContentDump(DicStack* pDicStack, Stz* szTitle);
   
     void vDiscard(void);
@@ -115,11 +110,16 @@ namespace SenVM
     void vPopBy(i8 nBytes);
   
   private:
+    FipVal* aAllotFipVal(void);
+    IntVal* aAllotIntVal(void);
+    PtrVal* aAllotPtrVal(void);
     StkVal* aAllotStkVal(i8 nBytes);
+    StrVal* aAllotStrVal(i8 nSize);
   
-    Cell* aPopFip(void);
-    i8    iPopInt(void);
-  
+    Cell*   aPopFip(void);
+    i8      iPopInt(void);
+    Object* pPopObj(void);
+
     void vPopLocal(Local* aLocal);
     void vPopVal(StkVal* aStkVal);
     void vPushBy(i8 nBytes);
