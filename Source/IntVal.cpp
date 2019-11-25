@@ -21,6 +21,8 @@ void* IntVal::operator new(size_t)
 IntVal::IntVal(void)
 : StkVal(CN_INTVAL)
 {
+  NEVER_REACH;
+  
   _Header::vClass(CN_INTVAL);
   
   m_iInt = 0;

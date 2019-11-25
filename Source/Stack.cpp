@@ -805,9 +805,7 @@ void Stack::vPushFip(Cell* aFip)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
 //  FipVal xFipVal;
-//
 //  xFipVal = aFip;
-//
 //  vPushValue(xFipVal);
   
   FipVal* aFipVal = aAllotFipVal();
@@ -822,10 +820,13 @@ void Stack::vPushInt(i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  IntVal xIntVal1;
-  xIntVal1 = iInt;
+//  IntVal xIntVal1;
+//  xIntVal1 = iInt;
+//  vPushVal(xIntVal1);
   
-  vPushVal(xIntVal1);
+  IntVal* aIntVal = aAllotIntVal();
+  
+  * aIntVal = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
