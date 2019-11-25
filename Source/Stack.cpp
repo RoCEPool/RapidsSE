@@ -1007,8 +1007,18 @@ void Stack::vPushStkVal(StkVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(aStkVal);
+  _hazard_();
   
+  ASSERT(CN_GENVAR != aStkVal->eClass());
+  
+  i8 iSize = aStkVal->nStackBytes();
+  
+  vPushBy(iSize);
+  MemLib::vCopy(m_xTop.pStkVal,aStkVal,iSize,CN_STACK);
+  m_nValues++;
+  
+  _hazard_();
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
