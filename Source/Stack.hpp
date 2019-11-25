@@ -46,25 +46,25 @@ namespace SenVM
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    void vPeekGenVar(i8 i_Val, GenVar& xGenVar);
+    void vPeekGenVar(i8 i_Val, GenVar& xVar);
     StkVal* aPeekStkVal(i8 i_Val);
   
     bool bPopCN(eCN& eClassNo);
     bool bPopFip(Cell*& aFip);
     bool bPopGenVar(GenVar* pGenVar);
-    bool bPopGenVar(GenVar& xGenVar);
+    bool bPopGenVar(GenVar& xVar);
     bool bPopGenVar(GenVar& xVar1, GenVar& xVar2);
     bool bPopGenVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3);
     bool bPopInt(i8& iInt);
     bool bPopInt(i8& iInt1, i8& iInt2);
-    bool bPopInt(i8& iInt1, i8& iInt2, GenVar& xGenVar);
+    bool bPopInt(i8& iInt1, i8& iInt2, GenVar& xVar);
     bool bPopInt(i8& iInt, Object*& pObj);
-    bool bPopInt(i8& iInt, GenVar& xGenVar);
+    bool bPopInt(i8& iInt, GenVar& xVar);
     bool bPopInt(i8& iInt, s48K& sArg);
     bool bPopPtr(Object*& pObj);
     bool bPopPtr(Object*& pObj, i8& iInt);
     bool bPopPtr(Object*& pObj1, Object*& pObj2);
-    bool bPopPtr(Object*& pObj, GenVar& xGenVar);
+    bool bPopPtr(Object*& pObj, GenVar& xVar);
     bool bPopLocal(Local*& pLocal);
     bool bPopS32(s32&  sArg1);
     bool bPopS256(s256& sArg1);
@@ -78,11 +78,11 @@ namespace SenVM
     bool bPopAsI8_Inline(i8& iInt1);
     bool bPopAsInt_Quick(i8& iInt1);
   
-    void vPokeGenVar(i8 i_Val, GenVar& xGenVar);
+    void vPokeGenVar(i8 i_Val, GenVar& xVar);
   
     void vPushFip(Cell* aCell);
     void vPushGenVar(GenVar* pGenVar);
-    void vPushGenVar(GenVar& xGenVar);
+    void vPushGenVar(GenVar& xVar);
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);
     void vPushLocal(Local* pLocal);
