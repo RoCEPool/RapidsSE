@@ -73,12 +73,12 @@ namespace SenVM
     bool bPopS48K(s48K& sArg1, i8& iArg2);
     bool bPopS48K(s48K& sArg1, i8& iArg2, i8& iArg3);
     bool bPopS48K(s48K& sArg1, s48K& sArg2);
-    bool bPopString(String* pString);
+    bool bPopStr(String* pString);
     bool bPopAsInt(i8& iArg1);
     bool bPopAsI8_Inline(i8& iArg1);
     bool bPopAsInt_Quick(i8& iArg1);
   
-    void vPokeGenVar(i8 i_Value, GenVar& xGenVar);
+    void vPokeGenVar(i8 i_Val, GenVar& xGenVar);
   
     void vPushBool(bool bBool);
     void vPushFip(Cell* aCell);

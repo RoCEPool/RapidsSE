@@ -754,7 +754,7 @@ bool Stack::bPopS48K(s48K& sArg1, s48K& sArg2)
 /*----------------------------------------------------------------------------*/
 /* pop string from stack                                                      */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopString(String* pString)
+bool Stack::bPopStr(String* pString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

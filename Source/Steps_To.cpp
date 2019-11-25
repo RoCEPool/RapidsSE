@@ -48,7 +48,7 @@ void Step::vToInt(void)
   
   s32 sInt;
   
-  if ( ! m_pDataStack->bPopString(sInt) )
+  if ( ! m_pDataStack->bPopStr(sInt) )
     THROW_DSTACK();
 //  if ( ! m_pDataStack->bPopS32(sInt) )
 //    THROW_DSTACK();
