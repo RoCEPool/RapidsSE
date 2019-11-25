@@ -69,6 +69,10 @@ void Correctness::vTraceWith(void)
   vTrace("  WITH_ENTRY_EXIT\n"_Stz);
 #endif
   
+#ifdef WITH_GENVAR2
+  vTrace("  WITH_GENVAR2\n"_Stz);
+#endif
+  
 #ifdef WITH_INFLATE_TRACE
   vTrace("  WITH_INFLATE_TRACE\n"_Stz);
 #endif
