@@ -37,6 +37,8 @@ void* StrVal::operator new(size_t)
 StrVal::StrVal(void)
 : StkVal(CN_STRVAL)
 {
+  NEVER_REACH;
+  
   _Header::vClass(CN_STRVAL);
 }
 

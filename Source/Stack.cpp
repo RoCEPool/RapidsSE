@@ -488,10 +488,7 @@ bool Stack::bPopPtr(Object*& pObj)
   if ( ! bGuard(CN_PTRVAL) && ! bTopIsZero() )
     return false;
   
-  PtrVal xPtrVal;
-  vPopVal(&xPtrVal);
-  
-  pObj = xPtrVal.pObj();
+  pObj = pPopObj();
   
   return true;
 }
@@ -506,10 +503,7 @@ bool Stack::bPopPtr(Object*& pObj, i8& iInt)
   if ( ! bGuard(CN_PTRVAL,CN_INTVAL) )
     return false;
   
-  PtrVal xPtrVal;
-  vPopVal(&xPtrVal);
-  
-  pObj = xPtrVal.pObj();
+  pObj = pPopObj();
   
   iInt = iPopInt();
   
@@ -526,15 +520,9 @@ bool Stack::bPopPtr(Object*& pObj1, Object*& pObj2)
   if ( ! bGuard(CN_PTRVAL,CN_PTRVAL) )
     return false;
   
-  PtrVal xPtrVal1;
-  vPopVal(&xPtrVal1);
+  pObj1 = pPopObj();
   
-  pObj1 = xPtrVal1.pObj();
-  
-  PtrVal xPtrVal2;
-  vPopVal(&xPtrVal2);
-  
-  pObj2 = xPtrVal2.pObj();
+  pObj2 = pPopObj();
   
   return true;
 }
@@ -549,10 +537,7 @@ bool Stack::bPopPtr(Object*& pObj, GenVar& xVar)
   if ( ! bGuard(CN_PTRVAL) )
     return false;
   
-  PtrVal xPtrVal1;
-  vPopVal(&xPtrVal1);
-  
-  pObj = xPtrVal1.pObj();
+  pObj = pPopObj();
   
   return bPopVal(xVar);
 }
@@ -836,11 +821,13 @@ void Stack::vPushPtr(Object* pObj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  PtrVal xPtrObject;
+//  PtrVal xPtrObject;
+//  xPtrObject = pObj;
+//  vPushVal(xPtrObject);
   
-  xPtrObject = pObj;
+  PtrVal* aPtrVal = aAllotPtrVal();
   
-  vPushVal(xPtrObject);
+  * aPtrVal = pObj;
 }
 
 /*----------------------------------------------------------------------------*/
