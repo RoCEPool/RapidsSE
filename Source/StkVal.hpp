@@ -11,7 +11,6 @@ namespace SenVM
    
   public:
     void* operator new(size_t);
-    StkVal(eCN eClass);
   
     eCN  eClass(void);
     i8   nStackBytes(void);
