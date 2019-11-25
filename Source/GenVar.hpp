@@ -23,6 +23,15 @@ namespace SenVM
     union {
       _NestedValue  m_xNstVal;
       
+//      StkVal  m_xStkVal;
+
+//      FipVal  m_xFipVal;
+//      IntVal  m_xIntVal;
+//      PtrVal  m_xPtrVal;
+//      StrVal  m_xStrVal;
+
+      // - - - - - - - -
+      
       SenVar  m_xSenVar;
       
       FipVar  m_xFipVar;

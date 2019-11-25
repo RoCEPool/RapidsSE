@@ -129,7 +129,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
       }
         
       case CN_INTVAL: {
-        IntVal *aIntVal = _aIntVal(aEmbeddedStkVal); //xVariable.iInt();
+        IntVal* aIntVal = _aIntVal(aEmbeddedStkVal); //xVariable.iInt();
         i8 iInt = aIntVal->iInt();
         vTrace("[%2lld] [%s] %lld\n"_Stz,
                i_Val,aCN[eClass],iInt);
@@ -351,10 +351,12 @@ bool Stack::bPopCN(eCN& eClassNo)
   if ( ! bGuard(CN_INTVAL) )
     return false;
   
-  IntVal xIntVal;
-  vPopVal(&xIntVal);
+//  IntVal xIntVal;
+//  vPopVal(&xIntVal);
   
-  eClassNo = static_cast<eCN>(xIntVal.iInt());
+  i8 iInt = iPopInt();
+
+  eClassNo = static_cast<eCN>(iInt);
   
   return true;
 }
@@ -369,12 +371,14 @@ bool Stack::bPopFip(Cell*& aFip)
   if ( ! bGuard(CN_FIPVAL) )
     return false;
   
-  FipVal xFipVal;
-  
-  vPopVal(&xFipVal);
-  
-  aFip = xFipVal.aFip();
-  
+//  FipVal xFipVal;
+//
+//  vPopVal(&xFipVal);
+//
+//  aFip = xFipVal.aFip();
+
+  aFip = aPopFip();
+
   return true;
 }
 
@@ -423,7 +427,7 @@ bool Stack::bPopInt(i8& iInt1, i8& iInt2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop i8,pObj from value stack                                            */
+/* pop i8,pObj from value stack                                               */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopInt(i8& iInt, Object*& pObj)
 {
