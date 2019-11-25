@@ -52,7 +52,7 @@ void Step::vSocketAccept(void)
   // return the socket
   Socket* pNewSocket = new Socket(this,iSocketId);
   
-  m_pDataStack->vPushPointer(pNewSocket);
+  m_pDataStack->vPushPtr(pNewSocket);
   
   EXIT();
 }
@@ -125,7 +125,7 @@ void Step::vSocketConnect(void)
   if (bResult) {
     // return the socket object
     Object* pPtrSocket = pSocket;
-    m_pDataStack->vPushPointer(pPtrSocket);
+    m_pDataStack->vPushPtr(pPtrSocket);
     EXIT();
     return;
   }
@@ -145,7 +145,7 @@ void Step::vSocketConnect(void)
            iError, strerror((int)iError));
   }
   
-  m_pDataStack->vPushPointer(nullptr);
+  m_pDataStack->vPushPtr(nullptr);
   
   EXIT();
 }
@@ -286,7 +286,7 @@ void Step::vSocketListen(void)
   
   // return socket
   Object* pPtrSocket = pSocket;
-  m_pDataStack->vPushPointer(pPtrSocket);
+  m_pDataStack->vPushPtr(pPtrSocket);
   
   EXIT();
 }
@@ -314,7 +314,7 @@ void Step::vSocketOpen(void)
            "Unable to create socket: Errno %d"_Stz, oSysCall.iError());
   
   Object* pPtrSocket = pSocket;
-  m_pDataStack->vPushPointer(pPtrSocket);
+  m_pDataStack->vPushPtr(pPtrSocket);
   
   EXIT();
 }
@@ -419,7 +419,7 @@ void Step::vSocketRecvObject(void)
 
     pJob->m_i_Focal = C_UNKNOWN;
                          
-    m_pDataStack->vPushPointer(pJob);
+    m_pDataStack->vPushPtr(pJob);
     m_pDataStack->vPushBool(true);
     EXIT();
     return;
@@ -451,7 +451,7 @@ void Step::vSocketRecvObject(void)
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
       
-      m_pDataStack->vPushPointer(pCancelMarker);
+      m_pDataStack->vPushPtr(pCancelMarker);
       m_pDataStack->vPushBool(true);
       EXIT();
       return;
@@ -479,7 +479,7 @@ void Step::vSocketRecvObject(void)
       // restore the nub of the crwbuffer
       pCrwBuffer->vRestoreNub();
       
-      m_pDataStack->vPushPointer(pCrwBuffer);
+      m_pDataStack->vPushPtr(pCrwBuffer);
       m_pDataStack->vPushBool(true);
       EXIT();
       return;
@@ -503,7 +503,7 @@ void Step::vSocketRecvObject(void)
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
       
-      m_pDataStack->vPushPointer(pEndMarker);
+      m_pDataStack->vPushPtr(pEndMarker);
       m_pDataStack->vPushBool(true);
       EXIT();
       return;
@@ -531,7 +531,7 @@ void Step::vSocketRecvObject(void)
       // restore the nub of the crwbuffer
       //pIrwBuffer->vRestoreNub();
       
-      m_pDataStack->vPushPointer(pIrwBuffer);
+      m_pDataStack->vPushPtr(pIrwBuffer);
       m_pDataStack->vPushBool(true);
       EXIT();
       return;
@@ -559,7 +559,7 @@ void Step::vSocketRecvObject(void)
       // restore the nub of the crwbuffer
       //pIrwBuffer->vRestoreNub();
       
-      m_pDataStack->vPushPointer(pCsvBuffer);
+      m_pDataStack->vPushPtr(pCsvBuffer);
       m_pDataStack->vPushBool(true);
       EXIT();
       return;
@@ -583,7 +583,7 @@ void Step::vSocketRecvObject(void)
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
       
-      m_pDataStack->vPushPointer(pStreamDef);
+      m_pDataStack->vPushPtr(pStreamDef);
       m_pDataStack->vPushBool(true);
       EXIT();
       return;
@@ -696,7 +696,7 @@ void Step::vSocketRecvObject_LowMem(void)
       vTrace("Discarded EntBuffer under low mem\n"_Stz);
     }
     
-    m_pDataStack->vPushPointer(pJob_WriteBuffer);
+    m_pDataStack->vPushPtr(pJob_WriteBuffer);
     m_pDataStack->vPushBool(true);
     EXIT();
     return;
@@ -732,7 +732,7 @@ void Step::vSocketRecvObject_LowMem(void)
     
     pJob->m_i_Focal = C_UNKNOWN;
 
-    m_pDataStack->vPushPointer(pJob);
+    m_pDataStack->vPushPtr(pJob);
     m_pDataStack->vPushBool(true);
     EXIT();
     return;
@@ -770,7 +770,7 @@ void Step::vSocketRecvObject_LowMem(void)
       // restore the nub of the crwbuffer
       pCrwBuffer->vRestoreNub();
       
-      m_pDataStack->vPushPointer(pCrwBuffer);
+      m_pDataStack->vPushPtr(pCrwBuffer);
       m_pDataStack->vPushBool(true);
       EXIT();
       return;
@@ -793,7 +793,7 @@ void Step::vSocketRecvObject_LowMem(void)
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
       
-      m_pDataStack->vPushPointer(pEndMarker);
+      m_pDataStack->vPushPtr(pEndMarker);
       m_pDataStack->vPushBool(true);
       EXIT();
       return;
@@ -820,7 +820,7 @@ void Step::vSocketRecvObject_LowMem(void)
       // restore the nub of the crwbuffer
       //pIrwBuffer->vRestoreNub();
       
-      m_pDataStack->vPushPointer(pIrwBuffer);
+      m_pDataStack->vPushPtr(pIrwBuffer);
       m_pDataStack->vPushBool(true);
       EXIT();
       return;
@@ -844,7 +844,7 @@ void Step::vSocketRecvObject_LowMem(void)
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
       
-      m_pDataStack->vPushPointer(pStreamDef);
+      m_pDataStack->vPushPtr(pStreamDef);
       m_pDataStack->vPushBool(true);
       EXIT();
       return;

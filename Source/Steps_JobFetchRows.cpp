@@ -232,7 +232,7 @@ void Step::vJob_SubFetchBufferQueueFetch(void)
     THROW_DSTACK();
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
-  m_pDataStack->vPushPointer(pJob->m_pBufferQueue);
+  m_pDataStack->vPushPtr(pJob->m_pBufferQueue);
   
   EXIT();
 }
@@ -266,7 +266,7 @@ void Step::vJob_SubFetchPlannerFetch(void)
     THROW_DSTACK();
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
-  m_pDataStack->vPushPointer(pJob->m_pPlanner);
+  m_pDataStack->vPushPtr(pJob->m_pPlanner);
   
   EXIT();
 }

@@ -36,7 +36,7 @@ void Step::vEnterObject(void)
   ASSERT(WK_OBJECT == pWord->eKind());
   
   Object* pObject = (Object*)pWord->aFirstCell();
-  m_pDataStack->vPushPointer(pObject);
+  m_pDataStack->vPushPtr(pObject);
   
   EXIT();
 }

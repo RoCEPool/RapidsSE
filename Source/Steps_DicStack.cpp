@@ -94,7 +94,7 @@ void Step::vDicStackPick(void)
   
   Object* pPtrDic = pDicStack->pPick(iDic);
 
-  m_pDataStack->vPushPointer(pPtrDic);
+  m_pDataStack->vPushPtr(pPtrDic);
   
   EXIT();
 }

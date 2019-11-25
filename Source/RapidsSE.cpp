@@ -241,7 +241,7 @@ eEC RapidsSE_BeginInsert(i8 iTrace, Session* pSession,
     API_LOC(360);
 
     // push the InsertTable job onto the jobstack
-    pSession->m_pJobStack->vPushPointer(pJob_InsertTable);
+    pSession->m_pJobStack->vPushPtr(pJob_InsertTable);
     API_LOC(370);
 
     SessionArray::vMarkJob(pSession,pJob_InsertTable);
@@ -307,7 +307,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
       for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
         eEC eError = pJob->m_pResponseVec->pGet(i_Node)->m_eErrorCode;
         if (eError != EC_NONE) {
-          pSession->m_pJobStack->vPushPointer(pJob);
+          pSession->m_pJobStack->vPushPtr(pJob);
           API_RETURN_ERROR(eError);
         }
       }
@@ -320,7 +320,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
     API_LOC(350);
 
     // push the job on the sessions job stack
-    pSession->m_pJobStack->vPushPointer(pJob);
+    pSession->m_pJobStack->vPushPtr(pJob);
     API_LOC(360);
   }
   catch (Error* pError) { API_CATCH(pError); }
@@ -355,7 +355,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     API_LOC(320);
     
     // push the InsertTable job onto the jobstack
-    pSession->m_pJobStack->vPushPointer(pJob_InsertRow);
+    pSession->m_pJobStack->vPushPtr(pJob_InsertRow);
     API_LOC(330);
     
     SessionArray::vMarkJob(pSession,pJob_InsertRow);
@@ -465,7 +465,7 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
     API_LOC(330);
 
     // push the InsertTable job onto the jobstack
-    pSession->m_pJobStack->vPushPointer(pJob_SubInserter);
+    pSession->m_pJobStack->vPushPtr(pJob_SubInserter);
     SessionArray::vMarkJob(pSession,pJob_SubInserter);
     API_LOC(340);
 

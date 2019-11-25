@@ -22,7 +22,7 @@ void Step::vSubsetFetch(void)
 {
   ENTRY(); // ENTRY("vSubsetNext"_Stz);
   
-  m_pDataStack->vPushPointer(*m_pRegSet->m_xpSubset);
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpSubset);
   
   EXIT();
 }
@@ -39,7 +39,7 @@ void Step::vSubsetNext(void)
   if (*m_pRegSet->m_xpSubset)
     pNextOperand = m_pRegSet->m_xpSubset->pNextItem();
   
-  m_pDataStack->vPushPointer(pNextOperand);
+  m_pDataStack->vPushPtr(pNextOperand);
   
   EXIT();
 }
@@ -59,7 +59,7 @@ void Step::vSubsetNextBuffer(void)
     m_pRegSet->m_xpSubset = pNextOperand;
   }
   
-  m_pDataStack->vPushPointer(pNextOperand);
+  m_pDataStack->vPushPtr(pNextOperand);
   
   EXIT();
 }

@@ -58,7 +58,7 @@ void Step::vDicKindGet(void)
   Object* pPtrKind;
   pPtrKind = pDic->pDicKind();
   
-  m_pDataStack->vPushPointer(pPtrKind);
+  m_pDataStack->vPushPtr(pPtrKind);
   
   EXIT();
 }
@@ -101,7 +101,7 @@ void Step::vDicLastWord(void)
   
   Word* pLastWord = pDic->pLastWord();
   
-  m_pDataStack->vPushPointer(pLastWord);
+  m_pDataStack->vPushPtr(pLastWord);
   
   EXIT();
 }
@@ -155,7 +155,7 @@ void Step::vDicRoot(void)
   ENTRY(); // ENTRY("vDicRoot"_Stz);
   
   Dic* pRootDic = AM::pRootDic();
-  m_pDataStack->vPushPointer(pRootDic);
+  m_pDataStack->vPushPtr(pRootDic);
   
   EXIT();
 }

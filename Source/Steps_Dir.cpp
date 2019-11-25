@@ -262,7 +262,7 @@ void Step::vDirNew(void)
   Object* pPtrDir;
   pPtrDir = (Object*)pDir;
   
-  m_pDataStack->vPushPointer(pPtrDir);
+  m_pDataStack->vPushPtr(pPtrDir);
   
   EXIT();
 }

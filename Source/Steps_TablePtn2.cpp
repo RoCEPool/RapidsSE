@@ -22,7 +22,7 @@ void Step::vTablePtnRoot(void)
   
   TablePtn* pTablePtn = _pTablePtn(*m_pRegSet->m_xpTablePtn);
   
-  m_pDataStack->vPushPointer(pTablePtn->pRootCrwBuffer());
+  m_pDataStack->vPushPtr(pTablePtn->pRootCrwBuffer());
   
   EXIT();
 }

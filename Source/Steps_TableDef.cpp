@@ -48,7 +48,7 @@ void Step::vTableDefParse(void)
     pTableDef = nullptr;
   }
   
-  m_pDataStack->vPushPointer(pTableDef);
+  m_pDataStack->vPushPtr(pTableDef);
 
   EXIT();
 }

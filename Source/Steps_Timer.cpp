@@ -146,7 +146,7 @@ void Step::vTimerNew(void)
   
   Object* pPtrTimer = pTimer;
   
-  m_pDataStack->vPushPointer(pPtrTimer);
+  m_pDataStack->vPushPtr(pPtrTimer);
   
   EXIT();
 }

@@ -94,7 +94,7 @@ void Step::vSlotsSubDic(void)
   
   Dic* pDic = pSlots->pSubDic();
   
-  m_pDataStack->vPushPointer(pDic);
+  m_pDataStack->vPushPtr(pDic);
   
   EXIT();
 }

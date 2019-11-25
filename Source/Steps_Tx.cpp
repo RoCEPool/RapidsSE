@@ -39,7 +39,7 @@ void Step::vTxBegin(void)
 //         pTx->iDistTxNode(), pTx->iDistTxNo(),
 //         pTx->aDecode());
   
-  m_pDataStack->vPushPointer(pTx);
+  m_pDataStack->vPushPtr(pTx);
   
   EXIT();
 }
@@ -317,7 +317,7 @@ void Step::vTxTestDist(void)
 //         pTx->iDistTxNode(), pTx->iDistTxNo(),
 //         pTx->aDecode());
   
-  m_pDataStack->vPushPointer(pTx);
+  m_pDataStack->vPushPtr(pTx);
   
   EXIT();
 }

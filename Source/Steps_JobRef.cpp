@@ -23,7 +23,7 @@ void Step::vJobRefPointer(void)
   
   Job* pJob = m_pRegSet->m_xpJobRef.pReferencedObject();
 
-  m_pDataStack->vPushPointer(pJob);
+  m_pDataStack->vPushPtr(pJob);
 
   EXIT();
 }

@@ -40,7 +40,7 @@ void Step::vCastPtr(void)
   if ( ! m_pDataStack->bPopI8(iInt) )
     THROW_DSTACK();
   
-  m_pDataStack->vPushPointer((Object*)iInt);
+  m_pDataStack->vPushPtr((Object*)iInt);
   
   EXIT();
 }

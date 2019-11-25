@@ -96,7 +96,7 @@ void Step::vJobClassNew(void)
   Job* pJob = pJobClass->pNewJob(nullptr);
   pJob->pEnameSet()->vAdd("<path>"_Stz,"/"_Stz);
 
-  m_pDataStack->vPushPointer(pJob);
+  m_pDataStack->vPushPtr(pJob);
   
   EXIT();
 }

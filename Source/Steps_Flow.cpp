@@ -55,7 +55,7 @@ void Step::vFlowExecute(void)
     m_aInxPtr = pWord->aEntryCell();
     
     Object* pObject = (Object*)pWord->aFirstCell();
-    m_pDataStack->vPushPointer(pObject);
+    m_pDataStack->vPushPtr(pObject);
   }
   else if (WK_ROUTINE == pWord->eKind()){
     m_pReturnStack->vPushFip(m_aInxPtr);

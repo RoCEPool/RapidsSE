@@ -31,7 +31,7 @@ void Step::vOlistFindJob(void)
   pJobFound->vBorrowRefBy(&m_pRegSet->m_xpJobRef);
   
   
-  m_pDataStack->vPushPointer(pJobFound);
+  m_pDataStack->vPushPtr(pJobFound);
   
   EXIT();
 }

@@ -53,7 +53,7 @@ void Step::vIndexDefParse(void)
     pIndexDef = nullptr;
   }
   
-  m_pDataStack->vPushPointer(pIndexDef);
+  m_pDataStack->vPushPtr(pIndexDef);
 
   EXIT();
 }

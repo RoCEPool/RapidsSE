@@ -67,7 +67,7 @@ void Step::vGridFindNode(void)
   
   Node* pNode = AM::pGrid()->pFindNode(sNodeNm);
   
-  m_pDataStack->vPushPointer(pNode);
+  m_pDataStack->vPushPtr(pNode);
   
   EXIT();
 }
@@ -97,7 +97,7 @@ void Step::vGridNode(void)
   
   Node* pNode = AM::pGrid()->pGetNode(iNode);
   
-  m_pDataStack->vPushPointer(pNode);
+  m_pDataStack->vPushPtr(pNode);
   
   EXIT();
 }

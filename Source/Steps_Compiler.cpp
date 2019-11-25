@@ -21,7 +21,7 @@ void Step::vCompilerCurrent(void)
   
   Word* pWord = m_pCompiler->pCurrentWord();
   
-  m_pDataStack->vPushPointer(pWord);
+  m_pDataStack->vPushPtr(pWord);
   
   EXIT();
 }

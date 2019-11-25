@@ -913,7 +913,7 @@ void Stack::vPushI8(i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* push pointer to proper object onto value stack                             */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushPointer(Object* pObject)
+void Stack::vPushPtr(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

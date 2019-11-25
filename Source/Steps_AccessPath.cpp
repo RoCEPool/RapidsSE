@@ -49,7 +49,7 @@ void Step::vAccessPathTableFetch(void)
   
   Table* pTable = pAccessPath->pTable();
   
-  m_pDataStack->vPushPointer(pTable);
+  m_pDataStack->vPushPtr(pTable);
   
   EXIT();
 }

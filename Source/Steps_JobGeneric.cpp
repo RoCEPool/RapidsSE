@@ -55,7 +55,7 @@ void Step::vJob__BegunNew(void)
 
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobBegun);
   
-  m_pDataStack->vPushPointer(pJobBegun);
+  m_pDataStack->vPushPtr(pJobBegun);
   
   EXIT();
 }
@@ -94,7 +94,7 @@ void Step::vJob__CancelNew(void)
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancel);
   
-  m_pDataStack->vPushPointer(pJobCancel);
+  m_pDataStack->vPushPtr(pJobCancel);
   
   EXIT();
 }
@@ -134,7 +134,7 @@ void Step::vJob__CancelledNew(void)
   if (pDistJob->bHasEnameTag(C_TAG_FLOW))
     pJobCancelled->pEnameSet()->vAdd(C_TAG_FLOW,1);
   
-  m_pDataStack->vPushPointer(pJobCancelled);
+  m_pDataStack->vPushPtr(pJobCancelled);
   
   EXIT();
 }
@@ -173,7 +173,7 @@ void Step::vJob__EndNew(void)
   if (pDistJob->bHasEnameTag(C_TAG_FLOW))
     pJobEnd->pEnameSet()->vAdd(C_TAG_FLOW,1);
   
-  m_pDataStack->vPushPointer(pJobEnd);
+  m_pDataStack->vPushPtr(pJobEnd);
   
   EXIT();
 }
@@ -213,7 +213,7 @@ void Step::vJob__EndedNew(void)
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnded);
   
-  m_pDataStack->vPushPointer(pJobEnded);
+  m_pDataStack->vPushPtr(pJobEnded);
   
   EXIT();
 }
@@ -252,7 +252,7 @@ void Step::vJob__ExecuteNew(void)
   if (pDistJob->bHasEnameTag(C_TAG_FLOW))
     pJobExecute->pEnameSet()->vAdd(C_TAG_FLOW,1);
   
-  m_pDataStack->vPushPointer(pJobExecute);
+  m_pDataStack->vPushPtr(pJobExecute);
   
   EXIT();
 }
@@ -292,7 +292,7 @@ void Step::vJob__ExecutedNew(void)
   if (pDistJob->bHasEnameTag(C_TAG_FLOW))
     pJobExecuted->pEnameSet()->vAdd(C_TAG_FLOW,1);
   
-  m_pDataStack->vPushPointer(pJobExecuted);
+  m_pDataStack->vPushPtr(pJobExecuted);
   
   EXIT();
 }

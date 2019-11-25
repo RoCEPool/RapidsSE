@@ -52,7 +52,7 @@ void Step::vEntBufferIndexFetch(void)
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
-  m_pDataStack->vPushPointer(pIndexBuffer->pIndex());
+  m_pDataStack->vPushPtr(pIndexBuffer->pIndex());
   
   EXIT();
 }
@@ -102,7 +102,7 @@ void Step::vEntBufferNextBuffer(void)
     bn nBuffer = pIndexBuffer->pNextBuffer()->nPoolBufferNo();
   }
   
-  m_pDataStack->vPushPointer(pIndexBuffer->pNextBuffer());
+  m_pDataStack->vPushPtr(pIndexBuffer->pNextBuffer());
   
   EXIT();
 }
@@ -165,7 +165,7 @@ void Step::vEntBufferToEntBuffer(void)
   
   EntBuffer* pEntBuffer = _pEntBuffer((void*)sString.iToI8());
   
-  m_pDataStack->vPushPointer(pEntBuffer);
+  m_pDataStack->vPushPtr(pEntBuffer);
   
   EXIT();
 }

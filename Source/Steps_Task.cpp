@@ -120,7 +120,7 @@ void Step::vTaskDicStack(void)
   
   Object* pPtrDicStack = &pThatTask->m_pForth->m_oDicStack;
   
-  m_pDataStack->vPushPointer(pPtrDicStack);
+  m_pDataStack->vPushPtr(pPtrDicStack);
   
   EXIT();
 }
@@ -238,7 +238,7 @@ void Step::vTaskJobFetch(void)
   
   Job* pJob = pThatTask->m_pJob;
   
-  m_pDataStack->vPushPointer(pJob);
+  m_pDataStack->vPushPtr(pJob);
   
   EXIT();
 }
@@ -357,7 +357,7 @@ void Step::vTaskSendNodeFetch(void)
   
   Object* pPtrSendNode = pSendNode;
   
-  m_pDataStack->vPushPointer(pPtrSendNode);
+  m_pDataStack->vPushPtr(pPtrSendNode);
   
   EXIT();
 }
@@ -470,7 +470,7 @@ void Step::vTaskThis(void)
   
   Object* pTask = m_pTask;
   
-  m_pDataStack->vPushPointer(pTask);
+  m_pDataStack->vPushPtr(pTask);
   
   EXIT();
 }
@@ -488,7 +488,7 @@ void Step::vTaskThread(void)
   Task* pThatTask = _pTask(pTaskObject);
 
   Thread* pThread = pThatTask->m_pThread;
-  m_pDataStack->vPushPointer(pThread);
+  m_pDataStack->vPushPtr(pThread);
   ASSERT(pThread);
   
   EXIT();

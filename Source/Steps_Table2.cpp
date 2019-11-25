@@ -47,7 +47,7 @@ void Step::vTablePtnFetch(void)
   i8 iSlot = TablePtn::iPartitionToSlot(iPtn);
   TablePtn* pTablePtn = m_pRegSet->m_xpTable->pSlots()->pPartition(iSlot);
   
-  m_pDataStack->vPushPointer(pTablePtn);
+  m_pDataStack->vPushPtr(pTablePtn);
   
   EXIT();
 }

@@ -69,7 +69,7 @@ void Step::vJob_InsertRowNewJobWriteRow(void)
                                                               pRecord,
                                                               iParentJobId);
   
-  m_pDataStack->vPushPointer(pJob_WriteRow);
+  m_pDataStack->vPushPtr(pJob_WriteRow);
   
   EXIT();
 }
@@ -148,7 +148,7 @@ void Step::vJob_InsertTableSubInserterJobFetch(void)
     THROW_DSTACK();
   Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJobPtr);
   
-  m_pDataStack->vPushPointer(pJob_InsertTable->m_pJobSubInserter);
+  m_pDataStack->vPushPtr(pJob_InsertTable->m_pJobSubInserter);
   
   EXIT();
 }

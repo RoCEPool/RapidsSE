@@ -59,7 +59,7 @@ void Step::vNodeNew(void)
 
   AM::pGrid()->vAddNode(pNode);
   
-  m_pDataStack->vPushPointer(pNode);
+  m_pDataStack->vPushPtr(pNode);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -229,7 +229,7 @@ void Step::vNodeRecvSocketFetch(void)
   
   Socket* pSocket = pNode->pRecvSocket();
   
-  m_pDataStack->vPushPointer(pSocket);
+  m_pDataStack->vPushPtr(pSocket);
   
   EXIT();
 }
@@ -270,7 +270,7 @@ void Step::vNodeSendSocketFetch(void)
   
   Socket* pSocket = pNode->pSendSocket();
   
-  m_pDataStack->vPushPointer(pSocket);
+  m_pDataStack->vPushPtr(pSocket);
   
   EXIT();
 }

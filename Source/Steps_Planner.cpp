@@ -67,7 +67,7 @@ void Step::vPlannerChosenPath(void)
     THROW_DSTACK();
   AccessPath* pChosenPlan = mpPlanner->pChosenPath(i_Phrase);
   
-  m_pDataStack->vPushPointer(pChosenPlan);
+  m_pDataStack->vPushPtr(pChosenPlan);
   
   EXIT();
 }
@@ -261,7 +261,7 @@ void Step::vPlannerNew(void)
   
   Planner* pPlanner = new Planner;
   
-  m_pDataStack->vPushPointer(pPlanner);
+  m_pDataStack->vPushPtr(pPlanner);
   
   EXIT();
 }
@@ -365,7 +365,7 @@ void Step::vPlannerTableFetch(void)
   
   Table* pTable = pPlanner->pTable();
 
-  m_pDataStack->vPushPointer(pTable);
+  m_pDataStack->vPushPtr(pTable);
   
   EXIT();
 }

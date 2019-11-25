@@ -69,7 +69,7 @@ void Step::vFileNew(void)
   Object* pPtrFile;
   pPtrFile = (Object*)pFile;
   
-  m_pDataStack->vPushPointer(pPtrFile);
+  m_pDataStack->vPushPtr(pPtrFile);
   
   EXIT();
 }

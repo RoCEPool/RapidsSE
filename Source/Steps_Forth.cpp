@@ -359,7 +359,7 @@ void Step::vFind(void)
   
   Word* pWord = m_oDicStack.pFindWord(sName);
   
-  m_pDataStack->vPushPointer(pWord);
+  m_pDataStack->vPushPtr(pWord);
   
   EXIT();
 }
@@ -381,7 +381,7 @@ void Step::vFindInCurrent(void)
   
   Word* pWord = m_oDicStack.pFindInCurrent(sName);
   
-  m_pDataStack->vPushPointer(pWord);
+  m_pDataStack->vPushPtr(pWord);
   
   EXIT();
 }
@@ -743,7 +743,7 @@ void Step::vTick(void)
     pCurrentWord->vEncode("pushValue"_Stz,pWord);
   }
   else {
-    m_pDataStack->vPushPointer(pWord);
+    m_pDataStack->vPushPtr(pWord);
   }
   
   EXIT();

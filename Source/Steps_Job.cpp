@@ -666,7 +666,7 @@ void Step::vJobEnameSetFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushPointer(pJob->pEnameSet());
+  m_pDataStack->vPushPtr(pJob->pEnameSet());
   
   EXIT();
 }
@@ -763,7 +763,7 @@ void Step::vJobFindOriginator(void)
   pJobFound->vBorrowRefBy(&m_pRegSet->m_xpJobRef);
   
   
-  m_pDataStack->vPushPointer(pJobFound);
+  m_pDataStack->vPushPtr(pJobFound);
   
   EXIT();
 }
@@ -787,7 +787,7 @@ void Step::vJobFindParticipant(void)
   pJobFound->vBorrowRefBy(&m_pRegSet->m_xpJobRef);
   
   
-  m_pDataStack->vPushPointer(pJobFound);
+  m_pDataStack->vPushPtr(pJobFound);
   
   EXIT();
 }
@@ -1119,7 +1119,7 @@ void Step::vJobOperandFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushPointer(pJob->m_pOperand);
+  m_pDataStack->vPushPtr(pJob->m_pOperand);
   
   EXIT();
 }
@@ -1237,7 +1237,7 @@ void Step::vJobOriginatingTaskFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushPointer(pJob->m_pOriginatingTask);
+  m_pDataStack->vPushPtr(pJob->m_pOriginatingTask);
   
   EXIT();
 }
@@ -1955,7 +1955,7 @@ void Step::vJobSessionFetch(void)
   if (iSessionId != C_UNKNOWN)
     pSession = AM::pSessionArray()->pGetSession(iSessionId);
   
-  m_pDataStack->vPushPointer(pSession);
+  m_pDataStack->vPushPtr(pSession);
   
   EXIT();
 }
@@ -2245,7 +2245,7 @@ void Step::vJobTaskFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushPointer(pJob->pTask());
+  m_pDataStack->vPushPtr(pJob->pTask());
   
   EXIT();
 }
@@ -2283,7 +2283,7 @@ void Step::vJobThis(void)
   
   Job* pJob = m_pTask->m_pJob;
   
-  m_pDataStack->vPushPointer(pJob);
+  m_pDataStack->vPushPtr(pJob);
 
   EXIT();
 }
@@ -2321,7 +2321,7 @@ void Step::vJobWaitParticipant(void)
 //  Job* pJobFound = AM::pParticipatingJobs()->pFindJob(iJobId);
 //  RASSERT(pJobFound);
   
-  m_pDataStack->vPushPointer(pJobFound);
+  m_pDataStack->vPushPtr(pJobFound);
   
   EXIT();
 }

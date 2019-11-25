@@ -52,7 +52,7 @@ void Step::vWordCategoryFetch(void)
   
   Word* pCategory = pWord->pCategory();
   
-  m_pDataStack->vPushPointer(pCategory);
+  m_pDataStack->vPushPtr(pCategory);
   
   EXIT();
 }
@@ -110,7 +110,7 @@ void Step::vWordEnmSetFetch(void)
   
   EnameSet* pEnameSet = pWord->pEnameSet();
   
-   m_pDataStack->vPushPointer(pEnameSet);
+   m_pDataStack->vPushPtr(pEnameSet);
   
   EXIT();
 }
@@ -372,7 +372,7 @@ void Step::vWordPrev(void)
   
   Word* pPrevWord = pWord->pPrevWord();
   
-  m_pDataStack->vPushPointer(pPrevWord);
+  m_pDataStack->vPushPtr(pPrevWord);
   
   EXIT();
 }

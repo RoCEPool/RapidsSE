@@ -85,7 +85,7 @@ void Step::vIndexColumnFetch(void)
   ASSERT(iColumnNo < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iColumnNo);
   
-  m_pDataStack->vPushPointer(pColumn);
+  m_pDataStack->vPushPtr(pColumn);
   
   EXIT();
 }
@@ -221,7 +221,7 @@ void Step::vIndexIndexDefFetch(void)
     THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   
-  m_pDataStack->vPushPointer(pIndex->pIndexDef());
+  m_pDataStack->vPushPtr(pIndex->pIndexDef());
   
   EXIT();
 }
@@ -846,7 +846,7 @@ void Step::vIndexSubDic(void)
   
   Dic* pDic = pIndex->pSubDic();
   
-  m_pDataStack->vPushPointer(pDic);
+  m_pDataStack->vPushPtr(pDic);
   
   EXIT();
 }
@@ -869,7 +869,7 @@ void Step::vIndexTableFetch(void)
   Table* pTable = pIndex->pTable();
   ASSERT(CN_TABLE == pTable->eClass());
   
-  m_pDataStack->vPushPointer(pTable);
+  m_pDataStack->vPushPtr(pTable);
   
   EXIT();
 }

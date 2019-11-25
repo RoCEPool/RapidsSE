@@ -191,7 +191,7 @@ void Step::vTableColumnFetch(void)
   
   ColumnVec* pColVec = pTable->pColumnVec();
   
-  m_pDataStack->vPushPointer(pColVec->pGet(iColumnNo));
+  m_pDataStack->vPushPtr(pColVec->pGet(iColumnNo));
   
   EXIT();
 }
@@ -325,7 +325,7 @@ void Step::vTableGetPtn(void)
   i8 i_Slot = TablePtn::iPartitionToSlot(i_Ptn);
   TablePtn* pTablePtn = pTable->pPartition(i_Slot);
 
-  m_pDataStack->vPushPointer(pTablePtn);
+  m_pDataStack->vPushPtr(pTablePtn);
   
   EXIT();
 }
@@ -403,7 +403,7 @@ void Step::vTableFindColumn(void)
   }
   RASSERT(bFound);
   
-  m_pDataStack->vPushPointer(pColumn);
+  m_pDataStack->vPushPtr(pColumn);
   
   EXIT();
 }
@@ -680,7 +680,7 @@ void Step::vTableSubDic(void)
   
   Dic* pDic = pTable->pSubDic();
   
-  m_pDataStack->vPushPointer(pDic);
+  m_pDataStack->vPushPtr(pDic);
   
   EXIT();
 }
@@ -722,7 +722,7 @@ void Step::vTableSlots(void)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  m_pDataStack->vPushPointer(pTable->pSlots());
+  m_pDataStack->vPushPtr(pTable->pSlots());
   
   EXIT();
 }
@@ -760,7 +760,7 @@ void Step::vTableTableDefFetch(void)
     THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
   
-  m_pDataStack->vPushPointer(pTable->pTableDef());
+  m_pDataStack->vPushPtr(pTable->pTableDef());
 
   EXIT();
 }

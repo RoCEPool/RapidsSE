@@ -34,7 +34,7 @@ void Step::vSessionCommand(void)
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  m_pDataStack->vPushPointer(pSession->m_pInput);
+  m_pDataStack->vPushPtr(pSession->m_pInput);
   
   EXIT();
 }
@@ -54,7 +54,7 @@ void Step::vSessionDicStackFetch(void)
   ASSERT(pSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  m_pDataStack->vPushPointer(pSession->pPathStack());
+  m_pDataStack->vPushPtr(pSession->pPathStack());
   
   EXIT();
 }
@@ -92,7 +92,7 @@ void Step::vSessionEnameSetFetch(void)
   
   EnameSet* pEnameSet = pSession->m_pSemantic->pEnameSet();
   
-  m_pDataStack->vPushPointer(pEnameSet);
+  m_pDataStack->vPushPtr(pEnameSet);
   
   EXIT();
 }
@@ -168,7 +168,7 @@ void Step::vSessionTxFetch(void)
   
   Tx* pTx = pSession->pTx();
   
-  m_pDataStack->vPushPointer(pTx);
+  m_pDataStack->vPushPtr(pTx);
   
   EXIT();
 }

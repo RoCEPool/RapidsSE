@@ -29,7 +29,7 @@ void Step::vEnameSetNew(void)
   
   EnameSet* pEnameSet = new EnameSet;
   
-  m_pDataStack->vPushPointer(pEnameSet);
+  m_pDataStack->vPushPtr(pEnameSet);
   
   EXIT();
 }
