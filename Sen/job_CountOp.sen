@@ -28,7 +28,7 @@
       "Operand:- ZK_CRWBUFFER" .
       nCount Operand[].rowCount@ + to nCount
       true
-      endof
+    endof
 
     ZK_CSVBUFFER of
       "Operand:- ZK_CSVBUFFER" .

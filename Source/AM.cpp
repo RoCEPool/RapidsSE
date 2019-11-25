@@ -163,6 +163,12 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
  
+    case CN_IRWBUFFER: {
+      IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
+      delete pIrwBuffer;
+      break;
+    }
+      
     case CN_STARTMARKER: {
       StartMarker* pStartMarker = _pStartMarker(pOperand);
       delete pStartMarker;

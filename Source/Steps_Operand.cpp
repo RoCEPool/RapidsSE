@@ -11,6 +11,7 @@ void Step::vAddSteps_Operand(void)
 {
   vAddStep("Operand[].bide"_Stz,         &Step::vOperandBide);
   vAddStep("Operand[].delete"_Stz,       &Step::vOperandDelete);
+  vAddStep("Operand[].firstRow@"_Stz,    &Step::vOperandFirstRowFetch);
   vAddStep("Operand[].handleAggEnd"_Stz, &Step::vOperandHandleAggEnd);
   vAddStep("Operand[].handleEnd"_Stz,    &Step::vOperandHandleEnd);
   vAddStep("Operand[].isNull"_Stz,       &Step::vOperandIsNull);
@@ -58,6 +59,19 @@ void Step::vOperandDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Operand[].firstRow@ -- fetch operand first row                             */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandFirstRowFetch(void)
+{
+  ENTRY(); // ENTRY("vOperandFirstRowFetch"_Stz);
+  
+  IrwBuffer* pIrwBuffer = _pIrwBuffer(m_pRegSet->m_pOperand);
+  m_pRegSet->m_xpRow = pIrwBuffer->aFirstRow();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Operand[].handleCountEnd -- handle count end marker                        */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandHandleAggEnd(void)
@@ -98,13 +112,13 @@ void Step::vOperandHandleAggEnd(void)
       
       // get the columnVec defining the rowref
       ColumnVec* pColumnVec = new ColumnVec;
-      pOp->m_pStreamDef->vAddColumns(pColumnVec);
+      pStreamDef->vAddColumns(pColumnVec);
       
       Row* pRow = pIrwBuffer->aAllotRow(pColumnVec);
       pRow->m_waColVal[0] = nCount;
       
       // pipe out the streamdef
-      pOp->vPipeOut(new StreamDef(pOp->m_pStreamDef));
+      pOp->vPipeOut(pStreamDef);
       
       // pipe out the buffer with the count
       pOp->vPipeOut(pIrwBuffer);

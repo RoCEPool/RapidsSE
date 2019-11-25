@@ -29,7 +29,7 @@ OpDesc __Op_Start (
   StartOp::eCall,     // function which calls the op loop
   nullptr,            // function which calls the drain loop
 
-  "count"_Stz
+  "start"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

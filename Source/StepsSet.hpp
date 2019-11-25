@@ -865,6 +865,7 @@ public:
   // operand
   void vOperandBide(void);
   void vOperandDelete(void);
+  void vOperandFirstRowFetch(void);
   void vOperandHandleAggEnd(void);
   void vOperandHandleEnd(void);
   void vOperandIsNull(void);
@@ -965,6 +966,9 @@ public:
   void vRbCursorNext(void);
   void vRbCursorTableFetch(void);
   void vRbCursorTableStore(void);
+
+  // row
+  void vRowIntColumnFetch(void);
 
   // rowCursor
   void vRowCursorBegin(void);

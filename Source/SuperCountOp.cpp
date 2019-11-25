@@ -7,7 +7,7 @@
 OpDesc __Op_SuperCount (
   CN_SUPERCOUNTOP,    // class number
   OK_SINGLE,          // op kind
-  "SuperCount"_Stz,   // first word of prompt command
+  "SuperCountOp"_Stz, // first word of prompt command
   "Sct"_Stz,          // prefix
                         
   false,              // partitioned
@@ -29,7 +29,7 @@ OpDesc __Op_SuperCount (
   SuperCountOp::eCall,// function which calls the op loop
   nullptr,            // function which calls the drain loop
   
-  "superCount"_Stz
+  "superCountOp"_Stz
   );
 
 /*----------------------------------------------------------------------------*/
