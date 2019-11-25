@@ -7,7 +7,7 @@
 OpDesc __Op_XmitOp (
   CN_XMITOP,          // class number
   OK_SINGLE,          // op kind
-  "Xmit"_Stz,         // first word of prompt command
+  "XmitOp"_Stz,       // first word of prompt command
   "Xmt"_Stz,          // prefix
   
   true,               // partitioned
@@ -76,7 +76,6 @@ XmitOp::XmitOp(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   _precondition_(_MAGIC_,CN_XMITOP);
   
-  m_iXmitNode = C_UNKNOWN;
   m_bCancelMarker = false;
 }
 
@@ -119,16 +118,6 @@ eOR XmitOp::eCall(void* aThis)
 }
 
 /*----------------------------------------------------------------------------*/
-/* the sort operator loop function                                            */
-/*----------------------------------------------------------------------------*/
-void XmitOp::vXmitNode(i8 i_XmitNode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOP,_FOOTER_);
-  
-  m_iXmitNode = i_XmitNode;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -138,6 +127,8 @@ void XmitOp::vXmitNode(i8 i_XmitNode)
 eOR XmitOp::eXmitLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOP,_FOOTER_);
+  
+  RASSERT(0);
   
   i8 iOperands = 0;
   

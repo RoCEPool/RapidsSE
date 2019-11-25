@@ -9,7 +9,6 @@ namespace DataOperators
   {
   private:
   
-    i8 m_iXmitNode;        // node to xmit to
     bool m_bCancelMarker;  // has the cancel marker been already sent ?
     
     // must be last
@@ -24,8 +23,6 @@ namespace DataOperators
       
       static Op* pNew(OpSpec* pOpSpec, Pipeline* pPipeline);
       static eOR eCall(void* aThis);
-    
-      void vXmitNode(i8 iXmitNode);
   
   private:
     eOR eXmitLoop(void);

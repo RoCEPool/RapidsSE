@@ -7,16 +7,65 @@
 /*----------------------------------------------------------------------------*/
 /* execute for cancelQuery                            (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : Xmit_req ( -- )
- 
-   >>logEntry <SEED_REQ>
+ : XmitOp_req ( -- )
 
-   job::this locals| pJob_XmitOp |
+  >>logEntry <SEED_REQ>
 
+  begin
 
-   pJob_XmitOp job.opLoop
+    // bide till next operand is available
+    Operand[].bide
 
-   //pJob_XmitOp job::participantExecuted
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_CRWBUFFER of
+        "Operand:- ZK_CRWBUFFER" .
+        Operand[].workDone
+        Operand[].xmitOut
+        true
+      endof
+
+      ZK_CSVBUFFER of
+        "Operand:- ZK_CSVBUFFER" .
+        Operand[].workDone
+        Operand[].xmitOut
+        true
+      endof
+
+      ZK_ENDMARKER of
+        "Operand:- ZK_ENDMARKER" .
+        Operand[].handleEnd
+        false
+      endof
+
+      ZK_ENTBUFFER of
+        "Operand:- ZK_ENTBUFFER" .
+        Operand[].workDone
+        Operand[].xmitOut
+        true
+      endof
+
+      ZK_IRWBUFFER of
+        "Operand:- ZK_IRWBUFFER" .
+        Operand[].workDone
+        Operand[].xmitOut
+        true
+      endof
+
+      ZK_STREAMDEF of
+        "Operand:- ZK_STREAMDEF" .
+        Operand[].workDone
+        Operand[].xmitOut
+        true
+      endof
+
+    endcase
+
+  while assert::stack_0 repeat
 
   <<logExit
   job::deleteThis
@@ -26,9 +75,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: Xmit :: Xmit ;
+jobSyntax: XmitOp :: XmitOp ;
 
-jobInfo: Xmit
+jobInfo: XmitOp
 {
   <?jobDesc?>  = "--description of job--"
   

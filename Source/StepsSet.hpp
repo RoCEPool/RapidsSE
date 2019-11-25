@@ -879,6 +879,7 @@ public:
   void vOperandRowCountFetch(void);
   void vOperandSet(void);
   void vOperandWorkDone(void);
+  void vOperandXmitOut(void);
 
   // persistence
   void vPersistenceCheckpoint(void);
