@@ -55,12 +55,12 @@ namespace SenVM
     bool bPopGenVar(GenVar& xGenVar);
     bool bPopGenVar(GenVar& xVar1, GenVar& xVar2);
     bool bPopGenVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3);
-    bool bPopI8(i8& iArg);
-    bool bPopI8(i8& iArg1, i8& iArg2);
-    bool bPopI8(i8& iArg1, i8& iArg2, GenVar& xGenVar);
-    bool bPopI8(i8& iArg, Object*& pObject);
-    bool bPopI8(i8& iArg, GenVar& xGenVar);
-    bool bPopI8(i8& iArg, s48K& sArg);
+    bool bPopInt(i8& iArg);
+    bool bPopInt(i8& iArg1, i8& iArg2);
+    bool bPopInt(i8& iArg1, i8& iArg2, GenVar& xGenVar);
+    bool bPopInt(i8& iArg, Object*& pObject);
+    bool bPopInt(i8& iArg, GenVar& xGenVar);
+    bool bPopInt(i8& iArg, s48K& sArg);
     bool bPopPtr(Object*& pObject);
     bool bPopPtr(Object*& pObject, i8& iArg);
     bool bPopPtr(Object*& pObject1, Object*& pObject2);

@@ -317,7 +317,7 @@ void Step::vNodeStateStore(void)
   Node* pNode = _pNode(pPtrNode);
   
   i8 iState;
-  if ( ! m_pDataStack->bPopI8(iState) )
+  if ( ! m_pDataStack->bPopInt(iState) )
     THROW_DSTACK();
   
   pNode->vState((eNS)iState);

@@ -309,7 +309,7 @@ void Step::vStrRandom(void)
   ENTRY(); // ENTRY("vStrRandom"_Stz);
   
   i8 iLength;
-  if ( ! m_pDataStack->bPopI8(iLength) )
+  if ( ! m_pDataStack->bPopInt(iLength) )
     THROW_DSTACK();
   
   s256 sRnd;

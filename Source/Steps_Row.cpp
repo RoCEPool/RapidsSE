@@ -21,7 +21,7 @@ void Step::vRowIntColumnFetch(void)
   
   i8 iColumn;
   
-  if ( ! m_pDataStack->bPopI8(iColumn) )
+  if ( ! m_pDataStack->bPopInt(iColumn) )
     THROW_DSTACK();
   
   Row* aRow = *m_pRegSet->m_xpRow;

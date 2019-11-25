@@ -21,7 +21,7 @@ void Step::vErrorMsg(void)
   
   
   i8 iErrorCode;
-  if ( ! m_pDataStack->bPopI8(iErrorCode) )
+  if ( ! m_pDataStack->bPopInt(iErrorCode) )
     THROW_DSTACK();
   
   if (iErrorCode < EC_NONE || iErrorCode > EC_ENUMS)

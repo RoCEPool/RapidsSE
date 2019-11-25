@@ -83,7 +83,7 @@ void Step::vOperandHandleAggEnd(void)
   
   i8 nCount;
   
-  if ( ! m_pDataStack->bPopI8(nCount) )
+  if ( ! m_pDataStack->bPopInt(nCount) )
     THROW_DSTACK();
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;

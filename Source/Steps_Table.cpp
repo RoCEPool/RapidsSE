@@ -85,7 +85,7 @@ void Step::vTableAnalyze(void)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  if ( ! m_pDataStack->bPopI8(iDetailed) )
+  if ( ! m_pDataStack->bPopInt(iDetailed) )
     THROW_DSTACK();
   
   s48K sAnalysis;
@@ -164,7 +164,7 @@ void Step::vTableIsLoadingStore(void)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  if ( ! m_pDataStack->bPopI8(iLoading) )
+  if ( ! m_pDataStack->bPopInt(iLoading) )
     THROW_DSTACK();
   
   pTable->vIsLoading(iLoading == 1 ? true : false);
@@ -186,7 +186,7 @@ void Step::vTableColumnFetch(void)
   ASSERT(CN_TABLE == pTable->eClass());
   
   i8 iColumnNo;
-  if ( ! m_pDataStack->bPopI8(iColumnNo) )
+  if ( ! m_pDataStack->bPopInt(iColumnNo) )
   THROW_DSTACK();
   
   ColumnVec* pColVec = pTable->pColumnVec();
@@ -700,7 +700,7 @@ void Step::vTableSubLoaders(void)
   ASSERT(CN_TABLE == pTable->eClass());
   
   i8 iSubLoaders;
-  if ( ! m_pDataStack->bPopI8(iSubLoaders) )
+  if ( ! m_pDataStack->bPopInt(iSubLoaders) )
     THROW_DSTACK();
   
   pTable->vSubLoaders(iSubLoaders);

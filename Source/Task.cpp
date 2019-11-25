@@ -1221,7 +1221,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       //*pf = 'i';                                                    //! Defect??
       
       i8 iInt;
-      m_pForth->m_pDataStack->bPopI8(iInt);
+      m_pForth->m_pDataStack->bPopInt(iInt);
       
       char caValue[32];
       StrLib::wToString(iInt,caValue);

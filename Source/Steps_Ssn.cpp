@@ -113,7 +113,7 @@ void Step::vSsnSenLoc(void)
   ENTRY(); // ENTRY("vSsnSenLoc"_Stz);
   
   i8 iPosition;
-  if ( ! m_pDataStack->bPopI8(iPosition) )
+  if ( ! m_pDataStack->bPopInt(iPosition) )
     THROW_DSTACK();
 
   //  Session* pSession = m_i_Session->m_pSession;

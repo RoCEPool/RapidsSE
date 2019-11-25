@@ -379,7 +379,7 @@ bool Stack::bPopGenVar(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
 /*----------------------------------------------------------------------------*/
 /* pop i8 from value stack                                                    */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopI8(i8& iArg)
+bool Stack::bPopInt(i8& iArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -400,7 +400,7 @@ bool Stack::bPopI8(i8& iArg)
 /*----------------------------------------------------------------------------*/
 /* pop i8,i8 from value stack                                                 */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopI8(i8& iArg1, i8& iArg2)
+bool Stack::bPopInt(i8& iArg1, i8& iArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -423,7 +423,7 @@ bool Stack::bPopI8(i8& iArg1, i8& iArg2)
 /*----------------------------------------------------------------------------*/
 /* pop i8,pObject from value stack                                            */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopI8(i8& iArg, Object*& pObject)
+bool Stack::bPopInt(i8& iArg, Object*& pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -446,7 +446,7 @@ bool Stack::bPopI8(i8& iArg, Object*& pObject)
 /*----------------------------------------------------------------------------*/
 /* pop i8,val from value stack                                                */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopI8(i8& iArg, GenVar& xGenVar)
+bool Stack::bPopInt(i8& iArg, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -466,7 +466,7 @@ bool Stack::bPopI8(i8& iArg, GenVar& xGenVar)
 /*----------------------------------------------------------------------------*/
 /* pop i8,s from value stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopI8(i8& iArg, s48K& sArg)
+bool Stack::bPopInt(i8& iArg, s48K& sArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -489,7 +489,7 @@ bool Stack::bPopI8(i8& iArg, s48K& sArg)
 /*----------------------------------------------------------------------------*/
 /* pop i8,i8,val from value stack                                             */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopI8(i8& iArg1, i8& iArg2, GenVar& xGenVar)
+bool Stack::bPopInt(i8& iArg1, i8& iArg2, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

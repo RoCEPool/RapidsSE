@@ -306,7 +306,7 @@ void Step::vTaskSeed(void)
 
 
   i8 nTaskArgs;
-  if ( ! m_pDataStack->bPopI8(nTaskArgs) )
+  if ( ! m_pDataStack->bPopInt(nTaskArgs) )
     THROW_DSTACK();
   //ASSERT(! nTaskArgs);
   
@@ -393,7 +393,7 @@ void Step::vTaskSleepMsec(void)
   
   i8 nMilliSeconds;
   
-  if ( ! m_pDataStack->bPopI8(nMilliSeconds) )
+  if ( ! m_pDataStack->bPopInt(nMilliSeconds) )
     THROW_DSTACK();
   
   i8 nMicroSeconds = nMilliSeconds * C_1K;
@@ -413,7 +413,7 @@ void Step::vTaskSleepSsec(void)
   
   i8 nSeconds;
   
-  if ( ! m_pDataStack->bPopI8(nSeconds) )
+  if ( ! m_pDataStack->bPopInt(nSeconds) )
     THROW_DSTACK();
   
   i8 nMicroSeconds = nSeconds * C_1M;
@@ -433,7 +433,7 @@ void Step::vTaskSleepUsec(void)
   
   i8 nMicroSeconds;
   
-  if ( ! m_pDataStack->bPopI8(nMicroSeconds) )
+  if ( ! m_pDataStack->bPopInt(nMicroSeconds) )
     THROW_DSTACK();
   
   m_pTask->vSleepUsec(nMicroSeconds);

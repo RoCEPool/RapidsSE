@@ -368,7 +368,7 @@ void Step::vDirSeek(void)
   Dir* pDir = _pDir(pPtrDir);
   
   i8 iPosition;
-  if ( ! m_pDataStack->bPopI8(iPosition) )
+  if ( ! m_pDataStack->bPopInt(iPosition) )
     THROW_DSTACK();
   
   pDir->vSeek(iPosition);

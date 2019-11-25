@@ -31,7 +31,7 @@ void Step::vJobClassFind(void)
   ENTRY(); // ENTRY("vJobClassFind"_Stz);
   
   i8 iJobClass;
-  if ( ! m_pDataStack->bPopI8(iJobClass) )
+  if ( ! m_pDataStack->bPopInt(iJobClass) )
     THROW_DSTACK();
   
   eCN eClass = (eCN)iJobClass;
@@ -51,7 +51,7 @@ void Step::vJobClassBuffer(void)
   ENTRY(); // ENTRY("vJobClassBuffer"_Stz);
   
   i8 iJobClass_p;
-  if ( ! m_pDataStack->bPopI8(iJobClass_p) )
+  if ( ! m_pDataStack->bPopInt(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
@@ -70,7 +70,7 @@ void Step::vJobClassName(void)
   ENTRY(); // ENTRY("vJobClassName"_Stz);
   
   i8 iJobClass_p;
-  if ( ! m_pDataStack->bPopI8(iJobClass_p) )
+  if ( ! m_pDataStack->bPopInt(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
@@ -89,7 +89,7 @@ void Step::vJobClassNew(void)
   ENTRY(); // ENTRY("vJobClassNew"_Stz);
   
   i8 iJobClass_p;
-  if ( ! m_pDataStack->bPopI8(iJobClass_p) )
+  if ( ! m_pDataStack->bPopInt(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
 
@@ -109,7 +109,7 @@ void Step::vJobClassSeedRun(void)
   ENTRY(); // ENTRY("vJobClassSeedRun"_Stz);
   
   i8 iJobClass_p;
-  if ( ! m_pDataStack->bPopI8(iJobClass_p) )
+  if ( ! m_pDataStack->bPopInt(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
@@ -128,7 +128,7 @@ void Step::vJobClassSeedReq(void)
   ENTRY(); // ENTRY("vJobClassSeedReq"_Stz);
   
   i8 iJobClass_p;
-  if ( ! m_pDataStack->bPopI8(iJobClass_p) )
+  if ( ! m_pDataStack->bPopInt(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
@@ -147,7 +147,7 @@ void Step::vJobClassSeedRcv(void)
   ENTRY(); // ENTRY("vJobClassSeedRcv"_Stz);
   
   i8 iJobClass_p;
-  if ( ! m_pDataStack->bPopI8(iJobClass_p) )
+  if ( ! m_pDataStack->bPopInt(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
@@ -166,7 +166,7 @@ void Step::vJobClassSeedExe(void)
   ENTRY(); // ENTRY("vJobClassSeedExe"_Stz);
   
   i8 iJobClass_p;
-  if ( ! m_pDataStack->bPopI8(iJobClass_p) )
+  if ( ! m_pDataStack->bPopInt(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
@@ -185,7 +185,7 @@ void Step::vJobClassSeedEnd(void)
   ENTRY(); // ENTRY("vJobClassSeedEnd"_Stz);
   
   i8 iJobClass_p;
-  if ( ! m_pDataStack->bPopI8(iJobClass_p) )
+  if ( ! m_pDataStack->bPopInt(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
@@ -204,7 +204,7 @@ void Step::vJobClassSeedCan(void)
   ENTRY(); // ENTRY("vJobClassSeedCan"_Stz);
   
   i8 iJobClass_p;
-  if ( ! m_pDataStack->bPopI8(iJobClass_p) )
+  if ( ! m_pDataStack->bPopInt(iJobClass_p) )
     THROW_DSTACK();
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
