@@ -25,6 +25,7 @@ namespace Registers
     REG<File> m_xpFile0;    // file0[]
     REG<File> m_xpFile1;    // file1[]
 
+    REG<Row>      m_xpRow;
     REG<Operand>  m_xpSubset;
     REG<Table>    m_xpTable;
     REG<TablePtn> m_xpTablePtn;

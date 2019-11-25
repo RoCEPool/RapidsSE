@@ -77,17 +77,17 @@ CountOp::CountOp(OpSpec* pOpSpec, Pipeline* pPipeline)
   
   m_fpCall = CountOp::eCall;
   m_nCount = 0;
-  m_pStreamDef = new StreamDef;
-  
-  // create an integer column
-  m_pStreamDef->m_xaColumn[0].vColumnNo(0);
-  m_pStreamDef->m_xaColumn[0].vColumnNm("count"_Stz);
-  m_pStreamDef->m_xaColumn[0].vColumnType(CT_INTEGER);
-  m_pStreamDef->m_xaColumn[0].vDatumType(DM_INT);
-  
-  m_pStreamDef->m_nDefSets++;
-  m_pStreamDef->m_nDefColumns[0] = 1;
-  m_pStreamDef->m_i_DefStart[0] = 0;
+//  m_pStreamDef = new StreamDef;
+//
+//  // create an integer column
+//  m_pStreamDef->m_xaColumn[0].vColumnNo(0);
+//  m_pStreamDef->m_xaColumn[0].vColumnNm("count"_Stz);
+//  m_pStreamDef->m_xaColumn[0].vColumnType(CT_INTEGER);
+//  m_pStreamDef->m_xaColumn[0].vDatumType(DM_INT);
+//
+//  m_pStreamDef->m_nDefSets++;
+//  m_pStreamDef->m_nDefColumns[0] = 1;
+//  m_pStreamDef->m_i_DefStart[0] = 0;
   
   _checkInitialised_(CN_COUNTOP);
 
