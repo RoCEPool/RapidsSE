@@ -219,14 +219,28 @@ SenVar* GenVar::aEmbeddedSenVar(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size of string in nested value                                         */
+/* get size of of embedded value on stack                                     */
 /*----------------------------------------------------------------------------*/
-i8 GenVar::nSize(void)
+i8 GenVar::nStackBytes(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  i8 nSize = u.m_xNstVal.m_wWord;
+  i8 nBytes = u.m_xSenVar.nStackBytes();
   
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of string in nested value                                         */
+/*----------------------------------------------------------------------------*/
+i8 GenVar::nStzSize(void)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  //i8 nSize = u.m_xNstVal.m_wWord;
+  
+  i8 nSize = u.m_xStrVar.nSize();
+
   return nSize;
 }
 

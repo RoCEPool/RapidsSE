@@ -48,14 +48,15 @@ namespace SenVM
     char*   azChar(void);
     eCN     eEmbeddedClass(void);
     StkVal* aEmbeddedStkVal(void);
+    SenVar* aEmbeddedSenVar(void);
     Cell*   aFip(void);
     i8      iInt(void);
     bool    bIsInt(void);
     Object* pObj(void);
-    SenVar* aEmbeddedSenVar(void);
-    i8      nSize(void);
+    i8      nStackBytes(void);
     Stz*    szStz(void);
-  
+    i8      nStzSize(void);
+
   private:
     Footer* aFooter(void);
   };
