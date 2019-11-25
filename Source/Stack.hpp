@@ -41,8 +41,6 @@ namespace SenVM
   
     void vContentDump(DicStack* pDicStack, Stz* szTitle);
   
-    void vDiscard(void);
-  
     bool bGuard(i8 nValues);
     bool bGuard(eCN eClass0);
     bool bGuard(eCN eClass0, eCN eClass1);
@@ -115,6 +113,8 @@ namespace SenVM
     PtrVal* aAllotPtrVal(void);
     StkVal* aAllotStkVal(i8 nBytes);
     StrVal* aAllotStrVal(i8 nSize);
+  
+    void vDiscard(void);
   
     Cell*   aPopFip(void);
     i8      iPopInt(void);

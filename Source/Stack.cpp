@@ -98,7 +98,7 @@ void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* dump contents of the value stack                                           */
+/* dump contents of the stack                                                 */
 /*----------------------------------------------------------------------------*/
 void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
 {
@@ -161,26 +161,6 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
     }
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* discard value on top of value stack                                        */
-/*----------------------------------------------------------------------------*/
-void Stack::vDiscard(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-
-  _hazard_();
-  
-  StkVal* aStkVal = reinterpret_cast<StkVal*>(m_aTop);
-  
-  i8 iSize = aStkVal->nStackBytes();
-  
-  vPopBy(iSize);
-  
-  m_nValues--;
-  
-  _hazard_();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1190,6 +1170,26 @@ StrVal* Stack::aAllotStrVal(i8 nSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* discard value on top of value stack                                        */
+/*----------------------------------------------------------------------------*/
+void Stack::vDiscard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  _hazard_();
+  
+  StkVal* aStkVal = reinterpret_cast<StkVal*>(m_aTop);
+  
+  i8 iSize = aStkVal->nStackBytes();
+  
+  vPopBy(iSize);
+  
+  m_nValues--;
+  
+  _hazard_();
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop fip from stack                                                         */
 /*----------------------------------------------------------------------------*/
 Cell* Stack::aPopFip(void)
@@ -1204,7 +1204,7 @@ Cell* Stack::aPopFip(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop integer from stack                                                     */
+/* pop int from stack                                                         */
 /*----------------------------------------------------------------------------*/
 i8 Stack::iPopInt(void)
 {
@@ -1215,6 +1215,20 @@ i8 Stack::iPopInt(void)
   vDiscard();
   
   return iInt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop obj from stack                                                         */
+/*----------------------------------------------------------------------------*/
+Object* Stack::pPopObj(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  Object* pObj = static_cast<PtrVal*>(m_aTop)->pObj();
+  
+  vDiscard();
+  
+  return pObj;
 }
 
 /*----------------------------------------------------------------------------*/
