@@ -856,7 +856,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     
     sStackContents.vCatSprint(" "_Stz);
     
-    StkVal* aStkVal = pStack->aPeekVal(iValue);
+    StkVal* aStkVal = pStack->aPeekStkVal(iValue);
     
     eCN eClass = aStkVal->eClass();
     
@@ -1190,7 +1190,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     // should be %v or %V
     ASSERT('v' == *pf || 'V' == *pf);
     
-    StkVal* aStkVal0 = m_pForth->m_pDataStack->aPeekVal(0);
+    StkVal* aStkVal0 = m_pForth->m_pDataStack->aPeekStkVal(0);
     eCN eClass = aStkVal0->eClass();
     
     // test for StrVal
@@ -1198,13 +1198,13 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       
       //*pf = 's';                                                    //! Defect??
       
-      s48K sValue;
-      m_pForth->m_pDataStack->bPopS48K(sValue);
+      s48K sStr;
+      m_pForth->m_pDataStack->bPopS48K(sStr);
       
       if ('V' == *pf)
         *ps++ = '"';
       
-      for (char* pv = sValue.azChar(); *pv; )
+      for (char* pv = sStr.azChar(); *pv; )
         *ps++ = *pv++;
       
       if ('V' == *pf)
@@ -1220,11 +1220,11 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       
       //*pf = 'i';                                                    //! Defect??
       
-      i8 iValue;
-      m_pForth->m_pDataStack->bPopI8(iValue);
+      i8 iInt;
+      m_pForth->m_pDataStack->bPopI8(iInt);
       
       char caValue[32];
-      StrLib::wToString(iValue,caValue);
+      StrLib::wToString(iInt,caValue);
       
       for (char* pv = caValue; *pv; )
         *ps++ = *pv++;
@@ -1239,11 +1239,11 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       
       //*pf = 'i';                                                    //! Defect??
       
-      Object* pValue;
-      m_pForth->m_pDataStack->bPopObject(pValue);
+      Object* pObject;
+      m_pForth->m_pDataStack->bPopObject(pObject);
       
       char caValue[32];
-      StrLib::wToPointer(pValue,caValue);
+      StrLib::wToPointer(pObject,caValue);
       
       for (char* pv = caValue; *pv; )
         *ps++ = *pv++;

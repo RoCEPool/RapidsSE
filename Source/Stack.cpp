@@ -186,7 +186,7 @@ bool Stack::bGuard(eCN eClass0)
   if (nValues() < 1)
     return false;
   
-  StkVal* aStkVal0 = aPeekVal(0);
+  StkVal* aStkVal0 = aPeekStkVal(0);
   if (eClass0 != aStkVal0->eClass())
     return false;
   
@@ -203,11 +203,11 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1)
   if (nValues() < 2)
     return false;
   
-  StkVal* aStkVal0 = aPeekVal(0);
+  StkVal* aStkVal0 = aPeekStkVal(0);
   if (eClass0 != aStkVal0->eClass())
     return false;
   
-  StkVal* aStkVal1 = aPeekVal(1);
+  StkVal* aStkVal1 = aPeekStkVal(1);
   if (eClass1 != aStkVal1->eClass())
     return false;
   
@@ -224,15 +224,15 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
   if (nValues() < 3)
     return false;
   
-  StkVal* aStkVal0 = aPeekVal(0);
+  StkVal* aStkVal0 = aPeekStkVal(0);
   if (eClass0 != aStkVal0->eClass())
     return false;
   
-  StkVal* aStkVal1 = aPeekVal(1);
+  StkVal* aStkVal1 = aPeekStkVal(1);
   if (eClass1 != aStkVal1->eClass())
     return false;
   
-  StkVal* aSrkVal2 = aPeekVal(2);
+  StkVal* aSrkVal2 = aPeekStkVal(2);
   if (eClass2 != aSrkVal2->eClass())
     return false;
   
@@ -242,7 +242,7 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on value stack                                         */
 /*----------------------------------------------------------------------------*/
-StkVal* Stack::aPeekVal(i8 i_Val)
+StkVal* Stack::aPeekStkVal(i8 i_Val)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -264,7 +264,7 @@ void Stack::vPeekGenVar(i8 i_Val, GenVar& xVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aPeekedValue = aPeekVal(i_Val);
+  StkVal* aPeekedValue = aPeekStkVal(i_Val);
   
   i8 iSize = aPeekedValue->nStackBytes();
   
@@ -852,7 +852,7 @@ void Stack::vPokeGenVar(i8 i_Val, GenVar& xGenVar)
   
   i8 iSize = xGenVar.aEmbeddedStkVal()->nStackBytes();
   
-  StkVal* aPokeAddress = aPeekVal(i_Val);
+  StkVal* aPokeAddress = aPeekStkVal(i_Val);
   
   MemLib::vCopy(aPokeAddress,xGenVar.aEmbeddedStkVal(),iSize,CN_STACK);
 }

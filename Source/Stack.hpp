@@ -46,8 +46,8 @@ namespace SenVM
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    StkVal* aPeekVal(i8 i_Val);
     void vPeekGenVar(i8 i_Val, GenVar& xGenVar);
+    StkVal* aPeekStkVal(i8 i_Val);
     bool bPeekZero(void);
   
     bool bPopCN(eCN& eClassNo);

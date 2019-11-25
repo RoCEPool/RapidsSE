@@ -83,7 +83,7 @@ void Step::vAssertClass_0(void)
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  StkVal* aStkVal = m_pDataStack->aPeekVal(0);
+  StkVal* aStkVal = m_pDataStack->aPeekStkVal(0);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aStkVal->eClass();
@@ -111,7 +111,7 @@ void Step::vAssertClass_1(void)
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  StkVal* aStkVal = m_pDataStack->aPeekVal(1);
+  StkVal* aStkVal = m_pDataStack->aPeekStkVal(1);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aStkVal->eClass();
@@ -139,7 +139,7 @@ void Step::vAssertClass_2(void)
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  StkVal* aStkVal = m_pDataStack->aPeekVal(2);
+  StkVal* aStkVal = m_pDataStack->aPeekStkVal(2);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aStkVal->eClass();
@@ -167,7 +167,7 @@ void Step::vAssertClass_3(void)
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  StkVal* aStkVal = m_pDataStack->aPeekVal(3);
+  StkVal* aStkVal = m_pDataStack->aPeekStkVal(3);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aStkVal->eClass();
@@ -195,7 +195,7 @@ void Step::vAssertClass_4(void)
   if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
     THROW_DSTACK();
   
-  StkVal* aStkVal = m_pDataStack->aPeekVal(4);
+  StkVal* aStkVal = m_pDataStack->aPeekStkVal(4);
   
   eCN eAssertClassNo = (eCN)iAssertClassNo;
   eCN eClassNo = aStkVal->eClass();
