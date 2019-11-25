@@ -109,7 +109,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
   i8 nValues = this->nValues();
   for (i8 i_Val = 0; i_Val < nValues; i_Val++) {
     
-    vPeekVar(i_Val,xVariable);
+    vPeekVal(i_Val,xVariable);
     
     StkVal* aEmbeddedStkVal = xVariable.aEmbeddedStkVal();
     eCN eClass = aEmbeddedStkVal->eClass();
@@ -260,7 +260,7 @@ StkVal* Stack::aPeekVal(i8 i_Val)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on value stack                                         */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekVar(i8 i_Val, GenVar& xVariable)
+void Stack::vPeekVal(i8 i_Val, GenVar& xVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -276,7 +276,7 @@ void Stack::vPeekVar(i8 i_Val, GenVar& xVariable)
 /*----------------------------------------------------------------------------*/
 /* poke given value into value stack                                          */
 /*----------------------------------------------------------------------------*/
-void Stack::vPokeVar(i8 i_Val, GenVar& xVar)
+void Stack::vPokeVal(i8 i_Val, GenVar& xVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

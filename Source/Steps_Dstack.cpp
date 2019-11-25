@@ -67,7 +67,7 @@ void Step::vDstackClass(void)
   
   GenVar xVariable;
   
-  m_pDataStack->vPeekVar(nTh,xVariable);
+  m_pDataStack->vPeekVal(nTh,xVariable);
   
   eCN eClass = xVariable.eEmbeddedClass();
   
@@ -198,7 +198,7 @@ void Step::vDstackOver(void)
   
   GenVar xVariable;
   
-  m_pDataStack->vPeekVar(1,xVariable);
+  m_pDataStack->vPeekVal(1,xVariable);
   
   m_pDataStack->vPushVal(xVariable);
   
@@ -220,7 +220,7 @@ void Step::vDstackPick(void)
   
   GenVar xVariable;
   
-  m_pDataStack->vPeekVar(iPick,xVariable);
+  m_pDataStack->vPeekVal(iPick,xVariable);
   
   m_pDataStack->vPushVal(xVariable);
   

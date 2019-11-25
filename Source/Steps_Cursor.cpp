@@ -24,7 +24,7 @@ void Step::vCursorFetch(void)
   
   GenVar xCursorVar;
   
-  m_pReturnStack->vPeekVar(iPeek,xCursorVar);
+  m_pReturnStack->vPeekVal(iPeek,xCursorVar);
   
   m_pDataStack->vPushVal(xCursorVar);
   
@@ -44,7 +44,7 @@ void Step::vCursorStore(void)
   if ( ! m_pDataStack->bPopVal(xCursorVar) )
     THROW_DSTACK();
   
-  m_pReturnStack->vPokeVar(iPoke,xCursorVar);
+  m_pReturnStack->vPokeVal(iPoke,xCursorVar);
   
   EXIT();
 }

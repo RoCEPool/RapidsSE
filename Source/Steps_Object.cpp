@@ -87,7 +87,7 @@ void Step::vObjectFetch(void)
   
   GenVar xObjectVar;
   
-  m_pReturnStack->vPeekVar(iPick,xObjectVar);
+  m_pReturnStack->vPeekVal(iPick,xObjectVar);
   
   m_pDataStack->vPushVal(xObjectVar);
   
@@ -124,7 +124,7 @@ void Step::vObjectStore(void)
   if ( ! m_pDataStack->bPopVal(xObjectVar) )
     THROW_DSTACK();
   
-  m_pReturnStack->vPokeVar(iPeek,xObjectVar);
+  m_pReturnStack->vPokeVal(iPeek,xObjectVar);
   
   EXIT();
 }
