@@ -90,7 +90,7 @@ namespace SenVM
     bool bPopVal(GenVar& xVar1, GenVar& xVar2);
     bool bPopVal(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3);
   
-    void vPushFip(Cell* aCell);
+    void vPushFip(Cell* aFip);
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);
     void vPushLocal(Local* pLocal);

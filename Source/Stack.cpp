@@ -861,30 +861,6 @@ void Stack::vPushFip(Cell* aFip)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push value onto value stack                                                */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushVal(GenVar* pVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vPushVal(pVar->aEmbeddedStkVal());
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto value stack                                                */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushVal(GenVar& xVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vPushVal(xVar.aEmbeddedStkVal());
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* push i8 onto value stack                                                   */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushInt(i8 iInt)
@@ -988,6 +964,30 @@ void Stack::vPushS16KB(s16KB& sEss)
   xStrVar = sEss;
   
   vPushVal(xStrVar);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push value onto value stack                                                */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushVal(GenVar* pVar)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  vPushVal(pVar->aEmbeddedStkVal());
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push value onto value stack                                                */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushVal(GenVar& xVar)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  vPushVal(xVar.aEmbeddedStkVal());
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
