@@ -36,7 +36,7 @@ void Step::vPushJ(void)
 {
   ENTRY(); // ENTRY("vPushJ"_Stz);
   
-  StkVal* aLoopIndex_J = m_pReturnStack->aPeekStkVal(3);
+  StkVal* aLoopIndex_J = m_pReturnStack->aPeekVal(3);
   
   m_pDataStack->vPushStkVal(aLoopIndex_J);
   

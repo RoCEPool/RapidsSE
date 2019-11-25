@@ -47,7 +47,7 @@ void Step::vAstackClass(void)
   
   GenVar xVariable;
   
-  m_pAuxStack->vPeekGenVar(nTh,xVariable);
+  m_pAuxStack->vPeekVar(nTh,xVariable);
   
   eCN eClass = xVariable.eClass();
   
@@ -116,7 +116,7 @@ void Step::vAstackFetch(void)
   
   GenVar xVariable;
   
-  m_pAuxStack->vPeekGenVar(0,xVariable);
+  m_pAuxStack->vPeekVar(0,xVariable);
   
   m_pDataStack->vPushGenVar(xVariable);
   
@@ -156,7 +156,7 @@ void Step::vAstackPick(void)
   
   GenVar xVariable;
   
-  m_pAuxStack->vPeekGenVar(iPick,xVariable);
+  m_pAuxStack->vPeekVar(iPick,xVariable);
   
   m_pDataStack->vPushGenVar(xVariable);
   
@@ -294,7 +294,7 @@ void Step::vAstack0(void)
   
   GenVar xVariable;
   
-  m_pAuxStack->vPeekGenVar(0,xVariable);
+  m_pAuxStack->vPeekVar(0,xVariable);
   
   m_pDataStack->vPushGenVar(xVariable);
   
@@ -312,7 +312,7 @@ void Step::vAstack1(void)
   
   GenVar xVariable;
   
-  m_pAuxStack->vPeekGenVar(1,xVariable);
+  m_pAuxStack->vPeekVar(1,xVariable);
   
   m_pDataStack->vPushGenVar(xVariable);
   
@@ -330,7 +330,7 @@ void Step::vAstack2(void)
   
   GenVar xVariable;
   
-  m_pAuxStack->vPeekGenVar(2,xVariable);
+  m_pAuxStack->vPeekVar(2,xVariable);
   
   m_pDataStack->vPushGenVar(xVariable);
   
@@ -348,7 +348,7 @@ void Step::vAstack3(void)
   
   GenVar xVariable;
   
-  m_pAuxStack->vPeekGenVar(3,xVariable);
+  m_pAuxStack->vPeekVar(3,xVariable);
   
   m_pDataStack->vPushGenVar(xVariable);
   
@@ -366,7 +366,7 @@ void Step::vAstack4(void)
   
   GenVar xVariable;
   
-  m_pAuxStack->vPeekGenVar(4,xVariable);
+  m_pAuxStack->vPeekVar(4,xVariable);
   
   m_pDataStack->vPushGenVar(xVariable);
   
@@ -384,7 +384,7 @@ void Step::vAstack5(void)
   
   GenVar xVariable;
   
-  m_pAuxStack->vPeekGenVar(5,xVariable);
+  m_pAuxStack->vPeekVar(5,xVariable);
   
   m_pDataStack->vPushGenVar(xVariable);
   
@@ -402,7 +402,7 @@ void Step::vAstack6(void)
   
   GenVar xVariable;
   
-  m_pAuxStack->vPeekGenVar(6,xVariable);
+  m_pAuxStack->vPeekVar(6,xVariable);
   
   m_pDataStack->vPushGenVar(xVariable);
   
@@ -420,7 +420,7 @@ void Step::vAstack7(void)
   
   GenVar xVariable;
   
-  m_pAuxStack->vPeekGenVar(7,xVariable);
+  m_pAuxStack->vPeekVar(7,xVariable);
   
   m_pDataStack->vPushGenVar(xVariable);
   
@@ -438,7 +438,7 @@ void Step::vAstack8(void)
   
   GenVar xVariable;
   
-  m_pAuxStack->vPeekGenVar(8,xVariable);
+  m_pAuxStack->vPeekVar(8,xVariable);
   
   m_pDataStack->vPushGenVar(xVariable);
   
@@ -456,7 +456,7 @@ void Step::vAstack9(void)
   
   GenVar xVariable;
   
-  m_pAuxStack->vPeekGenVar(9,xVariable);
+  m_pAuxStack->vPeekVar(9,xVariable);
   
   m_pDataStack->vPushGenVar(xVariable);
   

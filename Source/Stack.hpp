@@ -46,8 +46,10 @@ namespace SenVM
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    void vPeekGenVar(i8 i_Val, GenVar& xVar);
-    StkVal* aPeekStkVal(i8 i_Val);
+    StkVal* aPeekVal(i8 i_Val);
+    void vPeekVar(i8 i_Val, GenVar& xVar);
+  
+    void vPokeVar(i8 i_Val, GenVar& xVar);
   
     bool bPopCN(eCN& eClassNo);
     bool bPopFip(Cell*& aFip);
@@ -56,19 +58,19 @@ namespace SenVM
     bool bPopInt(i8& iInt1, i8& iInt2, GenVar& xVar);
     bool bPopInt(i8& iInt, Object*& pObj);
     bool bPopInt(i8& iInt, GenVar& xVar);
-    bool bPopInt(i8& iInt, s48K& sArg);
+    bool bPopInt(i8& iInt, s48K& sEss);
     bool bPopPtr(Object*& pObj);
     bool bPopPtr(Object*& pObj, i8& iInt);
     bool bPopPtr(Object*& pObj1, Object*& pObj2);
     bool bPopPtr(Object*& pObj, GenVar& xVar);
     bool bPopLocal(Local*& pLocal);
-    bool bPopS32(s32&  sArg1);
-    bool bPopS256(s256& sArg1);
-    bool bPopS4K(s4K&  sArg1);
-    bool bPopS48K(s48K& sArg1);
-    bool bPopS48K(s48K& sArg1, i8& iInt2);
-    bool bPopS48K(s48K& sArg1, i8& iInt2, i8& iInt3);
-    bool bPopS48K(s48K& sArg1, s48K& sArg2);
+    bool bPopS32(s32&  sEss1);
+    bool bPopS256(s256& sEss1);
+    bool bPopS4K(s4K&  sEss1);
+    bool bPopS48K(s48K& sEss1);
+    bool bPopS48K(s48K& sEss1, i8& iInt2);
+    bool bPopS48K(s48K& sEss1, i8& iInt2, i8& iInt3);
+    bool bPopS48K(s48K& sEss1, s48K& sEss2);
     bool bPopStr(String* pStr);
     bool bPopVar(GenVar* pVar);
     bool bPopVar(GenVar& xVar);
@@ -78,19 +80,17 @@ namespace SenVM
     bool bPopAsI8_Inline(i8& iInt1);
     bool bPopAsInt_Quick(i8& iInt1);
   
-    void vPokeGenVar(i8 i_Val, GenVar& xVar);
-  
     void vPushFip(Cell* aCell);
     void vPushGenVar(GenVar* pVar);
     void vPushGenVar(GenVar& xVar);
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);
     void vPushLocal(Local* pLocal);
-    void vPushS32(s32& s32);
-    void vPushS256(s256& s256);
-    void vPushS4K(s4K& s4K);
-    void vPushS16KB(s16KB& s16KB);
-    void vPushS48K(s48K& s48K);
+    void vPushS32(s32& sEss);
+    void vPushS256(s256& sEss);
+    void vPushS4K(s4K& sEss);
+    void vPushS16KB(s16KB& sEss);
+    void vPushS48K(s48K& sEss);
     void vPushStkVal(StkVal* aStkVal);
     void vPushStkVal(StkVal& xStkVal);
   
