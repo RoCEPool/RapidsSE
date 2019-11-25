@@ -68,7 +68,7 @@ i8 PtrVal::iAsInt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get how many bytes are needed to push a FipVal on stack                    */
+/* get how many bytes are needed to push a PtrVal on stack                    */
 /*----------------------------------------------------------------------------*/
 i8 PtrVal::nStackBytes(void)
 {

@@ -309,25 +309,6 @@ bool Stack::bPeekZero(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop aCell from value stack                                                 */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopCell(Cell*& aFip)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_FIPVAL) )
-    return false;
-  
-  FipVal xFipVal;
-  
-  vPopVal(&xFipVal);
-  
-  aFip = xFipVal.aFip();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop eClassNo from value stack                                              */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopCN(eCN& eClassNo)
@@ -341,6 +322,25 @@ bool Stack::bPopCN(eCN& eClassNo)
   vPopVal(&xIntVal);
   
   eClassNo = static_cast<eCN>(xIntVal.iInt());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop fip from value stack                                                   */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopFip(Cell*& aFip)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_FIPVAL) )
+    return false;
+  
+  FipVal xFipVal;
+  
+  vPopVal(&xFipVal);
+  
+  aFip = xFipVal.aFip();
   
   return true;
 }
@@ -910,7 +910,7 @@ void Stack::vPushBool(bool bArg)
 /*----------------------------------------------------------------------------*/
 /* push Cell* onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushCell(Cell* aCell)
+void Stack::vPushFip(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

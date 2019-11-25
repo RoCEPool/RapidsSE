@@ -335,7 +335,7 @@ void Step::vExit_RT(void)
     m_pTask->vLocalsPop();
   
   Cell* aCell;
-  if ( ! m_pReturnStack->bPopCell(aCell) )
+  if ( ! m_pReturnStack->bPopFip(aCell) )
     THROW_RSTACK();
   
   m_aInxPtr = aCell;

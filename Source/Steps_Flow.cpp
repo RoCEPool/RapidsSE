@@ -51,14 +51,14 @@ void Step::vFlowExecute(void)
     ((Step*)this->*fpStep)();
   }
   else if (WK_OBJECT == pWord->eKind()) {
-    m_pReturnStack->vPushCell(m_aInxPtr);
+    m_pReturnStack->vPushFip(m_aInxPtr);
     m_aInxPtr = pWord->aEntryCell();
     
     Object* pObject = (Object*)pWord->aFirstCell();
     m_pDataStack->vPushPointer(pObject);
   }
   else if (WK_ROUTINE == pWord->eKind()){
-    m_pReturnStack->vPushCell(m_aInxPtr);
+    m_pReturnStack->vPushFip(m_aInxPtr);
     m_aInxPtr = pWord->aEntryCell();
   }
   else {

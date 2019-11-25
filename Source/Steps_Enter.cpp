@@ -22,7 +22,7 @@ void Step::vEnterObject(void)
   
   StepFp* afpEntryCell = (m_aInxPtr - 1)->m_afpIntrinsic + 1;
 
-  m_pReturnStack->vPushCell(m_aInxPtr);
+  m_pReturnStack->vPushFip(m_aInxPtr);
   m_aInxPtr = *(Cell**)afpEntryCell;
   
   Word* pWord = pAdd<Word*>((Object*)afpEntryCell,
@@ -50,7 +50,7 @@ void Step::vEnterRoutine(void)
   
   StepFp* afpEntryCell = (m_aInxPtr - 1)->m_afpIntrinsic + 1;
   
-  m_pReturnStack->vPushCell(m_aInxPtr);
+  m_pReturnStack->vPushFip(m_aInxPtr);
   m_aInxPtr = *(Cell**)afpEntryCell;
 
    if ( (m_pTask->m_iTraceMask & C_TRACE_ROUTINES) )

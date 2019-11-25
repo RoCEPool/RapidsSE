@@ -86,8 +86,8 @@ void Step::vRstackCsRoll(void)
     m_pReturnStack->vPushGenVar(xValMid);
   }
   
-  Cell* aCellZ;
-  if ( ! m_pDataStack->bPopCell(aCellZ) )
+  Cell* aFipZ;
+  if ( ! m_pDataStack->bPopFip(aFipZ) )
     THROW_DSTACK();
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
@@ -97,7 +97,7 @@ void Step::vRstackCsRoll(void)
     m_pDataStack->vPushGenVar(xValMid);
   }
 
-  m_pDataStack->vPushCell(aCellZ);
+  m_pDataStack->vPushFip(aFipZ);
   
   
   EXIT();
