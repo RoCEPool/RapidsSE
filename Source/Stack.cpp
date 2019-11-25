@@ -274,21 +274,6 @@ void Stack::vPeekGenVar(i8 i_Val, GenVar& xVariable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is top value a zero?                                                       */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPeekZero(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  StkVal* aStkVal = aTopVal();
-  
-  if (CN_INTVAL == aStkVal->eClass() && 0 == _aIntVal(aStkVal)->iInt())
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop eClassNo from value stack                                              */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopCN(eCN& eClassNo)
@@ -533,7 +518,7 @@ bool Stack::bPopObject(Object*& pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuard(CN_PTRVAL) && ! bPeekZero() )
+  if ( ! bGuard(CN_PTRVAL) && ! bTopIsZero() )
     return false;
   
   PtrVal xPtrVal;
@@ -1325,6 +1310,19 @@ StkVal* Stack::aStackLimit(void)
   char* aLimit = (char*)&m_xWsp.ayArea()[0];
   
   return pPoolCheck<StkVal*>(aLimit);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is top value a zero?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Stack::bTopIsZero(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if (CN_INTVAL == m_aTop->eClass() && 0 == _aIntVal(m_aTop)->iInt())
+    return true;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

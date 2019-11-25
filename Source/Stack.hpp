@@ -48,7 +48,6 @@ namespace SenVM
     
     void vPeekGenVar(i8 i_Val, GenVar& xGenVar);
     StkVal* aPeekStkVal(i8 i_Val);
-    bool bPeekZero(void);
   
     bool bPopCN(eCN& eClassNo);
     bool bPopFip(Cell*& aFip);
@@ -128,6 +127,8 @@ namespace SenVM
     StkVal* aStackBase(void);
     StkVal* aStackLimit(void);
     
+    bool bTopIsZero(void);
+  
     Footer* aFooter(void);
     Footer* aHazard(void);
   };
