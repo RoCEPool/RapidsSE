@@ -82,7 +82,7 @@ void Step::vJob_SubLoaderBegin(void)
 
   bool bBegun = pJob_SubLoader->bBegin();
   
-  m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushInt(bBegun);
   
   EXIT();
 }
@@ -105,11 +105,11 @@ void Step::vJob_SubLoaderChunk(void)
       AM::nMaxReadyLP()) {
     m_pTask->vSleepUsec(1000);
     m_pTask->vSchedulerAct(SA_SLEEP);
-    m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushInt(true);
   }
   else {
     bool bCallAgain = pJob_SubLoader->bChunk();
-    m_pDataStack->vPushBool(bCallAgain);
+    m_pDataStack->vPushInt(bCallAgain);
   }
   
   EXIT();

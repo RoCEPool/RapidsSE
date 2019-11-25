@@ -299,7 +299,7 @@ void Step::vNodeStartNode(void)
     THROW_DSTACK();
   Node* pNode = _pNode(pPtrNode);
   
-  m_pDataStack->vPushBool(true);
+  m_pDataStack->vPushInt(true);
 
   EXIT();
 }

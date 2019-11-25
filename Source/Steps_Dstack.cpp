@@ -164,7 +164,7 @@ void Step::vDstackDupNonZero(void)
     m_pDataStack->vPushGenVar(xValA);
   }
   else
-    m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushInt(false);
   
   EXIT();
 }

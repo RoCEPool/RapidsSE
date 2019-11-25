@@ -29,9 +29,9 @@ void Step::vZeroLess(void)
     THROW_DSTACK();
   
   if (iZero < 0)
-    m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushInt(true);
   else
-    m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -48,9 +48,9 @@ void Step::vZeroLessEqual(void)
     THROW_DSTACK();
   
   if (iZero <= 0)
-    m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushInt(true);
   else
-    m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -67,9 +67,9 @@ void Step::vZeroEqual(void)
     THROW_DSTACK();
   
   if (iZero == 0)
-    m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushInt(true);
   else
-    m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -86,9 +86,9 @@ void Step::vZeroNotEqual(void)
     THROW_DSTACK();
   
   if (iZero != 0)
-    m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushInt(true);
   else
-    m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -105,9 +105,9 @@ void Step::vZeroGreaterEqual(void)
     THROW_DSTACK();
   
   if (iZero >= 0)
-    m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushInt(true);
   else
-    m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushInt(false);
   
   EXIT();
 }
@@ -124,9 +124,9 @@ void Step::vZeroGreater(void)
     THROW_DSTACK();
   
   if (iZero > 0)
-    m_pDataStack->vPushBool(true);
+    m_pDataStack->vPushInt(true);
   else
-    m_pDataStack->vPushBool(false);
+    m_pDataStack->vPushInt(false);
   
   EXIT();
 }

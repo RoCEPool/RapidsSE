@@ -57,7 +57,7 @@ void Step::vJobClassBuffer(void)
   
   bool bBuffer = pJobClass->m_bBuffer;
   
-  m_pDataStack->vPushBool(bBuffer);
+  m_pDataStack->vPushInt(bBuffer);
   
   EXIT();
 }

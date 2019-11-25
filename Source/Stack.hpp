@@ -80,7 +80,6 @@ namespace SenVM
   
     void vPokeGenVar(i8 i_Val, GenVar& xGenVar);
   
-    void vPushBool(bool bBool);
     void vPushFip(Cell* aCell);
     void vPushGenVar(GenVar* pGenVar);
     void vPushGenVar(GenVar& xGenVar);

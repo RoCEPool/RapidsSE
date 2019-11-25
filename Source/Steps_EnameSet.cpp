@@ -183,7 +183,7 @@ void Step::vEnameSetHasName(void)
 
   bool bHas = pEnameSet->bHasName(sName);
   
-  m_pDataStack->vPushBool(bHas);
+  m_pDataStack->vPushInt(bHas);
   
   EXIT();
 }

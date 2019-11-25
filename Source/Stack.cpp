@@ -843,19 +843,6 @@ void Stack::vPokeGenVar(i8 i_Val, GenVar& xGenVar)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push bool onto value stack                                                 */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushBool(bool bArg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  IntVal xIntVal;
-  xIntVal = bArg;
-  
-  vPushStkVal(xIntVal);
-}
-
-/*----------------------------------------------------------------------------*/
 /* push Cell* onto value stack                                                */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushFip(Cell* aFip)

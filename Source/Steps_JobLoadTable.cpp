@@ -31,7 +31,7 @@ void Step::vJob_LoadTableBegin(void)
   
   bool bBegun = pJob_LoadTable->bBegin();
   
-  m_pDataStack->vPushBool(bBegun);
+  m_pDataStack->vPushInt(bBegun);
   
   EXIT();
 }
@@ -50,7 +50,7 @@ void Step::vJob_LoadTableChunk(void)
 
   bool bCallAgain = pJob_LoadTable->bChunk();
   
-  m_pDataStack->vPushBool(bCallAgain);
+  m_pDataStack->vPushInt(bCallAgain);
   
  EXIT();
 }
