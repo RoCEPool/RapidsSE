@@ -5,17 +5,6 @@
 
 namespace SenVM
 {
-  class _NestedValue
-  {
-  public:
-    _Header  m_xHeader;
-    i8       m_wWord;
-    char     m_caStr[C_MAX_VCH2];
-
-  };
-  
-  //----------------------------------------------------------------------------
-  
   class GenVar : public Object
   {
   private:

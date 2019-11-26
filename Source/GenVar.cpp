@@ -96,6 +96,8 @@ void GenVar::operator =(Stz* szStz)
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
   u.m_xStrVal.vAssign(szStz);
+  
+  _postcondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
