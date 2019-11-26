@@ -20,6 +20,7 @@ void* IntVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void IntVal::operator =(i8 iInt)
 {
+  vClass(CN_INTVAL);
   m_iInt = iInt;
 }
 

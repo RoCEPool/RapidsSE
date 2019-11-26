@@ -63,8 +63,8 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Cell* aFip)
 {
-  u.m_xNstVal.m_xHeader.vClass(CN_FIPVAL);
-  u.m_xNstVal.m_wWord = (w8)aFip;
+  //u.m_xFipVal.vClass(CN_FIPVAL);
+  u.m_xFipVal = aFip;
   
 //  u.m_xFipVar = aFipPtr;
 }
@@ -76,8 +76,8 @@ void GenVar::operator =(i8 iInt)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  u.m_xNstVal.m_xHeader.vClass(CN_INTVAL);
-  u.m_xNstVal.m_wWord = iInt;
+//  u.m_xIntVal.vClass(CN_INTVAL);
+  u.m_xIntVal = iInt;
   
 //  u.m_xIntVar = iInt;
 }

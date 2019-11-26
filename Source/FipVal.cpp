@@ -32,6 +32,7 @@ void* FipVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void FipVal::operator =(Cell* aFip)
 {
+  vClass(CN_FIPVAL);
   m_aFip = aFip;
 }
 
