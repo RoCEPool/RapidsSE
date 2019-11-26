@@ -89,8 +89,8 @@ void GenVar::operator =(Object* pObj)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  u.m_xNstVal.m_xHeader.vClass(CN_PTRVAL);
-  u.m_xNstVal.m_wWord = (w8)pObj;
+  //u.m_xPtrVal.vClass(CN_PTRVAL);
+  u.m_xPtrVal = pObj;
   
 //  u.m_xPtrVar = pObj;
 }

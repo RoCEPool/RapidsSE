@@ -32,6 +32,7 @@ void* PtrVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void PtrVal::operator =(Object* pObject)
 {
+  vClass(CN_PTRVAL);
   m_pObj = pObject;
 }
 
