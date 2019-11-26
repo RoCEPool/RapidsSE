@@ -21,7 +21,7 @@ namespace SenVM
   private:
 
     union {
-      _NestedValue  m_xNstVal;
+//      _NestedValue  m_xNstVal;
       
       StkVal  m_xStkVal;
 
@@ -30,7 +30,7 @@ namespace SenVM
       PtrVal  m_xPtrVal;
       StrVal  m_xStrVal;
       
-//      char    m_caStr[C_48KB];
+      byte    m_yaSpace[C_48KB];
 
     } u;
 
