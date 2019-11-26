@@ -16,7 +16,6 @@ pDUMPFUN *gpDump[]
 {
   /*  0 */ &Dump::vInvalid,         // CN_NONE
   
-  /*  7 */ &Dump::vInvalid,         // CN_INTVAL
   /* 11 */ &Dump::vInvalid,         // CN_PTRVAL
   /* 12 */ &Dump::vInvalid,         // CN_STRVAL
 
@@ -135,6 +134,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_INSERTOP
   /*    */ &Dump::vDummy,           // CN_INTBUFFER
   /*    */ &Dump::vDummy,           // CN_INTERSECTOP
+  /*  7 */ &Dump::vInvalid,         // CN_INTVAL
   /*    */ &Dump::vDummy,           // CN_IOCHUNK
   /*    */ &Dump::vDummy,           // CN_IOCOPY
   /*    */ &Dump::vDummy,           // CN_IRWBUFFER
@@ -357,7 +357,6 @@ i8 giClassSize[]
 {
   /*  0 */ 0,                          // CN_NONE
   
-  /*  7 */ sizeof(IntVal),             // CN_INTVAL
   /* 11 */ sizeof(PtrVal),             // CN_PTRVAL
   /* 12 */ sizeof(StrVal),             // CN_STRVAL
  
@@ -475,6 +474,7 @@ i8 giClassSize[]
   /*    */ sizeof(InsertOp),           // CN_INSERTOP
   /*    */ sizeof(IntBuffer),          // CN_INTBUFFER
   /*    */ sizeof(IntersectOp),        // CN_INTERSECTOP
+  /*  7 */ sizeof(IntVal),             // CN_INTVAL
   /*    */ sizeof(IoChunk),            // CN_IOCHUNK
   /*    */ sizeof(IoCopy),             // CN_IOCOPY
   /*    */ sizeof(IrwBuffer),          // CN_IRWBUFFER
@@ -695,7 +695,6 @@ eHT geWhichHeap[]
 {
   /*  0 */ HT_INVALID,           // CN_NONE
   
-  /*  7 */ HT_INVALID,           // CN_INTVAL
   /* 11 */ HT_INVALID,           // CN_PTRVAL
   /* 12 */ HT_INVALID,           // CN_STRVAL
 
@@ -813,6 +812,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_INSERTOP
   /*    */ HT_TRANSIENT_LARGE,   // CN_INTBUFFER
   /*    */ HT_TRANSIENT_SMALL,   // CN_INTERSECTOP
+  /*  7 */ HT_INVALID,           // CN_INTVAL
   /*    */ HT_TRANSIENT_LARGE,   // CN_IOCHUNK
   /*    */ HT_TRANSIENT_SMALL,   // CN_IOCOPY
   /*    */ HT_TRANSIENT_LARGE,   // CN_IRWBUFFER

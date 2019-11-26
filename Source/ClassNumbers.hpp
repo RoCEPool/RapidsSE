@@ -15,7 +15,6 @@ enum eCN : u2 // Class Number
 {
   /*   0 0x00        0B Heap:I */ CN_NONE,
   
-  /*   6 0x06       16B Heap:I */ CN_INTVAL,
   /*   8 0x08       16B Heap:I */ CN_PTRVAL,
   /*   9 0x09      272B Heap:I */ CN_STRVAL,
  
@@ -133,6 +132,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_INSERTOP,
   /*                           */ CN_INTBUFFER,
   /*                           */ CN_INTERSECTOP,
+  /*   6 0x06       16B Heap:I */ CN_INTVAL,
   /*  51 0x33  1000440B Heap:L */ CN_IOCHUNK,
   /*  52 0x34       32B Heap:S */ CN_IOCOPY,
   /*                           */ CN_IRWBUFFER,
@@ -353,7 +353,6 @@ static Stz* aCN[]
 {
   /*   0 0x00 */ "NONE"_Stz,                // CN_NONE
   
-  /*   6 0x06 */ "INTVAL"_Stz,              // CN_INTVAL
   /*   8 0x08 */ "PTRVAL"_Stz,              // CN_PTRVAL
   /*   9 0x09 */ "STRVAL"_Stz,              // CN_STRVAL
 
@@ -471,6 +470,7 @@ static Stz* aCN[]
   /*          */ "INSERTOP"_Stz,            // CN_INSERTOP
   /*          */ "INTBUFFER"_Stz,           // CN_INTBUFFER
   /*          */ "INTERSECTOP"_Stz,         // CN_INTERSECTOP
+  /*   6 0x06 */ "INTVAL"_Stz,              // CN_INTVAL
   /*  51 0x33 */ "IOCHUNK"_Stz,             // CN_IOCHUNK
   /*  52 0x34 */ "IOCOPY"_Stz,              // CN_IOCOPY
   /*          */ "IRWBUFFER"_Stz,           // CN_IRWBUFFER

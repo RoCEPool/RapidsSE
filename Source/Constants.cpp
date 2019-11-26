@@ -157,7 +157,6 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("CN_NONE"_Stz,         CN_NONE);
 
   /*    */ vAddConstant("CN_BIRTH"_Stz,        CN_BIRTH);
-  /*  4 */ vAddConstant("CN_INTVAL"_Stz,       CN_INTVAL);
   /*  7 */ vAddConstant("CN_PTRVAL"_Stz,       CN_PTRVAL);
   /*  8 */ vAddConstant("CN_STRVAL"_Stz,       CN_STRVAL);
   
@@ -198,7 +197,8 @@ void Constants::vAddConstants(void)
   
   /* 28 */ vAddConstant("CN_INDEX"_Stz,        CN_INDEX);
   /*    */ //vAddConstant("CN_INDEXDEFN"_Stz,    CN_INDEXDEFN);
-  
+  /*  4 */ vAddConstant("CN_INTVAL"_Stz,       CN_INTVAL);
+
   /*    */ vAddConstant("CN_JOB_BOOT"_Stz,           CN_JOB_BOOT);
   /*    */ vAddConstant("CN_JOB_COPYBUFFER"_Stz,     CN_JOB_COPYBUFFER);
   /*    */ vAddConstant("CN_JOB_FETCHROWS"_Stz,      CN_JOB_FETCHROWS);

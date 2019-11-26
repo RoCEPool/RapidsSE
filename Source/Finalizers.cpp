@@ -12,7 +12,6 @@ pFINALIZE *gpFinalize[]
 {
   /*  0 */ &Finalize::vUndefined,         // CN_NONE
   
-  /*  7 */ &Finalize::vUndefined,         // CN_INTVAL
   /* 11 */ &Finalize::vUndefined,         // CN_PTRVAL
   /* 12 */ &Finalize::vUndefined,         // CN_STRVAL
 
@@ -130,7 +129,8 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_INSERTOP
   /*    */ &Finalize::vUndefined,         // CN_INTBUFFER
   /*    */ &Finalize::vUndefined,         // CN_INTERSECTOP
-   /*    */ &Finalize::vUndefined,         // CN_IOCHUNK
+  /*  7 */ &Finalize::vUndefined,         // CN_INTVAL
+  /*    */ &Finalize::vUndefined,         // CN_IOCHUNK
   /*    */ &Finalize::vUndefined,         // CN_IOCOPY
   /*    */ &Finalize::vUndefined,         // CN_IRWBUFFER
 
