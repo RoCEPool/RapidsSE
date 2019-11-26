@@ -207,18 +207,6 @@ Object* GenVar::pObj(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of the embedded sen variable                                   */
-/*----------------------------------------------------------------------------*/
-SenVar* GenVar::aEmbeddedSenVar(void)
-{
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
-  
-  SenVar* aSenVar = & u.m_xSenVar;
-  
-  return aSenVar;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get size of of embedded value on stack                                     */
 /*----------------------------------------------------------------------------*/
 i8 GenVar::nStackBytes(void)

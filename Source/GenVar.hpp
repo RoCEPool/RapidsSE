@@ -33,11 +33,6 @@ namespace SenVM
       // - - - - - - - -
       
       SenVar  m_xSenVar;
-      
-//      FipVar  m_xFipVar;
-      IntVar  m_xIntVar;
-//      PtrVar  m_xPtrVar;
-//      StrVar  m_xStrVar;
     } u;
 
     // must be last
@@ -57,7 +52,6 @@ namespace SenVM
     char*   azChar(void);
     eCN     eEmbeddedClass(void);
     StkVal* aEmbeddedStkVal(void);
-    SenVar* aEmbeddedSenVar(void);
     Cell*   aFip(void);
     i8      iInt(void);
     bool    bIsInt(void);
