@@ -19,8 +19,6 @@ pFINALIZE *gpFinalize[]
   /* 11 */ &Finalize::vUndefined,         // CN_PTRVAL
   /* 12 */ &Finalize::vUndefined,         // CN_STRVAL
 
-  /*  6 */ &Finalize::vUndefined,         // CN_FLTVAL
- 
   /* 19 */ &Finalize::vUndefined,         // CN_ACCESSPATH
   /*    */ &Finalize::vUndefined,         // CN_AGGOP
   /* 22 */ &Finalize::vUndefined,         // CN_ARG
