@@ -9,7 +9,10 @@ namespace StorageEngine
   {
   public:
   
+    static void vMainEntry(void);
+
     static void vAttachRegion(void);
+    static void vBootCheck(void);
     static void vCallBoot(void);
     static void vCallImmmediate(Task* pTask);
     static void vCallPrompt(void);
@@ -24,7 +27,6 @@ namespace StorageEngine
     static void vGetCopyright(s256& sCopyright);
     static void vGetWelcome(s256& sWelcome);
     static void vKillPrev(void);
-    static void vMainEntry(void);
     static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vMonitorProfile(s48K& sPortrait);
     static void vOpenLog(void);

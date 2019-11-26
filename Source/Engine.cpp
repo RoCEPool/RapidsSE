@@ -23,11 +23,6 @@ void Engine::vMainEntry(void)
   //OpSys::vGetInfo();
   // OpSys::vTraceInfo();
   
-  ASSERT(sizeof(AccessPath) == giClassSize[CN_ACCESSPATH]);
-  
-  ASSERT(sizeof(Heap)       == giClassSize[CN_LARGEPERSISTENT]);
-  ASSERT(sizeof(Lock)       == giClassSize[CN_LOCK]);
-
   vPrintWelcome();
   
   Correctness::vTraceWith();
@@ -89,6 +84,41 @@ void Engine::vAttachRegion(void)
   
   if (AM::bVerbose())
     AttachMap::vDump(CN_ATTACHMAP, pAttachMap, Stz::szTab(1));
+}
+
+/*----------------------------------------------------------------------------*/
+/* things to check right at the beginning                                     */
+/*----------------------------------------------------------------------------*/
+void Engine::vBootCheck(void)
+{
+  ASSERT( 1 == giClassSize[CN__A__]);
+  ASSERT( 2 == giClassSize[CN__B__]);
+  ASSERT( 3 == giClassSize[CN__C__]);
+  ASSERT( 4 == giClassSize[CN__D__]);
+  ASSERT( 5 == giClassSize[CN__E__]);
+  ASSERT( 6 == giClassSize[CN__F__]);
+  ASSERT( 7 == giClassSize[CN__G__]);
+  ASSERT( 8 == giClassSize[CN__H__]);
+  ASSERT( 9 == giClassSize[CN__I__]);
+  ASSERT(10 == giClassSize[CN__J__]);
+  ASSERT(11 == giClassSize[CN__K__]);
+  ASSERT(12 == giClassSize[CN__L__]);
+  ASSERT(13 == giClassSize[CN__M__]);
+  ASSERT(14 == giClassSize[CN__N__]);
+  ASSERT(15 == giClassSize[CN__O__]);
+  ASSERT(16 == giClassSize[CN__P__]);
+  ASSERT(17 == giClassSize[CN__Q__]);
+  ASSERT(18 == giClassSize[CN__R__]);
+  ASSERT(19 == giClassSize[CN__S__]);
+  ASSERT(20 == giClassSize[CN__T__]);
+  ASSERT(21 == giClassSize[CN__U__]);
+  ASSERT(22 == giClassSize[CN__V__]);
+  ASSERT(23 == giClassSize[CN__W__]);
+  ASSERT(24 == giClassSize[CN__X__]);
+  ASSERT(25 == giClassSize[CN__Y__]);
+  ASSERT(26 == giClassSize[CN__Z__]);
+
+
 }
 
 /*----------------------------------------------------------------------------*/
