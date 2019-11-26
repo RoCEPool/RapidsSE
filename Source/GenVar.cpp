@@ -63,10 +63,9 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Cell* aFip)
 {
-  //u.m_xFipVal.vClass(CN_FIPVAL);
-  u.m_xFipVal = aFip;
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-//  u.m_xFipVar = aFipPtr;
+  u.m_xFipVal = aFip;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,10 +75,7 @@ void GenVar::operator =(i8 iInt)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-//  u.m_xIntVal.vClass(CN_INTVAL);
   u.m_xIntVal = iInt;
-  
-//  u.m_xIntVar = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,10 +85,7 @@ void GenVar::operator =(Object* pObj)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  //u.m_xPtrVal.vClass(CN_PTRVAL);
   u.m_xPtrVal = pObj;
-  
-//  u.m_xPtrVar = pObj;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,11 +95,7 @@ void GenVar::operator =(Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-//  u.m_xNstVal.m_xHeader.vClass(CN_STRVAL);
-//  u.m_xNstVal.m_wWord = StrLib::nCopy(u.m_xNstVal.m_caStr,szStz->azChar()) + 1;
   u.m_xStrVal.vAssign(szStz);
-  
-//  u.m_xStrVar = szStz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,8 +107,6 @@ void GenVar::operator =(Stz* szStz)
 char* GenVar::azChar(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
-  
-//  char* az = (char*)u.m_xNstVal.m_caStr;
   
   char* az = u.m_xStrVal.azChar();
 
@@ -133,21 +120,17 @@ Cell* GenVar::aFip(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-//  Cell* aFip = (Cell*)u.m_xNstVal.m_wWord;
-  
   Cell* aFip = u.m_xFipVal.aFip();
 
   return aFip;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get integer                                                               */
+/* get integer                                                                */
 /*----------------------------------------------------------------------------*/
 i8 GenVar::iInt(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
-  
-//  i8 iInt = u.m_xNstVal.m_wWord;
   
   i8 iInt = u.m_xIntVal.iInt();
   
@@ -174,8 +157,6 @@ eCN GenVar::eEmbeddedClass(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-//  StkVal* aStkVal = aEmbeddedStkVal();
-  
   eCN eClassNo = u.m_xStkVal.eClass();
   
   return eClassNo;
@@ -188,10 +169,6 @@ StkVal* GenVar::aEmbeddedStkVal(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-//  StkVal* aStkVal = reinterpret_cast<StkVal*>( & u.m_xNstVal );
-//
-//  return aStkVal;
-  
   return & u.m_xStkVal;
 }
 
@@ -201,8 +178,6 @@ StkVal* GenVar::aEmbeddedStkVal(void)
 Object* GenVar::pObj(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
-  
-//  Object* pObj = (Object*)u.m_xNstVal.m_wWord;
   
   Object* pObj = u.m_xPtrVal.pObj();
 
@@ -216,8 +191,6 @@ i8 GenVar::nStzSize(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  //i8 nSize = u.m_xNstVal.m_wWord;
-  
   i8 nSize = u.m_xStrVal.nSize();
 
   return nSize;
@@ -229,8 +202,6 @@ i8 GenVar::nStzSize(void)
 Stz* GenVar::szStz(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
-  
-//  Stz* sz = (Stz*)u.m_xNstVal.m_caStr;
   
   Stz* sz = u.m_xStrVal.szStz();
 

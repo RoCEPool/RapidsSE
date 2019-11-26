@@ -21,7 +21,6 @@ namespace SenVM
   private:
 
     union {
-//      _NestedValue  m_xNstVal;
       
       StkVal  m_xStkVal;
 
