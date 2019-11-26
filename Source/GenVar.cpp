@@ -188,9 +188,11 @@ StkVal* GenVar::aEmbeddedStkVal(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  StkVal* aStkVal = reinterpret_cast<StkVal*>( & u.m_xNstVal );
+//  StkVal* aStkVal = reinterpret_cast<StkVal*>( & u.m_xNstVal );
+//
+//  return aStkVal;
   
-  return aStkVal;
+  return & u.m_xStkVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -228,9 +230,9 @@ Stz* GenVar::szStz(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Stz* sz = (Stz*)u.m_xNstVal.m_caStr;
+//  Stz* sz = (Stz*)u.m_xNstVal.m_caStr;
   
-//  Stz* sz = u.m_xStrVar.szStz();
+  Stz* sz = u.m_xStrVal.szStz();
 
   return sz;
 }
