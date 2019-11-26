@@ -31,15 +31,15 @@ i8 StkVal::nStackBytes(void)
   
   switch (eClassNo) {
       
-    case CN_INTVAL: {
-      IntVal* aIntVal = _aIntVal(this);
-      nBytes = aIntVal->nStackBytes();
-      break;
-    }
-      
     case CN_FIPVAL: {
       FipVal* aFipVal = _aFipVal(this);
       nBytes = aFipVal->nStackBytes();
+      break;
+    }
+      
+    case CN_INTVAL: {
+      IntVal* aIntVal = _aIntVal(this);
+      nBytes = aIntVal->nStackBytes();
       break;
     }
       
@@ -52,13 +52,6 @@ i8 StkVal::nStackBytes(void)
     case CN_STRVAL: {
       StrVal* aStrVal = _aStrVal(this);
       nBytes = aStrVal->nStackBytes();
-      break;
-    }
-      
-    // -- -- -- -- -- --
-    case CN_INTVAR: {
-      IntVar* aIntVar = _aIntVar(this);
-      nBytes = aIntVar->nStackBytes();
       break;
     }
       

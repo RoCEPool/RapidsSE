@@ -31,7 +31,6 @@ namespace SenVM
 #include "DicPath.hpp"
 #include "DicStack.hpp"
 #include "GenVar.hpp"
-#include "GenVar2.hpp"
 #include "Local.hpp"
 #include "LocalChain.hpp"
 #include "Routine.hpp"
