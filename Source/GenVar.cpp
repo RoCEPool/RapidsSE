@@ -161,7 +161,7 @@ bool GenVar::bIsInt(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  if (CN_INTVAL == u.m_xNstVal.m_xHeader.eClass())
+  if (CN_INTVAL == u.m_xStkVal.eClass())
     return true;
   else
     return false;
@@ -174,9 +174,9 @@ eCN GenVar::eEmbeddedClass(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  StkVal* aStkVal = aEmbeddedStkVal();
+//  StkVal* aStkVal = aEmbeddedStkVal();
   
-  eCN eClassNo = aStkVal->eClass();
+  eCN eClassNo = u.m_xStkVal.eClass();
   
   return eClassNo;
 }
