@@ -30,9 +30,6 @@ namespace SenVM
       PtrVal  m_xPtrVal;
       StrVal  m_xStrVal;
 
-      // - - - - - - - -
-      
-      //SenVar  m_xSenVar;
     } u;
 
     // must be last
