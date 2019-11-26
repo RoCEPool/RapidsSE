@@ -32,7 +32,7 @@ namespace SenVM
 
       // - - - - - - - -
       
-      SenVar  m_xSenVar;
+      //SenVar  m_xSenVar;
     } u;
 
     // must be last
@@ -56,8 +56,7 @@ namespace SenVM
     i8      iInt(void);
     bool    bIsInt(void);
     Object* pObj(void);
-    i8      nStackBytes(void);
-    Stz*    szStz(void);
+     Stz*    szStz(void);
     i8      nStzSize(void);
 
   private:
