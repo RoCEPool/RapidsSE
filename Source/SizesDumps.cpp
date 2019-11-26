@@ -24,7 +24,6 @@ pDUMPFUN *gpDump[]
   /* 12 */ &Dump::vInvalid,         // CN_STRVAL
 
   /*  6 */ &Dump::vInvalid,         // CN_FLTVAL
-  /*  9 */ &Dump::vInvalid,         // CN_IVLVAL
 
   /* 19 */ &Dump::vInvalid,         // CN_ACCESSPATH
   /*    */ &Dump::vDummy,           // CN_AGGOP
@@ -368,7 +367,6 @@ i8 giClassSize[]
   /* 12 */ sizeof(StrVal),             // CN_STRVAL
  
   /*  6 */ 0,                          // CN_FLTVAL
-  /*  9 */ 0,                          // CN_IVLVAL
 
   /* 19 */ sizeof(AccessPath),         // CN_ACCESSPATH
   /*    */ sizeof(AggOp),              // CN_AGGOP
@@ -486,7 +484,6 @@ i8 giClassSize[]
   /*    */ sizeof(IrwBuffer),          // CN_IRWBUFFER
 
   /*    */ sizeof(Job__Find),          // CN_JOB__FIND
-  
   /*    */ sizeof(Job_Boot),           // CN_JOB_BOOT
   /*    */ sizeof(Job_CopyBuffer),     // CN_JOB_COPYBUFFER
   /*    */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
@@ -508,7 +505,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Universal),      // CN_JOB_UNIVERSAL
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
   /*    */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW
-  
   /*    */ sizeof(JobList),            // CN_JOBLIST
   /*    */ sizeof(JoinOp),             // CN_JOINOP
   /* 59 */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
@@ -711,7 +707,6 @@ eHT geWhichHeap[]
   /* 12 */ HT_INVALID,           // CN_STRVAL
 
   /*  6 */ HT_INVALID,           // CN_FLTVAL
-  /*  9 */ HT_INVALID,           // CN_IVLVAL
 
   /* 19 */ HT_TRANSIENT_MEDIUM,  // CN_ACCESSPATH
   /*    */ HT_TRANSIENT_SMALL,   // CN_AGGOP

@@ -23,7 +23,6 @@ enum eCN : u2 // Class Number
   /*   9 0x09      272B Heap:I */ CN_STRVAL,
  
   /*   5 0x05       16B Heap:I */ CN_FLTVAL__,     //! TO BE DELETED
-  /*   7 0x07       16B Heap:I */ CN_IVLVAL__,     //! TO BE DELETED
 
   /*  12 0x0C       80B Heap:M */ CN_ACCESSPATH,
   /*                           */ CN_AGGOP,
@@ -364,7 +363,6 @@ static Stz* aCN[]
   /*   9 0x09 */ "STRVAL"_Stz,              // CN_STRVAL
 
   /*   5 0x05 */ "FLTVAL"_Stz,              // CN_FLTVAL
-  /*   7 0x07 */ "IVLVAL"_Stz,              // CN_IVLVAL
 
   /*  12 0x0C */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
   /*          */ "AGGOP"_Stz,               // CN_AGGOP

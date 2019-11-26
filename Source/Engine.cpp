@@ -8,6 +8,7 @@ extern Arguments    gxArguments;
 
 extern AttachMap*   gpAttachMap;
 extern BufferPool*  gpBufferPool;
+extern i8           giClassSize[];
 extern Header*      gaSeShmRegion;
 extern File*        gpTraceFile;
 
@@ -22,6 +23,11 @@ void Engine::vMainEntry(void)
   //OpSys::vGetInfo();
   // OpSys::vTraceInfo();
   
+  ASSERT(sizeof(AccessPath) == giClassSize[CN_ACCESSPATH]);
+  
+  ASSERT(sizeof(Heap)       == giClassSize[CN_LARGEPERSISTENT]);
+  ASSERT(sizeof(Lock)       == giClassSize[CN_LOCK]);
+
   vPrintWelcome();
   
   Correctness::vTraceWith();

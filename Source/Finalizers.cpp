@@ -20,8 +20,7 @@ pFINALIZE *gpFinalize[]
   /* 12 */ &Finalize::vUndefined,         // CN_STRVAL
 
   /*  6 */ &Finalize::vUndefined,         // CN_FLTVAL
-  /*  9 */ &Finalize::vUndefined,         // CN_IVLVAL
-
+ 
   /* 19 */ &Finalize::vUndefined,         // CN_ACCESSPATH
   /*    */ &Finalize::vUndefined,         // CN_AGGOP
   /* 22 */ &Finalize::vUndefined,         // CN_ARG
