@@ -202,9 +202,9 @@ Object* GenVar::pObj(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Object* pObj = (Object*)u.m_xNstVal.m_wWord;
+//  Object* pObj = (Object*)u.m_xNstVal.m_wWord;
   
-//  Object* pObj = u.m_xPtrVar.pObj();
+  Object* pObj = u.m_xPtrVal.pObj();
 
   return pObj;
 }

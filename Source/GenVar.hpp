@@ -29,6 +29,8 @@ namespace SenVM
       IntVal  m_xIntVal;
       PtrVal  m_xPtrVal;
       StrVal  m_xStrVal;
+      
+//      char    m_caStr[C_48KB];
 
     } u;
 
