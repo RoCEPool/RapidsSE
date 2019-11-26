@@ -12,8 +12,6 @@ pFINALIZE *gpFinalize[]
 {
   /*  0 */ &Finalize::vUndefined,         // CN_NONE
   
-  /* 12 */ &Finalize::vUndefined,         // CN_STRVAL
-
   /* 19 */ &Finalize::vUndefined,         // CN_ACCESSPATH
   /*    */ &Finalize::vUndefined,         // CN_AGGOP
   /* 22 */ &Finalize::vUndefined,         // CN_ARG
@@ -301,6 +299,7 @@ pFINALIZE *gpFinalize[]
   /*128 */ &Finalize::vUndefined,         // CN_STMT_SELECT
   /* 13 */ &Finalize::vUndefined,         // CN_STREAMDEF
   /* 13 */ &Finalize::vUndefined,         // CN_STRING_T
+  /* 12 */ &Finalize::vUndefined,         // CN_STRVAL  
   /*    */ &Finalize::vUndefined,         // CN_SUPERAGGOP
   /*    */ &Finalize::vUndefined,         // CN_SUPERCOUNTOP
   /*    */ &Finalize::vUndefined,         // CN_SUPERMERGEOP

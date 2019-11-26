@@ -16,8 +16,6 @@ pDUMPFUN *gpDump[]
 {
   /*  0 */ &Dump::vInvalid,         // CN_NONE
   
-  /* 12 */ &Dump::vInvalid,         // CN_STRVAL
-
   /* 19 */ &Dump::vInvalid,         // CN_ACCESSPATH
   /*    */ &Dump::vDummy,           // CN_AGGOP
   /* 22 */ &Dump::vInvalid,         // CN_ARG
@@ -305,6 +303,7 @@ pDUMPFUN *gpDump[]
   /* 13 */ &Dump::vInvalid,         // CN_STMT_SELECT
   /* 13 */ &Dump::vInvalid,         // CN_STREAMDEF
   /* 13 */ &Dump::vInvalid,         // CN_STRING_T
+  /* 12 */ &Dump::vInvalid,         // CN_STRVAL
   /*    */ &Dump::vInvalid,         // CN_SUPERAGGOP
   /*    */ &Dump::vInvalid,         // CN_SUPERCOUNTOP
   /*    */ &Dump::vInvalid,         // CN_SUPERMERGEOP
@@ -357,8 +356,6 @@ i8 giClassSize[]
 {
   /*  0 */ 0,                          // CN_NONE
   
-  /* 12 */ sizeof(StrVal),             // CN_STRVAL
- 
   /* 19 */ sizeof(AccessPath),         // CN_ACCESSPATH
   /*    */ sizeof(AggOp),              // CN_AGGOP
   /* 22 */ sizeof(Arg),                // CN_ARG
@@ -643,6 +640,7 @@ i8 giClassSize[]
   /*128 */ sizeof(Stmt_Select),        // CN_STMT_SELECT
   /* 13 */ sizeof(StreamDef),          // CN_STREAMDEF
   /* 13 */ sizeof(s32),                // CN_STRING_T
+  /* 12 */ sizeof(StrVal),             // CN_STRVAL
   /*    */ sizeof(SuperAggOp),         // CN_SUPERAGGOP
   /*    */ sizeof(SuperCountOp),       // CN_SUPERCOUNTOP
   /*    */ sizeof(SuperMergeOp),       // CN_SUPERMERGEOP
@@ -695,8 +693,6 @@ eHT geWhichHeap[]
 {
   /*  0 */ HT_INVALID,           // CN_NONE
   
-  /* 12 */ HT_INVALID,           // CN_STRVAL
-
   /* 19 */ HT_TRANSIENT_MEDIUM,  // CN_ACCESSPATH
   /*    */ HT_TRANSIENT_SMALL,   // CN_AGGOP
   /* 22 */ HT_TRANSIENT_SMALL,   // CN_ARG
@@ -985,6 +981,7 @@ eHT geWhichHeap[]
   /*128 */ HT_TRANSIENT_LARGE,   // CN_STMT_SELECT
   /*128 */ HT_TRANSIENT_LARGE,   // CN_STREAMDEF
   /* 13 */ HT_INVALID,           // CN_STRING_T
+  /* 12 */ HT_INVALID,           // CN_STRVAL
   /*    */ HT_TRANSIENT_SMALL,   // CN_SUPERAGGOP
   /*    */ HT_TRANSIENT_SMALL,   // CN_SUPERCOUNTOP
   /*    */ HT_TRANSIENT_SMALL,   // CN_SUPERMERGEOP

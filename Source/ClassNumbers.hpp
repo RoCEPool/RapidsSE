@@ -15,8 +15,6 @@ enum eCN : u2 // Class Number
 {
   /*   0 0x00        0B Heap:I */ CN_NONE,
   
-  /*   9 0x09      272B Heap:I */ CN_STRVAL,
- 
   /*  12 0x0C       80B Heap:M */ CN_ACCESSPATH,
   /*                           */ CN_AGGOP,
   /*  16 0x10      296B Heap:S */ CN_ARG,
@@ -301,6 +299,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_STMT_SELECT,
   /* 193 0xC1       48B Heap:I */ CN_STREAMDEF,
   /* 193 0xC1       48B Heap:I */ CN_STRING_T,
+  /*   9 0x09      272B Heap:I */ CN_STRVAL,
   /*                           */ CN_SUPERAGGOP,
   /*                           */ CN_SUPERCOUNTOP,
   /*                           */ CN_SUPERMERGEOP,
@@ -353,8 +352,6 @@ static Stz* aCN[]
 {
   /*   0 0x00 */ "NONE"_Stz,                // CN_NONE
   
-  /*   9 0x09 */ "STRVAL"_Stz,              // CN_STRVAL
-
   /*  12 0x0C */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
   /*          */ "AGGOP"_Stz,               // CN_AGGOP
   /*  16 0x10 */ "ARG"_Stz,                 // CN_ARG
@@ -639,6 +636,7 @@ static Stz* aCN[]
   /* 192 0xC0 */ "STMT_SELECT"_Stz,         // CN_STMT_SELECT
   /* 193 0xC1 */ "STREAMDEF"_Stz,           // CN_STREAMDEF
   /* 193 0xC1 */ "STRING_T"_Stz,            // CN_STRING_T
+  /*   9 0x09 */ "STRVAL"_Stz,              // CN_STRVAL  
   /*          */ "SUPERAGGOP"_Stz,          // CN_SUPERAGGOP
   /*          */ "SUPERCOUNTOP"_Stz,        // CN_SUPERCOUNTOP
   /*          */ "SUPERMERGEOP"_Stz,        // CN_SUPERMERGEOP
