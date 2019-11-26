@@ -16,7 +16,6 @@ pDUMPFUN *gpDump[]
 {
   /*  0 */ &Dump::vInvalid,         // CN_NONE
   
-  /*    */ &Dump::vInvalid,         // CN_BIRTH
   /*    */ &Dump::vInvalid,         // CN_FIPVAL
   /*    */ &Dump::vInvalid,         // CN_FREQDIST
   /*  7 */ &Dump::vInvalid,         // CN_INTVAL
@@ -31,6 +30,7 @@ pDUMPFUN *gpDump[]
   /* 24 */ &Dump::vInvalid,         // CN_ATOMIC
   /* 25 */ &AttachMap::vDump,       // CN_ATTACHMAP
 
+  /*    */ &Dump::vInvalid,         // CN_BIRTH
   /* 29 */ &Dump::vInvalid,         // CN_BOTHOP
   /* 29 */ &Dump::vInvalid,         // CN_BPA
   /* 29 */ &Dump::vInvalid,         // CN_BUCKETMAP
@@ -357,7 +357,6 @@ i8 giClassSize[]
 {
   /*  0 */ 0,                          // CN_NONE
   
-  /*    */ sizeof(Birth),              // CN_BIRTH
   /*    */ sizeof(FipVal),             // CN_FIPVAL
   /*  7 */ sizeof(FreqDist),           // CN_FREQDIST
   /*  7 */ sizeof(IntVal),             // CN_INTVAL
@@ -372,6 +371,7 @@ i8 giClassSize[]
   /* 24 */ sizeof(Atomic),             // CN_ATOMIC
   /* 25 */ sizeof(AttachMap),          // CN_ATTACHMAP
 
+  /*    */ sizeof(Birth),              // CN_BIRTH
   /* 29 */ sizeof(BothOp),             // CN_BOTHOP
   /* 29 */ sizeof(BPA),                // CN_BPA
   /* 29 */ sizeof(BucketMap),          // CN_BUCKETMAP
@@ -695,7 +695,6 @@ eHT geWhichHeap[]
 {
   /*  0 */ HT_INVALID,           // CN_NONE
   
-  /*  8 */ HT_INVALID,           // CN_BIRTH
   /*  8 */ HT_INVALID,           // CN_FIPVAL
   /*  8 */ HT_TRANSIENT_SMALL,   // CN_FREQDIST
   /*  7 */ HT_INVALID,           // CN_INTVAL
@@ -710,6 +709,7 @@ eHT geWhichHeap[]
   /* 24 */ HT_INVALID,           // CN_ATOMIC
   /* 25 */ HT_INVALID,           // CN_ATTACHMAP
 
+  /*  8 */ HT_INVALID,           // CN_BIRTH
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_BOTHOP
   /* 29 */ HT_INVALID,           // CN_BPA
   /* 29 */ HT_TRANSIENT_LARGE,   // CN_BUCKETMAP

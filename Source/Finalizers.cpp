@@ -12,7 +12,6 @@ pFINALIZE *gpFinalize[]
 {
   /*  0 */ &Finalize::vUndefined,         // CN_NONE
   
-  /*    */ &Finalize::vUndefined,         // CN_BIRTH
   /*    */ &Finalize::vUndefined,         // CN_FIPVAL
   /*    */ &Finalize::vUndefined,         // CN_FREQDIST
   /*  7 */ &Finalize::vUndefined,         // CN_INTVAL
@@ -27,6 +26,7 @@ pFINALIZE *gpFinalize[]
   /* 24 */ &Finalize::vUndefined,         // CN_ATOMIC
   /* 25 */ &Finalize::vUndefined,         // CN_ATTACHMAP
 
+  /*    */ &Finalize::vUndefined,         // CN_BIRTH
   /* 29 */ &Finalize::vUndefined,         // CN_BOTHOP
   /* 29 */ &Finalize::vUndefined,         // CN_BPA
   /* 29 */ &Finalize::vUndefined,         // CN_BUCKETMAP

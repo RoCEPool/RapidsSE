@@ -15,7 +15,6 @@ enum eCN : u2 // Class Number
 {
   /*   0 0x00        0B Heap:I */ CN_NONE,
   
-  /*                           */ CN_BIRTH,
   /*   4 0x04       16B Heap:I */ CN_FIPVAL,
   /*                           */ CN_FREQDIST,
   /*   6 0x06       16B Heap:I */ CN_INTVAL,
@@ -30,6 +29,7 @@ enum eCN : u2 // Class Number
   /*  18 0x12       24B Heap:I */ CN_ATOMIC,
   /*  19 0x13    19672B Heap:I */ CN_ATTACHMAP,
 
+  /*                           */ CN_BIRTH,
   /*                           */ CN_BOTHOP,
   /*  20 0x14        1B Heap:I */ CN_BPA,
   /*  20 0x14        1B Heap:I */ CN_BUCKETMAP,
@@ -353,7 +353,6 @@ static Stz* aCN[]
 {
   /*   0 0x00 */ "NONE"_Stz,                // CN_NONE
   
-  /*          */ "BIRTH"_Stz,               // CN_BIRTH
   /*   4 0x04 */ "FIPVAL"_Stz,              // CN_FIPVAL
   /*          */ "FREQDIST"_Stz,            // CN_FREQDIST
   /*   6 0x06 */ "INTVAL"_Stz,              // CN_INTVAL
@@ -368,6 +367,7 @@ static Stz* aCN[]
   /*  18 0x12 */ "ATOMIC"_Stz,              // CN_ATOMIC
   /*  19 0x13 */ "ATTACHMAP"_Stz,           // CN_ATTACHMAP
 
+  /*          */ "BIRTH"_Stz,               // CN_BIRTH
   /*          */ "BOTHOP"_Stz,              // CN_BOTHOP
   /*  20 0x14 */ "BPA"_Stz,                 // CN_BPA
   /*  20 0x14 */ "BUCKETMAP"_Stz,           // CN_BUCKETMAP
