@@ -43,7 +43,7 @@ namespace SenVM
     i8      iInt(void);
     bool    bIsInt(void);
     Object* pObj(void);
-     Stz*    szStz(void);
+    Stz*    szStz(void);
     i8      nStzSize(void);
 
   private:
