@@ -12,7 +12,6 @@ namespace SenVM
   public:
     void* operator new(size_t);
   
-    eCN  eClass(void);
     i8   nStackBytes(void);
     void vToString(Stz* aString);
   };
