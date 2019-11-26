@@ -102,8 +102,9 @@ void GenVar::operator =(Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  u.m_xNstVal.m_xHeader.vClass(CN_STRVAL);
-  u.m_xNstVal.m_wWord = StrLib::nCopy(u.m_xNstVal.m_caStr,szStz->azChar()) + 1;
+//  u.m_xNstVal.m_xHeader.vClass(CN_STRVAL);
+//  u.m_xNstVal.m_wWord = StrLib::nCopy(u.m_xNstVal.m_caStr,szStz->azChar()) + 1;
+  u.m_xStrVal.vAssign(szStz);
   
 //  u.m_xStrVar = szStz;
 }
