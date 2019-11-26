@@ -16,7 +16,6 @@ pDUMPFUN *gpDump[]
 {
   /*  0 */ &Dump::vInvalid,         // CN_NONE
   
-  /*    */ &Dump::vInvalid,         // CN_FIPVAL
   /*  7 */ &Dump::vInvalid,         // CN_INTVAL
   /* 11 */ &Dump::vInvalid,         // CN_PTRVAL
   /* 12 */ &Dump::vInvalid,         // CN_STRVAL
@@ -102,6 +101,7 @@ pDUMPFUN *gpDump[]
   /* 31 */ &Dump::vDummy,           // CN_FILTER_SUBQRY
   /* 31 */ &Dump::vDummy,           // CN_FILTER_WHERE
   /* 31 */ &Dump::vDummy,           // CN_FILTER_ZED
+  /*    */ &Dump::vInvalid,         // CN_FIPVAL
   /* 31 */ &Dump::vDummy,           // CN_FOCALOBJECTS
   /* 31 */ &Dump::vDummy,           // CN_FORTH
   /* 40 */ &Dump::vDummy,           // CN_FORMATTERS
@@ -357,7 +357,6 @@ i8 giClassSize[]
 {
   /*  0 */ 0,                          // CN_NONE
   
-  /*    */ sizeof(FipVal),             // CN_FIPVAL
   /*  7 */ sizeof(IntVal),             // CN_INTVAL
   /* 11 */ sizeof(PtrVal),             // CN_PTRVAL
   /* 12 */ sizeof(StrVal),             // CN_STRVAL
@@ -443,6 +442,7 @@ i8 giClassSize[]
   /*    */ sizeof(Filter_SubQry),      // CN_FILTER_SUBQRY
   /*    */ sizeof(Filter_Where),       // CN_FILTER_WHERE
   /*    */ sizeof(Filter_Zed),         // CN_FILTER_ZED
+  /*    */ sizeof(FipVal),             // CN_FIPVAL
   /*    */ sizeof(FocalObjects),       // CN_FOCALOBJECTS
   /*    */ sizeof(Forth),              // CN_FORTH
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
@@ -695,7 +695,6 @@ eHT geWhichHeap[]
 {
   /*  0 */ HT_INVALID,           // CN_NONE
   
-  /*  8 */ HT_INVALID,           // CN_FIPVAL
   /*  7 */ HT_INVALID,           // CN_INTVAL
   /* 11 */ HT_INVALID,           // CN_PTRVAL
   /* 12 */ HT_INVALID,           // CN_STRVAL
@@ -781,6 +780,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_SUBQRY
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_WHERE
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_ZED
+  /*  8 */ HT_INVALID,           // CN_FIPVAL
   /* 40 */ HT_TRANSIENT_LARGE,   // CN_FOCALOBJECTS
   /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORTH
   /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS

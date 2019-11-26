@@ -12,7 +12,6 @@ pFINALIZE *gpFinalize[]
 {
   /*  0 */ &Finalize::vUndefined,         // CN_NONE
   
-  /*    */ &Finalize::vUndefined,         // CN_FIPVAL
   /*  7 */ &Finalize::vUndefined,         // CN_INTVAL
   /* 11 */ &Finalize::vUndefined,         // CN_PTRVAL
   /* 12 */ &Finalize::vUndefined,         // CN_STRVAL
@@ -98,6 +97,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_FILTER_SUBQRY
   /*    */ &Finalize::vUndefined,         // CN_FILTER_WHERE
   /*    */ &Finalize::vUndefined,         // CN_FILTER_ZED
+  /*    */ &Finalize::vUndefined,         // CN_FIPVAL
   /*    */ &Finalize::vUndefined,         // CN_FOCALOBJECTS
   /*    */ &Finalize::vUndefined,         // CN_FORTH
   /* 39 */ &Finalize::vUndefined,         // CN_FORMATTERS

@@ -15,7 +15,6 @@ enum eCN : u2 // Class Number
 {
   /*   0 0x00        0B Heap:I */ CN_NONE,
   
-  /*   4 0x04       16B Heap:I */ CN_FIPVAL,
   /*   6 0x06       16B Heap:I */ CN_INTVAL,
   /*   8 0x08       16B Heap:I */ CN_PTRVAL,
   /*   9 0x09      272B Heap:I */ CN_STRVAL,
@@ -101,6 +100,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_FILTER_SUBQRY,
   /*                           */ CN_FILTER_WHERE,
   /*                           */ CN_FILTER_ZED,
+  /*   4 0x04       16B Heap:I */ CN_FIPVAL,
   /*                           */ CN_FOCALOBJECTS,
   /*                           */ CN_FORTH,
   /*  37 0x25       48B Heap:S */ CN_FORMATTERS,
@@ -353,7 +353,6 @@ static Stz* aCN[]
 {
   /*   0 0x00 */ "NONE"_Stz,                // CN_NONE
   
-  /*   4 0x04 */ "FIPVAL"_Stz,              // CN_FIPVAL
   /*   6 0x06 */ "INTVAL"_Stz,              // CN_INTVAL
   /*   8 0x08 */ "PTRVAL"_Stz,              // CN_PTRVAL
   /*   9 0x09 */ "STRVAL"_Stz,              // CN_STRVAL
@@ -439,6 +438,7 @@ static Stz* aCN[]
   /*          */ "FILTER_SUBQRY"_Stz,       // CN_FILTER_SUBQRY
   /*          */ "FILTER_WHERE"_Stz,        // CN_FILTER_WHERE
   /*          */ "FILTER_ZED"_Stz,          // CN_FILTER_ZED
+  /*   4 0x04 */ "FIPVAL"_Stz,              // CN_FIPVAL
   /*          */ "FOCALOBJECTS"_Stz,        // CN_FOCALOBJECTS
   /*          */ "FORTH"_Stz,               // CN_FORTH
   /*  37 0x25 */ "FORMATTERS"_Stz,          // CN_FORMATTERS
