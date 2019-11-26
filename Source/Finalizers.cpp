@@ -13,7 +13,6 @@ pFINALIZE *gpFinalize[]
   /*  0 */ &Finalize::vUndefined,         // CN_NONE
   
   /*    */ &Finalize::vUndefined,         // CN_FIPVAL
-  /*    */ &Finalize::vUndefined,         // CN_FREQDIST
   /*  7 */ &Finalize::vUndefined,         // CN_INTVAL
   /* 11 */ &Finalize::vUndefined,         // CN_PTRVAL
   /* 12 */ &Finalize::vUndefined,         // CN_STRVAL
@@ -106,7 +105,8 @@ pFINALIZE *gpFinalize[]
   /* 42 */ &Finalize::vUndefined,         // CN_FREECHUNK
   /* 43 */ &Finalize::vUndefined,         // CN_FREEDNOT
   /* 44 */ &Finalize::vUndefined,         // CN_FREEITEM
-  
+  /*    */ &Finalize::vUndefined,         // CN_FREQDIST
+
   /*    */ &Finalize::vUndefined,         // CN_GENERATEOP
   /*    */ &Finalize::vUndefined,         // CN_GENVAR
   /*    */ &Finalize::vUndefined,         // CN_GETKEYOP

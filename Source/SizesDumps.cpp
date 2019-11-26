@@ -17,7 +17,6 @@ pDUMPFUN *gpDump[]
   /*  0 */ &Dump::vInvalid,         // CN_NONE
   
   /*    */ &Dump::vInvalid,         // CN_FIPVAL
-  /*    */ &Dump::vInvalid,         // CN_FREQDIST
   /*  7 */ &Dump::vInvalid,         // CN_INTVAL
   /* 11 */ &Dump::vInvalid,         // CN_PTRVAL
   /* 12 */ &Dump::vInvalid,         // CN_STRVAL
@@ -110,7 +109,8 @@ pDUMPFUN *gpDump[]
   /* 42 */ &Dump::vDummy,           // CN_FREECHUNK
   /* 43 */ &Dump::vDummy,           // CN_FREEDNOT
   /* 44 */ &Dump::vDummy,           // CN_FREEITEM
-  
+  /*    */ &Dump::vInvalid,         // CN_FREQDIST
+
   /*    */ &Dump::vInvalid,         // CN_GENERATEOP
   /*    */ &Dump::vInvalid,         // CN_GENVAR
   /*    */ &Dump::vInvalid,         // CN_GETKEYOP
@@ -358,7 +358,6 @@ i8 giClassSize[]
   /*  0 */ 0,                          // CN_NONE
   
   /*    */ sizeof(FipVal),             // CN_FIPVAL
-  /*  7 */ sizeof(FreqDist),           // CN_FREQDIST
   /*  7 */ sizeof(IntVal),             // CN_INTVAL
   /* 11 */ sizeof(PtrVal),             // CN_PTRVAL
   /* 12 */ sizeof(StrVal),             // CN_STRVAL
@@ -451,7 +450,8 @@ i8 giClassSize[]
   /* 42 */ sizeof(FreeChunk),          // CN_FREECHUNK
   /* 43 */ 0,                          // CN_FREEDNOT
   /* 44 */ 0,                          // CN_FREEITEM
-  
+  /*  7 */ sizeof(FreqDist),           // CN_FREQDIST
+
   /*    */ sizeof(GenerateOp),         // CN_GENERATEOP
   /*    */ sizeof(GenVar),             // CN_GENVAR
   /*    */ sizeof(GetKeyOp),           // CN_GETKEYOP
@@ -696,7 +696,6 @@ eHT geWhichHeap[]
   /*  0 */ HT_INVALID,           // CN_NONE
   
   /*  8 */ HT_INVALID,           // CN_FIPVAL
-  /*  8 */ HT_TRANSIENT_SMALL,   // CN_FREQDIST
   /*  7 */ HT_INVALID,           // CN_INTVAL
   /* 11 */ HT_INVALID,           // CN_PTRVAL
   /* 12 */ HT_INVALID,           // CN_STRVAL
@@ -789,7 +788,8 @@ eHT geWhichHeap[]
   /* 42 */ HT_INVALID,           // CN_FREECHUNK
   /* 43 */ HT_INVALID,           // CN_FREEDNOT
   /* 44 */ HT_INVALID,           // CN_FREEITEM
-  
+  /*  8 */ HT_TRANSIENT_SMALL,   // CN_FREQDIST
+
   /*    */ HT_TRANSIENT_SMALL,   // CN_GENERATEOP
   /*    */ HT_INVALID,           // CN_GENVAR
   /*    */ HT_TRANSIENT_SMALL,   // CN_GETKEYOP

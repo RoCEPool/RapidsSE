@@ -16,7 +16,6 @@ enum eCN : u2 // Class Number
   /*   0 0x00        0B Heap:I */ CN_NONE,
   
   /*   4 0x04       16B Heap:I */ CN_FIPVAL,
-  /*                           */ CN_FREQDIST,
   /*   6 0x06       16B Heap:I */ CN_INTVAL,
   /*   8 0x08       16B Heap:I */ CN_PTRVAL,
   /*   9 0x09      272B Heap:I */ CN_STRVAL,
@@ -109,7 +108,8 @@ enum eCN : u2 // Class Number
   /*  39 0x27       24B Heap:I */ CN_FREECHUNK,
   /*  40 0x28        0B Heap:I */ CN_FREEDNOT,
   /*  41 0x29        0B Heap:I */ CN_FREEITEM,
-  
+  /*                           */ CN_FREQDIST,
+
   /*                           */ CN_GENERATEOP,
   /*  42 0x2A    64024B Heap:I */ CN_GENVAR,
   /*                           */ CN_GETKEYOP,
@@ -354,7 +354,6 @@ static Stz* aCN[]
   /*   0 0x00 */ "NONE"_Stz,                // CN_NONE
   
   /*   4 0x04 */ "FIPVAL"_Stz,              // CN_FIPVAL
-  /*          */ "FREQDIST"_Stz,            // CN_FREQDIST
   /*   6 0x06 */ "INTVAL"_Stz,              // CN_INTVAL
   /*   8 0x08 */ "PTRVAL"_Stz,              // CN_PTRVAL
   /*   9 0x09 */ "STRVAL"_Stz,              // CN_STRVAL
@@ -447,7 +446,8 @@ static Stz* aCN[]
   /*  39 0x27 */ "FREECHUNK"_Stz,           // CN_FREECHUNK
   /*  40 0x28 */ "FREEDNOT"_Stz,            // CN_FREEDNOT
   /*  41 0x29 */ "FREEITEM"_Stz,            // CN_FREEITEM
-  
+  /*          */ "FREQDIST"_Stz,            // CN_FREQDIST
+
   /*          */ "GENERATEOP"_Stz,          // CN_GENERATEOP
   /*  42 0x2A */ "GENVAR"_Stz,              // CN_GENVAR
   /*          */ "GETKEYOP"_Stz,            // CN_GETKEYOP

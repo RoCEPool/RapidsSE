@@ -158,7 +158,6 @@ void Constants::vAddConstants(void)
 
   /*    */ vAddConstant("CN_BIRTH"_Stz,        CN_BIRTH);
   /*  5 */ vAddConstant("CN_FIPVAL"_Stz,       CN_FIPVAL);
-  /*    */ vAddConstant("CN_FREQDIST"_Stz,     CN_FREQDIST);
   /*  4 */ vAddConstant("CN_INTVAL"_Stz,       CN_INTVAL);
   /*  7 */ vAddConstant("CN_PTRVAL"_Stz,       CN_PTRVAL);
   /*  8 */ vAddConstant("CN_STRVAL"_Stz,       CN_STRVAL);
@@ -187,7 +186,8 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_FILTEROP"_Stz,     CN_FILTEROP);
   /* 15 */ vAddConstant("CN_FREEBUFFER"_Stz,   CN_FREEBUFFER);
   /* 22 */ vAddConstant("CN_FREECHUNK"_Stz,    CN_FREECHUNK);
-  
+  /*    */ vAddConstant("CN_FREQDIST"_Stz,     CN_FREQDIST);
+
   /*    */ vAddConstant("CN_GENVAR"_Stz,       CN_GENVAR);
   /*    */ vAddConstant("CN_GETKEYOP"_Stz,     CN_GETKEYOP);
   /* 26 */ vAddConstant("CN_GRID"_Stz,         CN_GRID);
