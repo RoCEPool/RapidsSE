@@ -119,9 +119,9 @@ char* GenVar::azChar(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  char* az = (char*)u.m_xNstVal.m_caStr;
+//  char* az = (char*)u.m_xNstVal.m_caStr;
   
-//  char* az = u.m_xStrVar.azChar();
+  char* az = u.m_xStrVal.azChar();
 
   return az;
 }
@@ -133,9 +133,9 @@ Cell* GenVar::aFip(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Cell* aFip = (Cell*)u.m_xNstVal.m_wWord;
+//  Cell* aFip = (Cell*)u.m_xNstVal.m_wWord;
   
-//  Cell* aFip = u.m_xFipVar.aFip();
+  Cell* aFip = u.m_xFipVal.aFip();
 
   return aFip;
 }
@@ -147,9 +147,9 @@ i8 GenVar::iInt(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  i8 iInt = u.m_xNstVal.m_wWord;
+//  i8 iInt = u.m_xNstVal.m_wWord;
   
-//  i8 iInt = u.m_xIntVar.iInt();
+  i8 iInt = u.m_xIntVal.iInt();
   
   return iInt;
 }
