@@ -60,7 +60,7 @@ namespace Strings
     static bool  bEqualTo(const char* s1, const char* s2);
     static bool  bEqualTo(const char* s1, const char* s2, i8 iCase);
     static bool  bEnds(const char* sArg, const char cEnd);
-    static bool  bEnds(const char* sArg, const char* sEnd);
+    static bool  bEnds(char* sArg, char* sEnd);
     static void  vEscape(const char* sArg, char* sEscaped);
     static bool  bEscapeConvert(const char cArg,
                                 char cEnclosedBy_Leading, char cEnclosedBy_Trailing,

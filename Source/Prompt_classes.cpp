@@ -36,16 +36,19 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
   
   for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
 
-    char cFirst = *aCN[i_Class]->azChar();
-
-    if ('~' == cGroup) {
-      if ('A' == cFirst)
-        vTrace("\n"_Stz);
-    }
-    else  {
-      if (cGroup != cFirst)
-        vTrace("\n"_Stz);
-    }
+//    char cFirst = *aCN[i_Class]->azChar();
+//
+//    if ('~' == cGroup) {
+//      if ('A' == cFirst)
+//        vTrace("\n"_Stz);
+//    }
+//    else  {
+//      if (cGroup != cFirst)
+//        vTrace("\n"_Stz);
+//    }
+    
+    if (StrLib::bEnds(aCN[i_Class]->azChar(),(char*)"__"))
+      vTrace("\n"_Stz);
     
     eHT eHeap = geWhichHeap[i_Class];
     
@@ -56,15 +59,21 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
     else if (HT_TRANSIENT_MEDIUM == eHeap) cHeap = 'M';
     else if (HT_TRANSIENT_SMALL  == eHeap) cHeap = 'S';
 
-    vTrace("    /* %3lld 0x%02X %8lldB Heap:%c */ CN_%s,\n"_Stz,
-           i_Class,i_Class,giClassSize[i_Class],
+    vTrace("    /* %3lld 0x%03X %8lldB Heap:%c */ CN_%s,\n"_Stz,
+           
+           i_Class,
+           i_Class,
+           giClassSize[i_Class],
            cHeap,
-           aCN[i_Class]);
+           aCN[i_Class],
+           
+           C_ENDARGS
+           );
     
-    if ('~' != cGroup)
-      cGroup = cFirst;
-    else if ('A' == cFirst)
-      cGroup = cFirst;
+//    if ('~' != cGroup)
+//      cGroup = cFirst;
+//    else if ('A' == cFirst)
+//      cGroup = cFirst;
   }
   
   
@@ -77,29 +86,32 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
   
   for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
     
-    char cFirst = *aCN[i_Class]->azChar();
+//    char cFirst = *aCN[i_Class]->azChar();
+//
+//    if ('~' == cGroup) {
+//      if ('A' == cFirst)
+//        vTrace("\n"_Stz);
+//    }
+//    else  {
+//      if (cGroup != cFirst)
+//        vTrace("\n"_Stz);
+//    }
     
-    if ('~' == cGroup) {
-      if ('A' == cFirst)
-        vTrace("\n"_Stz);
-    }
-    else  {
-      if (cGroup != cFirst)
-        vTrace("\n"_Stz);
-    }
     
-    
+    if (StrLib::bEnds(aCN[i_Class]->azChar(),(char*)"__"))
+      vTrace("\n"_Stz);
+
     sName = "\""_Stz;
     sName.vConcat(aCN[i_Class]);
     sName.vConcat("\"_Stz,"_Stz);
     
-    vTrace("    /* %3lld 0x%02X */ %-26s // CN_%s\n"_Stz,
+    vTrace("    /* %3lld 0x%03X */ %-26s // CN_%s\n"_Stz,
            i_Class,i_Class,sName.azChar(),aCN[i_Class]);
     
-    if ('~' != cGroup)
-      cGroup = cFirst;
-    else if ('A' == cFirst)
-      cGroup = cFirst;
+//    if ('~' != cGroup)
+//      cGroup = cFirst;
+//    else if ('A' == cFirst)
+//      cGroup = cFirst;
   }
 
   return true;

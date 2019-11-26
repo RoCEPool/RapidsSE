@@ -117,8 +117,6 @@ void Engine::vBootCheck(void)
   ASSERT(24 == giClassSize[CN__X__]);
   ASSERT(25 == giClassSize[CN__Y__]);
   ASSERT(26 == giClassSize[CN__Z__]);
-
-
 }
 
 /*----------------------------------------------------------------------------*/

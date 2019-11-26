@@ -639,7 +639,7 @@ bool StrLib::bEnds(const char* s, const char c)
 /*----------------------------------------------------------------------------*/
 /* bEnds: test if string ends with given substr arg                           */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bEnds(const char* sArg, const char* sEnd)
+bool StrLib::bEnds(char* sArg, char* sEnd)
 {
   i8 nLen  = iLength(sArg);
   i8 nBack = iLength(sEnd);
