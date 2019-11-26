@@ -367,11 +367,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vInvalid,         // CN__Z__
   /*116 */ &Dump::vUndefined,       // CN_ZEDOP
   
-  /*151 */ &Dump::vUndefined,       // CN_ZSMALL_
-  /*152 */ &Dump::vUndefined,       // CN_ZMEDIUM_
-  /*153 */ &Dump::vUndefined,       // CN_ZLARGE_
-  /*154 */ &Dump::vUndefined,       // CN_ZJUMBO_
-  
   /*155 */ &Dump::vEnums            // CN_ENUMS
 };
 
@@ -733,11 +728,6 @@ i8 giClassSize[]
   /*    */ 'Z'-'A' + 1,                // CN__Z__
   /*116 */ sizeof(ZedOp),              // CN_ZEDOP
   
-  /*151 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_
-  /*152 */ C_SIZE_MEDIUM_OBJECT - 256, // CN_ZMEDIUM_
-  /*153 */ C_SIZE_POOL_BUFFER   - 256, // CN_ZLARGE_
-  /*154 */ C_SIZE_JUMBO_OBJECT  - 256, // CN_ZJUMBO_
-
   /*155 */ -1
 };
 
@@ -1099,11 +1089,6 @@ eHT geWhichHeap[]
   /*    */ HT_INVALID,           // CN__Z__
   /*118 */ HT_TRANSIENT_SMALL,   // CN_ZEDOP
   
-  /*151 */ HT_INVALID,           // CN_ZSMALL_
-  /*152 */ HT_INVALID,           // CN_ZMEDIUM_
-  /*153 */ HT_INVALID,           // CN_ZLARGE_
-  /*154 */ HT_INVALID,           // CN_ZJUMBO_
-
   /*155 */ HT_INVALID,           // CN_ENUMS
 };
 

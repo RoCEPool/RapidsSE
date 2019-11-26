@@ -290,11 +290,6 @@ void Constants::vAddConstants(void)
   /* 87 */ vAddConstant("CN_TXSET"_Stz,        CN_TXSET);
   
   /* 88 */ vAddConstant("CN_WORD"_Stz,         CN_WORD);
-
-  /* 89 */ vAddConstant("CN_ZSMALL_"_Stz,      CN_ZSMALL_);
-  /* 90 */ vAddConstant("CN_ZMEDIUM_"_Stz,     CN_ZMEDIUM_);
-  /* 91 */ vAddConstant("CN_ZLARGE_"_Stz,      CN_ZLARGE_);
-  /* 92 */ vAddConstant("CN_ZJUMBO_"_Stz,      CN_ZJUMBO_);
   
   /* 93 */ vAddConstant("CN_ENUMS"_Stz,        CN_ENUMS);
  

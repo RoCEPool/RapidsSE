@@ -362,12 +362,7 @@ pFINALIZE *gpFinalize[]
   
   /*    */ &Finalize::vUndefined,         // CN__Z__
   /*116 */ &Finalize::vUndefined,         // CN_ZEDOP
-  
-  /*151 */ &Finalize::vUndefined,         // CN_ZSMALL_
-  /*152 */ &Finalize::vUndefined,         // CN_ZMEDIUM_
-  /*153 */ &Finalize::vUndefined,         // CN_ZLARGE_
-  /*154 */ &Finalize::vUndefined,         // CN_ZJUMBO_
-  
+    
   /*155 */ &Finalize::vEnums              // CN_ENUMS
 };
 

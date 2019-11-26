@@ -365,10 +365,7 @@ enum eCN : u2 // Class Number
   
   /* 324 0x144       26B Heap:I */ CN__Z__,
   /* 325 0x145      480B Heap:S */ CN_ZEDOP,
-  /* 326 0x146     3840B Heap:I */ CN_ZSMALL_,
-  /* 327 0x147    65280B Heap:I */ CN_ZMEDIUM_,
-  /* 328 0x148  1048320B Heap:I */ CN_ZLARGE_,
-  /* 329 0x149 16776960B Heap:I */ CN_ZJUMBO_,
+
   /* 330 0x14A       -1B Heap:I */ CN_ENUMS,
 };
   
@@ -729,10 +726,7 @@ static Stz* aCN[]
   
   /* 324 0x144 */ "_Z__"_Stz,                // CN__Z__
   /* 325 0x145 */ "ZEDOP"_Stz,               // CN_ZEDOP
-  /* 326 0x146 */ "ZSMALL_"_Stz,             // CN_ZSMALL_
-  /* 327 0x147 */ "ZMEDIUM_"_Stz,            // CN_ZMEDIUM_
-  /* 328 0x148 */ "ZLARGE_"_Stz,             // CN_ZLARGE_
-  /* 329 0x149 */ "ZJUMBO_"_Stz,             // CN_ZJUMBO_
+
   /* 330 0x14A */ "ENUMS"_Stz,               // CN_ENUMS
 };
   
