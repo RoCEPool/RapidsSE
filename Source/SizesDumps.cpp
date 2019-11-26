@@ -16,7 +16,6 @@ pDUMPFUN *gpDump[]
 {
   /*  0 */ &Dump::vInvalid,         // CN_NONE
   
-  /* 11 */ &Dump::vInvalid,         // CN_PTRVAL
   /* 12 */ &Dump::vInvalid,         // CN_STRVAL
 
   /* 19 */ &Dump::vInvalid,         // CN_ACCESSPATH
@@ -221,6 +220,7 @@ pDUMPFUN *gpDump[]
   /* 90 */ &Dump::vUndefined,       // CN_PROJECTOP
   /* 91 */ &Dump::vUndefined,       // CN_PSXTHD
   /* 94 */ &Dump::vDummy,           // CN_PTNCOLVEC
+  /* 11 */ &Dump::vInvalid,         // CN_PTRVAL
 
   /* 95 */ &Queue::vDump,           // CN_QUEUE
   /* 96 */ &QueueBuffer::vDump,     // CN_QUEUEBUFFER
@@ -357,7 +357,6 @@ i8 giClassSize[]
 {
   /*  0 */ 0,                          // CN_NONE
   
-  /* 11 */ sizeof(PtrVal),             // CN_PTRVAL
   /* 12 */ sizeof(StrVal),             // CN_STRVAL
  
   /* 19 */ sizeof(AccessPath),         // CN_ACCESSPATH
@@ -559,6 +558,7 @@ i8 giClassSize[]
   /* 91 */ sizeof(ProjectOp),          // CN_PROJECTOP
   /* 89 */ sizeof(PsxThd),             // CN_PSXTHD
   /* 94 */ sizeof(PtnColVec),          // CN_PTNCOLVEC
+  /* 11 */ sizeof(PtrVal),             // CN_PTRVAL
 
   /* 95 */ sizeof(Queue),              // CN_QUEUE
   /* 96 */ sizeof(QueueBuffer),        // CN_QUEUEBUFFER
@@ -695,7 +695,6 @@ eHT geWhichHeap[]
 {
   /*  0 */ HT_INVALID,           // CN_NONE
   
-  /* 11 */ HT_INVALID,           // CN_PTRVAL
   /* 12 */ HT_INVALID,           // CN_STRVAL
 
   /* 19 */ HT_TRANSIENT_MEDIUM,  // CN_ACCESSPATH
@@ -901,6 +900,7 @@ eHT geWhichHeap[]
   /* 90 */ HT_TRANSIENT_SMALL,   // CN_PROJECTOP
   /* 91 */ HT_TRANSIENT_SMALL,   // CN_PSXTHD
   /* 94 */ HT_TRANSIENT_MEDIUM,  // CN_PTNCOLVEC
+  /* 11 */ HT_INVALID,           // CN_PTRVAL
 
   /* 95 */ HT_TRANSIENT_SMALL,   // CN_QUEUE
   /* 96 */ HT_INVALID,           // CN_QUEUEBUFFER

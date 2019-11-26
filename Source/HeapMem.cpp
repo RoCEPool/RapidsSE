@@ -355,7 +355,7 @@ void HeapMem::vSearchFree(void)
 /*----------------------------------------------------------------------------*/
 void HeapMem::vValidateEnums(void)
 {
-  // note: using i8 for iClassNo instead of eCN because you cannot
+  // note: using i8 for i_Class instead of eCN because you cannot
   //       increment (++) an enum
   
   for (i8 i_Class = CN_NONE; i_Class < CN_ENUMS; i_Class++) {
@@ -363,7 +363,7 @@ void HeapMem::vValidateEnums(void)
     eCN eClass = (eCN)i_Class;
     
     eHT eHeap = geWhichHeap[eClass];
-    i8  iSize = giClassSize[eHeap];
+    i8  iSize = giClassSize[eClass];
     
     switch(eHeap) {
       case HT_INVALID:

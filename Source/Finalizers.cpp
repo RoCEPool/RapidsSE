@@ -12,7 +12,6 @@ pFINALIZE *gpFinalize[]
 {
   /*  0 */ &Finalize::vUndefined,         // CN_NONE
   
-  /* 11 */ &Finalize::vUndefined,         // CN_PTRVAL
   /* 12 */ &Finalize::vUndefined,         // CN_STRVAL
 
   /* 19 */ &Finalize::vUndefined,         // CN_ACCESSPATH
@@ -217,6 +216,7 @@ pFINALIZE *gpFinalize[]
   /* 91 */ &Finalize::vUndefined,         // CN_PROJECTOP
   /* 89 */ &Finalize::vUndefined,         // CN_PSXTHD
   /* 94 */ &Finalize::vUndefined,         // CN_PTNCOLVEC
+  /* 11 */ &Finalize::vUndefined,         // CN_PTRVAL
 
   /* 95 */ &Finalize::vUndefined,         // CN_QUEUE
   /* 96 */ &Finalize::vUndefined,         // CN_QUEUEBUFFER

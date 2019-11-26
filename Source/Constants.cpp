@@ -156,14 +156,13 @@ void Constants::vAddConstants(void)
   // CN_ : class numbers
   /*  0 */ vAddConstant("CN_NONE"_Stz,         CN_NONE);
 
-  /*    */ vAddConstant("CN_BIRTH"_Stz,        CN_BIRTH);
-  /*  7 */ vAddConstant("CN_PTRVAL"_Stz,       CN_PTRVAL);
   /*  8 */ vAddConstant("CN_STRVAL"_Stz,       CN_STRVAL);
   
   /* 12 */ vAddConstant("CN_ARGUMENTS"_Stz,    CN_ARGUMENTS);
   /* 13 */ vAddConstant("CN_ATOMIC"_Stz,       CN_ATOMIC);
   /* 14 */ vAddConstant("CN_ATTACHMAP"_Stz,    CN_ATTACHMAP);
   
+  /*    */ vAddConstant("CN_BIRTH"_Stz,        CN_BIRTH);
   /* 17 */ vAddConstant("CN_BPA"_Stz,          CN_BPA);
   /*    */ vAddConstant("CN_BUFFERCURSOR"_Stz, CN_BUFFERCURSOR);
   /* 16 */ vAddConstant("CN_BUFFERPOOL"_Stz,   CN_BUFFERPOOL);
@@ -241,7 +240,8 @@ void Constants::vAddConstants(void)
 
   /* 40 */ vAddConstant("CN_PARSER"_Stz,       CN_PARSER);
   /*    */ vAddConstant("CN_PLAN"_Stz,         CN_PLAN);
-  
+  /*  7 */ vAddConstant("CN_PTRVAL"_Stz,       CN_PTRVAL);
+
   /* 45 */ vAddConstant("CN_QUEUE"_Stz,        CN_QUEUE);
   /* 46 */ vAddConstant("CN_QUEUEBUFFER"_Stz,  CN_QUEUEBUFFER);
   /*    */ vAddConstant("CN_QUEUES"_Stz,       CN_QUEUES);

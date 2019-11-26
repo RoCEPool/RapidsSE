@@ -15,7 +15,6 @@ enum eCN : u2 // Class Number
 {
   /*   0 0x00        0B Heap:I */ CN_NONE,
   
-  /*   8 0x08       16B Heap:I */ CN_PTRVAL,
   /*   9 0x09      272B Heap:I */ CN_STRVAL,
  
   /*  12 0x0C       80B Heap:M */ CN_ACCESSPATH,
@@ -217,6 +216,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_PROJECTOP,
   /* 166 0xA6       32B Heap:S */ CN_PSXTHD,
   /* 167 0xA7     8216B Heap:M */ CN_PTNCOLVEC,
+  /*   8 0x08       16B Heap:I */ CN_PTRVAL,
 
   /* 168 0xA8      168B Heap:S */ CN_QUEUE,
   /* 169 0xA9       64B Heap:I */ CN_QUEUEBUFFER,
@@ -353,7 +353,6 @@ static Stz* aCN[]
 {
   /*   0 0x00 */ "NONE"_Stz,                // CN_NONE
   
-  /*   8 0x08 */ "PTRVAL"_Stz,              // CN_PTRVAL
   /*   9 0x09 */ "STRVAL"_Stz,              // CN_STRVAL
 
   /*  12 0x0C */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
@@ -555,6 +554,7 @@ static Stz* aCN[]
   /*          */ "PROJECTOP"_Stz,           // CN_PROJECTOP
   /* 166 0xA6 */ "PSXTHD"_Stz,              // CN_PSXTHD
   /* 167 0xA7 */ "PTNCOLVEC"_Stz,           // CN_PTNCOLVEC
+  /*   8 0x08 */ "PTRVAL"_Stz,              // CN_PTRVAL
 
   /* 168 0xA8 */ "QUEUE"_Stz,               // CN_QUEUE
   /* 169 0xA9 */ "QUEUEBUFFER"_Stz,         // CN_QUEUEBUFFER
