@@ -251,14 +251,13 @@ void Step::vDstackReverse(void)
   if ( ! m_pDataStack->bPopInt(nValues) )
     THROW_DSTACK();
   
-  for (i8 i = 0; i < nValues; i++) {
+  for (i8 i = 0; i < nValues; i++)
     if ( ! m_pDataStack->bPopVal(paVal[i]) )
       THROW_DSTACK();
-  }
 
-  for (i8 i = 0; i < nValues; i++) {
-    m_pDataStack->vPushVal(paVal[i]->aEmbeddedStkVal());
-  }
+  for (i8 i = 0; i < nValues; i++)
+    m_pDataStack->Step::vDstackReverse((paVal[i]);
+
 }
 
 /*----------------------------------------------------------------------------*/
