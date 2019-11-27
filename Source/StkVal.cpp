@@ -21,6 +21,17 @@ void* StkVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* copy source stack value into this one                                      */
+/*----------------------------------------------------------------------------*/
+void StkVal::vCopy(StkVal* aSrcVal, i8 nBytes)
+{
+  if (! nBytes)
+    nBytes = this->nStackBytes();
+  
+  MemLib::vCopy(this,aSrcVal,nBytes,CN_STACK);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get how many bytes are needed to push a StkVal on stack                    */
 /*----------------------------------------------------------------------------*/
 i8 StkVal::nStackBytes(void)

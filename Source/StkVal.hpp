@@ -12,6 +12,8 @@ namespace SenVM
   public:
     void* operator new(size_t);
   
+    void vCopy(StkVal* aSrcVal, i8 nBytes=0);
+  
     i8   nStackBytes(void);
     void vToString(Stz* aString);
   };
