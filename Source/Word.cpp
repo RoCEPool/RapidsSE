@@ -187,18 +187,17 @@ byte* Word::ayAllot(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append a pointer to cell                                                   */
+/* append a pointer to a cell                                                 */
 /*----------------------------------------------------------------------------*/
 void Word::vAppend(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  void* aAddress = aAppend(aCell);
-  ASSERT(aAddress);
+  IGNORE_RETURN(aAppend(aCell));
 }
 
 /*----------------------------------------------------------------------------*/
-/* append a pointer to cell                                                   */
+/* append a pointer to a cell, return the address of the allotted cell        */
 /*----------------------------------------------------------------------------*/
 void* Word::aAppend(Cell* aCell)
 {
@@ -224,20 +223,6 @@ void Word::vAppend(i8 iInt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append a value  (the entire value, not the pointer to it)                  */
-/*----------------------------------------------------------------------------*/
-void Word::vAppend(StkVal* aStkVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-
-  i8 iSize = aStkVal->nStackBytes();
-
-  char* aValueAddress = (char*)ayAllot(iSize);
-
-  MemLib::vCopy(aValueAddress,aStkVal,iSize,CN_WORD);
-}
-
-/*----------------------------------------------------------------------------*/
 /* append address of pointer to task step                                     */
 /*----------------------------------------------------------------------------*/
 void Word::vAppend(StepFp* afpStepFp)
@@ -247,6 +232,20 @@ void Word::vAppend(StepFp* afpStepFp)
   StepFp** aafpStepFp = (StepFp**)ayAllot(sizeof(StepFp*));
 
   * aafpStepFp = afpStepFp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append a value (the entire value, not a pointer to it)                     */
+/*----------------------------------------------------------------------------*/
+void Word::vAppend(StkVal* aStkVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  i8 nBytes = aStkVal->nStackBytes();
+  
+  char* aValueAddress = (char*)ayAllot(nBytes);
+  
+  MemLib::vCopy(aValueAddress,aStkVal,nBytes,CN_WORD);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -283,7 +283,7 @@ void Stack::vPokeVal(i8 i_Val, GenVar& xVar)
   
   StkVal* aPokeAddress = aPeekVal(i_Val);
   
-  aPokeAddress->vCopy(xVar.aEmbeddedStkVal(),nBytes);
+  aPokeAddress->vCopy(xVar,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -676,12 +676,12 @@ bool Stack::bPopS48K(s48K& sEss1, s48K& sEss2)
     return false;
   
   GenVar xVar1;
-  vPopVal(xVar1.aEmbeddedStkVal());
+  vPopVal(xVar1);
   
   sEss1 = _aStrVal(xVar1.aEmbeddedStkVal())->szStz();
   
   GenVar xVar2;
-  vPopVal(xVar2.aEmbeddedStkVal());
+  vPopVal(xVar2);
   
   sEss2 = _aStrVal(xVar2.aEmbeddedStkVal())->szStz();
   
@@ -751,9 +751,9 @@ bool Stack::bPopVal(GenVar& xVar1, GenVar& xVar2)
   if ( ! bGuard(2) )
     return false;
   
-  vPopVal(xVar1.aEmbeddedStkVal());
+  vPopVal(xVar1);
   
-  vPopVal(xVar2.aEmbeddedStkVal());
+  vPopVal(xVar2);
   
   return true;
 }
@@ -768,11 +768,11 @@ bool Stack::bPopVal(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
   if ( ! bGuard(3) )
     return false;
   
-  vPopVal(xVar1.aEmbeddedStkVal());
+  vPopVal(xVar1);
   
-  vPopVal(xVar2.aEmbeddedStkVal());
+  vPopVal(xVar2);
   
-  vPopVal(xVar3.aEmbeddedStkVal());
+  vPopVal(xVar3);
   
   return true;
 }
