@@ -998,13 +998,28 @@ i8 Stack::nValues(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* pop StkVal on top of stack, inc number of values on stack                  */
+/*----------------------------------------------------------------------------*/
+StkVal* Stack::aAllot(i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  m_xTop.vAdvance(nBytes);
+  ASSERT(m_xTop.ayByte >= (byte*)aStackLimit());
+  
+  m_nValues++;
+  
+  return m_xTop.pStkVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* allot a fip value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
 FipVal* Stack::aAllotFipVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  FipVal* aFipVal = static_cast<FipVal*>(aAllotStkVal(sizeof(FipVal)));
+  FipVal* aFipVal = static_cast<FipVal*>(aAllot(sizeof(FipVal)));
   
   aFipVal->vClass(CN_FIPVAL);
   aFipVal->vMagic();
@@ -1019,7 +1034,7 @@ IntVal* Stack::aAllotIntVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  IntVal* aIntVal = static_cast<IntVal*>(aAllotStkVal(sizeof(IntVal)));
+  IntVal* aIntVal = static_cast<IntVal*>(aAllot(sizeof(IntVal)));
   
   aIntVal->vClass(CN_INTVAL);
   aIntVal->vMagic();
@@ -1034,27 +1049,12 @@ PtrVal* Stack::aAllotPtrVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  PtrVal* aPtrVal = static_cast<PtrVal*>(aAllotStkVal(sizeof(PtrVal)));
+  PtrVal* aPtrVal = static_cast<PtrVal*>(aAllot(sizeof(PtrVal)));
   
   aPtrVal->vClass(CN_PTRVAL);
   aPtrVal->vMagic();
   
   return aPtrVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop StkVal on top of stack, inc number of values on stack                  */
-/*----------------------------------------------------------------------------*/
-StkVal* Stack::aAllotStkVal(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  m_xTop.vAdvance(nBytes);
-  ASSERT(m_xTop.ayByte >= (byte*)aStackLimit());
-
-  m_nValues++;
-
-  return m_xTop.pStkVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1064,7 +1064,7 @@ StrVal* Stack::aAllotStrVal(i8 nSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StrVal* aStrVal = static_cast<StrVal*>(aAllotStkVal(sizeof(StrVal) + nSize - 1));
+  StrVal* aStrVal = static_cast<StrVal*>(aAllot(sizeof(StrVal) - 1 + nSize));
   
   aStrVal->vClass(CN_STRVAL);
   aStrVal->vMagic();

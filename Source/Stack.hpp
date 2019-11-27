@@ -121,10 +121,10 @@ namespace SenVM
   public:
   
   private:
+    StkVal* aAllot(i8 nBytes);
     FipVal* aAllotFipVal(void);
     IntVal* aAllotIntVal(void);
     PtrVal* aAllotPtrVal(void);
-    StkVal* aAllotStkVal(i8 nBytes);
     StrVal* aAllotStrVal(i8 nSize);
   
     void    vDiscard(void);
