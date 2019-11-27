@@ -108,7 +108,6 @@ namespace SenVM
     void vPushVal(GenVar* pVar);
     void vPushVal(GenVar& xVar);
     void vPushVal(StkVal* aStkVal);
-    void vPushVal(StkVal& xStkVal);
   
     void vReset(void);
     void vRetry(void);

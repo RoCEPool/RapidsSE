@@ -915,16 +915,6 @@ void Stack::vPushVal(GenVar& xVar)
 /*----------------------------------------------------------------------------*/
 /* push value onto stack                                                      */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushVal(StkVal& xVal1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vPushVal(&xVal1);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto stack                                                      */
-/*----------------------------------------------------------------------------*/
 void Stack::vPushVal(StkVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
