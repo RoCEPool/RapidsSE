@@ -212,16 +212,6 @@ void* Word::aAppend(Cell* aCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append a value  (the entire value, not the pointer to it)                  */
-/*----------------------------------------------------------------------------*/
-void Word::vAppend(GenVar* pGenVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  vAppend(pGenVar->aEmbeddedStkVal());
-}
-
-/*----------------------------------------------------------------------------*/
 /* append an i8 integer                                                       */
 /*----------------------------------------------------------------------------*/
 void Word::vAppend(i8 iInt)
@@ -422,13 +412,13 @@ void Word::vEncode(Stz* aWordNm, Cell* aCell)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Stz* aWordNm, GenVar* pGenVar)
+void Word::vEncode(Stz* aWordNm, StkVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   vEncode(aWordNm);
   
-  vAppend(pGenVar);
+  vAppend(aStkVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -441,7 +431,7 @@ void Word::vEncode(Stz* aWordNm, Word* pCalledWord)
   GenVar xVar;
   xVar = pCalledWord;
   
-  vEncode(aWordNm,&xVar);
+  vEncode(aWordNm,xVar);
 }
 
 /*----------------------------------------------------------------------------*/

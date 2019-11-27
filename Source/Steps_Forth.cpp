@@ -116,7 +116,7 @@ void Step::vComma(void)
   if ( ! m_pDataStack->bPopVal(xValue) )
     THROW_DSTACK();
   
-  pCurrentWord->vEncode("pushValue"_Stz,&xValue);
+  pCurrentWord->vEncode("pushValue"_Stz,xValue);
     
   EXIT();
 }

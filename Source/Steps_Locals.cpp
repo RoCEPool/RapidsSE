@@ -105,12 +105,12 @@ void Step::vLocalsBar(void)
     
     // encode the word
     xVariable = m_pCompiler->m_nLocals;
-    pWordLocal->vEncode("pushValue"_Stz,&xVariable);
+    pWordLocal->vEncode("pushValue"_Stz,xVariable);
     pWordLocal->vEncode("local.fetch"_Stz);
     pWordLocal->vEncode("exit_rt"_Stz);
 
     // initialise the local from dstack
-    pCurrentWord->vEncode("pushValue"_Stz,&xVariable);
+    pCurrentWord->vEncode("pushValue"_Stz,xVariable);
     pCurrentWord->vEncode("local.store"_Stz);
     
     m_pCompiler->m_nLocals++;
@@ -227,7 +227,7 @@ void Step::vLocalsTo(void)
     GenVar xMetaNm;
     xMetaNm = sLocalNm;
     
-    pCurrentWord->vEncode("pushValue"_Stz,&xMetaNm);
+    pCurrentWord->vEncode("pushValue"_Stz,xMetaNm);
     pCurrentWord->vEncode("swap"_Stz);
 
     if (bSemanticTo) {
@@ -252,7 +252,7 @@ void Step::vLocalsTo(void)
   GenVar xVar_LocalNo;
   xVar_LocalNo = pLocalWord->iLocalNo();
   
-  pCurrentWord->vEncode("pushValue"_Stz,&xVar_LocalNo);
+  pCurrentWord->vEncode("pushValue"_Stz,xVar_LocalNo);
   pCurrentWord->vEncode("local.store"_Stz);
   
   EXIT();
