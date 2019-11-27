@@ -297,10 +297,8 @@ bool Stack::bPopAsInt(i8& iInt)
   if ( ! bGuard(1) )
     return false;
   
-  GenVar xVar;
-  vPopVal(xVar.aEmbeddedStkVal());
-  
-  iInt = xVar.iInt();
+  iInt = m_xTop.pAnyVal->iInt();
+  vDiscard();
   
   return true;
 }

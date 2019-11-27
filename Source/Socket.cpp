@@ -509,7 +509,7 @@ bool Socket::bCreateServer(int iPortNo, SysCall& SysCall)
   // 3) allow socket to listen for new connections
   
   iResult = listen(m_iSocketFd
-                   ,iBacklogOf4
+                   ,iBacklogOf4                                      //! Why 4??
                    );
   
   if (iResult != 0) {

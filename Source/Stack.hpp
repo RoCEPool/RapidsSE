@@ -13,6 +13,7 @@ namespace SenVM
     byte*   ayByte;
     StkVal* pStkVal;
     
+    AnyVal* pAnyVal;
     FipVal* pFipVal;
     IntVal* pIntVal;
     PtrVal* pPtrVal;
