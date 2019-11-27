@@ -37,6 +37,16 @@ namespace Correctness
     return &m_xFooter; \
   }
 
+/*----------------------------------------------------------------------------*/
+/* macro for standard aFooter() function                                      */
+/*----------------------------------------------------------------------------*/
+#define __aHazardFunction(CLASSNM,CN) \
+  Footer* CLASSNM::aHazard(void) \
+  { \
+    _precondition_(_ADDRESS_,_MAGIC_,CN); \
+    return &m_xFooter; \
+  }
+
 /*--------------------------------------------------------------------------*/
 /* check the object has a footer marker as its last word                    */
 /*--------------------------------------------------------------------------*/
