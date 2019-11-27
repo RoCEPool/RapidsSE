@@ -1135,17 +1135,19 @@ void Stack::vPopLocal(Local* aLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  _hazard_();
+//  _hazard_();
+//
+//  i8 nBytes = aTopVal()->nStackBytes();
+//
+//  aLocal->aLocalValue()->vCopy(m_xTop.pStkVal,nBytes);
+//
+//  m_xTop.vRewind(nBytes);
+//
+//  m_nValues--;
+//
+//  _hazard_();
   
-  i8 nBytes = aTopVal()->nStackBytes();
-  
-  aLocal->aLocalValue()->vCopy(m_xTop.pStkVal,nBytes);
-
-  m_xTop.vRewind(nBytes);
-  
-  m_nValues--;
-  
-  _hazard_();
+  vPopVal(aLocal->aLocalValue());
 }
 
 /*----------------------------------------------------------------------------*/
