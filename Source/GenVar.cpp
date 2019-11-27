@@ -86,10 +86,23 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* auto conversion operator : as StkVal*                                      */
+/*----------------------------------------------------------------------------*/
+GenVar::operator StkVal*(void)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+
+  return & u.m_xStkVal;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* operator =                                                                 */
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(StkVal* aStkVal)
 {
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+
   eCN eClass = aStkVal->eClass();
   
   switch (eClass) {

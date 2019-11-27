@@ -32,6 +32,9 @@ namespace SenVM
     GenVar(StkVal*);
    ~GenVar(void) noexcept(false);
   
+    // auto conversion
+    operator StkVal*(void);
+
     void operator =(StkVal*);
   
     void operator =(Cell* aFip);
