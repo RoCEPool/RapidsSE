@@ -256,7 +256,7 @@ void Step::vDstackReverse(void)
       THROW_DSTACK();
 
   for (i8 i = 0; i < nValues; i++)
-    m_pDataStack->Step::vDstackReverse((paVal[i]);
+    m_pDataStack->vPushVal(paVal[i]);
 
 }
 
