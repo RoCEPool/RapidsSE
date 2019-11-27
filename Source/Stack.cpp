@@ -102,6 +102,8 @@ void Stack::vDump(eCN eClass, Object* pObj, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
   vTrace("%s:\n"_Stz,aTitle);
   
   GenVar xVar;
