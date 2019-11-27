@@ -277,11 +277,9 @@ void Stack::vPokeVal(i8 i_Val, GenVar& xVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  i8 nBytes = xVar.aEmbeddedStkVal()->nStackBytes();
-  
   StkVal* aPokeAddress = aPeekVal(i_Val);
   
-  aPokeAddress->vCopy(xVar,nBytes);
+  aPokeAddress->vCopy(xVar);
 }
 
 /*----------------------------------------------------------------------------*/
