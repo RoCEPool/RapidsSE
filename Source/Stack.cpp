@@ -113,16 +113,16 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
     
     vPeekVal(i_Val,xVar);
     
-    eCN eClass = xVar.aEmbeddedStkVal()->eClass();
+    eCN eValClass = xVar.eValClass();
     
-    switch(eClass) {
+    switch(eValClass) {
         
       case CN_FIPVAL: {
         Cell* aFip  = xVar.aFip();
         Word* pWord = pDicStack->pLocateWord(aFip);
 
         vTrace("[%2lld] [%s] %p word %s \n"_Stz,
-               i_Val,aCN[eClass],aFip,
+               i_Val,aCN[eValClass],aFip,
                pWord ? pWord->szWordNm() : "<none>"_Stz);
         break;
       }
@@ -131,7 +131,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
         i8 iInt = xVar.iInt();
         
         vTrace("[%2lld] [%s] %lld\n"_Stz,
-               i_Val,aCN[eClass],iInt);
+               i_Val,aCN[eValClass],iInt);
         break;
       }
         
@@ -140,7 +140,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
         eCN ePtdClass = pObj->eClass();
         
         vTrace("[%2lld] [%s] %p (%s)\n"_Stz,
-               i_Val,aCN[eClass],pObj,aCN[ePtdClass]);
+               i_Val,aCN[eValClass],pObj,aCN[ePtdClass]);
         break;
       }
         
@@ -148,14 +148,14 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
         char* azChar = xVar.azChar();
         
         vTrace("[%2lld] [%s] %s\n"_Stz,
-               i_Val,aCN[eClass],azChar);
+               i_Val,aCN[eValClass],azChar);
         break;
       }
         
       default: {
         
         vTrace("[%2lld] [%s]\n"_Stz,
-               i_Val,aCN[eClass]);
+               i_Val,aCN[eValClass]);
         break;
       }
         
