@@ -46,6 +46,33 @@ GenVar::GenVar(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+GenVar::GenVar(StkVal* aStkVal)
+: Object(CN_GENVAR)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  u.m_xStkVal.vMagic();
+  u.m_xStkVal.vClass(CN_NONE);
+  
+  eCN eClassNo = aStkVal->eClass();
+  
+  switch (eClassNo) {
+    case CN_FIPVAL: u.m_xFipVal = aStkVal->aFip();    break;
+    case CN_INTVAL: u.m_xIntVal = aStkVal->iInt();    break;
+    case CN_PTRVAL: u.m_xPtrVal = aStkVal->pObj();    break;
+    case CN_STRVAL: u.m_xStrVal.vAssign(aStkVal->szStz());  break;
+      
+    default:
+      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+             "Invalid eClass %lld"_Stz,eClassNo);
+  }
+
+  _postcondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 GenVar::~GenVar(void) noexcept(false)

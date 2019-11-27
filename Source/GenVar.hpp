@@ -29,6 +29,7 @@ namespace SenVM
     void* operator new(size_t);
   
     GenVar(void);
+    GenVar(StkVal*);
    ~GenVar(void) noexcept(false);
   
     void operator =(StkVal*);

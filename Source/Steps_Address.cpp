@@ -51,31 +51,7 @@ void Step::vAddressFetch(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  GenVar xValFetched;
-  
-  eCN eClass = aStkVal->eClass();
-  
-  switch (eClass) {
-    case CN_FIPVAL:
-      xValFetched = aStkVal->aFip();
-      break;
-      
-    case CN_INTVAL:
-      xValFetched = aStkVal->iInt();
-      break;
-      
-    case CN_PTRVAL:
-      xValFetched = aStkVal->pObj();
-      break;
-      
-    case CN_STRVAL:
-      xValFetched = aStkVal->szStz();
-      break;
-      
-    default:
-      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
-             "Invalid eClass %lld"_Stz,eClass);
-  }
+  GenVar xValFetched = aStkVal; 
   
   m_pDataStack->vPushVal(xValFetched);
   
@@ -100,29 +76,31 @@ void Step::vAddressStore(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  eCN eClass = aStkVal->eClass();
+//  eCN eClass = aStkVal->eClass();
+//
+//  switch (eClass) {
+//    case CN_FIPVAL:
+//      *_aFipVal(aStkVal) = _aFipVal(xValToStore.aEmbeddedStkVal())->aFip();
+//      break;
+//
+//    case CN_INTVAL:
+//      *_aIntVal(aStkVal) = _aIntVal(xValToStore.aEmbeddedStkVal())->iInt();
+//      break;
+//
+//    case CN_PTRVAL:
+//      *_aPtrVal(aStkVal) = _aPtrVal(xValToStore.aEmbeddedStkVal())->pObj();
+//      break;
+//
+//   case CN_STRVAL:
+//      _aStrVal(aStkVal)->vAssign( _aStrVal(xValToStore.aEmbeddedStkVal())->szStz() );
+//      break;
+//
+//    default:
+//      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+//             "Invalid eClass %lld"_Stz,eClass);
+//  }
   
-  switch (eClass) {
-    case CN_FIPVAL:
-      *_aFipVal(aStkVal) = _aFipVal(xValToStore.aEmbeddedStkVal())->aFip();
-      break;
-      
-    case CN_INTVAL:
-      *_aIntVal(aStkVal) = _aIntVal(xValToStore.aEmbeddedStkVal())->iInt();
-      break;
-      
-    case CN_PTRVAL:
-      *_aPtrVal(aStkVal) = _aPtrVal(xValToStore.aEmbeddedStkVal())->pObj();
-      break;
-      
-   case CN_STRVAL:
-      _aStrVal(aStkVal)->vAssign( _aStrVal(xValToStore.aEmbeddedStkVal())->szStz() );
-      break;
-      
-    default:
-      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
-             "Invalid eClass %lld"_Stz,eClass);
-  }
+  aStkVal->vCopy(xValToStore.aEmbeddedStkVal());
   
   EXIT();
 }
