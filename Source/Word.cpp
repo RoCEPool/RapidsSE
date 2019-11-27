@@ -212,38 +212,25 @@ void* Word::aAppend(Cell* aCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append an i8 integer                                                       */
-/*----------------------------------------------------------------------------*/
-void Word::vAppend(i8 iInt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  void* aAddress = aAppend(iInt);
-  ASSERT(aAddress);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append an i8 integer                                                       */
-/*----------------------------------------------------------------------------*/
-void* Word::aAppend(i8 iInt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  i8* aAllottedInt = (i8*)ayAllot(sizeof(i8));
-  
-  *aAllottedInt = iInt;
-  
-  return aAllottedInt;
-}
-
-/*----------------------------------------------------------------------------*/
 /* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
 void Word::vAppend(GenVar* pGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  void* aValueAddress = aAppend(pGenVar->aEmbeddedStkVal());
+  vAppend(pGenVar->aEmbeddedStkVal());
+}
+
+/*----------------------------------------------------------------------------*/
+/* append an i8 integer                                                       */
+/*----------------------------------------------------------------------------*/
+void Word::vAppend(i8 iInt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  i8* aAllottedInt = (i8*)ayAllot(sizeof(i8));
+
+  *aAllottedInt = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
