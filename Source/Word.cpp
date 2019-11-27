@@ -240,24 +240,11 @@ void Word::vAppend(StkVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  void* aAddress = aAppend(aStkVal);
-  ASSERT(aAddress);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a value  (the entire value, not the pointer to it)                  */
-/*----------------------------------------------------------------------------*/
-void* Word::aAppend(StkVal* aStkVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-
   i8 iSize = aStkVal->nStackBytes();
-  
+
   char* aValueAddress = (char*)ayAllot(iSize);
-  
+
   MemLib::vCopy(aValueAddress,aStkVal,iSize,CN_WORD);
-  
-  return aValueAddress;
 }
 
 /*----------------------------------------------------------------------------*/
