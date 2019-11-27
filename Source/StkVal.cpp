@@ -26,7 +26,7 @@ void* StkVal::operator new(size_t)
 void StkVal::vCopy(StkVal* aSrcVal, i8 nBytes)
 {
   if (! nBytes)
-    nBytes = this->nStackBytes();
+    nBytes = aSrcVal->nStackBytes();
   
   MemLib::vCopy(this,aSrcVal,nBytes,CN_STACK);
 }

@@ -267,9 +267,7 @@ void Stack::vPeekVal(i8 i_Val, GenVar& xVar)
   
   StkVal* aPeekedValue = aPeekVal(i_Val);
   
-  i8 nBytes = aPeekedValue->nStackBytes();
-  
-  xVar.aEmbeddedStkVal()->vCopy(aPeekedValue,nBytes);
+  xVar.vCopy(aPeekedValue);
 }
 
 /*----------------------------------------------------------------------------*/

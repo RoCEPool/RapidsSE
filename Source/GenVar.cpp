@@ -179,6 +179,16 @@ char* GenVar::azChar(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy given source value into this var                                      */
+/*----------------------------------------------------------------------------*/
+void GenVar::vCopy(StkVal* aStkVal)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  u.m_xStkVal.vCopy(aStkVal);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get forth instruction pointer                                              */
 /*----------------------------------------------------------------------------*/
 Cell* GenVar::aFip(void)

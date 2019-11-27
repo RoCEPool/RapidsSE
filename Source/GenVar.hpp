@@ -43,6 +43,7 @@ namespace SenVM
     void operator =(Stz* szStz);
 
     char*   azChar(void);
+    void    vCopy(StkVal* aStkVal);
     StkVal* aEmbeddedStkVal(void);
     Cell*   aFip(void);
     i8      iInt(void);
