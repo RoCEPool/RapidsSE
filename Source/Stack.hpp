@@ -134,7 +134,6 @@ namespace SenVM
 
     void    vPopLocal(Local* aLocal);
     void    vPopVal(StkVal* aStkVal);
-    void    vPushBy(i8 nBytes);
   
     StkVal* aStackBase(void);
     StkVal* aStackLimit(void);

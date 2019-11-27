@@ -956,7 +956,7 @@ void Stack::vPushVal(StkVal* aStkVal)
   
   i8 iSize = aStkVal->nStackBytes();
   
-  vPushBy(iSize);
+  m_xTop.vAdvance(iSize);
   MemLib::vCopy(m_xTop.pStkVal,aStkVal,iSize,CN_STACK);
   m_nValues++;
   
@@ -1190,22 +1190,6 @@ void Stack::vPopVal(StkVal* aStkVal)
   m_nValues--;
   
   _hazard_();
-}
-
-/*----------------------------------------------------------------------------*/
-/* push top by given bytes                                                    */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushBy(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  char* pTop = reinterpret_cast<char*>(m_xTop.pStkVal);
-  
-  pTop -= nBytes;
-  
-  ASSERT(pTop >= (char*)aStackLimit());
-  
-  m_xTop.pStkVal = reinterpret_cast<StkVal*>(pTop);
 }
 
 /*----------------------------------------------------------------------------*/
