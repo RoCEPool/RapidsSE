@@ -31,6 +31,8 @@ namespace SenVM
     GenVar(void);
    ~GenVar(void) noexcept(false);
   
+    void operator =(StkVal*);
+  
     void operator =(Cell* aFip);
     void operator =(i8 iInt);
     void operator =(Object* pObj);

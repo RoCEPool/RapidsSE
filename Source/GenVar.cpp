@@ -59,6 +59,29 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* operator =                                                                 */
+/*----------------------------------------------------------------------------*/
+void GenVar::operator =(StkVal* aStkVal)
+{
+  eCN eClass = aStkVal->eClass();
+  
+  switch (eClass) {
+    case CN_FIPVAL: u.m_xFipVal = aStkVal->aFip();    break;
+    case CN_INTVAL: u.m_xIntVal = aStkVal->iInt();    break;
+    case CN_PTRVAL: u.m_xPtrVal = aStkVal->pObj();    break;
+    case CN_STRVAL: u.m_xStrVal.vAssign(aStkVal->szStz());  break;
+      
+    default:
+      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+             "Invalid eClass %lld"_Stz,eClass);
+  }
+  
+  NEVER_REACH;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
 /* assign/copy a forth instruction pointer                                    */
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Cell* aFip)
