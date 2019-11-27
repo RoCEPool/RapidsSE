@@ -104,23 +104,20 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
 {
   vTrace("%s:\n"_Stz,aTitle);
   
-  GenVar xVariable;
+  GenVar xVar;
   
   i8 nValues = this->nValues();
   for (i8 i_Val = 0; i_Val < nValues; i_Val++) {
     
-    vPeekVal(i_Val,xVariable);
+    vPeekVal(i_Val,xVar);
     
-    StkVal* aEmbeddedStkVal = xVariable.aEmbeddedStkVal();
-    eCN eClass = aEmbeddedStkVal->eClass();
+    eCN eClass = xVar.aEmbeddedStkVal()->eClass();
     
     switch(eClass) {
         
       case CN_FIPVAL: {
-        FipVal* aFipVal = _aFipVal(aEmbeddedStkVal);
-        Cell* aFip = aFipVal->aFip();
+        Cell* aFip  = xVar.aFip();
         Word* pWord = pDicStack->pLocateWord(aFip);
-
 
         vTrace("[%2lld] [%s] %p word %s \n"_Stz,
                i_Val,aCN[eClass],aFip,
@@ -129,30 +126,32 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
       }
         
       case CN_INTVAL: {
-        IntVal* aIntVal = _aIntVal(aEmbeddedStkVal); //xVariable.iInt();
-        i8 iInt = aIntVal->iInt();
+        i8 iInt = xVar.iInt();
+        
         vTrace("[%2lld] [%s] %lld\n"_Stz,
                i_Val,aCN[eClass],iInt);
         break;
       }
         
       case CN_PTRVAL: {
-        PtrVal* aPtrVal = _aPtrVal(aEmbeddedStkVal);
-        Object* pObj = aPtrVal->pObj();
-        eCN ePtdClass   = pObj->eClass();
+        Object* pObj  = xVar.pObj();
+        eCN ePtdClass = pObj->eClass();
+        
         vTrace("[%2lld] [%s] %p (%s)\n"_Stz,
                i_Val,aCN[eClass],pObj,aCN[ePtdClass]);
         break;
       }
         
       case CN_STRVAL: {
-        StrVal* aStrVal = _aStrVal(aEmbeddedStkVal);
+        char* azChar = xVar.azChar();
+        
         vTrace("[%2lld] [%s] %s\n"_Stz,
-               i_Val,aCN[eClass],aStrVal->azChar());
+               i_Val,aCN[eClass],azChar);
         break;
       }
         
       default: {
+        
         vTrace("[%2lld] [%s]\n"_Stz,
                i_Val,aCN[eClass]);
         break;
