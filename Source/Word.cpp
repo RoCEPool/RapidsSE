@@ -243,47 +243,7 @@ void Word::vAppend(GenVar* pGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  void* aAddress = aAppend(pGenVar);
-  ASSERT(aAddress);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a value  (the entire value, not the pointer to it)                  */
-/*----------------------------------------------------------------------------*/
-void* Word::aAppend(GenVar* pGenVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
   void* aValueAddress = aAppend(pGenVar->aEmbeddedStkVal());
-  
-  return aValueAddress;
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a value  (the entire value, not the pointer to it)                  */
-/*----------------------------------------------------------------------------*/
-void* Word::aAppend(SenVar* aSenVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  i8 nBytes = aSenVar->nStackBytes();
-  
-  byte* ayDst = ayAllot(nBytes);
-  
-  MemLib::vCopy(ayDst,aSenVar,nBytes,CN_WORD);
-  
-  return ayDst;
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a value  (the entire value, not the pointer to it)                  */
-/*----------------------------------------------------------------------------*/
-void Word::vAppend(SenVar* aSenVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  void* aAddress = aAppend(aSenVar);
-  ASSERT(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/

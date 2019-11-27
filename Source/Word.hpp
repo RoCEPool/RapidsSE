@@ -65,12 +65,9 @@ namespace SenVM
     byte* ayAllot(i8 iBytes);
     void* aAppend(Cell* aCell);
     void  vAppend(Cell* aCell);
-    void* aAppend(GenVar* pGenVar);
     void  vAppend(GenVar* pGenVar);
     void* aAppend(i8 iInt);
     void  vAppend(i8 iInt);
-    void* aAppend(SenVar* aSenVar);
-    void  vAppend(SenVar* aSenVar);
     void* aAppend(StepFp* afpStep);
     void  vAppend(StepFp* afpStep);
     void* aAppend(StkVal* aStkVal);
