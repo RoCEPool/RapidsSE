@@ -262,14 +262,15 @@ void Step::vSocketListen(void)
   ENTRY(); // ENTRY("vSocketListen"_Stz);
   
   SysCall oSysCall;
-  Socket* pSocket;
   i8      iPort;
-  
   
   if ( ! m_pDataStack->bPopInt(iPort) )
     THROW_DSTACK();
   
-  pSocket = new Socket(this);
+  //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -
+  // attempt to create server-side listening socket
+  
+  Socket* pSocket = new Socket(this);
   bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
   
   if ( ! bResult ) {
@@ -284,6 +285,25 @@ void Step::vSocketListen(void)
              "Unable to listen for connections: Errno %d"_Stz, oSysCall.iError());
   }
   
+  //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -
+  // test to see what happens when we attempt to create
+  // server-side listening socket when the socket/port is already in use
+  
+//  Socket* pSocket2 = new Socket(this);
+//  bool bResult2 = pSocket2->bCreateServer((int)iPort, oSysCall);
+//
+//  if ( ! bResult2 ) {
+//    if (oSysCall.iError() == EADDRINUSE) {
+//      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+//             "Address in use (port: %lld). "
+//             "Check if another instance of RAPIDSSE is running!"_Stz,
+//             iPort);
+//    }
+//    else
+//      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+//             "Unable to listen for connections: Errno %d"_Stz, oSysCall.iError());
+//  }
+
   // return socket
   Object* pPtrSocket = pSocket;
   m_pDataStack->vPushPtr(pPtrSocket);
