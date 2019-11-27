@@ -1168,7 +1168,7 @@ void Stack::vPopLocal(Local* aLocal)
   i8 iSize = aTopVal()->nStackBytes();
   
   MemLib::vCopy(aLocal->aLocalValue(),m_xTop.pStkVal,iSize,CN_STACK);
-  vPopBy(iSize);
+  m_xTop.vRewind(iSize);
   m_nValues--;
   
   _hazard_();
@@ -1186,7 +1186,7 @@ void Stack::vPopVal(StkVal* aStkVal)
   i8 iSize = aTopVal()->nStackBytes();
   
   MemLib::vCopy(aStkVal,m_xTop.pStkVal,iSize,CN_STACK);
-  vPopBy(iSize);
+  m_xTop.vRewind(iSize);
   m_nValues--;
   
   _hazard_();

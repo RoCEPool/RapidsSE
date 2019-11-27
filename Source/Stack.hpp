@@ -128,7 +128,6 @@ namespace SenVM
   
     void    vDiscard(void);
   
-    void    vPopBy(i8 nBytes);
     Cell*   aPopFip(void);
     i8      iPopInt(void);
     Object* pPopObj(void);
@@ -145,20 +144,6 @@ namespace SenVM
     Footer* aFooter(void);
     Footer* aHazard(void);
   };
-  
-  /*----------------------------------------------------------------------------*/
-  /* pop top by given bytes                                                     */
-  /*----------------------------------------------------------------------------*/
-  inline void Stack::vPopBy(i8 nBytes)
-  {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-    
-    char* aTop = reinterpret_cast<char*>(m_xTop.pStkVal);
-    
-    aTop += nBytes;
-    
-    m_xTop.pStkVal = reinterpret_cast<StkVal*>(aTop);
-  }
   
   /*----------------------------------------------------------------------------*/
   /* pop value from data stack  as integer                                      */
@@ -182,7 +167,8 @@ namespace SenVM
       NEVER_REACH;
     }
   
-  vPopBy(sizeof(IntVal)); // inline
+  m_xTop.vRewind(sizeof(IntVal));
+  
   m_nValues--;
   
   return true;
