@@ -54,10 +54,10 @@ Stack::Stack(eKK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_eKind         = eKind;
+  m_eKind        = eKind;
   
-  m_xTop.pStkVal  = aStackBase();
-  m_nValues       = 0;
+  m_xTop.pStkVal = aStackBase();
+  m_nValues      = 0;
   
   m_aRetryTop    = aStackBase();
   m_nRetryValues = 0;
@@ -68,9 +68,9 @@ Stack::Stack(eKK eKind)
   
   _checkInitialised_(CN_STACK);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
   _hazard_();
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -268,11 +268,7 @@ void Stack::vPeekVal(i8 i_Val, GenVar& xVariable)
   
   i8 nBytes = aPeekedValue->nStackBytes();
   
-  //vTrace("Peek: %lld %p %lld\n"_Stz,iNthValue,pPeekedValue,nBytes);
-  
-  //MemLib::vCopy(xVariable.aEmbeddedStkVal(),aPeekedValue,iSize,CN_STACK);
   xVariable.aEmbeddedStkVal()->vCopy(aPeekedValue,nBytes);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -286,7 +282,6 @@ void Stack::vPokeVal(i8 i_Val, GenVar& xVar)
   
   StkVal* aPokeAddress = aPeekVal(i_Val);
   
-  //MemLib::vCopy(aPokeAddress,xVar.aEmbeddedStkVal(),nBytes,CN_STACK);
   aPokeAddress->vCopy(xVar.aEmbeddedStkVal(),nBytes);
 }
 
@@ -316,10 +311,8 @@ bool Stack::bPopAsInt_Quick(i8& iInt)
   if ( ! bGuard(1) )
     return false;
   
-  // get pointer to value on the top of the stack
   StkVal* aTopValue = aTopVal();
   
-  // discard the value
   vDiscard();
   
   eCN eClassNo = aTopValue->eClass();
@@ -512,7 +505,7 @@ bool Stack::bPopPtr(Object*& pObj, i8& iInt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop Object*, Object* from stack                                           */
+/* pop Object*, Object* from stack                                            */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopPtr(Object*& pObj1, Object*& pObj2)
 {
@@ -947,7 +940,6 @@ void Stack::vPushVal(StkVal* aStkVal)
   
   m_xTop.vAdvance(nBytes);
   
-  //MemLib::vCopy(m_xTop.pStkVal,aStkVal,nBytes,CN_STACK);
   m_xTop.pStkVal->vCopy(aStkVal,nBytes);
   
   m_nValues++;
@@ -963,12 +955,6 @@ void Stack::vPushVal(StkVal* aStkVal)
 void Stack::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  //! maybe this would be better as a re-init() ?
-  //! that possibly would help with corruptions
-  
-//  while (nValues())
-//    vDiscard();
   
   m_xTop.pStkVal  = aStackBase();
   m_nValues       = 0;
@@ -1095,7 +1081,6 @@ void Stack::vDiscard(void)
   _hazard_();
   
   m_xTop.vRewind();
-  
   m_nValues--;
   
   _hazard_();
@@ -1154,7 +1139,6 @@ void Stack::vPopLocal(Local* aLocal)
   
   i8 nBytes = aTopVal()->nStackBytes();
   
-  //MemLib::vCopy(aLocal->aLocalValue(),m_xTop.pStkVal,nBytes,CN_STACK);
   aLocal->aLocalValue()->vCopy(m_xTop.pStkVal,nBytes);
 
   m_xTop.vRewind(nBytes);
@@ -1175,7 +1159,6 @@ void Stack::vPopVal(StkVal* aStkVal)
   
   i8 nBytes = aTopVal()->nStackBytes();
   
-  //MemLib::vCopy(aStkVal,m_xTop.pStkVal,nBytes,CN_STACK);
   aStkVal->vCopy(m_xTop.pStkVal,nBytes);
   
   m_xTop.vRewind(nBytes);
