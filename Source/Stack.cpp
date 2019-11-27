@@ -717,14 +717,14 @@ bool Stack::bPopStr(String* pString)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack into given variable                                   */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopVal(GenVar* pVariable)
+bool Stack::bPopVal(GenVar* pVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(1) )
     return false;
   
-  vPopVal(pVariable->aEmbeddedStkVal());
+  vPopVal(pVar->aEmbeddedStkVal());
   
   return true;
 }
@@ -787,10 +787,6 @@ void Stack::vPushFip(Cell* aFip)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-//  FipVal xFipVal;
-//  xFipVal = aFip;
-//  vPushValue(xFipVal);
-  
   FipVal* aFipVal = aAllotFipVal();
   
   * aFipVal = aFip;
@@ -803,10 +799,6 @@ void Stack::vPushInt(i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-//  IntVal xIntVal1;
-//  xIntVal1 = iInt;
-//  vPushVal(xIntVal1);
-  
   IntVal* aIntVal = aAllotIntVal();
   
   * aIntVal = iInt;
@@ -818,10 +810,6 @@ void Stack::vPushInt(i8 iInt)
 void Stack::vPushPtr(Object* pObj)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-//  PtrVal xPtrObject;
-//  xPtrObject = pObj;
-//  vPushVal(xPtrObject);
   
   PtrVal* aPtrVal = aAllotPtrVal();
   
@@ -973,8 +961,11 @@ void Stack::vReset(void)
   //! maybe this would be better as a re-init() ?
   //! that possibly would help with corruptions
   
-  while (nValues())
-    vDiscard();
+//  while (nValues())
+//    vDiscard();
+  
+  m_xTop.pStkVal  = aStackBase();
+  m_nValues       = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -984,8 +975,8 @@ void Stack::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  m_xTop.pStkVal    = m_aRetryTop;
-  m_nValues = m_nRetryValues;
+  m_xTop.pStkVal = m_aRetryTop;
+  m_nValues      = m_nRetryValues;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1064,14 +1055,6 @@ PtrVal* Stack::aAllotPtrVal(void)
 StkVal* Stack::aAllotStkVal(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-//  char* aTop = reinterpret_cast<char*>(m_xTop.pStkVal);
-//
-//  aTop -= nBytes;
-//
-//  ASSERT(aTop >= (char*)aStackLimit());
-//
-//  m_xTop.pStkVal = reinterpret_cast<StkVal*>(aTop);
   
   m_xTop.vAdvance(nBytes);
   ASSERT(m_xTop.ayByte >= (byte*)aStackLimit());
@@ -1191,7 +1174,7 @@ void Stack::vPopVal(StkVal* aStkVal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* base of this stack                                                         */
+/* compute the base of this stack                                             */
 /*----------------------------------------------------------------------------*/
 StkVal* Stack::aStackBase(void)
 {
@@ -1203,7 +1186,7 @@ StkVal* Stack::aStackBase(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* limit of this stack                                                        */
+/* compute the limit of this stack                                            */
 /*----------------------------------------------------------------------------*/
 StkVal* Stack::aStackLimit(void)
 {
