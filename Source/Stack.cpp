@@ -266,11 +266,13 @@ void Stack::vPeekVal(i8 i_Val, GenVar& xVariable)
   
   StkVal* aPeekedValue = aPeekVal(i_Val);
   
-  i8 iSize = aPeekedValue->nStackBytes();
+  i8 nBytes = aPeekedValue->nStackBytes();
   
-  //vTrace("Peek: %lld %p %lld\n"_Stz,iNthValue,pPeekedValue,iSize);
+  //vTrace("Peek: %lld %p %lld\n"_Stz,iNthValue,pPeekedValue,nBytes);
   
-  MemLib::vCopy(xVariable.aEmbeddedStkVal(),aPeekedValue,iSize,CN_STACK);
+  //MemLib::vCopy(xVariable.aEmbeddedStkVal(),aPeekedValue,iSize,CN_STACK);
+  xVariable.aEmbeddedStkVal()->vCopy(aPeekedValue,nBytes);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -280,11 +282,12 @@ void Stack::vPokeVal(i8 i_Val, GenVar& xVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  i8 iSize = xVar.aEmbeddedStkVal()->nStackBytes();
+  i8 nBytes = xVar.aEmbeddedStkVal()->nStackBytes();
   
   StkVal* aPokeAddress = aPeekVal(i_Val);
   
-  MemLib::vCopy(aPokeAddress,xVar.aEmbeddedStkVal(),iSize,CN_STACK);
+  //MemLib::vCopy(aPokeAddress,xVar.aEmbeddedStkVal(),nBytes,CN_STACK);
+  aPokeAddress->vCopy(xVar.aEmbeddedStkVal(),nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1149,10 +1152,13 @@ void Stack::vPopLocal(Local* aLocal)
 
   _hazard_();
   
-  i8 iSize = aTopVal()->nStackBytes();
+  i8 nBytes = aTopVal()->nStackBytes();
   
-  MemLib::vCopy(aLocal->aLocalValue(),m_xTop.pStkVal,iSize,CN_STACK);
-  m_xTop.vRewind(iSize);
+  //MemLib::vCopy(aLocal->aLocalValue(),m_xTop.pStkVal,nBytes,CN_STACK);
+  aLocal->aLocalValue()->vCopy(m_xTop.pStkVal,nBytes);
+
+  m_xTop.vRewind(nBytes);
+  
   m_nValues--;
   
   _hazard_();
@@ -1167,10 +1173,13 @@ void Stack::vPopVal(StkVal* aStkVal)
 
   _hazard_();
   
-  i8 iSize = aTopVal()->nStackBytes();
+  i8 nBytes = aTopVal()->nStackBytes();
   
-  MemLib::vCopy(aStkVal,m_xTop.pStkVal,iSize,CN_STACK);
-  m_xTop.vRewind(iSize);
+  //MemLib::vCopy(aStkVal,m_xTop.pStkVal,nBytes,CN_STACK);
+  aStkVal->vCopy(m_xTop.pStkVal,nBytes);
+  
+  m_xTop.vRewind(nBytes);
+  
   m_nValues--;
   
   _hazard_();
