@@ -85,13 +85,13 @@ void Step::vToStr(void)
 {
   ENTRY(); // ENTRY("vToStr"_Stz);
   
-  GenVar xVal;
-  if ( ! m_pDataStack->bPopVal(xVal) )
+  GenVar xVar;
+  if ( ! m_pDataStack->bPopVal(xVar) )
     THROW_DSTACK();
   
   s48K sString;
   
-  xVal.aEmbeddedStkVal()->vToString(sString);
+  xVar.vToString(sString);
   
   m_pDataStack->vPushS48K(sString);
   

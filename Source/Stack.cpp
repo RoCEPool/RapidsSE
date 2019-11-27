@@ -261,7 +261,7 @@ StkVal* Stack::aPeekVal(i8 i_Val)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekVal(i8 i_Val, GenVar& xVariable)
+void Stack::vPeekVal(i8 i_Val, GenVar& xVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -269,7 +269,7 @@ void Stack::vPeekVal(i8 i_Val, GenVar& xVariable)
   
   i8 nBytes = aPeekedValue->nStackBytes();
   
-  xVariable.aEmbeddedStkVal()->vCopy(aPeekedValue,nBytes);
+  xVar.aEmbeddedStkVal()->vCopy(aPeekedValue,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -998,7 +998,7 @@ i8 Stack::nValues(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* pop StkVal on top of stack, inc number of values on stack                  */
+/* allot a fip value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
 StkVal* Stack::aAllot(i8 nBytes)
 {

@@ -80,7 +80,7 @@ i8 StkVal::nStackBytes(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void StkVal::vToString(Stz* aString)
+void StkVal::vToString(Stz* szString)
 {
   eCN eClass = this->eClass();
   
@@ -88,25 +88,25 @@ void StkVal::vToString(Stz* aString)
             
     case CN_FIPVAL: {
       FipVal* aFipVal = _aFipVal(this);
-      aFipVal->vToString(aString);
+      aFipVal->vToString(szString);
       break;
     }
       
     case CN_INTVAL: {
       IntVal* aIntVal = _aIntVal(this);
-      aIntVal->vToString(aString);
+      aIntVal->vToString(szString);
       break;
     }
       
     case CN_PTRVAL: {
       PtrVal* aPtrVal = _aPtrVal(this);
-      aPtrVal->vToString(aString);
+      aPtrVal->vToString(szString);
       break;
     }
       
     case CN_STRVAL: {
       StrVal* aStrVal = _aStrVal(this);
-      aStrVal->vToString(aString);
+      aStrVal->vToString(szString);
       break;
     }
             

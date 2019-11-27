@@ -44,6 +44,7 @@ namespace SenVM
     Object* pObj(void);
     Stz*    szStz(void);
     i8      nStzSize(void);
+    void    vToString(Stz* szStz);
 
   private:
     Footer* aFooter(void);

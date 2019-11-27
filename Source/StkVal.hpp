@@ -15,7 +15,7 @@ namespace SenVM
     void vCopy(StkVal* aSrcVal, i8 nBytes=0);
   
     i8   nStackBytes(void);
-    void vToString(Stz* aString);
+    void vToString(Stz* szString);
   };
 }
 
