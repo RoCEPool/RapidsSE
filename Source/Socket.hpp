@@ -11,7 +11,7 @@ namespace Resources
   
     Object* m_pIsFor;
   
-    int     m_iSocketId;                  //! i think this is m_iSocketFd -- ray
+    int     m_iSocketFd;
     bool    m_bBlocking;
     Lock    m_okLock;
   

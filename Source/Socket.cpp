@@ -58,7 +58,7 @@ Socket::Socket(Object* pIsFor)
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   m_pIsFor    = pIsFor;
-  m_iSocketId = -1;
+  m_iSocketFd = C_UNKNOWN;
   m_bBlocking = true;
   
   m_aLowBuff  = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
@@ -85,7 +85,7 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   m_pIsFor    = pIsFor;
-  m_iSocketId = iSocketId;
+  m_iSocketFd = iSocketId;
   m_bBlocking = true;
   
   m_aLowBuff  = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
@@ -109,8 +109,8 @@ Socket::~Socket(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  if (-1 != m_iSocketId) {
-    vWarn("Socket %d not closed!\n"_Stz, m_iSocketId);
+  if (C_UNKNOWN != m_iSocketFd) {
+    vWarn("Socket %d not closed!\n"_Stz, m_iSocketFd);
   }
   
   MemLib::vFreeBlock(m_aLowBuff,C_SIZE_POOL_BUFFER);
@@ -133,7 +133,7 @@ void Socket::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Socket* pSocket = _pSocket(pObject);
 
   vTrace("id %lld %s\n"_Stz,
-         pSocket->m_iSocketId,
+         pSocket->m_iSocketFd,
          pSocket->m_bBlocking ? "blocking"_Stz : "non-blocking"_Stz);
 }
 
@@ -232,7 +232,7 @@ void Socket::vAddrInit(sockaddr_in* aAddr, Stz* sAddr, int iPort)
   MemLib::vZero(aAddr,sizeof(sockaddr_in),CN_SOCKET);
   
   aAddr->sin_family      = AF_INET;
-  aAddr->sin_addr.s_addr = sAddr->azChar() == nullptr ? -1 : inet_addr(sAddr->azChar());
+  aAddr->sin_addr.s_addr = sAddr->azChar() == nullptr ? C_UNKNOWN : inet_addr(sAddr->azChar());
   aAddr->sin_port        = htons((int)iPort);
 }
 
@@ -243,7 +243,7 @@ void Socket::vCopy(Socket* pSource)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  m_iSocketId = pSource->m_iSocketId;
+  m_iSocketFd = pSource->m_iSocketFd;
   m_bBlocking = pSource->m_bBlocking;
 }
 
@@ -264,7 +264,7 @@ bool Socket::bIsOpen()
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  if (-1 != m_iSocketId)
+  if (C_UNKNOWN != m_iSocketFd)
     return true;
   
   return false;
@@ -287,11 +287,11 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nAccepts++;
 #endif
   
-  iSocketId = accept(m_iSocketId
+  iSocketId = accept(m_iSocketFd
                          ,(struct sockaddr*)&xClientAddr
                          ,&iSize
                          );
-  if (-1 == iSocketId) {
+  if (C_UNKNOWN == iSocketId) {
     SysCall.vError(errno);
     return false;
   }
@@ -314,7 +314,7 @@ bool Socket::bClose(SysCall& SysCall)
   
   SysCall.vClear();
   
-  int iError = shutdown(m_iSocketId, SHUT_RDWR);
+  int iError = shutdown(m_iSocketFd, SHUT_RDWR);
   
   if (iError && ENOTCONN != errno) {
     SysCall.vError(errno);
@@ -325,13 +325,13 @@ bool Socket::bClose(SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nCloses++;
 #endif
   
-  iError = close(m_iSocketId);
+  iError = close(m_iSocketFd);
   if (iError) {
     SysCall.vError(errno);
     return false;
   }
   
-  m_iSocketId = -1;
+  m_iSocketFd = C_UNKNOWN;
   
   if (AM::bAttached()) AM::pResourceTracker()->vDecSocketOpen();
   
@@ -354,21 +354,21 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   
   SysCall.vClear();
   
-  if (-1 == m_iSocketId) {
-    m_iSocketId = socket(AF_INET,SOCK_STREAM,0);
+  if (C_UNKNOWN == m_iSocketFd) {
+    m_iSocketFd = socket(AF_INET,SOCK_STREAM,0);
 
-    if (m_iSocketId < 0) {
+    if (m_iSocketFd < 0) {
       SysCall.vError(errno);
       return false;
     }
     
-    iResult = setsockopt(m_iSocketId
+    iResult = setsockopt(m_iSocketFd
                          ,SOL_SOCKET
                          ,SO_REUSEADDR
                          ,(void*)&iOpt
                          ,sizeof(iOpt)
                          );
-    if (-1 == iResult) {
+    if (C_UNKNOWN == iResult) {
       SysCall.vError(errno);
       bClose(SysCall);
       return false;
@@ -401,12 +401,12 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
               "this client attempting connection to server %s %d"_Stz, //!format-LogRes
               sAddr,iPort);
   
-  iResult = connect(m_iSocketId,(struct sockaddr*)pAddrInfo->ai_addr,sizeof(struct sockaddr));
+  iResult = connect(m_iSocketFd,(struct sockaddr*)pAddrInfo->ai_addr,sizeof(struct sockaddr));
   
   if (iResult != 0) {
     SysCall.vError(errno);
-    close(m_iSocketId);
-    m_iSocketId = -1;
+    close(m_iSocketFd);
+    m_iSocketFd = C_UNKNOWN;
     return false;
   }
   
@@ -437,31 +437,31 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_iSocketId = socket(AF_INET
+  m_iSocketFd = socket(AF_INET
                       ,SOCK_STREAM
                       ,0
                       );
-  if (-1 == m_iSocketId) {
+  if (C_UNKNOWN == m_iSocketFd) {
     SysCall.vError(errno);
     return false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  iResult = setsockopt(m_iSocketId
+  iResult = setsockopt(m_iSocketFd
                        ,SOL_SOCKET
                        ,SO_REUSEADDR
                        ,(void*)&iOpt
                        ,sizeof(iOpt)
                        );
-  if (-1 == iResult) {
+  if (C_UNKNOWN == iResult) {
     SysCall.vError(errno);
     return false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  iResult = bind(m_iSocketId
+  iResult = bind(m_iSocketFd
                  ,(struct sockaddr*)&xServerAddr
                  ,sizeof(xServerAddr)
                  );
@@ -477,7 +477,7 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  iResult = listen(m_iSocketId,4);
+  iResult = listen(m_iSocketFd,4);
   if (iResult != 0) {
     SysCall.vError(errno);
     return false;
@@ -550,9 +550,9 @@ bool Socket::bRecvBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
     gpAttachMap->m_oStatistics.Socket.m_nRecvs++;
 #endif
     
-    i8 nRecvBytes = recv(m_iSocketId,pSoFar,nMore,0);
+    i8 nRecvBytes = recv(m_iSocketFd,pSoFar,nMore,0);
     
-    if (-1 == nRecvBytes) {
+    if (C_UNKNOWN == nRecvBytes) {
       SysCall.vError(errno);
       //vTrace("ERROR1: %lld\n"_Stz, errno);
       return false;
@@ -596,8 +596,8 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nSends++;
 #endif
   
-  i8 nSentBytes = send(m_iSocketId,pBuffer,nBytes,0);
-  if (-1 == nSentBytes) {
+  i8 nSentBytes = send(m_iSocketFd,pBuffer,nBytes,0);
+  if (C_UNKNOWN == nSentBytes) {
     SysCall.vError(errno);
     return false;
   }
@@ -629,16 +629,16 @@ bool Socket::bSetNonBlocking(SysCall& SysCall)
   SysCall.vClear();
   
   // get current socket flags
-  int iFlags = fcntl(m_iSocketId,F_GETFL,0);
-  if (-1 == iFlags) {
+  int iFlags = fcntl(m_iSocketFd,F_GETFL,0);
+  if (C_UNKNOWN == iFlags) {
     SysCall.vError(errno);
     return false;
 
   }
   
   // set non-blocking
-  int iResult = fcntl(m_iSocketId,F_SETFL,iFlags | O_NONBLOCK);
-  if (-1 == iResult) {
+  int iResult = fcntl(m_iSocketFd,F_SETFL,iFlags | O_NONBLOCK);
+  if (C_UNKNOWN == iResult) {
     SysCall.vError(errno);
     return false;
 
@@ -668,13 +668,13 @@ bool Socket::bTestForData(SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nPeeks++;
 #endif
   
-  i8 nRecv = recv(m_iSocketId,&cc,1,MSG_PEEK);
+  i8 nRecv = recv(m_iSocketFd,&cc,1,MSG_PEEK);
   
-  if (-1 == nRecv && EAGAIN == errno) {
+  if (C_UNKNOWN == nRecv && EAGAIN == errno) {
     return false;
   }
   
-  if (-1 == nRecv) {
+  if (C_UNKNOWN == nRecv) {
     SysCall.vError(errno);
     return false;
   }
@@ -700,7 +700,7 @@ bool Socket::bWriteVch(Stz* aChar, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nSends++;
 #endif
   
-  i8 nSent = send(m_iSocketId, aChar->azChar(), nBytes,0);
+  i8 nSent = send(m_iSocketFd, aChar->azChar(), nBytes,0);
   
   if (nSent != nBytes)
     return false;
@@ -726,10 +726,10 @@ bool Socket::bSocket(SysCall& SysCall)
   
   SysCall.vClear();
   
-  //m_iSocketId = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
-  m_iSocketId = socket(AF_INET,SOCK_STREAM,0);
+  //m_iSocketFd = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
+  m_iSocketFd = socket(AF_INET,SOCK_STREAM,0);
 
-  if (m_iSocketId < 0) {
+  if (m_iSocketFd < 0) {
     SysCall.vError(errno);
     return false;
   }
@@ -768,7 +768,7 @@ bool Socket::bBind(int iPort, SysCall& SysCall)
     ,xAddr.sin_addr.s_addr
     );
   
-  int iResult = bind(m_iSocketId
+  int iResult = bind(m_iSocketFd
                      ,(struct sockaddr *)&xAddr
                      ,sizeof(xAddr)
                      );
@@ -800,7 +800,7 @@ bool Socket::bBind(Stz* sAddr, int iPort, SysCall& SysCall)
     ,xAddr.sin_addr.s_addr
     );
   
-  int iResult = bind(m_iSocketId
+  int iResult = bind(m_iSocketFd
                      ,(struct sockaddr *)&xAddr
                      ,sizeof(xAddr)
                      );
@@ -827,13 +827,13 @@ bool Socket::bRecvBuffer(int nBytes, SysCall& SysCall)
   
   SysCall.vClear();
   
-  iResult = setsockopt(m_iSocketId
+  iResult = setsockopt(m_iSocketFd
                        ,SOL_SOCKET
                        ,SO_RCVBUF
                        ,(void*)&iOpt
                        ,sizeof(iOpt)
                        );
-  if (-1 == iResult)
+  if (C_UNKNOWN == iResult)
   {
     SysCall.vError(errno);
     return false;
@@ -903,7 +903,7 @@ bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
 //              "Socket send %lldB"_Stz, //!format-LogRes
 //              nBytes);
   
-  i8 nBytesSent = sendto(m_iSocketId
+  i8 nBytesSent = sendto(m_iSocketFd
                          ,aBytes
                          ,nBytes
                          ,0
@@ -911,7 +911,7 @@ bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
                          ,sizeof(m_xServAddr)
                          );
   
-  if (-1 == nBytesSent)
+  if (C_UNKNOWN == nBytesSent)
   {
     SysCall.vError(errno);
     return false;
@@ -957,7 +957,7 @@ bool Socket::bRecvFrom(void* pBuffer, i8 nBytes, i8* pRecv, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nRecvFroms++;
 #endif
   
-  i8 nBytesRecv = recvfrom(m_iSocketId
+  i8 nBytesRecv = recvfrom(m_iSocketFd
                          ,pBuffer
                          ,nBytes
                          ,0
@@ -965,7 +965,7 @@ bool Socket::bRecvFrom(void* pBuffer, i8 nBytes, i8* pRecv, SysCall& SysCall)
                          ,&iRemoteLen
                          );
   
-  if (-1 == nBytesRecv)
+  if (C_UNKNOWN == nBytesRecv)
   {
     SysCall.vError(errno);
     return false;
