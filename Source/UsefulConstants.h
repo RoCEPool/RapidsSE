@@ -136,7 +136,116 @@ static const i8 C_128K = C_1K * 128;     // 128 thousand  = 128,000
 static const i8 C_256K = C_1K * 256;     // 256 thousand  = 256,000
 static const i8 C_512K = C_1K * 512;     // 512 thousand  = 512,000
 
+// refer: https://en.wikipedia.org/wiki/List_of_prime_numbers#The_first_1000_prime_numbers
+static const i8 C_PRIME_1  = 1;
+static const i8 C_PRIME_2  = 2;
+static const i8 C_PRIME_3  = 3;
+static const i8 C_PRIME_4  = 5;
+static const i8 C_PRIME_5  = 7;
+static const i8 C_PRIME_6  = 11;
+static const i8 C_PRIME_7  = 13;
+static const i8 C_PRIME_8  = 17;
+static const i8 C_PRIME_9  = 19;
+static const i8 C_PRIME_10 = 23;
 
+static const i8 C_PRIME_11 = 29;
+static const i8 C_PRIME_12 = 31;
+static const i8 C_PRIME_13 = 37;
+static const i8 C_PRIME_14 = 41;
+static const i8 C_PRIME_15 = 43;
+static const i8 C_PRIME_16 = 47;
+static const i8 C_PRIME_17 = 53;
+static const i8 C_PRIME_18 = 59;
+static const i8 C_PRIME_19 = 61;
+static const i8 C_PRIME_20 = 67;
+
+static const i8 C_PRIME_21 = 71;
+static const i8 C_PRIME_22 = 73;
+static const i8 C_PRIME_23 = 79;
+static const i8 C_PRIME_24 = 83;
+static const i8 C_PRIME_25 = 89;
+static const i8 C_PRIME_26 = 97;
+static const i8 C_PRIME_27 = 101;
+static const i8 C_PRIME_28 = 103;
+static const i8 C_PRIME_29 = 107;
+static const i8 C_PRIME_30 = 109;
+
+static const i8 C_PRIME_31 = 113;
+static const i8 C_PRIME_32 = 127;
+static const i8 C_PRIME_33 = 131;
+static const i8 C_PRIME_34 = 137;
+static const i8 C_PRIME_35 = 139;
+static const i8 C_PRIME_36 = 149;
+static const i8 C_PRIME_37 = 151;
+static const i8 C_PRIME_38 = 157;
+static const i8 C_PRIME_39 = 163;
+static const i8 C_PRIME_40 = 167;
+
+static const i8 C_PRIME_41 = 173;
+static const i8 C_PRIME_42 = 179;
+static const i8 C_PRIME_43 = 181;
+static const i8 C_PRIME_44 = 191;
+static const i8 C_PRIME_45 = 193;
+static const i8 C_PRIME_46 = 197;
+static const i8 C_PRIME_47 = 199;
+static const i8 C_PRIME_48 = 211;
+static const i8 C_PRIME_49 = 223;
+static const i8 C_PRIME_50 = 227;
+
+static const i8 C_PRIME_51 = 229;
+static const i8 C_PRIME_52 = 233;
+static const i8 C_PRIME_53 = 239;
+static const i8 C_PRIME_54 = 241;
+static const i8 C_PRIME_55 = 251;
+static const i8 C_PRIME_56 = 257;
+static const i8 C_PRIME_57 = 263;
+static const i8 C_PRIME_58 = 269;
+static const i8 C_PRIME_59 = 271;
+static const i8 C_PRIME_60 = 277;
+
+static const i8 C_PRIME_61 = 281;
+static const i8 C_PRIME_62 = 283;
+static const i8 C_PRIME_63 = 293;
+static const i8 C_PRIME_64 = 307;
+static const i8 C_PRIME_65 = 311;
+static const i8 C_PRIME_66 = 313;
+static const i8 C_PRIME_67 = 317;
+static const i8 C_PRIME_68 = 331;
+static const i8 C_PRIME_69 = 337;
+static const i8 C_PRIME_70 = 347;
+
+static const i8 C_PRIME_71 = 349;
+static const i8 C_PRIME_72 = 353;
+static const i8 C_PRIME_73 = 359;
+static const i8 C_PRIME_74 = 367;
+static const i8 C_PRIME_75 = 373;
+static const i8 C_PRIME_76 = 379;
+static const i8 C_PRIME_77 = 383;
+static const i8 C_PRIME_78 = 389;
+static const i8 C_PRIME_79 = 397;
+static const i8 C_PRIME_80 = 401;
+
+static const i8 C_PRIME_81 = 409;
+static const i8 C_PRIME_82 = 419;
+static const i8 C_PRIME_83 = 421;
+static const i8 C_PRIME_84 = 431;
+static const i8 C_PRIME_85 = 433;
+static const i8 C_PRIME_86 = 439;
+static const i8 C_PRIME_87 = 443;
+static const i8 C_PRIME_88 = 449;
+static const i8 C_PRIME_89 = 457;
+static const i8 C_PRIME_90 = 461;
+
+static const i8 C_PRIME_91 = 463;
+static const i8 C_PRIME_92 = 467;
+static const i8 C_PRIME_93 = 479;
+static const i8 C_PRIME_94 = 487;
+static const i8 C_PRIME_95 = 491;
+static const i8 C_PRIME_96 = 499;
+static const i8 C_PRIME_97 = 503;
+static const i8 C_PRIME_98 = 509;
+static const i8 C_PRIME_99 = 521;
+static const i8 C_PRIME_100 = 523;
 
 /*============================================================================*/
 /* end                                                                        */
