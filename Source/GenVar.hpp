@@ -51,6 +51,7 @@ namespace SenVM
     Stz*    szStz(void);
     i8      nStzSize(void);
     void    vToString(Stz* szStz);
+    eCN     eValClass(void);
 
   private:
     Footer* aFooter(void);
