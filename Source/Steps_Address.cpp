@@ -76,7 +76,7 @@ void Step::vAddressStore(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-  aStkVal->vCopy(xValToStore.aEmbeddedStkVal());
+  aStkVal->vCopy(xValToStore);
   
   EXIT();
 }
