@@ -1067,14 +1067,17 @@ StkVal* Stack::aAllotStkVal(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  char* aTop = reinterpret_cast<char*>(m_xTop.pStkVal);
+//  char* aTop = reinterpret_cast<char*>(m_xTop.pStkVal);
+//
+//  aTop -= nBytes;
+//
+//  ASSERT(aTop >= (char*)aStackLimit());
+//
+//  m_xTop.pStkVal = reinterpret_cast<StkVal*>(aTop);
   
-  aTop -= nBytes;
-  
-  ASSERT(aTop >= (char*)aStackLimit());
-  
-  m_xTop.pStkVal = reinterpret_cast<StkVal*>(aTop);
-  
+  m_xTop.vAdvance(nBytes);
+  ASSERT(m_xTop.ayByte >= (byte*)aStackLimit());
+
   m_nValues++;
 
   return m_xTop.pStkVal;
@@ -1104,9 +1107,6 @@ void Stack::vDiscard(void)
   
   _hazard_();
   
-  //i8 iSize = m_xTop.pStkVal->nStackBytes();
-
-  //vPopBy(iSize);
   m_xTop.vRewind();
   
   m_nValues--;
