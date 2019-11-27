@@ -1104,9 +1104,10 @@ void Stack::vDiscard(void)
   
   _hazard_();
   
-  i8 iSize = m_xTop.pStkVal->nStackBytes();
-  
-  vPopBy(iSize);
+  //i8 iSize = m_xTop.pStkVal->nStackBytes();
+
+  //vPopBy(iSize);
+  m_xTop.vRewind();
   
   m_nValues--;
   

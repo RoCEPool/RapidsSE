@@ -10,12 +10,19 @@ namespace SenVM
 
   union StkPtr {
     
+    byte*   ayByte;
     StkVal* pStkVal;
     
     FipVal* pFipVal;
     IntVal* pIntVal;
     PtrVal* pPtrVal;
     StrVal* pStrVal;
+    
+    int i (void) { return 0; }
+    
+    void vAdvance (i8 nBytes) { ayByte -= nBytes; }
+    void vRewind  (i8 nBytes) { ayByte += nBytes; }
+    void vRewind  (void)      { vRewind(pStkVal->nStackBytes()); }
   };
 
   class Stack: public Object
