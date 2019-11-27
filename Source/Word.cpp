@@ -254,22 +254,9 @@ void Word::vAppend(StepFp* afpStepFp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  void* aAddress = aAppend(afpStepFp);
-  ASSERT(aAddress);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append address of pointer to task step                                     */
-/*----------------------------------------------------------------------------*/
-void* Word::aAppend(StepFp* afpStepFp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-
   StepFp** aafpStepFp = (StepFp**)ayAllot(sizeof(StepFp*));
 
-  *aafpStepFp = afpStepFp;
-
-  return aafpStepFp;
+  * aafpStepFp = afpStepFp;
 }
 
 /*----------------------------------------------------------------------------*/
