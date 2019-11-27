@@ -429,7 +429,7 @@ bool Stack::bPopInt(i8& iInt, GenVar& xVar)
   
   iInt = iPopInt();
   
-  vPopVal(xVar.aEmbeddedStkVal());
+  vPopVal(xVar);
   
   return true;
 }
@@ -447,7 +447,7 @@ bool Stack::bPopInt(i8& iInt, s48K& sEss)
   iInt = iPopInt();
   
   GenVar xVar;
-  vPopVal(xVar.aEmbeddedStkVal());
+  vPopVal(xVar);
   
   sEss = _aStrVal(&xVar)->szStz();
   
@@ -468,7 +468,7 @@ bool Stack::bPopInt(i8& iInt1, i8& iInt2, GenVar& xVar)
   
   iInt2 = iPopInt();
   
-  vPopVal(xVar.aEmbeddedStkVal());
+  vPopVal(xVar);
 
   return true;
 }
@@ -563,7 +563,7 @@ bool Stack::bPopS32(s32& sEss)
     return false;
   
   GenVar xVar;
-  vPopVal(xVar.aEmbeddedStkVal());
+  vPopVal(xVar);
   
   sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
   
@@ -581,7 +581,7 @@ bool Stack::bPopS256(s256& sEss)
     return false;
   
   GenVar xVar;
-  vPopVal(xVar.aEmbeddedStkVal());
+  vPopVal(xVar);
   
   sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
   
@@ -599,7 +599,7 @@ bool Stack::bPopS4K(s4K& sEss)
     return false;
   
   GenVar xVar;
-  vPopVal(xVar.aEmbeddedStkVal());
+  vPopVal(xVar);
   
   sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
   
@@ -617,7 +617,7 @@ bool Stack::bPopS48K(s48K& sEss)
     return false;
   
   GenVar xVar;
-  vPopVal(xVar.aEmbeddedStkVal());
+  vPopVal(xVar);
   
   sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
   
@@ -635,7 +635,7 @@ bool Stack::bPopS48K(s48K& sEss, i8& iInt)
     return false;
   
   GenVar xVar;
-  vPopVal(xVar.aEmbeddedStkVal());
+  vPopVal(xVar);
   
   sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
   
@@ -655,7 +655,7 @@ bool Stack::bPopS48K(s48K& sEss, i8& iInt1, i8& iInt2)
     return false;
   
   GenVar xVar;
-  vPopVal(xVar.aEmbeddedStkVal());
+  vPopVal(xVar);
   sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
   
   iInt1 = iPopInt();
@@ -736,7 +736,7 @@ bool Stack::bPopVal(GenVar& xVar)
   if ( ! bGuard(1) )
     return false;
   
-  vPopVal(xVar.aEmbeddedStkVal());
+  vPopVal(xVar);
   
   return true;
 }
