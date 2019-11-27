@@ -61,15 +61,15 @@ void Step::vDstackClass(void)
 {
   ENTRY(); // ENTRY("vDstackClass"_Stz);
   
-  i8 nTh;
-  if ( ! m_pDataStack->bPopInt(nTh) )
+  i8 i_Val;
+  if ( ! m_pDataStack->bPopInt(i_Val) )
     THROW_DSTACK();
   
-  GenVar xVariable;
+  GenVar xVar;
   
-  m_pDataStack->vPeekVal(nTh,xVariable);
+  m_pDataStack->vPeekVal(i_Val,xVar);
   
-  eCN eClass = xVariable.eEmbeddedClass();
+  eCN eClass = xVar.aEmbeddedStkVal()->eClass();
   
   m_pDataStack->vPushInt(eClass);
   

@@ -153,18 +153,6 @@ bool GenVar::bIsInt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get class of embedded stack value                                          */
-/*----------------------------------------------------------------------------*/
-eCN GenVar::eEmbeddedClass(void)
-{
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
-  
-  eCN eClassNo = u.m_xStkVal.eClass();
-  
-  return eClassNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get address of the nested value                                            */
 /*----------------------------------------------------------------------------*/
 StkVal* GenVar::aEmbeddedStkVal(void)
