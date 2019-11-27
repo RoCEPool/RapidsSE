@@ -14,6 +14,14 @@ namespace SenVM
   
     void vCopy(StkVal* aSrcVal, i8 nBytes=0);
   
+    char*   azChar(void);
+    Cell*   aFip(void);
+    i8      iInt(void);
+    bool    bIsInt(void);
+    Object* pObj(void);
+    Stz*    szStz(void);
+    i8      nStzSize(void);
+
     i8   nStackBytes(void);
     void vToString(Stz* szString);
   };

@@ -46,9 +46,6 @@ void Step::vStrAlgebra(void)
   // declaring a fixed length string
   s32 xString("A test"_Stz);
   
-  GenVar xVariable;
-  StrVal* aStrVal = _aStrVal(&xVariable);
-  
   EXIT();
 }
 

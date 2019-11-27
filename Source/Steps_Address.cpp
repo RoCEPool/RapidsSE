@@ -47,30 +47,31 @@ void Step::vAddressFetch(void)
   Object* pObject;
   if ( ! m_pDataStack->bPopPtr(pObject) )
     THROW_DSTACK();
+  StkVal* aStkVal = reinterpret_cast<StkVal*>(pObject);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   GenVar xValFetched;
   
-  eCN eClass = pObject->eClass();
-  
-  StkVal* aStkVal = reinterpret_cast<StkVal*>(pObject);
+  eCN eClass = aStkVal->eClass();
   
   switch (eClass) {
-    case CN_INTVAL:
-      xValFetched = _aIntVal(aStkVal)->iInt();
+    case CN_FIPVAL:
+      xValFetched = aStkVal->aFip();
       break;
       
-    case CN_STRVAL:
-      xValFetched = _aStrVal(aStkVal)->szStz();
+    case CN_INTVAL:
+      xValFetched = aStkVal->iInt();
       break;
       
     case CN_PTRVAL:
-      xValFetched = _aPtrVal(aStkVal)->pObj();
+      xValFetched = aStkVal->pObj();
       break;
       
-    case CN_FIPVAL:
-      xValFetched = (Object*)_aFipVal(aStkVal)->aFip();
+    case CN_STRVAL:
+      xValFetched = aStkVal->szStz();
       break;
-  
+      
     default:
       vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
              "Invalid eClass %lld"_Stz,eClass);
@@ -91,30 +92,31 @@ void Step::vAddressStore(void)
   Object* pObject;
   if ( ! m_pDataStack->bPopPtr(pObject) )
     THROW_DSTACK();
-  
-  GenVar xValStored;
-  if ( ! m_pDataStack->bPopVal(xValStored) )
+  StkVal* aStkVal = reinterpret_cast<StkVal*>(pObject);
+
+  GenVar xValToStore;
+  if ( ! m_pDataStack->bPopVal(xValToStore) )
     THROW_DSTACK();
   
-  StkVal* aStkVal = reinterpret_cast<StkVal*>(pObject);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  eCN eClass = pObject->eClass();
+  eCN eClass = aStkVal->eClass();
   
   switch (eClass) {
     case CN_FIPVAL:
-      *_aFipVal(aStkVal) = _aFipVal(xValStored.aEmbeddedStkVal())->aFip();
+      *_aFipVal(aStkVal) = _aFipVal(xValToStore.aEmbeddedStkVal())->aFip();
       break;
       
     case CN_INTVAL:
-      *_aIntVal(aStkVal) = _aIntVal(xValStored.aEmbeddedStkVal())->iInt();
+      *_aIntVal(aStkVal) = _aIntVal(xValToStore.aEmbeddedStkVal())->iInt();
       break;
       
     case CN_PTRVAL:
-      *_aPtrVal(aStkVal) = _aPtrVal(xValStored.aEmbeddedStkVal())->pObj();
+      *_aPtrVal(aStkVal) = _aPtrVal(xValToStore.aEmbeddedStkVal())->pObj();
       break;
       
    case CN_STRVAL:
-      _aStrVal(aStkVal)->vAssign( _aStrVal(xValStored.aEmbeddedStkVal())->szStz() );
+      _aStrVal(aStkVal)->vAssign( _aStrVal(xValToStore.aEmbeddedStkVal())->szStz() );
       break;
       
     default:
