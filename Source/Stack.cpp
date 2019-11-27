@@ -54,10 +54,10 @@ Stack::Stack(eKK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_eKind   = eKind;
+  m_eKind         = eKind;
   
-  m_xTop.pStkVal    = aStackBase();
-  m_nValues = 0;
+  m_xTop.pStkVal  = aStackBase();
+  m_nValues       = 0;
   
   m_aRetryTop    = aStackBase();
   m_nRetryValues = 0;
@@ -288,7 +288,7 @@ void Stack::vPokeVal(i8 i_Val, GenVar& xVar)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value from stack  as integer                                           */
+/* pop value from stack as integer                                            */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopAsInt(i8& iInt)
 {
@@ -306,7 +306,7 @@ bool Stack::bPopAsInt(i8& iInt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value from stack  as integer                                           */
+/* pop value from stack as integer                                            */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopAsInt_Quick(i8& iInt)
 {

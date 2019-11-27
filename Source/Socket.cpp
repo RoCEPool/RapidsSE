@@ -423,61 +423,95 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* create a listening server socket on this server                            */
 /*----------------------------------------------------------------------------*/
-bool Socket::bCreateServer(int iPort, SysCall& SysCall)
+bool Socket::bCreateServer(int iPortNo, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   int iResult;
   int iOpt = 1;
-  sockaddr_in xServerAddr;
+  int iBacklogOf4 = 4;
+  sockaddr_in xThisServerAddr;
   
   SysCall.vClear();
   
-  vAddrInit(&xServerAddr,iPort);
+  /*
+    refer: $ man 2 listen
+   
+    DESCRIPTION
+    Creation of socket-based connections requires several operations.  First,
+    a socket is created with socket(2).  Next, a willingness to accept incoming
+    connections and a  queue limit for incoming connections are specified with
+    listen().  Finally, the connections are accepted with accept(2).  The
+    listen() call applies only to sockets of type SOCK_STREAM.
+    
+    The backlog parameter defines the maximum length for the queue of pending
+    connections.  If a connection request arrives with the queue full, the
+    client may receive an error with an indication of ECONNREFUSED.
+    Alternatively, if the underlying protocol supports retransmission, the
+    request may be ignored so that retries may succeed.
+  */
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 1) initialize the server sockaddr_in structure
+  
+  vAddrInit(&xThisServerAddr,iPortNo);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a socket end-point
   
   m_iSocketFd = socket(AF_INET
                       ,SOCK_STREAM
                       ,0
                       );
+  
   if (C_UNKNOWN == m_iSocketFd) {
     SysCall.vError(errno);
     return false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2) allow quick socket reuse
+  
+  //! CAUTION: need both setsockopt(SO_REUSEADDR) and bind(sockaddr)
+  //!          to avoid accidental use of port by two processes
+  
+  // 2a) set the socket to allow quick reuse of port-address
   
   iResult = setsockopt(m_iSocketFd
-                       ,SOL_SOCKET
+                       ,SOL_SOCKET     // setting socket-level option
                        ,SO_REUSEADDR
                        ,(void*)&iOpt
                        ,sizeof(iOpt)
                        );
+
   if (C_UNKNOWN == iResult) {
     SysCall.vError(errno);
     return false;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
+  // 2b) bind a name-address to this (listening) socket
+  //     this prohibits the same actual socket being used by two processes
+  //
+  // refer: https://hea-www.harvard.edu/~fine/Tech/addrinuse.html
+
   iResult = bind(m_iSocketFd
-                 ,(struct sockaddr*)&xServerAddr
-                 ,sizeof(xServerAddr)
+                 ,(struct sockaddr*)&xThisServerAddr
+                 ,sizeof(xThisServerAddr)
                  );
-  
+
   if (iResult != 0) {
     SysCall.vError(errno);
     return false;
   }
 
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.Socket.m_nListens++;
-#endif
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 3) allow socket to listen for new connections
   
-  iResult = listen(m_iSocketFd,4);
+  iResult = listen(m_iSocketFd
+                   ,iBacklogOf4
+                   );
+  
   if (iResult != 0) {
     SysCall.vError(errno);
     return false;
@@ -485,11 +519,15 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+#ifdef WITH_STATISTICS_COUNTERS
+  gpAttachMap->m_oStatistics.Socket.m_nListens++;
+#endif
+  
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
   AM::vLogRes(SL_INF,this,RA_SKT_LISTENER,
               "listening socket created port=%d"_Stz, //!format-LogRes
-              iPort);
+              iPortNo);
 
   SysCall.vSuccess();
   return true;
