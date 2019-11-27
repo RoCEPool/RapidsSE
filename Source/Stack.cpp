@@ -940,10 +940,13 @@ void Stack::vPushVal(StkVal* aStkVal)
   
   ASSERT(CN_GENVAR != aStkVal->eClass());
   
-  i8 iSize = aStkVal->nStackBytes();
+  i8 nBytes = aStkVal->nStackBytes();
   
-  m_xTop.vAdvance(iSize);
-  MemLib::vCopy(m_xTop.pStkVal,aStkVal,iSize,CN_STACK);
+  m_xTop.vAdvance(nBytes);
+  
+  //MemLib::vCopy(m_xTop.pStkVal,aStkVal,nBytes,CN_STACK);
+  m_xTop.pStkVal->vCopy(aStkVal,nBytes);
+  
   m_nValues++;
   
   _hazard_();
