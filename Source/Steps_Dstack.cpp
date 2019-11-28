@@ -346,11 +346,15 @@ void Step::vDstackRot(void)
   ENTRY(); // ENTRY("vDstackRot"_Stz);
   
   GenVar xVarA;
-  GenVar xVarB;
-  GenVar xVarC;
-  
-  if ( ! m_pDataStack->bPopVal(xVarA,xVarB,xVarC) )
+  if ( ! m_pDataStack->bPopVal(xVarA) )
     THROW_DSTACK();
+  GenVar xVarB;
+  if ( ! m_pDataStack->bPopVal(xVarB) )
+    THROW_DSTACK();
+  GenVar xVarC;
+  if ( ! m_pDataStack->bPopVal(xVarC) )
+    THROW_DSTACK();
+
   
   m_pDataStack->vPushVal(xVarB);
   m_pDataStack->vPushVal(xVarA);
@@ -367,12 +371,15 @@ void Step::vDstackRotInv(void)
   ENTRY(); // ENTRY("vDstackRotInv"_Stz);
   
   GenVar xVarA;
-  GenVar xVarB;
-  GenVar xVarC;
-  
-  if ( ! m_pDataStack->bPopVal(xVarA,xVarB,xVarC) )
+  if ( ! m_pDataStack->bPopVal(xVarA) )
     THROW_DSTACK();
-  
+  GenVar xVarB;
+  if ( ! m_pDataStack->bPopVal(xVarB) )
+    THROW_DSTACK();
+  GenVar xVarC;
+  if ( ! m_pDataStack->bPopVal(xVarC) )
+    THROW_DSTACK();
+
   m_pDataStack->vPushVal(xVarA);
   m_pDataStack->vPushVal(xVarC);
   m_pDataStack->vPushVal(xVarB);
