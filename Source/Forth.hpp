@@ -41,6 +41,7 @@ namespace SenVM
   
     void vContentDump(void);
     bool bCorrectLayout(void);
+    DicStack* pDicStack(void);
     void vReset(void);
     void vSeedForth(Word* pSeedWord);
 

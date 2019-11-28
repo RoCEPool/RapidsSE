@@ -71,6 +71,7 @@ namespace Tasks
     void vDropTaskLock(void);
     void vDump(void);
     void vFocalOutline(s4K& sOutline);
+    Forth* pForth(void);
     void vGrabTaskLock(void);
     void vInitExeContext(void);
     bool bIsLocked(void);

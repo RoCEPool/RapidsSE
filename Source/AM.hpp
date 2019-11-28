@@ -246,6 +246,7 @@ namespace Oblique
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static i8   iTaskAcksRmg_assert_only_(Task* pTask);
     static void vTaskBeginOp(Task* pTask);
+    static DicStack* pTaskDicStack(void);
     static void vTaskDump(void);
     static void vTaskMutexLock(Task* pTask);
     static void vTaskMutexSignal(Task* pTask);

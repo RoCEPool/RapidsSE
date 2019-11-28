@@ -1315,6 +1315,10 @@ bool AM::bTaskIsLocked(Task* pTask) {
   return bLocked;
 }
 
+DicStack* AM::pTaskDicStack(void) {
+  return pThisTLSTask()->pForth()->pDicStack();;
+}
+
 bool AM::bJobHasError(Job* pJob) {
   return pJob->m_bHasError;
 }

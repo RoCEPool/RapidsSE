@@ -119,11 +119,18 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
         
       case CN_FIPVAL: {
         Cell* aFip  = xVar.aFip();
-        Word* pWord = pDicStack->pLocateWord(aFip);
+        if (pDicStack) {
+          Word* pWord = pDicStack->pLocateWord(aFip);
 
-        vTrace("[%2lld] [%s] %p word %s \n"_Stz,
-               i_Val,aCN[eValClass],aFip,
-               pWord ? pWord->szWordNm() : "<none>"_Stz);
+          vTrace("[%2lld] [%s] %p word %s \n"_Stz,
+                 i_Val,aCN[eValClass],aFip,
+                 pWord ? pWord->szWordNm() : "<none>"_Stz);
+        }
+        else {
+          vTrace("[%2lld] [%s] %p word %s \n"_Stz,
+                 i_Val,aCN[eValClass],aFip,
+                 "<UNKNOWN>"_Stz);
+        }
         break;
       }
         
@@ -504,10 +511,14 @@ void Stack::vPushStr(String* pStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
+  vContentDump(nullptr,"Before:"_Stz);
+
   i8 nBytes = pStr->nStackBytes();
   StrVal* aStrVal = aAllotStrVal(nBytes);
 
-  aStrVal->vCopy(aStrVal,nBytes);
+  aStrVal->vAssign(pStr->szStz());
+  
+  vContentDump(nullptr,"After:"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

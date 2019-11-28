@@ -106,6 +106,8 @@ Forth::~Forth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Forth::vContentDump(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
+
   Word* pWord = m_oDicStack.pLocateWord(m_aInxPtr);
 
   vTrace("\n"_Stz);
@@ -135,10 +137,22 @@ void Forth::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get dictionary stack                                                       */
+/*----------------------------------------------------------------------------*/
+DicStack* Forth::pDicStack(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
+
+  return & m_oDicStack;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset forth execution context                                              */
 /*----------------------------------------------------------------------------*/
 void Forth::vReset(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
+
   m_pAuxStack->vReset();
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
@@ -159,6 +173,8 @@ void Forth::vReset(void)
 /*----------------------------------------------------------------------------*/
 void Forth::vSeedForth(Word* pSeedWord)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
+
   m_pSeedWord = pSeedWord;
   m_aInxPtr   = pSeedWord->aFirstCell();
   
