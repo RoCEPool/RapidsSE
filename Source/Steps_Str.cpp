@@ -60,7 +60,7 @@ void Step::vStrCat(void)
   s48K sStrB;
   s48K sStrA;
   
-  if ( ! m_pDataStack->bPopS48K(sStrB,sStrA) )
+  if ( ! m_pDataStack->bPop_ss(sStrB,sStrA) )
     THROW_DSTACK();
   
   sStrR = sStrA;
@@ -84,7 +84,7 @@ void Step::vStrClip(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopS48K(sString,iLength) )
+  if ( ! m_pDataStack->bPop_si(sString,iLength) )
     THROW_DSTACK();
   
   // validate length
@@ -207,7 +207,7 @@ void Step::vStrLeft(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopS48K(sString,iLength) )
+  if ( ! m_pDataStack->bPop_si(sString,iLength) )
     THROW_DSTACK();
   
   // validate length
@@ -403,7 +403,7 @@ void Step::vStrRight(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopS48K(sString,iLength) )
+  if ( ! m_pDataStack->bPop_si(sString,iLength) )
     THROW_DSTACK();
   
   // validate length
@@ -438,7 +438,7 @@ void Step::vStrSub(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopS48K(sString,iStart,iLength) )
+  if ( ! m_pDataStack->bPop_sii(sString,iStart,iLength) )
     THROW_DSTACK();
   
   i8 iHasLength = sString.nLength();

@@ -569,7 +569,7 @@ bool Stack::bPopS48K(s48K& sEss)
 /*----------------------------------------------------------------------------*/
 /* pop s,i8 from stack                                                        */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopS48K(s48K& sEss, i8& iInt)
+bool Stack::bPop_si(s48K& sEss, i8& iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -589,7 +589,7 @@ bool Stack::bPopS48K(s48K& sEss, i8& iInt)
 /*----------------------------------------------------------------------------*/
 /* pop s,i8,i8 from stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopS48K(s48K& sEss, i8& iInt1, i8& iInt2)
+bool Stack::bPop_sii(s48K& sEss, i8& iInt1, i8& iInt2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -610,7 +610,7 @@ bool Stack::bPopS48K(s48K& sEss, i8& iInt1, i8& iInt2)
 /*----------------------------------------------------------------------------*/
 /* pop s,s from stack                                                         */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopS48K(s48K& sEss1, s48K& sEss2)
+bool Stack::bPop_ss(s48K& sEss1, s48K& sEss2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
