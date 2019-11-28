@@ -444,9 +444,13 @@ void Step::vStrSub(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPop_sii(sString,iStart,iLength) )
+  if ( ! m_pDataStack->bPopStr(sString) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopInt(iStart) )
+    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iLength) )
+    THROW_DSTACK();
+
   i8 iHasLength = sString.nLength();
   
   // validate start index

@@ -429,27 +429,6 @@ bool Stack::bPop_si(String* pStr1, i8& iInt1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop s,i8,i8 from stack                                                     */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPop_sii(String* pStr1, i8& iInt1, i8& iInt2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_STRVAL,CN_INTVAL,CN_INTVAL) )
-    return false;
-  
-  StrVal* aStrVal1 = _aStrVal(aTopVal());
-  pStr1->vCopy(aStrVal1->szStz());
-  vDiscard();
-
-  iInt1 = iPopInt();
-  
-  iInt2 = iPopInt();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop s,s from stack                                                         */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop_ss(String* pStr1, String* pStr2)
