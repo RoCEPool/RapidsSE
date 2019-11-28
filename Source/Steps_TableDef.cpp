@@ -25,7 +25,7 @@ void Step::vTableDefParse(void)
   Job* pJob_CreateTable = _pJob(pJobPtr);
   
   s4K sCmd;
-  if (! m_pDataStack->bPopS4K(sCmd))
+  if (! m_pDataStack->bPopStr(sCmd))
     THROW_DSTACK();
 
   //vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);

@@ -1059,7 +1059,7 @@ void Step::vJobMetadataStore(void)
   Job* pJob = _pJob(pJobPtr);
   
   s4K sMetadata;
-  if ( ! m_pDataStack->bPopS4K(sMetadata) )
+  if ( ! m_pDataStack->bPopStr(sMetadata) )
     THROW_DSTACK();
   
   pJob->m_sMetadata = sMetadata;
@@ -1707,7 +1707,7 @@ void Step::vJobResponseStore(void)
   Job* pJob = _pJob(pJobPtr);
   
   s4K sResponse;
-  if ( ! m_pDataStack->bPopS4K(sResponse) )
+  if ( ! m_pDataStack->bPopStr(sResponse) )
     THROW_DSTACK();
   
   //pJob->m_xNode[iNode].m_sResponse = sResponse;

@@ -30,7 +30,7 @@ void Step::vIndexDefParse(void)
   Table* pTable = _pTable(pPtrTable);
 
   s4K sCmd;
-  if (! m_pDataStack->bPopS4K(sCmd))
+  if (! m_pDataStack->bPopStr(sCmd))
     THROW_DSTACK();
 
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);

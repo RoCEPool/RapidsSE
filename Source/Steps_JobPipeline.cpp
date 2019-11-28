@@ -148,7 +148,7 @@ void Step::vJob_PipelineCompile(void)
   ENTRY(); // ENTRY("vJob_PipelineCompile"_Stz);
   
   s4K sCmd;
-  if (! m_pDataStack->bPopS4K(sCmd))
+  if (! m_pDataStack->bPopStr(sCmd))
     THROW_DSTACK();
 
   m_pRegSet->m_pDynamo = new Dynamo(sCmd);
