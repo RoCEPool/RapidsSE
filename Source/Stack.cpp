@@ -577,8 +577,8 @@ bool Stack::bPop_sii(String* pStr1, i8& iInt1, i8& iInt2)
   if ( ! bGuard(CN_STRVAL,CN_INTVAL,CN_INTVAL) )
     return false;
   
-  StrVal* aStrVal = _aStrVal(aTopVal());
-  pStr1->vCopy(aStrVal->szStz());
+  StrVal* aStrVal1 = _aStrVal(aTopVal());
+  pStr1->vCopy(aStrVal1->szStz());
   vDiscard();
 
   iInt1 = iPopInt();
@@ -591,23 +591,21 @@ bool Stack::bPop_sii(String* pStr1, i8& iInt1, i8& iInt2)
 /*----------------------------------------------------------------------------*/
 /* pop s,s from stack                                                         */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop_ss(s48K& sEss1, s48K& sEss2)
+bool Stack::bPop_ss(String* pStr1, String* pStr2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_STRVAL,CN_STRVAL) )
     return false;
   
-  GenVar xVar1;
-  vPopStkVal(xVar1);
-  
-  sEss1 = _aStrVal(xVar1.aEmbeddedStkVal())->szStz();
-  
-  GenVar xVar2;
-  vPopStkVal(xVar2);
-  
-  sEss2 = _aStrVal(xVar2.aEmbeddedStkVal())->szStz();
-  
+  StrVal* aStrVal1 = _aStrVal(aTopVal());
+  pStr1->vCopy(aStrVal1->szStz());
+  vDiscard();
+
+  StrVal* aStrVal2 = _aStrVal(aTopVal());
+  pStr2->vCopy(aStrVal2->szStz());
+  vDiscard();
+
   return true;
 }
 
