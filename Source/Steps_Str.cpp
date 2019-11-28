@@ -86,9 +86,11 @@ void Step::vStrClip(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPop_si(sString,iLength) )
+  if ( ! m_pDataStack->bPopStr(sString) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopInt(iLength) )
+    THROW_DSTACK();
+
   // validate length
   i8 iHasLength = sString.nLength();
   
@@ -212,9 +214,11 @@ void Step::vStrLeft(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPop_si(sString,iLength) )
+  if ( ! m_pDataStack->bPopStr(sString) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopInt(iLength) )
+    THROW_DSTACK();
+
   // validate length
   i8 iHasLength = sString.nLength();
   
@@ -411,9 +415,11 @@ void Step::vStrRight(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPop_si(sString,iLength) )
+  if ( ! m_pDataStack->bPopStr(sString) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopInt(iLength) )
+    THROW_DSTACK();
+
   // validate length
   i8 iHasLength = sString.nLength();
   
