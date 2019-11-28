@@ -47,7 +47,7 @@ void Step::vNodeNew(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s32 sNodeNm;
   
-  if (! m_pDataStack->bPopS32(sNodeNm))
+  if (! m_pDataStack->bPopStr(sNodeNm))
     THROW_DSTACK();
 
   Node* pNode = new Node(pNode_copy->iNodeNo() + 1,

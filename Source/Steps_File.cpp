@@ -88,7 +88,7 @@ void Step::vFileOpen(void)
   File* pFile = _pFile(pPtrFile);
   
   s32 sMode;
-  if ( ! m_pDataStack->bPopS32(sMode) )
+  if ( ! m_pDataStack->bPopStr(sMode) )
     THROW_DSTACK();
 
   s256 sPath;

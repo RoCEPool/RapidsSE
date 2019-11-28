@@ -2174,7 +2174,7 @@ void Step::vJobSpawnUniversal(void)
   ENTRY(); // ENTRY("vJobSpawnUniversal"_Stz);
   
   s32 sJobNm;
-  if ( ! m_pDataStack->bPopS32(sJobNm) )
+  if ( ! m_pDataStack->bPopStr(sJobNm) )
     THROW_DSTACK();
 
 //  Object* pJobPtr;

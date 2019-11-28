@@ -301,7 +301,7 @@ void Step::vTaskSeed(void)
   Task* pThatTask = _pTask(pTaskObject);
   
   s32 sSeed;
-  if ( ! m_pDataStack->bPopS32(sSeed) )
+  if ( ! m_pDataStack->bPopStr(sSeed) )
     THROW_DSTACK();
 
 

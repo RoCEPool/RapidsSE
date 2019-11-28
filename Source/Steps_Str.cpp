@@ -330,7 +330,7 @@ void Step::vStrRemovePrefix(void)
     THROW_DSTACK();
   
   s32 sIntro;
-  if ( ! m_pDataStack->bPopS32(sIntro) )
+  if ( ! m_pDataStack->bPopStr(sIntro) )
     THROW_DSTACK();
   
   StrLib::vRemovePrefix(sString.azChar(), * sIntro.azChar());
@@ -352,7 +352,7 @@ void Step::vStrRemoveSuffix(void)
     THROW_DSTACK();
   
   s32 sIntro;
-  if ( ! m_pDataStack->bPopS32(sIntro) )
+  if ( ! m_pDataStack->bPopStr(sIntro) )
     THROW_DSTACK();
   
   StrLib::vRemoveSuffix(sString.azChar(), * sIntro.azChar());
@@ -535,7 +535,7 @@ void Step::vStrToStrVec(void)
   
   for (i8 iMove = 0; iMove < nStrings; iMove++) {
     
-    RASSERT(m_pAuxStack->bPopS32(sDicNm));
+    RASSERT(m_pAuxStack->bPopStr(sDicNm));
     m_pDataStack->vPushS32(sDicNm);
   }
 

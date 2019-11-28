@@ -383,7 +383,7 @@ void Step::vTableFindColumn(void)
   ASSERT(CN_TABLE == pTable->eClass());
   
   s32 sColumnName;
-  if ( ! m_pDataStack->bPopS32(sColumnName) )
+  if ( ! m_pDataStack->bPopStr(sColumnName) )
     THROW_DSTACK();
   
   ColumnVec* pColVec = pTable->pColumnVec();
@@ -423,7 +423,7 @@ void Step::vTableIsColumn(void)
   ASSERT(CN_TABLE == pTable->eClass());
   
   s32 sColumnName;
-  if ( ! m_pDataStack->bPopS32(sColumnName) )
+  if ( ! m_pDataStack->bPopStr(sColumnName) )
     THROW_DSTACK();
   
   ColumnVec* pColVec = pTable->pColumnVec();
