@@ -77,7 +77,7 @@ void Step::vInputOpen(void)
   
   s256 sFilePath;
   
-  if ( ! m_pDataStack->bPopS256(sFilePath) )
+  if ( ! m_pDataStack->bPopStr(sFilePath) )
     THROW_DSTACK();
   
   bool bOpened = m_pCompiler->m_pTokeniser->bUseFile(sFilePath);

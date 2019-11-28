@@ -515,7 +515,7 @@ void Step::vStrToStrVec(void)
   
   // get the path string
   s256 sPath;
-  if ( ! m_pDataStack->bPopS256(sPath) )
+  if ( ! m_pDataStack->bPopStr(sPath) )
     THROW_DSTACK();
   
   i8 nStrings = 0;

@@ -83,7 +83,6 @@ namespace SenVM
     bool bPopPtr(Object*& pObj1, Object*& pObj2);
     bool bPopPtr(Object*& pObj, GenVar& xVar);
     bool bPopLocal(Local*& pLocal);
-    bool bPopS256(s256& sEss1);
     bool bPopS4K(s4K&  sEss1);
     bool bPopS48K(s48K& sEss1);
     bool bPopS48K(s48K& sEss1, i8& iInt2);

@@ -62,7 +62,7 @@ void Step::vGridFindNode(void)
   ENTRY(); // ENTRY("vGridFindNode"_Stz);
   
   s256 sNodeNm;
-  if ( ! m_pDataStack->bPopS256(sNodeNm) )
+  if ( ! m_pDataStack->bPopStr(sNodeNm) )
     THROW_DSTACK();
   
   Node* pNode = AM::pGrid()->pFindNode(sNodeNm);

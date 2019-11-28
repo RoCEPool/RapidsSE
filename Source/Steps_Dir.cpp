@@ -39,7 +39,7 @@ void Step::vDirChangeCurrent(void)
   ENTRY(); // ENTRY("vDirChangeCurrent"_Stz);
   
   s256 sDir;
-  if ( ! m_pDataStack->bPopS256(sDir) )
+  if ( ! m_pDataStack->bPopStr(sDir) )
     THROW_DSTACK();
   
   if ( ! Dir::bChangeCurrent(sDir) )
@@ -57,7 +57,7 @@ void Step::vDirExists(void)
   ENTRY(); // ENTRY("vDirExists"_Stz);
   
   s256 sDirPath;
-  if ( ! m_pDataStack->bPopS256(sDirPath) )
+  if ( ! m_pDataStack->bPopStr(sDirPath) )
     THROW_DSTACK();
   
   i8 iResult = Dir::bExists(sDirPath);
@@ -98,7 +98,7 @@ void Step::vDirMake(void)
   ENTRY(); // ENTRY("vDirMake"_Stz);
   
   s256 sPath;
-  if ( ! m_pDataStack->bPopS256(sPath) )
+  if ( ! m_pDataStack->bPopStr(sPath) )
     THROW_DSTACK();
   
   i8 iResult = Dir::bMake(sPath);
@@ -116,7 +116,7 @@ void Step::vDirRemove(void)
   ENTRY(); // ENTRY("vDirRemove"_Stz);
   
   s256 sPath;
-  if ( ! m_pDataStack->bPopS256(sPath) )
+  if ( ! m_pDataStack->bPopStr(sPath) )
     THROW_DSTACK();
   
   i8 iResult = Dir::bRemove(sPath);
@@ -281,7 +281,7 @@ void Step::vDirOpen(void)
   Dir* pDir = _pDir(pPtrDir);
   
   s256 sPath;
-  if ( ! m_pDataStack->bPopS256(sPath) )
+  if ( ! m_pDataStack->bPopStr(sPath) )
     THROW_DSTACK();
   
   bool bOpened = pDir->bOpen(sPath);

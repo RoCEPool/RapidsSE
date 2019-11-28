@@ -76,7 +76,7 @@ void Step::vEnameSetAddStr(void)
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
 
   s256 sValue;
-  if ( ! m_pDataStack->bPopS256(sValue) )
+  if ( ! m_pDataStack->bPopStr(sValue) )
     THROW_DSTACK();
   
   s32 sName;
@@ -201,7 +201,7 @@ void Step::vEnameSetUpsertStr(void)
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s256 sValue;
-  if ( ! m_pDataStack->bPopS256(sValue) )
+  if ( ! m_pDataStack->bPopStr(sValue) )
     THROW_DSTACK();
   
   s32 sName;

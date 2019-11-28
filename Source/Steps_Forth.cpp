@@ -350,7 +350,7 @@ void Step::vFind(void)
   ENTRY(); // ENTRY("vFind"_Stz);
   
   s256 sName;
-  if ( ! m_pDataStack->bPopS256(sName) )
+  if ( ! m_pDataStack->bPopStr(sName) )
     THROW_DSTACK();
   
   if (m_pTask->m_iTraceMask) {
@@ -372,7 +372,7 @@ void Step::vFindInCurrent(void)
   ENTRY(); // ENTRY("vFindInCurrent"_Stz);
   
   s256 sName;
-  if ( ! m_pDataStack->bPopS256(sName) )
+  if ( ! m_pDataStack->bPopStr(sName) )
     THROW_DSTACK();
   
   if (m_pTask->m_iTraceMask) {

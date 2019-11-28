@@ -42,7 +42,7 @@ void Step::vLogMark(void)
   
   s256 sMark;
 
-  if ( ! m_pDataStack->bPopS256(sMark) )
+  if ( ! m_pDataStack->bPopStr(sMark) )
     THROW_DSTACK();
 
   //i8 iJobId = m_pTask->m_pJob->m_iFocalId;
@@ -60,7 +60,7 @@ void Step::vLogMarkEntry(void)
   
   s256 sWordNm;
   
-  if ( ! m_pDataStack->bPopS256(sWordNm) )
+  if ( ! m_pDataStack->bPopStr(sWordNm) )
     THROW_DSTACK();
   
   Job* pJob = m_pTask->m_pJob;
@@ -80,7 +80,7 @@ void Step::vLogMarkExit(void)
   
   s256 sWordNm;
   
-  if ( ! m_pDataStack->bPopS256(sWordNm) )
+  if ( ! m_pDataStack->bPopStr(sWordNm) )
     THROW_DSTACK();
   
   Job* pJob = m_pTask->m_pJob;
