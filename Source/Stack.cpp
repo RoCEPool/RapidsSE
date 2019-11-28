@@ -551,19 +551,19 @@ bool Stack::bPopLocal(Local*& pLocal)
 /*----------------------------------------------------------------------------*/
 /* pop s,i8 from stack                                                        */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop_si(s48K& sEss, i8& iInt)
+bool Stack::bPop_si(String* pStr1, i8& iInt1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_STRVAL,CN_INTVAL) )
     return false;
   
-  GenVar xVar;
-  vPopStkVal(xVar);
+  StrVal* aStrVal = _aStrVal(aTopVal());
   
-  sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
-  
-  iInt = iPopInt();
+  pStr1->vCopy(aStrVal->szStz());
+  vDiscard();
+
+  iInt1 = iPopInt();
   
   return true;
 }
