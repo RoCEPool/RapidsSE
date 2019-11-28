@@ -60,9 +60,11 @@ void Step::vStrCat(void)
   s48K sStrB;
   s48K sStrA;
   
-  if ( ! m_pDataStack->bPop_ss(sStrB,sStrA) )
+  if ( ! m_pDataStack->bPopStr(sStrB) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopStr(sStrA) )
+    THROW_DSTACK();
+
   sStrR = sStrA;
   
   sStrR.vConcat(sStrB);

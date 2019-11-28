@@ -76,7 +76,6 @@ namespace SenVM
     bool bPopPtr(Object*& pObj);
     bool bPopLocal(Local*& pLocal);
     bool bPop_si(String* pStr1, i8& iInt1);
-    bool bPop_ss(String* pStr1, String* pStr2);
     bool bPopStr(String* pStr);
     bool bPopVal(GenVar& xVar);
   
