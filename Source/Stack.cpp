@@ -498,6 +498,19 @@ void Stack::vPushLocal(Local* pLocal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push string onto stack                                                     */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushStr(String* pStr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  i8 nBytes = pStr->nStackBytes();
+  StrVal* aStrVal = aAllotStrVal(nBytes);
+
+  aStrVal->vCopy(aStrVal,nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
 /* push s32 onto stack                                                        */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushS32(s32& sEss)

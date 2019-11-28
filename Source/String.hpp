@@ -10,6 +10,7 @@ namespace Correctness
   public:
     Header m_xHeader;
     i8     m_nSize;       // size of char area
+  
     char   m_caStr[1];    // char area
 
     // m_xFooter which is :
@@ -24,6 +25,7 @@ namespace Correctness
     void  vCopy(Stz* szArg);
   
     i8    nSize(void);
+    i8    nStackBytes(void);
     char* azStr(void);
     Stz*  szStz(void);
   

@@ -87,6 +87,7 @@ namespace SenVM
     void vPushS4K(s4K& sEss);
     void vPushS16KB(s16KB& sEss);
     void vPushS48K(s48K& sEss);
+    void vPushStr(String* pStr);
     void vPushVal(GenVar* pVar);
     void vPushVal(GenVar& xVar);
     void vPushVal(StkVal* aStkVal);
