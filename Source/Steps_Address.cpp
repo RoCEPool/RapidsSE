@@ -22,11 +22,13 @@ void Step::vAddressEqual(void)
   ENTRY(); // ENTRY("vAddressEql"_Stz);
   
   GenVar xAddressA;
-  GenVar xAddressB;
-  
-  if ( ! m_pDataStack->bPopVal(xAddressA,xAddressB) )
+  if ( ! m_pDataStack->bPopVal(xAddressA) )
     THROW_DSTACK();
   
+  GenVar xAddressB;
+  if ( ! m_pDataStack->bPopVal(xAddressB) )
+    THROW_DSTACK();
+
   i8 iA = xAddressA.iInt();
   i8 iB = xAddressB.iInt();
   

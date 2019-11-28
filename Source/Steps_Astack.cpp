@@ -131,11 +131,13 @@ void Step::vAstackNip(void)
   ENTRY(); // ENTRY("vAstackNip"_Stz);
   
   GenVar xValA;
+  if ( ! m_pAuxStack->bPopVal(xValA) )
+    THROW_ASTACK();
+  
   GenVar xValB;
-  
-  if ( ! m_pAuxStack->bPopVal(xValA,xValB) )
-  THROW_ASTACK();
-  
+  if ( ! m_pAuxStack->bPopVal(xValB) )
+    THROW_ASTACK();
+
   m_pAuxStack->vPushVal(xValA);
   
   EXIT();
@@ -217,11 +219,13 @@ void Step::vAstackSwap(void)
   ENTRY(); // ENTRY("vAstackSwap"_Stz);
   
   GenVar xValA;
+  if ( ! m_pAuxStack->bPopVal(xValA) )
+    THROW_ASTACK();
+  
   GenVar xValB;
-  
-  if ( ! m_pAuxStack->bPopVal(xValA,xValB) )
-  THROW_ASTACK();
-  
+  if ( ! m_pAuxStack->bPopVal(xValB) )
+    THROW_ASTACK();
+
   m_pAuxStack->vPushVal(xValA);
   m_pAuxStack->vPushVal(xValB);
   

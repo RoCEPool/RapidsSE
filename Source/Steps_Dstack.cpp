@@ -113,11 +113,14 @@ void Step::vDstackDropTwo(void)
 {
   ENTRY(); // ENTRY("vDstackDrop"_Stz);
   
-  // should just discard on stack
+  //! should just discard on stack
   
   GenVar xVarA;
+  if ( ! m_pDataStack->bPopVal(xVarA) )
+    THROW_DSTACK();
+  
   GenVar xVarB;
-  if ( ! m_pDataStack->bPopVal(xVarA,xVarB) )
+  if ( ! m_pDataStack->bPopVal(xVarB) )
     THROW_DSTACK();
   
   EXIT();
@@ -177,9 +180,11 @@ void Step::vDstackNip(void)
   ENTRY(); // ENTRY("vDstackNip"_Stz);
   
   GenVar xVarA;
-  GenVar xVarB;
+  if ( ! m_pDataStack->bPopVal(xVarA) )
+    THROW_DSTACK();
   
-  if ( ! m_pDataStack->bPopVal(xVarA,xVarB) )
+  GenVar xVarB;
+  if ( ! m_pDataStack->bPopVal(xVarB) )
     THROW_DSTACK();
   
   m_pDataStack->vPushVal(xVarA);
@@ -395,9 +400,11 @@ void Step::vDstackSwap(void)
   ENTRY(); // ENTRY("vDstackSwap"_Stz);
   
   GenVar xVarA;
-  GenVar xVarB;
+  if ( ! m_pDataStack->bPopVal(xVarA) )
+    THROW_DSTACK();
   
-  if ( ! m_pDataStack->bPopVal(xVarA,xVarB) )
+  GenVar xVarB;
+  if ( ! m_pDataStack->bPopVal(xVarB) )
     THROW_DSTACK();
   
   m_pDataStack->vPushVal(xVarA);
@@ -414,11 +421,13 @@ void Step::vDstackTuck(void)
   ENTRY(); // ENTRY("vDstackTuck"_Stz);
   
   GenVar xVarA;
-  GenVar xVarB;
-  
-  if ( ! m_pDataStack->bPopVal(xVarA,xVarB) )
+  if ( ! m_pDataStack->bPopVal(xVarA) )
     THROW_DSTACK();
   
+  GenVar xVarB;
+  if ( ! m_pDataStack->bPopVal(xVarB) )
+    THROW_DSTACK();
+
   m_pDataStack->vPushVal(xVarA);
   m_pDataStack->vPushVal(xVarB);
   m_pDataStack->vPushVal(xVarA);

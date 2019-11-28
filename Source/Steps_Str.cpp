@@ -116,11 +116,14 @@ void Step::vStrEqual(void)
   ENTRY(); // ENTRY("vStrEql"_Stz);
   
   GenVar xStringA;
-  GenVar xStringB;
-  
-  // get the arguments
-  if ( ! m_pDataStack->bPopVal(xStringB,xStringA) )
+  if ( ! m_pDataStack->bPopVal(xStringA) )
     THROW_DSTACK();
+  
+  GenVar xStringB;
+  if ( ! m_pDataStack->bPopVal(xStringB) )
+    THROW_DSTACK();
+
+  // get the arguments
   
   i8 iEqual = StrLib::bEqualTo(xStringA.azChar(),
                                xStringB.azChar(),
@@ -258,12 +261,15 @@ void Step::vStrPrepend(void)
   s48K xStrB;
   s48K xStrA;
   
-  GenVar xValA;
+  //! the use of A and B here doesnt seem intuitive
   GenVar xValB;
-  
-  if ( ! m_pDataStack->bPopVal(xValB,xValA) )
+  if ( ! m_pDataStack->bPopVal(xValB) )
     THROW_DSTACK();
-  
+ 
+  GenVar xValA;
+  if ( ! m_pDataStack->bPopVal(xValA) )
+    THROW_DSTACK();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first string A
   

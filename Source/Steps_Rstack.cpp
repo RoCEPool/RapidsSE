@@ -321,11 +321,13 @@ void Step::vRstackSwap(void)
   ENTRY(); // ENTRY("vRstackSwap"_Stz);
   
   GenVar xValA;
-  GenVar xValB;
-  
-  if ( ! m_pReturnStack->bPopVal(xValA,xValB) )
+  if ( ! m_pReturnStack->bPopVal(xValA) )
     THROW_DSTACK();
   
+  GenVar xValB;
+  if ( ! m_pReturnStack->bPopVal(xValB) )
+    THROW_DSTACK();
+
   m_pReturnStack->vPushVal(xValA);
   m_pReturnStack->vPushVal(xValB);
   
@@ -372,8 +374,11 @@ void Step::vRstackToRTwo(void)
   ENTRY(); // ENTRY("vRstackToRTwo"_Stz);
   
   GenVar xValX0;
+  if ( ! m_pDataStack->bPopVal(xValX0) )
+    THROW_DSTACK();
+
   GenVar xValX1;
-  if ( ! m_pDataStack->bPopVal(xValX0,xValX1) )
+  if ( ! m_pDataStack->bPopVal(xValX1) )
     THROW_DSTACK();
   
   m_pReturnStack->vPushVal(xValX1);
