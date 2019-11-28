@@ -1199,7 +1199,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       //*pf = 's';                                                    //! Defect??
       
       s48K sStr;
-      m_pForth->m_pDataStack->bPopS48K(sStr);
+      m_pForth->m_pDataStack->bPopStr(sStr);
       
       if ('V' == *pf)
         *ps++ = '"';

@@ -160,7 +160,7 @@ void Step::vEntBufferToEntBuffer(void)
   
   s48K sString;
   
-  if ( ! m_pDataStack->bPopS48K(sString) )
+  if ( ! m_pDataStack->bPopStr(sString) )
     THROW_DSTACK();
   
   EntBuffer* pEntBuffer = _pEntBuffer((void*)sString.iToI8());

@@ -169,7 +169,7 @@ void Step::vFileWrite(void)
   
   s48K sLine;
   
-  if ( ! m_pDataStack->bPopS48K(sLine) )
+  if ( ! m_pDataStack->bPopStr(sLine) )
     THROW_DSTACK();
   
   Stz* wStr = sLine;

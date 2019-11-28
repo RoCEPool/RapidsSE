@@ -132,13 +132,13 @@ void Step::vTableLazyBuildIndexes(void)
   i8 iTxId;
   s48K sString;
   
-  if ( ! m_pDataStack->bPopS48K(sString) )
+  if ( ! m_pDataStack->bPopStr(sString) )
     THROW_DSTACK();
   
   Table* pTable = reinterpret_cast<Table*>(sString.iToI8());
   ASSERT(CN_TABLE == pTable->eClass());
   
-  if ( ! m_pDataStack->bPopS48K(sString) )
+  if ( ! m_pDataStack->bPopStr(sString) )
     THROW_DSTACK();
   
   iSlot = sString.iToI8();

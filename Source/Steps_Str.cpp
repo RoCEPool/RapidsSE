@@ -142,7 +142,7 @@ void Step::vStrEscape(void)
   s48K xEscaped;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopS48K(xArg) )
+  if ( ! m_pDataStack->bPopStr(xArg) )
     THROW_DSTACK();
   
   StrLib::vEscape(xArg.azChar(),xEscaped.azChar());
@@ -160,7 +160,7 @@ void Step::vStrFirstCsv(void)
   ENTRY(); // ENTRY("vStrFirstCsv"_Stz);
   
   s48K sStr;
-  if ( ! m_pDataStack->bPopS48K(sStr) )
+  if ( ! m_pDataStack->bPopStr(sStr) )
     THROW_DSTACK();
   
   s48K sFirstValue;
@@ -183,7 +183,7 @@ void Step::vStrFormat(void)
   ENTRY(); // ENTRY("vStrFormat"_Stz);
   
   s48K sFormat;
-  if ( ! m_pDataStack->bPopS48K(sFormat) )
+  if ( ! m_pDataStack->bPopStr(sFormat) )
     THROW_DSTACK();
   
   s48K sString;
@@ -237,7 +237,7 @@ void Step::vStrLength(void)
   s48K sString;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopS48K(sString) )
+  if ( ! m_pDataStack->bPopStr(sString) )
     THROW_DSTACK();
   
   iLength = sString.nLength();
@@ -326,7 +326,7 @@ void Step::vStrRemovePrefix(void)
   ENTRY(); // ENTRY("vStrRemovePrefix"_Stz);
   
   s48K sString;
-  if ( ! m_pDataStack->bPopS48K(sString) )
+  if ( ! m_pDataStack->bPopStr(sString) )
     THROW_DSTACK();
   
   s32 sIntro;
@@ -348,7 +348,7 @@ void Step::vStrRemoveSuffix(void)
   ENTRY(); // ENTRY("vStrRemoveSuffix"_Stz);
   
   s48K sString;
-  if ( ! m_pDataStack->bPopS48K(sString) )
+  if ( ! m_pDataStack->bPopStr(sString) )
     THROW_DSTACK();
   
   s32 sIntro;
@@ -373,13 +373,13 @@ void Step::vStrReplace(void)
   s48K sThat;
   s48K sThis;
   
-  if ( ! m_pDataStack->bPopS48K(sString) )
+  if ( ! m_pDataStack->bPopStr(sString) )
     THROW_DSTACK();
 
-  if ( ! m_pDataStack->bPopS48K(sThat) )
+  if ( ! m_pDataStack->bPopStr(sThat) )
     THROW_DSTACK();
   
-  if ( ! m_pDataStack->bPopS48K(sThis) )
+  if ( ! m_pDataStack->bPopStr(sThis) )
     THROW_DSTACK();
   
   s48K sReplaced;
@@ -476,7 +476,7 @@ void Step::vStrTailInt(void)
   
   // get the string
   s48K sString;
-  if ( ! m_pDataStack->bPopS48K(sString) )
+  if ( ! m_pDataStack->bPopStr(sString) )
     THROW_DSTACK();
   
   // get last char in string

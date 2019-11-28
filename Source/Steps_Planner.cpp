@@ -279,7 +279,7 @@ void Step::vPlannerParseWhere(void)
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   s48K sWhere;
-  if ( ! m_pDataStack->bPopS48K(sWhere) )
+  if ( ! m_pDataStack->bPopStr(sWhere) )
     THROW_DSTACK();
   
   pPlanner->vParseWhere(sWhere);

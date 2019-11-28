@@ -549,24 +549,6 @@ bool Stack::bPopLocal(Local*& pLocal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop s from stack                                                           */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopS48K(s48K& sEss)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_STRVAL) )
-    return false;
-  
-  GenVar xVar;
-  vPopStkVal(xVar);
-  
-  sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop s,i8 from stack                                                        */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop_si(s48K& sEss, i8& iInt)

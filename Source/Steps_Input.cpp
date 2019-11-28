@@ -145,7 +145,7 @@ void Step::vInputText(void)
   
   s48K sInput;                                             //! NEED STACK CHECKS
   
-  if ( ! m_pDataStack->bPopS48K(sInput) )
+  if ( ! m_pDataStack->bPopStr(sInput) )
     THROW_DSTACK();
     
   m_pCompiler->m_pTokeniser->vUseString(sInput);
