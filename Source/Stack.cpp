@@ -513,21 +513,6 @@ bool Stack::bPopStr(String* pString)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack into given variable                                   */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopVal(GenVar* pVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  vPopStkVal(pVar->aEmbeddedStkVal());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop value from stack into given variable                                   */
-/*----------------------------------------------------------------------------*/
 bool Stack::bPopVal(GenVar& xVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);

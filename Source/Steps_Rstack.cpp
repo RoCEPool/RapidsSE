@@ -201,7 +201,6 @@ void Step::vRstackReverse(void)
 {
   ENTRY(); // ENTRY("vRstackReverse"_Stz);
   
-  GenVar xVal0;
   GenVar xVal1;
   GenVar xVal2;
   GenVar xVal3;
@@ -209,23 +208,35 @@ void Step::vRstackReverse(void)
   GenVar xVal5;
   GenVar xVal6;
   GenVar xVal7;
-  
-  GenVar* paVal[8] = {
-    &xVal0, &xVal1, &xVal2, &xVal3, &xVal4, &xVal5, &xVal6, &xVal7
-  };
+  GenVar xVal8;
   
   i8 nValues;
   if ( ! m_pDataStack->bPopInt(nValues) )
     THROW_DSTACK();
   
-  for (i8 i = 0; i < nValues; i++) {
-    if ( ! m_pReturnStack->bPopVal(paVal[i]) )
-      THROW_DSTACK();
+  switch (nValues) {
+    case 8: m_pReturnStack->bPopVal(xVal8);
+    case 7: m_pReturnStack->bPopVal(xVal7);
+    case 6: m_pReturnStack->bPopVal(xVal6);
+    case 5: m_pReturnStack->bPopVal(xVal5);
+    case 4: m_pReturnStack->bPopVal(xVal4);
+    case 3: m_pReturnStack->bPopVal(xVal3);
+    case 2: m_pReturnStack->bPopVal(xVal2);
+    case 1: m_pReturnStack->bPopVal(xVal1);
   }
-  
-  for (i8 i = 0; i < nValues; i++) {
-    m_pReturnStack->vPushVal(paVal[i]);
+ 
+  switch (nValues) {
+    case 8: m_pReturnStack->vPushVal(xVal8);
+    case 7: m_pReturnStack->vPushVal(xVal7);
+    case 6: m_pReturnStack->vPushVal(xVal6);
+    case 5: m_pReturnStack->vPushVal(xVal5);
+    case 4: m_pReturnStack->vPushVal(xVal4);
+    case 3: m_pReturnStack->vPushVal(xVal3);
+    case 2: m_pReturnStack->vPushVal(xVal2);
+    case 1: m_pReturnStack->vPushVal(xVal1);
   }
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

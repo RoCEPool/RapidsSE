@@ -172,7 +172,6 @@ void Step::vAstackReverse(void)
 {
   ENTRY(); // ENTRY("vAstackReverse"_Stz);
   
-  GenVar xVal0;
   GenVar xVal1;
   GenVar xVal2;
   GenVar xVal3;
@@ -180,22 +179,33 @@ void Step::vAstackReverse(void)
   GenVar xVal5;
   GenVar xVal6;
   GenVar xVal7;
-  
-  GenVar* paVal[8] = {
-    &xVal0, &xVal1, &xVal2, &xVal3, &xVal4, &xVal5, &xVal6, &xVal7
-  };
+  GenVar xVal8;
   
   i8 nValues;
   if ( ! m_pDataStack->bPopInt(nValues) )
     THROW_DSTACK();
   
-  for (i8 i = 0; i < nValues; i++) {
-    if ( ! m_pAuxStack->bPopVal(paVal[i]) )
-      THROW_ASTACK();
+  
+  switch (nValues) {
+    case 8: m_pAuxStack->bPopVal(xVal8);
+    case 7: m_pAuxStack->bPopVal(xVal7);
+    case 6: m_pAuxStack->bPopVal(xVal6);
+    case 5: m_pAuxStack->bPopVal(xVal5);
+    case 4: m_pAuxStack->bPopVal(xVal4);
+    case 3: m_pAuxStack->bPopVal(xVal3);
+    case 2: m_pAuxStack->bPopVal(xVal2);
+    case 1: m_pAuxStack->bPopVal(xVal1);
   }
   
-  for (i8 i = 0; i < nValues; i++) {
-    m_pAuxStack->vPushVal(paVal[i]);
+  switch (nValues) {
+    case 8: m_pAuxStack->vPushVal(xVal8);
+    case 7: m_pAuxStack->vPushVal(xVal7);
+    case 6: m_pAuxStack->vPushVal(xVal6);
+    case 5: m_pAuxStack->vPushVal(xVal5);
+    case 4: m_pAuxStack->vPushVal(xVal4);
+    case 3: m_pAuxStack->vPushVal(xVal3);
+    case 2: m_pAuxStack->vPushVal(xVal2);
+    case 1: m_pAuxStack->vPushVal(xVal1);
   }
 }
 
