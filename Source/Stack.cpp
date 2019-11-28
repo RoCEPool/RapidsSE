@@ -412,23 +412,6 @@ bool Stack::bPopPtr(Object*& pObj)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop Object*, Object* from stack                                            */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopPtr(Object*& pObj1, Object*& pObj2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_PTRVAL,CN_PTRVAL) )
-    return false;
-  
-  pObj1 = pPopObj();
-  
-  pObj2 = pPopObj();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop Object* from stack                                                     */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopPtr(Object*& pObj, GenVar& xVar)

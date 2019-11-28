@@ -114,13 +114,14 @@ void Step::vJob_LoadTableTableStore(void)
 {
   ENTRY(); // ENTRY("vJob_LoaderTableStore"_Stz);
   
-  Object* pPtrTable;
   Object* pPtrJob_LoadTable;
-  if ( ! m_pDataStack->bPopPtr(pPtrJob_LoadTable,pPtrTable) )
+  if ( ! m_pDataStack->bPopPtr(pPtrJob_LoadTable) )
     THROW_DSTACK();
-  
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
-  
+
+  Object* pPtrTable;
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
+    THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
   
   pJob_LoadTable->vTable(pTable);

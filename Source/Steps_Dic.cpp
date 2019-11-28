@@ -52,7 +52,6 @@ void Step::vDicKindGet(void)
   
   if ( ! m_pDataStack->bPopPtr(pPtrDic) )
     THROW_DSTACK();
-  
   Dic* pDic = _pDic(pPtrDic);
   
   Object* pPtrKind;
@@ -70,14 +69,14 @@ void Step::vDicKindSet(void)
 {
   ENTRY(); // ENTRY("vDicKindSet"_Stz);
   
-  Object* pPtrKind;
   Object* pPtrDic;
-  
-  if ( ! m_pDataStack->bPopPtr(pPtrDic,pPtrKind) )
+  if ( ! m_pDataStack->bPopPtr(pPtrDic) )
     THROW_DSTACK();
-  
   Dic* pDic = _pDic(pPtrDic);
-  
+
+  Object* pPtrKind;
+  if ( ! m_pDataStack->bPopPtr(pPtrKind) )
+    THROW_DSTACK();
   Word* pKind = _pWord(pPtrKind);
   
   pDic->vDicKind(pKind);
