@@ -73,11 +73,7 @@ namespace SenVM
     bool bPopCN(eCN& eClassNo);
     bool bPopFip(Cell*& aFip);
     bool bPopInt(i8& iInt);
-    bool bPopInt(i8& iInt1, i8& iInt2);
-    bool bPopInt(i8& iInt1, i8& iInt2, GenVar& xVar);
-    bool bPopInt(i8& iInt, Object*& pObj);
-    bool bPopInt(i8& iInt, GenVar& xVar);
-    bool bPopInt(i8& iInt, String* pStr1);
+    bool bPop_ii(i8& iInt1, i8& iInt2);
     bool bPopPtr(Object*& pObj);
     bool bPopPtr(Object*& pObj, i8& iInt);
     bool bPopPtr(Object*& pObj1, Object*& pObj2);

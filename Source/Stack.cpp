@@ -382,7 +382,7 @@ bool Stack::bPopInt(i8& iInt)
 /*----------------------------------------------------------------------------*/
 /* pop i8,i8 from stack                                                       */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopInt(i8& iInt1, i8& iInt2)
+bool Stack::bPop_ii(i8& iInt1, i8& iInt2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -393,78 +393,6 @@ bool Stack::bPopInt(i8& iInt1, i8& iInt2)
   
   iInt2 = iPopInt();
   
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop i8,pObj from stack                                                     */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopInt(i8& iInt, Object*& pObj)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_INTVAL,CN_PTRVAL) )
-    return false;
-  
-  iInt = iPopInt();
-  
-  pObj = pPopObj();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop i8,val from stack                                                      */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopInt(i8& iInt, GenVar& xVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_INTVAL,CN_STRVAL) )
-    return false;
-  
-  iInt = iPopInt();
-  
-  vPopStkVal(xVar);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop i8,s from stack                                                        */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopInt(i8& iInt, String* pStr1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_INTVAL,CN_STRVAL) )
-    return false;
-  
-  iInt = iPopInt();
-  
-  StrVal* aStrVal1 = _aStrVal(aTopVal());
-  pStr1->vCopy(aStrVal1->szStz());
-  vDiscard();
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop i8,i8,val from stack                                                   */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopInt(i8& iInt1, i8& iInt2, GenVar& xVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
-    return false;
-  
-  iInt1 = iPopInt();
-  
-  iInt2 = iPopInt();
-  
-  vPopStkVal(xVar);
-
   return true;
 }
 
