@@ -68,9 +68,11 @@ void Step::vIntDivide(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop_ii(j,i) )
+  if ( ! m_pDataStack->bPopInt(j) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopInt(i) )
+    THROW_DSTACK();
+
   r = DIV(i,j);
   
   m_pDataStack->vPushInt(r);
@@ -87,9 +89,11 @@ void Step::vIntEqual(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop_ii(j,i) )
+  if ( ! m_pDataStack->bPopInt(j) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopInt(i) )
+    THROW_DSTACK();
+
   r = i == j;
   
   m_pDataStack->vPushInt(r);
@@ -106,9 +110,11 @@ void Step::vIntGreater(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop_ii(j,i) )
+  if ( ! m_pDataStack->bPopInt(j) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopInt(i) )
+    THROW_DSTACK();
+
   r = i > j;
   
   m_pDataStack->vPushInt(r);
@@ -125,9 +131,11 @@ void Step::vIntGreaterEqual(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop_ii(j,i) )
+  if ( ! m_pDataStack->bPopInt(j) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopInt(i) )
+    THROW_DSTACK();
+
   r = i >= j;
   
   m_pDataStack->vPushInt(r);
@@ -180,9 +188,11 @@ void Step::vIntLess(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop_ii(j,i) )
+  if ( ! m_pDataStack->bPopInt(j) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopInt(i) )
+    THROW_DSTACK();
+
   r = i < j;
   
   m_pDataStack->vPushInt(r);
@@ -199,9 +209,11 @@ void Step::vIntLessEqual(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop_ii(j,i) )
+  if ( ! m_pDataStack->bPopInt(j) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopInt(i) )
+    THROW_DSTACK();
+
   r = i <= j;
   
   m_pDataStack->vPushInt(r);
@@ -218,9 +230,11 @@ void Step::vIntModulo(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop_ii(j,i) )
+  if ( ! m_pDataStack->bPopInt(j) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopInt(i) )
+    THROW_DSTACK();
+
   r = MOD(i,j);
   
   m_pDataStack->vPushInt(r);
@@ -237,9 +251,11 @@ void Step::vIntMultiply(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop_ii(j,i) )
+  if ( ! m_pDataStack->bPopInt(j) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopInt(i) )
+    THROW_DSTACK();
+
   r = i * j;
   
   m_pDataStack->vPushInt(r);
@@ -275,9 +291,11 @@ void Step::vIntNotEqual(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop_ii(j,i) )
+  if ( ! m_pDataStack->bPopInt(j) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopInt(i) )
+    THROW_DSTACK();
+
   r = i != j;
   
   m_pDataStack->vPushInt(r);
@@ -316,9 +334,11 @@ void Step::vIntSubtract(void)
   
   i8 r, j, i;
   
-  if ( ! m_pDataStack->bPop_ii(j,i) )
+  if ( ! m_pDataStack->bPopInt(j) )
     THROW_DSTACK();
-  
+  if ( ! m_pDataStack->bPopInt(i) )
+    THROW_DSTACK();
+
   r = i - j;
   
   m_pDataStack->vPushInt(r);

@@ -380,23 +380,6 @@ bool Stack::bPopInt(i8& iInt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop i8,i8 from stack                                                       */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPop_ii(i8& iInt1, i8& iInt2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_INTVAL,CN_INTVAL) )
-    return false;
-  
-  iInt1 = iPopInt();
-  
-  iInt2 = iPopInt();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop Object* from stack                                                     */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopPtr(Object*& pObj)
