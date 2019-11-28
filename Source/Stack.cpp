@@ -433,7 +433,7 @@ bool Stack::bPopInt(i8& iInt, GenVar& xVar)
 /*----------------------------------------------------------------------------*/
 /* pop i8,s from stack                                                        */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopInt(i8& iInt, s48K& sEss)
+bool Stack::bPopInt(i8& iInt, String* pStr1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -442,11 +442,10 @@ bool Stack::bPopInt(i8& iInt, s48K& sEss)
   
   iInt = iPopInt();
   
-  GenVar xVar;
-  vPopStkVal(xVar);
-  
-  sEss = _aStrVal(&xVar)->szStz();
-  
+  StrVal* aStrVal1 = _aStrVal(aTopVal());
+  pStr1->vCopy(aStrVal1->szStz());
+  vDiscard();
+
   return true;
 }
 
