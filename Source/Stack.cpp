@@ -129,7 +129,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
         else {
           vTrace("[%2lld] [%s] %p word %s \n"_Stz,
                  i_Val,aCN[eValClass],aFip,
-                 "<UNKNOWN>"_Stz);
+                 "<UNKNOWN - No pDicStack>"_Stz);
         }
         break;
       }
@@ -513,8 +513,8 @@ void Stack::vPushStr(String* pStr)
   
   vContentDump(nullptr,"Before:"_Stz);
 
-  i8 nBytes = pStr->nStackBytes();
-  StrVal* aStrVal = aAllotStrVal(nBytes);
+  i8 nSize = StrLib::iSize(pStr->azStr());
+  StrVal* aStrVal = aAllotStrVal(nSize);
 
   aStrVal->vAssign(pStr->szStz());
   
@@ -734,7 +734,9 @@ StrVal* Stack::aAllotStrVal(i8 nSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StrVal* aStrVal = static_cast<StrVal*>(aAllot(sizeof(StrVal) - 1 + nSize));
+  i8 nBytes = sizeof(_Header) + 8 + nSize;
+  
+  StrVal* aStrVal = static_cast<StrVal*>(aAllot(nBytes));
   
   aStrVal->vClass(CN_STRVAL);
   aStrVal->vMagic();

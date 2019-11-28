@@ -70,7 +70,7 @@ i8 String::nStackBytes(void)
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();
   
-  i8 nBytes = sizeof(String) + StrLib::iLength(m_caStr);
+  i8 nBytes = sizeof(_Header) + sizeof(i8) + StrLib::iSize(m_caStr);
   
   return nBytes;
 }
