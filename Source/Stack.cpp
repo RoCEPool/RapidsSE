@@ -425,7 +425,7 @@ bool Stack::bPopInt(i8& iInt, GenVar& xVar)
   
   iInt = iPopInt();
   
-  vPopVal(xVar);
+  vPopStkVal(xVar);
   
   return true;
 }
@@ -443,7 +443,7 @@ bool Stack::bPopInt(i8& iInt, s48K& sEss)
   iInt = iPopInt();
   
   GenVar xVar;
-  vPopVal(xVar);
+  vPopStkVal(xVar);
   
   sEss = _aStrVal(&xVar)->szStz();
   
@@ -464,7 +464,7 @@ bool Stack::bPopInt(i8& iInt1, i8& iInt2, GenVar& xVar)
   
   iInt2 = iPopInt();
   
-  vPopVal(xVar);
+  vPopStkVal(xVar);
 
   return true;
 }
@@ -559,7 +559,7 @@ bool Stack::bPopS32(s32& sEss)
     return false;
   
   GenVar xVar;
-  vPopVal(xVar);
+  vPopStkVal(xVar);
   
   sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
   
@@ -577,7 +577,7 @@ bool Stack::bPopS256(s256& sEss)
     return false;
   
   GenVar xVar;
-  vPopVal(xVar);
+  vPopStkVal(xVar);
   
   sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
   
@@ -595,7 +595,7 @@ bool Stack::bPopS4K(s4K& sEss)
     return false;
   
   GenVar xVar;
-  vPopVal(xVar);
+  vPopStkVal(xVar);
   
   sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
   
@@ -613,7 +613,7 @@ bool Stack::bPopS48K(s48K& sEss)
     return false;
   
   GenVar xVar;
-  vPopVal(xVar);
+  vPopStkVal(xVar);
   
   sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
   
@@ -631,7 +631,7 @@ bool Stack::bPopS48K(s48K& sEss, i8& iInt)
     return false;
   
   GenVar xVar;
-  vPopVal(xVar);
+  vPopStkVal(xVar);
   
   sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
   
@@ -651,7 +651,7 @@ bool Stack::bPopS48K(s48K& sEss, i8& iInt1, i8& iInt2)
     return false;
   
   GenVar xVar;
-  vPopVal(xVar);
+  vPopStkVal(xVar);
   sEss = _aStrVal(xVar.aEmbeddedStkVal())->szStz();
   
   iInt1 = iPopInt();
@@ -672,12 +672,12 @@ bool Stack::bPopS48K(s48K& sEss1, s48K& sEss2)
     return false;
   
   GenVar xVar1;
-  vPopVal(xVar1);
+  vPopStkVal(xVar1);
   
   sEss1 = _aStrVal(xVar1.aEmbeddedStkVal())->szStz();
   
   GenVar xVar2;
-  vPopVal(xVar2);
+  vPopStkVal(xVar2);
   
   sEss2 = _aStrVal(xVar2.aEmbeddedStkVal())->szStz();
   
@@ -717,7 +717,7 @@ bool Stack::bPopVal(GenVar* pVar)
   if ( ! bGuard(1) )
     return false;
   
-  vPopVal(pVar->aEmbeddedStkVal());
+  vPopStkVal(pVar->aEmbeddedStkVal());
   
   return true;
 }
@@ -732,7 +732,7 @@ bool Stack::bPopVal(GenVar& xVar)
   if ( ! bGuard(1) )
     return false;
   
-  vPopVal(xVar);
+  vPopStkVal(xVar);
   
   return true;
 }
@@ -747,9 +747,9 @@ bool Stack::bPopVal(GenVar& xVar1, GenVar& xVar2)
   if ( ! bGuard(2) )
     return false;
   
-  vPopVal(xVar1);
+  vPopStkVal(xVar1);
   
-  vPopVal(xVar2);
+  vPopStkVal(xVar2);
   
   return true;
 }
@@ -764,11 +764,11 @@ bool Stack::bPopVal(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
   if ( ! bGuard(3) )
     return false;
   
-  vPopVal(xVar1);
+  vPopStkVal(xVar1);
   
-  vPopVal(xVar2);
+  vPopStkVal(xVar2);
   
-  vPopVal(xVar3);
+  vPopStkVal(xVar3);
   
   return true;
 }
@@ -810,7 +810,7 @@ void Stack::vPushPtr(Object* pObj)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push pointer to register onto stack                                        */
+/* push contents of local onto stack                                          */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushLocal(Local* pLocal)
 {
@@ -918,22 +918,8 @@ void Stack::vPushVal(GenVar& xVar)
 void Stack::vPushVal(StkVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  _hazard_();
-  
-  ASSERT(CN_GENVAR != aStkVal->eClass());
-  
-  i8 nBytes = aStkVal->nStackBytes();
-  
-  m_xTop.vAdvance(nBytes);
-  
-  m_xTop.pStkVal->vCopy(aStkVal,nBytes);
-  
-  m_nValues++;
-  
-  _hazard_();
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  vPushStkVal(aStkVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1122,13 +1108,13 @@ void Stack::vPopLocal(Local* aLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPopVal(aLocal->aLocalValue());
+  vPopStkVal(aLocal->aLocalValue());
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop value from stack                                                       */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopVal(StkVal* aStkVal)
+void Stack::vPopStkVal(StkVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
@@ -1143,6 +1129,30 @@ void Stack::vPopVal(StkVal* aStkVal)
   m_nValues--;
   
   _hazard_();
+}
+
+/*----------------------------------------------------------------------------*/
+/* push value onto stack                                                      */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushStkVal(StkVal* aStkVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  _hazard_();
+  
+  ASSERT(CN_GENVAR != aStkVal->eClass());
+  
+  i8 nBytes = aStkVal->nStackBytes();
+  
+  m_xTop.vAdvance(nBytes);
+  
+  m_xTop.pStkVal->vCopy(aStkVal,nBytes);
+  
+  m_nValues++;
+  
+  _hazard_();
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
