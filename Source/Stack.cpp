@@ -118,8 +118,13 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
     
     eCN eValClass = xVar.eValClass();
     
-    vTrace("[%2lld %p %02lldB %8s] "_Stz,
-           i_Val,aStkVal,nStackBytes,aCN[eValClass]);
+    if (CN_STRVAL == eValClass)
+      vTrace("[%2lld %p %02lldB %6s (8,8,%02lld)] "_Stz,
+             i_Val,aStkVal,nStackBytes,aCN[eValClass],
+             _aStrVal(aStkVal)->nSize());
+    else
+      vTrace("[%2lld %p %02lldB %6s (8,8,00)] "_Stz,
+             i_Val,aStkVal,nStackBytes,aCN[eValClass]);
 
     
     switch(eValClass) {
