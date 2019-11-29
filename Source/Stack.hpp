@@ -5,6 +5,8 @@
 
 namespace SenVM
 {
+  static const i8 C_NO_ADDITIONAL_BYTES = 0;
+  
   static const i8 C_WSP_STACK = C_SIZE_LARGE_OBJECT - C_1KB;
   //static const i8 C_WSP_STACK = C_SIZE_SMALL_OBJECT;
 
@@ -95,7 +97,7 @@ namespace SenVM
   public:
   
   private:
-    AnyVal* aAllotAnyVal(i8 nBytes);
+    AnyVal* aAllotAnyVal(i8 nWithAdditionalBytes);
     FipVal* aAllotFipVal(void);
     IntVal* aAllotIntVal(void);
     PtrVal* aAllotPtrVal(void);

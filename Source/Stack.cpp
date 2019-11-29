@@ -572,11 +572,13 @@ i8 Stack::nValues(void)
 /*----------------------------------------------------------------------------*/
 /* allot a value on top of stack                                               */
 /*----------------------------------------------------------------------------*/
-AnyVal* Stack::aAllotAnyVal(i8 nBytes)
+AnyVal* Stack::aAllotAnyVal(i8 nWithAdditionalBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_xTop.vAdvance(nBytes);
+  i8 nAllotBytes = sizeof(AnyVal) + nWithAdditionalBytes;
+  
+  m_xTop.vAdvance(nAllotBytes);
   ASSERT(m_xTop.ayByte >= (byte*)aStackLimit());
   
   m_nValues++;
@@ -591,7 +593,7 @@ FipVal* Stack::aAllotFipVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  FipVal* aFipVal = (FipVal*) aAllotAnyVal(sizeof(FipVal));
+  FipVal* aFipVal = (FipVal*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
   
   aFipVal->vClass(CN_FIPVAL);
   aFipVal->vMagic();
@@ -606,7 +608,7 @@ IntVal* Stack::aAllotIntVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  IntVal* aIntVal = (IntVal*) aAllotAnyVal(sizeof(IntVal));
+  IntVal* aIntVal = (IntVal*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
   
   aIntVal->vClass(CN_INTVAL);
   aIntVal->vMagic();
@@ -621,7 +623,7 @@ PtrVal* Stack::aAllotPtrVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  PtrVal* aPtrVal = (PtrVal*) aAllotAnyVal(sizeof(PtrVal));
+  PtrVal* aPtrVal = (PtrVal*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
   
   aPtrVal->vClass(CN_PTRVAL);
   aPtrVal->vMagic();
@@ -636,9 +638,9 @@ StrVal* Stack::aAllotStrVal(i8 nStrSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  i8 nBytes = sizeof(_Header) + 8 + nStrSize;
+  i8 nWithAdditionalBytes = nStrSize;
   
-  StrVal* aStrVal = (StrVal*) aAllotAnyVal(nBytes);
+  StrVal* aStrVal = (StrVal*) aAllotAnyVal(nWithAdditionalBytes);
   
   aStrVal->vClass(CN_STRVAL);
   aStrVal->vMagic();
