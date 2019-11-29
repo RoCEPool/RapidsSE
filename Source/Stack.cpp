@@ -541,19 +541,6 @@ void Stack::vPushS48K(s48K& sEss)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push s16KB onto stack                                                      */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushS16KB(s16KB& sEss)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  GenVar xStrVar;
-  xStrVar = sEss;
-  
-  vPushVal(xStrVar);
-}
-
-/*----------------------------------------------------------------------------*/
 /* push value onto stack                                                      */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushVal(GenVar* pVar)

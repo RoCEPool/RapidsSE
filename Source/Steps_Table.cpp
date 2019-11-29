@@ -300,7 +300,7 @@ void Step::vTableGetColumnsAsString(void)
     s.vConcat(aCT[pColVec->pGet(i_Column)->eColumnType()]);
   }
   
-  m_pDataStack->vPushS16KB(s);
+  m_pDataStack->vPushStr(s);
   
   EXIT();
 }
