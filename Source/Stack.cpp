@@ -530,33 +530,6 @@ void Stack::vPushStr(String* pStr)
 /*----------------------------------------------------------------------------*/
 /* push value onto stack                                                      */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushVal(GenVar* pVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  StkVal* aStkVal = pVar->aEmbeddedStkVal();
-  
-  vPushVal(aStkVal);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto stack                                                      */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushVal(GenVar& xVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  StkVal* aStkVal = xVar.aEmbeddedStkVal();
-  vPushVal(aStkVal);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto stack                                                      */
-/*----------------------------------------------------------------------------*/
 void Stack::vPushVal(StkVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
