@@ -95,7 +95,7 @@ namespace SenVM
   public:
   
   private:
-    StkVal* aAllot(i8 nBytes);
+    AnyVal* aAllotAnyVal(i8 nBytes);
     FipVal* aAllotFipVal(void);
     IntVal* aAllotIntVal(void);
     PtrVal* aAllotPtrVal(void);

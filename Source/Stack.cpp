@@ -570,9 +570,9 @@ i8 Stack::nValues(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allot a fip value on top of stack                                          */
+/* allot a value on top of stack                                               */
 /*----------------------------------------------------------------------------*/
-StkVal* Stack::aAllot(i8 nBytes)
+AnyVal* Stack::aAllotAnyVal(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -581,7 +581,7 @@ StkVal* Stack::aAllot(i8 nBytes)
   
   m_nValues++;
   
-  return m_xTop.pStkVal;
+  return m_xTop.pAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -591,7 +591,7 @@ FipVal* Stack::aAllotFipVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  FipVal* aFipVal = static_cast<FipVal*>(aAllot(sizeof(FipVal)));
+  FipVal* aFipVal = (FipVal*) aAllotAnyVal(sizeof(FipVal));
   
   aFipVal->vClass(CN_FIPVAL);
   aFipVal->vMagic();
@@ -606,7 +606,7 @@ IntVal* Stack::aAllotIntVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  IntVal* aIntVal = static_cast<IntVal*>(aAllot(sizeof(IntVal)));
+  IntVal* aIntVal = (IntVal*) aAllotAnyVal(sizeof(IntVal));
   
   aIntVal->vClass(CN_INTVAL);
   aIntVal->vMagic();
@@ -621,7 +621,7 @@ PtrVal* Stack::aAllotPtrVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  PtrVal* aPtrVal = static_cast<PtrVal*>(aAllot(sizeof(PtrVal)));
+  PtrVal* aPtrVal = (PtrVal*) aAllotAnyVal(sizeof(PtrVal));
   
   aPtrVal->vClass(CN_PTRVAL);
   aPtrVal->vMagic();
@@ -638,7 +638,7 @@ StrVal* Stack::aAllotStrVal(i8 nSize)
   
   i8 nBytes = sizeof(_Header) + 8 + nSize;
   
-  StrVal* aStrVal = static_cast<StrVal*>(aAllot(nBytes));
+  StrVal* aStrVal = (StrVal*) aAllotAnyVal(nBytes);
   
   aStrVal->vClass(CN_STRVAL);
   aStrVal->vMagic();
