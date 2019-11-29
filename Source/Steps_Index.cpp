@@ -60,7 +60,7 @@ void Step::vIndexAnalyze(void)
   s48K sAnalysis;
   i8 nRows;
   sAnalysis = (Stz*)pIndex->pTable()->pAnalyzeIndex(pIndex, iDetailed == 1 ? true : false, nRows);
-  m_pDataStack->vPushS48K(sAnalysis);
+  m_pDataStack->vPushStr(sAnalysis);
   
   EXIT();
 }

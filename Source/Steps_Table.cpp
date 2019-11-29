@@ -92,7 +92,7 @@ void Step::vTableAnalyze(void)
   i8 nRows;
   sAnalysis = (Stz*)pTable->pAnalyzeTable(iDetailed == 1 ? true : false, nRows);
   
-  m_pDataStack->vPushS48K(sAnalysis);
+  m_pDataStack->vPushStr(sAnalysis);
     
   EXIT();
 }

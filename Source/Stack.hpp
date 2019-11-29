@@ -82,7 +82,6 @@ namespace SenVM
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);
     void vPushLocal(Local* pLocal);
-    void vPushS48K(s48K& sEss);
     void vPushStr(String* pStr);
     void vPushVal(GenVar* pVar);
     void vPushVal(GenVar& xVar);
