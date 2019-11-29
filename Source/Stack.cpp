@@ -304,7 +304,7 @@ bool Stack::bPopAsInt(i8& iInt)
   if ( ! bGuard(1) )
     return false;
   
-  iInt = m_xTop.aAnyVal->iInt();
+  iInt = m_xTop.aAnyVal->iAsInt();
   vTopDiscard();
   
   return true;

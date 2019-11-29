@@ -8,7 +8,6 @@ namespace SenVM
   class FipVal : public StkVal
   {
   private:
-    Cell* m_aFip;
         
   public:
     void* operator new(size_t);

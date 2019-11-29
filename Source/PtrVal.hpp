@@ -8,8 +8,7 @@ namespace SenVM
   class PtrVal : public StkVal
   {
   private:
-    Object* m_pObj;
-
+ 
   public:
     void* operator new(size_t);
     

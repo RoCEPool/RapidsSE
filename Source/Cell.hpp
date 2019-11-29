@@ -26,9 +26,9 @@ namespace SenVM
       // additionally cells can be an argument to a another cell
       //
       
-      Cell*   m_aJumpTo;      // a pointer to another cell within same routine
+      Cell*    m_aJumpTo;      // a pointer to another cell within same routine
       
-      StkVal   m_xEmbValue;    // or an embedded value (for PushValue)
+      _Header  m_xEmbValue;    // or an embedded value (for PushValue)
     };
   };
   

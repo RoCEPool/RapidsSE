@@ -8,7 +8,6 @@ namespace SenVM
   class IntVal : public StkVal
   {
   private:
-    i8  m_iInt;
   
   public:
     void* operator new(size_t);

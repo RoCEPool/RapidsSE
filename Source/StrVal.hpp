@@ -8,7 +8,6 @@ namespace SenVM
   class StrVal : public StkVal
   {
   protected:
-    i8   m_nBytesFollowing;
     char m_caStr[1];
   
   public:

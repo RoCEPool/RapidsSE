@@ -8,12 +8,20 @@ namespace SenVM
   class StkVal : public _Header
   {
   protected:
-   
+    union {
+      Cell*   m_aFip;
+      i8      m_iInt;
+      Object* m_pObj;
+      
+      i8      m_nBytesFollowing;
+    };
+  
   public:
     void* operator new(size_t);
   
     void vCopy(StkVal* aSrcVal, i8 nBytes=0);
   
+    i8      iAsInt(void);
     char*   azChar(void);
     Cell*   aFip(void);
     void    vFip(Cell* aFip);

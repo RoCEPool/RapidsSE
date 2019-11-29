@@ -10,12 +10,12 @@
 void SenVM::vCheckAssumptions(void)
 {
   
-  ASSERT(8 == sizeof(StkVal));
+  ASSERT(16 == sizeof(StkVal));
   RASSERT(sizeof(Dtm) == sizeof(SingleWord));
   
-  ASSERT(sizeof(StkVal) + sizeof(i8)     == sizeof(IntVal));
-  ASSERT(sizeof(StkVal) + sizeof(void*)  == sizeof(FipVal));
-  ASSERT(sizeof(StkVal) + sizeof(void*)  == sizeof(PtrVal));
+  ASSERT(sizeof(StkVal)   == sizeof(IntVal));
+  ASSERT(sizeof(StkVal)   == sizeof(FipVal));
+  ASSERT(sizeof(StkVal)   == sizeof(PtrVal));
   //  ASSERT(sizeof(StkVal) + sizeof(i8)     == sizeof(StrVal));
   
   //  ASSERT(sizeof(StrVal) + sizeof(Footer) + 32    == sizeof(s32));

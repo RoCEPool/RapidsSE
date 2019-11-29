@@ -8,12 +8,10 @@ namespace SenVM
   class AnyVal : public StkVal
   {
   private:
-    i8  m_iInt;
   
   public:
     void* operator new(size_t);
     
-    i8   iInt(void);
   };
   
   /*----------------------------------------------------------------------------*/

@@ -66,7 +66,7 @@ void Step::vPushValue(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  StkVal* aStkVal = &m_aInxPtr->m_xEmbValue;
+  StkVal* aStkVal = (StkVal*) & m_aInxPtr->m_xEmbValue;
   
   m_pDataStack->vPushVal((AnyVal*) aStkVal);
   
