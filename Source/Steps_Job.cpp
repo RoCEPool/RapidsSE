@@ -1689,7 +1689,7 @@ void Step::vJobResponseFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushS4K(pJob->m_xResponse.m_sResponse);
+  m_pDataStack->vPushStr(pJob->m_xResponse.m_sResponse);
   
   EXIT();
 }
