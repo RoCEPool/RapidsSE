@@ -747,25 +747,25 @@ void Stack::vPopLocal(Local* aLocal)
 /*----------------------------------------------------------------------------*/
 /* compute the base of this stack                                             */
 /*----------------------------------------------------------------------------*/
-StkVal* Stack::aStackBase(void)
+AnyVal* Stack::aStackBase(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   char* aBase = (char*)&m_xWsp.ayArea()[C_WSP_STACK - 1];
   
-  return pPoolCheck<StkVal*>(aBase);
+  return pPoolCheck<AnyVal*>(aBase);
 }
 
 /*----------------------------------------------------------------------------*/
 /* compute the limit of this stack                                            */
 /*----------------------------------------------------------------------------*/
-StkVal* Stack::aStackLimit(void)
+AnyVal* Stack::aStackLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   char* aLimit = (char*)&m_xWsp.ayArea()[0];
   
-  return pPoolCheck<StkVal*>(aLimit);
+  return pPoolCheck<AnyVal*>(aLimit);
 }
 
 /*----------------------------------------------------------------------------*/

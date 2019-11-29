@@ -110,10 +110,10 @@ namespace SenVM
 
     void    vPopLocal(Local* aLocal);
   
-    StkVal* aStackBase(void);
-    StkVal* aStackLimit(void);
+    AnyVal* aStackBase(void);
+    AnyVal* aStackLimit(void);
     
-    void    vTopDiscard(void);  
+    void    vTopDiscard(void);
     bool    bTopIsZero(void);
   
     Footer* aFooter(void);
