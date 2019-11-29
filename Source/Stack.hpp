@@ -14,15 +14,15 @@ namespace SenVM
     
     byte*   ayByte;
     
-    AnyVal* pAnyVal;
-    FipVal* pFipVal;
-    IntVal* pIntVal;
-    PtrVal* pPtrVal;
-    StrVal* pStrVal;
+    AnyVal* aAnyVal;
+    FipVal* aFipVal;
+    IntVal* aIntVal;
+    PtrVal* aPtrVal;
+    StrVal* aStrVal;
     
     void vAdvance (i8 nBytes) { ayByte -= nBytes; }
     void vRewind  (i8 nBytes) { ayByte += nBytes; }
-    void vRewind  (void)      { vRewind(pAnyVal->nStackBytes()); }
+    void vRewind  (void)      { vRewind(aAnyVal->nStackBytes()); }
   };
 
   class Stack: public Object
@@ -129,13 +129,13 @@ namespace SenVM
   if ( ! bGuard(1) )
     return false;
   
-  eCN eClassNo = m_xTop.pAnyVal->eClass(); // inline
+  eCN eClassNo = m_xTop.aAnyVal->eClass(); // inline
   
   if (CN_INTVAL == eClassNo)
-    iInt = _aIntVal(m_xTop.pAnyVal)->iInt(); // inline
+    iInt = _aIntVal(m_xTop.aAnyVal)->iInt(); // inline
   else
     if (CN_PTRVAL == eClassNo)
-      iInt = _aPtrVal(m_xTop.pAnyVal)->pObj() ? 1 : 0; // inline
+      iInt = _aPtrVal(m_xTop.aAnyVal)->pObj() ? 1 : 0; // inline
     else {
       iInt = -1;
       NEVER_REACH;

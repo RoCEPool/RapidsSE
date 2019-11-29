@@ -5,7 +5,7 @@
 #include "SenVM.h"
 
 
-// Note: to optimise stack operations look at directly using pDataStack->m_xTop.pAnyVal
+// Note: to optimise stack operations look at directly using pDataStack->m_xTop.aAnyVal
 //       refer to Step::vFlowJumpFalse
  
  
@@ -56,7 +56,7 @@ Stack::Stack(eKK eKind)
   
   m_eKind        = eKind;
   
-  m_xTop.pAnyVal = aStackBase();
+  m_xTop.aAnyVal = aStackBase();
   m_nValues      = 0;
   
   m_aRetryTop    = aStackBase();
@@ -90,7 +90,7 @@ void Stack::vDump(eCN eClass, Object* pObj, Stz* aTab)
   
   vTrace("values %lld top %p\n"_Stz,
          pStack->m_nValues,
-         pStack->m_xTop.pAnyVal);
+         pStack->m_xTop.aAnyVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -304,7 +304,7 @@ bool Stack::bPopAsInt(i8& iInt)
   if ( ! bGuard(1) )
     return false;
   
-  iInt = m_xTop.pAnyVal->iInt();
+  iInt = m_xTop.aAnyVal->iInt();
   vTopDiscard();
   
   return true;
@@ -529,7 +529,7 @@ void Stack::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_xTop.pAnyVal  = aStackBase();
+  m_xTop.aAnyVal  = aStackBase();
   m_nValues       = 0;
 }
 
@@ -540,7 +540,7 @@ void Stack::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  m_xTop.pAnyVal = m_aRetryTop;
+  m_xTop.aAnyVal = m_aRetryTop;
   m_nValues      = m_nRetryValues;
 }
 
@@ -551,7 +551,7 @@ void Stack::vRetryPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_aRetryTop    = m_xTop.pAnyVal;
+  m_aRetryTop    = m_xTop.aAnyVal;
   m_nRetryValues = m_nValues;
 }
 
@@ -583,7 +583,7 @@ AnyVal* Stack::aAllotAnyVal(i8 nWithAdditionalBytes)
   
   m_nValues++;
   
-  return m_xTop.pAnyVal;
+  return m_xTop.aAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -659,7 +659,7 @@ void Stack::vAnyValPop(AnyVal* aAnyVal)
   
   i8 nBytes = aTopVal()->nStackBytes();
   
-  aAnyVal->vCopy(m_xTop.pAnyVal,nBytes);
+  aAnyVal->vCopy(m_xTop.aAnyVal,nBytes);
   
   m_xTop.vRewind(nBytes);
   
@@ -683,7 +683,7 @@ void Stack::vAnyValPush(AnyVal* aAnyVal)
   
   m_xTop.vAdvance(nBytes);
   
-  m_xTop.pAnyVal->vCopy(aAnyVal,nBytes);
+  m_xTop.aAnyVal->vCopy(aAnyVal,nBytes);
   
   m_nValues++;
   
@@ -699,7 +699,7 @@ Cell* Stack::aFipValPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Cell* aFip = m_xTop.pFipVal->aFip();
+  Cell* aFip = m_xTop.aFipVal->aFip();
   
   vTopDiscard();
   
@@ -713,7 +713,7 @@ i8 Stack::iIntValPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  i8 iInt = m_xTop.pIntVal->iInt();
+  i8 iInt = m_xTop.aIntVal->iInt();
   
   vTopDiscard();
   
@@ -727,7 +727,7 @@ Object* Stack::pPtrValPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Object* pObj = m_xTop.pPtrVal->pObj();
+  Object* pObj = m_xTop.aPtrVal->pObj();
   
   vTopDiscard();
   
@@ -790,7 +790,7 @@ bool Stack::bTopIsZero(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if (CN_INTVAL == m_xTop.pAnyVal->eClass() && 0 == m_xTop.pIntVal->iInt())
+  if (CN_INTVAL == m_xTop.aAnyVal->eClass() && 0 == m_xTop.aIntVal->iInt())
     return true;
   
   return false;
@@ -803,7 +803,7 @@ AnyVal* Stack::aTopVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
     
-  return (AnyVal*) m_xTop.pAnyVal;
+  return (AnyVal*) m_xTop.aAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/
