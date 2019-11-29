@@ -447,14 +447,14 @@ bool Stack::bPopStr(String* pString)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack into given variable                                   */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopVal(GenVar& xVar)
+bool Stack::bPopVal(GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(1) )
     return false;
   
-  vPopStkVal(xVar);
+  vPopStkVal(xGenVar);
   
   return true;
 }
