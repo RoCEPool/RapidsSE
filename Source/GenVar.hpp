@@ -33,6 +33,7 @@ namespace SenVM
    ~GenVar(void) noexcept(false);
   
     // auto conversion
+    operator AnyVal*(void);
     operator StkVal*(void);
 
     void operator =(StkVal*);

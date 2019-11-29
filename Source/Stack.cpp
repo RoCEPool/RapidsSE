@@ -111,8 +111,8 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
   i8 nValues = this->nValues();
   for (i8 i_Val = 0; i_Val < nValues; i_Val++) {
     
-    StkVal* aStkVal = aPeekVal(i_Val);
-    i8 nStackBytes = aStkVal->nStackBytes();
+    AnyVal* aAnyVal = aPeekVal(i_Val);
+    i8 nStackBytes = aAnyVal->nStackBytes();
     
     vPeekVal(i_Val,xVar);
     
@@ -120,11 +120,11 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
     
     if (CN_STRVAL == eValClass)
       vTrace("[%2lld %p %02lldB %6s (8,8,%02lld)] "_Stz,
-             i_Val,aStkVal,nStackBytes,aCN[eValClass],
-             _aStrVal(aStkVal)->nSize());
+             i_Val,aAnyVal,nStackBytes,aCN[eValClass],
+             _aStrVal(aAnyVal)->nSize());
     else
       vTrace("[%2lld %p %02lldB %6s (8,8,00)] "_Stz,
-             i_Val,aStkVal,nStackBytes,aCN[eValClass]);
+             i_Val,aAnyVal,nStackBytes,aCN[eValClass]);
 
     
     switch(eValClass) {
@@ -255,7 +255,7 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-StkVal* Stack::aPeekVal(i8 i_Val)
+AnyVal* Stack::aPeekVal(i8 i_Val)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -267,7 +267,7 @@ StkVal* Stack::aPeekVal(i8 i_Val)
     aStkVal = reinterpret_cast<StkVal*>(aAddress);
   }
   
-  return aStkVal;
+  return (AnyVal*)aStkVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -285,13 +285,13 @@ void Stack::vPeekVal(i8 i_Val, GenVar& xGenVar)
 /*----------------------------------------------------------------------------*/
 /* poke given value into stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPokeVal(i8 i_Val, StkVal* aStkVal)
+void Stack::vPokeVal(i8 i_Val, AnyVal* aAnyVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   StkVal* aPokeAddress = aPeekVal(i_Val);
   
-  aPokeAddress->vCopy(aStkVal);
+  aPokeAddress->vCopy(aAnyVal);
 }
 
 /*----------------------------------------------------------------------------*/

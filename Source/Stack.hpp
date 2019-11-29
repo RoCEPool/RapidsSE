@@ -62,10 +62,10 @@ namespace SenVM
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    StkVal* aPeekVal(i8 i_Val);
+    AnyVal* aPeekVal(i8 i_Val);
     void vPeekVal(i8 i_Val, GenVar& xGenVar);
   
-    void vPokeVal(i8 i_Val, StkVal* aStkVal);
+    void vPokeVal(i8 i_Val, AnyVal* aAnyVal);
   
     bool bPopAsInt(i8& iInt1);
     bool bPopAsInt_Inline(i8& iInt1);
