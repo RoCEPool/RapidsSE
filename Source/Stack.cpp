@@ -797,11 +797,11 @@ bool Stack::bTopIsZero(void)
 /*----------------------------------------------------------------------------*/
 /* peek at value on top of stack                                              */
 /*----------------------------------------------------------------------------*/
-StkVal* Stack::aTopVal(void)
+AnyVal* Stack::aTopVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
     
-  return m_xTop.pStkVal;
+  return (AnyVal*) m_xTop.pStkVal;
 }
 
 /*----------------------------------------------------------------------------*/
