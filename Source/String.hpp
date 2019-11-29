@@ -25,7 +25,7 @@ namespace Correctness
     void  vCopy(Stz* szArg);
   
     i8    nSize(void);
-    i8    nStackBytes(void);
+    i8    nStackUsage(void);
     char* azStr(void);
     Stz*  szStz(void);
   

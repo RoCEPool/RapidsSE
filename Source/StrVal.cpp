@@ -75,7 +75,7 @@ Stz* StrVal::szStz(void)
 /*----------------------------------------------------------------------------*/
 /* get how many bytes are needed to push this StrVal on stack                 */
 /*----------------------------------------------------------------------------*/
-i8 StrVal::nStackBytes(void)
+i8 StrVal::nStackUsage(void)
 {
 //  i8 nBytes = sizeof(StrVal)
 //                - sizeof(m_caStr)

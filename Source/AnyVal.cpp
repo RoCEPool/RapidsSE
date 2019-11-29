@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* AnyVal.cpp -- Base Class for Self-Describing Values on Stack               */
+/* AnyVal.cpp -- Base Class for Self-Describing Values                        */
 /*============================================================================*/
 
 #include "SenVM.h"
@@ -26,7 +26,7 @@ void* AnyVal::operator new(size_t)
 void AnyVal::vCopy(AnyVal* aSrcVal, i8 nBytes)
 {
   if (! nBytes)
-    nBytes = aSrcVal->nStackBytes();
+    nBytes = aSrcVal->nStackUsage();
   
   MemLib::vCopy(this,aSrcVal,nBytes,CN_STACK);
 }
@@ -82,7 +82,7 @@ void AnyVal::vInspect(void)
 {
   _magic_();
   
-  i8 nBytes = nStackBytes();
+  i8 nBytes = nStackUsage();
   
   s256 sLead;
   sLead.vSprint("%p %s %02lldB: "_Stz,this,aCN[eClass()],nBytes);
@@ -259,7 +259,7 @@ void AnyVal::vStz(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* get how many bytes are needed to push a AnyVal on stack                    */
 /*----------------------------------------------------------------------------*/
-i8 AnyVal::nStackBytes(void)
+i8 AnyVal::nStackUsage(void)
 {
   i8 nBytes = 0;
   
@@ -269,31 +269,31 @@ i8 AnyVal::nStackBytes(void)
       
     case CN_FIPVAL: {
       FipVal* aFipVal = _aFipVal(this);
-      nBytes = aFipVal->nStackBytes();
+      nBytes = aFipVal->nStackUsage();
       break;
     }
       
     case CN_INTVAL: {
       IntVal* aIntVal = _aIntVal(this);
-      nBytes = aIntVal->nStackBytes();
+      nBytes = aIntVal->nStackUsage();
       break;
     }
       
     case CN_PTRVAL: {
       PtrVal* aPtrVal = _aPtrVal(this);
-      nBytes = aPtrVal->nStackBytes();
+      nBytes = aPtrVal->nStackUsage();
       break;
     }
       
     case CN_STRVAL: {
       StrVal* aStrVal = _aStrVal(this);
-      nBytes = aStrVal->nStackBytes();
+      nBytes = aStrVal->nStackUsage();
       break;
     }
       
     // -- -- -- -- -- --
     default:
-      vTrace("AnyVal::nStackBytes -- invalid eClass %lld %s\n"_Stz,
+      vTrace("AnyVal::nStackUsage -- invalid eClass %lld %s\n"_Stz,
              eClassNo,aCN[eClassNo]);
       NEVER_REACH;
       break;

@@ -250,11 +250,11 @@ Object* GenVar::pObj(void)
 /*----------------------------------------------------------------------------*/
 /* get bytes required to push value on stack                                  */
 /*----------------------------------------------------------------------------*/
-i8 GenVar::nStackBytes(void)
+i8 GenVar::nStackUsage(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  i8 nBytes = u.m_xStrVal.nStackBytes();
+  i8 nBytes = u.m_xStrVal.nStackUsage();
   
   return nBytes;
 }

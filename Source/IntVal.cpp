@@ -38,7 +38,7 @@ i8 IntVal::iInt(void)
 /*----------------------------------------------------------------------------*/
 /* get how many bytes are needed to push a IntVal on stack                    */
 /*----------------------------------------------------------------------------*/
-i8 IntVal::nStackBytes(void)
+i8 IntVal::nStackUsage(void)
 {
   return sizeof(IntVal);
 }

@@ -1400,7 +1400,7 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
         vTrace(" %s\n"_Stz,sString.azChar());
       }
       
-      i8 iBytes = aAnyVal->nStackBytes();
+      i8 iBytes = aAnyVal->nStackUsage();
       aDoesCell = aAdd<Cell*>(aDoesCell,iBytes);
       
       continue;

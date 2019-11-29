@@ -241,7 +241,7 @@ void Word::vAppend(AnyVal* aAnyVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  i8 nBytes = aAnyVal->nStackBytes();
+  i8 nBytes = aAnyVal->nStackUsage();
   
   char* aValueAddress = (char*)ayAllot(nBytes);
   

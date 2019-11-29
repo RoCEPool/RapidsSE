@@ -49,7 +49,7 @@ namespace SenVM
     i8      iInt(void);
     bool    bIsInt(void);
     Object* pObj(void);
-    i8      nStackBytes(void);
+    i8      nStackUsage(void);
     Stz*    szStz(void);
     i8      nStzSize(void);
     void    vToString(Stz* szStz);

@@ -112,7 +112,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
   for (i8 i_Val = 0; i_Val < nValues; i_Val++) {
     
     AnyVal* aAnyVal = aPeekVal(i_Val);
-    i8 nStackBytes = aAnyVal->nStackBytes();
+    i8 nStackUsage = aAnyVal->nStackUsage();
     
     vPeekVal(i_Val,xVar);
     
@@ -120,11 +120,11 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
     
     if (CN_STRVAL == eValClass)
       vTrace("[%2lld %p %02lldB %6s (8,8,%02lld)] "_Stz,
-             i_Val,aAnyVal,nStackBytes,aCN[eValClass],
+             i_Val,aAnyVal,nStackUsage,aCN[eValClass],
              _aStrVal(aAnyVal)->nSize());
     else
       vTrace("[%2lld %p %02lldB %6s (8,8,00)] "_Stz,
-             i_Val,aAnyVal,nStackBytes,aCN[eValClass]);
+             i_Val,aAnyVal,nStackUsage,aCN[eValClass]);
 
     
     switch(eValClass) {
@@ -262,7 +262,7 @@ AnyVal* Stack::aPeekVal(i8 i_Val)
   AnyVal* aAnyVal = aTopVal();
   while (i_Val--) {
     char* aAddress = reinterpret_cast<char*>(aAnyVal);
-    i8 iSize = aAnyVal->nStackBytes();
+    i8 iSize = aAnyVal->nStackUsage();
     aAddress += iSize;
     aAnyVal = reinterpret_cast<AnyVal*>(aAddress);
   }
@@ -657,7 +657,7 @@ void Stack::vAnyValPop(AnyVal* aAnyVal)
   
   _hazard_();
   
-  i8 nBytes = aTopVal()->nStackBytes();
+  i8 nBytes = aTopVal()->nStackUsage();
   
   aAnyVal->vCopy(m_xTop.aAnyVal,nBytes);
   
@@ -679,7 +679,7 @@ void Stack::vAnyValPush(AnyVal* aAnyVal)
   
   ASSERT(CN_GENVAR != aAnyVal->eClass());
   
-  i8 nBytes = aAnyVal->nStackBytes();
+  i8 nBytes = aAnyVal->nStackUsage();
   
   m_xTop.vAdvance(nBytes);
   

@@ -22,7 +22,7 @@ namespace SenVM
     
     void vAdvance (i8 nBytes) { ayByte -= nBytes; }
     void vRewind  (i8 nBytes) { ayByte += nBytes; }
-    void vRewind  (void)      { vRewind(aAnyVal->nStackBytes()); }
+    void vRewind  (void)      { vRewind(aAnyVal->nStackUsage()); }
   };
 
   class Stack: public Object

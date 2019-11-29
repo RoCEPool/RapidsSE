@@ -15,7 +15,7 @@ namespace SenVM
     void  operator =(Cell* aFip);
     Cell* aFip(void);
   
-    i8    nStackBytes(void);
+    i8    nStackUsage(void);
     void  vToString(Stz* szDst);
   };
   

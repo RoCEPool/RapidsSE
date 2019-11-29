@@ -50,7 +50,7 @@ Cell* FipVal::aFip(void)
 /*----------------------------------------------------------------------------*/
 /* get how many bytes are needed to push a FipVal on stack                    */
 /*----------------------------------------------------------------------------*/
-i8 FipVal::nStackBytes(void)
+i8 FipVal::nStackUsage(void)
 {
   return sizeof(FipVal);
 }

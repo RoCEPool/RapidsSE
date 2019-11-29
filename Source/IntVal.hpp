@@ -15,7 +15,7 @@ namespace SenVM
     void operator =(i8 iVal);
     i8   iInt(void);
   
-    i8   nStackBytes(void);
+    i8   nStackUsage(void);
     void vToString(Stz* szDst);
   };
   

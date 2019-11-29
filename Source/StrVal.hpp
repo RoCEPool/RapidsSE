@@ -19,7 +19,7 @@ namespace SenVM
     i8    nSize(void);
     Stz*  szStz(void);
 
-    i8    nStackBytes(void);
+    i8    nStackUsage(void);
     void  vToString(Stz* szStz);
   };
 

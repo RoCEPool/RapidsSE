@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* AnyVal.hpp -- Base Class for a Self-Describing Values on Stack             */
+/* AnyVal.hpp -- Base Class for a Self-Describing Values                      */
 /*============================================================================*/
 #pragma once
 
@@ -19,10 +19,9 @@ namespace SenVM
   public:
     void* operator new(size_t);
   
-    void vCopy(AnyVal* aSrcVal, i8 nBytes=0);
-  
     i8      iAsInt(void);
     char*   azChar(void);
+    void    vCopy(AnyVal* aSrcVal, i8 nBytes=0);
     Cell*   aFip(void);
     void    vFip(Cell* aFip);
     void    vInspect(void);
@@ -31,12 +30,11 @@ namespace SenVM
     bool    bIsInt(void);
     Object* pObj(void);
     void    vObj(Object* pObj);
+    i8      nStackUsage(void);
     Stz*    szStz(void);
     void    vStz(Stz* szStz);
     i8      nStzSize(void);
-
-    i8   nStackBytes(void);
-    void vToString(Stz* szString);
+    void    vToString(Stz* szDst);
   };
   
   /*----------------------------------------------------------------------------*/
