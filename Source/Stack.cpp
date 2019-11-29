@@ -540,7 +540,7 @@ void Stack::vPushS32(s32& sEss)
   
   vPushVal(xStrVar);
   
-  //vContentDump(nullptr,"After:"_Stz);
+  vContentDump(nullptr,"After:"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
