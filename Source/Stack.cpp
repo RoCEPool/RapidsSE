@@ -602,7 +602,9 @@ void Stack::vPushVal(GenVar* pVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(pVar->aEmbeddedStkVal());
+  StkVal* aStkVal = pVar->aEmbeddedStkVal();
+  
+  vPushVal(aStkVal);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -614,7 +616,8 @@ void Stack::vPushVal(GenVar& xVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(xVar.aEmbeddedStkVal());
+  StkVal* aStkVal = xVar.aEmbeddedStkVal();
+  vPushVal(aStkVal);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -626,6 +629,8 @@ void Stack::vPushVal(StkVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
+  //aStkVal->vInspect();
+  
   vPushStkVal(aStkVal);
 }
 

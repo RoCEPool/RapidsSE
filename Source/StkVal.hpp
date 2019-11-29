@@ -17,6 +17,7 @@ namespace SenVM
     char*   azChar(void);
     Cell*   aFip(void);
     void    vFip(Cell* aFip);
+    void    vInspect(void);
     i8      iInt(void);
     void    vInt(i8 iInt);
     bool    bIsInt(void);
