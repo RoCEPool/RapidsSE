@@ -111,9 +111,16 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
   i8 nValues = this->nValues();
   for (i8 i_Val = 0; i_Val < nValues; i_Val++) {
     
+    StkVal* aStkVal = aPeekVal(i_Val);
+    i8 nStackBytes = aStkVal->nStackBytes();
+    
     vPeekVal(i_Val,xVar);
     
     eCN eValClass = xVar.eValClass();
+    
+    vTrace("[%2lld %p %02lldB %8s] "_Stz,
+           i_Val,aStkVal,nStackBytes,aCN[eValClass]);
+
     
     switch(eValClass) {
         
@@ -122,13 +129,11 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
         if (pDicStack) {
           Word* pWord = pDicStack->pLocateWord(aFip);
 
-          vTrace("[%2lld] [%s] %p word %s \n"_Stz,
-                 i_Val,aCN[eValClass],aFip,
+          vTrace("=%p word %s \n"_Stz,aFip,
                  pWord ? pWord->szWordNm() : "<none>"_Stz);
         }
         else {
-          vTrace("[%2lld] [%s] %p word %s \n"_Stz,
-                 i_Val,aCN[eValClass],aFip,
+          vTrace("%p word %s \n"_Stz,aFip,
                  "<UNKNOWN - No pDicStack>"_Stz);
         }
         break;
@@ -137,8 +142,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
       case CN_INTVAL: {
         i8 iInt = xVar.iInt();
         
-        vTrace("[%2lld] [%s] %lld\n"_Stz,
-               i_Val,aCN[eValClass],iInt);
+        vTrace("%lld\n"_Stz,iInt);
         break;
       }
         
@@ -146,23 +150,19 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
         Object* pObj  = xVar.pObj();
         eCN ePtdClass = pObj->eClass();
         
-        vTrace("[%2lld] [%s] %p (%s)\n"_Stz,
-               i_Val,aCN[eValClass],pObj,aCN[ePtdClass]);
+        vTrace("%p (%s)\n"_Stz,pObj,aCN[ePtdClass]);
         break;
       }
         
       case CN_STRVAL: {
         char* azChar = xVar.azChar();
         
-        vTrace("[%2lld] [%s] %s\n"_Stz,
-               i_Val,aCN[eValClass],azChar);
+        vTrace("%s\n"_Stz,azChar);
         break;
       }
         
       default: {
         
-        vTrace("[%2lld] [%s]\n"_Stz,
-               i_Val,aCN[eValClass]);
         break;
       }
         
@@ -528,10 +528,14 @@ void Stack::vPushS32(s32& sEss)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
+  //vContentDump(nullptr,"Before:"_Stz);
+  
   GenVar xStrVar;
   xStrVar = sEss;
   
   vPushVal(xStrVar);
+  
+  //vContentDump(nullptr,"After:"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
