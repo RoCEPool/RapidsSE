@@ -103,6 +103,9 @@ namespace SenVM
     PtrVal* aAllotPtrVal(void);
     StrVal* aAllotStrVal(i8 nStrSize);
   
+    void    vAnyValPop(AnyVal* aAnyVal);
+    void    vAnyValPush(AnyVal* aAnyVal);
+  
     void    vDiscard(void);
   
     Cell*   aPopFip(void);
@@ -110,9 +113,6 @@ namespace SenVM
     Object* pPopObj(void);
 
     void    vPopLocal(Local* aLocal);
-    void    vPopStkVal(StkVal* aStkVal);
-  
-    void    vPushStkVal(StkVal* aStkVal);
   
     StkVal* aStackBase(void);
     StkVal* aStackLimit(void);
