@@ -632,11 +632,11 @@ PtrVal* Stack::aAllotPtrVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot a str value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
-StrVal* Stack::aAllotStrVal(i8 nSize)
+StrVal* Stack::aAllotStrVal(i8 nStrSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  i8 nBytes = sizeof(_Header) + 8 + nSize;
+  i8 nBytes = sizeof(_Header) + 8 + nStrSize;
   
   StrVal* aStrVal = (StrVal*) aAllotAnyVal(nBytes);
   

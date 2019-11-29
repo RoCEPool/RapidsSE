@@ -99,7 +99,7 @@ namespace SenVM
     FipVal* aAllotFipVal(void);
     IntVal* aAllotIntVal(void);
     PtrVal* aAllotPtrVal(void);
-    StrVal* aAllotStrVal(i8 nSize);
+    StrVal* aAllotStrVal(i8 nStrSize);
   
     void    vDiscard(void);
   
