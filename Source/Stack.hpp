@@ -70,7 +70,6 @@ namespace SenVM
     bool bPopAsInt(i8& iInt1);
     bool bPopAsInt_Inline(i8& iInt1);
     bool bPopAsInt_Quick(i8& iInt1);
-    bool bPopCN(eCN& eClassNo);
     bool bPopFip(Cell*& aFip);
     bool bPopInt(i8& iInt);
     bool bPopPtr(Object*& pObj);

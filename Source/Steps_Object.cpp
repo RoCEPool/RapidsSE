@@ -47,11 +47,11 @@ void Step::vObjectClassStore(void)
   if ( ! m_pDataStack->bPopPtr(pObject) )
     THROW_DSTACK();
   
-  eCN eClassNo;
-  if ( ! m_pDataStack->bPopCN(eClassNo) )
+  i8 iClassNo;
+  if ( ! m_pDataStack->bPopInt(iClassNo) )
     THROW_DSTACK();
-  
-  pObject->vClass(eClassNo);
+
+  pObject->vClass((eCN)iClassNo);
   
   EXIT();
 }

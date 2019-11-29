@@ -345,23 +345,6 @@ bool Stack::bPopAsInt_Quick(i8& iInt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop eClassNo from stack                                                    */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopCN(eCN& eClassNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_INTVAL) )
-    return false;
-  
-  i8 iInt = iPopInt();
-
-  eClassNo = static_cast<eCN>(iInt);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop fip from stack                                                         */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopFip(Cell*& aFip)
