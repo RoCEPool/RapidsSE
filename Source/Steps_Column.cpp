@@ -35,7 +35,7 @@ void Step::vColumnIsNullableFetch(void)
   s32 sColumnIsNullable;
   sColumnIsNullable = pColumn->bIsNullable() ? "true"_Stz : "false"_Stz;
   
-  m_pDataStack->vPushS32(sColumnIsNullable);
+  m_pDataStack->vPushStr(sColumnIsNullable);
   
   EXIT();
 }
@@ -58,7 +58,7 @@ void Step::vColumnIsPartitionKeyFetch(void)
   s32 sIsPartitionKey;
   sIsPartitionKey = pColumn->bIsPtnKey() ? "true"_Stz : "false"_Stz;
   
-  m_pDataStack->vPushS32(sIsPartitionKey);
+  m_pDataStack->vPushStr(sIsPartitionKey);
   
   EXIT();
 }
@@ -100,7 +100,7 @@ void Step::vColumnNameFetch(void)
   
   s32 sColNm(pColumn->szColNm());
   
-  m_pDataStack->vPushS32(sColNm);
+  m_pDataStack->vPushStr(sColNm);
   
   EXIT();
 }
@@ -143,7 +143,7 @@ void Step::vColumnTypeFetch(void)
   s32 sColumnType;
   sColumnType = aCT[pColumn->eColumnType()];
   
-  m_pDataStack->vPushS32(sColumnType);
+  m_pDataStack->vPushStr(sColumnType);
   
   EXIT();
 }

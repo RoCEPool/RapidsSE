@@ -548,13 +548,13 @@ void Step::vStrToStrVec(void)
     if (! StrLib::bExtractName(&azPath,azDicNm))
       break;
     
-    m_pAuxStack->vPushS32(sDicNm);
+    m_pAuxStack->vPushStr(sDicNm);
   }
   
   for (i8 iMove = 0; iMove < nStrings; iMove++) {
     
     RASSERT(m_pAuxStack->bPopStr(sDicNm));
-    m_pDataStack->vPushS32(sDicNm);
+    m_pDataStack->vPushStr(sDicNm);
   }
 
   m_pDataStack->vPushInt(nStrings);

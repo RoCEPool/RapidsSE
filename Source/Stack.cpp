@@ -528,23 +528,6 @@ void Stack::vPushStr(String* pStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push s32 onto stack                                                        */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushS32(s32& sEss)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  //vContentDump(nullptr,"Before:"_Stz);
-  
-  GenVar xStrVar;
-  xStrVar = sEss;
-  
-  vPushVal(xStrVar);
-  
-  //vContentDump(nullptr,"After:"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
 /* push s256 onto stack                                                       */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushS256(s256& sEss)

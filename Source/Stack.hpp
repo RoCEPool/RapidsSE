@@ -82,7 +82,6 @@ namespace SenVM
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);
     void vPushLocal(Local* pLocal);
-    void vPushS32(s32& sEss);
     void vPushS256(s256& sEss);
     void vPushS4K(s4K& sEss);
     void vPushS16KB(s16KB& sEss);

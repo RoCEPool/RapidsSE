@@ -739,7 +739,7 @@ void Step::vJobExecuteFetch(void)
       break;
   }
   
-  m_pDataStack->vPushS32(sExecute);
+  m_pDataStack->vPushStr(sExecute);
   
   EXIT();
 }

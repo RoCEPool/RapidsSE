@@ -465,7 +465,7 @@ void Step::vTableName(void)
   
   sName = (Stz*)pTable->szTableNm();
   
-  m_pDataStack->vPushS32(sName);
+  m_pDataStack->vPushStr(sName);
 
   EXIT();
 }

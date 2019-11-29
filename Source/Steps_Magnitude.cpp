@@ -43,7 +43,7 @@ void Step::vToDigitName(void)
     default:sName = "invalid"_Stz; break;
   }
   
-  m_pDataStack->vPushS32(sName);
+  m_pDataStack->vPushStr(sName);
   
   EXIT();
 }

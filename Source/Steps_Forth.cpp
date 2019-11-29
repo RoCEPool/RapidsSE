@@ -449,7 +449,7 @@ void Step::vLocate(void)
   if (pLocatedWord) {
     s32 sName;
     sName = pLocatedWord->szWordNm();
-    m_pDataStack->vPushS32(sName);
+    m_pDataStack->vPushStr(sName);
   }
   else {
     i8 iZero = 0;
@@ -688,7 +688,7 @@ void Step::vSeriesName(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pDataStack->vPushS32(sNextName);
+  m_pDataStack->vPushStr(sNextName);
 
   EXIT();
 }
