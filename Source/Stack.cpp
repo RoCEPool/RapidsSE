@@ -305,7 +305,7 @@ bool Stack::bPopAsInt(i8& iInt)
     return false;
   
   iInt = m_xTop.pAnyVal->iInt();
-  vDiscard();
+  vTopDiscard();
   
   return true;
 }
@@ -322,7 +322,7 @@ bool Stack::bPopAsInt_Quick(i8& iInt)
   
   StkVal* aTopValue = aTopVal();
   
-  vDiscard();
+  vTopDiscard();
   
   eCN eClassNo = aTopValue->eClass();
   
@@ -354,7 +354,7 @@ bool Stack::bPopFip(Cell*& aFip)
   if ( ! bGuard(CN_FIPVAL) )
     return false;
   
-  aFip = aPopFip();
+  aFip = aFipValPop();
 
   return true;
 }
@@ -369,7 +369,7 @@ bool Stack::bPopInt(i8& iInt)
   if ( ! bGuard(CN_INTVAL) )
     return false;
   
-  iInt = iPopInt();
+  iInt = iIntValPop();
   
   return true;
 }
@@ -384,7 +384,7 @@ bool Stack::bPopPtr(Object*& pObj)
   if ( ! bGuard(CN_PTRVAL) && ! bTopIsZero() )
     return false;
   
-  pObj = pPopObj();
+  pObj = pPtrValPop();
   
   return true;
 }
@@ -420,7 +420,7 @@ bool Stack::bPopStr(String* pString)
   
   pString->vCopy(aStrVal->szStz());
   
-  vDiscard();
+  vTopDiscard();
   
   _hazard_();
 
@@ -693,30 +693,15 @@ void Stack::vAnyValPush(AnyVal* aAnyVal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* discard value on top of stack                                              */
-/*----------------------------------------------------------------------------*/
-void Stack::vDiscard(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  _hazard_();
-  
-  m_xTop.vRewind();
-  m_nValues--;
-  
-  _hazard_();
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop fip from stack                                                         */
 /*----------------------------------------------------------------------------*/
-Cell* Stack::aPopFip(void)
+Cell* Stack::aFipValPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   Cell* aFip = m_xTop.pFipVal->aFip();
   
-  vDiscard();
+  vTopDiscard();
   
   return aFip;
 }
@@ -724,13 +709,13 @@ Cell* Stack::aPopFip(void)
 /*----------------------------------------------------------------------------*/
 /* pop int from stack                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Stack::iPopInt(void)
+i8 Stack::iIntValPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   i8 iInt = m_xTop.pIntVal->iInt();
   
-  vDiscard();
+  vTopDiscard();
   
   return iInt;
 }
@@ -738,13 +723,13 @@ i8 Stack::iPopInt(void)
 /*----------------------------------------------------------------------------*/
 /* pop obj from stack                                                         */
 /*----------------------------------------------------------------------------*/
-Object* Stack::pPopObj(void)
+Object* Stack::pPtrValPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   Object* pObj = m_xTop.pPtrVal->pObj();
   
-  vDiscard();
+  vTopDiscard();
   
   return pObj;
 }
@@ -781,6 +766,21 @@ StkVal* Stack::aStackLimit(void)
   char* aLimit = (char*)&m_xWsp.ayArea()[0];
   
   return pPoolCheck<StkVal*>(aLimit);
+}
+
+/*----------------------------------------------------------------------------*/
+/* discard value on top of stack                                              */
+/*----------------------------------------------------------------------------*/
+void Stack::vTopDiscard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  _hazard_();
+  
+  m_xTop.vRewind();
+  m_nValues--;
+  
+  _hazard_();
 }
 
 /*----------------------------------------------------------------------------*/

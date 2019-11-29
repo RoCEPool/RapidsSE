@@ -48,7 +48,7 @@ void Step::vIntAdd(void)
   StkVal* j = m_pDataStack->aTopVal();
   
   // discard the value
-  m_pDataStack->vDiscard();
+  m_pDataStack->vTopDiscard();
   
   // get pointer to value on the top of the stack
   StkVal* i = m_pDataStack->aTopVal();
