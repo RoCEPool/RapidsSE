@@ -38,6 +38,16 @@ namespace SenVM
     i8   nStackBytes(void);
     void vToString(Stz* szString);
   };
+  
+  /*----------------------------------------------------------------------------*/
+  /* safe cast                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline StkVal* _aStkVal(void* aAddr)
+  {
+    StkVal* aStkVal = reinterpret_cast<StkVal*>(aAddr);
+  
+    return aStkVal;
+  }
 }
 
 /*============================================================================*/
