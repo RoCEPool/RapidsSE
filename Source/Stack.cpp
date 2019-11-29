@@ -273,13 +273,13 @@ StkVal* Stack::aPeekVal(i8 i_Val)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekVal(i8 i_Val, GenVar& xVar)
+void Stack::vPeekVal(i8 i_Val, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   StkVal* aPeekedValue = aPeekVal(i_Val);
   
-  xVar.vCopy(aPeekedValue);
+  xGenVar.vCopy(aPeekedValue);
 }
 
 /*----------------------------------------------------------------------------*/
