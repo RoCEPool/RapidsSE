@@ -76,7 +76,7 @@ void Step::vJobClassName(void)
   
   s256 sName(aCN[pJobClass->m_eClass]);
   
-  m_pDataStack->vPushS256(sName);
+  m_pDataStack->vPushStr(sName);
   
   EXIT();
 }
@@ -115,7 +115,7 @@ void Step::vJobClassSeedRun(void)
   
   s256 sSeed((Stz*)pJobClass->m_aSeedRun);
   
-  m_pDataStack->vPushS256(sSeed);
+  m_pDataStack->vPushStr(sSeed);
   
   EXIT();
 }
@@ -134,7 +134,7 @@ void Step::vJobClassSeedReq(void)
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedReq);
   
-  m_pDataStack->vPushS256(sSeed);
+  m_pDataStack->vPushStr(sSeed);
   
   EXIT();
 }
@@ -153,7 +153,7 @@ void Step::vJobClassSeedRcv(void)
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedRcv);
   
-  m_pDataStack->vPushS256(sSeed);
+  m_pDataStack->vPushStr(sSeed);
   
   EXIT();
 }
@@ -172,7 +172,7 @@ void Step::vJobClassSeedExe(void)
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedExe);
   
-  m_pDataStack->vPushS256(sSeed);
+  m_pDataStack->vPushStr(sSeed);
   
   EXIT();
 }
@@ -191,7 +191,7 @@ void Step::vJobClassSeedEnd(void)
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedEnd);
   
-  m_pDataStack->vPushS256(sSeed);
+  m_pDataStack->vPushStr(sSeed);
   
   EXIT();
 }
@@ -210,7 +210,7 @@ void Step::vJobClassSeedCan(void)
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedCan);
   
-  m_pDataStack->vPushS256(sSeed);
+  m_pDataStack->vPushStr(sSeed);
   
   EXIT();
 }

@@ -2228,7 +2228,7 @@ void Step::vJobStateDiagram(void)
   
   AM::vStateDiagram(sDiagram,(eCN)iClassNo);
   
-  m_pDataStack->vPushS256(sDiagram);
+  m_pDataStack->vPushStr(sDiagram);
   
   EXIT();
 }

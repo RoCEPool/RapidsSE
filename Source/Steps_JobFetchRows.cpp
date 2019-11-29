@@ -58,7 +58,7 @@ void Step::vJob_FetchRowsColumnNameFetch(void)
     THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
-  m_pDataStack->vPushS256(pJob_FetchRows->m_sColumnName);
+  m_pDataStack->vPushStr(pJob_FetchRows->m_sColumnName);
   
   EXIT();
 }
@@ -214,7 +214,7 @@ void Step::vJob_FetchRowsWhereFetch(void)
     THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
-  m_pDataStack->vPushS256(pJob_FetchRows->m_sWhere);
+  m_pDataStack->vPushStr(pJob_FetchRows->m_sWhere);
   
   EXIT();
 }

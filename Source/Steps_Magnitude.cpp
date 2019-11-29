@@ -62,7 +62,7 @@ void Step::vBytesMagnitude(void)
   s256 sMag;
   MagLib::vByteMag(iBytes, sMag);
   
-  m_pDataStack->vPushS256(sMag);
+  m_pDataStack->vPushStr(sMag);
   
   EXIT();
 }
@@ -87,7 +87,7 @@ void Step::vNumberMagnitude(void)
   
   MagLib::vByteMag(iNumber, iScale, s);
   
-  m_pDataStack->vPushS256(s);
+  m_pDataStack->vPushStr(s);
   
   EXIT();
 }

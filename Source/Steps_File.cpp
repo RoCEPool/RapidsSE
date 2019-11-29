@@ -118,7 +118,7 @@ void Step::vFilePathGet(void)
 
   s256 sPath = pFile->sFilePath();
   
-  m_pDataStack->vPushS256(sPath);
+  m_pDataStack->vPushStr(sPath);
   
   EXIT();
 }

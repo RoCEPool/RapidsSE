@@ -182,7 +182,7 @@ void Step::vGridThisNodeNameFetch(void)
   s256 sName;
   sName = AM::pGrid()->pThisNode()->szNodeNm();
   
-  m_pDataStack->vPushS256(sName);
+  m_pDataStack->vPushStr(sName);
   
   EXIT();
 }

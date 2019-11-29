@@ -117,7 +117,7 @@ void Step::vNodeIP(void)
   
   s256 sIP;
   sIP = pNode->szIPAddr();
-  m_pDataStack->vPushS256(sIP);
+  m_pDataStack->vPushStr(sIP);
   
   EXIT();
 }
@@ -139,7 +139,7 @@ void Step::vNodeName(void)
   
   s256 sName;
   sName = pNode->szNodeNm();
-  m_pDataStack->vPushS256(sName);
+  m_pDataStack->vPushStr(sName);
   
   EXIT();
 }
@@ -366,7 +366,7 @@ void Step::vNodeStatus(void)
             pGrid->pThisNode()->szNodeNm(),
             sRegionNm.azChar());
   
-  m_pDataStack->vPushS256(s);
+  m_pDataStack->vPushStr(s);
   
   EXIT();
 }

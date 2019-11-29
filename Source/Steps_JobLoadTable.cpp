@@ -102,7 +102,7 @@ void Step::vJob_LoadTableFilePathFetch(void)
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   s256 sFilePath = pJob_LoadTable->szFilePath();
-  m_pDataStack->vPushS256(sFilePath);
+  m_pDataStack->vPushStr(sFilePath);
   
   EXIT();
 }

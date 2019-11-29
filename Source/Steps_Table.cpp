@@ -829,7 +829,7 @@ void Step::vTableVerify(void)
   bool bVerified = pTable->bVerifyTable();
   s256 s = bVerified ? "Valid"_Stz : "Invalid"_Stz;
   
-  m_pDataStack->vPushS256(s);
+  m_pDataStack->vPushStr(s);
   
   EXIT();
 }

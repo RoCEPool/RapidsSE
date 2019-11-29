@@ -1110,7 +1110,7 @@ void Step::vIndexVerify(void)
   
   bool bVerified = pIndex->pTable()->bVerifyIndex(pIndex);
   s256 s = bVerified ? "Valid"_Stz : "Invalid"_Stz;
-  m_pDataStack->vPushS256(s);
+  m_pDataStack->vPushStr(s);
   
   EXIT();
 }

@@ -325,7 +325,7 @@ void Step::vStrRandom(void)
   
   Random::vString(sRnd,iLength);
   
-  m_pDataStack->vPushS256(sRnd);
+  m_pDataStack->vPushStr(sRnd);
   
   EXIT();
 }

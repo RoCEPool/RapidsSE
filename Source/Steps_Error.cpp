@@ -30,7 +30,7 @@ void Step::vErrorMsg(void)
   s256 sErrorMsg;
   sErrorMsg = aEC[iErrorCode];
   
-  m_pDataStack->vPushS256(sErrorMsg);
+  m_pDataStack->vPushStr(sErrorMsg);
   
   EXIT();
 }
