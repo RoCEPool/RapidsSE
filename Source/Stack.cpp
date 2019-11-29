@@ -485,9 +485,9 @@ void Stack::vPushLocal(Local* pLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aStkVal = pLocal->aLocalValue();
+  AnyVal* aAnyVal = _aAnyVal(pLocal->aLocalValue());
   
-  vPushVal(aStkVal);
+  vPushVal(aAnyVal);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -513,13 +513,13 @@ void Stack::vPushStr(String* pStr)
 /*----------------------------------------------------------------------------*/
 /* push value onto stack                                                      */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushVal(StkVal* aStkVal)
+void Stack::vPushVal(AnyVal* aAnyVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
   //aStkVal->vInspect();
   
-  vPushStkVal(aStkVal);
+  vPushStkVal(aAnyVal);
 }
 
 /*----------------------------------------------------------------------------*/

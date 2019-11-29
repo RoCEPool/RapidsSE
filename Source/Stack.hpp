@@ -82,7 +82,7 @@ namespace SenVM
     void vPushPtr(Object* pObj);
     void vPushLocal(Local* pLocal);
     void vPushStr(String* pStr);
-    void vPushVal(StkVal* aStkVal);
+    void vPushVal(AnyVal* aAnyVal);
   
     void vReset(void);
     void vRetry(void);
