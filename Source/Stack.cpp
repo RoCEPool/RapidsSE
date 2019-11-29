@@ -5,7 +5,7 @@
 #include "SenVM.h"
 
 
-// Note: to optimise stack operations look at directly using pDataStack->m_xTop.pStkVal
+// Note: to optimise stack operations look at directly using pDataStack->m_xTop.pAnyVal
 //       refer to Step::vFlowJumpFalse
  
  
@@ -56,7 +56,7 @@ Stack::Stack(eKK eKind)
   
   m_eKind        = eKind;
   
-  m_xTop.pStkVal = aStackBase();
+  m_xTop.pAnyVal = aStackBase();
   m_nValues      = 0;
   
   m_aRetryTop    = aStackBase();
@@ -90,7 +90,7 @@ void Stack::vDump(eCN eClass, Object* pObj, Stz* aTab)
   
   vTrace("values %lld top %p\n"_Stz,
          pStack->m_nValues,
-         pStack->m_xTop.pStkVal);
+         pStack->m_xTop.pAnyVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,8 +199,8 @@ bool Stack::bGuard(eCN eClass0)
   if (nValues() < 1)
     return false;
   
-  StkVal* aStkVal0 = aPeekVal(0);
-  if (eClass0 != aStkVal0->eClass())
+  AnyVal* aAnyVal0 = aPeekVal(0);
+  if (eClass0 != aAnyVal0->eClass())
     return false;
   
   return true;
@@ -216,12 +216,12 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1)
   if (nValues() < 2)
     return false;
   
-  StkVal* aStkVal0 = aPeekVal(0);
-  if (eClass0 != aStkVal0->eClass())
+  AnyVal* aAnyVal0 = aPeekVal(0);
+  if (eClass0 != aAnyVal0->eClass())
     return false;
   
-  StkVal* aStkVal1 = aPeekVal(1);
-  if (eClass1 != aStkVal1->eClass())
+  AnyVal* aAnyVal1 = aPeekVal(1);
+  if (eClass1 != aAnyVal1->eClass())
     return false;
   
   return true;
@@ -237,15 +237,15 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
   if (nValues() < 3)
     return false;
   
-  StkVal* aStkVal0 = aPeekVal(0);
-  if (eClass0 != aStkVal0->eClass())
+  AnyVal* aAnyVal0 = aPeekVal(0);
+  if (eClass0 != aAnyVal0->eClass())
     return false;
   
-  StkVal* aStkVal1 = aPeekVal(1);
-  if (eClass1 != aStkVal1->eClass())
+  AnyVal* aAnyVal1 = aPeekVal(1);
+  if (eClass1 != aAnyVal1->eClass())
     return false;
   
-  StkVal* aSrkVal2 = aPeekVal(2);
+  AnyVal* aSrkVal2 = aPeekVal(2);
   if (eClass2 != aSrkVal2->eClass())
     return false;
   
@@ -259,15 +259,15 @@ AnyVal* Stack::aPeekVal(i8 i_Val)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aStkVal = aTopVal();
+  AnyVal* aAnyVal = aTopVal();
   while (i_Val--) {
-    char* aAddress = reinterpret_cast<char*>(aStkVal);
-    i8 iSize = aStkVal->nStackBytes();
+    char* aAddress = reinterpret_cast<char*>(aAnyVal);
+    i8 iSize = aAnyVal->nStackBytes();
     aAddress += iSize;
-    aStkVal = reinterpret_cast<StkVal*>(aAddress);
+    aAnyVal = reinterpret_cast<AnyVal*>(aAddress);
   }
   
-  return (AnyVal*)aStkVal;
+  return (AnyVal*)aAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -277,7 +277,7 @@ void Stack::vPeekVal(i8 i_Val, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aPeekedValue = aPeekVal(i_Val);
+  AnyVal* aPeekedValue = aPeekVal(i_Val);
   
   xGenVar.vCopy(aPeekedValue);
 }
@@ -289,7 +289,7 @@ void Stack::vPokeVal(i8 i_Val, AnyVal* aAnyVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aPokeAddress = aPeekVal(i_Val);
+  AnyVal* aPokeAddress = aPeekVal(i_Val);
   
   aPokeAddress->vCopy(aAnyVal);
 }
@@ -320,7 +320,7 @@ bool Stack::bPopAsInt_Quick(i8& iInt)
   if ( ! bGuard(1) )
     return false;
   
-  StkVal* aTopValue = aTopVal();
+  AnyVal* aTopValue = aTopVal();
   
   vTopDiscard();
   
@@ -517,7 +517,7 @@ void Stack::vPushVal(AnyVal* aAnyVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  //aStkVal->vInspect();
+  //aAnyVal->vInspect();
   
   vAnyValPush(aAnyVal);
 }
@@ -529,7 +529,7 @@ void Stack::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_xTop.pStkVal  = aStackBase();
+  m_xTop.pAnyVal  = aStackBase();
   m_nValues       = 0;
 }
 
@@ -540,7 +540,7 @@ void Stack::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  m_xTop.pStkVal = m_aRetryTop;
+  m_xTop.pAnyVal = m_aRetryTop;
   m_nValues      = m_nRetryValues;
 }
 
@@ -551,7 +551,7 @@ void Stack::vRetryPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_aRetryTop    = m_xTop.pStkVal;
+  m_aRetryTop    = m_xTop.pAnyVal;
   m_nRetryValues = m_nValues;
 }
 
@@ -683,7 +683,7 @@ void Stack::vAnyValPush(AnyVal* aAnyVal)
   
   m_xTop.vAdvance(nBytes);
   
-  m_xTop.pStkVal->vCopy(aAnyVal,nBytes);
+  m_xTop.pAnyVal->vCopy(aAnyVal,nBytes);
   
   m_nValues++;
   
@@ -790,7 +790,7 @@ bool Stack::bTopIsZero(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if (CN_INTVAL == m_xTop.pStkVal->eClass() && 0 == m_xTop.pIntVal->iInt())
+  if (CN_INTVAL == m_xTop.pAnyVal->eClass() && 0 == m_xTop.pIntVal->iInt())
     return true;
   
   return false;
@@ -803,7 +803,7 @@ AnyVal* Stack::aTopVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
     
-  return (AnyVal*) m_xTop.pStkVal;
+  return (AnyVal*) m_xTop.pAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/

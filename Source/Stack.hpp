@@ -13,7 +13,6 @@ namespace SenVM
   union StkPtr {
     
     byte*   ayByte;
-    StkVal* pStkVal;
     
     AnyVal* pAnyVal;
     FipVal* pFipVal;
@@ -23,7 +22,7 @@ namespace SenVM
     
     void vAdvance (i8 nBytes) { ayByte -= nBytes; }
     void vRewind  (i8 nBytes) { ayByte += nBytes; }
-    void vRewind  (void)      { vRewind(pStkVal->nStackBytes()); }
+    void vRewind  (void)      { vRewind(pAnyVal->nStackBytes()); }
   };
 
   class Stack: public Object
@@ -37,7 +36,7 @@ namespace SenVM
     StkPtr  m_xTop;         // current top of stack
     i8      m_nValues;      // number of values currently on stack
 
-    StkVal* m_aRetryTop;    // reset to this top of stack
+    AnyVal* m_aRetryTop;    // reset to this top of stack
     i8      m_nRetryValues; // reset with this many values on stack
     
     Footer m_xHazard;
@@ -130,13 +129,13 @@ namespace SenVM
   if ( ! bGuard(1) )
     return false;
   
-  eCN eClassNo = m_xTop.pStkVal->eClass(); // inline
+  eCN eClassNo = m_xTop.pAnyVal->eClass(); // inline
   
   if (CN_INTVAL == eClassNo)
-    iInt = _aIntVal(m_xTop.pStkVal)->iInt(); // inline
+    iInt = _aIntVal(m_xTop.pAnyVal)->iInt(); // inline
   else
     if (CN_PTRVAL == eClassNo)
-      iInt = _aPtrVal(m_xTop.pStkVal)->pObj() ? 1 : 0; // inline
+      iInt = _aPtrVal(m_xTop.pAnyVal)->pObj() ? 1 : 0; // inline
     else {
       iInt = -1;
       NEVER_REACH;
