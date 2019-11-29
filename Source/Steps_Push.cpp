@@ -24,7 +24,7 @@ void Step::vPushI(void)
   
   StkVal* aLoopIndex_I = m_pReturnStack->aTopVal();
   
-  m_pDataStack->vPushVal((AnyVal*) aLoopIndex_I);
+  m_pDataStack->vPushVal((StkVal*) aLoopIndex_I);
   
   EXIT();
 }
@@ -38,7 +38,7 @@ void Step::vPushJ(void)
   
   StkVal* aLoopIndex_J = m_pReturnStack->aPeekVal(3);
   
-  m_pDataStack->vPushVal((AnyVal*) aLoopIndex_J);
+  m_pDataStack->vPushVal((StkVal*) aLoopIndex_J);
   
   EXIT();
 }
@@ -68,7 +68,7 @@ void Step::vPushValue(void)
   
   StkVal* aStkVal = (StkVal*) & m_aInxPtr->m_xEmbValue;
   
-  m_pDataStack->vPushVal((AnyVal*) aStkVal);
+  m_pDataStack->vPushVal((StkVal*) aStkVal);
   
   m_pTask->vAdjustFIP(aStkVal->nStackBytes());
   

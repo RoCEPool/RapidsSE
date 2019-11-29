@@ -143,7 +143,7 @@ void StkVal::vInspect(void)
   acChar += 2;
   vTrace("|"_Stz);
 
-  vTrace("%16lld"_Stz,_aAnyVal(this)->iInt());
+  vTrace("%16lld"_Stz,_aStkVal(this)->iInt());
   i_Char += 8;
   acChar += 8;
   vTrace("|"_Stz);
