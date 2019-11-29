@@ -516,14 +516,15 @@ void Stack::vPushStr(String* pStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vContentDump(nullptr,"Before:"_Stz);
+  //vContentDump(nullptr,"Before:"_Stz);
 
   i8 nSize = StrLib::iSize(pStr->azStr());
   StrVal* aStrVal = aAllotStrVal(nSize);
 
   aStrVal->vAssign(pStr->szStz());
-  
-  vContentDump(nullptr,"After:"_Stz);
+  //aStrVal->vInspect();
+
+  //vContentDump(nullptr,"After:"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -540,7 +541,7 @@ void Stack::vPushS32(s32& sEss)
   
   vPushVal(xStrVar);
   
-  vContentDump(nullptr,"After:"_Stz);
+  //vContentDump(nullptr,"After:"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

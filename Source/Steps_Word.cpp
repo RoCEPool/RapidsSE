@@ -151,7 +151,7 @@ void Step::vWordExitHookGet(void)
   
   s32 sExitHook(pWord->szExitHook());
   
-  m_pDataStack->vPushS32(sExitHook);
+  m_pDataStack->vPushStr(sExitHook);
   
   EXIT();
 }
