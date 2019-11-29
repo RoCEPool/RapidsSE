@@ -5,7 +5,7 @@
 
 namespace SenVM
 {
-  class StrVal : public StkVal
+  class StrVal : public AnyVal
   {
   protected:
     char m_caStr[1];

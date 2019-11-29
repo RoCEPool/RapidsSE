@@ -14,7 +14,7 @@ namespace SenVM
     
     byte*   ayByte;
     
-    StkVal* aAnyVal;
+    AnyVal* aAnyVal;
     FipVal* aFipVal;
     IntVal* aIntVal;
     PtrVal* aPtrVal;
@@ -36,7 +36,7 @@ namespace SenVM
     StkPtr  m_xTop;         // current top of stack
     i8      m_nValues;      // number of values currently on stack
 
-    StkVal* m_aRetryTop;    // reset to this top of stack
+    AnyVal* m_aRetryTop;    // reset to this top of stack
     i8      m_nRetryValues; // reset with this many values on stack
     
     Footer m_xHazard;
@@ -63,10 +63,10 @@ namespace SenVM
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    StkVal* aPeekVal(i8 i_Val);
+    AnyVal* aPeekVal(i8 i_Val);
     void vPeekVal(i8 i_Val, GenVar& xGenVar);
   
-    void vPokeVal(i8 i_Val, StkVal* aAnyVal);
+    void vPokeVal(i8 i_Val, AnyVal* aAnyVal);
   
     bool bPopAsInt(i8& iInt1);
     bool bPopAsInt_Inline(i8& iInt1);
@@ -83,25 +83,25 @@ namespace SenVM
     void vPushPtr(Object* pObj);
     void vPushLocal(Local* pLocal);
     void vPushStr(String* pStr);
-    void vPushVal(StkVal* aAnyVal);
+    void vPushVal(AnyVal* aAnyVal);
   
     void vReset(void);
     void vRetry(void);
     void vRetryPoint(void);
   
-    StkVal* aTopVal(void);
+    AnyVal* aTopVal(void);
   
     i8 nValues(void);
   
   private:
-    StkVal* aAllotAnyVal(i8 nWithAdditionalBytes);
+    AnyVal* aAllotAnyVal(i8 nWithAdditionalBytes);
     FipVal* aAllotFipVal(void);
     IntVal* aAllotIntVal(void);
     PtrVal* aAllotPtrVal(void);
     StrVal* aAllotStrVal(i8 nStrSize);
   
-    void    vAnyValPop(StkVal* aAnyVal);
-    void    vAnyValPush(StkVal* aAnyVal);
+    void    vAnyValPop(AnyVal* aAnyVal);
+    void    vAnyValPush(AnyVal* aAnyVal);
   
     Cell*   aFipValPop(void);
     i8      iIntValPop(void);
@@ -109,8 +109,8 @@ namespace SenVM
 
     void    vPopLocal(Local* aLocal);
   
-    StkVal* aStackBase(void);
-    StkVal* aStackLimit(void);
+    AnyVal* aStackBase(void);
+    AnyVal* aStackLimit(void);
     
     void    vTopDiscard(void);
     bool    bTopIsZero(void);

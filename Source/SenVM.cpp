@@ -10,13 +10,13 @@
 void SenVM::vCheckAssumptions(void)
 {
   
-  ASSERT(16 == sizeof(StkVal));
+  ASSERT(16 == sizeof(AnyVal));
   RASSERT(sizeof(Dtm) == sizeof(SingleWord));
   
-  ASSERT(sizeof(StkVal)   == sizeof(IntVal));
-  ASSERT(sizeof(StkVal)   == sizeof(FipVal));
-  ASSERT(sizeof(StkVal)   == sizeof(PtrVal));
-  //  ASSERT(sizeof(StkVal) + sizeof(i8)     == sizeof(StrVal));
+  ASSERT(sizeof(AnyVal)   == sizeof(IntVal));
+  ASSERT(sizeof(AnyVal)   == sizeof(FipVal));
+  ASSERT(sizeof(AnyVal)   == sizeof(PtrVal));
+  //  ASSERT(sizeof(AnyVal) + sizeof(i8)     == sizeof(StrVal));
   
   //  ASSERT(sizeof(StrVal) + sizeof(Footer) + 32    == sizeof(s32));
   //  ASSERT(sizeof(StrVal) + sizeof(Footer) + 256   == sizeof(s256));
@@ -26,7 +26,7 @@ void SenVM::vCheckAssumptions(void)
   ASSERT(sizeof(Cell) == 8);
   
   ASSERT(sizeof(Dic) < C_SIZE_SMALL_OBJECT);
-  //ASSERT(sizeof(StkVal) + C_64K + 16     == sizeof(GenVar));
+  //ASSERT(sizeof(AnyVal) + C_64K + 16     == sizeof(GenVar));
 }
 
 /*============================================================================*/

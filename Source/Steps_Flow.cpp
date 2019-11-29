@@ -136,7 +136,7 @@ void Step::vFlowJumpFalse(void)
 //
 //  // get pointer to value on the top of the stack
 //  Stack* pDataStack = m_pDataStack;
-//  StkVal* aStkVal = reinterpret_cast<StkVal*>(pDataStack->m_xTop.pStkVal);
+//  AnyVal* aStkVal = reinterpret_cast<AnyVal*>(pDataStack->m_xTop.pStkVal);
 //
 //  eCN eClassNo = aStkVal->eClass(); // inline
 //

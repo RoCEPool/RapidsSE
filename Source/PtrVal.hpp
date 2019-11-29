@@ -5,7 +5,7 @@
 
 namespace SenVM
 {
-  class PtrVal : public StkVal
+  class PtrVal : public AnyVal
   {
   private:
  

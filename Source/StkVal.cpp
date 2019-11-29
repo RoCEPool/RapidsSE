@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StkVal.cpp -- Base Class for Self-Describing Values on Stack               */
+/* AnyVal.cpp -- Base Class for Self-Describing Values on Stack               */
 /*============================================================================*/
 
 #include "SenVM.h"
@@ -7,10 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* StkVal::operator new(size_t)
+void* AnyVal::operator new(size_t)
 {
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: StkVal class cannot be new'd\n"_Stz);
+         "fatal: AnyVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -23,7 +23,7 @@ void* StkVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* copy source stack value into this one                                      */
 /*----------------------------------------------------------------------------*/
-void StkVal::vCopy(StkVal* aSrcVal, i8 nBytes)
+void AnyVal::vCopy(AnyVal* aSrcVal, i8 nBytes)
 {
   if (! nBytes)
     nBytes = aSrcVal->nStackBytes();
@@ -34,7 +34,7 @@ void StkVal::vCopy(StkVal* aSrcVal, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get integer                                                                */
 /*----------------------------------------------------------------------------*/
-i8 StkVal::iAsInt(void)
+i8 AnyVal::iAsInt(void)
 {
   _magic_();
   
@@ -44,7 +44,7 @@ i8 StkVal::iAsInt(void)
 /*----------------------------------------------------------------------------*/
 /* get azChar                                                                 */
 /*----------------------------------------------------------------------------*/
-char* StkVal::azChar(void)
+char* AnyVal::azChar(void)
 {
   _magic_();
   
@@ -56,7 +56,7 @@ char* StkVal::azChar(void)
 /*----------------------------------------------------------------------------*/
 /* get forth instruction pointer                                              */
 /*----------------------------------------------------------------------------*/
-Cell* StkVal::aFip(void)
+Cell* AnyVal::aFip(void)
 {
   _magic_();
   
@@ -68,7 +68,7 @@ Cell* StkVal::aFip(void)
 /*----------------------------------------------------------------------------*/
 /* set forth instruction pointer                                              */
 /*----------------------------------------------------------------------------*/
-void StkVal::vFip(Cell* aFip)
+void AnyVal::vFip(Cell* aFip)
 {
   _magic_();
   
@@ -78,7 +78,7 @@ void StkVal::vFip(Cell* aFip)
 /*----------------------------------------------------------------------------*/
 /* inspect the memory pattern that is a stack value                           */
 /*----------------------------------------------------------------------------*/
-void StkVal::vInspect(void)
+void AnyVal::vInspect(void)
 {
   _magic_();
   
@@ -165,7 +165,7 @@ void StkVal::vInspect(void)
 /*----------------------------------------------------------------------------*/
 /* get integer                                                                */
 /*----------------------------------------------------------------------------*/
-i8 StkVal::iInt(void)
+i8 AnyVal::iInt(void)
 {
   _magic_();
   
@@ -177,7 +177,7 @@ i8 StkVal::iInt(void)
 /*----------------------------------------------------------------------------*/
 /* set integer                                                                */
 /*----------------------------------------------------------------------------*/
-void StkVal::vInt(i8 iInt)
+void AnyVal::vInt(i8 iInt)
 {
   _magic_();
   
@@ -187,7 +187,7 @@ void StkVal::vInt(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* test if nested value is an integer                                         */
 /*----------------------------------------------------------------------------*/
-bool StkVal::bIsInt(void)
+bool AnyVal::bIsInt(void)
 {
   _magic_();
   
@@ -200,7 +200,7 @@ bool StkVal::bIsInt(void)
 /*----------------------------------------------------------------------------*/
 /* get object address                                                         */
 /*----------------------------------------------------------------------------*/
-Object* StkVal::pObj(void)
+Object* AnyVal::pObj(void)
 {
   _magic_();
   
@@ -212,7 +212,7 @@ Object* StkVal::pObj(void)
 /*----------------------------------------------------------------------------*/
 /* set object pointer                                                         */
 /*----------------------------------------------------------------------------*/
-void StkVal::vObj(Object* pObj)
+void AnyVal::vObj(Object* pObj)
 {
   _magic_();
   
@@ -222,7 +222,7 @@ void StkVal::vObj(Object* pObj)
 /*----------------------------------------------------------------------------*/
 /* get size of string in nested value                                         */
 /*----------------------------------------------------------------------------*/
-i8 StkVal::nStzSize(void)
+i8 AnyVal::nStzSize(void)
 {
   _magic_();
   
@@ -234,7 +234,7 @@ i8 StkVal::nStzSize(void)
 /*----------------------------------------------------------------------------*/
 /* get stz                                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* StkVal::szStz(void)
+Stz* AnyVal::szStz(void)
 {
   _magic_();
   
@@ -246,7 +246,7 @@ Stz* StkVal::szStz(void)
 /*----------------------------------------------------------------------------*/
 /* set object pointer                                                         */
 /*----------------------------------------------------------------------------*/
-void StkVal::vStz(Stz* szStz)
+void AnyVal::vStz(Stz* szStz)
 {
   _magic_();
   
@@ -257,9 +257,9 @@ void StkVal::vStz(Stz* szStz)
 
 
 /*----------------------------------------------------------------------------*/
-/* get how many bytes are needed to push a StkVal on stack                    */
+/* get how many bytes are needed to push a AnyVal on stack                    */
 /*----------------------------------------------------------------------------*/
-i8 StkVal::nStackBytes(void)
+i8 AnyVal::nStackBytes(void)
 {
   i8 nBytes = 0;
   
@@ -293,7 +293,7 @@ i8 StkVal::nStackBytes(void)
       
     // -- -- -- -- -- --
     default:
-      vTrace("StkVal::nStackBytes -- invalid eClass %lld %s\n"_Stz,
+      vTrace("AnyVal::nStackBytes -- invalid eClass %lld %s\n"_Stz,
              eClassNo,aCN[eClassNo]);
       NEVER_REACH;
       break;
@@ -305,7 +305,7 @@ i8 StkVal::nStackBytes(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void StkVal::vToString(Stz* szString)
+void AnyVal::vToString(Stz* szString)
 {
   eCN eClass = this->eClass();
   
@@ -336,7 +336,7 @@ void StkVal::vToString(Stz* szString)
     }
             
     default:
-      vTrace("StkVal::vToString -- invalid eClass %lld"_Stz,eClass);
+      vTrace("AnyVal::vToString -- invalid eClass %lld"_Stz,eClass);
       NEVER_REACH;
       break;
   }

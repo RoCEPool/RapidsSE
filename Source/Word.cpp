@@ -237,7 +237,7 @@ void Word::vAppend(StepFp* afpStepFp)
 /*----------------------------------------------------------------------------*/
 /* append a value (the entire value, not a pointer to it)                     */
 /*----------------------------------------------------------------------------*/
-void Word::vAppend(StkVal* aStkVal)
+void Word::vAppend(AnyVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -411,7 +411,7 @@ void Word::vEncode(Stz* aWordNm, Cell* aCell)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Stz* aWordNm, StkVal* aStkVal)
+void Word::vEncode(Stz* aWordNm, AnyVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

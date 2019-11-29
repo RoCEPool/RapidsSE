@@ -5,7 +5,7 @@
 
 namespace SenVM
 {
-  class FipVal : public StkVal
+  class FipVal : public AnyVal
   {
   private:
         

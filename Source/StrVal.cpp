@@ -81,7 +81,7 @@ i8 StrVal::nStackBytes(void)
 //                - sizeof(m_caStr)
 //                + m_nBytesFollowing;
 
-  i8 nBytes = sizeof(StkVal)
+  i8 nBytes = sizeof(AnyVal)
                 + m_nBytesFollowing;
 
   return nBytes;

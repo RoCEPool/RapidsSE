@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* StkVal.hpp -- Base Class for a Self-Describing Values on Stack             */
+/* AnyVal.hpp -- Base Class for a Self-Describing Values on Stack             */
 /*============================================================================*/
 #pragma once
 
 namespace SenVM
 {
-  class StkVal : public _Header
+  class AnyVal : public _Header
   {
   protected:
     union {
@@ -19,7 +19,7 @@ namespace SenVM
   public:
     void* operator new(size_t);
   
-    void vCopy(StkVal* aSrcVal, i8 nBytes=0);
+    void vCopy(AnyVal* aSrcVal, i8 nBytes=0);
   
     i8      iAsInt(void);
     char*   azChar(void);
@@ -42,9 +42,9 @@ namespace SenVM
   /*----------------------------------------------------------------------------*/
   /* safe cast                                                                  */
   /*----------------------------------------------------------------------------*/
-  inline StkVal* _aStkVal(void* aAddr)
+  inline AnyVal* _aStkVal(void* aAddr)
   {
-    StkVal* aStkVal = reinterpret_cast<StkVal*>(aAddr);
+    AnyVal* aStkVal = reinterpret_cast<AnyVal*>(aAddr);
   
     return aStkVal;
   }

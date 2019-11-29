@@ -48,7 +48,7 @@ GenVar::GenVar(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-GenVar::GenVar(StkVal* aStkVal)
+GenVar::GenVar(AnyVal* aStkVal)
 : Object(CN_GENVAR)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
@@ -86,9 +86,9 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* auto conversion operator : as StkVal*                                      */
+/* auto conversion operator : as AnyVal*                                      */
 /*----------------------------------------------------------------------------*/
-GenVar::operator StkVal*(void)
+GenVar::operator AnyVal*(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
 
@@ -99,7 +99,7 @@ GenVar::operator StkVal*(void)
 /*----------------------------------------------------------------------------*/
 /* operator =                                                                 */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(StkVal* aStkVal)
+void GenVar::operator =(AnyVal* aStkVal)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
 
@@ -181,7 +181,7 @@ char* GenVar::azChar(void)
 /*----------------------------------------------------------------------------*/
 /* copy given source value into this var                                      */
 /*----------------------------------------------------------------------------*/
-void GenVar::vCopy(StkVal* aStkVal)
+void GenVar::vCopy(AnyVal* aStkVal)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
@@ -228,7 +228,7 @@ bool GenVar::bIsInt(void)
 /*----------------------------------------------------------------------------*/
 /* get address of the nested value                                            */
 /*----------------------------------------------------------------------------*/
-StkVal* GenVar::aEmbeddedStkVal(void)
+AnyVal* GenVar::aEmbeddedStkVal(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   

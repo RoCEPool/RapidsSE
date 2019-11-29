@@ -49,7 +49,7 @@ void Step::vAddressFetch(void)
   Object* pObject;
   if ( ! m_pDataStack->bPopPtr(pObject) )
     THROW_DSTACK();
-  StkVal* aStkVal = reinterpret_cast<StkVal*>(pObject);
+  AnyVal* aStkVal = reinterpret_cast<AnyVal*>(pObject);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -70,7 +70,7 @@ void Step::vAddressStore(void)
   Object* pObject;
   if ( ! m_pDataStack->bPopPtr(pObject) )
     THROW_DSTACK();
-  StkVal* aStkVal = reinterpret_cast<StkVal*>(pObject);
+  AnyVal* aStkVal = reinterpret_cast<AnyVal*>(pObject);
 
   GenVar xValToStore;
   if ( ! m_pDataStack->bPopVal(xValToStore) )
