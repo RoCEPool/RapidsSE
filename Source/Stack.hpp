@@ -65,7 +65,7 @@ namespace SenVM
     StkVal* aPeekVal(i8 i_Val);
     void vPeekVal(i8 i_Val, GenVar& xVar);
   
-    void vPokeVal(i8 i_Val, GenVar& xVar);
+    void vPokeVal(i8 i_Val, StkVal* aStkVal);
   
     bool bPopAsInt(i8& iInt1);
     bool bPopAsInt_Inline(i8& iInt1);

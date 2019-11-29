@@ -285,13 +285,13 @@ void Stack::vPeekVal(i8 i_Val, GenVar& xVar)
 /*----------------------------------------------------------------------------*/
 /* poke given value into stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPokeVal(i8 i_Val, GenVar& xVar)
+void Stack::vPokeVal(i8 i_Val, StkVal* aStkVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   StkVal* aPokeAddress = aPeekVal(i_Val);
   
-  aPokeAddress->vCopy(xVar);
+  aPokeAddress->vCopy(aStkVal);
 }
 
 /*----------------------------------------------------------------------------*/
