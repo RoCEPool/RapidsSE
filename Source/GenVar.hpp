@@ -11,7 +11,7 @@ namespace SenVM
 
     union {
       
-      AnyVal  m_xStkVal;
+      AnyVal  m_xAnyVal;
 
       FipVal  m_xFipVal;
       IntVal  m_xIntVal;
@@ -43,8 +43,8 @@ namespace SenVM
     void operator =(Stz* szStz);
 
     char*   azChar(void);
-    void    vCopy(AnyVal* aStkVal);
-    AnyVal* aEmbeddedStkVal(void);
+    void    vCopy(AnyVal* aAnyVal);
+    AnyVal* aEmbeddedAnyVal(void);
     Cell*   aFip(void);
     i8      iInt(void);
     bool    bIsInt(void);

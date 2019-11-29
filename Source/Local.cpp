@@ -53,9 +53,9 @@ AnyVal* Local::aLocalValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCAL,_FOOTER_);
   
-  AnyVal* aStkVal = reinterpret_cast<AnyVal*>(m_xWsp.ayArea());
+  AnyVal* aAnyVal = reinterpret_cast<AnyVal*>(m_xWsp.ayArea());
   
-  return aStkVal;
+  return aAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/

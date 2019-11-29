@@ -485,7 +485,7 @@ void Stack::vPushLocal(Local* pLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  AnyVal* aAnyVal = _aStkVal(pLocal->aLocalValue());
+  AnyVal* aAnyVal = _aAnyVal(pLocal->aLocalValue());
   
   vPushVal(aAnyVal);
 

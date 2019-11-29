@@ -237,15 +237,15 @@ void Word::vAppend(StepFp* afpStepFp)
 /*----------------------------------------------------------------------------*/
 /* append a value (the entire value, not a pointer to it)                     */
 /*----------------------------------------------------------------------------*/
-void Word::vAppend(AnyVal* aStkVal)
+void Word::vAppend(AnyVal* aAnyVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  i8 nBytes = aStkVal->nStackBytes();
+  i8 nBytes = aAnyVal->nStackBytes();
   
   char* aValueAddress = (char*)ayAllot(nBytes);
   
-  MemLib::vCopy(aValueAddress,aStkVal,nBytes,CN_WORD);
+  MemLib::vCopy(aValueAddress,aAnyVal,nBytes,CN_WORD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -411,13 +411,13 @@ void Word::vEncode(Stz* aWordNm, Cell* aCell)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Stz* aWordNm, AnyVal* aStkVal)
+void Word::vEncode(Stz* aWordNm, AnyVal* aAnyVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   vEncode(aWordNm);
   
-  vAppend(aStkVal);
+  vAppend(aAnyVal);
 }
 
 /*----------------------------------------------------------------------------*/

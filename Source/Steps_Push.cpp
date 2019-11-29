@@ -66,11 +66,11 @@ void Step::vPushValue(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  AnyVal* aStkVal = (AnyVal*) & m_aInxPtr->m_xEmbValue;
+  AnyVal* aAnyVal = (AnyVal*) & m_aInxPtr->m_xEmbValue;
   
-  m_pDataStack->vPushVal((AnyVal*) aStkVal);
+  m_pDataStack->vPushVal((AnyVal*) aAnyVal);
   
-  m_pTask->vAdjustFIP(aStkVal->nStackBytes());
+  m_pTask->vAdjustFIP(aAnyVal->nStackBytes());
   
   EXIT();
 }

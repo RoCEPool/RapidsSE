@@ -42,11 +42,11 @@ namespace SenVM
   /*----------------------------------------------------------------------------*/
   /* safe cast                                                                  */
   /*----------------------------------------------------------------------------*/
-  inline AnyVal* _aStkVal(void* aAddr)
+  inline AnyVal* _aAnyVal(void* aAddr)
   {
-    AnyVal* aStkVal = reinterpret_cast<AnyVal*>(aAddr);
+    AnyVal* aAnyVal = reinterpret_cast<AnyVal*>(aAddr);
   
-    return aStkVal;
+    return aAnyVal;
   }
 }
 

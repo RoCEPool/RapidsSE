@@ -67,7 +67,7 @@ namespace SenVM
     void  vAppend(Cell* aCell);
     void  vAppend(i8 iInt);
     void  vAppend(StepFp* afpStep);
-    void  vAppend(AnyVal* aStkVal);
+    void  vAppend(AnyVal* aAnyVal);
     Article* pArticle(void);
     void  vArticle(Article* pArticle);
     Word* pCategory(void);
@@ -84,7 +84,7 @@ namespace SenVM
     void  vEncode(Stz* aWordNm);
     void  vEncode(Stz* aWordNm, Cell* aCell);
     void  vEncode(Stz* aWordNm, Word* pCalledWord);
-    void  vEncode(Stz* aWordNm, AnyVal* aStkVal);
+    void  vEncode(Stz* aWordNm, AnyVal* aAnyVal);
     void  vEncode(StepFp* afpEntryStep);
     i8    iEpoch(void);
     Stz*  szExceptionHook(void);

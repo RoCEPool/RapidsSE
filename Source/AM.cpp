@@ -1390,17 +1390,17 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
       
       aDoesCell++;
       
-      AnyVal* aStkVal = reinterpret_cast<AnyVal*>(aDoesCell);
+      AnyVal* aAnyVal = reinterpret_cast<AnyVal*>(aDoesCell);
       
-      if (CN_STRVAL == aStkVal->eClass()) {
-        vTrace(" \"%s\"\n"_Stz,_aStrVal(aStkVal)->azChar());
+      if (CN_STRVAL == aAnyVal->eClass()) {
+        vTrace(" \"%s\"\n"_Stz,_aStrVal(aAnyVal)->azChar());
       }
       else {
-        aStkVal->vToString(sString);
+        aAnyVal->vToString(sString);
         vTrace(" %s\n"_Stz,sString.azChar());
       }
       
-      i8 iBytes = aStkVal->nStackBytes();
+      i8 iBytes = aAnyVal->nStackBytes();
       aDoesCell = aAdd<Cell*>(aDoesCell,iBytes);
       
       continue;

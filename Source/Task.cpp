@@ -866,19 +866,19 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     
     sStackContents.vCatSprint(" "_Stz);
     
-    AnyVal* aStkVal = pStack->aPeekVal(iValue);
+    AnyVal* aAnyVal = pStack->aPeekVal(iValue);
     
-    eCN eClass = aStkVal->eClass();
+    eCN eClass = aAnyVal->eClass();
     
     if (CN_INTVAL == eClass) {
-      sStackContents.vCatSprint("%lld"_Stz,_aIntVal(aStkVal)->iInt());
+      sStackContents.vCatSprint("%lld"_Stz,_aIntVal(aAnyVal)->iInt());
     }
     else if (CN_PTRVAL == eClass) {
-      if (_aPtrVal(aStkVal)->pObj()) {
+      if (_aPtrVal(aAnyVal)->pObj()) {
         
-        Object* pPtr = _aPtrVal(aStkVal)->pObj();
+        Object* pPtr = _aPtrVal(aAnyVal)->pObj();
         
-        eCN ePtrClass = _aPtrVal(aStkVal)->pObj()->eClass();
+        eCN ePtrClass = _aPtrVal(aAnyVal)->pObj()->eClass();
         
         if (CN_WORD == ePtrClass)
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
@@ -910,20 +910,20 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
       }
       else
         sStackContents.vCatSprint("^%s=%p"_Stz,
-                                  aCN[aStkVal->eClass()],
-                                  _aPtrVal(aStkVal)->pObj());
+                                  aCN[aAnyVal->eClass()],
+                                  _aPtrVal(aAnyVal)->pObj());
     }
     else if (CN_FIPVAL == eClass) {                                      
       sStackContents.vCatSprint("%p"_Stz,
-                                _aFipVal(aStkVal)->aFip());
+                                _aFipVal(aAnyVal)->aFip());
     }
     else if (CN_STRVAL == eClass) {
       sStackContents.vCatSprint("\"%lls\""_Stz,
-                                _aStrVal(aStkVal)->azChar());
+                                _aStrVal(aAnyVal)->azChar());
     }
     else {
       sStackContents.vCatSprint("<unknown:class=%lld>"_Stz,
-                                aStkVal->eClass());
+                                aAnyVal->eClass());
     }
   }
   
@@ -1200,8 +1200,8 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     // should be %v or %V
     ASSERT('v' == *pf || 'V' == *pf);
     
-    AnyVal* aStkVal0 = m_pForth->m_pDataStack->aPeekVal(0);
-    eCN eClass = aStkVal0->eClass();
+    AnyVal* aAnyVal0 = m_pForth->m_pDataStack->aPeekVal(0);
+    eCN eClass = aAnyVal0->eClass();
     
     // test for StrVal
     if (CN_STRVAL == eClass) {
