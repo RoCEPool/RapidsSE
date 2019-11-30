@@ -320,7 +320,9 @@ bool Stack::bPopFip(Cell*& aFip)
   if ( ! bGuard(CN_FIPVAL) )
     return false;
   
-  aFip = aFipValPop();
+  aFip = m_xTop.aFipVal->aFip();
+  
+  vTopDiscard();
 
   return true;
 }
@@ -335,8 +337,10 @@ bool Stack::bPopInt(i8& iInt)
   if ( ! bGuard(CN_INTVAL) )
     return false;
   
-  iInt = iIntValPop();
+  iInt = m_xTop.aIntVal->iInt();
   
+  vTopDiscard();
+
   return true;
 }
 
@@ -350,8 +354,10 @@ bool Stack::bPopPtr(Object*& pObj)
   if ( ! bGuard(CN_PTRVAL) && ! bTopIsZero() )
     return false;
   
-  pObj = pPtrValPop();
+  pObj = m_xTop.aPtrVal->pObj();
   
+  vTopDiscard();
+
   return true;
 }
 
@@ -605,48 +611,6 @@ StrVal* Stack::aAllotStrVal(i8 nStrSize)
   aStrVal->vMagic();
   
   return aStrVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop fip from stack                                                         */
-/*----------------------------------------------------------------------------*/
-Cell* Stack::aFipValPop(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  Cell* aFip = m_xTop.aFipVal->aFip();
-  
-  vTopDiscard();
-  
-  return aFip;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop int from stack                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Stack::iIntValPop(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  i8 iInt = m_xTop.aIntVal->iInt();
-  
-  vTopDiscard();
-  
-  return iInt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop obj from stack                                                         */
-/*----------------------------------------------------------------------------*/
-Object* Stack::pPtrValPop(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  Object* pObj = m_xTop.aPtrVal->pObj();
-  
-  vTopDiscard();
-  
-  return pObj;
 }
 
 /*----------------------------------------------------------------------------*/
