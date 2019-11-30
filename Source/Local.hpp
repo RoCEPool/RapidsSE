@@ -16,7 +16,9 @@ namespace SenVM
   public:
     void* operator new(size_t);
     Local(void);
-      
+  
+    operator AnyVal*(void);
+  
     AnyVal* aLocalValue(void);
   
   private:

@@ -39,7 +39,7 @@ namespace SenVM
     AnyVal* m_aRetryTop;    // reset to this top of stack
     i8      m_nRetryValues; // reset with this many values on stack
     
-    Footer m_xHazard;
+    Footer  m_xHazard;
     
     Wsp_t<C_WSP_STACK> m_xWsp;
     
@@ -81,7 +81,7 @@ namespace SenVM
     void vPushFip(Cell* aFip);
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);
-    void vPushLocal(Local* pLocal);
+    void vPushLocal(AnyVal* aAnyVal);
     void vPushStr(String* pStr);
     void vPushVal(AnyVal* aAnyVal);
   

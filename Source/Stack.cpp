@@ -481,11 +481,9 @@ void Stack::vPushPtr(Object* pObj)
 /*----------------------------------------------------------------------------*/
 /* push contents of local onto stack                                          */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushLocal(Local* pLocal)
+void Stack::vPushLocal(AnyVal* aAnyVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  AnyVal* aAnyVal = _aAnyVal(pLocal->aLocalValue());
   
   vPushVal(aAnyVal);
 
