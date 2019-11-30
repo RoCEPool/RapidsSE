@@ -390,21 +390,6 @@ bool Stack::bPopPtr(Object*& pObj)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop register from stack                                                    */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopLocal(Local*& pLocal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  vAnyValPop(pLocal->aAnyValue());
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop string from stack                                                      */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopStr(String* pString)
@@ -424,6 +409,21 @@ bool Stack::bPopStr(String* pString)
   
   _hazard_();
 
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from stack                                                       */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopVal(AnyVal* aAnyVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  vAnyValPop(aAnyVal);
+  
   return true;
 }
 

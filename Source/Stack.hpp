@@ -74,8 +74,8 @@ namespace SenVM
     bool bPopFip(Cell*& aFip);
     bool bPopInt(i8& iInt);
     bool bPopPtr(Object*& pObj);
-    bool bPopLocal(Local*& pLocal);
     bool bPopStr(String* pStr);
+    bool bPopVal(AnyVal* aAnyVal);
     bool bPopVal(GenVar& xGenVar);
   
     void vPushFip(Cell* aFip);
