@@ -80,11 +80,10 @@
         tablePtn[].root to Subset[]
         Subset[]@ to Operand[]
         begin
-          not Operand[].isNull
-        while
+          Operand[].isNull
+        not while
           Operand[].pipeOut
           Subset[].nextBuffer to Operand[]
-          not Operand[].isNull
         repeat
 
         Operand[].newEndMarker

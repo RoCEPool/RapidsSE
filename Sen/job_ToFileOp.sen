@@ -7,16 +7,47 @@
 /*----------------------------------------------------------------------------*/
 /* execute for toFileOp req                           (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : ToFile_req ( -- )
+ : ToFileOp_req ( -- )
  
-   >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
-   job::this locals| pJob_ToFileOp |
+  job::this locals| pJob_ToFileOp |
 
+  // open the file for writing
+  pJob_ToFileOp job.openToFile
 
-   pJob_ToFileOp job.opLoop
+  begin
 
-   //pJob_ConsumeOp job::participantExecuted
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_CSVBUFFER of
+        "Operand:- ZK_CSVBUFFER" .
+        Operand[].writeToFile
+        true
+      endof
+
+      ZK_ENDMARKER of
+        "Operand:- ZK_ENDMARKER" .
+        Operand[].handleEnd
+        false
+      endof
+
+      ZK_STREAMDEF of
+        "Operand:- ZK_STREAMDEF" .
+        Operand[].delete
+        true
+      endof
+
+    endcase
+
+  while assert::stack_0 repeat
 
   <<logExit
   job::deleteThis
