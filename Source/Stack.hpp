@@ -27,9 +27,6 @@ namespace SenVM
 
   class Stack: public Object
   {
-  friend class Tasks::Task;
-  friend class Steps::Step;
-
   private:
     eKK     m_eKind;        // kind of stack
   
@@ -57,6 +54,8 @@ namespace SenVM
     static void vDump(eCN eClass, Object* pObj, Stz* aTab);
   
     void vContentDump(DicStack* pDicStack, Stz* szTitle);
+  
+    void vDiscardTop(void);
   
     bool bGuard(i8 nValues);
     bool bGuard(eCN eClass0);
@@ -99,7 +98,6 @@ namespace SenVM
     AnyVal* aStackBase(void);
     AnyVal* aStackLimit(void);
     
-    void    vTopDiscard(void);
     bool    bTopIsZero(void);
   
     Footer* aFooter(void);

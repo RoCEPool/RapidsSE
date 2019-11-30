@@ -177,6 +177,21 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
 }
 
 /*----------------------------------------------------------------------------*/
+/* discard value on top of stack                                              */
+/*----------------------------------------------------------------------------*/
+void Stack::vDiscardTop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  _hazard_();
+  
+  m_xTop.vRewind();
+  m_nValues--;
+  
+  _hazard_();
+}
+
+/*----------------------------------------------------------------------------*/
 /* guard stack has at least nValues on it                                     */
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuard(i8 nValues)
@@ -305,7 +320,7 @@ bool Stack::bPopAsInt(i8& iInt)
     return false;
   
   iInt = m_xTop.aAnyVal->iAsInt();
-  vTopDiscard();
+  vDiscardTop();
   
   return true;
 }
@@ -322,7 +337,7 @@ bool Stack::bPopFip(Cell*& aFip)
   
   aFip = m_xTop.aFipVal->aFip();
   
-  vTopDiscard();
+  vDiscardTop();
 
   return true;
 }
@@ -339,7 +354,7 @@ bool Stack::bPopInt(i8& iInt)
   
   iInt = m_xTop.aIntVal->iInt();
   
-  vTopDiscard();
+  vDiscardTop();
 
   return true;
 }
@@ -356,7 +371,7 @@ bool Stack::bPopPtr(Object*& pObj)
   
   pObj = m_xTop.aPtrVal->pObj();
   
-  vTopDiscard();
+  vDiscardTop();
 
   return true;
 }
@@ -377,7 +392,7 @@ bool Stack::bPopStr(String* pString)
   
   pString->vCopy(aStrVal->szStz());
   
-  vTopDiscard();
+  vDiscardTop();
   
   _hazard_();
 
@@ -635,21 +650,6 @@ AnyVal* Stack::aStackLimit(void)
   char* aLimit = (char*)&m_xWsp.ayArea()[0];
   
   return pPoolCheck<AnyVal*>(aLimit);
-}
-
-/*----------------------------------------------------------------------------*/
-/* discard value on top of stack                                              */
-/*----------------------------------------------------------------------------*/
-void Stack::vTopDiscard(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  _hazard_();
-  
-  m_xTop.vRewind();
-  m_nValues--;
-  
-  _hazard_();
 }
 
 /*----------------------------------------------------------------------------*/
