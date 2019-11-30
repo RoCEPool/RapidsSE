@@ -13,9 +13,7 @@ namespace SenVM
     void* operator new(size_t);
     
     void    operator =(Object* pObject);
-    Object* pObj(void);
-
-    i8      iAsInt(void);
+  
     i8      nStackUsage(void);
     void    vToString(Stz* szDst);
   };

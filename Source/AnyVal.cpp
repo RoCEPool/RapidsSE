@@ -59,10 +59,8 @@ char* AnyVal::azChar(void)
 Cell* AnyVal::aFip(void)
 {
   _magic_();
-  
-  Cell* aFip = _aFipVal(this)->aFip();
-  
-  return aFip;
+    
+  return m_aFip;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,10 +166,8 @@ void AnyVal::vInspect(void)
 i8 AnyVal::iInt(void)
 {
   _magic_();
-  
-  i8 iInt = _aIntVal(this)->iInt();
-  
-  return iInt;
+    
+  return m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -204,9 +200,7 @@ Object* AnyVal::pObj(void)
 {
   _magic_();
   
-  Object* pObj = _aPtrVal(this)->pObj();
-  
-  return pObj;
+  return m_pObj;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -252,8 +246,6 @@ void AnyVal::vStz(Stz* szStz)
   
   _aStrVal(this)->vAssign(szStz);
 }
-
-
 
 
 /*----------------------------------------------------------------------------*/
