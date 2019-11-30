@@ -69,8 +69,6 @@ namespace SenVM
     void vPokeVal(i8 i_Val, AnyVal* aAnyVal);
   
     bool bPopAsInt(i8& iInt1);
-    bool bPopAsInt_Inline(i8& iInt1);
-    bool bPopAsInt_Quick(i8& iInt1);
     bool bPopFip(Cell*& aFip);
     bool bPopInt(i8& iInt);
     bool bPopPtr(Object*& pObj);
@@ -114,36 +112,6 @@ namespace SenVM
     Footer* aFooter(void);
     Footer* aHazard(void);
   };
-  
-  /*----------------------------------------------------------------------------*/
-  /* pop value from data stack  as integer                                      */
-  /*----------------------------------------------------------------------------*/
-  inline bool Stack::bPopAsInt_Inline(i8& iInt)
-  {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  eCN eClassNo = m_xTop.aAnyVal->eClass(); // inline
-  
-  if (CN_INTVAL == eClassNo)
-    iInt = _aIntVal(m_xTop.aAnyVal)->iInt(); // inline
-  else
-    if (CN_PTRVAL == eClassNo)
-      iInt = _aPtrVal(m_xTop.aAnyVal)->pObj() ? 1 : 0; // inline
-    else {
-      iInt = -1;
-      NEVER_REACH;
-    }
-  
-  m_xTop.vRewind(sizeof(IntVal));
-  
-  m_nValues--;
-  
-  return true;
-  }
-
 }
 
 /*============================================================================*/

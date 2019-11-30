@@ -311,40 +311,6 @@ bool Stack::bPopAsInt(i8& iInt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value from stack as integer                                            */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopAsInt_Quick(i8& iInt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  AnyVal* aTopValue = aTopVal();
-  
-  vTopDiscard();
-  
-  eCN eClassNo = aTopValue->eClass();
-  
-  switch (eClassNo) {
-      
-    case CN_INTVAL:
-      iInt = _aIntVal(aTopValue)->iInt();
-      return true;
-      
-    case CN_PTRVAL:
-      iInt = _aPtrVal(aTopValue)->pObj() ? 1 : 0;
-      return true;
-      
-    default:
-      NEVER_REACH;
-  }
-  
-  NEVER_REACH;
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop fip from stack                                                         */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopFip(Cell*& aFip)
