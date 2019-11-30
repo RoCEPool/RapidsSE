@@ -21,6 +21,10 @@ namespace SenVM
 #include "PtrVal.hpp"
 #include "StrVal.hpp"
 
+#include "AllVal.hpp"
+
+// -- -- -- -- -- -- -- --
+
 #include "Cell.hpp"
 #include "Dic.hpp"
 #include "DicPath.hpp"
