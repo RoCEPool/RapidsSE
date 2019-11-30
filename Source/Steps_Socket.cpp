@@ -36,8 +36,7 @@ void Step::vSocketAccept(void)
   Object* pObject;
   
   
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -69,8 +68,7 @@ void Step::vSocketClose(void)
   Object* pObject;
   
   
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -100,14 +98,11 @@ void Step::vSocketConnect(void)
   i8 iPort;
   
   
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   
-  if ( ! m_pDataStack->bPopVal(xNodeVar) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xNodeVar) ) THROW_DSTACK();
   
-  if ( ! m_pDataStack->bPopInt(iPort) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iPort) ) THROW_DSTACK();
   
   // get address of node
   Stz* sAddr = xNodeVar.szStz();
@@ -161,14 +156,11 @@ void Step::vSocketConnect(void)
 //
 //  ENTRY(); // ENTRY("vSocketConnect"_Stz);
 //
-//  if ( ! m_pDataStack->bPopPtr(pObject) )
-//    THROW_DSTACK();
+//  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
 //
-//  if ( ! m_pDataStack->bPopVal(xNodeVar) )
-//    THROW_DSTACK();
+//  if ( ! m_pDataStack->bPopVal(xNodeVar) ) THROW_DSTACK();
 //
-//  if ( ! m_pDataStack->bPopInt(iPort) )
-//    THROW_DSTACK();
+//  if ( ! m_pDataStack->bPopInt(iPort) ) THROW_DSTACK();
 //
 //  // get address of node
 //  Stz* sAddr = xNodeVar.szStz();
@@ -228,8 +220,7 @@ void Step::vSocketDropWrite(void)
   ENTRY(); // ENTRY("vSocketDropWrite"_Stz);
   
   Object* pSocketPtr;
-  if ( ! m_pDataStack->bPopPtr(pSocketPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pSocketPtr) ) THROW_DSTACK();
   Socket* pSocket = _pSocket(pSocketPtr);
   
   pSocket->vDropWrite();
@@ -245,8 +236,7 @@ void Step::vSocketGrabWrite(void)
   ENTRY(); // ENTRY("vSocketGrabWrite"_Stz);
   
   Object* pSocketPtr;
-  if ( ! m_pDataStack->bPopPtr(pSocketPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pSocketPtr) ) THROW_DSTACK();
   Socket* pSocket = _pSocket(pSocketPtr);
   
   pSocket->vGrabWrite();
@@ -264,8 +254,7 @@ void Step::vSocketListen(void)
   SysCall oSysCall;
   i8      iPort;
   
-  if ( ! m_pDataStack->bPopInt(iPort) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iPort) ) THROW_DSTACK();
   
   //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -
   // attempt to create server-side listening socket
@@ -322,8 +311,7 @@ void Step::vSocketOpen(void)
   Socket* pSocket;
   
   Object* pNodePtr;
-  if ( ! m_pDataStack->bPopPtr(pNodePtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pNodePtr) ) THROW_DSTACK();
   Node* pNode = _pNode(pNodePtr);
 
   pSocket = new Socket(pNodePtr);
@@ -358,8 +346,7 @@ void Step::vSocketRecvObject(void)
   ENTRY(); // ENTRY("vSocketRecvObject"_Stz);
   
   Object* pSocketPtr;
-  if ( ! m_pDataStack->bPopPtr(pSocketPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pSocketPtr) ) THROW_DSTACK();
   Socket* pSocket = _pSocket(pSocketPtr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -638,8 +625,7 @@ void Step::vSocketRecvObject_LowMem(void)
   bool bDiscardOperand = false;
   
   Object* pSocketPtr;
-  if ( ! m_pDataStack->bPopPtr(pSocketPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pSocketPtr) ) THROW_DSTACK();
   Socket* pSocket = _pSocket(pSocketPtr);
   
   void* aLowBuff = pSocket->m_aLowBuff;
@@ -890,13 +876,11 @@ void Step::vSocketSendObject(void)
   ENTRY(); // ENTRY("vSocketSendObject"_Stz);
   
   Object* pSocketPtr;
-  if ( ! m_pDataStack->bPopPtr(pSocketPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pSocketPtr) ) THROW_DSTACK();
   Socket* pSocket = _pSocket(pSocketPtr);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-  THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -23,8 +23,7 @@ void Step::vDot(void)
   ENTRY(); // ENTRY("vDot"_Stz);
   
   GenVar xVariable;
-  if ( ! m_pDataStack->bPopVal(xVariable) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xVariable) ) THROW_DSTACK();
   
   if (xVariable.bIsInt()) {
 //    vTrace("[%s %s] %lld\n"_Stz,
@@ -51,8 +50,7 @@ void Step::vDot(void)
 //  ENTRY(); // ENTRY("vDot"_Stz);
 //
 //  GenVar xVariable;
-//  if ( ! m_pDataStack->bPopVal(xVariable) )
-//    THROW_DSTACK();
+//  if ( ! m_pDataStack->bPopVal(xVariable) ) THROW_DSTACK();
 //
 //  s32 sSide;
 //
@@ -84,8 +82,7 @@ void Step::vDotPut(void)
   ENTRY(); // ENTRY("vDotPut"_Stz);
   
   GenVar xVariable;
-  if ( ! m_pDataStack->bPopVal(xVariable) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xVariable) ) THROW_DSTACK();
   
   if (xVariable.bIsInt())
     vTrace("%lld"_Stz,xVariable.iInt());
@@ -115,8 +112,7 @@ void Step::vDotVerbose(void)
   ENTRY(); // ENTRY("vDotVerbose"_Stz);
   
   GenVar xVariable;
-  if ( ! m_pDataStack->bPopVal(xVariable) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xVariable) ) THROW_DSTACK();
   
   if (AM::bVerbose()) {
     vTrace("[%p %s] %s\n"_Stz,

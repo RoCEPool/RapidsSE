@@ -32,13 +32,11 @@ void Step::vJob_FetchRowsColumnStore(void)
   ENTRY(); // ENTRY("vJob_FetchRowsColumnStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
   Object* pColumnPtr;
-  if ( ! m_pDataStack->bPopPtr(pColumnPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pColumnPtr) ) THROW_DSTACK();
   Column* pColumn = _pColumn(pColumnPtr);
   
   pJob_FetchRows->m_pColumn = pColumn;
@@ -54,8 +52,7 @@ void Step::vJob_FetchRowsColumnNameFetch(void)
   ENTRY(); // ENTRY("vJob_FetchRowsColumnNameFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
   m_pDataStack->vPushStr(pJob_FetchRows->m_sColumnName);
@@ -71,13 +68,11 @@ void Step::vJob_FetchRowsLastBuffersStore(void)
   ENTRY(); // ENTRY("vJob_FetchRowsLastBuffersStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
   i8 nLastBuffers;
-  if ( ! m_pDataStack->bPopAsInt(nLastBuffers) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(nLastBuffers) ) THROW_DSTACK();
   
   pJob_FetchRows->m_nLastBuffers = nLastBuffers;
   
@@ -92,8 +87,7 @@ void Step::vJob_FetchRowsPartitionFetch(void)
   ENTRY(); // ENTRY("vJob_FetchRowsPartitionFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
 
   m_pDataStack->vPushInt(pJob_FetchRows->m_iPartition);
@@ -109,13 +103,11 @@ void Step::vJob_FetchRowsPlannerStore(void)
   ENTRY(); // ENTRY("vJob_FetchRowsPlannerStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
   Object* pPlannerPtr;
-  if ( ! m_pDataStack->bPopPtr(pPlannerPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPlannerPtr) ) THROW_DSTACK();
   Planner* pPlanner = _pPlanner(pPlannerPtr);
   
   pJob_FetchRows->m_pPlanner = pPlanner;
@@ -135,23 +127,19 @@ void Step::vJob_FetchRowsSpawnSub(void)
   ENTRY(); // ENTRY("vJob_FetchRowsSpawnSub"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
 
   Object* pPlannerPtr;
-  if ( ! m_pDataStack->bPopPtr(pPlannerPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPlannerPtr) ) THROW_DSTACK();
   Planner* pPlanner = _pPlanner(pPlannerPtr);
   ASSERT(CN_PLANNER == pPlanner->eClass());
   
   i8 iPhrase;
-  if ( ! m_pDataStack->bPopAsInt(iPhrase) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iPhrase) ) THROW_DSTACK();
   
   i8 iSlot;
-  if ( ! m_pDataStack->bPopAsInt(iSlot) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iSlot) ) THROW_DSTACK();
   
   Session* pSession = pJob_FetchRows->pSession();
   ReqTuple* aReqTuple = &pJob_FetchRows->m_xReqTuple;
@@ -188,13 +176,11 @@ void Step::vJob_FetchRowsTableStore(void)
   ENTRY(); // ENTRY("vJob_FetchRowsTableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
   Object* pTablePtr;
-  if ( ! m_pDataStack->bPopPtr(pTablePtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pTablePtr) ) THROW_DSTACK();
   Table* pTable = _pTable(pTablePtr);
   
   pJob_FetchRows->m_pTable = pTable;
@@ -210,8 +196,7 @@ void Step::vJob_FetchRowsWhereFetch(void)
   ENTRY(); // ENTRY("vJob_FetchRowsWhereFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
   m_pDataStack->vPushStr(pJob_FetchRows->m_sWhere);
@@ -228,8 +213,7 @@ void Step::vJob_SubFetchBufferQueueFetch(void)
   ENTRY(); // ENTRY("vJob_SubFetchBufferQueueFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
   m_pDataStack->vPushPtr(pJob->m_pBufferQueue);
@@ -245,8 +229,7 @@ void Step::vJob_SubFetchPhraseFetch(void)
   ENTRY(); // ENTRY("vJob_SubFetchPhraseFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
   m_pDataStack->vPushInt(pJob->m_iPhrase);
@@ -262,8 +245,7 @@ void Step::vJob_SubFetchPlannerFetch(void)
   ENTRY(); // ENTRY("vJob_SubFetchPlannerFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
   m_pDataStack->vPushPtr(pJob->m_pPlanner);
@@ -280,8 +262,7 @@ void Step::vJob_SubFetchSlotFetch(void)
   ENTRY(); // ENTRY("vJob_SubFetchSlotFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
   m_pDataStack->vPushInt(pJob->i_Slot());

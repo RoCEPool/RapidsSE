@@ -60,10 +60,8 @@ void Step::vStrCat(void)
   s48K sStrB;
   s48K sStrA;
   
-  if ( ! m_pDataStack->bPopStr(sStrB) )
-    THROW_DSTACK();
-  if ( ! m_pDataStack->bPopStr(sStrA) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sStrB) ) THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sStrA) ) THROW_DSTACK();
 
   sStrR = sStrA;
   
@@ -86,10 +84,8 @@ void Step::vStrClip(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopStr(sString) )
-    THROW_DSTACK();
-  if ( ! m_pDataStack->bPopInt(iLength) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iLength) ) THROW_DSTACK();
 
   // validate length
   i8 iHasLength = sString.nLength();
@@ -120,12 +116,10 @@ void Step::vStrEqual(void)
   ENTRY(); // ENTRY("vStrEql"_Stz);
   
   GenVar xStringA;
-  if ( ! m_pDataStack->bPopVal(xStringA) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xStringA) ) THROW_DSTACK();
   
   GenVar xStringB;
-  if ( ! m_pDataStack->bPopVal(xStringB) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xStringB) ) THROW_DSTACK();
 
   // get the arguments
   
@@ -149,8 +143,7 @@ void Step::vStrEscape(void)
   s48K xEscaped;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopStr(xArg) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(xArg) ) THROW_DSTACK();
   
   StrLib::vEscape(xArg.azChar(),xEscaped.azChar());
   
@@ -167,8 +160,7 @@ void Step::vStrFirstCsv(void)
   ENTRY(); // ENTRY("vStrFirstCsv"_Stz);
   
   s48K sStr;
-  if ( ! m_pDataStack->bPopStr(sStr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sStr) ) THROW_DSTACK();
   
   s48K sFirstValue;
   
@@ -190,8 +182,7 @@ void Step::vStrFormat(void)
   ENTRY(); // ENTRY("vStrFormat"_Stz);
   
   s48K sFormat;
-  if ( ! m_pDataStack->bPopStr(sFormat) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sFormat) ) THROW_DSTACK();
   
   s48K sString;
   
@@ -214,10 +205,8 @@ void Step::vStrLeft(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopStr(sString) )
-    THROW_DSTACK();
-  if ( ! m_pDataStack->bPopInt(iLength) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iLength) ) THROW_DSTACK();
 
   // validate length
   i8 iHasLength = sString.nLength();
@@ -246,8 +235,7 @@ void Step::vStrLength(void)
   s48K sString;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopStr(sString) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
   
   iLength = sString.nLength();
   
@@ -269,12 +257,10 @@ void Step::vStrPrepend(void)
   
   //! the use of A and B here doesnt seem intuitive
   GenVar xValB;
-  if ( ! m_pDataStack->bPopVal(xValB) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xValB) ) THROW_DSTACK();
  
   GenVar xValA;
-  if ( ! m_pDataStack->bPopVal(xValA) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xValA) ) THROW_DSTACK();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first string A
@@ -318,8 +304,7 @@ void Step::vStrRandom(void)
   ENTRY(); // ENTRY("vStrRandom"_Stz);
   
   i8 iLength;
-  if ( ! m_pDataStack->bPopInt(iLength) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iLength) ) THROW_DSTACK();
   
   s256 sRnd;
   
@@ -338,12 +323,10 @@ void Step::vStrRemovePrefix(void)
   ENTRY(); // ENTRY("vStrRemovePrefix"_Stz);
   
   s48K sString;
-  if ( ! m_pDataStack->bPopStr(sString) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
   
   s32 sIntro;
-  if ( ! m_pDataStack->bPopStr(sIntro) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sIntro) ) THROW_DSTACK();
   
   StrLib::vRemovePrefix(sString.azChar(), * sIntro.azChar());
   
@@ -360,12 +343,10 @@ void Step::vStrRemoveSuffix(void)
   ENTRY(); // ENTRY("vStrRemoveSuffix"_Stz);
   
   s48K sString;
-  if ( ! m_pDataStack->bPopStr(sString) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
   
   s32 sIntro;
-  if ( ! m_pDataStack->bPopStr(sIntro) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sIntro) ) THROW_DSTACK();
   
   StrLib::vRemoveSuffix(sString.azChar(), * sIntro.azChar());
   
@@ -385,14 +366,11 @@ void Step::vStrReplace(void)
   s48K sThat;
   s48K sThis;
   
-  if ( ! m_pDataStack->bPopStr(sString) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
 
-  if ( ! m_pDataStack->bPopStr(sThat) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sThat) ) THROW_DSTACK();
   
-  if ( ! m_pDataStack->bPopStr(sThis) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sThis) ) THROW_DSTACK();
   
   s48K sReplaced;
   
@@ -415,10 +393,8 @@ void Step::vStrRight(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopStr(sString) )
-    THROW_DSTACK();
-  if ( ! m_pDataStack->bPopInt(iLength) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iLength) ) THROW_DSTACK();
 
   // validate length
   i8 iHasLength = sString.nLength();
@@ -452,12 +428,9 @@ void Step::vStrSub(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopStr(sString) )
-    THROW_DSTACK();
-  if ( ! m_pDataStack->bPopInt(iStart) )
-    THROW_DSTACK();
-  if ( ! m_pDataStack->bPopInt(iLength) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iStart) ) THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iLength) ) THROW_DSTACK();
 
   i8 iHasLength = sString.nLength();
   
@@ -494,8 +467,7 @@ void Step::vStrTailInt(void)
   
   // get the string
   s48K sString;
-  if ( ! m_pDataStack->bPopStr(sString) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
   
   // get last char in string
   char* aLast = StrLib::sLast(sString.azChar());
@@ -533,8 +505,7 @@ void Step::vStrToStrVec(void)
   
   // get the path string
   s256 sPath;
-  if ( ! m_pDataStack->bPopStr(sPath) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sPath) ) THROW_DSTACK();
   
   i8 nStrings = 0;
   

@@ -24,8 +24,7 @@ void Step::vStreamDefGet(void)
   ENTRY(); // ENTRY("vStreamDefGet"_Stz);
   
   Object* pPtrObject;
-  if ( ! m_pDataStack->bPopPtr(pPtrObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrObject) ) THROW_DSTACK();
   
   m_pDataStack->vPushPtr(*m_pRegSet->m_xpStreamDef);
   
@@ -108,8 +107,7 @@ void Step::vStreamDefSet(void)
   ENTRY(); // ENTRY("vStreamDefSet"_Stz);
   
   Object* pPtrObject;
-  if ( ! m_pDataStack->bPopPtr(pPtrObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrObject) ) THROW_DSTACK();
   
   m_pRegSet->m_xpStreamDef = _pStreamDef(pPtrObject);
   

@@ -27,8 +27,7 @@ void Step::vEntBufferDump(void)
   
   Object* pPtrIndexBuffer = nullptr;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndexBuffer) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndexBuffer) ) THROW_DSTACK();
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
@@ -47,8 +46,7 @@ void Step::vEntBufferIndexFetch(void)
   Object* pPtrIndex;
   Object* pPtrIndexBuffer;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndexBuffer) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndexBuffer) ) THROW_DSTACK();
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
@@ -67,13 +65,11 @@ void Step::vEntBufferIndexStore(void)
   Object* pPtrIndex;
   Object* pPtrIndexBuffer;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndexBuffer) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndexBuffer) ) THROW_DSTACK();
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -93,8 +89,7 @@ void Step::vEntBufferNextBuffer(void)
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndexBuffer) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndexBuffer) ) THROW_DSTACK();
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
@@ -117,8 +112,7 @@ void Step::vEntBufferPartitionFetch(void)
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndexBuffer) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndexBuffer) ) THROW_DSTACK();
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
@@ -137,14 +131,12 @@ void Step::vEntBufferPartitionStore(void)
   Object* pPtrEntry = nullptr;
   Object* pPtrIndexBuffer;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndexBuffer) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndexBuffer) ) THROW_DSTACK();
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
   i8 iPartitionNo;
-  if ( ! m_pDataStack->bPopInt(iPartitionNo) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iPartitionNo) ) THROW_DSTACK();
   
   pIndexBuffer->vPartitionNo(iPartitionNo);
   
@@ -160,8 +152,7 @@ void Step::vEntBufferToEntBuffer(void)
   
   s48K sString;
   
-  if ( ! m_pDataStack->bPopStr(sString) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
   
   EntBuffer* pEntBuffer = _pEntBuffer((void*)sString.iToI8());
   

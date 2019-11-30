@@ -97,8 +97,7 @@ void Step::vOperandHandleAggEnd(void)
   
   i8 nCount;
   
-  if ( ! m_pDataStack->bPopInt(nCount) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(nCount) ) THROW_DSTACK();
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
   
@@ -335,8 +334,7 @@ void Step::vOperandSet(void)
   ENTRY(); // ENTRY("vOperandSet"_Stz);
   
   Object* pPtrObject;
-  if ( ! m_pDataStack->bPopPtr(pPtrObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrObject) ) THROW_DSTACK();
   
   m_pRegSet->m_pOperand = _pOperand(pPtrObject);
   

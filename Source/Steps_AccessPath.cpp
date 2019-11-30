@@ -21,13 +21,11 @@ void Step::vAccessPathTableStore(void)
   ENTRY(); // ENTRY("vAccessPathTableStore"_Stz);
   
   Object* pPtrAccessPath;
-  if ( ! m_pDataStack->bPopPtr(pPtrAccessPath) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrAccessPath) ) THROW_DSTACK();
   AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) ) THROW_DSTACK();
   Table* pTable = _pTable(pPtrTable);
   
   pAccessPath->vTable(pTable);
@@ -43,8 +41,7 @@ void Step::vAccessPathTableFetch(void)
   ENTRY(); // ENTRY("vAccessPathTableFetch"_Stz);
   
   Object* pPtrAccessPath;
-  if ( ! m_pDataStack->bPopPtr(pPtrAccessPath) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrAccessPath) ) THROW_DSTACK();
   AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
   
   Table* pTable = pAccessPath->pTable();

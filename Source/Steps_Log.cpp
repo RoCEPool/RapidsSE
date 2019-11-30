@@ -42,8 +42,7 @@ void Step::vLogMark(void)
   
   s256 sMark;
 
-  if ( ! m_pDataStack->bPopStr(sMark) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sMark) ) THROW_DSTACK();
 
   //i8 iJobId = m_pTask->m_pJob->m_iFocalId;
   JobLog::vNote(m_pTask->m_pJob,sMark);
@@ -60,8 +59,7 @@ void Step::vLogMarkEntry(void)
   
   s256 sWordNm;
   
-  if ( ! m_pDataStack->bPopStr(sWordNm) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sWordNm) ) THROW_DSTACK();
   
   Job* pJob = m_pTask->m_pJob;
   AM::vLogJob(SL_INF,pJob,JA_JOB_ENTER,
@@ -80,8 +78,7 @@ void Step::vLogMarkExit(void)
   
   s256 sWordNm;
   
-  if ( ! m_pDataStack->bPopStr(sWordNm) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sWordNm) ) THROW_DSTACK();
   
   Job* pJob = m_pTask->m_pJob;
 
@@ -100,8 +97,7 @@ void Step::vLogMarkPhase(void)
   ENTRY(); // ENTRY("vActivityLogMarkPhase"_Stz);
   
   i8 i_Phase;
-  if ( ! m_pDataStack->bPopInt(i_Phase) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(i_Phase) ) THROW_DSTACK();
   
   Job* pJob = m_pTask->m_pJob;
   
@@ -122,12 +118,10 @@ void Step::vLogMarkSeed(void)
   ENTRY(); // ENTRY("vLogMarkSeed"_Stz);
   
   i8 iSeed;
-  if ( ! m_pDataStack->bPopInt(iSeed) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iSeed) ) THROW_DSTACK();
   
   s32 sWordNm;
-  if ( ! m_pDataStack->bPopStr(sWordNm) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sWordNm) ) THROW_DSTACK();
   
   //ActLog::vAdd(m_pTask->m_pJob,(eAN)iSeed,sWordNm.szStz());
   
@@ -142,12 +136,10 @@ void Step::vLogMarkWord(void)
   ENTRY(); // ENTRY("vLogMarkWord"_Stz);
   
   i8 iAN;
-  if ( ! m_pDataStack->bPopInt(iAN) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iAN) ) THROW_DSTACK();
   
   s32 sWordNm;
-  if ( ! m_pDataStack->bPopStr(sWordNm) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sWordNm) ) THROW_DSTACK();
   
   //ActLog::vAdd(m_pTask->m_pJob,(eAN)iAN,sWordNm.szStz());
   
@@ -162,8 +154,7 @@ void Step::vLogJobSeed(void)
   ENTRY(); // ENTRY("vLogJobSeed"_Stz);
   
   i8 i_Seed;
-  if ( ! m_pDataStack->bPopInt(i_Seed) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(i_Seed) ) THROW_DSTACK();
   
   Job* pJob = m_pTask->m_pJob;
   AM::vLogJob(SL_INF,pJob,JA_JOB_SEED,

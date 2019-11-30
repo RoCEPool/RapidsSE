@@ -28,8 +28,7 @@ void Step::vFileClose(void)
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrFile) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrFile) ) THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
   
@@ -47,8 +46,7 @@ void Step::vFileDelete(void)
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrFile) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrFile) ) THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
 
@@ -83,17 +81,14 @@ void Step::vFileOpen(void)
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrFile) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrFile) ) THROW_DSTACK();
   File* pFile = _pFile(pPtrFile);
   
   s32 sMode;
-  if ( ! m_pDataStack->bPopStr(sMode) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sMode) ) THROW_DSTACK();
 
   s256 sPath;
-  if ( ! m_pDataStack->bPopStr(sPath) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sPath) ) THROW_DSTACK();
   
   bool bOpened = pFile->bOpenMode(sPath,sMode);
   
@@ -111,8 +106,7 @@ void Step::vFilePathGet(void)
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrFile) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrFile) ) THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
 
@@ -132,8 +126,7 @@ void Step::vFileRead(void)
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrFile) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrFile) ) THROW_DSTACK();
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
   
@@ -161,16 +154,14 @@ void Step::vFileWrite(void)
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrFile) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrFile) ) THROW_DSTACK();
   
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
   
   s48K sLine;
   
-  if ( ! m_pDataStack->bPopStr(sLine) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sLine) ) THROW_DSTACK();
   
   Stz* wStr = sLine;
   

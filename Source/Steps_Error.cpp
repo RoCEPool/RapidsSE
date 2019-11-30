@@ -21,8 +21,7 @@ void Step::vErrorMsg(void)
   
   
   i8 iErrorCode;
-  if ( ! m_pDataStack->bPopInt(iErrorCode) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iErrorCode) ) THROW_DSTACK();
   
   if (iErrorCode < EC_NONE || iErrorCode > EC_ENUMS)
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,"error.msg"_Stz);

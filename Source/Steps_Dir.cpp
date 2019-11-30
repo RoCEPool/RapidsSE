@@ -39,8 +39,7 @@ void Step::vDirChangeCurrent(void)
   ENTRY(); // ENTRY("vDirChangeCurrent"_Stz);
   
   s256 sDir;
-  if ( ! m_pDataStack->bPopStr(sDir) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sDir) ) THROW_DSTACK();
   
   if ( ! Dir::bChangeCurrent(sDir) )
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -57,8 +56,7 @@ void Step::vDirExists(void)
   ENTRY(); // ENTRY("vDirExists"_Stz);
   
   s256 sDirPath;
-  if ( ! m_pDataStack->bPopStr(sDirPath) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sDirPath) ) THROW_DSTACK();
   
   i8 iResult = Dir::bExists(sDirPath);
   
@@ -98,8 +96,7 @@ void Step::vDirMake(void)
   ENTRY(); // ENTRY("vDirMake"_Stz);
   
   s256 sPath;
-  if ( ! m_pDataStack->bPopStr(sPath) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sPath) ) THROW_DSTACK();
   
   i8 iResult = Dir::bMake(sPath);
   
@@ -116,8 +113,7 @@ void Step::vDirRemove(void)
   ENTRY(); // ENTRY("vDirRemove"_Stz);
   
   s256 sPath;
-  if ( ! m_pDataStack->bPopStr(sPath) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sPath) ) THROW_DSTACK();
   
   i8 iResult = Dir::bRemove(sPath);
   
@@ -135,8 +131,7 @@ void Step::vDirClose(void)
   
   Object* pPtrDir;
 
-  if ( ! m_pDataStack->bPopPtr(pPtrDir) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDir) ) THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -154,8 +149,7 @@ void Step::vDirDelete(void)
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrDir) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDir) ) THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -173,8 +167,7 @@ void Step::vDirEntryName(void)
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrDir) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDir) ) THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -194,8 +187,7 @@ void Step::vDirEntryType(void)
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrDir) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDir) ) THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -217,8 +209,7 @@ void Step::vDirIsClosed(void)
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrDir) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDir) ) THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -238,8 +229,7 @@ void Step::vDirIsOpen(void)
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrDir) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDir) ) THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -276,13 +266,11 @@ void Step::vDirOpen(void)
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrDir) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDir) ) THROW_DSTACK();
   Dir* pDir = _pDir(pPtrDir);
   
   s256 sPath;
-  if ( ! m_pDataStack->bPopStr(sPath) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sPath) ) THROW_DSTACK();
   
   bool bOpened = pDir->bOpen(sPath);
   
@@ -300,8 +288,7 @@ void Step::vDirPathGet(void)
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrDir) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDir) ) THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -322,8 +309,7 @@ void Step::vDirRead(void)
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrDir) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDir) ) THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -343,8 +329,7 @@ void Step::vDirRewind(void)
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrDir) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDir) ) THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -362,14 +347,12 @@ void Step::vDirSeek(void)
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrDir) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDir) ) THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   
   i8 iPosition;
-  if ( ! m_pDataStack->bPopInt(iPosition) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iPosition) ) THROW_DSTACK();
   
   pDir->vSeek(iPosition);
   
@@ -385,8 +368,7 @@ void Step::vDirTell(void)
   
   Object* pPtrDir;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrDir) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDir) ) THROW_DSTACK();
   
   Dir* pDir = _pDir(pPtrDir);
   

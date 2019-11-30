@@ -21,8 +21,7 @@ void Step::vPersistenceCheckpoint(void)
   ENTRY(); // ENTRY("vPersistenceCheckpoint"_Stz);
   
   s256 sFilePath;
-  if ( ! m_pDataStack->bPopStr(sFilePath) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sFilePath) ) THROW_DSTACK();
   
   vTrace("\nTaking checkpoint into file : '%s'\n"_Stz, sFilePath.azChar());
 
@@ -43,8 +42,7 @@ void Step::vPersistenceReload(void)
   ENTRY(); // ENTRY("vPersistenceReload"_Stz);
   
   s256 sFilePath;
-  if ( ! m_pDataStack->bPopStr(sFilePath) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sFilePath) ) THROW_DSTACK();
   
   vTrace("\nReloading from file : '%s'\n"_Stz, sFilePath.azChar());
   

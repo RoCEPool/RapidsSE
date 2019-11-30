@@ -4,12 +4,6 @@
 
 #include "SenVM.h"
 
-
-// Note: to optimise stack operations look at directly using pDataStack->m_xTop.aAnyVal
-//       refer to Step::vFlowJumpFalse
- 
- 
-
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -109,17 +103,13 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
   
   vTrace("%s:\n"_Stz,aTitle);
   
-  GenVar xVar;
-  
   i8 nValues = this->nValues();
   for (i8 i_Val = 0; i_Val < nValues; i_Val++) {
     
     AnyVal* aAnyVal = aPeekVal(i_Val);
+    
+    eCN eValClass  = aAnyVal->eClass();
     i8 nStackUsage = aAnyVal->nStackUsage();
-    
-    vPeekVal(i_Val,xVar);
-    
-    eCN eValClass = xVar.eValClass();
     
     if (CN_STRVAL == eValClass)
       vTrace("[%2lld %p %02lldB %6s (8,8,%02lld)] "_Stz,
@@ -129,11 +119,10 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
       vTrace("[%2lld %p %02lldB %6s (8,8,00)] "_Stz,
              i_Val,aAnyVal,nStackUsage,aCN[eValClass]);
     
-    
     switch(eValClass) {
         
       case CN_FIPVAL: {
-        Cell* aFip  = xVar.aFip();
+        Cell* aFip  = aAnyVal->aFip();
         if (pDicStack) {
           Word* pWord = pDicStack->pLocateWord(aFip);
           
@@ -148,14 +137,14 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
       }
         
       case CN_INTVAL: {
-        i8 iInt = xVar.iInt();
+        i8 iInt = aAnyVal->iInt();
         
         vTrace("%lld\n"_Stz,iInt);
         break;
       }
         
       case CN_PTRVAL: {
-        Object* pObj  = xVar.pObj();
+        Object* pObj  =aAnyVal->pObj();
         eCN ePtdClass = pObj->eClass();
         
         vTrace("%p (%s)\n"_Stz,pObj,aCN[ePtdClass]);
@@ -163,7 +152,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
       }
         
       case CN_STRVAL: {
-        char* azChar = xVar.azChar();
+        char* azChar = aAnyVal->azChar();
         
         vTrace("%s\n"_Stz,azChar);
         break;
@@ -455,7 +444,7 @@ void Stack::vPushStr(String* pStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  //vContentDump(nullptr,"Before:"_Stz);
+  //vDump(nullptr,"Before:"_Stz);
 
   i8 nSize = StrLib::iSize(pStr->azStr());
   StrVal* aStrVal = aAllotStrVal(nSize);
@@ -463,7 +452,7 @@ void Stack::vPushStr(String* pStr)
   aStrVal->vAssign(pStr->szStz());
   //aStrVal->vInspect();
 
-  //vContentDump(nullptr,"After:"_Stz);
+  //vDump(nullptr,"After:"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -473,8 +462,6 @@ void Stack::vPushVal(AnyVal* aAnyVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  //aAnyVal->vInspect();
-  
   _hazard_();
   
   i8 nBytes = aAnyVal->nStackUsage();

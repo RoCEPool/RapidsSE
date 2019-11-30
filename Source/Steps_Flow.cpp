@@ -42,8 +42,7 @@ void Step::vFlowExecute(void)
   ENTRY(); // ENTRY("vFlowExecute"_Stz);
   
   Object* pWordObject;
-  if ( ! m_pDataStack->bPopPtr(pWordObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pWordObject) ) THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   if (WK_INTRINSIC == pWord->eKind()) {
@@ -112,8 +111,7 @@ void Step::vFlowJumpFalse(void)
   ENTRY(); // ENTRY("vJumpFalse"_Stz);
   
   i8 iVal;
-  if ( ! m_pDataStack->bPopAsInt(iVal) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iVal) ) THROW_DSTACK();
   
   // n.b. the IP points to the jump arg
   
@@ -131,8 +129,7 @@ void Step::vFlowJumpFalse(void)
 //{
 //  ENTRY(); // ENTRY("vJumpFalse"_Stz);
 //
-//  //if ( ! bGuard(1) )
-//  //  THROW_DSTACK();
+//  //if ( ! bGuard(1) ) THROW_DSTACK();
 //
 //  // get pointer to value on the top of the stack
 //  Stack* pDataStack = m_pDataStack;
@@ -176,8 +173,7 @@ void Step::vFlowJumpTrue(void)
   ENTRY(); // ENTRY("vJumpTrue"_Stz);
   
   i8 iVal;
-  if ( ! m_pDataStack->bPopAsInt(iVal) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iVal) ) THROW_DSTACK();
   
   // n.b. the IP points to the jump arg
   

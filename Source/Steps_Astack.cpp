@@ -42,8 +42,7 @@ void Step::vAstackClass(void)
   ENTRY(); // ENTRY("vAstackClass"_Stz);
   
   i8 nTh;
-  if ( ! m_pDataStack->bPopInt(nTh) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(nTh) ) THROW_DSTACK();
   
   GenVar xVariable;
   
@@ -92,8 +91,7 @@ void Step::vAstackDup(void)
   // could just copy from stack back into stack
   
   GenVar xValA;
-  if ( ! m_pAuxStack->bPopVal(xValA) )
-  THROW_DSTACK();
+  if ( ! m_pAuxStack->bPopVal(xValA) ) THROW_DSTACK();
   
   m_pAuxStack->vPushVal(xValA);
   m_pAuxStack->vPushVal(xValA);
@@ -127,12 +125,10 @@ void Step::vAstackNip(void)
   ENTRY(); // ENTRY("vAstackNip"_Stz);
   
   GenVar xValA;
-  if ( ! m_pAuxStack->bPopVal(xValA) )
-    THROW_ASTACK();
+  if ( ! m_pAuxStack->bPopVal(xValA) ) THROW_ASTACK();
   
   GenVar xValB;
-  if ( ! m_pAuxStack->bPopVal(xValB) )
-    THROW_ASTACK();
+  if ( ! m_pAuxStack->bPopVal(xValB) ) THROW_ASTACK();
 
   m_pAuxStack->vPushVal(xValA);
   
@@ -147,8 +143,7 @@ void Step::vAstackPick(void)
   ENTRY(); // ENTRY("vAstackPick"_Stz);
   
   i8 iPick;
-  if ( ! m_pDataStack->bPopAsInt(iPick) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iPick) ) THROW_DSTACK();
   
   // could do this directly on stack
   
@@ -178,8 +173,7 @@ void Step::vAstackReverse(void)
   GenVar xVal8;
   
   i8 nValues;
-  if ( ! m_pDataStack->bPopInt(nValues) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(nValues) ) THROW_DSTACK();
   
   
   switch (nValues) {
@@ -225,12 +219,10 @@ void Step::vAstackSwap(void)
   ENTRY(); // ENTRY("vAstackSwap"_Stz);
   
   GenVar xValA;
-  if ( ! m_pAuxStack->bPopVal(xValA) )
-    THROW_ASTACK();
+  if ( ! m_pAuxStack->bPopVal(xValA) ) THROW_ASTACK();
   
   GenVar xValB;
-  if ( ! m_pAuxStack->bPopVal(xValB) )
-    THROW_ASTACK();
+  if ( ! m_pAuxStack->bPopVal(xValB) ) THROW_ASTACK();
 
   m_pAuxStack->vPushVal(xValA);
   m_pAuxStack->vPushVal(xValB);
@@ -246,8 +238,7 @@ void Step::vAstackToA(void)
   ENTRY(); // ENTRY("vAstackToA"_Stz);
   
   GenVar xValOpaque;
-  if ( ! m_pDataStack->bPopVal(xValOpaque) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xValOpaque) ) THROW_DSTACK();
   
   m_pAuxStack->vPushVal(xValOpaque);
   
@@ -262,8 +253,7 @@ void Step::vAstackToD(void)
   ENTRY(); // ENTRY("vAstackToD"_Stz);
   
   GenVar xVal;
-  if ( ! m_pAuxStack->bPopVal(xVal) )
-    THROW_ASTACK();
+  if ( ! m_pAuxStack->bPopVal(xVal) ) THROW_ASTACK();
   
   m_pDataStack->vPushVal(xVal);
   
@@ -278,13 +268,11 @@ void Step::vAstackTransfer(void)
   ENTRY(); // ENTRY("vAstackTransfer"_Stz);
   
   Object* pPtrTask;
-  if ( ! m_pDataStack->bPopPtr(pPtrTask) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrTask) ) THROW_DSTACK();
   Task* pThatTask = _pTask(pPtrTask);
   
   GenVar xVariable;
-  if ( ! m_pDataStack->bPopVal(xVariable) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xVariable) ) THROW_DSTACK();
   
   pThatTask->m_okLock.vGrabWrite();
   pThatTask->m_pForth->m_pAuxStack->vPushVal(xVariable);

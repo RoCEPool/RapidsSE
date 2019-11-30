@@ -36,8 +36,7 @@ void Step::vAssert(void)
   ENTRY(); // ENTRY("vAssert"_Stz);
   
   i8 iTrue;
-  if ( ! m_pDataStack->bPopAsInt(iTrue) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iTrue) ) THROW_DSTACK();
   
   RASSERT(iTrue);
   
@@ -52,8 +51,7 @@ void Step::vAssertClass(void)
   ENTRY(); // ENTRY("vAssertClass"_Stz);
   
   i8 iAssertClassNo;
-  if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) ) THROW_DSTACK();
   
   AnyVal* aAnyVal = m_pDataStack->aTopVal();
   
@@ -80,8 +78,7 @@ void Step::vAssertClass_0(void)
   ENTRY(); // ENTRY("vAssertClass_0"_Stz);
   
   i8 iAssertClassNo;
-  if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) ) THROW_DSTACK();
   
   AnyVal* aAnyVal = m_pDataStack->aPeekVal(0);
   
@@ -108,8 +105,7 @@ void Step::vAssertClass_1(void)
   ENTRY(); // ENTRY("vAssertClass_1"_Stz);
   
   i8 iAssertClassNo;
-  if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) ) THROW_DSTACK();
   
   AnyVal* aAnyVal = m_pDataStack->aPeekVal(1);
   
@@ -136,8 +132,7 @@ void Step::vAssertClass_2(void)
   ENTRY(); // ENTRY("vAssertClass_2"_Stz);
   
   i8 iAssertClassNo;
-  if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) ) THROW_DSTACK();
   
   AnyVal* aAnyVal = m_pDataStack->aPeekVal(2);
   
@@ -164,8 +159,7 @@ void Step::vAssertClass_3(void)
   ENTRY(); // ENTRY("vAssertClass_3"_Stz);
   
   i8 iAssertClassNo;
-  if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) ) THROW_DSTACK();
   
   AnyVal* aAnyVal = m_pDataStack->aPeekVal(3);
   
@@ -192,8 +186,7 @@ void Step::vAssertClass_4(void)
   ENTRY(); // ENTRY("vAssertClass_4"_Stz);
   
   i8 iAssertClassNo;
-  if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iAssertClassNo) ) THROW_DSTACK();
   
   AnyVal* aAnyVal = m_pDataStack->aPeekVal(4);
   

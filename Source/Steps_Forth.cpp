@@ -46,8 +46,7 @@ void Step::vAllot(void)
   
   i8 iBytes;
   
-  if ( !  m_pDataStack->bPopInt(iBytes) )
-    THROW_DSTACK();
+  if ( !  m_pDataStack->bPopInt(iBytes) ) THROW_DSTACK();
   
   RASSERT(iBytes);
   
@@ -113,8 +112,7 @@ void Step::vComma(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   GenVar xValue;
-  if ( ! m_pDataStack->bPopVal(xValue) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xValue) ) THROW_DSTACK();
   
   pCurrentWord->vEncode("pushValue"_Stz,xValue);
     
@@ -129,8 +127,7 @@ void Step::vCompileComma(void)
   ENTRY(); // ENTRY("vCompileComma"_Stz);
   
   Object* pWordObject;
-  if ( ! m_pDataStack->bPopPtr(pWordObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pWordObject) ) THROW_DSTACK();
   Word* pCalledWord = _pWord(pWordObject);
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
@@ -199,8 +196,7 @@ void Step::vCreateFrom(void)
   ENTRY(); // ENTRY("vCreateFrom"_Stz);
   
   s32 sName;
-  if ( ! m_pDataStack->bPopStr(sName) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
   
   Dic* pDic;
   if (m_oDicStack.iCount())
@@ -227,8 +223,7 @@ void Step::vCreateFromPersistent(void)
   ENTRY(); // ENTRY("vCreateFrom"_Stz);
   
   s32 sName;
-  if ( ! m_pDataStack->bPopStr(sName) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
   
   Dic* pDic;
   if (m_oDicStack.iCount())
@@ -252,8 +247,7 @@ void Step::vCreateFromInRoot(void)
   ENTRY(); // ENTRY("vCreateFromInRoot"_Stz);
   
   s32 sName;
-  if ( ! m_pDataStack->bPopStr(sName) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
   
   Dic* pDic = AM::pRootDic();
   
@@ -334,8 +328,7 @@ void Step::vExit_RT(void)
     m_pTask->vLocalsPop();
   
   Cell* aCell;
-  if ( ! m_pReturnStack->bPopFip(aCell) )
-    THROW_RSTACK();
+  if ( ! m_pReturnStack->bPopFip(aCell) ) THROW_RSTACK();
   
   m_aInxPtr = aCell;
   
@@ -350,8 +343,7 @@ void Step::vFind(void)
   ENTRY(); // ENTRY("vFind"_Stz);
   
   s256 sName;
-  if ( ! m_pDataStack->bPopStr(sName) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
   
   if (m_pTask->m_iTraceMask) {
     i8 i = 0;
@@ -372,8 +364,7 @@ void Step::vFindInCurrent(void)
   ENTRY(); // ENTRY("vFindInCurrent"_Stz);
   
   s256 sName;
-  if ( ! m_pDataStack->bPopStr(sName) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
   
   if (m_pTask->m_iTraceMask) {
     i8 i = 0; i++;
@@ -438,8 +429,7 @@ void Step::vLocate(void)
   ENTRY(); // ENTRY("vLocate"_Stz);
   
   i8 iAddrAsInt;
-  if ( ! m_pDataStack->bPopAsInt(iAddrAsInt) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iAddrAsInt) ) THROW_DSTACK();
   
   void* aCellVoid = (void*)iAddrAsInt;
   Cell* aHasCell = _aCell(aCellVoid);
@@ -656,8 +646,7 @@ void Step::vSeriesName(void)
   ENTRY(); // ENTRY("vSeriesName"_Stz);
   
   s32 sName;
-  if ( ! m_pDataStack->bPopStr(sName) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

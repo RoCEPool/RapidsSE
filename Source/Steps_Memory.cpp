@@ -23,12 +23,10 @@ void Step::vMemoryByteDump(void)
   ENTRY(); // ENTRY("vMemoryByteDump"_Stz);
   
   i8 iSize;
-  if ( ! m_pDataStack->bPopInt(iSize) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iSize) ) THROW_DSTACK();
   
   Object* pWordObject;
-  if ( ! m_pDataStack->bPopPtr(pWordObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pWordObject) ) THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   //pWord->vByteDump(iSize);
@@ -68,12 +66,10 @@ void Step::vMemoryWordDump(void)
   ENTRY(); // ENTRY("vMemoryWordDump"_Stz);
   
   i8 iSize;
-  if ( ! m_pDataStack->bPopInt(iSize) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iSize) ) THROW_DSTACK();
   
   Object* pWordObject;
-  if ( ! m_pDataStack->bPopPtr(pWordObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pWordObject) ) THROW_DSTACK();
   Word* pWord = _pWord(pWordObject);
   
   //pWord->vWordDump(iSize);

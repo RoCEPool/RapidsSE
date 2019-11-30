@@ -22,8 +22,7 @@ void Step::vDicPathDepth(void)
   ENTRY(); // ENTRY("vDicStackDepth"_Stz);
   
   Object* pPtrDicPath;
-  if ( ! m_pDataStack->bPopPtr(pPtrDicPath) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDicPath) ) THROW_DSTACK();
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
   ASSERT(CN_DICPATH == pDicPath->eClass());
@@ -43,8 +42,7 @@ void Step::vDicPathDump(void)
   ENTRY(); // ENTRY("vDicPathDump"_Stz);
   
   Object* pPtrDicPath;
-  if ( ! m_pDataStack->bPopPtr(pPtrDicPath) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDicPath) ) THROW_DSTACK();
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
   ASSERT(CN_DICPATH == pDicPath->eClass());
@@ -62,15 +60,13 @@ void Step::vDicPathPick(void)
   ENTRY(); // ENTRY("vDicPathPick"_Stz);
   
   Object* pPtrDicPath;
-  if ( ! m_pDataStack->bPopPtr(pPtrDicPath) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDicPath) ) THROW_DSTACK();
   
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
   ASSERT(CN_DICPATH == pDicPath->eClass());
   
   i8 iDic;
-  if ( ! m_pDataStack->bPopInt(iDic) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iDic) ) THROW_DSTACK();
 
   s32 sDicNm(pDicPath->sDicName(iDic));
   

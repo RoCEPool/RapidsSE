@@ -21,8 +21,7 @@ void Step::vCastInt(void)
   ENTRY(); // ENTRY("vCastInt"_Stz);
   
   Object* pPtr;
-  if ( ! m_pDataStack->bPopPtr(pPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtr) ) THROW_DSTACK();
   
   m_pDataStack->vPushInt((i8)pPtr);
   
@@ -37,8 +36,7 @@ void Step::vCastPtr(void)
   ENTRY(); // ENTRY("vCastPtr"_Stz);
   
   i8 iInt;
-  if ( ! m_pDataStack->bPopInt(iInt) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iInt) ) THROW_DSTACK();
   
   m_pDataStack->vPushPtr((Object*)iInt);
   

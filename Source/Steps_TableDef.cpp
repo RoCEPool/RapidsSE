@@ -20,13 +20,11 @@ void Step::vTableDefParse(void)
   ENTRY(); // ENTRY("vTableDefParse"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   Job* pJob_CreateTable = _pJob(pJobPtr);
   
   s4K sCmd;
-  if (! m_pDataStack->bPopStr(sCmd))
-    THROW_DSTACK();
+  if (! m_pDataStack->bPopStr(sCmd)) THROW_DSTACK();
 
   //vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   //vTrace("Stmt: %s\n"_Stz,sCmd.szStz());

@@ -48,14 +48,12 @@ void Step::vIndexAnalyze(void)
   Object* pPtrIndex;
   i8 iDetailed;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  if ( ! m_pDataStack->bPopInt(iDetailed) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iDetailed) ) THROW_DSTACK();
   
   s48K sAnalysis;
   i8 nRows;
@@ -73,14 +71,12 @@ void Step::vIndexColumnFetch(void)
   ENTRY(); // ENTRY("vIndexColumnFetch"_Stz);
   
   Object* pPtrIndex;
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iColumnNo;
-  if ( ! m_pDataStack->bPopInt(iColumnNo) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iColumnNo) ) THROW_DSTACK();
   
   ASSERT(iColumnNo < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iColumnNo);
@@ -98,8 +94,7 @@ void Step::vIndexColumnCountFetch(void)
   ENTRY(); // ENTRY("vIndexColumnCountFetch"_Stz);
   
   Object* pPtrIndex;
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
@@ -116,14 +111,12 @@ void Step::vIndexColumnName(void)
   ENTRY(); // ENTRY("vIndexColumnName"_Stz);
   
   Object* pPtrIndex;
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIndex;
-  if ( ! m_pDataStack->bPopInt(iIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iIndex) ) THROW_DSTACK();
   
   ASSERT(iIndex < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
@@ -142,14 +135,12 @@ void Step::vIndexColumnType(void)
   ENTRY(); // ENTRY("vIndexColumnType"_Stz);
   
   Object* pPtrIndex;
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIndex;
-  if ( ! m_pDataStack->bPopInt(iIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iIndex) ) THROW_DSTACK();
   
   ASSERT(iIndex < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
@@ -170,8 +161,7 @@ void Step::vIndexCompact(void)
   Object* pPtrIndex;
   i8 iDetailed;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -189,8 +179,7 @@ void Step::vIndexDump(void)
   ENTRY(); // ENTRY("vIndexDump"_Stz);
   
   Object* pPtrIndex;
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -217,8 +206,7 @@ void Step::vIndexIndexDefFetch(void)
   ENTRY(); // ENTRY("vIndexIndexDefFetch"_Stz);
   
   Object* pPtrIndex;
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   
   m_pDataStack->vPushPtr(pIndex->pIndexDef());
@@ -234,13 +222,11 @@ void Step::vIndexIndexDefStore(void)
   ENTRY(); // ENTRY("vIndexIndexDefStore"_Stz);
   
   Object* pPtrIndex;
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   
   Object* pPtrIndexDef;
-  if ( ! m_pDataStack->bPopPtr(pPtrIndexDef) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndexDef) ) THROW_DSTACK();
   IndexDef* pIndexDef = _pIndexDef(pPtrIndexDef);
   
   pIndex->vIndexDef(pIndexDef);
@@ -256,8 +242,7 @@ void Step::vIndexInit(void)
   ENTRY(); // ENTRY("vIndexInit"_Stz);
   Object* pPtrIndex = nullptr;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -276,8 +261,7 @@ void Step::vIndexIsPrimaryKeyFetch(void)
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -298,15 +282,13 @@ void Step::vIndexIsPrimaryKeyStore(void)
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIsPrimaryKey;
-  if ( ! m_pDataStack->bPopInt(iIsPrimaryKey) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iIsPrimaryKey) ) THROW_DSTACK();
   
   pIndex->vIsPrimaryKey(iIsPrimaryKey ? true : false);
   
@@ -322,8 +304,7 @@ void Step::vIndexIsUniqueFetch(void)
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -344,8 +325,7 @@ void Step::vIndexIsValidUniqueIndex(void)
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -388,22 +368,19 @@ void Step::vIndexLowerBound(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   Object* pPtrJob;
-  if ( ! m_pDataStack->bPopPtr(pPtrJob) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrJob) ) THROW_DSTACK();
   
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the key
-  if ( ! m_pDataStack->bPopVal(xVariable) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xVariable) ) THROW_DSTACK();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
@@ -528,8 +505,7 @@ void Step::vIndexNameFetch(void)
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -549,8 +525,7 @@ void Step::vIndexPopulate(void)
   ENTRY(); // ENTRY("vIndexPopulate"_Stz);
   Object* pPtrIndex = nullptr;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -579,26 +554,22 @@ void Step::vIndexRange(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   Object* pPtrJob;
-  if ( ! m_pDataStack->bPopPtr(pPtrJob) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrJob) ) THROW_DSTACK();
   
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the lower key
-  if ( ! m_pDataStack->bPopVal(xValWrkLwr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xValWrkLwr) ) THROW_DSTACK();
   
   // get the upper key
-  if ( ! m_pDataStack->bPopVal(xValWrkUpr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xValWrkUpr) ) THROW_DSTACK();
   
   FetchBuffer* pFetchBuffer;
   EntBuffer* aLowerEntBuffer;
@@ -799,8 +770,7 @@ void Step::vIndexShowColumnVec(void)
   ENTRY(); // ENTRY("vIndexShowColumnVec"_Stz);
   
   Object* pPtrIndex;
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
@@ -817,8 +787,7 @@ void Step::vIndexSpace(void)
   ENTRY(); // ENTRY("vIndexSpace"_Stz);
   
   Object* pPtrIndex;
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -838,8 +807,7 @@ void Step::vIndexSubDic(void)
   ENTRY(); // ENTRY("vIndexSubDic"_Stz);
   
   Object* pPtrIndex;
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -860,8 +828,7 @@ void Step::vIndexTableFetch(void)
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -884,14 +851,12 @@ void Step::vIndexTableStore(void)
   Object* pPtrIndex = nullptr;
   Object* pPtrTable = nullptr;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  if ( ! m_pDataStack->bPopPtr(pPtrTable) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrTable) ) THROW_DSTACK();
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -910,8 +875,7 @@ void Step::vIndexTruncate(void)
   
   Object* pPtrIndex = nullptr;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -937,22 +901,19 @@ void Step::vIndexUpperBound(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   Object* pPtrJob;
-  if ( ! m_pDataStack->bPopPtr(pPtrJob) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrJob) ) THROW_DSTACK();
   
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the key
-  if ( ! m_pDataStack->bPopVal(xVariable) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xVariable) ) THROW_DSTACK();
   
   FetchBuffer* pFetchBuffer;
   EntBuffer* pEntBuffer;
@@ -1102,8 +1063,7 @@ void Step::vIndexVerify(void)
   
   Object* pPtrIndex;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -1123,8 +1083,7 @@ void Step::vIndexVisualize(void)
   ENTRY(); // ENTRY("vIndexVisualize"_Stz);
   
   Object* pPtrIndex;
-  if ( ! m_pDataStack->bPopPtr(pPtrIndex) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrIndex) ) THROW_DSTACK();
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());

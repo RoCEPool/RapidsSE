@@ -22,12 +22,10 @@ void Step::vAddressEqual(void)
   ENTRY(); // ENTRY("vAddressEql"_Stz);
   
   GenVar xAddressA;
-  if ( ! m_pDataStack->bPopVal(xAddressA) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xAddressA) ) THROW_DSTACK();
   
   GenVar xAddressB;
-  if ( ! m_pDataStack->bPopVal(xAddressB) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xAddressB) ) THROW_DSTACK();
 
   i8 iA = xAddressA.iInt();
   i8 iB = xAddressB.iInt();
@@ -47,8 +45,7 @@ void Step::vAddressFetch(void)
   ENTRY(); // ENTRY("vAddressFetch"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   AnyVal* aAnyVal = reinterpret_cast<AnyVal*>(pObject);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -68,13 +65,11 @@ void Step::vAddressStore(void)
   ENTRY(); // ENTRY("vAddressStore"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   AnyVal* aAnyVal = reinterpret_cast<AnyVal*>(pObject);
 
   GenVar xValToStore;
-  if ( ! m_pDataStack->bPopVal(xValToStore) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xValToStore) ) THROW_DSTACK();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

@@ -25,8 +25,7 @@ void Step::vSsnIncBegun(void)
   ENTRY(); // ENTRY("vSsnIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
   
@@ -47,8 +46,7 @@ void Step::vSsnIncCancelled(void)
   ENTRY(); // ENTRY("vSsnIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
   
@@ -69,8 +67,7 @@ void Step::vSsnIncEnded(void)
   ENTRY(); // ENTRY("vSsnIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
   
@@ -91,8 +88,7 @@ void Step::vSsnIncExecuted(void)
   ENTRY(); // ENTRY("vSsnIncExecuted"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
   
@@ -113,8 +109,7 @@ void Step::vSsnSenLoc(void)
   ENTRY(); // ENTRY("vSsnSenLoc"_Stz);
   
   i8 iPosition;
-  if ( ! m_pDataStack->bPopInt(iPosition) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iPosition) ) THROW_DSTACK();
 
   //  Session* pSession = m_i_Session->m_pSession;
   //  ApiState::vMarkSenLoc(pSession,iPosition);
@@ -133,8 +128,7 @@ void Step::vSsnTraceSession(void)
   ENTRY(); // ENTRY("vSsnTraceSession"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
   
   Job* pJob = _pJob(pJobPtr);
   

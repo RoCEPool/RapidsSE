@@ -644,8 +644,6 @@ void Engine::vOpenPool(void)
                             gxArguments.m_aRegionAddr);
   ASSERT(bResult);
   vAttachRegion();
-  //THROW_FATAL("Error: Engine missing arguments\n"_Stz);
-  //Process::vExitFailure();
 }
 
 /*----------------------------------------------------------------------------*/

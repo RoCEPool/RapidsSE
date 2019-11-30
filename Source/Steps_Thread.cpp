@@ -35,11 +35,9 @@ void Step::vThreadBind(void)
   i8 iCpu;
   Object* pObject;
   
-  if ( ! m_pDataStack->bPopInt(iCpu) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iCpu) ) THROW_DSTACK();
   
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -59,8 +57,7 @@ void Step::vThreadCpu(void)
   
   Object* pObject;
   
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -79,8 +76,7 @@ void Step::vThreadDedicatedFetch(void)
   ENTRY(); // ENTRY("vThreadDedicatedFetch"_Stz);
   
   Object* pThreadObject;
-  if ( ! m_pDataStack->bPopPtr(pThreadObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pThreadObject) ) THROW_DSTACK();
   Thread* pThread = _pThread(pThreadObject);
   
   m_pDataStack->vPushInt(pThread->m_eDedicated);
@@ -96,13 +92,11 @@ void Step::vThreadDedicatedStore(void)
   ENTRY(); // ENTRY("vThreadDedicatedStore"_Stz);
   
   Object* pThreadObject;
-  if ( ! m_pDataStack->bPopPtr(pThreadObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pThreadObject) ) THROW_DSTACK();
   Thread* pThread = _pThread(pThreadObject);
   
   i8 iDedicated;
-  if ( ! m_pDataStack->bPopAsInt(iDedicated) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iDedicated) ) THROW_DSTACK();
 
   pThread->m_eDedicated = (eCN)iDedicated;
   
@@ -132,8 +126,7 @@ void Step::vThreadDump(void)
   
   Object* pObject;
   
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -167,8 +160,7 @@ void Step::vThreadId(void)
   
   Object* pObject;
   
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -189,8 +181,7 @@ void Step::vThreadSleepMsec(void)
   
   i8 nMilliseconds;
   
-  if ( ! m_pDataStack->bPopInt(nMilliseconds) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(nMilliseconds) ) THROW_DSTACK();
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -208,8 +199,7 @@ void Step::vThreadSleepNsec(void)
   
   i8 nNanoseconds;
   
-  if ( ! m_pDataStack->bPopInt(nNanoseconds) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(nNanoseconds) ) THROW_DSTACK();
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -227,8 +217,7 @@ void Step::vThreadSleepSsec(void)
   
   i8 nSeconds;
   
-  if ( ! m_pDataStack->bPopInt(nSeconds) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(nSeconds) ) THROW_DSTACK();
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -246,8 +235,7 @@ void Step::vThreadSleepUsec(void)
   
   i8 nMicroseconds;
   
-  if ( ! m_pDataStack->bPopInt(nMicroseconds) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(nMicroseconds) ) THROW_DSTACK();
   
   Thread* pThread = Thread::pThisTLSThread();
   

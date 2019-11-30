@@ -26,12 +26,10 @@ void Step::vLocalFetch(void)
 {
   ENTRY(); // ENTRY("vLocalFetch"_Stz);
   
-  if ( ! m_pLocalsFrame )
-    THROW_DSTACK();
+  if ( ! m_pLocalsFrame ) THROW_DSTACK();
   
   i8 iLocal;
-  if ( ! m_pDataStack->bPopInt(iLocal) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iLocal) ) THROW_DSTACK();
   
   Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
   
@@ -47,12 +45,10 @@ void Step::vLocalStore(void)
 {
   ENTRY(); // ENTRY("vLocalStore"_Stz);
   
-  if ( ! m_pLocalsFrame )
-    THROW_DSTACK();
+  if ( ! m_pLocalsFrame ) THROW_DSTACK();
   
   i8 iLocal;
-  if ( ! m_pDataStack->bPopInt(iLocal) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iLocal) ) THROW_DSTACK();
   
   Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
   
@@ -128,8 +124,7 @@ void Step::vLocalsPop(void)
   
   LocalChain* pLocalsFrame = m_pLocalsFrame;
   
-  if ( ! pLocalsFrame )
-    THROW_DSTACK();
+  if ( ! pLocalsFrame ) THROW_DSTACK();
   
   m_pLocalsFrame = m_pLocalsFrame->pNext();
   

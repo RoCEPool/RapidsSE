@@ -20,8 +20,7 @@ void Step::vPlistFindJob(void)
   ENTRY(); // ENTRY("vPlistFindJob"_Stz);
   
   i8 iJobId;
-  if ( ! m_pDataStack->bPopAsInt(iJobId) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopAsInt(iJobId) ) THROW_DSTACK();
   
   Job* pJobFound = Scheduler::pFindParticipatingJob(iJobId);
   RASSERT(pJobFound);

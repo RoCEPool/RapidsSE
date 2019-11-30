@@ -26,8 +26,7 @@ void Step::vDicStackDepth(void)
   ENTRY(); // ENTRY("vDicStackDepth"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) ) THROW_DSTACK();
   
   DicStack* pDicStack = _pDicStack(pPtrDicStack);
 
@@ -46,8 +45,7 @@ void Step::vDicStackDrop(void)
   ENTRY(); // ENTRY("vDicStackDrop"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) ) THROW_DSTACK();
   
   DicStack* pDicStack = _pDicStack(pPtrDicStack);
 
@@ -64,8 +62,7 @@ void Step::vDicStackDump(void)
   ENTRY(); // ENTRY("vDicStackDump"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) ) THROW_DSTACK();
   
   DicStack* pDicStack = _pDicStack(pPtrDicStack);
 
@@ -82,15 +79,13 @@ void Step::vDicStackPick(void)
   ENTRY(); // ENTRY("vDicStackPick"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) ) THROW_DSTACK();
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
   
   i8 iDic;
-  if ( ! m_pDataStack->bPopInt(iDic) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iDic) ) THROW_DSTACK();
   
   Object* pPtrDic = pDicStack->pPick(iDic);
 
@@ -107,8 +102,7 @@ void Step::vDicStackPop(void)
   ENTRY(); // ENTRY("vDicStackPop"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) ) THROW_DSTACK();
   
   DicStack* pDicStack = _pDicStack(pPtrDicStack);
 
@@ -125,15 +119,13 @@ void Step::vDicStackPush(void)
   ENTRY(); // ENTRY("vDicStackPush"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) ) THROW_DSTACK();
   
   DicStack* pDicStack = _pDicStack(pPtrDicStack);
 
   Object* pPtrDic;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrDic) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDic) ) THROW_DSTACK();
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -150,8 +142,7 @@ void Step::vDicStackToPathStr(void)
   ENTRY(); // ENTRY("vDicStackToPathStr"_Stz);
   
   Object* pPtrDicStack;
-  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pPtrDicStack) ) THROW_DSTACK();
   DicStack* pDicStack = _pDicStack(pPtrDicStack);
   
   s256 sPath;

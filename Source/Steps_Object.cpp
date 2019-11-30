@@ -25,8 +25,7 @@ void Step::vObjectClassFetch(void)
   ENTRY(); // ENTRY("vObjectClassFetch"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   
   eCN eClassNo;
   eClassNo = pObject->eClass();
@@ -44,12 +43,10 @@ void Step::vObjectClassStore(void)
   ENTRY(); // ENTRY("vObjectClassStore"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   
   i8 iClassNo;
-  if ( ! m_pDataStack->bPopInt(iClassNo) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iClassNo) ) THROW_DSTACK();
 
   pObject->vClass((eCN)iClassNo);
   
@@ -64,8 +61,7 @@ void Step::vObjectDump(void)
   ENTRY(); // ENTRY("vObjectDump"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   
   eCN eClass = pObject->eClass();
   
@@ -102,8 +98,7 @@ void Step::vObjectMagicMark(void)
   ENTRY(); // ENTRY("vObjectMagicMark"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-    THROW_RSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_RSTACK();
   
   pObject->vMagic();
   
@@ -121,8 +116,7 @@ void Step::vObjectStore(void)
   
   GenVar xObjectVar;
   
-  if ( ! m_pDataStack->bPopVal(xObjectVar) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopVal(xObjectVar) ) THROW_DSTACK();
   
   m_pReturnStack->vPokeVal(iPeek,xObjectVar);
   
@@ -137,12 +131,10 @@ void Step::vObjectWordBodySet(void)
   ENTRY(); // ENTRY("vObjectWordBodySet"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPopPtr(pObject) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   
   i8 iIsBody;
-  if ( ! m_pDataStack->bPopInt(iIsBody) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iIsBody) ) THROW_DSTACK();
   
   pObject->vWordBody(iIsBody);
   

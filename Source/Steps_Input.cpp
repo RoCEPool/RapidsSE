@@ -77,8 +77,7 @@ void Step::vInputOpen(void)
   
   s256 sFilePath;
   
-  if ( ! m_pDataStack->bPopStr(sFilePath) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sFilePath) ) THROW_DSTACK();
   
   bool bOpened = m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
   
@@ -145,8 +144,7 @@ void Step::vInputText(void)
   
   s48K sInput;                                             //! NEED STACK CHECKS
   
-  if ( ! m_pDataStack->bPopStr(sInput) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sInput) ) THROW_DSTACK();
     
   m_pCompiler->m_pTokeniser->vUseString(sInput);
   

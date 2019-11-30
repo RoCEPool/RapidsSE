@@ -62,8 +62,7 @@ void Step::vGridFindNode(void)
   ENTRY(); // ENTRY("vGridFindNode"_Stz);
   
   s256 sNodeNm;
-  if ( ! m_pDataStack->bPopStr(sNodeNm) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopStr(sNodeNm) ) THROW_DSTACK();
   
   Node* pNode = AM::pGrid()->pFindNode(sNodeNm);
   
@@ -92,8 +91,7 @@ void Step::vGridNode(void)
   ENTRY(); // ENTRY("vGridNode"_Stz);
   
   i8 iNode;
-  if ( ! m_pDataStack->bPopInt(iNode) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iNode) ) THROW_DSTACK();
   
   Node* pNode = AM::pGrid()->pGetNode(iNode);
   
@@ -196,8 +194,7 @@ void Step::vGridStartedStore(void)
   
   i8 iStarted;
   
-  if ( ! m_pDataStack->bPopInt(iStarted) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iStarted) ) THROW_DSTACK();
   
   AM::pGrid()->vHasStarted(iStarted == 1 ? true : false);
   
@@ -225,8 +222,7 @@ void Step::vGridStartNodeStore(void)
   
   i8 iStartNode;
   
-  if ( ! m_pDataStack->bPopInt(iStartNode) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iStartNode) ) THROW_DSTACK();
   
   AM::pGrid()->vStartNode(iStartNode);
   
@@ -253,8 +249,7 @@ void Step::vGridToNode(void)
   ENTRY(); // ENTRY("vGridToNode"_Stz);
   
   i8 iParitionId;
-  if ( ! m_pDataStack->bPopInt(iParitionId) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iParitionId) ) THROW_DSTACK();
   
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
   //m_pDataStack->vPush((i8)0);
@@ -274,8 +269,7 @@ void Step::vGridToPartition(void)
   ENTRY(); // ENTRY("vGridToPartition"_Stz);
   
   i8 iSlot;
-  if ( ! m_pDataStack->bPopInt(iSlot) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iSlot) ) THROW_DSTACK();
   
   i8 iPartitionId = TablePtn::iSlotToPartition(iSlot);
   
@@ -292,8 +286,7 @@ void Step::vGridToSlot(void)
   ENTRY(); // ENTRY("vGridToSlot"_Stz);
   
   i8 iPartitionId;
-  if ( ! m_pDataStack->bPopInt(iPartitionId) )
-    THROW_DSTACK();
+  if ( ! m_pDataStack->bPopInt(iPartitionId) ) THROW_DSTACK();
   
   i8 iSlot = TablePtn::iPartitionToSlot(iPartitionId);
   
