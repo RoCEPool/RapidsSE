@@ -536,6 +536,29 @@ void Stack::vRetryPoint(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is top value a zero?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Stack::bTopIsZero(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if (CN_INTVAL == m_xTop.aAnyVal->eClass() && 0 == m_xTop.aIntVal->iInt())
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* peek at value on top of stack                                              */
+/*----------------------------------------------------------------------------*/
+AnyVal* Stack::aTopVal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  return (AnyVal*) m_xTop.aAnyVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of values currently on stack                                    */
 /*----------------------------------------------------------------------------*/
 i8 Stack::nValues(void)
@@ -650,29 +673,6 @@ AnyVal* Stack::aStackLimit(void)
   char* aLimit = (char*)&m_xWsp.ayArea()[0];
   
   return pPoolCheck<AnyVal*>(aLimit);
-}
-
-/*----------------------------------------------------------------------------*/
-/* is top value a zero?                                                       */
-/*----------------------------------------------------------------------------*/
-bool Stack::bTopIsZero(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if (CN_INTVAL == m_xTop.aAnyVal->eClass() && 0 == m_xTop.aIntVal->iInt())
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* peek at value on top of stack                                              */
-/*----------------------------------------------------------------------------*/
-AnyVal* Stack::aTopVal(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-    
-  return (AnyVal*) m_xTop.aAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/

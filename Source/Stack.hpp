@@ -84,9 +84,10 @@ namespace SenVM
     void vRetry(void);
     void vRetryPoint(void);
   
+    bool bTopIsZero(void);
     AnyVal* aTopVal(void);
   
-    i8 nValues(void);
+    i8   nValues(void);
   
   private:
     AnyVal* aAllotAnyVal(i8 nWithAdditionalBytes);
@@ -98,8 +99,6 @@ namespace SenVM
     AnyVal* aStackBase(void);
     AnyVal* aStackLimit(void);
     
-    bool    bTopIsZero(void);
-  
     Footer* aFooter(void);
     Footer* aHazard(void);
   };
