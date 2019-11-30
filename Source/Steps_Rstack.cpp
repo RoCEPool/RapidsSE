@@ -124,11 +124,7 @@ void Step::vRstackDrop(void)
 {
   ENTRY(); // ENTRY("vRstackDrop"_Stz);
   
-  // should just discard on stack
-  
-  GenVar xValA;
-  if ( ! m_pReturnStack->bPopVal(xValA) )
-    THROW_RSTACK();
+  m_pReturnStack->vDiscardTop();
   
   EXIT();
 }

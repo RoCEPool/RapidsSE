@@ -77,11 +77,7 @@ void Step::vAstackDrop(void)
 {
   ENTRY(); // ENTRY("vAstackDrop"_Stz);
   
-  // should just discard on stack
-  
-  GenVar xValA;
-  if ( ! m_pAuxStack->bPopVal(xValA) )
-    THROW_ASTACK();
+  m_pAuxStack->vDiscardTop();
   
   EXIT();
 }

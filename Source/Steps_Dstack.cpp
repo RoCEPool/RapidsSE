@@ -97,11 +97,7 @@ void Step::vDstackDrop(void)
 {
   ENTRY(); // ENTRY("vDstackDrop"_Stz);
   
-  // should just discard on stack
-  
-  GenVar xVarA;
-  if ( ! m_pDataStack->bPopVal(xVarA) )
-    THROW_DSTACK();
+  m_pDataStack->vDiscardTop();
   
   EXIT();
 }
@@ -115,14 +111,10 @@ void Step::vDstackDropTwo(void)
   
   //! should just discard on stack
   
-  GenVar xVarA;
-  if ( ! m_pDataStack->bPopVal(xVarA) )
-    THROW_DSTACK();
-  
-  GenVar xVarB;
-  if ( ! m_pDataStack->bPopVal(xVarB) )
-    THROW_DSTACK();
-  
+  m_pDataStack->vDiscardTop();
+
+  m_pDataStack->vDiscardTop();
+
   EXIT();
 }
 
