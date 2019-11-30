@@ -315,7 +315,7 @@ void Step::vRstackStk(void)
 {
   ENTRY(); // ENTRY("vRstackStk"_Stz);
   
-  m_pReturnStack->vContentDump(&m_oDicStack,"ReturnStack:"_Stz);
+  m_pReturnStack->vDump(&m_oDicStack,"ReturnStack:"_Stz);
   
   EXIT();
 }

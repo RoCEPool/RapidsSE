@@ -82,25 +82,28 @@ Stack::~Stack(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump stack                                                                 */
-/*----------------------------------------------------------------------------*/
-void Stack::vDump(eCN eClass, Object* pObj, Stz* aTab)
-{
-  Stack* pStack = _pStack(pObj);
-  
-  vTrace("values %lld top %p\n"_Stz,
-         pStack->m_nValues,
-         pStack->m_xTop.aAnyVal);
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* discard value on top of stack                                              */
+/*----------------------------------------------------------------------------*/
+void Stack::vDiscardTop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  _hazard_();
+  
+  m_xTop.vRewind();
+  m_nValues--;
+  
+  _hazard_();
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump contents of the stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
+void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -125,7 +128,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
     else
       vTrace("[%2lld %p %02lldB %6s (8,8,00)] "_Stz,
              i_Val,aAnyVal,nStackUsage,aCN[eValClass]);
-
+    
     
     switch(eValClass) {
         
@@ -133,7 +136,7 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
         Cell* aFip  = xVar.aFip();
         if (pDicStack) {
           Word* pWord = pDicStack->pLocateWord(aFip);
-
+          
           vTrace("=%p word %s \n"_Stz,aFip,
                  pWord ? pWord->szWordNm() : "<none>"_Stz);
         }
@@ -174,21 +177,6 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
     }
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* discard value on top of stack                                              */
-/*----------------------------------------------------------------------------*/
-void Stack::vDiscardTop(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  _hazard_();
-  
-  m_xTop.vRewind();
-  m_nValues--;
-  
-  _hazard_();
 }
 
 /*----------------------------------------------------------------------------*/

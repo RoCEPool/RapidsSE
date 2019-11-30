@@ -302,7 +302,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_SPVCH
   /* */ &Dump::vInvalid,         // CN_SRTBUFFER
   /* */ &Dump::vInvalid,         // CN_SRTSET
-  /* */ &Stack::vDump,           // CN_STACK
+  /* */ &Dump::vInvalid,         // CN_STACK
   /* */ &Dump::vInvalid,         // CN_STAGE
   /* */ &Dump::vInvalid,         // CN_STAGENDE
   /* */ &Dump::vInvalid,         // CN_STAGENDEVEC

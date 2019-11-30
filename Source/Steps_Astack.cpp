@@ -212,7 +212,7 @@ void Step::vAstackStk(void)
 {
   ENTRY(); // ENTRY("vAstackStk"_Stz);
   
-  m_pAuxStack->vContentDump(&m_oDicStack,"AuxStack:"_Stz);
+  m_pAuxStack->vDump(&m_oDicStack,"AuxStack:"_Stz);
   
   EXIT();
 }

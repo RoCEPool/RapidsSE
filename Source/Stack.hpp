@@ -51,17 +51,16 @@ namespace SenVM
    ~Stack(void) noexcept(false);
     
     static Stack* _pStack(void* aAddr);
-    static void vDump(eCN eClass, Object* pObj, Stz* aTab);
-  
-    void vContentDump(DicStack* pDicStack, Stz* szTitle);
   
     void vDiscardTop(void);
   
+    void vDump(DicStack* pDicStack, Stz* szTitle);
+
     bool bGuard(i8 nValues);
     bool bGuard(eCN eClass0);
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
-    
+  
     AnyVal* aPeekVal(i8 i_Val);
     void vPeekVal(i8 i_Val, GenVar& xGenVar);
   

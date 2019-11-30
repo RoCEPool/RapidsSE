@@ -398,7 +398,7 @@ void Step::vDstackStk(void)
 {
   ENTRY(); // ENTRY("vDstackStk"_Stz);
   
-  m_pDataStack->vContentDump(&m_oDicStack,"DataStack:"_Stz);
+  m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
   
   EXIT();
 }

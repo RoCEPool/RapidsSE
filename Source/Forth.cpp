@@ -129,9 +129,9 @@ void Forth::vContentDump(void)
          m_pExceptionWord ? m_pExceptionWord->szWordNm() : C_NO_NAME,
          m_pExceptionWord);
 
-  m_pAuxStack->vContentDump(&m_oDicStack,   "m_pAuxStack:"_Stz);
-  m_pDataStack->vContentDump(&m_oDicStack,  "m_pDataStack:"_Stz);
-  m_pReturnStack->vContentDump(&m_oDicStack,"m_pReturnStack:"_Stz);
+  m_pAuxStack->vDump(&m_oDicStack,   "m_pAuxStack:"_Stz);
+  m_pDataStack->vDump(&m_oDicStack,  "m_pDataStack:"_Stz);
+  m_pReturnStack->vDump(&m_oDicStack,"m_pReturnStack:"_Stz);
   
   m_oDicStack.vContentDump();
 }
