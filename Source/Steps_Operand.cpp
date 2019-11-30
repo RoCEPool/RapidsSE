@@ -108,19 +108,6 @@ void Step::vOperandHandleAggEnd(void)
     }
     else {
       
-      // create a new streamDef
-//      StreamDef* pStreamDef = new StreamDef;
-//
-//      // create an integer column
-//      pStreamDef->m_xaColumn[0].vColumnNo(0);
-//      pStreamDef->m_xaColumn[0].vColumnNm("count"_Stz);
-//      pStreamDef->m_xaColumn[0].vColumnType(CT_INTEGER);
-//      pStreamDef->m_xaColumn[0].vDatumType(DM_INT);
-//
-//      pStreamDef->m_nDefSets++;
-//      pStreamDef->m_nDefColumns[0] = 1;
-//      pStreamDef->m_i_DefStart[0] = 0;
-      
       // create an IrwBuffer
       IrwBuffer* pIrwBuffer = new IrwBuffer();
       
