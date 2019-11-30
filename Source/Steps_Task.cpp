@@ -30,7 +30,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.job@"_Stz,        &Step::vTaskJobFetch);
   vAddStep("task.job!"_Stz,        &Step::vTaskJobStore);
   vAddStep("task.name@"_Stz,       &Step::vTaskNameFetch);
-  vAddStep("task.seed"_Stz,        &Step::vTaskSeed);
   vAddStep("task.sendNode@"_Stz,   &Step::vTaskSendNodeFetch);
   vAddStep("task.sendNode!"_Stz,   &Step::vTaskSendNodeStore);
   vAddStep("task.state@"_Stz,      &Step::vTaskStateFetch);
@@ -269,46 +268,6 @@ void Step::vTaskNameFetch(void)
   s256 sName((Stz*)pThatTask->szJobName());
   
   m_pDataStack->vPushStr(sName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.seed -- set seed word and args of task                                */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskSeed(void)
-{
-  ENTRY(); // ENTRY("vTaskSeed"_Stz);
-  
-//  //                                   sSeed     nTaskArgs
-//  if ( ! m_pDataStack->bGuard(CN_STRVAL,CN_INTVAL) ) THROW_DSTACK();
-  
-  Object* pTaskObject;
-  if ( ! m_pDataStack->bPopPtr(pTaskObject) ) THROW_DSTACK();
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  s32 sSeed;
-  if ( ! m_pDataStack->bPopStr(sSeed) ) THROW_DSTACK();
-
-
-  i8 nTaskArgs;
-  if ( ! m_pDataStack->bPopInt(nTaskArgs) ) THROW_DSTACK();
-  //ASSERT(! nTaskArgs);
-  
-  if ( ! m_pDataStack->bGuard(nTaskArgs) ) THROW_DSTACK();
-  
-  // copy task arguments to given task (preserving stack order)
-  GenVar xVariable;
-  for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    m_pDataStack->vPeekVal(iTaskArg,xVariable);
-    pThatTask->m_pForth->m_pDataStack->vPushVal(xVariable);
-  }
-  
-  // discard original task arguments
-  for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    bool bPopped = m_pDataStack->bPopVal(xVariable);
-    ASSERT(bPopped);
-  }
   
   EXIT();
 }

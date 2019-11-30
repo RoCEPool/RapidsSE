@@ -1174,7 +1174,6 @@ public:
   void vTaskJobStore(void);
   void vTaskNameFetch(void);
   void vTaskThis(void);
-  void vTaskSeed(void);
   void vTaskSeedInitially(void);
   void vTaskSendNodeFetch(void);
   void vTaskSendNodeStore(void);
