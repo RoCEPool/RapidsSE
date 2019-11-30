@@ -26,7 +26,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].rowCount@"_Stz,    &Step::vOperandRowCountFetch);
   vAddStep("Operand[].set"_Stz,          &Step::vOperandSet);
   vAddStep("Operand[].toCsv"_Stz,        &Step::vOperandToCsv);
-  vAddStep("Operand[].xmitOut"_Stz,      &Step::vOperandXmitOut);
   vAddStep("Operand[].workDone"_Stz,     &Step::vOperandWorkDone);
 }
 
@@ -108,19 +107,6 @@ void Step::vOperandHandleAggEnd(void)
       pOp->vPipeOut(new CancelMarker);
     }
     else {
-      
-      // create a new streamDef
-//      StreamDef* pStreamDef = new StreamDef;
-//
-//      // create an integer column
-//      pStreamDef->m_xaColumn[0].vColumnNo(0);
-//      pStreamDef->m_xaColumn[0].vColumnNm("count"_Stz);
-//      pStreamDef->m_xaColumn[0].vColumnType(CT_INTEGER);
-//      pStreamDef->m_xaColumn[0].vDatumType(DM_INT);
-//
-//      pStreamDef->m_nDefSets++;
-//      pStreamDef->m_nDefColumns[0] = 1;
-//      pStreamDef->m_i_DefStart[0] = 0;
       
       // create an IrwBuffer
       IrwBuffer* pIrwBuffer = new IrwBuffer();
@@ -365,33 +351,6 @@ void Step::vOperandToCsv(void)
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pRegSet->m_pOperand);
   m_pRegSet->m_pOperand = pCrwBuffer->pToCsvBuffer();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].xmitOut -- xmit operator to next stage                           */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandXmitOut(void)
-{
-  ENTRY(); // ENTRY("vOperandXmitOut"_Stz);
-  
-  ASSERT(m_pRegSet->m_pOperand);
-  
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
-  
-  AM::vSendJobOperand(m_pTask,
-                      m_pRegSet->m_pOperand,
-                      pOp->m_pJobPipeline,
-                      pOp,
-                      pOp->m_iXmitNode);
-  
-
-  if (m_pRegSet->m_pOperand->eClass() != CN_ENTBUFFER &&
-      m_pRegSet->m_pOperand->eClass() != CN_CRWBUFFER)
-    AM::vDeleteOperand(m_pRegSet->m_pOperand);
-                      
-    m_pRegSet->m_pOperand = nullptr;
   
   EXIT();
 }

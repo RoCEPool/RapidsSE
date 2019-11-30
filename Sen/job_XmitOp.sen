@@ -25,14 +25,14 @@
       ZK_CRWBUFFER of
         "Operand:- ZK_CRWBUFFER" .
         Operand[].workDone
-        Operand[].xmitOut
+        Operand[].pipeOut
         true
       endof
 
       ZK_CSVBUFFER of
         "Operand:- ZK_CSVBUFFER" .
         Operand[].workDone
-        Operand[].xmitOut
+        Operand[].pipeOut
         true
       endof
 
@@ -45,21 +45,21 @@
       ZK_ENTBUFFER of
         "Operand:- ZK_ENTBUFFER" .
         Operand[].workDone
-        Operand[].xmitOut
+        Operand[].pipeOut
         true
       endof
 
       ZK_IRWBUFFER of
         "Operand:- ZK_IRWBUFFER" .
         Operand[].workDone
-        Operand[].xmitOut
+        Operand[].pipeOut
         true
       endof
 
       ZK_STREAMDEF of
         "Operand:- ZK_STREAMDEF" .
         Operand[].workDone
-        Operand[].xmitOut
+        Operand[].pipeOut
         true
       endof
 
