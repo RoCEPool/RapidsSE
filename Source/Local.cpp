@@ -35,7 +35,7 @@ Local::Local(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCAL,_FOOTER_);
   
-  MemLib::vZero(m_xWsp.ayArea(),C_WSP_LOCAL,CN_LOCAL);
+  u.vInit();
   
  _checkInitialised_(CN_LOCAL);
   
@@ -53,7 +53,7 @@ AnyVal* Local::aLocalValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCAL,_FOOTER_);
   
-  AnyVal* aAnyVal = reinterpret_cast<AnyVal*>(m_xWsp.ayArea());
+  AnyVal* aAnyVal = & u.m_xAnyVal;
   
   return aAnyVal;
 }

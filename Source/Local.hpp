@@ -7,11 +7,9 @@ namespace SenVM
 {
   class Local : public Object
   {
-    static const i8 C_WSP_LOCAL = C_8KB;
-    
   private:
-    Wsp_t<C_WSP_LOCAL> m_xWsp; // workspace which has a nested value
-
+    AllVal_small u;
+  
     // must be last
     Footer m_xFooter;
   
