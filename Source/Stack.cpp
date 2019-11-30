@@ -428,21 +428,6 @@ bool Stack::bPopVal(AnyVal* aAnyVal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value from stack into given variable                                   */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopVal(GenVar& xGenVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  vAnyValPop(xGenVar);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* push Cell* onto stack                                                      */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushFip(Cell* aFip)
