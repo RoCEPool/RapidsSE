@@ -12,10 +12,10 @@ namespace SenVM
   public:
     void* operator new(size_t);
     
-    void operator =(i8 iVal);
+    void  operator =(i8 iVal);
   
-    i8   nStackUsage(void);
-    void vToString(Stz* szDst);
+    i8    nStackUsage(void);
+    void  vToString(Stz* szDst);
   };
   
   /*----------------------------------------------------------------------------*/
@@ -25,7 +25,7 @@ namespace SenVM
   {
     IntVal* aIntVal = reinterpret_cast<IntVal*>(aAddr);
   
-    ASSERT( !aIntVal || CN_INTVAL == aIntVal->eClass() );
+    RASSERT_TYPE(aIntVal,CN_INTVAL);
   
     return aIntVal;
   }

@@ -18,7 +18,18 @@ namespace SenVM
     void  vToString(Stz* szDst);
   };
   
-  FipVal* _aFipVal(void* aAddr);
+  /*----------------------------------------------------------------------------*/
+  /* safe cast                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline FipVal* _aFipVal(void* aAddr)
+  {
+    FipVal* aFipVal = reinterpret_cast<FipVal*>(aAddr);
+  
+    RASSERT_TYPE(aFipVal,CN_FIPVAL);
+  
+    return aFipVal;
+  }
+  
 }
 
 /*============================================================================*/

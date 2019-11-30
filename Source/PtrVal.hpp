@@ -12,13 +12,23 @@ namespace SenVM
   public:
     void* operator new(size_t);
     
-    void    operator =(Object* pObject);
+    void  operator =(Object* pObject);
   
-    i8      nStackUsage(void);
-    void    vToString(Stz* szDst);
+    i8    nStackUsage(void);
+    void  vToString(Stz* szDst);
   };
   
-  PtrVal* _aPtrVal(void* aAddr);
+  /*----------------------------------------------------------------------------*/
+  /* safe cast                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline PtrVal* _aPtrVal(void* aAddr)
+  {
+    PtrVal* aPtrVal = reinterpret_cast<PtrVal*>(aAddr);
+  
+    RASSERT_TYPE(aPtrVal,CN_PTRVAL);
+  
+    return aPtrVal;
+  }
 }
 
 /*============================================================================*/

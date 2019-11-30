@@ -23,7 +23,17 @@ namespace SenVM
     void  vToString(Stz* szStz);
   };
 
-  StrVal* _aStrVal(void* aAddr);
+  /*----------------------------------------------------------------------------*/
+  /* safe cast                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline StrVal* _aStrVal(void* aAddr)
+  {
+    StrVal* aStrVal = reinterpret_cast<StrVal*>(aAddr);
+  
+    RASSERT_TYPE(aStrVal,CN_STRVAL);
+
+    return aStrVal;
+  }  
 }
 
 /*============================================================================*/
