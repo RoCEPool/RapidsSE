@@ -28,7 +28,7 @@
 /*----------------------------------------------------------------------------*/
 jobSyntax: ToFile :: ToFile ;
 
-jobInfo: ToFile
+jobInfo: ToFileOp
 {
   <?jobDesc?>  = "--description of job--"
   

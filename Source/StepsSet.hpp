@@ -866,6 +866,7 @@ public:
   void vOperandBide(void);
   void vOperandDelete(void);
   void vOperandFirstRowFetch(void);
+  void vOperandGet(void);
   void vOperandHandleAggEnd(void);
   void vOperandHandleEnd(void);
   void vOperandIsNull(void);
@@ -878,6 +879,7 @@ public:
   void vOperandPipeToJob(void);
   void vOperandRowCountFetch(void);
   void vOperandSet(void);
+  void vOperandToCsv(void);
   void vOperandWorkDone(void);
   void vOperandXmitOut(void);
 
@@ -1083,6 +1085,13 @@ public:
   void vStrSub(void);
   void vStrTailInt(void);
   void vStrToStrVec(void);
+
+  // stream def
+  void vStreamDefGet(void);
+  void vStreamDefNewCount(void);
+  void vStreamDefNewToCsv(void);
+  void vStreamDefPipeOut(void);
+  void vStreamDefSet(void);
 
   // sub loader
   void vSubLoaderDelete(void);

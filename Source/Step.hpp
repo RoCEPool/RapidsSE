@@ -121,6 +121,7 @@ namespace Steps
     static void vAddSteps_SsnState(void);
     static void vAddSteps_StepTiming(void);
     static void vAddSteps_Str(void);
+    static void vAddSteps_StreamDef(void);
     static void vAddSteps_Subset(void);
   
     static void vAddSteps_Table(void);

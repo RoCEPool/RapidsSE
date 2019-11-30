@@ -7,26 +7,64 @@
 /*----------------------------------------------------------------------------*/
 /* execute for ToCsvOp req                            (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : ToCsv_req ( -- )
- 
-   >>logEntry <SEED_REQ>
+ : ToCsvOp_req ( -- )
 
-   job::this locals| pJob_ToCsvOp |
+  >>logEntry <SEED_REQ>
 
+  begin
 
-   pJob_ToCsvOp job.opLoop
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_CRWBUFFER of
+        "Operand:- ZK_CRWBUFFER" .
+        Operand[].toCsv
+        Operand[].get to Subset[]
+        begin
+          not Operand[].isNull
+        while
+         Operand[].pipeOut
+         Subset[].nextBuffer to Operand[]
+         not Operand[].isNull
+        repeat
+        true
+      endof
+
+      ZK_ENDMARKER of
+        "Operand:- ZK_ENDMARKER" .
+        Operand[].handleEnd
+        false
+      endof
+
+      ZK_STREAMDEF of
+        "Operand:- ZK_STREAMDEF" .
+        Operand[].delete
+        StreamDef[].newToCsvStream
+        true
+      endof
+
+    endcase
+
+  while assert::stack_0 repeat
 
   <<logExit
   job::deleteThis
   <DONE_RUN>
 ;
 
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: ToCsv :: ToCsv ;
+jobSyntax: ToCsvOp :: ToCsvOp ;
 
-jobInfo: ToCsv
+jobInfo: ToCsvOp
 {
   <?jobDesc?>  = "--description of job--"
   
