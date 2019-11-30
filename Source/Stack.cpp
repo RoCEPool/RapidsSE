@@ -169,82 +169,6 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
 }
 
 /*----------------------------------------------------------------------------*/
-/* guard stack has at least nValues on it                                     */
-/*----------------------------------------------------------------------------*/
-bool Stack::bGuard(i8 nValues)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if (m_nValues < nValues)
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* guard top value on stack has given class                                   */
-/*----------------------------------------------------------------------------*/
-bool Stack::bGuard(eCN eClass0)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if (nValues() < 1)
-    return false;
-  
-  AnyVal* aAnyVal0 = aPeekVal(0);
-  if (eClass0 != aAnyVal0->eClass())
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* guard top 2 values on stack have given classes                             */
-/*----------------------------------------------------------------------------*/
-bool Stack::bGuard(eCN eClass0, eCN eClass1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if (nValues() < 2)
-    return false;
-  
-  AnyVal* aAnyVal0 = aPeekVal(0);
-  if (eClass0 != aAnyVal0->eClass())
-    return false;
-  
-  AnyVal* aAnyVal1 = aPeekVal(1);
-  if (eClass1 != aAnyVal1->eClass())
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* guard top 3 values on stack have given classes                             */
-/*----------------------------------------------------------------------------*/
-bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if (nValues() < 3)
-    return false;
-  
-  AnyVal* aAnyVal0 = aPeekVal(0);
-  if (eClass0 != aAnyVal0->eClass())
-    return false;
-  
-  AnyVal* aAnyVal1 = aPeekVal(1);
-  if (eClass1 != aAnyVal1->eClass())
-    return false;
-  
-  AnyVal* aSrkVal2 = aPeekVal(2);
-  if (eClass2 != aSrkVal2->eClass())
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
 AnyVal* Stack::aPeekVal(i8 i_Val)
@@ -624,6 +548,82 @@ StrVal* Stack::aAllotStrVal(i8 nStrSize)
   aStrVal->vMagic();
   
   return aStrVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* guard stack has at least nValues on it                                     */
+/*----------------------------------------------------------------------------*/
+bool Stack::bGuard(i8 nValues)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if (m_nValues < nValues)
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* guard top value on stack has given class                                   */
+/*----------------------------------------------------------------------------*/
+bool Stack::bGuard(eCN eClass0)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if (nValues() < 1)
+    return false;
+  
+  AnyVal* aAnyVal0 = aPeekVal(0);
+  if (eClass0 != aAnyVal0->eClass())
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* guard top 2 values on stack have given classes                             */
+/*----------------------------------------------------------------------------*/
+bool Stack::bGuard(eCN eClass0, eCN eClass1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if (nValues() < 2)
+    return false;
+  
+  AnyVal* aAnyVal0 = aPeekVal(0);
+  if (eClass0 != aAnyVal0->eClass())
+    return false;
+  
+  AnyVal* aAnyVal1 = aPeekVal(1);
+  if (eClass1 != aAnyVal1->eClass())
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* guard top 3 values on stack have given classes                             */
+/*----------------------------------------------------------------------------*/
+bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if (nValues() < 3)
+    return false;
+  
+  AnyVal* aAnyVal0 = aPeekVal(0);
+  if (eClass0 != aAnyVal0->eClass())
+    return false;
+  
+  AnyVal* aAnyVal1 = aPeekVal(1);
+  if (eClass1 != aAnyVal1->eClass())
+    return false;
+  
+  AnyVal* aSrkVal2 = aPeekVal(2);
+  if (eClass2 != aSrkVal2->eClass())
+    return false;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

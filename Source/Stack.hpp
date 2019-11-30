@@ -56,11 +56,6 @@ namespace SenVM
   
     void vDump(DicStack* pDicStack, Stz* szTitle);
 
-    bool bGuard(i8 nValues);
-    bool bGuard(eCN eClass0);
-    bool bGuard(eCN eClass0, eCN eClass1);
-    bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
-  
     AnyVal* aPeekVal(i8 i_Val);
     void vPeekVal(i8 i_Val, GenVar& xGenVar);
   
@@ -94,6 +89,11 @@ namespace SenVM
     IntVal* aAllotIntVal(void);
     PtrVal* aAllotPtrVal(void);
     StrVal* aAllotStrVal(i8 nStrSize);
+  
+    bool bGuard(i8 nValues);
+    bool bGuard(eCN eClass0);
+    bool bGuard(eCN eClass0, eCN eClass1);
+    bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
   
     AnyVal* aStackBase(void);
     AnyVal* aStackLimit(void);
