@@ -19,7 +19,7 @@ namespace SenVM
   
     operator AnyVal*(void);
   
-    AnyVal* aLocalValue(void);
+    AnyVal* aAnyValue(void);
   
   private:
     Footer* aFooter(void);

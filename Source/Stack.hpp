@@ -81,7 +81,6 @@ namespace SenVM
     void vPushFip(Cell* aFip);
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);
-    void vPushLocal(AnyVal* aAnyVal);
     void vPushStr(String* pStr);
     void vPushVal(AnyVal* aAnyVal);
   
