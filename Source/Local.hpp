@@ -16,8 +16,10 @@ namespace SenVM
   public:
     void* operator new(size_t);
     Local(void);
-      
-    AnyVal* aLocalValue(void);
+  
+    operator AnyVal*(void);
+  
+    AnyVal* aAnyValue(void);
   
   private:
     Footer* aFooter(void);

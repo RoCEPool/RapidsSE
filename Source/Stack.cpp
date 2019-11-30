@@ -390,21 +390,6 @@ bool Stack::bPopPtr(Object*& pObj)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop register from stack                                                    */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopLocal(Local*& pLocal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  vPopLocal(pLocal);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop string from stack                                                      */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopStr(String* pString)
@@ -424,6 +409,21 @@ bool Stack::bPopStr(String* pString)
   
   _hazard_();
 
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from stack                                                       */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopVal(AnyVal* aAnyVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  vAnyValPop(aAnyVal);
+  
   return true;
 }
 
@@ -476,20 +476,6 @@ void Stack::vPushPtr(Object* pObj)
   PtrVal* aPtrVal = aAllotPtrVal();
   
   * aPtrVal = pObj;
-}
-
-/*----------------------------------------------------------------------------*/
-/* push contents of local onto stack                                          */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushLocal(Local* pLocal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  AnyVal* aAnyVal = _aAnyVal(pLocal->aLocalValue());
-  
-  vPushVal(aAnyVal);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -732,16 +718,6 @@ Object* Stack::pPtrValPop(void)
   vTopDiscard();
   
   return pObj;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop local from stack                                                       */
-/*----------------------------------------------------------------------------*/
-void Stack::vPopLocal(Local* aLocal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vAnyValPop((AnyVal*)aLocal->aLocalValue());
 }
 
 /*----------------------------------------------------------------------------*/

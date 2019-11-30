@@ -47,9 +47,20 @@ Local::Local(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* auto conversion operator : as AnyVal*                                      */
+/*----------------------------------------------------------------------------*/
+Local::operator AnyVal*(void)
+{
+  _precondition_(_MAGIC_,CN_LOCAL,_FOOTER_);
+  
+  return & u.m_xAnyVal;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get address of value nested in the wsp                                     */
 /*----------------------------------------------------------------------------*/
-AnyVal* Local::aLocalValue(void)
+AnyVal* Local::aAnyValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCAL,_FOOTER_);
   

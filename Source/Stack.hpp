@@ -39,7 +39,7 @@ namespace SenVM
     AnyVal* m_aRetryTop;    // reset to this top of stack
     i8      m_nRetryValues; // reset with this many values on stack
     
-    Footer m_xHazard;
+    Footer  m_xHazard;
     
     Wsp_t<C_WSP_STACK> m_xWsp;
     
@@ -74,14 +74,13 @@ namespace SenVM
     bool bPopFip(Cell*& aFip);
     bool bPopInt(i8& iInt);
     bool bPopPtr(Object*& pObj);
-    bool bPopLocal(Local*& pLocal);
     bool bPopStr(String* pStr);
+    bool bPopVal(AnyVal* aAnyVal);
     bool bPopVal(GenVar& xGenVar);
   
     void vPushFip(Cell* aFip);
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);
-    void vPushLocal(Local* pLocal);
     void vPushStr(String* pStr);
     void vPushVal(AnyVal* aAnyVal);
   
@@ -107,8 +106,6 @@ namespace SenVM
     i8      iIntValPop(void);
     Object* pPtrValPop(void);
 
-    void    vPopLocal(Local* aLocal);
-  
     AnyVal* aStackBase(void);
     AnyVal* aStackLimit(void);
     
