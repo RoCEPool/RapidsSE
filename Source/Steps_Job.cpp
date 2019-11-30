@@ -60,6 +60,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.operand@"_Stz,         &Step::vJobOperandFetch);
   vAddStep("job.operand!"_Stz,         &Step::vJobOperandStore);
   
+  vAddStep("job.openToFile"_Stz,       &Step::vJobOpenToFile);
+  
   vAddStep("job.opLoop"_Stz,           &Step::vJobOpLoop);
   vAddStep("job.opTable!"_Stz,         &Step::vJobOpTableStore);
   
@@ -1103,6 +1105,30 @@ void Step::vJobNoWaitFetch(void)
   Job* pJob = _pJob(pJobPtr);
   
   m_pDataStack->vPushInt(pJob->bNoWaitTag());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.openToFile -- open the toFile                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJobOpenToFile(void)
+{
+  ENTRY(); // ENTRY("vJobOpenToFile"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! m_pDataStack->bPopPtr(pJobPtr) )
+    THROW_DSTACK();
+  Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
+  
+  s4K sFilePath;
+  Op* pToFileOp = pJob_Universal->m_pOp;
+  
+  sFilePath = pToFileOp->m_pOpSpec->pEnameSet()->szValue((i8)0);
+  if (! m_pRegSet->m_xpFile0->bOpenWrite(sFilePath)) {
+    vTrace("Failed to open file: %s\n"_Stz,sFilePath.azChar());
+    RASSERT(0);
+  }
   
   EXIT();
 }

@@ -95,6 +95,19 @@ print "*************************************************************************
 
 
 //docol epochTake;
+/*
+pipeline lineItem_dyn
+begin
+
+stage stageA on all partitions:
+  scanOp lineitem |  toCsvOp | stageB
+
+stage stageB on origin:
+  toFileOp "/tmp/xxx.csv" | outputOp
+
+end
+;
+
 
  pipeline lineItem_dyn
  begin
@@ -107,7 +120,7 @@ print "*************************************************************************
 
  end
  ;
-/*
+
 pipeline lineItem_dyn
 begin
 

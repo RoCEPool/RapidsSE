@@ -27,6 +27,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].set"_Stz,          &Step::vOperandSet);
   vAddStep("Operand[].toCsv"_Stz,        &Step::vOperandToCsv);
   vAddStep("Operand[].workDone"_Stz,     &Step::vOperandWorkDone);
+  vAddStep("Operand[].writeToFile"_Stz,  &Step::vOperandWriteToFile);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,7 +183,7 @@ void Step::vOperandIsNull(void)
 {
   ENTRY(); // ENTRY("vOperandIsNull"_Stz);
   
-  m_pDataStack->vPushInt(m_pRegSet->m_pOperand ? 1 : 0);
+  m_pDataStack->vPushInt(m_pRegSet->m_pOperand ? 0 : 1);
   
   EXIT();
 }
@@ -417,6 +418,24 @@ void Step::vOperandWorkDone(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Operand[].writeToFile -- write to file                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandWriteToFile(void)
+{
+  ENTRY(); // ENTRY("vOperandWriteToFile"_Stz);
+  
+  ASSERT(m_pRegSet->m_pOperand);
+  ASSERT(*m_pRegSet->m_xpFile0);
+  ASSERT(m_pRegSet->m_xpFile0->bIsOpen());
+  
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pRegSet->m_pOperand) ;
+  char* aData = pCsvBuffer->aDataArea();
+  
+  m_pRegSet->m_xpFile0->vPrint("%s"_Stz,aData);
+  m_pRegSet->m_xpFile0->vFlush();
+  
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

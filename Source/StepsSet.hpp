@@ -486,6 +486,7 @@ public:
   void vJobNextOperand(void);
   void vJobNoWaitFetch(void);
 
+  void vJobOpenToFile(void);
   void vJobOperandFetch(void);
   void vJobOperandStore(void);
   void vJobOpLoop(void);
@@ -881,7 +882,7 @@ public:
   void vOperandSet(void);
   void vOperandToCsv(void);
   void vOperandWorkDone(void);
-  void vOperandXmitOut(void);
+  void vOperandWriteToFile(void);
 
   // persistence
   void vPersistenceCheckpoint(void);

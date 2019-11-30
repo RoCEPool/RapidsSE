@@ -54,9 +54,20 @@ void Step::vSubsetNextBuffer(void)
   Operand* pNextOperand = nullptr;
   
   if (*m_pRegSet->m_xpSubset) {
-    CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpSubset);
-    pNextOperand = pCrwBuffer->pNextBuffer();
-    m_pRegSet->m_xpSubset = pNextOperand;
+    if (m_pRegSet->m_xpSubset->eClass() == CN_CRWBUFFER) {
+      CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpSubset);
+      pNextOperand = pCrwBuffer->pNextBuffer();
+      m_pRegSet->m_xpSubset = pNextOperand;
+    }
+    else
+      if (m_pRegSet->m_xpSubset->eClass() == CN_CSVBUFFER) {
+      CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpSubset);
+      pNextOperand = pCsvBuffer->pNextBuffer();
+      m_pRegSet->m_xpSubset = pNextOperand;
+    }
+    else {
+      ASSERT(0);
+    }
   }
   
   m_pDataStack->vPushPtr(pNextOperand);
