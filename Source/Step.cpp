@@ -141,6 +141,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_SsnState();
   Step::vAddSteps_StepTiming();
   Step::vAddSteps_Str();
+  Step::vAddSteps_StreamDef();
   Step::vAddSteps_Subset();
   
   Step::vAddSteps_Table();

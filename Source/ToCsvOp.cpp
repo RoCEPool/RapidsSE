@@ -7,7 +7,7 @@
 OpDesc __Op_ToCsv (
   CN_TOCSVOP,         // class number
   OK_SINGLE,          // op kind
-  "ToCsv"_Stz,        // first word of prompt command
+  "ToCsvOp"_Stz,      // first word of prompt command
   "Csv"_Stz,          // prefix
                  
   true,               // partitioned

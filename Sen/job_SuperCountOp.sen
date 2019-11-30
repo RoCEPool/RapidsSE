@@ -44,7 +44,7 @@
 
       ZK_STREAMDEF of
         "Operand:- ZK_STREAMDEF" .
-        Operand[].delete
+        Operand[].get to StreamDef[]
         true
       endof
 

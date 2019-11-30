@@ -7,7 +7,7 @@
 OpDesc __Op_ToFile (
   CN_TOFILEOP,        // class number
   OK_SINGLE,          // op kind
-  "ToFile"_Stz,       // first word of prompt command
+  "ToFileOp"_Stz,     // first word of prompt command
   "Fil"_Stz,          // prefix
                  
   true,               // partitioned

@@ -103,7 +103,8 @@
     // -- -- -- -- -- -- -- --
     // dispatch job
 
-    pReceivedJob job.jobClass CN_JOB_OPERAND == if
+    //pReceivedJob job.jobClass CN_JOB_OPERAND == if
+    pReceivedJob job.hasOperand if
       pReceivedJob Job_operand.pipeOut
     else
       pReceivedJob job.seedDecode

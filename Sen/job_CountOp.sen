@@ -63,6 +63,7 @@
     ZK_STREAMDEF of
       "Operand:- ZK_STREAMDEF" .
       Operand[].delete
+      StreamDef[].newCountStream
       true
     endof
 

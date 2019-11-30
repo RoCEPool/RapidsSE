@@ -12,6 +12,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].bide"_Stz,         &Step::vOperandBide);
   vAddStep("Operand[].delete"_Stz,       &Step::vOperandDelete);
   vAddStep("Operand[].firstRow@"_Stz,    &Step::vOperandFirstRowFetch);
+  vAddStep("Operand[].get"_Stz,          &Step::vOperandGet);
   vAddStep("Operand[].handleAggEnd"_Stz, &Step::vOperandHandleAggEnd);
   vAddStep("Operand[].handleEnd"_Stz,    &Step::vOperandHandleEnd);
   vAddStep("Operand[].isNull"_Stz,       &Step::vOperandIsNull);
@@ -24,6 +25,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].pipeToJob"_Stz,    &Step::vOperandPipeToJob);
   vAddStep("Operand[].rowCount@"_Stz,    &Step::vOperandRowCountFetch);
   vAddStep("Operand[].set"_Stz,          &Step::vOperandSet);
+  vAddStep("Operand[].toCsv"_Stz,        &Step::vOperandToCsv);
   vAddStep("Operand[].xmitOut"_Stz,      &Step::vOperandXmitOut);
   vAddStep("Operand[].workDone"_Stz,     &Step::vOperandWorkDone);
 }
@@ -73,7 +75,19 @@ void Step::vOperandFirstRowFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].handleCountEnd -- handle count end marker                        */
+/* Operand[].get -- fetch operand                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandGet(void)
+{
+  ENTRY(); // ENTRY("vOperandGet"_Stz);
+  
+  m_pDataStack->vPushPtr(m_pRegSet->m_pOperand);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].handleAggEnd -- handle agg end                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandHandleAggEnd(void)
 {
@@ -96,30 +110,30 @@ void Step::vOperandHandleAggEnd(void)
     else {
       
       // create a new streamDef
-      StreamDef* pStreamDef = new StreamDef;
-      
-      // create an integer column
-      pStreamDef->m_xaColumn[0].vColumnNo(0);
-      pStreamDef->m_xaColumn[0].vColumnNm("count"_Stz);
-      pStreamDef->m_xaColumn[0].vColumnType(CT_INTEGER);
-      pStreamDef->m_xaColumn[0].vDatumType(DM_INT);
-      
-      pStreamDef->m_nDefSets++;
-      pStreamDef->m_nDefColumns[0] = 1;
-      pStreamDef->m_i_DefStart[0] = 0;
+//      StreamDef* pStreamDef = new StreamDef;
+//
+//      // create an integer column
+//      pStreamDef->m_xaColumn[0].vColumnNo(0);
+//      pStreamDef->m_xaColumn[0].vColumnNm("count"_Stz);
+//      pStreamDef->m_xaColumn[0].vColumnType(CT_INTEGER);
+//      pStreamDef->m_xaColumn[0].vDatumType(DM_INT);
+//
+//      pStreamDef->m_nDefSets++;
+//      pStreamDef->m_nDefColumns[0] = 1;
+//      pStreamDef->m_i_DefStart[0] = 0;
       
       // create an IrwBuffer
       IrwBuffer* pIrwBuffer = new IrwBuffer();
       
       // get the columnVec defining the rowref
       ColumnVec* pColumnVec = new ColumnVec;
-      pStreamDef->vAddColumns(pColumnVec);
+      m_pRegSet->m_xpStreamDef->vAddColumns(pColumnVec);
       
       Row* pRow = pIrwBuffer->aAllotRow(pColumnVec);
       pRow->m_waColVal[0] = nCount;
       
       // pipe out the streamdef
-      pOp->vPipeOut(pStreamDef);
+      pOp->vPipeOut(*m_pRegSet->m_xpStreamDef);
       
       // pipe out the buffer with the count
       pOp->vPipeOut(pIrwBuffer);
@@ -156,18 +170,48 @@ void Step::vOperandHandleEnd(void)
       delete _pEndMarker(m_pRegSet->m_pOperand);
       
       //! HACK: TO GO
-      if (pOp->eClass() == CN_OUTPUTOP)
-        pOp->vPipeToJob(new CancelMarker);
-      else
-        pOp->vPipeOut(new CancelMarker);
+      switch(pOp->eClass()) {
+        
+        case CN_OUTPUTOP:
+          pOp->vPipeToJob(new CancelMarker);
+          break;
+        case CN_XMITOP: {
+          AM::vSendJobOperand(m_pTask,
+                              m_pRegSet->m_pOperand,
+                              pOp->m_pJobPipeline,
+                              pOp,
+                              pOp->m_iXmitNode);
+          break;
+        }
+        default:
+          pOp->vPipeOut(new CancelMarker);
+          break;
+      }
+        
     }
     else {
       
       //! HACK: TO GO
-      if (pOp->eClass() == CN_OUTPUTOP)
-         pOp->vPipeToJob(m_pRegSet->m_pOperand);
-      else
-        pOp->vPipeOut(m_pRegSet->m_pOperand);
+      switch(pOp->eClass()) {
+          
+        case CN_OUTPUTOP:
+          pOp->vPipeToJob(m_pRegSet->m_pOperand);
+          break;
+        case CN_XMITOP: {
+          AM::vSendJobOperand(m_pTask,
+                              m_pRegSet->m_pOperand,
+                              pOp->m_pJobPipeline,
+                              pOp,
+                              pOp->m_iXmitNode);
+          if (m_pRegSet->m_pOperand->eClass() != CN_ENTBUFFER &&
+              m_pRegSet->m_pOperand->eClass() != CN_CRWBUFFER)
+            AM::vDeleteOperand(m_pRegSet->m_pOperand);
+          break;
+        }
+        default:
+          pOp->vPipeOut(m_pRegSet->m_pOperand);
+          break;
+      }
     }
     
     if (AM::bJobHasError(pOp->m_pJobUniversal)) {
@@ -346,6 +390,19 @@ void Step::vOperandSet(void)
     THROW_DSTACK();
   
   m_pRegSet->m_pOperand = _pOperand(pPtrObject);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].toCsv -- convert operand to Csv                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandToCsv(void)
+{
+  ENTRY(); // ENTRY("vOperandToCsv"_Stz);
+  
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pRegSet->m_pOperand);
+  m_pRegSet->m_pOperand = pCrwBuffer->pToCsvBuffer();
   
   EXIT();
 }
