@@ -388,8 +388,18 @@ bool Stack::bPopVal(AnyVal* aAnyVal)
   if ( ! bGuard(1) )
     return false;
   
-  vAnyValPop(aAnyVal);
+  _hazard_();
   
+  i8 nBytes = aTopVal()->nStackUsage();
+  
+  aAnyVal->vCopy(m_xTop.aAnyVal,nBytes);
+  
+  m_xTop.vRewind(nBytes);
+  
+  m_nValues--;
+  
+  _hazard_();
+
   return true;
 }
 
@@ -456,7 +466,19 @@ void Stack::vPushVal(AnyVal* aAnyVal)
 
   //aAnyVal->vInspect();
   
-  vAnyValPush(aAnyVal);
+  _hazard_();
+  
+  i8 nBytes = aAnyVal->nStackUsage();
+  
+  m_xTop.vAdvance(nBytes);
+  
+  m_xTop.aAnyVal->vCopy(aAnyVal,nBytes);
+  
+  m_nValues++;
+  
+  _hazard_();
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -583,50 +605,6 @@ StrVal* Stack::aAllotStrVal(i8 nStrSize)
   aStrVal->vMagic();
   
   return aStrVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop any value from stack                                                   */
-/*----------------------------------------------------------------------------*/
-void Stack::vAnyValPop(AnyVal* aAnyVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  _hazard_();
-  
-  i8 nBytes = aTopVal()->nStackUsage();
-  
-  aAnyVal->vCopy(m_xTop.aAnyVal,nBytes);
-  
-  m_xTop.vRewind(nBytes);
-  
-  m_nValues--;
-  
-  _hazard_();
-}
-
-/*----------------------------------------------------------------------------*/
-/* push any value onto stack                                                  */
-/*----------------------------------------------------------------------------*/
-void Stack::vAnyValPush(AnyVal* aAnyVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  _hazard_();
-  
-  ASSERT(CN_GENVAR != aAnyVal->eClass());
-  
-  i8 nBytes = aAnyVal->nStackUsage();
-  
-  m_xTop.vAdvance(nBytes);
-  
-  m_xTop.aAnyVal->vCopy(aAnyVal,nBytes);
-  
-  m_nValues++;
-  
-  _hazard_();
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

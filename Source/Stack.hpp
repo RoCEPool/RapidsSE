@@ -95,10 +95,7 @@ namespace SenVM
     IntVal* aAllotIntVal(void);
     PtrVal* aAllotPtrVal(void);
     StrVal* aAllotStrVal(i8 nStrSize);
-  
-    void    vAnyValPop(AnyVal* aAnyVal);
-    void    vAnyValPush(AnyVal* aAnyVal);
-  
+   
     Cell*   aFipValPop(void);
     i8      iIntValPop(void);
     Object* pPtrValPop(void);
