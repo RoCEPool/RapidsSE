@@ -399,8 +399,8 @@ bool Stack::bPopLocal(Local*& pLocal)
   if ( ! bGuard(1) )
     return false;
   
-  vPopLocal(pLocal);
-  
+  vAnyValPop(pLocal->aAnyValue());
+
   return true;
 }
 
@@ -718,16 +718,6 @@ Object* Stack::pPtrValPop(void)
   vTopDiscard();
   
   return pObj;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop local from stack                                                       */
-/*----------------------------------------------------------------------------*/
-void Stack::vPopLocal(Local* aLocal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vAnyValPop(aLocal->aAnyValue());
 }
 
 /*----------------------------------------------------------------------------*/

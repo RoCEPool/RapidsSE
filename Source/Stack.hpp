@@ -106,8 +106,6 @@ namespace SenVM
     i8      iIntValPop(void);
     Object* pPtrValPop(void);
 
-    void    vPopLocal(Local* aLocal);
-  
     AnyVal* aStackBase(void);
     AnyVal* aStackLimit(void);
     
