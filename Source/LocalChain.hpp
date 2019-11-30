@@ -11,7 +11,7 @@ namespace SenVM
   {
   public:
     LocalChain* m_pNext;             // nest frame in chain
-    AnyVal* m_aDiscardPoint;     // discard point (when in call stack)
+    AnyVal*     m_aDiscardPoint;     // discard point (when in call stack)
     Local       m_xLocal[C_LOCALS];  // set of local values
     
     // must be last
