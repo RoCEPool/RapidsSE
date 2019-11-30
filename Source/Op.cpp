@@ -486,7 +486,7 @@ bool Op::bPause(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append operand to output op's operand queue                                */
+/* append operand to next op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
 void Op::vPipeOut(Operand* pOperand)
 {
@@ -501,20 +501,38 @@ void Op::vPipeOut(Operand* pOperand)
            aCN[pOperand->eClass()],
            pOperand);
 
-  if (m_bAppendRight) {
-    AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-                "PipeOut operand %s to right queue of %s"_Stz, //!format-LogOpr
-               aCN[pOperand->eClass()],
-               aCN[m_pOpOut->eClass()]);
-    m_pOpOut->vAppendRight(pOperand);
+  switch(eClass()) {
+      
+    case CN_OUTPUTOP:
+      vPipeToJob(pOperand);
+      break;
+      
+    case CN_XMITOP:
+      AM::vSendJobOperand(m_pTask,
+                          pOperand,
+                          m_pJobPipeline,
+                          this,
+                          m_iXmitNode);
+      break;
+  
+    default:
+      if (m_bAppendRight) {
+        AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                    "PipeOut operand %s to right queue of %s"_Stz, //!format-LogOpr
+                    aCN[pOperand->eClass()],
+                    aCN[m_pOpOut->eClass()]);
+        m_pOpOut->vAppendRight(pOperand);
+      }
+      else {
+        AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                    "PipeOut operand %s to left queue of %s"_Stz, //!format-LogOpr
+                    aCN[pOperand->eClass()],
+                    aCN[m_pOpOut->eClass()]);
+        m_pOpOut->vAppendLeft(pOperand);
+      }
+      break;
   }
-  else {
-    AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-                "PipeOut operand %s to left queue of %s"_Stz, //!format-LogOpr
-               aCN[pOperand->eClass()],
-               aCN[m_pOpOut->eClass()]);
-    m_pOpOut->vAppendLeft(pOperand);
-  }
+  
 }
 
 /*----------------------------------------------------------------------------*/

@@ -169,49 +169,11 @@ void Step::vOperandHandleEnd(void)
     if (pOp->bIsCancelling()) {
       delete _pEndMarker(m_pRegSet->m_pOperand);
       
-      //! HACK: TO GO
-      switch(pOp->eClass()) {
-        
-        case CN_OUTPUTOP:
-          pOp->vPipeToJob(new CancelMarker);
-          break;
-        case CN_XMITOP: {
-          AM::vSendJobOperand(m_pTask,
-                              m_pRegSet->m_pOperand,
-                              pOp->m_pJobPipeline,
-                              pOp,
-                              pOp->m_iXmitNode);
-          break;
-        }
-        default:
-          pOp->vPipeOut(new CancelMarker);
-          break;
-      }
+      pOp->vPipeOut(new CancelMarker);
         
     }
     else {
-      
-      //! HACK: TO GO
-      switch(pOp->eClass()) {
-          
-        case CN_OUTPUTOP:
-          pOp->vPipeToJob(m_pRegSet->m_pOperand);
-          break;
-        case CN_XMITOP: {
-          AM::vSendJobOperand(m_pTask,
-                              m_pRegSet->m_pOperand,
-                              pOp->m_pJobPipeline,
-                              pOp,
-                              pOp->m_iXmitNode);
-          if (m_pRegSet->m_pOperand->eClass() != CN_ENTBUFFER &&
-              m_pRegSet->m_pOperand->eClass() != CN_CRWBUFFER)
-            AM::vDeleteOperand(m_pRegSet->m_pOperand);
-          break;
-        }
-        default:
-          pOp->vPipeOut(m_pRegSet->m_pOperand);
-          break;
-      }
+      pOp->vPipeOut(m_pRegSet->m_pOperand);
     }
     
     if (AM::bJobHasError(pOp->m_pJobUniversal)) {
