@@ -24,7 +24,7 @@ void Step::vJob_NodeInfoNodeNameFetch(void)
     THROW_DSTACK();
   Job_NodeInfo* pJob_NodeInfo = _pJob_NodeInfo(pPtrJob_NodeInfo);
   
-  m_pDataStack->vPushS32(pJob_NodeInfo->m_sNodeName);
+  m_pDataStack->vPushStr(pJob_NodeInfo->m_sNodeName);
   
   EXIT();
 }

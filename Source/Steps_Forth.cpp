@@ -449,7 +449,7 @@ void Step::vLocate(void)
   if (pLocatedWord) {
     s32 sName;
     sName = pLocatedWord->szWordNm();
-    m_pDataStack->vPushS32(sName);
+    m_pDataStack->vPushStr(sName);
   }
   else {
     i8 iZero = 0;
@@ -567,17 +567,17 @@ void Step::vSee(void)
       
       aDoesCell++;
       
-      StkVal* aStkVal = reinterpret_cast<StkVal*>(aDoesCell);
+      AnyVal* aAnyVal = reinterpret_cast<AnyVal*>(aDoesCell);
       
-      if (CN_STRVAL == aStkVal->eClass()) {
-        vTrace(" \"%s\"\n"_Stz,_aStrVal(aStkVal)->azChar());
+      if (CN_STRVAL == aAnyVal->eClass()) {
+        vTrace(" \"%s\"\n"_Stz,_aStrVal(aAnyVal)->azChar());
       }
       else {
-        aStkVal->vToString(sString);
+        aAnyVal->vToString(sString);
         vTrace(" %s\n"_Stz,sString.azChar());
       }
       
-      i8 iBytes = aStkVal->nStackBytes();
+      i8 iBytes = aAnyVal->nStackUsage();
       aDoesCell = aAdd<Cell*>(aDoesCell,iBytes);
       
       continue;
@@ -688,7 +688,7 @@ void Step::vSeriesName(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pDataStack->vPushS32(sNextName);
+  m_pDataStack->vPushStr(sNextName);
 
   EXIT();
 }

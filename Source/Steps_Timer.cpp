@@ -262,7 +262,7 @@ void Step::vTimeCurrent(void)
   
   s32 s = xNow.sz();
   
-  m_pDataStack->vPushS32(s);
+  m_pDataStack->vPushStr(s);
   
   EXIT();
 }

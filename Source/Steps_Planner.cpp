@@ -151,7 +151,7 @@ void Step::vPlannerHighKeyFetch(void)
   Predicate* mpUpperPredicate = mpUpperPredicates->pGet(0);
   s256 sHighKey = mpUpperPredicate->pArg2()->sArgVal();
   
-  m_pDataStack->vPushS256(sHighKey);
+  m_pDataStack->vPushStr(sHighKey);
   
   EXIT();
 }
@@ -176,7 +176,7 @@ void Step::vPlannerIndexNmFetch(void)
   Index* pChosenIndex = mpChosenPath->pIndex();
   
   s32 sIndexNm = pChosenIndex->szIndexNm();
-  m_pDataStack->vPushS32(sIndexNm);
+  m_pDataStack->vPushStr(sIndexNm);
   
   EXIT();
 }
@@ -202,7 +202,7 @@ void Step::vPlannerKeyFetch(void)
   Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
   s256 sEqlKey = mpLowerPredicate->pArg2()->sArgVal();
   
-  m_pDataStack->vPushS256(sEqlKey);
+  m_pDataStack->vPushStr(sEqlKey);
   
   EXIT();
 }
@@ -228,7 +228,7 @@ void Step::vPlannerLowKeyFetch(void)
   Predicate* mpLowerPredicate = mpLowerPredicates->pGet(0);
   s256 sLowKey = mpLowerPredicate->pArg2()->sArgVal();
   
-  m_pDataStack->vPushS256(sLowKey);
+  m_pDataStack->vPushStr(sLowKey);
   
   EXIT();
 }

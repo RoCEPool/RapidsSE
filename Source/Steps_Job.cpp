@@ -739,7 +739,7 @@ void Step::vJobExecuteFetch(void)
       break;
   }
   
-  m_pDataStack->vPushS32(sExecute);
+  m_pDataStack->vPushStr(sExecute);
   
   EXIT();
 }
@@ -1689,7 +1689,7 @@ void Step::vJobResponseFetch(void)
     THROW_DSTACK();
   Job* pJob = _pJob(pJobPtr);
   
-  m_pDataStack->vPushS4K(pJob->m_xResponse.m_sResponse);
+  m_pDataStack->vPushStr(pJob->m_xResponse.m_sResponse);
   
   EXIT();
 }
@@ -2228,7 +2228,7 @@ void Step::vJobStateDiagram(void)
   
   AM::vStateDiagram(sDiagram,(eCN)iClassNo);
   
-  m_pDataStack->vPushS256(sDiagram);
+  m_pDataStack->vPushStr(sDiagram);
   
   EXIT();
 }

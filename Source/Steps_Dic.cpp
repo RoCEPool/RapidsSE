@@ -120,7 +120,7 @@ void Step::vDicName(void)
 
   s32 sName(pDic->szName());
   
-  m_pDataStack->vPushS32(sName);
+  m_pDataStack->vPushStr(sName);
   
   EXIT();
 }

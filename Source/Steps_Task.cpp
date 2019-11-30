@@ -279,7 +279,7 @@ void Step::vTaskNameFetch(void)
   
   s256 sName((Stz*)pThatTask->szJobName());
   
-  m_pDataStack->vPushS256(sName);
+  m_pDataStack->vPushStr(sName);
   
   EXIT();
 }

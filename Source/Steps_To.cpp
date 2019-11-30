@@ -93,7 +93,7 @@ void Step::vToStr(void)
   
   xVar.vToString(sString);
   
-  m_pDataStack->vPushS48K(sString);
+  m_pDataStack->vPushStr(sString);
   
   EXIT();
 }

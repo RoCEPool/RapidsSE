@@ -98,7 +98,7 @@ void LocalChain::vNext(LocalChain* pNext)
 /*----------------------------------------------------------------------------*/
 /* get return point where this local set should be discarded                  */
 /*----------------------------------------------------------------------------*/
-StkVal* LocalChain::aDiscardPoint(void)
+AnyVal* LocalChain::aDiscardPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSCHAIN,_FOOTER_);
   
@@ -108,7 +108,7 @@ StkVal* LocalChain::aDiscardPoint(void)
 /*----------------------------------------------------------------------------*/
 /* set return point where this local set should be discarded                  */
 /*----------------------------------------------------------------------------*/
-void LocalChain::vDiscardPoint(StkVal* aDiscardPoint)
+void LocalChain::vDiscardPoint(AnyVal* aDiscardPoint)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSCHAIN,_FOOTER_);
   

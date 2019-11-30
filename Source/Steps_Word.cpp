@@ -151,7 +151,7 @@ void Step::vWordExitHookGet(void)
   
   s32 sExitHook(pWord->szExitHook());
   
-  m_pDataStack->vPushS32(sExitHook);
+  m_pDataStack->vPushStr(sExitHook);
   
   EXIT();
 }
@@ -332,7 +332,7 @@ void Step::vWordNameFetch(void)
   
   s32 sWordName(pWord->szWordNm());
   
-  m_pDataStack->vPushS32(sWordName);
+  m_pDataStack->vPushStr(sWordName);
   
   EXIT();
 }

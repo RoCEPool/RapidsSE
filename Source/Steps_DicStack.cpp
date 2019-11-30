@@ -158,7 +158,7 @@ void Step::vDicStackToPathStr(void)
   
   pDicStack->vToPathStr(sPath);
   
-  m_pDataStack->vPushS256(sPath);
+  m_pDataStack->vPushStr(sPath);
 
   EXIT();
 }

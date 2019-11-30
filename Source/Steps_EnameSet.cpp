@@ -106,7 +106,7 @@ void Step::vEnameSetAsStr(void)
   SP_EnmSet spEnameSet;
   sStr = spEnameSet.sz(pEnameSet);
   
-  m_pDataStack->vPushS4K(sStr);
+  m_pDataStack->vPushStr(sStr);
   
   EXIT();
 }
@@ -160,7 +160,7 @@ void Step::vEnameSetGetStr(void)
     sValue = pEnameSet->szValue(sName);
   }
   
-  m_pDataStack->vPushS4K(sValue);
+  m_pDataStack->vPushStr(sValue);
   
   EXIT();
 }

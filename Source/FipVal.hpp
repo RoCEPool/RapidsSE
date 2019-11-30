@@ -5,22 +5,31 @@
 
 namespace SenVM
 {
-  class FipVal : public StkVal
+  class FipVal : public AnyVal
   {
   private:
-    Cell* m_aFip;
         
   public:
     void* operator new(size_t);
     
     void  operator =(Cell* aFip);
-    Cell* aFip(void);
-  
-    i8    nStackBytes(void);
+   
+    i8    nStackUsage(void);
     void  vToString(Stz* szDst);
   };
   
-  FipVal* _aFipVal(void* aAddr);
+  /*----------------------------------------------------------------------------*/
+  /* safe cast                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline FipVal* _aFipVal(void* aAddr)
+  {
+    FipVal* aFipVal = reinterpret_cast<FipVal*>(aAddr);
+  
+    RASSERT_TYPE(aFipVal,CN_FIPVAL);
+  
+    return aFipVal;
+  }
+  
 }
 
 /*============================================================================*/

@@ -49,13 +49,13 @@ Local::Local(void)
 /*----------------------------------------------------------------------------*/
 /* get address of value nested in the wsp                                     */
 /*----------------------------------------------------------------------------*/
-StkVal* Local::aLocalValue(void)
+AnyVal* Local::aLocalValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCAL,_FOOTER_);
   
-  StkVal* aStkVal = reinterpret_cast<StkVal*>(m_xWsp.ayArea());
+  AnyVal* aAnyVal = reinterpret_cast<AnyVal*>(m_xWsp.ayArea());
   
-  return aStkVal;
+  return aAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/

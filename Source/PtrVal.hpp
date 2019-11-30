@@ -5,23 +5,30 @@
 
 namespace SenVM
 {
-  class PtrVal : public StkVal
+  class PtrVal : public AnyVal
   {
   private:
-    Object* m_pObj;
-
+ 
   public:
     void* operator new(size_t);
     
-    void    operator =(Object* pObject);
-    Object* pObj(void);
-
-    i8      iAsInt(void);
-    i8      nStackBytes(void);
-    void    vToString(Stz* szDst);
+    void  operator =(Object* pObject);
+  
+    i8    nStackUsage(void);
+    void  vToString(Stz* szDst);
   };
   
-  PtrVal* _aPtrVal(void* aAddr);
+  /*----------------------------------------------------------------------------*/
+  /* safe cast                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline PtrVal* _aPtrVal(void* aAddr)
+  {
+    PtrVal* aPtrVal = reinterpret_cast<PtrVal*>(aAddr);
+  
+    RASSERT_TYPE(aPtrVal,CN_PTRVAL);
+  
+    return aPtrVal;
+  }
 }
 
 /*============================================================================*/

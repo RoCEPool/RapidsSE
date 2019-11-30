@@ -5,7 +5,7 @@
 #include "SenVM.h"
 
 
-// Note: to optimise stack operations look at directly using pDataStack->m_xTop.pStkVal
+// Note: to optimise stack operations look at directly using pDataStack->m_xTop.aAnyVal
 //       refer to Step::vFlowJumpFalse
  
  
@@ -56,7 +56,7 @@ Stack::Stack(eKK eKind)
   
   m_eKind        = eKind;
   
-  m_xTop.pStkVal = aStackBase();
+  m_xTop.aAnyVal = aStackBase();
   m_nValues      = 0;
   
   m_aRetryTop    = aStackBase();
@@ -90,7 +90,7 @@ void Stack::vDump(eCN eClass, Object* pObj, Stz* aTab)
   
   vTrace("values %lld top %p\n"_Stz,
          pStack->m_nValues,
-         pStack->m_xTop.pStkVal);
+         pStack->m_xTop.aAnyVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,15 +111,20 @@ void Stack::vContentDump(DicStack* pDicStack, Stz* aTitle)
   i8 nValues = this->nValues();
   for (i8 i_Val = 0; i_Val < nValues; i_Val++) {
     
-    StkVal* aStkVal = aPeekVal(i_Val);
-    i8 nStackBytes = aStkVal->nStackBytes();
+    AnyVal* aAnyVal = aPeekVal(i_Val);
+    i8 nStackUsage = aAnyVal->nStackUsage();
     
     vPeekVal(i_Val,xVar);
     
     eCN eValClass = xVar.eValClass();
     
-    vTrace("[%2lld %p %02lldB %8s] "_Stz,
-           i_Val,aStkVal,nStackBytes,aCN[eValClass]);
+    if (CN_STRVAL == eValClass)
+      vTrace("[%2lld %p %02lldB %6s (8,8,%02lld)] "_Stz,
+             i_Val,aAnyVal,nStackUsage,aCN[eValClass],
+             _aStrVal(aAnyVal)->nSize());
+    else
+      vTrace("[%2lld %p %02lldB %6s (8,8,00)] "_Stz,
+             i_Val,aAnyVal,nStackUsage,aCN[eValClass]);
 
     
     switch(eValClass) {
@@ -194,8 +199,8 @@ bool Stack::bGuard(eCN eClass0)
   if (nValues() < 1)
     return false;
   
-  StkVal* aStkVal0 = aPeekVal(0);
-  if (eClass0 != aStkVal0->eClass())
+  AnyVal* aAnyVal0 = aPeekVal(0);
+  if (eClass0 != aAnyVal0->eClass())
     return false;
   
   return true;
@@ -211,12 +216,12 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1)
   if (nValues() < 2)
     return false;
   
-  StkVal* aStkVal0 = aPeekVal(0);
-  if (eClass0 != aStkVal0->eClass())
+  AnyVal* aAnyVal0 = aPeekVal(0);
+  if (eClass0 != aAnyVal0->eClass())
     return false;
   
-  StkVal* aStkVal1 = aPeekVal(1);
-  if (eClass1 != aStkVal1->eClass())
+  AnyVal* aAnyVal1 = aPeekVal(1);
+  if (eClass1 != aAnyVal1->eClass())
     return false;
   
   return true;
@@ -232,15 +237,15 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
   if (nValues() < 3)
     return false;
   
-  StkVal* aStkVal0 = aPeekVal(0);
-  if (eClass0 != aStkVal0->eClass())
+  AnyVal* aAnyVal0 = aPeekVal(0);
+  if (eClass0 != aAnyVal0->eClass())
     return false;
   
-  StkVal* aStkVal1 = aPeekVal(1);
-  if (eClass1 != aStkVal1->eClass())
+  AnyVal* aAnyVal1 = aPeekVal(1);
+  if (eClass1 != aAnyVal1->eClass())
     return false;
   
-  StkVal* aSrkVal2 = aPeekVal(2);
+  AnyVal* aSrkVal2 = aPeekVal(2);
   if (eClass2 != aSrkVal2->eClass())
     return false;
   
@@ -250,43 +255,43 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-StkVal* Stack::aPeekVal(i8 i_Val)
+AnyVal* Stack::aPeekVal(i8 i_Val)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aStkVal = aTopVal();
+  AnyVal* aAnyVal = aTopVal();
   while (i_Val--) {
-    char* aAddress = reinterpret_cast<char*>(aStkVal);
-    i8 iSize = aStkVal->nStackBytes();
+    char* aAddress = reinterpret_cast<char*>(aAnyVal);
+    i8 iSize = aAnyVal->nStackUsage();
     aAddress += iSize;
-    aStkVal = reinterpret_cast<StkVal*>(aAddress);
+    aAnyVal = reinterpret_cast<AnyVal*>(aAddress);
   }
   
-  return aStkVal;
+  return (AnyVal*)aAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekVal(i8 i_Val, GenVar& xVar)
+void Stack::vPeekVal(i8 i_Val, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aPeekedValue = aPeekVal(i_Val);
+  AnyVal* aPeekedValue = aPeekVal(i_Val);
   
-  xVar.vCopy(aPeekedValue);
+  xGenVar.vCopy(aPeekedValue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* poke given value into stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPokeVal(i8 i_Val, GenVar& xVar)
+void Stack::vPokeVal(i8 i_Val, AnyVal* aAnyVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aPokeAddress = aPeekVal(i_Val);
+  AnyVal* aPokeAddress = aPeekVal(i_Val);
   
-  aPokeAddress->vCopy(xVar);
+  aPokeAddress->vCopy(aAnyVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -299,8 +304,8 @@ bool Stack::bPopAsInt(i8& iInt)
   if ( ! bGuard(1) )
     return false;
   
-  iInt = m_xTop.pAnyVal->iInt();
-  vDiscard();
+  iInt = m_xTop.aAnyVal->iAsInt();
+  vTopDiscard();
   
   return true;
 }
@@ -315,9 +320,9 @@ bool Stack::bPopAsInt_Quick(i8& iInt)
   if ( ! bGuard(1) )
     return false;
   
-  StkVal* aTopValue = aTopVal();
+  AnyVal* aTopValue = aTopVal();
   
-  vDiscard();
+  vTopDiscard();
   
   eCN eClassNo = aTopValue->eClass();
   
@@ -340,23 +345,6 @@ bool Stack::bPopAsInt_Quick(i8& iInt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop eClassNo from stack                                                    */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopCN(eCN& eClassNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_INTVAL) )
-    return false;
-  
-  i8 iInt = iPopInt();
-
-  eClassNo = static_cast<eCN>(iInt);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop fip from stack                                                         */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopFip(Cell*& aFip)
@@ -366,7 +354,7 @@ bool Stack::bPopFip(Cell*& aFip)
   if ( ! bGuard(CN_FIPVAL) )
     return false;
   
-  aFip = aPopFip();
+  aFip = aFipValPop();
 
   return true;
 }
@@ -381,7 +369,7 @@ bool Stack::bPopInt(i8& iInt)
   if ( ! bGuard(CN_INTVAL) )
     return false;
   
-  iInt = iPopInt();
+  iInt = iIntValPop();
   
   return true;
 }
@@ -396,7 +384,7 @@ bool Stack::bPopPtr(Object*& pObj)
   if ( ! bGuard(CN_PTRVAL) && ! bTopIsZero() )
     return false;
   
-  pObj = pPopObj();
+  pObj = pPtrValPop();
   
   return true;
 }
@@ -432,7 +420,7 @@ bool Stack::bPopStr(String* pString)
   
   pString->vCopy(aStrVal->szStz());
   
-  vDiscard();
+  vTopDiscard();
   
   _hazard_();
 
@@ -442,14 +430,14 @@ bool Stack::bPopStr(String* pString)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack into given variable                                   */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopVal(GenVar& xVar)
+bool Stack::bPopVal(GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(1) )
     return false;
   
-  vPopStkVal(xVar);
+  vAnyValPop(xGenVar);
   
   return true;
 }
@@ -497,9 +485,9 @@ void Stack::vPushLocal(Local* pLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  StkVal* aStkVal = pLocal->aLocalValue();
+  AnyVal* aAnyVal = _aAnyVal(pLocal->aLocalValue());
   
-  vPushVal(aStkVal);
+  vPushVal(aAnyVal);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -511,117 +499,27 @@ void Stack::vPushStr(String* pStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vContentDump(nullptr,"Before:"_Stz);
+  //vContentDump(nullptr,"Before:"_Stz);
 
   i8 nSize = StrLib::iSize(pStr->azStr());
   StrVal* aStrVal = aAllotStrVal(nSize);
 
   aStrVal->vAssign(pStr->szStz());
-  
-  vContentDump(nullptr,"After:"_Stz);
-}
+  //aStrVal->vInspect();
 
-/*----------------------------------------------------------------------------*/
-/* push s32 onto stack                                                        */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushS32(s32& sEss)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  //vContentDump(nullptr,"Before:"_Stz);
-  
-  GenVar xStrVar;
-  xStrVar = sEss;
-  
-  vPushVal(xStrVar);
-  
   //vContentDump(nullptr,"After:"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* push s256 onto stack                                                       */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushS256(s256& sEss)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  GenVar xStrVar;
-  xStrVar = sEss;
-  
-  vPushVal(xStrVar);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push s4K onto stack                                                        */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushS4K(s4K& sEss)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  GenVar xStrVar;
-  xStrVar = sEss;
-  
-  vPushVal(xStrVar);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push s48K onto stack                                                       */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushS48K(s48K& sEss)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  GenVar xStrVar;
-  xStrVar = sEss;
-  
-  vPushVal(xStrVar);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push s16KB onto stack                                                      */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushS16KB(s16KB& sEss)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  GenVar xStrVar;
-  xStrVar = sEss;
-  
-  vPushVal(xStrVar);
-}
-
-/*----------------------------------------------------------------------------*/
 /* push value onto stack                                                      */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushVal(GenVar* pVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vPushVal(pVar->aEmbeddedStkVal());
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto stack                                                      */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushVal(GenVar& xVar)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vPushVal(xVar.aEmbeddedStkVal());
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto stack                                                      */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushVal(StkVal* aStkVal)
+void Stack::vPushVal(AnyVal* aAnyVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  vPushStkVal(aStkVal);
+  //aAnyVal->vInspect();
+  
+  vAnyValPush(aAnyVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -631,7 +529,7 @@ void Stack::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_xTop.pStkVal  = aStackBase();
+  m_xTop.aAnyVal  = aStackBase();
   m_nValues       = 0;
 }
 
@@ -642,7 +540,7 @@ void Stack::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  m_xTop.pStkVal = m_aRetryTop;
+  m_xTop.aAnyVal = m_aRetryTop;
   m_nValues      = m_nRetryValues;
 }
 
@@ -653,7 +551,7 @@ void Stack::vRetryPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_aRetryTop    = m_xTop.pStkVal;
+  m_aRetryTop    = m_xTop.aAnyVal;
   m_nRetryValues = m_nValues;
 }
 
@@ -672,18 +570,20 @@ i8 Stack::nValues(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allot a fip value on top of stack                                          */
+/* allot a value on top of stack                                               */
 /*----------------------------------------------------------------------------*/
-StkVal* Stack::aAllot(i8 nBytes)
+AnyVal* Stack::aAllotAnyVal(i8 nWithAdditionalBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_xTop.vAdvance(nBytes);
+  i8 nAllotBytes = sizeof(AnyVal) + nWithAdditionalBytes;
+  
+  m_xTop.vAdvance(nAllotBytes);
   ASSERT(m_xTop.ayByte >= (byte*)aStackLimit());
   
   m_nValues++;
   
-  return m_xTop.pStkVal;
+  return m_xTop.aAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -693,7 +593,7 @@ FipVal* Stack::aAllotFipVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  FipVal* aFipVal = static_cast<FipVal*>(aAllot(sizeof(FipVal)));
+  FipVal* aFipVal = (FipVal*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
   
   aFipVal->vClass(CN_FIPVAL);
   aFipVal->vMagic();
@@ -708,7 +608,7 @@ IntVal* Stack::aAllotIntVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  IntVal* aIntVal = static_cast<IntVal*>(aAllot(sizeof(IntVal)));
+  IntVal* aIntVal = (IntVal*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
   
   aIntVal->vClass(CN_INTVAL);
   aIntVal->vMagic();
@@ -723,7 +623,7 @@ PtrVal* Stack::aAllotPtrVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  PtrVal* aPtrVal = static_cast<PtrVal*>(aAllot(sizeof(PtrVal)));
+  PtrVal* aPtrVal = (PtrVal*) aAllotAnyVal(C_NO_ADDITIONAL_BYTES);
   
   aPtrVal->vClass(CN_PTRVAL);
   aPtrVal->vMagic();
@@ -734,13 +634,13 @@ PtrVal* Stack::aAllotPtrVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot a str value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
-StrVal* Stack::aAllotStrVal(i8 nSize)
+StrVal* Stack::aAllotStrVal(i8 nStrSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  i8 nBytes = sizeof(_Header) + 8 + nSize;
+  i8 nWithAdditionalBytes = nStrSize;
   
-  StrVal* aStrVal = static_cast<StrVal*>(aAllot(nBytes));
+  StrVal* aStrVal = (StrVal*) aAllotAnyVal(nWithAdditionalBytes);
   
   aStrVal->vClass(CN_STRVAL);
   aStrVal->vMagic();
@@ -749,9 +649,129 @@ StrVal* Stack::aAllotStrVal(i8 nSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop any value from stack                                                   */
+/*----------------------------------------------------------------------------*/
+void Stack::vAnyValPop(AnyVal* aAnyVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  _hazard_();
+  
+  i8 nBytes = aTopVal()->nStackUsage();
+  
+  aAnyVal->vCopy(m_xTop.aAnyVal,nBytes);
+  
+  m_xTop.vRewind(nBytes);
+  
+  m_nValues--;
+  
+  _hazard_();
+}
+
+/*----------------------------------------------------------------------------*/
+/* push any value onto stack                                                  */
+/*----------------------------------------------------------------------------*/
+void Stack::vAnyValPush(AnyVal* aAnyVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  _hazard_();
+  
+  ASSERT(CN_GENVAR != aAnyVal->eClass());
+  
+  i8 nBytes = aAnyVal->nStackUsage();
+  
+  m_xTop.vAdvance(nBytes);
+  
+  m_xTop.aAnyVal->vCopy(aAnyVal,nBytes);
+  
+  m_nValues++;
+  
+  _hazard_();
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop fip from stack                                                         */
+/*----------------------------------------------------------------------------*/
+Cell* Stack::aFipValPop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  Cell* aFip = m_xTop.aFipVal->aFip();
+  
+  vTopDiscard();
+  
+  return aFip;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop int from stack                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Stack::iIntValPop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  i8 iInt = m_xTop.aIntVal->iInt();
+  
+  vTopDiscard();
+  
+  return iInt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop obj from stack                                                         */
+/*----------------------------------------------------------------------------*/
+Object* Stack::pPtrValPop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  Object* pObj = m_xTop.aPtrVal->pObj();
+  
+  vTopDiscard();
+  
+  return pObj;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop local from stack                                                       */
+/*----------------------------------------------------------------------------*/
+void Stack::vPopLocal(Local* aLocal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  vAnyValPop((AnyVal*)aLocal->aLocalValue());
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute the base of this stack                                             */
+/*----------------------------------------------------------------------------*/
+AnyVal* Stack::aStackBase(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  char* aBase = (char*)&m_xWsp.ayArea()[C_WSP_STACK - 1];
+  
+  return pPoolCheck<AnyVal*>(aBase);
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute the limit of this stack                                            */
+/*----------------------------------------------------------------------------*/
+AnyVal* Stack::aStackLimit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  char* aLimit = (char*)&m_xWsp.ayArea()[0];
+  
+  return pPoolCheck<AnyVal*>(aLimit);
+}
+
+/*----------------------------------------------------------------------------*/
 /* discard value on top of stack                                              */
 /*----------------------------------------------------------------------------*/
-void Stack::vDiscard(void)
+void Stack::vTopDiscard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -764,133 +784,13 @@ void Stack::vDiscard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop fip from stack                                                         */
-/*----------------------------------------------------------------------------*/
-Cell* Stack::aPopFip(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  Cell* aFip = m_xTop.pFipVal->aFip();
-  
-  vDiscard();
-  
-  return aFip;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop int from stack                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Stack::iPopInt(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  i8 iInt = m_xTop.pIntVal->iInt();
-  
-  vDiscard();
-  
-  return iInt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop obj from stack                                                         */
-/*----------------------------------------------------------------------------*/
-Object* Stack::pPopObj(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  Object* pObj = m_xTop.pPtrVal->pObj();
-  
-  vDiscard();
-  
-  return pObj;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop local from stack                                                       */
-/*----------------------------------------------------------------------------*/
-void Stack::vPopLocal(Local* aLocal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vPopStkVal(aLocal->aLocalValue());
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop value from stack                                                       */
-/*----------------------------------------------------------------------------*/
-void Stack::vPopStkVal(StkVal* aStkVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-
-  _hazard_();
-  
-  i8 nBytes = aTopVal()->nStackBytes();
-  
-  aStkVal->vCopy(m_xTop.pStkVal,nBytes);
-  
-  m_xTop.vRewind(nBytes);
-  
-  m_nValues--;
-  
-  _hazard_();
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto stack                                                      */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushStkVal(StkVal* aStkVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  _hazard_();
-  
-  ASSERT(CN_GENVAR != aStkVal->eClass());
-  
-  i8 nBytes = aStkVal->nStackBytes();
-  
-  m_xTop.vAdvance(nBytes);
-  
-  m_xTop.pStkVal->vCopy(aStkVal,nBytes);
-  
-  m_nValues++;
-  
-  _hazard_();
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute the base of this stack                                             */
-/*----------------------------------------------------------------------------*/
-StkVal* Stack::aStackBase(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  char* aBase = (char*)&m_xWsp.ayArea()[C_WSP_STACK - 1];
-  
-  return pPoolCheck<StkVal*>(aBase);
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute the limit of this stack                                            */
-/*----------------------------------------------------------------------------*/
-StkVal* Stack::aStackLimit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  char* aLimit = (char*)&m_xWsp.ayArea()[0];
-  
-  return pPoolCheck<StkVal*>(aLimit);
-}
-
-/*----------------------------------------------------------------------------*/
 /* is top value a zero?                                                       */
 /*----------------------------------------------------------------------------*/
 bool Stack::bTopIsZero(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if (CN_INTVAL == m_xTop.pStkVal->eClass() && 0 == m_xTop.pIntVal->iInt())
+  if (CN_INTVAL == m_xTop.aAnyVal->eClass() && 0 == m_xTop.aIntVal->iInt())
     return true;
   
   return false;
@@ -899,11 +799,11 @@ bool Stack::bTopIsZero(void)
 /*----------------------------------------------------------------------------*/
 /* peek at value on top of stack                                              */
 /*----------------------------------------------------------------------------*/
-StkVal* Stack::aTopVal(void)
+AnyVal* Stack::aTopVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
     
-  return m_xTop.pStkVal;
+  return (AnyVal*) m_xTop.aAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/

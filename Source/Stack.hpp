@@ -5,23 +5,24 @@
 
 namespace SenVM
 {
+  static const i8 C_NO_ADDITIONAL_BYTES = 0;
+  
   static const i8 C_WSP_STACK = C_SIZE_LARGE_OBJECT - C_1KB;
   //static const i8 C_WSP_STACK = C_SIZE_SMALL_OBJECT;
 
   union StkPtr {
     
     byte*   ayByte;
-    StkVal* pStkVal;
     
-    AnyVal* pAnyVal;
-    FipVal* pFipVal;
-    IntVal* pIntVal;
-    PtrVal* pPtrVal;
-    StrVal* pStrVal;
+    AnyVal* aAnyVal;
+    FipVal* aFipVal;
+    IntVal* aIntVal;
+    PtrVal* aPtrVal;
+    StrVal* aStrVal;
     
     void vAdvance (i8 nBytes) { ayByte -= nBytes; }
     void vRewind  (i8 nBytes) { ayByte += nBytes; }
-    void vRewind  (void)      { vRewind(pStkVal->nStackBytes()); }
+    void vRewind  (void)      { vRewind(aAnyVal->nStackUsage()); }
   };
 
   class Stack: public Object
@@ -35,7 +36,7 @@ namespace SenVM
     StkPtr  m_xTop;         // current top of stack
     i8      m_nValues;      // number of values currently on stack
 
-    StkVal* m_aRetryTop;    // reset to this top of stack
+    AnyVal* m_aRetryTop;    // reset to this top of stack
     i8      m_nRetryValues; // reset with this many values on stack
     
     Footer m_xHazard;
@@ -62,67 +63,56 @@ namespace SenVM
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    StkVal* aPeekVal(i8 i_Val);
-    void vPeekVal(i8 i_Val, GenVar& xVar);
+    AnyVal* aPeekVal(i8 i_Val);
+    void vPeekVal(i8 i_Val, GenVar& xGenVar);
   
-    void vPokeVal(i8 i_Val, GenVar& xVar);
+    void vPokeVal(i8 i_Val, AnyVal* aAnyVal);
   
     bool bPopAsInt(i8& iInt1);
     bool bPopAsInt_Inline(i8& iInt1);
     bool bPopAsInt_Quick(i8& iInt1);
-    bool bPopCN(eCN& eClassNo);
     bool bPopFip(Cell*& aFip);
     bool bPopInt(i8& iInt);
     bool bPopPtr(Object*& pObj);
     bool bPopLocal(Local*& pLocal);
     bool bPopStr(String* pStr);
-    bool bPopVal(GenVar& xVar);
+    bool bPopVal(GenVar& xGenVar);
   
     void vPushFip(Cell* aFip);
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);
     void vPushLocal(Local* pLocal);
-    void vPushS32(s32& sEss);
-    void vPushS256(s256& sEss);
-    void vPushS4K(s4K& sEss);
-    void vPushS16KB(s16KB& sEss);
-    void vPushS48K(s48K& sEss);
     void vPushStr(String* pStr);
-    void vPushVal(GenVar* pVar);
-    void vPushVal(GenVar& xVar);
-    void vPushVal(StkVal* aStkVal);
+    void vPushVal(AnyVal* aAnyVal);
   
     void vReset(void);
     void vRetry(void);
     void vRetryPoint(void);
   
-    StkVal* aTopVal(void);
+    AnyVal* aTopVal(void);
   
     i8 nValues(void);
   
-  public:
-  
   private:
-    StkVal* aAllot(i8 nBytes);
+    AnyVal* aAllotAnyVal(i8 nWithAdditionalBytes);
     FipVal* aAllotFipVal(void);
     IntVal* aAllotIntVal(void);
     PtrVal* aAllotPtrVal(void);
-    StrVal* aAllotStrVal(i8 nSize);
+    StrVal* aAllotStrVal(i8 nStrSize);
   
-    void    vDiscard(void);
+    void    vAnyValPop(AnyVal* aAnyVal);
+    void    vAnyValPush(AnyVal* aAnyVal);
   
-    Cell*   aPopFip(void);
-    i8      iPopInt(void);
-    Object* pPopObj(void);
+    Cell*   aFipValPop(void);
+    i8      iIntValPop(void);
+    Object* pPtrValPop(void);
 
     void    vPopLocal(Local* aLocal);
-    void    vPopStkVal(StkVal* aStkVal);
   
-    void    vPushStkVal(StkVal* aStkVal);
-  
-    StkVal* aStackBase(void);
-    StkVal* aStackLimit(void);
+    AnyVal* aStackBase(void);
+    AnyVal* aStackLimit(void);
     
+    void    vTopDiscard(void);
     bool    bTopIsZero(void);
   
     Footer* aFooter(void);
@@ -139,13 +129,13 @@ namespace SenVM
   if ( ! bGuard(1) )
     return false;
   
-  eCN eClassNo = m_xTop.pStkVal->eClass(); // inline
+  eCN eClassNo = m_xTop.aAnyVal->eClass(); // inline
   
   if (CN_INTVAL == eClassNo)
-    iInt = _aIntVal(m_xTop.pStkVal)->iInt(); // inline
+    iInt = _aIntVal(m_xTop.aAnyVal)->iInt(); // inline
   else
     if (CN_PTRVAL == eClassNo)
-      iInt = _aPtrVal(m_xTop.pStkVal)->pObj() ? 1 : 0; // inline
+      iInt = _aPtrVal(m_xTop.aAnyVal)->pObj() ? 1 : 0; // inline
     else {
       iInt = -1;
       NEVER_REACH;

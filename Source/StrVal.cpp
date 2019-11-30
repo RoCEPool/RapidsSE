@@ -9,18 +9,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-StrVal* SenVM::_aStrVal(void* aAddr)
-{
-  StrVal* aStrVal = reinterpret_cast<StrVal*>(aAddr);
-  
-  RASSERT( ! aStrVal || CN_STRVAL == aStrVal->eClass() );
-  
-  return aStrVal;
-}
-
-/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* StrVal::operator new(size_t)
@@ -42,7 +30,7 @@ void* StrVal::operator new(size_t)
 void StrVal::vAssign(Stz* szStz)
 {
   vClass(CN_STRVAL);
-  m_nBytesFollowing = StrLib::nCopy(m_caStr,szStz->azChar());
+  m_nBytesFollowing = StrLib::nCopy(m_caStr,szStz->azChar()) + 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,12 +63,15 @@ Stz* StrVal::szStz(void)
 /*----------------------------------------------------------------------------*/
 /* get how many bytes are needed to push this StrVal on stack                 */
 /*----------------------------------------------------------------------------*/
-i8 StrVal::nStackBytes(void)
+i8 StrVal::nStackUsage(void)
 {
-  i8 nBytes = sizeof(StrVal)
-                - sizeof(m_caStr)
+//  i8 nBytes = sizeof(StrVal)
+//                - sizeof(m_caStr)
+//                + m_nBytesFollowing;
+
+  i8 nBytes = sizeof(AnyVal)
                 + m_nBytesFollowing;
-  
+
   return nBytes;
 }
 

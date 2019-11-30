@@ -27,11 +27,12 @@ namespace Correctness
 
   static const i8 C_BYTES_PER_LINE   = 16;
   
+  static const u1 C_ASCII_MIN_VIZ    = ' ';
+  static const u1 C_ASCII_MAX_VIZ    = '~';
+  
   class MemLib
   {
   private:
-    static const u1 C_ASCII_MIN_VIZ = ' ';
-    static const u1 C_ASCII_MAX_VIZ = '~';
   
   public:
     static void* aAddBytes(void* aAddress, i8 nBytes);

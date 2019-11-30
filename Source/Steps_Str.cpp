@@ -69,7 +69,7 @@ void Step::vStrCat(void)
   
   sStrR.vConcat(sStrB);
   
-  m_pDataStack->vPushS48K(sStrR);
+  m_pDataStack->vPushStr(sStrR);
   
   EXIT();
 }
@@ -107,7 +107,7 @@ void Step::vStrClip(void)
   
   StrLib::vCopyLen(sSubStr.azChar(),pStart,llabs(iLength));
   
-  m_pDataStack->vPushS48K(sSubStr);
+  m_pDataStack->vPushStr(sSubStr);
   
   EXIT();
 }
@@ -154,7 +154,7 @@ void Step::vStrEscape(void)
   
   StrLib::vEscape(xArg.azChar(),xEscaped.azChar());
   
-  m_pDataStack->vPushS48K(xEscaped);
+  m_pDataStack->vPushStr(xEscaped);
   
   EXIT();
 }
@@ -177,7 +177,7 @@ void Step::vStrFirstCsv(void)
   if (! StrLib::bExtractItem(&aValue,sFirstValue.azChar(), ','))
     sFirstValue = ""_Stz;
   
-  m_pDataStack->vPushS48K(sFirstValue);
+  m_pDataStack->vPushStr(sFirstValue);
   
   EXIT();
 }
@@ -197,7 +197,7 @@ void Step::vStrFormat(void)
   
   m_pTask->vSprint(sFormat,sString);
   
-  m_pDataStack->vPushS48K(sString);
+  m_pDataStack->vPushStr(sString);
   
   EXIT();
 }
@@ -230,7 +230,7 @@ void Step::vStrLeft(void)
   
   StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
   
-  m_pDataStack->vPushS48K(sSubStr);
+  m_pDataStack->vPushStr(sSubStr);
   
   EXIT();
 }
@@ -305,7 +305,7 @@ void Step::vStrPrepend(void)
   
   xStrR.vConcat(xStrA);
   
-  m_pDataStack->vPushS48K(xStrR);
+  m_pDataStack->vPushStr(xStrR);
   
   EXIT();
 }
@@ -325,7 +325,7 @@ void Step::vStrRandom(void)
   
   Random::vString(sRnd,iLength);
   
-  m_pDataStack->vPushS256(sRnd);
+  m_pDataStack->vPushStr(sRnd);
   
   EXIT();
 }
@@ -347,7 +347,7 @@ void Step::vStrRemovePrefix(void)
   
   StrLib::vRemovePrefix(sString.azChar(), * sIntro.azChar());
   
-  m_pDataStack->vPushS48K(sString);
+  m_pDataStack->vPushStr(sString);
   
   EXIT();
 }
@@ -369,7 +369,7 @@ void Step::vStrRemoveSuffix(void)
   
   StrLib::vRemoveSuffix(sString.azChar(), * sIntro.azChar());
   
-  m_pDataStack->vPushS48K(sString);
+  m_pDataStack->vPushStr(sString);
 
   EXIT();
 }
@@ -398,7 +398,7 @@ void Step::vStrReplace(void)
   
   StrLib::bReplace(sReplaced.azChar(),sString.azChar(),sThis.azChar(),sThat.azChar());
   
-  m_pDataStack->vPushS48K(sReplaced);
+  m_pDataStack->vPushStr(sReplaced);
   
   EXIT();
 }
@@ -434,7 +434,7 @@ void Step::vStrRight(void)
   
   StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
   
-  m_pDataStack->vPushS48K(sSubStr);
+  m_pDataStack->vPushStr(sSubStr);
   
   EXIT();
 }
@@ -480,7 +480,7 @@ void Step::vStrSub(void)
   
   StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
   
-  m_pDataStack->vPushS48K(sSubStr);
+  m_pDataStack->vPushStr(sSubStr);
   
   EXIT();
 }
@@ -548,13 +548,13 @@ void Step::vStrToStrVec(void)
     if (! StrLib::bExtractName(&azPath,azDicNm))
       break;
     
-    m_pAuxStack->vPushS32(sDicNm);
+    m_pAuxStack->vPushStr(sDicNm);
   }
   
   for (i8 iMove = 0; iMove < nStrings; iMove++) {
     
     RASSERT(m_pAuxStack->bPopStr(sDicNm));
-    m_pDataStack->vPushS32(sDicNm);
+    m_pDataStack->vPushStr(sDicNm);
   }
 
   m_pDataStack->vPushInt(nStrings);

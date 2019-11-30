@@ -39,8 +39,8 @@ GenVar::GenVar(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  u.m_xStkVal.vMagic();
-  u.m_xStkVal.vClass(CN_NONE);
+  u.m_xAnyVal.vMagic();
+  u.m_xAnyVal.vClass(CN_NONE);
   
   _postcondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
 }
@@ -48,21 +48,21 @@ GenVar::GenVar(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-GenVar::GenVar(StkVal* aStkVal)
+GenVar::GenVar(AnyVal* aAnyVal)
 : Object(CN_GENVAR)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  u.m_xStkVal.vMagic();
-  u.m_xStkVal.vClass(CN_NONE);
+  u.m_xAnyVal.vMagic();
+  u.m_xAnyVal.vClass(CN_NONE);
   
-  eCN eClassNo = aStkVal->eClass();
+  eCN eClassNo = aAnyVal->eClass();
   
   switch (eClassNo) {
-    case CN_FIPVAL: u.m_xFipVal = aStkVal->aFip();    break;
-    case CN_INTVAL: u.m_xIntVal = aStkVal->iInt();    break;
-    case CN_PTRVAL: u.m_xPtrVal = aStkVal->pObj();    break;
-    case CN_STRVAL: u.m_xStrVal.vAssign(aStkVal->szStz());  break;
+    case CN_FIPVAL: u.m_xFipVal = aAnyVal->aFip();    break;
+    case CN_INTVAL: u.m_xIntVal = aAnyVal->iInt();    break;
+    case CN_PTRVAL: u.m_xPtrVal = aAnyVal->pObj();    break;
+    case CN_STRVAL: u.m_xStrVal.vAssign(aAnyVal->szStz());  break;
       
     default:
       vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -86,30 +86,30 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* auto conversion operator : as StkVal*                                      */
+/* auto conversion operator : as AnyVal*                                      */
 /*----------------------------------------------------------------------------*/
-GenVar::operator StkVal*(void)
+GenVar::operator AnyVal*(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
 
-  return & u.m_xStkVal;
+  return & u.m_xAnyVal;
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* operator =                                                                 */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(StkVal* aStkVal)
+void GenVar::operator =(AnyVal* aAnyVal)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
 
-  eCN eClass = aStkVal->eClass();
+  eCN eClass = aAnyVal->eClass();
   
   switch (eClass) {
-    case CN_FIPVAL: u.m_xFipVal = aStkVal->aFip();    break;
-    case CN_INTVAL: u.m_xIntVal = aStkVal->iInt();    break;
-    case CN_PTRVAL: u.m_xPtrVal = aStkVal->pObj();    break;
-    case CN_STRVAL: u.m_xStrVal.vAssign(aStkVal->szStz());  break;
+    case CN_FIPVAL: u.m_xFipVal = aAnyVal->aFip();    break;
+    case CN_INTVAL: u.m_xIntVal = aAnyVal->iInt();    break;
+    case CN_PTRVAL: u.m_xPtrVal = aAnyVal->pObj();    break;
+    case CN_STRVAL: u.m_xStrVal.vAssign(aAnyVal->szStz());  break;
       
     default:
       vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -181,11 +181,11 @@ char* GenVar::azChar(void)
 /*----------------------------------------------------------------------------*/
 /* copy given source value into this var                                      */
 /*----------------------------------------------------------------------------*/
-void GenVar::vCopy(StkVal* aStkVal)
+void GenVar::vCopy(AnyVal* aAnyVal)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  u.m_xStkVal.vCopy(aStkVal);
+  u.m_xAnyVal.vCopy(aAnyVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,7 +219,7 @@ bool GenVar::bIsInt(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  if (CN_INTVAL == u.m_xStkVal.eClass())
+  if (CN_INTVAL == u.m_xAnyVal.eClass())
     return true;
   else
     return false;
@@ -228,11 +228,11 @@ bool GenVar::bIsInt(void)
 /*----------------------------------------------------------------------------*/
 /* get address of the nested value                                            */
 /*----------------------------------------------------------------------------*/
-StkVal* GenVar::aEmbeddedStkVal(void)
+AnyVal* GenVar::aEmbeddedAnyVal(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  return & u.m_xStkVal;
+  return & u.m_xAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,11 +250,11 @@ Object* GenVar::pObj(void)
 /*----------------------------------------------------------------------------*/
 /* get bytes required to push value on stack                                  */
 /*----------------------------------------------------------------------------*/
-i8 GenVar::nStackBytes(void)
+i8 GenVar::nStackUsage(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  i8 nBytes = u.m_xStrVal.nStackBytes();
+  i8 nBytes = u.m_xStrVal.nStackUsage();
   
   return nBytes;
 }
@@ -290,7 +290,7 @@ void GenVar::vToString(Stz* szString)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  u.m_xStkVal.vToString(szString);
+  u.m_xAnyVal.vToString(szString);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -300,7 +300,7 @@ eCN GenVar::eValClass(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  return u.m_xStkVal.eClass();
+  return u.m_xAnyVal.eClass();
 }
 
 

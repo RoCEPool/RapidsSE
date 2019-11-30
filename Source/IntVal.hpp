@@ -5,19 +5,17 @@
 
 namespace SenVM
 {
-  class IntVal : public StkVal
+  class IntVal : public AnyVal
   {
   private:
-    i8  m_iInt;
   
   public:
     void* operator new(size_t);
     
-    void operator =(i8 iVal);
-    i8   iInt(void);
+    void  operator =(i8 iVal);
   
-    i8   nStackBytes(void);
-    void vToString(Stz* szDst);
+    i8    nStackUsage(void);
+    void  vToString(Stz* szDst);
   };
   
   /*----------------------------------------------------------------------------*/
@@ -27,7 +25,7 @@ namespace SenVM
   {
     IntVal* aIntVal = reinterpret_cast<IntVal*>(aAddr);
   
-    ASSERT( !aIntVal || CN_INTVAL == aIntVal->eClass() );
+    RASSERT_TYPE(aIntVal,CN_INTVAL);
   
     return aIntVal;
   }

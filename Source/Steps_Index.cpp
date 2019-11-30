@@ -60,7 +60,7 @@ void Step::vIndexAnalyze(void)
   s48K sAnalysis;
   i8 nRows;
   sAnalysis = (Stz*)pIndex->pTable()->pAnalyzeIndex(pIndex, iDetailed == 1 ? true : false, nRows);
-  m_pDataStack->vPushS48K(sAnalysis);
+  m_pDataStack->vPushStr(sAnalysis);
   
   EXIT();
 }
@@ -129,7 +129,7 @@ void Step::vIndexColumnName(void)
   Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
   
   s32 sColNm(pColumn->szColNm());
-  m_pDataStack->vPushS32(sColNm);
+  m_pDataStack->vPushStr(sColNm);
   
   EXIT();
 }
@@ -155,7 +155,7 @@ void Step::vIndexColumnType(void)
   Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
   s32 sColumnType = aCT[pColumn->eColumnType()];
   
-  m_pDataStack->vPushS32(sColumnType);
+  m_pDataStack->vPushStr(sColumnType);
   
   EXIT();
 }
@@ -536,7 +536,7 @@ void Step::vIndexNameFetch(void)
   
   s32 sIndexName = pIndex->szIndexNm();
   
-  m_pDataStack->vPushS32(sIndexName);
+  m_pDataStack->vPushStr(sIndexName);
   
   EXIT();
 }
@@ -1110,7 +1110,7 @@ void Step::vIndexVerify(void)
   
   bool bVerified = pIndex->pTable()->bVerifyIndex(pIndex);
   s256 s = bVerified ? "Valid"_Stz : "Invalid"_Stz;
-  m_pDataStack->vPushS256(s);
+  m_pDataStack->vPushStr(s);
   
   EXIT();
 }

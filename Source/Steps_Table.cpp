@@ -92,7 +92,7 @@ void Step::vTableAnalyze(void)
   i8 nRows;
   sAnalysis = (Stz*)pTable->pAnalyzeTable(iDetailed == 1 ? true : false, nRows);
   
-  m_pDataStack->vPushS48K(sAnalysis);
+  m_pDataStack->vPushStr(sAnalysis);
     
   EXIT();
 }
@@ -300,7 +300,7 @@ void Step::vTableGetColumnsAsString(void)
     s.vConcat(aCT[pColVec->pGet(i_Column)->eColumnType()]);
   }
   
-  m_pDataStack->vPushS16KB(s);
+  m_pDataStack->vPushStr(s);
   
   EXIT();
 }
@@ -465,7 +465,7 @@ void Step::vTableName(void)
   
   sName = (Stz*)pTable->szTableNm();
   
-  m_pDataStack->vPushS32(sName);
+  m_pDataStack->vPushStr(sName);
 
   EXIT();
 }
@@ -829,7 +829,7 @@ void Step::vTableVerify(void)
   bool bVerified = pTable->bVerifyTable();
   s256 s = bVerified ? "Valid"_Stz : "Invalid"_Stz;
   
-  m_pDataStack->vPushS256(s);
+  m_pDataStack->vPushStr(s);
   
   EXIT();
 }

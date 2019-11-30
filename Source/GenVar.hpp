@@ -5,22 +5,25 @@
 
 namespace SenVM
 {
+  union AllVal {
+    
+    AnyVal  m_xAnyVal;
+    
+    FipVal  m_xFipVal;
+    IntVal  m_xIntVal;
+    PtrVal  m_xPtrVal;
+    StrVal  m_xStrVal;
+    
+    byte    m_yaSpace[C_48KB];
+    
+    void vInit(void) { MemLib::vZero(m_yaSpace,sizeof(m_yaSpace),CN_NONE); }
+  } ;
+
   class GenVar : public Object
   {
   private:
 
-    union {
-      
-      StkVal  m_xStkVal;
-
-      FipVal  m_xFipVal;
-      IntVal  m_xIntVal;
-      PtrVal  m_xPtrVal;
-      StrVal  m_xStrVal;
-      
-      byte    m_yaSpace[C_48KB];
-
-    } u;
+    AllVal u;
 
     // must be last
     Footer m_xFooter;
@@ -29,13 +32,13 @@ namespace SenVM
     void* operator new(size_t);
   
     GenVar(void);
-    GenVar(StkVal*);
+    GenVar(AnyVal*);
    ~GenVar(void) noexcept(false);
   
     // auto conversion
-    operator StkVal*(void);
+    operator AnyVal*(void);
 
-    void operator =(StkVal*);
+    void operator =(AnyVal*);
   
     void operator =(Cell* aFip);
     void operator =(i8 iInt);
@@ -43,13 +46,13 @@ namespace SenVM
     void operator =(Stz* szStz);
 
     char*   azChar(void);
-    void    vCopy(StkVal* aStkVal);
-    StkVal* aEmbeddedStkVal(void);
+    void    vCopy(AnyVal* aAnyVal);
+    AnyVal* aEmbeddedAnyVal(void);
     Cell*   aFip(void);
     i8      iInt(void);
     bool    bIsInt(void);
     Object* pObj(void);
-    i8      nStackBytes(void);
+    i8      nStackUsage(void);
     Stz*    szStz(void);
     i8      nStzSize(void);
     void    vToString(Stz* szStz);

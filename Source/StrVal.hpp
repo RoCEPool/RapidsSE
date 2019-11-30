@@ -5,10 +5,9 @@
 
 namespace SenVM
 {
-  class StrVal : public StkVal
+  class StrVal : public AnyVal
   {
   protected:
-    i8   m_nBytesFollowing;
     char m_caStr[1];
   
   public:
@@ -20,11 +19,21 @@ namespace SenVM
     i8    nSize(void);
     Stz*  szStz(void);
 
-    i8    nStackBytes(void);
+    i8    nStackUsage(void);
     void  vToString(Stz* szStz);
   };
 
-  StrVal* _aStrVal(void* aAddr);
+  /*----------------------------------------------------------------------------*/
+  /* safe cast                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline StrVal* _aStrVal(void* aAddr)
+  {
+    StrVal* aStrVal = reinterpret_cast<StrVal*>(aAddr);
+  
+    RASSERT_TYPE(aStrVal,CN_STRVAL);
+
+    return aStrVal;
+  }  
 }
 
 /*============================================================================*/

@@ -118,7 +118,7 @@ void Step::vFilePathGet(void)
 
   s256 sPath = pFile->sFilePath();
   
-  m_pDataStack->vPushS256(sPath);
+  m_pDataStack->vPushStr(sPath);
   
   EXIT();
 }
@@ -142,7 +142,7 @@ void Step::vFileRead(void)
   bool bResult = pFile->bReadLine(sLine);
   
   if (bResult) {
-    m_pDataStack->vPushS48K(sLine);
+    m_pDataStack->vPushStr(sLine);
     m_pDataStack->vPushInt(true);
   }
   else {

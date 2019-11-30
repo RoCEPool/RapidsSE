@@ -27,7 +27,7 @@ void Step::vClassName(void)
   
   sClassName = aCN[iClassNo];
   
-  m_pDataStack->vPushS32(sClassName);
+  m_pDataStack->vPushStr(sClassName);
   
   EXIT();
 }

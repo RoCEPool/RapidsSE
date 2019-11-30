@@ -162,7 +162,7 @@ void Step::vInputToken(void)
   
   s48K sTkn(m_pCompiler->szToken());
   
-  m_pDataStack->vPushS48K(sTkn);
+  m_pDataStack->vPushStr(sTkn);
   
   EXIT();
 }
@@ -210,7 +210,7 @@ void Step::vTokenColon(void)
   
   s48K sTkn(m_pCompiler->szToken());
   
-  m_pDataStack->vPushS48K(sTkn);
+  m_pDataStack->vPushStr(sTkn);
   
   EXIT();
 }

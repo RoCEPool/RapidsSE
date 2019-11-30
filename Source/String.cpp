@@ -65,7 +65,7 @@ i8 String::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* get size of string                                                         */
 /*----------------------------------------------------------------------------*/
-i8 String::nStackBytes(void)
+i8 String::nStackUsage(void)
 {
   m_xHeader.vAssertHeader();
   aFooter()->vAssertFooter();

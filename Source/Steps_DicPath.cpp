@@ -74,7 +74,7 @@ void Step::vDicPathPick(void)
 
   s32 sDicNm(pDicPath->sDicName(iDic));
   
-  m_pDataStack->vPushS32(sDicNm);
+  m_pDataStack->vPushStr(sDicNm);
   
   EXIT();
 }

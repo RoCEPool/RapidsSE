@@ -55,7 +55,7 @@ void Step::vSlotsColumnName(void)
   
   s32 sColNm(pColumn->szColNm());
   
-  m_pDataStack->vPushS32(sColNm);
+  m_pDataStack->vPushStr(sColNm);
   
   EXIT();
 }

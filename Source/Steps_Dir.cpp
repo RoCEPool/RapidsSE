@@ -180,7 +180,7 @@ void Step::vDirEntryName(void)
   
   s256 sEntryNm = pDir->szEntryNm();
   
-  m_pDataStack->vPushS256(sEntryNm);
+  m_pDataStack->vPushStr(sEntryNm);
   
   EXIT();
 }
@@ -307,7 +307,7 @@ void Step::vDirPathGet(void)
   
   s256 sPath = pDir->szPath();
   
-  m_pDataStack->vPushS256(sPath);
+  m_pDataStack->vPushStr(sPath);
 
   
   EXIT();

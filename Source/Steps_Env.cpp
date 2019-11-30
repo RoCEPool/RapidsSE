@@ -29,7 +29,7 @@ void Step::vEnvGet(void)
   if (! Env::bGet(sEnvName,sEnvVal))
     sEnvVal = ""_Stz;
   
-  m_pDataStack->vPushS256(sEnvVal);
+  m_pDataStack->vPushStr(sEnvVal);
   
   EXIT();
 }
