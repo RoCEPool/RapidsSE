@@ -44,7 +44,7 @@ void Step::vTaskAck(void)
   ENTRY(); // ENTRY("vTaskAck"_Stz);
   
   Object* pTaskObject;
-  if ( ! m_pDataStack->bPopPtr(pTaskObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pTaskObject,__func__);
   Task* pTaskWaiting = _pTask(pTaskObject);
   
   bool bWasQueued = Scheduler::bAckWaitingTask(pTaskWaiting,m_pTask);
@@ -65,7 +65,7 @@ void Step::vTaskAcksStore(void)
   ENTRY(); // ENTRY("vTaskAcksStore"_Stz);
   
   Object* pPtrTask;
-  if ( ! m_pDataStack->bPopPtr(pPtrTask) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrTask,__func__);
   Task* pGivenTask = _pTask(pPtrTask);
   
   i8 nAcksRequired;
@@ -108,7 +108,7 @@ void Step::vTaskDicStack(void)
   ENTRY(); // ENTRY("vTaskDicStack"_Stz);
   
   Object* pPtrTask;
-  if ( ! m_pDataStack->bPopPtr(pPtrTask) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrTask,__func__);
   
   Task* pThatTask = _pTask(pPtrTask);
   ASSERT(CN_TASK == pThatTask->eClass());
@@ -140,7 +140,7 @@ void Step::vTaskDropLock(void)
   ENTRY(); // ENTRY("vTaskDrop"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pObject,__func__);
   Task* pThatTask = _pTask(pObject);
   
   Scheduler::vDropTaskLock(pThatTask);
@@ -183,7 +183,7 @@ void Step::vTaskGrabLock(void)
   ENTRY(); // ENTRY("vTaskGrab"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pObject,__func__);
   Task* pThatTask = _pTask(pObject);
   
   Scheduler::vGrabTaskLock(pThatTask);
@@ -199,7 +199,7 @@ void Step::vTaskIsAckSet(void)
   ENTRY(); // ENTRY("vTaskIsAckSet"_Stz);
   
   Object* pTaskObject;
-  if ( ! m_pDataStack->bPopPtr(pTaskObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pTaskObject,__func__);
   Task* pTaskBeingAcked = _pTask(pTaskObject);
   
   i8 iIsAckSet = pTaskBeingAcked->m_oAcksRmg.bIsSet();
@@ -224,7 +224,7 @@ void Step::vTaskJobFetch(void)
   ENTRY(); // ENTRY("vTaskJobFetch"_Stz);
   
   Object* pTaskObject;
-  if ( ! m_pDataStack->bPopPtr(pTaskObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pTaskObject,__func__);
   Task* pThatTask = _pTask(pTaskObject);
   
   Job* pJob = pThatTask->m_pJob;
@@ -242,11 +242,11 @@ void Step::vTaskJobStore(void)
   ENTRY(); // ENTRY("vTaskJobStore"_Stz);
   
   Object* pTaskObject;
-  if ( ! m_pDataStack->bPopPtr(pTaskObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pTaskObject,__func__);
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pJobObject;
-  if ( ! m_pDataStack->bPopPtr(pJobObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pJobObject,__func__);
   Job* pJob = _pJob(pJobObject);
   
   pThatTask->m_pJob = pJob;
@@ -262,7 +262,7 @@ void Step::vTaskNameFetch(void)
   ENTRY(); // ENTRY("vTaskNameFetch"_Stz);
   
   Object* pTaskObject;
-  if ( ! m_pDataStack->bPopPtr(pTaskObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pTaskObject,__func__);
   Task* pThatTask = _pTask(pTaskObject);
   
   s256 sName((Stz*)pThatTask->szJobName());
@@ -292,7 +292,7 @@ void Step::vTaskSendNodeFetch(void)
   ENTRY(); // ENTRY("vTaskSendNodeFetch"_Stz);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pObject,__func__);
   Task* pThatTask = _pTask(pObject);
   
   Node* pSendNode = pThatTask->pSendNode();
@@ -312,11 +312,11 @@ void Step::vTaskSendNodeStore(void)
   ENTRY(); // ENTRY("vTaskSendNodeStore"_Stz);
   
   Object* pTaskObject;
-  if ( ! m_pDataStack->bPopPtr(pTaskObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pTaskObject,__func__);
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pPtrSendNode;
-  if ( ! m_pDataStack->bPopPtr(pPtrSendNode) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrSendNode,__func__);
   Node* pSendNode = _pNode(pPtrSendNode);
   
   pThatTask->vSendNode(pSendNode);
@@ -387,7 +387,7 @@ void Step::vTaskStateFetch(void)
   ENTRY(); // ENTRY("vTaskStateFetch"_Stz);
   
   Object* pTaskObject;
-  if ( ! m_pDataStack->bPopPtr(pTaskObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pTaskObject,__func__);
   Task* pThatTask = _pTask(pTaskObject);
   
   eTS eState = pThatTask->m_eState;
@@ -419,7 +419,7 @@ void Step::vTaskThread(void)
   ENTRY(); // ENTRY("vTaskThread"_Stz);
   
   Object* pTaskObject;
-  if ( ! m_pDataStack->bPopPtr(pTaskObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pTaskObject,__func__);
   Task* pThatTask = _pTask(pTaskObject);
 
   Thread* pThread = pThatTask->m_pThread;

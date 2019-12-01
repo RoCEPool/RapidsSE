@@ -334,7 +334,7 @@ void Step::vOperandSet(void)
   ENTRY(); // ENTRY("vOperandSet"_Stz);
   
   Object* pPtrObject;
-  if ( ! m_pDataStack->bPopPtr(pPtrObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrObject,__func__);
   
   m_pRegSet->m_pOperand = _pOperand(pPtrObject);
   

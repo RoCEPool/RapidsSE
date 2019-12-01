@@ -28,7 +28,7 @@ void Step::vFileClose(void)
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrFile) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrFile,__func__);
   
   File* pFile = _pFile(pPtrFile);
   
@@ -46,7 +46,7 @@ void Step::vFileDelete(void)
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrFile) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrFile,__func__);
   
   File* pFile = _pFile(pPtrFile);
 
@@ -81,7 +81,7 @@ void Step::vFileOpen(void)
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrFile) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrFile,__func__);
   File* pFile = _pFile(pPtrFile);
   
   s32 sMode;
@@ -106,7 +106,7 @@ void Step::vFilePathGet(void)
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrFile) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrFile,__func__);
   
   File* pFile = _pFile(pPtrFile);
 
@@ -126,7 +126,7 @@ void Step::vFileRead(void)
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrFile) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrFile,__func__);
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
   
@@ -154,7 +154,7 @@ void Step::vFileWrite(void)
   
   Object* pPtrFile;
   
-  if ( ! m_pDataStack->bPopPtr(pPtrFile) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrFile,__func__);
   
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);

@@ -42,7 +42,7 @@ void Step::vFlowExecute(void)
   ENTRY(); // ENTRY("vFlowExecute"_Stz);
   
   Object* pWordObject;
-  if ( ! m_pDataStack->bPopPtr(pWordObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pWordObject,__func__);
   Word* pWord = _pWord(pWordObject);
   
   if (WK_INTRINSIC == pWord->eKind()) {

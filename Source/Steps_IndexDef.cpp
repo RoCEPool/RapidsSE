@@ -20,11 +20,11 @@ void Step::vIndexDefParse(void)
   ENTRY(); // ENTRY("vIndexDefParse"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job* pJob_CreateIndex = _pJob(pJobPtr);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopPtr(pPtrTable) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrTable,__func__);
   Table* pTable = _pTable(pPtrTable);
 
   s4K sCmd;

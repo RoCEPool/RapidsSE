@@ -36,7 +36,7 @@ void Step::vSocketAccept(void)
   Object* pObject;
   
   
-  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pObject,__func__);
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -68,7 +68,7 @@ void Step::vSocketClose(void)
   Object* pObject;
   
   
-  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pObject,__func__);
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -98,7 +98,7 @@ void Step::vSocketConnect(void)
   i8 iPort;
   
   
-  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pObject,__func__);
   
   if ( ! m_pDataStack->bPopVal(xNodeVar) ) THROW_DSTACK();
   
@@ -156,7 +156,7 @@ void Step::vSocketConnect(void)
 //
 //  ENTRY(); // ENTRY("vSocketConnect"_Stz);
 //
-//  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
+//  m_pDataStack->vPopPtr(pObject,__func__);
 //
 //  if ( ! m_pDataStack->bPopVal(xNodeVar) ) THROW_DSTACK();
 //
@@ -220,7 +220,7 @@ void Step::vSocketDropWrite(void)
   ENTRY(); // ENTRY("vSocketDropWrite"_Stz);
   
   Object* pSocketPtr;
-  if ( ! m_pDataStack->bPopPtr(pSocketPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pSocketPtr,__func__);
   Socket* pSocket = _pSocket(pSocketPtr);
   
   pSocket->vDropWrite();
@@ -236,7 +236,7 @@ void Step::vSocketGrabWrite(void)
   ENTRY(); // ENTRY("vSocketGrabWrite"_Stz);
   
   Object* pSocketPtr;
-  if ( ! m_pDataStack->bPopPtr(pSocketPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pSocketPtr,__func__);
   Socket* pSocket = _pSocket(pSocketPtr);
   
   pSocket->vGrabWrite();
@@ -311,7 +311,7 @@ void Step::vSocketOpen(void)
   Socket* pSocket;
   
   Object* pNodePtr;
-  if ( ! m_pDataStack->bPopPtr(pNodePtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pNodePtr,__func__);
   Node* pNode = _pNode(pNodePtr);
 
   pSocket = new Socket(pNodePtr);
@@ -346,7 +346,7 @@ void Step::vSocketRecvObject(void)
   ENTRY(); // ENTRY("vSocketRecvObject"_Stz);
   
   Object* pSocketPtr;
-  if ( ! m_pDataStack->bPopPtr(pSocketPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pSocketPtr,__func__);
   Socket* pSocket = _pSocket(pSocketPtr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -625,7 +625,7 @@ void Step::vSocketRecvObject_LowMem(void)
   bool bDiscardOperand = false;
   
   Object* pSocketPtr;
-  if ( ! m_pDataStack->bPopPtr(pSocketPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pSocketPtr,__func__);
   Socket* pSocket = _pSocket(pSocketPtr);
   
   void* aLowBuff = pSocket->m_aLowBuff;
@@ -876,11 +876,11 @@ void Step::vSocketSendObject(void)
   ENTRY(); // ENTRY("vSocketSendObject"_Stz);
   
   Object* pSocketPtr;
-  if ( ! m_pDataStack->bPopPtr(pSocketPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pSocketPtr,__func__);
   Socket* pSocket = _pSocket(pSocketPtr);
   
   Object* pObject;
-  if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pObject,__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

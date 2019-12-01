@@ -24,7 +24,7 @@ void Step::vJob_PipelineBegin(void)
   ENTRY(); // ENTRY("vJob_PipelineBegin"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pJobPtr,__func__);
   
   Job* pJob_Pipeline = _pJob(pJobPtr);
   
@@ -55,7 +55,7 @@ void Step::vJob_PipelineCancel(void)
   ENTRY(); // ENTRY("vJob_PipelineCancel"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pJobPtr,__func__);
   
   Job* pJob_Pipeline = _pJob(pJobPtr);
   
@@ -79,7 +79,7 @@ void Step::vJob_PipelineEnd(void)
   ENTRY(); // ENTRY("vJob_PipelineEnd"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pJobPtr,__func__);
   
   Job* pJob_Pipeline = _pJob(pJobPtr);
   
@@ -103,7 +103,7 @@ void Step::vJob_PipelineExecute(void)
   ENTRY(); // ENTRY("vJob_PipelineExecute"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pJobPtr,__func__);
   
   Job* pJob_Pipeline = _pJob(pJobPtr);
   

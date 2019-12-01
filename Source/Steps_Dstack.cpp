@@ -38,7 +38,7 @@ void Step::vDstackTransfer(void)
   ENTRY(); // ENTRY("vDstackTransfer"_Stz);
   
   Object* pPtrTask;
-  if ( ! m_pDataStack->bPopPtr(pPtrTask) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrTask,__func__);
   Task* pThatTask = _pTask(pPtrTask);
   
   i8 iVal;

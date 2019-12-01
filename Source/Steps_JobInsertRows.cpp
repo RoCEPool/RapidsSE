@@ -30,7 +30,7 @@ void Step::vJob_CopyBufferCopy(void)
   ENTRY(); // ENTRY("vJob_CopyBufferCopy"_Stz);
   
   Object* pPtrCopyBuffer;
-  if ( ! m_pDataStack->bPopPtr(pPtrCopyBuffer) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrCopyBuffer,__func__);
   Job_CopyBuffer* pJob_CopyBuffer = _pJob_CopyBuffer(pPtrCopyBuffer);
   
   pJob_CopyBuffer->vCopy();
@@ -46,11 +46,11 @@ void Step::vJob_InsertRowNewJobWriteRow(void)
   ENTRY(); // ENTRY("vJob_InsertRowNewJobWriteRow"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
   
   Object* pTablePtr;
-  if ( ! m_pDataStack->bPopPtr(pTablePtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pTablePtr,__func__);
   Table* pTable = _pTable(pTablePtr);
   
   Session* pSession = pJob_InsertRow->pSession();
@@ -79,7 +79,7 @@ void Step::vJob_InsertRowPartitionFetch(void)
   ENTRY(); // ENTRY("vJob_InsertRowPartitionFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
   
   m_pDataStack->vPushInt(pJob_InsertRow->m_iPartitionId);
@@ -95,11 +95,11 @@ void Step::vJob_InsertRowRecordStore(void)
   ENTRY(); // ENTRY("vJob_InsertRowRecordNull"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
   
   Object* pRecordObject;
-  if ( ! m_pDataStack->bPopPtr(pRecordObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pRecordObject,__func__);
   Record* pRecord = _pRecord(pRecordObject);
   
   pJob_InsertRow->m_pRecord = pRecord;
@@ -115,11 +115,11 @@ void Step::vJob_InsertRowSpawnJobWriteRow(void)
   ENTRY(); // ENTRY("vJob_WriteRowSpawnJobWriteRow"_Stz);
   
   Object* pJobInsertRowPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobInsertRowPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pJobInsertRowPtr,__func__);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobInsertRowPtr);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   // spawn a writeRow job
@@ -136,7 +136,7 @@ void Step::vJob_InsertTableSubInserterJobFetch(void)
   ENTRY(); // ENTRY("vJob_InsertTableSubInserterJobFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJobPtr);
   
   m_pDataStack->vPushPtr(pJob_InsertTable->m_pJobSubInserter);
@@ -152,11 +152,11 @@ void Step::vJob_SubInserterBegin(void)
   ENTRY(); // ENTRY("vJob_SubInserterBegin"_Stz);
   
   Object* pPtrSubInserter;
-  if ( ! m_pDataStack->bPopPtr(pPtrSubInserter) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrSubInserter,__func__);
   Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pPtrSubInserter);
   
   Object* pPtrTable;
-  if ( ! m_pDataStack->bPopPtr(pPtrTable) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrTable,__func__);
   Table* pTable = _pTable(pPtrTable);
   
   pJob_SubInserter->vBegin(pTable);
@@ -172,7 +172,7 @@ void Step::vJob_SubInserterEnd(void)
   ENTRY(); // ENTRY("vJob_SubInserterEnd"_Stz);
   
   Object* pPtrSubInserter;
-  if ( ! m_pDataStack->bPopPtr(pPtrSubInserter) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrSubInserter,__func__);
   Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pPtrSubInserter);
   
   pJob_SubInserter->vEnd();

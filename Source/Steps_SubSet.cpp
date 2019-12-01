@@ -83,7 +83,7 @@ void Step::vSubsetSet(void)
   ENTRY(); // ENTRY("vOperandSet"_Stz);
   
   Object* pPtrObject;
-  if ( ! m_pDataStack->bPopPtr(pPtrObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pPtrObject,__func__);
   
   m_pRegSet->m_xpSubset = _pOperand(pPtrObject);
   

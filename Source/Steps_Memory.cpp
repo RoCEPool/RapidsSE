@@ -26,7 +26,7 @@ void Step::vMemoryByteDump(void)
   m_pDataStack->vPopInt(iSize,__func__);
   
   Object* pWordObject;
-  if ( ! m_pDataStack->bPopPtr(pWordObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pWordObject,__func__);
   Word* pWord = _pWord(pWordObject);
   
   //pWord->vByteDump(iSize);
@@ -69,7 +69,7 @@ void Step::vMemoryWordDump(void)
   m_pDataStack->vPopInt(iSize,__func__);
   
   Object* pWordObject;
-  if ( ! m_pDataStack->bPopPtr(pWordObject) ) THROW_DSTACK();
+  m_pDataStack->vPopPtr(pWordObject,__func__);
   Word* pWord = _pWord(pWordObject);
   
   //pWord->vWordDump(iSize);
