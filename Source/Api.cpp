@@ -22,7 +22,7 @@ void Api::vDeleteJobs(Session* pSession)
 
   while (pJobStack->nValues()) {
     
-    Object* pJobObject; pJobStack->vPopPtr(pJobObject,__func__);
+    Object* pJobObject = pJobStack->pPopPtr(__func__);
     
     Job* aJob = (Job*)pJobObject;
     
