@@ -213,22 +213,6 @@ void Stack::vPokeVal(i8 i_Val, AnyVal* aAnyVal)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack as integer                                            */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopAsInt(i8& iInt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  iInt = m_xTop.aAnyVal->iAsInt();
-  vDiscardTop();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop value from stack as integer                                            */
-/*----------------------------------------------------------------------------*/
 void Stack::vPopAsInt(i8& iInt, const char* azFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
