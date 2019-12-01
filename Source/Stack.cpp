@@ -246,23 +246,6 @@ void Stack::vPopFip(Cell*& aFip, const char* azFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop i8 from stack                                                          */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopInt(i8& iInt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_INTVAL) )
-    return false;
-  
-  iInt = m_xTop.aIntVal->iInt();
-  
-  vDiscardTop();
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop i8 from stack                                                          */
-/*----------------------------------------------------------------------------*/
 void Stack::vPopInt(i8& iInt, const char* azFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);

@@ -63,7 +63,6 @@ namespace SenVM
   
     bool bPopAsInt(i8& iInt1);
     void vPopFip(Cell*& aFip, const char* azFunNm);
-    bool bPopInt(i8& iInt);
     void vPopInt(i8& iInt, const char* azFunNm);
     bool bPopPtr(Object*& pObj);
   
