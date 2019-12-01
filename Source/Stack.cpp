@@ -301,6 +301,29 @@ bool Stack::bPopStr(String* pString)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop string from stack                                                      */
+/*----------------------------------------------------------------------------*/
+void Stack::vPopStr(String* pString, const char* azFunNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_STRVAL) )
+    Correctness::vThrow(FK_DSTACK,VL_FATAL,
+                        azFunNm,__FILE__,__LINE__,
+                        "Invalid d-stack"_Stz);
+
+  _hazard_();
+  
+  StrVal* aStrVal = _aStrVal(aTopVal());
+  
+  pString->vCopy(aStrVal->szStz());
+  
+  vDiscardTop();
+  
+  _hazard_();
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop value from stack                                                       */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopVal(AnyVal* aAnyVal)
