@@ -229,23 +229,6 @@ bool Stack::bPopAsInt(i8& iInt)
 /*----------------------------------------------------------------------------*/
 /* pop fip from stack                                                         */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopFip(Cell*& aFip)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_FIPVAL) )
-    return false;
-  
-  aFip = m_xTop.aFipVal->aFip();
-  
-  vDiscardTop();
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop fip from stack                                                         */
-/*----------------------------------------------------------------------------*/
 void Stack::vPopFip(Cell*& aFip, const char* azFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
@@ -290,29 +273,6 @@ bool Stack::bPopPtr(Object*& pObj)
   pObj = m_xTop.aPtrVal->pObj();
   
   vDiscardTop();
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop string from stack                                                      */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopStr(String* pString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_STRVAL) )
-    return false;
-  
-  _hazard_();
-  
-  StrVal* aStrVal = _aStrVal(aTopVal());
-  
-  pString->vCopy(aStrVal->szStz());
-  
-  vDiscardTop();
-  
-  _hazard_();
 
   return true;
 }

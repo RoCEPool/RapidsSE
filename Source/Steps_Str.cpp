@@ -525,7 +525,7 @@ void Step::vStrToStrVec(void)
   
   for (i8 iMove = 0; iMove < nStrings; iMove++) {
     
-    RASSERT(m_pAuxStack->bPopStr(sDicNm));
+    m_pAuxStack->vPopStr(sDicNm,__func__);
     m_pDataStack->vPushStr(sDicNm);
   }
 

@@ -328,7 +328,7 @@ void Step::vExit_RT(void)
     m_pTask->vLocalsPop();
   
   Cell* aCell;
-  if ( ! m_pReturnStack->bPopFip(aCell) ) THROW_RSTACK();
+  m_pReturnStack->vPopFip(aCell,__func__);
   
   m_aInxPtr = aCell;
   
@@ -344,11 +344,7 @@ void Step::vFind(void)
   
   s256 sName;
   m_pDataStack->vPopStr(sName,__func__);
-  
-  if (m_pTask->m_iTraceMask) {
-    i8 i = 0;
-  }
-  
+    
   Word* pWord = m_oDicStack.pFindWord(sName);
   
   m_pDataStack->vPushPtr(pWord);
