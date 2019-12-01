@@ -110,7 +110,7 @@ void Step::vComma(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   GenVar xValue;
-  if ( ! m_pDataStack->bPopVal(xValue) ) THROW_DSTACK();
+  m_pDataStack->vPopVal(xValue,__func__);
   
   pCurrentWord->vEncode("pushValue"_Stz,xValue);
     

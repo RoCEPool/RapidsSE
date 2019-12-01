@@ -98,7 +98,7 @@ void Step::vSocketConnect(void)
   Object* pObject;
   m_pDataStack->vPopPtr(pObject,__func__);
   
-  if ( ! m_pDataStack->bPopVal(xNodeVar) ) THROW_DSTACK();
+  m_pDataStack->vPopVal(xNodeVar,__func__);
   
   i8 iPort; m_pDataStack->vPopInt(iPort,__func__);
   
