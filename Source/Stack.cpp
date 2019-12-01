@@ -331,6 +331,25 @@ i8 Stack::iPopAsInt(const char* azFunNm)
   return iInt;
 }
 
+/*----------------------------------------------------------------------------*/
+/* pop fip from stack                                                         */
+/*----------------------------------------------------------------------------*/
+Cell* Stack::aPopFip(const char* azFunNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_FIPVAL) )
+    Correctness::vThrow(FK_DSTACK,VL_FATAL,
+                        azFunNm,__FILE__,__LINE__,
+                        "Invalid d-stack"_Stz);
+  
+  Cell* aFip = m_xTop.aFipVal->aFip();
+  
+  vDiscardTop();
+  
+  return aFip;
+}
+
 
 
 
