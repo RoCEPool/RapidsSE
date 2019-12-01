@@ -53,9 +53,7 @@ void Step::vThreadCpu(void)
 {
   ENTRY(); // ENTRY("vThreadCpu"_Stz);
   
-  Object* pObject;
-  
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject; m_pDataStack->vPopPtr(pObject,__func__);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -119,9 +117,7 @@ void Step::vThreadDump(void)
 {
   ENTRY(); // ENTRY("vThreadDump"_Stz);
   
-  Object* pObject;
-  
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject; m_pDataStack->vPopPtr(pObject,__func__);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -153,9 +149,7 @@ void Step::vThreadId(void)
 {
   ENTRY(); // ENTRY("vThreadId"_Stz);
   
-  Object* pObject;
-  
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject; m_pDataStack->vPopPtr(pObject,__func__);
   
   ASSERT(CN_THREAD == pObject->eClass());
   

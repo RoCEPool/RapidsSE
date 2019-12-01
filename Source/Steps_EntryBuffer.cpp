@@ -25,9 +25,7 @@ void Step::vEntBufferDump(void)
 {
   ENTRY(); // ENTRY("vEntBufferDump"_Stz);
   
-  Object* pPtrIndexBuffer = nullptr;
-  
-  m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
+  Object* pPtrIndexBuffer = nullptr; m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
@@ -44,9 +42,7 @@ void Step::vEntBufferIndexFetch(void)
   ENTRY(); // ENTRY("vEntBufferIndexFetch"_Stz);
   
   Object* pPtrIndex;
-  Object* pPtrIndexBuffer;
-  
-  m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
+  Object* pPtrIndexBuffer; m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
@@ -63,9 +59,7 @@ void Step::vEntBufferIndexStore(void)
   ENTRY(); // ENTRY("vEntBufferIndexStore"_Stz);
   
   Object* pPtrIndex;
-  Object* pPtrIndexBuffer;
-  
-  m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
+  Object* pPtrIndexBuffer; m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
@@ -87,9 +81,7 @@ void Step::vEntBufferNextBuffer(void)
   ENTRY(); // ENTRY("vEntBufferNextBuffer"_Stz);
   
   Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  
-  m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
+  Object* pPtrIndexBuffer; m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
@@ -110,9 +102,7 @@ void Step::vEntBufferPartitionFetch(void)
   ENTRY(); // ENTRY("vEntBufferPartitionFetch"_Stz);
   
   Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  
-  m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
+  Object* pPtrIndexBuffer; m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
@@ -129,9 +119,7 @@ void Step::vEntBufferPartitionStore(void)
   ENTRY(); // ENTRY("vEntBufferPartitionStore"_Stz);
   
   Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  
-  m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
+  Object* pPtrIndexBuffer; m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   

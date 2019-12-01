@@ -116,9 +116,7 @@ void Step::vDicStackPush(void)
   
   DicStack* pDicStack = _pDicStack(pPtrDicStack);
 
-  Object* pPtrDic;
-  
-  m_pDataStack->vPopPtr(pPtrDic,__func__);
+  Object* pPtrDic; m_pDataStack->vPopPtr(pPtrDic,__func__);
   
   Dic* pDic = _pDic(pPtrDic);
   

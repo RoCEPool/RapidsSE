@@ -170,9 +170,7 @@ void Step::vTxDump(void)
 {
   ENTRY(); // ENTRY("vTxDump"_Stz);
   
-  Object* pPtrTx;
-  
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
+  Object* pPtrTx; m_pDataStack->vPopPtr(pPtrTx,__func__);
   Tx* pTx = _pTx(pPtrTx);
   
   pTx->vContentDump();
@@ -199,9 +197,7 @@ void Step::vTxFree(void)
 {
   ENTRY(); // ENTRY("vTxFree"_Stz);
   
-  Object* pPtrTx;
-  
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
+  Object* pPtrTx; m_pDataStack->vPopPtr(pPtrTx,__func__);
   Tx* pTx = _pTx(pPtrTx);
   
 //  vTrace("Freeing tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,

@@ -80,9 +80,7 @@ void Step::vNodeForget(void)
 {
   ENTRY(); // ENTRY("vNodeForget"_Stz);
   
-  Object* pPtrNode;
-  
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
+  Object* pPtrNode; m_pDataStack->vPopPtr(pPtrNode,__func__);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
@@ -105,9 +103,7 @@ void Step::vNodeIP(void)
 {
   ENTRY(); // ENTRY("vNodeIP"_Stz);
   
-  Object* pPtrNode;
-  
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
+  Object* pPtrNode; m_pDataStack->vPopPtr(pPtrNode,__func__);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
@@ -126,9 +122,7 @@ void Step::vNodeName(void)
 {
   ENTRY(); // ENTRY("vNodeName"_Stz);
   
-  Object* pPtrNode;
-  
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
+  Object* pPtrNode; m_pDataStack->vPopPtr(pPtrNode,__func__);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
@@ -147,9 +141,7 @@ void Step::vNodeNo(void)
 {
   ENTRY(); // ENTRY("vNodeNo"_Stz);
   
-  Object* pPtrNode;
-  
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
+  Object* pPtrNode; m_pDataStack->vPopPtr(pPtrNode,__func__);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());

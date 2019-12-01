@@ -226,9 +226,7 @@ void Step::vIndexIndexDefStore(void)
 void Step::vIndexInit(void)
 {
   ENTRY(); // ENTRY("vIndexInit"_Stz);
-  Object* pPtrIndex = nullptr;
-  
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -245,9 +243,7 @@ void Step::vIndexIsPrimaryKeyFetch(void)
 {
   ENTRY(); // ENTRY("vIndexIsPrimaryKeyFetch"_Stz);
   
-  Object* pPtrIndex = nullptr;
-  
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -266,9 +262,7 @@ void Step::vIndexIsPrimaryKeyStore(void)
 {
   ENTRY(); // ENTRY("vIndexIsPrimaryKeyStore"_Stz);
   
-  Object* pPtrIndex = nullptr;
-  
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -287,9 +281,7 @@ void Step::vIndexIsUniqueFetch(void)
 {
   ENTRY(); // ENTRY("vIndexIsUniqueFetch"_Stz);
   
-  Object* pPtrIndex = nullptr;
-  
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -308,9 +300,7 @@ void Step::vIndexIsValidUniqueIndex(void)
 {
   ENTRY(); // ENTRY("vIndexIsValidUniqueIndex"_Stz);
   
-  Object* pPtrIndex = nullptr;
-  
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -487,9 +477,7 @@ void Step::vIndexNameFetch(void)
 {
   ENTRY(); // ENTRY("vIndexNameFetch"_Stz);
   
-  Object* pPtrIndex = nullptr;
-  
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -507,9 +495,7 @@ void Step::vIndexNameFetch(void)
 void Step::vIndexPopulate(void)
 {
   ENTRY(); // ENTRY("vIndexPopulate"_Stz);
-  Object* pPtrIndex = nullptr;
-  
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -806,9 +792,7 @@ void Step::vIndexTableFetch(void)
 {
   ENTRY(); // ENTRY("vIndexTableFetch"_Stz);
   
-  Object* pPtrIndex = nullptr;
-  
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -828,10 +812,8 @@ void Step::vIndexTableStore(void)
 {
   ENTRY(); // ENTRY("vIndexTableStore"_Stz);
   
-  Object* pPtrIndex = nullptr;
+  Object* pPtrIndex = nullptr; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   Object* pPtrTable = nullptr;
-  
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -853,9 +835,7 @@ void Step::vIndexTruncate(void)
 {
   ENTRY(); // ENTRY("vIndexTruncate"_Stz);
   
-  Object* pPtrIndex = nullptr;
-  
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -1040,9 +1020,7 @@ void Step::vIndexVerify(void)
 {
   ENTRY(); // ENTRY("vIndexVerify"_Stz);
   
-  Object* pPtrIndex;
-  
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());

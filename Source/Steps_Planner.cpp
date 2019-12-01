@@ -38,9 +38,7 @@ void Step::vPlannerChoosePaths(void)
   
   ENTRY(); // ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
   
-  Object* mpPtrPlanner;
-  
-  m_pDataStack->vPopPtr(mpPtrPlanner,__func__);
+  Object* mpPtrPlanner; m_pDataStack->vPopPtr(mpPtrPlanner,__func__);
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
   for (i8 i_Phrase = 0; i_Phrase < mpPlanner->nPhrases(); i_Phrase++)
@@ -107,9 +105,7 @@ void Step::vPlannerGenPaths(void)
 {
   ENTRY(); // ENTRY("vPlannerGenPaths"_Stz);
   
-  Object* pPtrPlanner;
-  
-  m_pDataStack->vPopPtr(pPtrPlanner,__func__);
+  Object* pPtrPlanner; m_pDataStack->vPopPtr(pPtrPlanner,__func__);
   
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
@@ -212,9 +208,7 @@ void Step::vPlannerMatchPaths(void)
 {
   ENTRY(); // ENTRY("vPlannerMatchnPaths"_Stz);
   
-  Object* pPtrPlanner;
-  
-  m_pDataStack->vPopPtr(pPtrPlanner,__func__);
+  Object* pPtrPlanner; m_pDataStack->vPopPtr(pPtrPlanner,__func__);
   
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   

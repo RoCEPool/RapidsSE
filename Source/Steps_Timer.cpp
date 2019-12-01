@@ -32,9 +32,7 @@ void Step::vTimerDelete(void)
 {
   ENTRY(); // ENTRY("vTimeDelete"_Stz);
   
-  Object* pPtrTimer;
-  
-  m_pDataStack->vPopPtr(pPtrTimer,__func__);
+  Object* pPtrTimer; m_pDataStack->vPopPtr(pPtrTimer,__func__);
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
