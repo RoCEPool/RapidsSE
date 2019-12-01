@@ -22,7 +22,7 @@ void Step::vSlotsColumnCount(void)
 {
   ENTRY(); // ENTRY("vSlotsColumnCount"_Stz);
   
-  Object* pPtrSlots; m_pDataStack->vPopPtr(pPtrSlots,__func__);
+  Object* pPtrSlots = m_pDataStack->pPopPtr(__func__);
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
   
@@ -38,7 +38,7 @@ void Step::vSlotsColumnName(void)
 {
   ENTRY(); // ENTRY("vSlotsColumnName"_Stz);
   
-  Object* pPtrSlots; m_pDataStack->vPopPtr(pPtrSlots,__func__);
+  Object* pPtrSlots = m_pDataStack->pPopPtr(__func__);
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
   
@@ -61,7 +61,7 @@ void Step::vSlotsCreateColumnVec(void)
 {
   ENTRY(); // ENTRY("vSlotsCreateColumnVec"_Stz);
   
-  Object* pPtrSlots; m_pDataStack->vPopPtr(pPtrSlots,__func__);
+  Object* pPtrSlots = m_pDataStack->pPopPtr(__func__);
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
   
@@ -77,7 +77,7 @@ void Step::vSlotsSubDic(void)
 {
   ENTRY(); // ENTRY("vSlotsSubDic"_Stz);
   
-  Object* pSlotsPtr; m_pDataStack->vPopPtr(pSlotsPtr,__func__);
+  Object* pSlotsPtr = m_pDataStack->pPopPtr(__func__);
   
   Slots* pSlots = _pSlots(pSlotsPtr);
   ASSERT(CN_SLOTS == pSlots->eClass());

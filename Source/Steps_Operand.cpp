@@ -331,7 +331,7 @@ void Step::vOperandSet(void)
 {
   ENTRY(); // ENTRY("vOperandSet"_Stz);
   
-  Object* pPtrObject; m_pDataStack->vPopPtr(pPtrObject,__func__);
+  Object* pPtrObject = m_pDataStack->pPopPtr(__func__);
   
   m_pRegSet->m_pOperand = _pOperand(pPtrObject);
   

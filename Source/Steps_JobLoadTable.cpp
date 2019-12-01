@@ -24,7 +24,7 @@ void Step::vJob_LoadTableBegin(void)
 {
   ENTRY(); // ENTRY("vJob_LoadTableBegin"_Stz);
   
-  Object* pPtrJob_LoadTable; m_pDataStack->vPopPtr(pPtrJob_LoadTable,__func__);
+  Object* pPtrJob_LoadTable = m_pDataStack->pPopPtr(__func__);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   bool bBegun = pJob_LoadTable->bBegin();
@@ -41,7 +41,7 @@ void Step::vJob_LoadTableChunk(void)
 {
   ENTRY(); // ENTRY("vJob_LoadTableChunk"_Stz);
   
-  Object* pPtrJob_LoadTable; m_pDataStack->vPopPtr(pPtrJob_LoadTable,__func__);
+  Object* pPtrJob_LoadTable = m_pDataStack->pPopPtr(__func__);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
   bool bCallAgain = pJob_LoadTable->bChunk();
@@ -58,7 +58,7 @@ void Step::vJob_LoadTableDumpMap(void)
 {
   ENTRY(); // ENTRY("vJob_LoaderDUmpMap"_Stz);
   
-  Object* pPtrJob_LoadTable; m_pDataStack->vPopPtr(pPtrJob_LoadTable,__func__);
+  Object* pPtrJob_LoadTable = m_pDataStack->pPopPtr(__func__);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
   pJob_LoadTable->vDumpMap();
@@ -73,7 +73,7 @@ void Step::vJob_LoadTableEnd(void)
 {
   ENTRY(); // ENTRY("vJob_LoadTableEnd"_Stz);
   
-  Object* pPtrJob_LoadTable; m_pDataStack->vPopPtr(pPtrJob_LoadTable,__func__);
+  Object* pPtrJob_LoadTable = m_pDataStack->pPopPtr(__func__);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   pJob_LoadTable->vEnd();
@@ -88,7 +88,7 @@ void Step::vJob_LoadTableFilePathFetch(void)
 {
   ENTRY(); // ENTRY("vJob_LoadTableFilePathFetch"_Stz);
   
-  Object* pPtrJob_LoadTable; m_pDataStack->vPopPtr(pPtrJob_LoadTable,__func__);
+  Object* pPtrJob_LoadTable = m_pDataStack->pPopPtr(__func__);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   s256 sFilePath = pJob_LoadTable->szFilePath();
@@ -104,10 +104,10 @@ void Step::vJob_LoadTableTableStore(void)
 {
   ENTRY(); // ENTRY("vJob_LoaderTableStore"_Stz);
   
-  Object* pPtrJob_LoadTable; m_pDataStack->vPopPtr(pPtrJob_LoadTable,__func__);
+  Object* pPtrJob_LoadTable = m_pDataStack->pPopPtr(__func__);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
-  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable = m_pDataStack->pPopPtr(__func__);
   Table* pTable = _pTable(pPtrTable);
   
   pJob_LoadTable->vTable(pTable);

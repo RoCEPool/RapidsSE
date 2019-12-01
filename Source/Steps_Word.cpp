@@ -45,7 +45,7 @@ void Step::vWordCategoryFetch(void)
 {
   ENTRY(); // ENTRY("vWordKindGet"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   Word* pCategory = pWord->pCategory();
@@ -62,10 +62,10 @@ void Step::vWordCategoryStore(void)
 {
   ENTRY(); // ENTRY("vWordKindSet"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
-  Object* pCategoryObject; m_pDataStack->vPopPtr(pCategoryObject,__func__);
+  Object* pCategoryObject = m_pDataStack->pPopPtr(__func__);
   Word* pCategory = _pWord(pCategoryObject);
   
   pWord->vCategory(pCategory);
@@ -80,7 +80,7 @@ void Step::vWordDump(void)
 {
   ENTRY(); // ENTRY("vWordDump"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   pWord->vContentDump();
@@ -95,7 +95,7 @@ void Step::vWordEnmSetFetch(void)
 {
   ENTRY(); // ENTRY("vWordEnmSetFetch"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   EnameSet* pEnameSet = pWord->pEnameSet();
@@ -112,10 +112,10 @@ void Step::vWordEnmSetStore(void)
 {
   ENTRY(); // ENTRY("vWordEnmSetStore"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
-  Object* pEnameSet_obj; m_pDataStack->vPopPtr(pEnameSet_obj,__func__);
+  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__);
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   pWord->vEnameSet(pEnameSet);
@@ -130,7 +130,7 @@ void Step::vWordExitHookGet(void)
 {
   ENTRY(); // ENTRY("vWordExitHookGet"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   s32 sExitHook(pWord->szExitHook());
@@ -147,7 +147,7 @@ void Step::vWordExitHookSet(void)
 {
   ENTRY(); // ENTRY("vWordExitHookSet"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   s32 sExitHook;
@@ -165,7 +165,7 @@ void Step::vWordForget(void)
 {
   ENTRY(); // ENTRY("vWordForget"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   Word* pRemovedWord = m_oDicStack.pRemoveWord(pWord->szWordNm());
@@ -183,7 +183,7 @@ void Step::vWordImmediateGet(void)
 {
   ENTRY(); // ENTRY("vWordImmediateGet"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   i8 iImmediate = pWord->bImmediate();
@@ -200,7 +200,7 @@ void Step::vWordImmediateSet(void)
 {
   ENTRY(); // ENTRY("vWordImmediateSet"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   i8 iImmediate = m_pDataStack->iPopInt(__func__);
@@ -219,7 +219,7 @@ void Step::vWordIsImmediate(void)
   
   // we should just modify the pointers rather than actually pop
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   i8 iIsImmediate = pWord->bImmediate() ? 1 : 0;
@@ -236,7 +236,7 @@ void Step::vWordIsIntrinsic(void)
 {
   ENTRY(); // ENTRY("vWordIsIntrinsic"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   i8 iIsPrimitive = WK_INTRINSIC == pWord->eKind() ? 1 : 0;
@@ -253,7 +253,7 @@ void Step::vWordKindFetch(void)
 {
   ENTRY(); // ENTRY("vWordKindFetch"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   eWK eKind = pWord->eKind();
@@ -270,7 +270,7 @@ void Step::vWordKindStore(void)
 {
   ENTRY(); // ENTRY("vWordKindStore"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   i8 iKind = m_pDataStack->iPopInt(__func__);
@@ -287,7 +287,7 @@ void Step::vWordNameFetch(void)
 {
   ENTRY(); // ENTRY("vWordName"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   s32 sWordName(pWord->szWordNm());
@@ -304,7 +304,7 @@ void Step::vWordNameStore(void)
 {
   ENTRY(); // ENTRY("vWordName"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
 
   s32 sWordNm;
@@ -322,7 +322,7 @@ void Step::vWordPrev(void)
 {
   ENTRY(); // ENTRY("vWordPrev"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   Word* pPrevWord = pWord->pPrevWord();
@@ -339,7 +339,7 @@ void Step::vWordSee(void)
 {
   ENTRY(); // ENTRY("vWordSee"_Stz);
   
-  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
   Word* pWord = _pWord(pWordObject);
   
   AM::vWordSee(pWord,&m_oDicStack);

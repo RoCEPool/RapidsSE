@@ -20,7 +20,7 @@ void Step::vCastInt(void)
 {
   ENTRY(); // ENTRY("vCastInt"_Stz);
   
-  Object* pPtr; m_pDataStack->vPopPtr(pPtr,__func__);
+  Object* pPtr = m_pDataStack->pPopPtr(__func__);
   
   m_pDataStack->vPushInt((i8)pPtr);
   

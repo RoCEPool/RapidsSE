@@ -26,7 +26,7 @@ void Step::vDicInit(void)
 {
   ENTRY(); // ENTRY("vDicInit"_Stz);
   
-  Object* pPtrDic; m_pDataStack->vPopPtr(pPtrDic,__func__);
+  Object* pPtrDic = m_pDataStack->pPopPtr(__func__);
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -45,7 +45,7 @@ void Step::vDicKindGet(void)
 {
   ENTRY(); // ENTRY("vDicFrozenGet"_Stz);
   
-  Object* pPtrDic; m_pDataStack->vPopPtr(pPtrDic,__func__);
+  Object* pPtrDic = m_pDataStack->pPopPtr(__func__);
   Dic* pDic = _pDic(pPtrDic);
   
   Object* pPtrKind;
@@ -63,10 +63,10 @@ void Step::vDicKindSet(void)
 {
   ENTRY(); // ENTRY("vDicKindSet"_Stz);
   
-  Object* pPtrDic; m_pDataStack->vPopPtr(pPtrDic,__func__);
+  Object* pPtrDic = m_pDataStack->pPopPtr(__func__);
   Dic* pDic = _pDic(pPtrDic);
 
-  Object* pPtrKind; m_pDataStack->vPopPtr(pPtrKind,__func__);
+  Object* pPtrKind = m_pDataStack->pPopPtr(__func__);
   Word* pKind = _pWord(pPtrKind);
   
   pDic->vDicKind(pKind);
@@ -81,7 +81,7 @@ void Step::vDicLastWord(void)
 {
   ENTRY(); // ENTRY("vDicLastWord"_Stz);
   
-  Object* pPtrDic; m_pDataStack->vPopPtr(pPtrDic,__func__);
+  Object* pPtrDic = m_pDataStack->pPopPtr(__func__);
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -99,7 +99,7 @@ void Step::vDicName(void)
 {
   ENTRY(); // ENTRY("vDicName"_Stz);
  
-  Object* pPtrDic; m_pDataStack->vPopPtr(pPtrDic,__func__);
+  Object* pPtrDic = m_pDataStack->pPopPtr(__func__);
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -117,7 +117,7 @@ void Step::vDicRef(void)
 {
   ENTRY(); // ENTRY("vDicRef"_Stz);
   
-  Object* pPtrDic; m_pDataStack->vPopPtr(pPtrDic,__func__);
+  Object* pPtrDic = m_pDataStack->pPopPtr(__func__);
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -148,7 +148,7 @@ void Step::vDicWordCount(void)
 {
   ENTRY(); // ENTRY("vDicWordCount"_Stz);
   
-  Object* pPtrDic; m_pDataStack->vPopPtr(pPtrDic,__func__);
+  Object* pPtrDic = m_pDataStack->pPopPtr(__func__);
   
   Dic* pDic = _pDic(pPtrDic);
   

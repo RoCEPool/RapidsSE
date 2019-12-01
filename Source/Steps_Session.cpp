@@ -27,7 +27,7 @@ void Step::vSessionCommand(void)
 {
   ENTRY(); // ENTRY("vSessionCommand"_Stz);
   
-  Object* pPtrSession; m_pDataStack->vPopPtr(pPtrSession,__func__);
+  Object* pPtrSession = m_pDataStack->pPopPtr(__func__);
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
@@ -44,7 +44,7 @@ void Step::vSessionDicStackFetch(void)
 {
   ENTRY(); // ENTRY("vSessionDicStackFetch"_Stz);
   
-  Object* pPtrSession; m_pDataStack->vPopPtr(pPtrSession,__func__);
+  Object* pPtrSession = m_pDataStack->pPopPtr(__func__);
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(pSession);
@@ -62,7 +62,7 @@ void Step::vSessionDump(void)
 {
   ENTRY(); // ENTRY("vSessionDump"_Stz);
   
-  Object* pPtrSession; m_pDataStack->vPopPtr(pPtrSession,__func__);
+  Object* pPtrSession = m_pDataStack->pPopPtr(__func__);
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
@@ -79,7 +79,7 @@ void Step::vSessionEnameSetFetch(void)
 {
   ENTRY(); // ENTRY("vSessionEnameSetFetch"_Stz);
   
-  Object* pPtrSession; m_pDataStack->vPopPtr(pPtrSession,__func__);
+  Object* pPtrSession = m_pDataStack->pPopPtr(__func__);
   Session* pSession = _pSession(pPtrSession);
   
   EnameSet* pEnameSet = pSession->m_pSemantic->pEnameSet();
@@ -96,7 +96,7 @@ void Step::vSessionIsExiting(void)
 {
   ENTRY(); // ENTRY("vSessionIsExiting"_Stz);
   
-  Object* pPtrSession; m_pDataStack->vPopPtr(pPtrSession,__func__);
+  Object* pPtrSession = m_pDataStack->pPopPtr(__func__);
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
@@ -113,7 +113,7 @@ void Step::vSessionPid(void)
 {
   ENTRY(); // ENTRY("vSessionPid"_Stz);
   
-  Object* pPtrSession; m_pDataStack->vPopPtr(pPtrSession,__func__);
+  Object* pPtrSession = m_pDataStack->pPopPtr(__func__);
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
@@ -130,7 +130,7 @@ void Step::vSessionSlotFetch(void)
 {
   ENTRY(); // ENTRY("vSessionSlotFetch"_Stz);
   
-  Object* pPtrSession; m_pDataStack->vPopPtr(pPtrSession,__func__);
+  Object* pPtrSession = m_pDataStack->pPopPtr(__func__);
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
@@ -147,7 +147,7 @@ void Step::vSessionTxFetch(void)
 {
   ENTRY(); // ENTRY("vSessionTxFetch"_Stz);
   
-  Object* pPtrSession; m_pDataStack->vPopPtr(pPtrSession,__func__);
+  Object* pPtrSession = m_pDataStack->pPopPtr(__func__);
   Session* pSession = _pSession(pPtrSession);
   
   Tx* pTx = pSession->pTx();
@@ -164,10 +164,10 @@ void Step::vSessionTxStore(void)
 {
   ENTRY(); // ENTRY("vSessionTxStore"_Stz);
   
-  Object* pPtrSession; m_pDataStack->vPopPtr(pPtrSession,__func__);
+  Object* pPtrSession = m_pDataStack->pPopPtr(__func__);
   Session* pSession = _pSession(pPtrSession);
   
-  Object* pPtrTx; m_pDataStack->vPopPtr(pPtrTx,__func__);
+  Object* pPtrTx = m_pDataStack->pPopPtr(__func__);
   Tx* pTx = _pTx(pPtrTx);
   
   pSession->vTx(pTx);

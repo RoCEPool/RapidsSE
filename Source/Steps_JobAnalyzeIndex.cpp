@@ -20,7 +20,7 @@ void Step::vJob_AnalyzeIndexIsDetailed(void)
 {
   ENTRY(); // ENTRY("vJob_AnalyzeIndexIsDetailed"_Stz);
   
-  Object* pJobPtr; m_pDataStack->vPopPtr(pJobPtr,__func__);
+  Object* pJobPtr = m_pDataStack->pPopPtr(__func__);
   
 //  Job_AnalyzeIndex* pJoAnalyzeIndex = _pJob_AnalyzeIndex(pJobPtr);
 //  ASSERT(pJoAnalyzeIndex->eClass() == CN_JOB_ANALYZEINDEX);
@@ -37,7 +37,7 @@ void Step::vJob_AnalyzeTableIsDetailed(void)
 {
   ENTRY(); // ENTRY("vJob_AnalyzeTableIsDetailed"_Stz);
   
-  Object* pJobPtr; m_pDataStack->vPopPtr(pJobPtr,__func__);
+  Object* pJobPtr = m_pDataStack->pPopPtr(__func__);
   
   //Job_AnalyzeTable* pJoAnalyzeTable = _pJob_AnalyzeTable(pJobPtr);
   //ASSERT(pJoAnalyzeTable->eClass() == CN_JOB_ANALYZETABLE);

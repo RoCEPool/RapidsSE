@@ -24,7 +24,7 @@ void Step::vColumnIsNullableFetch(void)
 {
   ENTRY(); // ENTRY("vColumnIsNullableFetch"_Stz);
   
-  Object* pPtrColumn; m_pDataStack->vPopPtr(pPtrColumn,__func__);
+  Object* pPtrColumn = m_pDataStack->pPopPtr(__func__);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -44,7 +44,7 @@ void Step::vColumnIsPartitionKeyFetch(void)
 {
   ENTRY(); // ENTRY("vColumnIsPartitionKeyFetch"_Stz);
   
-  Object* pPtrColumn; m_pDataStack->vPopPtr(pPtrColumn,__func__);
+  Object* pPtrColumn = m_pDataStack->pPopPtr(__func__);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -64,7 +64,7 @@ void Step::vColumnLengthFetch(void)
 {
   ENTRY(); // ENTRY("vColumnLengthFetch"_Stz);
   
-  Object* pPtrColumn; m_pDataStack->vPopPtr(pPtrColumn,__func__);
+  Object* pPtrColumn = m_pDataStack->pPopPtr(__func__);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -81,7 +81,7 @@ void Step::vColumnNameFetch(void)
 {
   ENTRY(); // ENTRY("vColumnNameFetch"_Stz);
   
-  Object* pPtrColumn; m_pDataStack->vPopPtr(pPtrColumn,__func__);
+  Object* pPtrColumn = m_pDataStack->pPopPtr(__func__);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -100,7 +100,7 @@ void Step::vColumnScaleFetch(void)
 {
   ENTRY(); // ENTRY("vColumnScaleFetch"_Stz);
   
-  Object* pPtrColumn; m_pDataStack->vPopPtr(pPtrColumn,__func__);
+  Object* pPtrColumn = m_pDataStack->pPopPtr(__func__);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
@@ -117,7 +117,7 @@ void Step::vColumnTypeFetch(void)
 {
   ENTRY(); // ENTRY("vColumnTypeFetch"_Stz);
   
-  Object* pPtrColumn; m_pDataStack->vPopPtr(pPtrColumn,__func__);
+  Object* pPtrColumn = m_pDataStack->pPopPtr(__func__);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
