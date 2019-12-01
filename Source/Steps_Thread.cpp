@@ -37,7 +37,7 @@ void Step::vThreadBind(void)
   
   Object* pObject = m_pDataStack->pPopPtr(__func__); ASSERT(CN_THREAD == pObject->eClass());
   
-  Thread* pThread = static_cast<Thread*>(pObject);
+  Thread* pThread = _pThread(pObject);
   
   pThread->vBind(iCpu);
   
@@ -53,7 +53,7 @@ void Step::vThreadCpu(void)
   
   Object* pObject = m_pDataStack->pPopPtr(__func__); ASSERT(CN_THREAD == pObject->eClass());
   
-  Thread* pThread = static_cast<Thread*>(pObject);
+  Thread* pThread = _pThread(pObject);
   
   m_pDataStack->vPushInt(pThread->iCpu());
   
@@ -113,7 +113,7 @@ void Step::vThreadDump(void)
   
   Object* pObject = m_pDataStack->pPopPtr(__func__); ASSERT(CN_THREAD == pObject->eClass());
   
-  Thread* pThread = static_cast<Thread*>(pObject);
+  Thread* pThread = _pThread(pObject);
   
   pThread->vContentDump();
   
@@ -143,7 +143,7 @@ void Step::vThreadId(void)
   
   Object* pObject = m_pDataStack->pPopPtr(__func__); ASSERT(CN_THREAD == pObject->eClass());
   
-  Thread* pThread = static_cast<Thread*>(pObject);
+  Thread* pThread = _pThread(pObject);
   
   m_pDataStack->vPushInt(pThread->m_pPsxThd->m_iOsThdId);
   

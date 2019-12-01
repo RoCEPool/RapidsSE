@@ -20,7 +20,7 @@ void Step::vJob_AnalyzeIndexIsDetailed(void)
 {
   ENTRY(); // ENTRY("vJob_AnalyzeIndexIsDetailed"_Stz);
   
-  Object* pJobPtr = m_pDataStack->pPopPtr(__func__); 
+//  Object* pJobPtr = m_pDataStack->pPopPtr(__func__); 
 //  Job_AnalyzeIndex* pJoAnalyzeIndex = _pJob_AnalyzeIndex(pJobPtr);
 //  ASSERT(pJoAnalyzeIndex->eClass() == CN_JOB_ANALYZEINDEX);
   
