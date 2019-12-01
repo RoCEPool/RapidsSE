@@ -9,14 +9,43 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_File(void)
 {
-  vAddStep("file::new"_Stz,       &Step::vFileNew);
+  vAddStep("file0[].get"_Stz,     &Step::vFile0Get);
+  vAddStep("file0[].set"_Stz,     &Step::vFile0Set);
   
+  vAddStep("file::new"_Stz,       &Step::vFileNew);
   vAddStep("file.close"_Stz,      &Step::vFileClose);
   vAddStep("file.delete"_Stz,     &Step::vFileDelete);
   vAddStep("file.open"_Stz,       &Step::vFileOpen);
   vAddStep("file.path@"_Stz,      &Step::vFilePathGet);
   vAddStep("file.read"_Stz,       &Step::vFileRead);
   vAddStep("file.write"_Stz,      &Step::vFileWrite);
+}
+
+/*----------------------------------------------------------------------------*/
+/* file0[].get -- get reg file0                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vFile0Get(void)
+{
+  ENTRY(); // ENTRY("vFile0Get"_Stz);
+  
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpFile0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file0[].set -- set reg file0                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vFile0Set(void)
+{
+  ENTRY(); // ENTRY("vFile0Set"_Stz);
+  
+  Object* pPtrFile;
+  m_pDataStack->vPopPtr(pPtrFile,__func__);
+  
+  m_pRegSet->m_xpFile0 = _pFile(pPtrFile);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,7 +14,9 @@
   job::this locals| pJob_ToFileOp |
 
   // open the file for writing
-  pJob_ToFileOp job.openToFile
+  file::new locals| pFile |
+  <fileNm> OPEN_WRITE pFile file.open
+  pFile to file0[]
 
   begin
 
@@ -29,7 +31,7 @@
 
       ZK_CSVBUFFER of
         "Operand:- ZK_CSVBUFFER" .
-        Operand[].writeToFile
+        file0[].get Operand[].writeToFile0
         true
       endof
 
@@ -57,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: ToFile :: ToFile ;
+jobSyntax: ToFileOp :: ToFileOp <fileNm> ;
 
 jobInfo: ToFileOp
 {

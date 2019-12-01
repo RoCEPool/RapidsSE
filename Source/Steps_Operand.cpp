@@ -27,7 +27,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].set"_Stz,          &Step::vOperandSet);
   vAddStep("Operand[].toCsv"_Stz,        &Step::vOperandToCsv);
   vAddStep("Operand[].workDone"_Stz,     &Step::vOperandWorkDone);
-  vAddStep("Operand[].writeToFile"_Stz,  &Step::vOperandWriteToFile);
+  vAddStep("Operand[].writeToFile0"_Stz,  &Step::vOperandWriteToFile0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -415,11 +415,11 @@ void Step::vOperandWorkDone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].writeToFile -- write to file                                     */
+/* Operand[].writeToFile0 -- write to file0[]                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandWriteToFile(void)
+void Step::vOperandWriteToFile0(void)
 {
-  ENTRY(); // ENTRY("vOperandWriteToFile"_Stz);
+  ENTRY(); // ENTRY("vOperandWriteToFile0"_Stz);
   
   ASSERT(m_pRegSet->m_pOperand);
   ASSERT(*m_pRegSet->m_xpFile0);
