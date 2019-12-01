@@ -141,8 +141,7 @@ void Step::vAstackPick(void)
 {
   ENTRY(); // ENTRY("vAstackPick"_Stz);
   
-  i8 iPick;
-  m_pDataStack->vPopAsInt(iPick,__func__);
+  i8 iPick; m_pDataStack->vPopAsInt(iPick,__func__);
   
   // could do this directly on stack
   
