@@ -325,8 +325,7 @@ void Step::vExit_RT(void)
       && m_pLocalsFrame->aDiscardPoint() == m_pReturnStack->aTopVal())
     m_pTask->vLocalsPop();
   
-  Cell* aCell;
-  m_pReturnStack->vPopFip(aCell,__func__);
+  Cell* aCell; m_pReturnStack->vPopFip(aCell,__func__);
   
   m_aInxPtr = aCell;
   

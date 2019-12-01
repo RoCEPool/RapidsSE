@@ -81,8 +81,7 @@ void Step::vRstackCsRoll(void)
     m_pReturnStack->vPushVal(xValMid);
   }
   
-  Cell* aFipZ;
-  m_pDataStack->vPopFip(aFipZ,__func__);
+  Cell* aFipZ; m_pDataStack->vPopFip(aFipZ,__func__);
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     m_pReturnStack->vPopVal(xValMid,__func__);
