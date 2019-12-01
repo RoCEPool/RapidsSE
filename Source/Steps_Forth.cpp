@@ -110,7 +110,7 @@ void Step::vComma(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   GenVar xValue;
-  if ( ! m_pDataStack->bPopVal(xValue) ) THROW_DSTACK();
+  m_pDataStack->vPopVal(xValue,__func__);
   
   pCurrentWord->vEncode("pushValue"_Stz,xValue);
     
@@ -325,8 +325,7 @@ void Step::vExit_RT(void)
       && m_pLocalsFrame->aDiscardPoint() == m_pReturnStack->aTopVal())
     m_pTask->vLocalsPop();
   
-  Cell* aCell;
-  m_pReturnStack->vPopFip(aCell,__func__);
+  Cell* aCell; m_pReturnStack->vPopFip(aCell,__func__);
   
   m_aInxPtr = aCell;
   
@@ -422,8 +421,7 @@ void Step::vLocate(void)
 {
   ENTRY(); // ENTRY("vLocate"_Stz);
   
-  i8 iAddrAsInt;
-  if ( ! m_pDataStack->bPopAsInt(iAddrAsInt) ) THROW_DSTACK();
+  i8 iAddrAsInt; m_pDataStack->vPopAsInt(iAddrAsInt,__func__);
   
   void* aCellVoid = (void*)iAddrAsInt;
   Cell* aHasCell = _aCell(aCellVoid);

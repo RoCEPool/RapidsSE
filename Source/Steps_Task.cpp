@@ -68,8 +68,7 @@ void Step::vTaskAcksStore(void)
   m_pDataStack->vPopPtr(pPtrTask,__func__);
   Task* pGivenTask = _pTask(pPtrTask);
   
-  i8 nAcksRequired;
-  if ( ! m_pDataStack->bPopAsInt(nAcksRequired) ) THROW_DSTACK();
+  i8 nAcksRequired; m_pDataStack->vPopAsInt(nAcksRequired,__func__);
   
   ASSERT(0 == pGivenTask->m_oAcksRmg.iPrintOnlyValue());
 

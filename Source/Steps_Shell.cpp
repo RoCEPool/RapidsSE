@@ -21,7 +21,7 @@ void Step::vShellExecute(void)
   
   GenVar xCommand;
   
-  if ( ! m_pDataStack->bPopVal(xCommand) ) THROW_DSTACK();
+  m_pDataStack->vPopVal(xCommand,__func__);
   
   SysCall oSysCall;
   

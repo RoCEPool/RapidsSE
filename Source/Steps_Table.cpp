@@ -297,8 +297,7 @@ void Step::vTableGetPtn(void)
   m_pDataStack->vPopPtr(pPtrTable,__func__);
   Table* pTable = _pTable(pPtrTable);
   
-  i8 i_Ptn;
-  if ( ! m_pDataStack->bPopAsInt(i_Ptn) ) THROW_DSTACK();
+  i8 i_Ptn; m_pDataStack->vPopAsInt(i_Ptn,__func__);
   
   // get the table partition
   i8 i_Slot = TablePtn::iPartitionToSlot(i_Ptn);
@@ -450,14 +449,13 @@ void Step::vTablePublish(void)
   ENTRY(); // ENTRY("vTablePublish"_Stz);
   
   Object* pPtrTable;
-  i8 iSlot;
   
   m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  if ( ! m_pDataStack->bPopAsInt(iSlot) ) THROW_DSTACK();
+  i8 iSlot; m_pDataStack->vPopAsInt(iSlot,__func__);
   
   pTable->vPublish(iSlot);
   
@@ -476,11 +474,9 @@ void Step::vTablePurge(void)
   m_pDataStack->vPopPtr(pPtrTable,__func__);
   Table* pTable = _pTable(pPtrTable);
   
-  i8 iSlot;
-  if ( ! m_pDataStack->bPopAsInt(iSlot) ) THROW_DSTACK();
+  i8 iSlot; m_pDataStack->vPopAsInt(iSlot,__func__);
   
-  i8 iOlderThanSeconds;
-  if ( ! m_pDataStack->bPopAsInt(iOlderThanSeconds) ) THROW_DSTACK();
+  i8 iOlderThanSeconds; m_pDataStack->vPopAsInt(iOlderThanSeconds,__func__);
   
   bool bPurged = pTable->bPurge(iSlot,iOlderThanSeconds);
   
@@ -748,14 +744,13 @@ void Step::vTableTruncate(void)
   ENTRY(); // ENTRY("vTableTruncate"_Stz);
   
   Object* pPtrTable;
-  i8 iSlot;
   
   m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  if ( ! m_pDataStack->bPopAsInt(iSlot) ) THROW_DSTACK();
+  i8 iSlot; m_pDataStack->vPopAsInt(iSlot,__func__);
   
   pTable->vTruncate(iSlot);
   

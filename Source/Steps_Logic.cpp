@@ -21,11 +21,9 @@ void Step::vLogicAnd(void)
 {
   ENTRY(); // ENTRY("vLogicAnd"_Stz);
   
-  i8 iArgB;
-  if ( ! m_pDataStack->bPopAsInt(iArgB) ) THROW_DSTACK();
+  i8 iArgB; m_pDataStack->vPopAsInt(iArgB,__func__);
   
-  i8 iArgA;
-  if ( ! m_pDataStack->bPopAsInt(iArgA) ) THROW_DSTACK();
+  i8 iArgA; m_pDataStack->vPopAsInt(iArgA,__func__);
   
   i8 iArgR = (iArgA && iArgB) ? 1 : 0;
   
@@ -41,8 +39,7 @@ void Step::vLogicNot(void)
 {
   ENTRY(); // ENTRY("vLogicNot"_Stz);
   
-  i8 iValA;
-  if ( ! m_pDataStack->bPopAsInt(iValA) ) THROW_DSTACK();
+  i8 iValA; m_pDataStack->vPopAsInt(iValA,__func__);
   
   i8 iNotA = iValA ? 0 : 1;
   
@@ -58,11 +55,9 @@ void Step::vLogicOr(void)
 {
   ENTRY(); // ENTRY("vLogicOr"_Stz);
   
-  i8 iArgB;
-  if ( ! m_pDataStack->bPopAsInt(iArgB) ) THROW_DSTACK();
+  i8 iArgB; m_pDataStack->vPopAsInt(iArgB,__func__);
   
-  i8 iArgA;
-  if ( ! m_pDataStack->bPopAsInt(iArgA) ) THROW_DSTACK();
+  i8 iArgA; m_pDataStack->vPopAsInt(iArgA,__func__);
   
   i8 iArgR = (iArgA || iArgB) ? 1 : 0;
   

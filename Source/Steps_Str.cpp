@@ -117,10 +117,10 @@ void Step::vStrEqual(void)
   ENTRY(); // ENTRY("vStrEql"_Stz);
   
   GenVar xStringA;
-  if ( ! m_pDataStack->bPopVal(xStringA) ) THROW_DSTACK();
+  m_pDataStack->vPopVal(xStringA,__func__);
   
   GenVar xStringB;
-  if ( ! m_pDataStack->bPopVal(xStringB) ) THROW_DSTACK();
+  m_pDataStack->vPopVal(xStringB,__func__);
 
   // get the arguments
   
@@ -258,10 +258,10 @@ void Step::vStrPrepend(void)
   
   //! the use of A and B here doesnt seem intuitive
   GenVar xValB;
-  if ( ! m_pDataStack->bPopVal(xValB) ) THROW_DSTACK();
+  m_pDataStack->vPopVal(xValB,__func__);
  
   GenVar xValA;
-  if ( ! m_pDataStack->bPopVal(xValA) ) THROW_DSTACK();
+  m_pDataStack->vPopVal(xValA,__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first string A
