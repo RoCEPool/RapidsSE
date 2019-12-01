@@ -22,10 +22,10 @@ void Api::vDeleteJobs(Session* pSession)
 
   while (pJobStack->nValues()) {
     
-    Object* pJobObject = pJobStack->pPopPtr(__func__); Job* aJob = (Job*)pJobObject;
+    Job* pJob = _pJob(pJobStack->pPopPtr(__func__));
     
     // find the job class on this node
-    eCN eClass = aJob->eClass();
+    eCN eClass = pJob->eClass();
     JobClass* pJobClass = JobClass::pFind(eClass);
     
     SessionArray::vMarkApiLoc(pSession,200);
@@ -34,7 +34,7 @@ void Api::vDeleteJobs(Session* pSession)
     
     // If we come across a JOB_FETCHROWS then we need to empty its queues
     if (eClass == CN_JOB_FETCHROWS) {
-      Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(aJob);
+      Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
       
       //vTrace("%s m_nLastBuffersScanned: %lld %lld\n"_Stz,pJob_FetchRows->m_pTable->sTable(),
       //       pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
@@ -75,7 +75,7 @@ void Api::vDeleteJobs(Session* pSession)
     
     // delete the job
     //vTrace("Deleting job %p %s\n"_Stz, aJob, aCN[aJob->eClass()]);
-    pJobClass->vDeleteJob(aJob);
+    pJobClass->vDeleteJob(pJob);
     
     pSession->m_nJobDelete++;
   }
