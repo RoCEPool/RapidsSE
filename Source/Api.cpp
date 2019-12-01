@@ -22,9 +22,7 @@ void Api::vDeleteJobs(Session* pSession)
 
   while (pJobStack->nValues()) {
     
-    Object* pJobObject = pJobStack->pPopPtr(__func__);
-    
-    Job* aJob = (Job*)pJobObject;
+    Object* pJobObject = pJobStack->pPopPtr(__func__); Job* aJob = (Job*)pJobObject;
     
     // find the job class on this node
     eCN eClass = aJob->eClass();

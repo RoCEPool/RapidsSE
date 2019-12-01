@@ -40,9 +40,7 @@ void Step::vFile0Set(void)
 {
   ENTRY(); // ENTRY("vFile0Set"_Stz);
   
-  Object* pPtrFile = m_pDataStack->pPopPtr(__func__);
-  
-  m_pRegSet->m_xpFile0 = _pFile(pPtrFile);
+  Object* pPtrFile = m_pDataStack->pPopPtr(__func__); m_pRegSet->m_xpFile0 = _pFile(pPtrFile);
   
   EXIT();
 }
@@ -54,9 +52,7 @@ void Step::vFileClose(void)
 {
   ENTRY(); // ENTRY("vFileClose"_Stz);
   
-  Object* pPtrFile = m_pDataStack->pPopPtr(__func__);
-  
-  File* pFile = _pFile(pPtrFile);
+  Object* pPtrFile = m_pDataStack->pPopPtr(__func__); File* pFile = _pFile(pPtrFile);
   
   pFile->vClose();
   
@@ -70,9 +66,7 @@ void Step::vFileDelete(void)
 {
   ENTRY(); // ENTRY("vFileDelete"_Stz);
   
-  Object* pPtrFile = m_pDataStack->pPopPtr(__func__);
-  
-  File* pFile = _pFile(pPtrFile);
+  Object* pPtrFile = m_pDataStack->pPopPtr(__func__); File* pFile = _pFile(pPtrFile);
 
   delete pFile;
   
@@ -103,8 +97,7 @@ void Step::vFileOpen(void)
 {
   ENTRY(); // ENTRY("vFileOpen"_Stz);
   
-  Object* pPtrFile = m_pDataStack->pPopPtr(__func__);
-  File* pFile = _pFile(pPtrFile);
+  Object* pPtrFile = m_pDataStack->pPopPtr(__func__); File* pFile = _pFile(pPtrFile);
   
   s32 sMode;
   m_pDataStack->vPopStr(sMode,__func__);
@@ -126,9 +119,7 @@ void Step::vFilePathGet(void)
 {
   ENTRY(); // ENTRY("vFilePathGet"_Stz);
   
-  Object* pPtrFile = m_pDataStack->pPopPtr(__func__);
-  
-  File* pFile = _pFile(pPtrFile);
+  Object* pPtrFile = m_pDataStack->pPopPtr(__func__); File* pFile = _pFile(pPtrFile);
 
   s256 sPath = pFile->sFilePath();
   
@@ -144,8 +135,7 @@ void Step::vFileRead(void)
 {
   ENTRY(); // ENTRY("vFileRead"_Stz);
   
-  Object* pPtrFile = m_pDataStack->pPopPtr(__func__);
-  File* pFile = _pFile(pPtrFile);
+  Object* pPtrFile = m_pDataStack->pPopPtr(__func__); File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
   
   s48K sLine;
@@ -170,9 +160,7 @@ void Step::vFileWrite(void)
 {
   ENTRY(); // ENTRY("vFileWrite"_Stz);
   
-  Object* pPtrFile = m_pDataStack->pPopPtr(__func__);
-  
-  File* pFile = _pFile(pPtrFile);
+  Object* pPtrFile = m_pDataStack->pPopPtr(__func__); File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
   
   s48K sLine;

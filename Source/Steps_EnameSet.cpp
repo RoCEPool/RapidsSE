@@ -44,8 +44,7 @@ void Step::vEnameSetAddInt(void)
 {
   ENTRY(); // ENTRY("vEnameSetAddInt"_Stz);
   
-  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__);
-  EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
+  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__); EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   i8 iValue = m_pDataStack->iPopInt(__func__);
   
@@ -65,8 +64,7 @@ void Step::vEnameSetAddStr(void)
 {
   ENTRY(); // ENTRY("vEnameSetAddStr"_Stz);
   
-  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__);
-  EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
+  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__); EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
 
   s256 sValue;
   m_pDataStack->vPopStr(sValue,__func__);
@@ -87,9 +85,7 @@ void Step::vEnameSetAsStr(void)
 {
   ENTRY(); // ENTRY("vEnameSetAsStr"_Stz);
   
-  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__);
-  
-  EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
+  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__); EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s4K sStr;
   SP_EnmSet spEnameSet;
@@ -107,8 +103,7 @@ void Step::vEnameSetGetInt(void)
 {
   ENTRY(); // ENTRY("vEnameSetGetInt"_Stz);
   
-  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__);
-  EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
+  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__); EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
@@ -128,8 +123,7 @@ void Step::vEnameSetGetStr(void)
 {
   ENTRY(); // ENTRY("vEnameSetGetStr"_Stz);
   
-  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__);
-  EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
+  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__); EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
@@ -155,8 +149,7 @@ void Step::vEnameSetHasName(void)
 {
   ENTRY(); // ENTRY("vEnameSetHasName"_Stz);
   
-  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__);
-  EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
+  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__); EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
@@ -175,8 +168,7 @@ void Step::vEnameSetUpsertStr(void)
 {
   ENTRY(); // ENTRY("vEnameSetAddStr"_Stz);
   
-  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__);
-  EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
+  Object* pEnameSet_obj = m_pDataStack->pPopPtr(__func__); EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s256 sValue;
   m_pDataStack->vPopStr(sValue,__func__);

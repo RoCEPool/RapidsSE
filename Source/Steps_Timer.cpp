@@ -32,9 +32,7 @@ void Step::vTimerDelete(void)
 {
   ENTRY(); // ENTRY("vTimeDelete"_Stz);
   
-  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__);
-  
-  Timer* pTimer = _pTimer(pPtrTimer);
+  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__); Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   Object* pTimerObject = reinterpret_cast<Object*>(pTimer);
@@ -53,9 +51,7 @@ void Step::vTimerInit(void)
 {
   ENTRY(); // ENTRY("vTimerInit"_Stz);
   
-  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__);
-  
-  Timer* pTimer = _pTimer(pPtrTimer);
+  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__); Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   new(pTimer) Timer;
@@ -70,9 +66,7 @@ void Step::vTimerMicrosecs(void)
 {
   ENTRY(); // ENTRY("vTimerMicrosecs"_Stz);
   
-  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__);
-  
-  Timer* pTimer = _pTimer(pPtrTimer);
+  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__); Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iMicroseconds = pTimer->iMicroseconds();
@@ -89,9 +83,7 @@ void Step::vTimerMillisecs(void)
 {
   ENTRY(); // ENTRY("vTimerMillisecs"_Stz);
   
-  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__);
-  
-  Timer* pTimer = _pTimer(pPtrTimer);
+  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__); Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iMilliseconds = pTimer->iMilliseconds();
@@ -108,9 +100,7 @@ void Step::vTimerNanosecs(void)
 {
   ENTRY(); // ENTRY("vTimerNanosecs"_Stz);
   
-  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__);
-  
-  Timer* pTimer = _pTimer(pPtrTimer);
+  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__); Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iNanoseconds = pTimer->iNanoseconds();
@@ -147,9 +137,7 @@ void Step::vTimerReset(void)
 {
   ENTRY(); // ENTRY("vTimerReset"_Stz);
   
-  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__);
-  
-  Timer* pTimer = _pTimer(pPtrTimer);
+  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__); Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   pTimer->vReset();
@@ -164,9 +152,7 @@ void Step::vTimerSecs(void)
 {
   ENTRY(); // ENTRY("vTimerSecs"_Stz);
   
-  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__);
-  
-  Timer* pTimer = _pTimer(pPtrTimer);
+  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__); Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iSeconds = pTimer->iSeconds();
@@ -183,9 +169,7 @@ void Step::vTimerStart(void)
 {
   ENTRY(); // ENTRY("vTimerStart"_Stz);
   
-  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__);
-  
-  Timer* pTimer = _pTimer(pPtrTimer);
+  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__); Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   pTimer->vStart();
@@ -200,9 +184,7 @@ void Step::vTimerTicks(void)
 {
   ENTRY(); // ENTRY("vTimerTicks"_Stz);
   
-  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__);
-  
-  Timer* pTimer = _pTimer(pPtrTimer);
+  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__); Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iTicks = pTimer->iTicks();
@@ -219,9 +201,7 @@ void Step::vTimerUpdate(void)
 {
   ENTRY(); // ENTRY("vTimerUpdate"_Stz);
   
-  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__);
-  
-  Timer* pTimer = _pTimer(pPtrTimer);
+  Object* pPtrTimer = m_pDataStack->pPopPtr(__func__); Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   pTimer->vUpdate();

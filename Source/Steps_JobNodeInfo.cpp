@@ -19,8 +19,7 @@ void Step::vJob_NodeInfoNodeNameFetch(void)
 {
   ENTRY(); // ENTRY("vJob_NodeInfoNodeNameFetch"_Stz);
   
-  Object* pPtrJob_NodeInfo = m_pDataStack->pPopPtr(__func__);
-  Job_NodeInfo* pJob_NodeInfo = _pJob_NodeInfo(pPtrJob_NodeInfo);
+  Object* pPtrJob_NodeInfo = m_pDataStack->pPopPtr(__func__); Job_NodeInfo* pJob_NodeInfo = _pJob_NodeInfo(pPtrJob_NodeInfo);
   
   m_pDataStack->vPushStr(pJob_NodeInfo->m_sNodeName);
   

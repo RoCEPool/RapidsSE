@@ -19,8 +19,7 @@ void Step::vJob_OperandPipeOut(void)
 {
   ENTRY(); // ENTRY("vJob_OperandPipeOut"_Stz);
   
-  Object* pJobPtr = m_pDataStack->pPopPtr(__func__);
-  Job_Operand* pJob_Operand = _pJob_Operand(pJobPtr);
+  Object* pJobPtr = m_pDataStack->pPopPtr(__func__); Job_Operand* pJob_Operand = _pJob_Operand(pJobPtr);
   
   // find the parent participant job
   i8 iParentJob = pJob_Operand->iParentId();

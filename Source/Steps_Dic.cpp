@@ -26,9 +26,7 @@ void Step::vDicInit(void)
 {
   ENTRY(); // ENTRY("vDicInit"_Stz);
   
-  Object* pPtrDic = m_pDataStack->pPopPtr(__func__);
-  
-  Dic* pDic = _pDic(pPtrDic);
+  Object* pPtrDic = m_pDataStack->pPopPtr(__func__); Dic* pDic = _pDic(pPtrDic);
 
   new (pDic) Dic;
   
@@ -45,8 +43,7 @@ void Step::vDicKindGet(void)
 {
   ENTRY(); // ENTRY("vDicFrozenGet"_Stz);
   
-  Object* pPtrDic = m_pDataStack->pPopPtr(__func__);
-  Dic* pDic = _pDic(pPtrDic);
+  Object* pPtrDic = m_pDataStack->pPopPtr(__func__); Dic* pDic = _pDic(pPtrDic);
   
   Object* pPtrKind;
   pPtrKind = pDic->pDicKind();
@@ -63,11 +60,9 @@ void Step::vDicKindSet(void)
 {
   ENTRY(); // ENTRY("vDicKindSet"_Stz);
   
-  Object* pPtrDic = m_pDataStack->pPopPtr(__func__);
-  Dic* pDic = _pDic(pPtrDic);
+  Object* pPtrDic = m_pDataStack->pPopPtr(__func__); Dic* pDic = _pDic(pPtrDic);
 
-  Object* pPtrKind = m_pDataStack->pPopPtr(__func__);
-  Word* pKind = _pWord(pPtrKind);
+  Object* pPtrKind = m_pDataStack->pPopPtr(__func__); Word* pKind = _pWord(pPtrKind);
   
   pDic->vDicKind(pKind);
   
@@ -81,9 +76,7 @@ void Step::vDicLastWord(void)
 {
   ENTRY(); // ENTRY("vDicLastWord"_Stz);
   
-  Object* pPtrDic = m_pDataStack->pPopPtr(__func__);
-  
-  Dic* pDic = _pDic(pPtrDic);
+  Object* pPtrDic = m_pDataStack->pPopPtr(__func__); Dic* pDic = _pDic(pPtrDic);
   
   Word* pLastWord = pDic->pLastWord();
   
@@ -99,9 +92,7 @@ void Step::vDicName(void)
 {
   ENTRY(); // ENTRY("vDicName"_Stz);
  
-  Object* pPtrDic = m_pDataStack->pPopPtr(__func__);
-  
-  Dic* pDic = _pDic(pPtrDic);
+  Object* pPtrDic = m_pDataStack->pPopPtr(__func__); Dic* pDic = _pDic(pPtrDic);
 
   s32 sName(pDic->szName());
   
@@ -117,9 +108,7 @@ void Step::vDicRef(void)
 {
   ENTRY(); // ENTRY("vDicRef"_Stz);
   
-  Object* pPtrDic = m_pDataStack->pPopPtr(__func__);
-  
-  Dic* pDic = _pDic(pPtrDic);
+  Object* pPtrDic = m_pDataStack->pPopPtr(__func__); Dic* pDic = _pDic(pPtrDic);
 
   bool bRef = pDic->bRefOut();
   
@@ -148,9 +137,7 @@ void Step::vDicWordCount(void)
 {
   ENTRY(); // ENTRY("vDicWordCount"_Stz);
   
-  Object* pPtrDic = m_pDataStack->pPopPtr(__func__);
-  
-  Dic* pDic = _pDic(pPtrDic);
+  Object* pPtrDic = m_pDataStack->pPopPtr(__func__); Dic* pDic = _pDic(pPtrDic);
   
   i8 nWords = pDic->nWords();
   

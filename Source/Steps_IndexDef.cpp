@@ -19,11 +19,9 @@ void Step::vIndexDefParse(void)
 {
   ENTRY(); // ENTRY("vIndexDefParse"_Stz);
   
-  Object* pJobPtr = m_pDataStack->pPopPtr(__func__);
-  Job* pJob_CreateIndex = _pJob(pJobPtr);
+  Object* pJobPtr = m_pDataStack->pPopPtr(__func__); Job* pJob_CreateIndex = _pJob(pJobPtr);
   
-  Object* pPtrTable = m_pDataStack->pPopPtr(__func__);
-  Table* pTable = _pTable(pPtrTable);
+  Object* pPtrTable = m_pDataStack->pPopPtr(__func__); Table* pTable = _pTable(pPtrTable);
 
   s4K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);

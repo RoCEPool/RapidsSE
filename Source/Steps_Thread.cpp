@@ -35,9 +35,7 @@ void Step::vThreadBind(void)
   
   i8 iCpu = m_pDataStack->iPopInt(__func__);
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
-  
-  ASSERT(CN_THREAD == pObject->eClass());
+  Object* pObject = m_pDataStack->pPopPtr(__func__); ASSERT(CN_THREAD == pObject->eClass());
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
@@ -53,9 +51,7 @@ void Step::vThreadCpu(void)
 {
   ENTRY(); // ENTRY("vThreadCpu"_Stz);
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
-  
-  ASSERT(CN_THREAD == pObject->eClass());
+  Object* pObject = m_pDataStack->pPopPtr(__func__); ASSERT(CN_THREAD == pObject->eClass());
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
@@ -71,8 +67,7 @@ void Step::vThreadDedicatedFetch(void)
 {
   ENTRY(); // ENTRY("vThreadDedicatedFetch"_Stz);
   
-  Object* pThreadObject = m_pDataStack->pPopPtr(__func__);
-  Thread* pThread = _pThread(pThreadObject);
+  Object* pThreadObject = m_pDataStack->pPopPtr(__func__); Thread* pThread = _pThread(pThreadObject);
   
   m_pDataStack->vPushInt(pThread->m_eDedicated);
 
@@ -86,8 +81,7 @@ void Step::vThreadDedicatedStore(void)
 {
   ENTRY(); // ENTRY("vThreadDedicatedStore"_Stz);
   
-  Object* pThreadObject = m_pDataStack->pPopPtr(__func__);
-  Thread* pThread = _pThread(pThreadObject);
+  Object* pThreadObject = m_pDataStack->pPopPtr(__func__); Thread* pThread = _pThread(pThreadObject);
   
   i8 iDedicated = m_pDataStack->iPopAsInt(__func__);
 
@@ -117,9 +111,7 @@ void Step::vThreadDump(void)
 {
   ENTRY(); // ENTRY("vThreadDump"_Stz);
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
-  
-  ASSERT(CN_THREAD == pObject->eClass());
+  Object* pObject = m_pDataStack->pPopPtr(__func__); ASSERT(CN_THREAD == pObject->eClass());
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
@@ -149,9 +141,7 @@ void Step::vThreadId(void)
 {
   ENTRY(); // ENTRY("vThreadId"_Stz);
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__);
-  
-  ASSERT(CN_THREAD == pObject->eClass());
+  Object* pObject = m_pDataStack->pPopPtr(__func__); ASSERT(CN_THREAD == pObject->eClass());
   
   Thread* pThread = static_cast<Thread*>(pObject);
   

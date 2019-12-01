@@ -24,8 +24,7 @@ void Step::vToBody(void)
 {
   ENTRY(); // ENTRY("vToBody"_Stz);
   
-  Object* pWordObject = m_pDataStack->pPopPtr(__func__);
-  Word* pWord = _pWord(pWordObject);
+  Object* pWordObject = m_pDataStack->pPopPtr(__func__); Word* pWord = _pWord(pWordObject);
   
   //  char* pBody = pAdd<char*>(pWord,sizeof(Word));
   char* pBody = pWord->aWspArea();

@@ -34,9 +34,7 @@ void Step::vTablePtnSet(void)
 {
   ENTRY(); // ENTRY("vTablePtnSet"_Stz);
   
-  Object* pPtrObject = m_pDataStack->pPopPtr(__func__);
-  
-  m_pRegSet->m_xpTablePtn = _pTablePtn(pPtrObject);
+  Object* pPtrObject = m_pDataStack->pPopPtr(__func__); m_pRegSet->m_xpTablePtn = _pTablePtn(pPtrObject);
   
   EXIT();
 }
