@@ -60,7 +60,7 @@ namespace SenVM
     void vPeekVal(i8 i_Val, GenVar& xGenVar);
   
     void vPokeVal(i8 i_Val, AnyVal* aAnyVal);
-    
+  
     void vPopAsInt(i8& iInt, const char* azFunNm);
     void vPopFip(Cell*& aFip, const char* azFunNm);
     void vPopInt(i8& iInt, const char* azFunNm);

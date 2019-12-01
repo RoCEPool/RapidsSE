@@ -157,7 +157,7 @@
 
   job::this locals| pJob_CreateIndex |
 
-  0 0 locals| pTable sTableNm sIndexNm |
+  //0 0 locals| pTable sTableNm sIndexNm |
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
