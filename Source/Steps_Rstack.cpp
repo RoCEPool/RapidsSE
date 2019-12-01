@@ -84,7 +84,7 @@ void Step::vRstackCsRoll(void)
   }
   
   Cell* aFipZ;
-  if ( ! m_pDataStack->bPopFip(aFipZ) ) THROW_DSTACK();
+  m_pDataStack->vPopFip(aFipZ,__func__);
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     if ( ! m_pReturnStack->bPopVal(xValMid) ) THROW_RSTACK();

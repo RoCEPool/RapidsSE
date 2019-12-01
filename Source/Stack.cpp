@@ -244,6 +244,23 @@ bool Stack::bPopFip(Cell*& aFip)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop fip from stack                                                         */
+/*----------------------------------------------------------------------------*/
+void Stack::vPopFip(Cell*& aFip, const char* azFunNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_FIPVAL) )
+    Correctness::vThrow(FK_DSTACK,VL_FATAL,
+                        azFunNm,__FILE__,__LINE__,
+                        "Invalid d-stack"_Stz);
+
+  aFip = m_xTop.aFipVal->aFip();
+  
+  vDiscardTop();
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop i8 from stack                                                          */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopInt(i8& iInt)

@@ -33,7 +33,7 @@ void Step::vEncodeAgain(void)
   
   // cstack: pop known backward address
   Cell* pKnownDestination;
-  if ( ! m_pDataStack->bPopFip(pKnownDestination) ) THROW_DSTACK();
+  m_pDataStack->vPopFip(pKnownDestination,__func__);
   
   // append : jump to known backward address
   pCurrentWord->vEncode("jump"_Stz,pKnownDestination);
@@ -71,7 +71,7 @@ void Step::vEncodeContinue(void)
   
   // cstack: pop known backward address
   Cell* pKnownBackward;
-  if ( ! m_pDataStack->bPopFip(pKnownBackward) ) THROW_DSTACK();
+  m_pDataStack->vPopFip(pKnownBackward,__func__);
   
   // append : jump on true to known backward address
   pCurrentWord->vEncode("jumpTrue"_Stz,pKnownBackward);
@@ -129,11 +129,11 @@ void Step::vEncodeIfAgain(void)
   
   // cstack: pop known if address
   Cell* pIfDestination;
-  if ( ! m_pDataStack->bPopFip(pIfDestination) ) THROW_DSTACK();
+  m_pDataStack->vPopFip(pIfDestination,__func__);
   
   // cstack: pop known backward address
   Cell* pKnownDestination;
-  if ( ! m_pDataStack->bPopFip(pKnownDestination) ) THROW_DSTACK();
+  m_pDataStack->vPopFip(pKnownDestination,__func__);
   
   // append : jump to known backward address
   pCurrentWord->vEncode("jump"_Stz,pKnownDestination);
@@ -168,7 +168,7 @@ void Step::vEncodeLoop(void)
   Cell* pDoLimitTest = nullptr;
   if (! iIsDo) {
     // cstack: pop destination address of backward jump
-    if ( ! m_pDataStack->bPopFip(pDoLimitTest) ) THROW_DSTACK();
+    m_pDataStack->vPopFip(pDoLimitTest,__func__);
     pDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   }
   
@@ -179,7 +179,7 @@ void Step::vEncodeLoop(void)
     // jump on true to doHere:
     Cell* pDoHere;
     // cstack: pop destination address of backward jump
-    if ( ! m_pDataStack->bPopFip(pDoHere) ) THROW_DSTACK();
+    m_pDataStack->vPopFip(pDoHere,__func__);
     pCurrentWord->vEncode("jumpTrue"_Stz,pDoHere);
   }
   else {
@@ -213,7 +213,7 @@ void Step::vEncodeLoopPlus(void)
   Cell* pDoLimitTest = nullptr;
   if (! iIsDo) {
     // cstack: pop destination address of backward jump
-    if ( ! m_pDataStack->bPopFip(pDoLimitTest) ) THROW_DSTACK();
+    m_pDataStack->vPopFip(pDoLimitTest,__func__);
     pDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   }
   
@@ -224,7 +224,7 @@ void Step::vEncodeLoopPlus(void)
     // jump on true to doHere:
     Cell* pDoHere;
     // cstack: pop destination address of backward jump
-    if ( ! m_pDataStack->bPopFip(pDoHere) ) THROW_DSTACK();
+    m_pDataStack->vPopFip(pDoHere,__func__);
     pCurrentWord->vEncode("jumpTrue"_Stz,pDoHere);
   }
   else {
@@ -248,7 +248,7 @@ void Step::vEncodeNext(void)
   
   Cell* pDoLimitTest = nullptr;
   // cstack: pop destination address of backward jump
-  if ( ! m_pDataStack->bPopFip(pDoLimitTest) ) THROW_DSTACK();
+  m_pDataStack->vPopFip(pDoLimitTest,__func__);
   pDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   
   pCurrentWord->vEncode("r@"_Stz); // copy index limit to dstack
@@ -272,7 +272,7 @@ void Step::vEncodeThen(void)
   
   // cstack: pop unknown forward address
   Cell* pUnknownOrigin;
-  if ( ! m_pDataStack->bPopFip(pUnknownOrigin) ) THROW_DSTACK();
+  m_pDataStack->vPopFip(pUnknownOrigin,__func__);
   
   // resolve forward branch to this point in routine
   pUnknownOrigin->m_aJumpTo = pCurrentWord->aLastCell();
@@ -291,7 +291,7 @@ void Step::vEncodeUntil(void)
   
   // cstack: pop known backward address
   Cell* pKnownDestination;
-  if ( ! m_pDataStack->bPopFip(pKnownDestination) ) THROW_DSTACK();
+  m_pDataStack->vPopFip(pKnownDestination,__func__);
   
   // append : jump on false to known backward address
   pCurrentWord->vEncode("jumpFalse"_Stz,pKnownDestination);
