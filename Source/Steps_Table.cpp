@@ -75,13 +75,13 @@ void Step::vTableAnalyze(void)
   ENTRY(); // ENTRY("vTableAnalyze"_Stz);
   
   Object* pPtrTable;
-  i8 iDetailed;
   
   m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
+  i8 iDetailed;
   m_pDataStack->vPopInt(iDetailed,__func__);
   
   s48K sAnalysis;
@@ -148,13 +148,13 @@ void Step::vTableIsLoadingStore(void)
   ENTRY(); // ENTRY("vTableIsLoadingStore"_Stz);
   
   Object* pPtrTable;
-  i8 iLoading;
 
   m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
+  i8 iLoading;
   m_pDataStack->vPopInt(iLoading,__func__);
   
   pTable->vIsLoading(iLoading == 1 ? true : false);

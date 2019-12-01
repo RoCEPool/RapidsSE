@@ -46,13 +46,12 @@ void Step::vIndexAnalyze(void)
   ENTRY(); // ENTRY("vIndexAnalyze"_Stz);
   
   Object* pPtrIndex;
-  i8 iDetailed;
-  
   m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
+  i8 iDetailed;
   m_pDataStack->vPopInt(iDetailed,__func__);
   
   s48K sAnalysis;

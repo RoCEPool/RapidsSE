@@ -162,7 +162,6 @@ void Step::vEncodeLoop(void)
   pCurrentWord->vEncode(">r"_Stz);
   
   i8 iIsDo;
-  // cstack: is do ?
   m_pDataStack->vPopInt(iIsDo,__func__);
   
   Cell* pDoLimitTest = nullptr;
@@ -207,7 +206,6 @@ void Step::vEncodeLoopPlus(void)
   pCurrentWord->vEncode(">r"_Stz);
   
   i8 iIsDo;
-  // cstack: is do ?
   m_pDataStack->vPopInt(iIsDo,__func__);
   
   Cell* pDoLimitTest = nullptr;

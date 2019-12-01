@@ -291,7 +291,6 @@ void Step::vWordKindStore(void)
   Word* pWord = _pWord(pWordObject);
   
   i8 iKind;
-  
   m_pDataStack->vPopInt(iKind,__func__);
   
   pWord->vKind((eWK)iKind);

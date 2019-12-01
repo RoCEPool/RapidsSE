@@ -2050,8 +2050,6 @@ void Step::vJobSpawn(void)
 {
   ENTRY(); // ENTRY("vJobSpawn"_Stz);
   
-//  i8 i_Seed;
-//  m_pDataStack->vPopInt(i_Seed,__func__);
 
   Object* pJobPtr;
   m_pDataStack->vPopPtr(pJobPtr,__func__);
@@ -2063,7 +2061,6 @@ void Step::vJobSpawn(void)
               aCN[m_pTask->m_pJob->eClass()],
               C_ENDARGS);
 
-//  pJob->vSeed((eSS)i_Seed);
   
   IGNORE_RETURN(Api::bSpawnJob(pJob));
   

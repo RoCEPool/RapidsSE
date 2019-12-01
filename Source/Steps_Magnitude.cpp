@@ -21,9 +21,8 @@ void Step::vToDigitName(void)
 {
   ENTRY(); // ENTRY("vToDigitName"_Stz);
   
-  i8 iDigit;
-  
   // get the arguments
+  i8 iDigit;
   m_pDataStack->vPopInt(iDigit,__func__);
   
   s32 sName;
@@ -73,10 +72,9 @@ void Step::vNumberMagnitude(void)
   ENTRY(); // ENTRY("vNumberMagnitude"_Stz);
   
   i8 iNumber;
-  i8 iScale;
-  
   m_pDataStack->vPopInt(iNumber,__func__);
   
+  i8 iScale;  
   m_pDataStack->vPopInt(iScale,__func__);
   
   s256 s;

@@ -20,7 +20,6 @@ void Step::vRowIntColumnFetch(void)
   ENTRY(); // ENTRY("vSubsetNext"_Stz);
   
   i8 iColumn;
-  
   m_pDataStack->vPopInt(iColumn,__func__);
   
   Row* aRow = *m_pRegSet->m_xpRow;

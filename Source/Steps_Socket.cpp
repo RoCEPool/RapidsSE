@@ -92,16 +92,15 @@ void Step::vSocketConnect(void)
   
   SysCall oSysCall;
   Socket* pSocket;
-  Object* pObject;
   GenVar xNodeVar;
   
-  i8 iPort;
   
-  
+  Object* pObject;
   m_pDataStack->vPopPtr(pObject,__func__);
   
   if ( ! m_pDataStack->bPopVal(xNodeVar) ) THROW_DSTACK();
   
+  i8 iPort;
   m_pDataStack->vPopInt(iPort,__func__);
   
   // get address of node
@@ -144,73 +143,6 @@ void Step::vSocketConnect(void)
   
   EXIT();
 }
-/*----------------------------------------------------------------------------*/
-//void Step::vSocketConnect(void)
-//{
-//  SysCall oSysCall;
-//  Socket* pSocket;
-//  Object* pObject;
-//  GenVar xNodeVar;
-//
-//  i8 iPort;
-//
-//  ENTRY(); // ENTRY("vSocketConnect"_Stz);
-//
-//  m_pDataStack->vPopPtr(pObject,__func__);
-//
-//  if ( ! m_pDataStack->bPopVal(xNodeVar) ) THROW_DSTACK();
-//
-//  m_pDataStack->vPopInt(iPort,__func__);
-//
-//  // get address of node
-//  Stz* sAddr = xNodeVar.szStz();
-//
-//  if (AM::bVerbose())
-//    vTrace("SOCKET ADDR: %s\n"_Stz,sAddr);
-//
-//  // get pSocket
-//  pSocket = reinterpret_cast<Socket*>(pObject);
-//
-//  bool bResult = false;
-//
-//  // try connecting in a loop if timeout occurs
-//  // possibly other node not back to accepting connections
-//
-//  i8 iTimedOutCount = 0;
-//  i8 iConnRefusedCount = 0;
-//
-//  while (!bResult) {
-//
-//    bResult = pSocket->bConnectServer(sAddr, (int)iPort, oSysCall);
-//
-//    if ( ! bResult ) {
-//      i8 iError = oSysCall.iError();
-//
-//      if (iError == ETIMEDOUT) {
-//        if (0 == iTimedOutCount++)
-//          vTrace("Connect timedout... retrying...\n"_Stz);
-//        continue;
-//      }
-//
-//      if (iError == ECONNREFUSED) {
-//        if (0 == iConnRefusedCount++)
-//          vTrace("Connect refused... retrying...\n"_Stz);
-//        continue;
-//      }
-//
-//      vTrace("Unable to connect: Errno %d %s\n"_Stz,
-//             iError, strerror((int)iError));
-//      AM::vNap(1000, CN_SOCKET);
-//      //vThrow(FK_CHECK,__func__,__FILE__,__LINE__,"Unable to connect: Errno %d"_Stz, iError);
-//    }
-//  }
-//
-//  // return the socket object
-//  Object* pPtrSocket = pSocket;
-//  m_pDataStack->vPushPointer(pPtrSocket);
-//
-//  EXIT();
-//}
 
 /*----------------------------------------------------------------------------*/
 /* socket.dropWrite: drop socket write lock                                   */
@@ -252,8 +184,8 @@ void Step::vSocketListen(void)
   ENTRY(); // ENTRY("vSocketListen"_Stz);
   
   SysCall oSysCall;
-  i8      iPort;
   
+  i8      iPort;
   m_pDataStack->vPopInt(iPort,__func__);
   
   //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -

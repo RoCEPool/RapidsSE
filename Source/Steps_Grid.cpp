@@ -193,7 +193,6 @@ void Step::vGridStartedStore(void)
   ENTRY(); // ENTRY("vGridSetStarted"_Stz);
   
   i8 iStarted;
-  
   m_pDataStack->vPopInt(iStarted,__func__);
   
   AM::pGrid()->vHasStarted(iStarted == 1 ? true : false);
@@ -202,7 +201,7 @@ void Step::vGridStartedStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::StartNode@ -- get grid start node                                 */
+/* grid::StartNode@ -- get grid start node                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vGridStartNodeFetch(void)
 {
@@ -214,14 +213,13 @@ void Step::vGridStartNodeFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::StartNode! -- set grid start node                                 */
+/* grid::StartNode! -- set grid start node                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vGridStartNodeStore(void)
 {
   ENTRY(); // ENTRY("vGridStartNodeStore"_Stz);
   
   i8 iStartNode;
-  
   m_pDataStack->vPopInt(iStartNode,__func__);
   
   AM::pGrid()->vStartNode(iStartNode);
@@ -230,7 +228,7 @@ void Step::vGridStartNodeStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::started@ -- get grid started                                          */
+/* grid::started@ -- get grid started                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vGridStartedFetch(void)
 {

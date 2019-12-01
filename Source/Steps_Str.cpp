@@ -80,12 +80,13 @@ void Step::vStrClip(void)
 {
   ENTRY(); // ENTRY("vStrClip"_Stz);
   
-  i8 iLength;
-  s48K sString;
   s48K sSubStr;
   
   // get the arguments
+  s48K sString;
   m_pDataStack->vPopStr(sString,__func__);
+  
+  i8 iLength;
   m_pDataStack->vPopInt(iLength,__func__);
 
   // validate length
@@ -201,12 +202,13 @@ void Step::vStrLeft(void)
 {
   ENTRY(); // ENTRY("vClip"_Stz);
   
-  i8 iLength;
-  s48K sString;
   s48K sSubStr;
   
   // get the arguments
+  s48K sString;
   m_pDataStack->vPopStr(sString,__func__);
+  
+  i8 iLength;
   m_pDataStack->vPopInt(iLength,__func__);
 
   // validate length
@@ -389,12 +391,12 @@ void Step::vStrRight(void)
 {
   ENTRY(); // ENTRY("vStrRight"_Stz);
   
-  i8 iLength;
-  s48K sString;
   s48K sSubStr;
   
   // get the arguments
+  s48K sString;
   m_pDataStack->vPopStr(sString,__func__);
+  i8 iLength;
   m_pDataStack->vPopInt(iLength,__func__);
 
   // validate length
@@ -423,14 +425,14 @@ void Step::vStrSub(void)
 {
   ENTRY(); // ENTRY("vStrSub"_Stz);
   
-  i8 iLength;
-  i8 iStart;
-  s48K sString;
   s48K sSubStr;
   
   // get the arguments
+  s48K sString;
   m_pDataStack->vPopStr(sString,__func__);
+  i8 iStart;
   m_pDataStack->vPopInt(iStart,__func__);
+  i8 iLength;
   m_pDataStack->vPopInt(iLength,__func__);
 
   i8 iHasLength = sString.nLength();
