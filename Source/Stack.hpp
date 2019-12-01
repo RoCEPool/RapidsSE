@@ -61,7 +61,6 @@ namespace SenVM
   
     void vPokeVal(i8 i_Val, AnyVal* aAnyVal);
   
-    void vPopInt(i8& iInt, const char* azFunNm);
     void vPopPtr(Object*& pObj, const char* azFunNm);
     void vPopStr(String* pStr, const char* azFunNm);
     void vPopVal(AnyVal* aAnyVal, const char* azFunNm);

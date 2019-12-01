@@ -71,8 +71,7 @@ void Step::vNumberMagnitude(void)
   
   i8 iNumber = m_pDataStack->iPopInt(__func__);
   
-  i8 iScale;  
-  m_pDataStack->vPopInt(iScale,__func__);
+  i8 iScale = m_pDataStack->iPopInt(__func__);
   
   s256 s;
   

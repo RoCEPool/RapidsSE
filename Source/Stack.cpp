@@ -211,23 +211,6 @@ void Stack::vPokeVal(i8 i_Val, AnyVal* aAnyVal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop i8 from stack                                                          */
-/*----------------------------------------------------------------------------*/
-void Stack::vPopInt(i8& iInt, const char* azFunNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_INTVAL) )
-    Correctness::vThrow(FK_DSTACK,VL_FATAL,
-                        azFunNm,__FILE__,__LINE__,
-                        "Invalid d-stack"_Stz);
-
-  iInt = m_xTop.aIntVal->iInt();
-  
-  vDiscardTop();
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop Object* from stack                                                     */
 /*----------------------------------------------------------------------------*/
 void Stack::vPopPtr(Object*& pObj, const char* azFunNm)
