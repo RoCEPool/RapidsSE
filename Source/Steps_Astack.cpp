@@ -174,14 +174,14 @@ void Step::vAstackReverse(void)
   
   
   switch (nValues) {
-    case 8: m_pAuxStack->bPopVal(xVal8);
-    case 7: m_pAuxStack->bPopVal(xVal7);
-    case 6: m_pAuxStack->bPopVal(xVal6);
-    case 5: m_pAuxStack->bPopVal(xVal5);
-    case 4: m_pAuxStack->bPopVal(xVal4);
-    case 3: m_pAuxStack->bPopVal(xVal3);
-    case 2: m_pAuxStack->bPopVal(xVal2);
-    case 1: m_pAuxStack->bPopVal(xVal1);
+    case 8: m_pAuxStack->vPopVal(xVal8,__func__);
+    case 7: m_pAuxStack->vPopVal(xVal7,__func__);
+    case 6: m_pAuxStack->vPopVal(xVal6,__func__);
+    case 5: m_pAuxStack->vPopVal(xVal5,__func__);
+    case 4: m_pAuxStack->vPopVal(xVal4,__func__);
+    case 3: m_pAuxStack->vPopVal(xVal3,__func__);
+    case 2: m_pAuxStack->vPopVal(xVal2,__func__);
+    case 1: m_pAuxStack->vPopVal(xVal1,__func__);
   }
   
   switch (nValues) {

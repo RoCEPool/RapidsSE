@@ -50,9 +50,8 @@ void Step::vLocalStore(void)
   
   Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
   
-  ASSERT(m_pDataStack->bPopVal(pLocal->aAnyValue()));
-  //m_pDataStack->bPopVal(pLocal->aAnyValue());
-
+  m_pDataStack->vPopVal(pLocal->aAnyValue(),__func__);
+ 
   EXIT();
 }
 
