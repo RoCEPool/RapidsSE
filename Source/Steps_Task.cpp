@@ -348,9 +348,7 @@ void Step::vTaskSleepSsec(void)
 {
   ENTRY(); // ENTRY("vTaskSleepSsec"_Stz);
   
-  i8 nSeconds;
-  
-  m_pDataStack->vPopInt(nSeconds,__func__);
+  i8 nSeconds; m_pDataStack->vPopInt(nSeconds,__func__);
   i8 nMicroSeconds = nSeconds * C_1M;
   
   m_pTask->vSleepUsec(nMicroSeconds);
