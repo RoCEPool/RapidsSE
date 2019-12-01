@@ -35,7 +35,7 @@ void Step::vThreadBind(void)
   
   i8 iCpu = m_pDataStack->iPopInt(__func__);
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__); Thread* pThread = _pThread(pObject);
+  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
   pThread->vBind(iCpu);
   
@@ -49,7 +49,7 @@ void Step::vThreadCpu(void)
 {
   ENTRY(); // ENTRY("vThreadCpu"_Stz);
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__); Thread* pThread = _pThread(pObject);
+  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pThread->iCpu());
   
@@ -107,7 +107,7 @@ void Step::vThreadDump(void)
 {
   ENTRY(); // ENTRY("vThreadDump"_Stz);
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__); Thread* pThread = _pThread(pObject);
+  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
   pThread->vContentDump();
   
@@ -135,7 +135,7 @@ void Step::vThreadId(void)
 {
   ENTRY(); // ENTRY("vThreadId"_Stz);
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__); Thread* pThread = _pThread(pObject);
+  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pThread->m_pPsxThd->m_iOsThdId);
   

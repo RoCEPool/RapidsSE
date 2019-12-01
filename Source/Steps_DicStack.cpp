@@ -69,7 +69,7 @@ void Step::vDicStackPick(void)
 {
   ENTRY(); // ENTRY("vDicStackPick"_Stz);
   
-  Object* pPtrDicStack = m_pDataStack->pPopPtr(__func__); DicStack* pDicStack = _pDicStack(pPtrDicStack);
+  DicStack* pDicStack = _pDicStack(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_DICSTACK == pDicStack->eClass());
   
   i8 iDic = m_pDataStack->iPopInt(__func__);
