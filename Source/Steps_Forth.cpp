@@ -421,7 +421,7 @@ void Step::vLocate(void)
 {
   ENTRY(); // ENTRY("vLocate"_Stz);
   
-  i8 iAddrAsInt; m_pDataStack->vPopAsInt(iAddrAsInt,__func__);
+  i8 iAddrAsInt = m_pDataStack->iPopAsInt(__func__);
   
   void* aCellVoid = (void*)iAddrAsInt;
   Cell* aHasCell = _aCell(aCellVoid);

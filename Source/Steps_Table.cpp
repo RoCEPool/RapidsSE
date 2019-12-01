@@ -297,7 +297,7 @@ void Step::vTableGetPtn(void)
   m_pDataStack->vPopPtr(pPtrTable,__func__);
   Table* pTable = _pTable(pPtrTable);
   
-  i8 i_Ptn; m_pDataStack->vPopAsInt(i_Ptn,__func__);
+  i8 i_Ptn = m_pDataStack->iPopAsInt(__func__);
   
   // get the table partition
   i8 i_Slot = TablePtn::iPartitionToSlot(i_Ptn);
@@ -455,7 +455,7 @@ void Step::vTablePublish(void)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  i8 iSlot; m_pDataStack->vPopAsInt(iSlot,__func__);
+  i8 iSlot = m_pDataStack->iPopAsInt(__func__);
   
   pTable->vPublish(iSlot);
   
@@ -474,9 +474,9 @@ void Step::vTablePurge(void)
   m_pDataStack->vPopPtr(pPtrTable,__func__);
   Table* pTable = _pTable(pPtrTable);
   
-  i8 iSlot; m_pDataStack->vPopAsInt(iSlot,__func__);
+  i8 iSlot = m_pDataStack->iPopAsInt(__func__);
   
-  i8 iOlderThanSeconds; m_pDataStack->vPopAsInt(iOlderThanSeconds,__func__);
+  i8 iOlderThanSeconds = m_pDataStack->iPopAsInt(__func__);
   
   bool bPurged = pTable->bPurge(iSlot,iOlderThanSeconds);
   
@@ -750,7 +750,7 @@ void Step::vTableTruncate(void)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  i8 iSlot; m_pDataStack->vPopAsInt(iSlot,__func__);
+  i8 iSlot = m_pDataStack->iPopAsInt(__func__);
   
   pTable->vTruncate(iSlot);
   
