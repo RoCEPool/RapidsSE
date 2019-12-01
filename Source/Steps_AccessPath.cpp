@@ -20,9 +20,9 @@ void Step::vAccessPathTableStore(void)
 {
   ENTRY(); // ENTRY("vAccessPathTableStore"_Stz);
   
-  Object* pPtrAccessPath = m_pDataStack->pPopPtr(__func__); AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
+  AccessPath* pAccessPath = _pAccessPath(m_pDataStack->pPopPtr(__func__));
   
-  Object* pPtrTable = m_pDataStack->pPopPtr(__func__); Table* pTable = _pTable(pPtrTable);
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   pAccessPath->vTable(pTable);
   
@@ -36,7 +36,7 @@ void Step::vAccessPathTableFetch(void)
 {
   ENTRY(); // ENTRY("vAccessPathTableFetch"_Stz);
   
-  Object* pPtrAccessPath = m_pDataStack->pPopPtr(__func__); AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
+  AccessPath* pAccessPath = _pAccessPath(m_pDataStack->pPopPtr(__func__));
   
   Table* pTable = pAccessPath->pTable();
   
