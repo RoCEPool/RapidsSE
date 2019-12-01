@@ -11,7 +11,7 @@
 
   params| pJob_SubLoader |
 
-  locals| bContinue |
+  0 locals| bContinue |
 
   pJob_SubLoader job_subLoader.begin not if exit then
 
