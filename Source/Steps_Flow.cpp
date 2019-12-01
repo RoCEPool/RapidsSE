@@ -41,8 +41,7 @@ void Step::vFlowExecute(void)
 {
   ENTRY(); // ENTRY("vFlowExecute"_Stz);
   
-  Object* pWordObject;
-  m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
   Word* pWord = _pWord(pWordObject);
   
   if (WK_INTRINSIC == pWord->eKind()) {

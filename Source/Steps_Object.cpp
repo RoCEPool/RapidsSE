@@ -24,8 +24,7 @@ void Step::vObjectClassFetch(void)
 {
   ENTRY(); // ENTRY("vObjectClassFetch"_Stz);
   
-  Object* pObject;
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject; m_pDataStack->vPopPtr(pObject,__func__);
   
   eCN eClassNo;
   eClassNo = pObject->eClass();
@@ -42,8 +41,7 @@ void Step::vObjectClassStore(void)
 {
   ENTRY(); // ENTRY("vObjectClassStore"_Stz);
   
-  Object* pObject;
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject; m_pDataStack->vPopPtr(pObject,__func__);
   
   i8 iClassNo = m_pDataStack->iPopInt(__func__);
 
@@ -59,8 +57,7 @@ void Step::vObjectDump(void)
 {
   ENTRY(); // ENTRY("vObjectDump"_Stz);
   
-  Object* pObject;
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject; m_pDataStack->vPopPtr(pObject,__func__);
   
   eCN eClass = pObject->eClass();
   
@@ -96,8 +93,7 @@ void Step::vObjectMagicMark(void)
 {
   ENTRY(); // ENTRY("vObjectMagicMark"_Stz);
   
-  Object* pObject;
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject; m_pDataStack->vPopPtr(pObject,__func__);
   
   pObject->vMagic();
   
@@ -129,8 +125,7 @@ void Step::vObjectWordBodySet(void)
 {
   ENTRY(); // ENTRY("vObjectWordBodySet"_Stz);
   
-  Object* pObject;
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject; m_pDataStack->vPopPtr(pObject,__func__);
   
   i8 iIsBody = m_pDataStack->iPopInt(__func__);
   

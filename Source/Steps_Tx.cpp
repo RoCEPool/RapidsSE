@@ -51,8 +51,7 @@ void Step::vTxCommit(void)
 {
   ENTRY(); // ENTRY("vTxCommit"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
+  Object* pPtrTx; m_pDataStack->vPopPtr(pPtrTx,__func__);
   Tx* pTx = _pTx(pPtrTx);
   
   pTx->vPhase(XP_COMMITTED);
@@ -72,8 +71,7 @@ void Step::vTxCounterDec(void)
 {
   ENTRY(); // ENTRY("vTxCounterDec"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
+  Object* pPtrTx; m_pDataStack->vPopPtr(pPtrTx,__func__);
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iCounter = pTx->iCounterDec();
@@ -96,8 +94,7 @@ void Step::vTxCounterFetch(void)
 {
   ENTRY(); // ENTRY("vTxCounterFetch"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
+  Object* pPtrTx; m_pDataStack->vPopPtr(pPtrTx,__func__);
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iCounter = pTx->iCounterGet();
@@ -114,8 +111,7 @@ void Step::vTxCounterStore(void)
 {
   ENTRY(); // ENTRY("vTxCounterStore"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
+  Object* pPtrTx; m_pDataStack->vPopPtr(pPtrTx,__func__);
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iCounter = m_pDataStack->iPopInt(__func__);
@@ -132,8 +128,7 @@ void Step::vTxDistMemberFetch(void)
 {
   ENTRY(); // ENTRY("vTxDistMemberFetch"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
+  Object* pPtrTx; m_pDataStack->vPopPtr(pPtrTx,__func__);
   Tx* pTx = _pTx(pPtrTx);
   
   ASSERT(pTx->bLocalTx());
@@ -154,8 +149,7 @@ void Step::vTxDistMemberStore(void)
 {
   ENTRY(); // ENTRY("vTxDistMemberStore"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
+  Object* pPtrTx; m_pDataStack->vPopPtr(pPtrTx,__func__);
   Tx* pTx = _pTx(pPtrTx);
   
   ASSERT(pTx->bLocalTx());
@@ -227,8 +221,7 @@ void Step::vTxId(void)
 {
   ENTRY(); // ENTRY("vTxId"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
+  Object* pPtrTx; m_pDataStack->vPopPtr(pPtrTx,__func__);
   Tx* pTx = _pTx(pPtrTx);
   
   i8 iTxId = pTx->iLocalTxId();
@@ -245,8 +238,7 @@ void Step::vTxPrepare(void)
 {
   ENTRY(); // ENTRY("vTxPrepare"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
+  Object* pPtrTx; m_pDataStack->vPopPtr(pPtrTx,__func__);
   Tx* pTx = _pTx(pPtrTx);
   
   pTx->vPhase(XP_PREPARED);
@@ -266,8 +258,7 @@ void Step::vTxRollback(void)
 {
   ENTRY(); // ENTRY("vTxRollback"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
+  Object* pPtrTx; m_pDataStack->vPopPtr(pPtrTx,__func__);
   Tx* pTx = _pTx(pPtrTx);
   
   pTx->vPhase(XP_ROLLEDBACK);

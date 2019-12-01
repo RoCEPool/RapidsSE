@@ -20,8 +20,7 @@ void Step::vTableSet(void)
 {
   ENTRY(); // ENTRY("vTableSet"_Stz);
   
-  Object* pPtrObject;
-  m_pDataStack->vPopPtr(pPtrObject,__func__);
+  Object* pPtrObject; m_pDataStack->vPopPtr(pPtrObject,__func__);
   
   m_pRegSet->m_xpTable = _pTable(pPtrObject);
   
@@ -35,8 +34,7 @@ void Step::vTablePtnFetch(void)
 {
   ENTRY(); // ENTRY("vTableSet"_Stz);
   
-  Object* pPtrObject;
-  m_pDataStack->vPopPtr(pPtrObject,__func__);
+  Object* pPtrObject; m_pDataStack->vPopPtr(pPtrObject,__func__);
   
   Job_Universal* pJob = _pJob_Universal(pPtrObject);
   

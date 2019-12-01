@@ -67,12 +67,10 @@ void Step::vDicKindSet(void)
 {
   ENTRY(); // ENTRY("vDicKindSet"_Stz);
   
-  Object* pPtrDic;
-  m_pDataStack->vPopPtr(pPtrDic,__func__);
+  Object* pPtrDic; m_pDataStack->vPopPtr(pPtrDic,__func__);
   Dic* pDic = _pDic(pPtrDic);
 
-  Object* pPtrKind;
-  m_pDataStack->vPopPtr(pPtrKind,__func__);
+  Object* pPtrKind; m_pDataStack->vPopPtr(pPtrKind,__func__);
   Word* pKind = _pWord(pPtrKind);
   
   pDic->vDicKind(pKind);
@@ -107,8 +105,7 @@ void Step::vDicName(void)
 {
   ENTRY(); // ENTRY("vDicName"_Stz);
  
-  Object* pPtrDic;
-  m_pDataStack->vPopPtr(pPtrDic,__func__);
+  Object* pPtrDic; m_pDataStack->vPopPtr(pPtrDic,__func__);
   
   Dic* pDic = _pDic(pPtrDic);
 

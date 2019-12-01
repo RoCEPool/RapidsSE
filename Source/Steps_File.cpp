@@ -40,8 +40,7 @@ void Step::vFile0Set(void)
 {
   ENTRY(); // ENTRY("vFile0Set"_Stz);
   
-  Object* pPtrFile;
-  m_pDataStack->vPopPtr(pPtrFile,__func__);
+  Object* pPtrFile; m_pDataStack->vPopPtr(pPtrFile,__func__);
   
   m_pRegSet->m_xpFile0 = _pFile(pPtrFile);
   

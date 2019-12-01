@@ -23,8 +23,7 @@ void Step::vLockDropRead(void)
 {
   ENTRY(); // ENTRY("vLockDropRead"_Stz);
   
-  Object* pPtrLock;;
-  m_pDataStack->vPopPtr(pPtrLock,__func__);
+  Object* pPtrLock;; m_pDataStack->vPopPtr(pPtrLock,__func__);
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -42,8 +41,7 @@ void Step::vLockDropWrite(void)
 {
   ENTRY(); // ENTRY("vLockDropWrite"_Stz);
 
-  Object* pPtrLock;;
-  m_pDataStack->vPopPtr(pPtrLock,__func__);
+  Object* pPtrLock;; m_pDataStack->vPopPtr(pPtrLock,__func__);
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -61,8 +59,7 @@ void Step::vLockGrabRead(void)
 {
   ENTRY(); // ENTRY("vLockGrabRead"_Stz);
 
-  Object* pPtrLock;;
-  m_pDataStack->vPopPtr(pPtrLock,__func__);
+  Object* pPtrLock;; m_pDataStack->vPopPtr(pPtrLock,__func__);
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -80,8 +77,7 @@ void Step::vLockGrabWrite(void)
 {
   ENTRY(); // ENTRY("vLockGrabWrite"_Stz);
 
-  Object* pPtrLock;;
-  m_pDataStack->vPopPtr(pPtrLock,__func__);
+  Object* pPtrLock;; m_pDataStack->vPopPtr(pPtrLock,__func__);
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -99,8 +95,7 @@ void Step::vLockInit(void)
 {
   ENTRY(); // ENTRY("vLockInit"_Stz);
   
-  Object* pPtrLock;;
-  m_pDataStack->vPopPtr(pPtrLock,__func__);
+  Object* pPtrLock;; m_pDataStack->vPopPtr(pPtrLock,__func__);
   
   Lock* pLock = _pLock(pPtrLock);
   

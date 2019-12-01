@@ -22,8 +22,7 @@ void Step::vJob_SubTruncateSlotFetch(void)
 {
   ENTRY(); // ENTRY("vJob_SubTruncateSlotFetch"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
+  Object* pJobPtr; m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
   m_pDataStack->vPushInt(pJob->i_Slot());
@@ -38,8 +37,7 @@ void Step::vJob_SubTruncateTruncateJobIdFetch(void)
 {
   ENTRY(); // ENTRY("vJob_SubTruncateTruncateJobIdFetch"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
+  Object* pJobPtr; m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job_SubTruncate* pJob = _pJob_SubTruncate(pJobPtr);
   
   m_pDataStack->vPushInt(pJob->m_iTruncateJobId);
@@ -54,8 +52,7 @@ void Step::vJob_TruncateTableSpawnSub(void)
 {
   ENTRY(); // ENTRY("vJob_TruncateTableSpawnSub"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
+  Object* pJobPtr; m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
   
   i8 iSlot = m_pDataStack->iPopAsInt(__func__);

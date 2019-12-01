@@ -35,8 +35,7 @@ void Step::vThreadBind(void)
   
   i8 iCpu = m_pDataStack->iPopInt(__func__);
   
-  Object* pObject;
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject; m_pDataStack->vPopPtr(pObject,__func__);
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -74,8 +73,7 @@ void Step::vThreadDedicatedFetch(void)
 {
   ENTRY(); // ENTRY("vThreadDedicatedFetch"_Stz);
   
-  Object* pThreadObject;
-  m_pDataStack->vPopPtr(pThreadObject,__func__);
+  Object* pThreadObject; m_pDataStack->vPopPtr(pThreadObject,__func__);
   Thread* pThread = _pThread(pThreadObject);
   
   m_pDataStack->vPushInt(pThread->m_eDedicated);
@@ -90,8 +88,7 @@ void Step::vThreadDedicatedStore(void)
 {
   ENTRY(); // ENTRY("vThreadDedicatedStore"_Stz);
   
-  Object* pThreadObject;
-  m_pDataStack->vPopPtr(pThreadObject,__func__);
+  Object* pThreadObject; m_pDataStack->vPopPtr(pThreadObject,__func__);
   Thread* pThread = _pThread(pThreadObject);
   
   i8 iDedicated = m_pDataStack->iPopAsInt(__func__);

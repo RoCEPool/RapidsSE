@@ -99,13 +99,11 @@ void Step::vTableIsValidIndexColumns(void)
 {
   ENTRY(); // ENTRY("vTableIsValidIndexColumns"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  Object* pPtrJob;
-  m_pDataStack->vPopPtr(pPtrJob,__func__);
+  Object* pPtrJob; m_pDataStack->vPopPtr(pPtrJob,__func__);
   
   Job_Universal* pJob_CreateIndex = _pJob_Universal(pPtrJob);
   ASSERT(CN_JOB_UNIVERSAL == pJob_CreateIndex->eClass());
@@ -167,8 +165,7 @@ void Step::vTableColumnFetch(void)
 {
   ENTRY(); // ENTRY("vTableColumnFetch"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
@@ -188,8 +185,7 @@ void Step::vTableColumnCountFetch(void)
 {
   ENTRY(); // ENTRY("vTableColumnCountFetch"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
@@ -208,8 +204,7 @@ void Step::vTableDrop(void)
 {
   ENTRY(); // ENTRY("vTableDrop"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -226,8 +221,7 @@ void Step::vTableDump(void)
   
   vTrace("TableDump\n"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -258,8 +252,7 @@ void Step::vTableGetColumnsAsString(void)
 {
   ENTRY(); // ENTRY("vTableGetColumnsAsString"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
@@ -293,8 +286,7 @@ void Step::vTableGetPtn(void)
 {
   ENTRY(); // ENTRY("vTableGetPtn"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   Table* pTable = _pTable(pPtrTable);
   
   i8 i_Ptn = m_pDataStack->iPopAsInt(__func__);
@@ -315,8 +307,7 @@ void Step::vTableIndexCount(void)
 {
   ENTRY(); // ENTRY("vTableIndexCount"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass())
@@ -333,8 +324,7 @@ void Step::vTableInit(void)
 {
   ENTRY(); // ENTRY("vTableInit"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -351,8 +341,7 @@ void Step::vTableFindColumn(void)
 {
   ENTRY(); // ENTRY("vTableFindColumn"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -389,8 +378,7 @@ void Step::vTableIsColumn(void)
 {
   ENTRY(); // ENTRY("vTableInit"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -426,8 +414,7 @@ void Step::vTableName(void)
 {
   ENTRY(); // ENTRY("vTableName"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -524,8 +511,7 @@ void Step::vTableScan(void)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  Object* pPtrJob;
-  m_pDataStack->vPopPtr(pPtrJob,__func__);
+  Object* pPtrJob; m_pDataStack->vPopPtr(pPtrJob,__func__);
   
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
@@ -612,8 +598,7 @@ void Step::vTableShowColumnVec(void)
 {
   ENTRY(); // ENTRY("vTableShowColumnVec"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
@@ -629,8 +614,7 @@ void Step::vTableSubDic(void)
 {
   ENTRY(); // ENTRY("vTableSubDic"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -649,8 +633,7 @@ void Step::vTableSubLoaders(void)
 {
   ENTRY(); // ENTRY("vTableSubDic"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -669,8 +652,7 @@ void Step::vTableSlots(void)
 {
   ENTRY(); // ENTRY("vTableSlots"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -687,8 +669,7 @@ void Step::vTableSpace(void)
 {
   ENTRY(); // ENTRY("vTableSpace"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -707,8 +688,7 @@ void Step::vTableTableDefFetch(void)
 {
   ENTRY(); // ENTRY("vTableTableDefFetch"_Stz);
 
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   Table* pTable = _pTable(pPtrTable);
   
   m_pDataStack->vPushPtr(pTable->pTableDef());
@@ -723,12 +703,10 @@ void Step::vTableTableDefStore(void)
 {
   ENTRY(); // ENTRY("vTableTableDefStore"_Stz);
   
-  Object* pPtrTable;
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   Table* pTable = _pTable(pPtrTable);
   
-  Object* pPtrTableDef;
-  m_pDataStack->vPopPtr(pPtrTableDef,__func__);
+  Object* pPtrTableDef; m_pDataStack->vPopPtr(pPtrTableDef,__func__);
   TableDef* pTableDef = _pTableDef(pPtrTableDef);
 
   pTable->vTableDef(pTableDef);

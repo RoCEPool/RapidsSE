@@ -23,8 +23,7 @@ void Step::vJob_WriteRowParentJobIdFetch(void)
 {
   ENTRY(); // ENTRY("vJob_WriteRowParentJobIdFetch"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
+  Object* pJobPtr; m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   i8 iParentJobId = pJob_WriteRow->m_iParentJobId;
@@ -42,12 +41,10 @@ void Step::vJob_WriteRowEncodeRow(void)
 {
   ENTRY(); // ENTRY("vJob_WriteRowEncodeRow"_Stz);
   
-  Object* pJobWriteRowPtr;
-  m_pDataStack->vPopPtr(pJobWriteRowPtr,__func__);
+  Object* pJobWriteRowPtr; m_pDataStack->vPopPtr(pJobWriteRowPtr,__func__);
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobWriteRowPtr);
   
-  Object* pJobInsertRowPtr;
-  m_pDataStack->vPopPtr(pJobInsertRowPtr,__func__);
+  Object* pJobInsertRowPtr; m_pDataStack->vPopPtr(pJobInsertRowPtr,__func__);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobInsertRowPtr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -89,8 +86,7 @@ void Step::vJob_WriteRowInsertRow(void)
 {
   ENTRY(); // ENTRY("vJob_WriteRowInsertRow"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
+  Object* pJobPtr; m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   pJob_WriteRow->vInsertRow();
@@ -105,8 +101,7 @@ void Step::vJob_WriteRowPartitionFetch(void)
 {
   ENTRY(); // ENTRY("vJob_WriteRowPartitionFetch"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
+  Object* pJobPtr; m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   i8 i_Partition = pJob_WriteRow->m_iPartitionId;
@@ -122,12 +117,10 @@ void Step::vJob_WriteRowTableStore(void)
 {
   ENTRY(); // ENTRY("vJob_WriteRowTableStore"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
+  Object* pJobPtr; m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
-  Object* pTablePtr;
-  m_pDataStack->vPopPtr(pTablePtr,__func__);
+  Object* pTablePtr; m_pDataStack->vPopPtr(pTablePtr,__func__);
   Table* pTable = _pTable(pTablePtr);
   
   pJob_WriteRow->m_pTable = pTable;

@@ -124,8 +124,7 @@ void Step::vCompileComma(void)
 {
   ENTRY(); // ENTRY("vCompileComma"_Stz);
   
-  Object* pWordObject;
-  m_pDataStack->vPopPtr(pWordObject,__func__);
+  Object* pWordObject; m_pDataStack->vPopPtr(pWordObject,__func__);
   Word* pCalledWord = _pWord(pWordObject);
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
