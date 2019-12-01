@@ -22,7 +22,7 @@ void Step::vMemoryByteDump(void)
 {
   ENTRY(); // ENTRY("vMemoryByteDump"_Stz);
   
-  i8 iSize; m_pDataStack->vPopInt(iSize,__func__);
+  i8 iSize = m_pDataStack->iPopInt(__func__);
   
   Object* pWordObject;
   m_pDataStack->vPopPtr(pWordObject,__func__);
@@ -64,7 +64,7 @@ void Step::vMemoryWordDump(void)
 {
   ENTRY(); // ENTRY("vMemoryWordDump"_Stz);
   
-  i8 iSize; m_pDataStack->vPopInt(iSize,__func__);
+  i8 iSize = m_pDataStack->iPopInt(__func__);
   
   Object* pWordObject;
   m_pDataStack->vPopPtr(pWordObject,__func__);

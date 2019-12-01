@@ -60,7 +60,7 @@ void Step::vPlannerChosenPath(void)
   m_pDataStack->vPopPtr(mpPtrPlanner,__func__);
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
-  i8 i_Phrase; m_pDataStack->vPopInt(i_Phrase,__func__);
+  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* pChosenPlan = mpPlanner->pChosenPath(i_Phrase);
   
   m_pDataStack->vPushPtr(pChosenPlan);
@@ -95,7 +95,7 @@ void Step::vPlannerFetchTechniqueFetch(void)
   m_pDataStack->vPopPtr(pPtrPlanner,__func__);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  i8 i_Phrase; m_pDataStack->vPopInt(i_Phrase,__func__);
+  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   eAT eFetchTechnique = mpPlanner->pChosenPath(i_Phrase)->eAccess();
   
   m_pDataStack->vPushInt(eFetchTechnique);
@@ -132,7 +132,7 @@ void Step::vPlannerHighKeyFetch(void)
   m_pDataStack->vPopPtr(pPtrPlanner,__func__);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  i8 i_Phrase; m_pDataStack->vPopInt(i_Phrase,__func__);
+  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
   PredicateVec* mpUpperPredicates = mpChosenPath->pUpperPredicates();
@@ -155,7 +155,7 @@ void Step::vPlannerIndexNmFetch(void)
   m_pDataStack->vPopPtr(pPtrPlanner,__func__);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  i8 i_Phrase; m_pDataStack->vPopInt(i_Phrase,__func__);
+  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
   Index* pChosenIndex = mpChosenPath->pIndex();
@@ -177,7 +177,7 @@ void Step::vPlannerKeyFetch(void)
   m_pDataStack->vPopPtr(pPtrPlanner,__func__);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  i8 i_Phrase; m_pDataStack->vPopInt(i_Phrase,__func__);
+  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
@@ -200,7 +200,7 @@ void Step::vPlannerLowKeyFetch(void)
   m_pDataStack->vPopPtr(pPtrPlanner,__func__);
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
-  i8 i_Phrase; m_pDataStack->vPopInt(i_Phrase,__func__);
+  i8 i_Phrase = m_pDataStack->iPopInt(__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();

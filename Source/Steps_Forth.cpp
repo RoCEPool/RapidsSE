@@ -44,7 +44,7 @@ void Step::vAllot(void)
 {
   ENTRY(); // ENTRY("vAllot"_Stz);
   
-  i8 iBytes; m_pDataStack->vPopInt(iBytes,__func__);
+  i8 iBytes = m_pDataStack->iPopInt(__func__);
   
   RASSERT(iBytes);
   

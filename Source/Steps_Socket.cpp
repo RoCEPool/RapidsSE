@@ -100,7 +100,7 @@ void Step::vSocketConnect(void)
   
   m_pDataStack->vPopVal(xNodeVar,__func__);
   
-  i8 iPort; m_pDataStack->vPopInt(iPort,__func__);
+  i8 iPort = m_pDataStack->iPopInt(__func__);
   
   // get address of node
   Stz* sAddr = xNodeVar.szStz();
@@ -184,7 +184,7 @@ void Step::vSocketListen(void)
   
   SysCall oSysCall;
   
-  i8 iPort; m_pDataStack->vPopInt(iPort,__func__);
+  i8 iPort = m_pDataStack->iPopInt(__func__);
   
   //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -
   // attempt to create server-side listening socket

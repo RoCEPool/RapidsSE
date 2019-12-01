@@ -108,7 +108,7 @@ void Step::vSsnSenLoc(void)
 {
   ENTRY(); // ENTRY("vSsnSenLoc"_Stz);
   
-  i8 iPosition; m_pDataStack->vPopInt(iPosition,__func__);
+  i8 iPosition = m_pDataStack->iPopInt(__func__);
 
   //  Session* pSession = m_i_Session->m_pSession;
   //  ApiState::vMarkSenLoc(pSession,iPosition);

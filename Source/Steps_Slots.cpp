@@ -44,7 +44,7 @@ void Step::vSlotsColumnName(void)
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
   
-  i8 iIndex; m_pDataStack->vPopInt(iIndex,__func__);
+  i8 iIndex = m_pDataStack->iPopInt(__func__);
   
   ASSERT(iIndex < pSlots->pPtnColVec()->nItems());
   Column* pColumn = pSlots->pPtnColVec()->pGet(iIndex);

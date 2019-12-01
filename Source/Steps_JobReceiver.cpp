@@ -75,7 +75,7 @@ void Step::vJob_ReceiverConnNoStore(void)
   m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
-  i8 iConnNo; m_pDataStack->vPopInt(iConnNo,__func__);
+  i8 iConnNo = m_pDataStack->iPopInt(__func__);
   
   pJob_Receiver->vConnNo(iConnNo);
   
