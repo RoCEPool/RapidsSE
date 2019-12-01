@@ -68,8 +68,6 @@ namespace SenVM
     void vPopStr(String* pStr, const char* azFunNm);
     void vPopVal(AnyVal* aAnyVal, const char* azFunNm);
 
-    bool bPopVal(AnyVal* aAnyVal);
-  
     void vPushFip(Cell* aFip);
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);

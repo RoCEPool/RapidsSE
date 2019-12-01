@@ -326,31 +326,6 @@ void Stack::vPopVal(AnyVal* aAnyVal, const char* azFunNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value from stack                                                       */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopVal(AnyVal* aAnyVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  _hazard_();
-  
-  i8 nBytes = aTopVal()->nStackUsage();
-  
-  aAnyVal->vCopy(m_xTop.aAnyVal,nBytes);
-  
-  m_xTop.vRewind(nBytes);
-  
-  m_nValues--;
-  
-  _hazard_();
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* push Cell* onto stack                                                      */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushFip(Cell* aFip)
