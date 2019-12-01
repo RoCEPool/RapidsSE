@@ -32,7 +32,7 @@ void Step::vEncodeAgain(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // cstack: pop known backward address
-  Cell* pKnownDestination; m_pDataStack->vPopFip(pKnownDestination,__func__);
+  Cell* pKnownDestination = m_pDataStack->aPopFip(__func__);
   
   // append : jump to known backward address
   pCurrentWord->vEncode("jump"_Stz,pKnownDestination);
@@ -69,7 +69,7 @@ void Step::vEncodeContinue(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // cstack: pop known backward address
-  Cell* pKnownBackward; m_pDataStack->vPopFip(pKnownBackward,__func__);
+  Cell* pKnownBackward = m_pDataStack->aPopFip(__func__);
   
   // append : jump on true to known backward address
   pCurrentWord->vEncode("jumpTrue"_Stz,pKnownBackward);
@@ -126,10 +126,10 @@ void Step::vEncodeIfAgain(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // cstack: pop known if address
-  Cell* pIfDestination; m_pDataStack->vPopFip(pIfDestination,__func__);
+  Cell* pIfDestination = m_pDataStack->aPopFip(__func__);
   
   // cstack: pop known backward address
-  Cell* pKnownDestination; m_pDataStack->vPopFip(pKnownDestination,__func__);
+  Cell* pKnownDestination = m_pDataStack->aPopFip(__func__);
   
   // append : jump to known backward address
   pCurrentWord->vEncode("jump"_Stz,pKnownDestination);
@@ -239,7 +239,7 @@ void Step::vEncodeNext(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // cstack: pop destination address of backward jump
-  Cell* pDoLimitTest = nullptr; m_pDataStack->vPopFip(pDoLimitTest,__func__);
+  Cell* pDoLimitTest = m_pDataStack->aPopFip(__func__);
   pDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   
   pCurrentWord->vEncode("r@"_Stz); // copy index limit to dstack
@@ -262,7 +262,7 @@ void Step::vEncodeThen(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // cstack: pop unknown forward address
-  Cell* pUnknownOrigin; m_pDataStack->vPopFip(pUnknownOrigin,__func__);
+  Cell* pUnknownOrigin = m_pDataStack->aPopFip(__func__);
   
   // resolve forward branch to this point in routine
   pUnknownOrigin->m_aJumpTo = pCurrentWord->aLastCell();
@@ -280,7 +280,7 @@ void Step::vEncodeUntil(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // cstack: pop known backward address
-  Cell* pKnownDestination; m_pDataStack->vPopFip(pKnownDestination,__func__);
+  Cell* pKnownDestination = m_pDataStack->aPopFip(__func__);
   
   // append : jump on false to known backward address
   pCurrentWord->vEncode("jumpFalse"_Stz,pKnownDestination);
