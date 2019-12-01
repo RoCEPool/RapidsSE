@@ -242,8 +242,8 @@ void Step::vEncodeNext(void)
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
-  Cell* pDoLimitTest = nullptr;
   // cstack: pop destination address of backward jump
+  Cell* pDoLimitTest = nullptr;
   m_pDataStack->vPopFip(pDoLimitTest,__func__);
   pDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   
