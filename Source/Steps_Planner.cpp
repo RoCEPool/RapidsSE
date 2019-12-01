@@ -38,11 +38,11 @@ void Step::vPlannerChoosePaths(void)
   
   ENTRY(); // ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
   
-  Object* mpPtrPlanner; m_pDataStack->vPopPtr(mpPtrPlanner,__func__);
-  Planner* mpPlanner = _pPlanner(mpPtrPlanner);
+  Object* pPtrPlanner; m_pDataStack->vPopPtr(pPtrPlanner,__func__);
+  Planner* pPlanner = _pPlanner(pPtrPlanner);
   
-  for (i8 i_Phrase = 0; i_Phrase < mpPlanner->nPhrases(); i_Phrase++)
-    mpPlanner->vChoosePath(i_Phrase);
+  for (i8 i_Phrase = 0; i_Phrase < pPlanner->nPhrases(); i_Phrase++)
+    pPlanner->vChoosePath(i_Phrase);
   
   EXIT();
 }
