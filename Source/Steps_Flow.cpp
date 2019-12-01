@@ -111,7 +111,7 @@ void Step::vFlowJumpFalse(void)
   ENTRY(); // ENTRY("vJumpFalse"_Stz);
   
   i8 iVal;
-  if ( ! m_pDataStack->bPopAsInt(iVal) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iVal,__func__);
   
   // n.b. the IP points to the jump arg
   
@@ -173,7 +173,7 @@ void Step::vFlowJumpTrue(void)
   ENTRY(); // ENTRY("vJumpTrue"_Stz);
   
   i8 iVal;
-  if ( ! m_pDataStack->bPopAsInt(iVal) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iVal,__func__);
   
   // n.b. the IP points to the jump arg
   

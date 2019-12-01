@@ -201,7 +201,7 @@ void Step::vDstackPick(void)
   ENTRY(); // ENTRY("vDstackPick"_Stz);
   
   i8 iPick;
-  if ( ! m_pDataStack->bPopAsInt(iPick) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iPick,__func__);
   
   // could do this directly on stack
   

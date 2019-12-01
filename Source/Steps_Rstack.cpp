@@ -47,7 +47,7 @@ void Step::vRstackCsPick(void)
   
   // pop which value
   i8 nThValue;
-  if ( ! m_pDataStack->bPopAsInt(nThValue) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(nThValue,__func__);
   
   // pop one return address
 //  GenVar xRtnWsp;
@@ -170,7 +170,7 @@ void Step::vRstackPick(void)
   ENTRY(); // ENTRY("vRstackPick"_Stz);
   
   i8 iPick;
-  if ( ! m_pDataStack->bPopAsInt(iPick) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iPick,__func__);
   
   // could do this directly on stack
   

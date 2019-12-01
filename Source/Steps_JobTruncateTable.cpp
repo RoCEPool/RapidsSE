@@ -59,7 +59,7 @@ void Step::vJob_TruncateTableSpawnSub(void)
   Job_Universal* pJob_Universal = _pJob_Universal(pJobPtr);
   
   i8 iSlot;
-  if ( ! m_pDataStack->bPopAsInt(iSlot) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iSlot,__func__);
   
   i8 iTruncateJobId = pJob_Universal->m_iFocalId;
   ReqTuple* aReqTuple = &pJob_Universal->m_xReqTuple;

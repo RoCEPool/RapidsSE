@@ -423,7 +423,7 @@ void Step::vLocate(void)
   ENTRY(); // ENTRY("vLocate"_Stz);
   
   i8 iAddrAsInt;
-  if ( ! m_pDataStack->bPopAsInt(iAddrAsInt) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iAddrAsInt,__func__);
   
   void* aCellVoid = (void*)iAddrAsInt;
   Cell* aHasCell = _aCell(aCellVoid);

@@ -668,7 +668,7 @@ void Step::vJobErrorFetch(void)
   Job* pJob = _pJob(pJobPtr);
 
   i8 iNode;
-  if ( ! m_pDataStack->bPopAsInt(iNode) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iNode,__func__);
   
   m_pDataStack->vPushInt(pJob->m_xResponse.m_eErrorCode);
   
@@ -687,7 +687,7 @@ void Step::vJobErrorStore(void)
   Job* pJob = _pJob(pJobPtr);
   
   i8 iJobError;
-  if ( ! m_pDataStack->bPopAsInt(iJobError) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iJobError,__func__);
   
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
   pJob->m_bHasError = true;
@@ -732,7 +732,7 @@ void Step::vJobFindOriginator(void)
   ENTRY(); // ENTRY("vJobFindOriginator"_Stz);
   
   i8 iJobId;
-  if ( ! m_pDataStack->bPopAsInt(iJobId) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iJobId,__func__);
   
   Job* pJobFound = Scheduler::pFindOriginatingJob(iJobId);
   RASSERT(pJobFound);
@@ -755,7 +755,7 @@ void Step::vJobFindParticipant(void)
   ENTRY(); // ENTRY("vJobFindParticipant"_Stz);
   
   i8 iJobId;
-  if ( ! m_pDataStack->bPopAsInt(iJobId) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iJobId,__func__);
     
   Job* pJobFound = Scheduler::pFindParticipatingJob(iJobId);
   RASSERT(pJobFound);
@@ -1249,7 +1249,7 @@ void Step::vJobOriginatorFetch(void)
   ENTRY(); // ENTRY("vJobOriginatorFetch"_Stz);
   
   i8 iJobId;
-  if ( ! m_pDataStack->bPopAsInt(iJobId) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iJobId,__func__);
   
   m_pDataStack->vPushInt(Job::iOriginatorNode(iJobId));
   
@@ -1300,7 +1300,7 @@ void Step::vJobParticipantStore(void)
   Job* pJob = _pJob(pJobPtr);
   
   i8 iParticipantNode;
-  if ( ! m_pDataStack->bPopAsInt(iParticipantNode) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iParticipantNode,__func__);
   
   pJob->vParticipantNode(iParticipantNode);
   
@@ -1344,7 +1344,7 @@ void Step::vJobParticipantResponseStore(void)
   Job* pJob = _pJob(pJobPtr);
   
 //  i8 iNode;
-//  if ( ! m_pDataStack->bPopAsInt(iNode) ) THROW_DSTACK();
+//  m_pDataStack->vPopAsInt(iNode,__func__);
   
   Object* pParticipantJobPtr;
   m_pDataStack->vPopPtr(pParticipantJobPtr,__func__);
@@ -1421,7 +1421,7 @@ void Step::vJobPhaseStore(void)
   Job* pJob = _pJob(pJobPtr);
   
   i8 iJobPhase;
-  if ( ! m_pDataStack->bPopAsInt(iJobPhase) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iJobPhase,__func__);
   
   pJob->vJobPhase((eJP)iJobPhase);
   
@@ -2208,7 +2208,7 @@ void Step::vJobWaitParticipant(void)
   ENTRY(); // ENTRY("vJobWaitParticipant"_Stz);
   
   i8 iJobId;
-  if ( ! m_pDataStack->bPopAsInt(iJobId) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iJobId,__func__);
   
   Object* pJobObject;
   m_pDataStack->vPopPtr(pJobObject,__func__);

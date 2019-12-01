@@ -72,7 +72,7 @@ void Step::vJob_FetchRowsLastBuffersStore(void)
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
   i8 nLastBuffers;
-  if ( ! m_pDataStack->bPopAsInt(nLastBuffers) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(nLastBuffers,__func__);
   
   pJob_FetchRows->m_nLastBuffers = nLastBuffers;
   
@@ -136,10 +136,10 @@ void Step::vJob_FetchRowsSpawnSub(void)
   ASSERT(CN_PLANNER == pPlanner->eClass());
   
   i8 iPhrase;
-  if ( ! m_pDataStack->bPopAsInt(iPhrase) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iPhrase,__func__);
   
   i8 iSlot;
-  if ( ! m_pDataStack->bPopAsInt(iSlot) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iSlot,__func__);
   
   Session* pSession = pJob_FetchRows->pSession();
   ReqTuple* aReqTuple = &pJob_FetchRows->m_xReqTuple;

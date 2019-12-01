@@ -95,7 +95,7 @@ void Step::vThreadDedicatedStore(void)
   Thread* pThread = _pThread(pThreadObject);
   
   i8 iDedicated;
-  if ( ! m_pDataStack->bPopAsInt(iDedicated) ) THROW_DSTACK();
+  m_pDataStack->vPopAsInt(iDedicated,__func__);
 
   pThread->m_eDedicated = (eCN)iDedicated;
   
