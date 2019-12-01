@@ -282,6 +282,8 @@ public:
   void vErrorMsg(void);
 
   // file
+  void vFile0Get(void);
+  void vFile0Set(void);
   void vFileClose(void);
   void vFileDelete(void);
   void vFileNew(void);
@@ -882,7 +884,7 @@ public:
   void vOperandSet(void);
   void vOperandToCsv(void);
   void vOperandWorkDone(void);
-  void vOperandWriteToFile(void);
+  void vOperandWriteToFile0(void);
 
   // persistence
   void vPersistenceCheckpoint(void);

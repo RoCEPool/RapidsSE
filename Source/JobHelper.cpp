@@ -199,8 +199,10 @@ bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, EnameSet* pSynEnmSet)
       continue;
     }
     
-    if (pSynEnmSet->szName(i_Syn)->bEqual("__meta__"_Stz))
+    if (pSynEnmSet->szName(i_Syn)->bEqual("__meta__"_Stz)) {
+      //pSynEnmSet->vPrint();
       return true;
+    }
     
     if (! pTkn->szText()->bSame((pSynEnmSet->szValue(i_Syn)))) {
       //vTrace("%s\n"_Stz, pTkn->szText());
