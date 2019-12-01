@@ -333,6 +333,24 @@ Cell* Stack::aPopFip(const char* azFunNm)
   return aFip;
 }
 
+/*----------------------------------------------------------------------------*/
+/* pop i8 from stack                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Stack::iPopInt(const char* azFunNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_INTVAL) )
+    Correctness::vThrow(FK_DSTACK,VL_FATAL,
+                        azFunNm,__FILE__,__LINE__,
+                        "Invalid d-stack"_Stz);
+  
+  i8 iInt = m_xTop.aIntVal->iInt();
+  
+  vDiscardTop();
+  
+  return iInt;
+}
 
 
 

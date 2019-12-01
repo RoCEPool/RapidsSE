@@ -68,6 +68,7 @@ namespace SenVM
 
     i8    iPopAsInt(const char* azFunNm);
     Cell* aPopFip(const char* azFunNm);
+    i8    iPopInt(const char* azFunNm);
 
     void vPushFip(Cell* aFip);
     void vPushInt(i8 iInt);
