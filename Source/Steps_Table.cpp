@@ -49,13 +49,12 @@ void Step::vTableAddIndex(void)
 {
   ENTRY(); // ENTRY("vTableAddIndex"_Stz);
   
-  Object* pPtrTable;
-  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -467,12 +466,11 @@ void Step::vTableRemoveIndex(void)
 {
   ENTRY(); // ENTRY("vTableRef"_Stz);
   
-  Object* pPtrTable;
-  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
 
@@ -488,13 +486,12 @@ void Step::vTableScan(void)
 {
   ENTRY(); // ENTRY("vTableScan"_Stz);
   
-  Object* pPtrTable = nullptr;
   FetchBuffer* pFetchBuffer;
   GenVar xVariable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());

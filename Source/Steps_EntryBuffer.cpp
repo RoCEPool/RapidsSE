@@ -58,12 +58,11 @@ void Step::vEntBufferIndexStore(void)
 {
   ENTRY(); // ENTRY("vEntBufferIndexStore"_Stz);
   
-  Object* pPtrIndex;
   Object* pPtrIndexBuffer; m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());

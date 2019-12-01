@@ -148,10 +148,7 @@ void Step::vIndexCompact(void)
 {
   ENTRY(); // ENTRY("vIndexCompact"_Stz);
   
-  Object* pPtrIndex;
-  i8 iDetailed;
-  
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -336,14 +333,13 @@ void Step::vIndexLowerBound(void)
 {
   ENTRY(); // ENTRY("vIndexLowerBound"_Stz);
   
-  Object* pPtrIndex = nullptr;
   FetchBuffer* pFetchBuffer;
   
   GenVar xVariable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -517,14 +513,12 @@ void Step::vIndexRange(void)
 {
   ENTRY(); // ENTRY("vIndexRange"_Stz);
   
-  Object* pPtrIndex = nullptr;
-  
   GenVar xValWrkLwr;
   GenVar xValWrkUpr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
@@ -813,12 +807,11 @@ void Step::vIndexTableStore(void)
   ENTRY(); // ENTRY("vIndexTableStore"_Stz);
   
   Object* pPtrIndex = nullptr; m_pDataStack->vPopPtr(pPtrIndex,__func__);
-  Object* pPtrTable = nullptr;
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  m_pDataStack->vPopPtr(pPtrTable,__func__);
+  Object* pPtrTable; m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -856,12 +849,12 @@ void Step::vIndexUpperBound(void)
 {
   ENTRY(); // ENTRY("vIndexUpperBound"_Stz);
   
-  Object* pPtrIndex = nullptr;
+
   GenVar xVariable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());

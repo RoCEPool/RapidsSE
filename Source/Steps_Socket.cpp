@@ -33,10 +33,8 @@ void Step::vSocketAccept(void)
   SysCall oSysCall;
   Socket* pSocket;
   int     iSocketId;
-  Object* pObject;
   
-  
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject; m_pDataStack->vPopPtr(pObject,__func__);
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -65,10 +63,8 @@ void Step::vSocketClose(void)
   
   SysCall oSysCall;
   Socket* pSocket;
-  Object* pObject;
   
-  
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject; m_pDataStack->vPopPtr(pObject,__func__);
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
