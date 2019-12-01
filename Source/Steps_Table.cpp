@@ -450,13 +450,13 @@ void Step::vTablePublish(void)
   ENTRY(); // ENTRY("vTablePublish"_Stz);
   
   Object* pPtrTable;
-  i8 iSlot;
   
   m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
+  i8 iSlot;
   m_pDataStack->vPopAsInt(iSlot,__func__);
   
   pTable->vPublish(iSlot);
@@ -748,13 +748,13 @@ void Step::vTableTruncate(void)
   ENTRY(); // ENTRY("vTableTruncate"_Stz);
   
   Object* pPtrTable;
-  i8 iSlot;
   
   m_pDataStack->vPopPtr(pPtrTable,__func__);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
+  i8 iSlot;
   m_pDataStack->vPopAsInt(iSlot,__func__);
   
   pTable->vTruncate(iSlot);
