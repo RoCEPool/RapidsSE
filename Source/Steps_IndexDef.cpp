@@ -28,7 +28,7 @@ void Step::vIndexDefParse(void)
   Table* pTable = _pTable(pPtrTable);
 
   s4K sCmd;
-  if (! m_pDataStack->bPopStr(sCmd)) THROW_DSTACK();
+  m_pDataStack->vPopStr(sCmd,__func__);
 
   vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
   vTrace("Stmt: %s\n"_Stz,sCmd.szStz());

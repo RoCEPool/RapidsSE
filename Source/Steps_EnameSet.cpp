@@ -52,7 +52,7 @@ void Step::vEnameSetAddInt(void)
   if ( ! m_pDataStack->bPopInt(iValue) ) THROW_DSTACK();
   
   s32 sName;
-  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sName,__func__);
   
   pEnameSet->vAdd(sName,iValue);
   // pEnameSet->vPrint();
@@ -72,10 +72,10 @@ void Step::vEnameSetAddStr(void)
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
 
   s256 sValue;
-  if ( ! m_pDataStack->bPopStr(sValue) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sValue,__func__);
   
   s32 sName;
-  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sName,__func__);
   
   pEnameSet->vAdd(sName,sValue);
   //pEnameSet->vPrint();
@@ -116,7 +116,7 @@ void Step::vEnameSetGetInt(void)
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s32 sName;
-  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sName,__func__);
   
   i8 iValue;
   iValue = pEnameSet->iValue(sName);
@@ -138,7 +138,7 @@ void Step::vEnameSetGetStr(void)
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s32 sName;
-  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sName,__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // translate name into value
@@ -166,7 +166,7 @@ void Step::vEnameSetHasName(void)
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s32 sName;
-  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sName,__func__);
 
   bool bHas = pEnameSet->bHasName(sName);
   
@@ -187,10 +187,10 @@ void Step::vEnameSetUpsertStr(void)
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s256 sValue;
-  if ( ! m_pDataStack->bPopStr(sValue) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sValue,__func__);
   
   s32 sName;
-  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sName,__func__);
   
   bool bHas = pEnameSet->bHasName(sName);
   

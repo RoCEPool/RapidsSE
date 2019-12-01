@@ -1029,7 +1029,7 @@ void Step::vJobMetadataStore(void)
   Job* pJob = _pJob(pJobPtr);
   
   s4K sMetadata;
-  if ( ! m_pDataStack->bPopStr(sMetadata) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sMetadata,__func__);
   
   pJob->m_sMetadata = sMetadata;
   
@@ -1662,7 +1662,7 @@ void Step::vJobResponseStore(void)
   Job* pJob = _pJob(pJobPtr);
   
   s4K sResponse;
-  if ( ! m_pDataStack->bPopStr(sResponse) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sResponse,__func__);
   
   //pJob->m_xNode[iNode].m_sResponse = sResponse;
   pJob->m_xResponse.m_sResponse = sResponse;
@@ -2104,7 +2104,7 @@ void Step::vJobSpawnUniversal(void)
   ENTRY(); // ENTRY("vJobSpawnUniversal"_Stz);
   
   s32 sJobNm;
-  if ( ! m_pDataStack->bPopStr(sJobNm) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sJobNm,__func__);
 
 //  Object* pJobPtr;
 //  if ( ! m_pDataStack->bPopPtr(pJobPtr) ) THROW_DSTACK();

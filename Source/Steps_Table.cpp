@@ -126,12 +126,12 @@ void Step::vTableLazyBuildIndexes(void)
   i8 iTxId;
   s48K sString;
   
-  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sString,__func__);
   
   Table* pTable = reinterpret_cast<Table*>(sString.iToI8());
   ASSERT(CN_TABLE == pTable->eClass());
   
-  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sString,__func__);
   
   iSlot = sString.iToI8();
   
@@ -362,7 +362,7 @@ void Step::vTableFindColumn(void)
   ASSERT(CN_TABLE == pTable->eClass());
   
   s32 sColumnName;
-  if ( ! m_pDataStack->bPopStr(sColumnName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sColumnName,__func__);
   
   ColumnVec* pColVec = pTable->pColumnVec();
   Column* pColumn = nullptr;
@@ -400,7 +400,7 @@ void Step::vTableIsColumn(void)
   ASSERT(CN_TABLE == pTable->eClass());
   
   s32 sColumnName;
-  if ( ! m_pDataStack->bPopStr(sColumnName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sColumnName,__func__);
   
   ColumnVec* pColVec = pTable->pColumnVec();
   Column* pColumn;

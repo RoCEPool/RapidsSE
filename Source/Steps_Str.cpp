@@ -62,7 +62,7 @@ void Step::vStrCat(void)
   
   m_pDataStack->vPopStr(sStrB,__func__);
 
-  if ( ! m_pDataStack->bPopStr(sStrA) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sStrA,__func__);
 
   sStrR = sStrA;
   
@@ -85,7 +85,7 @@ void Step::vStrClip(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sString,__func__);
   if ( ! m_pDataStack->bPopInt(iLength) ) THROW_DSTACK();
 
   // validate length
@@ -144,7 +144,7 @@ void Step::vStrEscape(void)
   s48K xEscaped;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopStr(xArg) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(xArg,__func__);
   
   StrLib::vEscape(xArg.azChar(),xEscaped.azChar());
   
@@ -161,7 +161,7 @@ void Step::vStrFirstCsv(void)
   ENTRY(); // ENTRY("vStrFirstCsv"_Stz);
   
   s48K sStr;
-  if ( ! m_pDataStack->bPopStr(sStr) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sStr,__func__);
   
   s48K sFirstValue;
   
@@ -183,7 +183,7 @@ void Step::vStrFormat(void)
   ENTRY(); // ENTRY("vStrFormat"_Stz);
   
   s48K sFormat;
-  if ( ! m_pDataStack->bPopStr(sFormat) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sFormat,__func__);
   
   s48K sString;
   
@@ -206,7 +206,7 @@ void Step::vStrLeft(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sString,__func__);
   if ( ! m_pDataStack->bPopInt(iLength) ) THROW_DSTACK();
 
   // validate length
@@ -236,7 +236,7 @@ void Step::vStrLength(void)
   s48K sString;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sString,__func__);
   
   iLength = sString.nLength();
   
@@ -324,10 +324,10 @@ void Step::vStrRemovePrefix(void)
   ENTRY(); // ENTRY("vStrRemovePrefix"_Stz);
   
   s48K sString;
-  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sString,__func__);
   
   s32 sIntro;
-  if ( ! m_pDataStack->bPopStr(sIntro) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sIntro,__func__);
   
   StrLib::vRemovePrefix(sString.azChar(), * sIntro.azChar());
   
@@ -344,10 +344,10 @@ void Step::vStrRemoveSuffix(void)
   ENTRY(); // ENTRY("vStrRemoveSuffix"_Stz);
   
   s48K sString;
-  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sString,__func__);
   
   s32 sIntro;
-  if ( ! m_pDataStack->bPopStr(sIntro) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sIntro,__func__);
   
   StrLib::vRemoveSuffix(sString.azChar(), * sIntro.azChar());
   
@@ -367,11 +367,11 @@ void Step::vStrReplace(void)
   s48K sThat;
   s48K sThis;
   
-  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sString,__func__);
 
-  if ( ! m_pDataStack->bPopStr(sThat) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sThat,__func__);
   
-  if ( ! m_pDataStack->bPopStr(sThis) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sThis,__func__);
   
   s48K sReplaced;
   
@@ -394,7 +394,7 @@ void Step::vStrRight(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sString,__func__);
   if ( ! m_pDataStack->bPopInt(iLength) ) THROW_DSTACK();
 
   // validate length
@@ -429,7 +429,7 @@ void Step::vStrSub(void)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sString,__func__);
   if ( ! m_pDataStack->bPopInt(iStart) ) THROW_DSTACK();
   if ( ! m_pDataStack->bPopInt(iLength) ) THROW_DSTACK();
 
@@ -468,7 +468,7 @@ void Step::vStrTailInt(void)
   
   // get the string
   s48K sString;
-  if ( ! m_pDataStack->bPopStr(sString) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sString,__func__);
   
   // get last char in string
   char* aLast = StrLib::sLast(sString.azChar());
@@ -506,7 +506,7 @@ void Step::vStrToStrVec(void)
   
   // get the path string
   s256 sPath;
-  if ( ! m_pDataStack->bPopStr(sPath) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sPath,__func__);
   
   i8 nStrings = 0;
   

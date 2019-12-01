@@ -262,7 +262,7 @@ void Step::vPlannerParseWhere(void)
   Planner* pPlanner = _pPlanner(pPtrPlanner);
   
   s48K sWhere;
-  if ( ! m_pDataStack->bPopStr(sWhere) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sWhere,__func__);
   
   pPlanner->vParseWhere(sWhere);
   pPlanner->vParsePhrases();

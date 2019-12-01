@@ -85,10 +85,10 @@ void Step::vFileOpen(void)
   File* pFile = _pFile(pPtrFile);
   
   s32 sMode;
-  if ( ! m_pDataStack->bPopStr(sMode) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sMode,__func__);
 
   s256 sPath;
-  if ( ! m_pDataStack->bPopStr(sPath) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sPath,__func__);
   
   bool bOpened = pFile->bOpenMode(sPath,sMode);
   
@@ -161,7 +161,7 @@ void Step::vFileWrite(void)
   
   s48K sLine;
   
-  if ( ! m_pDataStack->bPopStr(sLine) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sLine,__func__);
   
   Stz* wStr = sLine;
   

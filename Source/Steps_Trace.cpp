@@ -48,7 +48,7 @@ void Step::vTracePoint(void)
   
   s256 sPointName;
   
-  if ( ! m_pDataStack->bPopStr(sPointName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sPointName,__func__);
   
   if (AM::bTracepoint())
     m_pTask->vTracePoint(sPointName);

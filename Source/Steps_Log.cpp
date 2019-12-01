@@ -42,7 +42,7 @@ void Step::vLogMark(void)
   
   s256 sMark;
 
-  if ( ! m_pDataStack->bPopStr(sMark) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sMark,__func__);
 
   //i8 iJobId = m_pTask->m_pJob->m_iFocalId;
   JobLog::vNote(m_pTask->m_pJob,sMark);
@@ -59,7 +59,7 @@ void Step::vLogMarkEntry(void)
   
   s256 sWordNm;
   
-  if ( ! m_pDataStack->bPopStr(sWordNm) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sWordNm,__func__);
   
   Job* pJob = m_pTask->m_pJob;
   AM::vLogJob(SL_INF,pJob,JA_JOB_ENTER,
@@ -78,7 +78,7 @@ void Step::vLogMarkExit(void)
   
   s256 sWordNm;
   
-  if ( ! m_pDataStack->bPopStr(sWordNm) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sWordNm,__func__);
   
   Job* pJob = m_pTask->m_pJob;
 
@@ -121,7 +121,7 @@ void Step::vLogMarkSeed(void)
   if ( ! m_pDataStack->bPopInt(iSeed) ) THROW_DSTACK();
   
   s32 sWordNm;
-  if ( ! m_pDataStack->bPopStr(sWordNm) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sWordNm,__func__);
   
   //ActLog::vAdd(m_pTask->m_pJob,(eAN)iSeed,sWordNm.szStz());
   
@@ -139,7 +139,7 @@ void Step::vLogMarkWord(void)
   if ( ! m_pDataStack->bPopInt(iAN) ) THROW_DSTACK();
   
   s32 sWordNm;
-  if ( ! m_pDataStack->bPopStr(sWordNm) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sWordNm,__func__);
   
   //ActLog::vAdd(m_pTask->m_pJob,(eAN)iAN,sWordNm.szStz());
   

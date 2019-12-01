@@ -196,7 +196,7 @@ void Step::vCreateFrom(void)
   ENTRY(); // ENTRY("vCreateFrom"_Stz);
   
   s32 sName;
-  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sName,__func__);
   
   Dic* pDic;
   if (m_oDicStack.iCount())
@@ -223,7 +223,7 @@ void Step::vCreateFromPersistent(void)
   ENTRY(); // ENTRY("vCreateFrom"_Stz);
   
   s32 sName;
-  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sName,__func__);
   
   Dic* pDic;
   if (m_oDicStack.iCount())
@@ -247,7 +247,7 @@ void Step::vCreateFromInRoot(void)
   ENTRY(); // ENTRY("vCreateFromInRoot"_Stz);
   
   s32 sName;
-  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sName,__func__);
   
   Dic* pDic = AM::pRootDic();
   
@@ -343,7 +343,7 @@ void Step::vFind(void)
   ENTRY(); // ENTRY("vFind"_Stz);
   
   s256 sName;
-  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sName,__func__);
   
   if (m_pTask->m_iTraceMask) {
     i8 i = 0;
@@ -364,7 +364,7 @@ void Step::vFindInCurrent(void)
   ENTRY(); // ENTRY("vFindInCurrent"_Stz);
   
   s256 sName;
-  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sName,__func__);
   
   if (m_pTask->m_iTraceMask) {
     i8 i = 0; i++;
@@ -646,7 +646,7 @@ void Step::vSeriesName(void)
   ENTRY(); // ENTRY("vSeriesName"_Stz);
   
   s32 sName;
-  if ( ! m_pDataStack->bPopStr(sName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sName,__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

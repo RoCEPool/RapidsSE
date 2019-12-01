@@ -160,7 +160,7 @@ void Step::vWordExitHookSet(void)
   Word* pWord = _pWord(pWordObject);
   
   s32 sExitHook;
-  if ( ! m_pDataStack->bPopStr(sExitHook) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sExitHook,__func__);
   
   pWord->vExitHook(sExitHook);
   
@@ -329,7 +329,7 @@ void Step::vWordNameStore(void)
   Word* pWord = _pWord(pWordObject);
 
   s32 sWordNm;
-  if ( ! m_pDataStack->bPopStr(sWordNm) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sWordNm,__func__);
 
   pWord->vWordNm(sWordNm);
     

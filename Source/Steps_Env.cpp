@@ -21,7 +21,7 @@ void Step::vEnvGet(void)
   
   s32 sEnvName;
   
-  if ( ! m_pDataStack->bPopStr(sEnvName) ) THROW_DSTACK();
+  m_pDataStack->vPopStr(sEnvName,__func__);
   
   s256 sEnvVal;
   
