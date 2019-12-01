@@ -335,6 +335,25 @@ i8 Stack::iPopInt(const char* azFunNm)
   return iInt;
 }
 
+/*----------------------------------------------------------------------------*/
+/* pop Object* from stack                                                     */
+/*----------------------------------------------------------------------------*/
+Object* Stack::pPopPtr(const char* azFunNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if (! bGuard(CN_PTRVAL) && ! bTopIsZero() )
+    Correctness::vThrow(FK_DSTACK,VL_FATAL,
+                        azFunNm,__FILE__,__LINE__,
+                        "Invalid d-stack"_Stz);
+  
+  Object* pObj = m_xTop.aPtrVal->pObj();
+  
+  vDiscardTop();
+  
+  return pObj;
+}
+
 
 
 

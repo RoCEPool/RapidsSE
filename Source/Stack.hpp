@@ -65,9 +65,10 @@ namespace SenVM
     void vPopStr(String* pStr, const char* azFunNm);
     void vPopVal(AnyVal* aAnyVal, const char* azFunNm);
 
-    i8    iPopAsInt(const char* azFunNm);
-    Cell* aPopFip(const char* azFunNm);
-    i8    iPopInt(const char* azFunNm);
+    i8      iPopAsInt(const char* azFunNm);
+    Cell*   aPopFip(const char* azFunNm);
+    i8      iPopInt(const char* azFunNm);
+    Object* pPopPtr(const char* azFunNm);
 
     void vPushFip(Cell* aFip);
     void vPushInt(i8 iInt);
