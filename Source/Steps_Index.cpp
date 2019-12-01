@@ -806,7 +806,7 @@ void Step::vIndexTableStore(void)
 {
   ENTRY(); // ENTRY("vIndexTableStore"_Stz);
   
-  Object* pPtrIndex = nullptr; m_pDataStack->vPopPtr(pPtrIndex,__func__);
+  Object* pPtrIndex; m_pDataStack->vPopPtr(pPtrIndex,__func__);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());

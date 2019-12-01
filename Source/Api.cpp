@@ -19,11 +19,10 @@ extern Log* gpLog;
 void Api::vDeleteJobs(Session* pSession)
 {
   Stack* pJobStack = pSession->m_pJobStack;
-  Object* pJobObject;
 
   while (pJobStack->nValues()) {
     
-    pJobStack->vPopPtr(pJobObject,__func__);
+    Object* pJobObject; pJobStack->vPopPtr(pJobObject,__func__);
     
     Job* aJob = (Job*)pJobObject;
     
