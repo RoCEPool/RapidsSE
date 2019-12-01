@@ -19,8 +19,7 @@ void Step::vClassName(void)
 {
   ENTRY(); // ENTRY("vClassName"_Stz);
   
-  i8 iClassNo;
-  m_pDataStack->vPopInt(iClassNo,__func__);
+  i8 iClassNo; m_pDataStack->vPopInt(iClassNo,__func__);
   
   s32 sClassName;
   

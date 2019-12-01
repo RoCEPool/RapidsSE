@@ -302,8 +302,7 @@ void Step::vNodeStateStore(void)
   m_pDataStack->vPopPtr(pPtrNode,__func__);
   Node* pNode = _pNode(pPtrNode);
   
-  i8 iState;
-  m_pDataStack->vPopInt(iState,__func__);
+  i8 iState; m_pDataStack->vPopInt(iState,__func__);
   
   pNode->vState((eNS)iState);
   

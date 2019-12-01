@@ -64,8 +64,7 @@ void Step::vToPtr(void)
 {
   ENTRY(); // ENTRY("vToPtr"_Stz);
   
-  i8 iPtr;
-  m_pDataStack->vPopInt(iPtr,__func__);
+  i8 iPtr; m_pDataStack->vPopInt(iPtr,__func__);
   
   Object* pPtr = (Object*)iPtr;
   
@@ -100,8 +99,7 @@ void Step::vToTask(void)
 {
   ENTRY(); // ENTRY("vToTask"_Stz);
   
-  i8 iVal;
-  m_pDataStack->vPopInt(iVal,__func__);
+  i8 iVal; m_pDataStack->vPopInt(iVal,__func__);
   
   Object* pPtrTask = _pTask(iVal);
   

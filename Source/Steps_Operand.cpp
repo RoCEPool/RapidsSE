@@ -95,8 +95,7 @@ void Step::vOperandHandleAggEnd(void)
   
   ASSERT(m_pRegSet->m_pOperand);
   
-  i8 nCount;
-  m_pDataStack->vPopInt(nCount,__func__);
+  i8 nCount; m_pDataStack->vPopInt(nCount,__func__);
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
   

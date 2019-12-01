@@ -45,8 +45,7 @@ void Step::vObjectClassStore(void)
   Object* pObject;
   m_pDataStack->vPopPtr(pObject,__func__);
   
-  i8 iClassNo;
-  m_pDataStack->vPopInt(iClassNo,__func__);
+  i8 iClassNo; m_pDataStack->vPopInt(iClassNo,__func__);
 
   pObject->vClass((eCN)iClassNo);
   
@@ -133,8 +132,7 @@ void Step::vObjectWordBodySet(void)
   Object* pObject;
   m_pDataStack->vPopPtr(pObject,__func__);
   
-  i8 iIsBody;
-  m_pDataStack->vPopInt(iIsBody,__func__);
+  i8 iIsBody; m_pDataStack->vPopInt(iIsBody,__func__);
   
   pObject->vWordBody(iIsBody);
   

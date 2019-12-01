@@ -127,8 +127,7 @@ void Step::vJobAcksRemaining(void)
   m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 nAcksRemaining;
-  m_pDataStack->vPopInt(nAcksRemaining,__func__);
+  i8 nAcksRemaining; m_pDataStack->vPopInt(nAcksRemaining,__func__);
   
   pJob->vAcksRmg(nAcksRemaining);
   
@@ -1198,8 +1197,7 @@ void Step::vJobOriginatingIdStore(void)
   m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iOriginatingId;
-  m_pDataStack->vPopInt(iOriginatingId,__func__);
+  i8 iOriginatingId; m_pDataStack->vPopInt(iOriginatingId,__func__);
   
   pJob->m_iOriginatingId = iOriginatingId;
   
@@ -1615,8 +1613,7 @@ void Step::vJobReseed(void)
 {
   ENTRY(); // ENTRY("vJobReseed"_Stz);
   
-  i8 i_Seed;
-  m_pDataStack->vPopInt(i_Seed,__func__);
+  i8 i_Seed; m_pDataStack->vPopInt(i_Seed,__func__);
   
   Object* pJobPtr;
   m_pDataStack->vPopPtr(pJobPtr,__func__);
@@ -1698,8 +1695,7 @@ void Step::vJobRowsInvalidStore(void)
   m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iRowsInvalid;
-  m_pDataStack->vPopInt(iRowsInvalid,__func__);
+  i8 iRowsInvalid; m_pDataStack->vPopInt(iRowsInvalid,__func__);
   
   //pJob->m_xNode[iNode].m_ixRowsInvalid = iRowsInvalid;
   
@@ -1736,8 +1732,7 @@ void Step::vJobRowsProcessedStore(void)
   m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iRowsProcessed;
-  m_pDataStack->vPopInt(iRowsProcessed,__func__);
+  i8 iRowsProcessed; m_pDataStack->vPopInt(iRowsProcessed,__func__);
   
   //pJob->m_xNode[iNode].m_ixRowsProcessed = iRowsProcessed;
   
@@ -1775,8 +1770,7 @@ void Step::vJobRowsSkippedStore(void)
   m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iRowsSkipped;
-  m_pDataStack->vPopInt(iRowsSkipped,__func__);
+  i8 iRowsSkipped; m_pDataStack->vPopInt(iRowsSkipped,__func__);
   
   //pJob->m_xNode[iNode].m_ixRowsSkipped = iRowsSkipped;
   
@@ -1841,8 +1835,7 @@ void Step::vJobSeedStore(void)
   m_pDataStack->vPopPtr(pJobPtr,__func__);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 i_Seed;
-  m_pDataStack->vPopInt(i_Seed,__func__);
+  i8 i_Seed; m_pDataStack->vPopInt(i_Seed,__func__);
   
   AM::vLogSvc(SL_INF,m_pTask->m_pJob,VA_SVC_SPAWN_JOB,
               "%s spawned by %s"_Stz, //!format-LogSvc
@@ -2074,8 +2067,7 @@ void Step::vJobSpawnDedicated(void)
 {
   ENTRY(); // ENTRY("vJobSpawnDedicated"_Stz);
   
-  i8 i_Seed;
-  m_pDataStack->vPopInt(i_Seed,__func__);
+  i8 i_Seed; m_pDataStack->vPopInt(i_Seed,__func__);
   
   Object* pJobPtr;
   m_pDataStack->vPopPtr(pJobPtr,__func__);
@@ -2145,8 +2137,7 @@ void Step::vJobStateDiagram(void)
 {
   ENTRY(); // ENTRY("vJobStateDiagram"_Stz);
   
-  i8 iClassNo;
-  m_pDataStack->vPopInt(iClassNo,__func__);
+  i8 iClassNo; m_pDataStack->vPopInt(iClassNo,__func__);
 
   s256 sDiagram;
   

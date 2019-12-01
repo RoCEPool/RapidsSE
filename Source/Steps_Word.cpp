@@ -215,8 +215,7 @@ void Step::vWordImmediateSet(void)
   m_pDataStack->vPopPtr(pWordObject,__func__);
   Word* pWord = _pWord(pWordObject);
   
-  i8 iImmediate;
-  m_pDataStack->vPopInt(iImmediate,__func__);
+  i8 iImmediate; m_pDataStack->vPopInt(iImmediate,__func__);
   
   pWord->vImmediate(iImmediate);
   
@@ -290,8 +289,7 @@ void Step::vWordKindStore(void)
   m_pDataStack->vPopPtr(pWordObject,__func__);
   Word* pWord = _pWord(pWordObject);
   
-  i8 iKind;
-  m_pDataStack->vPopInt(iKind,__func__);
+  i8 iKind; m_pDataStack->vPopInt(iKind,__func__);
   
   pWord->vKind((eWK)iKind);
   

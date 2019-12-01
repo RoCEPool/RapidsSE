@@ -351,8 +351,7 @@ void Step::vDirSeek(void)
   
   Dir* pDir = _pDir(pPtrDir);
   
-  i8 iPosition;
-  m_pDataStack->vPopInt(iPosition,__func__);
+  i8 iPosition; m_pDataStack->vPopInt(iPosition,__func__);
   
   pDir->vSeek(iPosition);
   

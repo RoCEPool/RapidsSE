@@ -48,8 +48,7 @@ void Step::vEnameSetAddInt(void)
   m_pDataStack->vPopPtr(pEnameSet_obj,__func__);
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
-  i8 iValue;
-  m_pDataStack->vPopInt(iValue,__func__);
+  i8 iValue; m_pDataStack->vPopInt(iValue,__func__);
   
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);
