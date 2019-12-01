@@ -25,7 +25,7 @@ void Step::vEntBufferDump(void)
 {
   ENTRY(); // ENTRY("vEntBufferDump"_Stz);
   
-  Object* pPtrIndexBuffer; m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
+  Object* pPtrIndexBuffer = m_pDataStack->pPopPtr(__func__);
   
   EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
   
