@@ -29,7 +29,7 @@ void Step::vLocalFetch(void)
   if ( ! m_pLocalsFrame ) THROW_DSTACK();
   
   i8 iLocal;
-  if ( ! m_pDataStack->bPopInt(iLocal) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iLocal,__func__);
   
   Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
   
@@ -48,7 +48,7 @@ void Step::vLocalStore(void)
   if ( ! m_pLocalsFrame ) THROW_DSTACK();
   
   i8 iLocal;
-  if ( ! m_pDataStack->bPopInt(iLocal) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iLocal,__func__);
   
   Local* pLocal = m_pLocalsFrame->pLocal(iLocal);
   

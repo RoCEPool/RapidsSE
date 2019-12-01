@@ -65,7 +65,7 @@ void Step::vTraceSet(void)
   
   i8 iTrace;
   
-  if ( ! m_pDataStack->bPopInt(iTrace) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iTrace,__func__);
   
   m_pTask->m_iTraceMask = iTrace;
   

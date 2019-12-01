@@ -46,7 +46,7 @@ void Step::vObjectClassStore(void)
   if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   
   i8 iClassNo;
-  if ( ! m_pDataStack->bPopInt(iClassNo) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iClassNo,__func__);
 
   pObject->vClass((eCN)iClassNo);
   
@@ -134,7 +134,7 @@ void Step::vObjectWordBodySet(void)
   if ( ! m_pDataStack->bPopPtr(pObject) ) THROW_DSTACK();
   
   i8 iIsBody;
-  if ( ! m_pDataStack->bPopInt(iIsBody) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iIsBody,__func__);
   
   pObject->vWordBody(iIsBody);
   

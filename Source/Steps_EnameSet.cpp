@@ -49,7 +49,7 @@ void Step::vEnameSetAddInt(void)
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   i8 iValue;
-  if ( ! m_pDataStack->bPopInt(iValue) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iValue,__func__);
   
   s32 sName;
   m_pDataStack->vPopStr(sName,__func__);

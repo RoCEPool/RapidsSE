@@ -86,7 +86,7 @@ void Step::vStrClip(void)
   
   // get the arguments
   m_pDataStack->vPopStr(sString,__func__);
-  if ( ! m_pDataStack->bPopInt(iLength) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iLength,__func__);
 
   // validate length
   i8 iHasLength = sString.nLength();
@@ -207,7 +207,7 @@ void Step::vStrLeft(void)
   
   // get the arguments
   m_pDataStack->vPopStr(sString,__func__);
-  if ( ! m_pDataStack->bPopInt(iLength) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iLength,__func__);
 
   // validate length
   i8 iHasLength = sString.nLength();
@@ -305,7 +305,7 @@ void Step::vStrRandom(void)
   ENTRY(); // ENTRY("vStrRandom"_Stz);
   
   i8 iLength;
-  if ( ! m_pDataStack->bPopInt(iLength) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iLength,__func__);
   
   s256 sRnd;
   
@@ -395,7 +395,7 @@ void Step::vStrRight(void)
   
   // get the arguments
   m_pDataStack->vPopStr(sString,__func__);
-  if ( ! m_pDataStack->bPopInt(iLength) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iLength,__func__);
 
   // validate length
   i8 iHasLength = sString.nLength();
@@ -430,8 +430,8 @@ void Step::vStrSub(void)
   
   // get the arguments
   m_pDataStack->vPopStr(sString,__func__);
-  if ( ! m_pDataStack->bPopInt(iStart) ) THROW_DSTACK();
-  if ( ! m_pDataStack->bPopInt(iLength) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iStart,__func__);
+  m_pDataStack->vPopInt(iLength,__func__);
 
   i8 iHasLength = sString.nLength();
   

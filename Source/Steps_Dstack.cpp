@@ -42,7 +42,7 @@ void Step::vDstackTransfer(void)
   Task* pThatTask = _pTask(pPtrTask);
   
   i8 iVal;
-  if ( ! m_pDataStack->bPopInt(iVal) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iVal,__func__);
   
   pThatTask->m_okLock.vGrabWrite();
   pThatTask->m_pForth->m_pDataStack->vPushInt(iVal);
@@ -60,7 +60,7 @@ void Step::vDstackClass(void)
   ENTRY(); // ENTRY("vDstackClass"_Stz);
   
   i8 i_Val;
-  if ( ! m_pDataStack->bPopInt(i_Val) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(i_Val,__func__);
   
   GenVar xVar;
   
@@ -233,7 +233,7 @@ void Step::vDstackReverse(void)
   GenVar xVal8;
 
   i8 nValues;
-  if ( ! m_pDataStack->bPopInt(nValues) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(nValues,__func__);
   
   switch (nValues) {
     case 8: m_pDataStack->bPopVal(xVal8);
@@ -271,7 +271,7 @@ void Step::vDstackRoll(void)
   GenVar xVarX;
   
   i8 nValues;
-  if ( ! m_pDataStack->bPopInt(nValues) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(nValues,__func__);
   
   if ( ! m_pDataStack->bPopVal(xVarA) ) THROW_DSTACK();
   
@@ -303,7 +303,7 @@ void Step::vDstackRollInv(void)
   GenVar xVarX;
   
   i8 nValues;
-  if ( ! m_pDataStack->bPopInt(nValues) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(nValues,__func__);
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
     if ( ! m_pDataStack->bPopVal(xVarX) ) THROW_DSTACK();

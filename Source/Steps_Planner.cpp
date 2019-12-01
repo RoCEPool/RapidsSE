@@ -61,7 +61,7 @@ void Step::vPlannerChosenPath(void)
   Planner* mpPlanner = _pPlanner(mpPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! m_pDataStack->bPopInt(i_Phrase) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(i_Phrase,__func__);
   AccessPath* pChosenPlan = mpPlanner->pChosenPath(i_Phrase);
   
   m_pDataStack->vPushPtr(pChosenPlan);
@@ -97,7 +97,7 @@ void Step::vPlannerFetchTechniqueFetch(void)
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! m_pDataStack->bPopInt(i_Phrase) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(i_Phrase,__func__);
   eAT eFetchTechnique = mpPlanner->pChosenPath(i_Phrase)->eAccess();
   
   m_pDataStack->vPushInt(eFetchTechnique);
@@ -135,7 +135,7 @@ void Step::vPlannerHighKeyFetch(void)
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! m_pDataStack->bPopInt(i_Phrase) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(i_Phrase,__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
   PredicateVec* mpUpperPredicates = mpChosenPath->pUpperPredicates();
@@ -159,7 +159,7 @@ void Step::vPlannerIndexNmFetch(void)
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! m_pDataStack->bPopInt(i_Phrase) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(i_Phrase,__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
   Index* pChosenIndex = mpChosenPath->pIndex();
@@ -182,7 +182,7 @@ void Step::vPlannerKeyFetch(void)
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! m_pDataStack->bPopInt(i_Phrase) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(i_Phrase,__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();
@@ -206,7 +206,7 @@ void Step::vPlannerLowKeyFetch(void)
   Planner* mpPlanner = _pPlanner(pPtrPlanner);
   
   i8 i_Phrase;
-  if ( ! m_pDataStack->bPopInt(i_Phrase) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(i_Phrase,__func__);
   AccessPath* mpChosenPath = mpPlanner->pChosenPath(i_Phrase);
   
   PredicateVec* mpLowerPredicates = mpChosenPath->pLowerPredicates();

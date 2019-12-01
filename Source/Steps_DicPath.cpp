@@ -66,7 +66,7 @@ void Step::vDicPathPick(void)
   ASSERT(CN_DICPATH == pDicPath->eClass());
   
   i8 iDic;
-  if ( ! m_pDataStack->bPopInt(iDic) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iDic,__func__);
 
   s32 sDicNm(pDicPath->sDicName(iDic));
   

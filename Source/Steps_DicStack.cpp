@@ -85,7 +85,7 @@ void Step::vDicStackPick(void)
   ASSERT(CN_DICSTACK == pDicStack->eClass());
   
   i8 iDic;
-  if ( ! m_pDataStack->bPopInt(iDic) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iDic,__func__);
   
   Object* pPtrDic = pDicStack->pPick(iDic);
 

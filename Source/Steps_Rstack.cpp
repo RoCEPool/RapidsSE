@@ -74,7 +74,7 @@ void Step::vRstackCsRoll(void)
   
   // pop n values
   i8 nValues;
-  if ( ! m_pDataStack->bPopInt(nValues) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(nValues,__func__);
   
   GenVar xValMid;
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
@@ -201,7 +201,7 @@ void Step::vRstackReverse(void)
   GenVar xVal8;
   
   i8 nValues;
-  if ( ! m_pDataStack->bPopInt(nValues) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(nValues,__func__);
   
   switch (nValues) {
     case 8: m_pReturnStack->bPopVal(xVal8);
@@ -239,7 +239,7 @@ void Step::vRstackRoll(void)
   GenVar xValX;
   
   i8 nValues;
-  if ( ! m_pDataStack->bPopInt(nValues) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(nValues,__func__);
   
   if ( ! m_pReturnStack->bPopVal(xValA) ) THROW_RSTACK();
   
@@ -271,7 +271,7 @@ void Step::vRstackRollInv(void)
   GenVar xValX;
   
   i8 nValues;
-  if ( ! m_pDataStack->bPopInt(nValues) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(nValues,__func__);
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     if ( ! m_pReturnStack->bPopVal(xValX) ) THROW_RSTACK();

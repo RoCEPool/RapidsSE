@@ -163,7 +163,7 @@ void Step::vEncodeLoop(void)
   
   i8 iIsDo;
   // cstack: is do ?
-  if ( ! m_pDataStack->bPopInt(iIsDo) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iIsDo,__func__);
   
   Cell* pDoLimitTest = nullptr;
   if (! iIsDo) {
@@ -208,7 +208,7 @@ void Step::vEncodeLoopPlus(void)
   
   i8 iIsDo;
   // cstack: is do ?
-  if ( ! m_pDataStack->bPopInt(iIsDo) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iIsDo,__func__);
   
   Cell* pDoLimitTest = nullptr;
   if (! iIsDo) {

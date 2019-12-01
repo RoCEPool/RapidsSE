@@ -102,7 +102,7 @@ void Step::vSocketConnect(void)
   
   if ( ! m_pDataStack->bPopVal(xNodeVar) ) THROW_DSTACK();
   
-  if ( ! m_pDataStack->bPopInt(iPort) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iPort,__func__);
   
   // get address of node
   Stz* sAddr = xNodeVar.szStz();
@@ -160,7 +160,7 @@ void Step::vSocketConnect(void)
 //
 //  if ( ! m_pDataStack->bPopVal(xNodeVar) ) THROW_DSTACK();
 //
-//  if ( ! m_pDataStack->bPopInt(iPort) ) THROW_DSTACK();
+//  m_pDataStack->vPopInt(iPort,__func__);
 //
 //  // get address of node
 //  Stz* sAddr = xNodeVar.szStz();
@@ -254,7 +254,7 @@ void Step::vSocketListen(void)
   SysCall oSysCall;
   i8      iPort;
   
-  if ( ! m_pDataStack->bPopInt(iPort) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iPort,__func__);
   
   //- - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - -
   // attempt to create server-side listening socket

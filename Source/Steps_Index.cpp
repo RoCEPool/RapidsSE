@@ -53,7 +53,7 @@ void Step::vIndexAnalyze(void)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  if ( ! m_pDataStack->bPopInt(iDetailed) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iDetailed,__func__);
   
   s48K sAnalysis;
   i8 nRows;
@@ -76,7 +76,7 @@ void Step::vIndexColumnFetch(void)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iColumnNo;
-  if ( ! m_pDataStack->bPopInt(iColumnNo) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iColumnNo,__func__);
   
   ASSERT(iColumnNo < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iColumnNo);
@@ -116,7 +116,7 @@ void Step::vIndexColumnName(void)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIndex;
-  if ( ! m_pDataStack->bPopInt(iIndex) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iIndex,__func__);
   
   ASSERT(iIndex < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
@@ -140,7 +140,7 @@ void Step::vIndexColumnType(void)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIndex;
-  if ( ! m_pDataStack->bPopInt(iIndex) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iIndex,__func__);
   
   ASSERT(iIndex < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iIndex);
@@ -288,7 +288,7 @@ void Step::vIndexIsPrimaryKeyStore(void)
   ASSERT(CN_INDEX == pIndex->eClass());
   
   i8 iIsPrimaryKey;
-  if ( ! m_pDataStack->bPopInt(iIsPrimaryKey) ) THROW_DSTACK();
+  m_pDataStack->vPopInt(iIsPrimaryKey,__func__);
   
   pIndex->vIsPrimaryKey(iIsPrimaryKey ? true : false);
   
