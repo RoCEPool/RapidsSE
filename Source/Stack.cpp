@@ -325,6 +325,32 @@ void Stack::vPopVal(AnyVal* aAnyVal, const char* azFunNm)
   _hazard_();
 }
 
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* pop value from stack as integer                                            */
+/*----------------------------------------------------------------------------*/
+i8 Stack::iPopAsInt(const char* azFunNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    Correctness::vThrow(FK_DSTACK,VL_FATAL,
+                        azFunNm,__FILE__,__LINE__,
+                        "Invalid d-stack"_Stz);
+  
+  i8 iInt = m_xTop.aAnyVal->iAsInt();
+  vDiscardTop();
+  
+  return iInt;
+}
+
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /* push Cell* onto stack                                                      */
 /*----------------------------------------------------------------------------*/
