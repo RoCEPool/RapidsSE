@@ -35,9 +35,7 @@ void Step::vThreadBind(void)
   
   i8 iCpu = m_pDataStack->iPopInt(__func__);
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__); ASSERT(CN_THREAD == pObject->eClass());
-  
-  Thread* pThread = _pThread(pObject);
+  Object* pObject = m_pDataStack->pPopPtr(__func__); Thread* pThread = _pThread(pObject);
   
   pThread->vBind(iCpu);
   
@@ -51,9 +49,7 @@ void Step::vThreadCpu(void)
 {
   ENTRY(); // ENTRY("vThreadCpu"_Stz);
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__); ASSERT(CN_THREAD == pObject->eClass());
-  
-  Thread* pThread = _pThread(pObject);
+  Object* pObject = m_pDataStack->pPopPtr(__func__); Thread* pThread = _pThread(pObject);
   
   m_pDataStack->vPushInt(pThread->iCpu());
   
@@ -111,9 +107,7 @@ void Step::vThreadDump(void)
 {
   ENTRY(); // ENTRY("vThreadDump"_Stz);
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__); ASSERT(CN_THREAD == pObject->eClass());
-  
-  Thread* pThread = _pThread(pObject);
+  Object* pObject = m_pDataStack->pPopPtr(__func__); Thread* pThread = _pThread(pObject);
   
   pThread->vContentDump();
   
@@ -141,9 +135,7 @@ void Step::vThreadId(void)
 {
   ENTRY(); // ENTRY("vThreadId"_Stz);
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__); ASSERT(CN_THREAD == pObject->eClass());
-  
-  Thread* pThread = _pThread(pObject);
+  Object* pObject = m_pDataStack->pPopPtr(__func__); Thread* pThread = _pThread(pObject);
   
   m_pDataStack->vPushInt(pThread->m_pPsxThd->m_iOsThdId);
   
@@ -152,7 +144,7 @@ void Step::vThreadId(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* thread::sleepMsec -- sleep for n milliseconds                                */
+/* thread::sleepMsec -- sleep for n milliseconds                              */
 /*----------------------------------------------------------------------------*/
 void Step::vThreadSleepMsec(void)
 {
@@ -168,7 +160,7 @@ void Step::vThreadSleepMsec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread::sleepNsec -- sleep for n nanoseconds                                 */
+/* thread::sleepNsec -- sleep for n nanoseconds                               */
 /*----------------------------------------------------------------------------*/
 void Step::vThreadSleepNsec(void)
 {
@@ -184,7 +176,7 @@ void Step::vThreadSleepNsec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.sleepSsec -- sleep for n seconds                                      */
+/* thread.sleepSsec -- sleep for n seconds                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vThreadSleepSsec(void)
 {
@@ -200,7 +192,7 @@ void Step::vThreadSleepSsec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread::sleepUsec -- sleep for n microseconds                                */
+/* thread::sleepUsec -- sleep for n microseconds                              */
 /*----------------------------------------------------------------------------*/
 void Step::vThreadSleepUsec(void)
 {
