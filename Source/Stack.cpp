@@ -263,23 +263,6 @@ void Stack::vPopInt(i8& iInt, const char* azFunNm)
 /*----------------------------------------------------------------------------*/
 /* pop Object* from stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopPtr(Object*& pObj)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_PTRVAL) && ! bTopIsZero() )
-    return false;
-  
-  pObj = m_xTop.aPtrVal->pObj();
-  
-  vDiscardTop();
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop Object* from stack                                                     */
-/*----------------------------------------------------------------------------*/
 void Stack::vPopPtr(Object*& pObj, const char* azFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
@@ -313,6 +296,31 @@ void Stack::vPopStr(String* pString, const char* azFunNm)
   pString->vCopy(aStrVal->szStz());
   
   vDiscardTop();
+  
+  _hazard_();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from stack                                                       */
+/*----------------------------------------------------------------------------*/
+void Stack::vPopVal(AnyVal* aAnyVal, const char* azFunNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    Correctness::vThrow(FK_DSTACK,VL_FATAL,
+                        azFunNm,__FILE__,__LINE__,
+                        "Invalid d-stack"_Stz);
+
+  _hazard_();
+  
+  i8 nBytes = aTopVal()->nStackUsage();
+  
+  aAnyVal->vCopy(m_xTop.aAnyVal,nBytes);
+  
+  m_xTop.vRewind(nBytes);
+  
+  m_nValues--;
   
   _hazard_();
 }
