@@ -24,7 +24,7 @@ void Step::vColumnIsNullableFetch(void)
 {
   ENTRY(); // ENTRY("vColumnIsNullableFetch"_Stz);
   
-  Object* pPtrColumn = m_pDataStack->pPopPtr(__func__); Column* pColumn = _pColumn(pPtrColumn);
+  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
   
   s32 sColumnIsNullable;
@@ -42,7 +42,7 @@ void Step::vColumnIsPartitionKeyFetch(void)
 {
   ENTRY(); // ENTRY("vColumnIsPartitionKeyFetch"_Stz);
   
-  Object* pPtrColumn = m_pDataStack->pPopPtr(__func__); Column* pColumn = _pColumn(pPtrColumn);
+  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
   
   s32 sIsPartitionKey;
@@ -60,7 +60,7 @@ void Step::vColumnLengthFetch(void)
 {
   ENTRY(); // ENTRY("vColumnLengthFetch"_Stz);
   
-  Object* pPtrColumn = m_pDataStack->pPopPtr(__func__); Column* pColumn = _pColumn(pPtrColumn);
+  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
   
   m_pDataStack->vPushInt(pColumn->iColumnLength());
@@ -75,7 +75,7 @@ void Step::vColumnNameFetch(void)
 {
   ENTRY(); // ENTRY("vColumnNameFetch"_Stz);
   
-  Object* pPtrColumn = m_pDataStack->pPopPtr(__func__); Column* pColumn = _pColumn(pPtrColumn);
+  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
   
   s32 sColNm(pColumn->szColNm());
@@ -92,7 +92,7 @@ void Step::vColumnScaleFetch(void)
 {
   ENTRY(); // ENTRY("vColumnScaleFetch"_Stz);
   
-  Object* pPtrColumn = m_pDataStack->pPopPtr(__func__); Column* pColumn = _pColumn(pPtrColumn);
+  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
   
   m_pDataStack->vPushInt(pColumn->iColumnScale());
@@ -107,7 +107,7 @@ void Step::vColumnTypeFetch(void)
 {
   ENTRY(); // ENTRY("vColumnTypeFetch"_Stz);
   
-  Object* pPtrColumn = m_pDataStack->pPopPtr(__func__); Column* pColumn = _pColumn(pPtrColumn);
+  Column* pColumn = _pColumn(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_COLUMN == pColumn->eClass());
   
   s32 sColumnType;

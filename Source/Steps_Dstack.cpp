@@ -37,7 +37,7 @@ void Step::vDstackTransfer(void)
 {
   ENTRY(); // ENTRY("vDstackTransfer"_Stz);
   
-  Object* pPtrTask = m_pDataStack->pPopPtr(__func__); Task* pThatTask = _pTask(pPtrTask);
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
   i8 iVal = m_pDataStack->iPopInt(__func__);
   

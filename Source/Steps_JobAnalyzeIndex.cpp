@@ -36,7 +36,7 @@ void Step::vJob_AnalyzeTableIsDetailed(void)
 {
   ENTRY(); // ENTRY("vJob_AnalyzeTableIsDetailed"_Stz);
   
-  Object* pJobPtr = m_pDataStack->pPopPtr(__func__); //Job_AnalyzeTable* pJoAnalyzeTable = _pJob_AnalyzeTable(pJobPtr);
+  //Job_AnalyzeTable* pJoAnalyzeTable = _pJob_AnalyzeTable(m_pDataStack->pPopPtr(__func__));
   //ASSERT(pJoAnalyzeTable->eClass() == CN_JOB_ANALYZETABLE);
   
   //m_pDataStack->vPushInt(pJoAnalyzeTable->m_bIsDetailed);

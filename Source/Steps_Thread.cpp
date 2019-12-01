@@ -67,7 +67,7 @@ void Step::vThreadDedicatedFetch(void)
 {
   ENTRY(); // ENTRY("vThreadDedicatedFetch"_Stz);
   
-  Object* pThreadObject = m_pDataStack->pPopPtr(__func__); Thread* pThread = _pThread(pThreadObject);
+  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pThread->m_eDedicated);
 
@@ -81,7 +81,7 @@ void Step::vThreadDedicatedStore(void)
 {
   ENTRY(); // ENTRY("vThreadDedicatedStore"_Stz);
   
-  Object* pThreadObject = m_pDataStack->pPopPtr(__func__); Thread* pThread = _pThread(pThreadObject);
+  Thread* pThread = _pThread(m_pDataStack->pPopPtr(__func__));
   
   i8 iDedicated = m_pDataStack->iPopAsInt(__func__);
 

@@ -25,7 +25,7 @@ void Step::vDicStackDepth(void)
 {
   ENTRY(); // ENTRY("vDicStackDepth"_Stz);
   
-  Object* pPtrDicStack = m_pDataStack->pPopPtr(__func__); DicStack* pDicStack = _pDicStack(pPtrDicStack);
+  DicStack* pDicStack = _pDicStack(m_pDataStack->pPopPtr(__func__));
 
   i8 iDepth = pDicStack->iCount();
   
@@ -41,7 +41,7 @@ void Step::vDicStackDrop(void)
 {
   ENTRY(); // ENTRY("vDicStackDrop"_Stz);
   
-  Object* pPtrDicStack = m_pDataStack->pPopPtr(__func__); DicStack* pDicStack = _pDicStack(pPtrDicStack);
+  DicStack* pDicStack = _pDicStack(m_pDataStack->pPopPtr(__func__));
 
   pDicStack->vDiscard();
   
@@ -55,7 +55,7 @@ void Step::vDicStackDump(void)
 {
   ENTRY(); // ENTRY("vDicStackDump"_Stz);
   
-  Object* pPtrDicStack = m_pDataStack->pPopPtr(__func__); DicStack* pDicStack = _pDicStack(pPtrDicStack);
+  DicStack* pDicStack = _pDicStack(m_pDataStack->pPopPtr(__func__));
 
   pDicStack->vContentDump();
   
@@ -88,7 +88,7 @@ void Step::vDicStackPop(void)
 {
   ENTRY(); // ENTRY("vDicStackPop"_Stz);
   
-  Object* pPtrDicStack = m_pDataStack->pPopPtr(__func__); DicStack* pDicStack = _pDicStack(pPtrDicStack);
+  DicStack* pDicStack = _pDicStack(m_pDataStack->pPopPtr(__func__));
 
   pDicStack->vPop();
   
@@ -102,9 +102,9 @@ void Step::vDicStackPush(void)
 {
   ENTRY(); // ENTRY("vDicStackPush"_Stz);
   
-  Object* pPtrDicStack = m_pDataStack->pPopPtr(__func__); DicStack* pDicStack = _pDicStack(pPtrDicStack);
+  DicStack* pDicStack = _pDicStack(m_pDataStack->pPopPtr(__func__));
 
-  Object* pPtrDic = m_pDataStack->pPopPtr(__func__); Dic* pDic = _pDic(pPtrDic);
+  Dic* pDic = _pDic(m_pDataStack->pPopPtr(__func__));
   
   pDicStack->vPush(pDic);
   
@@ -118,7 +118,7 @@ void Step::vDicStackToPathStr(void)
 {
   ENTRY(); // ENTRY("vDicStackToPathStr"_Stz);
   
-  Object* pPtrDicStack = m_pDataStack->pPopPtr(__func__); DicStack* pDicStack = _pDicStack(pPtrDicStack);
+  DicStack* pDicStack = _pDicStack(m_pDataStack->pPopPtr(__func__));
   
   s256 sPath;
   

@@ -264,7 +264,7 @@ void Step::vAstackTransfer(void)
 {
   ENTRY(); // ENTRY("vAstackTransfer"_Stz);
   
-  Object* pPtrTask = m_pDataStack->pPopPtr(__func__); Task* pThatTask = _pTask(pPtrTask);
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
   GenVar xVariable;
   m_pDataStack->vPopVal(xVariable,__func__);

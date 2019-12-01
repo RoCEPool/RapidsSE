@@ -52,7 +52,7 @@ void Step::vFileClose(void)
 {
   ENTRY(); // ENTRY("vFileClose"_Stz);
   
-  Object* pPtrFile = m_pDataStack->pPopPtr(__func__); File* pFile = _pFile(pPtrFile);
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   
   pFile->vClose();
   
@@ -66,7 +66,7 @@ void Step::vFileDelete(void)
 {
   ENTRY(); // ENTRY("vFileDelete"_Stz);
   
-  Object* pPtrFile = m_pDataStack->pPopPtr(__func__); File* pFile = _pFile(pPtrFile);
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
 
   delete pFile;
   
@@ -97,7 +97,7 @@ void Step::vFileOpen(void)
 {
   ENTRY(); // ENTRY("vFileOpen"_Stz);
   
-  Object* pPtrFile = m_pDataStack->pPopPtr(__func__); File* pFile = _pFile(pPtrFile);
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   
   s32 sMode;
   m_pDataStack->vPopStr(sMode,__func__);
@@ -119,7 +119,7 @@ void Step::vFilePathGet(void)
 {
   ENTRY(); // ENTRY("vFilePathGet"_Stz);
   
-  Object* pPtrFile = m_pDataStack->pPopPtr(__func__); File* pFile = _pFile(pPtrFile);
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
 
   s256 sPath = pFile->sFilePath();
   
@@ -135,7 +135,7 @@ void Step::vFileRead(void)
 {
   ENTRY(); // ENTRY("vFileRead"_Stz);
   
-  Object* pPtrFile = m_pDataStack->pPopPtr(__func__); File* pFile = _pFile(pPtrFile);
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   ASSERT(pFile);
   
   s48K sLine;
@@ -160,7 +160,7 @@ void Step::vFileWrite(void)
 {
   ENTRY(); // ENTRY("vFileWrite"_Stz);
   
-  Object* pPtrFile = m_pDataStack->pPopPtr(__func__); File* pFile = _pFile(pPtrFile);
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
   ASSERT(pFile);
   
   s48K sLine;

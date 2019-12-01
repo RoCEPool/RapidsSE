@@ -25,7 +25,7 @@ void Step::vJob__BegunNew(void)
 {
   ENTRY(); // ENTRY("vJob__BegunNew"_Stz);
   
-  Object* pDistJobPtr = m_pDataStack->pPopPtr(__func__); Job* pDistJob = _pJob(pDistJobPtr);
+  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
 
@@ -64,7 +64,7 @@ void Step::vJob__CancelNew(void)
 {
   ENTRY(); // ENTRY("vJob__CancelNew"_Stz);
   
-  Object* pDistJobPtr = m_pDataStack->pPopPtr(__func__); Job* pDistJob = _pJob(pDistJobPtr);
+  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
   
@@ -100,7 +100,7 @@ void Step::vJob__CancelledNew(void)
 {
   ENTRY(); // ENTRY("vJob__CancelledNew"_Stz);
   
-  Object* pDistJobPtr = m_pDataStack->pPopPtr(__func__); Job* pDistJob = _pJob(pDistJobPtr);
+  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
 
@@ -137,7 +137,7 @@ void Step::vJob__EndNew(void)
 {
   ENTRY(); // ENTRY("vJob__EndNew"_Stz);
   
-  Object* pDistJobPtr = m_pDataStack->pPopPtr(__func__); Job* pDistJob = _pJob(pDistJobPtr);
+  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
   
@@ -173,7 +173,7 @@ void Step::vJob__EndedNew(void)
 {
   ENTRY(); // ENTRY("vJob__EndedNew"_Stz);
   
-  Object* pDistJobPtr = m_pDataStack->pPopPtr(__func__); Job* pDistJob = _pJob(pDistJobPtr);
+  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
   
@@ -210,7 +210,7 @@ void Step::vJob__ExecuteNew(void)
 {
   ENTRY(); // ENTRY("vJob__ExecuteNew"_Stz);
   
-  Object* pDistJobPtr = m_pDataStack->pPopPtr(__func__); Job* pDistJob = _pJob(pDistJobPtr);
+  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
   
@@ -246,7 +246,7 @@ void Step::vJob__ExecutedNew(void)
 {
   ENTRY(); // ENTRY("vJob__ExecutedNew"_Stz);
   
-  Object* pDistJobPtr = m_pDataStack->pPopPtr(__func__); Job* pDistJob = _pJob(pDistJobPtr);
+  Job* pDistJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
   

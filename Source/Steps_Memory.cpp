@@ -24,7 +24,7 @@ void Step::vMemoryByteDump(void)
   
   i8 iSize = m_pDataStack->iPopInt(__func__);
   
-  Object* pWordObject = m_pDataStack->pPopPtr(__func__); Word* pWord = _pWord(pWordObject);
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
   //pWord->vByteDump(iSize);
   MemLib::vHexDump(pWord,iSize);
@@ -64,7 +64,7 @@ void Step::vMemoryWordDump(void)
   
   i8 iSize = m_pDataStack->iPopInt(__func__);
   
-  Object* pWordObject = m_pDataStack->pPopPtr(__func__); Word* pWord = _pWord(pWordObject);
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
   //pWord->vWordDump(iSize);
   MemLib::vWordDump(pWord,iSize);
