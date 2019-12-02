@@ -40,7 +40,9 @@ void Step::vFile0Set(void)
 {
   ENTRY(); // ENTRY("vFile0Set"_Stz);
   
-  Object* pPtrFile = m_pDataStack->pPopPtr(__func__); m_pRegSet->m_xpFile0 = _pFile(pPtrFile);
+  File* pFile = _pFile(m_pDataStack->pPopPtr(__func__));
+
+  m_pRegSet->m_xpFile0 = pFile;
   
   EXIT();
 }
@@ -82,10 +84,7 @@ void Step::vFileNew(void)
   
   File* pFile = new File(m_pTask);
   
-  Object* pPtrFile;
-  pPtrFile = (Object*)pFile;
-  
-  m_pDataStack->vPushPtr(pPtrFile);
+  m_pDataStack->vPushPtr(pFile);
   
   EXIT();
 }

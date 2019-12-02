@@ -82,7 +82,7 @@ void Step::vSubsetSet(void)
 {
   ENTRY(); // ENTRY("vOperandSet"_Stz);
   
-  Object* pPtrObject = m_pDataStack->pPopPtr(__func__); m_pRegSet->m_xpSubset = _pOperand(pPtrObject);
+  m_pRegSet->m_xpSubset = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

@@ -20,7 +20,7 @@ void Step::vTableSet(void)
 {
   ENTRY(); // ENTRY("vTableSet"_Stz);
   
-  Object* pPtrObject = m_pDataStack->pPopPtr(__func__); m_pRegSet->m_xpTable = _pTable(pPtrObject);
+  m_pRegSet->m_xpTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
