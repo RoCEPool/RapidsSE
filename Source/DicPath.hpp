@@ -36,6 +36,8 @@ namespace SenVM
   
     Footer* aFooter(void);
   };
+  
+  DicPath* _pDicPath(void* aAddr);
 }
 
 /*============================================================================*/

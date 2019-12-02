@@ -24,9 +24,7 @@ void Step::vJob_SubLoaderSpawn(void)
 {
   ENTRY(); // ENTRY("vJob_SubLoaderSpawn"_Stz);
   
-  Object* pPtrJob_LoadTable;
-  m_pDataStack->vPopPtr(pPtrJob_LoadTable,__func__);
-  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
+  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -74,9 +72,7 @@ void Step::vJob_SubLoaderBegin(void)
 {
   ENTRY(); // ENTRY("vJob_SubLoaderBegin"_Stz);
   
-  Object* pPtrJob_SubLoader;
-  m_pDataStack->vPopPtr(pPtrJob_SubLoader,__func__);
-  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(m_pDataStack->pPopPtr(__func__));
 
   bool bBegun = pJob_SubLoader->bBegin();
   
@@ -92,9 +88,7 @@ void Step::vJob_SubLoaderChunk(void)
 {
   ENTRY(); // ENTRY("vJob_SubLoaderChunk"_Stz);
   
-  Object* pPtrJob_SubLoader;
-  m_pDataStack->vPopPtr(pPtrJob_SubLoader,__func__);
-  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // stall if ready queue LP is building up (to discuss with Ray)
@@ -119,9 +113,7 @@ void Step::vJob_SubLoaderEnd(void)
 {
   ENTRY(); // ENTRY("vJob_SubLoaderEnd"_Stz);
   
-  Object* pPtrJob_SubLoader;
-  m_pDataStack->vPopPtr(pPtrJob_SubLoader,__func__);
-  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(m_pDataStack->pPopPtr(__func__));
   
   pJob_SubLoader->vEnd();
   
@@ -135,9 +127,7 @@ void Step::vJob_SubLoaderTerminate(void)
 {
   ENTRY(); // ENTRY("vJob_SubLoaderTerminate"_Stz);
   
-  Object* pPtrJob_SubLoader;
-  m_pDataStack->vPopPtr(pPtrJob_SubLoader,__func__);
-  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(m_pDataStack->pPopPtr(__func__));
   
   i8 iTerminate = pJob_SubLoader->bTerminate();
   

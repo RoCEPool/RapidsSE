@@ -25,11 +25,7 @@ void Step::vEntBufferDump(void)
 {
   ENTRY(); // ENTRY("vEntBufferDump"_Stz);
   
-  Object* pPtrIndexBuffer = nullptr;
-  
-  m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
-  
-  EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
   pIndexBuffer->vShow();
   
@@ -44,11 +40,7 @@ void Step::vEntBufferIndexFetch(void)
   ENTRY(); // ENTRY("vEntBufferIndexFetch"_Stz);
   
   Object* pPtrIndex;
-  Object* pPtrIndexBuffer;
-  
-  m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
-  
-  EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushPtr(pIndexBuffer->pIndex());
   
@@ -62,16 +54,9 @@ void Step::vEntBufferIndexStore(void)
 {
   ENTRY(); // ENTRY("vEntBufferIndexStore"_Stz);
   
-  Object* pPtrIndex;
-  Object* pPtrIndexBuffer;
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
-  
-  EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
-  
-  m_pDataStack->vPopPtr(pPtrIndex,__func__);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
+  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
   
   pIndexBuffer->vIndex(pIndex);
@@ -87,11 +72,7 @@ void Step::vEntBufferNextBuffer(void)
   ENTRY(); // ENTRY("vEntBufferNextBuffer"_Stz);
   
   Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  
-  m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
-  
-  EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
   if (pIndexBuffer->pNextBuffer()) {
     bn nBuffer = pIndexBuffer->pNextBuffer()->nPoolBufferNo();
@@ -110,11 +91,7 @@ void Step::vEntBufferPartitionFetch(void)
   ENTRY(); // ENTRY("vEntBufferPartitionFetch"_Stz);
   
   Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
-  
-  m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
-  
-  EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pIndexBuffer->iPartitionNo());
   
@@ -129,13 +106,9 @@ void Step::vEntBufferPartitionStore(void)
   ENTRY(); // ENTRY("vEntBufferPartitionStore"_Stz);
   
   Object* pPtrEntry = nullptr;
-  Object* pPtrIndexBuffer;
+  EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPopPtr(pPtrIndexBuffer,__func__);
-  
-  EntBuffer* pIndexBuffer = _pEntBuffer(pPtrIndexBuffer);
-  
-  i8 iPartitionNo; m_pDataStack->vPopInt(iPartitionNo,__func__);
+  i8 iPartitionNo = m_pDataStack->iPopInt(__func__);
   
   pIndexBuffer->vPartitionNo(iPartitionNo);
   

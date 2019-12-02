@@ -63,7 +63,7 @@ void Step::vTraceSet(void)
 {
   ENTRY(); // ENTRY("vTraceSet"_Stz);
   
-  i8 iTrace; m_pDataStack->vPopInt(iTrace,__func__);
+  i8 iTrace = m_pDataStack->iPopInt(__func__);
   
   m_pTask->m_iTraceMask = iTrace;
   

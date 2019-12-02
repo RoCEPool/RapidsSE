@@ -37,11 +37,9 @@ void Step::vDstackTransfer(void)
 {
   ENTRY(); // ENTRY("vDstackTransfer"_Stz);
   
-  Object* pPtrTask;
-  m_pDataStack->vPopPtr(pPtrTask,__func__);
-  Task* pThatTask = _pTask(pPtrTask);
+  Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  i8 iVal; m_pDataStack->vPopInt(iVal,__func__);
+  i8 iVal = m_pDataStack->iPopInt(__func__);
   
   pThatTask->m_okLock.vGrabWrite();
   pThatTask->m_pForth->m_pDataStack->vPushInt(iVal);
@@ -58,7 +56,7 @@ void Step::vDstackClass(void)
 {
   ENTRY(); // ENTRY("vDstackClass"_Stz);
   
-  i8 i_Val; m_pDataStack->vPopInt(i_Val,__func__);
+  i8 i_Val = m_pDataStack->iPopInt(__func__);
   
   GenVar xVar;
   
@@ -200,7 +198,7 @@ void Step::vDstackPick(void)
 {
   ENTRY(); // ENTRY("vDstackPick"_Stz);
   
-  i8 iPick; m_pDataStack->vPopAsInt(iPick,__func__);
+  i8 iPick = m_pDataStack->iPopAsInt(__func__);
   
   // could do this directly on stack
   
@@ -229,17 +227,17 @@ void Step::vDstackReverse(void)
   GenVar xVal7;
   GenVar xVal8;
 
-  i8 nValues; m_pDataStack->vPopInt(nValues,__func__);
+  i8 nValues = m_pDataStack->iPopInt(__func__);
   
   switch (nValues) {
-    case 8: m_pDataStack->bPopVal(xVal8);
-    case 7: m_pDataStack->bPopVal(xVal7);
-    case 6: m_pDataStack->bPopVal(xVal6);
-    case 5: m_pDataStack->bPopVal(xVal5);
-    case 4: m_pDataStack->bPopVal(xVal4);
-    case 3: m_pDataStack->bPopVal(xVal3);
-    case 2: m_pDataStack->bPopVal(xVal2);
-    case 1: m_pDataStack->bPopVal(xVal1);
+    case 8: m_pDataStack->vPopVal(xVal8,__func__);
+    case 7: m_pDataStack->vPopVal(xVal7,__func__);
+    case 6: m_pDataStack->vPopVal(xVal6,__func__);
+    case 5: m_pDataStack->vPopVal(xVal5,__func__);
+    case 4: m_pDataStack->vPopVal(xVal4,__func__);
+    case 3: m_pDataStack->vPopVal(xVal3,__func__);
+    case 2: m_pDataStack->vPopVal(xVal2,__func__);
+    case 1: m_pDataStack->vPopVal(xVal1,__func__);
   }
   
   switch (nValues) {
@@ -266,7 +264,7 @@ void Step::vDstackRoll(void)
   GenVar xVarA;
   GenVar xVarX;
   
-  i8 nValues; m_pDataStack->vPopInt(nValues,__func__);
+  i8 nValues = m_pDataStack->iPopInt(__func__);
   
   m_pDataStack->vPopVal(xVarA,__func__);
   
@@ -297,7 +295,7 @@ void Step::vDstackRollInv(void)
   GenVar xVarZ;
   GenVar xVarX;
   
-  i8 nValues; m_pDataStack->vPopInt(nValues,__func__);
+  i8 nValues = m_pDataStack->iPopInt(__func__);
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
     m_pDataStack->vPopVal(xVarX,__func__);

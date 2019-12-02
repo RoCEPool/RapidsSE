@@ -21,10 +21,7 @@ void Step::vDicPathDepth(void)
 {
   ENTRY(); // ENTRY("vDicStackDepth"_Stz);
   
-  Object* pPtrDicPath;
-  m_pDataStack->vPopPtr(pPtrDicPath,__func__);
-  
-  DicPath* pDicPath = (DicPath*)(pPtrDicPath);
+  DicPath* pDicPath = _pDicPath(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_DICPATH == pDicPath->eClass());
   
   i8 iDepth = pDicPath->nDicNames();
@@ -41,10 +38,7 @@ void Step::vDicPathDump(void)
 {
   ENTRY(); // ENTRY("vDicPathDump"_Stz);
   
-  Object* pPtrDicPath;
-  m_pDataStack->vPopPtr(pPtrDicPath,__func__);
-  
-  DicPath* pDicPath = (DicPath*)(pPtrDicPath);
+  DicPath* pDicPath = _pDicPath(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_DICPATH == pDicPath->eClass());
   
   pDicPath->vContentDump();
@@ -59,13 +53,10 @@ void Step::vDicPathPick(void)
 {
   ENTRY(); // ENTRY("vDicPathPick"_Stz);
   
-  Object* pPtrDicPath;
-  m_pDataStack->vPopPtr(pPtrDicPath,__func__);
-  
-  DicPath* pDicPath = (DicPath*)(pPtrDicPath);
+  DicPath* pDicPath = _pDicPath(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_DICPATH == pDicPath->eClass());
   
-  i8 iDic; m_pDataStack->vPopInt(iDic,__func__);
+  i8 iDic = m_pDataStack->iPopInt(__func__);
 
   s32 sDicNm(pDicPath->sDicName(iDic));
   

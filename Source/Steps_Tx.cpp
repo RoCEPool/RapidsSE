@@ -51,9 +51,7 @@ void Step::vTxCommit(void)
 {
   ENTRY(); // ENTRY("vTxCommit"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
-  Tx* pTx = _pTx(pPtrTx);
+  Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
   pTx->vPhase(XP_COMMITTED);
 
@@ -72,9 +70,7 @@ void Step::vTxCounterDec(void)
 {
   ENTRY(); // ENTRY("vTxCounterDec"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
-  Tx* pTx = _pTx(pPtrTx);
+  Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
   i8 iCounter = pTx->iCounterDec();
   
@@ -96,9 +92,7 @@ void Step::vTxCounterFetch(void)
 {
   ENTRY(); // ENTRY("vTxCounterFetch"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
-  Tx* pTx = _pTx(pPtrTx);
+  Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
   i8 iCounter = pTx->iCounterGet();
   
@@ -114,11 +108,9 @@ void Step::vTxCounterStore(void)
 {
   ENTRY(); // ENTRY("vTxCounterStore"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
-  Tx* pTx = _pTx(pPtrTx);
+  Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
-  i8 iCounter; m_pDataStack->vPopInt(iCounter,__func__);
+  i8 iCounter = m_pDataStack->iPopInt(__func__);
   
   pTx->vCounterSet(iCounter);
   
@@ -132,13 +124,11 @@ void Step::vTxDistMemberFetch(void)
 {
   ENTRY(); // ENTRY("vTxDistMemberFetch"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
-  Tx* pTx = _pTx(pPtrTx);
+  Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
   ASSERT(pTx->bLocalTx());
   
-  i8 i_Node; m_pDataStack->vPopInt(i_Node,__func__);
+  i8 i_Node = m_pDataStack->iPopInt(__func__);
   
   bool bDistMember = pTx->bDistMember(i_Node);
   
@@ -154,15 +144,13 @@ void Step::vTxDistMemberStore(void)
 {
   ENTRY(); // ENTRY("vTxDistMemberStore"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
-  Tx* pTx = _pTx(pPtrTx);
+  Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
   ASSERT(pTx->bLocalTx());
   
-  i8 i_Node; m_pDataStack->vPopInt(i_Node,__func__);
+  i8 i_Node = m_pDataStack->iPopInt(__func__);
 
-  i8 iDistMember; m_pDataStack->vPopInt(iDistMember,__func__);
+  i8 iDistMember = m_pDataStack->iPopInt(__func__);
   
   pTx->vDistMember(i_Node,iDistMember);
   
@@ -176,10 +164,7 @@ void Step::vTxDump(void)
 {
   ENTRY(); // ENTRY("vTxDump"_Stz);
   
-  Object* pPtrTx;
-  
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
-  Tx* pTx = _pTx(pPtrTx);
+  Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
   pTx->vContentDump();
   
@@ -205,10 +190,7 @@ void Step::vTxFree(void)
 {
   ENTRY(); // ENTRY("vTxFree"_Stz);
   
-  Object* pPtrTx;
-  
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
-  Tx* pTx = _pTx(pPtrTx);
+  Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
 //  vTrace("Freeing tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
 //         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
@@ -227,9 +209,7 @@ void Step::vTxId(void)
 {
   ENTRY(); // ENTRY("vTxId"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
-  Tx* pTx = _pTx(pPtrTx);
+  Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
   i8 iTxId = pTx->iLocalTxId();
   
@@ -245,9 +225,7 @@ void Step::vTxPrepare(void)
 {
   ENTRY(); // ENTRY("vTxPrepare"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
-  Tx* pTx = _pTx(pPtrTx);
+  Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
   pTx->vPhase(XP_PREPARED);
   
@@ -266,9 +244,7 @@ void Step::vTxRollback(void)
 {
   ENTRY(); // ENTRY("vTxRollback"_Stz);
   
-  Object* pPtrTx;
-  m_pDataStack->vPopPtr(pPtrTx,__func__);
-  Tx* pTx = _pTx(pPtrTx);
+  Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
   pTx->vPhase(XP_ROLLEDBACK);
   
@@ -287,7 +263,7 @@ void Step::vTxTestDist(void)
 {
   ENTRY(); // ENTRY("vTxTestDist"_Stz);
   
-  i8 iDistTxId; m_pDataStack->vPopInt(iDistTxId,__func__);
+  i8 iDistTxId = m_pDataStack->iPopInt(__func__);
   
   Tx* pTx = Tx::pTestDistTx(iDistTxId);
 

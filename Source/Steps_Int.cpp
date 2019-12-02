@@ -65,8 +65,8 @@ void Step::vIntDivide(void)
 {
   ENTRY(); // ENTRY("vIntDivide"_Stz);
   
-  i8 j; m_pDataStack->vPopInt(j,__func__);
-  i8 i; m_pDataStack->vPopInt(i,__func__);
+  i8 j = m_pDataStack->iPopInt(__func__);
+  i8 i = m_pDataStack->iPopInt(__func__);
 
   i8 r = DIV(i,j);
   
@@ -82,8 +82,8 @@ void Step::vIntEqual(void)
 {
   ENTRY(); // ENTRY("vIntEqual"_Stz);
   
-  i8 j; m_pDataStack->vPopInt(j,__func__);
-  i8 i; m_pDataStack->vPopInt(i,__func__);
+  i8 j = m_pDataStack->iPopInt(__func__);
+  i8 i = m_pDataStack->iPopInt(__func__);
 
   i8 r = i == j;
   
@@ -99,8 +99,8 @@ void Step::vIntGreater(void)
 {
   ENTRY(); // ENTRY("vIntGreater"_Stz);
   
-  i8 j; m_pDataStack->vPopInt(j,__func__);
-  i8 i; m_pDataStack->vPopInt(i,__func__);
+  i8 j = m_pDataStack->iPopInt(__func__);
+  i8 i = m_pDataStack->iPopInt(__func__);
 
   i8 r = i > j;
   
@@ -116,8 +116,8 @@ void Step::vIntGreaterEqual(void)
 {
   ENTRY(); // ENTRY("vIntGreaterEqual"_Stz);
   
-  i8 j; m_pDataStack->vPopInt(j,__func__);
-  i8 i; m_pDataStack->vPopInt(i,__func__);
+  i8 j = m_pDataStack->iPopInt(__func__);
+  i8 i = m_pDataStack->iPopInt(__func__);
 
   i8 r = i >= j;
   
@@ -152,7 +152,7 @@ void Step::vIntHo16(void)
 {
   ENTRY(); // ENTRY("vIntHash"_Stz);
   
-  i8 i; m_pDataStack->vPopInt(i,__func__);
+  i8 i = m_pDataStack->iPopInt(__func__);
   
   m_pDataStack->vPushInt(i >> 48);
   
@@ -166,8 +166,8 @@ void Step::vIntLess(void)
 {
   ENTRY(); // ENTRY("vIntLess"_Stz);
   
-  i8 j; m_pDataStack->vPopInt(j,__func__);
-  i8 i; m_pDataStack->vPopInt(i,__func__);
+  i8 j = m_pDataStack->iPopInt(__func__);
+  i8 i = m_pDataStack->iPopInt(__func__);
 
   i8 r = i < j;
   
@@ -183,8 +183,8 @@ void Step::vIntLessEqual(void)
 {
   ENTRY(); // ENTRY("vIntLessEqual"_Stz);
   
-  i8 j; m_pDataStack->vPopInt(j,__func__);
-  i8 i; m_pDataStack->vPopInt(i,__func__);
+  i8 j = m_pDataStack->iPopInt(__func__);
+  i8 i = m_pDataStack->iPopInt(__func__);
 
   i8 r = i <= j;
   
@@ -200,8 +200,8 @@ void Step::vIntModulo(void)
 {
   ENTRY(); // ENTRY("vIntModulo"_Stz);
   
-  i8 j; m_pDataStack->vPopInt(j,__func__);
-  i8 i; m_pDataStack->vPopInt(i,__func__);
+  i8 j = m_pDataStack->iPopInt(__func__);
+  i8 i = m_pDataStack->iPopInt(__func__);
 
   i8 r = MOD(i,j);
   
@@ -217,8 +217,8 @@ void Step::vIntMultiply(void)
 {
   ENTRY(); // ENTRY("vIntMultiply"_Stz);
   
-  i8 j; m_pDataStack->vPopInt(j,__func__);
-  i8 i; m_pDataStack->vPopInt(i,__func__);
+  i8 j = m_pDataStack->iPopInt(__func__);
+  i8 i = m_pDataStack->iPopInt(__func__);
 
   i8 r = i * j;
   
@@ -234,7 +234,7 @@ void Step::vIntNeg(void)
 {
   ENTRY(); // ENTRY("vIntNeg"_Stz);
   
-  i8 i; m_pDataStack->vPopInt(i,__func__);
+  i8 i = m_pDataStack->iPopInt(__func__);
   
  i8 r = -1 * i;
   
@@ -250,8 +250,8 @@ void Step::vIntNotEqual(void)
 {
   ENTRY(); // ENTRY("vIntNotEqual"_Stz);
   
-  i8 j; m_pDataStack->vPopInt(j,__func__);
-  i8 i; m_pDataStack->vPopInt(i,__func__);
+  i8 j = m_pDataStack->iPopInt(__func__);
+  i8 i = m_pDataStack->iPopInt(__func__);
 
   i8 r = i != j;
   
@@ -267,9 +267,9 @@ void Step::vIntRandom(void)
 {
   ENTRY(); // ENTRY("vIntRandom"_Stz);
   
-  i8 iHigh; m_pDataStack->vPopInt(iHigh,__func__);
+  i8 iHigh = m_pDataStack->iPopInt(__func__);
   
-  i8 iLow; m_pDataStack->vPopInt(iLow,__func__);
+  i8 iLow = m_pDataStack->iPopInt(__func__);
   
   i8 iRandom = Random::iInteger(iLow,iHigh);
   
@@ -285,8 +285,8 @@ void Step::vIntSubtract(void)
 {
   ENTRY(); // ENTRY("vIntSubtract"_Stz);
   
-  i8 j; m_pDataStack->vPopInt(j,__func__);
-  i8 i; m_pDataStack->vPopInt(i,__func__);
+  i8 j = m_pDataStack->iPopInt(__func__);
+  i8 i = m_pDataStack->iPopInt(__func__);
 
   i8 r = i - j;
   
@@ -302,9 +302,9 @@ void Step::vUnsignedIntRandom(void)
 {
   ENTRY(); // ENTRY("vUnsignedIntRandom"_Stz);
   
-  i8 iHigh; m_pDataStack->vPopInt(iHigh,__func__);
+  i8 iHigh = m_pDataStack->iPopInt(__func__);
   
-  i8 iLow; m_pDataStack->vPopInt(iLow,__func__);
+  i8 iLow = m_pDataStack->iPopInt(__func__);
   
   u8 uRandom = Random::uInteger(iLow,iHigh);
   

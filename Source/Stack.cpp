@@ -213,7 +213,7 @@ void Stack::vPokeVal(i8 i_Val, AnyVal* aAnyVal)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack as integer                                            */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopAsInt(i8& iInt, const char* azFunNm)
+i8 Stack::iPopAsInt(const char* azFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -221,15 +221,17 @@ void Stack::vPopAsInt(i8& iInt, const char* azFunNm)
     Correctness::vThrow(FK_DSTACK,VL_FATAL,
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-
-  iInt = m_xTop.aAnyVal->iAsInt();
+  
+  i8 iInt = m_xTop.aAnyVal->iAsInt();
   vDiscardTop();
+  
+  return iInt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop fip from stack                                                         */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopFip(Cell*& aFip, const char* azFunNm)
+Cell* Stack::aPopFip(const char* azFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -237,16 +239,18 @@ void Stack::vPopFip(Cell*& aFip, const char* azFunNm)
     Correctness::vThrow(FK_DSTACK,VL_FATAL,
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-
-  aFip = m_xTop.aFipVal->aFip();
+  
+  Cell* aFip = m_xTop.aFipVal->aFip();
   
   vDiscardTop();
+  
+  return aFip;
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop i8 from stack                                                          */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopInt(i8& iInt, const char* azFunNm)
+i8 Stack::iPopInt(const char* azFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -254,16 +258,18 @@ void Stack::vPopInt(i8& iInt, const char* azFunNm)
     Correctness::vThrow(FK_DSTACK,VL_FATAL,
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-
-  iInt = m_xTop.aIntVal->iInt();
+  
+  i8 iInt = m_xTop.aIntVal->iInt();
   
   vDiscardTop();
+  
+  return iInt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop Object* from stack                                                     */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopPtr(Object*& pObj, const char* azFunNm)
+Object* Stack::pPopPtr(const char* azFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -271,10 +277,12 @@ void Stack::vPopPtr(Object*& pObj, const char* azFunNm)
     Correctness::vThrow(FK_DSTACK,VL_FATAL,
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-
-  pObj = m_xTop.aPtrVal->pObj();
+  
+  Object* pObj = m_xTop.aPtrVal->pObj();
   
   vDiscardTop();
+  
+  return pObj;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -288,7 +296,7 @@ void Stack::vPopStr(String* pString, const char* azFunNm)
     Correctness::vThrow(FK_DSTACK,VL_FATAL,
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-
+  
   _hazard_();
   
   StrVal* aStrVal = _aStrVal(aTopVal());
@@ -311,29 +319,6 @@ void Stack::vPopVal(AnyVal* aAnyVal, const char* azFunNm)
     Correctness::vThrow(FK_DSTACK,VL_FATAL,
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
-
-  _hazard_();
-  
-  i8 nBytes = aTopVal()->nStackUsage();
-  
-  aAnyVal->vCopy(m_xTop.aAnyVal,nBytes);
-  
-  m_xTop.vRewind(nBytes);
-  
-  m_nValues--;
-  
-  _hazard_();
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop value from stack                                                       */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopVal(AnyVal* aAnyVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
   
   _hazard_();
   
@@ -346,8 +331,6 @@ bool Stack::bPopVal(AnyVal* aAnyVal)
   m_nValues--;
   
   _hazard_();
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

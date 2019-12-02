@@ -19,9 +19,7 @@ void Step::vTableDefParse(void)
 {
   ENTRY(); // ENTRY("vTableDefParse"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
-  Job* pJob_CreateTable = _pJob(pJobPtr);
+  Job* pJob_CreateTable = _pJob(m_pDataStack->pPopPtr(__func__));
   
   s4K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);

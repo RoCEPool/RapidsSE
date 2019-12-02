@@ -80,11 +80,7 @@ void Step::vNodeForget(void)
 {
   ENTRY(); // ENTRY("vNodeForget"_Stz);
   
-  Object* pPtrNode;
-  
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
-  
-  Node* pNode = _pNode(pPtrNode);
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_NODE == pNode->eClass());
   
   Grid* pGrid = AM::pGrid();
@@ -105,11 +101,7 @@ void Step::vNodeIP(void)
 {
   ENTRY(); // ENTRY("vNodeIP"_Stz);
   
-  Object* pPtrNode;
-  
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
-  
-  Node* pNode = _pNode(pPtrNode);
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_NODE == pNode->eClass());
   
   s256 sIP;
@@ -126,11 +118,7 @@ void Step::vNodeName(void)
 {
   ENTRY(); // ENTRY("vNodeName"_Stz);
   
-  Object* pPtrNode;
-  
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
-  
-  Node* pNode = _pNode(pPtrNode);
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_NODE == pNode->eClass());
   
   s256 sName;
@@ -147,11 +135,7 @@ void Step::vNodeNo(void)
 {
   ENTRY(); // ENTRY("vNodeNo"_Stz);
   
-  Object* pPtrNode;
-  
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
-  
-  Node* pNode = _pNode(pPtrNode);
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_NODE == pNode->eClass());
   
   m_pDataStack->vPushInt(pNode->iNodeNo());
@@ -178,9 +162,7 @@ void Step::vNodePort(void)
 {
   ENTRY(); // ENTRY("vNodeNo"_Stz);
   
-  Object* pPtrNode;
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
-  Node* pNode = _pNode(pPtrNode);
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pNode->iPortNo());
   
@@ -194,13 +176,9 @@ void Step::vNodeRecvSocketStore(void)
 {
   ENTRY(); // ENTRY("vNodeRecvSocketStore"_Stz);
   
-  Object* pPtrNode;
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
-  Node* pNode = _pNode(pPtrNode);
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
-  Object* pSocketPtr;
-  m_pDataStack->vPopPtr(pSocketPtr,__func__);
-  Socket* pSocket = _pSocket(pSocketPtr);
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   pNode->vRecvSocket(pSocket);
   
@@ -214,9 +192,7 @@ void Step::vNodeRecvSocketFetch(void)
 {
   ENTRY(); // ENTRY("vNodeRecvSocketFetch"_Stz);
   
-  Object* pPtrNode;
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
-  Node* pNode = _pNode(pPtrNode);
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
   Socket* pSocket = pNode->pRecvSocket();
   
@@ -232,13 +208,9 @@ void Step::vNodeSendSocketStore(void)
 {
   ENTRY(); // ENTRY("vNodeSendSocketStore"_Stz);
   
-  Object* pPtrNode;
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
-  Node* pNode = _pNode(pPtrNode);
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
 
-  Object* pSocketPtr;
-  m_pDataStack->vPopPtr(pSocketPtr,__func__);
-  Socket* pSocket = _pSocket(pSocketPtr);
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
     
   pNode->vSendSocket(pSocket);
   
@@ -252,9 +224,7 @@ void Step::vNodeSendSocketFetch(void)
 {
   ENTRY(); // ENTRY("vNodeSendSocketFetch"_Stz);
   
-  Object* pPtrNode;
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
-  Node* pNode = _pNode(pPtrNode);
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
   Socket* pSocket = pNode->pSendSocket();
   
@@ -282,9 +252,7 @@ void Step::vNodeStartNode(void)
 {
   ENTRY(); // ENTRY("vNodeStartNode"_Stz);
   
-  Object* pPtrNode;
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
-  Node* pNode = _pNode(pPtrNode);
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(true);
 
@@ -298,11 +266,9 @@ void Step::vNodeStateStore(void)
 {
   ENTRY(); // ENTRY("vNodeStateStore"_Stz);
   
-  Object* pPtrNode;
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
-  Node* pNode = _pNode(pPtrNode);
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
-  i8 iState; m_pDataStack->vPopInt(iState,__func__);
+  i8 iState = m_pDataStack->iPopInt(__func__);
   
   pNode->vState((eNS)iState);
   
@@ -316,9 +282,7 @@ void Step::vNodeStateFetch(void)
 {
   ENTRY(); // ENTRY("vNodeStateFetch"_Stz);
   
-  Object* pPtrNode;
-  m_pDataStack->vPopPtr(pPtrNode,__func__);
-  Node* pNode = _pNode(pPtrNode);
+  Node* pNode = _pNode(m_pDataStack->pPopPtr(__func__));
   
   eNS eState = pNode->eState();
   

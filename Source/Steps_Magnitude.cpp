@@ -22,7 +22,7 @@ void Step::vToDigitName(void)
   ENTRY(); // ENTRY("vToDigitName"_Stz);
   
   // get the arguments
-  i8 iDigit; m_pDataStack->vPopInt(iDigit,__func__);
+  i8 iDigit = m_pDataStack->iPopInt(__func__);
   
   s32 sName;
   
@@ -52,7 +52,7 @@ void Step::vBytesMagnitude(void)
 {
   ENTRY(); // ENTRY("vBytesMagnitude"_Stz);
   
-  i8 iBytes; m_pDataStack->vPopInt(iBytes,__func__);
+  i8 iBytes = m_pDataStack->iPopInt(__func__);
   
   s256 sMag;
   MagLib::vByteMag(iBytes, sMag);
@@ -69,10 +69,9 @@ void Step::vNumberMagnitude(void)
 {
   ENTRY(); // ENTRY("vNumberMagnitude"_Stz);
   
-  i8 iNumber; m_pDataStack->vPopInt(iNumber,__func__);
+  i8 iNumber = m_pDataStack->iPopInt(__func__);
   
-  i8 iScale;  
-  m_pDataStack->vPopInt(iScale,__func__);
+  i8 iScale = m_pDataStack->iPopInt(__func__);
   
   s256 s;
   

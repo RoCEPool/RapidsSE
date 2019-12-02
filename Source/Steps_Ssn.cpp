@@ -24,10 +24,7 @@ void Step::vSsnIncBegun(void)
 {
   ENTRY(); // ENTRY("vSsnIncBegun"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
-  
-  Job* pJob = _pJob(pJobPtr);
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
@@ -45,10 +42,7 @@ void Step::vSsnIncCancelled(void)
 {
   ENTRY(); // ENTRY("vSsnIncBegun"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
-  
-  Job* pJob = _pJob(pJobPtr);
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
@@ -66,10 +60,7 @@ void Step::vSsnIncEnded(void)
 {
   ENTRY(); // ENTRY("vSsnIncBegun"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
-  
-  Job* pJob = _pJob(pJobPtr);
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
@@ -87,10 +78,7 @@ void Step::vSsnIncExecuted(void)
 {
   ENTRY(); // ENTRY("vSsnIncExecuted"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
-  
-  Job* pJob = _pJob(pJobPtr);
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   
@@ -108,7 +96,7 @@ void Step::vSsnSenLoc(void)
 {
   ENTRY(); // ENTRY("vSsnSenLoc"_Stz);
   
-  i8 iPosition; m_pDataStack->vPopInt(iPosition,__func__);
+  i8 iPosition = m_pDataStack->iPopInt(__func__);
 
   //  Session* pSession = m_i_Session->m_pSession;
   //  ApiState::vMarkSenLoc(pSession,iPosition);
@@ -126,10 +114,7 @@ void Step::vSsnTraceSession(void)
 {
   ENTRY(); // ENTRY("vSsnTraceSession"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
-  
-  Job* pJob = _pJob(pJobPtr);
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   i8 i_Session = pJob->m_xReqTuple.m_i_Session;
   

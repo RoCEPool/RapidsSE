@@ -24,9 +24,7 @@ void Step::vToBody(void)
 {
   ENTRY(); // ENTRY("vToBody"_Stz);
   
-  Object* pWordObject;
-  m_pDataStack->vPopPtr(pWordObject,__func__);
-  Word* pWord = _pWord(pWordObject);
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
   //  char* pBody = pAdd<char*>(pWord,sizeof(Word));
   char* pBody = pWord->aWspArea();
@@ -64,7 +62,7 @@ void Step::vToPtr(void)
 {
   ENTRY(); // ENTRY("vToPtr"_Stz);
   
-  i8 iPtr; m_pDataStack->vPopInt(iPtr,__func__);
+  i8 iPtr = m_pDataStack->iPopInt(__func__);
   
   Object* pPtr = (Object*)iPtr;
   
@@ -99,7 +97,7 @@ void Step::vToTask(void)
 {
   ENTRY(); // ENTRY("vToTask"_Stz);
   
-  i8 iVal; m_pDataStack->vPopInt(iVal,__func__);
+  i8 iVal = m_pDataStack->iPopInt(__func__);
   
   Object* pPtrTask = _pTask(iVal);
   

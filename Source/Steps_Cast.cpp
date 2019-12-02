@@ -20,8 +20,7 @@ void Step::vCastInt(void)
 {
   ENTRY(); // ENTRY("vCastInt"_Stz);
   
-  Object* pPtr;
-  m_pDataStack->vPopPtr(pPtr,__func__);
+  Object* pPtr = m_pDataStack->pPopPtr(__func__);
   
   m_pDataStack->vPushInt((i8)pPtr);
   
@@ -35,7 +34,7 @@ void Step::vCastPtr(void)
 {
   ENTRY(); // ENTRY("vCastPtr"_Stz);
   
-  i8 iInt; m_pDataStack->vPopInt(iInt,__func__);
+  i8 iInt = m_pDataStack->iPopInt(__func__);
   
   m_pDataStack->vPushPtr((Object*)iInt);
   

@@ -24,11 +24,9 @@ void Step::vObjectClassFetch(void)
 {
   ENTRY(); // ENTRY("vObjectClassFetch"_Stz);
   
-  Object* pObject;
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
   
-  eCN eClassNo;
-  eClassNo = pObject->eClass();
+  eCN eClassNo = pObject->eClass();
   
   m_pDataStack->vPushInt(eClassNo);
   
@@ -42,10 +40,9 @@ void Step::vObjectClassStore(void)
 {
   ENTRY(); // ENTRY("vObjectClassStore"_Stz);
   
-  Object* pObject;
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
   
-  i8 iClassNo; m_pDataStack->vPopInt(iClassNo,__func__);
+  i8 iClassNo = m_pDataStack->iPopInt(__func__);
 
   pObject->vClass((eCN)iClassNo);
   
@@ -59,8 +56,7 @@ void Step::vObjectDump(void)
 {
   ENTRY(); // ENTRY("vObjectDump"_Stz);
   
-  Object* pObject;
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
   
   eCN eClass = pObject->eClass();
   
@@ -96,8 +92,7 @@ void Step::vObjectMagicMark(void)
 {
   ENTRY(); // ENTRY("vObjectMagicMark"_Stz);
   
-  Object* pObject;
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
   
   pObject->vMagic();
   
@@ -129,10 +124,9 @@ void Step::vObjectWordBodySet(void)
 {
   ENTRY(); // ENTRY("vObjectWordBodySet"_Stz);
   
-  Object* pObject;
-  m_pDataStack->vPopPtr(pObject,__func__);
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
   
-  i8 iIsBody; m_pDataStack->vPopInt(iIsBody,__func__);
+  i8 iIsBody = m_pDataStack->iPopInt(__func__);
   
   pObject->vWordBody(iIsBody);
   

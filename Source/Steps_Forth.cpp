@@ -44,7 +44,7 @@ void Step::vAllot(void)
 {
   ENTRY(); // ENTRY("vAllot"_Stz);
   
-  i8 iBytes; m_pDataStack->vPopInt(iBytes,__func__);
+  i8 iBytes = m_pDataStack->iPopInt(__func__);
   
   RASSERT(iBytes);
   
@@ -124,9 +124,7 @@ void Step::vCompileComma(void)
 {
   ENTRY(); // ENTRY("vCompileComma"_Stz);
   
-  Object* pWordObject;
-  m_pDataStack->vPopPtr(pWordObject,__func__);
-  Word* pCalledWord = _pWord(pWordObject);
+  Word* pCalledWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
@@ -325,7 +323,7 @@ void Step::vExit_RT(void)
       && m_pLocalsFrame->aDiscardPoint() == m_pReturnStack->aTopVal())
     m_pTask->vLocalsPop();
   
-  Cell* aCell; m_pReturnStack->vPopFip(aCell,__func__);
+  Cell* aCell = m_pReturnStack->aPopFip(__func__);
   
   m_aInxPtr = aCell;
   
@@ -421,7 +419,7 @@ void Step::vLocate(void)
 {
   ENTRY(); // ENTRY("vLocate"_Stz);
   
-  i8 iAddrAsInt; m_pDataStack->vPopAsInt(iAddrAsInt,__func__);
+  i8 iAddrAsInt = m_pDataStack->iPopAsInt(__func__);
   
   void* aCellVoid = (void*)iAddrAsInt;
   Cell* aHasCell = _aCell(aCellVoid);

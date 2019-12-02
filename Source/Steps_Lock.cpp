@@ -23,10 +23,7 @@ void Step::vLockDropRead(void)
 {
   ENTRY(); // ENTRY("vLockDropRead"_Stz);
   
-  Object* pPtrLock;;
-  m_pDataStack->vPopPtr(pPtrLock,__func__);
-  
-  Lock* pLock = _pLock(pPtrLock);
+  Lock* pLock = _pLock(m_pDataStack->pPopPtr(__func__));
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
   
@@ -42,10 +39,7 @@ void Step::vLockDropWrite(void)
 {
   ENTRY(); // ENTRY("vLockDropWrite"_Stz);
 
-  Object* pPtrLock;;
-  m_pDataStack->vPopPtr(pPtrLock,__func__);
-  
-  Lock* pLock = _pLock(pPtrLock);
+  Lock* pLock = _pLock(m_pDataStack->pPopPtr(__func__));
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
 
@@ -61,10 +55,7 @@ void Step::vLockGrabRead(void)
 {
   ENTRY(); // ENTRY("vLockGrabRead"_Stz);
 
-  Object* pPtrLock;;
-  m_pDataStack->vPopPtr(pPtrLock,__func__);
-  
-  Lock* pLock = _pLock(pPtrLock);
+  Lock* pLock = _pLock(m_pDataStack->pPopPtr(__func__));
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
 
@@ -80,10 +71,7 @@ void Step::vLockGrabWrite(void)
 {
   ENTRY(); // ENTRY("vLockGrabWrite"_Stz);
 
-  Object* pPtrLock;;
-  m_pDataStack->vPopPtr(pPtrLock,__func__);
-  
-  Lock* pLock = _pLock(pPtrLock);
+  Lock* pLock = _pLock(m_pDataStack->pPopPtr(__func__));
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
   
@@ -99,10 +87,7 @@ void Step::vLockInit(void)
 {
   ENTRY(); // ENTRY("vLockInit"_Stz);
   
-  Object* pPtrLock;;
-  m_pDataStack->vPopPtr(pPtrLock,__func__);
-  
-  Lock* pLock = _pLock(pPtrLock);
+  Lock* pLock = _pLock(m_pDataStack->pPopPtr(__func__));
   
   new(pLock) Lock(LK_UNKNOWN,nullptr);
   

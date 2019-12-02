@@ -1230,7 +1230,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       
       //*pf = 'i';                                                    //! Defect??
       
-      i8 iInt; m_pForth->m_pDataStack->vPopInt(iInt,__func__);
+      i8 iInt = m_pForth->m_pDataStack->iPopInt(__func__);
       
       char caValue[32];
       StrLib::wToString(iInt,caValue);
@@ -1248,8 +1248,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       
       //*pf = 'i';                                                    //! Defect??
       
-      Object* pObject;
-      m_pForth->m_pDataStack->vPopPtr(pObject,__func__);
+      Object* pObject = m_pForth->m_pDataStack->pPopPtr(__func__);
       
       char caValue[32];
       StrLib::wToPointer(pObject,caValue);

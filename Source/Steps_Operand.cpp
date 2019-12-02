@@ -95,7 +95,7 @@ void Step::vOperandHandleAggEnd(void)
   
   ASSERT(m_pRegSet->m_pOperand);
   
-  i8 nCount; m_pDataStack->vPopInt(nCount,__func__);
+  i8 nCount = m_pDataStack->iPopInt(__func__);
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
   
@@ -331,10 +331,7 @@ void Step::vOperandSet(void)
 {
   ENTRY(); // ENTRY("vOperandSet"_Stz);
   
-  Object* pPtrObject;
-  m_pDataStack->vPopPtr(pPtrObject,__func__);
-  
-  m_pRegSet->m_pOperand = _pOperand(pPtrObject);
+  m_pRegSet->m_pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }

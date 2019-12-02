@@ -25,9 +25,7 @@ void Step::vJob_WriteBufferParentJobIdFetch(void)
 {
   ENTRY(); // ENTRY("vJob_WriteBufferParentJobIdFetch"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
-  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
+  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(m_pDataStack->pPopPtr(__func__));
   
   i8 iParentJobId = pJob_WriteBuffer->m_iParentJobId;
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
@@ -45,9 +43,7 @@ void Step::vJob_WriteBufferInsertRows(void)
 {
   ENTRY(); // ENTRY("vJob_WriteBufferInsertRows"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
-  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
+  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(m_pDataStack->pPopPtr(__func__));
   
   bool bAllBuffersWritten = pJob_WriteBuffer->bInsertRows();
   
@@ -63,9 +59,7 @@ void Step::vJob_WriteBufferIsIngesting(void)
 {
   ENTRY(); // ENTRY("vJob_WriteBufferIsIngesting"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
-  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
+  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(m_pDataStack->pPopPtr(__func__));
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
@@ -81,9 +75,7 @@ void Step::vJob_WriteBufferIsInserting(void)
 {
   ENTRY(); // ENTRY("vJob_WriteBufferIsInserting"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
-  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
+  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(m_pDataStack->pPopPtr(__func__));
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
@@ -99,9 +91,7 @@ void Step::vJob_WriteBufferIsLoading(void)
 {
   ENTRY(); // ENTRY("vJob_WriteBufferIsLoading"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
-  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
+  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(m_pDataStack->pPopPtr(__func__));
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
@@ -117,9 +107,7 @@ void Step::vJob_WriteBufferPartitionFetch(void)
 {
   ENTRY(); // ENTRY("vJob_WriteBufferPartitionFetch"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
-  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
+  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(m_pDataStack->pPopPtr(__func__));
   
   i8 i_Partition = pJob_WriteBuffer->m_iPartitionId;
   m_pDataStack->vPushInt(i_Partition);
@@ -134,13 +122,9 @@ void Step::vJob_WriteBufferTableStore(void)
 {
   ENTRY(); // ENTRY("vJob_WriteBufferTableStore"_Stz);
   
-  Object* pJobPtr;
-  m_pDataStack->vPopPtr(pJobPtr,__func__);
-  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
+  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(m_pDataStack->pPopPtr(__func__));
   
-  Object* pTablePtr;
-  m_pDataStack->vPopPtr(pTablePtr,__func__);
-  Table* pTable = _pTable(pTablePtr);
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   
   pJob_WriteBuffer->m_pTable = pTable;
   
