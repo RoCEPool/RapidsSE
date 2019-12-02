@@ -7,17 +7,17 @@ namespace SenVM
 {
   class StrVal : public AnyVal
   {
-  protected:
+  private:
     char m_caStr[1];
   
   public:
     void* operator new(size_t);
   
   public:
-    void  vAssign(Stz* szStr);
     char* azChar(void);
     i8    nSize(void);
     Stz*  szStz(void);
+    void  vStz(Stz* szStz);
 
     i8    nStackUsage(void);
     void  vToString(Stz* szStz);

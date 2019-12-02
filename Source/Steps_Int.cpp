@@ -53,7 +53,7 @@ void Step::vIntAdd(void)
   AnyVal* i = m_pDataStack->aTopVal();
   
   // add the two values and leave the result on the stack
-  *_aIntVal(i) = _aIntVal(j)->iInt() + _aIntVal(i)->iInt();
+  _aIntVal(i)->vInt(_aIntVal(j)->iInt() + _aIntVal(i)->iInt());
   
   EXIT();
 }

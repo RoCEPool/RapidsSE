@@ -27,7 +27,7 @@ void* StrVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
-void StrVal::vAssign(Stz* szStz)
+void StrVal::vStz(Stz* szStz)
 {
   vClass(CN_STRVAL);
   m_nBytesFollowing = StrLib::nCopy(m_caStr,szStz->azChar()) + 1;

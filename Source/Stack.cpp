@@ -342,7 +342,7 @@ void Stack::vPushFip(Cell* aFip)
   
   FipVal* aFipVal = aAllotFipVal();
   
-  * aFipVal = aFip;
+  aFipVal->vFip(aFip);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -354,7 +354,7 @@ void Stack::vPushInt(i8 iInt)
   
   IntVal* aIntVal = aAllotIntVal();
   
-  * aIntVal = iInt;
+  aIntVal->vInt(iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -366,7 +366,7 @@ void Stack::vPushPtr(Object* pObj)
   
   PtrVal* aPtrVal = aAllotPtrVal();
   
-  * aPtrVal = pObj;
+  aPtrVal->vObj(pObj);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -381,7 +381,7 @@ void Stack::vPushStr(String* pStr)
   i8 nSize = StrLib::iSize(pStr->azStr());
   StrVal* aStrVal = aAllotStrVal(nSize);
 
-  aStrVal->vAssign(pStr->szStz());
+  aStrVal->vStz(pStr->szStz());
   //aStrVal->vInspect();
 
   //vDump(nullptr,"After:"_Stz);
