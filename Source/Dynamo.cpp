@@ -490,8 +490,12 @@ bool Dynamo::bCollectOp(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vAcceptToken();
-
+//  vAcceptToken();
+//
+//  JobClass* aJobClass = AM::pFindJobClass(CN_JOB_UNIVERSAL);
+//  ASSERT(aJobClass);
+  //Job* pJob = aJobClass->pPreJob(&m_pRequest->m_xReqTuple,m_pSession);
+  
   i8 i_Arg = 0;
   for (;;) {
     

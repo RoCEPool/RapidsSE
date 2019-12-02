@@ -1189,6 +1189,11 @@ void AM::vLogEntrySprint(s4K& sString, i8 i_Entry) {
   Log::vEntrySprint(sString,i_Entry);
 }
 
+JobClass* AM::pFindJobClass(eCN eClass)
+{
+  return JobClass::pFind(eClass);
+}
+
 void AM::vFocalAdd(Focal* pFocal)      {
   if (! gpAttachMap || !gpAttachMap->m_pFocalObjects)
     return;
