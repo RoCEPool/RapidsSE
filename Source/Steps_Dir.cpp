@@ -72,13 +72,13 @@ void Step::vDirGetCurrent(void)
 {
   ENTRY(); // ENTRY("vDirGetCurrent"_Stz);
   
-  GenVar xStrVal;
+  GenVar xDirPath;
   
   s256 sDirPath;
   
   if (Dir::bGetCurrent(sDirPath)) {
-    xStrVal = sDirPath;
-    m_pDataStack->vPushVal(xStrVal);
+    xDirPath = sDirPath;
+    m_pDataStack->vPushVal(xDirPath);
   }
   else {
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,

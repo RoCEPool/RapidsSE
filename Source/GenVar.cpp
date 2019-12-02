@@ -62,7 +62,7 @@ GenVar::GenVar(AnyVal* aAnyVal)
     case CN_FIPVAL: u.m_xFipVal.vFip(aAnyVal->aFip());    break;
     case CN_INTVAL: u.m_xIntVal.vInt(aAnyVal->iInt());    break;
     case CN_PTRVAL: u.m_xPtrVal.vObj(aAnyVal->pObj());    break;
-    case CN_STZVAL: u.m_xStrVal.vStz(aAnyVal->szStz());   break;
+    case CN_STZVAL: u.m_xStzVal.vStz(aAnyVal->szStz());   break;
       
     default:
       vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -109,7 +109,7 @@ void GenVar::operator =(AnyVal* aAnyVal)
     case CN_FIPVAL: u.m_xFipVal.vFip(aAnyVal->aFip());    break;
     case CN_INTVAL: u.m_xIntVal.vInt(aAnyVal->iInt());    break;
     case CN_PTRVAL: u.m_xPtrVal.vObj(aAnyVal->pObj());    break;
-    case CN_STZVAL: u.m_xStrVal.vStz(aAnyVal->szStz());   break;
+    case CN_STZVAL: u.m_xStzVal.vStz(aAnyVal->szStz());   break;
       
     default:
       vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -158,7 +158,7 @@ void GenVar::operator =(Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  u.m_xStrVal.vStz(szStz);
+  u.m_xStzVal.vStz(szStz);
   
   _postcondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
 }
@@ -173,7 +173,7 @@ char* GenVar::azChar(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  char* az = u.m_xStrVal.azChar();
+  char* az = u.m_xStzVal.azChar();
 
   return az;
 }
@@ -254,7 +254,7 @@ i8 GenVar::nStackUsage(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  i8 nBytes = u.m_xStrVal.nStackUsage();
+  i8 nBytes = u.m_xStzVal.nStackUsage();
   
   return nBytes;
 }
@@ -266,7 +266,7 @@ Stz* GenVar::szStz(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Stz* sz = u.m_xStrVal.szStz();
+  Stz* sz = u.m_xStzVal.szStz();
 
   return sz;
 }
@@ -278,7 +278,7 @@ i8 GenVar::nStzSize(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  i8 nSize = u.m_xStrVal.nStzSize();
+  i8 nSize = u.m_xStzVal.nStzSize();
   
   return nSize;
 }

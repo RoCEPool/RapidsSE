@@ -27,11 +27,11 @@ namespace SenVM
   /*----------------------------------------------------------------------------*/
   inline StzVal* _aStzVal(void* aAddr)
   {
-    StzVal* aStrVal = reinterpret_cast<StzVal*>(aAddr);
+    StzVal* aStzVal = reinterpret_cast<StzVal*>(aAddr);
   
-    RASSERT_TYPE(aStrVal,CN_STZVAL);
+    RASSERT_TYPE(aStzVal,CN_STZVAL);
 
-    return aStrVal;
+    return aStzVal;
   }  
 }
 

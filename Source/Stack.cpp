@@ -299,9 +299,9 @@ void Stack::vPopStr(String* pString, const char* azFunNm)
   
   _hazard_();
   
-  StzVal* aStrVal = _aStzVal(aTopVal());
+  StzVal* aStzVal = _aStzVal(aTopVal());
   
-  pString->vCopy(aStrVal->szStz());
+  pString->vCopy(aStzVal->szStz());
   
   vDiscardTop();
   
@@ -379,10 +379,10 @@ void Stack::vPushStr(String* pStr)
   //vDump(nullptr,"Before:"_Stz);
 
   i8 nSize = StrLib::iSize(pStr->azStr());
-  StzVal* aStrVal = aAllotStrVal(nSize);
+  StzVal* aStzVal = aAllotStzVal(nSize);
 
-  aStrVal->vStz(pStr->szStz());
-  //aStrVal->vInspect();
+  aStzVal->vStz(pStr->szStz());
+  //aStzVal->vInspect();
 
   //vDump(nullptr,"After:"_Stz);
 }
@@ -544,18 +544,18 @@ PtrVal* Stack::aAllotPtrVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot a str value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
-StzVal* Stack::aAllotStrVal(i8 nStrSize)
+StzVal* Stack::aAllotStzVal(i8 nStrSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   i8 nWithAdditionalBytes = nStrSize;
   
-  StzVal* aStrVal = (StzVal*) aAllotAnyVal(nWithAdditionalBytes);
+  StzVal* aStzVal = (StzVal*) aAllotAnyVal(nWithAdditionalBytes);
   
-  aStrVal->vClass(CN_STZVAL);
-  aStrVal->vMagic();
+  aStzVal->vClass(CN_STZVAL);
+  aStzVal->vMagic();
   
-  return aStrVal;
+  return aStzVal;
 }
 
 /*----------------------------------------------------------------------------*/

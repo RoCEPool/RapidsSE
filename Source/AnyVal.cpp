@@ -278,8 +278,8 @@ i8 AnyVal::nStackUsage(void)
     }
       
     case CN_STZVAL: {
-      StzVal* aStrVal = _aStzVal(this);
-      nBytes = aStrVal->nStackUsage();
+      StzVal* aStzVal = _aStzVal(this);
+      nBytes = aStzVal->nStackUsage();
       break;
     }
       
@@ -322,8 +322,8 @@ void AnyVal::vToString(Stz* szStz)
     }
       
     case CN_STZVAL: {
-      StzVal* aStrVal = _aStzVal(this);
-      aStrVal->vToStz(szStz);
+      StzVal* aStzVal = _aStzVal(this);
+      aStzVal->vToStz(szStz);
       break;
     }
             
