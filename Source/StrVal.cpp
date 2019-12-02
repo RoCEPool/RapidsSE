@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StrVal.cpp -- Layout of a String when on Stack                             */
+/* StrVal.cpp -- Layout of a Stz string when on stack                         */
 /*============================================================================*/
 
 #include "SenVM.h"
@@ -29,9 +29,9 @@ void* StrVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void StrVal::vStz(Stz* szStz)
 {
-  vClass(CN_STRVAL);
+  vClass(CN_STZVAL);
   
-  m_nBytesFollowing = StrLib::nCopy(m_caStr,szStz->azChar()) + 1;
+  m_nBytesFollowing = StrLib::nCopy(m_caStz,szStz->azChar()) + 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +39,7 @@ void StrVal::vStz(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 char* StrVal::azChar(void)
 {
-  return m_caStr;
+  return m_caStz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ i8 StrVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 Stz* StrVal::szStz(void)
 {
-  return reinterpret_cast<Stz*>(m_caStr);
+  return reinterpret_cast<Stz*>(m_caStz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ i8 StrVal::nStzSize(void)
 /*----------------------------------------------------------------------------*/
 void StrVal::vToStz(Stz* szDst)
 {
-  StrLib::vCopy(szDst->azChar(),m_caStr);
+  StrLib::vCopy(szDst->azChar(),m_caStz);
 }
 
 /*============================================================================*/

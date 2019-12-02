@@ -62,7 +62,7 @@ GenVar::GenVar(AnyVal* aAnyVal)
     case CN_FIPVAL: u.m_xFipVal.vFip(aAnyVal->aFip());    break;
     case CN_INTVAL: u.m_xIntVal.vInt(aAnyVal->iInt());    break;
     case CN_PTRVAL: u.m_xPtrVal.vObj(aAnyVal->pObj());    break;
-    case CN_STRVAL: u.m_xStrVal.vStz(aAnyVal->szStz());   break;
+    case CN_STZVAL: u.m_xStrVal.vStz(aAnyVal->szStz());   break;
       
     default:
       vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -109,7 +109,7 @@ void GenVar::operator =(AnyVal* aAnyVal)
     case CN_FIPVAL: u.m_xFipVal.vFip(aAnyVal->aFip());    break;
     case CN_INTVAL: u.m_xIntVal.vInt(aAnyVal->iInt());    break;
     case CN_PTRVAL: u.m_xPtrVal.vObj(aAnyVal->pObj());    break;
-    case CN_STRVAL: u.m_xStrVal.vStz(aAnyVal->szStz());   break;
+    case CN_STZVAL: u.m_xStrVal.vStz(aAnyVal->szStz());   break;
       
     default:
       vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,

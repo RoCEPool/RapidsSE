@@ -917,7 +917,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
       sStackContents.vCatSprint("%p"_Stz,
                                 _aFipVal(aAnyVal)->aFip());
     }
-    else if (CN_STRVAL == eClass) {
+    else if (CN_STZVAL == eClass) {
       sStackContents.vCatSprint("\"%lls\""_Stz,
                                 _aStrVal(aAnyVal)->azChar());
     }
@@ -1204,7 +1204,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     eCN eClass = aAnyVal0->eClass();
     
     // test for StrVal
-    if (CN_STRVAL == eClass) {
+    if (CN_STZVAL == eClass) {
       
       //*pf = 's';                                                    //! Defect??
       

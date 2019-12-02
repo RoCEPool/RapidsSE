@@ -111,7 +111,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
     eCN eValClass  = aAnyVal->eClass();
     i8 nStackUsage = aAnyVal->nStackUsage();
     
-    if (CN_STRVAL == eValClass)
+    if (CN_STZVAL == eValClass)
       vTrace("[%2lld %p %02lldB %6s (8,8,%02lld)] "_Stz,
              i_Val,aAnyVal,nStackUsage,aCN[eValClass],
              _aStrVal(aAnyVal)->nStzSize());
@@ -151,7 +151,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
         break;
       }
         
-      case CN_STRVAL: {
+      case CN_STZVAL: {
         char* azChar = aAnyVal->azChar();
         
         vTrace("%s\n"_Stz,azChar);
@@ -292,7 +292,7 @@ void Stack::vPopStr(String* pString, const char* azFunNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuard(CN_STRVAL) )
+  if ( ! bGuard(CN_STZVAL) )
     Correctness::vThrow(FK_DSTACK,VL_FATAL,
                         azFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
@@ -552,7 +552,7 @@ StrVal* Stack::aAllotStrVal(i8 nStrSize)
   
   StrVal* aStrVal = (StrVal*) aAllotAnyVal(nWithAdditionalBytes);
   
-  aStrVal->vClass(CN_STRVAL);
+  aStrVal->vClass(CN_STZVAL);
   aStrVal->vMagic();
   
   return aStrVal;

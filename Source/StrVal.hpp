@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StrVal.hpp -- Layout of a String when on Stack                             */
+/* StrVal.hpp -- Layout of a Stz string when on stack                         */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@ namespace SenVM
   class StrVal : public AnyVal
   {
   private:
-    char m_caStr[1];
+    char m_caStz[1];
   
   public:
     void* operator new(size_t);
@@ -29,7 +29,7 @@ namespace SenVM
   {
     StrVal* aStrVal = reinterpret_cast<StrVal*>(aAddr);
   
-    RASSERT_TYPE(aStrVal,CN_STRVAL);
+    RASSERT_TYPE(aStrVal,CN_STZVAL);
 
     return aStrVal;
   }  

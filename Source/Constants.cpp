@@ -156,7 +156,7 @@ void Constants::vAddConstants(void)
   // CN_ : class numbers
   /*  0 */ vAddConstant("CN_NONE"_Stz,         CN_NONE);
 
-  /*  8 */ vAddConstant("CN_STRVAL"_Stz,       CN_STRVAL);
+  /*  8 */ vAddConstant("CN_STZVAL"_Stz,       CN_STZVAL);
   
   /* 12 */ vAddConstant("CN_ARGUMENTS"_Stz,    CN_ARGUMENTS);
   /* 13 */ vAddConstant("CN_ATOMIC"_Stz,       CN_ATOMIC);

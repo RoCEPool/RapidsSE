@@ -319,7 +319,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_STMT_SELECT
   /* */ &Dump::vInvalid,         // CN_STREAMDEF
   /* */ &Dump::vInvalid,         // CN_STRING_T
-  /* */ &Dump::vInvalid,         // CN_STRVAL
+  /* */ &Dump::vInvalid,         // CN_STZVAL
   /* */ &Dump::vInvalid,         // CN_SUPERAGGOP
   /* */ &Dump::vInvalid,         // CN_SUPERCOUNTOP
   /* */ &Dump::vInvalid,         // CN_SUPERMERGEOP
@@ -680,7 +680,7 @@ i8 giClassSize[]
   /* */ sizeof(Stmt_Select),        // CN_STMT_SELECT
   /* */ sizeof(StreamDef),          // CN_STREAMDEF
   /* */ sizeof(s32),                // CN_STRING_T
-  /* */ sizeof(StrVal),             // CN_STRVAL
+  /* */ sizeof(StrVal),             // CN_STZVAL
   /* */ sizeof(SuperAggOp),         // CN_SUPERAGGOP
   /* */ sizeof(SuperCountOp),       // CN_SUPERCOUNTOP
   /* */ sizeof(SuperMergeOp),       // CN_SUPERMERGEOP
@@ -1041,7 +1041,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_STMT_SELECT
   /* */ HT_TRANSIENT_LARGE,   // CN_STREAMDEF
   /* */ HT_INVALID,           // CN_STRING_T
-  /* */ HT_INVALID,           // CN_STRVAL
+  /* */ HT_INVALID,           // CN_STZVAL
   /* */ HT_TRANSIENT_SMALL,   // CN_SUPERAGGOP
   /* */ HT_TRANSIENT_SMALL,   // CN_SUPERCOUNTOP
   /* */ HT_TRANSIENT_SMALL,   // CN_SUPERMERGEOP

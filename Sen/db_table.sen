@@ -121,7 +121,7 @@
 : withinTable ( "<tableNm>" -- t|f )
 
   assert::stack_1+
-  CN_STRVAL assert::class_0
+  CN_STZVAL assert::class_0
 
   // assert dictionary path
   task::this task.dicStack dicStack.depth assert

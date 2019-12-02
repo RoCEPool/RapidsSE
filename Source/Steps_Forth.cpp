@@ -549,7 +549,7 @@ void Step::vSee(void)
       
       AnyVal* aAnyVal = reinterpret_cast<AnyVal*>(aDoesCell);
       
-      if (CN_STRVAL == aAnyVal->eClass()) {
+      if (CN_STZVAL == aAnyVal->eClass()) {
         vTrace(" \"%s\"\n"_Stz,_aStrVal(aAnyVal)->azChar());
       }
       else {
