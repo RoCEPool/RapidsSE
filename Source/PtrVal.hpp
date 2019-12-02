@@ -14,9 +14,8 @@ namespace SenVM
     
   public:
     void  vObj(Object* pObject);
-  
     i8    nStackUsage(void);
-    void  vToString(Stz* szDst);
+    void  vToStz(Stz* szDst);
   };
   
   /*----------------------------------------------------------------------------*/

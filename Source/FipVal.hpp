@@ -14,9 +14,8 @@ namespace SenVM
     
   public:
     void  vFip(Cell* aFip);
-   
     i8    nStackUsage(void);
-    void  vToString(Stz* szDst);
+    void  vToStz(Stz* szDst);
   };
   
   /*----------------------------------------------------------------------------*/
@@ -30,7 +29,6 @@ namespace SenVM
   
     return aFipVal;
   }
-  
 }
 
 /*============================================================================*/

@@ -30,6 +30,7 @@ void* StrVal::operator new(size_t)
 void StrVal::vStz(Stz* szStz)
 {
   vClass(CN_STRVAL);
+  
   m_nBytesFollowing = StrLib::nCopy(m_caStr,szStz->azChar()) + 1;
 }
 
@@ -39,6 +40,16 @@ void StrVal::vStz(Stz* szStz)
 char* StrVal::azChar(void)
 {
   return m_caStr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get how many bytes are needed to push this StrVal on stack                 */
+/*----------------------------------------------------------------------------*/
+i8 StrVal::nStackUsage(void)
+{  
+  i8 nBytes = sizeof(AnyVal) + m_nBytesFollowing;
+  
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,27 +69,9 @@ i8 StrVal::nStzSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get how many bytes are needed to push this StrVal on stack                 */
-/*----------------------------------------------------------------------------*/
-i8 StrVal::nStackUsage(void)
-{
-//  i8 nBytes = sizeof(StrVal)
-//                - sizeof(m_caStr)
-//                + m_nBytesFollowing;
-
-  i8 nBytes = sizeof(AnyVal)
-                + m_nBytesFollowing;
-
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void StrVal::vToString(Stz* szDst)
+void StrVal::vToStz(Stz* szDst)
 {
   StrLib::vCopy(szDst->azChar(),m_caStr);
 }

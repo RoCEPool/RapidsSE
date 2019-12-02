@@ -40,7 +40,7 @@ i8 PtrVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void PtrVal::vToString(Stz* szDst)
+void PtrVal::vToStz(Stz* szDst)
 {
   * szDst = reinterpret_cast<void*>(m_pObj);
 }

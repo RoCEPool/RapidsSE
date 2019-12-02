@@ -38,7 +38,7 @@ i8 IntVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void IntVal::vToString(Stz* szDst)
+void IntVal::vToStz(Stz* szDst)
 {
   if (C_DATUM_NULL == m_iInt) {
     szDst->vConcat("null"_Stz);

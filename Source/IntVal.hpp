@@ -15,7 +15,7 @@ namespace SenVM
   public:
     void  vInt(i8 iVal);
     i8    nStackUsage(void);
-    void  vToString(Stz* szDst);
+    void  vToStz(Stz* szDst);
   };
   
   /*----------------------------------------------------------------------------*/

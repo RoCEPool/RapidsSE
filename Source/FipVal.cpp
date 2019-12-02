@@ -38,7 +38,7 @@ i8 FipVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void FipVal::vToString(Stz* szDst)
+void FipVal::vToStz(Stz* szDst)
 {
   * szDst = reinterpret_cast<void*>(m_aFip);
 }
