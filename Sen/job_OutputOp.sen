@@ -11,8 +11,6 @@
 
   >>logEntry <SEED_REQ>
 
-  job::this locals| pMark2Op |
-
   begin
 
     // bide till next operand is available
