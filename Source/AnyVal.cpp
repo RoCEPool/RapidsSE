@@ -297,7 +297,7 @@ i8 AnyVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void AnyVal::vToString(Stz* szString)
+void AnyVal::vToString(Stz* szStz)
 {
   eCN eClass = this->eClass();
   
@@ -305,25 +305,25 @@ void AnyVal::vToString(Stz* szString)
             
     case CN_FIPVAL: {
       FipVal* aFipVal = _aFipVal(this);
-      aFipVal->vToString(szString);
+      aFipVal->vToString(szStz);
       break;
     }
       
     case CN_INTVAL: {
       IntVal* aIntVal = _aIntVal(this);
-      aIntVal->vToString(szString);
+      aIntVal->vToStz(szStz);
       break;
     }
       
     case CN_PTRVAL: {
       PtrVal* aPtrVal = _aPtrVal(this);
-      aPtrVal->vToString(szString);
+      aPtrVal->vToStz(szStz);
       break;
     }
       
     case CN_STRVAL: {
       StrVal* aStrVal = _aStrVal(this);
-      aStrVal->vToString(szString);
+      aStrVal->vToStz(szStz);
       break;
     }
             
