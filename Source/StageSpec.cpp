@@ -171,7 +171,7 @@ void StageSpec::vPrependStartOp(void)
   
   OpSpec* pOpSpec;
   
-  pOpSpec = new OpSpec("start"_Stz,this);
+  pOpSpec = new OpSpec("startOp"_Stz,this);
   m_pOpSpecVec->vInsert(pOpSpec);
   
   // rework the m_i_OpSpec

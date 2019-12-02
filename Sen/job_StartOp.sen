@@ -7,16 +7,43 @@
 /*----------------------------------------------------------------------------*/
 /* execute for startOp request                        (on node where spawned) */
 /*----------------------------------------------------------------------------*/
- : start_req ( -- )
+ : startOp_req ( -- )
  
-   >>logEntry <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
-   job::this locals| pJob_StartOp |
+  begin
 
+    // bide till next operand is available
+    Operand[].bide
 
-   pJob_StartOp job.opLoop
+    // pop next operand from queue into Operand[]
+    Operand[].next
 
-   //pJob_StartOp job::participantExecuted
+    // decode kind
+    Operand[].kind case
+
+      ZK_ENDMARKER of
+        "Operand:- ZK_ENDMARKER" .
+        Operand[].delete
+        false
+      endof
+
+      ZK_CANCELMARKER of
+        "Operand:- ZK_CANCELMARKER" .
+        "Query being cancelled\n" .
+        Operand[].pipeOut
+        true
+      endof
+
+      ZK_STARTMARKER of
+        "Operand:- ZK_STARTMARKER" .
+        Operand[].pipeOut
+        true
+      endof
+
+    endcase
+
+  while assert::stack_0 repeat
 
   <<logExit
   job::deleteThis
@@ -26,9 +53,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: start :: start ;
+jobSyntax: startOp :: startOp ;
 
-jobInfo: start
+jobInfo: startOp
 {
   <?jobDesc?>  = "--description of job--"
   

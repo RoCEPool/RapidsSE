@@ -7,7 +7,7 @@
 OpDesc __Op_Start (
   CN_STARTOP,         // class number
   OK_SINGLE,          // op kind
-  "Start"_Stz,        // first word of prompt command
+  "StartOp"_Stz,      // first word of prompt command
   "Sta"_Stz,          // prefix
                  
   true,               // partitioned

@@ -45,7 +45,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can scan the table
   <tableNm> to sTableNm
-
+  sTableNm .
   sTableNm checkScanTable not if
     pJob_ScanOp <ERROR_JOB> !!logError exit
   then

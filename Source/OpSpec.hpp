@@ -38,6 +38,7 @@ namespace Pipelines
     void vOpDefn(OpDefn* aOpDefn);
     i8   i_OpSpec(void);
     void v_OpSpec(i8 i_OpSpec);
+    void vReplace(Stz* szName, Stz* szValue);
     i8   i_Slot(void);
     StageSpec* pStageSpec(void);
 

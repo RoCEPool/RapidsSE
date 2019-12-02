@@ -7,6 +7,7 @@ enum eZK // operand kind
 {
   /*  0 */ ZK_NONE=0,
 
+  /*    */ ZK_CANCELMARKER,
   /*    */ ZK_CRWBUFFER,
   /*    */ ZK_CSVBUFFER,
   /*    */ ZK_ENDMARKER,
@@ -23,6 +24,7 @@ static Stz* aZK[]
 {
   /*  0 */ "NONE"_Stz,
   
+  /*    */ "ZK_CANCELMARKER"_Stz,
   /*    */ "ZK_CRWBUFFER"_Stz,
   /*    */ "ZK_CSVBUFFER"_Stz,
   /*    */ "ZK_ENDMARKER"_Stz,

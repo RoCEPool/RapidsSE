@@ -246,7 +246,7 @@ void EnameSet::vPrintDetailed(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy source ename-set into this ename-set                                  */
+/* copy source ename-set into this ename-set and replace an ename pair        */
 /*----------------------------------------------------------------------------*/
 void EnameSet::vReplace(Stz* szName, Stz* szValue)
 {
