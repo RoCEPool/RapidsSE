@@ -114,7 +114,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
     if (CN_STRVAL == eValClass)
       vTrace("[%2lld %p %02lldB %6s (8,8,%02lld)] "_Stz,
              i_Val,aAnyVal,nStackUsage,aCN[eValClass],
-             _aStrVal(aAnyVal)->nSize());
+             _aStrVal(aAnyVal)->nStzSize());
     else
       vTrace("[%2lld %p %02lldB %6s (8,8,00)] "_Stz,
              i_Val,aAnyVal,nStackUsage,aCN[eValClass]);

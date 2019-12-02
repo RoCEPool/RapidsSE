@@ -260,18 +260,6 @@ i8 GenVar::nStackUsage(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size of string in nested value                                         */
-/*----------------------------------------------------------------------------*/
-i8 GenVar::nStzSize(void)
-{
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
-  
-  i8 nSize = u.m_xStrVal.nSize();
-
-  return nSize;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get stz                                                                    */
 /*----------------------------------------------------------------------------*/
 Stz* GenVar::szStz(void)
@@ -281,6 +269,18 @@ Stz* GenVar::szStz(void)
   Stz* sz = u.m_xStrVal.szStz();
 
   return sz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of nested string value                                            */
+/*----------------------------------------------------------------------------*/
+i8 GenVar::nStzSize(void)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  i8 nSize = u.m_xStrVal.nStzSize();
+  
+  return nSize;
 }
 
 /*----------------------------------------------------------------------------*/

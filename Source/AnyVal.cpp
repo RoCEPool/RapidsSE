@@ -220,7 +220,7 @@ i8 AnyVal::nStzSize(void)
 {
   _magic_();
   
-  i8 nSize = _aStrVal(this)->nSize();
+  i8 nSize = _aStrVal(this)->nStzSize();
   
   return nSize;
 }

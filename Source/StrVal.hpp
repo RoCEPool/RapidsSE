@@ -15,9 +15,9 @@ namespace SenVM
   
   public:
     char* azChar(void);
-    i8    nSize(void);
     Stz*  szStz(void);
     void  vStz(Stz* szStz);
+    i8    nStzSize(void);
 
     i8    nStackUsage(void);
     void  vToString(Stz* szStz);
