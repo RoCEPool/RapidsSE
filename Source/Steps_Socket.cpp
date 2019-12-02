@@ -31,13 +31,11 @@ void Step::vSocketAccept(void)
   ENTRY(); // ENTRY("vSocketAccept"_Stz);
   
   SysCall oSysCall;
-  Socket* pSocket;
-  int     iSocketId;
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__); // get pSocket
-  pSocket = reinterpret_cast<Socket*>(pObject);
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
   
   // accept a connection
+  int iSocketId;
   bool bResult = pSocket->bAcceptClient(iSocketId, oSysCall);
   
   if ( ! bResult )
@@ -60,11 +58,9 @@ void Step::vSocketClose(void)
   ENTRY(); // ENTRY("vSocketClose"_Stz);
   
   SysCall oSysCall;
-  Socket* pSocket;
-  
-  Object* pObject = m_pDataStack->pPopPtr(__func__); // get pSocket
-  pSocket = reinterpret_cast<Socket*>(pObject);
-  
+
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+
   // close the socket
   bool bResult = pSocket->bClose(oSysCall);
   
