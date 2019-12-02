@@ -114,7 +114,7 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
     if (CN_STZVAL == eValClass)
       vTrace("[%2lld %p %02lldB %6s (8,8,%02lld)] "_Stz,
              i_Val,aAnyVal,nStackUsage,aCN[eValClass],
-             _aStrVal(aAnyVal)->nStzSize());
+             _aStzVal(aAnyVal)->nStzSize());
     else
       vTrace("[%2lld %p %02lldB %6s (8,8,00)] "_Stz,
              i_Val,aAnyVal,nStackUsage,aCN[eValClass]);
@@ -299,7 +299,7 @@ void Stack::vPopStr(String* pString, const char* azFunNm)
   
   _hazard_();
   
-  StrVal* aStrVal = _aStrVal(aTopVal());
+  StzVal* aStrVal = _aStzVal(aTopVal());
   
   pString->vCopy(aStrVal->szStz());
   
@@ -379,7 +379,7 @@ void Stack::vPushStr(String* pStr)
   //vDump(nullptr,"Before:"_Stz);
 
   i8 nSize = StrLib::iSize(pStr->azStr());
-  StrVal* aStrVal = aAllotStrVal(nSize);
+  StzVal* aStrVal = aAllotStrVal(nSize);
 
   aStrVal->vStz(pStr->szStz());
   //aStrVal->vInspect();
@@ -544,13 +544,13 @@ PtrVal* Stack::aAllotPtrVal(void)
 /*----------------------------------------------------------------------------*/
 /* allot a str value on top of stack                                          */
 /*----------------------------------------------------------------------------*/
-StrVal* Stack::aAllotStrVal(i8 nStrSize)
+StzVal* Stack::aAllotStrVal(i8 nStrSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   i8 nWithAdditionalBytes = nStrSize;
   
-  StrVal* aStrVal = (StrVal*) aAllotAnyVal(nWithAdditionalBytes);
+  StzVal* aStrVal = (StzVal*) aAllotAnyVal(nWithAdditionalBytes);
   
   aStrVal->vClass(CN_STZVAL);
   aStrVal->vMagic();

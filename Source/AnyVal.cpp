@@ -48,7 +48,7 @@ char* AnyVal::azChar(void)
 {
   _magic_();
   
-  char* az = _aStrVal(this)->azChar();
+  char* az = _aStzVal(this)->azChar();
   
   return az;
 }
@@ -220,7 +220,7 @@ i8 AnyVal::nStzSize(void)
 {
   _magic_();
   
-  i8 nSize = _aStrVal(this)->nStzSize();
+  i8 nSize = _aStzVal(this)->nStzSize();
   
   return nSize;
 }
@@ -232,7 +232,7 @@ Stz* AnyVal::szStz(void)
 {
   _magic_();
   
-  Stz* sz = _aStrVal(this)->szStz();
+  Stz* sz = _aStzVal(this)->szStz();
   
   return sz;
 }
@@ -244,7 +244,7 @@ void AnyVal::vStz(Stz* szStz)
 {
   _magic_();
   
-  _aStrVal(this)->vStz(szStz);
+  _aStzVal(this)->vStz(szStz);
 }
 
 
@@ -278,7 +278,7 @@ i8 AnyVal::nStackUsage(void)
     }
       
     case CN_STZVAL: {
-      StrVal* aStrVal = _aStrVal(this);
+      StzVal* aStrVal = _aStzVal(this);
       nBytes = aStrVal->nStackUsage();
       break;
     }
@@ -322,7 +322,7 @@ void AnyVal::vToString(Stz* szStz)
     }
       
     case CN_STZVAL: {
-      StrVal* aStrVal = _aStrVal(this);
+      StzVal* aStrVal = _aStzVal(this);
       aStrVal->vToStz(szStz);
       break;
     }

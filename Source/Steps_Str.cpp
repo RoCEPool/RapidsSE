@@ -41,7 +41,7 @@ void Step::vStrAlgebra(void)
   ENTRY(); // ENTRY("vStrAlgebra"_Stz);
  
   // (1) StrVal's cannot be declared as local variables
-  //StrVal xStrval;  // uncommenting this line should produce a compile error
+  //StzVal xStrval;  // uncommenting this line should produce a compile error
   
   // declaring a fixed length string
   s32 xString("A test"_Stz);

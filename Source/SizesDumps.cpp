@@ -680,7 +680,7 @@ i8 giClassSize[]
   /* */ sizeof(Stmt_Select),        // CN_STMT_SELECT
   /* */ sizeof(StreamDef),          // CN_STREAMDEF
   /* */ sizeof(s32),                // CN_STRING_T
-  /* */ sizeof(StrVal),             // CN_STZVAL
+  /* */ sizeof(StzVal),             // CN_STZVAL
   /* */ sizeof(SuperAggOp),         // CN_SUPERAGGOP
   /* */ sizeof(SuperCountOp),       // CN_SUPERCOUNTOP
   /* */ sizeof(SuperMergeOp),       // CN_SUPERMERGEOP

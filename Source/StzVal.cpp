@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StrVal.cpp -- Layout of a Stz string when on stack                         */
+/* StzVal.cpp -- Layout of a Stz string when on stack                         */
 /*============================================================================*/
 
 #include "SenVM.h"
@@ -11,10 +11,10 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* StrVal::operator new(size_t)
+void* StzVal::operator new(size_t)
 {
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: StrVal class cannot be new'd\n"_Stz);
+         "fatal: StzVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -27,7 +27,7 @@ void* StrVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
-void StrVal::vStz(Stz* szStz)
+void StzVal::vStz(Stz* szStz)
 {
   vClass(CN_STZVAL);
   
@@ -37,15 +37,15 @@ void StrVal::vStz(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* get char*                                                                  */
 /*----------------------------------------------------------------------------*/
-char* StrVal::azChar(void)
+char* StzVal::azChar(void)
 {
   return m_caStz;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get how many bytes are needed to push this StrVal on stack                 */
+/* get how many bytes are needed to push this StzVal on stack                 */
 /*----------------------------------------------------------------------------*/
-i8 StrVal::nStackUsage(void)
+i8 StzVal::nStackUsage(void)
 {  
   i8 nBytes = sizeof(AnyVal) + m_nBytesFollowing;
   
@@ -55,7 +55,7 @@ i8 StrVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 /* get adddress of Stz area                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* StrVal::szStz(void)
+Stz* StzVal::szStz(void)
 {
   return reinterpret_cast<Stz*>(m_caStz);
 }
@@ -63,7 +63,7 @@ Stz* StrVal::szStz(void)
 /*----------------------------------------------------------------------------*/
 /* get size of str                                                            */
 /*----------------------------------------------------------------------------*/
-i8 StrVal::nStzSize(void)
+i8 StzVal::nStzSize(void)
 {
   return m_nBytesFollowing;
 }
@@ -71,7 +71,7 @@ i8 StrVal::nStzSize(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void StrVal::vToStz(Stz* szDst)
+void StzVal::vToStz(Stz* szDst)
 {
   StrLib::vCopy(szDst->azChar(),m_caStz);
 }

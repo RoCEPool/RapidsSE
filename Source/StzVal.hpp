@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* StrVal.hpp -- Layout of a Stz string when on stack                         */
+/* StzVal.hpp -- memory layout of an Stz value                                */
 /*============================================================================*/
 #pragma once
 
 namespace SenVM
 {
-  class StrVal : public AnyVal
+  class StzVal : public AnyVal
   {
   private:
     char m_caStz[1];
@@ -25,9 +25,9 @@ namespace SenVM
   /*----------------------------------------------------------------------------*/
   /* safe cast                                                                  */
   /*----------------------------------------------------------------------------*/
-  inline StrVal* _aStrVal(void* aAddr)
+  inline StzVal* _aStzVal(void* aAddr)
   {
-    StrVal* aStrVal = reinterpret_cast<StrVal*>(aAddr);
+    StzVal* aStrVal = reinterpret_cast<StzVal*>(aAddr);
   
     RASSERT_TYPE(aStrVal,CN_STZVAL);
 
