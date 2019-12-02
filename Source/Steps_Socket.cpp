@@ -83,7 +83,11 @@ void Step::vSocketConnect(void)
   GenVar xNodeVar;
   
   
-  Object* pObject = m_pDataStack->pPopPtr(__func__); m_pDataStack->vPopVal(xNodeVar,__func__);
+  Object* pObject = m_pDataStack->pPopPtr(__func__);
+  // get pSocket
+  pSocket = reinterpret_cast<Socket*>(pObject);
+
+  m_pDataStack->vPopVal(xNodeVar,__func__);
   
   i8 iPort = m_pDataStack->iPopInt(__func__);
   
@@ -93,8 +97,6 @@ void Step::vSocketConnect(void)
   if (AM::bVerbose())
     vTrace("SOCKET ADDR: %s\n"_Stz,sAddr);
   
-  // get pSocket
-  pSocket = reinterpret_cast<Socket*>(pObject);
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
