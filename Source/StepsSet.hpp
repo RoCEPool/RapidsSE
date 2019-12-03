@@ -1320,6 +1320,7 @@ public:
   void vWordEnmSetStore(void);
   void vWordExitHookGet(void);
   void vWordExitHookSet(void);
+  void vWordFind(void);
   void vWordForget(void);
   void vWordImmediateGet(void);
   void vWordImmediateSet(void);

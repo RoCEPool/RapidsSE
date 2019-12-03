@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Word(void)
 {
+  vAddStep("word::find"_Stz,        &Step::vWordFind);
   vAddStep("word::new"_Stz,         &Step::vWordNew);
   
   vAddStep("word.category@"_Stz,    &Step::vWordCategoryFetch);
@@ -149,6 +150,29 @@ void Step::vWordExitHookSet(void)
   
   pWord->vExitHook(sExitHook);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.find -- find word given its name                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vWordFind(void)
+{
+  ENTRY(); // ENTRY("vWordNew"_Stz);
+  
+  s32 sWordNm;
+  m_pDataStack->vPopStr(sWordNm,__func__);
+  
+  Dic* pDic;
+  if (m_oDicStack.iCount())
+    pDic = m_oDicStack.pTop();
+  else
+    pDic = AM::pRootDic();
+  
+  Word* pWordFound = pDic->pFindWord(sWordNm);
+  
+  m_pDataStack->vPushPtr(pWordFound);
+
   EXIT();
 }
 
