@@ -109,7 +109,7 @@
 
   0 locals| sFilePath |
 
-  input.push
+  input::push
 
   args.senDir sSubDir str.cat dup
 
@@ -133,7 +133,7 @@
           to sFilePath
         sFilePath "Would open %v" .printf
 
-        sFilePath input.open docol input.close
+        sFilePath input::open docol input::close
 
       then
 
@@ -144,7 +144,7 @@
 
   pSubDir dir.delete
 
-  input.pop
+  input::pop
 
 ;
 
