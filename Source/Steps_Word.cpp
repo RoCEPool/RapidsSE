@@ -10,6 +10,7 @@
 void Step::vAddSteps_Word(void)
 {
   vAddStep("word::find"_Stz,        &Step::vWordFind);
+  vAddStep("word::locate"_Stz,      &Step::vWordLocate);
   vAddStep("word::new"_Stz,         &Step::vWordNew);
   
   vAddStep("word.category@"_Stz,    &Step::vWordCategoryFetch);
@@ -282,6 +283,30 @@ void Step::vWordKindStore(void)
   
   pWord->vKind((eWK)iKind);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word::locate -- locate word given a fip                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vWordLocate(void)
+{
+  ENTRY(); // ENTRY("vWordKindStore"_Stz);
+  
+  Cell* aHasCell = m_pDataStack->aPopFip(__func__);
+  
+  Word* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
+  
+  if (pLocatedWord) {
+    s32 sName;
+    sName = pLocatedWord->szWordNm();
+    m_pDataStack->vPushStr(sName);
+  }
+  else {
+    i8 iZero = 0;
+    m_pDataStack->vPushInt(iZero);
+  }
+
   EXIT();
 }
 

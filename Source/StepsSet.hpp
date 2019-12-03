@@ -1327,6 +1327,7 @@ public:
   void vWordIsIntrinsic(void);
   void vWordKindFetch(void);
   void vWordKindStore(void);
+  void vWordLocate(void);
   void vWordNameFetch(void);
   void vWordNameStore(void);
   void vWordNew(void);
