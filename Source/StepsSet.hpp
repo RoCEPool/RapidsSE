@@ -1314,13 +1314,13 @@ public:
   void vWord(void);
   void vWordCategoryFetch(void);
   void vWordCategoryStore(void);
+  void vWordDelete(void);
   void vWordDump(void);
   void vWordEnmSetFetch(void);
   void vWordEnmSetStore(void);
   void vWordExitHookGet(void);
   void vWordExitHookSet(void);
   void vWordFind(void);
-  void vWordForget(void);
   void vWordImmediateGet(void);
   void vWordImmediateSet(void);
   void vWordIsImmediate(void);

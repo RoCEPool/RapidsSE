@@ -5998,7 +5998,7 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "  dup not if drop exit_rt then ( )\n"
     "\n"
-    "  word.forget ( )\n"
+    "  word::delete ( )\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"

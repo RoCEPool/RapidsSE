@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Word(void)
 {
+  vAddStep("word::delete"_Stz,      &Step::vWordDelete);
   vAddStep("word::find"_Stz,        &Step::vWordFind);
   vAddStep("word::locate"_Stz,      &Step::vWordLocate);
   vAddStep("word::new"_Stz,         &Step::vWordNew);
@@ -20,7 +21,6 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.EnameSet!"_Stz,    &Step::vWordEnmSetStore);
   vAddStep("word.exitHook@"_Stz,    &Step::vWordExitHookGet);
   vAddStep("word.exitHook!"_Stz,    &Step::vWordExitHookSet);
-  vAddStep("word.forget"_Stz,       &Step::vWordForget);
   vAddStep("word.immediate@"_Stz,   &Step::vWordImmediateGet);
   vAddStep("word.immediate!"_Stz,   &Step::vWordImmediateSet);
   vAddStep("word.isImmediate"_Stz,  &Step::vWordIsImmediate);
@@ -172,9 +172,9 @@ void Step::vWordFind(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.forget -- forget word on stack                                        */
+/* word::delete -- forget word on stack                                       */
 /*----------------------------------------------------------------------------*/
-void Step::vWordForget(void)
+void Step::vWordDelete(void)
 {
   ENTRY(); // ENTRY("vWordForget"_Stz);
   
