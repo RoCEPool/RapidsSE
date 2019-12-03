@@ -36,7 +36,7 @@ void Step::vJob_PipelineBegin(void)
   // set the pipeline
   
   pJob_Pipeline->m_pPipeline->vPopulateOpVec(m_pRegSet->m_pDynamo->pPipelineSpec());
-  pJob_Pipeline->m_pPipeline->vSetupJob();
+  //pJob_Pipeline->m_pPipeline->vSetupJob();
   
   delete m_pRegSet->m_pDynamo;
   m_pRegSet->m_pDynamo = nullptr;
