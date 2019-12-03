@@ -26,7 +26,6 @@ void Step::vAddSteps_Forth(void)
   vAddStep("findInCurrent"_Stz,   &Step::vFindInCurrent);
   vAddStep("forget"_Stz,          &Step::vForget);
   vAddStep("immediate"_Stz,       &Step::vImmediate,        true );
-  vAddStep("locate"_Stz,          &Step::vLocate);
   vAddStep("postpone"_Stz,        &Step::vPostpone,         true );
   vAddStep("prompt"_Stz,          &Step::vPrompt,           true );
   vAddStep("see"_Stz,             &Step::vSee);
@@ -389,30 +388,6 @@ void Step::vImmediate(void)
   //vTrace("Step::vImmediate: %s\n"_Stz,pCurrentWord->sName().azChar());
   
   pCurrentWord->vImmediate(true);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* locate -- locate and push word name based on the ip which is on the stack  */
-/*----------------------------------------------------------------------------*/
-void Step::vLocate(void)
-{
-  ENTRY(); // ENTRY("vLocate"_Stz);
-  
-  Cell* aHasCell = m_pDataStack->aPopFip(__func__);
-  
-  Word* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
-  
-  if (pLocatedWord) {
-    s32 sName;
-    sName = pLocatedWord->szWordNm();
-    m_pDataStack->vPushStr(sName);
-  }
-  else {
-    i8 iZero = 0;
-    m_pDataStack->vPushInt(iZero);
-  }
   
   EXIT();
 }

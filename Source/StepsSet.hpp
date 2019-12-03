@@ -324,7 +324,6 @@ public:
   void vFindInCurrent(void);
   void vForget(void);
   void vImmediate(void);
-  void vLocate(void);
   void vPostpone(void);
   void vPrompt(void);
   void vSee(void);
