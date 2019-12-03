@@ -75,8 +75,7 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
 
   m_pOpSpec       = pOpSpec;
   m_sNextLabel    = "<nil>"_Stz;
-  
-  m_aOpDefn       = pOpSpec->aOpDefn();
+
   m_pPipeline     = pPipeline;
   m_pJobPipeline  = pPipeline->pJob();
   
@@ -111,8 +110,8 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_iNextStage = C_UNKNOWN;
   m_iXmitNode  = C_UNKNOWN;
   
-  m_fpCall        = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
-  m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
+  m_fpCall        = nullptr;
+  m_fpDrain       = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -164,69 +163,69 @@ Op* Op::pThisTLSOp(void)
 /*----------------------------------------------------------------------------*/
 /* call op loop                                                               */
 /*----------------------------------------------------------------------------*/
-void Op::vOpLoop(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  eOR eCallAgain;
-//  if (bIsCancelling() && m_fpDrain)
-//    eCallAgain = (*m_fpDrain)(this);
-//  else
-
-  if (m_bFirstCall) {
-    m_bFirstCall = false;
-    
-    m_aOpDefn = gxOpCatalog.aFindOp(m_sName);
-    
-    m_fpCall  = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
-    m_fpDrain = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
-  }
-  
-  AM::vLogOpr(SL_INF,this,OA_OP_CALL,
-              "Calling operator"_Stz); //!format-LogOpr
-  
-  eCallAgain = (*m_fpCall)(this);
-
-  AM::vLogOpr(SL_INF,this,OA_OP_RETURNED,
-              "Returned from operator with %s"_Stz, //!format-LogOpr
-             aOR[eCallAgain]);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  switch (eCallAgain) {
-   
-    case OR_BIDE:
-      ASSERT(bIsLocked());
-      AM::vTaskSchedulerAct(m_pTask,SA_BIDE);
-      return;
-    
-    case OR_ERROR:
-      ASSERT(AM::bJobHasError(m_pJobUniversal));
-      AM::vSetJobLocalError(m_pJobUniversal, m_pPipeline->pJob());
-      
-      if (m_bAckJobEnd)
-        vAckJob();
-      
-      //AM::vTaskSchedulerAct(m_pTask,SA_DELETE);
-      return;
-      
-    case OR_EXIT:
-      if (AM::bJobHasError(m_pJobUniversal)) {
-        AM::vSetJobLocalError(m_pJobUniversal, m_pPipeline->pJob());
-      }
-      if (m_bAckJobEnd)
-        vAckJob();
-      //AM::vTaskSchedulerAct(m_pTask,SA_DELETE);
-      return;
-    
-    case OR_PAUSE:
-      //AM::vTaskSchedulerAct(m_pTask,SA_PAUSE);
-      return;
-    
-    default:
-      NEVER_REACH;
-  }
-}
+//void Op::vOpLoop(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_);
+//
+//  eOR eCallAgain;
+////  if (bIsCancelling() && m_fpDrain)
+////    eCallAgain = (*m_fpDrain)(this);
+////  else
+//
+//  if (m_bFirstCall) {
+//    m_bFirstCall = false;
+//
+//    m_aOpDefn = gxOpCatalog.aFindOp(m_sName);
+//
+//    m_fpCall  = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
+//    m_fpDrain = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
+//  }
+//
+//  AM::vLogOpr(SL_INF,this,OA_OP_CALL,
+//              "Calling operator"_Stz); //!format-LogOpr
+//
+//  eCallAgain = (*m_fpCall)(this);
+//
+//  AM::vLogOpr(SL_INF,this,OA_OP_RETURNED,
+//              "Returned from operator with %s"_Stz, //!format-LogOpr
+//             aOR[eCallAgain]);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  switch (eCallAgain) {
+//
+//    case OR_BIDE:
+//      ASSERT(bIsLocked());
+//      AM::vTaskSchedulerAct(m_pTask,SA_BIDE);
+//      return;
+//
+//    case OR_ERROR:
+//      ASSERT(AM::bJobHasError(m_pJobUniversal));
+//      AM::vSetJobLocalError(m_pJobUniversal, m_pPipeline->pJob());
+//
+//      if (m_bAckJobEnd)
+//        vAckJob();
+//
+//      //AM::vTaskSchedulerAct(m_pTask,SA_DELETE);
+//      return;
+//
+//    case OR_EXIT:
+//      if (AM::bJobHasError(m_pJobUniversal)) {
+//        AM::vSetJobLocalError(m_pJobUniversal, m_pPipeline->pJob());
+//      }
+//      if (m_bAckJobEnd)
+//        vAckJob();
+//      //AM::vTaskSchedulerAct(m_pTask,SA_DELETE);
+//      return;
+//
+//    case OR_PAUSE:
+//      //AM::vTaskSchedulerAct(m_pTask,SA_PAUSE);
+//      return;
+//
+//    default:
+//      NEVER_REACH;
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

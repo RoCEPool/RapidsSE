@@ -62,7 +62,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.openToFile"_Stz,       &Step::vJobOpenToFile);
   
-  vAddStep("job.opLoop"_Stz,           &Step::vJobOpLoop);
   vAddStep("job.opTable!"_Stz,         &Step::vJobOpTableStore);
   
   vAddStep("job.originatingId@"_Stz,   &Step::vJobOriginatingIdFetch);
@@ -938,21 +937,6 @@ void Step::vJobOperandStore(void)
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   pJob->m_pOperand = pOperand;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.opLoop -- execute the job's op loop                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOpLoop(void)
-{
-  ENTRY(); // ENTRY("vJobOperandStore"_Stz);
-  
-  Job_Universal* pJob_Universal = _pJob_Universal(m_pDataStack->pPopPtr(__func__));
-  
-  Op* pOp = pJob_Universal->m_pOp;
-  pOp->vOpLoop();
   
   EXIT();
 }

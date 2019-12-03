@@ -624,65 +624,6 @@ void Dynamo::vShow(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Phase3 : flatten into one stage                                            */
-/*----------------------------------------------------------------------------*/
-bool Dynamo::bPhase3_flatten(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  StageSpecVec* pStageSpecVec = m_pPipelineSpec->pStageSpecVec();
-  
-  StageSpec* pStageSpec_0 = pStageSpecVec->pGet(0);
-  for (i8 i_Stage = 1; i_Stage < pStageSpecVec->nItems(); i_Stage++) {
-    StageSpec* pStageSpec_n = pStageSpecVec->pGet(i_Stage);
-    
-    pStageSpec_0->vCopyOps(pStageSpec_n);
-  }
-  
-  return true;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* Phase4 : find op defn's                                                    */
-/*----------------------------------------------------------------------------*/
-bool Dynamo::bPhase4_opdefn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-
-  RASSERT(0);
-  
-  StageSpecVec* pStageSpecVec = m_pPipelineSpec->pStageSpecVec();
-  
-  for (i8 i_Stage = 0; i_Stage < pStageSpecVec->nItems(); i_Stage++) {
-    StageSpec* pStageSpec = pStageSpecVec->pGet(i_Stage);
-    
-    OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
-    for (i8 i_Op = 0; i_Op < pOpSpecVec->nItems(); i_Op++) {
-      OpSpec* pOpSpec = pOpSpecVec->pGet(i_Op);
-      
-      OpDefn* aOpDefn = gxOpCatalog.aFindOp(pOpSpec->szName());
-      
-      //! HOW DO WE HANDLE ERRORS?
-      if (! aOpDefn) {
-        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-               "Unable to find %s in op catalog"_Stz,pOpSpec->szName());
-      }
-      
-      pOpSpec->vOpDefn(aOpDefn);
-    }
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* accept token and advance to next token                                     */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vAcceptToken(void)

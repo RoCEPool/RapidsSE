@@ -14,7 +14,7 @@
    job::this locals| pJob_ChunkFileOp |
 
 
-   pJob_ChunkFileOp job.opLoop
+   //pJob_ChunkFileOp job.opLoop
 
   <<logExit
   job::deleteThis

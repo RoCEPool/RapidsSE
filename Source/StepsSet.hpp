@@ -491,7 +491,6 @@ public:
   void vJobOpenToFile(void);
   void vJobOperandFetch(void);
   void vJobOperandStore(void);
-  void vJobOpLoop(void);
   void vJobOpTableStore(void);
   void vJobOriginatingIdFetch(void);
   void vJobOriginatingIdStore(void);

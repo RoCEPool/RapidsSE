@@ -44,8 +44,6 @@ namespace Pipelines
     bool bIsOperator(Token* pTkn);
     bool bPhase1_collect(Job* pJob);
     bool bPhase2_staging(void);
-    bool bPhase3_flatten(void);
-    bool bPhase4_opdefn(void);
 
     PipelineSpec* pPipelineSpec(void);
     void vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage);

@@ -14,7 +14,6 @@ namespace Operators
     s32            m_sName;          // first word of prompt command
     
     Pipeline*      m_pPipeline;      // op digest
-    OpDefn*        m_aOpDefn;        // op definition
     OpSpec*        m_pOpSpec;        // op specification
   
     s32            m_sNextLabel;     // label of this op
@@ -65,9 +64,6 @@ namespace Operators
    ~Op(void) noexcept(false);
   
     static Op* pThisTLSOp(void);
-
-    // - - - - - - - - - - - - - - - -
-    void vOpLoop(void);
   
     // - - - - - - - - - - - - - - - -
     void vAckJob(void);
