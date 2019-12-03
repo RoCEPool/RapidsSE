@@ -23,7 +23,6 @@ void Step::vAddSteps_Forth(void)
   vAddStep("does>"_Stz,           &Step::vDoes,             true );
   vAddStep("does_rt"_Stz,         &Step::vDoes_RT);
   vAddStep("exit_rt"_Stz,         &Step::vExit_RT);
-  vAddStep("find"_Stz,            &Step::vFind);
   vAddStep("findInCurrent"_Stz,   &Step::vFindInCurrent);
   vAddStep("forget"_Stz,          &Step::vForget);
   vAddStep("immediate"_Stz,       &Step::vImmediate,        true );
@@ -325,23 +324,6 @@ void Step::vExit_RT(void)
   Cell* aCell = m_pReturnStack->aPopFip(__func__);
   
   m_aInxPtr = aCell;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* find -- find and push word named on stack                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vFind(void)
-{
-  ENTRY(); // ENTRY("vFind"_Stz);
-  
-  s256 sName;
-  m_pDataStack->vPopStr(sName,__func__);
-    
-  Word* pWord = m_oDicStack.pFindWord(sName);
-  
-  m_pDataStack->vPushPtr(pWord);
   
   EXIT();
 }

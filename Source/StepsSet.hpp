@@ -321,7 +321,6 @@ public:
   void vDoes(void);
   void vDoes_RT(void);
   void vExit_RT(void);
-  void vFind(void);
   void vFindInCurrent(void);
   void vForget(void);
   void vImmediate(void);
