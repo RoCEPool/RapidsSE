@@ -361,7 +361,8 @@ void Step::vWordNew(void)
 
   Word* pNewWord = new(pDic) Word(sWordNm);
 
-  m_pDataStack->vPushPtr(pNewWord);
+  //m_pDataStack->vPushPtr(pNewWord);
+  m_pCompiler->vCurrentWord(pNewWord);
 
   EXIT();
 }

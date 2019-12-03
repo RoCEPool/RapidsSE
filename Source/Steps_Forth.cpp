@@ -14,7 +14,6 @@ void Step::vAddSteps_Forth(void)
   vAddStep(":"_Stz,               &Step::vColon);
   vAddStep(","_Stz,               &Step::vComma);
   vAddStep("compile,"_Stz,        &Step::vCompileComma);
-  vAddStep("create"_Stz,          &Step::vCreate);
   vAddStep("createTenants"_Stz,   &Step::vCreateTenants);
   vAddStep(">create"_Stz,         &Step::vCreateFrom);
   vAddStep(">createInRoot"_Stz,   &Step::vCreateFromInRoot);
@@ -129,30 +128,6 @@ void Step::vCompileComma(void)
   StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
   
   pCurrentWord->vEncode(afpCalledEntryStep);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* create -- create word named by next token, becomes word being compiled     */
-/*----------------------------------------------------------------------------*/
-void Step::vCreate(void)
-{
-  ENTRY(); // ENTRY("vCreate"_Stz);
-  
-  m_pCompiler->vNextToken();
-  
-  Dic* pDic;
-  if (m_oDicStack.iCount())
-    pDic = m_oDicStack.pTop();
-  else
-    pDic = AM::pRootDic();
-  
-  //vTrace(": %s\n"_Stz,m_pCompiler->szToken()->azChar());
-  
-  Word* pNewWord = new(pDic) Word(m_pCompiler->szToken());
-  
-  m_pCompiler->vCurrentWord(pNewWord);
   
   EXIT();
 }
