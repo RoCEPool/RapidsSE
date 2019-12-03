@@ -1028,6 +1028,8 @@ public:
   void vSessionIsExiting(void);
   void vSessionPid(void);
   void vSessionSlotFetch(void);
+  void vSessionToDoFetch(void);
+  void vSessionToDoStore(void);
   void vSessionTxFetch(void);
   void vSessionTxStore(void);
 
