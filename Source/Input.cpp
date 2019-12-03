@@ -2,7 +2,7 @@
 /* Input.cpp -- Input Processor                                               */
 /*============================================================================*/
 
-#include "Commands.h"
+#include "TokenStream.h"
 #include "AM.hpp"
 
 

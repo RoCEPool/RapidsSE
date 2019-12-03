@@ -2,7 +2,7 @@
 /* Parser.cpp -- input processor, stripping out line and block comments      */
 /*============================================================================*/
 
-#include "Commands.h"
+#include "TokenStream.h"
 #include "AM.hpp"
 
 #include "Arguments.hpp"

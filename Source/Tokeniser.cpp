@@ -2,7 +2,7 @@
 /* Tokeniser.cpp -- Tokeniser : divide input stream into tokens               */
 /*============================================================================*/
 
-#include "Commands.h"
+#include "TokenStream.h"
 #include "AM.hpp"
 
 
