@@ -400,10 +400,7 @@ void Step::vLocate(void)
 {
   ENTRY(); // ENTRY("vLocate"_Stz);
   
-  i8 iAddrAsInt = m_pDataStack->iPopAsInt(__func__);
-  
-  void* aCellVoid = (void*)iAddrAsInt;
-  Cell* aHasCell = _aCell(aCellVoid);
+  Cell* aHasCell = m_pDataStack->aPopFip(__func__);
   
   Word* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
   
