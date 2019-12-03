@@ -323,7 +323,6 @@ public:
   void vDoes_RT(void);
   void vExit_RT(void);
   void vFindInCurrent(void);
-  void vForget(void);
   void vImmediate(void);
   void vPostpone(void);
   void vPrompt(void);

@@ -23,7 +23,6 @@ void Step::vAddSteps_Forth(void)
   vAddStep("does_rt"_Stz,         &Step::vDoes_RT);
   vAddStep("exit_rt"_Stz,         &Step::vExit_RT);
   vAddStep("findInCurrent"_Stz,   &Step::vFindInCurrent);
-  vAddStep("forget"_Stz,          &Step::vForget);
   vAddStep("immediate"_Stz,       &Step::vImmediate,        true );
   vAddStep("postpone"_Stz,        &Step::vPostpone,         true );
   vAddStep("prompt"_Stz,          &Step::vPrompt,           true );
@@ -319,34 +318,6 @@ void Step::vFindInCurrent(void)
   Word* pWord = m_oDicStack.pFindInCurrent(sName);
   
   m_pDataStack->vPushPtr(pWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* forget -- forget the word named by next token                              */
-/*----------------------------------------------------------------------------*/
-void Step::vForget(void)
-{
-  ENTRY(); // ENTRY("vForget"_Stz);
-  
-  m_pCompiler->vNextToken();
-  
-  Word* pWord = m_oDicStack.pFindWord(m_pCompiler->szToken());
-  
-  if ( ! pWord )
-    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
-           "No such word: %s"_Stz,
-           m_pCompiler->szToken()->azChar());
-  
-  s32 sName;
-  
-  sName = m_pCompiler->szToken();
-  
-  Word* pRemovedWord = m_oDicStack.pRemoveWord(sName);
-  ASSERT(pRemovedWord);
-  
-  delete pRemovedWord;
   
   EXIT();
 }

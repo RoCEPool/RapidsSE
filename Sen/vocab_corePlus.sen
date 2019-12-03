@@ -36,11 +36,9 @@
 /*----------------------------------------------------------------------------*/
 : :forget ( <"wordNm"> )
 
-  find ( word )
+  find dup not if drop exit_rt then
 
-  dup not if drop exit_rt then ( )
-
-  word::delete ( )
+  word::delete
 ;
 
 /*----------------------------------------------------------------------------*/
