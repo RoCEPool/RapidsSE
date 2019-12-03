@@ -9,10 +9,14 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Docol(void)
 {
-  vAddStep("]"_Stz,                      &Step::vDocolCompiling);
-  vAddStep("["_Stz,                      &Step::vDocolInterpreting,   true );
-  vAddStep("docol::isCompiling"_Stz,     &Step::vDocolIsCompiling);
-  vAddStep("docol::isInterpreting"_Stz,  &Step::vDocolIsInterpreting);
+  vAddStep("]"_Stz,                       &Step::vDocolCompiling);
+  vAddStep("["_Stz,                       &Step::vDocolInterpreting,   true);
+  
+  vAddStep("docol::currentWord@"_Stz,     &Step::vDocolCurrentWordFetch);
+  vAddStep("docol::currentWord!"_Stz,     &Step::vDocolCurrentWordStore);
+
+  vAddStep("docol::isCompiling"_Stz,      &Step::vDocolIsCompiling);
+  vAddStep("docol::isInterpreting"_Stz,   &Step::vDocolIsInterpreting);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -23,6 +27,34 @@ void Step::vDocolCompiling(void)
   ENTRY(); // ENTRY("vDocolCompiling"_Stz);
   
   m_pCompiler->vCompiling(true);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* docol::currentWord@ -- get current word                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vDocolCurrentWordFetch(void)
+{
+  ENTRY(); // ENTRY("vDocolCurrentWordFetch"_Stz);
+  
+  Word* pCurrWord = m_pCompiler->pCurrentWord();
+  
+  m_pDataStack->vPushPtr(pCurrWord);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* docol::currentWord! -- put current word                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vDocolCurrentWordStore(void)
+{
+  ENTRY(); // ENTRY("vDocolCurrentWordStore"_Stz);
+  
+  Word* pCurrWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  m_pCompiler->vCurrentWord(pCurrWord);
   
   EXIT();
 }

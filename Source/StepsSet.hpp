@@ -202,6 +202,8 @@ public:
 
   // docol
   void vDocolCompiling(void);
+  void vDocolCurrentWordFetch(void);
+  void vDocolCurrentWordStore(void);
   void vDocolInterpreting(void);
   void vDocolIsCompiling(void);
   void vDocolIsInterpreting(void);
