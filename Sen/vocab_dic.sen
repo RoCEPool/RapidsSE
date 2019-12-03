@@ -85,7 +85,7 @@ diclock.dropwrite
 
 diclock.grabwrite
 
-  >create
+  :create
   WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
   compiler::current >body object.magic!

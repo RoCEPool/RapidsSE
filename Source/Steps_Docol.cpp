@@ -38,6 +38,9 @@ void Step::vDocolCurrentWordFetch(void)
 {
   ENTRY(); // ENTRY("vDocolCurrentWordFetch"_Stz);
   
+  if (! m_pCompiler)
+    m_pCompiler = new Compiler;
+
   Word* pCurrWord = m_pCompiler->pCurrentWord();
   
   m_pDataStack->vPushPtr(pCurrWord);
@@ -54,6 +57,9 @@ void Step::vDocolCurrentWordStore(void)
   
   Word* pCurrWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
+  if (! m_pCompiler)
+    m_pCompiler = new Compiler;
+
   m_pCompiler->vCurrentWord(pCurrWord);
   
   EXIT();

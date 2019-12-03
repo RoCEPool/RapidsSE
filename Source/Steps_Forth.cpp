@@ -15,7 +15,7 @@ void Step::vAddSteps_Forth(void)
   vAddStep(","_Stz,               &Step::vComma);
   vAddStep("compile,"_Stz,        &Step::vCompileComma);
   vAddStep("createTenants"_Stz,   &Step::vCreateTenants);
-  vAddStep(">create"_Stz,         &Step::vCreateFrom);
+  vAddStep(" :create"_Stz,         &Step::vCreateFrom);
   vAddStep(">createInRoot"_Stz,   &Step::vCreateFromInRoot);
   vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
   vAddStep("createPersistent"_Stz,&Step::vCreatePersistent);
@@ -156,7 +156,7 @@ void Step::vCreatePersistent(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >create -- create word in dictionary using string on stack                 */
+/* :create -- create word in dictionary using string on stack                 */
 /*----------------------------------------------------------------------------*/
 void Step::vCreateFrom(void)
 {

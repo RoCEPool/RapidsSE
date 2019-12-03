@@ -20,7 +20,7 @@
 : :constant
 
   // create a word using the string on top of the stack
-  >create
+  :create
 
   // encode a push value of the value currently on the stack
   ,
