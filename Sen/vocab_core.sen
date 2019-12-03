@@ -157,7 +157,7 @@ true tick CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 : EXIT immediate
 
-  compiler::current word.exitHook@ find dup if
+  compiler::current word.exitHook@ word::find dup if
     compile,
   else
     drop

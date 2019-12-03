@@ -162,14 +162,8 @@ void Step::vWordFind(void)
   
   s32 sWordNm;
   m_pDataStack->vPopStr(sWordNm,__func__);
-  
-  Dic* pDic;
-  if (m_oDicStack.iCount())
-    pDic = m_oDicStack.pTop();
-  else
-    pDic = AM::pRootDic();
-  
-  Word* pWordFound = pDic->pFindWord(sWordNm);
+    
+  Word* pWordFound = m_oDicStack.pFindWord(sWordNm);
   
   m_pDataStack->vPushPtr(pWordFound);
 

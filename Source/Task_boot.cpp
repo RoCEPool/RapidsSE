@@ -91,7 +91,7 @@ void Task::vAddRoutines(void)
   "    then"
   
   // is token a known word?
-  "    input.token find"
+  "    input.token word::find"
   "    dup not if"                // we have an unknown word
   "      drop"
 //"      \"unknown\" ."
@@ -168,8 +168,8 @@ void Task::vAddRoutines(void)
   ": include"
 //  "  traceon"
   "  args.munged if"
-  "    dup find if"
-  "      find execute include-string"
+  "    dup word::find if"
+  "      word::find execute include-string"
   "      exit_rt"
   "    then"
   "    . debug::trap"
