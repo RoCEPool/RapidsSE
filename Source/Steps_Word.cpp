@@ -9,24 +9,25 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Word(void)
 {
-  vAddStep("word.category@"_Stz,   &Step::vWordCategoryFetch);
-  vAddStep("word.category!"_Stz,   &Step::vWordCategoryStore);
-  vAddStep("word.dump"_Stz,        &Step::vWordDump);
-  vAddStep("word.EnameSet@"_Stz,   &Step::vWordEnmSetFetch);
-  vAddStep("word.EnameSet!"_Stz,   &Step::vWordEnmSetStore);
-  vAddStep("word.exitHook@"_Stz,   &Step::vWordExitHookGet);
-  vAddStep("word.exitHook!"_Stz,   &Step::vWordExitHookSet);
-  vAddStep("word.forget"_Stz,      &Step::vWordForget);
-  vAddStep("word.immediate@"_Stz,  &Step::vWordImmediateGet);
-  vAddStep("word.immediate!"_Stz,  &Step::vWordImmediateSet);
-  vAddStep("word.isImmediate"_Stz, &Step::vWordIsImmediate);
-  vAddStep("word.isIntrinsic"_Stz, &Step::vWordIsIntrinsic);
-  vAddStep("word.kind@"_Stz,       &Step::vWordKindFetch);
-  vAddStep("word.kind!"_Stz,       &Step::vWordKindStore);
-  vAddStep("word.name@"_Stz,       &Step::vWordNameFetch);
-  vAddStep("word.name!"_Stz,       &Step::vWordNameStore);
-  vAddStep("word.prev"_Stz,        &Step::vWordPrev);
-  vAddStep("word.see"_Stz,         &Step::vWordSee);
+  vAddStep("word.category@"_Stz,    &Step::vWordCategoryFetch);
+  vAddStep("word.category!"_Stz,    &Step::vWordCategoryStore);
+  vAddStep("word.dump"_Stz,         &Step::vWordDump);
+  vAddStep("word.EnameSet@"_Stz,    &Step::vWordEnmSetFetch);
+  vAddStep("word.EnameSet!"_Stz,    &Step::vWordEnmSetStore);
+  vAddStep("word.exitHook@"_Stz,    &Step::vWordExitHookGet);
+  vAddStep("word.exitHook!"_Stz,    &Step::vWordExitHookSet);
+  vAddStep("word.forget"_Stz,       &Step::vWordForget);
+  vAddStep("word.immediate@"_Stz,   &Step::vWordImmediateGet);
+  vAddStep("word.immediate!"_Stz,   &Step::vWordImmediateSet);
+  vAddStep("word.isImmediate"_Stz,  &Step::vWordIsImmediate);
+  vAddStep("word.isIntrinsic"_Stz,  &Step::vWordIsIntrinsic);
+  vAddStep("word.kind@"_Stz,        &Step::vWordKindFetch);
+  vAddStep("word.kind!"_Stz,        &Step::vWordKindStore);
+  vAddStep("word.name@"_Stz,        &Step::vWordNameFetch);
+  vAddStep("word.name!"_Stz,        &Step::vWordNameStore);
+  vAddStep("word.prev"_Stz,         &Step::vWordPrev);
+  vAddStep("word.resetRoutine"_Stz, &Step::vWordPrev);
+  vAddStep("word.see"_Stz,          &Step::vWordSee);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -309,6 +310,20 @@ void Step::vWordPrev(void)
   Word* pPrevWord = pWord->pPrevWord();
   
   m_pDataStack->vPushPtr(pPrevWord);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.resetRoutine -- reset the routine contents                            */
+/*----------------------------------------------------------------------------*/
+void Step::vWordResetRoutine(void)
+{
+  ENTRY(); // ENTRY("vWordResetRoutine"_Stz);
+  
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  pWord->vResetRoutine();
   
   EXIT();
 }

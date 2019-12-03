@@ -1330,6 +1330,7 @@ public:
   void vWordNameFetch(void);
   void vWordNameStore(void);
   void vWordPrev(void);
+  void vWordResetRoutine(void);
   void vWordSee(void);
 
   // zero
