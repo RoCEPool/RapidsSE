@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Docol(void)
 {
-  vAddStep("]"_Stz,                     &Step::vDocolCompiling);
-  vAddStep("["_Stz,                     &Step::vDocolInterpreting,   true );
-  vAddStep("docol.isCompiling"_Stz,     &Step::vDocolIsCompiling);
-  vAddStep("docol.isInterpreting"_Stz,  &Step::vDocolIsInterpreting);
+  vAddStep("]"_Stz,                      &Step::vDocolCompiling);
+  vAddStep("["_Stz,                      &Step::vDocolInterpreting,   true );
+  vAddStep("docol::isCompiling"_Stz,     &Step::vDocolIsCompiling);
+  vAddStep("docol::isInterpreting"_Stz,  &Step::vDocolIsInterpreting);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +40,7 @@ void Step::vDocolInterpreting(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* docol.isCompiling -- currently in compiling mode?                          */
+/* docol::isCompiling -- currently in compiling mode?                         */
 /*----------------------------------------------------------------------------*/
 void Step::vDocolIsCompiling(void)
 {
@@ -54,7 +54,7 @@ void Step::vDocolIsCompiling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* docol.isInterpreting -- currently in interpreting mode?                    */
+/* docol::isInterpreting -- currently in interpreting mode?                   */
 /*----------------------------------------------------------------------------*/
 void Step::vDocolIsInterpreting(void)
 {
