@@ -31,6 +31,7 @@ enum eJT // job type
   /*    */ JT_DUMPTABLE,
   /*    */ JT_FORGETNODE,
   /*    */ JT_LF,
+  /*    */ JT_LIMITOP,
   /*    */ JT_LISTCATALOGS,
   /*    */ JT_LISTCOLUMNS,
   /*    */ JT_LISTIDXCOLUMNS,

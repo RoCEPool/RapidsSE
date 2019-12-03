@@ -211,7 +211,6 @@ pFINALIZE *gpFinalize[]
   /* 28 */ &Finalize::vUndefined,         // CN_OPSPEC
   /* 28 */ &Finalize::vUndefined,         // CN_OPSPECVEC
   /* 28 */ &Finalize::vUndefined,         // CN_OPVEC
-  /*    */ &Finalize::vUndefined,         // CN_OUTPUTOP
 
   /*    */ &Finalize::vUndefined,         // CN__P__
   /* 78 */ &Finalize::vUndefined,         // CN_PARSER
@@ -254,7 +253,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_ROWTRAY
   
   /*    */ &Finalize::vUndefined,         // CN__S__
-  /*    */ &Finalize::vUndefined,         // CN_SCANOP
   /*    */ &Finalize::vUndefined,         // CN_SCHEMA
   /*    */ &Finalize::vUndefined,         // CN_SCHEMATEST
   /*    */ &Finalize::vUndefined,         // CN_SEEME

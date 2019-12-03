@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Operators.h"
+#include "eJT.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -231,7 +232,7 @@ void Pipeline::vSetupJob(void)
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
     Op* pOp = pStage->pOpVec()->pGet(i_Op);
     
-    if (CN_LIMITOP == pOp->eClass()) {
+    if (JT_LIMITOP == AM::eJobType(pOp->m_pJobUniversal)) {
       m_bPulsed = true;
       break;
     }
@@ -245,7 +246,7 @@ void Pipeline::vSetupJob(void)
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
     Op* pOp = pStage->pOpVec()->pGet(i_Op);
     
-    if (CN_SCANOP == pOp->eClass()) {
+    if (JT_SCANOP == AM::eJobType(pOp->m_pJobUniversal)) {
       m_pOpToPulse = pOp;
       pOp->m_bPulsed = true;
       break;

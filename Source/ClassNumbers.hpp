@@ -214,7 +214,6 @@ enum eCN : u2 // Class Number
   /* 182 0x0B6     5696B Heap:M */ CN_OPSPEC,
   /* 183 0x0B7     2080B Heap:S */ CN_OPSPECVEC,
   /* 184 0x0B8     2080B Heap:S */ CN_OPVEC,
-  /* 185 0x0B9      480B Heap:S */ CN_OUTPUTOP,
   
   /* 186 0x0BA       16B Heap:I */ CN__P__,
   /* 187 0x0BB    48840B Heap:M */ CN_PARSER,
@@ -257,7 +256,6 @@ enum eCN : u2 // Class Number
   /* 222 0x0DE  1043608B Heap:L */ CN_ROWTRAY,
   
   /* 223 0x0DF       19B Heap:I */ CN__S__,
-  /* 224 0x0E0      504B Heap:S */ CN_SCANOP,
   /* 225 0x0E1       16B Heap:S */ CN_SCHEMA,
   /* 226 0x0E2    50336B Heap:L */ CN_SCHEMATEST,
   /* 227 0x0E3        8B Heap:I */ CN_SEEME,
@@ -576,7 +574,6 @@ static Stz* aCN[]
   /* 182 0x0B6 */ "OPSPEC"_Stz,              // CN_OPSPEC
   /* 183 0x0B7 */ "OPSPECVEC"_Stz,           // CN_OPSPECVEC
   /* 184 0x0B8 */ "OPVEC"_Stz,               // CN_OPVEC
-  /* 185 0x0B9 */ "OUTPUTOP"_Stz,            // CN_OUTPUTOP
   
   /* 186 0x0BA */ "_P__"_Stz,                // CN__P__
   /* 187 0x0BB */ "PARSER"_Stz,              // CN_PARSER
@@ -619,7 +616,6 @@ static Stz* aCN[]
   /* 222 0x0DE */ "ROWTRAY"_Stz,             // CN_ROWTRAY
   
   /* 223 0x0DF */ "_S__"_Stz,                // CN__S__
-  /* 224 0x0E0 */ "SCANOP"_Stz,              // CN_SCANOP
   /* 225 0x0E1 */ "SCHEMA"_Stz,              // CN_SCHEMA
   /* 226 0x0E2 */ "SCHEMATEST"_Stz,          // CN_SCHEMATEST
   /* 227 0x0E3 */ "SEEME"_Stz,               // CN_SEEME

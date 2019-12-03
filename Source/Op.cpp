@@ -45,7 +45,7 @@ bool Operators::_bIsValidOp(eCN eClass)
 void* Op::operator new(size_t)
 {
   Op* pOp =
-  static_cast<Op*>(HeapMem::pAllocate(CN_SCANOP));
+  static_cast<Op*>(HeapMem::pAllocate(CN_OP));
   
   return pOp;
 }
