@@ -155,7 +155,7 @@ ePX Dynamo::eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec) {
 /*----------------------------------------------------------------------------*/
 /* compile entire pipeline                                                    */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompile(void)
+bool Dynamo::bCompile(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
@@ -172,7 +172,7 @@ bool Dynamo::bCompile(void)
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
 #endif
   
-  bResult = bPhase1_collect();
+  bResult = bPhase1_collect(pJob);
   if (! bResult)
     return false;
  
@@ -198,9 +198,9 @@ bool Dynamo::bCompile(void)
 //  
 //  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
-  bResult = bPhase4_opdefn();
-  if (! bResult)
-    return false;
+//  bResult = bPhase4_opdefn();
+//  if (! bResult)
+//    return false;
   
 #ifdef WITH_TRACE_DYNAMO
   m_pPipelineSpec->vPrint();
@@ -213,7 +213,7 @@ bool Dynamo::bCompile(void)
 /*----------------------------------------------------------------------------*/
 /* phase 1: collect the plan                                                  */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bPhase1_collect(void)
+bool Dynamo::bPhase1_collect(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
@@ -234,7 +234,7 @@ bool Dynamo::bPhase1_collect(void)
   }
   
   while (m_pTkn->bSame("stage"_Stz))
-    bResult = bCollectStage();
+    bResult = bCollectStage(pJob);
   
   bResult = bCollectEnd();
 
@@ -289,7 +289,7 @@ bool Dynamo::bCollectBegin(void)
 /*----------------------------------------------------------------------------*/
 /* compile stage                                                              */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCollectStage(void)
+bool Dynamo::bCollectStage(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
@@ -311,7 +311,7 @@ bool Dynamo::bCollectStage(void)
   bCollectTopology();
   
   if (bIsOperator(m_pTkn))
-    bCollectPipe();
+    bCollectPipe(pJob);
   
 #ifdef WITH_TRACE_DYNAMO
   vTrace("Stage Clause recognised\n"_Stz);
@@ -449,7 +449,7 @@ bool Dynamo::bCollectTopology(void)
 /*----------------------------------------------------------------------------*/
 /* compile pipe                                                               */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCollectPipe(void)
+bool Dynamo::bCollectPipe(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
@@ -458,7 +458,7 @@ bool Dynamo::bCollectPipe(void)
     if (! bIsOperator(m_pTkn))
       break;
 
-    bCollectOp();
+    bCollectOp(pJob);
     
     if (! m_pTkn->bSame("|"_Stz))
       break;
@@ -476,7 +476,7 @@ bool Dynamo::bCollectPipe(void)
 /*----------------------------------------------------------------------------*/
 /* compile op                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCollectOp(void)
+bool Dynamo::bCollectOp(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
 
@@ -491,10 +491,6 @@ bool Dynamo::bCollectOp(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vAcceptToken();
-//
-//  JobClass* aJobClass = AM::pFindJobClass(CN_JOB_UNIVERSAL);
-//  ASSERT(aJobClass);
-  //Job* pJob = aJobClass->pPreJob(&m_pRequest->m_xReqTuple,m_pSession);
   
   i8 i_Arg = 0;
   for (;;) {
@@ -656,6 +652,8 @@ bool Dynamo::bPhase3_flatten(void)
 bool Dynamo::bPhase4_opdefn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+
+  RASSERT(0);
   
   StageSpecVec* pStageSpecVec = m_pPipelineSpec->pStageSpecVec();
   

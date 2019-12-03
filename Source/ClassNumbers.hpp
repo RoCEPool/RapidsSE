@@ -205,6 +205,7 @@ enum eCN : u2 // Class Number
   /* 175 0x0AF   118856B Heap:L */ CN_NUMBAT,
   
   /* 176 0x0B0       15B Heap:I */ CN__O__,
+  /*                 Heap:S     */ CN_OP,
   /* 177 0x0B1      536B Heap:M */ CN_OP_TOCLAUSE,
   /* 178 0x0B2     4504B Heap:M */ CN_OP_TOCOMMAND,
   /* 179 0x0B3      480B Heap:M */ CN_OP_TODO,
@@ -566,6 +567,7 @@ static Stz* aCN[]
   /* 175 0x0AF */ "NUMBAT"_Stz,              // CN_NUMBAT
   
   /* 176 0x0B0 */ "_O__"_Stz,                // CN__O__
+  /*           */ "OP"_Stz,                  // CN_OP
   /* 177 0x0B1 */ "OP_TOCLAUSE"_Stz,         // CN_OP_TOCLAUSE
   /* 178 0x0B2 */ "OP_TOCOMMAND"_Stz,        // CN_OP_TOCOMMAND
   /* 179 0x0B3 */ "OP_TODO"_Stz,             // CN_OP_TODO

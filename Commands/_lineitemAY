@@ -95,13 +95,11 @@ print "*************************************************************************
 
 
 //docol epochTake;
-pipeline lineItem_dyn
+pipeline export
 begin
 
 stage stageA on all partitions:
-  scanOp lineitem | stageB
-stage stageB on origin:
-  outputOp
+  scanOp lineitem | outputOp
 end;
 
 /*

@@ -47,13 +47,10 @@ namespace DataOperators
 #include "Mark2Op.hpp"
 #include "MergeOp.hpp"
 
-#include "OutputOp.hpp"
-
 #include "ProjectOp.hpp"
 
 #include "ReduceOp.hpp"
 
-#include "ScanOp.hpp"
 #include "SortOp.hpp"
 #include "StartOp.hpp"
 #include "SuperAggOp.hpp"

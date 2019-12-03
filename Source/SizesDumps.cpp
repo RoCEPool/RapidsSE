@@ -206,6 +206,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_NUMBAT
 
   /* */ &Dump::vInvalid,         // CN__O__
+  /* */ &Dump::vInvalid,         // CN_OP
   /* */ &Dump::vInvalid,         // CN_OP_TOCLAUSE
   /* */ &Dump::vInvalid,         // CN_OP_TOCOMMAND
   /* */ &Dump::vInvalid,         // CN_OP_TODO
@@ -567,6 +568,7 @@ i8 giClassSize[]
   /* */ sizeof(Numbat),             // CN_NUMBAT
 
   /* */ 'O'-'A' + 1,                // CN__O__
+  /* */ sizeof(Op),                 // CN_OP
   /* */ sizeof(Op_ToClause),        // CN_OP_TOCLAUSE
   /* */ sizeof(Op_ToCommand),       // CN_OP_TOCOMMAND
   /* */ sizeof(Op_ToDo),            // CN_OP_TODO
@@ -575,7 +577,7 @@ i8 giClassSize[]
   /* */ sizeof(OpSpec),             // CN_OPSPEC
   /* */ sizeof(OpSpecVec),          // CN_OPSPECVEC
   /* */ sizeof(OpVec),              // CN_OPVEC
-  /* */ sizeof(OutputOp),           // CN_OUTPUTOP
+  /* */ sizeof(XmitOp),             // CN_OUTPUTOP
 
   /* */ 'P'-'A' + 1,                // CN__P__
   /* */ sizeof(Parser),             // CN_PARSER
@@ -618,7 +620,7 @@ i8 giClassSize[]
   /* */ sizeof(RowTray),            // CN_ROWTRAY
   
   /* */ 'S'-'A' + 1,                // CN__S__
-  /* */ sizeof(ScanOp),             // CN_SCANOP
+  /* */ sizeof(XmitOp),             // CN_SCANOP
   /* */ sizeof(Schema),             // CN_SCHEMA
   /* */ sizeof(SchemaTest),         // CN_SCHEMATEST
   /* */ sizeof(SeeMe),              // CN_SEEME
@@ -928,6 +930,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_NUMBAT
 
   /* */ HT_INVALID,           // CN__O__
+  /* */ HT_TRANSIENT_SMALL,   // CN_OP
   /* */ HT_TRANSIENT_MEDIUM,  // CN_OP_TOCLAUSE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_OP_TOCOMMAND
   /* */ HT_TRANSIENT_MEDIUM,  // CN_OP_TODO

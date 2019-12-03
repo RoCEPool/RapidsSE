@@ -32,17 +32,17 @@ namespace Pipelines
     
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);
-    bool bCompile(void);
+    bool bCompile(Job* pJob);
     bool bCollectName(void);
     bool bCollectBegin(void);
-    bool bCollectStage(void);
+    bool bCollectStage(Job* pJob);
     bool bCollectTopology(void);
-    bool bCollectPipe(void);
-    bool bCollectOp();
+    bool bCollectPipe(Job* pJob);
+    bool bCollectOp(Job* pJob);
     bool bCollectEnd(void);
     void vPipelineSpec(PipelineSpec* pPipelineSpec);
     bool bIsOperator(Token* pTkn);
-    bool bPhase1_collect(void);
+    bool bPhase1_collect(Job* pJob);
     bool bPhase2_staging(void);
     bool bPhase3_flatten(void);
     bool bPhase4_opdefn(void);

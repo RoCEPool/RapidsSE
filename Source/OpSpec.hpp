@@ -8,15 +8,14 @@ namespace Pipelines
   class OpSpec : public Object
   {
   private:
-    s32  m_sName;
-    bool m_bAppendRight;
+    s32        m_sName;
+    bool       m_bAppendRight;
     StageSpec* m_pStageSpec;
-    i8   m_i_OpSpec;
-  
-    i8   m_i_Slot;
+    i8         m_i_OpSpec;
+    i8         m_i_Slot;
 
     EnameSet  m_oEnameSet;
-    OpDefn* m_aOpDefn;
+    OpDefn*   m_aOpDefn;
     
     // must be last
     Footer m_xFooter;

@@ -95,18 +95,18 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
   for (i8 i_OpSpec = 0; i_OpSpec < pOpSpecVec->nItems(); i_OpSpec++ ) {
     
     OpSpec* pOpSpec = pOpSpecVec->pGet(i_OpSpec);
-    OpDefn* aOpDefn = gxOpCatalog.aFindOp(pOpSpec->szName());
+    //OpDefn* aOpDefn = pOpSpec->aOpDefn(); //OpCatalog.aFindOp(pOpSpec->szName());
     
     // unknown
-    if (! aOpDefn) {
-      vTrace(" ? %s\n"_Stz,pOpSpec->szName());
-      ASSERT(0);
-      continue;
-    }
+//    if (! aOpDefn) {
+//      vTrace(" ? %s\n"_Stz,pOpSpec->szName());
+//      ASSERT(0);
+//      continue;
+//    }
     
     // add the operator to the stages of the stageNdeVec
     for (i8 i_Index = 0; i_Index < m_oStageNdeVec.nItems(); i_Index++) {
-      Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,pPipeLine);
+      Op* pOp = new Op(CN_OP,pOpSpec,pPipeLine);
       StageNde* pStageNde = m_oStageNdeVec.pGet(i_Index);
       
       pOp->m_nNode = pStageNde->iNode();
@@ -116,8 +116,9 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
     
     // add the operator to the stages of the stagePtnVec
     for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
-      Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,pPipeLine);
+      Op* pOp = new Op(CN_OP,pOpSpec,pPipeLine);
       StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
+      
       pOp->m_nPartition = pStagePtn->iPartition();
       pStagePtn->pOpVec()->vAdd(pOp);
       m_oOpVec.vAdd(pOp);
@@ -224,7 +225,7 @@ void Stage::vEndOperators(i8 iThisNode)
     
     if (iPtnNode == iThisNode) {
       Op* pOp = pStagePtn->pOpVec()->pGet(0);
-      RASSERT(pOp->eClass() == CN_STARTOP);
+      RASSERT(AM::eJobType(pOp->m_pJobUniversal) == JT_STARTOP);
       pOp->vAppendLeft(new EndMarker);
     }
   }
@@ -250,7 +251,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
       nOps += pStagePtn->pOpVec()->nItems();
       
       // ignore startOps
-      if (pStagePtn->pOpVec()->pGet(0)->eClass() == CN_STARTOP)
+      if (AM::eJobType(pStagePtn->pOpVec()->pGet(0)->m_pJobUniversal) == JT_STARTOP)
         nOps--;
     }
   }
@@ -370,7 +371,7 @@ void Stage::vStartOperators(i8 iThisNode)
     
     if (pStageNde->iNode() == iThisNode) {
       Op* pOp = pStageNde->pOpVec()->pGet(0);
-      RASSERT(pOp->eClass() == CN_STARTOP);
+      //RASSERT(pOp->eClass() == CN_STARTOP);
       pOp->vAppendLeft(new StartMarker);
     }
   }
@@ -382,7 +383,7 @@ void Stage::vStartOperators(i8 iThisNode)
     
     if (iPtnNode == iThisNode) {
       Op* pOp = pStagePtn->pOpVec()->pGet(0);
-      RASSERT(pOp->eClass() == CN_STARTOP);
+      //RASSERT(pOp->eClass() == CN_STARTOP);
       pOp->vAppendLeft(new StartMarker);
     }
   }

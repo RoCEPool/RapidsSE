@@ -40,6 +40,17 @@ bool Operators::_bIsValidOp(eCN eClass)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new                                                                        */
+/*----------------------------------------------------------------------------*/
+void* Op::operator new(size_t)
+{
+  Op* pOp =
+  static_cast<Op*>(HeapMem::pAllocate(CN_SCANOP));
+  
+  return pOp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* free back to the heap                                                      */
 /*----------------------------------------------------------------------------*/
 void Op::operator delete(void* aAddress)
@@ -58,10 +69,10 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   _precondition_(_MAGIC_,eClassNo);
   
   RASSERT(pOpSpec);
-  RASSERT(pOpSpec->aOpDefn());
+  //RASSERT(pOpSpec->aOpDefn());
   
-  m_sName = pOpSpec->aOpDefn()->m_szCommand;
-  
+  m_sName = pOpSpec->szName();
+
   m_pOpSpec       = pOpSpec;
   m_sNextLabel    = "<nil>"_Stz;
   
@@ -501,13 +512,13 @@ void Op::vPipeOut(Operand* pOperand)
            aCN[pOperand->eClass()],
            pOperand);
 
-  switch(eClass()) {
+  switch(AM::eJobType(m_pJobUniversal)) {
       
-    case CN_OUTPUTOP:
+    case JT_OUTPUTOP:
       vPipeToJob(pOperand);
       break;
       
-    case CN_XMITOP:
+    case JT_XMITOP:
       AM::vSendJobOperand(m_pTask,
                           pOperand,
                           m_pJobPipeline,
@@ -762,8 +773,16 @@ bool Op::bSpawnJob(i8 iSessionId)
                                          this->m_iFocalId);
   
   // copy objectName
-  AM::vJobObjectName(m_pJobUniversal, m_sObjectName);
+  //AM::vJobObjectName(m_pJobUniversal, m_sObjectName);
   
+  s4K szCmdStr;
+  vToCmdStr(szCmdStr);
+  
+  Tokeniser* pTokenizer = new Tokeniser;
+  TokenVec* pTknVec = new TokenVec;
+  pTokenizer->vTokenise(pTknVec, szCmdStr);
+  
+  eEC eError = AM::ePopulateJob(m_pJobUniversal, pTknVec);
   bool bSpawned = AM::bSpawnJob(m_pJobUniversal);
   
   m_pTask = AM::pExecutingTask(m_pJobUniversal);
@@ -789,6 +808,19 @@ void Op::vTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pTask = pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print stage spec                                                           */
+/*----------------------------------------------------------------------------*/
+void Op::vToCmdStr(Stz* szCmdStr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  szCmdStr->vCopy(m_sName);
+  szCmdStr->vConcat(" "_Stz);
+  m_pOpSpec->pEnameSet()->vAppend(szCmdStr);
+  vTrace("%s\n"_Stz, szCmdStr);
 }
 
 /*----------------------------------------------------------------------------*/

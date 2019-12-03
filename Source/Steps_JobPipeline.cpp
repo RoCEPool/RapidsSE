@@ -98,22 +98,24 @@ void Step::vJob_PipelineExecute(void)
   //pJob_Pipeline->vExecute();
   
   Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn operaotors for this node
+  i8 iThisNode = AM::pGrid()->iThisNode();
+  vTrace("Spawning operator jobs for node %lld\n"_Stz, iThisNode);
+
+  pPipeline->vSpawnOperatorJobs(pJob_Pipeline->m_xReqTuple.m_i_Session, iThisNode);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of operators to be executed on this node
   
-  i8 iThisNode = AM::pGrid()->iThisNode();
+  
   i8 nOps = pPipeline->nOpsOnNode(iThisNode);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set acks remaining equal to no of operators to be executed on this node
   
   AM::vSetAcksRmg(pJob_Pipeline->pTask(),nOps);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn operaotors for this node
-  vTrace("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
-  
-  pPipeline->vSpawnOperatorJobs(pJob_Pipeline->m_xReqTuple.m_i_Session, iThisNode);
   
   // get the first stage of the pipeline
   Stage* pStage = pPipeline->pStageVec()->pGet(0);
@@ -136,7 +138,7 @@ void Step::vJob_PipelineCompile(void)
 
   m_pRegSet->m_pDynamo = new Dynamo(sCmd);
   
-  bool bResult = m_pRegSet->m_pDynamo->bCompile();
+  bool bResult = m_pRegSet->m_pDynamo->bCompile(m_pTask->m_pJob);
   RASSERT( bResult );
   
 //  if ( ! bResult) {

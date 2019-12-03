@@ -147,7 +147,10 @@ void StageNde::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
     // for each operator in the stage nde
     for (i8 i_Op = m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
       Op* pOp = m_oOpVec.pGet(i_Op);
-            
+
+      s4K szCmdStr;
+      pOp->vToCmdStr(szCmdStr);
+      
       bool bSpawned = pOp->bSpawnJob(iSessionId);
       
       ASSERT(bSpawned);

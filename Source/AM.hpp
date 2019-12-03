@@ -7,9 +7,11 @@
 
 #include "eAA.h"
 #include "eDA.h"
+#include "eEC.h"
 #include "eGA.h"
 #include "eHA.h"
 #include "eJA.h"
+#include "eJT.h"
 #include "eLA.h"
 #include "eCA.h"
 #include "eMA.h"
@@ -174,12 +176,12 @@ namespace Oblique
     static void vDumpApi(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static JobClass* pFindJobClass(eCN eClass);
     static void vFocalAdd(Focal* pFocal);
     static void vFocalOutline(s4K& sString, Focal* pFocal);
     static void vFocalRemove(Focal* pFocal);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static eJT  eJobType(Job* pJob);
     static i8   iJobUniqueId(Job* pJob);
     static void vJobContentDump(Job* pJob);
     static bool bJobHasError(Job* pJob);
@@ -229,8 +231,10 @@ namespace Oblique
     static void vNap(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMilliSeconds, eCN eCallingClass);
     static Job* pNewJobUniversal(Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId);
-
+    static Job* pNewJobUniversal(Job* pJob, TokenVec* pTknVec);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static eEC ePopulateJob(Job* pJob, TokenVec* pTknVec);
     static void vPrintGlobals(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

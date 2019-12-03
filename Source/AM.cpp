@@ -285,6 +285,13 @@ bool AM::bJobIsForeign(i8 iJobId) {
 void AM::vLogArguments(void) {
   gxArguments.vLog();
 }
+eEC AM::ePopulateJob(Job* pJob, TokenVec* pTknVec)
+{
+  eEC eError = _pJob_Universal(pJob)->ePopulateJob(pTknVec);
+  
+  return eError;
+}
+
 void AM::vPrintArguments(void) {
   gxArguments.vPrint();
 }
@@ -1039,6 +1046,22 @@ Job* AM::pNewJobUniversal( Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId)
   return pJobUniversal;
 }
 
+Job* AM::pNewJobUniversal(Job* pJob, TokenVec* pTknVec)
+{
+  JobClass* pJobClass = JobClass::pFind(CN_JOB_UNIVERSAL);
+  
+  Job_Universal* pJob_Universal = new Job_Universal(pJob,pJobClass,&pJob->m_xReqTuple,-1);
+  
+  //Job_Universal* pJob_Universal = _pJob_Universal(pJobClass->pPreJob(&pJob->m_xReqTuple,nullptr));
+  pJob_Universal->ePopulateJob(pTknVec);
+  
+  pJob->vSeed(SS_SEED_REQ);
+  
+  pJob->pEnameSet()->vPrint();
+  
+  return pJob;
+}
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -1189,11 +1212,6 @@ void AM::vLogEntrySprint(s4K& sString, i8 i_Entry) {
   Log::vEntrySprint(sString,i_Entry);
 }
 
-JobClass* AM::pFindJobClass(eCN eClass)
-{
-  return JobClass::pFind(eClass);
-}
-
 void AM::vFocalAdd(Focal* pFocal)      {
   if (! gpAttachMap || !gpAttachMap->m_pFocalObjects)
     return;
@@ -1283,6 +1301,7 @@ bool AM::bInBufferPool(Object* pObject) {
   return gpBufferPool->bInBufferPool(pObject);
 }
 
+eJT AM::eJobType(Job* pJob) { return pJob->m_eJobType;                        }
 i8 AM::iJobUniqueId(Job* pJob) { return pJob->m_iFocalId;                     }
 
 void AM::vPrintGlobals(void)

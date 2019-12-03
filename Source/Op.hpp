@@ -12,7 +12,7 @@ namespace Operators
   
   public:
     s32            m_sName;          // first word of prompt command
-  
+    
     Pipeline*      m_pPipeline;      // op digest
     OpDefn*        m_aOpDefn;        // op definition
     OpSpec*        m_pOpSpec;        // op specification
@@ -58,6 +58,7 @@ namespace Operators
     eOR (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
 
   public:
+    void* operator new(size_t);
     void  operator delete(void*);
   
     Op(eCN eClass, OpSpec* pOpSpec, Pipeline* pPipeline);
@@ -101,6 +102,7 @@ namespace Operators
     bool bSpawnJob(i8 iSessionId);
     Task* pTask(void);
     void vTask(Task* pTask);
+    void vToCmdStr(Stz* szCmdStr);
     void vWorkQuanta(i8 iWorkQuanta);
   };
 
