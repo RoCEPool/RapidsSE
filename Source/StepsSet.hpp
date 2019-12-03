@@ -1329,6 +1329,7 @@ public:
   void vWordKindStore(void);
   void vWordNameFetch(void);
   void vWordNameStore(void);
+  void vWordNew(void);
   void vWordPrev(void);
   void vWordResetRoutine(void);
   void vWordSee(void);

@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Word(void)
 {
+  vAddStep("word::new"_Stz,         &Step::vWordNew);
+  
   vAddStep("word.category@"_Stz,    &Step::vWordCategoryFetch);
   vAddStep("word.category!"_Stz,    &Step::vWordCategoryStore);
   vAddStep("word.dump"_Stz,         &Step::vWordDump);
@@ -26,7 +28,7 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.name@"_Stz,        &Step::vWordNameFetch);
   vAddStep("word.name!"_Stz,        &Step::vWordNameStore);
   vAddStep("word.prev"_Stz,         &Step::vWordPrev);
-  vAddStep("word.resetRoutine"_Stz, &Step::vWordPrev);
+  vAddStep("word.resetRoutine"_Stz, &Step::vWordResetRoutine);
   vAddStep("word.see"_Stz,          &Step::vWordSee);
 }
 
@@ -200,7 +202,7 @@ void Step::vWordImmediateSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* isImmediate -- is word immediate?                                          */
+/* word.isImmediate -- is word immediate?                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vWordIsImmediate(void)
 {
@@ -295,6 +297,29 @@ void Step::vWordNameStore(void)
 
   pWord->vWordNm(sWordNm);
     
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.new -- new of word                                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vWordNew(void)
+{
+  ENTRY(); // ENTRY("vWordNew"_Stz);
+  
+  s32 sWordNm;
+  m_pDataStack->vPopStr(sWordNm,__func__);
+  
+  Dic* pDic;
+  if (m_oDicStack.iCount())
+    pDic = m_oDicStack.pTop();
+  else
+    pDic = AM::pRootDic();
+
+  Word* pNewWord = new(pDic) Word(sWordNm);
+
+  m_pDataStack->vPushPtr(pNewWord);
+
   EXIT();
 }
 

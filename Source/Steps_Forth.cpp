@@ -150,7 +150,6 @@ void Step::vCreate(void)
   else
     pDic = AM::pRootDic();
   
-  
   //vTrace(": %s\n"_Stz,m_pCompiler->szToken()->azChar());
   
   Word* pNewWord = new(pDic) Word(m_pCompiler->szToken());
