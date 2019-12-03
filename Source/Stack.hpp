@@ -18,7 +18,7 @@ namespace SenVM
     FipVal* aFipVal;
     IntVal* aIntVal;
     PtrVal* aPtrVal;
-    StrVal* aStrVal;
+    StzVal* aStzVal;
     
     void vAdvance (i8 nBytes) { ayByte -= nBytes; }
     void vRewind  (i8 nBytes) { ayByte += nBytes; }
@@ -88,7 +88,7 @@ namespace SenVM
     FipVal* aAllotFipVal(void);
     IntVal* aAllotIntVal(void);
     PtrVal* aAllotPtrVal(void);
-    StrVal* aAllotStrVal(i8 nStrSize);
+    StzVal* aAllotStzVal(i8 nStrSize);
   
     bool bGuard(i8 nValues);
     bool bGuard(eCN eClass0);

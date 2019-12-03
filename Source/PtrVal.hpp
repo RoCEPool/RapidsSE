@@ -12,10 +12,10 @@ namespace SenVM
   public:
     void* operator new(size_t);
     
-    void  operator =(Object* pObject);
-  
+  public:
+    void  vObj(Object* pObject);
     i8    nStackUsage(void);
-    void  vToString(Stz* szDst);
+    void  vToStz(Stz* szDst);
   };
   
   /*----------------------------------------------------------------------------*/

@@ -12,7 +12,7 @@ namespace SenVM
     FipVal  m_xFipVal;
     IntVal  m_xIntVal;
     PtrVal  m_xPtrVal;
-    StrVal  m_xStrVal;
+    StzVal  m_xStzVal;
     
     byte    m_yaSpace[C_48KB];
     
@@ -26,7 +26,7 @@ namespace SenVM
     FipVal  m_xFipVal;
     IntVal  m_xIntVal;
     PtrVal  m_xPtrVal;
-    StrVal  m_xStrVal;
+    StzVal  m_xStzVal;
     
     byte    m_yaSpace[C_8KB];
     

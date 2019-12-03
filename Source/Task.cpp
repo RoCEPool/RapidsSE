@@ -917,9 +917,9 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
       sStackContents.vCatSprint("%p"_Stz,
                                 _aFipVal(aAnyVal)->aFip());
     }
-    else if (CN_STRVAL == eClass) {
+    else if (CN_STZVAL == eClass) {
       sStackContents.vCatSprint("\"%lls\""_Stz,
-                                _aStrVal(aAnyVal)->azChar());
+                                _aStzVal(aAnyVal)->azChar());
     }
     else {
       sStackContents.vCatSprint("<unknown:class=%lld>"_Stz,
@@ -1203,8 +1203,8 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     AnyVal* aAnyVal0 = m_pForth->m_pDataStack->aPeekVal(0);
     eCN eClass = aAnyVal0->eClass();
     
-    // test for StrVal
-    if (CN_STRVAL == eClass) {
+    // test for StzVal
+    if (CN_STZVAL == eClass) {
       
       //*pf = 's';                                                    //! Defect??
       

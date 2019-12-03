@@ -19,7 +19,7 @@ namespace SenVM
 #include "FipVal.hpp"
 #include "IntVal.hpp"
 #include "PtrVal.hpp"
-#include "StrVal.hpp"
+#include "StzVal.hpp"
 
 #include "AllVal.hpp"
 

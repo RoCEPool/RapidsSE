@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StrVal.cpp -- Layout of a String when on Stack                             */
+/* StzVal.cpp -- Layout of a Stz string when on stack                         */
 /*============================================================================*/
 
 #include "SenVM.h"
@@ -11,10 +11,10 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* StrVal::operator new(size_t)
+void* StzVal::operator new(size_t)
 {
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: StrVal class cannot be new'd\n"_Stz);
+         "fatal: StzVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -27,60 +27,53 @@ void* StrVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
-void StrVal::vAssign(Stz* szStz)
+void StzVal::vStz(Stz* szStz)
 {
-  vClass(CN_STRVAL);
-  m_nBytesFollowing = StrLib::nCopy(m_caStr,szStz->azChar()) + 1;
+  vClass(CN_STZVAL);
+  
+  m_nBytesFollowing = StrLib::nCopy(m_caStz,szStz->azChar()) + 1;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get char*                                                                  */
 /*----------------------------------------------------------------------------*/
-char* StrVal::azChar(void)
+char* StzVal::azChar(void)
 {
-  return m_caStr;
+  return m_caStz;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size of str                                                            */
+/* get how many bytes are needed to push this StzVal on stack                 */
 /*----------------------------------------------------------------------------*/
-i8 StrVal::nSize(void)
-{
-  return m_nBytesFollowing;
+i8 StzVal::nStackUsage(void)
+{  
+  i8 nBytes = sizeof(AnyVal) + m_nBytesFollowing;
+  
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get adddress of Stz area                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* StrVal::szStz(void)
+Stz* StzVal::szStz(void)
 {
-  return reinterpret_cast<Stz*>(m_caStr);
+  return reinterpret_cast<Stz*>(m_caStz);
 }
 
 /*----------------------------------------------------------------------------*/
+/* get size of str                                                            */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get how many bytes are needed to push this StrVal on stack                 */
-/*----------------------------------------------------------------------------*/
-i8 StrVal::nStackUsage(void)
+i8 StzVal::nStzSize(void)
 {
-//  i8 nBytes = sizeof(StrVal)
-//                - sizeof(m_caStr)
-//                + m_nBytesFollowing;
-
-  i8 nBytes = sizeof(AnyVal)
-                + m_nBytesFollowing;
-
-  return nBytes;
+  return m_nBytesFollowing;
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void StrVal::vToString(Stz* szDst)
+void StzVal::vToStz(Stz* szDst)
 {
-  StrLib::vCopy(szDst->azChar(),m_caStr);
+  StrLib::vCopy(szDst->azChar(),m_caStz);
 }
 
 /*============================================================================*/

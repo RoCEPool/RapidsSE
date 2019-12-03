@@ -77,7 +77,7 @@ void Task::vAddRoutines(void)
   "        jumpBegin_"
   "      then"
   
-  "      docol.isCompiling if"    // compile encodes push StrVal
+  "      docol.isCompiling if"    // compile encodes push StzVal
   "        ,"
   "        jumpBegin_"
   "      then"

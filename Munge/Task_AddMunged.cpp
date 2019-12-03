@@ -12594,7 +12594,7 @@ void Task::vAddMunged(Forth* pForth)
     ": withinTable ( \\\"<tableNm>\\\" -- t|f )\n"
     "\n"
     "  assert::stack_1+\n"
-    "  CN_STRVAL assert::class_0\n"
+    "  CN_STZVAL assert::class_0\n"
     "\n"
     "  // assert dictionary path\n"
     "  task::this task.dicStack dicStack.depth assert\n"

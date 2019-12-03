@@ -1,38 +1,37 @@
 /*============================================================================*/
-/* StrVal.hpp -- Layout of a String when on Stack                             */
+/* StzVal.hpp -- memory layout of an Stz value                                */
 /*============================================================================*/
 #pragma once
 
 namespace SenVM
 {
-  class StrVal : public AnyVal
+  class StzVal : public AnyVal
   {
-  protected:
-    char m_caStr[1];
+  private:
+    char m_caStz[1];
   
   public:
     void* operator new(size_t);
   
   public:
-    void  vAssign(Stz* szStr);
     char* azChar(void);
-    i8    nSize(void);
-    Stz*  szStz(void);
-
     i8    nStackUsage(void);
-    void  vToString(Stz* szStz);
+    Stz*  szStz(void);
+    void  vStz(Stz* szStz);
+    i8    nStzSize(void);
+    void  vToStz(Stz* szStz);
   };
 
   /*----------------------------------------------------------------------------*/
   /* safe cast                                                                  */
   /*----------------------------------------------------------------------------*/
-  inline StrVal* _aStrVal(void* aAddr)
+  inline StzVal* _aStzVal(void* aAddr)
   {
-    StrVal* aStrVal = reinterpret_cast<StrVal*>(aAddr);
+    StzVal* aStzVal = reinterpret_cast<StzVal*>(aAddr);
   
-    RASSERT_TYPE(aStrVal,CN_STRVAL);
+    RASSERT_TYPE(aStzVal,CN_STZVAL);
 
-    return aStrVal;
+    return aStzVal;
   }  
 }
 

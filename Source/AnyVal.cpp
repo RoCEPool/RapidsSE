@@ -48,7 +48,7 @@ char* AnyVal::azChar(void)
 {
   _magic_();
   
-  char* az = _aStrVal(this)->azChar();
+  char* az = _aStzVal(this)->azChar();
   
   return az;
 }
@@ -70,7 +70,7 @@ void AnyVal::vFip(Cell* aFip)
 {
   _magic_();
   
-  *_aFipVal(this) = aFip;
+  _aFipVal(this)->vFip(aFip);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,7 +177,7 @@ void AnyVal::vInt(i8 iInt)
 {
   _magic_();
   
-  *_aIntVal(this) = iInt;
+  _aIntVal(this)->vInt(iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -210,7 +210,7 @@ void AnyVal::vObj(Object* pObj)
 {
   _magic_();
   
-  *_aPtrVal(this) = pObj;
+  _aPtrVal(this)->vObj(pObj);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -220,7 +220,7 @@ i8 AnyVal::nStzSize(void)
 {
   _magic_();
   
-  i8 nSize = _aStrVal(this)->nSize();
+  i8 nSize = _aStzVal(this)->nStzSize();
   
   return nSize;
 }
@@ -232,7 +232,7 @@ Stz* AnyVal::szStz(void)
 {
   _magic_();
   
-  Stz* sz = _aStrVal(this)->szStz();
+  Stz* sz = _aStzVal(this)->szStz();
   
   return sz;
 }
@@ -244,7 +244,7 @@ void AnyVal::vStz(Stz* szStz)
 {
   _magic_();
   
-  _aStrVal(this)->vAssign(szStz);
+  _aStzVal(this)->vStz(szStz);
 }
 
 
@@ -277,9 +277,9 @@ i8 AnyVal::nStackUsage(void)
       break;
     }
       
-    case CN_STRVAL: {
-      StrVal* aStrVal = _aStrVal(this);
-      nBytes = aStrVal->nStackUsage();
+    case CN_STZVAL: {
+      StzVal* aStzVal = _aStzVal(this);
+      nBytes = aStzVal->nStackUsage();
       break;
     }
       
@@ -297,7 +297,7 @@ i8 AnyVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void AnyVal::vToString(Stz* szString)
+void AnyVal::vToString(Stz* szStz)
 {
   eCN eClass = this->eClass();
   
@@ -305,25 +305,25 @@ void AnyVal::vToString(Stz* szString)
             
     case CN_FIPVAL: {
       FipVal* aFipVal = _aFipVal(this);
-      aFipVal->vToString(szString);
+      aFipVal->vToString(szStz);
       break;
     }
       
     case CN_INTVAL: {
       IntVal* aIntVal = _aIntVal(this);
-      aIntVal->vToString(szString);
+      aIntVal->vToStz(szStz);
       break;
     }
       
     case CN_PTRVAL: {
       PtrVal* aPtrVal = _aPtrVal(this);
-      aPtrVal->vToString(szString);
+      aPtrVal->vToStz(szStz);
       break;
     }
       
-    case CN_STRVAL: {
-      StrVal* aStrVal = _aStrVal(this);
-      aStrVal->vToString(szString);
+    case CN_STZVAL: {
+      StzVal* aStzVal = _aStzVal(this);
+      aStzVal->vToStz(szStz);
       break;
     }
             

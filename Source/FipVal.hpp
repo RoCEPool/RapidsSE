@@ -12,10 +12,10 @@ namespace SenVM
   public:
     void* operator new(size_t);
     
-    void  operator =(Cell* aFip);
-   
+  public:
+    void  vFip(Cell* aFip);
     i8    nStackUsage(void);
-    void  vToString(Stz* szDst);
+    void  vToStz(Stz* szDst);
   };
   
   /*----------------------------------------------------------------------------*/
@@ -29,7 +29,6 @@ namespace SenVM
   
     return aFipVal;
   }
-  
 }
 
 /*============================================================================*/

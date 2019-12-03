@@ -59,10 +59,10 @@ GenVar::GenVar(AnyVal* aAnyVal)
   eCN eClassNo = aAnyVal->eClass();
   
   switch (eClassNo) {
-    case CN_FIPVAL: u.m_xFipVal = aAnyVal->aFip();    break;
-    case CN_INTVAL: u.m_xIntVal = aAnyVal->iInt();    break;
-    case CN_PTRVAL: u.m_xPtrVal = aAnyVal->pObj();    break;
-    case CN_STRVAL: u.m_xStrVal.vAssign(aAnyVal->szStz());  break;
+    case CN_FIPVAL: u.m_xFipVal.vFip(aAnyVal->aFip());    break;
+    case CN_INTVAL: u.m_xIntVal.vInt(aAnyVal->iInt());    break;
+    case CN_PTRVAL: u.m_xPtrVal.vObj(aAnyVal->pObj());    break;
+    case CN_STZVAL: u.m_xStzVal.vStz(aAnyVal->szStz());   break;
       
     default:
       vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -106,10 +106,10 @@ void GenVar::operator =(AnyVal* aAnyVal)
   eCN eClass = aAnyVal->eClass();
   
   switch (eClass) {
-    case CN_FIPVAL: u.m_xFipVal = aAnyVal->aFip();    break;
-    case CN_INTVAL: u.m_xIntVal = aAnyVal->iInt();    break;
-    case CN_PTRVAL: u.m_xPtrVal = aAnyVal->pObj();    break;
-    case CN_STRVAL: u.m_xStrVal.vAssign(aAnyVal->szStz());  break;
+    case CN_FIPVAL: u.m_xFipVal.vFip(aAnyVal->aFip());    break;
+    case CN_INTVAL: u.m_xIntVal.vInt(aAnyVal->iInt());    break;
+    case CN_PTRVAL: u.m_xPtrVal.vObj(aAnyVal->pObj());    break;
+    case CN_STZVAL: u.m_xStzVal.vStz(aAnyVal->szStz());   break;
       
     default:
       vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -128,7 +128,7 @@ void GenVar::operator =(Cell* aFip)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  u.m_xFipVal = aFip;
+  u.m_xFipVal.vFip(aFip);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,7 +138,7 @@ void GenVar::operator =(i8 iInt)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  u.m_xIntVal = iInt;
+  u.m_xIntVal.vInt(iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,7 +148,7 @@ void GenVar::operator =(Object* pObj)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  u.m_xPtrVal = pObj;
+  u.m_xPtrVal.vObj(pObj);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +158,7 @@ void GenVar::operator =(Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  u.m_xStrVal.vAssign(szStz);
+  u.m_xStzVal.vStz(szStz);
   
   _postcondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
 }
@@ -173,7 +173,7 @@ char* GenVar::azChar(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  char* az = u.m_xStrVal.azChar();
+  char* az = u.m_xStzVal.azChar();
 
   return az;
 }
@@ -254,21 +254,9 @@ i8 GenVar::nStackUsage(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  i8 nBytes = u.m_xStrVal.nStackUsage();
+  i8 nBytes = u.m_xStzVal.nStackUsage();
   
   return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size of string in nested value                                         */
-/*----------------------------------------------------------------------------*/
-i8 GenVar::nStzSize(void)
-{
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
-  
-  i8 nSize = u.m_xStrVal.nSize();
-
-  return nSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,9 +266,21 @@ Stz* GenVar::szStz(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
-  Stz* sz = u.m_xStrVal.szStz();
+  Stz* sz = u.m_xStzVal.szStz();
 
   return sz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of nested string value                                            */
+/*----------------------------------------------------------------------------*/
+i8 GenVar::nStzSize(void)
+{
+  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  
+  i8 nSize = u.m_xStzVal.nStzSize();
+  
+  return nSize;
 }
 
 /*----------------------------------------------------------------------------*/

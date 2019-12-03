@@ -1416,8 +1416,8 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
       
       AnyVal* aAnyVal = reinterpret_cast<AnyVal*>(aDoesCell);
       
-      if (CN_STRVAL == aAnyVal->eClass()) {
-        vTrace(" \"%s\"\n"_Stz,_aStrVal(aAnyVal)->azChar());
+      if (CN_STZVAL == aAnyVal->eClass()) {
+        vTrace(" \"%s\"\n"_Stz,_aStzVal(aAnyVal)->azChar());
       }
       else {
         aAnyVal->vToString(sString);
