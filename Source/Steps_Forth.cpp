@@ -15,7 +15,6 @@ void Step::vAddSteps_Forth(void)
   vAddStep(","_Stz,               &Step::vComma);
   vAddStep("compile,"_Stz,        &Step::vCompileComma);
   vAddStep("createTenants"_Stz,   &Step::vCreateTenants);
-  vAddStep(" :create"_Stz,         &Step::vCreateFrom);
   vAddStep(">createInRoot"_Stz,   &Step::vCreateFromInRoot);
   vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
   vAddStep("createPersistent"_Stz,&Step::vCreatePersistent);
@@ -149,33 +148,6 @@ void Step::vCreatePersistent(void)
   //vTrace(": %s\n"_Stz,m_pCompiler->szToken()->azChar());
   
   Word* pNewWord = new(pDic,true) Word(m_pCompiler->szToken());
-  
-  m_pCompiler->vCurrentWord(pNewWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* :create -- create word in dictionary using string on stack                 */
-/*----------------------------------------------------------------------------*/
-void Step::vCreateFrom(void)
-{
-  ENTRY(); // ENTRY("vCreateFrom"_Stz);
-  
-  s32 sName;
-  m_pDataStack->vPopStr(sName,__func__);
-  
-  Dic* pDic;
-  if (m_oDicStack.iCount())
-    pDic = m_oDicStack.pTop();
-  else
-    pDic = AM::pRootDic();
-  
-  //vTrace(": %s\n"_Stz,sName.azChar());
-  Word* pNewWord = new(pDic) Word(sName);
-  
-  if (! m_pCompiler)
-    m_pCompiler = new Compiler;
   
   m_pCompiler->vCurrentWord(pNewWord);
   
