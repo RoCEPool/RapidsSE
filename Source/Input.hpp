@@ -5,7 +5,7 @@
 
 #include "TokenStream.h"
 
-namespace Commands
+namespace TokenStream
 {
   class Input : public Object
   {

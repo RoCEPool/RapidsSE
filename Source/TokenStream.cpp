@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Commands::vCheckAssumptions(void)
+void TokenStream::vCheckAssumptions(void)
 {
 }
 

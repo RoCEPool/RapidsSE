@@ -8,8 +8,6 @@ namespace Assembler     {                                                     }
 namespace Base          {                                                     }
 namespace Chunks        { class Formatters;                                   }
 namespace ClassData     {                                                     }
-namespace Commands      { class Input; class Parser;
-                          class Tokeniser; class TokenVec;                    }
 namespace CompilerOperators {                                                 }
 namespace CompilerStream{                                                     }
 namespace ControlData   {                                                     }
@@ -72,6 +70,8 @@ namespace Strings       {                                                     }
 namespace Structures    { class Article; class Queue;                         }
 namespace Tasks         { class Task;                                         }
 namespace Threads       { class Thread;                                       }
+namespace TokenStream   { class Input; class Parser;
+                          class Tokeniser; class TokenVec;                    }
 namespace Transactions  { class Tx; class TxSet;                              }
 namespace Transform     {                                                     }
 namespace Utilities     { class BPA;                                          }
@@ -84,7 +84,6 @@ using namespace Assembler;
 using namespace Base;
 using namespace Chunks;
 using namespace ClassData;
-using namespace Commands;
 using namespace CompilerOperators;
 using namespace CompilerStream;
 using namespace ControlData;
@@ -127,6 +126,7 @@ using namespace Strings;
 using namespace Structures;
 using namespace Tasks;
 using namespace Threads;
+using namespace TokenStream;
 using namespace Transactions;
 using namespace Transform;
 using namespace Utilities;

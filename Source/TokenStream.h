@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace Commands
+namespace TokenStream
 {
   void vCheckAssumptions(void);
 }

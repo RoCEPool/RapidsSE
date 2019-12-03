@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Tokeniser* Commands::_pTokeniser(void* aAddr)
+Tokeniser* TokenStream::_pTokeniser(void* aAddr)
 {
   Tokeniser* pTokeniser = reinterpret_cast<Tokeniser*>(aAddr);
   

@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Input* Commands::_pInput(void* aAddr)
+Input* TokenStream::_pInput(void* aAddr)
 {
   Input* pInput = reinterpret_cast<Input*>(aAddr);
   

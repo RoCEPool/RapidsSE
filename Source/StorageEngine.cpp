@@ -19,7 +19,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Base::vCheckAssumptions();
   Chunks::vCheckAssumptions();
   ClassData::vCheckAssumptions();
-  Commands::vCheckAssumptions();
   ControlData::vCheckAssumptions();
   Correctness::vCheckAssumptions();
   Enums::vCheckAssumptions();
@@ -39,6 +38,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Streams::vCheckAssumptions();
   Strings::vCheckAssumptions();
   Structures::vCheckAssumptions();
+  TokenStream::vCheckAssumptions();
   Transactions::vCheckAssumptions();
 
   // third party??
