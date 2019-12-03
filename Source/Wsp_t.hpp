@@ -26,6 +26,7 @@ namespace Alignment
     void  vInit(void);
     byte* ayLatter(void);
     i8    nLength(void);
+    void  vReset(void);
     i8    nSize(void);
     Stz*  szStz(void);
     void  vTake(i8 nBytes);
@@ -135,6 +136,15 @@ byte* Wsp_t<LENGTH>::ayLatter(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset this wsp                                                             */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+void Wsp_t<LENGTH>::vReset(void)
+{
+  vUsed(0);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get total size of this Wsp_t                                               */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
@@ -180,20 +190,20 @@ void Wsp_t<LENGTH>::vGive(i8 nBytes)
 /* get number of used bytes                                                   */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
+i8 Wsp_t<LENGTH>::nUsed(void)
+{
+  return m_nAreaUsed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of used bytes                                                   */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
 void Wsp_t<LENGTH>::vUsed(i8 nBytes)
 {
   m_nAreaUsed = nBytes;
   
   ASSERT(m_nAreaUsed <= LENGTH);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of used bytes                                                   */
-/*----------------------------------------------------------------------------*/
-template<int LENGTH>
-i8 Wsp_t<LENGTH>::nUsed(void)
-{
-  return m_nAreaUsed;
 }
 
 /*----------------------------------------------------------------------------*/
