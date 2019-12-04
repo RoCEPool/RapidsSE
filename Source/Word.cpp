@@ -435,7 +435,7 @@ void Word::vEncodePush(AnyVal* aAnyVal)
   else if (CN_PTRVAL == eClassNo_val)
     vEncodeCall("pushPtrVal"_Stz);
   else if (CN_STZVAL == eClassNo_val)
-    vEncodeCall("pushStrVal"_Stz);
+    vEncodeCall("pushStzVal"_Stz);
   else {
     NEVER_REACH;
   }

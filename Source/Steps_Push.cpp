@@ -12,12 +12,11 @@ void Step::vAddSteps_Push(void)
   vAddStep("i"_Stz,               &Step::vPushI);
   vAddStep("j"_Stz,               &Step::vPushJ);
   vAddStep("nullPtr"_Stz,         &Step::vPushNullPtr);
-  vAddStep("pushValue"_Stz,       &Step::vPushValue);
  
   vAddStep("pushFipVal"_Stz,      &Step::vPushFipVal);
   vAddStep("pushIntVal"_Stz,      &Step::vPushIntVal);
   vAddStep("pushPtrVal"_Stz,      &Step::vPushPtrVal);
-  vAddStep("pushStrVal"_Stz,      &Step::vPushStrVal);
+  vAddStep("pushStzVal"_Stz,      &Step::vPushStzVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,26 +60,6 @@ void Step::vPushNullPtr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pushValue -- push value arg onto stack                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vPushValue(void)
-{
-  ENTRY(); // ENTRY("vPushValue"_Stz);
-  
-  if (m_pTask->m_iTraceMask) {
-    ASSERT(m_pTask->m_iTraceMask);
-  }
-  
-  AnyVal* aAnyVal = (AnyVal*) & m_aInxPtr->m_xEmbValue;
-  
-  m_pDataStack->vPushVal((AnyVal*) aAnyVal);
-  
-  m_pTask->vAdjustFIP(aAnyVal->nStackUsage());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* pushFip -- push fipval arg onto stack                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vPushFipVal(void)
@@ -91,7 +70,7 @@ void Step::vPushFipVal(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  FipVal* aFipVal = _aFipVal(& m_aInxPtr->m_xEmbValue);
+  FipVal* aFipVal = _aFipVal(& m_aInxPtr->m_xEmbVal);
   
   m_pDataStack->vPushFip(aFipVal->aFip());
   
@@ -111,7 +90,7 @@ void Step::vPushIntVal(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  IntVal* aIntVal = _aIntVal(& m_aInxPtr->m_xEmbValue);
+  IntVal* aIntVal = _aIntVal(& m_aInxPtr->m_xEmbVal);
   
   m_pDataStack->vPushInt(aIntVal->iInt());
   
@@ -131,7 +110,7 @@ void Step::vPushPtrVal(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  PtrVal* aPtrVal = _aPtrVal(& m_aInxPtr->m_xEmbValue);
+  PtrVal* aPtrVal = _aPtrVal(& m_aInxPtr->m_xEmbVal);
   
   m_pDataStack->vPushPtr(aPtrVal->pObj());
   
@@ -141,9 +120,9 @@ void Step::vPushPtrVal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pushStr -- push strval arg onto stack                                      */
+/* pushStz -- push strval arg onto stack                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vPushStrVal(void)
+void Step::vPushStzVal(void)
 {
   ENTRY(); // ENTRY("vPushStr"_Stz);
   
@@ -151,7 +130,7 @@ void Step::vPushStrVal(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  StzVal* aStzVal = _aStzVal(& m_aInxPtr->m_xEmbValue);
+  StzVal* aStzVal = _aStzVal(& m_aInxPtr->m_xEmbVal);
   
   m_pDataStack->vPushStz(aStzVal->szStz());
   

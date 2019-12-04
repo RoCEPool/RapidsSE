@@ -244,6 +244,7 @@ public:
   void vEncodeLoop(void);
   void vEncodeLoopPlus(void);
   void vEncodeNext(void);
+  void vEncodePush(void);
   void vEncodeThen(void);
   void vEncodeUntil(void);
 
@@ -944,12 +945,11 @@ public:
   void vPushI(void);
   void vPushJ(void);
   void vPushNullPtr(void);
-  void vPushValue(void);
 
   void vPushFipVal(void);
   void vPushIntVal(void);
   void vPushPtrVal(void);
-  void vPushStrVal(void);
+  void vPushStzVal(void);
 
   // queue
   void vQueueAppend(void);

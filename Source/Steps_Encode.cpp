@@ -20,6 +20,8 @@ void Step::vAddSteps_Encode(void)
   vAddStep("next"_Stz,                &Step::vEncodeNext,          true );
   vAddStep("then"_Stz,                &Step::vEncodeThen,          true );
   vAddStep("until"_Stz,               &Step::vEncodeUntil,         true );
+  
+  vAddStep("encode::push"_Stz,        &Step::vEncodePush);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -246,6 +248,23 @@ void Step::vEncodeNext(void)
   
   pCurrentWord->vEncodeCall("rdrop"_Stz);
   pCurrentWord->vEncodeCall("rdrop"_Stz);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode::push -- encode push of value                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vEncodePush(void)
+{
+  ENTRY(); // ENTRY("vEncodePush"_Stz);
+  
+  Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  
+  GenVar xVal;
+  m_pDataStack->vPopVal(xVal,__func__);
+
+  pCurrentWord->vEncodePush(xVal);
   
   EXIT();
 }
