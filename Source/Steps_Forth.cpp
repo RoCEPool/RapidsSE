@@ -328,6 +328,10 @@ void Step::vPostpone(void)
            "No word: %s "_Stz,
            m_pCompiler->szToken()->azChar());
   
+  
+  GenVar xVar;
+  xVar = pCalledWord;
+
   if (pCalledWord->bImmediate()) {
     
     // put call to immediate word into this current definition
@@ -343,7 +347,7 @@ void Step::vPostpone(void)
     // put call to normal word into some future definition
     
     // copy indirect pointer into the current word
-    pCurrentWord->vEncode("pushValue"_Stz,pCalledWord);
+    pCurrentWord->vEncodePush("pushValue"_Stz,xVar);
     pCurrentWord->vEncodeCall("compile,"_Stz);
   }
   
@@ -498,9 +502,12 @@ void Step::vTick(void)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "No word: %s "_Stz,sWordNm.azChar());
   
+  GenVar xVar;
+  xVar = pWord;
+
   if (m_pCompiler->bCompiling()) {
     Word* pCurrentWord = m_pCompiler->pCurrentWord();
-    pCurrentWord->vEncode("pushValue"_Stz,pWord);
+    pCurrentWord->vEncodePush("pushValue"_Stz,xVar);
   }
   else {
     m_pDataStack->vPushPtr(pWord);

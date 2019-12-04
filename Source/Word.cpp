@@ -384,19 +384,6 @@ StepFp* Word::afpEntryStep(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* encode call to named word which has a word* argument                       */
-/*----------------------------------------------------------------------------*/
-void Word::vEncode(Stz* aWordNm, Word* pCalledWord)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  GenVar xVar;
-  xVar = pCalledWord;
-  
-  vEncodePush(aWordNm,xVar);
-}
-
-/*----------------------------------------------------------------------------*/
 /* encode call of entry step                                                  */
 /*----------------------------------------------------------------------------*/
 void Word::vEncodeCall(StepFp* afpEntryStep)
