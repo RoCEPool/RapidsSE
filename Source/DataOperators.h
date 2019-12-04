@@ -20,7 +20,6 @@ namespace DataOperators
 
 #include "ChunkFileOp.hpp"
 #include "CombineOp.hpp"
-#include "CountOp.hpp"
 
 #include "DelayOp.hpp"
 #include "DistinctOp.hpp"
