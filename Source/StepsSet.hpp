@@ -478,8 +478,6 @@ public:
 
   void vJobKindFetch(void);
 
-  void vJobLoopOutputOp(void);
-
   void vJobMetadataStore(void);
 
   void vJobNextOperand(void);
