@@ -109,7 +109,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN__H__
   /* */ &Dump::vDummy,           // CN_HASHBUFFER
   /* */ &Dump::vDummy,           // CN_HASHMAP
-  /* */ &Dump::vDummy,           // CN_HASHOP
   /* */ &HeapBuffer::vDump,      // CN_HEAPBUFFER
   /* */ &Dump::vDummy,           // CN_HPROW
 
@@ -118,14 +117,11 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_INDEXDEF
   /* */ &Dump::vDummy,           // CN_INDEXTREE
   /* */ &Dump::vDummy,           // CN_INDEXTREEVEC
-  /* */ &Dump::vDummy,           // CN_INFLATEOP
   /* */ &Dump::vDummy,           // CN_INPUT
   /* */ &Dump::vDummy,           // CN_IDXCOLVEC
   /* */ &Dump::vDummy,           // CN_IDXVEC
   /* */ &Dump::vDummy,           // CN_INGESTCHUNK
-  /* */ &Dump::vDummy,           // CN_INSERTOP
   /* */ &Dump::vDummy,           // CN_INTBUFFER
-  /* */ &Dump::vDummy,           // CN_INTERSECTOP
   /* */ &Dump::vInvalid,         // CN_INTVAL
   /* */ &Dump::vDummy,           // CN_IOCHUNK
   /* */ &Dump::vDummy,           // CN_IOCOPY
@@ -155,7 +151,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_JOB_WRITEBUFFER
   /* */ &Dump::vDummy,           // CN_JOB_WRITEROW
   /* */ &JobList::vDump,         // CN_JOBLIST
-  /* */ &Dump::vDummy,           // CN_JOINOP
   /* */ &Heap::vDump,            // CN_JUMBOPERSISTENT
   /* */ &Heap::vDump,            // CN_JUMBOTRANSIENT
   
@@ -166,7 +161,6 @@ pDUMPFUN *gpDump[]
   /* */ &Heap::vDump,            // CN_LARGEPERSISTENT
   /* */ &Heap::vDump,            // CN_LARGETRANSIENT
   /* */ &Dump::vDummy,           // CN_LEXICON
-  /* */ &Dump::vDummy,           // CN_LIMITOP
   /* */ &Dump::vDummy,           // CN_LOADCHUNK
   /* */ &LoadMap::vDump,         // CN_LOADMAP
   /* */ &Dump::vInvalid,         // CN_LOCAL
@@ -179,7 +173,6 @@ pDUMPFUN *gpDump[]
   /* */ &Heap::vDump,            // CN_MEDIUMPERSISTENT
   /* */ &Heap::vDump,            // CN_MEDIUMTRANSIENT
   /* */ &Dump::vUndefined,       // CN_MEMTEST
-  /* */ &Dump::vUndefined,       // CN_MERGEOP
   /* */ &Dump::vUndefined,       // CN_MUTEX
 
   /* */ &Dump::vInvalid,         // CN__N__
@@ -450,7 +443,6 @@ i8 giClassSize[]
   /* */ 'H'-'A' + 1,                // CN__H__
   /* */ sizeof(HashBuffer),         // CN_HASHBUFFER
   /* */ sizeof(HashMap),            // CN_HASHMAP
-  /* */ sizeof(HashOp),             // CN_HASHOP
   /* */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
   /* */ sizeof(SP_Row),             // CN_HPROW
 
@@ -459,14 +451,11 @@ i8 giClassSize[]
   /* */ sizeof(IndexDef),           // CN_INDEXDEF
   /* */ sizeof(IndexTree),          // CN_INDEXTREE
   /* */ sizeof(IndexTreeVec),       // CN_INDEXTREEVEC
-  /* */ sizeof(InflateOp),          // CN_INFLATEOP
   /* */ sizeof(Input),              // CN_INPUT
   /* */ sizeof(IdxColVec),          // CN_IDXCOLVEC
   /* */ sizeof(IdxVec),             // CN_IDXVEC
   /* */ sizeof(IngestChunk),        // CN_INGESTCHUNK
-  /* */ sizeof(InsertOp),           // CN_INSERTOP
   /* */ sizeof(IntBuffer),          // CN_INTBUFFER
-  /* */ sizeof(IntersectOp),        // CN_INTERSECTOP
   /* */ sizeof(IntVal),             // CN_INTVAL
   /* */ sizeof(IoChunk),            // CN_IOCHUNK
   /* */ sizeof(IoCopy),             // CN_IOCOPY
@@ -496,7 +485,6 @@ i8 giClassSize[]
   /* */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
   /* */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW
   /* */ sizeof(JobList),            // CN_JOBLIST
-  /* */ sizeof(JoinOp),             // CN_JOINOP
   /* */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
   /* */ sizeof(Heap), // correct    // CN_JUMBOTRANSIENT
   
@@ -507,7 +495,6 @@ i8 giClassSize[]
   /* */ sizeof(Heap), // correct    // CN_LARGEPERSISTENT
   /* */ sizeof(Heap), // correct    // CN_LARGETRANSIENT
   /* */ sizeof(Lexicon),            // CN_LEXICON
-  /* */ sizeof(LimitOp),            // CN_LIMITOP
   /* */ sizeof(LoadChunk),          // CN_LOADCHUNK
   /* */ sizeof(LoadMap),            // CN_LOADMAP
   /* */ sizeof(Local),              // CN_LOCAL
@@ -520,7 +507,6 @@ i8 giClassSize[]
   /* */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
   /* */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
   /* */ sizeof(MemTest),            // CN_MEMTEST
-  /* */ sizeof(MergeOp),            // CN_MERGEOP
   /* */ sizeof(Mutex),              // CN_MUTEX
 
   /* */ 'N'-'A' + 1,                // CN__N__
@@ -791,7 +777,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN__H__
   /* */ HT_TRANSIENT_LARGE,   // CN_HASHBUFFER
   /* */ HT_TRANSIENT_SMALL,   // CN_HASHMAP
-  /* */ HT_TRANSIENT_SMALL,   // CN_HASHOP
   /* */ HT_INVALID,           // CN_HEAPBUFFER
   /* */ HT_INVALID,           // CN_HPROW
 
@@ -800,14 +785,11 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_INDEXDEF
   /* */ HT_TRANSIENT_SMALL,   // CN_INDEXTREE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_INDEXTREEVEC
-  /* */ HT_TRANSIENT_MEDIUM,  // CN_INFLATEOP
   /* */ HT_TRANSIENT_MEDIUM,  // CN_INPUT
   /* */ HT_TRANSIENT_MEDIUM,  // CN_IDXCOLVEC
   /* */ HT_TRANSIENT_MEDIUM,  // CN_IDXVEC
   /* */ HT_TRANSIENT_LARGE,   // CN_INGESTCHUNK
-  /* */ HT_TRANSIENT_LARGE,   // CN_INSERTOP
   /* */ HT_TRANSIENT_LARGE,   // CN_INTBUFFER
-  /* */ HT_TRANSIENT_SMALL,   // CN_INTERSECTOP
   /* */ HT_INVALID,           // CN_INTVAL
   /* */ HT_TRANSIENT_LARGE,   // CN_IOCHUNK
   /* */ HT_TRANSIENT_SMALL,   // CN_IOCOPY
@@ -837,7 +819,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEBUFFER
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEROW
   /* */ HT_TRANSIENT_SMALL,   // CN_JOBLIST
-  /* */ HT_TRANSIENT_SMALL,   // CN_JOINOP
   /* */ HT_INVALID,           // CN_JUMBOPERSISTENT
   /* */ HT_INVALID,           // CN_JUMBOTRANSIENT
   
@@ -848,7 +829,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_LARGEPERSISTENT
   /* */ HT_INVALID,           // CN_LARGETRANSIENT
   /* */ HT_TRANSIENT_SMALL,   // CN_LEXICON
-  /* */ HT_TRANSIENT_SMALL,   // CN_LIMITOP
   /* */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
   /* */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP
   /* */ HT_INVALID,           // CN_LOCAL
@@ -861,7 +841,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_MEDIUMPERSISTENT
   /* */ HT_INVALID,           // CN_MEDIUMTRANSIENT
   /* */ HT_TRANSIENT_SMALL,   // CN_MEMTEST
-  /* */ HT_TRANSIENT_SMALL,   // CN_MERGEOP
   /* */ HT_TRANSIENT_SMALL,   // CN_MUTEX
 
   /* */ HT_INVALID,           // CN__N__

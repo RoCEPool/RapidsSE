@@ -108,7 +108,6 @@ enum eCN : u2 // Class Number
   /*  97 0x061        8B Heap:I */ CN__H__,
   /*  98 0x062  1044336B Heap:L */ CN_HASHBUFFER,
   /*  99 0x063       96B Heap:S */ CN_HASHMAP,
-  /* 100 0x064      480B Heap:S */ CN_HASHOP,
   /* 101 0x065       64B Heap:I */ CN_HEAPBUFFER,
   /* 102 0x066    20448B Heap:I */ CN_HPROW,
   
@@ -117,14 +116,11 @@ enum eCN : u2 // Class Number
   /* 105 0x069     4168B Heap:M */ CN_INDEXDEF,
   /* 106 0x06A      232B Heap:S */ CN_INDEXTREE,
   /* 107 0x06B     8224B Heap:M */ CN_INDEXTREEVEC,
-  /* 108 0x06C      480B Heap:M */ CN_INFLATEOP,
   /* 109 0x06D       24B Heap:M */ CN_INPUT,
   /* 110 0x06E     8216B Heap:M */ CN_IDXCOLVEC,
   /* 111 0x06F     8224B Heap:M */ CN_IDXVEC,
   /* 112 0x070  1000088B Heap:L */ CN_INGESTCHUNK,
-  /* 113 0x071      784B Heap:L */ CN_INSERTOP,
   /* 114 0x072     1192B Heap:L */ CN_INTBUFFER,
-  /* 115 0x073      480B Heap:S */ CN_INTERSECTOP,
   /* 116 0x074       16B Heap:I */ CN_INTVAL,
   /* 117 0x075  1000512B Heap:L */ CN_IOCHUNK,
   /* 118 0x076       32B Heap:S */ CN_IOCOPY,
@@ -154,7 +150,6 @@ enum eCN : u2 // Class Number
   /* 141 0x08D    14280B Heap:L */ CN_JOB_WRITEBUFFER,
   /* 142 0x08E   145392B Heap:L */ CN_JOB_WRITEROW,
   /* 143 0x08F      224B Heap:S */ CN_JOBLIST,
-  /* 144 0x090      544B Heap:S */ CN_JOINOP,
   /* 145 0x091      296B Heap:I */ CN_JUMBOPERSISTENT,
   /* 146 0x092      296B Heap:I */ CN_JUMBOTRANSIENT,
   
@@ -165,7 +160,6 @@ enum eCN : u2 // Class Number
   /* 150 0x096      296B Heap:I */ CN_LARGEPERSISTENT,
   /* 151 0x097      296B Heap:I */ CN_LARGETRANSIENT,
   /* 152 0x098       80B Heap:S */ CN_LEXICON,
-  /* 153 0x099      496B Heap:S */ CN_LIMITOP,
   /* 154 0x09A  1000512B Heap:L */ CN_LOADCHUNK,
   /* 155 0x09B  9389360B Heap:J */ CN_LOADMAP,
   /* 156 0x09C     8216B Heap:I */ CN_LOCAL,
@@ -178,7 +172,6 @@ enum eCN : u2 // Class Number
   /* 163 0x0A3      296B Heap:I */ CN_MEDIUMPERSISTENT,
   /* 164 0x0A4      296B Heap:I */ CN_MEDIUMTRANSIENT,
   /* 165 0x0A5      136B Heap:S */ CN_MEMTEST,
-  /* 166 0x0A6      744B Heap:S */ CN_MERGEOP,
   /* 167 0x0A7      480B Heap:S */ CN_MUTEX,
   
   /* 168 0x0A8       14B Heap:I */ CN__N__,
@@ -449,7 +442,6 @@ static Stz* aCN[]
   /*  97 0x061 */ "_H__"_Stz,                // CN__H__
   /*  98 0x062 */ "HASHBUFFER"_Stz,          // CN_HASHBUFFER
   /*  99 0x063 */ "HASHMAP"_Stz,             // CN_HASHMAP
-  /* 100 0x064 */ "HASHOP"_Stz,              // CN_HASHOP
   /* 101 0x065 */ "HEAPBUFFER"_Stz,          // CN_HEAPBUFFER
   /* 102 0x066 */ "HPROW"_Stz,               // CN_HPROW
   
@@ -458,14 +450,11 @@ static Stz* aCN[]
   /* 105 0x069 */ "INDEXDEF"_Stz,            // CN_INDEXDEF
   /* 106 0x06A */ "INDEXTREE"_Stz,           // CN_INDEXTREE
   /* 107 0x06B */ "INDEXTREEVEC"_Stz,        // CN_INDEXTREEVEC
-  /* 108 0x06C */ "INFLATEOP"_Stz,           // CN_INFLATEOP
   /* 109 0x06D */ "INPUT"_Stz,               // CN_INPUT
   /* 110 0x06E */ "IDXCOLVEC"_Stz,           // CN_IDXCOLVEC
   /* 111 0x06F */ "IDXVEC"_Stz,              // CN_IDXVEC
   /* 112 0x070 */ "INGESTCHUNK"_Stz,         // CN_INGESTCHUNK
-  /* 113 0x071 */ "INSERTOP"_Stz,            // CN_INSERTOP
   /* 114 0x072 */ "INTBUFFER"_Stz,           // CN_INTBUFFER
-  /* 115 0x073 */ "INTERSECTOP"_Stz,         // CN_INTERSECTOP
   /* 116 0x074 */ "INTVAL"_Stz,              // CN_INTVAL
   /* 117 0x075 */ "IOCHUNK"_Stz,             // CN_IOCHUNK
   /* 118 0x076 */ "IOCOPY"_Stz,              // CN_IOCOPY
@@ -495,7 +484,6 @@ static Stz* aCN[]
   /* 141 0x08D */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER
   /* 142 0x08E */ "JOB_WRITEROW"_Stz,        // CN_JOB_WRITEROW
   /* 143 0x08F */ "JOBLIST"_Stz,             // CN_JOBLIST
-  /* 144 0x090 */ "JOINOP"_Stz,              // CN_JOINOP
   /* 145 0x091 */ "JUMBOPERSISTENT"_Stz,     // CN_JUMBOPERSISTENT
   /* 146 0x092 */ "JUMBOTRANSIENT"_Stz,      // CN_JUMBOTRANSIENT
   
@@ -506,7 +494,6 @@ static Stz* aCN[]
   /* 150 0x096 */ "LARGEPERSISTENT"_Stz,     // CN_LARGEPERSISTENT
   /* 151 0x097 */ "LARGETRANSIENT"_Stz,      // CN_LARGETRANSIENT
   /* 152 0x098 */ "LEXICON"_Stz,             // CN_LEXICON
-  /* 153 0x099 */ "LIMITOP"_Stz,             // CN_LIMITOP
   /* 154 0x09A */ "LOADCHUNK"_Stz,           // CN_LOADCHUNK
   /* 155 0x09B */ "LOADMAP"_Stz,             // CN_LOADMAP
   /* 156 0x09C */ "LOCAL"_Stz,               // CN_LOCAL
@@ -519,7 +506,6 @@ static Stz* aCN[]
   /* 163 0x0A3 */ "MEDIUMPERSISTENT"_Stz,    // CN_MEDIUMPERSISTENT
   /* 164 0x0A4 */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
   /* 165 0x0A5 */ "MEMTEST"_Stz,             // CN_MEMTEST
-  /* 166 0x0A6 */ "MERGEOP"_Stz,             // CN_MERGEOP
   /* 167 0x0A7 */ "MUTEX"_Stz,               // CN_MUTEX
   
   /* 168 0x0A8 */ "_N__"_Stz,                // CN__N__

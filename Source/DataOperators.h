@@ -14,18 +14,6 @@ namespace DataOperators
 
 //------------------------------------------------------------------------------
 
-#include "HashOp.hpp"
-
-#include "InflateOp.hpp"
-#include "InsertOp.hpp"
-#include "IntersectOp.hpp"
-
-#include "JoinOp.hpp"
-
-#include "LimitOp.hpp"
-
-#include "MergeOp.hpp"
-
 #include "ProjectOp.hpp"
 
 #include "ReduceOp.hpp"
