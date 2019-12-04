@@ -325,7 +325,6 @@ public:
   void vImmediate(void);
   void vPostpone(void);
   void vPrompt(void);
-  void vSee(void);
   void vSemicolon(void);
   void vSeriesName(void);
   void vSubDic(void);
