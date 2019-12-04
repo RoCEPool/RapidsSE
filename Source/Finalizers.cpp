@@ -355,7 +355,6 @@ pFINALIZE *gpFinalize[]
   /*150 */ &Finalize::vUndefined,         // CN_WORD
   
   /*    */ &Finalize::vUndefined,         // CN__X__
-  /*150 */ &Finalize::vUndefined,         // CN_XMITOP
   
   /*    */ &Finalize::vUndefined,         // CN__Y__
   

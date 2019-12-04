@@ -358,7 +358,6 @@ enum eCN : u2 // Class Number
   /* 320 0x140    64808B Heap:M */ CN_WORD,
   
   /* 321 0x141       24B Heap:I */ CN__X__,
-  /* 322 0x142      488B Heap:S */ CN_XMITOP,
   
   /* 323 0x143       25B Heap:I */ CN__Y__,
   
@@ -718,7 +717,6 @@ static Stz* aCN[]
   /* 320 0x140 */ "WORD"_Stz,                // CN_WORD
   
   /* 321 0x141 */ "_X__"_Stz,                // CN__X__
-  /* 322 0x142 */ "XMITOP"_Stz,              // CN_XMITOP
   
   /* 323 0x143 */ "_Y__"_Stz,                // CN__Y__
   
