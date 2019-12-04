@@ -50,8 +50,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.kind@"_Stz,            &Step::vJobKindFetch);
   
-  vAddStep("job.LoopOutputOp"_Stz,     &Step::vJobLoopOutputOp);
-  
   vAddStep("job.metadata!"_Stz,        &Step::vJobMetadataStore);
   
   vAddStep("job.nextOperand"_Stz,      &Step::vJobNextOperand);
@@ -713,129 +711,6 @@ void Step::vJobKindFetch(void)
   
   m_pDataStack->vPushInt(pJob->eJobKind());
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.LoopOutputOp -- execute the job's output op loop                       */
-/*----------------------------------------------------------------------------*/
-void Step::vJobLoopOutputOp(void)
-{
-  ENTRY(); // ENTRY("vJobLoopOutputOp"_Stz);
-  
-  Job_Universal* pJob_Universal = _pJob_Universal(m_pDataStack->pPopPtr(__func__));
-  
-  bool bContinue = true;
-  
-  Op* pOp = pJob_Universal->m_pOp;
-  
-  for (;;) {
-    
-    Operand* pOperand = pOp->pPopQueue2();
-    
-    if (! pOperand) {
-      ASSERT(pOp->bIsLocked());
-      AM::vTaskSchedulerAct(m_pTask,SA_BIDE);
-      goto L_EXIT;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-    switch (pOperand->eClass()) {
-        
-        // -- -- -- -- -- --
-        
-      case CN_CRWBUFFER: {
-        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-        pOp->m_iWorkDone += pCrwBuffer->nRowCount();
-        pOp->vPipeToJob(pOperand);
-        break;
-      }
-        
-        // -- -- -- -- -- --
-        
-      case CN_CSVBUFFER: {
-        CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
-        pOp->m_iWorkDone += pCsvBuffer->nRecords();
-        pOp->vPipeToJob(pOperand);
-        break;
-      }
-        
-        // -- -- -- -- -- --
-        
-      case CN_ENDMARKER: {
-        
-        if (--pOp->m_nLeftEndMarkers == 0) {
-          if (pOp->bIsCancelling()) {
-            delete _pEndMarker(pOperand);
-            pOp->vPipeToJob(new CancelMarker);
-          }
-          else
-            pOp->vPipeToJob(pOperand);
-          
-          if (AM::bJobHasError(pOp->m_pJobUniversal)) {
-            AM::vSetJobLocalError(pOp->m_pJobUniversal, pOp->m_pPipeline->pJob());
-          }
-          if (pOp->m_bAckJobEnd)
-            pOp->vAckJob();
-          
-          bContinue = false;
-          goto L_EXIT;
-        }
-        else
-          delete (EndMarker*)pOperand;
-        
-        break;
-      }
-        
-        // -- -- -- -- -- --
-        
-      case CN_ENTBUFFER: {
-        EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
-        pOp->m_iWorkDone += pEntBuffer->nItems();
-        pOp->vPipeToJob(pOperand);
-        break;
-      }
-        
-        // -- -- -- -- -- --
-        
-      case CN_IRWBUFFER: {
-        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-        pOp->m_iWorkDone += pIrwBuffer->nItems();
-        pOp->vPipeToJob(pOperand);
-        break;
-      }
-        
-        // -- -- -- -- -- --
-        
-      case CN_SRTBUFFER: {
-        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        pOp->m_iWorkDone += pSrtBuffer->nItems();
-        pOp->vPipeToJob(pOperand);
-        break;
-      }
-        
-        // -- -- -- -- -- --
-        
-      case CN_STREAMDEF: {
-        pOp->vPipeToJob(pOperand);
-        break;
-      }
-        
-        // -- -- -- -- -- --
-        
-      default:
-        RASSERT(0);
-        break;
-    }
-  
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-L_EXIT:
-  
-  m_pDataStack->vPushInt(bContinue);
-  
   EXIT();
 }
 
