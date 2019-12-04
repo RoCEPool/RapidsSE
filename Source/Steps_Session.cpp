@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Session(void)
 {
-  vAddStep("job::this"_Stz,                &Step::vJobThis);
+  vAddStep("session::this"_Stz,            &Step::vSessionThis);
   
   vAddStep("session.commandProcessor"_Stz, &Step::vSessionCommand);
   vAddStep("session.dicStack@"_Stz,        &Step::vSessionDicStackFetch);

@@ -180,14 +180,18 @@ traceon
 
   "storedCmd" :create
 
-  true find docol::currentWord@ word.prompt!
+  true docol::currentWord@ word.prompt!
 
   "print \"hello world!\"" ,
 
-  // POSTPONE session::this
+  POSTPONE session::this
 
   POSTPONE session.todo!
+
+  POSTPONE exit_rt
 ;
+
+ssnDo
 
 /*============================================================================*/
 /* end                                                                        */
