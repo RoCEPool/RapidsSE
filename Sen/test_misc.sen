@@ -182,7 +182,7 @@ traceon
 
   true docol::currentWord@ word.prompt!
 
-  "print \"hello world!\"" ,
+  "print \"hello world!\"" encode::push
 
   POSTPONE session::this
 
