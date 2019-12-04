@@ -203,7 +203,6 @@ pFINALIZE *gpFinalize[]
   /* 87 */ &Finalize::vUndefined,         // CN_PLANNER
   /* 90 */ &Finalize::vUndefined,         // CN_PREDICATE
   /* 91 */ &Finalize::vUndefined,         // CN_PREDICATEVEC
-  /* 91 */ &Finalize::vUndefined,         // CN_PROJECTOP
   /* 89 */ &Finalize::vUndefined,         // CN_PSXTHD
   /* 94 */ &Finalize::vUndefined,         // CN_PTNCOLVEC
   /* 11 */ &Finalize::vUndefined,         // CN_PTRVAL
@@ -216,7 +215,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN__R__
   /*    */ &Finalize::vUndefined,         // CN_RECORD
   /*    */ &Finalize::vUndefined,         // CN_RECORDBUFFER
-  /*    */ &Finalize::vUndefined,         // CN_REDUCEOP
   /*    */ &Finalize::vUndefined,         // CN_REFBUFFER
   /*    */ &Finalize::vUndefined,         // CN_REFSET
   /*    */ &Finalize::vUndefined,         // CN_REGSET
@@ -260,7 +258,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_SNTSP
   /*    */ &Finalize::vUndefined,         // CN_SNVCH
   /*125 */ &Finalize::vUndefined,         // CN_SOCKET
-  /*125 */ &Finalize::vUndefined,         // CN_SORTOP
   /*    */ &Finalize::vUndefined,         // CN_SPBCD
   /*    */ &Finalize::vUndefined,         // CN_SPBOL
   /*    */ &Finalize::vUndefined,         // CN_SPDTE
@@ -293,8 +290,6 @@ pFINALIZE *gpFinalize[]
   /* 13 */ &Finalize::vUndefined,         // CN_STREAMDEF
   /* 13 */ &Finalize::vUndefined,         // CN_STRING_T
   /* 12 */ &Finalize::vUndefined,         // CN_STZVAL  
-  /*    */ &Finalize::vUndefined,         // CN_SUPERAGGOP
-  /*    */ &Finalize::vUndefined,         // CN_SUPERMERGEOP
   /*129 */ &Finalize::vUndefined,         // CN_SYSCALL
   
   /*    */ &Finalize::vUndefined,         // CN__T__

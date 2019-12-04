@@ -14,14 +14,6 @@ namespace DataOperators
 
 //------------------------------------------------------------------------------
 
-#include "ProjectOp.hpp"
-
-#include "ReduceOp.hpp"
-
-#include "SortOp.hpp"
-#include "SuperAggOp.hpp"
-#include "SuperMergeOp.hpp"
-
 #include "TakeawayOp.hpp"
 
 #include "WhereOp.hpp"

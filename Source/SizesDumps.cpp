@@ -207,7 +207,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_PLANNER
   /* */ &Dump::vUndefined,       // CN_PREDICATE
   /* */ &Dump::vUndefined,       // CN_PREDVEC
-  /* */ &Dump::vUndefined,       // CN_PROJECTOP
   /* */ &Dump::vUndefined,       // CN_PSXTHD
   /* */ &Dump::vDummy,           // CN_PTNCOLVEC
   /* */ &Dump::vInvalid,         // CN_PTRVAL
@@ -220,7 +219,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN__R__
   /* */ &Dump::vUndefined,       // CN_RECORD
   /* */ &Dump::vUndefined,       // CN_RECORDBUFFER
-  /* */ &Dump::vUndefined,       // CN_REDUCEOP
   /* */ &Dump::vUndefined,       // CN_REFBUFFER
   /* */ &Dump::vUndefined,       // CN_REFSET
   /* */ &Dump::vUndefined,       // CN_REGSET
@@ -264,7 +262,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_SNTSP
   /* */ &Dump::vInvalid,         // CN_SNVCH
   /* */ &Socket::vDump,          // CN_SOCKET
-  /* */ &Dump::vInvalid,         // CN_SORTOP
   /* */ &Dump::vInvalid,         // CN_SPBCD
   /* */ &Dump::vInvalid,         // CN_SPBOL
   /* */ &Dump::vInvalid,         // CN_SPDTE
@@ -297,8 +294,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_STREAMDEF
   /* */ &Dump::vInvalid,         // CN_STRING_T
   /* */ &Dump::vInvalid,         // CN_STZVAL
-  /* */ &Dump::vInvalid,         // CN_SUPERAGGOP
-  /* */ &Dump::vInvalid,         // CN_SUPERMERGEOP
   /* */ &Dump::vInvalid,         // CN_SYSCALL
 
   /* */ &Dump::vInvalid,         // CN__T__
@@ -541,7 +536,6 @@ i8 giClassSize[]
   /* */ sizeof(Planner),            // CN_PLANNER
   /* */ sizeof(Predicate),          // CN_PREDICATE
   /* */ sizeof(PredicateVec),       // CN_PREDICATEVEC
-  /* */ sizeof(ProjectOp),          // CN_PROJECTOP
   /* */ sizeof(PsxThd),             // CN_PSXTHD
   /* */ sizeof(PtnColVec),          // CN_PTNCOLVEC
   /* */ sizeof(PtrVal),             // CN_PTRVAL
@@ -554,7 +548,6 @@ i8 giClassSize[]
   /* */ 'R'-'A' + 1,                // CN__R__
   /* */ sizeof(Record),             // CN_RECORD
   /* */ sizeof(RecordBuffer),       // CN_RECORDBUFFER
-  /* */ sizeof(ReduceOp),           // CN_REDUCEOP
   /* */ sizeof(RefBuffer),          // CN_REFBUFFER
   /* */ sizeof(RefSet),             // CN_REFSET
   /* */ sizeof(RegSet),             // CN_REGSET
@@ -598,7 +591,6 @@ i8 giClassSize[]
   /* */ sizeof(SN_Tsp),             // CN_SNTSP
   /* */ sizeof(SN_Vch),             // CN_SNVCH
   /* */ sizeof(Socket),             // CN_SOCKET
-  /* */ sizeof(SortOp),             // CN_SORTOP
   /* */ sizeof(SP_Bcd),             // CN_SPBCD
   /* */ sizeof(SP_Bol),             // CN_SPBOL
   /* */ sizeof(SP_Dte),             // CN_SPDTE
@@ -631,8 +623,6 @@ i8 giClassSize[]
   /* */ sizeof(StreamDef),          // CN_STREAMDEF
   /* */ sizeof(s32),                // CN_STRING_T
   /* */ sizeof(StzVal),             // CN_STZVAL
-  /* */ sizeof(SuperAggOp),         // CN_SUPERAGGOP
-  /* */ sizeof(SuperMergeOp),       // CN_SUPERMERGEOP
   /* */ sizeof(SysCall),            // CN_SYSCALL
   
   /* */ 'T'-'A' + 1,                // CN__T__
@@ -875,7 +865,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PLANNER
   /* */ HT_TRANSIENT_SMALL,   // CN_PREDICATE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PREDICATEVEC
-  /* */ HT_TRANSIENT_SMALL,   // CN_PROJECTOP
   /* */ HT_TRANSIENT_SMALL,   // CN_PSXTHD
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PTNCOLVEC
   /* */ HT_INVALID,           // CN_PTRVAL
@@ -888,7 +877,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN__R__
   /* */ HT_TRANSIENT_MEDIUM,  // CN_RECORD
   /* */ HT_TRANSIENT_LARGE,   // CN_RECORDBUFFER
-  /* */ HT_TRANSIENT_LARGE,   // CN_REDUCEOP
   /* */ HT_TRANSIENT_LARGE,   // CN_REFBUFFER
   /* */ HT_INVALID,           // CN_REFSET
   /* */ HT_TRANSIENT_SMALL,   // CN_REGSET
@@ -932,7 +920,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_SNTSP
   /* */ HT_INVALID,           // CN_SNVCH
   /* */ HT_TRANSIENT_SMALL,   // CN_SOCKET
-  /* */ HT_TRANSIENT_SMALL,   // CN_SORTOP
   /* */ HT_INVALID,           // CN_SPBCD
   /* */ HT_INVALID,           // CN_SPBOL
   /* */ HT_INVALID,           // CN_SPDTE
@@ -965,8 +952,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_STREAMDEF
   /* */ HT_INVALID,           // CN_STRING_T
   /* */ HT_INVALID,           // CN_STZVAL
-  /* */ HT_TRANSIENT_SMALL,   // CN_SUPERAGGOP
-  /* */ HT_TRANSIENT_SMALL,   // CN_SUPERMERGEOP
   /* */ HT_INVALID,           // CN_SYSCALL
   
   /* */ HT_INVALID,           // CN__T__

@@ -206,7 +206,6 @@ enum eCN : u2 // Class Number
   /* 195 0x0C3     3112B Heap:M */ CN_PLANNER,
   /* 196 0x0C4       48B Heap:S */ CN_PREDICATE,
   /* 197 0x0C5      184B Heap:M */ CN_PREDICATEVEC,
-  /* 198 0x0C6     2896B Heap:S */ CN_PROJECTOP,
   /* 199 0x0C7      104B Heap:S */ CN_PSXTHD,
   /* 200 0x0C8     8216B Heap:M */ CN_PTNCOLVEC,
   /* 201 0x0C9       16B Heap:I */ CN_PTRVAL,
@@ -219,7 +218,6 @@ enum eCN : u2 // Class Number
   /* 206 0x0CE       18B Heap:I */ CN__R__,
   /* 207 0x0CF    16440B Heap:M */ CN_RECORD,
   /* 208 0x0D0  1043496B Heap:L */ CN_RECORDBUFFER,
-  /* 209 0x0D1      480B Heap:L */ CN_REDUCEOP,
   /* 210 0x0D2  1043872B Heap:L */ CN_REFBUFFER,
   /* 211 0x0D3       24B Heap:I */ CN_REFSET,
   /* 212 0x0D4      176B Heap:S */ CN_REGSET,
@@ -263,7 +261,6 @@ enum eCN : u2 // Class Number
   /* 250 0x0FA       32B Heap:I */ CN_SNTSP,
   /* 251 0x0FB     4128B Heap:I */ CN_SNVCH,
   /* 252 0x0FC      304B Heap:S */ CN_SOCKET,
-  /* 253 0x0FD      480B Heap:S */ CN_SORTOP,
   /* 254 0x0FE     4064B Heap:I */ CN_SPBCD,
   /* 255 0x0FF     4064B Heap:I */ CN_SPBOL,
   /* 256 0x100     4064B Heap:I */ CN_SPDTE,
@@ -296,8 +293,6 @@ enum eCN : u2 // Class Number
   /* 284 0x11C    31408B Heap:L */ CN_STREAMDEF,
   /* 285 0x11D       56B Heap:I */ CN_STRING_T,
   /* 286 0x11E       24B Heap:I */ CN_STZVAL,
-  /* 287 0x11F      488B Heap:S */ CN_SUPERAGGOP,
-  /* 289 0x121     1520B Heap:S */ CN_SUPERMERGEOP,
   /* 290 0x122       32B Heap:I */ CN_SYSCALL,
   
   /* 291 0x123       20B Heap:I */ CN__T__,
@@ -540,7 +535,6 @@ static Stz* aCN[]
   /* 195 0x0C3 */ "PLANNER"_Stz,             // CN_PLANNER
   /* 196 0x0C4 */ "PREDICATE"_Stz,           // CN_PREDICATE
   /* 197 0x0C5 */ "PREDICATEVEC"_Stz,        // CN_PREDICATEVEC
-  /* 198 0x0C6 */ "PROJECTOP"_Stz,           // CN_PROJECTOP
   /* 199 0x0C7 */ "PSXTHD"_Stz,              // CN_PSXTHD
   /* 200 0x0C8 */ "PTNCOLVEC"_Stz,           // CN_PTNCOLVEC
   /* 201 0x0C9 */ "PTRVAL"_Stz,              // CN_PTRVAL
@@ -553,7 +547,6 @@ static Stz* aCN[]
   /* 206 0x0CE */ "_R__"_Stz,                // CN__R__
   /* 207 0x0CF */ "RECORD"_Stz,              // CN_RECORD
   /* 208 0x0D0 */ "RECORDBUFFER"_Stz,        // CN_RECORDBUFFER
-  /* 209 0x0D1 */ "REDUCEOP"_Stz,            // CN_REDUCEOP
   /* 210 0x0D2 */ "REFBUFFER"_Stz,           // CN_REFBUFFER
   /* 211 0x0D3 */ "REFSET"_Stz,              // CN_REFSET
   /* 212 0x0D4 */ "REGSET"_Stz,              // CN_REGSET
@@ -597,7 +590,6 @@ static Stz* aCN[]
   /* 250 0x0FA */ "SNTSP"_Stz,               // CN_SNTSP
   /* 251 0x0FB */ "SNVCH"_Stz,               // CN_SNVCH
   /* 252 0x0FC */ "SOCKET"_Stz,              // CN_SOCKET
-  /* 253 0x0FD */ "SORTOP"_Stz,              // CN_SORTOP
   /* 254 0x0FE */ "SPBCD"_Stz,               // CN_SPBCD
   /* 255 0x0FF */ "SPBOL"_Stz,               // CN_SPBOL
   /* 256 0x100 */ "SPDTE"_Stz,               // CN_SPDTE
@@ -630,8 +622,6 @@ static Stz* aCN[]
   /* 284 0x11C */ "STREAMDEF"_Stz,           // CN_STREAMDEF
   /* 285 0x11D */ "STRING_T"_Stz,            // CN_STRING_T
   /* 286 0x11E */ "STZVAL"_Stz,              // CN_STZVAL
-  /* 287 0x11F */ "SUPERAGGOP"_Stz,          // CN_SUPERAGGOP
-  /* 289 0x121 */ "SUPERMERGEOP"_Stz,        // CN_SUPERMERGEOP
   /* 290 0x122 */ "SYSCALL"_Stz,             // CN_SYSCALL
   
   /* 291 0x123 */ "_T__"_Stz,                // CN__T__
