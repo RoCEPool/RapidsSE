@@ -860,6 +860,7 @@ public:
   void vOlistFindJob(void);
 
   // operator
+  void vOpLeftEndMarkersStore(void);
   void vOpLinkNextStage(void);
   void vOpNextStageStore(void);
   void vOpTopologyStore(void);

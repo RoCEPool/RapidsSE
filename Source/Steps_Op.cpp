@@ -10,9 +10,21 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Op(void)
 {
+  vAddStep("Op.leftEndMarkers!"_Stz,  &Step::vOpLeftEndMarkersStore);
   vAddStep("Op.linkNextStage"_Stz,    &Step::vOpLinkNextStage);
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.topology!"_Stz,        &Step::vOpTopologyStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.endMarkers! -- store end markers in op                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOpLeftEndMarkersStore(void)
+{
+  ENTRY(); // ENTRY("vOpLeftEndMarkersStore"_Stz);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  pOp->m_nLeftEndMarkers = m_pDataStack->iPopInt(__func__);
 }
 
 /*----------------------------------------------------------------------------*/
