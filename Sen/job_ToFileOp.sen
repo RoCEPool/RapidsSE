@@ -16,6 +16,10 @@
   // open the file for writing
   file::new locals| pFile |
   <fileNm> OPEN_WRITE pFile file.open
+  not if
+    pFile file.delete assert::stack_0 EC_INVALID_FILE pJob_ToFileOp <ERROR_JOB> !!logError exit
+  then
+
   pFile to file0[]
 
   begin
@@ -31,7 +35,7 @@
 
       ZK_CSVBUFFER of
         "Operand:- ZK_CSVBUFFER" .
-        file0[].get Operand[].writeToFile0
+        Operand[].writeToFile0
         true
       endof
 
