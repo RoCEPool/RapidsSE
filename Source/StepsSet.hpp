@@ -944,7 +944,6 @@ public:
   void vPushI(void);
   void vPushJ(void);
   void vPushNullPtr(void);
-  void vPushValue(void);
 
   void vPushFipVal(void);
   void vPushIntVal(void);

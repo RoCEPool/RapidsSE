@@ -1410,31 +1410,6 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // push value
-    
-    if ( *aDoesCell->m_afpIntrinsic == &Step::vPushValue ) {
-      
-      vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->szWordNm());
-      
-      aDoesCell++;
-      
-      AnyVal* aAnyVal = reinterpret_cast<AnyVal*>(aDoesCell);
-      
-      if (CN_STZVAL == aAnyVal->eClass()) {
-        vTrace(" \"%s\"\n"_Stz,_aStzVal(aAnyVal)->azChar());
-      }
-      else {
-        aAnyVal->vToString(sString);
-        vTrace(" %s\n"_Stz,sString.azChar());
-      }
-      
-      i8 iBytes = aAnyVal->nStackUsage();
-      aDoesCell = aAdd<Cell*>(aDoesCell,iBytes);
-      
-      continue;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // push intval
     
     if ( *aDoesCell->m_afpIntrinsic == &Step::vPushIntVal ) {
@@ -1464,7 +1439,15 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
       
       PtrVal* aPtrVal = _aPtrVal(aDoesCell);
       
-      vTrace(" %p\n"_Stz,aPtrVal->pObj());
+      eCN eClassNo_obj = aPtrVal->pObj()->eClass();
+      
+      if (CN_WORD == eClassNo_obj) {
+        Word* pWord = _pWord(aPtrVal->pObj());
+        vTrace(" %p %s\n"_Stz,pWord,pWord->szWordNm());
+      }
+      else {
+        vTrace(" %p %s\n"_Stz,aCN[eClassNo_obj]);
+      }
       
       i8 iBytes = aPtrVal->nStackUsage();
       aDoesCell = aAdd<Cell*>(aDoesCell,iBytes);
@@ -1483,7 +1466,7 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
       
       StzVal* aStzVal = _aStzVal(aDoesCell);
       
-      vTrace(" \"%s\"\n"_Stz,aStzVal->iInt());
+      vTrace(" \"%s\"\n"_Stz,aStzVal->szStz());
       
       i8 iBytes = aStzVal->nStackUsage();
       aDoesCell = aAdd<Cell*>(aDoesCell,iBytes);
