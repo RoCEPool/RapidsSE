@@ -14,14 +14,6 @@ namespace DataOperators
 
 //------------------------------------------------------------------------------
 
-#include "ExprOp.hpp"
-
-#include "FetchOp.hpp"
-#include "FilterOp.hpp"
-
-#include "GenerateOp.hpp"
-#include "GetKeyOp.hpp"
-
 #include "HashOp.hpp"
 
 #include "InflateOp.hpp"

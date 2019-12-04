@@ -72,14 +72,11 @@ enum eCN : u2 // Class Number
   /*  59 0x03B  1043952B Heap:L */ CN_ENTBUFFER,
   /*  60 0x03C      304B Heap:I */ CN_ENTWRK,
   /*  61 0x03D      352B Heap:S */ CN_ENUMFLAGS,
-  /*  62 0x03E     4112B Heap:M */ CN_EXPROP,
   
   /*  63 0x03F        6B Heap:I */ CN__F__,
   /*  64 0x040  1040440B Heap:L */ CN_FETCHBUFFER,
-  /*  65 0x041     1088B Heap:S */ CN_FETCHOP,
   /*  66 0x042      384B Heap:S */ CN_FIFO,
   /*  67 0x043      448B Heap:S */ CN_FILE,
-  /*  68 0x044      520B Heap:S */ CN_FILTEROP,
   /*  69 0x045      136B Heap:M */ CN_FILTER_FETCH,
   /*  70 0x046      136B Heap:M */ CN_FILTER_FROM,
   /*  71 0x047      136B Heap:M */ CN_FILTER_GROUPBY,
@@ -105,9 +102,7 @@ enum eCN : u2 // Class Number
   /*  91 0x05B     2072B Heap:S */ CN_FREQDIST,
   
   /*  92 0x05C        7B Heap:I */ CN__G__,
-  /*  93 0x05D      496B Heap:S */ CN_GENERATEOP,
   /*  94 0x05E    49168B Heap:I */ CN_GENVAR,
-  /*  95 0x05F      784B Heap:S */ CN_GETKEYOP,
   /*  96 0x060     2184B Heap:L */ CN_GRID,
   
   /*  97 0x061        8B Heap:I */ CN__H__,
@@ -418,14 +413,11 @@ static Stz* aCN[]
   /*  59 0x03B */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
   /*  60 0x03C */ "ENTWRK"_Stz,              // CN_ENTWRK
   /*  61 0x03D */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS
-  /*  62 0x03E */ "EXPROP"_Stz,              // CN_EXPROP
   
   /*  63 0x03F */ "_F__"_Stz,                // CN__F__
   /*  64 0x040 */ "FETCHBUFFER"_Stz,         // CN_FETCHBUFFER
-  /*  65 0x041 */ "FETCHOP"_Stz,             // CN_FETCHOP
   /*  66 0x042 */ "FIFO"_Stz,                // CN_FIFO
   /*  67 0x043 */ "FILE"_Stz,                // CN_FILE
-  /*  68 0x044 */ "FILTEROP"_Stz,            // CN_FILTEROP
   /*  69 0x045 */ "FILTER_FETCH"_Stz,        // CN_FILTER_FETCH
   /*  70 0x046 */ "FILTER_FROM"_Stz,         // CN_FILTER_FROM
   /*  71 0x047 */ "FILTER_GROUPBY"_Stz,      // CN_FILTER_GROUPBY
@@ -451,9 +443,7 @@ static Stz* aCN[]
   /*  91 0x05B */ "FREQDIST"_Stz,            // CN_FREQDIST
   
   /*  92 0x05C */ "_G__"_Stz,                // CN__G__
-  /*  93 0x05D */ "GENERATEOP"_Stz,          // CN_GENERATEOP
   /*  94 0x05E */ "GENVAR"_Stz,              // CN_GENVAR
-  /*  95 0x05F */ "GETKEYOP"_Stz,            // CN_GETKEYOP
   /*  96 0x060 */ "GRID"_Stz,                // CN_GRID
   
   /*  97 0x061 */ "_H__"_Stz,                // CN__H__

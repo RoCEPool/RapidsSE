@@ -69,14 +69,11 @@ pFINALIZE *gpFinalize[]
   /* 64 */ &Finalize::vUndefined,         // CN_ENTWRK
   /*    */ &Finalize::vUndefined,         // CN_ENUMFLAGS
   /*    */ &Finalize::vUndefined,         // CN_ENUMSS
-  /*    */ &Finalize::vUndefined,         // CN_EXPROP
 
   /*    */ &Finalize::vUndefined,         // CN__F__
   /*    */ &Finalize::vUndefined,         // CN_FETCHBUFFER
-  /*    */ &Finalize::vUndefined,         // CN_FETCHOP
   /*    */ &Finalize::vUndefined,         // CN_FIFO
   /*    */ &Finalize::vUndefined,         // CN_FILE
-  /*    */ &Finalize::vUndefined,         // CN_FILTEROP
   /*    */ &Finalize::vUndefined,         // CN_FILTER_FETCH
   /*    */ &Finalize::vUndefined,         // CN_FILTER_FROM
   /*    */ &Finalize::vUndefined,         // CN_FILTER_GROUPBY
@@ -102,9 +99,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_FREQDIST
 
   /*    */ &Finalize::vUndefined,         // CN__G__
-  /*    */ &Finalize::vUndefined,         // CN_GENERATEOP
   /*    */ &Finalize::vUndefined,         // CN_GENVAR
-  /*    */ &Finalize::vUndefined,         // CN_GETKEYOP
   /* 48 */ &Finalize::vUndefined,         // CN_GRID
   
   /*    */ &Finalize::vUndefined,         // CN__H__

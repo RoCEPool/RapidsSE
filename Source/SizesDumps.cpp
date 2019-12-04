@@ -73,14 +73,11 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_ENTBUFFER
   /* */ &Dump::vInvalid,         // CN_ENTWRK
   /* */ &Dump::vDummy,           // CN_ENUMFLAGS
-  /* */ &Dump::vDummy,           // CN_EXPROP
 
   /* */ &Dump::vInvalid,         // CN__F__
   /* */ &Dump::vInvalid,         // CN_FETCHBUFFER
-  /* */ &Dump::vInvalid,         // CN_FETCHOP
   /* */ &Dump::vInvalid,         // CN_FIFO
   /* */ &Dump::vInvalid,         // CN_FILE
-  /* */ &Dump::vInvalid,         // CN_FILTEROP
   /* */ &Dump::vDummy,           // CN_FILTER_FETCH
   /* */ &Dump::vDummy,           // CN_FILTER_FROM
   /* */ &Dump::vDummy,           // CN_FILTER_GROUPBY
@@ -106,9 +103,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_FREQDIST
 
   /* */ &Dump::vInvalid,         // CN__G__
-  /* */ &Dump::vInvalid,         // CN_GENERATEOP
   /* */ &Dump::vInvalid,         // CN_GENVAR
-  /* */ &Dump::vInvalid,         // CN_GETKEYOP
   /* */ &Grid::vDump,            // CN_GRID
   
   /* */ &Dump::vInvalid,         // CN__H__
@@ -419,14 +414,11 @@ i8 giClassSize[]
   /* */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* */ sizeof(EntWrk),             // CN_ENTWRK
   /* */ sizeof(EnumFlags),          // CN_ENUMFLAGS
-  /* */ sizeof(ExprOp),             // CN_EXPROP
 
   /* */ 'F'-'A' + 1,                // CN__F__
   /* */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
-  /* */ sizeof(FetchOp),            // CN_FETCHOP
   /* */ sizeof(Fifo),               // CN_FIFO
   /* */ sizeof(File),               // CN_FILE
-  /* */ sizeof(FilterOp),           // CN_FILTEROP
   /* */ sizeof(Filter_Fetch),       // CN_FILTER_FETCH
   /* */ sizeof(Filter_From),        // CN_FILTER_FROM
   /* */ sizeof(Filter_GroupBy),     // CN_FILTER_GROUPBY
@@ -452,9 +444,7 @@ i8 giClassSize[]
   /* */ sizeof(FreqDist),           // CN_FREQDIST
 
   /* */ 'G'-'A' + 1,                // CN__G__
-  /* */ sizeof(GenerateOp),         // CN_GENERATEOP
   /* */ sizeof(GenVar),             // CN_GENVAR
-  /* */ sizeof(GetKeyOp),           // CN_GETKEYOP
   /* */ sizeof(Grid),               // CN_GRID
   
   /* */ 'H'-'A' + 1,                // CN__H__
@@ -765,14 +755,11 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_ENTBUFFER
   /* */ HT_INVALID,           // CN_ENTWRK
   /* */ HT_TRANSIENT_SMALL,   // CN_ENUMFLAGS
-  /* */ HT_TRANSIENT_MEDIUM,  // CN_EXPROP
 
   /* */ HT_INVALID,           // CN__F__
   /* */ HT_TRANSIENT_LARGE,   // CN_FETCHBUFFER
-  /* */ HT_TRANSIENT_SMALL,   // CN_FETCHOP
   /* */ HT_TRANSIENT_SMALL,   // CN_FIFO
   /* */ HT_TRANSIENT_SMALL,   // CN_FILE
-  /* */ HT_TRANSIENT_SMALL,   // CN_FILTEROP
   /* */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_FETCH
   /* */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_FROM
   /* */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_GROUPBY
@@ -798,9 +785,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_FREQDIST
 
   /* */ HT_INVALID,           // CN__G__
-  /* */ HT_TRANSIENT_SMALL,   // CN_GENERATEOP
   /* */ HT_INVALID,           // CN_GENVAR
-  /* */ HT_TRANSIENT_SMALL,   // CN_GETKEYOP
   /* */ HT_TRANSIENT_LARGE,   // CN_GRID
 
   /* */ HT_INVALID,           // CN__H__
