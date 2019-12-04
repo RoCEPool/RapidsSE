@@ -384,18 +384,6 @@ StepFp* Word::afpEntryStep(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* encode call to named word which has a cell* argument                       */
-/*----------------------------------------------------------------------------*/
-void Word::vEncode(Stz* aWordNm, Cell* aCell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  vEncodeCall(aWordNm);
-  
-  vAppend(aCell);
-}
-
-/*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(Stz* aWordNm, AnyVal* aAnyVal)
@@ -443,6 +431,19 @@ void Word::vEncodeCall(Stz* aWordNm)
   
   vAppend(pCalledWord->afpEntryStep());
 }
+
+/*----------------------------------------------------------------------------*/
+/* encode call to named word which has a cell* argument                       */
+/*----------------------------------------------------------------------------*/
+void Word::vEncodeJump(Stz* aWordNm, Cell* aCell)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  vEncodeCall(aWordNm);
+  
+  vAppend(aCell);
+}
+
 /*----------------------------------------------------------------------------*/
 /* get ename set                                                              */
 /*----------------------------------------------------------------------------*/
