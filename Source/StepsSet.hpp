@@ -1323,7 +1323,7 @@ public:
 
   // word
   void vWord(void);
-  void vWordAllot(void);
+  void vWordAllotObject(void);
   void vWordCategoryFetch(void);
   void vWordCategoryStore(void);
   void vWordDelete(void);

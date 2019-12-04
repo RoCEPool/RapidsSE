@@ -14,7 +14,7 @@ void Step::vAddSteps_Word(void)
   vAddStep("word::locate"_Stz,      &Step::vWordLocate);
   vAddStep("word::new"_Stz,         &Step::vWordNew);
   
-  vAddStep("word.allot"_Stz,        &Step::vWordAllot);
+  vAddStep("word.allotObject"_Stz,  &Step::vWordAllotObject);
   vAddStep("word.category@"_Stz,    &Step::vWordCategoryFetch);
   vAddStep("word.category!"_Stz,    &Step::vWordCategoryStore);
   vAddStep("word.dump"_Stz,         &Step::vWordDump);
@@ -47,11 +47,11 @@ void Step::vWord(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.allot -- allot an object of n bytes in wsp                            */
+/* word.allotObject -- allot an object of n bytes in wsp                      */
 /*----------------------------------------------------------------------------*/
-void Step::vWordAllot(void)
+void Step::vWordAllotObject(void)
 {
-  ENTRY(); // ENTRY("vWordAllot"_Stz);
+  ENTRY(); // ENTRY("vWordAllotObject"_Stz);
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -61,6 +61,9 @@ void Step::vWordAllot(void)
   Object* pAllotedObject = (Object*)pWord->ayAllot(nBytes);
   ASSERT(pAllotedObject);
   
+  pAllotedObject->vMagic();
+  pAllotedObject->vClass(CN_NONE);
+
   m_pDataStack->vPushPtr(pAllotedObject);
 
   EXIT();
