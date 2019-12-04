@@ -106,7 +106,7 @@ void Step::vComma(void)
   GenVar xValue;
   m_pDataStack->vPopVal(xValue,__func__);
   
-  pCurrentWord->vEncodePush("pushValue"_Stz,xValue);
+  pCurrentWord->vEncodePush(xValue);
     
   EXIT();
 }
@@ -347,7 +347,7 @@ void Step::vPostpone(void)
     // put call to normal word into some future definition
     
     // copy indirect pointer into the current word
-    pCurrentWord->vEncodePush("pushValue"_Stz,xVar);
+    pCurrentWord->vEncodePush(xVar);
     pCurrentWord->vEncodeCall("compile,"_Stz);
   }
   
@@ -507,7 +507,7 @@ void Step::vTick(void)
 
   if (m_pCompiler->bCompiling()) {
     Word* pCurrentWord = m_pCompiler->pCurrentWord();
-    pCurrentWord->vEncodePush("pushValue"_Stz,xVar);
+    pCurrentWord->vEncodePush(xVar);
   }
   else {
     m_pDataStack->vPushPtr(pWord);
