@@ -333,7 +333,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_THREADVEC
   /*142 */ &Finalize::vUndefined,         // CN_TIMEMARKER
   /*142 */ &Finalize::vUndefined,         // CN_TIMER
-  /*    */ &Finalize::vUndefined,         // CN_TOFILEOP
   /*143 */ &Finalize::vUndefined,         // CN_TOKEN
   /*144 */ &Finalize::vUndefined,         // CN_TOKENISER
   /*146 */ &Finalize::vUndefined,         // CN_TOKENVEC
