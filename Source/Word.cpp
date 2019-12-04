@@ -426,8 +426,20 @@ void Word::vEncodePush(Stz* aWordNm, AnyVal* aAnyVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vEncodeCall(aWordNm);
+  eCN eClassNo_val = aAnyVal->eClass();
   
+  if (CN_FIPVAL == eClassNo_val)
+    vEncodeCall("pushFipVal"_Stz);
+  else if (CN_INTVAL == eClassNo_val)
+    vEncodeCall("pushIntVal"_Stz);
+  else if (CN_PTRVAL == eClassNo_val)
+    vEncodeCall("pushPtrVal"_Stz);
+  else if (CN_STZVAL == eClassNo_val)
+    vEncodeCall("pushStrVal"_Stz);
+  else {
+    NEVER_REACH;
+  }
+
   vAppend(aAnyVal);
 }
 
