@@ -301,7 +301,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_TABLEDEF
   /* */ &TablePtn::vDump,        // CN_TABLEPTN
   /* */ &Dump::vDummy,           // CN_TABLEPTNVEC
-  /* */ &Dump::vDummy,           // CN_TAKEAWAYOP
   /* */ &Task::vDump,            // CN_TASK
   /* */ &Dump::vUndefined,       // CN_TASKLIST
   /* */ &Dump::vUndefined,       // CN_TASKQUEUE
@@ -324,7 +323,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN__V__
   
   /* */ &Dump::vInvalid,         // CN__W__
-  /* */ &Dump::vInvalid,         // CN_WHEREOP
   /* */ &Dump::vInvalid,         // CN_WILDERNESS
   /* */ &Word::vDump,            // CN_WORD
 
@@ -333,7 +331,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN__Y__
   
   /* */ &Dump::vInvalid,         // CN__Z__
-  /* */ &Dump::vUndefined,       // CN_ZEDOP
   
   /* */ &Dump::vEnums            // CN_ENUMS
 };
@@ -630,7 +627,6 @@ i8 giClassSize[]
   /* */ sizeof(TableDef),           // CN_TABLEDEF
   /* */ sizeof(TablePtn),           // CN_TABLEPTN
   /* */ sizeof(TablePtnVec),        // CN_TABLEPTNVEC
-  /* */ sizeof(TakeawayOp),         // CN_TAKEAWAYOP
   /* */ sizeof(Task),               // CN_TASK
   /* */ sizeof(TaskList),           // CN_TASKLIST
   /* */ sizeof(TaskQueue),          // CN_TASKQUEUE
@@ -653,7 +649,6 @@ i8 giClassSize[]
   /* */ 'V'-'A' + 1,                // CN__V__
   
   /* */ 'W'-'A' + 1,                // CN__W__
-  /* */ sizeof(WhereOp),            // CN_WHEREOP
   /* */ sizeof(Wilderness),         // CN_WILDERNESS
   /* */ sizeof(Word),               // CN_WORD
   
@@ -662,7 +657,6 @@ i8 giClassSize[]
   /* */ 'Y'-'A' + 1,                // CN__Y__
 
   /* */ 'Z'-'A' + 1,                // CN__Z__
-  /* */ sizeof(ZedOp),              // CN_ZEDOP
   
   /* */ -1
 };
@@ -959,7 +953,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_TABLEDEF
   /* */ HT_TRANSIENT_SMALL,   // CN_TABLEPTN
   /* */ HT_TRANSIENT_MEDIUM,  // CN_TABLEPTNVEC
-  /* */ HT_TRANSIENT_SMALL,   // CN_TAKEAWAY
   /* */ HT_TRANSIENT_MEDIUM,  // CN_TASK
   /* */ HT_TRANSIENT_SMALL,   // CN_TASKLIST
   /* */ HT_TRANSIENT_SMALL,   // CN_TEMPNAME
@@ -982,7 +975,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN__V__
   
   /* */ HT_INVALID,           // CN__W__
-  /* */ HT_TRANSIENT_SMALL,   // CN_WHEREOP
   /* */ HT_INVALID,           // CN_WILDERNESS
   /* */ HT_TRANSIENT_MEDIUM,  // CN_WORD
 
@@ -991,7 +983,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN__Y__
   
   /* */ HT_INVALID,           // CN__Z__
-  /* */ HT_TRANSIENT_SMALL,   // CN_ZEDOP
   
   /* */ HT_INVALID,           // CN_ENUMS
 };

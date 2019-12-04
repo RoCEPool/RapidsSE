@@ -297,7 +297,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_TABLEDEF
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTN
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTNVEC
-  /*    */ &Finalize::vUndefined,         // CN_TAKEAWAYOP
   /*131 */ &Finalize::vUndefined,         // CN_TASK
   /*134 */ &Finalize::vUndefined,         // CN_TASKLIST
   /*    */ &Finalize::vUndefined,         // CN_TASKQUEUE
@@ -320,7 +319,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN__V__
   
   /*    */ &Finalize::vUndefined,         // CN__W__
-  /* 40 */ &Finalize::vUndefined,         // CN_WHEREOP
   /*149 */ &Finalize::vUndefined,         // CN_WILDERNESS
   /*150 */ &Finalize::vUndefined,         // CN_WORD
   
@@ -329,7 +327,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN__Y__
   
   /*    */ &Finalize::vUndefined,         // CN__Z__
-  /*116 */ &Finalize::vUndefined,         // CN_ZEDOP
     
   /*155 */ &Finalize::vEnums              // CN_ENUMS
 };

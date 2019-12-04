@@ -300,7 +300,6 @@ enum eCN : u2 // Class Number
   /* 293 0x125     4120B Heap:M */ CN_TABLEDEF,
   /* 294 0x126      296B Heap:S */ CN_TABLEPTN,
   /* 295 0x127     1048B Heap:M */ CN_TABLEPTNVEC,
-  /* 296 0x128      480B Heap:S */ CN_TAKEAWAYOP,
   /* 297 0x129      432B Heap:M */ CN_TASK,
   /* 298 0x12A      256B Heap:S */ CN_TASKLIST,
   /* 299 0x12B      224B Heap:S */ CN_TASKQUEUE,
@@ -323,7 +322,6 @@ enum eCN : u2 // Class Number
   /* 316 0x13C       22B Heap:I */ CN__V__,
   
   /* 317 0x13D       23B Heap:I */ CN__W__,
-  /* 318 0x13E      480B Heap:S */ CN_WHEREOP,
   /* 319 0x13F       16B Heap:I */ CN_WILDERNESS,
   /* 320 0x140    64808B Heap:M */ CN_WORD,
   
@@ -332,7 +330,6 @@ enum eCN : u2 // Class Number
   /* 323 0x143       25B Heap:I */ CN__Y__,
   
   /* 324 0x144       26B Heap:I */ CN__Z__,
-  /* 325 0x145      480B Heap:S */ CN_ZEDOP,
 
   /* 330 0x14A       -1B Heap:I */ CN_ENUMS,
 };
@@ -629,7 +626,6 @@ static Stz* aCN[]
   /* 293 0x125 */ "TABLEDEF"_Stz,            // CN_TABLEDEF
   /* 294 0x126 */ "TABLEPTN"_Stz,            // CN_TABLEPTN
   /* 295 0x127 */ "TABLEPTNVEC"_Stz,         // CN_TABLEPTNVEC
-  /* 296 0x128 */ "TAKEAWAYOP"_Stz,          // CN_TAKEAWAYOP
   /* 297 0x129 */ "TASK"_Stz,                // CN_TASK
   /* 298 0x12A */ "TASKLIST"_Stz,            // CN_TASKLIST
   /* 299 0x12B */ "TASKQUEUE"_Stz,           // CN_TASKQUEUE
@@ -652,7 +648,6 @@ static Stz* aCN[]
   /* 316 0x13C */ "_V__"_Stz,                // CN__V__
   
   /* 317 0x13D */ "_W__"_Stz,                // CN__W__
-  /* 318 0x13E */ "WHEREOP"_Stz,             // CN_WHEREOP
   /* 319 0x13F */ "WILDERNESS"_Stz,          // CN_WILDERNESS
   /* 320 0x140 */ "WORD"_Stz,                // CN_WORD
   
@@ -661,7 +656,6 @@ static Stz* aCN[]
   /* 323 0x143 */ "_Y__"_Stz,                // CN__Y__
   
   /* 324 0x144 */ "_Z__"_Stz,                // CN__Z__
-  /* 325 0x145 */ "ZEDOP"_Stz,               // CN_ZEDOP
 
   /* 330 0x14A */ "ENUMS"_Stz,               // CN_ENUMS
 };
