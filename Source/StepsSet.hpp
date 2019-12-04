@@ -133,6 +133,10 @@ public:
   void vCompilerPop(void);
   void vCompilerPush(void);
 
+  void vCompilerCurrentWordFetch(void);
+  void vCompilerCurrentWordStore(void);
+
+
   // cpu
   void vCpuRdtscp(void);
 
