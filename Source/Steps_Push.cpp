@@ -70,7 +70,7 @@ void Step::vPushFipVal(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  FipVal* aFipVal = _aFipVal(& m_aInxPtr->m_xEmbValue);
+  FipVal* aFipVal = _aFipVal(& m_aInxPtr->m_xEmbVal);
   
   m_pDataStack->vPushFip(aFipVal->aFip());
   
@@ -90,7 +90,7 @@ void Step::vPushIntVal(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  IntVal* aIntVal = _aIntVal(& m_aInxPtr->m_xEmbValue);
+  IntVal* aIntVal = _aIntVal(& m_aInxPtr->m_xEmbVal);
   
   m_pDataStack->vPushInt(aIntVal->iInt());
   
@@ -110,7 +110,7 @@ void Step::vPushPtrVal(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  PtrVal* aPtrVal = _aPtrVal(& m_aInxPtr->m_xEmbValue);
+  PtrVal* aPtrVal = _aPtrVal(& m_aInxPtr->m_xEmbVal);
   
   m_pDataStack->vPushPtr(aPtrVal->pObj());
   
@@ -130,7 +130,7 @@ void Step::vPushStzVal(void)
     ASSERT(m_pTask->m_iTraceMask);
   }
   
-  StzVal* aStzVal = _aStzVal(& m_aInxPtr->m_xEmbValue);
+  StzVal* aStzVal = _aStzVal(& m_aInxPtr->m_xEmbVal);
   
   m_pDataStack->vPushStz(aStzVal->szStz());
   
