@@ -25,7 +25,6 @@ void Step::vAddSteps_Forth(void)
   vAddStep("immediate"_Stz,       &Step::vImmediate,        true );
   vAddStep("postpone"_Stz,        &Step::vPostpone,         true );
   vAddStep("prompt"_Stz,          &Step::vPrompt,           true );
-  vAddStep("see"_Stz,             &Step::vSee);
   vAddStep(";"_Stz,               &Step::vSemicolon,        true );
   vAddStep("series-name"_Stz,     &Step::vSeriesName);
   vAddStep("subDic"_Stz,          &Step::vSubDic,           true );
@@ -361,95 +360,6 @@ void Step::vPrompt(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   pCurrentWord->vPrompt(true);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* see -- dump routine of word named by next token                            */
-/*----------------------------------------------------------------------------*/
-void Step::vSee(void)
-{
-  ENTRY(); // ENTRY("vSee"_Stz);
-  
-  s48K sString;
-  
-  m_pCompiler->vNextToken();
-  
-  Word* pWord = m_oDicStack.pFindWord(m_pCompiler->szToken());
-  if ( ! pWord ) {
-    vTrace("See: %s unknown\n"_Stz,m_pCompiler->szToken()->azChar());
-    return;
-  }
-  
-  vTrace("See: %s\n"_Stz,pWord->szWordNm());
-  
-  Cell* aDoesCell = pWord->aEntryCell();
-  
-  Word* pDoesWord = (Word*)( ((u8)aDoesCell & (u8)~0xFFFF)
-                                      + sizeof(HeapBuffer));
-  
-  while (aDoesCell < pDoesWord->aLastCell()) {
-    
-    StepFp fpHasStep = *aDoesCell->m_afpIntrinsic;
-    
-    Word* pCallsWord = m_oDicStack.pLocateWord(fpHasStep);
-    
-    // jumps
-    if (*aDoesCell->m_afpIntrinsic == &Step::vFlowJump ||
-        *aDoesCell->m_afpIntrinsic == &Step::vFlowJumpFalse ||
-        *aDoesCell->m_afpIntrinsic == &Step::vFlowJumpTrue ) {
-      
-      vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->szWordNm());
-      
-      aDoesCell++;
-      
-      vTrace(" %p\n"_Stz,aDoesCell->m_aJumpTo);
-      
-      aDoesCell++;
-      
-      continue;
-    }
-    
-    // push
-    if ( *aDoesCell->m_afpIntrinsic == &Step::vPushValue ) {
-      
-      vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->szWordNm());
-      
-      aDoesCell++;
-      
-      AnyVal* aAnyVal = reinterpret_cast<AnyVal*>(aDoesCell);
-      
-      if (CN_STZVAL == aAnyVal->eClass()) {
-        vTrace(" \"%s\"\n"_Stz,_aStzVal(aAnyVal)->azChar());
-      }
-      else {
-        aAnyVal->vToString(sString);
-        vTrace(" %s\n"_Stz,sString.azChar());
-      }
-      
-      i8 iBytes = aAnyVal->nStackUsage();
-      aDoesCell = aAdd<Cell*>(aDoesCell,iBytes);
-      
-      continue;
-    }
-    
-    // enterRoutine
-    if ( *aDoesCell->m_afpIntrinsic == &Step::vEnterRoutine ) {
-      
-      Word* pCallsWord = (Word*)( ((u8)aDoesCell->m_afpIntrinsic & (u8)~0xFFFF)
-                                           + sizeof(HeapBuffer));
-      
-      vTrace("%p: %s\n"_Stz,aDoesCell,pCallsWord->szWordNm());
-      aDoesCell++;
-      continue;
-    }
-    
-    // other
-    vTrace("%p: %s\n"_Stz,aDoesCell,pCallsWord->szWordNm());
-    
-    aDoesCell++;
-  }
   
   EXIT();
 }

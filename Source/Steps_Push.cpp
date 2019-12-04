@@ -14,9 +14,9 @@ void Step::vAddSteps_Push(void)
   vAddStep("nullPtr"_Stz,         &Step::vPushNullPtr);
   vAddStep("pushValue"_Stz,       &Step::vPushValue);
  
-  vAddStep("pushInt"_Stz,         &Step::vPushValue);
-  vAddStep("pushPtr"_Stz,         &Step::vPushValue);
-  vAddStep("pushStr"_Stz,         &Step::vPushValue);
+  vAddStep("pushIntVal"_Stz,      &Step::vPushIntVal);
+  vAddStep("pushPtrVal"_Stz,      &Step::vPushPtrVal);
+  vAddStep("pushStrVal"_Stz,      &Step::vPushStrVal);
 }
 
 /*----------------------------------------------------------------------------*/
