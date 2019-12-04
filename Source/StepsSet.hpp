@@ -942,6 +942,10 @@ public:
   void vPushNullPtr(void);
   void vPushValue(void);
 
+  void vPushIntVal(void);
+  void vPushPtrVal(void);
+  void vPushStrVal(void);
+
   // queue
   void vQueueAppend(void);
   void vQueueDelete(void);
