@@ -105,7 +105,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN__H__
   /*    */ &Finalize::vUndefined,         // CN_HASHBUFFER
   /*    */ &Finalize::vUndefined,         // CN_HASHMAP
-  /*    */ &Finalize::vUndefined,         // CN_HASHOP
   /* 50 */ &Finalize::vUndefined,         // CN_HEAPBUFFER
   /* 50 */ &Finalize::vUndefined,         // CN_HPROW
 
@@ -114,14 +113,11 @@ pFINALIZE *gpFinalize[]
   /* 52 */ &Finalize::vUndefined,         // CN_INDEXDEF
   /* 52 */ &Finalize::vUndefined,         // CN_INDEXTREE
   /* 53 */ &Finalize::vUndefined,         // CN_INDEXTREEVEC
-  /*    */ &Finalize::vUndefined,         // CN_INFLATEOP
   /*    */ &Finalize::vUndefined,         // CN_INPUT
   /* 54 */ &Finalize::vUndefined,         // CN_IDXCOLVEC
   /* 55 */ &Finalize::vUndefined,         // CN_IDXVEC
   /*    */ &Finalize::vUndefined,         // CN_INGESTCHUNK
-  /*    */ &Finalize::vUndefined,         // CN_INSERTOP
   /*    */ &Finalize::vUndefined,         // CN_INTBUFFER
-  /*    */ &Finalize::vUndefined,         // CN_INTERSECTOP
   /*  7 */ &Finalize::vUndefined,         // CN_INTVAL
   /*    */ &Finalize::vUndefined,         // CN_IOCHUNK
   /*    */ &Finalize::vUndefined,         // CN_IOCOPY
@@ -151,7 +147,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEROW
   /*    */ &Finalize::vUndefined,         // CN_JOBLIST
-  /*    */ &Finalize::vUndefined,         // CN_JOINOP
   /* 59 */ &Finalize::vUndefined,         // CN_JUMBOPERSISTENT
   /* 60 */ &Finalize::vUndefined,         // CN_JUMBOTRANSIENT
   
@@ -162,7 +157,6 @@ pFINALIZE *gpFinalize[]
   /* 65 */ &Finalize::vUndefined,         // CN_LARGEPERSISTENT
   /* 66 */ &Finalize::vUndefined,         // CN_LARGETRANSIENT
   /*    */ &Finalize::vUndefined,         // CN_LEXICON
-  /*    */ &Finalize::vUndefined,         // CN_LIMITOP
   /*    */ &Finalize::vUndefined,         // CN_LOADCHUNK
   /* 71 */ &Finalize::vUndefined,         // CN_LOADMAP
   /*    */ &Finalize::vUndefined,         // CN_LOCAL
@@ -175,7 +169,6 @@ pFINALIZE *gpFinalize[]
   /* 73 */ &Finalize::vUndefined,         // CN_MEDIUMPERSISTENT
   /* 74 */ &Finalize::vUndefined,         // CN_MEDIUMTRANSIENT
   /*    */ &Finalize::vUndefined,         // CN_MEMTEST
-  /*    */ &Finalize::vUndefined,         // CN_MERGEOP
   /*114 */ &Finalize::vUndefined,         // CN_MUTEX
   
   /*    */ &Finalize::vUndefined,         // CN__N__
@@ -210,7 +203,6 @@ pFINALIZE *gpFinalize[]
   /* 87 */ &Finalize::vUndefined,         // CN_PLANNER
   /* 90 */ &Finalize::vUndefined,         // CN_PREDICATE
   /* 91 */ &Finalize::vUndefined,         // CN_PREDICATEVEC
-  /* 91 */ &Finalize::vUndefined,         // CN_PROJECTOP
   /* 89 */ &Finalize::vUndefined,         // CN_PSXTHD
   /* 94 */ &Finalize::vUndefined,         // CN_PTNCOLVEC
   /* 11 */ &Finalize::vUndefined,         // CN_PTRVAL
@@ -223,7 +215,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN__R__
   /*    */ &Finalize::vUndefined,         // CN_RECORD
   /*    */ &Finalize::vUndefined,         // CN_RECORDBUFFER
-  /*    */ &Finalize::vUndefined,         // CN_REDUCEOP
   /*    */ &Finalize::vUndefined,         // CN_REFBUFFER
   /*    */ &Finalize::vUndefined,         // CN_REFSET
   /*    */ &Finalize::vUndefined,         // CN_REGSET
@@ -267,7 +258,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_SNTSP
   /*    */ &Finalize::vUndefined,         // CN_SNVCH
   /*125 */ &Finalize::vUndefined,         // CN_SOCKET
-  /*125 */ &Finalize::vUndefined,         // CN_SORTOP
   /*    */ &Finalize::vUndefined,         // CN_SPBCD
   /*    */ &Finalize::vUndefined,         // CN_SPBOL
   /*    */ &Finalize::vUndefined,         // CN_SPDTE
@@ -300,8 +290,6 @@ pFINALIZE *gpFinalize[]
   /* 13 */ &Finalize::vUndefined,         // CN_STREAMDEF
   /* 13 */ &Finalize::vUndefined,         // CN_STRING_T
   /* 12 */ &Finalize::vUndefined,         // CN_STZVAL  
-  /*    */ &Finalize::vUndefined,         // CN_SUPERAGGOP
-  /*    */ &Finalize::vUndefined,         // CN_SUPERMERGEOP
   /*129 */ &Finalize::vUndefined,         // CN_SYSCALL
   
   /*    */ &Finalize::vUndefined,         // CN__T__
@@ -309,7 +297,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_TABLEDEF
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTN
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTNVEC
-  /*    */ &Finalize::vUndefined,         // CN_TAKEAWAYOP
   /*131 */ &Finalize::vUndefined,         // CN_TASK
   /*134 */ &Finalize::vUndefined,         // CN_TASKLIST
   /*    */ &Finalize::vUndefined,         // CN_TASKQUEUE
@@ -332,7 +319,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN__V__
   
   /*    */ &Finalize::vUndefined,         // CN__W__
-  /* 40 */ &Finalize::vUndefined,         // CN_WHEREOP
   /*149 */ &Finalize::vUndefined,         // CN_WILDERNESS
   /*150 */ &Finalize::vUndefined,         // CN_WORD
   
@@ -341,7 +327,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN__Y__
   
   /*    */ &Finalize::vUndefined,         // CN__Z__
-  /*116 */ &Finalize::vUndefined,         // CN_ZEDOP
     
   /*155 */ &Finalize::vEnums              // CN_ENUMS
 };

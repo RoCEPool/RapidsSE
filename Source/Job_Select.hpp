@@ -14,7 +14,9 @@ namespace Jobs
     Op_ToFilter*   m_pToFilter;  // convert to filters
     Op_ToCommand*  m_pToCommand; // back to string form
     Op_ToDo*       m_pToDo;      // give back to prompt
-    ZedOp*         m_pZed;       // sink
+    
+    //! ZEDOP has been removed !!!
+    //ZedOp*         m_pZed;       // sink
   
     Stmt_Select*   m_pStmt_Select;
 

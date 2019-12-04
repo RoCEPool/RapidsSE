@@ -268,8 +268,6 @@ void Constants::vAddConstants(void)
   /* 69 */ vAddConstant("CN_STMT_SELECT"_Stz,  CN_STMT_SELECT);
   /*  1 */ vAddConstant("CN_STREAMDEF"_Stz,    CN_STREAMDEF);
   /*  1 */ vAddConstant("CN_STRING_T"_Stz,     CN_STRING_T);
-  /*    */ vAddConstant("CN_SUPERAGGOP"_Stz,   CN_SUPERAGGOP);
-  /*    */ vAddConstant("CN_SUPERMERGEOP"_Stz, CN_SUPERMERGEOP);
   /* 70 */ vAddConstant("CN_SYSCALL"_Stz,      CN_SYSCALL);
 
   /* 71 */ vAddConstant("CN_TABLE"_Stz,        CN_TABLE);
@@ -466,6 +464,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("JT_DROPTENANT"_Stz,      JT_DROPTENANT);
   /*    */ vAddConstant("JT_DUMPINDEX"_Stz,       JT_DUMPINDEX);
   /*    */ vAddConstant("JT_DUMPTABLE"_Stz,       JT_DUMPTABLE);
+  /*    */ vAddConstant("JT_ENDOP"_Stz,           JT_ENDOP);
   /*    */ vAddConstant("JT_FORGETNODE"_Stz,      JT_FORGETNODE);
   /*    */ vAddConstant("JT_LF"_Stz,              JT_LF);
   /*    */ vAddConstant("JT_LISTCATALOGS"_Stz,    JT_LISTCATALOGS);
@@ -474,7 +473,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("JT_LISTINDEXES"_Stz,     JT_LISTINDEXES);
   /*    */ vAddConstant("JT_LISTPARTCOLUMNS"_Stz, JT_LISTPARTCOLUMNS);
   /*    */ vAddConstant("JT_LISTPARTITIONS"_Stz,  JT_LISTPARTITIONS);
-  /*    */ vAddConstant("JT_OUTPUTOP"_Stz,        JT_OUTPUTOP);
   /*    */ vAddConstant("JT_PING"_Stz,            JT_PING);
   /*    */ vAddConstant("JT_PWF"_Stz,             JT_PWF);
   /*    */ vAddConstant("JT_SCANOP"_Stz,          JT_SCANOP);

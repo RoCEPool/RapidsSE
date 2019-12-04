@@ -108,7 +108,6 @@ enum eCN : u2 // Class Number
   /*  97 0x061        8B Heap:I */ CN__H__,
   /*  98 0x062  1044336B Heap:L */ CN_HASHBUFFER,
   /*  99 0x063       96B Heap:S */ CN_HASHMAP,
-  /* 100 0x064      480B Heap:S */ CN_HASHOP,
   /* 101 0x065       64B Heap:I */ CN_HEAPBUFFER,
   /* 102 0x066    20448B Heap:I */ CN_HPROW,
   
@@ -117,14 +116,11 @@ enum eCN : u2 // Class Number
   /* 105 0x069     4168B Heap:M */ CN_INDEXDEF,
   /* 106 0x06A      232B Heap:S */ CN_INDEXTREE,
   /* 107 0x06B     8224B Heap:M */ CN_INDEXTREEVEC,
-  /* 108 0x06C      480B Heap:M */ CN_INFLATEOP,
   /* 109 0x06D       24B Heap:M */ CN_INPUT,
   /* 110 0x06E     8216B Heap:M */ CN_IDXCOLVEC,
   /* 111 0x06F     8224B Heap:M */ CN_IDXVEC,
   /* 112 0x070  1000088B Heap:L */ CN_INGESTCHUNK,
-  /* 113 0x071      784B Heap:L */ CN_INSERTOP,
   /* 114 0x072     1192B Heap:L */ CN_INTBUFFER,
-  /* 115 0x073      480B Heap:S */ CN_INTERSECTOP,
   /* 116 0x074       16B Heap:I */ CN_INTVAL,
   /* 117 0x075  1000512B Heap:L */ CN_IOCHUNK,
   /* 118 0x076       32B Heap:S */ CN_IOCOPY,
@@ -154,7 +150,6 @@ enum eCN : u2 // Class Number
   /* 141 0x08D    14280B Heap:L */ CN_JOB_WRITEBUFFER,
   /* 142 0x08E   145392B Heap:L */ CN_JOB_WRITEROW,
   /* 143 0x08F      224B Heap:S */ CN_JOBLIST,
-  /* 144 0x090      544B Heap:S */ CN_JOINOP,
   /* 145 0x091      296B Heap:I */ CN_JUMBOPERSISTENT,
   /* 146 0x092      296B Heap:I */ CN_JUMBOTRANSIENT,
   
@@ -165,7 +160,6 @@ enum eCN : u2 // Class Number
   /* 150 0x096      296B Heap:I */ CN_LARGEPERSISTENT,
   /* 151 0x097      296B Heap:I */ CN_LARGETRANSIENT,
   /* 152 0x098       80B Heap:S */ CN_LEXICON,
-  /* 153 0x099      496B Heap:S */ CN_LIMITOP,
   /* 154 0x09A  1000512B Heap:L */ CN_LOADCHUNK,
   /* 155 0x09B  9389360B Heap:J */ CN_LOADMAP,
   /* 156 0x09C     8216B Heap:I */ CN_LOCAL,
@@ -178,7 +172,6 @@ enum eCN : u2 // Class Number
   /* 163 0x0A3      296B Heap:I */ CN_MEDIUMPERSISTENT,
   /* 164 0x0A4      296B Heap:I */ CN_MEDIUMTRANSIENT,
   /* 165 0x0A5      136B Heap:S */ CN_MEMTEST,
-  /* 166 0x0A6      744B Heap:S */ CN_MERGEOP,
   /* 167 0x0A7      480B Heap:S */ CN_MUTEX,
   
   /* 168 0x0A8       14B Heap:I */ CN__N__,
@@ -213,7 +206,6 @@ enum eCN : u2 // Class Number
   /* 195 0x0C3     3112B Heap:M */ CN_PLANNER,
   /* 196 0x0C4       48B Heap:S */ CN_PREDICATE,
   /* 197 0x0C5      184B Heap:M */ CN_PREDICATEVEC,
-  /* 198 0x0C6     2896B Heap:S */ CN_PROJECTOP,
   /* 199 0x0C7      104B Heap:S */ CN_PSXTHD,
   /* 200 0x0C8     8216B Heap:M */ CN_PTNCOLVEC,
   /* 201 0x0C9       16B Heap:I */ CN_PTRVAL,
@@ -226,7 +218,6 @@ enum eCN : u2 // Class Number
   /* 206 0x0CE       18B Heap:I */ CN__R__,
   /* 207 0x0CF    16440B Heap:M */ CN_RECORD,
   /* 208 0x0D0  1043496B Heap:L */ CN_RECORDBUFFER,
-  /* 209 0x0D1      480B Heap:L */ CN_REDUCEOP,
   /* 210 0x0D2  1043872B Heap:L */ CN_REFBUFFER,
   /* 211 0x0D3       24B Heap:I */ CN_REFSET,
   /* 212 0x0D4      176B Heap:S */ CN_REGSET,
@@ -270,7 +261,6 @@ enum eCN : u2 // Class Number
   /* 250 0x0FA       32B Heap:I */ CN_SNTSP,
   /* 251 0x0FB     4128B Heap:I */ CN_SNVCH,
   /* 252 0x0FC      304B Heap:S */ CN_SOCKET,
-  /* 253 0x0FD      480B Heap:S */ CN_SORTOP,
   /* 254 0x0FE     4064B Heap:I */ CN_SPBCD,
   /* 255 0x0FF     4064B Heap:I */ CN_SPBOL,
   /* 256 0x100     4064B Heap:I */ CN_SPDTE,
@@ -303,8 +293,6 @@ enum eCN : u2 // Class Number
   /* 284 0x11C    31408B Heap:L */ CN_STREAMDEF,
   /* 285 0x11D       56B Heap:I */ CN_STRING_T,
   /* 286 0x11E       24B Heap:I */ CN_STZVAL,
-  /* 287 0x11F      488B Heap:S */ CN_SUPERAGGOP,
-  /* 289 0x121     1520B Heap:S */ CN_SUPERMERGEOP,
   /* 290 0x122       32B Heap:I */ CN_SYSCALL,
   
   /* 291 0x123       20B Heap:I */ CN__T__,
@@ -312,7 +300,6 @@ enum eCN : u2 // Class Number
   /* 293 0x125     4120B Heap:M */ CN_TABLEDEF,
   /* 294 0x126      296B Heap:S */ CN_TABLEPTN,
   /* 295 0x127     1048B Heap:M */ CN_TABLEPTNVEC,
-  /* 296 0x128      480B Heap:S */ CN_TAKEAWAYOP,
   /* 297 0x129      432B Heap:M */ CN_TASK,
   /* 298 0x12A      256B Heap:S */ CN_TASKLIST,
   /* 299 0x12B      224B Heap:S */ CN_TASKQUEUE,
@@ -335,7 +322,6 @@ enum eCN : u2 // Class Number
   /* 316 0x13C       22B Heap:I */ CN__V__,
   
   /* 317 0x13D       23B Heap:I */ CN__W__,
-  /* 318 0x13E      480B Heap:S */ CN_WHEREOP,
   /* 319 0x13F       16B Heap:I */ CN_WILDERNESS,
   /* 320 0x140    64808B Heap:M */ CN_WORD,
   
@@ -344,7 +330,6 @@ enum eCN : u2 // Class Number
   /* 323 0x143       25B Heap:I */ CN__Y__,
   
   /* 324 0x144       26B Heap:I */ CN__Z__,
-  /* 325 0x145      480B Heap:S */ CN_ZEDOP,
 
   /* 330 0x14A       -1B Heap:I */ CN_ENUMS,
 };
@@ -449,7 +434,6 @@ static Stz* aCN[]
   /*  97 0x061 */ "_H__"_Stz,                // CN__H__
   /*  98 0x062 */ "HASHBUFFER"_Stz,          // CN_HASHBUFFER
   /*  99 0x063 */ "HASHMAP"_Stz,             // CN_HASHMAP
-  /* 100 0x064 */ "HASHOP"_Stz,              // CN_HASHOP
   /* 101 0x065 */ "HEAPBUFFER"_Stz,          // CN_HEAPBUFFER
   /* 102 0x066 */ "HPROW"_Stz,               // CN_HPROW
   
@@ -458,14 +442,11 @@ static Stz* aCN[]
   /* 105 0x069 */ "INDEXDEF"_Stz,            // CN_INDEXDEF
   /* 106 0x06A */ "INDEXTREE"_Stz,           // CN_INDEXTREE
   /* 107 0x06B */ "INDEXTREEVEC"_Stz,        // CN_INDEXTREEVEC
-  /* 108 0x06C */ "INFLATEOP"_Stz,           // CN_INFLATEOP
   /* 109 0x06D */ "INPUT"_Stz,               // CN_INPUT
   /* 110 0x06E */ "IDXCOLVEC"_Stz,           // CN_IDXCOLVEC
   /* 111 0x06F */ "IDXVEC"_Stz,              // CN_IDXVEC
   /* 112 0x070 */ "INGESTCHUNK"_Stz,         // CN_INGESTCHUNK
-  /* 113 0x071 */ "INSERTOP"_Stz,            // CN_INSERTOP
   /* 114 0x072 */ "INTBUFFER"_Stz,           // CN_INTBUFFER
-  /* 115 0x073 */ "INTERSECTOP"_Stz,         // CN_INTERSECTOP
   /* 116 0x074 */ "INTVAL"_Stz,              // CN_INTVAL
   /* 117 0x075 */ "IOCHUNK"_Stz,             // CN_IOCHUNK
   /* 118 0x076 */ "IOCOPY"_Stz,              // CN_IOCOPY
@@ -495,7 +476,6 @@ static Stz* aCN[]
   /* 141 0x08D */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER
   /* 142 0x08E */ "JOB_WRITEROW"_Stz,        // CN_JOB_WRITEROW
   /* 143 0x08F */ "JOBLIST"_Stz,             // CN_JOBLIST
-  /* 144 0x090 */ "JOINOP"_Stz,              // CN_JOINOP
   /* 145 0x091 */ "JUMBOPERSISTENT"_Stz,     // CN_JUMBOPERSISTENT
   /* 146 0x092 */ "JUMBOTRANSIENT"_Stz,      // CN_JUMBOTRANSIENT
   
@@ -506,7 +486,6 @@ static Stz* aCN[]
   /* 150 0x096 */ "LARGEPERSISTENT"_Stz,     // CN_LARGEPERSISTENT
   /* 151 0x097 */ "LARGETRANSIENT"_Stz,      // CN_LARGETRANSIENT
   /* 152 0x098 */ "LEXICON"_Stz,             // CN_LEXICON
-  /* 153 0x099 */ "LIMITOP"_Stz,             // CN_LIMITOP
   /* 154 0x09A */ "LOADCHUNK"_Stz,           // CN_LOADCHUNK
   /* 155 0x09B */ "LOADMAP"_Stz,             // CN_LOADMAP
   /* 156 0x09C */ "LOCAL"_Stz,               // CN_LOCAL
@@ -519,7 +498,6 @@ static Stz* aCN[]
   /* 163 0x0A3 */ "MEDIUMPERSISTENT"_Stz,    // CN_MEDIUMPERSISTENT
   /* 164 0x0A4 */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
   /* 165 0x0A5 */ "MEMTEST"_Stz,             // CN_MEMTEST
-  /* 166 0x0A6 */ "MERGEOP"_Stz,             // CN_MERGEOP
   /* 167 0x0A7 */ "MUTEX"_Stz,               // CN_MUTEX
   
   /* 168 0x0A8 */ "_N__"_Stz,                // CN__N__
@@ -554,7 +532,6 @@ static Stz* aCN[]
   /* 195 0x0C3 */ "PLANNER"_Stz,             // CN_PLANNER
   /* 196 0x0C4 */ "PREDICATE"_Stz,           // CN_PREDICATE
   /* 197 0x0C5 */ "PREDICATEVEC"_Stz,        // CN_PREDICATEVEC
-  /* 198 0x0C6 */ "PROJECTOP"_Stz,           // CN_PROJECTOP
   /* 199 0x0C7 */ "PSXTHD"_Stz,              // CN_PSXTHD
   /* 200 0x0C8 */ "PTNCOLVEC"_Stz,           // CN_PTNCOLVEC
   /* 201 0x0C9 */ "PTRVAL"_Stz,              // CN_PTRVAL
@@ -567,7 +544,6 @@ static Stz* aCN[]
   /* 206 0x0CE */ "_R__"_Stz,                // CN__R__
   /* 207 0x0CF */ "RECORD"_Stz,              // CN_RECORD
   /* 208 0x0D0 */ "RECORDBUFFER"_Stz,        // CN_RECORDBUFFER
-  /* 209 0x0D1 */ "REDUCEOP"_Stz,            // CN_REDUCEOP
   /* 210 0x0D2 */ "REFBUFFER"_Stz,           // CN_REFBUFFER
   /* 211 0x0D3 */ "REFSET"_Stz,              // CN_REFSET
   /* 212 0x0D4 */ "REGSET"_Stz,              // CN_REGSET
@@ -611,7 +587,6 @@ static Stz* aCN[]
   /* 250 0x0FA */ "SNTSP"_Stz,               // CN_SNTSP
   /* 251 0x0FB */ "SNVCH"_Stz,               // CN_SNVCH
   /* 252 0x0FC */ "SOCKET"_Stz,              // CN_SOCKET
-  /* 253 0x0FD */ "SORTOP"_Stz,              // CN_SORTOP
   /* 254 0x0FE */ "SPBCD"_Stz,               // CN_SPBCD
   /* 255 0x0FF */ "SPBOL"_Stz,               // CN_SPBOL
   /* 256 0x100 */ "SPDTE"_Stz,               // CN_SPDTE
@@ -644,8 +619,6 @@ static Stz* aCN[]
   /* 284 0x11C */ "STREAMDEF"_Stz,           // CN_STREAMDEF
   /* 285 0x11D */ "STRING_T"_Stz,            // CN_STRING_T
   /* 286 0x11E */ "STZVAL"_Stz,              // CN_STZVAL
-  /* 287 0x11F */ "SUPERAGGOP"_Stz,          // CN_SUPERAGGOP
-  /* 289 0x121 */ "SUPERMERGEOP"_Stz,        // CN_SUPERMERGEOP
   /* 290 0x122 */ "SYSCALL"_Stz,             // CN_SYSCALL
   
   /* 291 0x123 */ "_T__"_Stz,                // CN__T__
@@ -653,7 +626,6 @@ static Stz* aCN[]
   /* 293 0x125 */ "TABLEDEF"_Stz,            // CN_TABLEDEF
   /* 294 0x126 */ "TABLEPTN"_Stz,            // CN_TABLEPTN
   /* 295 0x127 */ "TABLEPTNVEC"_Stz,         // CN_TABLEPTNVEC
-  /* 296 0x128 */ "TAKEAWAYOP"_Stz,          // CN_TAKEAWAYOP
   /* 297 0x129 */ "TASK"_Stz,                // CN_TASK
   /* 298 0x12A */ "TASKLIST"_Stz,            // CN_TASKLIST
   /* 299 0x12B */ "TASKQUEUE"_Stz,           // CN_TASKQUEUE
@@ -676,7 +648,6 @@ static Stz* aCN[]
   /* 316 0x13C */ "_V__"_Stz,                // CN__V__
   
   /* 317 0x13D */ "_W__"_Stz,                // CN__W__
-  /* 318 0x13E */ "WHEREOP"_Stz,             // CN_WHEREOP
   /* 319 0x13F */ "WILDERNESS"_Stz,          // CN_WILDERNESS
   /* 320 0x140 */ "WORD"_Stz,                // CN_WORD
   
@@ -685,7 +656,6 @@ static Stz* aCN[]
   /* 323 0x143 */ "_Y__"_Stz,                // CN__Y__
   
   /* 324 0x144 */ "_Z__"_Stz,                // CN__Z__
-  /* 325 0x145 */ "ZEDOP"_Stz,               // CN_ZEDOP
 
   /* 330 0x14A */ "ENUMS"_Stz,               // CN_ENUMS
 };

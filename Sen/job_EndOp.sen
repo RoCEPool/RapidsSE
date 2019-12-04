@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* job_OutputOp.sen -- Job OutputOp                                           */
+/* job_EndOp.sen -- Job EndOp                                                 */
 /*============================================================================*/
 
-" job_OutputOp.sen" .verbose
+" job_EndOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute for outputOp request                       (on node where spawned) */
+/* execute for endOp request                          (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: outputOp_req ( -- )
+: endOp_req ( -- )
 
   >>logEntry <SEED_REQ>
 
@@ -82,13 +82,13 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-jobSyntax: outputOp :: outputOp ;
+jobSyntax: endOp :: endOp ;
 
-jobInfo: outputOp
+jobInfo: endOp
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_OUTPUTOP
+  <?jobType?>  = JT_ENDOP
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_NODE_ZERO
   <?ddlLock?>  = DL_GRAB_READ

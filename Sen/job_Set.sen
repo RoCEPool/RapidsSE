@@ -44,6 +44,8 @@
 "job_DumpIndex.sen"      include
 "job_DumpTable.sen"      include
 
+"Job_EndOp.sen"          include
+
 "job_ForgetNode.sen"     include
 
 "job_FetchRows.sen"      include
@@ -62,8 +64,6 @@
 "Job_ListTables.sen"     include
 "Job_ListTenants.sen"    include
 "Job_LoadTable.sen"      include
-
-"Job_OutputOp.sen"       include
 
 "Job_Periodic.sen"       include
 "Job_Ping.sen"           include

@@ -11,6 +11,8 @@
 
   >>logEntry <SEED_REQ>
 
+  <consumeXmits> op.leftEndMarkers!
+
   begin
 
     // bide till next operand is available
@@ -82,7 +84,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: ConsumeOp :: ConsumeOp ;
+jobSyntax: ConsumeOp :: ConsumeOp <consumeXmits> ;
 
 jobInfo: ConsumeOp
 {

@@ -112,15 +112,19 @@ Job_Select::Job_Select(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_pToFilter  = new Op_ToFilter  (nullptr,m_pPipeline);
   m_pToCommand = new Op_ToCommand (nullptr,m_pPipeline);
   m_pToDo      = new Op_ToDo      (nullptr,m_pPipeline);
-  m_pZed       = new ZedOp        (nullptr,m_pPipeline);
+  
+  //! ZEDOP has been removed !!!
+  //m_pZed       = new ZedOp        (nullptr,m_pPipeline);
   
   m_pStmt_Select = new Stmt_Select;
 
   m_pToClause->vOpOut(m_pToFilter);
   m_pToFilter->vOpOut(m_pToCommand);
   m_pToCommand->vOpOut(m_pToDo);
-  m_pToDo->vOpOut(m_pZed);
-  m_pZed->vOpOut(nullptr);
+  
+  //! ZEDOP has been removed !!!
+  //m_pToDo->vOpOut(m_pZed);
+  //m_pZed->vOpOut(nullptr);
 
   _checkInitialised_(CN_JOB_SELECT);
   
@@ -134,7 +138,7 @@ Job_Select::~Job_Select(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
  
-  delete m_pZed;
+  //delete m_pZed;
   delete m_pToDo;
   delete m_pToCommand;
   delete m_pToFilter;
