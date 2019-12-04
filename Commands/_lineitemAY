@@ -118,18 +118,31 @@ end;
  end
  ;
 
-/*
 pipeline lineItem_dyn
 begin
 
 stage stageA on all partitions:
-scanOp lineitem |  toCsvOp | stageB
+  scanOp lineitem |  toCsvOp | stageB
 
 stage stageB on origin:
-toFileOp "/tmp/xxx.csv" | outputOp
+  outputOp
 
 end
 ;
+
+/*
+ 
+ pipeline lineItem_dyn
+ begin
+ 
+ stage stageA on all partitions:
+ scanOp lineitem |  toCsvOp | stageB
+ 
+ stage stageB on origin:
+ toFileOp "/tmp/xxx.csv" | outputOp
+ 
+ end
+ ;
 
 pipeline lineItem_dyn
 begin
