@@ -282,7 +282,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_TEMPNAME"_Stz,     CN_TEMPNAME);
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
   /* 80 */ vAddConstant("CN_TIMER"_Stz,        CN_TIMER);
-  /*    */ vAddConstant("CN_TOFILEOP"_Stz,     CN_TOFILEOP);
   /* 81 */ vAddConstant("CN_TOKENISER"_Stz,    CN_TOKENISER);
   /* 82 */ vAddConstant("CN_TX"_Stz,           CN_TX);
   /* 87 */ vAddConstant("CN_TXSET"_Stz,        CN_TXSET);
