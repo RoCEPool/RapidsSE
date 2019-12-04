@@ -16,7 +16,7 @@ void Step::vAddSteps_Push(void)
   vAddStep("pushFipVal"_Stz,      &Step::vPushFipVal);
   vAddStep("pushIntVal"_Stz,      &Step::vPushIntVal);
   vAddStep("pushPtrVal"_Stz,      &Step::vPushPtrVal);
-  vAddStep("pushStrVal"_Stz,      &Step::vPushStrVal);
+  vAddStep("pushStzVal"_Stz,      &Step::vPushStzVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,9 +120,9 @@ void Step::vPushPtrVal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pushStr -- push strval arg onto stack                                      */
+/* pushStz -- push strval arg onto stack                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vPushStrVal(void)
+void Step::vPushStzVal(void)
 {
   ENTRY(); // ENTRY("vPushStr"_Stz);
   

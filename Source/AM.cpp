@@ -1456,9 +1456,9 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // push strval
+    // push stzval
     
-    if ( *aDoesCell->m_afpIntrinsic == &Step::vPushStrVal ) {
+    if ( *aDoesCell->m_afpIntrinsic == &Step::vPushStzVal ) {
       
       vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->szWordNm());
       

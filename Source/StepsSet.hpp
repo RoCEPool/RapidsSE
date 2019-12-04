@@ -948,7 +948,7 @@ public:
   void vPushFipVal(void);
   void vPushIntVal(void);
   void vPushPtrVal(void);
-  void vPushStrVal(void);
+  void vPushStzVal(void);
 
   // queue
   void vQueueAppend(void);

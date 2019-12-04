@@ -593,7 +593,7 @@ void Constants::vAddConstants(void)
   /*  1 */ vAddConstant("SIZEOF_INTVAL"_Stz, sizeof(IntVal));
   /*  2 */ vAddConstant("SIZEOF_IPVAL"_Stz,  sizeof(FipVal));
   /*  4 */ vAddConstant("SIZEOF_PTRVAL"_Stz, sizeof(PtrVal));
-  /*  5 */ vAddConstant("SIZEOF_STRVAL"_Stz, sizeof(StzVal));
+  /*  5 */ vAddConstant("SIZEOF_STZVAL"_Stz, sizeof(StzVal));
   /*  6 */ vAddConstant("SIZEOF_VALSET"_Stz, sizeof(GenVar)); // correct
   /*  7 */ vAddConstant("SIZEOF_ValWrk"_Stz, sizeof(GenVar)); // correct
   
