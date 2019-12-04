@@ -51,11 +51,11 @@
   WK_OBJECT compiler::current word.kind!
   sizeof_table allot
 
-  compiler::current >body object.magic!
-  CN_TABLE compiler::current >body object.class!
-  true compiler::current >body object.wordbody!
+  compiler::current word.embObject object.magic!
+  CN_TABLE compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
 
-  compiler::current >body table.init
+  compiler::current word.embObject table.init
   tick table compiler::current word.category!
 
   does>
@@ -70,11 +70,11 @@
   WK_OBJECT compiler::current word.kind!
   sizeof_table allot
 
-  compiler::current >body object.magic!
-  CN_TABLE compiler::current >body object.class!
-  true compiler::current >body object.wordbody!
+  compiler::current word.embObject object.magic!
+  CN_TABLE compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
 
-  compiler::current >body table.init
+  compiler::current word.embObject table.init
   tick table compiler::current word.category!
 
   compiler::current

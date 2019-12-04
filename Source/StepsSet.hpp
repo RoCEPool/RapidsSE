@@ -1255,7 +1255,6 @@ public:
   void vTimeCurrent(void);
 
   // to
-  void vToBody(void);
   void vToInt(void);
   void vToPtr(void);
   void vToStr(void);

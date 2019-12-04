@@ -35,11 +35,11 @@
   WK_OBJECT compiler::current word.kind!
   sizeof_index allot
 
-  compiler::current >body object.magic!
-  CN_INDEX compiler::current >body object.class!
-  true compiler::current >body object.wordbody!
+  compiler::current word.embObject object.magic!
+  CN_INDEX compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
 
-  compiler::current >body index.init
+  compiler::current word.embObject index.init
 
   tick index compiler::current word.category!
 
@@ -55,11 +55,11 @@
   WK_OBJECT compiler::current word.kind!
   sizeof_index allot
 
-  compiler::current >body object.magic!
-  CN_INDEX compiler::current >body object.class!
-  true compiler::current >body object.wordbody!
+  compiler::current word.embObject object.magic!
+  CN_INDEX compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
 
-  compiler::current >body index.init
+  compiler::current word.embObject index.init
 
   tick index compiler::current word.category!
 

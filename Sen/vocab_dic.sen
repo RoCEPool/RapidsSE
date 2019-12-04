@@ -22,11 +22,11 @@ diclock.grabwrite
   WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
 
-  compiler::current >body object.magic!
-  CN_DIC compiler::current >body object.class!
-  true compiler::current >body object.wordbody!
+  compiler::current word.embObject object.magic!
+  CN_DIC compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
 
-  compiler::current >body dic.init
+  compiler::current word.embObject dic.init
 
   tick folder compiler::current word.category!
 
@@ -48,11 +48,11 @@ diclock.grabwrite
   WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
 
-  compiler::current >body object.magic!
-  CN_DIC compiler::current >body object.class!
-  true compiler::current >body object.wordbody!
+  compiler::current word.embObject object.magic!
+  CN_DIC compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
 
-  compiler::current >body dic.init
+  compiler::current word.embObject dic.init
 
   tick folder compiler::current word.category!
 
@@ -72,11 +72,11 @@ diclock.grabwrite
   WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
 
-  compiler::current >body object.magic!
-  CN_DIC compiler::current >body object.class!
-  true compiler::current >body object.wordbody!
+  compiler::current word.embObject object.magic!
+  CN_DIC compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
 
-  compiler::current >body dic.init
+  compiler::current word.embObject dic.init
 
   tick folder compiler::current word.category!
 
@@ -98,11 +98,11 @@ diclock.grabwrite
   WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
 
-  compiler::current >body object.magic!
-  CN_DIC compiler::current >body object.class!
-  true compiler::current >body object.wordbody!
+  compiler::current word.embObject object.magic!
+  CN_DIC compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
 
-  compiler::current >body dic.init
+  compiler::current word.embObject dic.init
 
   tick folder compiler::current word.category!
 
@@ -124,12 +124,12 @@ diclock.grabwrite
   WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
 
-  compiler::current >body object.magic!
-  CN_DIC compiler::current >body object.class!
-  true compiler::current >body object.wordbody!
+  compiler::current word.embObject object.magic!
+  CN_DIC compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
 
   tick folder compiler::current word.category!
-  compiler::current >body dic.init
+  compiler::current word.embObject dic.init
 
   compiler::current
 
