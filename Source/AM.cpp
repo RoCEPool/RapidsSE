@@ -1378,7 +1378,7 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
   s48K sString;
   
   SP_Word spWord;
-  vTrace("Word: %s\n"_Stz,spWord.sz(pWord));
+  vTrace("%s\n"_Stz,spWord.szSee(pWord));
 
   Cell* aDoesCell = pWord->aEntryCell();
   

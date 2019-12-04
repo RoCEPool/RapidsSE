@@ -17,6 +17,7 @@ namespace SenVM
    ~SP_Word(void) noexcept(false);
   
     Stz* sz(Word* pWord);
+    Stz* szSee(Word* pWord);
 
     Footer* aFooter(void);
   };
