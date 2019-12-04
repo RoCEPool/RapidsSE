@@ -83,7 +83,7 @@ namespace SenVM
     void  vEnameSet(EnameSet* pEnameSet);
     void  vEncode(Stz* aWordNm, Word* pCalledWord);
     void  vEncode(Stz* aWordNm, AnyVal* aAnyVal);
-    void  vEncode(StepFp* afpEntryStep);
+    void  vEncodeCall(StepFp* afpEntryStep);
     void  vEncodeCall(Stz* aWordNm);
     void  vEncodeJump(Stz* aWordNm, Cell* aCell);
     i8    iEpoch(void);

@@ -264,7 +264,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
         }
         else if (WK_ROUTINE == pCalledWord->eKind()) {
           StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
-          pNewWord->vEncode(afpCalledEntryStep);
+          pNewWord->vEncodeCall(afpCalledEntryStep);
         }
         else {
           vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,

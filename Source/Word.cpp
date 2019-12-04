@@ -411,7 +411,7 @@ void Word::vEncode(Stz* aWordNm, Word* pCalledWord)
 /*----------------------------------------------------------------------------*/
 /* encode call of entry step                                                  */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(StepFp* afpEntryStep)
+void Word::vEncodeCall(StepFp* afpEntryStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

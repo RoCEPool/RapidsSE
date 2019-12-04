@@ -124,7 +124,7 @@ void Step::vCompileComma(void)
   
   StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
   
-  pCurrentWord->vEncode(afpCalledEntryStep);
+  pCurrentWord->vEncodeCall(afpCalledEntryStep);
   
   EXIT();
 }
@@ -336,7 +336,7 @@ void Step::vPostpone(void)
     StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
     
     // copy indirect pointer into the current word
-    pCurrentWord->vEncode(afpCalledEntryStep);
+    pCurrentWord->vEncodeCall(afpCalledEntryStep);
   }
   else {
     
