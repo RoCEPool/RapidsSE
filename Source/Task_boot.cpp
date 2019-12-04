@@ -249,7 +249,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
         
       case TN_INTEGER:
         xVariable = m_pForth->m_pCompiler->szToken()->iToI8();
-        pNewWord->vEncode("pushValue"_Stz,xVariable);
+        pNewWord->vEncodePush("pushValue"_Stz,xVariable);
         break;
         
       case TN_NAME:
@@ -274,7 +274,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
         
       case TN_STRING: {
         xVariable = m_pForth->m_pCompiler->szToken();
-        pNewWord->vEncode("pushValue"_Stz,xVariable);
+        pNewWord->vEncodePush("pushValue"_Stz,xVariable);
         break;
       }
         

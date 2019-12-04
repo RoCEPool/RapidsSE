@@ -106,7 +106,7 @@ void Step::vComma(void)
   GenVar xValue;
   m_pDataStack->vPopVal(xValue,__func__);
   
-  pCurrentWord->vEncode("pushValue"_Stz,xValue);
+  pCurrentWord->vEncodePush("pushValue"_Stz,xValue);
     
   EXIT();
 }

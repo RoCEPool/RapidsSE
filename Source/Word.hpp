@@ -82,10 +82,10 @@ namespace SenVM
     EnameSet* pEnameSet(void);
     void  vEnameSet(EnameSet* pEnameSet);
     void  vEncode(Stz* aWordNm, Word* pCalledWord);
-    void  vEncode(Stz* aWordNm, AnyVal* aAnyVal);
     void  vEncodeCall(StepFp* afpEntryStep);
     void  vEncodeCall(Stz* aWordNm);
     void  vEncodeJump(Stz* aWordNm, Cell* aCell);
+    void  vEncodePush(Stz* aWordNm, AnyVal* aAnyVal);
     i8    iEpoch(void);
     Stz*  szExceptionHook(void);
     void  vExceptionHook(Stz* szExceptionHook);

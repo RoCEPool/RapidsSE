@@ -384,18 +384,6 @@ StepFp* Word::afpEntryStep(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* encode call to named word which has a value argument                       */
-/*----------------------------------------------------------------------------*/
-void Word::vEncode(Stz* aWordNm, AnyVal* aAnyVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  vEncodeCall(aWordNm);
-  
-  vAppend(aAnyVal);
-}
-
-/*----------------------------------------------------------------------------*/
 /* encode call to named word which has a word* argument                       */
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(Stz* aWordNm, Word* pCalledWord)
@@ -405,7 +393,7 @@ void Word::vEncode(Stz* aWordNm, Word* pCalledWord)
   GenVar xVar;
   xVar = pCalledWord;
   
-  vEncode(aWordNm,xVar);
+  vEncodePush(aWordNm,xVar);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -442,6 +430,18 @@ void Word::vEncodeJump(Stz* aWordNm, Cell* aCell)
   vEncodeCall(aWordNm);
   
   vAppend(aCell);
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode call to named word which has a value argument                       */
+/*----------------------------------------------------------------------------*/
+void Word::vEncodePush(Stz* aWordNm, AnyVal* aAnyVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  vEncodeCall(aWordNm);
+  
+  vAppend(aAnyVal);
 }
 
 /*----------------------------------------------------------------------------*/
