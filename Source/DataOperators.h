@@ -51,7 +51,6 @@ namespace DataOperators
 
 #include "SortOp.hpp"
 #include "SuperAggOp.hpp"
-#include "SuperCountOp.hpp"
 #include "SuperMergeOp.hpp"
 
 #include "TakeawayOp.hpp"
