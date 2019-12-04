@@ -146,7 +146,7 @@ void Stage::vCancelOperators(i8 iThisNode)
     
     if (pStageNde->iNode() == iThisNode) {
       Op* pOp = pStageNde->pOpVec()->pGet(0);
-      RASSERT(pOp->eClass() == CN_STARTOP);
+      RASSERT(AM::eJobType(pOp->m_pJobUniversal) == JT_STARTOP);
       pOp->vAppendLeft(new CancelMarker);
     }
   }
@@ -158,7 +158,7 @@ void Stage::vCancelOperators(i8 iThisNode)
     
     if (iPtnNode == iThisNode) {
       Op* pOp = pStagePtn->pOpVec()->pGet(0);
-      RASSERT(pOp->eClass() == CN_STARTOP);
+      RASSERT(AM::eJobType(pOp->m_pJobUniversal) == JT_STARTOP);
       pOp->vAppendLeft(new CancelMarker);
     }
   }
@@ -205,7 +205,7 @@ void Stage::vEndOperators(i8 iThisNode)
     
     if (pStageNde->iNode() == iThisNode) {
       Op* pOp = pStageNde->pOpVec()->pGet(0);
-      RASSERT(pOp->eClass() == CN_STARTOP);
+      RASSERT(AM::eJobType(pOp->m_pJobUniversal) == JT_STARTOP);
       pOp->vAppendLeft(new EndMarker);
     }
   }
@@ -243,7 +243,8 @@ i8 Stage::nOpsOnNode(i8 iNode)
       nOps += pStagePtn->pOpVec()->nItems();
       
       // ignore startOps
-      if (AM::eJobType(pStagePtn->pOpVec()->pGet(0)->m_pJobUniversal) == JT_STARTOP)
+      Op* pOp = pStagePtn->pOpVec()->pGet(0);
+      if (AM::eJobType(pOp->m_pJobUniversal) == JT_STARTOP)
         nOps--;
     }
   }
@@ -257,7 +258,8 @@ i8 Stage::nOpsOnNode(i8 iNode)
       nOps += pStageNde->pOpVec()->nItems();
       
       // ignore startOps
-      if (pStageNde->pOpVec()->pGet(0)->eClass() == CN_STARTOP)
+      Op* pOp = pStageNde->pOpVec()->pGet(0);
+      if (AM::eJobType(pOp->m_pJobUniversal) == JT_STARTOP)
         nOps--;
     }
   }
@@ -363,7 +365,7 @@ void Stage::vStartOperators(i8 iThisNode)
     
     if (pStageNde->iNode() == iThisNode) {
       Op* pOp = pStageNde->pOpVec()->pGet(0);
-      //RASSERT(pOp->eClass() == CN_STARTOP);
+      RASSERT(AM::eJobType(pOp->m_pJobUniversal) == JT_STARTOP);
       pOp->vAppendLeft(new StartMarker);
     }
   }
@@ -375,7 +377,7 @@ void Stage::vStartOperators(i8 iThisNode)
     
     if (iPtnNode == iThisNode) {
       Op* pOp = pStagePtn->pOpVec()->pGet(0);
-      //RASSERT(pOp->eClass() == CN_STARTOP);
+      RASSERT(AM::eJobType(pOp->m_pJobUniversal) == JT_STARTOP);
       pOp->vAppendLeft(new StartMarker);
     }
   }
