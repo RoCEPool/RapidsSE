@@ -191,7 +191,7 @@ void Task::vTaskLoop(void)
     // UNUSUAL CODE:
     //   get address of member containing intinsic function pointer and
     //   dereference it to get the intrinsic function to be called
-    StepFp fpStep = * ( (m_pForth->m_aInxPtr ++)->m_afpIntrinsic );
+    StepFp fpStep = * ( (m_pForth->m_aInxPtr ++)->m_afpStep );
     
     // call the intinsic
     //try {

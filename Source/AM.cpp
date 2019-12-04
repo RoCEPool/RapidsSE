@@ -1387,16 +1387,16 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
   
   while (aDoesCell < pDoesWord->aLastCell()) {
     
-    StepFp fpHasStep = *aDoesCell->m_afpIntrinsic;
+    StepFp fpHasStep = *aDoesCell->m_afpStep;
     
     Word* pCallsWord = pDicStack->pLocateWord(fpHasStep);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // jumps
     
-    if (*aDoesCell->m_afpIntrinsic == &Step::vFlowJump ||
-        *aDoesCell->m_afpIntrinsic == &Step::vFlowJumpFalse ||
-        *aDoesCell->m_afpIntrinsic == &Step::vFlowJumpTrue ) {
+    if (*aDoesCell->m_afpStep == &Step::vFlowJump ||
+        *aDoesCell->m_afpStep == &Step::vFlowJumpFalse ||
+        *aDoesCell->m_afpStep == &Step::vFlowJumpTrue ) {
       
       vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->szWordNm());
       
@@ -1412,7 +1412,7 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // push intval
     
-    if ( *aDoesCell->m_afpIntrinsic == &Step::vPushIntVal ) {
+    if ( *aDoesCell->m_afpStep == &Step::vPushIntVal ) {
       
       vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->szWordNm());
       
@@ -1431,7 +1431,7 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // push ptrval
     
-    if ( *aDoesCell->m_afpIntrinsic == &Step::vPushPtrVal ) {
+    if ( *aDoesCell->m_afpStep == &Step::vPushPtrVal ) {
       
       vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->szWordNm());
       
@@ -1458,7 +1458,7 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // push stzval
     
-    if ( *aDoesCell->m_afpIntrinsic == &Step::vPushStzVal ) {
+    if ( *aDoesCell->m_afpStep == &Step::vPushStzVal ) {
       
       vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->szWordNm());
       
@@ -1476,9 +1476,9 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // enterRoutine
-    if ( *aDoesCell->m_afpIntrinsic == &Step::vEnterRoutine ) {
+    if ( *aDoesCell->m_afpStep == &Step::vEnterRoutine ) {
       
-      Word* pCallsWord = (Word*)( ((u8)aDoesCell->m_afpIntrinsic & (u8)~0xFFFF)
+      Word* pCallsWord = (Word*)( ((u8)aDoesCell->m_afpStep & (u8)~0xFFFF)
                                  + sizeof(HeapBuffer));
       
       vTrace("%p: %s\n"_Stz,aDoesCell,pCallsWord->szWordNm());

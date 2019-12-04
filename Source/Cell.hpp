@@ -20,15 +20,15 @@ namespace SenVM
       //   - Step::vXyz for primitives
       //
       
-      StepFp* m_afpIntrinsic; // address of an intrinsic function
+      StepFp* m_afpStep;   // address of an intrinsic function
       
       //
       // additionally cells can be an argument to a another cell
       //
       
-      Cell*    m_aJumpTo;     // a pointer to another cell within same routine
+      Cell*    m_aJumpTo;  // a pointer to another cell within same routine
       
-      _Header  m_xEmbVal;     // or an embedded value (for PushValue)
+      _Header  m_xEmbVal;  // or an embedded value (for PushValue)
     };
   };
   
