@@ -47,7 +47,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create an index using name on the stack (leaves index on stack)             */
+/* create an index using name on the stack (leaves index on stack)            */
 /*----------------------------------------------------------------------------*/
 : :index
 
@@ -83,7 +83,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* assert top of task dictionary stack is indexes                              */
+/* assert top of task dictionary stack is indexes                             */
 /*----------------------------------------------------------------------------*/
 : assertInIndexes ( -- t|f )
   withinIndexes assert
@@ -204,3 +204,6 @@
   index.space 0 swap number.magnitude >str
 ;
 
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -50,11 +50,14 @@
   createPersistent
   WK_OBJECT compiler::current word.kind!
   sizeof_table allot
+
   compiler::current >body object.magic!
   CN_TABLE compiler::current >body object.class!
-  compiler::current >body table.init
   true compiler::current >body object.wordbody!
+
+  compiler::current >body table.init
   tick table compiler::current word.category!
+
   does>
 ;
 
@@ -66,11 +69,14 @@
   >createPersistent
   WK_OBJECT compiler::current word.kind!
   sizeof_table allot
+
   compiler::current >body object.magic!
   CN_TABLE compiler::current >body object.class!
-  compiler::current >body table.init
   true compiler::current >body object.wordbody!
+
+  compiler::current >body table.init
   tick table compiler::current word.category!
+
   compiler::current
   does>
 ;
