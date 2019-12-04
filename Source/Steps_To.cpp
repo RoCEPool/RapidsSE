@@ -13,7 +13,6 @@ void Step::vAddSteps_To(void)
   vAddStep(">int"_Stz,        &Step::vToInt);
   vAddStep(">ptr"_Stz,        &Step::vToPtr);
   vAddStep(">str"_Stz,        &Step::vToStr);
-  vAddStep(">task"_Stz,       &Step::vToTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,21 +69,6 @@ void Step::vToStr(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* >task -- convert int to task ptr                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vToTask(void)
-{
-  ENTRY(); // ENTRY("vToTask"_Stz);
-  
-  i8 iVal = m_pDataStack->iPopInt(__func__);
-  
-  Object* pPtrTask = _pTask(iVal);
-  
-  m_pDataStack->vPushPtr(pPtrTask);
-  
-  EXIT();
-}
 
 /*============================================================================*/
 /* end                                                                        */
