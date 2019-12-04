@@ -21,6 +21,7 @@ void Step::vAddSteps_Encode(void)
   vAddStep("then"_Stz,                &Step::vEncodeThen,          true );
   vAddStep("until"_Stz,               &Step::vEncodeUntil,         true );
   
+  vAddStep("encode::call"_Stz,        &Step::vEncodeCall);
   vAddStep("encode::push"_Stz,        &Step::vEncodePush);
 }
 
@@ -58,6 +59,24 @@ void Step::vEncodeAhead(void)
   // cstack: push unknown forward address
   m_pDataStack->vPushFip(aUnknownOrigin);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode::call -- encode call                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vEncodeCall(void)
+{
+  ENTRY(); // ENTRY("vEncodeCall"_Stz);
+  
+  Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  
+  Word* pCalledWord = _pWord(m_pDataStack->pPopPtr(__func__));
+
+  StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
+  
+  pCurrentWord->vEncodeCall(afpCalledEntryStep);
+
   EXIT();
 }
 

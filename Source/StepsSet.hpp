@@ -237,6 +237,7 @@ public:
   // encode
   void vEncodeAgain(void);
   void vEncodeAhead(void);
+  void vEncodeCall(void);
   void vEncodeContinue(void);
   void vEncodeHere(void);
   void vEncodeIf(void);
