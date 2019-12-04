@@ -1332,6 +1332,8 @@ public:
   void vWordNameStore(void);
   void vWordNew(void);
   void vWordPrev(void);
+  void vWordPromptFetch(void);
+  void vWordPromptStore(void);
   void vWordResetRoutine(void);
   void vWordSee(void);
 

@@ -30,6 +30,8 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.name@"_Stz,        &Step::vWordNameFetch);
   vAddStep("word.name!"_Stz,        &Step::vWordNameStore);
   vAddStep("word.prev"_Stz,         &Step::vWordPrev);
+  vAddStep("word.prompt@"_Stz,      &Step::vWordPromptFetch);
+  vAddStep("word.prompt!"_Stz,      &Step::vWordPromptStore);
   vAddStep("word.resetRoutine"_Stz, &Step::vWordResetRoutine);
   vAddStep("word.see"_Stz,          &Step::vWordSee);
 }
@@ -379,6 +381,38 @@ void Step::vWordPrev(void)
   Word* pPrevWord = pWord->pPrevWord();
   
   m_pDataStack->vPushPtr(pPrevWord);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.prompt@ -- fetch m_bPrompt of word                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vWordPromptFetch(void)
+{
+  ENTRY(); // ENTRY("vWordPromptFetch"_Stz);
+  
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  bool bPrompt = pWord->bPrompt();
+  
+  m_pDataStack->vPushInt(bPrompt);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.prompt! -- store m_bPrompt of word                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vWordPromptStore(void)
+{
+  ENTRY(); // ENTRY("vWordPromptStore"_Stz);
+  
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  i8 iPrompt = m_pDataStack->iPopInt(__func__);
+  
+  pWord->vPrompt(iPrompt);
   
   EXIT();
 }
