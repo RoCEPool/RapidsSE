@@ -415,7 +415,7 @@ i8 giClassSize[]
   /* */ sizeof(CombineOp),          // CN_COMBINEOP
   /* */ sizeof(Request),            // CN_COMMAND
   /* */ sizeof(Compiler),           // CN_COMPILER
-  /* */ sizeof(ConsumeOp),          // CN_CONSUMEOP
+  /* */ sizeof(CountOp),            // CN_CONSUMEOP
   /* */ sizeof(CountOp),            // CN_COUNTOP
   /* */ sizeof(CrwBuffer),          // CN_CRWBUFFER
   /* */ sizeof(CsvBuffer),          // CN_CSVBUFFER
@@ -719,7 +719,7 @@ i8 giClassSize[]
   /* */ sizeof(Word),               // CN_WORD
   
   /* */ 'X'-'A' + 1,                // CN__X__
-  /* */ sizeof(XmitOp),             // CN_XMITOP
+  /* */ sizeof(CountOp),             // CN_XMITOP
   
   /* */ 'Y'-'A' + 1,                // CN__Y__
 

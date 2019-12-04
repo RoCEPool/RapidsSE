@@ -11,6 +11,14 @@
 
   >>logEntry <SEED_REQ>
 
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> op.nextStage!
+
+  op.linkNextStage
+
   begin
 
     // bide till next operand is available
@@ -75,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: XmitOp :: XmitOp ;
+jobSyntax: XmitOp :: XmitOp <topology> <nextStage> ;
 
 jobInfo: XmitOp
 {

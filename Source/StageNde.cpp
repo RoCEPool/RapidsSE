@@ -102,16 +102,18 @@ void StageNde::vLinkOperators(StageVec* pStageVec)
     // get the last operator of this stage
     pOp = m_oOpVec.pGet(m_oOpVec.nItems()-1);
     
-    // if last operator is xmit, link to the first operator of the next stage
-    if (pOp->eClass() == CN_XMITOP) {
-      
-      // get the xmitOp's next stage
-      RASSERT(pOp->m_iNextStage != C_UNKNOWN);
-      Stage* pNextStage = pStageVec->pGet(pOp->m_iNextStage);
-      RASSERT(pNextStage);
-      
-      pOp->vLinkToStage(pNextStage);
-    }
+//    // if last operator is xmit, link to the first operator of the next stage
+//    if (AM::eJobType(pOp->m_pJobUniversal) == JT_XMITOP) {
+//
+//      // get the xmitOp's next stage
+//      RASSERT(pOp->m_iNextStage != C_UNKNOWN);
+//      Stage* pNextStage = pStageVec->pGet(pOp->m_iNextStage);
+//      RASSERT(pNextStage);
+//
+//      pOp->vLinkToStage(pNextStage);
+//    }
+    
+
   }
   
 }

@@ -110,12 +110,9 @@ void EnameSet::vAppend(Stz* szCmd)
   
   for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
     
-    if (i_Ename)
-      vTrace(", "_Stz);
-    
     if (TN_INTEGER == m_xEname[i_Ename].m_eToken) {
       
-      szCmd->vCatSprint("%lld"_Stz,
+      szCmd->vCatSprint("%lld "_Stz,
              m_xEname[i_Ename].m_i_Value
              );
       continue;
