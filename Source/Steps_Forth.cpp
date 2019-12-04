@@ -9,7 +9,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Forth(void)
 {
-  vAddStep("cell"_Stz,            &Step::vCell);
   vAddStep(":"_Stz,               &Step::vColon);
   vAddStep(","_Stz,               &Step::vComma);
   vAddStep("compile,"_Stz,        &Step::vCompileComma);
@@ -28,20 +27,6 @@ void Step::vAddSteps_Forth(void)
   vAddStep("series-name"_Stz,     &Step::vSeriesName);
   vAddStep("subDic"_Stz,          &Step::vSubDic,           true );
   vAddStep("tick"_Stz,            &Step::vTick,             true );
-}
-
-/*----------------------------------------------------------------------------*/
-/* cell -- push size of a cell                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vCell(void)
-{
-  ENTRY(); // ENTRY("vCell"_Stz);
-  
-  i8 nBytes = sizeof(void*);
-  
-  m_pDataStack->vPushInt(nBytes);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

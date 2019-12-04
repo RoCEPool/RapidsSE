@@ -313,7 +313,6 @@ public:
   void vFlowThrow(void);
 
   // forth
-  void vCell(void);
   void vColon(void);
   void vComma(void);
   void vCompileComma(void);
