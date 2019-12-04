@@ -331,6 +331,7 @@ void Step::vOperandSet(void)
 {
   ENTRY(); // ENTRY("vOperandSet"_Stz);
   
+  ASSERT( ! m_pRegSet->m_pOperand );
   m_pRegSet->m_pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   EXIT();

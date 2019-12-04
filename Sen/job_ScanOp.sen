@@ -58,9 +58,6 @@
   pJob_ScanOp table[].tablePtn@ to tablePtn[]
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // new a stream def
-  pTable Operand[].newStreamDef
-  Operand[].pipeOut
 
   begin
 
@@ -75,6 +72,11 @@
 
       ZK_STARTMARKER of
         "Operand:- ZK_STARTMARKER" .
+        Operand[].delete
+
+        // new a stream def
+        pTable Operand[].newStreamDef
+        Operand[].pipeOut
 
         // pipeout all subsets from tablePtn
         tablePtn[].root to Subset[]

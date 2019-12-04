@@ -90,6 +90,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* push value of <nextStage> from job's ename-set                             */
+/*----------------------------------------------------------------------------*/
+: <nextStage> <<jobArgTag>> ( -- s )
+
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
+;
+
+/*----------------------------------------------------------------------------*/
 /* push value of <newNm> from job's ename-set                                 */
 /*----------------------------------------------------------------------------*/
 : <newNm> <<jobArgTag>> ( -- s )
@@ -167,6 +175,14 @@
 : <tenantNm> <<jobArgTag>> ( -- s )
 
   [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+;
+
+/*----------------------------------------------------------------------------*/
+/* push value of <topology> from job's ename-set                              */
+/*----------------------------------------------------------------------------*/
+: <topology> <<jobArgTag>> ( -- s )
+
+  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
 ;
 
 /*----------------------------------------------------------------------------*/

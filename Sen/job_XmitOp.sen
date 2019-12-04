@@ -13,6 +13,14 @@
 
   begin
 
+    // set topolgy in the op
+    <topology> op.topology!
+
+    // set nextStage in op
+    <nextStage> op.nextStage!
+
+    op.linkNextStage
+
     // bide till next operand is available
     Operand[].bide
 
@@ -75,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: XmitOp :: XmitOp ;
+jobSyntax: XmitOp :: XmitOp <topology> <nextStage> ;
 
 jobInfo: XmitOp
 {

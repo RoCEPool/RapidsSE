@@ -864,6 +864,11 @@ public:
   // olist (originator list)
   void vOlistFindJob(void);
 
+  // operator
+  void vOpLinkNextStage(void);
+  void vOpNextStageStore(void);
+  void vOpTopologyStore(void);
+
   // operand
   void vOperandBide(void);
   void vOperandDelete(void);

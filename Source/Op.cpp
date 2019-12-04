@@ -388,7 +388,7 @@ void Op::vLinkToStage(Stage* pStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  ASSERT(eClass() == CN_XMITOP);
+  ASSERT(AM::eJobType(m_pJobUniversal) == JT_XMITOP);
   
   Op* pOpNext = nullptr;
   StageNde* pStageNde = nullptr;

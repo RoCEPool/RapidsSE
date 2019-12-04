@@ -99,10 +99,14 @@ pipeline export
 begin
 
 stage stageA on all partitions:
-  scanOp lineitem | outputOp
+  scanOp lineitem | stageB
+stage stageB on origin:
+  outputOp
+
 end;
 
 /*
+ 
  pipeline lineItem_dyn
  begin
  
