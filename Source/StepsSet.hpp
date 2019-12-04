@@ -1328,6 +1328,7 @@ public:
   void vWordCategoryStore(void);
   void vWordDelete(void);
   void vWordDump(void);
+  void vWordEmbObject(void);
   void vWordEnmSetFetch(void);
   void vWordEnmSetStore(void);
   void vWordExitHookGet(void);
