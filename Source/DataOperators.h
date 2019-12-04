@@ -14,16 +14,6 @@ namespace DataOperators
 
 //------------------------------------------------------------------------------
 
-#include "AggOp.hpp"
-
-#include "BothOp.hpp"
-
-#include "ChunkFileOp.hpp"
-#include "CombineOp.hpp"
-
-#include "DelayOp.hpp"
-#include "DistinctOp.hpp"
-
 #include "ExprOp.hpp"
 
 #include "FetchOp.hpp"
@@ -42,7 +32,6 @@ namespace DataOperators
 
 #include "LimitOp.hpp"
 
-#include "Mark2Op.hpp"
 #include "MergeOp.hpp"
 
 #include "ProjectOp.hpp"

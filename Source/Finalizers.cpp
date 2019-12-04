@@ -14,7 +14,6 @@ pFINALIZE *gpFinalize[]
   
   /*    */ &Finalize::vUndefined,         // CN__A__
   /* 19 */ &Finalize::vUndefined,         // CN_ACCESSPATH
-  /*    */ &Finalize::vUndefined,         // CN_AGGOP
   /* 22 */ &Finalize::vUndefined,         // CN_ARG
   /* 23 */ &Finalize::vUndefined,         // CN_ARGUMENTS
   /*    */ &Finalize::vUndefined,         // CN_ARTICLE
@@ -23,7 +22,6 @@ pFINALIZE *gpFinalize[]
 
   /*    */ &Finalize::vUndefined,         // CN__B__
   /*    */ &Finalize::vUndefined,         // CN_BIRTH
-  /* 29 */ &Finalize::vUndefined,         // CN_BOTHOP
   /* 29 */ &Finalize::vUndefined,         // CN_BPA
   /* 29 */ &Finalize::vUndefined,         // CN_BUCKETMAP
   /*    */ &Finalize::vUndefined,         // CN_BUFFERCURSOR
@@ -36,7 +34,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_CANCELMARKER
   /* 30 */ &Finalize::vUndefined,         // CN_CARRYOVER
   /*    */ &Finalize::vUndefined,         // CN_CATALOG
-  /*    */ &Finalize::vUndefined,         // CN_CHUNKFILEOP
   /*    */ &Finalize::vUndefined,         // CN_CLAUSE_FROM
   /*    */ &Finalize::vUndefined,         // CN_CLAUSE_GROUPBY
   /*    */ &Finalize::vUndefined,         // CN_CLAUSE_JOIN
@@ -48,7 +45,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_CMD_SELECT
   /*    */ &Finalize::vUndefined,         // CN_COLUMN
   /* 32 */ &Finalize::vUndefined,         // CN_COLUMNVEC
-  /*    */ &Finalize::vUndefined,         // CN_COMBINEOP
   /*    */ &Finalize::vUndefined,         // CN_COMMAND
   /*    */ &Finalize::vUndefined,         // CN_COMPILER
   /*    */ &Finalize::vUndefined,         // CN_CRWBUFFER
@@ -57,12 +53,10 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN__D__
   /*    */ &Finalize::vUndefined,         // CN_DECACNT
   /*    */ &Finalize::vUndefined,         // CN_DECIDER
-  /*    */ &Finalize::vUndefined,         // CN_DELAYOP
   /* 33 */ &Dic::vFinalize,               // CN_DIC
   /*    */ &Finalize::vUndefined,         // CN_DICPATH
   /* 34 */ &Finalize::vUndefined,         // CN_DICSTACK
   /* 35 */ &Finalize::vUndefined,         // CN_DIR
-  /*    */ &Finalize::vUndefined,         // CN_DISTINCTOP
   /*    */ &Finalize::vUndefined,         // CN_DTMVAL
   /*    */ &Finalize::vUndefined,         // CN_DYNAMO
 
@@ -183,7 +177,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_LOGENTRY
 
   /*    */ &Finalize::vUndefined,         // CN__M__
-  /* 73 */ &Finalize::vUndefined,         // CN_MARK2OP
   /* 73 */ &Finalize::vUndefined,         // CN_MEDIUMPERSISTENT
   /* 74 */ &Finalize::vUndefined,         // CN_MEDIUMTRANSIENT
   /*    */ &Finalize::vUndefined,         // CN_MEMTEST

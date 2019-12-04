@@ -18,7 +18,6 @@ pDUMPFUN *gpDump[]
   
   /* */ &Dump::vInvalid,         // CN__A__
   /* */ &Dump::vInvalid,         // CN_ACCESSPATH
-  /* */ &Dump::vDummy,           // CN_AGGOP
   /* */ &Dump::vInvalid,         // CN_ARG
   /* */ &Dump::vInvalid,         // CN_ARGUMENTS
   /* */ &Dump::vUndefined,       // CN_ARTICLE
@@ -27,7 +26,6 @@ pDUMPFUN *gpDump[]
 
   /* */ &Dump::vInvalid,         // CN__B__
   /* */ &Dump::vInvalid,         // CN_BIRTH
-  /* */ &Dump::vInvalid,         // CN_BOTHOP
   /* */ &Dump::vInvalid,         // CN_BPA
   /* */ &Dump::vInvalid,         // CN_BUCKETMAP
   /* */ &Dump::vInvalid,         // CN_BUFFERCURSOR
@@ -41,7 +39,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_CARRYOVER
   /* */ &Dump::vDummy,           // CN_CATALOG
   /* */ &Dump::vDummy,           // CN_CATALOG
-  /* */ &Dump::vDummy,           // CN_CHUNKFILEOP
   /* */ &Dump::vDummy,           // CN_CLAUSE_FROM
   /* */ &Dump::vDummy,           // CN_CLAUSE_GROUPBY
   /* */ &Dump::vDummy,           // CN_CLAUSE_JOIN
@@ -52,7 +49,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_CLAUSE_WHERE
   /* */ &Dump::vDummy,           // CN_CMD_SELECT
   /* */ &Dump::vDummy,           // CN_COLUMNVEC
-  /* */ &Dump::vDummy,           // CN_COMBINEOP
   /* */ &Dump::vDummy,           // CN_COMMAND
   /* */ &Dump::vDummy,           // CN_COMPILER
   /* */ &Dump::vUndefined,       // CN_CRWBUFFER
@@ -61,12 +57,10 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN__D__
   /* */ &Dump::vDummy,           // CN_DECACNT
   /* */ &Dump::vDummy,           // CN_DECIDER
-  /* */ &Dump::vDummy,           // CN_DELAYOP
   /* */ &Dic::vDump,             // CN_DIC
   /* */ &Dump::vDummy,           // CN_DICPATH
   /* */ &DicStack::vDump,        // CN_DICSTACK
   /* */ &Dump::vInvalid,         // CN_DIR
-  /* */ &Dump::vDummy,           // CN_DISTINCTOP
   /* */ &Dump::vDummy,           // CN_DTMVAL
   /* */ &Dump::vDummy,           // CN_DYNAMO
 
@@ -187,7 +181,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_LOGENTRY
 
   /* */ &Dump::vInvalid,         // CN__M__
-  /* */ &Dump::vUndefined,       // CN_MARK2OP
   /* */ &Heap::vDump,            // CN_MEDIUMPERSISTENT
   /* */ &Heap::vDump,            // CN_MEDIUMTRANSIENT
   /* */ &Dump::vUndefined,       // CN_MEMTEST
@@ -371,7 +364,6 @@ i8 giClassSize[]
   
   /* */ 'A'-'A' + 1,                // CN__A__
   /* */ sizeof(AccessPath),         // CN_ACCESSPATH
-  /* */ sizeof(AggOp),              // CN_AGGOP
   /* */ sizeof(Arg),                // CN_ARG
   /* */ sizeof(Arguments),          // CN_ARGUMENTS
   /* */ sizeof(Article),            // CN_ARTICLE
@@ -380,7 +372,6 @@ i8 giClassSize[]
 
   /* */ 'B'-'A' + 1,                // CN__B__
   /* */ sizeof(Birth),              // CN_BIRTH
-  /* */ sizeof(BothOp),             // CN_BOTHOP
   /* */ sizeof(BPA),                // CN_BPA
   /* */ sizeof(BucketMap),          // CN_BUCKETMAP
   /* */ sizeof(BufferCursor),       // CN_BUFFERCURSOR
@@ -393,7 +384,6 @@ i8 giClassSize[]
   /* */ sizeof(CancelMarker),       // CN_CANCELMARKER
   /* */ sizeof(CarryOver),          // CN_CARRYOVER
   /* */ sizeof(Catalog),            // CN_CATALOG
-  /* */ sizeof(ChunkFileOp),        // CN_CHUNKFILEOP
   /* */ sizeof(Clause_From),        // CN_CLAUSE_FROM
   /* */ sizeof(Clause_GroupBy),     // CN_CLAUSE_GROUPBY
   /* */ sizeof(Clause_Join),        // CN_CLAUSE_JOIN
@@ -405,7 +395,6 @@ i8 giClassSize[]
   /* */ sizeof(Cmd_Select),         // CN_CMD_SELECT
   /* */ sizeof(Column),             // CN_COLUMN
   /* */ sizeof(ColumnVec),          // CN_COLUMNVEC
-  /* */ sizeof(CombineOp),          // CN_COMBINEOP
   /* */ sizeof(Request),            // CN_COMMAND
   /* */ sizeof(Compiler),           // CN_COMPILER
   /* */ sizeof(CrwBuffer),          // CN_CRWBUFFER
@@ -414,12 +403,10 @@ i8 giClassSize[]
   /* */ 'D'-'A' + 1,                // CN__D__
   /* */ sizeof(DecaCnt),            // CN_DECACNT
   /* */ sizeof(Decider),            // CN_DECIDER
-  /* */ sizeof(DelayOp),            // CN_DELAYOP
   /* */ sizeof(Dic),                // CN_DIC
   /* */ sizeof(DicPath),            // CN_DICPATH
   /* */ sizeof(DicStack),           // CN_DICSTACK
   /* */ sizeof(Dir),                // CN_DIR
-  /* */ sizeof(DistinctOp),         // CN_DISTINCTOP
   /* */ sizeof(DtmVal),             // CN_DTMVAL
   /* */ sizeof(Dynamo),             // CN_DYNAMO
 
@@ -540,7 +527,6 @@ i8 giClassSize[]
   /* */ sizeof(LogEntry),           // CN_LOGENTRY
 
   /* */ 'M'-'A' + 1,                // CN__M__
-  /* */ sizeof(Mark2Op),            // CN_MARK2OP
   /* */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
   /* */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
   /* */ sizeof(MemTest),            // CN_MEMTEST
@@ -724,7 +710,6 @@ eHT geWhichHeap[]
   
   /* */ HT_INVALID,           // CN__A__
   /* */ HT_TRANSIENT_MEDIUM,  // CN_ACCESSPATH
-  /* */ HT_TRANSIENT_SMALL,   // CN_AGGOP
   /* */ HT_TRANSIENT_SMALL,   // CN_ARG
   /* */ HT_INVALID,           // CN_ARGUMENTS
   /* */ HT_TRANSIENT_SMALL,   // CN_ARTICLE
@@ -733,7 +718,6 @@ eHT geWhichHeap[]
 
   /* */ HT_INVALID,           // CN__B__
   /* */ HT_INVALID,           // CN_BIRTH
-  /* */ HT_TRANSIENT_SMALL,   // CN_BOTHOP
   /* */ HT_INVALID,           // CN_BPA
   /* */ HT_TRANSIENT_LARGE,   // CN_BUCKETMAP
   /* */ HT_TRANSIENT_LARGE,   // CN_BUFFERCURSOR
@@ -746,7 +730,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_CANCELMARKER
   /* */ HT_INVALID,           // CN_CARRYOVER
   /* */ HT_INVALID,           // CN_CATALOG
-  /* */ HT_INVALID,           // CN_CHUNKFILEOP
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_FROM
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_GROUPBY
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_JOIN
@@ -758,7 +741,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CMD_SELECT
   /* */ HT_TRANSIENT_SMALL,   // CN_COLUMN
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
-  /* */ HT_TRANSIENT_SMALL,   // CN_COMBINEOP
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COMMAND
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COMPILER
   /* */ HT_TRANSIENT_LARGE,   // CN_CRWBUFFER
@@ -767,12 +749,10 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN__D__
   /* */ HT_TRANSIENT_SMALL,   // CN_DECACNT
   /* */ HT_TRANSIENT_SMALL,   // CN_DECIDER
-  /* */ HT_TRANSIENT_SMALL,   // CN_DELAYOP
   /* */ HT_TRANSIENT_MEDIUM,  // CN_DIC
   /* */ HT_TRANSIENT_SMALL,   // CN_DICPATH
   /* */ HT_TRANSIENT_SMALL,   // CN_DICSTACK
   /* */ HT_TRANSIENT_SMALL,   // CN_DIR
-  /* */ HT_TRANSIENT_SMALL,   // CN_DISTINCTOP
   /* */ HT_TRANSIENT_MEDIUM,  // CN_DTMVAL
   /* */ HT_TRANSIENT_SMALL,   // CN_DYNAMO
 
@@ -893,7 +873,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_LOGENTRY
 
   /* */ HT_INVALID,           // CN__M__
-  /* */ HT_TRANSIENT_SMALL,   // CN_MARK2OP
   /* */ HT_INVALID,           // CN_MEDIUMPERSISTENT
   /* */ HT_INVALID,           // CN_MEDIUMTRANSIENT
   /* */ HT_TRANSIENT_SMALL,   // CN_MEMTEST
