@@ -180,7 +180,7 @@ traceon
 
   "storedCmd" :create
 
-  true docol::currentWord@ word.prompt!
+  true compiler::currentWord@ word.prompt!
 
   "print \"hello world!\"" encode::push
 
