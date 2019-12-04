@@ -9,7 +9,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Forth(void)
 {
-  vAddStep("allot"_Stz,           &Step::vAllot);
   vAddStep("cell"_Stz,            &Step::vCell);
   vAddStep(":"_Stz,               &Step::vColon);
   vAddStep(","_Stz,               &Step::vComma);
@@ -29,25 +28,6 @@ void Step::vAddSteps_Forth(void)
   vAddStep("series-name"_Stz,     &Step::vSeriesName);
   vAddStep("subDic"_Stz,          &Step::vSubDic,           true );
   vAddStep("tick"_Stz,            &Step::vTick,             true );
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot -- reserve n bytes in word being compiled                            */
-/*----------------------------------------------------------------------------*/
-void Step::vAllot(void)
-{
-  ENTRY(); // ENTRY("vAllot"_Stz);
-  
-  i8 iBytes = m_pDataStack->iPopInt(__func__);
-  
-  RASSERT(iBytes);
-  
-  Word* pCurrentWord = m_pCompiler->pCurrentWord();
-  
-  byte* aAddress = pCurrentWord->ayAllot(iBytes);
-  ASSERT(aAddress);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

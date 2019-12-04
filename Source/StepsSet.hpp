@@ -311,7 +311,6 @@ public:
   void vFlowThrow(void);
 
   // forth
-  void vAllot(void);
   void vCell(void);
   void vColon(void);
   void vComma(void);
@@ -1322,6 +1321,7 @@ public:
 
   // word
   void vWord(void);
+  void vWordAllot(void);
   void vWordCategoryFetch(void);
   void vWordCategoryStore(void);
   void vWordDelete(void);
