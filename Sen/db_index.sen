@@ -34,11 +34,15 @@
   create
   WK_OBJECT compiler::current word.kind!
   sizeof_index allot
+
   compiler::current >body object.magic!
   CN_INDEX compiler::current >body object.class!
-  compiler::current >body index.init
   true compiler::current >body object.wordbody!
+
+  compiler::current >body index.init
+
   tick index compiler::current word.category!
+
   does>
 ;
 
@@ -50,11 +54,15 @@
   :create
   WK_OBJECT compiler::current word.kind!
   sizeof_index allot
+
   compiler::current >body object.magic!
   CN_INDEX compiler::current >body object.class!
-  compiler::current >body index.init
   true compiler::current >body object.wordbody!
+
+  compiler::current >body index.init
+
   tick index compiler::current word.category!
+
   compiler::current
   does>
 ;
