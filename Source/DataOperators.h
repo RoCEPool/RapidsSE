@@ -20,7 +20,6 @@ namespace DataOperators
 
 #include "ChunkFileOp.hpp"
 #include "CombineOp.hpp"
-#include "CountOp.hpp"
 
 #include "DelayOp.hpp"
 #include "DistinctOp.hpp"
@@ -52,7 +51,6 @@ namespace DataOperators
 
 #include "SortOp.hpp"
 #include "SuperAggOp.hpp"
-#include "SuperCountOp.hpp"
 #include "SuperMergeOp.hpp"
 
 #include "TakeawayOp.hpp"

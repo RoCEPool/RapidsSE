@@ -105,7 +105,6 @@ stage stageB on origin:
 
 end;
 
-/*
  
  pipeline lineItem_dyn
  begin
@@ -119,7 +118,7 @@ end;
  end
  ;
 
- 
+/*
 pipeline lineItem_dyn
 begin
 

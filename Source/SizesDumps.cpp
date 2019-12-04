@@ -55,7 +55,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_COMBINEOP
   /* */ &Dump::vDummy,           // CN_COMMAND
   /* */ &Dump::vDummy,           // CN_COMPILER
-  /* */ &Dump::vDummy,           // CN_COUNTOP
   /* */ &Dump::vUndefined,       // CN_CRWBUFFER
   /* */ &Dump::vUndefined,       // CN_CSVBUFFER
 
@@ -318,7 +317,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_STRING_T
   /* */ &Dump::vInvalid,         // CN_STZVAL
   /* */ &Dump::vInvalid,         // CN_SUPERAGGOP
-  /* */ &Dump::vInvalid,         // CN_SUPERCOUNTOP
   /* */ &Dump::vInvalid,         // CN_SUPERMERGEOP
   /* */ &Dump::vInvalid,         // CN_SYSCALL
 
@@ -412,7 +410,6 @@ i8 giClassSize[]
   /* */ sizeof(CombineOp),          // CN_COMBINEOP
   /* */ sizeof(Request),            // CN_COMMAND
   /* */ sizeof(Compiler),           // CN_COMPILER
-  /* */ sizeof(CountOp),            // CN_COUNTOP
   /* */ sizeof(CrwBuffer),          // CN_CRWBUFFER
   /* */ sizeof(CsvBuffer),          // CN_CSVBUFFER
 
@@ -675,7 +672,6 @@ i8 giClassSize[]
   /* */ sizeof(s32),                // CN_STRING_T
   /* */ sizeof(StzVal),             // CN_STZVAL
   /* */ sizeof(SuperAggOp),         // CN_SUPERAGGOP
-  /* */ sizeof(SuperCountOp),       // CN_SUPERCOUNTOP
   /* */ sizeof(SuperMergeOp),       // CN_SUPERMERGEOP
   /* */ sizeof(SysCall),            // CN_SYSCALL
   
@@ -769,7 +765,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_COMBINEOP
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COMMAND
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COMPILER
-  /* */ HT_TRANSIENT_SMALL,   // CN_COUNTOP
   /* */ HT_TRANSIENT_LARGE,   // CN_CRWBUFFER
   /* */ HT_TRANSIENT_LARGE,   // CN_CSVBUFFER
 
@@ -1032,7 +1027,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_STRING_T
   /* */ HT_INVALID,           // CN_STZVAL
   /* */ HT_TRANSIENT_SMALL,   // CN_SUPERAGGOP
-  /* */ HT_TRANSIENT_SMALL,   // CN_SUPERCOUNTOP
   /* */ HT_TRANSIENT_SMALL,   // CN_SUPERMERGEOP
   /* */ HT_INVALID,           // CN_SYSCALL
   

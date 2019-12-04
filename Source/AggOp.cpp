@@ -85,7 +85,7 @@ AggOp::AggOp(OpSpec* pOpSpec, Pipeline* pPipeline)
     m_iWhichVec[i_Col] = C_UNKNOWN;
   }
   
-  _checkInitialised_(CN_COUNTOP);
+  _checkInitialised_(CN_AGGOP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_AGGOP,_FOOTER_);
 }

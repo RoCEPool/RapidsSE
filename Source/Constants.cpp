@@ -271,7 +271,6 @@ void Constants::vAddConstants(void)
   /*  1 */ vAddConstant("CN_STREAMDEF"_Stz,    CN_STREAMDEF);
   /*  1 */ vAddConstant("CN_STRING_T"_Stz,     CN_STRING_T);
   /*    */ vAddConstant("CN_SUPERAGGOP"_Stz,   CN_SUPERAGGOP);
-  /*    */ vAddConstant("CN_SUPERCOUNTOP"_Stz, CN_SUPERCOUNTOP);
   /*    */ vAddConstant("CN_SUPERMERGEOP"_Stz, CN_SUPERMERGEOP);
   /* 70 */ vAddConstant("CN_SYSCALL"_Stz,      CN_SYSCALL);
 

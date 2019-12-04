@@ -51,7 +51,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_COMBINEOP
   /*    */ &Finalize::vUndefined,         // CN_COMMAND
   /*    */ &Finalize::vUndefined,         // CN_COMPILER
-  /*    */ &Finalize::vUndefined,         // CN_COUNTOP
   /*    */ &Finalize::vUndefined,         // CN_CRWBUFFER
   /*    */ &Finalize::vUndefined,         // CN_CSVBUFFER
   
@@ -314,7 +313,6 @@ pFINALIZE *gpFinalize[]
   /* 13 */ &Finalize::vUndefined,         // CN_STRING_T
   /* 12 */ &Finalize::vUndefined,         // CN_STZVAL  
   /*    */ &Finalize::vUndefined,         // CN_SUPERAGGOP
-  /*    */ &Finalize::vUndefined,         // CN_SUPERCOUNTOP
   /*    */ &Finalize::vUndefined,         // CN_SUPERMERGEOP
   /*129 */ &Finalize::vUndefined,         // CN_SYSCALL
   

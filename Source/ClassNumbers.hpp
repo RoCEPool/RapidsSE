@@ -54,7 +54,6 @@ enum eCN : u2 // Class Number
   /*  35 0x023      480B Heap:S */ CN_COMBINEOP,
   /*  36 0x024      176B Heap:M */ CN_COMMAND,
   /*  37 0x025       64B Heap:M */ CN_COMPILER,
-  /*  39 0x027      488B Heap:S */ CN_COUNTOP,
   /*  40 0x028  1044008B Heap:L */ CN_CRWBUFFER,
   /*  41 0x029  1040784B Heap:L */ CN_CSVBUFFER,
   
@@ -317,7 +316,6 @@ enum eCN : u2 // Class Number
   /* 285 0x11D       56B Heap:I */ CN_STRING_T,
   /* 286 0x11E       24B Heap:I */ CN_STZVAL,
   /* 287 0x11F      488B Heap:S */ CN_SUPERAGGOP,
-  /* 288 0x120      488B Heap:S */ CN_SUPERCOUNTOP,
   /* 289 0x121     1520B Heap:S */ CN_SUPERMERGEOP,
   /* 290 0x122       32B Heap:I */ CN_SYSCALL,
   
@@ -411,7 +409,6 @@ static Stz* aCN[]
   /*  35 0x023 */ "COMBINEOP"_Stz,           // CN_COMBINEOP
   /*  36 0x024 */ "COMMAND"_Stz,             // CN_COMMAND
   /*  37 0x025 */ "COMPILER"_Stz,            // CN_COMPILER
-  /*  39 0x027 */ "COUNTOP"_Stz,             // CN_COUNTOP
   /*  40 0x028 */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
   /*  41 0x029 */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
   
@@ -674,7 +671,6 @@ static Stz* aCN[]
   /* 285 0x11D */ "STRING_T"_Stz,            // CN_STRING_T
   /* 286 0x11E */ "STZVAL"_Stz,              // CN_STZVAL
   /* 287 0x11F */ "SUPERAGGOP"_Stz,          // CN_SUPERAGGOP
-  /* 288 0x120 */ "SUPERCOUNTOP"_Stz,        // CN_SUPERCOUNTOP
   /* 289 0x121 */ "SUPERMERGEOP"_Stz,        // CN_SUPERMERGEOP
   /* 290 0x122 */ "SYSCALL"_Stz,             // CN_SYSCALL
   
