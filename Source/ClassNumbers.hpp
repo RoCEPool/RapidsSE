@@ -17,7 +17,6 @@ enum eCN : u2 // Class Number
   
   /*   1 0x001        1B Heap:I */ CN__A__,
   /*   2 0x002       80B Heap:M */ CN_ACCESSPATH,
-  /*   3 0x003     2896B Heap:S */ CN_AGGOP,
   /*   4 0x004      304B Heap:S */ CN_ARG,
   /*   5 0x005    16584B Heap:I */ CN_ARGUMENTS,
   /*   6 0x006      384B Heap:S */ CN_ARTICLE,
@@ -26,7 +25,6 @@ enum eCN : u2 // Class Number
   
   /*   9 0x009        2B Heap:I */ CN__B__,
   /*  10 0x00A       32B Heap:I */ CN_BIRTH,
-  /*  11 0x00B      480B Heap:S */ CN_BOTHOP,
   /*  12 0x00C        1B Heap:I */ CN_BPA,
   /*  13 0x00D     8400B Heap:L */ CN_BUCKETMAP,
   /*  14 0x00E       32B Heap:L */ CN_BUFFERCURSOR,
@@ -39,7 +37,6 @@ enum eCN : u2 // Class Number
   /*  20 0x014       80B Heap:S */ CN_CANCELMARKER,
   /*  21 0x015       40B Heap:I */ CN_CARRYOVER,
   /*  22 0x016       16B Heap:I */ CN_CATALOG,
-  /*  23 0x017      480B Heap:I */ CN_CHUNKFILEOP,
   /*  24 0x018      136B Heap:M */ CN_CLAUSE_FROM,
   /*  25 0x019      136B Heap:M */ CN_CLAUSE_GROUPBY,
   /*  26 0x01A      136B Heap:M */ CN_CLAUSE_JOIN,
@@ -51,7 +48,6 @@ enum eCN : u2 // Class Number
   /*  32 0x020     4096B Heap:M */ CN_CMD_SELECT,
   /*  33 0x021      120B Heap:S */ CN_COLUMN,
   /*  34 0x022     8216B Heap:M */ CN_COLUMNVEC,
-  /*  35 0x023      480B Heap:S */ CN_COMBINEOP,
   /*  36 0x024      176B Heap:M */ CN_COMMAND,
   /*  37 0x025       64B Heap:M */ CN_COMPILER,
   /*  40 0x028  1044008B Heap:L */ CN_CRWBUFFER,
@@ -60,12 +56,10 @@ enum eCN : u2 // Class Number
   /*  42 0x02A        4B Heap:I */ CN__D__,
   /*  43 0x02B       80B Heap:S */ CN_DECACNT,
   /*  44 0x02C       32B Heap:S */ CN_DECIDER,
-  /*  45 0x02D      488B Heap:S */ CN_DELAYOP,
   /*  46 0x02E       88B Heap:M */ CN_DIC,
   /*  47 0x02F      920B Heap:S */ CN_DICPATH,
   /*  48 0x030      152B Heap:S */ CN_DICSTACK,
   /*  49 0x031      680B Heap:S */ CN_DIR,
-  /*  50 0x032      480B Heap:S */ CN_DISTINCTOP,
   /*  51 0x033     4072B Heap:M */ CN_DTMVAL,
   /*  52 0x034       56B Heap:S */ CN_DYNAMO,
   
@@ -78,14 +72,11 @@ enum eCN : u2 // Class Number
   /*  59 0x03B  1043952B Heap:L */ CN_ENTBUFFER,
   /*  60 0x03C      304B Heap:I */ CN_ENTWRK,
   /*  61 0x03D      352B Heap:S */ CN_ENUMFLAGS,
-  /*  62 0x03E     4112B Heap:M */ CN_EXPROP,
   
   /*  63 0x03F        6B Heap:I */ CN__F__,
   /*  64 0x040  1040440B Heap:L */ CN_FETCHBUFFER,
-  /*  65 0x041     1088B Heap:S */ CN_FETCHOP,
   /*  66 0x042      384B Heap:S */ CN_FIFO,
   /*  67 0x043      448B Heap:S */ CN_FILE,
-  /*  68 0x044      520B Heap:S */ CN_FILTEROP,
   /*  69 0x045      136B Heap:M */ CN_FILTER_FETCH,
   /*  70 0x046      136B Heap:M */ CN_FILTER_FROM,
   /*  71 0x047      136B Heap:M */ CN_FILTER_GROUPBY,
@@ -111,9 +102,7 @@ enum eCN : u2 // Class Number
   /*  91 0x05B     2072B Heap:S */ CN_FREQDIST,
   
   /*  92 0x05C        7B Heap:I */ CN__G__,
-  /*  93 0x05D      496B Heap:S */ CN_GENERATEOP,
   /*  94 0x05E    49168B Heap:I */ CN_GENVAR,
-  /*  95 0x05F      784B Heap:S */ CN_GETKEYOP,
   /*  96 0x060     2184B Heap:L */ CN_GRID,
   
   /*  97 0x061        8B Heap:I */ CN__H__,
@@ -186,7 +175,6 @@ enum eCN : u2 // Class Number
   /* 160 0x0A0     1272B Heap:I */ CN_LOGENTRY,
   
   /* 161 0x0A1       13B Heap:I */ CN__M__,
-  /* 162 0x0A2      480B Heap:S */ CN_MARK2OP,
   /* 163 0x0A3      296B Heap:I */ CN_MEDIUMPERSISTENT,
   /* 164 0x0A4      296B Heap:I */ CN_MEDIUMTRANSIENT,
   /* 165 0x0A5      136B Heap:S */ CN_MEMTEST,
@@ -370,7 +358,6 @@ static Stz* aCN[]
   
   /*   1 0x001 */ "_A__"_Stz,                // CN__A__
   /*   2 0x002 */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
-  /*   3 0x003 */ "AGGOP"_Stz,               // CN_AGGOP
   /*   4 0x004 */ "ARG"_Stz,                 // CN_ARG
   /*   5 0x005 */ "ARGUMENTS"_Stz,           // CN_ARGUMENTS
   /*   6 0x006 */ "ARTICLE"_Stz,             // CN_ARTICLE
@@ -379,7 +366,6 @@ static Stz* aCN[]
   
   /*   9 0x009 */ "_B__"_Stz,                // CN__B__
   /*  10 0x00A */ "BIRTH"_Stz,               // CN_BIRTH
-  /*  11 0x00B */ "BOTHOP"_Stz,              // CN_BOTHOP
   /*  12 0x00C */ "BPA"_Stz,                 // CN_BPA
   /*  13 0x00D */ "BUCKETMAP"_Stz,           // CN_BUCKETMAP
   /*  14 0x00E */ "BUFFERCURSOR"_Stz,        // CN_BUFFERCURSOR
@@ -392,7 +378,6 @@ static Stz* aCN[]
   /*  20 0x014 */ "CANCELMARKER"_Stz,        // CN_CANCELMARKER
   /*  21 0x015 */ "CARRYOVER"_Stz,           // CN_CARRYOVER
   /*  22 0x016 */ "CATALOG"_Stz,             // CN_CATALOG
-  /*  23 0x017 */ "CHUNKFILEOP"_Stz,         // CN_CHUNKFILEOP
   /*  24 0x018 */ "CLAUSE_FROM"_Stz,         // CN_CLAUSE_FROM
   /*  25 0x019 */ "CLAUSE_GROUPBY"_Stz,      // CN_CLAUSE_GROUPBY
   /*  26 0x01A */ "CLAUSE_JOIN"_Stz,         // CN_CLAUSE_JOIN
@@ -404,7 +389,6 @@ static Stz* aCN[]
   /*  32 0x020 */ "CMD_SELECT"_Stz,          // CN_CMD_SELECT
   /*  33 0x021 */ "COLUMN"_Stz,              // CN_COLUMN
   /*  34 0x022 */ "COLUMNVEC"_Stz,           // CN_COLUMNVEC
-  /*  35 0x023 */ "COMBINEOP"_Stz,           // CN_COMBINEOP
   /*  36 0x024 */ "COMMAND"_Stz,             // CN_COMMAND
   /*  37 0x025 */ "COMPILER"_Stz,            // CN_COMPILER
   /*  40 0x028 */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
@@ -413,12 +397,10 @@ static Stz* aCN[]
   /*  42 0x02A */ "_D__"_Stz,                // CN__D__
   /*  43 0x02B */ "DECACNT"_Stz,             // CN_DECACNT
   /*  44 0x02C */ "DECIDER"_Stz,             // CN_DECIDER
-  /*  45 0x02D */ "DELAYOP"_Stz,             // CN_DELAYOP
   /*  46 0x02E */ "DIC"_Stz,                 // CN_DIC
   /*  47 0x02F */ "DICPATH"_Stz,             // CN_DICPATH
   /*  48 0x030 */ "DICSTACK"_Stz,            // CN_DICSTACK
   /*  49 0x031 */ "DIR"_Stz,                 // CN_DIR
-  /*  50 0x032 */ "DISTINCTOP"_Stz,          // CN_DISTINCTOP
   /*  51 0x033 */ "DTMVAL"_Stz,              // CN_DTMVAL
   /*  52 0x034 */ "DYNAMO"_Stz,              // CN_DYNAMO
   
@@ -431,14 +413,11 @@ static Stz* aCN[]
   /*  59 0x03B */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
   /*  60 0x03C */ "ENTWRK"_Stz,              // CN_ENTWRK
   /*  61 0x03D */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS
-  /*  62 0x03E */ "EXPROP"_Stz,              // CN_EXPROP
   
   /*  63 0x03F */ "_F__"_Stz,                // CN__F__
   /*  64 0x040 */ "FETCHBUFFER"_Stz,         // CN_FETCHBUFFER
-  /*  65 0x041 */ "FETCHOP"_Stz,             // CN_FETCHOP
   /*  66 0x042 */ "FIFO"_Stz,                // CN_FIFO
   /*  67 0x043 */ "FILE"_Stz,                // CN_FILE
-  /*  68 0x044 */ "FILTEROP"_Stz,            // CN_FILTEROP
   /*  69 0x045 */ "FILTER_FETCH"_Stz,        // CN_FILTER_FETCH
   /*  70 0x046 */ "FILTER_FROM"_Stz,         // CN_FILTER_FROM
   /*  71 0x047 */ "FILTER_GROUPBY"_Stz,      // CN_FILTER_GROUPBY
@@ -464,9 +443,7 @@ static Stz* aCN[]
   /*  91 0x05B */ "FREQDIST"_Stz,            // CN_FREQDIST
   
   /*  92 0x05C */ "_G__"_Stz,                // CN__G__
-  /*  93 0x05D */ "GENERATEOP"_Stz,          // CN_GENERATEOP
   /*  94 0x05E */ "GENVAR"_Stz,              // CN_GENVAR
-  /*  95 0x05F */ "GETKEYOP"_Stz,            // CN_GETKEYOP
   /*  96 0x060 */ "GRID"_Stz,                // CN_GRID
   
   /*  97 0x061 */ "_H__"_Stz,                // CN__H__
@@ -539,7 +516,6 @@ static Stz* aCN[]
   /* 160 0x0A0 */ "LOGENTRY"_Stz,            // CN_LOGENTRY
   
   /* 161 0x0A1 */ "_M__"_Stz,                // CN__M__
-  /* 162 0x0A2 */ "MARK2OP"_Stz,             // CN_MARK2OP
   /* 163 0x0A3 */ "MEDIUMPERSISTENT"_Stz,    // CN_MEDIUMPERSISTENT
   /* 164 0x0A4 */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
   /* 165 0x0A5 */ "MEMTEST"_Stz,             // CN_MEMTEST
