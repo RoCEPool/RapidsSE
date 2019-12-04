@@ -80,6 +80,26 @@ void Step::vPushValue(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pushFip -- push fipval arg onto stack                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vPushFipVal(void)
+{
+  ENTRY(); // ENTRY("vPushFipVal"_Stz);
+  
+  if (m_pTask->m_iTraceMask) {
+    ASSERT(m_pTask->m_iTraceMask);
+  }
+  
+  FipVal* aFipVal = _aFipVal(& m_aInxPtr->m_xEmbValue);
+  
+  m_pDataStack->vPushFip(aFipVal->aFip());
+  
+  m_pTask->vAdjustFIP(aFipVal->nStackUsage());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* pushInt -- push intval arg onto stack                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vPushIntVal(void)
