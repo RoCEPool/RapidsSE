@@ -287,7 +287,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
     m_pForth->m_pCompiler->vNextToken();
   }
   
-  pNewWord->vEncode("exit_rt"_Stz);
+  pNewWord->vEncodeCall("exit_rt"_Stz);
   
 
   // reset scanning

@@ -50,7 +50,7 @@ void Step::vEncodeAhead(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // append : jump to unknown forward address
-  pCurrentWord->vEncode("jump"_Stz);
+  pCurrentWord->vEncodeCall("jump"_Stz);
   Cell* aUnknownOrigin = (Cell*)pCurrentWord->aAppend((Cell*)nullptr);
   
   // cstack: push unknown forward address
@@ -107,7 +107,7 @@ void Step::vEncodeIf(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // append : jumpFalse to unknown forward address
-  pCurrentWord->vEncode("jumpFalse"_Stz);
+  pCurrentWord->vEncodeCall("jumpFalse"_Stz);
   Cell* aUnknownOrigin = (Cell*)pCurrentWord->aAppend((Cell*)nullptr);
   
   // cstack: push unknown forward address
@@ -153,9 +153,9 @@ void Step::vEncodeLoop(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // increment index:
-  pCurrentWord->vEncode("r>"_Stz);
-  pCurrentWord->vEncode("1+"_Stz);
-  pCurrentWord->vEncode(">r"_Stz);
+  pCurrentWord->vEncodeCall("r>"_Stz);
+  pCurrentWord->vEncodeCall("1+"_Stz);
+  pCurrentWord->vEncodeCall(">r"_Stz);
   
   i8 iIsDo = m_pDataStack->iPopInt(__func__);
   
@@ -166,8 +166,8 @@ void Step::vEncodeLoop(void)
     aDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   }
   
-  pCurrentWord->vEncode("2r@"_Stz); // copy index limit to dstack
-  pCurrentWord->vEncode("!="_Stz);   // test for limit > index
+  pCurrentWord->vEncodeCall("2r@"_Stz); // copy index limit to dstack
+  pCurrentWord->vEncodeCall("!="_Stz);   // test for limit > index
   
   if (iIsDo) {
     // jump on true to doHere:
@@ -179,8 +179,8 @@ void Step::vEncodeLoop(void)
     pCurrentWord->vEncode("jumpTrue"_Stz,aDoLimitTest+1);
   }
   
-  pCurrentWord->vEncode("rdrop"_Stz);
-  pCurrentWord->vEncode("rdrop"_Stz);
+  pCurrentWord->vEncodeCall("rdrop"_Stz);
+  pCurrentWord->vEncodeCall("rdrop"_Stz);
   
   EXIT();
 }
@@ -195,9 +195,9 @@ void Step::vEncodeLoopPlus(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   // increment index:
-  pCurrentWord->vEncode("r>"_Stz);
-  pCurrentWord->vEncode("+"_Stz);
-  pCurrentWord->vEncode(">r"_Stz);
+  pCurrentWord->vEncodeCall("r>"_Stz);
+  pCurrentWord->vEncodeCall("+"_Stz);
+  pCurrentWord->vEncodeCall(">r"_Stz);
   
   i8 iIsDo = m_pDataStack->iPopInt(__func__);
   
@@ -208,8 +208,8 @@ void Step::vEncodeLoopPlus(void)
     aDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   }
   
-  pCurrentWord->vEncode("2r@"_Stz); // copy index limit to dstack
-  pCurrentWord->vEncode("!="_Stz);   // test for limit > index
+  pCurrentWord->vEncodeCall("2r@"_Stz); // copy index limit to dstack
+  pCurrentWord->vEncodeCall("!="_Stz);   // test for limit > index
   
   if (iIsDo) {
     // jump on true to doHere:
@@ -221,8 +221,8 @@ void Step::vEncodeLoopPlus(void)
     pCurrentWord->vEncode("jumpTrue"_Stz,aDoLimitTest+1);
   }
   
-  pCurrentWord->vEncode("rdrop"_Stz);
-  pCurrentWord->vEncode("rdrop"_Stz);
+  pCurrentWord->vEncodeCall("rdrop"_Stz);
+  pCurrentWord->vEncodeCall("rdrop"_Stz);
   
   EXIT();
 }
@@ -240,12 +240,12 @@ void Step::vEncodeNext(void)
   Cell* aDoLimitTest = m_pDataStack->aPopFip(__func__);
   aDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   
-  pCurrentWord->vEncode("r@"_Stz); // copy index limit to dstack
+  pCurrentWord->vEncodeCall("r@"_Stz); // copy index limit to dstack
   
   pCurrentWord->vEncode("jumpTrue"_Stz,aDoLimitTest+1);
   
-  pCurrentWord->vEncode("rdrop"_Stz);
-  pCurrentWord->vEncode("rdrop"_Stz);
+  pCurrentWord->vEncodeCall("rdrop"_Stz);
+  pCurrentWord->vEncodeCall("rdrop"_Stz);
   
   EXIT();
 }

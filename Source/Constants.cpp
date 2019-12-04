@@ -18,7 +18,7 @@ void Constants::vAddConstant(Stz* szName, i8 iVal)
   xVar = iVal;
 
   pNewWord->vEncode("pushIntVal"_Stz,xVar);
-  pNewWord->vEncode("exit_rt"_Stz);
+  pNewWord->vEncodeCall("exit_rt"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,7 +32,7 @@ void Constants::vAddConstant(Stz* szName, Stz* szVal)
   xVar = szVal;
   
   pNewWord->vEncode("pushStrVal"_Stz,xVar);
-  pNewWord->vEncode("exit_rt"_Stz);
+  pNewWord->vEncodeCall("exit_rt"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

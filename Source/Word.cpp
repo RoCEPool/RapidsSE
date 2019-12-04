@@ -382,19 +382,6 @@ StepFp* Word::afpEntryStep(void)
   return &m_fpIntrinsic;
 }
 
-/*----------------------------------------------------------------------------*/
-/* encode call to named word                                                  */
-/*----------------------------------------------------------------------------*/
-void Word::vEncode(Stz* aWordNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  Dic* pRootDic = AM::pRootDic();
-  Word* pCalledWord = pRootDic->pFindWord(aWordNm);
-  ASSERT(pCalledWord);
-  
-  vAppend(pCalledWord->afpEntryStep());
-}
 
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a cell* argument                       */
@@ -403,7 +390,7 @@ void Word::vEncode(Stz* aWordNm, Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vEncode(aWordNm);
+  vEncodeCall(aWordNm);
   
   vAppend(aCell);
 }
@@ -415,7 +402,7 @@ void Word::vEncode(Stz* aWordNm, AnyVal* aAnyVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vEncode(aWordNm);
+  vEncodeCall(aWordNm);
   
   vAppend(aAnyVal);
 }
@@ -443,6 +430,19 @@ void Word::vEncode(StepFp* afpEntryStep)
   vAppend(afpEntryStep);
 }
 
+/*----------------------------------------------------------------------------*/
+/* encode call to named word                                                  */
+/*----------------------------------------------------------------------------*/
+void Word::vEncodeCall(Stz* aWordNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  Dic* pRootDic = AM::pRootDic();
+  Word* pCalledWord = pRootDic->pFindWord(aWordNm);
+  ASSERT(pCalledWord);
+  
+  vAppend(pCalledWord->afpEntryStep());
+}
 /*----------------------------------------------------------------------------*/
 /* get ename set                                                              */
 /*----------------------------------------------------------------------------*/
