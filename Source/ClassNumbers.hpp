@@ -54,7 +54,6 @@ enum eCN : u2 // Class Number
   /*  35 0x023      480B Heap:S */ CN_COMBINEOP,
   /*  36 0x024      176B Heap:M */ CN_COMMAND,
   /*  37 0x025       64B Heap:M */ CN_COMPILER,
-  /*  38 0x026      488B Heap:S */ CN_CONSUMEOP,
   /*  39 0x027      488B Heap:S */ CN_COUNTOP,
   /*  40 0x028  1044008B Heap:L */ CN_CRWBUFFER,
   /*  41 0x029  1040784B Heap:L */ CN_CSVBUFFER,
@@ -358,7 +357,6 @@ enum eCN : u2 // Class Number
   /* 320 0x140    64808B Heap:M */ CN_WORD,
   
   /* 321 0x141       24B Heap:I */ CN__X__,
-  /* 322 0x142      488B Heap:S */ CN_XMITOP,
   
   /* 323 0x143       25B Heap:I */ CN__Y__,
   
@@ -414,7 +412,6 @@ static Stz* aCN[]
   /*  35 0x023 */ "COMBINEOP"_Stz,           // CN_COMBINEOP
   /*  36 0x024 */ "COMMAND"_Stz,             // CN_COMMAND
   /*  37 0x025 */ "COMPILER"_Stz,            // CN_COMPILER
-  /*  38 0x026 */ "CONSUMEOP"_Stz,           // CN_CONSUMEOP
   /*  39 0x027 */ "COUNTOP"_Stz,             // CN_COUNTOP
   /*  40 0x028 */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
   /*  41 0x029 */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
@@ -718,7 +715,6 @@ static Stz* aCN[]
   /* 320 0x140 */ "WORD"_Stz,                // CN_WORD
   
   /* 321 0x141 */ "_X__"_Stz,                // CN__X__
-  /* 322 0x142 */ "XMITOP"_Stz,              // CN_XMITOP
   
   /* 323 0x143 */ "_Y__"_Stz,                // CN__Y__
   

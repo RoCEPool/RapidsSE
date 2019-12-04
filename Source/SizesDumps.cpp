@@ -55,7 +55,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_COMBINEOP
   /* */ &Dump::vDummy,           // CN_COMMAND
   /* */ &Dump::vDummy,           // CN_COMPILER
-  /* */ &Dump::vDummy,           // CN_CONSUMEOP
   /* */ &Dump::vDummy,           // CN_COUNTOP
   /* */ &Dump::vUndefined,       // CN_CRWBUFFER
   /* */ &Dump::vUndefined,       // CN_CSVBUFFER
@@ -359,7 +358,6 @@ pDUMPFUN *gpDump[]
   /* */ &Word::vDump,            // CN_WORD
 
   /* */ &Dump::vInvalid,         // CN__X__
-  /* */ &Dump::vUndefined,       // CN_XMITOP
 
   /* */ &Dump::vInvalid,         // CN__Y__
   
@@ -415,7 +413,6 @@ i8 giClassSize[]
   /* */ sizeof(CombineOp),          // CN_COMBINEOP
   /* */ sizeof(Request),            // CN_COMMAND
   /* */ sizeof(Compiler),           // CN_COMPILER
-  /* */ sizeof(CountOp),            // CN_CONSUMEOP
   /* */ sizeof(CountOp),            // CN_COUNTOP
   /* */ sizeof(CrwBuffer),          // CN_CRWBUFFER
   /* */ sizeof(CsvBuffer),          // CN_CSVBUFFER
@@ -719,7 +716,6 @@ i8 giClassSize[]
   /* */ sizeof(Word),               // CN_WORD
   
   /* */ 'X'-'A' + 1,                // CN__X__
-  /* */ sizeof(CountOp),             // CN_XMITOP
   
   /* */ 'Y'-'A' + 1,                // CN__Y__
 
@@ -775,7 +771,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_COMBINEOP
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COMMAND
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COMPILER
-  /* */ HT_TRANSIENT_SMALL,   // CN_CONSUMEOP
   /* */ HT_TRANSIENT_SMALL,   // CN_COUNTOP
   /* */ HT_TRANSIENT_LARGE,   // CN_CRWBUFFER
   /* */ HT_TRANSIENT_LARGE,   // CN_CSVBUFFER
@@ -1079,7 +1074,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_WORD
 
   /* */ HT_INVALID,           // CN__X__
-  /* */ HT_TRANSIENT_SMALL,   // CN_XMITOP
 
   /* */ HT_INVALID,           // CN__Y__
   
