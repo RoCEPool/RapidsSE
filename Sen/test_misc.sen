@@ -180,7 +180,7 @@ traceon
 
   "storedCmd" :create
 
-  // true find docol::currentWord@ word.prompt!
+  true find docol::currentWord@ word.prompt!
 
   "print \"hello world!\"" ,
 

@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Session(void)
 {
+  vAddStep("job::this"_Stz,                &Step::vJobThis);
+  
   vAddStep("session.commandProcessor"_Stz, &Step::vSessionCommand);
   vAddStep("session.dicStack@"_Stz,        &Step::vSessionDicStackFetch);
   vAddStep("session.dump"_Stz,             &Step::vSessionDump);
@@ -126,6 +128,27 @@ void Step::vSessionSlotFetch(void)
   
   m_pDataStack->vPushInt(pSession->iSlot());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* session::this -- get current session                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vSessionThis(void)
+{
+  ENTRY(); // ENTRY("vSessionThis"_Stz);
+ 
+  Job* pJob = m_pTask->m_pJob;
+
+  i8 iSessionId = pJob->m_xReqTuple.m_i_Session;
+  
+  Session* pSession = nullptr;
+  
+  if (iSessionId != C_UNKNOWN)
+    pSession = AM::pSessionArray()->pGetSession(iSessionId);
+  
+  m_pDataStack->vPushPtr(pSession);
+
   EXIT();
 }
 
