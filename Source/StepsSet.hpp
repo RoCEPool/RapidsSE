@@ -202,6 +202,8 @@ public:
 
   // docol
   void vDocolCompiling(void);
+  void vDocolCurrentWordFetch(void);
+  void vDocolCurrentWordStore(void);
   void vDocolInterpreting(void);
   void vDocolIsCompiling(void);
   void vDocolIsInterpreting(void);
@@ -312,8 +314,6 @@ public:
   void vColon(void);
   void vComma(void);
   void vCompileComma(void);
-  void vCreate(void);
-  void vCreateFrom(void);
   void vCreateFromInRoot(void);
   void vCreateFromPersistent(void);
   void vCreatePersistent(void);
@@ -321,11 +321,8 @@ public:
   void vDoes(void);
   void vDoes_RT(void);
   void vExit_RT(void);
-  void vFind(void);
   void vFindInCurrent(void);
-  void vForget(void);
   void vImmediate(void);
-  void vLocate(void);
   void vPostpone(void);
   void vPrompt(void);
   void vSee(void);
@@ -950,6 +947,10 @@ public:
   void vPushNullPtr(void);
   void vPushValue(void);
 
+  void vPushIntVal(void);
+  void vPushPtrVal(void);
+  void vPushStrVal(void);
+
   // queue
   void vQueueAppend(void);
   void vQueueDelete(void);
@@ -1036,6 +1037,9 @@ public:
   void vSessionIsExiting(void);
   void vSessionPid(void);
   void vSessionSlotFetch(void);
+  void vSessionThis(void);
+  void vSessionToDoFetch(void);
+  void vSessionToDoStore(void);
   void vSessionTxFetch(void);
   void vSessionTxStore(void);
 
@@ -1320,21 +1324,27 @@ public:
   void vWord(void);
   void vWordCategoryFetch(void);
   void vWordCategoryStore(void);
+  void vWordDelete(void);
   void vWordDump(void);
   void vWordEnmSetFetch(void);
   void vWordEnmSetStore(void);
   void vWordExitHookGet(void);
   void vWordExitHookSet(void);
-  void vWordForget(void);
+  void vWordFind(void);
   void vWordImmediateGet(void);
   void vWordImmediateSet(void);
   void vWordIsImmediate(void);
   void vWordIsIntrinsic(void);
   void vWordKindFetch(void);
   void vWordKindStore(void);
+  void vWordLocate(void);
   void vWordNameFetch(void);
   void vWordNameStore(void);
+  void vWordNew(void);
   void vWordPrev(void);
+  void vWordPromptFetch(void);
+  void vWordPromptStore(void);
+  void vWordResetRoutine(void);
   void vWordSee(void);
 
   // zero

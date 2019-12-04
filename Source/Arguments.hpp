@@ -8,10 +8,10 @@ namespace StorageEngine
   class Arguments : public Object
   {
     friend class       Oblique::AM;
-    friend class      Commands::Input;
     friend class StorageEngine::Engine;
-    friend class      Commands::Parser;
-    friend class      Commands::Tokeniser;
+    friend class   TokenStream::Input;
+    friend class   TokenStream::Parser;
+    friend class   TokenStream::Tokeniser;
 
   private:
   

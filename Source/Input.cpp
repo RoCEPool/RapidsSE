@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Input.cpp - Input Processor                                            */
+/* Input.cpp -- Input Processor                                               */
 /*============================================================================*/
 
-#include "Commands.h"
+#include "TokenStream.h"
 #include "AM.hpp"
 
 
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Input* Commands::_pInput(void* aAddr)
+Input* TokenStream::_pInput(void* aAddr)
 {
   Input* pInput = reinterpret_cast<Input*>(aAddr);
   

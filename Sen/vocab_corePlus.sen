@@ -20,7 +20,7 @@
 : :constant
 
   // create a word using the string on top of the stack
-  >create
+  :create
 
   // encode a push value of the value currently on the stack
   ,
@@ -36,11 +36,9 @@
 /*----------------------------------------------------------------------------*/
 : :forget ( <"wordNm"> )
 
-  find ( word )
+  find dup not if drop exit_rt then
 
-  dup not if drop exit_rt then ( )
-
-  word.forget ( )
+  word::delete
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Commands.h -- Commands namespace                                           */
+/* TokenStream.h -- TokenStream namespace                                     */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace Commands
+namespace TokenStream
 {
   void vCheckAssumptions(void);
 }

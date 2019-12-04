@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Commands
+namespace TokenStream
 {
   class Token : public Object
   {

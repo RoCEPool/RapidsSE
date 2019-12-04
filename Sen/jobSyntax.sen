@@ -13,7 +13,7 @@
 
   next-token locals| sJobNm |
 
-  sJobNm series-name "_syn" str.cat >create
+  sJobNm series-name "_syn" str.cat :create
 
   // set the word category to be jobSyntax
   [ compiler::current , ] compiler::current word.category!

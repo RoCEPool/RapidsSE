@@ -45,23 +45,23 @@ void Task::vAddRoutines(void)
   "  begin_"
   
   // get next input token
-  "    input.next"
+  "    input::next"
   
   // test for end of input?
-  "    input.type TN_NONE == if"
+  "    input::type TN_NONE == if"
   "      exit_rt"
   "    then"
   
   // is token an integer?
-  "    input.type TN_INTEGER == if"
+  "    input::type TN_INTEGER == if"
   
-  "      input.token >int"        // convert str to int, leave on stack
+  "      input::token >int"        // convert str to int, leave on stack
   
-  "      docol.isInterpreting if" // interpret leaves int on stack
+  "      docol::isInterpreting if" // interpret leaves int on stack
   "        jumpBegin_"
   "      then"
   
-  "      docol.isCompiling if"    // compile encodes push intval
+  "      docol::isCompiling if"    // compile encodes push intval
   "        ,"
   "        jumpBegin_"
   "      then"
@@ -69,15 +69,15 @@ void Task::vAddRoutines(void)
   "    then"
   
   // is token a string?
-  "    input.type TN_STRING == if"
+  "    input::type TN_STRING == if"
   
-  "      input.token"             // put str on stack
+  "      input::token"             // put str on stack
   
-  "      docol.isInterpreting if" // interpret leaves str on stack
+  "      docol::isInterpreting if" // interpret leaves str on stack
   "        jumpBegin_"
   "      then"
   
-  "      docol.isCompiling if"    // compile encodes push StzVal
+  "      docol::isCompiling if"    // compile encodes push StzVal
   "        ,"
   "        jumpBegin_"
   "      then"
@@ -85,18 +85,18 @@ void Task::vAddRoutines(void)
   "    then"
   
   // should be a name
-  "    input.type TN_NAME != if"  // double check we have a name
-  "      \"strange token\" . input.type ."
+  "    input::type TN_NAME != if"  // double check we have a name
+  "      \"strange token\" . input::type ."
   "      jumpBegin_"
   "    then"
   
   // is token a known word?
-  "    input.token find"
+  "    input::token word::find"
   "    dup not if"                // we have an unknown word
   "      drop"
 //"      \"unknown\" ."
-//"      input.token ."
-  "      input.unknown"
+//"      input::token ."
+  "      input::unknown"
 //"      dic.isCompiled not if process::quit then "
   "      jumpBegin_"
   "    then"
@@ -110,12 +110,12 @@ void Task::vAddRoutines(void)
   "    then"
   
   // are we compiling?
-  "    docol.isCompiling if "     // compile encodes call to word
+  "    docol::isCompiling if "     // compile encodes call to word
   "      dup word.isIntrinsic if"
-  "        compile,"                // primitive
+  "        compile,"              // primitive
   "        jumpBegin_"
   "      then"
-  "      compile,"                  // routine
+  "      compile,"                // routine
   "      jumpBegin_"
   "    then"
   
@@ -131,7 +131,7 @@ void Task::vAddRoutines(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": ::enter"
-  "  input.stdin"
+  "  input::stdin"
   "  docol"
   "  task::delete"
   "  ;"_Stz;
@@ -141,12 +141,12 @@ void Task::vAddRoutines(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": include-file"
-  "  input.push"
+  "  input::push"
   "  args.senDir str.prepend"
-  "  input.open"
+  "  input::open"
   "  docol"
-  "  input.close"
-  "  input.pop"
+  "  input::close"
+  "  input::pop"
   "  ;"_Stz;
   
   pCompileColon(sDefinition);
@@ -154,11 +154,11 @@ void Task::vAddRoutines(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": include-string"
-  "  input.push"
+  "  input::push"
   //"  dup ."
-  "  input.text"
+  "  input::text"
   "  docol"
-  "  input.pop"
+  "  input::pop"
   "  ;"_Stz;
   
   pCompileColon(sDefinition);
@@ -168,8 +168,8 @@ void Task::vAddRoutines(void)
   ": include"
 //  "  traceon"
   "  args.munged if"
-  "    dup find if"
-  "      find execute include-string"
+  "    dup word::find if"
+  "      word::find execute include-string"
   "      exit_rt"
   "    then"
   "    . debug::trap"

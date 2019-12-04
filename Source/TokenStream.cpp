@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* Commands.cpp -- Commands namespace functions                               */
+/* TokenStream.cpp -- TokenStream namespace functions                         */
 /*============================================================================*/
 
-#include "Commands.h"
+#include "TokenStream.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Commands::vCheckAssumptions(void)
+void TokenStream::vCheckAssumptions(void)
 {
 }
 

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Input.hpp -- Input Processor                                           */
+/* Input.hpp -- Input Processor                                               */
 /*============================================================================*/
 #pragma once
 
-#include "Commands.h"
+#include "TokenStream.h"
 
-namespace Commands
+namespace TokenStream
 {
   class Input : public Object
   {

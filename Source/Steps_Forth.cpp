@@ -14,20 +14,15 @@ void Step::vAddSteps_Forth(void)
   vAddStep(":"_Stz,               &Step::vColon);
   vAddStep(","_Stz,               &Step::vComma);
   vAddStep("compile,"_Stz,        &Step::vCompileComma);
-  vAddStep("create"_Stz,          &Step::vCreate);
   vAddStep("createTenants"_Stz,   &Step::vCreateTenants);
-  vAddStep(">create"_Stz,         &Step::vCreateFrom);
   vAddStep(">createInRoot"_Stz,   &Step::vCreateFromInRoot);
   vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
   vAddStep("createPersistent"_Stz,&Step::vCreatePersistent);
   vAddStep("does>"_Stz,           &Step::vDoes,             true );
   vAddStep("does_rt"_Stz,         &Step::vDoes_RT);
   vAddStep("exit_rt"_Stz,         &Step::vExit_RT);
-  vAddStep("find"_Stz,            &Step::vFind);
   vAddStep("findInCurrent"_Stz,   &Step::vFindInCurrent);
-  vAddStep("forget"_Stz,          &Step::vForget);
   vAddStep("immediate"_Stz,       &Step::vImmediate,        true );
-  vAddStep("locate"_Stz,          &Step::vLocate);
   vAddStep("postpone"_Stz,        &Step::vPostpone,         true );
   vAddStep("prompt"_Stz,          &Step::vPrompt,           true );
   vAddStep("see"_Stz,             &Step::vSee);
@@ -136,31 +131,6 @@ void Step::vCompileComma(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create -- create word named by next token, becomes word being compiled     */
-/*----------------------------------------------------------------------------*/
-void Step::vCreate(void)
-{
-  ENTRY(); // ENTRY("vCreate"_Stz);
-  
-  m_pCompiler->vNextToken();
-  
-  Dic* pDic;
-  if (m_oDicStack.iCount())
-    pDic = m_oDicStack.pTop();
-  else
-    pDic = AM::pRootDic();
-  
-  
-  //vTrace(": %s\n"_Stz,m_pCompiler->szToken()->azChar());
-  
-  Word* pNewWord = new(pDic) Word(m_pCompiler->szToken());
-  
-  m_pCompiler->vCurrentWord(pNewWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* createPersistent -- create word in dictionary (persistent heap)            */
 /*----------------------------------------------------------------------------*/
 void Step::vCreatePersistent(void)
@@ -178,33 +148,6 @@ void Step::vCreatePersistent(void)
   //vTrace(": %s\n"_Stz,m_pCompiler->szToken()->azChar());
   
   Word* pNewWord = new(pDic,true) Word(m_pCompiler->szToken());
-  
-  m_pCompiler->vCurrentWord(pNewWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >create -- create word in dictionary using string on stack                 */
-/*----------------------------------------------------------------------------*/
-void Step::vCreateFrom(void)
-{
-  ENTRY(); // ENTRY("vCreateFrom"_Stz);
-  
-  s32 sName;
-  m_pDataStack->vPopStr(sName,__func__);
-  
-  Dic* pDic;
-  if (m_oDicStack.iCount())
-    pDic = m_oDicStack.pTop();
-  else
-    pDic = AM::pRootDic();
-  
-  //vTrace(": %s\n"_Stz,sName.azChar());
-  Word* pNewWord = new(pDic) Word(sName);
-  
-  if (! m_pCompiler)
-    m_pCompiler = new Compiler;
   
   m_pCompiler->vCurrentWord(pNewWord);
   
@@ -331,23 +274,6 @@ void Step::vExit_RT(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find -- find and push word named on stack                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vFind(void)
-{
-  ENTRY(); // ENTRY("vFind"_Stz);
-  
-  s256 sName;
-  m_pDataStack->vPopStr(sName,__func__);
-    
-  Word* pWord = m_oDicStack.pFindWord(sName);
-  
-  m_pDataStack->vPushPtr(pWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* findInCurrent -- find and push word named on stack withinin curr dic       */
 /*----------------------------------------------------------------------------*/
 void Step::vFindInCurrent(void)
@@ -369,34 +295,6 @@ void Step::vFindInCurrent(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* forget -- forget the word named by next token                              */
-/*----------------------------------------------------------------------------*/
-void Step::vForget(void)
-{
-  ENTRY(); // ENTRY("vForget"_Stz);
-  
-  m_pCompiler->vNextToken();
-  
-  Word* pWord = m_oDicStack.pFindWord(m_pCompiler->szToken());
-  
-  if ( ! pWord )
-    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
-           "No such word: %s"_Stz,
-           m_pCompiler->szToken()->azChar());
-  
-  s32 sName;
-  
-  sName = m_pCompiler->szToken();
-  
-  Word* pRemovedWord = m_oDicStack.pRemoveWord(sName);
-  ASSERT(pRemovedWord);
-  
-  delete pRemovedWord;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* immediate -- make the word being compiled an immediate word                */
 /*----------------------------------------------------------------------------*/
 void Step::vImmediate(void)
@@ -408,33 +306,6 @@ void Step::vImmediate(void)
   //vTrace("Step::vImmediate: %s\n"_Stz,pCurrentWord->sName().azChar());
   
   pCurrentWord->vImmediate(true);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* locate -- locate and push word name based on the ip which is on the stack  */
-/*----------------------------------------------------------------------------*/
-void Step::vLocate(void)
-{
-  ENTRY(); // ENTRY("vLocate"_Stz);
-  
-  i8 iAddrAsInt = m_pDataStack->iPopAsInt(__func__);
-  
-  void* aCellVoid = (void*)iAddrAsInt;
-  Cell* aHasCell = _aCell(aCellVoid);
-  
-  Word* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
-  
-  if (pLocatedWord) {
-    s32 sName;
-    sName = pLocatedWord->szWordNm();
-    m_pDataStack->vPushStr(sName);
-  }
-  else {
-    i8 iZero = 0;
-    m_pDataStack->vPushInt(iZero);
-  }
   
   EXIT();
 }

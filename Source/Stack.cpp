@@ -388,6 +388,24 @@ void Stack::vPushStr(String* pStr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push stz onto stack                                                        */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushStz(Stz* szStz)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  //vDump(nullptr,"Before:"_Stz);
+  
+  i8 nSize = szStz->nSize();
+  StzVal* aStzVal = aAllotStzVal(nSize);
+  
+  aStzVal->vStz(szStz);
+  //aStzVal->vInspect();
+  
+  //vDump(nullptr,"After:"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* push value onto stack                                                      */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushVal(AnyVal* aAnyVal)

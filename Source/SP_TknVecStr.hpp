@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Commands
+namespace TokenStream
 {
   class SP_TknVecStr : public SP
   {

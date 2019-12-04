@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Session(void)
 {
+  vAddStep("session::this"_Stz,            &Step::vSessionThis);
+  
   vAddStep("session.commandProcessor"_Stz, &Step::vSessionCommand);
   vAddStep("session.dicStack@"_Stz,        &Step::vSessionDicStackFetch);
   vAddStep("session.dump"_Stz,             &Step::vSessionDump);
@@ -16,6 +18,8 @@ void Step::vAddSteps_Session(void)
   vAddStep("session.isExiting"_Stz,        &Step::vSessionIsExiting);
   vAddStep("session.pid"_Stz,              &Step::vSessionPid);
   vAddStep("session.slot@"_Stz,            &Step::vSessionSlotFetch);
+  vAddStep("session.todo@"_Stz,            &Step::vSessionToDoFetch);
+  vAddStep("session.todo!"_Stz,            &Step::vSessionToDoStore);
   vAddStep("session.tx@"_Stz,              &Step::vSessionTxFetch);
   vAddStep("session.tx!"_Stz,              &Step::vSessionTxStore);
 }
@@ -123,6 +127,58 @@ void Step::vSessionSlotFetch(void)
   ASSERT(CN_SESSION == pSession->eClass());
   
   m_pDataStack->vPushInt(pSession->iSlot());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* session::this -- get current session                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vSessionThis(void)
+{
+  ENTRY(); // ENTRY("vSessionThis"_Stz);
+ 
+  Job* pJob = m_pTask->m_pJob;
+
+  i8 iSessionId = pJob->m_xReqTuple.m_i_Session;
+  
+  Session* pSession = nullptr;
+  
+  if (iSessionId != C_UNKNOWN)
+    pSession = AM::pSessionArray()->pGetSession(iSessionId);
+  
+  m_pDataStack->vPushPtr(pSession);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* session.todo@ -- fetch todo of SE session                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vSessionToDoFetch(void)
+{
+  ENTRY(); // ENTRY("vSessionToDoFetch"_Stz);
+  
+  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushStr(pSession->m_sToDo);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* session.toDo! -- store todo of SE session                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vSessionToDoStore(void)
+{
+  ENTRY(); // ENTRY("vSessionTxStore"_Stz);
+  
+  Session* pSession = _pSession(m_pDataStack->pPopPtr(__func__));
+  
+  s4K sToDo;
+  m_pDataStack->vPopStr(sToDo,__func__);
+
+  pSession->m_sToDo = sToDo;
   
   EXIT();
 }
