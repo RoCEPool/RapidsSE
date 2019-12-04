@@ -86,7 +86,7 @@ void Step::vLocalsBar(void)
       m_oDicStack.vPush(pDic);
       
       // enocde locals frame push
-      pCurrentWord->vEncode("locals.push"_Stz);
+      pCurrentWord->vEncodeCall("locals.push"_Stz);
     }
     
     // create new word for local variable in current dictionary
@@ -99,13 +99,13 @@ void Step::vLocalsBar(void)
     
     // encode the word
     xVariable = m_pCompiler->m_nLocals;
-    pWordLocal->vEncode("pushValue"_Stz,xVariable);
-    pWordLocal->vEncode("local.fetch"_Stz);
-    pWordLocal->vEncode("exit_rt"_Stz);
+    pWordLocal->vEncodePush("pushValue"_Stz,xVariable);
+    pWordLocal->vEncodeCall("local.fetch"_Stz);
+    pWordLocal->vEncodeCall("exit_rt"_Stz);
 
     // initialise the local from dstack
-    pCurrentWord->vEncode("pushValue"_Stz,xVariable);
-    pCurrentWord->vEncode("local.store"_Stz);
+    pCurrentWord->vEncodePush("pushValue"_Stz,xVariable);
+    pCurrentWord->vEncodeCall("local.store"_Stz);
     
     m_pCompiler->m_nLocals++;
   }
@@ -174,32 +174,32 @@ void Step::vLocalsTo(void)
     m_pCompiler->vNextToken();
   }
   else if (m_pCompiler->szToken()->bSame("File0[]"_Stz)) {
-    pCurrentWord->vEncode("File0[].set"_Stz);
+    pCurrentWord->vEncodeCall("File0[].set"_Stz);
     EXIT();
     return;
   }
   else if (m_pCompiler->szToken()->bSame("Operand[]"_Stz)) {
-    pCurrentWord->vEncode("Operand[].set"_Stz);
+    pCurrentWord->vEncodeCall("Operand[].set"_Stz);
     EXIT();
     return;
   }
   else if (m_pCompiler->szToken()->bSame("StreamDef[]"_Stz)) {
-    pCurrentWord->vEncode("StreamDef[].set"_Stz);
+    pCurrentWord->vEncodeCall("StreamDef[].set"_Stz);
     EXIT();
     return;
   }
   else if (m_pCompiler->szToken()->bSame("Subset[]"_Stz)) {
-    pCurrentWord->vEncode("Subset[].set"_Stz);
+    pCurrentWord->vEncodeCall("Subset[].set"_Stz);
     EXIT();
     return;
   }
   else if (m_pCompiler->szToken()->bSame("Table[]"_Stz)) {
-    pCurrentWord->vEncode("Table[].set"_Stz);
+    pCurrentWord->vEncodeCall("Table[].set"_Stz);
     EXIT();
     return;
   }
   else if (m_pCompiler->szToken()->bSame("TablePtn[]"_Stz)) {
-    pCurrentWord->vEncode("TablePtn[].set"_Stz);
+    pCurrentWord->vEncodeCall("TablePtn[].set"_Stz);
     EXIT();
     return;
   }
@@ -230,20 +230,20 @@ void Step::vLocalsTo(void)
     GenVar xMetaNm;
     xMetaNm = sLocalNm;
     
-    pCurrentWord->vEncode("pushValue"_Stz,xMetaNm);
-    pCurrentWord->vEncode("swap"_Stz);
+    pCurrentWord->vEncodePush("pushValue"_Stz,xMetaNm);
+    pCurrentWord->vEncodeCall("swap"_Stz);
 
     if (bSemanticTo) {
-      pCurrentWord->vEncode("job::this"_Stz);
-      pCurrentWord->vEncode("job.session@"_Stz);
-      pCurrentWord->vEncode("session.enameSet@"_Stz);
+      pCurrentWord->vEncodeCall("job::this"_Stz);
+      pCurrentWord->vEncodeCall("job.session@"_Stz);
+      pCurrentWord->vEncodeCall("session.enameSet@"_Stz);
     }
     else {
-      pCurrentWord->vEncode("job::this"_Stz);
-      pCurrentWord->vEncode("job.enameSet@"_Stz);
+      pCurrentWord->vEncodeCall("job::this"_Stz);
+      pCurrentWord->vEncodeCall("job.enameSet@"_Stz);
     }
     
-    pCurrentWord->vEncode("enameSet.upsertStr"_Stz);
+    pCurrentWord->vEncodeCall("enameSet.upsertStr"_Stz);
     
     EXIT();
     return;
@@ -255,8 +255,8 @@ void Step::vLocalsTo(void)
   GenVar xVar_LocalNo;
   xVar_LocalNo = pLocalWord->iLocalNo();
   
-  pCurrentWord->vEncode("pushValue"_Stz,xVar_LocalNo);
-  pCurrentWord->vEncode("local.store"_Stz);
+  pCurrentWord->vEncodePush("pushValue"_Stz,xVar_LocalNo);
+  pCurrentWord->vEncodeCall("local.store"_Stz);
   
   EXIT();
  }

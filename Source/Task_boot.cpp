@@ -249,7 +249,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
         
       case TN_INTEGER:
         xVariable = m_pForth->m_pCompiler->szToken()->iToI8();
-        pNewWord->vEncode("pushValue"_Stz,xVariable);
+        pNewWord->vEncodePush("pushValue"_Stz,xVariable);
         break;
         
       case TN_NAME:
@@ -264,7 +264,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
         }
         else if (WK_ROUTINE == pCalledWord->eKind()) {
           StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
-          pNewWord->vEncode(afpCalledEntryStep);
+          pNewWord->vEncodeCall(afpCalledEntryStep);
         }
         else {
           vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -274,7 +274,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
         
       case TN_STRING: {
         xVariable = m_pForth->m_pCompiler->szToken();
-        pNewWord->vEncode("pushValue"_Stz,xVariable);
+        pNewWord->vEncodePush("pushValue"_Stz,xVariable);
         break;
       }
         
@@ -287,7 +287,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
     m_pForth->m_pCompiler->vNextToken();
   }
   
-  pNewWord->vEncode("exit_rt"_Stz);
+  pNewWord->vEncodeCall("exit_rt"_Stz);
   
 
   // reset scanning

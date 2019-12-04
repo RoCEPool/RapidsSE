@@ -106,7 +106,7 @@ void Step::vComma(void)
   GenVar xValue;
   m_pDataStack->vPopVal(xValue,__func__);
   
-  pCurrentWord->vEncode("pushValue"_Stz,xValue);
+  pCurrentWord->vEncodePush("pushValue"_Stz,xValue);
     
   EXIT();
 }
@@ -124,7 +124,7 @@ void Step::vCompileComma(void)
   
   StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
   
-  pCurrentWord->vEncode(afpCalledEntryStep);
+  pCurrentWord->vEncodeCall(afpCalledEntryStep);
   
   EXIT();
 }
@@ -226,8 +226,8 @@ void Step::vDoes(void)
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
-  pCurrentWord->vEncode("does_rt"_Stz);
-  pCurrentWord->vEncode("exit_rt"_Stz);
+  pCurrentWord->vEncodeCall("does_rt"_Stz);
+  pCurrentWord->vEncodeCall("exit_rt"_Stz);
   
   //pCurrentWord->vEncode("pushBody");
   
@@ -336,7 +336,7 @@ void Step::vPostpone(void)
     StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
     
     // copy indirect pointer into the current word
-    pCurrentWord->vEncode(afpCalledEntryStep);
+    pCurrentWord->vEncodeCall(afpCalledEntryStep);
   }
   else {
     
@@ -344,7 +344,7 @@ void Step::vPostpone(void)
     
     // copy indirect pointer into the current word
     pCurrentWord->vEncode("pushValue"_Stz,pCalledWord);
-    pCurrentWord->vEncode("compile,"_Stz);
+    pCurrentWord->vEncodeCall("compile,"_Stz);
   }
   
   EXIT();
@@ -382,21 +382,21 @@ void Step::vSemicolon(void)
     m_oDicStack.vDiscard();
     
     // enocde locals frame pop
-    pCurrentWord->vEncode("locals.pop"_Stz);
+    pCurrentWord->vEncodeCall("locals.pop"_Stz);
   }
   
   if (! pCurrentWord->szWordNm()->bSame("exit"_Stz) &&
       m_oDicStack.pFindWord("exit"_Stz)) {
     
     if (m_oDicStack.pFindWord(pCurrentWord->szExitHook())) {
-      pCurrentWord->vEncode(pCurrentWord->szExitHook());
-      pCurrentWord->vEncode("exit_rt"_Stz);
+      pCurrentWord->vEncodeCall(pCurrentWord->szExitHook());
+      pCurrentWord->vEncodeCall("exit_rt"_Stz);
     }
     else
-      pCurrentWord->vEncode("exit_RT"_Stz);
+      pCurrentWord->vEncodeCall("exit_RT"_Stz);
   }
   else
-    pCurrentWord->vEncode("exit_rt"_Stz);
+    pCurrentWord->vEncodeCall("exit_rt"_Stz);
   
   m_pCompiler->vCompiling(false);
   
