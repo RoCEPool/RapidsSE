@@ -14,13 +14,11 @@
   job::this locals| pJob_ToFileOp |
 
   // open the file for writing
-  file::new locals| pFile |
-  <fileNm> OPEN_WRITE pFile file.open
+  file::new to File0[]
+  <fileNm> OPEN_WRITE File0[].get file.open
   not if
-    pFile file.delete assert::stack_0 EC_INVALID_FILE pJob_ToFileOp <ERROR_JOB> !!logError exit
+    File0[].get file.delete assert::stack_0 EC_INVALID_FILE pJob_ToFileOp <ERROR_JOB> !!logError exit
   then
-
-  pFile to file0[]
 
   begin
 
