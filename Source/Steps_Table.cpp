@@ -320,7 +320,7 @@ void Step::vTableFindColumn(void)
   Column* pColumn = nullptr;
   bool bFound = false;
   
-  // look for the column in the columnVec
+  // look for the column in the streamDef
   i8 nTableColumns = pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nTableColumns; i_Col++) {
     
@@ -355,7 +355,7 @@ void Step::vTableIsColumn(void)
   Column* pColumn;
   bool bFound = false;
   
-  // look for the column in the columnVec
+  // look for the column in the streamDef
   i8 nTableColumns = pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nTableColumns; i_Col++) {
     
