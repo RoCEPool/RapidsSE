@@ -105,7 +105,7 @@ void Task::vAddRoutines(void)
   // is token a known word?
   "  input::token word::find"
   "  dup not if"
-  "    drop"                     // we have an unknown word
+  "    drop"                     // token is an unknown word
   "    input::unknown"
   "    reenter"
   "  then"
@@ -116,7 +116,7 @@ void Task::vAddRoutines(void)
   // -- -- -- -- -- -- --
   // is an immediate word?
   "  dup word.isImmediate if"
-  "    execute"                  // execute an immediate word
+  "    execute"                  // execute the immediate word
   "    reenter"
   "  then"
   
@@ -125,14 +125,15 @@ void Task::vAddRoutines(void)
   "  compiler::isPostponing if"
   "    \"SHOULD NOT BE POSTPONING\" ."
   "    process::quit"
-  "    "
+  "    postpone ,"
+  "    postpone compile,"
   "    reenter"
   "  then"
 
   // -- -- -- -- -- -- --
   // compiling mode?
   "  compiler::isCompiling if "
-  "    compile,"                 // compile, encodes call to routine
+  "    compile,"                 // compile, encodes call to word
   "    reenter"
   "  then"
   
