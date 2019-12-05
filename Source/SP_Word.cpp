@@ -69,7 +69,44 @@ Stz* SP_Word::sz(Word* pWord)
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Word::szSee(Word* pWord)
+Stz* SP_Word::szSeeDoes(Word* pWord)
+{
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  StrLib::vSprint(m_caResult,
+                  "%p: Does %s %s %s"
+                  "%s%s"_Stz,
+                  
+                  pWord,
+                  pWord->szWordNm(),
+                  aWK[pWord->eKind()],
+                  pWord->pCategory()->szWordNm(),
+                  
+                  
+                  pWord->bImmediate() ? " immediate" : "",
+                  pWord->bPrompt()    ? " prompt"    : "",
+                  
+                  C_ENDARGS
+                  );
+  
+  if (* pWord->szExitHook()->azChar())
+    StrLib::vSprintCat((Stz*)m_caResult,
+                       " exitHook %s"_Stz,
+                       pWord->szExitHook());
+  
+  if (* pWord->szExceptionHook()->azChar())
+    StrLib::vSprintCat((Stz*)m_caResult,
+                       " exceptionHook %s"_Stz,
+                       pWord->szExceptionHook());
+  
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint Header and return Stz* to result                                    */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Word::szSeeWord(Word* pWord)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
