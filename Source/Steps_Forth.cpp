@@ -55,6 +55,8 @@ void Step::vColon(void)
   
   m_pCompiler->vCurrentWord(pNewWord);
   
+  m_pCompiler->vNestedWord(0,pNewWord);
+  
   EXIT();
 }
 
