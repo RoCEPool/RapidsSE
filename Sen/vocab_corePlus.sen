@@ -76,6 +76,22 @@
   loop
 ;
 
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* get nested Word$$<n>                                                       */
+/*----------------------------------------------------------------------------*/
+
+: Word$$0 0 compiler::nested@ ;
+: Word$$1 1 compiler::nested@ ;
+: Word$$2 2 compiler::nested@ ;
+: Word$$3 3 compiler::nested@ ;
+: Word$$4 4 compiler::nested@ ;
+: Word$$5 5 compiler::nested@ ;
+: Word$$6 6 compiler::nested@ ;
+: Word$$7 7 compiler::nested@ ;
+: Word$$8 8 compiler::nested@ ;
+: Word$$9 9 compiler::nested@ ;
 
 /*============================================================================*/
 /* end                                                                        */
