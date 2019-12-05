@@ -45,7 +45,6 @@ Compiler::Compiler(void)
     m_paWord[i_Nested] = nullptr;
 
   // -- -- -- -- -- -- --
-  m_pRetryIP   = nullptr;
   m_pBeginIP   = nullptr;
 
   _checkInitialised_(CN_COMPILER);

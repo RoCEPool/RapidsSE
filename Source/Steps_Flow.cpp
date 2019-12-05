@@ -17,7 +17,6 @@ void Step::vAddSteps_Flow(void)
   vAddStep("jumpFalse"_Stz,       &Step::vFlowJumpFalse);
   vAddStep("jumpTrue"_Stz,        &Step::vFlowJumpTrue);
   vAddStep("nop"_Stz,             &Step::vFlowNop);
-  vAddStep("retryPoint"_Stz,      &Step::vFlowRetryPoint);
   vAddStep("test"_Stz,            &Step::vFlowTest);
   vAddStep("throw"_Stz,           &Step::vFlowThrow);
 }
@@ -189,22 +188,6 @@ void Step::vFlowJumpTrue(void)
 void Step::vFlowNop(void)
 {
   ENTRY(); // ENTRY("vFlowNop"_Stz);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* retryPoint -- mark retry point                                             */
-/*----------------------------------------------------------------------------*/
-void Step::vFlowRetryPoint(void)
-{
-  ENTRY(); // ENTRY("vFlowRetryPoint"_Stz);
-  
-  m_pCompiler->m_pRetryIP = m_aInxPtr;
-  
-  m_pDataStack->vRetryPoint();
-  
-  m_pReturnStack->vRetryPoint();
   
   EXIT();
 }

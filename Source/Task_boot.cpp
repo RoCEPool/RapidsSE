@@ -41,9 +41,7 @@ void Task::vAddRoutines(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": interpret"
-  
-  "  retryPoint"
-  
+    
   // -- -- -- -- -- -- --
   // get next input token
   "  begin_"

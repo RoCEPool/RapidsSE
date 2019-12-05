@@ -305,7 +305,6 @@ public:
   void vFlowJumpFalse(void);
   void vFlowJumpTrue(void);
   void vFlowNop(void);
-  void vFlowRetryPoint(void);
   void vFlowTest(void);
   void vFlowThrow(void);
 

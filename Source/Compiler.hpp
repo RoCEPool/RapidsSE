@@ -4,7 +4,7 @@
 #pragma once
 
 namespace SenVM
-{  
+{
   class Compiler : public Object
   {
   private:
@@ -19,8 +19,7 @@ namespace SenVM
 
   public:
     Cell* m_pBeginIP;
-    Cell* m_pRetryIP;
-
+ 
     // must be last
     Footer m_xFooter;
     
