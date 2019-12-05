@@ -148,21 +148,37 @@ void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the outer word of this data ptr                                        */
+/* get the outer word of this cell ptr                                        */
 /*----------------------------------------------------------------------------*/
-Word* Word::pToWord(void* pBody)
+Word* Word::pToWord(Cell* aFip)
 {
   // static function
   
-  Word* pWord = (Word*)aAdd<Word*>(pBody,
-                                   -( sizeof(Word)
-                                      - sizeof(Wsp_t<C_WSP_WORD>)
-                                      - sizeof(Footer)
-                                    )
-                                  );
+//  Word* pWord = (Word*)aAdd<Word*>(aAddr,
+//                                   -( sizeof(Word)
+//                                      - sizeof(Wsp_t<C_WSP_WORD>)
+//                                      - sizeof(Footer)
+//                                    )
+//                                  );
   
-  ASSERT(pWord->eClass() == CN_WORD);
+  u8    uWord = ((u8)aFip & (u8)~0xFFFF) + sizeof(HeapBuffer);
   
+  Word* pWord = _pWord((void*)uWord);
+  
+  return pWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the outer word of this embedded object                                 */
+/*----------------------------------------------------------------------------*/
+Word* Word::pToWord(Object* pEmbObject)
+{
+  // static function
+
+  u8    uWord = ((u8)pEmbObject & (u8)~0xFFFF) + sizeof(HeapBuffer);
+  
+  Word* pWord = _pWord((void*)uWord);
+
   return pWord;
 }
 
