@@ -42,7 +42,6 @@ namespace MetaData
     PtnColVec* pPtnColVec(void);
     void       vPublishTable(i8 iPartitionNo);
     bool       bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds);
-    void       vShowColumnVec(void);
     Dic*       pSubDic(void);
     void       vTable(Table* pTable);
     void       vTidyUp(void);

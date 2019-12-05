@@ -224,19 +224,6 @@ bool Slots::bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds)
 }
 
 /*----------------------------------------------------------------------------*/
-/* show column vector                                                         */
-/*----------------------------------------------------------------------------*/
-void Slots::vShowColumnVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  for (i8 i_Column = 0; i_Column < m_pPtnColVec->nItems(); i_Column++) {
-    Column* pColumn = m_pPtnColVec->pGet(i_Column);
-    pColumn->vShow();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* get partitioning sub dictionary                                            */
 /*----------------------------------------------------------------------------*/
 Dic* Slots::pSubDic(void)

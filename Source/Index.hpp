@@ -41,7 +41,6 @@ namespace MetaData
     void   vIsPrimaryKey(bool bPrimaryKey);
     bool   bIsUnique(void);
     void   vIsUnique(bool bUnique);
-    void   vShowColumnVec(void);
     i8     iSortKeyDatum(void);
     Dic*   pSubDic(void);
     void   vTable(Table* pTable);

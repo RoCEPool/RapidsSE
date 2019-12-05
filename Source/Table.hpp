@@ -74,7 +74,6 @@ namespace MetaData
     void vPublish(i8 iPartitionNo);
     bool bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
     EntBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
-    void vShowColumnVec(void);
     Dic* pSubDic(void);
     void vSubLoaders(i8 iSubLoaders);
     Slots* pSlots(void);

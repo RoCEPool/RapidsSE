@@ -188,19 +188,6 @@ i8 Index::iIndexNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* show column vector                                                         */
-/*----------------------------------------------------------------------------*/
-void Index::vShowColumnVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  for (i8 i_Column = 0; i_Column < m_pIndexDef->m_pIdxColVec->nItems(); i_Column++) {
-    Column* pColumn = m_pIndexDef->m_pIdxColVec->pGet(i_Column);
-    pColumn->vShow();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* get index sub dictionary                                                   */
 /*----------------------------------------------------------------------------*/
 Dic* Index::pSubDic(void)

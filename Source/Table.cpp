@@ -690,19 +690,6 @@ EntBuffer* Table::pRootBuffer(i8 i_Slot, i8 i_Index)
 }
 
 /*----------------------------------------------------------------------------*/
-/* show column vector                                                         */
-/*----------------------------------------------------------------------------*/
-void Table::vShowColumnVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
-  for (i8 iColumn = 0; iColumn < m_pTableDef->m_pColVec->nItems(); iColumn++) {
-    Column* pColumn = m_pTableDef->m_pColVec->pGet(iColumn);
-    pColumn->vShow();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* get slots                                                                  */
 /*----------------------------------------------------------------------------*/
 Slots* Table::pSlots(void)
