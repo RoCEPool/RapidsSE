@@ -17,6 +17,7 @@ void Step::vAddSteps_Flow(void)
   vAddStep("jumpFalse"_Stz,       &Step::vFlowJumpFalse);
   vAddStep("jumpTrue"_Stz,        &Step::vFlowJumpTrue);
   vAddStep("nop"_Stz,             &Step::vFlowNop);
+  vAddStep("reenter"_Stz,         &Step::vFlowReenter);
   vAddStep("test"_Stz,            &Step::vFlowTest);
   vAddStep("throw"_Stz,           &Step::vFlowThrow);
 }
@@ -188,6 +189,20 @@ void Step::vFlowJumpTrue(void)
 void Step::vFlowNop(void)
 {
   ENTRY(); // ENTRY("vFlowNop"_Stz);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reenter -- re-enter the word currenty being executed (i.e. start over)     */
+/*----------------------------------------------------------------------------*/
+void Step::vFlowReenter(void)
+{
+  ENTRY(); // ENTRY("vFlowReenter"_Stz);
+  
+  Word* pExecuting = Word::pToWord(m_aInxPtr);
+  
+  m_aInxPtr = pExecuting->aEntryCell();
   
   EXIT();
 }
