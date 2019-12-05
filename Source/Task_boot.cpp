@@ -61,8 +61,8 @@ void Task::vAddRoutines(void)
   
   "      input::token >int"        // convert str to int, leave on stack
   
-  "      docol::isInterpreting if" // interpret leaves int on stack
-  "        jumpBegin_"
+  "      docol::isInterpreting if"
+  "        jumpBegin_"             // interpret leaves int on stack
   "      then"
   
   "      ,"                        // compile encodes push intval
@@ -76,8 +76,8 @@ void Task::vAddRoutines(void)
   
   "      input::token"             // put str on stack
   
-  "      docol::isInterpreting if" // interpret leaves str on stack
-  "        jumpBegin_"
+  "      docol::isInterpreting if"
+  "        jumpBegin_"             // interpret leaves str on stack
   "      then"
   
   "      ,"                        // compile encodes push stzVal
@@ -95,7 +95,7 @@ void Task::vAddRoutines(void)
   // -- -- -- -- -- -- --
   // is token a known word?
   "    input::token word::find"
-  "    dup not if"                // we have an unknown word
+  "    dup not if"                 // we have an unknown word
   "      drop"
   "      input::unknown"
   "      jumpBegin_"
@@ -106,25 +106,25 @@ void Task::vAddRoutines(void)
   
   // -- -- -- -- -- -- --
   // is an immediate word?
-  "    dup word.isImmediate if"   // execute an immediate word
-  "      execute"
+  "    dup word.isImmediate if"
+  "      execute"                  // execute an immediate word
   "      jumpBegin_"
   "    then"
   
   // -- -- -- -- -- -- --
   // are we compiling?
-  "    docol::isCompiling if "     // compile encodes call to word
+  "    docol::isCompiling if "
   "      dup word.isIntrinsic if"
-  "        compile,"              // primitive
+  "        compile,"               // compile encodes call to primitive
   "        jumpBegin_"
   "      then"
-  "      compile,"                // routine
+  "      compile,"                 // compile encodes call to routine
   "      jumpBegin_"
   "    then"
   
   // -- -- -- -- -- -- --
   // we are interpreting
-  "    execute"                   // execute word
+  "    execute"                    // execute word
   
   "  jumpBegin_"
   
