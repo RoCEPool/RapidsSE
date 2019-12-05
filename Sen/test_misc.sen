@@ -224,25 +224,21 @@ doesTest xyz ;
 
   sSmt .
 
-  // -- -- -- -- -- --
-  sWordNm "_co" str.cat word::new locals| pCoWord |
-
-  pCoWord compiler::current!
-
-    .
-
-    exit_rt
-
+  " in collect before 1" .
 
   // -- -- -- -- -- --
-  //2 sWordNm :NestedWord$$
-  //
-  //  Word$$1 compile,
-  //
-  //;NestedWord$$
+  1 sWordNm :NestedWord$$
+
+    sSmt ,
+
+    POSTPONE .
+
+  ;NestedWord$$
+
+  " in collect after 1" .
 ;
 
-//collect myCollect a b c ;
+collect myCollect a b c ;
 
 
 /*============================================================================*/

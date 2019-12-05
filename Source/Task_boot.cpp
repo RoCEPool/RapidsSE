@@ -61,13 +61,13 @@ void Task::vAddRoutines(void)
   
   "      input::token >int"        // convert str to int, leave on stack
   
-  "      compiler::isInterpreting if"
-  "        jumpBegin_"             // interpret leaves int on stack
+  "      compiler::isCompiling if"
+  "        ,"                      // compile encodes push intval
+  "        jumpBegin_"
   "      then"
   
-  "      ,"                        // compile encodes push intval
-  "      jumpBegin_"
-  
+  "      jumpBegin_"               // interpret leaves int on stack
+
   "    then"
   
   // -- -- -- -- -- -- --
@@ -76,13 +76,13 @@ void Task::vAddRoutines(void)
   
   "      input::token"             // put str on stack
   
-  "      compiler::isInterpreting if"
-  "        jumpBegin_"             // interpret leaves str on stack
+  "      compiler::isCompiling if"
+  "        ,"                      // compile encodes push stzVal
+  "        jumpBegin_"
   "      then"
   
-  "      ,"                        // compile encodes push stzVal
-  "      jumpBegin_"
-  
+  "      jumpBegin_"               // interpret leaves str on stack
+
   "    then"
   
   // -- -- -- -- -- -- --

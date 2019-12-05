@@ -97,7 +97,7 @@
 /*----------------------------------------------------------------------------*/
 /* start compiling nested word                                                */
 /*----------------------------------------------------------------------------*/
-: :NestedWord$$ immediate
+: :NestedWord$$ // immediate
 
   word::new dup compiler::current! compiler::nested!
 ;
@@ -105,11 +105,11 @@
 /*----------------------------------------------------------------------------*/
 /* end compiling nested word                                                  */
 /*----------------------------------------------------------------------------*/
-: ;NestedWord$$ immediate
+: ;NestedWord$$ // immediate
 
   POSTPONE exit_rt
 
-  0 compiler::nested@
+  0 compiler::nested@ compiler::current!
 ;
 
 /*============================================================================*/
