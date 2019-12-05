@@ -10,7 +10,7 @@
 void Step::vAddSteps_Process(void)
 {
   vAddStep("process.getPid"_Stz,  &Step::vProcessGetPid);
-  vAddStep("process::quit"_Stz,    &Step::vProcessQuit);
+  vAddStep("process::quit"_Stz,   &Step::vProcessQuit);
   vAddStep("process.testPid"_Stz, &Step::vProcessTestPid);
 }
 

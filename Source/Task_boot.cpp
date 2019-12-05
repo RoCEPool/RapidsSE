@@ -44,86 +44,106 @@ void Task::vAddRoutines(void)
     
   // -- -- -- -- -- -- --
   // get next input token
-  "    input::next"
+  "  input::next"
   
   // -- -- -- -- -- -- --
   // test for end of input?
-  "    input::type TN_NONE == if"
-  "      exit_rt"
-  "    then"
+  "  input::type TN_NONE == if"
+  "    exit_rt"
+  "  then"
   
   // -- -- -- -- -- -- --
   // is token an integer?
-  "    input::type TN_INTEGER == if"
+  "  input::type TN_INTEGER == if"
   
-  "      input::token >int"        // convert str to int, leave on stack
-  
-  "      compiler::isCompiling if"
-  "        ,"                      // compile encodes push intval
-  "        reenter"
-  "      then"
-  
-  "      reenter"                  // interpret leaves int on stack
+  "    input::token >int"        // convert str to int, leave on stack
 
+  "    compiler::isPostponing if"
+  "      \"SHOULD NOT BE POSTPONING\" ."
+  "      process::quit"
+  "      reenter"
   "    then"
+
+  "    compiler::isCompiling if"
+  "      ,"                      // compile encodes push intval
+  "      reenter"
+  "    then"
+  
+  "    reenter"                  // interpret leaves int on stack
+
+  "  then"
   
   // -- -- -- -- -- -- --
   // is token a string?
-  "    input::type TN_STRING == if"
+  "  input::type TN_STRING == if"
   
-  "      input::token"             // put str on stack
+  "    input::token"             // put str on stack
   
-  "      compiler::isCompiling if"
-  "        ,"                      // compile encodes push stzVal
-  "        reenter"
-  "      then"
-  
-  "      reenter"                  // interpret leaves str on stack
-
-  "    then"
-  
-  // -- -- -- -- -- -- --
-  // should be a name
-  "    input::type TN_NAME != if"  // double check we have a name
-  "      \"strange token\" . input::type ."
+  "    compiler::isPostponing if"
+  "      \"SHOULD NOT BE POSTPONING\" ."
+  "      process::quit"
   "      reenter"
   "    then"
+  
+  "    compiler::isCompiling if"
+  "      ,"                      // compile encodes push stzVal
+  "      reenter"
+  "    then"
+  
+  "    reenter"                  // interpret leaves str on stack
+
+  "  then"
+  
+  // -- -- -- -- -- -- --
+  // token should be a name
+  "  input::type TN_NAME != if"
+  "    \"strange token\" . input::type ."
+  "    reenter"
+  "  then"
   
   // -- -- -- -- -- -- --
   // is token a known word?
-  "    input::token word::find"
-  "    dup not if"                 // we have an unknown word
-  "      drop"
-  "      input::unknown"
-  "      reenter"
-  "    then"
+  "  input::token word::find"
+  "  dup not if"
+  "    drop"                     // we have an unknown word
+  "    input::unknown"
+  "    reenter"
+  "  then"
   
   // -- -- -- -- -- -- --
-  // pWord now on stack
+  // pWord now on d-stack
   
   // -- -- -- -- -- -- --
   // is an immediate word?
-  "    dup word.isImmediate if"
-  "      execute"                  // execute an immediate word
-  "      reenter"
-  "    then"
+  "  dup word.isImmediate if"
+  "    execute"                  // execute an immediate word
+  "    reenter"
+  "  then"
   
   // -- -- -- -- -- -- --
+  // are we postponing?
+  "  compiler::isPostponing if"
+  "    \"SHOULD NOT BE POSTPONING\" ."
+  "    process::quit"
+  "    reenter"
+  "  then"
+
+  // -- -- -- -- -- -- --
   // are we compiling?
-  "    compiler::isCompiling if "
-  "      dup word.isIntrinsic if"
-  "        compile,"               // compile encodes call to primitive
-  "        reenter"
-  "      then"
-  "      compile,"                 // compile encodes call to routine
+  "  compiler::isCompiling if "
+  "    dup word.isIntrinsic if"
+  "      compile,"               // compile encodes call to primitive
   "      reenter"
   "    then"
+  "    compile,"                 // compile encodes call to routine
+  "    reenter"
+  "  then"
   
   // -- -- -- -- -- -- --
   // we are interpreting
-  "    execute"                    // execute word
+  "  execute"                    // execute word
   
-  "  reenter"
+  "  reenter"                    // loop over
 
   "  ;"_Stz;
   
