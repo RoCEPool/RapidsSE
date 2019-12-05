@@ -9,18 +9,17 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Compiler(void)
 {
-  vAddStep("compiler::current@"_Stz, &Step::vCompilerCurrentFetch);
-  vAddStep("compiler::current!"_Stz, &Step::vCompilerCurrentStore);
+  vAddStep("["_Stz,                        &Step::vDocolInterpreting,   true);
+  vAddStep("]"_Stz,                        &Step::vDocolCompiling);
   
-  vAddStep("compiler::nested@"_Stz,  &Step::vCompilerNestedFetch);
-  vAddStep("compiler::nested!"_Stz,  &Step::vCompilerNestedStore);
+  vAddStep("compiler::current@"_Stz,       &Step::vCompilerCurrentFetch);
+  vAddStep("compiler::current!"_Stz,       &Step::vCompilerCurrentStore);
   
-  vAddStep("]"_Stz,                       &Step::vDocolCompiling);
-  vAddStep("["_Stz,                       &Step::vDocolInterpreting,   true);
+  vAddStep("compiler::isCompiling"_Stz,    &Step::vCompilerIsCompiling);
+  vAddStep("compiler::isInterpreting"_Stz, &Step::vCompilerIsInterpreting);
   
-  vAddStep("docol::isCompiling"_Stz,      &Step::vDocolIsCompiling);
-  vAddStep("docol::isInterpreting"_Stz,   &Step::vDocolIsInterpreting);
-
+  vAddStep("compiler::nested@"_Stz,        &Step::vCompilerNestedFetch);
+  vAddStep("compiler::nested!"_Stz,        &Step::vCompilerNestedStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,11 +121,11 @@ void Step::vDocolInterpreting(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* docol::isCompiling -- currently in compiling mode?                         */
+/* compiler::isCompiling -- currently in compiling mode?                         */
 /*----------------------------------------------------------------------------*/
-void Step::vDocolIsCompiling(void)
+void Step::vCompilerIsCompiling(void)
 {
-  ENTRY(); // ENTRY("vDocolIsCompiling"_Stz);
+  ENTRY(); // ENTRY("vCompilerIsCompiling"_Stz);
   
   i8 iIsCompiling = m_pCompiler->bCompiling() ? 1 : 0;
   
@@ -136,9 +135,9 @@ void Step::vDocolIsCompiling(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* docol::isInterpreting -- currently in interpreting mode?                   */
+/* compiler::isInterpreting -- currently in interpreting mode?                   */
 /*----------------------------------------------------------------------------*/
-void Step::vDocolIsInterpreting(void)
+void Step::vCompilerIsInterpreting(void)
 {
   ENTRY(); // ENTRY("vDocolIsInterpreting"_Stz);
   
