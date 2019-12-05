@@ -15,9 +15,8 @@ namespace SenVM
   
     Word* m_pCurrent;      // current word being compiled
     i8    m_nLocals;       // number of locals/params variables
-  public:
-    i8    m_nSubDic;       // number of sub dictionaries
   
+  public:
     Cell* m_pBeginIP;
     Cell* m_pRetryIP;
 

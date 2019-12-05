@@ -34,7 +34,6 @@ Compiler::Compiler(void)
   
   m_bCompiling = false;
   m_pCurrent   = nullptr;
-  m_nSubDic    = 0;
   m_nLocals    = 0;
 
   m_pRetryIP   = nullptr;
