@@ -42,16 +42,19 @@ void Task::vAddRoutines(void)
   ": docol"
   
   "  retryPoint"
-  "  begin_"
   
+  // -- -- -- -- -- -- --
   // get next input token
+  "  begin_"
   "    input::next"
   
+  // -- -- -- -- -- -- --
   // test for end of input?
   "    input::type TN_NONE == if"
   "      exit_rt"
   "    then"
   
+  // -- -- -- -- -- -- --
   // is token an integer?
   "    input::type TN_INTEGER == if"
   
@@ -61,13 +64,12 @@ void Task::vAddRoutines(void)
   "        jumpBegin_"
   "      then"
   
-  "      docol::isCompiling if"    // compile encodes push intval
-  "        ,"
-  "        jumpBegin_"
-  "      then"
+  "      ,"                        // compile encodes push intval
+  "      jumpBegin_"
   
   "    then"
   
+  // -- -- -- -- -- -- --
   // is token a string?
   "    input::type TN_STRING == if"
   
@@ -84,12 +86,14 @@ void Task::vAddRoutines(void)
   
   "    then"
   
+  // -- -- -- -- -- -- --
   // should be a name
   "    input::type TN_NAME != if"  // double check we have a name
   "      \"strange token\" . input::type ."
   "      jumpBegin_"
   "    then"
   
+  // -- -- -- -- -- -- --
   // is token a known word?
   "    input::token word::find"
   "    dup not if"                // we have an unknown word
@@ -101,7 +105,8 @@ void Task::vAddRoutines(void)
   "      jumpBegin_"
   "    then"
   
-  // known word on stack
+  // -- -- -- -- -- -- --
+  // pWord on stack
   
   // is an immediate word?
   "    dup word.isImmediate if"   // execute an immediate word
@@ -109,6 +114,7 @@ void Task::vAddRoutines(void)
   "      jumpBegin_"
   "    then"
   
+  // -- -- -- -- -- -- --
   // are we compiling?
   "    docol::isCompiling if "     // compile encodes call to word
   "      dup word.isIntrinsic if"
@@ -119,6 +125,7 @@ void Task::vAddRoutines(void)
   "      jumpBegin_"
   "    then"
   
+  // -- -- -- -- -- -- --
   // we are interpreting
   "    execute"                   // execute word
   
@@ -229,7 +236,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
     pDic = m_pForth->m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
-;
+
 
   pNewWord = new(pDic) Word(m_pForth->m_pCompiler->szToken());
   
