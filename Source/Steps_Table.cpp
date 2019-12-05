@@ -168,8 +168,8 @@ void Step::vTableColumnCountFetch(void)
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TABLE == pTable->eClass());
   
-  ColumnVec* pColVec = pTable->pColumnVec();
-  i8 nColumns = pColVec->nItems();
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  i8 nColumns = pStreamDef->nColumns(C_ALL);
   
   m_pDataStack->vPushInt(nColumns);
   
