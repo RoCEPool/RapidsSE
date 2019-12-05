@@ -30,7 +30,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table.removeIndex"_Stz,        &Step::vTableRemoveIndex);
   vAddStep("table.scan"_Stz,               &Step::vTableScan);
-  vAddStep("table.showColumnVec"_Stz,      &Step::vTableShowColumnVec);
   vAddStep("table.slots"_Stz,              &Step::vTableSlots);
   vAddStep("table.space"_Stz,              &Step::vTableSpace);
   vAddStep("table.subDic"_Stz,             &Step::vTableSubDic);
@@ -532,21 +531,6 @@ void Step::vTableScan(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
   pQueue->vAppend(pFetchBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.showColumnVec -- show column vector                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vTableShowColumnVec(void)
-{
-  ENTRY(); // ENTRY("vTableShowColumnVec"_Stz);
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  pTable->vShowColumnVec();
   
   EXIT();
 }

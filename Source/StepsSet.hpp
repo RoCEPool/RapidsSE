@@ -1134,7 +1134,6 @@ public:
   void vTablePurge(void);
   void vTableRemoveIndex(void);
   void vTableScan(void);
-  void vTableShowColumnVec(void);
   void vTableSlots(void);
   void vTableSpace(void);
   void vTableSubDic(void);
