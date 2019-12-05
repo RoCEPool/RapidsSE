@@ -79,10 +79,8 @@ void Task::vAddRoutines(void)
   "        jumpBegin_"
   "      then"
   
-  "      docol::isCompiling if"    // compile encodes push StzVal
-  "        ,"
-  "        jumpBegin_"
-  "      then"
+  "      ,"                        // compile encodes push stzVal
+  "      jumpBegin_"
   
   "    then"
   
@@ -98,16 +96,14 @@ void Task::vAddRoutines(void)
   "    input::token word::find"
   "    dup not if"                // we have an unknown word
   "      drop"
-//"      \"unknown\" ."
-//"      input::token ."
   "      input::unknown"
-//"      dic.isCompiled not if process::quit then "
   "      jumpBegin_"
   "    then"
   
   // -- -- -- -- -- -- --
-  // pWord on stack
+  // pWord now on stack
   
+  // -- -- -- -- -- -- --
   // is an immediate word?
   "    dup word.isImmediate if"   // execute an immediate word
   "      execute"
