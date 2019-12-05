@@ -29,7 +29,7 @@ void Step::vCompilerInterpreting(void)
 {
   ENTRY(); // ENTRY("vCompilerInterpreting"_Stz);
   
-  m_pCompiler->vCompiling(false);
+  m_pCompiler->vMode(CM_INTERPRETING);
   
   EXIT();
 }
@@ -41,7 +41,7 @@ void Step::vCompilerCompiling(void)
 {
   ENTRY(); // ENTRY("vCompilerCompiling"_Stz);
   
-  m_pCompiler->vCompiling(true);
+  m_pCompiler->vMode(CM_COMPILING);
   
   EXIT();
 }
@@ -87,7 +87,7 @@ void Step::vCompilerIsCompiling(void)
 {
   ENTRY(); // ENTRY("vCompilerIsCompiling"_Stz);
   
-  i8 iIsCompiling = m_pCompiler->bCompiling() ? 1 : 0;
+  i8 iIsCompiling = CM_COMPILING == m_pCompiler->eMode();
   
   m_pDataStack->vPushInt(iIsCompiling);
   
@@ -101,7 +101,7 @@ void Step::vCompilerIsInterpreting(void)
 {
   ENTRY(); // ENTRY("vDocolIsInterpreting"_Stz);
   
-  i8 iIsInterpreting = m_pCompiler->bCompiling() ? 0 : 1;
+  i8 iIsInterpreting = CM_INTERPRETING == m_pCompiler->eMode();
   
   m_pDataStack->vPushInt(iIsInterpreting);
   

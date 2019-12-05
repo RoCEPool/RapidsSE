@@ -64,23 +64,15 @@ Compiler::~Compiler(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get compilation state                                                      */
+/* is the compiler compiling?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Compiler::bCompiling(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
-  return m_bCompiling;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set compilation state                                                      */
-/*----------------------------------------------------------------------------*/
-void Compiler::vCompiling(bool bCompiling)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  bool bIsCompiling = CM_COMPILING == m_eMode;
   
-  m_bCompiling = bCompiling;
+  return bIsCompiling;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,6 +93,18 @@ void Compiler::vCurrentWord(Word* pWord)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
   m_pCurrent = pWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the compiler interpreting?                                              */
+/*----------------------------------------------------------------------------*/
+bool Compiler::bInterpreting(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  bool bIsInterpreting = CM_INTERPRETING == m_eMode;
+  
+  return bIsInterpreting;
 }
 
 /*----------------------------------------------------------------------------*/

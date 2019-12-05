@@ -37,7 +37,7 @@ void Step::vColon(void)
   
   s32 sName;
   
-  m_pCompiler->vCompiling(true);
+  m_pCompiler->vMode(CM_COMPILING);
   
   m_pCompiler->vNextToken();
   sName = m_pCompiler->szToken();
@@ -368,7 +368,7 @@ void Step::vSemicolon(void)
   else
     pCurrentWord->vEncodeCall("exit_rt"_Stz);
   
-  m_pCompiler->vCompiling(false);
+  m_pCompiler->vMode(CM_INTERPRETING);
     
   m_pCompiler->vCurrentWord(nullptr);
   

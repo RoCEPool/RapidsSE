@@ -28,10 +28,11 @@ namespace SenVM
    ~Compiler(void) noexcept(false);
   
     bool  bCompiling(void);
-    void  vCompiling(bool bCompiling);
 
     Word* pCurrentWord(void);
     void  vCurrentWord(Word* pWord);
+  
+    bool  bInterpreting(void);
   
     i8    nLocals(void);
     void  vLocals(i8 nLocals);
