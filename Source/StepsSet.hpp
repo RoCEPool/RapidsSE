@@ -202,10 +202,10 @@ public:
   void vDirTell(void);
 
   // docol
-  void vDocolCompiling(void);
-  void vDocolInterpreting(void);
-  void vDocolIsCompiling(void);
-  void vDocolIsInterpreting(void);
+  void vCompilerCompiling(void);
+  void vCompilerInterpreting(void);
+  void vCompilerIsCompiling(void);
+  void vCompilerIsInterpreting(void);
 
   // dot
   void vDot(void);

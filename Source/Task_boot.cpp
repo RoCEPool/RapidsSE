@@ -61,7 +61,7 @@ void Task::vAddRoutines(void)
   
   "      input::token >int"        // convert str to int, leave on stack
   
-  "      docol::isInterpreting if"
+  "      compiler::isInterpreting if"
   "        jumpBegin_"             // interpret leaves int on stack
   "      then"
   
@@ -76,7 +76,7 @@ void Task::vAddRoutines(void)
   
   "      input::token"             // put str on stack
   
-  "      docol::isInterpreting if"
+  "      compiler::isInterpreting if"
   "        jumpBegin_"             // interpret leaves str on stack
   "      then"
   
@@ -113,7 +113,7 @@ void Task::vAddRoutines(void)
   
   // -- -- -- -- -- -- --
   // are we compiling?
-  "    docol::isCompiling if "
+  "    compiler::isCompiling if "
   "      dup word.isIntrinsic if"
   "        compile,"               // compile encodes call to primitive
   "        jumpBegin_"
