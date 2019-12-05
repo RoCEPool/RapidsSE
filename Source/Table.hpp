@@ -53,7 +53,6 @@ namespace MetaData
     Stz* pAnalyzeTable(bool bDetailed, i8& nRows);
     void vCompactIndex(Index* pIndex);
     i8   nCrwBuffers(void);
-    ColumnVec* pColumnVec(void);
     void vContentDump(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
     //void vCreateColumnVec(Jobs::Job_CreateTable* pJob);
