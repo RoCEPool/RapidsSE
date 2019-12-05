@@ -121,7 +121,7 @@ void Task::vAddRoutines(void)
   "  then"
   
   // -- -- -- -- -- -- --
-  // are we postponing?
+  // postponing mode?
   "  compiler::isPostponing if"
   "    \"SHOULD NOT BE POSTPONING\" ."
   "    process::quit"
@@ -130,13 +130,9 @@ void Task::vAddRoutines(void)
   "  then"
 
   // -- -- -- -- -- -- --
-  // are we compiling?
+  // compiling mode?
   "  compiler::isCompiling if "
-  "    dup word.isIntrinsic if"
-  "      compile,"               // compile encodes call to primitive
-  "      reenter"
-  "    then"
-  "    compile,"                 // compile encodes call to routine
+  "    compile,"                 // compile, encodes call to routine
   "    reenter"
   "  then"
   
