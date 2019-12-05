@@ -151,9 +151,9 @@ void Step::vTableColumnFetch(void)
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   
-  ColumnVec* pColVec = pTable->pColumnVec();
+  StreamDef* pStreamDef = pTable->pStreamDef();
   
-  m_pDataStack->vPushPtr(pColVec->pGet(iColumnNo));
+  m_pDataStack->vPushPtr(pStreamDef->pGetColumn(iColumnNo));
   
   EXIT();
 }
