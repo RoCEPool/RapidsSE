@@ -151,9 +151,9 @@ void Step::vTableColumnFetch(void)
   
   i8 iColumnNo = m_pDataStack->iPopInt(__func__);
   
-  ColumnVec* pColVec = pTable->pColumnVec();
+  StreamDef* pStreamDef = pTable->pStreamDef();
   
-  m_pDataStack->vPushPtr(pColVec->pGet(iColumnNo));
+  m_pDataStack->vPushPtr(pStreamDef->pGetColumn(iColumnNo));
   
   EXIT();
 }
@@ -168,8 +168,8 @@ void Step::vTableColumnCountFetch(void)
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TABLE == pTable->eClass());
   
-  ColumnVec* pColVec = pTable->pColumnVec();
-  i8 nColumns = pColVec->nItems();
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  i8 nColumns = pStreamDef->nColumns(C_ALL);
   
   m_pDataStack->vPushInt(nColumns);
   
@@ -230,8 +230,8 @@ void Step::vTableGetColumnsAsString(void)
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_TABLE == pTable->eClass());
   
-  ColumnVec* pColVec = pTable->pColumnVec();
-  i8 nColumns = pColVec->nItems();
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  i8 nColumns = pStreamDef->nColumns(C_ALL);
   
   s16KB s;
   for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
@@ -240,12 +240,12 @@ void Step::vTableGetColumnsAsString(void)
     s.vConcat(","_Stz);
     
     if (i_Column == 0)
-    s.vCopy(pColVec->pGet(i_Column)->szColNm());
+    s.vCopy(pStreamDef->pGetColumn(i_Column)->szColNm());
     else
-    s.vConcat(pColVec->pGet(i_Column)->szColNm());
+    s.vConcat(pStreamDef->pGetColumn(i_Column)->szColNm());
     
     s.vConcat(" "_Stz);
-    s.vConcat(aCT[pColVec->pGet(i_Column)->eColumnType()]);
+    s.vConcat(aCT[pStreamDef->pGetColumn(i_Column)->eColumnType()]);
   }
   
   m_pDataStack->vPushStr(s);
