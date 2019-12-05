@@ -32,6 +32,7 @@ static const i8 C_MAX_SHORTCUTS = 64;
 
 static const i8 C_MAX_BUCKETS   = 1024;
 
+static const i8 C_MAX_NESTED_WORDS  = 16;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

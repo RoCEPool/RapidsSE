@@ -32,17 +32,22 @@ Compiler::Compiler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
-  m_bCompiling = false;
   m_pCurrent   = nullptr;
+  
+  for (i8 i_Nested = 0; i_Nested < C_MAX_NESTED_WORDS; i_Nested++)
+    m_paWord[i_Nested] = nullptr;
+  
+  m_bCompiling = false;
   m_nLocals    = 0;
-
-  m_pRetryIP   = nullptr;
-  m_pBeginIP   = nullptr;
 
   m_pTokeniser = new Tokeniser;
   m_pTokeniser->vPush();
   s48K sString(""_Stz);
   m_pTokeniser->vUseString(sString);
+  
+  // -- -- -- -- -- -- --
+  m_pRetryIP   = nullptr;
+  m_pBeginIP   = nullptr;
 
   _checkInitialised_(CN_COMPILER);
   
@@ -124,6 +129,28 @@ void Compiler::vLocals(i8 nLocals)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get nested word                                                            */
+/*----------------------------------------------------------------------------*/
+Word* Compiler::pNestedWord(i8 i_Nested)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  Word* pNested = m_paWord[i_Nested];
+  
+  return pNested;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set nested word                                                            */
+/*----------------------------------------------------------------------------*/
+void Compiler::vNestedWord(i8 i_Nested, Word* pNested)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_paWord[i_Nested] = pNested;
+}
+
+/*----------------------------------------------------------------------------*/
 /* advance to next token                                                      */
 /*----------------------------------------------------------------------------*/
 void Compiler::vNextToken(void)
@@ -152,7 +179,6 @@ Tokeniser* Compiler::pTokeniser(void)
   
   return m_pTokeniser;
 }
-
 
 
 /*----------------------------------------------------------------------------*/
