@@ -80,7 +80,7 @@
 
   task::seedInitially
 
-  // [ compiler::current word.name@ , ] .
+  // [ compiler::currentWord@ word.name@ , ] .
   // <jobNm> .
 
   job::becomeOriginator

@@ -9,27 +9,11 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Compiler(void)
 {
-  vAddStep("compiler::current"_Stz,      &Step::vCompilerCurrent);
-  
   vAddStep("compiler::currentWord@"_Stz, &Step::vCompilerCurrentWordFetch);
   vAddStep("compiler::currentWord!"_Stz, &Step::vCompilerCurrentWordStore);
   
   vAddStep("compiler::nested@"_Stz,      &Step::vCompilerNestedFetch);
   vAddStep("compiler::nested!"_Stz,      &Step::vCompilerNestedStore);
-}
-
-/*----------------------------------------------------------------------------*/
-/* compiler::current -- push word being compiled                              */
-/*----------------------------------------------------------------------------*/
-void Step::vCompilerCurrent(void)
-{
-  ENTRY(); // ENTRY("vCompilerCurrent"_Stz);
-  
-  Word* pWord = m_pCompiler->pCurrentWord();
-  
-  m_pDataStack->vPushPtr(pWord);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

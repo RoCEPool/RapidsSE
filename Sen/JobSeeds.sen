@@ -16,7 +16,7 @@
 
   task::seedInitially
 
-  [ compiler::current word.name@ , ] .
+  [ compiler::currentWord@ word.name@ , ] .
   <jobNm> .
 
   //debug::breakPoint
@@ -57,7 +57,7 @@
 
   task::seedInitially
 
-  // [ compiler::current word.name@ , ] .
+  // [ compiler::currentWord@ word.name@ , ] .
   // <jobNm> .
 
   job::becomeOriginator
@@ -88,7 +88,7 @@
 
   task::seedInitially
 
-  // [ compiler::current word.name@ , ] .
+  // [ compiler::currentWord@ word.name@ , ] .
 
   JP_BEGINNING job::this job.phase!
 
@@ -116,7 +116,7 @@
 
   task::seedInitially
 
-  // [ compiler::current word.name@ , ] .
+  // [ compiler::currentWord@ word.name@ , ] .
 
   JP_EXECUTING job::this job.phase!
 
@@ -148,7 +148,7 @@
 
   task::seedInitially
 
-  // [ compiler::current word.name@ , ] .
+  // [ compiler::currentWord@ word.name@ , ] .
 
   JP_ENDING job::this job.phase!
 
@@ -174,7 +174,7 @@
 
   task::seedInitially
 
-  // [ compiler::current word.name@ , ] .
+  // [ compiler::currentWord@ word.name@ , ] .
 
   JP_CANCELING job::this job.phase!
 

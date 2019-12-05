@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : jobInfo::addEname params| sEvalue sEname |
 
-  compiler::current word.EnameSet@ locals| pEnameSet |
+  compiler::currentWord@ word.EnameSet@ locals| pEnameSet |
 
   sEvalue find locals| pEvalueWord |
 
@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : job::isGenericJob
 
-  compiler::current word.EnameSet@ locals| pEnameSet |
+  compiler::currentWord@ word.EnameSet@ locals| pEnameSet |
 
   "<?jobKind?>" pEnameSet EnameSet.getInt
 
@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 : job::isLocalJob
 
-  compiler::current word.EnameSet@ locals| pEnameSet |
+  compiler::currentWord@ word.EnameSet@ locals| pEnameSet |
 
   "<?jobKind?>" pEnameSet EnameSet.getInt
 
@@ -91,7 +91,7 @@
 /*----------------------------------------------------------------------------*/
 : job::isDistJob
 
-  compiler::current word.EnameSet@ locals| pEnameSet |
+  compiler::currentWord@ word.EnameSet@ locals| pEnameSet |
 
  "<?jobKind?>" pEnameSet EnameSet.getInt
 
@@ -115,7 +115,7 @@
 /*----------------------------------------------------------------------------*/
 : job::isServiceCmd
 
-  compiler::current word.EnameSet@ locals| pEnameSet |
+  compiler::currentWord@ word.EnameSet@ locals| pEnameSet |
 
   "<?cmdKind?>" pEnameSet EnameSet.getInt
 
@@ -148,7 +148,7 @@
 /*----------------------------------------------------------------------------*/
 : seedEnameAdd params| sDefaultSeed sSuffix sSeedEname |
 
-  compiler::current word.EnameSet@ locals| pEnameSet |
+  compiler::currentWord@ word.EnameSet@ locals| pEnameSet |
 
   sSuffix seedExists?
     if word::name_trunc else sDefaultSeed then
@@ -276,7 +276,7 @@
 : .generateService
 
   // calc the name of the service
-  "_" compiler::current word.name@ str.removeSuffix locals| sServiceNm |
+  "_" compiler::currentWord@ word.name@ str.removeSuffix locals| sServiceNm |
 
   // calc the name of the spawner
   sServiceNm "_spawner" str.cat locals| sSpawnerNm |
@@ -287,7 +287,7 @@
 
   // create a word by the spawner name
   sSpawnerNm :create
-  compiler::current locals| pSpawnerWd |
+  compiler::currentWord@ locals| pSpawnerWd |
 
   // debug
   //pSpawnerWd word.dump
@@ -314,7 +314,7 @@
   // create an immediate word by the service name
 
   sServiceNm :create
-  compiler::current locals| pServiceWd |
+  compiler::currentWord@ locals| pServiceWd |
   true pServiceWd word.immediate!
 
   // debug
@@ -357,12 +357,12 @@
   next-token "_cls" str.cat :create
 
   // set the word kind to be jobClass
-  [ compiler::current , ] compiler::current word.category!
+  [ compiler::currentWord@ , ] compiler::currentWord@ word.category!
 
   // attach an ename set to the word being created
   EnameSet::new to pEnameSet
 
-  pEnameSet compiler::current word.EnameSet!
+  pEnameSet compiler::currentWord@ word.EnameSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -16,12 +16,12 @@
   sJobNm series-name "_syn" str.cat :create
 
   // set the word category to be jobSyntax
-  [ compiler::current , ] compiler::current word.category!
+  [ compiler::currentWord@ , ] compiler::currentWord@ word.category!
 
   // attach an ename set to the word being created
   EnameSet::new locals| pEnameSet |
 
-  pEnameSet compiler::current word.EnameSet!
+  pEnameSet compiler::currentWord@ word.EnameSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

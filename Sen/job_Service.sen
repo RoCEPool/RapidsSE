@@ -87,7 +87,7 @@ jobInfo: service
 
   dropN
 
-  //compiler::current word.name@ ,
+  //compiler::currentWord@ word.name@ ,
 
   "service" ,
 

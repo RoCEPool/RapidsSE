@@ -129,8 +129,6 @@ public:
   void vComment(void);
 
   // comment
-  void vCompilerCurrent(void);
-
   void vCompilerCurrentWordFetch(void);
   void vCompilerCurrentWordStore(void);
   void vCompilerNestedFetch(void);
