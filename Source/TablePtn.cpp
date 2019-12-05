@@ -576,8 +576,7 @@ void TablePtn::vPublish(void)
   HV_Rec hvRec(pStreamDef, C_ALL);
   
   // create a row for retrieving the row
-  ColumnVec* pColVec = m_pCurrentCrwBuffer->pTable()->pColumnVec();
-  HV_Row hRow(pColVec, C_ALL);
+  HV_Row hRow(pStreamDef, C_ALL);
   
   // publish the current buffer (last buffer that was added)
   i8 nRowCount = m_pCurrentCrwBuffer->nRowCount();

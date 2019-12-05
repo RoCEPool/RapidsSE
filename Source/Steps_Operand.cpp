@@ -109,11 +109,7 @@ void Step::vOperandHandleAggEnd(void)
       // create an IrwBuffer
       IrwBuffer* pIrwBuffer = new IrwBuffer();
       
-      // get the columnVec defining the rowref
-      ColumnVec* pColumnVec = new ColumnVec;
-      m_pRegSet->m_xpStreamDef->vAddColumns(pColumnVec);
-      
-      Row* pRow = pIrwBuffer->aAllotRow(pColumnVec);
+      Row* pRow = pIrwBuffer->aAllotRow(*m_pRegSet->m_xpStreamDef);
       pRow->m_waColVal[0] = nCount;
       
       // pipe out the streamdef

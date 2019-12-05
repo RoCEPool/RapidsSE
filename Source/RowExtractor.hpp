@@ -13,11 +13,11 @@ namespace Rows
                            Column* pCol, Formatters* pRecFmt);
   
     static bool bExtractNext(Row* pRow, char** acRecCrs,
-                             ColumnVec* pColVec, Formatters* pRecFmt,
+                             StreamDef* pStreamDef, Formatters* pRecFmt,
                              bool& bBlankLine_);
   
     static Column* pExtractRow(Row* pRow, char** acRecCrs,
-                               ColumnVec* pColVec, Formatters* pRecFmt);
+                               StreamDef* pStreamDef, Formatters* pRecFmt);
   
   private:
     static bool bExtractElement(DtmVal* pDtmVal, char** acRecCrs,

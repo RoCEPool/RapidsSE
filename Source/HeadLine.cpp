@@ -132,14 +132,14 @@ void HeadLine::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* calculate free space of a head line                                        */
 /*----------------------------------------------------------------------------*/
-i8 HeadLine::nFreeSpace(ColumnVec* pColVec)
+i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
 {
   //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
   
-  Column* pLastCol = pColVec->pGet(pColVec->nItems() - 1);
+  Column* pLastCol = pStreamDef->pGetColumn(pStreamDef->nColumns(C_ALL) - 1);
   ASSERT(pLastCol->bIsLastColumn());
   
-  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  i8 i_BaseOffset = RowCoder::iBaseOffset(pStreamDef);
   
   i8 i_ColCrs_ = 0;
   i8 i_OfsCrs_ = i_BaseOffset;

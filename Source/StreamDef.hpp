@@ -8,11 +8,10 @@ namespace MetaData
   class StreamDef : public Definition
   {
   public:
-    s32  m_sName;   // name
-    s256 m_sPath;   // full name
-    i8   m_iStreamId; // unique stream identifier
-
-    i8     m_nDefSets;       // eg. 3
+    s32    m_sName;         // name
+    s256   m_sPath;         // full name
+    i8     m_iStreamId;     // unique stream identifier
+    i8     m_nDefSets;      // eg. 3
     i8     m_nDefColumns[C_MAX_STREAMDEFS];
     i8     m_i_DefStart[C_MAX_STREAMDEFS];    // 0, 4, 9
     Column m_xaColumn[C_MAX_DEFCOLUMNS];
@@ -36,7 +35,9 @@ namespace MetaData
     void vAddColumns(ColumnVec* pColumnVec);
     void vAddColumns(ColumnVec* pColumnVec, i8 nDefSet);
 
+    i8 nColumns(i8 iSubSet);
     i8 iFindColumn(char* sColumnNm, i8& iColVec);
+    Column* pGetColumn(i8 iColumn);
     void vToMetadata(Stz* sMetaData);
     
     Footer* aFooter(void);

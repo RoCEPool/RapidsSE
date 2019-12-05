@@ -49,15 +49,15 @@ void Encoding::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
+Encoding::Encoding(StreamDef* pStreamDef, i8 nHeadSize, i8 nMetaSize)
 : Object(CN_ENCODING)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
-  m_pColVec   = pColVec;
-  m_nColumns  = m_pColVec->nItems();
-  m_nHeadSize = nHeadSize;
-  m_nMetaSize = nMetaSize;
+  m_pStreamDef = pStreamDef;
+  m_nColumns   = pStreamDef->nColumns(C_ALL);
+  m_nHeadSize  = nHeadSize;
+  m_nMetaSize  = nMetaSize;
   
   m_nBytesNeeded = C_UNKNOWN;
   m_nShiftOver   = C_UNKNOWN;
@@ -83,7 +83,7 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
   }
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    xaColEnc[i_Col].m_pCol   = pColVec->pGet(i_Col);
+    xaColEnc[i_Col].m_pCol   = m_pStreamDef->pGetColumn(i_Col);
     xaColEnc[i_Col].m_eDatum = xaColEnc[i_Col].m_pCol->eDatumType();
   }
   

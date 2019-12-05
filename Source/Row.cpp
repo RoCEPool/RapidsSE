@@ -53,15 +53,17 @@ void Row::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Row::Row(ColumnVec* pColVec, i8 iDummy)
+Row::Row(StreamDef* pStreamDef, i8 iSubSet)
 : Object(CN_ROW)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
-  m_pColVec     = pColVec;
-  m_nColumns    = m_pColVec->nItems();
-  m_iBaseOffset = RowCoder::iBaseOffset(m_pColVec);
+  m_pStreamDef  = pStreamDef;
+  m_iSubSet     = iSubSet;
+  m_nColumns    = pStreamDef->nColumns(iSubSet);
+  m_iBaseOffset = RowCoder::iBaseOffset(m_nColumns);
   m_bGetAll     = true;
+  
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_abGetCol[i_Col] = false;
   m_iLastCol    = C_UNKNOWN;
@@ -106,7 +108,7 @@ void Row::vAdjustAddresses(Row* pCopiedFromRow)
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
-    Column* pCol = m_pColVec->pGet(i_Col);
+    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
     
     if (DM_VCH != pCol->eDatumType())
       continue;
@@ -172,9 +174,9 @@ void Row::vCopy(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
-  for (i8 i_Col = 0; i_Col < m_pColVec->nItems(); i_Col++) {
+  for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
   
-    Column* pCol = m_pColVec->pGet(i_Col);
+    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // vch
     
@@ -211,7 +213,7 @@ void Row::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_)
     
-    Column* pIntoCol = m_pColVec->pGet(i_IntoCol);
+    Column* pIntoCol = m_pStreamDef->pGetColumn(i_IntoCol);
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // vch
     
@@ -251,7 +253,7 @@ void Row::vDontDecodeVch(void)
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
-    Column* pCol = m_pColVec->pGet(i_Col);
+    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
     
     if (DM_VCH == pCol->eDatumType()) {
       m_abGetCol[i_Col] = false;

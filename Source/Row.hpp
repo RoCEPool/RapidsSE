@@ -8,7 +8,9 @@ namespace Transform
   class Row : public Object
   {
   public:
-    ColumnVec* m_pColVec;
+    StreamDef* m_pStreamDef;     // stream def
+    i8         m_iSubSet;        // stream def subset
+    
     i8         m_nColumns;
   
     i8         m_iBaseOffset;
@@ -30,7 +32,7 @@ namespace Transform
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
 
-    Row(ColumnVec* pColVec, i8 iDummy);
+    Row(StreamDef* pStreamDef, i8 iSubSet);
     ~Row(void) noexcept(false);
   
     void vAdjustAddresses(Row* pCopiedFromRow);

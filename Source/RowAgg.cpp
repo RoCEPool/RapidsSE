@@ -137,7 +137,7 @@ void RowAgg::vAggregate(i8 i_Slot, CrwBuffer* pCrwBuffer)
   
   // aggregate the buffer
   i8 nRowCount = pCrwBuffer->nRowCount();
-  HV_Row hRow(m_pTable->pColumnVec(),C_ALL);
+  HV_Row hRow(m_pTable->pStreamDef(),C_ALL);
   i8 iKeyCol = m_pKeyColumn->iColumnNo();
   
   for (i8 i_Row = 0; i_Row < nRowCount; i_Row++) {

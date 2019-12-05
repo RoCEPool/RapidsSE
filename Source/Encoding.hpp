@@ -29,7 +29,7 @@ namespace Rows
                    private RowCoder
   {
   public:
-    ColumnVec* m_pColVec;
+    StreamDef* m_pStreamDef;
   
     i8  m_nColumns;
     i8  m_nHeadSize;
@@ -52,7 +52,7 @@ namespace Rows
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
 
-    Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize);
+    Encoding(StreamDef* pStreamDef, i8 nHeadSize, i8 nMetaSize);
     ~Encoding(void) noexcept(false);
   
     i8   nBytesNeeded(void);

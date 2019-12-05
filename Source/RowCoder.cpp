@@ -23,9 +23,19 @@ i8 RowCoder::iAuxLen(eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 /* calc base offset for column vector                                         */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iBaseOffset(ColumnVec* pColVec)
+i8 RowCoder::iBaseOffset(StreamDef* pStreamDef)
 {
-  i8 iOffset  = C_W_1B + nMetaSize(pColVec);
+  i8 iOffset  = C_W_1B + nMetaSize(pStreamDef);
+  
+  return iOffset;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calc base offset for column vector                                         */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iBaseOffset(i8 nColumns)
+{
+  i8 iOffset  = C_W_1B + nColumns;
   
   return iOffset;
 }
@@ -194,7 +204,7 @@ bool RowCoder::bHasAuxLen(eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 /* calc size of the head line for column vector                               */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::nHeadSize(ColumnVec* pColVec)
+i8 RowCoder::nHeadSize(StreamDef* pStreamDef)
 {
   // experiment 1
   //i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
@@ -229,7 +239,7 @@ i8 RowCoder::nHeadSize(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /* calc size of meta tape for given column vector (does not incl <W>)         */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::nMetaSize(ColumnVec* pColVec)
+i8 RowCoder::nMetaSize(StreamDef* pStreamDef)
 {
 //  i8 nColumns = pColVec->nItems();
 //
@@ -238,7 +248,7 @@ i8 RowCoder::nMetaSize(ColumnVec* pColVec)
 //  i8 nMetaBytes = nBits / (i8)C_BITS_PER_BYTE
 //                   + (nBits % (i8)C_BITS_PER_BYTE ? 1 : 0);
 
-  i8 nMetaBytes = pColVec->nItems();
+  i8 nMetaBytes = pStreamDef->nColumns(C_ALL);
 
   return nMetaBytes;
 }

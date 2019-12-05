@@ -424,59 +424,6 @@ void Table::vContentDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create column vector                                                       */
-/*----------------------------------------------------------------------------*/
-//void Table::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-//  
-////  vTrace("vCreateColumnVec: table %s column %s %s\n"_Stz,
-////         szTableNm(),
-////         sColumnNm.szStz(),
-////         sColumnDefn.szStz());
-//  
-//  Column* pColumn = new Column(sColumnNm.szStz(),sColumnDefn.szStz());
-//  
-//  m_pColumnVec->vInsert(pColumn);
-//  
-//  // renumber
-//  for (i8 iColumn = 0; iColumn < m_pColumnVec->nItems(); iColumn++) {
-//    Column* pColumn = m_pColumnVec->pGet(iColumn);
-//    if (pColumn->iColumnNo() != -1)
-//      pColumn->vColumnNo(iColumn);
-//  }
-//}
-
-/*----------------------------------------------------------------------------*/
-/* create column vector                                                       */
-/*----------------------------------------------------------------------------*/
-//void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-//
-//  Column* pColumn = nullptr;
-//
-//  m_pTableDef->m_pStreamDef->m_sName = m_sTableNm;
-//  m_pTableDef->m_pStreamDef->m_sPath.vSprint("../%s"_Stz,m_sTableNm.szStz());
-//
-//  m_pTableDef->m_pStreamDef->m_nDefSets = 1;
-//  m_pTableDef->m_pStreamDef->m_i_DefStart[0] = 0;
-//
-//  for (i8 i_Col = 0; i_Col < pJob->m_iColumns; i_Col++) {
-//    pColumn = new Column(pJob,i_Col);
-//    m_pTableDef->m_pColVec->vAdd(pColumn);
-//    pColumn->vColVec(m_pTableDef->m_pColVec);
-//
-//    // - - - - - - - - - - - - - - -
-//    m_pTableDef->m_pStreamDef->m_xaColumn[i_Col].vCopy(pColumn);
-//    m_pTableDef->m_pStreamDef->m_nDefColumns[0]++;
-//  }
-//
-//  if (pColumn)
-//    pColumn->vIsLastColumn(true);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* find column by name                                                        */
 /*----------------------------------------------------------------------------*/
 Column* Table::pFindColumn(Stz* szColNm)

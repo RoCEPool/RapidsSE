@@ -82,7 +82,7 @@ void IrwBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* allot a ref set in this buffer (may return nulltpr)                        */
 /*----------------------------------------------------------------------------*/
-Row* IrwBuffer::aAllotRow(ColumnVec* pColVec)
+Row* IrwBuffer::aAllotRow(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
   
@@ -94,7 +94,7 @@ Row* IrwBuffer::aAllotRow(ColumnVec* pColVec)
   
   vIncItems();
   
-  Row* aRow = new(ayRow) Row(pColVec,0);
+  Row* aRow = new(ayRow) Row(pStreamDef,C_ALL);
   
   return aRow;
 }

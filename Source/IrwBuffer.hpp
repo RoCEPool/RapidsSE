@@ -24,7 +24,7 @@ namespace Transform
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    Row* aAllotRow(ColumnVec* pColVec);
+    Row* aAllotRow(StreamDef* pStreamDef);
   
     Row* aFirstRow(void);
     Row* aLastRow(void);

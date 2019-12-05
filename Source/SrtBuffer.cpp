@@ -183,10 +183,7 @@ void SrtBuffer::vGetKeys(StreamDef* pStreamDef, i8 iKeyCol, i8 iColVec)
   
   Crw* aCrw;
 
-  ColumnVec* pColVec = new ColumnVec;
-
-  HV_Row hRow(pColVec,C_ALL);
-  pStreamDef->vAddColumns(pColVec);
+  HV_Row hRow(pStreamDef,C_ALL);
   
   SrtSet* aSrtSet = aFirstSrtSet();
   while (aSrtSet) {
@@ -204,8 +201,6 @@ void SrtBuffer::vGetKeys(StreamDef* pStreamDef, i8 iKeyCol, i8 iColVec)
     
      aSrtSet = aNextSrtSet(aSrtSet);
   }
-  
-  delete pColVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -309,14 +304,6 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
   SrtSet* aSrtSet = aFirstSrtSet();
-  ColumnVec* pColumnVec[C_MAX_STREAMDEFS];
-  
-  //! ALKA TO REVIEW : COLUMNV VECTOR
-  // create a column vec from each row ref
-  for (i8 iRowRef = 0; iRowRef < m_nRowRefs; iRowRef++) {
-    pColumnVec[iRowRef] = new ColumnVec;
-    pStreamDef->vAddColumns(pColumnVec[iRowRef] , iRowRef);
-  }
   
   // NOTE: We need to iterate nItems() rows as its possible
   // that limit has truncated the no of rows
@@ -333,14 +320,14 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
       Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRef));
       
       HV_Rec hvRec(pStreamDef, iRowRef);
-      HV_Row hRow(pColumnVec[iRowRef], iRowRef);
+      HV_Row hRow(pStreamDef, iRowRef);
       
       // inflate the row
       if (aCrw) {
         RowInflator::vInflateRow(hRow, aCrw);
       } else {
         // get no of columns
-        i8 nColumns = pColumnVec[iRowRef]->nItems();
+        i8 nColumns = pStreamDef->nColumns(iRowRef);
         
         // for each column
         for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
@@ -354,10 +341,6 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
     vTrace(")\n"_Stz);
     
     aSrtSet = aNextSrtSet(aSrtSet);
-  }
-  
-  for (i8 iRowRef = 0; iRowRef < m_nRowRefs; iRowRef++) {
-    delete pColumnVec[iRowRef];
   }
   
 }
@@ -428,13 +411,6 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
   
   SrtSet* aSrtSet = aFirstSrtSet();
   
-  // create a column vec from each row ref
-  for (i8 iRowRef = 0; iRowRef < m_nRowRefs; iRowRef++) {
-    pColumnVec[iRowRef] = new ColumnVec;
-    pStreamDef->vAddColumns(pColumnVec[iRowRef] , iRowRef);
-  }
-  
-  
   i8 nRows = nItems();
   i8 iElement = 0;
   while (nRows--) {
@@ -457,14 +433,14 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
       Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRefs));
       
       HV_Rec hvRec(pStreamDef, iRowRefs);
-      HV_Row hRow(pColumnVec[iRowRefs], iRowRefs);
+      HV_Row hRow(pStreamDef, iRowRefs);
 
       // inflate the row
       if (aCrw) {
         RowInflator::vInflateRow(hRow, aCrw);
       } else {
         // get no of columns
-        i8 nColumns = pColumnVec[iRowRefs]->nItems();
+        i8 nColumns = pStreamDef->nColumns(iRowRefs);
         
         // for each column
         for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {

@@ -8,7 +8,7 @@
 /* get encoded datum from row                                                 */
 /*----------------------------------------------------------------------------*/
 void RowDecoder::vDecode(DtmVal* pDtmVal, HeadLine* aHeadLine,
-                           ColumnVec* pColVec, Column* pCol,
+                           i8 nColumns, Column* pCol,
                            i8& i_ColCrs_, i8& i_OfsCrs_)
 {
   eDM eDatum = pCol->eDatumType();
@@ -16,7 +16,7 @@ void RowDecoder::vDecode(DtmVal* pDtmVal, HeadLine* aHeadLine,
   switch (eDatum) {
       
     case DM_BCD:
-      vDecodeBcd(pDtmVal,aHeadLine,pColVec,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeBcd(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_BOL:
@@ -24,31 +24,31 @@ void RowDecoder::vDecode(DtmVal* pDtmVal, HeadLine* aHeadLine,
       break;
       
     case DM_DTE:
-      vDecodeDte(pDtmVal,aHeadLine,pColVec,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeDte(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_FLT:
-      vDecodeFlt(pDtmVal,aHeadLine,pColVec,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeFlt(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_INT:
-      vDecodeInt(pDtmVal,aHeadLine,pColVec,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeInt(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_IVL:
-      vDecodeIvl(pDtmVal,aHeadLine,pColVec,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeIvl(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_TME:
-      vDecodeTme(pDtmVal,aHeadLine,pColVec,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeTme(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_TSP:
-      vDecodeTsp(pDtmVal,aHeadLine,pColVec,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeTsp(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_VCH:
-      vDecodeVch(pDtmVal,aHeadLine,pColVec,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeVch(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     default:
@@ -60,10 +60,10 @@ void RowDecoder::vDecode(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /* decode decimal from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowDecoder::vDecodeBcd(DtmVal* pDtmVal, HeadLine* aHeadLine,
-                              ColumnVec* pColVec, Column* pCol,
+                              i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
 
   pDtmVal->m_eDatum = DM_BCD;
 
@@ -136,10 +136,10 @@ void RowDecoder::vDecodeBol(DtmVal* pDtmVal, HeadLine* aHeadLine,Column* pCol)
 /* decode date from given head line                                           */
 /*----------------------------------------------------------------------------*/
 void RowDecoder::vDecodeDte(DtmVal* pDtmVal, HeadLine* aHeadLine,
-                              ColumnVec* pColVec, Column* pCol,
+                              i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
   
   pDtmVal->m_eDatum = DM_DTE;
   i8 iEra = C_ERA_0;
@@ -177,10 +177,10 @@ void RowDecoder::vDecodeDte(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /* decode float from given head line                                          */
 /*----------------------------------------------------------------------------*/
 void RowDecoder::vDecodeFlt(DtmVal* pDtmVal, HeadLine* aHeadLine,
-                              ColumnVec* pColVec, Column* pCol,
+                              i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
   
   pDtmVal->m_eDatum = DM_FLT;
   
@@ -208,10 +208,10 @@ void RowDecoder::vDecodeFlt(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /* decode integer from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowDecoder::vDecodeInt(DtmVal* pDtmVal, HeadLine* aHeadLine,
-                            ColumnVec* pColVec, Column* pCol,
+                            i8 nColumns, Column* pCol,
                             i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
   
   pDtmVal->m_eDatum = DM_INT;
   
@@ -254,10 +254,10 @@ void RowDecoder::vDecodeInt(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /* decode interval from given head line                                       */
 /*----------------------------------------------------------------------------*/
 void RowDecoder::vDecodeIvl(DtmVal* pDtmVal, HeadLine* aHeadLine,
-                              ColumnVec* pColVec, Column* pCol,
+                              i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
   
   pDtmVal->m_eDatum = DM_IVL;
   
@@ -285,10 +285,10 @@ void RowDecoder::vDecodeIvl(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /* decode time from given head line                                           */
 /*----------------------------------------------------------------------------*/
 void RowDecoder::vDecodeTme(DtmVal* pDtmVal, HeadLine* aHeadLine,
-                              ColumnVec* pColVec, Column* pCol,
+                              i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
   
   pDtmVal->m_eDatum = DM_TME;
   
@@ -319,10 +319,10 @@ void RowDecoder::vDecodeTme(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /* decode timestamp from given head line                                      */
 /*----------------------------------------------------------------------------*/
 void RowDecoder::vDecodeTsp(DtmVal* pDtmVal, HeadLine* aHeadLine,
-                              ColumnVec* pColVec, Column* pCol,
+                              i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
   
   pDtmVal->m_eDatum = DM_TSP;
   
@@ -347,10 +347,10 @@ void RowDecoder::vDecodeTsp(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
 void RowDecoder::vDecodeVch(DtmVal* pDtmVal, HeadLine* aHeadLine,
-                              ColumnVec* pColVec, Column* pCol,
+                              i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
 
   pDtmVal->m_eDatum = DM_VCH;
   

@@ -63,7 +63,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
     
     _ColEnc* aColEnc = & pEncoding->xaColEnc[i_Col];
     
-    Column* pCol = pEncoding->m_pColVec->pGet(i_Col);
+    Column* pCol = pEncoding->m_pStreamDef->pGetColumn(i_Col);
     eDM eDatum   = pCol->eDatumType();
     Stz* szDatum = (Stz*)aDM[eDatum];
     

@@ -164,6 +164,27 @@ void StreamDef::vAddColumns(ColumnVec* pColumnVec, i8 nDefSet)
   
 }
 
+/*----------------------------------------------------------------------------*/
+/* get no of columns in subset of streamDef                                   */
+/*----------------------------------------------------------------------------*/
+i8 StreamDef::nColumns(i8 iSubSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  i8 nColumns = 0;
+  
+  if (C_ALL == iSubSet) {
+    for (i8 i_StreamDef = 0; i_StreamDef < m_nDefSets; i_StreamDef++) {
+      nColumns +=  m_nDefColumns[i_StreamDef];
+    }
+  }
+  else {
+    nColumns +=  m_nDefColumns[iSubSet];
+  }
+  return nColumns;
+  
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get column vector at index                                                 */
@@ -185,6 +206,16 @@ i8 StreamDef::iFindColumn(char* sColumnNm, i8& i_ColVec)
 //  }
   
   return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column at index                                                        */
+/*----------------------------------------------------------------------------*/
+Column* StreamDef::pGetColumn(i8 iColumn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  return &m_xaColumn[iColumn];
 }
 
 /*----------------------------------------------------------------------------*/

@@ -35,13 +35,14 @@ namespace Rows
   {
   public:
     static i8   iAuxLen(eMC eMetaCode);
-    static i8   iBaseOffset(ColumnVec* pColVec);
+    static i8   iBaseOffset(StreamDef* pStreamDef);
+    static i8   iBaseOffset(i8 nColumns);
     static i8   nDataSize(eMC eMetaCode);
     static void vDteFromEdt(Dtm* aDte, i8 iEra);
     static void vDteIntoEdt(Dtm wDte, Dtm& wEdt_, i8& iEra_);
     static bool bHasAuxLen(eMC eMetaCode);
-    static i8   nHeadSize(ColumnVec* pColVec);
-    static i8   nMetaSize(ColumnVec* pColVec);
+    static i8   nHeadSize(StreamDef* pStreamDef);
+    static i8   nMetaSize(StreamDef* pStreamDef);
   };
 }
 

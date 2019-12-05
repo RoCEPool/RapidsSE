@@ -318,6 +318,16 @@ i8 CrwBuffer::iLengthList(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the stream def                                                         */
+/*----------------------------------------------------------------------------*/
+StreamDef* CrwBuffer::pStreamDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  return pTable()->pStreamDef();
+}
+
+/*----------------------------------------------------------------------------*/
 /* set the table of the row buffer                                            */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vTable(Table* pTable)
@@ -390,7 +400,7 @@ void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
   ColumnVec* pColVec = new ColumnVec;
   pStreamDef->vAddColumns(pColVec);
   
-  HV_Row hRow(pColVec,C_ALL);
+  HV_Row hRow(pStreamDef,C_ALL);
   HV_Rec hvRec(pStreamDef,C_ALL);
   
   i8 nRows = nRowCount();
@@ -479,12 +489,11 @@ void CrwBuffer::vShowRow(i8 i_Row)
 {
   vTrace("Id: %3lli.%03lli "_Stz,m_iBufferNo,i_Row);
   
-  ColumnVec* pColVec = pTable()->pColumnVec();
   StreamDef* pStreamDef = pTable()->pStreamDef();
   HV_Rec hvRec(pStreamDef,C_ALL);
   
   // create a row
-  HV_Row hRow(pColVec,C_ALL);
+  HV_Row hRow(pStreamDef,C_ALL);
   
   // get compact row
   Crw* aCompactRow = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
@@ -539,14 +548,13 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  ColumnVec* pColVec = pTable()->pColumnVec();
   StreamDef* pStreamDef = pTable()->pStreamDef();
   
   CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
   CsvBuffer* pCsvBuffer = pFirstCsvBuffer;
   
   HV_Rec hvRec(pStreamDef,C_ALL);
-  HV_Row hRow(pColVec,C_ALL);
+  HV_Row hRow(pStreamDef,C_ALL);
   
   i8 nRows = nRowCount();
   i8 nBytes;
@@ -589,7 +597,7 @@ SrtBuffer* CrwBuffer::pToSrtBuffer(i8 iKeyCol)
   
   i8 nRowRefs = 1;
   
-  HV_Row hRow(pTable()->pColumnVec(),C_ALL);
+  HV_Row hRow(pTable()->pStreamDef(),C_ALL);
   SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
   
   i8 nRows = nRowCount();
@@ -632,7 +640,7 @@ IrwBuffer* CrwBuffer::pToIrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  ColumnVec* pColVec = pTable()->pColumnVec();
+  StreamDef* pStreamDef = pTable()->pStreamDef();
   
   IrwBuffer* pIrwBuffer = new IrwBuffer;
   Row* pRow;
@@ -643,14 +651,14 @@ IrwBuffer* CrwBuffer::pToIrwBuffer(void)
     // get compact row
     Crw* aCompactRow = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
     
-    pRow = pIrwBuffer->aAllotRow(pColVec);
+    pRow = pIrwBuffer->aAllotRow(pStreamDef);
     if (! pRow) {
       IrwBuffer* pNewIrwBuffer = new IrwBuffer;
       pIrwBuffer->vNextBuffer(pNewIrwBuffer);
       pNewIrwBuffer->vPrevBuffer(pIrwBuffer);
       
       pIrwBuffer = pNewIrwBuffer;
-      pRow = pIrwBuffer->aAllotRow(pColVec);
+      pRow = pIrwBuffer->aAllotRow(pStreamDef);
     }
     
     // inflate compact row into row

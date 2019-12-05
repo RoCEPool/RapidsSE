@@ -25,7 +25,7 @@ namespace Rows
 
     byte* ayAdrLogical(i8 i_Offset);
     void vDump(void);
-    i8   nFreeSpace(ColumnVec* pColVec);
+    i8   nFreeSpace(StreamDef* pStreamDef);
     eMC  eGetEncoding(Column* pCol, i8 i_BaseOffset,
                       i8& i_ColCrs_, i8& i_OfsCrs_);
     w8   wGetLogical(i8 i_Offset, i8 nDataSize);

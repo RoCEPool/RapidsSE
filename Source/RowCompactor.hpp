@@ -10,7 +10,7 @@ namespace Rows
   {
   public:
     RowNub*    m_pCrwNub;      // nub of crw buffer
-    ColumnVec* m_pColVec;      // column vector
+    StreamDef* m_pStreamDef;   // stream def
     i8         m_nHeadSize;    // size of head line for this colvec/table
     i8         m_nMetaSize;    // size of meta data for this colvec/table
     i8         m_i_BaseOffset; // base offset for this colvec/table

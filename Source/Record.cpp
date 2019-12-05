@@ -51,7 +51,7 @@ Record::Record(void)
   
   m_azAppendCursor = m_sRecStr.azChar();
   m_pStreamDef     = nullptr;
-  m_iDefSet        = C_UNKNOWN;
+  m_iSubSet        = C_UNKNOWN;
   
   _checkInitialised_(CN_RECORD);
   
@@ -68,7 +68,7 @@ Record::Record(StreamDef* pStreamDef, i8 iSubSet)
   
   m_azAppendCursor = m_sRecStr.azChar();
   m_pStreamDef     = pStreamDef;
-  m_iDefSet        = iSubSet;
+  m_iSubSet        = iSubSet;
   
   _checkInitialised_(CN_RECORD);
   
@@ -92,29 +92,8 @@ Record::~Record(void) noexcept(false)
 void Record::vAppend(Row* pRow)
 {
   vReset();
-  /*
-  // get no of columns
-  i8 nColumns = m_pColumnVec->nItems();
   
-  // for each column
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    
-    // get the column at index
-    Column* pCol = m_pColumnVec->pGet(i_Col);
-    
-    // comma separate column values
-    if (i_Col)
-      m_sRecStr.vAppend(&m_azAppendCursor,","_Stz);
-    
-    // append column value
-    vAppend(pCol,pRow);
-    
-    //vTrace("%s\n"_Stz,pRec->szRecStr());
-  }
-   */
-  
-  
-  if (m_iDefSet == C_ALL) {
+  if (m_iSubSet == C_ALL) {
     
     for (i8 i_DefSet = 0; i_DefSet < m_pStreamDef->m_nDefSets; i_DefSet++) {
       
@@ -145,10 +124,10 @@ void Record::vAppend(Row* pRow)
   }
   else {
     // get no of columns in this stream def
-     i8 nColumns = m_pStreamDef->m_nDefColumns[m_iDefSet];
+     i8 nColumns = m_pStreamDef->m_nDefColumns[m_iSubSet];
 
      // get start of stream def columns
-     i8 iDefStart = m_pStreamDef->m_i_DefStart[m_iDefSet];
+     i8 iDefStart = m_pStreamDef->m_i_DefStart[m_iSubSet];
 
      // for each column
      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {

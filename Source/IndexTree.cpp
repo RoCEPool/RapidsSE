@@ -695,7 +695,7 @@ bool IndexTree::bVerifyIndex(void)
 void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
 {
   // create a row
-  HV_Row hRow(pCrwBuffer->pColumnVec(),C_ALL);
+  HV_Row hRow(pCrwBuffer->pStreamDef(),C_ALL);
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   

@@ -57,18 +57,18 @@ JobExtractRow::~JobExtractRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool JobExtractRow::bExtractRow(Stz* szRecStr, bool &bBlankLine)
 {
-  ColumnVec* pColVec = m_pTable->pColumnVec();
+  StreamDef* pStreamDef = m_pTable->pStreamDef();
   
   if (m_pRow)
     m_pRow->vResetValues();
   else
-    m_pRow = new Row(pColVec,0);
+    m_pRow = new Row(pStreamDef,C_ALL);
 
   char* acRecCrs = szRecStr->azChar();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool bResult = RowExtractor::bExtractNext(m_pRow,&acRecCrs,pColVec,
+  bool bResult = RowExtractor::bExtractNext(m_pRow,&acRecCrs,pStreamDef,
                                          &m_oFormatters,bBlankLine);
   if (! bResult)
     return false;

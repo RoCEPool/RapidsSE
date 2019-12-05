@@ -49,7 +49,7 @@ void SP_Row::vRow(Row* pRow)
   
   for (i8 i_Col = 0; i_Col < pRow->m_nColumns; i_Col++) {
   
-    Column* pCol = pRow->m_pColVec->pGet(i_Col);
+    Column* pCol = pRow->m_pStreamDef->pGetColumn(i_Col);
     eDM eDatum   = pCol->eDatumType();
     Stz* szDatum = (Stz*)aDM[eDatum];
 

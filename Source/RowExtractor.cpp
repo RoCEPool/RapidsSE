@@ -50,7 +50,7 @@ void RowExtractor::vAddElement(EntWrk* pEntWrk, Stz* szSrc,
 /* extract row from record (returning first column which has invalid field)   */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractNext(Row* pRow, char** aacRecCrs,
-                             ColumnVec* pColVec, Formatters* pRecFmt,
+                             StreamDef* pStreamDef, Formatters* pRecFmt,
                              bool& bBlankLine_)
 {
   char* acRec = *aacRecCrs;
@@ -85,7 +85,7 @@ bool RowExtractor::bExtractNext(Row* pRow, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // extract row from record
   
-  Column* pBadCol = pExtractRow(pRow,aacRecCrs,pColVec,pRecFmt);
+  Column* pBadCol = pExtractRow(pRow,aacRecCrs,pStreamDef,pRecFmt);
   
   // any invalid field?
   if (pBadCol) {
@@ -109,12 +109,12 @@ bool RowExtractor::bExtractNext(Row* pRow, char** aacRecCrs,
 /* extract record into row (returning first column which has invalid field)   */
 /*----------------------------------------------------------------------------*/
 Column* RowExtractor::pExtractRow(Row* pRow, char** aacRecCrs,
-                               ColumnVec* pColVec, Formatters* pRecFmt)
+                               StreamDef* pStreamDef, Formatters* pRecFmt)
 {
-  i8 nCols = pColVec->nItems();
+  i8 nCols = pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    Column* pCol = pColVec->pGet(i_Col);
+    Column* pCol = pStreamDef->pGetColumn(i_Col);
   
     DtmVal oDatum;
     oDatum.m_pCol = pCol;

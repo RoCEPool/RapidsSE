@@ -50,7 +50,7 @@ RowCompactor::RowCompactor(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   m_pCrwNub       = nullptr;
-  m_pColVec       = nullptr;
+  m_pStreamDef    = nullptr;
   m_nHeadSize     = C_UNKNOWN;
   m_nMetaSize     = C_UNKNOWN;
   m_i_BaseOffset  = C_UNKNOWN;
@@ -107,15 +107,15 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   m_pCrwNub       = pCrwBuffer->m_oRowTray.pNub();
-  m_pColVec       = m_pCrwNub->pDesc()->pColumnVec();
-  m_nHeadSize     = nHeadSize(m_pColVec);
-  m_nMetaSize     = nMetaSize(m_pColVec);
-  m_i_BaseOffset  = iBaseOffset(m_pColVec);
+  m_pStreamDef    = m_pCrwNub->pDesc()->pStreamDef();
+  m_nHeadSize     = nHeadSize(m_pStreamDef);
+  m_nMetaSize     = nMetaSize(m_pStreamDef);
+  m_i_BaseOffset  = iBaseOffset(m_pStreamDef);
   
   m_pRowSamples   = new IrwBuffer;
   m_bCollecting   = bCollectSamples;
   
-  m_pEncoding     = new Encoding(m_pColVec,m_nHeadSize,m_nMetaSize);
+  m_pEncoding     = new Encoding(m_pStreamDef,m_nHeadSize,m_nMetaSize);
   m_aHeadLine     = nullptr;
   m_aOverLine     = nullptr;
 }
@@ -137,7 +137,7 @@ void RowCompactor::vCompactEnd(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pCrwNub       = nullptr;
-  m_pColVec       = nullptr;
+  m_pStreamDef    = nullptr;
   m_nHeadSize     = C_UNKNOWN;
   m_nMetaSize     = C_UNKNOWN;
   m_i_BaseOffset  = C_UNKNOWN;
@@ -195,7 +195,7 @@ bool RowCompactor::bCollectSample(Row* pInflatedRow)
     return false;
   }
   
-  Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec);
+  Row* pSampleRow = m_pRowSamples->aAllotRow(m_pStreamDef);
   if (! pSampleRow) {
 #ifdef WITH_ENCODING_TRACE
     vTrace("Samples full\n"_Stz);
@@ -260,10 +260,10 @@ void RowCompactor::vAnalyzeSamples(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  i8 nCols = m_pColVec->nItems();
+  i8 nCols = m_pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    Column* pCol = m_pColVec->pGet(i_Col);
+    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
     eDM eDatum = pCol->eDatumType();
     
     if (DM_VCH != eDatum)
@@ -438,7 +438,7 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  i8 nCols = m_pColVec->nItems();
+  i8 nCols = m_pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
     _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
@@ -575,7 +575,7 @@ void RowCompactor::vPackCrw(Encoding* pEncoding)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pack all the columns into the logical compact row
   
-  i8 nCols = m_pColVec->nItems();
+  i8 nCols = m_pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
@@ -594,7 +594,7 @@ void RowCompactor::vPackCrw(Encoding* pEncoding)
   #endif
   
 #ifdef WITH_ANALYSE_FREE
-  i8 nFreeSpace = aHeadLine->nFreeSpace(m_pColVec);
+  i8 nFreeSpace = aHeadLine->nFreeSpace(m_pStreamDef);
   m_oFreqDist.vAdd(nFreeSpace);
 #endif
 }

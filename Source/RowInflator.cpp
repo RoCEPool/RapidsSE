@@ -449,7 +449,7 @@ void RowInflator::vInflateColumn(Row* pRow, i8 iColumnInto, HeadLine* aHeadLine,
   byte* ayDataByte = (byte*)aHeadLine + iBaseOffset;
   i8*   aiColVal   = &pRow->m_waColVal[iColumnInto].m_iInt;
   
-  RASSERT(pRow->m_pColVec->pGet(iColumnInto)->eColumnType() ==
+  RASSERT(pRow->m_pStreamDef->pGetColumn(iColumnInto)->eColumnType() ==
           pColVec->pGet(i_ColToRetrieve)->eColumnType());
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {

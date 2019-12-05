@@ -60,6 +60,7 @@ namespace Rows
     void      vGetRow(Row* pRow, i8 i_Row);
     void      vShow(void);
     void      vShowRow(i8 i_Row);
+    StreamDef* pStreamDef(void);
     Crw*      pCrw(i8 i_Row);
 
     ////////////////////////////////////////////////////////////////////////////
