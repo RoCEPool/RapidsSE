@@ -82,6 +82,7 @@
 /* get nested Word$$<n>                                                       */
 /*----------------------------------------------------------------------------*/
 
+: Word$$    compiler::nested@ ;
 : Word$$0 0 compiler::nested@ ;
 : Word$$1 1 compiler::nested@ ;
 : Word$$2 2 compiler::nested@ ;
@@ -96,15 +97,19 @@
 /*----------------------------------------------------------------------------*/
 /* start compiling nested word                                                */
 /*----------------------------------------------------------------------------*/
-: :Nested immediate
+: :NestedWord$$ immediate
 
+  word::new dup compiler::current! compiler::nested!
 ;
 
 /*----------------------------------------------------------------------------*/
 /* end compiling nested word                                                  */
 /*----------------------------------------------------------------------------*/
-: ;Nested immediate
+: ;NestedWord$$ immediate
 
+  POSTPONE exit_rt
+
+  0 compiler::nested@
 ;
 
 /*============================================================================*/

@@ -135,9 +135,9 @@ void Step::vCompilerNestedStore(void)
 {
   ENTRY(); // ENTRY("vCompilerNestedStore"_Stz);
   
-  i8 i_Nested = m_pDataStack->iPopInt(__func__);
-  
   Word* pNested = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  i8 i_Nested = m_pDataStack->iPopInt(__func__);
   
   if (! m_pCompiler)
     m_pCompiler = new Compiler;
