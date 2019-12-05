@@ -771,22 +771,6 @@ void Task::vReseed(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* retry after exception                                                      */
-/*----------------------------------------------------------------------------*/
-void Task::vRetry(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_pForth->m_aInxPtr = m_pForth->m_pCompiler->m_pRetryIP;
-  m_pForth->m_pCompiler->m_pBeginIP = nullptr;
-  
-  m_pForth->m_pCompiler->pTokeniser()->vToken(""_Stz);
-  
-  m_pForth->m_pDataStack->vRetry();
-  m_pForth->m_pReturnStack->vRetry();
-}
-
-/*----------------------------------------------------------------------------*/
 /* is task seeded to run                                                      */
 /*----------------------------------------------------------------------------*/
 bool Task::bSeeded(void)

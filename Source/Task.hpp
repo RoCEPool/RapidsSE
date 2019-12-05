@@ -94,7 +94,6 @@ namespace Tasks
     RegSet* pRegSet(void);
     void vRenderPortrait(s256& sTaskPortrait);
     void vReseed(void);
-    void vRetry(void);
     bool bSeeded(void);
     void vSeedTask(void);
     Grids::Node* pSendNode(void);
