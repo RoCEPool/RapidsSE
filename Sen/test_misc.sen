@@ -227,7 +227,7 @@ doesTest xyz ;
 
     sSmt ,
 
-    POSTPONE .
+    .
 
     see //debug::breakPoint
 
@@ -236,9 +236,9 @@ doesTest xyz ;
   "-- -- in collect after 1 -- --" .
 ;
 
-collect myCollect a b c ;
+//collect myCollect a b c ;
 
-tick myCollect word.see
+//tick myCollect word.see
 
 //debug::breakPoint
 /*============================================================================*/

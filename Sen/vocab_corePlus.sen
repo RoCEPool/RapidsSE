@@ -97,17 +97,29 @@
 /*----------------------------------------------------------------------------*/
 /* start compiling nested word                                                */
 /*----------------------------------------------------------------------------*/
-: :NestedWord$$ // immediate
+: :NestedWord$$
 
   word::new dup compiler::current! compiler::nested!
+
+
+  //--
+  //compiler::postponing
+  //--
 ;
 
 /*----------------------------------------------------------------------------*/
 /* end compiling nested word                                                  */
 /*----------------------------------------------------------------------------*/
-: ;NestedWord$$ // immediate
+: ;NestedWord$$
 
   POSTPONE exit_rt
+
+
+  //--
+  //exit_rt
+  //compiler::compiling
+  //--
+
 
   0 compiler::nested@ compiler::current!
 ;

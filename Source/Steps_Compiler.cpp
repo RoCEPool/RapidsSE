@@ -12,15 +12,15 @@ void Step::vAddSteps_Compiler(void)
   vAddStep("["_Stz,                        &Step::vCompilerInterpreting,  true);
   vAddStep("]"_Stz,                        &Step::vCompilerCompiling);
   
-  vAddStep("[["_Stz,                       &Step::vCompilerCompiling,     true);
-  vAddStep("]]"_Stz,                       &Step::vCompilerPostponing,    true);
+  vAddStep("[["_Stz,                       &Step::vCompilerCompiling);
+  vAddStep("]]"_Stz,                       &Step::vCompilerPostponing);
   
-  vAddStep("compiler::compiling"_Stz,      &Step::vCompilerCompiling,     true);
+  vAddStep("compiler::compiling"_Stz,      &Step::vCompilerCompiling);
   
   vAddStep("compiler::current@"_Stz,       &Step::vCompilerCurrentFetch);
   vAddStep("compiler::current!"_Stz,       &Step::vCompilerCurrentStore);
   
-  vAddStep("compiler::interpreting"_Stz,   &Step::vCompilerInterpreting,  true);
+  vAddStep("compiler::interpreting"_Stz,   &Step::vCompilerInterpreting);
   
   vAddStep("compiler::isCompiling"_Stz,    &Step::vCompilerIsCompiling);
   vAddStep("compiler::isInterpreting"_Stz, &Step::vCompilerIsInterpreting);
@@ -29,7 +29,7 @@ void Step::vAddSteps_Compiler(void)
   vAddStep("compiler::nested@"_Stz,        &Step::vCompilerNestedFetch);
   vAddStep("compiler::nested!"_Stz,        &Step::vCompilerNestedStore);
   
-  vAddStep("compiler::postponing"_Stz,     &Step::vCompilerPostponing,    true);
+  vAddStep("compiler::postponing"_Stz,     &Step::vCompilerPostponing);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,18 +52,6 @@ void Step::vCompilerCompiling(void)
   ENTRY(); // ENTRY("vCompilerCompiling"_Stz);
   
   m_pCompiler->vMode(CM_COMPILING);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/*  compiler::postponing -- change to postponing mode                         */
-/*----------------------------------------------------------------------------*/
-void Step::vCompilerPostponing(void)
-{
-  ENTRY(); // ENTRY("vCompilerPostponing"_Stz);
-  
-  m_pCompiler->vMode(CM_POSTPONING);
   
   EXIT();
 }
@@ -178,6 +166,18 @@ void Step::vCompilerNestedStore(void)
     m_pCompiler = new Compiler;
   
   m_pCompiler->vNestedWord(i_Nested,pNested);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/*  compiler::postponing -- change to postponing mode                         */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerPostponing(void)
+{
+  ENTRY(); // ENTRY("vCompilerPostponing"_Stz);
+  
+  m_pCompiler->vMode(CM_POSTPONING);
   
   EXIT();
 }

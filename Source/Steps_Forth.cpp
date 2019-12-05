@@ -85,9 +85,9 @@ void Step::vCompileComma(void)
 {
   ENTRY(); // ENTRY("vCompileComma"_Stz);
   
-  Word* pCalledWord = _pWord(m_pDataStack->pPopPtr(__func__));
-  
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
+  
+  Word* pCalledWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
   StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
   

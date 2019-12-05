@@ -59,7 +59,7 @@ void Task::vAddRoutines(void)
   "    input::token >int"        // convert str to int, leave on stack
 
   "    compiler::isPostponing if"
-  "      \"SHOULD NOT BE POSTPONING\" ."
+  "      \"SHOULD NOT BE POSTPONING AN INT\" ."
   "      process::quit"
   "      reenter"
   "    then"
@@ -80,7 +80,7 @@ void Task::vAddRoutines(void)
   "    input::token"             // put str on stack
   
   "    compiler::isPostponing if"
-  "      \"SHOULD NOT BE POSTPONING\" ."
+  "      \"SHOULD NOT BE POSTPONING A STR\" ."
   "      process::quit"
   "      reenter"
   "    then"
@@ -123,10 +123,10 @@ void Task::vAddRoutines(void)
   // -- -- -- -- -- -- --
   // postponing mode?
   "  compiler::isPostponing if"
-  "    \"SHOULD NOT BE POSTPONING\" ."
-  "    process::quit"
-  "    postpone ,"
-  "    postpone compile,"
+//  "    \"SHOULD NOT BE POSTPONING\" ."
+//  "    process::quit"
+  "    \"POSTPONING\" ."
+  "    \"compile,\" word::find compile,"
   "    reenter"
   "  then"
 
