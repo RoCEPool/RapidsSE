@@ -130,12 +130,11 @@ public:
 
   // comment
   void vCompilerCurrent(void);
-  void vCompilerPop(void);
-  void vCompilerPush(void);
 
   void vCompilerCurrentWordFetch(void);
   void vCompilerCurrentWordStore(void);
-
+  void vCompilerNestedFetch(void);
+  void vCompilerNestedStore(void);
 
   // cpu
   void vCpuRdtscp(void);
