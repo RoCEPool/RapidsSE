@@ -402,7 +402,6 @@ void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
     hvRec->vPrintRow();
   }
   
-  delete pColVec;
 }
 
 /*----------------------------------------------------------------------------*/
