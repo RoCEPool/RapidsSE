@@ -44,7 +44,6 @@ void Task::vAddRoutines(void)
     
   // -- -- -- -- -- -- --
   // get next input token
-  "  begin_"
   "    input::next"
   
   // -- -- -- -- -- -- --
@@ -61,10 +60,10 @@ void Task::vAddRoutines(void)
   
   "      compiler::isCompiling if"
   "        ,"                      // compile encodes push intval
-  "        jumpBegin_"
+  "        reenter"
   "      then"
   
-  "      jumpBegin_"               // interpret leaves int on stack
+  "      reenter"                  // interpret leaves int on stack
 
   "    then"
   
@@ -76,10 +75,10 @@ void Task::vAddRoutines(void)
   
   "      compiler::isCompiling if"
   "        ,"                      // compile encodes push stzVal
-  "        jumpBegin_"
+  "        reenter"
   "      then"
   
-  "      jumpBegin_"               // interpret leaves str on stack
+  "      reenter"                  // interpret leaves str on stack
 
   "    then"
   
@@ -87,7 +86,7 @@ void Task::vAddRoutines(void)
   // should be a name
   "    input::type TN_NAME != if"  // double check we have a name
   "      \"strange token\" . input::type ."
-  "      jumpBegin_"
+  "      reenter"
   "    then"
   
   // -- -- -- -- -- -- --
@@ -96,7 +95,7 @@ void Task::vAddRoutines(void)
   "    dup not if"                 // we have an unknown word
   "      drop"
   "      input::unknown"
-  "      jumpBegin_"
+  "      reenter"
   "    then"
   
   // -- -- -- -- -- -- --
@@ -106,7 +105,7 @@ void Task::vAddRoutines(void)
   // is an immediate word?
   "    dup word.isImmediate if"
   "      execute"                  // execute an immediate word
-  "      jumpBegin_"
+  "      reenter"
   "    then"
   
   // -- -- -- -- -- -- --
@@ -114,18 +113,18 @@ void Task::vAddRoutines(void)
   "    compiler::isCompiling if "
   "      dup word.isIntrinsic if"
   "        compile,"               // compile encodes call to primitive
-  "        jumpBegin_"
+  "        reenter"
   "      then"
   "      compile,"                 // compile encodes call to routine
-  "      jumpBegin_"
+  "      reenter"
   "    then"
   
   // -- -- -- -- -- -- --
   // we are interpreting
   "    execute"                    // execute word
   
-  "  jumpBegin_"
-  
+  "  reenter"
+
   "  ;"_Stz;
   
   pCompileColon(sDefinition);
