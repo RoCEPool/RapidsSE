@@ -297,11 +297,9 @@ public:
   void vFileWrite(void);
 
   // flow
-  void vFlowBegin_(void);
   void vFlowExecute(void);
   void vFlowHazard(void);
   void vFlowJump(void);
-  void vFlowJumpBegin_(void);
   void vFlowJumpFalse(void);
   void vFlowJumpTrue(void);
   void vFlowNop(void);

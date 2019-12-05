@@ -9,29 +9,15 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Flow(void)
 {
-  vAddStep("begin_"_Stz,          &Step::vFlowBegin_);
   vAddStep("execute"_Stz,         &Step::vFlowExecute);
   vAddStep("hazard"_Stz,          &Step::vFlowHazard);
   vAddStep("jump"_Stz,            &Step::vFlowJump);
-  vAddStep("jumpBegin_"_Stz,      &Step::vFlowJumpBegin_);
   vAddStep("jumpFalse"_Stz,       &Step::vFlowJumpFalse);
   vAddStep("jumpTrue"_Stz,        &Step::vFlowJumpTrue);
   vAddStep("nop"_Stz,             &Step::vFlowNop);
   vAddStep("reenter"_Stz,         &Step::vFlowReenter);
   vAddStep("test"_Stz,            &Step::vFlowTest);
   vAddStep("throw"_Stz,           &Step::vFlowThrow);
-}
-
-/*----------------------------------------------------------------------------*/
-/* begin_ -- begin of the docol loop : docol (used only in docol)   immediate */
-/*----------------------------------------------------------------------------*/
-void Step::vFlowBegin_(void)
-{
-  ENTRY(); // ENTRY("vBegin_"_Stz);
-  
-  m_pCompiler->m_pBeginIP = m_aInxPtr;
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,18 +71,6 @@ void Step::vFlowJump(void)
   ENTRY(); // ENTRY("vJump"_Stz);
   
   m_aInxPtr = m_aInxPtr->m_aJumpTo;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jumpBegin_ -- jump to begin_ (used only in : docol)              immediate */
-/*----------------------------------------------------------------------------*/
-void Step::vFlowJumpBegin_(void)
-{
-  ENTRY(); // ENTRY("vFlowJumpBegin_"_Stz);
-  
-  m_aInxPtr = m_pCompiler->m_pBeginIP;
   
   EXIT();
 }
