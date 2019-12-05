@@ -27,7 +27,6 @@ namespace Steps
   
     static void vAddSteps_Bp(void);
   
-    static void vAddSteps_Cast(void);
     static void vAddSteps_Class(void);
     static void vAddSteps_Column(void);
     static void vAddSteps_Comment(void);

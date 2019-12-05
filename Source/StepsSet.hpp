@@ -99,10 +99,6 @@ public:
   void vBpInUseSpace(void);
   void vBpTotalSpace(void);
 
-  // cast
-  void vCastInt(void);
-  void vCastPtr(void);
-
   // class
   void vClassName(void);
 
