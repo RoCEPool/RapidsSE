@@ -129,13 +129,10 @@ public:
   void vComment(void);
 
   // comment
-  void vCompilerCurrent(void);
-  void vCompilerPop(void);
-  void vCompilerPush(void);
-
-  void vCompilerCurrentWordFetch(void);
-  void vCompilerCurrentWordStore(void);
-
+  void vCompilerCurrentFetch(void);
+  void vCompilerCurrentStore(void);
+  void vCompilerNestedFetch(void);
+  void vCompilerNestedStore(void);
 
   // cpu
   void vCpuRdtscp(void);

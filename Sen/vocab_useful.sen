@@ -133,7 +133,7 @@
           to sFilePath
         sFilePath "Would open %v" .printf
 
-        sFilePath input::open docol input::close
+        sFilePath input::open interpret input::close
 
       then
 

@@ -9,32 +9,26 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Compiler(void)
 {
-  vAddStep("compiler::current"_Stz,      &Step::vCompilerCurrent);
+  vAddStep("compiler::current@"_Stz, &Step::vCompilerCurrentFetch);
+  vAddStep("compiler::current!"_Stz, &Step::vCompilerCurrentStore);
   
-  vAddStep("compiler::currentWord@"_Stz, &Step::vCompilerCurrentWordFetch);
-  vAddStep("compiler::currentWord!"_Stz, &Step::vCompilerCurrentWordStore);
+  vAddStep("compiler::nested@"_Stz,  &Step::vCompilerNestedFetch);
+  vAddStep("compiler::nested!"_Stz,  &Step::vCompilerNestedStore);
+  
+  vAddStep("]"_Stz,                       &Step::vDocolCompiling);
+  vAddStep("["_Stz,                       &Step::vDocolInterpreting,   true);
+  
+  vAddStep("docol::isCompiling"_Stz,      &Step::vDocolIsCompiling);
+  vAddStep("docol::isInterpreting"_Stz,   &Step::vDocolIsInterpreting);
+
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::current -- push word being compiled                              */
+/* compiler::current@ -- get current word                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerCurrent(void)
+void Step::vCompilerCurrentFetch(void)
 {
-  ENTRY(); // ENTRY("vCompilerCurrent"_Stz);
-  
-  Word* pWord = m_pCompiler->pCurrentWord();
-  
-  m_pDataStack->vPushPtr(pWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* compiler::currentWord@ -- get current word                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vCompilerCurrentWordFetch(void)
-{
-  ENTRY(); // ENTRY("vCompilerCurrentWordFetch"_Stz);
+  ENTRY(); // ENTRY("vCompilerCurrentFetch"_Stz);
   
   if (! m_pCompiler)
     m_pCompiler = new Compiler;
@@ -47,11 +41,11 @@ void Step::vCompilerCurrentWordFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::currentWord! -- put current word                                 */
+/* compiler::current! -- put current word                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerCurrentWordStore(void)
+void Step::vCompilerCurrentStore(void)
 {
-  ENTRY(); // ENTRY("vCompilerCurrentWordStore"_Stz);
+  ENTRY(); // ENTRY("vCompilerCurrentStore"_Stz);
   
   Word* pCurrWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
@@ -62,6 +56,99 @@ void Step::vCompilerCurrentWordStore(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* compiler::nested@ -- get nested word                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerNestedFetch(void)
+{
+  ENTRY(); // ENTRY("vCompilerNestedFetch"_Stz);
+  
+  if (! m_pCompiler)
+    m_pCompiler = new Compiler;
+  
+  i8 i_Nested = m_pDataStack->iPopInt(__func__);
+  
+  Word* pNested = m_pCompiler->pNestedWord(i_Nested);
+  
+  m_pDataStack->vPushPtr(pNested);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* compiler::nested! -- set nested word                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerNestedStore(void)
+{
+  ENTRY(); // ENTRY("vCompilerNestedStore"_Stz);
+  
+  i8 i_Nested = m_pDataStack->iPopInt(__func__);
+  
+  Word* pNested = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  if (! m_pCompiler)
+    m_pCompiler = new Compiler;
+  
+  m_pCompiler->vNestedWord(i_Nested,pNested);
+  
+  EXIT();
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* ] -- enter compiler state                                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vDocolCompiling(void)
+{
+  ENTRY(); // ENTRY("vDocolCompiling"_Stz);
+  
+  m_pCompiler->vCompiling(true);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [ -- enter interpreter state                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vDocolInterpreting(void)
+{
+  ENTRY(); // ENTRY("vDocolInterpreting"_Stz);
+  
+  m_pCompiler->vCompiling(false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* docol::isCompiling -- currently in compiling mode?                         */
+/*----------------------------------------------------------------------------*/
+void Step::vDocolIsCompiling(void)
+{
+  ENTRY(); // ENTRY("vDocolIsCompiling"_Stz);
+  
+  i8 iIsCompiling = m_pCompiler->bCompiling() ? 1 : 0;
+  
+  m_pDataStack->vPushInt(iIsCompiling);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* docol::isInterpreting -- currently in interpreting mode?                   */
+/*----------------------------------------------------------------------------*/
+void Step::vDocolIsInterpreting(void)
+{
+  ENTRY(); // ENTRY("vDocolIsInterpreting"_Stz);
+  
+  i8 iIsInterpreting = m_pCompiler->bCompiling() ? 0 : 1;
+  
+  m_pDataStack->vPushInt(iIsInterpreting);
+  
+  EXIT();
+}
+
 
 
 /*============================================================================*/

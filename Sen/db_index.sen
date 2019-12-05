@@ -32,16 +32,16 @@
 : index:
 
   create
-  WK_OBJECT compiler::current word.kind!
+  WK_OBJECT compiler::current@ word.kind!
   sizeof_index allot
 
-  compiler::current word.embObject object.magic!
-  CN_INDEX compiler::current word.embObject object.class!
-  true compiler::current word.embObject object.wordbody!
+  compiler::current@ word.embObject object.magic!
+  CN_INDEX compiler::current@ word.embObject object.class!
+  true compiler::current@ word.embObject object.wordbody!
 
-  compiler::current word.embObject index.init
+  compiler::current@ word.embObject index.init
 
-  tick index compiler::current word.category!
+  tick index compiler::current@ word.category!
 
   does>
 ;
@@ -52,18 +52,18 @@
 : :index
 
   :create
-  WK_OBJECT compiler::current word.kind!
+  WK_OBJECT compiler::current@ word.kind!
   sizeof_index allot
 
-  compiler::current word.embObject object.magic!
-  CN_INDEX compiler::current word.embObject object.class!
-  true compiler::current word.embObject object.wordbody!
+  compiler::current@ word.embObject object.magic!
+  CN_INDEX compiler::current@ word.embObject object.class!
+  true compiler::current@ word.embObject object.wordbody!
 
-  compiler::current word.embObject index.init
+  compiler::current@ word.embObject index.init
 
-  tick index compiler::current word.category!
+  tick index compiler::current@ word.category!
 
-  compiler::current
+  compiler::current@
   does>
 ;
 

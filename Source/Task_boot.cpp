@@ -32,6 +32,7 @@ void Task::vAddRoutines(void)
   
   s48K sDefinition;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": __nil ;"_Stz;
   
@@ -39,101 +40,94 @@ void Task::vAddRoutines(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
-  ": docol"
+  ": interpret"
   
   "  retryPoint"
-  "  begin_"
   
+  // -- -- -- -- -- -- --
   // get next input token
+  "  begin_"
   "    input::next"
   
+  // -- -- -- -- -- -- --
   // test for end of input?
   "    input::type TN_NONE == if"
   "      exit_rt"
   "    then"
   
+  // -- -- -- -- -- -- --
   // is token an integer?
   "    input::type TN_INTEGER == if"
   
   "      input::token >int"        // convert str to int, leave on stack
   
-  "      docol::isInterpreting if" // interpret leaves int on stack
-  "        jumpBegin_"
+  "      docol::isInterpreting if"
+  "        jumpBegin_"             // interpret leaves int on stack
   "      then"
   
-  "      docol::isCompiling if"    // compile encodes push intval
-  "        ,"
-  "        jumpBegin_"
-  "      then"
+  "      ,"                        // compile encodes push intval
+  "      jumpBegin_"
   
   "    then"
   
+  // -- -- -- -- -- -- --
   // is token a string?
   "    input::type TN_STRING == if"
   
   "      input::token"             // put str on stack
   
-  "      docol::isInterpreting if" // interpret leaves str on stack
-  "        jumpBegin_"
+  "      docol::isInterpreting if"
+  "        jumpBegin_"             // interpret leaves str on stack
   "      then"
   
-  "      docol::isCompiling if"    // compile encodes push StzVal
-  "        ,"
-  "        jumpBegin_"
-  "      then"
+  "      ,"                        // compile encodes push stzVal
+  "      jumpBegin_"
   
   "    then"
   
+  // -- -- -- -- -- -- --
   // should be a name
   "    input::type TN_NAME != if"  // double check we have a name
   "      \"strange token\" . input::type ."
   "      jumpBegin_"
   "    then"
   
+  // -- -- -- -- -- -- --
   // is token a known word?
   "    input::token word::find"
-  "    dup not if"                // we have an unknown word
+  "    dup not if"                 // we have an unknown word
   "      drop"
-//"      \"unknown\" ."
-//"      input::token ."
   "      input::unknown"
-//"      dic.isCompiled not if process::quit then "
   "      jumpBegin_"
   "    then"
   
-  // known word on stack
+  // -- -- -- -- -- -- --
+  // pWord now on stack
   
+  // -- -- -- -- -- -- --
   // is an immediate word?
-  "    dup word.isImmediate if"   // execute an immediate word
-  "      execute"
+  "    dup word.isImmediate if"
+  "      execute"                  // execute an immediate word
   "      jumpBegin_"
   "    then"
   
+  // -- -- -- -- -- -- --
   // are we compiling?
-  "    docol::isCompiling if "     // compile encodes call to word
+  "    docol::isCompiling if "
   "      dup word.isIntrinsic if"
-  "        compile,"              // primitive
+  "        compile,"               // compile encodes call to primitive
   "        jumpBegin_"
   "      then"
-  "      compile,"                // routine
+  "      compile,"                 // compile encodes call to routine
   "      jumpBegin_"
   "    then"
   
+  // -- -- -- -- -- -- --
   // we are interpreting
-  "    execute"                   // execute word
+  "    execute"                    // execute word
   
   "  jumpBegin_"
   
-  " ;"_Stz;
-  
-  pCompileColon(sDefinition);
-      
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  sDefinition =
-  ": ::enter"
-  "  input::stdin"
-  "  docol"
-  "  task::delete"
   "  ;"_Stz;
   
   pCompileColon(sDefinition);
@@ -144,7 +138,7 @@ void Task::vAddRoutines(void)
   "  input::push"
   "  args.senDir str.prepend"
   "  input::open"
-  "  docol"
+  "  interpret"
   "  input::close"
   "  input::pop"
   "  ;"_Stz;
@@ -157,7 +151,7 @@ void Task::vAddRoutines(void)
   "  input::push"
   //"  dup ."
   "  input::text"
-  "  docol"
+  "  interpret"
   "  input::pop"
   "  ;"_Stz;
   
@@ -181,6 +175,7 @@ void Task::vAddRoutines(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Temporary ifdef till we get sen files embedded in the executable
+
 #ifdef WITH_APPLE
   sDefinition =
   ": boot_run"
@@ -199,6 +194,7 @@ void Task::vAddRoutines(void)
   "  task::delete"
   "  ;"_Stz;
 #endif
+  
   pCompileColon(sDefinition);
 }
 
@@ -229,7 +225,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
     pDic = m_pForth->m_oDicStack.pTop();
   else
     pDic = AM::pRootDic();
-;
+
 
   pNewWord = new(pDic) Word(m_pForth->m_pCompiler->szToken());
   

@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : <<jobArgTag>> immediate ( -- )
 
-  [ compiler::current , ]
+  [ compiler::current@ , ]
 
-  compiler::current word.category!
+  compiler::current@ word.category!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 : <catalogNm> <<jobArgTag>> ( -- "<catalogNm>" )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +30,7 @@
 /*----------------------------------------------------------------------------*/
 : <cmd> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 : <consumeXmits> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 : <detailed> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 : <fileNm> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@
 /*----------------------------------------------------------------------------*/
 : <folderNm> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +70,7 @@
 /*----------------------------------------------------------------------------*/
 : <indexNm> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 : <jobClass> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +86,7 @@
 /*----------------------------------------------------------------------------*/
 : <jobNm> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -94,7 +94,7 @@
 /*----------------------------------------------------------------------------*/
 : <jobId> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +102,7 @@
 /*----------------------------------------------------------------------------*/
 : <nextStage> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -110,7 +110,7 @@
 /*----------------------------------------------------------------------------*/
 : <newNm> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -118,7 +118,7 @@
 /*----------------------------------------------------------------------------*/
 : <nodeNm> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -126,7 +126,7 @@
 /*----------------------------------------------------------------------------*/
 : <path> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +134,7 @@
 /*----------------------------------------------------------------------------*/
 : <pipeNm> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +142,7 @@
 /*----------------------------------------------------------------------------*/
 : <pipelineNm> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -150,7 +150,7 @@
 /*----------------------------------------------------------------------------*/
 : <routineNm> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +158,7 @@
 /*----------------------------------------------------------------------------*/
 : <schemaNm> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -166,7 +166,7 @@
 /*----------------------------------------------------------------------------*/
 : <subPath> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -174,7 +174,7 @@
 /*----------------------------------------------------------------------------*/
 : <tableNm> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -182,7 +182,7 @@
 /*----------------------------------------------------------------------------*/
 : <tenantNm> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -190,7 +190,7 @@
 /*----------------------------------------------------------------------------*/
 : <topology> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -198,7 +198,7 @@
 /*----------------------------------------------------------------------------*/
 : <wordNm> <<jobArgTag>> ( -- s )
 
-  [ compiler::current word.name@ , ] job::this job.enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
 ;
 
 /*============================================================================*/

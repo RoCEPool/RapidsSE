@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_can immediate
 
-  compiler::current word.name@ ,
+  compiler::current@ word.name@ ,
 
   POSTPONE AN_SEED_CAN
 
@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_end immediate
 
-  compiler::current word.name@ ,
+  compiler::current@ word.name@ ,
 
   POSTPONE AN_SEED_END
 
@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_exe immediate
 
-  compiler::current word.name@ ,
+  compiler::current@ word.name@ ,
 
   POSTPONE AN_SEED_EXE
 
@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_rcv immediate
 
-  compiler::current word.name@ ,
+  compiler::current@ word.name@ ,
 
   POSTPONE AN_SEED_RCV
 
@@ -57,7 +57,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_req immediate
 
-  compiler::current word.name@ ,
+  compiler::current@ word.name@ ,
 
   AN_SEED_REQ ,
 
@@ -69,7 +69,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::seed_run immediate
 
-  compiler::current word.name@ ,
+  compiler::current@ word.name@ ,
 
   AN_SEED_RCV ,
 
@@ -81,7 +81,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::resources_checked immediate
 
-  compiler::current word.name@ ,
+  compiler::current@ word.name@ ,
 
   AN_RESOURCES_CHECKED ,
 
@@ -93,7 +93,7 @@
 /*----------------------------------------------------------------------------*/
 : actLog::resources_released immediate
 
-  compiler::current word.name@ ,
+  compiler::current@ word.name@ ,
 
   AN_RESOURCES_RELEASED ,
 
@@ -108,7 +108,7 @@
 : >>logEntry immediate
 
   // format the string to be printed
-  compiler::current word.name@ ">>%v" str.format
+  compiler::current@ word.name@ ">>%v" str.format
 
   // encode push of that string
   ,
@@ -137,7 +137,7 @@
 : <<logExit immediate
 
   // format the string to be printed
-  compiler::current word.name@ "<<%v" str.format
+  compiler::current@ word.name@ "<<%v" str.format
 
   // encode push of that string
   ,
@@ -152,7 +152,7 @@
 : !!logError immediate
 
   // format the string to be printed
-  compiler::current word.name@ "!!%v" str.format
+  compiler::current@ word.name@ "!!%v" str.format
 
   // encode push of that string
   ,
