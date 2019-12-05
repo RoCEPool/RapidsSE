@@ -342,10 +342,10 @@ void Step::vSemicolon(void)
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
-  if (m_pCompiler->m_nLocals) {
+  if (m_pCompiler->nLocals()) {
     
     // reset the number of local variables
-    m_pCompiler->m_nLocals = 0;
+    m_pCompiler->vLocals(0);
     
     // pop top dictionary
     m_oDicStack.vDiscard();

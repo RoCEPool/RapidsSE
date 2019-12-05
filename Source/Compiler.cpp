@@ -105,6 +105,26 @@ void Compiler::vCurrentWord(Word* pWord)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of locals                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Compiler::nLocals(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  return m_nLocals;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of locals                                                       */
+/*----------------------------------------------------------------------------*/
+void Compiler::vLocals(i8 nLocals)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_nLocals = nLocals;
+}
+
+/*----------------------------------------------------------------------------*/
 /* advance to next token                                                      */
 /*----------------------------------------------------------------------------*/
 void Compiler::vNextToken(void)

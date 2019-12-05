@@ -78,7 +78,8 @@ void Step::vLocalsBar(void)
       break;
 
     // test for first use of locals|
-    if ( ! m_pCompiler->m_nLocals ) {
+    i8 nLcl = m_pCompiler->nLocals();
+    if ( ! nLcl ) {
       
       // create a locals dictionary
       pDic = new Dic;
@@ -95,10 +96,10 @@ void Step::vLocalsBar(void)
     
     // set word as local variable
     pWordLocal->vKind(WK_LOCAL);
-    pWordLocal->vLocalNo(m_pCompiler->m_nLocals);
+    pWordLocal->vLocalNo(nLcl);
     
     // encode the word
-    xVariable = m_pCompiler->m_nLocals;
+    xVariable = nLcl;
     pWordLocal->vEncodePush(xVariable);
     pWordLocal->vEncodeCall("local.fetch"_Stz);
     pWordLocal->vEncodeCall("exit_rt"_Stz);
@@ -107,7 +108,8 @@ void Step::vLocalsBar(void)
     pCurrentWord->vEncodePush(xVariable);
     pCurrentWord->vEncodeCall("local.store"_Stz);
     
-    m_pCompiler->m_nLocals++;
+    nLcl++;
+    m_pCompiler->vLocals(nLcl);
   }
   
   EXIT();

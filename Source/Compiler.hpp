@@ -13,10 +13,10 @@ namespace SenVM
   
     bool  m_bCompiling;    // currently in compilation state?
   
-  public:
     Word* m_pCurrent;      // current word being compiled
-    i8    m_nSubDic;       // number of sub dictionaries
     i8    m_nLocals;       // number of locals/params variables
+  public:
+    i8    m_nSubDic;       // number of sub dictionaries
   
     Cell* m_pBeginIP;
     Cell* m_pRetryIP;
@@ -38,6 +38,9 @@ namespace SenVM
 
     Word* pCurrentWord(void);
     void  vCurrentWord(Word* pWord);
+
+    i8    nLocals(void);
+    void  vLocals(i8 nLocals);
 
     void  vNextToken(void);
     Stz*  szToken(void);
