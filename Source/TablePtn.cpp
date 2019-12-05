@@ -572,11 +572,12 @@ void TablePtn::vPublish(void)
     return;
   }
   
-  ColumnVec* pColVec = m_pCurrentCrwBuffer->pTable()->pColumnVec();
-  HV_Rec hvRec(pColVec);
+  StreamDef* pStreamDef = m_pCurrentCrwBuffer->pTable()->pStreamDef();
+  HV_Rec hvRec(pStreamDef, C_ALL);
   
   // create a row for retrieving the row
-  HV_Row hRow(pColVec);
+  ColumnVec* pColVec = m_pCurrentCrwBuffer->pTable()->pColumnVec();
+  HV_Row hRow(pColVec, C_ALL);
   
   // publish the current buffer (last buffer that was added)
   i8 nRowCount = m_pCurrentCrwBuffer->nRowCount();

@@ -662,7 +662,7 @@ void Jobs::vJob_FetchRows_post(Job* pJob)
     }
     
     // create a row for retrieval
-    pJob_FetchRows->m_pRow = new Row(pJob_FetchRows->m_pTable->pColumnVec());
+    pJob_FetchRows->m_pRow = new Row(pJob_FetchRows->m_pTable->pColumnVec(),0);
     
     while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
       
@@ -697,7 +697,7 @@ void Jobs::vJob_FetchRows_post(Job* pJob)
   }
   
   // create a row for retrieval
-  pJob_FetchRows->m_pRow = new Row(pJob_FetchRows->m_pTable->pColumnVec());
+  pJob_FetchRows->m_pRow = new Row(pJob_FetchRows->m_pTable->pColumnVec(), 0);
                    
   while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
     
@@ -754,8 +754,8 @@ void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows,
                           FetchBuffer* pFetchBuffer,
                           i8& iRowsPrinted)
 {
-  ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
-  HV_Rec hvRec(pColVec);
+  StreamDef* pStreamDef = pJob_FetchRows->m_pTable->pStreamDef();
+  HV_Rec hvRec(pStreamDef, C_ALL);
   
   Crw** aaCompactRow_cursor = pFetchBuffer->aaFirstCrwPtr();
   
@@ -807,6 +807,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
   CrwBuffer* pCrwBuffer = nullptr;
   
   ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
+  StreamDef* pStreamDef = pJob_FetchRows->m_pTable->pStreamDef();
   Column* pCol = pJob_FetchRows->m_pColumn;
   
   Crw** aaHeadLine = pFetchBuffer->aaFirstCrwPtr();
@@ -832,7 +833,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
     RowInflator::vInflateColumn(pJob_FetchRows->m_pRow,aHeadLine,pCol->iColumnNo());
     
     if (pJob_FetchRows->m_bPrint) {
-      HV_Rec hvRec(pColVec);
+      HV_Rec hvRec(pStreamDef,C_ALL);
       
       hvRec->vAppend(pCol,pJob_FetchRows->m_pRow);
       vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());

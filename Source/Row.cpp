@@ -53,7 +53,7 @@ void Row::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Row::Row(ColumnVec* pColVec)
+Row::Row(ColumnVec* pColVec, i8 iDummy)
 : Object(CN_ROW)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);

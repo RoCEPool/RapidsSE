@@ -778,9 +778,10 @@ void EntBuffer::vPrintRows(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   ColumnVec* pColVec = m_pIndex->pTable()->pColumnVec();
+  StreamDef* pStreamDef = m_pIndex->pTable()->pStreamDef();
   
-  HV_Row hRow(pColVec);
-  HV_Rec hvRec(pColVec);
+  HV_Row hRow(pColVec, C_ALL);
+  HV_Rec hvRec(pStreamDef, C_ALL);
   
   Ent* aEnt = aLeadEntry();
   
@@ -1139,7 +1140,7 @@ SrtBuffer* EntBuffer::pToSrtBuffer(i8 iKeyCol)
   
   i8 nRowRefs = 1;
   
-  HV_Row hRow(m_pIndex->pTable()->pColumnVec());
+  HV_Row hRow(m_pIndex->pTable()->pColumnVec(), C_ALL);
   SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
   
   Ent* aEntry = aLeadEntry();

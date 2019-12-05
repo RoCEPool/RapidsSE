@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+static const i8 C_ALL  = -1;
 static const i8 C_UNKNOWN  = -1;
 static const b8 C_NONFOCAL = true;
 static const i8 C_ENDARGS  = -1;

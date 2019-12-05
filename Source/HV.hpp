@@ -17,9 +17,9 @@ namespace Gadgets
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    HV<CLASS,PARAMETER>(PARAMETER* pParameter)
+    HV<CLASS,PARAMETER>(PARAMETER* pParameter, i8 iValue)
     {
-      m_pObject = new CLASS(pParameter);
+      m_pObject = new CLASS(pParameter, iValue);
     }
     
     /*------------------------------------------------------------------------*/

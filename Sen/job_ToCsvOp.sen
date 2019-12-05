@@ -69,7 +69,7 @@ jobInfo: ToCsvOp
 {
   <?jobDesc?>  = "--description of job--"
   
-  //<?jobType?>  = JT_TOCSVOP
+  <?jobType?>  = JT_TOCSVOP
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_NODE_ZERO
   <?ddlLock?>  = DL_GRAB_READ

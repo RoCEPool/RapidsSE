@@ -31,7 +31,7 @@ namespace MetaData
     static eCT eColumn(Stz* szType);
   
     eEC eParse(Stz* szCmd);
-  
+    
   private:
   
     eEC eExtractBoolean  (Column* pCol, TokenVec* pTknVec);

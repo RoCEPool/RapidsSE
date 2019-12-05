@@ -5,7 +5,7 @@
 
 namespace Transform
 {
-  typedef       HV <Record,ColumnVec>                            HV_Rec;
+  typedef       HV <Record,StreamDef>                            HV_Rec;
   
   class IrwBuffer : public DataBuffer,
                     public MiniHeap_t<Row>
