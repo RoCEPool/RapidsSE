@@ -53,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 : .formNodeList ( -- sNodeList )
 
-  locals| pNode |
+  0 locals| pNode |
 
   ""
 
@@ -78,7 +78,7 @@
   params| sNodeName |
   params| bAdd      |
 
-  locals| sShellCommand |
+  0 locals| sShellCommand |
 
   // form the shell command
   bAdd sNodeName sNodeList .formShellCommand to sShellCommand
@@ -103,8 +103,8 @@
   // test for single node grid
   grid::definedNodes 1 == if exit then
 
-  locals| sNodeList |
-  locals| sShellCommand |
+  0 locals| sNodeList |
+  0 locals| sShellCommand |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the node list
@@ -138,7 +138,7 @@
 
   params| sNodeNm   |
 
-  locals| sNodeList |
+  0 locals| sNodeList |
 
   // form the node list
   .formNodeList to sNodeList
