@@ -235,11 +235,11 @@ doesTest xyz ;
 
 
   // -- -- -- -- -- --
-  //sWordNm :: Word$$2
+  //sWordNm :Nested Word$$2
   //
   //  Word$$1 compile,
   //
-  //;;
+  //;Nested
 ;
 
 //collect myCollect a b c ;
