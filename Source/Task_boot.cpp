@@ -127,16 +127,6 @@ void Task::vAddRoutines(void)
   
   "  jumpBegin_"
   
-  " ;"_Stz;
-  
-  pCompileColon(sDefinition);
-      
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  sDefinition =
-  ": ::enter"
-  "  input::stdin"
-  "  docol"
-  "  task::delete"
   "  ;"_Stz;
   
   pCompileColon(sDefinition);
