@@ -36,7 +36,7 @@ Stz* My::szToken(void)
 {
   Task* pTask = AM::pThisTLSTask();
   
-  return pTask->pCompiler()->m_pTokeniser->szToken();
+  return pTask->pCompiler()->pTokeniser()->szToken();
 }
 
 /*----------------------------------------------------------------------------*/

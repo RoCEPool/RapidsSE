@@ -11,16 +11,16 @@ namespace SenVM
   
   private:
   
-    bool  m_bCompiling;    // currently in compilation state?
+    bool  m_bCompiling;      // currently in compilation state?
   
-    Word* m_pCurrent;      // current word being compiled
-    i8    m_nLocals;       // number of locals/params variables
+    Word* m_pCurrent;        // current word being compiled
+    i8    m_nLocals;         // number of locals/params variables
+  
+    Tokeniser* m_pTokeniser; // input stream tokenizer
   
   public:
     Cell* m_pBeginIP;
     Cell* m_pRetryIP;
-
-    Tokeniser* m_pTokeniser; // input stream tokenizer
 
     // must be last
     Footer m_xFooter;
@@ -42,7 +42,10 @@ namespace SenVM
     void  vLocals(i8 nLocals);
 
     void  vNextToken(void);
+  
     Stz*  szToken(void);
+  
+    Tokeniser* pTokeniser(void);
 
         
     Footer* aFooter(void);
