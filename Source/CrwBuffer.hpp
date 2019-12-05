@@ -35,7 +35,6 @@ namespace Rows
     static CrwBuffer* pRefdCrwBuffer(Id& xId);
     static CrwBuffer* pToCrwBuffer(void* aAddr);
   
-    ColumnVec* pColumnVec(void);
     void       vTable(Table* pTable);
     Table*     pTable(void);
     i8         nRowCount(void);

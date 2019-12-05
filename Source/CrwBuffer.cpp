@@ -231,16 +231,6 @@ void CrwBuffer::vBufferCount(i8& nBuffers)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the column vector                                                      */
-/*----------------------------------------------------------------------------*/
-ColumnVec* CrwBuffer::pColumnVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  return pTable()->pColumnVec();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get decile full of the buffer                                              */
 /*----------------------------------------------------------------------------*/
 i8 CrwBuffer::iDecile(void)
