@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : makePartitions ( "<tableNm>" -- )
 
-  0 locals| tableNm |
+  params| tableNm |
 
   args.tracepoint if
     tableNm "MAKING PARTITIONS FOR TABLE " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
@@ -96,8 +96,8 @@
 /*----------------------------------------------------------------------------*/
 : tablePtnGrabRead ( i_Partition pTable -- )
 
-  0 locals| pTable |      // given table
-  0 locals| i_Partition | // which partition
+  params| pTable |      // given table
+  params| i_Partition | // which partition
 
   begin
     i_Partition pTable table.getPtn tablePtn.attemptGrabRead

@@ -99,7 +99,6 @@ bool FetchBuffer::bAppendCrw(Crw* pCrw)
   // copy the cacheLine pointer
   *ppFetchCrw = pCrw;                             //! dont use dereference and =
   
-  //pRow->vShow(m_pTable->pColumnVec(), true);
   //vTrace(" %p \n"_Stz, pRow);
   
   return true;
