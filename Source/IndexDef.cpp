@@ -222,19 +222,6 @@ L_RETURN:
 }
 
 /*----------------------------------------------------------------------------*/
-/* show column vector                                                         */
-/*----------------------------------------------------------------------------*/
-void IndexDef::vShowColumnVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
-  
-  for (i8 i_Column = 0; i_Column < m_pIdxColVec->nItems(); i_Column++) {
-    Column* pColumn = m_pIdxColVec->pGet(i_Column);
-    pColumn->vShow();
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a primary key  index                                               */
 /*----------------------------------------------------------------------------*/
 bool IndexDef::bIsPrimaryKey(void)

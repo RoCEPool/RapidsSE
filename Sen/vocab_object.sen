@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : object.assertClass ( eClassNo pObject -- )
 
-  0 locals| pObject |
-  0 locals| eClassNo |
+  params| pObject |
+  params| eClassNo |
 
   pObject object.class@ eClassNo !=
   if

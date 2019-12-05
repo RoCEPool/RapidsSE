@@ -399,7 +399,6 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
   
   i8 nSrtSets = nItems();
   //vTrace ("Rows: %lld\n"_Stz, nSrtSets);
-  ColumnVec* pColumnVec[C_MAX_STREAMDEFS];
   
   vTrace("SrtBuffer: %p (buffer %lld): rows: %lld\n"_Stz,
          this,m_iBufferNo,nSrtSets);

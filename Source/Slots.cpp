@@ -119,11 +119,11 @@ void Slots::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
   Column* pColumn = nullptr;
   
   // find the column from the table columnVector
-  i8 iColumns = m_pTable->pColumnVec()->nItems();
+  i8 iColumns = m_pTable->pStreamDef()->nColumns(C_ALL);
   
   bool bFound = false;
   for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
-    pColumn = m_pTable->pColumnVec()->pGet(i_Col);
+    pColumn = m_pTable->pStreamDef()->pGetColumn(i_Col);
     if (pColumn->szColNm()->bSame(sColumnNm)) {
       bFound = true;
       break;
@@ -147,11 +147,10 @@ void Slots::vCreateColumnVec(void)
   Column* pColumn = nullptr;
   
   // find the column from the table columnVector
-  i8 iColumns = m_pTable->pColumnVec()->nItems();
+  i8 iColumns = m_pTable->pStreamDef()->nColumns(C_ALL);
   
-  bool bFound = false;
   for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
-    pColumn = m_pTable->pColumnVec()->pGet(i_Col);
+    pColumn = m_pTable->pStreamDef()->pGetColumn(i_Col);
     if (pColumn->bIsPtnKey()) {
       m_pPtnColVec->vInsert(pColumn);
     }
@@ -221,19 +220,6 @@ bool Slots::bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds)
   bool bPurged = pTablePtn->bPurge(iOlderThanSeconds);
   
   return bPurged;
-}
-
-/*----------------------------------------------------------------------------*/
-/* show column vector                                                         */
-/*----------------------------------------------------------------------------*/
-void Slots::vShowColumnVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  for (i8 i_Column = 0; i_Column < m_pPtnColVec->nItems(); i_Column++) {
-    Column* pColumn = m_pPtnColVec->pGet(i_Column);
-    pColumn->vShow();
-  }
 }
 
 /*----------------------------------------------------------------------------*/

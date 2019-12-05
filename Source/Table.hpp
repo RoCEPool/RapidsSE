@@ -53,7 +53,6 @@ namespace MetaData
     Stz* pAnalyzeTable(bool bDetailed, i8& nRows);
     void vCompactIndex(Index* pIndex);
     i8   nCrwBuffers(void);
-    ColumnVec* pColumnVec(void);
     void vContentDump(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
     //void vCreateColumnVec(Jobs::Job_CreateTable* pJob);
@@ -74,7 +73,6 @@ namespace MetaData
     void vPublish(i8 iPartitionNo);
     bool bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
     EntBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
-    void vShowColumnVec(void);
     Dic* pSubDic(void);
     void vSubLoaders(i8 iSubLoaders);
     Slots* pSlots(void);

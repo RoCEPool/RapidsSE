@@ -131,40 +131,6 @@ void StreamDef::vAdd(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert column array to a column vector                                    */
-/*----------------------------------------------------------------------------*/
-void StreamDef::vAddColumns(ColumnVec* pColumnVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  for (i8 i_StreamDef = 0; i_StreamDef < m_nDefSets; i_StreamDef++) {
-    for (i8 i_DefCol = 0; i_DefCol < m_nDefColumns[i_StreamDef]; i_DefCol++) {
-      
-      Column* pColumn = new Column;
-      pColumn->vCopy(&m_xaColumn[i_DefCol]);
-      pColumnVec->vAdd(pColumn);
-    }
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert column array to a column vector                                    */
-/*----------------------------------------------------------------------------*/
-void StreamDef::vAddColumns(ColumnVec* pColumnVec, i8 nDefSet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  for (i8 i_DefCol = m_i_DefStart[nDefSet]; i_DefCol < m_nDefColumns[nDefSet]; i_DefCol++) {
-    
-    Column* pColumn = new Column;
-    pColumn->vCopy(&m_xaColumn[i_DefCol]);
-    pColumnVec->vAdd(pColumn);
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* get no of columns in subset of streamDef                                   */
 /*----------------------------------------------------------------------------*/
 i8 StreamDef::nColumns(i8 iSubSet)

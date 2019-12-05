@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* Partition                                                                  */
 /*----------------------------------------------------------------------------*/
-BufferCursor* BufferSort::pPartitionBuffer(ColumnVec* pColumnVec, SrtBuffer* pSrtBuffer,
+BufferCursor* BufferSort::pPartitionBuffer(SrtBuffer* pSrtBuffer,
                                            BufferCursor* pLowCursor, BufferCursor* pHighCursor)
 {
   
@@ -93,15 +93,15 @@ BufferCursor* BufferSort::pPartitionBuffer(ColumnVec* pColumnVec, SrtBuffer* pSr
 /*----------------------------------------------------------------------------*/
 /* QuickSort                                                                  */
 /*----------------------------------------------------------------------------*/
-void BufferSort::vQuickSortBuffer(ColumnVec* pColumnVec, SrtBuffer* pSrtBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor)
+void BufferSort::vQuickSortBuffer(SrtBuffer* pSrtBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor)
 {
   
   if (pLowCursor->bIsBefore(pHighCursor)) {
-    BufferCursor* pPartitionCursor = pPartitionBuffer(pColumnVec, pSrtBuffer, pLowCursor, pHighCursor);
+    BufferCursor* pPartitionCursor = pPartitionBuffer(pSrtBuffer, pLowCursor, pHighCursor);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // quick sort from low to partition
-    vQuickSortBuffer(pColumnVec, pSrtBuffer, pLowCursor, pPartitionCursor);
+    vQuickSortBuffer(pSrtBuffer, pLowCursor, pPartitionCursor);
     
     //pSrtBuffer->vShow(pColumnVec);
     
@@ -109,7 +109,7 @@ void BufferSort::vQuickSortBuffer(ColumnVec* pColumnVec, SrtBuffer* pSrtBuffer, 
     // quick sort from partition+1 to high
     pPartitionCursor->bMoveRight();
     BufferCursor* pPartitionNext = new BufferCursor(pPartitionCursor);
-    vQuickSortBuffer(pColumnVec, pSrtBuffer, pPartitionNext, pHighCursor);
+    vQuickSortBuffer(pSrtBuffer, pPartitionNext, pHighCursor);
     
     delete pPartitionCursor;
     delete pPartitionNext;

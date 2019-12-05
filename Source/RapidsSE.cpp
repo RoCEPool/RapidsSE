@@ -980,8 +980,8 @@ eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
   (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.azChar());
   API_LOC(320);
   
-  ColumnVec* pColumnVec = pTable->pColumnVec();
-  Column* pColumn = pColumnVec->pGet(i_Col);
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  Column* pColumn = pStreamDef->pGetColumn(i_Col);
   API_LOC(330);
   
   sprintf(pSession->m_sResponse.azChar(),"%lld,%s,%s,%lld,%lld,%s,%s",
@@ -1023,10 +1023,10 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
     (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.azChar());
   API_LOC(320);
 
-  ColumnVec* pColumnVec = pTable->pColumnVec();
+  StreamDef* pStreamDef = pTable->pStreamDef();
   API_LOC(330);
 
-  pJob_ListColumns->m_xResponse.m_ixRowsProcessed = pColumnVec->nItems();
+  pJob_ListColumns->m_xResponse.m_ixRowsProcessed = pStreamDef->nColumns(C_ALL);
   API_LOC(340);
 
   *aiRowCount = *(pJob_ListColumns->m_xResponse.m_ixRowsProcessed);
