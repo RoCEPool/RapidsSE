@@ -205,20 +205,34 @@ ssnDo
 doesTest xyz ;
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+
 : collect
 
-  create
+  //"" locals| sSmt |
 
+  next-token locals| sWordNm |
+
+  sWordNm :create
+
+  // -- -- -- -- -- --
+
+  ""
   begin
     next-token dup ";" str.equal not
     while
-    .
+    str.cat " " str.cat
   repeat
   drop
 
-  does>
+  " in collect" .
 
+  dup . ,
+
+  // -- -- -- -- -- --
+
+  POSTPONE .
+
+  POSTPONE exit_rt
 ;
 
 collect myCollect a b c ;
