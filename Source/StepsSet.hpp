@@ -129,10 +129,16 @@ public:
   void vComment(void);
 
   // comment
+  void vCompilerCompiling(void);
   void vCompilerCurrentFetch(void);
   void vCompilerCurrentStore(void);
+  void vCompilerInterpreting(void);
+  void vCompilerIsCompiling(void);
+  void vCompilerIsInterpreting(void);
+  void vCompilerIsPostponing(void);
   void vCompilerNestedFetch(void);
   void vCompilerNestedStore(void);
+  void vCompilerPostponing(void);
 
   // cpu
   void vCpuRdtscp(void);
@@ -200,12 +206,6 @@ public:
   void vDirRewind(void);
   void vDirSeek(void);
   void vDirTell(void);
-
-  // docol
-  void vCompilerCompiling(void);
-  void vCompilerInterpreting(void);
-  void vCompilerIsCompiling(void);
-  void vCompilerIsInterpreting(void);
 
   // dot
   void vDot(void);

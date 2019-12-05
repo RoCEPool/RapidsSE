@@ -9,7 +9,6 @@ namespace SenVM
   {
   private:
     Word* m_pCurrent;        // current word being compiled
-    bool  m_bCompiling;      // currently in compilation state?
     eCM   m_eMode;           // current mode of compiler
   
     Tokeniser* m_pTokeniser; // input stream tokenizer

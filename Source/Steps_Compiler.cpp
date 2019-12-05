@@ -12,8 +12,12 @@ void Step::vAddSteps_Compiler(void)
   vAddStep("["_Stz,                        &Step::vCompilerInterpreting,  true);
   vAddStep("]"_Stz,                        &Step::vCompilerCompiling);
   
+  vAddStep("compiler::compiling"_Stz,      &Step::vCompilerCompiling,     true);
+  
   vAddStep("compiler::current@"_Stz,       &Step::vCompilerCurrentFetch);
   vAddStep("compiler::current!"_Stz,       &Step::vCompilerCurrentStore);
+  
+  vAddStep("compiler::interpreting"_Stz,   &Step::vCompilerInterpreting,  true);
   
   vAddStep("compiler::isCompiling"_Stz,    &Step::vCompilerIsCompiling);
   vAddStep("compiler::isInterpreting"_Stz, &Step::vCompilerIsInterpreting);

@@ -33,7 +33,6 @@ Compiler::Compiler(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
   m_pCurrent   = nullptr;
-  m_bCompiling = false;
   m_eMode      = CM_INTERPRETING;
 
   m_pTokeniser = new Tokeniser;
