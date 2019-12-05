@@ -383,7 +383,6 @@ public:
   void vIndexNameFetch(void);
   void vIndexPopulate(void);
   void vIndexRange(void);
-  void vIndexShowColumnVec(void);
   void vIndexSpace(void);
   void vIndexSubDic(void);
   void vIndexTableFetch(void);

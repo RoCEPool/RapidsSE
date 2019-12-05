@@ -27,7 +27,6 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.name@"_Stz,           &Step::vIndexNameFetch);
   vAddStep("index.populate"_Stz,        &Step::vIndexPopulate);
   vAddStep("index.range"_Stz,           &Step::vIndexRange);
-  vAddStep("index.showColumnVec"_Stz,   &Step::vIndexShowColumnVec);
   vAddStep("index.space"_Stz,           &Step::vIndexSpace);
   vAddStep("index.subDic"_Stz,          &Step::vIndexSubDic);
   vAddStep("index.table@"_Stz,          &Step::vIndexTableFetch);
@@ -686,21 +685,6 @@ LastBuffer:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
   pQueue->vAppend(pFetchBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.showColumnVec -- show column vector                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexShowColumnVec(void)
-{
-  ENTRY(); // ENTRY("vIndexShowColumnVec"_Stz);
-  
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  pIndex->vShowColumnVec();
   
   EXIT();
 }
