@@ -21,8 +21,7 @@
 
   sSenFile <newNm> sTxtFile
     "cat %v | sed s/NAME_OF_JOB/%v/g > %v"
-      str.format
-        locals| sSedCmd |
+      str.format locals| sSedCmd |
 
   sSedCmd .
 

@@ -14,11 +14,13 @@ void Step::vAddSteps_Word(void)
   vAddStep("word::locate"_Stz,      &Step::vWordLocate);
   vAddStep("word::new"_Stz,         &Step::vWordNew);
   
+  vAddStep("word.allotObject"_Stz,  &Step::vWordAllotObject);
   vAddStep("word.category@"_Stz,    &Step::vWordCategoryFetch);
   vAddStep("word.category!"_Stz,    &Step::vWordCategoryStore);
   vAddStep("word.dump"_Stz,         &Step::vWordDump);
-  vAddStep("word.EnameSet@"_Stz,    &Step::vWordEnmSetFetch);
-  vAddStep("word.EnameSet!"_Stz,    &Step::vWordEnmSetStore);
+  vAddStep("word.embObject"_Stz,    &Step::vWordEmbObject);
+  vAddStep("word.enameSet@"_Stz,    &Step::vWordEnmSetFetch);
+  vAddStep("word.enameSet!"_Stz,    &Step::vWordEnmSetStore);
   vAddStep("word.exitHook@"_Stz,    &Step::vWordExitHookGet);
   vAddStep("word.exitHook!"_Stz,    &Step::vWordExitHookSet);
   vAddStep("word.immediate@"_Stz,   &Step::vWordImmediateGet);
@@ -42,6 +44,29 @@ void Step::vAddSteps_Word(void)
 void Step::vWord(void)
 {
   ENTRY(); // ENTRY("vWord"_Stz);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.allotObject -- allot an embedded object of n bytes in wsp             */
+/*----------------------------------------------------------------------------*/
+void Step::vWordAllotObject(void)
+{
+  ENTRY(); // ENTRY("vWordAllotObject"_Stz);
+  
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  i8 nBytes = m_pDataStack->iPopInt(__func__);
+  RASSERT(nBytes);
+
+  Object* pEmbObject = (Object*)pWord->ayAllot(nBytes);
+  ASSERT(pEmbObject);
+  
+  pEmbObject->vMagic();
+  pEmbObject->vClass(CN_NONE);
+
+  m_pDataStack->vPushPtr(pEmbObject);
+
   EXIT();
 }
 
@@ -87,6 +112,24 @@ void Step::vWordDump(void)
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
   pWord->vContentDump();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.embObject -- get embedded object in wsp of word                       */
+/*----------------------------------------------------------------------------*/
+void Step::vWordEmbObject(void)
+{
+  ENTRY(); // ENTRY("vWordEmbObject"_Stz);
+  
+  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
+  
+  char* aWsp = pWord->aWspArea();
+  
+  Object* pEmbObject = reinterpret_cast<Object*>(aWsp);
+  
+  m_pDataStack->vPushPtr(pEmbObject);
   
   EXIT();
 }

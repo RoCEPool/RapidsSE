@@ -133,6 +133,10 @@ public:
   void vCompilerPop(void);
   void vCompilerPush(void);
 
+  void vCompilerCurrentWordFetch(void);
+  void vCompilerCurrentWordStore(void);
+
+
   // cpu
   void vCpuRdtscp(void);
 
@@ -202,8 +206,6 @@ public:
 
   // docol
   void vDocolCompiling(void);
-  void vDocolCurrentWordFetch(void);
-  void vDocolCurrentWordStore(void);
   void vDocolInterpreting(void);
   void vDocolIsCompiling(void);
   void vDocolIsInterpreting(void);
@@ -237,6 +239,7 @@ public:
   // encode
   void vEncodeAgain(void);
   void vEncodeAhead(void);
+  void vEncodeCall(void);
   void vEncodeContinue(void);
   void vEncodeHere(void);
   void vEncodeIf(void);
@@ -310,8 +313,6 @@ public:
   void vFlowThrow(void);
 
   // forth
-  void vAllot(void);
-  void vCell(void);
   void vColon(void);
   void vComma(void);
   void vCompileComma(void);
@@ -1253,7 +1254,6 @@ public:
   void vTimeCurrent(void);
 
   // to
-  void vToBody(void);
   void vToInt(void);
   void vToPtr(void);
   void vToStr(void);
@@ -1321,10 +1321,12 @@ public:
 
   // word
   void vWord(void);
+  void vWordAllotObject(void);
   void vWordCategoryFetch(void);
   void vWordCategoryStore(void);
   void vWordDelete(void);
   void vWordDump(void);
+  void vWordEmbObject(void);
   void vWordEnmSetFetch(void);
   void vWordEnmSetStore(void);
   void vWordExitHookGet(void);

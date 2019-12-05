@@ -9,31 +9,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_To(void)
 {
-  vAddStep(">body"_Stz,       &Step::vToBody);
   vAddStep(">digitName"_Stz,  &Step::vToDigitName);
   vAddStep(">int"_Stz,        &Step::vToInt);
   vAddStep(">ptr"_Stz,        &Step::vToPtr);
   vAddStep(">str"_Stz,        &Step::vToStr);
-  vAddStep(">task"_Stz,       &Step::vToTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* >body -- convert word pointer to body pointer                              */
-/*----------------------------------------------------------------------------*/
-void Step::vToBody(void)
-{
-  ENTRY(); // ENTRY("vToBody"_Stz);
-  
-  Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
-  
-  //  char* pBody = pAdd<char*>(pWord,sizeof(Word));
-  char* pBody = pWord->aWspArea();
-  
-  Object* pPtrBody = reinterpret_cast<Object*>(pBody);
-  
-  m_pDataStack->vPushPtr(pPtrBody);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,21 +69,6 @@ void Step::vToStr(void)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* >task -- convert int to task ptr                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vToTask(void)
-{
-  ENTRY(); // ENTRY("vToTask"_Stz);
-  
-  i8 iVal = m_pDataStack->iPopInt(__func__);
-  
-  Object* pPtrTask = _pTask(iVal);
-  
-  m_pDataStack->vPushPtr(pPtrTask);
-  
-  EXIT();
-}
 
 /*============================================================================*/
 /* end                                                                        */

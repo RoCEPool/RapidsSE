@@ -34,27 +34,35 @@
   create
   WK_OBJECT compiler::current word.kind!
   sizeof_index allot
-  compiler::current >body object.magic!
-  CN_INDEX compiler::current >body object.class!
-  compiler::current >body index.init
-  true compiler::current >body object.wordbody!
+
+  compiler::current word.embObject object.magic!
+  CN_INDEX compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
+
+  compiler::current word.embObject index.init
+
   tick index compiler::current word.category!
+
   does>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create an index using name on the stack (leaves index on stack)             */
+/* create an index using name on the stack (leaves index on stack)            */
 /*----------------------------------------------------------------------------*/
 : :index
 
   :create
   WK_OBJECT compiler::current word.kind!
   sizeof_index allot
-  compiler::current >body object.magic!
-  CN_INDEX compiler::current >body object.class!
-  compiler::current >body index.init
-  true compiler::current >body object.wordbody!
+
+  compiler::current word.embObject object.magic!
+  CN_INDEX compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
+
+  compiler::current word.embObject index.init
+
   tick index compiler::current word.category!
+
   compiler::current
   does>
 ;
@@ -75,7 +83,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* assert top of task dictionary stack is indexes                              */
+/* assert top of task dictionary stack is indexes                             */
 /*----------------------------------------------------------------------------*/
 : assertInIndexes ( -- t|f )
   withinIndexes assert
@@ -196,3 +204,6 @@
   index.space 0 swap number.magnitude >str
 ;
 
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -216,7 +216,7 @@
 /*----------------------------------------------------------------------------*/
 : dicStack.dropAll ( dicStack -- )
 
-  locals| dicStack |
+  0 locals| dicStack |
 
   dicStack dicStack.depth 0 ?do
     dicStack dicStack.drop

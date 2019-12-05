@@ -84,11 +84,11 @@ void Correctness::vStackDump(void)
   //xException.vPrint();
   
   // dump the call stack
-  //vStackDump();
   
   if (AM::bDeveloper()) {
     xException.vPrint();
     AM::vTaskDump();
+    vStackDump();
   }
   
   throw xException;
@@ -131,6 +131,11 @@ void Correctness::vStackDump(void)
   //    printf("  FreeChunk was %d\n",eWasClass);
   //  }
   
+  //if (AM::bDeveloper()) {
+    AM::vTaskDump();
+    vStackDump();
+  //}
+
   vThrow(eKind,eSeverity,azFunc,azFilePath,iLineNo,(Stz*)zCondition);
 }
 

@@ -21,11 +21,14 @@ diclock.grabwrite
   createTenants
   WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
-  compiler::current >body object.magic!
-  CN_DIC compiler::current >body object.class!
+
+  compiler::current word.embObject object.magic!
+  CN_DIC compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
+
+  compiler::current word.embObject dic.init
+
   tick folder compiler::current word.category!
-  compiler::current >body dic.init
-  true compiler::current >body object.wordbody!
 
   //compiler::current word.name@ "  dic: %v" str.format .
 
@@ -44,11 +47,14 @@ diclock.grabwrite
   create
   WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
-  compiler::current >body object.magic!
-  CN_DIC compiler::current >body object.class!
+
+  compiler::current word.embObject object.magic!
+  CN_DIC compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
+
+  compiler::current word.embObject dic.init
+
   tick folder compiler::current word.category!
-  compiler::current >body dic.init
-  true compiler::current >body object.wordbody!
 
   //compiler::current word.name@ "  dic: %v" str.format .
 
@@ -65,11 +71,14 @@ diclock.grabwrite
   createPersistent
   WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
-  compiler::current >body object.magic!
-  CN_DIC compiler::current >body object.class!
+
+  compiler::current word.embObject object.magic!
+  CN_DIC compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
+
+  compiler::current word.embObject dic.init
+
   tick folder compiler::current word.category!
-  compiler::current >body dic.init
-  true compiler::current >body object.wordbody!
 
   //compiler::current word.name@ "  dic: %v" str.format .
 
@@ -88,11 +97,15 @@ diclock.grabwrite
   :create
   WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
-  compiler::current >body object.magic!
-  CN_DIC compiler::current >body object.class!
+
+  compiler::current word.embObject object.magic!
+  CN_DIC compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
+
+  compiler::current word.embObject dic.init
+
   tick folder compiler::current word.category!
-  compiler::current >body dic.init
-  true compiler::current >body object.wordbody!
+
   compiler::current
 
   //compiler::current word.name@ "  :dic %v" str.format .
@@ -110,11 +123,14 @@ diclock.grabwrite
   >createPersistent
   WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
-  compiler::current >body object.magic!
-  CN_DIC compiler::current >body object.class!
+
+  compiler::current word.embObject object.magic!
+  CN_DIC compiler::current word.embObject object.class!
+  true compiler::current word.embObject object.wordbody!
+
   tick folder compiler::current word.category!
-  compiler::current >body dic.init
-  true compiler::current >body object.wordbody!
+  compiler::current word.embObject dic.init
+
   compiler::current
 
   //compiler::current word.name@ "  :dic %v" str.format .
