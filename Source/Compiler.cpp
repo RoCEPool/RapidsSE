@@ -63,7 +63,7 @@ Compiler::~Compiler(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* is the compiler compiling?                                                 */
+/* is the compiler in compiling mode?                                         */
 /*----------------------------------------------------------------------------*/
 bool Compiler::bCompiling(void)
 {
@@ -95,7 +95,7 @@ void Compiler::vCurrentWord(Word* pWord)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is the compiler interpreting?                                              */
+/* is the compiler in interpreting mode?                                      */
 /*----------------------------------------------------------------------------*/
 bool Compiler::bInterpreting(void)
 {
@@ -176,6 +176,18 @@ void Compiler::vNextToken(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
   m_pTokeniser->vNextToken();
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the compiler in postponing mode?                                        */
+/*----------------------------------------------------------------------------*/
+bool Compiler::bPostponing(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  bool bIsPostponing = CM_POSTPONING == m_eMode;
+  
+  return bIsPostponing;
 }
 
 /*----------------------------------------------------------------------------*/

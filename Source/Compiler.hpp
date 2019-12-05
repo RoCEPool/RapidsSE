@@ -44,6 +44,8 @@ namespace SenVM
   
     void  vNextToken(void);
   
+    bool  bPostponing(void);
+  
     Stz*  szToken(void);
   
     Tokeniser* pTokeniser(void);

@@ -21,13 +21,16 @@ void Step::vAddSteps_Compiler(void)
   
   vAddStep("compiler::isCompiling"_Stz,    &Step::vCompilerIsCompiling);
   vAddStep("compiler::isInterpreting"_Stz, &Step::vCompilerIsInterpreting);
-  
+  vAddStep("compiler::isPostponing"_Stz,   &Step::vCompilerIsPostponing);
+
   vAddStep("compiler::nested@"_Stz,        &Step::vCompilerNestedFetch);
   vAddStep("compiler::nested!"_Stz,        &Step::vCompilerNestedStore);
+  
+  vAddStep("compiler::postponing"_Stz,     &Step::vCompilerPostponing,    true);
 }
 
 /*----------------------------------------------------------------------------*/
-/* [ -- enter interpreter state                                               */
+/* [ -- change to interpreting mode                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerInterpreting(void)
 {
@@ -39,13 +42,25 @@ void Step::vCompilerInterpreting(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ] -- enter compiler state                                                  */
+/* ] -- change to compiling mode                                              */
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerCompiling(void)
 {
   ENTRY(); // ENTRY("vCompilerCompiling"_Stz);
   
   m_pCompiler->vMode(CM_COMPILING);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/*  compiler::postponing -- change to postponing mode                         */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerPostponing(void)
+{
+  ENTRY(); // ENTRY("vCompilerPostponing"_Stz);
+  
+  m_pCompiler->vMode(CM_POSTPONING);
   
   EXIT();
 }
@@ -91,7 +106,7 @@ void Step::vCompilerIsCompiling(void)
 {
   ENTRY(); // ENTRY("vCompilerIsCompiling"_Stz);
   
-  i8 iIsCompiling = CM_COMPILING == m_pCompiler->eMode();
+  i8 iIsCompiling = m_pCompiler->bCompiling();
   
   m_pDataStack->vPushInt(iIsCompiling);
   
@@ -103,15 +118,28 @@ void Step::vCompilerIsCompiling(void)
 /*----------------------------------------------------------------------------*/
 void Step::vCompilerIsInterpreting(void)
 {
-  ENTRY(); // ENTRY("vDocolIsInterpreting"_Stz);
+  ENTRY(); // ENTRY("vCompilerIsInterpreting"_Stz);
   
-  i8 iIsInterpreting = CM_INTERPRETING == m_pCompiler->eMode();
+  i8 iIsInterpreting = m_pCompiler->bInterpreting();
   
   m_pDataStack->vPushInt(iIsInterpreting);
   
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* compiler::isPostponing -- currently in postponing mode?                    */
+/*----------------------------------------------------------------------------*/
+void Step::vCompilerIsPostponing(void)
+{
+  ENTRY(); // ENTRY("vCompilerIsPostponing"_Stz);
+  
+  i8 bIsPostponing = m_pCompiler->bPostponing();
+  
+  m_pDataStack->vPushInt(bIsPostponing);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* compiler::nested@ -- get nested word                                       */
