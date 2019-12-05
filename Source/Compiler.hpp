@@ -16,9 +16,6 @@ namespace SenVM
 
     i8    m_nLocals;         // number of locals/params variables
     Word* m_paWord[C_MAX_NESTED_WORDS]; // array of nested words
-
-  public:
-    Cell* m_pBeginIP;
  
     // must be last
     Footer m_xFooter;

@@ -44,9 +44,6 @@ Compiler::Compiler(void)
   for (i8 i_Nested = 0; i_Nested < C_MAX_NESTED_WORDS; i_Nested++)
     m_paWord[i_Nested] = nullptr;
 
-  // -- -- -- -- -- -- --
-  m_pBeginIP   = nullptr;
-
   _checkInitialised_(CN_COMPILER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
