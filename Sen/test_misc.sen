@@ -212,9 +212,6 @@ doesTest xyz ;
 
   next-token locals| sWordNm |
 
-  sWordNm :create
-
-  // -- -- -- -- -- --
 
   begin
     next-token dup ";" str.equal not
@@ -227,16 +224,25 @@ doesTest xyz ;
 
   sSmt .
 
-  sSmt ,
+  // -- -- -- -- -- --
+  sWordNm "_co" str.cat word::new locals| pCoWord |
+
+  pCoWord compiler::currentWord!
+
+    .
+
+    exit_rt
+
 
   // -- -- -- -- -- --
-
-  POSTPONE .
-
-  POSTPONE exit_rt
+  //sWordNm :: Word$$2
+  //
+  //  Word$$1 compile,
+  //
+  //;;
 ;
 
-collect myCollect a b c ;
+//collect myCollect a b c ;
 
 
 /*============================================================================*/
