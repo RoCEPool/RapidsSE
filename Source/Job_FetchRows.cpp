@@ -806,7 +806,6 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
   //DtmVal oDatum;
   CrwBuffer* pCrwBuffer = nullptr;
   
-  ColumnVec* pColVec = pJob_FetchRows->m_pTable->pColumnVec();
   StreamDef* pStreamDef = pJob_FetchRows->m_pTable->pStreamDef();
   Column* pCol = pJob_FetchRows->m_pColumn;
   

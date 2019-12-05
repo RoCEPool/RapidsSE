@@ -119,11 +119,11 @@ void Slots::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
   Column* pColumn = nullptr;
   
   // find the column from the table columnVector
-  i8 iColumns = m_pTable->pColumnVec()->nItems();
+  i8 iColumns = m_pTable->pStreamDef()->nColumns(C_ALL);
   
   bool bFound = false;
   for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
-    pColumn = m_pTable->pColumnVec()->pGet(i_Col);
+    pColumn = m_pTable->pStreamDef()->pGetColumn(i_Col);
     if (pColumn->szColNm()->bSame(sColumnNm)) {
       bFound = true;
       break;
@@ -147,11 +147,10 @@ void Slots::vCreateColumnVec(void)
   Column* pColumn = nullptr;
   
   // find the column from the table columnVector
-  i8 iColumns = m_pTable->pColumnVec()->nItems();
+  i8 iColumns = m_pTable->pStreamDef()->nColumns(C_ALL);
   
-  bool bFound = false;
   for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
-    pColumn = m_pTable->pColumnVec()->pGet(i_Col);
+    pColumn = m_pTable->pStreamDef()->pGetColumn(i_Col);
     if (pColumn->bIsPtnKey()) {
       m_pPtnColVec->vInsert(pColumn);
     }

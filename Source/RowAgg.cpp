@@ -316,14 +316,14 @@ void RowAgg::vDiscoverColumns(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
   
-  ColumnVec* pColVec = m_pTable->pColumnVec();
+  StreamDef* pStreamDef = m_pTable->pStreamDef();
   
-  m_pKeyColumn = pColVec->pGet(0);
+  m_pKeyColumn = pStreamDef->pGetColumn(0);
   
-  i8 nTableColumns = pColVec->nItems();
+  i8 nTableColumns = pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 1; i_Col < nTableColumns; i_Col++) {
     
-    Column* pColumn = pColVec->pGet(i_Col);
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
     
     if (-1 == pColumn->iColumnNo())
       continue;
