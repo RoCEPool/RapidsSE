@@ -30,7 +30,7 @@ namespace Transform
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
 
-    Row(ColumnVec* pColVec);
+    Row(ColumnVec* pColVec, i8 iDummy);
     ~Row(void) noexcept(false);
   
     void vAdjustAddresses(Row* pCopiedFromRow);

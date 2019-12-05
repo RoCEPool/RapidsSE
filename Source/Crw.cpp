@@ -27,6 +27,7 @@ Crw::~Crw(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
 {
+  /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // word dump of headLine (& overLine)
   
@@ -218,6 +219,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   }
   
   //vDumpHead_IV("DumpHeap_IV"_Stz,aHeadLine,pColVec);
+  */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,6 +227,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
 {
+  /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // word dump of headLine (& overLine)
   
@@ -346,6 +349,7 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   } // for (i_Col)
   
   delete pRow;
+   */
 }
 
 

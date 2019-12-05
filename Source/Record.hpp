@@ -12,7 +12,8 @@ namespace Transform
   private:
     s16KB      m_sRecStr;        // the record as a string
     char*      m_azAppendCursor; // cursor for StrLib::vAppend()
-    ColumnVec* m_pColumnVec;     // column vector of table
+    StreamDef* m_pStreamDef;     // stream def of table
+    i8         m_iDefSet;
     
     // must be last
     Footer m_xFooter;
@@ -22,7 +23,7 @@ namespace Transform
     void  operator delete(void*);
 
     Record(void);
-    Record(ColumnVec* pColumnVec);
+    Record(StreamDef* pStreamDef, i8 iDefSet);
     ~Record(void) noexcept(false);
   
     void vAppend(Row* pRow);

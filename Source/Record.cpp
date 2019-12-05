@@ -50,7 +50,8 @@ Record::Record(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   m_azAppendCursor = m_sRecStr.azChar();
-  m_pColumnVec     = nullptr;
+  m_pStreamDef     = nullptr;
+  m_iDefSet        = C_UNKNOWN;
   
   _checkInitialised_(CN_RECORD);
   
@@ -60,13 +61,14 @@ Record::Record(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Record::Record(ColumnVec* pColumnVec)
+Record::Record(StreamDef* pStreamDef, i8 iSubSet)
 : Object(CN_RECORD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
   m_azAppendCursor = m_sRecStr.azChar();
-  m_pColumnVec     = pColumnVec;
+  m_pStreamDef     = pStreamDef;
+  m_iDefSet        = iSubSet;
   
   _checkInitialised_(CN_RECORD);
   
@@ -90,7 +92,7 @@ Record::~Record(void) noexcept(false)
 void Record::vAppend(Row* pRow)
 {
   vReset();
-  
+  /*
   // get no of columns
   i8 nColumns = m_pColumnVec->nItems();
   
@@ -109,6 +111,61 @@ void Record::vAppend(Row* pRow)
     
     //vTrace("%s\n"_Stz,pRec->szRecStr());
   }
+   */
+  
+  
+  if (m_iDefSet == C_ALL) {
+    
+    for (i8 i_DefSet = 0; i_DefSet < m_pStreamDef->m_nDefSets; i_DefSet++) {
+      
+      // get no of columns in this stream def
+      i8 nColumns = m_pStreamDef->m_nDefColumns[i_DefSet];
+    
+      // get start of stream def columns
+      i8 iDefStart = m_pStreamDef->m_i_DefStart[i_DefSet];
+    
+      // for each column
+      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+        
+        // get the column at index
+        Column xCol = m_pStreamDef->m_xaColumn[i_Col + iDefStart];
+        
+        // comma separate column values
+        if (i_Col)
+          m_sRecStr.vAppend(&m_azAppendCursor,","_Stz);
+        
+        //! ALKA: Revert once Column not newable
+        // append column value
+        //vAppend(&xCol,pRow);
+        vAppend(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
+        //vTrace("%s\n"_Stz,pRec->szRecStr());
+        
+      }
+    }
+  }
+  else {
+    // get no of columns in this stream def
+     i8 nColumns = m_pStreamDef->m_nDefColumns[m_iDefSet];
+
+     // get start of stream def columns
+     i8 iDefStart = m_pStreamDef->m_i_DefStart[m_iDefSet];
+
+     // for each column
+     for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+       
+       // get the column at index
+       Column xCol = m_pStreamDef->m_xaColumn[i_Col + iDefStart];
+       
+       // comma separate column values
+       if (i_Col)
+         m_sRecStr.vAppend(&m_azAppendCursor,","_Stz);
+       
+       //! ALKA: Revert once Column not newable
+       // append column value
+       //vAppend(&xCol,pRow);
+       vAppend(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
+     }
+   }
 }
 
 /*----------------------------------------------------------------------------*/

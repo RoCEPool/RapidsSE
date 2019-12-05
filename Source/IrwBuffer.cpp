@@ -94,7 +94,7 @@ Row* IrwBuffer::aAllotRow(ColumnVec* pColVec)
   
   vIncItems();
   
-  Row* aRow = new(ayRow) Row(pColVec);
+  Row* aRow = new(ayRow) Row(pColVec,0);
   
   return aRow;
 }
@@ -156,7 +156,7 @@ void IrwBuffer::vPrintRows(StreamDef* pStreamDef)
   ColumnVec* pColumnVec = new ColumnVec;
   pStreamDef->vAddColumns(pColumnVec);
   
-  HV_Rec hvRec(pColumnVec);
+  HV_Rec hvRec(pStreamDef,C_ALL);
   
   // NOTE: We need to print only nItem no of rows
   // as the limitOp may have truncated the rows via setting the nItems()
@@ -199,7 +199,7 @@ void IrwBuffer::vShow(StreamDef* pStreamDef)
   ColumnVec* pColumnVec = new ColumnVec;
   pStreamDef->vAddColumns(pColumnVec);
   
-  HV_Rec hvRec(pColumnVec);
+  HV_Rec hvRec(pStreamDef,C_ALL);
   while (pRow) {
     hvRec->vAppend(pRow);
     pRow = aNextRow(pRow);
