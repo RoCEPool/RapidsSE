@@ -205,23 +205,44 @@ ssnDo
 doesTest xyz ;
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+
 : collect
 
-  create
+  "" locals| sSmt |
+
+  next-token locals| sWordNm |
+
 
   begin
     next-token dup ";" str.equal not
     while
-    .
+    sSmt swap str.cat " " str.cat to sSmt
   repeat
   drop
 
-  does>
+  " in collect" .
 
+  sSmt .
+
+  // -- -- -- -- -- --
+  sWordNm "_co" str.cat word::new locals| pCoWord |
+
+  pCoWord compiler::currentWord!
+
+    .
+
+    exit_rt
+
+
+  // -- -- -- -- -- --
+  //sWordNm :: Word$$2
+  //
+  //  Word$$1 compile,
+  //
+  //;;
 ;
 
-collect myCollect a b c ;
+//collect myCollect a b c ;
 
 
 /*============================================================================*/

@@ -36,7 +36,7 @@ Stz* My::szToken(void)
 {
   Task* pTask = AM::pThisTLSTask();
   
-  return pTask->pCompiler()->m_pTokeniser->szToken();
+  return pTask->pCompiler()->pTokeniser()->szToken();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,7 +46,7 @@ Stz* My::szWordNm(void)
 {
   Task* pTask = AM::pThisTLSTask();
   
-  Word* pWord = pTask->pCompiler()->m_pCurrent;
+  Word* pWord = pTask->pCompiler()->pCurrentWord();
   
   return pWord->szWordNm();
 }

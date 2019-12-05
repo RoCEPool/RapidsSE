@@ -1388,9 +1388,22 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
   vTrace("%s\n"_Stz,spWord.szSeeDoes(pDoes));
 
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  AM::vWordSeeInx(pDoes,pDoes->aFirstCell(), pDicStack);
+  
+  if (pWord != pDoes)
+    AM::vWordSeeInx(pWord,pWord->aFirstCell(),pDicStack);
+  
+  vTrace("=========================================\n"_Stz);
+}
 
-  for (Cell* aLastCell = pDoes->aLastCell(); aFip < aLastCell; /*none*/ ) {
+/*----------------------------------------------------------------------------*/
+/* dump routine of word                                                       */
+/*----------------------------------------------------------------------------*/
+void AM::vWordSeeInx(Word* pWord, Cell* aFip, DicStack* pDicStack)
+{
+  vTrace("- - - - - - - - - - - - - - - - - - - - -\n"_Stz);
+
+  for (Cell* aLastCell = pWord->aLastCell(); aFip < aLastCell; /*none*/ ) {
     
     StepFp fpHasStep = *aFip->m_afpStep;
     
@@ -1432,7 +1445,7 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
       
       continue;
     }
-
+    
     // -- -- -- -- -- -- -- -- -- --
     // push ptrval
     
@@ -1478,7 +1491,7 @@ void AM::vWordSee(Word* pWord, DicStack* pDicStack)
       
       continue;
     }
-
+    
     // -- -- -- -- -- -- -- -- -- --
     // enter routine
     if ( *aFip->m_afpStep == &Step::vEnterRoutine ) {

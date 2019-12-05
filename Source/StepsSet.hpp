@@ -329,7 +329,6 @@ public:
   void vPrompt(void);
   void vSemicolon(void);
   void vSeriesName(void);
-  void vSubDic(void);
   void vTick(void);
 
   // grid

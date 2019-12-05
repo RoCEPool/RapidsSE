@@ -25,7 +25,6 @@ void Step::vAddSteps_Forth(void)
   vAddStep("prompt"_Stz,          &Step::vPrompt,           true );
   vAddStep(";"_Stz,               &Step::vSemicolon,        true );
   vAddStep("series-name"_Stz,     &Step::vSeriesName);
-  vAddStep("subDic"_Stz,          &Step::vSubDic,           true );
   vAddStep("tick"_Stz,            &Step::vTick,             true );
 }
 
@@ -342,10 +341,10 @@ void Step::vSemicolon(void)
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
-  if (m_pCompiler->m_nLocals) {
+  if (m_pCompiler->nLocals()) {
     
     // reset the number of local variables
-    m_pCompiler->m_nLocals = 0;
+    m_pCompiler->vLocals(0);
     
     // pop top dictionary
     m_oDicStack.vDiscard();
@@ -368,11 +367,7 @@ void Step::vSemicolon(void)
     pCurrentWord->vEncodeCall("exit_rt"_Stz);
   
   m_pCompiler->vCompiling(false);
-  
-  // discard subDic use
-  for ( ; m_pCompiler->m_nSubDic; m_pCompiler->m_nSubDic--)
-    m_oDicStack.vDiscard();
-  
+    
   m_pCompiler->vCurrentWord(nullptr);
   
   EXIT();
@@ -419,33 +414,6 @@ void Step::vSeriesName(void)
   
   m_pDataStack->vPushStr(sNextName);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* subDic -- push sub dictionary                                              */
-/*----------------------------------------------------------------------------*/
-void Step::vSubDic(void)
-{
-  ENTRY(); // ENTRY("vSubDic"_Stz);
-  
-  m_pCompiler->vNextToken();
-  
-  s32 sNameSubDic;
-  sNameSubDic = m_pCompiler->szToken();
-  
-  Word* pWordSubDic = m_oDicStack.pFindWord(sNameSubDic);
-  if ( ! pWordSubDic )
-    vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
-           "No such subDic: %s"_Stz,
-           sNameSubDic.azChar());
-  
-  Dic* pDic = _pDic(pWordSubDic->aWspArea());
-  
-  m_oDicStack.vPush(pDic);
-  
-  m_pCompiler->m_nSubDic++;
-  
   EXIT();
 }
 

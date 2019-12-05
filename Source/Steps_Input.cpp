@@ -31,7 +31,7 @@ void Step::vInputClose(void)
 {
   ENTRY(); // ENTRY("vInputClose"_Stz);
   
-  m_pCompiler->m_pTokeniser->vUseEnd();
+  m_pCompiler->pTokeniser()->vUseEnd();
   
   EXIT();
 }
@@ -43,7 +43,7 @@ void Step::vInputDepth(void)
 {
   ENTRY(); // ENTRY("vInputDepth"_Stz);
   
-  i8 iDepth = m_pCompiler->m_pTokeniser->iDepth();
+  i8 iDepth = m_pCompiler->pTokeniser()->iDepth();
   
   m_pDataStack->vPushInt(iDepth);
   
@@ -77,7 +77,7 @@ void Step::vInputOpen(void)
   
   m_pDataStack->vPopStr(sFilePath,__func__);
   
-  bool bOpened = m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
+  bool bOpened = m_pCompiler->pTokeniser()->bUseFile(sFilePath);
   
   if ( ! bOpened )
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -93,7 +93,7 @@ void Step::vInputPop(void)
 {
   ENTRY(); // ENTRY("vInputPop"_Stz);
   
-  bool bPopped = m_pCompiler->m_pTokeniser->bPop();
+  bool bPopped = m_pCompiler->pTokeniser()->bPop();
   ASSERT(bPopped);
   
   EXIT();
@@ -109,7 +109,7 @@ void Step::vInputPush(void)
   if ( ! m_pCompiler )
     m_pCompiler = new Compiler;
   
-  m_pCompiler->m_pTokeniser->vPush();
+  m_pCompiler->pTokeniser()->vPush();
   
   EXIT();
 }
@@ -124,7 +124,7 @@ void Step::vInputStdin(void)
   if ( ! m_pCompiler )
     m_pCompiler = new Compiler;
   
-  m_pCompiler->m_pTokeniser->vUseStdin();
+  m_pCompiler->pTokeniser()->vUseStdin();
   
   EXIT();
 }
@@ -144,7 +144,7 @@ void Step::vInputText(void)
   
   m_pDataStack->vPopStr(sInput,__func__);
     
-  m_pCompiler->m_pTokeniser->vUseString(sInput);
+  m_pCompiler->pTokeniser()->vUseString(sInput);
   
   EXIT();
 }
@@ -170,7 +170,7 @@ void Step::vInputType(void)
 {
   ENTRY(); // ENTRY("vInputType"_Stz);
   
-  eTN eTokenType = m_pCompiler->m_pTokeniser->eToken();
+  eTN eTokenType = m_pCompiler->pTokeniser()->eToken();
   
   m_pDataStack->vPushInt(eTokenType);
   

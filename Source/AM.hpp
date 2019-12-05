@@ -267,6 +267,7 @@ namespace Oblique
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vWelcomeText(s256& sWelcome);
     static void vWordSee(Word* pWord, DicStack* pDicStack);
+    static void vWordSeeInx(Word* pWord, Cell* aFip, DicStack* pDicStack);
     static void vWriteLog(void);
     static void vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs);
 

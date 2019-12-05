@@ -214,7 +214,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
   Word* pCalledWord;
   GenVar xVariable;
   
-  m_pForth->m_pCompiler->m_pTokeniser->vUseString(sDefinition);
+  m_pForth->m_pCompiler->pTokeniser()->vUseString(sDefinition);
   
   // get :
   m_pForth->m_pCompiler->vNextToken();
@@ -237,7 +237,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
 
   m_pForth->m_pCompiler->vNextToken();
   
-  while (TN_NONE != m_pForth->m_pCompiler->m_pTokeniser->eToken()) {
+  while (TN_NONE != m_pForth->m_pCompiler->pTokeniser()->eToken()) {
     
     //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
     
@@ -245,7 +245,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
     if (m_pForth->m_pCompiler->szToken()->bEqual(";"_Stz))
       break;
     
-    switch (m_pForth->m_pCompiler->m_pTokeniser->eToken()) {
+    switch (m_pForth->m_pCompiler->pTokeniser()->eToken()) {
         
       case TN_INTEGER:
         xVariable = m_pForth->m_pCompiler->szToken()->iToI8();
@@ -281,7 +281,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
       default:
         vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
                "Invalid m_eToken %lld"_Stz,
-               m_pForth->m_pCompiler->m_pTokeniser->eToken());
+               m_pForth->m_pCompiler->pTokeniser()->eToken());
     }
     
     m_pForth->m_pCompiler->vNextToken();
@@ -291,7 +291,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
   
 
   // reset scanning
-  m_pForth->m_pCompiler->m_pTokeniser->vUseEnd();
+  m_pForth->m_pCompiler->pTokeniser()->vUseEnd();
   
   return pNewWord;
 }
@@ -305,7 +305,7 @@ void Task::vCompileConstant(s48K& sDefinition)
   
   s48K sValue;
   
-  m_pForth->m_pCompiler->m_pTokeniser->vUseString(sDefinition);
+  m_pForth->m_pCompiler->pTokeniser()->vUseString(sDefinition);
   
   // get string
   m_pForth->m_pCompiler->vNextToken();
@@ -332,7 +332,7 @@ void Task::vCompileConstant(s48K& sDefinition)
   
   m_pForth->m_pCompiler->vNextToken();
   
-  m_pForth->m_pCompiler->m_pTokeniser->vUseEnd();
+  m_pForth->m_pCompiler->pTokeniser()->vUseEnd();
 }
 
 /*============================================================================*/
