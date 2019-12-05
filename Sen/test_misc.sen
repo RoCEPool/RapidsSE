@@ -208,7 +208,7 @@ doesTest xyz ;
 
 : collect
 
-  //"" locals| sSmt |
+  "" locals| sSmt |
 
   next-token locals| sWordNm |
 
@@ -216,17 +216,18 @@ doesTest xyz ;
 
   // -- -- -- -- -- --
 
-  ""
   begin
     next-token dup ";" str.equal not
     while
-    str.cat " " str.cat
+    sSmt swap str.cat " " str.cat to sSmt
   repeat
   drop
 
   " in collect" .
 
-  dup . ,
+  sSmt .
+
+  sSmt ,
 
   // -- -- -- -- -- --
 
