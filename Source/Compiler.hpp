@@ -4,12 +4,9 @@
 #pragma once
 
 namespace SenVM
-{
-  
+{  
   class Compiler : public Object
   {
-  friend class Task;
-  
   private:
     Word* m_pCurrent;        // current word being compiled
     bool  m_bCompiling;      // currently in compilation state?

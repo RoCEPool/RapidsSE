@@ -38,8 +38,7 @@ Compiler::Compiler(void)
 
   m_pTokeniser = new Tokeniser;
   m_pTokeniser->vPush();
-  s48K sString(""_Stz);
-  m_pTokeniser->vUseString(sString);
+  m_pTokeniser->vUseString(""_Stz);
   
   m_nLocals    = 0;
   for (i8 i_Nested = 0; i_Nested < C_MAX_NESTED_WORDS; i_Nested++)
