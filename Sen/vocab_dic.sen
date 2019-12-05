@@ -19,18 +19,18 @@
 diclock.grabwrite
 
   createTenants
-  WK_OBJECT compiler::currentWord@ word.kind!
+  WK_OBJECT compiler::current@ word.kind!
   sizeof_dic allot
 
-  compiler::currentWord@ word.embObject object.magic!
-  CN_DIC compiler::currentWord@ word.embObject object.class!
-  true compiler::currentWord@ word.embObject object.wordbody!
+  compiler::current@ word.embObject object.magic!
+  CN_DIC compiler::current@ word.embObject object.class!
+  true compiler::current@ word.embObject object.wordbody!
 
-  compiler::currentWord@ word.embObject dic.init
+  compiler::current@ word.embObject dic.init
 
-  tick folder compiler::currentWord@ word.category!
+  tick folder compiler::current@ word.category!
 
-  //compiler::currentWord@ word.name@ "  dic: %v" str.format .
+  //compiler::current@ word.name@ "  dic: %v" str.format .
 
 diclock.dropwrite
   does>
@@ -45,18 +45,18 @@ diclock.dropwrite
 diclock.grabwrite
 
   create
-  WK_OBJECT compiler::currentWord@ word.kind!
+  WK_OBJECT compiler::current@ word.kind!
   sizeof_dic allot
 
-  compiler::currentWord@ word.embObject object.magic!
-  CN_DIC compiler::currentWord@ word.embObject object.class!
-  true compiler::currentWord@ word.embObject object.wordbody!
+  compiler::current@ word.embObject object.magic!
+  CN_DIC compiler::current@ word.embObject object.class!
+  true compiler::current@ word.embObject object.wordbody!
 
-  compiler::currentWord@ word.embObject dic.init
+  compiler::current@ word.embObject dic.init
 
-  tick folder compiler::currentWord@ word.category!
+  tick folder compiler::current@ word.category!
 
-  //compiler::currentWord@ word.name@ "  dic: %v" str.format .
+  //compiler::current@ word.name@ "  dic: %v" str.format .
 
 diclock.dropwrite
   does>
@@ -69,18 +69,18 @@ diclock.dropwrite
 diclock.grabwrite
 
   createPersistent
-  WK_OBJECT compiler::currentWord@ word.kind!
+  WK_OBJECT compiler::current@ word.kind!
   sizeof_dic allot
 
-  compiler::currentWord@ word.embObject object.magic!
-  CN_DIC compiler::currentWord@ word.embObject object.class!
-  true compiler::currentWord@ word.embObject object.wordbody!
+  compiler::current@ word.embObject object.magic!
+  CN_DIC compiler::current@ word.embObject object.class!
+  true compiler::current@ word.embObject object.wordbody!
 
-  compiler::currentWord@ word.embObject dic.init
+  compiler::current@ word.embObject dic.init
 
-  tick folder compiler::currentWord@ word.category!
+  tick folder compiler::current@ word.category!
 
-  //compiler::currentWord@ word.name@ "  dic: %v" str.format .
+  //compiler::current@ word.name@ "  dic: %v" str.format .
 
 diclock.dropwrite
 
@@ -95,20 +95,20 @@ diclock.dropwrite
 diclock.grabwrite
 
   :create
-  WK_OBJECT compiler::currentWord@ word.kind!
+  WK_OBJECT compiler::current@ word.kind!
   sizeof_dic allot
 
-  compiler::currentWord@ word.embObject object.magic!
-  CN_DIC compiler::currentWord@ word.embObject object.class!
-  true compiler::currentWord@ word.embObject object.wordbody!
+  compiler::current@ word.embObject object.magic!
+  CN_DIC compiler::current@ word.embObject object.class!
+  true compiler::current@ word.embObject object.wordbody!
 
-  compiler::currentWord@ word.embObject dic.init
+  compiler::current@ word.embObject dic.init
 
-  tick folder compiler::currentWord@ word.category!
+  tick folder compiler::current@ word.category!
 
-  compiler::currentWord@
+  compiler::current@
 
-  //compiler::currentWord@ word.name@ "  :dic %v" str.format .
+  //compiler::current@ word.name@ "  :dic %v" str.format .
 
 diclock.dropwrite
   does>
@@ -121,19 +121,19 @@ diclock.dropwrite
 diclock.grabwrite
 
   >createPersistent
-  WK_OBJECT compiler::currentWord@ word.kind!
+  WK_OBJECT compiler::current@ word.kind!
   sizeof_dic allot
 
-  compiler::currentWord@ word.embObject object.magic!
-  CN_DIC compiler::currentWord@ word.embObject object.class!
-  true compiler::currentWord@ word.embObject object.wordbody!
+  compiler::current@ word.embObject object.magic!
+  CN_DIC compiler::current@ word.embObject object.class!
+  true compiler::current@ word.embObject object.wordbody!
 
-  tick folder compiler::currentWord@ word.category!
-  compiler::currentWord@ word.embObject dic.init
+  tick folder compiler::current@ word.category!
+  compiler::current@ word.embObject dic.init
 
-  compiler::currentWord@
+  compiler::current@
 
-  //compiler::currentWord@ word.name@ "  :dic %v" str.format .
+  //compiler::current@ word.name@ "  :dic %v" str.format .
 
 diclock.dropwrite
   does>

@@ -18,9 +18,9 @@
 /*----------------------------------------------------------------------------*/
 : <<jobInfoTag>> immediate ( -- )
 
-  [ compiler::currentWord@ , ]
+  [ compiler::current@ , ]
 
-  compiler::currentWord@ word.category!
+  compiler::current@ word.category!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 : <?cmdKind?> <<jobInfoTag>> ( -- i )
 
-  [ compiler::currentWord@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
+  [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 : <?ddlLock?> <<jobInfoTag>> ( -- i )
 
-  [ compiler::currentWord@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
+  [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 : <?jobDesc?> <<jobInfoTag>> ( -- s )
 
-  [ compiler::currentWord@ word.name@ , ] jobInfo::enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 : <?jobKind?> <<jobInfoTag>> ( -- i )
 
-  [ compiler::currentWord@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
+  [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -63,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 : <?jobType?> <<jobInfoTag>> ( -- i )
 
-  [ compiler::currentWord@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
+  [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -71,7 +71,7 @@
 /*----------------------------------------------------------------------------*/
 : <?preCheck?> <<jobInfoTag>> ( -- s )
 
-  [ compiler::currentWord@ word.name@ , ] jobInfo::enameSet@ enameSet.getStr
+  [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getStr
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +79,7 @@
 /*----------------------------------------------------------------------------*/
 : <?rspKind?> <<jobInfoTag>> ( -- i )
 
-  [ compiler::currentWord@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
+  [ compiler::current@ word.name@ , ] jobInfo::enameSet@ enameSet.getInt
 ;
 
 

@@ -9,19 +9,19 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Compiler(void)
 {
-  vAddStep("compiler::currentWord@"_Stz, &Step::vCompilerCurrentWordFetch);
-  vAddStep("compiler::currentWord!"_Stz, &Step::vCompilerCurrentWordStore);
+  vAddStep("compiler::current@"_Stz, &Step::vCompilerCurrentFetch);
+  vAddStep("compiler::current!"_Stz, &Step::vCompilerCurrentStore);
   
-  vAddStep("compiler::nested@"_Stz,      &Step::vCompilerNestedFetch);
-  vAddStep("compiler::nested!"_Stz,      &Step::vCompilerNestedStore);
+  vAddStep("compiler::nested@"_Stz,  &Step::vCompilerNestedFetch);
+  vAddStep("compiler::nested!"_Stz,  &Step::vCompilerNestedStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::currentWord@ -- get current word                                 */
+/* compiler::current@ -- get current word                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerCurrentWordFetch(void)
+void Step::vCompilerCurrentFetch(void)
 {
-  ENTRY(); // ENTRY("vCompilerCurrentWordFetch"_Stz);
+  ENTRY(); // ENTRY("vCompilerCurrentFetch"_Stz);
   
   if (! m_pCompiler)
     m_pCompiler = new Compiler;
@@ -34,11 +34,11 @@ void Step::vCompilerCurrentWordFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::currentWord! -- put current word                                 */
+/* compiler::current! -- put current word                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vCompilerCurrentWordStore(void)
+void Step::vCompilerCurrentStore(void)
 {
-  ENTRY(); // ENTRY("vCompilerCurrentWordStore"_Stz);
+  ENTRY(); // ENTRY("vCompilerCurrentStore"_Stz);
   
   Word* pCurrWord = _pWord(m_pDataStack->pPopPtr(__func__));
   

@@ -48,15 +48,15 @@
 : table:
 
   createPersistent
-  WK_OBJECT compiler::currentWord@ word.kind!
+  WK_OBJECT compiler::current@ word.kind!
   sizeof_table allot
 
-  compiler::currentWord@ word.embObject object.magic!
-  CN_TABLE compiler::currentWord@ word.embObject object.class!
-  true compiler::currentWord@ word.embObject object.wordbody!
+  compiler::current@ word.embObject object.magic!
+  CN_TABLE compiler::current@ word.embObject object.class!
+  true compiler::current@ word.embObject object.wordbody!
 
-  compiler::currentWord@ word.embObject table.init
-  tick table compiler::currentWord@ word.category!
+  compiler::current@ word.embObject table.init
+  tick table compiler::current@ word.category!
 
   does>
 ;
@@ -67,17 +67,17 @@
 : :table
 
   >createPersistent
-  WK_OBJECT compiler::currentWord@ word.kind!
+  WK_OBJECT compiler::current@ word.kind!
   sizeof_table allot
 
-  compiler::currentWord@ word.embObject object.magic!
-  CN_TABLE compiler::currentWord@ word.embObject object.class!
-  true compiler::currentWord@ word.embObject object.wordbody!
+  compiler::current@ word.embObject object.magic!
+  CN_TABLE compiler::current@ word.embObject object.class!
+  true compiler::current@ word.embObject object.wordbody!
 
-  compiler::currentWord@ word.embObject table.init
-  tick table compiler::currentWord@ word.category!
+  compiler::current@ word.embObject table.init
+  tick table compiler::current@ word.category!
 
-  compiler::currentWord@
+  compiler::current@
   does>
 ;
 

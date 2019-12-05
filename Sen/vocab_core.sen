@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : ALLOT
 
-  compiler::currentWord@ word.allotObject drop
+  compiler::current@ word.allotObject drop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 : CREATE
 
-  input::next input::token word::new compiler::currentWord!
+  input::next input::token word::new compiler::current!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : :CREATE
 
-  word::new compiler::currentWord!
+  word::new compiler::current!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -218,7 +218,7 @@ true tick CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 : EXIT immediate
 
-  compiler::currentWord@ word.exitHook@ word::find dup if
+  compiler::current@ word.exitHook@ word::find dup if
     compile,
   else
     drop
@@ -234,14 +234,14 @@ true tick CASE word.immediate!
 : set_hook immediate
 
   "eg_hook"
-  compiler::currentWord@
+  compiler::current@
   word.exitHook!
 ;
 
 : exit_test prompt
 
   set_hook
-  //[ "eg_hook" compiler::currentWord@ word.exitHook! ]
+  //[ "eg_hook" compiler::current@ word.exitHook! ]
 
   1 if
     "exit with hook" . exit
