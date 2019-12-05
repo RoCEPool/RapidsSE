@@ -316,15 +316,15 @@ void Step::vTableFindColumn(void)
   s32 sColumnName;
   m_pDataStack->vPopStr(sColumnName,__func__);
   
-  ColumnVec* pColVec = pTable->pColumnVec();
+  StreamDef* pStreamDef = pTable->pStreamDef();
   Column* pColumn = nullptr;
   bool bFound = false;
   
   // look for the column in the columnVec
-  i8 nTableColumns = pColVec->nItems();
+  i8 nTableColumns = pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nTableColumns; i_Col++) {
     
-    pColumn = pColVec->pGet(i_Col);
+    pColumn = pStreamDef->pGetColumn(i_Col);
     
     if (pColumn->szColNm()->bSame(sColumnName)) {
       bFound = true;
@@ -351,15 +351,15 @@ void Step::vTableIsColumn(void)
   s32 sColumnName;
   m_pDataStack->vPopStr(sColumnName,__func__);
   
-  ColumnVec* pColVec = pTable->pColumnVec();
+  StreamDef* pStreamDef = pTable->pStreamDef();
   Column* pColumn;
   bool bFound = false;
   
   // look for the column in the columnVec
-  i8 nTableColumns = pColVec->nItems();
+  i8 nTableColumns = pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nTableColumns; i_Col++) {
     
-    pColumn = pColVec->pGet(i_Col);
+    pColumn = pStreamDef->pGetColumn(i_Col);
     
     if (pColumn->szColNm()->bSame(sColumnName)) {
       bFound = true;
