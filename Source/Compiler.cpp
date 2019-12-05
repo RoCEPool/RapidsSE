@@ -33,18 +33,18 @@ Compiler::Compiler(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
   m_pCurrent   = nullptr;
-  
-  for (i8 i_Nested = 0; i_Nested < C_MAX_NESTED_WORDS; i_Nested++)
-    m_paWord[i_Nested] = nullptr;
-  
   m_bCompiling = false;
-  m_nLocals    = 0;
+  m_eMode      = CM_INTERPRETING;
 
   m_pTokeniser = new Tokeniser;
   m_pTokeniser->vPush();
   s48K sString(""_Stz);
   m_pTokeniser->vUseString(sString);
   
+  m_nLocals    = 0;
+  for (i8 i_Nested = 0; i_Nested < C_MAX_NESTED_WORDS; i_Nested++)
+    m_paWord[i_Nested] = nullptr;
+
   // -- -- -- -- -- -- --
   m_pRetryIP   = nullptr;
   m_pBeginIP   = nullptr;
@@ -126,6 +126,26 @@ void Compiler::vLocals(i8 nLocals)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
   m_nLocals = nLocals;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get mode                                                                   */
+/*----------------------------------------------------------------------------*/
+eCM Compiler::eMode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  return m_eMode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set mode                                                                   */
+/*----------------------------------------------------------------------------*/
+void Compiler::vMode(eCM eMode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  m_eMode = eMode;
 }
 
 /*----------------------------------------------------------------------------*/
