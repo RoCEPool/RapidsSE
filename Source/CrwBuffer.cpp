@@ -385,11 +385,6 @@ void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  //! ALKA TO REVIEW : COLUMNV VECTOR
-  //ColumnVec* pColVec = pTable()->pColumnVec();
-  ColumnVec* pColVec = new ColumnVec;
-  pStreamDef->vAddColumns(pColVec);
-  
   HV_Row hRow(pStreamDef,C_ALL);
   HV_Rec hvRec(pStreamDef,C_ALL);
   

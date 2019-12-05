@@ -150,11 +150,6 @@ Row* IrwBuffer::aNextRow(Row* aPriorRow)
 void IrwBuffer::vPrintRows(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
-
-  //! ALKA TO REVIEW
-  // create a column vec from each row ref
-  ColumnVec* pColumnVec = new ColumnVec;
-  pStreamDef->vAddColumns(pColumnVec);
   
   HV_Rec hvRec(pStreamDef,C_ALL);
   
@@ -171,8 +166,6 @@ void IrwBuffer::vPrintRows(StreamDef* pStreamDef)
     // get the next row
     pRow = aNextRow(pRow);
   }
-  
-  delete pColumnVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,19 +187,12 @@ void IrwBuffer::vShow(StreamDef* pStreamDef)
   
   Row* pRow = aFirstRow();
   
-  //! ALKA TO REVIEW
-  // create a column vec from each row ref
-  ColumnVec* pColumnVec = new ColumnVec;
-  pStreamDef->vAddColumns(pColumnVec);
-  
   HV_Rec hvRec(pStreamDef,C_ALL);
   while (pRow) {
     hvRec->vAppend(pRow);
     pRow = aNextRow(pRow);
     hvRec->vPrintRow();
   }
-  
-  delete pColumnVec;
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
