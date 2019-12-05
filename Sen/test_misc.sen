@@ -220,11 +220,7 @@ doesTest xyz ;
   repeat
   drop
 
-  " in collect" .
-
-  sSmt .
-
-  " in collect before 1" .
+  "-- -- in collect before 1 -- --" .
 
   // -- -- -- -- -- --
   1 sWordNm :NestedWord$$
@@ -233,14 +229,18 @@ doesTest xyz ;
 
     POSTPONE .
 
+    see //debug::breakPoint
+
   ;NestedWord$$
 
-  " in collect after 1" .
+  "-- -- in collect after 1 -- --" .
 ;
 
 collect myCollect a b c ;
 
+tick myCollect word.see
 
+//debug::breakPoint
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

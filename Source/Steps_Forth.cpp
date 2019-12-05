@@ -16,16 +16,17 @@ void Step::vAddSteps_Forth(void)
   vAddStep(">createInRoot"_Stz,   &Step::vCreateFromInRoot);
   vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
   vAddStep("createPersistent"_Stz,&Step::vCreatePersistent);
-  vAddStep("does>"_Stz,           &Step::vDoes,             true );
+  vAddStep("does>"_Stz,           &Step::vDoes,             true);
   vAddStep("does_rt"_Stz,         &Step::vDoes_RT);
   vAddStep("exit_rt"_Stz,         &Step::vExit_RT);
   vAddStep("findInCurrent"_Stz,   &Step::vFindInCurrent);
-  vAddStep("immediate"_Stz,       &Step::vImmediate,        true );
-  vAddStep("postpone"_Stz,        &Step::vPostpone,         true );
-  vAddStep("prompt"_Stz,          &Step::vPrompt,           true );
-  vAddStep(";"_Stz,               &Step::vSemicolon,        true );
+  vAddStep("immediate"_Stz,       &Step::vImmediate,        true);
+  vAddStep("postpone"_Stz,        &Step::vPostpone,         true);
+  vAddStep("prompt"_Stz,          &Step::vPrompt,           true);
+  vAddStep("see"_Stz,             &Step::vSee,              true);
+  vAddStep(";"_Stz,               &Step::vSemicolon,        true);
   vAddStep("series-name"_Stz,     &Step::vSeriesName);
-  vAddStep("tick"_Stz,            &Step::vTick,             true );
+  vAddStep("tick"_Stz,            &Step::vTick,             true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -330,6 +331,20 @@ void Step::vPrompt(void)
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
   pCurrentWord->vPrompt(true);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* see -- see inx contents of word                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vSee(void)
+{
+  ENTRY(); // ENTRY("vSee"_Stz);
+  
+  Word* pCurrentWord = m_pCompiler->pCurrentWord();
+
+  AM::vWordSee(pCurrentWord,&m_oDicStack);
   
   EXIT();
 }
