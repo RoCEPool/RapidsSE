@@ -9,8 +9,9 @@ enum eCM // compiler mode
   
   /* 1 */ CM_COMPILING,
   /* 2 */ CM_INTERPRETING,
-  
-  /* 3 */ CM_ENUMS
+  /* 3 */ CM_POSTPONING,
+
+  /* 4 */ CM_ENUMS
 };
 
 static Stz* aCM[]
@@ -19,8 +20,9 @@ static Stz* aCM[]
   
   /* 1 */ "compiling"_Stz,
   /* 2 */ "interpreting"_Stz,
-  
-  /* 3 */ "enums"_Stz
+  /* 3 */ "postponing"_Stz,
+
+  /* 4 */ "enums"_Stz
 };
 
 /*============================================================================*/
