@@ -43,7 +43,6 @@ namespace Steps
     static void vAddSteps_DicPath(void);
     static void vAddSteps_DicStack(void);
     static void vAddSteps_Dir(void);
-    static void vAddSteps_Docol(void);
     static void vAddSteps_Dot(void);
     static void vAddSteps_Dstack(void);
   

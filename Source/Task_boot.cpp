@@ -32,6 +32,7 @@ void Task::vAddRoutines(void)
   
   s48K sDefinition;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": __nil ;"_Stz;
   
@@ -39,7 +40,7 @@ void Task::vAddRoutines(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
-  ": docol"
+  ": interpret"
   
   "  retryPoint"
   
@@ -137,7 +138,7 @@ void Task::vAddRoutines(void)
   "  input::push"
   "  args.senDir str.prepend"
   "  input::open"
-  "  docol"
+  "  interpret"
   "  input::close"
   "  input::pop"
   "  ;"_Stz;
@@ -150,7 +151,7 @@ void Task::vAddRoutines(void)
   "  input::push"
   //"  dup ."
   "  input::text"
-  "  docol"
+  "  interpret"
   "  input::pop"
   "  ;"_Stz;
   
@@ -174,6 +175,7 @@ void Task::vAddRoutines(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Temporary ifdef till we get sen files embedded in the executable
+
 #ifdef WITH_APPLE
   sDefinition =
   ": boot_run"
@@ -192,6 +194,7 @@ void Task::vAddRoutines(void)
   "  task::delete"
   "  ;"_Stz;
 #endif
+  
   pCompileColon(sDefinition);
 }
 
