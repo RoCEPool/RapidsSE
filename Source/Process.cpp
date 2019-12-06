@@ -90,6 +90,62 @@ bool Process::bTestPid(i8 iPid)
     return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get resident size of process                                               */
+/*----------------------------------------------------------------------------*/
+i8 Process::iResidentSize(void)
+{
+  i8 iResident = 0;
+  
+#ifdef WITH_APPLE
+  
+  // refer: http://web.mit.edu/darwin/src/modules/xnu/osfmk/man/task_info.html
+  //        http://web.mit.edu/darwin/src/modules/xnu/osfmk/man/task_basic_info.html
+
+  struct mach_task_basic_info info;
+  
+  mach_msg_type_number_t infoCount = MACH_TASK_BASIC_INFO_COUNT;
+  
+  if ( task_info( mach_task_self( ), MACH_TASK_BASIC_INFO,
+                 (task_info_t)&info, &infoCount ) != KERN_SUCCESS )
+ 
+    iResident = 0; /* Can't access? */
+  else
+    iResident = info.resident_size;
+  
+#endif
+  
+  return iResident;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get virtual size of process                                                */
+/*----------------------------------------------------------------------------*/
+i8 Process::iVirtualSize(void)
+{
+  i8 iVirtual = 0;
+  
+#ifdef WITH_APPLE
+  
+  // refer: http://web.mit.edu/darwin/src/modules/xnu/osfmk/man/task_info.html
+  //        http://web.mit.edu/darwin/src/modules/xnu/osfmk/man/task_basic_info.html
+
+  struct mach_task_basic_info info;
+  
+  mach_msg_type_number_t infoCount = MACH_TASK_BASIC_INFO_COUNT;
+  
+  if ( task_info( mach_task_self( ), MACH_TASK_BASIC_INFO,
+                 (task_info_t)&info, &infoCount ) != KERN_SUCCESS )
+    
+    iVirtual = 0;      /* Can't access? */
+  else
+    iVirtual = info.virtual_size;
+  
+#endif
+  
+  return iVirtual;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

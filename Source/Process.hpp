@@ -16,6 +16,9 @@ namespace Host
     static bool bIsSeProcess(void);
     static bool bKillPid(i8 iPid);
     static bool bTestPid(i8 iPid);
+  
+    static i8   iResidentSize(void);
+    static i8   iVirtualSize(void);
   };
 }
 

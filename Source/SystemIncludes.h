@@ -48,6 +48,10 @@
   #include "mach/vm_map.h"
   #include <mach/mach_time.h>
   #include <mach/thread_policy.h>
+  #include <mach/mach.h>
+  #include <mach/message.h>
+  #include <mach/kern_return.h>
+  #include <mach/task_info.h>
 #endif
 
 #include <netinet/in.h>

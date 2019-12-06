@@ -1000,6 +1000,16 @@ void Engine::vStartSystem(void)
     vInfo("Engine instance %s started\n"_Stz,gxArguments.m_sRegionName.azChar());
     AM::pGrid()->vDumpPartitioning();
   }
+  
+  s32 sResident_magn;
+  MagLib::vByteMag(Process::iResidentSize(),3,sResident_magn);
+  s32 sVirtual_magn;
+  MagLib::vByteMag(Process::iVirtualSize(),3,sVirtual_magn);
+
+  vTrace("PROCESS RESIDENT SIZE %s VIRTUAL SIZE %s\n"_Stz,
+         sResident_magn.szStz(),
+         sVirtual_magn.szStz()
+         );
 }
 
 /*----------------------------------------------------------------------------*/
