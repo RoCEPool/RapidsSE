@@ -110,9 +110,9 @@ Slots::~Slots(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create column vector                                                       */
+/* create stream def                                                          */
 /*----------------------------------------------------------------------------*/
-void Slots::vCreateColumnVec(void)
+void Slots::vCreateStreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   

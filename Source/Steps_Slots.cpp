@@ -11,7 +11,7 @@ void Step::vAddSteps_Slots(void)
 {
   vAddStep("slots.columnCount"_Stz,     &Step::vSlotsColumnCount);
   vAddStep("slots.columnName"_Stz,      &Step::vSlotsColumnName);
-  vAddStep("slots.createColumnVec"_Stz, &Step::vSlotsCreateColumnVec);
+  vAddStep("slots.createStreamDef"_Stz, &Step::vSlotsCreateStreamDef);
   vAddStep("slots.subDic"_Stz,          &Step::vSlotsSubDic);
 }
 
@@ -53,16 +53,16 @@ void Step::vSlotsColumnName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* slots.createColumnVec -- create slots column vector from subdic            */
+/* slots.createStreamDef -- create slots StreamDef from subdic                */
 /*----------------------------------------------------------------------------*/
-void Step::vSlotsCreateColumnVec(void)
+void Step::vSlotsCreateStreamDef(void)
 {
-  ENTRY(); // ENTRY("vSlotsCreateColumnVec"_Stz);
+  ENTRY(); // ENTRY("vSlotsCreateStreamDef"_Stz);
   
   Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SLOTS == pSlots->eClass());
   
-  pSlots->vCreateColumnVec();
+  pSlots->vCreateStreamDef();
   
   EXIT();
 }

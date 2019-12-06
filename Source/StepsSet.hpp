@@ -1039,7 +1039,7 @@ public:
   // slots
   void vSlotsColumnCount(void);
   void vSlotsColumnName(void);
-  void vSlotsCreateColumnVec(void);
+  void vSlotsCreateStreamDef(void);
   void vSlotsSubDic(void);
 
   // socket

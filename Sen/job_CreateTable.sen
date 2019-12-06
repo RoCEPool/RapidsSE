@@ -83,7 +83,7 @@
 
   //----------------------------------------------------------------------------
   // add partition columns
-  pTable table.slots slots.createColumnVec
+  pTable table.slots slots.createStreamDef
 
   //----------------------------------------------------------------------------
   // move back to tables

@@ -35,7 +35,7 @@ namespace MetaData
     Slots(void);
     ~Slots(void) noexcept(false);
     
-    void       vCreateColumnVec(void);
+    void       vCreateStreamDef(void);
     Partitioning::TablePtn*  pPartition(i8 iSlot);
     bool       bPopulateIndex(i8 iIndexNo);
     StreamDef* pPtnStreamDef(void);
