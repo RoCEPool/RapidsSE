@@ -25,8 +25,8 @@ void Engine::vMainEntry(void)
   
   vPrintWelcome();
   
-  Correctness::vTraceWith();
-  
+  gxArguments.vPrintStartupInfo();
+
   vSetSignalHandlers();
   
   // init the tls keys
@@ -730,18 +730,6 @@ void Engine::vPrintWelcome(void)
     vInfo("%s\n"_Stz,sWelcome.szStz());
     vInfo("%s\n"_Stz,sCopyright.szStz());
   }
-  
-  if (gxArguments.m_bVerbose) {
-#ifdef WITH_MUNGED_SEN
-    vTrace("  Compiled with MUNGE\n\n"_Stz);
-#else
-    vTrace("  Not compiled with MUNGE\n\n"_Stz);
-#endif
-  }
-  
-  // print startup information
-  if (gxArguments.m_bWelcome && gxArguments.m_bStart)
-    gxArguments.vPrintStartupInfo();
 }
 
 /*----------------------------------------------------------------------------*/

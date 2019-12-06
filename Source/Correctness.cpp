@@ -21,6 +21,8 @@ void Correctness::vCheckAssumptions(void)
 /*----------------------------------------------------------------------------*/
 void Correctness::vTraceWith(void)
 {
+  vTrace("\nWith:\n"_Stz);
+
 #ifdef WITH_ACTION_SEQUENCE
   vTrace("  WITH_ACTION_SEQUENCE\n"_Stz);
 #endif

@@ -789,8 +789,18 @@ void Arguments::vPrintStartupInfo(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
-  if (! m_bDeveloper)
+  // print startup information
+  if ( ! (gxArguments.m_bWelcome && gxArguments.m_bStart) ||
+       ! m_bDeveloper)
     return;
+  
+  if (gxArguments.m_bVerbose) {
+#ifdef WITH_MUNGED_SEN
+    vTrace("  Compiled with MUNGE\n\n"_Stz);
+#else
+    vTrace("  Not compiled with MUNGE\n\n"_Stz);
+#endif
+  }
   
   vTrace("Args:\n"_Stz);
   
@@ -843,6 +853,8 @@ void Arguments::vPrintStartupInfo(void)
 #endif
   
   if (m_bDeveloper) vTrace("  --developer\n"_Stz);
+  
+  Correctness::vTraceWith();
 }
 
 /*----------------------------------------------------------------------------*/
