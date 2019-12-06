@@ -219,8 +219,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN__R__
   /* */ &Dump::vUndefined,       // CN_RECORD
   /* */ &Dump::vUndefined,       // CN_RECORDBUFFER
-  /* */ &Dump::vUndefined,       // CN_REFBUFFER
-  /* */ &Dump::vUndefined,       // CN_REFSET
   /* */ &Dump::vUndefined,       // CN_REGSET
   /* */ &Dump::vUndefined,       // CN_RELOP
   /* */ &Dump::vUndefined,       // CN_REQUEST
@@ -545,8 +543,6 @@ i8 giClassSize[]
   /* */ 'R'-'A' + 1,                // CN__R__
   /* */ sizeof(Record),             // CN_RECORD
   /* */ sizeof(RecordBuffer),       // CN_RECORDBUFFER
-  /* */ sizeof(RegSet),          // CN_REFBUFFER
-  /* */ sizeof(RegSet),             // CN_REFSET
   /* */ sizeof(RegSet),             // CN_REGSET
   /* */ sizeof(RelOp),              // CN_RELOP
   /* */ sizeof(Request),            // CN_REQUEST
@@ -871,8 +867,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN__R__
   /* */ HT_TRANSIENT_MEDIUM,  // CN_RECORD
   /* */ HT_TRANSIENT_LARGE,   // CN_RECORDBUFFER
-  /* */ HT_TRANSIENT_LARGE,   // CN_REFBUFFER
-  /* */ HT_INVALID,           // CN_REFSET
   /* */ HT_TRANSIENT_SMALL,   // CN_REGSET
   /* */ HT_TRANSIENT_SMALL,   // CN_RELOP
   /* */ HT_TRANSIENT_MEDIUM,  // CN_REQUEST

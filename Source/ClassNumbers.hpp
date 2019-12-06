@@ -218,8 +218,6 @@ enum eCN : u2 // Class Number
   /* 206 0x0CE       18B Heap:I */ CN__R__,
   /* 207 0x0CF    16440B Heap:M */ CN_RECORD,
   /* 208 0x0D0  1043496B Heap:L */ CN_RECORDBUFFER,
-  /* 210 0x0D2  1043872B Heap:L */ CN_REFBUFFER,
-  /* 211 0x0D3       24B Heap:I */ CN_REFSET,
   /* 212 0x0D4      176B Heap:S */ CN_REGSET,
   /* 213 0x0D5       24B Heap:S */ CN_RELOP,
   /* 214 0x0D6      176B Heap:M */ CN_REQUEST,
@@ -544,8 +542,6 @@ static Stz* aCN[]
   /* 206 0x0CE */ "_R__"_Stz,                // CN__R__
   /* 207 0x0CF */ "RECORD"_Stz,              // CN_RECORD
   /* 208 0x0D0 */ "RECORDBUFFER"_Stz,        // CN_RECORDBUFFER
-  /* 210 0x0D2 */ "REFBUFFER"_Stz,           // CN_REFBUFFER
-  /* 211 0x0D3 */ "REFSET"_Stz,              // CN_REFSET
   /* 212 0x0D4 */ "REGSET"_Stz,              // CN_REGSET
   /* 213 0x0D5 */ "RELOP"_Stz,               // CN_RELOP
   /* 214 0x0D6 */ "REQUEST"_Stz,             // CN_REQUEST
