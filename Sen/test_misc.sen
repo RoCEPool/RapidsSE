@@ -218,20 +218,14 @@ doesTest xyz ;
   repeat
   drop
 
-  "-- -- in collect before 1 -- --" .
-
   // -- -- -- -- -- --
-  1 sWordNm :NestedWord$$
+  1 sWordNm :NestedWord
 
     sSmt ,
 
     [[ . ]]
 
-    see //debug::breakPoint
-
-  ;NestedWord$$
-
-  "-- -- in collect after 1 -- --" .
+  ;NestedWord
 ;
 
 collect myCollect a b c ;
