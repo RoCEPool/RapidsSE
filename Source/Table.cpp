@@ -456,39 +456,6 @@ bool Table::bIsLoading(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate index columns                                                     */
-/*----------------------------------------------------------------------------*/
-bool Table::bIsValidIndexColumns(Jobs::Job_Universal* pJob)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-//  Column* pColumn = nullptr;
-//
-//  // find the column from the table columnVector
-//  i8 iColumns = m_pTableDef->m_pStreamDef->nColumn(C_ALL);
-//  i8 iColumnsIndex = pJob->m_iColumns;
-//  s32 sColumnNm;
-//
-//  for (i8 i_ColumnIndex = 0; i_ColumnIndex < iColumnsIndex; i_ColumnIndex++) {
-//
-//    sColumnNm = pJob->m_sColumnName[i_ColumnIndex];
-//
-//    bool bFound = false;
-//    for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
-//      pColumn = m_pTableDef->m_pStreamDef->pGetColumn(i_Col);
-//      if (pColumn->szColNm()->bSame(sColumnNm)) {
-//        bFound = true;
-//        break;
-//      }
-//    }
-//    if ( ! bFound )
-//      return false;
-//  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set table is loading                                                       */
 /*----------------------------------------------------------------------------*/
 void Table::vIsLoading(bool bIsLoading)

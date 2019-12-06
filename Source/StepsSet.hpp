@@ -1133,7 +1133,6 @@ public:
   void vTableTableDefFetch(void);
   void vTableTableDefStore(void);
   void vTableTruncate(void);
-  void vTableIsValidIndexColumns(void);
   void vTableVerify(void);
   void vTableVisualize(void);
 

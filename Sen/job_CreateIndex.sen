@@ -53,13 +53,6 @@
   sIndexNm checkIsNotIndex not if popIndexes popTable assertInTables false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if index columns are valid
-  pJob_CreateIndex pTable table.isValidIndexColumns not if
-    popIndexes popTable assertInTables EC_INVALID_INDEX_COLUMN false
-    exit
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes
   popIndexes
 

@@ -23,7 +23,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.init"_Stz,               &Step::vTableInit);
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
   vAddStep("table.isLoading!"_Stz,         &Step::vTableIsLoadingStore);
-  vAddStep("table.isValidIndexColumns"_Stz,&Step::vTableIsValidIndexColumns);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
   vAddStep("table.name"_Stz,               &Step::vTableName);
   vAddStep("table.publish"_Stz,            &Step::vTablePublish);
@@ -77,24 +76,6 @@ void Step::vTableAnalyze(void)
   
   m_pDataStack->vPushStr(sAnalysis);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.isValidIndexColumns -- validate index columns from job_createIndex  */
-/*----------------------------------------------------------------------------*/
-void Step::vTableIsValidIndexColumns(void)
-{
-  ENTRY(); // ENTRY("vTableIsValidIndexColumns"_Stz);
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  Job_Universal* pJob_CreateIndex = _pJob_Universal(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_JOB_UNIVERSAL == pJob_CreateIndex->eClass());
-  
-  m_pDataStack->vPushInt(pTable->bIsValidIndexColumns(pJob_CreateIndex));
-  
   EXIT();
 }
 
