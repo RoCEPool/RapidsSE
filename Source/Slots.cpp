@@ -112,34 +112,6 @@ Slots::~Slots(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create column vector                                                       */
 /*----------------------------------------------------------------------------*/
-void Slots::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  Column* pColumn = nullptr;
-  
-  // find the column from the table columnVector
-  i8 iColumns = m_pTable->pStreamDef()->nColumns(C_ALL);
-  
-  bool bFound = false;
-  for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
-    pColumn = m_pTable->pStreamDef()->pGetColumn(i_Col);
-    if (pColumn->szColNm()->bSame(sColumnNm)) {
-      bFound = true;
-      break;
-    }
-  }
-  ASSERT(bFound);
-  
-  // mark the column as a partion key column
-  pColumn->vIsPtnKey(true);
-  
-  m_pPtnColVec->vInsert(pColumn);
-}
-
-/*----------------------------------------------------------------------------*/
-/* create column vector                                                       */
-/*----------------------------------------------------------------------------*/
 void Slots::vCreateColumnVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);

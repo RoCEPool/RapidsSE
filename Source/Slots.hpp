@@ -35,7 +35,6 @@ namespace MetaData
     Slots(void);
     ~Slots(void) noexcept(false);
     
-    void       vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn);
     void       vCreateColumnVec(void);
     Partitioning::TablePtn*  pPartition(i8 iSlot);
     bool       bPopulateIndex(i8 iIndexNo);
