@@ -13,7 +13,6 @@ namespace MetaData
     s32 m_sTableNm;          // table name
     eTT m_eTableType;        // table type
   
-    ColumnVec* m_pColVec;    // column vector
     StreamDef* m_pStreamDef; // definition
   
     s4K m_sCmd;              // the command which created this def

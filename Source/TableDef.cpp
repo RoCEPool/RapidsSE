@@ -53,7 +53,6 @@ TableDef::TableDef(void)
   m_sTableNm   = C_NO_NAME;
   m_eTableType = TT_NORMAL;
 
-  m_pColVec    = new ColumnVec;
   m_pStreamDef = new StreamDef;
   
   m_sCmd       = ""_Stz;
@@ -72,7 +71,6 @@ TableDef::~TableDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
-  delete m_pColVec;
   delete m_pStreamDef;
 }
 
@@ -156,10 +154,15 @@ eEC TableDef::eParse(Stz* szCmd)
     goto L_RETURN;
   }
   
+  // create the streamDef for this table def
+  m_pStreamDef->m_nDefSets = 1;
+  m_pStreamDef->m_i_DefStart[0] = 0;
+  m_pStreamDef->m_nDefColumns[0] = 0;
+  
   // -- -- -- -- -- -- -- -- -- -- --
   // iterate from first column till )
   // -- -- -- -- -- -- -- -- -- -- --
-
+  
   pTkn = pTknVec->pNextToken(); dPT();
   for (i8 i_Col = 0; ! pTkn->bSame(")"_Stz); i_Col++) {
     
@@ -187,12 +190,10 @@ eEC TableDef::eParse(Stz* szCmd)
     }
     
     // -- -- -- --
-    // add column
+    // create column
     // -- -- -- --
-
-    Column* pCol = new Column;
-    m_pColVec->vAdd(pCol);
-
+    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
+    
     // set column number
     pCol->vColumnNo(i_Col);
     
@@ -204,7 +205,7 @@ eEC TableDef::eParse(Stz* szCmd)
     // -- -- -- -- -- -- -- -- -- -- --
 
     for (i8 i_Search = 0; i_Search < i_Col - 1; i_Search++) {
-      Column* pCol_search = m_pColVec->pGet(i_Search++);
+      Column* pCol_search = m_pStreamDef->pGetColumn(i_Search++);
       if (pCol_search->szColNm()->bSame(pCol->szColNm())) {
         eError = EC_DUPLICATE_COLUMN;
         goto L_RETURN;
@@ -280,10 +281,9 @@ eEC TableDef::eParse(Stz* szCmd)
 //
 //      pTkn = pTknVec->pNextToken(); dPT();
 //    }
-    m_pStreamDef->m_xaColumn[i_Col].vCopy(pCol);
-    m_pStreamDef->m_nDefColumns[0]++;
     
-   
+   m_pStreamDef->m_nDefColumns[0]++;
+    
   }
   
   // check if we have a partition by clause
@@ -301,22 +301,12 @@ eEC TableDef::eParse(Stz* szCmd)
       
     // no partition by clause
     // we will create partitioning using the first column
-    m_pColVec->pGet(0)->vIsPtnKey(true);
+    m_pStreamDef->pGetColumn(0)->vIsPtnKey(true);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 L_RETURN:
-  
-  // now create the streamDef for this table def
-  m_pStreamDef->m_nDefSets = 1;
-  m_pStreamDef->m_i_DefStart[0] = 0;
-  m_pStreamDef->m_nDefColumns[0] = 0;
-  
-  for (i8 i_Col = 0; i_Col < m_pColVec->nItems(); i_Col++) {
-    m_pStreamDef->m_xaColumn[i_Col].vCopy(m_pColVec->pGet(i_Col));
-    m_pStreamDef->m_nDefColumns[0]++;
-  }
   
   delete pTknVec;
   
@@ -585,8 +575,8 @@ eEC TableDef::eExtractVarchar(Column* pCol, TokenVec* pTknVec)
       iPartKeys++;
       
       // find column and set as partition column
-      for (i8 i_Col = 0; i_Col < m_pColVec->nItems(); i_Col++) {
-        Column* pCol = m_pColVec->pGet(i_Col);
+      for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
+        Column* pCol = m_pStreamDef->pGetColumn(i_Col);
         if (pCol->szColNm()->bSame(pTkn->szText())) {
           pCol->vIsPtnKey(true);
           bFound = true;
