@@ -15,6 +15,8 @@ namespace MetaData
     i8     m_nDefColumns[C_MAX_STREAMDEFS];
     i8     m_i_DefStart[C_MAX_STREAMDEFS];    // 0, 4, 9
     Column m_xaColumn[C_MAX_DEFCOLUMNS];
+  
+    i8     m_nFixedSized;   // is this a fixed size row?
     
     bool m_bTemp;   // is this a temporary definition?
   

@@ -61,6 +61,8 @@ StreamDef::StreamDef(void)
   m_bTemp = false;
   //vTrace("StreamDef permanent %p\n"_Stz, this);
   
+  m_nFixedSized = 0;
+  
   _checkInitialised_(CN_STREAMDEF);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);

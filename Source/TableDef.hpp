@@ -44,6 +44,8 @@ namespace MetaData
     eEC eExtractVarchar  (Column* pCol, TokenVec* pTknVec);
 
     eEC eExtractPartitionBy(TokenVec* pTknVec);
+  
+    eEC eParseRowSize(TokenVec* pTknVec);
     
     Footer* aFooter(void);
   };

@@ -26,7 +26,9 @@ time create table LineItem                 // SF * 6,000,000 rows
   L_COMMENT       VARCHAR(44)   NOT NULL   // 15) 45B  23B  rnd[10..43]
   //                                             ----  ---
   // 16 columns                                  174B  91B
-);
+)
+  rowsize 1024
+;
 
 time create table LineItem2                 // SF * 6,000,000 rows
 (

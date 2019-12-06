@@ -288,6 +288,14 @@ eEC TableDef::eParse(Stz* szCmd)
   
   // check if we have a partition by clause
   pTkn = pTknVec->pNextToken(); dPT();
+
+  if ( pTkn->bSame("rowsize"_Stz)) {
+    eError = eParseRowSize(pTknVec);
+    if (EC_NONE != eError)
+      return eError;
+  }
+  
+  // check if we have a partition by clause
   if ( pTkn->bSame("partition"_Stz)) {
 
     eError = eExtractPartitionBy(pTknVec);
@@ -544,65 +552,88 @@ eEC TableDef::eExtractVarchar(Column* pCol, TokenVec* pTknVec)
   return EC_NONE;
 }
 
-  /*----------------------------------------------------------------------------*/
-  /* partition the table                                                        */
-  /*----------------------------------------------------------------------------*/
-  eEC TableDef::eExtractPartitionBy(TokenVec* pTknVec)
-  {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+/*----------------------------------------------------------------------------*/
+/* partition the table                                                        */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eExtractPartitionBy(TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  // next token should be 'by'
+  Token* pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn->bSame("by"_Stz) ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // next token should be '('
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn->bSame("("_Stz)) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the partition columns
+  
+  i8 iPartKeys = 0;
+  bool bFound = false;
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  while ( ! pTkn->bSame(")"_Stz) ) {
     
-    // next token should be 'by'
-    Token* pTkn = pTknVec->pNextToken(); dPT();
-    if ( ! pTkn->bSame("by"_Stz) ) {
-      return EC_INVALID_COMMAND;
-    }
+    iPartKeys++;
     
-    // next token should be '('
-    pTkn = pTknVec->pNextToken(); dPT();
-    if ( ! pTkn->bSame("("_Stz)) {
-      return EC_INVALID_COMMAND;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // create the partition columns
-    
-    i8 iPartKeys = 0;
-    bool bFound = false;
-    
-    pTkn = pTknVec->pNextToken(); dPT();
-    while ( ! pTkn->bSame(")"_Stz) ) {
-      
-      iPartKeys++;
-      
-      // find column and set as partition column
-      for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
-        Column* pCol = m_pStreamDef->pGetColumn(i_Col);
-        if (pCol->szColNm()->bSame(pTkn->szText())) {
-          pCol->vIsPtnKey(true);
-          bFound = true;
-          break;
-        }
+    // find column and set as partition column
+    for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
+      Column* pCol = m_pStreamDef->pGetColumn(i_Col);
+      if (pCol->szColNm()->bSame(pTkn->szText())) {
+        pCol->vIsPtnKey(true);
+        bFound = true;
+        break;
       }
-      if ( ! bFound) {
-        return EC_INVALID_COMMAND;
-      }
-      pTkn = pTknVec->pNextToken(); dPT();
-      if ( ! pTkn->bSame(","_Stz)) {
-        continue;
-      }
-      pTkn = pTknVec->pNextToken(); dPT();
-      bFound = false;
     }
-    
-    if ( ! iPartKeys ) {
+    if ( ! bFound) {
       return EC_INVALID_COMMAND;
     }
-    
     pTkn = pTknVec->pNextToken(); dPT();
-    if ( ! pTkn->bSame(";"_Stz))
-      return EC_INVALID_COMMAND;
-    
-    return EC_NONE;
+    if ( ! pTkn->bSame(","_Stz)) {
+      continue;
+    }
+    pTkn = pTknVec->pNextToken(); dPT();
+    bFound = false;
+  }
+  
+  if ( ! iPartKeys ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if ( ! pTkn->bSame(";"_Stz))
+    return EC_INVALID_COMMAND;
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse rowsize option                                                       */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eParseRowSize(TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  // next token should be integer
+  Token* pTkn = pTknVec->pNextToken(); dPT();
+  
+  // check if it was numeric
+  if ( ! pTkn->bIsNumeric() ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // get size
+  i8 nRowSize = pTkn->iToI8();
+
+  m_pStreamDef->m_nFixedSized = nRowSize;
+  
+  return EC_NONE;
 }
 
 #undef dPT
