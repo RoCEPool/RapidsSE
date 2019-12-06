@@ -230,7 +230,14 @@ i8 RowCoder::nHeadSize(StreamDef* pStreamDef)
   //nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(SingleWord));
   
   //i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
-  i8 nBytesHead = 32; //256;
+  
+  
+  i8 nBytesHead = 32;
+  
+  if (pStreamDef->m_nFixedSized)
+    nBytesHead = pStreamDef->m_nFixedSized;
+  
+  
   
   RASSERT(nBytesHead >= C_MIN_HEAD_BYTES);
   return nBytesHead;

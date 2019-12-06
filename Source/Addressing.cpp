@@ -9,13 +9,17 @@
 /*----------------------------------------------------------------------------*/
 i8 Correctness::nSub(void* aAddress0, void* aAddress1)
 {
-  char* aAddr0 = reinterpret_cast<char*>(aAddress0);
-  char* aAddr1 = reinterpret_cast<char*>(aAddress1);
+  byte* ayAddr0 = reinterpret_cast<byte*>(aAddress0);
+  byte* ayAddr1 = reinterpret_cast<byte*>(aAddress1);
  
-  assert(aAddr0 >= aAddr1);
   
-  i8 nBytes = aAddr0 - aAddr1;
+  i8 nBytes = 0;
   
+  if (ayAddr0 >= ayAddr1)
+    nBytes = ayAddr0 - ayAddr1;
+  else
+    nBytes = ayAddr1 - ayAddr0;
+
   return nBytes;
 }
 

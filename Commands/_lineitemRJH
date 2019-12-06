@@ -27,7 +27,7 @@ time create table LineItem                 // SF * 6,000,000 rows
   //                                             ----  ---
   // 16 columns                                  174B  91B
 )
-  rowsize 1024
+  rowsize 256
 ;
 
 time create table LineItem2                 // SF * 6,000,000 rows
@@ -87,9 +87,12 @@ begin
     endOp
 end;
 
+dumptable lineitem;
+
 ping;
 
 logWrite;
+
 
 //dynamic pipeline lineItem_dyn
 //begin

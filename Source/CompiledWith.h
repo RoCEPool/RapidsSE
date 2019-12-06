@@ -73,7 +73,6 @@
 //#define WITH_INFLATE_TRACE       // code for tracing inflate compiled in
 //#define WITH_SHOCO_DUPLICATES    // test for duplicate shoco values
 //#define WITH_VERIFY_TAILS        // verify tails
-//#define WITH_NO_TAILS            // test for duplicate shoco values
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // event-based task model

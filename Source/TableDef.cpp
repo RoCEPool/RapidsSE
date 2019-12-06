@@ -293,6 +293,7 @@ eEC TableDef::eParse(Stz* szCmd)
     eError = eParseRowSize(pTknVec);
     if (EC_NONE != eError)
       return eError;
+    pTkn = pTknVec->pNextToken(); dPT();
   }
   
   // check if we have a partition by clause
