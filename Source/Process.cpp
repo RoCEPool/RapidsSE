@@ -146,6 +146,56 @@ i8 Process::iVirtualSize(void)
   return iVirtual;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get system time of process (in microseconds)                               */
+/*----------------------------------------------------------------------------*/
+i8 Process::iSystemUsec(void)
+{
+  i8 iSystem = 0;
+  
+#ifdef WITH_APPLE
+  
+  struct task_thread_times_info info;
+  
+  mach_msg_type_number_t infoCount = TASK_THREAD_TIMES_INFO_COUNT;
+  
+  if ( task_info( mach_task_self( ), TASK_THREAD_TIMES_INFO,
+                 (task_info_t)&info, &infoCount ) != KERN_SUCCESS )
+    
+    iSystem = 0;      /* Can't access? */
+  else
+    iSystem = info.system_time.seconds * C_1M + info.system_time.microseconds;
+  
+#endif
+  
+  return iSystem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get user time of process (in microseconds)                                 */
+/*----------------------------------------------------------------------------*/
+i8 Process::iUserUsec(void)
+{
+  i8 iUser = 0;
+  
+#ifdef WITH_APPLE
+  
+  struct task_thread_times_info info;
+  
+  mach_msg_type_number_t infoCount = TASK_THREAD_TIMES_INFO_COUNT;
+  
+  if ( task_info( mach_task_self( ), TASK_THREAD_TIMES_INFO,
+                 (task_info_t)&info, &infoCount ) != KERN_SUCCESS )
+    
+    iUser = 0;      /* Can't access? */
+  else
+    iUser = info.user_time.seconds * C_1M + info.user_time.microseconds;
+  
+#endif
+  
+  return iUser;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

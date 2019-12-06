@@ -1010,6 +1010,12 @@ void Engine::vStartSystem(void)
          sResident_magn.szStz(),
          sVirtual_magn.szStz()
          );
+  
+  vTrace("SYSTEM TIME %lldus USER TIME %lldus\n"_Stz,
+         Process::iSystemUsec(),
+         Process::iUserUsec()
+         );
+
 }
 
 /*----------------------------------------------------------------------------*/

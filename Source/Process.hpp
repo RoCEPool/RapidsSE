@@ -19,6 +19,9 @@ namespace Host
   
     static i8   iResidentSize(void);
     static i8   iVirtualSize(void);
+  
+    static i8   iSystemUsec(void);
+    static i8   iUserUsec(void);
   };
 }
 
