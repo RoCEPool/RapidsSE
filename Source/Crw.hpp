@@ -13,8 +13,8 @@ namespace Rows
     Crw(void);
     ~Crw(void) noexcept(false);
   
-    static void vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec);
-    static void vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec);
+    static void vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef);
+    static void vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef);
   };
 
   /*--------------------------------------------------------------------------*/

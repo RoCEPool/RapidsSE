@@ -25,9 +25,9 @@ Crw::~Crw(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump compact row                                                           */
 /*----------------------------------------------------------------------------*/
-void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
+void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
 {
-  /*
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // word dump of headLine (& overLine)
   
@@ -62,9 +62,9 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get no of columns
-  i8 nColumns = pColVec->nItems();
+  i8 nColumns = pStreamDef->nColumns(C_ALL);
   
-  i8 nFreeBytes = aHeadLine->nFreeSpace(pColVec);
+  i8 nFreeBytes = aHeadLine->nFreeSpace(pStreamDef);
   if (nFreeBytes < 0)
     nFreeBytes = 0;
   
@@ -85,7 +85,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
            nColumns,
            aHeadLine->iOverflow2B(),
            i_Col_over,
-           pColVec->pGet(i_Col_over)->szColNm(),
+           pStreamDef->pGetColumn(i_Col_over)->szColNm(),
            nFreeBytes,
            
            aOverLine,
@@ -104,10 +104,10 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  HV_Rec hvRec(pColVec);
+  HV_Rec hvRec(pStreamDef, C_ALL);
   DtmVal oDatum;
   
-  i8 i_Offset = RowCoder::iBaseOffset(pColVec);
+  i8 i_Offset = RowCoder::iBaseOffset(nColumns);
   
   vTrace("Col ColNm         DtmVal MetaCode"
          "           Offset Address      DataBytes           ColVal\n"_Stz);
@@ -127,7 +127,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     
     // get the column at index
-    Column* pCol = pColVec->pGet(i_Col);
+    Column* pCol = pStreamDef->pGetColumn(i_Col);
     
     // get the encoded information
     eDatum     = pCol->eDatumType();
@@ -191,7 +191,8 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
     hvRec->vReset();
     
     // first get the encoded value into datum
-    RowDecoder::vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_Offset);
+    i8 nCols = pStreamDef->nColumns(C_ALL);
+    RowDecoder::vDecode(&oDatum,aHeadLine,nCols,pCol,i_Col,i_Offset);
     hvRec->vAppend(pCol, &oDatum);
     
     vTrace("%s"_Stz,hvRec->szRecStr());
@@ -219,15 +220,14 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   }
   
   //vDumpHead_IV("DumpHeap_IV"_Stz,aHeadLine,pColVec);
-  */
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
-void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
+void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
 {
-  /*
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // word dump of headLine (& overLine)
   
@@ -262,9 +262,9 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get no of columns
-  i8 nColumns = pColVec->nItems();
+  i8 nColumns = pStreamDef->nColumns(C_ALL);
   
-  i8 nFreeBytes = aHeadLine->nFreeSpace(pColVec);
+  i8 nFreeBytes = aHeadLine->nFreeSpace(pStreamDef);
   if (nFreeBytes < 0)
     nFreeBytes = 0;
   
@@ -285,7 +285,7 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
            nColumns,
            aHeadLine->iOverflow2B(),
            i_Col_over,
-           pColVec->pGet(i_Col_over)->szColNm(),
+           pStreamDef->pGetColumn(i_Col_over)->szColNm(),
            nFreeBytes,
            
            aOverLine,
@@ -304,10 +304,10 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  HV_Rec hvRec(pColVec);
+  HV_Rec hvRec(pStreamDef, C_ALL);
   DtmVal oDatum;
   
-  i8 i_Offset = RowCoder::iBaseOffset(pColVec);
+  i8 nCols = pStreamDef->nColumns(C_ALL);
   
   vTrace("Col ColNm         DtmVal MetaCode"
          "           Offset Address      DataBytes           ColVal\n"_Stz);
@@ -317,12 +317,10 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   Stz*  szDatum;
   eMC   eMetaCode;
   Stz*  szMetaCode;
-  byte* ayAddr;
-  i8    nBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Row* pRow = new Row(pColVec);
+  Row* pRow = new Row(pStreamDef, C_ALL);
   
   RowInflator::vInflateRow(pRow,aHeadLine);
   
@@ -330,7 +328,7 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     
     // get the column
-    Column* pCol = pColVec->pGet(i_Col);
+    Column* pCol = pStreamDef->pGetColumn(i_Col);
     
     // get the encoded information
     eDatum     = pCol->eDatumType();
@@ -349,7 +347,6 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   } // for (i_Col)
   
   delete pRow;
-   */
 }
 
 

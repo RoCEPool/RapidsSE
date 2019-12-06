@@ -590,7 +590,7 @@ void RowCompactor::vPackCrw(Encoding* pEncoding)
   
   #ifdef WITH_ENCODING_TRACE
   if (m_nTotalCrws <= 10)
-    Crw::vDumpCrw("vPackCrw"_Stz,m_aHeadLine,m_pColVec);
+    Crw::vDumpCrw("vPackCrw"_Stz,m_aHeadLine,m_pStreamDef);
   #endif
   
 #ifdef WITH_ANALYSE_FREE
