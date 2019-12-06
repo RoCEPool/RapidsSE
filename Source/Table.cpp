@@ -422,10 +422,10 @@ Column* Table::pFindColumn(Stz* szColNm)
   
   Column* pColumn = nullptr;
   bool bFound = false;
-  i8 nColumns = m_pTableDef->m_pColVec->nItems();
+  i8 nColumns = m_pTableDef->m_pStreamDef->nColumns(C_ALL);
 
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    pColumn = m_pTableDef->m_pColVec->pGet(i_Col);
+    pColumn = m_pTableDef->m_pStreamDef->pGetColumn(i_Col);
     if (pColumn->szColNm()->bSame(szColNm)) {
       bFound = true;
       break;
@@ -465,7 +465,7 @@ bool Table::bIsValidIndexColumns(Jobs::Job_Universal* pJob)
 //  Column* pColumn = nullptr;
 //
 //  // find the column from the table columnVector
-//  i8 iColumns = m_pTableDef->m_pColVec->nItems();
+//  i8 iColumns = m_pTableDef->m_pStreamDef->nColumn(C_ALL);
 //  i8 iColumnsIndex = pJob->m_iColumns;
 //  s32 sColumnNm;
 //
@@ -475,7 +475,7 @@ bool Table::bIsValidIndexColumns(Jobs::Job_Universal* pJob)
 //
 //    bool bFound = false;
 //    for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
-//      pColumn = m_pTableDef->m_pColVec->pGet(i_Col);
+//      pColumn = m_pTableDef->m_pStreamDef->pGetColumn(i_Col);
 //      if (pColumn->szColNm()->bSame(sColumnNm)) {
 //        bFound = true;
 //        break;
@@ -538,11 +538,11 @@ void Table::vMarkTable(void)
   sTableMark.vSprintCat("Table %s\n"_Stz,
                         m_sTableNm.szStz());
   
-  i8 nCols = m_pTableDef->m_pColVec->nItems();
+  i8 nCols = m_pTableDef->m_pStreamDef->nColumns(C_ALL);
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    Column* pColumn = m_pTableDef->m_pColVec->pGet(i_Col);
+    Column* pColumn = m_pTableDef->m_pStreamDef->pGetColumn(i_Col);
     sTableMark.vSprintCat("  Col %02lld %s %s(%lld,%lld) %s\n"_Stz,
                           i_Col,
                           pColumn->szColNm(),
