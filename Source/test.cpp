@@ -177,14 +177,14 @@ void vTest5(void)
 /*----------------------------------------------------------------------------*/
 void vTest6(void)
 {
-  RefBuffer* pRefBuffer = new RefBuffer(0);
-  
-  while (pRefBuffer->aAllotRefSet(2))
-    {;}
-  
-  vDebugPoint();
-  
-  delete pRefBuffer;
+//  RefBuffer* pRefBuffer = new RefBuffer(0);
+//  
+//  while (pRefBuffer->aAllotRefSet(2))
+//    {;}
+//  
+//  vDebugPoint();
+//  
+//  delete pRefBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

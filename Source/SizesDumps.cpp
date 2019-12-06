@@ -545,8 +545,8 @@ i8 giClassSize[]
   /* */ 'R'-'A' + 1,                // CN__R__
   /* */ sizeof(Record),             // CN_RECORD
   /* */ sizeof(RecordBuffer),       // CN_RECORDBUFFER
-  /* */ sizeof(RefBuffer),          // CN_REFBUFFER
-  /* */ sizeof(RefSet),             // CN_REFSET
+  /* */ sizeof(RegSet),          // CN_REFBUFFER
+  /* */ sizeof(RegSet),             // CN_REFSET
   /* */ sizeof(RegSet),             // CN_REGSET
   /* */ sizeof(RelOp),              // CN_RELOP
   /* */ sizeof(Request),            // CN_REQUEST

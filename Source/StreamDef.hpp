@@ -17,8 +17,6 @@ namespace MetaData
     Column m_xaColumn[C_MAX_DEFCOLUMNS];
     
     bool m_bTemp;   // is this a temporary definition?
-    
-    //ArrayNL_t<ColumnVec,C_MAX_COLUMNVECS> m_oColVecAry;
   
     // must be last
     Footer m_xFooter;
