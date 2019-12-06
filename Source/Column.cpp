@@ -63,8 +63,6 @@ Column::Column(void)
   
   m_bIsLastColumn = false;
   
-  m_pColVec       = nullptr;
-  
   _checkInitialised_(CN_COLUMN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
@@ -88,7 +86,6 @@ Column::Column(void)
 //  m_bIsUnique     = pJob->m_xColumns[iColumnNo].m_bIsUnique;
 //  m_bIsPtnKey     = pJob->m_xColumns[iColumnNo].m_bIsPtnKey;
 //  m_bIsLastColumn = false;
-//  m_pColVec       = nullptr;
 //
 //  _checkInitialised_(CN_COLUMN);
 //
@@ -244,16 +241,6 @@ void Column::vColumnType(eCT eColumnType)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set column vector                                                          */
-/*----------------------------------------------------------------------------*/
-void Column::vColVec(ColumnVec* pColVec)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  m_pColVec = pColVec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 void Column::vCopy(Column* pCol)
@@ -270,7 +257,6 @@ void Column::vCopy(Column* pCol)
   m_bIsUnique       = pCol->m_bIsUnique;
   m_bIsPtnKey       = pCol->m_bIsPtnKey;
   m_bIsLastColumn   = pCol->m_bIsLastColumn;
-  m_pColVec         = nullptr;
   
   //_checkInitialised_(CN_COLUMN);
   

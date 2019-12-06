@@ -37,8 +37,6 @@ namespace MetaData
     bool  m_bIsUnique;
     bool  m_bIsPtnKey;
     bool  m_bIsLastColumn;
-  
-    ColumnVec* m_pColVec;
     
     // must be last
     Footer m_xFooter;
@@ -70,9 +68,6 @@ namespace MetaData
   
     eCT  eColumnType(void);
     void vColumnType(eCT eColumnType);
-
-    //ColumnVec* pColVec(void);
-    void vColVec(ColumnVec* pColVec);
 
     void vCopy(Column* pCol);
   
@@ -120,15 +115,6 @@ namespace MetaData
       return m_eDatumType;
     }
   
-    /*----------------------------------------------------------------------------*/
-    /* get column vector                                                          */
-    /*----------------------------------------------------------------------------*/
-    inline ColumnVec* pColVec(void)
-    {
-      _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-    
-      return m_pColVec;
-    }
   };
   
   Column* _pColumn(void* aAddr);
