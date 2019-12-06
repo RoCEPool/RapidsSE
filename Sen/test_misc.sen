@@ -208,11 +208,9 @@ doesTest xyz ;
 
 : collect
 
-  "" locals| sSmt |
-
   next-token locals| sWordNm |
 
-
+  "" locals| sSmt |
   begin
     next-token dup ";" str.equal not
     while
@@ -227,7 +225,7 @@ doesTest xyz ;
 
     sSmt ,
 
-    .
+    [[ . ]]
 
     see //debug::breakPoint
 
@@ -236,9 +234,9 @@ doesTest xyz ;
   "-- -- in collect after 1 -- --" .
 ;
 
-//collect myCollect a b c ;
+collect myCollect a b c ;
 
-//tick myCollect word.see
+tick myCollect word.see
 
 //debug::breakPoint
 /*============================================================================*/

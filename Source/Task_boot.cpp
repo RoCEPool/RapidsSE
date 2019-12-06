@@ -126,6 +126,7 @@ void Task::vAddRoutines(void)
 //  "    \"SHOULD NOT BE POSTPONING\" ."
 //  "    process::quit"
   "    \"POSTPONING\" ."
+  "    , "
   "    \"compile,\" word::find compile,"
   "    reenter"
   "  then"

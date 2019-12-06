@@ -207,9 +207,13 @@ void Step::vAssertStack_0(void)
 
   i8 iStackValues = m_pDataStack->nValues();
   
-  if ( ! (0 == iStackValues)  )
+  if ( ! (0 == iStackValues)  ) {
+    
+    m_pTask->m_pForth->vContentDump();
+
     vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
            "assert::stack_0 in word"_Stz);
+  }
   
   EXIT();
 }

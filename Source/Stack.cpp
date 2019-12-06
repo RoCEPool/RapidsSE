@@ -147,7 +147,13 @@ void Stack::vDump(DicStack* pDicStack, Stz* aTitle)
         Object* pObj  =aAnyVal->pObj();
         eCN ePtdClass = pObj->eClass();
         
-        vTrace("%p (%s)\n"_Stz,pObj,aCN[ePtdClass]);
+        if (CN_WORD == ePtdClass) {
+          Word* pPtdWord = _pWord(pObj);
+          vTrace("%p (%s) %s\n"_Stz,pObj,aCN[ePtdClass],pPtdWord->szWordNm());
+        }
+        else
+          vTrace("%p (%s)\n"_Stz,pObj,aCN[ePtdClass]);
+
         break;
       }
         
