@@ -191,22 +191,9 @@ traceon
   POSTPONE exit_rt
 ;
 
-ssnDo
-
-: doesTest
-
-  create
-
-  does>
-
-   "in does" .
-;
-
-doesTest xyz ;
-
 /*----------------------------------------------------------------------------*/
 
-: collect
+: storeProcedure
 
   next-token locals| sWordNm |
 
@@ -224,11 +211,19 @@ doesTest xyz ;
     sSmt ,
 
     [[ . ]]
-
   ;NestedWord
+
 ;
 
-collect myCollect a b c ;
+/*----------------------------------------------------------------------------*/
+
+storeProcedure myCollect
+
+  pipeline EXPORT parameters <tableNm> <fileNm>
+  begin
+
+  end
+;
 
 tick myCollect word.see
 
