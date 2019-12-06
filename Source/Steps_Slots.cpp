@@ -25,7 +25,7 @@ void Step::vSlotsColumnCount(void)
   Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SLOTS == pSlots->eClass());
   
-  m_pDataStack->vPushInt(pSlots->pPtnColVec()->nItems());
+  m_pDataStack->vPushInt(pSlots->pPtnStreamDef()->nColumns(C_ALL));
   
   EXIT();
 }
@@ -42,8 +42,8 @@ void Step::vSlotsColumnName(void)
   
   i8 iIndex = m_pDataStack->iPopInt(__func__);
   
-  ASSERT(iIndex < pSlots->pPtnColVec()->nItems());
-  Column* pColumn = pSlots->pPtnColVec()->pGet(iIndex);
+  ASSERT(iIndex < pSlots->pPtnStreamDef()->nColumns(C_ALL));
+  Column* pColumn = pSlots->pPtnStreamDef()->pGetColumn(iIndex);
   
   s32 sColNm(pColumn->szColNm());
   
@@ -53,7 +53,7 @@ void Step::vSlotsColumnName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* slots.createColumnVec -- create slots column vector from subdic         */
+/* slots.createColumnVec -- create slots column vector from subdic            */
 /*----------------------------------------------------------------------------*/
 void Step::vSlotsCreateColumnVec(void)
 {

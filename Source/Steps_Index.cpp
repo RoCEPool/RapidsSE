@@ -278,8 +278,8 @@ void Step::vIndexIsValidUniqueIndex(void)
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  // get the table partition column vector
-  PtnColVec* pPtnColVec = pIndex->pTable()->pPtnColVec();
+  // get the table partition stream def
+  StreamDef* pPtnStreamDef = pIndex->pTable()->pPtnStreamDef();
   
   // get the index column vector
   IdxColVec* pIdxColVec = pIndex->pIdxColVec();
@@ -287,10 +287,10 @@ void Step::vIndexIsValidUniqueIndex(void)
   bool bValid = true;
   
   // a unique index must include all columns in the partitioning keys
-  i8 nPtnColumns = pPtnColVec->nItems();
+  i8 nPtnColumns = pPtnStreamDef->nColumns(C_ALL);
   for (i8 i = 0; i < nPtnColumns; i++)
   {
-    Column* pColumn = pPtnColVec->pGet(i);
+    Column* pColumn = pPtnStreamDef->pGetColumn(i);
     if ( ! pIdxColVec->bContains(pColumn)) {
       bValid = false;
       break;

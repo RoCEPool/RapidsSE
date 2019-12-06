@@ -615,11 +615,11 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* get partition column vector                                                */
 /*----------------------------------------------------------------------------*/
-PtnColVec*  Table::pPtnColVec(void)
+StreamDef*  Table::pPtnStreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_xSlots.pPtnColVec();
+  return m_xSlots.pPtnStreamDef();
 }
 
 /*----------------------------------------------------------------------------*/

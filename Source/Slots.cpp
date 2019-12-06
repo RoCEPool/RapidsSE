@@ -93,7 +93,7 @@ Slots::Slots(void)
     
   }
   
-  m_pPtnColVec = new PtnColVec;
+  m_pPtnStreamDef = new StreamDef;
   
   _checkInitialised_(CN_SLOTS);
 }
@@ -118,13 +118,19 @@ void Slots::vCreateColumnVec(void)
   
   Column* pColumn = nullptr;
   
+  m_pPtnStreamDef->m_nDefSets = 1;
+  m_pPtnStreamDef->m_i_DefStart[0] = 0;
+  m_pPtnStreamDef->m_nDefColumns[0] = 0;
+
   // find the column from the table columnVector
   i8 iColumns = m_pTable->pStreamDef()->nColumns(C_ALL);
   
   for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
     pColumn = m_pTable->pStreamDef()->pGetColumn(i_Col);
     if (pColumn->bIsPtnKey()) {
-      m_pPtnColVec->vInsert(pColumn);
+      m_pPtnStreamDef->m_xaColumn[m_pPtnStreamDef->m_nDefColumns[0]].vCopy(pColumn);
+      m_pPtnStreamDef->m_nDefColumns[0]++;
+
     }
   }
 }
@@ -161,11 +167,11 @@ bool Slots::bPopulateIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* get ptnColVec                                                              */
 /*----------------------------------------------------------------------------*/
-PtnColVec* Slots::pPtnColVec(void)
+StreamDef* Slots::pPtnStreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
-  return m_pPtnColVec;
+  return m_pPtnStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -228,7 +234,6 @@ void Slots::vTidyUp(void)
   
   // get IdxDataVec from any one partition
   IndexTreeVec* pIndexTreeVec = m_pTablePtnVec->pGet(0)->pIndexTreeVec();
-  i8 nItems = pIndexTreeVec->nItems();
   
   // run the finalize for the partitions
   for (i8 i_Slot = 0; i_Slot < AM::nSlotsPerNode(); i_Slot++) {
@@ -240,11 +245,8 @@ void Slots::vTidyUp(void)
   // delete the partition vector
   delete m_pTablePtnVec;
   
-  // Since the column is picked from the ColVec of table
-  // we need to just remove it from the PtnColVec before deleting it
-  m_pPtnColVec->vClear();
-  
-  delete m_pPtnColVec;
+  // delete the partition stream def
+  delete m_pPtnStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/

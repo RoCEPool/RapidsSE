@@ -248,7 +248,7 @@ void Column::vCopy(Column* pCol)
   //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   m_iColumnNo       = pCol->m_iColumnNo;
-  m_sColumnNm     = pCol->m_sColumnNm;
+  m_sColumnNm       = pCol->m_sColumnNm;
   m_eColumnType     = pCol->m_eColumnType;
   m_iColumnLength   = pCol->m_iColumnLength;
   m_iColumnScale    = pCol->m_iColumnScale;

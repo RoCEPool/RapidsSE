@@ -67,7 +67,7 @@ namespace MetaData
     Partitioning::TablePtn* pPartition(i8 iSlot);
     bool bPopulateIndex(i8 iIndexNo);
     void vRemoveIndex(Index* pIndex);
-    PtnColVec*  pPtnColVec(void);
+    StreamDef*  pPtnStreamDef(void);
     void vPublish(i8 iPartitionNo);
     bool bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
     EntBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);

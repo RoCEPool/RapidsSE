@@ -19,8 +19,8 @@ namespace MetaData
   private:
     Table* m_pTable;   // table this slots belongs to
     Dic    m_xSubDic;  // table partition sub dictionary
-    PtnColVec*   m_pPtnColVec;   // partition colummn vector
-    TablePtnVec* m_pTablePtnVec; // table partition vector
+    StreamDef*    m_pPtnStreamDef;   // partition stream def
+    TablePtnVec*  m_pTablePtnVec;    // table partition vector
   
     // must be last
     Footer m_xFooter;
@@ -38,7 +38,7 @@ namespace MetaData
     void       vCreateColumnVec(void);
     Partitioning::TablePtn*  pPartition(i8 iSlot);
     bool       bPopulateIndex(i8 iIndexNo);
-    PtnColVec* pPtnColVec(void);
+    StreamDef* pPtnStreamDef(void);
     void       vPublishTable(i8 iPartitionNo);
     bool       bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds);
     Dic*       pSubDic(void);
