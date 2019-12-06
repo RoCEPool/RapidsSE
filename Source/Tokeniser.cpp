@@ -63,27 +63,28 @@ Tokeniser::Tokeniser(void)
     Stz* szNodeNm = AM::szNodeNm();
     i8  i_Node = AM::iThisNodeNo();
     
-    m_sPrompt.vSprint("[N%lld/%lld %s %lld%s%s%s] se %s%c"_Stz,
+    //m_sPrompt.vSprint("[N%lld/%lld %s %lld%s%s%s] se %s%c"_Stz,
+    m_sPrompt.vSprint("[%s %lld] se %s%c"_Stz,
                       
-                      i_Node,
-                      nNodes,
+//                      i_Node,
+//                      nNodes,
                       szNodeNm,
                       Process::iGetPid(),
-  #ifdef WITH_SHARED_LOG
-                      AM::bLog() ? " LG+" : " LG-",
-  #else
-                      "",
-  #endif
-  #ifdef WITH_ENTRY_EXIT
-                      " EE+",
-  #else
-                      "",
-  #endif
-  #ifdef WITH_TRACE_API
-                      " TA+",
-  #else
-                      "",
-  #endif
+//  #ifdef WITH_SHARED_LOG
+//                      AM::bLog() ? " LG+" : " LG-",
+//  #else
+//                      "",
+//  #endif
+//  #ifdef WITH_ENTRY_EXIT
+//                      " EE+",
+//  #else
+//                      "",
+//  #endif
+//  #ifdef WITH_TRACE_API
+//                      " TA+",
+//  #else
+//                      "",
+//  #endif
 
                       RAPIDSSE_VERSION_STRING,
   #ifdef WITH_DEBUG_VERSION
