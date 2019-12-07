@@ -101,8 +101,8 @@ eCT TableDef::eColumn(Stz* szType)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-//#define dPT() vTrace("tkn=%s\n"_Stz,pTkn->szText());
-#define dPT()
+#define dPT() vTrace("tkn=%s\n"_Stz,pTkn->szText());
+//#define dPT()
 
 /*----------------------------------------------------------------------------*/
 /* parse Create Table command                                                 */
@@ -169,7 +169,6 @@ eEC TableDef::eParse(Stz* szCmd)
     // -- -- -- -- -- -- -- --
     // exceeded column limit?
     // -- -- -- -- -- -- -- --
-
     if (i_Col >= C_MAX_COLUMNS) {
       eError = EC_MAX_COLUMNS;
       goto L_RETURN;
@@ -178,7 +177,6 @@ eEC TableDef::eParse(Stz* szCmd)
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // subsequent column names, skipping over comma
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
     if (i_Col) {
       if (pTkn->bSame(","_Stz)) {
         pTkn = pTknVec->pNextToken(); dPT();
@@ -189,101 +187,13 @@ eEC TableDef::eParse(Stz* szCmd)
       }
     }
     
-    // -- -- -- --
-    // create column
-    // -- -- -- --
-    Column* pCol = m_pStreamDef->pGetColumn(i_Col);
-    
-    // set column number
-    pCol->vColumnNo(i_Col);
-    
-    // set column name
-    pCol->vColumnNm(pTkn->szText());
-    
-    // -- -- -- -- -- -- -- -- -- -- --
-    // check for duplicate column name
-    // -- -- -- -- -- -- -- -- -- -- --
-
-    for (i8 i_Search = 0; i_Search < i_Col - 1; i_Search++) {
-      Column* pCol_search = m_pStreamDef->pGetColumn(i_Search++);
-      if (pCol_search->szColNm()->bSame(pCol->szColNm())) {
-        eError = EC_DUPLICATE_COLUMN;
-        goto L_RETURN;
-      }
-    }
-    
-    // -- -- -- --
-    // column type
-    // -- -- -- --
-
-    pTkn = pTknVec->pNextToken(); dPT();
-    eCT eColumn = TableDef::eColumn(pTkn->szText());
-    
-    switch (eColumn) {
-        
-      case CT_BOOLEAN:   eError = eParseColumnBoolean   (pTknVec,pCol);  break;
-      case CT_DATE:      eError = eParseColumnDate      (pTknVec,pCol);  break;
-      case CT_DECIMAL:   eError = eParseColumnDecimal   (pTknVec,pCol);  break;
-      case CT_FLOAT:     eError = eParseColumnFloat     (pTknVec,pCol);  break;
-      case CT_INTEGER:   eError = eParseColumnInteger   (pTknVec,pCol);  break;
-      case CT_INTERVAL:  eError = eParseColumnInterval  (pTknVec,pCol);  break;
-      case CT_TIME:      eError = eParseColumnTime      (pTknVec,pCol);  break;
-      case CT_TIMESTAMP: eError = eParseColumnTimestamp (pTknVec,pCol);  break;
-      case CT_VARCHAR:   eError = eParseColumnVarchar   (pTknVec,pCol);  break;
-        
-      default:
-        if (pTkn->bSame("char"_Stz) ||
-            pTkn->bSame("varbinary"_Stz)) {
-          eError = eParseColumnVarchar(pTknVec,pCol);
-        }
-        else
-          eError = EC_INVALID_COMMAND;
-        break;
-        
-    }
-    
+    // -- -- -- -- --
+    // parse column
+    // -- -- -- -- --
+    eError = eParseColumn(pTknVec,i_Col);
     if (EC_NONE != eError)
       goto L_RETURN;
- 
-    
-    // -- -- -- --
-    // next token
-    // -- -- -- --
-    pTkn = pTknVec->pNextToken(); dPT();
-    
-    // -- -- --
-    // not null
-    // -- -- --
-
-    if (pTkn->bSame("not"_Stz)) {
-      pTkn = pTknVec->pNextToken(); dPT();
-      if (! pTkn->bSame("null"_Stz))
-        return EC_INVALID_COMMAND;
-      pCol->vIsNullable(false);
-      
-      pTkn = pTknVec->pNextToken(); dPT();
-    }
-    
-    // check for PRIMARY KEY
-//    if (m_xTokenVec[i_Tkn]->bSame("primary"_Stz)) {
-//
-//      pJob->pCol->m_sPrimaryKey = m_xTokenVec[i_Tkn++]->aText();
-//
-//      if (!m_xTokenVec[i_Tkn]->bSame("key"_Stz)) {
-//        m_pSession->vSetLastError(EC_INVALID_COMMAND);
-//        return false;
-//      }
-//    }
-    
-    // check for UNIQUE
-//    if (pTkn->bSame("unique"_Stz)) {
-//      pCol->vIsUnique(true);
-//
-//      pTkn = pTknVec->pNextToken(); dPT();
-//    }
-    
-   m_pStreamDef->m_nDefColumns[0]++;
-    
+    pTkn = pTknVec->pCurrToken(); dPT();
   }
   
   // check if we have a partition by clause
