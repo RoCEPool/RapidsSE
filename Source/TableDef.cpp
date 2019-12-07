@@ -520,23 +520,24 @@ eEC TableDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
-  // -- -- -- --
-  // next token
-  // -- -- -- --
+  eEC eError = EC_NONE;
+  
   Token* pTkn = pTknVec->pNextToken(); dPT();
-  
-  // -- -- --
-  // not null
-  // -- -- --
-  
-  if (pTkn->bSame("not"_Stz)) {
-    pTkn = pTknVec->pNextToken(); dPT();
-    if (! pTkn->bSame("null"_Stz))
-      return EC_INVALID_COMMAND;
-    pCol->vIsNullable(false);
     
+  if (pTkn->bSame("not"_Stz)) {
+    
+    eError = eParseNotNull(pTknVec,pCol);
+    if (EC_NONE != eError)
+      return eError;
+
     pTkn = pTknVec->pNextToken(); dPT();
   }
+  
+  
+  
+  
+  
+  
   
   // check for PRIMARY KEY
   //    if (m_xTokenVec[i_Tkn]->bSame("primary"_Stz)) {
@@ -623,6 +624,13 @@ eEC TableDef::eParseNotNull(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
+  Token* pTkn = pTknVec->pNextToken(); dPT();
+  
+  if (! pTkn->bSame("null"_Stz))
+    return EC_INVALID_COMMAND;
+  
+  pCol->vIsNullable(false);
+
   return EC_NONE;
 }
 
