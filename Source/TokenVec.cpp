@@ -279,6 +279,24 @@ Token* TokenVec::pNextToken(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return previous token                                                      */
+/*----------------------------------------------------------------------------*/
+Token* TokenVec::pPrevToken(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  if (m_iCurTkn > 0) {
+    
+    m_iCurTkn--;
+    Token* pTkn = pGet(m_iCurTkn);
+    return pTkn;
+  }
+  
+  m_iCurTkn = C_UNKNOWN;
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* print this token vector                                                    */
 /*----------------------------------------------------------------------------*/
 void TokenVec::vPrint(void)

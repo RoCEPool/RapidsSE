@@ -36,7 +36,7 @@ namespace TokenStream
     Token* pFirstToken(void);
     void vIncTokens(void);
     Token* pNextToken(void);
-    i8   nTokens(void);
+    Token* pPrevToken(void);
     void vPrint(void);
     void vReset(void);
     void vSetAllTokens(void);
@@ -44,6 +44,7 @@ namespace TokenStream
     void vStripAmpersand(void);
     void vStripSingleQuotes(void);
     void vStripSemicolon(void);
+    i8   nTokens(void);
     void vToString(Stz* szStr, i8 iFromTkn=0);
 
     Footer* aFooter(void);
