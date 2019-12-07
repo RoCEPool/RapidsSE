@@ -67,9 +67,13 @@ namespace Rows
     void vAppendClose(void);
     void vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples);
     bool bAppendRow(Row* pRow);
-  
+    void vReplaceRow(Row* pRow, i8 i_Row);
+
   private:
     bool       bHasSpace(i8 nBytes);
+  
+   HeadLine*   aGetHead(i8 i_Row);
+
 
     ////////////////////////////////////////////////////////////////////////////
   

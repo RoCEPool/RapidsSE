@@ -425,6 +425,16 @@ i8 CrwBuffer::nRowCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* replace existing into this buffer                                          */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vReplaceRow(Row* pRow, i8 i_Row)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* restore the buffer after being received over a socket                      */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vRestore(void)
@@ -491,6 +501,10 @@ void CrwBuffer::vShowRow(i8 i_Row)
   i8 nOffset = nSub(this,aCompactRow);
   
   vTrace("row: %04x (%s)\n"_Stz,nOffset,hvRec->szRecStr());
+  
+  if (0 == i_Row)
+    Crw::vDumpCrw("  "_Stz,aCompactRow,pStreamDef);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -787,6 +801,21 @@ bool CrwBuffer::bVerifyNextPrev(void)
   
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get the head line for given row                                            */
+/*----------------------------------------------------------------------------*/
+HeadLine* CrwBuffer::aGetHead(i8 i_Row)
+{
+  HeadLine* aHeadLine = m_oRowTray.pNub()->aGetHead(i_Row);
+  
+  return aHeadLine;
+}
+
 
 
 /*----------------------------------------------------------------------------*/

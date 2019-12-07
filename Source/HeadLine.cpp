@@ -137,7 +137,8 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
   //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
   
   Column* pLastCol = pStreamDef->pGetColumn(pStreamDef->nColumns(C_ALL) - 1);
-  ASSERT(pLastCol->bIsLastColumn());
+  
+ // ASSERT(pLastCol->bIsLastColumn());
   
   i8 i_BaseOffset = RowCoder::iBaseOffset(pStreamDef);
   
