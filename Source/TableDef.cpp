@@ -561,6 +561,76 @@ eEC TableDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse asc column clause                                                    */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eParseAsc(TokenVec* pTknVec, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse desc column clause                                                   */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eParseDesc(TokenVec* pTknVec, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse fixed column clause                                                  */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eParseFixed(TokenVec* pTknVec, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse max column clause                                                    */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eParseMax(TokenVec* pTknVec, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse min column clause                                                    */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eParseMin(TokenVec* pTknVec, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse not null column clause                                               */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eParseNotNull(TokenVec* pTknVec, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse random column clause                                                 */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eParseRandom(TokenVec* pTknVec, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
