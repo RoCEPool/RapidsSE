@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 : Job__Cancelled::send ( pJobParticipant -- )
 
-  params| pJobParticipant iJobId |
+  params| pJobParticipant |
 
   pJobParticipant job.id@ locals| iJobId |
 
