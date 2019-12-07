@@ -30,6 +30,7 @@ namespace Enums
 
 #include "eDA.h"
 #include "eDC.h"
+#include "eDG.h"
 #include "eDL.h"
 #include "eDM.h"
 #include "eDS.h"
