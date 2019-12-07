@@ -8,7 +8,7 @@ namespace SenVM
   class Local : public Object
   {
   private:
-    AllVal_small u;
+    AllVal_y8KB u;
   
     // must be last
     Footer m_xFooter;
