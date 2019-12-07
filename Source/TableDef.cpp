@@ -221,20 +221,20 @@ eEC TableDef::eParse(Stz* szCmd)
     
     switch (eColumn) {
         
-      case CT_BOOLEAN:   eError = eExtractBoolean   (pCol,pTknVec);  break;
-      case CT_DATE:      eError = eExtractDate      (pCol,pTknVec);  break;
-      case CT_DECIMAL:   eError = eExtractDecimal   (pCol,pTknVec);  break;
-      case CT_FLOAT:     eError = eExtractFloat     (pCol,pTknVec);  break;
-      case CT_INTEGER:   eError = eExtractInteger   (pCol,pTknVec);  break;
-      case CT_INTERVAL:  eError = eExtractInterval  (pCol,pTknVec);  break;
-      case CT_TIME:      eError = eExtractTime      (pCol,pTknVec);  break;
-      case CT_TIMESTAMP: eError = eExtractTimestamp (pCol,pTknVec);  break;
-      case CT_VARCHAR:   eError = eExtractVarchar   (pCol,pTknVec);  break;
+      case CT_BOOLEAN:   eError = eParseColumnBoolean   (pTknVec,pCol);  break;
+      case CT_DATE:      eError = eParseColumnDate      (pTknVec,pCol);  break;
+      case CT_DECIMAL:   eError = eParseColumnDecimal   (pTknVec,pCol);  break;
+      case CT_FLOAT:     eError = eParseColumnFloat     (pTknVec,pCol);  break;
+      case CT_INTEGER:   eError = eParseColumnInteger   (pTknVec,pCol);  break;
+      case CT_INTERVAL:  eError = eParseColumnInterval  (pTknVec,pCol);  break;
+      case CT_TIME:      eError = eParseColumnTime      (pTknVec,pCol);  break;
+      case CT_TIMESTAMP: eError = eParseColumnTimestamp (pTknVec,pCol);  break;
+      case CT_VARCHAR:   eError = eParseColumnVarchar   (pTknVec,pCol);  break;
         
       default:
         if (pTkn->bSame("char"_Stz) ||
             pTkn->bSame("varbinary"_Stz)) {
-          eError = eExtractVarchar(pCol,pTknVec);
+          eError = eParseColumnVarchar(pTknVec,pCol);
         }
         else
           eError = EC_INVALID_COMMAND;
@@ -299,7 +299,7 @@ eEC TableDef::eParse(Stz* szCmd)
   // check if we have a partition by clause
   if ( pTkn->bSame("partition"_Stz)) {
 
-    eError = eExtractPartitionBy(pTknVec);
+    eError = eParsePartitionBy(pTknVec);
     if (EC_NONE != eError)
       return eError;
   }
@@ -329,7 +329,7 @@ L_RETURN:
 /*----------------------------------------------------------------------------*/
 /* extract boolean                                                            */
 /*----------------------------------------------------------------------------*/
-eEC TableDef::eExtractBoolean(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -342,7 +342,7 @@ eEC TableDef::eExtractBoolean(Column* pCol, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* extract date                                                               */
 /*----------------------------------------------------------------------------*/
-eEC TableDef::eExtractDate(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eParseColumnDate(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -355,7 +355,7 @@ eEC TableDef::eExtractDate(Column* pCol, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* extract decimal                                                            */
 /*----------------------------------------------------------------------------*/
-eEC TableDef::eExtractDecimal(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -412,7 +412,7 @@ eEC TableDef::eExtractDecimal(Column* pCol, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* extract float                                                              */
 /*----------------------------------------------------------------------------*/
-eEC TableDef::eExtractFloat(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -457,7 +457,7 @@ eEC TableDef::eExtractFloat(Column* pCol, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* extract integer                                                            */
 /*----------------------------------------------------------------------------*/
-eEC TableDef::eExtractInteger(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -471,7 +471,7 @@ eEC TableDef::eExtractInteger(Column* pCol, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* extract interval                                                           */
 /*----------------------------------------------------------------------------*/
-eEC TableDef::eExtractInterval(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -484,7 +484,7 @@ eEC TableDef::eExtractInterval(Column* pCol, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* extract time                                                               */
 /*----------------------------------------------------------------------------*/
-eEC TableDef::eExtractTime(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eParseColumnTime(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -497,7 +497,7 @@ eEC TableDef::eExtractTime(Column* pCol, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* extract timestamp                                                          */
 /*----------------------------------------------------------------------------*/
-eEC TableDef::eExtractTimestamp(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -510,7 +510,7 @@ eEC TableDef::eExtractTimestamp(Column* pCol, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* extract varchar                                                            */
 /*----------------------------------------------------------------------------*/
-eEC TableDef::eExtractVarchar(Column* pCol, TokenVec* pTknVec)
+eEC TableDef::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
@@ -556,7 +556,7 @@ eEC TableDef::eExtractVarchar(Column* pCol, TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* partition the table                                                        */
 /*----------------------------------------------------------------------------*/
-eEC TableDef::eExtractPartitionBy(TokenVec* pTknVec)
+eEC TableDef::eParsePartitionBy(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   

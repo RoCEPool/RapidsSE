@@ -33,18 +33,17 @@ namespace MetaData
     
   private:
   
-    eEC eExtractBoolean  (Column* pCol, TokenVec* pTknVec);
-    eEC eExtractDate     (Column* pCol, TokenVec* pTknVec);
-    eEC eExtractDecimal  (Column* pCol, TokenVec* pTknVec);
-    eEC eExtractFloat    (Column* pCol, TokenVec* pTknVec);
-    eEC eExtractInteger  (Column* pCol, TokenVec* pTknVec);
-    eEC eExtractInterval (Column* pCol, TokenVec* pTknVec);
-    eEC eExtractTime     (Column* pCol, TokenVec* pTknVec);
-    eEC eExtractTimestamp(Column* pCol, TokenVec* pTknVec);
-    eEC eExtractVarchar  (Column* pCol, TokenVec* pTknVec);
+    eEC eParseColumnBoolean  (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnDate     (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnDecimal  (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnFloat    (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnInteger  (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnInterval (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnTime     (TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol);
+    eEC eParseColumnVarchar  (TokenVec* pTknVec, Column* pCol);
 
-    eEC eExtractPartitionBy(TokenVec* pTknVec);
-  
+    eEC eParsePartitionBy(TokenVec* pTknVec);
     eEC eParseRowSize(TokenVec* pTknVec);
     
     Footer* aFooter(void);
