@@ -45,6 +45,8 @@ namespace MetaData
     eEC eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol);
     eEC eParseColumnVarchar  (TokenVec* pTknVec, Column* pCol);
 
+    eEC eParseColumnClauses  (TokenVec* pTknVec, Column* pCol);
+  
     eEC eParseTableClauses(TokenVec* pTknVec);
 
     eEC eParsePartitionBy(TokenVec* pTknVec);

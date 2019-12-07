@@ -277,45 +277,11 @@ eEC TableDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
   
   if (EC_NONE != eError)
     return eError;
-
   
-  // -- -- -- --
-  // next token
-  // -- -- -- --
-  pTkn = pTknVec->pNextToken(); dPT();
-  
-  // -- -- --
-  // not null
-  // -- -- --
-  
-  if (pTkn->bSame("not"_Stz)) {
-    pTkn = pTknVec->pNextToken(); dPT();
-    if (! pTkn->bSame("null"_Stz))
-      return EC_INVALID_COMMAND;
-    pCol->vIsNullable(false);
-    
-    pTkn = pTknVec->pNextToken(); dPT();
-  }
-  
-  // check for PRIMARY KEY
-  //    if (m_xTokenVec[i_Tkn]->bSame("primary"_Stz)) {
-  //
-  //      pJob->pCol->m_sPrimaryKey = m_xTokenVec[i_Tkn++]->aText();
-  //
-  //      if (!m_xTokenVec[i_Tkn]->bSame("key"_Stz)) {
-  //        m_pSession->vSetLastError(EC_INVALID_COMMAND);
-  //        return false;
-  //      }
-  //    }
-  
-  // check for UNIQUE
-  //    if (pTkn->bSame("unique"_Stz)) {
-  //      pCol->vIsUnique(true);
-  //
-  //      pTkn = pTknVec->pNextToken(); dPT();
-  //    }
+  eError = eParseColumnClauses(pTknVec,pCol);
   
   m_pStreamDef->m_nDefColumns[0]++;
+
   
   return EC_NONE;
 }
@@ -543,6 +509,53 @@ eEC TableDef::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
   
   // set size in column
   pCol->vColumnLength(iSize);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse column clause                                                        */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  // -- -- -- --
+  // next token
+  // -- -- -- --
+  Token* pTkn = pTknVec->pNextToken(); dPT();
+  
+  // -- -- --
+  // not null
+  // -- -- --
+  
+  if (pTkn->bSame("not"_Stz)) {
+    pTkn = pTknVec->pNextToken(); dPT();
+    if (! pTkn->bSame("null"_Stz))
+      return EC_INVALID_COMMAND;
+    pCol->vIsNullable(false);
+    
+    pTkn = pTknVec->pNextToken(); dPT();
+  }
+  
+  // check for PRIMARY KEY
+  //    if (m_xTokenVec[i_Tkn]->bSame("primary"_Stz)) {
+  //
+  //      pJob->pCol->m_sPrimaryKey = m_xTokenVec[i_Tkn++]->aText();
+  //
+  //      if (!m_xTokenVec[i_Tkn]->bSame("key"_Stz)) {
+  //        m_pSession->vSetLastError(EC_INVALID_COMMAND);
+  //        return false;
+  //      }
+  //    }
+  
+  // check for UNIQUE
+  //    if (pTkn->bSame("unique"_Stz)) {
+  //      pCol->vIsUnique(true);
+  //
+  //      pTkn = pTknVec->pNextToken(); dPT();
+  //    }
+
   
   return EC_NONE;
 }
