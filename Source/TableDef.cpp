@@ -101,8 +101,8 @@ eCT TableDef::eColumn(Stz* szType)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-#define dPT() vTrace("tkn=%s\n"_Stz,pTkn->szText());
-//#define dPT()
+//#define dPT() vTrace("tkn=%s\n"_Stz,pTkn->szText());
+#define dPT()
 
 /*----------------------------------------------------------------------------*/
 /* parse Create Table command                                                 */
@@ -527,6 +527,51 @@ eEC TableDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
     
     Token* pTkn = pTknVec->pNextToken(); dPT();
   
+    if (pTkn->bSame("asc"_Stz)) {
+      
+      eError = eParseAsc(pTknVec,pCol);
+      if (EC_NONE != eError)
+        return eError;
+      
+      continue;
+    }
+    
+    if (pTkn->bSame("desc"_Stz)) {
+      
+      eError = eParseDesc(pTknVec,pCol);
+      if (EC_NONE != eError)
+        return eError;
+      
+      continue;
+    }
+    
+    if (pTkn->bSame("fixed"_Stz)) {
+      
+      eError = eParseFixed(pTknVec,pCol);
+      if (EC_NONE != eError)
+        return eError;
+      
+      continue;
+    }
+
+    if (pTkn->bSame("max"_Stz)) {
+      
+      eError = eParseMax(pTknVec,pCol);
+      if (EC_NONE != eError)
+        return eError;
+      
+      continue;
+    }
+
+    if (pTkn->bSame("min"_Stz)) {
+      
+      eError = eParseMin(pTknVec,pCol);
+      if (EC_NONE != eError)
+        return eError;
+      
+      continue;
+    }
+    
     if (pTkn->bSame("not"_Stz)) {
     
       eError = eParseNotNull(pTknVec,pCol);
@@ -536,6 +581,15 @@ eEC TableDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
       continue;
     }
   
+    if (pTkn->bSame("random"_Stz)) {
+      
+      eError = eParseRandom(pTknVec,pCol);
+      if (EC_NONE != eError)
+        return eError;
+      
+      continue;
+    }
+    
     break;
   }
   
