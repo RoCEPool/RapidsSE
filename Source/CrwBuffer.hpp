@@ -72,7 +72,7 @@ namespace Rows
   private:
     bool       bHasSpace(i8 nBytes);
   
-   HeadLine*   aGetHead(i8 i_Row);
+    HeadLine*  aGetHead(i8 i_Row);
 
 
     ////////////////////////////////////////////////////////////////////////////

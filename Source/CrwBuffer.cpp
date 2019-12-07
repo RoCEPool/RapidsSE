@@ -262,7 +262,8 @@ void CrwBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vGetRow(Row* pRow, i8 i_Row)
 {
-  Crw* aCompactRow = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
+  Crw* aCompactRow = (Crw*)aGetHead(i_Row);
+  
   RowInflator::vInflateRow(pRow,aCompactRow);
 }
 
@@ -393,7 +394,7 @@ void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     // get the compact row
-    Crw* aCrw = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
+    Crw* aCrw = (Crw*)aGetHead(i_Row);
     
     // inflate compact row into row
     RowInflator::vInflateRow(hRow,aCrw);
@@ -411,7 +412,7 @@ Crw* CrwBuffer::pCrw(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  return (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
+  return (Crw*)aGetHead(i_Row);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -490,7 +491,7 @@ void CrwBuffer::vShowRow(i8 i_Row)
   HV_Row hRow(pStreamDef,C_ALL);
   
   // get compact row
-  Crw* aCompactRow = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
+  Crw* aCompactRow = (Crw*)aGetHead(i_Row);
   
   // inflate compact row into row
   RowInflator::vInflateRow(hRow,aCompactRow);
@@ -618,7 +619,7 @@ SrtBuffer* CrwBuffer::pToSrtBuffer(i8 iKeyCol)
     RASSERT(pSrtSet);
     
     // get compact row
-    Crw* aCrw = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
+    Crw* aCrw = (Crw*)aGetHead(i_Row);
     
     // set the rowData in the srtSet
     pSrtSet->vRowRef(0, (i8)aCrw);
@@ -649,7 +650,7 @@ IrwBuffer* CrwBuffer::pToIrwBuffer(void)
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     // get compact row
-    Crw* aCompactRow = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
+    Crw* aCompactRow = (Crw*)aGetHead(i_Row);
     
     pRow = pIrwBuffer->aAllotRow(pStreamDef);
     if (! pRow) {
@@ -760,7 +761,7 @@ bool CrwBuffer::bVerifyRows(void)
   i8 nRows = nRowCount();
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    Crw* aRowCacheLine = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
+    Crw* aRowCacheLine = (Crw*)aGetHead(i_Row);
     RASSERT(aRowCacheLine);
   }
   
