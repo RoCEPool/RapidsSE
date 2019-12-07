@@ -279,10 +279,11 @@ eEC TableDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
     return eError;
   
   eError = eParseColumnClauses(pTknVec,pCol);
-  
+  if (EC_NONE != eError)
+    return eError;
+
   m_pStreamDef->m_nDefColumns[0]++;
 
-  
   return EC_NONE;
 }
 
@@ -522,22 +523,26 @@ eEC TableDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
   
   eEC eError = EC_NONE;
   
-  Token* pTkn = pTknVec->pNextToken(); dPT();
+  for (;;) {
     
-  if (pTkn->bSame("not"_Stz)) {
+    Token* pTkn = pTknVec->pNextToken(); dPT();
+  
+    if (pTkn->bSame("not"_Stz)) {
     
-    eError = eParseNotNull(pTknVec,pCol);
-    if (EC_NONE != eError)
-      return eError;
+      eError = eParseNotNull(pTknVec,pCol);
+      if (EC_NONE != eError)
+        return eError;
 
-    pTkn = pTknVec->pNextToken(); dPT();
+      continue;
+    }
+  
+    break;
   }
   
   
-  
-  
-  
-  
+  //!
+  //! ??? discuss with Alka
+  //!
   
   // check for PRIMARY KEY
   //    if (m_xTokenVec[i_Tkn]->bSame("primary"_Stz)) {
@@ -557,7 +562,6 @@ eEC TableDef::eParseColumnClauses(TokenVec* pTknVec, Column* pCol)
   //      pTkn = pTknVec->pNextToken(); dPT();
   //    }
 
-  
   return EC_NONE;
 }
 
