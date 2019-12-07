@@ -50,47 +50,28 @@ Column::Column(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  s32 sName = ""_Stz;
   m_iColumnNo     = -1;
-  m_sColumnNm   = sName;
+  m_sColumnNm     = C_NO_NAME;
+  
   m_eColumnType   = CT_NONE;
   m_iColumnLength = 0;
   m_iColumnScale  = 0;
   m_eDatumType    = DM_NONE;
+  m_eGeneration   = DG_NONE;
   m_bIsNullable   = true;
   m_bIsUnique     = false;
   m_bIsPtnKey     = false;
   
   m_bIsLastColumn = false;
   
+  m_xMaxVal.vInit();
+  m_xMinVal.vInit();
+
   _checkInitialised_(CN_COLUMN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 }
 
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-//Column::Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo)
-//: Object(CN_COLUMN)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-//
-//  m_iColumnNo     = iColumnNo;
-//  m_sColumnNm   = pJob->m_xColumns[iColumnNo].m_sColumnNm;
-//  m_eColumnType   = pJob->m_xColumns[iColumnNo].m_eColumnType;
-//  m_iColumnLength = pJob->m_xColumns[iColumnNo].m_iColumnLength;
-//  m_iColumnScale  = pJob->m_xColumns[iColumnNo].m_iColumnScale;
-//  m_eDatumType    = pJob->m_xColumns[iColumnNo].m_eDatumType;
-//  m_bIsNullable   = pJob->m_xColumns[iColumnNo].m_bIsNullable;
-//  m_bIsUnique     = pJob->m_xColumns[iColumnNo].m_bIsUnique;
-//  m_bIsPtnKey     = pJob->m_xColumns[iColumnNo].m_bIsPtnKey;
-//  m_bIsLastColumn = false;
-//
-//  _checkInitialised_(CN_COLUMN);
-//
-//  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -274,6 +255,16 @@ void Column::vDatumType(eDM eDatumType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get data generation style                                                  */
+/*----------------------------------------------------------------------------*/
+eDG Column::eGeneration(void)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  return m_eGeneration;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get is last column?                                                        */
 /*----------------------------------------------------------------------------*/
 bool Column::bIsLastColumn(void)
@@ -364,6 +355,27 @@ void Column::vIsPtnKey(bool bIsPtnKey)
   
   m_bIsPtnKey = bIsPtnKey;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get m_MaxVal                                                               */
+/*----------------------------------------------------------------------------*/
+AllVal_y32* Column::aMaxVal(void)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  return & m_xMaxVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get m_MinVal                                                               */
+/*----------------------------------------------------------------------------*/
+AllVal_y32* Column::aMinVal(void)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  return & m_xMinVal;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* show column contents                                                       */

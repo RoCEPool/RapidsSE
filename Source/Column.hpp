@@ -28,16 +28,20 @@ namespace MetaData
     private:
     i8    m_iColumnNo;
     s32   m_sColumnNm;
-  //s32   m_sAlias;
+  
     eCT   m_eColumnType;
     i8    m_iColumnLength;
     i8    m_iColumnScale;
     eDM   m_eDatumType;
+    eDG   m_eGeneration;
     bool  m_bIsNullable;
     bool  m_bIsUnique;
     bool  m_bIsPtnKey;
     bool  m_bIsLastColumn;
-    
+  
+    AllVal_y32 m_xMaxVal;
+    AllVal_y32 m_xMinVal;
+
     // must be last
     Footer m_xFooter;
     
@@ -47,8 +51,7 @@ namespace MetaData
     void  operator delete(void*);
     
     Column(void);
-    //Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo);
-    ~Column(void) noexcept(false);
+   ~Column(void) noexcept(false);
   
     static bool bValidBcd(i8 iPrecision, i8 iScale);
     static bool bValidFlt(i8 iSize);
@@ -60,7 +63,6 @@ namespace MetaData
     i8   iColumnScale(void);
     void vColumnScale(i8 iColumnScale);
   
-    //i8   iColumnNo(void);
     void vColumnNo(i8 iColumnNo);
   
     Stz* szColNm(void);
@@ -71,8 +73,9 @@ namespace MetaData
 
     void vCopy(Column* pCol);
   
-    //eDM  eDatumType(void);
     void vDatumType(eDM eDatumType);
+  
+    eDG  eGeneration(void);
   
     bool bIsLastColumn(void);
     void vIsLastColumn(bool bIsLastColumn);
@@ -87,6 +90,9 @@ namespace MetaData
   
     bool bIsPtnKey(void);
     void vIsPtnKey(bool bIsPtnKey);
+
+    AllVal_y32* aMaxVal(void);
+    AllVal_y32* aMinVal(void);
 
     void vShow(void);
   

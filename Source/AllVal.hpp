@@ -32,7 +32,7 @@ namespace SenVM
     
     byte    m_yaSpace[32];
     
-    void vInit(void) { MemLib::vZero(m_yaSpace,sizeof(m_yaSpace),CN_NONE); }
+    void vInit(void) { MemLib::vZero(m_yaSpace,sizeof(AllVal_y32),CN_NONE); }
   };
 
   union AllVal_y8KB {
@@ -46,7 +46,7 @@ namespace SenVM
     
     byte    m_yaSpace[C_8KB];
     
-    void vInit(void) { MemLib::vZero(m_yaSpace,sizeof(m_yaSpace),CN_NONE); }
+    void vInit(void) { MemLib::vZero(m_yaSpace,sizeof(AllVal_y8KB),CN_NONE); }
   };
   
 }

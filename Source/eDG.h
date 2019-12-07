@@ -9,6 +9,7 @@ enum eDG // data generation
   
   /*    */ DG_ASCENDING,
   /*    */ DG_DESCENDING,
+  /*    */ DG_FIXED,
   /*    */ DG_RANDOM,
   
   /*    */ DG_ENUMS,
@@ -18,9 +19,10 @@ static Stz* aDG[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*  0 */ "DG_ASCENDING"_Stz,
-  /*  0 */ "DG_DESCENDING"_Stz,
-  /*  0 */ "DG_RANDOM"_Stz,
+  /*  0 */ "ASCENDING"_Stz,
+  /*  0 */ "DESCENDING"_Stz,
+  /*  0 */ "FIXED"_Stz,
+  /*  0 */ "RANDOM"_Stz,
   
   /*    */ "ENUMS"_Stz,
 };
