@@ -196,33 +196,8 @@ eEC TableDef::eParse(Stz* szCmd)
     pTkn = pTknVec->pCurrToken(); dPT();
   }
   
-  // check if we have a partition by clause
-  pTkn = pTknVec->pNextToken(); dPT();
-
-  if ( pTkn->bSame("rowsize"_Stz)) {
-    eError = eParseRowSize(pTknVec);
-    if (EC_NONE != eError)
-      return eError;
-    pTkn = pTknVec->pNextToken(); dPT();
-  }
+  eError = eParseTableClauses(pTknVec);
   
-  // check if we have a partition by clause
-  if ( pTkn->bSame("partition"_Stz)) {
-
-    eError = eParsePartitionBy(pTknVec);
-    if (EC_NONE != eError)
-      return eError;
-  }
-  else {
-    
-    if ( ! pTkn->bSame(";"_Stz))
-      return EC_INVALID_COMMAND;
-      
-    // no partition by clause
-    // we will create partitioning using the first column
-    m_pStreamDef->pGetColumn(0)->vIsPtnKey(true);
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 L_RETURN:
@@ -569,6 +544,47 @@ eEC TableDef::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
   // set size in column
   pCol->vColumnLength(iSize);
   
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* parse table clauses                                                        */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eParseTableClauses(TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+
+  eEC eError = EC_NONE;
+  
+  Token* pTkn = pTknVec->pNextToken(); dPT();
+  
+  if ( pTkn->bSame("rowsize"_Stz)) {
+    eError = eParseRowSize(pTknVec);
+    if (EC_NONE != eError)
+      return eError;
+    pTkn = pTknVec->pNextToken(); dPT();
+  }
+  
+  // check if we have a partition by clause
+  if ( pTkn->bSame("partition"_Stz)) {
+    eError = eParsePartitionBy(pTknVec);
+    if (EC_NONE != eError)
+      return eError;
+    pTkn = pTknVec->pNextToken(); dPT();
+  }
+  else {
+    
+    if ( ! pTkn->bSame(";"_Stz))
+      return EC_INVALID_COMMAND;
+    
+    // no partition by clause
+    // we will create partitioning using the first column
+    m_pStreamDef->pGetColumn(0)->vIsPtnKey(true);
+  }
+
   return EC_NONE;
 }
 
