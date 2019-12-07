@@ -567,6 +567,8 @@ eEC TableDef::eParseAsc(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
+  pCol->vGeneration(DG_ASCENDING);
+  
   return EC_NONE;
 }
 
@@ -577,6 +579,8 @@ eEC TableDef::eParseDesc(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
+  pCol->vGeneration(DG_DESCENDING);
+  
   return EC_NONE;
 }
 
@@ -586,6 +590,8 @@ eEC TableDef::eParseDesc(TokenVec* pTknVec, Column* pCol)
 eEC TableDef::eParseFixed(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  pCol->vGeneration(DG_FIXED);
   
   return EC_NONE;
 }
@@ -626,6 +632,8 @@ eEC TableDef::eParseNotNull(TokenVec* pTknVec, Column* pCol)
 eEC TableDef::eParseRandom(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  pCol->vGeneration(DG_RANDOM);
   
   return EC_NONE;
 }

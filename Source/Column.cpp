@@ -265,6 +265,16 @@ eDG Column::eGeneration(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set data generation style                                                  */
+/*----------------------------------------------------------------------------*/
+void Column::vGeneration(eDG eGeneration)
+{
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  m_eGeneration = eGeneration;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get is last column?                                                        */
 /*----------------------------------------------------------------------------*/
 bool Column::bIsLastColumn(void)

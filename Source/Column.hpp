@@ -76,7 +76,8 @@ namespace MetaData
     void vDatumType(eDM eDatumType);
   
     eDG  eGeneration(void);
-  
+    void vGeneration(eDG eGeneration);
+
     bool bIsLastColumn(void);
     void vIsLastColumn(bool bIsLastColumn);
     
