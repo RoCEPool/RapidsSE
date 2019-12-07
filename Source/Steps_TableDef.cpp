@@ -35,8 +35,8 @@ void Step::vTableDefParse(void)
   if (eResult != EC_NONE) {
     
     // set the error code in the job
-    pJob_CreateTable->m_bHasError = true;
-    pJob_CreateTable->m_xResponse.m_eErrorCode = eResult;
+    pJob_CreateTable->vHasError(true);
+    pJob_CreateTable->vErrorCode(eResult);
     
     // delete tabledef
     delete pTableDef;

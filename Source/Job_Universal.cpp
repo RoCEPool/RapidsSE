@@ -191,7 +191,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
   bool b = JobHelper::bParseCmd(pEnameSet(),pTknVec);
   if (! b) {
     vTrace("Unable to match job syntax\n"_Stz);
-    m_bHasError = true;
+    vHasError(true);
     return EC_INVALID_COMMAND;
   }
 
@@ -262,7 +262,7 @@ void Jobs::vJob_Universal_post(Job* pJob)
   
   i8 iResponses = pJob->m_pResponseVec->nItems();
   
-  if (pJob->m_bHasError) {
+  if (pJob->bHasError()) {
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
       vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob->m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
     }

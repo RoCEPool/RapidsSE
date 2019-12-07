@@ -230,7 +230,7 @@ bool Job_SubLoader::bChunk(void)
     eEC eError = eProcessRecord(aRecord, nRecordBytes);
     
     if (EC_NONE == eError) {
-      m_xResponse.m_ixRowsProcessed.iInc();
+      vIncRowsProcessed();
       continue;
     }
     
@@ -238,13 +238,13 @@ bool Job_SubLoader::bChunk(void)
       continue;
 
     if (EC_INVALID_VALUE == eError) {
-      m_xResponse.m_ixRowsInvalid.iInc();
+      vIncRowsInvalid();
       ++m_pJob_LoadTable->m_ixErrors;
       continue;
     }
     
     if (EC_MAX_ROW_LENGTH == eError) {
-      m_xResponse.m_ixRowsInvalid.iInc();
+      vIncRowsInvalid();
       ++m_pJob_LoadTable->m_ixErrors;
       continue;
     }
@@ -269,17 +269,15 @@ void Job_SubLoader::vEnd(void)
   // handle any dangling buffers
   vHandleDanglingBuffers();
   
-  i8 i_Node = AM::iThisNodeNo();
-  
   // add invalid rows into parent load table job
-  i8 iRowsInvalid = *m_xResponse.m_ixRowsInvalid;
-  m_pJob_LoadTable->m_xResponse.m_ixRowsInvalid += iRowsInvalid;
+  i8 iRowsInvalid = this->iRowsInvalid();
+  m_pJob_LoadTable->vAddRowsInvalid(iRowsInvalid);
   
   // add processed rows into parent load table job
-  i8 iRowsProcessed = *m_xResponse.m_ixRowsProcessed;
+  i8 iRowsProcessed = this->iRowsProcessed();
   //! REMOVE THIS TRACE
   //vTrace("iRowsProcessed %lld [RJH REMOVE]\n"_Stz,iRowsProcessed);
-  m_pJob_LoadTable->m_xResponse.m_ixRowsProcessed += iRowsProcessed;
+  m_pJob_LoadTable->vAddRowsProcessed(iRowsProcessed);
   
   // close the file being loaded
   m_pLoadChunk->vCloseFile();

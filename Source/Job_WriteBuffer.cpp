@@ -291,11 +291,11 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
     Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJobFound);
 
     // add the number of rows into rows skipped
-    pJob_LoadTable->m_xResponse.m_ixRowsSkipped += m_nRows;
+    pJob_LoadTable->vAddRowsSkipped(m_nRows);
   
     if (AM::bVerbose())
       vTrace("m_iRowsSkipped %lld m_nRows %lld\n"_Stz,
-             *pJob_LoadTable->m_xResponse.m_ixRowsSkipped,
+             pJob_LoadTable->iRowsSkipped(),
              m_nRows);
   }
   

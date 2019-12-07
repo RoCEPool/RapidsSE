@@ -301,7 +301,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
     API_LOC(330);
 
     // check if job had an error
-    if (pJob->m_bHasError) {
+    if (pJob->bHasError()) {
       i8 iResponses = pJob->m_pResponseVec->nItems();
       
       for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
@@ -383,7 +383,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     API_LOC(380);
     
     // check if job had an error
-    if (pJob_InsertRow->m_bHasError) {
+    if (pJob_InsertRow->bHasError()) {
       
       i8 iResponses = pJob->m_pResponseVec->nItems();
       
@@ -577,7 +577,7 @@ eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
     API_LOC(320);
 
     // check if job had an error
-    if (pJob_InsertTable->m_bHasError) {
+    if (pJob_InsertTable->bHasError()) {
       i8 iResponses = pJob->m_pResponseVec->nItems();
       
       for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
@@ -856,7 +856,7 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   Response* pResponse = nullptr;
   
   if (eResponseKind == RS_LOCAL_ROWS) {
-    pResponse = &pJob->m_xResponse;
+    pResponse = pJob->pResponse();
   }
   else {
     RASSERT(eResponseKind == RS_NODE_ROWS);
@@ -936,7 +936,7 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
   i8 iRowsProcessed= 0;
   
   if (eResponseKind == RS_LOCAL_ROWS) {
-    iRowsProcessed = *pJob->m_xResponse.m_ixRowsProcessed;
+    iRowsProcessed = pJob->iRowsProcessed();
   }
   else {
     RASSERT(eResponseKind == RS_NODE_ROWS);
@@ -977,7 +977,7 @@ eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
   
   //i8 iNode = AM::pGrid()->m_iThisNode;
   Table* pTable =
-  (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.azChar());
+  (Table*)StrLib::iToI8(pJob_ListColumns->szResponse()->azChar());
   API_LOC(320);
   
   StreamDef* pStreamDef = pTable->pStreamDef();
@@ -1020,16 +1020,16 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
 
   //i8 iNode = AM::pGrid()->m_iThisNode;
   Table* pTable =
-    (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.azChar());
+    (Table*)StrLib::iToI8(pJob_ListColumns->szResponse()->azChar());
   API_LOC(320);
 
   StreamDef* pStreamDef = pTable->pStreamDef();
   API_LOC(330);
 
-  pJob_ListColumns->m_xResponse.m_ixRowsProcessed = pStreamDef->nColumns(C_ALL);
+  pJob_ListColumns->vRowsProcessed(pStreamDef->nColumns(C_ALL));
   API_LOC(340);
 
-  *aiRowCount = *(pJob_ListColumns->m_xResponse.m_ixRowsProcessed);
+  *aiRowCount = pJob_ListColumns->iRowsProcessed();
   API_LOC(350);
   
   API_RETURN();

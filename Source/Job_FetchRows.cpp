@@ -637,10 +637,10 @@ void Jobs::vJob_FetchRows_post(Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   
-  if ( pJob_FetchRows->m_bHasError ) {
+  if ( pJob_FetchRows->bHasError() ) {
     
     vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
-             aEC[pJob_FetchRows->m_xResponse.m_eErrorCode]);
+             aEC[pJob_FetchRows->eErrorCode()]);
    
     return;
   }
@@ -693,7 +693,7 @@ void Jobs::vJob_FetchRows_post(Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fetch
   if (AM::bMetadata()) {
-    vTrace("metadata: %s\n"_Stz, pJob_FetchRows->m_sMetadata.szStz());
+    vTrace("metadata: %s\n"_Stz, pJob_FetchRows->szMetaData());
   }
   
   // create a row for retrieval

@@ -514,7 +514,7 @@ void Step::vJobErrorFetch(void)
 
   i8 iNode = m_pDataStack->iPopAsInt(__func__);
   
-  m_pDataStack->vPushInt(pJob->m_xResponse.m_eErrorCode);
+  m_pDataStack->vPushInt(pJob->eErrorCode());
   
   EXIT();
 }
@@ -531,8 +531,8 @@ void Step::vJobErrorStore(void)
   i8 iJobError = m_pDataStack->iPopAsInt(__func__);
   
   //pJob->m_xNode[iNode].m_eErrorCode = (eEC)iJobError;
-  pJob->m_bHasError = true;
-  pJob->m_xResponse.m_eErrorCode = (eEC)iJobError;
+  pJob->vHasError(true);
+  pJob->vErrorCode((eEC)iJobError);
   
   //ActLog::vAdd(pJob,AN_ERROR_CODE,iJobError);
   
@@ -616,7 +616,7 @@ void Step::vJobHasError(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushInt(pJob->m_bHasError);
+  m_pDataStack->vPushInt(pJob->bHasError());
   
   EXIT();
 }
@@ -726,7 +726,7 @@ void Step::vJobMetadataStore(void)
   s4K sMetadata;
   m_pDataStack->vPopStr(sMetadata,__func__);
   
-  pJob->m_sMetadata = sMetadata;
+  pJob->vMetaData(sMetadata);
   
   EXIT();
 }
@@ -997,14 +997,14 @@ void Step::vJobParticipantResponseStore(void)
   // set node and error in the response
   //RASSERT(iNode == pParticipantJob->m_iParticipantNode);
   pResponse->m_iNode           = pParticipantJob->iParticipantNode();
-  pResponse->m_sResponse       = pParticipantJob->m_xResponse.m_sResponse;
-  pResponse->m_ixRowsProcessed = pParticipantJob->m_xResponse.m_ixRowsProcessed;
-  pResponse->m_ixRowsInvalid   = pParticipantJob->m_xResponse.m_ixRowsInvalid;
-  pResponse->m_ixRowsSkipped   = pParticipantJob->m_xResponse.m_ixRowsSkipped;
-  pResponse->m_eErrorCode      = pParticipantJob->m_xResponse.m_eErrorCode;
+  pResponse->m_sResponse       = pParticipantJob->szResponse();
+  pResponse->m_ixRowsProcessed = pParticipantJob->iRowsProcessed();
+  pResponse->m_ixRowsInvalid   = pParticipantJob->iRowsInvalid();
+  pResponse->m_ixRowsSkipped   = pParticipantJob->iRowsSkipped();
+  pResponse->m_eErrorCode      = pParticipantJob->eErrorCode();
   
   if (pResponse->m_eErrorCode != EC_NONE)
-    pJob->m_bHasError = true;
+    pJob->vHasError(true);
   
   // add the response to the vector of responses
   pJob->m_pResponseVec->vAdd(pResponse);
@@ -1257,7 +1257,8 @@ void Step::vJobResponseFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  m_pDataStack->vPushStr(pJob->m_xResponse.m_sResponse);
+  s32 sResponse = pJob->szResponse();
+  m_pDataStack->vPushStr(sResponse);
   
   EXIT();
 }
@@ -1275,7 +1276,7 @@ void Step::vJobResponseStore(void)
   m_pDataStack->vPopStr(sResponse,__func__);
   
   //pJob->m_xNode[iNode].m_sResponse = sResponse;
-  pJob->m_xResponse.m_sResponse = sResponse;
+  pJob->vResponse(sResponse);
   
   EXIT();
 }
@@ -1289,7 +1290,7 @@ void Step::vJobRowsInvalidFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  i8 iRowsInvalid = *pJob->m_xResponse.m_ixRowsInvalid;
+  i8 iRowsInvalid = pJob->iRowsInvalid();
   m_pDataStack->vPushInt(iRowsInvalid);
   
   EXIT();
@@ -1308,7 +1309,7 @@ void Step::vJobRowsInvalidStore(void)
   
   //pJob->m_xNode[iNode].m_ixRowsInvalid = iRowsInvalid;
   
-  pJob->m_xResponse.m_ixRowsInvalid = iRowsInvalid;
+  pJob->vRowsInvalid(iRowsInvalid);
   
   EXIT();
 }
@@ -1322,7 +1323,7 @@ void Step::vJobRowsProcessedFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  i8 iRowsProcessed = *pJob->m_xResponse.m_ixRowsProcessed;
+  i8 iRowsProcessed = pJob->iRowsProcessed();
   m_pDataStack->vPushInt(iRowsProcessed);
   
   EXIT();
@@ -1341,7 +1342,7 @@ void Step::vJobRowsProcessedStore(void)
   
   //pJob->m_xNode[iNode].m_ixRowsProcessed = iRowsProcessed;
   
-  pJob->m_xResponse.m_ixRowsProcessed = iRowsProcessed;
+  pJob->vRowsProcessed(iRowsProcessed);
   
   EXIT();
 }
@@ -1355,7 +1356,7 @@ void Step::vJobRowsSkippedFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
  
-  i8 iRowsSkipped = *pJob->m_xResponse.m_ixRowsSkipped;
+  i8 iRowsSkipped = pJob->iRowsSkipped();
 
   m_pDataStack->vPushInt(iRowsSkipped);
   
@@ -1375,7 +1376,7 @@ void Step::vJobRowsSkippedStore(void)
   
   //pJob->m_xNode[iNode].m_ixRowsSkipped = iRowsSkipped;
   
-  pJob->m_xResponse.m_ixRowsSkipped = iRowsSkipped;
+  pJob->vRowsSkipped(iRowsSkipped);
   
   EXIT();
 }

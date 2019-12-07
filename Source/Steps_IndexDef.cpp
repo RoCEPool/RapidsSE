@@ -37,8 +37,8 @@ void Step::vIndexDefParse(void)
   if (eResult != EC_NONE) {
     
     // set the error code in the job
-    pJob_CreateIndex->m_bHasError = true;
-    pJob_CreateIndex->m_xResponse.m_eErrorCode = eResult;
+    pJob_CreateIndex->vHasError(true);
+    pJob_CreateIndex->vErrorCode(eResult);
     
     // delete IndexDef
     delete pIndexDef;

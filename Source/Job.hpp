@@ -31,7 +31,6 @@ static Stz* C_TAG_PATH     = "<path>"_Stz;
 namespace Jobs
 {
   class Job : public Focal,
-              public JobResult,
               public CRM<Job>
   {
   private:
@@ -48,7 +47,15 @@ namespace Jobs
     eJL       m_eJobList;     // which job list the job is currently in
     eJP       m_eJobPhase;    // which job phase the job is currently in
     eJS       m_eJobState;    // current state of the job
-
+    
+    // job result
+    s4K          m_sMetadata;    // meta data of job
+    bool         m_bHasError;    // has an error from one or more nodes
+    Response     m_xResponse;    // response of this job
+    
+  public:
+    ResponseVec* m_pResponseVec; // vector of responses from all the nodes
+    Queue*       m_pBufferQueue; // buffer queue to receive the buffers of the result
   
   public:
 
@@ -91,15 +98,25 @@ namespace Jobs
   
     static EnameSet* pJobInfo_enameSet(Stz* szJobNm);
 
+    void vAddError(eEC eError);
     i8   iAcksOriginal(void);
     i8   iAcksRmg_printOnlyValue(void);
     void vAcksRmg(i8 nAcks);
     bool bAcksRmgDec(void);
+    void vAddRowsProcessed(i8 iRowsProcessed);
+    void vAddRowsInvalid(i8 iRowsInvalid);
+    void vAddRowsSkipped(i8 iRowsSkipped);
     bool bByPromptTag(void);
     void vContentDump(void);
     EnameSet* pEnameSet(void);
+    void vErrorCode(eEC eErrorCode);
+    eEC  eErrorCode(void);
     void vFocalOutline(s4K& sOutline);
     bool bHasEnameTag(Stz* szEnameTag);
+    bool bHasError(void);
+    void vHasError(bool bHasError);
+    void vIncRowsProcessed(void);
+    void vIncRowsInvalid(void);
     i8   iJobId(void);
     eJK  eJobKind(void);
     void vJobKind(eJK eJobKind);
@@ -115,7 +132,26 @@ namespace Jobs
     void vLockJobMutex(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
+    Stz* szMetaData(void);
+    void vMetaData(Stz* sMetaData);
     bool bNoWaitTag(void);
+    void vPrintLoadRows(void);
+    void vPrintLocalErrors(void);
+    void vPrintLocalRows(void);
+    void vPrintLocalZero(void);
+    void vPrintNodeErrors(void);
+    void vPrintNodeRows(void);
+    void vPrintNodeZero(void);
+    void vPrintQueueRows(void);
+    Response* pResponse(void);
+    Stz* szResponse(void);
+    void vResponse(Stz* sResponse);
+    i8   iRowsProcessed(void);
+    void vRowsProcessed(i8 iRowsProcessed);
+    i8   iRowsSkipped(void);
+    void vRowsSkipped(i8 iRowsSkipped);
+    i8   iRowsInvalid(void);
+    void vRowsInvalid(i8 iRowsInvalid);
     Stz* szSide(void);
     void vSignalJobMutex(void);
     void vUnlockJobMutex(void);

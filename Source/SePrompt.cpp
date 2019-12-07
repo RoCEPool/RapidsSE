@@ -177,7 +177,7 @@ void SePrompt::vPromptLoop(void)
     
     vPreJob();
     
-    if (m_pJob->m_bHasError) {
+    if (m_pJob->bHasError()) {
       //vTrace("job has error (maybe syntax error)\n"_Stz);
       
       //! temp  // // // // // // // // // // // // // //
@@ -221,7 +221,7 @@ void SePrompt::vPromptLoop(void)
     m_oTimer.vUpdate();
     
     vPostJob();
-    if (m_pJob->m_bHasError) {
+    if (m_pJob->bHasError()) {
       vDumpTokenVec();
     }
     

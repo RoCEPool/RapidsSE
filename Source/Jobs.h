@@ -20,7 +20,6 @@ namespace Jobs
 
 #include "JobExtractRow.hpp"
 #include "JobFilePath.hpp"
-#include "JobResult.hpp"
 
 #include "Job.hpp"
 
