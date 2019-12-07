@@ -327,7 +327,116 @@ L_RETURN:
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* extract boolean                                                            */
+/* parse column                                                               */
+/*----------------------------------------------------------------------------*/
+eEC TableDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
+  
+  eEC eError = EC_NONE;
+  
+  Token* pTkn = pTknVec->pCurrToken(); dPT();
+  // -- -- -- --
+  
+  // create column
+  // -- -- -- --
+  Column* pCol = m_pStreamDef->pGetColumn(i_Col);
+  
+  // set column number
+  pCol->vColumnNo(i_Col);
+  
+  // set column name
+  pCol->vColumnNm(pTkn->szText());
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  // check for duplicate column name
+  // -- -- -- -- -- -- -- -- -- -- --
+  
+  for (i8 i_Search = 0; i_Search < i_Col - 1; i_Search++) {
+    Column* pCol_search = m_pStreamDef->pGetColumn(i_Search++);
+    if (pCol_search->szColNm()->bSame(pCol->szColNm())) {
+      eError = EC_DUPLICATE_COLUMN;
+      return eError;
+    }
+  }
+  
+  // -- -- -- --
+  // column type
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  eCT eColumn = TableDef::eColumn(pTkn->szText());
+  
+  switch (eColumn) {
+      
+    case CT_BOOLEAN:   eError = eParseColumnBoolean   (pTknVec,pCol);  break;
+    case CT_DATE:      eError = eParseColumnDate      (pTknVec,pCol);  break;
+    case CT_DECIMAL:   eError = eParseColumnDecimal   (pTknVec,pCol);  break;
+    case CT_FLOAT:     eError = eParseColumnFloat     (pTknVec,pCol);  break;
+    case CT_INTEGER:   eError = eParseColumnInteger   (pTknVec,pCol);  break;
+    case CT_INTERVAL:  eError = eParseColumnInterval  (pTknVec,pCol);  break;
+    case CT_TIME:      eError = eParseColumnTime      (pTknVec,pCol);  break;
+    case CT_TIMESTAMP: eError = eParseColumnTimestamp (pTknVec,pCol);  break;
+    case CT_VARCHAR:   eError = eParseColumnVarchar   (pTknVec,pCol);  break;
+      
+    default:
+      if (pTkn->bSame("char"_Stz) ||
+          pTkn->bSame("varbinary"_Stz)) {
+        eError = eParseColumnVarchar(pTknVec,pCol);
+      }
+      else
+        eError = EC_INVALID_COMMAND;
+      break;
+      
+  }
+  
+  if (EC_NONE != eError)
+    return eError;
+
+  
+  // -- -- -- --
+  // next token
+  // -- -- -- --
+  pTkn = pTknVec->pNextToken(); dPT();
+  
+  // -- -- --
+  // not null
+  // -- -- --
+  
+  if (pTkn->bSame("not"_Stz)) {
+    pTkn = pTknVec->pNextToken(); dPT();
+    if (! pTkn->bSame("null"_Stz))
+      return EC_INVALID_COMMAND;
+    pCol->vIsNullable(false);
+    
+    pTkn = pTknVec->pNextToken(); dPT();
+  }
+  
+  // check for PRIMARY KEY
+  //    if (m_xTokenVec[i_Tkn]->bSame("primary"_Stz)) {
+  //
+  //      pJob->pCol->m_sPrimaryKey = m_xTokenVec[i_Tkn++]->aText();
+  //
+  //      if (!m_xTokenVec[i_Tkn]->bSame("key"_Stz)) {
+  //        m_pSession->vSetLastError(EC_INVALID_COMMAND);
+  //        return false;
+  //      }
+  //    }
+  
+  // check for UNIQUE
+  //    if (pTkn->bSame("unique"_Stz)) {
+  //      pCol->vIsUnique(true);
+  //
+  //      pTkn = pTknVec->pNextToken(); dPT();
+  //    }
+  
+  m_pStreamDef->m_nDefColumns[0]++;
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse boolean column                                                       */
 /*----------------------------------------------------------------------------*/
 eEC TableDef::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol)
 {
@@ -340,7 +449,7 @@ eEC TableDef::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract date                                                               */
+/* parse date column                                                          */
 /*----------------------------------------------------------------------------*/
 eEC TableDef::eParseColumnDate(TokenVec* pTknVec, Column* pCol)
 {
@@ -353,7 +462,7 @@ eEC TableDef::eParseColumnDate(TokenVec* pTknVec, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract decimal                                                            */
+/* parse decimal column                                                       */
 /*----------------------------------------------------------------------------*/
 eEC TableDef::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
 {
@@ -410,7 +519,7 @@ eEC TableDef::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract float                                                              */
+/* parse float column                                                         */
 /*----------------------------------------------------------------------------*/
 eEC TableDef::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
 {
@@ -455,7 +564,7 @@ eEC TableDef::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract integer                                                            */
+/* parse integer column                                                       */
 /*----------------------------------------------------------------------------*/
 eEC TableDef::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
 {
@@ -469,7 +578,7 @@ eEC TableDef::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract interval                                                           */
+/* parse interval column                                                      */
 /*----------------------------------------------------------------------------*/
 eEC TableDef::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
 {
@@ -482,7 +591,7 @@ eEC TableDef::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract time                                                               */
+/* parse time column                                                          */
 /*----------------------------------------------------------------------------*/
 eEC TableDef::eParseColumnTime(TokenVec* pTknVec, Column* pCol)
 {
@@ -495,7 +604,7 @@ eEC TableDef::eParseColumnTime(TokenVec* pTknVec, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract timestamp                                                          */
+/* parse timestamp column                                                     */
 /*----------------------------------------------------------------------------*/
 eEC TableDef::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol)
 {
@@ -508,7 +617,7 @@ eEC TableDef::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract varchar                                                            */
+/* parse varchar column                                                       */
 /*----------------------------------------------------------------------------*/
 eEC TableDef::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
 {
@@ -554,7 +663,7 @@ eEC TableDef::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* partition the table                                                        */
+/* parse partition clause                                                     */
 /*----------------------------------------------------------------------------*/
 eEC TableDef::eParsePartitionBy(TokenVec* pTknVec)
 {
@@ -615,7 +724,7 @@ eEC TableDef::eParsePartitionBy(TokenVec* pTknVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse rowsize option                                                       */
+/* parse rowsize clause                                                       */
 /*----------------------------------------------------------------------------*/
 eEC TableDef::eParseRowSize(TokenVec* pTknVec)
 {

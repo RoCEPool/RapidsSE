@@ -32,7 +32,9 @@ namespace MetaData
     eEC eParse(Stz* szCmd);
     
   private:
-  
+
+    eEC eParseColumn(TokenVec* pTknVec, i8 i_Col);
+
     eEC eParseColumnBoolean  (TokenVec* pTknVec, Column* pCol);
     eEC eParseColumnDate     (TokenVec* pTknVec, Column* pCol);
     eEC eParseColumnDecimal  (TokenVec* pTknVec, Column* pCol);
