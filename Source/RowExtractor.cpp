@@ -158,14 +158,14 @@ Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
     // value
     
     switch (eDatum) {
-      case DM_BCD: b = bExtractBcd(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
-      case DM_BOL: b = bExtractBol(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
-      case DM_DTE: b = bExtractDte(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
-      case DM_FLT: b = bExtractFlt(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
-      case DM_INT: b = bExtractInt(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
-      case DM_IVL: b = bExtractIvl(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
-      case DM_TME: b = bExtractTme(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
-      case DM_TSP: b = bExtractTsp(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
+      case DM_BCD: b = bExtractBcd(&oDatum,aazCrs,pFmt); break;
+      case DM_BOL: b = bExtractBol(&oDatum,aazCrs,pFmt); break;
+      case DM_DTE: b = bExtractDte(&oDatum,aazCrs,pFmt); break;
+      case DM_FLT: b = bExtractFlt(&oDatum,aazCrs,pFmt); break;
+      case DM_INT: b = bExtractInt(&oDatum,aazCrs,pFmt); break;
+      case DM_IVL: b = bExtractIvl(&oDatum,aazCrs,pFmt); break;
+      case DM_TME: b = bExtractTme(&oDatum,aazCrs,pFmt); break;
+      case DM_TSP: b = bExtractTsp(&oDatum,aazCrs,pFmt); break;
       case DM_VCH: b = bExtractVch(&oDatum,aazCrs,pFmt); break;
       default:
         vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -337,8 +337,7 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, char** aazCrs, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* extract a decimal datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractBcd(Datum* pDatum, char** aazCrs, Format* pFmt,
-                               bool bSawEnclosedLeading)
+bool RowExtractor::bExtractBcd(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Bcd snBcd;
   
@@ -357,8 +356,7 @@ bool RowExtractor::bExtractBcd(Datum* pDatum, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract a boolean datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractBol(Datum* pDatum, char** aazCrs, Format* pFmt,
-                               bool bSawEnclosedLeading)
+bool RowExtractor::bExtractBol(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Bol snBol;
   
@@ -377,8 +375,7 @@ bool RowExtractor::bExtractBol(Datum* pDatum, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract a date datum from csv field value                      yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractDte(Datum* pDatum, char** aazCrs, Format* pFmt,
-                               bool bSawEnclosedLeading)
+bool RowExtractor::bExtractDte(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Dte snDte;
   
@@ -397,8 +394,7 @@ bool RowExtractor::bExtractDte(Datum* pDatum, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract a float datum from csv field value                                 */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractFlt(Datum* pDatum, char** aazCrs, Format* pFmt,
-                               bool bSawEnclosedLeading)
+bool RowExtractor::bExtractFlt(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Flt snFlt;
   
@@ -417,8 +413,7 @@ bool RowExtractor::bExtractFlt(Datum* pDatum, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract an integer datum from csv field value                              */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractInt(Datum* pDatum, char** aazCrs, Format* pFmt,
-                               bool bSawEnclosedLeading)
+bool RowExtractor::bExtractInt(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Int snInt;
   
@@ -446,8 +441,7 @@ bool RowExtractor::bExtractInt(Datum* pDatum, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract an interval datum from csv field value                             */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractIvl(Datum* pDatum, char** aazCrs, Format* pFmt,
-                               bool bSawEnclosedLeading)
+bool RowExtractor::bExtractIvl(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Ivl snIvl;
   
@@ -466,8 +460,7 @@ bool RowExtractor::bExtractIvl(Datum* pDatum, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract a time datum from csv field value                    hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractTme(Datum* pDatum, char** aazCrs, Format* pFmt,
-                               bool bSawEnclosedLeading)
+bool RowExtractor::bExtractTme(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Tsp snTsp;
   
@@ -486,8 +479,7 @@ bool RowExtractor::bExtractTme(Datum* pDatum, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp datum from csv field value    yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractTsp(Datum* pDatum, char** aazCrs, Format* pFmt,
-                               bool bSawEnclosedLeading)
+bool RowExtractor::bExtractTsp(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Tsp snTsp;
   
