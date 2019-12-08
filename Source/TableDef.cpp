@@ -662,6 +662,8 @@ eEC TableDef::eParseMax(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
+  Token* pTkn = pTknVec->pNextToken(); dPT();
+
   return EC_NONE;
 }
 
@@ -672,6 +674,8 @@ eEC TableDef::eParseMin(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
+  Token* pTkn = pTknVec->pNextToken(); dPT();
+
   return EC_NONE;
 }
 
