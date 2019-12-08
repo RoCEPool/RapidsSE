@@ -314,12 +314,6 @@ bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   SN_Bcd snBcd;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-//  bool bSawEnclosedLeading =
-//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
 
   Column* pColumn = pDtmVal->m_pCol;
@@ -334,7 +328,7 @@ bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    goto L_TAIL;
+    return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -346,20 +340,6 @@ bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   catch (Exception xException) {
     return false;
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-L_TAIL:
-  
-//  bool bSawEnclosedTrailing =
-//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-//  if (! bSawEnclosedTrailing)
-//    return false;
-//
-//  // should see a valid field end
-//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-//    return false;
   
   return true;
 }
@@ -371,12 +351,6 @@ bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Bol snBol;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-//  bool bSawEnclosedLeading =
-//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -392,7 +366,7 @@ bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    goto L_TAIL;
+    return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -405,20 +379,6 @@ bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     return false;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-L_TAIL:
-  
-//  bool bSawEnclosedTrailing =
-//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-//  if (! bSawEnclosedTrailing)
-//    return false;
-//
-//  // should see a valid field end
-//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-//    return false;
-  
   return true;
 }
 
@@ -429,12 +389,6 @@ bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Dte snDte;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-//  bool bSawEnclosedLeading =
-//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -451,7 +405,7 @@ bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    goto L_TAIL;
+    return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -463,20 +417,6 @@ bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   catch (Exception xException) {
     return false;
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-L_TAIL:
-  
-//  bool bSawEnclosedTrailing =
-//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-//  if (! bSawEnclosedTrailing)
-//    return false;
-//
-//  // should see a valid field end
-//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-//    return false;
   
   return true;
 }
@@ -488,12 +428,6 @@ bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Flt snFlt;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-//  bool bSawEnclosedLeading =
-//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -509,7 +443,7 @@ bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    goto L_TAIL;
+    return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -521,20 +455,6 @@ bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   catch (Exception xException) {
     return false;
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-L_TAIL:
-  
-//  bool bSawEnclosedTrailing =
-//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-//  if (! bSawEnclosedTrailing)
-//    return false;
-//
-//  // should see a valid field end
-//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-//    return false;
   
   return true;
 }
@@ -546,12 +466,6 @@ bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Int snInt;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-//  bool bSawEnclosedLeading =
-//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -567,7 +481,7 @@ bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    goto L_TAIL;
+    return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -588,20 +502,6 @@ bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     StrLib::vSkipDigits(aazCrs);
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-L_TAIL:
-  
-//  bool bSawEnclosedTrailing =
-//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-//  if (! bSawEnclosedTrailing)
-//    return false;
-//
-//  // should see a valid field end
-//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-//    return false;
-  
   return true;
 }
 
@@ -613,12 +513,6 @@ bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Ivl snIvl;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-//  bool bSawEnclosedLeading =
-//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -634,7 +528,7 @@ bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    goto L_TAIL;
+    return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -646,20 +540,6 @@ bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   catch (Exception xException) {
     return false;
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-L_TAIL:
-  
-//  bool bSawEnclosedTrailing =
-//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-//  if (! bSawEnclosedTrailing)
-//    return false;
-//
-//  // should see a valid field end
-//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-//    return false;
   
   return true;
 }
@@ -671,12 +551,6 @@ bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Tsp snTsp;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-//  bool bSawEnclosedLeading =
-//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -692,7 +566,7 @@ bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    goto L_TAIL;
+    return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -704,20 +578,6 @@ bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   catch (Exception xException) {
     return false;
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-L_TAIL:
-  
-//  bool bSawEnclosedTrailing =
-//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-//  if (! bSawEnclosedTrailing)
-//    return false;
-//
-//  // should see a valid field end
-//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-//    return false;
   
   return true;
 }
@@ -729,11 +589,6 @@ bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Tsp snTsp;
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-//  bool bSawEnclosedLeading =
-//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -749,7 +604,7 @@ bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    goto L_TAIL;
+    return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -761,20 +616,6 @@ bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   catch (Exception xException) {
     return false;
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-L_TAIL:
-  
-//  bool bSawEnclosedTrailing =
-//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-//  if (! bSawEnclosedTrailing)
-//    return false;
-//
-//  // should see a valid field end
-//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-//    return false;
   
   return true;
 }
@@ -801,7 +642,7 @@ bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    goto L_TAIL;
+    return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -818,21 +659,6 @@ bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
   catch (Exception xException) {
     return false;
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-L_TAIL:
-  
-//  bool bSawEnclosedTrailing =
-//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,
-//                        pFmt->m_cEnclosedBy_Trailing);
-//  if (! bSawEnclosedTrailing)
-//    return false;
-//  
-//  // should see a valid field end
-//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-//    return false;
   
   return true;
 }
