@@ -222,7 +222,7 @@ void Encoding::vInitialEncoding(Row* pRow)
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // encode the column value
     
-    switch (xrColEnc.m_pCol->eDatumType()) {
+    switch (xrColEnc.m_pCol->eDatum()) {
         
       case DM_BCD: vEncodeBcd(xrColEnc,wColVal);  break;
       case DM_BOL: vEncodeBol(xrColEnc,wColVal);  break;

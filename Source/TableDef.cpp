@@ -295,7 +295,7 @@ eEC TableDef::eParseColumnBoolean(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   pCol->vColumnType(CT_BOOLEAN);
-  pCol->vDatumType(DM_BOL);
+  pCol->vDatum(DM_BOL);
   
   return EC_NONE;
 }
@@ -308,7 +308,7 @@ eEC TableDef::eParseColumnDate(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   pCol->vColumnType(CT_DATE);
-  pCol->vDatumType(DM_DTE);
+  pCol->vDatum(DM_DTE);
   
   return EC_NONE;
 }
@@ -326,7 +326,7 @@ eEC TableDef::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
   
   // set column type in column
   pCol->vColumnType(CT_DECIMAL);
-  pCol->vDatumType(DM_BCD);
+  pCol->vDatum(DM_BCD);
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
 
@@ -382,7 +382,7 @@ eEC TableDef::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
   
   // set column type
   pCol->vColumnType(CT_FLOAT);
-  pCol->vDatumType(DM_FLT);
+  pCol->vDatum(DM_FLT);
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
 
@@ -423,7 +423,7 @@ eEC TableDef::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   pCol->vColumnType(CT_INTEGER);
-  pCol->vDatumType(DM_INT);
+  pCol->vDatum(DM_INT);
   pCol->vColumnLength(C_MAX_PRECISION_INT);
 
   return EC_NONE;
@@ -437,7 +437,7 @@ eEC TableDef::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   pCol->vColumnType(CT_INTERVAL);
-  pCol->vDatumType(DM_IVL);
+  pCol->vDatum(DM_IVL);
   
   return EC_NONE;
 }
@@ -450,7 +450,7 @@ eEC TableDef::eParseColumnTime(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   pCol->vColumnType(CT_TIME);
-  pCol->vDatumType(DM_TME);
+  pCol->vDatum(DM_TME);
   
   return EC_NONE;
 }
@@ -463,7 +463,7 @@ eEC TableDef::eParseColumnTimestamp(TokenVec* pTknVec, Column* pCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
   
   pCol->vColumnType(CT_TIMESTAMP);
-  pCol->vDatumType(DM_TSP);
+  pCol->vDatum(DM_TSP);
   
   return EC_NONE;
 }
@@ -480,7 +480,7 @@ eEC TableDef::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
   
   // set column type
   pCol->vColumnType(CT_VARCHAR);
-  pCol->vDatumType(DM_VCH);
+  pCol->vDatum(DM_VCH);
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
 

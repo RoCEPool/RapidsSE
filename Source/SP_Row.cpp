@@ -50,7 +50,7 @@ void SP_Row::vRow(Row* pRow)
   for (i8 i_Col = 0; i_Col < pRow->m_nColumns; i_Col++) {
   
     Column* pCol = pRow->m_pStreamDef->pGetColumn(i_Col);
-    eDM eDatum   = pCol->eDatumType();
+    eDM eDatum   = pCol->eDatum();
     Stz* szDatum = (Stz*)aDM[eDatum];
 
     StrLib::vAppendString(&szCrs,(char*)"  "_Stz);

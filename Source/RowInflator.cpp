@@ -372,7 +372,7 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
       continue; // to next i_Col
     }
     
-    switch (pCol->eDatumType()) {
+    switch (pCol->eDatum()) {
       case DM_BOL:
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
@@ -787,7 +787,7 @@ void RowInflator::vInflateColumn(Row* pRow, i8 iColumnInto, HeadLine* aHeadLine,
       continue; // to next i_Col
     }
     
-    switch (pCol->eDatumType()) {
+    switch (pCol->eDatum()) {
       case DM_BOL:
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
@@ -1207,7 +1207,7 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
       continue; // to next i_Col
     }
     
-    switch (pCol->eDatumType()) {
+    switch (pCol->eDatum()) {
       case DM_BOL:
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;
@@ -1572,7 +1572,7 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
       continue; // to next i_Col
     }
         
-    switch (pCol->eDatumType()) {
+    switch (pCol->eDatum()) {
       case DM_BOL:
         vTrace(" [%lld %15s] %lld\n"_Stz,i_Col,pCol->szColNm(),*(aiValue-1));
         break;

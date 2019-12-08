@@ -42,7 +42,7 @@ void Step::vStreamDefNewCount(void)
   pStreamDef->m_xaColumn[0].vColumnNo(0);
   pStreamDef->m_xaColumn[0].vColumnNm("count"_Stz);
   pStreamDef->m_xaColumn[0].vColumnType(CT_INTEGER);
-  pStreamDef->m_xaColumn[0].vDatumType(DM_INT);
+  pStreamDef->m_xaColumn[0].vDatum(DM_INT);
   
   pStreamDef->m_nDefSets++;
   pStreamDef->m_nDefColumns[0] = 1;
@@ -67,7 +67,7 @@ void Step::vStreamDefNewToCsv(void)
   pStreamDef->m_xaColumn[0].vColumnNo(0);
   pStreamDef->m_xaColumn[0].vColumnNm("row"_Stz);
   pStreamDef->m_xaColumn[0].vColumnType(CT_VARCHAR);
-  pStreamDef->m_xaColumn[0].vDatumType(DM_VCH);
+  pStreamDef->m_xaColumn[0].vDatum(DM_VCH);
   
   pStreamDef->m_nDefSets++;
   pStreamDef->m_nDefColumns[0] = 1;

@@ -157,7 +157,7 @@ void Record::vAppend(Column* pCol, DtmVal* pDtmVal)
     return;
   }
 
-  eDM eDatum = pCol->eDatumType();
+  eDM eDatum = pCol->eDatum();
   
   switch (eDatum) {
     case DM_BCD: vAppendBcd(pCol,pDtmVal); break;
@@ -189,7 +189,7 @@ void Record::vAppend(Column* pCol, Row* pRow)
     return;
   }
   
-  eDM eDatum = pCol->eDatumType();
+  eDM eDatum = pCol->eDatum();
  
   switch (eDatum) {
     case DM_BCD: vAppendBcd(pCol,&oDatum); break;

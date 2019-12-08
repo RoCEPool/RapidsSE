@@ -11,7 +11,7 @@ void RowDecoder::vDecode(DtmVal* pDtmVal, HeadLine* aHeadLine,
                            i8 nColumns, Column* pCol,
                            i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  eDM eDatum = pCol->eDatumType();
+  eDM eDatum = pCol->eDatum();
   
   switch (eDatum) {
       

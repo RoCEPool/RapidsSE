@@ -146,7 +146,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
     
     byte* ayElm = EntWrk::ayEachElm(pCol,nBytes,&ayCursor);
     
-    eDM eDatum = pCol->eDatumType();
+    eDM eDatum = pCol->eDatum();
     
     if (eDatum == DM_VCH)
       nBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);

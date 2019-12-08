@@ -30,7 +30,7 @@ Sprint::~Sprint(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Sprint::vInto(Stz *szTgt, void *avSrc, Column *pCol)
 {
-  eDM eDatum = pCol->eDatumType();
+  eDM eDatum = pCol->eDatum();
   char* az   = (char*)szTgt;
   i8 iValue  = *(i8*)avSrc;
   

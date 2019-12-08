@@ -130,7 +130,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
     Column* pCol = pStreamDef->pGetColumn(i_Col);
     
     // get the encoded information
-    eDatum     = pCol->eDatumType();
+    eDatum     = pCol->eDatum();
     szDatum    = aDM[eDatum];
     eMetaCode  = aHeadLine->eMetaCode(i_Col);
     szMetaCode = aMC[eMetaCode];
@@ -331,7 +331,7 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
     Column* pCol = pStreamDef->pGetColumn(i_Col);
     
     // get the encoded information
-    eDatum     = pCol->eDatumType();
+    eDatum     = pCol->eDatum();
     szDatum    = aDM[eDatum];
     eMetaCode  = aHeadLine->eMetaCode(i_Col);
     szMetaCode = aMC[eMetaCode];

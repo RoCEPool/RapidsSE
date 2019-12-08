@@ -24,7 +24,7 @@ void RowExtractor::vAddElement(EntWrk* pEntWrk, Column* pCol,
   char* aSrc = (char*)szSrc;
   char* aDst = (char*)pEntWrk->ayElementCrs();
 
-  if (DM_VCH == pCol->eDatumType()) {
+  if (DM_VCH == pCol->eDatum()) {
     nBytes = StrLib::iWordFlip(aDst,aSrc);
     pEntWrk->vIncKeyBytes(nBytes);
     return;
@@ -120,7 +120,7 @@ Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
     oDatum.m_pCol = pCol;
     
     bool b = false;
-    eDM eDatum = pCol->eDatumType();
+    eDM eDatum = pCol->eDatum();
     
     switch (eDatum) {
       case DM_BCD: b = bExtractBcd(&oDatum,aazCrs,pFmt); break;
@@ -188,7 +188,7 @@ bool RowExtractor::bExtractDtm(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
   bool b = false;
   
   Column* pCol = pDtmVal->m_pCol;
-  eDM eDatum   = pCol->eDatumType();
+  eDM eDatum   = pCol->eDatum();
   
   i8 iYear, iMonth, iDay;
   i8 iHour, iMinute, iSecond, iMicro, iMilli;

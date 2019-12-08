@@ -178,7 +178,7 @@ void EntWrk::vAppendElement(Row* pRow, Column* pCol)
   }
   
   
-  if (DM_VCH == pCol->eDatumType()) {
+  if (DM_VCH == pCol->eDatum()) {
     char* aDst = (char*)ayElementCrs();
     char* aSrc = (char*)iValue;
     nBytes = StrLib::iWordFlip(aDst, aSrc);
