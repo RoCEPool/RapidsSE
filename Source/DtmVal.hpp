@@ -10,7 +10,6 @@ namespace Transform
   public:
   
     Column* m_pCol;   // which column
-    eDM     m_eDatumXX; // the kind of datum
     Dtm     m_wDtm;   // the value
   
     // - - - - - - -
