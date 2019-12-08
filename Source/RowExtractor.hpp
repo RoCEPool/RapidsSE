@@ -50,6 +50,8 @@ namespace Rows
                              bool& bValidNull,
                              bool bSkipTrailingSpaces=true);
   
+    static bool bIsSomeNull(char** aazCrs, Format* pFmt);
+  
     static bool bValidFieldEnd(char* aSrc, Format* pFmt);
     static bool bValidFieldEndDefault(char* aSrc, Format* pFmt);
     static bool bValidRecordEnd(char* aSrc, Format* pFmt);
