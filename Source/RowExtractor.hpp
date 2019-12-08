@@ -43,13 +43,7 @@ namespace Rows
     static bool bIsEnclosedString(char** aazCrs, Format* pFmt);
     static bool bIsThereFieldData(char* aSrc, Format* pFmt);
     static bool bIsThereRecordData(char* aSrc, Format* pFmt);
-  
-    static bool bTestForNull(Column* pCol,
-                             char** aazCrs,
-                             Format* pFmt,
-                             bool& bValidNull,
-                             bool bSkipTrailingSpaces=true);
-  
+    
     static bool bIsSomeNull(char** aazCrs, Format* pFmt);
   
     static bool bValidFieldEnd(char* aSrc, Format* pFmt);

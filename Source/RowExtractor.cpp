@@ -335,7 +335,7 @@ bool RowExtractor::bExtractDtm(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a decimal field from csv substr                                    */
+/* extract a decimal datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
@@ -361,7 +361,7 @@ bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a boolean field from csv substr                                    */
+/* extract a boolean datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
@@ -387,7 +387,7 @@ bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a date field from csv substr                           yyyy-mo-ddZ */
+/* extract a date datum from csv field value                      yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
@@ -413,7 +413,7 @@ bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a float field from csv substr                                      */
+/* extract a float datum from csv field value                                 */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
@@ -439,7 +439,7 @@ bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract an integer field from csv substr                                   */
+/* extract an integer datum from csv field value                              */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
@@ -474,7 +474,7 @@ bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 
 
 /*----------------------------------------------------------------------------*/
-/* extract an interval field from csv substr                                  */
+/* extract an interval datum from csv field value                             */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
@@ -500,7 +500,7 @@ bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a time field from csv substr                         hh:mi:ss.fffZ */
+/* extract a time datum from csv field value                    hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
@@ -526,7 +526,7 @@ bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
+/* extract a timestamp datum from csv field value    yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
@@ -552,7 +552,7 @@ bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a varchar field from csv substr                                    */
+/* extract a varchar datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
 {
@@ -638,90 +638,6 @@ bool RowExtractor::bIsThereRecordData(char* aSrc, Format* pFmt)
     return false;
   else
     return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for null token                                                        */
-/*----------------------------------------------------------------------------*/
-bool RowExtractor::bTestForNull(Column* pColumn, char** aazCrs,
-                          Format* pFmt,
-                          bool& rbValidNull,
-                          bool bSkipTrailingSpaces)
-{
-  /*
-   * This function scans aazCrs and attempts to identify the text form of a null.
-   * There are three text forms of null: null, \N or '\N'.
-   * If a null (and only a null) is detected and
-   *  a) the column is nullable, then bValidNull is set to true and the
-   *     function returns true; or
-   *  b) the column is not nullable, then bValidNull is set to false and the
-   *     function returns true.
-   * If no form of null is detected then bValidNull is set to false and the
-   * function returns false.
-   * Importantly a valid null is one of the three forms of null -- there can be
-   * no further characters after it. Eg: "nulla" or "null a" are not
-   * correct forms of null.
-   */
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test if there is any field data
-  
-  if ( ! bIsThereFieldData(*aazCrs, pFmt)) {
-    if ( ! pColumn->bIsNullable() ) {
-      // a null was detected in a non-nullable column
-      rbValidNull = false;
-      return true;
-    }
-    // a null was detected in a nullable column
-    rbValidNull = true;
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null, \N, '\N' or [\N]
-  
-  char* aStart = *aazCrs;
-  
-  if ( (**aazCrs == 'N' || **aazCrs == 'n') && (0 == StrLib::iCompare(*aazCrs+1, "ULL", 3, C_NO_CASE)) ) {
-    // skip over token null
-    *aazCrs = (*aazCrs) + 4;
-  }
-  else if (**aazCrs     == pFmt->m_cEscapeChar &&
-           *(*aazCrs+1) == 'N') {
-    // skip over \N
-    *aazCrs = (*aazCrs) + 2;
-  }
-  else if (**aazCrs     == pFmt->m_cEnclosedBy_Leading &&
-           *(*aazCrs+1) == pFmt->m_cEscapeChar &&
-           *(*aazCrs+2) == 'N'                        &&
-           *(*aazCrs+3) == pFmt->m_cEnclosedBy_Trailing) {
-    // skip over '\N' or [\N]
-    *aazCrs = (*aazCrs) + 4;
-  }
-  else if (**aazCrs    == pFmt->m_cEnclosedBy_Leading &&
-           ((*(*aazCrs+1) == 'N' || *(*aazCrs+1) == 'n') && (0 == StrLib::iCompare(*aazCrs+2, "ULL", 3, C_NO_CASE))) &&
-           *(*aazCrs+5) == pFmt->m_cEnclosedBy_Trailing) {
-    // skip over 'NULL'
-    *aazCrs = (*aazCrs) + 6;
-  }
-  else {
-    // no null detected
-    rbValidNull = false; // no null, so neither valid or invalid
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check the column is nullable
-  
-  if ( ! pColumn->bIsNullable() ) {
-    // a null was detected in a non-nullable column
-    rbValidNull = false;
-    return true;
-  }
-  
-  // a null was detected in a nullable column
-  rbValidNull = true;
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
