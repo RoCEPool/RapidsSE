@@ -1,0 +1,103 @@
+/*============================================================================*/
+/* job_OutputOp.sen -- Job OutputOp                                           */
+/*============================================================================*/
+
+" job_PutputOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute for outputOp request                       (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: outputOp_req ( -- )
+
+  >>logEntry <SEED_REQ>
+
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_CRWBUFFER of
+        "Operand:- ZK_CRWBUFFER" .
+        Operand[].workDone
+        Operand[].pipeToJob
+        true
+      endof
+
+      ZK_CSVBUFFER of
+        "Operand:- ZK_CSVBUFFER" .
+        Operand[].workDone
+        Operand[].pipeToJob
+        true
+      endof
+
+      ZK_ENDMARKER of
+        "Operand:- ZK_ENDMARKER" .
+        Operand[].handleEnd
+        false
+      endof
+
+      ZK_ENTBUFFER of
+        "Operand:- ZK_ENTBUFFER" .
+        Operand[].workDone
+        Operand[].pipeToJob
+        true
+      endof
+
+      ZK_IRWBUFFER of
+        "Operand:- ZK_IRWBUFFER" .
+        Operand[].workDone
+        Operand[].pipeToJob
+        true
+      endof
+
+      ZK_SRTBUFFER of
+        "Operand:- ZK_SRTBUFFER" .
+        Operand[].workDone
+        Operand[].pipeToJob
+        true
+      endof
+
+      ZK_STREAMDEF of
+        "Operand:- ZK_STREAMDEF" .
+        Operand[].workDone
+        Operand[].pipeToJob
+        true
+      endof
+
+    endcase
+
+  while assert::stack_0 repeat
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/***                            - Definition -                              ***/
+/*----------------------------------------------------------------------------*/
+jobSyntax: outputOp :: outputOp ;
+
+jobInfo: outputOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobType?>  = JT_OUTPUTOP
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

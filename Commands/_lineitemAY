@@ -100,7 +100,7 @@ begin
 stage stageA on all partitions:
   scanOp lineitem | stageB
 stage stageB on origin:
-  endOp
+  outputOp
 
 end;
 
@@ -112,7 +112,7 @@ stage stageA on all partitions:
 scanOp lineitem |  toCsvOp | stageB
 
 stage stageB on origin:
-toFileOp "/tmp/xxx.csv" | endOp
+toFileOp "/tmp/xxx.csv" | outputOp
 
 end
 ;
@@ -124,7 +124,7 @@ end
    scanOp lineitem |  countOp | superCountOp | stageB
  
  stage stageB on origin:
-   superCountOp | endOp
+   superCountOp | outputOp
 
  end
  ;

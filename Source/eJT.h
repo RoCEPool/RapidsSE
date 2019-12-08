@@ -39,7 +39,7 @@ enum eJT // job type
   /*    */ JT_LISTINDEXES,
   /*    */ JT_LISTPARTCOLUMNS,
   /*    */ JT_LISTPARTITIONS,
-  
+  /*    */ JT_OUTPUTOP,
   /*    */ JT_PING,
   /*    */ JT_PWF,
   /*    */ JT_SCANOP,
@@ -99,6 +99,7 @@ static Stz* aJT[]
   /*    */ "LISTINDEXES"_Stz,
   /*    */ "LISTPARTCOLUMNS"_Stz,
   /*    */ "LISTPARTITIONS"_Stz,
+  /*    */ "OUTPUTOP"_Stz,
   /*    */ "PING"_Stz,
   /*    */ "PWF"_Stz,
   /*    */ "SCANOP"_Stz,
