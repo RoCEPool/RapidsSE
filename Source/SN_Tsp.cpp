@@ -32,7 +32,7 @@ SN_Tsp::~SN_Tsp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 SN_Tsp::i(char** aacCrs, Column* pCol, Format* pScnFmt)
+i8 SN_Tsp::i(char** aacCrs, Column* pCol, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNTSP);
   
@@ -42,8 +42,8 @@ i8 SN_Tsp::i(char** aacCrs, Column* pCol, Format* pScnFmt)
   if ( ! StrLib::bExtractTimestamp2(aacCrs,
                                     iYear, iMonth, iDay,
                                     iHour, iMinute, iSecond, iMicro,
-                                    pScnFmt->m_eDateComponent,
-                                    pScnFmt->m_cDateSeparator) )
+                                    pFmt->m_eDateComponent,
+                                    pFmt->m_cDateSeparator) )
     THROW("StrLib::bExtractTimestamp2"_Stz);
 
   m_wDtm.xTsp.m_uYearDelta = iYear - C_YEAR_BASE;

@@ -20,7 +20,7 @@ namespace ScanSprint
     
     Stz* sz(char** aacCrs,
             Column* pCol,
-            Format* pScnFmt,
+            Format* pFmt,
             bool bSawLeadingEnclosed,
             i8& nChars_);
   

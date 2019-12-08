@@ -32,7 +32,7 @@ SN_Vch::~SN_Vch(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SN_Vch::sz(char** aacCrs, Column* pCol, Format* pScnFmt,
+Stz* SN_Vch::sz(char** aacCrs, Column* pCol, Format* pFmt,
                bool bSawLeadingEnclosed,
                i8& nChars_)
 {
@@ -42,12 +42,12 @@ Stz* SN_Vch::sz(char** aacCrs, Column* pCol, Format* pScnFmt,
                                  m_caVch,
                                  pCol->iColumnLength(),
                                  bSawLeadingEnclosed,
-                                 pScnFmt->m_cEnclosedBy_Leading,
-                                 pScnFmt->m_cEnclosedBy_Trailing,
-                                 pScnFmt->m_cEscapeChar,
-                                 pScnFmt->m_cFieldDelimiter,
-                                 pScnFmt->m_cRecordTerminator,
-                                 pScnFmt->m_bAllowNonPrintable,
+                                 pFmt->m_cEnclosedBy_Leading,
+                                 pFmt->m_cEnclosedBy_Trailing,
+                                 pFmt->m_cEscapeChar,
+                                 pFmt->m_cFieldDelimiter,
+                                 pFmt->m_cRecordTerminator,
+                                 pFmt->m_bAllowNonPrintable,
                                  nChars_) )
     THROW("StrLib::bExtractVarchar"_Stz);
 

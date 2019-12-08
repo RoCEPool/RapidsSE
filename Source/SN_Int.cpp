@@ -32,7 +32,7 @@ SN_Int::~SN_Int(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 SN_Int::i(char** aacCrs, Column* pCol, Format* pScnFmt)
+i8 SN_Int::i(char** aacCrs, Column* pCol, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNINT);
   
