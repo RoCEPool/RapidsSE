@@ -14,7 +14,7 @@ namespace Chunks
     Stz* m_aNextRecord; // first byte of next record
   
   public:
-    RecordExtractor(eCN eClassNo, Format* pFormatters);
+    RecordExtractor(eCN eClassNo, Format* pFmt);
     ~RecordExtractor(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

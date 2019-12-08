@@ -199,7 +199,7 @@ bool Job_SubLoader::bChunk(void)
   Session* pSession = m_pJob_LoadTable->pSession();
   Table* pTable = m_pJob_LoadTable->m_pTable;
   i8 iParentJobId = m_pJob_LoadTable->m_iFocalId;
-  Format* pFormatters = &m_pJob_LoadTable->m_oFormatters;
+  Format* pFmt = &m_pJob_LoadTable->m_oFormatters;
 
   i8 i_Seek;
   i8 nChunkBytes;

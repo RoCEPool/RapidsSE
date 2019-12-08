@@ -43,8 +43,8 @@ void LoadChunk::operator delete(void* pLoadChunkAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LoadChunk::LoadChunk(Format* pFormatters)
-: FileChunk(CN_LOADCHUNK,pFormatters)
+LoadChunk::LoadChunk(Format* pFmt)
+: FileChunk(CN_LOADCHUNK,pFmt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
  

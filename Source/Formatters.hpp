@@ -33,7 +33,7 @@ namespace Chunks
     ~Format(void) noexcept(false);
   
     void vReset(void);
-    void vSet(Format* pFormatters);
+    void vSet(Format* pFmt);
     void vShow(void);
     
     Footer* aFooter(void);

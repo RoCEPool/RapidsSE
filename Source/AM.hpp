@@ -63,7 +63,7 @@ namespace Oblique
     static Lock* pDicLock(void);
     static i8   iElapsedSsec(void);
     static i8   iEpoch(void);
-    static Format* pFormatters(void);
+    static Format* pFmt(void);
     static Grid* pGrid(void);
     static i8   nConnectedNodes(void);
     static i8   nDefinedNodes(void);
