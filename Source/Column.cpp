@@ -450,9 +450,6 @@ byte* Column::ayValue(i8& nBytes, byte** aayCursor)
       nBytes = sizeof(i8);
       break;
       
-    case DM_VBN:
-      NEVER_REACH;
-      break;
     
     case DM_VCH:
       aElem = (Stz*)aValue;

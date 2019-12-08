@@ -15,10 +15,9 @@ enum eDM : u1 // Dtm Kind
   /*  6 */ DM_IVL,
   /*  7 */ DM_TME,
   /*  8 */ DM_TSP,
-  /*  9 */ DM_VBN,
-  /* 10 */ DM_VCH,
+  /*  9 */ DM_VCH,
   
-  /* 11 */ DM_ENUMS
+  /* 10 */ DM_ENUMS
 };
 
 static Stz* aDM[]
@@ -33,10 +32,9 @@ static Stz* aDM[]
   /*  6 */ "IVL"_Stz,
   /*  7 */ "TME"_Stz,
   /*  8 */ "TSP"_Stz,
-  /*  9 */ "VBN"_Stz,
-  /* 10 */ "VCH"_Stz,
+  /*  9 */ "VCH"_Stz,
   
-  /* 11 */ "ENUMS"_Stz,
+  /* 10 */ "ENUMS"_Stz,
 };
 
 /*============================================================================*/
