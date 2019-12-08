@@ -291,18 +291,21 @@ bool RowExtractor::bExtractDtm(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
 bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs,
                                     Format* pFmt)
 {
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_BCD;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
   bool bSawEnclosedLeading =
   StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
+  // field processing
+
+  Column* pColumn = pDtmVal->m_pCol;
+  pDtmVal->m_eDatum = DM_BCD;
+  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null
   
   bool bValidNull = false;
   if (bTestForNull(pColumn,aazCrs,pFmt,bValidNull)) {
@@ -344,15 +347,17 @@ bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs,
 bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs,
                                     Format* pFmt)
 {
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_BOL;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
   bool bSawEnclosedLeading =
   StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // field processing
+  
+  Column* pColumn = pDtmVal->m_pCol;
+  pDtmVal->m_eDatum = DM_BOL;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
@@ -397,17 +402,19 @@ bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs,
 bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs,
                                     Format* pFmt)
 {
-  
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_DTE;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
   bool bSawEnclosedLeading =
   StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // field processing
+
+  Column* pColumn = pDtmVal->m_pCol;
+  pDtmVal->m_eDatum = DM_DTE;
+  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
   
@@ -451,15 +458,17 @@ bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs,
 bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs,
                                     Format* pFmt)
 {
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_FLT;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
   bool bSawEnclosedLeading =
   StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // field processing
+  
+  Column* pColumn = pDtmVal->m_pCol;
+  pDtmVal->m_eDatum = DM_FLT;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
@@ -504,15 +513,17 @@ bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs,
 bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs,
                                     Format* pFmt)
 {
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_INT;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
   bool bSawEnclosedLeading =
   StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // field processing
+  
+  Column* pColumn = pDtmVal->m_pCol;
+  pDtmVal->m_eDatum = DM_INT;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
@@ -566,15 +577,17 @@ bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs,
 bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs,
                                     Format* pFmt)
 {
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_IVL;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
   bool bSawEnclosedLeading =
   StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // field processing
+  
+  Column* pColumn = pDtmVal->m_pCol;
+  pDtmVal->m_eDatum = DM_IVL;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
@@ -619,16 +632,17 @@ bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs,
 bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs,
                                     Format* pFmt)
 {
-  
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_TME;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
   bool bSawEnclosedLeading =
   StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // field processing
+  
+  Column* pColumn = pDtmVal->m_pCol;
+  pDtmVal->m_eDatum = DM_TME;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
@@ -673,16 +687,17 @@ bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs,
 bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs,
                                     Format* pFmt)
 {
-  
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_TSP;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
   bool bSawEnclosedLeading =
   StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // field processing
+  
+  Column* pColumn = pDtmVal->m_pCol;
+  pDtmVal->m_eDatum = DM_TSP;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
@@ -727,8 +742,10 @@ bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs,
 bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs,
                                     Format* pFmt)
 {
-  Column* pColumn = pDtmVal->m_pCol;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // field processing
   
+  Column* pColumn = pDtmVal->m_pCol;
   pDtmVal->m_eDatum = DM_VCH;
   
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
