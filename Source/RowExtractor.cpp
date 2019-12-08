@@ -334,6 +334,8 @@ bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
+L_TAIL:
+  
   bool bSawEnclosedTrailing =
   StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
   if (! bSawEnclosedTrailing)
@@ -388,6 +390,8 @@ bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
+  
+L_TAIL:
   
   bool bSawEnclosedTrailing =
   StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
@@ -445,6 +449,8 @@ bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
+L_TAIL:
+  
   bool bSawEnclosedTrailing =
   StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
   if (! bSawEnclosedTrailing)
@@ -499,6 +505,8 @@ bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
+  
+L_TAIL:
   
   bool bSawEnclosedTrailing =
   StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
@@ -563,6 +571,8 @@ bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
+L_TAIL:
+  
   bool bSawEnclosedTrailing =
   StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
   if (! bSawEnclosedTrailing)
@@ -619,6 +629,8 @@ bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
+L_TAIL:
+  
   bool bSawEnclosedTrailing =
   StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
   if (! bSawEnclosedTrailing)
@@ -673,6 +685,8 @@ bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
+  
+L_TAIL:
   
   bool bSawEnclosedTrailing =
   StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
@@ -729,6 +743,8 @@ bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
+L_TAIL:
+  
   bool bSawEnclosedTrailing =
   StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
   if (! bSawEnclosedTrailing)
@@ -781,6 +797,8 @@ bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
+  
+L_TAIL:
   
   bool bSawEnclosedTrailing =
   StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,
@@ -858,7 +876,7 @@ bool RowExtractor::bIsThereRecordData(char* aSrc, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bTestForNull(Column* pColumn, char** aazCrs,
                           Format* pFmt,
-                          bool& bValidNull,
+                          bool& rbValidNull,
                           bool bSkipTrailingSpaces)
 {
   /*
@@ -882,11 +900,11 @@ bool RowExtractor::bTestForNull(Column* pColumn, char** aazCrs,
   if ( ! bIsThereFieldData(*aazCrs, pFmt)) {
     if ( ! pColumn->bIsNullable() ) {
       // a null was detected in a non-nullable column
-      bValidNull = false;
+      rbValidNull = false;
       return true;
     }
     // a null was detected in a nullable column
-    bValidNull = true;
+    rbValidNull = true;
     return true;
   }
   
@@ -922,7 +940,7 @@ bool RowExtractor::bTestForNull(Column* pColumn, char** aazCrs,
   }
   else {
     // no null detected
-    bValidNull = false; // no null, so neither valid or invalid
+    rbValidNull = false; // no null, so neither valid or invalid
     return false;
   }
   
@@ -937,7 +955,7 @@ bool RowExtractor::bTestForNull(Column* pColumn, char** aazCrs,
   if (! bValidFieldEnd(*aazCrs,pFmt)) {
     // no well formed null detected
     *(aazCrs) = aStart;
-    bValidNull = false; // no null, so neither valid or invalid
+    rbValidNull = false; // no null, so neither valid or invalid
     return false;
   }
   
@@ -946,12 +964,12 @@ bool RowExtractor::bTestForNull(Column* pColumn, char** aazCrs,
   
   if ( ! pColumn->bIsNullable() ) {
     // a null was detected in a non-nullable column
-    bValidNull = false;
+    rbValidNull = false;
     return true;
   }
   
   // a null was detected in a nullable column
-  bValidNull = true;
+  rbValidNull = true;
   return true;
 }
 
