@@ -20,25 +20,25 @@ namespace Rows
                                char** aazCrs, Format* pFmt);
   
   private:
-    static bool bExtractDtm(DtmVal* pDtmVal, char** aazCrs, Format* pFmt);
+    static bool bExtractDtm(Datum* pDtmVal, char** aazCrs, Format* pFmt);
   
-    static bool bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+    static bool bExtractBcd(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                             bool bSawEnclosedLeading);
-    static bool bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+    static bool bExtractBol(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                             bool bSawEnclosedLeading);
-    static bool bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+    static bool bExtractDte(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                             bool bSawEnclosedLeading);
-    static bool bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+    static bool bExtractFlt(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                             bool bSawEnclosedLeading);
-    static bool bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+    static bool bExtractInt(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                             bool bSawEnclosedLeading);
-    static bool bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+    static bool bExtractIvl(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                             bool bSawEnclosedLeading);
-    static bool bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+    static bool bExtractTme(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                             bool bSawEnclosedLeading);
-    static bool bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+    static bool bExtractTsp(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                             bool bSawEnclosedLeading);
-    static bool bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt);
+    static bool bExtractVch(Datum* pDtmVal, char** aazCrs, Format* pFmt);
   
     static bool bIsEnclosedString(char** aazCrs, Format* pFmt);
     static bool bIsThereFieldData(char* aSrc, Format* pFmt);

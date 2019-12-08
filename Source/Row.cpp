@@ -127,7 +127,7 @@ void Row::vAdjustAddresses(Row* pCopiedFromRow)
 /*----------------------------------------------------------------------------*/
 /* append column value to row                                                 */
 /*----------------------------------------------------------------------------*/
-void Row::vAppendValue(DtmVal* pDtmVal, Column* pCol)
+void Row::vAppendValue(Datum* pDtmVal, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 

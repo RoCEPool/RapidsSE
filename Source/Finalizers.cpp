@@ -51,13 +51,13 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_CSVBUFFER
   
   /*    */ &Finalize::vUndefined,         // CN__D__
+  /*    */ &Finalize::vUndefined,         // CN_DATUM
   /*    */ &Finalize::vUndefined,         // CN_DECACNT
   /*    */ &Finalize::vUndefined,         // CN_DECIDER
   /* 33 */ &Dic::vFinalize,               // CN_DIC
   /*    */ &Finalize::vUndefined,         // CN_DICPATH
   /* 34 */ &Finalize::vUndefined,         // CN_DICSTACK
   /* 35 */ &Finalize::vUndefined,         // CN_DIR
-  /*    */ &Finalize::vUndefined,         // CN_DTMVAL
   /*    */ &Finalize::vUndefined,         // CN_DYNAMO
 
   /*    */ &Finalize::vUndefined,         // CN__E__

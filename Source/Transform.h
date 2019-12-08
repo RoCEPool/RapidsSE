@@ -14,7 +14,7 @@ namespace Transform
 
 //------------------------------------------------------------------------------
 
-#include "DtmVal.hpp"
+#include "Datum.hpp"
 
 #include "Scan.hpp"
 #include "Sprint.hpp"

@@ -150,7 +150,7 @@ void Record::vAppend(Row* pRow)
 /*----------------------------------------------------------------------------*/
 /* append ascii of datum to record                                            */
 /*----------------------------------------------------------------------------*/
-void Record::vAppend(Column* pCol, DtmVal* pDtmVal)
+void Record::vAppend(Column* pCol, Datum* pDtmVal)
 {
   if (pDtmVal->bIsNull()) {
     m_sRecStr.vAppend(&m_azAppendCursor,"null"_Stz);
@@ -179,7 +179,7 @@ void Record::vAppend(Column* pCol, DtmVal* pDtmVal)
 /*----------------------------------------------------------------------------*/
 void Record::vAppend(Column* pCol, Row* pRow)
 {
-  DtmVal oDatum;
+  Datum oDatum;
   i8 i_Col = pCol->iColumnNo();
   
   oDatum.m_wDtm.m_iInt = pRow->m_waColVal[i_Col].m_iInt;
@@ -212,7 +212,7 @@ void Record::vAppend(Column* pCol, Row* pRow)
 /*----------------------------------------------------------------------------*/
 /* append ascii of decimal datum to record                                    */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendBcd(Column* pCol, DtmVal* pDtmVal)
+void Record::vAppendBcd(Column* pCol, Datum* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -250,7 +250,7 @@ void Record::vAppendBcd(Column* pCol, DtmVal* pDtmVal)
 /*----------------------------------------------------------------------------*/
 /* append ascii of boolean datum to record                                    */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendBol(Column* pCol, DtmVal* pDtmVal)
+void Record::vAppendBol(Column* pCol, Datum* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -262,7 +262,7 @@ void Record::vAppendBol(Column* pCol, DtmVal* pDtmVal)
 /*----------------------------------------------------------------------------*/
 /* append ascii of date datum to record                                       */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendDte(Column* pCol, DtmVal* pDtmVal)
+void Record::vAppendDte(Column* pCol, Datum* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -281,7 +281,7 @@ void Record::vAppendDte(Column* pCol, DtmVal* pDtmVal)
 /*----------------------------------------------------------------------------*/
 /* append ascii of float datum to record                                      */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendFlt(Column* pCol, DtmVal* pDtmVal)
+void Record::vAppendFlt(Column* pCol, Datum* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -296,7 +296,7 @@ void Record::vAppendFlt(Column* pCol, DtmVal* pDtmVal)
 /*----------------------------------------------------------------------------*/
 /* append ascii of integer datum to record                                    */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendInt(Column* pCol, DtmVal* pDtmVal)
+void Record::vAppendInt(Column* pCol, Datum* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -308,7 +308,7 @@ void Record::vAppendInt(Column* pCol, DtmVal* pDtmVal)
 /*----------------------------------------------------------------------------*/
 /* append ascii of interval datum to record                                   */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendIvl(Column* pCol, DtmVal* pDtmVal)
+void Record::vAppendIvl(Column* pCol, Datum* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
  
@@ -320,7 +320,7 @@ void Record::vAppendIvl(Column* pCol, DtmVal* pDtmVal)
 /*----------------------------------------------------------------------------*/
 /* append ascii of time datum to record                                       */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendTme(Column* pCol, DtmVal* pDtmVal)
+void Record::vAppendTme(Column* pCol, Datum* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -332,7 +332,7 @@ void Record::vAppendTme(Column* pCol, DtmVal* pDtmVal)
 /*----------------------------------------------------------------------------*/
 /* append ascii of timestamp datum to record                                  */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendTsp(Column* pCol, DtmVal* pDtmVal)
+void Record::vAppendTsp(Column* pCol, Datum* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -344,7 +344,7 @@ void Record::vAppendTsp(Column* pCol, DtmVal* pDtmVal)
 /*----------------------------------------------------------------------------*/
 /* append ascii of varchar datum to record                                    */
 /*----------------------------------------------------------------------------*/
-void Record::vAppendVch(Column* pCol, DtmVal* pDtmVal)
+void Record::vAppendVch(Column* pCol, Datum* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   

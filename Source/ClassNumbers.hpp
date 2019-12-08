@@ -54,13 +54,13 @@ enum eCN : u2 // Class Number
   /*  35 0x023  1040784B Heap:L */ CN_CSVBUFFER,
   
   /*  36 0x024        4B Heap:I */ CN__D__,
+  /*  43 0x02B     4072B Heap:M */ CN_DATUM,
   /*  37 0x025       80B Heap:S */ CN_DECACNT,
   /*  38 0x026       32B Heap:S */ CN_DECIDER,
   /*  39 0x027       88B Heap:M */ CN_DIC,
   /*  40 0x028      920B Heap:S */ CN_DICPATH,
   /*  41 0x029      152B Heap:S */ CN_DICSTACK,
   /*  42 0x02A      680B Heap:S */ CN_DIR,
-  /*  43 0x02B     4072B Heap:M */ CN_DTMVAL,
   /*  44 0x02C       56B Heap:S */ CN_DYNAMO,
   
   /*  45 0x02D        5B Heap:I */ CN__E__,
@@ -378,13 +378,13 @@ static Stz* aCN[]
   /*  35 0x023 */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
   
   /*  36 0x024 */ "_D__"_Stz,                // CN__D__
+  /*  43 0x02B */ "DTMVAL"_Stz,              // CN_DATUM
   /*  37 0x025 */ "DECACNT"_Stz,             // CN_DECACNT
   /*  38 0x026 */ "DECIDER"_Stz,             // CN_DECIDER
   /*  39 0x027 */ "DIC"_Stz,                 // CN_DIC
   /*  40 0x028 */ "DICPATH"_Stz,             // CN_DICPATH
   /*  41 0x029 */ "DICSTACK"_Stz,            // CN_DICSTACK
   /*  42 0x02A */ "DIR"_Stz,                 // CN_DIR
-  /*  43 0x02B */ "DTMVAL"_Stz,              // CN_DTMVAL
   /*  44 0x02C */ "DYNAMO"_Stz,              // CN_DYNAMO
   
   /*  45 0x02D */ "_E__"_Stz,                // CN__E__

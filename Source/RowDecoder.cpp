@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* get encoded datum from row                                                 */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecode(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecode(Datum* pDtmVal, HeadLine* aHeadLine,
                            i8 nColumns, Column* pCol,
                            i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -59,7 +59,7 @@ void RowDecoder::vDecode(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode decimal from given head line                                        */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeBcd(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeBcd(Datum* pDtmVal, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -101,7 +101,7 @@ void RowDecoder::vDecodeBcd(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode boolean from given head line                                        */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeBol(DtmVal* pDtmVal, HeadLine* aHeadLine,Column* pCol)
+void RowDecoder::vDecodeBol(Datum* pDtmVal, HeadLine* aHeadLine,Column* pCol)
 {
   //eMC eEncoding = aHeadLine->eGetEncoding(pCol,pColVec,i_ColCrs_,i_Offset);
   
@@ -131,7 +131,7 @@ void RowDecoder::vDecodeBol(DtmVal* pDtmVal, HeadLine* aHeadLine,Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* decode date from given head line                                           */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeDte(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeDte(Datum* pDtmVal, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -171,7 +171,7 @@ void RowDecoder::vDecodeDte(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode float from given head line                                          */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeFlt(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeFlt(Datum* pDtmVal, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -200,7 +200,7 @@ void RowDecoder::vDecodeFlt(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode integer from given head line                                        */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeInt(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeInt(Datum* pDtmVal, HeadLine* aHeadLine,
                             i8 nColumns, Column* pCol,
                             i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -244,7 +244,7 @@ void RowDecoder::vDecodeInt(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode interval from given head line                                       */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeIvl(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeIvl(Datum* pDtmVal, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -273,7 +273,7 @@ void RowDecoder::vDecodeIvl(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode time from given head line                                           */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeTme(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeTme(Datum* pDtmVal, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -305,7 +305,7 @@ void RowDecoder::vDecodeTme(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode timestamp from given head line                                      */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeTsp(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeTsp(Datum* pDtmVal, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs)
 {
@@ -331,7 +331,7 @@ void RowDecoder::vDecodeTsp(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVch(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeVch(Datum* pDtmVal, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -368,7 +368,7 @@ void RowDecoder::vDecodeVch(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVchLong(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeVchLong(Datum* pDtmVal, HeadLine* aHeadLine,
                                  Column* pCol, i8 i_Offset)
 {
   //vDebugPoint();
@@ -388,7 +388,7 @@ void RowDecoder::vDecodeVchLong(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode MC_SHOCO_FIT_1C tail line shoco                                     */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVchShocoFit(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeVchShocoFit(Datum* pDtmVal, HeadLine* aHeadLine,
                                       Column* pCol, i8 i_Offset)
 {
   /*
@@ -424,7 +424,7 @@ void RowDecoder::vDecodeVchShocoFit(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode MC_SHOCO_SPLIT_2T1C tail line shoco                                 */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVchShocoSplit(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeVchShocoSplit(Datum* pDtmVal, HeadLine* aHeadLine,
                                         Column* pCol, i8 i_Offset)
 {
   /*
@@ -480,7 +480,7 @@ void RowDecoder::vDecodeVchShocoSplit(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode MC_SHOCO_TAIL_2T tail line shoco                                    */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVchShocoTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeVchShocoTail(Datum* pDtmVal, HeadLine* aHeadLine,
                                        Column* pCol, i8 i_Offset)
 {
   i8 i_Tail_rel = aHeadLine->wGetLogical(i_Offset,C_2B);
@@ -516,7 +516,7 @@ void RowDecoder::vDecodeVchShocoTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode MC_STRING_TAIL_2T tail line string                                 */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVchStringTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeVchStringTail(Datum* pDtmVal, HeadLine* aHeadLine,
                                         Column* pCol, i8 i_Offset)
 {
   i8 i_Tail_rel = aHeadLine->wGetLogical(i_Offset,C_2B);
@@ -551,7 +551,7 @@ void RowDecoder::vDecodeVchStringTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVchSmall(DtmVal* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeVchSmall(Datum* pDtmVal, HeadLine* aHeadLine,
                                    Column* pCol, i8 i_Offset)
 {
   //vDebugPoint();

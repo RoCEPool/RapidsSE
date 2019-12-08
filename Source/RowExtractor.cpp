@@ -30,7 +30,7 @@ void RowExtractor::vAddElement(EntWrk* pEntWrk, Column* pCol,
     return;
   }
 
-  DtmVal oDatum;
+  Datum oDatum;
   oDatum.m_pCol = pCol;
 
   bool b = RowExtractor::bExtractDtm(&oDatum,&aSrc,pFmt);
@@ -118,7 +118,7 @@ Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
     
     Column* pCol = pStreamDef->pGetColumn(i_Col);
   
-    DtmVal oDatum;
+    Datum oDatum;
     oDatum.m_pCol = pCol;
     
     bool b = false;
@@ -237,7 +237,7 @@ Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
 /*----------------------------------------------------------------------------*/
 /* extract key element                                                        */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractDtm(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
+bool RowExtractor::bExtractDtm(Datum* pDtmVal, char** aazCrs, Format* pFmt)
 {
   bool b = false;
   
@@ -337,18 +337,12 @@ bool RowExtractor::bExtractDtm(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* extract a decimal datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+bool RowExtractor::bExtractBcd(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Bcd snBcd;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // field processing
-
   Column* pColumn = pDtmVal->m_pCol;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // decimal field processing
   
   try {
     pDtmVal->m_wDtm.m_iBcd = snBcd.i(aazCrs,pColumn,pFmt);
@@ -363,18 +357,12 @@ bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract a boolean datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+bool RowExtractor::bExtractBol(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Bol snBol;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // field processing
-  
   Column* pColumn = pDtmVal->m_pCol;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // boolean field processing
   
   try {
     pDtmVal->m_wDtm.m_iBol = snBol.i(aazCrs,pColumn,pFmt);
@@ -389,18 +377,12 @@ bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract a date datum from csv field value                      yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+bool RowExtractor::bExtractDte(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Dte snDte;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // field processing
-
   Column* pColumn = pDtmVal->m_pCol;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // date field processing
   
   try {
     pDtmVal->m_wDtm.m_iDte = snDte.i(aazCrs,pColumn,pFmt);
@@ -415,18 +397,12 @@ bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract a float datum from csv field value                                 */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+bool RowExtractor::bExtractFlt(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Flt snFlt;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // field processing
-  
   Column* pColumn = pDtmVal->m_pCol;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // float field processing
   
   try {
     pDtmVal->m_wDtm.m_dFlt = snFlt.d(aazCrs,pColumn,pFmt);
@@ -441,18 +417,12 @@ bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract an integer datum from csv field value                              */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+bool RowExtractor::bExtractInt(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Int snInt;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // field processing
-  
   Column* pColumn = pDtmVal->m_pCol;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // integer field processing
   
   try {
     pDtmVal->m_wDtm.m_iInt = snInt.i(aazCrs,pColumn,pFmt);
@@ -476,18 +446,12 @@ bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract an interval datum from csv field value                             */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+bool RowExtractor::bExtractIvl(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Ivl snIvl;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // field processing
-  
   Column* pColumn = pDtmVal->m_pCol;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // interval field processing
   
   try {
     pDtmVal->m_wDtm.m_iIvl = snIvl.i(aazCrs,pColumn,pFmt);
@@ -502,18 +466,12 @@ bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract a time datum from csv field value                    hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+bool RowExtractor::bExtractTme(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Tsp snTsp;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // field processing
-  
   Column* pColumn = pDtmVal->m_pCol;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // time field processing
   
   try {
     pDtmVal->m_wDtm.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
@@ -528,18 +486,12 @@ bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp datum from csv field value    yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+bool RowExtractor::bExtractTsp(Datum* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
   SN_Tsp snTsp;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // field processing
-  
   Column* pColumn = pDtmVal->m_pCol;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // timestamp field processing
   
   try {
     pDtmVal->m_wDtm.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
@@ -554,13 +506,10 @@ bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
+bool RowExtractor::bExtractVch(Datum* pDtmVal, char** aazCrs, Format* pFmt)
 {
   SN_Vch snVch;
   bool bSawEnclosedLeading = false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // field processing
   
   Column* pColumn = pDtmVal->m_pCol;
   
@@ -569,7 +518,7 @@ bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
   bSawEnclosedLeading = bIsEnclosedString(aazCrs,pFmt);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // varchar field processing
+  // varchar field value processing
   
   try {
     pDtmVal->m_sVch = snVch.sz(aazCrs,pColumn,pFmt,

@@ -55,13 +55,13 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_CSVBUFFER
 
   /* */ &Dump::vInvalid,         // CN__D__
+  /* */ &Dump::vDummy,           // CN_DATUM
   /* */ &Dump::vDummy,           // CN_DECACNT
   /* */ &Dump::vDummy,           // CN_DECIDER
   /* */ &Dic::vDump,             // CN_DIC
   /* */ &Dump::vDummy,           // CN_DICPATH
   /* */ &DicStack::vDump,        // CN_DICSTACK
   /* */ &Dump::vInvalid,         // CN_DIR
-  /* */ &Dump::vDummy,           // CN_DTMVAL
   /* */ &Dump::vDummy,           // CN_DYNAMO
 
   /* */ &Dump::vInvalid,         // CN__E__
@@ -380,13 +380,13 @@ i8 giClassSize[]
   /* */ sizeof(CsvBuffer),          // CN_CSVBUFFER
 
   /* */ 'D'-'A' + 1,                // CN__D__
+  /* */ sizeof(Datum),             // CN_DATUM
   /* */ sizeof(DecaCnt),            // CN_DECACNT
   /* */ sizeof(Decider),            // CN_DECIDER
   /* */ sizeof(Dic),                // CN_DIC
   /* */ sizeof(DicPath),            // CN_DICPATH
   /* */ sizeof(DicStack),           // CN_DICSTACK
   /* */ sizeof(Dir),                // CN_DIR
-  /* */ sizeof(DtmVal),             // CN_DTMVAL
   /* */ sizeof(Dynamo),             // CN_DYNAMO
 
   /* */ 'E'-'A' + 1,                // CN__E__
@@ -705,13 +705,13 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_CSVBUFFER
 
   /* */ HT_INVALID,           // CN__D__
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_DATUM
   /* */ HT_TRANSIENT_SMALL,   // CN_DECACNT
   /* */ HT_TRANSIENT_SMALL,   // CN_DECIDER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_DIC
   /* */ HT_TRANSIENT_SMALL,   // CN_DICPATH
   /* */ HT_TRANSIENT_SMALL,   // CN_DICSTACK
   /* */ HT_TRANSIENT_SMALL,   // CN_DIR
-  /* */ HT_TRANSIENT_MEDIUM,  // CN_DTMVAL
   /* */ HT_TRANSIENT_SMALL,   // CN_DYNAMO
 
   /* */ HT_INVALID,           // CN__E__
