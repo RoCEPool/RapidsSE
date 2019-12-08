@@ -150,8 +150,23 @@ Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
     if (! b)
       return pCol;
     
+    // - - - -
+    bool bSawEnclosedTrailing =
+    StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
+    if (! bSawEnclosedTrailing)
+      return pCol;
+    
+    // should see a valid field end
+    if ( ! bValidFieldEnd(*aazCrs,pFmt) )
+      return pCol;
+    
+    
+
+    
     // move past the field delimiter
     //   (but not past the RowExtractor terminator or RowExtractor ends)
+    
+    // - - - -
     
     if (pCol->bIsLastColumn()) {
       // do not expect to see a field delimiter
@@ -337,14 +352,14 @@ bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   
 L_TAIL:
   
-  bool bSawEnclosedTrailing =
-  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-    return false;
+//  bool bSawEnclosedTrailing =
+//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
+//  if (! bSawEnclosedTrailing)
+//    return false;
+//
+//  // should see a valid field end
+//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
+//    return false;
   
   return true;
 }
@@ -395,14 +410,14 @@ bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   
 L_TAIL:
   
-  bool bSawEnclosedTrailing =
-  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-    return false;
+//  bool bSawEnclosedTrailing =
+//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
+//  if (! bSawEnclosedTrailing)
+//    return false;
+//
+//  // should see a valid field end
+//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
+//    return false;
   
   return true;
 }
@@ -454,14 +469,14 @@ bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   
 L_TAIL:
   
-  bool bSawEnclosedTrailing =
-  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-    return false;
+//  bool bSawEnclosedTrailing =
+//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
+//  if (! bSawEnclosedTrailing)
+//    return false;
+//
+//  // should see a valid field end
+//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
+//    return false;
   
   return true;
 }
@@ -512,14 +527,14 @@ bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   
 L_TAIL:
   
-  bool bSawEnclosedTrailing =
-  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-    return false;
+//  bool bSawEnclosedTrailing =
+//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
+//  if (! bSawEnclosedTrailing)
+//    return false;
+//
+//  // should see a valid field end
+//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
+//    return false;
   
   return true;
 }
@@ -578,14 +593,14 @@ bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   
 L_TAIL:
   
-  bool bSawEnclosedTrailing =
-  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-    return false;
+//  bool bSawEnclosedTrailing =
+//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
+//  if (! bSawEnclosedTrailing)
+//    return false;
+//
+//  // should see a valid field end
+//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
+//    return false;
   
   return true;
 }
@@ -637,14 +652,14 @@ bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   
 L_TAIL:
   
-  bool bSawEnclosedTrailing =
-  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-    return false;
+//  bool bSawEnclosedTrailing =
+//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
+//  if (! bSawEnclosedTrailing)
+//    return false;
+//
+//  // should see a valid field end
+//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
+//    return false;
   
   return true;
 }
@@ -695,14 +710,14 @@ bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   
 L_TAIL:
   
-  bool bSawEnclosedTrailing =
-  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-    return false;
+//  bool bSawEnclosedTrailing =
+//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
+//  if (! bSawEnclosedTrailing)
+//    return false;
+//
+//  // should see a valid field end
+//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
+//    return false;
   
   return true;
 }
@@ -752,14 +767,14 @@ bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   
 L_TAIL:
   
-  bool bSawEnclosedTrailing =
-  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-    return false;
+//  bool bSawEnclosedTrailing =
+//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
+//  if (! bSawEnclosedTrailing)
+//    return false;
+//
+//  // should see a valid field end
+//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
+//    return false;
   
   return true;
 }
@@ -809,15 +824,15 @@ bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
   
 L_TAIL:
   
-  bool bSawEnclosedTrailing =
-  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,
-                        pFmt->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
-  
-  // should see a valid field end
-  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-    return false;
+//  bool bSawEnclosedTrailing =
+//  StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,
+//                        pFmt->m_cEnclosedBy_Trailing);
+//  if (! bSawEnclosedTrailing)
+//    return false;
+//  
+//  // should see a valid field end
+//  if ( ! bValidFieldEnd(*aazCrs,pFmt) )
+//    return false;
   
   return true;
 }
