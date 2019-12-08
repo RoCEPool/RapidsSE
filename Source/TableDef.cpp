@@ -714,34 +714,41 @@ eEC TableDef::eParseTableClauses(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
 
+  bool bSawPartition = false;
+  
   eEC eError = EC_NONE;
   
-  Token* pTkn = pTknVec->pNextToken(); dPT();
+  for (;;) {
   
-  if ( pTkn->bSame("rowsize"_Stz)) {
-    eError = eParseRowSize(pTknVec);
-    if (EC_NONE != eError)
-      return eError;
-    pTkn = pTknVec->pNextToken(); dPT();
+    Token* pTkn = pTknVec->pNextToken(); dPT();
+    
+    if ( pTkn->bSame("rowsize"_Stz)) {
+      
+      eError = eParseRowSize(pTknVec);
+      if (EC_NONE != eError)
+        return eError;
+      
+      continue;
+    }
+    
+    if ( pTkn->bSame("partition"_Stz)) {
+      
+      eError = eParsePartitionBy(pTknVec);
+      if (EC_NONE != eError)
+        return eError;
+      
+      continue;
+    }
+    
+    break;
   }
   
-  // check if we have a partition by clause
-  if ( pTkn->bSame("partition"_Stz)) {
-    eError = eParsePartitionBy(pTknVec);
-    if (EC_NONE != eError)
-      return eError;
-    pTkn = pTknVec->pNextToken(); dPT();
-  }
-  else {
-    
-    if ( ! pTkn->bSame(";"_Stz))
-      return EC_INVALID_COMMAND;
-    
-    // no partition by clause
-    // we will create partitioning using the first column
-    m_pStreamDef->pGetColumn(0)->vIsPtnKey(true);
-  }
+  // if no partition by clause was specified
+  //   we create default partitioning using the first column
 
+  if (! bSawPartition)
+    m_pStreamDef->pGetColumn(0)->vIsPtnKey(true);
+  
   return EC_NONE;
 }
 
