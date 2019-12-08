@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* get encoded datum from row                                                 */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecode(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecode(Datum* pDatum, HeadLine* aHeadLine,
                            i8 nColumns, Column* pCol,
                            i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -16,39 +16,39 @@ void RowDecoder::vDecode(Datum* pDtmVal, HeadLine* aHeadLine,
   switch (eDatum) {
       
     case DM_BCD:
-      vDecodeBcd(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeBcd(pDatum,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_BOL:
-      vDecodeBol(pDtmVal,aHeadLine,pCol);
+      vDecodeBol(pDatum,aHeadLine,pCol);
       break;
       
     case DM_DTE:
-      vDecodeDte(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeDte(pDatum,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_FLT:
-      vDecodeFlt(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeFlt(pDatum,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_INT:
-      vDecodeInt(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeInt(pDatum,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_IVL:
-      vDecodeIvl(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeIvl(pDatum,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_TME:
-      vDecodeTme(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeTme(pDatum,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_TSP:
-      vDecodeTsp(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeTsp(pDatum,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_VCH:
-      vDecodeVch(pDtmVal,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeVch(pDatum,aHeadLine,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     default:
@@ -59,7 +59,7 @@ void RowDecoder::vDecode(Datum* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode decimal from given head line                                        */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeBcd(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -69,29 +69,29 @@ void RowDecoder::vDecodeBcd(Datum* pDtmVal, HeadLine* aHeadLine,
                                           i_ColCrs_,i_OfsCrs_);
   switch (eEncoding) {
       
-    case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL; break;
+    case MC_NULL: pDatum->m_wDtm.m_iInt = C_DATUM_NULL; break;
       
-    case MC_BCD_1B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_1B); break;
-    case MC_BCD_2B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_2B); break;
-    case MC_BCD_3B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_3B); break;
-    case MC_BCD_4B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_4B); break;
-    case MC_BCD_5B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_5B); break;
-    case MC_BCD_6B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_6B); break;
-    case MC_BCD_7B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_7B); break;
-    case MC_BCD_8B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_8B); break;
+    case MC_BCD_1B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_1B); break;
+    case MC_BCD_2B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_2B); break;
+    case MC_BCD_3B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_3B); break;
+    case MC_BCD_4B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_4B); break;
+    case MC_BCD_5B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_5B); break;
+    case MC_BCD_6B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_6B); break;
+    case MC_BCD_7B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_7B); break;
+    case MC_BCD_8B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_8B); break;
       
-    case MC_BCD_M_ONE: pDtmVal->m_wDtm.m_iInt = (i8)-1;  break;
-    case MC_BCD_ZERO:  pDtmVal->m_wDtm.m_iInt = (i8)0;   break;
-    case MC_BCD_ONE:   pDtmVal->m_wDtm.m_iInt = (i8)1;   break;
-    case MC_BCD_TWO:   pDtmVal->m_wDtm.m_iInt = (i8)2;   break;
-    case MC_BCD_THREE: pDtmVal->m_wDtm.m_iInt = (i8)3;   break;
-    case MC_BCD_FOUR:  pDtmVal->m_wDtm.m_iInt = (i8)4;   break;
-    case MC_BCD_FIVE:  pDtmVal->m_wDtm.m_iInt = (i8)5;   break;
-    case MC_BCD_SIX:   pDtmVal->m_wDtm.m_iInt = (i8)6;   break;
-    case MC_BCD_SEVEN: pDtmVal->m_wDtm.m_iInt = (i8)7;   break;
-    case MC_BCD_EIGHT: pDtmVal->m_wDtm.m_iInt = (i8)8;   break;
-    case MC_BCD_NINE:  pDtmVal->m_wDtm.m_iInt = (i8)9;   break;
-    case MC_BCD_TEN:   pDtmVal->m_wDtm.m_iInt = (i8)10;  break;
+    case MC_BCD_M_ONE: pDatum->m_wDtm.m_iInt = (i8)-1;  break;
+    case MC_BCD_ZERO:  pDatum->m_wDtm.m_iInt = (i8)0;   break;
+    case MC_BCD_ONE:   pDatum->m_wDtm.m_iInt = (i8)1;   break;
+    case MC_BCD_TWO:   pDatum->m_wDtm.m_iInt = (i8)2;   break;
+    case MC_BCD_THREE: pDatum->m_wDtm.m_iInt = (i8)3;   break;
+    case MC_BCD_FOUR:  pDatum->m_wDtm.m_iInt = (i8)4;   break;
+    case MC_BCD_FIVE:  pDatum->m_wDtm.m_iInt = (i8)5;   break;
+    case MC_BCD_SIX:   pDatum->m_wDtm.m_iInt = (i8)6;   break;
+    case MC_BCD_SEVEN: pDatum->m_wDtm.m_iInt = (i8)7;   break;
+    case MC_BCD_EIGHT: pDatum->m_wDtm.m_iInt = (i8)8;   break;
+    case MC_BCD_NINE:  pDatum->m_wDtm.m_iInt = (i8)9;   break;
+    case MC_BCD_TEN:   pDatum->m_wDtm.m_iInt = (i8)10;  break;
       
     default:
       NEVER_REACH;
@@ -101,7 +101,7 @@ void RowDecoder::vDecodeBcd(Datum* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode boolean from given head line                                        */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeBol(Datum* pDtmVal, HeadLine* aHeadLine,Column* pCol)
+void RowDecoder::vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,Column* pCol)
 {
   //eMC eEncoding = aHeadLine->eGetEncoding(pCol,pColVec,i_ColCrs_,i_Offset);
   
@@ -109,18 +109,18 @@ void RowDecoder::vDecodeBol(Datum* pDtmVal, HeadLine* aHeadLine,Column* pCol)
   eMC eEncoding = aHeadLine->eMetaCode(i_Column);
   
   if (MC_BOL_FALSE == eEncoding)
-    pDtmVal->m_wDtm.m_iInt = 0;
+    pDatum->m_wDtm.m_iInt = 0;
   else if (MC_BOL_TRUE == eEncoding)
-    pDtmVal->m_wDtm.m_iInt = 1;
+    pDatum->m_wDtm.m_iInt = 1;
   else
-    pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;
+    pDatum->m_wDtm.m_iInt = C_DATUM_NULL;
   
   /*
    switch (eEncoding) {
    
-   case MC_NULL:  pDtmVal->m_iInt = C_DATUM_NULL; break;
-   case MC_BOL_FALSE: pDtmVal->m_iInt = (i8)0;        break;
-   case MC_BOL_TRUE:  pDtmVal->m_iInt = (i8)1;        break;
+   case MC_NULL:  pDatum->m_iInt = C_DATUM_NULL; break;
+   case MC_BOL_FALSE: pDatum->m_iInt = (i8)0;        break;
+   case MC_BOL_TRUE:  pDatum->m_iInt = (i8)1;        break;
    
    default:
    NEVER_REACH;
@@ -131,7 +131,7 @@ void RowDecoder::vDecodeBol(Datum* pDtmVal, HeadLine* aHeadLine,Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* decode date from given head line                                           */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeDte(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -147,31 +147,31 @@ void RowDecoder::vDecodeDte(Datum* pDtmVal, HeadLine* aHeadLine,
   switch (eThisEncoding) {
       
     case MC_NULL:
-      pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;
+      pDatum->m_wDtm.m_iInt = C_DATUM_NULL;
       return;
     case MC_DTE_E0_2B:
-      pDtmVal->m_wDtm.m_iDte = aHeadLine->wGetLogical(i_OfsCrs_,C_2B);
+      pDatum->m_wDtm.m_iDte = aHeadLine->wGetLogical(i_OfsCrs_,C_2B);
       iEra = C_ERA_0;
       break;
     case MC_DTE_E1_2B:
-      pDtmVal->m_wDtm.m_iDte = aHeadLine->wGetLogical(i_OfsCrs_,C_2B);
+      pDatum->m_wDtm.m_iDte = aHeadLine->wGetLogical(i_OfsCrs_,C_2B);
       iEra = C_ERA_1;
       break;
     case MC_DTE_E2_2B:
-      pDtmVal->m_wDtm.m_iDte = aHeadLine->wGetLogical(i_OfsCrs_,C_2B);
+      pDatum->m_wDtm.m_iDte = aHeadLine->wGetLogical(i_OfsCrs_,C_2B);
       iEra = C_ERA_2;
       break;
     default:
       NEVER_REACH;
   }
   
-  vDteFromEdt(&pDtmVal->m_wDtm,iEra);
+  vDteFromEdt(&pDatum->m_wDtm,iEra);
 }
 
 /*----------------------------------------------------------------------------*/
 /* decode float from given head line                                          */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeFlt(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -181,16 +181,16 @@ void RowDecoder::vDecodeFlt(Datum* pDtmVal, HeadLine* aHeadLine,
                                           i_ColCrs_,i_OfsCrs_);
   switch (eEncoding) {
       
-    case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL; break;
+    case MC_NULL: pDatum->m_wDtm.m_iInt = C_DATUM_NULL; break;
       
-    case MC_FLT_1B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_1B); break;
-    case MC_FLT_2B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_2B); break;
-    case MC_FLT_3B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_3B); break;
-    case MC_FLT_4B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_4B); break;
-    case MC_FLT_5B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_5B); break;
-    case MC_FLT_6B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_6B); break;
-    case MC_FLT_7B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_7B); break;
-    case MC_FLT_8B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_8B); break;
+    case MC_FLT_1B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_1B); break;
+    case MC_FLT_2B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_2B); break;
+    case MC_FLT_3B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_3B); break;
+    case MC_FLT_4B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_4B); break;
+    case MC_FLT_5B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_5B); break;
+    case MC_FLT_6B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_6B); break;
+    case MC_FLT_7B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_7B); break;
+    case MC_FLT_8B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_8B); break;
       
     default:
       NEVER_REACH;
@@ -200,7 +200,7 @@ void RowDecoder::vDecodeFlt(Datum* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode integer from given head line                                        */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeInt(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
                             i8 nColumns, Column* pCol,
                             i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -212,29 +212,29 @@ void RowDecoder::vDecodeInt(Datum* pDtmVal, HeadLine* aHeadLine,
   
   switch (eEncoding) {
       
-    case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL; break;
+    case MC_NULL: pDatum->m_wDtm.m_iInt = C_DATUM_NULL; break;
       
-    case MC_INT_1B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_1B); break;
-    case MC_INT_2B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_2B); break;
-    case MC_INT_3B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_3B); break;
-    case MC_INT_4B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_4B); break;
-    case MC_INT_5B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_5B); break;
-    case MC_INT_6B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_6B); break;
-    case MC_INT_7B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_7B); break;
-    case MC_INT_8B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_8B); break;
+    case MC_INT_1B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_1B); break;
+    case MC_INT_2B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_2B); break;
+    case MC_INT_3B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_3B); break;
+    case MC_INT_4B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_4B); break;
+    case MC_INT_5B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_5B); break;
+    case MC_INT_6B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_6B); break;
+    case MC_INT_7B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_7B); break;
+    case MC_INT_8B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_8B); break;
       
-    case MC_INT_M_ONE:  pDtmVal->m_wDtm.m_iInt = (i8)-1; break;
-    case MC_INT_ZERO:   pDtmVal->m_wDtm.m_iInt = (i8)0;  break;
-    case MC_INT_ONE:    pDtmVal->m_wDtm.m_iInt = (i8)1;  break;
-    case MC_INT_TWO:    pDtmVal->m_wDtm.m_iInt = (i8)2;  break;
-    case MC_INT_THREE:  pDtmVal->m_wDtm.m_iInt = (i8)3;  break;
-    case MC_INT_FOUR:   pDtmVal->m_wDtm.m_iInt = (i8)4;  break;
-    case MC_INT_FIVE:   pDtmVal->m_wDtm.m_iInt = (i8)5;  break;
-    case MC_INT_SIX:    pDtmVal->m_wDtm.m_iInt = (i8)6;  break;
-    case MC_INT_SEVEN:  pDtmVal->m_wDtm.m_iInt = (i8)7;  break;
-    case MC_INT_EIGHT:  pDtmVal->m_wDtm.m_iInt = (i8)8;  break;
-    case MC_INT_NINE:   pDtmVal->m_wDtm.m_iInt = (i8)9;  break;
-    case MC_INT_TEN:    pDtmVal->m_wDtm.m_iInt = (i8)10; break;
+    case MC_INT_M_ONE:  pDatum->m_wDtm.m_iInt = (i8)-1; break;
+    case MC_INT_ZERO:   pDatum->m_wDtm.m_iInt = (i8)0;  break;
+    case MC_INT_ONE:    pDatum->m_wDtm.m_iInt = (i8)1;  break;
+    case MC_INT_TWO:    pDatum->m_wDtm.m_iInt = (i8)2;  break;
+    case MC_INT_THREE:  pDatum->m_wDtm.m_iInt = (i8)3;  break;
+    case MC_INT_FOUR:   pDatum->m_wDtm.m_iInt = (i8)4;  break;
+    case MC_INT_FIVE:   pDatum->m_wDtm.m_iInt = (i8)5;  break;
+    case MC_INT_SIX:    pDatum->m_wDtm.m_iInt = (i8)6;  break;
+    case MC_INT_SEVEN:  pDatum->m_wDtm.m_iInt = (i8)7;  break;
+    case MC_INT_EIGHT:  pDatum->m_wDtm.m_iInt = (i8)8;  break;
+    case MC_INT_NINE:   pDatum->m_wDtm.m_iInt = (i8)9;  break;
+    case MC_INT_TEN:    pDatum->m_wDtm.m_iInt = (i8)10; break;
       
     default:
       NEVER_REACH;
@@ -244,7 +244,7 @@ void RowDecoder::vDecodeInt(Datum* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode interval from given head line                                       */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeIvl(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -254,16 +254,16 @@ void RowDecoder::vDecodeIvl(Datum* pDtmVal, HeadLine* aHeadLine,
                                           i_ColCrs_,i_OfsCrs_);
   switch (eEncoding) {
       
-    case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL; break;
+    case MC_NULL: pDatum->m_wDtm.m_iInt = C_DATUM_NULL; break;
       
-    case MC_IVL_1B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_1B); break;
-    case MC_IVL_2B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_2B); break;
-    case MC_IVL_3B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_3B); break;
-    case MC_IVL_4B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_4B); break;
-    case MC_IVL_5B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_5B); break;
-    case MC_IVL_6B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_6B); break;
-    case MC_IVL_7B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_7B); break;
-    case MC_IVL_8B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_8B); break;
+    case MC_IVL_1B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_1B); break;
+    case MC_IVL_2B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_2B); break;
+    case MC_IVL_3B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_3B); break;
+    case MC_IVL_4B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_4B); break;
+    case MC_IVL_5B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_5B); break;
+    case MC_IVL_6B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_6B); break;
+    case MC_IVL_7B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_7B); break;
+    case MC_IVL_8B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_8B); break;
       
     default:
       NEVER_REACH;
@@ -273,7 +273,7 @@ void RowDecoder::vDecodeIvl(Datum* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode time from given head line                                           */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeTme(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeTme(Datum* pDatum, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -283,29 +283,29 @@ void RowDecoder::vDecodeTme(Datum* pDtmVal, HeadLine* aHeadLine,
                                           i_ColCrs_,i_OfsCrs_);
   switch (eEncoding) {
       
-    case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL; break;
+    case MC_NULL: pDatum->m_wDtm.m_iInt = C_DATUM_NULL; break;
       
-    case MC_TME_1B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_1B); break;
-    case MC_TME_2B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_2B); break;
-    case MC_TME_3B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_3B); break;
-    case MC_TME_4B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_4B); break;
-    case MC_TME_5B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_5B); break;
-    case MC_TME_6B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_6B); break;
-    case MC_TME_7B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_7B); break;
-    case MC_TME_8B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_8B); break;
+    case MC_TME_1B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_1B); break;
+    case MC_TME_2B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_2B); break;
+    case MC_TME_3B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_3B); break;
+    case MC_TME_4B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_4B); break;
+    case MC_TME_5B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_5B); break;
+    case MC_TME_6B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_6B); break;
+    case MC_TME_7B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_7B); break;
+    case MC_TME_8B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_8B); break;
       
     default:
       NEVER_REACH;
   }
   
-  //vRestoreTme(pDtmVal);
-  pDtmVal->m_wDtm.m_iInt <<= 40;
+  //vRestoreTme(pDatum);
+  pDatum->m_wDtm.m_iInt <<= 40;
 }
 
 /*----------------------------------------------------------------------------*/
 /* decode timestamp from given head line                                      */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeTsp(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs)
 {
@@ -315,23 +315,23 @@ void RowDecoder::vDecodeTsp(Datum* pDtmVal, HeadLine* aHeadLine,
                                           i_ColCrs_,i_OfsCrs);
   switch (eEncoding) {
       
-    case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL; break;
+    case MC_NULL: pDatum->m_wDtm.m_iInt = C_DATUM_NULL; break;
       
-    case MC_TSP_8B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs,C_8B); break;
+    case MC_TSP_8B: pDatum->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs,C_8B); break;
       
     default:
       NEVER_REACH;
   }
   
 //  if (eEncoding == MC_5B)
-//    //vRestoreTsp(pDtmVal);
-//    pDtmVal->m_wDtm.m_iInt <<= 24;
+//    //vRestoreTsp(pDatum);
+//    pDatum->m_wDtm.m_iInt <<= 24;
 }
 
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVch(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
@@ -342,24 +342,24 @@ void RowDecoder::vDecodeVch(Datum* pDtmVal, HeadLine* aHeadLine,
                                           i_ColCrs_,i_OfsCrs_);
   
   if (MC_NULL == eEncoding) {
-    pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;
+    pDatum->m_wDtm.m_iInt = C_DATUM_NULL;
     return;
   }
   
   else if (MC_STR_EMPTY == eEncoding) {
-    pDtmVal->m_nChars = 0;
-    *pDtmVal->m_sVch.azChar() = '\0';
-    pDtmVal->m_wDtm.m_iInt = 0;
+    pDatum->m_nChars = 0;
+    *pDatum->m_sVch.azChar() = '\0';
+    pDatum->m_wDtm.m_iInt = 0;
   }
   
   else if (MC_STR_FIT_1L == eEncoding)
-    vDecodeVchSmall(pDtmVal,aHeadLine,pCol,i_OfsCrs_);
+    vDecodeVchSmall(pDatum,aHeadLine,pCol,i_OfsCrs_);
   
   else if (MC_STR_FIT_2L == eEncoding)
-    vDecodeVchLong(pDtmVal,aHeadLine,pCol,i_OfsCrs_);
+    vDecodeVchLong(pDatum,aHeadLine,pCol,i_OfsCrs_);
   
   else if (MC_STR_TAIL_2T == eEncoding)
-    vDecodeVchStringTail(pDtmVal,aHeadLine,pCol,i_OfsCrs_);
+    vDecodeVchStringTail(pDatum,aHeadLine,pCol,i_OfsCrs_);
     
   else
     NEVER_REACH;
@@ -368,27 +368,27 @@ void RowDecoder::vDecodeVch(Datum* pDtmVal, HeadLine* aHeadLine,
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVchLong(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeVchLong(Datum* pDatum, HeadLine* aHeadLine,
                                  Column* pCol, i8 i_Offset)
 {
   //vDebugPoint();
   
   i8 nLength = aHeadLine->wGetLogical(i_Offset,C_2B);
   
-  MemLib::vCopy((byte*)pDtmVal->m_sVch.azChar(),
+  MemLib::vCopy((byte*)pDatum->m_sVch.azChar(),
                 (byte*)aHeadLine->ayAdrLogical(i_Offset + C_2B),
                 nLength,
                 CN_ROWCOMPACTOR);
   
-  * (pDtmVal->m_sVch.azChar() + nLength) = '\0';
+  * (pDatum->m_sVch.azChar() + nLength) = '\0';
   
-  pDtmVal->m_nChars = nLength;
+  pDatum->m_nChars = nLength;
 }
 
 /*----------------------------------------------------------------------------*/
 /* decode MC_SHOCO_FIT_1C tail line shoco                                     */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVchShocoFit(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
                                       Column* pCol, i8 i_Offset)
 {
   /*
@@ -412,19 +412,19 @@ void RowDecoder::vDecodeVchShocoFit(Datum* pDtmVal, HeadLine* aHeadLine,
   //RASSERT(nCompressed <= 56);
   
   i8 nDecompressed =
-  Compress::iFromShoco((char*)pDtmVal->m_sVch.azChar(),
-                       pDtmVal->m_sVch.nSpace(),
+  Compress::iFromShoco((char*)pDatum->m_sVch.azChar(),
+                       pDatum->m_sVch.nSpace(),
                        aHeadLine->ayAdrLogical(i_Offset + C_C_1B),
                        //((byte*)aHeadLine)+i_Offset+1,
                        nCompressed);
   ASSERT(nDecompressed > 0);
-  pDtmVal->m_nChars = nDecompressed;
+  pDatum->m_nChars = nDecompressed;
 }
 
 /*----------------------------------------------------------------------------*/
 /* decode MC_SHOCO_SPLIT_2T1C tail line shoco                                 */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVchShocoSplit(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
                                         Column* pCol, i8 i_Offset)
 {
   /*
@@ -469,18 +469,18 @@ void RowDecoder::vDecodeVchShocoSplit(Datum* pDtmVal, HeadLine* aHeadLine,
   //MemLib::vWordDump(caShoco+2,3 * sizeof(SpaceUnit));
   
   i8 nDecompressed =
-  Compress::iFromShoco((char*)pDtmVal->m_sVch.azChar(),
+  Compress::iFromShoco((char*)pDatum->m_sVch.azChar(),
                        255,
                        (byte*)caShoco+2,
                        nCompressed);
   ASSERT(nDecompressed);
-  pDtmVal->m_nChars = nDecompressed;
+  pDatum->m_nChars = nDecompressed;
 }
 
 /*----------------------------------------------------------------------------*/
 /* decode MC_SHOCO_TAIL_2T tail line shoco                                    */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVchShocoTail(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
                                        Column* pCol, i8 i_Offset)
 {
   i8 i_Tail_rel = aHeadLine->wGetLogical(i_Offset,C_2B);
@@ -503,20 +503,20 @@ void RowDecoder::vDecodeVchShocoTail(Datum* pDtmVal, HeadLine* aHeadLine,
   //RASSERT(nCompressed <= 4);
   
   i8 nDecompressed =
-  Compress::iFromShoco(pDtmVal->m_sVch.azChar(),  // decompressed destination
+  Compress::iFromShoco(pDatum->m_sVch.azChar(),  // decompressed destination
                        255,                      // max destination
                        ((byte*)aShocoTail)       // from compressed source
                          + C_U_1B
                          + C_C_1B,
                        nCompressed);             // bytes compressed
   ASSERT(nDecompressed);
-  pDtmVal->m_nChars = nDecompressed;
+  pDatum->m_nChars = nDecompressed;
 }
 
 /*----------------------------------------------------------------------------*/
 /* decode MC_STRING_TAIL_2T tail line string                                 */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVchStringTail(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeVchStringTail(Datum* pDatum, HeadLine* aHeadLine,
                                         Column* pCol, i8 i_Offset)
 {
   i8 i_Tail_rel = aHeadLine->wGetLogical(i_Offset,C_2B);
@@ -538,34 +538,34 @@ void RowDecoder::vDecodeVchStringTail(Datum* pDtmVal, HeadLine* aHeadLine,
   i8 nLength = aTail_str->w8_1B(+ C_U_1B);
   byte* ayString = (byte*)aTail_str + C_U_1B + C_L_1B;
   
-  MemLib::vCopy((byte*)pDtmVal->m_sVch.azChar(),
+  MemLib::vCopy((byte*)pDatum->m_sVch.azChar(),
                 (byte*)ayString,
                 nLength,
                 CN_ROWCOMPACTOR);
   
-  * (pDtmVal->m_sVch.azChar() + nLength) = '\0';
+  * (pDatum->m_sVch.azChar() + nLength) = '\0';
   
-  pDtmVal->m_nChars = nLength;
+  pDatum->m_nChars = nLength;
 }
 
 /*----------------------------------------------------------------------------*/
 /* decode varchar from given head line                                        */
 /*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVchSmall(Datum* pDtmVal, HeadLine* aHeadLine,
+void RowDecoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
                                    Column* pCol, i8 i_Offset)
 {
   //vDebugPoint();
   
   i8 nLength = aHeadLine->wGetLogical(i_Offset,C_1B);
   
-  MemLib::vCopy((byte*)pDtmVal->m_sVch.azChar(),
+  MemLib::vCopy((byte*)pDatum->m_sVch.azChar(),
                 (byte*)aHeadLine->ayAdrLogical(i_Offset + 1),
                 nLength,
                 CN_ROWCOMPACTOR);
   
-  * (pDtmVal->m_sVch.azChar() + nLength) = '\0';
+  * (pDatum->m_sVch.azChar() + nLength) = '\0';
   
-  pDtmVal->m_nChars = nLength;
+  pDatum->m_nChars = nLength;
   
 }
 

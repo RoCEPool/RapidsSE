@@ -24,7 +24,7 @@ namespace Transform
     void  operator delete(void*);
 
     Datum(void);
-    ~Datum(void) noexcept(false);
+   ~Datum(void) noexcept(false);
 
     bool bIsNull(void);
     void vSetNull(void);

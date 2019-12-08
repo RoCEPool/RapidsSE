@@ -36,7 +36,7 @@ namespace Transform
     ~Row(void) noexcept(false);
   
     void vAdjustAddresses(Row* pCopiedFromRow);
-    void vAppendValue(Datum* pDtmVal, Column* pCol);
+    void vAppendValue(Datum* pDatum, Column* pCol);
     void vCopy(Row* pRow);
     void vCopy(Row* pRow, i8 iFromCol, i8 iIntoCol);
     void vDontDecodeVch(void);

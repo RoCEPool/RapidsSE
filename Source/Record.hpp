@@ -28,17 +28,17 @@ namespace Transform
   
     void vAppend(Row* pRow);
     
-    void vAppend(Column* pCol, Datum* pDtmVal);
+    void vAppend(Column* pCol, Datum* pDatum);
     void vAppend(Column* pCol, Row* pRow);
-    void vAppendBcd(Column* pCol, Datum* pDtmVal);
-    void vAppendBol(Column* pCol, Datum* pDtmVal);
-    void vAppendDte(Column* pCol, Datum* pDtmVal);
-    void vAppendFlt(Column* pCol, Datum* pDtmVal);
-    void vAppendInt(Column* pCol, Datum* pDtmVal);
-    void vAppendIvl(Column* pCol, Datum* pDtmVal);
-    void vAppendTme(Column* pCol, Datum* pDtmVal);
-    void vAppendTsp(Column* pCol, Datum* pDtmVal);
-    void vAppendVch(Column* pCol, Datum* pDtmVal);
+    void vAppendBcd(Column* pCol, Datum* pDatum);
+    void vAppendBol(Column* pCol, Datum* pDatum);
+    void vAppendDte(Column* pCol, Datum* pDatum);
+    void vAppendFlt(Column* pCol, Datum* pDatum);
+    void vAppendInt(Column* pCol, Datum* pDatum);
+    void vAppendIvl(Column* pCol, Datum* pDatum);
+    void vAppendTme(Column* pCol, Datum* pDatum);
+    void vAppendTsp(Column* pCol, Datum* pDatum);
+    void vAppendVch(Column* pCol, Datum* pDatum);
 
     void vPrintRow(void);
     void vPrintPartialRow(void);

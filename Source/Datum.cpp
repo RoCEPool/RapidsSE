@@ -13,9 +13,9 @@
 /*----------------------------------------------------------------------------*/
 Datum* Transform::_pDtmVal(void* aAddr)
 {
-  Datum* pDtmVal = reinterpret_cast<Datum*>(aAddr);
+  Datum* pDatum = reinterpret_cast<Datum*>(aAddr);
   
-  return pDtmVal;
+  return pDatum;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,9 +33,9 @@ void* Datum::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void Datum::operator delete(void* aAddr)
 {
-  Datum* pDtmVal = reinterpret_cast<Datum*>(aAddr);
+  Datum* pDatum = reinterpret_cast<Datum*>(aAddr);
   
-  HeapMem::vFree(pDtmVal);
+  HeapMem::vFree(pDatum);
 }
 
 
