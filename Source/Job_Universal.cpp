@@ -194,10 +194,9 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
     vHasError(true);
     return EC_INVALID_COMMAND;
   }
-
-  // m_oEnameSet.vPrint();
   
   EnameSet* pEnameSet_ji = pJobInfoEnameSet();
+  pEnameSet_ji->vPrint();
   
   if (pEnameSet_ji) {
     m_eJobType = (eJT) pEnameSet_ji->iValue("<?jobType?>"_Stz);
