@@ -317,8 +317,6 @@ bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // field processing
 
   Column* pColumn = pDtmVal->m_pCol;
-  pDtmVal->m_eDatum = DM_BCD;
-  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null
@@ -356,7 +354,6 @@ bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // field processing
   
   Column* pColumn = pDtmVal->m_pCol;
-  pDtmVal->m_eDatum = DM_BOL;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
@@ -394,8 +391,6 @@ bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // field processing
 
   Column* pColumn = pDtmVal->m_pCol;
-  pDtmVal->m_eDatum = DM_DTE;
-  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
@@ -433,7 +428,6 @@ bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // field processing
   
   Column* pColumn = pDtmVal->m_pCol;
-  pDtmVal->m_eDatum = DM_FLT;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
@@ -471,7 +465,6 @@ bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // field processing
   
   Column* pColumn = pDtmVal->m_pCol;
-  pDtmVal->m_eDatum = DM_INT;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
@@ -518,7 +511,6 @@ bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // field processing
   
   Column* pColumn = pDtmVal->m_pCol;
-  pDtmVal->m_eDatum = DM_IVL;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
@@ -556,7 +548,6 @@ bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // field processing
   
   Column* pColumn = pDtmVal->m_pCol;
-  pDtmVal->m_eDatum = DM_TME;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
@@ -594,7 +585,6 @@ bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // field processing
   
   Column* pColumn = pDtmVal->m_pCol;
-  pDtmVal->m_eDatum = DM_TSP;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null processing
@@ -632,7 +622,6 @@ bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
   // field processing
   
   Column* pColumn = pDtmVal->m_pCol;
-  pDtmVal->m_eDatum = DM_VCH;
   
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null

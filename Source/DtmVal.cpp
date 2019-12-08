@@ -48,7 +48,6 @@ DtmVal::DtmVal(void)
   _precondition_(_MAGIC_,CN_DTMVAL,_FOOTER_);
   
   m_pCol   = nullptr;
-  m_eDatum = DM_NONE;
   m_wDtm.m_iInt   = C_UNKNOWN;
   m_nChars = 0;
 
