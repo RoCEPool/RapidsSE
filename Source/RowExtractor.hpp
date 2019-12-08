@@ -49,11 +49,6 @@ namespace Rows
                              Format* pFmt,
                              bool& bValidNull,
                              bool bSkipTrailingSpaces=true);
-    static bool bTestForNullDefault(Column* pCol,
-                                    char** aazCrs,
-                                    Format* pFmt,
-                                    bool& bValidNull,
-                                    bool bSkipTrailingSpaces=true);
   
     static bool bValidFieldEnd(char* aSrc, Format* pFmt);
     static bool bValidFieldEndDefault(char* aSrc, Format* pFmt);

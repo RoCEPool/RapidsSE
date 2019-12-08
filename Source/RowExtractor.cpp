@@ -132,7 +132,7 @@ Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
       bSawEnclosedLeading = false;
     else
       bSawEnclosedLeading =
-      StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+        StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
     
     // - - - -
     // null
@@ -551,7 +551,7 @@ bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
   // field processing
   
   Column* pColumn = pDtmVal->m_pCol;
-    
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for enclosed
   bSawEnclosedLeading = bIsEnclosedString(aazCrs,pFmt);
@@ -727,93 +727,6 @@ bool RowExtractor::bTestForNull(Column* pColumn, char** aazCrs,
   
   // a null was detected in a nullable column
   rbValidNull = true;
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for null token                                                        */
-/*----------------------------------------------------------------------------*/
-bool RowExtractor::bTestForNullDefault(Column* pColumn, char** aazCrs,
-                                 Format* pFmt, bool& bValidNull,
-                                 bool bSkipTrailingSpaces)
-{
-  /*
-   * This function scans aazCrs and attempts to identify the text form of a null.
-   * There are three text forms of null: null, \N or '\N'.
-   * If a null (and only a null) is detected and
-   *  a) the column is nullable, then bValidNull is set to true and the
-   *     function returns true; or
-   *  b) the column is not nullable, then bValidNull is set to false and the
-   *     function returns true.
-   * If no form of null is detected then bValidNull is set to false and the
-   * function returns false.
-   * Importantly a valid null is one of the three forms of null -- there can be
-   * no further characters after it. Eg: "nulla" or "null a" are not
-   * correct forms of null.
-   */
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test if there is any field data
-  
-  if ( ! bIsThereFieldData(*aazCrs, pFmt)) {
-    if ( ! pColumn->bIsNullable() ) {
-      // a null was detected in a non-nullable column
-      bValidNull = false;
-      return true;
-    }
-    // a null was detected in a nullable column
-    bValidNull = true;
-    return true;
-  }
-  
-  //if ( ! bIsThereFieldData(*aazCrs, pFmt))
-  //  return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null, \N, '\N' or [\N]
-  
-  char* aStart = *aazCrs;
-  
-  if ( (**aazCrs == 'N' || **aazCrs == 'n') && (0 == StrLib::iCompare(*aazCrs+1, "ULL", 3, C_NO_CASE)) ) {
-    // skip over token null
-    *aazCrs = (*aazCrs) + 4;
-  }
-  else if (**aazCrs     == pFmt->m_cEscapeChar &&
-           *(*aazCrs+1) == 'N') {
-    // skip over \N
-    *aazCrs = (*aazCrs) + 2;
-  }
-  else {
-    // no null detected
-    bValidNull = false; // no null, so neither valid or invalid
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  // optionally skip trailing spaces
-  if (bSkipTrailingSpaces)
-    StrLib::vSkipSpaces(aazCrs);
-  // check it was "null" only
-  if (! bValidFieldEndDefault(*aazCrs,pFmt)) {
-    // no well formed null detected
-    *(aazCrs) = aStart;
-    bValidNull = false; // no null, so neither valid or invalid
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check the column is nullable
-  
-  if ( ! pColumn->bIsNullable() ) {
-    // a null was detected in a non-nullable column
-    bValidNull = false;
-    return true;
-  }
-  
-  // a null was detected in a nullable column
-  bValidNull = true;
   return true;
 }
 
