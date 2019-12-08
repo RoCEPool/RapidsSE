@@ -47,7 +47,7 @@ Lock* AM::pDdlLock(void)      { return & gpAttachMap->m_okDdlLock;            }
 Lock* AM::pDicLock(void)      { return & gpAttachMap->m_okDicLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
-Formatters* AM::pFormatters(void) { return & gpAttachMap->m_oFormatters;      }
+Format* AM::pFormatters(void) { return & gpAttachMap->m_oFormatters;      }
 Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
 bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->m_bHasStarted;   }
 HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }

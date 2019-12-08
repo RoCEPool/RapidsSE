@@ -9,12 +9,12 @@ namespace Chunks
   class RecordExtractor : public DataChunk
   {
   public:
-    Formatters* m_pFormatters; // using these formatters
+    Format* m_pFormatters; // using these formatters
   
     Stz* m_aNextRecord; // first byte of next record
   
   public:
-    RecordExtractor(eCN eClassNo, Formatters* pFormatters);
+    RecordExtractor(eCN eClassNo, Format* pFormatters);
     ~RecordExtractor(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

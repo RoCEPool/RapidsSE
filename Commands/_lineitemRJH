@@ -84,7 +84,7 @@ begin
   stage stageA on all partitions:
     scanOp lineitem | stageB
   stage stageB on origin:
-    endOp
+    outputOp
 end;
 
 dumptable lineitem;

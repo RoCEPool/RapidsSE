@@ -94,7 +94,7 @@ enum eCN : u2 // Class Number
   /*  72 0x048       16B Heap:I */ CN_FIPVAL,
   /*  73 0x049   524520B Heap:L */ CN_FOCALOBJECTS,
   /*  74 0x04A      256B Heap:S */ CN_FORTH,
-  /*  75 0x04B       56B Heap:S */ CN_FORMATTERS,
+  /*  75 0x04B       56B Heap:S */ CN_FORMAT,
   /*  76 0x04C       32B Heap:I */ CN_FREEBUFFER,
   /*  77 0x04D       24B Heap:I */ CN_FREECHUNK,
   /*  78 0x04E        0B Heap:I */ CN_FREEDNOT,
@@ -418,7 +418,7 @@ static Stz* aCN[]
   /*  72 0x048 */ "FIPVAL"_Stz,              // CN_FIPVAL
   /*  73 0x049 */ "FOCALOBJECTS"_Stz,        // CN_FOCALOBJECTS
   /*  74 0x04A */ "FORTH"_Stz,               // CN_FORTH
-  /*  75 0x04B */ "FORMATTERS"_Stz,          // CN_FORMATTERS
+  /*  75 0x04B */ "FORMAT"_Stz,              // CN_FORMAT
   /*  76 0x04C */ "FREEBUFFER"_Stz,          // CN_FREEBUFFER
   /*  77 0x04D */ "FREECHUNK"_Stz,           // CN_FREECHUNK
   /*  78 0x04E */ "FREEDNOT"_Stz,            // CN_FREEDNOT

@@ -41,7 +41,7 @@ void FileChunk::operator delete(void* pFileChunkAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-FileChunk::FileChunk(eCN eClassNo, Formatters* pFormatters)
+FileChunk::FileChunk(eCN eClassNo, Format* pFormatters)
 : RecordExtractor(eClassNo,pFormatters)
 , m_oFile(nullptr)
 {

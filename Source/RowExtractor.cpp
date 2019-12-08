@@ -17,7 +17,7 @@
 /* add element to entwrk key                                                  */
 /*----------------------------------------------------------------------------*/
 void RowExtractor::vAddElement(EntWrk* pEntWrk, Stz* szSrc,
-                            Column* pCol, Formatters* pFmt)
+                            Column* pCol, Format* pFmt)
 {
   i8 nBytes;
 
@@ -50,7 +50,7 @@ void RowExtractor::vAddElement(EntWrk* pEntWrk, Stz* szSrc,
 /* extract row from record (returning first column which has invalid field)   */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractNext(Row* pRow, char** aacCrs,
-                             StreamDef* pStreamDef, Formatters* pFmt,
+                             StreamDef* pStreamDef, Format* pFmt,
                              bool& bBlankLine_)
 {
   char* acRec = *aacCrs;
@@ -109,7 +109,7 @@ bool RowExtractor::bExtractNext(Row* pRow, char** aacCrs,
 /* extract record into row (returning first column which has invalid field)   */
 /*----------------------------------------------------------------------------*/
 Column* RowExtractor::pExtractRow(Row* pRow, char** aacCrs,
-                               StreamDef* pStreamDef, Formatters* pFmt)
+                               StreamDef* pStreamDef, Format* pFmt)
 {
   i8 nCols = pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
@@ -185,7 +185,7 @@ Column* RowExtractor::pExtractRow(Row* pRow, char** aacCrs,
 /* extract key element                                                        */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractElement(DtmVal* pDtmVal, char** aacCrs,
-                                Column* pCol, Formatters* pFmt)
+                                Column* pCol, Format* pFmt)
 {
   bool b = false;
   eDM eDatum = pCol->eDatumType();
@@ -290,7 +290,7 @@ bool RowExtractor::bExtractElement(DtmVal* pDtmVal, char** aacCrs,
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aacCrs,
-                                    Formatters* pFmt)
+                                    Format* pFmt)
 {
   Column* pColumn = pDtmVal->m_pCol;
   
@@ -343,7 +343,7 @@ bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aacCrs,
 /* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aacCrs,
-                                    Formatters* pFmt)
+                                    Format* pFmt)
 {
   Column* pColumn = pDtmVal->m_pCol;
   
@@ -396,7 +396,7 @@ bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aacCrs,
 /* extract a date field from csv substr                           yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aacCrs,
-                                    Formatters* pFmt)
+                                    Format* pFmt)
 {
   
   Column* pColumn = pDtmVal->m_pCol;
@@ -450,7 +450,7 @@ bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aacCrs,
 /* extract a float field from csv substr                                      */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aacCrs,
-                                    Formatters* pFmt)
+                                    Format* pFmt)
 {
   Column* pColumn = pDtmVal->m_pCol;
   
@@ -503,7 +503,7 @@ bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aacCrs,
 /* extract an integer field from csv substr                                   */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aacCrs,
-                                    Formatters* pFmt)
+                                    Format* pFmt)
 {
   Column* pColumn = pDtmVal->m_pCol;
   
@@ -565,7 +565,7 @@ bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aacCrs,
 /* extract an interval field from csv substr                                  */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aacCrs,
-                                    Formatters* pFmt)
+                                    Format* pFmt)
 {
   Column* pColumn = pDtmVal->m_pCol;
   
@@ -618,7 +618,7 @@ bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aacCrs,
 /* extract a time field from csv substr                         hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aacCrs,
-                                    Formatters* pFmt)
+                                    Format* pFmt)
 {
   
   Column* pColumn = pDtmVal->m_pCol;
@@ -672,7 +672,7 @@ bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aacCrs,
 /* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aacCrs,
-                                    Formatters* pFmt)
+                                    Format* pFmt)
 {
   
   Column* pColumn = pDtmVal->m_pCol;
@@ -726,7 +726,7 @@ bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aacCrs,
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aacCrs,
-                                    Formatters* pFmt)
+                                    Format* pFmt)
 {
   Column* pColumn = pDtmVal->m_pCol;
   
@@ -782,7 +782,7 @@ bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aacCrs,
 /*----------------------------------------------------------------------------*/
 /* is the string enclosed?                                                    */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bIsEnclosedString(char** aacCrs, Formatters* pFmt)
+bool RowExtractor::bIsEnclosedString(char** aacCrs, Format* pFmt)
 {
   if (! pFmt->m_cEnclosedBy_Leading)
     return false;
@@ -807,7 +807,7 @@ bool RowExtractor::bIsEnclosedString(char** aacCrs, Formatters* pFmt)
 /*----------------------------------------------------------------------------*/
 /* is there data?                                                             */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bIsThereFieldData(char* aSrc, Formatters* pFmt)
+bool RowExtractor::bIsThereFieldData(char* aSrc, Format* pFmt)
 {
   if ( ! *aSrc
       || *aSrc == pFmt->m_cFieldDelimiter
@@ -822,7 +822,7 @@ bool RowExtractor::bIsThereFieldData(char* aSrc, Formatters* pFmt)
 /*----------------------------------------------------------------------------*/
 /* is there data?                                                             */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bIsThereRecordData(char* aSrc, Formatters* pFmt)
+bool RowExtractor::bIsThereRecordData(char* aSrc, Format* pFmt)
 {
   if ( ! *aSrc
       || *aSrc == C_NL
@@ -837,7 +837,7 @@ bool RowExtractor::bIsThereRecordData(char* aSrc, Formatters* pFmt)
 /* test for null token                                                        */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bTestForNull(Column* pColumn, char** aacCrs,
-                          Formatters* pFmt,
+                          Format* pFmt,
                           bool& bValidNull,
                           bool bSkipTrailingSpaces)
 {
@@ -939,7 +939,7 @@ bool RowExtractor::bTestForNull(Column* pColumn, char** aacCrs,
 /* test for null token                                                        */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bTestForNullDefault(Column* pColumn, char** aacCrs,
-                                 Formatters* pFmt, bool& bValidNull,
+                                 Format* pFmt, bool& bValidNull,
                                  bool bSkipTrailingSpaces)
 {
   /*
@@ -1025,7 +1025,7 @@ bool RowExtractor::bTestForNullDefault(Column* pColumn, char** aacCrs,
 /*----------------------------------------------------------------------------*/
 /* test for valid field end                                                   */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bValidFieldEnd(char* aSrc, Formatters* pFmt)
+bool RowExtractor::bValidFieldEnd(char* aSrc, Format* pFmt)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for end of data
@@ -1067,7 +1067,7 @@ bool RowExtractor::bValidFieldEnd(char* aSrc, Formatters* pFmt)
 /*----------------------------------------------------------------------------*/
 /* test for valid field end                                                   */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bValidFieldEndDefault(char* aSrc, Formatters* pFmt)
+bool RowExtractor::bValidFieldEndDefault(char* aSrc, Format* pFmt)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for end of data
@@ -1094,7 +1094,7 @@ bool RowExtractor::bValidFieldEndDefault(char* aSrc, Formatters* pFmt)
 /*----------------------------------------------------------------------------*/
 /* test for valid record end                                                  */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bValidRecordEnd(char* aSrc, Formatters* pFmt)
+bool RowExtractor::bValidRecordEnd(char* aSrc, Format* pFmt)
 {
   switch (pFmt->m_eRecordEnd) {
       

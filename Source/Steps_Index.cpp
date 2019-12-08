@@ -351,7 +351,7 @@ void Step::vIndexLowerBound(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   EntWrk xEntWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = AM::pFormatters();
+  Format* pFormatters = AM::pFormatters();
   Stz* szStz = xVariable.szStz();
   
   RowExtractor::vAddElement(&xEntWrkLower,szStz,pColumn0,pFormatters);
@@ -536,7 +536,7 @@ void Step::vIndexRange(void)
   // make the lower key
   EntWrk xEntWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = AM::pFormatters();
+  Format* pFormatters = AM::pFormatters();
   Stz* szStz = xValWrkLwr.szStz();
   
   RowExtractor::vAddElement(&xEntWrkLower,szStz,pColumn0,pFormatters);
@@ -837,7 +837,7 @@ void Step::vIndexUpperBound(void)
   // make the upper key
   EntWrk xEntWrkUpper;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = AM::pFormatters();
+  Format* pFormatters = AM::pFormatters();
   Stz* szStz = xVariable.szStz();
   
   RowExtractor::vAddElement(&xEntWrkUpper,szStz,pColumn0,pFormatters);

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Formatters.hpp -- set of formatting characters                             */
+/* Format.hpp -- set of formatting characters                             */
 /*============================================================================*/
 #pragma once
 
 namespace Chunks
 {
-  class Formatters : public Object
+  class Format : public Object
   {
   public:
     bool m_bDefault;             // default formatters
@@ -29,17 +29,17 @@ namespace Chunks
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Formatters(void);
-    ~Formatters(void) noexcept(false);
+    Format(void);
+    ~Format(void) noexcept(false);
   
     void vReset(void);
-    void vSet(Formatters* pFormatters);
+    void vSet(Format* pFormatters);
     void vShow(void);
     
     Footer* aFooter(void);
   };
   
-  Formatters* _pFormatters(void* aAddr);
+  Format* _pFormatters(void* aAddr);
 }
 
 /*============================================================================*/

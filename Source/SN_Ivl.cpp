@@ -32,7 +32,7 @@ SN_Ivl::~SN_Ivl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 SN_Ivl::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
+i8 SN_Ivl::i(char** aacCrs, Column* pCol, Format* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNIVL);
   

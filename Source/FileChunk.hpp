@@ -15,7 +15,7 @@ namespace Chunks
     void* operator new(size_t);
     void  operator delete(void*);
     
-    FileChunk(eCN eClassNo, Formatters* pFormatters);
+    FileChunk(eCN eClassNo, Format* pFormatters);
     ~FileChunk(void) noexcept(false);
   
     void  vCloseFile(void);

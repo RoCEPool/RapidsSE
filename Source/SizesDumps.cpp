@@ -95,7 +95,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_FIPVAL
   /* */ &Dump::vDummy,           // CN_FOCALOBJECTS
   /* */ &Dump::vDummy,           // CN_FORTH
-  /* */ &Dump::vDummy,           // CN_FORMATTERS
+  /* */ &Dump::vDummy,           // CN_FORMAT
   /* */ &Dump::vDummy,           // CN_FREEBUFFER
   /* */ &Dump::vDummy,           // CN_FREECHUNK
   /* */ &Dump::vDummy,           // CN_FREEDNOT
@@ -420,7 +420,7 @@ i8 giClassSize[]
   /* */ sizeof(FipVal),             // CN_FIPVAL
   /* */ sizeof(FocalObjects),       // CN_FOCALOBJECTS
   /* */ sizeof(Forth),              // CN_FORTH
-  /* */ sizeof(Formatters),         // CN_FORMATTERS
+  /* */ sizeof(Format),         // CN_FORMAT
   /* */ sizeof(PoolBuffer),         // CN_FREEBUFFER
   /* */ sizeof(FreeChunk),          // CN_FREECHUNK
   /* */ 0,                          // CN_FREEDNOT
@@ -745,7 +745,7 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_FIPVAL
   /* */ HT_TRANSIENT_LARGE,   // CN_FOCALOBJECTS
   /* */ HT_TRANSIENT_SMALL,   // CN_FORTH
-  /* */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS
+  /* */ HT_TRANSIENT_SMALL,   // CN_FORMAT
   /* */ HT_INVALID,           // CN_FREEBUFFER
   /* */ HT_INVALID,           // CN_FREECHUNK
   /* */ HT_INVALID,           // CN_FREEDNOT

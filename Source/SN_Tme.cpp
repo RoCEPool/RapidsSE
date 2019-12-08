@@ -32,7 +32,7 @@ SN_Tme::~SN_Tme(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 SN_Tme::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
+i8 SN_Tme::i(char** aacCrs, Column* pCol, Format* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNTME);
   

@@ -32,7 +32,7 @@ SN_Dte::~SN_Dte(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 SN_Dte::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
+i8 SN_Dte::i(char** aacCrs, Column* pCol, Format* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNDTE);
   

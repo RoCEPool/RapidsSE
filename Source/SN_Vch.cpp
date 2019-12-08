@@ -32,7 +32,7 @@ SN_Vch::~SN_Vch(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SN_Vch::sz(char** aacCrs, Column* pCol, Formatters* pScnFmt,
+Stz* SN_Vch::sz(char** aacCrs, Column* pCol, Format* pScnFmt,
                bool bSawLeadingEnclosed,
                i8& nChars_)
 {

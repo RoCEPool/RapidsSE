@@ -21,7 +21,7 @@ RecordExtractor* Chunks::_pRecordExtractor(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RecordExtractor::RecordExtractor(eCN eClassNo, Formatters* pFormatters)
+RecordExtractor::RecordExtractor(eCN eClassNo, Format* pFormatters)
 : DataChunk(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);

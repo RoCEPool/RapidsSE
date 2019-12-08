@@ -19,7 +19,7 @@ namespace Chunks
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IngestChunk(Formatters* pFormatters);
+    IngestChunk(Format* pFormatters);
     ~IngestChunk(void) noexcept(false);
   
     i8 nReadMore(File& oFile);

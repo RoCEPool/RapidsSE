@@ -16,7 +16,7 @@ namespace ScanSprint
     SN_Ivl(void);
     ~SN_Ivl(void) noexcept(false);
   
-    i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
+    i8 i(char** aacCrs, Column* pCol, Format* pScnFmt);
   
     Footer* aFooter(void);
   };

@@ -6,7 +6,7 @@
 namespace Alignment     {                                                     }
 namespace Assembler     {                                                     }
 namespace Base          {                                                     }
-namespace Chunks        { class Formatters;                                   }
+namespace Chunks        { class Format;                                   }
 namespace ClassData     {                                                     }
 namespace CompilerOperators {                                                 }
 namespace CompilerStream{                                                     }

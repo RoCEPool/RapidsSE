@@ -10,7 +10,7 @@ namespace Jobs
   public:
     Row*        m_pRow;         // row
     Table*      m_pTable;       // table
-    Formatters  m_oFormatters;  // formatters
+    Format  m_oFormatters;  // formatters
   
     RowCompactor*   m_paRowCompactor[C_MAX_PARTITIONS];
   

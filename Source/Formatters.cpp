@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Formatters.cpp -- set of formatting characters                             */
+/* Format.cpp -- set of formatting characters                             */
 /*============================================================================*/
 
 #include "Chunks.h"
@@ -12,11 +12,11 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Formatters* Chunks::_pFormatters(void* aAddr)
+Format* Chunks::_pFormatters(void* aAddr)
 {
-  Formatters* pFormatters = reinterpret_cast<Formatters*>(aAddr);
+  Format* pFormatters = reinterpret_cast<Format*>(aAddr);
   
-  RASSERT_TYPE(pFormatters,CN_FORMATTERS);
+  RASSERT_TYPE(pFormatters,CN_FORMAT);
   
   return pFormatters;
 }
@@ -24,9 +24,9 @@ Formatters* Chunks::_pFormatters(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Formatters::operator new(size_t)
+void* Format::operator new(size_t)
 {
-  void* pFormatters = HeapMem::pAllocate(CN_FORMATTERS);
+  void* pFormatters = HeapMem::pAllocate(CN_FORMAT);
   
   return pFormatters;
 }
@@ -34,9 +34,9 @@ void* Formatters::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Formatters::operator delete(void* pFormattersAddress)
+void Format::operator delete(void* pFormattersAddress)
 {
-  Formatters* pFormatters = _pFormatters(pFormattersAddress);
+  Format* pFormatters = _pFormatters(pFormattersAddress);
   
   HeapMem::vFree(pFormatters);
 }
@@ -44,10 +44,10 @@ void Formatters::operator delete(void* pFormattersAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Formatters::Formatters(void)
-: Object(CN_FORMATTERS)
+Format::Format(void)
+: Object(CN_FORMAT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
 
   m_bDefault             = true;
   m_bAllowNonPrintable   = false;
@@ -72,25 +72,25 @@ Formatters::Formatters(void)
   
   m_nMaxErrors           = 0;
   
-  _checkInitialised_(CN_FORMATTERS);
+  _checkInitialised_(CN_FORMAT);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FORMAT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Formatters::~Formatters(void) noexcept(false)
+Format::~Format(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* reset the formatters to given set of defaults                              */
 /*----------------------------------------------------------------------------*/
-void Formatters::vReset(void)
+void Format::vReset(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
 
   m_bDefault = true;
   
@@ -114,9 +114,9 @@ void Formatters::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* reset the formatters to given set of defaults                              */
 /*----------------------------------------------------------------------------*/
-void Formatters::vSet(Formatters* pFormatters)
+void Format::vSet(Format* pFormatters)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
   
   m_bDefault = false;
   
@@ -140,9 +140,9 @@ void Formatters::vSet(Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void Formatters::vShow(void)
+void Format::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
   
   vTrace("enclosed_by_Leading %c\n"_Stz, m_cEnclosedBy_Leading ? m_cEnclosedBy_Leading : '0');
   vTrace("enclosed_by_trailing %c\n"_Stz, m_cEnclosedBy_Trailing ? m_cEnclosedBy_Trailing : '0');
@@ -168,9 +168,9 @@ void Formatters::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Formatters::aFooter(void)
+Footer* Format::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
   
   return &m_xFooter;
 }

@@ -91,7 +91,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_FIPVAL
   /*    */ &Finalize::vUndefined,         // CN_FOCALOBJECTS
   /*    */ &Finalize::vUndefined,         // CN_FORTH
-  /* 39 */ &Finalize::vUndefined,         // CN_FORMATTERS
+  /* 39 */ &Finalize::vUndefined,         // CN_FORMAT
   /* 41 */ &Finalize::vUndefined,         // CN_FREEBUFFER
   /* 42 */ &Finalize::vUndefined,         // CN_FREECHUNK
   /* 43 */ &Finalize::vUndefined,         // CN_FREEDNOT

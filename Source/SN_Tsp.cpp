@@ -32,7 +32,7 @@ SN_Tsp::~SN_Tsp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 SN_Tsp::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
+i8 SN_Tsp::i(char** aacCrs, Column* pCol, Format* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNTSP);
   
