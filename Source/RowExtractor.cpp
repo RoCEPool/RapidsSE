@@ -137,12 +137,22 @@ Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
     // - - - -
     // null
 
-    bool bValidNull = false;
-    if (bTestForNull(pCol,aazCrs,pFmt,bValidNull)) {
-      if ( ! bValidNull )
+//    bool bValidNull = false;
+//    if (bTestForNull(pCol,aazCrs,pFmt,bValidNull)) {
+//      if ( ! bValidNull )
+//        return pCol;
+//      oDatum.vSetNull();
+//    }
+   
+    if (bIsSomeNull(aazCrs,pFmt)) {
+      if ( ! pCol->bIsNullable() ) {
+        // a null was detected in a non-nullable column
         return pCol;
+      }
       oDatum.vSetNull();
+      goto L_TRAILING;
     }
+
     
     // - - - -
     // value
@@ -167,6 +177,8 @@ Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
     
     // - - - - -
     // trailing
+    
+  L_TRAILING:
     
     bool bSawEnclosedTrailing =
     StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
