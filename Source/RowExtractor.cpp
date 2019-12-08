@@ -111,6 +111,8 @@ bool RowExtractor::bExtractNext(Row* pRow, StreamDef* pStreamDef,
 Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
                                   char** aazCrs, Format* pFmt)
 {
+  bool bSawEnclosedLeading;
+  
   i8 nCols = pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
@@ -122,15 +124,23 @@ Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
     bool b = false;
     eDM eDatum = pCol->eDatum();
     
+    
+  if (DM_VCH == eDatum)
+    bSawEnclosedLeading = false;
+  else
+    bSawEnclosedLeading =
+      StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+
+    
     switch (eDatum) {
-      case DM_BCD: b = bExtractBcd(&oDatum,aazCrs,pFmt); break;
-      case DM_BOL: b = bExtractBol(&oDatum,aazCrs,pFmt); break;
-      case DM_DTE: b = bExtractDte(&oDatum,aazCrs,pFmt); break;
-      case DM_FLT: b = bExtractFlt(&oDatum,aazCrs,pFmt); break;
-      case DM_INT: b = bExtractInt(&oDatum,aazCrs,pFmt); break;
-      case DM_IVL: b = bExtractIvl(&oDatum,aazCrs,pFmt); break;
-      case DM_TME: b = bExtractTme(&oDatum,aazCrs,pFmt); break;
-      case DM_TSP: b = bExtractTsp(&oDatum,aazCrs,pFmt); break;
+      case DM_BCD: b = bExtractBcd(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
+      case DM_BOL: b = bExtractBol(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
+      case DM_DTE: b = bExtractDte(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
+      case DM_FLT: b = bExtractFlt(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
+      case DM_INT: b = bExtractInt(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
+      case DM_IVL: b = bExtractIvl(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
+      case DM_TME: b = bExtractTme(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
+      case DM_TSP: b = bExtractTsp(&oDatum,aazCrs,pFmt, bSawEnclosedLeading); break;
       case DM_VCH: b = bExtractVch(&oDatum,aazCrs,pFmt); break;
       default:
         vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -283,14 +293,14 @@ bool RowExtractor::bExtractDtm(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs,
-                                    Format* pFmt)
+bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                               bool bSawEnclosedLeading)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
-  bool bSawEnclosedLeading =
-  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+//  bool bSawEnclosedLeading =
+//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -339,14 +349,14 @@ bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs,
-                                    Format* pFmt)
+bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                               bool bSawEnclosedLeading)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
-  bool bSawEnclosedLeading =
-  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+//  bool bSawEnclosedLeading =
+//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -394,14 +404,14 @@ bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a date field from csv substr                           yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs,
-                                    Format* pFmt)
+bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                               bool bSawEnclosedLeading)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
-  bool bSawEnclosedLeading =
-  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+//  bool bSawEnclosedLeading =
+//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -450,14 +460,14 @@ bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a float field from csv substr                                      */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs,
-                                    Format* pFmt)
+bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                               bool bSawEnclosedLeading)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
-  bool bSawEnclosedLeading =
-  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+//  bool bSawEnclosedLeading =
+//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -505,14 +515,14 @@ bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs,
 /*----------------------------------------------------------------------------*/
 /* extract an integer field from csv substr                                   */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs,
-                                    Format* pFmt)
+bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                               bool bSawEnclosedLeading)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
-  bool bSawEnclosedLeading =
-  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+//  bool bSawEnclosedLeading =
+//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -569,14 +579,14 @@ bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs,
 /*----------------------------------------------------------------------------*/
 /* extract an interval field from csv substr                                  */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs,
-                                    Format* pFmt)
+bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                               bool bSawEnclosedLeading)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
-  bool bSawEnclosedLeading =
-  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+//  bool bSawEnclosedLeading =
+//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -624,14 +634,14 @@ bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a time field from csv substr                         hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs,
-                                    Format* pFmt)
+bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                               bool bSawEnclosedLeading)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
-  bool bSawEnclosedLeading =
-  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+//  bool bSawEnclosedLeading =
+//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -679,14 +689,14 @@ bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs,
-                                    Format* pFmt)
+bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                               bool bSawEnclosedLeading)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
-  bool bSawEnclosedLeading =
-  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
+//  bool bSawEnclosedLeading =
+//  StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
@@ -734,8 +744,7 @@ bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs,
-                                    Format* pFmt)
+bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing

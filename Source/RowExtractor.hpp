@@ -22,14 +22,22 @@ namespace Rows
   private:
     static bool bExtractDtm(DtmVal* pDtmVal, char** aazCrs, Format* pFmt);
   
-    static bool bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt);
-    static bool bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt);
-    static bool bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt);
-    static bool bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt);
-    static bool bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt);
-    static bool bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt);
-    static bool bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt);
-    static bool bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt);
+    static bool bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                            bool bSawEnclosedLeading);
+    static bool bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                            bool bSawEnclosedLeading);
+    static bool bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                            bool bSawEnclosedLeading);
+    static bool bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                            bool bSawEnclosedLeading);
+    static bool bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                            bool bSawEnclosedLeading);
+    static bool bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                            bool bSawEnclosedLeading);
+    static bool bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                            bool bSawEnclosedLeading);
+    static bool bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
+                            bool bSawEnclosedLeading);
     static bool bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt);
   
     static bool bIsEnclosedString(char** aazCrs, Format* pFmt);
