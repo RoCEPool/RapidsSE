@@ -124,7 +124,7 @@ end
    scanOp lineitem |  countOp | superCountOp | stageB
  
  stage stageB on origin:
-   superCountOp | endOp
+   superCountOp | outputOp
 
  end
  ;
