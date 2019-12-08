@@ -125,7 +125,6 @@ Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
     switch (eDatum) {
       case DM_BCD: b = bExtractBcd(&oDatum,aazCrs,pFmt); break;
       case DM_BOL: b = bExtractBol(&oDatum,aazCrs,pFmt); break;
-      case DM_CHR: b = bExtractVch(&oDatum,aazCrs,pFmt); break;
       case DM_DTE: b = bExtractDte(&oDatum,aazCrs,pFmt); break;
       case DM_FLT: b = bExtractFlt(&oDatum,aazCrs,pFmt); break;
       case DM_INT: b = bExtractInt(&oDatum,aazCrs,pFmt); break;
@@ -203,10 +202,6 @@ bool RowExtractor::bExtractDtm(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
       
     case DM_BOL:
       b = StrLib::bExtractBoolean(aazCrs,pDtmVal->m_wDtm.m_iBol);
-      break;
-      
-    case DM_CHR:
-      b = bExtractVch(pDtmVal,aazCrs,pFmt);
       break;
       
     case DM_DTE:
