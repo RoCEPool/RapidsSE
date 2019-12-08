@@ -334,17 +334,6 @@ bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // field processing
 
   Column* pColumn = pDtmVal->m_pCol;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null
-  
-//  bool bValidNull = false;
-//  if (bTestForNull(pColumn,aazCrs,pFmt,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    pDtmVal->vSetNull();
-//    return true;
-//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decimal field processing
@@ -373,17 +362,6 @@ bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   Column* pColumn = pDtmVal->m_pCol;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-//  bool bValidNull = false;
-//  if (bTestForNull(pColumn,aazCrs,pFmt,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    pDtmVal->vSetNull();
-//    return true;
-//  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // boolean field processing
   
   try {
@@ -408,17 +386,6 @@ bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // field processing
 
   Column* pColumn = pDtmVal->m_pCol;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-//  bool bValidNull = false;
-//  if (bTestForNull(pColumn,aazCrs,pFmt,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    pDtmVal->vSetNull();
-//    return true;
-//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date field processing
@@ -447,17 +414,6 @@ bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   Column* pColumn = pDtmVal->m_pCol;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-//  bool bValidNull = false;
-//  if (bTestForNull(pColumn,aazCrs,pFmt,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    pDtmVal->vSetNull();
-//    return true;
-//  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // float field processing
   
   try {
@@ -482,17 +438,6 @@ bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // field processing
   
   Column* pColumn = pDtmVal->m_pCol;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-//  bool bValidNull = false;
-//  if (bTestForNull(pColumn,aazCrs,pFmt,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    pDtmVal->vSetNull();
-//    return true;
-//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // integer field processing
@@ -530,17 +475,6 @@ bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   Column* pColumn = pDtmVal->m_pCol;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-//  bool bValidNull = false;
-//  if (bTestForNull(pColumn,aazCrs,pFmt,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    pDtmVal->vSetNull();
-//    return true;
-//  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // interval field processing
   
   try {
@@ -565,17 +499,6 @@ bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   // field processing
   
   Column* pColumn = pDtmVal->m_pCol;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-//  bool bValidNull = false;
-//  if (bTestForNull(pColumn,aazCrs,pFmt,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    pDtmVal->vSetNull();
-//    return true;
-//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // time field processing
@@ -604,17 +527,6 @@ bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
   Column* pColumn = pDtmVal->m_pCol;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-//  bool bValidNull = false;
-//  if (bTestForNull(pColumn,aazCrs,pFmt,bValidNull)) {
-//    if ( ! bValidNull )
-//      return false;
-//    pDtmVal->vSetNull();
-//    return true;
-//  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // timestamp field processing
   
   try {
@@ -639,18 +551,7 @@ bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
   // field processing
   
   Column* pColumn = pDtmVal->m_pCol;
-  
- // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null
-  
-//  bool bValidNull = false;
-//  if (bTestForNull(pColumn,aazCrs,pFmt,bValidNull,false)) {
-//    if ( ! bValidNull )
-//      return false;
-//    pDtmVal->vSetNull();
-//    return true;
-//  }
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for enclosed
   bSawEnclosedLeading = bIsEnclosedString(aazCrs,pFmt);
