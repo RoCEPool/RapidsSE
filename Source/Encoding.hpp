@@ -9,7 +9,6 @@ namespace Rows
   struct _ColEnc {
     
     Column* m_pCol;    // column
-    eDM  m_eDatum;     // column datum
     
     eMC  m_eMetaCode;  // meta code describing the column value
     Dtm  m_wDataCode;  // column value data bytes

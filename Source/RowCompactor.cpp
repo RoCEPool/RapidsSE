@@ -445,7 +445,7 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for non-null vch column of minimum length
     
-    if (DM_VCH != aColEnc->m_eDatum)
+    if (DM_VCH != aColEnc->m_pCol->eDatumType())
       continue;
     
     // -- vch column --
@@ -731,7 +731,7 @@ void RowCompactor::vPutDataCode(_ColEnc& xColEnc)
     return;
   
   // non-vch packing as {1..8B} (max of 1 word)
-  if (DM_VCH != xColEnc.m_eDatum) {
+  if (DM_VCH != xColEnc.m_pCol->eDatumType()) {
     vPutData_Bytes(xColEnc);
     return;
   }

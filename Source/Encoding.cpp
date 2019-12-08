@@ -69,7 +69,6 @@ Encoding::Encoding(StreamDef* pStreamDef, i8 nHeadSize, i8 nMetaSize)
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     
     xaColEnc[i_Col].m_pCol       = nullptr;
-    xaColEnc[i_Col].m_eDatum     = DM_NONE;
     
     xaColEnc[i_Col].m_eMetaCode  = MC_NULL;
     xaColEnc[i_Col].m_wDataCode  = C_UNKNOWN;
@@ -84,7 +83,6 @@ Encoding::Encoding(StreamDef* pStreamDef, i8 nHeadSize, i8 nMetaSize)
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     xaColEnc[i_Col].m_pCol   = m_pStreamDef->pGetColumn(i_Col);
-    xaColEnc[i_Col].m_eDatum = xaColEnc[i_Col].m_pCol->eDatumType();
   }
   
 #ifdef WITH_CHECK_INITIALISED
@@ -224,7 +222,7 @@ void Encoding::vInitialEncoding(Row* pRow)
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // encode the column value
     
-    switch (xrColEnc.m_eDatum) {
+    switch (xrColEnc.m_pCol->eDatumType()) {
         
       case DM_BCD: vEncodeBcd(xrColEnc,wColVal);  break;
       case DM_BOL: vEncodeBol(xrColEnc,wColVal);  break;
