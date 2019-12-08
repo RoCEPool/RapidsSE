@@ -289,6 +289,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_STEPACCUM
   /* */ &StepTiming::vDump,      // CN_STEPTIMING
   /* */ &Dump::vInvalid,         // CN_STMT_SELECT
+  /* */ &Dump::vInvalid,         // CN_STOPMARKER
   /* */ &Dump::vInvalid,         // CN_STREAMDEF
   /* */ &Dump::vInvalid,         // CN_STRING_T
   /* */ &Dump::vInvalid,         // CN_STZVAL
@@ -613,6 +614,7 @@ i8 giClassSize[]
   /* */ sizeof(StepAccum),          // CN_STEPACCUM
   /* */ sizeof(StepTiming),         // CN_STEPTIMING
   /* */ sizeof(Stmt_Select),        // CN_STMT_SELECT
+  /* */ sizeof(StopMarker),         // CN_STOPMARKER
   /* */ sizeof(StreamDef),          // CN_STREAMDEF
   /* */ sizeof(s32),                // CN_STRING_T
   /* */ sizeof(StzVal),             // CN_STZVAL
@@ -937,6 +939,7 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_STATISTICS
   /* */ HT_TRANSIENT_LARGE,   // CN_STEPTIMING
   /* */ HT_TRANSIENT_LARGE,   // CN_STMT_SELECT
+  /* */ HT_TRANSIENT_SMALL,   // CN_STOPMARKER
   /* */ HT_TRANSIENT_LARGE,   // CN_STREAMDEF
   /* */ HT_INVALID,           // CN_STRING_T
   /* */ HT_INVALID,           // CN_STZVAL

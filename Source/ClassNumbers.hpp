@@ -288,6 +288,7 @@ enum eCN : u2 // Class Number
   /* 253 0x0FD       64B Heap:I */ CN_STEPACCUM,
   /* 254 0x0FE   131288B Heap:L */ CN_STEPTIMING,
   /* 255 0x0FF       80B Heap:L */ CN_STMT_SELECT,
+  /*              47800B Heap:L */ CN_STOPMARKER,
   /* 256 0x100    47800B Heap:L */ CN_STREAMDEF,
   /* 257 0x101       56B Heap:I */ CN_STRING_T,
   /* 258 0x102       24B Heap:I */ CN_STZVAL,
@@ -611,6 +612,7 @@ static Stz* aCN[]
   /* 253 0x0FD */ "STEPACCUM"_Stz,           // CN_STEPACCUM
   /* 254 0x0FE */ "STEPTIMING"_Stz,          // CN_STEPTIMING
   /* 255 0x0FF */ "STMT_SELECT"_Stz,         // CN_STMT_SELECT
+  /*           */ "STOPMARKER"_Stz,          // CN_STOPMARKER
   /* 256 0x100 */ "STREAMDEF"_Stz,           // CN_STREAMDEF
   /* 257 0x101 */ "STRING_T"_Stz,            // CN_STRING_T
   /* 258 0x102 */ "STZVAL"_Stz,              // CN_STZVAL

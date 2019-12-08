@@ -215,6 +215,7 @@ void Step::vOperandKind(void)
     case CN_IRWBUFFER:   eOperand = ZK_IRWBUFFER;   break;
     case CN_SRTBUFFER:   eOperand = ZK_SRTBUFFER;   break;
     case CN_STARTMARKER: eOperand = ZK_STARTMARKER; break;
+    case CN_STOPMARKER:  eOperand = ZK_STOPMARKER;  break;
     case CN_STREAMDEF:   eOperand = ZK_STREAMDEF;   break;
       
     default:

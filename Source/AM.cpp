@@ -173,6 +173,12 @@ void AM::vDeleteOperand(Operand* pOperand)
       delete pStartMarker;
       break;
     }
+    
+    case CN_STOPMARKER: {
+      StopMarker* pStopMarker = _pStopMarker(pOperand);
+      delete pStopMarker;
+      break;
+    }
       
     case CN_STREAMDEF: {
       StreamDef* pStreamDef = _pStreamDef(pOperand);

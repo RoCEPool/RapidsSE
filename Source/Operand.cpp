@@ -28,9 +28,11 @@ bool Streams::_bIsValidOperand(eCN eClass)
     case CN_ENDMARKER:
     case CN_CANCELMARKER:
     case CN_CRWBUFFER:
-    case CN_IRWBUFFER:
-    case CN_STREAMDEF:
     case CN_CSVBUFFER:
+    case CN_IRWBUFFER:
+    case CN_STARTMARKER:
+    case CN_STREAMDEF:
+    case CN_STOPMARKER:
       return true;
     default:
       return false;

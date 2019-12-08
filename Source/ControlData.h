@@ -21,6 +21,7 @@ namespace ControlData
 #include "EndMarker.hpp"
 #include "PauseMarker.hpp"
 #include "StartMarker.hpp"
+#include "StopMarker.hpp"
 #include "TimeMarker.hpp"
 
 /*============================================================================*/
