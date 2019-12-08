@@ -354,7 +354,7 @@ void Step::vIndexLowerBound(void)
   Format* pFmt = AM::pFmt();
   Stz* szStz = xVariable.szStz();
   
-  RowExtractor::vAddElement(&xEntWrkLower,szStz,pColumn0,pFmt);
+  RowExtractor::vAddElement(&xEntWrkLower,pColumn0,szStz,pFmt);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     xEntWrkLower.vAppendMinusInfinity();
   }
@@ -539,7 +539,7 @@ void Step::vIndexRange(void)
   Format* pFmt = AM::pFmt();
   Stz* szStz = xValWrkLwr.szStz();
   
-  RowExtractor::vAddElement(&xEntWrkLower,szStz,pColumn0,pFmt);
+  RowExtractor::vAddElement(&xEntWrkLower,pColumn0,szStz,pFmt);
 
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     xEntWrkLower.vAppendMinusInfinity();
@@ -552,7 +552,7 @@ void Step::vIndexRange(void)
   pColumn0 = pIndex->pIdxColVec()->pGet(0);
   szStz = xValWrkUpr.szStz();
   
-  RowExtractor::vAddElement(&xEntWrkUpper,szStz,pColumn0,pFmt);
+  RowExtractor::vAddElement(&xEntWrkUpper,pColumn0,szStz,pFmt);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     xEntWrkUpper.vAppendPlusInfinity();
   }
@@ -840,7 +840,7 @@ void Step::vIndexUpperBound(void)
   Format* pFmt = AM::pFmt();
   Stz* szStz = xVariable.szStz();
   
-  RowExtractor::vAddElement(&xEntWrkUpper,szStz,pColumn0,pFmt);
+  RowExtractor::vAddElement(&xEntWrkUpper,pColumn0,szStz,pFmt);
   for (i8 iKey = 1; iKey < nIdxCols; iKey++) {
     xEntWrkUpper.vAppendPlusInfinity();
   }
