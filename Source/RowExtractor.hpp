@@ -23,24 +23,15 @@ namespace Rows
     static bool bExtractElement(DtmVal* pDtmVal, char** aacCrs,
                                 Column* pCol, Format* pFmt);
   
-    static bool bExtractBcd(DtmVal* pDtmVal, char** aacCrs,
-                                    Format* pFmt);
-    static bool bExtractBol(DtmVal* pDtmVal, char** aacCrs,
-                                    Format* pFmt);
-    static bool bExtractDte(DtmVal* pDtmVal, char** aacCrs,
-                                    Format* pFmt);
-    static bool bExtractFlt(DtmVal* pDtmVal, char** aacCrs,
-                                    Format* pFmt);
-    static bool bExtractInt(DtmVal* pDtmVal, char** aacCrs,
-                                    Format* pFmt);
-    static bool bExtractIvl(DtmVal* pDtmVal, char** aacCrs,
-                                    Format* pFmt);
-    static bool bExtractTme(DtmVal* pDtmVal, char** aacCrs,
-                                    Format* pFmt);
-    static bool bExtractTsp(DtmVal* pDtmVal, char** aacCrs,
-                                    Format* pFmt);
-    static bool bExtractVch(DtmVal* pDtmVal, char** aacCrs,
-                                    Format* pFmt);
+    static bool bExtractBcd(DtmVal* pDtmVal, char** aacCrs, Format* pFmt);
+    static bool bExtractBol(DtmVal* pDtmVal, char** aacCrs, Format* pFmt);
+    static bool bExtractDte(DtmVal* pDtmVal, char** aacCrs, Format* pFmt);
+    static bool bExtractFlt(DtmVal* pDtmVal, char** aacCrs, Format* pFmt);
+    static bool bExtractInt(DtmVal* pDtmVal, char** aacCrs, Format* pFmt);
+    static bool bExtractIvl(DtmVal* pDtmVal, char** aacCrs, Format* pFmt);
+    static bool bExtractTme(DtmVal* pDtmVal, char** aacCrs, Format* pFmt);
+    static bool bExtractTsp(DtmVal* pDtmVal, char** aacCrs, Format* pFmt);
+    static bool bExtractVch(DtmVal* pDtmVal, char** aacCrs, Format* pFmt);
   
     static bool bIsEnclosedString(char** aacCrs, Format* pFmt);
     static bool bIsThereFieldData(char* aSrc, Format* pFmt);
