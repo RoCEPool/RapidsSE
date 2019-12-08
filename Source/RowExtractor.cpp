@@ -296,6 +296,8 @@ bool RowExtractor::bExtractDtm(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
 bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
+  SN_Bcd snBcd;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -317,13 +319,12 @@ bool RowExtractor::bExtractBcd(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    return true;
+    goto L_TAIL;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decimal field processing
   
-  SN_Bcd snBcd;
   try {
     pDtmVal->m_wDtm.m_iBcd = snBcd.i(aazCrs,pColumn,pFmt);
   }
@@ -354,6 +355,8 @@ L_TAIL:
 bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
+  SN_Bol snBol;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -374,13 +377,12 @@ bool RowExtractor::bExtractBol(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    return true;
+    goto L_TAIL;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // boolean field processing
   
-  SN_Bol snBol;
   try {
     pDtmVal->m_wDtm.m_iBol = snBol.i(aazCrs,pColumn,pFmt);
   }
@@ -411,6 +413,8 @@ L_TAIL:
 bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
+  SN_Dte snDte;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -432,13 +436,12 @@ bool RowExtractor::bExtractDte(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    return true;
+    goto L_TAIL;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date field processing
   
-  SN_Dte snDte;
   try {
     pDtmVal->m_wDtm.m_iDte = snDte.i(aazCrs,pColumn,pFmt);
   }
@@ -469,6 +472,8 @@ L_TAIL:
 bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
+  SN_Flt snFlt;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -489,13 +494,12 @@ bool RowExtractor::bExtractFlt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    return true;
+    goto L_TAIL;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // float field processing
   
-  SN_Flt snFlt;
   try {
     pDtmVal->m_wDtm.m_dFlt = snFlt.d(aazCrs,pColumn,pFmt);
   }
@@ -526,6 +530,8 @@ L_TAIL:
 bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
+  SN_Int snInt;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -546,13 +552,12 @@ bool RowExtractor::bExtractInt(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    return true;
+    goto L_TAIL;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // integer field processing
   
-  SN_Int snInt;
   try {
     pDtmVal->m_wDtm.m_iInt = snInt.i(aazCrs,pColumn,pFmt);
   }
@@ -592,6 +597,8 @@ L_TAIL:
 bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
+  SN_Ivl snIvl;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -612,13 +619,12 @@ bool RowExtractor::bExtractIvl(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    return true;
+    goto L_TAIL;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // interval field processing
   
-  SN_Ivl snIvl;
   try {
     pDtmVal->m_wDtm.m_iIvl = snIvl.i(aazCrs,pColumn,pFmt);
   }
@@ -649,6 +655,8 @@ L_TAIL:
 bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
+  SN_Tsp snTsp;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -669,13 +677,12 @@ bool RowExtractor::bExtractTme(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    return true;
+    goto L_TAIL;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // time field processing
   
-  SN_Tsp snTsp;
   try {
     pDtmVal->m_wDtm.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
   }
@@ -706,6 +713,7 @@ L_TAIL:
 bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
                                bool bSawEnclosedLeading)
 {
+  SN_Tsp snTsp;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   
@@ -726,13 +734,12 @@ bool RowExtractor::bExtractTsp(DtmVal* pDtmVal, char** aazCrs, Format* pFmt,
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    return true;
+    goto L_TAIL;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // timestamp field processing
   
-  SN_Tsp snTsp;
   try {
     pDtmVal->m_wDtm.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
   }
@@ -762,6 +769,9 @@ L_TAIL:
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
 {
+  SN_Vch snVch;
+  bool bSawEnclosedLeading = false;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // field processing
   
@@ -776,17 +786,16 @@ bool RowExtractor::bExtractVch(DtmVal* pDtmVal, char** aazCrs, Format* pFmt)
     if ( ! bValidNull )
       return false;
     pDtmVal->vSetNull();
-    return true;
+    goto L_TAIL;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for enclosed
-  bool bSawEnclosedLeading = bIsEnclosedString(aazCrs,pFmt);
+  bSawEnclosedLeading = bIsEnclosedString(aazCrs,pFmt);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // varchar field processing
   
-  SN_Vch snVch;
   try {
     pDtmVal->m_sVch = snVch.sz(aazCrs,pColumn,pFmt,
                               bSawEnclosedLeading,pDtmVal->m_nChars);
@@ -947,17 +956,17 @@ bool RowExtractor::bTestForNull(Column* pColumn, char** aazCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
-  // optionally skip trailing spaces
-  if (bSkipTrailingSpaces)
-    StrLib::vSkipSpaces(aazCrs);
-  
-  // check it was "null" only
-  if (! bValidFieldEnd(*aazCrs,pFmt)) {
-    // no well formed null detected
-    *(aazCrs) = aStart;
-    rbValidNull = false; // no null, so neither valid or invalid
-    return false;
-  }
+//  // optionally skip trailing spaces
+//  if (bSkipTrailingSpaces)
+//    StrLib::vSkipSpaces(aazCrs);
+//
+//  // check it was "null" only
+//  if (! bValidFieldEnd(*aazCrs,pFmt)) {
+//    // no well formed null detected
+//    *(aazCrs) = aStart;
+//    rbValidNull = false; // no null, so neither valid or invalid
+//    return false;
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check the column is nullable
