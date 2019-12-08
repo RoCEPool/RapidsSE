@@ -20,8 +20,7 @@ namespace Rows
                                StreamDef* pStreamDef, Format* pFmt);
   
   private:
-    static bool bExtractElement(DtmVal* pDtmVal, char** aacCrs,
-                                Column* pCol, Format* pFmt);
+    static bool bExtractDtm(DtmVal* pDtmVal, char** aacCrs, Format* pFmt);
   
     static bool bExtractBcd(DtmVal* pDtmVal, char** aacCrs, Format* pFmt);
     static bool bExtractBol(DtmVal* pDtmVal, char** aacCrs, Format* pFmt);

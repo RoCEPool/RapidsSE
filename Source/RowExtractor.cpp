@@ -33,7 +33,7 @@ void RowExtractor::vAddElement(EntWrk* pEntWrk, Stz* szSrc,
   DtmVal oDatum;
   oDatum.m_pCol = pCol;
 
-  bool b = RowExtractor::bExtractElement(&oDatum,&aSrc,pCol,pFmt);
+  bool b = RowExtractor::bExtractDtm(&oDatum,&aSrc,pFmt);
   ASSERT(b);
 
   if (oDatum.bIsNull()) {
@@ -184,13 +184,12 @@ Column* RowExtractor::pExtractRow(Row* pRow, char** aacCrs,
 /*----------------------------------------------------------------------------*/
 /* extract key element                                                        */
 /*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractElement(DtmVal* pDtmVal, char** aacCrs,
-                                Column* pCol, Format* pFmt)
+bool RowExtractor::bExtractDtm(DtmVal* pDtmVal, char** aacCrs, Format* pFmt)
 {
   bool b = false;
-  eDM eDatum = pCol->eDatumType();
   
-  pDtmVal->m_pCol = pCol;
+  Column* pCol = pDtmVal->m_pCol;
+  eDM eDatum   = pCol->eDatumType();
   
   i8 iYear, iMonth, iDay;
   i8 iHour, iMinute, iSecond, iMicro, iMilli;
@@ -280,7 +279,7 @@ bool RowExtractor::bExtractElement(DtmVal* pDtmVal, char** aacCrs,
       
     default:
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-             "RowExtractor::bExtractElement: Invalid eDatum : %lld\n"_Stz,eDatum);
+             "RowExtractor::bExtractDtm: Invalid eDatum : %lld\n"_Stz,eDatum);
   }
   
   return b;
