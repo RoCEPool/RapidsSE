@@ -20,9 +20,12 @@ void Step::vAddSteps_Subset(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSubsetFetch(void)
 {
-  ENTRY(); // ENTRY("vSubsetNext"_Stz);
+  ENTRY(); // ENTRY("vSubsetFetch"_Stz);
   
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpSubset);
+  if (m_pRegSet->m_xpSubset.bIsNull())
+    m_pDataStack->vPushPtr(nullptr);
+  else
+    m_pDataStack->vPushPtr(*m_pRegSet->m_xpSubset);
   
   EXIT();
 }
