@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace RowBase
+namespace Rows
 {
   static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
   

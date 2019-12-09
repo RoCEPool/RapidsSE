@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace RowBase
+namespace Rows
 {
   class Datum : public Object
   {

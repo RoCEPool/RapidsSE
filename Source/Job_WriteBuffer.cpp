@@ -322,7 +322,7 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
   // have all buffers been loaded?
   bool bAllBuffersWritten = pPartition->bAllBuffersWritten(DS_LOAD);
   //if (bAllBuffersLoaded)
-  //  vTrace("RowBase loaded\n"_Stz);
+  //  vTrace("Buffers loaded\n"_Stz);
   
   return bAllBuffersWritten;
 }
