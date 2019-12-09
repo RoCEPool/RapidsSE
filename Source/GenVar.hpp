@@ -5,7 +5,7 @@
 
 namespace Datums
 {
-  class GenVar : public Object
+  class GenVar : public Datum
   {
   private:
 

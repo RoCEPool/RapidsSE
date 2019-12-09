@@ -15,7 +15,7 @@ GenVar* Datums::_pGenVar(void* aAddr)
 {
   GenVar* pValWrk = reinterpret_cast<GenVar*>(aAddr);
   
-  RASSERT_TYPE(pValWrk,CN_GENVAR);
+  RASSERT_TYPE(pValWrk,CN_DATUM);
   
   return pValWrk;
 }
@@ -35,23 +35,23 @@ void* GenVar::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 GenVar::GenVar(void)
-: Object(CN_GENVAR)
+//: Object(CN_DATUM)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   u.m_xAnyVal.vMagic();
   u.m_xAnyVal.vClass(CN_NONE);
   
-  _postcondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 GenVar::GenVar(AnyVal* aAnyVal)
-: Object(CN_GENVAR)
+//: Object(CN_DATUM)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   u.m_xAnyVal.vMagic();
   u.m_xAnyVal.vClass(CN_NONE);
@@ -69,7 +69,7 @@ GenVar::GenVar(AnyVal* aAnyVal)
              "Invalid eClass %lld"_Stz,eClassNo);
   }
 
-  _postcondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,7 +77,7 @@ GenVar::GenVar(AnyVal* aAnyVal)
 /*----------------------------------------------------------------------------*/
 GenVar::~GenVar(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 }
 
 
@@ -90,7 +90,7 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 GenVar::operator AnyVal*(void)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
   return & u.m_xAnyVal;
 }
@@ -101,7 +101,7 @@ GenVar::operator AnyVal*(void)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(AnyVal* aAnyVal)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
   eCN eClass = aAnyVal->eClass();
   
@@ -126,7 +126,7 @@ void GenVar::operator =(AnyVal* aAnyVal)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Cell* aFip)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   u.m_xFipVal.vFip(aFip);
 }
@@ -136,7 +136,7 @@ void GenVar::operator =(Cell* aFip)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(i8 iInt)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   u.m_xIntVal.vInt(iInt);
 }
@@ -146,7 +146,7 @@ void GenVar::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Object* pObj)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   u.m_xPtrVal.vObj(pObj);
 }
@@ -156,11 +156,11 @@ void GenVar::operator =(Object* pObj)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Stz* szStz)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   u.m_xStzVal.vStz(szStz);
   
-  _postcondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,7 +171,7 @@ void GenVar::operator =(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 char* GenVar::azChar(void)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   char* az = u.m_xStzVal.azChar();
 
@@ -183,7 +183,7 @@ char* GenVar::azChar(void)
 /*----------------------------------------------------------------------------*/
 void GenVar::vCopy(AnyVal* aAnyVal)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   u.m_xAnyVal.vCopy(aAnyVal);
 }
@@ -193,7 +193,7 @@ void GenVar::vCopy(AnyVal* aAnyVal)
 /*----------------------------------------------------------------------------*/
 Cell* GenVar::aFip(void)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   Cell* aFip = u.m_xFipVal.aFip();
 
@@ -205,7 +205,7 @@ Cell* GenVar::aFip(void)
 /*----------------------------------------------------------------------------*/
 i8 GenVar::iInt(void)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   i8 iInt = u.m_xIntVal.iInt();
   
@@ -217,7 +217,7 @@ i8 GenVar::iInt(void)
 /*----------------------------------------------------------------------------*/
 bool GenVar::bIsInt(void)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   if (CN_INTVAL == u.m_xAnyVal.eClass())
     return true;
@@ -230,7 +230,7 @@ bool GenVar::bIsInt(void)
 /*----------------------------------------------------------------------------*/
 AnyVal* GenVar::aEmbeddedAnyVal(void)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   return & u.m_xAnyVal;
 }
@@ -240,7 +240,7 @@ AnyVal* GenVar::aEmbeddedAnyVal(void)
 /*----------------------------------------------------------------------------*/
 Object* GenVar::pObj(void)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   Object* pObj = u.m_xPtrVal.pObj();
 
@@ -252,7 +252,7 @@ Object* GenVar::pObj(void)
 /*----------------------------------------------------------------------------*/
 i8 GenVar::nStackUsage(void)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   i8 nBytes = u.m_xStzVal.nStackUsage();
   
@@ -264,7 +264,7 @@ i8 GenVar::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 Stz* GenVar::szStz(void)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   Stz* sz = u.m_xStzVal.szStz();
 
@@ -276,7 +276,7 @@ Stz* GenVar::szStz(void)
 /*----------------------------------------------------------------------------*/
 i8 GenVar::nStzSize(void)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   i8 nSize = u.m_xStzVal.nStzSize();
   
@@ -288,7 +288,7 @@ i8 GenVar::nStzSize(void)
 /*----------------------------------------------------------------------------*/
 void GenVar::vToString(Stz* szString)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   u.m_xAnyVal.vToString(szString);
 }
@@ -298,7 +298,7 @@ void GenVar::vToString(Stz* szString)
 /*----------------------------------------------------------------------------*/
 eCN GenVar::eValClass(void)
 {
-  _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   return u.m_xAnyVal.eClass();
 }
