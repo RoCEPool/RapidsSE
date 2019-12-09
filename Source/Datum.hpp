@@ -28,10 +28,18 @@ namespace Datums
     void  operator delete(void*);
 
     Datum(void);
+    Datum(AnyVal*);
    ~Datum(void) noexcept(false);
   
     // auto conversion
     operator AnyVal*(void);
+  
+    void operator =(AnyVal*);
+  
+    void operator =(Cell* aFip);
+    void operator =(i8 iInt);
+    void operator =(Object* pObj);
+    void operator =(Stz* szStz);
 
     bool bExtractDtm(char** aazCrs, Format* pFmt);
   
