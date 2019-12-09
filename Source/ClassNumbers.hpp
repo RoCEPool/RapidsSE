@@ -102,7 +102,6 @@ enum eCN : u2 // Class Number
   /*  80 0x050     2072B Heap:S */ CN_FREQDIST,
   
   /*  81 0x051        7B Heap:I */ CN__G__,
-  /*  82 0x052    49168B Heap:I */ CN_GENVAR,
   /*  83 0x053     2184B Heap:L */ CN_GRID,
   
   /*  84 0x054        8B Heap:I */ CN__H__,
@@ -426,7 +425,6 @@ static Stz* aCN[]
   /*  80 0x050 */ "FREQDIST"_Stz,            // CN_FREQDIST
   
   /*  81 0x051 */ "_G__"_Stz,                // CN__G__
-  /*  82 0x052 */ "GENVAR"_Stz,              // CN_GENVAR
   /*  83 0x053 */ "GRID"_Stz,                // CN_GRID
   
   /*  84 0x054 */ "_H__"_Stz,                // CN__H__
