@@ -45,7 +45,7 @@ namespace Datums
     bool bIsNull(void);
     void vSetNull(void);
   
-  private:
+  public:
     Footer* aFooter(void);
   };
   

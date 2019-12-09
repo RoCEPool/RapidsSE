@@ -8,10 +8,7 @@ namespace Datums
   class GenVar : public Datum
   {
   private:
-
-    // must be last
-    Footer m_xFooter;
-    
+  
     public:
     void* operator new(size_t);
   
@@ -42,8 +39,6 @@ namespace Datums
     void    vToString(Stz* szStz);
     eCN     eValClass(void);
 
-  private:
-    Footer* aFooter(void);
   };
 
   GenVar* _pGenVar(void* aAddr);
