@@ -10,16 +10,26 @@ namespace SenVM
   protected:
     union {
       Cell*   m_aFip;
-      i8      m_iInt;
       Object* m_pObj;
       
-      i8      m_nBytesFollowing;
-      
+      i8      m_iBcd;
+      i8      m_iBol;
+      i8      m_iDte;
+      i8      m_iEdt;
+      d8      m_dFlt;
+      i8      m_iInt;
+      i8      m_iIvl;
+      i8      m_iTme;
+      i8      m_iTsc;
+      i8      m_iTsp;
+
       _Dte    m_xDte;
       _Edt    m_xEdt;
       _Ivl    m_xIvl;
       _Tme    m_xTme;
       _Tsp    m_xTsp;
+      
+      i8      m_nBytesFollowing;
     };
   
   public:
