@@ -51,8 +51,8 @@ IndexEntries 4000;
 //time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
-//time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
-time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
+time ld lineitem "/tpch/SF1/lineitem.tbl" max_errors 100;
+//time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
@@ -67,32 +67,45 @@ visidx lineitem lineitem_idx1;
 //fetch lineitem limit 10;
 //dumpidx lineitem LineItem_Idx1;
 
-create table orders (
-O_ORDERKEY        INTEGER NOT NULL,
-O_CUSTKEY         INTEGER NOT NULL,
-O_ORDERSTATUS     CHAR(1) NOT NULL,
-O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
-O_ORDERDATE       TIMESTAMP NOT NULL,
-O_ORDERPRIORITY   CHAR(15) NOT NULL,
-O_CLERK           CHAR(15) NOT NULL,
-O_SHIPPRIORITY    INTEGER NOT NULL,
-O_COMMENT         VARCHAR(79) NOT NULL
-);
-//CREATE INDEX orders_idx1 ON orders(O_ORDERKEY);
-
-print "loading orders..." ;
-time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
-//time ld orders "/DATA/tpch/orders10k.csv" max_errors 100;
-//time ld orders "/tpch/SF1/orders.tbl" field_delimiter "|" max_errors 100;
-
-
 //dumptbl lineitem;
 
-
+/*
 print "**************************************************************************";
 print "scan lineitem | output;";
 print "**************************************************************************";
 
+pipeline export
+begin
+
+stage stageA on all partitions:
+  scanOp lineitem |  toCsvOp | stageB
+
+stage stageB on origin:
+  toFileOp "/tmp/lineitem.csv" | outputOp
+
+end
+;
+
+ 
+ create table orders (
+ O_ORDERKEY        INTEGER NOT NULL,
+ O_CUSTKEY         INTEGER NOT NULL,
+ O_ORDERSTATUS     CHAR(1) NOT NULL,
+ O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+ O_ORDERDATE       TIMESTAMP NOT NULL,
+ O_ORDERPRIORITY   CHAR(15) NOT NULL,
+ O_CLERK           CHAR(15) NOT NULL,
+ O_SHIPPRIORITY    INTEGER NOT NULL,
+ O_COMMENT         VARCHAR(79) NOT NULL
+ );
+ //CREATE INDEX orders_idx1 ON orders(O_ORDERKEY);
+ 
+ print "loading orders..." ;
+ time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
+ //time ld orders "/DATA/tpch/orders10k.csv" max_errors 100;
+ //time ld orders "/tpch/SF1/orders.tbl" field_delimiter "|" max_errors 100;
+
+ 
 //docol epochTake;
 pipeline lineItem_dyn
 begin
@@ -104,18 +117,6 @@ stage stageB on origin:
 
 end;
 
-
-pipeline export
-begin
-
-stage stageA on all partitions:
-  scanOp lineitem |  toCsvOp | stageB
-
-stage stageB on origin:
-  toFileOp "/tmp/xxx.csv" | outputOp
-
-end
-;
 
  pipeline lineItem_dyn
  begin
@@ -129,7 +130,6 @@ end
  end
  ;
 
-/*
  
  pipeline lineItem_dyn
  begin
