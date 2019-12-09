@@ -9,8 +9,6 @@ namespace Datums
   {
   private:
 
-    AllVal u;
-
     // must be last
     Footer m_xFooter;
     

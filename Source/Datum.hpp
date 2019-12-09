@@ -15,6 +15,11 @@ namespace Datums
     i8      m_nChars; // number of chars
     sVCH    m_sVch;   // vch value
 
+  
+  
+    AllVal u;
+  
+
     // must be last
     Footer m_xFooter;
   
