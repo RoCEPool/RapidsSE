@@ -285,6 +285,164 @@ void Datum::vSetNull(void)
   m_wDtm.m_iInt = C_DATUM_NULL;
 }
 
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get azChar                                                                 */
+/*----------------------------------------------------------------------------*/
+char* Datum::azChar(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  char* az = u.m_xStzVal.azChar();
+  
+  return az;
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy given source value into this var                                      */
+/*----------------------------------------------------------------------------*/
+void Datum::vCopy(AnyVal* aAnyVal)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xAnyVal.vCopy(aAnyVal);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get forth instruction pointer                                              */
+/*----------------------------------------------------------------------------*/
+Cell* Datum::aFip(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  Cell* aFip = u.m_xFipVal.aFip();
+  
+  return aFip;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get integer                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Datum::iInt(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  i8 iInt = u.m_xIntVal.iInt();
+  
+  return iInt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if nested value is an integer                                         */
+/*----------------------------------------------------------------------------*/
+bool Datum::bIsInt(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  if (CN_INTVAL == u.m_xAnyVal.eClass())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of the nested value                                            */
+/*----------------------------------------------------------------------------*/
+AnyVal* Datum::aEmbeddedAnyVal(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  return & u.m_xAnyVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object address                                                         */
+/*----------------------------------------------------------------------------*/
+Object* Datum::pObj(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  Object* pObj = u.m_xPtrVal.pObj();
+  
+  return pObj;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bytes required to push value on stack                                  */
+/*----------------------------------------------------------------------------*/
+i8 Datum::nStackUsage(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  i8 nBytes = u.m_xStzVal.nStackUsage();
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stz                                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* Datum::szStz(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  Stz* sz = u.m_xStzVal.szStz();
+  
+  return sz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of nested string value                                            */
+/*----------------------------------------------------------------------------*/
+i8 Datum::nStzSize(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  i8 nSize = u.m_xStzVal.nStzSize();
+  
+  return nSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert to stz string                                                      */
+/*----------------------------------------------------------------------------*/
+void Datum::vToString(Stz* szString)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xAnyVal.vToString(szString);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get class of embedded value                                                */
+/*----------------------------------------------------------------------------*/
+eCN Datum::eValClass(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  return u.m_xAnyVal.eClass();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

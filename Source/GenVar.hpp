@@ -26,18 +26,6 @@ namespace Datums
     void operator =(Object* pObj);
     void operator =(Stz* szStz);
 
-    char*   azChar(void);
-    void    vCopy(AnyVal* aAnyVal);
-    AnyVal* aEmbeddedAnyVal(void);
-    Cell*   aFip(void);
-    i8      iInt(void);
-    bool    bIsInt(void);
-    Object* pObj(void);
-    i8      nStackUsage(void);
-    Stz*    szStz(void);
-    i8      nStzSize(void);
-    void    vToString(Stz* szStz);
-    eCN     eValClass(void);
 
   };
 
