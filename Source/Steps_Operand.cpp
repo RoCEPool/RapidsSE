@@ -15,6 +15,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].get"_Stz,          &Step::vOperandGet);
   vAddStep("Operand[].handleAggEnd"_Stz, &Step::vOperandHandleAggEnd);
   vAddStep("Operand[].handleEnd"_Stz,    &Step::vOperandHandleEnd);
+  vAddStep("Operand[].handleStop"_Stz,   &Step::vOperandHandleStop);
   vAddStep("Operand[].isNull"_Stz,       &Step::vOperandIsNull);
   vAddStep("Operand[].itemCount@"_Stz,   &Step::vOperandItemCountFetch);
   vAddStep("Operand[].kind"_Stz,         &Step::vOperandKind);
@@ -166,6 +167,33 @@ void Step::vOperandHandleEnd(void)
   else
     delete (EndMarker*)m_pRegSet->m_pOperand;
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].handleStop -- handle stop marker                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandHandleStop(void)
+{
+  ENTRY(); // ENTRY("vOperandHandleStop"_Stz);
+  
+  ASSERT(m_pRegSet->m_pOperand);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  
+  if (--pOp->m_nLeftEndMarkers == 0) {
+    pOp->vPipeOut(m_pRegSet->m_pOperand);
+    
+    if (AM::bJobHasError(pOp->m_pJobUniversal)) {
+      AM::vSetJobLocalError(pOp->m_pJobUniversal, pOp->m_pPipeline->pJob());
+    }
+    if (pOp->m_bAckJobEnd)
+      pOp->vAckJob();
+    
+  }
+  else
+    delete (EndMarker*)m_pRegSet->m_pOperand;
+  
   EXIT();
 }
 

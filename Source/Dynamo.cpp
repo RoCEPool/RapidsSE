@@ -577,6 +577,10 @@ bool Dynamo::bPhase2_staging(void)
     }
   }
   
+  // Append stopOp to last stage
+  StageSpec* pLastStageSpec = pStageSpecVec->pGet(pStageSpecVec->nItems() - 1);
+  pLastStageSpec->vAppendStopOp();
+
   return true;
 }
 

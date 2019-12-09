@@ -853,6 +853,7 @@ public:
   // operator
   void vOpLeftEndMarkersStore(void);
   void vOpLinkNextStage(void);
+  void vOpLinkStartOp(void);
   void vOpNextStageStore(void);
   void vOpTopologyStore(void);
 
@@ -863,6 +864,7 @@ public:
   void vOperandGet(void);
   void vOperandHandleAggEnd(void);
   void vOperandHandleEnd(void);
+  void vOperandHandleStop(void);
   void vOperandIsNull(void);
   void vOperandItemCountFetch(void);
   void vOperandKind(void);

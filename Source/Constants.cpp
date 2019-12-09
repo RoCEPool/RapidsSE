@@ -464,7 +464,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("JT_DROPTENANT"_Stz,      JT_DROPTENANT);
   /*    */ vAddConstant("JT_DUMPINDEX"_Stz,       JT_DUMPINDEX);
   /*    */ vAddConstant("JT_DUMPTABLE"_Stz,       JT_DUMPTABLE);
-  /*    */ vAddConstant("JT_ENDOP"_Stz,           JT_ENDOP);
   /*    */ vAddConstant("JT_FORGETNODE"_Stz,      JT_FORGETNODE);
   /*    */ vAddConstant("JT_LF"_Stz,              JT_LF);
   /*    */ vAddConstant("JT_LISTCATALOGS"_Stz,    JT_LISTCATALOGS);
@@ -484,6 +483,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("JT_STARTNODE"_Stz,       JT_STARTNODE);
   /*    */ vAddConstant("JT_STARTOP"_Stz,         JT_STARTOP);
   /*    */ vAddConstant("JT_STATUS"_Stz,          JT_STATUS);
+  /*    */ vAddConstant("JT_STOPOP"_Stz,          JT_STOPOP);
   /*    */ vAddConstant("JT_SUPERCOUNTOP"_Stz,    JT_SUPERCOUNTOP);
   /*    */ vAddConstant("JT_TABLESIZES"_Stz,      JT_TABLESIZES);
   /*    */ vAddConstant("JT_TOCSVOP"_Stz,         JT_TOCSVOP);

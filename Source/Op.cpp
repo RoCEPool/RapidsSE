@@ -425,7 +425,7 @@ void Op::vLinkToStage(Stage* pStage)
   // set the next label
   vNextLabel(pOpNext->m_sName);
   
-  // ste the op out
+  // set the op out
   vOpOut(pOpNext);
 }
 
@@ -512,6 +512,10 @@ void Op::vPipeOut(Operand* pOperand)
            pOperand);
 
   switch(AM::eJobType(m_pJobUniversal)) {
+    
+    case JT_STOPOP:
+      vPipeToJob(pOperand);
+      break;
       
     case JT_OUTPUTOP:
       vPipeToJob(pOperand);
@@ -569,6 +573,20 @@ void Op::vPipeToJob(Operand* pOperand)
   
   pBufferQueue->vAppend(pOperand);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* append operand to the pipeline startOp                                     */
+/*----------------------------------------------------------------------------*/
+void Op::vPipeToStart(Operand* pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                "PipeOut operand %s to left queue of %s"_Stz, //!format-LogOpr
+                aCN[pOperand->eClass()],
+                aCN[m_pOpOut->eClass()]);
+  m_pOpOut->vAppendLeft(pOperand);  
 }
 
 /*----------------------------------------------------------------------------*/

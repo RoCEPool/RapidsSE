@@ -44,8 +44,6 @@
 "job_DumpIndex.sen"      include
 "job_DumpTable.sen"      include
 
-"Job_EndOp.sen"          include
-
 "job_ForgetNode.sen"     include
 
 "job_FetchRows.sen"      include
@@ -84,6 +82,7 @@
 "job_StartNode.sen"      include
 "job_StartOp.sen"        include
 "job_Status.sen"         include
+"Job_StopOp.sen"         include
 "job_SubFetch.sen"       include
 "Job_SubInserter.sen"    include
 "job_SubLoader.sen"      include

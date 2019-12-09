@@ -12,6 +12,7 @@ void Step::vAddSteps_Op(void)
 {
   vAddStep("Op.leftEndMarkers!"_Stz,  &Step::vOpLeftEndMarkersStore);
   vAddStep("Op.linkNextStage"_Stz,    &Step::vOpLinkNextStage);
+  vAddStep("Op.linkStartOp"_Stz,      &Step::vOpLinkStartOp);
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.topology!"_Stz,        &Step::vOpTopologyStore);
 }
@@ -42,6 +43,30 @@ void Step::vOpLinkNextStage(void)
   RASSERT(pNextStage);
     
   pOp->vLinkToStage(pNextStage);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.linkStartOp -- link operator to start operator                          */
+/*----------------------------------------------------------------------------*/
+void Step::vOpLinkStartOp(void)
+{
+  ENTRY(); // ENTRY("vOpLinkNextStage"_Stz);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  ASSERT(AM::eJobType(pOp->m_pJobUniversal) == JT_STOPOP);
+  
+  // get the first stage
+  Stage* pFirstStage = pOp->m_pPipeline->pStageVec()->pGet(0);
+  
+  // get the first op inm the first stage
+  Op* pFirstOp = pFirstStage->pOpVec()->pGet(0);
+  
+  // this should be the stratOp
+  ASSERT(AM::eJobType(pFirstOp->m_pJobUniversal) == JT_STARTOP);
+ 
+  // set the opOut of stopOp to be the startOp
+  pOp->vOpOut(pFirstOp);
+  
 }
 
 /*----------------------------------------------------------------------------*/

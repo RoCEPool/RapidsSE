@@ -73,6 +73,20 @@ void StageSpec::vAddOpSpec(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append an endOp spec                                                       */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vAppendStopOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  OpSpec* pOpSpec;
+  
+  pOpSpec = new OpSpec("stopOp"_Stz,this);
+  m_pOpSpecVec->vAdd(pOpSpec);
+  pOpSpec->v_OpSpec(m_pOpSpecVec->nItems() - 1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy ops from given stage spec                                             */
 /*----------------------------------------------------------------------------*/
 void StageSpec::vCopyOps(StageSpec* pStageSpec)
