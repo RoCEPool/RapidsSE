@@ -15,9 +15,7 @@ namespace Transform
 //------------------------------------------------------------------------------
 
 
-#include "Datum.hpp"
 #include "Id.hpp"
-#include "Row.hpp"
 #include "Key.hpp"
 #include "Ent.hpp"
 #include "EntWrk.hpp"

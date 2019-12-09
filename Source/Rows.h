@@ -14,7 +14,6 @@ namespace Rows
 
 //------------------------------------------------------------------------------
 
-#include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "OverLine.hpp"
 #include "TailLine.hpp"

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace RowBase
 {
   class Row : public Object
   {
