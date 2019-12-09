@@ -48,7 +48,7 @@ Datum::Datum(void)
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   m_pCol   = nullptr;
-  m_wDtm.m_iInt   = C_UNKNOWN;
+  u.m_xAnyVal.m_iInt   = C_UNKNOWN;
   m_nChars = 0;
 
   u.m_xAnyVal.vMagic();
@@ -70,7 +70,7 @@ Datum::Datum(AnyVal* aAnyVal)
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   m_pCol   = nullptr;
-  m_wDtm.m_iInt   = C_UNKNOWN;
+  u.m_xAnyVal.m_iInt   = C_UNKNOWN;
   m_nChars = 0;
 
   u.m_xAnyVal.vMagic();
@@ -278,7 +278,7 @@ bool Datum::bExtractInt(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iInt = snInt.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iInt = snInt.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -390,7 +390,7 @@ bool Datum::bIsNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  if (m_wDtm.m_iInt == C_DATUM_NULL)
+  if (u.m_xAnyVal.m_iInt == C_DATUM_NULL)
     return true;
   else
     return false;
@@ -403,7 +403,7 @@ void Datum::vSetNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  m_wDtm.m_iInt = C_DATUM_NULL;
+  u.m_xAnyVal.m_iInt = C_DATUM_NULL;
 }
 
 

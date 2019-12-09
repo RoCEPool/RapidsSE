@@ -7,7 +7,8 @@ namespace SenVM
 {
   class AnyVal : public _Header
   {
-  protected:
+  //protected:
+  public:
     union {
       Cell*   m_aFip;
       Object* m_pObj;

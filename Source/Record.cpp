@@ -179,7 +179,7 @@ void Record::vAppend(Column* pCol, Row* pRow)
   Datum oDatum;
   i8 i_Col = pCol->iColumnNo();
   
-  oDatum.m_wDtm.m_iInt = pRow->m_waColVal[i_Col].m_iInt;
+  oDatum.u.m_xAnyVal.m_iInt = pRow->m_waColVal[i_Col].m_iInt;
   
   if (oDatum.bIsNull()) {
     m_sRecStr.vAppend(&m_azAppendCursor,"null"_Stz);
@@ -198,7 +198,7 @@ void Record::vAppend(Column* pCol, Row* pRow)
     case DM_TME: vAppendTme(pCol,&oDatum); break;
     case DM_TSP: vAppendTsp(pCol,&oDatum); break;
     case DM_VCH:
-      oDatum.m_sVch.vCopy((Stz*)oDatum.m_wDtm.m_iInt);
+      oDatum.m_sVch.vCopy((Stz*)oDatum.u.m_xAnyVal.m_iInt);
       vAppendVch(pCol,&oDatum);
       break;
     default:
@@ -299,7 +299,7 @@ void Record::vAppendInt(Column* pCol, Datum* pDatum)
   
   SP_Int spInt;
   
-  m_sRecStr.vAppend(&m_azAppendCursor,spInt.sz(pDatum->m_wDtm.m_iInt));
+  m_sRecStr.vAppend(&m_azAppendCursor,spInt.sz(pDatum->u.m_xAnyVal.m_iInt));
 }
 
 /*----------------------------------------------------------------------------*/
