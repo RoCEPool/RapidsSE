@@ -45,7 +45,7 @@ namespace Datums
     Footer* aFooter(void);
   };
   
-  Datum* _pDtmVal(void* aAddr);
+  Datum* _pDatum(void* aAddr);
 }
 
 

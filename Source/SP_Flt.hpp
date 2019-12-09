@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace ScanSprint
+namespace Datums
 {
   class SP_Flt : public Sprint
   {

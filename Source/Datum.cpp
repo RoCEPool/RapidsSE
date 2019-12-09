@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Datum* Datums::_pDtmVal(void* aAddr)
+Datum* Datums::_pDatum(void* aAddr)
 {
   Datum* pDatum = reinterpret_cast<Datum*>(aAddr);
   
