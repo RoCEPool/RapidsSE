@@ -6,7 +6,8 @@
 namespace Alignment     {                                                     }
 namespace Assembler     {                                                     }
 namespace Base          {                                                     }
-namespace Chunks        { class Format;                                   }
+namespace Buffers       {                                                     }
+namespace Chunks        { class Format;                                       }
 namespace ClassData     {                                                     }
 namespace CompilerOperators {                                                 }
 namespace CompilerStream{                                                     }
@@ -54,7 +55,7 @@ namespace Prompt        { class SePrompt;                                     }
 namespace Oblique       { class AM;                                           }
 namespace Operators     { class Op; class Pipeline;                           }
 namespace Resources     { class Resource; class ResourceTracker;
-                          class PsxThd;                                      }
+                          class PsxThd;                                       }
 namespace Registers     { class RegSet;                                       }
 namespace Rows          { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }
@@ -82,6 +83,7 @@ namespace Verbs         {                                                     }
 using namespace Alignment;
 using namespace Assembler;
 using namespace Base;
+using namespace Buffers;
 using namespace Chunks;
 using namespace ClassData;
 using namespace CompilerOperators;
