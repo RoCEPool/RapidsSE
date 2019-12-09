@@ -63,6 +63,7 @@ namespace Datums
     Object* pObj(void);
     i8      nStackUsage(void);
     Stz*    szStz(void);
+    void    vStz(Stz* szStz);
     i8      nStzSize(void);
     void    vToString(Stz* szStz);
     eCN     eValClass(void);
