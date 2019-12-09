@@ -454,6 +454,9 @@ void Step::vOperandWriteToFile0(void)
   m_pRegSet->m_xpFile0->vPrint("%s"_Stz,aData);
   m_pRegSet->m_xpFile0->vFlush();
   
+  // delete the buffer 
+  delete pCsvBuffer;
+  
 }
 /*============================================================================*/
 /* end                                                                        */
