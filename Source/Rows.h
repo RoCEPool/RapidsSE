@@ -14,8 +14,6 @@ namespace Rows
 
 //------------------------------------------------------------------------------
 
-#include "Datum.hpp"
-
 #include "RowCoder.hpp"
 #include "Row.hpp"
 
