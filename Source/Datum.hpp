@@ -58,6 +58,7 @@ namespace Datums
   
     // - - - - - - - - - - - - - - - -
   
+    AnyVal* aAnyVal(void);
     char*   azChar(void);
     void    vCopy(AnyVal* aAnyVal);
     AnyVal* aEmbeddedAnyVal(void);
