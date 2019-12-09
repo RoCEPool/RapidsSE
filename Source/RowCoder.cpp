@@ -145,17 +145,17 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 /* convert a Edt into an Dte (in situ)                                        */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDteFromEdt(i8* awEdtDte, i8 iEraBaseYear)
+void RowCoder::vDteFromEdt(i8* awEdtDte_rpl, i8 iEraBaseYear)
 {
-  _Edt* aEdt = (_Edt*)awEdtDte;
+  _Edt* aEdt = (_Edt*)awEdtDte_rpl;
   
   i8 iYearInEra = aEdt->m_uYearInEra;
   i8 iMonth     = aEdt->m_uMonth;
   i8 iDay       = aEdt->m_uDay;
   
-  * awEdtDte = 0;
+  * awEdtDte_rpl = 0;
   
-  _Dte* aDte = (_Dte*)awEdtDte;
+  _Dte* aDte = (_Dte*)awEdtDte_rpl;
   
   aDte->m_uYearDelta = iYearInEra + iEraBaseYear;
   aDte->m_uMonth     = iMonth;
@@ -165,40 +165,9 @@ void RowCoder::vDteFromEdt(i8* awEdtDte, i8 iEraBaseYear)
 /*----------------------------------------------------------------------------*/
 /* convert a Dte into an Edt                                                  */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDteIntoEdt(Dtm wDte,
-                           Dtm& wEdt_, i8& iEra_)
+void RowCoder::vDteIntoEdt(i8 wDte_src, i8* awEdt_dst, i8& iEra_)
 {
-  i8 iYearDelta = wDte.xDte.m_uYearDelta;
-  i8 iMonth     = wDte.xDte.m_uMonth;
-  i8 iDay       = wDte.xDte.m_uDay;
-  
-  i8 iYearInEra;
-  
-  if (iYearDelta < C_ERA_1) {
-    iEra_ = C_ERA_0;
-    iYearInEra = iYearDelta - C_ERA_0;
-  }
-  else if (iYearDelta < C_ERA_2) {
-    iEra_ = C_ERA_1;
-    iYearInEra = iYearDelta - C_ERA_1;
-  }
-  else {
-    iEra_ = C_ERA_2;
-    iYearInEra = iYearDelta - C_ERA_2;
-  }
-  
-  wEdt_.m_iEdt = 0;
-  wEdt_.xEdt.m_uYearInEra = iYearInEra;
-  wEdt_.xEdt.m_uMonth     = iMonth;
-  wEdt_.xEdt.m_uDay       = iDay;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert a Dte into an Edt                                                  */
-/*----------------------------------------------------------------------------*/
-void RowCoder::vDteIntoEdt(i8* awDte_src, i8* awEdt_dst, i8& iEra_)
-{
-  _Dte* aDte = (_Dte*)awDte_src;
+  _Dte* aDte = (_Dte*) & wDte_src;
   
   i8 iYearDelta = aDte->m_uYearDelta;
   i8 iMonth     = aDte->m_uMonth;
