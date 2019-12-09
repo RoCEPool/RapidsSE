@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Rows
+namespace Buffers
 {
   // how a column is to be compacted
   struct _ColEnc {

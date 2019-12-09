@@ -46,7 +46,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   CompilerStream::vCheckAssumptions();
   Transform::vCheckAssumptions();
   ScanSprint::vCheckAssumptions();
-  Rows::vCheckAssumptions();
+  Buffers::vCheckAssumptions();
   Indexes::vCheckAssumptions();
   Partitioning::vCheckAssumptions();
   Grids::vCheckAssumptions();

@@ -14,7 +14,7 @@ static Numbat oNumBat("partKey"_Stz);
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowCompactor* Rows::_pRowCoder(void* aAddr)
+RowCompactor* Buffers::_pRowCoder(void* aAddr)
 {
   RowCompactor* pRowCompactor = reinterpret_cast<RowCompactor*>(aAddr);
   

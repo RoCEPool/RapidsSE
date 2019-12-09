@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SrtBuffer* Rows::_pSrtBuffer(void* aAddress)
+SrtBuffer* Buffers::_pSrtBuffer(void* aAddress)
 {
   SrtBuffer* pSrtBuffer = reinterpret_cast<SrtBuffer*>(aAddress);
   

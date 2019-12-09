@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace Rows
+namespace Buffers
 {  
   void vCheckAssumptions(void);
 }

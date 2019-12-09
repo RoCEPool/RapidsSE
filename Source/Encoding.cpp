@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Encoding* Rows::_pEncoding(void* aAddr)
+Encoding* Buffers::_pEncoding(void* aAddr)
 {
   Encoding* pEncoding = reinterpret_cast<Encoding*>(aAddr);
   

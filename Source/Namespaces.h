@@ -57,7 +57,7 @@ namespace Operators     { class Op; class Pipeline;                           }
 namespace Resources     { class Resource; class ResourceTracker;
                           class PsxThd;                                       }
 namespace Registers     { class RegSet;                                       }
-namespace Rows          { class CrwBuffer;                                    }
+namespace Buffers       { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
 namespace SenVM         { class Cell; class Dic; class DicStack;
@@ -115,7 +115,7 @@ using namespace Pool;
 using namespace Prompt;
 using namespace Registers;
 using namespace Resources;
-using namespace Rows;
+using namespace Buffers;
 using namespace ScanSprint;
 using namespace Scheduling;
 using namespace SenVM;

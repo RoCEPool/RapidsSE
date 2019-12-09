@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-BufferCursor* Rows::_pBufferCursor(void* aAddr)
+BufferCursor* Buffers::_pBufferCursor(void* aAddr)
 {
   BufferCursor* pBufferCursor = reinterpret_cast<BufferCursor*>(aAddr);
   
