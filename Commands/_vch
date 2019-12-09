@@ -21,7 +21,7 @@ fetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
-print "200 Formatters with: no enclosed_char\n" ;
+print "200 Format with: no enclosed_char\n" ;
 
 create table vch (
   vch_testno  INTEGER     NOT NULL,
@@ -37,7 +37,7 @@ fetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
-print "300 Formatters with: no enclosed_by no escape_char\n" ;
+print "300 Format with: no enclosed_by no escape_char\n" ;
 
 create table vch (
   vch_testno  INTEGER     NOT NULL,
@@ -53,7 +53,7 @@ fetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
-print "400 Formatters with: no escape_char\n" ;
+print "400 Format with: no escape_char\n" ;
 
 create table vch (
   vch_testno  INTEGER     NOT NULL,
@@ -86,7 +86,7 @@ fetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
-print "600 Formatters with: terminated + no enclosed_char\n" ;
+print "600 Format with: terminated + no enclosed_char\n" ;
 
 create table vch (
   vch_testno  INTEGER     NOT NULL,
@@ -102,7 +102,7 @@ fetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
-print "700 Formatters with: terminated + no enclosed_by no escape_char\n" ;
+print "700 Format with: terminated + no enclosed_by no escape_char\n" ;
 
 create table vch (
   vch_testno  INTEGER     NOT NULL,
@@ -118,7 +118,7 @@ fetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
-print "800 Formatters with: terminated + no escape_char\n" ;
+print "800 Format with: terminated + no escape_char\n" ;
 
 create table vch (
   vch_testno  INTEGER     NOT NULL,
@@ -134,7 +134,7 @@ fetch vch;
 drop table vch;
 
 print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
-print "900 Formatters with: delimiter\n" ;
+print "900 Format with: delimiter\n" ;
 
 create table vch (
 vch_testno  INTEGER     NOT NULL,

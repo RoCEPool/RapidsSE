@@ -2,7 +2,7 @@
 /* SN_Bol.cpp - Bol scan helper                                               */
 /*============================================================================*/
 
-#include "ScanSprint.h"
+#include "Datums.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -32,7 +32,7 @@ SN_Bol::~SN_Bol(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 SN_Bol::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
+i8 SN_Bol::i(char** aacCrs, Column* pCol, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNBOL);
   

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "CompilerStream.h"
+#include "Rows.h"
 
 //------------------------------------------------------------------------------
 
@@ -14,13 +14,8 @@ namespace Transform
 
 //------------------------------------------------------------------------------
 
-#include "DtmVal.hpp"
-
-#include "Scan.hpp"
-#include "Sprint.hpp"
 
 #include "Id.hpp"
-#include "Row.hpp"
 #include "Key.hpp"
 #include "Ent.hpp"
 #include "EntWrk.hpp"
@@ -31,6 +26,7 @@ namespace Transform
 
 #include "NmStr.hpp"
 #include "NmStrList.hpp"
+
 
 /*============================================================================*/
 /* end                                                                        */

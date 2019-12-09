@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace ScanSprint
+namespace Rows
 {
   class SP_Row : public Sprint
   {

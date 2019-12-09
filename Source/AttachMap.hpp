@@ -48,7 +48,7 @@ namespace StorageEngine
     Lock          m_okDicLock;
     i8            m_iEpoch;
     FocalObjects* m_pFocalObjects;
-    Formatters    m_oFormatters;
+    Format    m_oFormatters;
     Grid*         m_pGrid;
     HeapMem       m_xHeapMem;
     Article*      m_pLexiconArticle;

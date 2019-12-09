@@ -1,22 +1,24 @@
 /*============================================================================*/
-/* DtmVal.hpp -- DtmVal (column value outside of row)                         */
+/* Datum.hpp -- Datum (column value outside of row)                           */
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace Datums
 {
-  class DtmVal : public Object
+  class Datum : public Object
   {
   public:
-  
     Column* m_pCol;   // which column
-    eDM     m_eDatum; // the kind of datum
     Dtm     m_wDtm;   // the value
   
     // - - - - - - -
     i8      m_nChars; // number of chars
     sVCH    m_sVch;   // vch value
 
+  
+    // - - - - - - -
+    AllVal  m_xAllVal;
+  
     // must be last
     Footer m_xFooter;
   
@@ -24,8 +26,20 @@ namespace Transform
     void* operator new(size_t);
     void  operator delete(void*);
 
-    DtmVal(void);
-    ~DtmVal(void) noexcept(false);
+    Datum(void);
+   ~Datum(void) noexcept(false);
+  
+    bool bExtractDtm(char** aazCrs, Format* pFmt);
+  
+    bool bExtractBcd(char** aazCrs, Format* pFmt);
+    bool bExtractBol(char** aazCrs, Format* pFmt);
+    bool bExtractDte(char** aazCrs, Format* pFmt);
+    bool bExtractFlt(char** aazCrs, Format* pFmt);
+    bool bExtractInt(char** aazCrs, Format* pFmt);
+    bool bExtractIvl(char** aazCrs, Format* pFmt);
+    bool bExtractTme(char** aazCrs, Format* pFmt);
+    bool bExtractTsp(char** aazCrs, Format* pFmt);
+    bool bExtractVch(char** aazCrs, Format* pFmt);
 
     bool bIsNull(void);
     void vSetNull(void);
@@ -34,7 +48,7 @@ namespace Transform
     Footer* aFooter(void);
   };
   
-  DtmVal* _pDtmVal(void* aAddr);
+  Datum* _pDatum(void* aAddr);
 }
 
 

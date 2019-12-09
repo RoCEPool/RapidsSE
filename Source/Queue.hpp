@@ -32,7 +32,6 @@ namespace Structures
     i8    iCount(void);
     void  vContentDump(Stz* aTab);
     Object* pPop(void);
-    //bool  bPopX(Forth::GenVar* pValWrk);
     
   private:
     void vExpand(void);

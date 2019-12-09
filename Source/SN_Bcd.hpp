@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace ScanSprint
+namespace Datums
 {
   class SN_Bcd : public Scan
   {
@@ -16,7 +16,7 @@ namespace ScanSprint
     SN_Bcd(void);
     ~SN_Bcd(void) noexcept(false);
   
-    i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
+    i8 i(char** aacCrs, Column* pCol, Format* pFmt);
   
     Footer* aFooter(void);
   };

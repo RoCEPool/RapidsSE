@@ -146,12 +146,12 @@ void Key::vShow(IdxColVec* pIdxColVec)
     
     byte* ayElm = EntWrk::ayEachElm(pCol,nBytes,&ayCursor);
     
-    eDM eDatum = pCol->eDatumType();
+    eDM eDatum = pCol->eDatum();
     
     if (eDatum == DM_VCH)
       nBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
     else
-      ScanSprint::Sprint::vInto((Stz*)caLiteral,ayElm,pCol);
+      Datums::Sprint::vInto((Stz*)caLiteral,ayElm,pCol);
     
     vTrace("Elm[%lld %lldB] %s "_Stz,i_Col,nBytes,caLiteral);
   }

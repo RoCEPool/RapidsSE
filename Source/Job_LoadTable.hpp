@@ -11,7 +11,7 @@ namespace Jobs
   {
   public:
     Table*     m_pTable;       // table being load
-    Formatters m_oFormatters;  // record formatters
+    Format m_oFormatters;  // record formatters
   
     LoadMap*   m_pLoadMap;     // load map
   

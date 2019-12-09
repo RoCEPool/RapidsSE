@@ -2,7 +2,7 @@
 /* SN_Flt.cpp - Flt scan helper                                               */
 /*============================================================================*/
 
-#include "ScanSprint.h"
+#include "Datums.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -32,7 +32,7 @@ SN_Flt::~SN_Flt(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-d8 SN_Flt::d(char** aacCrs, Column* pCol, Formatters* pScnFmt)
+d8 SN_Flt::d(char** aacCrs, Column* pCol, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNFLT);
   

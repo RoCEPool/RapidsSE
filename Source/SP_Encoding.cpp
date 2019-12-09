@@ -2,7 +2,7 @@
 /* SP_Encoding.cpp - Row Encoding sprint helper                               */
 /*============================================================================*/
 
-#include "Rows.h"
+#include "Buffers.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -64,7 +64,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
     _ColEnc* aColEnc = & pEncoding->xaColEnc[i_Col];
     
     Column* pCol = pEncoding->m_pStreamDef->pGetColumn(i_Col);
-    eDM eDatum   = pCol->eDatumType();
+    eDM eDatum   = pCol->eDatum();
     Stz* szDatum = (Stz*)aDM[eDatum];
     
     StrLib::vAppendString(&szCrs,(char*)" "_Stz);

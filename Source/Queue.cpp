@@ -147,39 +147,6 @@ void Queue::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* pop value from this queue (there may not be any)                           */
 /*----------------------------------------------------------------------------*/
-//bool Queue::bPopX(Forth::GenVar* pValWrk)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
-//
-//  m_okLock.vGrabWrite();
-//
-//  if ( ! m_pTopBuffer ) {
-//    ASSERT( ! m_iCount );
-//    m_okLock.vDropWrite();
-//    return false;
-//  }
-//
-//  bool bDiscardable;
-//  bool bPopped = m_pTopBuffer->bPop(pValWrk,bDiscardable);
-//
-//  if (bDiscardable) {
-//    ASSERT(bPopped);
-//    vDiscard();
-//  }
-//
-//  if (bPopped)
-//    m_iCount--;
-//
-//  ASSERT(m_iCount >= 0);
-//
-//  m_okLock.vDropWrite();
-//
-//  return bPopped;
-//}
-//
-/*----------------------------------------------------------------------------*/
-/* pop value from this queue (there may not be any)                           */
-/*----------------------------------------------------------------------------*/
 Object* Queue::pPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);

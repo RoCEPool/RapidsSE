@@ -3,7 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-namespace ScanSprint
+namespace Datums
+
 {
   class SN_Vch : public Scan
   {
@@ -20,7 +21,7 @@ namespace ScanSprint
     
     Stz* sz(char** aacCrs,
             Column* pCol,
-            Formatters* pScnFmt,
+            Format* pFmt,
             bool bSawLeadingEnclosed,
             i8& nChars_);
   

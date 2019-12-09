@@ -56,7 +56,7 @@ Column::Column(void)
   m_eColumnType   = CT_NONE;
   m_iColumnLength = 0;
   m_iColumnScale  = 0;
-  m_eDatumType    = DM_NONE;
+  m_eDatum        = DM_NONE;
   m_eGeneration   = DG_NONE;
   m_bIsNullable   = true;
   m_bIsUnique     = false;
@@ -233,7 +233,8 @@ void Column::vCopy(Column* pCol)
   m_eColumnType     = pCol->m_eColumnType;
   m_iColumnLength   = pCol->m_iColumnLength;
   m_iColumnScale    = pCol->m_iColumnScale;
-  m_eDatumType      = pCol->m_eDatumType;
+  m_eDatum          = pCol->m_eDatum;
+  m_eGeneration     = pCol->m_eGeneration;
   m_bIsNullable     = pCol->m_bIsNullable;
   m_bIsUnique       = pCol->m_bIsUnique;
   m_bIsPtnKey       = pCol->m_bIsPtnKey;
@@ -247,11 +248,11 @@ void Column::vCopy(Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* set datum type                                                             */
 /*----------------------------------------------------------------------------*/
-void Column::vDatumType(eDM eDatumType)
+void Column::vDatum(eDM eDatum)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  m_eDatumType = eDatumType;
+  m_eDatum = eDatum;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -400,7 +401,7 @@ void Column::vShow(void)
          aCT[m_eColumnType],
          m_iColumnLength,
          m_iColumnScale,
-         aDM[m_eDatumType],
+         aDM[m_eDatum],
          m_bIsNullable ? "nullable"_Stz : "not null"_Stz,
          m_bIsPtnKey? "partitionKey"_Stz : ""_Stz);
 }
@@ -450,9 +451,6 @@ byte* Column::ayValue(i8& nBytes, byte** aayCursor)
       nBytes = sizeof(i8);
       break;
       
-    case DM_VBN:
-      NEVER_REACH;
-      break;
     
     case DM_VCH:
       aElem = (Stz*)aValue;
@@ -470,7 +468,7 @@ byte* Column::ayValue(i8& nBytes, byte** aayCursor)
   }
   */
   
-  if (DM_VCH == m_eDatumType) {
+  if (DM_VCH == m_eDatum) {
     szElem = (Stz*)ayValue;
     nBytes = 0;
     

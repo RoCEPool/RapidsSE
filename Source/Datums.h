@@ -1,23 +1,20 @@
 /*============================================================================*/
-/* ScanSprint.h -- ScanSprint namespace                                       */
+/* Datums.h -- Datums namespace                                               */
 /*============================================================================*/
 #pragma once
 
-#include "Transform.h"
+#include "CompilerStream.h"
 
 //------------------------------------------------------------------------------
 
-namespace ScanSprint
-{
+namespace Datums
+{  
   void vCheckAssumptions(void);
 }
 
 //------------------------------------------------------------------------------
 
-#include "Scan.hpp"
-#include "Sprint.hpp"
-
-#include "SP_Row.hpp"
+#include "Datum.hpp"
 
 #include "SN_Bcd.hpp"
 #include "SN_Bol.hpp"
@@ -29,6 +26,7 @@ namespace ScanSprint
 #include "SN_Tsp.hpp"
 #include "SN_Vch.hpp"
 
+#include "Sprint.hpp"
 #include "SP_Bcd.hpp"
 #include "SP_Bol.hpp"
 #include "SP_Dte.hpp"

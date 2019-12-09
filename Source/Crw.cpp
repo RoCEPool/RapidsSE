@@ -2,7 +2,7 @@
 /* Crw.hpp -- Compact Row                                                    */
 /*============================================================================*/
 
-#include "Rows.h"
+#include "Buffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -105,11 +105,11 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   HV_Rec hvRec(pStreamDef, C_ALL);
-  DtmVal oDatum;
+  Datum oDatum;
   
   i8 i_Offset = RowCoder::iBaseOffset(nColumns);
   
-  vTrace("Col ColNm         DtmVal MetaCode"
+  vTrace("Col ColNm         Datum MetaCode"
          "           Offset Address      DataBytes           ColVal\n"_Stz);
   
   
@@ -130,7 +130,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
     Column* pCol = pStreamDef->pGetColumn(i_Col);
     
     // get the encoded information
-    eDatum     = pCol->eDatumType();
+    eDatum     = pCol->eDatum();
     szDatum    = aDM[eDatum];
     eMetaCode  = aHeadLine->eMetaCode(i_Col);
     szMetaCode = aMC[eMetaCode];
@@ -305,11 +305,11 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   HV_Rec hvRec(pStreamDef, C_ALL);
-  DtmVal oDatum;
+  Datum oDatum;
   
   i8 nCols = pStreamDef->nColumns(C_ALL);
   
-  vTrace("Col ColNm         DtmVal MetaCode"
+  vTrace("Col ColNm         Datum MetaCode"
          "           Offset Address      DataBytes           ColVal\n"_Stz);
   
   
@@ -331,7 +331,7 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
     Column* pCol = pStreamDef->pGetColumn(i_Col);
     
     // get the encoded information
-    eDatum     = pCol->eDatumType();
+    eDatum     = pCol->eDatum();
     szDatum    = aDM[eDatum];
     eMetaCode  = aHeadLine->eMetaCode(i_Col);
     szMetaCode = aMC[eMetaCode];

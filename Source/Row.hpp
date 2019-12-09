@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace Rows
 {
   class Row : public Object
   {
@@ -36,7 +36,7 @@ namespace Transform
     ~Row(void) noexcept(false);
   
     void vAdjustAddresses(Row* pCopiedFromRow);
-    void vAppendValue(DtmVal* pDtmVal, Column* pCol);
+    void vAppendValue(Datum* pDatum, Column* pCol);
     void vCopy(Row* pRow);
     void vCopy(Row* pRow, i8 iFromCol, i8 iIntoCol);
     void vDontDecodeVch(void);

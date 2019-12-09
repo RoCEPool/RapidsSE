@@ -2,7 +2,7 @@
 /* RowCompactor.cpp -- Row Compactor Mark V                                   */
 /*============================================================================*/
 
-#include "Rows.h"
+#include "Buffers.h"
 
 static Numbat oNumBat("partKey"_Stz);
 
@@ -14,7 +14,7 @@ static Numbat oNumBat("partKey"_Stz);
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowCompactor* Rows::_pRowCoder(void* aAddr)
+RowCompactor* Buffers::_pRowCoder(void* aAddr)
 {
   RowCompactor* pRowCompactor = reinterpret_cast<RowCompactor*>(aAddr);
   
@@ -264,7 +264,7 @@ void RowCompactor::vAnalyzeSamples(void)
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
     Column* pCol = m_pStreamDef->pGetColumn(i_Col);
-    eDM eDatum = pCol->eDatumType();
+    eDM eDatum = pCol->eDatum();
     
     if (DM_VCH != eDatum)
       continue;
@@ -445,7 +445,7 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for non-null vch column of minimum length
     
-    if (DM_VCH != aColEnc->m_eDatum)
+    if (DM_VCH != aColEnc->m_pCol->eDatum())
       continue;
     
     // -- vch column --
@@ -731,7 +731,7 @@ void RowCompactor::vPutDataCode(_ColEnc& xColEnc)
     return;
   
   // non-vch packing as {1..8B} (max of 1 word)
-  if (DM_VCH != xColEnc.m_eDatum) {
+  if (DM_VCH != xColEnc.m_pCol->eDatum()) {
     vPutData_Bytes(xColEnc);
     return;
   }

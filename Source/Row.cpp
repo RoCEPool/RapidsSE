@@ -2,8 +2,6 @@
 /* Row.cpp -- Computable form of Row                                          */
 /*============================================================================*/
 
-#include "Transform.h"
-
 #include "Rows.h"
 
 
@@ -14,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Row* Transform::_pRow(void* aAddr)
+Row* Rows::_pRow(void* aAddr)
 {
   Row* pRow = reinterpret_cast<Row*>(aAddr);
   
@@ -110,7 +108,7 @@ void Row::vAdjustAddresses(Row* pCopiedFromRow)
     
     Column* pCol = m_pStreamDef->pGetColumn(i_Col);
     
-    if (DM_VCH != pCol->eDatumType())
+    if (DM_VCH != pCol->eDatum())
       continue;
 
     if (m_waColVal[i_Col].bIsNull())
@@ -127,7 +125,7 @@ void Row::vAdjustAddresses(Row* pCopiedFromRow)
 /*----------------------------------------------------------------------------*/
 /* append column value to row                                                 */
 /*----------------------------------------------------------------------------*/
-void Row::vAppendValue(DtmVal* pDtmVal, Column* pCol)
+void Row::vAppendValue(Datum* pDatum, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 
@@ -136,15 +134,15 @@ void Row::vAppendValue(DtmVal* pDtmVal, Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // vch
   
-  if (DM_VCH == pCol->eDatumType()) {
+  if (DM_VCH == pCol->eDatum()) {
     
-    if (pDtmVal->bIsNull()) {
+    if (pDatum->bIsNull()) {
       m_waColVal[i_Col].vSetNull();
       return;
     }
     
     char* acDstString = (char*)m_xWsp.ayLatter();
-    char* acSrcString = (char*)pDtmVal->m_sVch.azChar();
+    char* acSrcString = (char*)pDatum->m_sVch.azChar();
 
     i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
 
@@ -161,7 +159,7 @@ void Row::vAppendValue(DtmVal* pDtmVal, Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all others
   
-  m_waColVal[i_Col].m_iInt = pDtmVal->m_wDtm.m_iInt;
+  m_waColVal[i_Col].m_iInt = pDatum->m_wDtm.m_iInt;
 
   if (pCol->bIsPtnKey())
     m_iHash += iHashColumn(pCol);
@@ -180,7 +178,7 @@ void Row::vCopy(Row* pRow)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // vch
     
-    if (DM_VCH == pCol->eDatumType()) {
+    if (DM_VCH == pCol->eDatum()) {
       
       if (pRow->m_waColVal[i_Col].bIsNull()) {
         m_waColVal[i_Col].vSetNull();
@@ -217,7 +215,7 @@ void Row::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // vch
     
-    if (DM_VCH == pIntoCol->eDatumType()) {
+    if (DM_VCH == pIntoCol->eDatum()) {
       
       if (pRow->m_waColVal[i_FromCol].bIsNull()) {
         m_waColVal[i_IntoCol].vSetNull();
@@ -255,7 +253,7 @@ void Row::vDontDecodeVch(void)
     
     Column* pCol = m_pStreamDef->pGetColumn(i_Col);
     
-    if (DM_VCH == pCol->eDatumType()) {
+    if (DM_VCH == pCol->eDatum()) {
       m_abGetCol[i_Col] = false;
     }
     else
@@ -274,7 +272,7 @@ i8 Row::iHashColumn(Column* pCol)
   i8 i_Col = pCol->iColumnNo();
   
   i8 iHash;
-  if (DM_VCH == pCol->eDatumType())
+  if (DM_VCH == pCol->eDatum())
     iHash = HshLib::iHash((byte*)m_waColVal[i_Col].m_iInt,sizeof(w8));
   else
     iHash = HshLib::iHash((byte*)&m_waColVal[i_Col].m_iInt,sizeof(w8));

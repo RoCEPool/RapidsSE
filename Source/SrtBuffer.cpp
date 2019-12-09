@@ -2,7 +2,7 @@
 /* SrtBuffer.cpp -- Reference Buffer                                          */
 /*============================================================================*/
 
-#include "Rows.h"
+#include "Buffers.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SrtBuffer* Rows::_pSrtBuffer(void* aAddress)
+SrtBuffer* Buffers::_pSrtBuffer(void* aAddress)
 {
   SrtBuffer* pSrtBuffer = reinterpret_cast<SrtBuffer*>(aAddress);
   

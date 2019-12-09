@@ -1583,8 +1583,8 @@ bool StrLib::bExtractTimestamp(char** aaSrc,
   if ( ! bExtractDate(aaSrc,iYear,iMonth,iDay) )
     return false;
   //if ( ! StrLib::bExtractDate2(aaSrc, iYear, iMonth, iDay,
-  //                             pFormatters->m_eDateComponent,
-  //                             pFormatters->m_cDateSeparator) )
+  //                             pFmt->m_eDateComponent,
+  //                             pFmt->m_cDateSeparator) )
   //  return false;
   
   // - time portion
@@ -1856,8 +1856,8 @@ bool StrLib::bExtractVarcharDefault(char** aaSrc,
 {
   i8 iLength = 0;
   
-//  char cEscapeChar = AM::pFormatters()->m_cEscapeChar;
-//  char cFieldDelimiter = AM::pFormatters()->m_cFieldDelimiter;
+//  char cEscapeChar = AM::pFmt()->m_cEscapeChar;
+//  char cFieldDelimiter = AM::pFmt()->m_cFieldDelimiter;
 
   char cEscapeChar = D_ESCAPE_CHAR;
   char cFieldDelimiter = D_FIELD_DELIMITER;

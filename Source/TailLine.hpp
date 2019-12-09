@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Rows
+namespace Buffers
 {
   class TailLine : public Line
   {

@@ -6,13 +6,15 @@
 namespace Alignment     {                                                     }
 namespace Assembler     {                                                     }
 namespace Base          {                                                     }
-namespace Chunks        { class Formatters;                                   }
+namespace Buffers       { class CrwBuffer;                                    }
+namespace Chunks        { class Format;                                       }
 namespace ClassData     {                                                     }
 namespace CompilerOperators {                                                 }
 namespace CompilerStream{                                                     }
 namespace ControlData   {                                                     }
 namespace Correctness   {                                                     }
 namespace DataOperators {                                                     }
+namespace Datums        {                                                     }
 namespace Debugging     {                                                     }
 namespace Enums         {                                                     }
 namespace Esses         { template <int BYTES> class String_t;
@@ -53,11 +55,9 @@ namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }
 namespace Prompt        { class SePrompt;                                     }
 namespace Oblique       { class AM;                                           }
 namespace Operators     { class Op; class Pipeline;                           }
-namespace Resources     { class Resource; class ResourceTracker;
-                          class PsxThd;                                      }
+namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Registers     { class RegSet;                                       }
-namespace Rows          { class CrwBuffer;                                    }
-namespace ScanSprint    {                                                     }
+namespace Rows          {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
 namespace SenVM         { class Cell; class Dic; class DicStack;
                           class Forth; class Word;                            }
@@ -82,6 +82,7 @@ namespace Verbs         {                                                     }
 using namespace Alignment;
 using namespace Assembler;
 using namespace Base;
+using namespace Buffers;
 using namespace Chunks;
 using namespace ClassData;
 using namespace CompilerOperators;
@@ -89,6 +90,7 @@ using namespace CompilerStream;
 using namespace ControlData;
 using namespace Correctness;
 using namespace DataOperators;
+using namespace Datums;
 using namespace Debugging;
 using namespace Pipelines;
 using namespace Enums;
@@ -114,7 +116,6 @@ using namespace Prompt;
 using namespace Registers;
 using namespace Resources;
 using namespace Rows;
-using namespace ScanSprint;
 using namespace Scheduling;
 using namespace SenVM;
 using namespace Services;

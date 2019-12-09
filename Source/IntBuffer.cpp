@@ -2,7 +2,7 @@
 /* IntBuffer.cpp -- Integer Buffer                                            */
 /*============================================================================*/
 
-#include "Rows.h"
+#include "Buffers.h"
 #include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IntBuffer* Rows::_pIntBuffer(void* aAddress)
+IntBuffer* Buffers::_pIntBuffer(void* aAddress)
 {
   IntBuffer* pIntBuffer = reinterpret_cast<IntBuffer*>(aAddress);
   

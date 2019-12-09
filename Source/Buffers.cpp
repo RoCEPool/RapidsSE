@@ -1,14 +1,18 @@
 /*============================================================================*/
-/* ScanSprint.cpp -- ScanSprint namespace functions                           */
+/* Buffers.cpp - Buffers namespace functions                                  */
 /*============================================================================*/
 
-#include "ScanSprint.h"
+#include "Buffers.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void ScanSprint::vCheckAssumptions(void)
+void Buffers::vCheckAssumptions(void)
 {
+  RASSERT(sizeof(HeadLine) == sizeof(SingleWord));
+  RASSERT(sizeof(TailLine) == sizeof(SpaceUnit));
+  RASSERT(sizeof(FreeItem) <= sizeof(Ent));
+  RASSERT(sizeof(NEO)      == C_NEO_SIZE);
 }
 
 /*============================================================================*/

@@ -2,7 +2,7 @@
 /* SN_Ivl.cpp - Ivl scan helper                                               */
 /*============================================================================*/
 
-#include "ScanSprint.h"
+#include "Datums.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -32,7 +32,7 @@ SN_Ivl::~SN_Ivl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 SN_Ivl::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
+i8 SN_Ivl::i(char** aacCrs, Column* pCol, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNIVL);
   

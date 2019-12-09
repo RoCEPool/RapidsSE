@@ -2,7 +2,7 @@
 /* CrwBuffer.cpp -- Compact Row Buffer                                        */
 /*============================================================================*/
 
-#include "Rows.h"
+#include "Buffers.h"
 #include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* Rows::_pCrwBuffer(void* aAddress)
+CrwBuffer* Buffers::_pCrwBuffer(void* aAddress)
 {
   CrwBuffer* pCrwBuffer = reinterpret_cast<CrwBuffer*>(aAddress);
   

@@ -2,7 +2,7 @@
 /* SN_Bcd.cpp - Bcd scan helper                                               */
 /*============================================================================*/
 
-#include "ScanSprint.h"
+#include "Datums.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -32,7 +32,7 @@ SN_Bcd::~SN_Bcd(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 SN_Bcd::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
+i8 SN_Bcd::i(char** aacCrs, Column* pCol, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNBCD);
   

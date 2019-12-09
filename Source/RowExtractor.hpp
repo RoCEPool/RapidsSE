@@ -3,63 +3,44 @@
 /*============================================================================*/
 #pragma once
 
-namespace Rows
+namespace Buffers
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class RowExtractor : private RowCoder
   {
   public:
-    static void vAddElement(EntWrk* pEntWrk, Stz* aSrc,
-                           Column* pCol, Formatters* pRecFmt);
+    static void vAddElement(EntWrk* pEntWrk, Column* pCol,
+                            Stz* azSrc, Format* pFmt);
   
-    static bool bExtractNext(Row* pRow, char** acRecCrs,
-                             StreamDef* pStreamDef, Formatters* pRecFmt,
+    static bool bExtractNext(Row* pRow, StreamDef* pStreamDef,
+                             char** aazCrs, Format* pFmt,
                              bool& bBlankLine_);
   
-    static Column* pExtractRow(Row* pRow, char** acRecCrs,
-                               StreamDef* pStreamDef, Formatters* pRecFmt);
+    static Column* pExtractRow(Row* pRow, StreamDef* pStreamDef,
+                               char** aazCrs, Format* pFmt);
   
   private:
-    static bool bExtractElement(DtmVal* pDtmVal, char** acRecCrs,
-                                Column* pCol, Formatters* pRecFmt);
+    static bool bExtractDtm(Datum* pDatum, char** aazCrs, Format* pFmt);
   
-    static bool bExtractBcdSupplied(DtmVal* pDtmVal, char** acRecCrs,
-                                    Formatters* pRecFmt);
-    static bool bExtractBolSupplied(DtmVal* pDtmVal, char** acRecCrs,
-                                    Formatters* pRecFmt);
-    static bool bExtractDteSupplied(DtmVal* pDtmVal, char** acRecCrs,
-                                    Formatters* pRecFmt);
-    static bool bExtractFltSupplied(DtmVal* pDtmVal, char** acRecCrs,
-                                    Formatters* pRecFmt);
-    static bool bExtractIntSupplied(DtmVal* pDtmVal, char** acRecCrs,
-                                    Formatters* pRecFmt);
-    static bool bExtractIvlSupplied(DtmVal* pDtmVal, char** acRecCrs,
-                                    Formatters* pRecFmt);
-    static bool bExtractTmeSupplied(DtmVal* pDtmVal, char** acRecCrs,
-                                    Formatters* pRecFmt);
-    static bool bExtractTspSupplied(DtmVal* pDtmVal, char** acRecCrs,
-                                    Formatters* pRecFmt);
-    static bool bExtractVchSupplied(DtmVal* pDtmVal, char** acRecCrs,
-                                    Formatters* pRecFmt);
+    static bool bExtractBcd(Datum* pDatum, char** aazCrs, Format* pFmt);
+    static bool bExtractBol(Datum* pDatum, char** aazCrs, Format* pFmt);
+    static bool bExtractDte(Datum* pDatum, char** aazCrs, Format* pFmt);
+    static bool bExtractFlt(Datum* pDatum, char** aazCrs, Format* pFmt);
+    static bool bExtractInt(Datum* pDatum, char** aazCrs, Format* pFmt);
+    static bool bExtractIvl(Datum* pDatum, char** aazCrs, Format* pFmt);
+    static bool bExtractTme(Datum* pDatum, char** aazCrs, Format* pFmt);
+    static bool bExtractTsp(Datum* pDatum, char** aazCrs, Format* pFmt);
+    static bool bExtractVch(Datum* pDatum, char** aazCrs, Format* pFmt);
   
-    static bool bIsEnclosedString(char** acRecCrs, Formatters* pRecFmt);
-    static bool bIsThereFieldData(char* aSrc, Formatters* pRecFmt);
-    static bool bIsThereRecordData(char* aSrc, Formatters* pRecFmt);
+    static bool bIsEnclosedString(char** aazCrs, Format* pFmt);
+    static bool bIsThereFieldData(char* aSrc, Format* pFmt);
+    static bool bIsThereRecordData(char* aSrc, Format* pFmt);
+    
+    static bool bIsSomeNull(char** aazCrs, Format* pFmt);
   
-    static bool bTestForNull(Column* pCol,
-                             char** acRecCrs,
-                             Formatters* pRecFmt,
-                             bool& bValidNull,
-                             bool bSkipTrailingSpaces=true);
-    static bool bTestForNullDefault(Column* pCol,
-                                    char** acRecCrs,
-                                    Formatters* pRecFmt,
-                                    bool& bValidNull,
-                                    bool bSkipTrailingSpaces=true);
-  
-    static bool bValidFieldEnd(char* aSrc, Formatters* pRecFmt);
-    static bool bValidFieldEndDefault(char* aSrc, Formatters* pRecFmt);
-    static bool bValidRecordEnd(char* aSrc, Formatters* pRecFmt);
+    static bool bValidFieldEnd(char* aSrc, Format* pFmt);
+    static bool bValidFieldEndDefault(char* aSrc, Format* pFmt);
+    static bool bValidRecordEnd(char* aSrc, Format* pFmt);
   };
   
 }

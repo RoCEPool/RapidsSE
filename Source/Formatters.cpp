@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Formatters.cpp -- set of formatting characters                             */
+/* Format.cpp -- set of formatting characters                             */
 /*============================================================================*/
 
 #include "Chunks.h"
@@ -12,42 +12,42 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Formatters* Chunks::_pFormatters(void* aAddr)
+Format* Chunks::_pFormatters(void* aAddr)
 {
-  Formatters* pFormatters = reinterpret_cast<Formatters*>(aAddr);
+  Format* pFmt = reinterpret_cast<Format*>(aAddr);
   
-  RASSERT_TYPE(pFormatters,CN_FORMATTERS);
+  RASSERT_TYPE(pFmt,CN_FORMAT);
   
-  return pFormatters;
+  return pFmt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Formatters::operator new(size_t)
+void* Format::operator new(size_t)
 {
-  void* pFormatters = HeapMem::pAllocate(CN_FORMATTERS);
+  void* pFmt = HeapMem::pAllocate(CN_FORMAT);
   
-  return pFormatters;
+  return pFmt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Formatters::operator delete(void* pFormattersAddress)
+void Format::operator delete(void* pFormattersAddress)
 {
-  Formatters* pFormatters = _pFormatters(pFormattersAddress);
+  Format* pFmt = _pFormatters(pFormattersAddress);
   
-  HeapMem::vFree(pFormatters);
+  HeapMem::vFree(pFmt);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Formatters::Formatters(void)
-: Object(CN_FORMATTERS)
+Format::Format(void)
+: Object(CN_FORMAT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
 
   m_bDefault             = true;
   m_bAllowNonPrintable   = false;
@@ -72,77 +72,77 @@ Formatters::Formatters(void)
   
   m_nMaxErrors           = 0;
   
-  _checkInitialised_(CN_FORMATTERS);
+  _checkInitialised_(CN_FORMAT);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FORMAT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Formatters::~Formatters(void) noexcept(false)
+Format::~Format(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* reset the formatters to given set of defaults                              */
 /*----------------------------------------------------------------------------*/
-void Formatters::vReset(void)
+void Format::vReset(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
 
   m_bDefault = true;
   
-  m_bAllowNonPrintable   = AM::pFormatters()->m_bAllowNonPrintable;
-  m_cEnclosedBy_Leading  = AM::pFormatters()->m_cEnclosedBy_Leading;
-  m_cEnclosedBy_Trailing = AM::pFormatters()->m_cEnclosedBy_Trailing;
+  m_bAllowNonPrintable   = AM::pFmt()->m_bAllowNonPrintable;
+  m_cEnclosedBy_Leading  = AM::pFmt()->m_cEnclosedBy_Leading;
+  m_cEnclosedBy_Trailing = AM::pFmt()->m_cEnclosedBy_Trailing;
   
-  m_cEscapeChar       = AM::pFormatters()->m_cEscapeChar;
-  m_cFieldDelimiter   = AM::pFormatters()->m_cFieldDelimiter;
-  m_cRecordTerminator = AM::pFormatters()->m_cRecordTerminator;
-  m_eRecordEnd        = AM::pFormatters()->m_eRecordEnd;
+  m_cEscapeChar       = AM::pFmt()->m_cEscapeChar;
+  m_cFieldDelimiter   = AM::pFmt()->m_cFieldDelimiter;
+  m_cRecordTerminator = AM::pFmt()->m_cRecordTerminator;
+  m_eRecordEnd        = AM::pFmt()->m_eRecordEnd;
   
-  m_eDateComponent[0] = AM::pFormatters()->m_eDateComponent[0];
-  m_eDateComponent[1] = AM::pFormatters()->m_eDateComponent[1];
-  m_eDateComponent[2] = AM::pFormatters()->m_eDateComponent[2];
+  m_eDateComponent[0] = AM::pFmt()->m_eDateComponent[0];
+  m_eDateComponent[1] = AM::pFmt()->m_eDateComponent[1];
+  m_eDateComponent[2] = AM::pFmt()->m_eDateComponent[2];
   
-  m_cDateSeparator    = AM::pFormatters()->m_cDateSeparator;
-  m_nMaxErrors        = AM::pFormatters()->m_nMaxErrors;
+  m_cDateSeparator    = AM::pFmt()->m_cDateSeparator;
+  m_nMaxErrors        = AM::pFmt()->m_nMaxErrors;
 }
 
 /*----------------------------------------------------------------------------*/
 /* reset the formatters to given set of defaults                              */
 /*----------------------------------------------------------------------------*/
-void Formatters::vSet(Formatters* pFormatters)
+void Format::vSet(Format* pFmt)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
   
   m_bDefault = false;
   
-  m_bAllowNonPrintable   = pFormatters->m_bAllowNonPrintable;
-  m_cEnclosedBy_Leading  = pFormatters->m_cEnclosedBy_Leading;
-  m_cEnclosedBy_Trailing = pFormatters->m_cEnclosedBy_Trailing;
+  m_bAllowNonPrintable   = pFmt->m_bAllowNonPrintable;
+  m_cEnclosedBy_Leading  = pFmt->m_cEnclosedBy_Leading;
+  m_cEnclosedBy_Trailing = pFmt->m_cEnclosedBy_Trailing;
   
-  m_cEscapeChar       = pFormatters->m_cEscapeChar;
-  m_cFieldDelimiter   = pFormatters->m_cFieldDelimiter;
-  m_cRecordTerminator = pFormatters->m_cRecordTerminator;
-  m_eRecordEnd        = pFormatters->m_eRecordEnd;
+  m_cEscapeChar       = pFmt->m_cEscapeChar;
+  m_cFieldDelimiter   = pFmt->m_cFieldDelimiter;
+  m_cRecordTerminator = pFmt->m_cRecordTerminator;
+  m_eRecordEnd        = pFmt->m_eRecordEnd;
   
-  m_eDateComponent[0] = pFormatters->m_eDateComponent[0];
-  m_eDateComponent[1] = pFormatters->m_eDateComponent[1];
-  m_eDateComponent[2] = pFormatters->m_eDateComponent[2];
+  m_eDateComponent[0] = pFmt->m_eDateComponent[0];
+  m_eDateComponent[1] = pFmt->m_eDateComponent[1];
+  m_eDateComponent[2] = pFmt->m_eDateComponent[2];
   
-  m_cDateSeparator    = pFormatters->m_cDateSeparator;
-  m_nMaxErrors        = pFormatters->m_nMaxErrors;
+  m_cDateSeparator    = pFmt->m_cDateSeparator;
+  m_nMaxErrors        = pFmt->m_nMaxErrors;
 }
 
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void Formatters::vShow(void)
+void Format::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
   
   vTrace("enclosed_by_Leading %c\n"_Stz, m_cEnclosedBy_Leading ? m_cEnclosedBy_Leading : '0');
   vTrace("enclosed_by_trailing %c\n"_Stz, m_cEnclosedBy_Trailing ? m_cEnclosedBy_Trailing : '0');
@@ -168,9 +168,9 @@ void Formatters::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Formatters::aFooter(void)
+Footer* Format::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORMAT);
   
   return &m_xFooter;
 }
