@@ -378,7 +378,7 @@ static Stz* aCN[]
   /*  35 0x023 */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
   
   /*  36 0x024 */ "_D__"_Stz,                // CN__D__
-  /*  43 0x02B */ "DTMVAL"_Stz,              // CN_DATUM
+  /*  43 0x02B */ "DATUM"_Stz,               // CN_DATUM
   /*  37 0x025 */ "DECACNT"_Stz,             // CN_DECACNT
   /*  38 0x026 */ "DECIDER"_Stz,             // CN_DECIDER
   /*  39 0x027 */ "DIC"_Stz,                 // CN_DIC

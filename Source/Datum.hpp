@@ -8,7 +8,6 @@ namespace Datums
   class Datum : public Object
   {
   public:
-  
     Column* m_pCol;   // which column
     Dtm     m_wDtm;   // the value
   
@@ -16,6 +15,10 @@ namespace Datums
     i8      m_nChars; // number of chars
     sVCH    m_sVch;   // vch value
 
+  
+    // - - - - - - -
+    AllVal  m_xAllVal;
+  
     // must be last
     Footer m_xFooter;
   
