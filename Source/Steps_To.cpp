@@ -57,7 +57,7 @@ void Step::vToStr(void)
 {
   ENTRY(); // ENTRY("vToStr"_Stz);
   
-  GenVar xVar;
+  Datum xVar;
   m_pDataStack->vPopVal(xVar,__func__);
   
   s48K sString;

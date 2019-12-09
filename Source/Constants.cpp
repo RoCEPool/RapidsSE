@@ -14,7 +14,7 @@ void Constants::vAddConstant(Stz* szName, i8 iVal)
   
   pNewWord->vCategory(AM::pRootConstant());
   
-  GenVar xVar;
+  Datum xVar;
   xVar = iVal;
 
   pNewWord->vEncodePush(xVar);
@@ -28,7 +28,7 @@ void Constants::vAddConstant(Stz* szName, Stz* szVal)
 {
   Word* pNewWord = new(AM::pRootDic()) Word(szName);
   
-  GenVar xVar;
+  Datum xVar;
   xVar = szVal;
   
   pNewWord->vEncodePush(xVar);
@@ -594,8 +594,8 @@ void Constants::vAddConstants(void)
   /*  2 */ vAddConstant("SIZEOF_IPVAL"_Stz,  sizeof(FipVal));
   /*  4 */ vAddConstant("SIZEOF_PTRVAL"_Stz, sizeof(PtrVal));
   /*  5 */ vAddConstant("SIZEOF_STZVAL"_Stz, sizeof(StzVal));
-  /*  6 */ vAddConstant("SIZEOF_VALSET"_Stz, sizeof(GenVar)); // correct
-  /*  7 */ vAddConstant("SIZEOF_ValWrk"_Stz, sizeof(GenVar)); // correct
+  /*  6 */ vAddConstant("SIZEOF_VALSET"_Stz, sizeof(Datum)); // correct
+  /*  7 */ vAddConstant("SIZEOF_ValWrk"_Stz, sizeof(Datum)); // correct
   
   /*  9 */ vAddConstant("SIZEOF_ATOMIC"_Stz,       sizeof(Atomic));
   /* 11 */ vAddConstant("SIZEOF_POOLBUFFER"_Stz,   sizeof(PoolBuffer));

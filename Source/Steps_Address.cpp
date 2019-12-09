@@ -21,10 +21,10 @@ void Step::vAddressEqual(void)
 {
   ENTRY(); // ENTRY("vAddressEql"_Stz);
   
-  GenVar xAddressA;
+  Datum xAddressA;
   m_pDataStack->vPopVal(xAddressA,__func__);
   
-  GenVar xAddressB;
+  Datum xAddressB;
   m_pDataStack->vPopVal(xAddressB,__func__);
 
   i8 iA = xAddressA.iInt();
@@ -48,7 +48,7 @@ void Step::vAddressFetch(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  GenVar xValFetched = aAnyVal; 
+  Datum xValFetched = aAnyVal; 
   
   m_pDataStack->vPushVal(xValFetched);
   
@@ -64,7 +64,7 @@ void Step::vAddressStore(void)
   
   AnyVal* aAnyVal = _aAnyVal(m_pDataStack->pPopPtr(__func__));
 
-  GenVar xValToStore;
+  Datum xValToStore;
   m_pDataStack->vPopVal(xValToStore,__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

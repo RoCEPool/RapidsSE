@@ -431,7 +431,7 @@ void Step::vTableScan(void)
   ENTRY(); // ENTRY("vTableScan"_Stz);
   
   FetchBuffer* pFetchBuffer;
-  GenVar xVariable;
+  Datum xVariable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive

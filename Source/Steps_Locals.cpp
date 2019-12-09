@@ -66,7 +66,7 @@ void Step::vLocalsBar(void)
   
   Dic* pDic = m_oDicStack.pPick(0);
 
-  GenVar xVariable;
+  Datum xVariable;
   
   for (;;) {
     
@@ -229,7 +229,7 @@ void Step::vLocalsTo(void)
     
     Word* pCurrentWord = m_pCompiler->pCurrentWord();
     
-    GenVar xMetaNm;
+    Datum xMetaNm;
     xMetaNm = sLocalNm;
     
     pCurrentWord->vEncodePush(xMetaNm);
@@ -254,7 +254,7 @@ void Step::vLocalsTo(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle a local
 
-  GenVar xVar_LocalNo;
+  Datum xVar_LocalNo;
   xVar_LocalNo = pLocalWord->iLocalNo();
   
   pCurrentWord->vEncodePush(xVar_LocalNo);

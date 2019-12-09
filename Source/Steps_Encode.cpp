@@ -280,7 +280,7 @@ void Step::vEncodePush(void)
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
-  GenVar xVal;
+  Datum xVal;
   m_pDataStack->vPopVal(xVal,__func__);
 
   pCurrentWord->vEncodePush(xVal);

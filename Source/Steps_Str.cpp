@@ -116,10 +116,10 @@ void Step::vStrEqual(void)
 {
   ENTRY(); // ENTRY("vStrEql"_Stz);
   
-  GenVar xStringA;
+  Datum xStringA;
   m_pDataStack->vPopVal(xStringA,__func__);
   
-  GenVar xStringB;
+  Datum xStringB;
   m_pDataStack->vPopVal(xStringB,__func__);
 
   // get the arguments
@@ -257,10 +257,10 @@ void Step::vStrPrepend(void)
   s48K xStrA;
   
   //! the use of A and B here doesnt seem intuitive
-  GenVar xValB;
+  Datum xValB;
   m_pDataStack->vPopVal(xValB,__func__);
  
-  GenVar xValA;
+  Datum xValA;
   m_pDataStack->vPopVal(xValA,__func__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

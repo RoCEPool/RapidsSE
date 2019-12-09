@@ -51,6 +51,9 @@ Datum::Datum(void)
   m_wDtm.m_iInt   = C_UNKNOWN;
   m_nChars = 0;
 
+  u.m_xAnyVal.vMagic();
+  u.m_xAnyVal.vClass(CN_NONE);
+
   //m_sVch
   
   _checkInitialised_(CN_DATUM);

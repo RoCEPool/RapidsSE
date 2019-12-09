@@ -70,7 +70,7 @@ void Step::vComma(void)
   
   Word* pCurrentWord = m_pCompiler->pCurrentWord();
   
-  GenVar xValue;
+  Datum xValue;
   m_pDataStack->vPopVal(xValue,__func__);
   
   pCurrentWord->vEncodePush(xValue);
@@ -296,7 +296,7 @@ void Step::vPostpone(void)
            m_pCompiler->szToken()->azChar());
   
   
-  GenVar xVar;
+  Datum xVar;
   xVar = pCalledWord;
 
   if (pCalledWord->bImmediate()) {
@@ -452,7 +452,7 @@ void Step::vTick(void)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "No word: %s "_Stz,sWordNm.azChar());
   
-  GenVar xVar;
+  Datum xVar;
   xVar = pWord;
 
   if (m_pCompiler->bCompiling()) {

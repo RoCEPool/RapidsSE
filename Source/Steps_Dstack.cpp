@@ -58,7 +58,7 @@ void Step::vDstackClass(void)
   
   i8 i_Val = m_pDataStack->iPopInt(__func__);
   
-  GenVar xVar;
+  Datum xVar;
   
   m_pDataStack->vPeekVal(i_Val,xVar);
   
@@ -124,7 +124,7 @@ void Step::vDstackDup(void)
 
   // could just copy from stack back into stack
   
-  GenVar xVarA;
+  Datum xVarA;
   m_pDataStack->vPopVal(xVarA,__func__);
   
   m_pDataStack->vPushVal(xVarA);
@@ -142,7 +142,7 @@ void Step::vDstackDupNonZero(void)
   
   // could just copy from stack back into stack
   
-  GenVar xVarA;
+  Datum xVarA;
   m_pDataStack->vPopVal(xVarA,__func__);
   
   if (xVarA.iInt()) {
@@ -162,10 +162,10 @@ void Step::vDstackNip(void)
 {
   ENTRY(); // ENTRY("vDstackNip"_Stz);
   
-  GenVar xVarA;
+  Datum xVarA;
   m_pDataStack->vPopVal(xVarA,__func__);
   
-  GenVar xVarB;
+  Datum xVarB;
   m_pDataStack->vPopVal(xVarB,__func__);
   
   m_pDataStack->vPushVal(xVarA);
@@ -182,7 +182,7 @@ void Step::vDstackOver(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pDataStack->vPeekVal(1,xVariable);
   
@@ -202,7 +202,7 @@ void Step::vDstackPick(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pDataStack->vPeekVal(iPick,xVariable);
   
@@ -218,14 +218,14 @@ void Step::vDstackReverse(void)
 {
   ENTRY(); // ENTRY("vDstackReverse"_Stz);
   
-  GenVar xVal1;
-  GenVar xVal2;
-  GenVar xVal3;
-  GenVar xVal4;
-  GenVar xVal5;
-  GenVar xVal6;
-  GenVar xVal7;
-  GenVar xVal8;
+  Datum xVal1;
+  Datum xVal2;
+  Datum xVal3;
+  Datum xVal4;
+  Datum xVal5;
+  Datum xVal6;
+  Datum xVal7;
+  Datum xVal8;
 
   i8 nValues = m_pDataStack->iPopInt(__func__);
   
@@ -261,8 +261,8 @@ void Step::vDstackRoll(void)
 {
   ENTRY(); // ENTRY("vDstackRoll"_Stz);
   
-  GenVar xVarA;
-  GenVar xVarX;
+  Datum xVarA;
+  Datum xVarX;
   
   i8 nValues = m_pDataStack->iPopInt(__func__);
   
@@ -292,8 +292,8 @@ void Step::vDstackRollInv(void)
 {
   ENTRY(); // ENTRY("vDstackRollInv"_Stz);
   
-  GenVar xVarZ;
-  GenVar xVarX;
+  Datum xVarZ;
+  Datum xVarX;
   
   i8 nValues = m_pDataStack->iPopInt(__func__);
   
@@ -324,11 +324,11 @@ void Step::vDstackRot(void)
 {
   ENTRY(); // ENTRY("vDstackRot"_Stz);
   
-  GenVar xVarA;
+  Datum xVarA;
   m_pDataStack->vPopVal(xVarA,__func__);
-  GenVar xVarB;
+  Datum xVarB;
   m_pDataStack->vPopVal(xVarB,__func__);
-  GenVar xVarC;
+  Datum xVarC;
   m_pDataStack->vPopVal(xVarC,__func__);
 
   
@@ -346,11 +346,11 @@ void Step::vDstackRotInv(void)
 {
   ENTRY(); // ENTRY("vDstackRotInv"_Stz);
   
-  GenVar xVarA;
+  Datum xVarA;
   m_pDataStack->vPopVal(xVarA,__func__);
-  GenVar xVarB;
+  Datum xVarB;
   m_pDataStack->vPopVal(xVarB,__func__);
-  GenVar xVarC;
+  Datum xVarC;
   m_pDataStack->vPopVal(xVarC,__func__);
 
   m_pDataStack->vPushVal(xVarA);
@@ -379,10 +379,10 @@ void Step::vDstackSwap(void)
 {
   ENTRY(); // ENTRY("vDstackSwap"_Stz);
   
-  GenVar xVarA;
+  Datum xVarA;
   m_pDataStack->vPopVal(xVarA,__func__);
   
-  GenVar xVarB;
+  Datum xVarB;
   m_pDataStack->vPopVal(xVarB,__func__);
   
   m_pDataStack->vPushVal(xVarA);
@@ -398,10 +398,10 @@ void Step::vDstackTuck(void)
 {
   ENTRY(); // ENTRY("vDstackTuck"_Stz);
   
-  GenVar xVarA;
+  Datum xVarA;
   m_pDataStack->vPopVal(xVarA,__func__);
   
-  GenVar xVarB;
+  Datum xVarB;
   m_pDataStack->vPopVal(xVarB,__func__);
 
   m_pDataStack->vPushVal(xVarA);

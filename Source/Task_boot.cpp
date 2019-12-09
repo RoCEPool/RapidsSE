@@ -224,7 +224,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
   Word* pNewWord;
   StepFp  fpStep;
   Word* pCalledWord;
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pForth->m_pCompiler->pTokeniser()->vUseString(sDefinition);
   

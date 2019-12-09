@@ -76,7 +76,7 @@ void Step::vObjectFetch(void)
   
   i8 iPick = 0;
   
-  GenVar xObjectVar;
+  Datum xObjectVar;
   
   m_pReturnStack->vPeekVal(iPick,xObjectVar);
   
@@ -108,7 +108,7 @@ void Step::vObjectStore(void)
   
   i8 iPeek = 0;
   
-  GenVar xObjectVar;
+  Datum xObjectVar;
   
   m_pDataStack->vPopVal(xObjectVar,__func__);
   

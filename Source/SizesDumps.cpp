@@ -428,7 +428,7 @@ i8 giClassSize[]
   /* */ sizeof(FreqDist),           // CN_FREQDIST
 
   /* */ 'G'-'A' + 1,                // CN__G__
-  /* */ sizeof(GenVar),             // CN_GENVAR
+  /* */ 0,             // CN_GENVAR
   /* */ sizeof(Grid),               // CN_GRID
   
   /* */ 'H'-'A' + 1,                // CN__H__

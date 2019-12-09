@@ -19,7 +19,7 @@ void Step::vShellExecute(void)
 {
   ENTRY(); // ENTRY("vShellExecute"_Stz);
   
-  GenVar xCommand;
+  Datum xCommand;
   
   m_pDataStack->vPopVal(xCommand,__func__);
   
