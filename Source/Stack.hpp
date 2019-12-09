@@ -57,7 +57,6 @@ namespace SenVM
     void vDump(DicStack* pDicStack, Stz* szTitle);
 
     AnyVal* aPeekVal(i8 i_Val);
-    void vPeekVal(i8 i_Val, GenVar& xGenVar);
     void vPeekVal(i8 i_Val, AnyVal* aAnyVal);
 
     void vPokeVal(i8 i_Val, AnyVal* aAnyVal);
