@@ -794,7 +794,7 @@ void Task::vSeedTask(void)
   
   Stz* szSeed = m_pJob->szSeed();
   
-  vTrace("SEED %s\n"_Stz,szSeed);
+  //vTrace("SEED %s\n"_Stz,szSeed);
   Word* pSeedWord = pRootDic->pFindWord(szSeed);
   
   if (! pSeedWord)
