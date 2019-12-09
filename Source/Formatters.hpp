@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Format.hpp -- set of formatting characters                             */
+/* Format.hpp -- set of formatting characters                                 */
 /*============================================================================*/
 #pragma once
 
@@ -30,7 +30,7 @@ namespace Chunks
     void  operator delete(void*);
     
     Format(void);
-    ~Format(void) noexcept(false);
+   ~Format(void) noexcept(false);
   
     void vReset(void);
     void vSet(Format* pFmt);

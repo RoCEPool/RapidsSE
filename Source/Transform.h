@@ -14,11 +14,8 @@ namespace Transform
 
 //------------------------------------------------------------------------------
 
+
 #include "Datum.hpp"
-
-#include "Scan.hpp"
-#include "Sprint.hpp"
-
 #include "Id.hpp"
 #include "Row.hpp"
 #include "Key.hpp"
@@ -31,6 +28,7 @@ namespace Transform
 
 #include "NmStr.hpp"
 #include "NmStrList.hpp"
+
 
 /*============================================================================*/
 /* end                                                                        */

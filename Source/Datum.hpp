@@ -25,6 +25,18 @@ namespace Transform
 
     Datum(void);
    ~Datum(void) noexcept(false);
+  
+    bool bExtractDtm(char** aazCrs, Format* pFmt);
+  
+    bool bExtractBcd(char** aazCrs, Format* pFmt);
+    bool bExtractBol(char** aazCrs, Format* pFmt);
+    bool bExtractDte(char** aazCrs, Format* pFmt);
+    bool bExtractFlt(char** aazCrs, Format* pFmt);
+    bool bExtractInt(char** aazCrs, Format* pFmt);
+    bool bExtractIvl(char** aazCrs, Format* pFmt);
+    bool bExtractTme(char** aazCrs, Format* pFmt);
+    bool bExtractTsp(char** aazCrs, Format* pFmt);
+    bool bExtractVch(char** aazCrs, Format* pFmt);
 
     bool bIsNull(void);
     void vSetNull(void);
