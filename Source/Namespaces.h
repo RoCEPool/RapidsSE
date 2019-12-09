@@ -6,7 +6,7 @@
 namespace Alignment     {                                                     }
 namespace Assembler     {                                                     }
 namespace Base          {                                                     }
-namespace Buffers       {                                                     }
+namespace RowBase       {                                                     }
 namespace Chunks        { class Format;                                       }
 namespace ClassData     {                                                     }
 namespace CompilerOperators {                                                 }
@@ -83,7 +83,7 @@ namespace Verbs         {                                                     }
 using namespace Alignment;
 using namespace Assembler;
 using namespace Base;
-using namespace Buffers;
+using namespace RowBase;
 using namespace Chunks;
 using namespace ClassData;
 using namespace CompilerOperators;
