@@ -16,9 +16,7 @@ namespace Datums
     GenVar(AnyVal*);
    ~GenVar(void) noexcept(false);
   
-    // auto conversion
-    operator AnyVal*(void);
-
+ 
     void operator =(AnyVal*);
   
     void operator =(Cell* aFip);

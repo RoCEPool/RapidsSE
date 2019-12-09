@@ -30,6 +30,9 @@ namespace Datums
     Datum(void);
    ~Datum(void) noexcept(false);
   
+    // auto conversion
+    operator AnyVal*(void);
+
     bool bExtractDtm(char** aazCrs, Format* pFmt);
   
     bool bExtractBcd(char** aazCrs, Format* pFmt);
