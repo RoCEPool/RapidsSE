@@ -240,7 +240,7 @@ bool Datum::bExtractDte(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iDte = snDte.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iDte = snDte.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -259,7 +259,7 @@ bool Datum::bExtractFlt(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_dFlt = snFlt.d(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_dFlt = snFlt.d(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -306,7 +306,7 @@ bool Datum::bExtractIvl(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iIvl = snIvl.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iIvl = snIvl.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -325,7 +325,7 @@ bool Datum::bExtractTme(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -344,7 +344,7 @@ bool Datum::bExtractTsp(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;

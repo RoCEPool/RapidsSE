@@ -150,15 +150,15 @@ void RowDecoder::vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
       pDatum->u.m_xAnyVal.m_iInt = C_DATUM_NULL;
       return;
     case MC_DTE_E0_2B:
-      pDatum->m_wDtm.m_iDte = aHeadLine->wGetLogical(i_OfsCrs_,C_2B);
+      pDatum->u.m_xAnyVal.m_iDte = aHeadLine->wGetLogical(i_OfsCrs_,C_2B);
       iEra = C_ERA_0;
       break;
     case MC_DTE_E1_2B:
-      pDatum->m_wDtm.m_iDte = aHeadLine->wGetLogical(i_OfsCrs_,C_2B);
+      pDatum->u.m_xAnyVal.m_iDte = aHeadLine->wGetLogical(i_OfsCrs_,C_2B);
       iEra = C_ERA_1;
       break;
     case MC_DTE_E2_2B:
-      pDatum->m_wDtm.m_iDte = aHeadLine->wGetLogical(i_OfsCrs_,C_2B);
+      pDatum->u.m_xAnyVal.m_iDte = aHeadLine->wGetLogical(i_OfsCrs_,C_2B);
       iEra = C_ERA_2;
       break;
     default:

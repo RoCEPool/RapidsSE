@@ -267,9 +267,9 @@ void Record::vAppendDte(Column* pCol, Datum* pDatum)
   
   StrLib::vSprint(sAscii.azChar(),
                   "%02lld-%02lld-%02lld"_Stz,
-                  (i8)pDatum->m_wDtm.xDte.m_uYearDelta + C_YEAR_BASE,
-                  (i8)pDatum->m_wDtm.xDte.m_uMonth,
-                  (i8)pDatum->m_wDtm.xDte.m_uDay);
+                  (i8)pDatum->u.m_xAnyVal.m_xDte.m_uYearDelta + C_YEAR_BASE,
+                  (i8)pDatum->u.m_xAnyVal.m_xDte.m_uMonth,
+                  (i8)pDatum->u.m_xAnyVal.m_xDte.m_uDay);
 
   //m_sRecStr.vConcat((Stz*)sAscii.azChar());
   m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.azChar());
@@ -284,7 +284,7 @@ void Record::vAppendFlt(Column* pCol, Datum* pDatum)
   
   s32 sAscii;
 
-  StrLib::vSprint(sAscii.azChar(),"%g"_Stz,pDatum->m_wDtm.m_dFlt);
+  StrLib::vSprint(sAscii.azChar(),"%g"_Stz,pDatum->u.m_xAnyVal.m_dFlt);
   
   //m_sRecStr.vConcat((Stz*)sAscii.azChar());
   m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.azChar());
@@ -311,7 +311,7 @@ void Record::vAppendIvl(Column* pCol, Datum* pDatum)
  
   SP_Ivl spIvl;
 
-  m_sRecStr.vAppend(&m_azAppendCursor,spIvl.sz(pDatum->m_wDtm.m_iIvl));
+  m_sRecStr.vAppend(&m_azAppendCursor,spIvl.sz(pDatum->u.m_xAnyVal.m_iIvl));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -323,7 +323,7 @@ void Record::vAppendTme(Column* pCol, Datum* pDatum)
   
   SP_Tme SP_Tme;
 
-  m_sRecStr.vAppend(&m_azAppendCursor,SP_Tme.sz(pDatum->m_wDtm.m_iTme));
+  m_sRecStr.vAppend(&m_azAppendCursor,SP_Tme.sz(pDatum->u.m_xAnyVal.m_iTme));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -335,7 +335,7 @@ void Record::vAppendTsp(Column* pCol, Datum* pDatum)
   
   SP_Tsp SP_Tsp;
   
-  m_sRecStr.vAppend(&m_azAppendCursor,SP_Tsp.sz(pDatum->m_wDtm.m_iTsp));
+  m_sRecStr.vAppend(&m_azAppendCursor,SP_Tsp.sz(pDatum->u.m_xAnyVal.m_iTsp));
 }
 
 /*----------------------------------------------------------------------------*/
