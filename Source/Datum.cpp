@@ -202,7 +202,7 @@ bool Datum::bExtractBcd(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iBcd = snBcd.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iBcd = snBcd.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -221,7 +221,7 @@ bool Datum::bExtractBol(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iBol = snBol.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iBol = snBol.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;

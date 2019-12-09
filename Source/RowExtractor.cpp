@@ -249,13 +249,13 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, char** aazCrs, Format* pFmt)
   
   switch (eDatum) {
     case DM_BCD:
-      b = StrLib::bExtractDecimal(aazCrs,pDatum->m_wDtm.m_iBcd,
+      b = StrLib::bExtractDecimal(aazCrs,pDatum->u.m_xAnyVal.m_iBcd,
                                   pCol->iColumnLength(),
                                   pCol->iColumnScale());
       break;
       
     case DM_BOL:
-      b = StrLib::bExtractBoolean(aazCrs,pDatum->m_wDtm.m_iBol);
+      b = StrLib::bExtractBoolean(aazCrs,pDatum->u.m_xAnyVal.m_iBol);
       break;
       
     case DM_DTE:
@@ -344,7 +344,7 @@ bool RowExtractor::bExtractBcd(Datum* pDatum, char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iBcd = snBcd.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iBcd = snBcd.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -363,7 +363,7 @@ bool RowExtractor::bExtractBol(Datum* pDatum, char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iBol = snBol.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iBol = snBol.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;

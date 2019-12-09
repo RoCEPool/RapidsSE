@@ -220,8 +220,8 @@ void Record::vAppendBcd(Column* pCol, Datum* pDatum)
   for (i8 i_Digit = 0; i_Digit < pCol->iColumnScale(); i_Digit++)
     iDigits *= 10;
   
-  i8 iBcd_Whole    = pDatum->m_wDtm.m_iBcd / iDigits;
-  i8 iBcd_Fraction = pDatum->m_wDtm.m_iBcd % iDigits;
+  i8 iBcd_Whole    = pDatum->u.m_xAnyVal.m_iBcd / iDigits;
+  i8 iBcd_Fraction = pDatum->u.m_xAnyVal.m_iBcd % iDigits;
   
   if (iBcd_Fraction < 0 || iBcd_Whole < 0) {
     bNegative     = true;
@@ -253,7 +253,7 @@ void Record::vAppendBol(Column* pCol, Datum* pDatum)
   
   SP_Bol SP_Bol;
   
-  m_sRecStr.vAppend(&m_azAppendCursor,SP_Bol.sz(pDatum->m_wDtm.m_iBol));
+  m_sRecStr.vAppend(&m_azAppendCursor,SP_Bol.sz(pDatum->u.m_xAnyVal.m_iBol));
 }
 
 /*----------------------------------------------------------------------------*/
