@@ -205,6 +205,18 @@ void Stack::vPeekVal(i8 i_Val, GenVar& xGenVar)
 }
 
 /*----------------------------------------------------------------------------*/
+/* peek at given value on stack                                               */
+/*----------------------------------------------------------------------------*/
+void Stack::vPeekVal(i8 i_Val, AnyVal* aAnyVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  AnyVal* aPeekedValue = aPeekVal(i_Val);
+  
+  aAnyVal->vCopy(aPeekedValue);
+}
+
+/*----------------------------------------------------------------------------*/
 /* poke given value into stack                                                */
 /*----------------------------------------------------------------------------*/
 void Stack::vPokeVal(i8 i_Val, AnyVal* aAnyVal)
