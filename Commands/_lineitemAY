@@ -109,10 +109,10 @@ pipeline export
 begin
 
 stage stageA on all partitions:
-scanOp lineitem |  toCsvOp | stageB
+  scanOp lineitem |  toCsvOp | stageB
 
 stage stageB on origin:
-toFileOp "/tmp/xxx.csv" | outputOp
+  toFileOp "/tmp/xxx.csv" | outputOp
 
 end
 ;

@@ -22,8 +22,8 @@
     // decode kind
     Operand[].kind case
 
-      ZK_ENDMARKER of
-        "Operand:- ZK_ENDMARKER" .
+      ZK_STOPMARKER of
+        "Operand:- ZK_STOPMARKER" .
         Operand[].delete
         false
       endof

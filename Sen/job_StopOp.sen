@@ -1,15 +1,18 @@
 /*============================================================================*/
-/* job_EndOp.sen -- Job EndOp                                                 */
+/* job_StopOp.sen -- Job StopOp                                                 */
 /*============================================================================*/
 
-" job_EndOp.sen" .verbose
+" job_StopOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* execute for endOp request                          (on node where spawned) */
+/* execute for stopOp request                         (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: endOp_req ( -- )
+: stopOp_req ( -- )
 
   >>logEntry <SEED_REQ>
+
+  // link stopOp to startOp
+  Op.linkStartOp
 
   begin
 
@@ -22,52 +25,10 @@
     // decode kind
     Operand[].kind case
 
-      ZK_CRWBUFFER of
-        "Operand:- ZK_CRWBUFFER" .
-        Operand[].workDone
-        Operand[].pipeToJob
-        true
-      endof
-
-      ZK_CSVBUFFER of
-        "Operand:- ZK_CSVBUFFER" .
-        Operand[].workDone
-        Operand[].pipeToJob
-        true
-      endof
-
-      ZK_ENDMARKER of
-        "Operand:- ZK_ENDMARKER" .
-        Operand[].handleEnd
+      ZK_STOPMARKER of
+        "Operand:- ZK_STOPMARKER" .
+        Operand[].handleStop
         false
-      endof
-
-      ZK_ENTBUFFER of
-        "Operand:- ZK_ENTBUFFER" .
-        Operand[].workDone
-        Operand[].pipeToJob
-        true
-      endof
-
-      ZK_IRWBUFFER of
-        "Operand:- ZK_IRWBUFFER" .
-        Operand[].workDone
-        Operand[].pipeToJob
-        true
-      endof
-
-      ZK_SRTBUFFER of
-        "Operand:- ZK_SRTBUFFER" .
-        Operand[].workDone
-        Operand[].pipeToJob
-        true
-      endof
-
-      ZK_STREAMDEF of
-        "Operand:- ZK_STREAMDEF" .
-        Operand[].workDone
-        Operand[].pipeToJob
-        true
       endof
 
     endcase
@@ -82,13 +43,13 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-jobSyntax: endOp :: endOp ;
+jobSyntax: stopOp :: stopOp ;
 
-jobInfo: endOp
+jobInfo: stopOp
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_ENDOP
+  <?jobType?>  = JT_STOPOP
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_NODE_ZERO
   <?ddlLock?>  = DL_GRAB_READ

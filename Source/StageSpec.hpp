@@ -26,6 +26,7 @@ namespace Pipelines
    ~StageSpec(void) noexcept(false);
   
     void vAddOpSpec(OpSpec* pOpSpec);
+    void vAppendStopOp(void);
     void vCopyOps(StageSpec* pStageSpec);
     void vLocus(Stz* szLocus);
     Stz* szName(void);
