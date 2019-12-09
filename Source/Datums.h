@@ -16,6 +16,16 @@ namespace Datums
 
 #include "Datum.hpp"
 
+#include "SN_Bcd.hpp"
+#include "SN_Bol.hpp"
+#include "SN_Dte.hpp"
+#include "SN_Flt.hpp"
+#include "SN_Int.hpp"
+#include "SN_Ivl.hpp"
+#include "SN_Tme.hpp"
+#include "SN_Tsp.hpp"
+#include "SN_Vch.hpp"
+
 #include "Sprint.hpp"
 #include "SP_Bcd.hpp"
 #include "SP_Bol.hpp"
