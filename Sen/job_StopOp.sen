@@ -22,45 +22,10 @@
     // decode kind
     Operand[].kind case
 
-      ZK_CRWBUFFER of
-        "Operand:- ZK_CRWBUFFER" .
-        Operand[].workDone
-        Operand[].pipeToJob
-        true
-      endof
-
-      ZK_CSVBUFFER of
-        "Operand:- ZK_CSVBUFFER" .
-        Operand[].workDone
-        Operand[].pipeToJob
-        true
-      endof
-
       ZK_ENDMARKER of
         "Operand:- ZK_ENDMARKER" .
         Operand[].handleEnd
         false
-      endof
-
-      ZK_ENTBUFFER of
-        "Operand:- ZK_ENTBUFFER" .
-        Operand[].workDone
-        Operand[].pipeToJob
-        true
-      endof
-
-      ZK_IRWBUFFER of
-        "Operand:- ZK_IRWBUFFER" .
-        Operand[].workDone
-        Operand[].pipeToJob
-        true
-      endof
-
-      ZK_SRTBUFFER of
-        "Operand:- ZK_SRTBUFFER" .
-        Operand[].workDone
-        Operand[].pipeToJob
-        true
       endof
 
       ZK_STREAMDEF of
