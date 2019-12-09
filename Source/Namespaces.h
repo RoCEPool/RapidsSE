@@ -58,7 +58,6 @@ namespace Operators     { class Op; class Pipeline;                           }
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Registers     { class RegSet;                                       }
 namespace Rows          {                                                     }
-namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
 namespace SenVM         { class Cell; class Dic; class DicStack;
                           class Forth; class Word;                            }
@@ -83,7 +82,7 @@ namespace Verbs         {                                                     }
 using namespace Alignment;
 using namespace Assembler;
 using namespace Base;
-using namespace Rows;
+using namespace Buffers;
 using namespace Chunks;
 using namespace ClassData;
 using namespace CompilerOperators;
@@ -116,8 +115,7 @@ using namespace Pool;
 using namespace Prompt;
 using namespace Registers;
 using namespace Resources;
-using namespace Buffers;
-using namespace ScanSprint;
+using namespace Rows;
 using namespace Scheduling;
 using namespace SenVM;
 using namespace Services;

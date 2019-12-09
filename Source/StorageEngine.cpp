@@ -17,56 +17,52 @@ void StorageEngine::vCheckAllAssumptions(void)
   Alignment::vCheckAssumptions();
   Assembler::vCheckAssumptions();
   Base::vCheckAssumptions();
+  Buffers::vCheckAssumptions();
   Chunks::vCheckAssumptions();
   ClassData::vCheckAssumptions();
+  CompilerOperators::vCheckAssumptions();
+  CompilerStream::vCheckAssumptions();
   ControlData::vCheckAssumptions();
   Correctness::vCheckAssumptions();
   Enums::vCheckAssumptions();
   Esses::vCheckAssumptions();
   Focals::vCheckAssumptions();
   Gadgets::vCheckAssumptions();
+  Grids::vCheckAssumptions();
   Host::vCheckAssumptions();
+  Indexes::vCheckAssumptions();
+  Interface::vCheckAssumptions();
+  Jobs::vCheckAssumptions();
   Library::vCheckAssumptions();
   Locking::vCheckAssumptions();
   MetaData::vCheckAssumptions();
+  Operators::vCheckAssumptions();
+  Partitioning::vCheckAssumptions();
   Persistence::vCheckAssumptions();
   Pipelines::vCheckAssumptions();
+  Plans::vCheckAssumptions();
   Pool::vCheckAssumptions();
+  Prompt::vCheckAssumptions();
   Registers::vCheckAssumptions();
   Resources::vCheckAssumptions();
+  Scheduling::vCheckAssumptions();
   SenVM::vCheckAssumptions();
+  Services::vCheckAssumptions();
+  Sessions::vCheckAssumptions();
+  Steps::vCheckAssumptions();
+  StorageEngine::vCheckAssumptions();
   Streams::vCheckAssumptions();
   Strings::vCheckAssumptions();
   Structures::vCheckAssumptions();
+  Tasks::vCheckAssumptions();
+  Threads::vCheckAssumptions();
   TokenStream::vCheckAssumptions();
+  Transform::vCheckAssumptions();
   Transactions::vCheckAssumptions();
+  Utilities::vCheckAssumptions();
 
   // third party??
 
-  CompilerStream::vCheckAssumptions();
-  Transform::vCheckAssumptions();
-  ScanSprint::vCheckAssumptions();
-  Buffers::vCheckAssumptions();
-  Indexes::vCheckAssumptions();
-  Partitioning::vCheckAssumptions();
-  Grids::vCheckAssumptions();
-  Sessions::vCheckAssumptions();
-  Transactions::vCheckAssumptions();
-  Plans::vCheckAssumptions();
-  Operators::vCheckAssumptions();
-  CompilerOperators::vCheckAssumptions();
-  Jobs::vCheckAssumptions();
-  Tasks::vCheckAssumptions();
-  Threads::vCheckAssumptions();
-  Scheduling::vCheckAssumptions();
-  Interface::vCheckAssumptions();
-  Services::vCheckAssumptions();
-  Utilities::vCheckAssumptions();
-  Steps::vCheckAssumptions();
-  Prompt::vCheckAssumptions();
-  StorageEngine::vCheckAssumptions();
-  
-  
 }
 
 /*----------------------------------------------------------------------------*/
