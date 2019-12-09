@@ -161,17 +161,21 @@ void RowCoder::vDteFromEdt(Dtm* aDte, i8 iEraBaseYear)
 /*----------------------------------------------------------------------------*/
 /* convert a Edt into an Dte (in situ)                                        */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDteFromEdt(AnyVal* aAnyVal, i8 iEraBaseYear)
+void RowCoder::vDteFromEdt(i8* awEdtDte, i8 iEraBaseYear)
 {
-  i8 iYearInEra = aAnyVal->m_xEdt.m_uYearInEra;
-  i8 iMonth     = aAnyVal->m_xEdt.m_uMonth;
-  i8 iDay       = aAnyVal->m_xEdt.m_uDay;
+  _Edt* aEdt = (_Edt*)awEdtDte;
   
-  aAnyVal->m_iDte = 0;
+  i8 iYearInEra = aEdt->m_uYearInEra;
+  i8 iMonth     = aEdt->m_uMonth;
+  i8 iDay       = aEdt->m_uDay;
   
-  aAnyVal->m_xDte.m_uYearDelta = iYearInEra + iEraBaseYear;
-  aAnyVal->m_xDte.m_uMonth     = iMonth;
-  aAnyVal->m_xDte.m_uDay       = iDay;
+  * awEdtDte = 0;
+  
+  _Dte* aDte = (_Dte*)awEdtDte;
+  
+  aDte->m_uYearDelta = iYearInEra + iEraBaseYear;
+  aDte->m_uMonth     = iMonth;
+  aDte->m_uDay       = iDay;
 }
 
 /*----------------------------------------------------------------------------*/

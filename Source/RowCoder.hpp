@@ -39,7 +39,7 @@ namespace Rows
     static i8   iBaseOffset(i8 nColumns);
     static i8   nDataSize(eMC eMetaCode);
     static void vDteFromEdt(Dtm* aDte, i8 iEra);
-    static void vDteFromEdt(AnyVal* aAnyVal_dte, i8 iEra);
+    static void vDteFromEdt(i8* awEdtDte, i8 iEra);
     static void vDteIntoEdt(Dtm wDte, Dtm& wEdt_, i8& iEra_);
     static bool bHasAuxLen(eMC eMetaCode);
     static i8   nHeadSize(StreamDef* pStreamDef);
