@@ -14,6 +14,12 @@ namespace SenVM
       Object* m_pObj;
       
       i8      m_nBytesFollowing;
+      
+      _Dte    m_xDte;
+      _Edt    m_xEdt;
+      _Ivl    m_xIvl;
+      _Tme    m_xTme;
+      _Tsp    m_xTsp;
     };
   
   public:
