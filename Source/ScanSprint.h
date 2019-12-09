@@ -15,7 +15,6 @@ namespace ScanSprint
 //------------------------------------------------------------------------------
 
 
-#include "SP_Row.hpp"
 
 #include "SN_Bcd.hpp"
 #include "SN_Bol.hpp"
