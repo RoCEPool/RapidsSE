@@ -572,6 +572,18 @@ void Datum::vStzSize(i8 nSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get space allowed for nested string value                                  */
+/*----------------------------------------------------------------------------*/
+i8 Datum::nStzSpace(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  i8 nSize = sizeof(u.m_yaSpace);
+  
+  return nSize;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert to stz string                                                      */
 /*----------------------------------------------------------------------------*/
 void Datum::vToString(Stz* szString)
