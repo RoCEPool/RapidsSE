@@ -54,12 +54,8 @@ Datum::Datum(void)
   u.m_xAnyVal.vMagic();
   u.m_xAnyVal.vClass(CN_NONE);
 
-#ifdef WITH_DATUM_U_ONLY
   u.m_xStzVal.vStz(""_Stz);
   //vStzDump();
-#else
-  m_nChars = 0;
-#endif
 
   //m_sVch
   

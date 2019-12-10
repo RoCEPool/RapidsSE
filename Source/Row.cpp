@@ -143,11 +143,7 @@ void Row::vAppendValue(Datum* pDatum, Column* pCol)
     
     char* acDstString = (char*)m_xWsp.ayLatter();
     
-#ifdef WITH_DATUM_U_ONLY
     char* acSrcString = (char*)pDatum->azChar();
-#else
-    char* acSrcString = (char*)pDatum->m_sVch.azChar();
-#endif
     
     i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
 

@@ -320,7 +320,6 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, char** aazCrs, Format* pFmt)
       break;
       
     case DM_VCH: {
-#ifdef WITH_DATUM_U_ONLY
 
       i8 nChars = 0;
       b = StrLib::bExtractVarcharDefault(aazCrs,
@@ -330,12 +329,6 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, char** aazCrs, Format* pFmt)
       pDatum->vStzSize(nChars + 1);
       
       //pDatum->vStzDump();
-#else
-      b = StrLib::bExtractVarcharDefault(aazCrs,
-                                         pDatum->m_sVch.azChar(),
-                                         pCol->iColumnLength(),
-                                         pDatum->m_nChars);
-#endif
       
       break;
     }
@@ -528,20 +521,12 @@ bool RowExtractor::bExtractVch(Datum* pDatum, char** aazCrs, Format* pFmt)
   
   try {
     
-#ifdef WITH_DATUM_U_ONLY
-
     i8 nChars = 0;
     * pDatum = snVch.sz(aazCrs,pColumn,pFmt,bSawEnclosedLeading,
                       nChars);
 
     //pDatum->vStzDump();
 
-#else
-    
-    pDatum->m_sVch = snVch.sz(aazCrs,pColumn,pFmt,bSawEnclosedLeading,
-                              pDatum->m_nChars);
-    
-#endif
   }
   catch (Exception xException) {
     return false;

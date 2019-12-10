@@ -199,13 +199,9 @@ void Record::vAppend(Column* pCol, Row* pRow)
     case DM_TSP: vAppendTsp(pCol,&oDatum); break;
       
     case DM_VCH:
-#ifdef WITH_DATUM_U_ONLY
       oDatum.vStz(pRow->m_waColVal[i_Col].m_szVch);
       //oDatum.vStzDump();
       
-#else
-      oDatum.m_sVch.vCopy((Stz*)oDatum.u.m_xAnyVal.m_iInt);
-#endif
       vAppendVch(pCol,&oDatum);
       break;
       
@@ -355,11 +351,7 @@ void Record::vAppendVch(Column* pCol, Datum* pDatum)
   
   SP_Vch SP_Vch;
   
-#ifdef WITH_DATUM_U_ONLY
   m_sRecStr.vAppend(&m_azAppendCursor,SP_Vch.sz(pDatum->azChar()));
-#else
-  m_sRecStr.vAppend(&m_azAppendCursor,SP_Vch.sz(pDatum->m_sVch.azChar()));
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
