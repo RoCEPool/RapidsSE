@@ -565,7 +565,10 @@ void RowDecoder::vDecodeVchStringTail(Datum* pDatum, HeadLine* aHeadLine,
    */
   
   i8 nLength = aTail_str->w8_1B(+ C_U_1B);
+  
   byte* ayString = (byte*)aTail_str + C_U_1B + C_L_1B;
+  
+  //!<r> pDatum->vStz((char*)ayString,nLength);
   
   MemLib::vCopy((byte*)pDatum->m_sVch.azChar(),
                 (byte*)ayString,
@@ -575,6 +578,8 @@ void RowDecoder::vDecodeVchStringTail(Datum* pDatum, HeadLine* aHeadLine,
   * (pDatum->m_sVch.azChar() + nLength) = '\0';
   
   pDatum->m_nChars = nLength;
+  
+  //!<r>
 }
 
 /*----------------------------------------------------------------------------*/
