@@ -102,7 +102,8 @@ void Step::vJob_PipelineExecute(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operaotors for this node
   i8 iThisNode = AM::pGrid()->iThisNode();
-  vTrace("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
+  if (AM::bVerbose())
+    vTrace("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
 
   pPipeline->vSpawnOperatorJobs(pJob_Pipeline->m_xReqTuple.m_i_Session, iThisNode);
   
