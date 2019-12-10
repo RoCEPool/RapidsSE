@@ -516,6 +516,18 @@ void RowDecoder::vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
   i8 nCompressed = aShocoTail->w8_1B(+ C_U_1B);
   //RASSERT(nCompressed <= 4);
   
+  //!<r>
+//  i8 nDecompressed =
+//    Compress::iFromShoco(pDatum->azChar(),         // decompressed destination
+//                         pDatum->nStzSpace(),      // max destination
+//                         ((byte*)aShocoTail)       // from compressed source
+//                           + C_U_1B
+//                           + C_C_1B,
+//                         nCompressed);             // bytes compressed
+//
+//  pDatum->vStzSize(nDecompressed + 1);
+
+
   i8 nDecompressed =
   Compress::iFromShoco(pDatum->m_sVch.azChar(),  // decompressed destination
                        255,                      // max destination
@@ -525,6 +537,9 @@ void RowDecoder::vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
                        nCompressed);             // bytes compressed
   ASSERT(nDecompressed);
   pDatum->m_nChars = nDecompressed;
+  
+  //!<r>
+
 }
 
 /*----------------------------------------------------------------------------*/
