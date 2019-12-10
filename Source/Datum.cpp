@@ -371,8 +371,17 @@ bool Datum::bExtractVch(char** aazCrs, Format* pFmt)
   // varchar field value processing
   
   try {
+    //!<r>
+    
+//    i8 nChars = 0;
+//    * pDatum = snVch.sz(aazCrs,pColumn,pFmt,bSawEnclosedLeading,
+//                      nChars);
+//
     pDatum->m_sVch = snVch.sz(aazCrs,pColumn,pFmt,
                               bSawEnclosedLeading,pDatum->m_nChars);
+    
+    //!<r>
+
   }
   catch (Exception xException) {
     return false;
