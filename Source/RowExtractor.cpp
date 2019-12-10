@@ -319,12 +319,24 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, char** aazCrs, Format* pFmt)
       pDatum->u.m_xAnyVal.m_xTsp.m_uSpare  = 0;
       break;
       
-    case DM_VCH:
+    case DM_VCH: {
+      //!<r>
+      
+//      i8 nChars = 0;
+//      b = StrLib::bExtractVarcharDefault(aazCrs,
+//                                         pDatum->azChar(),
+//                                         pCol->iColumnLength(),
+//                                         nChars);
+//      pDatum->vStzSize(nChars + 1);
+      
       b = StrLib::bExtractVarcharDefault(aazCrs,
                                          pDatum->m_sVch.azChar(),
                                          pCol->iColumnLength(),
                                          pDatum->m_nChars);
+      //!<r>
+
       break;
+    }
       
     default:
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -513,8 +525,18 @@ bool RowExtractor::bExtractVch(Datum* pDatum, char** aazCrs, Format* pFmt)
   // varchar field value processing
   
   try {
-    pDatum->m_sVch = snVch.sz(aazCrs,pColumn,pFmt,
-                              bSawEnclosedLeading,pDatum->m_nChars);
+    
+    //!<r>
+
+//    i8 nChars = 0;
+//    * pDatum = snVch.sz(aazCrs,pColumn,pFmt,bSawEnclosedLeading,
+//                      nChars);
+
+    pDatum->m_sVch = snVch.sz(aazCrs,pColumn,pFmt,bSawEnclosedLeading,
+                              pDatum->m_nChars);
+    
+    //!<r>
+
   }
   catch (Exception xException) {
     return false;
