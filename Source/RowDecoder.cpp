@@ -347,9 +347,11 @@ void RowDecoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
   }
   
   else if (MC_STR_EMPTY == eEncoding) {
+    //!<r> pDatum->vStz(""_Stz);
     pDatum->m_nChars = 0;
     *pDatum->m_sVch.azChar() = '\0';
     pDatum->u.m_xAnyVal.m_iInt = 0;
+    //!<r>
   }
   
   else if (MC_STR_FIT_1L == eEncoding)
@@ -375,14 +377,16 @@ void RowDecoder::vDecodeVchLong(Datum* pDatum, HeadLine* aHeadLine,
   
   i8 nLength = aHeadLine->wGetLogical(i_Offset,C_2B);
   
+  //!<r> pDatum->vStz((char*)aHeadLine->ayAdrLogical(i_Offset + C_2B),nLength);
   MemLib::vCopy((byte*)pDatum->m_sVch.azChar(),
                 (byte*)aHeadLine->ayAdrLogical(i_Offset + C_2B),
                 nLength,
                 CN_ROWCOMPACTOR);
   
   * (pDatum->m_sVch.azChar() + nLength) = '\0';
-  
   pDatum->m_nChars = nLength;
+  //!<r>
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -419,6 +423,7 @@ void RowDecoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
                        nCompressed);
   ASSERT(nDecompressed > 0);
   pDatum->m_nChars = nDecompressed;
+  //!<r>
 }
 
 /*----------------------------------------------------------------------------*/

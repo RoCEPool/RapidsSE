@@ -66,6 +66,7 @@ namespace Datums
     void    vStz(Stz* szStz);
     void    vStz(char* acnChar, i8 nLength);
     i8      nStzSize(void);
+    void    vStzSize(i8 nSize);
     void    vToString(Stz* szStz);
     eCN     eValClass(void);
 
