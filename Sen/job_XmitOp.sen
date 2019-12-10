@@ -47,7 +47,6 @@
       ZK_ENDMARKER of
         "Operand:- ZK_ENDMARKER" .
         Operand[].handleEnd
-        false
       endof
 
       ZK_ENTBUFFER of

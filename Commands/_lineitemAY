@@ -51,8 +51,8 @@ IndexEntries 4000;
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
-time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
-//time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
+//time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
+time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
@@ -71,27 +71,15 @@ docol epochDump;
 //dumpidx lineitem LineItem_Idx1;
 
 //dumptbl lineitem;
-docol epochTake;
+//docol epochTake;
 
 
 print "**************************************************************************";
 print "scan lineitem | output;";
 print "**************************************************************************";
 
- pipeline export
- begin
- 
- stage stageA on all partitions:
- scanOp lineitem |  stageB
- 
- stage stageB on origin:
- outputOp
- 
- end
- ;
 
-docol epochDump;
-/*
+
  time pipeline export
  begin
  
@@ -103,7 +91,19 @@ docol epochDump;
  
  end
  ;
+
+/*
+ pipeline export
+ begin
  
+ stage stageA on all partitions:
+ scanOp lineitem |  stageB
+ stage stageB on origin:
+  outputOp
+ end
+ ;
+
+ docol epochDump;
  create table orders (
  O_ORDERKEY        INTEGER NOT NULL,
  O_CUSTKEY         INTEGER NOT NULL,

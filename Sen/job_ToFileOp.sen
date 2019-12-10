@@ -41,7 +41,6 @@
         "Operand:- ZK_ENDMARKER" .
         Operand[].handleEnd
         File0[].get file.delete
-        false
       endof
 
       ZK_STREAMDEF of

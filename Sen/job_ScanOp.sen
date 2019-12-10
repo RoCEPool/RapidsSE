@@ -90,7 +90,6 @@
 
         Operand[].newEndMarker
         Operand[].handleEnd
-        false
       endof
 
     endcase

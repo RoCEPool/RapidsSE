@@ -146,6 +146,8 @@ void Step::vOperandHandleEnd(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
   
+  vTrace("%s %lld\n"_Stz, pOp->m_sName.azChar(), *pOp->m_nLeftEndMarkers);
+  
   if (--pOp->m_nLeftEndMarkers == 0) {
     if (pOp->bIsCancelling()) {
       delete _pEndMarker(m_pRegSet->m_pOperand);
@@ -163,9 +165,12 @@ void Step::vOperandHandleEnd(void)
     if (pOp->m_bAckJobEnd)
       pOp->vAckJob();
     
+    m_pDataStack->vPushInt(0);
   }
-  else
+  else {
     delete (EndMarker*)m_pRegSet->m_pOperand;
+    m_pDataStack->vPushInt(1);
+  }
 
   EXIT();
 }
