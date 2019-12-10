@@ -592,6 +592,8 @@ void RowDecoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
   
   i8 nLength = aHeadLine->wGetLogical(i_Offset,C_1B);
   
+  //!<r> pDatum->vStz((char*)aHeadLine->ayAdrLogical(i_Offset + 1),nLength);
+
   MemLib::vCopy((byte*)pDatum->m_sVch.azChar(),
                 (byte*)aHeadLine->ayAdrLogical(i_Offset + 1),
                 nLength,
@@ -600,6 +602,9 @@ void RowDecoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
   * (pDatum->m_sVch.azChar() + nLength) = '\0';
   
   pDatum->m_nChars = nLength;
+  
+  //!<r>
+
   
 }
 
