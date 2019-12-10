@@ -45,7 +45,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can scan the table
   <tableNm> to sTableNm
-  sTableNm .
   sTableNm checkScanTable not if
     pJob_ScanOp <ERROR_JOB> !!logError exit
   then
@@ -71,7 +70,7 @@
     Operand[].kind case
 
       ZK_STARTMARKER of
-        "Operand:- ZK_STARTMARKER" .
+        "Operand:- ZK_STARTMARKER" .verbose
         Operand[].delete
 
         // new a stream def

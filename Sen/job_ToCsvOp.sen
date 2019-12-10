@@ -23,7 +23,7 @@
     Operand[].kind case
 
       ZK_CRWBUFFER of
-        "Operand:- ZK_CRWBUFFER" .
+        "Operand:- ZK_CRWBUFFER" .verbose
         Operand[].toCsv
         Operand[].get to Subset[]
         begin
@@ -38,12 +38,12 @@
       endof
 
       ZK_ENDMARKER of
-        "Operand:- ZK_ENDMARKER" .
+        "Operand:- ZK_ENDMARKER" .verbose
         Operand[].handleEnd
       endof
 
       ZK_STREAMDEF of
-        "Operand:- ZK_STREAMDEF" .
+        "Operand:- ZK_STREAMDEF" .verbose
         Operand[].delete
         StreamDef[].newToCsvStream
         true

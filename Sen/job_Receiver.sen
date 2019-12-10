@@ -95,10 +95,10 @@
 
     // -- -- -- -- -- -- -- --
     // examine job
-    pReceivedJob job.kind@ JK_GENERIC == if
+    //pReceivedJob job.kind@ JK_GENERIC == if
       //"received a generic job" .
-      pReceivedJob job.enameSet@ enameSet.asStr .
-    then
+    //  pReceivedJob job.enameSet@ enameSet.asStr .
+    //then
 
     // -- -- -- -- -- -- -- --
     // dispatch job

@@ -25,13 +25,13 @@
     Operand[].kind case
 
       ZK_ENDMARKER of
-        "Operand:- ZK_ENDMARKER" .
+        "Operand:- ZK_ENDMARKER" .verbose
         nSuperCount Operand[].handleAggEnd
         false
       endof
 
       ZK_IRWBUFFER of
-        "Operand:- ZK_IRWBUFFER" .
+        "Operand:- ZK_IRWBUFFER" .verbose
         Operand[].firstRow@
 
         nSuperCount
@@ -43,7 +43,7 @@
       endof
 
       ZK_STREAMDEF of
-        "Operand:- ZK_STREAMDEF" .
+        "Operand:- ZK_STREAMDEF" .verbose
         Operand[].get to StreamDef[]
         true
       endof
