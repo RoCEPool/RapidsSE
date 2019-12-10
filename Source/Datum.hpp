@@ -66,6 +66,7 @@ namespace Datums
     Stz*    szStz(void);
     void    vStz(Stz* szStz);
     void    vStz(char* acnChar, i8 nLength);
+    void    vStzDump(void);
     i8      nStzSize(void);
     void    vStzSize(i8 nSize);
     i8      nStzSpace(void);
