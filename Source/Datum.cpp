@@ -47,12 +47,18 @@ Datum::Datum(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_pCol   = nullptr;
+  m_pCol = nullptr;
   u.m_xAnyVal.m_iInt   = C_UNKNOWN;
-  m_nChars = 0;
+  
 
   u.m_xAnyVal.vMagic();
   u.m_xAnyVal.vClass(CN_NONE);
+
+#ifdef WITH_DATUM_U_ONLY
+  u.m_xStzVal.vStz(""_Stz);
+#else
+  m_nChars = 0;
+#endif
 
   //m_sVch
   
@@ -71,7 +77,6 @@ Datum::Datum(AnyVal* aAnyVal)
   
   m_pCol   = nullptr;
   u.m_xAnyVal.m_iInt   = C_UNKNOWN;
-  m_nChars = 0;
 
   u.m_xAnyVal.vMagic();
   u.m_xAnyVal.vClass(CN_NONE);

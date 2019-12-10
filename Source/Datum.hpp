@@ -11,10 +11,11 @@ namespace Datums
     Column* m_pCol;   // which column
     AllVal  u;        // column value
 
-    // - - - - - - -
+#ifndef WITH_DATUM_U_ONLY
     i8      m_nChars; // number of chars
     sVCH    m_sVch;   // vch value
-
+#endif
+  
     // must be last
     Footer m_xFooter;
   
