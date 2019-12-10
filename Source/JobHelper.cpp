@@ -90,7 +90,7 @@ bool JobHelper::bExtractArgs(EnameSet* pArgEnmSet,
     if (pSynEnmSet->szName(i_Syn)->bSame("__json__"_Stz)) {
       if (! bExtractJson(pArgEnmSet,pSynEnmSet,i_Syn,pTknVec,i_Tkn))
         return false;
-      pArgEnmSet->vPrint();
+      //pArgEnmSet->vPrint();
       continue;
     }
     
@@ -138,7 +138,7 @@ bool JobHelper::bExtractJson(EnameSet*   pArgEnmSet,
     pArgEnmSet->vAdd(pTkn_name->szText(),
                      pTkn_value->szText());
     
-    pArgEnmSet->vPrint();
+    //pArgEnmSet->vPrint();
 
 
     pTkn = pTknVec->pGet(++i_Tkn_);

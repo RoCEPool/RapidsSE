@@ -837,7 +837,7 @@ void Op::vToCmdStr(Stz* szCmdStr)
   szCmdStr->vCopy(m_sName);
   szCmdStr->vConcat(" "_Stz);
   m_pOpSpec->pEnameSet()->vAppend(szCmdStr);
-  vTrace("%s\n"_Stz, szCmdStr);
+  //vTrace("%s\n"_Stz, szCmdStr);
 }
 
 /*----------------------------------------------------------------------------*/

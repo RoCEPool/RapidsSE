@@ -196,7 +196,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
   }
   
   EnameSet* pEnameSet_ji = pJobInfoEnameSet();
-  pEnameSet_ji->vPrint();
+  //pEnameSet_ji->vPrint();
   
   if (pEnameSet_ji) {
     m_eJobType = (eJT) pEnameSet_ji->iValue("<?jobType?>"_Stz);

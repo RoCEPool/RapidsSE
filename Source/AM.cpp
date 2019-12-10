@@ -1047,7 +1047,7 @@ Job* AM::pNewJobUniversal( Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId)
   pJobUniversal->pEnameSet()->vAdd("<jobNm>"_Stz,pOp->m_sName);
   pJobUniversal->vSeed(SS_SEED_REQ);
 
-  pJobUniversal->pEnameSet()->vPrint();
+  //pJobUniversal->pEnameSet()->vPrint();
   
   return pJobUniversal;
 }

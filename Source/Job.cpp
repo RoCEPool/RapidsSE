@@ -245,12 +245,12 @@ Job::~Job(void) noexcept(false)
   
   //vTrace("Deleting job: %s\n"_Stz,aCN[eClass()]);
   
-  if (bHasEnameTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
-    
-    SP_EnmSet spEnameSet;
-    vPrint("Job Delete: %s\n"_Stz,spEnameSet.sz(&m_oEnameSet));
-    //m_oEnameSet.vPrint();
-  }
+//  if (bHasEnameTag(C_TAG_LIFE) || JK_GENERIC == m_eJobKind) {
+//
+//    SP_EnmSet spEnameSet;
+//    vPrint("Job Delete: %s\n"_Stz,spEnameSet.sz(&m_oEnameSet));
+//    //m_oEnameSet.vPrint();
+//  }
 
   vIncStepNo();
   if (m_bWasReceived) {

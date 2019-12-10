@@ -42,7 +42,7 @@ void Step::vNodeNew(void)
   Job* pJob = AM::pThisTLSJob();
   EnameSet* pEnameSet = pJob->pEnameSet();
   
-  pEnameSet->vPrint();
+  //pEnameSet->vPrint();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s32 sNodeNm;
