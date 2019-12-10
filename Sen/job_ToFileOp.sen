@@ -40,6 +40,7 @@
       ZK_ENDMARKER of
         "Operand:- ZK_ENDMARKER" .verbose
         Operand[].handleEnd
+        File0[].get file.close
         File0[].get file.delete
       endof
 
