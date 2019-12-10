@@ -203,7 +203,7 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
     }
   }
   
-  //if (AM::bVerbose())
+  if (AM::bVerbose())
     vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
   
   vDebugPoint();
