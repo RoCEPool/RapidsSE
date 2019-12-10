@@ -482,13 +482,25 @@ void RowDecoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
   
   //MemLib::vWordDump(caShoco+2,3 * sizeof(SpaceUnit));
   
+  //!<r>
+//  i8 nChars =
+//      Compress::iFromShoco(pDatum->azChar(),
+//                           pDatum->nStzSpace(),
+//                           (byte*)caShoco+2,
+//                           nCompressed);
+//  ASSERT(nChars);
+//  pDatum->vStzSize(nChars + 1);
+
+  
+
   i8 nDecompressed =
-  Compress::iFromShoco((char*)pDatum->m_sVch.azChar(),
-                       255,
-                       (byte*)caShoco+2,
-                       nCompressed);
+    Compress::iFromShoco((char*)pDatum->m_sVch.azChar(),
+                         255,
+                         (byte*)caShoco+2,
+                         nCompressed);
   ASSERT(nDecompressed);
   pDatum->m_nChars = nDecompressed;
+  //!<r>
 }
 
 /*----------------------------------------------------------------------------*/
