@@ -417,14 +417,12 @@ void RowDecoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
   
   //!<r>
 //  i8 nDecompressed =
-//    Compress::iFromShoco((char*)pDatum->m_sVch.azChar(),
-//                         pDatum->m_sVch.nSpace(),
+//    Compress::iFromShoco(pDatum->azChar(),
+//                         pDatum->nStzSpace(),
 //                         aHeadLine->ayAdrLogical(i_Offset + C_C_1B),
-//                         //((byte*)aHeadLine)+i_Offset+1,
 //                         nCompressed);
-//  ASSERT(nDecompressed > 0);
-//  pDatum->m_nChars = nDecompressed;
-
+//
+//  pDatum->vStzSize(nDecompressed + 1);
   
   i8 nDecompressed =
     Compress::iFromShoco((char*)pDatum->m_sVch.azChar(),
