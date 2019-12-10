@@ -328,7 +328,8 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, char** aazCrs, Format* pFmt)
                                          pCol->iColumnLength(),
                                          nChars);
       pDatum->vStzSize(nChars + 1);
-
+      
+      //pDatum->vStzDump();
 #else
       b = StrLib::bExtractVarcharDefault(aazCrs,
                                          pDatum->m_sVch.azChar(),
@@ -532,6 +533,8 @@ bool RowExtractor::bExtractVch(Datum* pDatum, char** aazCrs, Format* pFmt)
     i8 nChars = 0;
     * pDatum = snVch.sz(aazCrs,pColumn,pFmt,bSawEnclosedLeading,
                       nChars);
+
+    //pDatum->vStzDump();
 
 #else
     

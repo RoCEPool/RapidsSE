@@ -352,6 +352,7 @@ void RowDecoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
 
     pDatum->vStz(""_Stz);
     
+    //pDatum->vStzDump();
 #else
     
     pDatum->m_nChars = 0;
@@ -388,6 +389,7 @@ void RowDecoder::vDecodeVchLong(Datum* pDatum, HeadLine* aHeadLine,
 
   pDatum->vStz((char*)aHeadLine->ayAdrLogical(i_Offset + C_2B),nLength);
   
+  //pDatum->vStzDump();
 #else
   
   MemLib::vCopy((byte*)pDatum->m_sVch.azChar(),
@@ -437,6 +439,8 @@ void RowDecoder::vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
 
   pDatum->vStzSize(nDecompressed + 1);
   
+  //pDatum->vStzDump();
+
 #else
   
   i8 nDecompressed =
@@ -508,6 +512,8 @@ void RowDecoder::vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
   ASSERT(nChars);
   pDatum->vStzSize(nChars + 1);
   
+  //pDatum->vStzDump();
+
 #else
   
   i8 nDecompressed =
@@ -557,7 +563,8 @@ void RowDecoder::vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
                          nCompressed);             // bytes compressed
 
   pDatum->vStzSize(nDecompressed + 1);
-
+  
+  //pDatum->vStzDump();
 #else
   
   i8 nDecompressed =
@@ -604,6 +611,8 @@ void RowDecoder::vDecodeVchStringTail(Datum* pDatum, HeadLine* aHeadLine,
 
   pDatum->vStz((char*)ayString,nLength);
  
+  //pDatum->vStzDump();
+
 #else
   
   MemLib::vCopy((byte*)pDatum->m_sVch.azChar(),
@@ -631,6 +640,8 @@ void RowDecoder::vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
 #ifdef WITH_DATUM_U_ONLY
 
   pDatum->vStz((char*)aHeadLine->ayAdrLogical(i_Offset + 1),nLength);
+
+  //pDatum->vStzDump();
 
 #else
   

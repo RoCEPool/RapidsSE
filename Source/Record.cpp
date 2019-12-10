@@ -201,11 +201,12 @@ void Record::vAppend(Column* pCol, Row* pRow)
     case DM_VCH:
 #ifdef WITH_DATUM_U_ONLY
       oDatum.vStz(pRow->m_waColVal[i_Col].m_szVch);
-      vAppendVch(pCol,&oDatum);
+      //oDatum.vStzDump();
+      
 #else
       oDatum.m_sVch.vCopy((Stz*)oDatum.u.m_xAnyVal.m_iInt);
-      vAppendVch(pCol,&oDatum);
 #endif
+      vAppendVch(pCol,&oDatum);
       break;
       
     default:

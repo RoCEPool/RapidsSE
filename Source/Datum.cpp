@@ -56,6 +56,7 @@ Datum::Datum(void)
 
 #ifdef WITH_DATUM_U_ONLY
   u.m_xStzVal.vStz(""_Stz);
+  //vStzDump();
 #else
   m_nChars = 0;
 #endif
@@ -570,7 +571,16 @@ void Datum::vStzDump(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  vTrace("|%02lld|%s|\n"_Stz,nStzSize(),szStz());
+  vTrace("vStzDump() : "_Stz);
+  
+  if (m_pCol) {
+    vTrace("%s %s "_Stz,m_pCol->szColNm(),aCT[m_pCol->eColumnType()]);
+  }
+  
+  vTrace("|%02lld|%02lld|%s|\n"_Stz,
+         nStzSize(),
+         szStz()->iLength(),
+         szStz());
 }
 
 /*----------------------------------------------------------------------------*/

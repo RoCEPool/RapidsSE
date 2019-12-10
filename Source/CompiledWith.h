@@ -79,7 +79,7 @@
 
 //#define WITH_PULSING             // code for pulsing compiled in
 
-//#define WITH_DATUM_U_ONLY        // code for just using Datum.u
+#define WITH_DATUM_U_ONLY        // code for just using Datum.u
 
 /*============================================================================*/
 /* end                                                                        */
