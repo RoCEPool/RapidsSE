@@ -94,7 +94,7 @@
 /*----------------------------------------------------------------------------*/
 : run_entryHook
 
-  "run_entryHook" .
+  //"run_entryHook" .
 
   r@ locate log::markEntry
 
@@ -209,7 +209,7 @@
 /*----------------------------------------------------------------------------*/
 : run_exitHook
 
-  "run_exitHook" .
+  //"run_exitHook" .
 
   r@ locate log::markExit
 
@@ -228,7 +228,7 @@
 /*----------------------------------------------------------------------------*/
 : std_exitHook
 
-  "std_exitHook" .
+  //"std_exitHook" .
 
   r@ locate log::markExit
 ;
