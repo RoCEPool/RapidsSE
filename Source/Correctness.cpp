@@ -59,6 +59,10 @@ void Correctness::vTraceWith(void)
   vTrace("  WITH_CORECTNESS_ALGEBRA\n"_Stz);
 #endif
   
+#ifdef WITH_DATUM_U_ONLY
+  vTrace("  WITH_DATUM_U_ONLY\n"_Stz);
+#endif
+  
 #ifdef WITH_DEBUG_VERSION
   vTrace("  WITH_DEBUG_VERSION\n"_Stz);
 #endif
