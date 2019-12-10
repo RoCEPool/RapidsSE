@@ -9,16 +9,12 @@ namespace Datums
   {
   public:
     Column* m_pCol;   // which column
-    Dtm     m_wDtm;   // the value
-  
+    AllVal  u;        // column value
+
     // - - - - - - -
     i8      m_nChars; // number of chars
     sVCH    m_sVch;   // vch value
 
-  
-    // - - - - - - -
-    AllVal  m_xAllVal;
-  
     // must be last
     Footer m_xFooter;
   
@@ -27,8 +23,19 @@ namespace Datums
     void  operator delete(void*);
 
     Datum(void);
+    Datum(AnyVal*);
    ~Datum(void) noexcept(false);
   
+    // auto conversion
+    operator AnyVal*(void);
+  
+    void operator =(AnyVal*);
+  
+    void operator =(Cell* aFip);
+    void operator =(i8 iInt);
+    void operator =(Object* pObj);
+    void operator =(Stz* szStz);
+
     bool bExtractDtm(char** aazCrs, Format* pFmt);
   
     bool bExtractBcd(char** aazCrs, Format* pFmt);
@@ -44,7 +51,28 @@ namespace Datums
     bool bIsNull(void);
     void vSetNull(void);
   
-  private:
+    // - - - - - - - - - - - - - - - -
+  
+    AnyVal* aAnyVal(void);
+    char*   azChar(void);
+    void    vCopy(AnyVal* aAnyVal);
+    AnyVal* aEmbeddedAnyVal(void);
+    Cell*   aFip(void);
+    i8      iInt(void);
+    bool    bIsInt(void);
+    Object* pObj(void);
+    i8      nStackUsage(void);
+    Stz*    szStz(void);
+    void    vStz(Stz* szStz);
+    void    vStz(char* acnChar, i8 nLength);
+    i8      nStzSize(void);
+    void    vStzSize(i8 nSize);
+    i8      nStzSpace(void);
+    void    vToString(Stz* szStz);
+    eCN     eValClass(void);
+
+  
+  public:
     Footer* aFooter(void);
   };
   

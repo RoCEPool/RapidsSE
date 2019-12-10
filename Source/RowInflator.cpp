@@ -282,21 +282,21 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
       case MC_DTE_E0_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_0);
+        vDteFromEdt((aiColVal-1),C_ERA_0);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DTE_E1_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_1);
+        vDteFromEdt((aiColVal-1),C_ERA_1);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DTE_E2_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_2);
+        vDteFromEdt((aiColVal-1),C_ERA_2);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -697,21 +697,21 @@ void RowInflator::vInflateColumn(Row* pRow, i8 iColumnInto, HeadLine* aHeadLine,
       case MC_DTE_E0_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_0);
+        vDteFromEdt((aiColVal-1),C_ERA_0);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DTE_E1_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_1);
+        vDteFromEdt((aiColVal-1),C_ERA_1);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DTE_E2_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_2);
+        vDteFromEdt((aiColVal-1),C_ERA_2);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -1117,21 +1117,21 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
       case MC_DTE_E0_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_0);
+        vDteFromEdt((aiColVal-1),C_ERA_0);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DTE_E1_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_1);
+        vDteFromEdt((aiColVal-1),C_ERA_1);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DTE_E2_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_2);
+        vDteFromEdt((aiColVal-1),C_ERA_2);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -1485,21 +1485,21 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
       case MC_DTE_E0_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_0);
+        vDteFromEdt((aiColVal-1),C_ERA_0);
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DTE_E1_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_1);
+        vDteFromEdt((aiColVal-1),C_ERA_1);
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_DTE_E2_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
-        vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_2);
+        vDteFromEdt((aiColVal-1),C_ERA_2);
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -

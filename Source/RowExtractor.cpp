@@ -42,7 +42,7 @@ void RowExtractor::vAddElement(EntWrk* pEntWrk, Column* pCol,
     return;
   }
 
-  nBytes = Dtm::nCopy((byte*)aDst,oDatum.m_wDtm.m_iInt);
+  nBytes = Dtm::nCopy((byte*)aDst,oDatum.u.m_xAnyVal.m_iInt);
   pEntWrk->vIncKeyBytes(nBytes);
 }
 
@@ -249,13 +249,13 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, char** aazCrs, Format* pFmt)
   
   switch (eDatum) {
     case DM_BCD:
-      b = StrLib::bExtractDecimal(aazCrs,pDatum->m_wDtm.m_iBcd,
+      b = StrLib::bExtractDecimal(aazCrs,pDatum->u.m_xAnyVal.m_iBcd,
                                   pCol->iColumnLength(),
                                   pCol->iColumnScale());
       break;
       
     case DM_BOL:
-      b = StrLib::bExtractBoolean(aazCrs,pDatum->m_wDtm.m_iBol);
+      b = StrLib::bExtractBoolean(aazCrs,pDatum->u.m_xAnyVal.m_iBol);
       break;
       
     case DM_DTE:
@@ -265,24 +265,24 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, char** aazCrs, Format* pFmt)
       if (!b)
         break;
       
-      pDatum->m_wDtm.xDte.m_uYearDelta  = iYear - C_YEAR_BASE;
-      pDatum->m_wDtm.xDte.m_uMonth = iMonth;
-      pDatum->m_wDtm.xDte.m_uDay   = iDay;
-      pDatum->m_wDtm.xDte.m_uSpare = 0;
+      pDatum->u.m_xAnyVal.m_xDte.m_uYearDelta  = iYear - C_YEAR_BASE;
+      pDatum->u.m_xAnyVal.m_xDte.m_uMonth = iMonth;
+      pDatum->u.m_xAnyVal.m_xDte.m_uDay   = iDay;
+      pDatum->u.m_xAnyVal.m_xDte.m_uSpare = 0;
       break;
       
     case DM_FLT:
-      b = StrLib::bExtractFloat(aazCrs,pDatum->m_wDtm.m_dFlt);
+      b = StrLib::bExtractFloat(aazCrs,pDatum->u.m_xAnyVal.m_dFlt);
       break;
       
     case DM_INT:
-      b = StrLib::bExtractInteger(aazCrs,&pDatum->m_wDtm.m_iInt, true/*bWithSign*/);
+      b = StrLib::bExtractInteger(aazCrs,&pDatum->u.m_xAnyVal.m_iInt, true/*bWithSign*/);
       break;
       
     case DM_IVL:
       b = StrLib::bExtractInterval(aazCrs, iSecond, iMilli);
-      pDatum->m_wDtm.xIvl.m_uSecond = iSecond;
-      pDatum->m_wDtm.xIvl.m_uMicro  = iMilli*C_1K;
+      pDatum->u.m_xAnyVal.m_xIvl.m_uSecond = iSecond;
+      pDatum->u.m_xAnyVal.m_xIvl.m_uMicro  = iMilli*C_1K;
       break;
       
     case DM_TME:
@@ -291,11 +291,11 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, char** aazCrs, Format* pFmt)
       if (!b)
         break;
       
-      pDatum->m_wDtm.xTme.m_uHour   = iHour;
-      pDatum->m_wDtm.xTme.m_uMinute = iMinute;
-      pDatum->m_wDtm.xTme.m_uSecond = iSecond;
-      pDatum->m_wDtm.xTme.m_uMicro  = iMicro;
-      pDatum->m_wDtm.xTme.m_uSpare  = 0;
+      pDatum->u.m_xAnyVal.m_xTme.m_uHour   = iHour;
+      pDatum->u.m_xAnyVal.m_xTme.m_uMinute = iMinute;
+      pDatum->u.m_xAnyVal.m_xTme.m_uSecond = iSecond;
+      pDatum->u.m_xAnyVal.m_xTme.m_uMicro  = iMicro;
+      pDatum->u.m_xAnyVal.m_xTme.m_uSpare  = 0;
       
       break;
       
@@ -308,15 +308,15 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, char** aazCrs, Format* pFmt)
       if (!b)
         break;
       
-      pDatum->m_wDtm.xTsp.m_uYearDelta   = iYear - C_YEAR_BASE;
-      pDatum->m_wDtm.xTsp.m_uMonth  = iMonth;
-      pDatum->m_wDtm.xTsp.m_uDay    = iDay;
-      pDatum->m_wDtm.xTsp.m_uHour   = iHour;
-      pDatum->m_wDtm.xTsp.m_uMinute = iMinute;
-      pDatum->m_wDtm.xTsp.m_uSecond = iSecond;
-      pDatum->m_wDtm.xTsp.m_uMicro  = iMicro;
-      pDatum->m_wDtm.xTsp.m_uLocal  = C_TSP_LOCAL;
-      pDatum->m_wDtm.xTsp.m_uSpare  = 0;
+      pDatum->u.m_xAnyVal.m_xTsp.m_uYearDelta   = iYear - C_YEAR_BASE;
+      pDatum->u.m_xAnyVal.m_xTsp.m_uMonth  = iMonth;
+      pDatum->u.m_xAnyVal.m_xTsp.m_uDay    = iDay;
+      pDatum->u.m_xAnyVal.m_xTsp.m_uHour   = iHour;
+      pDatum->u.m_xAnyVal.m_xTsp.m_uMinute = iMinute;
+      pDatum->u.m_xAnyVal.m_xTsp.m_uSecond = iSecond;
+      pDatum->u.m_xAnyVal.m_xTsp.m_uMicro  = iMicro;
+      pDatum->u.m_xAnyVal.m_xTsp.m_uLocal  = C_TSP_LOCAL;
+      pDatum->u.m_xAnyVal.m_xTsp.m_uSpare  = 0;
       break;
       
     case DM_VCH:
@@ -344,7 +344,7 @@ bool RowExtractor::bExtractBcd(Datum* pDatum, char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iBcd = snBcd.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iBcd = snBcd.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -363,7 +363,7 @@ bool RowExtractor::bExtractBol(Datum* pDatum, char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iBol = snBol.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iBol = snBol.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -382,7 +382,7 @@ bool RowExtractor::bExtractDte(Datum* pDatum, char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iDte = snDte.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iDte = snDte.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -401,7 +401,7 @@ bool RowExtractor::bExtractFlt(Datum* pDatum, char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_dFlt = snFlt.d(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_dFlt = snFlt.d(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -420,7 +420,7 @@ bool RowExtractor::bExtractInt(Datum* pDatum, char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iInt = snInt.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iInt = snInt.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -448,7 +448,7 @@ bool RowExtractor::bExtractIvl(Datum* pDatum, char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iIvl = snIvl.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iIvl = snIvl.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -467,7 +467,7 @@ bool RowExtractor::bExtractTme(Datum* pDatum, char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -486,7 +486,7 @@ bool RowExtractor::bExtractTsp(Datum* pDatum, char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;

@@ -32,6 +32,7 @@ namespace Library
       _Ivl  xIvl;
       _Tme  xTme;
       _Tsp  xTsp;
+      
       Stz*  m_szVch;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

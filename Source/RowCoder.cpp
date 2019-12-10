@@ -145,28 +145,33 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 /* convert a Edt into an Dte (in situ)                                        */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDteFromEdt(Dtm* aDte, i8 iEraBaseYear)
+void RowCoder::vDteFromEdt(i8* awEdtDte_rpl, i8 iEraBaseYear)
 {
-  i8 iYearInEra = aDte->xEdt.m_uYearInEra;
-  i8 iMonth     = aDte->xEdt.m_uMonth;
-  i8 iDay       = aDte->xEdt.m_uDay;
+  _Edt* aEdt = (_Edt*)awEdtDte_rpl;
   
-  aDte->m_iDte = 0;
+  i8 iYearInEra = aEdt->m_uYearInEra;
+  i8 iMonth     = aEdt->m_uMonth;
+  i8 iDay       = aEdt->m_uDay;
   
-  aDte->xDte.m_uYearDelta = iYearInEra + iEraBaseYear;
-  aDte->xDte.m_uMonth     = iMonth;
-  aDte->xDte.m_uDay       = iDay;
+  * awEdtDte_rpl = 0;
+  
+  _Dte* aDte = (_Dte*)awEdtDte_rpl;
+  
+  aDte->m_uYearDelta = iYearInEra + iEraBaseYear;
+  aDte->m_uMonth     = iMonth;
+  aDte->m_uDay       = iDay;
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert a Dte into an Edt                                                  */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vDteIntoEdt(Dtm wDte,
-                           Dtm& wEdt_, i8& iEra_)
+void RowCoder::vDteIntoEdt(i8 wDte_src, i8* awEdt_dst, i8& iEra_)
 {
-  i8 iYearDelta = wDte.xDte.m_uYearDelta;
-  i8 iMonth     = wDte.xDte.m_uMonth;
-  i8 iDay       = wDte.xDte.m_uDay;
+  _Dte* aDte = (_Dte*) & wDte_src;
+  
+  i8 iYearDelta = aDte->m_uYearDelta;
+  i8 iMonth     = aDte->m_uMonth;
+  i8 iDay       = aDte->m_uDay;
   
   i8 iYearInEra;
   
@@ -183,10 +188,13 @@ void RowCoder::vDteIntoEdt(Dtm wDte,
     iYearInEra = iYearDelta - C_ERA_2;
   }
   
-  wEdt_.m_iEdt = 0;
-  wEdt_.xEdt.m_uYearInEra = iYearInEra;
-  wEdt_.xEdt.m_uMonth     = iMonth;
-  wEdt_.xEdt.m_uDay       = iDay;
+  _Edt* aEdt = (_Edt*)awEdt_dst;
+  
+  * awEdt_dst = 0;
+
+  aEdt->m_uYearInEra = iYearInEra;
+  aEdt->m_uMonth     = iMonth;
+  aEdt->m_uDay       = iDay;
 }
 
 /*----------------------------------------------------------------------------*/

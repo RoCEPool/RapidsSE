@@ -72,7 +72,7 @@ void Step::vDirGetCurrent(void)
 {
   ENTRY(); // ENTRY("vDirGetCurrent"_Stz);
   
-  GenVar xDirPath;
+  Datum xDirPath;
   
   s256 sDirPath;
   

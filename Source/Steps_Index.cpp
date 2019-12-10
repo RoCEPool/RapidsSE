@@ -311,7 +311,7 @@ void Step::vIndexLowerBound(void)
   
   FetchBuffer* pFetchBuffer;
   
-  GenVar xVariable;
+  Datum xVariable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
@@ -481,8 +481,8 @@ void Step::vIndexRange(void)
 {
   ENTRY(); // ENTRY("vIndexRange"_Stz);
   
-  GenVar xValWrkLwr;
-  GenVar xValWrkUpr;
+  Datum xValWrkLwr;
+  Datum xValWrkUpr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
@@ -786,7 +786,7 @@ void Step::vIndexUpperBound(void)
   ENTRY(); // ENTRY("vIndexUpperBound"_Stz);
   
 
-  GenVar xVariable;
+  Datum xVariable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive

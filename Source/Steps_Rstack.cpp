@@ -49,12 +49,12 @@ void Step::vRstackCsPick(void)
   i8 nThValue = m_pDataStack->iPopAsInt(__func__);
   
   // pop one return address
-//  GenVar xRtnWsp;
+//  Datum xRtnWsp;
 //  bool b = m_pReturnStack->bPop(&xRtnWsp);
 //  ASSERT(b);
   
   // copy n-th value onto top
-  GenVar xVariable;
+  Datum xVariable;
   m_pReturnStack->vPeekVal(nThValue,xVariable);
   m_pReturnStack->vPushVal(xVariable);
   
@@ -74,7 +74,7 @@ void Step::vRstackCsRoll(void)
   // pop n values
   i8 nValues = m_pDataStack->iPopInt(__func__);
   
-  GenVar xValMid;
+  Datum xValMid;
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
     m_pDataStack->vPopVal(xValMid,__func__);
     
@@ -130,7 +130,7 @@ void Step::vRstackFetch(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pReturnStack->vPeekVal(0,xVariable);
   
@@ -148,8 +148,8 @@ void Step::vRstackFetchTwo(void)
   
   // could do this directly on stack
   
-  GenVar xValX0;
-  GenVar xValX1;
+  Datum xValX0;
+  Datum xValX1;
   
   m_pReturnStack->vPeekVal(0,xValX0);
   m_pReturnStack->vPeekVal(1,xValX1);
@@ -171,7 +171,7 @@ void Step::vRstackPick(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pReturnStack->vPeekVal(iPick,xVariable);
   
@@ -187,14 +187,14 @@ void Step::vRstackReverse(void)
 {
   ENTRY(); // ENTRY("vRstackReverse"_Stz);
   
-  GenVar xVal1;
-  GenVar xVal2;
-  GenVar xVal3;
-  GenVar xVal4;
-  GenVar xVal5;
-  GenVar xVal6;
-  GenVar xVal7;
-  GenVar xVal8;
+  Datum xVal1;
+  Datum xVal2;
+  Datum xVal3;
+  Datum xVal4;
+  Datum xVal5;
+  Datum xVal6;
+  Datum xVal7;
+  Datum xVal8;
   
   i8 nValues = m_pDataStack->iPopInt(__func__);
   
@@ -230,8 +230,8 @@ void Step::vRstackRoll(void)
 {
   ENTRY(); // ENTRY("vRstackRoll"_Stz);
   
-  GenVar xValA;
-  GenVar xValX;
+  Datum xValA;
+  Datum xValX;
   
   i8 nValues = m_pDataStack->iPopInt(__func__);
   
@@ -261,8 +261,8 @@ void Step::vRstackRollInv(void)
 {
   ENTRY(); // ENTRY("vRstackRollInv"_Stz);
   
-  GenVar xValZ;
-  GenVar xValX;
+  Datum xValZ;
+  Datum xValX;
   
   i8 nValues = m_pDataStack->iPopInt(__func__);
   
@@ -305,10 +305,10 @@ void Step::vRstackSwap(void)
 {
   ENTRY(); // ENTRY("vRstackSwap"_Stz);
   
-  GenVar xValA;
+  Datum xValA;
   m_pReturnStack->vPopVal(xValA,__func__);
   
-  GenVar xValB;
+  Datum xValB;
   m_pReturnStack->vPopVal(xValB,__func__);
 
   m_pReturnStack->vPushVal(xValA);
@@ -324,7 +324,7 @@ void Step::vRstackToP(void)
 {
   ENTRY(); // ENTRY("vRstackToP"_Stz);
   
-  GenVar xVal;
+  Datum xVal;
   m_pReturnStack->vPopVal(xVal,__func__);
   
   m_pDataStack->vPushVal(xVal);
@@ -339,7 +339,7 @@ void Step::vRstackToR(void)
 {
   ENTRY(); // ENTRY("vRstackToR"_Stz);
   
-  GenVar xValOpaque;
+  Datum xValOpaque;
   m_pDataStack->vPopVal(xValOpaque,__func__);
   
   m_pReturnStack->vPushVal(xValOpaque);
@@ -354,10 +354,10 @@ void Step::vRstackToRTwo(void)
 {
   ENTRY(); // ENTRY("vRstackToRTwo"_Stz);
   
-  GenVar xValX0;
+  Datum xValX0;
   m_pDataStack->vPopVal(xValX0,__func__);
 
-  GenVar xValX1;
+  Datum xValX1;
   m_pDataStack->vPopVal(xValX1,__func__);
   
   m_pReturnStack->vPushVal(xValX1);
@@ -375,7 +375,7 @@ void Step::vRstack0(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pReturnStack->vPeekVal(0,xVariable);
   
@@ -393,7 +393,7 @@ void Step::vRstack1(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pReturnStack->vPeekVal(1,xVariable);
   
@@ -411,7 +411,7 @@ void Step::vRstack2(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pReturnStack->vPeekVal(2,xVariable);
   
@@ -429,7 +429,7 @@ void Step::vRstack3(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pReturnStack->vPeekVal(3,xVariable);
   
@@ -447,7 +447,7 @@ void Step::vRstack4(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pReturnStack->vPeekVal(4,xVariable);
   
@@ -465,7 +465,7 @@ void Step::vRstack5(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pReturnStack->vPeekVal(5,xVariable);
   
@@ -483,7 +483,7 @@ void Step::vRstack6(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pReturnStack->vPeekVal(6,xVariable);
   
@@ -501,7 +501,7 @@ void Step::vRstack7(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pReturnStack->vPeekVal(7,xVariable);
   
@@ -519,7 +519,7 @@ void Step::vRstack8(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pReturnStack->vPeekVal(8,xVariable);
   
@@ -537,7 +537,7 @@ void Step::vRstack9(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pReturnStack->vPeekVal(9,xVariable);
   

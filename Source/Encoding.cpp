@@ -332,7 +332,7 @@ void Encoding::vEncodeDte(_ColEnc& xColEnc, Dtm wColVal)
   // encode as: MC_DTE_En_2B + {D}
   
   i8 iEra = 0;
-  vDteIntoEdt(wColVal,xColEnc.m_wDataCode,iEra);
+  vDteIntoEdt(wColVal.m_iDte,&xColEnc.m_wDataCode.m_iEdt,iEra);
   
        if (C_ERA_0 == iEra) xColEnc.m_eMetaCode= MC_DTE_E0_2B;
   else if (C_ERA_1 == iEra) xColEnc.m_eMetaCode= MC_DTE_E1_2B;

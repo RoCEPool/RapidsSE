@@ -43,7 +43,7 @@ void Step::vAstackClass(void)
   
   i8 nTh = m_pDataStack->iPopInt(__func__);
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pAuxStack->vPeekVal(nTh,xVariable);
   
@@ -89,7 +89,7 @@ void Step::vAstackDup(void)
   
   // could just copy from stack back into stack
   
-  GenVar xValA;
+  Datum xValA;
   m_pAuxStack->vPopVal(xValA,__func__);
   
   m_pAuxStack->vPushVal(xValA);
@@ -107,7 +107,7 @@ void Step::vAstackFetch(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pAuxStack->vPeekVal(0,xVariable);
   
@@ -123,10 +123,10 @@ void Step::vAstackNip(void)
 {
   ENTRY(); // ENTRY("vAstackNip"_Stz);
   
-  GenVar xValA;
+  Datum xValA;
   m_pAuxStack->vPopVal(xValA,__func__);
   
-  GenVar xValB;
+  Datum xValB;
   m_pAuxStack->vPopVal(xValB,__func__);
 
   m_pAuxStack->vPushVal(xValA);
@@ -145,7 +145,7 @@ void Step::vAstackPick(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pAuxStack->vPeekVal(iPick,xVariable);
   
@@ -161,14 +161,14 @@ void Step::vAstackReverse(void)
 {
   ENTRY(); // ENTRY("vAstackReverse"_Stz);
   
-  GenVar xVal1;
-  GenVar xVal2;
-  GenVar xVal3;
-  GenVar xVal4;
-  GenVar xVal5;
-  GenVar xVal6;
-  GenVar xVal7;
-  GenVar xVal8;
+  Datum xVal1;
+  Datum xVal2;
+  Datum xVal3;
+  Datum xVal4;
+  Datum xVal5;
+  Datum xVal6;
+  Datum xVal7;
+  Datum xVal8;
   
   i8 nValues = m_pDataStack->iPopInt(__func__);
   
@@ -215,10 +215,10 @@ void Step::vAstackSwap(void)
 {
   ENTRY(); // ENTRY("vAstackSwap"_Stz);
   
-  GenVar xValA;
+  Datum xValA;
   m_pAuxStack->vPopVal(xValA,__func__);
   
-  GenVar xValB;
+  Datum xValB;
   m_pAuxStack->vPopVal(xValB,__func__);
 
   m_pAuxStack->vPushVal(xValA);
@@ -234,7 +234,7 @@ void Step::vAstackToA(void)
 {
   ENTRY(); // ENTRY("vAstackToA"_Stz);
   
-  GenVar xValOpaque;
+  Datum xValOpaque;
   m_pDataStack->vPopVal(xValOpaque,__func__);
   
   m_pAuxStack->vPushVal(xValOpaque);
@@ -249,7 +249,7 @@ void Step::vAstackToD(void)
 {
   ENTRY(); // ENTRY("vAstackToD"_Stz);
   
-  GenVar xVal;
+  Datum xVal;
   m_pAuxStack->vPopVal(xVal,__func__);
   
   m_pDataStack->vPushVal(xVal);
@@ -266,7 +266,7 @@ void Step::vAstackTransfer(void)
   
   Task* pThatTask = _pTask(m_pDataStack->pPopPtr(__func__));
   
-  GenVar xVariable;
+  Datum xVariable;
   m_pDataStack->vPopVal(xVariable,__func__);
   
   pThatTask->m_okLock.vGrabWrite();
@@ -285,7 +285,7 @@ void Step::vAstack0(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pAuxStack->vPeekVal(0,xVariable);
   
@@ -303,7 +303,7 @@ void Step::vAstack1(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pAuxStack->vPeekVal(1,xVariable);
   
@@ -321,7 +321,7 @@ void Step::vAstack2(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pAuxStack->vPeekVal(2,xVariable);
   
@@ -339,7 +339,7 @@ void Step::vAstack3(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pAuxStack->vPeekVal(3,xVariable);
   
@@ -357,7 +357,7 @@ void Step::vAstack4(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pAuxStack->vPeekVal(4,xVariable);
   
@@ -375,7 +375,7 @@ void Step::vAstack5(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pAuxStack->vPeekVal(5,xVariable);
   
@@ -393,7 +393,7 @@ void Step::vAstack6(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pAuxStack->vPeekVal(6,xVariable);
   
@@ -411,7 +411,7 @@ void Step::vAstack7(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pAuxStack->vPeekVal(7,xVariable);
   
@@ -429,7 +429,7 @@ void Step::vAstack8(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pAuxStack->vPeekVal(8,xVariable);
   
@@ -447,7 +447,7 @@ void Step::vAstack9(void)
   
   // could do this directly on stack
   
-  GenVar xVariable;
+  Datum xVariable;
   
   m_pAuxStack->vPeekVal(9,xVariable);
   

@@ -18,7 +18,9 @@ namespace SenVM
     i8    nStackUsage(void);
     Stz*  szStz(void);
     void  vStz(Stz* szStz);
+    void  vStz(char* anChar, i8 nLength);
     i8    nStzSize(void);
+    void  vStzSize(i8 nSize);
     void  vToStz(Stz* szStz);
   };
 

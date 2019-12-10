@@ -22,7 +22,7 @@ void Step::vDot(void)
 {
   ENTRY(); // ENTRY("vDot"_Stz);
   
-  GenVar xVariable;
+  Datum xVariable;
   m_pDataStack->vPopVal(xVariable,__func__);
   
   if (xVariable.bIsInt()) {
@@ -49,7 +49,7 @@ void Step::vDot(void)
 //{
 //  ENTRY(); // ENTRY("vDot"_Stz);
 //
-//  GenVar xVariable;
+//  Datum xVariable;
 //  m_pDataStack->vPopVal(xVariable,__func__);
 //
 //  s32 sSide;
@@ -81,7 +81,7 @@ void Step::vDotPut(void)
 {
   ENTRY(); // ENTRY("vDotPut"_Stz);
   
-  GenVar xVariable;
+  Datum xVariable;
   m_pDataStack->vPopVal(xVariable,__func__);
   
   if (xVariable.bIsInt())
@@ -111,7 +111,7 @@ void Step::vDotVerbose(void)
 {
   ENTRY(); // ENTRY("vDotVerbose"_Stz);
   
-  GenVar xVariable;
+  Datum xVariable;
   m_pDataStack->vPopVal(xVariable,__func__);
   
   if (AM::bVerbose()) {

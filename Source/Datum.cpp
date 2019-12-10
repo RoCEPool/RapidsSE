@@ -48,12 +48,46 @@ Datum::Datum(void)
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   m_pCol   = nullptr;
-  m_wDtm.m_iInt   = C_UNKNOWN;
+  u.m_xAnyVal.m_iInt   = C_UNKNOWN;
   m_nChars = 0;
+
+  u.m_xAnyVal.vMagic();
+  u.m_xAnyVal.vClass(CN_NONE);
 
   //m_sVch
   
   _checkInitialised_(CN_DATUM);
+  
+  _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Datum::Datum(AnyVal* aAnyVal)
+: Object(CN_DATUM)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  m_pCol   = nullptr;
+  u.m_xAnyVal.m_iInt   = C_UNKNOWN;
+  m_nChars = 0;
+
+  u.m_xAnyVal.vMagic();
+  u.m_xAnyVal.vClass(CN_NONE);
+  
+  eCN eClassNo = aAnyVal->eClass();
+  
+  switch (eClassNo) {
+    case CN_FIPVAL: u.m_xFipVal.vFip(aAnyVal->aFip());    break;
+    case CN_INTVAL: u.m_xIntVal.vInt(aAnyVal->iInt());    break;
+    case CN_PTRVAL: u.m_xPtrVal.vObj(aAnyVal->pObj());    break;
+    case CN_STZVAL: u.m_xStzVal.vStz(aAnyVal->szStz());   break;
+      
+    default:
+      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+             "Invalid eClass %lld"_Stz,eClassNo);
+  }
   
   _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 }
@@ -69,6 +103,93 @@ Datum::~Datum(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* auto conversion operator : as AnyVal*                                      */
+/*----------------------------------------------------------------------------*/
+Datum::operator AnyVal*(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  return & u.m_xAnyVal;
+}
+
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* operator =                                                                 */
+/*----------------------------------------------------------------------------*/
+void Datum::operator =(AnyVal* aAnyVal)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  eCN eClass = aAnyVal->eClass();
+  
+  switch (eClass) {
+    case CN_FIPVAL: u.m_xFipVal.vFip(aAnyVal->aFip());    break;
+    case CN_INTVAL: u.m_xIntVal.vInt(aAnyVal->iInt());    break;
+    case CN_PTRVAL: u.m_xPtrVal.vObj(aAnyVal->pObj());    break;
+    case CN_STZVAL: u.m_xStzVal.vStz(aAnyVal->szStz());   break;
+      
+    default:
+      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+             "Invalid eClass %lld"_Stz,eClass);
+  }
+  
+  NEVER_REACH;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* assign/copy a forth instruction pointer                                    */
+/*----------------------------------------------------------------------------*/
+void Datum::operator =(Cell* aFip)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xFipVal.vFip(aFip);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign/copy an integer                                                     */
+/*----------------------------------------------------------------------------*/
+void Datum::operator =(i8 iInt)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xIntVal.vInt(iInt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign/copy a pointer to a proper object                                   */
+/*----------------------------------------------------------------------------*/
+void Datum::operator =(Object* pObj)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xPtrVal.vObj(pObj);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign/copy a string                                                       */
+/*----------------------------------------------------------------------------*/
+void Datum::operator =(Stz* szStz)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xStzVal.vStz(szStz);
+  
+  _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+}
+
+
+
+
+
+
 #if 0
 
 /*----------------------------------------------------------------------------*/
@@ -81,7 +202,7 @@ bool Datum::bExtractBcd(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iBcd = snBcd.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iBcd = snBcd.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -100,7 +221,7 @@ bool Datum::bExtractBol(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iBol = snBol.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iBol = snBol.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -119,7 +240,7 @@ bool Datum::bExtractDte(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iDte = snDte.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iDte = snDte.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -138,7 +259,7 @@ bool Datum::bExtractFlt(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_dFlt = snFlt.d(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_dFlt = snFlt.d(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -157,7 +278,7 @@ bool Datum::bExtractInt(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iInt = snInt.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iInt = snInt.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -185,7 +306,7 @@ bool Datum::bExtractIvl(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iIvl = snIvl.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iIvl = snIvl.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -204,7 +325,7 @@ bool Datum::bExtractTme(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -223,7 +344,7 @@ bool Datum::bExtractTsp(char** aazCrs, Format* pFmt)
   Column* pColumn = pDatum->m_pCol;
   
   try {
-    pDatum->m_wDtm.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
+    pDatum->u.m_xAnyVal.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
   }
   catch (Exception xException) {
     return false;
@@ -269,7 +390,7 @@ bool Datum::bIsNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  if (m_wDtm.m_iInt == C_DATUM_NULL)
+  if (u.m_xAnyVal.m_iInt == C_DATUM_NULL)
     return true;
   else
     return false;
@@ -282,8 +403,218 @@ void Datum::vSetNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  m_wDtm.m_iInt = C_DATUM_NULL;
+  u.m_xAnyVal.m_iInt = C_DATUM_NULL;
 }
+
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get aAnyVal                                                                */
+/*----------------------------------------------------------------------------*/
+AnyVal* Datum::aAnyVal(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  return & u.m_xAnyVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get azChar                                                                 */
+/*----------------------------------------------------------------------------*/
+char* Datum::azChar(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  char* az = u.m_xStzVal.azChar();
+  
+  return az;
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy given source value into this var                                      */
+/*----------------------------------------------------------------------------*/
+void Datum::vCopy(AnyVal* aAnyVal)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xAnyVal.vCopy(aAnyVal);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get forth instruction pointer                                              */
+/*----------------------------------------------------------------------------*/
+Cell* Datum::aFip(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  Cell* aFip = u.m_xFipVal.aFip();
+  
+  return aFip;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get integer                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Datum::iInt(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  i8 iInt = u.m_xIntVal.iInt();
+  
+  return iInt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if nested value is an integer                                         */
+/*----------------------------------------------------------------------------*/
+bool Datum::bIsInt(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  if (CN_INTVAL == u.m_xAnyVal.eClass())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of the nested value                                            */
+/*----------------------------------------------------------------------------*/
+AnyVal* Datum::aEmbeddedAnyVal(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  return & u.m_xAnyVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object address                                                         */
+/*----------------------------------------------------------------------------*/
+Object* Datum::pObj(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  Object* pObj = u.m_xPtrVal.pObj();
+  
+  return pObj;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bytes required to push value on stack                                  */
+/*----------------------------------------------------------------------------*/
+i8 Datum::nStackUsage(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  i8 nBytes = u.m_xStzVal.nStackUsage();
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stz                                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* Datum::szStz(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  Stz* sz = u.m_xStzVal.szStz();
+  
+  return sz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stz                                                                    */
+/*----------------------------------------------------------------------------*/
+void Datum::vStz(Stz* szStz)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xStzVal.vStz(szStz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stz                                                                    */
+/*----------------------------------------------------------------------------*/
+void Datum::vStz(char* acnChar, i8 nLength)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xStzVal.vStz(acnChar,nLength);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of nested string value                                            */
+/*----------------------------------------------------------------------------*/
+i8 Datum::nStzSize(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  i8 nSize = u.m_xStzVal.nStzSize();
+  
+  return nSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set size of nested string value                                            */
+/*----------------------------------------------------------------------------*/
+void Datum::vStzSize(i8 nSize)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xStzVal.vStzSize(nSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get space allowed for nested string value                                  */
+/*----------------------------------------------------------------------------*/
+i8 Datum::nStzSpace(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  i8 nSize = sizeof(u.m_yaSpace);
+  
+  return nSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert to stz string                                                      */
+/*----------------------------------------------------------------------------*/
+void Datum::vToString(Stz* szString)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xAnyVal.vToString(szString);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get class of embedded value                                                */
+/*----------------------------------------------------------------------------*/
+eCN Datum::eValClass(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  return u.m_xAnyVal.eClass();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
