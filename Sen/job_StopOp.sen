@@ -27,7 +27,7 @@
 
       ZK_STOPMARKER of
         "Operand:- ZK_STOPMARKER" .
-        Operand[].handleStop
+        Operand[].pipeOut
         false
       endof
 

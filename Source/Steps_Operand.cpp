@@ -179,20 +179,8 @@ void Step::vOperandHandleStop(void)
   
   ASSERT(m_pRegSet->m_pOperand);
   
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
-  
-  if (--pOp->m_nLeftEndMarkers == 0) {
-    pOp->vPipeOut(m_pRegSet->m_pOperand);
-    
-    if (AM::bJobHasError(pOp->m_pJobUniversal)) {
-      AM::vSetJobLocalError(pOp->m_pJobUniversal, pOp->m_pPipeline->pJob());
-    }
-    if (pOp->m_bAckJobEnd)
-      pOp->vAckJob();
-    
-  }
-  else
-    delete (EndMarker*)m_pRegSet->m_pOperand;
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  pOp->vPipeOut(m_pRegSet->m_pOperand);
   
   EXIT();
 }

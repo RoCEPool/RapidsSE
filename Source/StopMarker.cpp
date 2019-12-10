@@ -43,7 +43,7 @@ void StopMarker::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StopMarker::StopMarker(void)
-: Operand(CN_STARTMARKER)
+: Operand(CN_STOPMARKER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STOPMARKER,_FOOTER_);
 

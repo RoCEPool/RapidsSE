@@ -62,7 +62,7 @@ void Step::vOpLinkStartOp(void)
   Op* pFirstOp = pFirstStage->pOpVec()->pGet(0);
   
   // this should be the stratOp
-  ASSERT(AM::eJobType(pFirstOp->m_pJobUniversal) == JT_STARTOP);
+  //ASSERT(AM::eJobType(pFirstOp->m_pJobUniversal) == JT_STARTOP);
  
   // set the opOut of stopOp to be the startOp
   pOp->vOpOut(pFirstOp);
