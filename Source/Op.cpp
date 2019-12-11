@@ -99,8 +99,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_nRightEndMarkers = 0;
   m_pStreamDef       = nullptr;
   
-  m_bFirstCall       = true;
-  
   m_eTopologyX = PX_NONE;
   m_iNextStage = C_UNKNOWN;
   m_iXmitNode  = C_UNKNOWN;

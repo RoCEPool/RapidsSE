@@ -40,8 +40,6 @@ namespace Operators
     i8             m_nRightEndMarkers;    // expected left end markers
     
     StreamDef*     m_pStreamDef;
-  
-    bool           m_bFirstCall;      // first time being called?
     
     ePX            m_eTopologyX;      // cross topology
     i8             m_iNextStage;      // next stage in the cross topology
