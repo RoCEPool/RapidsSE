@@ -241,18 +241,23 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, Column* pCol, char** aazCrs, Forma
   
   eDM eDatum = pCol->eDatum();
   
-  i8 iYear, iMonth, iDay;
-  i8 iHour, iMinute, iSecond, iMicro, iMilli;
+  i8 iBcd, iBol, iInt, iIvl;
+  
+  d8 dFlt;
+  
+  i8 iYear, iMonth, iDay, iHour, iMinute, iSecond, iMicro, iMilli;
   
   switch (eDatum) {
     case DM_BCD:
-      b = StrLib::bExtractDecimal(aazCrs,pDatum->u.m_xAnyVal.m_iBcd,
+      b = StrLib::bExtractDecimal(aazCrs,iBcd,
                                   pCol->iColumnLength(),
                                   pCol->iColumnScale());
+      pDatum->vBcd(iBcd);
       break;
       
     case DM_BOL:
-      b = StrLib::bExtractBoolean(aazCrs,pDatum->u.m_xAnyVal.m_iBol);
+      b = StrLib::bExtractBoolean(aazCrs,iBol);
+      pDatum->vBol(iBol);
       break;
       
     case DM_DTE:
@@ -269,11 +274,13 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, Column* pCol, char** aazCrs, Forma
       break;
       
     case DM_FLT:
-      b = StrLib::bExtractFloat(aazCrs,pDatum->u.m_xAnyVal.m_dFlt);
+      b = StrLib::bExtractFloat(aazCrs,dFlt);
+      pDatum->vFlt(dFlt);
       break;
       
     case DM_INT:
-      b = StrLib::bExtractInteger(aazCrs,&pDatum->u.m_xAnyVal.m_iInt, true/*bWithSign*/);
+      b = StrLib::bExtractInteger(aazCrs,&iInt, true/*bWithSign*/);
+      pDatum->vInt(iInt);
       break;
       
     case DM_IVL:

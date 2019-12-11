@@ -8,7 +8,6 @@ namespace Datums
   class Datum : public Object
   {
   private:
-
   public:
     AllVal  u;        // column value
 
