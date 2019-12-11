@@ -4,7 +4,7 @@
 
 print "\n";
 print "**************************************************************************";
-print "A) Exporting Lineitem";
+print "A) Exporting LineItem";
 print "**************************************************************************";
 
 time pipeline exportA
@@ -12,7 +12,7 @@ begin
  
   stage scanBuffers on all partitions:
 
-    scanOp LineItem | stageB
+    scanOp LineItem | outputCsv
 
 
   stage outputCsv on origin:
