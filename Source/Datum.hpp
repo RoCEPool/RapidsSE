@@ -57,6 +57,7 @@ namespace Datums
     i8      iInt(void);
     void    vInt(i8 iInt);
     i8      iIvl(void);
+    void    vIvl(i8 iSecond, i8 iMicro);
     bool    bIsInt(void);
     Object* pObj(void);
     void    vObj(Object* pObj);

@@ -245,7 +245,7 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, Column* pCol, char** aazCrs, Forma
   
   d8 dFlt;
   
-  i8 iYear, iMonth, iDay, iHour, iMinute, iSecond, iMicro, iMilli;
+  i8 iYear, iMonth, iDay, iHour, iMinute, iSecond, iMilli, iMicro;
   
   switch (eDatum) {
     case DM_BCD:
@@ -282,8 +282,8 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, Column* pCol, char** aazCrs, Forma
       
     case DM_IVL:
       b = StrLib::bExtractInterval(aazCrs, iSecond, iMilli);
-      pDatum->u.m_xAnyVal.m_xIvl.m_uSecond = iSecond;
-      pDatum->u.m_xAnyVal.m_xIvl.m_uMicro  = iMilli*C_1K;
+      iMicro = iMilli * C_1K;
+      pDatum->vIvl(iSecond,iMicro);
       break;
       
     case DM_TME:

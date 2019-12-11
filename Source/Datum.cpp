@@ -448,6 +448,17 @@ i8 Datum::iIvl(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set interval from parts                                                    */
+/*----------------------------------------------------------------------------*/
+void Datum::vIvl(i8 iSecond, i8 iMicro)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xAnyVal.m_xIvl.m_uSecond = iSecond;
+  u.m_xAnyVal.m_xIvl.m_uMicro  = iMicro;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get object address                                                         */
 /*----------------------------------------------------------------------------*/
 Object* Datum::pObj(void)
