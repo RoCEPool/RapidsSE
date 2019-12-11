@@ -75,13 +75,26 @@ void StageSpec::vAddOpSpec(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* append an endOp spec                                                       */
 /*----------------------------------------------------------------------------*/
-void StageSpec::vAppendStopOp(void)
+void StageSpec::vAppendStopOp(ePX eTopologyX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   OpSpec* pOpSpec;
+  i8 iStopArg = C_UNKNOWN;
   
   pOpSpec = new OpSpec("stopOp"_Stz,this);
+  
+  // add argument to the consumeOp depending on the topology
+  switch (eTopologyX) {
+    case PX_ORIGIN_TO_ALL_PARTITIONS:
+      iStopArg = AM::pGrid()->nSlotsPerNode();
+      break;
+      
+    default:
+      RASSERT(0);
+  }
+  
+  pOpSpec->vAddEnamePair("<arg_0>"_Stz,iStopArg,TN_INTEGER);
   m_pOpSpecVec->vAdd(pOpSpec);
   pOpSpec->v_OpSpec(m_pOpSpecVec->nItems() - 1);
 }

@@ -513,10 +513,6 @@ void Op::vPipeOut(Operand* pOperand)
 
   switch(AM::eJobType(m_pJobUniversal)) {
     
-    case JT_STOPOP:
-      vPipeToJob(pOperand);
-      break;
-      
     case JT_OUTPUTOP:
       vPipeToJob(pOperand);
       break;
