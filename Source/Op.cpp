@@ -69,7 +69,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   _precondition_(_MAGIC_,eClassNo);
   
   RASSERT(pOpSpec);
-  //RASSERT(pOpSpec->aOpDefn());
   
   m_sName = pOpSpec->szName();
 
@@ -80,10 +79,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_pJobPipeline  = pPipeline->pJob();
   
   m_pJobUniversal = nullptr;
-  
-  m_sObjectName   = ""_Stz;
-  m_sIndexName    = ""_Stz;
-  m_pTable        = nullptr;
   
   m_pTask         = nullptr;
   
@@ -104,14 +99,11 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_nRightEndMarkers = 0;
   m_pStreamDef       = nullptr;
   
-  m_bFirstCall       = true;
-  
   m_eTopologyX = PX_NONE;
   m_iNextStage = C_UNKNOWN;
   m_iXmitNode  = C_UNKNOWN;
   
   m_fpCall        = nullptr;
-  m_fpDrain       = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -137,7 +129,7 @@ Op::~Op(void) noexcept(false)
   if (m_pStreamDef)
     delete m_pStreamDef;
   
-  m_pOpSpec = nullptr;
+  delete m_pOpSpec;
   
   -- gixOp;
   AM::vLogOpr(SL_INF,this,OA_OP_DESTRUCT,
@@ -158,76 +150,6 @@ Op* Op::pThisTLSOp(void)
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* call op loop                                                               */
-/*----------------------------------------------------------------------------*/
-//void Op::vOpLoop(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_);
-//
-//  eOR eCallAgain;
-////  if (bIsCancelling() && m_fpDrain)
-////    eCallAgain = (*m_fpDrain)(this);
-////  else
-//
-//  if (m_bFirstCall) {
-//    m_bFirstCall = false;
-//
-//    m_aOpDefn = gxOpCatalog.aFindOp(m_sName);
-//
-//    m_fpCall  = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
-//    m_fpDrain = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
-//  }
-//
-//  AM::vLogOpr(SL_INF,this,OA_OP_CALL,
-//              "Calling operator"_Stz); //!format-LogOpr
-//
-//  eCallAgain = (*m_fpCall)(this);
-//
-//  AM::vLogOpr(SL_INF,this,OA_OP_RETURNED,
-//              "Returned from operator with %s"_Stz, //!format-LogOpr
-//             aOR[eCallAgain]);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  switch (eCallAgain) {
-//
-//    case OR_BIDE:
-//      ASSERT(bIsLocked());
-//      AM::vTaskSchedulerAct(m_pTask,SA_BIDE);
-//      return;
-//
-//    case OR_ERROR:
-//      ASSERT(AM::bJobHasError(m_pJobUniversal));
-//      AM::vSetJobLocalError(m_pJobUniversal, m_pPipeline->pJob());
-//
-//      if (m_bAckJobEnd)
-//        vAckJob();
-//
-//      //AM::vTaskSchedulerAct(m_pTask,SA_DELETE);
-//      return;
-//
-//    case OR_EXIT:
-//      if (AM::bJobHasError(m_pJobUniversal)) {
-//        AM::vSetJobLocalError(m_pJobUniversal, m_pPipeline->pJob());
-//      }
-//      if (m_bAckJobEnd)
-//        vAckJob();
-//      //AM::vTaskSchedulerAct(m_pTask,SA_DELETE);
-//      return;
-//
-//    case OR_PAUSE:
-//      //AM::vTaskSchedulerAct(m_pTask,SA_PAUSE);
-//      return;
-//
-//    default:
-//      NEVER_REACH;
-//  }
-//}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -404,9 +326,7 @@ void Op::vLinkToStage(Stage* pStage)
     }
     
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
-      // get the node of this op ptn
-      i8 i_Nde = TablePtn::iPartitionToNode(m_nPartition);
-      pStageNde = pStage->pStageNde(i_Nde);
+      pStageNde = pStage->pStageNde(m_nNode);
       break;
     }
   
@@ -480,6 +400,19 @@ void Op::vOpOut(Op* pOpOut)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set partition in op                                                        */
+/*----------------------------------------------------------------------------*/
+void Op::vPartition(i8 nPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_nPartition = nPartition;
+  
+  // set the node tis partition belongs to 
+  m_nNode = TablePtn::iPartitionToNode(m_nPartition);
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator is to pause?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Op::bPause(void)
@@ -513,10 +446,6 @@ void Op::vPipeOut(Operand* pOperand)
 
   switch(AM::eJobType(m_pJobUniversal)) {
     
-    case JT_STOPOP:
-      vPipeToJob(pOperand);
-      break;
-      
     case JT_OUTPUTOP:
       vPipeToJob(pOperand);
       break;
@@ -799,7 +728,14 @@ bool Op::bSpawnJob(i8 iSessionId)
   TokenVec* pTknVec = new TokenVec;
   pTokenizer->vTokenise(pTknVec, szCmdStr);
   
+  // delete the tokeniser
+  delete pTokenizer;
+  
   eEC eError = AM::ePopulateJob(m_pJobUniversal, pTknVec);
+  
+  // delete the tokenVec
+  delete pTknVec;
+  
   bool bSpawned = AM::bSpawnJob(m_pJobUniversal);
   
   m_pTask = AM::pExecutingTask(m_pJobUniversal);

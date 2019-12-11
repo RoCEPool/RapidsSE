@@ -12,7 +12,7 @@
   >>logEntry <SEED_REQ>
 
   // link stopOp to startOp
-  Op.linkStartOp
+  <startOps>  Op.linkStartOp
 
   begin
 
@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-jobSyntax: stopOp :: stopOp ;
+jobSyntax: stopOp :: stopOp <startOps> ;
 
 jobInfo: stopOp
 {

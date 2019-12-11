@@ -76,8 +76,9 @@ void Step::vJob_PipelineEnd(void)
   
   //pJob_Pipeline->vEnd();
   
-  // get the first stage of the pipeline
-  Stage* pStage = pJob_Pipeline->m_pPipeline->pStageVec()->pGet(0);
+  // get the last stage of the pipeline
+  i8 nItems = pJob_Pipeline->m_pPipeline->pStageVec()->nItems();
+  Stage* pStage = pJob_Pipeline->m_pPipeline->pStageVec()->pGet(nItems-1);
   
   // send stopMarker to the StopOp of the last stage of the pipeline
   i8 iThisNode = AM::pGrid()->iThisNode();

@@ -18,11 +18,6 @@ namespace Operators
   
     s32            m_sNextLabel;     // label of this op
     
-    //! ALKA: These should go into OpObjectName
-    s32            m_sObjectName;    // object name (e.g. schema, table etc)
-    s32            m_sIndexName;     // index name
-    Table*         m_pTable;         // table 
-    
     Job*           m_pJobPipeline;   // pipeline job this operator belongs to
 
     Job*           m_pJobUniversal;  // universal job this operator belongs to
@@ -45,16 +40,15 @@ namespace Operators
     i8             m_nRightEndMarkers;    // expected left end markers
     
     StreamDef*     m_pStreamDef;
-  
-    bool           m_bFirstCall;      // first time being called?
     
     ePX            m_eTopologyX;      // cross topology
     i8             m_iNextStage;      // next stage in the cross topology
     
     i8             m_iXmitNode;       // xmit node (for xmitOp)
     
+
+    //! ALKA: should go
     eOR (*m_fpCall) (void* aThisOp);  // function which calls the op loop
-    eOR (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
 
   public:
     void* operator new(size_t);
@@ -85,6 +79,7 @@ namespace Operators
     void vNextLabel(Stz* szNextLabel);
     i8   iOpId(void);
     void vOpOut(Op* pOpOut);
+    void vPartition(i8 iPartition);
     bool bPause(void);
     void vPipeOut(Operand* pOperand);
     void vPipeOut_endMarker(void);

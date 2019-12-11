@@ -52,20 +52,28 @@ void Step::vOpLinkStartOp(void)
 {
   ENTRY(); // ENTRY("vOpLinkNextStage"_Stz);
   
+  i8 iStartOps = m_pDataStack->iPopInt(__func__);
+  
   Op* pOp = m_pTask->m_pJob->m_pOp;
   ASSERT(AM::eJobType(pOp->m_pJobUniversal) == JT_STOPOP);
   
   // get the first stage
   Stage* pFirstStage = pOp->m_pPipeline->pStageVec()->pGet(0);
   
-  // get the first op inm the first stage
-  Op* pFirstOp = pFirstStage->pOpVec()->pGet(0);
+  // get the first op in the first stage
+  for (i8 i_Op = 0; i_Op < iStartOps; i_Op++) {
+    Op* pStartOp = pFirstStage->pOpVec()->pGet(i_Op);
   
-  // this should be the stratOp
-  //ASSERT(AM::eJobType(pFirstOp->m_pJobUniversal) == JT_STARTOP);
+    // the stopOp should be linking to a startOP on the same node
+    RASSERT(pOp->m_nNode == pStartOp->m_nNode);
  
-  // set the opOut of stopOp to be the startOp
-  pOp->vOpOut(pFirstOp);
+    // set the opOut of stopOp to be the startOp
+    
+    //! ALKA : we need to be able to do a FANOUT
+    // Need an array of OpOut's: to dicuss with Ray
+    // one stopOp sending stopmarker to multiple startOp's
+    pOp->vOpOut(pStartOp);
+  }
   
 }
 

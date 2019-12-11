@@ -58,10 +58,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.operand@"_Stz,         &Step::vJobOperandFetch);
   vAddStep("job.operand!"_Stz,         &Step::vJobOperandStore);
   
-  vAddStep("job.openToFile"_Stz,       &Step::vJobOpenToFile);
-  
-  vAddStep("job.opTable!"_Stz,         &Step::vJobOpTableStore);
-  
   vAddStep("job.originatingId@"_Stz,   &Step::vJobOriginatingIdFetch);
   vAddStep("job.originatingId!"_Stz,   &Step::vJobOriginatingIdStore);
   vAddStep("job.originatingTask@"_Stz, &Step::vJobOriginatingTaskFetch);
@@ -766,27 +762,6 @@ void Step::vJobNoWaitFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.openToFile -- open the toFile                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOpenToFile(void)
-{
-  ENTRY(); // ENTRY("vJobOpenToFile"_Stz);
-  
-  Job_Universal* pJob_Universal = _pJob_Universal(m_pDataStack->pPopPtr(__func__));
-  
-  s4K sFilePath;
-  Op* pToFileOp = pJob_Universal->m_pOp;
-  
-  sFilePath = pToFileOp->m_pOpSpec->pEnameSet()->szValue((i8)0);
-  if (! m_pRegSet->m_xpFile0->bOpenWrite(sFilePath)) {
-    vTrace("Failed to open file: %s\n"_Stz,sFilePath.azChar());
-    RASSERT(0);
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.operand@ -- fetch operand from job                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vJobOperandFetch(void)
@@ -812,23 +787,6 @@ void Step::vJobOperandStore(void)
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   pJob->m_pOperand = pOperand;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.opTable! -- store the table in the job's op                            */
-/*----------------------------------------------------------------------------*/
-void Step::vJobOpTableStore(void)
-{
-  ENTRY(); // ENTRY("vJobOpTableStore"_Stz);
-  
-  Job_Universal* pJob_Universal = _pJob_Universal(m_pDataStack->pPopPtr(__func__));
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  Op* pOp = pJob_Universal->m_pOp;
-  pOp->m_pTable = pTable;
   
   EXIT();
 }

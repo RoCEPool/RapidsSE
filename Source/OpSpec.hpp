@@ -15,7 +15,6 @@ namespace Pipelines
     i8         m_i_Slot;
 
     EnameSet  m_oEnameSet;
-    OpDefn*   m_aOpDefn;
     
     // must be last
     Footer m_xFooter;
@@ -33,8 +32,6 @@ namespace Pipelines
     EnameSet* pEnameSet(void);
     Stz* szName(void);
     void vName(Stz* szName);
-    OpDefn* aOpDefn(void);
-    void vOpDefn(OpDefn* aOpDefn);
     i8   i_OpSpec(void);
     void v_OpSpec(i8 i_OpSpec);
     void vReplace(Stz* szName, Stz* szValue);

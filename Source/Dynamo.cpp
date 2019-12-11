@@ -40,6 +40,8 @@ Dynamo::Dynamo(Stz* sCmd)
   Tokeniser* pTokenizer = new Tokeniser;
   m_p_TknVec = new TokenVec;
   pTokenizer->vTokenise(m_p_TknVec, sCmd);
+  delete pTokenizer;
+  
   m_p_TknVec->vCutToken(m_p_TknVec->nTokens());
   
   m_pPipelineSpec = nullptr;
@@ -197,10 +199,6 @@ bool Dynamo::bCompile(Job* pJob)
 //  m_pPipelineSpec->vPrint();
 //  
 //  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
-  
-//  bResult = bPhase4_opdefn();
-//  if (! bResult)
-//    return false;
   
 #ifdef WITH_TRACE_DYNAMO
   m_pPipelineSpec->vPrint();
@@ -546,13 +544,16 @@ bool Dynamo::bPhase2_staging(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   StageSpecVec* pStageSpecVec = m_pPipelineSpec->pStageSpecVec();
+  StageSpec* pFirstStageSpec = nullptr;
   
   for (i8 i_Stage = 0; i_Stage < pStageSpecVec->nItems(); i_Stage++) {
     StageSpec* pStageSpec = pStageSpecVec->pGet(i_Stage);
 
     // prepend a StartOp to the first stage
-    if (i_Stage == 0)
+    if (i_Stage == 0) {
+      pFirstStageSpec = pStageSpec;
       pStageSpec->vPrependStartOp();
+    }
     
     OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
     for (i8 i_Op = 0; i_Op < pOpSpecVec->nItems(); i_Op++) {
@@ -579,7 +580,8 @@ bool Dynamo::bPhase2_staging(void)
   
   // Append stopOp to last stage
   StageSpec* pLastStageSpec = pStageSpecVec->pGet(pStageSpecVec->nItems() - 1);
-  pLastStageSpec->vAppendStopOp();
+  ePX eTopologyX = eTopoloyX(pLastStageSpec, pFirstStageSpec);
+  pLastStageSpec->vAppendStopOp(eTopologyX);
 
   return true;
 }
