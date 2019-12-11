@@ -69,7 +69,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   _precondition_(_MAGIC_,eClassNo);
   
   RASSERT(pOpSpec);
-  //RASSERT(pOpSpec->aOpDefn());
   
   m_sName = pOpSpec->szName();
 
@@ -158,76 +157,6 @@ Op* Op::pThisTLSOp(void)
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* call op loop                                                               */
-/*----------------------------------------------------------------------------*/
-//void Op::vOpLoop(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_);
-//
-//  eOR eCallAgain;
-////  if (bIsCancelling() && m_fpDrain)
-////    eCallAgain = (*m_fpDrain)(this);
-////  else
-//
-//  if (m_bFirstCall) {
-//    m_bFirstCall = false;
-//
-//    m_aOpDefn = gxOpCatalog.aFindOp(m_sName);
-//
-//    m_fpCall  = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
-//    m_fpDrain = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
-//  }
-//
-//  AM::vLogOpr(SL_INF,this,OA_OP_CALL,
-//              "Calling operator"_Stz); //!format-LogOpr
-//
-//  eCallAgain = (*m_fpCall)(this);
-//
-//  AM::vLogOpr(SL_INF,this,OA_OP_RETURNED,
-//              "Returned from operator with %s"_Stz, //!format-LogOpr
-//             aOR[eCallAgain]);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  switch (eCallAgain) {
-//
-//    case OR_BIDE:
-//      ASSERT(bIsLocked());
-//      AM::vTaskSchedulerAct(m_pTask,SA_BIDE);
-//      return;
-//
-//    case OR_ERROR:
-//      ASSERT(AM::bJobHasError(m_pJobUniversal));
-//      AM::vSetJobLocalError(m_pJobUniversal, m_pPipeline->pJob());
-//
-//      if (m_bAckJobEnd)
-//        vAckJob();
-//
-//      //AM::vTaskSchedulerAct(m_pTask,SA_DELETE);
-//      return;
-//
-//    case OR_EXIT:
-//      if (AM::bJobHasError(m_pJobUniversal)) {
-//        AM::vSetJobLocalError(m_pJobUniversal, m_pPipeline->pJob());
-//      }
-//      if (m_bAckJobEnd)
-//        vAckJob();
-//      //AM::vTaskSchedulerAct(m_pTask,SA_DELETE);
-//      return;
-//
-//    case OR_PAUSE:
-//      //AM::vTaskSchedulerAct(m_pTask,SA_PAUSE);
-//      return;
-//
-//    default:
-//      NEVER_REACH;
-//  }
-//}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/

@@ -41,8 +41,6 @@ OpSpec::OpSpec(Stz* szOpName, StageSpec* pStageSpec)
 
   //m_oEnameSet
   
-  m_aOpDefn = nullptr;
-  
   _checkInitialised_(CN_OPSPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
@@ -122,26 +120,6 @@ void OpSpec::vName(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the op defn                                                            */
-/*----------------------------------------------------------------------------*/
-OpDefn* OpSpec::aOpDefn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  return m_aOpDefn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the op defn                                                            */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vOpDefn(OpDefn* aOpDefn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_aOpDefn = aOpDefn;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get i_OpSpec                                                               */
 /*----------------------------------------------------------------------------*/
 i8 OpSpec::i_OpSpec(void)
@@ -192,7 +170,7 @@ void OpSpec::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  vTrace("[%lld] %s opDefn=%p "_Stz,m_i_OpSpec,m_sName.szStz(),m_aOpDefn);
+  vTrace("[%lld] %s "_Stz,m_i_OpSpec,m_sName.szStz());
     
   m_oEnameSet.vPrint();
 }

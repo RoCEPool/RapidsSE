@@ -198,10 +198,6 @@ bool Dynamo::bCompile(Job* pJob)
 //  
 //  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
-//  bResult = bPhase4_opdefn();
-//  if (! bResult)
-//    return false;
-  
 #ifdef WITH_TRACE_DYNAMO
   m_pPipelineSpec->vPrint();
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
