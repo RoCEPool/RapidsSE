@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _export - export of TPC-H LineItem table                                   */
+/* _load - load of TPC-H LineItem table                                       */
 /*============================================================================*/
 
 print "\n";
@@ -39,24 +39,6 @@ print "Loading table lineitem";
 print "**************************************************************************";
 
 time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
-//time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
-
-print "\n";
-print "**************************************************************************";
-print "Exporting table lineitem";
-print "**************************************************************************";
-
-time pipeline export
- begin
- 
-  stage stageA on all partitions:
-    scanOp lineitem |  toCsvOp | stageB
- 
-  stage stageB on origin:
-    toFileOp "/tmp/lineitem.csv" | outputOp
- 
- end
- ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -10,6 +10,7 @@ namespace Datums
   public:
     Column* m_pCol;   // which column
     AllVal  u;        // column value
+
   
     // must be last
     Footer m_xFooter;
