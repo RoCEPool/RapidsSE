@@ -334,6 +334,19 @@ i8 Datum::iDte_year(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set date from parts                                                        */
+/*----------------------------------------------------------------------------*/
+void Datum::vDte(i8 iYear, i8 iMonth, i8 iDay)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xAnyVal.m_xDte.m_uYearDelta = iYear - C_YEAR_BASE;
+  u.m_xAnyVal.m_xDte.m_uMonth     = iMonth;
+  u.m_xAnyVal.m_xDte.m_uDay       = iDay;
+  u.m_xAnyVal.m_xDte.m_uSpare     = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address of the nested value                                            */
 /*----------------------------------------------------------------------------*/
 AnyVal* Datum::aEmbeddedAnyVal(void)

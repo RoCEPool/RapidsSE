@@ -267,10 +267,7 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, Column* pCol, char** aazCrs, Forma
       if (!b)
         break;
       
-      pDatum->u.m_xAnyVal.m_xDte.m_uYearDelta  = iYear - C_YEAR_BASE;
-      pDatum->u.m_xAnyVal.m_xDte.m_uMonth = iMonth;
-      pDatum->u.m_xAnyVal.m_xDte.m_uDay   = iDay;
-      pDatum->u.m_xAnyVal.m_xDte.m_uSpare = 0;
+      pDatum->vDte(iYear,iMonth,iDay);
       break;
       
     case DM_FLT:

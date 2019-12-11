@@ -48,6 +48,7 @@ namespace Datums
     i8      iDte_day(void);
     i8      iDte_month(void);
     i8      iDte_year(void);
+    void    vDte(i8 iYear, i8 iMonth, i8 iDay);
     AnyVal* aEmbeddedAnyVal(void);
     Cell*   aFip(void);
     void    vFip(Cell* aFip);
