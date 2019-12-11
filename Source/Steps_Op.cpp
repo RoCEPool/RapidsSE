@@ -65,7 +65,7 @@ void Step::vOpLinkStartOp(void)
     Op* pStartOp = pFirstStage->pOpVec()->pGet(i_Op);
   
     // the stopOp should be linking to a startOP on the same node
-    //RASSERT(pOp->m_nNode == pStartOp->m_nNode);
+    RASSERT(pOp->m_nNode == pStartOp->m_nNode);
  
     // set the opOut of stopOp to be the startOp
     

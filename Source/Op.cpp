@@ -404,9 +404,7 @@ void Op::vLinkToStage(Stage* pStage)
     }
     
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
-      // get the node of this op ptn
-      i8 i_Nde = TablePtn::iPartitionToNode(m_nPartition);
-      pStageNde = pStage->pStageNde(i_Nde);
+      pStageNde = pStage->pStageNde(m_nNode);
       break;
     }
   
@@ -477,6 +475,19 @@ void Op::vOpOut(Op* pOpOut)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   m_pOpOut = pOpOut;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set partition in op                                                        */
+/*----------------------------------------------------------------------------*/
+void Op::vPartition(i8 nPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_nPartition = nPartition;
+  
+  // set the node tis partition belongs to 
+  m_nNode = TablePtn::iPartitionToNode(m_nPartition);
 }
 
 /*----------------------------------------------------------------------------*/

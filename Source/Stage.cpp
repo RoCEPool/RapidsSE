@@ -111,7 +111,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
       Op* pOp = new Op(CN_OP,pOpSpec,pPipeLine);
       StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
       
-      pOp->m_nPartition = pStagePtn->iPartition();
+      pOp->vPartition(pStagePtn->iPartition());
       pStagePtn->pOpVec()->vAdd(pOp);
       m_oOpVec.vAdd(pOp);
     }

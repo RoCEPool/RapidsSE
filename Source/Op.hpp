@@ -85,6 +85,7 @@ namespace Operators
     void vNextLabel(Stz* szNextLabel);
     i8   iOpId(void);
     void vOpOut(Op* pOpOut);
+    void vPartition(i8 iPartition);
     bool bPause(void);
     void vPipeOut(Operand* pOperand);
     void vPipeOut_endMarker(void);
