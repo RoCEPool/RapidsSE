@@ -163,6 +163,26 @@ void RowCoder::vDteFromEdt(i8* awEdtDte_rpl, i8 iEraBaseYear)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert a Edt into an Dte (in situ)                                        */
+/*----------------------------------------------------------------------------*/
+void RowCoder::vDteFromEdt(i8* awEdtDte_dst, i8 wEdtDte_src, i8 iEraBaseYear)
+{
+  _Edt* aEdt = (_Edt*) & wEdtDte_src;
+  
+  i8 iYearInEra = aEdt->m_uYearInEra;
+  i8 iMonth     = aEdt->m_uMonth;
+  i8 iDay       = aEdt->m_uDay;
+  
+  * awEdtDte_dst = 0;
+  
+  _Dte* aDte = (_Dte*)awEdtDte_dst;
+  
+  aDte->m_uYearDelta = iYearInEra + iEraBaseYear;
+  aDte->m_uMonth     = iMonth;
+  aDte->m_uDay       = iDay;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert a Dte into an Edt                                                  */
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDteIntoEdt(i8 wDte_src, i8* awEdt_dst, i8& iEra_)

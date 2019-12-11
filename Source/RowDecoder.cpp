@@ -165,7 +165,7 @@ void RowDecoder::vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
       NEVER_REACH;
   }
   
-  vDteFromEdt(&pDatum->u.m_xAnyVal.m_iEdt,iEra);
+  vDteFromEdt(&pDatum->u.m_xAnyVal.m_iDte,pDatum->u.m_xAnyVal.m_iEdt,iEra);
 }
 
 /*----------------------------------------------------------------------------*/
