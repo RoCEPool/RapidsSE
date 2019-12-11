@@ -371,7 +371,7 @@ bool RowExtractor::bExtractDte(Datum* pDatum, Column* pCol, char** aazCrs, Forma
   SN_Dte snDte;
   
   try {
-    pDatum->u.m_xAnyVal.m_iDte = snDte.i(aazCrs,pCol,pFmt);
+    pDatum->vDte(snDte.i(aazCrs,pCol,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -431,7 +431,7 @@ bool RowExtractor::bExtractIvl(Datum* pDatum, Column* pCol, char** aazCrs, Forma
   SN_Ivl snIvl;
   
   try {
-    pDatum->u.m_xAnyVal.m_iIvl = snIvl.i(aazCrs,pCol,pFmt);
+    pDatum->vIvl(snIvl.i(aazCrs,pCol,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -448,7 +448,7 @@ bool RowExtractor::bExtractTme(Datum* pDatum, Column* pCol, char** aazCrs, Forma
   SN_Tsp snTsp;
   
   try {
-    pDatum->u.m_xAnyVal.m_iTsp = snTsp.i(aazCrs,pCol,pFmt);
+    pDatum->vTsp(snTsp.i(aazCrs,pCol,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -465,7 +465,7 @@ bool RowExtractor::bExtractTsp(Datum* pDatum, Column* pCol, char** aazCrs, Forma
   SN_Tsp snTsp;
   
   try {
-    pDatum->u.m_xAnyVal.m_iTsp = snTsp.i(aazCrs,pCol,pFmt);
+    pDatum->vTsp(snTsp.i(aazCrs,pCol,pFmt));
   }
   catch (Exception xException) {
     return false;

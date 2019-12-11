@@ -48,6 +48,7 @@ namespace Datums
     i8      iDte_day(void);
     i8      iDte_month(void);
     i8      iDte_year(void);
+    void    vDte(i8 iDte);
     void    vDte(i8 iYear, i8 iMonth, i8 iDay);
     AnyVal* aEmbeddedAnyVal(void);
     Cell*   aFip(void);
@@ -57,6 +58,7 @@ namespace Datums
     i8      iInt(void);
     void    vInt(i8 iInt);
     i8      iIvl(void);
+    void    vIvl(i8 iIvl);
     void    vIvl(i8 iSecond, i8 iMicro);
     bool    bIsInt(void);
     Object* pObj(void);
@@ -72,11 +74,11 @@ namespace Datums
     i8      iTme(void);
     void    vTme(i8 iTme);
     void    vTme(i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro);
-    void    vTsp(i8 iYear, i8 iMonth,  i8 iDay,
-                 i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro);
     void    vToString(Stz* szStz);
     i8      iTsp(void);
     void    vTsp(i8 iTsp);
+    void    vTsp(i8 iYear, i8 iMonth,  i8 iDay,
+                 i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro);
     eCN     eValClass(void);
 
   public:
