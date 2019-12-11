@@ -8,10 +8,8 @@ namespace Datums
   class Datum : public Object
   {
   private:
-  public:
-    AllVal  u;        // column value
+    AllVal  u; // value
 
-  
     // must be last
     Footer m_xFooter;
   
@@ -50,6 +48,7 @@ namespace Datums
     i8      iDte_year(void);
     void    vDte(i8 iDte);
     void    vDte(i8 iYear, i8 iMonth, i8 iDay);
+    i8      iEdt(void);
     AnyVal* aEmbeddedAnyVal(void);
     Cell*   aFip(void);
     void    vFip(Cell* aFip);
