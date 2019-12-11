@@ -177,14 +177,18 @@ void Record::vAppend(Column* pCol, Datum* pDatum)
 void Record::vAppend(Column* pCol, Row* pRow)
 {
   Datum oDatum;
-  i8 i_Col = pCol->iColumnNo();
+
+  oDatum.vColumn(pCol);
   
-  oDatum.u.m_xAnyVal.m_iInt = pRow->m_waColVal[i_Col].m_iInt;
+  i8 i_Col = pCol->iColumnNo();
+  oDatum = pRow->m_waColVal[i_Col].m_iInt;
   
   if (oDatum.bIsNull()) {
     m_sRecStr.vAppend(&m_azAppendCursor,"null"_Stz);
     return;
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   eDM eDatum = pCol->eDatum();
  

@@ -9,8 +9,9 @@ namespace Datums
   {
   private:
     Column* m_pCol;   // which column
+ 
   public:
-    AllVal  u;        // column value
+  AllVal  u;        // column value
 
   
     // must be last
@@ -33,18 +34,6 @@ namespace Datums
     void operator =(i8 iInt);
     void operator =(Object* pObj);
     void operator =(Stz* szStz);
-
-    bool bExtractDtm(char** aazCrs, Format* pFmt);
-  
-    bool bExtractBcd(char** aazCrs, Format* pFmt);
-    bool bExtractBol(char** aazCrs, Format* pFmt);
-    bool bExtractDte(char** aazCrs, Format* pFmt);
-    bool bExtractFlt(char** aazCrs, Format* pFmt);
-    bool bExtractInt(char** aazCrs, Format* pFmt);
-    bool bExtractIvl(char** aazCrs, Format* pFmt);
-    bool bExtractTme(char** aazCrs, Format* pFmt);
-    bool bExtractTsp(char** aazCrs, Format* pFmt);
-    bool bExtractVch(char** aazCrs, Format* pFmt);
 
     bool bIsNull(void);
     void vSetNull(void);
