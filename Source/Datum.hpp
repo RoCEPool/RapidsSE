@@ -7,8 +7,9 @@ namespace Datums
 {
   class Datum : public Object
   {
-  public:
+  private:
     Column* m_pCol;   // which column
+  public:
     AllVal  u;        // column value
 
   
@@ -52,6 +53,8 @@ namespace Datums
   
     AnyVal* aAnyVal(void);
     char*   azChar(void);
+    Column* pColumn(void);
+    void    vColumn(Column* pColumn);
     void    vCopy(AnyVal* aAnyVal);
     AnyVal* aEmbeddedAnyVal(void);
     Cell*   aFip(void);

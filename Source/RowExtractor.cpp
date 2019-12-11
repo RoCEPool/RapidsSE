@@ -31,7 +31,7 @@ void RowExtractor::vAddElement(EntWrk* pEntWrk, Column* pCol,
   }
 
   Datum oDatum;
-  oDatum.m_pCol = pCol;
+  oDatum.vColumn(pCol);
 
   bool b = RowExtractor::bExtractDtm(&oDatum,&aSrc,pFmt);
   ASSERT(b);
@@ -119,7 +119,7 @@ Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
     Column* pCol = pStreamDef->pGetColumn(i_Col);
   
     Datum oDatum;
-    oDatum.m_pCol = pCol;
+    oDatum.vColumn(pCol);
     
     bool b = false;
     eDM eDatum = pCol->eDatum();
@@ -241,7 +241,7 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   bool b = false;
   
-  Column* pCol = pDatum->m_pCol;
+  Column* pCol = pDatum->pColumn();
   eDM eDatum   = pCol->eDatum();
   
   i8 iYear, iMonth, iDay;
@@ -348,7 +348,7 @@ bool RowExtractor::bExtractBcd(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Bcd snBcd;
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDatum->pColumn();
   
   try {
     pDatum->u.m_xAnyVal.m_iBcd = snBcd.i(aazCrs,pColumn,pFmt);
@@ -367,7 +367,7 @@ bool RowExtractor::bExtractBol(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Bol snBol;
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDatum->pColumn();
   
   try {
     pDatum->u.m_xAnyVal.m_iBol = snBol.i(aazCrs,pColumn,pFmt);
@@ -386,7 +386,7 @@ bool RowExtractor::bExtractDte(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Dte snDte;
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDatum->pColumn();
   
   try {
     pDatum->u.m_xAnyVal.m_iDte = snDte.i(aazCrs,pColumn,pFmt);
@@ -405,7 +405,7 @@ bool RowExtractor::bExtractFlt(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Flt snFlt;
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDatum->pColumn();
   
   try {
     pDatum->u.m_xAnyVal.m_dFlt = snFlt.d(aazCrs,pColumn,pFmt);
@@ -424,7 +424,7 @@ bool RowExtractor::bExtractInt(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Int snInt;
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDatum->pColumn();
   
   try {
     pDatum->u.m_xAnyVal.m_iInt = snInt.i(aazCrs,pColumn,pFmt);
@@ -452,7 +452,7 @@ bool RowExtractor::bExtractIvl(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Ivl snIvl;
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDatum->pColumn();
   
   try {
     pDatum->u.m_xAnyVal.m_iIvl = snIvl.i(aazCrs,pColumn,pFmt);
@@ -471,7 +471,7 @@ bool RowExtractor::bExtractTme(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Tsp snTsp;
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDatum->pColumn();
   
   try {
     pDatum->u.m_xAnyVal.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
@@ -490,7 +490,7 @@ bool RowExtractor::bExtractTsp(Datum* pDatum, char** aazCrs, Format* pFmt)
 {
   SN_Tsp snTsp;
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDatum->pColumn();
   
   try {
     pDatum->u.m_xAnyVal.m_iTsp = snTsp.i(aazCrs,pColumn,pFmt);
@@ -510,7 +510,7 @@ bool RowExtractor::bExtractVch(Datum* pDatum, char** aazCrs, Format* pFmt)
   SN_Vch snVch;
   bool bSawEnclosedLeading = false;
   
-  Column* pColumn = pDatum->m_pCol;
+  Column* pColumn = pDatum->pColumn();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for enclosed
