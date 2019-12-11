@@ -47,7 +47,6 @@ namespace Operators
     i8             m_iXmitNode;       // xmit node (for xmitOp)
     
     eOR (*m_fpCall) (void* aThisOp);  // function which calls the op loop
-    eOR (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
 
   public:
     void* operator new(size_t);

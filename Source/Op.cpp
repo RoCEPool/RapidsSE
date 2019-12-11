@@ -104,7 +104,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_iXmitNode  = C_UNKNOWN;
   
   m_fpCall        = nullptr;
-  m_fpDrain       = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
