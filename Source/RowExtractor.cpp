@@ -41,7 +41,7 @@ void RowExtractor::vAddElement(EntWrk* pEntWrk, Column* pCol,
     return;
   }
 
-  nBytes = Dtm::nCopy((byte*)aDst,oDatum.u.m_xAnyVal.m_iInt);
+  nBytes = Dtm::nCopy((byte*)aDst,oDatum.iInt());
   pEntWrk->vIncKeyBytes(nBytes);
 }
 

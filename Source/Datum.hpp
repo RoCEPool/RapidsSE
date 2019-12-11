@@ -8,9 +8,9 @@ namespace Datums
   class Datum : public Object
   {
   private:
- 
+
   public:
-  AllVal  u;        // column value
+    AllVal  u;        // column value
 
   
     // must be last
@@ -41,10 +41,17 @@ namespace Datums
   
     AnyVal* aAnyVal(void);
     char*   azChar(void);
+    i8      iBcd(void);
+    i8      iBol(void);
     void    vCopy(AnyVal* aAnyVal);
+    i8      iDte_day(void);
+    i8      iDte_month(void);
+    i8      iDte_year(void);
     AnyVal* aEmbeddedAnyVal(void);
     Cell*   aFip(void);
+    d8      dFlt(void);
     i8      iInt(void);
+    i8      iIvl(void);
     bool    bIsInt(void);
     Object* pObj(void);
     i8      nStackUsage(void);
@@ -55,10 +62,11 @@ namespace Datums
     i8      nStzSize(void);
     void    vStzSize(i8 nSize);
     i8      nStzSpace(void);
+    i8      iTme(void);
     void    vToString(Stz* szStz);
+    i8      iTsp(void);
     eCN     eValClass(void);
 
-  
   public:
     Footer* aFooter(void);
   };

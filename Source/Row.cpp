@@ -160,7 +160,7 @@ void Row::vAppendValue(Datum* pDatum, Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all others
   
-  m_waColVal[i_Col].m_iInt = pDatum->u.m_xAnyVal.m_iInt;
+  m_waColVal[i_Col].m_iInt = pDatum->iInt();
 
   if (pCol->bIsPtnKey())
     m_iHash += iHashColumn(pCol);
