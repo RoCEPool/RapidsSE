@@ -292,12 +292,7 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, Column* pCol, char** aazCrs, Forma
       if (!b)
         break;
       
-      pDatum->u.m_xAnyVal.m_xTme.m_uHour   = iHour;
-      pDatum->u.m_xAnyVal.m_xTme.m_uMinute = iMinute;
-      pDatum->u.m_xAnyVal.m_xTme.m_uSecond = iSecond;
-      pDatum->u.m_xAnyVal.m_xTme.m_uMicro  = iMicro;
-      pDatum->u.m_xAnyVal.m_xTme.m_uSpare  = 0;
-      
+      pDatum->vTme(iHour,iMinute,iSecond,iMicro);
       break;
       
     case DM_TSP:

@@ -71,6 +71,7 @@ namespace Datums
     i8      nStzSpace(void);
     i8      iTme(void);
     void    vTme(i8 iTme);
+    void    vTme(i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro);
     void    vToString(Stz* szStz);
     i8      iTsp(void);
     void    vTsp(i8 iTsp);

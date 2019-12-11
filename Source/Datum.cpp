@@ -596,6 +596,20 @@ void Datum::vTme(i8 iTme)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set time from parts                                                        */
+/*----------------------------------------------------------------------------*/
+void Datum::vTme(i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xAnyVal.m_xTme.m_uHour   = iHour;
+  u.m_xAnyVal.m_xTme.m_uMinute = iMinute;
+  u.m_xAnyVal.m_xTme.m_uSecond = iSecond;
+  u.m_xAnyVal.m_xTme.m_uMicro  = iMicro;
+  u.m_xAnyVal.m_xTme.m_uSpare  = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert to stz string                                                      */
 /*----------------------------------------------------------------------------*/
 void Datum::vToString(Stz* szString)
