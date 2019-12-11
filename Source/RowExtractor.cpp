@@ -304,15 +304,7 @@ bool RowExtractor::bExtractDtm(Datum* pDatum, Column* pCol, char** aazCrs, Forma
       if (!b)
         break;
       
-      pDatum->u.m_xAnyVal.m_xTsp.m_uYearDelta   = iYear - C_YEAR_BASE;
-      pDatum->u.m_xAnyVal.m_xTsp.m_uMonth  = iMonth;
-      pDatum->u.m_xAnyVal.m_xTsp.m_uDay    = iDay;
-      pDatum->u.m_xAnyVal.m_xTsp.m_uHour   = iHour;
-      pDatum->u.m_xAnyVal.m_xTsp.m_uMinute = iMinute;
-      pDatum->u.m_xAnyVal.m_xTsp.m_uSecond = iSecond;
-      pDatum->u.m_xAnyVal.m_xTsp.m_uMicro  = iMicro;
-      pDatum->u.m_xAnyVal.m_xTsp.m_uLocal  = C_TSP_LOCAL;
-      pDatum->u.m_xAnyVal.m_xTsp.m_uSpare  = 0;
+      pDatum->vTsp(iYear,iMonth,iDay,iHour,iMinute,iSecond,iMicro);
       break;
       
     case DM_VCH: {

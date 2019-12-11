@@ -632,6 +632,25 @@ i8 Datum::iTsp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set timestamp from parts                                                   */
+/*----------------------------------------------------------------------------*/
+void Datum::vTsp(i8 iYear, i8 iMonth,  i8 iDay,
+                 i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  u.m_xAnyVal.m_xTsp.m_uYearDelta = iYear - C_YEAR_BASE;
+  u.m_xAnyVal.m_xTsp.m_uMonth     = iMonth;
+  u.m_xAnyVal.m_xTsp.m_uDay       = iDay;
+  u.m_xAnyVal.m_xTsp.m_uHour      = iHour;
+  u.m_xAnyVal.m_xTsp.m_uMinute    = iMinute;
+  u.m_xAnyVal.m_xTsp.m_uSecond    = iSecond;
+  u.m_xAnyVal.m_xTsp.m_uMicro     = iMicro;
+  u.m_xAnyVal.m_xTsp.m_uLocal     = C_TSP_LOCAL;
+  u.m_xAnyVal.m_xTsp.m_uSpare     = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get class of embedded value                                                */
 /*----------------------------------------------------------------------------*/
 eCN Datum::eValClass(void)
