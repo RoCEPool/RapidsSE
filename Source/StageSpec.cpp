@@ -90,6 +90,10 @@ void StageSpec::vAppendStopOp(ePX eTopologyX)
       iStopArg = AM::pGrid()->nSlotsPerNode();
       break;
       
+    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
+      iStopArg = 1;
+      break;
+      
     default:
       RASSERT(0);
   }

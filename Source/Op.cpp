@@ -129,7 +129,7 @@ Op::~Op(void) noexcept(false)
   if (m_pStreamDef)
     delete m_pStreamDef;
   
-  m_pOpSpec = nullptr;
+  delete m_pOpSpec;
   
   -- gixOp;
   AM::vLogOpr(SL_INF,this,OA_OP_DESTRUCT,
