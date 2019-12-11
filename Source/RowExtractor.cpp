@@ -31,7 +31,6 @@ void RowExtractor::vAddElement(EntWrk* pEntWrk, Column* pCol,
   }
 
   Datum oDatum;
-  oDatum.vColumn(pCol);
 
   bool b = RowExtractor::bExtractDtm(&oDatum,pCol,&aSrc,pFmt);
   ASSERT(b);
@@ -119,7 +118,6 @@ Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
     Column* pCol = pStreamDef->pGetColumn(i_Col);
   
     Datum oDatum;
-    oDatum.vColumn(pCol);
     
     bool b = false;
     eDM eDatum = pCol->eDatum();

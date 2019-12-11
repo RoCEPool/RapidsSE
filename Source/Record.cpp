@@ -178,8 +178,6 @@ void Record::vAppend(Column* pCol, Row* pRow)
 {
   Datum oDatum;
 
-  oDatum.vColumn(pCol);
-  
   i8 i_Col = pCol->iColumnNo();
   oDatum = pRow->m_waColVal[i_Col].m_iInt;
   

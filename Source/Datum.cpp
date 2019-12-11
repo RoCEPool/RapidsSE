@@ -47,7 +47,6 @@ Datum::Datum(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_pCol = nullptr;
   u.m_xAnyVal.m_iInt   = C_UNKNOWN;
   
 
@@ -72,7 +71,6 @@ Datum::Datum(AnyVal* aAnyVal)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_pCol   = nullptr;
   u.m_xAnyVal.m_iInt   = C_UNKNOWN;
 
   u.m_xAnyVal.vMagic();
@@ -246,26 +244,6 @@ char* Datum::azChar(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get column                                                                 */
-/*----------------------------------------------------------------------------*/
-Column* Datum::pColumn(void)
-{
-  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
-  
-  return m_pCol;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set column                                                                 */
-/*----------------------------------------------------------------------------*/
-void Datum::vColumn(Column* pColumn)
-{
-  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
-  
-  m_pCol = pColumn;
-}
-
-/*----------------------------------------------------------------------------*/
 /* copy given source value into this var                                      */
 /*----------------------------------------------------------------------------*/
 void Datum::vCopy(AnyVal* aAnyVal)
@@ -386,11 +364,7 @@ void Datum::vStzDump(void)
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   vTrace("vStzDump() : "_Stz);
-  
-  if (m_pCol) {
-    vTrace("%s %s "_Stz,m_pCol->szColNm(),aCT[m_pCol->eColumnType()]);
-  }
-  
+    
   vTrace("|%02lld|%02lld|%s|\n"_Stz,
          nStzSize(),
          szStz()->iLength(),
