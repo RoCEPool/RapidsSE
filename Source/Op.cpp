@@ -80,10 +80,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   
   m_pJobUniversal = nullptr;
   
-  m_sObjectName   = ""_Stz;
-  m_sIndexName    = ""_Stz;
-  m_pTable        = nullptr;
-  
   m_pTask         = nullptr;
   
   m_bAckJobEnd    = true;

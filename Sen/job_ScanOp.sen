@@ -52,7 +52,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move to table folder and find the table and tablePtn
   sTableNm pushTable assert
-  sTableNm find execute to table[] //pJob_ScanOp job.opTable!
+  sTableNm find execute to table[]
 
   pJob_ScanOp table[].tablePtn@ to tablePtn[]
 
