@@ -40,6 +40,8 @@ Dynamo::Dynamo(Stz* sCmd)
   Tokeniser* pTokenizer = new Tokeniser;
   m_p_TknVec = new TokenVec;
   pTokenizer->vTokenise(m_p_TknVec, sCmd);
+  delete pTokenizer;
+  
   m_p_TknVec->vCutToken(m_p_TknVec->nTokens());
   
   m_pPipelineSpec = nullptr;
