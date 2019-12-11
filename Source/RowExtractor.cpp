@@ -337,7 +337,7 @@ bool RowExtractor::bExtractBcd(Datum* pDatum, Column* pCol, char** aazCrs, Forma
   SN_Bcd snBcd;
   
   try {
-    pDatum->u.m_xAnyVal.m_iBcd = snBcd.i(aazCrs,pCol,pFmt);
+    pDatum->vBcd(snBcd.i(aazCrs,pCol,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -354,7 +354,7 @@ bool RowExtractor::bExtractBol(Datum* pDatum, Column* pCol, char** aazCrs, Forma
   SN_Bol snBol;
   
   try {
-    pDatum->u.m_xAnyVal.m_iBol = snBol.i(aazCrs,pCol,pFmt);
+    pDatum->vBol(snBol.i(aazCrs,pCol,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -388,7 +388,7 @@ bool RowExtractor::bExtractFlt(Datum* pDatum, Column* pCol, char** aazCrs, Forma
   SN_Flt snFlt;
   
   try {
-    pDatum->u.m_xAnyVal.m_dFlt = snFlt.d(aazCrs,pCol,pFmt);
+    pDatum->vFlt(snFlt.d(aazCrs,pCol,pFmt));
   }
   catch (Exception xException) {
     return false;
@@ -405,7 +405,7 @@ bool RowExtractor::bExtractInt(Datum* pDatum, Column* pCol, char** aazCrs, Forma
   SN_Int snInt;
   
   try {
-    pDatum->u.m_xAnyVal.m_iInt = snInt.i(aazCrs,pCol,pFmt);
+    pDatum->vInt(snInt.i(aazCrs,pCol,pFmt));
   }
   catch (Exception xException) {
     return false;
