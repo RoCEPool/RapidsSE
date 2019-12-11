@@ -42,18 +42,24 @@ namespace Datums
     AnyVal* aAnyVal(void);
     char*   azChar(void);
     i8      iBcd(void);
+    void    vBcd(i8 iBcd);
     i8      iBol(void);
+    void    vBol(i8 iBol);
     void    vCopy(AnyVal* aAnyVal);
     i8      iDte_day(void);
     i8      iDte_month(void);
     i8      iDte_year(void);
     AnyVal* aEmbeddedAnyVal(void);
     Cell*   aFip(void);
+    void    vFip(Cell* aFip);
     d8      dFlt(void);
+    void    vFlt(d8 dFlt);
     i8      iInt(void);
+    void    vInt(i8 iInt);
     i8      iIvl(void);
     bool    bIsInt(void);
     Object* pObj(void);
+    void    vObj(Object* pObj);
     i8      nStackUsage(void);
     Stz*    szStz(void);
     void    vStz(Stz* szStz);
@@ -63,8 +69,10 @@ namespace Datums
     void    vStzSize(i8 nSize);
     i8      nStzSpace(void);
     i8      iTme(void);
+    void    vTme(i8 iTme);
     void    vToString(Stz* szStz);
     i8      iTsp(void);
+    void    vTsp(i8 iTsp);
     eCN     eValClass(void);
 
   public:
