@@ -25,7 +25,6 @@ namespace Pipelines
     void  operator delete(void*);
   
     Dynamo(Stz* sCmd);
-    Dynamo(TokenVec* pTknVec);
    ~Dynamo(void) noexcept(false);
   
     static ePX eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec);

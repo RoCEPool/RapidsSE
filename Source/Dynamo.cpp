@@ -56,27 +56,6 @@ Dynamo::Dynamo(Stz* sCmd)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Dynamo::Dynamo(TokenVec* pTknVec)
-: Object(CN_DYNAMO)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  m_p_TknVec = pTknVec;
-  
-  m_pPipelineSpec = nullptr;
-  m_pStageSpec   = nullptr;
-  
-  m_i_Tkn        = 0;
-  m_pTkn         = nullptr;
-
-  _checkInitialised_(CN_DYNAMO);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Dynamo::~Dynamo(void) noexcept(false)
@@ -84,6 +63,7 @@ Dynamo::~Dynamo(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   delete m_pPipelineSpec;
+  delete m_p_TknVec;
   //delete m_pStageSpec;
   
 }

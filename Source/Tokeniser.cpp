@@ -162,7 +162,7 @@ void Tokeniser::vTokenise(TokenVec* pTokenVec, Stz* szString)
   for (i8 i_Token = 0; ; i_Token++) {
     pTokeniser->vNextToken();
     if (TN_NONE == pTokeniser->eToken())
-    break;
+      break;
     
     pTokenVec->vIncTokens();
     

@@ -82,7 +82,6 @@ namespace Operators
     void vPartition(i8 iPartition);
     bool bPause(void);
     void vPipeOut(Operand* pOperand);
-    void vPipeOut_endMarker(void);
     void vPipeToJob(Operand* pOperand);
     void vPipeToStart(Operand* pOperand);
     Operand* pPopQueue(void);

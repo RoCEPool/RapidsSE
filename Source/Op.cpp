@@ -519,18 +519,6 @@ void Op::vPipeToStart(Operand* pOperand)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append end-marker to output op's operand queue                             */
-/*----------------------------------------------------------------------------*/
-void Op::vPipeOut_endMarker(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  EndMarker* pEndMarker = new EndMarker;
-  
-  vPipeOut(pEndMarker);
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop operand queue                                                          */
 /*----------------------------------------------------------------------------*/
 Operand* Op::pPopQueue(void)
