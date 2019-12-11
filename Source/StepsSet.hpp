@@ -474,7 +474,6 @@ public:
   void vJobNextOperand(void);
   void vJobNoWaitFetch(void);
 
-  void vJobOpenToFile(void);
   void vJobOperandFetch(void);
   void vJobOperandStore(void);
   void vJobOriginatingIdFetch(void);
