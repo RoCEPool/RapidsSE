@@ -728,7 +728,14 @@ bool Op::bSpawnJob(i8 iSessionId)
   TokenVec* pTknVec = new TokenVec;
   pTokenizer->vTokenise(pTknVec, szCmdStr);
   
+  // delete the tokeniser
+  delete pTokenizer;
+  
   eEC eError = AM::ePopulateJob(m_pJobUniversal, pTknVec);
+  
+  // delete the tokenVec
+  delete pTknVec;
+  
   bool bSpawned = AM::bSpawnJob(m_pJobUniversal);
   
   m_pTask = AM::pExecutingTask(m_pJobUniversal);
