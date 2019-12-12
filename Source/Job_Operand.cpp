@@ -160,9 +160,11 @@ Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
   
   ReqTuple xReqTuple("!!OPERAND"_Stz,false);
   
-  Job_Operand* pJob_Operand =
-    static_cast<Job_Operand*>
-      (pJobClass_Operand->pPreJob(&xReqTuple,pSession));
+//  Job_Operand* pJob_Operand =
+//    static_cast<Job_Operand*>
+//      (pJobClass_Operand->pPreJob(&xReqTuple,pSession));
+  
+  Job_Operand* pJob_Operand = new Job_Operand(pJobClass_Operand, &xReqTuple);
   
   pJob_Operand->vSeed(SS_SEED_RUN);
   
