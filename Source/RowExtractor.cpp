@@ -156,15 +156,15 @@ Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
     // value
     
     switch (eDatum) {
-      case DM_BCD: b = bExtractBcd(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_BOL: b = bExtractBol(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_DTE: b = bExtractDte(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_FLT: b = bExtractFlt(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_INT: b = bExtractInt(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_IVL: b = bExtractIvl(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_TME: b = bExtractTme(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_TSP: b = bExtractTsp(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_VCH: b = bExtractVch(&oDatum,pCol,aazCrs,pFmt); break;
+      case DM_BCD: b = CsvValue::bToBcd(&oDatum,pCol,aazCrs,pFmt); break;
+      case DM_BOL: b = CsvValue::bToBol(&oDatum,pCol,aazCrs,pFmt); break;
+      case DM_DTE: b = CsvValue::bToDte(&oDatum,pCol,aazCrs,pFmt); break;
+      case DM_FLT: b = CsvValue::bToFlt(&oDatum,pCol,aazCrs,pFmt); break;
+      case DM_INT: b = CsvValue::bToInt(&oDatum,pCol,aazCrs,pFmt); break;
+      case DM_IVL: b = CsvValue::bToIvl(&oDatum,pCol,aazCrs,pFmt); break;
+      case DM_TME: b = CsvValue::bToTme(&oDatum,pCol,aazCrs,pFmt); break;
+      case DM_TSP: b = CsvValue::bToTsp(&oDatum,pCol,aazCrs,pFmt); break;
+      case DM_VCH: b = CsvValue::bToVch(&oDatum,pCol,aazCrs,pFmt); break;
       default:
         vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
                "RowExtractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
