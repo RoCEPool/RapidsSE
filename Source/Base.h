@@ -26,8 +26,8 @@ namespace Base
 #include "ByteLiterals.hpp"
 #include "i3.hpp"
 #include "Null.hpp"
-#include "Structs.h"
 #include "WordAsBytes.h"
+#include "WorldTypes.h"
 
 /*============================================================================*/
 /* end                                                                        */

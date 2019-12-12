@@ -14,6 +14,14 @@ void Correctness::vCheckAssumptions(void)
   ASSERT(8 == sizeof(Header));
   ASSERT(8 == sizeof(Object));
   ASSERT(8 == sizeof(Footer));
+  
+
+  ASSERT(8 == sizeof(_Dte));
+  ASSERT(8 == sizeof(_Edt));
+  ASSERT(8 == sizeof(_Ivl));
+  ASSERT(8 == sizeof(_Tme));
+  ASSERT(8 == sizeof(_Tsp));
+  ASSERT(8 == sizeof(_Id));
 }
 
 /*----------------------------------------------------------------------------*/
