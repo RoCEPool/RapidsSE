@@ -3,10 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace Records
 {
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Record : public Object
   {
   private:

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace Records
 {
   const int C_SIZEOF_RECORDSIZE = 4;
   

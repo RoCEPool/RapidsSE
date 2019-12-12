@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RecordBuffer* Transform::_pRecordBuffer(void* aAddr)
+RecordBuffer* Records::_pRecordBuffer(void* aAddr)
 {
   RecordBuffer* pRecordBuffer = reinterpret_cast<RecordBuffer*>(aAddr);
   

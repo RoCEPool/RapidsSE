@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Rows.h"
+#include "Records.h"
 
 //------------------------------------------------------------------------------
 
@@ -20,8 +20,6 @@ namespace Transform
 #include "Ent.hpp"
 #include "EntWrk.hpp"
 
-#include "Record.hpp"
-#include "RecordBuffer.hpp"
 #include "IrwBuffer.hpp"
 
 #include "NmStr.hpp"

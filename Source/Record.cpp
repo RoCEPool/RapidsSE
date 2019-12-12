@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Record* Transform::_pRecord(void* aAddr)
+Record* Records::_pRecord(void* aAddr)
 {
   Record* pRecord = reinterpret_cast<Record*>(aAddr);
   

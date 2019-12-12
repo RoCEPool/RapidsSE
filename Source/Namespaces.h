@@ -55,6 +55,7 @@ namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }
 namespace Prompt        { class SePrompt;                                     }
 namespace Oblique       { class AM;                                           }
 namespace Operators     { class Op; class Pipeline;                           }
+namespace Records       {                                                     }
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Registers     { class RegSet;                                       }
 namespace Rows          {                                                     }
@@ -113,6 +114,7 @@ using namespace Persistence;
 using namespace Plans;
 using namespace Pool;
 using namespace Prompt;
+using namespace Records;
 using namespace Registers;
 using namespace Resources;
 using namespace Rows;
