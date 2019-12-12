@@ -2,11 +2,42 @@
 /* CsValue.cpp -- Csv Value                                                   */
 /*============================================================================*/
 
-#include "Buffers.h"
-#include "AM.hpp"
+#include "Records.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- Public Static -----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* extract a datum from csv field value                                       */
+/*----------------------------------------------------------------------------*/
+bool CsvValue::bToDtm(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
+{
+  bool b = false;
+  
+  eDM eDatum = pCol->eDatum();
+
+  switch (eDatum) {
+    case DM_BCD: b = bToBcd(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_BOL: b = bToBol(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_DTE: b = bToDte(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_FLT: b = bToFlt(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_INT: b = bToInt(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_IVL: b = bToIvl(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_TME: b = bToTme(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_TSP: b = bToTsp(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_VCH: b = bToBcd(pDatum,pCol,aazCrs,pFmt); break;
+      
+    default:
+      vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+             "CsvValue::bToDtm: Invalid eDatum : %lld\n"_Stz,eDatum);
+  }
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
