@@ -144,7 +144,6 @@ void Job_Operand::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /* new an operand job                                                         */
 /*----------------------------------------------------------------------------*/
 Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
-                                         Task* pTask,
                                          Operand* pOperand,
                                          i8 iParentJobId,
                                          Op* pOp,

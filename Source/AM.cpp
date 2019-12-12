@@ -240,7 +240,7 @@ void AM::vSendJobOperand(Task* pTask, Operand* pOperand,
   
   // new a xmit job
   Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(
-                                  nullptr, pTask,pOperand, pParentJob->m_iFocalId,pOp,iNode);
+                                  nullptr, pOperand, pParentJob->m_iFocalId,pOp,iNode);
   
   // set the send node in the task
   Node* pSendNode = pGrid()->pGetNode(iNode);

@@ -29,7 +29,6 @@ namespace Jobs
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     static Job_Operand* pNewJobOperand(Session* pSession,
-                                       Task* pTask,
                                        Operand* pOperand,
                                        i8 iParentJobId,
                                        Op* pOp,
