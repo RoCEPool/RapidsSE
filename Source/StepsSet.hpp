@@ -869,7 +869,6 @@ public:
   void vOperandNewStreamDef(void);
   void vOperandNext(void);
   void vOperandPipeOut(void);
-  void vOperandPipeToJob(void);
   void vOperandRowCountFetch(void);
   void vOperandSet(void);
   void vOperandToCsv(void);
