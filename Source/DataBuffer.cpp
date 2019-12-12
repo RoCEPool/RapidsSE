@@ -22,7 +22,7 @@ DataBuffer* MetaData::_pDataBuffer(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DataBuffer::DataBuffer(eCN eClassNo)
+DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 : LinkedBuffer(eClassNo)
 , m_okLock(LK_CRWBUFFER,this)
 {
@@ -32,6 +32,7 @@ DataBuffer::DataBuffer(eCN eClassNo)
   m_iPartitionNo  = C_UNKNOWN;
   m_iBufferHeight = 0;
   m_oWhenNewed.vNow();
+  m_bIsPermanent = bIsPermanent;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
@@ -158,6 +159,16 @@ Pool::bn DataBuffer::nPoolBufferNo(void)
   bn nBufferNo = pPoolBuffer->nPoolBufferNo();
   
   return nBufferNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this buffer temporary ?                                                 */
+/*----------------------------------------------------------------------------*/
+bool DataBuffer::bIsPermanent(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_bIsPermanent;
 }
 
 /*============================================================================*/

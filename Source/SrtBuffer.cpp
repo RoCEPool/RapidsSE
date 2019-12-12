@@ -44,7 +44,7 @@ void SrtBuffer::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SrtBuffer::SrtBuffer(i8 nRowRefs, i8 iPartition)
-: DataBuffer(CN_SRTBUFFER)
+: DataBuffer(CN_SRTBUFFER, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   

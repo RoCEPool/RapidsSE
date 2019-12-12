@@ -53,8 +53,8 @@ void CrwBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CrwBuffer::CrwBuffer(void)
-: DataBuffer(CN_CRWBUFFER)
+CrwBuffer::CrwBuffer(bool bIsPermanent)
+: DataBuffer(CN_CRWBUFFER, bIsPermanent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   

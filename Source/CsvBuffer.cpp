@@ -45,7 +45,7 @@ void CsvBuffer::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 CsvBuffer::CsvBuffer(void)
-: DataBuffer(CN_CSVBUFFER)
+: DataBuffer(CN_CSVBUFFER, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   

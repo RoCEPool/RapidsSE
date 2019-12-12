@@ -44,7 +44,7 @@ void IrwBuffer::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IrwBuffer::IrwBuffer(void)
-: DataBuffer(CN_IRWBUFFER)
+: DataBuffer(CN_IRWBUFFER, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
   

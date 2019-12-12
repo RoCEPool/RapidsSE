@@ -54,7 +54,7 @@ void IntBuffer::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IntBuffer::IntBuffer(void)
-: DataBuffer(CN_INTBUFFER)
+: DataBuffer(CN_INTBUFFER, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
   

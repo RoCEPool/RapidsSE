@@ -57,7 +57,7 @@ void EntBuffer::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntBuffer::EntBuffer(void)
-: DataBuffer(CN_ENTBUFFER)
+: DataBuffer(CN_ENTBUFFER, true)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
