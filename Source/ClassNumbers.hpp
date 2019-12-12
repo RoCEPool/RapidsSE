@@ -183,10 +183,6 @@ enum eCN : u2 // Class Number
   
   /* 155 0x09B       15B Heap:I */ CN__O__,
   /* 156 0x09C      464B Heap:S */ CN_OP,
-  /* 157 0x09D      528B Heap:M */ CN_OP_TOCLAUSE,
-  /* 158 0x09E     4496B Heap:M */ CN_OP_TOCOMMAND,
-  /* 159 0x09F      472B Heap:M */ CN_OP_TODO,
-  /* 160 0x0A0      568B Heap:M */ CN_OP_TOFILTER,
   /* 161 0x0A1       56B Heap:S */ CN_OPERANDQUEUE,
   /* 162 0x0A2     5696B Heap:M */ CN_OPSPEC,
   /* 163 0x0A3     2080B Heap:S */ CN_OPSPECVEC,
@@ -505,10 +501,6 @@ static Stz* aCN[]
   
   /* 155 0x09B */ "_O__"_Stz,                // CN__O__
   /* 156 0x09C */ "OP"_Stz,                  // CN_OP
-  /* 157 0x09D */ "OP_TOCLAUSE"_Stz,         // CN_OP_TOCLAUSE
-  /* 158 0x09E */ "OP_TOCOMMAND"_Stz,        // CN_OP_TOCOMMAND
-  /* 159 0x09F */ "OP_TODO"_Stz,             // CN_OP_TODO
-  /* 160 0x0A0 */ "OP_TOFILTER"_Stz,         // CN_OP_TOFILTER
   /* 161 0x0A1 */ "OPERANDQUEUE"_Stz,        // CN_OPERANDQUEUE
   /* 162 0x0A2 */ "OPSPEC"_Stz,              // CN_OPSPEC
   /* 163 0x0A3 */ "OPSPECVEC"_Stz,           // CN_OPSPECVEC

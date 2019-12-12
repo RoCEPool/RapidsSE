@@ -1290,9 +1290,6 @@ void AM::vFocalOutline(s4K& sOutline, Focal* pFocal) {
   else if (Jobs::_bIsValidJob(eClassNo))
     _pJob(pFocal)->vFocalOutline(sOutline);
   
-  else if (Operators::_bIsValidOp(eClassNo))
-    _pOp(pFocal)->vFocalOutline(sOutline);
-  
   else
     sOutline.vSprint("<%s focal>"_Stz,aCN[eClassNo]);
 }

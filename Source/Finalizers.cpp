@@ -180,10 +180,6 @@ pFINALIZE *gpFinalize[]
 
   /*    */ &Finalize::vUndefined,         // CN__O__
   /* 28 */ &Finalize::vUndefined,         // CN_OP
-  /* 28 */ &Finalize::vUndefined,         // CN_OP_TOCLAUSE
-  /* 28 */ &Finalize::vUndefined,         // CN_OP_TOCOMMAND
-  /* 28 */ &Finalize::vUndefined,         // CN_OP_TODO
-  /* 28 */ &Finalize::vUndefined,         // CN_OP_TOFILTER
   /* 28 */ &Finalize::vUndefined,         // CN_OPERANDQUEUE
   /* 28 */ &Finalize::vUndefined,         // CN_OPSPEC
   /* 28 */ &Finalize::vUndefined,         // CN_OPSPECVEC

@@ -26,20 +26,6 @@ Op* Operators::_pOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is given class a valid op?                                                 */
-/*----------------------------------------------------------------------------*/
-bool Operators::_bIsValidOp(eCN eClass)
-{
-  if (eClass >= CN_OP_TOCLAUSE && eClass <= CN_OP_TOFILTER)
-    return true;
-//  else
-//  if (eClass >= CN_OP_TOCLAUSE && eClass <= CN_OP_TOFILTER)
-//    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* new                                                                        */
 /*----------------------------------------------------------------------------*/
 void* Op::operator new(size_t)
