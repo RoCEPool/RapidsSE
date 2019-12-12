@@ -14,6 +14,8 @@ namespace Records
 
 //------------------------------------------------------------------------------
 
+#include "CsvValue.hpp"
+
 #include "Record.hpp"
 #include "RecordBuffer.hpp"
 
