@@ -9,8 +9,21 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Table2(void)
 {
+  vAddStep("table[].get"_Stz,                &Step::vTableGet);
   vAddStep("table[].set"_Stz,                &Step::vTableSet);
   vAddStep("table[].tablePtn@"_Stz,          &Step::vTablePtnFetch);
+}
+
+/*----------------------------------------------------------------------------*/
+/* table[].get -- get table                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTableGet(void)
+{
+  ENTRY(); // ENTRY("vTableGet"_Stz);
+  
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpTable);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

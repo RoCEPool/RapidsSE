@@ -1,0 +1,125 @@
+/*============================================================================*/
+/* job_InsertOp.sen -- Job InsertOp                                           */
+/*============================================================================*/
+
+" job_InsertOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a insertablee table folder                                */
+/*----------------------------------------------------------------------------*/
+: checkInsertTable ( "<tableNm>" -- true | errorCode false )
+
+  params| sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTable not if popTable false exit then
+  //sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+
+  // pop table folder
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for insertOp                               (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : InsertOp_req ( -- )
+ 
+  >>logEntry <SEED_REQ>
+  job::this locals| pJob_InsertOp |
+
+  0 0 locals| sTableNm pTable |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can scan the table
+  <tableNm> to sTableNm
+  sTableNm checkInsertTable not if
+    pJob_InsertOp <ERROR_JOB> !!logError exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move to table folder and find the table and tablePtn
+  sTableNm pushTable assert
+  sTableNm find execute to table[]
+
+  0 table[].get tablePtnGrabWrite
+  //pJob_InsertOp op.partition@ locals| iPartition |
+
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+    ZK_CRWBUFFER of
+      "Operand:- ZK_CRWBUFFER" .verbose
+      Operand[].insertIntoTable
+      true
+    endof
+
+    ZK_CSVBUFFER of
+      "Operand:- ZK_CSVBUFFER" .verbose
+      true
+    endof
+
+    ZK_ENDMARKER of
+      "Operand:- ZK_ENDMARKER" .verbose
+      Operand[].handleEnd
+      false
+    endof
+
+    ZK_STREAMDEF of
+      "Operand:- ZK_STREAMDEF" .verbose
+      Operand[].pipeOut
+      true
+    endof
+
+    endcase
+
+    while assert::stack_0 repeat
+
+  0 table[].get tablePtnDropWrite
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobSyntax: InsertOp :: InsertOp <tableNm> ;
+
+jobInfo: InsertOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobType?>  = JT_COUNTOP
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_WRITE
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -864,6 +864,7 @@ public:
   void vOperandHandleStop(void);
   void vOperandIsNull(void);
   void vOperandItemCountFetch(void);
+  void vOperandInsertIntoTable(void);
   void vOperandKind(void);
   void vOperandNewEndMarker(void);
   void vOperandNewStreamDef(void);
@@ -1135,6 +1136,7 @@ public:
   void vTableVisualize(void);
 
   // table2
+  void vTableGet(void);
   void vTableSet(void);
   void vTablePtnFetch(void);
 

@@ -9,25 +9,26 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Operand(void)
 {
-  vAddStep("Operand[].bide"_Stz,         &Step::vOperandBide);
-  vAddStep("Operand[].delete"_Stz,       &Step::vOperandDelete);
-  vAddStep("Operand[].firstRow@"_Stz,    &Step::vOperandFirstRowFetch);
-  vAddStep("Operand[].get"_Stz,          &Step::vOperandGet);
-  vAddStep("Operand[].handleAggEnd"_Stz, &Step::vOperandHandleAggEnd);
-  vAddStep("Operand[].handleEnd"_Stz,    &Step::vOperandHandleEnd);
-  vAddStep("Operand[].handleStop"_Stz,   &Step::vOperandHandleStop);
-  vAddStep("Operand[].isNull"_Stz,       &Step::vOperandIsNull);
-  vAddStep("Operand[].itemCount@"_Stz,   &Step::vOperandItemCountFetch);
-  vAddStep("Operand[].kind"_Stz,         &Step::vOperandKind);
-  vAddStep("Operand[].newEndMarker"_Stz, &Step::vOperandNewEndMarker);
-  vAddStep("Operand[].newStreamDef"_Stz, &Step::vOperandNewStreamDef);
-  vAddStep("Operand[].next"_Stz,         &Step::vOperandNext);
-  vAddStep("Operand[].pipeOut"_Stz,      &Step::vOperandPipeOut);
-  vAddStep("Operand[].rowCount@"_Stz,    &Step::vOperandRowCountFetch);
-  vAddStep("Operand[].set"_Stz,          &Step::vOperandSet);
-  vAddStep("Operand[].toCsv"_Stz,        &Step::vOperandToCsv);
-  vAddStep("Operand[].workDone"_Stz,     &Step::vOperandWorkDone);
-  vAddStep("Operand[].writeToFile0"_Stz,  &Step::vOperandWriteToFile0);
+  vAddStep("Operand[].bide"_Stz,           &Step::vOperandBide);
+  vAddStep("Operand[].delete"_Stz,         &Step::vOperandDelete);
+  vAddStep("Operand[].firstRow@"_Stz,      &Step::vOperandFirstRowFetch);
+  vAddStep("Operand[].get"_Stz,            &Step::vOperandGet);
+  vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vOperandHandleAggEnd);
+  vAddStep("Operand[].handleEnd"_Stz,      &Step::vOperandHandleEnd);
+  vAddStep("Operand[].handleStop"_Stz,     &Step::vOperandHandleStop);
+  vAddStep("Operand[].isNull"_Stz,         &Step::vOperandIsNull);
+  vAddStep("Operand[].itemCount@"_Stz,     &Step::vOperandItemCountFetch);
+  vAddStep("Operand[].insertIntoTable"_Stz,&Step::vOperandInsertIntoTable);
+  vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
+  vAddStep("Operand[].newEndMarker"_Stz,   &Step::vOperandNewEndMarker);
+  vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
+  vAddStep("Operand[].next"_Stz,           &Step::vOperandNext);
+  vAddStep("Operand[].pipeOut"_Stz,        &Step::vOperandPipeOut);
+  vAddStep("Operand[].rowCount@"_Stz,      &Step::vOperandRowCountFetch);
+  vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
+  vAddStep("Operand[].toCsv"_Stz,          &Step::vOperandToCsv);
+  vAddStep("Operand[].workDone"_Stz,       &Step::vOperandWorkDone);
+  vAddStep("Operand[].writeToFile0"_Stz,   &Step::vOperandWriteToFile0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,6 +213,25 @@ void Step::vOperandItemCountFetch(void)
   IrwBuffer* pIrwBuffer = _pIrwBuffer(m_pRegSet->m_pOperand);
   
   m_pDataStack->vPushInt(pIrwBuffer->nItems());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].insertIntoTable -- insert operand into the table                 */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandInsertIntoTable(void)
+{
+  ENTRY(); // ENTRY("vOperandInsertIntoTable"_Stz);
+  
+  ASSERT(m_pRegSet->m_pOperand);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pRegSet->m_pOperand);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  i8 iPartition = pOp->m_nPartition;
+  i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
+  
+  m_pRegSet->m_xpTable->vInsertEntries(C_UNKNOWN, iSlot, pCrwBuffer);
   
   EXIT();
 }

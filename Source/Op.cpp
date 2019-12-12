@@ -691,15 +691,14 @@ bool Op::bSpawnJob(i8 iSessionId)
   m_pJobUniversal = AM::pNewJobUniversal(this, &xReqTuple,
                                          this->m_iFocalId);
   
-  // copy objectName
-  //AM::vJobObjectName(m_pJobUniversal, m_sObjectName);
-  
   s4K szCmdStr;
   vToCmdStr(szCmdStr);
   
   Tokeniser* pTokenizer = new Tokeniser;
   TokenVec* pTknVec = new TokenVec;
   pTokenizer->vTokenise(pTknVec, szCmdStr);
+  
+  vTrace("****************************************************Spawning job for %s\n"_Stz, szCmdStr.szStz());
   
   // delete the tokeniser
   delete pTokenizer;
