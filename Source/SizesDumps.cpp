@@ -462,7 +462,7 @@ i8 giClassSize[]
   /* */ sizeof(Job_Operand),        // CN_JOB_OPERAND
   /* */ sizeof(Job_Receiver),       // CN_JOB_RECEIVER
   /* */ sizeof(Job_Sanity),         // CN_JOB_SANITY
-  /* */ sizeof(Job_Select),         // CN_JOB_SELECT
+  /* */ sizeof(Op),         // CN_JOB_SELECT
   /* */ sizeof(Job_Start),          // CN_JOB_START
   /* */ sizeof(Job_SubFetch),       // CN_JOB_SUBFETCH
   /* */ sizeof(Job_SubFetch),       // CN_JOB_SUBINFLATE
@@ -509,10 +509,10 @@ i8 giClassSize[]
 
   /* */ 'O'-'A' + 1,                // CN__O__
   /* */ sizeof(Op),                 // CN_OP
-  /* */ sizeof(Op_ToClause),        // CN_OP_TOCLAUSE
-  /* */ sizeof(Op_ToCommand),       // CN_OP_TOCOMMAND
-  /* */ sizeof(Op_ToDo),            // CN_OP_TODO
-  /* */ sizeof(Op_ToFilter),        // CN_OP_TOFILTER
+  /* */ sizeof(Op),        // CN_OP_TOCLAUSE
+  /* */ sizeof(Op),       // CN_OP_TOCOMMAND
+  /* */ sizeof(Op),            // CN_OP_TODO
+  /* */ sizeof(Op),        // CN_OP_TOFILTER
   /* */ sizeof(OperandQueue),       // CN_OPERANDQUEUE
   /* */ sizeof(OpSpec),             // CN_OPSPEC
   /* */ sizeof(OpSpecVec),          // CN_OPSPECVEC

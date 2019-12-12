@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "CompilerOperators.h"
+#include "Operators.h"
 
 //------------------------------------------------------------------------------
 
@@ -52,7 +52,6 @@ namespace Jobs
 #include "Job_Receiver.hpp"
 
 #include "Job_Sanity.hpp"
-#include "Job_Select.hpp"
 #include "Job_Start.hpp"
 
 #include "Job_SubFetch.hpp"
