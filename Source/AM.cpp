@@ -139,6 +139,7 @@ void AM::vBootError(bool bBootError) {
 /*----------------------------------------------------------------------------*/
 void AM::vDeleteOperand(Operand* pOperand)
 {
+  
   eCN eClass = pOperand->eClass();
   
   switch(eClass) {
@@ -151,7 +152,18 @@ void AM::vDeleteOperand(Operand* pOperand)
       
     case CN_CRWBUFFER: {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+      
+      // permament crw buffers not to be deleted
+      if (pCrwBuffer->bIsPermanent())
+        break;
+      
       delete pCrwBuffer;
+      break;
+    }
+      
+    case CN_CSVBUFFER: {
+      CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+      delete pCsvBuffer;
       break;
     }
       
@@ -161,6 +173,11 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
  
+    case CN_ENTBUFFER: {
+      // should never be called for ent buffers
+      RASSERT(0);
+    }
+      
     case CN_IRWBUFFER: {
       IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
       delete pIrwBuffer;
@@ -240,7 +257,11 @@ void AM::vSendJobOperand(Task* pTask, Operand* pOperand,
   nObjectSize = giClassSize[pOperand->eClass()];
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
   
-  // now delet ethe job_operand
+  // delete the operand
+  AM::vDeleteOperand(pOperand);
+  pJob_Operand->m_pOperand = nullptr;
+  
+  // now delete the job_operand
   delete pJob_Operand;
   
   // drop the socket write lock
