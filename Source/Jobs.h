@@ -27,7 +27,6 @@ namespace Jobs
 
 #include "JobWriteBehind.hpp"
 
-#include "RowAgg.hpp"
 #include "RowOnce.hpp"
 
 #include "JobHelper.hpp"
