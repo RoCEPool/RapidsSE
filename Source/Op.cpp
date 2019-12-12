@@ -698,7 +698,7 @@ bool Op::bSpawnJob(i8 iSessionId)
   TokenVec* pTknVec = new TokenVec;
   pTokenizer->vTokenise(pTknVec, szCmdStr);
   
-  vTrace("****************************************************Spawning job for %s\n"_Stz, szCmdStr.szStz());
+  //vTrace("****************************************************Spawning job for %s\n"_Stz, szCmdStr.szStz());
   
   // delete the tokeniser
   delete pTokenizer;
