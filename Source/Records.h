@@ -14,6 +14,7 @@ namespace Records
 
 //------------------------------------------------------------------------------
 
+#include "CsvField.hpp"
 #include "CsvValue.hpp"
 
 #include "Record.hpp"

@@ -22,16 +22,6 @@ namespace Buffers
   private:
     static bool bExtractDtm(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
   
-    static bool bExtractBcd(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
-    static bool bExtractBol(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
-    static bool bExtractDte(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
-    static bool bExtractFlt(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
-    static bool bExtractInt(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
-    static bool bExtractIvl(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
-    static bool bExtractTme(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
-    static bool bExtractTsp(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
-    static bool bExtractVch(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
-  
     static bool bIsEnclosedString(char** aazCrs, Format* pFmt);
     static bool bIsThereFieldData(char* aSrc, Format* pFmt);
     static bool bIsThereRecordData(char* aSrc, Format* pFmt);
