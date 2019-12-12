@@ -14,10 +14,6 @@ namespace Pipelines
 
 //------------------------------------------------------------------------------
 
-#include "OpDefn.hpp"
-#include "OpDesc.hpp"
-#include "OpCatalog.hpp"
-
 #include "OpSpec.hpp"
 #include "OpSpecVec.hpp"
 

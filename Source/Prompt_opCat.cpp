@@ -18,14 +18,14 @@ PromptDesc __Prompt_opCat (
   ""_Stz               // description
 );
 
-extern OpCatalog gxOpCatalog;
+//extern OpCatalog gxOpCatalog;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_opCat(SePrompt* pPrompt)
 {
-  gxOpCatalog.vPrintCatalog();
+  //gxOpCatalog.vPrintCatalog();
   
   return true;
 }

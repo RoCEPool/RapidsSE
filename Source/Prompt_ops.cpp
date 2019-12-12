@@ -4,8 +4,6 @@
 
 #include "Prompt.h"
 
-extern OpCatalog gxOpCatalog;
-
 PromptDesc __Prompt_ops (
   PF_FUNS,               // prompt function
   "Prompt_ops"_Stz,      // name of the prompt function

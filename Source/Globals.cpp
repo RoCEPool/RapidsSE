@@ -7,7 +7,6 @@
 Arguments     gxArguments;
 FnCatalog     gxFnCatalog;
 JobCatalog    gxJobCatalog;
-OpCatalog     gxOpCatalog;
 PromptCatalog gxPromptCatalog;
 
 AttachMap*    gpAttachMap   = nullptr;

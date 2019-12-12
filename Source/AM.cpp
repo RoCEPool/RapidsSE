@@ -5,7 +5,6 @@
 #include "Oblique.h"
 
 extern Arguments     gxArguments;
-extern OpCatalog     gxOpCatalog;
 extern PromptCatalog gxPromptCatalog;
 
 extern AttachMap*    gpAttachMap;
@@ -1310,7 +1309,6 @@ i8 AM::iJobUniqueId(Job* pJob) { return pJob->m_iFocalId;                     }
 void AM::vPrintGlobals(void)
 {
   printf("gxArguments     @%p\n",&gxArguments);
-  printf("gxOpCatalog     @%p\n",&gxOpCatalog);
   printf("gxPromptCatalog @%p\n",&gxPromptCatalog);
   printf("\n");
 
