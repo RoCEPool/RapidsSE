@@ -194,7 +194,7 @@ void Stage::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* send stop marker to stopOp of the stage                                    */
+/* send stop marker to startOps of this stage                                 */
 /*----------------------------------------------------------------------------*/
 void Stage::vStopPipeline(i8 iThisNode)
 {
@@ -204,9 +204,8 @@ void Stage::vStopPipeline(i8 iThisNode)
     StageNde* pStageNde = m_oStageNdeVec.pGet(i_Nde);
     
     if (pStageNde->iNode() == iThisNode) {
-      i8 nOps = pStageNde->pOpVec()->nItems();
-      Op* pOp = pStageNde->pOpVec()->pGet(nOps - 1);
-      if (AM::eJobType(pOp->m_pJobUniversal) == JT_STOPOP)
+      Op* pOp = pStageNde->pOpVec()->pGet(0);
+      if (AM::eJobType(pOp->m_pJobUniversal) == JT_STARTOP)
         pOp->vAppendLeft(new StopMarker);
     }
   }
@@ -217,10 +216,10 @@ void Stage::vStopPipeline(i8 iThisNode)
     i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
     
     if (iPtnNode == iThisNode) {
-      i8 nOps = pStagePtn->pOpVec()->nItems();
-      Op* pOp = pStagePtn->pOpVec()->pGet(nOps - 1);
-      if (AM::eJobType(pOp->m_pJobUniversal) == JT_STOPOP)
+      Op* pOp = pStagePtn->pOpVec()->pGet(0);
+      if (AM::eJobType(pOp->m_pJobUniversal) == JT_STARTOP)
         pOp->vAppendLeft(new StopMarker);
+
     }
   }
   

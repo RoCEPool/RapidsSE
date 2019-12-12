@@ -559,9 +559,9 @@ bool Dynamo::bPhase2_staging(void)
   }
   
   // Append stopOp to last stage
-  StageSpec* pLastStageSpec = pStageSpecVec->pGet(pStageSpecVec->nItems() - 1);
-  ePX eTopologyX = eTopoloyX(pLastStageSpec, pFirstStageSpec);
-  pLastStageSpec->vAppendStopOp(eTopologyX);
+//  StageSpec* pLastStageSpec = pStageSpecVec->pGet(pStageSpecVec->nItems() - 1);
+//  ePX eTopologyX = eTopoloyX(pLastStageSpec, pFirstStageSpec);
+//  pLastStageSpec->vAppendStopOp(eTopologyX);
 
   return true;
 }
