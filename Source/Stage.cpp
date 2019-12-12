@@ -248,18 +248,12 @@ i8 Stage::nOpsOnNode(i8 iNode)
       Op* pOp = pStagePtn->pOpVec()->pGet(0);
       if (AM::eJobType(pOp->m_pJobUniversal) == JT_STARTOP)
         nOps--;
-      
-      // ignore StopOp
-      pOp = pStagePtn->pOpVec()->pGet(nItems-1);
-      if (AM::eJobType(pOp->m_pJobUniversal) == JT_STOPOP)
-        nOps--;
     }
   }
   
   for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
     
     StageNde* pStageNde = m_oStageNdeVec.pGet(i_Nde);
-    i8 nItems = pStageNde->pOpVec()->nItems();
     
     // skip if Op not for this node
     if (pStageNde->iNode() == iNode) {
@@ -268,11 +262,6 @@ i8 Stage::nOpsOnNode(i8 iNode)
       // ignore StartOp
       Op* pOp = pStageNde->pOpVec()->pGet(0);
       if (AM::eJobType(pOp->m_pJobUniversal) == JT_STARTOP)
-        nOps--;
-      
-      // ignore StopOp
-      pOp = pStageNde->pOpVec()->pGet(nItems-1);
-      if (AM::eJobType(pOp->m_pJobUniversal) == JT_STOPOP)
         nOps--;
     }
   }
