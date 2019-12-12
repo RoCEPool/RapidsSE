@@ -20,7 +20,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Buffers::vCheckAssumptions();
   Chunks::vCheckAssumptions();
   ClassData::vCheckAssumptions();
-  CompilerOperators::vCheckAssumptions();
   CompilerStream::vCheckAssumptions();
   ControlData::vCheckAssumptions();
   Correctness::vCheckAssumptions();
