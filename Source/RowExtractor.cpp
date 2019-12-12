@@ -110,117 +110,15 @@ bool RowExtractor::bExtractNext(Row* pRow, StreamDef* pStreamDef,
 Column* RowExtractor::pExtractRow(Row* pRow, StreamDef* pStreamDef,
                                   char** aazCrs, Format* pFmt)
 {
-  bool bSawEnclosedLeading;
+  Datum oDatum;
   
   i8 nCols = pStreamDef->nColumns(C_ALL);
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
     Column* pCol = pStreamDef->pGetColumn(i_Col);
   
-    Datum oDatum;
-    
-    bool b = false;
-    eDM eDatum = pCol->eDatum();
-    
-    
-    // - - - -
-    // leading
-    
-    if (DM_VCH == eDatum)
-      bSawEnclosedLeading = false;
-    else
-      bSawEnclosedLeading =
-        StrLib::bSkipLeading(aazCrs,pFmt->m_cEnclosedBy_Leading);
-    
-    // - - - -
-    // null
-
-//    bool bValidNull = false;
-//    if (bTestForNull(pCol,aazCrs,pFmt,bValidNull)) {
-//      if ( ! bValidNull )
-//        return pCol;
-//      oDatum.vSetNull();
-//    }
-   
-    if (bIsSomeNull(aazCrs,pFmt)) {
-      if ( ! pCol->bIsNullable() ) {
-        // a null was detected in a non-nullable column
-        return pCol;
-      }
-      oDatum.vSetNull();
-      goto L_TRAILING;
-    }
-
-    
-    // - - - -
-    // value
-    
-    switch (eDatum) {
-      case DM_BCD: b = CsvValue::bToBcd(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_BOL: b = CsvValue::bToBol(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_DTE: b = CsvValue::bToDte(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_FLT: b = CsvValue::bToFlt(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_INT: b = CsvValue::bToInt(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_IVL: b = CsvValue::bToIvl(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_TME: b = CsvValue::bToTme(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_TSP: b = CsvValue::bToTsp(&oDatum,pCol,aazCrs,pFmt); break;
-      case DM_VCH: b = CsvValue::bToVch(&oDatum,pCol,aazCrs,pFmt); break;
-      default:
-        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-               "RowExtractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
-    }
-    
-    if (! b)
+    if (! CsvField::bExtractDtm(&oDatum,pCol,aazCrs,pFmt))
       return pCol;
-    
-    // - - - - -
-    // trailing
-    
-  L_TRAILING:
-    
-    bool bSawEnclosedTrailing =
-    StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
-    if (! bSawEnclosedTrailing)
-      return pCol;
-    
-    // should see a valid field end
-    if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-      return pCol;
-    
-    
-
-    
-    // move past the field delimiter
-    //   (but not past the RowExtractor terminator or RowExtractor ends)
-    
-    // - - - -
-    
-    if (pCol->bIsLastColumn()) {
-      // do not expect to see a field delimiter
-      if ( pFmt->m_cFieldDelimiter &&
-          pFmt->m_cRecordTerminator &&
-          pFmt->m_cFieldDelimiter != pFmt->m_cRecordTerminator &&
-          *(*aazCrs) == pFmt->m_cFieldDelimiter ) {
-        // saw a field delimiter after last field (incorrect)
-        return pCol;
-      }
-      /*
-       // did not see a field delimiter (correct)
-       if ( pFmt->m_cFieldDelimiter &&
-       *(*aazCrs) == pFmt->m_cFieldDelimiter )
-       (*aazCrs)++;
-       */
-    }
-    else {
-      // expect to see a field delimiter
-      if ( pFmt->m_cFieldDelimiter &&
-          *(*aazCrs) == pFmt->m_cFieldDelimiter )
-        // saw a field delimiter after non-last field (correct)
-        (*aazCrs)++;
-      else
-        // did not see a field delimiter after non-last field (incorrect)
-        return pCol;
-    }
     
     pRow->vAppendValue(&oDatum,pCol);
   }
