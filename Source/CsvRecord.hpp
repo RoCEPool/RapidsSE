@@ -8,6 +8,8 @@ namespace Records
   class CsvRecord
   {
   public:
+    static Column* pExtractRow(Row* pRow, StreamDef* pStreamDef,
+                               char** aazCrs, Format* pFmt);
   };
 }
 

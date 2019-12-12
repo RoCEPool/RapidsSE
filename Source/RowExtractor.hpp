@@ -16,9 +16,6 @@ namespace Buffers
                              char** aazCrs, Format* pFmt,
                              bool& bBlankLine_);
   
-    static Column* pExtractRow(Row* pRow, StreamDef* pStreamDef,
-                               char** aazCrs, Format* pFmt);
-  
   private:
     static bool bExtractDtm(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
   
