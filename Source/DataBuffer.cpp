@@ -162,13 +162,23 @@ Pool::bn DataBuffer::nPoolBufferNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this buffer temporary ?                                                 */
+/* is this buffer permanent ?                                                 */
 /*----------------------------------------------------------------------------*/
 bool DataBuffer::bIsPermanent(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_bIsPermanent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark buffer permanent/temporary                                            */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vIsPermanent(bool bIsPermanent)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bIsPermanent = bIsPermanent;
 }
 
 /*============================================================================*/

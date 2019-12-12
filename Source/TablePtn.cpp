@@ -268,7 +268,7 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
   
   if (m_pRootCrwBuffer == nullptr) {
     ASSERT( ! m_pCurrentCrwBuffer )
-    m_pRootCrwBuffer = new CrwBuffer(true);
+    m_pRootCrwBuffer = new CrwBuffer();
     m_pRootCrwBuffer->vTable(m_pTable);
     m_pRootCrwBuffer->vPartitionNo(m_iPartitionId);
     m_pCurrentCrwBuffer = m_pRootCrwBuffer;
@@ -278,7 +278,7 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
   bool bAppended = m_pCurrentCrwBuffer->bAppendRow(pRow);
   
   if ( ! bAppended ) {
-    CrwBuffer* pCrwBuffer = new CrwBuffer(true);
+    CrwBuffer* pCrwBuffer = new CrwBuffer();
     m_pRootCrwBuffer->vTable(m_pTable);
     m_pRootCrwBuffer->vPartitionNo(m_iPartitionId);
     pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());

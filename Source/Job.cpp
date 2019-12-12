@@ -1205,7 +1205,7 @@ void Job::vPrintQueueRows(void)
         //               *m_xResponse.m_ixRowsProcessed);
         vTrace("Query cancelled!!! (rows fetched so far %lld)\n"_Stz,
                *m_xResponse.m_ixRowsProcessed);
-        delete (_pCancelMarker(pOperand));
+        AM::vDeleteOperand(pOperand);
         goto L_EXIT;
         
         break;
@@ -1217,6 +1217,7 @@ void Job::vPrintQueueRows(void)
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
         m_xResponse.m_ixRowsProcessed += pCrwBuffer->nRowCount();
         pCrwBuffer->vPrintRows(pStreamDef);
+        AM::vDeleteOperand(pOperand);
         break;
       }
         
@@ -1226,6 +1227,7 @@ void Job::vPrintQueueRows(void)
         CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
         m_xResponse.m_ixRowsProcessed += pCsvBuffer->nRecords();
         pCsvBuffer->vPrintRows();
+        AM::vDeleteOperand(pOperand);
         break;
       }
         
@@ -1246,6 +1248,7 @@ void Job::vPrintQueueRows(void)
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
         m_xResponse.m_ixRowsProcessed += pEntBuffer->nItems();
         pEntBuffer->vPrintRows();
+        AM::vDeleteOperand(pOperand);
         break;
       }
         
@@ -1255,7 +1258,7 @@ void Job::vPrintQueueRows(void)
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
         m_xResponse.m_ixRowsProcessed += pIrwBuffer->nItems();
         pIrwBuffer->vPrintRows(pStreamDef);
-        delete pIrwBuffer;
+        AM::vDeleteOperand(pOperand);
         break;
       }
         
@@ -1265,7 +1268,7 @@ void Job::vPrintQueueRows(void)
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
         m_xResponse.m_ixRowsProcessed += pSrtBuffer->nItems();
         pSrtBuffer->vPrintRows(pStreamDef);
-        delete pSrtBuffer;
+        AM::vDeleteOperand(pOperand);
         break;
       }
         
@@ -1296,7 +1299,7 @@ void Job::vPrintQueueRows(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
   
-  delete pStreamDef;
+  AM::vDeleteOperand(pStreamDef);
   return;
   
 }

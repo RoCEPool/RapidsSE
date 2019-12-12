@@ -157,13 +157,13 @@ Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
   // create a write buffer job
   
   //! this needs to be optimised
-  JobClass* pJobClass_Xmit = JobClass::pFind(CN_JOB_OPERAND);
+  JobClass* pJobClass_Operand = JobClass::pFind(CN_JOB_OPERAND);
   
-  ReqTuple xReqTuple("!!XMIT"_Stz,false);
+  ReqTuple xReqTuple("!!OPERAND"_Stz,false);
   
   Job_Operand* pJob_Operand =
     static_cast<Job_Operand*>
-      (pJobClass_Xmit->pPreJob(&xReqTuple,pSession));
+      (pJobClass_Operand->pPreJob(&xReqTuple,pSession));
   
   pJob_Operand->vSeed(SS_SEED_RUN);
   

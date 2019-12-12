@@ -34,6 +34,7 @@ namespace MetaData
   
     // - - - - - - - - - - - - - -
     bool bIsPermanent(void);
+    void vIsPermanent(bool bIsPermanent);
     i8   iPoolBufferNo(void);
     bn   nPoolBufferNo(void);
   };

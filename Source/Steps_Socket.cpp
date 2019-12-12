@@ -375,7 +375,7 @@ void Step::vSocketRecvObject(void)
       
     case CN_CRWBUFFER: {
       
-      CrwBuffer* pCrwBuffer = new CrwBuffer(false);
+      CrwBuffer* pCrwBuffer = new CrwBuffer();
       
       MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
       
@@ -388,6 +388,7 @@ void Step::vSocketRecvObject(void)
         EXIT();
         return;
       }
+      pCrwBuffer->vIsPermanent(false);
       
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
@@ -663,7 +664,7 @@ void Step::vSocketRecvObject_LowMem(void)
       
     case CN_CRWBUFFER:
     
-      pCrwBuffer = new CrwBuffer(false);
+      pCrwBuffer = new CrwBuffer;
       
       MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
       
@@ -676,6 +677,8 @@ void Step::vSocketRecvObject_LowMem(void)
         EXIT();
         return;
       }
+      
+      pCrwBuffer->vIsPermanent(false);
       
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
