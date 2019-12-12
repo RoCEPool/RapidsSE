@@ -205,7 +205,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_OPERAND"_Stz,        CN_JOB_OPERAND);
   /*    */ vAddConstant("CN_JOB_RECEIVER"_Stz,       CN_JOB_RECEIVER);
   /*    */ vAddConstant("CN_JOB_SANITY"_Stz,         CN_JOB_SANITY);
-  /*    */ vAddConstant("CN_JOB_SELECT"_Stz,         CN_JOB_SELECT);
   /*    */ vAddConstant("CN_JOB_START"_Stz,          CN_JOB_START);
   /*    */ vAddConstant("CN_JOB_SUBFETCH"_Stz,       CN_JOB_SUBFETCH);
   /*    */ vAddConstant("CN_JOB_SUBINFLATE"_Stz,     CN_JOB_SUBINFLATE);
