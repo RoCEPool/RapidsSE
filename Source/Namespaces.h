@@ -66,6 +66,7 @@ namespace SenVM         { class Cell; class Dic; class DicStack;
                           class Forth; class Word;                            }
 namespace Services      {                                                     }
 namespace Sessions      { class Request; class Session; class SessionState;   }
+namespace SqlValues     {                                                     }
 namespace Steps         { class Step; class StepTiming;                       }
 namespace StorageEngine { class AttachMap; class Engine;                      }
 namespace Strings       {                                                     }
@@ -125,6 +126,7 @@ using namespace Scheduling;
 using namespace SenVM;
 using namespace Services;
 using namespace Sessions;
+using namespace SqlValues;
 using namespace Steps;
 using namespace StorageEngine;
 using namespace Strings;
