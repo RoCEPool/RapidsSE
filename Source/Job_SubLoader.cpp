@@ -222,7 +222,7 @@ bool Job_SubLoader::bChunk(void)
       return false;
     
     // fetch next record from current chunk
-    bool bHaveRecord = m_pLoadChunk->bGetRecord(&aRecord,nRecordBytes);
+    bool bHaveRecord = m_pLoadChunk->bNextRecord(&aRecord,nRecordBytes);
     if (! bHaveRecord)
       return true;
     
