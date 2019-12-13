@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Records
+namespace Datums
 
 {
   class SN_Bol : public Scan
