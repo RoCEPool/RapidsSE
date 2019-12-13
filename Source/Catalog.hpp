@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* Catalog.hpp - Catalog                                                      */
+/* Catalog.hpp -- Catalog                                                     */
 /*============================================================================*/
 #pragma once
 
-namespace MetaData
+namespace Folders
 {
   class Catalog : public Object
   {
@@ -17,8 +17,7 @@ namespace MetaData
     void  operator delete(void*);
     
     Catalog(void);
-    ~Catalog(void) noexcept(false);
-    
+   ~Catalog(void) noexcept(false);
    
     Footer* aFooter(void);
   };

@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* Tenants.hpp - Tenants                                                      */
+/* Tenants.hpp -- Tenants                                                     */
 /*============================================================================*/
 #pragma once
 
-namespace MetaData
+namespace Folders
 {
   class Tenants : public Object
   {
@@ -17,9 +17,8 @@ namespace MetaData
     void  operator delete(void*);
     
     Tenants(void);
-    ~Tenants(void) noexcept(false);
-    
-   
+   ~Tenants(void) noexcept(false);
+  
     Footer* aFooter(void);
   };
   

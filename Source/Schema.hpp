@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* Schema.hpp - Schema                                                        */
+/* Schema.hpp -- Schema                                                       */
 /*============================================================================*/
 #pragma once
 
-namespace MetaData
+namespace Folders
 {
   class Schema : public Object
   {
@@ -17,7 +17,7 @@ namespace MetaData
     void  operator delete(void*);
     
     Schema(void);
-    ~Schema(void) noexcept(false);
+   ~Schema(void) noexcept(false);
     
    
     Footer* aFooter(void);
