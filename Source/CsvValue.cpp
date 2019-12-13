@@ -8,7 +8,6 @@
 /*-- Public Static -----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
 /*----------------------------------------------------------------------------*/
 /* extract a datum from csv field value                                       */
 /*----------------------------------------------------------------------------*/
@@ -215,6 +214,73 @@ bool CsvValue::bToVch(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for some form of null                                                 */
+/*----------------------------------------------------------------------------*/
+bool CsvValue::bIsSomeNull(char** aazCrs, Format* pFmt)
+{
+  /*
+   * This function scans aazCrs and attempts to identify the text form of a null.
+   * There are three text forms of null: null, \N or '\N'.
+   * If a null (and only a null) is detected and
+   *  a) the column is nullable, then bValidNull is set to true and the
+   *     function returns true; or
+   *  b) the column is not nullable, then bValidNull is set to false and the
+   *     function returns true.
+   * If no form of null is detected then bValidNull is set to false and the
+   * function returns false.
+   * Importantly a valid null is one of the three forms of null -- there can be
+   * no further characters after it. Eg: "nulla" or "null a" are not
+   * correct forms of null.
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test if there is any field data
+  
+  if ( ! bIsThereFieldData(*aazCrs, pFmt)) {
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for null, \N, '\N' or [\N]
+  
+  char* azStart = *aazCrs;
+  
+  if ( (**aazCrs == 'N' || **aazCrs == 'n') &&
+      (0 == StrLib::iCompare(*aazCrs+1, "ULL", 3, C_NO_CASE)) ) {
+    // skip over token null
+    *aazCrs = (*aazCrs) + 4;
+  }
+  else if (**aazCrs     == pFmt->m_cEscapeChar &&
+           *(*aazCrs+1) == 'N') {
+    // skip over \N
+    *aazCrs = (*aazCrs) + 2;
+  }
+  else if (**aazCrs     == pFmt->m_cEnclosedBy_Leading &&
+           *(*aazCrs+1) == pFmt->m_cEscapeChar &&
+           *(*aazCrs+2) == 'N'                        &&
+           *(*aazCrs+3) == pFmt->m_cEnclosedBy_Trailing) {
+    // skip over '\N' or [\N]
+    *aazCrs = (*aazCrs) + 4;
+  }
+  else if (**aazCrs    == pFmt->m_cEnclosedBy_Leading &&
+           ((*(*aazCrs+1) == 'N' || *(*aazCrs+1) == 'n') &&
+            (0 == StrLib::iCompare(*aazCrs+2, "ULL", 3, C_NO_CASE))) &&
+           *(*aazCrs+5) == pFmt->m_cEnclosedBy_Trailing) {
+    // skip over 'NULL'
+    *aazCrs = (*aazCrs) + 6;
+  }
+  else {
+    // no null detected
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private Static ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -255,72 +321,6 @@ bool CsvValue::bIsThereFieldData(char* aSrc, Format* pFmt)
     return false;
   else
     return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for some form of null                                                 */
-/*----------------------------------------------------------------------------*/
-bool CsvValue::bIsSomeNull(char** aazCrs, Format* pFmt)
-{
-  /*
-   * This function scans aazCrs and attempts to identify the text form of a null.
-   * There are three text forms of null: null, \N or '\N'.
-   * If a null (and only a null) is detected and
-   *  a) the column is nullable, then bValidNull is set to true and the
-   *     function returns true; or
-   *  b) the column is not nullable, then bValidNull is set to false and the
-   *     function returns true.
-   * If no form of null is detected then bValidNull is set to false and the
-   * function returns false.
-   * Importantly a valid null is one of the three forms of null -- there can be
-   * no further characters after it. Eg: "nulla" or "null a" are not
-   * correct forms of null.
-   */
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test if there is any field data
-
-  if ( ! bIsThereFieldData(*aazCrs, pFmt)) {
-    return true;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null, \N, '\N' or [\N]
-
-  char* azStart = *aazCrs;
-
-  if ( (**aazCrs == 'N' || **aazCrs == 'n') &&
-       (0 == StrLib::iCompare(*aazCrs+1, "ULL", 3, C_NO_CASE)) ) {
-    // skip over token null
-    *aazCrs = (*aazCrs) + 4;
-  }
-  else if (**aazCrs     == pFmt->m_cEscapeChar &&
-           *(*aazCrs+1) == 'N') {
-    // skip over \N
-    *aazCrs = (*aazCrs) + 2;
-  }
-  else if (**aazCrs     == pFmt->m_cEnclosedBy_Leading &&
-           *(*aazCrs+1) == pFmt->m_cEscapeChar &&
-           *(*aazCrs+2) == 'N'                        &&
-           *(*aazCrs+3) == pFmt->m_cEnclosedBy_Trailing) {
-    // skip over '\N' or [\N]
-    *aazCrs = (*aazCrs) + 4;
-  }
-  else if (**aazCrs    == pFmt->m_cEnclosedBy_Leading &&
-           ((*(*aazCrs+1) == 'N' || *(*aazCrs+1) == 'n') &&
-            (0 == StrLib::iCompare(*aazCrs+2, "ULL", 3, C_NO_CASE))) &&
-           *(*aazCrs+5) == pFmt->m_cEnclosedBy_Trailing) {
-    // skip over 'NULL'
-    *aazCrs = (*aazCrs) + 6;
-  }
-  else {
-    // no null detected
-    return false;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  return true;
 }
 
 /*============================================================================*/

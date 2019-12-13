@@ -5,14 +5,12 @@
 
 namespace Buffers
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class KeyBuilder : private RowCoder
+  class KeyBuilder
   {
   public:
     static void vAddElement(EntWrk* pEntWrk, Column* pCol,
                             Stz* azSrc, Format* pFmt);
-};
-  
+  };
 }
 
 /*============================================================================*/

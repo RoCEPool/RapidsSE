@@ -28,7 +28,6 @@ void KeyBuilder::vAddElement(EntWrk* pEntWrk, Column* pCol,
 
   Datum oDatum;
 
-  //bool b = KeyBuilder::bExtractDtm(&oDatum,pCol,&aSrc,pFmt);
   bool b = CsvValue::bToDtm(&oDatum,pCol,&aSrc,pFmt);
   ASSERT(b);
 
