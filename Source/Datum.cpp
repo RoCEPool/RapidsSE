@@ -121,10 +121,10 @@ void Datum::operator =(AnyVal* aAnyVal)
   eCN eClass = aAnyVal->eClass();
   
   switch (eClass) {
-    case CN_FIPVAL: u.m_xFipVal.vFip(aAnyVal->aFip());    break;
-    case CN_INTVAL: u.m_xIntVal.vInt(aAnyVal->iInt());    break;
-    case CN_PTRVAL: u.m_xPtrVal.vObj(aAnyVal->pObj());    break;
-    case CN_STZVAL: u.m_xStzVal.vStz(aAnyVal->szStz());   break;
+    case CN_FIPVAL: vFip(aAnyVal->aFip());    break;
+    case CN_INTVAL: vInt(aAnyVal->iInt());    break;
+    case CN_PTRVAL: vObj(aAnyVal->pObj());    break;
+    case CN_STZVAL: vStz(aAnyVal->szStz());   break;
       
     default:
       vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -144,7 +144,7 @@ void Datum::operator =(Cell* aFip)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xFipVal.vFip(aFip);
+  vFip(aFip);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,7 +154,7 @@ void Datum::operator =(i8 iInt)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xIntVal.vInt(iInt);
+  vInt(iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +164,7 @@ void Datum::operator =(Object* pObj)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xPtrVal.vObj(pObj);
+  vObj(pObj);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,7 +174,7 @@ void Datum::operator =(Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xStzVal.vStz(szStz);
+  vStz(szStz);
   
   _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 }
@@ -400,7 +400,7 @@ void Datum::vFip(Cell* aFip)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.m_aFip = aFip;
+  u.m_xFipVal.vFip(aFip);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -444,7 +444,7 @@ void Datum::vInt(i8 iInt)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.m_iInt = iInt;
+  u.m_xIntVal.vInt(iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -512,7 +512,7 @@ void Datum::vObj(Object* pObj)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xPtrVal.m_pObj = pObj;
+  u.m_xPtrVal.vObj(pObj);
 }
 
 /*----------------------------------------------------------------------------*/
