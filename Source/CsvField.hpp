@@ -13,7 +13,6 @@ namespace Records
   
     static bool bValidFieldEnd(char* aSrc, Format* pFmt);
     static bool bValidRecordEnd(char* aSrc, Format* pFmt);
-
   };
 }
 
