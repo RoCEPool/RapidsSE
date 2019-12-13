@@ -82,7 +82,7 @@ i8 IngestChunk::nReadMore(File& oFile)
   
   vSetBytes(nCarryOverBytes + nBytesRead);
   
-  m_aNextRecord = (Stz*)aDataArea();
+  m_szNextRecord = (Stz*)aDataArea();
   
   if (! nBytesRead)
     return 0;

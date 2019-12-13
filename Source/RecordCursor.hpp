@@ -8,9 +8,9 @@ namespace Chunks
   class RecordCursor : public DataChunk
   {
   public:
-    Format* m_pFormatters; // using these formatters
+    Format* m_pFmt;         // using these formatters
   
-    Stz*    m_aNextRecord; // first byte of next record
+    Stz*    m_szNextRecord; // first byte of next record
   
   public:
     RecordCursor(eCN eClassNo, Format* pFmt);

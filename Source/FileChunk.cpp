@@ -145,8 +145,8 @@ void FileChunk::vReadSpecificChunk(i8 iSeek, i8 nBytes)
   m_nUnprocessedBytes = nBytesRead;
   m_nDataBytes = m_nUnprocessedBytes;
   
-  m_aLastDataByte =  &(aStartArea)[m_nDataBytes - 1];
-  m_aNextRecord   = aStartArea;
+  m_aLastDataByte = &(aStartArea)[m_nDataBytes - 1];
+  m_szNextRecord  = aStartArea;
 }
 
 /*----------------------------------------------------------------------------*/

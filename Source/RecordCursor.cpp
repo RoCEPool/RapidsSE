@@ -16,8 +16,8 @@ RecordCursor::RecordCursor(eCN eClassNo, Format* pFmt)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_pFormatters  = pFmt;
-  m_aNextRecord  = nullptr;
+  m_pFmt  = pFmt;
+  m_szNextRecord  = nullptr;
 
    _postcondition_(_ADDRESS_,_MAGIC_);
 }
@@ -42,10 +42,10 @@ bool RecordCursor::bNextRecord(Stz** aszRecord, i8& nRecordBytes)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   // get start address of next record
-  Stz* szStartRecord = m_aNextRecord;
+  Stz* szStartRecord = m_szNextRecord;
   
   // find end address of next record
-  Stz* szEndRecord   = m_aNextRecord;
+  Stz* szEndRecord   = m_szNextRecord;
   bool bFound = bFindRecordEnd((char**)&szEndRecord);
   
   if (! bFound)
@@ -55,7 +55,7 @@ bool RecordCursor::bNextRecord(Stz** aszRecord, i8& nRecordBytes)
   nRecordBytes = szEndRecord - szStartRecord + 1;
   
   // advance to beginning of next record for next time
-  m_aNextRecord = szEndRecord + 1;
+  m_szNextRecord = szEndRecord + 1;
   m_nUnprocessedBytes -= nRecordBytes;
   
   *aszRecord = szStartRecord;
@@ -77,7 +77,7 @@ bool RecordCursor::bFindRecordEnd(char** aazRecordEnd)
   char* aRecordStart;
   
   // which record end are we looking for?
-  switch (m_pFormatters->m_eRecordEnd) {
+  switch (m_pFmt->m_eRecordEnd) {
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case RE_NL: // advance to next [<terminator>]\n
@@ -97,11 +97,11 @@ bool RecordCursor::bFindRecordEnd(char** aazRecordEnd)
           return false;
         
         // if no record terminator we have found record end (ie. \n)
-        if (! m_pFormatters->m_cRecordTerminator)
+        if (! m_pFmt->m_cRecordTerminator)
           break;
         
         // we have found ending \n if prior character is the record terminator
-        if (m_pFormatters->m_cRecordTerminator == *(*aazRecordEnd-1))
+        if (m_pFmt->m_cRecordTerminator == *(*aazRecordEnd-1))
           break;
         
         // did not see [terminator>\n... move on
@@ -131,11 +131,11 @@ bool RecordCursor::bFindRecordEnd(char** aazRecordEnd)
           return false;
         
         // if no record terminator we have found record end (ie. \r)
-        if (! m_pFormatters->m_cRecordTerminator)
+        if (! m_pFmt->m_cRecordTerminator)
           break;
         
         // we have found ending \r if prior character is the record terminator
-        if (m_pFormatters->m_cRecordTerminator == *(*aazRecordEnd-1))
+        if (m_pFmt->m_cRecordTerminator == *(*aazRecordEnd-1))
           break;
         
         // did not see [terminator>\r... move on
@@ -165,11 +165,11 @@ bool RecordCursor::bFindRecordEnd(char** aazRecordEnd)
           return false;
         
         // if no record terminator we have found record end (ie. \r\n)
-        if (! m_pFormatters->m_cRecordTerminator)
+        if (! m_pFmt->m_cRecordTerminator)
           break;
         
         // we have found ending \r\n if prior character is the record terminator
-        if (m_pFormatters->m_cRecordTerminator == *(*aazRecordEnd-1))
+        if (m_pFmt->m_cRecordTerminator == *(*aazRecordEnd-1))
           break;
         
         // did not see [terminator>\r\n... move on
