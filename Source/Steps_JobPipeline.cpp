@@ -47,14 +47,6 @@ void Step::vJob_PipelineBegin(void)
   
   pPipeline->vSpawnOperatorJobs(pJob_Pipeline->m_xReqTuple.m_i_Session, iThisNode);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get no of operators to be executed on this node
-  i8 nOps = pPipeline->nOpsOnNode(iThisNode);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set acks remaining equal to no of operators to be executed on this node
-  AM::vSetAcksRmg(pJob_Pipeline->pTask(),nOps);
-  
   EXIT();
 }
 
@@ -106,12 +98,20 @@ void Step::vJob_PipelineExecute(void)
   Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
   
   Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
+  i8 iThisNode = AM::pGrid()->iThisNode();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get no of operators to be executed on this node
+  i8 nOps = pPipeline->nOpsOnNode(iThisNode);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set acks remaining equal to no of operators to be executed on this node
+  AM::vSetAcksRmg(pJob_Pipeline->pTask(),nOps);
   
   // get the first stage of the pipeline
   Stage* pStage = pPipeline->pStageVec()->pGet(0);
   
   // send startMarker to the startOp of the first stage of the pipeline
-  i8 iThisNode = AM::pGrid()->iThisNode();
   pStage->vStartPipeline(iThisNode);
   
   EXIT();

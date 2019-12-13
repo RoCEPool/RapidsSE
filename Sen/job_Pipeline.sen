@@ -18,11 +18,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
-<cmd> job_Pipeline::compile
+  //<cmd> job_Pipeline::compile
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job
-  pJob_pipeline job_Pipeline.begin
+  //pJob_pipeline job_Pipeline.begin
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the pipeline job
@@ -34,7 +34,31 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // end the pipeline job
-  pJob_pipeline job_Pipeline.end
+  //pJob_pipeline job_Pipeline.end
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_pipeline job check resources                                   */
+/*----------------------------------------------------------------------------*/
+: pipeline::checkResources _eeh ( -- )
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compile the pipeline command
+  <cmd> job_Pipeline::compile
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // begin the pipeline job
+  job::this job_Pipeline.begin
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_pipeline job release resources                                 */
+/*----------------------------------------------------------------------------*/
+: pipeline::releaseResources _eeh ( -- )
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // end the pipeline job
+  job::this job_Pipeline.end
 ;
 
 /*----------------------------------------------------------------------------*/
