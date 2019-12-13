@@ -46,12 +46,11 @@ Datum::Datum(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.m_iInt   = C_UNKNOWN;
-  
-
   u.m_xAnyVal.vMagic();
   u.m_xAnyVal.vClass(CN_NONE);
-
+  
+  u.m_xAnyVal.m_iInt   = C_UNKNOWN;
+  
   u.m_xStzVal.vStz(""_Stz);
   //vStzDump();
 
@@ -217,6 +216,22 @@ AnyVal* Datum::aAnyVal(void)
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   return & u.m_xAnyVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign datum from token                                                    */
+/*----------------------------------------------------------------------------*/
+bool Datum::bAssign(Token* pTkn, Column* pCol)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+
+  char* azCrs = pTkn->azChar();
+  
+  Format* pFmt = AM::pFmt();
+  
+  bool b = CsvValue::bToDtm(this,pCol,&azCrs,pFmt);
+  
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,9 +14,9 @@ namespace Datums
 
 //------------------------------------------------------------------------------
 
-#include "Datum.hpp"
-
 #include "Column.hpp"
+
+#include "Datum.hpp"
 
 #include "SN_Bcd.hpp"
 #include "SN_Bol.hpp"
@@ -27,7 +27,6 @@ namespace Datums
 #include "SN_Tme.hpp"
 #include "SN_Tsp.hpp"
 #include "SN_Vch.hpp"
-
 
 #include "SP_Bcd.hpp"
 #include "SP_Bol.hpp"

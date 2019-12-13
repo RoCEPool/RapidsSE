@@ -25,6 +25,7 @@ namespace TokenStream
     static Token* _pToken(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
+    char* azChar(void);
     void  vConcat(Stz*);
     void  vCopy(Stz*);
     void  vCopy(Token*);
