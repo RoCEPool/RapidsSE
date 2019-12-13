@@ -35,10 +35,8 @@ Dynamo::Dynamo(Stz* sCmd)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the pipeline
   
-  Tokeniser* pTokenizer = new Tokeniser;
   m_p_TknVec = new TokenVec;
-  pTokenizer->vTokenise(m_p_TknVec, sCmd);
-  delete pTokenizer;
+  Tokeniser::vTokenise(m_p_TknVec, sCmd);
   
   m_p_TknVec->vCutToken(m_p_TknVec->nTokens());
   
@@ -61,6 +59,8 @@ Dynamo::~Dynamo(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   delete m_pPipelineSpec;
+  
+  m_p_TknVec->vSetAllTokens();
   delete m_p_TknVec;
   //delete m_pStageSpec;
   

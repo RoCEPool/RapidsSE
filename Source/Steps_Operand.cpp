@@ -26,7 +26,8 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].pipeOut"_Stz,        &Step::vOperandPipeOut);
   vAddStep("Operand[].rowCount@"_Stz,      &Step::vOperandRowCountFetch);
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
-  vAddStep("Operand[].toCsv"_Stz,          &Step::vOperandToCsv);
+  vAddStep("Operand[].crwToCsv"_Stz,       &Step::vOperandCrwToCsv);
+  vAddStep("Operand[].csvToCrw"_Stz,       &Step::vOperandCsvToCrw);
   vAddStep("Operand[].workDone"_Stz,       &Step::vOperandWorkDone);
   vAddStep("Operand[].writeToFile0"_Stz,   &Step::vOperandWriteToFile0);
 }
@@ -357,14 +358,27 @@ void Step::vOperandSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].toCsv -- convert operand to Csv                                  */
+/* Operand[].crwToCsv -- convert Crw operand to Csv                           */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandToCsv(void)
+void Step::vOperandCrwToCsv(void)
 {
-  ENTRY(); // ENTRY("vOperandToCsv"_Stz);
+  ENTRY(); // ENTRY("vOperandCrwToCsv"_Stz);
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pRegSet->m_pOperand);
   m_pRegSet->m_pOperand = pCrwBuffer->pToCsvBuffer();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].csvToCrw -- convert csv operand to Crw                           */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandCsvToCrw(void)
+{
+  ENTRY(); // ENTRY("vOperandCsvToCrw"_Stz);
+  
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pRegSet->m_pOperand);
+  //m_pRegSet->m_pOperand = pCsvBuffer->pToCrwBuffer();
   
   EXIT();
 }

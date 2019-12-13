@@ -111,7 +111,7 @@ jobInfo: InsertOp
 {
   <?jobDesc?>  = "--description of job--"
   
-  <?jobType?>  = JT_COUNTOP
+  <?jobType?>  = JT_INSERTOP
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_NODE_ZERO
   <?ddlLock?>  = DL_GRAB_WRITE
