@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* parse csv field and extract datum                                          */
+/* parse csv field and extract next datum                                     */
 /*----------------------------------------------------------------------------*/
 bool CsvField::bExtractDtm(Datum* pDatum, Column* pCol,
                               char** aazCrs, Format* pFmt)
@@ -54,7 +54,7 @@ bool CsvField::bExtractDtm(Datum* pDatum, Column* pCol,
     case DM_VCH: b = CsvValue::bToVch(pDatum,pCol,aazCrs,pFmt); break;
     default:
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-             "RowExtractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
+             "KeyBuilder::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
   }
   
   if (! b)
@@ -78,7 +78,7 @@ L_TRAILING:
   
   
   // move past the field delimiter
-  //   (but not past the RowExtractor terminator or RowExtractor ends)
+  //   (but not past the KeyBuilder terminator or KeyBuilder ends)
   
   // - - - -
   
@@ -184,7 +184,6 @@ bool CsvField::bValidRecordEnd(char* aSrc, Format* pFmt)
       return false;
   }
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

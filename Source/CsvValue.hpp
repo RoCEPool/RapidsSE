@@ -20,17 +20,12 @@ namespace Records
     static bool bToTsp(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
     static bool bToVch(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
   
+    static bool bIsSomeNull(char** aazCrs, Format* pFmt);
+  
+  private:
     static bool bIsEnclosedString(char** aazCrs, Format* pFmt);
     static bool bIsThereFieldData(char* aSrc, Format* pFmt);
-//    static bool bIsThereRecordData(char* aSrc, Format* pFmt);
-//
-    static bool bIsSomeNull(char** aazCrs, Format* pFmt);
-//
-//    static bool bValidFieldEnd(char* aSrc, Format* pFmt);
-//    static bool bValidFieldEndDefault(char* aSrc, Format* pFmt);
-//    static bool bValidRecordEnd(char* aSrc, Format* pFmt);
   };
-  
 }
 
 /*============================================================================*/

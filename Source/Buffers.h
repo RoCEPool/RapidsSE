@@ -41,7 +41,6 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 #include "QuickSort.hpp"
 #include "RowCompactor.hpp"
 #include "RowDecoder.hpp"
-#include "RowExtractor.hpp"
 #include "RowInflator.hpp"
 
 #include "SrtSet.hpp"

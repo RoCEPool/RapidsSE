@@ -8,8 +8,8 @@ namespace Jobs
   class JobExtractRow
   {
   public:
-    Row*        m_pRow;         // row
-    Table*      m_pTable;       // table
+    Row*    m_pRow;         // row
+    Table*  m_pTable;       // table
     Format  m_oFormatters;  // formatters
   
     RowCompactor*   m_paRowCompactor[C_MAX_PARTITIONS];

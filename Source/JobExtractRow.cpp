@@ -68,9 +68,9 @@ bool JobExtractRow::bExtractRow(Stz* szRecStr, bool &bBlankLine)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool bResult = RowExtractor::bExtractNext(m_pRow,pStreamDef,
-                                            &acRecCrs,&m_oFormatters,
-                                            bBlankLine);
+  bool bResult = CsvCursor::bExtractNext(m_pRow,pStreamDef,
+                                         &acRecCrs,&m_oFormatters,
+                                         bBlankLine);
   if (! bResult)
     return false;
   

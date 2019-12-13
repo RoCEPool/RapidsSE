@@ -8,7 +8,6 @@
 /*-- Public Static -----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
 /*----------------------------------------------------------------------------*/
 /* extract a datum from csv field value                                       */
 /*----------------------------------------------------------------------------*/
@@ -133,7 +132,6 @@ bool CsvValue::bToInt(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
   return true;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* extract an interval datum from csv field value                             */
 /*----------------------------------------------------------------------------*/
@@ -216,6 +214,73 @@ bool CsvValue::bToVch(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for some form of null                                                 */
+/*----------------------------------------------------------------------------*/
+bool CsvValue::bIsSomeNull(char** aazCrs, Format* pFmt)
+{
+  /*
+   * This function scans aazCrs and attempts to identify the text form of a null.
+   * There are three text forms of null: null, \N or '\N'.
+   * If a null (and only a null) is detected and
+   *  a) the column is nullable, then bValidNull is set to true and the
+   *     function returns true; or
+   *  b) the column is not nullable, then bValidNull is set to false and the
+   *     function returns true.
+   * If no form of null is detected then bValidNull is set to false and the
+   * function returns false.
+   * Importantly a valid null is one of the three forms of null -- there can be
+   * no further characters after it. Eg: "nulla" or "null a" are not
+   * correct forms of null.
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test if there is any field data
+  
+  if ( ! bIsThereFieldData(*aazCrs, pFmt)) {
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for null, \N, '\N' or [\N]
+  
+  char* azStart = *aazCrs;
+  
+  if ( (**aazCrs == 'N' || **aazCrs == 'n') &&
+      (0 == StrLib::iCompare(*aazCrs+1, "ULL", 3, C_NO_CASE)) ) {
+    // skip over token null
+    *aazCrs = (*aazCrs) + 4;
+  }
+  else if (**aazCrs     == pFmt->m_cEscapeChar &&
+           *(*aazCrs+1) == 'N') {
+    // skip over \N
+    *aazCrs = (*aazCrs) + 2;
+  }
+  else if (**aazCrs     == pFmt->m_cEnclosedBy_Leading &&
+           *(*aazCrs+1) == pFmt->m_cEscapeChar &&
+           *(*aazCrs+2) == 'N'                        &&
+           *(*aazCrs+3) == pFmt->m_cEnclosedBy_Trailing) {
+    // skip over '\N' or [\N]
+    *aazCrs = (*aazCrs) + 4;
+  }
+  else if (**aazCrs    == pFmt->m_cEnclosedBy_Leading &&
+           ((*(*aazCrs+1) == 'N' || *(*aazCrs+1) == 'n') &&
+            (0 == StrLib::iCompare(*aazCrs+2, "ULL", 3, C_NO_CASE))) &&
+           *(*aazCrs+5) == pFmt->m_cEnclosedBy_Trailing) {
+    // skip over 'NULL'
+    *aazCrs = (*aazCrs) + 6;
+  }
+  else {
+    // no null detected
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private Static ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -257,186 +322,6 @@ bool CsvValue::bIsThereFieldData(char* aSrc, Format* pFmt)
   else
     return true;
 }
-
-///*----------------------------------------------------------------------------*/
-///* is there data?                                                             */
-///*----------------------------------------------------------------------------*/
-//bool CsvValue::bIsThereRecordData(char* aSrc, Format* pFmt)
-//{
-//  if ( ! *aSrc
-//      || *aSrc == C_NL
-//      || *aSrc == C_CR
-//      )
-//    return false;
-//  else
-//    return true;
-//}
-//
-/*----------------------------------------------------------------------------*/
-/* test for some form of null                                                 */
-/*----------------------------------------------------------------------------*/
-bool CsvValue::bIsSomeNull(char** aazCrs, Format* pFmt)
-{
-  /*
-   * This function scans aazCrs and attempts to identify the text form of a null.
-   * There are three text forms of null: null, \N or '\N'.
-   * If a null (and only a null) is detected and
-   *  a) the column is nullable, then bValidNull is set to true and the
-   *     function returns true; or
-   *  b) the column is not nullable, then bValidNull is set to false and the
-   *     function returns true.
-   * If no form of null is detected then bValidNull is set to false and the
-   * function returns false.
-   * Importantly a valid null is one of the three forms of null -- there can be
-   * no further characters after it. Eg: "nulla" or "null a" are not
-   * correct forms of null.
-   */
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test if there is any field data
-
-  if ( ! bIsThereFieldData(*aazCrs, pFmt)) {
-    return true;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null, \N, '\N' or [\N]
-
-  char* azStart = *aazCrs;
-
-  if ( (**aazCrs == 'N' || **aazCrs == 'n') && (0 == StrLib::iCompare(*aazCrs+1, "ULL", 3, C_NO_CASE)) ) {
-    // skip over token null
-    *aazCrs = (*aazCrs) + 4;
-  }
-  else if (**aazCrs     == pFmt->m_cEscapeChar &&
-           *(*aazCrs+1) == 'N') {
-    // skip over \N
-    *aazCrs = (*aazCrs) + 2;
-  }
-  else if (**aazCrs     == pFmt->m_cEnclosedBy_Leading &&
-           *(*aazCrs+1) == pFmt->m_cEscapeChar &&
-           *(*aazCrs+2) == 'N'                        &&
-           *(*aazCrs+3) == pFmt->m_cEnclosedBy_Trailing) {
-    // skip over '\N' or [\N]
-    *aazCrs = (*aazCrs) + 4;
-  }
-  else if (**aazCrs    == pFmt->m_cEnclosedBy_Leading &&
-           ((*(*aazCrs+1) == 'N' || *(*aazCrs+1) == 'n') && (0 == StrLib::iCompare(*aazCrs+2, "ULL", 3, C_NO_CASE))) &&
-           *(*aazCrs+5) == pFmt->m_cEnclosedBy_Trailing) {
-    // skip over 'NULL'
-    *aazCrs = (*aazCrs) + 6;
-  }
-  else {
-    // no null detected
-    return false;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check the column is nullable
-
-  return true;
-}
-
-///*----------------------------------------------------------------------------*/
-///* test for valid field end                                                   */
-///*----------------------------------------------------------------------------*/
-//bool CsvValue::bValidFieldEnd(char* aSrc, Format* pFmt)
-//{
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // test for end of data
-//
-//  // valid field end if we've run out of data
-//  if (! *aSrc)
-//    return true;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // test for explicit field separator
-//
-//  // valid field end if we've encounter the field delimiter
-//  if (*aSrc == pFmt->m_cFieldDelimiter)
-//    return true;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // test for explicit CsvValue terminator
-//
-//  if (pFmt->m_cRecordTerminator) {
-//
-//    // not a valid field end if expected CsvValue terminator is not seen
-//    if (*aSrc != pFmt->m_cRecordTerminator)
-//      return false;
-//
-//    // test we see the CsvValue end after the CsvValue termintor
-//    bool bValidEnd = bValidRecordEnd(aSrc+1,pFmt);
-//
-//    return bValidEnd;
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // test for explicit CsvValue ends
-//
-//  bool bValidEnd = bValidRecordEnd(aSrc,pFmt);
-//
-//  return bValidEnd;
-//}
-//
-///*----------------------------------------------------------------------------*/
-///* test for valid field end                                                   */
-///*----------------------------------------------------------------------------*/
-//bool CsvValue::bValidFieldEndDefault(char* aSrc, Format* pFmt)
-//{
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // test for end of data
-//
-//  // valid field end if we've run out of data
-//  if (! *aSrc)
-//    return true;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // test for explicit field separator
-//
-//  // valid field end if we've encounter the field delimiter
-//  if (*aSrc == pFmt->m_cFieldDelimiter)
-//    return true;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // test for explicit CsvValue ends
-//
-//  bool bValidEnd = bValidRecordEnd(aSrc,pFmt);
-//
-//  return bValidEnd;
-//}
-//
-///*----------------------------------------------------------------------------*/
-///* test for valid record end                                                  */
-///*----------------------------------------------------------------------------*/
-//bool CsvValue::bValidRecordEnd(char* aSrc, Format* pFmt)
-//{
-//  switch (pFmt->m_eRecordEnd) {
-//
-//    case RE_NL: // test for \n
-//      if (C_NL == *aSrc)
-//        return true;
-//      else
-//        return false;
-//
-//    case RE_CR: // test for \r
-//      if (C_CR == *aSrc)
-//        return true;
-//      else
-//        return false;
-//
-//    case RE_CRNL: // test for \r\n
-//      if (C_CR == *aSrc && C_NL == *(aSrc+1))
-//        return true;
-//      else
-//        return false;
-//
-//    default: // otherwise not a field end
-//      NEVER_REACH;
-//      return false;
-//  }
-//}
-//
 
 /*============================================================================*/
 /* end                                                                        */

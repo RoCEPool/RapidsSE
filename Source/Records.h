@@ -14,6 +14,7 @@ namespace Records
 
 //------------------------------------------------------------------------------
 
+#include "CsvCursor.hpp"
 #include "CsvField.hpp"
 #include "CsvValue.hpp"
 #include "CsvRecord.hpp"

@@ -18,6 +18,8 @@ namespace Indexes
 
 //------------------------------------------------------------------------------
 
+#include "KeyBuilder.hpp"
+
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
