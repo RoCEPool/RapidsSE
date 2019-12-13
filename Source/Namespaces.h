@@ -33,6 +33,7 @@ namespace Esses         { template <int BYTES> class String_t;
                           typedef Bytes_t<C_4K>    b4K;   // note this is 4K not 4KB
                                                                               }
 namespace Focals        { class ReqTuple;                                     }
+namespace Folders       {                                                     }
 namespace Gadgets       { class EnumFlags;                                    }
 namespace Grids         { class Grid; class Node;                             }
 namespace Host          {                                                     }
@@ -97,6 +98,7 @@ using namespace Pipelines;
 using namespace Enums;
 using namespace Esses;
 using namespace Focals;
+using namespace Folders;
 using namespace Gadgets;
 using namespace Grids;
 using namespace Host;
