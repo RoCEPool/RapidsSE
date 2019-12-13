@@ -14,18 +14,12 @@ namespace SenVM
 
 //------------------------------------------------------------------------------
 
-#include "AnyVal.hpp"
 
-#include "FipVal.hpp"
-#include "IntVal.hpp"
-#include "PtrVal.hpp"
-#include "StzVal.hpp"
 
 #include "AllVal.hpp"
 
 // -- -- -- -- -- -- -- --
 
-#include "Cell.hpp"
 #include "Dic.hpp"
 #include "DicPath.hpp"
 #include "DicStack.hpp"

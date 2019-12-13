@@ -2,7 +2,7 @@
 /* FipVal.cpp -- Layout of a Forth Instruction Pointer when on Stack          */
 /*============================================================================*/
 
-#include "SenVM.h"
+#include "SqlValues.h"
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */

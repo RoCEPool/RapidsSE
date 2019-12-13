@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace SenVM
+namespace SqlValues
 {
   class IntVal : public AnyVal
   {

@@ -2,12 +2,12 @@
 /* Cell.hpp - a cell in the body of a word                                    */
 /*============================================================================*/
 
-#include "SenVM.h"
+#include "SqlValues.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Cell* SenVM::_aCell(void* aAddr)
+Cell* SqlValues::_aCell(void* aAddr)
 {
   Cell* aCell = reinterpret_cast<Cell*>(aAddr);
   

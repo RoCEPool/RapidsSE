@@ -2,7 +2,7 @@
 /* PtrVal.cpp -- Layout of a Pointer to a Proper Object when on Stack         */
 /*============================================================================*/
 
-#include "SenVM.h"
+#include "SqlValues.h"
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */

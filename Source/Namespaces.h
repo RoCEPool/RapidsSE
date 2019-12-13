@@ -62,11 +62,11 @@ namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Registers     { class RegSet;                                       }
 namespace Rows          {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
-namespace SenVM         { class Cell; class Dic; class DicStack;
+namespace SenVM         { class Dic; class DicStack;
                           class Forth; class Word;                            }
 namespace Services      {                                                     }
 namespace Sessions      { class Request; class Session; class SessionState;   }
-namespace SqlValues     {                                                     }
+namespace SqlValues     { class Cell;                                         }
 namespace Steps         { class Step; class StepTiming;                       }
 namespace StorageEngine { class AttachMap; class Engine;                      }
 namespace Strings       {                                                     }
