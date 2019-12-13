@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* parse csv field and extract datum                                          */
+/* parse csv field and extract next datum                                     */
 /*----------------------------------------------------------------------------*/
 bool CsvField::bExtractDtm(Datum* pDatum, Column* pCol,
                               char** aazCrs, Format* pFmt)
