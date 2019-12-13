@@ -17,7 +17,7 @@ namespace Chunks
 #include "Format.hpp"
 
 #include "DataChunk.hpp"
-#include "RecordCursor.hpp"
+#include "RecordChunk.hpp"
 #include "FileChunk.hpp"
 
 #include "IngestChunk.hpp"

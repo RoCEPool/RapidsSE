@@ -6,7 +6,7 @@
 namespace Chunks
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class IngestChunk : public RecordCursor,
+  class IngestChunk : public RecordChunk,
                       public ListItem_t<IngestChunk>
   {
   public:

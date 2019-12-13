@@ -6,7 +6,7 @@
 namespace Chunks
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class FileChunk : public RecordCursor
+  class FileChunk : public RecordChunk
   {
   protected:
     File m_oFile; // file being used
