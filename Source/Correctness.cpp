@@ -22,6 +22,16 @@ void Correctness::vCheckAssumptions(void)
   ASSERT(8 == sizeof(_Tme));
   ASSERT(8 == sizeof(_Tsp));
   ASSERT(8 == sizeof(_Id));
+  
+  ASSERT(8 == sizeof(Bcd));
+  ASSERT(8 == sizeof(Bol));
+  ASSERT(8 == sizeof(Dte));
+  ASSERT(8 == sizeof(Edt));
+  ASSERT(8 == sizeof(Flt));
+  ASSERT(8 == sizeof(Int));
+  ASSERT(8 == sizeof(Ivl));
+  ASSERT(8 == sizeof(Tme));
+  ASSERT(8 == sizeof(Tsp));
 }
 
 /*----------------------------------------------------------------------------*/
