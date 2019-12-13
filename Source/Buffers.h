@@ -36,6 +36,9 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 #include "Encoding.hpp"
 #include "SP_Encoding.hpp"
 
+#include "DataBuffer.hpp"
+
+
 #include "IrwBuffer.hpp"
 #include "CrwBuffer.hpp"
 #include "CsvBuffer.hpp"

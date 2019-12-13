@@ -2,7 +2,7 @@
 /* DataBuffer.cpp -- Rows Buffer                                              */
 /*============================================================================*/
 
-#include "MetaData.h"
+#include "Buffers.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DataBuffer* MetaData::_pDataBuffer(void* aAddress)
+DataBuffer* Buffers::_pDataBuffer(void* aAddress)
 {
   DataBuffer* pDataBuffer = reinterpret_cast<DataBuffer*>(aAddress);
   
