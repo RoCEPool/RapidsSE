@@ -872,7 +872,8 @@ public:
   void vOperandPipeOut(void);
   void vOperandRowCountFetch(void);
   void vOperandSet(void);
-  void vOperandToCsv(void);
+  void vOperandCrwToCsv(void);
+  void vOperandCsvToCrw(void);
   void vOperandWorkDone(void);
   void vOperandWriteToFile0(void);
 

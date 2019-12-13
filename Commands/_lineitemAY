@@ -90,30 +90,16 @@ L_COMMENT       VARCHAR(44)   NOT NULL   // 15) 45B  23B  ßrnd[10..43]
 // 16 columns                                  174B  91B
 );
 
+create index idx on lineitem2 (L_ORDERKEY);
+
 print "**************************************************************************";
 print "scan lineitem | output;";
 print "**************************************************************************";
 
 
 
-docol epochTake;
 
-time pipeline export
-begin
-
-stage stageA on all partitions:
-  scanOp lineitem | stageB
-
-stage stageB on origin:
-  outputOp
-
-end
-;
-
-docol epochDump;
-
-/*
-time pipeline export
+time pipeline insert
 begin
 
 stage stageA on all partitions:
@@ -121,6 +107,21 @@ scanOp lineitem | insertOp lineitem2 | outputOp
 
 end
 ;
+
+/*
+docol epochTake;
+
+time pipeline export
+begin
+
+stage stageA on all partitions:
+scanOp lineitem | outputOp
+
+end
+;
+
+docol epochDump;
+
 
 docol epochDump;
 
