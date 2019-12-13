@@ -17,24 +17,12 @@
   pTask task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compile the pipeline command
-  //<cmd> job_Pipeline::compile
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // begin the pipeline job
-  //pJob_pipeline job_Pipeline.begin
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // execute the pipeline job
+  // execute the pipeline job (send startmarker to startOp)
   pJob_pipeline job_Pipeline.execute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for operators to finish
   task::wait
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // end the pipeline job
-  //pJob_pipeline job_Pipeline.end
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +35,7 @@
   <cmd> job_Pipeline::compile
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // begin the pipeline job
+  // begin the pipeline job (spawning jobs for ops etc)
   job::this job_Pipeline.begin
 ;
 
@@ -57,7 +45,7 @@
 : pipeline::releaseResources _eeh ( -- )
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // end the pipeline job
+  // end the pipeline job  (send stopmarker to startOp)
   job::this job_Pipeline.end
 ;
 
