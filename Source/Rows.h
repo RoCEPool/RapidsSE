@@ -17,7 +17,6 @@ namespace Rows
 #include "RowCoder.hpp"
 #include "Row.hpp"
 
-#include "SP_Row.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

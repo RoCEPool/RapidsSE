@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Datums
+namespace Records
 {
   class SP_Flt : public Sprint
   {

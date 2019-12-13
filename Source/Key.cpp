@@ -151,7 +151,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
     if (eDatum == DM_VCH)
       nBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
     else
-      Datums::Sprint::vInto((Stz*)caLiteral,ayElm,pCol);
+      CsvValue::vInto((Stz*)caLiteral,ayElm,pCol);
     
     vTrace("Elm[%lld %lldB] %s "_Stz,i_Col,nBytes,caLiteral);
   }

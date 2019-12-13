@@ -3,8 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Datums
-
+namespace Records
 {
   class SN_Tsp : public Scan
   {

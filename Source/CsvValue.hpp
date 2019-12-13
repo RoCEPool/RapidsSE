@@ -22,6 +22,8 @@ namespace Records
   
     static bool bIsSomeNull(char** aazCrs, Format* pFmt);
   
+    static void vInto(Stz* szTgt, void* avSrc, Column* pCol);
+
   private:
     static bool bIsEnclosedString(char** aazCrs, Format* pFmt);
     static bool bIsThereFieldData(char* aSrc, Format* pFmt);

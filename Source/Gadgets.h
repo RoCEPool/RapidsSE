@@ -28,6 +28,7 @@ namespace Gadgets
 #include "SeeMe.hpp"
 #include "Sleep.hpp"
 #include "Scan.hpp"
+#include "Sprint.hpp"
 #include "TempName.hpp"
 #include "Tick.hpp"
 #include "Timer.hpp"
