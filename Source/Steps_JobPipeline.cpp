@@ -25,6 +25,8 @@ void Step::vJob_PipelineBegin(void)
   
   Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a pipeline
   pJob_Pipeline->m_pPipeline = new Pipeline(pJob_Pipeline);
   Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
   
@@ -32,16 +34,13 @@ void Step::vJob_PipelineBegin(void)
   RASSERT( ! pJob_Pipeline->m_pBufferQueue );
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the pipeline
-  
+  // popluate the op vector of the pipeline
   pPipeline->vPopulateOpVec(m_pRegSet->m_pDynamo->pPipelineSpec());
-  //pJob_Pipeline->m_pPipeline->vSetupJob();
-  
   delete m_pRegSet->m_pDynamo;
   m_pRegSet->m_pDynamo = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn operaotors for this node
+  // spawn operators for this node
   i8 iThisNode = AM::pGrid()->iThisNode();
   if (AM::bVerbose())
     vTrace("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
@@ -50,12 +49,10 @@ void Step::vJob_PipelineBegin(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get no of operators to be executed on this node
-  
   i8 nOps = pPipeline->nOpsOnNode(iThisNode);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set acks remaining equal to no of operators to be executed on this node
-  
   AM::vSetAcksRmg(pJob_Pipeline->pTask(),nOps);
   
   EXIT();
@@ -69,8 +66,6 @@ void Step::vJob_PipelineCancel(void)
   ENTRY(); // ENTRY("vJob_PipelineCancel"_Stz);
   
   Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  //pJob_Pipeline->vCancel();
   
   // get the first stage of the pipeline
   Stage* pStage = pJob_Pipeline->m_pPipeline->pStageVec()->pGet(0);
@@ -91,10 +86,7 @@ void Step::vJob_PipelineEnd(void)
   
   Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  //pJob_Pipeline->vEnd();
-  
   // get the first stage of the pipeline
-  i8 nItems = pJob_Pipeline->m_pPipeline->pStageVec()->nItems();
   Stage* pStage = pJob_Pipeline->m_pPipeline->pStageVec()->pGet(0);
   
   // send stopMarker to the StartOp of the first stage of the pipeline

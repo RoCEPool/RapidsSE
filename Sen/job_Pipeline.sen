@@ -12,14 +12,13 @@
   task::this locals| pTask |
   job::this  locals| pJob_pipeline |
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // grab the task lock
   pTask task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
-  <cmd> job_Pipeline::compile
+<cmd> job_Pipeline::compile
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job
@@ -30,7 +29,7 @@
   pJob_pipeline job_Pipeline.execute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // wait for operators to finish
   task::wait
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
