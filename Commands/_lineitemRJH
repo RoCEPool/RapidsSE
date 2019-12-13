@@ -89,6 +89,8 @@ end;
 
 dumptable lineitem;
 
+time fetch lineitem "l_orderKey 20 <" ;
+
 ping;
 
 logWrite;

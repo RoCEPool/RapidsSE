@@ -2,7 +2,7 @@
 /* RowExtractor.cpp -- RowExtractor                                           */
 /*============================================================================*/
 
-#include "Buffers.h"
+#include "Indexes.h"
 #include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -32,7 +32,8 @@ void RowExtractor::vAddElement(EntWrk* pEntWrk, Column* pCol,
 
   Datum oDatum;
 
-  bool b = RowExtractor::bExtractDtm(&oDatum,pCol,&aSrc,pFmt);
+  //bool b = RowExtractor::bExtractDtm(&oDatum,pCol,&aSrc,pFmt);
+  bool b = CsvValue::bToDtm(&oDatum,pCol,&aSrc,pFmt);
   ASSERT(b);
 
   if (oDatum.bIsNull()) {
