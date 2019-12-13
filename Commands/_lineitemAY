@@ -96,19 +96,6 @@ print "*************************************************************************
 print "scan lineitem | output;";
 print "**************************************************************************";
 
-
-
-
-time pipeline insert
-begin
-
-stage stageA on all partitions:
-scanOp lineitem | insertOp lineitem2 | outputOp
-
-end
-;
-
-/*
 docol epochTake;
 
 time pipeline export
@@ -120,6 +107,7 @@ scanOp lineitem | outputOp
 end
 ;
 
+/*
 docol epochDump;
 
 
