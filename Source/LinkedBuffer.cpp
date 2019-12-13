@@ -2,7 +2,7 @@
 /* LinkedBuffer.cpp -- Linked Buffer                                          */
 /*============================================================================*/
 
-#include "Streams.h"
+#include "Operands.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LinkedBuffer* Streams::_pLinkedBuffer(void* aAddress)
+LinkedBuffer* Operands::_pLinkedBuffer(void* aAddress)
 {
   LinkedBuffer* pLinkedBuffer = reinterpret_cast<LinkedBuffer*>(aAddress);
   

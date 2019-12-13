@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Streams
+namespace Operands
 {
   class Definition : public Operand
   {

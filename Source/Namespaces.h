@@ -55,6 +55,7 @@ namespace Plans         {                                                     }
 namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }
 namespace Prompt        { class SePrompt;                                     }
 namespace Oblique       { class AM;                                           }
+namespace Operands      { class Operand;                                      }
 namespace Operators     { class Op; class Pipeline;                           }
 namespace Records       {                                                     }
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
@@ -67,7 +68,6 @@ namespace Services      {                                                     }
 namespace Sessions      { class Request; class Session; class SessionState;   }
 namespace Steps         { class Step; class StepTiming;                       }
 namespace StorageEngine { class AttachMap; class Engine;                      }
-namespace Streams       { class Operand;                                      }
 namespace Strings       {                                                     }
 namespace Structures    { class Article; class Queue;                         }
 namespace Tasks         { class Task;                                         }
@@ -110,6 +110,7 @@ using namespace Locking;
 using namespace Logging;
 using namespace MetaData;
 using namespace Oblique;
+using namespace Operands;
 using namespace Operators;
 using namespace Partitioning;
 using namespace Persistence;
@@ -126,7 +127,6 @@ using namespace Services;
 using namespace Sessions;
 using namespace Steps;
 using namespace StorageEngine;
-using namespace Streams;
 using namespace Strings;
 using namespace Structures;
 using namespace Tasks;

@@ -50,7 +50,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Sessions::vCheckAssumptions();
   Steps::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
-  Streams::vCheckAssumptions();
+  Operands::vCheckAssumptions();
   Strings::vCheckAssumptions();
   Structures::vCheckAssumptions();
   Tasks::vCheckAssumptions();

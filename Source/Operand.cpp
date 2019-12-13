@@ -2,7 +2,7 @@
 /* Operand.cpp -- Operand Buffer                                              */
 /*============================================================================*/
 
-#include "Streams.h"
+#include "Operands.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Operand* Streams::_pOperand(void* aAddress)
+Operand* Operands::_pOperand(void* aAddress)
 {
   Operand* pOperand = reinterpret_cast<Operand*>(aAddress);
   
@@ -22,7 +22,7 @@ Operand* Streams::_pOperand(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* is given class a valid operand?                                            */
 /*----------------------------------------------------------------------------*/
-bool Streams::_bIsValidOperand(eCN eClass)
+bool Operands::_bIsValidOperand(eCN eClass)
 {
   switch(eClass) {
     case CN_ENDMARKER:

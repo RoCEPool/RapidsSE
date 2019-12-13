@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Streams
+namespace Operands
 {
   class OperandQueue : public ListNL_t<Operand>
   {
