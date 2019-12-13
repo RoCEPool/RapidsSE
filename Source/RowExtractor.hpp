@@ -12,9 +12,6 @@ namespace Buffers
     static void vAddElement(EntWrk* pEntWrk, Column* pCol,
                             Stz* azSrc, Format* pFmt);
   
-    static bool bExtractNext(Row* pRow, StreamDef* pStreamDef,
-                             char** aazCrs, Format* pFmt,
-                             bool& bBlankLine_);
   
   private:
     static bool bExtractDtm(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
