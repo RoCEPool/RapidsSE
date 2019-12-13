@@ -18,7 +18,7 @@ namespace Indexes
 
 //------------------------------------------------------------------------------
 
-#include "RowExtractor.hpp"
+#include "KeyBuilder.hpp"
 
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
