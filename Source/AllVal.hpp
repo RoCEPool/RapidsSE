@@ -10,8 +10,9 @@ namespace SenVM
     AnyVal  m_xAnyVal;
     
     FipVal  m_xFipVal;
-    IntVal  m_xIntVal;
     PtrVal  m_xPtrVal;
+    
+    IntVal  m_xIntVal;
     StzVal  m_xStzVal;
     
     byte    m_yaSpace[C_48KB];
@@ -26,8 +27,9 @@ namespace SenVM
     AnyVal  m_xAnyVal;
     
     FipVal  m_xFipVal;
-    IntVal  m_xIntVal;
     PtrVal  m_xPtrVal;
+    
+    IntVal  m_xIntVal;
     StzVal  m_xStzVal;
     
     byte    m_yaSpace[32];
@@ -40,8 +42,9 @@ namespace SenVM
     AnyVal  m_xAnyVal;
     
     FipVal  m_xFipVal;
-    IntVal  m_xIntVal;
     PtrVal  m_xPtrVal;
+    
+    IntVal  m_xIntVal;
     StzVal  m_xStzVal;
     
     byte    m_yaSpace[C_8KB];
