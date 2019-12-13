@@ -2,7 +2,7 @@
 /* Column.cpp - Column                                                        */
 /*============================================================================*/
 
-#include "MetaData.h"
+#include "Datums.h"
 
 #include "Jobs.h"
 
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Column* MetaData::_pColumn(void* aAddr)
+Column* Datums::_pColumn(void* aAddr)
 {
   Column* pColumn = reinterpret_cast<Column*>(aAddr);
   

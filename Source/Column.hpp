@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace MetaData
+namespace Datums
 {
   class Column : public Object
   {
