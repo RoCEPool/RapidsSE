@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace Buffers
 {
   typedef       HV <Record,StreamDef>                            HV_Rec;
   

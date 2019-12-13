@@ -20,7 +20,6 @@ namespace Transform
 #include "Ent.hpp"
 #include "EntWrk.hpp"
 
-#include "IrwBuffer.hpp"
 
 #include "NmStr.hpp"
 #include "NmStrList.hpp"

@@ -2,7 +2,7 @@
 /* IrwBuffer.hpp -- Inflated Row Buffer                                       */
 /*============================================================================*/
 
-#include "Transform.h"
+#include "Buffers.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IrwBuffer* Transform::_pIrwBuffer(void* aAddress)
+IrwBuffer* Buffers::_pIrwBuffer(void* aAddress)
 {
   IrwBuffer* pIrwBuffer = reinterpret_cast<IrwBuffer*>(aAddress);
   
