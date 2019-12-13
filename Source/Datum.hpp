@@ -30,7 +30,7 @@ namespace Datums
     void operator =(i8 iInt);
     void operator =(Object* pObj);
     void operator =(Stz* szStz);
-
+ 
     bool bIsNull(void);
     void vSetNull(void);
   
