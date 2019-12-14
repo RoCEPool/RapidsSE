@@ -23,7 +23,7 @@ void* TmeVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void TmeVal::vTme(Tme wTme)
 {
-  vClass(CN_INTVAL);
+  vClass(CN_TMEVAL);
   m_wTme = wTme;
 }
 

@@ -23,7 +23,7 @@ void* TspVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void TspVal::vTsp(Tsp wTsp)
 {
-  vClass(CN_INTVAL);
+  vClass(CN_TSPVAL);
   m_wTsp = wTsp;
 }
 

@@ -23,7 +23,7 @@ void* BcdVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void BcdVal::vBcd(Bcd wBcd)
 {
-  vClass(CN_INTVAL);
+  vClass(CN_BCDVAL);
   m_wBcd = wBcd;
 }
 

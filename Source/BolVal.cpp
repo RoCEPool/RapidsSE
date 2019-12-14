@@ -23,7 +23,7 @@ void* BolVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void BolVal::vBol(Bol wBol)
 {
-  vClass(CN_INTVAL);
+  vClass(CN_BOLVAL);
   m_wBol = wBol;
 }
 

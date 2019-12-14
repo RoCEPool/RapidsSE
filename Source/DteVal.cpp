@@ -23,7 +23,7 @@ void* DteVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void DteVal::vDte(Dte wDte)
 {
-  vClass(CN_INTVAL);
+  vClass(CN_DTEVAL);
   m_wDte = wDte;
 }
 

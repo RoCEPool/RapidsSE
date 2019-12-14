@@ -23,7 +23,7 @@ void* EdtVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void EdtVal::vEdt(Edt wEdt)
 {
-  vClass(CN_INTVAL);
+  vClass(CN_EDTVAL);
   m_wEdt = wEdt;
 }
 

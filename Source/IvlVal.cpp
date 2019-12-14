@@ -23,7 +23,7 @@ void* IvlVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void IvlVal::vIvl(Ivl wIvl)
 {
-  vClass(CN_INTVAL);
+  vClass(CN_IVLVAL);
   m_wIvl = wIvl;
 }
 
