@@ -30,6 +30,14 @@ namespace SqlValues
       _Tme    m_xTme;
       _Tsp    m_xTsp;
       
+      Bcd     m_wBcd;
+      Bol     m_wBol;
+      Dte     m_wDte;
+      Edt     m_wEdt;
+      Ivl     m_wIvl;
+      Tme     m_wTme;
+      Tsp     m_wTsp;
+
       i8      m_nBytesFollowing;
     };
   
