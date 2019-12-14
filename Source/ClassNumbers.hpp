@@ -24,7 +24,9 @@ enum eCN : u2 // Class Number
   /*   7 0x007    26000B Heap:I */ CN_ATTACHMAP,
   
   /*   8 0x008        2B Heap:I */ CN__B__,
+  /*  99 0x063       16B Heap:I */ CN_BCDVAL,
   /*   9 0x009       32B Heap:I */ CN_BIRTH,
+  /*  99 0x063       16B Heap:I */ CN_BOLVAL,
   /*  10 0x00A        1B Heap:I */ CN_BPA,
   /*  11 0x00B     8400B Heap:L */ CN_BUCKETMAP,
   /*  12 0x00C       32B Heap:L */ CN_BUFFERCURSOR,
@@ -61,10 +63,12 @@ enum eCN : u2 // Class Number
   /*  40 0x028      920B Heap:S */ CN_DICPATH,
   /*  41 0x029      152B Heap:S */ CN_DICSTACK,
   /*  42 0x02A      680B Heap:S */ CN_DIR,
+  /*  99 0x063       16B Heap:I */ CN_DTEVAL,
   /*  44 0x02C       56B Heap:S */ CN_DYNAMO,
   
   /*  45 0x02D        5B Heap:I */ CN__E__,
   /*  46 0x02E       72B Heap:S */ CN_EARLYMARKER,
+  /*  99 0x063       16B Heap:I */ CN_EDTVAL,
   /*  47 0x02F    27264B Heap:L */ CN_ENCODING,
   /*  48 0x030       80B Heap:S */ CN_ENDMARKER,
   /*  49 0x031     5584B Heap:M */ CN_ENMSET,
@@ -92,6 +96,7 @@ enum eCN : u2 // Class Number
   /*  70 0x046      136B Heap:M */ CN_FILTER_WHERE,
   /*  71 0x047      136B Heap:M */ CN_FILTER_ZED,
   /*  72 0x048       16B Heap:I */ CN_FIPVAL,
+  /*  99 0x063       16B Heap:I */ CN_FLTVAL,
   /*  73 0x049   524520B Heap:L */ CN_FOCALOBJECTS,
   /*  74 0x04A      256B Heap:S */ CN_FORTH,
   /*  75 0x04B       56B Heap:S */ CN_FORMAT,
@@ -124,7 +129,8 @@ enum eCN : u2 // Class Number
   /* 100 0x064  1000512B Heap:L */ CN_IOCHUNK,
   /* 101 0x065       32B Heap:S */ CN_IOCOPY,
   /* 102 0x066  1043864B Heap:L */ CN_IRWBUFFER,
-  
+  /*  99 0x063       16B Heap:I */ CN_IVLVAL,
+
   /* 103 0x067       10B Heap:I */ CN__J__,
   /* 104 0x068    14224B Heap:L */ CN_JOB__FIND,
   /* 105 0x069    14224B Heap:L */ CN_JOB_BOOT,
@@ -304,9 +310,11 @@ enum eCN : u2 // Class Number
   /* 273 0x111     2272B Heap:M */ CN_THREADVEC,
   /* 274 0x112       72B Heap:S */ CN_TIMEMARKER,
   /* 275 0x113       32B Heap:S */ CN_TIMER,
+  /*  99 0x063       16B Heap:I */ CN_TMEVAL,
   /* 276 0x114      304B Heap:S */ CN_TOKEN,
   /* 277 0x115    56856B Heap:M */ CN_TOKENISER,
   /* 278 0x116     8232B Heap:M */ CN_TOKENVEC,
+  /*  99 0x063       16B Heap:I */ CN_TSPVAL,
   /* 279 0x117      432B Heap:S */ CN_TX,
   /* 280 0x118      240B Heap:S */ CN_TXSET,
   
@@ -342,7 +350,9 @@ static Stz* aCN[]
   /*   7 0x007 */ "ATTACHMAP"_Stz,           // CN_ATTACHMAP
   
   /*   8 0x008 */ "_B__"_Stz,                // CN__B__
+  /*  99 0x063 */ "BCDVAL"_Stz,              // CN_BCDVAL
   /*   9 0x009 */ "BIRTH"_Stz,               // CN_BIRTH
+  /*  99 0x063 */ "BOLVAL"_Stz,              // CN_BOLVAL
   /*  10 0x00A */ "BPA"_Stz,                 // CN_BPA
   /*  11 0x00B */ "BUCKETMAP"_Stz,           // CN_BUCKETMAP
   /*  12 0x00C */ "BUFFERCURSOR"_Stz,        // CN_BUFFERCURSOR
@@ -379,10 +389,12 @@ static Stz* aCN[]
   /*  40 0x028 */ "DICPATH"_Stz,             // CN_DICPATH
   /*  41 0x029 */ "DICSTACK"_Stz,            // CN_DICSTACK
   /*  42 0x02A */ "DIR"_Stz,                 // CN_DIR
+  /*  99 0x063 */ "DTEVAL"_Stz,              // CN_DTEVAL
   /*  44 0x02C */ "DYNAMO"_Stz,              // CN_DYNAMO
   
   /*  45 0x02D */ "_E__"_Stz,                // CN__E__
   /*  46 0x02E */ "EARLYMARKER"_Stz,         // CN_EARLYMARKER
+  /*  99 0x063 */ "EDTVAL"_Stz,              // CN_EDTVAL
   /*  47 0x02F */ "ENCODING"_Stz,            // CN_ENCODING
   /*  48 0x030 */ "ENDMARKER"_Stz,           // CN_ENDMARKER
   /*  49 0x031 */ "ENMSET"_Stz,              // CN_ENMSET
@@ -410,6 +422,7 @@ static Stz* aCN[]
   /*  70 0x046 */ "FILTER_WHERE"_Stz,        // CN_FILTER_WHERE
   /*  71 0x047 */ "FILTER_ZED"_Stz,          // CN_FILTER_ZED
   /*  72 0x048 */ "FIPVAL"_Stz,              // CN_FIPVAL
+  /*  99 0x063 */ "FLTVAL"_Stz,              // CN_FLTVAL
   /*  73 0x049 */ "FOCALOBJECTS"_Stz,        // CN_FOCALOBJECTS
   /*  74 0x04A */ "FORTH"_Stz,               // CN_FORTH
   /*  75 0x04B */ "FORMAT"_Stz,              // CN_FORMAT
@@ -442,7 +455,8 @@ static Stz* aCN[]
   /* 100 0x064 */ "IOCHUNK"_Stz,             // CN_IOCHUNK
   /* 101 0x065 */ "IOCOPY"_Stz,              // CN_IOCOPY
   /* 102 0x066 */ "IRWBUFFER"_Stz,           // CN_IRWBUFFER
-  
+  /*  99 0x063 */ "IVLVAL"_Stz,              // CN_IVLVAL
+
   /* 103 0x067 */ "_J__"_Stz,                // CN__J__
   /* 104 0x068 */ "JOB__FIND"_Stz,           // CN_JOB__FIND
   /* 105 0x069 */ "JOB_BOOT"_Stz,            // CN_JOB_BOOT
@@ -622,9 +636,11 @@ static Stz* aCN[]
   /* 273 0x111 */ "THREADVEC"_Stz,           // CN_THREADVEC
   /* 274 0x112 */ "TIMEMARKER"_Stz,          // CN_TIMEMARKER
   /* 275 0x113 */ "TIMER"_Stz,               // CN_TIMER
+  /*  99 0x063 */ "TMEVAL"_Stz,              // CN_TMEVAL
   /* 276 0x114 */ "TOKEN"_Stz,               // CN_TOKEN
   /* 277 0x115 */ "TOKENISER"_Stz,           // CN_TOKENISER
   /* 278 0x116 */ "TOKENVEC"_Stz,            // CN_TOKENVEC
+  /*  99 0x063 */ "TSPVAL"_Stz,              // CN_TSPVAL
   /* 279 0x117 */ "TX"_Stz,                  // CN_TX
   /* 280 0x118 */ "TXSET"_Stz,               // CN_TXSET
   

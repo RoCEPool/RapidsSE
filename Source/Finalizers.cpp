@@ -21,7 +21,9 @@ pFINALIZE *gpFinalize[]
   /* 25 */ &Finalize::vUndefined,         // CN_ATTACHMAP
 
   /*    */ &Finalize::vUndefined,         // CN__B__
+  /*  7 */ &Finalize::vUndefined,         // CN_BCDVAL
   /*    */ &Finalize::vUndefined,         // CN_BIRTH
+  /*  7 */ &Finalize::vUndefined,         // CN_BOLVAL
   /* 29 */ &Finalize::vUndefined,         // CN_BPA
   /* 29 */ &Finalize::vUndefined,         // CN_BUCKETMAP
   /*    */ &Finalize::vUndefined,         // CN_BUFFERCURSOR
@@ -58,10 +60,12 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_DICPATH
   /* 34 */ &Finalize::vUndefined,         // CN_DICSTACK
   /* 35 */ &Finalize::vUndefined,         // CN_DIR
+  /*  7 */ &Finalize::vUndefined,         // CN_DTEVAL
   /*    */ &Finalize::vUndefined,         // CN_DYNAMO
 
   /*    */ &Finalize::vUndefined,         // CN__E__
   /*    */ &Finalize::vUndefined,         // CN_EARLYMARKER
+  /*  7 */ &Finalize::vUndefined,         // CN_EDTVAL
   /*    */ &Finalize::vUndefined,         // CN_ENCODING
   /*    */ &Finalize::vUndefined,         // CN_ENDMARKER
   /* 37 */ &Finalize::vUndefined,         // CN_ENMSET
@@ -89,6 +93,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_FILTER_WHERE
   /*    */ &Finalize::vUndefined,         // CN_FILTER_ZED
   /*    */ &Finalize::vUndefined,         // CN_FIPVAL
+  /*  7 */ &Finalize::vUndefined,         // CN_FLTVAL
   /*    */ &Finalize::vUndefined,         // CN_FOCALOBJECTS
   /*    */ &Finalize::vUndefined,         // CN_FORTH
   /* 39 */ &Finalize::vUndefined,         // CN_FORMAT
@@ -121,6 +126,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_IOCHUNK
   /*    */ &Finalize::vUndefined,         // CN_IOCOPY
   /*    */ &Finalize::vUndefined,         // CN_IRWBUFFER
+  /*  7 */ &Finalize::vUndefined,         // CN_IVLVAL
 
   /*    */ &Finalize::vUndefined,         // CN__J__
   /*    */ &Finalize::vUndefined,         // CN_JOB__FIND
@@ -302,8 +308,10 @@ pFINALIZE *gpFinalize[]
   /*142 */ &Finalize::vUndefined,         // CN_TIMEMARKER
   /*142 */ &Finalize::vUndefined,         // CN_TIMER
   /*143 */ &Finalize::vUndefined,         // CN_TOKEN
+  /*  7 */ &Finalize::vUndefined,         // CN_TMEVAL
   /*144 */ &Finalize::vUndefined,         // CN_TOKENISER
   /*146 */ &Finalize::vUndefined,         // CN_TOKENVEC
+  /*  7 */ &Finalize::vUndefined,         // CN_TSPVAL
   /*147 */ &Finalize::vUndefined,         // CN_TX
   /*148 */ &Finalize::vUndefined,         // CN_TXSET
   

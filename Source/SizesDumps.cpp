@@ -25,7 +25,9 @@ pDUMPFUN *gpDump[]
   /* */ &AttachMap::vDump,       // CN_ATTACHMAP
 
   /* */ &Dump::vInvalid,         // CN__B__
+  /* */ &Dump::vInvalid,         // CN_BCDVAL
   /* */ &Dump::vInvalid,         // CN_BIRTH
+  /* */ &Dump::vInvalid,         // CN_BOLVAL
   /* */ &Dump::vInvalid,         // CN_BPA
   /* */ &Dump::vInvalid,         // CN_BUCKETMAP
   /* */ &Dump::vInvalid,         // CN_BUFFERCURSOR
@@ -62,10 +64,12 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_DICPATH
   /* */ &DicStack::vDump,        // CN_DICSTACK
   /* */ &Dump::vInvalid,         // CN_DIR
+  /* */ &Dump::vInvalid,         // CN_DTEVAL
   /* */ &Dump::vDummy,           // CN_DYNAMO
 
   /* */ &Dump::vInvalid,         // CN__E__
   /* */ &Dump::vUndefined,       // CN_EARLYMARKER
+  /* */ &Dump::vInvalid,         // CN_EDTVAL
   /* */ &Dump::vUndefined,       // CN_ENCODING
   /* */ &Dump::vUndefined,       // CN_ENDMARKER
   /* */ &Dump::vDummy,           // CN_ENMSET
@@ -93,6 +97,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_FILTER_WHERE
   /* */ &Dump::vDummy,           // CN_FILTER_ZED
   /* */ &Dump::vInvalid,         // CN_FIPVAL
+  /* */ &Dump::vInvalid,         // CN_FLTVAL
   /* */ &Dump::vDummy,           // CN_FOCALOBJECTS
   /* */ &Dump::vDummy,           // CN_FORTH
   /* */ &Dump::vDummy,           // CN_FORMAT
@@ -125,6 +130,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_IOCHUNK
   /* */ &Dump::vDummy,           // CN_IOCOPY
   /* */ &Dump::vDummy,           // CN_IRWBUFFER
+  /* */ &Dump::vInvalid,         // CN_IVLVAL
 
   /* */ &Dump::vInvalid,         // CN__J__
   /* */ &Dump::vDummy,           // CN_JOB__FIND
@@ -305,9 +311,11 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_THREADVEC
   /* */ &Dump::vInvalid,         // CN_TIMEMARKER
   /* */ &Dump::vInvalid,         // CN_TIMER
+  /* */ &Dump::vInvalid,         // CN_TMEVAL
   /* */ &Token::vDump,           // CN_TOKEN
   /* */ &Tokeniser::vDump,       // CN_TOKENISER
   /* */ &Dump::vInvalid,         // CN_TOKENVEC
+  /* */ &Dump::vInvalid,         // CN_TSPVAL
   /* */ &Tx::vDump,              // CN_TX
   /* */ &Dump::vUndefined,       // CN_TXSET
 
@@ -344,7 +352,9 @@ i8 giClassSize[]
   /* */ sizeof(AttachMap),          // CN_ATTACHMAP
 
   /* */ 'B'-'A' + 1,                // CN__B__
+  /* */ sizeof(BcdVal),             // CN_BCDVAL
   /* */ sizeof(Birth),              // CN_BIRTH
+  /* */ sizeof(BolVal),             // CN_BOLVAL
   /* */ sizeof(BPA),                // CN_BPA
   /* */ sizeof(BucketMap),          // CN_BUCKETMAP
   /* */ sizeof(BufferCursor),       // CN_BUFFERCURSOR
@@ -374,17 +384,19 @@ i8 giClassSize[]
   /* */ sizeof(CsvBuffer),          // CN_CSVBUFFER
 
   /* */ 'D'-'A' + 1,                // CN__D__
-  /* */ sizeof(Datum),             // CN_DATUM
+  /* */ sizeof(Datum),              // CN_DATUM
   /* */ sizeof(DecaCnt),            // CN_DECACNT
   /* */ sizeof(Decider),            // CN_DECIDER
   /* */ sizeof(Dic),                // CN_DIC
   /* */ sizeof(DicPath),            // CN_DICPATH
   /* */ sizeof(DicStack),           // CN_DICSTACK
   /* */ sizeof(Dir),                // CN_DIR
+  /* */ sizeof(DteVal),             // CN_DTEVAL
   /* */ sizeof(Dynamo),             // CN_DYNAMO
 
   /* */ 'E'-'A' + 1,                // CN__E__
   /* */ sizeof(EarlyMarker),        // CN_EARLYMARKER
+  /* */ sizeof(EdtVal),             // CN_EDTVAL
   /* */ sizeof(Encoding),           // CN_ENCODING
   /* */ sizeof(EndMarker),          // CN_ENDMARKER
   /* */ sizeof(EnameSet),           // CN_ENMSET
@@ -412,9 +424,10 @@ i8 giClassSize[]
   /* */ sizeof(Filter_Where),       // CN_FILTER_WHERE
   /* */ sizeof(Filter_Zed),         // CN_FILTER_ZED
   /* */ sizeof(FipVal),             // CN_FIPVAL
+  /* */ sizeof(FltVal),             // CN_FLTVAL
   /* */ sizeof(FocalObjects),       // CN_FOCALOBJECTS
   /* */ sizeof(Forth),              // CN_FORTH
-  /* */ sizeof(Format),         // CN_FORMAT
+  /* */ sizeof(Format),             // CN_FORMAT
   /* */ sizeof(PoolBuffer),         // CN_FREEBUFFER
   /* */ sizeof(FreeChunk),          // CN_FREECHUNK
   /* */ 0,                          // CN_FREEDNOT
@@ -444,6 +457,7 @@ i8 giClassSize[]
   /* */ sizeof(IoChunk),            // CN_IOCHUNK
   /* */ sizeof(IoCopy),             // CN_IOCOPY
   /* */ sizeof(IrwBuffer),          // CN_IRWBUFFER
+  /* */ sizeof(IvlVal),             // CN_IVLVAL
 
   /* */ 'J'-'A' + 1,                // CN__J__
   /* */ sizeof(Job__Find),          // CN_JOB__FIND
@@ -624,9 +638,11 @@ i8 giClassSize[]
   /* */ sizeof(ThreadVec),          // CN_THREADVEC
   /* */ sizeof(TimeMarker),         // CN_TIMEMARKER
   /* */ sizeof(Timer),              // CN_TIMER
+  /* */ sizeof(TmeVal),             // CN_TMEVAL
   /* */ sizeof(Token),              // CN_TOKEN
   /* */ sizeof(Tokeniser),          // CN_TOKENISER
   /* */ sizeof(TokenVec),           // CN_TOKENVEC
+  /* */ sizeof(TspVal),             // CN_TSPVAL
   /* */ sizeof(Tx),                 // CN_TX
   /* */ sizeof(TxSet),              // CN_TXSET
 
@@ -663,7 +679,9 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_ATTACHMAP
 
   /* */ HT_INVALID,           // CN__B__
+  /* */ HT_INVALID,           // CN_BCDVAL
   /* */ HT_INVALID,           // CN_BIRTH
+  /* */ HT_INVALID,           // CN_BOLVAL
   /* */ HT_INVALID,           // CN_BPA
   /* */ HT_TRANSIENT_LARGE,   // CN_BUCKETMAP
   /* */ HT_TRANSIENT_LARGE,   // CN_BUFFERCURSOR
@@ -700,10 +718,12 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_DICPATH
   /* */ HT_TRANSIENT_SMALL,   // CN_DICSTACK
   /* */ HT_TRANSIENT_SMALL,   // CN_DIR
+  /* */ HT_INVALID,           // CN_DTEVAL
   /* */ HT_TRANSIENT_SMALL,   // CN_DYNAMO
 
   /* */ HT_INVALID,           // CN__E__
   /* */ HT_TRANSIENT_SMALL,   // CN_EARLYMARKER
+  /* */ HT_INVALID,           // CN_EDTVAL
   /* */ HT_TRANSIENT_LARGE,   // CN_ENCODING
   /* */ HT_TRANSIENT_SMALL,   // CN_ENDMARKER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_ENMSET
@@ -731,6 +751,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_WHERE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_ZED
   /* */ HT_INVALID,           // CN_FIPVAL
+  /* */ HT_INVALID,           // CN_FLTVAL
   /* */ HT_TRANSIENT_LARGE,   // CN_FOCALOBJECTS
   /* */ HT_TRANSIENT_SMALL,   // CN_FORTH
   /* */ HT_TRANSIENT_SMALL,   // CN_FORMAT
@@ -763,6 +784,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_IOCHUNK
   /* */ HT_TRANSIENT_SMALL,   // CN_IOCOPY
   /* */ HT_TRANSIENT_LARGE,   // CN_IRWBUFFER
+  /* */ HT_INVALID,           // CN_IVLVAL
 
   /* */ HT_INVALID,           // CN__J__
   /* */ HT_TRANSIENT_LARGE,   // CN_JOB__FIND
@@ -943,9 +965,11 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_THREADVEC
   /* */ HT_TRANSIENT_SMALL,   // CN_TIMEMARKER
   /* */ HT_TRANSIENT_SMALL,   // CN_TIMER
+  /* */ HT_INVALID,           // CN_TMEVAL
   /* */ HT_TRANSIENT_SMALL,   // CN_TOKEN
   /* */ HT_TRANSIENT_MEDIUM,  // CN_TOKENISER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_TOKENVEC
+  /* */ HT_INVALID,           // CN_TSPVAL
   /* */ HT_TRANSIENT_SMALL,   // CN_TX
   /* */ HT_TRANSIENT_SMALL,   // CN_TXSET
   
