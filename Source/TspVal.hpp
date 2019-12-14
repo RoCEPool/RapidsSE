@@ -13,7 +13,7 @@ namespace SqlValues
     void* operator new(size_t);
     
   public:
-    void  vTsp(i8 iVal);
+    void  vTsp(Tsp wTsp);
     i8    nStackUsage(void);
     void  vToStz(Stz* szDst);
   };
