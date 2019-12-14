@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* IntVal.hpp -- Layout of an i8 Integer when on Stack                        */
+/*============================================================================*/
+#pragma once
+
+namespace SqlValues
+{
+  class FltVal : public AnyVal
+  {
+  private:
+  
+  public:
+    void* operator new(size_t);
+    
+  public:
+    void  vFlt(i8 iVal);
+    i8    nStackUsage(void);
+    void  vToStz(Stz* szDst);
+  };
+  
+  /*----------------------------------------------------------------------------*/
+  /* safe cast                                                                  */
+  /*----------------------------------------------------------------------------*/
+  inline FltVal* _aFltVal(void* aAddr)
+  {
+    FltVal* aFltVal = reinterpret_cast<FltVal*>(aAddr);
+  
+    RASSERT_TYPE(aFltVal,CN_INTVAL);
+  
+    return aFltVal;
+  }
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
