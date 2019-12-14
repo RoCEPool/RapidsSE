@@ -8,7 +8,7 @@ logSection createTable;
 
 time create table LineItem                 // SF * 6,000,000 rows
 (
-  L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B  O_ORDERKEY 1+
+  L_ORDERKEY      INTEGER       NOT NULL min 1,  //  0)  8B   3B  O_ORDERKEY 1+
   L_PARTKEY       INTEGER       NOT NULL,  //  1)  8B   3B  rnd(1..(SF*200000))
   L_SUPPKEY       INTEGER       NOT NULL,  //  2)  8B   3B  f(L_PARTKEY)
   L_LINENUMBER    INTEGER       NOT NULL,  //  3)  8B   3B  1..7
