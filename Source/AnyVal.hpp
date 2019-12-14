@@ -7,7 +7,7 @@ namespace SqlValues
 {
   class AnyVal : public _Header
   {
-  //protected:
+  protected:
   public:
     union {
       Cell*   m_aFip;
@@ -40,7 +40,7 @@ namespace SqlValues
       Tsp     m_wTsp;
 
       i8      m_nBytesFollowing;
-    };
+    } u;
   
   public:
     void* operator new(size_t);

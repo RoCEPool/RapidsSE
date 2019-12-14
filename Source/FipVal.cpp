@@ -24,7 +24,7 @@ void* FipVal::operator new(size_t)
 void FipVal::vFip(Cell* aFip)
 {
   vClass(CN_FIPVAL);
-  m_aFip = aFip;
+  u.m_aFip = aFip;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +40,7 @@ i8 FipVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void FipVal::vToStz(Stz* szDst)
 {
-  * szDst = reinterpret_cast<void*>(m_aFip);
+  * szDst = reinterpret_cast<void*>(u.m_aFip);
 }
 
 /*============================================================================*/

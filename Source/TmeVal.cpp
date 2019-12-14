@@ -24,7 +24,7 @@ void* TmeVal::operator new(size_t)
 void TmeVal::vTme(Tme wTme)
 {
   vClass(CN_TMEVAL);
-  m_wTme = wTme;
+  u.m_wTme = wTme;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,12 +40,12 @@ i8 TmeVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void TmeVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iInt) {
+  if (C_DATUM_NULL == u.m_iInt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iInt;
+  * szDst = u.m_iInt;
 }
 
 /*============================================================================*/

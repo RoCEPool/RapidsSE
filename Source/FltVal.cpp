@@ -24,7 +24,7 @@ void* FltVal::operator new(size_t)
 void FltVal::vFlt(Flt wFlt)
 {
   vClass(CN_INTVAL);
-  m_wFlt = wFlt;
+  u.m_wFlt = wFlt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,12 +40,12 @@ i8 FltVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void FltVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iInt) {
+  if (C_DATUM_NULL == u.m_iInt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iInt;
+  * szDst = u.m_iInt;
 }
 
 /*============================================================================*/

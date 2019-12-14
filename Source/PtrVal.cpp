@@ -26,7 +26,7 @@ void* PtrVal::operator new(size_t)
 void PtrVal::vObj(Object* pObject)
 {
   vClass(CN_PTRVAL);
-  m_pObj = pObject;
+  u.m_pObj = pObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@ i8 PtrVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void PtrVal::vToStz(Stz* szDst)
 {
-  * szDst = reinterpret_cast<void*>(m_pObj);
+  * szDst = reinterpret_cast<void*>(u.m_pObj);
 }
 
 /*============================================================================*/

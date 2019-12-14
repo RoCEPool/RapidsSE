@@ -31,7 +31,7 @@ void StzVal::vStz(Stz* szStz)
 {
   vClass(CN_STZVAL);
   
-  m_nBytesFollowing = StrLib::nCopy(m_caStz,szStz->azChar()) + 1;
+  u.m_nBytesFollowing = StrLib::nCopy(m_caStz,szStz->azChar()) + 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@ void StzVal::vStz(char* acnChar, i8 nLength)
 {
   vClass(CN_STZVAL);
   
-  m_nBytesFollowing = StrLib::nCopy(m_caStz,acnChar) + 1;
+  u.m_nBytesFollowing = StrLib::nCopy(m_caStz,acnChar) + 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ char* StzVal::azChar(void)
 /*----------------------------------------------------------------------------*/
 i8 StzVal::nStackUsage(void)
 {  
-  i8 nBytes = sizeof(AnyVal) + m_nBytesFollowing;
+  i8 nBytes = sizeof(AnyVal) + u.m_nBytesFollowing;
   
   return nBytes;
 }
@@ -76,7 +76,7 @@ Stz* StzVal::szStz(void)
 /*----------------------------------------------------------------------------*/
 i8 StzVal::nStzSize(void)
 {
-  return m_nBytesFollowing;
+  return u.m_nBytesFollowing;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,7 +84,7 @@ i8 StzVal::nStzSize(void)
 /*----------------------------------------------------------------------------*/
 void StzVal::vStzSize(i8 nSize)
 {
-  m_nBytesFollowing = nSize;
+  u.m_nBytesFollowing = nSize;
 }
 
 /*----------------------------------------------------------------------------*/

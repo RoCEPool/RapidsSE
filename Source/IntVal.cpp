@@ -24,7 +24,7 @@ void* IntVal::operator new(size_t)
 void IntVal::vInt(i8 iInt)
 {
   vClass(CN_INTVAL);
-  m_iInt = iInt;
+  u.m_iInt = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,12 +40,12 @@ i8 IntVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void IntVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iInt) {
+  if (C_DATUM_NULL == u.m_iInt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iInt;
+  * szDst = u.m_iInt;
 }
 
 /*============================================================================*/

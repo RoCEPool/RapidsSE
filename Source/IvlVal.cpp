@@ -24,7 +24,7 @@ void* IvlVal::operator new(size_t)
 void IvlVal::vIvl(Ivl wIvl)
 {
   vClass(CN_IVLVAL);
-  m_wIvl = wIvl;
+  u.m_wIvl = wIvl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,12 +40,12 @@ i8 IvlVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void IvlVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iInt) {
+  if (C_DATUM_NULL == u.m_iInt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iInt;
+  * szDst = u.m_iInt;
 }
 
 /*============================================================================*/

@@ -24,7 +24,7 @@ void* BolVal::operator new(size_t)
 void BolVal::vBol(Bol wBol)
 {
   vClass(CN_BOLVAL);
-  m_wBol = wBol;
+  u.m_wBol = wBol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,12 +40,12 @@ i8 BolVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void BolVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iInt) {
+  if (C_DATUM_NULL == u.m_iInt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iInt;
+  * szDst = u.m_iInt;
 }
 
 /*============================================================================*/

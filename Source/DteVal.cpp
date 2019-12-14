@@ -24,7 +24,7 @@ void* DteVal::operator new(size_t)
 void DteVal::vDte(Dte wDte)
 {
   vClass(CN_DTEVAL);
-  m_wDte = wDte;
+  u.m_wDte = wDte;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,12 +40,12 @@ i8 DteVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void DteVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iInt) {
+  if (C_DATUM_NULL == u.m_iInt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iInt;
+  * szDst = u.m_iInt;
 }
 
 /*============================================================================*/

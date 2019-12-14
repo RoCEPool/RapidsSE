@@ -24,7 +24,7 @@ void* BcdVal::operator new(size_t)
 void BcdVal::vBcd(Bcd wBcd)
 {
   vClass(CN_BCDVAL);
-  m_wBcd = wBcd;
+  u.m_wBcd = wBcd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,12 +40,12 @@ i8 BcdVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void BcdVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iInt) {
+  if (C_DATUM_NULL == u.m_iInt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iInt;
+  * szDst = u.m_iInt;
 }
 
 /*============================================================================*/
