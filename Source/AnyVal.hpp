@@ -46,13 +46,25 @@ namespace SqlValues
     void* operator new(size_t);
   
     i8      iAsInt(void);
+    Bcd     wBcd(void);
+    void    vBcd(Bcd wBcd);
+    Bol     wBol(void);
+    void    vBol(Bol wBol);
     char*   azChar(void);
     void    vCopy(AnyVal* aSrcVal, i8 nBytes=0);
+    Dte     wDte(void);
+    void    vDte(Dte wDte);
+    Edt     wEdt(void);
+    void    vEdt(Edt wEdt);
     Cell*   aFip(void);
     void    vFip(Cell* aFip);
+    Flt     wFlt(void);
+    void    vFlt(Flt wFlt);
     void    vInspect(void);
     i8      iInt(void);
     void    vInt(i8 iInt);
+    Ivl     wIvl(void);
+    void    vIvl(Ivl wIvl);
     bool    bIsInt(void);
     Object* pObj(void);
     void    vObj(Object* pObj);
@@ -60,6 +72,10 @@ namespace SqlValues
     Stz*    szStz(void);
     void    vStz(Stz* szStz);
     i8      nStzSize(void);
+    Tme     wTme(void);
+    void    vTme(Tme wTme);
+    Tsp     wTsp(void);
+    void    vTsp(Tsp wTsp);
     void    vToString(Stz* szDst);
   };
   
