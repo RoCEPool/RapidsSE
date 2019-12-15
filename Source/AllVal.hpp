@@ -5,31 +5,7 @@
 
 namespace SenVM
 {
-  class AllVal
-  {
-  public:
-   union {
-      i8      m__zero__;
-     
-      AnyVal  m_xAnyVal;
-      
-      FipVal  m_xFipVal;
-      PtrVal  m_xPtrVal;
-      
-      BcdVal  m_xBcdVal;
-      BolVal  m_xBolVal;
-      DteVal  m_xDteVal;
-      EdtVal  m_xEdtVal;
-      FltVal  m_xFltVal;
-      IntVal  m_xIntVal;
-      IvlVal  m_xIvlVal;
-      StzVal  m_xStzVal;
-      TmeVal  m_xTmeVal;
-      TspVal  m_xTspVal;
-    };
-  };
-
-  // concreate variations
+  // concrete variations
   
   class AllVal_y32 : public AnyVal
   {
