@@ -25,12 +25,6 @@ namespace SqlValues
       i8      m_iTme;
       i8      m_iTsc;
       i8      m_iTsp;
-
-      _Dte    m_xDte;
-      _Edt    m_xEdt;
-//      _Ivl    m_xIvl;
-      _Tme    m_xTme;
-      _Tsp    m_xTsp;
       
       Bcd     m_wBcd;
       Bol     m_wBol;
