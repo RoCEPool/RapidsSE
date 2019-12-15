@@ -85,7 +85,7 @@ void Step::vStreamDefPipeOut(void)
 {
   ENTRY(); // ENTRY("vStreamDefPipeOut"_Stz);
   
-  ASSERT(m_pRegSet->m_pOperand);
+  ASSERT(*m_pRegSet->m_xpStreamDef);
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
   

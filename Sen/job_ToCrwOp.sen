@@ -5,11 +5,55 @@
 " job_ToCrwOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* check if word is a valid table folder                                      */
+/*----------------------------------------------------------------------------*/
+: checkTable ( "<tableNm>" -- true | errorCode false )
+
+  params| sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTable not if popTable false exit then
+  //sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+
+  // pop table folder
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for ToCrwOp req                            (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : ToCrwOp_req ( -- )
 
   >>logEntry <SEED_REQ>
+
+  job::this locals| pJob_ToCrwOp |
+
+  0 0 locals| sTableNm pTable |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if we can access the table
+  <tableNm> to sTableNm
+  sTableNm checkTable not if
+  pJob_ToCrwOp <ERROR_JOB> !!logError exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move to table folder and find the table and tablePtn
+  sTableNm pushTable assert
+  sTableNm find execute to table[]
 
   begin
 
@@ -24,7 +68,7 @@
 
       ZK_CSVBUFFER of
         "Operand:- ZK_CSVBUFFER" .verbose
-        Operand[].csvToCrw
+        table[].get Operand[].csvToCrw
         Operand[].get to Subset[]
         begin
           Operand[].isNull
@@ -45,7 +89,8 @@
       ZK_STREAMDEF of
         "Operand:- ZK_STREAMDEF" .verbose
         Operand[].delete
-        StreamDef[].newToCsvStream
+        Operand[].newStreamDef
+        Operand[].pipeOut
         true
       endof
 
@@ -62,7 +107,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: ToCrwOp :: ToCrwOp ;
+jobSyntax: ToCrwOp :: ToCrwOp <tableNm> ;
 
 jobInfo: ToCrwOp
 {

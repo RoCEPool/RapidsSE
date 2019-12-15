@@ -146,6 +146,48 @@ i8 CsvBuffer::nRecords(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert CswBuffer to a CrwBuffer                                           */
+/*----------------------------------------------------------------------------*/
+CrwBuffer* CsvBuffer::pToCrwBuffer(Table* pTable, RowCompactor* pRowCompactor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  CrwBuffer* pCrwBuffer = new CrwBuffer;
+  pCrwBuffer->vTable(pTable);
+  pCrwBuffer->vPartitionNo(0);  //!ALKA
+  
+  Row* pRow = new Row(pTable->pStreamDef(),C_ALL);
+
+  char* aCursor = aDataArea();
+  bool bBlankLine = false;
+  Format* pFormat = AM::pFmt();
+  pFormat->m_cRecordTerminator = '\n';
+  
+  pCrwBuffer->vAppendOpen(pRowCompactor, false);
+  
+  for(i8 i_Record = 0; i_Record < m_nRecords; i_Record++) {
+    
+    bool bResult = CsvCursor::bExtractNext(pRow, pTable->pStreamDef(), &aCursor, pFormat, bBlankLine);
+    RASSERT(bResult);
+    
+    bResult = pCrwBuffer->bAppendRow(pRow);
+    
+    if ( ! bResult ) {
+      CrwBuffer* pNewCsvBuffer = new CrwBuffer;
+      pCrwBuffer->vTable(pTable);
+      pCrwBuffer->vPartitionNo(0);  //!ALKA
+      
+      pCrwBuffer->vNextBuffer(pNewCsvBuffer);
+      pCrwBuffer = pNewCsvBuffer;
+      bResult = pCrwBuffer->bAppendRow(pRow);
+      RASSERT(bResult);
+    }
+  }
+  
+  return pCrwBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

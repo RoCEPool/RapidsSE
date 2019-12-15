@@ -113,6 +113,7 @@ static Stz* aJT[]
   /*    */ "STATUS"_Stz,
   /*    */ "SUPERCOUNTOP"_Stz,
   /*    */ "TABLESIZES"_Stz,
+  /*    */ "TOCRWOP"_Stz,
   /*    */ "TOCSVOP"_Stz,
   /*    */ "TOFILEOP"_Stz,
   /*    */ "TRUNCATETABLE"_Stz,

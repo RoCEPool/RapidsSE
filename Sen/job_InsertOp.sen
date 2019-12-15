@@ -43,7 +43,7 @@
   0 0 locals| sTableNm pTable |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if we can scan the table
+  // check if we can insert into the table
   <tableNm> to sTableNm
   sTableNm checkInsertTable not if
     pJob_InsertOp <ERROR_JOB> !!logError exit
@@ -70,23 +70,20 @@
 
     ZK_CRWBUFFER of
       "Operand:- ZK_CRWBUFFER" .verbose
+      //table[].get table.streamDef@ to StreamDef[]
       Operand[].insertIntoTable
-      true
-    endof
-
-    ZK_CSVBUFFER of
-      "Operand:- ZK_CSVBUFFER" .verbose
       true
     endof
 
     ZK_ENDMARKER of
       "Operand:- ZK_ENDMARKER" .verbose
       Operand[].handleEnd
-      false
     endof
 
     ZK_STREAMDEF of
       "Operand:- ZK_STREAMDEF" .verbose
+      Operand[].delete
+      Operand[].newStreamDef
       Operand[].pipeOut
       true
     endof

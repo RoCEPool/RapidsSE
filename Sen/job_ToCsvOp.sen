@@ -46,6 +46,7 @@
         "Operand:- ZK_STREAMDEF" .verbose
         Operand[].delete
         StreamDef[].newToCsvStream
+        StreamDef[].pipeout
         true
       endof
 
