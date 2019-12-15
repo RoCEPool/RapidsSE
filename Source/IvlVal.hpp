@@ -7,6 +7,8 @@ namespace SqlValues
 {
   class IvlVal : public _Header
   {
+  friend class Datums::Datum;
+  
   private:
   union {
     Ivl   m_wIvl;
@@ -30,7 +32,7 @@ namespace SqlValues
   {
     IvlVal* aIvlVal = reinterpret_cast<IvlVal*>(aAddr);
   
-    RASSERT_TYPE(aIvlVal,CN_INTVAL);
+    RASSERT_TYPE(aIvlVal,CN_IVLVAL);
   
     return aIvlVal;
   }

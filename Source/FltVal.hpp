@@ -7,6 +7,8 @@ namespace SqlValues
 {
   class FltVal : public _Header
   {
+  friend class Datums::Datum;
+  
   private:
   union {
     Flt   m_wFlt;
@@ -30,7 +32,7 @@ namespace SqlValues
   {
     FltVal* aFltVal = reinterpret_cast<FltVal*>(aAddr);
   
-    RASSERT_TYPE(aFltVal,CN_INTVAL);
+    RASSERT_TYPE(aFltVal,CN_FLTVAL);
   
     return aFltVal;
   }

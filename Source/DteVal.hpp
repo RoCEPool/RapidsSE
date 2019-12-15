@@ -7,6 +7,8 @@ namespace SqlValues
 {
   class DteVal : public _Header
   {
+  friend class Datums::Datum;
+  
   private:
   union {
     Dte   m_wDte;
@@ -30,7 +32,7 @@ namespace SqlValues
   {
     DteVal* aDteVal = reinterpret_cast<DteVal*>(aAddr);
   
-    RASSERT_TYPE(aDteVal,CN_INTVAL);
+    RASSERT_TYPE(aDteVal,CN_DTEVAL);
   
     return aDteVal;
   }

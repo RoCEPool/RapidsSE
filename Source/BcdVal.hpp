@@ -7,6 +7,8 @@ namespace SqlValues
 {
   class BcdVal : public _Header
   {
+  friend class Datums::Datum;
+  
   private:
   union {
     Bcd   m_wBcd;

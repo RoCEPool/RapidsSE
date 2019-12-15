@@ -7,6 +7,8 @@ namespace SqlValues
 {
   class StzVal : public _Header
   {
+  friend class Datums::Datum;
+  
   private:
     i8   m_nBytesFollowing;
     char m_caStz[1];

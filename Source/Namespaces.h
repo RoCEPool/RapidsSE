@@ -14,7 +14,7 @@ namespace CompilerStream{                                                     }
 namespace ControlData   {                                                     }
 namespace Correctness   { class Cell;                                         }
 namespace DataOperators {                                                     }
-namespace Datums        {                                                     }
+namespace Datums        { class Datum;                                        }
 namespace Debugging     {                                                     }
 namespace Enums         {                                                     }
 namespace Esses         { template <int BYTES> class String_t;

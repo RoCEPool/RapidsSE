@@ -489,8 +489,8 @@ void Datum::vIvl(i8 iSecond, i8 iMicro)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.u.m_xIvl.m_uSecond = iSecond;
-  u.m_xAnyVal.u.m_xIvl.m_uMicro  = iMicro;
+  u.m_xIvlVal.m_wIvl.m_uSecond = iSecond;
+  u.m_xIvlVal.m_wIvl.m_uMicro  = iMicro;
 }
 
 /*----------------------------------------------------------------------------*/

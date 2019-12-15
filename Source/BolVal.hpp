@@ -7,6 +7,8 @@ namespace SqlValues
 {
   class BolVal : public _Header
   {
+  friend class Datums::Datum;
+  
   private:
   union {
     Bol   m_wBol;
@@ -30,7 +32,7 @@ namespace SqlValues
   {
     BolVal* aBolVal = reinterpret_cast<BolVal*>(aAddr);
   
-    RASSERT_TYPE(aBolVal,CN_INTVAL);
+    RASSERT_TYPE(aBolVal,CN_BOLVAL);
   
     return aBolVal;
   }
