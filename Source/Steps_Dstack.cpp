@@ -62,7 +62,7 @@ void Step::vDstackClass(void)
   
   m_pDataStack->vPeekVal(i_Val,xVar);
   
-  eCN eValClass = xVar.eValClass();
+  eCN eValClass = xVar.eAnyClass();
   
   m_pDataStack->vPushInt(eValClass);
   

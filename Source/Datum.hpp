@@ -54,6 +54,7 @@ namespace Datums
   
     // - - - - - - - - - - - - - - - -
   
+    eCN     eAnyClass(void);
     AnyVal* aAnyVal(void);
     bool    bAssign(Token* pTkn, Column* pCol);
     char*   azChar(void);
@@ -68,7 +69,6 @@ namespace Datums
     void    vDte(i8 iDte);
     void    vDte(i8 iYear, i8 iMonth, i8 iDay);
     i8      iEdt(void);
-    AnyVal* aEmbeddedAnyVal(void);
     Cell*   aFip(void);
     void    vFip(Cell* aFip);
     d8      dFlt(void);
@@ -97,7 +97,6 @@ namespace Datums
     void    vTsp(i8 iTsp);
     void    vTsp(i8 iYear, i8 iMonth,  i8 iDay,
                  i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro);
-    eCN     eValClass(void);
 
   public:
     Footer* aFooter(void);

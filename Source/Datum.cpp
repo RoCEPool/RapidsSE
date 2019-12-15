@@ -209,6 +209,16 @@ void Datum::vSetNull(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get class of embedded value                                                */
+/*----------------------------------------------------------------------------*/
+eCN Datum::eAnyClass(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  return m_xAnyVal.eClass();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get aAnyVal                                                                */
 /*----------------------------------------------------------------------------*/
 AnyVal* Datum::aAnyVal(void)
@@ -369,16 +379,6 @@ i8 Datum::iEdt(void)
   i8 iEdt = m_xEdtVal.m_iEdt;
   
   return iEdt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of the nested value                                            */
-/*----------------------------------------------------------------------------*/
-AnyVal* Datum::aEmbeddedAnyVal(void)
-{
-  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
-  
-  return & m_xAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -693,16 +693,6 @@ void Datum::vTsp(i8 iYear, i8 iMonth,  i8 iDay,
   m_xTspVal.m_wTsp.m_uMicro     = iMicro;
   m_xTspVal.m_wTsp.m_uLocal     = C_TSP_LOCAL;
   m_xTspVal.m_wTsp.m_uSpare     = 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get class of embedded value                                                */
-/*----------------------------------------------------------------------------*/
-eCN Datum::eValClass(void)
-{
-  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
-  
-  return m_xAnyVal.eClass();
 }
 
 
