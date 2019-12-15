@@ -47,6 +47,13 @@ namespace Correctness
 #include "REG.hpp"
 
 
+namespace Tasks {
+  typedef void (Step::*StepFp)(void);
+}
+
+
+#include "Cell.hpp"
+
 
 typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Stz*);
 extern pDUMPFUN *gpDump[];

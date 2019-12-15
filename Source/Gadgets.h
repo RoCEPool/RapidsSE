@@ -45,12 +45,6 @@ namespace Gadgets
 #include "SP_String.hpp"
 #include "SP_Timer.hpp"
 
-namespace Tasks {
-    
-  //typedef void (*StepFp)(Forth* pForth);
-  typedef void (Step::*StepFp)(void);
-}
-
 typedef void (*FNADDR)(void*);
 
 #define INTRINSIC(FNNAME) \

@@ -2,12 +2,12 @@
 /* Cell.hpp - a cell in the body of a word                                    */
 /*============================================================================*/
 
-#include "SqlValues.h"
+#include "Correctness.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Cell* SqlValues::_aCell(void* aAddr)
+Cell* Correctness::_aCell(void* aAddr)
 {
   Cell* aCell = reinterpret_cast<Cell*>(aAddr);
   

@@ -20,7 +20,6 @@ namespace Base
 }
 
 //------------------------------------------------------------------------------
-
 #include "AxiomaticConstants.h"
 #include "BitLib.hpp"
 #include "ByteLiterals.hpp"

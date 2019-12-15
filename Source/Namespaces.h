@@ -12,7 +12,7 @@ namespace ClassData     {                                                     }
 namespace CompilerOperators {                                                 }
 namespace CompilerStream{                                                     }
 namespace ControlData   {                                                     }
-namespace Correctness   {                                                     }
+namespace Correctness   { class Cell;                                         }
 namespace DataOperators {                                                     }
 namespace Datums        {                                                     }
 namespace Debugging     {                                                     }
@@ -66,7 +66,7 @@ namespace SenVM         { class Dic; class DicStack;
                           class Forth; class Word;                            }
 namespace Services      {                                                     }
 namespace Sessions      { class Request; class Session; class SessionState;   }
-namespace SqlValues     { class Cell;                                         }
+namespace SqlValues     {                                                     }
 namespace Steps         { class Step; class StepTiming;                       }
 namespace StorageEngine { class AttachMap; class Engine;                      }
 namespace Strings       {                                                     }

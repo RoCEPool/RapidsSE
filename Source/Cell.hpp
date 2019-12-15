@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace SqlValues
+namespace Correctness
 {
   class Cell
   {
