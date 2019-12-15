@@ -24,7 +24,7 @@ namespace Datums
       StzVal  m_xStzVal;
       TmeVal  m_xTmeVal;
       TspVal  m_xTspVal;
-    } u;
+    };
   
     byte m_yaSpace[C_48KB];
 

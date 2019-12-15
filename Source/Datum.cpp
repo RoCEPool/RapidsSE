@@ -46,12 +46,12 @@ Datum::Datum(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.vMagic();
-  u.m_xAnyVal.vClass(CN_INTVAL);
+  m_xAnyVal.vMagic();
+  m_xAnyVal.vClass(CN_INTVAL);
   
-  u.m_xAnyVal.vInt(C_UNKNOWN);
+  m_xAnyVal.vInt(C_UNKNOWN);
   
-  u.m_xStzVal.vStz(""_Stz);
+  m_xStzVal.vStz(""_Stz);
   //vStzDump();
 
   //m_sVch
@@ -69,18 +69,18 @@ Datum::Datum(AnyVal* aAnyVal)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  u.m_xAnyVal.vMagic();
-  u.m_xAnyVal.vClass(CN_INTVAL);
+  m_xAnyVal.vMagic();
+  m_xAnyVal.vClass(CN_INTVAL);
   
-  u.m_xAnyVal.vInt(C_UNKNOWN);
+  m_xAnyVal.vInt(C_UNKNOWN);
   
   eCN eClassNo = aAnyVal->eClass();
   
   switch (eClassNo) {
-    case CN_FIPVAL: u.m_xFipVal.vFip(aAnyVal->aFip());    break;
-    case CN_INTVAL: u.m_xIntVal.vInt(aAnyVal->iInt());    break;
-    case CN_PTRVAL: u.m_xPtrVal.vObj(aAnyVal->pObj());    break;
-    case CN_STZVAL: u.m_xStzVal.vStz(aAnyVal->szStz());   break;
+    case CN_FIPVAL: m_xFipVal.vFip(aAnyVal->aFip());    break;
+    case CN_INTVAL: m_xIntVal.vInt(aAnyVal->iInt());    break;
+    case CN_PTRVAL: m_xPtrVal.vObj(aAnyVal->pObj());    break;
+    case CN_STZVAL: m_xStzVal.vStz(aAnyVal->szStz());   break;
       
     default:
       vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -108,7 +108,7 @@ Datum::operator AnyVal*(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  return & u.m_xAnyVal;
+  return & m_xAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -189,7 +189,7 @@ bool Datum::bIsNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  if (u.m_xAnyVal.u.m_iInt == C_DATUM_NULL)
+  if (m_xAnyVal.u.m_iInt == C_DATUM_NULL)
     return true;
   else
     return false;
@@ -202,7 +202,7 @@ void Datum::vSetNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  u.m_xAnyVal.u.m_iInt = C_DATUM_NULL;
+  m_xAnyVal.u.m_iInt = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -215,7 +215,7 @@ AnyVal* Datum::aAnyVal(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  return & u.m_xAnyVal;
+  return & m_xAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,7 +241,7 @@ i8 Datum::iBcd(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iBcd = u.m_xAnyVal.u.m_iBcd;
+  i8 iBcd = m_xAnyVal.u.m_iBcd;
   
   return iBcd;
 }
@@ -253,7 +253,7 @@ void Datum::vBcd(i8 iBcd)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.u.m_iBcd = iBcd;
+  m_xAnyVal.u.m_iBcd = iBcd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -263,7 +263,7 @@ i8 Datum::iBol(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iBol = u.m_xAnyVal.u.m_iBol;
+  i8 iBol = m_xAnyVal.u.m_iBol;
   
   return iBol;
 }
@@ -275,7 +275,7 @@ void Datum::vBol(i8 iBol)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.u.m_iBol = iBol;
+  m_xAnyVal.u.m_iBol = iBol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -285,7 +285,7 @@ char* Datum::azChar(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  char* az = u.m_xStzVal.azChar();
+  char* az = m_xStzVal.azChar();
   
   return az;
 }
@@ -297,7 +297,7 @@ void Datum::vCopy(AnyVal* aAnyVal)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.vCopy(aAnyVal);
+  m_xAnyVal.vCopy(aAnyVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,7 +307,7 @@ i8 Datum::iDte_day(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iDay = u.m_xAnyVal.u.m_xDte.m_uDay;
+  i8 iDay = m_xAnyVal.u.m_xDte.m_uDay;
   
   return iDay;
 }
@@ -319,7 +319,7 @@ i8 Datum::iDte_month(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iMonth = u.m_xAnyVal.u.m_xDte.m_uMonth;
+  i8 iMonth = m_xAnyVal.u.m_xDte.m_uMonth;
   
   return iMonth;
 }
@@ -331,7 +331,7 @@ i8 Datum::iDte_year(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iYear = u.m_xAnyVal.u.m_xDte.m_uYearDelta + C_YEAR_BASE;
+  i8 iYear = m_xAnyVal.u.m_xDte.m_uYearDelta + C_YEAR_BASE;
   
   return iYear;
 }
@@ -343,7 +343,7 @@ void Datum::vDte(i8 iDte)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.u.m_iDte = iDte;
+  m_xAnyVal.u.m_iDte = iDte;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -353,10 +353,10 @@ void Datum::vDte(i8 iYear, i8 iMonth, i8 iDay)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.u.m_xDte.m_uYearDelta = iYear - C_YEAR_BASE;
-  u.m_xAnyVal.u.m_xDte.m_uMonth     = iMonth;
-  u.m_xAnyVal.u.m_xDte.m_uDay       = iDay;
-  u.m_xAnyVal.u.m_xDte.m_uSpare     = 0;
+  m_xAnyVal.u.m_xDte.m_uYearDelta = iYear - C_YEAR_BASE;
+  m_xAnyVal.u.m_xDte.m_uMonth     = iMonth;
+  m_xAnyVal.u.m_xDte.m_uDay       = iDay;
+  m_xAnyVal.u.m_xDte.m_uSpare     = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -366,7 +366,7 @@ i8 Datum::iEdt(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iEdt = u.m_xAnyVal.u.m_iEdt;
+  i8 iEdt = m_xAnyVal.u.m_iEdt;
   
   return iEdt;
 }
@@ -378,7 +378,7 @@ AnyVal* Datum::aEmbeddedAnyVal(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  return & u.m_xAnyVal;
+  return & m_xAnyVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -388,7 +388,7 @@ Cell* Datum::aFip(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  Cell* aFip = u.m_xFipVal.aFip();
+  Cell* aFip = m_xFipVal.aFip();
   
   return aFip;
 }
@@ -400,7 +400,7 @@ void Datum::vFip(Cell* aFip)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xFipVal.vFip(aFip);
+  m_xFipVal.vFip(aFip);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -410,7 +410,7 @@ d8 Datum::dFlt(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  d8 dFlt = u.m_xAnyVal.u.m_dFlt;
+  d8 dFlt = m_xAnyVal.u.m_dFlt;
   
   return dFlt;
 }
@@ -422,7 +422,7 @@ void Datum::vFlt(d8 dFlt)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.u.m_dFlt = dFlt;
+  m_xAnyVal.u.m_dFlt = dFlt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -432,7 +432,7 @@ i8 Datum::iInt(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iInt = u.m_xIntVal.iInt();
+  i8 iInt = m_xIntVal.iInt();
   
   return iInt;
 }
@@ -444,7 +444,7 @@ void Datum::vInt(i8 iInt)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xIntVal.vInt(iInt);
+  m_xIntVal.vInt(iInt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -454,7 +454,7 @@ bool Datum::bIsInt(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  if (CN_INTVAL == u.m_xAnyVal.eClass())
+  if (CN_INTVAL == m_xAnyVal.eClass())
     return true;
   else
     return false;
@@ -467,7 +467,7 @@ i8 Datum::iIvl(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iIvl = u.m_xAnyVal.u.m_iIvl;
+  i8 iIvl = m_xAnyVal.u.m_iIvl;
   
   return iIvl;
 }
@@ -479,7 +479,7 @@ void Datum::vIvl(i8 iIvl)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.u.m_iIvl = iIvl;
+  m_xAnyVal.u.m_iIvl = iIvl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -489,8 +489,8 @@ void Datum::vIvl(i8 iSecond, i8 iMicro)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xIvlVal.m_wIvl.m_uSecond = iSecond;
-  u.m_xIvlVal.m_wIvl.m_uMicro  = iMicro;
+  m_xIvlVal.m_wIvl.m_uSecond = iSecond;
+  m_xIvlVal.m_wIvl.m_uMicro  = iMicro;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -500,7 +500,7 @@ Object* Datum::pObj(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  Object* pObj = u.m_xPtrVal.pObj();
+  Object* pObj = m_xPtrVal.pObj();
   
   return pObj;
 }
@@ -512,7 +512,7 @@ void Datum::vObj(Object* pObj)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xPtrVal.vObj(pObj);
+  m_xPtrVal.vObj(pObj);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -522,7 +522,7 @@ i8 Datum::nStackUsage(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 nBytes = u.m_xStzVal.nStackUsage();
+  i8 nBytes = m_xStzVal.nStackUsage();
   
   return nBytes;
 }
@@ -534,7 +534,7 @@ Stz* Datum::szStz(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  Stz* sz = u.m_xStzVal.szStz();
+  Stz* sz = m_xStzVal.szStz();
   
   return sz;
 }
@@ -546,7 +546,7 @@ void Datum::vStz(Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xStzVal.vStz(szStz);
+  m_xStzVal.vStz(szStz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -556,7 +556,7 @@ void Datum::vStz(char* acnChar, i8 nLength)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xStzVal.vStz(acnChar,nLength);
+  m_xStzVal.vStz(acnChar,nLength);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -581,7 +581,7 @@ i8 Datum::nStzSize(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 nSize = u.m_xStzVal.nStzSize();
+  i8 nSize = m_xStzVal.nStzSize();
   
   return nSize;
 }
@@ -593,7 +593,7 @@ void Datum::vStzSize(i8 nSize)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xStzVal.vStzSize(nSize);
+  m_xStzVal.vStzSize(nSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -615,7 +615,7 @@ i8 Datum::iTme(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iTme = u.m_xAnyVal.u.m_iTme;
+  i8 iTme = m_xAnyVal.u.m_iTme;
   
   return iTme;
 }
@@ -627,7 +627,7 @@ void Datum::vTme(i8 iTme)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.u.m_iTme = iTme;
+  m_xAnyVal.u.m_iTme = iTme;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -637,11 +637,11 @@ void Datum::vTme(i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.u.m_xTme.m_uHour   = iHour;
-  u.m_xAnyVal.u.m_xTme.m_uMinute = iMinute;
-  u.m_xAnyVal.u.m_xTme.m_uSecond = iSecond;
-  u.m_xAnyVal.u.m_xTme.m_uMicro  = iMicro;
-  u.m_xAnyVal.u.m_xTme.m_uSpare  = 0;
+  m_xAnyVal.u.m_xTme.m_uHour   = iHour;
+  m_xAnyVal.u.m_xTme.m_uMinute = iMinute;
+  m_xAnyVal.u.m_xTme.m_uSecond = iSecond;
+  m_xAnyVal.u.m_xTme.m_uMicro  = iMicro;
+  m_xAnyVal.u.m_xTme.m_uSpare  = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -651,7 +651,7 @@ void Datum::vToString(Stz* szString)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.vToString(szString);
+  m_xAnyVal.vToString(szString);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -661,7 +661,7 @@ i8 Datum::iTsp(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iTsp = u.m_xAnyVal.u.m_iTsp;
+  i8 iTsp = m_xAnyVal.u.m_iTsp;
   
   return iTsp;
 }
@@ -673,7 +673,7 @@ void Datum::vTsp(i8 iTsp)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.u.m_iTsp = iTsp;
+  m_xAnyVal.u.m_iTsp = iTsp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -684,15 +684,15 @@ void Datum::vTsp(i8 iYear, i8 iMonth,  i8 iDay,
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  u.m_xAnyVal.u.m_xTsp.m_uYearDelta = iYear - C_YEAR_BASE;
-  u.m_xAnyVal.u.m_xTsp.m_uMonth     = iMonth;
-  u.m_xAnyVal.u.m_xTsp.m_uDay       = iDay;
-  u.m_xAnyVal.u.m_xTsp.m_uHour      = iHour;
-  u.m_xAnyVal.u.m_xTsp.m_uMinute    = iMinute;
-  u.m_xAnyVal.u.m_xTsp.m_uSecond    = iSecond;
-  u.m_xAnyVal.u.m_xTsp.m_uMicro     = iMicro;
-  u.m_xAnyVal.u.m_xTsp.m_uLocal     = C_TSP_LOCAL;
-  u.m_xAnyVal.u.m_xTsp.m_uSpare     = 0;
+  m_xAnyVal.u.m_xTsp.m_uYearDelta = iYear - C_YEAR_BASE;
+  m_xAnyVal.u.m_xTsp.m_uMonth     = iMonth;
+  m_xAnyVal.u.m_xTsp.m_uDay       = iDay;
+  m_xAnyVal.u.m_xTsp.m_uHour      = iHour;
+  m_xAnyVal.u.m_xTsp.m_uMinute    = iMinute;
+  m_xAnyVal.u.m_xTsp.m_uSecond    = iSecond;
+  m_xAnyVal.u.m_xTsp.m_uMicro     = iMicro;
+  m_xAnyVal.u.m_xTsp.m_uLocal     = C_TSP_LOCAL;
+  m_xAnyVal.u.m_xTsp.m_uSpare     = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -702,7 +702,7 @@ eCN Datum::eValClass(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  return u.m_xAnyVal.eClass();
+  return m_xAnyVal.eClass();
 }
 
 
