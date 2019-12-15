@@ -10,7 +10,6 @@ namespace SqlValues
   friend class Datums::Datum;
 
   protected:
-  public:
     union {
       Cell*   m_aFip;
       d8      m_dFlt;
@@ -28,7 +27,7 @@ namespace SqlValues
       Tsp     m_wTsp;
 
       i8      m_nBytesFollowing;
-    } u;
+    };
   
   public:
     void* operator new(size_t);
