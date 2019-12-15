@@ -377,8 +377,10 @@ void Step::vOperandCsvToCrw(void)
 {
   ENTRY(); // ENTRY("vOperandCsvToCrw"_Stz);
   
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  
   CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pRegSet->m_pOperand);
-  //m_pRegSet->m_pOperand = pCsvBuffer->pToCrwBuffer();
+  m_pRegSet->m_pOperand = pCsvBuffer->pToCrwBuffer(pTable, new RowCompactor);
   
   EXIT();
 }

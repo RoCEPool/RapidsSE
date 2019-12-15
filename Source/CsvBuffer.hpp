@@ -28,12 +28,13 @@ namespace Buffers
     CsvBuffer(void);
     ~CsvBuffer(void) noexcept(false);
     
-    char* aDataArea(void);
-    char* aAllotRecord(i8 nBytes);
-    i8    nFreeBytes(void);
+    char*      aAllotRecord(i8 nBytes);
+    char*      aDataArea(void);
+    i8         nFreeBytes(void);
     CsvBuffer* pNextBuffer(void);
-    void  vPrintRows(void);
-    i8    nRecords(void);
+    void       vPrintRows(void);
+    i8         nRecords(void);
+    CrwBuffer* pToCrwBuffer(Table* pTable, RowCompactor* pRowCompactor);
     
   private:
     Footer* aFooter(void);

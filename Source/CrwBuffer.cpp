@@ -558,7 +558,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
   HV_Row hRow(pStreamDef,C_ALL);
   
   i8 nRows = nRowCount();
-  i8 nBytes;
+  i8 nBytes = 1;
   char* aRecord = nullptr;
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
