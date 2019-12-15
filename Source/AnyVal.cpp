@@ -425,7 +425,7 @@ void AnyVal::vToString(Stz* szStz)
             
     case CN_FIPVAL: {
       FipVal* aFipVal = _aFipVal(this);
-      aFipVal->vToString(szStz);
+      aFipVal->vToStz(szStz);
       break;
     }
       

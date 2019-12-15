@@ -5,10 +5,14 @@
 
 namespace SqlValues
 {
-  class PtrVal : public AnyVal
+  class PtrVal : public _Header
   {
   private:
- 
+  union {
+    Object* m_pObj;
+    i8      m_iInt;
+  };
+
   public:
     void* operator new(size_t);
     

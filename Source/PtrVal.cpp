@@ -27,7 +27,7 @@ Object* PtrVal::pObj(void)
 {
   vClass(CN_PTRVAL);
   
-  return u.m_pObj;
+  return m_pObj;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +36,7 @@ Object* PtrVal::pObj(void)
 void PtrVal::vObj(Object* pObject)
 {
   vClass(CN_PTRVAL);
-  u.m_pObj = pObject;
+  m_pObj = pObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +52,7 @@ i8 PtrVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void PtrVal::vToStz(Stz* szDst)
 {
-  * szDst = reinterpret_cast<void*>(u.m_pObj);
+  * szDst = reinterpret_cast<void*>(m_pObj);
 }
 
 /*============================================================================*/

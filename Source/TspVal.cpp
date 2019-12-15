@@ -25,7 +25,7 @@ Tsp TspVal::wTsp(void)
 {
   ASSERT(bIsClass(CN_TSPVAL));
   
-  return u.m_wTsp;
+  return m_wTsp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ Tsp TspVal::wTsp(void)
 void TspVal::vTsp(Tsp wTsp)
 {
   vClass(CN_TSPVAL);
-  u.m_wTsp = wTsp;
+  m_wTsp = wTsp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,12 +50,12 @@ i8 TspVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void TspVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == u.m_iInt) {
+  if (C_DATUM_NULL == m_iInt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = u.m_iInt;
+  * szDst = m_iInt;
 }
 
 /*============================================================================*/

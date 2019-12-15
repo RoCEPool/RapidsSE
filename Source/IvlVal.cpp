@@ -25,7 +25,7 @@ Ivl IvlVal::wIvl(void)
 {
   ASSERT(bIsClass(CN_IVLVAL));
   
-  return u.m_wIvl;
+  return m_wIvl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ Ivl IvlVal::wIvl(void)
 void IvlVal::vIvl(Ivl wIvl)
 {
   vClass(CN_IVLVAL);
-  u.m_wIvl = wIvl;
+  m_wIvl = wIvl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,12 +50,12 @@ i8 IvlVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void IvlVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == u.m_iInt) {
+  if (C_DATUM_NULL == m_iInt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = u.m_iInt;
+  * szDst = m_iInt;
 }
 
 /*============================================================================*/

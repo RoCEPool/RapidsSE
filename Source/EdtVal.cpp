@@ -25,7 +25,7 @@ Edt EdtVal::wEdt(void)
 {
   ASSERT(bIsClass(CN_EDTVAL));
   
-  return u.m_wEdt;
+  return m_wEdt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ Edt EdtVal::wEdt(void)
 void EdtVal::vEdt(Edt wEdt)
 {
   vClass(CN_EDTVAL);
-  u.m_wEdt = wEdt;
+  m_wEdt = wEdt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,12 +50,12 @@ i8 EdtVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void EdtVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == u.m_iInt) {
+  if (C_DATUM_NULL == m_iInt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = u.m_iInt;
+  * szDst = m_iInt;
 }
 
 /*============================================================================*/

@@ -25,7 +25,7 @@ Flt FltVal::wFlt(void)
 {
   ASSERT(bIsClass(CN_FLTVAL));
   
-  return u.m_wFlt;
+  return m_wFlt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ Flt FltVal::wFlt(void)
 void FltVal::vFlt(Flt wFlt)
 {
   vClass(CN_FLTVAL);
-  u.m_wFlt = wFlt;
+  m_wFlt = wFlt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,12 +50,12 @@ i8 FltVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void FltVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == u.m_iInt) {
+  if (C_DATUM_NULL == m_iInt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = u.m_iInt;
+  * szDst = m_iInt;
 }
 
 /*============================================================================*/

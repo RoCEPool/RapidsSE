@@ -5,10 +5,14 @@
 
 namespace SqlValues
 {
-  class TspVal : public AnyVal
+  class TspVal : public _Header
   {
   private:
-  
+  union {
+    Tsp   m_wTsp;
+    i8    m_iInt;
+  };
+
   public:
     void* operator new(size_t);
     

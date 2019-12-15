@@ -5,10 +5,14 @@
 
 namespace SqlValues
 {
-  class DteVal : public AnyVal
+  class DteVal : public _Header
   {
   private:
-  
+  union {
+    Dte   m_wDte;
+    i8    m_iInt;
+  };
+
   public:
     void* operator new(size_t);
     

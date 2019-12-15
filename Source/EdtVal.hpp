@@ -5,10 +5,14 @@
 
 namespace SqlValues
 {
-  class EdtVal : public AnyVal
+  class EdtVal : public _Header
   {
   private:
-  
+  union {
+    Edt   m_wEdt;
+    i8    m_iInt;
+  };
+
   public:
     void* operator new(size_t);
     

@@ -25,7 +25,7 @@ Dte DteVal::wDte(void)
 {
   ASSERT(bIsClass(CN_DTEVAL));
   
-  return u.m_wDte;
+  return m_wDte;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ Dte DteVal::wDte(void)
 void DteVal::vDte(Dte wDte)
 {
   vClass(CN_DTEVAL);
-  u.m_wDte = wDte;
+  m_wDte = wDte;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,12 +50,12 @@ i8 DteVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void DteVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == u.m_iInt) {
+  if (C_DATUM_NULL == m_iInt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = u.m_iInt;
+  * szDst = m_iInt;
 }
 
 /*============================================================================*/

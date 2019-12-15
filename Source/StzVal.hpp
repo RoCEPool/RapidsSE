@@ -5,9 +5,10 @@
 
 namespace SqlValues
 {
-  class StzVal : public AnyVal
+  class StzVal : public _Header
   {
   private:
+    i8   m_nBytesFollowing;
     char m_caStz[1];
   
   public:

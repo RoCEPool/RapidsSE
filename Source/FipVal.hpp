@@ -5,10 +5,14 @@
 
 namespace SqlValues
 {
-  class FipVal : public AnyVal
+  class FipVal : public _Header
   {
   private:
-        
+  union {
+    Cell*  m_aFip;
+    i8     m_iInt;
+  };
+
   public:
     void* operator new(size_t);
     

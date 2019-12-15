@@ -5,10 +5,14 @@
 
 namespace SqlValues
 {
-  class IvlVal : public AnyVal
+  class IvlVal : public _Header
   {
   private:
-  
+  union {
+    Ivl   m_wIvl;
+    i8    m_iInt;
+  };
+
   public:
     void* operator new(size_t);
     

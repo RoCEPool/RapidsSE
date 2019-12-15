@@ -25,7 +25,7 @@ Tme TmeVal::wTme(void)
 {
   ASSERT(bIsClass(CN_TMEVAL));
   
-  return u.m_wTme;
+  return m_wTme;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ Tme TmeVal::wTme(void)
 void TmeVal::vTme(Tme wTme)
 {
   vClass(CN_TMEVAL);
-  u.m_wTme = wTme;
+  m_wTme = wTme;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,12 +50,12 @@ i8 TmeVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void TmeVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == u.m_iInt) {
+  if (C_DATUM_NULL == m_iInt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = u.m_iInt;
+  * szDst = m_iInt;
 }
 
 /*============================================================================*/

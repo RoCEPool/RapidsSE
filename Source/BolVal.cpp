@@ -25,7 +25,7 @@ Bol BolVal::wBol(void)
 {
   ASSERT(bIsClass(CN_BOLVAL));
   
-  return u.m_wBol;
+  return m_wBol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ Bol BolVal::wBol(void)
 void BolVal::vBol(Bol wBol)
 {
   vClass(CN_BOLVAL);
-  u.m_wBol = wBol;
+  m_wBol = wBol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,12 +50,12 @@ i8 BolVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void BolVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == u.m_iInt) {
+  if (C_DATUM_NULL == m_iInt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = u.m_iInt;
+  * szDst = m_iInt;
 }
 
 /*============================================================================*/

@@ -5,10 +5,14 @@
 
 namespace SqlValues
 {
-  class BolVal : public AnyVal
+  class BolVal : public _Header
   {
   private:
-  
+  union {
+    Bol   m_wBol;
+    i8    m_iInt;
+  };
+
   public:
     void* operator new(size_t);
     

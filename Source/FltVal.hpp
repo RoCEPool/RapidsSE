@@ -5,10 +5,14 @@
 
 namespace SqlValues
 {
-  class FltVal : public AnyVal
+  class FltVal : public _Header
   {
   private:
-  
+  union {
+    Flt   m_wFlt;
+    i8    m_iInt;
+  };
+
   public:
     void* operator new(size_t);
     
