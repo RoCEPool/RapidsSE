@@ -12,7 +12,7 @@ namespace SqlValues
   private:
   union {
     Cell*  m_aFip;
-    i8     m_iInt;
+    i8     m_iFip;
   };
 
   public:

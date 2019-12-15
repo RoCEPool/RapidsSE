@@ -50,12 +50,12 @@ i8 FltVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void FltVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iInt) {
+  if (C_DATUM_NULL == m_iFlt) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iInt;
+  * szDst = m_iFlt;
 }
 
 /*============================================================================*/

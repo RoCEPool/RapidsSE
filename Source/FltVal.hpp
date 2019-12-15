@@ -12,7 +12,7 @@ namespace SqlValues
   private:
   union {
     Flt   m_wFlt;
-    i8    m_iInt;
+    i8    m_iFlt;
   };
 
   public:

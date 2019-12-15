@@ -12,7 +12,7 @@ namespace SqlValues
   private:
   union {
     Object* m_pObj;
-    i8      m_iInt;
+    i8      m_iObj;
   };
 
   public:

@@ -50,12 +50,12 @@ i8 BcdVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void BcdVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iInt) {
+  if (C_DATUM_NULL == m_iBcd) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iInt;
+  * szDst = m_iBcd;
 }
 
 /*============================================================================*/

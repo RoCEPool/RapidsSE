@@ -50,12 +50,12 @@ i8 DteVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void DteVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iInt) {
+  if (C_DATUM_NULL == m_iDte) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iInt;
+  * szDst = m_iDte;
 }
 
 /*============================================================================*/

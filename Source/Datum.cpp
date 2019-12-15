@@ -343,7 +343,7 @@ void Datum::vDte(i8 iDte)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xAnyVal.u.m_iDte = iDte;
+  m_xDteVal.m_iDte = iDte;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -353,10 +353,10 @@ void Datum::vDte(i8 iYear, i8 iMonth, i8 iDay)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xAnyVal.u.m_xDte.m_uYearDelta = iYear - C_YEAR_BASE;
-  m_xAnyVal.u.m_xDte.m_uMonth     = iMonth;
-  m_xAnyVal.u.m_xDte.m_uDay       = iDay;
-  m_xAnyVal.u.m_xDte.m_uSpare     = 0;
+  m_xDteVal.m_wDte.m_uYearDelta = iYear - C_YEAR_BASE;
+  m_xDteVal.m_wDte.m_uMonth     = iMonth;
+  m_xDteVal.m_wDte.m_uDay       = iDay;
+  m_xDteVal.m_wDte.m_uSpare     = 0;
 }
 
 /*----------------------------------------------------------------------------*/
