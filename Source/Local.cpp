@@ -53,7 +53,7 @@ Local::operator AnyVal*(void)
 {
   _precondition_(_MAGIC_,CN_LOCAL,_FOOTER_);
   
-  return & u.m_xAnyVal;
+  return & u;
 }
 
 
@@ -64,7 +64,7 @@ AnyVal* Local::aAnyValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCAL,_FOOTER_);
   
-  AnyVal* aAnyVal = & u.m_xAnyVal;
+  AnyVal* aAnyVal = & u;
   
   return aAnyVal;
 }
