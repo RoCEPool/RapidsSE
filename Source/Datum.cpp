@@ -46,10 +46,10 @@ Datum::Datum(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xAnyVal.vMagic();
-  m_xAnyVal.vClass(CN_INTVAL);
+  m_xIntVal.vMagic();
+  m_xIntVal.vClass(CN_INTVAL);
   
-  m_xAnyVal.vInt(C_UNKNOWN);
+  m_xIntVal.vInt(C_UNKNOWN);
   
   m_xStzVal.vStz(""_Stz);
   //vStzDump();
@@ -69,10 +69,10 @@ Datum::Datum(AnyVal* aAnyVal)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  m_xAnyVal.vMagic();
-  m_xAnyVal.vClass(CN_INTVAL);
+  m_xIntVal.vMagic();
+  m_xIntVal.vClass(CN_INTVAL);
   
-  m_xAnyVal.vInt(C_UNKNOWN);
+  m_xIntVal.vInt(C_UNKNOWN);
   
   eCN eClassNo = aAnyVal->eClass();
   
@@ -189,7 +189,7 @@ bool Datum::bIsNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  if (m_xAnyVal.u.m_iInt == C_DATUM_NULL)
+  if (m_xIntVal.m_iInt == C_DATUM_NULL)
     return true;
   else
     return false;
@@ -202,7 +202,7 @@ void Datum::vSetNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  m_xAnyVal.u.m_iInt = C_DATUM_NULL;
+  m_xIntVal.m_iInt = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,7 +241,7 @@ i8 Datum::iBcd(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iBcd = m_xAnyVal.u.m_iBcd;
+  i8 iBcd = m_xBcdVal.m_iBcd;
   
   return iBcd;
 }
@@ -253,7 +253,7 @@ void Datum::vBcd(i8 iBcd)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xAnyVal.u.m_iBcd = iBcd;
+  m_xBcdVal.m_iBcd = iBcd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -263,7 +263,7 @@ i8 Datum::iBol(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iBol = m_xAnyVal.u.m_iBol;
+  i8 iBol = m_xBolVal.m_iBol;
   
   return iBol;
 }
@@ -275,7 +275,7 @@ void Datum::vBol(i8 iBol)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xAnyVal.u.m_iBol = iBol;
+  m_xBolVal.m_iBol = iBol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,7 +307,7 @@ i8 Datum::iDte_day(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iDay = m_xAnyVal.u.m_xDte.m_uDay;
+  i8 iDay = m_xDteVal.m_wDte.m_uDay;
   
   return iDay;
 }
@@ -319,7 +319,7 @@ i8 Datum::iDte_month(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iMonth = m_xAnyVal.u.m_xDte.m_uMonth;
+  i8 iMonth = m_xDteVal.m_wDte.m_uMonth;
   
   return iMonth;
 }
@@ -331,7 +331,7 @@ i8 Datum::iDte_year(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iYear = m_xAnyVal.u.m_xDte.m_uYearDelta + C_YEAR_BASE;
+  i8 iYear = m_xDteVal.m_wDte.m_uYearDelta + C_YEAR_BASE;
   
   return iYear;
 }
@@ -366,7 +366,7 @@ i8 Datum::iEdt(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iEdt = m_xAnyVal.u.m_iEdt;
+  i8 iEdt = m_xEdtVal.m_iEdt;
   
   return iEdt;
 }
@@ -410,7 +410,7 @@ d8 Datum::dFlt(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  d8 dFlt = m_xAnyVal.u.m_dFlt;
+  d8 dFlt = m_xFltVal.m_wFlt.m_dFlt;
   
   return dFlt;
 }
@@ -422,7 +422,7 @@ void Datum::vFlt(d8 dFlt)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xAnyVal.u.m_dFlt = dFlt;
+  m_xFltVal.m_wFlt.m_dFlt = dFlt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -467,7 +467,7 @@ i8 Datum::iIvl(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iIvl = m_xAnyVal.u.m_iIvl;
+  i8 iIvl = m_xIvlVal.m_iIvl;
   
   return iIvl;
 }
@@ -479,7 +479,7 @@ void Datum::vIvl(i8 iIvl)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xAnyVal.u.m_iIvl = iIvl;
+  m_xIvlVal.m_iIvl = iIvl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -615,7 +615,7 @@ i8 Datum::iTme(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iTme = m_xAnyVal.u.m_iTme;
+  i8 iTme = m_xTmeVal.m_iTme;
   
   return iTme;
 }
@@ -627,7 +627,7 @@ void Datum::vTme(i8 iTme)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xAnyVal.u.m_iTme = iTme;
+  m_xTmeVal.m_iTme = iTme;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -637,11 +637,11 @@ void Datum::vTme(i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xAnyVal.u.m_xTme.m_uHour   = iHour;
-  m_xAnyVal.u.m_xTme.m_uMinute = iMinute;
-  m_xAnyVal.u.m_xTme.m_uSecond = iSecond;
-  m_xAnyVal.u.m_xTme.m_uMicro  = iMicro;
-  m_xAnyVal.u.m_xTme.m_uSpare  = 0;
+  m_xTmeVal.m_wTme.m_uHour   = iHour;
+  m_xTmeVal.m_wTme.m_uMinute = iMinute;
+  m_xTmeVal.m_wTme.m_uSecond = iSecond;
+  m_xTmeVal.m_wTme.m_uMicro  = iMicro;
+  m_xTmeVal.m_wTme.m_uSpare  = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -661,7 +661,7 @@ i8 Datum::iTsp(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iTsp = m_xAnyVal.u.m_iTsp;
+  i8 iTsp = m_xTspVal.m_iTsp;
   
   return iTsp;
 }
@@ -673,7 +673,7 @@ void Datum::vTsp(i8 iTsp)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xAnyVal.u.m_iTsp = iTsp;
+  m_xTspVal.m_iTsp = iTsp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -684,15 +684,15 @@ void Datum::vTsp(i8 iYear, i8 iMonth,  i8 iDay,
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xAnyVal.u.m_xTsp.m_uYearDelta = iYear - C_YEAR_BASE;
-  m_xAnyVal.u.m_xTsp.m_uMonth     = iMonth;
-  m_xAnyVal.u.m_xTsp.m_uDay       = iDay;
-  m_xAnyVal.u.m_xTsp.m_uHour      = iHour;
-  m_xAnyVal.u.m_xTsp.m_uMinute    = iMinute;
-  m_xAnyVal.u.m_xTsp.m_uSecond    = iSecond;
-  m_xAnyVal.u.m_xTsp.m_uMicro     = iMicro;
-  m_xAnyVal.u.m_xTsp.m_uLocal     = C_TSP_LOCAL;
-  m_xAnyVal.u.m_xTsp.m_uSpare     = 0;
+  m_xTspVal.m_wTsp.m_uYearDelta = iYear - C_YEAR_BASE;
+  m_xTspVal.m_wTsp.m_uMonth     = iMonth;
+  m_xTspVal.m_wTsp.m_uDay       = iDay;
+  m_xTspVal.m_wTsp.m_uHour      = iHour;
+  m_xTspVal.m_wTsp.m_uMinute    = iMinute;
+  m_xTspVal.m_wTsp.m_uSecond    = iSecond;
+  m_xTspVal.m_wTsp.m_uMicro     = iMicro;
+  m_xTspVal.m_wTsp.m_uLocal     = C_TSP_LOCAL;
+  m_xTspVal.m_wTsp.m_uSpare     = 0;
 }
 
 /*----------------------------------------------------------------------------*/
