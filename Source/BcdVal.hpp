@@ -5,10 +5,14 @@
 
 namespace SqlValues
 {
-  class BcdVal : public AnyVal
+  class BcdVal : public _Header
   {
   private:
-  
+  union {
+    Bcd   m_wBcd;
+    i8    m_iInt;
+  };
+
   public:
     void* operator new(size_t);
     
@@ -26,7 +30,7 @@ namespace SqlValues
   {
     BcdVal* aBcdVal = reinterpret_cast<BcdVal*>(aAddr);
   
-    RASSERT_TYPE(aBcdVal,CN_INTVAL);
+    RASSERT_TYPE(aBcdVal,CN_BCDVAL);
   
     return aBcdVal;
   }
