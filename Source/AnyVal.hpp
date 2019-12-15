@@ -16,21 +16,13 @@ namespace SqlValues
       d8      m_dFlt;
       i8      m_iInt;
       Object* m_pObj;
-
-      i8      m_iBcd;
-      i8      m_iBol;
-      i8      m_iDte;
-      i8      m_iEdt;
-      i8      m_iIvl;
-      i8      m_iTme;
-      i8      m_iTsc;
-      i8      m_iTsp;
       
       Bcd     m_wBcd;
       Bol     m_wBol;
       Dte     m_wDte;
       Edt     m_wEdt;
       Flt     m_wFlt;
+      Int     m_wInt;
       Ivl     m_wIvl;
       Tme     m_wTme;
       Tsp     m_wTsp;

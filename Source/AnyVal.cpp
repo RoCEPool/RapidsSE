@@ -150,7 +150,7 @@ void AnyVal::vFip(Cell* aFip)
 {
   _magic_();
   
-  _aFipVal(this)->vFip(aFip);
+  u.m_aFip = aFip;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -257,7 +257,7 @@ void AnyVal::vInt(i8 iInt)
 {
   _magic_();
   
-  _aIntVal(this)->vInt(iInt);
+  u.m_iInt = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -310,7 +310,7 @@ void AnyVal::vObj(Object* pObj)
 {
   _magic_();
   
-  _aPtrVal(this)->vObj(pObj);
+  u.m_pObj = pObj;
 }
 
 /*----------------------------------------------------------------------------*/
