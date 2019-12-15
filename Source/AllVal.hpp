@@ -9,7 +9,8 @@ namespace SenVM
   {
   public:
    union {
-      
+      i8      m__zero__;
+     
       AnyVal  m_xAnyVal;
       
       FipVal  m_xFipVal;
@@ -26,10 +27,8 @@ namespace SenVM
       TmeVal  m_xTmeVal;
       TspVal  m_xTspVal;
     };
-  
-   };
+  };
 
-  
   // concreate variations
   
   class AllVal_y32 : public AllVal
@@ -38,7 +37,7 @@ namespace SenVM
     
   public:
     void vInit(void) {
-      MemLib::vZero(this,sizeof(AllVal_y32),CN_NONE);
+      MemLib::vZero(&m__zero__,sizeof(AllVal_y32),CN_NONE);
       m_xIntVal.vInt(C_DATUM_NULL);
     }
   };
@@ -50,7 +49,7 @@ namespace SenVM
     
   public:
     void vInit(void) {
-      MemLib::vZero(this,sizeof(AllVal_y8KB),CN_NONE);
+      MemLib::vZero(&m__zero__,sizeof(AllVal_y8KB),CN_NONE);
       m_xIntVal.vInt(C_DATUM_NULL);
     }
   };
@@ -61,7 +60,7 @@ namespace SenVM
   
   public:
     void vInit(void) {
-      MemLib::vZero(this,sizeof(AllVal_y48KB),CN_NONE);
+      MemLib::vZero(&m__zero__,sizeof(AllVal_y48KB),CN_NONE);
       m_xIntVal.vInt(C_DATUM_NULL);
     }
   };

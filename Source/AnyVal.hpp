@@ -11,6 +11,8 @@ namespace SqlValues
 
   protected:
     union {
+      i8      m__zero__;
+      
       Cell*   m_aFip;
       d8      m_dFlt;
       i8      m_iInt;
