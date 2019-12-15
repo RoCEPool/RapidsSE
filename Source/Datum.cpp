@@ -603,7 +603,7 @@ i8 Datum::nStzSpace(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 nSize = sizeof(u.m_yaSpace);
+  i8 nSize = sizeof(m_yaSpace);
   
   return nSize;
 }
