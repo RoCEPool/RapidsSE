@@ -370,7 +370,7 @@ void Column::vIsPtnKey(bool bIsPtnKey)
 /*----------------------------------------------------------------------------*/
 /* get m_MaxVal                                                               */
 /*----------------------------------------------------------------------------*/
-AllVal_y32* Column::aMaxVal(void)
+AnyVal_y32* Column::aMaxVal(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
@@ -380,7 +380,7 @@ AllVal_y32* Column::aMaxVal(void)
 /*----------------------------------------------------------------------------*/
 /* get m_MinVal                                                               */
 /*----------------------------------------------------------------------------*/
-AllVal_y32* Column::aMinVal(void)
+AnyVal_y32* Column::aMinVal(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   

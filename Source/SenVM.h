@@ -14,12 +14,6 @@ namespace SenVM
 
 //------------------------------------------------------------------------------
 
-
-
-#include "AllVal.hpp"
-
-// -- -- -- -- -- -- -- --
-
 #include "Dic.hpp"
 #include "DicPath.hpp"
 #include "DicStack.hpp"
