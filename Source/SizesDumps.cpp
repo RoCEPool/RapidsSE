@@ -384,7 +384,7 @@ i8 giClassSize[]
   /* */ sizeof(CsvBuffer),          // CN_CSVBUFFER
 
   /* */ 'D'-'A' + 1,                // CN__D__
-  /* */ sizeof(Datum),              // CN_DATUM
+  /* */ sizeof(Datum_h),            // CN_DATUM
   /* */ sizeof(DecaCnt),            // CN_DECACNT
   /* */ sizeof(Decider),            // CN_DECIDER
   /* */ sizeof(Dic),                // CN_DIC

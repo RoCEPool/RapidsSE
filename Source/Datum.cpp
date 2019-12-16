@@ -38,6 +38,8 @@ Datum_h::Datum_h(i8 nSizeSpace)
   
   m_nSizeSpace = nSizeSpace;
   _setFooter_();
+  
+  MemLib::vZero(ayaSpace(),nSizeSpace,CN_DATUM);
 
   m_xIntVal.vMagic();
   m_xIntVal.vClass(CN_INTVAL);
@@ -476,6 +478,22 @@ void Datum_h::vObj(Object* pObj)
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   m_xPtrVal.vObj(pObj);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of space area                                                  */
+/*----------------------------------------------------------------------------*/
+byte* Datum_h::ayaSpace(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  byte* ayaSpace =
+    aAdd<byte*>(this,
+                 sizeof(Object) + sizeof(m_nSizeSpace) +
+                 sizeof(StzVal)) ;
+  
+
+  return ayaSpace;
 }
 
 /*----------------------------------------------------------------------------*/

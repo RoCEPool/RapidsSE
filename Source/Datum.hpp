@@ -78,6 +78,7 @@ namespace Datums
     bool    bIsInt(void);
     Object* pObj(void);
     void    vObj(Object* pObj);
+    byte*   ayaSpace(void);
     i8      nStackUsage(void);
     Stz*    szStz(void);
     void    vStz(Stz* szStz);

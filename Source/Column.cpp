@@ -64,8 +64,8 @@ Column::Column(void)
   
   m_bIsLastColumn = false;
   
-  m_xMaxVal.vInit();
-  m_xMinVal.vInit();
+//  m_xMaxVal.vInit();
+//  m_xMinVal.vInit();
 
   _checkInitialised_(CN_COLUMN);
   
@@ -370,22 +370,22 @@ void Column::vIsPtnKey(bool bIsPtnKey)
 /*----------------------------------------------------------------------------*/
 /* get m_MaxVal                                                               */
 /*----------------------------------------------------------------------------*/
-AnyVal_y32* Column::aMaxVal(void)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  return & m_xMaxVal;
-}
+//AnyVal_y32* Column::aMaxVal(void)
+//{
+//  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+//
+//  return & m_xMaxVal;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get m_MinVal                                                               */
 /*----------------------------------------------------------------------------*/
-AnyVal_y32* Column::aMinVal(void)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  return & m_xMinVal;
-}
+//AnyVal_y32* Column::aMinVal(void)
+//{
+//  //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+//  
+//  return & m_xMinVal;
+//}
 
 
 /*----------------------------------------------------------------------------*/

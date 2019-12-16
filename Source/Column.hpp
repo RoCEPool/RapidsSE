@@ -21,8 +21,8 @@ namespace Datums
     bool  m_bIsPtnKey;
     bool  m_bIsLastColumn;
   
-    AnyVal_y32 m_xMaxVal;
-    AnyVal_y32 m_xMinVal;
+    Datum_y32 m_xMaxVal;
+    Datum_y32 m_xMinVal;
 
     // must be last
     Footer m_xFooter;

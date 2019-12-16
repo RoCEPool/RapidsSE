@@ -78,14 +78,14 @@ space;
 sztbl lineitem;
 //fetch lineitem limit 10;
 
-pipeline lineitem_fetch
-begin
-
-  stage stageA on all partitions:
-    scanOp lineitem | stageB
-  stage stageB on origin:
-    outputOp
-end;
+//pipeline lineitem_fetch
+//begin
+//
+//  stage stageA on all partitions:
+//    scanOp lineitem | stageB
+//  stage stageB on origin:
+//    outputOp
+//end;
 
 dumptable lineitem;
 
