@@ -13,7 +13,9 @@ time create table T
   rowsize 256
 ;
 
-lscol T ;
+lscol T;
+
+docol test_rjh;
 
 /*============================================================================*/
 /* end                                                                        */

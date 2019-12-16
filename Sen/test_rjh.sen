@@ -8,8 +8,19 @@
 
   "Rays Test Suite" .
 
-  "/tenants/boray/catalogs/rapidsse/schemas/public/tables" .
+  0 locals| pTable |
 
+  "/tenants/boray/catalogs/rapidsse/schemas/public/tables/T"
+
+  dup .
+
+  str.toStrVec task::dicStack.set
+
+  "T" find execute
+
+stk
+
+  to pTable
 ;
 
 /*============================================================================*/
