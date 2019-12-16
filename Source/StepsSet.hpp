@@ -573,10 +573,6 @@ public:
   void vJob_FetchRowsTableStore(void);
   void vJob_FetchRowsWhereFetch(void);
 
-  // job GenData
-  void vJob_GenerateGenerate(void);
-  void vJob_GenerateTableStore(void);
-
   // job IndexJoin
   void vJob_IndexJoinLastBuffersStore(void);
   void vJob_IndexJoinLeftIndexStore(void);
