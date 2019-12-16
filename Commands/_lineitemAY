@@ -96,6 +96,18 @@ print "*************************************************************************
 print "scan lineitem | output;";
 print "**************************************************************************";
 
+time pipeline export
+ begin
+
+  stage stageA on all partitions:
+   scanOp lineitem | toCsvOp | stageB
+
+  stage stageB on origin:
+   toFileOp "/tmp/xxx.csv" | outputOp
+
+end
+;
+/*
 time pipeline insert
 begin
 
@@ -104,7 +116,7 @@ stage stageA on all partitions:
 
 end
 ;
-/*
+
 docol epochTake;
 
 time pipeline export
@@ -122,14 +134,7 @@ end
 >>>>>>> Stashed changes
 docol epochTake;
 
-time pipeline export
-begin
 
-stage stageA on all partitions:
-scanOp lineitem | outputOp
-
-end
-;
 
 /*
 docol epochDump;
