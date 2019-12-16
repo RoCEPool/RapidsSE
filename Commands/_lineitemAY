@@ -100,7 +100,7 @@ time pipeline insert
 begin
 
 stage stageA on all partitions:
-scanOp lineitem | toCsvOP | toCrwOp lineitem2 | insertOp lineitem2 | outputOp
+  scanOp lineitem | toCsvOP | toCrwOp lineitem2 | insertOp lineitem2 | outputOp
 
 end
 ;

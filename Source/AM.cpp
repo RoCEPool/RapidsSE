@@ -238,6 +238,14 @@ void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
 void AM::vSendJobOperand(Task* pTask, Operand* pOperand,
                          Job* pParentJob, Op* pOp, i8 iNode) {
   
+  // get next stage to xmit to
+  ASSERT (pOp->m_iNextStage != C_UNKNOWN);
+  Stage* pNextStage = pOp->m_pPipeline->pStageVec()->pGet(pOp->m_iNextStage);
+  RASSERT(pNextStage);
+  
+  // link operator to next stage
+  pOp->vLinkToStage(pNextStage);
+  
   // new a xmit job
   Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(
                                   nullptr, pOperand, pParentJob->m_iFocalId,pOp,iNode);

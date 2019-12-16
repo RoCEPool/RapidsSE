@@ -17,7 +17,7 @@
   // set nextStage in op
   <nextStage> op.nextStage!
 
-  op.linkNextStage
+  //op.linkNextStage
 
   begin
 
