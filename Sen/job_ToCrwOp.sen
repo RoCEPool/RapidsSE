@@ -55,6 +55,10 @@
   sTableNm pushTable assert
   sTableNm find execute to table[]
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a write behind
+  writeBehind[].create
+
   begin
 
     // bide till next operand is available
@@ -68,6 +72,7 @@
 
       ZK_CSVBUFFER of
         "Operand:- ZK_CSVBUFFER" .verbose
+/*
         table[].get Operand[].csvToCrw
         Operand[].get to Subset[]
         begin
@@ -78,6 +83,7 @@
           Subset[].nextBuffer to Operand[]
           assert::stack_0
         repeat
+ */
         true
       endof
 

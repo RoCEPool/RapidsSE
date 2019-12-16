@@ -30,6 +30,7 @@ namespace Registers
     REG<Operand>   m_xpSubset;
     REG<Table>     m_xpTable;
     REG<TablePtn>  m_xpTablePtn;
+    REG<WriteBehind> m_xpWriteBehind;
     
     // pipeline members
     Dynamo*   m_pDynamo;    // dynamo pipleine compiler

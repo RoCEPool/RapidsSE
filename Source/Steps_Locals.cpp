@@ -205,7 +205,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  
+  else if (m_pCompiler->szToken()->bSame("WriteBehind[]"_Stz)) {
+    pCurrentWord->vEncodeCall("WriteBehind[].set"_Stz);
+    EXIT();
+    return;
+  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get name of local from token stream

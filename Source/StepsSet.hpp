@@ -1338,6 +1338,11 @@ public:
   void vWordResetRoutine(void);
   void vWordSee(void);
 
+  // write behind
+  void vWriteBehindCreate(void);
+  void vWriteBehindGet(void);
+  void vWriteBehindset(void);
+
   // zero
   void vZeroLess(void);
   void vZeroLessEqual(void);

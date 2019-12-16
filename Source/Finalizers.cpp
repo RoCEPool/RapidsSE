@@ -322,6 +322,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN__W__
   /*149 */ &Finalize::vUndefined,         // CN_WILDERNESS
   /*150 */ &Finalize::vUndefined,         // CN_WORD
+  /*    */ &Finalize::vUndefined,         // CN_WRITEBEHIND
   
   /*    */ &Finalize::vUndefined,         // CN__X__
   

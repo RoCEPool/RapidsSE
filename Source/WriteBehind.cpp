@@ -9,6 +9,16 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+WriteBehind* Buffers::_pWriteBehind(void* aAddr)
+{
+  WriteBehind* pWriteBehind = reinterpret_cast<WriteBehind*>(aAddr);
+  
+  return pWriteBehind;
+}
+
+/*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
 void* WriteBehind::operator new(size_t)
@@ -27,7 +37,10 @@ void* WriteBehind::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 WriteBehind::WriteBehind(eDS eDataSource)
+: Object(CN_WRITEBEHIND)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
+  
   m_pParentJob = nullptr;
   m_eDataSource = eDataSource;
   
@@ -42,6 +55,8 @@ WriteBehind::WriteBehind(eDS eDataSource)
 /*----------------------------------------------------------------------------*/
 WriteBehind::~WriteBehind(void) noexcept(false)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
+  
   // Assert we don't have any dangling buffers
   for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++) {
     RASSERT( ! m_pCrwBuffer[i_Ptn] );
@@ -57,6 +72,8 @@ WriteBehind::~WriteBehind(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eEC WriteBehind::eAppendRow(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
+  
   // use row hash to get partition
   i8 i_Ptn = m_pTable->iToPartition(m_pRow->m_iHash);
   
@@ -121,6 +138,8 @@ eEC WriteBehind::eAppendRow(void)
 /*----------------------------------------------------------------------------*/
 void WriteBehind::vHandleDanglingBuffers(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
+  
   for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++) {
 
     if ( ! m_pCrwBuffer[i_Ptn] )
@@ -155,6 +174,8 @@ void WriteBehind::vHandleDanglingBuffers(void)
 /*----------------------------------------------------------------------------*/
 eEC WriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
+  
   bool bBlankLine = false;
   
   if (nBytes > C_MAX_RECORD) {
@@ -197,6 +218,8 @@ eEC WriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void WriteBehind::vNewCrwBuffer( i8 i_Ptn)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
+  
   m_pCrwBuffer[i_Ptn] = new CrwBuffer();
   
   m_pCrwBuffer[i_Ptn]->vTable(m_pTable);
@@ -206,6 +229,19 @@ void WriteBehind::vNewCrwBuffer( i8 i_Ptn)
   m_nWriteBehindBuffers[i_Ptn]++;
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* WriteBehind::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND);
+  
+  return &m_xFooter;
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

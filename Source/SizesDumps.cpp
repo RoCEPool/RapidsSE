@@ -326,6 +326,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN__W__
   /* */ &Dump::vInvalid,         // CN_WILDERNESS
   /* */ &Word::vDump,            // CN_WORD
+  /* */ &Dump::vInvalid,         // CN_WRITEBEHIND
 
   /* */ &Dump::vInvalid,         // CN__X__
 
@@ -653,6 +654,7 @@ i8 giClassSize[]
   /* */ 'W'-'A' + 1,                // CN__W__
   /* */ sizeof(Wilderness),         // CN_WILDERNESS
   /* */ sizeof(Word),               // CN_WORD
+  /* */ sizeof(WriteBehind),               // CN_WRITEBEHIND
   
   /* */ 'X'-'A' + 1,                // CN__X__
   
@@ -980,6 +982,7 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN__W__
   /* */ HT_INVALID,           // CN_WILDERNESS
   /* */ HT_TRANSIENT_MEDIUM,  // CN_WORD
+  /* */ HT_TRANSIENT_LARGE,   // CN_WRITEBEHIND
 
   /* */ HT_INVALID,           // CN__X__
 

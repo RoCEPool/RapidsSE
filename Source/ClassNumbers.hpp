@@ -325,6 +325,7 @@ enum eCN : u2 // Class Number
   /* 283 0x11B       23B Heap:I */ CN__W__,
   /* 284 0x11C       16B Heap:I */ CN_WILDERNESS,
   /* 285 0x11D    64808B Heap:M */ CN_WORD,
+  /*     0x11D    64808B Heap:M */ CN_WRITEBEHIND,
   
   /* 286 0x11E       24B Heap:I */ CN__X__,
   
@@ -651,6 +652,7 @@ static Stz* aCN[]
   /* 283 0x11B */ "_W__"_Stz,                // CN__W__
   /* 284 0x11C */ "WILDERNESS"_Stz,          // CN_WILDERNESS
   /* 285 0x11D */ "WORD"_Stz,                // CN_WORD
+  /*     0x11D */ "WRITEBEHIND"_Stz,         // CN_WRITEBEHIND
   
   /* 286 0x11E */ "_X__"_Stz,                // CN__X__
   

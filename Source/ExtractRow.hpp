@@ -15,7 +15,7 @@ namespace Buffers
     Format  m_oFormatters;  // formatters
   
     RowCompactor*   m_paRowCompactor[C_MAX_PARTITIONS];
-  
+    
   public:
     void* operator new(size_t);
   
@@ -24,6 +24,7 @@ namespace Buffers
     
   public:
     bool bExtractRow(Stz* szRecStr, bool &bBlankLine);
+    
   };
 }
 
