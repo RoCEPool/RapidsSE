@@ -85,12 +85,7 @@ void RowGenerator::vRndInt(Row* pRow, Column* pCol)
 {
   Datum oDatum;
   
-  i8 iMin = pCol->pMinVal()->iInt();
-  i8 iMax = pCol->pMaxVal()->iInt();
-
-  i8 iRnd = RndLib::iInteger(iMin,iMax); // inclusive
-  
-  oDatum = iRnd;
+  RN_Int rnInt(&oDatum,pCol);
   
   pRow->vAppendValue(&oDatum,pCol);
 }

@@ -14,8 +14,11 @@ namespace Datums
     
   public:
     RN_Int(void);
+    RN_Int(Datum* pDatum, Column* pCol);
    ~RN_Int(void) noexcept(false);
   
+    void vRndInt(Datum* pDatum, Column* pCol);
+
     Footer* aFooter(void);
   };
 }
