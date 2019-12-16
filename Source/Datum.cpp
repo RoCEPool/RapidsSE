@@ -34,7 +34,7 @@ void Datum_abstract::operator delete(void* aAddr)
 Datum_abstract::Datum_abstract(void)
 : Object(CN_DATUM)
 {
-  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM);
   
   m_nSizeSpace = C_48KB;
   
@@ -55,10 +55,34 @@ Datum_abstract::Datum_abstract(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Datum_abstract::Datum_abstract(i8 nSizeSpace)
+: Object(CN_DATUM)
+{
+  _precondition_(_MAGIC_,CN_DATUM);
+  
+  m_nSizeSpace = nSizeSpace;
+  
+  m_xIntVal.vMagic();
+  m_xIntVal.vClass(CN_INTVAL);
+  m_xIntVal.vInt(C_UNKNOWN);
+  
+  m_xStzVal.vStz(""_Stz);
+  //vStzDump();
+  
+  //m_sVch
+  
+  _checkInitialised_(CN_DATUM);
+  
+  _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Datum_abstract::Datum_abstract(AnyVal* aAnyVal)
 : Object(CN_DATUM)
 {
-  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM);
 
   m_nSizeSpace = C_48KB;
   
@@ -695,7 +719,16 @@ Footer* Datum_abstract::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_DATUM);
   
-  return &m_xFooter;
+  Footer* aFooter_this = & m_xFooter ;
+  
+  Footer* aFooter_calc =
+    aAdd<Footer*>(this,
+                  sizeof(Object) + sizeof(m_nSizeSpace) +
+                  sizeof(StzVal) + m_nSizeSpace) ;
+  
+  ASSERT(aFooter_calc == aFooter_this);
+
+  return aFooter_calc;
 }
 
 /*============================================================================*/

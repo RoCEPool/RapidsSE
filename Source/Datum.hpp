@@ -23,7 +23,7 @@ namespace Datums
       FltVal  m_xFltVal;
       IntVal  m_xIntVal;
       IvlVal  m_xIvlVal;
-      StzVal  m_xStzVal;
+      StzVal  m_xStzVal; // this is the larger
       TmeVal  m_xTmeVal;
       TspVal  m_xTspVal;
     };
@@ -38,6 +38,7 @@ namespace Datums
     void  operator delete(void*);
 
     Datum_abstract(void);
+    Datum_abstract(i8 nSizeSpace);
     Datum_abstract(AnyVal*);
    ~Datum_abstract(void) noexcept(false);
   
@@ -111,14 +112,24 @@ namespace Datums
   class Datum_t : public Datum_abstract
   {
   public:
+    Datum_t(void);
+  
     void operator =(AnyVal*);
   
     void operator =(Cell* aFip);
     void operator =(i8 iInt);
     void operator =(Object* pObj);
     void operator =(Stz* szStz);
-
   };
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator =                                                                 */
+/*----------------------------------------------------------------------------*/
+template <i8 SPACE>
+Datum_t<SPACE>::Datum_t(void)
+: Datum_abstract(SPACE)
+{
 }
 
 /*----------------------------------------------------------------------------*/
