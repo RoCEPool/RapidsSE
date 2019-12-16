@@ -28,10 +28,6 @@ namespace Datums
       TspVal  m_xTspVal;
     };
   
-    byte m_yaSpace[C_48KB];
-
-    // must be last
-    Footer m_xFooter;
   
   public:
     void* operator new(size_t);
@@ -111,6 +107,11 @@ namespace Datums
   template <i8 SPACE>
   class Datum_t : public Datum_abstract
   {
+    byte m_yaSpace[C_48KB];
+  
+    // must be last
+    Footer m_xFooter;
+  
   public:
     Datum_t(void);
   
@@ -120,6 +121,7 @@ namespace Datums
     void operator =(i8 iInt);
     void operator =(Object* pObj);
     void operator =(Stz* szStz);
+  
   };
 }
 

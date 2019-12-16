@@ -35,8 +35,9 @@ Datum_abstract::Datum_abstract(void)
 : Object(CN_DATUM)
 {
   _precondition_(_MAGIC_,CN_DATUM);
-  
+
   m_nSizeSpace = C_48KB;
+  _setFooter_();
   
   m_xIntVal.vMagic();
   m_xIntVal.vClass(CN_INTVAL);
@@ -61,7 +62,8 @@ Datum_abstract::Datum_abstract(i8 nSizeSpace)
   _precondition_(_MAGIC_,CN_DATUM);
   
   m_nSizeSpace = nSizeSpace;
-  
+  _setFooter_();
+
   m_xIntVal.vMagic();
   m_xIntVal.vClass(CN_INTVAL);
   m_xIntVal.vInt(C_UNKNOWN);
@@ -85,7 +87,8 @@ Datum_abstract::Datum_abstract(AnyVal* aAnyVal)
   _precondition_(_MAGIC_,CN_DATUM);
 
   m_nSizeSpace = C_48KB;
-  
+  _setFooter_();
+
   m_xIntVal.vMagic();
   m_xIntVal.vClass(CN_INTVAL);
   m_xIntVal.vInt(C_UNKNOWN);
@@ -619,9 +622,7 @@ i8 Datum_abstract::nStzSpace(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 nSize = sizeof(m_yaSpace);
-  
-  return nSize;
+  return m_nSizeSpace;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -719,15 +720,11 @@ Footer* Datum_abstract::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_DATUM);
   
-  Footer* aFooter_this = & m_xFooter ;
-  
   Footer* aFooter_calc =
     aAdd<Footer*>(this,
                   sizeof(Object) + sizeof(m_nSizeSpace) +
                   sizeof(StzVal) + m_nSizeSpace) ;
   
-  ASSERT(aFooter_calc == aFooter_this);
-
   return aFooter_calc;
 }
 
