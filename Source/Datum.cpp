@@ -46,9 +46,10 @@ Datum::Datum(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
+  m_nSizeSpace = C_48KB;
+  
   m_xIntVal.vMagic();
   m_xIntVal.vClass(CN_INTVAL);
-  
   m_xIntVal.vInt(C_UNKNOWN);
   
   m_xStzVal.vStz(""_Stz);
@@ -69,9 +70,10 @@ Datum::Datum(AnyVal* aAnyVal)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
+  m_nSizeSpace = C_48KB;
+  
   m_xIntVal.vMagic();
   m_xIntVal.vClass(CN_INTVAL);
-  
   m_xIntVal.vInt(C_UNKNOWN);
   
   eCN eClassNo = aAnyVal->eClass();

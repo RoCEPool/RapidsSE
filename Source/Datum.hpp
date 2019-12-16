@@ -8,6 +8,8 @@ namespace Datums
   class Datum : public Object
   {
   private:
+    i8  m_nSizeSpace;
+  
     union {
       AnyVal  m_xAnyVal;
     
