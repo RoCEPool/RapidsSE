@@ -195,8 +195,10 @@ void Step::vTableGenRandomRow(void)
   
   Row* pRow = new Row(pStreamDef,C_ALL);
   
-  delete pRow;
+  RowGenerator::vRandom(pRow,pStreamDef);
   
+  m_pDataStack->vPushPtr(pRow);
+
   EXIT();
 }
 
