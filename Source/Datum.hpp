@@ -107,7 +107,7 @@ namespace Datums
   template <i8 SPACE>
   class Datum_t : public Datum_h
   {
-    byte m_yaSpace[C_48KB];
+    byte m_yaSpace[SPACE];
   
     // must be last
     Footer m_xFooter;
