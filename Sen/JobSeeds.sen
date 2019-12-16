@@ -62,6 +62,12 @@
 
   job::becomeOriginator
 
+  <jobNm> "::request" str.cat find dup if
+    execute
+  else
+    drop
+  then
+
   job::distributeConnected
 
   // wait for the signal from deciding job__ended/cancelled
