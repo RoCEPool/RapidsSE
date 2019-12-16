@@ -11,7 +11,6 @@
 void Step::vAddSteps_Op(void)
 {
   vAddStep("Op.leftEndMarkers!"_Stz,  &Step::vOpLeftEndMarkersStore);
-  vAddStep("Op.linkNextStage"_Stz,    &Step::vOpLinkNextStage);
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.topology!"_Stz,        &Step::vOpTopologyStore);
 }
@@ -25,23 +24,6 @@ void Step::vOpLeftEndMarkersStore(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   pOp->m_nLeftEndMarkers = m_pDataStack->iPopInt(__func__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.linkNextStage -- link operator to next stage                            */
-/*----------------------------------------------------------------------------*/
-void Step::vOpLinkNextStage(void)
-{
-  ENTRY(); // ENTRY("vOpLinkNextStage"_Stz);
-  
-  Op* pOp = m_pTask->m_pJob->m_pOp;
-  
-  // link last operator to the first operator of the next stage if there is one
-  ASSERT (pOp->m_iNextStage != C_UNKNOWN);
-  Stage* pNextStage = pOp->m_pPipeline->pStageVec()->pGet(pOp->m_iNextStage);
-  RASSERT(pNextStage);
-    
-  pOp->vLinkToStage(pNextStage);
 }
 
 /*----------------------------------------------------------------------------*/
