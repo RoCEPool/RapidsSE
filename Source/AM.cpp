@@ -236,7 +236,7 @@ void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
   pTask->vAcksRmg(nAcks);
 }
 void AM::vSendJobOperand(Task* pTask, Operand* pOperand,
-                         Job* pParentJob, Op* pOp, i8 iNode) {
+                         Job* pParentJob, Op* pOp) {
   
   // get next stage to xmit to
   ASSERT (pOp->m_iNextStage != C_UNKNOWN);
@@ -248,10 +248,10 @@ void AM::vSendJobOperand(Task* pTask, Operand* pOperand,
   
   // new a xmit job
   Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(
-                                  nullptr, pOperand, pParentJob->m_iFocalId,pOp,iNode);
+                                  nullptr, pOperand, pParentJob->m_iFocalId,pOp,pOp->m_iXmitNode);
   
   // set the send node in the task
-  Node* pSendNode = pGrid()->pGetNode(iNode);
+  Node* pSendNode = pGrid()->pGetNode(pOp->m_iXmitNode);
   pTask->vSendNode(pSendNode);
   
   // grab socket wite lock

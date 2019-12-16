@@ -46,7 +46,7 @@
 
       ZK_STREAMDEF of
         "Operand:- ZK_STREAMDEF" .verbose
-        Operand[].delete
+        Operand[].pipeOut
         true
       endof
 

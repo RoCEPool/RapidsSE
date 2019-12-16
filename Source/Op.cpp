@@ -439,8 +439,7 @@ void Op::vPipeOut(Operand* pOperand)
       AM::vSendJobOperand(m_pTask,
                           pOperand,
                           m_pJobPipeline,
-                          this,
-                          m_iXmitNode);
+                          this);
       break;
   
     default:

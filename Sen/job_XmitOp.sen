@@ -17,8 +17,6 @@
   // set nextStage in op
   <nextStage> op.nextStage!
 
-  //op.linkNextStage
-
   begin
 
     // bide till next operand is available
