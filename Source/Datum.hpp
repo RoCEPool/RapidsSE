@@ -5,35 +5,26 @@
 
 namespace Datums
 {
-  class _Datum : public Object
+  class Datum : public Object
   {
-  protected:
-  
-  union {
-    AnyVal  m_xAnyVal;
+  private:
+    union {
+      AnyVal  m_xAnyVal;
     
-    FipVal  m_xFipVal;
-    PtrVal  m_xPtrVal;
+      FipVal  m_xFipVal;
+      PtrVal  m_xPtrVal;
     
-    BcdVal  m_xBcdVal;
-    BolVal  m_xBolVal;
-    DteVal  m_xDteVal;
-    EdtVal  m_xEdtVal;
-    FltVal  m_xFltVal;
-    IntVal  m_xIntVal;
-    IvlVal  m_xIvlVal;
-    StzVal  m_xStzVal;
-    TmeVal  m_xTmeVal;
-    TspVal  m_xTspVal;
-  };
-  
-  public:
-    _Datum(eCN eClass);
-
-  };
-  
-  class Datum : public _Datum
-  {
+      BcdVal  m_xBcdVal;
+      BolVal  m_xBolVal;
+      DteVal  m_xDteVal;
+      EdtVal  m_xEdtVal;
+      FltVal  m_xFltVal;
+      IntVal  m_xIntVal;
+      IvlVal  m_xIvlVal;
+      StzVal  m_xStzVal;
+      TmeVal  m_xTmeVal;
+      TspVal  m_xTspVal;
+    };
   
     byte m_yaSpace[C_48KB];
 
