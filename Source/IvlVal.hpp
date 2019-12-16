@@ -7,7 +7,7 @@ namespace SqlValues
 {
   class IvlVal : public _Header
   {
-  friend class Datums::_Datum_;
+  friend class Datums::Datum;
   
   private:
   union {

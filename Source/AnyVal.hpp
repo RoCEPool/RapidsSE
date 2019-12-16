@@ -7,7 +7,7 @@ namespace SqlValues
 {
   class AnyVal : public _Header
   {
-  friend class Datums::_Datum_;
+  friend class Datums::Datum;
 
   protected:
     union {
