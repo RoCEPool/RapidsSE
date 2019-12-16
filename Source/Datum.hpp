@@ -5,7 +5,7 @@
 
 namespace Datums
 {
-  class Datum : public Object
+  class Datum_abstract : public Object
   {
   private:
     i8  m_nSizeSpace;
@@ -37,9 +37,9 @@ namespace Datums
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Datum(void);
-    Datum(AnyVal*);
-   ~Datum(void) noexcept(false);
+    Datum_abstract(void);
+    Datum_abstract(AnyVal*);
+   ~Datum_abstract(void) noexcept(false);
   
     // auto conversion
     operator AnyVal*(void);
@@ -104,16 +104,98 @@ namespace Datums
     Footer* aFooter(void);
   };
   
-  Datum* _pDatum(void* aAddr);
-}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-template <i8 MAX_SPACE>
-class Datum_t : public Datum
-{
+  template <i8 SPACE>
+  class Datum_t : public Datum_abstract
+  {
+  public:
+    void operator =(AnyVal*);
   
-};
+    void operator =(Cell* aFip);
+    void operator =(i8 iInt);
+    void operator =(Object* pObj);
+    void operator =(Stz* szStz);
+
+  };
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator =                                                                 */
+/*----------------------------------------------------------------------------*/
+template <i8 SPACE>
+void Datum_t<SPACE>::operator =(AnyVal* aAnyVal)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  eCN eClass = aAnyVal->eClass();
+  
+  switch (eClass) {
+    case CN_FIPVAL: vFip(aAnyVal->aFip());    break;
+    case CN_INTVAL: vInt(aAnyVal->iInt());    break;
+    case CN_PTRVAL: vObj(aAnyVal->pObj());    break;
+    case CN_STZVAL: vStz(aAnyVal->szStz());   break;
+      
+    default:
+      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
+             "Invalid eClass %lld"_Stz,eClass);
+  }
+  
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* assign/copy a forth instruction pointer                                    */
+/*----------------------------------------------------------------------------*/
+template <i8 SPACE>
+void Datum_t<SPACE>::operator =(Cell* aFip)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  vFip(aFip);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign/copy an integer                                                     */
+/*----------------------------------------------------------------------------*/
+template <i8 SPACE>
+void Datum_t<SPACE>::operator =(i8 iInt)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  vInt(iInt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign/copy a pointer to a proper object                                   */
+/*----------------------------------------------------------------------------*/
+template <i8 SPACE>
+void Datum_t<SPACE>::operator =(Object* pObj)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  vObj(pObj);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign/copy a string                                                       */
+/*----------------------------------------------------------------------------*/
+template <i8 SPACE>
+void Datum_t<SPACE>::operator =(Stz* szStz)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  vStz(szStz);
+  
+  _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

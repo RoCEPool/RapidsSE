@@ -47,10 +47,8 @@ void Step::vAddressFetch(void)
   AnyVal* aAnyVal = _aAnyVal(m_pDataStack->pPopPtr(__func__));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Datum xValFetched = aAnyVal; 
-  
-  m_pDataStack->vPushVal(xValFetched);
+    
+  m_pDataStack->vPushVal(aAnyVal);
   
   EXIT();
 }

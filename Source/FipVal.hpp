@@ -7,8 +7,8 @@ namespace SqlValues
 {
   class FipVal : public _Header
   {
-  friend class Datums::Datum;
-  
+  template <i8 SPACE> friend class Datums::Datum_t;
+
   private:
   union {
     Cell*  m_aFip;

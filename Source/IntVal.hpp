@@ -7,8 +7,9 @@ namespace SqlValues
 {
   class IntVal : public _Header
   {
-  friend class Datums::Datum;
-  
+  friend class Datums::Datum_abstract;
+  template <i8 SPACE> friend class Datums::Datum_t;
+
   private:
   union {
     Int   m_wInt;

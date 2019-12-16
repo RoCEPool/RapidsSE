@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* extract a datum from csv field value                                       */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToDtm(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
+bool CsvValue::bToDtm(Datum_abstract* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 {
   bool b = false;
   
@@ -42,7 +42,7 @@ bool CsvValue::bToDtm(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* extract a decimal datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToBcd(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
+bool CsvValue::bToBcd(Datum_abstract* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 {
   SN_Bcd snBcd;
   
@@ -59,7 +59,7 @@ bool CsvValue::bToBcd(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* extract a boolean datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToBol(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
+bool CsvValue::bToBol(Datum_abstract* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 {
   SN_Bol snBol;
   
@@ -76,7 +76,7 @@ bool CsvValue::bToBol(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* extract a date datum from csv field value                      yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToDte(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
+bool CsvValue::bToDte(Datum_abstract* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 {
   SN_Dte snDte;
   
@@ -93,7 +93,7 @@ bool CsvValue::bToDte(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* extract a float datum from csv field value                                 */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToFlt(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
+bool CsvValue::bToFlt(Datum_abstract* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 {
   SN_Flt snFlt;
   
@@ -110,7 +110,7 @@ bool CsvValue::bToFlt(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* extract an integer datum from csv field value                              */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToInt(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
+bool CsvValue::bToInt(Datum_abstract* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 {
   SN_Int snInt;
   
@@ -135,7 +135,7 @@ bool CsvValue::bToInt(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* extract an interval datum from csv field value                             */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToIvl(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
+bool CsvValue::bToIvl(Datum_abstract* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 {
   SN_Ivl snIvl;
   
@@ -152,7 +152,7 @@ bool CsvValue::bToIvl(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* extract a time datum from csv field value                    hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToTme(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
+bool CsvValue::bToTme(Datum_abstract* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 {
   SN_Tsp snTsp;
   
@@ -169,7 +169,7 @@ bool CsvValue::bToTme(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp datum from csv field value    yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToTsp(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
+bool CsvValue::bToTsp(Datum_abstract* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 {
   SN_Tsp snTsp;
   
@@ -186,7 +186,7 @@ bool CsvValue::bToTsp(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 /*----------------------------------------------------------------------------*/
 /* extract a varchar datum from csv field value                               */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bToVch(Datum* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
+bool CsvValue::bToVch(Datum_abstract* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 {
   SN_Vch snVch;
   bool bSawEnclosedLeading = false;

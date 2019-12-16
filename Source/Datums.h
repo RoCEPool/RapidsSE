@@ -37,9 +37,11 @@ namespace Datums
 #include "SP_Tsp.hpp"
 #include "SP_Vch.hpp"
 
+#include "Datum.hpp"
+
+typedef Datum_t<C_48KB> Datum;
 #include "CsvValue.hpp"
 
-#include "Datum.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
