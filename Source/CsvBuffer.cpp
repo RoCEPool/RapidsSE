@@ -152,6 +152,8 @@ CrwBuffer* CsvBuffer::pToCrwBuffer(Table* pTable, RowCompactor* pRowCompactor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
+  //vPrintRows();
+  
   CrwBuffer* pCrwBuffer = new CrwBuffer;
   pCrwBuffer->vTable(pTable);
   pCrwBuffer->vPartitionNo(0);  //!ALKA
@@ -167,6 +169,7 @@ CrwBuffer* CsvBuffer::pToCrwBuffer(Table* pTable, RowCompactor* pRowCompactor)
   
   for(i8 i_Record = 0; i_Record < m_nRecords; i_Record++) {
     
+    pRow->vResetValues();
     bool bResult = CsvCursor::bExtractNext(pRow, pTable->pStreamDef(), &aCursor, pFormat, bBlankLine);
     RASSERT(bResult);
     
@@ -183,6 +186,8 @@ CrwBuffer* CsvBuffer::pToCrwBuffer(Table* pTable, RowCompactor* pRowCompactor)
       RASSERT(bResult);
     }
   }
+  
+  //pCrwBuffer->vDump();
   
   return pCrwBuffer;
 }
