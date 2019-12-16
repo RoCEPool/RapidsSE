@@ -14,8 +14,12 @@ namespace Datums
 
 //------------------------------------------------------------------------------
 
-#include "Column.hpp"
+#include "Datum.hpp"
 
+typedef Datum_t<C_48KB> Datum;
+typedef Datum_t<32>     Datum_y32;
+
+#include "Column.hpp"
 
 #include "SN_Bcd.hpp"
 #include "SN_Bol.hpp"
@@ -37,9 +41,7 @@ namespace Datums
 #include "SP_Tsp.hpp"
 #include "SP_Vch.hpp"
 
-#include "Datum.hpp"
 
-typedef Datum_t<C_48KB> Datum;
 #include "CsvValue.hpp"
 
 

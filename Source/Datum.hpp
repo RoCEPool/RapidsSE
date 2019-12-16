@@ -33,9 +33,7 @@ namespace Datums
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Datum_h(void);
     Datum_h(i8 nSizeSpace);
-    Datum_h(AnyVal*);
    ~Datum_h(void) noexcept(false);
   
     // auto conversion
@@ -55,7 +53,7 @@ namespace Datums
   
     eCN     eAnyClass(void);
     AnyVal* aAnyVal(void);
-    bool    bAssign(Token* pTkn, Column* pCol);
+    //bool    bAssign(Token* pTkn, Column* pCol);
     char*   azChar(void);
     i8      iBcd(void);
     void    vBcd(i8 iBcd);
