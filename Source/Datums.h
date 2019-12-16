@@ -16,7 +16,6 @@ namespace Datums
 
 #include "Column.hpp"
 
-#include "Datum.hpp"
 
 #include "SN_Bcd.hpp"
 #include "SN_Bol.hpp"
@@ -39,6 +38,8 @@ namespace Datums
 #include "SP_Vch.hpp"
 
 #include "CsvValue.hpp"
+
+#include "Datum.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
