@@ -105,6 +105,15 @@ namespace Datums
   Datum* _pDatum(void* aAddr);
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+template <i8 MAX_SPACE>
+class Datum_t : public Datum
+{
+  
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #pragma pack(push, 1)
 class Nibbler1 {
