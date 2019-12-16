@@ -21,6 +21,8 @@ typedef Datum_t<32>     Datum_y32;
 
 #include "Column.hpp"
 
+#include "RN_Bcd.hpp"
+
 #include "SN_Bcd.hpp"
 #include "SN_Bol.hpp"
 #include "SN_Dte.hpp"
