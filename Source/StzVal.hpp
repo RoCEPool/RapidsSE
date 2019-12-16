@@ -7,7 +7,7 @@ namespace SqlValues
 {
   class StzVal : public _Header
   {
-  friend class Datums::Datum;
+  friend class Datums::_Datum_;
   
   private:
     i8   m_nBytesFollowing;

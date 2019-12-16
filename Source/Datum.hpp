@@ -32,7 +32,7 @@ namespace Datums
 
   };
   
-  class Datum : public _Datum
+  class _Datum_ : public _Datum
   {
   
     byte m_yaSpace[C_48KB];
@@ -41,13 +41,8 @@ namespace Datums
     Footer m_xFooter;
   
   public:
-    void* operator new(size_t);
-    void  operator delete(void*);
+    _Datum_(eCN eClass);
 
-    Datum(void);
-    Datum(AnyVal*);
-   ~Datum(void) noexcept(false);
-  
     // auto conversion
     operator AnyVal*(void);
   
@@ -111,8 +106,28 @@ namespace Datums
     Footer* aFooter(void);
   };
   
+  class Datum : public _Datum_
+  {
+  public:
+  void* operator new(size_t);
+    void  operator delete(void*);
+    
+    Datum(void);
+    Datum(AnyVal*);
+   ~Datum(void) noexcept(false);
+  
+  public:
+    void operator =(AnyVal*);
+  
+    void operator =(Cell* aFip);
+    void operator =(i8 iInt);
+    void operator =(Object* pObj);
+    void operator =(Stz* szStz);
+  };
+
   Datum* _pDatum(void* aAddr);
 }
+
 
 
 #pragma pack(push, 1)

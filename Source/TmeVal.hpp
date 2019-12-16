@@ -7,7 +7,7 @@ namespace SqlValues
 {
   class TmeVal : public _Header
   {
-  friend class Datums::Datum;
+  friend class Datums::_Datum_;
   
   private:
   union {
