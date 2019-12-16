@@ -20,7 +20,7 @@ void RowGenerator::vRandom(Row* pRow, StreamDef* pStreamDef)
   
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     Column* pCol = pStreamDef->pGetColumn(i_Col);
-    pRow->vAppendValue(&oDatum,pCol);
+    pRow->vSetValue(&oDatum,pCol);
   }
 
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
@@ -87,7 +87,7 @@ void RowGenerator::vRndInt(Row* pRow, Column* pCol)
   
   RN_Int rnInt(&oDatum,pCol);
   
-  pRow->vAppendValue(&oDatum,pCol);
+  pRow->vSetValue(&oDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/

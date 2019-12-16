@@ -125,50 +125,6 @@ void Row::vAdjustAddresses(Row* pCopiedFromRow)
 /*----------------------------------------------------------------------------*/
 /* append column value to row                                                 */
 /*----------------------------------------------------------------------------*/
-void Row::vAppendValue(Datum* pDatum, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
-
-  i8 i_Col = pCol->iColumnNo();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // vch
-  
-  if (DM_VCH == pCol->eDatum()) {
-    
-    if (pDatum->bIsNull()) {
-      m_waColVal[i_Col].vSetNull();
-      return;
-    }
-    
-    char* acDstString = (char*)m_xWsp.ayLatter();
-    
-    char* acSrcString = (char*)pDatum->azChar();
-    
-    i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
-
-    m_waColVal[i_Col].m_iInt = (i8)acDstString;
-    
-    m_xWsp.vTake(nSrcLength + 1);
-
-    if (pCol->bIsPtnKey())
-      m_iHash += iHashColumn(pCol);
-    
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // all others
-  
-  m_waColVal[i_Col].m_iInt = pDatum->iInt();
-
-  if (pCol->bIsPtnKey())
-    m_iHash += iHashColumn(pCol);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append column value to row                                                 */
-/*----------------------------------------------------------------------------*/
 void Row::vCopy(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
@@ -296,6 +252,50 @@ void Row::vResetValues(void)
 #endif
   
   m_xWsp.vInit();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set column value in row                                                    */
+/*----------------------------------------------------------------------------*/
+void Row::vSetValue(Datum* pDatum, Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  i8 i_Col = pCol->iColumnNo();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // vch
+  
+  if (DM_VCH == pCol->eDatum()) {
+    
+    if (pDatum->bIsNull()) {
+      m_waColVal[i_Col].vSetNull();
+      return;
+    }
+    
+    char* acDstString = (char*)m_xWsp.ayLatter();
+    
+    char* acSrcString = (char*)pDatum->azChar();
+    
+    i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
+    
+    m_waColVal[i_Col].m_iInt = (i8)acDstString;
+    
+    m_xWsp.vTake(nSrcLength + 1);
+    
+    if (pCol->bIsPtnKey())
+      m_iHash += iHashColumn(pCol);
+    
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // all others
+  
+  m_waColVal[i_Col].m_iInt = pDatum->iInt();
+  
+  if (pCol->bIsPtnKey())
+    m_iHash += iHashColumn(pCol);
 }
 
 /*----------------------------------------------------------------------------*/
