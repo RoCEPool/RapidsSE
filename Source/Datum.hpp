@@ -5,7 +5,7 @@
 
 namespace Datums
 {
-  class Datum_abstract : public Object
+  class Datum_h : public Object
   {
   private:
     i8  m_nSizeSpace;
@@ -33,10 +33,10 @@ namespace Datums
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Datum_abstract(void);
-    Datum_abstract(i8 nSizeSpace);
-    Datum_abstract(AnyVal*);
-   ~Datum_abstract(void) noexcept(false);
+    Datum_h(void);
+    Datum_h(i8 nSizeSpace);
+    Datum_h(AnyVal*);
+   ~Datum_h(void) noexcept(false);
   
     // auto conversion
     operator AnyVal*(void);
@@ -105,7 +105,7 @@ namespace Datums
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   template <i8 SPACE>
-  class Datum_t : public Datum_abstract
+  class Datum_t : public Datum_h
   {
     byte m_yaSpace[C_48KB];
   
@@ -130,7 +130,7 @@ namespace Datums
 /*----------------------------------------------------------------------------*/
 template <i8 SPACE>
 Datum_t<SPACE>::Datum_t(void)
-: Datum_abstract(SPACE)
+: Datum_h(SPACE)
 {
 }
 
