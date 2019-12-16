@@ -74,8 +74,8 @@ namespace Datums
     bool bIsPtnKey(void);
     void vIsPtnKey(bool bIsPtnKey);
 
-    AnyVal_y32* aMaxVal(void);
-    AnyVal_y32* aMinVal(void);
+    Datum_h* pMaxVal(void);
+    Datum_h* pMinVal(void);
 
     void vShow(void);
   
