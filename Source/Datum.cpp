@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Datum_abstract::operator new(size_t)
+void* Datum_h::operator new(size_t)
 {
   void* pObject = HeapMem::pAllocate(CN_DATUM);
   
@@ -21,7 +21,7 @@ void* Datum_abstract::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::operator delete(void* aAddr)
+void Datum_h::operator delete(void* aAddr)
 {
   Datum* pDatum = reinterpret_cast<Datum*>(aAddr);
   
@@ -31,12 +31,13 @@ void Datum_abstract::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Datum_abstract::Datum_abstract(void)
+Datum_h::Datum_h(void)
 : Object(CN_DATUM)
 {
-  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
-  
+  _precondition_(_MAGIC_,CN_DATUM);
+
   m_nSizeSpace = C_48KB;
+  _setFooter_();
   
   m_xIntVal.vMagic();
   m_xIntVal.vClass(CN_INTVAL);
@@ -55,13 +56,39 @@ Datum_abstract::Datum_abstract(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Datum_abstract::Datum_abstract(AnyVal* aAnyVal)
+Datum_h::Datum_h(i8 nSizeSpace)
 : Object(CN_DATUM)
 {
-  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  _precondition_(_MAGIC_,CN_DATUM);
+  
+  m_nSizeSpace = nSizeSpace;
+  _setFooter_();
+
+  m_xIntVal.vMagic();
+  m_xIntVal.vClass(CN_INTVAL);
+  m_xIntVal.vInt(C_UNKNOWN);
+  
+  m_xStzVal.vStz(""_Stz);
+  //vStzDump();
+  
+  //m_sVch
+  
+  _checkInitialised_(CN_DATUM);
+  
+  _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Datum_h::Datum_h(AnyVal* aAnyVal)
+: Object(CN_DATUM)
+{
+  _precondition_(_MAGIC_,CN_DATUM);
 
   m_nSizeSpace = C_48KB;
-  
+  _setFooter_();
+
   m_xIntVal.vMagic();
   m_xIntVal.vClass(CN_INTVAL);
   m_xIntVal.vInt(C_UNKNOWN);
@@ -85,7 +112,7 @@ Datum_abstract::Datum_abstract(AnyVal* aAnyVal)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Datum_abstract::~Datum_abstract(void) noexcept(false)
+Datum_h::~Datum_h(void) noexcept(false)
 {
 }
 
@@ -96,7 +123,7 @@ Datum_abstract::~Datum_abstract(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* auto conversion operator : as AnyVal*                                      */
 /*----------------------------------------------------------------------------*/
-Datum_abstract::operator AnyVal*(void)
+Datum_h::operator AnyVal*(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -106,7 +133,7 @@ Datum_abstract::operator AnyVal*(void)
 /*----------------------------------------------------------------------------*/
 /* operator =                                                                 */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::operator =(AnyVal* aAnyVal)
+void Datum_h::operator =(AnyVal* aAnyVal)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -132,7 +159,7 @@ void Datum_abstract::operator =(AnyVal* aAnyVal)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a forth instruction pointer                                    */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::operator =(Cell* aFip)
+void Datum_h::operator =(Cell* aFip)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -142,7 +169,7 @@ void Datum_abstract::operator =(Cell* aFip)
 /*----------------------------------------------------------------------------*/
 /* assign/copy an integer                                                     */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::operator =(i8 iInt)
+void Datum_h::operator =(i8 iInt)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -152,7 +179,7 @@ void Datum_abstract::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a pointer to a proper object                                   */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::operator =(Object* pObj)
+void Datum_h::operator =(Object* pObj)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -162,7 +189,7 @@ void Datum_abstract::operator =(Object* pObj)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a string                                                       */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::operator =(Stz* szStz)
+void Datum_h::operator =(Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -177,7 +204,7 @@ void Datum_abstract::operator =(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* test null                                                                  */
 /*----------------------------------------------------------------------------*/
-bool Datum_abstract::bIsNull(void)
+bool Datum_h::bIsNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
@@ -190,7 +217,7 @@ bool Datum_abstract::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 /* set null                                                                   */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vSetNull(void)
+void Datum_h::vSetNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
@@ -203,7 +230,7 @@ void Datum_abstract::vSetNull(void)
 /*----------------------------------------------------------------------------*/
 /* get class of embedded value                                                */
 /*----------------------------------------------------------------------------*/
-eCN Datum_abstract::eAnyClass(void)
+eCN Datum_h::eAnyClass(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -213,7 +240,7 @@ eCN Datum_abstract::eAnyClass(void)
 /*----------------------------------------------------------------------------*/
 /* get aAnyVal                                                                */
 /*----------------------------------------------------------------------------*/
-AnyVal* Datum_abstract::aAnyVal(void)
+AnyVal* Datum_h::aAnyVal(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -223,7 +250,7 @@ AnyVal* Datum_abstract::aAnyVal(void)
 /*----------------------------------------------------------------------------*/
 /* assign datum from token                                                    */
 /*----------------------------------------------------------------------------*/
-bool Datum_abstract::bAssign(Token* pTkn, Column* pCol)
+bool Datum_h::bAssign(Token* pTkn, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
@@ -239,7 +266,7 @@ bool Datum_abstract::bAssign(Token* pTkn, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* get decimal                                                                */
 /*----------------------------------------------------------------------------*/
-i8 Datum_abstract::iBcd(void)
+i8 Datum_h::iBcd(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -251,7 +278,7 @@ i8 Datum_abstract::iBcd(void)
 /*----------------------------------------------------------------------------*/
 /* set decimal                                                                */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vBcd(i8 iBcd)
+void Datum_h::vBcd(i8 iBcd)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -261,7 +288,7 @@ void Datum_abstract::vBcd(i8 iBcd)
 /*----------------------------------------------------------------------------*/
 /* get boolean                                                                */
 /*----------------------------------------------------------------------------*/
-i8 Datum_abstract::iBol(void)
+i8 Datum_h::iBol(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -273,7 +300,7 @@ i8 Datum_abstract::iBol(void)
 /*----------------------------------------------------------------------------*/
 /* set boolean                                                                */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vBol(i8 iBol)
+void Datum_h::vBol(i8 iBol)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -283,7 +310,7 @@ void Datum_abstract::vBol(i8 iBol)
 /*----------------------------------------------------------------------------*/
 /* get azChar                                                                 */
 /*----------------------------------------------------------------------------*/
-char* Datum_abstract::azChar(void)
+char* Datum_h::azChar(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -295,7 +322,7 @@ char* Datum_abstract::azChar(void)
 /*----------------------------------------------------------------------------*/
 /* copy given source value into this var                                      */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vCopy(AnyVal* aAnyVal)
+void Datum_h::vCopy(AnyVal* aAnyVal)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -305,7 +332,7 @@ void Datum_abstract::vCopy(AnyVal* aAnyVal)
 /*----------------------------------------------------------------------------*/
 /* get day of date                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Datum_abstract::iDte_day(void)
+i8 Datum_h::iDte_day(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -317,7 +344,7 @@ i8 Datum_abstract::iDte_day(void)
 /*----------------------------------------------------------------------------*/
 /* get month of date                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Datum_abstract::iDte_month(void)
+i8 Datum_h::iDte_month(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -329,7 +356,7 @@ i8 Datum_abstract::iDte_month(void)
 /*----------------------------------------------------------------------------*/
 /* get year of date                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Datum_abstract::iDte_year(void)
+i8 Datum_h::iDte_year(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -341,7 +368,7 @@ i8 Datum_abstract::iDte_year(void)
 /*----------------------------------------------------------------------------*/
 /* set date from parts                                                        */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vDte(i8 iDte)
+void Datum_h::vDte(i8 iDte)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -351,7 +378,7 @@ void Datum_abstract::vDte(i8 iDte)
 /*----------------------------------------------------------------------------*/
 /* set date from parts                                                        */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vDte(i8 iYear, i8 iMonth, i8 iDay)
+void Datum_h::vDte(i8 iYear, i8 iMonth, i8 iDay)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -364,7 +391,7 @@ void Datum_abstract::vDte(i8 iYear, i8 iMonth, i8 iDay)
 /*----------------------------------------------------------------------------*/
 /* get era-date                                                               */
 /*----------------------------------------------------------------------------*/
-i8 Datum_abstract::iEdt(void)
+i8 Datum_h::iEdt(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -376,7 +403,7 @@ i8 Datum_abstract::iEdt(void)
 /*----------------------------------------------------------------------------*/
 /* get forth instruction pointer                                              */
 /*----------------------------------------------------------------------------*/
-Cell* Datum_abstract::aFip(void)
+Cell* Datum_h::aFip(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -388,7 +415,7 @@ Cell* Datum_abstract::aFip(void)
 /*----------------------------------------------------------------------------*/
 /* set forth instruction pointer                                              */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vFip(Cell* aFip)
+void Datum_h::vFip(Cell* aFip)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -398,7 +425,7 @@ void Datum_abstract::vFip(Cell* aFip)
 /*----------------------------------------------------------------------------*/
 /* get float                                                                  */
 /*----------------------------------------------------------------------------*/
-d8 Datum_abstract::dFlt(void)
+d8 Datum_h::dFlt(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -410,7 +437,7 @@ d8 Datum_abstract::dFlt(void)
 /*----------------------------------------------------------------------------*/
 /* set float                                                                  */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vFlt(d8 dFlt)
+void Datum_h::vFlt(d8 dFlt)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -420,7 +447,7 @@ void Datum_abstract::vFlt(d8 dFlt)
 /*----------------------------------------------------------------------------*/
 /* get integer                                                                */
 /*----------------------------------------------------------------------------*/
-i8 Datum_abstract::iInt(void)
+i8 Datum_h::iInt(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -432,7 +459,7 @@ i8 Datum_abstract::iInt(void)
 /*----------------------------------------------------------------------------*/
 /* set integer                                                                */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vInt(i8 iInt)
+void Datum_h::vInt(i8 iInt)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -442,7 +469,7 @@ void Datum_abstract::vInt(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* test if nested value is an integer                                         */
 /*----------------------------------------------------------------------------*/
-bool Datum_abstract::bIsInt(void)
+bool Datum_h::bIsInt(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -455,7 +482,7 @@ bool Datum_abstract::bIsInt(void)
 /*----------------------------------------------------------------------------*/
 /* get interval                                                               */
 /*----------------------------------------------------------------------------*/
-i8 Datum_abstract::iIvl(void)
+i8 Datum_h::iIvl(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -467,7 +494,7 @@ i8 Datum_abstract::iIvl(void)
 /*----------------------------------------------------------------------------*/
 /* set interval                                                               */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vIvl(i8 iIvl)
+void Datum_h::vIvl(i8 iIvl)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -477,7 +504,7 @@ void Datum_abstract::vIvl(i8 iIvl)
 /*----------------------------------------------------------------------------*/
 /* set interval from parts                                                    */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vIvl(i8 iSecond, i8 iMicro)
+void Datum_h::vIvl(i8 iSecond, i8 iMicro)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -488,7 +515,7 @@ void Datum_abstract::vIvl(i8 iSecond, i8 iMicro)
 /*----------------------------------------------------------------------------*/
 /* get object address                                                         */
 /*----------------------------------------------------------------------------*/
-Object* Datum_abstract::pObj(void)
+Object* Datum_h::pObj(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -500,7 +527,7 @@ Object* Datum_abstract::pObj(void)
 /*----------------------------------------------------------------------------*/
 /* set object address                                                         */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vObj(Object* pObj)
+void Datum_h::vObj(Object* pObj)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -510,7 +537,7 @@ void Datum_abstract::vObj(Object* pObj)
 /*----------------------------------------------------------------------------*/
 /* get bytes required to push value on stack                                  */
 /*----------------------------------------------------------------------------*/
-i8 Datum_abstract::nStackUsage(void)
+i8 Datum_h::nStackUsage(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -522,7 +549,7 @@ i8 Datum_abstract::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 /* get stz                                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* Datum_abstract::szStz(void)
+Stz* Datum_h::szStz(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -534,7 +561,7 @@ Stz* Datum_abstract::szStz(void)
 /*----------------------------------------------------------------------------*/
 /* set stz                                                                    */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vStz(Stz* szStz)
+void Datum_h::vStz(Stz* szStz)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -544,7 +571,7 @@ void Datum_abstract::vStz(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* set stz                                                                    */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vStz(char* acnChar, i8 nLength)
+void Datum_h::vStz(char* acnChar, i8 nLength)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -554,7 +581,7 @@ void Datum_abstract::vStz(char* acnChar, i8 nLength)
 /*----------------------------------------------------------------------------*/
 /* set stz                                                                    */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vStzDump(void)
+void Datum_h::vStzDump(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -569,7 +596,7 @@ void Datum_abstract::vStzDump(void)
 /*----------------------------------------------------------------------------*/
 /* get size of nested string value                                            */
 /*----------------------------------------------------------------------------*/
-i8 Datum_abstract::nStzSize(void)
+i8 Datum_h::nStzSize(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -581,7 +608,7 @@ i8 Datum_abstract::nStzSize(void)
 /*----------------------------------------------------------------------------*/
 /* set size of nested string value                                            */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vStzSize(i8 nSize)
+void Datum_h::vStzSize(i8 nSize)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -591,19 +618,17 @@ void Datum_abstract::vStzSize(i8 nSize)
 /*----------------------------------------------------------------------------*/
 /* get space allowed for nested string value                                  */
 /*----------------------------------------------------------------------------*/
-i8 Datum_abstract::nStzSpace(void)
+i8 Datum_h::nStzSpace(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 nSize = sizeof(m_yaSpace);
-  
-  return nSize;
+  return m_nSizeSpace;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get time                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Datum_abstract::iTme(void)
+i8 Datum_h::iTme(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -615,7 +640,7 @@ i8 Datum_abstract::iTme(void)
 /*----------------------------------------------------------------------------*/
 /* set time                                                                   */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vTme(i8 iTme)
+void Datum_h::vTme(i8 iTme)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -625,7 +650,7 @@ void Datum_abstract::vTme(i8 iTme)
 /*----------------------------------------------------------------------------*/
 /* set time from parts                                                        */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vTme(i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro)
+void Datum_h::vTme(i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -639,7 +664,7 @@ void Datum_abstract::vTme(i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro)
 /*----------------------------------------------------------------------------*/
 /* convert to stz string                                                      */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vToString(Stz* szString)
+void Datum_h::vToString(Stz* szString)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -649,7 +674,7 @@ void Datum_abstract::vToString(Stz* szString)
 /*----------------------------------------------------------------------------*/
 /* get timestamp                                                              */
 /*----------------------------------------------------------------------------*/
-i8 Datum_abstract::iTsp(void)
+i8 Datum_h::iTsp(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -661,7 +686,7 @@ i8 Datum_abstract::iTsp(void)
 /*----------------------------------------------------------------------------*/
 /* set timestamp                                                              */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vTsp(i8 iTsp)
+void Datum_h::vTsp(i8 iTsp)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
@@ -671,7 +696,7 @@ void Datum_abstract::vTsp(i8 iTsp)
 /*----------------------------------------------------------------------------*/
 /* set timestamp from parts                                                   */
 /*----------------------------------------------------------------------------*/
-void Datum_abstract::vTsp(i8 iYear, i8 iMonth,  i8 iDay,
+void Datum_h::vTsp(i8 iYear, i8 iMonth,  i8 iDay,
                  i8 iHour, i8 iMinute, i8 iSecond, i8 iMicro)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
@@ -691,11 +716,16 @@ void Datum_abstract::vTsp(i8 iYear, i8 iMonth,  i8 iDay,
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-Footer* Datum_abstract::aFooter(void)
+Footer* Datum_h::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_DATUM);
   
-  return &m_xFooter;
+  Footer* aFooter_calc =
+    aAdd<Footer*>(this,
+                  sizeof(Object) + sizeof(m_nSizeSpace) +
+                  sizeof(StzVal) + m_nSizeSpace) ;
+  
+  return aFooter_calc;
 }
 
 /*============================================================================*/
