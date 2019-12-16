@@ -21,8 +21,8 @@ namespace Datums
     bool  m_bIsPtnKey;
     bool  m_bIsLastColumn;
   
-    AnyVal_y32 m_xMaxVal;
-    AnyVal_y32 m_xMinVal;
+    Datum_y32 m_xMaxVal;
+    Datum_y32 m_xMinVal;
 
     // must be last
     Footer m_xFooter;
@@ -74,8 +74,8 @@ namespace Datums
     bool bIsPtnKey(void);
     void vIsPtnKey(bool bIsPtnKey);
 
-    AnyVal_y32* aMaxVal(void);
-    AnyVal_y32* aMinVal(void);
+    Datum_h* pMaxVal(void);
+    Datum_h* pMinVal(void);
 
     void vShow(void);
   

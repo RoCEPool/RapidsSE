@@ -31,31 +31,6 @@ void Datum_h::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Datum_h::Datum_h(void)
-: Object(CN_DATUM)
-{
-  _precondition_(_MAGIC_,CN_DATUM);
-
-  m_nSizeSpace = C_48KB;
-  _setFooter_();
-  
-  m_xIntVal.vMagic();
-  m_xIntVal.vClass(CN_INTVAL);
-  m_xIntVal.vInt(C_UNKNOWN);
-  
-  m_xStzVal.vStz(""_Stz);
-  //vStzDump();
-
-  //m_sVch
-  
-  _checkInitialised_(CN_DATUM);
-  
-  _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Datum_h::Datum_h(i8 nSizeSpace)
 : Object(CN_DATUM)
 {
@@ -63,6 +38,8 @@ Datum_h::Datum_h(i8 nSizeSpace)
   
   m_nSizeSpace = nSizeSpace;
   _setFooter_();
+  
+  MemLib::vZero(ayaSpace(),nSizeSpace,CN_DATUM);
 
   m_xIntVal.vMagic();
   m_xIntVal.vClass(CN_INTVAL);
@@ -74,37 +51,6 @@ Datum_h::Datum_h(i8 nSizeSpace)
   //m_sVch
   
   _checkInitialised_(CN_DATUM);
-  
-  _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Datum_h::Datum_h(AnyVal* aAnyVal)
-: Object(CN_DATUM)
-{
-  _precondition_(_MAGIC_,CN_DATUM);
-
-  m_nSizeSpace = C_48KB;
-  _setFooter_();
-
-  m_xIntVal.vMagic();
-  m_xIntVal.vClass(CN_INTVAL);
-  m_xIntVal.vInt(C_UNKNOWN);
-  
-  eCN eClassNo = aAnyVal->eClass();
-  
-  switch (eClassNo) {
-    case CN_FIPVAL: m_xFipVal.vFip(aAnyVal->aFip());    break;
-    case CN_INTVAL: m_xIntVal.vInt(aAnyVal->iInt());    break;
-    case CN_PTRVAL: m_xPtrVal.vObj(aAnyVal->pObj());    break;
-    case CN_STZVAL: m_xStzVal.vStz(aAnyVal->szStz());   break;
-      
-    default:
-      vThrow(FK_CHECK,VL_FATAL,__func__,__FILE__,__LINE__,
-             "Invalid eClass %lld"_Stz,eClassNo);
-  }
   
   _postcondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 }
@@ -250,18 +196,18 @@ AnyVal* Datum_h::aAnyVal(void)
 /*----------------------------------------------------------------------------*/
 /* assign datum from token                                                    */
 /*----------------------------------------------------------------------------*/
-bool Datum_h::bAssign(Token* pTkn, Column* pCol)
-{
-  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
-
-  char* azCrs = pTkn->azChar();
-  
-  Format* pFmt = AM::pFmt();
-  
-  bool b = CsvValue::bToDtm(this,pCol,&azCrs,pFmt);
-  
-  return b;
-}
+//bool Datum_h::bAssign(Token* pTkn, Column* pCol)
+//{
+//  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+//
+//  char* azCrs = pTkn->azChar();
+//  
+//  Format* pFmt = AM::pFmt();
+//  
+//  bool b = CsvValue::bToDtm(this,pCol,&azCrs,pFmt);
+//  
+//  return b;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get decimal                                                                */
@@ -532,6 +478,22 @@ void Datum_h::vObj(Object* pObj)
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
   m_xPtrVal.vObj(pObj);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of space area                                                  */
+/*----------------------------------------------------------------------------*/
+byte* Datum_h::ayaSpace(void)
+{
+  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
+  
+  byte* ayaSpace =
+    aAdd<byte*>(this,
+                 sizeof(Object) + sizeof(m_nSizeSpace) +
+                 sizeof(StzVal)) ;
+  
+
+  return ayaSpace;
 }
 
 /*----------------------------------------------------------------------------*/

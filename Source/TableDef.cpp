@@ -664,12 +664,13 @@ eEC TableDef::eParseMax(TokenVec* pTknVec, Column* pCol)
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
 
-  Datum oDatum;
+  Datum_h* pDatum = pCol->pMaxVal();
   
-  bool b = oDatum.bAssign(pTkn,pCol);
+  i8 iMax = pTkn->iToI8();
+  pDatum->vInt(iMax);
   
-  if (!b)
-    return EC_INVALID_COLUMN;
+//  if (!b)
+//    return EC_INVALID_COLUMN;
   
   return EC_NONE;
 }
@@ -683,12 +684,13 @@ eEC TableDef::eParseMin(TokenVec* pTknVec, Column* pCol)
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
   
-  Datum oDatum;
+  Datum_h* pDatum = pCol->pMinVal();
+
+  i8 iMin = pTkn->iToI8();
+  pDatum->vInt(iMin);
   
-  bool b = oDatum.bAssign(pTkn,pCol);
-  
-  if (!b)
-    return EC_INVALID_COLUMN;
+//  if (!b)
+//    return EC_INVALID_COLUMN;
   
   return EC_NONE;
 }
