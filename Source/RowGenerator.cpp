@@ -6,13 +6,103 @@
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Static Functions --------------------------------------------------------*/
+/*-- Public Static Functions -------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get a random row                                                           */
+/* generate a random row                                                      */
 /*----------------------------------------------------------------------------*/
 void RowGenerator::vRandom(Row* pRow, StreamDef* pStreamDef)
+{
+  i8 nCols = pStreamDef->nColumns(C_ALL);
+  
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    Column* pCol = pStreamDef->pGetColumn(i_Col);
+    
+    eDM eDatum = pCol->eDatum();
+    
+    switch (eDatum) {
+      case DM_BCD: vRndBcd(pRow,pCol); break;
+      case DM_BOL: vRndBol(pRow,pCol); break;
+      case DM_DTE: vRndDte(pRow,pCol); break;
+      case DM_FLT: vRndFlt(pRow,pCol); break;
+      case DM_INT: vRndInt(pRow,pCol); break;
+      case DM_IVL: vRndIvl(pRow,pCol); break;
+      case DM_TME: vRndTme(pRow,pCol); break;
+      case DM_TSP: vRndTsp(pRow,pCol); break;
+      case DM_VCH: vRndVch(pRow,pCol); break;
+      default:
+        vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+               "RowGenerator::vRandom: Invalid eDatum : %lld\n"_Stz,eDatum);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private Static Functions ------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* generate a random bcd column                                               */
+/*----------------------------------------------------------------------------*/
+void RowGenerator::vRndBcd(Row* pRow, Column* pCol)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate a random bol column                                               */
+/*----------------------------------------------------------------------------*/
+void RowGenerator::vRndBol(Row* pRow, Column* pCol)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate a random dte column                                               */
+/*----------------------------------------------------------------------------*/
+void RowGenerator::vRndDte(Row* pRow, Column* pCol)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate a random flt column                                               */
+/*----------------------------------------------------------------------------*/
+void RowGenerator::vRndFlt(Row* pRow, Column* pCol)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate a random int column                                               */
+/*----------------------------------------------------------------------------*/
+void RowGenerator::vRndInt(Row* pRow, Column* pCol)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate a random ivl column                                               */
+/*----------------------------------------------------------------------------*/
+void RowGenerator::vRndIvl(Row* pRow, Column* pCol)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate a random tme column                                               */
+/*----------------------------------------------------------------------------*/
+void RowGenerator::vRndTme(Row* pRow, Column* pCol)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate a random tsp column                                               */
+/*----------------------------------------------------------------------------*/
+void RowGenerator::vRndTsp(Row* pRow, Column* pCol)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate a random vch column                                               */
+/*----------------------------------------------------------------------------*/
+void RowGenerator::vRndVch(Row* pRow, Column* pCol)
 {
 }
 
