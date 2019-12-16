@@ -271,7 +271,7 @@ void Step::vIntRandom(void)
   
   i8 iLow = m_pDataStack->iPopInt(__func__);
   
-  i8 iRandom = Random::iInteger(iLow,iHigh);
+  i8 iRandom = RndLib::iInteger(iLow,iHigh);
   
   m_pDataStack->vPushInt(iRandom);
   
@@ -306,7 +306,7 @@ void Step::vUnsignedIntRandom(void)
   
   i8 iLow = m_pDataStack->iPopInt(__func__);
   
-  u8 uRandom = Random::uInteger(iLow,iHigh);
+  u8 uRandom = RndLib::uInteger(iLow,iHigh);
   
   m_pDataStack->vPushInt(uRandom);
   

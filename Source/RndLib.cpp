@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Random.cpp -- generate random number/string                                */
+/* RndLib.cpp -- generate random number/string                                */
 /*============================================================================*/
 
 #include "Library.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* generate a random number                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Random::iInteger(void)
+i8 RndLib::iInteger(void)
 {
   i8 iRand = ThirdParty::genrand64_int63();
   
@@ -17,7 +17,7 @@ i8 Random::iInteger(void)
 /*----------------------------------------------------------------------------*/
 /* generate a random number                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Random::iInteger(i8 iMax)
+i8 RndLib::iInteger(i8 iMax)
 {
   i8 iRand = ThirdParty::genrand64_int63() % iMax;
   
@@ -27,7 +27,7 @@ i8 Random::iInteger(i8 iMax)
 /*----------------------------------------------------------------------------*/
 /* generate a random number between low and high (inclusive)                  */
 /*----------------------------------------------------------------------------*/
-i8 Random::iInteger(i8 iLow, i8 iHigh)
+i8 RndLib::iInteger(i8 iLow, i8 iHigh)
 {
   i8 r = ThirdParty::genrand64_int63();
   
@@ -44,7 +44,7 @@ i8 Random::iInteger(i8 iLow, i8 iHigh)
 /*----------------------------------------------------------------------------*/
 /* generate a random number                                                   */
 /*----------------------------------------------------------------------------*/
-u8 Random::uInteger(void)
+u8 RndLib::uInteger(void)
 {
   u8 iRand = ThirdParty::genrand64_int64();
   
@@ -54,7 +54,7 @@ u8 Random::uInteger(void)
 /*----------------------------------------------------------------------------*/
 /* generate a random number                                                   */
 /*----------------------------------------------------------------------------*/
-u8 Random::uInteger(u8 uMax)
+u8 RndLib::uInteger(u8 uMax)
 {
   u8 uRand = ThirdParty::genrand64_int64() % uMax;
   
@@ -64,7 +64,7 @@ u8 Random::uInteger(u8 uMax)
 /*----------------------------------------------------------------------------*/
 /* generate a random number between low and high (inclusive)                  */
 /*----------------------------------------------------------------------------*/
-u8 Random::uInteger(u8 uLow, u8 uHigh)
+u8 RndLib::uInteger(u8 uLow, u8 uHigh)
 {
   u8 r = ThirdParty::genrand64_int64();
   
@@ -81,7 +81,7 @@ u8 Random::uInteger(u8 uLow, u8 uHigh)
 /*----------------------------------------------------------------------------*/
 /* choose a random logarithemic level (up to n levels, at given frequency)    */
 /*----------------------------------------------------------------------------*/
-i8 Random::iLogLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
+i8 RndLib::iLogLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
 {
   //
   // This function generates a number between 0 and nLevels - 1.
@@ -108,7 +108,7 @@ i8 Random::iLogLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
   
   u8 uBitSubset = 0;
   u8 nSubsetsLeft = 0;
-  u8 uRandomPattern = 0;
+  u8 uRndLibPattern = 0;
   
   // step thru bit subsets until we find a subset with some bits set
   i8 nAllZeroSubsets;
@@ -118,16 +118,16 @@ i8 Random::iLogLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
     if (0 == nSubsetsLeft) {
       
       if (C_UNKNOWN == i_NextRnd)
-        uRandomPattern = Random::uInteger();
+        uRndLibPattern = RndLib::uInteger();
       else
-        uRandomPattern = Random::uRepeatable(i_NextRnd);
+        uRndLibPattern = RndLib::uRepeatable(i_NextRnd);
 
       nSubsetsLeft = nLevels / iFrequency;
     }
 
     // take the next lower subset of bits
-    uBitSubset = uRandomPattern & uBitMask;
-    uRandomPattern >>= iFrequency;
+    uBitSubset = uRndLibPattern & uBitMask;
+    uRndLibPattern >>= iFrequency;
     nSubsetsLeft--;
   }
   
@@ -143,7 +143,7 @@ i8 Random::iLogLevel(i8 nLevels, i8 iFrequency, i8& i_NextRnd)
 /*----------------------------------------------------------------------------*/
 /* generate a random string of given length                                   */
 /*----------------------------------------------------------------------------*/
-void Random::vString(s256& sStr, i8 iLength)
+void RndLib::vString(s256& sStr, i8 iLength)
 {
   static char caCharSet[69] = // 68 actual chars + the '\0'
     "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-#?!";
@@ -1188,7 +1188,7 @@ u8 uaRand[1024] = {
   /* 1023 */  7355564764150119854ull,
 };
 
-u8 Random::uRepeatable(i8& i_Next)
+u8 RndLib::uRepeatable(i8& i_Next)
 {
   u8 uRnd = uaRand[i_Next];
   

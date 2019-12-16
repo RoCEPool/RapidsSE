@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Random.hpp -- random number/string generator                               */
+/* RndLib.hpp -- random number/string generator                               */
 /*============================================================================*/
 #pragma once
 
 namespace Library
 {
-  class Random
+  class RndLib
   {
   public:
     static i8 iInteger(void);

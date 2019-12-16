@@ -282,8 +282,8 @@ void vTest8(void)
 void vTest10(void)
 {
   
-  i8 i1 = Random::iInteger(-999999,999999);
-  i8 i2 = Random::iInteger(-999999,999999);
+  i8 i1 = RndLib::iInteger(-999999,999999);
+  i8 i2 = RndLib::iInteger(-999999,999999);
   
   for (i8 i = 0; i < 10000000; i ++) {
     //i8 i1 = Random::iInteger(-999999,999999);
@@ -511,7 +511,7 @@ void vTest12(void)
   vTrace("\nSorting array\n"_Stz);
     
   for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
-    A[i] = Random::iInteger(0,1000);
+    A[i] = RndLib::iInteger(0,1000);
     vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
   }
 
@@ -605,7 +605,7 @@ void vTest13(void)
   vTrace("\nSorting array\n"_Stz);
   
   for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
-    A[i] = Random::iInteger(0,1000);
+    A[i] = RndLib::iInteger(0,1000);
     vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
   }
   
@@ -731,7 +731,7 @@ void vTest14(void)
   vTrace("\nSorting array\n"_Stz);
   
   for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
-    A[i] = Random::iInteger(0,1000);
+    A[i] = RndLib::iInteger(0,1000);
     vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
   }
   
@@ -867,7 +867,7 @@ void vTest15(void)
   vTrace("\nSorting array\n"_Stz);
   
   for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
-    A[i] = Random::iInteger(0,1000);
+    A[i] = RndLib::iInteger(0,1000);
     vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
   }
   

@@ -33,7 +33,7 @@ bool Prompt::bPrompt_rnd(SePrompt* pPrompt)
 
   i8 i_Next = 0;
   for (i8 i = 0; i < 32; i++) {
-    vTrace("/* %4lld */ %20lluull, "_Stz,i,Random::uRepeatable(i_Next));
+    vTrace("/* %4lld */ %20lluull, "_Stz,i,RndLib::uRepeatable(i_Next));
     if (0 == (i+1) % 1)
       vTrace("\n"_Stz);
   }
