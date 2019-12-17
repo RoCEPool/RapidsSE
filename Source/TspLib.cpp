@@ -28,15 +28,15 @@ Dtm TspLib::wGetCurrTsp_local(void)
     return wTsp;
   }
   
-  wTsp.xTsp.m_uYearDelta = aLocalDateTime->tm_year;
-  wTsp.xTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
-  wTsp.xTsp.m_uDay       = aLocalDateTime->tm_mday;
-  wTsp.xTsp.m_uHour      = aLocalDateTime->tm_hour;
-  wTsp.xTsp.m_uMinute    = aLocalDateTime->tm_min;
-  wTsp.xTsp.m_uSecond    = aLocalDateTime->tm_sec;
-  wTsp.xTsp.m_uMicro     = wIvl.m_wIvl.m_uMicro;
-  wTsp.xTsp.m_uLocal     = C_TSP_LOCAL;
-  wTsp.xTsp.m_uSpare     = 0;
+  wTsp.m_wTsp.m_uYearDelta = aLocalDateTime->tm_year;
+  wTsp.m_wTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
+  wTsp.m_wTsp.m_uDay       = aLocalDateTime->tm_mday;
+  wTsp.m_wTsp.m_uHour      = aLocalDateTime->tm_hour;
+  wTsp.m_wTsp.m_uMinute    = aLocalDateTime->tm_min;
+  wTsp.m_wTsp.m_uSecond    = aLocalDateTime->tm_sec;
+  wTsp.m_wTsp.m_uMicro     = wIvl.m_wIvl.m_uMicro;
+  wTsp.m_wTsp.m_uLocal     = C_TSP_LOCAL;
+  wTsp.m_wTsp.m_uSpare     = 0;
   
   return wTsp;
 }
@@ -65,15 +65,15 @@ Dtm TspLib::wGetCurrTsp_utc(void)
     return wTsp;
   }
 
-  wTsp.xTsp.m_uYearDelta = aUtcDateTime->tm_year;
-  wTsp.xTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
-  wTsp.xTsp.m_uDay       = aUtcDateTime->tm_mday;
-  wTsp.xTsp.m_uHour      = aUtcDateTime->tm_hour;
-  wTsp.xTsp.m_uMinute    = aUtcDateTime->tm_min;
-  wTsp.xTsp.m_uSecond    = aUtcDateTime->tm_sec;
-  wTsp.xTsp.m_uMicro     = wIvl.m_wIvl.m_uMicro;
-  wTsp.xTsp.m_uLocal     = C_TSP_UTC;
-  wTsp.xTsp.m_uSpare     = 0;
+  wTsp.m_wTsp.m_uYearDelta = aUtcDateTime->tm_year;
+  wTsp.m_wTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
+  wTsp.m_wTsp.m_uDay       = aUtcDateTime->tm_mday;
+  wTsp.m_wTsp.m_uHour      = aUtcDateTime->tm_hour;
+  wTsp.m_wTsp.m_uMinute    = aUtcDateTime->tm_min;
+  wTsp.m_wTsp.m_uSecond    = aUtcDateTime->tm_sec;
+  wTsp.m_wTsp.m_uMicro     = wIvl.m_wIvl.m_uMicro;
+  wTsp.m_wTsp.m_uLocal     = C_TSP_UTC;
+  wTsp.m_wTsp.m_uSpare     = 0;
   
   return wTsp;
 }
@@ -96,15 +96,15 @@ Dtm TspLib::wToTsp_local(Dtm wIvl)
     return wDtm;
   }
   
-  wDtm.xTsp.m_uYearDelta = aLocalDateTime->tm_year;
-  wDtm.xTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
-  wDtm.xTsp.m_uDay       = aLocalDateTime->tm_mday;
-  wDtm.xTsp.m_uHour      = aLocalDateTime->tm_hour;
-  wDtm.xTsp.m_uMinute    = aLocalDateTime->tm_min;
-  wDtm.xTsp.m_uSecond    = aLocalDateTime->tm_sec;
-  wDtm.xTsp.m_uMicro     = wIvl.m_wIvl.m_uMicro;
-  wDtm.xTsp.m_uLocal     = C_TSP_LOCAL;
-  wDtm.xTsp.m_uSpare     = 0;
+  wDtm.m_wTsp.m_uYearDelta = aLocalDateTime->tm_year;
+  wDtm.m_wTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
+  wDtm.m_wTsp.m_uDay       = aLocalDateTime->tm_mday;
+  wDtm.m_wTsp.m_uHour      = aLocalDateTime->tm_hour;
+  wDtm.m_wTsp.m_uMinute    = aLocalDateTime->tm_min;
+  wDtm.m_wTsp.m_uSecond    = aLocalDateTime->tm_sec;
+  wDtm.m_wTsp.m_uMicro     = wIvl.m_wIvl.m_uMicro;
+  wDtm.m_wTsp.m_uLocal     = C_TSP_LOCAL;
+  wDtm.m_wTsp.m_uSpare     = 0;
 
   return wDtm;
 }
@@ -131,15 +131,15 @@ Dtm TspLib::wToTsp_utc(Dtm wIvl)
     return wDtm;
   }
 
-  wDtm.xTsp.m_uYearDelta = aUtcDateTime->tm_year;
-  wDtm.xTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
-  wDtm.xTsp.m_uDay       = aUtcDateTime->tm_mday;
-  wDtm.xTsp.m_uHour      = aUtcDateTime->tm_hour;
-  wDtm.xTsp.m_uMinute    = aUtcDateTime->tm_min;
-  wDtm.xTsp.m_uSecond    = aUtcDateTime->tm_sec;
-  wDtm.xTsp.m_uMicro     = wIvl.m_wIvl.m_uMicro;
-  wDtm.xTsp.m_uLocal     = C_TSP_UTC;
-  wDtm.xTsp.m_uSpare     = 0;
+  wDtm.m_wTsp.m_uYearDelta = aUtcDateTime->tm_year;
+  wDtm.m_wTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
+  wDtm.m_wTsp.m_uDay       = aUtcDateTime->tm_mday;
+  wDtm.m_wTsp.m_uHour      = aUtcDateTime->tm_hour;
+  wDtm.m_wTsp.m_uMinute    = aUtcDateTime->tm_min;
+  wDtm.m_wTsp.m_uSecond    = aUtcDateTime->tm_sec;
+  wDtm.m_wTsp.m_uMicro     = wIvl.m_wIvl.m_uMicro;
+  wDtm.m_wTsp.m_uLocal     = C_TSP_UTC;
+  wDtm.m_wTsp.m_uSpare     = 0;
 
   return wDtm;
 }

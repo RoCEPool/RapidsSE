@@ -31,7 +31,7 @@ namespace Library
       Edt   m_wEdt;
       Ivl   m_wIvl;
       Tme   m_wTme;
-      _Tsp  xTsp;
+      Tsp   m_wTsp;
       
       Stz*  m_szVch;
 

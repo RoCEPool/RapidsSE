@@ -118,16 +118,16 @@ i8 Dtm::iTsp(i8 iYear, i8 iMonth,  i8 iDay,
 {
   Dtm xDtm;
   
-  xDtm.xTsp.m_uYearDelta = iYear - C_YEAR_BASE;
-  xDtm.xTsp.m_uMonth     = iMonth;
-  xDtm.xTsp.m_uDay       = iDay;
+  xDtm.m_wTsp.m_uYearDelta = iYear - C_YEAR_BASE;
+  xDtm.m_wTsp.m_uMonth     = iMonth;
+  xDtm.m_wTsp.m_uDay       = iDay;
   
-  xDtm.xTsp.m_uHour      = iHour;
-  xDtm.xTsp.m_uSecond    = iSecond;
-  xDtm.xTsp.m_uMinute    = iMinute;
-  xDtm.xTsp.m_uMicro     = iMicro;
-  xDtm.xTsp.m_uLocal     = C_TSP_LOCAL;
-  xDtm.xTsp.m_uSpare     = 0;
+  xDtm.m_wTsp.m_uHour      = iHour;
+  xDtm.m_wTsp.m_uSecond    = iSecond;
+  xDtm.m_wTsp.m_uMinute    = iMinute;
+  xDtm.m_wTsp.m_uMicro     = iMicro;
+  xDtm.m_wTsp.m_uLocal     = C_TSP_LOCAL;
+  xDtm.m_wTsp.m_uSpare     = 0;
   
   return xDtm.m_iI8;
 }
