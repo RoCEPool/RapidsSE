@@ -23,12 +23,12 @@ namespace Base
 #include "AxiomaticConstants.h"
 #include "BitLib.hpp"
 #include "ByteLiterals.hpp"
+#include "CommonTypes.h"
 #include "Gid.h"
 #include "i3.hpp"
 #include "Null.hpp"
 #include "WordAsBytes.h"
 
-#include "SqlTypes.h"
 
 /*============================================================================*/
 /* end                                                                        */
