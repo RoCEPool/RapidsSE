@@ -1341,6 +1341,7 @@ public:
   // write behind
   void vWriteBehindCreate(void);
   void vWriteBehindGet(void);
+  void vWriteBehindPipeOut(void);
   void vWriteBehindset(void);
 
   // zero

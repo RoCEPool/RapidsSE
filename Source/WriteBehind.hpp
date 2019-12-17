@@ -20,14 +20,16 @@ namespace Buffers
     
   public:
     void* operator new(size_t);
-  
+    void  operator delete(void*);
+    
     WriteBehind(eDS eDataSource);
     ~WriteBehind(void) noexcept(false);
     
   public:
-    eEC  eAppendRow(void);
-    void vHandleDanglingBuffers(void);
-    eEC  eProcessRecord(Stz* aRecord,  i8 nBytes);
+    eEC        eAppendRow(CrwBuffer** ppCrwBuffer);
+    CrwBuffer* pCrwBuffer(i8 iPtn);
+    void       vHandleDanglingBuffers(void);
+    eEC        eProcessRecord(char** aazRecord,  i8 nBytes, CrwBuffer** ppCrwBuffer);
   
   private:
     void vNewCrwBuffer(i8 iPartition);

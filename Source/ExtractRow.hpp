@@ -23,7 +23,7 @@ namespace Buffers
    ~ExtractRow(void) noexcept(false);
     
   public:
-    bool bExtractRow(Stz* szRecStr, bool &bBlankLine);
+    bool bExtractRow(char** aazRecStr, bool &bBlankLine);
     
   };
 }

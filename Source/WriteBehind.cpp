@@ -19,14 +19,26 @@ WriteBehind* Buffers::_pWriteBehind(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate a new entry buffer from heap                                      */
+/* allocate a new writeBehind from heap                                       */
 /*----------------------------------------------------------------------------*/
 void* WriteBehind::operator new(size_t)
 {
-  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: WriteBehind class cannot be new'd\n"_Stz);
+  WriteBehind* pWriteBehind =
+  static_cast<WriteBehind*>(HeapMem::pAllocate(CN_WRITEBEHIND));
+  
+  return pWriteBehind;
   
   NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free a writeBehind back to the heap                                        */
+/*----------------------------------------------------------------------------*/
+void WriteBehind::operator delete(void* aAddress)
+{
+  WriteBehind* pWriteBehind = static_cast<WriteBehind*>(aAddress);
+  
+  HeapMem::vFree(pWriteBehind);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,6 +60,10 @@ WriteBehind::WriteBehind(eDS eDataSource)
     m_pCrwBuffer[i_Partition]   = nullptr;
     m_nWriteBehindBuffers[i_Partition] = 0;
   }
+  
+  _checkInitialised_(CN_WRITEBEHIND);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +86,7 @@ WriteBehind::~WriteBehind(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-eEC WriteBehind::eAppendRow(void)
+eEC WriteBehind::eAppendRow(CrwBuffer** ppCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
@@ -117,20 +133,23 @@ eEC WriteBehind::eAppendRow(void)
     m_pCrwBuffer[i_Ptn] = nullptr;
     pCrwBuffer->vAppendClose();
     
-    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->pSession(),
-                                          m_pTable->szTableNm(),
-                                          m_eDataSource,
-                                          pCrwBuffer,
-                                          m_pParentJob->iJobId(),
-                                          i_Ptn,
-                                          C_NOT_FINAL,
-                                          0);
+    // return the full buffer
+    *ppCrwBuffer = pCrwBuffer;
     
     // repeat, try-again
     // ...
   }
   
   return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return the ptn crwBuffer                                                   */
+/*----------------------------------------------------------------------------*/
+CrwBuffer* WriteBehind::pCrwBuffer(i8 iPtn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
+  return m_pCrwBuffer[iPtn];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -172,24 +191,24 @@ void WriteBehind::vHandleDanglingBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* process record                                                             */
 /*----------------------------------------------------------------------------*/
-eEC WriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
+eEC WriteBehind::eProcessRecord(char** aazRecStr, i8 nBytes, CrwBuffer** ppCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
   bool bBlankLine = false;
   
-  if (nBytes > C_MAX_RECORD) {
-    if (! AM::bMetadata()) {
-      vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
-            szRecStr,
-            C_MAX_RECORD);
-    }
-    return EC_MAX_ROW_LENGTH;
-  }
+//  if (nBytes > C_MAX_RECORD) {
+//    if (! AM::bMetadata()) {
+//      vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
+//            szRecStr,
+//            C_MAX_RECORD);
+//    }
+//    return EC_MAX_ROW_LENGTH;
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool bValid = bExtractRow(szRecStr, bBlankLine);
+  bool bValid = bExtractRow(aazRecStr, bBlankLine);
   
   if (bBlankLine)
     return EC_BLANKLINE;
@@ -198,7 +217,7 @@ eEC WriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
     return EC_INVALID_VALUE;
 
   // attempt to append row into a write-behind buffer
-  eEC eError = eAppendRow();
+  eEC eError = eAppendRow(ppCrwBuffer);
 
   // was there an error ?
   if (eError != EC_NONE) {

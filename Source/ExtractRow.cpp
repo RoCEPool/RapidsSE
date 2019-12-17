@@ -55,7 +55,7 @@ ExtractRow::~ExtractRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* Extract row (with hash) from given record string                           */
 /*----------------------------------------------------------------------------*/
-bool ExtractRow::bExtractRow(Stz* szRecStr, bool &bBlankLine)
+bool ExtractRow::bExtractRow(char** aazRecStr, bool &bBlankLine)
 {
   StreamDef* pStreamDef = m_pTable->pStreamDef();
   
@@ -64,12 +64,12 @@ bool ExtractRow::bExtractRow(Stz* szRecStr, bool &bBlankLine)
   else
     m_pRow = new Row(pStreamDef,C_ALL);
 
-  char* acRecCrs = szRecStr->azChar();
+  //char* acRecCrs = szRecStr->azChar();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   bool bResult = CsvCursor::bExtractNext(m_pRow,pStreamDef,
-                                         &acRecCrs,&m_oFormatters,
+                                         aazRecStr,&m_oFormatters,
                                          bBlankLine);
   if (! bResult)
     return false;

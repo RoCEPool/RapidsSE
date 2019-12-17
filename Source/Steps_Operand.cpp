@@ -377,10 +377,44 @@ void Step::vOperandCsvToCrw(void)
 {
   ENTRY(); // ENTRY("vOperandCsvToCrw"_Stz);
   
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+  Op* pOp = m_pTask->m_pJob->m_pOp;
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pRegSet->m_pOperand);
-  m_pRegSet->m_pOperand = pCsvBuffer->pToCrwBuffer(pTable, new RowCompactor);
+  WriteBehind* pWriteBehind = *m_pRegSet->m_xpWriteBehind;
+  
+  char* aCursor = pCsvBuffer->aDataArea();
+  i8 nRecordBytes = 0;
+  CrwBuffer* pCrwBuffer = nullptr;
+  
+  for(i8 i_Record = 0; i_Record < pCsvBuffer->nRecords(); i_Record++) {
+    
+    // process that record into write behind
+    eEC eError = pWriteBehind->eProcessRecord(&aCursor, nRecordBytes, &pCrwBuffer);
+    
+    if (pCrwBuffer) {
+      pCrwBuffer->vAppendClose();
+      pOp->vPipeOut(_pOperand(pCrwBuffer));
+      pCrwBuffer = nullptr;
+    }
+//    if (EC_NONE == eError) {
+//      continue;
+//    }
+//
+//    if (EC_BLANKLINE == eError)
+//      continue;
+//
+//    if (EC_INVALID_VALUE == eError) {
+//      //vIncRowsInvalid();
+//      //++m_pJob_LoadTable->m_ixErrors;
+//      continue;
+//    }
+//
+//    if (EC_MAX_ROW_LENGTH == eError) {
+//      //vIncRowsInvalid();
+//      //++m_pJob_LoadTable->m_ixErrors;
+//      continue;
+//    }
+  }
   
   EXIT();
 }

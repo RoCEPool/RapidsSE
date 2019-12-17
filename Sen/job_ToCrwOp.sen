@@ -72,23 +72,13 @@
 
       ZK_CSVBUFFER of
         "Operand:- ZK_CSVBUFFER" .verbose
-/*
-        table[].get Operand[].csvToCrw
-        Operand[].get to Subset[]
-        begin
-          Operand[].isNull
-        not while
-          assert::stack_0
-          Operand[].pipeOut
-          Subset[].nextBuffer to Operand[]
-          assert::stack_0
-        repeat
- */
+        Operand[].csvToCrw
         true
       endof
 
       ZK_ENDMARKER of
         "Operand:- ZK_ENDMARKER" .verbose
+        writeBehind[].pipeout
         Operand[].handleEnd
       endof
 
