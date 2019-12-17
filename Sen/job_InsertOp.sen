@@ -5,7 +5,7 @@
 " job_InsertOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a insertablee table folder                                */
+/* check if word is a insertable table                                        */
 /*----------------------------------------------------------------------------*/
 : checkInsertTable ( "<tableNm>" -- true | errorCode false )
 
@@ -40,12 +40,11 @@
   >>logEntry <SEED_REQ>
   job::this locals| pJob_InsertOp |
 
-  0 0 locals| sTableNm pTable |
   op.partition@ locals| iPartition |
+  <tableNm> locals| sTableNm |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can insert into the table
-  <tableNm> to sTableNm
   sTableNm checkInsertTable not if
     pJob_InsertOp <ERROR_JOB> !!logError exit
   then
@@ -70,7 +69,6 @@
 
     ZK_CRWBUFFER of
       "Operand:- ZK_CRWBUFFER" .verbose
-      //table[].get table.streamDef@ to StreamDef[]
       Operand[].insertIntoTable
       true
     endof

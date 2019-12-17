@@ -298,7 +298,7 @@ void Step::vOperandNewEndMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newStreamDef -- new a stream def                                 */
+/* Operand[].newStreamDef -- new a stream def from table[]                    */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNewStreamDef(void)
 {
