@@ -100,12 +100,12 @@ i8 Dtm::iTme(i8 iHour, i8 iSecond, i8 iMinute, i8 iMicro)
 {
   Dtm xDtm;
   
-  xDtm.xTme.m_uHour   = iHour;
-  xDtm.xTme.m_uSecond = iSecond;
-  xDtm.xTme.m_uMinute = iMinute;
-  xDtm.xTme.m_uMicro  = iMicro;
+  xDtm.m_wTme.m_uHour   = iHour;
+  xDtm.m_wTme.m_uSecond = iSecond;
+  xDtm.m_wTme.m_uMinute = iMinute;
+  xDtm.m_wTme.m_uMicro  = iMicro;
   
-  xDtm.xTme.m_uSpare  = 0;
+  xDtm.m_wTme.m_uSpare  = 0;
   
   return xDtm.m_iI8;
 }

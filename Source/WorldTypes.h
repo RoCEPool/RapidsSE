@@ -8,7 +8,7 @@
 //class _Dte {
 //public:
 //  u8 m_uSpare     : 47 ; //         47b
-//  
+//
 //  u8 m_uDay       :  5 ; // 0..31       same as _Tsp.dte
 //  u8 m_uMonth     :  4 ; // 0..15
 //  u8 m_uYearDelta :  8 ; // 0..255  17b (1900+8b == 2155)
@@ -44,18 +44,18 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // time
-class _Tme {
-public:
-  u8 m_uSpare     : 27 ; //         27b
-  
-  u8 m_uMicro     : 20 ; // 0..1M       same as _Tsp.tme
-  u8 m_uSecond    :  6 ; // 0..63
-  u8 m_uMinute    :  6 ; // 0..63
-  u8 m_uHour      :  5 ; // 0..31   37b
-  //               ---
-  //                64
-  //               ===
-};
+//class _Tme {
+//public:
+//  u8 m_uSpare     : 27 ; //         27b
+//  
+//  u8 m_uMicro     : 20 ; // 0..1M       same as _Tsp.tme
+//  u8 m_uSecond    :  6 ; // 0..63
+//  u8 m_uMinute    :  6 ; // 0..63
+//  u8 m_uHour      :  5 ; // 0..31   37b
+//  //               ---
+//  //                64
+//  //               ===
+//};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // timestamp

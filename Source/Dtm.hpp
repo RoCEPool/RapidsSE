@@ -30,7 +30,7 @@ namespace Library
       Dte   m_wDte;
       Edt   m_wEdt;
       Ivl   m_wIvl;
-      _Tme  xTme;
+      Tme   m_wTme;
       _Tsp  xTsp;
       
       Stz*  m_szVch;
