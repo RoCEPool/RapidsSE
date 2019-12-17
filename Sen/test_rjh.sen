@@ -1,0 +1,30 @@
+/*============================================================================*/
+/* test_rjh.sen -- rays test set                                              */
+/*============================================================================*/
+
+" test_rjh.sen" .verbose
+
+: test_rjh prompt
+
+  "Rays Test Suite" .
+
+  0 locals| pTable |
+
+  "/tenants/boray/catalogs/rapidsse/schemas/public/tables/T"
+
+  dup .
+
+  str.toStrVec task::dicStack.set
+
+  "T" find execute
+
+stk
+
+  to pTable
+
+  pTable table.genRandomRow drop
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -20,7 +20,7 @@ namespace Library
 
 #include "Compress.hpp"
 #include "IvlLib.hpp"
-#include "Random.hpp"
+#include "RndLib.hpp"
 #include "TspLib.hpp"
 
 /*============================================================================*/

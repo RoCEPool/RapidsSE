@@ -308,7 +308,7 @@ void Step::vStrRandom(void)
   
   s256 sRnd;
   
-  Random::vString(sRnd,iLength);
+  RndLib::vString(sRnd,iLength);
   
   m_pDataStack->vPushStr(sRnd);
   

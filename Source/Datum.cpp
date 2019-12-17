@@ -43,7 +43,7 @@ Datum_h::Datum_h(i8 nSizeSpace)
 
   m_xIntVal.vMagic();
   m_xIntVal.vClass(CN_INTVAL);
-  m_xIntVal.vInt(C_UNKNOWN);
+  m_xIntVal.vInt(C_DATUM_NULL);
   
   m_xStzVal.vStz(""_Stz);
   //vStzDump();

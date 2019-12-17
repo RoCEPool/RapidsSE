@@ -24,7 +24,7 @@ Column* CsvRecord::pExtractRow(Row* pRow, StreamDef* pStreamDef,
     if (! CsvField::bExtractDtm(&oDatum,pCol,aazCrs,pFmt))
       return pCol;
     
-    pRow->vAppendValue(&oDatum,pCol);
+    pRow->vSetValue(&oDatum,pCol);
   }
   
   return nullptr;

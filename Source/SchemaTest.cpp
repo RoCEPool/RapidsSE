@@ -639,7 +639,7 @@ void SchemaTest::vMakeTest(void)
 eCT SchemaTest::eRandomType(void)
 {
   while (true) {
-    eCT eColumn = (eCT)Random::iInteger(CT_BOOLEAN,CT_VARCHAR);
+    eCT eColumn = (eCT)RndLib::iInteger(CT_BOOLEAN,CT_VARCHAR);
     
     if (CT_CHAR != eColumn)
       return eColumn;

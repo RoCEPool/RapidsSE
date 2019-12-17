@@ -25,6 +25,7 @@ namespace Gadgets
 #include "NmVal.hpp"
 #include "NextId.hpp"
 #include "Now.hpp"
+#include "Rand.hpp"
 #include "SeeMe.hpp"
 #include "Sleep.hpp"
 #include "Scan.hpp"

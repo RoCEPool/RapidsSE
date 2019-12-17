@@ -36,12 +36,12 @@ namespace Rows
     ~Row(void) noexcept(false);
   
     void vAdjustAddresses(Row* pCopiedFromRow);
-    void vAppendValue(Datum* pDatum, Column* pCol);
     void vCopy(Row* pRow);
     void vCopy(Row* pRow, i8 iFromCol, i8 iIntoCol);
     void vDontDecodeVch(void);
     i8   iHashColumn(Column* pCol);
     void vResetValues(void);
+    void vSetValue(Datum* pDatum, Column* pCol);
     i8   nSizeBytes(void);
 
   private:
