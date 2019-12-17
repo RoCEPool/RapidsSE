@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 Dtm::Dtm(void)
 {
-  m_iI8 = 0;
+  m_iInt = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,7 +77,7 @@ i8 Dtm::iDte(i8 iYear, i8 iMonth, i8 iDay)
   
   xDtm.m_wDte.m_uSpare     = 0;
 
-  return xDtm.m_iI8;
+  return xDtm.m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,7 +90,7 @@ i8 Dtm::iIvl(i8 iSecond, i8 iMilli)
   xDtm.m_wIvl.m_uSecond = iSecond;
   xDtm.m_wIvl.m_uMicro  = iMilli * C_1K;
   
-  return xDtm.m_iI8;
+  return xDtm.m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,7 +107,7 @@ i8 Dtm::iTme(i8 iHour, i8 iSecond, i8 iMinute, i8 iMicro)
   
   xDtm.m_wTme.m_uSpare  = 0;
   
-  return xDtm.m_iI8;
+  return xDtm.m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +129,7 @@ i8 Dtm::iTsp(i8 iYear, i8 iMonth,  i8 iDay,
   xDtm.m_wTsp.m_uLocal     = C_TSP_LOCAL;
   xDtm.m_wTsp.m_uSpare     = 0;
   
-  return xDtm.m_iI8;
+  return xDtm.m_iInt;
 }
 
 
@@ -142,7 +142,7 @@ i8 Dtm::iTsp(i8 iYear, i8 iMonth,  i8 iDay,
 /*----------------------------------------------------------------------------*/
 i8 Dtm::iAsI8(void)
 {
-  return m_iI8;
+  return m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,7 +150,7 @@ i8 Dtm::iAsI8(void)
 /*----------------------------------------------------------------------------*/
 void Dtm::vAsI8(i8 iAsI8)
 {
-  m_iI8 = iAsI8;
+  m_iInt = iAsI8;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +158,7 @@ void Dtm::vAsI8(i8 iAsI8)
 /*----------------------------------------------------------------------------*/
 i8 Dtm::iByteMagn(void)
 {
-  i8 iMagn = IntLib::iByteMagnitude(m_w8);
+  i8 iMagn = IntLib::iByteMagnitude(m_iInt);
   
   return iMagn;
 }
@@ -168,7 +168,7 @@ i8 Dtm::iByteMagn(void)
 /*----------------------------------------------------------------------------*/
 bool Dtm::bIsNull(void)
 {
-  if (C_DATUM_NULL == m_iI8)
+  if (C_DATUM_NULL == m_iInt)
     return true;
   else
     return false;
@@ -179,7 +179,7 @@ bool Dtm::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Dtm::vSetUnknown(void)
 {
-  m_iI8 = C_UNKNOWN;
+  m_iInt = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,7 +187,7 @@ void Dtm::vSetUnknown(void)
 /*----------------------------------------------------------------------------*/
 void Dtm::vSetNull(void)
 {
-  m_iI8 = C_DATUM_NULL;
+  m_iInt = C_DATUM_NULL;
 }
 
 /*============================================================================*/

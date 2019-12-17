@@ -762,7 +762,7 @@ void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc)
   
   // put {D}
   m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
-                           xColEnc.m_wDataCode.m_w8,
+                           xColEnc.m_wDataCode.m_iInt,
                            xColEnc.m_nDataSize);
 }
 

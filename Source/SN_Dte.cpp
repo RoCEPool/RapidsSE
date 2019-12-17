@@ -49,7 +49,7 @@ i8 SN_Dte::i(char** aacCrs, Column* pCol, Format* pFmt)
   m_wDtm.m_wDte.m_uDay   = iDay;
   m_wDtm.m_wDte.m_uSpare = 0;
   
-  return m_wDtm.m_iI8;
+  return m_wDtm.m_iInt;
 }
 
 

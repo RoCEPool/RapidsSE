@@ -11,7 +11,6 @@ namespace Library
     union {
       
       char* m_azStr;
-      i8    m_iI8;
       i8    m_nSize;    // size of vch
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -41,8 +40,6 @@ namespace Library
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       
       byte  m_yaByte[C_BYTES_PER_WORD];
-      w8    m_w8;
-
     };
   
   public:

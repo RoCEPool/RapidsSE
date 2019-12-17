@@ -196,7 +196,7 @@ void SrtBuffer::vGetKeys(StreamDef* pStreamDef, i8 iKeyCol, i8 iColVec)
         RowInflator::vInflateColumn(hRow, aCrw, iKeyCol);
         
         // set the key in the srtSet
-        aSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
+        aSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iInt);
       }
     
      aSrtSet = aNextSrtSet(aSrtSet);
@@ -331,7 +331,7 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
         
         // for each column
         for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-          hRow->m_waColVal[i_Col].m_iI8 = C_DATUM_NULL;
+          hRow->m_waColVal[i_Col].m_iInt = C_DATUM_NULL;
         }
       }
       hvRec->vAppend(hRow);
@@ -443,7 +443,7 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
         
         // for each column
         for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-          hRow->m_waColVal[i_Col].m_iI8 = C_DATUM_NULL;
+          hRow->m_waColVal[i_Col].m_iInt = C_DATUM_NULL;
         }
       }
       hvRec->vAppend(hRow);
