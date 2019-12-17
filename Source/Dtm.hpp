@@ -9,11 +9,7 @@ namespace Library
   {
   public:
     union {
-      
-      char* m_azStr;
-      i8    m_nSize;    // size of vch
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       i8    m_iBcd;
       i8    m_iBol;
       i8    m_iDte;
@@ -24,6 +20,8 @@ namespace Library
       i8    m_iTme;
       i8    m_iTsc;
       i8    m_iTsp;
+      
+      char* m_azStr;
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       Bcd   m_wBcd;
