@@ -48,17 +48,13 @@ void WriteBehind::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-WriteBehind::WriteBehind(eDS eDataSource)
+WriteBehind::WriteBehind(void)
 : Object(CN_WRITEBEHIND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
-  m_pParentJob = nullptr;
-  m_eDataSource = eDataSource;
-  
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pCrwBuffer[i_Partition]   = nullptr;
-    m_nWriteBehindBuffers[i_Partition] = 0;
   }
   
   _checkInitialised_(CN_WRITEBEHIND);
@@ -199,8 +195,6 @@ void WriteBehind::vNewCrwBuffer( i8 i_Ptn)
   m_pCrwBuffer[i_Ptn]->vTable(m_pTable);
   m_pCrwBuffer[i_Ptn]->vPartitionNo(i_Ptn);
   //m_pCrwBuffer[i_Ptn]->vDump();
-  
-  m_nWriteBehindBuffers[i_Ptn]++;
 }
 
 /*----------------------------------------------------------------------------*/

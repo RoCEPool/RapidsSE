@@ -23,10 +23,14 @@ void Step::vWriteBehindCreate(void)
 {
   ENTRY(); // ENTRY("vWriteBehindGet"_Stz);
   
-  WriteBehind* pWriteBehind = new WriteBehind(DS_INSERT);
+  WriteBehind* pWriteBehind = new WriteBehind;
   pWriteBehind->m_pTable = *m_pRegSet->m_xpTable;
+  
   pWriteBehind->m_oFormatters.vSet(AM::pFmt());
+  //pWriteBehind->m_oFormatters.m_cEnclosedBy_Leading = '\'';
+  //pWriteBehind->m_oFormatters.m_cEnclosedBy_Trailing = '\'';
   pWriteBehind->m_oFormatters.m_cRecordTerminator = '\n';
+  
   m_pRegSet->m_xpWriteBehind = pWriteBehind;
 }
 

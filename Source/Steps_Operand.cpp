@@ -395,24 +395,22 @@ void Step::vOperandCsvToCrw(void)
       pOp->vPipeOut(_pOperand(pCrwBuffer));
       pCrwBuffer = nullptr;
     }
-//    if (EC_NONE == eError) {
-//      continue;
-//    }
-//
-//    if (EC_BLANKLINE == eError)
-//      continue;
-//
-//    if (EC_INVALID_VALUE == eError) {
-//      //vIncRowsInvalid();
-//      //++m_pJob_LoadTable->m_ixErrors;
-//      continue;
-//    }
-//
-//    if (EC_MAX_ROW_LENGTH == eError) {
-//      //vIncRowsInvalid();
-//      //++m_pJob_LoadTable->m_ixErrors;
-//      continue;
-//    }
+    if (EC_NONE == eError) {
+      continue;
+    }
+
+    if (EC_BLANKLINE == eError)
+      continue;
+
+    if (EC_INVALID_VALUE == eError) {
+      vTrace("Warning: Skipping row (invalid value)\n"_Stz);
+      continue;
+    }
+
+    if (EC_MAX_ROW_LENGTH == eError) {
+      vTrace("Warning: Skipping row (Max row length)\n"_Stz);
+      continue;
+    }
   }
   
   EXIT();
