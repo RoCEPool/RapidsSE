@@ -16,7 +16,7 @@ void Correctness::vCheckAssumptions(void)
   ASSERT(8 == sizeof(Footer));
   
 
-  ASSERT(8 == sizeof(_Id));
+  ASSERT(8 == sizeof(Gid));
   
   ASSERT(8 == sizeof(Bcd));
   ASSERT(8 == sizeof(Bol));
