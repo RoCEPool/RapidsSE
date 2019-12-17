@@ -28,8 +28,7 @@ namespace Buffers
   public:
     eEC        eAppendRow(CrwBuffer** ppCrwBuffer);
     CrwBuffer* pCrwBuffer(i8 iPtn);
-    void       vHandleDanglingBuffers(void);
-    eEC        eProcessRecord(char** aazRecord,  i8 nBytes, CrwBuffer** ppCrwBuffer);
+    eEC        eProcessRecord(char** aazRecord, CrwBuffer** ppCrwBuffer);
   
   private:
     void vNewCrwBuffer(i8 iPartition);

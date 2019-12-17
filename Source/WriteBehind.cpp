@@ -153,59 +153,14 @@ CrwBuffer* WriteBehind::pCrwBuffer(i8 iPtn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* handle dangling buffers                                                    */
-/*----------------------------------------------------------------------------*/
-void WriteBehind::vHandleDanglingBuffers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
-  
-  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++) {
-
-    if ( ! m_pCrwBuffer[i_Ptn] )
-      vNewCrwBuffer(i_Ptn);
-    else
-      m_paRowCompactor[i_Ptn]->vCompactEnd();
-
-    // get the entry buffer
-    CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
-    m_pCrwBuffer[i_Ptn] = nullptr;
-
-    // close the append
-    pCrwBuffer->vAppendClose();
-    
-    i8 nWriteBehindBuffers = m_nWriteBehindBuffers[i_Ptn];
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // create a write buffer job for load
-    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->pSession(),
-                                          m_pTable->szTableNm(),
-                                          m_eDataSource,
-                                          pCrwBuffer,
-                                          m_pParentJob->iJobId(),
-                                          i_Ptn,
-                                          C_FINAL,
-                                          nWriteBehindBuffers);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* process record                                                             */
 /*----------------------------------------------------------------------------*/
-eEC WriteBehind::eProcessRecord(char** aazRecStr, i8 nBytes, CrwBuffer** ppCrwBuffer)
+eEC WriteBehind::eProcessRecord(char** aazRecStr, CrwBuffer** ppCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
   bool bBlankLine = false;
   
-//  if (nBytes > C_MAX_RECORD) {
-//    if (! AM::bMetadata()) {
-//      vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
-//            szRecStr,
-//            C_MAX_RECORD);
-//    }
-//    return EC_MAX_ROW_LENGTH;
-//  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   bool bValid = bExtractRow(aazRecStr, bBlankLine);

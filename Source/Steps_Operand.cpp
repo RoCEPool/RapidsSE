@@ -383,13 +383,12 @@ void Step::vOperandCsvToCrw(void)
   WriteBehind* pWriteBehind = *m_pRegSet->m_xpWriteBehind;
   
   char* aCursor = pCsvBuffer->aDataArea();
-  i8 nRecordBytes = 0;
   CrwBuffer* pCrwBuffer = nullptr;
   
   for(i8 i_Record = 0; i_Record < pCsvBuffer->nRecords(); i_Record++) {
     
     // process that record into write behind
-    eEC eError = pWriteBehind->eProcessRecord(&aCursor, nRecordBytes, &pCrwBuffer);
+    eEC eError = pWriteBehind->eProcessRecord(&aCursor, &pCrwBuffer);
     
     if (pCrwBuffer) {
       pCrwBuffer->vAppendClose();
