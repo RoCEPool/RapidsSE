@@ -280,10 +280,11 @@ OpVec* Stage::pOpVec(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iFromNode)
+Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn)
 {
   Op* pOp = nullptr;
   StageNde* pStageNde = nullptr;
+  StagePtn* pStagePtn = nullptr;
   
   switch (eTopologyX) {
       
@@ -291,17 +292,24 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iFromNode)
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN:
       pStageNde = m_oStageNdeVec.pGet(0);
+      pOp = pStageNde->pOpVec()->pGet(0);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
-      pStageNde = this->pStageNde(iFromNode);
+      pStageNde = this->pStageNde(iNde);
+      pOp = pStageNde->pOpVec()->pGet(0);
+      break;
+      
+    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
+      pStagePtn = m_oStagePtnVec.pGet(iPtn);
+      pOp = pStagePtn->pOpVec()->pGet(0);
       break;
       
     default:
       RASSERT(0);
   }
   
-  pOp = pStageNde->pOpVec()->pGet(0);
+  
   return pOp;
 }
 
@@ -323,6 +331,24 @@ StagePtnVec* Stage::pStagePtnVec(void)
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
   return &m_oStagePtnVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage ptn for given ptn                                                */
+/*----------------------------------------------------------------------------*/
+StagePtn* Stage::pStagePtn(i8 i_Ptn)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  StagePtn* pStagePtn = nullptr;
+  
+  for (i8 iPtnVec = 0; iPtnVec < m_oStagePtnVec.nItems(); iPtnVec++) {
+    pStagePtn = m_oStagePtnVec.pGet(iPtnVec);
+    if (pStagePtn->iPartition() == i_Ptn)
+      return pStagePtn;
+  }
+  
+  return pStagePtn;
 }
 
 /*----------------------------------------------------------------------------*/

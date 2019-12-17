@@ -114,7 +114,7 @@ Op::~Op(void) noexcept(false)
   if (m_pStreamDef)
     delete m_pStreamDef;
   
-  delete m_pOpSpec;
+  //delete m_pOpSpec;
   
   -- gixOp;
   AM::vLogOpr(SL_INF,this,OA_OP_DESTRUCT,
@@ -299,33 +299,43 @@ void Op::vLinkToStage(Stage* pStage)
   
   Op* pOpNext = nullptr;
   StageNde* pStageNde = nullptr;
+  StagePtn* pStagePtn = nullptr;
+  i8 i_Node = C_UNKNOWN;
   
   switch(m_eTopologyX) {
    
     case PX_ALL_NODES_TO_ORIGIN:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN: {
+      i_Node = m_nNode;
       RASSERT(pStage->pStageNdeVec()->nItems() == 1) ;
       pStageNde = pStage->pStageNdeVec()->pGet(0);
+      // get the first op of the stage nde
+      pOpNext = pStageNde->pOpVec()->pGet(0);
       break;
     }
     
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
-      pStageNde = pStage->pStageNde(m_nNode);
+      RASSERT(0);
+    }
+      
+    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
+      i_Node = TablePtn::iPartitionToNode(m_nPartition);
+      pStagePtn = pStage->pStagePtn(m_nPartition);
+      // get the first op of the stage ptn
+      pOpNext = pStagePtn->pOpVec()->pGet(0);
+      
       break;
     }
-  
+      
     default:
       RASSERT(0);
   }
   
-  ASSERT(pStageNde);
+  ASSERT( i_Node != C_UNKNOWN);
   
   // set the xmit node
-  AM::vXmitNode(this,pStageNde->iNode());
-  
-  // get the first op of the stage nde
-  pOpNext = pStageNde->pOpVec()->pGet(0);
+  AM::vXmitNode(this,i_Node);
   
   // set the next label
   vNextLabel(pOpNext->m_sName);

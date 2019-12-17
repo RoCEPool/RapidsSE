@@ -29,7 +29,8 @@ void Step::vJob_OperandPipeOut(void)
   Stage* pStage = pParentJob->m_pPipeline->pStageVec()->pGet(pJob_Operand->m_iNextStage);
   
   // get the op to forward to depending on the cross topology
-  Op* pOp = pStage->pPipeOutOp(pJob_Operand->m_eTopologyX, pJob_Operand->m_iNode);
+  Op* pOp = pStage->pPipeOutOp(pJob_Operand->m_eTopologyX, pJob_Operand->m_iNode,
+                               pJob_Operand->m_iPartition);
   pOp->vAppendLeft(pJob_Operand->m_pOperand);
   
   // now delete the job_operand

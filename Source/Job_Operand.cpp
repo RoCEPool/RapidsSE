@@ -108,6 +108,7 @@ Job_Operand::Job_Operand(JobClass* aJobClass, ReqTuple* aReqTuple)
   
   m_pOp          = nullptr;
   m_iNode        = C_UNKNOWN;
+  m_iPartition   = C_UNKNOWN;
   m_iParentJobId = C_UNKNOWN;
   
   m_eTopologyX   = PX_NONE;
@@ -169,9 +170,10 @@ Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
   pJob_Operand->vSeed(SS_SEED_RUN);
   
   pJob_Operand->vParentId(iParentJobId);
-  pJob_Operand->m_pOp       = pOp;
-  pJob_Operand->m_iNode     = iNode;
-  pJob_Operand->m_pOperand  = pOperand;
+  pJob_Operand->m_pOp        = pOp;
+  pJob_Operand->m_iNode      = iNode;
+  pJob_Operand->m_iPartition = pOp->m_nPartition;
+  pJob_Operand->m_pOperand   = pOperand;
   
   pJob_Operand->m_eTopologyX = pOp->m_eTopologyX;
   pJob_Operand->m_iNextStage = pOp->m_iNextStage;

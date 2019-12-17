@@ -41,6 +41,7 @@
   job::this locals| pJob_InsertOp |
 
   0 0 locals| sTableNm pTable |
+  op.partition@ locals| iPartition |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can insert into the table
@@ -54,8 +55,7 @@
   sTableNm pushTable assert
   sTableNm find execute to table[]
 
-  0 table[].get tablePtnGrabWrite
-  //pJob_InsertOp op.partition@ locals| iPartition |
+  iPartition table[].get tablePtnGrabWrite
 
   begin
 
@@ -92,7 +92,7 @@
 
     while assert::stack_0 repeat
 
-  0 table[].get tablePtnDropWrite
+  iPartition table[].get tablePtnDropWrite
 
   <<logExit
   job::deleteThis

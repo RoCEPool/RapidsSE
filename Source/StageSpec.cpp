@@ -171,6 +171,10 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX)
       iConsumeArg = AM::pGrid()->nSlotsPerNode();
       break;
       
+    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
+      iConsumeArg = 1;
+      break;
+      
     case PX_ALL_PARTITIONS_TO_ORIGIN:
       iConsumeArg = AM::pGrid()->nPartitions();
       break;

@@ -848,6 +848,7 @@ public:
   void vOpLeftEndMarkersStore(void);
   void vOpLinkNextStage(void);
   void vOpNextStageStore(void);
+  void vOpPartitionFetch(void);
   void vOpTopologyStore(void);
 
   // operand

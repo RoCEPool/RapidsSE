@@ -12,6 +12,7 @@ void Step::vAddSteps_Op(void)
 {
   vAddStep("Op.leftEndMarkers!"_Stz,  &Step::vOpLeftEndMarkersStore);
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
+  vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("Op.topology!"_Stz,        &Step::vOpTopologyStore);
 }
 
@@ -34,6 +35,18 @@ void Step::vOpNextStageStore(void)
   ENTRY(); // ENTRY("vOpNextStageStore"_Stz);
   
   m_pTask->m_pJob->m_pOp->m_iNextStage = m_pDataStack->iPopInt(__func__);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.partition@ -- fetch partition from op                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vOpPartitionFetch(void)
+{
+  ENTRY(); // ENTRY("vOpPartitionFetch"_Stz);
+  
+  m_pDataStack->vPushInt(m_pTask->m_pJob->m_pOp->m_nPartition);
   
   EXIT();
 }
