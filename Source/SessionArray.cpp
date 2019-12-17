@@ -225,14 +225,15 @@ void SessionArray::vDump(void)
   
   i8 iSessions = 0;
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
+    
+    if (iSessions == m_nSessionsSoFar)
+      break;
+    
     Session* pSession = m_paSession[i_Session];
     if (pSession)
       pSession->vTraceSession();
     
     iSessions++;
-    
-    if (iSessions == m_nSessionsSoFar)
-      break;
   }
   
   vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);
