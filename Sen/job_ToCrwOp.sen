@@ -41,13 +41,12 @@
 
   job::this locals| pJob_ToCrwOp |
 
-  0 0 locals| sTableNm pTable |
+  <tableNm> locals| sTableNm |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can access the table
-  <tableNm> to sTableNm
   sTableNm checkTable not if
-  pJob_ToCrwOp <ERROR_JOB> !!logError exit
+    pJob_ToCrwOp <ERROR_JOB> !!logError exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -78,7 +77,7 @@
 
       ZK_ENDMARKER of
         "Operand:- ZK_ENDMARKER" .verbose
-        writeBehind[].pipeout
+        writeBehind[].handleDangling
         Operand[].handleEnd
       endof
 

@@ -10,10 +10,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_WriteBehind(void)
 {
-  vAddStep("WriteBehind[].create"_Stz,   &Step::vWriteBehindCreate);
-  vAddStep("WriteBehind[].get"_Stz,      &Step::vWriteBehindGet);
-  vAddStep("WriteBehind[].pipeout"_Stz,  &Step::vWriteBehindPipeOut);
-  vAddStep("WriteBehind[].set"_Stz,      &Step::vWriteBehindset);
+  vAddStep("WriteBehind[].create"_Stz,         &Step::vWriteBehindCreate);
+  vAddStep("WriteBehind[].get"_Stz,            &Step::vWriteBehindGet);
+  vAddStep("WriteBehind[].handleDangling"_Stz, &Step::vWriteBehindHandleDangling);
+  vAddStep("WriteBehind[].set"_Stz,            &Step::vWriteBehindset);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,11 +41,11 @@ void Step::vWriteBehindGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* WriteBehind[].pipeout -- pipeout the writeBehind operands                  */
+/* WriteBehind[].handleDangling -- pipeout the writeBehind dangling operands  */
 /*----------------------------------------------------------------------------*/
-void Step::vWriteBehindPipeOut(void)
+void Step::vWriteBehindHandleDangling(void)
 {
-  ENTRY(); // ENTRY("vWriteBehindPipeOut"_Stz);
+  ENTRY(); // ENTRY("vWriteBehindHandleDangling"_Stz);
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   WriteBehind* pWriteBehind = *m_pRegSet->m_xpWriteBehind;
@@ -53,8 +53,8 @@ void Step::vWriteBehindPipeOut(void)
   for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++) {
     
     CrwBuffer* pCrwBuffer = pWriteBehind->pCrwBuffer(i_Ptn);
-    if (pCrwBuffer) {
     
+    if (pCrwBuffer) {
       // close the append
       pCrwBuffer->vAppendClose();
       pOp->vPipeOut(pCrwBuffer);
