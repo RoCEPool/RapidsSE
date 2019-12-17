@@ -27,7 +27,8 @@ namespace Library
       i8    m_iTsp;
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      _Dte  xDte;
+      Dte   m_wDte;
+      Edt   m_wEdt;
       Ivl   m_wIvl;
       _Tme  xTme;
       _Tsp  xTsp;

@@ -5,17 +5,17 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // date (since 1900)
-class _Dte {
-public:
-  u8 m_uSpare     : 47 ; //         47b
-  
-  u8 m_uDay       :  5 ; // 0..31       same as _Tsp.dte
-  u8 m_uMonth     :  4 ; // 0..15
-  u8 m_uYearDelta :  8 ; // 0..255  17b (1900+8b == 2155)
-  //               ---
-  //                64
-  //               ===
-};
+//class _Dte {
+//public:
+//  u8 m_uSpare     : 47 ; //         47b
+//  
+//  u8 m_uDay       :  5 ; // 0..31       same as _Tsp.dte
+//  u8 m_uMonth     :  4 ; // 0..15
+//  u8 m_uYearDelta :  8 ; // 0..255  17b (1900+8b == 2155)
+//  //               ---
+//  //                64
+//  //               ===
+//};
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // era-based date
