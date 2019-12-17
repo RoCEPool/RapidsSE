@@ -147,7 +147,7 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDteFromEdt(i8* awEdtDte_rpl, i8 iEraBaseYear)
 {
-  _Edt* aEdt = (_Edt*)awEdtDte_rpl;
+  Edt* aEdt = (Edt*)awEdtDte_rpl;
   
   i8 iYearInEra = aEdt->m_uYearInEra;
   i8 iMonth     = aEdt->m_uMonth;
@@ -167,7 +167,7 @@ void RowCoder::vDteFromEdt(i8* awEdtDte_rpl, i8 iEraBaseYear)
 /*----------------------------------------------------------------------------*/
 void RowCoder::vDteFromEdt(i8* awEdtDte_dst, i8 wEdtDte_src, i8 iEraBaseYear)
 {
-  _Edt* aEdt = (_Edt*) & wEdtDte_src;
+  Edt* aEdt = (Edt*) & wEdtDte_src;
   
   i8 iYearInEra = aEdt->m_uYearInEra;
   i8 iMonth     = aEdt->m_uMonth;
@@ -208,7 +208,7 @@ void RowCoder::vDteIntoEdt(i8 wDte_src, i8* awEdt_dst, i8& iEra_)
     iYearInEra = iYearDelta - C_ERA_2;
   }
   
-  _Edt* aEdt = (_Edt*)awEdt_dst;
+  Edt* aEdt = (Edt*)awEdt_dst;
   
   * awEdt_dst = 0;
 

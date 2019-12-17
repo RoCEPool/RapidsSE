@@ -28,7 +28,6 @@ namespace Library
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       _Dte  xDte;
-      _Edt  xEdt;
       _Ivl  xIvl;
       _Tme  xTme;
       _Tsp  xTsp;
