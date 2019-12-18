@@ -104,7 +104,7 @@ void SP_Row::vRow(Row* pRow)
       case DM_IVL: {
         SP_Ivl spIvl;
         StrLib::vAppendString(&szCrs,
-                              (char*)spIvl.sz(pRow->m_waColVal[i_Col].m_iIvl));
+                              (char*)spIvl.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         

@@ -11,9 +11,7 @@ namespace Library
     union {
 
       i8    m_iInt;
-      i8    m_iIvl;
       i8    m_iTme;
-      i8    m_iTsc;
       i8    m_iTsp;
       
       

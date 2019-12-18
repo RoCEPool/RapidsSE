@@ -147,7 +147,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
         case DM_IVL: {
           SP_Ivl spIvl;
           StrLib::vAppendString(&szCrs,
-                                (char*)spIvl.sz(aColEnc->m_wDataCode.m_iIvl));
+                                (char*)spIvl.sz(aColEnc->m_wDataCode));
           break;
         }
           

@@ -412,7 +412,7 @@ void Encoding::vEncodeIvl(_ColEnc& xColEnc, Dtm wColVal)
   if (bEncodeNul(xColEnc,wColVal))
     return;
   
-  xColEnc.m_wDataCode.m_iIvl = wColVal.m_iIvl;
+  xColEnc.m_wDataCode.m_wIvl.m_iAsI8 = wColVal.m_wIvl.m_iAsI8;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
