@@ -23,20 +23,20 @@
     Operand[].kind case
 
       ZK_STOPMARKER of
-        "Operand:- ZK_STOPMARKER" .verbose
+        //"Operand:- ZK_STOPMARKER" .verbose
         Operand[].delete
         false
       endof
 
       ZK_CANCELMARKER of
-        "Operand:- ZK_CANCELMARKER" .verbose
+        //"Operand:- ZK_CANCELMARKER" .verbose
         "Query being cancelled\n" .verbose
         Operand[].pipeOut
         true
       endof
 
       ZK_STARTMARKER of
-        "Operand:- ZK_STARTMARKER" .verbose
+        //"Operand:- ZK_STARTMARKER" .verbose
         Operand[].pipeOut
         true
       endof

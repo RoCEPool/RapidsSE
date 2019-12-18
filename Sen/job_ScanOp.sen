@@ -70,7 +70,7 @@
     Operand[].kind case
 
       ZK_STARTMARKER of
-        "Operand:- ZK_STARTMARKER" .verbose
+        //"Operand:- ZK_STARTMARKER" .verbose
         Operand[].delete
 
         // new a stream def

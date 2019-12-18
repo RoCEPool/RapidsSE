@@ -68,18 +68,18 @@
     Operand[].kind case
 
     ZK_CRWBUFFER of
-      "Operand:- ZK_CRWBUFFER" .verbose
+      //"Operand:- ZK_CRWBUFFER" .verbose
       Operand[].insertIntoTable
       true
     endof
 
     ZK_ENDMARKER of
-      "Operand:- ZK_ENDMARKER" .verbose
+      //"Operand:- ZK_ENDMARKER" .verbose
       Operand[].handleEnd
     endof
 
     ZK_STREAMDEF of
-      "Operand:- ZK_STREAMDEF" .verbose
+      //"Operand:- ZK_STREAMDEF" .verbose
       Operand[].delete
       Operand[].newStreamDef
       Operand[].pipeOut

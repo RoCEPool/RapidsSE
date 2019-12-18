@@ -23,47 +23,47 @@
     Operand[].kind case
 
       ZK_CRWBUFFER of
-        "Operand:- ZK_CRWBUFFER" .verbose
+        //"Operand:- ZK_CRWBUFFER" .verbose
         Operand[].workDone
         Operand[].pipeOut
         true
       endof
 
       ZK_CSVBUFFER of
-        "Operand:- ZK_CSVBUFFER" .verbose
+        //"Operand:- ZK_CSVBUFFER" .verbose
         Operand[].workDone
         Operand[].pipeOut
         true
       endof
 
       ZK_ENDMARKER of
-        "Operand:- ZK_ENDMARKER" .verbose
+        //"Operand:- ZK_ENDMARKER" .verbose
         Operand[].handleEnd
       endof
 
       ZK_ENTBUFFER of
-        "Operand:- ZK_ENTBUFFER" .verbose
+        //"Operand:- ZK_ENTBUFFER" .verbose
         Operand[].workDone
         Operand[].pipeOut
         true
       endof
 
       ZK_IRWBUFFER of
-        "Operand:- ZK_IRWBUFFER" .verbose
+        //"Operand:- ZK_IRWBUFFER" .verbose
         Operand[].workDone
         Operand[].pipeOut
         true
       endof
 
       ZK_SRTBUFFER of
-        "Operand:- ZK_SRTBUFFER" .verbose
+        //"Operand:- ZK_SRTBUFFER" .verbose
         Operand[].workDone
         Operand[].pipeOut
         true
       endof
 
       ZK_STREAMDEF of
-        "Operand:- ZK_STREAMDEF" .verbose
+        //"Operand:- ZK_STREAMDEF" .verbose
         Operand[].workDone
         Operand[].pipeOut
         true

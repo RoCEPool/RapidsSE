@@ -74,7 +74,7 @@
     Operand[].kind case
 
       ZK_CSVBUFFER of
-        "Operand:- ZK_CSVBUFFER" .verbose
+        //"Operand:- ZK_CSVBUFFER" .verbose
         // use extractRow from register0 and convert csvtoCrw
         Operand[].csvToCrw
         Operand[].delete
@@ -82,13 +82,13 @@
       endof
 
       ZK_ENDMARKER of
-        "Operand:- ZK_ENDMARKER" .verbose
+        //"Operand:- ZK_ENDMARKER" .verbose
         writeBehind[].handleDangling
         Operand[].handleEnd
       endof
 
       ZK_STREAMDEF of
-        "Operand:- ZK_STREAMDEF" .verbose
+        //"Operand:- ZK_STREAMDEF" .verbose
         Operand[].delete
         Operand[].newStreamDef
         Operand[].pipeOut
