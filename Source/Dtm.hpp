@@ -10,8 +10,7 @@ namespace Library
   public:
     union {
 
-      i8    m_iBcd;
-      i8    m_iBol;
+       i8    m_iBol;
       i8    m_iDte;
       i8    m_iEdt;
       d8    m_dFlt;
@@ -67,6 +66,9 @@ namespace Library
 
     void operator =(i8 iInt)    { m_iInt  = iInt;  }
     void operator =(Stz* szVch) { m_szVch = szVch; }
+  
+    operator i8(void) { return m_iWrd; } // auto conversion to i8
+
   };
 }
 

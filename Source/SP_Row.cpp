@@ -69,7 +69,7 @@ void SP_Row::vRow(Row* pRow)
       case DM_BCD: {
         SP_Bcd SP_Bcd;
         StrLib::vAppendString(&szCrs,
-                              (char*)SP_Bcd.sz(pRow->m_waColVal[i_Col].m_iBcd));
+                              (char*)SP_Bcd.sz(pRow->m_waColVal[i_Col]));
         break;
       }
 

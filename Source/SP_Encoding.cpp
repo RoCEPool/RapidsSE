@@ -112,7 +112,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
         case DM_BCD: {
           SP_Bcd SP_Bcd;
           StrLib::vAppendString(&szCrs,
-                                (char*)SP_Bcd.sz(aColEnc->m_wDataCode.m_iBcd));
+                                (char*)SP_Bcd.sz(aColEnc->m_wDataCode));
           break;
         }
 

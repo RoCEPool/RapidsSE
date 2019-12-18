@@ -263,12 +263,12 @@ void Encoding::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
   if (bEncodeNul(xColEnc,wColVal))
     return;
 
-  xColEnc.m_wDataCode.m_iBcd = wColVal.m_iBcd;
+  xColEnc.m_wDataCode.m_wBcd.m_iAsI8 = wColVal.m_wBcd.m_iAsI8;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // -1 case -- encode as: MC_BCD_M_ONE + {}
-  if (-1 == wColVal.m_iBcd) {
+  if (-1 == wColVal.m_wBcd.m_iAsI8) {
     xColEnc.m_eMetaCode = MC_BCD_M_ONE;
     xColEnc.m_nDataSize = C_0B;
     return;
@@ -277,8 +277,8 @@ void Encoding::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // 0..10 case -- encode as MC_BCD_ONE..TEN + {}
-  if (wColVal.m_iBcd >= 0 && wColVal.m_iBcd <= 10) {
-    xColEnc.m_eMetaCode = (eMC)(MC_BCD_ZERO + wColVal.m_iBcd);
+  if (wColVal.m_wBcd.m_iAsI8 >= 0 && wColVal.m_wBcd.m_iAsI8 <= 10) {
+    xColEnc.m_eMetaCode = (eMC)(MC_BCD_ZERO + wColVal.m_wBcd.m_iAsI8);
     xColEnc.m_nDataSize = C_0B;
     return;
   }
