@@ -36,10 +36,10 @@ d8 SN_Flt::d(char** aacCrs, Column* pCol, Format* pFmt)
 {
   _precondition_(_MAGIC_,CN_SNFLT);
   
-  if ( ! StrLib::bExtractFloat(aacCrs,m_wDtm.m_dFlt) )
+  if ( ! StrLib::bExtractFloat(aacCrs,m_wDtm.m_wFlt.m_dFlt) )
     THROW("StrLib::bExtractFloat"_Stz);
 
-  return m_wDtm.m_dFlt;
+  return m_wDtm.m_wFlt.m_dFlt;
 }
 
 

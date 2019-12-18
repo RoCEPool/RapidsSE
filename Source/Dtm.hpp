@@ -10,7 +10,6 @@ namespace Library
   public:
     union {
 
-      d8    m_dFlt;
       i8    m_iInt;
       i8    m_iIvl;
       i8    m_iTme;
