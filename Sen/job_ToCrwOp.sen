@@ -77,6 +77,7 @@
         "Operand:- ZK_CSVBUFFER" .verbose
         // use extractRow from register0 and convert csvtoCrw
         Operand[].csvToCrw
+        Operand[].delete
         true
       endof
 
