@@ -99,6 +99,7 @@ print "*************************************************************************
 print "scan lineitem | output;";
 print "**************************************************************************";
 
+docol epochTake;
 
 time pipeline insert
 begin
@@ -114,6 +115,9 @@ stage stageB on all partitions:
 
 end
  ;
+
+docol epochDump;
+
 /*
 
  stage stageB on all partitions:
