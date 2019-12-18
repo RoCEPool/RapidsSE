@@ -7,7 +7,19 @@
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+ExtractRow* Buffers::_pExtractRow(void* aAddress)
+{
+  ExtractRow* pExtractRow = reinterpret_cast<ExtractRow*>(aAddress);
   
+  RASSERT_TYPE(pExtractRow,CN_EXTRACTROW);
+  
+  return pExtractRow;
+}
+
 /*----------------------------------------------------------------------------*/
 /* allocate a new extractRow from heap                                        */
 /*----------------------------------------------------------------------------*/
@@ -74,7 +86,7 @@ ExtractRow::~ExtractRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* Extract row (with hash) from given record string                           */
 /*----------------------------------------------------------------------------*/
-bool ExtractRow::bExtractRow(char** aazRecStr, bool &bBlankLine)
+bool ExtractRow::bExtractRow(Row** ppRow, char** aazRecStr, bool &bBlankLine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXTRACTROW,_FOOTER_);
   
@@ -87,6 +99,9 @@ bool ExtractRow::bExtractRow(char** aazRecStr, bool &bBlankLine)
   bool bResult = CsvCursor::bExtractNext(m_pRow,pStreamDef,
                                          aazRecStr,&m_oFormatters,
                                          bBlankLine);
+  if (bResult)
+    *ppRow = m_pRow;
+  
   return bResult;
 }
 

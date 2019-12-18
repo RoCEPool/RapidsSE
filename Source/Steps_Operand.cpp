@@ -388,22 +388,13 @@ void Step::vOperandCsvToCrw(void)
   
   bool bBlankLine = false;
   
-  Format* pFormat = new Format;
-  pFormat->vSet(AM::pFmt());
-  pFormat->m_cEnclosedBy_Leading = '\'';
-  pFormat->m_cEnclosedBy_Trailing = '\'';
-  pFormat->m_cRecordTerminator = '\n';
+  ExtractRow* pExtractRow = _pExtractRow(*m_pRegSet->m_xpRegister0);
   
-  Row* pRow = nullptr;
+  Row* pRow;
   
   for(i8 i_Record = 0; i_Record < pCsvBuffer->nRecords(); i_Record++) {
     
-    if ( ! pRow )
-      pRow = new Row(pTable->pStreamDef(),C_ALL);
-    else
-      pRow->vResetValues();
-    
-    bool bValid = CsvCursor::bExtractNext(pRow, pTable->pStreamDef(), &aCursor, pFormat, bBlankLine);
+    bool bValid = pExtractRow->bExtractRow(&pRow, &aCursor, bBlankLine);
     
     if (bBlankLine)
       continue;

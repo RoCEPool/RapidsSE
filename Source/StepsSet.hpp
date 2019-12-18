@@ -282,6 +282,7 @@ public:
 
   // extractRow
   void vExtractRowCreate(void);
+  void vExtractRowDelete(void);
 
   // file
   void vFile0Get(void);
@@ -1344,6 +1345,7 @@ public:
 
   // write behind
   void vWriteBehindCreate(void);
+  void vWriteBehindDelete(void);
   void vWriteBehindGet(void);
   void vWriteBehindHandleDangling(void);
   void vWriteBehindset(void);

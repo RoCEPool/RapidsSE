@@ -75,6 +75,7 @@
 
       ZK_CSVBUFFER of
         "Operand:- ZK_CSVBUFFER" .verbose
+        // use extractRow from register0 and convert csvtoCrw
         Operand[].csvToCrw
         true
       endof
@@ -96,6 +97,12 @@
     endcase
 
   while assert::stack_0 repeat
+
+  // delete writeBehind
+  writeBehind[].delete
+
+  // deelete extractRow from reister0
+  extractRow.delete
 
   <<logExit
   job::deleteThis

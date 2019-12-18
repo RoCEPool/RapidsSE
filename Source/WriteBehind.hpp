@@ -25,7 +25,8 @@ namespace Buffers
   public:
     eEC        eAppendRow(Row* pRow, CrwBuffer** ppCrwBuffer, i8 i_Ptn);
     CrwBuffer* pCrwBuffer(i8 iPtn);
-  
+    void       vCrwBuffer(i8 iPtn, CrwBuffer* pCrwBuffer);
+    
   private:
     void vNewCrwBuffer(i8 iPartition);
     Footer* aFooter(void);

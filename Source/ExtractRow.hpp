@@ -25,11 +25,13 @@ namespace Buffers
    ~ExtractRow(void) noexcept(false);
     
   public:
-    bool bExtractRow(char** aazRecStr, bool &bBlankLine);
+    bool bExtractRow(Row** ppRow, char** aazRecStr, bool &bBlankLine);
     
   private:
     Footer* aFooter(void);
   };
+  
+  ExtractRow* _pExtractRow(void* aAddr);
 }
 
 /*============================================================================*/
