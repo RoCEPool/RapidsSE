@@ -302,12 +302,12 @@ void Encoding::vEncodeBol(_ColEnc& xColEnc, Dtm wColVal)
   if (bEncodeNul(xColEnc,wColVal))
     return;
   
-  xColEnc.m_wDataCode.m_iBol = wColVal.m_iBol;
+  xColEnc.m_wDataCode.m_wBol.m_iAsI8 = wColVal.m_wBol.m_iAsI8;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // encode as: MC_BOL_TRUE or MC_BOL_FALSE
-  if (wColVal.m_iBol)
+  if (wColVal.m_wBol.m_iAsI8)
     xColEnc.m_eMetaCode = MC_BOL_TRUE;
   else
     xColEnc.m_eMetaCode = MC_BOL_FALSE;

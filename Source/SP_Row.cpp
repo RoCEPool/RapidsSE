@@ -76,7 +76,7 @@ void SP_Row::vRow(Row* pRow)
       case DM_BOL: {
         SP_Bol SP_Bol;
         StrLib::vAppendString(&szCrs,
-                              (char*)SP_Bol.sz(pRow->m_waColVal[i_Col].m_iBol));
+                              (char*)SP_Bol.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         

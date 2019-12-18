@@ -119,7 +119,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
         case DM_BOL: {
           SP_Bol SP_Bol;
           StrLib::vAppendString(&szCrs,
-                                (char*)SP_Bol.sz(aColEnc->m_wDataCode.m_iBol));
+                                (char*)SP_Bol.sz(aColEnc->m_wDataCode));
           break;
         }
           
