@@ -411,7 +411,7 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
   Dtm wIvl = IvlLib::wGetCurrIvl();
   
   // add the wait for period
-  wIvl = IvlLib::wAdd(wIvl,iMicroSeconds);
+  wIvl = IvlLib::wAdd(wIvl.m_wIvl,iMicroSeconds);
   
   // create a absolute time spec
   struct timespec xTimeSpec;
