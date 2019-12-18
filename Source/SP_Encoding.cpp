@@ -154,14 +154,14 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
         case DM_TME: {
           SP_Tme SP_Tme;
           StrLib::vAppendString(&szCrs,
-                                (char*)SP_Tme.sz(aColEnc->m_wDataCode.m_iTme));
+                                (char*)SP_Tme.sz(aColEnc->m_wDataCode));
           break;
         }
           
         case DM_TSP: {
           SP_Tsp SP_Tsp;
           StrLib::vAppendString(&szCrs,
-                                (char*)SP_Tsp.sz(aColEnc->m_wDataCode.m_iTsp));
+                                (char*)SP_Tsp.sz(aColEnc->m_wDataCode));
           break;
         }
           

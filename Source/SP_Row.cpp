@@ -111,7 +111,7 @@ void SP_Row::vRow(Row* pRow)
       case DM_TME: {
         SP_Tme SP_Tme;
         StrLib::vAppendString(&szCrs,
-                              (char*)SP_Tme.sz(pRow->m_waColVal[i_Col].m_iTme));
+                              (char*)SP_Tme.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         
