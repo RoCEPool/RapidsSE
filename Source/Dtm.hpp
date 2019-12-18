@@ -29,6 +29,7 @@ namespace Library
       Dte   m_wDte;
       Edt   m_wEdt;
       Flt   m_wFlt;
+      Int   m_wInt;
       Ivl   m_wIvl;
       Tme   m_wTme;
       Tsp   m_wTsp;
