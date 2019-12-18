@@ -40,7 +40,7 @@ void Pipeline::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Pipeline::Pipeline(Job* pJob)
+Pipeline::Pipeline(Job* pJob, i8 iOriginatingNode)
 : Object(CN_PIPELINE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
@@ -50,6 +50,7 @@ Pipeline::Pipeline(Job* pJob)
   m_pOpToPulse = nullptr;
   
   m_bCancelling = false;
+  m_iOriginatingNode = iOriginatingNode;
   
   m_pPipelineSpec = nullptr;
   //m_oStageVec
@@ -92,6 +93,16 @@ bool Pipeline::bCancelling(void)
     vDebugPoint();
   
   return m_bCancelling;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the originating node                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Pipeline::iOriginatingNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  return m_iOriginatingNode;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -27,8 +27,9 @@ void Step::vWriteBehindCreate(void)
   pWriteBehind->m_pTable = *m_pRegSet->m_xpTable;
   
   pWriteBehind->m_oFormatters.vSet(AM::pFmt());
-  //pWriteBehind->m_oFormatters.m_cEnclosedBy_Leading = '\'';
-  //pWriteBehind->m_oFormatters.m_cEnclosedBy_Trailing = '\'';
+  
+  pWriteBehind->m_oFormatters.m_cEnclosedBy_Leading = '\'';
+  pWriteBehind->m_oFormatters.m_cEnclosedBy_Trailing = '\'';
   pWriteBehind->m_oFormatters.m_cRecordTerminator = '\n';
   
   m_pRegSet->m_xpWriteBehind = pWriteBehind;
