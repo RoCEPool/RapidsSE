@@ -21,6 +21,8 @@ namespace Library
       i8    m_iTsc;
       i8    m_iTsp;
       
+      i8    m_iWrd;
+      
       char* m_azStr;
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
