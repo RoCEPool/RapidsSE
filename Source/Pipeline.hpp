@@ -12,6 +12,7 @@ namespace Operators
     bool        m_bPulsed;
     Op*         m_pOpToPulse;
     bool        m_bCancelling;
+    i8          m_iOriginatingNode;
     
     PipelineSpec* m_pPipelineSpec; // the pipeline job specification
     StageVec      m_oStageVec;     // vector of stages
@@ -25,11 +26,12 @@ namespace Operators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Pipeline(Job* pJob);
+    Pipeline(Job* pJob, i8 iOriginatingNode);
    ~Pipeline(void) noexcept(false);
   
     void      vCancelling(bool bCancelling);
     bool      bCancelling(void);
+    i8        iOriginatingNode(void);
     Job*      pJob(void);
     i8        nOpsOnNode(i8 iNode);
     Op*       pOpToPulse(void);

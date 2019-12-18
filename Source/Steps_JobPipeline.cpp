@@ -27,7 +27,7 @@ void Step::vJob_PipelineBegin(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
-  pJob_Pipeline->m_pPipeline = new Pipeline(pJob_Pipeline);
+  pJob_Pipeline->m_pPipeline = new Pipeline(pJob_Pipeline, pJob_Pipeline->iOriginatorNode());
   Pipeline* pPipeline = pJob_Pipeline->m_pPipeline;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

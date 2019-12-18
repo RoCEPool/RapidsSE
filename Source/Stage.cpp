@@ -69,7 +69,8 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
       break;
       
     case PO_ORIGIN:
-      m_oStageNdeVec.vAdd(new StageNde(pStageSpec, 0));
+      vTrace("Pipeline Originating node : %lld\n"_Stz, pPipeLine->iOriginatingNode());
+      m_oStageNdeVec.vAdd(new StageNde(pStageSpec, pPipeLine->iOriginatingNode()));
       break;
       
     case PO_SPECIFIC_NODE:

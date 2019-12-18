@@ -1780,6 +1780,7 @@ bool StrLib::bExtractVarchar(char** aaSrc,
       // we saw a leading enclodedBy so test for trailing enclosedBy
       if (cSrc == cEnclosedBy_Trailing) {
         bSawTrailingEnclosed = true;
+        (*aaSrc)++;
         break;
       }
       //falls thru if not trailing enclosedBy

@@ -543,7 +543,7 @@ void CrwBuffer::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate an IrwBuffer from a crw buffer with a csv row                     */
+/* generate a CsvBuffer from a crw buffer with a csv row                      */
 /*----------------------------------------------------------------------------*/
 CsvBuffer* CrwBuffer::pToCsvBuffer(void)
 {

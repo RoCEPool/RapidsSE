@@ -110,9 +110,6 @@ void Record::vAppend(Row* pRow)
         if (i_Col)
           m_sRecStr.vAppend(&m_azAppendCursor,","_Stz);
         
-        //! ALKA: Revert once Column not newable
-        // append column value
-        //vAppend(&xCol,pRow);
         vAppend(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
         //vTrace("%s\n"_Stz,pRec->szRecStr());
         

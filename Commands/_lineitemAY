@@ -57,6 +57,7 @@ time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
+
 space;
 sztbl lineitem;
 
@@ -65,6 +66,8 @@ visidx lineitem lineitem_idx1;
 
 //fetch lineitem limit 10;
 //dumpidx lineitem LineItem_Idx1;
+
+//create table x ( i integer, j integer) partition by (j);
 
 //dumptbl lineitem;
 //docol epochTake;
@@ -101,15 +104,32 @@ time pipeline insert
 begin
 
 stage stageA on all partitions:
-scanOp lineitem | toCsvOP | toCrwOp lineitem2 | stageB
+  scanOp lineitem | toCsvOP | toCrwOp lineitem2 | stageB
 
 stage stageB on all partitions:
-insertOp lineitem2 | outputOp
+  insertOp lineitem2  | stageC
+
+ stage stageC on origin:
+   outputOp
+
+end
+ ;
+/*
+
+ stage stageB on all partitions:
+ insertOp lineitem2 | outputop
+stage stageA on all partitions:
+  scanOp lineitem | toCsvOp | toCrwOp lineitem2 | stageB
+
+stage stageB on origin:
+  outputOp
 
 end
 ;
 
-/*
+
+
+
  time pipeline export
  begin
  
