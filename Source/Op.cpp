@@ -114,7 +114,7 @@ Op::~Op(void) noexcept(false)
   if (m_pStreamDef)
     delete m_pStreamDef;
   
-  delete m_pOpSpec;
+  //delete m_pOpSpec;
   
   -- gixOp;
   AM::vLogOpr(SL_INF,this,OA_OP_DESTRUCT,
@@ -431,10 +431,10 @@ void Op::vPipeOut(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   if (AM::bVerbose())
-    vTrace("%s (P%lld) (N%lld) (job:%p)::vPipeOut :    %s %p\n"_Stz,
+    vTrace("%s (N%lld) (P%lld) (job:%p)::vPipeOut :    %s %p\n"_Stz,
            m_sName.szStz(),
-           m_nPartition,
            m_nNode,
+           m_nPartition,
            m_pJobPipeline,
            aCN[pOperand->eClass()],
            pOperand);
@@ -482,10 +482,10 @@ void Op::vPipeToJob(Operand* pOperand)
   Queue* pBufferQueue = AM::pBufferQueue(m_pJobPipeline);
   
   if (AM::bVerbose())
-    vTrace("%s (P%lld) (N%lld) ::vPipeToJob(%p):    %s %p\n"_Stz,
+    vTrace("%s (N%lld) (P%lld) ::vPipeToJob(%p):    %s %p\n"_Stz,
            m_sName.szStz(),
-           m_nPartition,
            m_nNode,
+           m_nPartition,
            m_pJobPipeline,
            aCN[pOperand->eClass()],
            pOperand);
@@ -539,10 +539,10 @@ Operand* Op::pPopQueue(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::bVerbose() && pOperand) {
-    vTrace("%s (P%lld) (N%lld) (job:%p)::pPopQueue : %s %p\n"_Stz,
+    vTrace("%s (N%lld) (P%lld) (job:%p)::pPopQueue : %s %p\n"_Stz,
            m_sName.szStz(),
-           m_nPartition,
            m_nNode,
+           m_nPartition,
            m_pJobPipeline,
            aCN[pOperand->eClass()],
            pOperand);
@@ -578,10 +578,10 @@ Operand* Op::pPopQueue2(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::bVerbose() && pOperand) {
-    vTrace("%s (P%lld) (N%lld) (job:%p)::pPopQueue : %s %p\n"_Stz,
+    vTrace("%s (N%lld) (P%lld) (job:%p)::pPopQueue : %s %p\n"_Stz,
            m_sName.szStz(),
-           m_nPartition,
            m_nNode,
+           m_nPartition,
            m_pJobPipeline,
            aCN[pOperand->eClass()],
            pOperand);

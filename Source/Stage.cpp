@@ -180,8 +180,10 @@ void Stage::vDump(void)
     EnameSet* pEnameSet = pOp->m_pOpSpec->pEnameSet();
     pEnameSet->vSprint(sArgs);
     
-    vTrace("  [%02lld] {%12s%-24s endMarkers(L%lld R%lld) :%-10s %s }\n"_Stz,
+    vTrace("  [%02lld] (N%lld) (P%lld) {%12s%-24s endMarkers(L%lld R%lld) :%-10s %s }\n"_Stz,
            i_Op,
+           pOp->m_nNode,
+           pOp->m_nPartition,
            pOp->m_sName.szStz(),
            sArgs.szStz(),
            pOp->m_nLeftEndMarkers,
