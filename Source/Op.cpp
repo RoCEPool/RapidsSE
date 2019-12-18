@@ -431,11 +431,12 @@ void Op::vPipeOut(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   if (AM::bVerbose())
-    vTrace("%s (N%lld) (P%lld) (job:%p)::vPipeOut :    %s %p\n"_Stz,
+    vTrace("%12s (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sName.szStz(),
            m_nNode,
            m_nPartition,
            m_pJobPipeline,
+           "vPipeOut :"_Stz,
            aCN[pOperand->eClass()],
            pOperand);
 
@@ -482,11 +483,12 @@ void Op::vPipeToJob(Operand* pOperand)
   Queue* pBufferQueue = AM::pBufferQueue(m_pJobPipeline);
   
   if (AM::bVerbose())
-    vTrace("%s (N%lld) (P%lld) ::vPipeToJob(%p):    %s %p\n"_Stz,
+    vTrace("%12s (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sName.szStz(),
            m_nNode,
            m_nPartition,
            m_pJobPipeline,
+           "vPipeToJob :"_Stz,
            aCN[pOperand->eClass()],
            pOperand);
   
@@ -539,11 +541,12 @@ Operand* Op::pPopQueue(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::bVerbose() && pOperand) {
-    vTrace("%s (N%lld) (P%lld) (job:%p)::pPopQueue : %s %p\n"_Stz,
+    vTrace("%12s (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sName.szStz(),
            m_nNode,
            m_nPartition,
            m_pJobPipeline,
+           "pPopQueue :"_Stz,
            aCN[pOperand->eClass()],
            pOperand);
   }
@@ -578,11 +581,12 @@ Operand* Op::pPopQueue2(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::bVerbose() && pOperand) {
-    vTrace("%s (N%lld) (P%lld) (job:%p)::pPopQueue : %s %p\n"_Stz,
+    vTrace("%12s (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sName.szStz(),
            m_nNode,
            m_nPartition,
            m_pJobPipeline,
+           "pPopQueue :"_Stz,
            aCN[pOperand->eClass()],
            pOperand);
   }
