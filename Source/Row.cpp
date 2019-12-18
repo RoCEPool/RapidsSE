@@ -157,7 +157,7 @@ void Row::vCopy(Row* pRow)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // all others
     
-    m_waColVal[i_Col].m_iInt = pRow->m_waColVal[i_Col].m_iI8;
+    m_waColVal[i_Col].m_iInt = pRow->m_waColVal[i_Col].m_iInt;
   }
 }
 
@@ -194,7 +194,7 @@ void Row::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // all others
     
-    m_waColVal[i_IntoCol].m_iInt = pRow->m_waColVal[i_FromCol].m_iI8;
+    m_waColVal[i_IntoCol].m_iInt = pRow->m_waColVal[i_FromCol].m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/

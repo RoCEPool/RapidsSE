@@ -12,10 +12,10 @@ Sleep::Sleep(void)
 {
   _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
   
-  m_wSleptTsp.m_iI8    = 0;
-  m_wWakeupTsp.m_iI8   = 0;
-  m_wWakeupIvl.m_iI8   = 0;
-  m_wDurationIvl.m_iI8 = 0;
+  m_wSleptTsp.m_iInt    = 0;
+  m_wWakeupTsp.m_iInt   = 0;
+  m_wWakeupIvl.m_iInt   = 0;
+  m_wDurationIvl.m_iInt = 0;
   
   _checkInitialised_(CN_SLEEP);
   
@@ -46,16 +46,16 @@ void Sleep::vClear(void)
   _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
   
   // reset slept tsp
-  m_wSleptTsp.m_iI8 = 0;
+  m_wSleptTsp.m_iInt = 0;
   
   // reset the wakeup time
-  m_wWakeupTsp.m_iI8 = 0;
+  m_wWakeupTsp.m_iInt = 0;
   
   // reset the wakeup Ivl
-  m_wWakeupIvl.m_iI8 = 0;
+  m_wWakeupIvl.m_iInt = 0;
   
   // reset the sleep interval
-  m_wDurationIvl.m_iI8 = 0;
+  m_wDurationIvl.m_iInt = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -110,7 +110,7 @@ bool Sleep::bWakeupNow(void)
   Dtm xCurrentIvl = IvlLib::wGetCurrIvl();
   
   // compare wakeup ivl with current ivl
-  if (m_wWakeupIvl.m_iI8 <= xCurrentIvl.m_iI8)
+  if (m_wWakeupIvl.m_iInt <= xCurrentIvl.m_iInt)
     return true;
   else
     return false;

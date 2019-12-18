@@ -12,8 +12,8 @@ Birth::Birth(void)
 {
   _precondition_(_MAGIC_,CN_BIRTH,_FOOTER_);
   
-  m_wTsp.m_iI8 = 0;
-  m_wIvl.m_iI8 = 0;
+  m_wTsp.m_iInt = 0;
+  m_wIvl.m_iInt = 0;
   
   _checkInitialised_(CN_BIRTH);
   
@@ -43,8 +43,8 @@ void Birth::vClear(void)
 {
   _precondition_(_MAGIC_,CN_BIRTH,_FOOTER_);
   
-  m_wTsp.m_iI8 = 0;
-  m_wIvl.m_iI8 = 0;
+  m_wTsp.m_iInt = 0;
+  m_wIvl.m_iInt = 0;
 }
 
 /*----------------------------------------------------------------------------*/

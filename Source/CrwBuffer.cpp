@@ -628,7 +628,7 @@ SrtBuffer* CrwBuffer::pToSrtBuffer(i8 iKeyCol)
     RowInflator::vInflateColumn(hRow, aCrw, iKeyCol);
     
     // set the key in the srtSet
-    pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
+    pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iInt);
   }
   
   return pSrtBuffer;

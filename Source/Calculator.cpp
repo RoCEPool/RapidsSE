@@ -227,7 +227,7 @@ i8 Calculator::iEvaluate(Row* pRow)
       case EO_COLUMN:
         iArgA = * (i8*)peCode;
         peCode += 8;
-        iRes = pRow->m_waColVal[iArgA].m_iI8;
+        iRes = pRow->m_waColVal[iArgA].m_iInt;
         m_iaStack[++i_TopVal] = iRes;
         break;
         

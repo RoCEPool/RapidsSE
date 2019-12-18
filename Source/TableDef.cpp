@@ -664,10 +664,9 @@ eEC TableDef::eParseMax(TokenVec* pTknVec, Column* pCol)
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
 
-  Datum_h* pDatum = pCol->pMaxVal();
-  
-  i8 iMax = pTkn->iToI8();
-  pDatum->vInt(iMax);
+  Datum_h* pDatum_max = pCol->pMaxVal();
+
+  DatumToken::vAssign(pDatum_max,pTkn,pCol);
   
 //  if (!b)
 //    return EC_INVALID_COLUMN;
@@ -684,11 +683,10 @@ eEC TableDef::eParseMin(TokenVec* pTknVec, Column* pCol)
   
   Token* pTkn = pTknVec->pNextToken(); dPT();
   
-  Datum_h* pDatum = pCol->pMinVal();
+  Datum_h* pDatum_min = pCol->pMinVal();
 
-  i8 iMin = pTkn->iToI8();
-  pDatum->vInt(iMin);
-  
+  DatumToken::vAssign(pDatum_min,pTkn,pCol);
+
 //  if (!b)
 //    return EC_INVALID_COLUMN;
   

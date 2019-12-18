@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 Dtm::Dtm(void)
 {
-  m_iI8 = 0;
+  m_iInt = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,13 +71,13 @@ i8 Dtm::iDte(i8 iYear, i8 iMonth, i8 iDay)
 {
   Dtm xDtm;
   
-  xDtm.xDte.m_uYearDelta = iYear - C_YEAR_BASE;
-  xDtm.xDte.m_uMonth     = iMonth;
-  xDtm.xDte.m_uDay       = iDay;
+  xDtm.m_wDte.m_uYearDelta = iYear - C_YEAR_BASE;
+  xDtm.m_wDte.m_uMonth     = iMonth;
+  xDtm.m_wDte.m_uDay       = iDay;
   
-  xDtm.xDte.m_uSpare     = 0;
+  xDtm.m_wDte.m_uSpare     = 0;
 
-  return xDtm.m_iI8;
+  return xDtm.m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,10 +87,10 @@ i8 Dtm::iIvl(i8 iSecond, i8 iMilli)
 {
   Dtm xDtm;
   
-  xDtm.xIvl.m_uSecond = iSecond;
-  xDtm.xIvl.m_uMicro  = iMilli * C_1K;
+  xDtm.m_wIvl.m_uSecond = iSecond;
+  xDtm.m_wIvl.m_uMicro  = iMilli * C_1K;
   
-  return xDtm.m_iI8;
+  return xDtm.m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,14 +100,14 @@ i8 Dtm::iTme(i8 iHour, i8 iSecond, i8 iMinute, i8 iMicro)
 {
   Dtm xDtm;
   
-  xDtm.xTme.m_uHour   = iHour;
-  xDtm.xTme.m_uSecond = iSecond;
-  xDtm.xTme.m_uMinute = iMinute;
-  xDtm.xTme.m_uMicro  = iMicro;
+  xDtm.m_wTme.m_uHour   = iHour;
+  xDtm.m_wTme.m_uSecond = iSecond;
+  xDtm.m_wTme.m_uMinute = iMinute;
+  xDtm.m_wTme.m_uMicro  = iMicro;
   
-  xDtm.xTme.m_uSpare  = 0;
+  xDtm.m_wTme.m_uSpare  = 0;
   
-  return xDtm.m_iI8;
+  return xDtm.m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,18 +118,18 @@ i8 Dtm::iTsp(i8 iYear, i8 iMonth,  i8 iDay,
 {
   Dtm xDtm;
   
-  xDtm.xTsp.m_uYearDelta = iYear - C_YEAR_BASE;
-  xDtm.xTsp.m_uMonth     = iMonth;
-  xDtm.xTsp.m_uDay       = iDay;
+  xDtm.m_wTsp.m_uYearDelta = iYear - C_YEAR_BASE;
+  xDtm.m_wTsp.m_uMonth     = iMonth;
+  xDtm.m_wTsp.m_uDay       = iDay;
   
-  xDtm.xTsp.m_uHour      = iHour;
-  xDtm.xTsp.m_uSecond    = iSecond;
-  xDtm.xTsp.m_uMinute    = iMinute;
-  xDtm.xTsp.m_uMicro     = iMicro;
-  xDtm.xTsp.m_uLocal     = C_TSP_LOCAL;
-  xDtm.xTsp.m_uSpare     = 0;
+  xDtm.m_wTsp.m_uHour      = iHour;
+  xDtm.m_wTsp.m_uSecond    = iSecond;
+  xDtm.m_wTsp.m_uMinute    = iMinute;
+  xDtm.m_wTsp.m_uMicro     = iMicro;
+  xDtm.m_wTsp.m_uLocal     = C_TSP_LOCAL;
+  xDtm.m_wTsp.m_uSpare     = 0;
   
-  return xDtm.m_iI8;
+  return xDtm.m_iInt;
 }
 
 
@@ -142,7 +142,7 @@ i8 Dtm::iTsp(i8 iYear, i8 iMonth,  i8 iDay,
 /*----------------------------------------------------------------------------*/
 i8 Dtm::iAsI8(void)
 {
-  return m_iI8;
+  return m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,7 +150,7 @@ i8 Dtm::iAsI8(void)
 /*----------------------------------------------------------------------------*/
 void Dtm::vAsI8(i8 iAsI8)
 {
-  m_iI8 = iAsI8;
+  m_iInt = iAsI8;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +158,7 @@ void Dtm::vAsI8(i8 iAsI8)
 /*----------------------------------------------------------------------------*/
 i8 Dtm::iByteMagn(void)
 {
-  i8 iMagn = IntLib::iByteMagnitude(m_w8);
+  i8 iMagn = IntLib::iByteMagnitude(m_iInt);
   
   return iMagn;
 }
@@ -168,7 +168,7 @@ i8 Dtm::iByteMagn(void)
 /*----------------------------------------------------------------------------*/
 bool Dtm::bIsNull(void)
 {
-  if (C_DATUM_NULL == m_iI8)
+  if (C_DATUM_NULL == m_iInt)
     return true;
   else
     return false;
@@ -179,7 +179,7 @@ bool Dtm::bIsNull(void)
 /*----------------------------------------------------------------------------*/
 void Dtm::vSetUnknown(void)
 {
-  m_iI8 = C_UNKNOWN;
+  m_iInt = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,7 +187,7 @@ void Dtm::vSetUnknown(void)
 /*----------------------------------------------------------------------------*/
 void Dtm::vSetNull(void)
 {
-  m_iI8 = C_DATUM_NULL;
+  m_iInt = C_DATUM_NULL;
 }
 
 /*============================================================================*/

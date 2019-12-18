@@ -415,8 +415,8 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
   
   // create a absolute time spec
   struct timespec xTimeSpec;
-  xTimeSpec.tv_sec  = wIvl.xIvl.m_uSecond;
-  xTimeSpec.tv_nsec = wIvl.xIvl.m_uMicro * C_1K;
+  xTimeSpec.tv_sec  = wIvl.m_wIvl.m_uSecond;
+  xTimeSpec.tv_nsec = wIvl.m_wIvl.m_uMicro * C_1K;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

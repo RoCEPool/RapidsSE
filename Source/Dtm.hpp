@@ -9,12 +9,7 @@ namespace Library
   {
   public:
     union {
-      
-      char* m_azStr;
-      i8    m_iI8;
-      i8    m_nSize;    // size of vch
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       i8    m_iBcd;
       i8    m_iBol;
       i8    m_iDte;
@@ -26,20 +21,23 @@ namespace Library
       i8    m_iTsc;
       i8    m_iTsp;
       
+      char* m_azStr;
+      
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      _Dte  xDte;
-      _Edt  xEdt;
-      _Ivl  xIvl;
-      _Tme  xTme;
-      _Tsp  xTsp;
+      Bcd   m_wBcd;
+      Bol   m_wBol;
+      Dte   m_wDte;
+      Edt   m_wEdt;
+      Flt   m_wFlt;
+      Ivl   m_wIvl;
+      Tme   m_wTme;
+      Tsp   m_wTsp;
       
       Stz*  m_szVch;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       
       byte  m_yaByte[C_BYTES_PER_WORD];
-      w8    m_w8;
-
     };
   
   public:

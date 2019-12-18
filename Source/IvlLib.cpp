@@ -14,10 +14,10 @@
 Dtm IvlLib::wAdd(Dtm wIvl1, Dtm wIvl2)
 {
   // convert wIvl1 to microseconds
-  u8 uMicro1 = (wIvl1.xIvl.m_uSecond * C_1M) + wIvl1.xIvl.m_uMicro;
+  u8 uMicro1 = (wIvl1.m_wIvl.m_uSecond * C_1M) + wIvl1.m_wIvl.m_uMicro;
   
   // convert wIvl2 to microseconds
-  u8 uMicro2 = (wIvl2.xIvl.m_uSecond * C_1M) + wIvl2.xIvl.m_uMicro;
+  u8 uMicro2 = (wIvl2.m_wIvl.m_uSecond * C_1M) + wIvl2.m_wIvl.m_uMicro;
   
   // add the two intervals
   u8 uMicro = uMicro1 + uMicro2;
@@ -34,7 +34,7 @@ Dtm IvlLib::wAdd(Dtm wIvl1, Dtm wIvl2)
 Dtm IvlLib::wAdd(Dtm wIvl, u8 uMicro)
 {
   // convert wIvl1 to microseconds
-  u8 uIvlMicro = (wIvl.xIvl.m_uSecond * C_1M) + wIvl.xIvl.m_uMicro;
+  u8 uIvlMicro = (wIvl.m_wIvl.m_uSecond * C_1M) + wIvl.m_wIvl.m_uMicro;
   
   // add the two intervals
   u8 uMicroTotal = uIvlMicro + uMicro;
@@ -64,10 +64,10 @@ Dtm IvlLib::wGetCurrIvl(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  wDtm.xIvl.m_uSecond = xTimeVal.tv_sec;
-  wDtm.xIvl.m_uMicro  = xTimeVal.tv_usec;
+  wDtm.m_wIvl.m_uSecond = xTimeVal.tv_sec;
+  wDtm.m_wIvl.m_uMicro  = xTimeVal.tv_usec;
   
-  ASSERT(wDtm.xIvl.m_uMicro < C_1M); // logic check
+  ASSERT(wDtm.m_wIvl.m_uMicro < C_1M); // logic check
 
   return wDtm;
 }
@@ -81,19 +81,19 @@ Dtm IvlLib::wToIvl(Dtm wTsp)
   
   struct tm xDateTime;
   
-  xDateTime.tm_year = wTsp.xTsp.m_uYearDelta;
-  xDateTime.tm_mon  = wTsp.xTsp.m_uMonth - 1;
-  xDateTime.tm_mday = wTsp.xTsp.m_uDay;
-  xDateTime.tm_hour = wTsp.xTsp.m_uHour;
-  xDateTime.tm_min  = wTsp.xTsp.m_uMinute;
-  xDateTime.tm_sec  = wTsp.xTsp.m_uSecond;
+  xDateTime.tm_year = wTsp.m_wTsp.m_uYearDelta;
+  xDateTime.tm_mon  = wTsp.m_wTsp.m_uMonth - 1;
+  xDateTime.tm_mday = wTsp.m_wTsp.m_uDay;
+  xDateTime.tm_hour = wTsp.m_wTsp.m_uHour;
+  xDateTime.tm_min  = wTsp.m_wTsp.m_uMinute;
+  xDateTime.tm_sec  = wTsp.m_wTsp.m_uSecond;
   
-  RASSERT(wTsp.xTsp.m_uLocal == C_TSP_LOCAL);
+  RASSERT(wTsp.m_wTsp.m_uLocal == C_TSP_LOCAL);
   
   time_t iSecondsSincePosixEpoch = timelocal(&xDateTime);
   
-  wIvl.xIvl.m_uSecond = iSecondsSincePosixEpoch;
-  wIvl.xIvl.m_uMicro = wTsp.xTsp.m_uMicro;
+  wIvl.m_wIvl.m_uSecond = iSecondsSincePosixEpoch;
+  wIvl.m_wIvl.m_uMicro = wTsp.m_wTsp.m_uMicro;
   
   return wIvl;
 }
@@ -106,7 +106,7 @@ Dtm IvlLib::wToIvl(u8 uMicroseconds)
   Dtm wIvl;
   
   if (uMicroseconds < C_1M) {
-    wIvl.xIvl.m_uMicro = uMicroseconds;
+    wIvl.m_wIvl.m_uMicro = uMicroseconds;
     return wIvl;
   }
   
@@ -115,11 +115,11 @@ Dtm IvlLib::wToIvl(u8 uMicroseconds)
   
   u8 uMultiples = uMicroseconds;
   
-  wIvl.xIvl.m_uMicro = uMultiples % C_1M;
+  wIvl.m_wIvl.m_uMicro = uMultiples % C_1M;
   
   u8 uSecondsDelta = uMultiples / C_1M;
   
-  wIvl.xIvl.m_uSecond += uSecondsDelta;
+  wIvl.m_wIvl.m_uSecond += uSecondsDelta;
   
   return wIvl;
 }
@@ -130,10 +130,10 @@ Dtm IvlLib::wToIvl(u8 uMicroseconds)
 u8 IvlLib::uSubtract(Dtm wIvl1, Dtm wIvl2)
 {
   // convert wIvl1 to microseconds
-  u8 uMicro1 = (wIvl1.xIvl.m_uSecond * C_1M) + wIvl1.xIvl.m_uMicro;
+  u8 uMicro1 = (wIvl1.m_wIvl.m_uSecond * C_1M) + wIvl1.m_wIvl.m_uMicro;
   
   // convert wIvl2 to microseconds
-  u8 uMicro2 = (wIvl2.xIvl.m_uSecond * C_1M) + wIvl1.xIvl.m_uMicro;
+  u8 uMicro2 = (wIvl2.m_wIvl.m_uSecond * C_1M) + wIvl1.m_wIvl.m_uMicro;
   
   // subtract
   u8 uMicro = uMicro1 - uMicro2;

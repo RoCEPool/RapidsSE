@@ -46,17 +46,17 @@ i8 SN_Tsp::i(char** aacCrs, Column* pCol, Format* pFmt)
                                     pFmt->m_cDateSeparator) )
     THROW("StrLib::bExtractTimestamp2"_Stz);
 
-  m_wDtm.xTsp.m_uYearDelta = iYear - C_YEAR_BASE;
-  m_wDtm.xTsp.m_uMonth     = iMonth;
-  m_wDtm.xTsp.m_uDay       = iDay;
-  m_wDtm.xTsp.m_uHour      = iHour;
-  m_wDtm.xTsp.m_uMinute    = iMinute;
-  m_wDtm.xTsp.m_uSecond    = iSecond;
-  m_wDtm.xTsp.m_uMicro     = iMicro;
-  m_wDtm.xTsp.m_uLocal     = C_TSP_LOCAL;
-  m_wDtm.xTsp.m_uSpare     = 0;
+  m_wDtm.m_wTsp.m_uYearDelta = iYear - C_YEAR_BASE;
+  m_wDtm.m_wTsp.m_uMonth     = iMonth;
+  m_wDtm.m_wTsp.m_uDay       = iDay;
+  m_wDtm.m_wTsp.m_uHour      = iHour;
+  m_wDtm.m_wTsp.m_uMinute    = iMinute;
+  m_wDtm.m_wTsp.m_uSecond    = iSecond;
+  m_wDtm.m_wTsp.m_uMicro     = iMicro;
+  m_wDtm.m_wTsp.m_uLocal     = C_TSP_LOCAL;
+  m_wDtm.m_wTsp.m_uSpare     = 0;
   
-  return m_wDtm.m_iI8;
+  return m_wDtm.m_iInt;
 }
 
 

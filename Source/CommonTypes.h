@@ -1,10 +1,10 @@
 /*============================================================================*/
-/* SqlTypes.h -- Sql Types                                                    */
+/* CommonTypes.h -- Common Types                                              */
 /*============================================================================*/
 #pragma once
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// bcd
+// bcd / decimal
 class Bcd
 {
 public:
@@ -35,7 +35,7 @@ public:
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// era-based date
+// era-based date (date given some known / understood era)
 class Edt
 {
 public:

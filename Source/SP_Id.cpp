@@ -38,7 +38,7 @@ Stz* SP_Id::sz(i8 iId)
   
   union {
     i8  iId;
-    _Id wId;
+    Gid wId;
   } U;
   
   
@@ -70,7 +70,7 @@ Stz* SP_Id::sz(eIK eKind, i8 iId)
   
   union {
     i8  iId;
-    _Id wId;
+    Gid wId;
   } U;
   
   
@@ -103,7 +103,7 @@ Stz* SP_Id::sz(eEK eKind, i8 iId)
   
   union {
     i8  iId;
-    _Id wId;
+    Gid wId;
   } U;
   
   
