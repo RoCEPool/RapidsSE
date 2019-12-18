@@ -126,7 +126,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
         case DM_DTE: {
           SP_Dte SP_Dte;
           StrLib::vAppendString(&szCrs,
-                                (char*)SP_Dte.sz(aColEnc->m_wDataCode.m_iDte));
+                                (char*)SP_Dte.sz(aColEnc->m_wDataCode));
           break;
         }
           

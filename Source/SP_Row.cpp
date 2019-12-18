@@ -83,7 +83,7 @@ void SP_Row::vRow(Row* pRow)
       case DM_DTE: {
         SP_Dte SP_Dte;
         StrLib::vAppendString(&szCrs,
-                              (char*)SP_Dte.sz(pRow->m_waColVal[i_Col].m_iDte));
+                              (char*)SP_Dte.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         
