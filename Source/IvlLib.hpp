@@ -17,7 +17,7 @@ namespace Library
   
     static Dtm  wAdd(Dtm wIvl1, Dtm wIvl2);
     static Dtm  wAdd(Dtm wIvl, u8 uMicro);
-    static u8   uSubtract(Dtm wIvl1, Dtm wIvl2);
+    static u8   uSubtract(Ivl wIvl1, Ivl wIvl2);
   };
 }
 

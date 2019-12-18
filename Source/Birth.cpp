@@ -57,7 +57,7 @@ i8 Birth::iElapsedSsec(void)
   // get current tsp as Ivl
   Dtm wCurrentIvl = IvlLib::wGetCurrIvl();
   
-  u8 uMicros = IvlLib::uSubtract(wCurrentIvl, m_wIvl);
+  u8 uMicros = IvlLib::uSubtract(wCurrentIvl.m_wIvl, m_wIvl.m_wIvl);
   
   return uMicros/C_1M;
 }

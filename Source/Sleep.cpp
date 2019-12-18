@@ -94,7 +94,7 @@ u8 Sleep::uWakeupInUsec(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // subtract wkaeupIvl from CurrentIvl
-  u8 uMicro = IvlLib::uSubtract(xCurrentIvl, m_wWakeupIvl);
+  u8 uMicro = IvlLib::uSubtract(xCurrentIvl.m_wIvl, m_wWakeupIvl.m_wIvl);
   
   return uMicro;
 }

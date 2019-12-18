@@ -127,13 +127,13 @@ Dtm IvlLib::wToIvl(u8 uMicroseconds)
 /*----------------------------------------------------------------------------*/
 /* subtract Ivl2 from Ivl1 and return the microseconds                        */
 /*----------------------------------------------------------------------------*/
-u8 IvlLib::uSubtract(Dtm wIvl1, Dtm wIvl2)
+u8 IvlLib::uSubtract(Ivl wIvl1, Ivl wIvl2)
 {
   // convert wIvl1 to microseconds
-  u8 uMicro1 = (wIvl1.m_wIvl.m_uSecond * C_1M) + wIvl1.m_wIvl.m_uMicro;
+  u8 uMicro1 = (wIvl1.m_uSecond * C_1M) + wIvl1.m_uMicro;
   
   // convert wIvl2 to microseconds
-  u8 uMicro2 = (wIvl2.m_wIvl.m_uSecond * C_1M) + wIvl1.m_wIvl.m_uMicro;
+  u8 uMicro2 = (wIvl2.m_uSecond * C_1M) + wIvl1.m_uMicro;
   
   // subtract
   u8 uMicro = uMicro1 - uMicro2;
