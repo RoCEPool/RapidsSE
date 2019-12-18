@@ -48,14 +48,20 @@ void WriteBehind::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-WriteBehind::WriteBehind(void)
+WriteBehind::WriteBehind(Table* pTable)
 : Object(CN_WRITEBEHIND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   
+  m_pTable = pTable;
+  
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
-    m_pCrwBuffer[i_Partition]   = nullptr;
+    m_pCrwBuffer[i_Partition]     = nullptr;
+    m_paRowCompactor[i_Partition] = nullptr;
   }
+  
+  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++)
+    m_paRowCompactor[i_Ptn] = new RowCompactor;
   
   _checkInitialised_(CN_WRITEBEHIND);
   
@@ -71,7 +77,8 @@ WriteBehind::~WriteBehind(void) noexcept(false)
   
   // Assert we don't have any dangling buffers
   for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++) {
-    RASSERT( ! m_pCrwBuffer[i_Ptn] );
+    delete m_paRowCompactor[i_Ptn];
+    RASSERT( ! m_pCrwBuffer[i_Ptn] );    
   }
 }
 
@@ -82,12 +89,9 @@ WriteBehind::~WriteBehind(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-eEC WriteBehind::eAppendRow(CrwBuffer** ppCrwBuffer)
+eEC WriteBehind::eAppendRow(Row* pRow, CrwBuffer** ppCrwBuffer, i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
-  
-  // use row hash to get partition
-  i8 i_Ptn = m_pTable->iToPartition(m_pRow->m_iHash);
   
   // append the row into a working buffer
   while (true) {
@@ -115,7 +119,7 @@ eEC WriteBehind::eAppendRow(CrwBuffer** ppCrwBuffer)
     CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
     
     //pCrwBuffer->vGrabWrite();
-    bool bWasAppended = pCrwBuffer->bAppendRow(m_pRow);
+    bool bWasAppended = pCrwBuffer->bAppendRow(pRow);
     //pCrwBuffer->vDropWrite();
     //pCrwBuffer->vDump();
     
@@ -146,37 +150,6 @@ CrwBuffer* WriteBehind::pCrwBuffer(i8 iPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
   return m_pCrwBuffer[iPtn];
-}
-
-/*----------------------------------------------------------------------------*/
-/* process record                                                             */
-/*----------------------------------------------------------------------------*/
-eEC WriteBehind::eProcessRecord(char** aazRecStr, CrwBuffer** ppCrwBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WRITEBEHIND,_FOOTER_);
-  
-  bool bBlankLine = false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  bool bValid = bExtractRow(aazRecStr, bBlankLine);
-  
-  if (bBlankLine)
-    return EC_BLANKLINE;
-
-  if (! bValid)
-    return EC_INVALID_VALUE;
-
-  // attempt to append row into a write-behind buffer
-  eEC eError = eAppendRow(ppCrwBuffer);
-
-  // was there an error ?
-  if (eError != EC_NONE) {
-    vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eError]);
-    return eError;
-  }
-
-  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

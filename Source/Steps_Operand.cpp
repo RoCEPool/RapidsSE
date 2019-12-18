@@ -381,36 +381,60 @@ void Step::vOperandCsvToCrw(void)
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pRegSet->m_pOperand);
   WriteBehind* pWriteBehind = *m_pRegSet->m_xpWriteBehind;
+  Table* pTable = *m_pRegSet->m_xpTable;
   
   char* aCursor = pCsvBuffer->aDataArea();
   CrwBuffer* pCrwBuffer = nullptr;
   
+  bool bBlankLine = false;
+  
+  Format* pFormat = new Format;
+  pFormat->vSet(AM::pFmt());
+  pFormat->m_cEnclosedBy_Leading = '\'';
+  pFormat->m_cEnclosedBy_Trailing = '\'';
+  pFormat->m_cRecordTerminator = '\n';
+  
+  Row* pRow = nullptr;
+  
   for(i8 i_Record = 0; i_Record < pCsvBuffer->nRecords(); i_Record++) {
     
-    // process that record into write behind
-    eEC eError = pWriteBehind->eProcessRecord(&aCursor, &pCrwBuffer);
+    if ( ! pRow )
+      pRow = new Row(pTable->pStreamDef(),C_ALL);
+    else
+      pRow->vResetValues();
+    
+    bool bValid = CsvCursor::bExtractNext(pRow, pTable->pStreamDef(), &aCursor, pFormat, bBlankLine);
+    
+    if (bBlankLine)
+      continue;
+    
+    if (! bValid ) {
+      vTrace("Warning: Skipping row (invalid value)\n"_Stz);
+    }
+    
+//    if (EC_MAX_ROW_LENGTH == eError) {
+//      vTrace("Warning: Skipping row (Max row length)\n"_Stz);
+//      continue;
+//    }
+    
+    // use row hash to get partition
+    i8 i_Ptn = pTable->iToPartition(pRow->m_iHash);
+    
+    // attempt to append row into a write-behind buffer
+    eEC eError = pWriteBehind->eAppendRow(pRow, &pCrwBuffer, i_Ptn);
+    
+    // was there an error ?
+    if (eError != EC_NONE) {
+      vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eError]);
+      continue;
+    }
     
     if (pCrwBuffer) {
       pCrwBuffer->vAppendClose();
       pOp->vPipeOut(_pOperand(pCrwBuffer));
       pCrwBuffer = nullptr;
     }
-    if (EC_NONE == eError) {
-      continue;
-    }
-
-    if (EC_BLANKLINE == eError)
-      continue;
-
-    if (EC_INVALID_VALUE == eError) {
-      vTrace("Warning: Skipping row (invalid value)\n"_Stz);
-      continue;
-    }
-
-    if (EC_MAX_ROW_LENGTH == eError) {
-      vTrace("Warning: Skipping row (Max row length)\n"_Stz);
-      continue;
-    }
+    
   }
   
   EXIT();
