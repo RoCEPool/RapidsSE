@@ -10,7 +10,7 @@ class Bcd
 public:
   union {
     i8 m_iBcd;
-    i8 m_iInt;
+    i8 m_iAsI8;
   };
 };
 
@@ -21,7 +21,7 @@ class Bol
 public:
   union {
     i8 m_iBol;
-    i8 m_iInt;
+    i8 m_iAsI8;
   };
 };
 
@@ -41,7 +41,7 @@ public:
       //                64
       //               ===
     };
-    i8 m_iInt;
+    i8 m_iAsI8;
   };
 };
 
@@ -61,7 +61,7 @@ public:
       //                64
       //               ===
     };
-    i8 m_iInt;
+    i8 m_iAsI8;
   };
 };
 
@@ -72,7 +72,7 @@ class Flt
 public:
   union {
     d8 m_dFlt;
-    i8 m_iInt;
+    i8 m_iAsI8;
   };
 };
 
@@ -81,7 +81,10 @@ public:
 class Int
 {
 public:
-  i8 m_iInt;
+  union {
+    d8 m_iInt;
+    i8 m_iAsI8;
+  };
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -97,7 +100,7 @@ public:
       //                64
       //               ===
     };
-    i8 m_iInt;
+    i8 m_iAsI8;
   };
 };
 
@@ -118,7 +121,7 @@ public:
       //                64
       //               ===
     };
-    i8 m_iInt;
+    i8 m_iAsI8;
   };
 };
 
@@ -145,7 +148,7 @@ public:
       //                64
       //               ===
     };
-    i8 m_iInt;
+    i8 m_iAsI8;
   };
 };
 
