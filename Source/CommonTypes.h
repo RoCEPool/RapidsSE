@@ -12,6 +12,8 @@ public:
     i8 m_iBcd;
     i8 m_iAsI8;
   };
+  
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -23,6 +25,8 @@ public:
     i8 m_iBol;
     i8 m_iAsI8;
   };
+  
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -43,6 +47,8 @@ public:
     };
     i8 m_iAsI8;
   };
+  
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -63,6 +69,8 @@ public:
     };
     i8 m_iAsI8;
   };
+  
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -74,6 +82,8 @@ public:
     d8 m_dFlt;
     i8 m_iAsI8;
   };
+  
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -85,6 +95,8 @@ public:
     d8 m_iInt;
     i8 m_iAsI8;
   };
+  
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -102,6 +114,8 @@ public:
     };
     i8 m_iAsI8;
   };
+  
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -123,6 +137,8 @@ public:
     };
     i8 m_iAsI8;
   };
+  
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -150,6 +166,8 @@ public:
     };
     i8 m_iAsI8;
   };
+  
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 /*============================================================================*/
