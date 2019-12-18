@@ -10,7 +10,6 @@ namespace Library
   public:
     union {
 
-      i8    m_iEdt;
       d8    m_dFlt;
       i8    m_iInt;
       i8    m_iIvl;
@@ -18,9 +17,6 @@ namespace Library
       i8    m_iTsc;
       i8    m_iTsp;
       
-      i8    m_iWrd;
-      
-      char* m_azStr;
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       Bcd   m_wBcd;
@@ -37,6 +33,8 @@ namespace Library
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       
+      i8    m_iWrd;
+      char* m_azStr;
       byte  m_yaByte[C_BYTES_PER_WORD];
     };
   
