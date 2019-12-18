@@ -58,6 +58,10 @@
   // create a write behind
   writeBehind[].create
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create an extractRow
+  //extractRow[].create
+
   begin
 
     // bide till next operand is available

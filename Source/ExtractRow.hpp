@@ -7,18 +7,17 @@ namespace Buffers
 {
   class RowCompactor;
   
-  class ExtractRow
+  class ExtractRow : Object
   {
   public:
     Row*    m_pRow;         // row
     Table*  m_pTable;       // table
     Format  m_oFormatters;  // formatters
-  
-    RowCompactor*   m_paRowCompactor[C_MAX_PARTITIONS];
     
   public:
     void* operator new(size_t);
-  
+    void  operator delete(void*);
+    
     ExtractRow(void);
    ~ExtractRow(void) noexcept(false);
     

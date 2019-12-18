@@ -7,32 +7,48 @@
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
+  
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
+/* allocate a new extractRow from heap                                        */
 /*----------------------------------------------------------------------------*/
 void* ExtractRow::operator new(size_t)
 {
-  vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: ExtractRow class cannot be new'd\n"_Stz);
+  ExtractRow* pExtractRow =
+  static_cast<ExtractRow*>(HeapMem::pAllocate(CN_EXTRACTROW));
+  
+  return pExtractRow;
   
   NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
+/* free a extractRow back to the heap                                         */
+/*----------------------------------------------------------------------------*/
+void ExtractRow::operator delete(void* aAddress)
+{
+  ExtractRow* pExtractRow = static_cast<ExtractRow*>(aAddress);
+  
+  HeapMem::vFree(pExtractRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ExtractRow::ExtractRow(void)
+: Object(CN_EXTRACTROW)
 {
-  m_pRow   = nullptr;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXTRACTROW,_FOOTER_);
   
+  m_pRow   = new Row(m_pTable->pStreamDef(), C_ALL);
   m_pTable = nullptr;
   
-  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PARTITIONS; i_Ptn++)
-    m_paRowCompactor[i_Ptn] = nullptr;
+  _checkInitialised_(CN_WRITEBEHIND);
   
-  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++)
-    m_paRowCompactor[i_Ptn] = new RowCompactor;
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_EXTRACTROW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,12 +56,10 @@ ExtractRow::ExtractRow(void)
 /*----------------------------------------------------------------------------*/
 ExtractRow::~ExtractRow(void) noexcept(false)
 {
-  delete m_pRow;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXTRACTROW,_FOOTER_);
   
-  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++) {
-    delete m_paRowCompactor[i_Ptn];
-  }
-
+  // delete the row
+  delete m_pRow;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,28 +71,17 @@ ExtractRow::~ExtractRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool ExtractRow::bExtractRow(char** aazRecStr, bool &bBlankLine)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXTRACTROW,_FOOTER_);
+  
   StreamDef* pStreamDef = m_pTable->pStreamDef();
   
-  if (m_pRow)
-    m_pRow->vResetValues();
-  else
-    m_pRow = new Row(pStreamDef,C_ALL);
-
-  //char* acRecCrs = szRecStr->azChar();
+  m_pRow->vResetValues();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   bool bResult = CsvCursor::bExtractNext(m_pRow,pStreamDef,
                                          aazRecStr,&m_oFormatters,
                                          bBlankLine);
-  if (! bResult)
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  //SP_Row spRow;
-  //vTrace("%s\n"_Stz,spRow.sz(m_pRow));
-
   return bResult;
 }
 

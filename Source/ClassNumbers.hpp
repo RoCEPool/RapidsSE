@@ -76,6 +76,7 @@ enum eCN : u2 // Class Number
   /*  51 0x033  1043952B Heap:L */ CN_ENTBUFFER,
   /*  52 0x034      304B Heap:I */ CN_ENTWRK,
   /*  53 0x035      312B Heap:S */ CN_ENUMFLAGS,
+  /*                312B Heap:S */ CN_EXTRACTROW,
   
   /*  54 0x036        6B Heap:I */ CN__F__,
   /*  55 0x037  1040440B Heap:L */ CN_FETCHBUFFER,
@@ -404,6 +405,7 @@ static Stz* aCN[]
   /*  51 0x033 */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
   /*  52 0x034 */ "ENTWRK"_Stz,              // CN_ENTWRK
   /*  53 0x035 */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS
+  /*           */ "EXTRACTROW"_Stz,          // CN_EXTRACTROW
   
   /*  54 0x036 */ "_F__"_Stz,                // CN__F__
   /*  55 0x037 */ "FETCHBUFFER"_Stz,         // CN_FETCHBUFFER
