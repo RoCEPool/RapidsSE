@@ -28,8 +28,6 @@ namespace Buffers
   
   private:
     void vNewCrwBuffer(i8 iPartition);
-    
-  private:
     Footer* aFooter(void);
   };
   

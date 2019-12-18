@@ -38,15 +38,20 @@ void ExtractRow::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ExtractRow::ExtractRow(void)
+ExtractRow::ExtractRow(Table* pTable)
 : Object(CN_EXTRACTROW)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXTRACTROW,_FOOTER_);
   
+  m_pTable = pTable;
   m_pRow   = new Row(m_pTable->pStreamDef(), C_ALL);
-  m_pTable = nullptr;
   
-  _checkInitialised_(CN_WRITEBEHIND);
+  m_oFormatters.vSet(AM::pFmt());
+  m_oFormatters.m_cEnclosedBy_Leading = '\'';
+  m_oFormatters.m_cEnclosedBy_Trailing = '\'';
+  m_oFormatters.m_cRecordTerminator = '\n';
+  
+  _checkInitialised_(CN_EXTRACTROW);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_EXTRACTROW,_FOOTER_);
 }
@@ -83,6 +88,20 @@ bool ExtractRow::bExtractRow(char** aazRecStr, bool &bBlankLine)
                                          aazRecStr,&m_oFormatters,
                                          bBlankLine);
   return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* ExtractRow::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EXTRACTROW);
+  
+  return &m_xFooter;
 }
 
 /*============================================================================*/

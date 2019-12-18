@@ -37,10 +37,10 @@ namespace Registers
   
     Operand*  m_pOperand;   // operand
     
-    REG<Object> m_xpObject0; // general purpose reg 0[]
-    REG<Object> m_xpObject1; // general purpose reg 1[]
-    REG<Object> m_xpObject2; // general purpose reg 2[]
-    REG<Object> m_xpObject3; // general purpose reg 3[]
+    REG<Object> m_xpRegister0; // general purpose reg 0[]
+    REG<Object> m_xpRegister1; // general purpose reg 1[]
+    REG<Object> m_xpRegister2; // general purpose reg 2[]
+    REG<Object> m_xpRegister3; // general purpose reg 3[]
 
     // must be last
     Footer m_xFooter;

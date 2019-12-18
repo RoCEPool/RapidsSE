@@ -7,23 +7,28 @@ namespace Buffers
 {
   class RowCompactor;
   
-  class ExtractRow : Object
+  class ExtractRow : public Object
   {
   public:
     Row*    m_pRow;         // row
     Table*  m_pTable;       // table
     Format  m_oFormatters;  // formatters
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ExtractRow(void);
+    ExtractRow(Table* pTable);
    ~ExtractRow(void) noexcept(false);
     
   public:
     bool bExtractRow(char** aazRecStr, bool &bBlankLine);
     
+  private:
+    Footer* aFooter(void);
   };
 }
 

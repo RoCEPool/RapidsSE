@@ -73,6 +73,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_EntBuffer();
   Step::vAddSteps_Env();
   Step::vAddSteps_Error();
+  Step::vAddSteps_ExtractRow();
   
   Step::vAddSteps_File();
   Step::vAddSteps_Flow();
@@ -128,6 +129,7 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Queues();
   
+  Step::vAddSteps_Register();
   Step::vAddSteps_RegSet();
   Step::vAddSteps_Row();
   Step::vAddSteps_Rstack();

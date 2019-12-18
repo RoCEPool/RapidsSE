@@ -51,6 +51,7 @@ namespace Steps
     static void vAddSteps_Enter(void);
     static void vAddSteps_Env(void);
     static void vAddSteps_Error(void);
+    static void vAddSteps_ExtractRow(void);
   
     static void vAddSteps_FetchTest(void);
     static void vAddSteps_File(void);
@@ -109,6 +110,7 @@ namespace Steps
   
     static void vAddSteps_Queues(void);
   
+    static void vAddSteps_Register(void);
     static void vAddSteps_RegSet(void);
     static void vAddSteps_Row(void);
     static void vAddSteps_Rstack(void);

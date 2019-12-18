@@ -185,6 +185,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (m_pCompiler->szToken()->bSame("Register0[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Register0[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (m_pCompiler->szToken()->bSame("StreamDef[]"_Stz)) {
     pCurrentWord->vEncodeCall("StreamDef[].set"_Stz);
     EXIT();

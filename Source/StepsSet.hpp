@@ -280,6 +280,9 @@ public:
   // errors
   void vErrorMsg(void);
 
+  // extractRow
+  void vExtractRowCreate(void);
+
   // file
   void vFile0Get(void);
   void vFile0Set(void);
@@ -981,6 +984,10 @@ public:
   void vRowCursorRow(void);
   void vRowCursorTableFetch(void);
   void vRowCursorTableStore(void);
+
+  // register
+  void vRegister0Get(void);
+  void vRegister0Set(void);
 
   // regset
   void vRegSetFun(void);

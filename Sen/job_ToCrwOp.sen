@@ -59,8 +59,8 @@
   writeBehind[].create
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create an extractRow
-  //extractRow[].create
+  // create an extractRow and put it in register 0
+  extractRow.create to register0[]
 
   begin
 
