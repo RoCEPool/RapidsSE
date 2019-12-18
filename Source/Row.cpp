@@ -72,7 +72,7 @@ Row::Row(StreamDef* pStreamDef, i8 iSubSet)
   
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
-    m_waColVal[i_Col].m_iInt = 0;
+    m_waColVal[i_Col].m_iWrd = 0;
   m_xWsp.vZero(CN_ROW);
   
 #else
@@ -147,7 +147,7 @@ void Row::vCopy(Row* pRow)
       
       i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
       
-      m_waColVal[i_Col].m_iInt = (i8)acDstString;
+      m_waColVal[i_Col].m_iWrd = (i8)acDstString;
       
       m_xWsp.vTake(nSrcLength + 1);
       
@@ -157,7 +157,7 @@ void Row::vCopy(Row* pRow)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // all others
     
-    m_waColVal[i_Col].m_iInt = pRow->m_waColVal[i_Col].m_iInt;
+    m_waColVal[i_Col].m_iWrd = pRow->m_waColVal[i_Col].m_iWrd;
   }
 }
 
@@ -184,7 +184,7 @@ void Row::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
       
       i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
       
-      m_waColVal[i_IntoCol].m_iInt = (i8)acDstString;
+      m_waColVal[i_IntoCol].m_iWrd = (i8)acDstString;
       
       m_xWsp.vTake(nSrcLength + 1);
       
@@ -194,7 +194,7 @@ void Row::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // all others
     
-    m_waColVal[i_IntoCol].m_iInt = pRow->m_waColVal[i_FromCol].m_iInt;
+    m_waColVal[i_IntoCol].m_iWrd = pRow->m_waColVal[i_FromCol].m_iWrd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -230,9 +230,9 @@ i8 Row::iHashColumn(Column* pCol)
   
   i8 iHash;
   if (DM_VCH == pCol->eDatum())
-    iHash = HshLib::iHash((byte*)m_waColVal[i_Col].m_iInt,sizeof(w8));
+    iHash = HshLib::iHash((byte*)m_waColVal[i_Col].m_iWrd,sizeof(w8));
   else
-    iHash = HshLib::iHash((byte*)&m_waColVal[i_Col].m_iInt,sizeof(w8));
+    iHash = HshLib::iHash((byte*)&m_waColVal[i_Col].m_iWrd,sizeof(w8));
   
   return iHash;
 }
@@ -248,7 +248,7 @@ void Row::vResetValues(void)
   
 #ifdef WITH_CHECK_INITIALISED
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
-    m_waColVal[i_Col].m_iInt = 0;
+    m_waColVal[i_Col].m_iWrd = 0;
 #endif
   
   m_xWsp.vInit();
@@ -279,7 +279,7 @@ void Row::vSetValue(Datum* pDatum, Column* pCol)
     
     i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
     
-    m_waColVal[i_Col].m_iInt = (i8)acDstString;
+    m_waColVal[i_Col].m_iWrd = (i8)acDstString;
     
     m_xWsp.vTake(nSrcLength + 1);
     
@@ -292,7 +292,7 @@ void Row::vSetValue(Datum* pDatum, Column* pCol)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all others
   
-  m_waColVal[i_Col].m_iInt = pDatum->iInt();
+  m_waColVal[i_Col].m_iWrd = pDatum->iInt();
   
   if (pCol->bIsPtnKey())
     m_iHash += iHashColumn(pCol);

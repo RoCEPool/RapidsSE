@@ -373,12 +373,12 @@ void Encoding::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
   if (bEncodeNul(xColEnc,wColVal))
     return;
   
-  xColEnc.m_wDataCode.m_iInt = wColVal.m_iInt;
+  xColEnc.m_wDataCode.m_iWrd = wColVal.m_iWrd;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // -1 case -- encode as: MC_INT_M_ONE + {}
-  if (-1 == wColVal.m_iInt) {
+  if (-1 == wColVal.m_iWrd) {
     xColEnc.m_eMetaCode = MC_INT_M_ONE;
     xColEnc.m_nDataSize = C_0B;
     return;
@@ -387,8 +387,8 @@ void Encoding::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // 0..10 case -- encode as MC_INT_ONE..TEN + {}
-  if (wColVal.m_iInt >= 0 && wColVal.m_iInt <= 10) {
-    xColEnc.m_eMetaCode = (eMC)(MC_INT_ZERO + wColVal.m_iInt);
+  if (wColVal.m_iWrd >= 0 && wColVal.m_iWrd <= 10) {
+    xColEnc.m_eMetaCode = (eMC)(MC_INT_ZERO + wColVal.m_iWrd);
     xColEnc.m_nDataSize = C_0B;
     return;
   }

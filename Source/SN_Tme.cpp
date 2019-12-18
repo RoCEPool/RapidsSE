@@ -47,7 +47,7 @@ i8 SN_Tme::i(char** aacCrs, Column* pCol, Format* pFmt)
   m_wDtm.m_wTme.m_uMicro  = iMicro;
   m_wDtm.m_wTme.m_uSpare  = 0;
   
-  return m_wDtm.m_iInt;
+  return m_wDtm;
 }
 
 

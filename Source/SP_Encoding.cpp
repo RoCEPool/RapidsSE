@@ -104,7 +104,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
     
     StrLib::vAppendPad(&szCrs,caLine,67);
     
-    if (C_DATUM_NULL == aColEnc->m_wDataCode.m_iInt) {
+    if (aColEnc->m_wDataCode.bIsNull()) {
       StrLib::vAppendString(&szCrs,(char*)"null"_Stz);
     }
     else {
@@ -133,14 +133,14 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
         case DM_FLT: {
           SP_Flt SP_Flt;
           StrLib::vAppendString(&szCrs,
-                                (char*)SP_Flt.sz(*(d8*)&aColEnc->m_wDataCode.m_iInt));
+                                (char*)SP_Flt.sz(*(d8*)&aColEnc->m_wDataCode));
           break;
         }
           
         case DM_INT: {
           SP_Int spInt;
           StrLib::vAppendString(&szCrs,
-                                (char*)spInt.sz(aColEnc->m_wDataCode.m_iInt));
+                                (char*)spInt.sz(aColEnc->m_wDataCode));
           break;
         }
           

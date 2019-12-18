@@ -56,7 +56,7 @@ i8 SN_Tsp::i(char** aacCrs, Column* pCol, Format* pFmt)
   m_wDtm.m_wTsp.m_uLocal     = C_TSP_LOCAL;
   m_wDtm.m_wTsp.m_uSpare     = 0;
   
-  return m_wDtm.m_iInt;
+  return m_wDtm;
 }
 
 

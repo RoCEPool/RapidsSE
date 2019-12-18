@@ -90,14 +90,14 @@ void SP_Row::vRow(Row* pRow)
       case DM_FLT: {
         SP_Flt SP_Flt;
         StrLib::vAppendString(&szCrs,
-                              (char*)SP_Flt.sz(*(d8*)&pRow->m_waColVal[i_Col].m_iInt));
+                              (char*)SP_Flt.sz(*(d8*)&pRow->m_waColVal[i_Col]));
         break;
       }
         
       case DM_INT: {
         SP_Int spInt;
         StrLib::vAppendString(&szCrs,
-                              (char*)spInt.sz(pRow->m_waColVal[i_Col].m_iInt));
+                              (char*)spInt.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         
