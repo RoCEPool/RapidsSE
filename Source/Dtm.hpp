@@ -11,9 +11,7 @@ namespace Library
     union {
 
       i8    m_iInt;
-      i8    m_iTsp;
-      
-      
+            
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       Bcd   m_wBcd;
       Bol   m_wBol;

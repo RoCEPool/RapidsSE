@@ -118,7 +118,7 @@ void SP_Row::vRow(Row* pRow)
       case DM_TSP: {
         SP_Tsp SP_Tsp;
         StrLib::vAppendString(&szCrs,
-                              (char*)SP_Tsp.sz(pRow->m_waColVal[i_Col].m_iTsp));
+                              (char*)SP_Tsp.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         

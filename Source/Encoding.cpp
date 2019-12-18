@@ -454,7 +454,7 @@ void Encoding::vEncodeTsp(_ColEnc& xColEnc, Dtm wColVal)
   if (bEncodeNul(xColEnc,wColVal))
     return;
   
-  xColEnc.m_wDataCode.m_iTsp = wColVal.m_iTsp;
+  xColEnc.m_wDataCode.m_wTsp.m_iAsI8 = wColVal.m_wTsp.m_iAsI8;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
