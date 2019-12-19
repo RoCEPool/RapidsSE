@@ -42,10 +42,6 @@ namespace Operators
     i8             m_iNextStage;      // next stage in the cross topology
     
     i8             m_iXmitNode;       // xmit node (for xmitOp)
-    
-
-    //! ALKA: should go
-    eOR (*m_fpCall) (void* aThisOp);  // function which calls the op loop
 
   public:
     void* operator new(size_t);

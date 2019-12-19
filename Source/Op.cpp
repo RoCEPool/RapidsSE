@@ -85,8 +85,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_iNextStage = C_UNKNOWN;
   m_iXmitNode  = C_UNKNOWN;
   
-  m_fpCall        = nullptr;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Task* pTask = AM::pThisTLSTask();
