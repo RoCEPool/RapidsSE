@@ -80,7 +80,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_nPartition       = C_UNKNOWN;
   m_nLeftEndMarkers  = 1;
   m_nRightEndMarkers = 0;
-  m_pStreamDef       = nullptr;
   
   m_eTopologyX = PX_NONE;
   m_iNextStage = C_UNKNOWN;
@@ -108,9 +107,6 @@ Op::~Op(void) noexcept(false)
   
   delete m_pQueueLeft;
   delete m_pQueueRight;
-  
-  if (m_pStreamDef)
-    delete m_pStreamDef;
   
   //delete m_pOpSpec;
   
