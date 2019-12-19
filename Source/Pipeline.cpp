@@ -243,7 +243,7 @@ void Pipeline::vSetupJob(void)
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
     Op* pOp = pStage->pOpVec()->pGet(i_Op);
     
-    if (JT_LIMITOP == AM::eJobType(pOp->m_pJobUniversal)) {
+    if (JT_LIMITOP == AM::eJobType(pOp->m_pOpJob)) {
       m_bPulsed = true;
       break;
     }
@@ -257,7 +257,7 @@ void Pipeline::vSetupJob(void)
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
     Op* pOp = pStage->pOpVec()->pGet(i_Op);
     
-    if (JT_SCANOP == AM::eJobType(pOp->m_pJobUniversal)) {
+    if (JT_SCANOP == AM::eJobType(pOp->m_pOpJob)) {
       m_pOpToPulse = pOp;
       pOp->m_bPulsed = true;
       break;

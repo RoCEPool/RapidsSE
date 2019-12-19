@@ -62,9 +62,7 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
 
   m_pPipeline     = pPipeline;
   m_pJobPipeline  = pPipeline->pJob();
-  
-  m_pJobUniversal = nullptr;
-  
+  m_pOpJob        = nullptr;
   m_pTask         = nullptr;
   
   m_bAckJobEnd    = true;
@@ -295,7 +293,7 @@ void Op::vLinkToStage(Stage* pStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  ASSERT(AM::eJobType(m_pJobUniversal) == JT_XMITOP);
+  ASSERT(AM::eJobType(m_pOpJob) == JT_XMITOP);
   
   Op* pOpNext = nullptr;
   StageNde* pStageNde = nullptr;
@@ -440,7 +438,7 @@ void Op::vPipeOut(Operand* pOperand)
            aCN[pOperand->eClass()],
            pOperand);
 
-  switch(AM::eJobType(m_pJobUniversal)) {
+  switch(AM::eJobType(m_pOpJob)) {
     
     case JT_OUTPUTOP:
       vPipeToJob(pOperand);
@@ -701,8 +699,8 @@ bool Op::bSpawnJob(i8 iSessionId)
   
   ReqTuple xReqTuple(m_sName,iSessionId, false);
 
-  m_pJobUniversal = AM::pNewJobUniversal(this, &xReqTuple,
-                                         this->m_iFocalId);
+  m_pOpJob = AM::pNewJobUniversal(this, &xReqTuple,
+                                  this->m_iFocalId);
   
   s4K szCmdStr;
   vToCmdStr(szCmdStr);
@@ -712,15 +710,15 @@ bool Op::bSpawnJob(i8 iSessionId)
   
   //vTrace("Spawning job for %s\n"_Stz, szCmdStr.szStz());
   
-  eEC eError = AM::ePopulateJob(m_pJobUniversal, pTknVec);
+  eEC eError = AM::ePopulateJob(m_pOpJob, pTknVec);
   
   // delete the tokenVec
   pTknVec->vSetAllTokens();
   delete pTknVec;
   
-  bool bSpawned = AM::bSpawnJob(m_pJobUniversal);
+  bool bSpawned = AM::bSpawnJob(m_pOpJob);
   
-  m_pTask = AM::pExecutingTask(m_pJobUniversal);
+  m_pTask = AM::pExecutingTask(m_pOpJob);
   
   return bSpawned;
 }

@@ -123,8 +123,8 @@ void Step::vOperandHandleAggEnd(void)
       pOp->vPipeOut(*m_pRegSet->m_xpOperand);
     }
     
-    if (AM::bJobHasError(pOp->m_pJobUniversal)) {
-      AM::vSetJobLocalError(pOp->m_pJobUniversal, pOp->m_pPipeline->pJob());
+    if (AM::bJobHasError(pOp->m_pOpJob)) {
+      AM::vSetJobLocalError(pOp->m_pOpJob, pOp->m_pPipeline->pJob());
     }
     if (pOp->m_bAckJobEnd)
       pOp->vAckJob();
@@ -160,8 +160,8 @@ void Step::vOperandHandleEnd(void)
       pOp->vPipeOut(*m_pRegSet->m_xpOperand);
     }
     
-    if (AM::bJobHasError(pOp->m_pJobUniversal)) {
-      AM::vSetJobLocalError(pOp->m_pJobUniversal, pOp->m_pPipeline->pJob());
+    if (AM::bJobHasError(pOp->m_pOpJob)) {
+      AM::vSetJobLocalError(pOp->m_pOpJob, pOp->m_pPipeline->pJob());
     }
     if (pOp->m_bAckJobEnd)
       pOp->vAckJob();
