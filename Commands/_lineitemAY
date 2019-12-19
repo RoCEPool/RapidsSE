@@ -49,7 +49,7 @@ space;
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
-time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
+//time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
@@ -99,13 +99,12 @@ print "*************************************************************************
 print "scan lineitem | output;";
 print "**************************************************************************";
 
-docol epochTake;
-
+/*
 time pipeline insert
 begin
 
 stage stageA on all partitions:
-  scanOp lineitem | toCsvOP | toCrwOp lineitem2 | stageB
+  scanOp lineitem | toCsvOP | toCrwOp lineitem2 | toCsvOP | toCrwOp lineitem2 | stageB
 
 stage stageB on all partitions:
   insertOp lineitem2  | stageC
@@ -116,16 +115,15 @@ stage stageB on all partitions:
 end
  ;
 
-docol epochDump;
 
-/*
 
- stage stageB on all partitions:
- insertOp lineitem2 | outputop
-stage stageA on all partitions:
-  scanOp lineitem | toCsvOp | toCrwOp lineitem2 | stageB
+time pipeline fetch
+ begin
 
-stage stageB on origin:
+ stage stageA on all partitions:
+   scanOp lineitem | stageB
+ 
+ stage stageB on origin:
   outputOp
 
 end

@@ -294,7 +294,7 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn)
     case PX_ALL_NODES_TO_ORIGIN:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN:
-      pStageNde = m_oStageNdeVec.pGet(0);
+      pStageNde = this->pStageNde(iNde);
       pOp = pStageNde->pOpVec()->pGet(0);
       break;
       

@@ -307,9 +307,9 @@ void Op::vLinkToStage(Stage* pStage)
     case PX_ALL_NODES_TO_ORIGIN:
     case PX_ALL_PARTITIONS_TO_ORIGIN:
     case PX_ORIGIN_TO_ORIGIN: {
-      i_Node = m_nNode;
+      i_Node = m_pPipeline->iOriginatingNode();
       RASSERT(pStage->pStageNdeVec()->nItems() == 1) ;
-      pStageNde = pStage->pStageNdeVec()->pGet(0);
+      pStageNde = pStage->pStageNde(i_Node);
       // get the first op of the stage nde
       pOpNext = pStageNde->pOpVec()->pGet(0);
       break;
