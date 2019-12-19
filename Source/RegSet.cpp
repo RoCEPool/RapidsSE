@@ -49,8 +49,6 @@ RegSet::RegSet(Task* pTask)
   m_eDdlLocked = LH_HAVE_NO_LOCK;
   m_i_NextRnd  = AM::bDeveloper() ? 0 : C_UNKNOWN;
   m_pSendNode  = nullptr;
-  
-  m_pOperand   = nullptr;
 
   _checkInitialised_(CN_REGSET);
   

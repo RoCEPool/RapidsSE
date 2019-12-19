@@ -39,9 +39,9 @@ void Step::vOperandBide(void)
 {
   ENTRY(); // ENTRY("vOperandBide"_Stz);
   
-  m_pRegSet->m_pOperand = m_pTask->m_pJob->m_pOp->pPopQueue2();
+  m_pRegSet->m_xpOperand = m_pTask->m_pJob->m_pOp->pPopQueue2();
   
-  if (! m_pRegSet->m_pOperand) {
+  if (m_pRegSet->m_xpOperand.bIsNull()) {
     ASSERT(m_pTask->bIsLocked());
     m_pTask->vSchedulerAct(SA_BIDE);
   }
@@ -56,9 +56,9 @@ void Step::vOperandDelete(void)
 {
   ENTRY(); // ENTRY("vOperandDelete"_Stz);
   
-  AM::vDeleteOperand(m_pRegSet->m_pOperand);
+  AM::vDeleteOperand(*m_pRegSet->m_xpOperand);
   
-  m_pRegSet->m_pOperand = nullptr;
+  m_pRegSet->m_xpOperand = nullptr;
   
   EXIT();
 }
@@ -70,7 +70,7 @@ void Step::vOperandFirstRowFetch(void)
 {
   ENTRY(); // ENTRY("vOperandFirstRowFetch"_Stz);
   
-  IrwBuffer* pIrwBuffer = _pIrwBuffer(m_pRegSet->m_pOperand);
+  IrwBuffer* pIrwBuffer = _pIrwBuffer(*m_pRegSet->m_xpOperand);
   m_pRegSet->m_xpRow = pIrwBuffer->aFirstRow();
   
   EXIT();
@@ -83,7 +83,7 @@ void Step::vOperandGet(void)
 {
   ENTRY(); // ENTRY("vOperandGet"_Stz);
   
-  m_pDataStack->vPushPtr(m_pRegSet->m_pOperand);
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpOperand);
   
   EXIT();
 }
@@ -95,7 +95,7 @@ void Step::vOperandHandleAggEnd(void)
 {
   ENTRY(); // ENTRY("vOperandHandleAggEnd"_Stz);
   
-  ASSERT(m_pRegSet->m_pOperand);
+  ASSERT(*m_pRegSet->m_xpOperand);
   
   i8 nCount = m_pDataStack->iPopInt(__func__);
   
@@ -103,7 +103,7 @@ void Step::vOperandHandleAggEnd(void)
   
   if (--pOp->m_nLeftEndMarkers == 0) {
     if (pOp->bIsCancelling()) {
-      delete _pEndMarker(m_pRegSet->m_pOperand);
+      delete _pEndMarker(*m_pRegSet->m_xpOperand);
       pOp->vPipeOut(new CancelMarker);
     }
     else {
@@ -120,7 +120,7 @@ void Step::vOperandHandleAggEnd(void)
       // pipe out the buffer with the count
       pOp->vPipeOut(pIrwBuffer);
       
-      pOp->vPipeOut(m_pRegSet->m_pOperand);
+      pOp->vPipeOut(*m_pRegSet->m_xpOperand);
     }
     
     if (AM::bJobHasError(pOp->m_pJobUniversal)) {
@@ -131,7 +131,7 @@ void Step::vOperandHandleAggEnd(void)
     
   }
   else
-    delete (EndMarker*)m_pRegSet->m_pOperand;
+    delete (EndMarker*)(*m_pRegSet->m_xpOperand);
   
   EXIT();
 }
@@ -143,7 +143,7 @@ void Step::vOperandHandleEnd(void)
 {
   ENTRY(); // ENTRY("vOperandHandleEnd"_Stz);
   
-  ASSERT(m_pRegSet->m_pOperand);
+  ASSERT(*m_pRegSet->m_xpOperand);
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
   
@@ -151,13 +151,13 @@ void Step::vOperandHandleEnd(void)
   
   if (--pOp->m_nLeftEndMarkers == 0) {
     if (pOp->bIsCancelling()) {
-      delete _pEndMarker(m_pRegSet->m_pOperand);
+      delete _pEndMarker(*m_pRegSet->m_xpOperand);
       
       pOp->vPipeOut(new CancelMarker);
         
     }
     else {
-      pOp->vPipeOut(m_pRegSet->m_pOperand);
+      pOp->vPipeOut(*m_pRegSet->m_xpOperand);
     }
     
     if (AM::bJobHasError(pOp->m_pJobUniversal)) {
@@ -169,7 +169,7 @@ void Step::vOperandHandleEnd(void)
     m_pDataStack->vPushInt(0);
   }
   else {
-    delete (EndMarker*)m_pRegSet->m_pOperand;
+    delete (EndMarker*)(*m_pRegSet->m_xpOperand);
     m_pDataStack->vPushInt(1);
   }
 
@@ -183,10 +183,10 @@ void Step::vOperandHandleStop(void)
 {
   ENTRY(); // ENTRY("vOperandHandleStop"_Stz);
   
-  ASSERT(m_pRegSet->m_pOperand);
+  ASSERT(*m_pRegSet->m_xpOperand);
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
-  pOp->vPipeOut(m_pRegSet->m_pOperand);
+  pOp->vPipeOut(*m_pRegSet->m_xpOperand);
   
   EXIT();
 }
@@ -198,7 +198,7 @@ void Step::vOperandIsNull(void)
 {
   ENTRY(); // ENTRY("vOperandIsNull"_Stz);
   
-  m_pDataStack->vPushInt(m_pRegSet->m_pOperand ? 0 : 1);
+  m_pDataStack->vPushInt(m_pRegSet->m_xpOperand.bIsNull() ? 1 : 0);
   
   EXIT();
 }
@@ -210,8 +210,8 @@ void Step::vOperandItemCountFetch(void)
 {
   ENTRY(); // ENTRY("vOperandItemCountFetch"_Stz);
   
-  ASSERT(m_pRegSet->m_pOperand);
-  IrwBuffer* pIrwBuffer = _pIrwBuffer(m_pRegSet->m_pOperand);
+  ASSERT(*m_pRegSet->m_xpOperand);
+  IrwBuffer* pIrwBuffer = _pIrwBuffer(*m_pRegSet->m_xpOperand);
   
   m_pDataStack->vPushInt(pIrwBuffer->nItems());
   
@@ -225,8 +225,8 @@ void Step::vOperandInsertIntoTable(void)
 {
   ENTRY(); // ENTRY("vOperandInsertIntoTable"_Stz);
   
-  ASSERT(m_pRegSet->m_pOperand);
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pRegSet->m_pOperand);
+  ASSERT(*m_pRegSet->m_xpOperand);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperand);
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   i8 iPartition = pOp->m_nPartition;
@@ -246,7 +246,7 @@ void Step::vOperandKind(void)
   
   eZK eOperand = ZK_NONE;
   
-  eCN eClass_op = m_pRegSet->m_pOperand->eClass();
+  eCN eClass_op = m_pRegSet->m_xpOperand->eClass();
   switch (eClass_op) {
       
     case CN_CRWBUFFER:   eOperand = ZK_CRWBUFFER;   break;
@@ -276,9 +276,9 @@ void Step::vOperandNext(void)
 {
   ENTRY(); // ENTRY("vOperandNext"_Stz);
   
-  if (! m_pRegSet->m_pOperand)
-    m_pRegSet->m_pOperand = m_pTask->m_pJob->m_pOp->pPopQueue2();
-  ASSERT(m_pRegSet->m_pOperand);
+  if (m_pRegSet->m_xpOperand.bIsNull())
+    m_pRegSet->m_xpOperand = m_pTask->m_pJob->m_pOp->pPopQueue2();
+  ASSERT(*m_pRegSet->m_xpOperand);
   
   EXIT();
 }
@@ -290,9 +290,9 @@ void Step::vOperandNewEndMarker(void)
 {
   ENTRY(); // ENTRY("vOperandNewEndMarker"_Stz);
   
-  ASSERT (! m_pRegSet->m_pOperand);
+  ASSERT (m_pRegSet->m_xpOperand.bIsNull());
   
-  m_pRegSet->m_pOperand = new EndMarker;
+  m_pRegSet->m_xpOperand = new EndMarker;
   
   EXIT();
 }
@@ -304,9 +304,9 @@ void Step::vOperandNewStreamDef(void)
 {
   ENTRY(); // ENTRY("vOperandNewStreamDef"_Stz);
   
-  ASSERT (! m_pRegSet->m_pOperand);
+  ASSERT (m_pRegSet->m_xpOperand.bIsNull());
   
-  m_pRegSet->m_pOperand = new StreamDef(m_pRegSet->m_xpTable->pStreamDef());
+  m_pRegSet->m_xpOperand = new StreamDef(m_pRegSet->m_xpTable->pStreamDef());
   
   EXIT();
 }
@@ -318,13 +318,13 @@ void Step::vOperandPipeOut(void)
 {
   ENTRY(); // ENTRY("vOperandPipeOut"_Stz);
   
-  ASSERT(m_pRegSet->m_pOperand);
+  ASSERT(*m_pRegSet->m_xpOperand);
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
 
-  pOp->vPipeOut(m_pRegSet->m_pOperand);
+  pOp->vPipeOut(*m_pRegSet->m_xpOperand);
   
-  m_pRegSet->m_pOperand = nullptr;
+  m_pRegSet->m_xpOperand = nullptr;
   
   EXIT();
 }
@@ -336,8 +336,8 @@ void Step::vOperandRowCountFetch(void)
 {
   ENTRY(); // ENTRY("vOperandRowCountFetch"_Stz);
   
-  ASSERT(m_pRegSet->m_pOperand);
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pRegSet->m_pOperand);
+  ASSERT(*m_pRegSet->m_xpOperand);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperand);
   
   m_pDataStack->vPushInt(pCrwBuffer->nRowCount());
   
@@ -351,8 +351,8 @@ void Step::vOperandSet(void)
 {
   ENTRY(); // ENTRY("vOperandSet"_Stz);
   
-  ASSERT( ! m_pRegSet->m_pOperand );
-  m_pRegSet->m_pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  ASSERT(m_pRegSet->m_xpOperand.bIsNull());
+  m_pRegSet->m_xpOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
@@ -364,8 +364,8 @@ void Step::vOperandCrwToCsv(void)
 {
   ENTRY(); // ENTRY("vOperandCrwToCsv"_Stz);
   
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pRegSet->m_pOperand);
-  m_pRegSet->m_pOperand = pCrwBuffer->pToCsvBuffer();
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperand);
+  m_pRegSet->m_xpOperand = pCrwBuffer->pToCsvBuffer();
   
   EXIT();
 }
@@ -379,7 +379,7 @@ void Step::vOperandCsvToCrw(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pRegSet->m_pOperand);
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperand);
   WriteBehind* pWriteBehind = *m_pRegSet->m_xpWriteBehind;
   Table* pTable = *m_pRegSet->m_xpTable;
   
@@ -438,22 +438,22 @@ void Step::vOperandWorkDone(void)
 {
   ENTRY(); // ENTRY("vOperandWorkDone"_Stz);
   
-  ASSERT(m_pRegSet->m_pOperand);
+  ASSERT(*m_pRegSet->m_xpOperand);
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
   
-  eCN eClass_op = m_pRegSet->m_pOperand->eClass();
+  eCN eClass_op = m_pRegSet->m_xpOperand->eClass();
   
   switch (eClass_op) {
       
     case CN_CRWBUFFER: {
-      CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pRegSet->m_pOperand);
+      CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperand);
       pOp->m_iWorkDone += pCrwBuffer->nRowCount();
       break;
     }
       
     case CN_CSVBUFFER: {
-      CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pRegSet->m_pOperand);
+      CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperand);
       pOp->m_iWorkDone += pCsvBuffer->nRecords();
       break;
     }
@@ -464,19 +464,19 @@ void Step::vOperandWorkDone(void)
     }
       
     case CN_ENTBUFFER: {
-      EntBuffer* pEntBuffer = _pEntBuffer(m_pRegSet->m_pOperand);
+      EntBuffer* pEntBuffer = _pEntBuffer(*m_pRegSet->m_xpOperand);
       pOp->m_iWorkDone += pEntBuffer->nItems();
       break;
     }
       
     case CN_IRWBUFFER: {
-      IrwBuffer* pIrwBuffer = _pIrwBuffer(m_pRegSet->m_pOperand);
+      IrwBuffer* pIrwBuffer = _pIrwBuffer(*m_pRegSet->m_xpOperand);
       pOp->m_iWorkDone += pIrwBuffer->nItems();
       break;
     }
       
     case CN_SRTBUFFER: {
-      SrtBuffer* pSrtBuffer = _pSrtBuffer(m_pRegSet->m_pOperand);
+      SrtBuffer* pSrtBuffer = _pSrtBuffer(*m_pRegSet->m_xpOperand);
       pOp->m_iWorkDone += pSrtBuffer->nItems();
       break;
     }
@@ -500,11 +500,11 @@ void Step::vOperandWriteToFile0(void)
 {
   ENTRY(); // ENTRY("vOperandWriteToFile0"_Stz);
   
-  ASSERT(m_pRegSet->m_pOperand);
+  ASSERT(*m_pRegSet->m_xpOperand);
   ASSERT(*m_pRegSet->m_xpFile0);
   ASSERT(m_pRegSet->m_xpFile0->bIsOpen());
   
-  CsvBuffer* pCsvBuffer = _pCsvBuffer(m_pRegSet->m_pOperand) ;
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperand) ;
   char* aData = pCsvBuffer->aDataArea();
   
   m_pRegSet->m_xpFile0->vPrint("%s"_Stz,aData);

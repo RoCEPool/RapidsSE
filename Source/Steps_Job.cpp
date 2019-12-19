@@ -389,9 +389,9 @@ void Step::vJobBideOperand(void)
   
   Job_Universal* pJob_Universal = _pJob_Universal(m_pDataStack->pPopPtr(__func__));
   
-  m_pRegSet->m_pOperand = pJob_Universal->m_pOp->pPopQueue2();
+  m_pRegSet->m_xpOperand = pJob_Universal->m_pOp->pPopQueue2();
   
-  if (! m_pRegSet->m_pOperand) {
+  if (m_pRegSet->m_xpOperand.bIsNull()) {
     ASSERT(m_pTask->bIsLocked());
     m_pTask->vSchedulerAct(SA_BIDE);
   }
@@ -740,9 +740,9 @@ void Step::vJobNextOperand(void)
   
   Op* pOp = pJob_Universal->m_pOp;
   
-  if (! m_pRegSet->m_pOperand)
-    m_pRegSet->m_pOperand = pOp->pPopQueue2();
-  ASSERT(m_pRegSet->m_pOperand);
+  if (m_pRegSet->m_xpOperand.bIsNull())
+    m_pRegSet->m_xpOperand = pOp->pPopQueue2();
+  ASSERT(*m_pRegSet->m_xpOperand);
   
   EXIT();
 }
