@@ -112,7 +112,7 @@ Dtm TspLib::wToTsp_local(Ivl wIvl)
 /*----------------------------------------------------------------------------*/
 /* convert interval to utc timestamp                                          */
 /*----------------------------------------------------------------------------*/
-Dtm TspLib::wToTsp_utc(Dtm wIvl)
+Dtm TspLib::wToTsp_utc(Ivl wIvl)
 {
   
   // currently we don't generate any UTC tsp's
@@ -120,7 +120,7 @@ Dtm TspLib::wToTsp_utc(Dtm wIvl)
   
   Dtm wDtm;
   
-  time_t iSecondsSincePosixEpoch = wIvl.m_wIvl.m_uSecond;
+  time_t iSecondsSincePosixEpoch = wIvl.m_uSecond;
   
   // convert secondsSince into a tm structure for UTC/GMT time zone
   struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
@@ -137,7 +137,7 @@ Dtm TspLib::wToTsp_utc(Dtm wIvl)
   wDtm.m_wTsp.m_uHour      = aUtcDateTime->tm_hour;
   wDtm.m_wTsp.m_uMinute    = aUtcDateTime->tm_min;
   wDtm.m_wTsp.m_uSecond    = aUtcDateTime->tm_sec;
-  wDtm.m_wTsp.m_uMicro     = wIvl.m_wIvl.m_uMicro;
+  wDtm.m_wTsp.m_uMicro     = wIvl.m_uMicro;
   wDtm.m_wTsp.m_uLocal     = C_TSP_UTC;
   wDtm.m_wTsp.m_uSpare     = 0;
 

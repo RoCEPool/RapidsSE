@@ -12,14 +12,15 @@ namespace Library
     static Dtm wGetCurrTsp_utc(void);
   
     static Dtm wToTsp_local(Ivl wIvl);
-    static Dtm wToTsp_utc(Dtm wIvl);
   
-    //! to be coded
+    //! to be coded / used
   
-    static Dtm wAddIvl(Dtm wTsp, Dtm wIvl);
-    static Dtm wSubtractIvl(Dtm wTsp, Dtm wIvl);
+    static Dtm wToTsp_utc(Ivl wIvl);
+  
+    static Dtm wAdd(Tsp wTsp, Ivl wIvl);
+    static Dtm wSubtract(Dtm wTsp, Ivl wIvl);
 
-    static Dtm wDifferenceIvl(Dtm wTsp_after, Dtm wTsp_before);
+    static Ivl wDifference(Tsp wTsp_after, Tsp wTsp_before);
   };
 }
 
