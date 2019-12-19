@@ -50,7 +50,6 @@ RegSet::RegSet(Task* pTask)
   m_i_NextRnd  = AM::bDeveloper() ? 0 : C_UNKNOWN;
   m_pSendNode  = nullptr;
   
-  m_pDynamo    = nullptr;
   m_pOperand   = nullptr;
 
   _checkInitialised_(CN_REGSET);
@@ -66,7 +65,6 @@ RegSet::~RegSet(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGSET,_FOOTER_);
 
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);
-  delete m_pDynamo;
 }
 
 

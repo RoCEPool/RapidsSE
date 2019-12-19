@@ -35,9 +35,9 @@ void Step::vJob_PipelineBegin(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // popluate the op vector of the pipeline
-  pPipeline->vPopulateOpVec(m_pRegSet->m_pDynamo->pPipelineSpec());
-  delete m_pRegSet->m_pDynamo;
-  m_pRegSet->m_pDynamo = nullptr;
+  pPipeline->vPopulateOpVec(m_pRegSet->m_xpDynamo->pPipelineSpec());
+  delete *m_pRegSet->m_xpDynamo;
+  m_pRegSet->m_xpDynamo = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operators for this node
@@ -127,9 +127,9 @@ void Step::vJob_PipelineCompile(void)
   s4K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
 
-  m_pRegSet->m_pDynamo = new Dynamo(sCmd);
+  m_pRegSet->m_xpDynamo = new Dynamo(sCmd);
   
-  bool bResult = m_pRegSet->m_pDynamo->bCompile(m_pTask->m_pJob);
+  bool bResult = m_pRegSet->m_xpDynamo->bCompile(m_pTask->m_pJob);
   RASSERT( bResult );
   
 //  if ( ! bResult) {
@@ -137,7 +137,7 @@ void Step::vJob_PipelineCompile(void)
 //  }
   
   if (AM::bVerbose()) {
-    m_pRegSet->m_pDynamo->vShow();
+    m_pRegSet->m_xpDynamo->vShow();
   }
   
   EXIT();
