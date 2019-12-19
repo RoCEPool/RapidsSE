@@ -14,6 +14,8 @@ public:
   };
   
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  
+  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -27,6 +29,8 @@ public:
   };
   
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  
+  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -49,6 +53,8 @@ public:
   };
   
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  
+  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -71,6 +77,8 @@ public:
   };
   
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  
+  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -84,6 +92,9 @@ public:
   };
   
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  
+  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  void operator = (d8 dArg) { m_dFlt  = dArg; } // assign from d8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -97,6 +108,8 @@ public:
   };
   
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  
+  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -116,6 +129,8 @@ public:
   };
   
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  
+  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -139,6 +154,8 @@ public:
   };
   
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  
+  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -168,6 +185,8 @@ public:
   };
   
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  
+  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
 };
 
 /*============================================================================*/
