@@ -238,7 +238,7 @@ i8 Datum_h::iBol(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iBol = m_xBolVal.m_iBol;
+  i8 iBol = m_xBolVal.m_wBol;
   
   return iBol;
 }
@@ -250,7 +250,7 @@ void Datum_h::vBol(i8 iBol)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xBolVal.m_iBol = iBol;
+  m_xBolVal.m_wBol = iBol;
 }
 
 /*----------------------------------------------------------------------------*/

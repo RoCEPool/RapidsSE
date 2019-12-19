@@ -50,12 +50,12 @@ i8 BolVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void BolVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iBol) {
+  if (m_wBol.bIsNull()) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iBol;
+  * szDst = m_wBol.m_iAsI8;
 }
 
 /*============================================================================*/
