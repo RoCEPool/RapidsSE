@@ -81,9 +81,9 @@ Dtm TspLib::wGetCurrTsp_utc(void)
 /*----------------------------------------------------------------------------*/
 /* convert interval to local timestamp                                        */
 /*----------------------------------------------------------------------------*/
-Dtm TspLib::wToTsp_local(Ivl wIvl)
+Tsp TspLib::wToTsp_local(Ivl wIvl)
 {
-  Dtm wDtm;
+  Tsp wDtm;
   
   time_t iSecondsSincePosixEpoch = wIvl.m_uSecond;
   
@@ -96,15 +96,15 @@ Dtm TspLib::wToTsp_local(Ivl wIvl)
     return wDtm;
   }
   
-  wDtm.m_wTsp.m_uYearDelta = aLocalDateTime->tm_year;
-  wDtm.m_wTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
-  wDtm.m_wTsp.m_uDay       = aLocalDateTime->tm_mday;
-  wDtm.m_wTsp.m_uHour      = aLocalDateTime->tm_hour;
-  wDtm.m_wTsp.m_uMinute    = aLocalDateTime->tm_min;
-  wDtm.m_wTsp.m_uSecond    = aLocalDateTime->tm_sec;
-  wDtm.m_wTsp.m_uMicro     = wIvl.m_uMicro;
-  wDtm.m_wTsp.m_uLocal     = C_TSP_LOCAL;
-  wDtm.m_wTsp.m_uSpare     = 0;
+  wDtm.m_uYearDelta = aLocalDateTime->tm_year;
+  wDtm.m_uMonth     = aLocalDateTime->tm_mon + 1;
+  wDtm.m_uDay       = aLocalDateTime->tm_mday;
+  wDtm.m_uHour      = aLocalDateTime->tm_hour;
+  wDtm.m_uMinute    = aLocalDateTime->tm_min;
+  wDtm.m_uSecond    = aLocalDateTime->tm_sec;
+  wDtm.m_uMicro     = wIvl.m_uMicro;
+  wDtm.m_uLocal     = C_TSP_LOCAL;
+  wDtm.m_uSpare     = 0;
 
   return wDtm;
 }

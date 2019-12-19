@@ -11,7 +11,7 @@ namespace Library
     static Dtm wGetCurrTsp_local(void);
     static Dtm wGetCurrTsp_utc(void);
   
-    static Dtm wToTsp_local(Ivl wIvl);
+    static Tsp wToTsp_local(Ivl wIvl);
   
     //! to be coded / used
   

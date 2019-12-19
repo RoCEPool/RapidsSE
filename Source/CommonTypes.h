@@ -15,7 +15,9 @@ public:
   
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
   
-  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  void operator = (i8 iArg) { m_iAsI8 = iArg; }   // assign from i8
+  
+  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -31,6 +33,8 @@ public:
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
   
   void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  
+  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -55,6 +59,8 @@ public:
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
   
   void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  
+  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -79,6 +85,8 @@ public:
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
   
   void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  
+  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -95,6 +103,8 @@ public:
   
   void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
   void operator = (d8 dArg) { m_dFlt  = dArg; } // assign from d8
+  
+  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -110,6 +120,8 @@ public:
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
   
   void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  
+  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -131,6 +143,8 @@ public:
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
   
   void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  
+  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -156,6 +170,8 @@ public:
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
   
   void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  
+  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -187,6 +203,8 @@ public:
   operator i8(void) { return m_iAsI8; } // auto conversion to i8
   
   void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  
+  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
 };
 
 /*============================================================================*/
