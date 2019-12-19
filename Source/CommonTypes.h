@@ -13,11 +13,13 @@ public:
     i8 m_iAsI8;
   };
   
-  operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
-  void operator = (i8 iArg) { m_iAsI8 = iArg; }   // assign from i8
+  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
+  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  
+  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -30,11 +32,13 @@ public:
     i8 m_iAsI8;
   };
   
-  operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
-  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
+  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  
+  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -56,11 +60,13 @@ public:
     i8 m_iAsI8;
   };
   
-  operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
-  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
+  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  
+  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -82,11 +88,13 @@ public:
     i8 m_iAsI8;
   };
   
-  operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
-  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
+  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  
+  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -99,12 +107,15 @@ public:
     i8 m_iAsI8;
   };
   
-  operator i8(void) { return m_iAsI8; } // auto conversion to i8
   
-  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
-  void operator = (d8 dArg) { m_dFlt  = dArg; } // assign from d8
+  operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
-  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
+  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
+  void operator = (d8 dArg)            { m_dFlt  = dArg; }  // assign from d8
+
+  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  
+  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -117,11 +128,13 @@ public:
     i8 m_iAsI8;
   };
   
-  operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
-  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
+  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  
+  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -140,11 +153,13 @@ public:
     i8 m_iAsI8;
   };
   
-  operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
-  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
+  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  
+  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -167,11 +182,13 @@ public:
     i8 m_iAsI8;
   };
   
-  operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
-  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
+  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  
+  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -200,11 +217,13 @@ public:
     i8 m_iAsI8;
   };
   
-  operator i8(void) { return m_iAsI8; } // auto conversion to i8
+  operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
-  void operator = (i8 iArg) { m_iAsI8 = iArg; } // assign from i8
+  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetNull(void) { m_iAsI8 = C_DATUM_NULL; } // set to be null
+  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  
+  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
 };
 
 /*============================================================================*/
