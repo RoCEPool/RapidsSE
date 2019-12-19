@@ -9,7 +9,7 @@ namespace Gadgets
   {
   private:
     char m_caResult[32];
-    Dtm  m_wTsp;
+    Tsp  m_wTsp;
 
     // must be last
     Footer m_xFooter;

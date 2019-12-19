@@ -47,25 +47,25 @@ void Now::vSetNow(void)
   if (! aLocalDateTime)
     vWarn("localtime() error; errno=%d"_Stz,errno);
   
-  m_wTsp.m_wTsp.m_uYearDelta = aLocalDateTime->tm_year;
-  m_wTsp.m_wTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
-  m_wTsp.m_wTsp.m_uDay       = aLocalDateTime->tm_mday;
-  m_wTsp.m_wTsp.m_uHour      = aLocalDateTime->tm_hour;
-  m_wTsp.m_wTsp.m_uMinute    = aLocalDateTime->tm_min;
-  m_wTsp.m_wTsp.m_uSecond    = aLocalDateTime->tm_sec;
-  m_wTsp.m_wTsp.m_uLocal     = C_TSP_LOCAL;
-  m_wTsp.m_wTsp.m_uMicro     = 0;
+  m_wTsp.m_uYearDelta = aLocalDateTime->tm_year;
+  m_wTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
+  m_wTsp.m_uDay       = aLocalDateTime->tm_mday;
+  m_wTsp.m_uHour      = aLocalDateTime->tm_hour;
+  m_wTsp.m_uMinute    = aLocalDateTime->tm_min;
+  m_wTsp.m_uSecond    = aLocalDateTime->tm_sec;
+  m_wTsp.m_uLocal     = C_TSP_LOCAL;
+  m_wTsp.m_uMicro     = 0;
   
   StrLib::vSprint(m_caResult,
                   (Stz*)F_NOW,
                   
-                  (i8)m_wTsp.m_wTsp.m_uYearDelta + C_YEAR_BASE,
-                  (i8)m_wTsp.m_wTsp.m_uMonth,
-                  (i8)m_wTsp.m_wTsp.m_uDay,
+                  (i8)m_wTsp.m_uYearDelta + C_YEAR_BASE,
+                  (i8)m_wTsp.m_uMonth,
+                  (i8)m_wTsp.m_uDay,
                   
-                  (i8)m_wTsp.m_wTsp.m_uHour,
-                  (i8)m_wTsp.m_wTsp.m_uMinute,
-                  (i8)m_wTsp.m_wTsp.m_uSecond);
+                  (i8)m_wTsp.m_uHour,
+                  (i8)m_wTsp.m_uMinute,
+                  (i8)m_wTsp.m_uSecond);
   
   _checkInitialised_(CN_NOW);
   
@@ -88,25 +88,25 @@ void Now::vSetNowUTC(void)
   if (! aUtcDateTime)
     vWarn("gmtime() error; errno=%d"_Stz,errno);
   
-  m_wTsp.m_wTsp.m_uYearDelta = aUtcDateTime->tm_year;
-  m_wTsp.m_wTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
-  m_wTsp.m_wTsp.m_uDay       = aUtcDateTime->tm_mday;
-  m_wTsp.m_wTsp.m_uHour      = aUtcDateTime->tm_hour;
-  m_wTsp.m_wTsp.m_uMinute    = aUtcDateTime->tm_min;
-  m_wTsp.m_wTsp.m_uSecond    = aUtcDateTime->tm_sec;
-  m_wTsp.m_wTsp.m_uLocal     = C_TSP_UTC;
-  m_wTsp.m_wTsp.m_uMicro     = 0;
+  m_wTsp.m_uYearDelta = aUtcDateTime->tm_year;
+  m_wTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
+  m_wTsp.m_uDay       = aUtcDateTime->tm_mday;
+  m_wTsp.m_uHour      = aUtcDateTime->tm_hour;
+  m_wTsp.m_uMinute    = aUtcDateTime->tm_min;
+  m_wTsp.m_uSecond    = aUtcDateTime->tm_sec;
+  m_wTsp.m_uLocal     = C_TSP_UTC;
+  m_wTsp.m_uMicro     = 0;
   
   StrLib::vSprint(m_caResult,
                   (Stz*)F_NOW,
                   
-                  (i8)m_wTsp.m_wTsp.m_uYearDelta + C_YEAR_BASE,
-                  (i8)m_wTsp.m_wTsp.m_uMonth,
-                  (i8)m_wTsp.m_wTsp.m_uDay,
+                  (i8)m_wTsp.m_uYearDelta + C_YEAR_BASE,
+                  (i8)m_wTsp.m_uMonth,
+                  (i8)m_wTsp.m_uDay,
                   
-                  (i8)m_wTsp.m_wTsp.m_uHour,
-                  (i8)m_wTsp.m_wTsp.m_uMinute,
-                  (i8)m_wTsp.m_wTsp.m_uSecond);
+                  (i8)m_wTsp.m_uHour,
+                  (i8)m_wTsp.m_uMinute,
+                  (i8)m_wTsp.m_uSecond);
   
   _checkInitialised_(CN_NOW);
   
@@ -153,7 +153,7 @@ i8 Now::iTsp(void)
 {
   _precondition_(_MAGIC_,CN_NOW,_FOOTER_);
   
-  return m_wTsp.iAsI8();
+  return m_wTsp.m_iAsI8;
 }
 
 /*----------------------------------------------------------------------------*/
