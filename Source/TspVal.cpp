@@ -50,12 +50,12 @@ i8 TspVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void TspVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iTsp) {
+  if (m_wTsp.bIsNull()) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iTsp;
+  * szDst = m_wTsp;
 }
 
 /*============================================================================*/

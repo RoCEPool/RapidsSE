@@ -640,7 +640,7 @@ i8 Datum_h::iTsp(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iTsp = m_xTspVal.m_iTsp;
+  i8 iTsp = m_xTspVal.m_wTsp;
   
   return iTsp;
 }
@@ -652,7 +652,7 @@ void Datum_h::vTsp(i8 iTsp)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xTspVal.m_iTsp = iTsp;
+  m_xTspVal.m_wTsp = iTsp;
 }
 
 /*----------------------------------------------------------------------------*/
