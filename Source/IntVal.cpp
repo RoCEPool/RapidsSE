@@ -25,7 +25,7 @@ i8 IntVal::iInt(void)
 {
   vClass(CN_INTVAL);
   
-  return m_iInt;
+  return m_wInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,7 +44,7 @@ Int IntVal::wInt(void)
 void IntVal::vInt(i8 iInt)
 {
   vClass(CN_INTVAL);
-  m_iInt = iInt;
+  m_wInt = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,12 +69,12 @@ i8 IntVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void IntVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iInt) {
+  if (m_wInt.bIsNull()) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iInt;
+  * szDst = m_wInt;
 }
 
 /*============================================================================*/

@@ -154,7 +154,7 @@ bool Datum_h::bIsNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  if (m_xIntVal.m_iInt == C_DATUM_NULL)
+  if (m_xIntVal.m_wInt.bIsNull())
     return true;
   else
     return false;
@@ -167,7 +167,7 @@ void Datum_h::vSetNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  m_xIntVal.m_iInt = C_DATUM_NULL;
+  m_xIntVal.m_wInt = C_DATUM_NULL;
 }
 
 /*----------------------------------------------------------------------------*/
