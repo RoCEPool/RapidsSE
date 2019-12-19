@@ -81,11 +81,11 @@ Dtm TspLib::wGetCurrTsp_utc(void)
 /*----------------------------------------------------------------------------*/
 /* convert interval to local timestamp                                        */
 /*----------------------------------------------------------------------------*/
-Dtm TspLib::wToTsp_local(Dtm wIvl)
+Dtm TspLib::wToTsp_local(Ivl wIvl)
 {
   Dtm wDtm;
   
-  time_t iSecondsSincePosixEpoch = wIvl.m_wIvl.m_uSecond;
+  time_t iSecondsSincePosixEpoch = wIvl.m_uSecond;
   
   // convert secondsSince into a tm structure for local time zone
   struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
@@ -102,7 +102,7 @@ Dtm TspLib::wToTsp_local(Dtm wIvl)
   wDtm.m_wTsp.m_uHour      = aLocalDateTime->tm_hour;
   wDtm.m_wTsp.m_uMinute    = aLocalDateTime->tm_min;
   wDtm.m_wTsp.m_uSecond    = aLocalDateTime->tm_sec;
-  wDtm.m_wTsp.m_uMicro     = wIvl.m_wIvl.m_uMicro;
+  wDtm.m_wTsp.m_uMicro     = wIvl.m_uMicro;
   wDtm.m_wTsp.m_uLocal     = C_TSP_LOCAL;
   wDtm.m_wTsp.m_uSpare     = 0;
 

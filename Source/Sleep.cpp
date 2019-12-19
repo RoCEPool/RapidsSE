@@ -14,8 +14,8 @@ Sleep::Sleep(void)
   
   m_wSleptTsp.m_iWrd    = 0;
   m_wWakeupTsp.m_iWrd   = 0;
-  m_wWakeupIvl.m_iWrd   = 0;
-  m_wDurationIvl.m_iWrd = 0;
+  m_wWakeupIvl   = 0;
+  m_wDurationIvl = 0;
   
   _checkInitialised_(CN_SLEEP);
   
@@ -52,10 +52,10 @@ void Sleep::vClear(void)
   m_wWakeupTsp.m_iWrd = 0;
   
   // reset the wakeup Ivl
-  m_wWakeupIvl.m_iWrd = 0;
+  m_wWakeupIvl = 0;
   
   // reset the sleep interval
-  m_wDurationIvl.m_iWrd = 0;
+  m_wDurationIvl = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@ void Sleep::vSleepFor(i8 iMicroseconds)
   Ivl wCurrentIvl = IvlLib::wToIvl(m_wSleptTsp);
   
   // calculate the wakeup time in Ivl
-  m_wWakeupIvl = IvlLib::wAdd(wCurrentIvl, m_wDurationIvl.m_wIvl);
+  m_wWakeupIvl = IvlLib::wAdd(wCurrentIvl, m_wDurationIvl);
   
   // set the wakeup time
   m_wWakeupTsp = TspLib::wToTsp_local(m_wWakeupIvl);
@@ -94,7 +94,7 @@ u8 Sleep::uWakeupInUsec(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // subtract wkaeupIvl from CurrentIvl
-  u8 uMicro = IvlLib::uSubtract(xCurrentIvl, m_wWakeupIvl.m_wIvl);
+  u8 uMicro = IvlLib::uSubtract(xCurrentIvl, m_wWakeupIvl);
   
   return uMicro;
 }
@@ -110,7 +110,7 @@ bool Sleep::bWakeupNow(void)
   Ivl xCurrentIvl = IvlLib::wGetCurrIvl();
   
   // compare wakeup ivl with current ivl
-  if (m_wWakeupIvl.m_iWrd <= xCurrentIvl.m_iAsI8)
+  if (m_wWakeupIvl.m_iAsI8 <= xCurrentIvl.m_iAsI8)
     return true;
   else
     return false;
