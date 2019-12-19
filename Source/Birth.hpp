@@ -9,7 +9,7 @@ namespace Gadgets
   {
   public:
     Dtm m_wTsp; // birth as tsp
-    Dtm m_wIvl; // birth as Ivl since epoch
+    Ivl m_wIvl; // birth as Ivl since epoch
   
     // must be last
     Footer m_xFooter;
