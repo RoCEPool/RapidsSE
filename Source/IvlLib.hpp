@@ -10,7 +10,7 @@ namespace Library
   public:
     static Dtm wGetCurrIvl(void);
   
-    static Dtm wToIvl(Dtm wTsp);
+    static Ivl wToIvl(Dtm wTsp);
     static Ivl wToIvl(u8 uMicro);
     
     //! to be coded

@@ -79,9 +79,9 @@ Dtm IvlLib::wGetCurrIvl(void)
 /*----------------------------------------------------------------------------*/
 /* convert timestamp to interval                                              */
 /*----------------------------------------------------------------------------*/
-Dtm IvlLib::wToIvl(Dtm wTsp)
+Ivl IvlLib::wToIvl(Dtm wTsp)
 {
-  Dtm wIvl;
+  Ivl wIvl;
   
   struct tm xDateTime;
   
@@ -96,8 +96,8 @@ Dtm IvlLib::wToIvl(Dtm wTsp)
   
   time_t iSecondsSincePosixEpoch = timelocal(&xDateTime);
   
-  wIvl.m_wIvl.m_uSecond = iSecondsSincePosixEpoch;
-  wIvl.m_wIvl.m_uMicro = wTsp.m_wTsp.m_uMicro;
+  wIvl.m_uSecond = iSecondsSincePosixEpoch;
+  wIvl.m_uMicro = wTsp.m_wTsp.m_uMicro;
   
   return wIvl;
 }

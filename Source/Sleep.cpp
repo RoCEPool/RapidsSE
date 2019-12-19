@@ -72,10 +72,10 @@ void Sleep::vSleepFor(i8 iMicroseconds)
   m_wDurationIvl = IvlLib::wToIvl(iMicroseconds);
   
   // get current sleptTsp as ivl
-  Dtm wCurrentIvl = IvlLib::wToIvl(m_wSleptTsp);
+  Ivl wCurrentIvl = IvlLib::wToIvl(m_wSleptTsp);
   
   // calculate the wakeup time in Ivl
-  m_wWakeupIvl = IvlLib::wAdd(wCurrentIvl.m_wIvl, m_wDurationIvl.m_wIvl);
+  m_wWakeupIvl = IvlLib::wAdd(wCurrentIvl, m_wDurationIvl.m_wIvl);
   
   // set the wakeup time
   m_wWakeupTsp = TspLib::wToTsp_local(m_wWakeupIvl);
