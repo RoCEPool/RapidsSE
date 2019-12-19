@@ -50,12 +50,12 @@ i8 IvlVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void IvlVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iIvl) {
+  if (m_wIvl.bIsNull()) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iIvl;
+  * szDst = m_wIvl;
 }
 
 /*============================================================================*/

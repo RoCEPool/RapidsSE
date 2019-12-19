@@ -432,7 +432,7 @@ i8 Datum_h::iIvl(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iIvl = m_xIvlVal.m_iIvl;
+  i8 iIvl = m_xIvlVal.m_wIvl;
   
   return iIvl;
 }
@@ -444,7 +444,7 @@ void Datum_h::vIvl(i8 iIvl)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xIvlVal.m_iIvl = iIvl;
+  m_xIvlVal.m_wIvl = iIvl;
 }
 
 /*----------------------------------------------------------------------------*/
