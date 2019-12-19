@@ -10,7 +10,7 @@ namespace Operators
   {
   friend class Pipeline;
   
-  public:
+  private:
     s32            m_sName;          // first word of prompt command
     
     Pipeline*      m_pPipeline;      // op digest
@@ -54,8 +54,11 @@ namespace Operators
     // - - - - - - - - - - - - - - - -
     void vAckJob(void);
     void vAckJobEnd(bool m_bAckJobEnd);
+    bool bAckJobEnd(void);
+    void vAddWorkDone(i8 iWorkDone);
     void vAppendLeft(Operand* pOperand);
     void vAppendRight(Operand* pOperand);
+    bool bAppendRight(void);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
     i8   nDecLeftEndMarkers(void);
@@ -73,11 +76,17 @@ namespace Operators
     Stz* szNextLabel(void);
     void vNextLabel(Stz* szNextLabel);
     i8   iNextStage(void);
+    void vNextStage(i8 iNextStage);
+    i8   nNode(void);
+    void vNode(i8 nNode);
     i8   iOpId(void);
     void vOpOut(Op* pOpOut);
+    Job* pOpJob(void);
+    OpSpec* pOpSpec(void);
     void vPartition(i8 iPartition);
     i8   nPartition(void);
     bool bPause(void);
+    Pipeline* pPipeline(void);
     void vPipeOut(Operand* pOperand);
     void vPipeToJob(Operand* pOperand);
     void vPipeToStart(Operand* pOperand);
@@ -94,7 +103,10 @@ namespace Operators
     void vTask(Task* pTask);
     void vToCmdStr(Stz* szCmdStr);
     ePX  eTopologyX(void);
+    void vTopologyX(ePX eTopologyX);
     void vWorkQuanta(i8 iWorkQuanta);
+    i8   iXmitNode(void);
+    void vXmitNode(i8 iNde);
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

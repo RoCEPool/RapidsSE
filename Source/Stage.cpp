@@ -100,7 +100,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
       Op* pOp = new Op(CN_OP,pOpSpec,pPipeLine);
       StageNde* pStageNde = m_oStageNdeVec.pGet(i_Index);
       
-      pOp->m_nNode = pStageNde->iNode();
+      pOp->vNode(pStageNde->iNode());
       pStageNde->pOpVec()->vAdd(pOp);
       m_oOpVec.vAdd(pOp);
     }
@@ -145,7 +145,7 @@ void Stage::vCancelOperators(i8 iThisNode)
     
     if (pStageNde->iNode() == iThisNode) {
       Op* pOp = pStageNde->pOpVec()->pGet(0);
-      RASSERT(AM::eJobType(pOp->m_pOpJob) == JT_STARTOP);
+      RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
       pOp->vAppendLeft(new CancelMarker);
     }
   }
@@ -157,7 +157,7 @@ void Stage::vCancelOperators(i8 iThisNode)
     
     if (iPtnNode == iThisNode) {
       Op* pOp = pStagePtn->pOpVec()->pGet(0);
-      RASSERT(AM::eJobType(pOp->m_pOpJob) == JT_STARTOP);
+      RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
       pOp->vAppendLeft(new CancelMarker);
     }
   }
@@ -177,19 +177,19 @@ void Stage::vDump(void)
     
     s32 sArgs;
     
-    EnameSet* pEnameSet = pOp->m_pOpSpec->pEnameSet();
+    EnameSet* pEnameSet = pOp->pOpSpec()->pEnameSet();
     pEnameSet->vSprint(sArgs);
     
     vTrace("  [%02lld] (N%lld) (P%02lld) {%12s%-24s endMarkers(L%lld R%lld) :%-10s %s }\n"_Stz,
            i_Op,
-           pOp->m_nNode,
-           pOp->m_nPartition,
-           pOp->m_sName.szStz(),
+           pOp->nNode(),
+           pOp->nPartition(),
+           pOp->szName(),
            sArgs.szStz(),
            pOp->nLeftEndMarkers(),
-           pOp->m_nRightEndMarkers,
+           pOp->nRightEndMarkers(),
            pOp->szNextLabel(),
-           pOp->m_bAppendRight ? "appendRight"_Stz : "appendLeft "_Stz
+           pOp->bAppendRight() ? "appendRight"_Stz : "appendLeft "_Stz
            );
   }
 }
@@ -206,7 +206,7 @@ void Stage::vStopPipeline(i8 iThisNode)
     
     if (pStageNde->iNode() == iThisNode) {
       Op* pOp = pStageNde->pOpVec()->pGet(0);
-      if (AM::eJobType(pOp->m_pOpJob) == JT_STARTOP)
+      if (AM::eJobType(pOp->pOpJob()) == JT_STARTOP)
         pOp->vAppendLeft(new StopMarker);
     }
   }
@@ -218,7 +218,7 @@ void Stage::vStopPipeline(i8 iThisNode)
     
     if (iPtnNode == iThisNode) {
       Op* pOp = pStagePtn->pOpVec()->pGet(0);
-      if (AM::eJobType(pOp->m_pOpJob) == JT_STARTOP)
+      if (AM::eJobType(pOp->pOpJob()) == JT_STARTOP)
         pOp->vAppendLeft(new StopMarker);
 
     }
@@ -247,7 +247,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
       
       // ignore StartOp
       Op* pOp = pStagePtn->pOpVec()->pGet(0);
-      if (AM::eJobType(pOp->m_pOpJob) == JT_STARTOP)
+      if (AM::eJobType(pOp->pOpJob()) == JT_STARTOP)
         nOps--;
     }
   }
@@ -262,7 +262,7 @@ i8 Stage::nOpsOnNode(i8 iNode)
       
       // ignore StartOp
       Op* pOp = pStageNde->pOpVec()->pGet(0);
-      if (AM::eJobType(pOp->m_pOpJob) == JT_STARTOP)
+      if (AM::eJobType(pOp->pOpJob()) == JT_STARTOP)
         nOps--;
     }
   }
@@ -394,7 +394,7 @@ void Stage::vStartPipeline(i8 iThisNode)
     
     if (pStageNde->iNode() == iThisNode) {
       Op* pOp = pStageNde->pOpVec()->pGet(0);
-      RASSERT(AM::eJobType(pOp->m_pOpJob) == JT_STARTOP);
+      RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
       pOp->vAppendLeft(new StartMarker);
     }
   }
@@ -406,7 +406,7 @@ void Stage::vStartPipeline(i8 iThisNode)
     
     if (iPtnNode == iThisNode) {
       Op* pOp = pStagePtn->pOpVec()->pGet(0);
-      RASSERT(AM::eJobType(pOp->m_pOpJob) == JT_STARTOP);
+      RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
       pOp->vAppendLeft(new StartMarker);
     }
   }

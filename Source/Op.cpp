@@ -137,7 +137,7 @@ void Op::vAckJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Task* pTask = AM::pExecutingTask(m_pJobPipeline);
+  Task* pTask = AM::pExecutingTask(m_pPipeline->pJob());
   
   AM::vLogOpr(SL_INF,this,OA_OP_ACK,
               "Acking job task"_Stz); //!format-LogOpr
@@ -153,6 +153,26 @@ void Op::vAckJobEnd(bool bAckJobEnd)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_bAckJobEnd = bAckJobEnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ack job on end marker                                                  */
+/*----------------------------------------------------------------------------*/
+bool Op::bAckJobEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_bAckJobEnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ack job on end marker                                                  */
+/*----------------------------------------------------------------------------*/
+void Op::vAddWorkDone(i8 iWorkDone)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iWorkDone += iWorkDone;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -207,6 +227,16 @@ void Op::vAppendRight(Operand* pOperand)
   
   // trigger this biding op
   AM::vTriggerBidingTask(m_pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append right ?                                                             */
+/*----------------------------------------------------------------------------*/
+bool Op::bAppendRight(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_bAppendRight;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -302,7 +332,7 @@ i8 Op::nLeftEndMarkers(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the leftEndMarkers                                                                */
+/* set the leftEndMarkers                                                     */
 /*----------------------------------------------------------------------------*/
 void Op::vLeftEndMarkers(i8 nEndMarkers)
 {
@@ -408,6 +438,36 @@ i8 Op::iNextStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set next stage                                                             */
+/*----------------------------------------------------------------------------*/
+void Op::vNextStage(i8 iNextStage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iNextStage = iNextStage;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node                                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Op::nNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_nNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set node                                                                   */
+/*----------------------------------------------------------------------------*/
+void Op::vNode(i8 nNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_nNode = nNode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get operator id                                                            */
 /*----------------------------------------------------------------------------*/
 i8 Op::iOpId(void)
@@ -415,6 +475,26 @@ i8 Op::iOpId(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_iFocalId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get out operator                                                           */
+/*----------------------------------------------------------------------------*/
+Job* Op::pOpJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pOpJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get opSpec                                                                 */
+/*----------------------------------------------------------------------------*/
+OpSpec* Op::pOpSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pOpSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -464,6 +544,16 @@ bool Op::bPause(void)
     return true;
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pipeline from op                                                       */
+/*----------------------------------------------------------------------------*/
+Pipeline* Op::pPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pPipeline;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -831,6 +921,15 @@ ePX Op::eTopologyX(void)
   return m_eTopologyX;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set cross topology                                                         */
+/*----------------------------------------------------------------------------*/
+void Op::vTopologyX(ePX eTopologyX)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_eTopologyX = eTopologyX;
+}
 
 /*----------------------------------------------------------------------------*/
 /* set work quanta                                                            */
@@ -840,6 +939,26 @@ void Op::vWorkQuanta(i8 iWorkQuanta)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_iWorkQuanta = iWorkQuanta;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get xmit node                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Op::iXmitNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iXmitNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set xmit node                                                              */
+/*----------------------------------------------------------------------------*/
+void Op::vXmitNode(i8 iXmitNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iXmitNode = iXmitNode;
 }
 
 /*============================================================================*/

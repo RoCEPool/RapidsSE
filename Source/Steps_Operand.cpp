@@ -123,10 +123,10 @@ void Step::vOperandHandleAggEnd(void)
       pOp->vPipeOut(*m_pRegSet->m_xpOperand);
     }
     
-    if (AM::bJobHasError(pOp->m_pOpJob)) {
-      AM::vSetJobLocalError(pOp->m_pOpJob, pOp->m_pPipeline->pJob());
+    if (AM::bJobHasError(pOp->pOpJob())) {
+      AM::vSetJobLocalError(pOp->pOpJob(), pOp->pPipeline()->pJob());
     }
-    if (pOp->m_bAckJobEnd)
+    if (pOp->bAckJobEnd())
       pOp->vAckJob();
     
   }
@@ -160,10 +160,10 @@ void Step::vOperandHandleEnd(void)
       pOp->vPipeOut(*m_pRegSet->m_xpOperand);
     }
     
-    if (AM::bJobHasError(pOp->m_pOpJob)) {
-      AM::vSetJobLocalError(pOp->m_pOpJob, pOp->m_pPipeline->pJob());
+    if (AM::bJobHasError(pOp->pOpJob())) {
+      AM::vSetJobLocalError(pOp->pOpJob(), pOp->pPipeline()->pJob());
     }
-    if (pOp->m_bAckJobEnd)
+    if (pOp->bAckJobEnd())
       pOp->vAckJob();
     
     m_pDataStack->vPushInt(0);
@@ -229,7 +229,7 @@ void Step::vOperandInsertIntoTable(void)
   CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperand);
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
-  i8 iPartition = pOp->m_nPartition;
+  i8 iPartition = pOp->nPartition();
   i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
   
   m_pRegSet->m_xpTable->vInsertEntries(C_UNKNOWN, iSlot, pCrwBuffer);
@@ -448,13 +448,13 @@ void Step::vOperandWorkDone(void)
       
     case CN_CRWBUFFER: {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperand);
-      pOp->m_iWorkDone += pCrwBuffer->nRowCount();
+      pOp->vAddWorkDone(pCrwBuffer->nRowCount());
       break;
     }
       
     case CN_CSVBUFFER: {
       CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperand);
-      pOp->m_iWorkDone += pCsvBuffer->nRecords();
+      pOp->vAddWorkDone(pCsvBuffer->nRecords());
       break;
     }
       
@@ -465,19 +465,19 @@ void Step::vOperandWorkDone(void)
       
     case CN_ENTBUFFER: {
       EntBuffer* pEntBuffer = _pEntBuffer(*m_pRegSet->m_xpOperand);
-      pOp->m_iWorkDone += pEntBuffer->nItems();
+      pOp->vAddWorkDone(pEntBuffer->nItems());
       break;
     }
       
     case CN_IRWBUFFER: {
       IrwBuffer* pIrwBuffer = _pIrwBuffer(*m_pRegSet->m_xpOperand);
-      pOp->m_iWorkDone += pIrwBuffer->nItems();
+      pOp->vAddWorkDone(pIrwBuffer->nItems());
       break;
     }
       
     case CN_SRTBUFFER: {
       SrtBuffer* pSrtBuffer = _pSrtBuffer(*m_pRegSet->m_xpOperand);
-      pOp->m_iWorkDone += pSrtBuffer->nItems();
+      pOp->vAddWorkDone(pSrtBuffer->nItems());
       break;
     }
       

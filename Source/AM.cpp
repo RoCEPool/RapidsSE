@@ -113,7 +113,7 @@ bool AM::bTracepoint(void)    { return gpAttachMap->m_bTracepoint;            }
 TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 
 void AM::vXmitNode(Op* pOp, i8 i_XmitNde) {
-  pOp->m_iXmitNode = i_XmitNde;
+  pOp->vXmitNode(i_XmitNde);
 }
 bool AM::bVerbose(void)       { return gpAttachMap->m_bVerbose;               }
 
@@ -239,8 +239,8 @@ void AM::vSendJobOperand(Task* pTask, Operand* pOperand,
                          Job* pParentJob, Op* pOp) {
   
   // get next stage to xmit to
-  ASSERT (pOp->m_iNextStage != C_UNKNOWN);
-  Stage* pNextStage = pOp->m_pPipeline->pStageVec()->pGet(pOp->m_iNextStage);
+  ASSERT (pOp->iNextStage() != C_UNKNOWN);
+  Stage* pNextStage = pOp->pPipeline()->pStageVec()->pGet(pOp->iNextStage());
   RASSERT(pNextStage);
   
   // link operator to next stage
@@ -248,10 +248,10 @@ void AM::vSendJobOperand(Task* pTask, Operand* pOperand,
   
   // new a xmit job
   Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(
-                                  nullptr, pOperand, pParentJob->m_iFocalId,pOp,pOp->m_iXmitNode);
+                                  nullptr, pOperand, pParentJob->m_iFocalId,pOp,pOp->iXmitNode());
   
   // set the send node in the task
-  Node* pSendNode = pGrid()->pGetNode(pOp->m_iXmitNode);
+  Node* pSendNode = pGrid()->pGetNode(pOp->iXmitNode());
   pTask->vSendNode(pSendNode);
   
   // grab socket wite lock
@@ -1067,12 +1067,12 @@ Job* AM::pNewJobUniversal( Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId)
 {
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
 
-  Job_Universal* pJobUniversal = new Job_Universal(pOp->m_pJobPipeline, pJobClass_Universal,pReqTuple,iUniqueId);
+  Job_Universal* pJobUniversal = new Job_Universal(pOp->pPipeline()->pJob(), pJobClass_Universal,pReqTuple,iUniqueId);
   
   pJobUniversal->m_pOp = pOp;
   pJobUniversal->pEnameSet()->vAdd("<path>"_Stz,
-                       pOp->m_pJobPipeline->pEnameSet()->szValue("<path>"_Stz));
-  pJobUniversal->pEnameSet()->vAdd("<jobNm>"_Stz,pOp->m_sName);
+                       pOp->pPipeline()->pJob()->pEnameSet()->szValue("<path>"_Stz));
+  pJobUniversal->pEnameSet()->vAdd("<jobNm>"_Stz,pOp->szName());
   pJobUniversal->vSeed(SS_SEED_REQ);
 
   //pJobUniversal->pEnameSet()->vPrint();

@@ -17,7 +17,7 @@ void Step::vAddSteps_Op(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op.endMarkers! -- store end markers in op                                  */
+/* Op.leftEndMarkers! -- store left end markers in op                         */
 /*----------------------------------------------------------------------------*/
 void Step::vOpLeftEndMarkersStore(void)
 {
@@ -34,7 +34,7 @@ void Step::vOpNextStageStore(void)
 {
   ENTRY(); // ENTRY("vOpNextStageStore"_Stz);
   
-  m_pTask->m_pJob->m_pOp->m_iNextStage = m_pDataStack->iPopInt(__func__);
+  m_pTask->m_pJob->m_pOp->vNextStage(m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
@@ -46,7 +46,7 @@ void Step::vOpPartitionFetch(void)
 {
   ENTRY(); // ENTRY("vOpPartitionFetch"_Stz);
   
-  m_pDataStack->vPushInt(m_pTask->m_pJob->m_pOp->m_nPartition);
+  m_pDataStack->vPushInt(m_pTask->m_pJob->m_pOp->nPartition());
   
   EXIT();
 }
@@ -58,7 +58,7 @@ void Step::vOpTopologyStore(void)
 {
   ENTRY(); // ENTRY("vOpTopologyStore"_Stz);
   
-  m_pTask->m_pJob->m_pOp->m_eTopologyX = (ePX)m_pDataStack->iPopInt(__func__);
+  m_pTask->m_pJob->m_pOp->vTopologyX((ePX)m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }
