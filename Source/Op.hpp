@@ -72,6 +72,7 @@ namespace Operators
     Stz* szName(void);
     Stz* szNextLabel(void);
     void vNextLabel(Stz* szNextLabel);
+    i8   iNextStage(void);
     i8   iOpId(void);
     void vOpOut(Op* pOpOut);
     void vPartition(i8 iPartition);
@@ -92,6 +93,7 @@ namespace Operators
     Task* pTask(void);
     void vTask(Task* pTask);
     void vToCmdStr(Stz* szCmdStr);
+    ePX  eTopologyX(void);
     void vWorkQuanta(i8 iWorkQuanta);
   };
 

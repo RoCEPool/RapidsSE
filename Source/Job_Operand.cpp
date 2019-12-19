@@ -171,8 +171,8 @@ Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
   pJob_Operand->m_iPartition = pOp->nPartition();
   pJob_Operand->m_pOperand   = pOperand;
   
-  pJob_Operand->m_eTopologyX = pOp->m_eTopologyX;
-  pJob_Operand->m_iNextStage = pOp->m_iNextStage;
+  pJob_Operand->m_eTopologyX = pOp->eTopologyX();
+  pJob_Operand->m_iNextStage = pOp->iNextStage();
   
   return pJob_Operand;
 }
