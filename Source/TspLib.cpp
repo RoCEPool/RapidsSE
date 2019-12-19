@@ -11,16 +11,16 @@
 /*----------------------------------------------------------------------------*/
 /* get current local timestamp                                                */
 /*----------------------------------------------------------------------------*/
-Dtm TspLib::wGetCurrTsp_local(void)
+Tsp TspLib::wGetCurrTsp_local(void)
 {
-  Dtm wIvl;
-  Dtm wTsp;
+  Tsp wIvl;
+  Tsp wTsp;
   
   // get current epoch interval
   wIvl = IvlLib::wGetCurrIvl();
   
   // convert current epoch interval into local timestamp
-  time_t iSecondsSincePosixEpoch = wIvl.m_wIvl.m_uSecond;
+  time_t iSecondsSincePosixEpoch = wIvl.m_uSecond;
   struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
   if (! aLocalDateTime) {
     vWarn("wGetCurrTsp_local: localtime() error; errno=%d"_Stz,errno);
@@ -28,15 +28,15 @@ Dtm TspLib::wGetCurrTsp_local(void)
     return wTsp;
   }
   
-  wTsp.m_wTsp.m_uYearDelta = aLocalDateTime->tm_year;
-  wTsp.m_wTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
-  wTsp.m_wTsp.m_uDay       = aLocalDateTime->tm_mday;
-  wTsp.m_wTsp.m_uHour      = aLocalDateTime->tm_hour;
-  wTsp.m_wTsp.m_uMinute    = aLocalDateTime->tm_min;
-  wTsp.m_wTsp.m_uSecond    = aLocalDateTime->tm_sec;
-  wTsp.m_wTsp.m_uMicro     = wIvl.m_wIvl.m_uMicro;
-  wTsp.m_wTsp.m_uLocal     = C_TSP_LOCAL;
-  wTsp.m_wTsp.m_uSpare     = 0;
+  wTsp.m_uYearDelta = aLocalDateTime->tm_year;
+  wTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
+  wTsp.m_uDay       = aLocalDateTime->tm_mday;
+  wTsp.m_uHour      = aLocalDateTime->tm_hour;
+  wTsp.m_uMinute    = aLocalDateTime->tm_min;
+  wTsp.m_uSecond    = aLocalDateTime->tm_sec;
+  wTsp.m_uMicro     = wIvl.m_uMicro;
+  wTsp.m_uLocal     = C_TSP_LOCAL;
+  wTsp.m_uSpare     = 0;
   
   return wTsp;
 }
@@ -44,20 +44,20 @@ Dtm TspLib::wGetCurrTsp_local(void)
 /*----------------------------------------------------------------------------*/
 /* get current UTC timestamp                                                  */
 /*----------------------------------------------------------------------------*/
-Dtm TspLib::wGetCurrTsp_utc(void)
+Tsp TspLib::wGetCurrTsp_utc(void)
 {
   
   // currently we don't generate any UTC tsp's
   RASSERT(0);
   
-  Dtm wIvl;
-  Dtm wTsp;
+  Ivl wIvl;
+  Tsp wTsp;
   
   // get current epoch interval
   wIvl = IvlLib::wGetCurrIvl();
   
   // convert current epoch interval into utc timestamp
-  time_t iSecondsSincePosixEpoch = wIvl.m_wIvl.m_uSecond;
+  time_t iSecondsSincePosixEpoch = wIvl.m_uSecond;
   struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
   if (! aUtcDateTime) {
     vWarn("wGetCurrTsp_utc: gmtime() error; errno=%d"_Stz,errno);
@@ -65,15 +65,15 @@ Dtm TspLib::wGetCurrTsp_utc(void)
     return wTsp;
   }
 
-  wTsp.m_wTsp.m_uYearDelta = aUtcDateTime->tm_year;
-  wTsp.m_wTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
-  wTsp.m_wTsp.m_uDay       = aUtcDateTime->tm_mday;
-  wTsp.m_wTsp.m_uHour      = aUtcDateTime->tm_hour;
-  wTsp.m_wTsp.m_uMinute    = aUtcDateTime->tm_min;
-  wTsp.m_wTsp.m_uSecond    = aUtcDateTime->tm_sec;
-  wTsp.m_wTsp.m_uMicro     = wIvl.m_wIvl.m_uMicro;
-  wTsp.m_wTsp.m_uLocal     = C_TSP_UTC;
-  wTsp.m_wTsp.m_uSpare     = 0;
+  wTsp.m_uYearDelta = aUtcDateTime->tm_year;
+  wTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
+  wTsp.m_uDay       = aUtcDateTime->tm_mday;
+  wTsp.m_uHour      = aUtcDateTime->tm_hour;
+  wTsp.m_uMinute    = aUtcDateTime->tm_min;
+  wTsp.m_uSecond    = aUtcDateTime->tm_sec;
+  wTsp.m_uMicro     = wIvl.m_uMicro;
+  wTsp.m_uLocal     = C_TSP_UTC;
+  wTsp.m_uSpare     = 0;
   
   return wTsp;
 }
@@ -83,7 +83,7 @@ Dtm TspLib::wGetCurrTsp_utc(void)
 /*----------------------------------------------------------------------------*/
 Tsp TspLib::wToTsp_local(Ivl wIvl)
 {
-  Tsp wDtm;
+  Tsp wTsp;
   
   time_t iSecondsSincePosixEpoch = wIvl.m_uSecond;
   
@@ -92,33 +92,33 @@ Tsp TspLib::wToTsp_local(Ivl wIvl)
 
   if (! aLocalDateTime) {
     vWarn("wToTsp_local: localtime_r() error; errno=%d"_Stz,errno);
-    wDtm.vSetNull();
-    return wDtm;
+    wTsp.vSetNull();
+    return wTsp;
   }
   
-  wDtm.m_uYearDelta = aLocalDateTime->tm_year;
-  wDtm.m_uMonth     = aLocalDateTime->tm_mon + 1;
-  wDtm.m_uDay       = aLocalDateTime->tm_mday;
-  wDtm.m_uHour      = aLocalDateTime->tm_hour;
-  wDtm.m_uMinute    = aLocalDateTime->tm_min;
-  wDtm.m_uSecond    = aLocalDateTime->tm_sec;
-  wDtm.m_uMicro     = wIvl.m_uMicro;
-  wDtm.m_uLocal     = C_TSP_LOCAL;
-  wDtm.m_uSpare     = 0;
+  wTsp.m_uYearDelta = aLocalDateTime->tm_year;
+  wTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
+  wTsp.m_uDay       = aLocalDateTime->tm_mday;
+  wTsp.m_uHour      = aLocalDateTime->tm_hour;
+  wTsp.m_uMinute    = aLocalDateTime->tm_min;
+  wTsp.m_uSecond    = aLocalDateTime->tm_sec;
+  wTsp.m_uMicro     = wIvl.m_uMicro;
+  wTsp.m_uLocal     = C_TSP_LOCAL;
+  wTsp.m_uSpare     = 0;
 
-  return wDtm;
+  return wTsp;
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert interval to utc timestamp                                          */
 /*----------------------------------------------------------------------------*/
-Dtm TspLib::wToTsp_utc(Ivl wIvl)
+Tsp TspLib::wToTsp_utc(Ivl wIvl)
 {
   
   // currently we don't generate any UTC tsp's
   RASSERT(0);
   
-  Dtm wDtm;
+  Tsp wTsp;
   
   time_t iSecondsSincePosixEpoch = wIvl.m_uSecond;
   
@@ -127,21 +127,21 @@ Dtm TspLib::wToTsp_utc(Ivl wIvl)
   
   if (! aUtcDateTime) {
     vWarn("wToTsp_utc: gmtime() error; errno=%d"_Stz,errno);
-    wDtm.vSetNull();
-    return wDtm;
+    wTsp.vSetNull();
+    return wTsp;
   }
 
-  wDtm.m_wTsp.m_uYearDelta = aUtcDateTime->tm_year;
-  wDtm.m_wTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
-  wDtm.m_wTsp.m_uDay       = aUtcDateTime->tm_mday;
-  wDtm.m_wTsp.m_uHour      = aUtcDateTime->tm_hour;
-  wDtm.m_wTsp.m_uMinute    = aUtcDateTime->tm_min;
-  wDtm.m_wTsp.m_uSecond    = aUtcDateTime->tm_sec;
-  wDtm.m_wTsp.m_uMicro     = wIvl.m_uMicro;
-  wDtm.m_wTsp.m_uLocal     = C_TSP_UTC;
-  wDtm.m_wTsp.m_uSpare     = 0;
+  wTsp.m_uYearDelta = aUtcDateTime->tm_year;
+  wTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
+  wTsp.m_uDay       = aUtcDateTime->tm_mday;
+  wTsp.m_uHour      = aUtcDateTime->tm_hour;
+  wTsp.m_uMinute    = aUtcDateTime->tm_min;
+  wTsp.m_uSecond    = aUtcDateTime->tm_sec;
+  wTsp.m_uMicro     = wIvl.m_uMicro;
+  wTsp.m_uLocal     = C_TSP_UTC;
+  wTsp.m_uSpare     = 0;
 
-  return wDtm;
+  return wTsp;
 }
 
 /*============================================================================*/
