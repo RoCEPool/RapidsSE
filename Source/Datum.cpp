@@ -318,7 +318,7 @@ void Datum_h::vDte(i8 iDte)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xDteVal.m_iDte = iDte;
+  m_xDteVal.m_wDte = iDte;
 }
 
 /*----------------------------------------------------------------------------*/
