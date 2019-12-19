@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* add Ivl2 to Ivl1 and return the new interval                               */
 /*----------------------------------------------------------------------------*/
-Dtm IvlLib::wAdd(Ivl wIvl1, Ivl wIvl2)
+Ivl IvlLib::wAdd(Ivl wIvl1, Ivl wIvl2)
 {
   // convert wIvl1 to microseconds
   u8 uMicro1 = (wIvl1.m_uSecond * C_1M) + wIvl1.m_uMicro;
@@ -27,7 +27,7 @@ Dtm IvlLib::wAdd(Ivl wIvl1, Ivl wIvl2)
   
   xIvl.m_wIvl = wToIvl(uMicro);
   
-  return xIvl;
+  return xIvl.m_wIvl;
 }
 
 /*----------------------------------------------------------------------------*/
