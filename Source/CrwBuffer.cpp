@@ -54,7 +54,7 @@ void CrwBuffer::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 CrwBuffer::CrwBuffer(void)
-: DataBuffer(CN_CRWBUFFER, true)
+: DataBuffer(CN_CRWBUFFER, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
@@ -517,8 +517,10 @@ void CrwBuffer::vShow(void)
   
   i8 nRows = nRowCount();
   
-  vTrace("CrwBuffer: %p (buffer %lld): rows: %lld headItems: %lld tailItems: %lld free: %lldB\n"_Stz,
-         this,m_iBufferNo,nRows,
+  vTrace("CrwBuffer: %p (buffer %lld %s): rows: %lld headItems: %lld tailItems: %lld free: %lldB\n"_Stz,
+         this,m_iBufferNo,
+         m_bIsPermanent ? "P"_Stz : "T"_Stz,
+         nRows,
          m_oRowTray.pNub()->nHeads(),
          m_oRowTray.pNub()->nTails(),
          m_oRowTray.pNub()->nFreeAllotableBytes());

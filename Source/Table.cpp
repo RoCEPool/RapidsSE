@@ -378,6 +378,10 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
   }
 
   //----------------------------------------------------------------------------
+  // mark crwBuffer as permanent before its appended to the table
+  pCrwBuffer->vIsPermanent(true);
+  
+  //----------------------------------------------------------------------------
   // (1) append the buffer entries into the table
   TablePtn* pPartition = this->pPartition(iSlot);
   
