@@ -47,7 +47,7 @@ void Step::vTablePtnFetch(void)
   
   Job_Universal* pJob = _pJob_Universal(m_pDataStack->pPopPtr(__func__));
   
-  i8 iPtn = pJob->m_pOp->m_nPartition;
+  i8 iPtn = pJob->m_pOp->nPartition();
   
   i8 iSlot = TablePtn::iPartitionToSlot(iPtn);
   TablePtn* pTablePtn = m_pRegSet->m_xpTable->pSlots()->pPartition(iSlot);

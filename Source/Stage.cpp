@@ -186,7 +186,7 @@ void Stage::vDump(void)
            pOp->m_nPartition,
            pOp->m_sName.szStz(),
            sArgs.szStz(),
-           pOp->m_nLeftEndMarkers,
+           pOp->nLeftEndMarkers(),
            pOp->m_nRightEndMarkers,
            pOp->szNextLabel(),
            pOp->m_bAppendRight ? "appendRight"_Stz : "appendLeft "_Stz

@@ -101,7 +101,7 @@ void Step::vOperandHandleAggEnd(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
   
-  if (--pOp->m_nLeftEndMarkers == 0) {
+  if (pOp->nDecLeftEndMarkers() == 0) {
     if (pOp->bIsCancelling()) {
       delete _pEndMarker(*m_pRegSet->m_xpOperand);
       pOp->vPipeOut(new CancelMarker);
@@ -149,7 +149,7 @@ void Step::vOperandHandleEnd(void)
   
   //vTrace("%s %lld\n"_Stz, pOp->m_sName.azChar(), pOp->m_nLeftEndMarkers);
   
-  if (--pOp->m_nLeftEndMarkers == 0) {
+  if (pOp->nDecLeftEndMarkers() == 0) {
     if (pOp->bIsCancelling()) {
       delete _pEndMarker(*m_pRegSet->m_xpOperand);
       

@@ -160,11 +160,7 @@ Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
   JobClass* pJobClass_Operand = JobClass::pFind(CN_JOB_OPERAND);
   
   ReqTuple xReqTuple("!!OPERAND"_Stz,false);
-  
-//  Job_Operand* pJob_Operand =
-//    static_cast<Job_Operand*>
-//      (pJobClass_Operand->pPreJob(&xReqTuple,pSession));
-  
+
   Job_Operand* pJob_Operand = new Job_Operand(pJobClass_Operand, &xReqTuple);
   
   pJob_Operand->vSeed(SS_SEED_RUN);
@@ -172,7 +168,7 @@ Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
   pJob_Operand->vParentId(iParentJobId);
   pJob_Operand->m_pOp        = pOp;
   pJob_Operand->m_iNode      = iNode;
-  pJob_Operand->m_iPartition = pOp->m_nPartition;
+  pJob_Operand->m_iPartition = pOp->nPartition();
   pJob_Operand->m_pOperand   = pOperand;
   
   pJob_Operand->m_eTopologyX = pOp->m_eTopologyX;

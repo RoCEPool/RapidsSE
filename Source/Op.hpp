@@ -27,20 +27,19 @@ namespace Operators
     i8             m_iWorkQuanta;    // quanta of work between pulses
     i8             m_iWorkDone;      // work done
 
+    bool           m_bAppendRight;   // append to right queue?
     OperandQueue*  m_pQueueLeft;     // the input queue being processed
     OperandQueue*  m_pQueueRight;    // the input queue being processed
-  
+    
     Op*            m_pOpOut;         // to which op the results get piped
-    bool           m_bAppendRight;   // append to right queue?
-  
+    
     i8             m_nNode;               // node no
     i8             m_nPartition;          // partition no
     i8             m_nLeftEndMarkers;     // expected left end markers
     i8             m_nRightEndMarkers;    // expected left end markers
     
     ePX            m_eTopologyX;      // cross topology
-    i8             m_iNextStage;      // next stage in the cross topology
-    
+    i8             m_iNextStage;      // next stage in the cross topology    
     i8             m_iXmitNode;       // xmit node (for xmitOp)
 
   public:
@@ -59,6 +58,7 @@ namespace Operators
     void vAppendRight(Operand* pOperand);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
+    i8   nDecLeftEndMarkers(void);
     void vDropTaskLock(void);
     void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
@@ -66,6 +66,8 @@ namespace Operators
     bool bIsCancelling(void);
     bool bIsLocked(void);
     void vJobPipeline(Job* pJob);
+    i8   nLeftEndMarkers(void);
+    void vLeftEndMarkers(i8 nEndMarkers);
     void vLinkToStage(Stage* pStage);
     Stz* szName(void);
     Stz* szNextLabel(void);
@@ -73,6 +75,7 @@ namespace Operators
     i8   iOpId(void);
     void vOpOut(Op* pOpOut);
     void vPartition(i8 iPartition);
+    i8   nPartition(void);
     bool bPause(void);
     void vPipeOut(Operand* pOperand);
     void vPipeToJob(Operand* pOperand);
@@ -83,6 +86,8 @@ namespace Operators
     Operand* pPopQueueRight(void);
     OperandQueue* pQueueLeft(void);
     OperandQueue* pQueueRight(void);
+    i8   nRightEndMarkers(void);
+    void vRightEndMarkers(i8 nEndMarkers);
     bool bSpawnJob(i8 iSessionId);
     Task* pTask(void);
     void vTask(Task* pTask);

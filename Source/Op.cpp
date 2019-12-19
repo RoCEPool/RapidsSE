@@ -70,11 +70,12 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
+  m_bAppendRight  = pOpSpec->bAppendRight();
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
   
   m_pOpOut        = nullptr;
-  m_bAppendRight  = pOpSpec->bAppendRight();
+  
 
   m_nNode            = C_UNKNOWN;
   m_nPartition       = C_UNKNOWN;
@@ -209,6 +210,16 @@ void Op::vAppendRight(Operand* pOperand)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dec the leftEndMarkers and return it                                       */
+/*----------------------------------------------------------------------------*/
+i8 Op::nDecLeftEndMarkers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return (--m_nLeftEndMarkers);
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Op::vDropTaskLock(void)
@@ -278,6 +289,26 @@ void Op::vJobPipeline(Job* pJob)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pJobPipeline = pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the leftEndMarkers                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Op::nLeftEndMarkers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_nLeftEndMarkers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the leftEndMarkers                                                                */
+/*----------------------------------------------------------------------------*/
+void Op::vLeftEndMarkers(i8 nEndMarkers)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_nLeftEndMarkers = nEndMarkers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -397,6 +428,16 @@ void Op::vPartition(i8 nPartition)
   
   // set the node tis partition belongs to 
   m_nNode = TablePtn::iPartitionToNode(m_nPartition);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partition from op                                                      */
+/*----------------------------------------------------------------------------*/
+i8 Op::nPartition(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_nPartition;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -682,6 +723,26 @@ OperandQueue* Op::pQueueRight(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_pQueueRight;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the rightEndMarkers                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Op::nRightEndMarkers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_nRightEndMarkers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the rightEndMarkers                                                    */
+/*----------------------------------------------------------------------------*/
+void Op::vRightEndMarkers(i8 nEndMarkers)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_nRightEndMarkers = nEndMarkers;
 }
 
 /*----------------------------------------------------------------------------*/
