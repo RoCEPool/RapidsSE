@@ -12,8 +12,8 @@ Birth::Birth(void)
 {
   _precondition_(_MAGIC_,CN_BIRTH,_FOOTER_);
   
-  m_wTsp.m_iInt = 0;
-  m_wIvl.m_iInt = 0;
+  m_wTsp.m_iWrd = 0;
+  m_wIvl.m_iWrd = 0;
   
   _checkInitialised_(CN_BIRTH);
   
@@ -43,8 +43,8 @@ void Birth::vClear(void)
 {
   _precondition_(_MAGIC_,CN_BIRTH,_FOOTER_);
   
-  m_wTsp.m_iInt = 0;
-  m_wIvl.m_iInt = 0;
+  m_wTsp.m_iWrd = 0;
+  m_wIvl.m_iWrd = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,9 +55,9 @@ i8 Birth::iElapsedSsec(void)
   _precondition_(_MAGIC_,CN_BIRTH,_FOOTER_);
   
   // get current tsp as Ivl
-  Dtm wCurrentIvl = IvlLib::wGetCurrIvl();
+  Ivl wCurrentIvl = IvlLib::wGetCurrIvl();
   
-  u8 uMicros = IvlLib::uSubtract(wCurrentIvl, m_wIvl);
+  u8 uMicros = IvlLib::uSubtract(wCurrentIvl, m_wIvl.m_wIvl);
   
   return uMicros/C_1M;
 }

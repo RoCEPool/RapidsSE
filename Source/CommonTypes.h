@@ -8,7 +8,12 @@
 class Bcd
 {
 public:
-  i8 m_iBcd;
+  union {
+    i8 m_iBcd;
+    i8 m_iAsI8;
+  };
+  
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -16,7 +21,12 @@ public:
 class Bol
 {
 public:
-  i8 m_iBol;
+  union {
+    i8 m_iBol;
+    i8 m_iAsI8;
+  };
+  
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -24,14 +34,21 @@ public:
 class Dte
 {
 public:
-  u8 m_uSpare     : 47 ; //         47b
+  union {
+    struct {
+      u8 m_uSpare     : 47 ; //         47b
+      
+      u8 m_uDay       :  5 ; // 0..31       same as _Tsp.dte
+      u8 m_uMonth     :  4 ; // 0..15
+      u8 m_uYearDelta :  8 ; // 0..255  17b (1900+8b == 2155)
+      //               ---
+      //                64
+      //               ===
+    };
+    i8 m_iAsI8;
+  };
   
-  u8 m_uDay       :  5 ; // 0..31       same as _Tsp.dte
-  u8 m_uMonth     :  4 ; // 0..15
-  u8 m_uYearDelta :  8 ; // 0..255  17b (1900+8b == 2155)
-  //               ---
-  //                64
-  //               ===
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -39,14 +56,21 @@ public:
 class Edt
 {
 public:
-  u8 m_uDay       :  5 ; // 0..31
-  u8 m_uMonth     :  4 ; // 0..15
-  u8 m_uYearInEra :  7 ; // 0..127  16b (eraBase+7b == 127)
+  union {
+    struct {
+      u8 m_uDay       :  5 ; // 0..31
+      u8 m_uMonth     :  4 ; // 0..15
+      u8 m_uYearInEra :  7 ; // 0..127  16b (eraBase+7b == 127)
+      
+      u8 m_uSpare     : 48 ; //         48b
+      //               ---
+      //                64
+      //               ===
+    };
+    i8 m_iAsI8;
+  };
   
-  u8 m_uSpare     : 48 ; //         48b
-  //               ---
-  //                64
-  //               ===
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -54,7 +78,12 @@ public:
 class Flt
 {
 public:
-  d8 m_dFlt;
+  union {
+    d8 m_dFlt;
+    i8 m_iAsI8;
+  };
+  
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -62,7 +91,12 @@ public:
 class Int
 {
 public:
-  i8 m_iInt;
+  union {
+    d8 m_iInt;
+    i8 m_iAsI8;
+  };
+  
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -70,11 +104,18 @@ public:
 class Ivl
 {
 public:
-  u8 m_uMicro     : 20 ; // 0..1M
-  u8 m_uSecond    : 44 ; // 0..1.7E13
-  //               ---
-  //                64
-  //               ===
+  union {
+    struct {
+      u8 m_uMicro     : 20 ; // 0..1M
+      u8 m_uSecond    : 44 ; // 0..1.7E13
+      //               ---
+      //                64
+      //               ===
+    };
+    i8 m_iAsI8;
+  };
+  
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -82,15 +123,22 @@ public:
 class Tme
 {
 public:
-  u8 m_uSpare     : 27 ; //         27b
+  union {
+    struct {
+      u8 m_uSpare     : 27 ; //         27b
+      
+      u8 m_uMicro     : 20 ; // 0..1M       same as _Tsp.tme
+      u8 m_uSecond    :  6 ; // 0..63
+      u8 m_uMinute    :  6 ; // 0..63
+      u8 m_uHour      :  5 ; // 0..31   37b
+      //               ---
+      //                64
+      //               ===
+    };
+    i8 m_iAsI8;
+  };
   
-  u8 m_uMicro     : 20 ; // 0..1M       same as _Tsp.tme
-  u8 m_uSecond    :  6 ; // 0..63
-  u8 m_uMinute    :  6 ; // 0..63
-  u8 m_uHour      :  5 ; // 0..31   37b
-  //               ---
-  //                64
-  //               ===
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -98,21 +146,28 @@ public:
 class Tsp
 {
 public:
-  u8 m_uSpare     :  9 ; //        9b
+  union {
+    struct {
+      u8 m_uSpare     :  9 ; //        9b
+      
+      u8 m_uLocal     :  1 ; //        1b
+      
+      u8 m_uMicro     : 20 ; // 0..1M
+      u8 m_uSecond    :  6 ; // 0..63
+      u8 m_uMinute    :  6 ; // 0..63
+      u8 m_uHour      :  5 ; // 0..31   37b
+      
+      u8 m_uDay       :  5 ; // 0..31
+      u8 m_uMonth     :  4 ; // 0..15
+      u8 m_uYearDelta :  8 ; // 0..255  17b  (1900+8b == 2155)
+      //               ---
+      //                64
+      //               ===
+    };
+    i8 m_iAsI8;
+  };
   
-  u8 m_uLocal     :  1 ; //        1b
-  
-  u8 m_uMicro     : 20 ; // 0..1M
-  u8 m_uSecond    :  6 ; // 0..63
-  u8 m_uMinute    :  6 ; // 0..63
-  u8 m_uHour      :  5 ; // 0..31   37b
-  
-  u8 m_uDay       :  5 ; // 0..31
-  u8 m_uMonth     :  4 ; // 0..15
-  u8 m_uYearDelta :  8 ; // 0..255  17b  (1900+8b == 2155)
-  //               ---
-  //                64
-  //               ===
+  operator i8(void) { return m_iAsI8; } // auto conversion to i8
 };
 
 /*============================================================================*/

@@ -10,25 +10,12 @@ namespace Library
   public:
     union {
 
-      i8    m_iBcd;
-      i8    m_iBol;
-      i8    m_iDte;
-      i8    m_iEdt;
-      d8    m_dFlt;
-      i8    m_iInt;
-      i8    m_iIvl;
-      i8    m_iTme;
-      i8    m_iTsc;
-      i8    m_iTsp;
-      
-      char* m_azStr;
-      
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       Bcd   m_wBcd;
       Bol   m_wBol;
       Dte   m_wDte;
       Edt   m_wEdt;
       Flt   m_wFlt;
+      Int   m_wInt;
       Ivl   m_wIvl;
       Tme   m_wTme;
       Tsp   m_wTsp;
@@ -37,6 +24,8 @@ namespace Library
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       
+      i8    m_iWrd;
+      char* m_azStr;
       byte  m_yaByte[C_BYTES_PER_WORD];
     };
   
@@ -62,8 +51,11 @@ namespace Library
     void vSetUnknown(void);
     void vSetNull(void);
 
-    void operator =(i8 iInt)    { m_iInt  = iInt;  }
+    void operator =(i8 iInt)    { m_iWrd  = iInt;  }
     void operator =(Stz* szVch) { m_szVch = szVch; }
+  
+    operator i8(void) { return m_iWrd; } // auto conversion to i8
+
   };
 }
 

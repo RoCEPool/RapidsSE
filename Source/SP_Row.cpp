@@ -69,56 +69,56 @@ void SP_Row::vRow(Row* pRow)
       case DM_BCD: {
         SP_Bcd SP_Bcd;
         StrLib::vAppendString(&szCrs,
-                              (char*)SP_Bcd.sz(pRow->m_waColVal[i_Col].m_iBcd));
+                              (char*)SP_Bcd.sz(pRow->m_waColVal[i_Col]));
         break;
       }
 
       case DM_BOL: {
         SP_Bol SP_Bol;
         StrLib::vAppendString(&szCrs,
-                              (char*)SP_Bol.sz(pRow->m_waColVal[i_Col].m_iBol));
+                              (char*)SP_Bol.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         
       case DM_DTE: {
         SP_Dte SP_Dte;
         StrLib::vAppendString(&szCrs,
-                              (char*)SP_Dte.sz(pRow->m_waColVal[i_Col].m_iDte));
+                              (char*)SP_Dte.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         
       case DM_FLT: {
         SP_Flt SP_Flt;
         StrLib::vAppendString(&szCrs,
-                              (char*)SP_Flt.sz(*(d8*)&pRow->m_waColVal[i_Col].m_iInt));
+                              (char*)SP_Flt.sz(*(d8*)&pRow->m_waColVal[i_Col]));
         break;
       }
         
       case DM_INT: {
         SP_Int spInt;
         StrLib::vAppendString(&szCrs,
-                              (char*)spInt.sz(pRow->m_waColVal[i_Col].m_iInt));
+                              (char*)spInt.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         
       case DM_IVL: {
         SP_Ivl spIvl;
         StrLib::vAppendString(&szCrs,
-                              (char*)spIvl.sz(pRow->m_waColVal[i_Col].m_iIvl));
+                              (char*)spIvl.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         
       case DM_TME: {
         SP_Tme SP_Tme;
         StrLib::vAppendString(&szCrs,
-                              (char*)SP_Tme.sz(pRow->m_waColVal[i_Col].m_iTme));
+                              (char*)SP_Tme.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         
       case DM_TSP: {
         SP_Tsp SP_Tsp;
         StrLib::vAppendString(&szCrs,
-                              (char*)SP_Tsp.sz(pRow->m_waColVal[i_Col].m_iTsp));
+                              (char*)SP_Tsp.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         

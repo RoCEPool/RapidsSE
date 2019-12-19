@@ -263,12 +263,12 @@ void Encoding::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
   if (bEncodeNul(xColEnc,wColVal))
     return;
 
-  xColEnc.m_wDataCode.m_iBcd = wColVal.m_iBcd;
+  xColEnc.m_wDataCode.m_wBcd.m_iAsI8 = wColVal.m_wBcd.m_iAsI8;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // -1 case -- encode as: MC_BCD_M_ONE + {}
-  if (-1 == wColVal.m_iBcd) {
+  if (-1 == wColVal.m_wBcd.m_iAsI8) {
     xColEnc.m_eMetaCode = MC_BCD_M_ONE;
     xColEnc.m_nDataSize = C_0B;
     return;
@@ -277,8 +277,8 @@ void Encoding::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // 0..10 case -- encode as MC_BCD_ONE..TEN + {}
-  if (wColVal.m_iBcd >= 0 && wColVal.m_iBcd <= 10) {
-    xColEnc.m_eMetaCode = (eMC)(MC_BCD_ZERO + wColVal.m_iBcd);
+  if (wColVal.m_wBcd.m_iAsI8 >= 0 && wColVal.m_wBcd.m_iAsI8 <= 10) {
+    xColEnc.m_eMetaCode = (eMC)(MC_BCD_ZERO + wColVal.m_wBcd.m_iAsI8);
     xColEnc.m_nDataSize = C_0B;
     return;
   }
@@ -302,12 +302,12 @@ void Encoding::vEncodeBol(_ColEnc& xColEnc, Dtm wColVal)
   if (bEncodeNul(xColEnc,wColVal))
     return;
   
-  xColEnc.m_wDataCode.m_iBol = wColVal.m_iBol;
+  xColEnc.m_wDataCode.m_wBol.m_iAsI8 = wColVal.m_wBol.m_iAsI8;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // encode as: MC_BOL_TRUE or MC_BOL_FALSE
-  if (wColVal.m_iBol)
+  if (wColVal.m_wBol.m_iAsI8)
     xColEnc.m_eMetaCode = MC_BOL_TRUE;
   else
     xColEnc.m_eMetaCode = MC_BOL_FALSE;
@@ -325,14 +325,14 @@ void Encoding::vEncodeDte(_ColEnc& xColEnc, Dtm wColVal)
   if (bEncodeNul(xColEnc,wColVal))
     return;
   
-  xColEnc.m_wDataCode.m_iDte = wColVal.m_iDte;
+  xColEnc.m_wDataCode.m_wDte.m_iAsI8 = wColVal.m_wDte.m_iAsI8;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // encode as: MC_DTE_En_2B + {D}
   
   i8 iEra = 0;
-  vDteIntoEdt(wColVal.m_iDte,&xColEnc.m_wDataCode.m_iEdt,iEra);
+  vDteIntoEdt(wColVal.m_wDte.m_iAsI8,&xColEnc.m_wDataCode.m_wEdt.m_iAsI8,iEra);
   
        if (C_ERA_0 == iEra) xColEnc.m_eMetaCode= MC_DTE_E0_2B;
   else if (C_ERA_1 == iEra) xColEnc.m_eMetaCode= MC_DTE_E1_2B;
@@ -352,7 +352,7 @@ void Encoding::vEncodeFlt(_ColEnc& xColEnc, Dtm wColVal)
   if (bEncodeNul(xColEnc,wColVal))
     return;
   
-  xColEnc.m_wDataCode.m_dFlt = wColVal.m_dFlt;
+  xColEnc.m_wDataCode.m_wFlt.m_dFlt = wColVal.m_wFlt.m_dFlt;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -373,12 +373,12 @@ void Encoding::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
   if (bEncodeNul(xColEnc,wColVal))
     return;
   
-  xColEnc.m_wDataCode.m_iInt = wColVal.m_iInt;
+  xColEnc.m_wDataCode.m_iWrd = wColVal.m_iWrd;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // -1 case -- encode as: MC_INT_M_ONE + {}
-  if (-1 == wColVal.m_iInt) {
+  if (-1 == wColVal.m_iWrd) {
     xColEnc.m_eMetaCode = MC_INT_M_ONE;
     xColEnc.m_nDataSize = C_0B;
     return;
@@ -387,8 +387,8 @@ void Encoding::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // 0..10 case -- encode as MC_INT_ONE..TEN + {}
-  if (wColVal.m_iInt >= 0 && wColVal.m_iInt <= 10) {
-    xColEnc.m_eMetaCode = (eMC)(MC_INT_ZERO + wColVal.m_iInt);
+  if (wColVal.m_iWrd >= 0 && wColVal.m_iWrd <= 10) {
+    xColEnc.m_eMetaCode = (eMC)(MC_INT_ZERO + wColVal.m_iWrd);
     xColEnc.m_nDataSize = C_0B;
     return;
   }
@@ -412,7 +412,7 @@ void Encoding::vEncodeIvl(_ColEnc& xColEnc, Dtm wColVal)
   if (bEncodeNul(xColEnc,wColVal))
     return;
   
-  xColEnc.m_wDataCode.m_iIvl = wColVal.m_iIvl;
+  xColEnc.m_wDataCode.m_wIvl.m_iAsI8 = wColVal.m_wIvl.m_iAsI8;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -433,7 +433,7 @@ void Encoding::vEncodeTme(_ColEnc& xColEnc, Dtm wColVal)
   if (bEncodeNul(xColEnc,wColVal))
     return;
   
-  xColEnc.m_wDataCode.m_iTme = wColVal.m_iTme;
+  xColEnc.m_wDataCode.m_wTme.m_iAsI8 = wColVal.m_wTme.m_iAsI8;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -454,7 +454,7 @@ void Encoding::vEncodeTsp(_ColEnc& xColEnc, Dtm wColVal)
   if (bEncodeNul(xColEnc,wColVal))
     return;
   
-  xColEnc.m_wDataCode.m_iTsp = wColVal.m_iTsp;
+  xColEnc.m_wDataCode.m_wTsp.m_iAsI8 = wColVal.m_wTsp.m_iAsI8;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -104,7 +104,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
     
     StrLib::vAppendPad(&szCrs,caLine,67);
     
-    if (C_DATUM_NULL == aColEnc->m_wDataCode.m_iInt) {
+    if (aColEnc->m_wDataCode.bIsNull()) {
       StrLib::vAppendString(&szCrs,(char*)"null"_Stz);
     }
     else {
@@ -112,56 +112,56 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
         case DM_BCD: {
           SP_Bcd SP_Bcd;
           StrLib::vAppendString(&szCrs,
-                                (char*)SP_Bcd.sz(aColEnc->m_wDataCode.m_iBcd));
+                                (char*)SP_Bcd.sz(aColEnc->m_wDataCode));
           break;
         }
 
         case DM_BOL: {
           SP_Bol SP_Bol;
           StrLib::vAppendString(&szCrs,
-                                (char*)SP_Bol.sz(aColEnc->m_wDataCode.m_iBol));
+                                (char*)SP_Bol.sz(aColEnc->m_wDataCode));
           break;
         }
           
         case DM_DTE: {
           SP_Dte SP_Dte;
           StrLib::vAppendString(&szCrs,
-                                (char*)SP_Dte.sz(aColEnc->m_wDataCode.m_iDte));
+                                (char*)SP_Dte.sz(aColEnc->m_wDataCode));
           break;
         }
           
         case DM_FLT: {
           SP_Flt SP_Flt;
           StrLib::vAppendString(&szCrs,
-                                (char*)SP_Flt.sz(*(d8*)&aColEnc->m_wDataCode.m_iInt));
+                                (char*)SP_Flt.sz(*(d8*)&aColEnc->m_wDataCode));
           break;
         }
           
         case DM_INT: {
           SP_Int spInt;
           StrLib::vAppendString(&szCrs,
-                                (char*)spInt.sz(aColEnc->m_wDataCode.m_iInt));
+                                (char*)spInt.sz(aColEnc->m_wDataCode));
           break;
         }
           
         case DM_IVL: {
           SP_Ivl spIvl;
           StrLib::vAppendString(&szCrs,
-                                (char*)spIvl.sz(aColEnc->m_wDataCode.m_iIvl));
+                                (char*)spIvl.sz(aColEnc->m_wDataCode));
           break;
         }
           
         case DM_TME: {
           SP_Tme SP_Tme;
           StrLib::vAppendString(&szCrs,
-                                (char*)SP_Tme.sz(aColEnc->m_wDataCode.m_iTme));
+                                (char*)SP_Tme.sz(aColEnc->m_wDataCode));
           break;
         }
           
         case DM_TSP: {
           SP_Tsp SP_Tsp;
           StrLib::vAppendString(&szCrs,
-                                (char*)SP_Tsp.sz(aColEnc->m_wDataCode.m_iTsp));
+                                (char*)SP_Tsp.sz(aColEnc->m_wDataCode));
           break;
         }
           

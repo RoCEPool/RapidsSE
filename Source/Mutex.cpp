@@ -408,10 +408,12 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
   
   //! #001 this code should be in a common library
   // get current secs.usec since unix epoch
-  Dtm wIvl = IvlLib::wGetCurrIvl();
+  Dtm wIvl;
+  
+  wIvl.m_wIvl = IvlLib::wGetCurrIvl();
   
   // add the wait for period
-  wIvl = IvlLib::wAdd(wIvl,iMicroSeconds);
+  wIvl = IvlLib::wAdd(wIvl.m_wIvl,iMicroSeconds);
   
   // create a absolute time spec
   struct timespec xTimeSpec;
