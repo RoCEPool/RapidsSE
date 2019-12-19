@@ -341,7 +341,7 @@ i8 Datum_h::iEdt(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iEdt = m_xEdtVal.m_iEdt;
+  i8 iEdt = m_xEdtVal.m_wEdt;
   
   return iEdt;
 }

@@ -50,12 +50,12 @@ i8 EdtVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void EdtVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iEdt) {
+  if (m_wEdt.bIsNull()) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iEdt;
+  * szDst = m_wEdt;
 }
 
 /*============================================================================*/
