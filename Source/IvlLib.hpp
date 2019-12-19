@@ -8,7 +8,7 @@ namespace Library
   class IvlLib
   {
   public:
-    static Dtm wGetCurrIvl(void);
+    static Ivl wGetCurrIvl(void);
   
     static Ivl wToIvl(Dtm wTsp);
     static Ivl wToIvl(u8 uMicro);

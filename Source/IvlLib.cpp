@@ -52,7 +52,7 @@ Ivl IvlLib::wAdd(Ivl wIvl, u8 uMicro)
 /*----------------------------------------------------------------------------*/
 /* get current system/epoch interval                                          */
 /*----------------------------------------------------------------------------*/
-Dtm IvlLib::wGetCurrIvl(void)
+Ivl IvlLib::wGetCurrIvl(void)
 {
   Dtm wDtm;
   
@@ -63,7 +63,7 @@ Dtm IvlLib::wGetCurrIvl(void)
   if (rCode) {
     vWarn("wGetCurrIvl: gettimeofday() error; errno=%d"_Stz,errno);
     wDtm.vSetUnknown();
-    return wDtm;
+    return wDtm.m_wIvl;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -73,7 +73,7 @@ Dtm IvlLib::wGetCurrIvl(void)
   
   ASSERT(wDtm.m_wIvl.m_uMicro < C_1M); // logic check
 
-  return wDtm;
+  return wDtm.m_wIvl;
 }
 
 /*----------------------------------------------------------------------------*/

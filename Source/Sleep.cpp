@@ -90,11 +90,11 @@ u8 Sleep::uWakeupInUsec(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get current time as an Ivl
-  Dtm xCurrentIvl = IvlLib::wGetCurrIvl();
+  Ivl xCurrentIvl = IvlLib::wGetCurrIvl();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // subtract wkaeupIvl from CurrentIvl
-  u8 uMicro = IvlLib::uSubtract(xCurrentIvl.m_wIvl, m_wWakeupIvl.m_wIvl);
+  u8 uMicro = IvlLib::uSubtract(xCurrentIvl, m_wWakeupIvl.m_wIvl);
   
   return uMicro;
 }
@@ -107,10 +107,10 @@ bool Sleep::bWakeupNow(void)
   _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
   
   // get current time as an Ivl
-  Dtm xCurrentIvl = IvlLib::wGetCurrIvl();
+  Ivl xCurrentIvl = IvlLib::wGetCurrIvl();
   
   // compare wakeup ivl with current ivl
-  if (m_wWakeupIvl.m_iWrd <= xCurrentIvl.m_iWrd)
+  if (m_wWakeupIvl.m_iWrd <= xCurrentIvl.m_iAsI8)
     return true;
   else
     return false;
