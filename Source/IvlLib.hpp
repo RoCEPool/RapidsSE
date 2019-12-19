@@ -11,7 +11,7 @@ namespace Library
     static Dtm wGetCurrIvl(void);
   
     static Dtm wToIvl(Dtm wTsp);
-    static Dtm wToIvl(u8 uMrocoseconds);
+    static Ivl wToIvl(u8 uMicro);
     
     //! to be coded
   

@@ -23,7 +23,9 @@ Dtm IvlLib::wAdd(Ivl wIvl1, Ivl wIvl2)
   u8 uMicro = uMicro1 + uMicro2;
   
   // convert microseconds to Ivl
-  Dtm xIvl = wToIvl(uMicro);
+  Dtm xIvl;
+  
+  xIvl.m_wIvl = wToIvl(uMicro);
   
   return xIvl;
 }
@@ -40,7 +42,9 @@ Dtm IvlLib::wAdd(Ivl wIvl, u8 uMicro)
   u8 uMicroTotal = uIvlMicro + uMicro;
   
   // convert microseconds to Ivl
-  Dtm xIvl = wToIvl(uMicroTotal);
+  Dtm xIvl;
+  
+  xIvl.m_wIvl = wToIvl(uMicroTotal);
   
   return xIvl;
 }
@@ -101,12 +105,12 @@ Dtm IvlLib::wToIvl(Dtm wTsp)
 /*----------------------------------------------------------------------------*/
 /* convert microseconds to interval                                           */
 /*----------------------------------------------------------------------------*/
-Dtm IvlLib::wToIvl(u8 uMicroseconds)
+Ivl IvlLib::wToIvl(u8 uMicroseconds)
 {
-  Dtm wIvl;
+  Ivl wIvl;
   
   if (uMicroseconds < C_1M) {
-    wIvl.m_wIvl.m_uMicro = uMicroseconds;
+    wIvl.m_uMicro = uMicroseconds;
     return wIvl;
   }
   
@@ -115,11 +119,11 @@ Dtm IvlLib::wToIvl(u8 uMicroseconds)
   
   u8 uMultiples = uMicroseconds;
   
-  wIvl.m_wIvl.m_uMicro = uMultiples % C_1M;
+  wIvl.m_uMicro = uMultiples % C_1M;
   
   u8 uSecondsDelta = uMultiples / C_1M;
   
-  wIvl.m_wIvl.m_uSecond += uSecondsDelta;
+  wIvl.m_uSecond += uSecondsDelta;
   
   return wIvl;
 }
