@@ -50,12 +50,12 @@ i8 BcdVal::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 void BcdVal::vToStz(Stz* szDst)
 {
-  if (C_DATUM_NULL == m_iBcd) {
+  if (m_wBcd.bIsNull()) {
     szDst->vConcat("null"_Stz);
     return;
   }
   
-  * szDst = m_iBcd;
+  * szDst = m_wBcd.m_iAsI8;
 }
 
 /*============================================================================*/

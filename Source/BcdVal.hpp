@@ -11,10 +11,7 @@ namespace SqlValues
   template <i8 SPACE> friend class Datums::Datum_t;
 
   private:
-  union {
     Bcd   m_wBcd;
-    i8    m_iBcd;
-  };
 
   public:
     void* operator new(size_t);

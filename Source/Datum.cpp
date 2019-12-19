@@ -216,7 +216,7 @@ i8 Datum_h::iBcd(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iBcd = m_xBcdVal.m_iBcd;
+  i8 iBcd = m_xBcdVal.m_wBcd;
   
   return iBcd;
 }
@@ -228,7 +228,7 @@ void Datum_h::vBcd(i8 iBcd)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xBcdVal.m_iBcd = iBcd;
+  m_xBcdVal.m_wBcd = iBcd;
 }
 
 /*----------------------------------------------------------------------------*/
