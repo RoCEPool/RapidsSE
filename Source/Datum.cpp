@@ -594,7 +594,7 @@ i8 Datum_h::iTme(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  i8 iTme = m_xTmeVal.m_iTme;
+  i8 iTme = m_xTmeVal.m_wTme;
   
   return iTme;
 }
@@ -606,7 +606,7 @@ void Datum_h::vTme(i8 iTme)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
   
-  m_xTmeVal.m_iTme = iTme;
+  m_xTmeVal.m_wTme = iTme;
 }
 
 /*----------------------------------------------------------------------------*/
