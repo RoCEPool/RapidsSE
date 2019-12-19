@@ -53,7 +53,6 @@ namespace Datums
   
     eCN     eAnyClass(void);
     AnyVal* aAnyVal(void);
-    //bool    bAssign(Token* pTkn, Column* pCol);
     char*   azChar(void);
     i8      iBcd(void);
     void    vBcd(i8 iBcd);

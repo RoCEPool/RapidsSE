@@ -194,22 +194,6 @@ AnyVal* Datum_h::aAnyVal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign datum from token                                                    */
-/*----------------------------------------------------------------------------*/
-//bool Datum_h::bAssign(Token* pTkn, Column* pCol)
-//{
-//  _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
-//
-//  char* azCrs = pTkn->azChar();
-//  
-//  Format* pFmt = AM::pFmt();
-//  
-//  bool b = CsvValue::bToDtm(this,pCol,&azCrs,pFmt);
-//  
-//  return b;
-//}
-
-/*----------------------------------------------------------------------------*/
 /* get decimal                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Datum_h::iBcd(void)
