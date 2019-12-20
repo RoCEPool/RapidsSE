@@ -15,9 +15,11 @@ static const i8 C_DATUM_PLUS_INFINITY  = LLONG_MAX;
 
 static const i8 C_I8_MIN = LLONG_MIN + 2;
 static const i8 C_I8_MAX = LLONG_MAX - 1;
+static const i8 C_I8_MID = C_I8_MAX / 2;
 
 static const d8 C_D8_MIN = DBL_MIN + DBL_EPSILON;
 static const d8 C_D8_MAX = DBL_MAX;
+static const d8 C_D8_MID = DBL_MAX / 2.0;
 
 static const u8 C_YEAR_BASE  = 1900;
 static const u8 C_YEAR_RANGE = 255;

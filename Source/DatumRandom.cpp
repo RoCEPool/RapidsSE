@@ -39,7 +39,10 @@ void DatumRandom::vRndDtm(Datum_h* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndBcd(Datum_h* pDatum, Column* pCol)
 {
-  vRndBcd(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+  Datum_h* pMin = pCol->pMinVal();
+  Datum_h* pMax = pCol->pMaxVal();
+  
+  vRndBcd(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +50,10 @@ void DatumRandom::vRndBcd(Datum_h* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndBol(Datum_h* pDatum, Column* pCol)
 {
-  vRndBol(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+  Datum_h* pMin = pCol->pMinVal();
+  Datum_h* pMax = pCol->pMaxVal();
+  
+  vRndBol(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +61,10 @@ void DatumRandom::vRndBol(Datum_h* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndDte(Datum_h* pDatum, Column* pCol)
 {
-  vRndDte(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+  Datum_h* pMin = pCol->pMinVal();
+  Datum_h* pMax = pCol->pMaxVal();
+  
+  vRndDte(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,7 +72,10 @@ void DatumRandom::vRndDte(Datum_h* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndFlt(Datum_h* pDatum, Column* pCol)
 {
-  vRndFlt(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+  Datum_h* pMin = pCol->pMinVal();
+  Datum_h* pMax = pCol->pMaxVal();
+  
+  vRndFlt(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,7 +83,10 @@ void DatumRandom::vRndFlt(Datum_h* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndInt(Datum_h* pDatum, Column* pCol)
 {
-  vRndInt(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+  Datum_h* pMin = pCol->pMinVal();
+  Datum_h* pMax = pCol->pMaxVal();
+
+  vRndInt(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +94,10 @@ void DatumRandom::vRndInt(Datum_h* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndIvl(Datum_h* pDatum, Column* pCol)
 {
-  vRndIvl(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+  Datum_h* pMin = pCol->pMinVal();
+  Datum_h* pMax = pCol->pMaxVal();
+  
+  vRndIvl(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +105,10 @@ void DatumRandom::vRndIvl(Datum_h* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndTme(Datum_h* pDatum, Column* pCol)
 {
-  vRndTme(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+  Datum_h* pMin = pCol->pMinVal();
+  Datum_h* pMax = pCol->pMaxVal();
+  
+  vRndTme(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,7 +116,10 @@ void DatumRandom::vRndTme(Datum_h* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndTsp(Datum_h* pDatum, Column* pCol)
 {
-  vRndTsp(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+  Datum_h* pMin = pCol->pMinVal();
+  Datum_h* pMax = pCol->pMaxVal();
+  
+  vRndTsp(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,7 +127,10 @@ void DatumRandom::vRndTsp(Datum_h* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndVch(Datum_h* pDatum, Column* pCol)
 {
-  vRndVch(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+  Datum_h* pMin = pCol->pMinVal();
+  Datum_h* pMax = pCol->pMaxVal();
+  
+ vRndVch(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,7 +141,7 @@ void DatumRandom::vRndVch(Datum_h* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndBcd(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 {
-  RN_Bcd rnInt(pDatum,pMin,pMax);
+  RN_Bcd rnBcd(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/

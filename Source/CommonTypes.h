@@ -17,11 +17,11 @@ public:
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetMax(void)                                   { }  // set max value
-  void vSetMid(void)                                   { }  // set mid value
-  void vSetMin(void)                                   { }  // set min value
-  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
-  void vSetUsual(void)                                 { }  // set usual value
+  void vSetMax(void)                { m_iBcd = C_I8_MAX; }  // set max value
+  void vSetMid(void)                { m_iBcd = C_I8_MID; }  // set mid value
+  void vSetMin(void)                { m_iBcd = C_I8_MIN; }  // set min value
+  void vSetNull(void)           { m_iBcd = C_DATUM_NULL; }  // set to be null
+  void vSetUsual(void)                    { m_iBcd = 73; }  // set usual value
 
   bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
 };
@@ -40,11 +40,11 @@ public:
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetMax(void)                                   { }  // set max value
-  void vSetMid(void)                                   { }  // set mid value
-  void vSetMin(void)                                   { }  // set min value
+  void vSetMax(void)                    { m_iBol = true; }  // set max value
+  void vSetMid(void)                    { m_iBol = true; }  // set mid value
+  void vSetMin(void)                   { m_iBol = false; }  // set min value
   void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
-  void vSetUsual(void)                                 { }  // set usual value
+  void vSetUsual(void)                  { m_iBol = true; }  // set usual value
 
   bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
 };
@@ -72,11 +72,23 @@ public:
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetMax(void)                                   { }  // set max value
-  void vSetMid(void)                                   { }  // set mid value
-  void vSetMin(void)                                   { }  // set min value
+  void vSetMax(void)                      { m_iAsI8 = 0;
+                            m_uYearDelta = C_YEAR_RANGE;
+                                          m_uMonth = 12;
+                                            m_uDay = 31; }  // set max value
+  void vSetMid(void)                      { m_iAsI8 = 0;
+                        m_uYearDelta = C_YEAR_RANGE / 2;
+                                           m_uMonth = 6;
+                                            m_uDay = 30; }  // set mid value
+  void vSetMin(void)                      { m_iAsI8 = 0;
+                                       m_uYearDelta = 0;
+                                           m_uMonth = 1;
+                                             m_uDay = 1; }  // set min value
   void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
-  void vSetUsual(void)                                 { }  // set usual value
+  void vSetUsual(void)                    { m_iAsI8 = 0;
+                                      m_uYearDelta = 35;
+                                          m_uMonth = 11;
+                                            m_uDay = 29; }  // set usual value
 
   bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
 };
@@ -129,11 +141,11 @@ public:
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   void operator = (d8 dArg)            { m_dFlt  = dArg; }  // assign from d8
 
-  void vSetMax(void)                                   { }  // set max value
-  void vSetMid(void)                                   { }  // set mid value
-  void vSetMin(void)                                   { }  // set min value
+  void vSetMax(void)                { m_dFlt = C_D8_MAX; }  // set max value
+  void vSetMid(void)                { m_dFlt = C_D8_MID; }  // set mid value
+  void vSetMin(void)                { m_dFlt = C_D8_MIN; }  // set min value
   void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
-  void vSetUsual(void)                                 { }  // set usual value
+  void vSetUsual(void)                 { m_dFlt = 3.141; }  // set usual value
 
   bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
 };
@@ -152,11 +164,11 @@ public:
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetMax(void)                                   { }  // set max value
-  void vSetMid(void)                                   { }  // set mid value
-  void vSetMin(void)                                   { }  // set min value
+  void vSetMax(void)               { m_iAsI8 = C_I8_MAX; }  // set max value
+  void vSetMid(void)               { m_iAsI8 = C_I8_MID; }  // set mid value
+  void vSetMin(void)               { m_iAsI8 = C_I8_MIN; }  // set min value
   void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
-  void vSetUsual(void)                                 { }  // set usual value
+  void vSetUsual(void)                   { m_iAsI8 = 42; }  // set usual value
 
   bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
 };
@@ -179,11 +191,15 @@ public:
   
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
-  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
+  void operator = (i8 iArg)      { m_uSecond = (u8)iArg;
+                                           m_uMicro = 0; }  // assign from i8
   
-  void vSetMax(void)                                   { }  // set max value
-  void vSetMid(void)                                   { }  // set mid value
-  void vSetMin(void)                                   { }  // set min value
+  void vSetMax(void)               { m_uSecond = 999999;
+                                      m_uMicro = 999999; }  // set max value
+  void vSetMid(void)                  { m_uSecond = 999;
+                                         m_uMicro = 999; }  // set mid value
+  void vSetMin(void)                    { m_uSecond = 0;
+                                           m_uMicro = 0; }  // set min value
   void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
   void vSetUsual(void)                                 { }  // set usual value
 
@@ -214,9 +230,21 @@ public:
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetMax(void)                                   { }  // set max value
-  void vSetMid(void)                                   { }  // set mid value
-  void vSetMin(void)                                   { }  // set min value
+  void vSetMax(void)                      { m_iAsI8 = 0;
+                                           m_uHour = 23;
+                                         m_uMinute = 59;
+                                         m_uSecond = 59;
+                                      m_uMicro = 999999; }  // set max value
+  void vSetMid(void)                      { m_iAsI8 = 0;
+                                           m_uHour = 12;
+                                          m_uMinute = 0;
+                                          m_uSecond = 0;
+                                           m_uMicro = 0; }  // set mid value
+  void vSetMin(void)                      { m_iAsI8 = 0;
+                                            m_uHour = 0;
+                                          m_uMinute = 0;
+                                          m_uSecond = 0;
+                                           m_uMicro = 0; }  // set min value
   void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
   void vSetUsual(void)                                 { }  // set usual value
 
@@ -253,9 +281,30 @@ public:
   
   void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetMax(void)                                   { }  // set max value
-  void vSetMid(void)                                   { }  // set mid value
-  void vSetMin(void)                                   { }  // set min value
+  void vSetMax(void)                      { m_iAsI8 = 0;
+                            m_uYearDelta = C_YEAR_RANGE;
+                                          m_uMonth = 12;
+                                            m_uDay = 31;
+                                           m_uHour = 23;
+                                         m_uMinute = 59;
+                                         m_uSecond = 59;
+                                      m_uMicro = 999999; }  // set max value
+  void vSetMid(void)                      { m_iAsI8 = 0;
+                        m_uYearDelta = C_YEAR_RANGE / 2;
+                                           m_uMonth = 6;
+                                            m_uDay = 30;
+                                           m_uHour = 12;
+                                          m_uMinute = 0;
+                                          m_uSecond = 0;
+                                           m_uMicro = 0; }  // set mid value
+  void vSetMin(void)                      { m_iAsI8 = 0;
+                                       m_uYearDelta = 0;
+                                           m_uMonth = 1;
+                                             m_uDay = 1;
+                                            m_uHour = 0;
+                                          m_uMinute = 0;
+                                          m_uSecond = 0;
+                                           m_uMicro = 0; }  // set min value
   void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
   void vSetUsual(void)                                 { }  // set usual value
 

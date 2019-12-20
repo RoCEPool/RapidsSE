@@ -197,6 +197,10 @@ void Step::vTableGenRandomRow(void)
   
   RowGenerator::vRandom(pRow,pStreamDef);
   
+  SP_Row spRow;
+  
+  vTrace(" randomRow: %s\n"_Stz,spRow.sz(pRow));
+  
   m_pDataStack->vPushPtr(pRow);
 
   EXIT();

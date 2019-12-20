@@ -16,7 +16,7 @@ namespace Records
     
   public:
     SP_Row(void);
-    ~SP_Row(void) noexcept(false);
+   ~SP_Row(void) noexcept(false);
 
     void vRow(Row* pRow);
   

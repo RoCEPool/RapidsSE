@@ -85,7 +85,7 @@ void RowGenerator::vRndInt(Row* pRow, Column* pCol)
 {
   Datum oDatum;
   
-  RN_Int rnInt(&oDatum,pCol);
+  DatumRandom::vRndInt(&oDatum,pCol);
   
   pRow->vSetValue(&oDatum,pCol);
 }
