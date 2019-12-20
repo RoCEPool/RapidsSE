@@ -8,12 +8,14 @@ logSection createTable;
 
 time create table T
 (
-  colA DECIMAL  NOT NULL min 0              max 250,
-  colB BOOLEAN  NOT NULL min false          max true,
-  colC DATE     NOT NULL min "2019-01-01"   max "2019-12-31",
-  colE INTEGER  NOT NULL min 1              max 1000,
-//colF INTERVAL NOT NULL min 0.0   max 100.0,
-  colG TIME     NOT NULL min "00:00:00.000" max "23:59:59.999"
+  colA DECIMAL   NOT NULL min 0              max 250,
+  colB BOOLEAN   NOT NULL min false          max true,
+  colC DATE      NOT NULL min "2019-01-01"   max "2019-12-31",
+  colE INTEGER   NOT NULL min 1              max 1000,
+//colF INTERVAL  NOT NULL min 0.0   max 100.0,
+  colG TIME      NOT NULL min "00:00:00.000" max "23:59:59.999",
+  colH TIMESTAMP NOT NULL min "2019-01-01 00:00:00.000"
+                          max "2019-12-31 23:59:59.999"
 )
   rowsize 256
 ;
