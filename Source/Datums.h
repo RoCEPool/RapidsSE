@@ -22,7 +22,14 @@ typedef Datum_t<32>     Datum_y32;
 #include "Column.hpp"
 
 #include "RN_Bcd.hpp"
+#include "RN_Bol.hpp"
+#include "RN_Dte.hpp"
+#include "RN_Flt.hpp"
 #include "RN_Int.hpp"
+#include "RN_Ivl.hpp"
+#include "RN_Tme.hpp"
+#include "RN_Tsp.hpp"
+#include "RN_Vch.hpp"
 
 #include "SN_Bcd.hpp"
 #include "SN_Bol.hpp"
