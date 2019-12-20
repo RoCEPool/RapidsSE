@@ -19,6 +19,15 @@
     // pop next operand from queue into Operand[]
     Operand[].next
 
+    Operand[].kind if ZK_ENDMARKER
+      Operand[].pipeToJob
+      Operand[].newStopMarker
+      Operand[].pipeOut
+      false
+    else
+      true
+    then
+
     Operand[].delete
 
   while assert::stack_0 repeat

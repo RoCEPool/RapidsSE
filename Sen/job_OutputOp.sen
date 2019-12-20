@@ -38,8 +38,6 @@
 
       ZK_ENDMARKER of
         //"Operand:- ZK_ENDMARKER" .verbose
-        Operand[].pipeToJob
-        Operand[].newEndMarker
         Operand[].handleEnd
       endof
 
