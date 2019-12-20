@@ -869,6 +869,7 @@ public:
   void vOperandInsertIntoTable(void);
   void vOperandKind(void);
   void vOperandNewEndMarker(void);
+  void vOperandNewStopMarker(void);
   void vOperandNewStreamDef(void);
   void vOperandNext(void);
   void vOperandPipeOut(void);

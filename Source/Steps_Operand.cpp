@@ -21,6 +21,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].insertIntoTable"_Stz,&Step::vOperandInsertIntoTable);
   vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
   vAddStep("Operand[].newEndMarker"_Stz,   &Step::vOperandNewEndMarker);
+  vAddStep("Operand[].newStopMarker"_Stz,  &Step::vOperandNewStopMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
   vAddStep("Operand[].next"_Stz,           &Step::vOperandNext);
   vAddStep("Operand[].pipeOut"_Stz,        &Step::vOperandPipeOut);
@@ -294,6 +295,20 @@ void Step::vOperandNewEndMarker(void)
   ASSERT (m_pRegSet->m_xpOperand.bIsNull());
   
   m_pRegSet->m_xpOperand = new EndMarker;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newEndMarker -- new an end marker                                */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewStopMarker(void)
+{
+  ENTRY(); // ENTRY("vOperandNewStopMarker"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperand.bIsNull());
+  
+  m_pRegSet->m_xpOperand = new StopMarker;
   
   EXIT();
 }
