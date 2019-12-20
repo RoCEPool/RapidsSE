@@ -16,21 +16,98 @@ void DatumRandom::vRndDtm(Datum_h* pDatum, Column* pCol)
   eDM eDatum = pCol->eDatum();
   
   switch (eDatum) {
-    case DM_BCD: vRndBcd(pDatum,pCol->pMinVal(),pCol->pMaxVal()); break;
-    case DM_BOL: vRndBol(pDatum,pCol->pMinVal(),pCol->pMaxVal()); break;
-    case DM_DTE: vRndDte(pDatum,pCol->pMinVal(),pCol->pMaxVal()); break;
-    case DM_FLT: vRndFlt(pDatum,pCol->pMinVal(),pCol->pMaxVal()); break;
-    case DM_INT: vRndInt(pDatum,pCol->pMinVal(),pCol->pMaxVal()); break;
-    case DM_IVL: vRndIvl(pDatum,pCol->pMinVal(),pCol->pMaxVal()); break;
-    case DM_TME: vRndTme(pDatum,pCol->pMinVal(),pCol->pMaxVal()); break;
-    case DM_TSP: vRndTsp(pDatum,pCol->pMinVal(),pCol->pMaxVal()); break;
-    case DM_VCH: vRndVch(pDatum,pCol->pMinVal(),pCol->pMaxVal()); break;
+    case DM_BCD: vRndBcd(pDatum,pCol); break;
+    case DM_BOL: vRndBol(pDatum,pCol); break;
+    case DM_DTE: vRndDte(pDatum,pCol); break;
+    case DM_FLT: vRndFlt(pDatum,pCol); break;
+    case DM_INT: vRndInt(pDatum,pCol); break;
+    case DM_IVL: vRndIvl(pDatum,pCol); break;
+    case DM_TME: vRndTme(pDatum,pCol); break;
+    case DM_TSP: vRndTsp(pDatum,pCol); break;
+    case DM_VCH: vRndVch(pDatum,pCol); break;
     default:
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "DatumRandom::vRnd: Invalid eDatum : %lld\n"_Stz,eDatum);
   }
-  
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* generate random bcd datum                                                  */
+/*----------------------------------------------------------------------------*/
+void DatumRandom::vRndBcd(Datum_h* pDatum, Column* pCol)
+{
+  vRndBcd(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate random bol datum                                                  */
+/*----------------------------------------------------------------------------*/
+void DatumRandom::vRndBol(Datum_h* pDatum, Column* pCol)
+{
+  vRndBol(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate random dte datum                                                  */
+/*----------------------------------------------------------------------------*/
+void DatumRandom::vRndDte(Datum_h* pDatum, Column* pCol)
+{
+  vRndDte(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate random flt datum                                                  */
+/*----------------------------------------------------------------------------*/
+void DatumRandom::vRndFlt(Datum_h* pDatum, Column* pCol)
+{
+  vRndFlt(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate random int datum                                                  */
+/*----------------------------------------------------------------------------*/
+void DatumRandom::vRndInt(Datum_h* pDatum, Column* pCol)
+{
+  vRndInt(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate random ivl datum                                                  */
+/*----------------------------------------------------------------------------*/
+void DatumRandom::vRndIvl(Datum_h* pDatum, Column* pCol)
+{
+  vRndIvl(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate random tme datum                                                  */
+/*----------------------------------------------------------------------------*/
+void DatumRandom::vRndTme(Datum_h* pDatum, Column* pCol)
+{
+  vRndTme(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate random tsp datum                                                  */
+/*----------------------------------------------------------------------------*/
+void DatumRandom::vRndTsp(Datum_h* pDatum, Column* pCol)
+{
+  vRndTsp(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate random vch datum                                                  */
+/*----------------------------------------------------------------------------*/
+void DatumRandom::vRndVch(Datum_h* pDatum, Column* pCol)
+{
+  vRndVch(pDatum,pCol->pMinVal(),pCol->pMaxVal());
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* generate random bcd datum                                                  */
