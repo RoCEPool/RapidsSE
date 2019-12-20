@@ -11,6 +11,9 @@
 
   >>logEntry <SEED_REQ>
 
+  // set topolgy in the op
+  <topology> op.topology!
+
   begin
 
     // bide till next operand is available
@@ -21,8 +24,9 @@
 
     Operand[].kind ZK_ENDMARKER == if
       Operand[].pipeToJob
-      Operand[].newStopMarker
-      Operand[].pipeOut
+      //Operand[].newStopMarker
+      //Operand[].pipeOut
+      Op.StopStartOps
       Op.ackPipelineJob
       false
     else
@@ -40,7 +44,7 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-jobSyntax: sinkOp :: sinkOp ;
+jobSyntax: sinkOp :: sinkOp <topology> ;
 
 jobInfo: sinkOp
 {

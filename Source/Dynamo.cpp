@@ -556,11 +556,19 @@ bool Dynamo::bPhase2_staging(void)
     }
   }
   
-  // Append stopOp to last stage
-//  StageSpec* pLastStageSpec = pStageSpecVec->pGet(pStageSpecVec->nItems() - 1);
-//  ePX eTopologyX = eTopoloyX(pLastStageSpec, pFirstStageSpec);
-//  pLastStageSpec->vAppendStopOp(eTopologyX);
-
+  // get cross topology between lastStage and first stage
+  StageSpec* pLastStageSpec = pStageSpecVec->pGet(pStageSpecVec->nItems() - 1);
+  ePX eTopologyX = eTopoloyX(pLastStageSpec, pFirstStageSpec);
+  
+  OpSpecVec* pOpSpecVec = pLastStageSpec->pOpSpecVec();
+  OpSpec* pOpSpec = pOpSpecVec->pGet(pOpSpecVec->nItems()-1);
+  
+  // arg-0 is the cross topology of the xmit op
+  pOpSpec->vAddEnamePair("<arg_0>"_Stz,(i8)eTopologyX,TN_INTEGER);
+  
+  // arg-1 is the next stage for the xmit
+  //pOpSpec->vAddEnamePair("<arg_1>"_Stz,(i8)i_Stage,TN_INTEGER);
+  
   return true;
 }
 

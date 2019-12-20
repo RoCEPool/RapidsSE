@@ -368,6 +368,10 @@ void Op::vLinkToStage(Stage* pStage)
       break;
     }
     
+    case PX_ORIGIN_TO_ALL_PARTITIONS: {
+      RASSERT(0);
+    }
+      
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
       RASSERT(0);
     }

@@ -854,6 +854,7 @@ public:
   void vOpLinkNextStage(void);
   void vOpNextStageStore(void);
   void vOpPartitionFetch(void);
+  void vOpStopStartOps(void);
   void vOpTopologyStore(void);
 
   // operand
