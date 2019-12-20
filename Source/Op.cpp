@@ -574,10 +574,6 @@ void Op::vPipeOut(Operand* pOperand)
            pOperand);
 
   switch(AM::eJobType(m_pOpJob)) {
-    
-    case JT_OUTPUTOP:
-      vPipeToJob(pOperand);
-      break;
       
     case JT_XMITOP:
       AM::vSendJobOperand(m_pTask,
