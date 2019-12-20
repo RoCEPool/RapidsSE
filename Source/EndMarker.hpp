@@ -8,8 +8,6 @@ namespace ControlData
   class EndMarker : public Operand
   {
   public:
-  
-    i8 m_iTotalOperands;
     
     // must be last
     Footer m_xFooter;
