@@ -24,6 +24,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
   vAddStep("Operand[].next"_Stz,           &Step::vOperandNext);
   vAddStep("Operand[].pipeOut"_Stz,        &Step::vOperandPipeOut);
+  vAddStep("Operand[].pipeToJob"_Stz,      &Step::vOperandPipeToJob);
   vAddStep("Operand[].rowCount@"_Stz,      &Step::vOperandRowCountFetch);
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
   vAddStep("Operand[].crwToCsv"_Stz,       &Step::vOperandCrwToCsv);
@@ -323,6 +324,24 @@ void Step::vOperandPipeOut(void)
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
 
   pOp->vPipeOut(*m_pRegSet->m_xpOperand);
+  
+  m_pRegSet->m_xpOperand = nullptr;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].pipeToJob -- append operand onto the pipeline job buffer queue   */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandPipeToJob(void)
+{
+  ENTRY(); // ENTRY("vOperandPipeToJob"_Stz);
+  
+  ASSERT(*m_pRegSet->m_xpOperand);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  
+  pOp->vPipeToJob(*m_pRegSet->m_xpOperand);
   
   m_pRegSet->m_xpOperand = nullptr;
   
