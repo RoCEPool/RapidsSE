@@ -331,38 +331,44 @@ eEC TableDef::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
   Token* pTkn = pTknVec->pNextToken(); dPT();
 
   // extract scale and precison if specified
-  if (pTkn->bSame("("_Stz)) {
+  if (! pTkn->bSame("("_Stz)) {
+    pCol->vColumnLength(iPrecision);
+    pCol->vColumnScale(iScale);
     
-    pTkn = pTknVec->pNextToken(); dPT();
+    IGNORE_RETURN(pTknVec->pPrevToken());
     
-    // check if it was numeric
-    if ( ! pTkn->bIsNumeric() )
-      return EC_INVALID_COMMAND;
-    
-    iPrecision = pTkn->iToI8();
-    
-    pTkn = pTknVec->pNextToken(); dPT();
-    
-    if (!pTkn->bSame(","_Stz))
-      return EC_INVALID_COMMAND;
-    
-    pTkn = pTknVec->pNextToken(); dPT();
-    
-    // check if it was numeric
-    if ( ! pTkn->bIsNumeric() )
-      return EC_INVALID_COMMAND;
-    
-    // get the scale
-    iScale = pTkn->iToI8();
-    
-    pTkn = pTknVec->pNextToken(); dPT();
-    if (! pTkn->bSame(")"_Stz))
-      return EC_INVALID_COMMAND;
-    
-    if (! Column::bValidBcd(iPrecision, iScale))
-      return EC_INVALID_COMMAND;
+    return EC_NONE;
   }
+    
+  pTkn = pTknVec->pNextToken(); dPT();
   
+  // check if it was numeric
+  if ( ! pTkn->bIsNumeric() )
+    return EC_INVALID_COMMAND;
+  
+  iPrecision = pTkn->iToI8();
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  
+  if (!pTkn->bSame(","_Stz))
+    return EC_INVALID_COMMAND;
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  
+  // check if it was numeric
+  if ( ! pTkn->bIsNumeric() )
+    return EC_INVALID_COMMAND;
+  
+  // get the scale
+  iScale = pTkn->iToI8();
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if (! pTkn->bSame(")"_Stz))
+    return EC_INVALID_COMMAND;
+  
+  if (! Column::bValidBcd(iPrecision, iScale))
+    return EC_INVALID_COMMAND;
+
   // set scale and length in column
   pCol->vColumnLength(iPrecision);
   pCol->vColumnScale(iScale);

@@ -55,6 +55,11 @@ void RowGenerator::vRandom(Row* pRow, StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 void RowGenerator::vRndBcd(Row* pRow, Column* pCol)
 {
+  Datum oDatum;
+  
+  DatumRandom::vRndBcd(&oDatum,pCol);
+  
+  pRow->vSetValue(&oDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,6 +67,11 @@ void RowGenerator::vRndBcd(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowGenerator::vRndBol(Row* pRow, Column* pCol)
 {
+  Datum oDatum;
+  
+  DatumRandom::vRndBol(&oDatum,pCol);
+  
+  pRow->vSetValue(&oDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,6 +79,11 @@ void RowGenerator::vRndBol(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowGenerator::vRndDte(Row* pRow, Column* pCol)
 {
+  Datum oDatum;
+  
+  DatumRandom::vRndDte(&oDatum,pCol);
+  
+  pRow->vSetValue(&oDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,6 +91,11 @@ void RowGenerator::vRndDte(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowGenerator::vRndFlt(Row* pRow, Column* pCol)
 {
+  Datum oDatum;
+  
+  DatumRandom::vRndFlt(&oDatum,pCol);
+  
+  pRow->vSetValue(&oDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,6 +115,11 @@ void RowGenerator::vRndInt(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowGenerator::vRndIvl(Row* pRow, Column* pCol)
 {
+  Datum oDatum;
+  
+  DatumRandom::vRndIvl(&oDatum,pCol);
+  
+  pRow->vSetValue(&oDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,6 +127,11 @@ void RowGenerator::vRndIvl(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowGenerator::vRndTme(Row* pRow, Column* pCol)
 {
+  Datum oDatum;
+  
+  DatumRandom::vRndTme(&oDatum,pCol);
+  
+  pRow->vSetValue(&oDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,6 +139,11 @@ void RowGenerator::vRndTme(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowGenerator::vRndTsp(Row* pRow, Column* pCol)
 {
+  Datum oDatum;
+  
+  DatumRandom::vRndTsp(&oDatum,pCol);
+  
+  pRow->vSetValue(&oDatum,pCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,6 +151,11 @@ void RowGenerator::vRndTsp(Row* pRow, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void RowGenerator::vRndVch(Row* pRow, Column* pCol)
 {
+  Datum oDatum;
+  
+  DatumRandom::vRndVch(&oDatum,pCol);
+  
+  pRow->vSetValue(&oDatum,pCol);
 }
 
 /*============================================================================*/
