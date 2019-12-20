@@ -18,6 +18,21 @@ RN_Vch::RN_Vch(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+RN_Vch::RN_Vch(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
+: Rand(CN_RN_RAND)
+{
+  _precondition_(_MAGIC_,CN_RN_RAND,_FOOTER_);
+  
+  _checkInitialised_(CN_RN_RAND);
+  
+  vRnd(pDatum,pMin,pMax);
+  
+  _postcondition_(_MAGIC_,CN_RN_RAND,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 RN_Vch::~RN_Vch(void) noexcept(false)

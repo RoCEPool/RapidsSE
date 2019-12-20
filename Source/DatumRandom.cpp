@@ -114,6 +114,7 @@ void DatumRandom::vRndVch(Datum_h* pDatum, Column* pCol)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndBcd(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 {
+  RN_Bcd rnInt(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,6 +122,7 @@ void DatumRandom::vRndBcd(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndBol(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 {
+  RN_Bol rnBol(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,6 +130,7 @@ void DatumRandom::vRndBol(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndDte(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 {
+  RN_Dte rnDte(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,6 +138,7 @@ void DatumRandom::vRndDte(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndFlt(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 {
+  RN_Flt rnFlt(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,8 +146,7 @@ void DatumRandom::vRndFlt(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndInt(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 {
-  RN_Int rnInt;
-  
+  RN_Int rnInt(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,6 +154,7 @@ void DatumRandom::vRndInt(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndIvl(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 {
+  RN_Ivl rnIvl(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,6 +162,7 @@ void DatumRandom::vRndIvl(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndTme(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 {
+  RN_Tme rnTme(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,6 +170,7 @@ void DatumRandom::vRndTme(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndTsp(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 {
+  RN_Tsp rnTsp(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -172,6 +178,7 @@ void DatumRandom::vRndTsp(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndVch(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 {
+  RN_Vch rnVch(pDatum,pMin,pMax);
 }
 
 /*============================================================================*/
