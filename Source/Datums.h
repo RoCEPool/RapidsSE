@@ -47,6 +47,7 @@ typedef Datum_t<32>     Datum_y32;
 
 #include "CsvValue.hpp"
 #include "DatumToken.hpp"
+#include "DatumRandom.hpp"
 
 
 /*============================================================================*/
