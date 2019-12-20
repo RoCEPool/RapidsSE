@@ -202,6 +202,18 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
       pStageNde->vLinkOperators(&m_oStageVec);
     }
     
+    // get the first op of the first stage (STARTOP)
+    Stage* pFirstStage = m_oStageVec.pGet(0);
+    Op* pStartOp = pFirstStage->pOpVec()->pGet(0);
+    
+    // get the last op of the last stage (SINKOP)
+    Stage* pLastStage = m_oStageVec.pGet(m_oStageVec.nItems()-1);
+    Op* pSinkOp = pLastStage->pOpVec()->pGet(pLastStage->pOpVec()->nItems() - 1);
+    
+    // link the SINKOP to STARTOP
+    pSinkOp->vNextLabel(pStartOp->szName());
+    pSinkOp->vOpOut(pStartOp);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // dump all operators of a stage
     

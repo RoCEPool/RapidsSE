@@ -99,41 +99,49 @@ print "*************************************************************************
 print "scan lineitem | output;";
 print "**************************************************************************";
 
-
-docol epochTake;
-
 time pipeline insert
 begin
 
 stage stageA on all partitions:
-  scanOp lineitem | toCsvOP | toCrwOp lineitem2 | toCsvOP | toCrwOp lineitem2 | stageB
+scanOp lineitem | toCsvOP | toCrwOp lineitem2 | stageB
 
 stage stageB on all partitions:
-  insertOp lineitem2  | stageC
+insertOp lineitem2  | stageC
 
- stage stageC on origin:
-   outputOp
+stage stageC on origin:
+  outputOp | sinkOp
 
 end
- ;
-
-docol epochDump;
-
+;
 /*
 
-time pipeline fetch
+ pipeline lineItem_dyn
  begin
-
+ 
  stage stageA on all partitions:
-   scanOp lineitem2 | stageB
+ scanOp lineitem2 |  countOp | stageB
  
  stage stageB on origin:
-  outputOp
+ superCountOp | outputOp
+ 
+ end
+ ;
+
+ 
+docol epochTake;
+time pipeline fetch
+begin
+
+  stage stageA on all partitions:
+    scanOp lineitem | stageB
+
+  stage stageB on origin:
+    outputOp
 
 end
 ;
 
-
+docol epochDump;
 
 
  time pipeline export
@@ -230,18 +238,7 @@ stage stageB on origin:
 end;
 
 
- pipeline lineItem_dyn
- begin
  
- stage stageA on all partitions:
-   scanOp lineitem |  countOp | superCountOp | stageB
- 
- stage stageB on origin:
-   superCountOp | outputOp
-
- end
- ;
-
  
  pipeline lineItem_dyn
  begin

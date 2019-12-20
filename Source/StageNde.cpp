@@ -97,10 +97,7 @@ void StageNde::vLinkOperators(StageVec* pStageVec)
     
     // link the two operators
     pOp->vNextLabel(pOpNext->szName());
-    pOp->vOpOut(pOpNext);
-    
-    // get the last operator of this stage
-    pOp = m_oOpVec.pGet(m_oOpVec.nItems()-1);
+    pOp->vOpOut(pOpNext);    
   }
   
 }
