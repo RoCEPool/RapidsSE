@@ -79,6 +79,12 @@ void RN_Bcd::vRnd(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 {
   _precondition_(_MAGIC_,CN_RN_RAND,_FOOTER_);
   
+  i8 iMin = pMin->iBol();
+  i8 iMax = pMax->iBol();
+  
+  i8 iRnd = RndLib::iInteger(iMin,iMax); // inclusive
+
+  pDatum->vInt(iRnd);
 }
 
 
