@@ -49,9 +49,13 @@ Stz* SP_Ivl::sz(i8 iIvl, i8 iScale)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
+  Ivl wIvl;
+  wIvl = iIvl;
+
   StrLib::vSprint(m_caResult,
                   (Stz*)m_caFormat,
-                  iIvl);
+                  wIvl.m_uSecond,
+                  wIvl.m_uMicro);
 
   return (Stz*) &m_caResult[0];
 }

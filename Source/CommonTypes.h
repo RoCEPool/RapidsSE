@@ -191,8 +191,7 @@ public:
   
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   
-  void operator = (i8 iArg)      { m_uSecond = (u8)iArg;
-                                           m_uMicro = 0; }  // assign from i8
+  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
   
   void vSetMax(void)               { m_uSecond = 999999;
                                       m_uMicro = 999999; }  // set max value
