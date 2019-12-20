@@ -12,17 +12,13 @@
 
   "/tenants/boray/catalogs/rapidsse/schemas/public/tables/T"
 
-  dup .
-
   str.toStrVec task::dicStack.set
 
-  "T" find execute
+  "T" find execute to pTable
 
-stk
-
-  to pTable
-
-  pTable table.genRandomRow drop
+  100 0 do
+    pTable table.genRandomRow drop
+  loop
 ;
 
 /*============================================================================*/
