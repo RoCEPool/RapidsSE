@@ -14,7 +14,12 @@ namespace Datums
     
   public:
     RN_Tme(void);
+    RN_Tme(Datum_h* pDatum, Column* pCol);
+    RN_Tme(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax);
    ~RN_Tme(void) noexcept(false);
+  
+    void vRnd(Datum_h* pDatum, Column* pCol);
+    void vRnd(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax);
   
     Footer* aFooter(void);
   };

@@ -14,9 +14,14 @@ namespace Datums
     
   public:
     RN_Tsp(void);
+    RN_Tsp(Datum_h* pDatum, Column* pCol);
+    RN_Tsp(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax);
    ~RN_Tsp(void) noexcept(false);
   
-    Footer* aFooter(void);
+    void vRnd(Datum_h* pDatum, Column* pCol);
+    void vRnd(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax);
+  
+   Footer* aFooter(void);
   };
 }
 

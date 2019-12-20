@@ -14,10 +14,12 @@ namespace Datums
     
   public:
     RN_Int(void);
-    RN_Int(Datum* pDatum, Column* pCol);
+    RN_Int(Datum_h* pDatum, Column* pCol);
+    RN_Int(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax);
    ~RN_Int(void) noexcept(false);
   
-    void vRndInt(Datum* pDatum, Column* pCol);
+    void vRnd(Datum_h* pDatum, Column* pCol);
+    void vRnd(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax);
 
     Footer* aFooter(void);
   };

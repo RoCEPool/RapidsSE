@@ -20,14 +20,14 @@ RN_Int::RN_Int(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RN_Int::RN_Int(Datum* pDatum, Column* pCol)
+RN_Int::RN_Int(Datum_h* pDatum, Column* pCol)
 : Rand(CN_RN_RAND)
 {
   _precondition_(_MAGIC_,CN_RN_RAND,_FOOTER_);
   
   _checkInitialised_(CN_RN_RAND);
   
-  vRndInt(pDatum,pCol);
+  vRnd(pDatum,pCol);
   
   _postcondition_(_MAGIC_,CN_RN_RAND,_FOOTER_);
 }
@@ -47,7 +47,7 @@ RN_Int::~RN_Int(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* generate a random integer                                                  */
 /*----------------------------------------------------------------------------*/
-void RN_Int::vRndInt(Datum* pDatum, Column* pCol)
+void RN_Int::vRnd(Datum_h* pDatum, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_RN_RAND,_FOOTER_);
   

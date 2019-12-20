@@ -65,6 +65,8 @@ void DatumRandom::vRndFlt(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 /*----------------------------------------------------------------------------*/
 void DatumRandom::vRndInt(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 {
+  RN_Int rnInt;
+  
 }
 
 /*----------------------------------------------------------------------------*/
