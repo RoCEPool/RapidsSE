@@ -154,10 +154,10 @@ bool CsvValue::bToIvl(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt
 /*----------------------------------------------------------------------------*/
 bool CsvValue::bToTme(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt)
 {
-  SN_Tsp snTsp;
+  SN_Tme snTme;
   
   try {
-    pDatum->vTsp(snTsp.i(aazCrs,pCol,pFmt));
+    pDatum->vTme(snTme.i(aazCrs,pCol,pFmt));
   }
   catch (Exception xException) {
     return false;

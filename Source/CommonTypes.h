@@ -56,11 +56,11 @@ class Dte
 public:
   union {
     struct {
-      u8 m_uSpare     : 47 ; //         47b
-      
       u8 m_uDay       :  5 ; // 0..31       same as _Tsp.dte
       u8 m_uMonth     :  4 ; // 0..15
       u8 m_uYearDelta :  8 ; // 0..255  17b (1900+8b == 2155)
+      
+      u8 m_uSpare     : 47 ; //         47b
       //               ---
       //                64
       //               ===
@@ -213,12 +213,12 @@ class Tme
 public:
   union {
     struct {
-      u8 m_uSpare     : 27 ; //         27b
-      
       u8 m_uMicro     : 20 ; // 0..1M       same as _Tsp.tme
       u8 m_uSecond    :  6 ; // 0..63
       u8 m_uMinute    :  6 ; // 0..63
       u8 m_uHour      :  5 ; // 0..31   37b
+      
+      u8 m_uSpare     : 27 ; //         27b
       //               ---
       //                64
       //               ===
@@ -258,8 +258,6 @@ class Tsp
 public:
   union {
     struct {
-      u8 m_uSpare     :  9 ; //        9b
-      
       u8 m_uLocal     :  1 ; //        1b
       
       u8 m_uMicro     : 20 ; // 0..1M
@@ -270,6 +268,8 @@ public:
       u8 m_uDay       :  5 ; // 0..31
       u8 m_uMonth     :  4 ; // 0..15
       u8 m_uYearDelta :  8 ; // 0..255  17b  (1900+8b == 2155)
+      
+      u8 m_uSpare     :  9 ; //        9b
       //               ---
       //                64
       //               ===
