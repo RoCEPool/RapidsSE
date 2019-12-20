@@ -393,26 +393,32 @@ eEC TableDef::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
   Token* pTkn = pTknVec->pNextToken(); dPT();
 
   // extract size if specified
-  if (pTkn->bSame("("_Stz)) {
+  if (! pTkn->bSame("("_Stz)) {
+    // set size in column
+    pCol->vColumnLength(iSize);
     
-    pTkn = pTknVec->pNextToken(); dPT();
+    IGNORE_RETURN(pTknVec->pPrevToken());
+    
+    return EC_NONE;
+  }
+    
+  pTkn = pTknVec->pNextToken(); dPT();
 
-    // check if it was numeric
-    if ( ! pTkn->bIsNumeric() ) {
-      return EC_INVALID_COMMAND;
-    }
-    
-    // get size
-    iSize = pTknVec->pNextToken()->iToI8();
-    
-    pTkn = pTknVec->pNextToken(); dPT();
-    if (!pTkn->bSame(")"_Stz)) {
-      return EC_INVALID_COMMAND;
-    }
-    
-    if (! Column::bValidFlt(iSize)) {
-      return EC_INVALID_COMMAND;
-    }
+  // check if it was numeric
+  if ( ! pTkn->bIsNumeric() ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // get size
+  iSize = pTknVec->pNextToken()->iToI8();
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if (!pTkn->bSame(")"_Stz)) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  if (! Column::bValidFlt(iSize)) {
+    return EC_INVALID_COMMAND;
   }
   
   // set size in column
