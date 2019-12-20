@@ -2,7 +2,7 @@
 /* job_OutputOp.sen -- Job OutputOp                                           */
 /*============================================================================*/
 
-" job_PutputOp.sen" .verbose
+" job_OutputOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute for outputOp request                       (on node where spawned) */

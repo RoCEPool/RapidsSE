@@ -75,6 +75,7 @@
 "Job_ScanOp.sen"         include
 "Job_Service.sen"        include
 "Job_ShowCluster.sen"    include
+"Job_SinkOp.sen"         include
 "Job_SizeIndex.sen"      include
 "Job_SizeTable.sen"      include
 "job_Space.sen"          include
