@@ -26,7 +26,7 @@ bool CsvValue::bToDtm(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt
     case DM_IVL: b = bToIvl(pDatum,pCol,aazCrs,pFmt); break;
     case DM_TME: b = bToTme(pDatum,pCol,aazCrs,pFmt); break;
     case DM_TSP: b = bToTsp(pDatum,pCol,aazCrs,pFmt); break;
-    case DM_VCH: b = bToBcd(pDatum,pCol,aazCrs,pFmt); break;
+    case DM_VCH: b = bToVch(pDatum,pCol,aazCrs,pFmt); break;
       
     default:
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,

@@ -491,28 +491,34 @@ eEC TableDef::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
   Token* pTkn = pTknVec->pNextToken(); dPT();
 
   // extract size if specified
-  if (pTkn->bSame("("_Stz)) {
+  if (! pTkn->bSame("("_Stz)) {
+    // set size in column
+    pCol->vColumnLength(iSize);
     
-    //pCol->vColumnLength(pTknVec->pNextToken()->iToI8());
+    IGNORE_RETURN(pTknVec->pPrevToken());
     
-    pTkn = pTknVec->pNextToken(); dPT();
-
-    // check if it was numeric
-    if (! pTkn->bIsNumeric())
-      return EC_INVALID_COMMAND;
-    
-    // get size
-    iSize = pTkn->iToI8();
-    
-    pTkn = pTknVec->pNextToken(); dPT();
-    
-    if (! pTkn->bSame(")"_Stz))
-      return EC_INVALID_COMMAND;
-    
-    // valid the size
-    if (! Column::bValidVch(iSize))
-      return EC_INVALID_COMMAND;
+    return EC_NONE;
   }
+    
+  //pCol->vColumnLength(pTknVec->pNextToken()->iToI8());
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+
+  // check if it was numeric
+  if (! pTkn->bIsNumeric())
+    return EC_INVALID_COMMAND;
+  
+  // get size
+  iSize = pTkn->iToI8();
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  
+  if (! pTkn->bSame(")"_Stz))
+    return EC_INVALID_COMMAND;
+  
+  // valid the size
+  if (! Column::bValidVch(iSize))
+    return EC_INVALID_COMMAND;
   
   // set size in column
   pCol->vColumnLength(iSize);
