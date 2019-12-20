@@ -99,6 +99,16 @@ print "*************************************************************************
 print "scan lineitem | output;";
 print "**************************************************************************";
 
+time pipeline scan
+begin
+
+stage stageA on all partitions:
+  scanOp lineitem | outputOp | sinkOp
+end
+;
+
+
+/*
 time pipeline insert
 begin
 
@@ -113,7 +123,7 @@ stage stageC on origin:
 
 end
 ;
-/*
+
 
  pipeline lineItem_dyn
  begin

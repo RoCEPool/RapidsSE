@@ -100,6 +100,23 @@ void Step::vOpStopStartOps(void)
       }
       break;
     }
+      
+    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
+      
+      i8 i_Node = TablePtn::iPartitionToNode(pOp->nPartition());
+      pStagePtn = pFirstStage->pStagePtn(pOp->nPartition());
+      // get the first op of the stage ptn
+      pOpNext = pStagePtn->pOpVec()->pGet(0);
+        
+      // link the stopOp to this startOp
+      pOp->vOpOut(pOpNext);
+      
+      // send a stopMarker to the startOp
+      pOp->vPipeOut(new StopMarker);
+
+      break;
+    }
+      
     default:
       RASSERT(0);
   }
