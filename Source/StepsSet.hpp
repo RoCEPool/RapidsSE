@@ -849,6 +849,7 @@ public:
   void vOlistFindJob(void);
 
   // operator
+  void vOpAckPipelineJob(void);
   void vOpLeftEndMarkersStore(void);
   void vOpLinkNextStage(void);
   void vOpNextStageStore(void);

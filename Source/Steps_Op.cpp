@@ -10,10 +10,22 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Op(void)
 {
+  vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
   vAddStep("Op.leftEndMarkers!"_Stz,  &Step::vOpLeftEndMarkersStore);
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("Op.topology!"_Stz,        &Step::vOpTopologyStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.ackPipelineJob -- ack the pipeline job                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOpAckPipelineJob(void)
+{
+  ENTRY(); // ENTRY("vOpAckPipelineJob"_Stz);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  pOp->vAckJob();
 }
 
 /*----------------------------------------------------------------------------*/
