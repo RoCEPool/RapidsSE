@@ -238,17 +238,11 @@ i8 Stage::nOpsOnNode(i8 iNode)
   for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
     
     StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
-    i8 nItems = pStagePtn->pOpVec()->nItems();
     
     // skip if partition is not for this node
     i8 iPartitionNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
     if (iPartitionNode == iNode) {
       nOps += pStagePtn->pOpVec()->nItems();
-      
-      // ignore StartOp
-      Op* pOp = pStagePtn->pOpVec()->pGet(0);
-      if (AM::eJobType(pOp->pOpJob()) == JT_STARTOP)
-        nOps--;
     }
   }
   
@@ -259,11 +253,6 @@ i8 Stage::nOpsOnNode(i8 iNode)
     // skip if Op not for this node
     if (pStageNde->iNode() == iNode) {
       nOps += pStageNde->pOpVec()->nItems();
-      
-      // ignore StartOp
-      Op* pOp = pStageNde->pOpVec()->pGet(0);
-      if (AM::eJobType(pOp->pOpJob()) == JT_STARTOP)
-        nOps--;
     }
   }
   
