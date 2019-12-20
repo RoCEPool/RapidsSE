@@ -167,7 +167,7 @@ void Datum_h::vSetNull(void)
 {
   _precondition_(_MAGIC_,CN_DATUM,_FOOTER_);
 
-  m_xIntVal.m_wInt = C_DATUM_NULL;
+  m_xIntVal.vSetNull();
 }
 
 /*----------------------------------------------------------------------------*/
