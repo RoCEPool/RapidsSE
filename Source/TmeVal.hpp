@@ -19,6 +19,13 @@ namespace SqlValues
   public:
     Tme   wTme(void);
     void  vTme(Tme wTme);
+  
+    void vSetMax(void)                { m_wTme.vSetMax(); }  // set max value
+    void vSetMid(void)                { m_wTme.vSetMid(); }  // set mid value
+    void vSetMin(void)                { m_wTme.vSetMin(); }  // set min value
+    void vSetNull(void)              { m_wTme.vSetNull(); }  // set to be null
+    void vSetUsual(void)            { m_wTme.vSetUsual(); }  // set usual value
+
     i8    nStackUsage(void);
     void  vToStz(Stz* szDst);
   };

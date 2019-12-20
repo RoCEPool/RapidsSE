@@ -19,6 +19,13 @@ namespace SqlValues
   public:
     Tsp   wTsp(void);
     void  vTsp(Tsp wTsp);
+  
+    void vSetMax(void)                { m_wTsp.vSetMax(); }  // set max value
+    void vSetMid(void)                { m_wTsp.vSetMid(); }  // set mid value
+    void vSetMin(void)                { m_wTsp.vSetMin(); }  // set min value
+    void vSetNull(void)              { m_wTsp.vSetNull(); }  // set to be null
+    void vSetUsual(void)            { m_wTsp.vSetUsual(); }  // set usual value
+
     i8    nStackUsage(void);
     void  vToStz(Stz* szDst);
   };

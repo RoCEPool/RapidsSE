@@ -19,6 +19,13 @@ namespace SqlValues
   public:
     Ivl   wIvl(void);
     void  vIvl(Ivl wIvl);
+  
+    void vSetMax(void)                { m_wIvl.vSetMax(); }  // set max value
+    void vSetMid(void)                { m_wIvl.vSetMid(); }  // set mid value
+    void vSetMin(void)                { m_wIvl.vSetMin(); }  // set min value
+    void vSetNull(void)              { m_wIvl.vSetNull(); }  // set to be null
+    void vSetUsual(void)            { m_wIvl.vSetUsual(); }  // set usual value
+
     i8    nStackUsage(void);
     void  vToStz(Stz* szDst);
   };

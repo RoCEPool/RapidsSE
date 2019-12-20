@@ -21,6 +21,13 @@ namespace SqlValues
     Int   wInt(void);
     void  vInt(i8 iInt);
     void  vInt(Int wInt);
+  
+    void vSetMax(void)                { m_wInt.vSetMax(); }  // set max value
+    void vSetMid(void)                { m_wInt.vSetMid(); }  // set mid value
+    void vSetMin(void)                { m_wInt.vSetMin(); }  // set min value
+    void vSetNull(void)              { m_wInt.vSetNull(); }  // set to be null
+    void vSetUsual(void)            { m_wInt.vSetUsual(); }  // set usual value
+
     i8    nStackUsage(void);
     void  vToStz(Stz* szDst);
   };

@@ -19,6 +19,13 @@ namespace SqlValues
   public:
     Flt   wFlt(void);
     void  vFlt(Flt wFlt);
+  
+    void vSetMax(void)                { m_wFlt.vSetMax(); }  // set max value
+    void vSetMid(void)                { m_wFlt.vSetMid(); }  // set mid value
+    void vSetMin(void)                { m_wFlt.vSetMin(); }  // set min value
+    void vSetNull(void)              { m_wFlt.vSetNull(); }  // set to be null
+    void vSetUsual(void)            { m_wFlt.vSetUsual(); }  // set usual value
+
     i8    nStackUsage(void);
     void  vToStz(Stz* szDst);
   };
