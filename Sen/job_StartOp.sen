@@ -25,6 +25,7 @@
       ZK_STOPMARKER of
         //"Operand:- ZK_STOPMARKER" .verbose
         Operand[].delete
+        Op.ackPipelineJob
         false
       endof
 
