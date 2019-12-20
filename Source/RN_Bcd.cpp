@@ -66,6 +66,10 @@ void RN_Bcd::vRnd(Datum_h* pDatum, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_RN_RAND,_FOOTER_);
   
+  Datum_h* pMin = pCol->pMinVal();
+  Datum_h* pMax = pCol->pMaxVal();
+  
+  vRnd(pDatum,pMin,pMax);
 }
 
 /*----------------------------------------------------------------------------*/

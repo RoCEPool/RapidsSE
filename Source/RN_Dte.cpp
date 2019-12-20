@@ -51,6 +51,19 @@ void RN_Dte::vRnd(Datum_h* pDatum, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_RN_RAND,_FOOTER_);
   
+  Datum_h* pMin = pCol->pMinVal();
+  Datum_h* pMax = pCol->pMaxVal();
+  
+  vRnd(pDatum,pMin,pMax);
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate a random dte                                                      */
+/*----------------------------------------------------------------------------*/
+void RN_Dte::vRnd(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
+{
+  _precondition_(_MAGIC_,CN_RN_RAND,_FOOTER_);
+  
 }
 
 
