@@ -44,7 +44,7 @@ void ErrorMarker::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ErrorMarker::ErrorMarker(void)
-: Operand(CN_ENDMARKER)
+: Operand(CN_ERRORMARKER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ERRORMARKER,_FOOTER_);
 

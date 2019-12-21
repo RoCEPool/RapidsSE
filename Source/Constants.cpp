@@ -581,6 +581,7 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("ZK_CSVBUFFER"_Stz,    ZK_CSVBUFFER);
   /*  0 */ vAddConstant("ZK_ENDMARKER"_Stz,    ZK_ENDMARKER);
   /*  0 */ vAddConstant("ZK_ENTBUFFER"_Stz,    ZK_ENTBUFFER);
+  /*  0 */ vAddConstant("ZK_ERRORMARKER"_Stz,  ZK_ERRORMARKER);
   /*  0 */ vAddConstant("ZK_IRWBUFFER"_Stz,    ZK_IRWBUFFER);
   /*  0 */ vAddConstant("ZK_SRTBUFFER"_Stz,    ZK_SRTBUFFER);
   /*  0 */ vAddConstant("ZK_STARTMARKER"_Stz,  ZK_STARTMARKER);

@@ -15,12 +15,14 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].get"_Stz,            &Step::vOperandGet);
   vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vOperandHandleAggEnd);
   vAddStep("Operand[].handleEnd"_Stz,      &Step::vOperandHandleEnd);
+  vAddStep("Operand[].handleError"_Stz,    &Step::vOperandHandleError);
   vAddStep("Operand[].handleStop"_Stz,     &Step::vOperandHandleStop);
   vAddStep("Operand[].isNull"_Stz,         &Step::vOperandIsNull);
   vAddStep("Operand[].itemCount@"_Stz,     &Step::vOperandItemCountFetch);
   vAddStep("Operand[].insertIntoTable"_Stz,&Step::vOperandInsertIntoTable);
   vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
   vAddStep("Operand[].newEndMarker"_Stz,   &Step::vOperandNewEndMarker);
+  vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
   vAddStep("Operand[].newStopMarker"_Stz,  &Step::vOperandNewStopMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
   vAddStep("Operand[].next"_Stz,           &Step::vOperandNext);
@@ -179,6 +181,46 @@ void Step::vOperandHandleEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Operand[].handleError -- handle error marker                               */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandHandleError(void)
+{
+  ENTRY(); // ENTRY("vOperandHandleError"_Stz);
+  
+  ASSERT(*m_pRegSet->m_xpOperand);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
+  
+  //vTrace("%s %lld\n"_Stz, pOp->m_sName.azChar(), pOp->m_nLeftEndMarkers);
+  
+  RASSERT(AM::bJobHasError(pOp->pOpJob()));
+  AM::vSetJobLocalError(pOp->pOpJob(), pOp->pPipeline()->pJob());
+  
+  if (pOp->nDecLeftEndMarkers() == 0) {
+    if (pOp->bIsCancelling()) {
+      AM::vDeleteOperand(*m_pRegSet->m_xpOperand);
+      
+      pOp->vPipeOut(new CancelMarker);
+      
+    }
+    else {
+      pOp->vPipeOut(*m_pRegSet->m_xpOperand);
+    }
+    
+    if (pOp->bAckJobEnd())
+      pOp->vAckJob();
+    
+    m_pDataStack->vPushInt(0);
+  }
+  else {
+    delete (EndMarker*)(*m_pRegSet->m_xpOperand);
+    m_pDataStack->vPushInt(1);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Operand[].handleStop -- handle stop marker                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandHandleStop(void)
@@ -255,6 +297,7 @@ void Step::vOperandKind(void)
     case CN_CSVBUFFER:   eOperand = ZK_CSVBUFFER;   break;
     case CN_ENDMARKER:   eOperand = ZK_ENDMARKER;   break;
     case CN_ENTBUFFER:   eOperand = ZK_ENTBUFFER;   break;
+    case CN_ERRORMARKER: eOperand = ZK_ERRORMARKER; break;
     case CN_IRWBUFFER:   eOperand = ZK_IRWBUFFER;   break;
     case CN_SRTBUFFER:   eOperand = ZK_SRTBUFFER;   break;
     case CN_STARTMARKER: eOperand = ZK_STARTMARKER; break;
@@ -295,6 +338,20 @@ void Step::vOperandNewEndMarker(void)
   ASSERT (m_pRegSet->m_xpOperand.bIsNull());
   
   m_pRegSet->m_xpOperand = new EndMarker;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newErrorMarker -- new an error marker                            */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewErrorMarker(void)
+{
+  ENTRY(); // ENTRY("vOperandNewErrorMarker"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperand.bIsNull());
+  
+  m_pRegSet->m_xpOperand = new ErrorMarker;
   
   EXIT();
 }

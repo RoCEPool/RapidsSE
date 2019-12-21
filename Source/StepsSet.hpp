@@ -864,12 +864,14 @@ public:
   void vOperandGet(void);
   void vOperandHandleAggEnd(void);
   void vOperandHandleEnd(void);
+  void vOperandHandleError(void);
   void vOperandHandleStop(void);
   void vOperandIsNull(void);
   void vOperandItemCountFetch(void);
   void vOperandInsertIntoTable(void);
   void vOperandKind(void);
   void vOperandNewEndMarker(void);
+  void vOperandNewErrorMarker(void);
   void vOperandNewStopMarker(void);
   void vOperandNewStreamDef(void);
   void vOperandNext(void);
