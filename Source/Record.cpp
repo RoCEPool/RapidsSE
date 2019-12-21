@@ -108,7 +108,7 @@ void Record::vAppend(Row* pRow)
         
         // comma separate column values
         if (i_Col)
-          m_sRecStr.vAppend(&m_azAppendCursor,","_Stz);
+          StrLib::vAppendString(&m_azAppendCursor,",");
         
         vAppend(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
         //vTrace("%s\n"_Stz,pRec->szRecStr());
@@ -131,7 +131,7 @@ void Record::vAppend(Row* pRow)
        
        // comma separate column values
        if (i_Col)
-         m_sRecStr.vAppend(&m_azAppendCursor,","_Stz);
+         StrLib::vAppendString(&m_azAppendCursor,",");
        
        //! ALKA: Revert once Column not newable
        // append column value
@@ -147,7 +147,7 @@ void Record::vAppend(Row* pRow)
 void Record::vAppend(Column* pCol, Datum* pDatum)
 {
   if (pDatum->bIsNull()) {
-    m_sRecStr.vAppend(&m_azAppendCursor,"null"_Stz);
+    StrLib::vAppendString(&m_azAppendCursor,"null");
     return;
   }
 
@@ -179,7 +179,7 @@ void Record::vAppend(Column* pCol, Row* pRow)
   oDatum = pRow->m_waColVal[i_Col].m_iWrd;
   
   if (oDatum.bIsNull()) {
-    m_sRecStr.vAppend(&m_azAppendCursor,"null"_Stz);
+    StrLib::vAppendString(&m_azAppendCursor,"null");
     return;
   }
 
@@ -244,7 +244,7 @@ void Record::vAppendBcd(Column* pCol, Datum* pDatum)
                     iBcd_Whole);
 
   //m_sRecStr.vConcat((Stz*)sAscii.azChar());
-  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.azChar());
+  StrLib::vAppendString(&m_azAppendCursor,sAscii.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -256,7 +256,7 @@ void Record::vAppendBol(Column* pCol, Datum* pDatum)
   
   SP_Bol SP_Bol;
   
-  m_sRecStr.vAppend(&m_azAppendCursor,SP_Bol.sz(pDatum->iBol()));
+  StrLib::vAppendString(&m_azAppendCursor,(char*)SP_Bol.sz(pDatum->iBol()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -275,7 +275,7 @@ void Record::vAppendDte(Column* pCol, Datum* pDatum)
                   (i8)pDatum->iDte_day());
 
   //m_sRecStr.vConcat((Stz*)sAscii.azChar());
-  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.azChar());
+  StrLib::vAppendString(&m_azAppendCursor,sAscii.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,7 +290,7 @@ void Record::vAppendFlt(Column* pCol, Datum* pDatum)
   StrLib::vSprint(sAscii.azChar(),"%g"_Stz,pDatum->dFlt());
   
   //m_sRecStr.vConcat((Stz*)sAscii.azChar());
-  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.azChar());
+  StrLib::vAppendString(&m_azAppendCursor,sAscii.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -302,7 +302,7 @@ void Record::vAppendInt(Column* pCol, Datum* pDatum)
   
   SP_Int spInt;
   
-  m_sRecStr.vAppend(&m_azAppendCursor,spInt.sz(pDatum->iInt()));
+  StrLib::vAppendString(&m_azAppendCursor,(char*)spInt.sz(pDatum->iInt()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -314,7 +314,7 @@ void Record::vAppendIvl(Column* pCol, Datum* pDatum)
  
   SP_Ivl spIvl;
 
-  m_sRecStr.vAppend(&m_azAppendCursor,spIvl.sz(pDatum->iIvl()));
+  StrLib::vAppendString(&m_azAppendCursor,(char*)spIvl.sz(pDatum->iIvl()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -326,7 +326,7 @@ void Record::vAppendTme(Column* pCol, Datum* pDatum)
   
   SP_Tme SP_Tme;
 
-  m_sRecStr.vAppend(&m_azAppendCursor,SP_Tme.sz(pDatum->iTme()));
+  StrLib::vAppendString(&m_azAppendCursor,(char*)SP_Tme.sz(pDatum->iTme()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -338,7 +338,7 @@ void Record::vAppendTsp(Column* pCol, Datum* pDatum)
   
   SP_Tsp SP_Tsp;
   
-  m_sRecStr.vAppend(&m_azAppendCursor,SP_Tsp.sz(pDatum->iTsp()));
+  StrLib::vAppendString(&m_azAppendCursor,(char*)SP_Tsp.sz(pDatum->iTsp()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -350,7 +350,7 @@ void Record::vAppendVch(Column* pCol, Datum* pDatum)
   
   SP_Vch SP_Vch;
   
-  m_sRecStr.vAppend(&m_azAppendCursor,SP_Vch.sz(pDatum->azChar()));
+  StrLib::vAppendString(&m_azAppendCursor,(char*)SP_Vch.sz(pDatum->azChar()));
 }
 
 /*----------------------------------------------------------------------------*/
