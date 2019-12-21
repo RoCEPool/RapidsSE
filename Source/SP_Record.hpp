@@ -8,9 +8,12 @@ namespace Records
   class SP_Record : public Sprint
   {
   public:
+    char       m_caRecord[C_16KB];
   
-    char m_caRecord[C_16KB];
-  
+    char*      m_azAppendCursor;   // cursor for StrLib::vAppend()
+    StreamDef* m_pStreamDef;       // stream def
+    i8         m_iSubSet;          // stream def subset
+
     // must be last
     Footer m_xFooter;
     

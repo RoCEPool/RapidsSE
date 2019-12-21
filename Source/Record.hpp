@@ -8,9 +8,6 @@ namespace Records
   class Record : public SP_Record
   {
   private:
-    char*      m_azAppendCursor; // cursor for StrLib::vAppend()
-    StreamDef* m_pStreamDef;     // stream def
-    i8         m_iSubSet;        // stream def subset
     
     // must be last
     Footer m_xFooter;

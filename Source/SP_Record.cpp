@@ -15,6 +15,10 @@ SP_Record::SP_Record(void)
   // set default enclosing char
   vFormat(F_VCH_enclose);
 
+  m_azAppendCursor = azRecord();
+  m_pStreamDef     = nullptr;
+  m_iSubSet        = C_UNKNOWN;
+
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
 #else

@@ -46,10 +46,6 @@ Record::Record(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_azAppendCursor = azRecord();
-  m_pStreamDef     = nullptr;
-  m_iSubSet        = C_UNKNOWN;
-  
   _checkInitialised_(CN_RECORD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
