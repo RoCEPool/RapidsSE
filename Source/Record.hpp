@@ -22,7 +22,7 @@ namespace Records
 
     Record(void);
     Record(StreamDef* pStreamDef, i8 iSubSet);
-    ~Record(void) noexcept(false);
+   ~Record(void) noexcept(false);
   
     void vAppend(Row* pRow);
     
