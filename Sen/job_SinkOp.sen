@@ -24,15 +24,20 @@
 
     Operand[].kind ZK_ENDMARKER == if
       Operand[].pipeToJob
-      //Operand[].newStopMarker
-      //Operand[].pipeOut
+      Op.StopStartOps
+      Op.ackPipelineJob
+      false
+    else
+
+    Operand[].kind ZK_ERRORMARKER == if
+      Operand[].pipeToJob
       Op.StopStartOps
       Op.ackPipelineJob
       false
     else
       Operand[].delete
       true
-    then
+    then then
 
   while assert::stack_0 repeat
 

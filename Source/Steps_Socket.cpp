@@ -426,6 +426,30 @@ void Step::vSocketRecvObject(void)
       return;
     }
     
+    case CN_ERRORMARKER: {
+      ErrorMarker* pErrorMarker = new ErrorMarker();
+      
+      MemLib::vCopy(pErrorMarker,pObject,sizeof(Object),CN_ERRORMARKER);
+      
+      aBody = aAdd<void*>(pErrorMarker,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_ERRORMARKER] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        m_pDataStack->vPushInt(false);
+        EXIT();
+        return;
+      }
+      
+      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+      
+      m_pDataStack->vPushPtr(pErrorMarker);
+      m_pDataStack->vPushInt(true);
+      EXIT();
+      return;
+    }
+      
     case CN_IRWBUFFER: {
       
       IrwBuffer* pIrwBuffer = new IrwBuffer();
