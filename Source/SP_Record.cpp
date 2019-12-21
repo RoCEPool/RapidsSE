@@ -118,35 +118,9 @@ void SP_Record::vAppendBcd(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  s32 sAscii;
-  bool bNegative = false;
+  SP_Bcd spBcd;
   
-  i8 iDigits = 1;
-  for (i8 i_Digit = 0; i_Digit < pCol->iColumnScale(); i_Digit++)
-    iDigits *= 10;
-  
-  i8 iBcd_Whole    = pDatum->iBcd() / iDigits;
-  i8 iBcd_Fraction = pDatum->iBcd() % iDigits;
-  
-  if (iBcd_Fraction < 0 || iBcd_Whole < 0) {
-    bNegative     = true;
-    iBcd_Fraction = iBcd_Fraction * -1;
-    iBcd_Whole    = iBcd_Whole * -1;
-  }
-  
-  if (pCol->iColumnScale())
-    StrLib::vSprint(sAscii.azChar(),"%s%lld.%.*lld"_Stz,
-                    bNegative ? "-" : "",
-                    iBcd_Whole,
-                    pCol->iColumnScale(),
-                    iBcd_Fraction);
-  else
-    StrLib::vSprint(sAscii.azChar(),"%s%lld"_Stz,
-                    bNegative ? "-" : "",
-                    iBcd_Whole);
-  
-  //m_sRecStr.vConcat((Stz*)sAscii.azChar());
-  StrLib::vAppendString(&m_azCursor,sAscii.azChar());
+  StrLib::vAppendString(&m_azCursor,(char*)spBcd.sz(pDatum->iBcd()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,9 +130,9 @@ void SP_Record::vAppendBol(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  SP_Bol SP_Bol;
+  SP_Bol spBol;
   
-  StrLib::vAppendString(&m_azCursor,(char*)SP_Bol.sz(pDatum->iBol()));
+  StrLib::vAppendString(&m_azCursor,(char*)spBol.sz(pDatum->iBol()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,16 +142,9 @@ void SP_Record::vAppendDte(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  s32 sAscii;
+  SP_Dte spDte;
   
-  StrLib::vSprint(sAscii.azChar(),
-                  "%02lld-%02lld-%02lld"_Stz,
-                  (i8)pDatum->iDte_year(),
-                  (i8)pDatum->iDte_month(),
-                  (i8)pDatum->iDte_day());
-  
-  //m_sRecStr.vConcat((Stz*)sAscii.azChar());
-  StrLib::vAppendString(&m_azCursor,sAscii.azChar());
+  StrLib::vAppendString(&m_azCursor,(char*)spDte.sz(pDatum->iDte()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,12 +154,8 @@ void SP_Record::vAppendFlt(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  s32 sAscii;
-  
-  StrLib::vSprint(sAscii.azChar(),"%g"_Stz,pDatum->dFlt());
-  
-  //m_sRecStr.vConcat((Stz*)sAscii.azChar());
-  StrLib::vAppendString(&m_azCursor,sAscii.azChar());
+  SP_Flt spFlt;
+  StrLib::vAppendString(&m_azCursor,(char*)spFlt.sz(pDatum->dFlt()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -226,9 +189,9 @@ void SP_Record::vAppendTme(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  SP_Tme SP_Tme;
+  SP_Tme spTme;
   
-  StrLib::vAppendString(&m_azCursor,(char*)SP_Tme.sz(pDatum->iTme()));
+  StrLib::vAppendString(&m_azCursor,(char*)spTme.sz(pDatum->iTme()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -238,9 +201,9 @@ void SP_Record::vAppendTsp(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  SP_Tsp SP_Tsp;
+  SP_Tsp spTsp;
   
-  StrLib::vAppendString(&m_azCursor,(char*)SP_Tsp.sz(pDatum->iTsp()));
+  StrLib::vAppendString(&m_azCursor,(char*)spTsp.sz(pDatum->iTsp()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,9 +213,9 @@ void SP_Record::vAppendVch(Column* pCol, Datum* pDatum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  SP_Vch SP_Vch;
+  SP_Vch spVch;
   
-  StrLib::vAppendString(&m_azCursor,(char*)SP_Vch.sz(pDatum->azChar()));
+  StrLib::vAppendString(&m_azCursor,(char*)spVch.sz(pDatum->azChar()));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -59,6 +59,7 @@ namespace Datums
     i8      iBol(void);
     void    vBol(i8 iBol);
     void    vCopy(AnyVal* aAnyVal);
+    i8      iDte(void);
     i8      iDte_day(void);
     i8      iDte_month(void);
     i8      iDte_year(void);
