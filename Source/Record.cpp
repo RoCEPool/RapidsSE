@@ -105,7 +105,7 @@ void Record::vAppend(Row* pRow)
         if (i_Col)
           StrLib::vAppendString(&m_azAppendCursor,",");
         
-        vAppend(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
+        vAppendCol(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
         //vTrace("%s\n"_Stz,pRec->szRecStr());
         
       }
@@ -131,50 +131,9 @@ void Record::vAppend(Row* pRow)
        //! ALKA: Revert once Column not newable
        // append column value
        //vAppend(&xCol,pRow);
-       vAppend(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
+       vAppendCol(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
      }
    }
-}
-
-/*----------------------------------------------------------------------------*/
-/* append ascii of datum to record                                            */
-/*----------------------------------------------------------------------------*/
-void Record::vAppend(Column* pCol, Row* pRow)
-{
-  Datum oDatum;
-
-  i8 i_Col = pCol->iColumnNo();
-  oDatum = pRow->m_waColVal[i_Col].m_iWrd;
-  
-  if (oDatum.bIsNull()) {
-    StrLib::vAppendString(&m_azAppendCursor,"null");
-    return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  eDM eDatum = pCol->eDatum();
- 
-  switch (eDatum) {
-    case DM_BCD: vAppendBcd(pCol,&oDatum); break;
-    case DM_BOL: vAppendBol(pCol,&oDatum); break;
-    case DM_DTE: vAppendDte(pCol,&oDatum); break;
-    case DM_FLT: vAppendFlt(pCol,&oDatum); break;
-    case DM_INT: vAppendInt(pCol,&oDatum); break;
-    case DM_IVL: vAppendIvl(pCol,&oDatum); break;
-    case DM_TME: vAppendTme(pCol,&oDatum); break;
-    case DM_TSP: vAppendTsp(pCol,&oDatum); break;
-      
-    case DM_VCH:
-      oDatum.vStz(pRow->m_waColVal[i_Col].m_szVch);
-      //oDatum.vStzDump();
-      
-      vAppendVch(pCol,&oDatum);
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
 }
 
 /*----------------------------------------------------------------------------*/

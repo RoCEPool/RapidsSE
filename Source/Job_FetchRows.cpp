@@ -834,7 +834,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
     if (pJob_FetchRows->m_bPrint) {
       HV_Rec hvRec(pStreamDef,C_ALL);
       
-      hvRec->vAppend(pCol,pJob_FetchRows->m_pRow);
+      hvRec->vAppendCol(pCol,pJob_FetchRows->m_pRow);
       vTrace("row: (%s)\n"_Stz,hvRec->szRecStr());
     }
     

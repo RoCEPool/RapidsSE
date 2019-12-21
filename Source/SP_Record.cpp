@@ -46,6 +46,47 @@ SP_Record::~SP_Record(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append ascii of datum to record                                            */
 /*----------------------------------------------------------------------------*/
+void SP_Record::vAppendCol(Column* pCol, Row* pRow)
+{
+  Datum oDatum;
+  
+  i8 i_Col = pCol->iColumnNo();
+  oDatum = pRow->m_waColVal[i_Col].m_iWrd;
+  
+  if (oDatum.bIsNull()) {
+    StrLib::vAppendString(&m_azAppendCursor,"null");
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  eDM eDatum = pCol->eDatum();
+  
+  switch (eDatum) {
+    case DM_BCD: vAppendBcd(pCol,&oDatum); break;
+    case DM_BOL: vAppendBol(pCol,&oDatum); break;
+    case DM_DTE: vAppendDte(pCol,&oDatum); break;
+    case DM_FLT: vAppendFlt(pCol,&oDatum); break;
+    case DM_INT: vAppendInt(pCol,&oDatum); break;
+    case DM_IVL: vAppendIvl(pCol,&oDatum); break;
+    case DM_TME: vAppendTme(pCol,&oDatum); break;
+    case DM_TSP: vAppendTsp(pCol,&oDatum); break;
+      
+    case DM_VCH:
+      oDatum.vStz(pRow->m_waColVal[i_Col].m_szVch);
+      //oDatum.vStzDump();
+      
+      vAppendVch(pCol,&oDatum);
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append ascii of datum to record                                            */
+/*----------------------------------------------------------------------------*/
 void SP_Record::vAppendDtm(Column* pCol, Datum* pDatum)
 {
   if (pDatum->bIsNull()) {
