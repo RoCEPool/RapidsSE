@@ -77,6 +77,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_ENTBUFFER
   /* */ &Dump::vInvalid,         // CN_ENTWRK
   /* */ &Dump::vDummy,           // CN_ENUMFLAGS
+  /* */ &Dump::vDummy,           // CN_ERRORMARKER
   /* */ &Dump::vDummy,           // CN_EXTRACTROW
 
   /* */ &Dump::vInvalid,         // CN__F__
@@ -407,6 +408,7 @@ i8 giClassSize[]
   /* */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* */ sizeof(EntWrk),             // CN_ENTWRK
   /* */ sizeof(EnumFlags),          // CN_ENUMFLAGS
+  /* */ sizeof(ExtractRow),         // CN_ERRORMARKER
   /* */ sizeof(ExtractRow),         // CN_EXTRACTROW
 
   /* */ 'F'-'A' + 1,                // CN__F__
@@ -737,6 +739,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_ENTBUFFER
   /* */ HT_INVALID,           // CN_ENTWRK
   /* */ HT_TRANSIENT_SMALL,   // CN_ENUMFLAGS
+  /* */ HT_TRANSIENT_SMALL,   // CN_ERRORMARKER
   /* */ HT_TRANSIENT_SMALL,   // CN_EXTRACTROW
 
   /* */ HT_INVALID,           // CN__F__
