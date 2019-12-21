@@ -18,6 +18,7 @@ namespace Records
     SP_Record(void);
    ~SP_Record(void) noexcept(false);
 
+    char* azRecord(void);
     void vRow(Row* pRow);
   
     Stz* sz(void);
