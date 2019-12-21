@@ -287,30 +287,30 @@ void SP_Record::vToRecord(Row* pRow)
     
     switch (eDatum) {
       case DM_BCD: {
-        SP_Bcd SP_Bcd;
+        SP_Bcd spBcd;
         StrLib::vAppendString(&m_azCursor,
-                              (char*)SP_Bcd.sz(pRow->m_waColVal[i_Col]));
+                              (char*)spBcd.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         
       case DM_BOL: {
-        SP_Bol SP_Bol;
+        SP_Bol spBol;
         StrLib::vAppendString(&m_azCursor,
-                              (char*)SP_Bol.sz(pRow->m_waColVal[i_Col]));
+                              (char*)spBol.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         
       case DM_DTE: {
-        SP_Dte SP_Dte;
+        SP_Dte spDte;
         StrLib::vAppendString(&m_azCursor,
-                              (char*)SP_Dte.sz(pRow->m_waColVal[i_Col]));
+                              (char*)spDte.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         
       case DM_FLT: {
-        SP_Flt SP_Flt;
+        SP_Flt spFlt;
         StrLib::vAppendString(&m_azCursor,
-                              (char*)SP_Flt.sz(*(d8*)&pRow->m_waColVal[i_Col]));
+                              (char*)spFlt.sz(*(d8*)&pRow->m_waColVal[i_Col]));
         break;
       }
         
@@ -329,23 +329,23 @@ void SP_Record::vToRecord(Row* pRow)
       }
         
       case DM_TME: {
-        SP_Tme SP_Tme;
+        SP_Tme spTme;
         StrLib::vAppendString(&m_azCursor,
-                              (char*)SP_Tme.sz(pRow->m_waColVal[i_Col]));
+                              (char*)spTme.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         
       case DM_TSP: {
-        SP_Tsp SP_Tsp;
+        SP_Tsp spTsp;
         StrLib::vAppendString(&m_azCursor,
-                              (char*)SP_Tsp.sz(pRow->m_waColVal[i_Col]));
+                              (char*)spTsp.sz(pRow->m_waColVal[i_Col]));
         break;
       }
         
       case DM_VCH: {
-        SP_Vch SP_Vch;
+        SP_Vch spVch;
         StrLib::vAppendString(&m_azCursor,
-                              (char*)SP_Vch.sz(pRow->m_waColVal[i_Col].m_azStr));
+                              (char*)spVch.sz(pRow->m_waColVal[i_Col].m_azStr));
         break;
       }
         
@@ -359,16 +359,7 @@ void SP_Record::vToRecord(Row* pRow)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* SP_Record::aFooter(void)
-{
-  _precondition_(_MAGIC_,CN_RECORD);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(SP_Record)
 
 /*============================================================================*/
 /* end                                                                        */
