@@ -59,7 +59,6 @@ Record::Record(StreamDef* pStreamDef, i8 iSubSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_azAppendCursor = azRecord();
   m_pStreamDef     = pStreamDef;
   m_iSubSet        = iSubSet;
   
@@ -387,18 +386,6 @@ void Record::vRecStr(Stz* szStr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
   
   StrLib::vCopy(m_caRecord,(char*)szStr);
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset                                                                      */
-/*----------------------------------------------------------------------------*/
-void Record::vReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
-  
-  m_caRecord[0] = '\0';
-  
-  m_azAppendCursor = azRecord();
 }
 
 

@@ -22,6 +22,9 @@ namespace Records
    ~SP_Record(void) noexcept(false);
 
     char* azRecord(void);
+  
+    void vReset(void);
+
     void vRow(Row* pRow);
   
     Stz* sz(void);

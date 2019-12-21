@@ -21,9 +21,16 @@ namespace Records
    ~Record(void) noexcept(false);
   
     void vAppend(Row* pRow);
-    
-    void vAppend(Column* pCol, Datum* pDatum);
+  
+    void vPrintRow(void);
+    void vPrintPartialRow(void);
+  
+    void vRecStr(Stz* szRecStr);
+    Stz* szRecStr(void);
+
     void vAppend(Column* pCol, Row* pRow);
+
+    void vAppend(Column* pCol, Datum* pDatum);
     void vAppendBcd(Column* pCol, Datum* pDatum);
     void vAppendBol(Column* pCol, Datum* pDatum);
     void vAppendDte(Column* pCol, Datum* pDatum);
@@ -34,13 +41,7 @@ namespace Records
     void vAppendTsp(Column* pCol, Datum* pDatum);
     void vAppendVch(Column* pCol, Datum* pDatum);
 
-    void vPrintRow(void);
-    void vPrintPartialRow(void);
   
-    void vRecStr(Stz* szRecStr);
-    Stz* szRecStr(void);
-  
-    void vReset(void);
   
   private:
     Footer* aFooter(void);
