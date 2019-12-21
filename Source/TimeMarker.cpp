@@ -14,9 +14,9 @@
 /*----------------------------------------------------------------------------*/
 TimeMarker* ControlData::_pTimeMarker(void* aAddr)
 {
-  TimeMarker* pOp = reinterpret_cast<TimeMarker*>(aAddr);
+  TimeMarker* pTimeMarker = reinterpret_cast<TimeMarker*>(aAddr);
   
-  return pOp;
+  return pTimeMarker;
 }
 
 /*----------------------------------------------------------------------------*/

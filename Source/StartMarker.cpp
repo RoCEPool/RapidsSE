@@ -13,9 +13,9 @@
 /*----------------------------------------------------------------------------*/
 StartMarker* ControlData::_pStartMarker(void* aAddr)
 {
-  StartMarker* pOp = reinterpret_cast<StartMarker*>(aAddr);
+  StartMarker* pStartMarker = reinterpret_cast<StartMarker*>(aAddr);
   
-  return pOp;
+  return pStartMarker;
 }
 
 /*----------------------------------------------------------------------------*/

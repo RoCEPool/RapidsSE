@@ -13,9 +13,9 @@
 /*----------------------------------------------------------------------------*/
 StopMarker* ControlData::_pStopMarker(void* aAddr)
 {
-  StopMarker* pOp = reinterpret_cast<StopMarker*>(aAddr);
+  StopMarker* pStopMarker = reinterpret_cast<StopMarker*>(aAddr);
   
-  return pOp;
+  return pStopMarker;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -408,7 +408,7 @@ i8 giClassSize[]
   /* */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* */ sizeof(EntWrk),             // CN_ENTWRK
   /* */ sizeof(EnumFlags),          // CN_ENUMFLAGS
-  /* */ sizeof(ExtractRow),         // CN_ERRORMARKER
+  /* */ sizeof(ErrorMarker),        // CN_ERRORMARKER
   /* */ sizeof(ExtractRow),         // CN_EXTRACTROW
 
   /* */ 'F'-'A' + 1,                // CN__F__

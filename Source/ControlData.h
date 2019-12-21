@@ -19,6 +19,7 @@ namespace ControlData
 #include "CancelMarker.hpp"
 #include "EarlyMarker.hpp"
 #include "EndMarker.hpp"
+#include "ErrorMarker.hpp"
 #include "PauseMarker.hpp"
 #include "StartMarker.hpp"
 #include "StopMarker.hpp"

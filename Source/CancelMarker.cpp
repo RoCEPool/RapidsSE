@@ -13,9 +13,9 @@
 /*----------------------------------------------------------------------------*/
 CancelMarker* ControlData::_pCancelMarker(void* aAddr)
 {
-  CancelMarker* pOp = reinterpret_cast<CancelMarker*>(aAddr);
+  CancelMarker* pCancelMarker = reinterpret_cast<CancelMarker*>(aAddr);
   
-  return pOp;
+  return pCancelMarker;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,9 +14,9 @@
 /*----------------------------------------------------------------------------*/
 PauseMarker* ControlData::_pPauseMarker(void* aAddr)
 {
-  PauseMarker* pOp = reinterpret_cast<PauseMarker*>(aAddr);
+  PauseMarker* pPauseMarker = reinterpret_cast<PauseMarker*>(aAddr);
   
-  return pOp;
+  return pPauseMarker;
 }
 
 /*----------------------------------------------------------------------------*/

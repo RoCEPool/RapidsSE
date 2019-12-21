@@ -14,9 +14,9 @@
 /*----------------------------------------------------------------------------*/
 EndMarker* ControlData::_pEndMarker(void* aAddr)
 {
-  EndMarker* pOp = reinterpret_cast<EndMarker*>(aAddr);
+  EndMarker* pEndMarker = reinterpret_cast<EndMarker*>(aAddr);
   
-  return pOp;
+  return pEndMarker;
 }
 
 /*----------------------------------------------------------------------------*/
