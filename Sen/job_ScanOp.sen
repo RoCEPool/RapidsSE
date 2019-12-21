@@ -46,7 +46,12 @@
   // check if we can scan the table
   <tableNm> to sTableNm
   sTableNm checkScanTable not if
-    pJob_ScanOp <ERROR_JOB> !!logError exit
+    pJob_ScanOp <ERROR_JOB>
+    Operand[].newErrorMarker
+    Operand[].pipeOut
+    !!logError
+    job::deleteThis
+    <DONE_RUN>
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

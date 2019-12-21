@@ -178,6 +178,12 @@ void AM::vDeleteOperand(Operand* pOperand)
       RASSERT(0);
     }
       
+    case CN_ERRORMARKER: {
+      ErrorMarker* pErrorMarker = _pErrorMarker(pOperand);
+      delete pErrorMarker;
+      break;
+    }
+      
     case CN_IRWBUFFER: {
       IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
       delete pIrwBuffer;

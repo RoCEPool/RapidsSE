@@ -1174,14 +1174,14 @@ void Job::vPrintLocalZero(void)
 /*----------------------------------------------------------------------------*/
 void Job::vPrintQueueRows(void)
 {
-  if ( m_bHasError ) {
-    i8 iResponses = m_pResponseVec->nItems();
-    RASSERT(iResponses == AM::nDefinedNodes());
-    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
-    }
-    return;
-  }
+//  if ( m_bHasError ) {
+//    i8 iResponses = m_pResponseVec->nItems();
+//    RASSERT(iResponses == AM::nDefinedNodes());
+//    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+//      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+//    }
+//    return;
+//  }
   
   StreamDef* pStreamDef = nullptr;
   
@@ -1198,7 +1198,7 @@ void Job::vPrintQueueRows(void)
     
     switch (pOperand->eClass()) {
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_CANCELMARKER: {
         //        vTrace("Query %lld cancelled!!! (rows fetched so far %lld)\n"_Stz, iJobId(),
@@ -1211,7 +1211,7 @@ void Job::vPrintQueueRows(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
@@ -1221,7 +1221,7 @@ void Job::vPrintQueueRows(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_CSVBUFFER: {
         CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
@@ -1231,7 +1231,7 @@ void Job::vPrintQueueRows(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_ENDMARKER: {
         // print the responses received
@@ -1242,7 +1242,7 @@ void Job::vPrintQueueRows(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
@@ -1251,8 +1251,22 @@ void Job::vPrintQueueRows(void)
         AM::vDeleteOperand(pOperand);
         break;
       }
+      
+      // -- -- -- -- -- --
         
-        // -- -- -- -- -- --
+      case CN_ERRORMARKER: {
+        i8 iResponses = m_pResponseVec->nItems();
+        RASSERT(iResponses == AM::nDefinedNodes());
+        for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+          vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+        }
+        AM::vDeleteOperand(pOperand);
+        goto L_EXIT;
+        
+        break;
+      }
+        
+      // -- -- -- -- -- --
         
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
@@ -1262,7 +1276,7 @@ void Job::vPrintQueueRows(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
@@ -1272,7 +1286,7 @@ void Job::vPrintQueueRows(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
         if ( ! pStreamDef ) {
@@ -1287,7 +1301,7 @@ void Job::vPrintQueueRows(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       default:
         RASSERT(0);

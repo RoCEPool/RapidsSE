@@ -193,8 +193,8 @@ void Step::vOperandHandleError(void)
   
   //vTrace("%s %lld\n"_Stz, pOp->m_sName.azChar(), pOp->m_nLeftEndMarkers);
   
-  RASSERT(AM::bJobHasError(pOp->pOpJob()));
-  AM::vSetJobLocalError(pOp->pOpJob(), pOp->pPipeline()->pJob());
+  if (AM::bJobHasError(pOp->pOpJob()))
+    AM::vSetJobLocalError(pOp->pOpJob(), pOp->pPipeline()->pJob());
   
   if (pOp->nDecLeftEndMarkers() == 0) {
     if (pOp->bIsCancelling()) {
@@ -213,7 +213,7 @@ void Step::vOperandHandleError(void)
     m_pDataStack->vPushInt(0);
   }
   else {
-    delete (EndMarker*)(*m_pRegSet->m_xpOperand);
+    delete (ErrorMarker*)(*m_pRegSet->m_xpOperand);
     m_pDataStack->vPushInt(1);
   }
   
