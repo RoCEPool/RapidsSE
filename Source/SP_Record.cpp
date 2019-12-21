@@ -16,9 +16,9 @@ SP_Record::SP_Record(void)
   vFormat(F_VCH_enclose);
 
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caRow,sizeof(m_caRow),CN_RECORD);
+  MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
 #else
-  m_caRow[0] = '\0';
+  m_caRecord[0] = '\0';
 #endif
   
   //! FIX RAY
@@ -46,7 +46,7 @@ char* SP_Record::azRecord(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return & m_caRow[0];
+  return & m_caRecord[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +56,7 @@ void SP_Record::vRow(Row* pRow)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  char* szCrs = &m_caRow[0];
+  char* szCrs = &m_caRecord[0];
   
   for (i8 i_Col = 0; i_Col < pRow->m_nColumns; i_Col++) {
   
@@ -156,7 +156,7 @@ Stz* SP_Record::sz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caRow[0];
+  return (Stz*) &m_caRecord[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,7 +168,7 @@ Stz* SP_Record::sz(Row* pRow)
 
   vRow(pRow);
   
-  return (Stz*) &m_caRow[0];
+  return (Stz*) &m_caRecord[0];
 }
 
 

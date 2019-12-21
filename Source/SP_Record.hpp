@@ -9,7 +9,7 @@ namespace Records
   {
   public:
   
-    char m_caRow[C_16KB];
+    char m_caRecord[C_16KB];
   
     // must be last
     Footer m_xFooter;

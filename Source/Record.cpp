@@ -46,7 +46,7 @@ Record::Record(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_azAppendCursor = m_sRecStr.azChar();
+  m_azAppendCursor = azRecord();
   m_pStreamDef     = nullptr;
   m_iSubSet        = C_UNKNOWN;
   
@@ -63,7 +63,7 @@ Record::Record(StreamDef* pStreamDef, i8 iSubSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_azAppendCursor = m_sRecStr.azChar();
+  m_azAppendCursor = azRecord();
   m_pStreamDef     = pStreamDef;
   m_iSubSet        = iSubSet;
   
@@ -360,7 +360,7 @@ void Record::vPrintRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
   
-  vTrace("row: (%s)\n"_Stz,m_sRecStr.szStz());
+  vTrace("row: (%s)\n"_Stz,azRecord());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -370,7 +370,7 @@ void Record::vPrintPartialRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
   
-  vTrace("%s"_Stz,m_sRecStr.szStz());
+  vTrace("%s"_Stz,azRecord());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -380,7 +380,7 @@ Stz* Record::szRecStr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
   
-  return m_sRecStr.szStz();
+  return sz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -390,7 +390,7 @@ void Record::vRecStr(Stz* szStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
   
-  m_sRecStr = szStr;
+  StrLib::vCopy(m_caRecord,(char*)szStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -400,9 +400,9 @@ void Record::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
   
-  m_sRecStr.vReset();
+  m_caRecord[0] = '\0';
   
-  m_azAppendCursor = m_sRecStr.azChar();
+  m_azAppendCursor = azRecord();
 }
 
 

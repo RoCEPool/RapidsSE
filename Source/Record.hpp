@@ -8,7 +8,6 @@ namespace Records
   class Record : public SP_Record
   {
   private:
-    s16KB      m_sRecStr;        // the record as a string
     char*      m_azAppendCursor; // cursor for StrLib::vAppend()
     StreamDef* m_pStreamDef;     // stream def
     i8         m_iSubSet;        // stream def subset
