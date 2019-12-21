@@ -30,7 +30,6 @@ namespace Records
 
     void vAppend(Column* pCol, Row* pRow);
 
-    void vAppend(Column* pCol, Datum* pDatum);
 
   
   

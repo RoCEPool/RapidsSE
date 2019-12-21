@@ -193,7 +193,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
     // first get the encoded value into datum
     i8 nCols = pStreamDef->nColumns(C_ALL);
     RowDecoder::vDecode(&oDatum,aHeadLine,nCols,pCol,i_Col,i_Offset);
-    hvRec->vAppend(pCol, &oDatum);
+    hvRec->vAppendDtm(pCol, &oDatum);
     
     vTrace("%s"_Stz,hvRec->szRecStr());
     

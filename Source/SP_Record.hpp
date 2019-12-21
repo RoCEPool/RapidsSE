@@ -21,6 +21,7 @@ namespace Records
     SP_Record(void);
    ~SP_Record(void) noexcept(false);
   
+    void vAppendDtm(Column* pCol, Datum* pDatum);
     void vAppendBcd(Column* pCol, Datum* pDatum);
     void vAppendBol(Column* pCol, Datum* pDatum);
     void vAppendDte(Column* pCol, Datum* pDatum);

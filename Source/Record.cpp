@@ -139,33 +139,6 @@ void Record::vAppend(Row* pRow)
 /*----------------------------------------------------------------------------*/
 /* append ascii of datum to record                                            */
 /*----------------------------------------------------------------------------*/
-void Record::vAppend(Column* pCol, Datum* pDatum)
-{
-  if (pDatum->bIsNull()) {
-    StrLib::vAppendString(&m_azAppendCursor,"null");
-    return;
-  }
-
-  eDM eDatum = pCol->eDatum();
-  
-  switch (eDatum) {
-    case DM_BCD: vAppendBcd(pCol,pDatum); break;
-    case DM_BOL: vAppendBol(pCol,pDatum); break;
-    case DM_DTE: vAppendDte(pCol,pDatum); break;
-    case DM_FLT: vAppendFlt(pCol,pDatum); break;
-    case DM_INT: vAppendInt(pCol,pDatum); break;
-    case DM_IVL: vAppendIvl(pCol,pDatum); break;
-    case DM_TME: vAppendTme(pCol,pDatum); break;
-    case DM_TSP: vAppendTsp(pCol,pDatum); break;
-    case DM_VCH: vAppendVch(pCol,pDatum); break;
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* append ascii of datum to record                                            */
-/*----------------------------------------------------------------------------*/
 void Record::vAppend(Column* pCol, Row* pRow)
 {
   Datum oDatum;
