@@ -21,7 +21,8 @@ SP_Record::SP_Record(void)
   m_caRow[0] = '\0';
 #endif
   
-  _checkInitialised_(CN_RECORD);
+  //! FIX RAY
+  //_checkInitialised_(CN_RECORD);
   
   _postcondition_(_MAGIC_,CN_RECORD,_FOOTER_);
 }
