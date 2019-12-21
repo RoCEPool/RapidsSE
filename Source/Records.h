@@ -18,6 +18,8 @@ namespace Records
 #include "CsvField.hpp"
 #include "CsvRecord.hpp"
 
+#include "SP_Record.hpp"
+
 #include "Record.hpp"
 #include "RecordBuffer.hpp"
 
