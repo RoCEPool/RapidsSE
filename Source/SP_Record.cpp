@@ -290,15 +290,18 @@ void SP_Record::vRow(Row* pRow)
   
     Column* pCol = pRow->m_pStreamDef->pGetColumn(i_Col);
     eDM eDatum   = pCol->eDatum();
-    Stz* szDatum = (Stz*)aDM[eDatum];
-
-    StrLib::vAppendString(&szCrs,(char*)"  "_Stz);
-
-    StrLib::vAppendString(&szCrs,(char*)pCol->szColNm());
-    StrLib::vAppendString(&szCrs,(char*)" "_Stz);
-    StrLib::vAppendString(&szCrs,(char*)szDatum);
-    StrLib::vAppendString(&szCrs,(char*)" "_Stz);
+//    Stz* szDatum = (Stz*)aDM[eDatum];
+//
+//    StrLib::vAppendString(&szCrs,(char*)"  "_Stz);
+//
+//    StrLib::vAppendString(&szCrs,(char*)pCol->szColNm());
+//    StrLib::vAppendString(&szCrs,(char*)" "_Stz);
+//    StrLib::vAppendString(&szCrs,(char*)szDatum);
+//    StrLib::vAppendString(&szCrs,(char*)" "_Stz);
     
+    if (i_Col)
+      StrLib::vAppendString(&szCrs,",");
+
     if (pRow->m_waColVal[i_Col].bIsNull()) {
       StrLib::vAppendString(&szCrs,(char*)"null"_Stz);
       continue;
@@ -371,8 +374,6 @@ void SP_Record::vRow(Row* pRow)
       default:
         NEVER_REACH;
     }
-
-    StrLib::vAppendString(&szCrs,(char*)"\n"_Stz);
   }
   
 }

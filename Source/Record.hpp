@@ -28,7 +28,6 @@ namespace Records
     void vRecStr(Stz* szRecStr);
     Stz* szRecStr(void);
 
-
   private:
     Footer* aFooter(void);
   };
