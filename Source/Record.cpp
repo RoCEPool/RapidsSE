@@ -42,7 +42,7 @@ void Record::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Record::Record(void)
-: Object(CN_RECORD)
+//: Object(CN_RECORD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
@@ -59,7 +59,7 @@ Record::Record(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Record::Record(StreamDef* pStreamDef, i8 iSubSet)
-: Object(CN_RECORD)
+//: Object(CN_RECORD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   

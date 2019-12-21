@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_Record.cpp - Row sprint helper                                             */
+/* SP_Record.cpp - Record sprint helper                                       */
 /*============================================================================*/
 
 #include "Records.h"
@@ -8,22 +8,22 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Record::SP_Record(void)
-: Sprint(CN_ROW)
+: Sprint(CN_RECORD)
 {
-  _precondition_(_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
   
   // set default enclosing char
   vFormat(F_VCH_enclose);
 
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caRow,sizeof(m_caRow),CN_ROW);
+  MemLib::vZero(m_caRow,sizeof(m_caRow),CN_RECORD);
 #else
   m_caRow[0] = '\0';
 #endif
   
-  _checkInitialised_(CN_ROW);
+  _checkInitialised_(CN_RECORD);
   
-  _postcondition_(_MAGIC_,CN_ROW,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_RECORD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -31,7 +31,7 @@ SP_Record::SP_Record(void)
 /*----------------------------------------------------------------------------*/
 SP_Record::~SP_Record(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -170,7 +170,7 @@ Stz* SP_Record::sz(Row* pRow)
 /*----------------------------------------------------------------------------*/
 Footer* SP_Record::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_ROW);
+  _precondition_(_MAGIC_,CN_RECORD);
   
   return &m_xFooter;
 }

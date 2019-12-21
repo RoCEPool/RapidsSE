@@ -5,7 +5,7 @@
 
 namespace Records
 {
-  class Record : public Object
+  class Record : public SP_Record
   {
   private:
     s16KB      m_sRecStr;        // the record as a string

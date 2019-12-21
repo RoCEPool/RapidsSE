@@ -85,7 +85,7 @@ begin
     scanOp lineitem | stageB
 
   stage stageB on origin:
-    outputOp
+    outputOp | sinkOp
 
 end;
 
