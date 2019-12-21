@@ -8,11 +8,11 @@ namespace Records
   class SP_Record : public Sprint
   {
   public:
-    char       m_caRecord[C_16KB];
+    char       m_caRecord[C_MAX_RECORD];
   
-    char*      m_azAppendCursor;   // cursor for StrLib::vAppend()
-    StreamDef* m_pStreamDef;       // stream def
-    i8         m_iSubSet;          // stream def subset
+    char*      m_azCursor;    // append cursor for StrLib::vAppend()
+    StreamDef* m_pStreamDef;  // stream def
+    i8         m_iSubSet;     // stream def subset
 
     // must be last
     Footer m_xFooter;
@@ -35,10 +35,10 @@ namespace Records
 
     char* azRecord(void);
     void vReset(void);
-    void vRow(Row* pRow);
-  
     Stz* sz(void);
     Stz* sz(Row* pRow);
+  
+    void vToRecord(Row* pRow);
   
     Footer* aFooter(void);
   };

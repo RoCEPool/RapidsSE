@@ -103,7 +103,7 @@ void Record::vAppend(Row* pRow)
         
         // comma separate column values
         if (i_Col)
-          StrLib::vAppendString(&m_azAppendCursor,",");
+          StrLib::vAppendString(&m_azCursor,",");
         
         vAppendCol(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
         //vTrace("%s\n"_Stz,pRec->szRecStr());
@@ -126,7 +126,7 @@ void Record::vAppend(Row* pRow)
        
        // comma separate column values
        if (i_Col)
-         StrLib::vAppendString(&m_azAppendCursor,",");
+         StrLib::vAppendString(&m_azCursor,",");
        
        //! ALKA: Revert once Column not newable
        // append column value
