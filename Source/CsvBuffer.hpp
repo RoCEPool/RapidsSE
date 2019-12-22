@@ -32,7 +32,7 @@ namespace Buffers
     char*      aDataArea(void);
     i8         nFreeBytes(void);
     CsvBuffer* pNextBuffer(void);
-    void       vPrintRows(void);
+    void       vPrintRecords(void);
     i8         nRecords(void);
     CrwBuffer* pToCrwBuffer(Table* pTable, RowCompactor* pRowCompactor);
     

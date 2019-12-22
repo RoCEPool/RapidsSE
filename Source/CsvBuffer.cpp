@@ -124,9 +124,9 @@ CsvBuffer* CsvBuffer::pNextBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print the rows                                                             */
+/* print the records                                                          */
 /*----------------------------------------------------------------------------*/
-void CsvBuffer::vPrintRows(void)
+void CsvBuffer::vPrintRecords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   

@@ -213,7 +213,7 @@ void Step::vTableGenRandomRow(void)
     StrLib::vCopyLen(aRecord,spRecord.sz()->azChar(),nLength);
   }
   
-  pCsvBuffer->vPrintRows();
+  pCsvBuffer->vPrintRecords();
   
   delete pCsvBuffer;
   delete pRow;
