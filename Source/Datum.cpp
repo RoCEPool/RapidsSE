@@ -547,7 +547,7 @@ void Datum_h::vStzDump(void)
     
   vTrace("|%02lld|%02lld|%s|\n"_Stz,
          nStzSize(),
-         szStz()->iLength(),
+         szStz()->nLength(),
          szStz());
 }
 

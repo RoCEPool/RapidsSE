@@ -108,7 +108,7 @@ void Stz::vCatSprint(Stz* szFormat, ...)
 {
   va_list args;
   
-  char* aEnd = azChar() + iLength();
+  char* aEnd = azChar() + nLength();
 
   va_start(args,szFormat);
   vsprintf(aEnd,szFormat->azChar(),args);
@@ -163,11 +163,11 @@ bool Stz::bEqual(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* iLength: get length in bytes of arg (not including terminating null)       */
 /*----------------------------------------------------------------------------*/
-i8 Stz::iLength(void)
+i8 Stz::nLength(void)
 {
-  i8 iLen = strlen(azChar());
+  i8 nLen = strlen(azChar());
   
-  return iLen;
+  return nLen;
 }
 
 /*----------------------------------------------------------------------------*/
