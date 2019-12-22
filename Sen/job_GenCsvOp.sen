@@ -5,9 +5,9 @@
 " job_GenCsvOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a scannable table folder                                  */
+/* check if word is a table folder                                            */
 /*----------------------------------------------------------------------------*/
-: checkScanTable ( "<tableNm>" -- true | errorCode false )
+: checkGenTable ( "<tableNm>" -- true | errorCode false )
 
   params| sTableNm |
 
@@ -39,7 +39,7 @@
 
   >>logEntry <SEED_REQ>
 
-  job::this locals| pJob_ScanOp |
+  job::this locals| pJob_GenCsvOp |
   0 0 locals| sTableNm pTable |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -59,10 +59,10 @@
         "Operand:- ZK_STARTMARKER" .verbose
         Operand[].delete
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // check if we can scan the table
         <tableNm> to sTableNm
-        sTableNm checkScanTable not if
+        sTableNm checkGenTable not if
 
           op.pipelineJob@ <ERROR_JOB>
 
@@ -71,26 +71,20 @@
 
         else
 
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // move to table folder and find the table and tablePtn
           sTableNm pushTable assert
           sTableNm find execute to table[]
-
-          pJob_ScanOp table[].tablePtn@ to tablePtn[]
 
           // new a stream def
           pTable Operand[].newStreamDef
           Operand[].pipeOut
 
-          // pipeout all subsets from tablePtn
-          tablePtn[].root to Subset[]
-          Subset[]@ to Operand[]
+          // pipeout a generated csv buffer
           begin
-            Operand[].isNull
-          not while
-            Operand[].pipeOut
-            Subset[].nextBuffer to Operand[]
-          repeat
+
+            false
+          while repeat
 
           Operand[].newEndMarker
           Operand[].handleEnd
