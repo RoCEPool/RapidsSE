@@ -571,7 +571,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
     // append the row to the record
     hvRec->vAppend(hRow);
     
-    StrLib::vConcat(hvRec->szRecStr()->azChar(),'\n');            //! sub-optimal
+    StrLib::vConcat(hvRec->szRecStr()->azChar(),'\n');           //! sub-optimal
     
     nBytes = hvRec->szRecStr()->nSize();
     
