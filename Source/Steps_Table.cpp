@@ -200,8 +200,8 @@ void Step::vTableGenRandomRow(void)
 //  SP_Row spRow;
 //  vTrace("Random Row: \n%s\n"_Stz,spRow.sz(pRow));
   
-  SP_Record spRecord;
-  vTrace("Random Rec: \n%s\n"_Stz,spRecord.sz(pRow));
+  SP_Record spRecord(pRow);
+  vTrace("Random Rec: \n%s\n"_Stz,spRecord.sz());
 
   m_pDataStack->vPushPtr(pRow);
 
