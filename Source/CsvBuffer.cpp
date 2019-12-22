@@ -80,15 +80,17 @@ CsvBuffer::~CsvBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot space for a record of given size                                     */
 /*----------------------------------------------------------------------------*/
-char* CsvBuffer::aAllotRecord(i8 nBytes)
+char* CsvBuffer::azAllotRecord(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
-  char* aRecord = (char*)m_xWsp.ayAllot(nBytes);
-  if (aRecord)
+  char* azRecord = (char*)m_xWsp.ayAllot(nBytes);
+  if (azRecord)
     m_nRecords++;
   
-  return aRecord;
+  * azRecord = '\0';
+  
+  return azRecord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,7 +105,7 @@ Stz* CsvBuffer::szAppendRecord(Stz* szRecord)
   if (nFreeBytes() < nLength)
     return nullptr;
   
-  char* azAllotted = aAllotRecord(nLength);
+  char* azAllotted = azAllotRecord(nLength);
   StrLib::vCopyLen(azAllotted,szRecord->azChar(),nLength);
 
   return (Stz*)azAllotted;
@@ -112,11 +114,11 @@ Stz* CsvBuffer::szAppendRecord(Stz* szRecord)
 /*----------------------------------------------------------------------------*/
 /* get the recoords pointer                                                   */
 /*----------------------------------------------------------------------------*/
-char* CsvBuffer::aDataArea(void)
+byte* CsvBuffer::ayDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
-  return (char*)m_xWsp.ayArea();
+  return m_xWsp.ayArea();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,7 +150,7 @@ void CsvBuffer::vPrintRecords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
-  char* aData = aDataArea();
+  char* aData = (char*)ayDataArea();
   
   vTrace("%s\n"_Stz, aData);
 }
@@ -178,7 +180,7 @@ CrwBuffer* CsvBuffer::pToCrwBuffer(Table* pTable, RowCompactor* pRowCompactor)
   
   Row* pRow = new Row(pTable->pStreamDef(),C_ALL);
 
-  char* aCursor = aDataArea();
+  char* aCursor = (char*)ayDataArea();
   bool bBlankLine = false;
   Format* pFormat = AM::pFmt();
   pFormat->m_cRecordTerminator = '\n';
