@@ -44,25 +44,26 @@
 "job_DumpIndex.sen"      include
 "job_DumpTable.sen"      include
 
-"job_ForgetNode.sen"     include
+"job_FetchRows.sen"       include
+"job_ForgetNode.sen"      include
 
-"job_FetchRows.sen"      include
+"job_GenCsvOp.sen"        include
 
-"Job_InsertOp.sen"       include
-"job_InsertRow.sen"      include
-"job_InsertTable.sen"    include
+"Job_InsertOp.sen"        include
+"job_InsertRow.sen"       include
+"job_InsertTable.sen"     include
 
-"Job_Lf.sen"             include
-"Job_ListColumns.sen"    include
-"Job_ListCatalogs.sen"   include
-"Job_ListIdxColumns.sen" include
-"Job_ListIndexes.sen"    include
+"Job_Lf.sen"              include
+"Job_ListColumns.sen"     include
+"Job_ListCatalogs.sen"    include
+"Job_ListIdxColumns.sen"  include
+"Job_ListIndexes.sen"     include
 "Job_ListPartColumns.sen" include
-"Job_ListPartitions.sen" include
-"Job_ListSchemas.sen"    include
-"Job_ListTables.sen"     include
-"Job_ListTenants.sen"    include
-"Job_LoadTable.sen"      include
+"Job_ListPartitions.sen"  include
+"Job_ListSchemas.sen"     include
+"Job_ListTables.sen"      include
+"Job_ListTenants.sen"     include
+"Job_LoadTable.sen"       include
 
 "Job_OutputOp.sen"       include
 
