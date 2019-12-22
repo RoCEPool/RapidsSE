@@ -28,7 +28,7 @@ namespace Buffers
     CsvBuffer(void);
     ~CsvBuffer(void) noexcept(false);
     
-    char*      azAllotRecord(i8 nBytes);
+    Stz*       szAllotRecord(i8 nBytes);
     Stz*       szAppendRecord(Stz* szRecord);
     byte*      ayDataArea(void);
     i8         nFreeBytes(void);

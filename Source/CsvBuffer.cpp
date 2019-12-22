@@ -70,27 +70,25 @@ CsvBuffer::~CsvBuffer(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allot space for a record of given size                                     */
+/* allot space for nBytes record , returning nullptr if insufficient space    */
 /*----------------------------------------------------------------------------*/
-char* CsvBuffer::azAllotRecord(i8 nBytes)
+Stz* CsvBuffer::szAllotRecord(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
-  char* azRecord = (char*)m_xWsp.ayAllot(nBytes);
-  if (azRecord)
-    m_nRecords++;
+  Stz* szRecord = (Stz*)m_xWsp.ayAllot(nBytes);
+  if (! szRecord)
+    return nullptr;
   
-  * azRecord = '\0';
+  m_nRecords++;
   
-  return azRecord;
+  * szRecord = '\0';
+  
+  return szRecord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,15 +98,16 @@ Stz* CsvBuffer::szAppendRecord(Stz* szRecord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
-  i8 nLength = szRecord->iLength();
+  i8 nSize = szRecord->nSize();
 
-  if (nFreeBytes() < nLength)
+  if (nFreeBytes() < nSize)
     return nullptr;
   
-  char* azAllotted = azAllotRecord(nLength);
-  StrLib::vCopyLen(azAllotted,szRecord->azChar(),nLength);
+  Stz* szAllotted = szAllotRecord(nSize - 1);
+  
+  StrLib::vCopy(szAllotted->azChar(),szRecord->azChar());
 
-  return (Stz*)azAllotted;
+  return szAllotted;
 }
 
 /*----------------------------------------------------------------------------*/
