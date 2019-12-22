@@ -43,26 +43,6 @@
   0 0 locals| sTableNm pTable |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if we can scan the table
-  <tableNm> to sTableNm
-  sTableNm checkScanTable not if
-    pJob_ScanOp <ERROR_JOB>
-    Operand[].newErrorMarker
-    Operand[].pipeOut
-    !!logError
-    job::deleteThis
-    <DONE_RUN>
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // move to table folder and find the table and tablePtn
-  sTableNm pushTable assert
-  sTableNm find execute to table[]
-
-  pJob_ScanOp table[].tablePtn@ to tablePtn[]
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   begin
 
     // bide till next operand is available
@@ -75,25 +55,49 @@
     Operand[].kind case
 
       ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
+
+        "Operand:- ZK_STARTMARKER" .verbose
         Operand[].delete
 
-        // new a stream def
-        pTable Operand[].newStreamDef
-        Operand[].pipeOut
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // check if we can scan the table
+        <tableNm> to sTableNm
+        sTableNm checkScanTable not if
 
-        // pipeout all subsets from tablePtn
-        tablePtn[].root to Subset[]
-        Subset[]@ to Operand[]
-        begin
-          Operand[].isNull
-        not while
+          op.pipelineJob@ <ERROR_JOB>
+
+          "ERROR>>>" .
+          Operand[].newErrorMarker
+          Operand[].handleError
+
+        else
+
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // move to table folder and find the table and tablePtn
+          sTableNm pushTable assert
+          sTableNm find execute to table[]
+
+          pJob_ScanOp table[].tablePtn@ to tablePtn[]
+
+          // new a stream def
+          pTable Operand[].newStreamDef
           Operand[].pipeOut
-          Subset[].nextBuffer to Operand[]
-        repeat
 
-        Operand[].newEndMarker
-        Operand[].handleEnd
+          // pipeout all subsets from tablePtn
+          tablePtn[].root to Subset[]
+          Subset[]@ to Operand[]
+          begin
+            Operand[].isNull
+          not while
+            Operand[].pipeOut
+            Subset[].nextBuffer to Operand[]
+          repeat
+
+          Operand[].newEndMarker
+          Operand[].handleEnd
+
+        then
+
       endof
 
     endcase

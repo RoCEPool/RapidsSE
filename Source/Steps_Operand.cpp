@@ -193,8 +193,8 @@ void Step::vOperandHandleError(void)
   
   //vTrace("%s %lld\n"_Stz, pOp->m_sName.azChar(), pOp->m_nLeftEndMarkers);
   
-  if (AM::bJobHasError(pOp->pOpJob()))
-    AM::vSetJobLocalError(pOp->pOpJob(), pOp->pPipeline()->pJob());
+  //if (AM::bJobHasError(pOp->pOpJob()))
+  //  AM::vSetJobLocalError(pOp->pOpJob(), pOp->pPipeline()->pJob());
   
   if (pOp->nDecLeftEndMarkers() == 0) {
     if (pOp->bIsCancelling()) {

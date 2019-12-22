@@ -57,7 +57,6 @@
       ZK_ERRORMARKER of
         //"Operand:- ZK_ERRORMARKER" .verbose
         Operand[].handleError
-        true
      endof
 
       ZK_IRWBUFFER of

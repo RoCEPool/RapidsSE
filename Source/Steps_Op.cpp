@@ -14,6 +14,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.leftEndMarkers!"_Stz,  &Step::vOpLeftEndMarkersStore);
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
+  vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPipleineJobFetch);
   vAddStep("Op.stopStartOps"_Stz,     &Step::vOpStopStartOps);
   vAddStep("Op.topology!"_Stz,        &Step::vOpTopologyStore);
 }
@@ -60,6 +61,20 @@ void Step::vOpPartitionFetch(void)
   ENTRY(); // ENTRY("vOpPartitionFetch"_Stz);
   
   m_pDataStack->vPushInt(m_pTask->m_pJob->m_pOp->nPartition());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.pipelineJob@ -- fetch pipeline job from op                              */
+/*----------------------------------------------------------------------------*/
+void Step::vOpPipleineJobFetch(void)
+{
+  ENTRY(); // ENTRY("vOpPipleineJobFetch"_Stz);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  
+  m_pDataStack->vPushPtr(pOp->pPipeline()->pJob());
   
   EXIT();
 }

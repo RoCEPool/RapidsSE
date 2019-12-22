@@ -1313,7 +1313,8 @@ void Job::vPrintQueueRows(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
   
-  AM::vDeleteOperand(pStreamDef);
+  if (pStreamDef)
+    AM::vDeleteOperand(pStreamDef);
   return;
   
 }

@@ -103,7 +103,7 @@ time pipeline scan
 begin
 
 stage stageA on all partitions:
-  scanOp lineitem | stageB
+  scanOp lineitemX | stageB
 
 stage stageB on origin:
   outputOp | sinkOp
