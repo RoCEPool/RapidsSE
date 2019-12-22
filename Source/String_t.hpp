@@ -357,7 +357,7 @@ i8 String_t<SIZE>::nLength(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return StrLib::iLength(azChar());
+  return StrLib::nLength(azChar());
 }
 
 /*----------------------------------------------------------------------------*/

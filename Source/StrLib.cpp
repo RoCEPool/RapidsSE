@@ -138,7 +138,7 @@ void StrLib::vAppendHex(char** pz, i8 iNumber)
 /*----------------------------------------------------------------------------*/
 void StrLib::vAppendPad(char** pz, const char* pString, i8 nLength)
 {
-  i8 nCurLen = StrLib::iLength(pString);
+  i8 nCurLen = StrLib::nLength(pString);
   
   if (nCurLen >= nLength)
     return;
@@ -242,7 +242,7 @@ void StrLib::vClick(char* aArg)
 /*----------------------------------------------------------------------------*/
 bool StrLib::bClip(char* aArg, i8 iMaxLen)
 {
-  i8 iCurLen = StrLib::iLength(aArg);
+  i8 iCurLen = StrLib::nLength(aArg);
   
   if (iCurLen <= iMaxLen)
     return false;
@@ -332,7 +332,7 @@ bool StrLib::iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase)
 /*----------------------------------------------------------------------------*/
 void StrLib::vConcat(char* pWS, char cChar)
 {
-  i8 i = iLength(pWS);
+  i8 i = nLength(pWS);
   pWS[i] = cChar;
   pWS[i+1] = '\0';
 }
@@ -370,8 +370,8 @@ void StrLib::vConcat(char* psDst, i8 iArg)
 /*----------------------------------------------------------------------------*/
 char* StrLib::wConcat(const char* s1, const char* s2)
 {
-  i8 iLen1 = iLength(s1);
-  i8 iLen2 = iLength(s2);
+  i8 iLen1 = nLength(s1);
+  i8 iLen2 = nLength(s2);
   
   i8 iSize = iLen1 + iLen2 + 1;
   
@@ -641,8 +641,8 @@ bool StrLib::bEnds(const char* s, const char c)
 /*----------------------------------------------------------------------------*/
 bool StrLib::bEnds(char* sArg, char* sEnd)
 {
-  i8 nLen  = iLength(sArg);
-  i8 nBack = iLength(sEnd);
+  i8 nLen  = nLength(sArg);
+  i8 nBack = nLength(sEnd);
   
   if (nBack > nLen)
     return false;
@@ -2257,7 +2257,7 @@ bool StrLib::bIsWhite(const char c)
 /*----------------------------------------------------------------------------*/
 char* StrLib::sLast(const char* s)
 {
-  i8 nLen  = iLength(s);
+  i8 nLen  = nLength(s);
   
   const char* z = s + nLen - 1;
   
@@ -2287,7 +2287,7 @@ bool StrLib::bSkipLeading(char** ps, char cEnclosedBy_Leading)
 /*----------------------------------------------------------------------------*/
 /* iLength: get length in bytes of arg (not including terminating null)       */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iLength(const char* s)
+i8 StrLib::nLength(const char* s)
 {
   i8 iLen = strlen(s);
   
@@ -2297,7 +2297,7 @@ i8 StrLib::iLength(const char* s)
 /*----------------------------------------------------------------------------*/
 /* iLength: get length in bytes of arg (not including terminating null)       */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iLength(const char* s, const char cTerm, i8 iMax)
+i8 StrLib::nLength(const char* s, const char cTerm, i8 iMax)
 {
   if (! *s)
     return 0;
@@ -2347,7 +2347,7 @@ bool StrLib::bOneOf(char** asaSet, char* sWord)
 /*----------------------------------------------------------------------------*/
 void StrLib::vPad(char* w, i8 iToLength, const char cWith)
 {
-  i8 iCurrLength = iLength(w);
+  i8 iCurrLength = nLength(w);
   
   if (iCurrLength >= iToLength)
     return;
@@ -2400,7 +2400,7 @@ void StrLib::vRemovePrefix(char *azArg, char cIntro)
 /*----------------------------------------------------------------------------*/
 void StrLib::vRemoveSuffix(char *azArg, char cIntro)
 {
-  char* azSuffix = azArg + iLength(azArg) - 1;
+  char* azSuffix = azArg + nLength(azArg) - 1;
   
   // find the byte where the suffix is introduced
   if (! bBackward(&azSuffix,azArg,cIntro))
@@ -2424,8 +2424,8 @@ bool StrLib::bReplace(char *pString, const char *pThis, const char *pThat)
     return false;
   
   // compute lengths and difference
-  i8 iLenThis = iLength(pThis);
-  i8 iLenThat = iLength(pThat);
+  i8 iLenThis = nLength(pThis);
+  i8 iLenThat = nLength(pThat);
   i8 iLenDiff = abs((int)iLenThis - (int)iLenThat);
   
   // which of 3 variants is it?
@@ -2443,7 +2443,7 @@ bool StrLib::bReplace(char *pString, const char *pThis, const char *pThat)
     // (2) replacing with longer
     
     // shuffle to the right to make space
-    char* pFrom  = pSubstr + iLength(pSubstr) - 1;
+    char* pFrom  = pSubstr + nLength(pSubstr) - 1;
     char* pTo    = pFrom   + iLenDiff;
     char* pLimit = pSubstr + iLenThis;
     while (pFrom >= pLimit)
@@ -2529,8 +2529,8 @@ NextIteration:
 /*----------------------------------------------------------------------------*/
 void StrLib::vReplaceTail(char* azArg, char* azTail)
 {
-  i8 iLen_arg  = StrLib::iLength(azArg);
-  i8 iLen_tail = StrLib::iLength(azTail);
+  i8 iLen_arg  = StrLib::nLength(azArg);
+  i8 iLen_tail = StrLib::nLength(azTail);
   
   //            01234567
   //            abcdefgh
@@ -2569,7 +2569,7 @@ void StrLib::vRight(char* azDst, char* azSrc, i8 i_At)
 /*----------------------------------------------------------------------------*/
 void StrLib::vRotate(char* zArg, i8 nBy)
 {
-  i8 nLen = iLength(zArg);
+  i8 nLen = nLength(zArg);
   ASSERT(nBy < nLen);
   
   char caFront[nBy];
@@ -2789,7 +2789,7 @@ void StrLib::vSprintCat(Stz* sDst, Stz* sFormat, ...)
 {
   va_list args;
   
-  char* sEnd = sDst->azChar() + iLength(sDst->azChar());
+  char* sEnd = sDst->azChar() + nLength(sDst->azChar());
   
   va_start(args,sFormat);
   vsprintf(sEnd,sFormat->azChar(),args);
@@ -2801,7 +2801,7 @@ void StrLib::vSprintCat(Stz* sDst, Stz* sFormat, ...)
 /*----------------------------------------------------------------------------*/
 void StrLib::vSprintCat(char* sDst, va_list args, const char* sFormat)
 {
-  char* sEnd = sDst + iLength(sDst);
+  char* sEnd = sDst + nLength(sDst);
   
   vsprintf(sEnd,sFormat,args);
 }
@@ -3008,7 +3008,7 @@ char* StrLib::wToString(i8 i, char* w)
 /*----------------------------------------------------------------------------*/
 char* StrLib::zTerminator(char* s)
 {
-  i8 nLen  = iLength(s);
+  i8 nLen  = nLength(s);
   
   char* z = s + nLen;
   
@@ -3046,7 +3046,7 @@ bool StrLib::bValidateMonth(i8 iDay, i8 iMonth, i8 iYear)
 /*----------------------------------------------------------------------------*/
 i8 StrLib::iWordFlip(char* aDst, char* aSrc)
 {
-  i8 iLenSrc  = iLength(aSrc);
+  i8 iLenSrc  = nLength(aSrc);
   //vTrace("Flipping %s\n"_Stz, aSrc);
   
   i8 iRoundUp = 0;

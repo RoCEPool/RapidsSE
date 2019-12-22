@@ -39,7 +39,7 @@ JobClass* JobCatalog::aFindClass(Stz* szCmd1, Stz* szCmd2)
       continue;
 
     if (aJobClass->m_aCommand2) {
-      if ( ! StrLib::iLength(aJobClass->m_aCommand2->azChar()) )
+      if ( ! StrLib::nLength(aJobClass->m_aCommand2->azChar()) )
         continue;
       if ( ! StrLib::bSame(aJobClass->m_aCommand2->azChar(),szCmd2->azChar()) )
         continue;
