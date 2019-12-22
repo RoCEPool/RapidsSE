@@ -203,14 +203,10 @@ void Step::vTableGenRandomRow(void)
     
     SP_Record spRecord(pRow);
     StrLib::vConcat(spRecord.sz()->azChar(),'\n');               //! sub-optimal
+    //vTrace("Random Rec: %s"_Stz,spRecord.sz());
 
-    //vTrace("Random Rec: \n%s\n"_Stz,spRecord.sz());
-
-    i8 nLength = spRecord.sz()->iLength();
-    if (pCsvBuffer->nFreeBytes() < nLength)
+    if (! pCsvBuffer->szAppendRecord(spRecord.sz()))
       break;
-    char* aRecord = pCsvBuffer->aAllotRecord(nLength);
-    StrLib::vCopyLen(aRecord,spRecord.sz()->azChar(),nLength);
   }
   
   pCsvBuffer->vPrintRecords();

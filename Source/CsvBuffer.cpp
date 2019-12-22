@@ -78,16 +78,6 @@ CsvBuffer::~CsvBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the recoords pointer                                                   */
-/*----------------------------------------------------------------------------*/
-char* CsvBuffer::aDataArea(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
-  
-  return (char*)m_xWsp.ayArea();
-}
-
-/*----------------------------------------------------------------------------*/
 /* allot space for a record of given size                                     */
 /*----------------------------------------------------------------------------*/
 char* CsvBuffer::aAllotRecord(i8 nBytes)
@@ -99,6 +89,34 @@ char* CsvBuffer::aAllotRecord(i8 nBytes)
     m_nRecords++;
   
   return aRecord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append record, returning nullptr if insufficient space                     */
+/*----------------------------------------------------------------------------*/
+Stz* CsvBuffer::szAppendRecord(Stz* szRecord)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  i8 nLength = szRecord->iLength();
+
+  if (nFreeBytes() < nLength)
+    return nullptr;
+  
+  char* azAllotted = aAllotRecord(nLength);
+  StrLib::vCopyLen(azAllotted,szRecord->azChar(),nLength);
+
+  return (Stz*)azAllotted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the recoords pointer                                                   */
+/*----------------------------------------------------------------------------*/
+char* CsvBuffer::aDataArea(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  return (char*)m_xWsp.ayArea();
 }
 
 /*----------------------------------------------------------------------------*/
