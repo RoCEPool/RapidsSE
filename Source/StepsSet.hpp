@@ -1122,7 +1122,7 @@ public:
   void vTableDump(void);
   void vTableFindColumn(void);
   void vTableFirstBuffer(void);
-  void vTableGenRandomRow(void);
+  void vTableGenCsvBuffer(void);
   void vTableGetColumnsAsString(void);
   void vTableColumnFetch(void);
   void vTableGetPtn(void);

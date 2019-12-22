@@ -80,9 +80,10 @@
           pTable Operand[].newStreamDef
           Operand[].pipeOut
 
-          // pipeout a generated csv buffer
+          // pipeout a single generated csv buffer
           begin
-
+            table[].get table.genCsvBuffer to Operand[]
+            Operand[].pipeOut
             false
           while repeat
 

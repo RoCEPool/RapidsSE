@@ -95,17 +95,6 @@ time fetch lineitem "l_orderKey 20 <" ;
 
 ping;
 
-pipeline lineitem_gen
-begin
-
-  stage stageA on all partitions:
-    genCsvOp lineitem | stageB
-
-  stage stageB on origin:
-    outputOp | sinkOp
-
-end;
-
 logWrite;
 
 

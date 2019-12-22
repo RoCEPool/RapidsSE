@@ -26,9 +26,18 @@ time create table T
 
 lscol T;
 
-docol test_rjh;
+//docol test_rjh;
 
-pwf ;
+pipeline t_gen
+begin
+
+  stage stageA on all partitions:
+    genCsvOp T | stageB
+
+  stage stageB on origin:
+  outputOp | sinkOp
+
+end;
 
 //drop table T;
 

@@ -16,8 +16,8 @@
 
   "T" find execute to pTable
 
-  100 0 do
-    pTable table.genRandomRow drop
+  3 0 do
+    pTable table.genCsvBuffer drop
   loop
 ;
 

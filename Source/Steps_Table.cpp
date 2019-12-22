@@ -16,7 +16,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.drop"_Stz,               &Step::vTableDrop);
   vAddStep("table.dump"_Stz,               &Step::vTableDump);
   vAddStep("table.findColumn"_Stz,         &Step::vTableFindColumn);
-  vAddStep("table.genRandomRow"_Stz,       &Step::vTableGenRandomRow);
+  vAddStep("table.genCsvBuffer"_Stz,       &Step::vTableGenCsvBuffer);
   vAddStep("table.getColumnsAsString"_Stz, &Step::vTableGetColumnsAsString);
   vAddStep("table.getPtn"_Stz,             &Step::vTableGetPtn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
@@ -183,11 +183,11 @@ void Step::vTableDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.genRandomRow -- generate a random row for table                      */
+/* table.genCsvBuffer -- generate a random row for table                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTableGenRandomRow(void)
+void Step::vTableGenCsvBuffer(void)
 {
-  ENTRY(); // ENTRY("vTableGenRandomData"_Stz);
+  ENTRY(); // ENTRY("vTableGenCsvBuffer"_Stz);
 
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   StreamDef* pStreamDef = pTable->pStreamDef();
@@ -211,10 +211,10 @@ void Step::vTableGenRandomRow(void)
   
   pCsvBuffer->vPrintRecords();
   
-  delete pCsvBuffer;
+  //delete pCsvBuffer;
   delete pRow;
   
-  m_pDataStack->vPushPtr(nullptr);
+  m_pDataStack->vPushPtr(pCsvBuffer);
 
   EXIT();
 }
