@@ -1367,11 +1367,6 @@ bool AM::bJobHasError(Job* pJob) {
   return pJob->bHasError();
 }
 
-void AM::vSetJobLocalError(Job* pFromJob, Job* pToJob) {
-  pToJob->vHasError(pFromJob->bHasError());
-  pToJob->vErrorCode(pFromJob->eErrorCode());
-}
-
 void AM::vJobObjectName(Job* pJob, Stz* szObjectName) {
   pJob->pEnameSet()->vAdd("<tableNm>"_Stz,szObjectName);
 }

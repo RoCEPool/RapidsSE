@@ -66,9 +66,8 @@
 
           op.pipelineJob@ <ERROR_JOB>
 
-          "ERROR>>>" .
           Operand[].newErrorMarker
-          Operand[].handleError
+          Operand[].handleEnd
 
         else
 

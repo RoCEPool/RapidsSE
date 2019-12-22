@@ -15,7 +15,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].get"_Stz,            &Step::vOperandGet);
   vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vOperandHandleAggEnd);
   vAddStep("Operand[].handleEnd"_Stz,      &Step::vOperandHandleEnd);
-  vAddStep("Operand[].handleError"_Stz,    &Step::vOperandHandleError);
   vAddStep("Operand[].handleStop"_Stz,     &Step::vOperandHandleStop);
   vAddStep("Operand[].isNull"_Stz,         &Step::vOperandIsNull);
   vAddStep("Operand[].itemCount@"_Stz,     &Step::vOperandItemCountFetch);
@@ -127,9 +126,6 @@ void Step::vOperandHandleAggEnd(void)
       pOp->vPipeOut(*m_pRegSet->m_xpOperand);
     }
     
-    if (AM::bJobHasError(pOp->pOpJob())) {
-      AM::vSetJobLocalError(pOp->pOpJob(), pOp->pPipeline()->pJob());
-    }
     if (pOp->bAckJobEnd())
       pOp->vAckJob();
     
@@ -149,9 +145,7 @@ void Step::vOperandHandleEnd(void)
   
   ASSERT(*m_pRegSet->m_xpOperand);
   
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
-  
-  //vTrace("%s %lld\n"_Stz, pOp->m_sName.azChar(), pOp->m_nLeftEndMarkers);
+  Op* pOp = m_pTask->m_pJob->m_pOp;
   
   if (pOp->nDecLeftEndMarkers() == 0) {
     if (pOp->bIsCancelling()) {
@@ -164,59 +158,16 @@ void Step::vOperandHandleEnd(void)
       pOp->vPipeOut(*m_pRegSet->m_xpOperand);
     }
     
-    if (AM::bJobHasError(pOp->pOpJob())) {
-      AM::vSetJobLocalError(pOp->pOpJob(), pOp->pPipeline()->pJob());
-    }
     if (pOp->bAckJobEnd())
       pOp->vAckJob();
     
     m_pDataStack->vPushInt(0);
   }
   else {
-    delete (EndMarker*)(*m_pRegSet->m_xpOperand);
+    AM::vDeleteOperand(*m_pRegSet->m_xpOperand);
     m_pDataStack->vPushInt(1);
   }
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].handleError -- handle error marker                               */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandHandleError(void)
-{
-  ENTRY(); // ENTRY("vOperandHandleError"_Stz);
-  
-  ASSERT(*m_pRegSet->m_xpOperand);
-  
-  Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
-  
-  //vTrace("%s %lld\n"_Stz, pOp->m_sName.azChar(), pOp->m_nLeftEndMarkers);
-  
-  //if (AM::bJobHasError(pOp->pOpJob()))
-  //  AM::vSetJobLocalError(pOp->pOpJob(), pOp->pPipeline()->pJob());
-  
-  if (pOp->nDecLeftEndMarkers() == 0) {
-    if (pOp->bIsCancelling()) {
-      AM::vDeleteOperand(*m_pRegSet->m_xpOperand);
-      
-      pOp->vPipeOut(new CancelMarker);
-      
-    }
-    else {
-      pOp->vPipeOut(*m_pRegSet->m_xpOperand);
-    }
-    
-    if (pOp->bAckJobEnd())
-      pOp->vAckJob();
-    
-    m_pDataStack->vPushInt(0);
-  }
-  else {
-    delete (ErrorMarker*)(*m_pRegSet->m_xpOperand);
-    m_pDataStack->vPushInt(1);
-  }
-  
   EXIT();
 }
 

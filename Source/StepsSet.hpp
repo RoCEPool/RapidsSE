@@ -865,7 +865,6 @@ public:
   void vOperandGet(void);
   void vOperandHandleAggEnd(void);
   void vOperandHandleEnd(void);
-  void vOperandHandleError(void);
   void vOperandHandleStop(void);
   void vOperandIsNull(void);
   void vOperandItemCountFetch(void);

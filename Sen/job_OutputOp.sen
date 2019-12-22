@@ -43,7 +43,7 @@
 
       ZK_ERRORMARKER of
         //"Operand:- ZK_ERRORMARKER" .verbose
-        Operand[].handleError
+        Operand[].handleEnd
       endof
 
       ZK_ENTBUFFER of
