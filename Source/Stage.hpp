@@ -34,7 +34,7 @@ namespace Operators
     StageNdeVec* pStageNdeVec(void);
     StagePtn*    pStagePtn(i8 i_Ptn);
     StagePtnVec* pStagePtnVec(void);
-    void         vStartPipeline(i8 iThisNode);
+    void         vStartPipeline(void);
     void         vStopPipeline(i8 iThisNode);
     
     Footer* aFooter(void);

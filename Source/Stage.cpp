@@ -382,33 +382,21 @@ StageNdeVec* Stage::pStageNdeVec(void)
 /*----------------------------------------------------------------------------*/
 /* send startMarker to startop of the stage                                   */
 /*----------------------------------------------------------------------------*/
-void Stage::vStartPipeline(i8 iThisNode)
+void Stage::vStartPipeline(void)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
-  for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
-    StageNde* pStageNde = m_oStageNdeVec.pGet(i_Nde);
-    
-    if (pStageNde->iNode() == iThisNode) {
-      Op* pOp = pStageNde->pOpVec()->pGet(0);
-      RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
-      pOp->vAppendLeft(new StartMarker);
-    }
-  }
+  // get first stage from stageNdeVec
+  StageNde* pStageNde = m_oStageNdeVec.pGet(0);
+
+  // get first operator of this first stage
+  Op* pOp = pStageNde->pOpVec()->pGet(0);
+  RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
   
-//  for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
-//    StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
-//    
-//    i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
-//    
-//    if (iPtnNode == iThisNode) {
-//      Op* pOp = pStagePtn->pOpVec()->pGet(0);
-//      RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
-//      pOp->vAppendLeft(new StartMarker);
-//    }
-//  }
-//  
+  // append a STARTMARKER
+  pOp->vAppendLeft(new StartMarker);
 }
+
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

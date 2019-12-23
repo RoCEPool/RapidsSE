@@ -112,7 +112,7 @@ void Step::vJob_PipelineExecute(void)
   Stage* pStage = pPipeline->pStageVec()->pGet(0);
   
   // send startMarker to the startOp of the first stage of the pipeline
-  pStage->vStartPipeline(iThisNode);
+  pStage->vStartPipeline();
   
   EXIT();
 }
