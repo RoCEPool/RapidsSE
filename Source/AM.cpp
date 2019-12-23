@@ -253,8 +253,7 @@ void AM::vSendJobOperand(Task* pTask, Operand* pOperand,
   pOp->vLinkToStage(pNextStage);
   
   // new a xmit job
-  Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(
-                                  nullptr, pOperand, pParentJob->m_iFocalId,pOp,pOp->iXmitNode());
+  Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(pOperand, pParentJob->m_iFocalId,pOp);
   
   // set the send node in the task
   Node* pSendNode = pGrid()->pGetNode(pOp->iXmitNode());
@@ -413,6 +412,30 @@ void AM::vWriteLog(void) {
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get pSession given i_Session                                               */
+/*----------------------------------------------------------------------------*/
+void AM::vSend(Task* pTask, Node* pSendNode, Job_Operand* pJob_Operand)
+{
+  pTask->vSendNode(pSendNode);
+  
+  // grab socket wite lock
+  Socket* pSocket = pSendNode->pSendSocket();
+  pSocket->vGrabWrite();
+  
+  SysCall oSysCall;
+  i8 nObjectSize = giClassSize[pJob_Operand->eClass()];
+  bool bResult = pSocket->bSendTo(pJob_Operand, nObjectSize, oSysCall);
+  
+  Operand* pOperand = pJob_Operand->m_pOperand;
+  nObjectSize = giClassSize[pOperand->eClass()];
+  bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
+  
+  // drop the socket write lock
+  pSocket->vDropWrite();
+  
+}
 
 /*----------------------------------------------------------------------------*/
 /* get pSession given i_Session                                               */
@@ -1064,6 +1087,25 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
   
   AM::vLogFyi("%s woken from nap"_Stz, //!format-LogFyi
               aCN[eCallingClass]);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete an operand job                                                      */
+/*----------------------------------------------------------------------------*/
+void AM::vDeleteJobOperand(Job_Operand* pJob)
+{
+  delete pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new an operand job                                                         */
+/*----------------------------------------------------------------------------*/
+Job_Operand* AM::pNewJobOperand(Job* pParentJob, Operand* pOperand, Op* pOp)
+{
+  Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(
+                                 pOperand, pParentJob->m_iFocalId, pOp);
+  
+  return pJob_Operand;
 }
 
 /*----------------------------------------------------------------------------*/

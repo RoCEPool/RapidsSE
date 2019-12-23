@@ -29,11 +29,7 @@ namespace Jobs
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    static Job_Operand* pNewJobOperand(Session* pSession,
-                                       Operand* pOperand,
-                                       i8 iParentJobId,
-                                       Op* pOp,
-                                       i8 iNode);
+    static Job_Operand* pNewJobOperand(Operand* pOperand, i8 iParentJobId, Op* pOp);
     
   public:
     void vInsertRow(void);

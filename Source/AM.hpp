@@ -229,6 +229,8 @@ namespace Oblique
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vNap(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMilliSeconds, eCN eCallingClass);
+    static void vDeleteJobOperand(Job_Operand* pJob);
+    static Job_Operand* pNewJobOperand(Job* pParentJob, Operand* pOperand, Op* pOp);
     static Job* pNewJobUniversal(Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -242,6 +244,7 @@ namespace Oblique
     static ReqTuple* aReqTuple_tls(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static void vSend(Task* pTask, Node* pSendNode, Job_Operand* pJob_Operand);
     static Session* pSessionGet(ReqTuple* aReqTuple);
     static bool bSpawnJob(Job* pJob);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);

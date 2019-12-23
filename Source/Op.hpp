@@ -98,6 +98,7 @@ namespace Operators
     OperandQueue* pQueueRight(void);
     i8   nRightEndMarkers(void);
     void vRightEndMarkers(i8 nEndMarkers);
+    void vSendJobOperand(Operand* pOperand);
     bool bSpawnJob(i8 iSessionId);
     Task* pTask(void);
     void vTask(Task* pTask);

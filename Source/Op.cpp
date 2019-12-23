@@ -589,10 +589,7 @@ void Op::vPipeOut(Operand* pOperand)
   switch(eJobType) {
       
     case JT_XMITOP:
-      AM::vSendJobOperand(m_pTask,
-                          pOperand,
-                          m_pJobPipeline,
-                          this);
+      vSendJobOperand(pOperand);
       break;
       
     default:
@@ -852,6 +849,37 @@ void Op::vRightEndMarkers(i8 nEndMarkers)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_nRightEndMarkers = nEndMarkers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job operand                                                            */
+/*----------------------------------------------------------------------------*/
+void Op::vSendJobOperand(Operand* pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  // get next stage to xmit to
+  ASSERT (m_iNextStage != C_UNKNOWN);
+  Stage* pNextStage = m_pPipeline->pStageVec()->pGet(m_iNextStage);
+  RASSERT(pNextStage);
+  
+  // link operator to next stage
+  vLinkToStage(pNextStage);
+  
+  // new a operand job
+  Job_Operand* pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this);
+  
+  // get the send node in the task
+  Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
+  
+  // send the operand job across the sendNode
+  AM::vSend(m_pTask, pSendNode, pJob_Operand);
+  
+  // delete the operand
+  AM::vDeleteOperand(pOperand);
+  
+  // delete the operand job
+  AM::vDeleteJobOperand(pJob_Operand);  
 }
 
 /*----------------------------------------------------------------------------*/

@@ -125,6 +125,7 @@ Job_Operand::Job_Operand(JobClass* aJobClass, ReqTuple* aReqTuple)
 Job_Operand::~Job_Operand(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_OPERAND,_FOOTER_);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -144,11 +145,9 @@ void Job_Operand::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* new an operand job                                                         */
 /*----------------------------------------------------------------------------*/
-Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
-                                         Operand* pOperand,
+Job_Operand* Job_Operand::pNewJobOperand(Operand* pOperand,
                                          i8 iParentJobId,
-                                         Op* pOp,
-                                         i8 iNode)
+                                         Op* pOp)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analysis
@@ -167,7 +166,7 @@ Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
   
   pJob_Operand->vParentId(iParentJobId);
   pJob_Operand->m_pOp        = pOp;
-  pJob_Operand->m_iNode      = iNode;
+  pJob_Operand->m_iNode      = pOp->iXmitNode();
   pJob_Operand->m_iPartition = pOp->nPartition();
   pJob_Operand->m_pOperand   = pOperand;
   
