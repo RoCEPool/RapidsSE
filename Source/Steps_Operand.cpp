@@ -425,7 +425,7 @@ void Step::vOperandCsvToCrw(void)
   WriteBehind* pWriteBehind = *m_pRegSet->m_xpWriteBehind;
   Table* pTable = *m_pRegSet->m_xpTable;
   
-  char* aCursor = pCsvBuffer->aDataArea();
+  char* aCursor = (char*)pCsvBuffer->ayDataArea();
   CrwBuffer* pCrwBuffer = nullptr;
   
   bool bBlankLine = false;
@@ -547,7 +547,7 @@ void Step::vOperandWriteToFile0(void)
   ASSERT(m_pRegSet->m_xpFile0->bIsOpen());
   
   CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperand) ;
-  char* aData = pCsvBuffer->aDataArea();
+  char* aData = (char*)pCsvBuffer->ayDataArea();
   
   m_pRegSet->m_xpFile0->vPrint("%s"_Stz,aData);
   m_pRegSet->m_xpFile0->vFlush();

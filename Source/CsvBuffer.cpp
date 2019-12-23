@@ -70,35 +70,54 @@ CsvBuffer::~CsvBuffer(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the recoords pointer                                                   */
+/* allot space for nBytes record , returning nullptr if insufficient space    */
 /*----------------------------------------------------------------------------*/
-char* CsvBuffer::aDataArea(void)
+Stz* CsvBuffer::szAllotRecord(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
-  return (char*)m_xWsp.ayArea();
+  Stz* szRecord = (Stz*)m_xWsp.ayAllot(nBytes);
+  if (! szRecord)
+    return nullptr;
+  
+  m_nRecords++;
+  
+  * szRecord = '\0';
+  
+  return szRecord;
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot space for a record of given size                                     */
+/* append record, returning nullptr if insufficient space                     */
 /*----------------------------------------------------------------------------*/
-char* CsvBuffer::aAllotRecord(i8 nBytes)
+Stz* CsvBuffer::szAppendRecord(Stz* szRecord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
-  char* aRecord = (char*)m_xWsp.ayAllot(nBytes);
-  if (aRecord)
-    m_nRecords++;
+  i8 nSize = szRecord->nSize();
+
+  if (nFreeBytes() < nSize)
+    return nullptr;
   
-  return aRecord;
+  Stz* szAllotted = szAllotRecord(nSize - 1);
+  
+  StrLib::vCopy(szAllotted->azChar(),szRecord->azChar());
+
+  return szAllotted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the recoords pointer                                                   */
+/*----------------------------------------------------------------------------*/
+byte* CsvBuffer::ayDataArea(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
+  
+  return m_xWsp.ayArea();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,13 +143,13 @@ CsvBuffer* CsvBuffer::pNextBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print the rows                                                             */
+/* print the records                                                          */
 /*----------------------------------------------------------------------------*/
-void CsvBuffer::vPrintRows(void)
+void CsvBuffer::vPrintRecords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CSVBUFFER,_FOOTER_);
   
-  char* aData = aDataArea();
+  char* aData = (char*)ayDataArea();
   
   vTrace("%s\n"_Stz, aData);
 }
@@ -160,7 +179,7 @@ CrwBuffer* CsvBuffer::pToCrwBuffer(Table* pTable, RowCompactor* pRowCompactor)
   
   Row* pRow = new Row(pTable->pStreamDef(),C_ALL);
 
-  char* aCursor = aDataArea();
+  char* aCursor = (char*)ayDataArea();
   bool bBlankLine = false;
   Format* pFormat = AM::pFmt();
   pFormat->m_cRecordTerminator = '\n';

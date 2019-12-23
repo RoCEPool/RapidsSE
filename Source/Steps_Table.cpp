@@ -16,7 +16,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.drop"_Stz,               &Step::vTableDrop);
   vAddStep("table.dump"_Stz,               &Step::vTableDump);
   vAddStep("table.findColumn"_Stz,         &Step::vTableFindColumn);
-  vAddStep("table.genRandomRow"_Stz,       &Step::vTableGenRandomRow);
+  vAddStep("table.genCsvBuffer"_Stz,       &Step::vTableGenCsvBuffer);
   vAddStep("table.getColumnsAsString"_Stz, &Step::vTableGetColumnsAsString);
   vAddStep("table.getPtn"_Stz,             &Step::vTableGetPtn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
@@ -183,27 +183,38 @@ void Step::vTableDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.genRandomRow -- generate a random row for table                      */
+/* table.genCsvBuffer -- generate a random row for table                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTableGenRandomRow(void)
+void Step::vTableGenCsvBuffer(void)
 {
-  ENTRY(); // ENTRY("vTableGenRandomData"_Stz);
+  ENTRY(); // ENTRY("vTableGenCsvBuffer"_Stz);
 
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-
   StreamDef* pStreamDef = pTable->pStreamDef();
   
+  CsvBuffer* pCsvBuffer = new CsvBuffer;
   Row* pRow = new Row(pStreamDef,C_ALL);
-  
-  RowGenerator::vRandom(pRow,pStreamDef);
-  
-//  SP_Row spRow;
-//  vTrace("Random Row: \n%s\n"_Stz,spRow.sz(pRow));
-  
-  SP_Record spRecord;
-  vTrace("Random Rec: \n%s\n"_Stz,spRecord.sz(pRow));
 
-  m_pDataStack->vPushPtr(pRow);
+  i8 nRecords = 0;
+  for ( ; ; nRecords++) {
+    
+    pRow->vResetValues();
+    RowGenerator::vRandom(pRow,pStreamDef);
+    
+    SP_Record spRecord(pRow);
+    StrLib::vConcat(spRecord.sz()->azChar(),'\n');               //! sub-optimal
+    //vTrace("Random Rec: %s"_Stz,spRecord.sz());
+
+    if (! pCsvBuffer->szAppendRecord(spRecord.sz()))
+      break;
+  }
+  
+  pCsvBuffer->vPrintRecords();
+  
+  //delete pCsvBuffer;
+  delete pRow;
+  
+  m_pDataStack->vPushPtr(pCsvBuffer);
 
   EXIT();
 }

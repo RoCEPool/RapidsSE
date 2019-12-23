@@ -561,7 +561,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
   
   i8 nRows = nRowCount();
   i8 nBytes = 1;
-  char* aRecord = nullptr;
+  Stz* szRecord = nullptr;
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
@@ -571,7 +571,7 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
     // append the row to the record
     hvRec->vAppend(hRow);
     
-    StrLib::vConcat(hvRec->szRecStr()->azChar(),'\n');            //! sub-optimal
+    StrLib::vConcat(hvRec->szRecStr()->azChar(),'\n');           //! sub-optimal
     
     nBytes = hvRec->szRecStr()->nSize();
     
@@ -581,12 +581,12 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
       pCsvBuffer = pNewCsvBuffer;
     }
     
-    aRecord = pCsvBuffer->aAllotRecord(nBytes - 1);
-    StrLib::vCopyLen(aRecord,hvRec->szRecStr()->azChar(),nBytes - 1);
+    szRecord = pCsvBuffer->szAllotRecord(nBytes - 1);
+    StrLib::vCopyLen(szRecord->azChar(),hvRec->szRecStr()->azChar(),nBytes - 1);
   }
   
-  if (aRecord)
-    aRecord[nBytes-1] = '\0';
+  if (szRecord)
+    ((char*)szRecord)[nBytes-1] = '\0';
   
   return pFirstCsvBuffer;
 }

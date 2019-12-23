@@ -1,0 +1,126 @@
+/*============================================================================*/
+/* job_GenCsvOp.sen -- Job GenCsvOp                                           */
+/*============================================================================*/
+
+" job_GenCsvOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a table folder                                            */
+/*----------------------------------------------------------------------------*/
+: checkGenTable ( "<tableNm>" -- true | errorCode false )
+
+  params| sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTable not if popTable false exit then
+  //sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+
+  // pop table folder
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* genCsvOp request                                   (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: genCsvOp_req ( -- )
+
+  >>logEntry <SEED_REQ>
+
+  job::this locals| pJob_GenCsvOp |
+  0 0 locals| sTableNm pTable |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_STARTMARKER of
+
+        "Operand:- ZK_STARTMARKER" .verbose
+        Operand[].delete
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // check if we can scan the table
+        <tableNm> to sTableNm
+        sTableNm checkGenTable not if
+
+          op.pipelineJob@ <ERROR_JOB>
+
+          Operand[].newErrorMarker
+          Operand[].handleEnd
+
+        else
+
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // move to table folder and find the table and tablePtn
+          sTableNm pushTable assert
+          sTableNm find execute to table[]
+
+          // new a stream def
+          pTable Operand[].newStreamDef
+          Operand[].pipeOut
+
+          // pipeout a single generated csv buffer
+          begin
+            table[].get table.genCsvBuffer to Operand[]
+            Operand[].pipeOut
+            false
+          while repeat
+
+          Operand[].newEndMarker
+          Operand[].handleEnd
+
+        then
+
+      endof
+
+    endcase
+
+  while assert::stack_0 repeat
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobSyntax: genCsvOp :: genCsvOp <tableNm> ;
+
+jobInfo: genCsvOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobType?>  = JT_SCANOP
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

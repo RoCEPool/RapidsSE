@@ -33,7 +33,7 @@ namespace Strings
     bool  bIsNumeric(void);
     bool  bIsSomeFalse(void);
     bool  bIsSomeTrue(void);
-    i8    iLength(void);
+    i8    nLength(void);
     bool  bSame(Stz* szArg);
     i8    nSize(void);
     void  vSprint(Stz* szFormat, ...);

@@ -1226,7 +1226,7 @@ void Job::vPrintQueueRows(void)
       case CN_CSVBUFFER: {
         CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
         m_xResponse.m_ixRowsProcessed += pCsvBuffer->nRecords();
-        pCsvBuffer->vPrintRows();
+        pCsvBuffer->vPrintRecords();
         AM::vDeleteOperand(pOperand);
         break;
       }

@@ -732,7 +732,7 @@ bool Socket::bWriteVch(Stz* aChar, SysCall& SysCall)
   
   SysCall.vClear();
   
-  i8 nBytes = aChar->iLength();
+  i8 nBytes = aChar->nLength();
  
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Socket.m_nSends++;

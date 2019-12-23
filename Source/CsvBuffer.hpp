@@ -28,11 +28,12 @@ namespace Buffers
     CsvBuffer(void);
     ~CsvBuffer(void) noexcept(false);
     
-    char*      aAllotRecord(i8 nBytes);
-    char*      aDataArea(void);
+    Stz*       szAllotRecord(i8 nBytes);
+    Stz*       szAppendRecord(Stz* szRecord);
+    byte*      ayDataArea(void);
     i8         nFreeBytes(void);
     CsvBuffer* pNextBuffer(void);
-    void       vPrintRows(void);
+    void       vPrintRecords(void);
     i8         nRecords(void);
     CrwBuffer* pToCrwBuffer(Table* pTable, RowCompactor* pRowCompactor);
     

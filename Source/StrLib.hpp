@@ -136,8 +136,8 @@ namespace Strings
     static bool  bIsWhite(const char c);
    
     static char* sLast(const char* s);
-    static i8    iLength(const char* s);
-    static i8    iLength(const char* s, const char cTerm, i8 iMax);
+    static i8    nLength(const char* s);
+    static i8    nLength(const char* s, const char cTerm, i8 iMax);
     
     static char* sNew(const char* sFormat, ...);
 

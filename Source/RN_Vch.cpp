@@ -64,7 +64,7 @@ void RN_Vch::vRnd(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
 {
   _precondition_(_MAGIC_,CN_RN_RAND,_FOOTER_);
   
-  i8 iLen = pMax->szStz()->iLength();
+  i8 iLen = pMax->szStz()->nLength();
   
   s256 s;
   RndLib::vString(s,iLen);

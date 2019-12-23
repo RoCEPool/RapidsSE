@@ -32,6 +32,35 @@ SP_Record::SP_Record(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+SP_Record::SP_Record(Row* pRow)
+: Sprint(CN_RECORD)
+{
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  // set default enclosing char
+  vFormat(F_VCH_enclose);
+  
+  m_azCursor   = azRecord();
+  m_pStreamDef = nullptr;
+  m_iSubSet    = C_UNKNOWN;
+  
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caRecord,sizeof(m_caRecord),CN_RECORD);
+#else
+  m_caRecord[0] = '\0';
+#endif
+  
+  //! FIX RAY
+  //_checkInitialised_(CN_RECORD);
+  
+  vToRecord(pRow);
+  
+  _postcondition_(_MAGIC_,CN_RECORD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 SP_Record::~SP_Record(void) noexcept(false)

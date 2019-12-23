@@ -277,7 +277,7 @@ void RowCompactor::vAnalyzeSamples(void)
         continue;
       
       char* azOuterStr = pOuterRow->m_waColVal[i_Col].m_azStr;
-      i8 nLength = StrLib::iLength(azOuterStr);
+      i8 nLength = StrLib::nLength(azOuterStr);
       if (nLength < 8)
         continue;
       
@@ -458,7 +458,7 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     // -- non-null vch column --
     
     char* azStr = aColVal->m_azStr;
-    if (StrLib::iLength(azStr) < 8)
+    if (StrLib::nLength(azStr) < 8)
       continue;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -778,7 +778,7 @@ void RowCompactor::vPutData_STR_FIT_1L(_ColEnc& xColEnc)
   
   // calc <L> (which includes the null term character)
   i8 nL = xColEnc.m_nDataSize - C_L_1B;
-  RASSERT(nL == StrLib::iLength(azShortN) + C_NULL_1B);
+  RASSERT(nL == StrLib::nLength(azShortN) + C_NULL_1B);
   RASSERT(nL < (i8)C_1_BYTE);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -816,7 +816,7 @@ void RowCompactor::vPutData_STR_FIT_2L(_ColEnc& xColEnc)
   
   // calc <LL>
   i8 nLL = xColEnc.m_nDataSize - C_L_2B;
-  RASSERT(nLL == StrLib::iLength(azLongN) + C_NULL_1B);
+  RASSERT(nLL == StrLib::nLength(azLongN) + C_NULL_1B);
   RASSERT(nLL < (i8)C_2_BYTES);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

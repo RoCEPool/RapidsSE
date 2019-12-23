@@ -19,6 +19,7 @@ namespace Records
     
   public:
     SP_Record(void);
+    SP_Record(Row* pRow);
    ~SP_Record(void) noexcept(false);
   
     void vAppendCol(Column* pCol, Row* pRow);

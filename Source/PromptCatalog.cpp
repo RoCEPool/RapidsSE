@@ -20,7 +20,7 @@ PromptDefn* PromptCatalog::pFindFun(Stz* aCommand1, Stz* aCommand2)
       continue;
     
     if (m_xPromptFun[i_Fun].m_aCommand2) {
-      if ( !aCommand2->iLength())
+      if ( !aCommand2->nLength())
         continue;
       if ( ! m_xPromptFun[i_Fun].m_aCommand2->bSame(aCommand2) )
         continue;
