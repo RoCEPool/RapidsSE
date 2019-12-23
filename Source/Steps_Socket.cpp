@@ -529,6 +529,54 @@ void Step::vSocketRecvObject(void)
       EXIT();
       return;
     }
+    
+    case CN_STARTMARKER: {
+      StartMarker* pStartMarker = new StartMarker();
+      
+      MemLib::vCopy(pStartMarker,pObject,sizeof(Object),CN_STARTMARKER);
+      
+      aBody = aAdd<void*>(pStartMarker,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_STARTMARKER] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        m_pDataStack->vPushInt(false);
+        EXIT();
+        return;
+      }
+      
+      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+      
+      m_pDataStack->vPushPtr(pStartMarker);
+      m_pDataStack->vPushInt(true);
+      EXIT();
+      return;
+    }
+      
+    case CN_STOPMARKER: {
+      StopMarker* pStopMarker = new StopMarker();
+      
+      MemLib::vCopy(pStopMarker,pObject,sizeof(Object),CN_STOPMARKER);
+      
+      aBody = aAdd<void*>(pStopMarker,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_STOPMARKER] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        m_pDataStack->vPushInt(false);
+        EXIT();
+        return;
+      }
+      
+      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+      
+      m_pDataStack->vPushPtr(pStopMarker);
+      m_pDataStack->vPushInt(true);
+      EXIT();
+      return;
+    }
       
     default:
       RASSERT(0);

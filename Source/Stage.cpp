@@ -287,6 +287,14 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn)
       pOp = pStageNde->pOpVec()->pGet(0);
       break;
       
+    case PX_ORIGIN_TO_ALL_PARTITIONS:
+      RASSERT(iPtn == C_UNKNOWN);
+      for (i8 i_Ptn = 0; i_Ptn < AM::pGrid()->nSlotsPerNode(); i_Ptn++) {
+        pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
+        pOp = pStagePtn->pOpVec()->pGet(0);
+      }
+      break;
+      
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
       pStageNde = this->pStageNde(iNde);
       pOp = pStageNde->pOpVec()->pGet(0);

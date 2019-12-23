@@ -93,6 +93,7 @@ void Step::vOpStopStartOps(void)
   Stage* pFirstStage = pPipeline->pStageVec()->pGet(0);
   
   StagePtn* pStagePtn;
+  StageNde* pStageNde;
   Op* pOpNext;
   
   switch(pOp->eTopologyX()) {
@@ -129,6 +130,23 @@ void Step::vOpStopStartOps(void)
       // send a stopMarker to the startOp
       pOp->vPipeOut(new StopMarker);
 
+      break;
+    }
+      
+    case PX_ORIGIN_TO_ORIGIN: {
+  
+      // get the stage nde
+      pStageNde = pFirstStage->pStageNde(0);
+    
+      // get the first op of the stage node
+      pOpNext = pStageNde->pOpVec()->pGet(0);
+      RASSERT(AM::eJobType(pOpNext->pOpJob()) == JT_STARTOP);
+    
+      // link the stopOp to this startOp
+      pOp->vOpOut(pOpNext);
+    
+      // send a stopMarker to the startOp
+      pOp->vPipeOut(new StopMarker);
       break;
     }
       

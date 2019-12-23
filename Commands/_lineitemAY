@@ -103,16 +103,19 @@ print "*************************************************************************
 time pipeline scan
 begin
 
-stage stageA on all partitions:
-scanOp lineitem | stageB
+stage stageA on origin:
+  startOp | stageB
 
-stage stageB on origin:
-outputOp | sinkOp
+stage stageB on all partitions:
+  scanOp lineitem | stageC
+
+stage stageC on origin:
+  outputOp | sinkOp 
 
 end
 ;
 
-
+/*
 time pipeline scan
 begin
 
@@ -125,7 +128,7 @@ outputOp | sinkOp
 end
 ;
 
-/*
+
 time pipeline insert
 begin
 

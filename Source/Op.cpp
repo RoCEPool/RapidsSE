@@ -369,7 +369,14 @@ void Op::vLinkToStage(Stage* pStage)
     }
     
     case PX_ORIGIN_TO_ALL_PARTITIONS: {
-      RASSERT(0);
+      i_Node = TablePtn::iPartitionToNode(m_nPartition);
+      
+      for (i8 i_Ptn = 0; i_Ptn < AM::pGrid()->nPartitions(); i_Ptn++) {
+        pStagePtn = pStage->pStagePtn(i_Ptn);
+        // get the first op of the stage ptnsc;
+        pOpNext = pStagePtn->pOpVec()->pGet(0);
+      }
+      break;
     }
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {

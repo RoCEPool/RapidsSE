@@ -530,7 +530,7 @@ bool Dynamo::bPhase2_staging(void)
     // prepend a StartOp to the first stage
     if (i_Stage == 0) {
       pFirstStageSpec = pStageSpec;
-      pStageSpec->vPrependStartOp();
+      //pStageSpec->vPrependStartOp();
     }
     
     OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
