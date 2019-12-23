@@ -45,8 +45,11 @@ namespace Pipelines
     bool bPhase2_staging(void);
 
     PipelineSpec* pPipelineSpec(void);
-    void vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage);
     void vShow(void);
+
+  private:
+    void vAddStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage);
+    void vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage);
     
     Footer* aFooter(void);
   };
