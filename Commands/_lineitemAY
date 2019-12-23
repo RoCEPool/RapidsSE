@@ -110,7 +110,7 @@ stage stageB on all partitions:
   scanOp lineitem | stageC
 
 stage stageC on origin:
-  outputOp | sinkOp 
+  outputOp | sinkOp | stageA
 
 end
 ;
