@@ -195,38 +195,6 @@ void Stage::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* send stop marker to startOps of this stage                                 */
-/*----------------------------------------------------------------------------*/
-void Stage::vStopPipeline(i8 iThisNode)
-{
-  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
-  
-  for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
-    StageNde* pStageNde = m_oStageNdeVec.pGet(i_Nde);
-    
-    if (pStageNde->iNode() == iThisNode) {
-      Op* pOp = pStageNde->pOpVec()->pGet(0);
-      if (AM::eJobType(pOp->pOpJob()) == JT_STARTOP)
-        pOp->vAppendLeft(new StopMarker);
-    }
-  }
-  
-  for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
-    StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
-    
-    i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
-    
-    if (iPtnNode == iThisNode) {
-      Op* pOp = pStagePtn->pOpVec()->pGet(0);
-      if (AM::eJobType(pOp->pOpJob()) == JT_STARTOP)
-        pOp->vAppendLeft(new StopMarker);
-
-    }
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* get ops to be executed on given node                                       */
 /*----------------------------------------------------------------------------*/
 i8 Stage::nOpsOnNode(i8 iNode)

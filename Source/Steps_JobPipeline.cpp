@@ -11,7 +11,6 @@ void Step::vAddSteps_JobPipeline(void)
 {
   vAddStep("Job_Pipeline.begin"_Stz,    &Step::vJob_PipelineBegin);
   vAddStep("Job_Pipeline.cancel"_Stz,   &Step::vJob_PipelineCancel);
-  vAddStep("Job_Pipeline.end"_Stz,      &Step::vJob_PipelineEnd);
   vAddStep("Job_Pipeline.execute"_Stz,  &Step::vJob_PipelineExecute);
   vAddStep("Job_Pipeline::compile"_Stz, &Step::vJob_PipelineCompile);
 }
@@ -65,25 +64,6 @@ void Step::vJob_PipelineCancel(void)
   // send cancelMarker to the startOps of the first stage of the pipeline
   i8 iThisNode = AM::pGrid()->iThisNode();
   pStage->vCancelOperators(iThisNode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job_Pipeline.end -- end the Pipeline job                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_PipelineEnd(void)
-{
-  ENTRY(); // ENTRY("vJob_PipelineEnd"_Stz);
-  
-  Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
-  
-  // get the first stage of the pipeline
-  Stage* pStage = pJob_Pipeline->m_pPipeline->pStageVec()->pGet(0);
-  
-  // send stopMarker to the StartOp of the first stage of the pipeline
-  i8 iThisNode = AM::pGrid()->iThisNode();
-  pStage->vStopPipeline(iThisNode);
   
   EXIT();
 }

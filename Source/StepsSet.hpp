@@ -639,7 +639,6 @@ public:
   // job Pipeline
   void vJob_PipelineBegin(void);
   void vJob_PipelineCancel(void);
-  void vJob_PipelineEnd(void);
   void vJob_PipelineExecute(void);
   void vJob_PipelineCompile(void);
 
