@@ -14,6 +14,9 @@
   // set topolgy in the op
   <topology> op.topology!
 
+  // set nextStage in op
+  <nextStage> op.nextStage!
+
   begin
 
     // bide till next operand is available
@@ -24,14 +27,18 @@
 
     Operand[].kind ZK_ENDMARKER == if
       Operand[].pipeToJob
-      Op.StopStartOps
+      //Op.StopStartOps
+      Operand[].newStopMarker
+      Operand[].pipeOut
       Op.ackPipelineJob
       false
     else
 
     Operand[].kind ZK_ERRORMARKER == if
       Operand[].pipeToJob
-      Op.StopStartOps
+      //Op.StopStartOps
+      Operand[].newStopMarker
+      Operand[].pipeOut
       Op.ackPipelineJob
       false
     else
@@ -49,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
-jobSyntax: sinkOp :: sinkOp <topology> ;
+jobSyntax: sinkOp :: sinkOp <topology> <nextStage> ;
 
 jobInfo: sinkOp
 {

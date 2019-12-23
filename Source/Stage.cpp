@@ -396,18 +396,18 @@ void Stage::vStartPipeline(i8 iThisNode)
     }
   }
   
-  for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
-    StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
-    
-    i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
-    
-    if (iPtnNode == iThisNode) {
-      Op* pOp = pStagePtn->pOpVec()->pGet(0);
-      RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
-      pOp->vAppendLeft(new StartMarker);
-    }
-  }
-  
+//  for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
+//    StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
+//    
+//    i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
+//    
+//    if (iPtnNode == iThisNode) {
+//      Op* pOp = pStagePtn->pOpVec()->pGet(0);
+//      RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
+//      pOp->vAppendLeft(new StartMarker);
+//    }
+//  }
+//  
 }
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

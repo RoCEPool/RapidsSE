@@ -348,7 +348,7 @@ void Op::vLinkToStage(Stage* pStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  ASSERT(AM::eJobType(m_pOpJob) == JT_XMITOP);
+  //ASSERT(AM::eJobType(m_pOpJob) == JT_XMITOP);
   
   Op* pOpNext = nullptr;
   StageNde* pStageNde = nullptr;
@@ -584,7 +584,9 @@ void Op::vPipeOut(Operand* pOperand)
            aCN[pOperand->eClass()],
            pOperand);
 
-  switch(AM::eJobType(m_pOpJob)) {
+  eJT eJobType = AM::eJobType(m_pOpJob);
+  
+  switch(eJobType) {
       
     case JT_XMITOP:
       AM::vSendJobOperand(m_pTask,
@@ -592,8 +594,13 @@ void Op::vPipeOut(Operand* pOperand)
                           m_pJobPipeline,
                           this);
       break;
-  
+      
     default:
+      if (eJobType == JT_SINKOP) {
+        // link operator to next stage
+        Stage* pNextStage = m_pPipeline->pStageVec()->pGet(m_iNextStage);
+        vLinkToStage(pNextStage);
+      }
       if (m_bAppendRight) {
         AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
                     "PipeOut operand %s to right queue of %s"_Stz, //!format-LogOpr

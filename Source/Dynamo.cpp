@@ -534,7 +534,8 @@ bool Dynamo::bPhase2_staging(void)
     }
     
     OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
-    for (i8 i_Op = 0; i_Op < pOpSpecVec->nItems(); i_Op++) {
+    i8 nOpSpecs = pOpSpecVec->nItems();
+    for (i8 i_Op = 0; i_Op < nOpSpecs; i_Op++) {
       OpSpec* pOpSpec = pOpSpecVec->pGet(i_Op);
       
 #ifdef WITH_TRACE_DYNAMO
@@ -549,22 +550,37 @@ bool Dynamo::bPhase2_staging(void)
         vTrace("  op %s is a stage %lld %s\n"_Stz,pOpSpec->szName(), i_Stage, aPX[eTopologyX]);
 #endif
         
-        vReplaceWithXmit(pOpSpec, eTopologyX, i_Stage);
-        pStageSpecFound->vPrependConsumeOp(eTopologyX);
+        if (eTopologyX == PX_ORIGIN_TO_ORIGIN) {
+          
+          OpSpec* pPrevOpSpec = pOpSpecVec->pGet(i_Op-1);
+          
+          // arg-0 is the cross topology of the xmit op
+          pPrevOpSpec->vAddEnamePair("<arg_0>"_Stz,(i8)eTopologyX,TN_INTEGER);
+          
+          // arg-1 is the next stage for the op
+          pPrevOpSpec->vAddEnamePair("<arg_1>"_Stz,(i8)i_Stage,TN_INTEGER);
+          
+          RASSERT(i_Op == pOpSpecVec->nItems()-1);
+          pOpSpecVec->vRemove(pOpSpec);
+        }
+        else {
+          vReplaceWithXmit(pOpSpec, eTopologyX, i_Stage);
+          pStageSpecFound->vPrependConsumeOp(eTopologyX);
+        }
       }
       
     }
   }
   
-  // get cross topology between lastStage and first stage
-  StageSpec* pLastStageSpec = pStageSpecVec->pGet(pStageSpecVec->nItems() - 1);
-  ePX eTopologyX = eTopoloyX(pLastStageSpec, pFirstStageSpec);
-  
-  OpSpecVec* pOpSpecVec = pLastStageSpec->pOpSpecVec();
-  OpSpec* pOpSpec = pOpSpecVec->pGet(pOpSpecVec->nItems()-1);
-  
-  // arg-0 is the cross topology of the xmit op
-  pOpSpec->vAddEnamePair("<arg_0>"_Stz,(i8)eTopologyX,TN_INTEGER);
+//  // get cross topology between lastStage and first stage
+//  StageSpec* pLastStageSpec = pStageSpecVec->pGet(pStageSpecVec->nItems() - 1);
+//  ePX eTopologyX = eTopoloyX(pLastStageSpec, pFirstStageSpec);
+//  
+//  OpSpecVec* pOpSpecVec = pLastStageSpec->pOpSpecVec();
+//  OpSpec* pOpSpec = pOpSpecVec->pGet(pOpSpecVec->nItems()-1);
+//  
+//  // arg-0 is the cross topology of the xmit op
+//  pOpSpec->vAddEnamePair("<arg_0>"_Stz,(i8)eTopologyX,TN_INTEGER);
   
   // arg-1 is the next stage for the xmit
   //pOpSpec->vAddEnamePair("<arg_1>"_Stz,(i8)i_Stage,TN_INTEGER);
