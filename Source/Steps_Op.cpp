@@ -15,7 +15,6 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPipleineJobFetch);
-  vAddStep("Op.stopStartOps"_Stz,     &Step::vOpStopStartOps);
   vAddStep("Op.topology!"_Stz,        &Step::vOpTopologyStore);
 }
 
@@ -75,84 +74,6 @@ void Step::vOpPipleineJobFetch(void)
   Op* pOp = m_pTask->m_pJob->m_pOp;
   
   m_pDataStack->vPushPtr(pOp->pPipeline()->pJob());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.stopStartOps -- stop the startOps                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vOpStopStartOps(void)
-{
-  ENTRY(); // ENTRY("vOpStopStartOps"_Stz);
-  
-  Op* pOp = m_pTask->m_pJob->m_pOp;
-  Pipeline* pPipeline = pOp->pPipeline();
-  
-  // get the first stage
-  Stage* pFirstStage = pPipeline->pStageVec()->pGet(0);
-  
-  StagePtn* pStagePtn;
-  StageNde* pStageNde;
-  Op* pOpNext;
-  
-  switch(pOp->eTopologyX()) {
-    case PX_ORIGIN_TO_ALL_PARTITIONS: {
-
-      for (i8 i_Ptn = 0; i_Ptn < AM::pGrid()->nPartitions(); i_Ptn++) {
-        
-        // get the stage ptn
-        pStagePtn = pFirstStage->pStagePtn(i_Ptn);
-        
-        // get the first op of the stage ptn
-        pOpNext = pStagePtn->pOpVec()->pGet(0);
-        RASSERT(AM::eJobType(pOpNext->pOpJob()) == JT_STARTOP);
-        
-        // link the stopOp to this startOp
-        pOp->vOpOut(pOpNext);
-        
-        // send a stopMarker to the startOp
-        pOp->vPipeOut(new StopMarker);
-      }
-      break;
-    }
-      
-    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
-      
-      i8 i_Node = TablePtn::iPartitionToNode(pOp->nPartition());
-      pStagePtn = pFirstStage->pStagePtn(pOp->nPartition());
-      // get the first op of the stage ptn
-      pOpNext = pStagePtn->pOpVec()->pGet(0);
-        
-      // link the stopOp to this startOp
-      pOp->vOpOut(pOpNext);
-      
-      // send a stopMarker to the startOp
-      pOp->vPipeOut(new StopMarker);
-
-      break;
-    }
-      
-    case PX_ORIGIN_TO_ORIGIN: {
-  
-      // get the stage nde
-      pStageNde = pFirstStage->pStageNde(0);
-    
-      // get the first op of the stage node
-      pOpNext = pStageNde->pOpVec()->pGet(0);
-      RASSERT(AM::eJobType(pOpNext->pOpJob()) == JT_STARTOP);
-    
-      // link the stopOp to this startOp
-      pOp->vOpOut(pOpNext);
-    
-      // send a stopMarker to the startOp
-      pOp->vPipeOut(new StopMarker);
-      break;
-    }
-      
-    default:
-      RASSERT(0);
-  }
   
   EXIT();
 }

@@ -27,7 +27,6 @@
 
     Operand[].kind ZK_ENDMARKER == if
       Operand[].pipeToJob
-      //Op.StopStartOps
       Operand[].newStopMarker
       Operand[].pipeOut
       Op.ackPipelineJob
@@ -36,7 +35,6 @@
 
     Operand[].kind ZK_ERRORMARKER == if
       Operand[].pipeToJob
-      //Op.StopStartOps
       Operand[].newStopMarker
       Operand[].pipeOut
       Op.ackPipelineJob

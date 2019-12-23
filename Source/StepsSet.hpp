@@ -854,7 +854,6 @@ public:
   void vOpNextStageStore(void);
   void vOpPartitionFetch(void);
   void vOpPipleineJobFetch(void);
-  void vOpStopStartOps(void);
   void vOpTopologyStore(void);
 
   // operand
