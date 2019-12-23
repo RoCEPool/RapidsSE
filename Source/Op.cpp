@@ -879,7 +879,7 @@ void Op::vSendJobOperand(Operand* pOperand)
   AM::vDeleteOperand(pOperand);
   
   // delete the operand job
-  AM::vDeleteJobOperand(pJob_Operand);  
+  AM::vDeleteJobOperand(pJob_Operand);
 }
 
 /*----------------------------------------------------------------------------*/

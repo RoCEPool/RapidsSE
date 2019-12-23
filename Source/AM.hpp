@@ -130,8 +130,6 @@ namespace Oblique
     static void vNextTempName(s32& sName);
     static void vPulseTask(Task* pTask);
     static void vSetAcksRmg(Task* pTask, i8 nAcks);
-    static void vSendJobOperand(Task* pTask, Operand* pOperand,
-                                Job* pParentJob, Op* pOp);
     static void vStepTiming(StepTiming* pStepTiming);
     static void vSubInserters(i8 nSubInserters);
     static void vTakenBuffers(PoolBuffer* pTakenBuffers);

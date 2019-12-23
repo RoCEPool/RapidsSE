@@ -241,46 +241,6 @@ void AM::vPulseTask(Task* pTask) {
 void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
   pTask->vAcksRmg(nAcks);
 }
-void AM::vSendJobOperand(Task* pTask, Operand* pOperand,
-                         Job* pParentJob, Op* pOp) {
-  
-  // get next stage to xmit to
-  ASSERT (pOp->iNextStage() != C_UNKNOWN);
-  Stage* pNextStage = pOp->pPipeline()->pStageVec()->pGet(pOp->iNextStage());
-  RASSERT(pNextStage);
-  
-  // link operator to next stage
-  pOp->vLinkToStage(pNextStage);
-  
-  // new a xmit job
-  Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(pOperand, pParentJob->m_iFocalId,pOp);
-  
-  // set the send node in the task
-  Node* pSendNode = pGrid()->pGetNode(pOp->iXmitNode());
-  pTask->vSendNode(pSendNode);
-  
-  // grab socket wite lock
-  Socket* pSocket = pSendNode->pSendSocket();
-  pSocket->vGrabWrite();
-  
-  SysCall oSysCall;
-  i8 nObjectSize = giClassSize[pJob_Operand->eClass()];
-  bool bResult = pSocket->bSendTo(pJob_Operand, nObjectSize, oSysCall);
-  
-  nObjectSize = giClassSize[pOperand->eClass()];
-  bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
-  
-  // delete the operand
-  AM::vDeleteOperand(pOperand);
-  pJob_Operand->m_pOperand = nullptr;
-  
-  // now delete the job_operand
-  delete pJob_Operand;
-  
-  // drop the socket write lock
-  pSocket->vDropWrite();
-}
-
 void AM::vStepTiming(StepTiming* pStepTiming) {
   gpAttachMap->m_pStepTiming = pStepTiming;
 }
