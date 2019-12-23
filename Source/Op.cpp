@@ -352,7 +352,7 @@ void Op::vLinkToStage(Stage* pStage)
   
   Op* pOpNext = nullptr;
   StageNde* pStageNde = nullptr;
-  StagePtn* pStagePtn = nullptr;
+  StagePtn * pStagePtn = nullptr;
   i8 i_Node = C_UNKNOWN;
   
   switch(m_eTopologyX) {
@@ -369,9 +369,9 @@ void Op::vLinkToStage(Stage* pStage)
     }
     
     case PX_ORIGIN_TO_ALL_PARTITIONS: {
-      i_Node = TablePtn::iPartitionToNode(m_nPartition);
+      for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
+        i_Node = TablePtn::iPartitionToNode(i_Ptn);
       
-      for (i8 i_Ptn = 0; i_Ptn < AM::pGrid()->nPartitions(); i_Ptn++) {
         pStagePtn = pStage->pStagePtn(i_Ptn);
         // get the first op of the stage ptnsc;
         pOpNext = pStagePtn->pOpVec()->pGet(0);
@@ -402,10 +402,10 @@ void Op::vLinkToStage(Stage* pStage)
   AM::vXmitNode(this,i_Node);
   
   // set the next label
-  vNextLabel(pOpNext->m_sName);
+  //vNextLabel(pOpNext->m_sName);
   
   // set the op out
-  vOpOut(pOpNext);
+  //vOpOut(pOpNext);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -596,11 +596,6 @@ void Op::vPipeOut(Operand* pOperand)
       break;
       
     default:
-      if (eJobType == JT_SINKOP) {
-        // link operator to next stage
-        Stage* pNextStage = m_pPipeline->pStageVec()->pGet(m_iNextStage);
-        vLinkToStage(pNextStage);
-      }
       if (m_bAppendRight) {
         AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
                     "PipeOut operand %s to right queue of %s"_Stz, //!format-LogOpr

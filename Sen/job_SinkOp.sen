@@ -17,6 +17,9 @@
   // set nextStage in op
   <nextStage> op.nextStage!
 
+  // link sinkOp to next stage
+  op.linkNextStage
+
   begin
 
     // bide till next operand is available

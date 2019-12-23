@@ -12,6 +12,7 @@ void Step::vAddSteps_Op(void)
 {
   vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
   vAddStep("Op.leftEndMarkers!"_Stz,  &Step::vOpLeftEndMarkersStore);
+  vAddStep("Op.linkNextStage"_Stz,    &Step::vOpLinkNextStage);
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPipleineJobFetch);
@@ -38,6 +39,40 @@ void Step::vOpLeftEndMarkersStore(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   pOp->vLeftEndMarkers(m_pDataStack->iPopInt(__func__));
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op.linkNextStage -- link this operator to the next stage                   */
+/*----------------------------------------------------------------------------*/
+void Step::vOpLinkNextStage(void)
+{
+  ENTRY(); // ENTRY("vOpLinkNextStage"_Stz);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  Pipeline* pPipeline = pOp->pPipeline();
+  
+  RASSERT(pOp->eTopologyX() == PX_ORIGIN_TO_ORIGIN);
+  
+  // get the originating node
+  i8 i_Node = pPipeline->iOriginatingNode();
+  
+  // get the next stage
+  Stage* pNextStage = pPipeline->pStageVec()->pGet(pOp->iNextStage());
+  RASSERT(pNextStage->pStageNdeVec()->nItems() == 1) ;
+  
+  // get the stageNde of originating node
+  StageNde* pStageNde = pNextStage->pStageNde(i_Node);
+  
+  // get the first op of the stage nde
+  Op* pOpNext = pStageNde->pOpVec()->pGet(0);
+  
+  // set the next label
+  pOp->vNextLabel(pOpNext->szName());
+  
+  // set the op out
+  pOp->vOpOut(pOpNext);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
