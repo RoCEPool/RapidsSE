@@ -575,19 +575,23 @@ void Constants::vAddConstants(void)
   /*  8 */ vAddConstant("XP_ENUMS"_Stz,       XP_ENUMS);
   
   // ZK_ : operand kind
-  /*  0 */ vAddConstant("ZK_NONE"_Stz,         ZK_NONE);
-  /*  0 */ vAddConstant("ZK_CANCELMARKER"_Stz, ZK_CANCELMARKER);
-  /*  0 */ vAddConstant("ZK_CRWBUFFER"_Stz,    ZK_CRWBUFFER);
-  /*  0 */ vAddConstant("ZK_CSVBUFFER"_Stz,    ZK_CSVBUFFER);
-  /*  0 */ vAddConstant("ZK_EOSMARKER"_Stz,    ZK_EOSMARKER);
-  /*  0 */ vAddConstant("ZK_ENTBUFFER"_Stz,    ZK_ENTBUFFER);
-  /*  0 */ vAddConstant("ZK_ERRORMARKER"_Stz,  ZK_ERRORMARKER);
-  /*  0 */ vAddConstant("ZK_IRWBUFFER"_Stz,    ZK_IRWBUFFER);
-  /*  0 */ vAddConstant("ZK_SRTBUFFER"_Stz,    ZK_SRTBUFFER);
-  /*  0 */ vAddConstant("ZK_STARTMARKER"_Stz,  ZK_STARTMARKER);
-  /*  0 */ vAddConstant("ZK_STOPMARKER"_Stz,   ZK_STOPMARKER);
-  /*  0 */ vAddConstant("ZK_STREAMDEF"_Stz,    ZK_STREAMDEF);
-  /*  0 */ vAddConstant("ZK_ENUMS"_Stz,        ZK_ENUMS);
+  /*  0 */ vAddConstant("ZK_NONE"_Stz,            ZK_NONE);
+  /*  0 */ vAddConstant("ZK_CANCELMARKER"_Stz,    ZK_CANCELMARKER);
+  /*  0 */ vAddConstant("ZK_COMMENCEMARKER"_Stz,  ZK_COMMENCEMARKER);
+  /*  0 */ vAddConstant("ZK_COMMENCEDMARKER"_Stz, ZK_COMMENCEDMARKER);
+  /*  0 */ vAddConstant("ZK_COMPLETEDMARKER"_Stz, ZK_COMPLETEDMARKER);
+  /*  0 */ vAddConstant("ZK_CRWBUFFER"_Stz,       ZK_CRWBUFFER);
+  /*  0 */ vAddConstant("ZK_CSVBUFFER"_Stz,       ZK_CSVBUFFER);
+  /*  0 */ vAddConstant("ZK_EOSMARKER"_Stz,       ZK_EOSMARKER);
+  /*  0 */ vAddConstant("ZK_ENTBUFFER"_Stz,       ZK_ENTBUFFER);
+  /*  0 */ vAddConstant("ZK_ERRORMARKER"_Stz,     ZK_ERRORMARKER);
+  /*  0 */ vAddConstant("ZK_IRWBUFFER"_Stz,       ZK_IRWBUFFER);
+  /*  0 */ vAddConstant("ZK_SRTBUFFER"_Stz,       ZK_SRTBUFFER);
+  /*  0 */ vAddConstant("ZK_STARTMARKER"_Stz,     ZK_STARTMARKER);
+  /*  0 */ vAddConstant("ZK_STOPMARKER"_Stz,      ZK_STOPMARKER);
+  /*  0 */ vAddConstant("ZK_STOPPEDMARKER"_Stz,   ZK_STOPPEDMARKER);
+  /*  0 */ vAddConstant("ZK_STREAMDEF"_Stz,       ZK_STREAMDEF);
+  /*  0 */ vAddConstant("ZK_ENUMS"_Stz,           ZK_ENUMS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
