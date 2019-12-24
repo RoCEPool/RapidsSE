@@ -40,7 +40,8 @@
 
       ZK_EOSMARKER of
         //"Operand:- ZK_EOSMARKER" .verbose
-        Operand[].handleEnd
+        Operand[].pipeOut
+        true
       endof
 
       ZK_ENTBUFFER of
@@ -77,9 +78,7 @@
 
       ZK_STOPMARKER of
         //"Operand:- ZK_STOPMARKER" .verbose
-        //Operand[].pipeOut
-        Op.ackPipelineJob
-        false
+        Operand[].handleEnd
       endof
 
       ZK_STREAMDEF of

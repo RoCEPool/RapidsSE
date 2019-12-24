@@ -26,6 +26,7 @@
 
       ZK_EOSMARKER of
         "Operand:- ZK_EOSMARKER" .verbose
+        Operand[].pipeOut
         nSuperCount Operand[].handleAggEnd
         false
       endof

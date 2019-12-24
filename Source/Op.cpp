@@ -894,7 +894,6 @@ bool Op::bSpawnJob(i8 iSessionId)
   pTknVec->vSetAllTokens();
   delete pTknVec;
   
-  vTrace("SPAWNED job %p for Op %p\n"_Stz, m_pOpJob, this);
   bool bSpawned = AM::bSpawnJob(m_pOpJob);
   
   m_pTask = AM::pExecutingTask(m_pOpJob);

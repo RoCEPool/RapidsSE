@@ -390,7 +390,7 @@ i8 giClassSize[]
   /* */ sizeof(EosMarker),          // CN_COMMENCEMARKER
   /* */ sizeof(EosMarker),          // CN_COMMENCEDMARKER
   /* */ sizeof(Compiler),           // CN_COMPILER
-  /* */ sizeof(EosMarker),          // CN_COMPLETEDMARKER
+  /* */ sizeof(CompletedMarker),    // CN_COMPLETEDMARKER
   /* */ sizeof(CrwBuffer),          // CN_CRWBUFFER
   /* */ sizeof(CsvBuffer),          // CN_CSVBUFFER
 
@@ -631,7 +631,7 @@ i8 giClassSize[]
   /* */ sizeof(StepTiming),         // CN_STEPTIMING
   /* */ sizeof(Stmt_Select),        // CN_STMT_SELECT
   /* */ sizeof(StopMarker),         // CN_STOPMARKER
-  /* */ sizeof(StopMarker),         // CN_STOPPEDMARKER
+  /* */ sizeof(StoppedMarker),      // CN_STOPPEDMARKER
   /* */ sizeof(StreamDef),          // CN_STREAMDEF
   /* */ sizeof(s32),                // CN_STRING_T
   /* */ sizeof(StzVal),             // CN_STZVAL

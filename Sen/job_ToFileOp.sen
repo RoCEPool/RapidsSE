@@ -39,7 +39,7 @@
 
       ZK_EOSMARKER of
         "Operand:- ZK_EOSMARKER" .verbose
-        Operand[].handleEnd
+        Operand[].pipeOut
         File0[].get file.close
         File0[].get file.delete
       endof

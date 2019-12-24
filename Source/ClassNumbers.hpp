@@ -412,7 +412,7 @@ static Stz* aCN[]
   /*  51 0x033 */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
   /*  52 0x034 */ "ENTWRK"_Stz,              // CN_ENTWRK
   /*  53 0x035 */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS
-  /*  48 0x030 */ "EosMarker"_Stz,           // CN_EOSMARKER
+  /*  48 0x030 */ "EOSMARKER"_Stz,           // CN_EOSMARKER
   /*           */ "ERRORMARKER"_Stz,         // CN_ERRORMARKER
   /*           */ "EXTRACTROW"_Stz,          // CN_EXTRACTROW
   

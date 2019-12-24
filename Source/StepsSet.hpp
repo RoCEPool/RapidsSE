@@ -868,9 +868,11 @@ public:
   void vOperandItemCountFetch(void);
   void vOperandInsertIntoTable(void);
   void vOperandKind(void);
+  void vOperandNewCompletedMarker(void);
   void vOperandNewEosMarker(void);
   void vOperandNewErrorMarker(void);
   void vOperandNewStopMarker(void);
+  void vOperandNewStoppedMarker(void);
   void vOperandNewStreamDef(void);
   void vOperandNext(void);
   void vOperandPipeOut(void);

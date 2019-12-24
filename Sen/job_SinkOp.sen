@@ -29,24 +29,32 @@
     Operand[].next
 
     Operand[].kind ZK_EOSMARKER == if
-      //Operand[].pipeToJob
+      //"Operand:- ZK_EOSMARKER" .verbose
       Operand[].delete
+      Operand[].newCompletedMarker
+      Operand[].pipeOut
+      true
+    else
+
+    Operand[].kind ZK_ERRORMARKER == if
+      //"Operand:- ZK_ERRORMARKER" .verbose
       Operand[].newStopMarker
       Operand[].pipeOut
       Op.ackPipelineJob
       false
     else
 
-    Operand[].kind ZK_ERRORMARKER == if
-      Operand[].pipeToJob
-      Operand[].newStopMarker
+    Operand[].kind ZK_STOPMARKER == if
+      //"Operand:- ZK_STOPMARKER" .verbose
+      Operand[].delete
+      Operand[].newStoppedMarker
       Operand[].pipeOut
       Op.ackPipelineJob
       false
     else
       Operand[].delete
       true
-    then then
+    then then then
 
   while assert::stack_0 repeat
 

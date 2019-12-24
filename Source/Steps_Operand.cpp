@@ -20,9 +20,11 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].itemCount@"_Stz,     &Step::vOperandItemCountFetch);
   vAddStep("Operand[].insertIntoTable"_Stz,&Step::vOperandInsertIntoTable);
   vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
+  vAddStep("Operand[].newCompletedMarker"_Stz,  &Step::vOperandNewCompletedMarker);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
   vAddStep("Operand[].newStopMarker"_Stz,  &Step::vOperandNewStopMarker);
+  vAddStep("Operand[].newStoppedMarker"_Stz, &Step::vOperandNewStoppedMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
   vAddStep("Operand[].next"_Stz,           &Step::vOperandNext);
   vAddStep("Operand[].pipeOut"_Stz,        &Step::vOperandPipeOut);
@@ -243,17 +245,19 @@ void Step::vOperandKind(void)
   
   eCN eClass_op = m_pRegSet->m_xpOperand->eClass();
   switch (eClass_op) {
-      
-    case CN_CRWBUFFER:   eOperand = ZK_CRWBUFFER;   break;
-    case CN_CSVBUFFER:   eOperand = ZK_CSVBUFFER;   break;
-    case CN_EOSMARKER:   eOperand = ZK_EOSMARKER;   break;
-    case CN_ENTBUFFER:   eOperand = ZK_ENTBUFFER;   break;
-    case CN_ERRORMARKER: eOperand = ZK_ERRORMARKER; break;
-    case CN_IRWBUFFER:   eOperand = ZK_IRWBUFFER;   break;
-    case CN_SRTBUFFER:   eOperand = ZK_SRTBUFFER;   break;
-    case CN_STARTMARKER: eOperand = ZK_STARTMARKER; break;
-    case CN_STOPMARKER:  eOperand = ZK_STOPMARKER;  break;
-    case CN_STREAMDEF:   eOperand = ZK_STREAMDEF;   break;
+    
+    case CN_COMPLETEDMARKER: eOperand = ZK_COMPLETEDMARKER; break;
+    case CN_CRWBUFFER:       eOperand = ZK_CRWBUFFER;       break;
+    case CN_CSVBUFFER:       eOperand = ZK_CSVBUFFER;       break;
+    case CN_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
+    case CN_ENTBUFFER:       eOperand = ZK_ENTBUFFER;       break;
+    case CN_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
+    case CN_IRWBUFFER:       eOperand = ZK_IRWBUFFER;       break;
+    case CN_SRTBUFFER:       eOperand = ZK_SRTBUFFER;       break;
+    case CN_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
+    case CN_STOPMARKER:      eOperand = ZK_STOPMARKER;      break;
+    case CN_STOPPEDMARKER:   eOperand = ZK_STOPPEDMARKER;   break;
+    case CN_STREAMDEF:       eOperand = ZK_STREAMDEF;       break;
       
     default:
       RASSERT(0);
@@ -275,6 +279,20 @@ void Step::vOperandNext(void)
   if (m_pRegSet->m_xpOperand.bIsNull())
     m_pRegSet->m_xpOperand = m_pTask->m_pJob->m_pOp->pPopQueue2();
   ASSERT(*m_pRegSet->m_xpOperand);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newCompletedMarker -- new a completed marker                     */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewCompletedMarker(void)
+{
+  ENTRY(); // ENTRY("vOperandNewCompletedMarker"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperand.bIsNull());
+  
+  m_pRegSet->m_xpOperand = new CompletedMarker;
   
   EXIT();
 }
@@ -320,6 +338,21 @@ void Step::vOperandNewStopMarker(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newStopppedMarker -- new a stopped marker                        */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewStoppedMarker(void)
+{
+  ENTRY(); // ENTRY("vOperandNewStoppedMarker"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperand.bIsNull());
+  
+  m_pRegSet->m_xpOperand = new StoppedMarker;
+  
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Operand[].newStreamDef -- new a stream def from table[]                    */
