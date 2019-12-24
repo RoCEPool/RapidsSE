@@ -52,7 +52,10 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_CMD_SELECT
   /* */ &Dump::vDummy,           // CN_COLUMNVEC
   /* */ &Dump::vDummy,           // CN_COMMAND
+  /* */ &Dump::vDummy,           // CN_COMMENCEMARKER
+  /* */ &Dump::vDummy,           // CN_COMMENCEDMARKER
   /* */ &Dump::vDummy,           // CN_COMPILER
+  /* */ &Dump::vDummy,           // CN_COMPLETEDMARKER
   /* */ &Dump::vUndefined,       // CN_CRWBUFFER
   /* */ &Dump::vUndefined,       // CN_CSVBUFFER
 
@@ -293,6 +296,7 @@ pDUMPFUN *gpDump[]
   /* */ &StepTiming::vDump,      // CN_STEPTIMING
   /* */ &Dump::vInvalid,         // CN_STMT_SELECT
   /* */ &Dump::vInvalid,         // CN_STOPMARKER
+  /* */ &Dump::vInvalid,         // CN_STOPPEDMARKER
   /* */ &Dump::vInvalid,         // CN_STREAMDEF
   /* */ &Dump::vInvalid,         // CN_STRING_T
   /* */ &Dump::vInvalid,         // CN_STZVAL
@@ -383,7 +387,10 @@ i8 giClassSize[]
   /* */ sizeof(Column),             // CN_COLUMN
   /* */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* */ sizeof(Request),            // CN_COMMAND
+  /* */ sizeof(EosMarker),          // CN_COMMENCEMARKER
+  /* */ sizeof(EosMarker),          // CN_COMMENCEDMARKER
   /* */ sizeof(Compiler),           // CN_COMPILER
+  /* */ sizeof(EosMarker),          // CN_COMPLETEDMARKER
   /* */ sizeof(CrwBuffer),          // CN_CRWBUFFER
   /* */ sizeof(CsvBuffer),          // CN_CSVBUFFER
 
@@ -624,6 +631,7 @@ i8 giClassSize[]
   /* */ sizeof(StepTiming),         // CN_STEPTIMING
   /* */ sizeof(Stmt_Select),        // CN_STMT_SELECT
   /* */ sizeof(StopMarker),         // CN_STOPMARKER
+  /* */ sizeof(StopMarker),         // CN_STOPPEDMARKER
   /* */ sizeof(StreamDef),          // CN_STREAMDEF
   /* */ sizeof(s32),                // CN_STRING_T
   /* */ sizeof(StzVal),             // CN_STZVAL
@@ -714,7 +722,10 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_COLUMN
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COMMAND
+  /* */ HT_TRANSIENT_SMALL,   // CN_COMMENCEMARKER
+  /* */ HT_TRANSIENT_SMALL,   // CN_COMMENCEDMARKER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COMPILER
+  /* */ HT_TRANSIENT_SMALL,   // CN_COMPLETEDMARKER
   /* */ HT_TRANSIENT_LARGE,   // CN_CRWBUFFER
   /* */ HT_TRANSIENT_LARGE,   // CN_CSVBUFFER
 
@@ -955,6 +966,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_STEPTIMING
   /* */ HT_TRANSIENT_LARGE,   // CN_STMT_SELECT
   /* */ HT_TRANSIENT_SMALL,   // CN_STOPMARKER
+  /* */ HT_TRANSIENT_SMALL,   // CN_STOPPEDMARKER
   /* */ HT_TRANSIENT_LARGE,   // CN_STREAMDEF
   /* */ HT_INVALID,           // CN_STRING_T
   /* */ HT_INVALID,           // CN_STZVAL

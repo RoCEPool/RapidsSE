@@ -28,12 +28,16 @@ bool Operands::_bIsValidOperand(eCN eClass)
     case CN_EOSMARKER:
     case CN_ERRORMARKER:
     case CN_CANCELMARKER:
+    case CN_COMMENCEMARKER:
+    case CN_COMMENCEDMARKER:
+    case CN_COMPLETEDMARKER:
     case CN_CRWBUFFER:
     case CN_CSVBUFFER:
     case CN_IRWBUFFER:
     case CN_STARTMARKER:
     case CN_STREAMDEF:
     case CN_STOPMARKER:
+    case CN_STOPPEDMARKER:
       return true;
     default:
       return false;

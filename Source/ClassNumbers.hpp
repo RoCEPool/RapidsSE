@@ -51,7 +51,10 @@ enum eCN : u2 // Class Number
   /*  30 0x01E      184B Heap:S */ CN_COLUMN,
   /*  31 0x01F     8216B Heap:M */ CN_COLUMNVEC,
   /*  32 0x020      176B Heap:M */ CN_COMMAND,
+  /*  32 0x020      176B Heap:M */ CN_COMMENCEMARKER,
+  /*  32 0x020      176B Heap:M */ CN_COMMENCEDMARKER,
   /*  33 0x021      176B Heap:M */ CN_COMPILER,
+  /*  33 0x021      176B Heap:M */ CN_COMPLETEDMARKER,
   /*  34 0x022  1044008B Heap:L */ CN_CRWBUFFER,
   /*  35 0x023  1040784B Heap:L */ CN_CSVBUFFER,
   
@@ -292,6 +295,7 @@ enum eCN : u2 // Class Number
   /* 254 0x0FE   131288B Heap:L */ CN_STEPTIMING,
   /* 255 0x0FF       80B Heap:L */ CN_STMT_SELECT,
   /*              47800B Heap:L */ CN_STOPMARKER,
+  /*              47800B Heap:L */ CN_STOPPEDMARKER,
   /* 256 0x100    47800B Heap:L */ CN_STREAMDEF,
   /* 257 0x101       56B Heap:I */ CN_STRING_T,
   /* 258 0x102       24B Heap:I */ CN_STZVAL,
@@ -381,7 +385,10 @@ static Stz* aCN[]
   /*  30 0x01E */ "COLUMN"_Stz,              // CN_COLUMN
   /*  31 0x01F */ "COLUMNVEC"_Stz,           // CN_COLUMNVEC
   /*  32 0x020 */ "COMMAND"_Stz,             // CN_COMMAND
+  /*  32 0x020 */ "COMMENCEMARKER"_Stz,      // CN_COMMENCEMARKER
+  /*  32 0x020 */ "COMMENCEDMARKER"_Stz,     // CN_COMMENCEDMARKER
   /*  33 0x021 */ "COMPILER"_Stz,            // CN_COMPILER
+  /*  33 0x021 */ "COMPLETEDMARKER"_Stz,     // CN_COMPLETEDMARKER
   /*  34 0x022 */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
   /*  35 0x023 */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
   
@@ -622,6 +629,7 @@ static Stz* aCN[]
   /* 254 0x0FE */ "STEPTIMING"_Stz,          // CN_STEPTIMING
   /* 255 0x0FF */ "STMT_SELECT"_Stz,         // CN_STMT_SELECT
   /*           */ "STOPMARKER"_Stz,          // CN_STOPMARKER
+  /*           */ "STOPPEDMARKER"_Stz,       // CN_STOPPEDMARKER
   /* 256 0x100 */ "STREAMDEF"_Stz,           // CN_STREAMDEF
   /* 257 0x101 */ "STRING_T"_Stz,            // CN_STRING_T
   /* 258 0x102 */ "STZVAL"_Stz,              // CN_STZVAL

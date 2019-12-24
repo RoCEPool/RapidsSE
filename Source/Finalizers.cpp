@@ -48,7 +48,10 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_COLUMN
   /* 32 */ &Finalize::vUndefined,         // CN_COLUMNVEC
   /*    */ &Finalize::vUndefined,         // CN_COMMAND
+  /*    */ &Finalize::vUndefined,         // CN_COMMENCEMARKER
+  /*    */ &Finalize::vUndefined,         // CN_COMMENCEDMARKER
   /*    */ &Finalize::vUndefined,         // CN_COMPILER
+  /*    */ &Finalize::vUndefined,         // CN_COMPLETEDMARKER
   /*    */ &Finalize::vUndefined,         // CN_CRWBUFFER
   /*    */ &Finalize::vUndefined,         // CN_CSVBUFFER
   
@@ -289,6 +292,7 @@ pFINALIZE *gpFinalize[]
   /*128 */ &Finalize::vUndefined,         // CN_STEPTIMING
   /*128 */ &Finalize::vUndefined,         // CN_STMT_SELECT
   /*    */ &Finalize::vUndefined,         // CN_STOPMARKER
+  /*    */ &Finalize::vUndefined,         // CN_STOPPEDMARKER
   /* 13 */ &Finalize::vUndefined,         // CN_STREAMDEF
   /* 13 */ &Finalize::vUndefined,         // CN_STRING_T
   /* 12 */ &Finalize::vUndefined,         // CN_STZVAL  
