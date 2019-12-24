@@ -84,7 +84,7 @@
       ZK_EOSMARKER of
         //"Operand:- ZK_EOSMARKER" .verbose
         writeBehind[].handleDangling
-        Operand[].handleEnd
+        Operand[].pipeOut
       endof
 
       ZK_STREAMDEF of

@@ -22,11 +22,12 @@
     // decode kind
     Operand[].kind case
 
-      ZK_STOPMARKER of
-        //"Operand:- ZK_STOPMARKER" .verbose
+      ZK_COMPLETEDMARKER of
+        //"Operand:- ZK_COMPLETEDMARKER" .verbose
+        Operand[].delete
+        Operand[].newStopMarker
         Operand[].pipeOut
-        Op.ackPipelineJob
-        false
+        true
       endof
 
       ZK_CANCELMARKER of
@@ -40,6 +41,13 @@
         //"Operand:- ZK_STARTMARKER" .verbose
         Operand[].pipeOut
         true
+      endof
+
+      ZK_STOPPEDMARKER of
+        //"Operand:- ZK_STOPPEDMARKER" .verbose
+        Operand[].delete
+        Op.ackPipelineJob
+        false
       endof
 
     endcase

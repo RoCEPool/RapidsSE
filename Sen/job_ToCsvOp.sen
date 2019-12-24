@@ -39,7 +39,7 @@
 
       ZK_EOSMARKER of
         //"Operand:- ZK_EOSMARKER" .verbose
-        Operand[].handleEnd
+        Operand[].pipeOut
       endof
 
       ZK_STREAMDEF of
