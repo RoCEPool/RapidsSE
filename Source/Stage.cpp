@@ -365,8 +365,6 @@ void Stage::vStartPipeline(void)
     // append a STARTMARKER
     pOp->vAppendLeft(new StartMarker);
   }
-  
- 
 }
 
 /*----------------------------------------------------------------------------*/

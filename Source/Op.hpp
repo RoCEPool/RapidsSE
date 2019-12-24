@@ -71,7 +71,6 @@ namespace Operators
     void vJobPipeline(Job* pJob);
     i8   nLeftEndMarkers(void);
     void vLeftEndMarkers(i8 nEndMarkers);
-    void vLinkToStage(Stage* pStage);
     Stz* szName(void);
     Stz* szNextLabel(void);
     void vNextLabel(Stz* szNextLabel);
