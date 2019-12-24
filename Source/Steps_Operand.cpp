@@ -20,9 +20,11 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].itemCount@"_Stz,     &Step::vOperandItemCountFetch);
   vAddStep("Operand[].insertIntoTable"_Stz,&Step::vOperandInsertIntoTable);
   vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
+  vAddStep("Operand[].newCompletedMarker"_Stz,  &Step::vOperandNewCompeletedMarker);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
   vAddStep("Operand[].newStopMarker"_Stz,  &Step::vOperandNewStopMarker);
+  vAddStep("Operand[].newStoppedMarker"_Stz, &Step::vOperandNewStoppedMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
   vAddStep("Operand[].next"_Stz,           &Step::vOperandNext);
   vAddStep("Operand[].pipeOut"_Stz,        &Step::vOperandPipeOut);
@@ -280,6 +282,20 @@ void Step::vOperandNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Operand[].newCompletedMarker -- new a completed marker                     */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewCompletedMarker(void)
+{
+  ENTRY(); // ENTRY("vOperandNewCompletedMarker"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperand.bIsNull());
+  
+  m_pRegSet->m_xpOperand = new CompletedMarker;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Operand[].newEosMarker -- new an end marker                                */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNewEosMarker(void)
@@ -320,6 +336,21 @@ void Step::vOperandNewStopMarker(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newStopppedMarker -- new a stopped marker                        */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewStoppedMarker(void)
+{
+  ENTRY(); // ENTRY("vOperandNewStoppedMarker"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperand.bIsNull());
+  
+  m_pRegSet->m_xpOperand = new StoppedMarker;
+  
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Operand[].newStreamDef -- new a stream def from table[]                    */
