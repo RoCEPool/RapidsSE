@@ -87,7 +87,7 @@
             false
           while repeat
 
-          Operand[].newEndMarker
+          Operand[].newEosMarker
           Operand[].handleEnd
 
         then

@@ -849,7 +849,7 @@ public:
 
   // operator
   void vOpAckPipelineJob(void);
-  void vOpLeftEndMarkersStore(void);
+  void vOpLeftEosMarkersStore(void);
   void vOpLinkNextStage(void);
   void vOpNextStageStore(void);
   void vOpPartitionFetch(void);
@@ -868,7 +868,7 @@ public:
   void vOperandItemCountFetch(void);
   void vOperandInsertIntoTable(void);
   void vOperandKind(void);
-  void vOperandNewEndMarker(void);
+  void vOperandNewEosMarker(void);
   void vOperandNewErrorMarker(void);
   void vOperandNewStopMarker(void);
   void vOperandNewStreamDef(void);

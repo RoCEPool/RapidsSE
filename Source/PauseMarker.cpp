@@ -24,10 +24,10 @@ PauseMarker* ControlData::_pPauseMarker(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* PauseMarker::operator new(size_t)
 {
-  PauseMarker* pEndMarker =
+  PauseMarker* pEosMarker =
     static_cast<PauseMarker*>(HeapMem::pAllocate(CN_PAUSEMARKER));
   
-  return pEndMarker;
+  return pEosMarker;
 }
 
 /*----------------------------------------------------------------------------*/

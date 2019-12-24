@@ -92,7 +92,7 @@
             Subset[].nextBuffer to Operand[]
           repeat
 
-          Operand[].newEndMarker
+          Operand[].newEosMarker
           Operand[].handleEnd
 
         then

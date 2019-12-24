@@ -11,7 +11,7 @@
 
   >>logEntry <SEED_REQ>
 
-  <consumeXmits> op.leftEndMarkers!
+  <consumeXmits> op.leftEosMarkers!
 
   begin
 
@@ -38,8 +38,8 @@
         true
       endof
 
-      ZK_ENDMARKER of
-        //"Operand:- ZK_ENDMARKER" .verbose
+      ZK_EOSMARKER of
+        //"Operand:- ZK_EOSMARKER" .verbose
         Operand[].handleEnd
       endof
 

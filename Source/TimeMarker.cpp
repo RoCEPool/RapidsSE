@@ -24,10 +24,10 @@ TimeMarker* ControlData::_pTimeMarker(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TimeMarker::operator new(size_t)
 {
-  TimeMarker* pEndMarker =
+  TimeMarker* pEosMarker =
     static_cast<TimeMarker*>(HeapMem::pAllocate(CN_PAUSEMARKER));
   
-  return pEndMarker;
+  return pEosMarker;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -36,10 +36,10 @@
         true
       endof
 
-      ZK_ENDMARKER of
-        //"Operand:- ZK_ENDMARKER" .verbose
+      ZK_EOSMARKER of
+        //"Operand:- ZK_EOSMARKER" .verbose
         Operand[].pipeToJob
-        Operand[].newEndMarker
+        Operand[].newEosMarker
         Operand[].handleEnd
       endof
 

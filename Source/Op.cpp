@@ -79,8 +79,8 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
 
   m_nNode            = C_UNKNOWN;
   m_nPartition       = C_UNKNOWN;
-  m_nLeftEndMarkers  = 1;
-  m_nRightEndMarkers = 0;
+  m_nLeftEosMarkers  = 1;
+  m_nRightEosMarkers = 0;
   
   m_eTopologyX = PX_NONE;
   m_iNextStage = C_UNKNOWN;
@@ -240,13 +240,13 @@ bool Op::bAppendRight(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dec the leftEndMarkers and return it                                       */
+/* dec the leftEosMarkers and return it                                       */
 /*----------------------------------------------------------------------------*/
-i8 Op::nDecLeftEndMarkers(void)
+i8 Op::nDecLeftEosMarkers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return (--m_nLeftEndMarkers);
+  return (--m_nLeftEosMarkers);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -322,23 +322,23 @@ void Op::vJobPipeline(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the leftEndMarkers                                                     */
+/* get the leftEosMarkers                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Op::nLeftEndMarkers(void)
+i8 Op::nLeftEosMarkers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_nLeftEndMarkers;
+  return m_nLeftEosMarkers;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the leftEndMarkers                                                     */
+/* set the leftEosMarkers                                                     */
 /*----------------------------------------------------------------------------*/
-void Op::vLeftEndMarkers(i8 nEndMarkers)
+void Op::vLeftEosMarkers(i8 nEosMarkers)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_nLeftEndMarkers = nEndMarkers;
+  m_nLeftEosMarkers = nEosMarkers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -765,23 +765,23 @@ OperandQueue* Op::pQueueRight(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the rightEndMarkers                                                    */
+/* get the rightEosMarkers                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Op::nRightEndMarkers(void)
+i8 Op::nRightEosMarkers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_nRightEndMarkers;
+  return m_nRightEosMarkers;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the rightEndMarkers                                                    */
+/* set the rightEosMarkers                                                    */
 /*----------------------------------------------------------------------------*/
-void Op::vRightEndMarkers(i8 nEndMarkers)
+void Op::vRightEosMarkers(i8 nEosMarkers)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_nRightEndMarkers = nEndMarkers;
+  m_nRightEosMarkers = nEosMarkers;
 }
 
 /*----------------------------------------------------------------------------*/

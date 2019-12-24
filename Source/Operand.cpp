@@ -25,7 +25,7 @@ Operand* Operands::_pOperand(void* aAddress)
 bool Operands::_bIsValidOperand(eCN eClass)
 {
   switch(eClass) {
-    case CN_ENDMARKER:
+    case CN_EOSMARKER:
     case CN_ERRORMARKER:
     case CN_CANCELMARKER:
     case CN_CRWBUFFER:

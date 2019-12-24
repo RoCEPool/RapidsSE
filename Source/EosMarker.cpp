@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EndMarker.cpp -- End Marker operand                                        */
+/* EosMarker.cpp -- End Marker operand                                        */
 /*============================================================================*/
 
 #include "Operators.h"
@@ -12,28 +12,28 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EndMarker* ControlData::_pEndMarker(void* aAddr)
+EosMarker* ControlData::_pEosMarker(void* aAddr)
 {
-  EndMarker* pEndMarker = reinterpret_cast<EndMarker*>(aAddr);
+  EosMarker* pEosMarker = reinterpret_cast<EosMarker*>(aAddr);
   
-  return pEndMarker;
+  return pEosMarker;
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate from heap                                                         */
 /*----------------------------------------------------------------------------*/
-void* EndMarker::operator new(size_t)
+void* EosMarker::operator new(size_t)
 {
-  EndMarker* pEndMarker =
-    static_cast<EndMarker*>(HeapMem::pAllocate(CN_ENDMARKER));
+  EosMarker* pEosMarker =
+    static_cast<EosMarker*>(HeapMem::pAllocate(CN_EOSMARKER));
   
-  return pEndMarker;
+  return pEosMarker;
 }
 
 /*----------------------------------------------------------------------------*/
 /* free back to the heap                                                      */
 /*----------------------------------------------------------------------------*/
-void EndMarker::operator delete(void* aAddress)
+void EosMarker::operator delete(void* aAddress)
 {
   Object* pObject = static_cast<Object*>(aAddress);
   
@@ -43,22 +43,22 @@ void EndMarker::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EndMarker::EndMarker(void)
-: Operand(CN_ENDMARKER)
+EosMarker::EosMarker(void)
+: Operand(CN_EOSMARKER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENDMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EOSMARKER,_FOOTER_);
 
-  _checkInitialised_(CN_ENDMARKER);
+  _checkInitialised_(CN_EOSMARKER);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENDMARKER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_EOSMARKER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-EndMarker::~EndMarker(void) noexcept(false)
+EosMarker::~EosMarker(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENDMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EOSMARKER,_FOOTER_);
 }
 
 
@@ -66,7 +66,7 @@ EndMarker::~EndMarker(void) noexcept(false)
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aFooterFunction(EndMarker);
+__aFooterFunction(EosMarker);
 
 
 /*============================================================================*/

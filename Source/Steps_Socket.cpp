@@ -402,13 +402,13 @@ void Step::vSocketRecvObject(void)
       return;
     }
       
-    case CN_ENDMARKER: {
-      EndMarker* pEndMarker = new EndMarker();
+    case CN_EOSMARKER: {
+      EosMarker* pEosMarker = new EosMarker();
       
-      MemLib::vCopy(pEndMarker,pObject,sizeof(Object),CN_ENDMARKER);
+      MemLib::vCopy(pEosMarker,pObject,sizeof(Object),CN_EOSMARKER);
       
-      aBody = aAdd<void*>(pEndMarker,sizeof(Object));
-      nRemainingBytes = giClassSize[CN_ENDMARKER] - sizeof(Object);
+      aBody = aAdd<void*>(pEosMarker,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_EOSMARKER] - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -420,7 +420,7 @@ void Step::vSocketRecvObject(void)
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
       
-      m_pDataStack->vPushPtr(pEndMarker);
+      m_pDataStack->vPushPtr(pEosMarker);
       m_pDataStack->vPushInt(true);
       EXIT();
       return;
@@ -729,7 +729,7 @@ void Step::vSocketRecvObject_LowMem(void)
   void* aBody;
   i8 nRemainingBytes;
   CrwBuffer* pCrwBuffer;
-  EndMarker* pEndMarker;
+  EosMarker* pEosMarker;
   StreamDef* pStreamDef;
   
   switch(eClass) {
@@ -763,13 +763,13 @@ void Step::vSocketRecvObject_LowMem(void)
       EXIT();
       return;
      
-    case CN_ENDMARKER:
-      pEndMarker = new EndMarker();
+    case CN_EOSMARKER:
+      pEosMarker = new EosMarker();
       
-      MemLib::vCopy(pEndMarker,pObject,sizeof(Object),CN_ENDMARKER);
+      MemLib::vCopy(pEosMarker,pObject,sizeof(Object),CN_EOSMARKER);
       
-      aBody = aAdd<void*>(pEndMarker,sizeof(Object));
-      nRemainingBytes = giClassSize[CN_ENDMARKER] - sizeof(Object);
+      aBody = aAdd<void*>(pEosMarker,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_EOSMARKER] - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -781,7 +781,7 @@ void Step::vSocketRecvObject_LowMem(void)
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
       
-      m_pDataStack->vPushPtr(pEndMarker);
+      m_pDataStack->vPushPtr(pEosMarker);
       m_pDataStack->vPushInt(true);
       EXIT();
       return;

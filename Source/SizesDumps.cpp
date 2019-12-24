@@ -71,12 +71,12 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_EARLYMARKER
   /* */ &Dump::vInvalid,         // CN_EDTVAL
   /* */ &Dump::vUndefined,       // CN_ENCODING
-  /* */ &Dump::vUndefined,       // CN_ENDMARKER
   /* */ &Dump::vDummy,           // CN_ENMSET
   /* */ &Dump::vDummy,           // CN_ENT
   /* */ &Dump::vDummy,           // CN_ENTBUFFER
   /* */ &Dump::vInvalid,         // CN_ENTWRK
   /* */ &Dump::vDummy,           // CN_ENUMFLAGS
+  /* */ &Dump::vUndefined,       // CN_EOSMARKER
   /* */ &Dump::vDummy,           // CN_ERRORMARKER
   /* */ &Dump::vDummy,           // CN_EXTRACTROW
 
@@ -402,12 +402,12 @@ i8 giClassSize[]
   /* */ sizeof(EarlyMarker),        // CN_EARLYMARKER
   /* */ sizeof(EdtVal),             // CN_EDTVAL
   /* */ sizeof(Encoding),           // CN_ENCODING
-  /* */ sizeof(EndMarker),          // CN_ENDMARKER
   /* */ sizeof(EnameSet),           // CN_ENMSET
   /* */ sizeof(Ent),                // CN_ENT
   /* */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* */ sizeof(EntWrk),             // CN_ENTWRK
   /* */ sizeof(EnumFlags),          // CN_ENUMFLAGS
+  /* */ sizeof(EosMarker),          // CN_EOSMARKER
   /* */ sizeof(ErrorMarker),        // CN_ERRORMARKER
   /* */ sizeof(ExtractRow),         // CN_EXTRACTROW
 
@@ -733,12 +733,12 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_EARLYMARKER
   /* */ HT_INVALID,           // CN_EDTVAL
   /* */ HT_TRANSIENT_LARGE,   // CN_ENCODING
-  /* */ HT_TRANSIENT_SMALL,   // CN_ENDMARKER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_ENMSET
   /* */ HT_INVALID,           // CN_ENT
   /* */ HT_TRANSIENT_LARGE,   // CN_ENTBUFFER
   /* */ HT_INVALID,           // CN_ENTWRK
   /* */ HT_TRANSIENT_SMALL,   // CN_ENUMFLAGS
+  /* */ HT_TRANSIENT_SMALL,   // CN_EOSMARKER
   /* */ HT_TRANSIENT_SMALL,   // CN_ERRORMARKER
   /* */ HT_TRANSIENT_SMALL,   // CN_EXTRACTROW
 

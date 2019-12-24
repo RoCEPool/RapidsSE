@@ -20,7 +20,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].itemCount@"_Stz,     &Step::vOperandItemCountFetch);
   vAddStep("Operand[].insertIntoTable"_Stz,&Step::vOperandInsertIntoTable);
   vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
-  vAddStep("Operand[].newEndMarker"_Stz,   &Step::vOperandNewEndMarker);
+  vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
   vAddStep("Operand[].newStopMarker"_Stz,  &Step::vOperandNewStopMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
@@ -104,9 +104,9 @@ void Step::vOperandHandleAggEnd(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp; //  pJob_Universal->m_pOp;
   
-  if (pOp->nDecLeftEndMarkers() == 0) {
+  if (pOp->nDecLeftEosMarkers() == 0) {
     if (pOp->bIsCancelling()) {
-      delete _pEndMarker(*m_pRegSet->m_xpOperand);
+      delete _pEosMarker(*m_pRegSet->m_xpOperand);
       pOp->vPipeOut(new CancelMarker);
     }
     else {
@@ -131,7 +131,7 @@ void Step::vOperandHandleAggEnd(void)
     
   }
   else
-    delete (EndMarker*)(*m_pRegSet->m_xpOperand);
+    delete (EosMarker*)(*m_pRegSet->m_xpOperand);
   
   EXIT();
 }
@@ -147,9 +147,9 @@ void Step::vOperandHandleEnd(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   
-  if (pOp->nDecLeftEndMarkers() == 0) {
+  if (pOp->nDecLeftEosMarkers() == 0) {
     if (pOp->bIsCancelling()) {
-      delete _pEndMarker(*m_pRegSet->m_xpOperand);
+      delete _pEosMarker(*m_pRegSet->m_xpOperand);
       
       pOp->vPipeOut(new CancelMarker);
         
@@ -246,7 +246,7 @@ void Step::vOperandKind(void)
       
     case CN_CRWBUFFER:   eOperand = ZK_CRWBUFFER;   break;
     case CN_CSVBUFFER:   eOperand = ZK_CSVBUFFER;   break;
-    case CN_ENDMARKER:   eOperand = ZK_ENDMARKER;   break;
+    case CN_EOSMARKER:   eOperand = ZK_EOSMARKER;   break;
     case CN_ENTBUFFER:   eOperand = ZK_ENTBUFFER;   break;
     case CN_ERRORMARKER: eOperand = ZK_ERRORMARKER; break;
     case CN_IRWBUFFER:   eOperand = ZK_IRWBUFFER;   break;
@@ -280,15 +280,15 @@ void Step::vOperandNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newEndMarker -- new an end marker                                */
+/* Operand[].newEosMarker -- new an end marker                                */
 /*----------------------------------------------------------------------------*/
-void Step::vOperandNewEndMarker(void)
+void Step::vOperandNewEosMarker(void)
 {
-  ENTRY(); // ENTRY("vOperandNewEndMarker"_Stz);
+  ENTRY(); // ENTRY("vOperandNewEosMarker"_Stz);
   
   ASSERT (m_pRegSet->m_xpOperand.bIsNull());
   
-  m_pRegSet->m_xpOperand = new EndMarker;
+  m_pRegSet->m_xpOperand = new EosMarker;
   
   EXIT();
 }
@@ -500,7 +500,7 @@ void Step::vOperandWorkDone(void)
       break;
     }
       
-    case CN_ENDMARKER: {
+    case CN_EOSMARKER: {
       RASSERT(0);
       break;
     }

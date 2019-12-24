@@ -167,9 +167,9 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
       
-    case CN_ENDMARKER: {
-      EndMarker* pEndMarker = _pEndMarker(pOperand);
-      delete pEndMarker;
+    case CN_EOSMARKER: {
+      EosMarker* pEosMarker = _pEosMarker(pOperand);
+      delete pEosMarker;
       break;
     }
  

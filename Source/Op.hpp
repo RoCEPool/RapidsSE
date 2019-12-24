@@ -35,8 +35,8 @@ namespace Operators
     
     i8             m_nNode;               // node no
     i8             m_nPartition;          // partition no
-    i8             m_nLeftEndMarkers;     // expected left end markers
-    i8             m_nRightEndMarkers;    // expected left end markers
+    i8             m_nLeftEosMarkers;     // expected left end markers
+    i8             m_nRightEosMarkers;    // expected left end markers
     
     ePX            m_eTopologyX;      // cross topology
     i8             m_iNextStage;      // next stage in the cross topology    
@@ -61,7 +61,7 @@ namespace Operators
     bool bAppendRight(void);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
-    i8   nDecLeftEndMarkers(void);
+    i8   nDecLeftEosMarkers(void);
     void vDropTaskLock(void);
     void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
@@ -69,8 +69,8 @@ namespace Operators
     bool bIsCancelling(void);
     bool bIsLocked(void);
     void vJobPipeline(Job* pJob);
-    i8   nLeftEndMarkers(void);
-    void vLeftEndMarkers(i8 nEndMarkers);
+    i8   nLeftEosMarkers(void);
+    void vLeftEosMarkers(i8 nEosMarkers);
     Stz* szName(void);
     Stz* szNextLabel(void);
     void vNextLabel(Stz* szNextLabel);
@@ -95,8 +95,8 @@ namespace Operators
     Operand* pPopQueueRight(void);
     OperandQueue* pQueueLeft(void);
     OperandQueue* pQueueRight(void);
-    i8   nRightEndMarkers(void);
-    void vRightEndMarkers(i8 nEndMarkers);
+    i8   nRightEosMarkers(void);
+    void vRightEosMarkers(i8 nEosMarkers);
     void vSendJobOperand(Operand* pOperand);
     bool bSpawnJob(i8 iSessionId);
     Task* pTask(void);

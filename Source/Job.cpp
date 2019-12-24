@@ -1233,7 +1233,7 @@ void Job::vPrintQueueRows(void)
         
       // -- -- -- -- -- --
         
-      case CN_ENDMARKER: {
+      case CN_EOSMARKER: {
         // print the responses received
         vTrace("success: %lld rows fetched\n"_Stz, *m_xResponse.m_ixRowsProcessed);
         AM::vDeleteOperand(pOperand);

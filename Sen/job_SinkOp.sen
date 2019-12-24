@@ -28,7 +28,7 @@
     // pop next operand from queue into Operand[]
     Operand[].next
 
-    Operand[].kind ZK_ENDMARKER == if
+    Operand[].kind ZK_EOSMARKER == if
       //Operand[].pipeToJob
       Operand[].delete
       Operand[].newStopMarker

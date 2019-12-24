@@ -70,12 +70,12 @@ enum eCN : u2 // Class Number
   /*  46 0x02E       72B Heap:S */ CN_EARLYMARKER,
   /*  99 0x063       16B Heap:I */ CN_EDTVAL,
   /*  47 0x02F    27264B Heap:L */ CN_ENCODING,
-  /*  48 0x030       80B Heap:S */ CN_ENDMARKER,
   /*  49 0x031     5584B Heap:M */ CN_ENMSET,
   /*  50 0x032       32B Heap:I */ CN_ENT,
   /*  51 0x033  1043952B Heap:L */ CN_ENTBUFFER,
   /*  52 0x034      304B Heap:I */ CN_ENTWRK,
   /*  53 0x035      312B Heap:S */ CN_ENUMFLAGS,
+  /*  48 0x030       80B Heap:S */ CN_EOSMARKER,
   /*                312B Heap:S */ CN_ERRORMARKER,
   /*                312B Heap:S */ CN_EXTRACTROW,
   
@@ -400,12 +400,12 @@ static Stz* aCN[]
   /*  46 0x02E */ "EARLYMARKER"_Stz,         // CN_EARLYMARKER
   /*  99 0x063 */ "EDTVAL"_Stz,              // CN_EDTVAL
   /*  47 0x02F */ "ENCODING"_Stz,            // CN_ENCODING
-  /*  48 0x030 */ "ENDMARKER"_Stz,           // CN_ENDMARKER
   /*  49 0x031 */ "ENMSET"_Stz,              // CN_ENMSET
   /*  50 0x032 */ "ENT"_Stz,                 // CN_ENT
   /*  51 0x033 */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
   /*  52 0x034 */ "ENTWRK"_Stz,              // CN_ENTWRK
   /*  53 0x035 */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS
+  /*  48 0x030 */ "EosMarker"_Stz,           // CN_EOSMARKER
   /*           */ "ERRORMARKER"_Stz,         // CN_ERRORMARKER
   /*           */ "EXTRACTROW"_Stz,          // CN_EXTRACTROW
   

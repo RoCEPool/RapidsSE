@@ -24,8 +24,8 @@
     // decode kind
     Operand[].kind case
 
-      ZK_ENDMARKER of
-        "Operand:- ZK_ENDMARKER" .verbose
+      ZK_EOSMARKER of
+        "Operand:- ZK_EOSMARKER" .verbose
         nSuperCount Operand[].handleAggEnd
         false
       endof

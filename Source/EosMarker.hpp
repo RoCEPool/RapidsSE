@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* EndMarker.hpp -- End Marker operand                                        */
+/* EosMarker.hpp -- End Marker operand                                        */
 /*============================================================================*/
 #pragma once
 
 namespace ControlData
 {
-  class EndMarker : public Operand
+  class EosMarker : public Operand
   {
   public:
     
@@ -16,13 +16,13 @@ namespace ControlData
     void* operator new(size_t);
     void  operator delete(void*);
   
-    EndMarker(void);
-   ~EndMarker(void) noexcept(false);
+    EosMarker(void);
+   ~EosMarker(void) noexcept(false);
 
     Footer* aFooter(void);
   };
 
-  EndMarker* _pEndMarker(void* aAddr);
+  EosMarker* _pEosMarker(void* aAddr);
 }
 
 /*============================================================================*/

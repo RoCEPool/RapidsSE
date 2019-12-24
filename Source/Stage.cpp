@@ -180,14 +180,14 @@ void Stage::vDump(void)
     EnameSet* pEnameSet = pOp->pOpSpec()->pEnameSet();
     pEnameSet->vSprint(sArgs);
     
-    vTrace("  [%02lld] (N%lld) (P%02lld) {%12s%-24s endMarkers(L%lld R%lld) :%-10s %s }\n"_Stz,
+    vTrace("  [%02lld] (N%lld) (P%02lld) {%12s%-24s EosMarkers(L%lld R%lld) :%-10s %s }\n"_Stz,
            i_Op,
            pOp->nNode(),
            pOp->nPartition(),
            pOp->szName(),
            sArgs.szStz(),
-           pOp->nLeftEndMarkers(),
-           pOp->nRightEndMarkers(),
+           pOp->nLeftEosMarkers(),
+           pOp->nRightEosMarkers(),
            pOp->szNextLabel(),
            pOp->bAppendRight() ? "appendRight"_Stz : "appendLeft "_Stz
            );

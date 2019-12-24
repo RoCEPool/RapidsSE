@@ -36,8 +36,8 @@
       true
     endof
 
-    ZK_ENDMARKER of
-      "Operand:- ZK_ENDMARKER" .verbose
+    ZK_EOSMARKER of
+      "Operand:- ZK_EOSMARKER" .verbose
       nCount Operand[].handleAggEnd
       false
     endof

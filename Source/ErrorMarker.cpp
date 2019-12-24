@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EndMarker.cpp -- End Marker operand                                        */
+/* EosMarker.cpp -- End Marker operand                                        */
 /*============================================================================*/
 
 #include "Operators.h"
@@ -48,7 +48,7 @@ ErrorMarker::ErrorMarker(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ERRORMARKER,_FOOTER_);
 
-  _checkInitialised_(CN_ENDMARKER);
+  _checkInitialised_(CN_EOSMARKER);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ERRORMARKER,_FOOTER_);
 }
