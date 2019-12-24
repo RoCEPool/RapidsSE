@@ -100,6 +100,24 @@ print "scan lineitem | output;";
 print "**************************************************************************";
 
 
+time pipeline insert
+begin
+
+  stage stageA on origin:
+    startOp | stageB
+
+  stage stageB on all partitions:
+    scanOp lineitem | toCsvOP | toCrwOp lineitem2 | stageC
+
+  stage stageC on all partitions:
+    insertOp lineitem2  | stageD
+
+  stage stageD on origin:
+    outputOp | sinkOp | stageA
+
+end
+;
+/*
 time pipeline scan
 begin
 
@@ -115,7 +133,6 @@ stage stageC on origin:
 end
 ;
 
-/*
 time pipeline scan
 begin
 
@@ -129,20 +146,7 @@ end
 ;
 
 
-time pipeline insert
-begin
 
-stage stageA on all partitions:
-scanOp lineitem | toCsvOP | toCrwOp lineitem2 | stageB
-
-stage stageB on all partitions:
-insertOp lineitem2  | stageC
-
-stage stageC on origin:
-  outputOp | sinkOp
-
-end
-;
 
 
  pipeline lineItem_dyn

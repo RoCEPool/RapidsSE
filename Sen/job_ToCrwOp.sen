@@ -85,6 +85,17 @@
         //"Operand:- ZK_EOSMARKER" .verbose
         writeBehind[].handleDangling
         Operand[].pipeOut
+        true
+      endof
+
+      ZK_STARTMARKER of
+        //"Operand:- ZK_STARTMARKER" .verbose
+        true
+      endof
+
+      ZK_STOPMARKER of
+        //"Operand:- ZK_STOPMARKER" .verbose
+        Operand[].handleEnd
       endof
 
       ZK_STREAMDEF of
