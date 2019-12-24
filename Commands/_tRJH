@@ -42,7 +42,23 @@ begin
 
 end;
 
-//drop table T;
+fetch T;
+
+pipeline t_ins
+begin
+
+  stage stageA on origin:
+    startOp | stageB
+
+  stage stageB on all partitions:
+    genCsvOp T | toCrwOp T | insertOp T | stageC
+
+  stage stageC on origin:
+    outputOp | sinkOp | stageA
+
+end;
+
+fetch T;
 
 /*============================================================================*/
 /* end                                                                        */

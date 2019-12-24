@@ -82,8 +82,9 @@ void RN_Tsp::vRnd(Datum_h* pDatum, Datum_h* pMin, Datum_h* pMax)
   i8 iMin = pMin->iInt();
   i8 iMax = pMax->iInt();
   
-  i8 iRnd = RndLib::iInteger(iMin,iMax); // inclusive
-  
+  //i8 iRnd = RndLib::iInteger(iMin,iMax); // inclusive
+  i8 iRnd = iMin; //hack
+
   pDatum->vInt(iRnd);
 }
 

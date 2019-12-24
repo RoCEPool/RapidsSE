@@ -57,19 +57,19 @@
       ZK_STARTMARKER of
 
         "Operand:- ZK_STARTMARKER" .verbose
-        Operand[].delete
+        Operand[].pipeOut
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // check if we can scan the table
         <tableNm> to sTableNm
-        sTableNm checkGenTable not if
-
-          op.pipelineJob@ <ERROR_JOB>
-
-          Operand[].newErrorMarker
-          Operand[].handleEnd
-
-        else
+        //sTableNm checkGenTable not if
+        //
+        //  op.pipelineJob@ <ERROR_JOB>
+        //
+        //  Operand[].newErrorMarker
+        //  Operand[].handleEnd
+        //
+        //else
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // move to table folder and find the table and tablePtn
@@ -77,27 +77,32 @@
           sTableNm find execute to table[]
 
           // new a stream def
-          pTable Operand[].newStreamDef
+          Operand[].newStreamDef
           Operand[].pipeOut
 
           // pipeout a single generated csv buffer
-          begin
+          //begin
             table[].get table.genCsvBuffer to Operand[]
             Operand[].pipeOut
-            false
-          while repeat
+            //false
+          //while repeat
 
           Operand[].newEosMarker
-          Operand[].handleEnd
+          //Operand[].handleEnd
+          Operand[].pipeOut
+          true
+      endof
 
-        then
-
+      ZK_STOPMARKER of
+        "Operand:- ZK_STOPMARKER" .verbose
+        Operand[].handleEnd
       endof
 
     endcase
 
   while assert::stack_0 repeat
 
+  "*** GENCSVOP EXITS" .
   <<logExit
   job::deleteThis
   <DONE_RUN>
