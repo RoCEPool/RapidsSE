@@ -30,6 +30,7 @@
 
     Operand[].kind ZK_ENDMARKER == if
       //Operand[].pipeToJob
+      Operand[].delete
       Operand[].newStopMarker
       Operand[].pipeOut
       Op.ackPipelineJob

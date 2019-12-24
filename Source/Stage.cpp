@@ -240,7 +240,7 @@ OpVec* Stage::pOpVec(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn)
+void Stage::vPipeOutOp(Operand* pOperand, ePX eTopologyX, i8 iNde, i8 iPtn)
 {
   Op* pOp = nullptr;
   StageNde* pStageNde = nullptr;
@@ -253,32 +253,31 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn)
     case PX_ORIGIN_TO_ORIGIN:
       pStageNde = this->pStageNde(iNde);
       pOp = pStageNde->pOpVec()->pGet(0);
+      pOp->vAppendLeft(pOperand);
       break;
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
-      RASSERT(iPtn == C_UNKNOWN);
-      for (i8 i_Ptn = 0; i_Ptn < AM::pGrid()->nSlotsPerNode(); i_Ptn++) {
-        pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
+        pStagePtn = m_oStagePtnVec.pGet(iPtn);
         pOp = pStagePtn->pOpVec()->pGet(0);
-      }
+        pOp->vAppendLeft(pOperand);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
       pStageNde = this->pStageNde(iNde);
       pOp = pStageNde->pOpVec()->pGet(0);
+      pOp->vAppendLeft(pOperand);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
       pStagePtn = m_oStagePtnVec.pGet(iPtn);
       pOp = pStagePtn->pOpVec()->pGet(0);
+      pOp->vAppendLeft(pOperand);
       break;
       
     default:
       RASSERT(0);
   }
   
-  
-  return pOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -357,12 +356,17 @@ void Stage::vStartPipeline(void)
   // get first stage from stageNdeVec
   StageNde* pStageNde = m_oStageNdeVec.pGet(0);
 
-  // get first operator of this first stage
-  Op* pOp = pStageNde->pOpVec()->pGet(0);
-  RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
+  if (pStageNde->iNode() == AM::pGrid()->iThisNode()) {
+    
+    // get first operator of this first stage
+    Op* pOp = pStageNde->pOpVec()->pGet(0);
+    RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
+    
+    // append a STARTMARKER
+    pOp->vAppendLeft(new StartMarker);
+  }
   
-  // append a STARTMARKER
-  pOp->vAppendLeft(new StartMarker);
+ 
 }
 
 /*----------------------------------------------------------------------------*/

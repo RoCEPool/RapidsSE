@@ -228,7 +228,7 @@ namespace Oblique
     static void vNap(i8 nMilliSeconds, eCN eCallingClass);
     static void vNapUsec(i8 nMilliSeconds, eCN eCallingClass);
     static void vDeleteJobOperand(Job_Operand* pJob);
-    static Job_Operand* pNewJobOperand(Job* pParentJob, Operand* pOperand, Op* pOp);
+    static Job_Operand* pNewJobOperand(Job* pParentJob, Operand* pOperand, Op* pOp, i8 iNde, i8 iPtn);
     static Job* pNewJobUniversal(Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -863,17 +863,70 @@ void Op::vSendJobOperand(Operand* pOperand)
   Stage* pNextStage = m_pPipeline->pStageVec()->pGet(m_iNextStage);
   RASSERT(pNextStage);
   
-  // link operator to next stage
-  vLinkToStage(pNextStage);
+  Job_Operand* pJob_Operand = nullptr;
   
-  // new a operand job
-  Job_Operand* pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this);
-  
-  // get the send node in the task
-  Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
-  
-  // send the operand job across the sendNode
-  AM::vSend(m_pTask, pSendNode, pJob_Operand);
+  switch(m_eTopologyX) {
+      
+    case PX_ALL_NODES_TO_ORIGIN:
+    case PX_ALL_PARTITIONS_TO_ORIGIN:
+    case PX_ORIGIN_TO_ORIGIN: {
+      
+      //xmitNde is the originating node
+      m_iXmitNode = m_pPipeline->iOriginatingNode();
+      
+      // new a operand job
+      pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this, m_iXmitNode, C_UNKNOWN);
+      
+      // get the send node in the task
+      Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
+      
+      // send the operand job across the sendNode
+      AM::vSend(m_pTask, pSendNode, pJob_Operand);
+      break;
+    }
+      
+    case PX_ORIGIN_TO_ALL_PARTITIONS: {
+      for (i8 i_Ptn = 0; i_Ptn < pNextStage->pStagePtnVec()->nItems(); i_Ptn++) {
+        
+        // xmitNode is the partition node
+        m_iXmitNode = TablePtn::iPartitionToNode(i_Ptn);
+        
+        // new a operand job
+        pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this, m_iXmitNode, i_Ptn);
+        
+        // get the send node in the task
+        Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
+        
+        // send the operand job across the sendNode
+        AM::vSend(m_pTask, pSendNode, pJob_Operand);
+      }
+      break;
+    }
+      
+    case PX_ALL_PARTITIONS_TO_ALL_NODES: {
+      RASSERT(0);
+    }
+      
+    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
+      
+      // xmitNode is the partitionNode
+      m_iXmitNode = TablePtn::iPartitionToNode(m_nPartition);
+      
+      // new a operand job
+      pJob_Operand = AM::pNewJobOperand(m_pJobPipeline, pOperand,this, m_iXmitNode, m_nPartition);
+      
+      // get the send node in the task
+      Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
+      
+      // send the operand job across the sendNode
+      AM::vSend(m_pTask, pSendNode, pJob_Operand);
+      
+      break;
+    }
+      
+    default:
+      RASSERT(0);
+  }
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
@@ -908,6 +961,7 @@ bool Op::bSpawnJob(i8 iSessionId)
   pTknVec->vSetAllTokens();
   delete pTknVec;
   
+  vTrace("SPAWNED job %p for Op %p\n"_Stz, m_pOpJob, this);
   bool bSpawned = AM::bSpawnJob(m_pOpJob);
   
   m_pTask = AM::pExecutingTask(m_pOpJob);

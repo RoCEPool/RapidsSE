@@ -389,6 +389,9 @@ void AM::vSend(Task* pTask, Node* pSendNode, Job_Operand* pJob_Operand)
   bool bResult = pSocket->bSendTo(pJob_Operand, nObjectSize, oSysCall);
   
   Operand* pOperand = pJob_Operand->m_pOperand;
+  
+  vTrace("Sending pOperand %p\n"_Stz, pOperand);
+  
   nObjectSize = giClassSize[pOperand->eClass()];
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
   
@@ -1060,10 +1063,10 @@ void AM::vDeleteJobOperand(Job_Operand* pJob)
 /*----------------------------------------------------------------------------*/
 /* new an operand job                                                         */
 /*----------------------------------------------------------------------------*/
-Job_Operand* AM::pNewJobOperand(Job* pParentJob, Operand* pOperand, Op* pOp)
+Job_Operand* AM::pNewJobOperand(Job* pParentJob, Operand* pOperand, Op* pOp, i8 iNde, i8 iPtn)
 {
   Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(
-                                 pOperand, pParentJob->m_iFocalId, pOp);
+                                 pOperand, pParentJob->m_iFocalId, pOp, iNde, iPtn);
   
   return pJob_Operand;
 }

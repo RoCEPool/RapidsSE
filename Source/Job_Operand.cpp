@@ -147,7 +147,7 @@ void Job_Operand::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 Job_Operand* Job_Operand::pNewJobOperand(Operand* pOperand,
                                          i8 iParentJobId,
-                                         Op* pOp)
+                                         Op* pOp, i8 iNde, i8 iPtn)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analysis
@@ -166,8 +166,8 @@ Job_Operand* Job_Operand::pNewJobOperand(Operand* pOperand,
   
   pJob_Operand->vParentId(iParentJobId);
   pJob_Operand->m_pOp        = pOp;
-  pJob_Operand->m_iNode      = pOp->iXmitNode();
-  pJob_Operand->m_iPartition = pOp->nPartition();
+  pJob_Operand->m_iNode      = iNde;
+  pJob_Operand->m_iPartition = iPtn;
   pJob_Operand->m_pOperand   = pOperand;
   
   pJob_Operand->m_eTopologyX = pOp->eTopologyX();

@@ -308,7 +308,7 @@ void Step::vOperandNewErrorMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Operand[].newEndMarker -- new an end marker                                */
+/* Operand[].newStopMarker -- new a stop marker                               */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNewStopMarker(void)
 {
