@@ -51,7 +51,7 @@ begin
     startOp | stageB
 
   stage stageB on all partitions:
-    genCsvOp T | toCrwOp T | insertOp T | stageC
+    genCsvOp T | toCrwOp T | upsertOp T | stageC
 
   stage stageC on origin:
     outputOp | sinkOp | stageA
