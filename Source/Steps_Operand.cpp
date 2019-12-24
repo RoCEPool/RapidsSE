@@ -31,6 +31,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].pipeToJob"_Stz,      &Step::vOperandPipeToJob);
   vAddStep("Operand[].rowCount@"_Stz,      &Step::vOperandRowCountFetch);
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
+  vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandInsertIntoTable);
   vAddStep("Operand[].crwToCsv"_Stz,       &Step::vOperandCrwToCsv);
   vAddStep("Operand[].csvToCrw"_Stz,       &Step::vOperandCsvToCrw);
   vAddStep("Operand[].workDone"_Stz,       &Step::vOperandWorkDone);
@@ -428,6 +429,25 @@ void Step::vOperandSet(void)
   
   ASSERT(m_pRegSet->m_xpOperand.bIsNull());
   m_pRegSet->m_xpOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].upsertIntoTable -- insert operand into the table                 */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandUpsertIntoTable(void)
+{
+  ENTRY(); // ENTRY("vOperandUpsertIntoTable"_Stz);
+  
+  ASSERT(*m_pRegSet->m_xpOperand);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(*m_pRegSet->m_xpOperand);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  i8 iPartition = pOp->nPartition();
+  i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
+  
+  m_pRegSet->m_xpTable->vInsertEntries(C_UNKNOWN, iSlot, pCrwBuffer);
   
   EXIT();
 }

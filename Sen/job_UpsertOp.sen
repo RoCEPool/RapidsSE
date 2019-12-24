@@ -69,7 +69,7 @@
 
     ZK_CRWBUFFER of
       //"Operand:- ZK_CRWBUFFER" .verbose
-      Operand[].insertIntoTable
+      Operand[].upsertIntoTable
       true
     endof
 

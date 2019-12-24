@@ -879,6 +879,7 @@ public:
   void vOperandPipeToJob(void);
   void vOperandRowCountFetch(void);
   void vOperandSet(void);
+  void vOperandUpsertIntoTable(void);
   void vOperandCrwToCsv(void);
   void vOperandCsvToCrw(void);
   void vOperandWorkDone(void);
