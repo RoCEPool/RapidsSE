@@ -81,11 +81,14 @@ sztbl lineitem;
 pipeline lineitem_fetch
 begin
 
-  stage stageA on all partitions:
-    scanOp lineitem | stageB
+  stage stageA on origin:
+    startOp | stageB
 
-  stage stageB on origin:
-    outputOp | sinkOp
+  stage stageB on all partitions:
+    scanOp lineitem | stageC
+
+  stage stageC on origin:
+    outputOp | sinkOp | stageA
 
 end;
 

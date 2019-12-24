@@ -98,6 +98,7 @@
 "job_TruncateTable.sen"  include
 
 "job_Universal.sen"      include
+"Job_UpsertOp.sen"       include
 "job_UseSchema.sen"      include
 
 "job_VerifyIndex.sen"    include

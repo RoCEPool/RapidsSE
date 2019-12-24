@@ -31,11 +31,14 @@ lscol T;
 pipeline t_gen
 begin
 
-  stage stageA on all partitions:
-    genCsvOp T | stageB
+  stage stageA on origin:
+    startOp | stageB
 
-  stage stageB on origin:
-    outputOp | sinkOp
+  stage stageB on all partitions:
+    genCsvOp T | stageC
+
+  stage stageC on origin:
+    outputOp | sinkOp | stageA
 
 end;
 
