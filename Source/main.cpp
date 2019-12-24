@@ -121,6 +121,10 @@ int main(int argc, const char* argv[])
  
     $ ./sethRel.sh tests/Tpch/customer.test
  
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ /tenants/boray/catalogs/rapidsse/schemas/public/tables
+ 
  */
 
 /*============================================================================*/
