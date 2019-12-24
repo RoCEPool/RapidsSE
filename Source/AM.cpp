@@ -150,6 +150,12 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
       
+    case CN_COMPLETEDMARKER: {
+      CompletedMarker* pCompletedMarker = _pCompletedMarker(pOperand);
+      delete pCompletedMarker;
+      break;
+    }
+      
     case CN_CRWBUFFER: {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
       
@@ -199,6 +205,12 @@ void AM::vDeleteOperand(Operand* pOperand)
     case CN_STOPMARKER: {
       StopMarker* pStopMarker = _pStopMarker(pOperand);
       delete pStopMarker;
+      break;
+    }
+      
+    case CN_STOPPEDMARKER: {
+      StoppedMarker* pStoppedMarker = _pStoppedMarker(pOperand);
+      delete pStoppedMarker;
       break;
     }
       
@@ -389,8 +401,6 @@ void AM::vSend(Task* pTask, Node* pSendNode, Job_Operand* pJob_Operand)
   bool bResult = pSocket->bSendTo(pJob_Operand, nObjectSize, oSysCall);
   
   Operand* pOperand = pJob_Operand->m_pOperand;
-  
-  vTrace("Sending pOperand %p\n"_Stz, pOperand);
   
   nObjectSize = giClassSize[pOperand->eClass()];
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);

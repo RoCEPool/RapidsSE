@@ -245,17 +245,19 @@ void Step::vOperandKind(void)
   
   eCN eClass_op = m_pRegSet->m_xpOperand->eClass();
   switch (eClass_op) {
-      
-    case CN_CRWBUFFER:   eOperand = ZK_CRWBUFFER;   break;
-    case CN_CSVBUFFER:   eOperand = ZK_CSVBUFFER;   break;
-    case CN_EOSMARKER:   eOperand = ZK_EOSMARKER;   break;
-    case CN_ENTBUFFER:   eOperand = ZK_ENTBUFFER;   break;
-    case CN_ERRORMARKER: eOperand = ZK_ERRORMARKER; break;
-    case CN_IRWBUFFER:   eOperand = ZK_IRWBUFFER;   break;
-    case CN_SRTBUFFER:   eOperand = ZK_SRTBUFFER;   break;
-    case CN_STARTMARKER: eOperand = ZK_STARTMARKER; break;
-    case CN_STOPMARKER:  eOperand = ZK_STOPMARKER;  break;
-    case CN_STREAMDEF:   eOperand = ZK_STREAMDEF;   break;
+    
+    case CN_COMPLETEDMARKER: eOperand = ZK_COMPLETEDMARKER; break;
+    case CN_CRWBUFFER:       eOperand = ZK_CRWBUFFER;       break;
+    case CN_CSVBUFFER:       eOperand = ZK_CSVBUFFER;       break;
+    case CN_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
+    case CN_ENTBUFFER:       eOperand = ZK_ENTBUFFER;       break;
+    case CN_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
+    case CN_IRWBUFFER:       eOperand = ZK_IRWBUFFER;       break;
+    case CN_SRTBUFFER:       eOperand = ZK_SRTBUFFER;       break;
+    case CN_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
+    case CN_STOPMARKER:      eOperand = ZK_STOPMARKER;      break;
+    case CN_STOPPEDMARKER:   eOperand = ZK_STOPPEDMARKER;   break;
+    case CN_STREAMDEF:       eOperand = ZK_STREAMDEF;       break;
       
     default:
       RASSERT(0);
