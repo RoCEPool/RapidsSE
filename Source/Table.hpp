@@ -57,8 +57,7 @@ namespace MetaData
     Column* pFindColumn(Stz* szColNm);
     IdxVec* pIdxVec(void);
     i8   nIndexBuffers(i8 iIndexNo);
-    void vInsertEntries(i8 iTxId, i8 iPartition,
-                        CrwBuffer* pCrwBuffer);
+    void vInsertEntries(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
     void vIsLoading(bool bIsLoading);
     bool bIsLoading(void);
     void vLazyBuildIndexes(i8 iSlot);
@@ -82,6 +81,7 @@ namespace MetaData
     i8   iToPartition(i8 iRowHash);
     void vTruncate(i8 iPartitionNo);
     void vTruncateIndex(i8 iPartitionNo, i8 iIndexNo);
+    void vUpsertEntries(i8 iTxId, i8 iPartition, CrwBuffer* pCrwBuffer);
     bool bVerifyTable(void);
     bool bVerifyIndexes(void);
     bool bVerifyIndex(Index* pIndex);

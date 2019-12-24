@@ -806,6 +806,56 @@ void Table::vTruncateIndex(i8 iPartitionNo, i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* upsert entries from a row buffer into the table indexes                    */
+/*----------------------------------------------------------------------------*/
+void Table::vUpsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
+{ //# indexTuning
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  //----------------------------------------------------------------------------
+  // This function is invoked when we insert rows into a table via a
+  // begin/insert/end and via the API's insert-select
+  
+  ASSERT(iSlot < AM::nSlotsPerNode());
+  
+  // if buffer has 0 entries (only head) then should be last buffer
+  if (pCrwBuffer->nRowCount() == 0) {
+    delete pCrwBuffer;
+    return;
+  }
+  
+  //----------------------------------------------------------------------------
+  // mark crwBuffer as permanent before its appended to the table
+  pCrwBuffer->vIsPermanent(true);
+  
+  //----------------------------------------------------------------------------
+  // (1) append the buffer entries into the table
+  TablePtn* pPartition = this->pPartition(iSlot);
+  
+  //----------------------------------------------------------------------------
+  // append the buffer to the data row buffers
+  pPartition->vAppendBuffer(pCrwBuffer);
+  
+  //----------------------------------------------------------------------------
+  // (2) insert entries from crwBuffer into all indexes of the table
+  
+  // get no of indexes of the table
+  IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
+  i8 nIndexes = pIndexTreeVec->nItems();
+  
+  // iterate all indexes of the table
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    
+    // get index
+    IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
+    
+    // insert entries from EntBuffer into the index
+    pNewIndexTree->vInsertEntriesFromBuffer(pCrwBuffer);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* verify all indexes                                                         */
 /*----------------------------------------------------------------------------*/
 bool Table::bVerifyIndexes(void)

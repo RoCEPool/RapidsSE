@@ -447,7 +447,7 @@ void Step::vOperandUpsertIntoTable(void)
   i8 iPartition = pOp->nPartition();
   i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
   
-  m_pRegSet->m_xpTable->vInsertEntries(C_UNKNOWN, iSlot, pCrwBuffer);
+  m_pRegSet->m_xpTable->vUpsertEntries(C_UNKNOWN, iSlot, pCrwBuffer);
   
   EXIT();
 }
