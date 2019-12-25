@@ -365,7 +365,7 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // This function is invoked when we insert rows into a table via a
   // begin/insert/end and via the API's insert-select
 
@@ -377,36 +377,16 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
     return;
   }
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark crwBuffer as permanent before its appended to the table
+
   pCrwBuffer->vIsPermanent(true);
   
-  //----------------------------------------------------------------------------
-  // (1) append the buffer entries into the table
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the buffer entries into the table
+  
   TablePtn* pPartition = this->pPartition(iSlot);
-  
   pPartition->vInsertEntries(pCrwBuffer);
-  
-//  //----------------------------------------------------------------------------
-//  // append the buffer to the data row buffers
-//  pPartition->vAppendBuffer(pCrwBuffer);
-//
-//  //----------------------------------------------------------------------------
-//  // (2) insert entries from crwBuffer into all indexes of the table
-//
-//  // get no of indexes of the table
-//  IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
-//  i8 nIndexes = pIndexTreeVec->nItems();
-//
-//  // iterate all indexes of the table
-//  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-//
-//    // get index
-//    IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
-//
-//    // insert entries from EntBuffer into the index
-//    pNewIndexTree->vInsertEntriesFromBuffer(pCrwBuffer);
-//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -815,7 +795,7 @@ void Table::vUpsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // This function is invoked when we insert rows into a table via a
   // begin/insert/end and via the API's insert-select
   
@@ -827,36 +807,16 @@ void Table::vUpsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
     return;
   }
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark crwBuffer as permanent before its appended to the table
+  
   pCrwBuffer->vIsPermanent(true);
   
-  //----------------------------------------------------------------------------
-  // (1) append the buffer entries into the table
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the buffer entries into the table
+  
   TablePtn* pPartition = this->pPartition(iSlot);
-
   pPartition->vUpsertEntries(pCrwBuffer);
-
-//  //----------------------------------------------------------------------------
-//  // append the buffer to the data row buffers
-//  pPartition->vAppendBuffer(pCrwBuffer);
-//
-//  //----------------------------------------------------------------------------
-//  // (2) insert entries from crwBuffer into all indexes of the table
-//
-//  // get no of indexes of the table
-//  IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
-//  i8 nIndexes = pIndexTreeVec->nItems();
-//
-//  // iterate all indexes of the table
-//  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-//
-//    // get index
-//    IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
-//
-//    // insert entries from EntBuffer into the index
-//    pNewIndexTree->vInsertEntriesFromBuffer(pCrwBuffer);
-//  }
 }
 
 /*----------------------------------------------------------------------------*/
