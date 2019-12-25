@@ -23,6 +23,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   CompilerStream::vCheckAssumptions();
   ControlData::vCheckAssumptions();
   Correctness::vCheckAssumptions();
+  Entries::vCheckAssumptions();
   Enums::vCheckAssumptions();
   Esses::vCheckAssumptions();
   Focals::vCheckAssumptions();
@@ -56,7 +57,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Tasks::vCheckAssumptions();
   Threads::vCheckAssumptions();
   TokenStream::vCheckAssumptions();
-  Entries::vCheckAssumptions();
   Transactions::vCheckAssumptions();
   Utilities::vCheckAssumptions();
 
