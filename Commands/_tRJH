@@ -26,6 +26,13 @@ time create table T
 
 lscol T;
 
+create index T_Idx_1 on T (colE);
+
+lsidx T;
+
+lsidxcol T T_Idx_1;
+
+
 //docol test_rjh;
 
 pipeline t_gen
