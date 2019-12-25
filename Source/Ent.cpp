@@ -76,9 +76,11 @@ void Ent::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 byte* Ent::ayByteSeq(void)
 {
-  byte* ayKey = aAdd<byte*>(this,sizeof(Ent));
+  byte* ayElmSeq = aKey()->ayElmSeq();
+    
+  ASSERT(ayElmSeq == aAdd<byte*>(this,sizeof(Ent)));
   
-  return ayKey;
+  return ayElmSeq;
 }
 
 /*----------------------------------------------------------------------------*/
