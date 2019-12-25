@@ -2,12 +2,12 @@
 /* NmStrList.hpp - list of name-strings                                       */
 /*============================================================================*/
 
-#include "Transform.h"
+#include "Structures.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-NmStrList* Transform::_pNmStrList(void* aAddr)
+NmStrList* Structures::_pNmStrList(void* aAddr)
 {
   NmStrList* pNmStrList = reinterpret_cast<NmStrList*>(aAddr);
   

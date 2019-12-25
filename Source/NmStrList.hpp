@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace Structures
 {
   class NmStrList : public ListNL_t<NmStr>
   {

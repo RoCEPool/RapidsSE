@@ -22,9 +22,6 @@ namespace Transform
 #include "EntWrk.hpp"
 
 
-#include "NmStr.hpp"
-#include "NmStrList.hpp"
-
 
 #include "SP_Key.hpp"
 
