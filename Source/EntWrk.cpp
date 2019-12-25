@@ -77,8 +77,8 @@ eKC EntWrk::eCompare(Ent* aEnt1, Ent* aEnt2)
   
   i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
-  byte* ayKey1Bytes = aEnt1->ayByteSeq();
-  byte* ayKey2Bytes = aEnt2->ayByteSeq();
+  byte* ayKey1Bytes = aEnt1->ayKeyElmSeq();
+  byte* ayKey2Bytes = aEnt2->ayKeyElmSeq();
   
   i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
   
@@ -245,7 +245,7 @@ byte* EntWrk::ayByteSeq(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_xEnt.ayByteSeq();
+  return m_xEnt.ayKeyElmSeq();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -301,7 +301,7 @@ void EntWrk::vFormEntry(Ent* pEntry)
   // copy key into entry
   
   byte* aSrcKey = ayByteSeq();
-  byte* aDstKey = pEntry->ayByteSeq();
+  byte* aDstKey = pEntry->ayKeyElmSeq();
   i8   nKeySize = this->nKeyBytes();
   
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
@@ -454,7 +454,7 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key byte sequence into this entry
   
-  byte* ayByteSeq = pEntry->ayByteSeq();
+  byte* ayByteSeq = pEntry->ayKeyElmSeq();
   i8 nKeyBytes = pEntry->nKeyBytes();
   RASSERT(nKeyBytes % 8 == 0);
   

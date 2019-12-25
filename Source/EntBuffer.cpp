@@ -981,8 +981,7 @@ void EntBuffer::vShowShort(void)
   while (iOffset > -1) {
     Ent* aEnt = aGetEntryOffset(iOffset);
     
-    Key* aKey = _aKey(aEnt->ayByteSeq())
-    ;
+    Key* aKey = _aKey(aEnt->ayKeyElmSeq());
     i8 iVal = aKey->iGetInt();
     
     if (m_iBufferHeight)

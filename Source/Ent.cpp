@@ -72,18 +72,6 @@ void Ent::vBuffer(i8 iBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of key bytes                                                   */
-/*----------------------------------------------------------------------------*/
-byte* Ent::ayByteSeq(void)
-{
-  byte* ayElmSeq = aKey()->ayElmSeq();
-    
-  ASSERT(ayElmSeq == aAdd<byte*>(this,sizeof(Ent)));
-  
-  return ayElmSeq;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get size of entry with neo                                                 */
 /*----------------------------------------------------------------------------*/
 i8 Ent::nEntSize(void)
@@ -132,6 +120,18 @@ i8 Ent::nKeyBytes(void)
 void Ent::vKeyBytes(i8 nKeyBytes)
 {
   m_xKey.vKeyBytes(nKeyBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of the element bytes of the key in this entry                  */
+/*----------------------------------------------------------------------------*/
+byte* Ent::ayKeyElmSeq(void)
+{
+  byte* ayElmSeq = aKey()->ayElmSeq();
+  
+  ASSERT(ayElmSeq == aAdd<byte*>(this,sizeof(Ent)));
+  
+  return ayElmSeq;
 }
 
 /*----------------------------------------------------------------------------*/
