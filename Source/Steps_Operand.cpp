@@ -31,7 +31,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].pipeToJob"_Stz,      &Step::vOperandPipeToJob);
   vAddStep("Operand[].rowCount@"_Stz,      &Step::vOperandRowCountFetch);
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
-  vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandInsertIntoTable);
+  vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandUpsertIntoTable);
   vAddStep("Operand[].crwToCsv"_Stz,       &Step::vOperandCrwToCsv);
   vAddStep("Operand[].csvToCrw"_Stz,       &Step::vOperandCsvToCrw);
   vAddStep("Operand[].workDone"_Stz,       &Step::vOperandWorkDone);
