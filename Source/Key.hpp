@@ -22,7 +22,7 @@ namespace Transform
     static eKC eCompare(Key* aLeft, Key* aRight);
   
     i8   iGetInt(void);
-    void vIncKeyBytes(i8 nDeltaBytes);
+    void vIncElmSeqSize(i8 nDeltaBytes);
     i8   nKeyBytes(void);
     void vKeyBytes(i8 nKeyBytes);
     void vShow(IdxColVec* pIdxColVec);

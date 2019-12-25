@@ -166,14 +166,14 @@ void EntWrk::vAppendElement(Row* pRow, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nBytes = 0;
+  i8 nElmSize = 0;
   
   i8 iValue = pRow->m_waColVal[pCol->iColumnNo()].m_iWrd;
   
   if (Null::bIsNull(iValue)) {
     byte* ayDst = (byte*)ayElementCrs();
-    nBytes = Null::nCopy(ayDst);
-    vIncKeyBytes(nBytes);
+    nElmSize = Null::nCopy(ayDst);
+    vIncElmSeqSize(nElmSize);
     return;
   }
   
@@ -181,13 +181,13 @@ void EntWrk::vAppendElement(Row* pRow, Column* pCol)
   if (DM_VCH == pCol->eDatum()) {
     char* aDst = (char*)ayElementCrs();
     char* aSrc = (char*)iValue;
-    nBytes = StrLib::iWordFlip(aDst, aSrc);
-    vIncKeyBytes(nBytes);
+    nElmSize = StrLib::iWordFlip(aDst, aSrc);
+    vIncElmSeqSize(nElmSize);
   }
   
   byte* ayDst = ayElementCrs();
-  nBytes = Dtm::nCopy(ayDst,iValue);
-  vIncKeyBytes(nBytes);
+  nElmSize = Dtm::nCopy(ayDst,iValue);
+  vIncElmSeqSize(nElmSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,7 +200,7 @@ void EntWrk::vAppendMinusInfinity(void)
   byte* ayDst = ayElementCrs();
   Dtm::vCopy(ayDst,(i8)C_DATUM_MINUS_INFINITY);
 
-  vIncKeyBytes(C_BYTES_PER_WORD);
+  vIncElmSeqSize(C_BYTES_PER_WORD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -213,7 +213,7 @@ void EntWrk::vAppendPlusInfinity(void)
   byte* ayDst = ayElementCrs();
   Dtm::vCopy(ayDst,(i8)C_DATUM_PLUS_INFINITY);
   
-  vIncKeyBytes(C_BYTES_PER_WORD);
+  vIncElmSeqSize(C_BYTES_PER_WORD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,13 +298,13 @@ i8 EntWrk::iHashKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inc total key bytes by the size of element                                 */
+/* inc total element sequence size by the size of element                     */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vIncKeyBytes(i8 nElementBytes)
+void EntWrk::vIncElmSeqSize(i8 nElementSize)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_xEnt.aKey()->vIncKeyBytes(nElementBytes);
+  m_xEnt.aKey()->vIncElmSeqSize(nElementSize);
 }
 
 /*----------------------------------------------------------------------------*/

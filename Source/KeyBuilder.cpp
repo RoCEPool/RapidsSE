@@ -15,14 +15,14 @@
 void KeyBuilder::vAddElement(EntWrk* pEntWrk, Column* pCol,
                                Stz* szSrc, Format* pFmt)
 {
-  i8 nBytes;
+  i8 nElmSize;
 
   char* aSrc = (char*)szSrc;
   char* aDst = (char*)pEntWrk->ayElementCrs();
 
   if (DM_VCH == pCol->eDatum()) {
-    nBytes = StrLib::iWordFlip(aDst,aSrc);
-    pEntWrk->vIncKeyBytes(nBytes);
+    nElmSize = StrLib::iWordFlip(aDst,aSrc);
+    pEntWrk->vIncElmSeqSize(nElmSize);
     return;
   }
 
@@ -32,13 +32,13 @@ void KeyBuilder::vAddElement(EntWrk* pEntWrk, Column* pCol,
   ASSERT(b);
 
   if (oDatum.bIsNull()) {
-    nBytes = Null::nCopy((byte*)aDst);
-    pEntWrk->vIncKeyBytes(nBytes);
+    nElmSize = Null::nCopy((byte*)aDst);
+    pEntWrk->vIncElmSeqSize(nElmSize);
     return;
   }
 
-  nBytes = Dtm::nCopy((byte*)aDst,oDatum.iInt());
-  pEntWrk->vIncKeyBytes(nBytes);
+  nElmSize = Dtm::nCopy((byte*)aDst,oDatum.iInt());
+  pEntWrk->vIncElmSeqSize(nElmSize);
 }
 
 /*============================================================================*/

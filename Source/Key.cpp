@@ -108,9 +108,9 @@ i8 Key::iGetInt(void)
 /*----------------------------------------------------------------------------*/
 /* increment the size of the element sequence                                 */
 /*----------------------------------------------------------------------------*/
-void Key::vIncKeyBytes(i8 nElmBytes)
+void Key::vIncElmSeqSize(i8 nDeltaBytes)
 {
-  m_nElmSeqSize += nElmBytes;
+  m_nElmSeqSize += nDeltaBytes;
 }
 
 /*----------------------------------------------------------------------------*/

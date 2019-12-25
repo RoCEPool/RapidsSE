@@ -49,7 +49,7 @@ namespace Transform
   
     i8    iHashKey(void);
   
-    void  vIncKeyBytes(i8 nElementBytes);
+    void  vIncElmSeqSize(i8 nElementSize);
     i8    iItem(void);
     void  vItem(i8 iItem);
   
