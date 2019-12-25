@@ -56,7 +56,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Tasks::vCheckAssumptions();
   Threads::vCheckAssumptions();
   TokenStream::vCheckAssumptions();
-  Transform::vCheckAssumptions();
+  Entries::vCheckAssumptions();
   Transactions::vCheckAssumptions();
   Utilities::vCheckAssumptions();
 

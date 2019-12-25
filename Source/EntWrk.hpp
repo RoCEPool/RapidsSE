@@ -5,7 +5,7 @@
 
 //! entry work is used to form an entry which is then inserted into an index
 
-namespace Transform
+namespace Entries
 {
   class EntWrk : public Object
   {

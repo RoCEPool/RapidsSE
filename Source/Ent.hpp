@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace Entries
 { 
   class Ent : public Header
   {

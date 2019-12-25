@@ -17,6 +17,7 @@ namespace DataOperators {                                                     }
 namespace Datums        { class Datum_h;
                           template <i8 SPACE> class Datum_t;                  }
 namespace Debugging     {                                                     }
+namespace Entries       {                                                     }
 namespace Enums         {                                                     }
 namespace Esses         { template <int BYTES> class String_t;
                           typedef String_t<32>     s32;
@@ -77,7 +78,6 @@ namespace Threads       { class Thread;                                       }
 namespace TokenStream   { class Input; class Parser;
                           class Tokeniser; class TokenVec;                    }
 namespace Transactions  { class Tx; class TxSet;                              }
-namespace Transform     {                                                     }
 namespace Utilities     { class BPA;                                          }
 namespace Verbs         {                                                     }
 
@@ -97,6 +97,7 @@ using namespace DataOperators;
 using namespace Datums;
 using namespace Debugging;
 using namespace Pipelines;
+using namespace Entries;
 using namespace Enums;
 using namespace Esses;
 using namespace Focals;
@@ -136,7 +137,6 @@ using namespace Tasks;
 using namespace Threads;
 using namespace TokenStream;
 using namespace Transactions;
-using namespace Transform;
 using namespace Utilities;
 using namespace Verbs;
 

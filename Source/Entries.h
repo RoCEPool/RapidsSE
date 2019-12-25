@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace Transform
+namespace Entries
 {
   void vCheckAssumptions(void);
 }

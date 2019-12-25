@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Entries.cpp -- Transform namespace functions                             */
+/* Entries.cpp -- Entries namespace functions                                 */
 /*============================================================================*/
 
 #include "Entries.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Transform::vCheckAssumptions(void)
+void Entries::vCheckAssumptions(void)
 {
 }
 
