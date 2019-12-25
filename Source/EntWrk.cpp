@@ -171,7 +171,7 @@ void EntWrk::vAppendElement(Row* pRow, Column* pCol)
   i8 iValue = pRow->m_waColVal[pCol->iColumnNo()].m_iWrd;
   
   if (Null::bIsNull(iValue)) {
-    byte* ayDst = (byte*)ayElementCrs();
+    byte* ayDst = (byte*)ayElmNext();
     nElmSize = Null::nCopy(ayDst);
     vIncElmSeqSize(nElmSize);
     return;
@@ -179,13 +179,13 @@ void EntWrk::vAppendElement(Row* pRow, Column* pCol)
   
   
   if (DM_VCH == pCol->eDatum()) {
-    char* aDst = (char*)ayElementCrs();
+    char* aDst = (char*)ayElmNext();
     char* aSrc = (char*)iValue;
     nElmSize = StrLib::iWordFlip(aDst, aSrc);
     vIncElmSeqSize(nElmSize);
   }
   
-  byte* ayDst = ayElementCrs();
+  byte* ayDst = ayElmNext();
   nElmSize = Dtm::nCopy(ayDst,iValue);
   vIncElmSeqSize(nElmSize);
 }
@@ -197,7 +197,7 @@ void EntWrk::vAppendMinusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  byte* ayDst = ayElementCrs();
+  byte* ayDst = ayElmNext();
   Dtm::vCopy(ayDst,(i8)C_DATUM_MINUS_INFINITY);
 
   vIncElmSeqSize(C_BYTES_PER_WORD);
@@ -210,7 +210,7 @@ void EntWrk::vAppendPlusInfinity(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
    
-  byte* ayDst = ayElementCrs();
+  byte* ayDst = ayElmNext();
   Dtm::vCopy(ayDst,(i8)C_DATUM_PLUS_INFINITY);
   
   vIncElmSeqSize(C_BYTES_PER_WORD);
@@ -239,9 +239,9 @@ void EntWrk::vBuffer(i8 iBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get element cursor (where to add next element)                             */
+/* get address where next element would be added                              */
 /*----------------------------------------------------------------------------*/
-byte* EntWrk::ayElementCrs(void)
+byte* EntWrk::ayElmNext(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   

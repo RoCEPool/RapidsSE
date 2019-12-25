@@ -18,7 +18,7 @@ void KeyBuilder::vAddElement(EntWrk* pEntWrk, Column* pCol,
   i8 nElmSize;
 
   char* aSrc = (char*)szSrc;
-  char* aDst = (char*)pEntWrk->ayElementCrs();
+  char* aDst = (char*)pEntWrk->ayElmNext();
 
   if (DM_VCH == pCol->eDatum()) {
     nElmSize = StrLib::iWordFlip(aDst,aSrc);

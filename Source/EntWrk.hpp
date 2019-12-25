@@ -42,7 +42,7 @@ namespace Transform
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
 
-    byte* ayElementCrs(void);
+    byte* ayElmNext(void);
     Ent*  aEnt(void);
     
     void  vFormEntry(Ent* pEntry);
