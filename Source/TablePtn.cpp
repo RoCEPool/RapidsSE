@@ -828,14 +828,27 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
+  EntWrk xEntWrk;
+  
   SP_Record spRecord;
   
+  IndexTree* pIndexTree = m_pIndexTreeVec->pGet(0);
+  IdxColVec* pIdxColVec = pIndexTree->pIndex()->pIndexDef()->pIdxColVec();
+
   HV_Row hRow(pCrwBuffer->pStreamDef(),C_ALL);
 
+  
   i8 nRows = pCrwBuffer->nRowCount();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     pCrwBuffer->vGetRow(hRow,i_Row);
     vTrace("Upsert %lld : %s\n"_Stz,i_Row,spRecord.sz(hRow));
+    
+    xEntWrk.vKeyBytes(0);
+    pIndexTree->vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
+    
+    xEntWrk.vShow(pIdxColVec);
+    
+    vDebugPoint();
   }
   
 }
