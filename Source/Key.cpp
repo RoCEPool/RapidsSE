@@ -2,7 +2,7 @@
 /* Key.cpp -- key part of an index entry                                      */
 /*============================================================================*/
 
-#include "Transform.h"
+#include "Entries.h"
 
 #include "Sprint.hpp"
 
