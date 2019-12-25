@@ -103,25 +103,27 @@ void SP_Key::vSprintKey(Key* pKey, IdxColVec* pIdxColVec)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vReset();
-  
-  i8 nBytes;
+  i8 nElmBytes;
 
   char caLiteral[128];
   char caElm[128];
 
   byte* ayCursor = pKey->ayByteSeq();
   
+  vReset();
+
+  StrLib::vSprint((Stz*)m_caKey,"Key[%lldB]; "_Stz,pKey->nKeyBytes());
+
   for (i8 i_IdxCol = 0; i_IdxCol < pIdxColVec->nItems(); i_IdxCol++) {
     
     Column* pCol = pIdxColVec->pGet(i_IdxCol);
     
-    byte* ayElm = EntWrk::ayEachElm(pCol,nBytes,&ayCursor);
+    byte* ayElm = EntWrk::ayEachElm(pCol,nElmBytes,&ayCursor);
     
     eDM eDatum = pCol->eDatum();
     
     if (eDatum == DM_VCH)
-      nBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
+      nElmBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
     else
       CsvValue::vInto((Stz*)caLiteral,ayElm,pCol);
  
@@ -129,7 +131,7 @@ void SP_Key::vSprintKey(Key* pKey, IdxColVec* pIdxColVec)
       StrLib::vConcat(m_caKey,", ");
 
     StrLib::vSprint((Stz*)caElm,"Elm[%lld %lldB] %s"_Stz,
-                       i_IdxCol,nBytes,caLiteral);
+                       i_IdxCol,nElmBytes,caLiteral);
     
     StrLib::vConcat(m_caKey,caElm);
   }

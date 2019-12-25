@@ -471,8 +471,12 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
   //Key* aKey = reinterpret_cast<Key*>(ayByteSeq());
   Ent* aEnt = this->aEnt();
   Key* aKey = aEnt->aKey();
-  aKey->vShow(pIdxColVec);
-  vTrace("\n"_Stz);
+  
+  //aKey->vShow(pIdxColVec);
+  //vTrace("\n"_Stz);
+  
+  SP_Key spKey(aKey,pIdxColVec);
+  vTrace("Key: %s\n"_Stz,spKey.sz(aKey,pIdxColVec));
 }
 
 /*----------------------------------------------------------------------------*/
