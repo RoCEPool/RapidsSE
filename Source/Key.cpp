@@ -106,27 +106,27 @@ i8 Key::iGetInt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* increment the key size                                                     */
+/* increment the size of the element sequence                                 */
 /*----------------------------------------------------------------------------*/
-void Key::vIncKeyBytes(i8 nDeltaBytes)
+void Key::vIncKeyBytes(i8 nElmBytes)
 {
-  m_nKeyBytes += nDeltaBytes;
+  m_nElmSeqSize += nElmBytes;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of bytes in key byte sequence                                   */
+/* get size of the element sequence                                           */
 /*----------------------------------------------------------------------------*/
 i8 Key::nKeyBytes(void)
 {
-  return m_nKeyBytes;
+  return m_nElmSeqSize;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set number of bytes in key byte sequence                                   */
+/* set size of the element sequence                                           */
 /*----------------------------------------------------------------------------*/
-void Key::vKeyBytes(i8 nKeyBytes)
+void Key::vKeyBytes(i8 nElmSeqBytes)
 {
-  m_nKeyBytes = (i4)nKeyBytes;
+  m_nElmSeqSize = (i4)nElmSeqBytes;
 }
 
 /*----------------------------------------------------------------------------*/

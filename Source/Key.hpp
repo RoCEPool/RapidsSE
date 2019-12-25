@@ -8,9 +8,9 @@ namespace Transform
   class Key
   {
   private:
-    i8 m_nKeyBytes; // size of key (in bytes)
+    i8 m_nElmSeqSize; // size of element sequence (in bytes)
   
-    // .. element byte sequence (of the key)
+    // .. element sequence (of the key)
 
   public:
     void* operator new(size_t);
@@ -28,11 +28,11 @@ namespace Transform
     void vShow(IdxColVec* pIdxColVec);
 
     /*------------------------------------------------------------------------*/
-    /* get the element byte sequence of this key                              */
+    /* get the element sequence of this key                                   */
     /*------------------------------------------------------------------------*/
     inline byte* ayElmSeq(void)
     {
-      return aAdd<byte*>(this,sizeof(m_nKeyBytes));
+      return aAdd<byte*>(this,sizeof(m_nElmSeqSize));
     }
   };
   
