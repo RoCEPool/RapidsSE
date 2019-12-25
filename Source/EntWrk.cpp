@@ -475,7 +475,7 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
   //aKey->vShow(pIdxColVec);
   //vTrace("\n"_Stz);
   
-  SP_Key spKey(aKey,pIdxColVec);
+  SP_Key spKey;
   vTrace("Key: %s\n"_Stz,spKey.sz(aKey,pIdxColVec));
 }
 

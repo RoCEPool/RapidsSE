@@ -108,7 +108,7 @@ void SP_Key::vSprintKey(Key* pKey, IdxColVec* pIdxColVec)
   char caLiteral[128];
   char caElm[128];
 
-  byte* ayCursor = pKey->ayByteSeq();
+  byte* ayCursor = pKey->ayElmSeq();
   
   vReset();
 

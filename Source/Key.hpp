@@ -28,9 +28,9 @@ namespace Transform
     void vShow(IdxColVec* pIdxColVec);
 
     /*------------------------------------------------------------------------*/
-    /* get the byte sequence of the key                                       */
+    /* get the element byte sequence of this key                              */
     /*------------------------------------------------------------------------*/
-    inline byte* ayByteSeq(void)
+    inline byte* ayElmSeq(void)
     {
       return aAdd<byte*>(this,sizeof(m_nKeyBytes));
     }
