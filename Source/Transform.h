@@ -17,6 +17,7 @@ namespace Transform
 
 #include "Id.hpp"
 #include "Key.hpp"
+#include "NEO.h"
 #include "Ent.hpp"
 #include "EntWrk.hpp"
 

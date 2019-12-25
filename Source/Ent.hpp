@@ -5,16 +5,6 @@
 
 namespace Transform
 { 
-  static const i8 C_NEO_SIZE = sizeof(i4);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class NEO // next entry offset array
-  {
-  public:
-    i4 m_iOffset[1];  // offset in buffer where the next entry is
-  };
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Ent : public Header
   {
   protected:
