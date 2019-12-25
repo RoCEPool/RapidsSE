@@ -44,9 +44,9 @@ EntWrk::EntWrk(void)
   m_xEnt.vKeyBytes(0);
 
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m__KeyBytes,sizeof(m__KeyBytes),CN_ENTWRK);
+  MemLib::vZero(m_yaSpace,sizeof(m_yaSpace),CN_ENTWRK);
 #else
-  m__KeyBytes[0] = '\0';
+  m_yaSpace[0] = '\0';
 #endif
   
   _checkInitialisedSize_(sizeof(EntWrk));

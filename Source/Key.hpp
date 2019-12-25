@@ -10,7 +10,7 @@ namespace Transform
   private:
     i8 m_nKeyBytes; // size of key (in bytes)
   
-    // ..byte sequence (of the key)
+    // .. element byte sequence (of the key)
 
   public:
     void* operator new(size_t);

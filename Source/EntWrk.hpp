@@ -11,9 +11,9 @@ namespace Transform
   {
   private:
 
-    Ent    m_xEnt; // the entry being formed
+    Ent    m_xEnt; // the index entry being formed
   
-    byte   m__KeyBytes[C_MAX_KEY]; // the bytes of the key
+    byte   m_yaSpace[C_MAX_KEY]; // the bytes of the key
   
     Footer m_xFooter;
   
