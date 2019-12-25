@@ -41,7 +41,7 @@ EntWrk::EntWrk(void)
   m_xEnt.vItem(0);
   m_xEnt.vLevels(0);
   
-  m_xEnt.vKeyBytes(0);
+  m_xEnt.vElmSeqSize(0);
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_yaSpace,sizeof(m_yaSpace),CN_ENTWRK);
@@ -342,11 +342,11 @@ i8 EntWrk::nKeyBytes(void)
 /*----------------------------------------------------------------------------*/
 /* set key byte sequence                                                      */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vKeyBytes(i8 nKeyBytes)
+void EntWrk::vKeyBytes(i8 nElmSeqSize)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_xEnt.vKeyBytes(nKeyBytes);
+  m_xEnt.vElmSeqSize(nElmSeqSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -360,15 +360,15 @@ byte* EntWrk::ayKeyElmSeq(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set element byte sequence of key                                           */
+/* set element sequence size and element sequence of key                      */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vKeyElmSeq(i8 nKeyBytes, byte* ayKeyElmSeq)
+void EntWrk::vKeyElmSeq(i8 nElmSeqSize, byte* ayKeyElmSeq)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_xEnt.vKeyBytes(nKeyBytes);
+  m_xEnt.vElmSeqSize(nElmSeqSize);
   
-  MemLib::vCopy(this->ayKeyElmSeq(),ayKeyElmSeq,nKeyBytes,CN_ENTWRK);
+  MemLib::vCopy(this->ayKeyElmSeq(),ayKeyElmSeq,nElmSeqSize,CN_ENTWRK);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -17,14 +17,14 @@ namespace Transform
     void* operator new(size_t, Key*);
   
     Key(void);
-    ~Key(void) noexcept(false);
+   ~Key(void) noexcept(false);
   
     static eKC eCompare(Key* aLeft, Key* aRight);
   
     i8   iGetInt(void);
     void vIncElmSeqSize(i8 nDeltaBytes);
     i8   nKeyBytes(void);
-    void vKeyBytes(i8 nKeyBytes);
+    void vElmSeqSize(i8 nElmSeqSize);
     void vShow(IdxColVec* pIdxColVec);
 
     /*------------------------------------------------------------------------*/

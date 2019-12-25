@@ -124,9 +124,9 @@ i8 Key::nKeyBytes(void)
 /*----------------------------------------------------------------------------*/
 /* set size of the element sequence                                           */
 /*----------------------------------------------------------------------------*/
-void Key::vKeyBytes(i8 nElmSeqBytes)
+void Key::vElmSeqSize(i8 nElmSeqSize)
 {
-  m_nElmSeqSize = (i4)nElmSeqBytes;
+  m_nElmSeqSize = (i4)nElmSeqSize;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -50,7 +50,7 @@ namespace Transform
 
     Key*  aKey(void);
     i8    nKeyBytes(void);
-    void  vKeyBytes(i8 nKeyBytes);
+    void  vElmSeqSize(i8 nElmSeqSize);
     byte* ayKeyElmSeq(void);
 
     i8    nLevels(void);

@@ -30,7 +30,7 @@ SkipRoots::SkipRoots(void)
 
   vBuffer(*nBufferNo);
   vLevels(3);
-  vKeyBytes(0);
+  vElmSeqSize(0);
 
   m_iPadding[0] = -1;
   m_iPadding[1] = -1;

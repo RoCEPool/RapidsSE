@@ -34,9 +34,9 @@ void* Ent::operator new(size_t, Ent* aEnt)
 Ent::Ent(eCN eClassNo, i8 nSizeEnt_Without_NEO)
 : Header(eClassNo)
 {
-  i8 nKeyBytes = static_cast<i4>(nSizeEnt_Without_NEO - sizeof(Ent));
+  i8 nElmSeqSize = static_cast<i4>(nSizeEnt_Without_NEO - sizeof(Ent));
   
-  m_xKey.vKeyBytes(nKeyBytes);
+  m_xKey.vElmSeqSize(nElmSeqSize);
   
 #ifdef WITH_DEBUG_VERSION
   m_iSkipNo = -1;
@@ -115,11 +115,11 @@ i8 Ent::nKeyBytes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set size key                                                               */
+/* set size of the element sequence                                           */
 /*----------------------------------------------------------------------------*/
-void Ent::vKeyBytes(i8 nKeyBytes)
+void Ent::vElmSeqSize(i8 nElmSeqSize)
 {
-  m_xKey.vKeyBytes(nKeyBytes);
+  m_xKey.vElmSeqSize(nElmSeqSize);
 }
 
 /*----------------------------------------------------------------------------*/
