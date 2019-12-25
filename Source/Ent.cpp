@@ -72,6 +72,35 @@ void Ent::vBuffer(i8 iBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of the element bytes of the key in this entry                  */
+/*----------------------------------------------------------------------------*/
+byte* Ent::ayElmSeq(void)
+{
+  byte* ayElmSeq = aKey()->ayElmSeq();
+  
+  ASSERT(ayElmSeq == aAdd<byte*>(this,sizeof(Ent)));
+  
+  return ayElmSeq;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of the element sequence                                           */
+/*----------------------------------------------------------------------------*/
+i8 Ent::nElmSeqSize(void)
+{
+  i8 nBytes = m_xKey.nElmSeqSize();
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set size of the element sequence                                           */
+/*----------------------------------------------------------------------------*/
+void Ent::vElmSeqSize(i8 nElmSeqSize)
+{
+  m_xKey.vElmSeqSize(nElmSeqSize);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size of entry with neo                                                 */
 /*----------------------------------------------------------------------------*/
 i8 Ent::nEntSize(void)
@@ -103,35 +132,6 @@ void Ent::vItem(i8 iItem)
 Key* Ent::aKey(void)
 {
   return &m_xKey;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size of the element sequence                                           */
-/*----------------------------------------------------------------------------*/
-i8 Ent::nElmSeqSize(void)
-{
-  i8 nBytes = m_xKey.nElmSeqSize();
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set size of the element sequence                                           */
-/*----------------------------------------------------------------------------*/
-void Ent::vElmSeqSize(i8 nElmSeqSize)
-{
-  m_xKey.vElmSeqSize(nElmSeqSize);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of the element bytes of the key in this entry                  */
-/*----------------------------------------------------------------------------*/
-byte* Ent::ayElmSeq(void)
-{
-  byte* ayElmSeq = aKey()->ayElmSeq();
-  
-  ASSERT(ayElmSeq == aAdd<byte*>(this,sizeof(Ent)));
-  
-  return ayElmSeq;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,6 +194,17 @@ void Ent::vNEOdump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get size of the NEO after this entry                                       */
+/*----------------------------------------------------------------------------*/
+i8 Ent::nNEOsize(void)
+{
+  i8 nLvls  = nLevels();
+  i8 nBytes = C_NEO_SIZE * nLvls;
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
 Id& Ent::xRef(void)
@@ -215,17 +226,6 @@ void Ent::vRef(Id xRef)
 i8 Ent::nSizeBytes(void)
 {
   i8 nBytes = nEntSize();
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size of the NEO after this entry                                       */
-/*----------------------------------------------------------------------------*/
-i8 Ent::nNEOsize(void)
-{
-  i8 nLvls  = nLevels();
-  i8 nBytes = C_NEO_SIZE * nLvls;
   
   return nBytes;
 }
