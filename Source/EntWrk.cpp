@@ -280,7 +280,7 @@ void EntWrk::vFormEntry(Ent* pEntry)
   
   byte* aSrcKey = ayKeyElmSeq();
   byte* aDstKey = pEntry->ayKeyElmSeq();
-  i8   nKeySize = this->nKeyBytes();
+  i8   nKeySize = this->nElmSeqSize();
   
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
 }
@@ -292,7 +292,7 @@ i8 EntWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash(ayKeyElmSeq(),nKeyBytes());
+  i8 iHash = HshLib::iHash(ayKeyElmSeq(),nElmSeqSize());
   
   return iHash;
 }
@@ -328,9 +328,9 @@ void EntWrk::vItem(i8 iItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get key size                                                               */
+/* get element sequence size                                                  */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk::nKeyBytes(void)
+i8 EntWrk::nElmSeqSize(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -340,9 +340,9 @@ i8 EntWrk::nKeyBytes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set key byte sequence                                                      */
+/* set element sequence size                                                  */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vKeyBytes(i8 nElmSeqSize)
+void EntWrk::vElmSeqSize(i8 nElmSeqSize)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -486,34 +486,34 @@ i8 EntWrk::nSize_EntKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nKeyBytes = this->nKeyBytes();
-  
-  i8 nBytes = sizeof(Ent) + nKeyBytes;
-  
-  return nBytes;
+  i8 nSizeEnt    = sizeof(Ent);
+  i8 nSizeElmSeq = nElmSeqSize();
+
+  i8 nSize = nSizeEnt + nSizeElmSeq;
+
+  return nSize;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the size this (Ent+Key+Neo)                                           */
+/* get the size this (Ent+Key+Neo)                                            */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nSize_EntKeyNeo(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nKeyBytes = this->nKeyBytes();
+  i8 nSizeEnt    = sizeof(Ent);
+  i8 nSizeElmSeq = nElmSeqSize();
+  i8 nSizeNeo    = nNEOsize();
   
-  i8 nNeoBytes = nNEOsize();
+  i8 nSize = nSizeEnt + nSizeElmSeq + nSizeNeo;
   
-  i8 nBytes = sizeof(Ent) + nKeyBytes + nNeoBytes;
-  
-  return nBytes;
+  return nSize;
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

@@ -843,7 +843,7 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
     pCrwBuffer->vGetRow(hRow,i_Row);
     vTrace("Upsert %lld : %s\n"_Stz,i_Row,spRecord.sz(hRow));
     
-    xEntWrk.vKeyBytes(0);
+    xEntWrk.vElmSeqSize(0);
     pIndexTree->vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
     
     xEntWrk.vShow(pIdxColVec);
