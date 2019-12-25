@@ -81,6 +81,7 @@ namespace Partitioning
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
     void vUpsertEntries(CrwBuffer* pCrwBuffer);
+    void vUpsertEntries2(CrwBuffer* pCrwBuffer);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
     

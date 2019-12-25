@@ -822,6 +822,14 @@ void TablePtn::vUpsertEntries(CrwBuffer* pCrwBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* WIP: upsert entries from a row buffer                                      */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* verify the table data of this partition                                    */
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bVerifyTable(void)

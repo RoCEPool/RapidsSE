@@ -816,7 +816,9 @@ void Table::vUpsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
   // append the buffer entries into the table
   
   TablePtn* pPartition = this->pPartition(iSlot);
+  
   pPartition->vUpsertEntries(pCrwBuffer);
+  pPartition->vUpsertEntries2(pCrwBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
