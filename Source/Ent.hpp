@@ -43,15 +43,15 @@ namespace Transform
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
   
+    byte* ayElmSeq(void);
+    i8    nElmSeqSize(void);
+    void  vElmSeqSize(i8 nElmSeqSize);
     i8    nEntSize(void);
   
     i8    iItem(void);
     void  vItem(i8 iItem);
 
     Key*  aKey(void);
-    i8    nElmSeqSize(void);
-    void  vElmSeqSize(i8 nElmSeqSize);
-    byte* ayKeyElmSeq(void);
 
     i8    nLevels(void);
     void  vLevels(i8 nLevels);

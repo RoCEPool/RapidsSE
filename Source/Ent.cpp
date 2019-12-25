@@ -125,7 +125,7 @@ void Ent::vElmSeqSize(i8 nElmSeqSize)
 /*----------------------------------------------------------------------------*/
 /* get address of the element bytes of the key in this entry                  */
 /*----------------------------------------------------------------------------*/
-byte* Ent::ayKeyElmSeq(void)
+byte* Ent::ayElmSeq(void)
 {
   byte* ayElmSeq = aKey()->ayElmSeq();
   
