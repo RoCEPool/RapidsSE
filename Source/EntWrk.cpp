@@ -468,7 +468,9 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  Key* aKey = reinterpret_cast<Key*>(ayByteSeq());
+  //Key* aKey = reinterpret_cast<Key*>(ayByteSeq());
+  Ent* aEnt = this->aEnt();
+  Key* aKey = aEnt->aKey();
   aKey->vShow(pIdxColVec);
   vTrace("\n"_Stz);
 }
