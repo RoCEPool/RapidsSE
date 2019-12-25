@@ -8,39 +8,24 @@ namespace Records
   class SP_Key : public Sprint
   {
   public:
-    char       m_caRecord[C_MAX_RECORD];
+    char  m_caKey[C_4KB];
   
-    char*      m_azCursor;    // append cursor for StrLib::vAppend()
-    StreamDef* m_pStreamDef;  // stream def
-    i8         m_iSubSet;     // stream def subset
-
     // must be last
     Footer m_xFooter;
     
   public:
     SP_Key(void);
-    SP_Key(Row* pRow);
+    SP_Key(Key* pKey, IdxColVec* pIdxColVec);
    ~SP_Key(void) noexcept(false);
   
-    void vAppendCol(Column* pCol, Row* pRow);
-    void vAppendDtm(Column* pCol, Datum* pDatum);
-    void vAppendBcd(Column* pCol, Datum* pDatum);
-    void vAppendBol(Column* pCol, Datum* pDatum);
-    void vAppendDte(Column* pCol, Datum* pDatum);
-    void vAppendFlt(Column* pCol, Datum* pDatum);
-    void vAppendInt(Column* pCol, Datum* pDatum);
-    void vAppendIvl(Column* pCol, Datum* pDatum);
-    void vAppendTme(Column* pCol, Datum* pDatum);
-    void vAppendTsp(Column* pCol, Datum* pDatum);
-    void vAppendVch(Column* pCol, Datum* pDatum);
+    char* azKey(void);
 
-    char* azRecord(void);
-    void vReset(void);
     Stz* sz(void);
-    Stz* sz(Row* pRow);
+    Stz* sz(Key* pKey, IdxColVec* pIdxColVec);
   
-    void vToRecord(Row* pRow);
-  
+    void vReset(void);
+    void vSprintKey(Key* pKey, IdxColVec* pIdxColVec);
+
     Footer* aFooter(void);
   };
 }
