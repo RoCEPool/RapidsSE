@@ -9,7 +9,6 @@ namespace Transform
   {
   private:
     i8 m_nElmSeqSize; // size of element sequence (in bytes)
-  
     // .. element sequence (of the key)
 
   public:
@@ -23,7 +22,7 @@ namespace Transform
   
     i8   iGetInt(void);
     void vIncElmSeqSize(i8 nDeltaBytes);
-    i8   nKeyBytes(void);
+    i8   nElmSeqSize(void);
     void vElmSeqSize(i8 nElmSeqSize);
     void vShow(IdxColVec* pIdxColVec);
 

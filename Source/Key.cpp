@@ -63,8 +63,8 @@ Key::~Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eKC Key::eCompare(Key* aLeft, Key* aRight)
 {
-  i8 nKeyBytes_l = aLeft->nKeyBytes();
-  i8 nKeyBytes_r = aRight->nKeyBytes();
+  i8 nKeyBytes_l = aLeft->nElmSeqSize();
+  i8 nKeyBytes_r = aRight->nElmSeqSize();
   
   byte* ayKeyBytes_l = aLeft->ayElmSeq();
   byte* ayKeyBytes_r = aRight->ayElmSeq();
@@ -116,7 +116,7 @@ void Key::vIncElmSeqSize(i8 nDeltaBytes)
 /*----------------------------------------------------------------------------*/
 /* get size of the element sequence                                           */
 /*----------------------------------------------------------------------------*/
-i8 Key::nKeyBytes(void)
+i8 Key::nElmSeqSize(void)
 {
   return m_nElmSeqSize;
 }

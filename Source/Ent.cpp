@@ -76,7 +76,7 @@ void Ent::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nEntSize(void)
 {
-  i8 nBytes = sizeof(Ent) + m_xKey.nKeyBytes() + nNEOsize();
+  i8 nBytes = sizeof(Ent) + m_xKey.nElmSeqSize() + nNEOsize();
   
   return nBytes;
 }
@@ -106,11 +106,11 @@ Key* Ent::aKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size key                                                               */
+/* get size of the element sequence                                           */
 /*----------------------------------------------------------------------------*/
-i8 Ent::nKeyBytes(void)
+i8 Ent::nElmSeqSize(void)
 {
-  i8 nBytes = m_xKey.nKeyBytes();
+  i8 nBytes = m_xKey.nElmSeqSize();
   return nBytes;
 }
 
@@ -157,7 +157,7 @@ i4 Ent::iNEO(i8 i_Level)
 {
   ASSERT(i_Level >= 0 && i_Level < nLevels());
 
-  i8 i_NEO = sizeof(Ent) + m_xKey.nKeyBytes() + (C_NEO_SIZE * i_Level);
+  i8 i_NEO = sizeof(Ent) + m_xKey.nElmSeqSize() + (C_NEO_SIZE * i_Level);
   
   i4 iNEO = * (aAdd<i4*>(this,i_NEO));
   
@@ -171,7 +171,7 @@ void Ent::vNEO(i8 i_Level, i4 i_Offset)
 {
   ASSERT(i_Level >= 0 && i_Level < nLevels());
 
-  i8 i_NEO = sizeof(Ent) + m_xKey.nKeyBytes() + (C_NEO_SIZE * i_Level);
+  i8 i_NEO = sizeof(Ent) + m_xKey.nElmSeqSize() + (C_NEO_SIZE * i_Level);
 
   * (aAdd<i4*>(this,i_NEO)) = i_Offset;
 }
@@ -287,7 +287,7 @@ bool Ent::bValidEnt(void)
 /*----------------------------------------------------------------------------*/
 NEO* Ent::aNEO(void)
 {
-  i8 i_NEO = sizeof(Ent) + m_xKey.nKeyBytes();
+  i8 i_NEO = sizeof(Ent) + m_xKey.nElmSeqSize();
 
   NEO* aNEO = aAdd<NEO*>(this,i_NEO);
   

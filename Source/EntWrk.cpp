@@ -72,8 +72,8 @@ EntWrk::~EntWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eKC EntWrk::eCompare(Ent* aEnt1, Ent* aEnt2)
 {
-  i8 nKeySize1 = aEnt1->nKeyBytes();
-  i8 nKeySize2 = aEnt2->nKeyBytes();
+  i8 nKeySize1 = aEnt1->nElmSeqSize();
+  i8 nKeySize2 = aEnt2->nElmSeqSize();
   
   i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
   
@@ -245,9 +245,9 @@ byte* EntWrk::ayElementCrs(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nKeyBytes = m_xEnt.nKeyBytes();
+  i8 nElmSeqSize = m_xEnt.nElmSeqSize();
 
-  byte* ayNextElm = aAdd<byte*>(ayKeyElmSeq(),nKeyBytes);
+  byte* ayNextElm = aAdd<byte*>(ayKeyElmSeq(),nElmSeqSize);
 
   return ayNextElm;
 }
@@ -334,7 +334,7 @@ i8 EntWrk::nKeyBytes(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 nSize = m_xEnt.nKeyBytes();
+  i8 nSize = m_xEnt.nElmSeqSize();
   
   return nSize;
 }
@@ -455,7 +455,7 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   // copy key byte sequence into this entry
   
   byte* ayByteSeq = pEntry->ayKeyElmSeq();
-  i8 nKeyBytes = pEntry->nKeyBytes();
+  i8 nKeyBytes = pEntry->nElmSeqSize();
   RASSERT(nKeyBytes % 8 == 0);
   
   vKeyElmSeq(nKeyBytes,ayByteSeq);

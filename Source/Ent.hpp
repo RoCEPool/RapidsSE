@@ -49,7 +49,7 @@ namespace Transform
     void  vItem(i8 iItem);
 
     Key*  aKey(void);
-    i8    nKeyBytes(void);
+    i8    nElmSeqSize(void);
     void  vElmSeqSize(i8 nElmSeqSize);
     byte* ayKeyElmSeq(void);
 

@@ -112,7 +112,7 @@ void SP_Key::vSprintKey(Key* pKey, IdxColVec* pIdxColVec)
   
   vReset();
 
-  StrLib::vSprint((Stz*)m_caKey,"Key[%lldB]; "_Stz,pKey->nKeyBytes());
+  StrLib::vSprint((Stz*)m_caKey,"Key[%lldB]; "_Stz,pKey->nElmSeqSize());
 
   for (i8 i_IdxCol = 0; i_IdxCol < pIdxColVec->nItems(); i_IdxCol++) {
     
