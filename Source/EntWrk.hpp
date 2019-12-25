@@ -41,7 +41,6 @@ namespace Transform
   
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
-    void  vByteSeq(i8 nKeyBytes, byte* ayByteSeq);
 
     byte* ayElementCrs(void);
     Ent*  aEnt(void);
@@ -57,6 +56,7 @@ namespace Transform
     i8    nKeyBytes(void);
     void  vKeyBytes(i8 nKeyBytes);
     byte* ayKeyElmSeq(void);
+    void  vKeyElmSeq(i8 nKeyBytes, byte* ayKeyElmSeq);
 
     i8    nLevels(void);
     void  vLevels(i8 nLevels);

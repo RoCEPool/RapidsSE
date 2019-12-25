@@ -239,18 +239,6 @@ void EntWrk::vBuffer(i8 iBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set byte sequence of key                                                   */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vByteSeq(i8 nKeyBytes, byte* ayByteSeq)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  m_xEnt.vKeyBytes(nKeyBytes);
-  
-  MemLib::vCopy(this->ayKeyElmSeq(),ayByteSeq,nKeyBytes,CN_ENTWRK);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get element cursor (where to add next element)                             */
 /*----------------------------------------------------------------------------*/
 byte* EntWrk::ayElementCrs(void)
@@ -372,6 +360,18 @@ byte* EntWrk::ayKeyElmSeq(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set element byte sequence of key                                           */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vKeyElmSeq(i8 nKeyBytes, byte* ayKeyElmSeq)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_xEnt.vKeyBytes(nKeyBytes);
+  
+  MemLib::vCopy(this->ayKeyElmSeq(),ayKeyElmSeq,nKeyBytes,CN_ENTWRK);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of levels                                                       */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nLevels(void)
@@ -458,7 +458,7 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   i8 nKeyBytes = pEntry->nKeyBytes();
   RASSERT(nKeyBytes % 8 == 0);
   
-  vByteSeq(nKeyBytes,ayByteSeq);
+  vKeyElmSeq(nKeyBytes,ayByteSeq);
 }
 
 /*----------------------------------------------------------------------------*/
