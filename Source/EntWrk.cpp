@@ -239,16 +239,6 @@ void EntWrk::vBuffer(i8 iBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get byte sequence of key                                                   */
-/*----------------------------------------------------------------------------*/
-byte* EntWrk::ayByteSeq(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  return m_xEnt.ayKeyElmSeq();
-}
-
-/*----------------------------------------------------------------------------*/
 /* set byte sequence of key                                                   */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vByteSeq(i8 nKeyBytes, byte* ayByteSeq)
@@ -257,7 +247,7 @@ void EntWrk::vByteSeq(i8 nKeyBytes, byte* ayByteSeq)
   
   m_xEnt.vKeyBytes(nKeyBytes);
   
-  MemLib::vCopy(this->ayByteSeq(),ayByteSeq,nKeyBytes,CN_ENTWRK);
+  MemLib::vCopy(this->ayKeyElmSeq(),ayByteSeq,nKeyBytes,CN_ENTWRK);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -269,7 +259,7 @@ byte* EntWrk::ayElementCrs(void)
   
   i8 nKeyBytes = m_xEnt.nKeyBytes();
 
-  byte* ayNextElm = aAdd<byte*>(ayByteSeq(),nKeyBytes);
+  byte* ayNextElm = aAdd<byte*>(ayKeyElmSeq(),nKeyBytes);
 
   return ayNextElm;
 }
@@ -300,7 +290,7 @@ void EntWrk::vFormEntry(Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into entry
   
-  byte* aSrcKey = ayByteSeq();
+  byte* aSrcKey = ayKeyElmSeq();
   byte* aDstKey = pEntry->ayKeyElmSeq();
   i8   nKeySize = this->nKeyBytes();
   
@@ -314,7 +304,7 @@ i8 EntWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash(ayByteSeq(),nKeyBytes());
+  i8 iHash = HshLib::iHash(ayKeyElmSeq(),nKeyBytes());
   
   return iHash;
 }
@@ -369,6 +359,16 @@ void EntWrk::vKeyBytes(i8 nKeyBytes)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   m_xEnt.vKeyBytes(nKeyBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get byte sequence of key                                                   */
+/*----------------------------------------------------------------------------*/
+byte* EntWrk::ayKeyElmSeq(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return m_xEnt.ayKeyElmSeq();
 }
 
 /*----------------------------------------------------------------------------*/
