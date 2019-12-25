@@ -385,26 +385,28 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
   // (1) append the buffer entries into the table
   TablePtn* pPartition = this->pPartition(iSlot);
   
-  //----------------------------------------------------------------------------
-  // append the buffer to the data row buffers
-  pPartition->vAppendBuffer(pCrwBuffer);
+  pPartition->vInsertEntries(pCrwBuffer);
   
-  //----------------------------------------------------------------------------
-  // (2) insert entries from crwBuffer into all indexes of the table
-
-  // get no of indexes of the table
-  IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
-  i8 nIndexes = pIndexTreeVec->nItems();
-
-  // iterate all indexes of the table
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-
-    // get index
-    IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
-
-    // insert entries from EntBuffer into the index
-    pNewIndexTree->vInsertEntriesFromBuffer(pCrwBuffer);
-  }
+//  //----------------------------------------------------------------------------
+//  // append the buffer to the data row buffers
+//  pPartition->vAppendBuffer(pCrwBuffer);
+//
+//  //----------------------------------------------------------------------------
+//  // (2) insert entries from crwBuffer into all indexes of the table
+//
+//  // get no of indexes of the table
+//  IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
+//  i8 nIndexes = pIndexTreeVec->nItems();
+//
+//  // iterate all indexes of the table
+//  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+//
+//    // get index
+//    IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
+//
+//    // insert entries from EntBuffer into the index
+//    pNewIndexTree->vInsertEntriesFromBuffer(pCrwBuffer);
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -832,27 +834,29 @@ void Table::vUpsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
   //----------------------------------------------------------------------------
   // (1) append the buffer entries into the table
   TablePtn* pPartition = this->pPartition(iSlot);
-  
-  //----------------------------------------------------------------------------
-  // append the buffer to the data row buffers
-  pPartition->vAppendBuffer(pCrwBuffer);
-  
-  //----------------------------------------------------------------------------
-  // (2) insert entries from crwBuffer into all indexes of the table
-  
-  // get no of indexes of the table
-  IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
-  i8 nIndexes = pIndexTreeVec->nItems();
-  
-  // iterate all indexes of the table
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    
-    // get index
-    IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
-    
-    // insert entries from EntBuffer into the index
-    pNewIndexTree->vInsertEntriesFromBuffer(pCrwBuffer);
-  }
+
+  pPartition->vUpsertEntries(pCrwBuffer);
+
+//  //----------------------------------------------------------------------------
+//  // append the buffer to the data row buffers
+//  pPartition->vAppendBuffer(pCrwBuffer);
+//
+//  //----------------------------------------------------------------------------
+//  // (2) insert entries from crwBuffer into all indexes of the table
+//
+//  // get no of indexes of the table
+//  IndexTreeVec* pIndexTreeVec = pPartition->pIndexTreeVec();
+//  i8 nIndexes = pIndexTreeVec->nItems();
+//
+//  // iterate all indexes of the table
+//  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+//
+//    // get index
+//    IndexTree* pNewIndexTree = pIndexTreeVec->pGet(i_Index);
+//
+//    // insert entries from EntBuffer into the index
+//    pNewIndexTree->vInsertEntriesFromBuffer(pCrwBuffer);
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
