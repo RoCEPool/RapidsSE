@@ -63,6 +63,7 @@ namespace Partitioning
     void vIncBuffersWritten(void);
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
+    void vInsertEntries(CrwBuffer* pCrwBuffer);
     bool bIsLocked(void);
     void vParentJobId(i8 iJobId);
     i8   iParentJobId(void);
@@ -79,6 +80,7 @@ namespace Partitioning
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
+    void vUpsertEntries(CrwBuffer* pCrwBuffer);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
     

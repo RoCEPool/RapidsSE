@@ -506,6 +506,35 @@ IndexTreeVec* TablePtn::pIndexTreeVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert entries from a row buffer                                           */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vInsertEntries(CrwBuffer* pCrwBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  //----------------------------------------------------------------------------
+  // append the buffer to the data row buffers
+
+  vAppendBuffer(pCrwBuffer);
+  
+  //----------------------------------------------------------------------------
+  // insert entries from crwBuffer into all indexes of the table
+  
+  // get no of indexes of the table
+  i8 nIndexes = m_pIndexTreeVec->nItems();
+  
+  // iterate all indexes of the table
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    
+    // get index
+    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
+    
+    // insert entries from EntBuffer into the index
+    pIndexTree->vInsertEntriesFromBuffer(pCrwBuffer);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* is the table partition locked?                                             */
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bIsLocked(void)
@@ -761,6 +790,35 @@ void TablePtn::vTruncate(void)
   
   m_pRootCrwBuffer    = nullptr;
   m_pCurrentCrwBuffer = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* upsert entries from a row buffer                                           */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vUpsertEntries(CrwBuffer* pCrwBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  //----------------------------------------------------------------------------
+  // append the buffer to the data row buffers
+  
+  vAppendBuffer(pCrwBuffer);
+  
+  //----------------------------------------------------------------------------
+  // insert entries from crwBuffer into all indexes of the table
+  
+  // get no of indexes of the table
+  i8 nIndexes = m_pIndexTreeVec->nItems();
+  
+  // iterate all indexes of the table
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    
+    // get index
+    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
+    
+    // insert entries from EntBuffer into the index
+    pIndexTree->vInsertEntriesFromBuffer(pCrwBuffer);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
