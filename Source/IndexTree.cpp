@@ -262,7 +262,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   
   xFirstL1_ent.vRef(xRef);
   
-  xFirstL1_ent.vKeyElmSeq(nKeyBytes,aKeyBytes);
+  xFirstL1_ent.vElmSeq(nKeyBytes,aKeyBytes);
 
   xFirstL1_ent.vLevels(nLevels);
   
@@ -331,7 +331,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     
     xLeftEntWrk.vRef(xRef);
     
-    xLeftEntWrk.vKeyElmSeq(nKeySize,aKeyBytes);
+    xLeftEntWrk.vElmSeq(nKeySize,aKeyBytes);
 
     xLeftEntWrk.vLevels(nLevels);
     

@@ -247,7 +247,7 @@ byte* EntWrk::ayElementCrs(void)
   
   i8 nElmSeqSize = m_xEnt.nElmSeqSize();
 
-  byte* ayNextElm = aAdd<byte*>(ayKeyElmSeq(),nElmSeqSize);
+  byte* ayNextElm = aAdd<byte*>(ayElmSeq(),nElmSeqSize);
 
   return ayNextElm;
 }
@@ -278,7 +278,7 @@ void EntWrk::vFormEntry(Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into entry
   
-  byte* aSrcKey = ayKeyElmSeq();
+  byte* aSrcKey = ayElmSeq();
   byte* aDstKey = pEntry->ayKeyElmSeq();
   i8   nKeySize = this->nElmSeqSize();
   
@@ -292,7 +292,7 @@ i8 EntWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash(ayKeyElmSeq(),nElmSeqSize());
+  i8 iHash = HshLib::iHash(ayElmSeq(),nElmSeqSize());
   
   return iHash;
 }
@@ -352,7 +352,7 @@ void EntWrk::vElmSeqSize(i8 nElmSeqSize)
 /*----------------------------------------------------------------------------*/
 /* get byte sequence of key                                                   */
 /*----------------------------------------------------------------------------*/
-byte* EntWrk::ayKeyElmSeq(void)
+byte* EntWrk::ayElmSeq(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -362,13 +362,13 @@ byte* EntWrk::ayKeyElmSeq(void)
 /*----------------------------------------------------------------------------*/
 /* set element sequence size and element sequence of key                      */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vKeyElmSeq(i8 nElmSeqSize, byte* ayKeyElmSeq)
+void EntWrk::vElmSeq(i8 nElmSeqSize, byte* ayElmSeq)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   m_xEnt.vElmSeqSize(nElmSeqSize);
   
-  MemLib::vCopy(this->ayKeyElmSeq(),ayKeyElmSeq,nElmSeqSize,CN_ENTWRK);
+  MemLib::vCopy(this->ayElmSeq(),ayElmSeq,nElmSeqSize,CN_ENTWRK);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -458,7 +458,7 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   i8 nKeyBytes = pEntry->nElmSeqSize();
   RASSERT(nKeyBytes % 8 == 0);
   
-  vKeyElmSeq(nKeyBytes,ayByteSeq);
+  vElmSeq(nKeyBytes,ayByteSeq);
 }
 
 /*----------------------------------------------------------------------------*/

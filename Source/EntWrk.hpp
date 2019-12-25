@@ -53,10 +53,10 @@ namespace Transform
     i8    iItem(void);
     void  vItem(i8 iItem);
   
+    byte* ayElmSeq(void);
+    void  vElmSeq(i8 nElmSeqSize, byte* ayElmSeq);
     i8    nElmSeqSize(void);
     void  vElmSeqSize(i8 nElmSeqSize);
-    byte* ayKeyElmSeq(void);
-    void  vKeyElmSeq(i8 nElmSeqSize, byte* ayElmSeq);
 
     i8    nLevels(void);
     void  vLevels(i8 nLevels);
