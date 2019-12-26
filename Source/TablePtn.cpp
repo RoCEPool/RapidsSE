@@ -849,6 +849,29 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
     xEntWrk.vShow(pIdxColVec);
     
     vDebugPoint();
+    
+    EntBuffer* pEntBuf = pIndexTree->pPositionH0Buffer(xEntWrk.aEnt());
+    
+    if (pEntBuf) {
+      Ent* aEnt_prior = pEntBuf->pPositionPriorEntry(xEntWrk.aEnt());
+      if (aEnt_prior) {
+        SP_Key spKey;
+        vTrace("Prior Key: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIdxColVec));
+        vDebugPoint();
+        
+        Ent* aEnt_found = pEntBuf->aNextEntry(aEnt_prior,0);
+        if (aEnt_found) {
+          vTrace("Found Key: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIdxColVec));
+          
+          if (KC_SAME == EntWrk::eCompare(aEnt_found,xEntWrk.aEnt()))
+            vTrace("SAME\n"_Stz);
+          else
+            vTrace("NOT SAME\n"_Stz);
+
+          vDebugPoint();
+        }
+      }
+    }
   }
   
 }

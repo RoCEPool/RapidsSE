@@ -612,7 +612,7 @@ EntBuffer* IndexTree::pPopSubList(EntBuffer** ppSubList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* position the IndexTree at a particular height of index buffer              */
+/* position to the first H0 buffer which has given key                        */
 /*----------------------------------------------------------------------------*/
 EntBuffer* IndexTree::pPositionH0Buffer(Ent* aEnt)
 {
