@@ -20,7 +20,7 @@ namespace Focals
 
 #include "NamedObject.hpp"
 #include "ReqTuple.hpp"
-#include "SP_Id.hpp"
+#include "SP_Gid.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
