@@ -43,8 +43,8 @@ namespace Correctness
 
 #include "PTR.hpp"
 #include "SMA.hpp"
-#include "REF.hpp"
-#include "REG.hpp"
+#include "REF_t.hpp"
+#include "REG_t.hpp"
 
 
 namespace Tasks {
