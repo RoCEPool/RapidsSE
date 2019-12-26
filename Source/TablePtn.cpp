@@ -863,11 +863,13 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
         if (aEnt_found) {
           vTrace("Found Key: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIdxColVec));
           
-          if (KC_SAME == EntWrk::eCompare(aEnt_found,xEntWrk.aEnt()))
-            vTrace("SAME\n"_Stz);
-          else
+          if (KC_SAME == EntWrk::eCompare(aEnt_found,xEntWrk.aEnt())) {
+            SP_Ref spRef;
+            vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found->xRef()));
+          }
+          else {
             vTrace("NOT SAME\n"_Stz);
-
+          }
           vDebugPoint();
         }
       }

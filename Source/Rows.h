@@ -20,6 +20,7 @@ namespace Rows
 
 #include "RowGenerator.hpp"
 
+#include "SP_Ref.hpp"
 #include "SP_Row.hpp"
 
 /*============================================================================*/

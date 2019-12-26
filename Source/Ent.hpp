@@ -51,9 +51,10 @@ namespace Entries
     void  vNEOdump(void);
     i8    nNEOsize(void);
 
-    Ref&   xRef(void);
+    Ref&  xRef(void);
     void  vRef(Ref xRef);
-  
+    Ref   wRef(void);
+
     i8    nSizeBytes(void);
 
     i8    iSkipNo(void);
