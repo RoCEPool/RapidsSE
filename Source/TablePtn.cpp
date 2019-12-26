@@ -864,8 +864,8 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
           vTrace("Found Key: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIdxColVec));
           
           if (KC_SAME == EntWrk::eCompare(aEnt_found,xEntWrk.aEnt())) {
-            SP_Ref spRef;
-            vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found->xRef()));
+            SP_Ent spRef;
+            vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIdxColVec));
           }
           else {
             vTrace("NOT SAME\n"_Stz);

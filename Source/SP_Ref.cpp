@@ -40,7 +40,7 @@ void SP_Ref::vRef(Ref wRef)
   _precondition_(_MAGIC_,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
-                  "%lld.%04lld.%lld"_Stz,
+                  "%lld.%04lld+%lld"_Stz,
                   
                   wRef.iBuffer(),
                   wRef.iItem(),

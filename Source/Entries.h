@@ -19,6 +19,7 @@ namespace Entries
 #include "Ent.hpp"
 #include "EntWrk.hpp"
 
+#include "SP_Ent.hpp"
 #include "SP_Key.hpp"
 
 /*============================================================================*/
