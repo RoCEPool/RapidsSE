@@ -15,9 +15,9 @@ namespace Entries
     i8  m_iSkipNo; // verify of order of skip items
 #endif
   
-    Key m_xKey;  // the key
+    Key m_xKey;    // the key
   
-    // ..keybytes (of the key)
+    // ..element sequence (of the key)
   
     // ..neo (0, 1 or 2 next entry offsets)
   
