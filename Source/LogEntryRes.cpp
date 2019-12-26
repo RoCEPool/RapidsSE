@@ -72,7 +72,7 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, Resource* pResource, eRA eResAct)
 /*----------------------------------------------------------------------------*/
 void _LogEntryRes::vOutline(s4K& sOutline)
 {
-  SP_Id spId;
+  SP_Gid spId;
   SP_String spString;
 
   sOutline.vCatSprint(".%s %24s"_Stz,
@@ -87,7 +87,7 @@ void _LogEntryRes::vOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 void _LogEntryRes::vWriteCsv(File* pFile, LogEntry* pEntry)
 {
-  SP_Id spId;
+  SP_Gid spId;
   
   pFile->vPrint("%s,%s"_Stz,
               

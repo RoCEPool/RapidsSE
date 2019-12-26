@@ -595,7 +595,7 @@ void Scheduler::vTask_Bide(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_DdlDropRead(Task* pTask)
 {
-  SP_Id spId;
+  SP_Gid spId;
   
   AM::pDdlLock()->vDropRead();
   pTask->pRegSet()->m_eDdlLocked = LH_HAVE_NO_LOCK;
@@ -612,7 +612,7 @@ void Scheduler::vTask_DdlDropRead(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_DdlDropWrite(Task* pTask)
 {
-  SP_Id spId;
+  SP_Gid spId;
   
   AM::pDdlLock()->vDropWrite();
   pTask->pRegSet()->m_eDdlLocked = LH_HAVE_NO_LOCK;
@@ -629,7 +629,7 @@ void Scheduler::vTask_DdlDropWrite(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_DdlGrabRead(Task* pTask)
 {
-  SP_Id spId;
+  SP_Gid spId;
   
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_DDL_READ_GRAB,
@@ -651,7 +651,7 @@ void Scheduler::vTask_DdlGrabRead(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_DdlGrabWrite(Task* pTask)
 {
-  SP_Id spId;
+  SP_Gid spId;
   
   pTask->vIncStepNo();
   AM::vLogTsk(SL_INF,pTask,TA_DDL_WRITE_GRAB,

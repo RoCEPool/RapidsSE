@@ -60,7 +60,7 @@ void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
 /*----------------------------------------------------------------------------*/
 void _LogEntryTsk::vOutline(s4K& sOutline)
 {
-  SP_Id spId;
+  SP_Gid spId;
   SP_String spString;
 
   sOutline.vCatSprint(".%s %24s"_Stz,
@@ -75,7 +75,7 @@ void _LogEntryTsk::vOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 void _LogEntryTsk::vWriteCsv(File* pFile, LogEntry* pEntry)
 {
-  SP_Id spId;
+  SP_Gid spId;
   
   pFile->vPrint("%s,%s"_Stz,
                 

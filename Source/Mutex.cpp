@@ -114,7 +114,7 @@ Mutex::Mutex(eMK eKind, Focal* pIsFor)
   
   _checkInitialised_(CN_MUTEX);
   
-  SP_Id spId;
+  SP_Gid spId;
   
   vIncStepNo(); ++ gixMutex;
   AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCT,
@@ -157,7 +157,7 @@ Mutex::~Mutex(void) noexcept(false)
 #endif
   
   vIncStepNo(); -- gixMutex;
-  SP_Id spId;
+  SP_Gid spId;
   AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCT,
               "Mutex -%s destruct ^for=%s |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
               aMK[m_eMutex],
@@ -360,7 +360,7 @@ void Mutex::vLock(Focal* pLockFor)
     
     vIncStepNo(); ++ m_ixLocked;
     
-    SP_Id spId;
+    SP_Gid spId;
     
     if (m_pIsFor == pLockFor)
       AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,

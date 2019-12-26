@@ -606,7 +606,7 @@ i8 giClassSize[]
   /* */ sizeof(SP_Dte),             // CN_SPDTE
   /* */ sizeof(SP_Elapsed),         // CN_SPELAPSED
   /* */ sizeof(SP_Flt),             // CN_SPFLT
-  /* */ sizeof(SP_Id),              // CN_SPID
+  /* */ sizeof(SP_Gid),              // CN_SPID
   /* */ sizeof(SP_Int),             // CN_SPINT
   /* */ sizeof(SP_Ivl),             // CN_SPIVL
   /* */ sizeof(SP_String),          // CN_SPSTRING

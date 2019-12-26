@@ -22,7 +22,7 @@ void _LogEntryTxn::vSet(LogEntry* pLogEntry, Tx* pTxn, eXA eTxnAct)
 /*----------------------------------------------------------------------------*/
 void _LogEntryTxn::vOutline(s4K& sOutline)
 {
-  SP_Id spId;
+  SP_Gid spId;
   SP_String spString;
 
   sOutline.vCatSprint(".%s %24s"_Stz,
@@ -37,7 +37,7 @@ void _LogEntryTxn::vOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 void _LogEntryTxn::vWriteCsv(File* pFile, LogEntry* pEntry)
 {
-  SP_Id spId;
+  SP_Gid spId;
   
   pFile->vPrint("%s,%s"_Stz,
                 

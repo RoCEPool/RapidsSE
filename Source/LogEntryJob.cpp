@@ -37,8 +37,8 @@ void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct)
 /*----------------------------------------------------------------------------*/
 void _LogEntryJob::vOutline(s4K& sOutline)
 {
-  SP_Id spId;
-  SP_Id spReqId;
+  SP_Gid spId;
+  SP_Gid spReqId;
   SP_String spString;
 
   sOutline.vCatSprint(".%s %24s %s"_Stz,
@@ -54,8 +54,8 @@ void _LogEntryJob::vOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 void _LogEntryJob::vWriteCsv(File* pFile, LogEntry* pEntry)
 {
-  SP_Id spId;
-  SP_Id spReqId;
+  SP_Gid spId;
+  SP_Gid spReqId;
 
   pFile->vPrint("%s,%s,%s"_Stz,
                 

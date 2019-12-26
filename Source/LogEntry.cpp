@@ -74,8 +74,8 @@ void LogEntry::vAsTxt(s4K& sString)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
-  SP_Id spId;
-  SP_Id spForId;
+  SP_Gid spId;
+  SP_Gid spForId;
   SP_Elapsed spElapsed;
 
   sString.vSprint("[%04lld,%04lld,%s+%s] %014p⬜️"_Stz,
@@ -388,8 +388,8 @@ void LogEntry::vWriteTxtEntry(File* pFile)
   if (m_bLine)
     pFile->vPrint("%s\n"_Stz,C_LOG_LINE);
   
-  SP_Id spId;
-  SP_Id spForId;
+  SP_Gid spId;
+  SP_Gid spForId;
   
   s256 sSub;
   s256 sMid;

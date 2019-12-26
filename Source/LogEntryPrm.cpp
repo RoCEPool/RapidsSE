@@ -30,7 +30,7 @@ void _LogEntryPrm::vSet(LogEntry* pLogEntry, SePrompt*  pPrompt, ePA ePrmAct)
 /*----------------------------------------------------------------------------*/
 void _LogEntryPrm::vOutline(s4K& sOutline)
 {
-  SP_Id spId;
+  SP_Gid spId;
   SP_String spString;
 
   sOutline.vCatSprint(".%s %24s"_Stz,
@@ -45,7 +45,7 @@ void _LogEntryPrm::vOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 void _LogEntryPrm::vWriteCsv(File* pFile, LogEntry* pEntry)
 {
-  SP_Id spId;
+  SP_Gid spId;
   
   pFile->vPrint("%s,%s"_Stz,
                 

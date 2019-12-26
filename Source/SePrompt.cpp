@@ -392,7 +392,7 @@ void SePrompt::vDeleteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  SP_Id spId;
+  SP_Gid spId;
   
   AM::vLogPrm(SL_INF,this,PA_PRM_DELETE_JOB,
               "%s"_Stz, //!format-LogPrm
@@ -640,7 +640,7 @@ void SePrompt::vJobWaitCond(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  SP_Id spId;
+  SP_Gid spId;
   
   vIncStepNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_WAITS,
@@ -776,7 +776,7 @@ void SePrompt::vPreJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
     
-  SP_Id spId;
+  SP_Gid spId;
   
   vIncStepNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_NEW_JOB,

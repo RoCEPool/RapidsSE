@@ -23,7 +23,7 @@ PromptDesc __Prompt_so (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_so(SePrompt* pPrompt)
 {
-  SP_Id spId;
+  SP_Gid spId;
   
   vTrace(" Request Id : %s\n"_Stz,spId.sz(IK_PROMPT,pPrompt->iRequestId()));
          

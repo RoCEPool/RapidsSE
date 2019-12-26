@@ -16,7 +16,7 @@ void _LogEntryThd::vSet(LogEntry* pLogEntry, Thread* pThread, eHA eThdAct)
     //pLogEntry->m_xReqTuple.vSet(&pThread->pTask()->pJob()->m_xReqTuple);
   }
   else {
-    SP_Id spId;
+    SP_Gid spId;
     
     pLogEntry->m_xReqTuple.m_sPurpose.vSprint("~~THREAD-%s~~"_Stz,
                                               spId.sz(pThread->m_iFocalId));
@@ -46,7 +46,7 @@ void _LogEntryThd::vSet(LogEntry* pLogEntry, Thread* pThread, eHA eThdAct)
 /*----------------------------------------------------------------------------*/
 void _LogEntryThd::vOutline(s4K& sOutline)
 {
-  SP_Id spId;
+  SP_Gid spId;
   SP_String spString;
 
   sOutline.vCatSprint(".%s %24s"_Stz,
@@ -61,7 +61,7 @@ void _LogEntryThd::vOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 void _LogEntryThd::vWriteCsv(File* pFile, LogEntry* pEntry)
 {
-  SP_Id spId;
+  SP_Gid spId;
   
   pFile->vPrint("%s,%s"_Stz,
                 

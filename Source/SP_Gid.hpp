@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SP_Id.hpp - Id sprint helper                                               */
+/* SP_Gid.hpp - Gid sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
 namespace Focals
 {
-  class SP_Id : public SP
+  class SP_Gid : public SP
   {
   public:
 
@@ -13,8 +13,8 @@ namespace Focals
     Footer m_xFooter;
     
   public:
-    SP_Id(void);
-    ~SP_Id(void) noexcept(false);
+    SP_Gid(void);
+   ~SP_Gid(void) noexcept(false);
   
     Stz* sz(i8 iId);
     Stz* sz(eIK eKind, i8 iId);

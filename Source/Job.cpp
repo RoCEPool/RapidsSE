@@ -107,7 +107,7 @@ Job::Job(eCN eClassNo)
   
   // -- -- -- -- -- --
   
-  SP_Id spId;
+  SP_Gid spId;
   
   vIncStepNo(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
@@ -166,7 +166,7 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple)
   m_pBufferQueue = nullptr;
   // -- -- -- -- -- --
   
-  SP_Id spId;
+  SP_Gid spId;
   
   vIncStepNo(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
@@ -226,7 +226,7 @@ Job::Job(Job* pParentJob, JobClass* aJobClass, ReqTuple* aReqTuple)
   
   // -- -- -- -- -- --
   
-  SP_Id spId;
+  SP_Gid spId;
   
   vIncStepNo(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,

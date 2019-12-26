@@ -84,7 +84,7 @@ Lock::~Lock(void) noexcept(false)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
  
   if (m_bFocal) {
-    SP_Id spId;
+    SP_Gid spId;
     
     vIncStepNo(); -- gixLock;
     AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCT,

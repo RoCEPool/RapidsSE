@@ -36,8 +36,8 @@ Stz* SP_ReqTuple::sz(ReqTuple* aReqTuple)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  SP_Id spId;
-  SP_Id spIdFor;
+  SP_Gid spId;
+  SP_Gid spIdFor;
 
   StrLib::vSprint(m_caResult,
                   "<i_Session=%lld ReqId=%s For=%s Detail=%lld Purpose=%s>"_Stz,

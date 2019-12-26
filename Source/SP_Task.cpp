@@ -46,7 +46,7 @@ Stz* SP_Task::sz_log(Task* pTask)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  SP_Id spThreadId;
+  SP_Gid spThreadId;
   
   StrLib::vSprint(m_caResult,
                   "{%s %s %s %s}"_Stz,
