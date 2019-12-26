@@ -8,7 +8,7 @@ namespace Entries
   class Ent : public Header
   {
   protected:
-    Id  m_xRef;  // reference (this is either a sub-ref to child entBuffer,
+    Ref  m_xRef;  // reference (this is either a sub-ref to child entBuffer,
                  //            or a row-ref at H0 leaf buffers to row)
   
 #ifdef WITH_DEBUG_VERSION
@@ -51,8 +51,8 @@ namespace Entries
     void  vNEOdump(void);
     i8    nNEOsize(void);
 
-    Id&   xRef(void);
-    void  vRef(Id xRef);
+    Ref&   xRef(void);
+    void  vRef(Ref xRef);
   
     i8    nSizeBytes(void);
 

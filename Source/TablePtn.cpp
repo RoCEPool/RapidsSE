@@ -294,7 +294,7 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
   m_pCurrentCrwBuffer->vAppendClose();
   
   // get the row from the buffer
-  Id xId;
+  Ref xId;
   i8 iRow = m_pCurrentCrwBuffer->nRowCount() - 1;
   xId.vItem(iRow);
   

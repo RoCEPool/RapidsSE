@@ -274,7 +274,7 @@ void EntBuffer::vCompactLeft(void)
        aThisEntry != nullptr;
        aThisEntry = pThisBuffer->aNextEntry(aThisEntry, 0)) {
     
-    Id xRef = aThisEntry->xRef();
+    Ref xRef = aThisEntry->xRef();
     
     xEntWrk.vSetEnt(xRef.iBuffer(), xRef.iItem(), aThisEntry);
     pTempBuffer->aInsertKeyAbsL0(xEntWrk,&aPriorEntry);
@@ -298,7 +298,7 @@ void EntBuffer::vCompactLeft(void)
        aTempEntry != nullptr;
        aTempEntry = pTempBuffer->aNextEntry(aTempEntry, 0)) {
     
-    Id xRef = aTempEntry->xRef();
+    Ref xRef = aTempEntry->xRef();
     
     xEntWrk.vSetEnt(xRef.iBuffer(), xRef.iItem(), aTempEntry);
     pThisBuffer->aInsertKeyAbsL0(xEntWrk,&aPriorEntry);
@@ -772,7 +772,7 @@ Ent* EntBuffer::aInsertKeyUpwards(EntWrk& xEntWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pInsertIntoBuffer->m_iBufferHeight) {
-    Id xRef = aInsertedKeyEntry->xRef();
+    Ref xRef = aInsertedKeyEntry->xRef();
     i8 nBuffer = xRef.iBuffer();
     
     HeapBuffer* pHeapBuffer =
@@ -1001,7 +1001,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
     aNextEntry = this->aNextEntry(aCopyEntry,0);
     
     // form the key
-    Id xRef = aCopyEntry->xRef();
+    Ref xRef = aCopyEntry->xRef();
     xEntWrk.vSetEnt(xRef.iBuffer(), xRef.iItem(), aCopyEntry);
     
     Ent* aNewEntry = pNewRightBuffer->aInsertKeyAbsL0(xEntWrk,&aLastEntryRight);
@@ -1061,7 +1061,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
   // the child buffer of any moved entry needs to have its higher buffer
   // corrected to the new right buffer
   
-  Id xRef;
+  Ref xRef;
   if (m_iBufferHeight != 0)  {
     for (Ent* aMovedEntry = pNewRightBuffer->aLeadEntry();
          aMovedEntry;

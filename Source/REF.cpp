@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Id.cpp -- the id of an item in a mini-heap                                 */
+/* Ref.cpp -- Reference to another buffer item                                */
 /*============================================================================*/
 
 #include "Rows.h"
@@ -11,10 +11,10 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Id::operator new(size_t)
+void* Ref::operator new(size_t)
 {
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: Id class cannot be new'd\n"_Stz);
+         "fatal: Ref class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -22,15 +22,15 @@ void* Id::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new(aId)                                                          */
 /*----------------------------------------------------------------------------*/
-void* Id::operator new(size_t, Id* aId)
+void* Ref::operator new(size_t, Ref* aRef)
 {
-  return aId;
+  return aRef;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Id::Id(void)
+Ref::Ref(void)
 {
   m_uBuffer  = 0;
   m_uItem    = 0;
@@ -40,7 +40,7 @@ Id::Id(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Id::Id(Id& xId)
+Ref::Ref(Ref& xId)
 {
   vAssign(xId);
 }
@@ -48,7 +48,7 @@ Id::Id(Id& xId)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Id::Id(u8 uBuffer, u8 uItem, u8 uOffsets)
+Ref::Ref(u8 uBuffer, u8 uItem, u8 uOffsets)
 {
   m_uBuffer  = uBuffer;
   m_uItem    = uItem;
@@ -58,7 +58,7 @@ Id::Id(u8 uBuffer, u8 uItem, u8 uOffsets)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Id::~Id(void) noexcept(false)
+Ref::~Ref(void) noexcept(false)
 {
 }
 
@@ -75,38 +75,38 @@ Id::~Id(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* assignment                                                                 */
 /*----------------------------------------------------------------------------*/
-void Id::operator =(Id& xId)
+void Ref::operator =(Ref& xRef)
 {
-  vAssign(xId);
+  vAssign(xRef);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get id as an i8 integer                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Id::iAsI8(void)
+i8 Ref::iAsI8(void)
 {
-  i8 iId;
+  i8 iRef;
 
-  iId  = m_uBuffer << 48;
-  iId |= m_uItem;
+  iRef  = m_uBuffer << 48;
+  iRef |= m_uItem;
 
-  return iId;
+  return iRef;
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign id                                                                  */
 /*----------------------------------------------------------------------------*/
-void Id::vAssign(Id& xId)
+void Ref::vAssign(Ref& xRef)
 {
-  m_uBuffer  = xId.m_uBuffer;
-  m_uItem    = xId.m_uItem;
-  m_uLevels  = xId.m_uLevels;
+  m_uBuffer  = xRef.m_uBuffer;
+  m_uItem    = xRef.m_uItem;
+  m_uLevels  = xRef.m_uLevels;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get buffer                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 Id::iBuffer(void)
+i8 Ref::iBuffer(void)
 {
   return (i8)m_uBuffer;
 }
@@ -114,7 +114,7 @@ i8 Id::iBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set buffer                                                                 */
 /*----------------------------------------------------------------------------*/
-void Id::vBuffer(i8 iBuffer)
+void Ref::vBuffer(i8 iBuffer)
 {
   m_uBuffer = iBuffer;
 }
@@ -122,7 +122,7 @@ void Id::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 /* get row                                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Id::iItem(void)
+i8 Ref::iItem(void)
 {
   return (i8)m_uItem;
 }
@@ -130,7 +130,7 @@ i8 Id::iItem(void)
 /*----------------------------------------------------------------------------*/
 /* set row                                                                    */
 /*----------------------------------------------------------------------------*/
-void Id::vItem(i8 iItem)
+void Ref::vItem(i8 iItem)
 {
   m_uItem = iItem;
 }
@@ -138,7 +138,7 @@ void Id::vItem(i8 iItem)
 /*----------------------------------------------------------------------------*/
 /* get number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Id::nLevels(void)
+i8 Ref::nLevels(void)
 {
   return (i8)m_uLevels;
 }
@@ -146,7 +146,7 @@ i8 Id::nLevels(void)
 /*----------------------------------------------------------------------------*/
 /* set number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-void Id::vLevels(i8 nLevels)
+void Ref::vLevels(i8 nLevels)
 {
   m_uLevels = nLevels;
 }

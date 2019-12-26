@@ -119,7 +119,7 @@ Ent* EntBuffer::aGetNextEntry(EntBuffer** ppEntBuffer, Ent* aPrevEntry)
 /*----------------------------------------------------------------------------*/
 EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
 {
-  Id xRef = pItem->xRef();
+  Ref xRef = pItem->xRef();
   
   EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(xRef);
     
@@ -129,7 +129,7 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pRefdEntBuffer(Id& xId)
+EntBuffer* EntBuffer::pRefdEntBuffer(Ref& xId)
 {
   bn nBufferNo = xId.iBuffer();
   
@@ -858,7 +858,7 @@ void EntBuffer::vRestore(void)
        aEnt != nullptr;
        aEnt = aNextEntry(aEnt, 0)) {
     
-    Id xRef(*nBuffer, aEnt->xRef().iItem(), aEnt->nLevels());
+    Ref xRef(*nBuffer, aEnt->xRef().iItem(), aEnt->nLevels());
     aEnt->vRef(xRef);
   }
   
@@ -890,7 +890,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
          aEnt->nLevels()
          );
   
-  vTrace("Id: %3lli.%03lli "_Stz,
+  vTrace("Ref: %3lli.%03lli "_Stz,
          aEnt->xRef().iBuffer(),
          aEnt->xRef().iItem()
          );
@@ -1066,7 +1066,7 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
   if (! aFirstEntry)
     return;
   
-  Id xRef;
+  Ref xRef;
   xRef = aFirstEntry->xRef();
   bn nBuffer = xRef.iBuffer();
   

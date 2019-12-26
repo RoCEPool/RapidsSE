@@ -51,7 +51,7 @@ namespace Jobs
     void vCreateRowOnce(void);
     void vDeleteBuffer(void);
     bool bPopulateJob(TokenVec* pTokenVec);
-    bool bRowSeen(Id xRowId);
+    bool bRowSeen(Ref xRowId);
     void vShow(void);
     
   public:

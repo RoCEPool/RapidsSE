@@ -205,7 +205,7 @@ Job_FetchRows::~Job_FetchRows(void) noexcept(false)
 bool Job_FetchRows::bAppendRow(FetchBuffer* pFetchBuffer, Ent* aItem,
                                Job_FetchRows* pJob_FetchRows)
 {
-  Id xRef = aItem->xRef();
+  Ref xRef = aItem->xRef();
   
   if (pJob_FetchRows && pJob_FetchRows->bRowSeen(xRef)) {
     // row already inserted
@@ -573,7 +573,7 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* test if row has been seen so far                                           */
 /*----------------------------------------------------------------------------*/
-bool Job_FetchRows::bRowSeen(Id xRowId)
+bool Job_FetchRows::bRowSeen(Ref xRowId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
   

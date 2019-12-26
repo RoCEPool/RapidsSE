@@ -250,7 +250,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   
   Ent* aFirstL0_ent = pFirstL0->aLeadEntry();
   
-  Id xRef = aFirstL0_ent->xRef();
+  Ref xRef = aFirstL0_ent->xRef();
   byte* aKeyBytes = aFirstL0_ent->ayElmSeq();
   i8 nKeyBytes = aFirstL0_ent->nElmSeqSize();
   i8 nLevels = aFirstL0_ent->nLevels();
@@ -319,7 +319,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the elements of the right key
     
-    Id xRef = aRightL0_Key->xRef();
+    Ref xRef = aRightL0_Key->xRef();
     byte* aKeyBytes = aRightL0_Key->ayElmSeq();
     
     //i8 nKeySize = aKey->nKeySize(pIdxColVec);
@@ -529,7 +529,7 @@ void IndexTree::vInsertEntriesFromBuffer(CrwBuffer* pCrwBuffer)
 
   //pEntBuffer->vShow();
 
-  Id xId;
+  Ref xId;
   xId.vBuffer(*pCrwBuffer->nPoolBufferNo());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -550,7 +550,7 @@ void IndexTree::vInsertEntriesFromBuffer(CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Id& xRowRef)
+bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   

@@ -207,7 +207,7 @@ i8 Ent::nNEOsize(void)
 /*----------------------------------------------------------------------------*/
 /* get ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
-Id& Ent::xRef(void)
+Ref& Ent::xRef(void)
 {
   return m_xRef;
 }
@@ -215,7 +215,7 @@ Id& Ent::xRef(void)
 /*----------------------------------------------------------------------------*/
 /* set reference                                                              */
 /*----------------------------------------------------------------------------*/
-void Ent::vRef(Id xRef)
+void Ent::vRef(Ref xRef)
 {
   m_xRef = xRef;
 }

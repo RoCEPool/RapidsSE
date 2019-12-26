@@ -673,7 +673,7 @@ bool EntBuffer::bVerifyRowRefs(void)
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
     // get the row buffer that this L0 key leaf references
-    Id xRef = aEnt->xRef();
+    Ref xRef = aEnt->xRef();
     CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
     
     // get the row entry from referenced entry buffer

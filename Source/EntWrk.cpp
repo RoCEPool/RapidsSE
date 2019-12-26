@@ -418,7 +418,7 @@ void EntWrk::vRandomLevels(void)
 /*----------------------------------------------------------------------------*/
 /* get ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
-Id& EntWrk::xRef(void)
+Ref& EntWrk::xRef(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -428,7 +428,7 @@ Id& EntWrk::xRef(void)
 /*----------------------------------------------------------------------------*/
 /* set ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vRef(Id& xRef)
+void EntWrk::vRef(Ref& xRef)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
@@ -448,7 +448,7 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   i8 nLevels = pEntry->nLevels();
   vLevels(nLevels);
   
-  Id xRef(iBufferNo,i_Item,nLevels);
+  Ref xRef(iBufferNo,i_Item,nLevels);
   vRef(xRef);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

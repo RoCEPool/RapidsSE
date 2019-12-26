@@ -64,8 +64,8 @@ namespace Entries
     i8    nNEOsize(void);
   
     void  vRandomLevels(void);
-    Id&   xRef(void);
-    void  vRef(Id& xRef);
+    Ref&   xRef(void);
+    void  vRef(Ref& xRef);
 
     void  vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry);
     void  vShow(IdxColVec* pIdxColVec);

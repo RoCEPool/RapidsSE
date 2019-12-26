@@ -1,32 +1,32 @@
 /*============================================================================*/
-/* Id.hpp -- the id of an item in a mini-heap                                 */
+/* Ref.hpp -- Reference to another buffer item                                */
 /*============================================================================*/
 #pragma once
 
 namespace Rows
 {
-  class Id
+  class Ref
   {
   private:
     struct {
       u8 m_uBuffer : 45; // which buffer
-      u8 m_uItem   : 16; // item in buffer
+      u8 m_uItem   : 16; // item in that buffer
       u8 m_uLevels :  3; // number of levels
     };            // 64
   
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Id* aId);
+    void* operator new(size_t, Ref* aRef);
     
-    Id(void);
-    Id(Id& xId);
-    Id(u8 uBuffer, u8 uItem, u8 uOffsets);
-    ~Id(void) noexcept(false);
+    Ref(void);
+    Ref(Ref& xRef);
+    Ref(u8 uBuffer, u8 uItem, u8 uOffsets);
+    ~Ref(void) noexcept(false);
     
-    void operator =(Id& xId); // assignment
+    void operator =(Ref& xId); // assignment
   
     i8    iAsI8(void);
-    void  vAssign(Id& xId);
+    void  vAssign(Ref& xRef);
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
     i8    iItem(void);

@@ -65,7 +65,7 @@ RowOnce::~RowOnce(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* has row been seen? (complete implementation)                               */
 /*----------------------------------------------------------------------------*/
-bool RowOnce::bRowSeen(Id xRowId)
+bool RowOnce::bRowSeen(Ref xRowId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWONCE,_FOOTER_);
   
