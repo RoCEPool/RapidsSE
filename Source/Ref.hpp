@@ -12,7 +12,7 @@ namespace Rows
       u8 m_uBuffer  : 45; // which buffer
       u8 m_uItem    : 16; // item in that buffer
       u8 m_uOffsets :  3; // number of neo's that follow
-    };            // 64
+    };             // 64
   
   public:
     void* operator new(size_t);
@@ -31,8 +31,8 @@ namespace Rows
     void  vBuffer(i8 iBuffer);
     i8    iItem(void);
     void  vItem(i8 iItem);
-    i8    nLevels(void);
-    void  vLevels(i8 nLevels);
+    i8    nOffsets(void);
+    void  vOffsets(i8 nOffsets);
   };
 }
 

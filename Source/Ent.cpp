@@ -137,17 +137,17 @@ Key* Ent::aKey(void)
 /*----------------------------------------------------------------------------*/
 /* get number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Ent::nLevels(void)
+i8 Ent::nOffsets(void)
 {
-  return m_xRef.nLevels();
+  return m_xRef.nOffsets();
 }
 
 /*----------------------------------------------------------------------------*/
 /* set number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-void Ent::vLevels(i8 nLevels)
+void Ent::vOffsets(i8 nLevels)
 {
-  m_xRef.vLevels(nLevels);
+  m_xRef.vOffsets(nLevels);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -155,7 +155,7 @@ void Ent::vLevels(i8 nLevels)
 /*----------------------------------------------------------------------------*/
 i4 Ent::iNEO(i8 i_Level)
 {
-  ASSERT(i_Level >= 0 && i_Level < nLevels());
+  ASSERT(i_Level >= 0 && i_Level < nOffsets());
 
   i8 i_NEO = sizeof(Ent) + m_xKey.nElmSeqSize() + (C_NEO_SIZE * i_Level);
   
@@ -169,7 +169,7 @@ i4 Ent::iNEO(i8 i_Level)
 /*----------------------------------------------------------------------------*/
 void Ent::vNEO(i8 i_Level, i4 i_Offset)
 {
-  ASSERT(i_Level >= 0 && i_Level < nLevels());
+  ASSERT(i_Level >= 0 && i_Level < nOffsets());
 
   i8 i_NEO = sizeof(Ent) + m_xKey.nElmSeqSize() + (C_NEO_SIZE * i_Level);
 
@@ -182,7 +182,7 @@ void Ent::vNEO(i8 i_Level, i4 i_Offset)
 void Ent::vNEOdump(void)
 {
   NEO* aNEO = this->aNEO();
-  i8 nLvls  = nLevels();
+  i8 nLvls  = nOffsets();
   
   vTrace("Ent %p levels: %lld NEO: %p"_Stz,
          this,nLvls,aNEO);
@@ -198,7 +198,7 @@ void Ent::vNEOdump(void)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nNEOsize(void)
 {
-  i8 nLvls  = nLevels();
+  i8 nLvls  = nOffsets();
   i8 nBytes = C_NEO_SIZE * nLvls;
   
   return nBytes;

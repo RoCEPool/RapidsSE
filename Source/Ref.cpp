@@ -138,7 +138,7 @@ void Ref::vItem(i8 iItem)
 /*----------------------------------------------------------------------------*/
 /* get number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Ref::nLevels(void)
+i8 Ref::nOffsets(void)
 {
   return (i8)m_uOffsets;
 }
@@ -146,7 +146,7 @@ i8 Ref::nLevels(void)
 /*----------------------------------------------------------------------------*/
 /* set number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-void Ref::vLevels(i8 nLevels)
+void Ref::vOffsets(i8 nLevels)
 {
   m_uOffsets = nLevels;
 }

@@ -252,7 +252,7 @@ void EntBuffer::vCutEntry(Ent* aEnt, Ent* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  i8 nLevels = aEnt->nLevels();
+  i8 nLevels = aEnt->nOffsets();
   
   for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
     i4 iNEO = aEnt->iNEO(i_Level);
@@ -336,7 +336,7 @@ void EntBuffer::vDumpPriorVec(Ent* aPriorVec[])
   
   for (i8 i = 0; i < 3; i++) {
     Ent* aEnt = aPriorVec[i];
-    for (i8 i_Level = 0; i_Level < aEnt->nLevels(); i_Level++) {
+    for (i8 i_Level = 0; i_Level < aEnt->nOffsets(); i_Level++) {
       vTrace("  i : %lld Ent : %p i_Offset : %lld offset : %lld pointsTo : %p\n"_Stz,
              i,
              aEnt,
@@ -858,7 +858,7 @@ void EntBuffer::vRestore(void)
        aEnt != nullptr;
        aEnt = aNextEntry(aEnt, 0)) {
     
-    Ref xRef(*nBuffer, aEnt->xRef().iItem(), aEnt->nLevels());
+    Ref xRef(*nBuffer, aEnt->xRef().iItem(), aEnt->nOffsets());
     aEnt->vRef(xRef);
   }
   
@@ -887,7 +887,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
          iOffset,
          aEnt,
          aEnt->nEntSize(),
-         aEnt->nLevels()
+         aEnt->nOffsets()
          );
   
   vTrace("Ref: %3lli.%03lli "_Stz,
@@ -903,7 +903,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   aKey->vShow(m_pIndex->pIdxColVec());
   
   vTrace(" offsets:"_Stz);
-  for (i8 i_Level = 0; i_Level < aEnt->nLevels(); i_Level++)
+  for (i8 i_Level = 0; i_Level < aEnt->nOffsets(); i_Level++)
     vTrace(" %d"_Stz,aEnt->iNEO(i_Level));
   
   vTrace("\n"_Stz);

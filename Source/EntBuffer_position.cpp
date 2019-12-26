@@ -130,7 +130,7 @@ void EntBuffer::vPositionPriorVecEntry(Ent* aFindKey, Ent* aPriorVec[],
   
   //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  i8 iFindLevels = aFindEntry ? aFindEntry->nLevels() - 1 : 2;
+  i8 iFindLevels = aFindEntry ? aFindEntry->nOffsets() - 1 : 2;
   
   bool bIsJuxta;
   Ent* aScanEntry_sl = aSkipRoots();

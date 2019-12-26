@@ -29,7 +29,7 @@ SkipRoots::SkipRoots(void)
   bn nBufferNo = pBuffer->nPoolBufferNo();
 
   vBuffer(*nBufferNo);
-  vLevels(3);
+  vOffsets(3);
   vElmSeqSize(0);
 
   m_iPadding[0] = -1;

@@ -111,7 +111,7 @@ void SP_Ent::vSprintEnt(Ent* aEnt, IdxColVec* pIdxColVec)
                   spRef.sz(aEnt->xRef()),
                   spKey.sz(aEnt->aKey(),pIdxColVec));
   
-  for (i8 i_Level = 0; i_Level < aEnt->nLevels(); i_Level++)
+  for (i8 i_Level = 0; i_Level < aEnt->nOffsets(); i_Level++)
     StrLib::vSprintCat((Stz*)m_caEnt," %d"_Stz,aEnt->iNEO(i_Level));
 
 }

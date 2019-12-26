@@ -39,7 +39,7 @@ EntWrk::EntWrk(void)
 
   m_xEnt.vBuffer(0);
   m_xEnt.vItem(0);
-  m_xEnt.vLevels(0);
+  m_xEnt.vOffsets(0);
   
   m_xEnt.vElmSeqSize(0);
 
@@ -273,7 +273,7 @@ void EntWrk::vFormEntry(Ent* pEntry)
   // set entry id and levels
   
   pEntry->vRef(xRef());
-  pEntry->vLevels(nLevels());
+  pEntry->vOffsets(nOffsets());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy key into entry
@@ -374,21 +374,21 @@ void EntWrk::vElmSeq(i8 nElmSeqSize, byte* ayElmSeq)
 /*----------------------------------------------------------------------------*/
 /* get number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-i8 EntWrk::nLevels(void)
+i8 EntWrk::nOffsets(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  return m_xEnt.nLevels();
+  return m_xEnt.nOffsets();
 }
 
 /*----------------------------------------------------------------------------*/
 /* set number of levels                                                       */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vLevels(i8 nLevels)
+void EntWrk::vOffsets(i8 nLevels)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  m_xEnt.vLevels(nLevels);
+  m_xEnt.vOffsets(nLevels);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -412,7 +412,7 @@ void EntWrk::vRandomLevels(void)
     
   i8 nLevels = AM::nRandomLevels();
 
-  m_xEnt.vLevels(nLevels);
+  m_xEnt.vOffsets(nLevels);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -445,8 +445,8 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
   
-  i8 nLevels = pEntry->nLevels();
-  vLevels(nLevels);
+  i8 nLevels = pEntry->nOffsets();
+  vOffsets(nLevels);
   
   Ref xRef(iBufferNo,i_Item,nLevels);
   vRef(xRef);

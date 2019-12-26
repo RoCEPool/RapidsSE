@@ -58,8 +58,8 @@ namespace Entries
     i8    nElmSeqSize(void);
     void  vElmSeqSize(i8 nElmSeqSize);
 
-    i8    nLevels(void);
-    void  vLevels(i8 nLevels);
+    i8    nOffsets(void);
+    void  vOffsets(i8 nLevels);
 
     i8    nNEOsize(void);
   

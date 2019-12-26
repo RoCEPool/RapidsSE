@@ -94,7 +94,7 @@ void EntBuffer::vBuildSkipListSorted(void)
     i4 iEntryOffset = iToOffset(aEnt);
     
     // get the number of offsets for this entry
-    i8 nLevels = aEnt->nLevels();
+    i8 nLevels = aEnt->nOffsets();
     
     // connect the dots
     for (i8 i_Level = 1; i_Level < nLevels; i_Level++) {
@@ -446,7 +446,7 @@ EntBuffer* EntBuffer::pInsertableBuffer(EntWrk& xEntWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  RASSERT(xEntWrk.nLevels());
+  RASSERT(xEntWrk.nOffsets());
   
   i8 nEntryBytes = xEntWrk.nSize_EntKey();
   i8 nOffsetBytes = xEntWrk.nNEOsize();
@@ -496,7 +496,7 @@ Ent* EntBuffer::aInsertKeyAbs(EntWrk& xEntWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  RASSERT(xEntWrk.nLevels());
+  RASSERT(xEntWrk.nOffsets());
   
   i8 nEntryBytes = xEntWrk.nSize_EntKey();
   i8 nOffsetBytes = xEntWrk.nNEOsize();
@@ -545,7 +545,7 @@ Ent* EntBuffer::aInsertKeyAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  RASSERT(xEntWrk.nLevels());
+  RASSERT(xEntWrk.nOffsets());
   
   i8 nEntryBytes = xEntWrk.nSize_EntKey();
   i8 nOffsetBytes = xEntWrk.nNEOsize();
@@ -577,7 +577,7 @@ Ent* EntBuffer::aInsertKeyAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry)
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   // for the moment we set L1 & L2 offsets in prior entry to -1
   
-  i8 nPriorLevels = aKeyEntry->nLevels();
+  i8 nPriorLevels = aKeyEntry->nOffsets();
   for (i8 i_Level = 0; i_Level < nPriorLevels; i_Level++)
     aKeyEntry->vNEO(i_Level,-1);
   
@@ -638,7 +638,7 @@ Ent* EntBuffer::aInsertKeyAbsLazy(EntWrk& xEntWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  RASSERT(xEntWrk.nLevels());
+  RASSERT(xEntWrk.nOffsets());
   
   i8 nEntryBytes = xEntWrk.nSize_EntKey();
   i8 nOffsetBytes = xEntWrk.nNEOsize();
@@ -704,7 +704,7 @@ void EntBuffer::vInsertKeySkip(Ent* aKeyEntry)
   
   i4 iKeyEntryOffset = iToOffset(aKeyEntry);
   
-  i8 nLevels = aKeyEntry->nLevels();
+  i8 nLevels = aKeyEntry->nOffsets();
   for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
     i4 iNextOffset = xPriorVec[i_Level]->iNEO(i_Level);
     aKeyEntry->vNEO(i_Level,iNextOffset);

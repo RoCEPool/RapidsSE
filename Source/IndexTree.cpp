@@ -253,7 +253,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   Ref xRef = aFirstL0_ent->xRef();
   byte* aKeyBytes = aFirstL0_ent->ayElmSeq();
   i8 nKeyBytes = aFirstL0_ent->nElmSeqSize();
-  i8 nLevels = aFirstL0_ent->nLevels();
+  i8 nLevels = aFirstL0_ent->nOffsets();
   
   i8 iFirstL0_BufferNo = pFirstL0->iPoolBufferNo();
   xRef.vBuffer(iFirstL0_BufferNo);
@@ -264,7 +264,7 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   
   xFirstL1_ent.vElmSeq(nKeyBytes,aKeyBytes);
 
-  xFirstL1_ent.vLevels(nLevels);
+  xFirstL1_ent.vOffsets(nLevels);
   
   Ent* aFirstL1_Key = pL1->aInsertKeyAbs(xFirstL1_ent);
   
@@ -324,7 +324,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     
     //i8 nKeySize = aKey->nKeySize(pIdxColVec);
     i8 nKeySize = aRightL0_Key->nElmSeqSize();
-    i8 nLevels = aRightL0_Key->nLevels();
+    i8 nLevels = aRightL0_Key->nOffsets();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key
@@ -333,7 +333,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     
     xLeftEntWrk.vElmSeq(nKeySize,aKeyBytes);
 
-    xLeftEntWrk.vLevels(nLevels);
+    xLeftEntWrk.vOffsets(nLevels);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute the size of the left key
