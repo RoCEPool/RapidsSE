@@ -14,6 +14,7 @@ namespace Rows
 
 //------------------------------------------------------------------------------
 
+#include "Id.hpp"
 #include "RowCoder.hpp"
 #include "Row.hpp"
 

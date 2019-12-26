@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Entries
+namespace Rows
 {
   class Id
   {
