@@ -520,7 +520,7 @@ i8 giClassSize[]
   /* */ sizeof(Mutex),              // CN_MUTEX
 
   /* */ 'N'-'A' + 1,                // CN__N__
-  /* */ sizeof(NextId),             // CN_NEXTID
+  /* */ sizeof(NextGid),             // CN_NEXTID
   /* */ sizeof(NmStr),              // CN_NMSTR
   /* */ sizeof(NmStrList),          // CN_NMSTRLIST
   /* */ sizeof(NmVal),              // CN_NMVAL

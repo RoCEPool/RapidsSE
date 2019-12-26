@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* NextId.cpp -- Next Id generator                                            */
+/* NextGid.cpp -- Next Gid generator                                          */
 /*============================================================================*/
 
 #include "Gadgets.h"
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-NextId::NextId(void)
+NextGid::NextGid(void)
 : Object(CN_NEXTID)
 {
   m_ixId = 0;
@@ -24,7 +24,7 @@ NextId::NextId(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-NextId::~NextId(void) noexcept(false)
+NextGid::~NextGid(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_NEXTID,_FOOTER_);
 }
@@ -38,13 +38,13 @@ NextId::~NextId(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* atomically inc (prefix form)                                               */
 /*----------------------------------------------------------------------------*/
-i8 NextId::operator ++(void)
+i8 NextGid::operator ++(void)
 {
   _precondition_(_MAGIC_,CN_NEXTID,_FOOTER_);
   
   i8 iId = ++ m_ixId;
   
-  //vTrace("NextId %lld\n"_Stz,iId);
+  //vTrace("NextGid %lld\n"_Stz,iId);
   
   return iId;
 }
@@ -52,7 +52,7 @@ i8 NextId::operator ++(void)
 /*----------------------------------------------------------------------------*/
 /* atomically subtract                                                        */
 /*----------------------------------------------------------------------------*/
-void NextId::vNodeNo(i8 iNodeNo)
+void NextGid::vNodeNo(i8 iNodeNo)
 {
   _precondition_(_MAGIC_,CN_NEXTID,_FOOTER_);
   
@@ -62,7 +62,7 @@ void NextId::vNodeNo(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(NextId)
+__aFooterFunction(NextGid)
 
 /*============================================================================*/
 /* end                                                                        */

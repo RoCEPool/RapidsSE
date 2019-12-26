@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* NextId.hpp -- Next Id generator                                            */
+/* NextGid.hpp -- Next Gid generator                                          */
 /*============================================================================*/
 #pragma once
 
 namespace Gadgets
 {
-  class NextId : public Object
+  class NextGid : public Object
   {
   private:
     Atomic m_ixId;
@@ -14,8 +14,8 @@ namespace Gadgets
     Footer m_xFooter;
     
   public:
-    NextId(void);
-   ~NextId(void) noexcept(false);
+    NextGid(void);
+   ~NextGid(void) noexcept(false);
   
     i8 operator ++(void); // increment (prefix form)
   
