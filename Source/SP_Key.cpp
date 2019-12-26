@@ -130,8 +130,11 @@ void SP_Key::vSprintKey(Key* pKey, IdxColVec* pIdxColVec)
     if (i_IdxCol)
       StrLib::vConcat(m_caKey,", ");
 
-    StrLib::vSprint((Stz*)caElm,"Elm[%lld %lldB] %s"_Stz,
-                       i_IdxCol,nElmBytes,caLiteral);
+    StrLib::vSprint((Stz*)caElm,"Elm[%lld %s %lldB] %s"_Stz,
+                    i_IdxCol,
+                    aDM[pCol->eDatum()],
+                    nElmBytes,
+                    caLiteral);
     
     StrLib::vConcat(m_caKey,caElm);
   }

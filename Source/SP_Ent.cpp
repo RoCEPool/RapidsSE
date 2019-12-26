@@ -107,7 +107,7 @@ void SP_Ent::vSprintEnt(Ent* aEnt, IdxColVec* pIdxColVec)
   SP_Key spKey;
   
   StrLib::vSprint(m_caEnt,
-                  "%s %s NEO:"_Stz,
+                  "%s %s; NEO:"_Stz,
                   spRef.sz(aEnt->xRef()),
                   spKey.sz(aEnt->aKey(),pIdxColVec));
   
