@@ -1,110 +1,38 @@
 /*============================================================================*/
-/* REF.hpp -- counted reference pointer                                       */
+/* Id.hpp -- the id of an item in a mini-heap                                 */
 /*============================================================================*/
 #pragma once
 
-#include "AM.hpp"
-
-namespace Gadgets {
-  template <class CLASS> class CRM;
-}
-
-namespace Correctness
+namespace Rows
 {
-  template <class CLASS>
-  class REF
+  class Id
   {
-    friend class CRM<CLASS>;
-  
   private:
-  
-    CLASS* m_pReferencedObject; // pointer to the referenced object
+    struct {
+      u8 m_uBuffer : 45; // which buffer
+      u8 m_uItem   : 16; // item in buffer
+      u8 m_uLevels :  3; // number of levels
+    };            // 64
   
   public:
+    void* operator new(size_t);
+    void* operator new(size_t, Id* aId);
+    
+    Id(void);
+    Id(Id& xId);
+    Id(u8 uBuffer, u8 uItem, u8 uOffsets);
+    ~Id(void) noexcept(false);
+    
+    void operator =(Id& xId); // assignment
   
-    /*------------------------------------------------------------------------*/
-    /* constructor                                                            */
-    /*------------------------------------------------------------------------*/
-    REF<CLASS>(void)
-    {
-      m_pReferencedObject = nullptr;
-    }
-  
-    /*------------------------------------------------------------------------*/
-    /* parameterized constructor                        (nullptr not allowed) */
-    /*------------------------------------------------------------------------*/
-//    REF<CLASS>(CRM<CLASS>* pReferenceTo)
-//    {
-//      if ( ! pReferenceTo || ! AM::bInBufferPool(pReferenceTo) )
-//        THROW("REF::REF(pReferenceTo) : invalid pReferenceTo parameter"_Stz);
-//
-//      m_pReferencedObject = nullptr;
-//
-//      pReferenceTo->vBorrowRefBy(this);
-//    }
-  
-    /*------------------------------------------------------------------------*/
-    /* destructor                                                             */
-    /*------------------------------------------------------------------------*/
-    ~REF<CLASS>(void)
-    {
-      RASSERT(! m_pReferencedObject);
-    }
-
-    /*------------------------------------------------------------------------*/
-    /*------------------------------------------------------------------------*/
-  
-    /*------------------------------------------------------------------------*/
-    /* member operator ->                               (nullptr not allowed) */
-    /*------------------------------------------------------------------------*/
-    CLASS* operator -> (void)
-    {
-      if (! m_pReferencedObject)
-        THROW("REF::operator ->(void) : m_pObject member is null"_Stz);
-   
-      return m_pReferencedObject;
-    }
-  
-    /*------------------------------------------------------------------------*/
-    /* is there a reference?                                                  */
-    /*------------------------------------------------------------------------*/
-    bool bHasReference(void)
-    {
-      if (m_pReferencedObject)
-        return true;
-      else
-        return false;
-    }
-  
-    /*------------------------------------------------------------------------*/
-    /* get the referenced object                                              */
-    /*------------------------------------------------------------------------*/
-    CLASS* pReferencedObject(void)
-    {
-      return m_pReferencedObject;
-    }
-  
-    /*------------------------------------------------------------------------*/
-    /* is pointer valid?                                (nullptr not allowed) */
-    /*------------------------------------------------------------------------*/
-    bool bIsValid(void)
-    {
-      if ( ! m_pReferencedObject ||
-           (m_pReferencedObject && AM::bInBufferPool(m_pReferencedObject)) )
-        return true;
-      else
-        return false;
-    }
-  
-    /*------------------------------------------------------------------------*/
-    /* return reference                                                       */
-    /*------------------------------------------------------------------------*/
-    void vReturnRef(void)
-    {
-      RASSERT(m_pReferencedObject);
-      m_pReferencedObject->vReturnRefBy(this);
-    }
-  
+    i8    iAsI8(void);
+    void  vAssign(Id& xId);
+    i8    iBuffer(void);
+    void  vBuffer(i8 iBuffer);
+    i8    iItem(void);
+    void  vItem(i8 iItem);
+    i8    nLevels(void);
+    void  vLevels(i8 nLevels);
   };
 }
 
