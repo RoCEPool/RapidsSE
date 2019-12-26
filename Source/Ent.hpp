@@ -8,8 +8,8 @@ namespace Entries
   class Ent : public Header
   {
   protected:
-    Ref  m_xRef;  // reference (this is either a sub-ref to child entBuffer,
-                 //            or a row-ref at H0 leaf buffers to row)
+    Ref  m_xRef;   // reference (this is either a sub-ref to a child EntBuffer,
+                   //            or a row-ref to a row at H0 leaf buffers)
   
 #ifdef WITH_DEBUG_VERSION
     i8  m_iSkipNo; // verify of order of skip items
@@ -19,7 +19,7 @@ namespace Entries
   
     // ..element sequence (of the key)
   
-    // ..neo (0, 1 or 2 next entry offsets)
+    // ..neo (1, 2 or 3 next entry offsets)
   
   public:
 

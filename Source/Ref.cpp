@@ -34,7 +34,7 @@ Ref::Ref(void)
 {
   m_uBuffer  = 0;
   m_uItem    = 0;
-  m_uLevels  = 0;
+  m_uOffsets = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +52,7 @@ Ref::Ref(u8 uBuffer, u8 uItem, u8 uOffsets)
 {
   m_uBuffer  = uBuffer;
   m_uItem    = uItem;
-  m_uLevels  = uOffsets;
+  m_uOffsets = uOffsets;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,7 +100,7 @@ void Ref::vAssign(Ref& xRef)
 {
   m_uBuffer  = xRef.m_uBuffer;
   m_uItem    = xRef.m_uItem;
-  m_uLevels  = xRef.m_uLevels;
+  m_uOffsets  = xRef.m_uOffsets;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,7 +140,7 @@ void Ref::vItem(i8 iItem)
 /*----------------------------------------------------------------------------*/
 i8 Ref::nLevels(void)
 {
-  return (i8)m_uLevels;
+  return (i8)m_uOffsets;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,7 +148,7 @@ i8 Ref::nLevels(void)
 /*----------------------------------------------------------------------------*/
 void Ref::vLevels(i8 nLevels)
 {
-  m_uLevels = nLevels;
+  m_uOffsets = nLevels;
 }
 
 /*============================================================================*/

@@ -9,9 +9,9 @@ namespace Rows
   {
   private:
     struct {
-      u8 m_uBuffer : 45; // which buffer
-      u8 m_uItem   : 16; // item in that buffer
-      u8 m_uLevels :  3; // number of levels / neo's that follow
+      u8 m_uBuffer  : 45; // which buffer
+      u8 m_uItem    : 16; // item in that buffer
+      u8 m_uOffsets :  3; // number of neo's that follow
     };            // 64
   
   public:
