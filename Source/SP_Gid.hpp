@@ -16,9 +16,9 @@ namespace Focals
     SP_Gid(void);
    ~SP_Gid(void) noexcept(false);
   
-    Stz* sz(i8 iId);
-    Stz* sz(eIK eKind, i8 iId);
-    Stz* sz(eEK eKind, i8 iId);
+    Stz* sz(i8 iGid);
+    Stz* sz(eIK eKind, i8 iGid);
+    Stz* sz(eEK eKind, i8 iGid);
 
     Footer* aFooter(void);
   };

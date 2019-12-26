@@ -184,7 +184,7 @@ enum eCN : u2 // Class Number
   /* 146 0x092      480B Heap:S */ CN_MUTEX,
   
   /* 147 0x093       14B Heap:I */ CN__N__,
-  /* 148 0x094       40B Heap:I */ CN_NEXTID,
+  /* 148 0x094       40B Heap:I */ CN_NEXTGID,
   /* 149 0x095     4112B Heap:M */ CN_NMSTR,
   /* 150 0x096      248B Heap:S */ CN_NMSTRLIST,
   /* 151 0x097       80B Heap:S */ CN_NMVAL,
@@ -518,7 +518,7 @@ static Stz* aCN[]
   /* 146 0x092 */ "MUTEX"_Stz,               // CN_MUTEX
   
   /* 147 0x093 */ "_N__"_Stz,                // CN__N__
-  /* 148 0x094 */ "NEXTID"_Stz,              // CN_NEXTID
+  /* 148 0x094 */ "NEXTGID"_Stz,             // CN_NEXTGID
   /* 149 0x095 */ "NMSTR"_Stz,               // CN_NMSTR
   /* 150 0x096 */ "NMSTRLIST"_Stz,           // CN_NMSTRLIST
   /* 151 0x097 */ "NMVAL"_Stz,               // CN_NMVAL

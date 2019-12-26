@@ -12,13 +12,13 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 NextGid::NextGid(void)
-: Object(CN_NEXTID)
+: Object(CN_NEXTGID)
 {
   m_ixId = 0;
   
-  _checkInitialised_(CN_NEXTID);
+  _checkInitialised_(CN_NEXTGID);
   
-  _postcondition_(_MAGIC_,CN_NEXTID,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_NEXTGID,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -26,7 +26,7 @@ NextGid::NextGid(void)
 /*----------------------------------------------------------------------------*/
 NextGid::~NextGid(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_NEXTID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_NEXTGID,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +40,7 @@ NextGid::~NextGid(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 NextGid::operator ++(void)
 {
-  _precondition_(_MAGIC_,CN_NEXTID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_NEXTGID,_FOOTER_);
   
   i8 iId = ++ m_ixId;
   
@@ -54,7 +54,7 @@ i8 NextGid::operator ++(void)
 /*----------------------------------------------------------------------------*/
 void NextGid::vNodeNo(i8 iNodeNo)
 {
-  _precondition_(_MAGIC_,CN_NEXTID,_FOOTER_);
+  _precondition_(_MAGIC_,CN_NEXTGID,_FOOTER_);
   
   m_ixId = iNodeNo << 48;
 }

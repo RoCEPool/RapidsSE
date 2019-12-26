@@ -181,7 +181,7 @@ pFINALIZE *gpFinalize[]
   /*114 */ &Finalize::vUndefined,         // CN_MUTEX
   
   /*    */ &Finalize::vUndefined,         // CN__N__
-  /*    */ &Finalize::vUndefined,         // CN_NEXTID
+  /*    */ &Finalize::vUndefined,         // CN_NEXTGID
   /*    */ &Finalize::vUndefined,         // CN_NMSTR
   /*    */ &Finalize::vUndefined,         // CN_NMSTRLIST
   /*    */ &Finalize::vUndefined,         // CN_NMVAL
