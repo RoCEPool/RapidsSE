@@ -408,7 +408,7 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 5) allot a logical compact row
   
-  vAllotCrw();
+  vAllotCrw(m_pEncoding);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 6) pack encoded inflated row into a compact row
@@ -502,7 +502,7 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
 /*----------------------------------------------------------------------------*/
 /* allot a compact row (head and potentially an over line)                    */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vAllotCrw(void)
+void RowCompactor::vAllotCrw(Encoding* pEncoding)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -534,7 +534,7 @@ void RowCompactor::vAllotCrw(void)
   m_aHeadLine = aAllotHead(m_nHeadSize);
 
   // do we allot an over line?
-  if (! m_pEncoding->bOverFlowed()) {
+  if (! pEncoding->bOverFlowed()) {
     m_aOverLine = nullptr;
     return;
   }
@@ -542,7 +542,7 @@ void RowCompactor::vAllotCrw(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // calc the size of the over line
-  i8 nBytesNeed = m_pEncoding->nBytesNeeded();
+  i8 nBytesNeed = pEncoding->nBytesNeeded();
   i8 nOverSize  = nBytesNeed - m_nHeadSize;
   ASSERT(nOverSize > 0);
   
