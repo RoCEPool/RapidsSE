@@ -11,16 +11,14 @@ namespace Buffers
   public:
     RowNub*    m_pCrwNub;      // nub of crw buffer
     StreamDef* m_pStreamDef;   // stream def
-    i8         m_nHeadSize;    // size of head line for this colvec/table
-    i8         m_nMetaSize;    // size of meta data for this colvec/table
-  
+    Encoding*  m_pEncoding;    // encoding of row
+
     // - - - - - - - - - - - -
     
     IrwBuffer* m_pRowSamples;  // the set of sample rows
     bool       m_bCollecting;  // has sampel set been encoded?
     
-    Encoding*  m_pEncoding;    // encoding of row
-    
+  
     HeadLine*  m_aHeadLine;    // head of crw
     OverLine*  m_aOverLine;    // over of crw
 

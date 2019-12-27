@@ -51,13 +51,11 @@ RowCompactor::RowCompactor(void)
   
   m_pCrwNub       = nullptr;
   m_pStreamDef    = nullptr;
-  m_nHeadSize     = C_UNKNOWN;
-  m_nMetaSize     = C_UNKNOWN;
-  
+  m_pEncoding     = nullptr;
+
   m_pRowSamples   = nullptr;
   m_bCollecting   = false;
   
-  m_pEncoding     = nullptr;
   m_aHeadLine     = nullptr;
   m_aOverLine     = nullptr;
 
@@ -106,14 +104,16 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   m_pCrwNub       = pCrwBuffer->m_oRowTray.pNub();
-  m_pStreamDef    = m_pCrwNub->pDesc()->pStreamDef();
-  m_nHeadSize     = nHeadSize(m_pStreamDef);
-  m_nMetaSize     = nMetaSize(m_pStreamDef);
   
+  m_pStreamDef    = m_pCrwNub->pDesc()->pStreamDef();
+  
+  i8 nHeadSize    = this->nHeadSize(m_pStreamDef);
+  i8 nMetaSize    = this->nMetaSize(m_pStreamDef);
+  m_pEncoding     = new Encoding(m_pStreamDef,nHeadSize,nMetaSize);
+
   m_pRowSamples   = new IrwBuffer;
   m_bCollecting   = bCollectSamples;
   
-  m_pEncoding     = new Encoding(m_pStreamDef,m_nHeadSize,m_nMetaSize);
   m_aHeadLine     = nullptr;
   m_aOverLine     = nullptr;
 }
@@ -136,8 +136,6 @@ void RowCompactor::vCompactEnd(void)
   
   m_pCrwNub       = nullptr;
   m_pStreamDef    = nullptr;
-  m_nHeadSize     = C_UNKNOWN;
-  m_nMetaSize     = C_UNKNOWN;
   
   delete m_pRowSamples;
   m_pRowSamples   = nullptr;
@@ -414,7 +412,7 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
   // 6) pack encoded inflated row into a compact row
   
   //vPackCrw(m_pEncoding);
-  Packing::vPackCrw(m_aHeadLine,m_nHeadSize,m_pEncoding);
+  Packing::vPackCrw(m_aHeadLine,m_pEncoding->m_nHeadSize,m_pEncoding);
   
   m_aHeadLine = nullptr;
 
@@ -532,7 +530,7 @@ void RowCompactor::vAllotCrw(Encoding* pEncoding)
   // allot a head line in nub (the <W> is init'd by iAllotHead())
 //  i8 i_Crw = m_pCrwNub->iAllotHead(m_nHeadSize);
 //  m_aHeadLine = m_pCrwNub->aGetHead(i_Crw);
-  m_aHeadLine = aAllotHead(m_nHeadSize);
+  m_aHeadLine = aAllotHead(pEncoding->m_nHeadSize);
 
   // do we allot an over line?
   if (! pEncoding->bOverFlowed()) {
@@ -544,7 +542,7 @@ void RowCompactor::vAllotCrw(Encoding* pEncoding)
   
   // calc the size of the over line
   i8 nBytesNeed = pEncoding->nBytesNeeded();
-  i8 nOverSize  = nBytesNeed - m_nHeadSize;
+  i8 nOverSize  = nBytesNeed - pEncoding->m_nHeadSize;
   ASSERT(nOverSize > 0);
   
   // +================================+   +--------------------------------+
