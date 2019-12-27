@@ -7,10 +7,6 @@
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 TablePtn* Partitioning::_pTablePtn(void* aAddr)
@@ -20,48 +16,6 @@ TablePtn* Partitioning::_pTablePtn(void* aAddr)
   RASSERT_TYPE(pTablePtn,CN_TABLEPTN);
   
   return pTablePtn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump partition                                                             */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-  TablePtn* pPartition = _pTablePtn(pObject);
-  
-  vTrace("m_iPartitionId %lld, DataVec %p\n"_Stz,
-         pPartition->m_iPartitionId, pPartition->m_pIndexTreeVec);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert partition number to node number                                    */
-/*----------------------------------------------------------------------------*/
-i8 TablePtn::iPartitionToNode(i8 iPartition)
-{
-  i8 iNode = iPartition % AM::nDefinedNodes();
-  
-  return iNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert partition number to slot number                                    */
-/*----------------------------------------------------------------------------*/
-i8 TablePtn::iPartitionToSlot(i8 iPartition)
-{
-  i8 iSlot = iPartition / AM::nDefinedNodes();
-  
-  return iSlot;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert slot number to partition number                                    */
-/*----------------------------------------------------------------------------*/
-i8 TablePtn::iSlotToPartition(i8 iSlot)
-{
-  i8 iPartition =
-   (iSlot * AM::nDefinedNodes()) + AM::iThisNodeNo();
-  
-  return iPartition;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,6 +81,68 @@ TablePtn::~TablePtn(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   vTidyUp();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump partition                                                             */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  TablePtn* pPartition = _pTablePtn(pObject);
+  
+  vTrace("m_iPartitionId %lld, DataVec %p\n"_Stz,
+         pPartition->m_iPartitionId, pPartition->m_pIndexTreeVec);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get crw given ref                                                          */
+/*----------------------------------------------------------------------------*/
+Crw* TablePtn::pGetCrw(Ref xRef)
+{
+  // get the referenced row buffer
+  CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
+  if (! pCrwBuffer)
+    return nullptr;
+  
+  // get the referenced row
+  Crw* aCrw = pCrwBuffer->pCrw(xRef.iItem());
+  
+  return aCrw;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert partition number to node number                                    */
+/*----------------------------------------------------------------------------*/
+i8 TablePtn::iPartitionToNode(i8 iPartition)
+{
+  i8 iNode = iPartition % AM::nDefinedNodes();
+  
+  return iNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert partition number to slot number                                    */
+/*----------------------------------------------------------------------------*/
+i8 TablePtn::iPartitionToSlot(i8 iPartition)
+{
+  i8 iSlot = iPartition / AM::nDefinedNodes();
+  
+  return iSlot;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert slot number to partition number                                    */
+/*----------------------------------------------------------------------------*/
+i8 TablePtn::iSlotToPartition(i8 iSlot)
+{
+  i8 iPartition =
+  (iSlot * AM::nDefinedNodes()) + AM::iThisNodeNo();
+  
+  return iPartition;
 }
 
 /*----------------------------------------------------------------------------*/

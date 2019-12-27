@@ -34,6 +34,7 @@ namespace Partitioning
     
   public:
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static Crw* pGetCrw(Ref xRef);
     static i8   iPartitionToNode(i8 iPartition);
     static i8   iPartitionToSlot(i8 iPartition);
     static i8   iSlotToPartition(i8 iSlot);
@@ -56,7 +57,6 @@ namespace Partitioning
     void vDropRead(void);
     void vDropWrite();
     void vDump(void);
-    CrwBuffer* pFirstCrwBuffer(void);
     bool bGrabRead(void);
     bool bGrabWrite(void);
     void vIncBuffersWritten(void);
