@@ -9,7 +9,7 @@ namespace Buffers
   {
   public:
     static void vPackCrw(HeadLine* aHeadLine, i8 nHeadSize, Encoding* pEncoding);
-    static void vPackColVal(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc);
+    static void vPackCol(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc);
   
     static void vPutMetaCode(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc);
     static void vPutMeta_split(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc);

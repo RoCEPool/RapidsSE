@@ -16,7 +16,7 @@ void Packing::vPackCrw(HeadLine* aHeadLine, i8 nHeadSize, Encoding* pEncoding)
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
-    vPackColVal(aHeadLine,nHeadSize,pEncoding->xaColEnc[i_Col]);
+    vPackCol(aHeadLine,nHeadSize,pEncoding->xaColEnc[i_Col]);
     //vDumpHead("vHeadCode b"_Stz,m_aCrw,m_pColVec);
   }
 }
@@ -24,14 +24,16 @@ void Packing::vPackCrw(HeadLine* aHeadLine, i8 nHeadSize, Encoding* pEncoding)
 /*----------------------------------------------------------------------------*/
 /* pack encoded column value into compact row                                 */
 /*----------------------------------------------------------------------------*/
-void Packing::vPackColVal(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc)
+void Packing::vPackCol(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc)
 {
   vPutMetaCode(aHeadLine,nHeadSize,xColEnc);
   
   vPutDataCode(aHeadLine,xColEnc);
 }
 
+
 /*----------------------------------------------------------------------------*/
+/*                            meta code packing                               */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -134,6 +136,11 @@ void Packing::vPutMeta_usual(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc
   aHeadLine->vMetaCode(i_Col,xColEnc.m_eMetaCode);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                            data code packing                               */
+/*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* put data code {D} for encoded column value into crw                        */
 /*----------------------------------------------------------------------------*/
@@ -152,17 +159,16 @@ void Packing::vPutDataCode(HeadLine* aHeadLine, _ColEnc& xColEnc)
   // vch packing
   if (MC_STR_FIT_1L  == xColEnc.m_eMetaCode)
     vPutData_STR_FIT_1L (aHeadLine,xColEnc);
+  
   else if (MC_STR_FIT_2L  == xColEnc.m_eMetaCode)
     vPutData_STR_FIT_2L (aHeadLine,xColEnc);
+  
   else if (MC_STR_TAIL_2T == xColEnc.m_eMetaCode)
     vPutData_STR_TAIL_2T(aHeadLine,xColEnc);
-  else {
-    RASSERT(0);
-  }
+  
+  else
+    NEVER_REACH;
 }
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* put data bytes for unary MC_xyz_1..8B (e.g. for MC_DTE_E1_2B, ...)         */
@@ -217,7 +223,7 @@ void Packing::vPutData_STR_FIT_1L(HeadLine* aHeadLine, _ColEnc& xColEnc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put data bytes for MC_STR_FIT_2L : <LL><LongN>                            */
+/* put data bytes for MC_STR_FIT_2L : <LL><LongN>                             */
 /*----------------------------------------------------------------------------*/
 void Packing::vPutData_STR_FIT_2L(HeadLine* aHeadLine, _ColEnc& xColEnc)
 {
@@ -273,7 +279,6 @@ void Packing::vPutData_STR_TAIL_2T(HeadLine* aHeadLine, _ColEnc& xColEnc)
                            i_Tail_rel,
                            C_2B);
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
