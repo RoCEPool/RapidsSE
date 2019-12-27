@@ -53,7 +53,6 @@ RowCompactor::RowCompactor(void)
   m_pStreamDef    = nullptr;
   m_nHeadSize     = C_UNKNOWN;
   m_nMetaSize     = C_UNKNOWN;
-  m_i_BaseOffset  = C_UNKNOWN;
   
   m_pRowSamples   = nullptr;
   m_bCollecting   = false;
@@ -110,7 +109,6 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   m_pStreamDef    = m_pCrwNub->pDesc()->pStreamDef();
   m_nHeadSize     = nHeadSize(m_pStreamDef);
   m_nMetaSize     = nMetaSize(m_pStreamDef);
-  m_i_BaseOffset  = iBaseOffset(m_pStreamDef);
   
   m_pRowSamples   = new IrwBuffer;
   m_bCollecting   = bCollectSamples;
@@ -140,7 +138,6 @@ void RowCompactor::vCompactEnd(void)
   m_pStreamDef    = nullptr;
   m_nHeadSize     = C_UNKNOWN;
   m_nMetaSize     = C_UNKNOWN;
-  m_i_BaseOffset  = C_UNKNOWN;
   
   delete m_pRowSamples;
   m_pRowSamples   = nullptr;

@@ -5,7 +5,7 @@
 
 namespace Buffers
 {
-  class RowCompactor : public Object,
+  class RowCompactor : public  Object,
                        private RowCoder
   {
   public:
@@ -13,8 +13,7 @@ namespace Buffers
     StreamDef* m_pStreamDef;   // stream def
     i8         m_nHeadSize;    // size of head line for this colvec/table
     i8         m_nMetaSize;    // size of meta data for this colvec/table
-    i8         m_i_BaseOffset; // base offset for this colvec/table
-    
+     
     // - - - - - - - - - - - -
     
     IrwBuffer* m_pRowSamples;  // the set of sample rows
