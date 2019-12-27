@@ -66,7 +66,6 @@ namespace Buffers
     // - - - - - - - - - - - - - - - - - - - - -
     // Support Functions (alpha order)
 
-    void vDumpTails(void);
     i8   iFindTail(TailLine* aFindLine);
     TailLine* aFindTail(TailLine* aFindLine, i8& i_Tail);
 

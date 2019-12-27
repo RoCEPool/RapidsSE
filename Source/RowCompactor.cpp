@@ -597,29 +597,6 @@ OverLine* RowCompactor::aAllotOver(i8 nOverSize)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* dump tail lines                                                            */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vDumpTails(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-
-  for (i8 i_Tail = m_pCrwNub->iLastTail();
-       i_Tail != C_UNKNOWN;
-       i_Tail = m_pCrwNub->iPrevTail(i_Tail)) {
-    
-    TailLine* aTailLine = m_pCrwNub->aGetTail(i_Tail);
-    
-    char* azStr = aAdd<char*>(aTailLine,(C_U_1B + C_L_1B));
-    
-    vTrace("Tail %lld : <U %lld> <L %lld> %s\n"_Stz,
-           i_Tail,
-           aTailLine->iU(),
-           aTailLine->iL(),
-           azStr);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* search for duplicate tail line                                             */
 /*----------------------------------------------------------------------------*/
 i8 RowCompactor::iFindTail(TailLine* aFindLine)

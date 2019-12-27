@@ -55,6 +55,9 @@ namespace Structures
     i8    nAreaBytes(void);
     DESC* pDesc(void);
     void  vDesc(DESC* pDesc);
+    void  vDumpTails(void);
+    i8    iFindTail(TAIL* aFindLine);
+    TAIL* aFindTail(TAIL* aFindLine, i8& i_Tail);
     i8    nFreeAllotableBytes(void);
     HEAD* aGetHead(void);
     HEAD* aGetHead(i8 i_Head);
@@ -376,6 +379,31 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vDesc(DESC* pDesc)
   
   m_pDesc = pDesc;
 }
+
+/*----------------------------------------------------------------------------*/
+/* dump tail lines                                                            */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vDumpTails(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+
+  for (i8 i_Tail = iLastTail();
+       i_Tail != C_UNKNOWN;
+       i_Tail = iPrevTail(i_Tail)) {
+    
+    TAIL* aTailLine = aGetTail(i_Tail);
+    
+    char* azStr = aAdd<char*>(aTailLine,(C_U_1B + C_L_1B));
+    
+    vTrace("Tail %lld : <U %lld> <L %lld> %s\n"_Stz,
+           i_Tail,
+           aTailLine->iU(),
+           aTailLine->iL(),
+           azStr);
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get total number of allotable free bytes remaining                         */
