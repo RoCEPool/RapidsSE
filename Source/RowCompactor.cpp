@@ -413,7 +413,8 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 6) pack encoded inflated row into a compact row
   
-  vPackCrw(m_pEncoding);
+  //vPackCrw(m_pEncoding);
+  Packing::vPackCrw(m_aHeadLine,m_nHeadSize,m_pEncoding,m_pStreamDef);
   
   m_aHeadLine = nullptr;
 
