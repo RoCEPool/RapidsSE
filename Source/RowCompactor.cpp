@@ -541,8 +541,9 @@ void RowCompactor::vAllotCrw(Encoding* pEncoding)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // calc the size of the over line
-  i8 nBytesNeed = pEncoding->nBytesNeeded();
-  i8 nOverSize  = nBytesNeed - pEncoding->m_nHeadSize;
+//  i8 nBytesNeed = pEncoding->nBytesNeeded();
+//  i8 nOverSize  = nBytesNeed - pEncoding->m_nHeadSize;
+  i8 nOverSize = pEncoding->nOverSize();
   ASSERT(nOverSize > 0);
   
   // +================================+   +--------------------------------+

@@ -176,6 +176,19 @@ bool Encoding::bOverFlowed(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* calc the size of the over line                                             */
+/*----------------------------------------------------------------------------*/
+i8 Encoding::nOverSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  
+  i8 nBytesNeed = this->nBytesNeeded();
+  i8 nOverSize  = nBytesNeed - m_nHeadSize;
+  
+  return nOverSize;
+}
+
+/*----------------------------------------------------------------------------*/
 /* split at headSize for overflow (if necessary)                              */
 /*----------------------------------------------------------------------------*/
 void Encoding::vSplitOver(void)

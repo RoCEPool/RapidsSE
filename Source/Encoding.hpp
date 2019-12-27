@@ -58,6 +58,7 @@ namespace Buffers
     void vEncodeRow(Row* pRow);
     void vMorphEncoding(_ColEnc* aColEnc);
     bool bOverFlowed(void);
+    i8   nOverSize(void);
     void vSplitOver(void);
 
   private:
