@@ -31,11 +31,12 @@ namespace Buffers
     CrwBuffer(void);
     ~CrwBuffer(void) noexcept(false);
 
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static void       vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Crw*       pRefdCrw(Ref xRef);
     static CrwBuffer* pRefdCrwBuffer(Ref& xRef);
     static CrwBuffer* pToCrwBuffer(void* aAddr);
- 
+    static void       vToRow(Row* pRow, Crw* aCrw);
+
     void       vTable(Table* pTable);
     Table*     pTable(void);
     i8         nRowCount(void);
