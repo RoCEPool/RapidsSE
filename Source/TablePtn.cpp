@@ -253,12 +253,41 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append a row buffer into the TablePtn                                      */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+
+#ifdef WITH_STATISTICS_COUNTERS
+  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
+#endif
+  
+  RASSERT(m_okLock.bIsLocked());
+  //m_okLock.vGrabWrite();
+
+  if (m_pRootCrwBuffer == nullptr) {
+    ASSERT( ! m_pCurrentCrwBuffer )
+    m_pRootCrwBuffer = pCrwBuffer;
+  }
+  else {
+    pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
+    pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
+    m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
+  }
+  
+  m_pCurrentCrwBuffer = pCrwBuffer;
+  
+  //m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* append a row to the row buffer into the TablePtn                           */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-
+  
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
 #endif
@@ -316,46 +345,6 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append a row buffer into the TablePtn                                      */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
-#endif
-  
-  RASSERT(m_okLock.bIsLocked());
-  //m_okLock.vGrabWrite();
-
-  if (m_pRootCrwBuffer == nullptr) {
-    ASSERT( ! m_pCurrentCrwBuffer )
-    m_pRootCrwBuffer = pCrwBuffer;
-  }
-  else {
-    pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
-    pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
-    m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
-  }
-  
-  m_pCurrentCrwBuffer = pCrwBuffer;
-  
-  //m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* have all buffers been loaded?                                              */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vWriteBehindBuffers(i8 nWriteBehindBuffers)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(bIsLocked());
-  m_nWriteBehindBuffers = nWriteBehindBuffers;
-}
-
-/*----------------------------------------------------------------------------*/
 /* have all buffers been loaded?                                              */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vBuffersWritten(i8 nBuffersWritten)
@@ -369,21 +358,26 @@ void TablePtn::vBuffersWritten(i8 nBuffersWritten)
 /*----------------------------------------------------------------------------*/
 /* have all buffers been loaded?                                              */
 /*----------------------------------------------------------------------------*/
-i8 TablePtn::nWriteBehindBuffers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_nWriteBehindBuffers;
-}
-
-/*----------------------------------------------------------------------------*/
-/* have all buffers been loaded?                                              */
-/*----------------------------------------------------------------------------*/
 i8 TablePtn::nBuffersWritten(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   return m_nBuffersWritten;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the row buffers used                                                   */
+/*----------------------------------------------------------------------------*/
+i8 TablePtn::nCrwBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  i8 nBufferCount = 0;
+  
+  if (m_pRootCrwBuffer)
+    m_pRootCrwBuffer->vBufferCount(nBufferCount);
+  
+  return nBufferCount;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -422,26 +416,6 @@ void TablePtn::vDump(void)
     pCrwBuffer = pCrwBuffer->pNextBuffer();
   }
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* set endInsert jobid                                                        */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vParentJobId(i8 iJobId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  m_iParentJobId = iJobId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get endInsert jobid                                                        */
-/*----------------------------------------------------------------------------*/
-i8 TablePtn::iParentJobId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  return m_iParentJobId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -542,6 +516,26 @@ bool TablePtn::bIsLocked(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   return m_okLock.bIsLocked();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set endInsert jobid                                                        */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vParentJobId(i8 iJobId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  m_iParentJobId = iJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get endInsert jobid                                                        */
+/*----------------------------------------------------------------------------*/
+i8 TablePtn::iParentJobId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_iParentJobId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -716,21 +710,6 @@ CrwBuffer* TablePtn::pRootCrwBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   return m_pRootCrwBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the row buffers used                                                   */
-/*----------------------------------------------------------------------------*/
-i8 TablePtn::nCrwBuffers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  i8 nBufferCount = 0;
-  
-  if (m_pRootCrwBuffer)
-    m_pRootCrwBuffer->vBufferCount(nBufferCount);
-  
-  return nBufferCount;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -913,6 +892,27 @@ void TablePtn::vVisualizeTable(void)
     pCrwBuffer = pCrwBuffer->pNextBuffer();
   }
   vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* have all buffers been loaded?                                              */
+/*----------------------------------------------------------------------------*/
+i8 TablePtn::nWriteBehindBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_nWriteBehindBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* have all buffers been loaded?                                              */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vWriteBehindBuffers(i8 nWriteBehindBuffers)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  ASSERT(bIsLocked());
+  m_nWriteBehindBuffers = nWriteBehindBuffers;
 }
 
 

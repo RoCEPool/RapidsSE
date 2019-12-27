@@ -50,13 +50,12 @@ namespace Partitioning
     bool bAllBuffersWritten(eDS eDataSource);
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
     void vAppendRow(RowCompactor* pRowCompactor, Row* pRow);
-    void vDump(void);
-    void vWriteBehindBuffers(i8 nWriteBehindBuffers);
     void vBuffersWritten(i8 m_nBuffersWritten);
-    i8   nWriteBehindBuffers(void);
     i8   nBuffersWritten(void);
+    i8   nCrwBuffers(void);
     void vDropRead(void);
     void vDropWrite();
+    void vDump(void);
     CrwBuffer* pFirstCrwBuffer(void);
     bool bGrabRead(void);
     bool bGrabWrite(void);
@@ -74,7 +73,6 @@ namespace Partitioning
     bool bPurge(i8 iOlderThanSeconds);
     void vResetWrite(void);
     CrwBuffer* pRootCrwBuffer(void);
-    i8   nCrwBuffers(void);
     void vTable(Table* pTable);
     Table* pTable(void);
     void vTidyUp(void);
@@ -84,7 +82,9 @@ namespace Partitioning
     void vUpsertEntries2(CrwBuffer* pCrwBuffer);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
-    
+    i8   nWriteBehindBuffers(void);
+    void vWriteBehindBuffers(i8 nWriteBehindBuffers);
+
   private:
     Footer* aFooter(void);
   };
