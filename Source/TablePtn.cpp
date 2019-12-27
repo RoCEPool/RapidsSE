@@ -815,6 +815,7 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
   IdxColVec* pIdxColVec = pIndexTree->pIndex()->pIndexDef()->pIdxColVec();
 
   HV_Row hRow(pCrwBuffer->pStreamDef(),C_ALL);
+  HV_Row hRowRefd(pCrwBuffer->pStreamDef(),C_ALL);
 
   
   i8 nRows = pCrwBuffer->nRowCount();
@@ -845,6 +846,14 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
           if (KC_SAME == EntWrk::eCompare(aEnt_found,xEntWrk.aEnt())) {
             SP_Ent spRef;
             vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIdxColVec));
+            
+            Crw* aCrw = CrwBuffer::pRefdCrw(aEnt_found->xRef());
+            if (aCrw) {
+              CrwBuffer::vToRow(hRowRefd,aCrw);
+              SP_Record spRec;
+              vTrace("     : %s\n"_Stz,spRec.sz(hRowRefd));
+
+            }
           }
           else {
             vTrace("NOT SAME\n"_Stz);
