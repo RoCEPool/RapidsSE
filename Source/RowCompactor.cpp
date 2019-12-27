@@ -529,9 +529,10 @@ void RowCompactor::vAllotCrw(void)
   // +================================+
   
   // allot a head line in nub (the <W> is init'd by iAllotHead())
-  i8 i_Crw = m_pCrwNub->iAllotHead(m_nHeadSize);
-  m_aHeadLine = m_pCrwNub->aGetHead(i_Crw);
-  
+//  i8 i_Crw = m_pCrwNub->iAllotHead(m_nHeadSize);
+//  m_aHeadLine = m_pCrwNub->aGetHead(i_Crw);
+  m_aHeadLine = aAllotHead();
+
   // do we allot an over line?
   if (! m_pEncoding->bOverFlowed()) {
     m_aOverLine = nullptr;
@@ -550,15 +551,44 @@ void RowCompactor::vAllotCrw(void)
   // +================================+   +--------------------------------+
   
   // allot the over line (the <U> is init'd by iAllotOver())
-  i8 i_Over = m_pCrwNub->iAllotOver(nOverSize);
-  m_aOverLine = m_pCrwNub->aGetOver(i_Over);
-  
+//  i8 i_Over = m_pCrwNub->iAllotOver(nOverSize);
+//  m_aOverLine = m_pCrwNub->aGetOver(i_Over);
+  m_aOverLine = aAllotOver(nOverSize);
+
   // +================================+   +--------------------------------+
   // | <W>                       [OL] |---| <U> ////////////////////////// |
   // +================================+   +--------------------------------+
   
   // link over line into head line
   m_aHeadLine->vSetOver(m_aOverLine);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a head line                                                          */
+/*----------------------------------------------------------------------------*/
+HeadLine* RowCompactor::aAllotHead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  // allot a head line in nub (the <W> is init'd by iAllotHead())
+  i8 i_Crw = m_pCrwNub->iAllotHead(m_nHeadSize);
+  HeadLine* aHeadLine = m_pCrwNub->aGetHead(i_Crw);
+
+  return aHeadLine;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a over line                                                          */
+/*----------------------------------------------------------------------------*/
+OverLine* RowCompactor::aAllotOver(i8 nOverSize)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  // allot the over line (the <U> is init'd by iAllotOver())
+  i8 i_Over = m_pCrwNub->iAllotOver(nOverSize);
+  OverLine* aOverLine = m_pCrwNub->aGetOver(i_Over);
+
+  return aOverLine;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -942,16 +972,7 @@ TailLine* RowCompactor::aFindTail(TailLine* aFindLine, i8& i_Tail)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* RowCompactor::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(RowCompactor);
 
 /*============================================================================*/
 /* end                                                                        */

@@ -13,7 +13,7 @@ namespace Buffers
     StreamDef* m_pStreamDef;   // stream def
     i8         m_nHeadSize;    // size of head line for this colvec/table
     i8         m_nMetaSize;    // size of meta data for this colvec/table
-     
+  
     // - - - - - - - - - - - -
     
     IrwBuffer* m_pRowSamples;  // the set of sample rows
@@ -58,9 +58,13 @@ namespace Buffers
     // Compact Row Packing (structural order)
   
     bool bAddCrw(Row* pInflatedRow);
-    
-    void vEncodeTails(Row* pInflatedRow);
+  
     void vAllotCrw(void);
+    HeadLine* aAllotHead(void);
+    OverLine* aAllotOver(i8 nOverSize);
+
+    void vEncodeTails(Row* pInflatedRow);
+  
     void vPackCrw(Encoding* pEncoding);
     void vPackColVal(_ColEnc& xColEnc);
   
