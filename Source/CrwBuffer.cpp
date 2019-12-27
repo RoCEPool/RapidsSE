@@ -89,11 +89,27 @@ void CrwBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get crw given ref                                                          */
+/*----------------------------------------------------------------------------*/
+Crw* CrwBuffer::pRefdCrw(Ref xRef)
+{
+  // get the referenced row buffer
+  CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
+  if (! pCrwBuffer)
+    return nullptr;
+  
+  // get the referenced row
+  Crw* aCrw = pCrwBuffer->pCrw(xRef.iItem());
+  
+  return aCrw;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* CrwBuffer::pRefdCrwBuffer(Ref& xId)
+CrwBuffer* CrwBuffer::pRefdCrwBuffer(Ref& xRef)
 {
-  bn nBufferNo = xId.iBuffer();
+  bn nBufferNo = xRef.iBuffer();
   
   HeapBuffer* pHeapBuffer =
   reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));

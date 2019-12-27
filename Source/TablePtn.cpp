@@ -99,22 +99,6 @@ void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get crw given ref                                                          */
-/*----------------------------------------------------------------------------*/
-Crw* TablePtn::pGetCrw(Ref xRef)
-{
-  // get the referenced row buffer
-  CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
-  if (! pCrwBuffer)
-    return nullptr;
-  
-  // get the referenced row
-  Crw* aCrw = pCrwBuffer->pCrw(xRef.iItem());
-  
-  return aCrw;
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert partition number to node number                                    */
 /*----------------------------------------------------------------------------*/
 i8 TablePtn::iPartitionToNode(i8 iPartition)

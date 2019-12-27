@@ -219,7 +219,7 @@ bool Job_FetchRows::bAppendRow(FetchBuffer* pFetchBuffer, Ent* aItem,
 //  // get the dataRow
 //  Crw* aCrw = pCrwBuffer->pCrw(xRef.iItem());
  
-  Crw* aCrw = TablePtn::pGetCrw(xRef);
+  Crw* aCrw = CrwBuffer::pRefdCrw(xRef);
 
   if (pFetchBuffer->bAppendCrw(aCrw))
     return true;
