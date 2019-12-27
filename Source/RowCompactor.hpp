@@ -60,7 +60,7 @@ namespace Buffers
     bool bAddCrw(Row* pInflatedRow);
   
     void vAllotCrw(void);
-    HeadLine* aAllotHead(void);
+    HeadLine* aAllotHead(i8 nHeadSize);
     OverLine* aAllotOver(i8 nOverSize);
 
     void vEncodeTails(Row* pInflatedRow);

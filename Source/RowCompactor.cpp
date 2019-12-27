@@ -531,7 +531,7 @@ void RowCompactor::vAllotCrw(void)
   // allot a head line in nub (the <W> is init'd by iAllotHead())
 //  i8 i_Crw = m_pCrwNub->iAllotHead(m_nHeadSize);
 //  m_aHeadLine = m_pCrwNub->aGetHead(i_Crw);
-  m_aHeadLine = aAllotHead();
+  m_aHeadLine = aAllotHead(m_nHeadSize);
 
   // do we allot an over line?
   if (! m_pEncoding->bOverFlowed()) {
@@ -566,12 +566,12 @@ void RowCompactor::vAllotCrw(void)
 /*----------------------------------------------------------------------------*/
 /* allot a head line                                                          */
 /*----------------------------------------------------------------------------*/
-HeadLine* RowCompactor::aAllotHead(void)
+HeadLine* RowCompactor::aAllotHead(i8 nHeadSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   // allot a head line in nub (the <W> is init'd by iAllotHead())
-  i8 i_Crw = m_pCrwNub->iAllotHead(m_nHeadSize);
+  i8 i_Crw = m_pCrwNub->iAllotHead(nHeadSize);
   HeadLine* aHeadLine = m_pCrwNub->aGetHead(i_Crw);
 
   return aHeadLine;
