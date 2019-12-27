@@ -8,8 +8,7 @@ namespace Buffers
   class Packing
   {
   public:
-    static void vPackCrw(HeadLine* aHeadLine, i8 nHeadSize,
-                         Encoding* pEncoding, StreamDef* pStreamDef);
+    static void vPackCrw(HeadLine* aHeadLine, i8 nHeadSize, Encoding* pEncoding);
     static void vPackColVal(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc);
   
     static void vPutMetaCode(HeadLine* aHeadLine, i8 nHeadSize, _ColEnc& xColEnc);

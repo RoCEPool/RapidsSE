@@ -7,13 +7,12 @@
 /*----------------------------------------------------------------------------*/
 /* pack the encoded inflated row into head[+over]{+tail}                      */
 /*----------------------------------------------------------------------------*/
-void Packing::vPackCrw(HeadLine* aHeadLine, i8 nHeadSize,
-                       Encoding* pEncoding, StreamDef* pStreamDef)
+void Packing::vPackCrw(HeadLine* aHeadLine, i8 nHeadSize, Encoding* pEncoding)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pack all the columns into the logical compact row
   
-  i8 nCols = pStreamDef->nColumns(C_ALL);
+  i8 nCols = pEncoding->m_nColumns;
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);

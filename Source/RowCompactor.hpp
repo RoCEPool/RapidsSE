@@ -64,20 +64,7 @@ namespace Buffers
     OverLine* aAllotOver(i8 nOverSize);
 
     void vEncodeTails(Row* pInflatedRow);
-  
-    void vPackCrw(Encoding* pEncoding);
-    void vPackColVal(_ColEnc& xColEnc);
-  
-    void vPutMetaCode(_ColEnc& xColEnc);
-    void vPutMeta_split(_ColEnc& xColEnc);
-    void vPutMeta_usual(_ColEnc& xColEnc);
-  
-    void vPutDataCode(_ColEnc& xColEnc);
-    void vPutData_Bytes(_ColEnc& xColEnc);
-    void vPutData_STR_FIT_2L(_ColEnc& xColEnc);
-    void vPutData_STR_FIT_1L(_ColEnc& xColEnc);
-    void vPutData_STR_TAIL_2T(_ColEnc& xColEnc);
-  
+    
     // - - - - - - - - - - - - - - - - - - - - -
     // Support Functions (alpha order)
 
