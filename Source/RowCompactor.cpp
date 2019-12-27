@@ -319,7 +319,7 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   
   TailStr xFindTail(pOuterRow->m_waColVal[i_Col].m_szVch);
   
-  if (C_UNKNOWN != iFindTail( (TailLine*) & xFindTail) )
+  if (C_UNKNOWN != m_pCrwNub->iFindTail( (TailLine*) & xFindTail) )
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -480,7 +480,7 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     aColEnc->m_aTailLine = m_pCrwNub->aGetTail(i_Tail);
 #else
     i8 i_Tail;
-    TailLine* aTailLine = aFindTail((TailLine*) & xFindTail, i_Tail);
+    TailLine* aTailLine = m_pCrwNub->aFindTail((TailLine*) & xFindTail, i_Tail);
     if (! aTailLine)
       continue;
     
@@ -530,7 +530,7 @@ void RowCompactor::vAllotCrw(Encoding* pEncoding)
   // allot a head line in nub (the <W> is init'd by iAllotHead())
 //  i8 i_Crw = m_pCrwNub->iAllotHead(m_nHeadSize);
 //  m_aHeadLine = m_pCrwNub->aGetHead(i_Crw);
-  m_aHeadLine = aAllotHead(pEncoding->m_nHeadSize);
+  m_aHeadLine = m_pCrwNub->aAllotHead(pEncoding->m_nHeadSize);
 
   // do we allot an over line?
   if (! pEncoding->bOverFlowed()) {
@@ -553,7 +553,7 @@ void RowCompactor::vAllotCrw(Encoding* pEncoding)
   // allot the over line (the <U> is init'd by iAllotOver())
 //  i8 i_Over = m_pCrwNub->iAllotOver(nOverSize);
 //  m_aOverLine = m_pCrwNub->aGetOver(i_Over);
-  m_aOverLine = aAllotOver(nOverSize);
+  m_aOverLine = m_pCrwNub->aAllotOver(nOverSize);
 
   // +================================+   +--------------------------------+
   // | <W>                       [OL] |---| <U> ////////////////////////// |
@@ -561,86 +561,6 @@ void RowCompactor::vAllotCrw(Encoding* pEncoding)
   
   // link over line into head line
   m_aHeadLine->vSetOver(m_aOverLine);
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a head line                                                          */
-/*----------------------------------------------------------------------------*/
-HeadLine* RowCompactor::aAllotHead(i8 nHeadSize)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  // allot a head line in nub (the <W> is init'd by iAllotHead())
-  i8 i_Crw = m_pCrwNub->iAllotHead(nHeadSize);
-  HeadLine* aHeadLine = m_pCrwNub->aGetHead(i_Crw);
-
-  return aHeadLine;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a over line                                                          */
-/*----------------------------------------------------------------------------*/
-OverLine* RowCompactor::aAllotOver(i8 nOverSize)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  // allot the over line (the <U> is init'd by iAllotOver())
-  i8 i_Over = m_pCrwNub->iAllotOver(nOverSize);
-  OverLine* aOverLine = m_pCrwNub->aGetOver(i_Over);
-
-  return aOverLine;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/**************************  Support Functions  *******************************/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* search for duplicate tail line                                             */
-/*----------------------------------------------------------------------------*/
-i8 RowCompactor::iFindTail(TailLine* aFindLine)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  for (i8 i_Tail = m_pCrwNub->iLastTail();
-       i_Tail != C_UNKNOWN;
-       i_Tail = m_pCrwNub->iPrevTail(i_Tail)) {
-    
-    TailLine* aTailLine = m_pCrwNub->aGetTail(i_Tail);
-    i8 nTailBytes = aTailLine->nBytes();
-    
-    //aFindLine->vDump();
-    //aTailLine->vDump();
-    
-    if (0 == MemLib::iCompareBytes(aTailLine,aFindLine,nTailBytes))
-      return i_Tail;
-  }
-  
-  return C_UNKNOWN;
-}
-
-/*----------------------------------------------------------------------------*/
-/* search for duplicate tail line                                             */
-/*----------------------------------------------------------------------------*/
-TailLine* RowCompactor::aFindTail(TailLine* aFindLine, i8& i_Tail)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  for (TailLine* aStrLine = m_pCrwNub->aLastStr();
-       aStrLine;
-       aStrLine = m_pCrwNub->aPrevStr(aStrLine,i_Tail)) {
-
-    i8 nTailBytes = aStrLine->nBytes();
-    
-    //aFindLine->vDump();
-    //aTailLine->vDump();
-    
-    if (0 == MemLib::iCompareBytes(aStrLine,aFindLine,nTailBytes))
-      return aStrLine;
-  }
-  
-  return nullptr;
 }
 
 

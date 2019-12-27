@@ -58,17 +58,9 @@ namespace Buffers
     bool bAddCrw(Row* pInflatedRow);
   
     void vAllotCrw(Encoding* pEncoding);
-    HeadLine* aAllotHead(i8 nHeadSize);
-    OverLine* aAllotOver(i8 nOverSize);
 
     void vEncodeTails(Row* pInflatedRow);
-    
-    // - - - - - - - - - - - - - - - - - - - - -
-    // Support Functions (alpha order)
-
-    i8   iFindTail(TailLine* aFindLine);
-    TailLine* aFindTail(TailLine* aFindLine, i8& i_Tail);
-
+  
   private:
     Footer* aFooter(void);
   };

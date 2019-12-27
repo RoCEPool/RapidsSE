@@ -49,7 +49,9 @@ namespace Structures
     static i8    iUnitDiff(HEAD* aHead, TAIL* aTail);
 
     i8    iAllotHead(i8 nBytes_unrounded);
+    HEAD* aAllotHead(i8 nHeadSize);
     i8    iAllotOver(i8 nBytes_unrounded);
+    OVER* aAllotOver(i8 nOverSize);
     i8    iAllotTail(i8 nBytes_unrounded);
     i8    nAllotedBytes(void);
     i8    nAreaBytes(void);
@@ -291,6 +293,21 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes_unrounded)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot a head line                                                          */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+HEAD* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aAllotHead(i8 nHeadSize)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+
+  // allot a head line in nub (the <W> is init'd by iAllotHead())
+  i8 i_Head = iAllotHead(nHeadSize);
+  HEAD* aHeadLine = aGetHead(i_Head);
+  
+  return aHeadLine;
+}
+
+/*----------------------------------------------------------------------------*/
 /* allot overflow item (with <U> size computed from given number of bytes)    */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
@@ -301,6 +318,21 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotOver(i8 nBytes_unrounded)
   i8 i_Over = iAllotTail(nBytes_unrounded);
   
   return i_Over;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a over line                                                          */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+OVER* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aAllotOver(i8 nOverSize)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+
+  // allot the over line (the <U> is init'd by iAllotOver())
+  i8 i_Over = iAllotOver(nOverSize);
+  OVER* aOverLine = aGetOver(i_Over);
+  
+  return aOverLine;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -404,6 +436,55 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vDumpTails(void)
   }
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* search for duplicate tail line                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iFindTail(TAIL* aFindLine)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+
+  for (i8 i_Tail = iLastTail();
+       i_Tail != C_UNKNOWN;
+       i_Tail = iPrevTail(i_Tail)) {
+    
+    TAIL* aTailLine = aGetTail(i_Tail);
+    i8 nTailBytes = aTailLine->nBytes();
+    
+    //aFindLine->vDump();
+    //aTailLine->vDump();
+    
+    if (0 == MemLib::iCompareBytes(aTailLine,aFindLine,nTailBytes))
+      return i_Tail;
+  }
+  
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* search for duplicate tail line                                             */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aFindTail(TAIL* aFindLine, i8& i_Tail)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+
+  for (TAIL* aStrLine = aLastStr();
+       aStrLine;
+       aStrLine = aPrevStr(aStrLine,i_Tail)) {
+    
+    i8 nTailBytes = aStrLine->nBytes();
+    
+    //aFindLine->vDump();
+    //aTailLine->vDump();
+    
+    if (0 == MemLib::iCompareBytes(aStrLine,aFindLine,nTailBytes))
+      return aStrLine;
+  }
+  
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get total number of allotable free bytes remaining                         */
