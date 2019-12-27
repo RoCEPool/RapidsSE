@@ -19,13 +19,13 @@ namespace Rows
   static const i8 C_IT_2B = 2;  // [IT] 2B relative into-tail i_Line
   static const i8 C_OT_2B = 2;  // [OT] 2B relative over-tail i_Line
   
-  static const i8 C_METABITS = 8;
-  static const i8 C_MIN_HEAD_BYTES = 24;
-  
   static const i8 C_ERA_0 =  0; // 1900
   static const i8 C_ERA_1 = 92; // 1992
   static const i8 C_ERA_2 = 99; // 1999
 
+  static const i8 C_METABITS = 8;
+  static const i8 C_MIN_HEAD_BYTES = 24;
+  
   // numer of rows to sample before creating tails set
   static const i8 C_SAMPLE_ROWS = 100;
   

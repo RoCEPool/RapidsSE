@@ -18,7 +18,7 @@ namespace MetaData
   
     i8     m_nFixedSized;   // is this a fixed size row?
     
-    bool m_bTemp;   // is this a temporary definition?
+    bool   m_bTemp;         // is this a temporary definition?
   
     // must be last
     Footer m_xFooter;
@@ -32,7 +32,6 @@ namespace MetaData
    ~StreamDef(void) noexcept(false);
     
     void vAdd(StreamDef* pStreamDef);
-  
     i8 nColumns(i8 iSubSet);
     i8 iFindColumn(char* sColumnNm, i8& iColVec);
     Column* pGetColumn(i8 iColumn);
