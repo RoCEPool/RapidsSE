@@ -213,12 +213,14 @@ bool Job_FetchRows::bAppendRow(FetchBuffer* pFetchBuffer, Ent* aItem,
     return true;
   }
   
-  // get the rowBuffer
-  CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
-  
-  // get the dataRow
-  Crw* aCrw = pCrwBuffer->pCrw(xRef.iItem());
-  
+//  // get the rowBuffer
+//  CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
+//
+//  // get the dataRow
+//  Crw* aCrw = pCrwBuffer->pCrw(xRef.iItem());
+ 
+  Crw* aCrw = TablePtn::pGetCrw(xRef);
+
   if (pFetchBuffer->bAppendCrw(aCrw))
     return true;
   else
