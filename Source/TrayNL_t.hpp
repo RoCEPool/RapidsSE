@@ -303,6 +303,10 @@ HEAD* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aAllotHead(i8 nHeadSize)
 
   // allot a head line in nub (the <W> is init'd by iAllotHead())
   i8 i_Head = iAllotHead(nHeadSize);
+  
+  if (C_UNKNOWN == i_Head)
+    return nullptr;
+  
   HEAD* aHeadLine = aGetHead(i_Head);
   
   return aHeadLine;

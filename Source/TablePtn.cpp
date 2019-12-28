@@ -253,6 +253,42 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot a row (from a table defined with a fixed row size)                   */
+/*----------------------------------------------------------------------------*/
+Crw* TablePtn::aAllotFixedSizeCrw(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  StreamDef* pStreamDef = m_pTable->pStreamDef();
+  i8 jRowSize = pStreamDef->m_nFixedSized;
+  RASSERT(jRowSize > 0);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // new the first buffer?
+  
+  if (! m_pRootCrwBuffer)
+    RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allot from latest buffer
+  
+  RowNub* pRowNub = m_pCurrentCrwBuffer->m_oRowTray.pNub();
+  Crw* aCrw = (Crw*)pRowNub->aAllotHead(jRowSize);
+  if (aCrw)
+    return aCrw;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allot from a new buffer
+
+  RASSERT(pNewCurrentCrwBuffer());                    //! this needs to be fixed
+  pRowNub = m_pCurrentCrwBuffer->m_oRowTray.pNub();
+  aCrw = (Crw*)pRowNub->aAllotHead(jRowSize);
+  RASSERT(aCrw);
+  
+  return aCrw;
+}
+
+/*----------------------------------------------------------------------------*/
 /* append a row buffer into the TablePtn                                      */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
@@ -295,7 +331,7 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
   RASSERT(m_okLock.bIsLocked());
   //m_okLock.vGrabWrite();
   
-  if (! m_pRootCrwBuffer )
+  if (! m_pRootCrwBuffer)
     RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
   
   m_pCurrentCrwBuffer->vAppendOpen(pRowCompactor, false);
