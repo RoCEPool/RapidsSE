@@ -379,10 +379,8 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Optimisation 2a) 3) split encoding between head and overflow
   
-  m_pEncoding->vSplitOver();
-#ifdef WITH_ENCODING_TRACE
-  vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
-#endif
+  vSplitOver();
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 4) check for space in target nub
@@ -561,6 +559,20 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
   
 #ifdef WITH_ENCODING_TRACE
   vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* split out over from head                                                   */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vSplitOver(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  m_pEncoding->vSplitOver();
+  
+#ifdef WITH_ENCODING_TRACE
+  vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
 #endif
 }
 

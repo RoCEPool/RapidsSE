@@ -53,13 +53,14 @@ namespace Buffers
     void vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow);
 
     // - - - - - - - - - - - - - - - - - - - - -
-    // Compact Row Packing (structural order)
+    // Compact Row Packing
   
     bool bAddCrw(Row* pInflatedRow);
     void vAllotCrw(Encoding* pEncoding);
     void vEncodeHead(Row* pInflatedRow);
     void vEncodeTails(Row* pInflatedRow);
-  
+    void vSplitOver(void);
+
   private:
     Footer* aFooter(void);
   };
