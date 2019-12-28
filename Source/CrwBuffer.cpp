@@ -99,7 +99,7 @@ Crw* CrwBuffer::pRefdCrw(Ref xRef)
     return nullptr;
   
   // get the referenced row
-  Crw* aCrw = pCrwBuffer->pCrw(xRef.iItem());
+  Crw* aCrw = pCrwBuffer->aCrw(xRef.iItem());
   
   return aCrw;
 }
@@ -253,6 +253,16 @@ void CrwBuffer::vBufferCount(i8& nBuffers)
     pNextBuffer = pNextBuffer->pNextBuffer();
     nBuffers++;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get compact row                                                            */
+/*----------------------------------------------------------------------------*/
+Crw* CrwBuffer::aCrw(i8 i_Row)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  return (Crw*)aGetHead(i_Row);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -427,16 +437,6 @@ void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
     hvRec->vPrintRow();
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* get compact row                                                            */
-/*----------------------------------------------------------------------------*/
-Crw* CrwBuffer::pCrw(i8 i_Row)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  return (Crw*)aGetHead(i_Row);
 }
 
 /*----------------------------------------------------------------------------*/

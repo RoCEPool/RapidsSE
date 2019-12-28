@@ -486,7 +486,7 @@ void Step::vTableScan(void)
     for (i8 iRow = 0; iRow < pCrwBuffer->nRowCount(); iRow++) {
       
       // get the row from the buffer
-      Crw* aCrw = pCrwBuffer->pCrw(iRow);
+      Crw* aCrw = pCrwBuffer->aCrw(iRow);
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // insert row from entry in FetchBuffer

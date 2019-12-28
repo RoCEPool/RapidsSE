@@ -824,6 +824,8 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
   i8 nRows = pCrwBuffer->nRowCount();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
+    Crw* aCrw = pCrwBuffer->aCrw(i_Row);
+    
     pCrwBuffer->vGetRow(hvRow,i_Row);
     vTrace("Upsert %lld : %s\n"_Stz,i_Row,spRecord.sz(hvRow));
     
@@ -863,13 +865,13 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
     SP_Ent spRef;
     vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIdxColVec));
     
-    Crw* aCrw = CrwBuffer::pRefdCrw(aEnt_found->xRef());
-    if (! aCrw) {
+    Crw* aCrw_refd = CrwBuffer::pRefdCrw(aEnt_found->xRef());
+    if (! aCrw_refd) {
       vTrace("No aCrw @%lld; skipping...\n"_Stz,(i8)__LINE__);
       continue;
     }
     
-    CrwBuffer::vToRow(hvRowRefd,aCrw);
+    CrwBuffer::vToRow(hvRowRefd,aCrw_refd);
     SP_Record spRec;
     vTrace("     : %s\n"_Stz,spRec.sz(hvRowRefd));
     
@@ -879,6 +881,10 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
     SP_Encoding spEncoding;
     vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding));
 
+    
+    vDebugPoint();
+
+    Packing::vPackCrw(aCrw,pEncoding);
     
     vDebugPoint();
 

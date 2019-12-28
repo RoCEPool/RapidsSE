@@ -790,7 +790,7 @@ void EntBuffer::vPrintRows(void)
     CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->xRef());
     
     // get the compact row
-    Crw* aCrw = pCrwBuffer->pCrw(aEnt->xRef().iItem());
+    Crw* aCrw = pCrwBuffer->aCrw(aEnt->xRef().iItem());
     
     // inflate compact row into row
     RowInflator::vInflateRow(hRow,aCrw);
@@ -1162,7 +1162,7 @@ SrtBuffer* EntBuffer::pToSrtBuffer(i8 iKeyCol)
     CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEntry->xRef());
     
     // get the dataRow
-    Crw* aCrw = pCrwBuffer->pCrw(aEntry->iItem());
+    Crw* aCrw = pCrwBuffer->aCrw(aEntry->iItem());
     
     // set the rowData in the srtSet
     pSrtSet->vRowRef(0, (i8)aCrw);

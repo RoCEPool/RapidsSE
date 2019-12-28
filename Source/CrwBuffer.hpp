@@ -43,26 +43,26 @@ namespace Buffers
 
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
-    void        vBufferCount(i8& nBufferCount);
-    i8          iDecile(void);
-    i8          iLengthList(void);
-    CrwBuffer*  pNextBuffer(void);
-    void        vNextBuffer(CrwBuffer* pNextBuffer);
-    CrwBuffer*  pPrevBuffer(void);
-    void        vPrevBuffer(CrwBuffer* pPrevBuffer);
-    void        vPrintRows(StreamDef* pStreamDef);
-    CsvBuffer*  pToCsvBuffer(void);
-    SrtBuffer*  pToSrtBuffer(i8 iKeyCol);
-    IrwBuffer*  pToIrwBuffer(void);
-    void        vTruncate(void);
+    void       vBufferCount(i8& nBufferCount);
+    i8         iDecile(void);
+    i8         iLengthList(void);
+    CrwBuffer* pNextBuffer(void);
+    void       vNextBuffer(CrwBuffer* pNextBuffer);
+    CrwBuffer* pPrevBuffer(void);
+    void       vPrevBuffer(CrwBuffer* pPrevBuffer);
+    void       vPrintRows(StreamDef* pStreamDef);
+    CsvBuffer* pToCsvBuffer(void);
+    SrtBuffer* pToSrtBuffer(i8 iKeyCol);
+    IrwBuffer* pToIrwBuffer(void);
+    void       vTruncate(void);
     
     ////////////////////////////////////////////////////////////////////////////
     // row functions
-    void      vGetRow(Row* pRow, i8 i_Row);
-    void      vShow(void);
-    void      vShowRow(i8 i_Row);
+    Crw*       aCrw(i8 i_Row);
+    void       vGetRow(Row* pRow, i8 i_Row);
+    void       vShow(void);
+    void       vShowRow(i8 i_Row);
     StreamDef* pStreamDef(void);
-    Crw*      pCrw(i8 i_Row);
 
     ////////////////////////////////////////////////////////////////////////////
     // row functions

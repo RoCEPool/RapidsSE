@@ -35,7 +35,7 @@ namespace Buffers
     void  operator delete(void*);
     
     RowCompactor(void);
-    ~RowCompactor(void) noexcept(false);
+   ~RowCompactor(void) noexcept(false);
     
     void vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples);
     void vCompactEnd(void);
