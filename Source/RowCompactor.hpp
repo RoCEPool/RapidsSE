@@ -56,7 +56,7 @@ namespace Buffers
     // Compact Row Packing
   
     bool bAddCrw(Row* pInflatedRow);
-    void vAllotCrw(Encoding* pEncoding);
+    bool bAllotCrw(void);
     void vEncodeHead(Row* pInflatedRow);
     void vEncodeTails(Row* pInflatedRow);
     void vSplitOver(void);

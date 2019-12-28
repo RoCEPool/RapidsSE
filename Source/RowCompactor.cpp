@@ -365,48 +365,29 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) initially encode the inflated row
-  
   vEncodeHead(pInflatedRow);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Optimisation 2a) encode tails
-  
+  // 2) encode tails
 //  if (! m_pStreamDef->m_nFixedSized)
     vEncodeTails(pInflatedRow);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Optimisation 2a) 3) split encoding between head and overflow
-  
+  // 3) split encoding between head and overflow
   vSplitOver();
 
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 4) check for space in target nub
-  
-  i8 nBytesNeeded = m_pEncoding->nBytesNeeded();
-  
-  if (! m_pCrwNub->bHasSpace(nBytesNeeded)) {
+  // 4) allot a logical compact row (head & over)
+  if (! bAllotCrw()) {
     m_nTotalBuffers++;
     return false;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 5) allot a logical compact row
-  
-  vAllotCrw(m_pEncoding);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 6) pack encoded inflated row into a compact row
-  
-  //vPackCrw(m_pEncoding);
+  // 5) pack encoded inflated row into a compact row
   Packing::vPackCrw(m_aHeadLine,m_pEncoding);
   
   m_aHeadLine = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 7) verify
+  // verify
   
 #ifdef WITH_VERIFY_TAILS
   m_pCrwNub->vVerifyTails(C_UNKNOWN);
@@ -418,7 +399,7 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
 /*----------------------------------------------------------------------------*/
 /* allot a compact row (head and potentially an over line)                    */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vAllotCrw(Encoding* pEncoding)
+bool RowCompactor::bAllotCrw(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -438,6 +419,15 @@ void RowCompactor::vAllotCrw(Encoding* pEncoding)
      <U>  is one byte space unit length of over line
    */
   
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  i8 nBytesNeeded = m_pEncoding->nBytesNeeded();
+  
+  if (! m_pCrwNub->bHasSpace(nBytesNeeded)) {
+    m_aHeadLine = nullptr;
+     return false;
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // +================================+
@@ -445,12 +435,12 @@ void RowCompactor::vAllotCrw(Encoding* pEncoding)
   // +================================+
   
   // allot a head line in nub (the <W> is init'd by iAllotHead())
-  m_aHeadLine = m_pCrwNub->aAllotHead(pEncoding->m_nHeadSize);
+  m_aHeadLine = m_pCrwNub->aAllotHead(m_pEncoding->m_nHeadSize);
 
   // do we allot an over line?
-  if (! pEncoding->bOverFlowed()) {
+  if (! m_pEncoding->bOverFlowed()) {
     m_aOverLine = nullptr;
-    return;
+    return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -460,7 +450,7 @@ void RowCompactor::vAllotCrw(Encoding* pEncoding)
   // +================================+   +--------------------------------+
   
   // allot the over line (the <U> is init'd by iAllotOver())
-  i8 nOverSize = pEncoding->nOverSize();
+  i8 nOverSize = m_pEncoding->nOverSize();
   ASSERT(nOverSize > 0);
   m_aOverLine = m_pCrwNub->aAllotOver(nOverSize);
 
@@ -470,6 +460,8 @@ void RowCompactor::vAllotCrw(Encoding* pEncoding)
   
   // link over line into head line
   m_aHeadLine->vSetOver(m_aOverLine);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
