@@ -49,15 +49,16 @@ void Encoding::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Encoding::Encoding(StreamDef* pStreamDef, i8 nHeadSize, i8 nMetaSize)
+Encoding::Encoding(StreamDef* pStreamDef)
 : Object(CN_ENCODING)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   m_pStreamDef = pStreamDef;
   m_nColumns   = pStreamDef->nColumns(C_ALL);
-  m_nHeadSize  = nHeadSize;
-  m_nMetaSize  = nMetaSize;
+  
+  m_nHeadSize  = nHeadSize(m_pStreamDef);
+  m_nMetaSize  = nMetaSize(m_pStreamDef);
   
   m_nBytesNeeded = C_UNKNOWN;
   m_nShiftOver   = C_UNKNOWN;

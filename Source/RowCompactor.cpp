@@ -107,9 +107,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   
   m_pStreamDef    = m_pCrwNub->pDesc()->pStreamDef();
   
-  i8 nHeadSize    = this->nHeadSize(m_pStreamDef);
-  i8 nMetaSize    = this->nMetaSize(m_pStreamDef);
-  m_pEncoding     = new Encoding(m_pStreamDef,nHeadSize,nMetaSize);
+  m_pEncoding     = new Encoding(m_pStreamDef);
 
   m_pRowSamples   = new IrwBuffer;
   m_bCollecting   = bCollectSamples;

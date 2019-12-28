@@ -51,7 +51,7 @@ namespace Buffers
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
 
-    Encoding(StreamDef* pStreamDef, i8 nHeadSize, i8 nMetaSize);
+    Encoding(StreamDef* pStreamDef);
     ~Encoding(void) noexcept(false);
   
     i8   nBytesNeeded(void);
