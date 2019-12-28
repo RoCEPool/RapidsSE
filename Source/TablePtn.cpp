@@ -915,6 +915,22 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* WIP: insert a new row                                                      */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vUpsert_insert(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* WIP: update an existing row                                                */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vUpsert_update(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* verify the table data of this partition                                    */
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bVerifyTable(void)
