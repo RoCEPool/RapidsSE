@@ -10,10 +10,15 @@ namespace Entries
   class EntWrk : public Object
   {
   private:
-
-    Ent    m_xEnt; // the index entry being formed
   
+    IdxColVec* m_pIdxColVec;     // index column vector describing the key
+
+    // - - - - - - - - - - - - -
+    // entry proper
+  
+    Ent    m_xEnt;               // the index entry being formed
     byte   m_yaSpace[C_MAX_KEY]; // the bytes of the key
+    // - - - - - - - - - - - - -
   
     Footer m_xFooter;
   
@@ -49,6 +54,8 @@ namespace Entries
   
     i8    iHashKey(void);
   
+    IdxColVec* pIdxColVec(void);
+    void  vIdxColVec(IdxColVec* pIdxColVec);
     void  vIncElmSeqSize(i8 nElementSize);
     i8    iItem(void);
     void  vItem(i8 iItem);
@@ -64,7 +71,7 @@ namespace Entries
     i8    nNEOsize(void);
   
     void  vRandomLevels(void);
-    Ref&   xRef(void);
+    Ref&  xRef(void);
     void  vRef(Ref& xRef);
 
     void  vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry);

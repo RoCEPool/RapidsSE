@@ -37,11 +37,15 @@ EntWrk::EntWrk(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK);
 
+  m_pIdxColVec = nullptr;
+  
+  // -- entry --
   m_xEnt.vBuffer(0);
   m_xEnt.vItem(0);
   m_xEnt.vOffsets(0);
   
   m_xEnt.vElmSeqSize(0);
+  // -- end entry --
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_yaSpace,sizeof(m_yaSpace),CN_ENTWRK);
@@ -295,6 +299,26 @@ i8 EntWrk::iHashKey(void)
   i8 iHash = HshLib::iHash(ayElmSeq(),nElmSeqSize());
   
   return iHash;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get index column vector                                                    */
+/*----------------------------------------------------------------------------*/
+IdxColVec* EntWrk::pIdxColVec(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return m_pIdxColVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set index column vector                                                    */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vIdxColVec(IdxColVec* pIdxColVec)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_pIdxColVec = pIdxColVec;
 }
 
 /*----------------------------------------------------------------------------*/
