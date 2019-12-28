@@ -17,7 +17,6 @@ namespace Rows
   {
   public:
     static i8   iAuxLen(eMC eMetaCode);
-    static i8   iBaseOffset(StreamDef* pStreamDef);
     static i8   iBaseOffset(i8 nColumns);
     static i8   nDataSize(eMC eMetaCode);
     static void vDteFromEdt(i8* awEdtDte_rpl, i8 iEra);

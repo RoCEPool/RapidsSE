@@ -23,19 +23,9 @@ i8 RowCoder::iAuxLen(eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 /* calc base offset for column vector                                         */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iBaseOffset(StreamDef* pStreamDef)
-{
-  i8 iOffset  = C_W_1B + nMetaSize(pStreamDef);
-  
-  return iOffset;
-}
-
-/*----------------------------------------------------------------------------*/
-/* calc base offset for column vector                                         */
-/*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffset(i8 nColumns)
 {
-  i8 iOffset  = C_W_1B + nColumns;
+  i8 iOffset = C_W_1B + nColumns;
   
   return iOffset;
 }
