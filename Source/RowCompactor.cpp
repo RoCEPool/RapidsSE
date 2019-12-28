@@ -427,6 +427,63 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot a compact row (head and potentially an over line)                    */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vAllotCrw(Encoding* pEncoding)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  /*
+             -- HeadLine --                      -- OverLine --
+   +================================+
+   | <W>                            |
+   +================================+
+   |                                |
+   +--------------------------------+   +--------------------------------+
+   |                           [OL] |---| <U> ////////////////////////// |
+   +--------------------------------+   +--------------------------------+
+   
+   where:
+     <W>  is one byte word length of head line
+     [OL] is 2B relative index of the over line
+     <U>  is one byte space unit length of over line
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // +================================+
+  // | <W>                            |
+  // +================================+
+  
+  // allot a head line in nub (the <W> is init'd by iAllotHead())
+  m_aHeadLine = m_pCrwNub->aAllotHead(pEncoding->m_nHeadSize);
+
+  // do we allot an over line?
+  if (! pEncoding->bOverFlowed()) {
+    m_aOverLine = nullptr;
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // +================================+   +--------------------------------+
+  // | <W>                            |   | <U> ////////////////////////// |
+  // +================================+   +--------------------------------+
+  
+  // allot the over line (the <U> is init'd by iAllotOver())
+  i8 nOverSize = pEncoding->nOverSize();
+  ASSERT(nOverSize > 0);
+  m_aOverLine = m_pCrwNub->aAllotOver(nOverSize);
+
+  // +================================+   +--------------------------------+
+  // | <W>                       [OL] |---| <U> ////////////////////////// |
+  // +================================+   +--------------------------------+
+  
+  // link over line into head line
+  m_aHeadLine->vSetOver(m_aOverLine);
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vEncodeTails(Row* pInflatedRow)
@@ -461,7 +518,7 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     // attempt to find tail for non-null vch column of minimum length
     
     TailStr xFindTail(aColVal->m_szVch);
-
+    
 #ifdef WITH_ENCODING_TRACE
     vDumpTails();
 #endif
@@ -496,71 +553,6 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     m_pEncoding->vMorphEncoding(aColEnc);
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot a compact row (head and potentially an over line)                    */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vAllotCrw(Encoding* pEncoding)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  /*
-             -- HeadLine --                      -- OverLine --
-   +================================+
-   | <W>                            |
-   +================================+
-   |                                |
-   +--------------------------------+   +--------------------------------+
-   |                           [OL] |---| <U> ////////////////////////// |
-   +--------------------------------+   +--------------------------------+
-   
-   where:
-     <W>  is one byte word length of head line
-     [OL] is 2B relative index of the over line
-     <U>  is one byte space unit length of over line
-   */
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // +================================+
-  // | <W>                            |
-  // +================================+
-  
-  // allot a head line in nub (the <W> is init'd by iAllotHead())
-//  i8 i_Crw = m_pCrwNub->iAllotHead(m_nHeadSize);
-//  m_aHeadLine = m_pCrwNub->aGetHead(i_Crw);
-  m_aHeadLine = m_pCrwNub->aAllotHead(pEncoding->m_nHeadSize);
-
-  // do we allot an over line?
-  if (! pEncoding->bOverFlowed()) {
-    m_aOverLine = nullptr;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // calc the size of the over line
-//  i8 nBytesNeed = pEncoding->nBytesNeeded();
-//  i8 nOverSize  = nBytesNeed - pEncoding->m_nHeadSize;
-  i8 nOverSize = pEncoding->nOverSize();
-  ASSERT(nOverSize > 0);
-  
-  // +================================+   +--------------------------------+
-  // | <W>                            |   | <U> ////////////////////////// |
-  // +================================+   +--------------------------------+
-  
-  // allot the over line (the <U> is init'd by iAllotOver())
-//  i8 i_Over = m_pCrwNub->iAllotOver(nOverSize);
-//  m_aOverLine = m_pCrwNub->aGetOver(i_Over);
-  m_aOverLine = m_pCrwNub->aAllotOver(nOverSize);
-
-  // +================================+   +--------------------------------+
-  // | <W>                       [OL] |---| <U> ////////////////////////// |
-  // +================================+   +--------------------------------+
-  
-  // link over line into head line
-  m_aHeadLine->vSetOver(m_aOverLine);
 }
 
 

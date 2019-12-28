@@ -53,6 +53,7 @@ namespace Structures
     i8    iAllotOver(i8 nBytes_unrounded);
     OVER* aAllotOver(i8 nOverSize);
     i8    iAllotTail(i8 nBytes_unrounded);
+    TAIL* aAllotTail(i8 nTailSize);
     i8    nAllotedBytes(void);
     i8    nAreaBytes(void);
     DESC* pDesc(void);
@@ -362,6 +363,20 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotTail(i8 nBytes_unrounded)
   aTail->vU(nUnits);
   
   return i_Tail;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a tail line                                                          */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aAllotTail(i8 nTailSize)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  i8 i_Tail = iAllotTail(nTailSize);
+  TAIL* aTailLine = aGetTail(i_Tail);
+  
+  return aTailLine;
 }
 
 /*----------------------------------------------------------------------------*/

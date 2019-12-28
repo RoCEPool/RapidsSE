@@ -817,53 +817,61 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
   HV_Row hRow(pCrwBuffer->pStreamDef(),C_ALL);
   HV_Row hRowRefd(pCrwBuffer->pStreamDef(),C_ALL);
 
-  
   i8 nRows = pCrwBuffer->nRowCount();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    
     pCrwBuffer->vGetRow(hRow,i_Row);
     vTrace("Upsert %lld : %s\n"_Stz,i_Row,spRecord.sz(hRow));
     
     xEntWrk.vElmSeqSize(0);
     pIndexTree->vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
-    
     xEntWrk.vShow(pIdxColVec);
+    
+    EntBuffer* pEntBuf = pIndexTree->pPositionH0Buffer(xEntWrk.aEnt());
+    if (! pEntBuf) {
+      vTrace("No pEntBuf @%lld; skipping...\n"_Stz,(i8)__LINE__);
+      continue;
+    }
+    
+    Ent* aEnt_prior = pEntBuf->pPositionPriorEntry(xEntWrk.aEnt());
+    if (! aEnt_prior) {
+      vTrace("No aEnt_prior @%lld; skipping...\n"_Stz,(i8)__LINE__);
+      continue;
+    }
+    
+    SP_Key spKey;
+    vTrace("Prior Key: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIdxColVec));
+    vDebugPoint();
+    
+    Ent* aEnt_found = pEntBuf->aNextEntry(aEnt_prior,0);
+    if (! aEnt_found) {
+      vTrace("No aEnt_found @%lld; skipping...\n"_Stz,(i8)__LINE__);
+     continue;
+    }
+    
+    vTrace("Found Key: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIdxColVec));
+    
+    if (KC_SAME != EntWrk::eCompare(aEnt_found,xEntWrk.aEnt())) {
+      vTrace("NOT SAME @%lld; skipping...\n"_Stz,(i8)__LINE__);
+      continue;
+    }
+    
+    SP_Ent spRef;
+    vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIdxColVec));
+    
+    Crw* aCrw = CrwBuffer::pRefdCrw(aEnt_found->xRef());
+    if (! aCrw) {
+      vTrace("No aCrw @%lld; skipping...\n"_Stz,(i8)__LINE__);
+      continue;
+    }
+    
+    CrwBuffer::vToRow(hRowRefd,aCrw);
+    SP_Record spRec;
+    vTrace("     : %s\n"_Stz,spRec.sz(hRowRefd));
     
     vDebugPoint();
     
-    EntBuffer* pEntBuf = pIndexTree->pPositionH0Buffer(xEntWrk.aEnt());
-    
-    if (pEntBuf) {
-      Ent* aEnt_prior = pEntBuf->pPositionPriorEntry(xEntWrk.aEnt());
-      if (aEnt_prior) {
-        SP_Key spKey;
-        vTrace("Prior Key: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIdxColVec));
-        vDebugPoint();
-        
-        Ent* aEnt_found = pEntBuf->aNextEntry(aEnt_prior,0);
-        if (aEnt_found) {
-          vTrace("Found Key: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIdxColVec));
-          
-          if (KC_SAME == EntWrk::eCompare(aEnt_found,xEntWrk.aEnt())) {
-            SP_Ent spRef;
-            vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIdxColVec));
-            
-            Crw* aCrw = CrwBuffer::pRefdCrw(aEnt_found->xRef());
-            if (aCrw) {
-              CrwBuffer::vToRow(hRowRefd,aCrw);
-              SP_Record spRec;
-              vTrace("     : %s\n"_Stz,spRec.sz(hRowRefd));
-
-            }
-          }
-          else {
-            vTrace("NOT SAME\n"_Stz);
-          }
-          vDebugPoint();
-        }
-      }
-    }
-  }
-  
+  } // for i_Row
 }
 
 /*----------------------------------------------------------------------------*/
