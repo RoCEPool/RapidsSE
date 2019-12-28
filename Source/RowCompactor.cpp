@@ -53,12 +53,12 @@ RowCompactor::RowCompactor(void)
   m_pStreamDef    = nullptr;
   m_pEncoding     = nullptr;
 
+  m_aHeadLine     = nullptr;
+  m_aOverLine     = nullptr;
+  
   m_pRowSamples   = nullptr;
   m_bCollecting   = false;
   
-  m_aHeadLine     = nullptr;
-  m_aOverLine     = nullptr;
-
   m_nTotalBuffers = 0;
   m_nTotalCrws    = 0;
   
@@ -104,16 +104,14 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   m_pCrwNub       = pCrwBuffer->m_oRowTray.pNub();
-  
   m_pStreamDef    = m_pCrwNub->pDesc()->pStreamDef();
-  
   m_pEncoding     = new Encoding(m_pStreamDef);
-
-  m_pRowSamples   = new IrwBuffer;
-  m_bCollecting   = bCollectSamples;
   
   m_aHeadLine     = nullptr;
   m_aOverLine     = nullptr;
+
+  m_pRowSamples   = new IrwBuffer;
+  m_bCollecting   = bCollectSamples;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,17 +130,17 @@ void RowCompactor::vCompactEnd(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pCrwNub       = nullptr;
-  m_pStreamDef    = nullptr;
-  
   delete m_pRowSamples;
   m_pRowSamples   = nullptr;
   m_bCollecting   = false;
   
-  delete m_pEncoding;
-  m_pEncoding     = nullptr;
   m_aHeadLine     = nullptr;
   m_aOverLine     = nullptr;
+  
+  delete m_pEncoding;
+  m_pEncoding     = nullptr;
+  m_pCrwNub       = nullptr;
+  m_pStreamDef    = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -382,7 +380,7 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
   }
   
   // 5) pack encoded inflated row into a compact row
-  Packing::vPackCrw(m_aHeadLine,m_pEncoding);
+  vPackCrw(m_aHeadLine,m_pEncoding);
   
   m_aHeadLine = nullptr;
 
