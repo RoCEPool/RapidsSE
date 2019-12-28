@@ -550,6 +550,36 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
+bool IndexTree::bInsertEntry(Crw* aCrw, Ref& xRowRef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  EntWrk xEntWrk;
+  
+  m_okLock.vGrabWrite();
+  
+  vExtractKey(&xEntWrk,aCrw);
+  
+  xEntWrk.vRef(xRowRef);
+  
+  //xEntWrk.vShow(m_pIndex->pIdxColVec());
+  
+  if (! m_pRootBuffer)
+    RASSERT(pNewRootBuffer());
+  
+  Ent* aKeyEntry = EntBuffer::aInsertKeyTree(xEntWrk,&m_pRootBuffer);
+  ASSERT(aKeyEntry);
+  
+  //m_pRootBuffer->bVerify();
+  
+  m_okLock.vDropWrite();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert an entry for given row into this index at level 0                   */
+/*----------------------------------------------------------------------------*/
 bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
