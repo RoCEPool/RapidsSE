@@ -972,8 +972,10 @@ void TablePtn::vUpsert_insert(Crw* aCrw_nosuch, Encoding* pEncoding_upsert)
   SP_Encoding spEncoding;
   vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert));
   
-  //..some code to get a new row..
-  //Packing::vPackCrw(aCrw_insert,pEncoding_upsert);
+  Crw* aCrw_insert = aAllotFixedSizeCrw();
+  Packing::vPackCrw(aCrw_insert,pEncoding_upsert);
+  
+  //..code to insert into the idexes..
   
   vDebugPoint();
 }
