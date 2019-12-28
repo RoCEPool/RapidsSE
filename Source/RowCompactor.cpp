@@ -423,7 +423,7 @@ bool RowCompactor::bAllotCrw(void)
   
   if (! m_pCrwNub->bHasSpace(nBytesNeeded)) {
     m_aHeadLine = nullptr;
-     return false;
+    return false;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

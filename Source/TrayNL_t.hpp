@@ -17,7 +17,7 @@ namespace Structures
   {
   private:
     i8 m_nSpaceUnits; // number of space units
-    i8 m_nHeadAllot;  // size of head to allot
+    i8 m_jHeadSize;   // size of head to allot
   
     i8 m_nHeadItems;  // number of items allocated from the head
     i8 m_nHeadWords;  // number of words allocated from the head
@@ -152,7 +152,7 @@ Nub_t<CN,HEAD,OVER,TAIL,DESC>::Nub_t(void)
   RASSERT(0 == sizeof(TAIL) % C_SPACEUNIT_QUANTA);
 
   m_nSpaceUnits = C_UNKNOWN;
-  m_nHeadAllot  = C_UNKNOWN;
+  m_jHeadSize  = C_UNKNOWN;
 
   m_nHeadItems  = 0;
   m_nHeadWords  = 0;
@@ -283,7 +283,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes_unrounded)
   m_nHeadWords += nWords;
   i8 i_Head = m_nHeadItems++;
 
-  m_nHeadAllot = nBytes_revised;
+  m_jHeadSize = nBytes_revised;
   
   HEAD* aHead = aGetHead(i_Head);
   
@@ -526,7 +526,7 @@ HEAD* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetHead(void)
   
   ASSERT(m_nHeadItems);
   
-  i8 i_Unit = (m_nHeadItems - 1) * (m_nHeadAllot / C_SPACEUNIT_QUANTA);
+  i8 i_Unit = (m_nHeadItems - 1) * (m_jHeadSize / C_SPACEUNIT_QUANTA);
   HEAD* aHead = (HEAD*)&m_axaUnits[i_Unit];
   
   return aHead;
@@ -542,7 +542,7 @@ HEAD* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetHead(i8 i_Head)
   
   ASSERT(i_Head >= 0 && i_Head < m_nHeadItems);
   
-  i8 i_Word = i_Head * (m_nHeadAllot / C_HEADLINE_QUANTA);
+  i8 i_Word = i_Head * (m_jHeadSize / C_HEADLINE_QUANTA);
   HEAD* aHead = (HEAD*)&m_axaWords[i_Word];
     
   return aHead;
