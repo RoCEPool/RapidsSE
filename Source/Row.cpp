@@ -59,7 +59,6 @@ Row::Row(StreamDef* pStreamDef, i8 iSubSet)
   m_pStreamDef  = pStreamDef;
   m_iSubSet     = iSubSet;
   m_nColumns    = pStreamDef->nColumns(iSubSet);
-  m_iBaseOffset = RowCoder::iBaseOffset(m_nColumns);
   m_bGetAll     = true;
   
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
