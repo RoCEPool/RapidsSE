@@ -811,17 +811,21 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
   
   SP_Record spRecord;
   
+  StreamDef* pStreamDef = pCrwBuffer->pStreamDef();
+  
   IndexTree* pIndexTree = m_pIndexTreeVec->pGet(0);
   IdxColVec* pIdxColVec = pIndexTree->pIndex()->pIndexDef()->pIdxColVec();
 
-  HV_Row hRow(pCrwBuffer->pStreamDef(),C_ALL);
-  HV_Row hRowRefd(pCrwBuffer->pStreamDef(),C_ALL);
+  HV_Row hvRow(pStreamDef,C_ALL);
+  HV_Row hvRowRefd(pStreamDef,C_ALL);
+  
+  Encoding* pEncoding = new Encoding(pStreamDef);
 
   i8 nRows = pCrwBuffer->nRowCount();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    pCrwBuffer->vGetRow(hRow,i_Row);
-    vTrace("Upsert %lld : %s\n"_Stz,i_Row,spRecord.sz(hRow));
+    pCrwBuffer->vGetRow(hvRow,i_Row);
+    vTrace("Upsert %lld : %s\n"_Stz,i_Row,spRecord.sz(hvRow));
     
     xEntWrk.vElmSeqSize(0);
     pIndexTree->vExtractKey(&xEntWrk,pCrwBuffer,i_Row);
@@ -865,12 +869,19 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer)
       continue;
     }
     
-    CrwBuffer::vToRow(hRowRefd,aCrw);
+    CrwBuffer::vToRow(hvRowRefd,aCrw);
     SP_Record spRec;
-    vTrace("     : %s\n"_Stz,spRec.sz(hRowRefd));
+    vTrace("     : %s\n"_Stz,spRec.sz(hvRowRefd));
     
     vDebugPoint();
     
+    pEncoding->vEncodeRow(hvRow);
+    SP_Encoding spEncoding;
+    vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding));
+
+    
+    vDebugPoint();
+
   } // for i_Row
 }
 
