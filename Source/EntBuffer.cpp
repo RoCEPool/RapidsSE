@@ -129,9 +129,9 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pRefdEntBuffer(Ref& xId)
+EntBuffer* EntBuffer::pRefdEntBuffer(Ref& xRowRef)
 {
-  bn nBufferNo = xId.iBuffer();
+  bn nBufferNo = xRowRef.iBuffer();
   
   HeapBuffer* pHeapBuffer =
   reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));

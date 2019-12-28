@@ -38,7 +38,7 @@ namespace MetaData
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Ent* aGetNextEntry(EntBuffer** ppEntBuffer, Ent* aPrevEntry);
     static EntBuffer* pRefdEntBuffer(Ent* pItem);
-    static EntBuffer* pRefdEntBuffer(Ref& xId);
+    static EntBuffer* pRefdEntBuffer(Ref& RowRef);
   
     void    vDropWrite(void);
     void    vGrabWrite(void);

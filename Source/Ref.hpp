@@ -23,7 +23,7 @@ namespace Rows
     Ref(u8 uBuffer, u8 uItem, u8 uOffsets);
    ~Ref(void) noexcept(false);
     
-    void operator =(Ref& xId); // assignment
+    void operator =(Ref& xRef); // assignment
   
     i8    iAsI8(void);
     void  vAssign(Ref& xRef);

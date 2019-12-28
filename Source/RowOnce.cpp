@@ -65,11 +65,11 @@ RowOnce::~RowOnce(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* has row been seen? (complete implementation)                               */
 /*----------------------------------------------------------------------------*/
-bool RowOnce::bRowSeen(Ref xRowId)
+bool RowOnce::bRowSeen(Ref xRowRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWONCE,_FOOTER_);
   
-  i8 iRowId = xRowId.iAsI8();
+  i8 iRowId = xRowRef.iAsI8();
   
   m_okLock.vGrabWrite();
   

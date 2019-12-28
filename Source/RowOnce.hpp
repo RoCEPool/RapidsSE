@@ -22,7 +22,7 @@ namespace Jobs
     RowOnce(void);
     ~RowOnce(void) noexcept(false);
   
-    bool bRowSeen(Ref xRowId);
+    bool bRowSeen(Ref xRowRef);
   
     Footer* aFooter(void);  
   };

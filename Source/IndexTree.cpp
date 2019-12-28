@@ -529,16 +529,16 @@ void IndexTree::vInsertEntriesFromBuffer(CrwBuffer* pCrwBuffer)
 
   //pEntBuffer->vShow();
 
-  Ref xId;
-  xId.vBuffer(*pCrwBuffer->nPoolBufferNo());
+  Ref xRowRef;
+  xRowRef.vBuffer(*pCrwBuffer->nPoolBufferNo());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffer till no more entries
   for (i8 i_Row = 0; i_Row < pCrwBuffer->nRowCount(); i_Row++) {
 
-    xId.vItem(i_Row);
+    xRowRef.vItem(i_Row);
     
-    bool bInserted = bInsertEntry(pCrwBuffer,i_Row,xId);
+    bool bInserted = bInsertEntry(pCrwBuffer,i_Row,xRowRef);
     
     //bVerify();
     ASSERT(bInserted);

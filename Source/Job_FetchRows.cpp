@@ -575,14 +575,14 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* test if row has been seen so far                                           */
 /*----------------------------------------------------------------------------*/
-bool Job_FetchRows::bRowSeen(Ref xRowId)
+bool Job_FetchRows::bRowSeen(Ref xRowRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
   
   if (! m_pRowOnce)
     return false;
   
-  bool bSeen = m_pRowOnce->bRowSeen(xRowId);
+  bool bSeen = m_pRowOnce->bRowSeen(xRowRef);
   
   return bSeen;
 }

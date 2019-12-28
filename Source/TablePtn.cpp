@@ -323,9 +323,9 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
   m_pCurrentCrwBuffer->vAppendClose();
   
   // get the row from the buffer
-  Ref xId;
+  Ref xRowRef;
   i8 iRow = m_pCurrentCrwBuffer->nRowCount() - 1;
-  xId.vItem(iRow);
+  xRowRef.vItem(iRow);
   
   // get no of indexes of the table
   i8 nIndexes = m_pIndexTreeVec->nItems();
@@ -337,7 +337,7 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
     IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
     
     // insert entry into other indexes
-    bool bResult = pIndexTree->bInsertEntry(m_pCurrentCrwBuffer,iRow,xId);
+    bool bResult = pIndexTree->bInsertEntry(m_pCurrentCrwBuffer,iRow,xRowRef);
     RASSERT(bResult);
   }
   
