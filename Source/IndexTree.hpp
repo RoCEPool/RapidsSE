@@ -46,7 +46,7 @@ namespace Indexes
     void       vLazyBuild(void);
     EntBuffer* pNewRootBuffer(void);
     EntBuffer* pPositionH0Buffer(Ent* aEnt);
-    EntBuffer* pRoot(void);
+    EntBuffer* pRootBuffer(void);
     void       vTidyUp(void);
     void       vTruncate(void);
     bool       bVerify(void);

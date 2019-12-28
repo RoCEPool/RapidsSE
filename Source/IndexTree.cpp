@@ -562,13 +562,9 @@ bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
   
   //xEntWrk.vShow(m_pIndex->pIdxColVec());
   
-  if ( ! m_pRootBuffer ) {
+  if (! m_pRootBuffer)
     RASSERT(pNewRootBuffer());
-//    m_pRootBuffer = new EntBuffer;
-//    m_pRootBuffer->vIndex(m_pIndex);
-//    m_pRootBuffer->vPartitionNo(m_iPartitionNo);
-  }
-  
+
   Ent* aKeyEntry = EntBuffer::aInsertKeyTree(xEntWrk,&m_pRootBuffer);
   ASSERT(aKeyEntry);
   
@@ -642,9 +638,9 @@ EntBuffer* IndexTree::pNewRootBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get root entry                                                             */
+/* get root buffer                                                            */
 /*----------------------------------------------------------------------------*/
-EntBuffer* IndexTree::pRoot(void)
+EntBuffer* IndexTree::pRootBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   

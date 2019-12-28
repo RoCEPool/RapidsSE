@@ -236,7 +236,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed, i8 &nRows)
     
     i8 iPartition = TablePtn::iSlotToPartition(iSlot);
     
-    EntBuffer *pIndexBuffer = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRoot();
+    EntBuffer *pIndexBuffer = pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRootBuffer();
     
     i8 nBuffers = 0;
     i8 nEntries = 0;
@@ -627,7 +627,7 @@ EntBuffer* Table::pRootBuffer(i8 i_Slot, i8 i_Index)
   
   IndexTree* pIdxTree = pTblPtn->pIndexTree(i_Index);
   
-  EntBuffer* pRootBuffer = pIdxTree->pRoot();
+  EntBuffer* pRootBuffer = pIdxTree->pRootBuffer();
   
   return pRootBuffer;
 }
@@ -854,7 +854,7 @@ bool Table::bVerifyIndex(Index* pIndex)
     bool bVerify = true;
     
     EntBuffer *pIndexBuffer =
-      pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRoot();
+      pPartition(iSlot)->pIndexTree(pIndex->iIndexNo())->pRootBuffer();
     
     if (pIndexBuffer)
       bVerify = pIndexBuffer->bVerify();
