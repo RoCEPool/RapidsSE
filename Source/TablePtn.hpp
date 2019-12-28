@@ -63,6 +63,7 @@ namespace Partitioning
     IndexTreeVec* pIndexTreeVec(void);
     void vInsertEntries(CrwBuffer* pCrwBuffer);
     bool bIsLocked(void);
+    CrwBuffer* pNewCurrentCrwBuffer(void);
     void vParentJobId(i8 iJobId);
     i8   iParentJobId(void);
     i8   iPartitionId(void);

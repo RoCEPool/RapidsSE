@@ -519,6 +519,40 @@ bool TablePtn::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new a CrwBuffer and make it the current                                    */
+/*----------------------------------------------------------------------------*/
+CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+#ifdef WITH_STATISTICS_COUNTERS
+  gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
+#endif
+  
+  RASSERT(m_okLock.bIsLocked());
+  
+  if (m_pRootCrwBuffer == nullptr) {
+    ASSERT( ! m_pCurrentCrwBuffer )
+    m_pRootCrwBuffer = new CrwBuffer;
+    m_pRootCrwBuffer->vTable(m_pTable);
+    m_pRootCrwBuffer->vPartitionNo(m_iPartitionId);
+    m_pCurrentCrwBuffer = m_pRootCrwBuffer;
+    
+    return m_pCurrentCrwBuffer;
+  }
+  
+  CrwBuffer* pCrwBuffer = new CrwBuffer;
+  m_pRootCrwBuffer->vTable(m_pTable);
+  m_pRootCrwBuffer->vPartitionNo(m_iPartitionId);
+  pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
+  pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
+  m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
+  m_pCurrentCrwBuffer = pCrwBuffer;
+    
+  return m_pCurrentCrwBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set endInsert jobid                                                        */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vParentJobId(i8 iJobId)
