@@ -840,12 +840,18 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
   IdxColVec* pIdxColVec = pIndexTree->pIndex()->pIndexDef()->pIdxColVec();
 
   HV_Row hvRow_upsert(pStreamDef,C_ALL);
-  HV_Row hvRow_exists(pStreamDef,C_ALL);
   
   Encoding* pEncoding_upsert = new Encoding(pStreamDef);
-
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iteration of rows from the incoming crw buffer
+  
   i8 nRows = pCrwBuffer_upsert->nRowCount();
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // get upsert row, re-encode it for this table, and extract key
     
     pCrwBuffer_upsert->vGetRow(hvRow_upsert,i_Row);
     vTrace("Upsert %lld : %s\n"_Stz,i_Row,spRecord.sz(hvRow_upsert));
@@ -857,6 +863,7 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
     xEntWrk.vShow(pIdxColVec);
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // possible insert
     
     EntBuffer* pEntBuf = pIndexTree->pPositionH0Buffer(xEntWrk.aEnt());
     if (! pEntBuf) {
@@ -871,7 +878,7 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
     }
     
     SP_Key spKey;
-    vTrace("Prior Key: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIdxColVec));
+    vTrace("Key Prior: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIdxColVec));
     vDebugPoint();
     
     Ent* aEnt_found = pEntBuf->aNextEntry(aEnt_prior,0);
@@ -880,12 +887,15 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
      continue;
     }
     
-    vTrace("Found Key: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIdxColVec));
+    vTrace("Key Found: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIdxColVec));
     
     if (KC_SAME != EntWrk::eCompare(aEnt_found,xEntWrk.aEnt())) {
       vTrace("NOT SAME @%lld; skipping...\n"_Stz,(i8)__LINE__);
       continue;
     }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // upsert
     
     SP_Ent spRef;
     vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIdxColVec));
@@ -896,13 +906,6 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
       continue;
     }
     
-    
-    CrwBuffer::vToRow(hvRow_exists,aCrw_exists);
-    SP_Record spRec;
-    vTrace("     : %s\n"_Stz,spRec.sz(hvRow_exists));
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
     vUpsert_update(aCrw_exists,pEncoding_upsert);
     
     vDebugPoint();
@@ -924,6 +927,13 @@ void TablePtn::vUpsert_insert(void)
 void TablePtn::vUpsert_update(Crw* aCrw_exists, Encoding* pEncoding_upsert)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  StreamDef* pStreamDef = m_pTable->pStreamDef();
+  
+  HV_Row hvRow_exists(pStreamDef,C_ALL);
+  CrwBuffer::vToRow(hvRow_exists,aCrw_exists);
+  SP_Record spRec;
+  vTrace("Exists   : %s\n"_Stz,spRec.sz(hvRow_exists));
   
   SP_Encoding spEncoding;
   vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert));
