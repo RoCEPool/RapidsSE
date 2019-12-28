@@ -57,6 +57,7 @@ namespace Buffers
   
     bool bAddCrw(Row* pInflatedRow);
     void vAllotCrw(Encoding* pEncoding);
+    void vEncodeHead(Row* pInflatedRow);
     void vEncodeTails(Row* pInflatedRow);
   
   private:

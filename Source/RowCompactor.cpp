@@ -368,21 +368,14 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) initially encode the inflated row
   
-  m_pEncoding->vEncodeRow(pInflatedRow);
-  
-#ifdef WITH_ENCODING_TRACE
-  SP_Encoding spEncoding;
-  vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
-#endif
+  vEncodeHead(pInflatedRow);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Optimisation 2a) encode tails
   
 //  if (! m_pStreamDef->m_nFixedSized)
     vEncodeTails(pInflatedRow);
-#ifdef WITH_ENCODING_TRACE
-  vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
-#endif
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Optimisation 2a) 3) split encoding between head and overflow
   
@@ -482,6 +475,21 @@ void RowCompactor::vAllotCrw(Encoding* pEncoding)
 }
 
 /*----------------------------------------------------------------------------*/
+/* encode the head                                                            */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vEncodeHead(Row* pInflatedRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  m_pEncoding->vEncodeRow(pInflatedRow);
+  
+#ifdef WITH_ENCODING_TRACE
+  SP_Encoding spEncoding;
+  vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vEncodeTails(Row* pInflatedRow)
@@ -551,6 +559,9 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     m_pEncoding->vMorphEncoding(aColEnc);
   }
   
+#ifdef WITH_ENCODING_TRACE
+  vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+#endif
 }
 
 
