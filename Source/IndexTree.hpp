@@ -41,8 +41,8 @@ namespace Indexes
     i8         nEntBuffers(void);
     EntBuffer* pFirstH0Buffer(void);
     Index*     pIndex(void);
+    void       vInsertEntries(CrwBuffer* pCrwBuffer);
     bool       bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef);
-    void       vInsertEntriesFromBuffer(CrwBuffer* pCrwBuffer);
     void       vLazyBuild(void);
     EntBuffer* pNewRootBuffer(void);
     EntBuffer* pPositionH0Buffer(Ent* aEnt);

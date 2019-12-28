@@ -529,7 +529,7 @@ void TablePtn::vInsertEntries(CrwBuffer* pCrwBuffer)
     IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
     
     // insert entries from EntBuffer into the index
-    pIndexTree->vInsertEntriesFromBuffer(pCrwBuffer);
+    pIndexTree->vInsertEntries(pCrwBuffer);
   }
 }
 
@@ -629,7 +629,7 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
   CrwBuffer* pCrwBuffer = m_pRootCrwBuffer;
   
   while (pCrwBuffer) {
-    pIndexTree->vInsertEntriesFromBuffer(pCrwBuffer);
+    pIndexTree->vInsertEntries(pCrwBuffer);
     pCrwBuffer = pCrwBuffer->pNextBuffer();
   }
 
@@ -855,7 +855,7 @@ void TablePtn::vUpsertEntries(CrwBuffer* pCrwBuffer)
     IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
     
     // insert entries from EntBuffer into the index
-    pIndexTree->vInsertEntriesFromBuffer(pCrwBuffer);
+    pIndexTree->vInsertEntries(pCrwBuffer);
   }
 }
 

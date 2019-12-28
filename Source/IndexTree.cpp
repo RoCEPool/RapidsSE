@@ -519,9 +519,9 @@ i8 IndexTree::nEntBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert entries from entryBuffer into this index at level 0                 */
+/* insert entries for pCrwBuffer into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vInsertEntriesFromBuffer(CrwBuffer* pCrwBuffer)
+void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
