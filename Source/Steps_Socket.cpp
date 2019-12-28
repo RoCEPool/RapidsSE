@@ -375,7 +375,7 @@ void Step::vSocketRecvObject(void)
       
     case CN_CRWBUFFER: {
       
-      CrwBuffer* pCrwBuffer = new CrwBuffer();
+      CrwBuffer* pCrwBuffer = new CrwBuffer;
       
       MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
       

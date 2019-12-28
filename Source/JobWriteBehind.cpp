@@ -197,7 +197,7 @@ eEC JobWriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void JobWriteBehind::vNewCrwBuffer( i8 i_Ptn)
 {
-  m_pCrwBuffer[i_Ptn] = new CrwBuffer();
+  m_pCrwBuffer[i_Ptn] = new CrwBuffer;
   
   m_pCrwBuffer[i_Ptn]->vTable(m_pTable);
   m_pCrwBuffer[i_Ptn]->vPartitionNo(i_Ptn);
