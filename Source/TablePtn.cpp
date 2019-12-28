@@ -295,26 +295,15 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
   RASSERT(m_okLock.bIsLocked());
   //m_okLock.vGrabWrite();
   
-  if (m_pRootCrwBuffer == nullptr) {
-    ASSERT( ! m_pCurrentCrwBuffer )
-    m_pRootCrwBuffer = new CrwBuffer();
-    m_pRootCrwBuffer->vTable(m_pTable);
-    m_pRootCrwBuffer->vPartitionNo(m_iPartitionId);
-    m_pCurrentCrwBuffer = m_pRootCrwBuffer;
-  }
+  if (! m_pRootCrwBuffer )
+    RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
   
   m_pCurrentCrwBuffer->vAppendOpen(pRowCompactor, false);
   bool bAppended = m_pCurrentCrwBuffer->bAppendRow(pRow);
   
-  if ( ! bAppended ) {
-    CrwBuffer* pCrwBuffer = new CrwBuffer();
-    m_pRootCrwBuffer->vTable(m_pTable);
-    m_pRootCrwBuffer->vPartitionNo(m_iPartitionId);
-    pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
-    pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
-    m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
-    m_pCurrentCrwBuffer = pCrwBuffer;
-    
+  if (! bAppended) {
+    RASSERT(pNewCurrentCrwBuffer());                  //! this needs to be fixed
+
     m_pCurrentCrwBuffer->vAppendOpen(pRowCompactor, false);
     bAppended = m_pCurrentCrwBuffer->bAppendRow(pRow);
     RASSERT(bAppended);
