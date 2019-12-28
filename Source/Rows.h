@@ -15,7 +15,6 @@ namespace Rows
 //------------------------------------------------------------------------------
 
 #include "Ref.hpp"
-#include "RowCoder.hpp"
 #include "Row.hpp"
 
 #include "RowGenerator.hpp"

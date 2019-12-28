@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Rows
+namespace Buffers
 {
   static const i8 C_METABITS = 8;
   static const i8 C_MIN_HEAD_BYTES = 24;
