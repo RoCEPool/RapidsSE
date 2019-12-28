@@ -853,6 +853,8 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // get upsert row, re-encode it for this table, and extract key
     
+    Crw* aCrw_upsert = pCrwBuffer_upsert->aCrw(i_Row);
+    
     pCrwBuffer_upsert->vGetRow(hvRow_upsert,i_Row);
     vTrace("Upsert %lld : %s\n"_Stz,i_Row,spRecord.sz(hvRow_upsert));
     
@@ -868,12 +870,14 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
     EntBuffer* pEntBuf = pIndexTree->pPositionH0Buffer(xEntWrk.aEnt());
     if (! pEntBuf) {
       vTrace("No pEntBuf @%lld; skipping...\n"_Stz,(i8)__LINE__);
+      vUpsert_insert(aCrw_upsert,pEncoding_upsert);
       continue;
     }
     
     Ent* aEnt_prior = pEntBuf->pPositionPriorEntry(xEntWrk.aEnt());
     if (! aEnt_prior) {
       vTrace("No aEnt_prior @%lld; skipping...\n"_Stz,(i8)__LINE__);
+      vUpsert_insert(aCrw_upsert,pEncoding_upsert);
       continue;
     }
     
@@ -884,6 +888,7 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
     Ent* aEnt_found = pEntBuf->aNextEntry(aEnt_prior,0);
     if (! aEnt_found) {
       vTrace("No aEnt_found @%lld; skipping...\n"_Stz,(i8)__LINE__);
+      vUpsert_insert(aCrw_upsert,pEncoding_upsert);
      continue;
     }
     
@@ -891,6 +896,7 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
     
     if (KC_SAME != EntWrk::eCompare(aEnt_found,xEntWrk.aEnt())) {
       vTrace("NOT SAME @%lld; skipping...\n"_Stz,(i8)__LINE__);
+      vUpsert_insert(aCrw_upsert,pEncoding_upsert);
       continue;
     }
     
@@ -916,9 +922,24 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
 /*----------------------------------------------------------------------------*/
 /* WIP: insert a new row                                                      */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vUpsert_insert(void)
+void TablePtn::vUpsert_insert(Crw* aCrw_nosuch, Encoding* pEncoding_upsert)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  StreamDef* pStreamDef = m_pTable->pStreamDef();
+  
+  HV_Row hvRow_nosuch(pStreamDef,C_ALL);
+  CrwBuffer::vToRow(hvRow_nosuch,aCrw_nosuch);
+  SP_Record spRec;
+  vTrace("NoSuch   : %s\n"_Stz,spRec.sz(hvRow_nosuch));
+  
+  SP_Encoding spEncoding;
+  vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert));
+  
+  //..some code to get a new row..
+  //Packing::vPackCrw(aCrw_insert,pEncoding_upsert);
+  
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/

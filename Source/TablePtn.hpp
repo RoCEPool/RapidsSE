@@ -80,7 +80,7 @@ namespace Partitioning
     void vTruncate(void);
     void vUpsertEntries(CrwBuffer* pCrwBuffer);
     void vUpsertEntries2(CrwBuffer* pCrwBuffer);
-    void vUpsert_insert(void);
+    void vUpsert_insert(Crw* aCrw_nosuch, Encoding* pEncoding_upsert);
     void vUpsert_update(Crw* aCrw_exists, Encoding* pEncoding_upsert);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
