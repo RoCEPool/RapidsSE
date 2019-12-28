@@ -44,6 +44,7 @@ namespace Indexes
     bool       bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef);
     void       vInsertEntriesFromBuffer(CrwBuffer* pCrwBuffer);
     void       vLazyBuild(void);
+    EntBuffer* pNewRootBuffer(void);
     EntBuffer* pPositionH0Buffer(Ent* aEnt);
     EntBuffer* pRoot(void);
     void       vTidyUp(void);
@@ -51,8 +52,7 @@ namespace Indexes
     bool       bVerify(void);
     bool       bVerifyIndex(void);
     void       vVisualize(void);
-  
-  
+
     void      vExtractKey(EntWrk* pEntWrk, Crw* aCrw);
     void      vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row);
 

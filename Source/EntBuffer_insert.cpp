@@ -948,7 +948,6 @@ EntBuffer* EntBuffer::pNewNextBuffer(void)
   return pNewBuffer;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* split this buffer into two: this original buffer and a new right buffer    */
 /*----------------------------------------------------------------------------*/
