@@ -592,7 +592,7 @@ Ent* EntBuffer::aInsertKeyAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry)
 /* insert a new key entry into this key tree                                  */
 /*----------------------------------------------------------------------------*/
 Ent* EntBuffer::aInsertKeyTree(EntWrk& xEntWrk,
-                                  EntBuffer** ppRootKeyBuffer)
+                               EntBuffer** ppRootKeyBuffer)
 {
   // ** note: this is a static function **
 

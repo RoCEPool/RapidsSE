@@ -62,6 +62,7 @@ namespace Partitioning
     void vIncBuffersWritten(void);
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
+    void vInsertEntries(Crw* aCrw);
     void vInsertEntries(CrwBuffer* pCrwBuffer);
     bool bIsLocked(void);
     CrwBuffer* pNewCurrentCrwBuffer(void);
@@ -81,8 +82,8 @@ namespace Partitioning
     void vTruncate(void);
     void vUpsertEntries(CrwBuffer* pCrwBuffer);
     void vUpsertEntries2(CrwBuffer* pCrwBuffer);
-    void vUpsert_insert(Crw* aCrw_nosuch, Encoding* pEncoding_upsert);
-    void vUpsert_update(Crw* aCrw_exists, Encoding* pEncoding_upsert);
+    void vUpsert_insert(Crw* aCrw_nosuch, EntWrk* pEntWrk, Encoding* pEncoding_upsert);
+    void vUpsert_update(Crw* aCrw_exists, EntWrk* pEntWrk, Encoding* pEncoding_upsert);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
     i8   nWriteBehindBuffers(void);
