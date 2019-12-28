@@ -37,6 +37,7 @@ EntWrk::EntWrk(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK);
 
+  m_pStreamDef = nullptr;
   m_pIdxColVec = nullptr;
   
   // -- entry --
@@ -530,6 +531,26 @@ i8 EntWrk::nSize_EntKeyNeo(void)
   i8 nSize = nSizeEnt + nSizeElmSeq + nSizeNeo;
   
   return nSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream definition                                                      */
+/*----------------------------------------------------------------------------*/
+StreamDef* EntWrk::pStreamDef(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return m_pStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stream definition                                                      */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vStreamDef(StreamDef* pStreamDef)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_pStreamDef = pStreamDef;
 }
 
 

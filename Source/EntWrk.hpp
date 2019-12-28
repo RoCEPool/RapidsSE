@@ -11,14 +11,14 @@ namespace Entries
   {
   private:
   
+    StreamDef* m_pStreamDef;     // stream definition
     IdxColVec* m_pIdxColVec;     // index column vector describing the key
 
-    // - - - - - - - - - - - - -
-    // entry proper
-  
+    // - - - - - - - - - - - - - //
+    //       entry proper        //
     Ent    m_xEnt;               // the index entry being formed
     byte   m_yaSpace[C_MAX_KEY]; // the bytes of the key
-    // - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - //
   
     Footer m_xFooter;
   
@@ -78,6 +78,8 @@ namespace Entries
     void  vShow(IdxColVec* pIdxColVec);
     i8    nSize_EntKey(void);
     i8    nSize_EntKeyNeo(void);
+    StreamDef* pStreamDef(void);
+    void  vStreamDef(StreamDef* pStreamDef);
 
     Footer* aFooter(void);
   };
