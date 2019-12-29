@@ -386,7 +386,9 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
   // append the buffer entries into the table
   
   TablePtn* pPartition = this->pPartition(iSlot);
-  pPartition->vInsertEntries(pCrwBuffer);
+  pPartition->vAppendBuffer(pCrwBuffer);
+
+  pPartition->vInsertIndexEntries(pCrwBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

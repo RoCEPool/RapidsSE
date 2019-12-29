@@ -505,20 +505,12 @@ IndexTreeVec* TablePtn::pIndexTreeVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert entries from a row buffer                                           */
+/* insert entries into all indexes for all rows in given buffer               */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vInsertEntries(CrwBuffer* pCrwBuffer)
+void TablePtn::vInsertIndexEntries(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  //----------------------------------------------------------------------------
-  // append the buffer to the data row buffers
-
-  vAppendBuffer(pCrwBuffer);
-  
-  //----------------------------------------------------------------------------
-  // insert entries from crwBuffer into all indexes of the table
-  
+    
   // get no of indexes of the table
   i8 nIndexes = m_pIndexTreeVec->nItems();
   
@@ -837,12 +829,12 @@ void TablePtn::vUpsertEntries(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append the buffer to the data row buffers
   
   vAppendBuffer(pCrwBuffer);
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert entries from crwBuffer into all indexes of the table
   
   // get no of indexes of the table
@@ -975,7 +967,7 @@ void TablePtn::vUpsert_insert(Crw* aCrw_nosuch, EntWrk* pEntWrk, Encoding* pEnco
   Crw* aCrw_insert = aAllotFixedSizeCrw();
   Packing::vPackCrw(aCrw_insert,pEncoding_upsert);
   
-  //..code to insert into the idexes..
+  //..code to insert into the indexes..
   
   vDebugPoint();
 }
