@@ -44,11 +44,11 @@ void IdxColVec::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IdxColVec::IdxColVec(void)
+IdxColVec::IdxColVec(IndexDef* pIndexDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IDXCOLVEC,_FOOTER_);
 
-  m_pIndex = nullptr;
+  m_pIndexDef = pIndexDef;
   
   _checkInitialised_(CN_IDXCOLVEC);
   
@@ -69,23 +69,23 @@ IdxColVec::~IdxColVec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get which index                                                            */
+/* get which index definition                                                 */
 /*----------------------------------------------------------------------------*/
-Index* IdxColVec::pIndex(void)
+IndexDef* IdxColVec::pIndexDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IDXCOLVEC,_FOOTER_);
   
-  return m_pIndex;
+  return m_pIndexDef;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set which index                                                            */
+/* set which index definition                                                 */
 /*----------------------------------------------------------------------------*/
-void IdxColVec::vIndex(Index* pIndex)
+void IdxColVec::vIndexDef(IndexDef* pIndexDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IDXCOLVEC,_FOOTER_);
   
-  m_pIndex = pIndex;
+  m_pIndexDef = pIndexDef;
 }
 
 

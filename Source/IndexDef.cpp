@@ -64,7 +64,7 @@ IndexDef::IndexDef(void)
   m_bIsPrimaryKey = false;
   m_bIsUnique     = false;
   
-  m_pIdxColVec    = new IdxColVec;
+  m_pIdxColVec    = new IdxColVec(this);
   
   m_sCmd          = ""_Stz;
 

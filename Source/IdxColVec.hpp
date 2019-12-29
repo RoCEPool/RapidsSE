@@ -8,7 +8,7 @@ namespace MetaData
   class IdxColVec : public VectorNL_t<CN_IDXCOLVEC,Column,1024>
   {
   private:
-    Index* m_pIndex;  // which index
+    IndexDef* m_pIndexDef;  // which index definition
   
     // must be last
     Footer m_xFooter;
@@ -17,11 +17,11 @@ namespace MetaData
     void* operator new(size_t);
     void  operator delete(void*);
   
-    IdxColVec(void);
+    IdxColVec(IndexDef* pIndexDef);
    ~IdxColVec(void) noexcept(false);
   
-    Index*  pIndex(void);
-    void    vIndex(Index* pIndex);
+    IndexDef* pIndexDef(void);
+    void vIndexDef(IndexDef* pIndexDef);
 
     Footer* aFooter(void);
   };
