@@ -21,6 +21,7 @@ namespace MetaData
 #include "Slots.hpp"
 #include "Table.hpp"
 #include "Index.hpp"
+#include "IdxColVec.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

@@ -49,7 +49,7 @@ namespace Jobs          { class Job; struct JobClass;  class JobList;
 namespace Library       {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class Log; class LogEntry;                          }
-namespace MetaData      { class Table; class Index;                           }
+namespace MetaData      { class Table; class IdxColVec; class Index;          }
 namespace Partitioning  { class BucketMap;  class TablePtn;                   }
 namespace Persistence   { class CarryOver;                                    }
 namespace Pipelines     { class OpSpec; class StageSpec; class StageVec;      }
