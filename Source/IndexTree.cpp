@@ -731,6 +731,51 @@ bool IndexTree::bVerifyIndex(void)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* extract an index key into EntWrk from this row using given index columns   */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
+{
+  // get stream def
+  StreamDef* pStreamDef = pEntWrk->pStreamDef();
+  
+  // inflate row
+  HV_Row hvRow(pStreamDef,C_ALL);
+  
+  RowInflator::vInflateRow(hvRow,aCrw);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  
+  i8 nIdxCols = pIdxColVec->nItems();
+  hvRow->m_bGetAll = false;
+  
+  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
+    
+    // get the column from the index column vector
+    Column* pColumn = pIdxColVec->pGet(i_IdxCol);
+    
+    // mark column to be retrieved
+    i8 i_Col = pColumn->iColumnNo();
+    hvRow->m_abGetCol[i_Col] = true;
+    hvRow->m_iLastCol = (i_Col > hvRow->m_iLastCol)
+                          ? i_Col
+                          : hvRow->m_iLastCol;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (i8 i_Col = 0; i_Col < nIdxCols; i_Col++) {
+    
+    Column* pColumn = pIdxColVec->pGet(i_Col);
+    
+    // add the column value to the key
+    pEntWrk->vAppendElement(hvRow,pColumn);
+    
+    //vShow(pIdxColVec);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* extract an index key into EntWrk from this row using given index columns   */

@@ -297,9 +297,9 @@ void CrwBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vGetRow(Row* pRow, i8 i_Row)
 {
-  Crw* aCompactRow = (Crw*)aGetHead(i_Row);
+  Crw* aCrw = (Crw*)aGetHead(i_Row);
   
-  RowInflator::vInflateRow(pRow,aCompactRow);
+  RowInflator::vInflateRow(pRow,aCrw);
 }
 
 /*----------------------------------------------------------------------------*/
