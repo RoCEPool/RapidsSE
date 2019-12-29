@@ -50,7 +50,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_CLAUSE_SUBQRY
   /* */ &Dump::vDummy,           // CN_CLAUSE_WHERE
   /* */ &Dump::vDummy,           // CN_CMD_SELECT
-  /* */ &Dump::vDummy,           // CN_COLUMNVEC
   /* */ &Dump::vDummy,           // CN_COMMAND
   /* */ &Dump::vDummy,           // CN_COMMENCEMARKER
   /* */ &Dump::vDummy,           // CN_COMMENCEDMARKER
@@ -385,7 +384,6 @@ i8 giClassSize[]
   /* */ sizeof(Clause_Where),       // CN_CLAUSE_WHERE
   /* */ sizeof(Cmd_Select),         // CN_CMD_SELECT
   /* */ sizeof(Column),             // CN_COLUMN
-  /* */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* */ sizeof(Request),            // CN_COMMAND
   /* */ sizeof(EosMarker),          // CN_COMMENCEMARKER
   /* */ sizeof(EosMarker),          // CN_COMMENCEDMARKER
@@ -720,7 +718,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_WHERE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CMD_SELECT
   /* */ HT_TRANSIENT_SMALL,   // CN_COLUMN
-  /* */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COMMAND
   /* */ HT_TRANSIENT_SMALL,   // CN_COMMENCEMARKER
   /* */ HT_TRANSIENT_SMALL,   // CN_COMMENCEDMARKER

@@ -46,7 +46,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_CLAUSE_WHERE
   /*    */ &Finalize::vUndefined,         // CN_CMD_SELECT
   /*    */ &Finalize::vUndefined,         // CN_COLUMN
-  /* 32 */ &Finalize::vUndefined,         // CN_COLUMNVEC
   /*    */ &Finalize::vUndefined,         // CN_COMMAND
   /*    */ &Finalize::vUndefined,         // CN_COMMENCEMARKER
   /*    */ &Finalize::vUndefined,         // CN_COMMENCEDMARKER

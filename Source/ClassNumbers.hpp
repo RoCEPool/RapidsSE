@@ -49,7 +49,6 @@ enum eCN : u2 // Class Number
   /*  28 0x01C      136B Heap:M */ CN_CLAUSE_WHERE,
   /*  29 0x01D     4096B Heap:M */ CN_CMD_SELECT,
   /*  30 0x01E      184B Heap:S */ CN_COLUMN,
-  /*  31 0x01F     8216B Heap:M */ CN_COLUMNVEC,
   /*  32 0x020      176B Heap:M */ CN_COMMAND,
   /*  32 0x020      176B Heap:M */ CN_COMMENCEMARKER,
   /*  32 0x020      176B Heap:M */ CN_COMMENCEDMARKER,
@@ -383,7 +382,6 @@ static Stz* aCN[]
   /*  28 0x01C */ "CLAUSE_WHERE"_Stz,        // CN_CLAUSE_WHERE
   /*  29 0x01D */ "CMD_SELECT"_Stz,          // CN_CMD_SELECT
   /*  30 0x01E */ "COLUMN"_Stz,              // CN_COLUMN
-  /*  31 0x01F */ "COLUMNVEC"_Stz,           // CN_COLUMNVEC
   /*  32 0x020 */ "COMMAND"_Stz,             // CN_COMMAND
   /*  32 0x020 */ "COMMENCEMARKER"_Stz,      // CN_COMMENCEMARKER
   /*  32 0x020 */ "COMMENCEDMARKER"_Stz,     // CN_COMMENCEDMARKER
