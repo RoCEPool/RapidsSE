@@ -174,9 +174,11 @@ bool Job_WriteBuffer::bInsertRows(void)
   // insert entries
   
   if (! gpBufferPool->bLowMemory()) {
+    
     // insert the working buffer
     CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pOperand);
-    m_pTable->vInsertEntries(iTxId, iSlot, pCrwBuffer);
+    m_pTable->vAppendBufferInsertEntries(iTxId, iSlot, pCrwBuffer);
+    
     // null the current buffer as its been appended to the table
     m_pOperand = nullptr;
   }

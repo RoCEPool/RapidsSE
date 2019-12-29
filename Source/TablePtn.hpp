@@ -80,10 +80,10 @@ namespace Partitioning
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
-    void vUpsertEntries(CrwBuffer* pCrwBuffer);
-    void vUpsertEntries2(CrwBuffer* pCrwBuffer);
-    void vUpsert_insert(Crw* aCrw_nosuch, EntWrk* pEntWrk, Encoding* pEncoding_upsert);
-    void vUpsert_update(Crw* aCrw_exists, EntWrk* pEntWrk, Encoding* pEncoding_upsert);
+    void vUpsertBuffer(CrwBuffer* pCrwBuffer);
+    void vUpsertBuffer2(CrwBuffer* pCrwBuffer);
+    void vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* pEntWrk, Encoding* pEncoding_upsert);
+    void vUpsertRow_update(Crw* aCrw_exists, EntWrk* pEntWrk, Encoding* pEncoding_upsert);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
     i8   nWriteBehindBuffers(void);

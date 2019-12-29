@@ -510,7 +510,7 @@ IndexTreeVec* TablePtn::pIndexTreeVec(void)
 void TablePtn::vInsertIndexEntries(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-    
+  
   // get no of indexes of the table
   i8 nIndexes = m_pIndexTreeVec->nItems();
   
@@ -825,7 +825,7 @@ void TablePtn::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 /* upsert entries from a row buffer                                           */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vUpsertEntries(CrwBuffer* pCrwBuffer)
+void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
@@ -854,7 +854,7 @@ void TablePtn::vUpsertEntries(CrwBuffer* pCrwBuffer)
 /*----------------------------------------------------------------------------*/
 /* WIP: upsert entries from a row buffer                                      */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
+void TablePtn::vUpsertBuffer2(CrwBuffer* pCrwBuffer_upsert)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
@@ -898,14 +898,14 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
     EntBuffer* pEntBuf = pIndexTree->pPositionH0Buffer(xEntWrk.aEnt());
     if (! pEntBuf) {
       vTrace("No pEntBuf @%lld; skipping...\n"_Stz,(i8)__LINE__);
-      vUpsert_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
+      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
       continue;
     }
     
     Ent* aEnt_prior = pEntBuf->pPositionPriorEntry(xEntWrk.aEnt());
     if (! aEnt_prior) {
       vTrace("No aEnt_prior @%lld; skipping...\n"_Stz,(i8)__LINE__);
-      vUpsert_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
+      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
       continue;
     }
     
@@ -916,7 +916,7 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
     Ent* aEnt_found = pEntBuf->aNextEntry(aEnt_prior,0);
     if (! aEnt_found) {
       vTrace("No aEnt_found @%lld; skipping...\n"_Stz,(i8)__LINE__);
-      vUpsert_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
+      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
      continue;
     }
     
@@ -924,7 +924,7 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
     
     if (KC_SAME != EntWrk::eCompare(aEnt_found,xEntWrk.aEnt())) {
       vTrace("NOT SAME @%lld; skipping...\n"_Stz,(i8)__LINE__);
-      vUpsert_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
+      vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
       continue;
     }
     
@@ -940,7 +940,7 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
       continue;
     }
     
-    vUpsert_update(aCrw_exists,&xEntWrk,pEncoding_upsert);
+    vUpsertRow_update(aCrw_exists,&xEntWrk,pEncoding_upsert);
     
     vDebugPoint();
 
@@ -950,7 +950,7 @@ void TablePtn::vUpsertEntries2(CrwBuffer* pCrwBuffer_upsert)
 /*----------------------------------------------------------------------------*/
 /* WIP: insert a new row                                                      */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vUpsert_insert(Crw* aCrw_nosuch, EntWrk* pEntWrk, Encoding* pEncoding_upsert)
+void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* pEntWrk, Encoding* pEncoding_upsert)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
@@ -975,7 +975,7 @@ void TablePtn::vUpsert_insert(Crw* aCrw_nosuch, EntWrk* pEntWrk, Encoding* pEnco
 /*----------------------------------------------------------------------------*/
 /* WIP: update an existing row                                                */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vUpsert_update(Crw* aCrw_exists, EntWrk* pEntWrk, Encoding* pEncoding_upsert)
+void TablePtn::vUpsertRow_update(Crw* aCrw_exists, EntWrk* pEntWrk, Encoding* pEncoding_upsert)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   

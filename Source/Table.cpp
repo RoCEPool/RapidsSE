@@ -324,6 +324,40 @@ Stz* Table::pAnalyzeTable(bool bDetailed, i8 &nRows)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert entries from a row buffer into the table indexes                    */
+/*----------------------------------------------------------------------------*/
+void Table::vAppendBufferInsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
+{ //# indexTuning
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // This function is invoked when we insert rows into a table via a
+  // begin/insert/end and via the API's insert-select
+  
+  ASSERT(iSlot < AM::nSlotsPerNode());
+  
+  // if buffer has 0 entries (only head) then should be last buffer
+  if (pCrwBuffer->nRowCount() == 0) {
+    delete pCrwBuffer;
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mark crwBuffer as permanent before its appended to the table
+  
+  pCrwBuffer->vIsPermanent(true);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the buffer entries into the table
+  
+  TablePtn* pPartition = this->pPartition(iSlot);
+  pPartition->vAppendBuffer(pCrwBuffer);
+  
+  pPartition->vInsertIndexEntries(pCrwBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* compact index                                                              */
 /*----------------------------------------------------------------------------*/
 void Table::vCompactIndex(Index* pIndex)
@@ -355,40 +389,6 @@ i8 Table::nCrwBuffers(void)
   }
   
   return iBuffers;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert entries from a row buffer into the table indexes                    */
-/*----------------------------------------------------------------------------*/
-void Table::vInsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
-{ //# indexTuning
-  
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // This function is invoked when we insert rows into a table via a
-  // begin/insert/end and via the API's insert-select
-
-  ASSERT(iSlot < AM::nSlotsPerNode());
-
-  // if buffer has 0 entries (only head) then should be last buffer
-  if (pCrwBuffer->nRowCount() == 0) {
-    delete pCrwBuffer;
-    return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // mark crwBuffer as permanent before its appended to the table
-
-  pCrwBuffer->vIsPermanent(true);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append the buffer entries into the table
-  
-  TablePtn* pPartition = this->pPartition(iSlot);
-  pPartition->vAppendBuffer(pCrwBuffer);
-
-  pPartition->vInsertIndexEntries(pCrwBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -790,9 +790,9 @@ void Table::vTruncateIndex(i8 iPartitionNo, i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* upsert entries from a row buffer into the table indexes                    */
+/* upsert row buffer into the table indexes                    */
 /*----------------------------------------------------------------------------*/
-void Table::vUpsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
+void Table::vUpsertBuffer(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
 { //# indexTuning
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -819,8 +819,8 @@ void Table::vUpsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
   
   TablePtn* pPartition = this->pPartition(iSlot);
   
-  pPartition->vUpsertEntries(pCrwBuffer);
-  pPartition->vUpsertEntries2(pCrwBuffer);
+  pPartition->vUpsertBuffer(pCrwBuffer);
+  pPartition->vUpsertBuffer2(pCrwBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
