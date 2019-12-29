@@ -57,6 +57,8 @@ IndexDef::IndexDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
+  m_pIndex        = nullptr;
+  
   m_sIndexNm      = C_NO_NAME;
   m_sTableNm      = C_NO_NAME;
   m_eIndexType    = IT_SKIP_LIST;
@@ -91,6 +93,26 @@ IndexDef::~IndexDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get which index                                                           */
+/*----------------------------------------------------------------------------*/
+Index* IndexDef::pIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  return m_pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set which index                                                            */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+  
+  m_pIndex = pIndex;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the index name                                                         */

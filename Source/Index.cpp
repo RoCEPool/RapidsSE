@@ -68,7 +68,7 @@ Index::Index(void)
   
   Word* pWord  = Word::pToWord(this);
   
-  m_pIndexDef = nullptr; // new IndexDef;
+  m_pIndexDef = nullptr;
   
   m_iIndexNo  = -1;
   m_sIndexNm  = pWord->szWordNm();
@@ -153,6 +153,8 @@ IndexDef* Index::pIndexDef(void)
 void Index::vIndexDef(IndexDef* pIndexDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  
+  pIndexDef->vIndex(this);
   
   m_pIndexDef = pIndexDef;
 }

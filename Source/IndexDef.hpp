@@ -10,16 +10,18 @@ namespace MetaData
   friend class Index;
   
   private:
-    s32  m_sIndexNm;      //
-    s32  m_sTableNm;      //
-    eIT  m_eIndexType;    //
+    Index* m_pIndex;         // which index
   
-    bool m_bIsPrimaryKey; //
-    bool m_bIsUnique;     //
+    s32    m_sIndexNm;       // name of index
+    s32    m_sTableNm;       // name of table
+    eIT    m_eIndexType;     // index type
   
-    IdxColVec*   m_pIdxColVec;    //
+    bool   m_bIsPrimaryKey;  // is this the primary key?
+    bool   m_bIsUnique;      // is this index unique?
   
-    s4K m_sCmd;  // the command which created this def
+    IdxColVec* m_pIdxColVec; // the sub-set of columns which are this index
+  
+    s4K    m_sCmd;  // the command which created this def
 
     // must be last
     Footer m_xFooter;
@@ -31,7 +33,8 @@ namespace MetaData
     IndexDef(void);
    ~IndexDef(void) noexcept(false);
   
-    Stz*   pAnalyze(void);
+    Index* pIndex(void);
+    void   vIndex(Index* pIndex);
     Stz*   szIndexNm(void);
     eEC    eParse(Table* pTable, Stz* szCmd);
     bool   bIsPrimaryKey(void);
