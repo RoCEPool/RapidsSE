@@ -553,16 +553,17 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 bool IndexTree::bInsertEntry(Crw* aCrw, Ref& xRowRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
+
+  StreamDef* pStreamDef = m_pIndex->pTable()->pStreamDef();
+
   EntWrk xEntWrk;
-  
-  m_okLock.vGrabWrite();
-  
+  xEntWrk.vStreamDef(pStreamDef);
   vExtractKey(&xEntWrk,aCrw);
-  
   xEntWrk.vRef(xRowRef);
-  
+
   //xEntWrk.vShow(m_pIndex->pIdxColVec());
+
+  m_okLock.vGrabWrite();                                           //! GRAB LOCK
   
   if (! m_pRootBuffer)
     RASSERT(pNewRootBuffer());
@@ -572,7 +573,7 @@ bool IndexTree::bInsertEntry(Crw* aCrw, Ref& xRowRef)
   
   //m_pRootBuffer->bVerify();
   
-  m_okLock.vDropWrite();
+  m_okLock.vDropWrite();                                           //! DROP LOCK
   
   return true;
 }
@@ -730,9 +731,8 @@ bool IndexTree::bVerifyIndex(void)
   return true;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* extract an index key into EntWrk from this row using given index columns   */
+/* extract a key from given row into EntWrk                                   */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
 {
@@ -778,7 +778,7 @@ void IndexTree::vExtractKey(EntWrk* pEntWrk, Crw* aCrw)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract an index key into EntWrk from this row using given index columns   */
+/* extract a key from row into EntWrk                                         */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row)
 {
