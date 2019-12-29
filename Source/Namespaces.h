@@ -6,7 +6,7 @@
 namespace Alignment     {                                                     }
 namespace Assembler     {                                                     }
 namespace Base          {                                                     }
-namespace Buffers       { class CrwBuffer;                                    }
+namespace Buffers       { class Crw; class CrwBuffer;                         }
 namespace Chunks        { class Format;                                       }
 namespace ClassData     {                                                     }
 namespace CompilerOperators {                                                 }

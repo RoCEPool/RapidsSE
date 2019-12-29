@@ -819,7 +819,7 @@ void Table::vUpsertBuffer(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
   
   TablePtn* pPartition = this->pPartition(iSlot);
   
-  pPartition->vUpsertBuffer(pCrwBuffer);
+  //pPartition->vUpsertBuffer(pCrwBuffer);
   pPartition->vUpsertBuffer2(pCrwBuffer);
 }
 

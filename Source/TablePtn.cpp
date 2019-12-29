@@ -255,9 +255,11 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
 /*----------------------------------------------------------------------------*/
 /* allot a row (from a table defined with a fixed row size)                   */
 /*----------------------------------------------------------------------------*/
-Crw* TablePtn::aAllotFixedSizeCrw(void)
+Crw* TablePtn::aAllotFixedSizeCrw(Ref& xRowRef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  Crw* aCrw = nullptr;
   
   StreamDef* pStreamDef = m_pTable->pStreamDef();
   i8 jRowSize = pStreamDef->m_nFixedSized;
@@ -273,17 +275,25 @@ Crw* TablePtn::aAllotFixedSizeCrw(void)
   // allot from latest buffer
   
   RowNub* pRowNub = m_pCurrentCrwBuffer->m_oRowTray.pNub();
-  Crw* aCrw = (Crw*)pRowNub->aAllotHead(jRowSize);
-  if (aCrw)
+  i8 i_Head = pRowNub->iAllotHead(jRowSize);
+  if (C_UNKNOWN != i_Head) {
+    aCrw = (Crw*)pRowNub->aGetHead(i_Head);
+    xRowRef.vBuffer(* m_pCurrentCrwBuffer->nPoolBufferNo());
+    xRowRef.vItem(i_Head);
     return aCrw;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allot from a new buffer
 
   RASSERT(pNewCurrentCrwBuffer());                    //! this needs to be fixed
   pRowNub = m_pCurrentCrwBuffer->m_oRowTray.pNub();
-  aCrw = (Crw*)pRowNub->aAllotHead(jRowSize);
+  i_Head = pRowNub->iAllotHead(jRowSize);
+  aCrw = (Crw*)pRowNub->aGetHead(i_Head);
   RASSERT(aCrw);
+  
+  xRowRef.vBuffer(* m_pCurrentCrwBuffer->nPoolBufferNo());
+  xRowRef.vItem(i_Head);
   
   return aCrw;
 }
@@ -911,21 +921,22 @@ void TablePtn::vUpsertBuffer2(CrwBuffer* pCrwBuffer_upsert)
 
     xEntWrk.vElmSeqSize(0);
     pIndexTree->vExtractKey(&xEntWrk,pCrwBuffer_upsert,i_Row);
-    xEntWrk.vShow(pIdxColVec);
-    
+    SP_Ent spEnt;
+    vTrace("EntWrk : %s\n"_Stz,spEnt.sz(xEntWrk.aEnt(),pIdxColVec));
+
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // possible insert
     
     EntBuffer* pEntBuf = pIndexTree->pPositionH0Buffer(xEntWrk.aEnt());
     if (! pEntBuf) {
-      vTrace("No pEntBuf @%lld; skipping...\n"_Stz,(i8)__LINE__);
+      vTrace("No pEntBuf @%lld; inserting...\n"_Stz,(i8)__LINE__);
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
       continue;
     }
     
     Ent* aEnt_prior = pEntBuf->pPositionPriorEntry(xEntWrk.aEnt());
     if (! aEnt_prior) {
-      vTrace("No aEnt_prior @%lld; skipping...\n"_Stz,(i8)__LINE__);
+      vTrace("No aEnt_prior @%lld; inserting...\n"_Stz,(i8)__LINE__);
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
       continue;
     }
@@ -936,7 +947,7 @@ void TablePtn::vUpsertBuffer2(CrwBuffer* pCrwBuffer_upsert)
     
     Ent* aEnt_found = pEntBuf->aNextEntry(aEnt_prior,0);
     if (! aEnt_found) {
-      vTrace("No aEnt_found @%lld; skipping...\n"_Stz,(i8)__LINE__);
+      vTrace("No aEnt_found @%lld; inserting...\n"_Stz,(i8)__LINE__);
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
      continue;
     }
@@ -944,7 +955,7 @@ void TablePtn::vUpsertBuffer2(CrwBuffer* pCrwBuffer_upsert)
     vTrace("Key Found: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIdxColVec));
     
     if (KC_SAME != EntWrk::eCompare(aEnt_found,xEntWrk.aEnt())) {
-      vTrace("NOT SAME @%lld; skipping...\n"_Stz,(i8)__LINE__);
+      vTrace("NOT SAME @%lld; inserting...\n"_Stz,(i8)__LINE__);
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
       continue;
     }
@@ -985,9 +996,12 @@ void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* pEntWrk, Encoding* pE
   SP_Encoding spEncoding;
   vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert));
   
-  Crw* aCrw_insert = aAllotFixedSizeCrw();
+  Crw* aCrw_insert = aAllotFixedSizeCrw(pEntWrk->xRef());
   Packing::vPackCrw(aCrw_insert,pEncoding_upsert);
   
+  SP_Ref spRef;
+  vTrace("Insert Entries to : %s\n"_Stz,spRef.sz(pEntWrk->xRef()));
+
   vInsertIndexEntries(aCrw_insert,pEntWrk->xRef());
   
   vDebugPoint();
