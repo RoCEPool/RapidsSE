@@ -62,7 +62,7 @@ namespace Partitioning
     void vIncBuffersWritten(void);
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
-    void vInsertIndexEntries(Crw* aCrw);
+    void vInsertIndexEntries(Crw* aCrw, Ref& xRowRef);
     void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
     bool bIsLocked(void);
     CrwBuffer* pNewCurrentCrwBuffer(void);
