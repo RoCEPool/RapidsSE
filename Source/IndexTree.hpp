@@ -10,11 +10,10 @@ namespace Indexes
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
   class IndexTree : public Object
   {
-    
   private:
-    Lock         m_okLock;         // lock on the buffer tree
-    Index*       m_pIndex;         // which index
-    i8           m_iPartitionNo;   // which partition no
+    Lock   m_okLock;        // lock on the buffer tree
+    Index* m_pIndex;        // which index
+    i8     m_iPartitionNo;  // which partition no
     
     EntBuffer* m_pRootBuffer;    // the root buffer
 
@@ -27,10 +26,8 @@ namespace Indexes
     void  operator delete(void*);
     
     IndexTree(Index* pIndex, i8 iPartitionNo);
-    ~IndexTree(void) noexcept(false);
+   ~IndexTree(void) noexcept(false);
   
-    static void vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0);
-    static void vCopyReInitL1(EntBuffer* pL1, EntBuffer* pLeftL0);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
     static void vMonitorPortrait(s48K& sPortrait);

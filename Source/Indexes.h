@@ -18,6 +18,11 @@ namespace Indexes
 
 //------------------------------------------------------------------------------
 
+//#define TRACE_COMPACT(x) x
+#define TRACE_COMPACT(x)
+
+// - - - - - - - - - - - -
+
 #include "KeyBuilder.hpp"
 
 #include "SkipRoots.hpp"
