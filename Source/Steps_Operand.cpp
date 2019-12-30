@@ -254,8 +254,10 @@ void Step::vOperandKind(void)
     case CN_ENTBUFFER:       eOperand = ZK_ENTBUFFER;       break;
     case CN_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
     case CN_IRWBUFFER:       eOperand = ZK_IRWBUFFER;       break;
+    case CN_PULSEMARKER:     eOperand = ZK_PULSEMARKER;     break;
     case CN_SRTBUFFER:       eOperand = ZK_SRTBUFFER;       break;
     case CN_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
+    case CN_STARTEDMARKER:   eOperand = ZK_STARTEDMARKER;   break;
     case CN_STOPMARKER:      eOperand = ZK_STOPMARKER;      break;
     case CN_STOPPEDMARKER:   eOperand = ZK_STOPPEDMARKER;   break;
     case CN_STREAMDEF:       eOperand = ZK_STREAMDEF;       break;

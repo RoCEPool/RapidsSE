@@ -627,7 +627,7 @@ i8 giClassSize[]
   /* */ sizeof(StageSpecVec),       // CN_STAGESPECVEC
   /* */ sizeof(StageVec),           // CN_STAGEVEC
   /* */ sizeof(StartMarker),        // CN_STARTMARKER
-  /* */ sizeof(StartMarker),        // CN_STARTEDMARKER
+  /* */ sizeof(StartedMarker),      // CN_STARTEDMARKER
   /* */ sizeof(Statistics),         // CN_STATISTICS
   /* */ sizeof(StepAccum),          // CN_STEPACCUM
   /* */ sizeof(StepTiming),         // CN_STEPTIMING

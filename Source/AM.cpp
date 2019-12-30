@@ -196,12 +196,24 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
       
+    case CN_PULSEMARKER: {
+      PulseMarker* pPulseMarker = _pPulseMarker(pOperand);
+      delete pPulseMarker;
+      break;
+    }
+      
     case CN_STARTMARKER: {
       StartMarker* pStartMarker = _pStartMarker(pOperand);
       delete pStartMarker;
       break;
     }
     
+    case CN_STARTEDMARKER: {
+      StartedMarker* pStartedMarker = _pStartedMarker(pOperand);
+      delete pStartedMarker;
+      break;
+    }
+      
     case CN_STOPMARKER: {
       StopMarker* pStopMarker = _pStopMarker(pOperand);
       delete pStopMarker;

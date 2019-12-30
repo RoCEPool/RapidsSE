@@ -34,6 +34,7 @@ bool Operands::_bIsValidOperand(eCN eClass)
     case CN_CRWBUFFER:
     case CN_CSVBUFFER:
     case CN_IRWBUFFER:
+    case CN_PULSEMARKER:
     case CN_STARTMARKER:
     case CN_STARTEDMARKER:
     case CN_STREAMDEF:

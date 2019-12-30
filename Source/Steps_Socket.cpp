@@ -505,6 +505,27 @@ void Step::vSocketRecvObject(void)
       EXIT();
       return;
     }
+     
+    case CN_PULSEMARKER: {
+      PulseMarker* pPulseMarker = new PulseMarker();
+      
+      MemLib::vCopy(pPulseMarker,pObject,sizeof(Object),CN_PULSEMARKER);
+      
+      aBody = aAdd<void*>(pPulseMarker,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_PULSEMARKER] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        m_pDataStack->vPushInt(false);
+        EXIT();
+        return;
+      }
+      
+      m_pDataStack->vPushPtr(pPulseMarker);
+      m_pDataStack->vPushInt(true);
+      EXIT();
+      return;
+    }
       
     case CN_STREAMDEF: {
       StreamDef* pStreamDef = new StreamDef();
