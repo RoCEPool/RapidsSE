@@ -25,7 +25,6 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#include "Prompt_ssnState.hpp"
 #include "Prompt_args.hpp"
 #include "Prompt_ascii.hpp"
 #include "Prompt_attachMap.hpp"
@@ -120,6 +119,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_so.hpp"
 #include "Prompt_socket.hpp"
 #include "Prompt_ssn.hpp"
+#include "Prompt_ssnState.hpp"
 #include "Prompt_st.hpp"
 
 #include "Prompt_takeMem.hpp"
