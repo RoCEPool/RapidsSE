@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptDesc __Prompt_resources (
+PromptFun __Prompt_resources (
   PF_RESOURCES,          // prompt function
   "Prompt_resources"_Stz,// name of the prompt function
   "comment"_Stz,         // comment about the function

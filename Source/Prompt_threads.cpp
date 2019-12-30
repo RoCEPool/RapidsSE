@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc __Prompt_threads (
+PromptFun __Prompt_threads (
   PF_THREADS,           // prompt function
   "Prompt_threads"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function

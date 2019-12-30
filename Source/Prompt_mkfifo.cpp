@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc __Prompt_mkfifo (
+PromptFun __Prompt_mkfifo (
   PF_MKFIFO,             // prompt function
   "Prompt_mkfifo"_Stz,   // name of the prompt function
   "comment"_Stz,         // comment about the function

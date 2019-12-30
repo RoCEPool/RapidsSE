@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc __Prompt_show (
+PromptFun __Prompt_show (
   PF_SHOW,           // prompt function
   "Prompt_show"_Stz, // name of the prompt function
   "comment"_Stz,     // comment about the function

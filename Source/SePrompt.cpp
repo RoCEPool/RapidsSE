@@ -462,7 +462,7 @@ bool SePrompt::bExecuteFunction(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  PromptDesc* pPromptDesc =
+  PromptFun* pPromptDesc =
     gxPromptCatalog.pFindFun(pTkn(0)->szText(), pTkn(1)->szText());
   
   if (! pPromptDesc)

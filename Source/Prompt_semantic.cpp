@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptDesc __Prompt_semantic (
+PromptFun __Prompt_semantic (
   PF_SEMANTIC,            // prompt function
   "Prompt_semantic"_Stz,  // name of the prompt function
   "comment"_Stz,          // comment about the function

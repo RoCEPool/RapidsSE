@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc __Prompt_constants (
+PromptFun __Prompt_constants (
   PF_CONSTANTS,            // prompt function
   "Prompt_constants"_Stz,  // name of the prompt function
   "comment"_Stz,           // comment about the function

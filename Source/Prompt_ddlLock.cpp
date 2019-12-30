@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc __Prompt_ddlLock (
+PromptFun __Prompt_ddlLock (
   PF_DDLLOCK,            // prompt function
   "Prompt_ddlLock"_Stz,  // name of the prompt function
   "comment"_Stz,         // comment about the function

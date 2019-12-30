@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptDesc __Prompt_args (
+PromptFun __Prompt_args (
   PF_ARGS,           // prompt function
   "Prompt_args"_Stz, // name of the prompt function
   "comment"_Stz,     // comment about the function

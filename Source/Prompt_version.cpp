@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptDesc __Prompt_version (
+PromptFun __Prompt_version (
   PF_VERSION,           // prompt function
   "Prompt_version"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function

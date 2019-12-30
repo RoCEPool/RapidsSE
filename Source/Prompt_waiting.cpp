@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptDesc __Prompt_waiting (
+PromptFun __Prompt_waiting (
   PF_WAITING,             // prompt function
   "Prompt_waiting"_Stz,   // name of the prompt function
   "comment"_Stz,          // comment about the function

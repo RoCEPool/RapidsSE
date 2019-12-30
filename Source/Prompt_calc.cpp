@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc __Prompt_calc (
+PromptFun __Prompt_calc (
   PF_BYE,            // prompt function
   "Prompt_calc"_Stz, // name of the prompt function
   "comment"_Stz,     // comment about the function

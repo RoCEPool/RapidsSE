@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc __Prompt_print (
+PromptFun __Prompt_print (
   PF_PRINT,          // prompt function
   "Prompt_print"_Stz,// name of the prompt function
   "comment"_Stz,     // comment about the function

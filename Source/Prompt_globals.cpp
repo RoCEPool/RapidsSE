@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptDesc __Prompt_globals (
+PromptFun __Prompt_globals (
   PF_GIVEMEM,           // prompt function
   "Prompt_globals"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function

@@ -6,7 +6,7 @@
 #include "AM.hpp"
 
 
-PromptDesc __Prompt_ssnState (
+PromptFun __Prompt_ssnState (
   PF_SSNSTATE,            // prompt function
   "Prompt_ssnState"_Stz,  // name of the prompt function
   "comment"_Stz,          // comment about the function

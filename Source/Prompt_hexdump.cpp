@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc __Prompt_hexdump (
+PromptFun __Prompt_hexdump (
   PF_HEXDUMP,           // prompt function
   "Prompt_hexdump"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function

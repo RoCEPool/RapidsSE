@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc __Prompt_shortcut (
+PromptFun __Prompt_shortcut (
   PF_SHORTCUT,        // prompt function
   "Prompt_shortcut"_Stz, // name of the prompt function
   "comment"_Stz,      // comment about the function

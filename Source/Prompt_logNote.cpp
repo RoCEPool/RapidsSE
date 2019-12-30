@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc __Prompt_logNote (
+PromptFun __Prompt_logNote (
   PF_LOGNOTE,           // prompt function
   "Prompt_logNote"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function

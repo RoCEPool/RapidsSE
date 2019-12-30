@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc __Prompt_setDbg (
+PromptFun __Prompt_setDbg (
   PF_SETDBG,           // prompt function
   "Prompt_setDbg"_Stz, // name of the prompt function
   "comment"_Stz,       // comment about the function

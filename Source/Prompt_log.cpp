@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc __Prompt_log (
+PromptFun __Prompt_log (
   PF_LOG,             // prompt function
   "Prompt_log"_Stz,    // name of the prompt function
   "comment"_Stz,       // comment about the function

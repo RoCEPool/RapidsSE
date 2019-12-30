@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc __Prompt_numbers (
+PromptFun __Prompt_numbers (
   PF_NUMBERS,           // prompt function
   "Prompt_numbers"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function
