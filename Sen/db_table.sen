@@ -53,9 +53,10 @@
 
   compiler::current@ word.embObject object.magic!
   CN_TABLE compiler::current@ word.embObject object.class!
-  true compiler::current@ word.embObject object.wordbody!
 
   compiler::current@ word.embObject table.init
+
+  true compiler::current@ word.embObject object.wordbody!
   tick table compiler::current@ word.category!
 
   does>
@@ -72,9 +73,10 @@
 
   compiler::current@ word.embObject object.magic!
   CN_TABLE compiler::current@ word.embObject object.class!
-  true compiler::current@ word.embObject object.wordbody!
 
   compiler::current@ word.embObject table.init
+
+  true compiler::current@ word.embObject object.wordbody!
   tick table compiler::current@ word.category!
 
   compiler::current@

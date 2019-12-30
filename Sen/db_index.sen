@@ -37,10 +37,10 @@
 
   compiler::current@ word.embObject object.magic!
   CN_INDEX compiler::current@ word.embObject object.class!
-  true compiler::current@ word.embObject object.wordbody!
 
   compiler::current@ word.embObject index.init
 
+  true compiler::current@ word.embObject object.wordbody!
   tick index compiler::current@ word.category!
 
   does>
@@ -57,10 +57,10 @@
 
   compiler::current@ word.embObject object.magic!
   CN_INDEX compiler::current@ word.embObject object.class!
-  true compiler::current@ word.embObject object.wordbody!
 
   compiler::current@ word.embObject index.init
 
+  true compiler::current@ word.embObject object.wordbody!
   tick index compiler::current@ word.category!
 
   compiler::current@

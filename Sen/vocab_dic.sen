@@ -24,10 +24,10 @@ diclock.grabwrite
 
   compiler::current@ word.embObject object.magic!
   CN_DIC compiler::current@ word.embObject object.class!
-  true compiler::current@ word.embObject object.wordbody!
 
   compiler::current@ word.embObject dic.init
 
+  true compiler::current@ word.embObject object.wordbody!
   tick folder compiler::current@ word.category!
 
   //compiler::current@ word.name@ "  dic: %v" str.format .
@@ -50,10 +50,10 @@ diclock.grabwrite
 
   compiler::current@ word.embObject object.magic!
   CN_DIC compiler::current@ word.embObject object.class!
-  true compiler::current@ word.embObject object.wordbody!
 
   compiler::current@ word.embObject dic.init
 
+  true compiler::current@ word.embObject object.wordbody!
   tick folder compiler::current@ word.category!
 
   //compiler::current@ word.name@ "  dic: %v" str.format .
@@ -74,10 +74,10 @@ diclock.grabwrite
 
   compiler::current@ word.embObject object.magic!
   CN_DIC compiler::current@ word.embObject object.class!
-  true compiler::current@ word.embObject object.wordbody!
 
   compiler::current@ word.embObject dic.init
 
+  true compiler::current@ word.embObject object.wordbody!
   tick folder compiler::current@ word.category!
 
   //compiler::current@ word.name@ "  dic: %v" str.format .
@@ -100,10 +100,10 @@ diclock.grabwrite
 
   compiler::current@ word.embObject object.magic!
   CN_DIC compiler::current@ word.embObject object.class!
-  true compiler::current@ word.embObject object.wordbody!
 
   compiler::current@ word.embObject dic.init
 
+  true compiler::current@ word.embObject object.wordbody!
   tick folder compiler::current@ word.category!
 
   compiler::current@
@@ -126,9 +126,10 @@ diclock.grabwrite
 
   compiler::current@ word.embObject object.magic!
   CN_DIC compiler::current@ word.embObject object.class!
-  true compiler::current@ word.embObject object.wordbody!
 
   tick folder compiler::current@ word.category!
+
+  true compiler::current@ word.embObject object.wordbody!
   compiler::current@ word.embObject dic.init
 
   compiler::current@
