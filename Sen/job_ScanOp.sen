@@ -100,11 +100,6 @@
 
       endof
 
-      ZK_STOPMARKER of
-      //"Operand:- ZK_STOPMARKER" .verbose
-      Operand[].handleEnd
-      endof
-
       ZK_STARTMARKER of
         //"Operand:- ZK_STARTMARKER" .verbose
         Operand[].pipeOut

@@ -22,14 +22,6 @@
     // decode kind
     Operand[].kind case
 
-      ZK_COMPLETEDMARKER of
-        //"Operand:- ZK_COMPLETEDMARKER" .verbose
-        Operand[].delete
-        Operand[].newStopMarker
-        Operand[].pipeOut
-        true
-      endof
-
       ZK_CANCELMARKER of
         //"Operand:- ZK_CANCELMARKER" .verbose
         "Query being cancelled\n" .verbose

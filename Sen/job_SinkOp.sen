@@ -31,8 +31,6 @@
     Operand[].kind ZK_EOSMARKER == if
       //"Operand:- ZK_EOSMARKER" .verbose
       Operand[].delete
-      Operand[].newCompletedMarker
-      Operand[].pipeOut
       true
     else
 

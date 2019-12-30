@@ -68,6 +68,7 @@
 "Job_OutputOp.sen"       include
 
 "Job_Periodic.sen"       include
+"Job_PeriodicOp.sen"     include
 "Job_Ping.sen"           include
 "Job_Pipeline.sen"       include
 "Job_Pwf.sen"            include

@@ -104,7 +104,7 @@ time pipeline scan
 begin
 
 stage stageA on origin:
-startOp | stageB
+startOp | periodicOp | stageB
 
 stage stageB on all partitions:
 scanOp lineitem | stageC
