@@ -1,0 +1,82 @@
+/*============================================================================*/
+/* job_PeriodicOp.sen -- Job PeriodicOp                                       */
+/*============================================================================*/
+
+" job_PeriodicOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* execute for periodicOp request                     (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : periodicOp_req ( -- )
+ 
+  >>logEntry <SEED_REQ>
+
+  begin
+
+    // bide till next operand is available
+    Operand[].bide
+
+    // pop next operand from queue into Operand[]
+    Operand[].next
+
+    // decode kind
+    Operand[].kind case
+
+      ZK_COMPLETEDMARKER of
+        //"Operand:- ZK_COMPLETEDMARKER" .verbose
+        Operand[].delete
+        Operand[].newStopMarker
+        Operand[].pipeOut
+        true
+      endof
+
+      ZK_CANCELMARKER of
+        //"Operand:- ZK_CANCELMARKER" .verbose
+        "Query being cancelled\n" .verbose
+        Operand[].pipeOut
+        true
+      endof
+
+      ZK_STARTMARKER of
+        //"Operand:- ZK_STARTMARKER" .verbose
+        Operand[].pipeOut
+        true
+      endof
+
+      ZK_STOPPEDMARKER of
+        //"Operand:- ZK_STOPPEDMARKER" .verbose
+        Operand[].delete
+        Op.ackPipelineJob
+        false
+      endof
+
+    endcase
+
+  while assert::stack_0 repeat
+
+  <<logExit
+  job::deleteThis
+  <DONE_RUN>
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobSyntax: periodicOp :: periodicOp ;
+
+jobInfo: periodicOp
+{
+  <?jobDesc?>  = "--description of job--"
+  
+  <?jobType?>  = JT_PERIODICOP
+  <?jobKind?>  = JK_LOCAL
+  <?rspKind?>  = RS_NODE_ZERO
+  <?ddlLock?>  = DL_GRAB_READ
+  
+  <?preCheck?> = bClusterStarted
+}
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

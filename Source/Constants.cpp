@@ -473,6 +473,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("JT_LISTPARTCOLUMNS"_Stz, JT_LISTPARTCOLUMNS);
   /*    */ vAddConstant("JT_LISTPARTITIONS"_Stz,  JT_LISTPARTITIONS);
   /*    */ vAddConstant("JT_OUTPUTOP"_Stz,        JT_OUTPUTOP);
+  /*    */ vAddConstant("JT_PERIODICOP"_Stz,      JT_PERIODICOP);
   /*    */ vAddConstant("JT_PING"_Stz,            JT_PING);
   /*    */ vAddConstant("JT_PWF"_Stz,             JT_PWF);
   /*    */ vAddConstant("JT_SCANOP"_Stz,          JT_SCANOP);
