@@ -550,7 +550,7 @@ i8 giClassSize[]
   /* */ sizeof(PsxThd),             // CN_PSXTHD
   /* */ sizeof(PtnColVec),          // CN_PTNCOLVEC
   /* */ sizeof(PtrVal),             // CN_PTRVAL
-  /* */ sizeof(PtrVal),             // CN_PULSEMARKER
+  /* */ sizeof(PulseMarker),        // CN_PULSEMARKER
 
   /* */ 'Q'-'A' + 1,                // CN__Q__
   /* */ sizeof(Queue),              // CN_QUEUE

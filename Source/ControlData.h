@@ -22,6 +22,7 @@ namespace ControlData
 #include "EosMarker.hpp"
 #include "ErrorMarker.hpp"
 #include "PauseMarker.hpp"
+#include "PulseMarker.hpp"
 #include "StartMarker.hpp"
 #include "StopMarker.hpp"
 #include "StoppedMarker.hpp"
