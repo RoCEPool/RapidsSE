@@ -925,16 +925,16 @@ void TablePtn::vUpsertBuffer2(CrwBuffer* pCrwBuffer_upsert)
     vTrace("EntWrk : %s\n"_Stz,spEnt.sz(xEntWrk.aEnt(),pIdxColVec));
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // possible insert
+    // possible insert (can we find the row using primary key)
     
-    EntBuffer* pEntBuf = pIndexTree->pPositionH0Buffer(xEntWrk.aEnt());
-    if (! pEntBuf) {
+    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aEnt());
+    if (! pEntH0Buf) {
       vTrace("No pEntBuf @%lld; inserting...\n"_Stz,(i8)__LINE__);
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
       continue;
     }
     
-    Ent* aEnt_prior = pEntBuf->pPositionPriorEntry(xEntWrk.aEnt());
+    Ent* aEnt_prior = pEntH0Buf->pPositionPriorEntry(xEntWrk.aEnt());
     if (! aEnt_prior) {
       vTrace("No aEnt_prior @%lld; inserting...\n"_Stz,(i8)__LINE__);
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
@@ -945,7 +945,7 @@ void TablePtn::vUpsertBuffer2(CrwBuffer* pCrwBuffer_upsert)
     vTrace("Key Prior: %s\n"_Stz,spKey.sz(aEnt_prior->aKey(),pIdxColVec));
     vDebugPoint();
     
-    Ent* aEnt_found = pEntBuf->aNextEntry(aEnt_prior,0);
+    Ent* aEnt_found = pEntH0Buf->aNextEntry(aEnt_prior,0);
     if (! aEnt_found) {
       vTrace("No aEnt_found @%lld; inserting...\n"_Stz,(i8)__LINE__);
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert);
@@ -961,7 +961,7 @@ void TablePtn::vUpsertBuffer2(CrwBuffer* pCrwBuffer_upsert)
     }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // upsert
+    // upsert (we have a crw matching the key)
     
     SP_Ent spRef;
     vTrace("SAME : %s\n"_Stz,spRef.sz(aEnt_found,pIdxColVec));
