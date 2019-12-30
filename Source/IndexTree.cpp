@@ -210,7 +210,7 @@ void IndexTree::vCompact(void)
       //vTrace("Sublist: %lld\n"_Stz,--iSubListLength);
       
       // copy contents of right L0 leftwards
-      EntBuffer::vCopyLeftV3(&pLeftL0,pRightL0);
+      EntBuffer::vCopyLeftH0(&pLeftL0,pRightL0);
       
       // delete the right L0
       delete pRightL0;

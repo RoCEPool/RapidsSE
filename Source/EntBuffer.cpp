@@ -89,7 +89,7 @@ EntBuffer::~EntBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* copy all keys of right buffer to left buffer; create new left when needed  */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
+void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
 {
   TRACE_COMPACT( vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,
                         pRightL0->iBufferNo()); )
