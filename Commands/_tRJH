@@ -36,7 +36,7 @@ pipeline t_ups
 begin
 
   stage stageA on origin:
-    startOp | stageB
+    startOp | periodicOp | stageB
 
   stage stageB on all partitions:
     genCsvOp T | toCrwOp T | upsertOp T | stageC
