@@ -19,7 +19,6 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 
 #include "SePrompt.hpp"
 
-#include "PromptDefn.hpp"
 #include "PromptDesc.hpp"
 #include "PromptCatalog.hpp"
 #include "PromptHelper.hpp"
