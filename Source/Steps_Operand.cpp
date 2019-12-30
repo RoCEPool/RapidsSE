@@ -23,6 +23,8 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newCompletedMarker"_Stz,  &Step::vOperandNewCompletedMarker);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
+  vAddStep("Operand[].newPulseMarker"_Stz, &Step::vOperandNewPulseMarker);
+  vAddStep("Operand[].newStartedMarker"_Stz, &Step::vOperandNewStartedMarker);
   vAddStep("Operand[].newStopMarker"_Stz,  &Step::vOperandNewStopMarker);
   vAddStep("Operand[].newStoppedMarker"_Stz, &Step::vOperandNewStoppedMarker);
   vAddStep("Operand[].newStreamDef"_Stz,   &Step::vOperandNewStreamDef);
@@ -329,6 +331,34 @@ void Step::vOperandNewErrorMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Operand[].newPulseMarker -- new a pulse marker                             */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewPulseMarker(void)
+{
+  ENTRY(); // ENTRY("vOperandNewPulseMarker"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperand.bIsNull());
+  
+  m_pRegSet->m_xpOperand = new PulseMarker;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newStartedMarker -- new a started marker                         */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewStartedMarker(void)
+{
+  ENTRY(); // ENTRY("vOperandNewStartedMarker"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperand.bIsNull());
+  
+  m_pRegSet->m_xpOperand = new StartedMarker;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Operand[].newStopMarker -- new a stop marker                               */
 /*----------------------------------------------------------------------------*/
 void Step::vOperandNewStopMarker(void)
@@ -355,7 +385,6 @@ void Step::vOperandNewStoppedMarker(void)
   
   EXIT();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* Operand[].newStreamDef -- new a stream def from table[]                    */

@@ -871,6 +871,8 @@ public:
   void vOperandNewCompletedMarker(void);
   void vOperandNewEosMarker(void);
   void vOperandNewErrorMarker(void);
+  void vOperandNewPulseMarker(void);
+  void vOperandNewStartedMarker(void);
   void vOperandNewStopMarker(void);
   void vOperandNewStoppedMarker(void);
   void vOperandNewStreamDef(void);
