@@ -214,6 +214,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_PSXTHD
   /* */ &Dump::vDummy,           // CN_PTNCOLVEC
   /* */ &Dump::vInvalid,         // CN_PTRVAL
+  /* */ &Dump::vDummy,           // CN_PULSEMARKER
 
   /* */ &Dump::vInvalid,         // CN__Q__
   /* */ &Queue::vDump,           // CN_QUEUE
@@ -549,6 +550,7 @@ i8 giClassSize[]
   /* */ sizeof(PsxThd),             // CN_PSXTHD
   /* */ sizeof(PtnColVec),          // CN_PTNCOLVEC
   /* */ sizeof(PtrVal),             // CN_PTRVAL
+  /* */ sizeof(PtrVal),             // CN_PULSEMARKER
 
   /* */ 'Q'-'A' + 1,                // CN__Q__
   /* */ sizeof(Queue),              // CN_QUEUE
@@ -884,6 +886,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_PSXTHD
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PTNCOLVEC
   /* */ HT_INVALID,           // CN_PTRVAL
+  /* */ HT_TRANSIENT_SMALL,   // CN_PULSEMARKER
 
   /* */ HT_INVALID,           // CN__Q__
   /* */ HT_TRANSIENT_SMALL,   // CN_QUEUE

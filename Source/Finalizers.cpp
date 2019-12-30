@@ -210,6 +210,7 @@ pFINALIZE *gpFinalize[]
   /* 89 */ &Finalize::vUndefined,         // CN_PSXTHD
   /* 94 */ &Finalize::vUndefined,         // CN_PTNCOLVEC
   /* 11 */ &Finalize::vUndefined,         // CN_PTRVAL
+  /* 11 */ &Finalize::vUndefined,         // CN_PULSEMARKER
 
   /*    */ &Finalize::vUndefined,         // CN__Q__
   /* 95 */ &Finalize::vUndefined,         // CN_QUEUE

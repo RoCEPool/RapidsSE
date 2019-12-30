@@ -213,6 +213,7 @@ enum eCN : u2 // Class Number
   /* 177 0x0B1      104B Heap:S */ CN_PSXTHD,
   /* 178 0x0B2     8216B Heap:M */ CN_PTNCOLVEC,
   /* 179 0x0B3       16B Heap:I */ CN_PTRVAL,
+  /* 179 0x0B3       16B Heap:I */ CN_PULSEMARKER,
   
   /* 180 0x0B4       17B Heap:I */ CN__Q__,
   /* 181 0x0B5      232B Heap:S */ CN_QUEUE,
@@ -547,6 +548,7 @@ static Stz* aCN[]
   /* 177 0x0B1 */ "PSXTHD"_Stz,              // CN_PSXTHD
   /* 178 0x0B2 */ "PTNCOLVEC"_Stz,           // CN_PTNCOLVEC
   /* 179 0x0B3 */ "PTRVAL"_Stz,              // CN_PTRVAL
+  /* 179 0x0B3 */ "PULSEMARKER"_Stz,         // CN_PULSEMARKER
   
   /* 180 0x0B4 */ "_Q__"_Stz,                // CN__Q__
   /* 181 0x0B5 */ "QUEUE"_Stz,               // CN_QUEUE
