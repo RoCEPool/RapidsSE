@@ -872,6 +872,7 @@ public:
   void vOperandNewEosMarker(void);
   void vOperandNewErrorMarker(void);
   void vOperandNewPulseMarker(void);
+  void vOperandNewStartMarker(void);
   void vOperandNewStartedMarker(void);
   void vOperandNewStopMarker(void);
   void vOperandNewStoppedMarker(void);

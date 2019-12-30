@@ -33,7 +33,7 @@
         //"Operand:- ZK_PULSEMARKER" .verbose
         Operand[].pipeOut
         Operand[].newStopMarker
-        Operand[].pipeout
+        Operand[].pipeOut
         Op.ackPipelineJob
         false
       endof

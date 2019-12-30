@@ -67,7 +67,9 @@
 
       ZK_PULSEMARKER of
         //"Operand:- ZK_PULSEMARKER" .verbose
-        Operand[].pipeout
+        Operand[].pipeOut
+        Operand[].newPulseMarker
+        Operand[].pipeToJob
         true
       endof
 
@@ -80,14 +82,20 @@
 
       ZK_STARTMARKER of
         //"Operand:- ZK_STARTMARKER" .verbose
-        Operand[].pipeout
+        Operand[].pipeToJob
+        Operand[].newStartMarker
+        Operand[].pipeOut
+        Operand[].newStartMarker
+        Operand[].pipeOut
         true
       endof
 
       ZK_STOPMARKER of
         //"Operand:- ZK_STOPMARKER" .verbose
+        Operand[].pipeToJob
+        Operand[].newStopMarker
         Operand[].handleEnd
-      endof
+        endof
 
       ZK_STREAMDEF of
         //"Operand:- ZK_STREAMDEF" .verbose

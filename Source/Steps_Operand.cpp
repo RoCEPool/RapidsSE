@@ -24,6 +24,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
   vAddStep("Operand[].newPulseMarker"_Stz, &Step::vOperandNewPulseMarker);
+  vAddStep("Operand[].newStartMarker"_Stz, &Step::vOperandNewStartMarker);
   vAddStep("Operand[].newStartedMarker"_Stz, &Step::vOperandNewStartedMarker);
   vAddStep("Operand[].newStopMarker"_Stz,  &Step::vOperandNewStopMarker);
   vAddStep("Operand[].newStoppedMarker"_Stz, &Step::vOperandNewStoppedMarker);
@@ -340,6 +341,20 @@ void Step::vOperandNewPulseMarker(void)
   ASSERT (m_pRegSet->m_xpOperand.bIsNull());
   
   m_pRegSet->m_xpOperand = new PulseMarker;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].newStartMarker -- new a start marker                             */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandNewStartMarker(void)
+{
+  ENTRY(); // ENTRY("vOperandNewStartMarker"_Stz);
+  
+  ASSERT (m_pRegSet->m_xpOperand.bIsNull());
+  
+  m_pRegSet->m_xpOperand = new StartMarker;
   
   EXIT();
 }

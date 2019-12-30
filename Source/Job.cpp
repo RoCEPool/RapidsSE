@@ -1234,11 +1234,8 @@ void Job::vPrintQueueRows(void)
       // -- -- -- -- -- --
         
       case CN_EOSMARKER: {
-        // print the responses received
-        vTrace("success: %lld rows fetched\n"_Stz, *m_xResponse.m_ixRowsProcessed);
+        vTrace("EOSMARKER\n"_Stz);
         AM::vDeleteOperand(pOperand);
-        goto L_EXIT;
-        
         break;
       }
         
@@ -1251,7 +1248,7 @@ void Job::vPrintQueueRows(void)
         AM::vDeleteOperand(pOperand);
         break;
       }
-      
+        
       // -- -- -- -- -- --
         
       case CN_ERRORMARKER: {
@@ -1278,6 +1275,13 @@ void Job::vPrintQueueRows(void)
         
       // -- -- -- -- -- --
         
+      case CN_PULSEMARKER: {
+        vTrace("PULSEMARKER\n"_Stz);
+        AM::vDeleteOperand(pOperand);
+        break;
+      }
+      // -- -- -- -- -- --
+        
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
         m_xResponse.m_ixRowsProcessed += pSrtBuffer->nItems();
@@ -1285,7 +1289,25 @@ void Job::vPrintQueueRows(void)
         AM::vDeleteOperand(pOperand);
         break;
       }
+       
+      // -- -- -- -- -- --
         
+      case CN_STARTMARKER: {
+        vTrace("STARTMARKER\n"_Stz);
+        AM::vDeleteOperand(pOperand);
+        break;
+      }
+        
+      // -- -- -- -- -- --
+        
+      case CN_STOPMARKER: {
+        vTrace("STOPMARKER\n"_Stz);
+        // print the responses received
+        vTrace("success: %lld rows fetched\n"_Stz, *m_xResponse.m_ixRowsProcessed);
+        AM::vDeleteOperand(pOperand);
+        goto L_EXIT;
+        break;
+      }
       // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
