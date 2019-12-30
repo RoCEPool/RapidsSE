@@ -5,9 +5,6 @@
 
 namespace Prompt
 {
-  class PromptFun;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class PromptCatalog
   {
   public:
