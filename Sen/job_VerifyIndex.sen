@@ -45,6 +45,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* verify index request (on originating node)                                 */
+/*----------------------------------------------------------------------------*/
+: verifyIndex::request _eeh ( -- <R> )
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set metadata string in the job
+  args.metadata if
+    "(nodeName VARCHAR, indexName VARCHAR, tableName VARCHAR, status VARCHAR)"
+  job::this job.metadata!
+
+then
+;
+
+/*----------------------------------------------------------------------------*/
 /* verify index request on a node                                             */
 /*----------------------------------------------------------------------------*/
 : verifyIndex::execute _eeh ( -- )
@@ -65,7 +79,7 @@
   pushIndexes assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // visualize
+  // verify
   sIndexNm find execute index.verify
   sTableNm sIndexNm grid::thisNodeName@
   "row: ('%v', '%v', '%v', '%v')\n" str.format

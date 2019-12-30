@@ -32,7 +32,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* anakyze table request (on originating node)                                */
+/* analverifyyze table request (on originating node)                                */
 /*----------------------------------------------------------------------------*/
 : analyzeTable::request _eeh ( -- <R> )
 
