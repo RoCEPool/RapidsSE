@@ -5,7 +5,7 @@ DIR=$(dirname "$0")
 CLASSPATH=".:*:${DIR}:${DIR}/*"
 
 SE_PATH="../OS X/Build/Products/Debug/SE"
-SE_ARGS="--name NODE1 --sen ../Sen --commands ../Commands"  # in addition to --metadata and --script
+SE_ARGS="--name NODE0 --sen ../Sen --commands ../Commands"  # in addition to --metadata and --script
 
 # Additional arguments for SETH. Enable as required.
 #SETH_ARGS="--clean --logtests"   # log all test executions to a file
