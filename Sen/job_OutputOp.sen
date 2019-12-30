@@ -65,6 +65,11 @@
         true
       endof
 
+      ZK_PULSEMARKER of
+        //"Operand:- ZK_PULSEMARKER" .verbose
+        true
+      endof
+
       ZK_SRTBUFFER of
         //"Operand:- ZK_SRTBUFFER" .verbose
         Operand[].workDone

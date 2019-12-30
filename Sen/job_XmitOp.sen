@@ -67,6 +67,13 @@
         true
       endof
 
+      ZK_PULSEMARKER of
+        //"Operand:- ZK_PULSEMARKER" .verbose
+        //Operand[].workDone
+        Operand[].pipeOut
+        true
+      endof
+
       ZK_STARTMARKER of
         //"Operand:- ZK_STARTMARKER" .verbose
         //Operand[].workDone
