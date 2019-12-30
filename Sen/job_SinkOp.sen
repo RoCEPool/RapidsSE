@@ -44,6 +44,14 @@
       false
     else
 
+    Operand[].kind ZK_STARTMARKER == if
+      //"Operand:- ZK_STARTMARKER" .verbose
+      Operand[].delete
+      Operand[].newStartedMarker
+      Operand[].pipeOut
+      true
+
+    else
     Operand[].kind ZK_STOPMARKER == if
       //"Operand:- ZK_STOPMARKER" .verbose
       Operand[].delete
@@ -54,7 +62,8 @@
     else
       Operand[].delete
       true
-    then then then
+
+    then then then then
 
   while assert::stack_0 repeat
 

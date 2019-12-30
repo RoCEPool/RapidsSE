@@ -43,6 +43,14 @@
         true
       endof
 
+      ZK_STARTEDMARKER of
+        //"Operand:- ZK_STARTEDMARKER" .verbose
+        Operand[].delete
+        Operand[].newPulseMarker
+        Operand[].pipeout
+        true
+      endof
+
       ZK_STOPPEDMARKER of
         //"Operand:- ZK_STOPPEDMARKER" .verbose
         Operand[].delete

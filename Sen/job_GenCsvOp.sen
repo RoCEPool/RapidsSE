@@ -93,42 +93,9 @@
       endof
 
       ZK_STARTMARKER of
-
         "Operand:- ZK_STARTMARKER" .verbose
         Operand[].pipeOut
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // check if we can scan the table
-        <tableNm> to sTableNm
-        //sTableNm checkGenTable not if
-        //
-        //  op.pipelineJob@ <ERROR_JOB>
-        //
-        //  Operand[].newErrorMarker
-        //  Operand[].handleEnd
-        //
-        //else
-
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          // move to table folder and find the table and tablePtn
-          sTableNm pushTable assert
-          sTableNm find execute to table[]
-
-          // new a stream def
-          Operand[].newStreamDef
-          Operand[].pipeOut
-
-          // pipeout a single generated csv buffer
-          //begin
-            table[].get table.genCsvBuffer to Operand[]
-            Operand[].pipeOut
-            //false
-          //while repeat
-
-          Operand[].newEosMarker
-          //Operand[].handleEnd
-          Operand[].pipeOut
-          true
+        true
       endof
 
       ZK_STOPMARKER of

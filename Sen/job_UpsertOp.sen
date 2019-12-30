@@ -86,6 +86,7 @@
 
     ZK_STARTMARKER of
       //"Operand:- ZK_STARTMARKER" .verbose
+      Operand[].pipeout
       true
     endof
 
