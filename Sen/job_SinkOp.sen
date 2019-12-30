@@ -34,6 +34,12 @@
       true
     else
 
+    Operand[].kind ZK_PULSEMARKER == if
+      //"Operand:- ZK_PULSEMARKER" .verbose
+      Operand[].delete
+      true
+    else
+
     Operand[].kind ZK_ERRORMARKER == if
       //"Operand:- ZK_ERRORMARKER" .verbose
       Operand[].newStopMarker
@@ -61,7 +67,7 @@
       Operand[].delete
       true
 
-    then then then then
+    then then then then then
 
   while assert::stack_0 repeat
 
