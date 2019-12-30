@@ -20,7 +20,7 @@ namespace MetaData
   protected:
     Index*    m_pIndex;     // index this buffer belongs to
     SkipRoots m_xSkipRoots; // skip roots
-    Ent*     m_aLazyChain; // first lazy entry
+    Ent*      m_aLazyChain; // first lazy entry
   
     SeeMe m_xSeeMe;
   

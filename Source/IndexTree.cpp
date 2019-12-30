@@ -213,7 +213,7 @@ void IndexTree::vCompact(void)
       //vTrace("Sublist: %lld\n"_Stz,--iSubListLength);
       
       // copy contents of right L0 leftwards
-      vCopyLeftV3(&pLeftL0,pRightL0);
+      IndexTree::vCopyLeftV3(&pLeftL0,pRightL0);
       
       // delete the right L0
       delete pRightL0;
@@ -276,19 +276,19 @@ void IndexTree::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
 /*----------------------------------------------------------------------------*/
 void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
   TRACE_COMPACT( vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,
                         pRightL0->iBufferNo()); )
   
   EntWrk xLeftEntWrk;
   
-  IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
+  EntBuffer* pLeftL0 = *ppLeftL0;
+  
+  Index* pIndex = pRightL0->pIndex();
+  ASSERT(pLeftL0->pIndex() == pIndex);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert the parameters are sensible
   
-  EntBuffer* pLeftL0 = *ppLeftL0;
   ASSERT(0 == pLeftL0->iBufferHeight());
   ASSERT(0 == pRightL0->iBufferHeight());
   EntBuffer* pL1 = pLeftL0->pHigherBuffer();
@@ -314,7 +314,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
        aRightL0_Key;
        aRightL0_Key = pRightL0->aNextEntry(aRightL0_Key,0)) {
     
-    TRACE_COMPACT( pRightKeyEntryL0->vShow(0, m_pIndex, true); )
+    TRACE_COMPACT( pRightKeyEntryL0->vShow(0, pIndex, true); )
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the elements of the right key
@@ -354,7 +354,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
       
       // new left buffer
       EntBuffer* pNewLeftL0 = new EntBuffer;
-      pNewLeftL0->vIndex(m_pIndex);
+      pNewLeftL0->vIndex(pIndex);
       pNewLeftL0->vHigherBuffer(pL1);
       
       // splice the new left buffer into the L0 list
@@ -374,7 +374,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     
     TRACE_COMPACT( pLeftL0->vShow(); )
     Ent* aLeftKeyEntryL0 = pLeftL0->aInsertKeyAbsL0(xLeftEntWrk,&aPriorEntry);
-    TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, m_pIndex, true); )
+    TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, pIndex, true); )
     TRACE_COMPACT( pLeftL0->vShow(); )
     
     //pLeftL0->vShow();
@@ -392,7 +392,7 @@ void IndexTree::vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
       //RASSERT(pL1->bVerifySkipListEntry());
       Ent* aLeftEntryL1 = pL1->aInsertKeyAbs(xLeftEntWrk);
       //RASSERT(pL1->bVerifySkipListEntry());
-      TRACE_COMPACT( pLeftEntryL1->vShow(0, m_pIndex, true); )
+      TRACE_COMPACT( pLeftEntryL1->vShow(0, pIndex, true); )
       TRACE_COMPACT( pL1->vShow(); )
       
       // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +

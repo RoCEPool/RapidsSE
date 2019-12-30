@@ -29,6 +29,7 @@ namespace Indexes
     IndexTree(Index* pIndex, i8 iPartitionNo);
     ~IndexTree(void) noexcept(false);
   
+    static void vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
     static void vMonitorPortrait(s48K& sPortrait);
@@ -36,7 +37,6 @@ namespace Indexes
     Stz*       pAnalyze(void);
     void       vCompact(void);
     void       vCopyReInitL1(EntBuffer* pL1, EntBuffer* pLeftL0);
-    void       vCopyLeftV3(EntBuffer** ppLeftL0, EntBuffer* pRightL0);
     void       vDump(bool bSameHeight);
     i8         nEntBuffers(void);
     EntBuffer* pFirstH0Buffer(void);
