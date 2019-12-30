@@ -25,11 +25,24 @@ PromptDesc::PromptDesc(ePF  ePromptFun,
   //vTrace("PromptDesc: %s %s %s\n"_Stz,
   //       aName, aComment, aCommand1);
   
+  m_ePromptFun  = ePromptFun;
+  m_aName       = aName;
+  m_aComment    = aComment;
+  m_aCommand1   = aCommand1;
+  m_aCommand2   = aCommand2;
+  m_fPrompt     = fPrompt;
+  m_bEnabled    = bEnabled;
+  m_bVisible    = bVisible;
+  m_aHelp       = aHelp;
+  m_aDesc       = aDesc;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // add the prompt class to the catalog
   i8 i_Prompt = gxPromptCatalog.m_nFunctions;
-
+  
   gxPromptCatalog.m_xPromptFun[i_Prompt].m_ePromptFun  = ePromptFun;
-
+  
   gxPromptCatalog.m_xPromptFun[i_Prompt].m_aName       = aName;
   gxPromptCatalog.m_xPromptFun[i_Prompt].m_aComment    = aComment;
   gxPromptCatalog.m_xPromptFun[i_Prompt].m_aCommand1   = aCommand1;
@@ -37,12 +50,13 @@ PromptDesc::PromptDesc(ePF  ePromptFun,
   gxPromptCatalog.m_xPromptFun[i_Prompt].m_fPrompt     = fPrompt;
   gxPromptCatalog.m_xPromptFun[i_Prompt].m_bEnabled    = bEnabled;
   gxPromptCatalog.m_xPromptFun[i_Prompt].m_bVisible    = bVisible;
-
+  
   gxPromptCatalog.m_xPromptFun[i_Prompt].m_aHelp       = aHelp;
   gxPromptCatalog.m_xPromptFun[i_Prompt].m_aDesc       = aDesc;
-
+  
   // we have one more class in the prompt catalog
   gxPromptCatalog.m_nFunctions++;
+
 }
 
 /*============================================================================*/

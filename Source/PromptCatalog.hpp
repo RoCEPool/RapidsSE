@@ -11,9 +11,10 @@ namespace Prompt
   class PromptCatalog
   {
   public:
-    i8        m_nFunctions;      // number of prompt functions
-    PromptDefn m_xPromptFun[128]; // array of prompt function descriptions
-  
+    i8          m_nFunctions;       // number of prompt functions
+    PromptDefn  m_xPromptFun[128];  // array of prompt function descriptions
+    PromptDesc* m_aaDesc[128];      // array of prompt function descriptions
+
   public:
     PromptDefn* pFindFun(Stz* aCommand1, Stz* aCommand2);
     void vFuns(ePF ePromptFun);
