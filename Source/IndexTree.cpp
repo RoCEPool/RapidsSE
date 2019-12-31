@@ -149,44 +149,44 @@ void IndexTree::vCompact(void)
   mbCheckPriorVec = true;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the number of L1 buffers 
+  // get the number of H1 buffers
   
 #ifdef USE_IT_COMPACT_TRACE
-  EntBuffer* pL1First = pFirstH1Buffer();
-  i8 nP1Buffers = pL1First ? pL1First->iLengthList() : 0;
+  EntBuffer* pH1First = pFirstH1Buffer();
+  i8 nP1Buffers = pH1First ? pH1First->iLengthList() : 0;
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // step thru each L1 buffer in the index
+  // step thru each H1 buffer in the index
   
-  i8 iL1BufferNo = -1;
+  i8 iH1BufferNo = -1;
   
-  for (EntBuffer* pL1 = pFirstH1Buffer(); pL1; pL1 = pL1->pNextBuffer()) {
+  for (EntBuffer* pH1 = pFirstH1Buffer(); pH1; pH1 = pH1->pNextBuffer()) {
     
-    iL1BufferNo++;
+    iH1BufferNo++;
     
 #ifdef USE_IT_COMPACT_TRACE
-     if (0 == iL1BufferNo % USE_IT_COMPACT_TRACE)
-      vTrace("Compaction Progress: Partition %lld: L1 Buffer %lld of %lld\n"_Stz,
-             m_iPartitionNo,iL1BufferNo,nP1Buffers);
+     if (0 == iH1BufferNo % USE_IT_COMPACT_TRACE)
+      vTrace("Compaction Progress: Partition %lld: H1 Buffer %lld of %lld\n"_Stz,
+             m_iPartitionNo,iH1BufferNo,nP1Buffers);
 #endif
     
-    TRACE_COMPACT( vTrace("  Compacting L1 %lld\n"_Stz,pL1->iBufferNo()); )
-    //vTrace("  Compacting L1 %lld\n"_Stz,pL1->iBufferNo());
+    TRACE_COMPACT( vTrace("  Compacting H1 %lld\n"_Stz,pH1->iBufferNo()); )
+    //vTrace("  Compacting H1 %lld\n"_Stz,pH1->iBufferNo());
     
-    //RASSERT(pL1->bVerifySkipListEntry());
+    //RASSERT(pH1->bVerifySkipListEntry());
     
     //continue;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the first L0 and the sublist which follows
     
-    // get the first L0 of current L1
-    EntBuffer* pFirstL0 = pL1->pFirstChildBuffer();
+    // get the first L0 of current H1
+    EntBuffer* pFirstL0 = pH1->pFirstChildBuffer();
     
     TRACE_COMPACT( pFirstLeftL0->vShowSubList(); )
     
-    // get the sublist after the first L0 of current L1
+    // get the sublist after the first L0 of current H1
     EntBuffer* pL0SubList = pFirstL0->pUnlinkSubList();
     if (! pL0SubList)
       continue;
@@ -198,8 +198,8 @@ void IndexTree::vCompact(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // copy each key in each L0 of sublist leftwards into (new) L0 buffers
     
-    // first reinit the LH1 buffer
-    EntBuffer::vCopyReInitH1(pL1,pFirstL0);
+    // first reinit the H1 buffer
+    EntBuffer::vCopyReInitH1(pH1,pFirstL0);
     
     // foreach right L0 in sublist
     EntBuffer* pLeftL0 = pFirstL0;
@@ -219,7 +219,7 @@ void IndexTree::vCompact(void)
     // build the skip list for dangling left L0
     pLeftL0->vBuildSkipListSorted();
     
-    //pL1->bVerifyKeyBufferOrder();
+    //pH1->bVerifyKeyBufferOrder();
   }
   
 }
