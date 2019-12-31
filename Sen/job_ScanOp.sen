@@ -59,13 +59,6 @@
         //"Operand:- ZK_PULSEMARKER" .verbose
         Operand[].pipeOut
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // move to table folder and find the table and tablePtn
-        sTableNm pushTable assert
-        sTableNm find execute to table[]
-
-        pJob_ScanOp table[].tablePtn@ to tablePtn[]
-
         // new a stream def
         Operand[].newStreamDef
         Operand[].pipeOut
@@ -74,35 +67,41 @@
         tablePtn[].root to Subset[]
         Subset[]@ to Operand[]
         begin
-        Operand[].isNull
+          Operand[].isNull
         not while
-        Operand[].pipeOut
-        Subset[].nextBuffer to Operand[]
+          Operand[].pipeOut
+          Subset[].nextBuffer to Operand[]
         repeat
 
         Operand[].newEosMarker
         Operand[].pipeOut
-        popTable
         true
 
       endof
 
       ZK_STARTMARKER of
         //"Operand:- ZK_STARTMARKER" .verbose
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
         // check if we can scan the table
         <tableNm> to sTableNm
         sTableNm checkScanTable not if
-          op.pipelineJob@ <ERROR_JOB>
+          op.pipelineJob@ <ERROR_JOB> !!logError
           Operand[].delete
           Operand[].newErrorMarker
         then
+
+        // move to table folder and find the table and tablePtn
+        sTableNm pushTable assert
+        sTableNm find execute to table[]
+        pJob_ScanOp table[].tablePtn@ to tablePtn[]
+
         Operand[].pipeOut
         true
       endof
 
       ZK_STOPMARKER of
         "Operand:- ZK_STOPMARKER*****" .verbose
+        popTable
         Operand[].handleEnd
       endof
 
