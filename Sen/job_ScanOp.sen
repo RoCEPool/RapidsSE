@@ -81,7 +81,6 @@
 
         // new a stream def
         Operand[].newStreamDef
-
         Operand[].pipeOut
 
         // pipeout all subsets from tablePtn
@@ -96,6 +95,7 @@
 
         Operand[].newEosMarker
         Operand[].pipeOut
+        popTable
         true
 
       endof
