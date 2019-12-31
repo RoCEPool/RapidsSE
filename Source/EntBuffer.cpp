@@ -106,8 +106,8 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
   
   ASSERT(0 == pLeftL0->iBufferHeight());
   ASSERT(0 == pRightL0->iBufferHeight());
-  EntBuffer* pL1 = pLeftL0->pHigherBuffer();
-  ASSERT(1 == pL1->iBufferHeight());
+  EntBuffer* pH1 = pLeftL0->pHigherBuffer();
+  ASSERT(1 == pH1->iBufferHeight());
   ASSERT(pRightL0->pHigherBuffer() == pLeftL0->pHigherBuffer());
   
   //vTrace("IndexTree::vCopyLeft (left %lld right %lld)\n"_Stz,
@@ -170,7 +170,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
       // new left buffer
       EntBuffer* pNewLeftL0 = new EntBuffer;
       pNewLeftL0->vIndex(pIndex);
-      pNewLeftL0->vHigherBuffer(pL1);
+      pNewLeftL0->vHigherBuffer(pH1);
       
       // splice the new left buffer into the L0 list
       pLeftL0->vSpliceAfter(pNewLeftL0);
@@ -195,7 +195,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
     //pLeftL0->vShow();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // insert a first L0 key into L1
+    // insert a first L0 key into H1
     
     if (1 == pLeftL0->nItems()) {
       
@@ -203,27 +203,27 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
       xRef.vBuffer(iLeftL0BufferNo);
       xLeftEntWrk.vRef(xRef);
       
-      TRACE_COMPACT( pL1->vShow(); )
-      //RASSERT(pL1->bVerifySkipListEntry());
-      Ent* aLeftEntryL1 = pL1->aInsertKeyAbs(xLeftEntWrk);
-      //RASSERT(pL1->bVerifySkipListEntry());
-      TRACE_COMPACT( pLeftEntryL1->vShow(0, pIndex, true); )
-      TRACE_COMPACT( pL1->vShow(); )
+      TRACE_COMPACT( pH1->vShow(); )
+      //RASSERT(pH1->bVerifySkipListEntry());
+      Ent* aLeftEntryH1 = pH1->aInsertKeyAbs(xLeftEntWrk);
+      //RASSERT(pH1->bVerifySkipListEntry());
+      TRACE_COMPACT( pLeftEntryH1->vShow(0, pIndex, true); )
+      TRACE_COMPACT( pH1->vShow(); )
       
       // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
       
-      //pL1->vShowShort();
+      //pH1->vShowShort();
       
-      //pL1->vShow();
+      //pH1->vShow();
       
-      //pL1->vShowTree();
+      //pH1->vShowTree();
       
-      //pL1->bVerifyKeyBufferOrder();
+      //pH1->bVerifyKeyBufferOrder();
       
       // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
     }
     
-    //pL1->bVerifyKeyBufferOrder();
+    //pH1->bVerifyKeyBufferOrder();
     
   } // for
   
@@ -238,13 +238,13 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
   ASSERT(1 == pH1->iBufferHeight());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // reset the L1 buffer
+  // reset the H1 buffer
   
   pH1->vReset();
-  //pL1->vShow();
+  //pH1->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // reinsert the first key of the first L0 buffer back into the L1 buffer
+  // reinsert the first key of the first L0 buffer back into the H1 buffer
   
   Ent* aFirstL0_ent = pFirstH0->aLeadEntry();
   
@@ -256,17 +256,17 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
   i8 iFirstL0_BufferNo = pFirstH0->iPoolBufferNo();
   xRef.vBuffer(iFirstL0_BufferNo);
   
-  EntWrk xFirstL1_ent;
+  EntWrk xFirstH1_ent;
   
-  xFirstL1_ent.vRef(xRef);
+  xFirstH1_ent.vRef(xRef);
   
-  xFirstL1_ent.vElmSeq(nKeyBytes,aKeyBytes);
+  xFirstH1_ent.vElmSeq(nKeyBytes,aKeyBytes);
   
-  xFirstL1_ent.vOffsets(nLevels);
+  xFirstH1_ent.vOffsets(nLevels);
   
-  Ent* aFirstL1_Key = pH1->aInsertKeyAbs(xFirstL1_ent);
+  Ent* aFirstH1_Key = pH1->aInsertKeyAbs(xFirstH1_ent);
   
-  //pL1->vShow();
+  //pH1->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -709,11 +709,11 @@ i8 EntBuffer::iLengthSubList(void)
   i8 iLength = 0;
   
   EntBuffer* pThisL0 = this;
-  EntBuffer* pThisL1 = pThisL0->pHigherBuffer();
+  EntBuffer* pThisH1 = pThisL0->pHigherBuffer();
   
   EntBuffer* pL0;
   for (pL0 = pThisL0;
-       pL0 && pL0->pHigherBuffer() == pThisL1;
+       pL0 && pL0->pHigherBuffer() == pThisH1;
        pL0 = pL0->pNextBuffer()) {
     
     iLength++;
@@ -1187,7 +1187,7 @@ void EntBuffer::vShowSubList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   EntBuffer* pThisL0 = this;
-  EntBuffer* pThisL1 = pThisL0->pHigherBuffer();
+  EntBuffer* pThisH1 = pThisL0->pHigherBuffer();
   
   vTrace("{"_Stz);
   
@@ -1196,7 +1196,7 @@ void EntBuffer::vShowSubList(void)
   
   EntBuffer* pL0;
   for (pL0 = pThisL0;
-       pL0 && pL0->pHigherBuffer() == pThisL1;
+       pL0 && pL0->pHigherBuffer() == pThisH1;
        pL0 = pL0->pNextBuffer()) {
     
     if (pL0 != pThisL0)
@@ -1391,7 +1391,7 @@ void EntBuffer::vTruncate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* unlink the sublist of EB's following this L0 EB within this L1             */
+/* unlink the sublist of EB's following this L0 EB within this H1             */
 /*----------------------------------------------------------------------------*/
 EntBuffer* EntBuffer::pUnlinkSubList(void)
 {
@@ -1400,9 +1400,9 @@ EntBuffer* EntBuffer::pUnlinkSubList(void)
   ASSERT(0 == m_iBufferHeight);
   
   EntBuffer* pThisL0 = this;
-  EntBuffer* pThisL1 = pThisL0->pHigherBuffer();
+  EntBuffer* pThisH1 = pThisL0->pHigherBuffer();
   EntBuffer* pNextL0 = pThisL0->pNextBuffer();
-  EntBuffer* pNextL1 = pThisL1->pNextBuffer();
+  EntBuffer* pNextH1 = pThisH1->pNextBuffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (a) no more L0
@@ -1411,7 +1411,7 @@ EntBuffer* EntBuffer::pUnlinkSubList(void)
     return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // circumstance (b) only one L0 under L1
+  // circumstance (b) only one L0 under H1
   
   if (pNextL0->pHigherBuffer() != pHigherBuffer())
     return nullptr;
@@ -1428,30 +1428,30 @@ EntBuffer* EntBuffer::pUnlinkSubList(void)
   pThisL0SubList->vPrevBuffer(nullptr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // circumstance (c) last L1, there is a sublist
+  // circumstance (c) last H1, there is a sublist
   
-  if (! pNextL1) {
+  if (! pNextH1) {
     
-    // last L1, therefore the next chain terminates here
+    // last H1, therefore the next chain terminates here
     pThisL0->vNextBuffer(nullptr);
     
     return pThisL0SubList;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // circumstance (d) middle L1, there is a sublist
+  // circumstance (d) middle H1, there is a sublist
   
-  EntBuffer* pFirstL0ofNextL1 = pNextL1->pFirstChildBuffer();
-  EntBuffer* pLastL0ofThisL1 = pFirstL0ofNextL1->pPrevBuffer();
+  EntBuffer* pFirstL0ofNextH1 = pNextH1->pFirstChildBuffer();
+  EntBuffer* pLastL0ofThisH1 = pFirstL0ofNextH1->pPrevBuffer();
   
-  // the next chain points to first L0 buffer of next L1
-  pThisL0->vNextBuffer(pFirstL0ofNextL1);
+  // the next chain points to first L0 buffer of next H1
+  pThisL0->vNextBuffer(pFirstL0ofNextH1);
   
-  // the prev chain of first L0 of next L1 is this L0
-  pFirstL0ofNextL1->vPrevBuffer(pThisL0);
+  // the prev chain of first L0 of next H1 is this L0
+  pFirstL0ofNextH1->vPrevBuffer(pThisL0);
   
   // the prev chain of last L0 of sublist terminates
-  pLastL0ofThisL1->vNextBuffer(nullptr);
+  pLastL0ofThisH1->vNextBuffer(nullptr);
   
   return pThisL0SubList;
 }

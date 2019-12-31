@@ -575,7 +575,7 @@ Ent* EntBuffer::aInsertKeyAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry)
   (*aaPriorEntry)->vNEO(0,iOffset);
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  // for the moment we set L1 & L2 offsets in prior entry to -1
+  // for the moment we set offsets in prior entry to -1
   
   i8 nPriorLevels = aKeyEntry->nOffsets();
   for (i8 i_Level = 0; i_Level < nPriorLevels; i_Level++)
