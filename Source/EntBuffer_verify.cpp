@@ -203,14 +203,14 @@ bool EntBuffer::bVerify(void)
     return bValid;
   }
   
-  bValid = bVerifyL0Other();
+  bValid = bVerifyH0Other();
   return bValid;
 }
 
 /*----------------------------------------------------------------------------*/
-/* verify the structure of this L0 buffer                                     */
+/* verify the structure of this H0 buffer                                     */
 /*----------------------------------------------------------------------------*/
-bool EntBuffer::bVerifyL0Other(void)
+bool EntBuffer::bVerifyH0Other(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -312,7 +312,7 @@ bool EntBuffer::bVerifyLnAny(void)
       bValid = pRefEntBuf->bVerifyLnAny();
     }
     else {
-      bValid = pRefEntBuf->bVerifyL0Other();
+      bValid = pRefEntBuf->bVerifyH0Other();
     }
     if (! bValid)
       return false;

@@ -35,7 +35,7 @@ namespace MetaData
     EntBuffer(void);
     ~EntBuffer(void) noexcept(false);
 
-    static void vCopyLeftH0(EntBuffer** ppLeftL0, EntBuffer* pRightL0);
+    static void vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0);
     static void vCopyReInitH1(EntBuffer* pH1, EntBuffer* pLeftH0);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Ent* aGetNextEntry(EntBuffer** ppEntBuffer, Ent* aPrevEntry);
@@ -176,7 +176,7 @@ namespace MetaData
     void         vQuickVerify(Ent* aSeeEntry=nullptr);
     bool         bQuickVerify(Ent* aNotSeeEntry);
   
-    bool         bVerifyL0Other(void);
+    bool         bVerifyH0Other(void);
     bool         bVerifyLnAny(void);
 
     bool         bVerifyAdjacent(void);
