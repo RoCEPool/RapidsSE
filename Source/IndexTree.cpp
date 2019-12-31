@@ -152,7 +152,7 @@ void IndexTree::vCompact(void)
   // get the number of L1 buffers 
   
 #ifdef USE_IT_COMPACT_TRACE
-  EntBuffer* pL1First = pFirstL1Buffer();
+  EntBuffer* pL1First = pFirstH1Buffer();
   i8 nP1Buffers = pL1First ? pL1First->iLengthList() : 0;
 #endif
   
@@ -161,7 +161,7 @@ void IndexTree::vCompact(void)
   
   i8 iL1BufferNo = -1;
   
-  for (EntBuffer* pL1 = pFirstL1Buffer(); pL1; pL1 = pL1->pNextBuffer()) {
+  for (EntBuffer* pL1 = pFirstH1Buffer(); pL1; pL1 = pL1->pNextBuffer()) {
     
     iL1BufferNo++;
     
@@ -247,9 +247,9 @@ void IndexTree::vDump(bool bSameHeight)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the first L1 buffer                                                    */
+/* get the first H1 buffer                                                    */
 /*----------------------------------------------------------------------------*/
-EntBuffer* IndexTree::pFirstL1Buffer(void)
+EntBuffer* IndexTree::pFirstH1Buffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
