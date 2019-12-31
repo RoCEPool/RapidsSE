@@ -66,6 +66,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* push value of <hours> from job's ename-set                                 */
+/*----------------------------------------------------------------------------*/
+: <hours> <<jobArgTag>> ( -- s )
+
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
+;
+
+/*----------------------------------------------------------------------------*/
 /* push value of <indexNm> from job's ename-set                               */
 /*----------------------------------------------------------------------------*/
 : <indexNm> <<jobArgTag>> ( -- s )
@@ -95,6 +103,14 @@
 : <jobId> <<jobArgTag>> ( -- s )
 
   [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
+;
+
+/*----------------------------------------------------------------------------*/
+/* push value of <minutes> from job's ename-set                               */
+/*----------------------------------------------------------------------------*/
+: <minutes> <<jobArgTag>> ( -- s )
+
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr >int
 ;
 
 /*----------------------------------------------------------------------------*/
