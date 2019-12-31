@@ -472,10 +472,10 @@ void Table::vLazyBuildIndexes(i8 iSlot)
     
     Index* pIndex = pNewIndexTree->pIndex();
     
-    // get an L0 buffer
+    // get an H0 buffer
     EntBuffer *pIndexBuffer = pPartition->pIndexTree(pIndex->iIndexNo())->pFirstH0Buffer();
     
-    // build skip list for all L0 buffers
+    // build skip list for all H0 buffers
     if (pIndexBuffer)
       pIndexBuffer->vLazyBuild();
   }

@@ -216,11 +216,11 @@ bool EntBuffer::bVerifyH0Other(void)
   
   RASSERT(0 == m_iBufferHeight);
   
-  //  vTrace("VerifyL0 %s: bufno: %lld level %lld\n"_Stz,
+  //  vTrace("VerifyH0 %s: bufno: %lld level %lld\n"_Stz,
   //         m_pIndex->aIndexName(),m_iBufferNo,m_iBufferHeight);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // verify the contents of this L0 index buffer
+  // verify the contents of this H0 index buffer
   
   bool bValid;
   
@@ -573,7 +573,7 @@ bool EntBuffer::bVerifyKeyOrder(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   /*
-   Any Ln buffer or L0 buffer should have its keys in ascending
+   Any Hn buffer or H0 buffer should have its keys in ascending
    order.
    */
   
@@ -657,14 +657,14 @@ bool EntBuffer::bVerifyNextPrev(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* verify the row references in this L0 index buffer                          */
+/* verify the row references in this H0 index buffer                          */
 /*----------------------------------------------------------------------------*/
 bool EntBuffer::bVerifyRowRefs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   /*
-   For this L0 index verify that its key entries referen a
+   For this H0 index verify that its key entries referen a
    valid row in a row buffer
    */
   
@@ -672,7 +672,7 @@ bool EntBuffer::bVerifyRowRefs(void)
   
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
-    // get the row buffer that this L0 key leaf references
+    // get the row buffer that this H0 key leaf references
     Ref xRef = aEnt->xRef();
     CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
     
