@@ -11,6 +11,8 @@
 
   >>logEntry <SEED_REQ>
 
+  //Op.pipelineJob@ job.id@ olist::findJob locals| origPipelineJob |
+
   begin
 
     // bide till next operand is available
@@ -82,6 +84,7 @@
 
       ZK_STARTMARKER of
         //"Operand:- ZK_STARTMARKER" .verbose
+        //origPipelineJob job.signalWaiter
         Operand[].pipeToJob
         Operand[].newStartMarker
         Operand[].pipeOut

@@ -476,6 +476,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("JT_OUTPUTOP"_Stz,        JT_OUTPUTOP);
   /*    */ vAddConstant("JT_PERIODICOP"_Stz,      JT_PERIODICOP);
   /*    */ vAddConstant("JT_PING"_Stz,            JT_PING);
+  /*    */ vAddConstant("JT_PIPELINE"_Stz,        JT_PIPELINE);
   /*    */ vAddConstant("JT_PWF"_Stz,             JT_PWF);
   /*    */ vAddConstant("JT_SCANOP"_Stz,          JT_SCANOP);
   /*    */ vAddConstant("JT_SHOWCLUSTER"_Stz,     JT_SHOWCLUSTER);

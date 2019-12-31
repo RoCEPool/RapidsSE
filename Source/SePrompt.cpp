@@ -208,19 +208,33 @@ void SePrompt::vPromptLoop(void)
       continue;
     }
     
+    if (m_pJob->m_eJobType == JT_PIPELINE) {
 
-    vJobWaitCond();
+      while ( ! m_pJob->m_pBufferQueue )
+        ;
+    
+      vPostJob();
+      
+      vJobWaitCond();
+      vJobUnlockMutex();
+      m_oTimer.vUpdate();
+      
+    }
+    else {
+      
+      vJobWaitCond();
 
-//    sleep(10);
-//    sleep(10);
-//    sleep(10);
-//    sleep(10);
-    
-    vJobUnlockMutex();
- 
-    m_oTimer.vUpdate();
-    
-    vPostJob();
+  //    sleep(10);
+  //    sleep(10);
+  //    sleep(10);
+  //    sleep(10);
+      
+      vJobUnlockMutex();
+   
+      m_oTimer.vUpdate();
+      
+      vPostJob();
+    }
     if (m_pJob->bHasError()) {
       vDumpTokenVec();
     }
@@ -764,7 +778,7 @@ void SePrompt::vPostJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  RASSERT(JS_RUNNING == m_pJob->eJobState());
+  //RASSERT(JS_RUNNING == m_pJob->eJobState());
   
   m_aJobClass->vPostJob(m_pJob);
 }

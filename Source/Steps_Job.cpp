@@ -1483,7 +1483,7 @@ void Step::vJobSignalWaiter(void)
   ENTRY(); // ENTRY("vJobSignalWaiter"_Stz);
   
   // there will be a thread waiting on completion of the job
-  // this could be a prompt htread or a java thread via the connector
+  // this could be a prompt thread or a java thread via the connector
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
