@@ -219,6 +219,9 @@ void SePrompt::vPromptLoop(void)
       vJobUnlockMutex();
       m_oTimer.vUpdate();
       
+      if (m_pJob->bHasError())
+        m_pJob->vPrintNodeErrors();
+      
     }
     else {
       

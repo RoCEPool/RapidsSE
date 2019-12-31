@@ -39,6 +39,15 @@
         true
       endof
 
+      ZK_ERRORMARKER of
+        //"Operand:- ZK_ERRORMARKER" .verbose
+        Operand[].delete
+        Operand[].newStopMarker
+        Operand[].pipeOut
+        Op.ackPipelineJob
+        false
+      endof
+
       ZK_PULSEMARKER of
         //"Operand:- ZK_PULSEMARKER" .verbose
         Operand[].pipeOut

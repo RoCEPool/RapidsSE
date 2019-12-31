@@ -1252,11 +1252,11 @@ void Job::vPrintQueueRows(void)
       // -- -- -- -- -- --
         
       case CN_ERRORMARKER: {
-        i8 iResponses = m_pResponseVec->nItems();
-        RASSERT(iResponses == AM::nDefinedNodes());
-        for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-          vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
-        }
+//        i8 iResponses = m_pResponseVec->nItems();
+//        RASSERT(iResponses == AM::nDefinedNodes());
+//        for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+//          vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+//        }
         AM::vDeleteOperand(pOperand);
         goto L_EXIT;
         

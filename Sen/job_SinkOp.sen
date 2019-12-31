@@ -42,10 +42,8 @@
 
     Operand[].kind ZK_ERRORMARKER == if
       //"Operand:- ZK_ERRORMARKER" .verbose
-      Operand[].newStopMarker
       Operand[].pipeOut
-      Op.ackPipelineJob
-      false
+      true
     else
 
     Operand[].kind ZK_STARTMARKER == if

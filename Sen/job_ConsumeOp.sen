@@ -53,7 +53,8 @@
 
       ZK_ERRORMARKER of
         //"Operand:- ZK_ERRORMARKER" .verbose
-        Operand[].handleEnd
+        Operand[].pipeOut
+        true
       endof
 
       ZK_IRWBUFFER of
