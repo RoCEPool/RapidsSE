@@ -36,7 +36,7 @@ namespace MetaData
     ~EntBuffer(void) noexcept(false);
 
     static void vCopyLeftH0(EntBuffer** ppLeftL0, EntBuffer* pRightL0);
-    static void vCopyReInitL1(EntBuffer* pL1, EntBuffer* pLeftL0);
+    static void vCopyReInitH1(EntBuffer* pH1, EntBuffer* pLeftH0);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Ent* aGetNextEntry(EntBuffer** ppEntBuffer, Ent* aPrevEntry);
     static EntBuffer* pRefdEntBuffer(Ent* pItem);

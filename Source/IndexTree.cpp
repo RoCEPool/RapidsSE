@@ -198,8 +198,8 @@ void IndexTree::vCompact(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // copy each key in each L0 of sublist leftwards into (new) L0 buffers
     
-    // first reinit the L1 buffer
-    EntBuffer::vCopyReInitL1(pL1,pFirstL0);
+    // first reinit the LH1 buffer
+    EntBuffer::vCopyReInitH1(pL1,pFirstL0);
     
     // foreach right L0 in sublist
     EntBuffer* pLeftL0 = pFirstL0;

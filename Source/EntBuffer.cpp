@@ -230,30 +230,30 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reinitialise the L1 buffer with just the first key of the first L0 buffer  */
+/* reinitialise the H1 buffer with just the first key of the first H0 buffer  */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
+void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
 {
-  ASSERT(0 == pFirstL0->iBufferHeight());
-  ASSERT(1 == pL1->iBufferHeight());
+  ASSERT(0 == pFirstH0->iBufferHeight());
+  ASSERT(1 == pH1->iBufferHeight());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reset the L1 buffer
   
-  pL1->vReset();
+  pH1->vReset();
   //pL1->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reinsert the first key of the first L0 buffer back into the L1 buffer
   
-  Ent* aFirstL0_ent = pFirstL0->aLeadEntry();
+  Ent* aFirstL0_ent = pFirstH0->aLeadEntry();
   
   Ref xRef = aFirstL0_ent->xRef();
   byte* aKeyBytes = aFirstL0_ent->ayElmSeq();
   i8 nKeyBytes = aFirstL0_ent->nElmSeqSize();
   i8 nLevels = aFirstL0_ent->nOffsets();
   
-  i8 iFirstL0_BufferNo = pFirstL0->iPoolBufferNo();
+  i8 iFirstL0_BufferNo = pFirstH0->iPoolBufferNo();
   xRef.vBuffer(iFirstL0_BufferNo);
   
   EntWrk xFirstL1_ent;
@@ -264,7 +264,7 @@ void EntBuffer::vCopyReInitL1(EntBuffer* pL1, EntBuffer* pFirstL0)
   
   xFirstL1_ent.vOffsets(nLevels);
   
-  Ent* aFirstL1_Key = pL1->aInsertKeyAbs(xFirstL1_ent);
+  Ent* aFirstL1_Key = pH1->aInsertKeyAbs(xFirstL1_ent);
   
   //pL1->vShow();
 }
