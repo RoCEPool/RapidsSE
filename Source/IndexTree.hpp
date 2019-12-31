@@ -59,7 +59,7 @@ namespace Indexes
     
   private:
     void       vDumpLevel(EntBuffer* pEntBuffer);
-    EntBuffer* pFirstL1Buffer(void);
+    EntBuffer* pFirstH1Buffer(void);
     EntBuffer* pPopSubList(EntBuffer** ppSubList);
   };
   
