@@ -1215,7 +1215,7 @@ void Step::vJobResponseFetch(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  s32 sResponse = pJob->szResponse();
+  s4K sResponse = pJob->szResponse();
   m_pDataStack->vPushStr(sResponse);
   
   EXIT();
