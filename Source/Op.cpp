@@ -929,7 +929,6 @@ void Op::vToCmdStr(Stz* szCmdStr)
   _precondition_(_ADDRESS_,_MAGIC_);
     
   szCmdStr->vCopy(m_sName);
-  szCmdStr->vConcat(" "_Stz);
   m_pOpSpec->pEnameSet()->vAppend(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
 }
