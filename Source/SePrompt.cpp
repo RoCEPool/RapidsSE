@@ -210,15 +210,19 @@ void SePrompt::vPromptLoop(void)
     
     if (m_pJob->m_eJobType == JT_PIPELINE) {
 
+      // wait till we the job has a buffer queue
       while ( ! m_pJob->m_pBufferQueue )
         ;
     
+      // start the post processing while the pipeline ops are running
       vPostJob();
       
+      // wait for the pipeline to complete
       vJobWaitCond();
       vJobUnlockMutex();
       m_oTimer.vUpdate();
       
+      // handle errors
       if (m_pJob->bHasError())
         m_pJob->vPrintNodeErrors();
       
