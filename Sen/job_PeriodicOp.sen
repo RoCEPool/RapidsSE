@@ -11,6 +11,16 @@
  
   >>logEntry <SEED_REQ>
 
+  <minutes> locals| minutes |
+  <hours> locals| hours |
+  0 locals| elapsed |
+
+  <minutes> .
+
+  hours if
+    hours 60 * to minutes
+  then
+
   begin
 
     // bide till next operand is available
@@ -32,6 +42,33 @@
       ZK_PULSEMARKER of
         //"Operand:- ZK_PULSEMARKER" .verbose
         Operand[].pipeOut
+
+        minutes if
+          begin
+/*
+            begin
+              minutes elapsed >
+            while
+              "while" .
+              task::yield
+              assert::stack_0
+              "sleeping" .
+              60 task::sleepSsec
+              "awake" .
+              60 elapsed + to elapsed
+            repeat
+*/
+            "sleeping" .
+            minutes 5 * thread::sleepSsec
+            "awake" .
+
+            Operand[].newPulseMarker
+            Operand[].pipeOut
+            0 to elapsed
+            true
+          while assert::stack_0 repeat
+        then
+
         Operand[].newStopMarker
         Operand[].pipeOut
         Op.ackPipelineJob
@@ -56,7 +93,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: periodicOp :: periodicOp ;
+jobSyntax: periodicOp :: periodicOp once ;
+jobSyntax: periodicOp :: periodicOp min <minutes> ;
+jobSyntax: periodicOp :: periodicOp hour <hours> ;
 
 jobInfo: periodicOp
 {

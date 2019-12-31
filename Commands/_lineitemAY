@@ -104,7 +104,7 @@ time pipeline scan
 begin
 
 stage stageA on origin:
-startOp | periodicOp | stageB
+startOp | periodicOp once | stageB
 
 stage stageB on all partitions:
 scanOp lineitem | stageC
@@ -116,6 +116,15 @@ end
 ;
 
 /*
+
+time pipeline scan
+begin
+
+stage stageA on origin:
+startOp | periodicOp once | sinkOp
+end;
+
+
 time pipeline insert
 begin
 
