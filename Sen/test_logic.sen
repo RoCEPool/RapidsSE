@@ -25,9 +25,9 @@
 /*----------------------------------------------------------------------------*/
 /* case test                                                                  */
 /*----------------------------------------------------------------------------*/
-: caseTest
+: caseTest prompt
 
-  10 0 do
+  13 0 do
     I case
       0 of "zero"  . endof
       1 of "one"   . endof
@@ -39,6 +39,9 @@
       7 of "seven" . endof
       8 of "eight" . endof
       9 of "nine"  . endof
+
+      "default case" .
+
     endcase
   loop
 ;
