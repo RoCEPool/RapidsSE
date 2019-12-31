@@ -88,12 +88,13 @@
           op.pipelineJob@ <ERROR_JOB> !!logError
           Operand[].delete
           Operand[].newErrorMarker
-        then
+        else
 
-        // move to table folder and find the table and tablePtn
-        sTableNm pushTable assert
-        sTableNm find execute to table[]
-        pJob_ScanOp table[].tablePtn@ to tablePtn[]
+          // move to table folder and find the table and tablePtn
+          sTableNm pushTable assert
+          sTableNm find execute to table[]
+          pJob_ScanOp table[].tablePtn@ to tablePtn[]
+        then
 
         Operand[].pipeOut
         true
