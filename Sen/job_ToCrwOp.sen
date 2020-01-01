@@ -43,25 +43,6 @@
 
   <tableNm> locals| sTableNm |
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if we can access the table
-  sTableNm checkTable not if
-    pJob_ToCrwOp <ERROR_JOB> !!logError exit
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // move to table folder and find the table and tablePtn
-  sTableNm pushTable assert
-  sTableNm find execute to table[]
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a write behind
-  writeBehind[].create
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create an extractRow and put it in register 0
-  extractRow.create to register0[]
-
   begin
 
     // bide till next operand is available
@@ -84,25 +65,38 @@
       ZK_EOSMARKER of
         //"Operand:- ZK_EOSMARKER" .verbose
         writeBehind[].handleDangling
+
+        // delete writeBehind
+        writeBehind[].delete
+
+        // deelete extractRow from reister0
+        extractRow.delete
+
         Operand[].pipeOut
         true
       endof
 
       ZK_PULSEMARKER of
         //"Operand:- ZK_PULSEMARKER" .verbose
+        // create a write behind
+        writeBehind[].create
+
+        // create an extractRow and put it in register 0
+        extractRow.create to register0[]
+
+        Operand[].pipeOut
         true
       endof
 
       ZK_STARTMARKER of
         //"Operand:- ZK_STARTMARKER" .verbose
         // check if we can scan the table
-        <tableNm> to sTableNm
         sTableNm checkTable not if
           op.pipelineJob@ <ERROR_JOB> !!logError
           Operand[].delete
           Operand[].newErrorMarker
         else
-          // move to table folder, find the table and tablePtn
+          // move to table folder and find the table and tablePtn
           sTableNm pushTable assert
           sTableNm find execute to table[]
         then
@@ -127,12 +121,6 @@
     endcase
 
   while assert::stack_0 repeat
-
-  // delete writeBehind
-  writeBehind[].delete
-
-  // deelete extractRow from reister0
-  extractRow.delete
 
   <<logExit
   job::deleteThis
