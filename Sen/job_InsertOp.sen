@@ -15,7 +15,7 @@
   checkInTables not if false exit then
 
   // check if tableNm is a word in tables folder
-  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
+  sTableNm checkIsWord not if drop EC_NO_SUCH_TABLE false exit then
 
   // push table folder
   sTableNm pushTable assert
@@ -40,21 +40,7 @@
   >>logEntry <SEED_REQ>
   job::this locals| pJob_InsertOp |
 
-  op.partition@ locals| iPartition |
   <tableNm> locals| sTableNm |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if we can insert into the table
-  sTableNm checkInsertTable not if
-    pJob_InsertOp <ERROR_JOB> !!logError exit
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // move to table folder and find the table and tablePtn
-  sTableNm pushTable assert
-  sTableNm find execute to table[]
-
-  iPartition table[].get tablePtnGrabWrite
 
   begin
 
@@ -69,7 +55,9 @@
 
     ZK_CRWBUFFER of
       //"Operand:- ZK_CRWBUFFER" .verbose
+      tablePtn[].get tablePtnGrabWrite2
       Operand[].insertIntoTable
+      tablePtn[].get tablePtnDropWrite2
       true
     endof
 
@@ -79,19 +67,40 @@
       true
     endof
 
+    ZK_ERRORMARKER of
+      //"Operand:- ZK_ERRORMARKER" .verbose
+      Operand[].pipeOut
+      true
+    endof
+
     ZK_PULSEMARKER of
       //"Operand:- ZK_PULSEMARKER" .verbose
+      Operand[].pipeOut
       true
     endof
 
     ZK_STARTMARKER of
       //"Operand:- ZK_STARTMARKER" .verbose
+
+      // check if we can insert into the table
+      sTableNm checkInsertTable not if
+        op.pipelineJob@ <ERROR_JOB> !!logError
+        Operand[].delete
+        Operand[].newErrorMarker
+      else
+        // move to table folder and find the table and tablePtn
+        sTableNm pushTable assert
+        sTableNm find execute to table[]
+        table[].tablePtn@ to tablePtn[]
+      then
+
       Operand[].pipeout
       true
     endof
 
     ZK_STOPMARKER of
       //"Operand:- ZK_STOPMARKER" .verbose
+      popTable
       Operand[].handleEnd
     endof
 
@@ -106,8 +115,6 @@
     endcase
 
     while assert::stack_0 repeat
-
-  iPartition table[].get tablePtnDropWrite
 
   <<logExit
   job::deleteThis
