@@ -45,7 +45,7 @@ void Step::vTablePtnFetch(void)
 {
   ENTRY(); // ENTRY("vTableSet"_Stz);
   
-  Job_Universal* pJob = _pJob_Universal(m_pDataStack->pPopPtr(__func__));
+  Job* pJob = m_pTask->m_pJob;
   
   i8 iPtn = pJob->m_pOp->nPartition();
   
