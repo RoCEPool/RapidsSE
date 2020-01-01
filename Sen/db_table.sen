@@ -206,6 +206,34 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check if word is a table                                                   */
+/*----------------------------------------------------------------------------*/
+: checkIsValidTable ( "<tableNm>" -- true | errorCode false )
+
+  params| sTableNm |
+
+  // check in tables folder
+  checkInTables not if false exit then
+
+  // check if tableNm is a word in tables folder
+  sTableNm checkIsWord not if drop EC_NO_SUCH_TABLE false exit then
+
+  // push table folder
+  sTableNm pushTable assert
+
+  sTableNm checkIsTable not if popTable false exit then
+  //sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+
+  // pop table folder
+  popTable
+
+  // assert in tables
+  assertInTables
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* find table given its name                                                  */
 /*----------------------------------------------------------------------------*/
 : table::find ( sTableNm -- pTable )

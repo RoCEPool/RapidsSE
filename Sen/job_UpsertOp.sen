@@ -40,21 +40,7 @@
   >>logEntry <SEED_REQ>
   job::this locals| pJob_UpsertOp |
 
-  op.partition@ locals| iPartition |
   <tableNm> locals| sTableNm |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if we can insert into the table
-  sTableNm checkUpsertTable not if
-    pJob_UpsertOp <ERROR_JOB> !!logError exit
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // move to table folder and find the table and tablePtn
-  sTableNm pushTable assert
-  sTableNm find execute to table[]
-
-  iPartition table[].get tablePtnGrabWrite
 
   begin
 
@@ -69,7 +55,9 @@
 
     ZK_CRWBUFFER of
       //"Operand:- ZK_CRWBUFFER" .verbose
+      tablePtn[].get tablePtnGrabWrite2
       Operand[].upsertIntoTable
+      tablePtn[].get tablePtnDropWrite2
       true
     endof
 
@@ -93,6 +81,18 @@
 
     ZK_STARTMARKER of
       //"Operand:- ZK_STARTMARKER" .verbose
+      // check if we can insert into the table
+      sTableNm checkIsValidTable not if
+        op.pipelineJob@ <ERROR_JOB> !!logError
+        Operand[].delete
+        Operand[].newErrorMarker
+      else
+        // move to table folder and find the table and tablePtn
+        sTableNm pushTable assert
+        sTableNm find execute to table[]
+        table[].tablePtn@ to tablePtn[]
+      then
+
       Operand[].pipeout
       true
     endof
@@ -113,8 +113,6 @@
     endcase
 
     while assert::stack_0 repeat
-
-  iPartition table[].get tablePtnDropWrite
 
   <<logExit
   job::deleteThis
