@@ -56,7 +56,7 @@
     else
     Operand[].kind ZK_STOPMARKER == if
       //"Operand:- ZK_STOPMARKER" .verbose
-      Operand[].delete
+      Operand[].pipeToJob
       Operand[].newStoppedMarker
       Operand[].pipeOut
       Op.ackPipelineJob

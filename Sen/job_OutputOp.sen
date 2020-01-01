@@ -96,8 +96,6 @@
 
       ZK_STOPMARKER of
         //"Operand:- ZK_STOPMARKER" .verbose
-        Operand[].pipeToJob
-        Operand[].newStopMarker
         Operand[].handleEnd
         endof
 
