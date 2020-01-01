@@ -1169,6 +1169,7 @@ public:
   void vTablePtnIsLocked(void);
 
   // table partition
+  void vTablePtnGet(void);
   void vTablePtnRoot(void);
   void vTablePtnSet(void);
 

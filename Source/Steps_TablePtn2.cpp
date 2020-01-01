@@ -9,8 +9,21 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_TablePartition2(void)
 {
+  vAddStep("tablePtn[].get"_Stz,   &Step::vTablePtnGet);
   vAddStep("tablePtn[].root"_Stz , &Step::vTablePtnRoot);
   vAddStep("tablePtn[].set"_Stz  , &Step::vTablePtnSet);
+}
+
+/*----------------------------------------------------------------------------*/
+/* tablePtn[].get -- get table                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnGet(void)
+{
+  ENTRY(); // ENTRY("vTablePtnGet"_Stz);
+  
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpTablePtn);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
