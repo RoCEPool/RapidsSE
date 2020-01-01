@@ -45,6 +45,7 @@
 
       ZK_PULSEMARKER of
         //"Operand:- ZK_PULSEMARKER" .verbose
+        Operand[].pipeOut
         true
       endof
 

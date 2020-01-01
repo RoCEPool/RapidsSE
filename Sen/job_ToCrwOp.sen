@@ -76,6 +76,12 @@
         true
       endof
 
+      ZK_ERRORMARKER of
+        //"Operand:- ZK_ERRORMARKER" .verbose
+        Operand[].pipeOut
+        true
+      endof
+
       ZK_PULSEMARKER of
         //"Operand:- ZK_PULSEMARKER" .verbose
         // create a write behind

@@ -15,7 +15,7 @@
   checkInTables not if false exit then
 
   // check if tableNm is a word in tables folder
-  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
+  sTableNm checkIsWord not if drop EC_NO_SUCH_TABLE false exit then
 
   // push table folder
   sTableNm pushTable assert
@@ -40,7 +40,9 @@
   >>logEntry <SEED_REQ>
 
   job::this locals| pJob_GenCsvOp |
-  0 0 locals| sTableNm pTable |
+  0 locals| pTable |
+
+  <tableNm> locals| sTableNm |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   begin
@@ -54,26 +56,21 @@
     // decode kind
     Operand[].kind case
 
+      ZK_EOSMARKER of
+        //"Operand:- ZK_EOSMARKER" .verbose
+        Operand[].pipeOut
+        true
+      endof
+
+      ZK_ERRORMARKER of
+        //"Operand:- ZK_ERRORMARKER" .verbose
+        Operand[].pipeOut
+        true
+      endof
+
       ZK_PULSEMARKER of
         //"Operand:- ZK_PULSEMARKER" .verbose
         Operand[].pipeOut
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // check if we can scan the table
-        <tableNm> to sTableNm
-        //sTableNm checkGenTable not if
-        //
-        //  op.pipelineJob@ <ERROR_JOB>
-        //
-        //  Operand[].newErrorMarker
-        //  Operand[].handleEnd
-        //
-        //else
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // move to table folder and find the table and tablePtn
-        sTableNm pushTable assert
-        sTableNm find execute to table[]
 
         // new a stream def
         Operand[].newStreamDef
@@ -93,13 +90,24 @@
       endof
 
       ZK_STARTMARKER of
-        "Operand:- ZK_STARTMARKER" .verbose
+        //"Operand:- ZK_STARTMARKER" .verbose
+        // check if table exits
+        sTableNm checkGenTable not if
+          op.pipelineJob@ <ERROR_JOB>
+          Operand[].delete
+          Operand[].newErrorMarker
+        else
+          // move to table folder and find the table
+          sTableNm pushTable assert
+          sTableNm find execute to table[]
+        then
+
         Operand[].pipeOut
         true
       endof
 
       ZK_STOPMARKER of
-        "Operand:- ZK_STOPMARKER" .verbose
+        //"Operand:- ZK_STOPMARKER" .verbose
         Operand[].handleEnd
       endof
 
