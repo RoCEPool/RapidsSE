@@ -15,7 +15,7 @@
   checkInTables not if false exit then
 
   // check if tableNm is a word in tables folder
-  sTableNm checkIsWord not if EC_NO_SUCH_TABLE false exit then
+  sTableNm checkIsWord not if drop EC_NO_SUCH_TABLE false exit then
 
   // push table folder
   sTableNm pushTable assert
@@ -95,6 +95,18 @@
 
       ZK_STARTMARKER of
         //"Operand:- ZK_STARTMARKER" .verbose
+        // check if we can scan the table
+        <tableNm> to sTableNm
+        sTableNm checkTable not if
+          op.pipelineJob@ <ERROR_JOB> !!logError
+          Operand[].delete
+          Operand[].newErrorMarker
+        else
+          // move to table folder, find the table and tablePtn
+          sTableNm pushTable assert
+          sTableNm find execute to table[]
+        then
+
         Operand[].pipeout
         true
       endof
