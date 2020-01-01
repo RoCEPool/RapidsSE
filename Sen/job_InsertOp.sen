@@ -5,34 +5,6 @@
 " job_InsertOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check if word is a insertable table                                        */
-/*----------------------------------------------------------------------------*/
-: checkInsertTable ( "<tableNm>" -- true | errorCode false )
-
-  params| sTableNm |
-
-  // check in tables folder
-  checkInTables not if false exit then
-
-  // check if tableNm is a word in tables folder
-  sTableNm checkIsWord not if drop EC_NO_SUCH_TABLE false exit then
-
-  // push table folder
-  sTableNm pushTable assert
-
-  sTableNm checkIsTable not if popTable false exit then
-  //sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
-
-  // pop table folder
-  popTable
-
-  // assert in tables
-  assertInTables
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute for insertOp                               (on node where spawned) */
 /*----------------------------------------------------------------------------*/
  : InsertOp_req ( -- )
@@ -83,7 +55,7 @@
       //"Operand:- ZK_STARTMARKER" .verbose
 
       // check if we can insert into the table
-      sTableNm checkInsertTable not if
+      sTableNm checkIsValidTable not if
         op.pipelineJob@ <ERROR_JOB> !!logError
         Operand[].delete
         Operand[].newErrorMarker
