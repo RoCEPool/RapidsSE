@@ -13,13 +13,6 @@
 
   job::this locals| pJob_ToFileOp |
 
-  // open the file for writing
-  file::new to File0[]
-  <fileNm> OPEN_WRITE File0[].get file.open
-  not if
-    File0[].get file.delete assert::stack_0 EC_INVALID_FILE pJob_ToFileOp <ERROR_JOB> !!logError exit
-  then
-
   begin
 
     // bide till next operand is available
@@ -32,20 +25,48 @@
     Operand[].kind case
 
       ZK_CSVBUFFER of
-        "Operand:- ZK_CSVBUFFER" .verbose
+        //"Operand:- ZK_CSVBUFFER" .verbose
         Operand[].writeToFile0
         true
       endof
 
       ZK_EOSMARKER of
-        "Operand:- ZK_EOSMARKER" .verbose
-        Operand[].pipeOut
+        //"Operand:- ZK_EOSMARKER" .verbose
         File0[].get file.close
         File0[].get file.delete
+        Operand[].pipeOut
+        true
+      endof
+
+      ZK_PULSEMARKER of
+        //"Operand:- ZK_PULSEMARKER" .verbose
+        Operand[].pipeOut
+        true
+      endof
+
+      ZK_STARTMARKER of
+        //"Operand:- ZK_STARTMARKER" .verbose
+
+        // open the file for writing
+        file::new to File0[]
+        <fileNm> OPEN_WRITE File0[].get file.open
+        not if
+          File0[].get file.delete assert::stack_0 EC_INVALID_FILE pJob_ToFileOp <ERROR_JOB> !!logError exit
+          op.pipelineJob@ <ERROR_JOB> !!logError
+          Operand[].delete
+          Operand[].newErrorMarker
+        then
+        Operand[].pipeout
+        true
+      endof
+
+      ZK_STOPMARKER of
+        //"Operand:- ZK_STOPMARKER" .verbose
+        Operand[].handleEnd
       endof
 
       ZK_STREAMDEF of
-        "Operand:- ZK_STREAMDEF" .verbose
+        //"Operand:- ZK_STREAMDEF" .verbose
         Operand[].pipeOut
         true
       endof
