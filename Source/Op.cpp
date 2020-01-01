@@ -142,6 +142,9 @@ void Op::vAckJob(void)
   AM::vLogOpr(SL_INF,this,OA_OP_ACK,
               "Acking job task"_Stz); //!format-LogOpr
   
+  if (gxArguments.m_bVerbose)
+    vTrace("Op %s: acking pipeline job\n"_Stz, aJT[AM::eJobType(m_pOpJob)]);
+  
   AM::vAckWaitingTask(pTask,m_pTask);
 }
 
