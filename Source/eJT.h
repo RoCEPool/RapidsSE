@@ -95,6 +95,7 @@ static Stz* aJT[]
   /*    */ "DUMPINDEX"_Stz,
   /*    */ "DUMPTABLE"_Stz,
   /*    */ "FORGETNODE"_Stz,
+  /*    */ "INSERTOP"_Stz,
   /*    */ "LF"_Stz,
   /*    */ "LIMITOP"_Stz,
   /*    */ "LISTCATALOGS"_Stz,
