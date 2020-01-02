@@ -5,6 +5,7 @@
 
 namespace Datums
 {
+  
   class CsvValue
   {
   public:
@@ -27,6 +28,8 @@ namespace Datums
   private:
     static bool bIsEnclosedString(char** aazCrs, Format* pFmt);
     static bool bIsThereFieldData(char* aSrc, Format* pFmt);
+    static bool bValidFieldEnd(char* aSrc, Format* pFmt);
+    static bool bValidRecordEnd(char* aSrc, Format* pFmt);
   };
 }
 

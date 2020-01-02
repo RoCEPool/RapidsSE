@@ -246,7 +246,9 @@ bool CsvValue::bIsSomeNull(char** aazCrs, Format* pFmt)
   char* azStart = *aazCrs;
   
   if ( (**aazCrs == 'N' || **aazCrs == 'n') &&
-      (0 == StrLib::iCompare(*aazCrs+1, "ULL", 3, C_NO_CASE)) ) {
+      (0 == StrLib::iCompare(*aazCrs+1, "ULL", 3, C_NO_CASE)) &&
+      bValidFieldEnd(*aazCrs+4,pFmt)) {
+      
     // skip over token null
     *aazCrs = (*aazCrs) + 4;
   }
@@ -406,6 +408,78 @@ bool CsvValue::bIsThereFieldData(char* aSrc, Format* pFmt)
     return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* test for valid field end                                                   */
+/*----------------------------------------------------------------------------*/
+bool CsvValue::bValidFieldEnd(char* aSrc, Format* pFmt)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for end of data
+  
+  // valid field end if we've run out of data
+  if (! *aSrc)
+    return true;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for explicit field separator
+  
+  // valid field end if we've encounter the field delimiter
+  if (*aSrc == pFmt->m_cFieldDelimiter)
+    return true;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for explicit CsvValue terminator
+  
+  if (pFmt->m_cRecordTerminator) {
+    
+    // not a valid field end if expected CsvValue terminator is not seen
+    if (*aSrc != pFmt->m_cRecordTerminator)
+      return false;
+    
+    // test we see the CsvValue end after the CsvValue termintor
+    bool bValidEnd = bValidRecordEnd(aSrc+1,pFmt);
+    
+    return bValidEnd;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for explicit CsvValue ends
+  
+  bool bValidEnd = bValidRecordEnd(aSrc,pFmt);
+  
+  return bValidEnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for valid record end                                                  */
+/*----------------------------------------------------------------------------*/
+bool CsvValue::bValidRecordEnd(char* aSrc, Format* pFmt)
+{
+  switch (pFmt->m_eRecordEnd) {
+      
+    case RE_NL: // test for \n
+      if (C_NL == *aSrc)
+        return true;
+      else
+        return false;
+      
+    case RE_CR: // test for \r
+      if (C_CR == *aSrc)
+        return true;
+      else
+        return false;
+      
+    case RE_CRNL: // test for \r\n
+      if (C_CR == *aSrc && C_NL == *(aSrc+1))
+        return true;
+      else
+        return false;
+      
+    default: // otherwise not a field end
+      NEVER_REACH;
+      return false;
+  }
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
