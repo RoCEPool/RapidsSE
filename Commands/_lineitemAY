@@ -100,6 +100,8 @@ print "scan lineitem | output;";
 print "**************************************************************************";
 
 
+/*
+
 time pipeline scan
 begin
 
@@ -115,7 +117,8 @@ outputOp | sinkOp | stageA
 end
 ;
 
-/*
+
+
 
 time pipeline scan
 begin
@@ -129,7 +132,7 @@ time pipeline insert
 begin
 
   stage stageA on origin:
-    startOp | stageB
+    startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
     scanOp lineitem | toCsvOP | toCrwOp lineitem2 | stageC
@@ -143,6 +146,21 @@ begin
 end
 ;
 
+
+time pipeline export
+begin
+
+stage stageA on origin:
+startOp | periodicOp once | stageB
+
+stage stageB on all partitions:
+scanOp lineitem | toCsvOp | stageC
+
+stage stageC on origin:
+toFileOp "/tmp/xxx.csv" | sinkOp | stageA
+
+end
+;
 
 
 time pipeline scan
@@ -189,18 +207,6 @@ end
 
 docol epochDump;
 
-
- time pipeline export
- begin
- 
- stage stageA on all partitions:
- scanOp lineitem | toCsvOp | stageB
- 
- stage stageB on origin:
- toFileOp "/tmp/xxx.csv" | outputOp
- 
- end
- ;
  
 docol epochTake;
 
