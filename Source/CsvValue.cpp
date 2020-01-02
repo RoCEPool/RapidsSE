@@ -216,7 +216,7 @@ bool CsvValue::bToVch(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt
 /*----------------------------------------------------------------------------*/
 /* test for some form of null                                                 */
 /*----------------------------------------------------------------------------*/
-bool CsvValue::bIsSomeNull(char** aazCrs, Format* pFmt)
+bool CsvValue::bIsSomeNull(char** aazCrs, Format* pFmt, bool bSkipTrailingSpaces)
 {
   /*
    * This function scans aazCrs and attempts to identify the text form of a null.
@@ -236,6 +236,8 @@ bool CsvValue::bIsSomeNull(char** aazCrs, Format* pFmt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test if there is any field data
   
+  char* aStart = *aazCrs;
+  
   if ( ! bIsThereFieldData(*aazCrs, pFmt)) {
     return true;
   }
@@ -244,36 +246,43 @@ bool CsvValue::bIsSomeNull(char** aazCrs, Format* pFmt)
   // test for null, \N, '\N' or [\N]
   
   if ( (**aazCrs == 'N' || **aazCrs == 'n') &&
-      (0 == StrLib::iCompare(*aazCrs+1, "ULL", 3, C_NO_CASE)) &&
-      bValidFieldEnd(*aazCrs+4,pFmt)) {
+      (0 == StrLib::iCompare(*aazCrs+1, "ULL", 3, C_NO_CASE))) {
       
     // skip over token null
     *aazCrs = (*aazCrs) + 4;
   }
   else if (**aazCrs     == pFmt->m_cEscapeChar &&
-           *(*aazCrs+1) == 'N' &&
-           bValidFieldEnd(*aazCrs+2,pFmt)) {
+           *(*aazCrs+1) == 'N') {
     // skip over \N
     *aazCrs = (*aazCrs) + 2;
   }
   else if (**aazCrs     == pFmt->m_cEnclosedBy_Leading  &&
            *(*aazCrs+1) == pFmt->m_cEscapeChar          &&
            *(*aazCrs+2) == 'N'                          &&
-           *(*aazCrs+3) == pFmt->m_cEnclosedBy_Trailing &&
-           bValidFieldEnd(*aazCrs+4,pFmt)) {
+           *(*aazCrs+3) == pFmt->m_cEnclosedBy_Trailing) {
     // skip over '\N' or [\N]
     *aazCrs = (*aazCrs) + 4;
   }
   else if (**aazCrs    == pFmt->m_cEnclosedBy_Leading    &&
            ((*(*aazCrs+1) == 'N' || *(*aazCrs+1) == 'n') &&
             (0 == StrLib::iCompare(*aazCrs+2, "ULL", 3, C_NO_CASE))) &&
-           *(*aazCrs+5) == pFmt->m_cEnclosedBy_Trailing &&
-           bValidFieldEnd(*aazCrs+6,pFmt)) {
+           *(*aazCrs+5) == pFmt->m_cEnclosedBy_Trailing) {
     // skip over 'NULL'
     *aazCrs = (*aazCrs) + 6;
   }
   else {
     // no null detected
+    return false;
+  }
+  
+  // optionally skip trailing spaces
+  if (bSkipTrailingSpaces)
+    StrLib::vSkipSpaces(aazCrs);
+  
+  // check it was "null" only
+  if (! bValidFieldEnd(*aazCrs,pFmt)) {
+    // no well formed null detected
+    *(aazCrs) = aStart;
     return false;
   }
   

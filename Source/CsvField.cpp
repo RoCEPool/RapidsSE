@@ -29,7 +29,8 @@ bool CsvField::bExtractDtm(Datum* pDatum, Column* pCol,
   // - - - -
   // null
   
-  if (CsvValue::bIsSomeNull(aazCrs,pFmt)) {
+  bool bSkipTrailingSpaces = pCol->eDatum() == DM_VCH ? false : true;
+  if (CsvValue::bIsSomeNull(aazCrs,pFmt,bSkipTrailingSpaces)) {
     if ( ! pCol->bIsNullable() ) {
       // a null was detected in a non-nullable column
       return false;

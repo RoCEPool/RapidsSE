@@ -21,7 +21,7 @@ namespace Datums
     static bool bToTsp(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
     static bool bToVch(Datum_h* pDatum, Column* pCol, char** aazCrs, Format* pFmt);
   
-    static bool bIsSomeNull(char** aazCrs, Format* pFmt);
+    static bool bIsSomeNull(char** aazCrs, Format* pFmt, bool bSkipTrailingSpaces);
   
     static void vInto(Stz* szTgt, void* avSrc, Column* pCol);
 
