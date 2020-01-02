@@ -45,6 +45,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* size index request (on originating node)                                   */
+/*----------------------------------------------------------------------------*/
+: sizeIndex::request _eeh ( -- <R> )
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set metadata string in the job
+  args.metadata if
+    "(nodeName VARCHAR, size VARCHAR)"
+  job::this job.metadata!
+
+  then
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute Job_SizeIndex job on a node                                        */
 /*----------------------------------------------------------------------------*/
 : sizeIndex::execute _eeh ( -- )
@@ -68,7 +82,7 @@
   sIndexNm find execute to pIndex
   pIndex index.space 0 swap number.magnitude to iSize
 
-  iSize grid::thisNodeName@ "row: ('%v' %v)" str.format
+  iSize grid::thisNodeName@ "row: ('%v', '%v')" str.format
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes and table folder

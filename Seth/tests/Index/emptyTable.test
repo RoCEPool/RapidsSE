@@ -44,7 +44,7 @@ fetch createT1 "key 10 >= key 20 <= AND";
 rows: 0
 
 // drop the index keyIdx;
-drop index createT1.keyIdx;
+drop index createT1 keyIdx;
 success
 
 // now drop the table

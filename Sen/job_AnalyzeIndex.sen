@@ -43,10 +43,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* anakyze index request (on originating node)                                */
+/* analyze index request (on originating node)                                */
 /*----------------------------------------------------------------------------*/
 : analyzeIndex::request _eeh ( -- <R> )
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set metadata string in the job

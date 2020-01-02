@@ -26,7 +26,7 @@ rows:
   ('key','INTEGER',19,0,false,true)
 
 // drop the index keyIdx;
-drop index createT1.keyIdx;
+drop index createT1 keyIdx;
 success
 
 } -- end of loop
