@@ -130,7 +130,6 @@ void Record::vAppend(Row* pRow)
        
        //! ALKA: Revert once Column not newable
        // append column value
-       //vAppend(&xCol,pRow);
        vAppendCol(&m_pStreamDef->m_xaColumn[i_Col + iDefStart],pRow);
      }
    }
