@@ -112,7 +112,9 @@ eEC TableDef::eParse(Stz* szCmd)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEDEF,_FOOTER_);
  
   eEC eError = EC_NONE;
-
+  i8 i_Col = C_UNKNOWN;
+  Column* pLastCol = nullptr;
+  
   // retain the Create Table command
   m_sCmd = szCmd;
   
@@ -164,7 +166,7 @@ eEC TableDef::eParse(Stz* szCmd)
   // -- -- -- -- -- -- -- -- -- -- --
   
   pTkn = pTknVec->pNextToken(); dPT();
-  for (i8 i_Col = 0; ! pTkn->bSame(")"_Stz); i_Col++) {
+  for (i_Col = 0; ! pTkn->bSame(")"_Stz); i_Col++) {
     
     // -- -- -- -- -- -- -- --
     // exceeded column limit?
@@ -191,10 +193,15 @@ eEC TableDef::eParse(Stz* szCmd)
     // parse column
     // -- -- -- -- --
     eError = eParseColumn(pTknVec,i_Col);
-    if (EC_NONE != eError)
+    if (EC_NONE != eError) {
       goto L_RETURN;
+    }
     pTkn = pTknVec->pCurrToken(); dPT();
   }
+  
+  // mark the last column
+  pLastCol = m_pStreamDef->pGetColumn(i_Col-1);
+  pLastCol->vIsLastColumn(true);
   
   eError = eParseTableClauses(pTknVec);
   

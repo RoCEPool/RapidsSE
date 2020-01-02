@@ -68,11 +68,11 @@ L_TRAILING:
   bool bSawEnclosedTrailing =
   StrLib::bSkipTrailing(aazCrs,bSawEnclosedLeading,pFmt->m_cEnclosedBy_Trailing);
   if (! bSawEnclosedTrailing)
-    return pCol;
+    return false;
   
   // should see a valid field end
   if ( ! bValidFieldEnd(*aazCrs,pFmt) )
-    return pCol;
+    return false;
   
   
   
@@ -89,7 +89,7 @@ L_TRAILING:
         pFmt->m_cFieldDelimiter != pFmt->m_cRecordTerminator &&
         *(*aazCrs) == pFmt->m_cFieldDelimiter ) {
       // saw a field delimiter after last field (incorrect)
-      return pCol;
+      return false;
     }
     /*
      // did not see a field delimiter (correct)
@@ -106,7 +106,7 @@ L_TRAILING:
       (*aazCrs)++;
     else
       // did not see a field delimiter after non-last field (incorrect)
-      return pCol;
+      return false;
   }
   
   return true;
