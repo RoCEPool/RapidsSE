@@ -243,8 +243,6 @@ bool CsvValue::bIsSomeNull(char** aazCrs, Format* pFmt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null, \N, '\N' or [\N]
   
-  char* azStart = *aazCrs;
-  
   if ( (**aazCrs == 'N' || **aazCrs == 'n') &&
       (0 == StrLib::iCompare(*aazCrs+1, "ULL", 3, C_NO_CASE)) &&
       bValidFieldEnd(*aazCrs+4,pFmt)) {
@@ -253,21 +251,24 @@ bool CsvValue::bIsSomeNull(char** aazCrs, Format* pFmt)
     *aazCrs = (*aazCrs) + 4;
   }
   else if (**aazCrs     == pFmt->m_cEscapeChar &&
-           *(*aazCrs+1) == 'N') {
+           *(*aazCrs+1) == 'N' &&
+           bValidFieldEnd(*aazCrs+2,pFmt)) {
     // skip over \N
     *aazCrs = (*aazCrs) + 2;
   }
-  else if (**aazCrs     == pFmt->m_cEnclosedBy_Leading &&
-           *(*aazCrs+1) == pFmt->m_cEscapeChar &&
-           *(*aazCrs+2) == 'N'                        &&
-           *(*aazCrs+3) == pFmt->m_cEnclosedBy_Trailing) {
+  else if (**aazCrs     == pFmt->m_cEnclosedBy_Leading  &&
+           *(*aazCrs+1) == pFmt->m_cEscapeChar          &&
+           *(*aazCrs+2) == 'N'                          &&
+           *(*aazCrs+3) == pFmt->m_cEnclosedBy_Trailing &&
+           bValidFieldEnd(*aazCrs+4,pFmt)) {
     // skip over '\N' or [\N]
     *aazCrs = (*aazCrs) + 4;
   }
-  else if (**aazCrs    == pFmt->m_cEnclosedBy_Leading &&
+  else if (**aazCrs    == pFmt->m_cEnclosedBy_Leading    &&
            ((*(*aazCrs+1) == 'N' || *(*aazCrs+1) == 'n') &&
             (0 == StrLib::iCompare(*aazCrs+2, "ULL", 3, C_NO_CASE))) &&
-           *(*aazCrs+5) == pFmt->m_cEnclosedBy_Trailing) {
+           *(*aazCrs+5) == pFmt->m_cEnclosedBy_Trailing &&
+           bValidFieldEnd(*aazCrs+6,pFmt)) {
     // skip over 'NULL'
     *aazCrs = (*aazCrs) + 6;
   }
