@@ -35,7 +35,7 @@ LOOP FOR 5 SECONDS {
   rows:
     ('col0', 'INTEGER', 19, 0, true, true)
 
-  drop index foo.fooIdx;
+  drop index foo fooIdx;
   success
 
   drop table foo;
