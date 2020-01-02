@@ -92,6 +92,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 jobSyntax: compactIndex :: compactIndex <tableNm> <indexNm> ;
+jobSyntax: compactIndex :: compactIdx   <tableNm> <indexNm> ;
 
 jobInfo: compactIndex
 {
