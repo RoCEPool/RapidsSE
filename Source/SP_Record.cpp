@@ -149,7 +149,7 @@ void SP_Record::vAppendBcd(Column* pCol, Datum* pDatum)
   
   SP_Bcd spBcd;
   
-  StrLib::vAppendString(&m_azCursor,(char*)spBcd.sz(pDatum->iBcd()));
+  StrLib::vAppendString(&m_azCursor,(char*)spBcd.sz(pDatum->iBcd(), pCol->iColumnScale()));
 }
 
 /*----------------------------------------------------------------------------*/
