@@ -150,12 +150,6 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
       
-    case CN_COMPLETEDMARKER: {
-      CompletedMarker* pCompletedMarker = _pCompletedMarker(pOperand);
-      delete pCompletedMarker;
-      break;
-    }
-      
     case CN_CRWBUFFER: {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
       

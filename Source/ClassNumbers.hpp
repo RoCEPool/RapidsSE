@@ -53,7 +53,6 @@ enum eCN : u2 // Class Number
   /*  32 0x020      176B Heap:M */ CN_COMMENCEMARKER,
   /*  32 0x020      176B Heap:M */ CN_COMMENCEDMARKER,
   /*  33 0x021      176B Heap:M */ CN_COMPILER,
-  /*  33 0x021      176B Heap:M */ CN_COMPLETEDMARKER,
   /*  34 0x022  1044008B Heap:L */ CN_CRWBUFFER,
   /*  35 0x023  1040784B Heap:L */ CN_CSVBUFFER,
   
@@ -388,7 +387,6 @@ static Stz* aCN[]
   /*  32 0x020 */ "COMMENCEMARKER"_Stz,      // CN_COMMENCEMARKER
   /*  32 0x020 */ "COMMENCEDMARKER"_Stz,     // CN_COMMENCEDMARKER
   /*  33 0x021 */ "COMPILER"_Stz,            // CN_COMPILER
-  /*  33 0x021 */ "COMPLETEDMARKER"_Stz,     // CN_COMPLETEDMARKER
   /*  34 0x022 */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
   /*  35 0x023 */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
   

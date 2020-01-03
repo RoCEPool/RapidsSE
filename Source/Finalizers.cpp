@@ -50,7 +50,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_COMMENCEMARKER
   /*    */ &Finalize::vUndefined,         // CN_COMMENCEDMARKER
   /*    */ &Finalize::vUndefined,         // CN_COMPILER
-  /*    */ &Finalize::vUndefined,         // CN_COMPLETEDMARKER
   /*    */ &Finalize::vUndefined,         // CN_CRWBUFFER
   /*    */ &Finalize::vUndefined,         // CN_CSVBUFFER
   

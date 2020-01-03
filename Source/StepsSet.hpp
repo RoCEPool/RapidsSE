@@ -868,7 +868,6 @@ public:
   void vOperandItemCountFetch(void);
   void vOperandInsertIntoTable(void);
   void vOperandKind(void);
-  void vOperandNewCompletedMarker(void);
   void vOperandNewEosMarker(void);
   void vOperandNewErrorMarker(void);
   void vOperandNewPulseMarker(void);

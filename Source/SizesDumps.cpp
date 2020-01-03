@@ -54,7 +54,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_COMMENCEMARKER
   /* */ &Dump::vDummy,           // CN_COMMENCEDMARKER
   /* */ &Dump::vDummy,           // CN_COMPILER
-  /* */ &Dump::vDummy,           // CN_COMPLETEDMARKER
   /* */ &Dump::vUndefined,       // CN_CRWBUFFER
   /* */ &Dump::vUndefined,       // CN_CSVBUFFER
 
@@ -390,7 +389,6 @@ i8 giClassSize[]
   /* */ sizeof(EosMarker),          // CN_COMMENCEMARKER
   /* */ sizeof(EosMarker),          // CN_COMMENCEDMARKER
   /* */ sizeof(Compiler),           // CN_COMPILER
-  /* */ sizeof(CompletedMarker),    // CN_COMPLETEDMARKER
   /* */ sizeof(CrwBuffer),          // CN_CRWBUFFER
   /* */ sizeof(CsvBuffer),          // CN_CSVBUFFER
 
@@ -726,7 +724,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_COMMENCEMARKER
   /* */ HT_TRANSIENT_SMALL,   // CN_COMMENCEDMARKER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COMPILER
-  /* */ HT_TRANSIENT_SMALL,   // CN_COMPLETEDMARKER
   /* */ HT_TRANSIENT_LARGE,   // CN_CRWBUFFER
   /* */ HT_TRANSIENT_LARGE,   // CN_CSVBUFFER
 

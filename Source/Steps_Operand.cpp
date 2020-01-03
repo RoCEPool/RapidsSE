@@ -20,7 +20,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].itemCount@"_Stz,     &Step::vOperandItemCountFetch);
   vAddStep("Operand[].insertIntoTable"_Stz,&Step::vOperandInsertIntoTable);
   vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
-  vAddStep("Operand[].newCompletedMarker"_Stz,  &Step::vOperandNewCompletedMarker);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
   vAddStep("Operand[].newPulseMarker"_Stz, &Step::vOperandNewPulseMarker);
@@ -284,20 +283,6 @@ void Step::vOperandNext(void)
   if (m_pRegSet->m_xpOperand.bIsNull())
     m_pRegSet->m_xpOperand = m_pTask->m_pJob->m_pOp->pPopQueue2();
   ASSERT(*m_pRegSet->m_xpOperand);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].newCompletedMarker -- new a completed marker                     */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandNewCompletedMarker(void)
-{
-  ENTRY(); // ENTRY("vOperandNewCompletedMarker"_Stz);
-  
-  ASSERT (m_pRegSet->m_xpOperand.bIsNull());
-  
-  m_pRegSet->m_xpOperand = new CompletedMarker;
   
   EXIT();
 }
