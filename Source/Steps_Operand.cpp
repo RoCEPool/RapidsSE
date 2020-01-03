@@ -111,8 +111,8 @@ void Step::vOperandHandleAggEnd(void)
   
   if (pOp->nDecLeftEosMarkers() == 0) {
     if (pOp->bIsCancelling()) {
-      delete _pEosMarker(*m_pRegSet->m_xpOperand);
-      pOp->vPipeOut(new CancelMarker);
+      AM::vDeleteOperand(*m_pRegSet->m_xpOperand);
+      pOp->vPipeOut(new Marker(OM_CANCELMARKER));
     }
     else {
       
@@ -136,7 +136,7 @@ void Step::vOperandHandleAggEnd(void)
     
   }
   else
-    delete (EosMarker*)(*m_pRegSet->m_xpOperand);
+    AM::vDeleteOperand(*m_pRegSet->m_xpOperand);
   
   EXIT();
 }
@@ -154,9 +154,9 @@ void Step::vOperandHandleEnd(void)
   
   if (pOp->nDecLeftEosMarkers() == 0) {
     if (pOp->bIsCancelling()) {
-      delete _pEosMarker(*m_pRegSet->m_xpOperand);
+      AM::vDeleteOperand(*m_pRegSet->m_xpOperand);
       
-      pOp->vPipeOut(new CancelMarker);
+      pOp->vPipeOut(new Marker(OM_CANCELMARKER));
         
     }
     else {
@@ -251,9 +251,7 @@ void Step::vOperandKind(void)
     
     case CN_CRWBUFFER:       eOperand = ZK_CRWBUFFER;       break;
     case CN_CSVBUFFER:       eOperand = ZK_CSVBUFFER;       break;
-    case CN_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
     case CN_ENTBUFFER:       eOperand = ZK_ENTBUFFER;       break;
-    case CN_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
     case CN_IRWBUFFER:       eOperand = ZK_IRWBUFFER;       break;
     case CN_MARKER: {
       Marker* pMarker = _pMarker(*m_pRegSet->m_xpOperand);
@@ -594,11 +592,6 @@ void Step::vOperandWorkDone(void)
     case CN_CSVBUFFER: {
       CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperand);
       pOp->vAddWorkDone(pCsvBuffer->nRecords());
-      break;
-    }
-      
-    case CN_EOSMARKER: {
-      RASSERT(0);
       break;
     }
       

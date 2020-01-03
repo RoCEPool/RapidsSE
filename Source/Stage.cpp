@@ -146,7 +146,7 @@ void Stage::vCancelOperators(i8 iThisNode)
     if (pStageNde->iNode() == iThisNode) {
       Op* pOp = pStageNde->pOpVec()->pGet(0);
       RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
-      pOp->vAppendLeft(new CancelMarker);
+      pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
     }
   }
   
@@ -158,7 +158,7 @@ void Stage::vCancelOperators(i8 iThisNode)
     if (iPtnNode == iThisNode) {
       Op* pOp = pStagePtn->pOpVec()->pGet(0);
       RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
-      pOp->vAppendLeft(new CancelMarker);
+      pOp->vAppendLeft(new Marker(OM_CANCELMARKER));
     }
   }
   

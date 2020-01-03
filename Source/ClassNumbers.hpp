@@ -36,7 +36,6 @@ enum eCN : u2 // Class Number
   
   /*  16 0x010        3B Heap:I */ CN__C__,
   /*  17 0x011    36880B Heap:M */ CN_CALCULATOR,
-  /*  18 0x012       80B Heap:S */ CN_CANCELMARKER,
   /*  19 0x013       40B Heap:I */ CN_CARRYOVER,
   /*  20 0x014       16B Heap:I */ CN_CATALOG,
   /*  21 0x015      136B Heap:M */ CN_CLAUSE_FROM,
@@ -50,8 +49,6 @@ enum eCN : u2 // Class Number
   /*  29 0x01D     4096B Heap:M */ CN_CMD_SELECT,
   /*  30 0x01E      184B Heap:S */ CN_COLUMN,
   /*  32 0x020      176B Heap:M */ CN_COMMAND,
-  /*  32 0x020      176B Heap:M */ CN_COMMENCEMARKER,
-  /*  32 0x020      176B Heap:M */ CN_COMMENCEDMARKER,
   /*  33 0x021      176B Heap:M */ CN_COMPILER,
   /*  34 0x022  1044008B Heap:L */ CN_CRWBUFFER,
   /*  35 0x023  1040784B Heap:L */ CN_CSVBUFFER,
@@ -68,7 +65,6 @@ enum eCN : u2 // Class Number
   /*  44 0x02C       56B Heap:S */ CN_DYNAMO,
   
   /*  45 0x02D        5B Heap:I */ CN__E__,
-  /*  46 0x02E       72B Heap:S */ CN_EARLYMARKER,
   /*  99 0x063       16B Heap:I */ CN_EDTVAL,
   /*  47 0x02F    27264B Heap:L */ CN_ENCODING,
   /*  49 0x031     5584B Heap:M */ CN_ENMSET,
@@ -76,8 +72,6 @@ enum eCN : u2 // Class Number
   /*  51 0x033  1043952B Heap:L */ CN_ENTBUFFER,
   /*  52 0x034      304B Heap:I */ CN_ENTWRK,
   /*  53 0x035      312B Heap:S */ CN_ENUMFLAGS,
-  /*  48 0x030       80B Heap:S */ CN_EOSMARKER,
-  /*                312B Heap:S */ CN_ERRORMARKER,
   /*                312B Heap:S */ CN_EXTRACTROW,
   
   /*  54 0x036        6B Heap:I */ CN__F__,
@@ -201,7 +195,6 @@ enum eCN : u2 // Class Number
   /* 165 0x0A5       16B Heap:I */ CN__P__,
   /* 166 0x0A6    48840B Heap:M */ CN_PARSER,
   /* 167 0x0A7     1048B Heap:M */ CN_PATHVEC,
-  /* 168 0x0A8       72B Heap:M */ CN_PAUSEMARKER,
   /* 169 0x0A9      232B Heap:M */ CN_PERUSE,
   /* 170 0x0AA      384B Heap:S */ CN_PIPE,
   /* 171 0x0AB     2136B Heap:M */ CN_PIPELINE,
@@ -213,7 +206,6 @@ enum eCN : u2 // Class Number
   /* 177 0x0B1      104B Heap:S */ CN_PSXTHD,
   /* 178 0x0B2     8216B Heap:M */ CN_PTNCOLVEC,
   /* 179 0x0B3       16B Heap:I */ CN_PTRVAL,
-  /* 179 0x0B3       16B Heap:I */ CN_PULSEMARKER,
   
   /* 180 0x0B4       17B Heap:I */ CN__Q__,
   /* 181 0x0B5      232B Heap:S */ CN_QUEUE,
@@ -289,14 +281,10 @@ enum eCN : u2 // Class Number
   /* 248 0x0F8      144B Heap:S */ CN_STAGESPEC,
   /* 249 0x0F9     2080B Heap:S */ CN_STAGESPECVEC,
   /* 250 0x0FA     2080B Heap:S */ CN_STAGEVEC,
-  /* 251 0x0FB       72B Heap:S */ CN_STARTMARKER,
-  /* 251 0x0FB       72B Heap:S */ CN_STARTEDMARKER,
   /* 252 0x0FC    16840B Heap:I */ CN_STATISTICS,
   /* 253 0x0FD       64B Heap:I */ CN_STEPACCUM,
   /* 254 0x0FE   131288B Heap:L */ CN_STEPTIMING,
   /* 255 0x0FF       80B Heap:L */ CN_STMT_SELECT,
-  /*              47800B Heap:L */ CN_STOPMARKER,
-  /*              47800B Heap:L */ CN_STOPPEDMARKER,
   /* 256 0x100    47800B Heap:L */ CN_STREAMDEF,
   /* 257 0x101       56B Heap:I */ CN_STRING_T,
   /* 258 0x102       24B Heap:I */ CN_STZVAL,
@@ -316,7 +304,6 @@ enum eCN : u2 // Class Number
   /* 271 0x10F      120B Heap:S */ CN_THREAD,
   /* 272 0x110      248B Heap:S */ CN_THREADQUEUE,
   /* 273 0x111     2272B Heap:M */ CN_THREADVEC,
-  /* 274 0x112       72B Heap:S */ CN_TIMEMARKER,
   /* 275 0x113       32B Heap:S */ CN_TIMER,
   /*  99 0x063       16B Heap:I */ CN_TMEVAL,
   /* 276 0x114      304B Heap:S */ CN_TOKEN,
@@ -371,7 +358,6 @@ static Stz* aCN[]
   
   /*  16 0x010 */ "_C__"_Stz,                // CN__C__
   /*  17 0x011 */ "CALCULATOR"_Stz,          // CN_CALCULATOR
-  /*  18 0x012 */ "CANCELMARKER"_Stz,        // CN_CANCELMARKER
   /*  19 0x013 */ "CARRYOVER"_Stz,           // CN_CARRYOVER
   /*  20 0x014 */ "CATALOG"_Stz,             // CN_CATALOG
   /*  21 0x015 */ "CLAUSE_FROM"_Stz,         // CN_CLAUSE_FROM
@@ -385,8 +371,6 @@ static Stz* aCN[]
   /*  29 0x01D */ "CMD_SELECT"_Stz,          // CN_CMD_SELECT
   /*  30 0x01E */ "COLUMN"_Stz,              // CN_COLUMN
   /*  32 0x020 */ "COMMAND"_Stz,             // CN_COMMAND
-  /*  32 0x020 */ "COMMENCEMARKER"_Stz,      // CN_COMMENCEMARKER
-  /*  32 0x020 */ "COMMENCEDMARKER"_Stz,     // CN_COMMENCEDMARKER
   /*  33 0x021 */ "COMPILER"_Stz,            // CN_COMPILER
   /*  34 0x022 */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
   /*  35 0x023 */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
@@ -403,7 +387,6 @@ static Stz* aCN[]
   /*  44 0x02C */ "DYNAMO"_Stz,              // CN_DYNAMO
   
   /*  45 0x02D */ "_E__"_Stz,                // CN__E__
-  /*  46 0x02E */ "EARLYMARKER"_Stz,         // CN_EARLYMARKER
   /*  99 0x063 */ "EDTVAL"_Stz,              // CN_EDTVAL
   /*  47 0x02F */ "ENCODING"_Stz,            // CN_ENCODING
   /*  49 0x031 */ "ENMSET"_Stz,              // CN_ENMSET
@@ -411,8 +394,6 @@ static Stz* aCN[]
   /*  51 0x033 */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
   /*  52 0x034 */ "ENTWRK"_Stz,              // CN_ENTWRK
   /*  53 0x035 */ "ENUMFLAGS"_Stz,           // CN_ENUMFLAGS
-  /*  48 0x030 */ "EOSMARKER"_Stz,           // CN_EOSMARKER
-  /*           */ "ERRORMARKER"_Stz,         // CN_ERRORMARKER
   /*           */ "EXTRACTROW"_Stz,          // CN_EXTRACTROW
   
   /*  54 0x036 */ "_F__"_Stz,                // CN__F__
@@ -536,7 +517,6 @@ static Stz* aCN[]
   /* 165 0x0A5 */ "_P__"_Stz,                // CN__P__
   /* 166 0x0A6 */ "PARSER"_Stz,              // CN_PARSER
   /* 167 0x0A7 */ "PATHVEC"_Stz,             // CN_PATHVEC
-  /* 168 0x0A8 */ "PAUSEMARKER"_Stz,         // CN_PAUSEMARKER
   /* 169 0x0A9 */ "PERUSE"_Stz,              // CN_PERUSE
   /* 170 0x0AA */ "PIPE"_Stz,                // CN_PIPE
   /* 171 0x0AB */ "PIPELINE"_Stz,            // CN_PIPELINE
@@ -548,7 +528,6 @@ static Stz* aCN[]
   /* 177 0x0B1 */ "PSXTHD"_Stz,              // CN_PSXTHD
   /* 178 0x0B2 */ "PTNCOLVEC"_Stz,           // CN_PTNCOLVEC
   /* 179 0x0B3 */ "PTRVAL"_Stz,              // CN_PTRVAL
-  /* 179 0x0B3 */ "PULSEMARKER"_Stz,         // CN_PULSEMARKER
   
   /* 180 0x0B4 */ "_Q__"_Stz,                // CN__Q__
   /* 181 0x0B5 */ "QUEUE"_Stz,               // CN_QUEUE
@@ -624,14 +603,10 @@ static Stz* aCN[]
   /* 248 0x0F8 */ "STAGESPEC"_Stz,           // CN_STAGESPEC
   /* 249 0x0F9 */ "STAGESPECVEC"_Stz,        // CN_STAGESPECVEC
   /* 250 0x0FA */ "STAGEVEC"_Stz,            // CN_STAGEVEC
-  /* 251 0x0FB */ "STARTMARKER"_Stz,         // CN_STARTMARKER
-  /* 251 0x0FB */ "STARTEDMARKER"_Stz,       // CN_STARTEDMARKER
   /* 252 0x0FC */ "STATISTICS"_Stz,          // CN_STATISTICS
   /* 253 0x0FD */ "STEPACCUM"_Stz,           // CN_STEPACCUM
   /* 254 0x0FE */ "STEPTIMING"_Stz,          // CN_STEPTIMING
   /* 255 0x0FF */ "STMT_SELECT"_Stz,         // CN_STMT_SELECT
-  /*           */ "STOPMARKER"_Stz,          // CN_STOPMARKER
-  /*           */ "STOPPEDMARKER"_Stz,       // CN_STOPPEDMARKER
   /* 256 0x100 */ "STREAMDEF"_Stz,           // CN_STREAMDEF
   /* 257 0x101 */ "STRING_T"_Stz,            // CN_STRING_T
   /* 258 0x102 */ "STZVAL"_Stz,              // CN_STZVAL
@@ -651,7 +626,6 @@ static Stz* aCN[]
   /* 271 0x10F */ "THREAD"_Stz,              // CN_THREAD
   /* 272 0x110 */ "THREADQUEUE"_Stz,         // CN_THREADQUEUE
   /* 273 0x111 */ "THREADVEC"_Stz,           // CN_THREADVEC
-  /* 274 0x112 */ "TIMEMARKER"_Stz,          // CN_TIMEMARKER
   /* 275 0x113 */ "TIMER"_Stz,               // CN_TIMER
   /*  99 0x063 */ "TMEVAL"_Stz,              // CN_TMEVAL
   /* 276 0x114 */ "TOKEN"_Stz,               // CN_TOKEN

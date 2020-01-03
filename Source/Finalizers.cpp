@@ -33,7 +33,6 @@ pFINALIZE *gpFinalize[]
 
   /*    */ &Finalize::vUndefined,         // CN__C__
   /*    */ &Finalize::vUndefined,         // CN_CALCULATOR
-  /*    */ &Finalize::vUndefined,         // CN_CANCELMARKER
   /* 30 */ &Finalize::vUndefined,         // CN_CARRYOVER
   /*    */ &Finalize::vUndefined,         // CN_CATALOG
   /*    */ &Finalize::vUndefined,         // CN_CLAUSE_FROM
@@ -47,8 +46,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_CMD_SELECT
   /*    */ &Finalize::vUndefined,         // CN_COLUMN
   /*    */ &Finalize::vUndefined,         // CN_COMMAND
-  /*    */ &Finalize::vUndefined,         // CN_COMMENCEMARKER
-  /*    */ &Finalize::vUndefined,         // CN_COMMENCEDMARKER
   /*    */ &Finalize::vUndefined,         // CN_COMPILER
   /*    */ &Finalize::vUndefined,         // CN_CRWBUFFER
   /*    */ &Finalize::vUndefined,         // CN_CSVBUFFER
@@ -65,7 +62,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_DYNAMO
 
   /*    */ &Finalize::vUndefined,         // CN__E__
-  /*    */ &Finalize::vUndefined,         // CN_EARLYMARKER
   /*  7 */ &Finalize::vUndefined,         // CN_EDTVAL
   /*    */ &Finalize::vUndefined,         // CN_ENCODING
   /* 37 */ &Finalize::vUndefined,         // CN_ENMSET
@@ -73,8 +69,6 @@ pFINALIZE *gpFinalize[]
   /* 64 */ &Finalize::vUndefined,         // CN_ENTWRK
   /*    */ &Finalize::vUndefined,         // CN_ENUMFLAGS
   /*    */ &Finalize::vUndefined,         // CN_ENUMSS
-  /*    */ &Finalize::vUndefined,         // CN_EOSMARKER
-  /*    */ &Finalize::vUndefined,         // CN_ERRORMARKER
   /*    */ &Finalize::vUndefined,         // CN_EXTRACTROW
 
   /*    */ &Finalize::vUndefined,         // CN__F__
@@ -198,7 +192,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN__P__
   /* 78 */ &Finalize::vUndefined,         // CN_PARSER
   /* 82 */ &Finalize::vUndefined,         // CN_PATHVEC
-  /* 82 */ &Finalize::vUndefined,         // CN_PAUSEMARKER
   /* 82 */ &Finalize::vUndefined,         // CN_PERUSE
   /*    */ &Finalize::vUndefined,         // CN_PIPE
   /* 34 */ &Finalize::vUndefined,         // CN_PIPELINE
@@ -210,7 +203,6 @@ pFINALIZE *gpFinalize[]
   /* 89 */ &Finalize::vUndefined,         // CN_PSXTHD
   /* 94 */ &Finalize::vUndefined,         // CN_PTNCOLVEC
   /* 11 */ &Finalize::vUndefined,         // CN_PTRVAL
-  /* 11 */ &Finalize::vUndefined,         // CN_PULSEMARKER
 
   /*    */ &Finalize::vUndefined,         // CN__Q__
   /* 95 */ &Finalize::vUndefined,         // CN_QUEUE
@@ -286,14 +278,10 @@ pFINALIZE *gpFinalize[]
   /*126 */ &Finalize::vUndefined,         // CN_STAGESPEC
   /*126 */ &Finalize::vUndefined,         // CN_STAGESPECVEC
   /*126 */ &Finalize::vUndefined,         // CN_STAGEVEC
-  /*    */ &Finalize::vUndefined,         // CN_STARTMARKER
-  /*    */ &Finalize::vUndefined,         // CN_STARTEDMARKER
   /*    */ &Finalize::vUndefined,         // CN_STATISTICS
   /*127 */ &Finalize::vUndefined,         // CN_STEPACCUM
   /*128 */ &Finalize::vUndefined,         // CN_STEPTIMING
   /*128 */ &Finalize::vUndefined,         // CN_STMT_SELECT
-  /*    */ &Finalize::vUndefined,         // CN_STOPMARKER
-  /*    */ &Finalize::vUndefined,         // CN_STOPPEDMARKER
   /* 13 */ &Finalize::vUndefined,         // CN_STREAMDEF
   /* 13 */ &Finalize::vUndefined,         // CN_STRING_T
   /* 12 */ &Finalize::vUndefined,         // CN_STZVAL  
@@ -313,7 +301,6 @@ pFINALIZE *gpFinalize[]
   /*137 */ &Finalize::vUndefined,         // CN_THREAD
   /*    */ &Finalize::vUndefined,         // CN_THREADQUEUE
   /*    */ &Finalize::vUndefined,         // CN_THREADVEC
-  /*142 */ &Finalize::vUndefined,         // CN_TIMEMARKER
   /*142 */ &Finalize::vUndefined,         // CN_TIMER
   /*143 */ &Finalize::vUndefined,         // CN_TOKEN
   /*  7 */ &Finalize::vUndefined,         // CN_TMEVAL

@@ -238,7 +238,6 @@ void Constants::vAddConstants(void)
   /* 40 */ vAddConstant("CN_PARSER"_Stz,       CN_PARSER);
   /*    */ vAddConstant("CN_PLAN"_Stz,         CN_PLAN);
   /*  7 */ vAddConstant("CN_PTRVAL"_Stz,       CN_PTRVAL);
-  /*  7 */ vAddConstant("CN_PULSEMARKER"_Stz,  CN_PULSEMARKER);
 
   /* 45 */ vAddConstant("CN_QUEUE"_Stz,        CN_QUEUE);
   /* 46 */ vAddConstant("CN_QUEUEBUFFER"_Stz,  CN_QUEUEBUFFER);

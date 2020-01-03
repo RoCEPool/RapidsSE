@@ -440,7 +440,7 @@ void Step::vSocketRecvObject(void)
       MemLib::vCopy(pMarker,pObject,sizeof(Object),CN_MARKER);
       
       aBody = aAdd<void*>(pMarker,sizeof(Object));
-      nRemainingBytes = giClassSize[CN_PULSEMARKER] - sizeof(Object);
+      nRemainingBytes = giClassSize[CN_MARKER] - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -630,7 +630,7 @@ void Step::vSocketRecvObject_LowMem(void)
   void* aBody;
   i8 nRemainingBytes;
   CrwBuffer* pCrwBuffer;
-  EosMarker* pEosMarker;
+  Marker* pMarker;
   StreamDef* pStreamDef;
   
   switch(eClass) {
@@ -664,13 +664,13 @@ void Step::vSocketRecvObject_LowMem(void)
       EXIT();
       return;
      
-    case CN_EOSMARKER:
-      pEosMarker = new EosMarker();
+    case CN_MARKER:
+      pMarker = new Marker();
       
-      MemLib::vCopy(pEosMarker,pObject,sizeof(Object),CN_EOSMARKER);
+      MemLib::vCopy(pMarker,pObject,sizeof(Object),CN_MARKER);
       
-      aBody = aAdd<void*>(pEosMarker,sizeof(Object));
-      nRemainingBytes = giClassSize[CN_EOSMARKER] - sizeof(Object);
+      aBody = aAdd<void*>(pMarker,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_MARKER] - sizeof(Object);
       
       bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
       if (! bResult) {
@@ -682,7 +682,7 @@ void Step::vSocketRecvObject_LowMem(void)
       //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
       //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
       
-      m_pDataStack->vPushPtr(pEosMarker);
+      m_pDataStack->vPushPtr(pMarker);
       m_pDataStack->vPushInt(true);
       EXIT();
       return;

@@ -37,7 +37,6 @@ pDUMPFUN *gpDump[]
 
   /* */ &Dump::vInvalid,         // CN__C__
   /* */ &Dump::vUndefined,       // CN_CALCULATOR
-  /* */ &Dump::vUndefined,       // CN_CANCELMARKER
   /* */ &Dump::vDummy,           // CN_CARRYOVER
   /* */ &Dump::vDummy,           // CN_CATALOG
   /* */ &Dump::vDummy,           // CN_CATALOG
@@ -51,8 +50,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_CLAUSE_WHERE
   /* */ &Dump::vDummy,           // CN_CMD_SELECT
   /* */ &Dump::vDummy,           // CN_COMMAND
-  /* */ &Dump::vDummy,           // CN_COMMENCEMARKER
-  /* */ &Dump::vDummy,           // CN_COMMENCEDMARKER
   /* */ &Dump::vDummy,           // CN_COMPILER
   /* */ &Dump::vUndefined,       // CN_CRWBUFFER
   /* */ &Dump::vUndefined,       // CN_CSVBUFFER
@@ -69,7 +66,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_DYNAMO
 
   /* */ &Dump::vInvalid,         // CN__E__
-  /* */ &Dump::vUndefined,       // CN_EARLYMARKER
   /* */ &Dump::vInvalid,         // CN_EDTVAL
   /* */ &Dump::vUndefined,       // CN_ENCODING
   /* */ &Dump::vDummy,           // CN_ENMSET
@@ -77,8 +73,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_ENTBUFFER
   /* */ &Dump::vInvalid,         // CN_ENTWRK
   /* */ &Dump::vDummy,           // CN_ENUMFLAGS
-  /* */ &Dump::vUndefined,       // CN_EOSMARKER
-  /* */ &Dump::vDummy,           // CN_ERRORMARKER
   /* */ &Dump::vDummy,           // CN_EXTRACTROW
 
   /* */ &Dump::vInvalid,         // CN__F__
@@ -202,7 +196,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN__P__
   /* */ &Parser::vDump,          // CN_PARSER
   /* */ &Dump::vInvalid,         // CN_PATHVEC
-  /* */ &Dump::vInvalid,         // CN_PAUSEMARKER
   /* */ &Dump::vInvalid,         // CN_PERUSE
   /* */ &Dump::vInvalid,         // CN_PIPE
   /* */ &Dump::vDummy,           // CN_PIPELINE
@@ -214,7 +207,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_PSXTHD
   /* */ &Dump::vDummy,           // CN_PTNCOLVEC
   /* */ &Dump::vInvalid,         // CN_PTRVAL
-  /* */ &Dump::vDummy,           // CN_PULSEMARKER
 
   /* */ &Dump::vInvalid,         // CN__Q__
   /* */ &Queue::vDump,           // CN_QUEUE
@@ -290,14 +282,10 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_STAGESPEC
   /* */ &Dump::vInvalid,         // CN_STAGESPECVEC
   /* */ &Dump::vInvalid,         // CN_STAGEVEC
-  /* */ &Dump::vInvalid,         // CN_STARTMARKER
-  /* */ &Dump::vInvalid,         // CN_STARTEDMARKER
   /* */ &Dump::vInvalid,         // CN_STATISTICS
   /* */ &Dump::vInvalid,         // CN_STEPACCUM
   /* */ &StepTiming::vDump,      // CN_STEPTIMING
   /* */ &Dump::vInvalid,         // CN_STMT_SELECT
-  /* */ &Dump::vInvalid,         // CN_STOPMARKER
-  /* */ &Dump::vInvalid,         // CN_STOPPEDMARKER
   /* */ &Dump::vInvalid,         // CN_STREAMDEF
   /* */ &Dump::vInvalid,         // CN_STRING_T
   /* */ &Dump::vInvalid,         // CN_STZVAL
@@ -317,7 +305,6 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_THREAD
   /* */ &Dump::vUndefined,       // CN_THREADQUEUE
   /* */ &Dump::vUndefined,       // CN_THREADVEC
-  /* */ &Dump::vInvalid,         // CN_TIMEMARKER
   /* */ &Dump::vInvalid,         // CN_TIMER
   /* */ &Dump::vInvalid,         // CN_TMEVAL
   /* */ &Token::vDump,           // CN_TOKEN
@@ -373,7 +360,6 @@ i8 giClassSize[]
 
   /* */ 'C'-'A' + 1,                // CN__C__
   /* */ sizeof(Calculator),         // CN_CALCULATOR
-  /* */ sizeof(CancelMarker),       // CN_CANCELMARKER
   /* */ sizeof(CarryOver),          // CN_CARRYOVER
   /* */ sizeof(Catalog),            // CN_CATALOG
   /* */ sizeof(Clause_From),        // CN_CLAUSE_FROM
@@ -387,8 +373,6 @@ i8 giClassSize[]
   /* */ sizeof(Cmd_Select),         // CN_CMD_SELECT
   /* */ sizeof(Column),             // CN_COLUMN
   /* */ sizeof(Request),            // CN_COMMAND
-  /* */ sizeof(EosMarker),          // CN_COMMENCEMARKER
-  /* */ sizeof(EosMarker),          // CN_COMMENCEDMARKER
   /* */ sizeof(Compiler),           // CN_COMPILER
   /* */ sizeof(CrwBuffer),          // CN_CRWBUFFER
   /* */ sizeof(CsvBuffer),          // CN_CSVBUFFER
@@ -405,7 +389,6 @@ i8 giClassSize[]
   /* */ sizeof(Dynamo),             // CN_DYNAMO
 
   /* */ 'E'-'A' + 1,                // CN__E__
-  /* */ sizeof(EarlyMarker),        // CN_EARLYMARKER
   /* */ sizeof(EdtVal),             // CN_EDTVAL
   /* */ sizeof(Encoding),           // CN_ENCODING
   /* */ sizeof(EnameSet),           // CN_ENMSET
@@ -413,8 +396,6 @@ i8 giClassSize[]
   /* */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* */ sizeof(EntWrk),             // CN_ENTWRK
   /* */ sizeof(EnumFlags),          // CN_ENUMFLAGS
-  /* */ sizeof(EosMarker),          // CN_EOSMARKER
-  /* */ sizeof(ErrorMarker),        // CN_ERRORMARKER
   /* */ sizeof(ExtractRow),         // CN_EXTRACTROW
 
   /* */ 'F'-'A' + 1,                // CN__F__
@@ -538,7 +519,6 @@ i8 giClassSize[]
   /* */ 'P'-'A' + 1,                // CN__P__
   /* */ sizeof(Parser),             // CN_PARSER
   /* */ sizeof(PathVec),            // CN_PATHVEC
-  /* */ sizeof(PauseMarker),        // CN_PAUSEMARKER
   /* */ sizeof(Peruse),             // CN_PERUSE
   /* */ sizeof(Fifo),               // CN_PIPE
   /* */ sizeof(Pipeline),           // CN_PIPELINE
@@ -550,7 +530,6 @@ i8 giClassSize[]
   /* */ sizeof(PsxThd),             // CN_PSXTHD
   /* */ sizeof(PtnColVec),          // CN_PTNCOLVEC
   /* */ sizeof(PtrVal),             // CN_PTRVAL
-  /* */ sizeof(PulseMarker),        // CN_PULSEMARKER
 
   /* */ 'Q'-'A' + 1,                // CN__Q__
   /* */ sizeof(Queue),              // CN_QUEUE
@@ -626,14 +605,10 @@ i8 giClassSize[]
   /* */ sizeof(StageSpec),          // CN_STAGESPEC
   /* */ sizeof(StageSpecVec),       // CN_STAGESPECVEC
   /* */ sizeof(StageVec),           // CN_STAGEVEC
-  /* */ sizeof(StartMarker),        // CN_STARTMARKER
-  /* */ sizeof(StartedMarker),      // CN_STARTEDMARKER
   /* */ sizeof(Statistics),         // CN_STATISTICS
   /* */ sizeof(StepAccum),          // CN_STEPACCUM
   /* */ sizeof(StepTiming),         // CN_STEPTIMING
   /* */ sizeof(Stmt_Select),        // CN_STMT_SELECT
-  /* */ sizeof(StopMarker),         // CN_STOPMARKER
-  /* */ sizeof(StoppedMarker),      // CN_STOPPEDMARKER
   /* */ sizeof(StreamDef),          // CN_STREAMDEF
   /* */ sizeof(s32),                // CN_STRING_T
   /* */ sizeof(StzVal),             // CN_STZVAL
@@ -653,7 +628,6 @@ i8 giClassSize[]
   /* */ sizeof(Thread),             // CN_THREAD
   /* */ sizeof(ThreadQueue),        // CN_THREADQUEUE
   /* */ sizeof(ThreadVec),          // CN_THREADVEC
-  /* */ sizeof(TimeMarker),         // CN_TIMEMARKER
   /* */ sizeof(Timer),              // CN_TIMER
   /* */ sizeof(TmeVal),             // CN_TMEVAL
   /* */ sizeof(Token),              // CN_TOKEN
@@ -709,7 +683,6 @@ eHT geWhichHeap[]
 
   /* */ HT_INVALID,           // CN__C__
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CALCULATOR
-  /* */ HT_TRANSIENT_SMALL,   // CN_CANCELMARKER
   /* */ HT_INVALID,           // CN_CARRYOVER
   /* */ HT_INVALID,           // CN_CATALOG
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_FROM
@@ -723,8 +696,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_CMD_SELECT
   /* */ HT_TRANSIENT_SMALL,   // CN_COLUMN
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COMMAND
-  /* */ HT_TRANSIENT_SMALL,   // CN_COMMENCEMARKER
-  /* */ HT_TRANSIENT_SMALL,   // CN_COMMENCEDMARKER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COMPILER
   /* */ HT_TRANSIENT_LARGE,   // CN_CRWBUFFER
   /* */ HT_TRANSIENT_LARGE,   // CN_CSVBUFFER
@@ -741,7 +712,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_DYNAMO
 
   /* */ HT_INVALID,           // CN__E__
-  /* */ HT_TRANSIENT_SMALL,   // CN_EARLYMARKER
   /* */ HT_INVALID,           // CN_EDTVAL
   /* */ HT_TRANSIENT_LARGE,   // CN_ENCODING
   /* */ HT_TRANSIENT_MEDIUM,  // CN_ENMSET
@@ -749,8 +719,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_ENTBUFFER
   /* */ HT_INVALID,           // CN_ENTWRK
   /* */ HT_TRANSIENT_SMALL,   // CN_ENUMFLAGS
-  /* */ HT_TRANSIENT_SMALL,   // CN_EOSMARKER
-  /* */ HT_TRANSIENT_SMALL,   // CN_ERRORMARKER
   /* */ HT_TRANSIENT_SMALL,   // CN_EXTRACTROW
 
   /* */ HT_INVALID,           // CN__F__
@@ -874,7 +842,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN__P__
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PARSER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PATHVEC
-  /* */ HT_TRANSIENT_MEDIUM,  // CN_PAUSEMARKER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PERUSE
   /* */ HT_TRANSIENT_SMALL,   // CN_PIPE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PIPELINE
@@ -886,7 +853,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_PSXTHD
   /* */ HT_TRANSIENT_MEDIUM,  // CN_PTNCOLVEC
   /* */ HT_INVALID,           // CN_PTRVAL
-  /* */ HT_TRANSIENT_SMALL,   // CN_PULSEMARKER
 
   /* */ HT_INVALID,           // CN__Q__
   /* */ HT_TRANSIENT_SMALL,   // CN_QUEUE
@@ -962,14 +928,10 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_STAGESPEC
   /* */ HT_TRANSIENT_SMALL,   // CN_STAGESPECVEC
   /* */ HT_TRANSIENT_SMALL,   // CN_STAGEVEC
-  /* */ HT_TRANSIENT_SMALL,   // CN_STARTMARKER
-  /* */ HT_TRANSIENT_SMALL,   // CN_STARTEDMARKER
   /* */ HT_INVALID,           // CN_STEPACCUM
   /* */ HT_INVALID,           // CN_STATISTICS
   /* */ HT_TRANSIENT_LARGE,   // CN_STEPTIMING
   /* */ HT_TRANSIENT_LARGE,   // CN_STMT_SELECT
-  /* */ HT_TRANSIENT_SMALL,   // CN_STOPMARKER
-  /* */ HT_TRANSIENT_SMALL,   // CN_STOPPEDMARKER
   /* */ HT_TRANSIENT_LARGE,   // CN_STREAMDEF
   /* */ HT_INVALID,           // CN_STRING_T
   /* */ HT_INVALID,           // CN_STZVAL
@@ -989,7 +951,6 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_THREAD
   /* */ HT_TRANSIENT_SMALL,   // CN_THREADQUEUE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_THREADVEC
-  /* */ HT_TRANSIENT_SMALL,   // CN_TIMEMARKER
   /* */ HT_TRANSIENT_SMALL,   // CN_TIMER
   /* */ HT_INVALID,           // CN_TMEVAL
   /* */ HT_TRANSIENT_SMALL,   // CN_TOKEN
