@@ -8,12 +8,17 @@ namespace ControlData
   class Marker : public Operand
   {
   protected:
-  
+    eOM  m_eOpMarker;
+    
   public:
+    void* operator new(size_t);
     void operator delete(void*);
   
-    Marker(eCN eClass);
+    Marker(void);
+    Marker(eOM eOpMarker);
    ~Marker(void) noexcept(false);
+    
+    eOM eOpMarker(void);
   };
 
   Marker* _pMarker(void* aAddr);

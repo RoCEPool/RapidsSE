@@ -144,9 +144,9 @@ void AM::vDeleteOperand(Operand* pOperand)
   
   switch(eClass) {
       
-    case CN_CANCELMARKER: {
-      CancelMarker* pCancelMarker = _pCancelMarker(pOperand);
-      delete pCancelMarker;
+    case CN_MARKER: {
+      Marker* pMarker = _pMarker(pOperand);
+      delete pMarker;
       break;
     }
       
@@ -166,57 +166,15 @@ void AM::vDeleteOperand(Operand* pOperand)
       delete pCsvBuffer;
       break;
     }
-      
-    case CN_EOSMARKER: {
-      EosMarker* pEosMarker = _pEosMarker(pOperand);
-      delete pEosMarker;
-      break;
-    }
  
     case CN_ENTBUFFER: {
       // should never be called for ent buffers
       RASSERT(0);
     }
       
-    case CN_ERRORMARKER: {
-      ErrorMarker* pErrorMarker = _pErrorMarker(pOperand);
-      delete pErrorMarker;
-      break;
-    }
-      
     case CN_IRWBUFFER: {
       IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
       delete pIrwBuffer;
-      break;
-    }
-      
-    case CN_PULSEMARKER: {
-      PulseMarker* pPulseMarker = _pPulseMarker(pOperand);
-      delete pPulseMarker;
-      break;
-    }
-      
-    case CN_STARTMARKER: {
-      StartMarker* pStartMarker = _pStartMarker(pOperand);
-      delete pStartMarker;
-      break;
-    }
-    
-    case CN_STARTEDMARKER: {
-      StartedMarker* pStartedMarker = _pStartedMarker(pOperand);
-      delete pStartedMarker;
-      break;
-    }
-      
-    case CN_STOPMARKER: {
-      StopMarker* pStopMarker = _pStopMarker(pOperand);
-      delete pStopMarker;
-      break;
-    }
-      
-    case CN_STOPPEDMARKER: {
-      StoppedMarker* pStoppedMarker = _pStoppedMarker(pOperand);
-      delete pStoppedMarker;
       break;
     }
       

@@ -20,6 +20,17 @@ Marker* ControlData::_pMarker(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allocate from heap                                                         */
+/*----------------------------------------------------------------------------*/
+void* Marker::operator new(size_t)
+{
+  Marker* pMarker =
+  static_cast<Marker*>(HeapMem::pAllocate(CN_MARKER));
+  
+  return pMarker;
+}
+
+/*----------------------------------------------------------------------------*/
 /* free back to the heap                                                      */
 /*----------------------------------------------------------------------------*/
 void Marker::operator delete(void* aAddress)
@@ -32,10 +43,23 @@ void Marker::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Marker::Marker(eCN eClassNo)
-: Operand(eClassNo)
+Marker::Marker(void)
+: Operand(CN_MARKER)
 {
-  _precondition_(_MAGIC_,eClassNo);
+  _precondition_(_MAGIC_,CN_MARKER);
+  
+  m_eOpMarker = OM_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Marker::Marker(eOM eOpMarker)
+: Operand(CN_MARKER)
+{
+  _precondition_(_MAGIC_,CN_MARKER);
+  
+  m_eOpMarker = eOpMarker;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,6 +68,16 @@ Marker::Marker(eCN eClassNo)
 Marker::~Marker(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the Op marker type                                                     */
+/*----------------------------------------------------------------------------*/
+eOM Marker::eOpMarker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_eOpMarker;
 }
 
 /*============================================================================*/

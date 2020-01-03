@@ -255,12 +255,26 @@ void Step::vOperandKind(void)
     case CN_ENTBUFFER:       eOperand = ZK_ENTBUFFER;       break;
     case CN_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
     case CN_IRWBUFFER:       eOperand = ZK_IRWBUFFER;       break;
-    case CN_PULSEMARKER:     eOperand = ZK_PULSEMARKER;     break;
+    case CN_MARKER: {
+      Marker* pMarker = _pMarker(*m_pRegSet->m_xpOperand);
+
+       switch(pMarker->eOpMarker()) {
+       
+         case OM_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
+         case OM_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
+         case OM_CANCELMARKER:    eOperand = ZK_CANCELMARKER;    break;
+         case OM_COMMENCEMARKER:  eOperand = ZK_COMMENCEMARKER;  break;
+         case OM_COMMENCEDMARKER: eOperand = ZK_COMMENCEDMARKER; break;
+         case OM_PULSEMARKER:     eOperand = ZK_PULSEMARKER;     break;
+         case OM_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
+         case OM_STARTEDMARKER:   eOperand = ZK_STARTEDMARKER;   break;
+         case OM_STOPMARKER:      eOperand = ZK_STOPMARKER;      break;
+         case OM_STOPPEDMARKER:   eOperand = ZK_STOPPEDMARKER;   break;
+         default:  ASSERT(0);
+       }
+      break;
+    }
     case CN_SRTBUFFER:       eOperand = ZK_SRTBUFFER;       break;
-    case CN_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
-    case CN_STARTEDMARKER:   eOperand = ZK_STARTEDMARKER;   break;
-    case CN_STOPMARKER:      eOperand = ZK_STOPMARKER;      break;
-    case CN_STOPPEDMARKER:   eOperand = ZK_STOPPEDMARKER;   break;
     case CN_STREAMDEF:       eOperand = ZK_STREAMDEF;       break;
       
     default:
@@ -296,7 +310,7 @@ void Step::vOperandNewEosMarker(void)
   
   ASSERT (m_pRegSet->m_xpOperand.bIsNull());
   
-  m_pRegSet->m_xpOperand = new EosMarker;
+  m_pRegSet->m_xpOperand = new Marker(OM_EOSMARKER);
   
   EXIT();
 }
@@ -310,7 +324,7 @@ void Step::vOperandNewErrorMarker(void)
   
   ASSERT (m_pRegSet->m_xpOperand.bIsNull());
   
-  m_pRegSet->m_xpOperand = new ErrorMarker;
+  m_pRegSet->m_xpOperand = new Marker(OM_ERRORMARKER);
   
   EXIT();
 }
@@ -324,7 +338,7 @@ void Step::vOperandNewPulseMarker(void)
   
   ASSERT (m_pRegSet->m_xpOperand.bIsNull());
   
-  m_pRegSet->m_xpOperand = new PulseMarker;
+  m_pRegSet->m_xpOperand = new Marker(OM_PULSEMARKER);
   
   EXIT();
 }
@@ -338,7 +352,7 @@ void Step::vOperandNewStartMarker(void)
   
   ASSERT (m_pRegSet->m_xpOperand.bIsNull());
   
-  m_pRegSet->m_xpOperand = new StartMarker;
+  m_pRegSet->m_xpOperand = new Marker(OM_STARTMARKER);
   
   EXIT();
 }
@@ -352,7 +366,7 @@ void Step::vOperandNewStartedMarker(void)
   
   ASSERT (m_pRegSet->m_xpOperand.bIsNull());
   
-  m_pRegSet->m_xpOperand = new StartedMarker;
+  m_pRegSet->m_xpOperand = new Marker(OM_STARTEDMARKER);
   
   EXIT();
 }
@@ -366,7 +380,7 @@ void Step::vOperandNewStopMarker(void)
   
   ASSERT (m_pRegSet->m_xpOperand.bIsNull());
   
-  m_pRegSet->m_xpOperand = new StopMarker;
+  m_pRegSet->m_xpOperand = new Marker(OM_STOPMARKER);
   
   EXIT();
 }
@@ -380,7 +394,7 @@ void Step::vOperandNewStoppedMarker(void)
   
   ASSERT (m_pRegSet->m_xpOperand.bIsNull());
   
-  m_pRegSet->m_xpOperand = new StoppedMarker;
+  m_pRegSet->m_xpOperand = new Marker(OM_STOPPEDMARKER);
   
   EXIT();
 }

@@ -100,8 +100,6 @@ print "scan lineitem | output;";
 print "**************************************************************************";
 
 
-/*
-
 time pipeline scan
 begin
 
@@ -117,7 +115,7 @@ outputOp | sinkOp | stageA
 end
 ;
 
-
+/*
 
 
 time pipeline scan

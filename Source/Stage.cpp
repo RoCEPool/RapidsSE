@@ -363,7 +363,7 @@ void Stage::vStartPipeline(void)
     RASSERT(AM::eJobType(pOp->pOpJob()) == JT_STARTOP);
     
     // append a STARTMARKER
-    pOp->vAppendLeft(new StartMarker);
+    pOp->vAppendLeft(new Marker(OM_STARTMARKER));
   }
 }
 

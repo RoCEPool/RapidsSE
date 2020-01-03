@@ -1200,19 +1200,6 @@ void Job::vPrintQueueRows(void)
         
       // -- -- -- -- -- --
         
-      case CN_CANCELMARKER: {
-        //        vTrace("Query %lld cancelled!!! (rows fetched so far %lld)\n"_Stz, iJobId(),
-        //               *m_xResponse.m_ixRowsProcessed);
-        vTrace("Query cancelled!!! (rows fetched so far %lld)\n"_Stz,
-               *m_xResponse.m_ixRowsProcessed);
-        AM::vDeleteOperand(pOperand);
-        goto L_EXIT;
-        
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
         m_xResponse.m_ixRowsProcessed += pCrwBuffer->nRowCount();
@@ -1233,33 +1220,11 @@ void Job::vPrintQueueRows(void)
         
       // -- -- -- -- -- --
         
-      case CN_EOSMARKER: {
-        vTrace("Pipeline Job: EOSMARKER\n"_Stz);
-        AM::vDeleteOperand(pOperand);
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
         m_xResponse.m_ixRowsProcessed += pEntBuffer->nItems();
         pEntBuffer->vPrintRows();
         AM::vDeleteOperand(pOperand);
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_ERRORMARKER: {
-//        i8 iResponses = m_pResponseVec->nItems();
-//        RASSERT(iResponses == AM::nDefinedNodes());
-//        for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-//          vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
-//        }
-        AM::vDeleteOperand(pOperand);
-        goto L_EXIT;
-        
         break;
       }
         
@@ -1274,12 +1239,57 @@ void Job::vPrintQueueRows(void)
       }
         
       // -- -- -- -- -- --
+      case CN_MARKER: {
+        Marker* pMarker = _pMarker(pOperand);
         
-      case CN_PULSEMARKER: {
-        vTrace("Pipeline Job: PULSEMARKER\n"_Stz);
-        AM::vDeleteOperand(pOperand);
+        switch (pMarker->eOpMarker()) {
+            
+          case OM_CANCELMARKER: {
+            vTrace("Query cancelled!!! (rows fetched so far %lld)\n"_Stz,
+                   *m_xResponse.m_ixRowsProcessed);
+            AM::vDeleteOperand(pOperand);
+            goto L_EXIT;
+            break;
+          }
+            
+          case OM_EOSMARKER: {
+            vTrace("Pipeline Job: EOSMARKER\n"_Stz);
+            AM::vDeleteOperand(pOperand);
+            break;
+          }
+            
+          case OM_ERRORMARKER: {
+            AM::vDeleteOperand(pOperand);
+            goto L_EXIT;
+            break;
+          }
+            
+          case OM_PULSEMARKER: {
+            vTrace("Pipeline Job: PULSEMARKER\n"_Stz);
+            AM::vDeleteOperand(pOperand);
+            break;
+          }
+            
+          case OM_STARTMARKER: {
+            vTrace("Pipeline Job: STARTMARKER\n"_Stz);
+            AM::vDeleteOperand(pOperand);
+            break;
+          }
+            
+          case OM_STOPMARKER: {
+            vTrace("Pipeline Job: STOPMARKER\n"_Stz);
+            vTrace("success: %lld rows fetched\n"_Stz, *m_xResponse.m_ixRowsProcessed);
+            AM::vDeleteOperand(pOperand);
+            goto L_EXIT;
+            break;
+          }
+            
+          default:
+            ASSERT(0);
+        }
         break;
       }
+      
       // -- -- -- -- -- --
         
       case CN_SRTBUFFER: {
@@ -1290,24 +1300,6 @@ void Job::vPrintQueueRows(void)
         break;
       }
        
-      // -- -- -- -- -- --
-        
-      case CN_STARTMARKER: {
-        vTrace("Pipeline Job: STARTMARKER\n"_Stz);
-        AM::vDeleteOperand(pOperand);
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_STOPMARKER: {
-        vTrace("Pipeline Job: STOPMARKER\n"_Stz);
-        // print the responses received
-        vTrace("success: %lld rows fetched\n"_Stz, *m_xResponse.m_ixRowsProcessed);
-        AM::vDeleteOperand(pOperand);
-        goto L_EXIT;
-        break;
-      }
       // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
