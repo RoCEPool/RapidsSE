@@ -250,7 +250,6 @@ void Step::vOperandKind(void)
   eCN eClass_op = m_pRegSet->m_xpOperand->eClass();
   switch (eClass_op) {
     
-    case CN_COMPLETEDMARKER: eOperand = ZK_COMPLETEDMARKER; break;
     case CN_CRWBUFFER:       eOperand = ZK_CRWBUFFER;       break;
     case CN_CSVBUFFER:       eOperand = ZK_CSVBUFFER;       break;
     case CN_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
