@@ -517,7 +517,9 @@ void Op::vPipeOut(Operand* pOperand)
            m_nPartition,
            m_pJobPipeline,
            "vPipeOut :"_Stz,
-           aCN[pOperand->eClass()],
+           pOperand->eClass() == CN_MARKER ?
+             aOM[(_pMarker(pOperand))->eOpMarker()] :
+             aCN[pOperand->eClass()],
            pOperand);
 
   eJT eJobType = AM::eJobType(m_pOpJob);
@@ -532,14 +534,18 @@ void Op::vPipeOut(Operand* pOperand)
       if (m_bAppendRight) {
         AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
                     "PipeOut operand %s to right queue of %s"_Stz, //!format-LogOpr
-                    aCN[pOperand->eClass()],
+                    pOperand->eClass() == CN_MARKER ?
+                      aOM[(_pMarker(pOperand))->eOpMarker()] :
+                      aCN[pOperand->eClass()],
                     aCN[m_pOpOut->eClass()]);
         m_pOpOut->vAppendRight(pOperand);
       }
       else {
         AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
                     "PipeOut operand %s to left queue of %s"_Stz, //!format-LogOpr
-                    aCN[pOperand->eClass()],
+                    pOperand->eClass() == CN_MARKER ?
+                      aOM[(_pMarker(pOperand))->eOpMarker()] :
+                      aCN[pOperand->eClass()],
                     aCN[m_pOpOut->eClass()]);
         m_pOpOut->vAppendLeft(pOperand);
       }
@@ -564,7 +570,9 @@ void Op::vPipeToJob(Operand* pOperand)
            m_nPartition,
            m_pJobPipeline,
            "vPipeToJob :"_Stz,
-           aCN[pOperand->eClass()],
+           pOperand->eClass() == CN_MARKER ?
+             aOM[(_pMarker(pOperand))->eOpMarker()] :
+             aCN[pOperand->eClass()],
            pOperand);
   
   AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
@@ -584,7 +592,9 @@ void Op::vPipeToStart(Operand* pOperand)
   
   AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
                 "PipeOut operand %s to left queue of %s"_Stz, //!format-LogOpr
-                aCN[pOperand->eClass()],
+                pOperand->eClass() == CN_MARKER ?
+                  aOM[(_pMarker(pOperand))->eOpMarker()] :
+                  aCN[pOperand->eClass()],
                 aCN[m_pOpOut->eClass()]);
   m_pOpOut->vAppendLeft(pOperand);  
 }
@@ -605,7 +615,9 @@ Operand* Op::pPopQueue(void)
   if (pOperand)
     AM::vLogOpr(SL_INF,this,OA_OP_POP,
                 "PopQueue operand %s from left queue"_Stz, //!format-LogOpr
-               aCN[pOperand->eClass()]);
+                pOperand->eClass() == CN_MARKER ?
+                  aOM[(_pMarker(pOperand))->eOpMarker()] :
+                  aCN[pOperand->eClass()]);
   else
     AM::vLogOpr(SL_INF,this,OA_OP_POP,
                 "PopQueue no operand on left queue"_Stz); //!format-LogOpr
@@ -622,7 +634,9 @@ Operand* Op::pPopQueue(void)
            m_nPartition,
            m_pJobPipeline,
            "pPopQueue :"_Stz,
-           aCN[pOperand->eClass()],
+           pOperand->eClass() == CN_MARKER ?
+             aOM[(_pMarker(pOperand))->eOpMarker()] :
+             aCN[pOperand->eClass()],
            pOperand);
   }
   
@@ -645,7 +659,9 @@ Operand* Op::pPopQueue2(void)
   if (pOperand)
     AM::vLogOpr(SL_INF,this,OA_OP_POP,
                 "PopQueue operand %s from left queue"_Stz, //!format-LogOpr
-                aCN[pOperand->eClass()]);
+                pOperand->eClass() == CN_MARKER ?
+                  aOM[(_pMarker(pOperand))->eOpMarker()] :
+                  aCN[pOperand->eClass()]);
   else
     AM::vLogOpr(SL_INF,this,OA_OP_POP,
                 "PopQueue no operand on left queue"_Stz); //!format-LogOpr
@@ -662,7 +678,9 @@ Operand* Op::pPopQueue2(void)
            m_nPartition,
            m_pJobPipeline,
            "pPopQueue :"_Stz,
-           aCN[pOperand->eClass()],
+           pOperand->eClass() == CN_MARKER ?
+             aOM[(_pMarker(pOperand))->eOpMarker()] :
+             aCN[pOperand->eClass()],
            pOperand);
   }
   
@@ -689,7 +707,9 @@ Operand* Op::pPopQueueLeft(void)
     if (AM::bVerbose())
       AM::vLogOpr(SL_INF,this,OA_OP_POP,
                   "PopQueueLeft operand %s from left queue"_Stz, //!format-LogOpr
-                 aCN[pOperand->eClass()]);
+                  pOperand->eClass() == CN_MARKER ?
+                    aOM[(_pMarker(pOperand))->eOpMarker()] :
+                    aCN[pOperand->eClass()]);
   }
   else {
     if (AM::bVerbose())
@@ -703,7 +723,9 @@ Operand* Op::pPopQueueLeft(void)
     if (AM::bVerbose())
       vTrace("%s::pPopQueueLeft : %s %p\n"_Stz,
              m_sName.szStz(),
-             aCN[pOperand->eClass()],
+             pOperand->eClass() == CN_MARKER ?
+               aOM[(_pMarker(pOperand))->eOpMarker()] :
+               aCN[pOperand->eClass()],
              pOperand);
   }
   
@@ -729,7 +751,9 @@ Operand* Op::pPopQueueRight(void)
   if (pOperand)
     AM::vLogOpr(SL_INF,this,OA_OP_POP,
                 "PopQueueRight operand %s from right queue"_Stz, //!format-LogOpr
-               aCN[pOperand->eClass()]);
+                pOperand->eClass() == CN_MARKER ?
+                  aOM[(_pMarker(pOperand))->eOpMarker()] :
+                  aCN[pOperand->eClass()]);
   else
     AM::vLogOpr(SL_INF,this,OA_OP_POP,
                 "PopQueueRight no operand on right queue"_Stz); //!format-LogOpr
@@ -740,7 +764,9 @@ Operand* Op::pPopQueueRight(void)
     if (AM::bVerbose())
       vTrace("%s::pPopQueueRight : %s %p\n"_Stz,
              m_sName.szStz(),
-             aCN[pOperand->eClass()],
+             pOperand->eClass() == CN_MARKER ?
+               aOM[(_pMarker(pOperand))->eOpMarker()] :
+               aCN[pOperand->eClass()],
              pOperand);
   }
   
