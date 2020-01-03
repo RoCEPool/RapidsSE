@@ -18,6 +18,36 @@
       true
     endof
 
+    ZK_ERRORMARKER of
+      "jobOperand::generic:- ZK_ERRORMARKER" .verbose
+      Operand[].pipeOut
+      true
+    endof
+
+    ZK_PULSEMARKER of
+      "jobOperand::generic:- ZK_PULSEMARKER" .verbose
+      Operand[].pipeOut
+      true
+    endof
+
+    ZK_STARTMARKER of
+      "jobOperand::generic:- ZK_STARTMARKER" .verbose
+      Operand[].pipeOut
+      true
+    endof
+
+    ZK_STOPMARKER of
+      "jobOperand::generic:- ZK_STOPMARKER" .verbose
+      Operand[].pipeOut
+      true
+    endof
+
+    ZK_EOSMARKER of
+      "jobOperand::generic:- ZK_EOSMARKER" .verbose
+      Operand[].pipeOut
+      true
+    endof
+
   endcase
 ;
 
