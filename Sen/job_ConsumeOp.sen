@@ -21,81 +21,78 @@
     // pop next operand from queue into Operand[]
     Operand[].next
 
-    // decode kind
-    Operand[].kind case
+      // decode kind
+      Operand[].kind case
 
-      ZK_CRWBUFFER of
-        //"Operand:- ZK_CRWBUFFER" .verbose
-        Operand[].workDone
-        Operand[].pipeOut
-        true
-      endof
+        ZK_CRWBUFFER of
+          //"Operand:- ZK_CRWBUFFER" .verbose
+          Operand[].workDone
+          Operand[].pipeOut
+          true
+        endof
 
-      ZK_CSVBUFFER of
-        //"Operand:- ZK_CSVBUFFER" .verbose
-        Operand[].workDone
-        Operand[].pipeOut
-        true
-      endof
+        ZK_CSVBUFFER of
+          //"Operand:- ZK_CSVBUFFER" .verbose
+          Operand[].workDone
+          Operand[].pipeOut
+          true
+        endof
 
-      ZK_EOSMARKER of
-        //"Operand:- ZK_EOSMARKER" .verbose
-        Operand[].pipeOut
-        true
-      endof
+        ZK_ENTBUFFER of
+          //"Operand:- ZK_ENTBUFFER" .verbose
+          Operand[].workDone
+          Operand[].pipeOut
+          true
+        endof
 
-      ZK_ENTBUFFER of
-        //"Operand:- ZK_ENTBUFFER" .verbose
-        Operand[].workDone
-        Operand[].pipeOut
-        true
-      endof
+        ZK_ERRORMARKER of
+          //"Operand:- ZK_ERRORMARKER" .verbose
+          Operand[].pipeOut
+          true
+        endof
 
-      ZK_ERRORMARKER of
-        //"Operand:- ZK_ERRORMARKER" .verbose
-        Operand[].pipeOut
-        true
-      endof
+        ZK_IRWBUFFER of
+          //"Operand:- ZK_IRWBUFFER" .verbose
+          Operand[].workDone
+          Operand[].pipeOut
+          true
+        endof
 
-      ZK_IRWBUFFER of
-        //"Operand:- ZK_IRWBUFFER" .verbose
-        Operand[].workDone
-        Operand[].pipeOut
-        true
-      endof
+        ZK_PULSEMARKER of
+          //"Operand:- ZK_PULSEMARKER" .verbose
+          Operand[].pipeOut
+          true
+        endof
 
-      ZK_PULSEMARKER of
-        //"Operand:- ZK_PULSEMARKER" .verbose
-        Operand[].pipeOut
-        true
-      endof
+        ZK_SRTBUFFER of
+          //"Operand:- ZK_SRTBUFFER" .verbose
+          Operand[].workDone
+          Operand[].pipeOut
+          true
+        endof
 
-      ZK_SRTBUFFER of
-        //"Operand:- ZK_SRTBUFFER" .verbose
-        Operand[].workDone
-        Operand[].pipeOut
-        true
-      endof
+        ZK_STARTMARKER of
+          //"Operand:- ZK_STARTMARKER" .verbose
+          Operand[].pipeOut
+          true
+        endof
 
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-        Operand[].pipeOut
-        true
-      endof
+        ZK_STOPMARKER of
+          //"Operand:- ZK_STOPMARKER" .verbose
+          Operand[].handleEnd
+        endof
 
-      ZK_STOPMARKER of
-        //"Operand:- ZK_STOPMARKER" .verbose
-        Operand[].handleEnd
-      endof
+        ZK_STREAMDEF of
+          //"Operand:- ZK_STREAMDEF" .verbose
+          Operand[].workDone
+          Operand[].pipeOut
+          true
+        endof
 
-      ZK_STREAMDEF of
-        //"Operand:- ZK_STREAMDEF" .verbose
-        Operand[].workDone
-        Operand[].pipeOut
-        true
-      endof
+        // handle the generic operands
+        jobOperand::generic
 
-    endcase
+      endcase
 
   while assert::stack_0 repeat
 

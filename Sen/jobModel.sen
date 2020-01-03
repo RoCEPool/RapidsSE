@@ -8,6 +8,7 @@
 "tags_jobInfo.sen" include
 
 "jobInfo.sen"      include
+"jobOperand.sen"   include
 "jobSyntax.sen"    include
 "jobWords.sen"     include
 "job2pc.sen"       include
