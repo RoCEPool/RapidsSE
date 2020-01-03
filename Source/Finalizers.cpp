@@ -173,6 +173,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_LOGENTRY
 
   /*    */ &Finalize::vUndefined,         // CN__M__
+  /*    */ &Finalize::vUndefined,         // CN_MARKER
   /* 73 */ &Finalize::vUndefined,         // CN_MEDIUMPERSISTENT
   /* 74 */ &Finalize::vUndefined,         // CN_MEDIUMTRANSIENT
   /*    */ &Finalize::vUndefined,         // CN_MEMTEST

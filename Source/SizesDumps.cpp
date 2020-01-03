@@ -177,6 +177,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_LOGENTRY
 
   /* */ &Dump::vInvalid,         // CN__M__
+  /* */ &Heap::vDump,            // CN_MARKER
   /* */ &Heap::vDump,            // CN_MEDIUMPERSISTENT
   /* */ &Heap::vDump,            // CN_MEDIUMTRANSIENT
   /* */ &Dump::vUndefined,       // CN_MEMTEST
@@ -512,6 +513,7 @@ i8 giClassSize[]
   /* */ sizeof(LogEntry),           // CN_LOGENTRY
 
   /* */ 'M'-'A' + 1,                // CN__M__
+  /* */ sizeof(Marker),             // CN_MARKER
   /* */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
   /* */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
   /* */ sizeof(MemTest),            // CN_MEMTEST
@@ -847,6 +849,7 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_LOGENTRY
 
   /* */ HT_INVALID,           // CN__M__
+  /* */ HT_TRANSIENT_SMALL,   // CN_MARKER
   /* */ HT_INVALID,           // CN_MEDIUMPERSISTENT
   /* */ HT_INVALID,           // CN_MEDIUMTRANSIENT
   /* */ HT_TRANSIENT_SMALL,   // CN_MEMTEST

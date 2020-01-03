@@ -226,6 +226,7 @@ void Constants::vAddConstants(void)
   /* 47 */ vAddConstant("CN_LOCALSCHAIN"_Stz,     CN_LOCALSCHAIN);
   /* 36 */ vAddConstant("CN_LOCK"_Stz,         CN_LOCK);
   
+  /*    */ vAddConstant("CN_MARKER"_Stz,           CN_MARKER);
   /*    */ vAddConstant("CN_MEDIUMPERSISTENT"_Stz, CN_MEDIUMPERSISTENT);
   /*    */ vAddConstant("CN_MEDIUMTRANSIENT"_Stz,  CN_MEDIUMTRANSIENT);
   /*    */ vAddConstant("CN_MEMTEST"_Stz,      CN_MEMTEST);
