@@ -11,6 +11,11 @@
 
   >>logEntry <SEED_REQ>
 
+  <consumeXmits> locals| xmits |
+
+  0 0 0 locals| start pulse def |
+  xmits xmits locals| stop eos |
+
   <consumeXmits> op.leftEosMarkers!
 
   begin
@@ -45,9 +50,35 @@
           true
         endof
 
+        ZK_EOSMARKER of
+          //"Operand:- ZK_EOSMARKER" .verbose
+          eos 1 - to eos
+          eos 0 == if
+            Operand[].pipeOut
+          else
+            Operand[].delete
+          then
+
+          eos 0 < if
+            xmits xmits eos - "Warning: ConsumeOp ZK_EOSMARKER/ZK_ERRORMARKER received %v; expected %v"
+          then
+
+          true
+        endof
+
         ZK_ERRORMARKER of
           //"Operand:- ZK_ERRORMARKER" .verbose
-          Operand[].pipeOut
+          eos 1 - to eos
+          eos 0 == if
+            Operand[].pipeOut
+          else
+            Operand[].delete
+          then
+
+          eos 0 < if
+            xmits xmits eos - "Warning: ConsumeOp ZK_EOSMARKER/ZK_ERRORMARKER received %v; expected %v"
+          then
+
           true
         endof
 
@@ -60,7 +91,15 @@
 
         ZK_PULSEMARKER of
           //"Operand:- ZK_PULSEMARKER" .verbose
-          Operand[].pipeOut
+          pulse 0 == if
+            Operand[].pipeOut
+          else
+            Operand[].delete
+          then
+          pulse 1 + to pulse
+          pulse xmits > if
+            xmits pulse "Warning: ConsumeOp ZK_PULSEMARKER received %v; expected %v"
+          then
           true
         endof
 
@@ -73,24 +112,51 @@
 
         ZK_STARTMARKER of
           //"Operand:- ZK_STARTMARKER" .verbose
-          Operand[].pipeOut
+          // pipeout first STARTMARKER
+          start 0 == if
+            Operand[].pipeOut
+          else
+            // drop other STARTMARKERS
+            Operand[].delete
+          then
+          start 1 + to start
+          start xmits > if
+            xmits start "Warning: ConsumeOp ZK_STARTMARKER received %v; expected %v" str.format .
+          then
           true
         endof
 
         ZK_STOPMARKER of
-          //"Operand:- ZK_STOPMARKER" .verbose
-          Operand[].handleEnd
+        //"Operand:- ZK_STOPMARKER" .verbose
+        stop 1 - to stop
+        stop 0 == if
+          Operand[].pipeOut
+          Op.ackPipelineJob
+          false
+        else
+          Operand[].delete
+          true
+        then
+
+        stop xmits > if
+          xmits xmits stop - "Warning: ConsumeOp ZK_STOPMARKER received %v; expected %v" str.format .
+        then
+
         endof
 
         ZK_STREAMDEF of
           //"Operand:- ZK_STREAMDEF" .verbose
-          Operand[].workDone
-          Operand[].pipeOut
+          def 0 == if
+            Operand[].pipeOut
+          else
+            Operand[].delete
+          then
+          def 1 + to def
           true
         endof
 
         // handle the generic operands
-        jobOperand::generic
+        //jobOperand::generic
 
       endcase
 
