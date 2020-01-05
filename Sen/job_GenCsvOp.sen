@@ -56,7 +56,6 @@
         //while repeat
 
         Operand[].newEosMarker
-        //Operand[].handleEnd
         Operand[].pipeOut
         true
       endof
@@ -80,7 +79,9 @@
 
       ZK_STOPMARKER of
         //"Operand:- ZK_STOPMARKER" .verbose
-        Operand[].handleEnd
+        Operand[].pipeOut
+        Op.ackPipelineJob
+        false
       endof
 
     endcase

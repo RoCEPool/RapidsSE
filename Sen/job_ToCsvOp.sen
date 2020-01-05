@@ -57,7 +57,9 @@
 
       ZK_STOPMARKER of
         //"Operand:- ZK_STOPMARKER" .verbose
-        Operand[].handleEnd
+      Operand[].pipeOut
+      Op.ackPipelineJob
+      false
       endof
 
       ZK_STREAMDEF of
