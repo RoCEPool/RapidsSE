@@ -129,9 +129,8 @@ void Step::vOperandHandleAggEnd(void)
       
       pOp->vPipeOut(*m_pRegSet->m_xpOperand);
     }
-    
-    if (pOp->bAckJobEnd())
-      pOp->vAckJob();
+  
+    pOp->vAckJob();
     
   }
   else

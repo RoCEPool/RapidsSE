@@ -65,7 +65,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_pOpJob        = nullptr;
   m_pTask         = nullptr;
   
-  m_bAckJobEnd    = true;
   m_bPulsed       = false;
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
@@ -146,26 +145,6 @@ void Op::vAckJob(void)
     vTrace("Op %s: acking pipeline job\n"_Stz, aJT[AM::eJobType(m_pOpJob)]);
   
   AM::vAckWaitingTask(pTask,m_pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set ack job on end marker                                                  */
-/*----------------------------------------------------------------------------*/
-void Op::vAckJobEnd(bool bAckJobEnd)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_bAckJobEnd = bAckJobEnd;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get ack job on end marker                                                  */
-/*----------------------------------------------------------------------------*/
-bool Op::bAckJobEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_bAckJobEnd;
 }
 
 /*----------------------------------------------------------------------------*/

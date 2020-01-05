@@ -22,7 +22,6 @@ namespace Operators
     Job*           m_pOpJob;         // job this operator belongs to
     Task*          m_pTask;          // task running this op
   
-    bool           m_bAckJobEnd;     // ack job on end marker
     bool           m_bPulsed;        // is this a pulsed operand?
     i8             m_iWorkQuanta;    // quanta of work between pulses
     i8             m_iWorkDone;      // work done
@@ -53,8 +52,6 @@ namespace Operators
   
     // - - - - - - - - - - - - - - - -
     void vAckJob(void);
-    void vAckJobEnd(bool m_bAckJobEnd);
-    bool bAckJobEnd(void);
     void vAddWorkDone(i8 iWorkDone);
     void vAppendLeft(Operand* pOperand);
     void vAppendRight(Operand* pOperand);
