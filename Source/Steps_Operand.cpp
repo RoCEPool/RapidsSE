@@ -14,7 +14,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].firstRow@"_Stz,      &Step::vOperandFirstRowFetch);
   vAddStep("Operand[].get"_Stz,            &Step::vOperandGet);
   vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vOperandHandleAggEnd);
-  vAddStep("Operand[].handleEnd"_Stz,      &Step::vOperandHandleEnd);
   vAddStep("Operand[].handleStop"_Stz,     &Step::vOperandHandleStop);
   vAddStep("Operand[].isNull"_Stz,         &Step::vOperandIsNull);
   vAddStep("Operand[].itemCount@"_Stz,     &Step::vOperandItemCountFetch);
@@ -138,41 +137,6 @@ void Step::vOperandHandleAggEnd(void)
   else
     AM::vDeleteOperand(*m_pRegSet->m_xpOperand);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].handleEnd -- handle end marker                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandHandleEnd(void)
-{
-  ENTRY(); // ENTRY("vOperandHandleEnd"_Stz);
-  
-  ASSERT(*m_pRegSet->m_xpOperand);
-  
-  Op* pOp = m_pTask->m_pJob->m_pOp;
-  
-  if (pOp->nDecLeftEosMarkers() == 0) {
-    if (pOp->bIsCancelling()) {
-      AM::vDeleteOperand(*m_pRegSet->m_xpOperand);
-      
-      pOp->vPipeOut(new Marker(OM_CANCELMARKER));
-        
-    }
-    else {
-      pOp->vPipeOut(*m_pRegSet->m_xpOperand);
-    }
-    
-    if (pOp->bAckJobEnd())
-      pOp->vAckJob();
-    
-    m_pDataStack->vPushInt(0);
-  }
-  else {
-    AM::vDeleteOperand(*m_pRegSet->m_xpOperand);
-    m_pDataStack->vPushInt(1);
-  }
-
   EXIT();
 }
 
