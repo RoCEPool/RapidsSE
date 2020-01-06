@@ -30,6 +30,7 @@ void Step::vJob_OperandPipeOut(void)
   
   // get the op to forward to depending on the cross topology
   pStage->vPipeOutOp(pJob_Operand->m_pOperand,
+                     false,
                      pJob_Operand->m_eTopologyX,
                      pJob_Operand->m_iNode,
                      pJob_Operand->m_iPartition,

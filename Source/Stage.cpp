@@ -240,7 +240,7 @@ OpVec* Stage::pOpVec(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-void Stage::vPipeOutOp(Operand* pOperand, ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
+void Stage::vPipeOutOp(Operand* pOperand, bool bAppendRight, ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
 {
   Op* pOp = nullptr;
   StageNde* pStageNde = nullptr;
@@ -253,30 +253,31 @@ void Stage::vPipeOutOp(Operand* pOperand, ePX eTopologyX, i8 iNde, i8 iPtn, i8 i
     case PX_ORIGIN_TO_ORIGIN:
       pStageNde = this->pStageNde(iNde);
       pOp = pStageNde->pOpVec()->pGet(iOp);
-      pOp->vAppendLeft(pOperand);
       break;
       
     case PX_ORIGIN_TO_ALL_PARTITIONS:
         pStagePtn = m_oStagePtnVec.pGet(iPtn);
         pOp = pStagePtn->pOpVec()->pGet(iOp);
-        pOp->vAppendLeft(pOperand);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_NODES:
       pStageNde = this->pStageNde(iNde);
       pOp = pStageNde->pOpVec()->pGet(iOp);
-      pOp->vAppendLeft(pOperand);
       break;
       
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
       pStagePtn = m_oStagePtnVec.pGet(iPtn);
       pOp = pStagePtn->pOpVec()->pGet(iOp);
-      pOp->vAppendLeft(pOperand);
       break;
       
     default:
       RASSERT(0);
   }
+  
+  if (bAppendRight)
+    pOp->vAppendRight(pOperand);
+  else
+    pOp->vAppendLeft(pOperand);
   
 }
 

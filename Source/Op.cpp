@@ -72,9 +72,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_bAppendRight  = pOpSpec->bAppendRight();
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
-  
-  m_pOpOut        = nullptr;
-  
 
   m_nNode            = C_UNKNOWN;
   m_nPartition       = C_UNKNOWN;
@@ -445,26 +442,6 @@ OpSpec* Op::pOpSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set out operator                                                           */
-/*----------------------------------------------------------------------------*/
-void Op::vOpOut(Op* pOpOut)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  m_pOpOut = pOpOut;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get out operator                                                           */
-/*----------------------------------------------------------------------------*/
-Op* Op::pOpOut(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_pOpOut;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set partition in op                                                        */
 /*----------------------------------------------------------------------------*/
 void Op::vPartition(i8 nPartition)
@@ -542,13 +519,13 @@ void Op::vPipeOut(Operand* pOperand)
       
     default:
       if (m_bAppendRight) {
-        AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-                    "PipeOut operand %s to right queue of %s"_Stz, //!format-LogOpr
-                    pOperand->eClass() == CN_MARKER ?
-                      aOM[(_pMarker(pOperand))->eOpMarker()] :
-                      aCN[pOperand->eClass()],
-                    aCN[m_pOpOut->eClass()]);
-        m_pOpOut->vAppendRight(pOperand);
+//        AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+//                    "PipeOut operand %s to right queue of %s"_Stz, //!format-LogOpr
+//                    pOperand->eClass() == CN_MARKER ?
+//                      aOM[(_pMarker(pOperand))->eOpMarker()] :
+//                      aCN[pOperand->eClass()],
+//                    aCN[m_pOpOut->eClass()]);
+//        m_pOpOut->vAppendRight(pOperand);
       }
       else {
         
@@ -557,6 +534,7 @@ void Op::vPipeOut(Operand* pOperand)
         
         // get the op to forward to depending on the cross topology
         pStage->vPipeOutOp(pOperand,
+                           m_bAppendRight,
                            m_eTopologyX,
                            m_nNode,
                            m_nPartition,
@@ -611,13 +589,13 @@ void Op::vPipeToStart(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-                "PipeOut operand %s to left queue of %s"_Stz, //!format-LogOpr
-                pOperand->eClass() == CN_MARKER ?
-                  aOM[(_pMarker(pOperand))->eOpMarker()] :
-                  aCN[pOperand->eClass()],
-                aCN[m_pOpOut->eClass()]);
-  m_pOpOut->vAppendLeft(pOperand);  
+//  AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+//                "PipeOut operand %s to left queue of %s"_Stz, //!format-LogOpr
+//                pOperand->eClass() == CN_MARKER ?
+//                  aOM[(_pMarker(pOperand))->eOpMarker()] :
+//                  aCN[pOperand->eClass()],
+//                aCN[m_pOpOut->eClass()]);
+  //m_pOpOut->vAppendLeft(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/

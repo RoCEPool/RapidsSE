@@ -96,8 +96,8 @@ void StageNde::vLinkOperators(StageVec* pStageVec)
     pOpNext = m_oOpVec.pGet(i_Op+1);
     
     // link the two operators
-    pOp->vNextLabel(pOpNext->szName());
-    pOp->vOpOut(pOpNext);    
+    //pOp->vNextLabel(pOpNext->szName());
+    //pOp->vOpOut(pOpNext);
   }
   
 }

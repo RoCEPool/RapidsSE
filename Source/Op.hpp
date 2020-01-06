@@ -30,8 +30,6 @@ namespace Operators
     OperandQueue*  m_pQueueLeft;     // the input queue being processed
     OperandQueue*  m_pQueueRight;    // the input queue being processed
     
-    Op*            m_pOpOut;         // to which op the results get piped
-    
     i8             m_nNode;               // node no
     i8             m_nPartition;          // partition no
     i8             m_nLeftEosMarkers;     // expected left end markers
@@ -79,8 +77,6 @@ namespace Operators
     i8   nNode(void);
     void vNode(i8 nNode);
     i8   iOpId(void);
-    void vOpOut(Op* pOpOut);
-    Op*  pOpOut(void);
     Job* pOpJob(void);
     OpSpec* pOpSpec(void);
     void vPartition(i8 iPartition);
