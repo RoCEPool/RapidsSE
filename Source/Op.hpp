@@ -38,7 +38,8 @@ namespace Operators
     i8             m_nRightEosMarkers;    // expected left end markers
     
     ePX            m_eTopologyX;      // cross topology
-    i8             m_iNextStage;      // next stage in the cross topology    
+    i8             m_iNextStage;      // next stage in the cross topology
+    i8             m_iNextOp;
     i8             m_iXmitNode;       // xmit node (for xmitOp)
 
   public:
@@ -71,6 +72,8 @@ namespace Operators
     Stz* szName(void);
     Stz* szNextLabel(void);
     void vNextLabel(Stz* szNextLabel);
+    i8   iNextOp(void);
+    void vNextOp(i8 iNextOp);
     i8   iNextStage(void);
     void vNextStage(i8 iNextStage);
     i8   nNode(void);

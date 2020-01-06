@@ -142,11 +142,21 @@ void OpSpec::v_OpSpec(i8 i_OpSpec)
 /*----------------------------------------------------------------------------*/
 /* replace an ename value                                                     */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vReplace(Stz* szName, Stz* szValue)
+void OpSpec::vReplaceEnamePair(Stz* szName, Stz* szValue, eTN eToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   m_oEnameSet.vReplace(szName, szValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* replace an ename value                                                     */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vReplaceEnamePair(Stz* szName, i8 iValue, eTN eToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_oEnameSet.vReplace(szName, iValue);
 }
 
 /*----------------------------------------------------------------------------*/

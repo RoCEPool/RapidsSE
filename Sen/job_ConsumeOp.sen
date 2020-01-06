@@ -13,8 +13,19 @@
 
   <consumeXmits> locals| xmits |
 
+  xmits "**********XMITS %v" str.format .
+<topology> "**********topology %v" str.format .
+<nextStage> "**********nextStage %v" str.format .
+<nextOp> "**********nextOp %v" str.format .
+
   0 0 0 locals| start pulse def |
   xmits xmits locals| stop eos |
+
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> <nextOp> op.nextStage!
 
   <consumeXmits> op.leftEosMarkers!
 
@@ -60,7 +71,8 @@
           then
 
           eos 0 < if
-            xmits xmits eos - "Warning: ConsumeOp ZK_EOSMARKER/ZK_ERRORMARKER received %v; expected %v"
+            xmits xmits eos -
+              "Warning: ConsumeOp ZK_EOSMARKER/ZK_ERRORMARKER received %v; expected %v" str.format .
           then
 
           true
@@ -76,7 +88,8 @@
           then
 
           eos 0 < if
-            xmits xmits eos - "Warning: ConsumeOp ZK_EOSMARKER/ZK_ERRORMARKER received %v; expected %v"
+            xmits xmits eos -
+              "Warning: ConsumeOp ZK_EOSMARKER/ZK_ERRORMARKER received %v; expected %v" str.format .
           then
 
           true
@@ -98,7 +111,7 @@
           then
           pulse 1 + to pulse
           pulse xmits > if
-            xmits pulse "Warning: ConsumeOp ZK_PULSEMARKER received %v; expected %v"
+            xmits pulse "Warning: ConsumeOp ZK_PULSEMARKER received %v; expected %v" str.format .
           then
           true
         endof
@@ -121,6 +134,7 @@
           then
           start 1 + to start
           start xmits > if
+            start .
             xmits start "Warning: ConsumeOp ZK_STARTMARKER received %v; expected %v" str.format .
           then
           true
@@ -170,7 +184,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: ConsumeOp :: ConsumeOp <consumeXmits> ;
+jobSyntax: ConsumeOp :: ConsumeOp <consumeXmits> <topology> <nextStage> <nextOp> ;
 
 jobInfo: ConsumeOp
 {

@@ -34,7 +34,8 @@ namespace Pipelines
     void vName(Stz* szName);
     i8   i_OpSpec(void);
     void v_OpSpec(i8 i_OpSpec);
-    void vReplace(Stz* szName, Stz* szValue);
+    void vReplaceEnamePair(Stz* szName, Stz* szValue, eTN eToken);
+    void vReplaceEnamePair(Stz* sName, i8 iValue, eTN eToken);
     i8   i_Slot(void);
     StageSpec* pStageSpec(void);
 

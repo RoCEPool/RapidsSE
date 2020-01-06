@@ -15,7 +15,7 @@
   <topology> op.topology!
 
   // set nextStage in op
-  <nextStage> op.nextStage!
+  <nextStage> <nextOp> op.nextStage!
 
   begin
 
@@ -108,7 +108,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: XmitOp :: XmitOp <topology> <nextStage> ;
+jobSyntax: XmitOp :: XmitOp <topology> <nextStage> <nextOp> ;
 
 jobInfo: XmitOp
 {

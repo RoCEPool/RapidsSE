@@ -113,6 +113,7 @@ Job_Operand::Job_Operand(JobClass* aJobClass, ReqTuple* aReqTuple)
   
   m_eTopologyX   = PX_NONE;
   m_iNextStage   = C_UNKNOWN;
+  m_iNextOp      = C_UNKNOWN;
   
   _checkInitialised_(CN_JOB_OPERAND);
   
@@ -172,6 +173,7 @@ Job_Operand* Job_Operand::pNewJobOperand(Operand* pOperand,
   
   pJob_Operand->m_eTopologyX = pOp->eTopologyX();
   pJob_Operand->m_iNextStage = pOp->iNextStage();
+  pJob_Operand->m_iNextOp    = pOp->iNextOp();
   
   return pJob_Operand;
 }

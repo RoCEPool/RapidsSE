@@ -121,7 +121,7 @@ Stz* StageSpec::szName(void)
 /*----------------------------------------------------------------------------*/
 /* prepend a consumeOp spec                                                   */
 /*----------------------------------------------------------------------------*/
-void StageSpec::vPrependConsumeOp(ePX eTopologyX)
+void StageSpec::vPrependConsumeOp(ePX eTopologyX, i8 iStage, i8 iOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
@@ -159,7 +159,18 @@ void StageSpec::vPrependConsumeOp(ePX eTopologyX)
       RASSERT(0);
   }
   
-  pOpSpec->vAddEnamePair("<arg_0>"_Stz,iConsumeArg,TN_INTEGER);
+  pOpSpec->vAddEnamePair("<arg_3>"_Stz,iConsumeArg,TN_INTEGER);
+  
+  // arg-1 is the cross topology of the consume op to next op
+//  ePX eLocalTopologyX = Dynamo::eTopoloyX(this, this);
+//  pOpSpec->vAddEnamePair("<arg_1>"_Stz,(i8)eLocalTopologyX,TN_INTEGER);
+//  
+//  // arg-2 is the next stage for the consume
+//  pOpSpec->vAddEnamePair("<arg_2>"_Stz,(i8)iStage,TN_INTEGER);
+//  
+//  // arg-3 is the op of the next stage for the consume
+//  pOpSpec->vAddEnamePair("<arg_3>"_Stz,(i8)iOp,TN_INTEGER);
+  
   m_pOpSpecVec->vInsert(pOpSpec);
   
   // rework the m_i_OpSpec

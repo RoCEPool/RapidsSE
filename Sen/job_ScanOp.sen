@@ -16,6 +16,12 @@
   job::this locals| pJob_ScanOp |
   <tableNm> locals| sTableNm |
 
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> <nextOp> op.nextStage!
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   begin
 
@@ -93,7 +99,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: scanOp :: scanOp <tableNm> ;
+jobSyntax: scanOp :: scanOp <tableNm> <topology> <nextStage> <nextOp> ;
 
 jobInfo: scanOp
 {

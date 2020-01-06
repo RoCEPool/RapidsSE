@@ -116,7 +116,6 @@ end
 ;
 
 
-/*
 
 time pipeline scan
 begin
@@ -136,15 +135,26 @@ sinkOp | stageA
 end
 ;
 
+time pipeline scan
+begin
 
+stage stageA on origin:
+startOp | periodicOp once | stageB
 
+stage stageB on origin:
+sinkOp | stageA
+
+end
+;
+/*
 
 time pipeline scan
 begin
 
 stage stageA on origin:
-startOp | periodicOp once | sinkOp
+startOp | periodicOp once | sinkOp | stageA
 end;
+
 
 
 time pipeline insert

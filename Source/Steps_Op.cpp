@@ -92,6 +92,7 @@ void Step::vOpNextStageStore(void)
 {
   ENTRY(); // ENTRY("vOpNextStageStore"_Stz);
   
+  m_pTask->m_pJob->m_pOp->vNextOp(m_pDataStack->iPopInt(__func__));
   m_pTask->m_pJob->m_pOp->vNextStage(m_pDataStack->iPopInt(__func__));
   
   EXIT();

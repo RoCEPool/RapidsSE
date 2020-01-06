@@ -15,10 +15,10 @@
   <topology> op.topology!
 
   // set nextStage in op
-  <nextStage> op.nextStage!
+  <nextStage> <nextOp> op.nextStage!
 
   // link sinkOp to next stage
-  op.linkNextStage
+  //op.linkNextStage
 
   begin
 
@@ -128,7 +128,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 jobSyntax: outputOp :: outputOp ;
-jobSyntax: outputOp :: outputOp <topology> <nextStage> ;
+jobSyntax: outputOp :: outputOp <topology> <nextStage> <nextOp> ;
 
 jobInfo: outputOp
 {

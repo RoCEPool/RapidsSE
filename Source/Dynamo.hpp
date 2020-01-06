@@ -48,7 +48,8 @@ namespace Pipelines
     void vShow(void);
 
   private:
-    void vAddStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage);
+    void vAddStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op);
+    void vReplaceStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_Op);
     void vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage);
     
     Footer* aFooter(void);

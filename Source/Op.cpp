@@ -83,6 +83,7 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   
   m_eTopologyX = PX_NONE;
   m_iNextStage = C_UNKNOWN;
+  m_iNextOp    = C_UNKNOWN;
   m_iXmitNode  = C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -354,6 +355,26 @@ void Op::vNextLabel(Stz* szNextLabel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next op                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Op::iNextOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iNextOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next stage                                                             */
+/*----------------------------------------------------------------------------*/
+void Op::vNextOp(i8 iNextOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iNextOp = iNextOp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next stage                                                             */
 /*----------------------------------------------------------------------------*/
 i8 Op::iNextStage(void)
@@ -530,13 +551,24 @@ void Op::vPipeOut(Operand* pOperand)
         m_pOpOut->vAppendRight(pOperand);
       }
       else {
-        AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-                    "PipeOut operand %s to left queue of %s"_Stz, //!format-LogOpr
-                    pOperand->eClass() == CN_MARKER ?
-                      aOM[(_pMarker(pOperand))->eOpMarker()] :
-                      aCN[pOperand->eClass()],
-                    aCN[m_pOpOut->eClass()]);
-        m_pOpOut->vAppendLeft(pOperand);
+        
+        // get the next stage the xmit is supposed to xmit to
+        Stage* pStage = m_pPipeline->pStageVec()->pGet(m_iNextStage);
+        
+        // get the op to forward to depending on the cross topology
+        pStage->vPipeOutOp(pOperand,
+                           m_eTopologyX,
+                           m_nNode,
+                           m_nPartition,
+                           m_iNextOp);
+        
+//        AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+//                    "PipeOut operand %s to left queue of %s"_Stz, //!format-LogOpr
+//                    pOperand->eClass() == CN_MARKER ?
+//                      aOM[(_pMarker(pOperand))->eOpMarker()] :
+//                      aCN[pOperand->eClass()],
+//                    aCN[m_pOpOut->eClass()]);
+        //m_pOpOut->vAppendLeft(pOperand);
       }
       break;
   }
@@ -767,6 +799,7 @@ void Op::vSendJobOperand(Operand* pOperand)
 
   // get next stage to xmit to
   ASSERT (m_iNextStage != C_UNKNOWN);
+  ASSERT(m_iNextOp != C_UNKNOWN);
   Stage* pNextStage = m_pPipeline->pStageVec()->pGet(m_iNextStage);
   RASSERT(pNextStage);
   

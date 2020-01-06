@@ -32,7 +32,8 @@ void Step::vJob_OperandPipeOut(void)
   pStage->vPipeOutOp(pJob_Operand->m_pOperand,
                      pJob_Operand->m_eTopologyX,
                      pJob_Operand->m_iNode,
-                     pJob_Operand->m_iPartition);
+                     pJob_Operand->m_iPartition,
+                     pJob_Operand->m_iNextOp);
   
   // now delete the job_operand
   delete pJob_Operand;

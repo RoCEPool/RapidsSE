@@ -295,6 +295,32 @@ void EnameSet::vReplace(Stz* szName, Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy source ename-set into this ename-set and replace an ename pair        */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vReplace(Stz* szName, i8 iValue)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  EnameSet xEnameSet;
+  
+  xEnameSet.vCopy(this);
+  vReset();
+  
+  for (i8 i_Ename = 0; i_Ename < xEnameSet.nEnames(); i_Ename++) {
+    
+    if (TN_STRING == xEnameSet.eToken(i_Ename)) {
+      vAdd(xEnameSet.szName(i_Ename),xEnameSet.szValue(i_Ename));
+    }
+    else {
+      if (xEnameSet.szName(i_Ename)->bSame(szName))
+        vAdd(xEnameSet.szName(i_Ename),iValue);
+      else
+        vAdd(xEnameSet.szName(i_Ename),xEnameSet.iValue(i_Ename));
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get token kind                                                             */
 /*----------------------------------------------------------------------------*/
 void EnameSet::vReset(void)
