@@ -581,50 +581,6 @@ void Op::vPipeToStart(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* pop operand queue                                                          */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopQueue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Operand* pOperand = nullptr;
-  
-  vGrabTaskLock();
-  
-  pOperand = pQueueLeft()->pPopQueue();
-  
-  if (pOperand)
-    AM::vLogOpr(SL_INF,this,OA_OP_POP,
-                "PopQueue operand %s from left queue"_Stz, //!format-LogOpr
-                pOperand->eClass() == CN_MARKER ?
-                  aOM[(_pMarker(pOperand))->eOpMarker()] :
-                  aCN[pOperand->eClass()]);
-  else
-    AM::vLogOpr(SL_INF,this,OA_OP_POP,
-                "PopQueue no operand on left queue"_Stz); //!format-LogOpr
-
-  //if (pOperand)
-    vDropTaskLock();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (AM::bVerbose() && pOperand) {
-    vTrace("%12s (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
-           m_sName.szStz(),
-           m_nNode,
-           m_nPartition,
-           m_pJobPipeline,
-           "pPopQueue :"_Stz,
-           pOperand->eClass() == CN_MARKER ?
-             aOM[(_pMarker(pOperand))->eOpMarker()] :
-             aCN[pOperand->eClass()],
-           pOperand);
-  }
-  
-  return pOperand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop operand queue                                                          */
-/*----------------------------------------------------------------------------*/
 Operand* Op::pPopQueue2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
