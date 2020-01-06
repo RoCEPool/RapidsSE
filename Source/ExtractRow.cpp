@@ -61,7 +61,7 @@ ExtractRow::ExtractRow(Table* pTable)
   m_oFormatters.vSet(AM::pFmt());
   m_oFormatters.m_cEnclosedBy_Leading = '\'';
   m_oFormatters.m_cEnclosedBy_Trailing = '\'';
-  m_oFormatters.m_cRecordTerminator = '\n';
+  //m_oFormatters.m_cRecordTerminator = '\n';
   
   _checkInitialised_(CN_EXTRACTROW);
   
