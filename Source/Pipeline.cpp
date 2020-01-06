@@ -188,7 +188,7 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
       StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
       
       // link all operators of the stage partition
-      pStagePtn->vLinkOperators(&m_oStageVec);
+      //pStagePtn->vLinkOperators(&m_oStageVec);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -199,7 +199,7 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
       StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
       
       // link all operators of the stage partition
-      pStageNde->vLinkOperators(&m_oStageVec);
+      //pStageNde->vLinkOperators(&m_oStageVec);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

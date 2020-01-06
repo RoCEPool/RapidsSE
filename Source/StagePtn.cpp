@@ -75,34 +75,6 @@ StagePtn::~StagePtn(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* link all operators of the stage partition                                  */
-/*----------------------------------------------------------------------------*/
-void StagePtn::vLinkOperators(StageVec* pStageVec)
-{
-  _precondition_(_MAGIC_,CN_STAGEPTN,_FOOTER_);
-  
-  Op* pOpNext = nullptr;
-  Op* pOp = nullptr;
-  
-  // for each operator in the stagePtn
-  for (i8 i_Op = 0; i_Op < m_oOpVec.nItems() - 1; i_Op++) {
-    
-    // get operator
-    pOp = m_oOpVec.pGet(i_Op);
-    
-    // get the next operator
-    pOpNext = m_oOpVec.pGet(i_Op+1);
-    
-    // link the two operators
-    //pOp->vNextLabel(pOpNext->szName());
-    //pOp->vOpOut(pOpNext);
-  }
-  
-  // get the last operator of this stage
-  pOp = m_oOpVec.pGet(m_oOpVec.nItems()-1);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get opVec                                                                  */
 /*----------------------------------------------------------------------------*/
 OpVec* StagePtn::pOpVec(void)

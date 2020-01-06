@@ -22,7 +22,6 @@ namespace Operators
     StageNde(StageSpec* pStageSpec, i8 i_Nde);
    ~StageNde(void) noexcept(false);
   
-    void       vLinkOperators(StageVec* pStageVec);
     i8         iNode(void);
     OpVec*     pOpVec(void);
     void       vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
