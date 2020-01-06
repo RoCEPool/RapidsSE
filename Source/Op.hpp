@@ -15,8 +15,6 @@ namespace Operators
     
     Pipeline*      m_pPipeline;      // op digest
     OpSpec*        m_pOpSpec;        // op specification
-  
-    s32            m_sNextLabel;     // label of this op
     
     Job*           m_pJobPipeline;   // pipeline job this operator belongs to
     Job*           m_pOpJob;         // job this operator belongs to
@@ -68,8 +66,6 @@ namespace Operators
     i8   nLeftEosMarkers(void);
     void vLeftEosMarkers(i8 nEosMarkers);
     Stz* szName(void);
-    Stz* szNextLabel(void);
-    void vNextLabel(Stz* szNextLabel);
     i8   iNextOp(void);
     void vNextOp(i8 iNextOp);
     i8   iNextStage(void);

@@ -58,7 +58,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_sName = pOpSpec->szName();
 
   m_pOpSpec       = pOpSpec;
-  m_sNextLabel    = "<nil>"_Stz;
 
   m_pPipeline     = pPipeline;
   m_pJobPipeline  = pPipeline->pJob();
@@ -329,26 +328,6 @@ Stz* Op::szName(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_sName;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next label                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Op::szNextLabel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_sNextLabel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set next label                                                             */
-/*----------------------------------------------------------------------------*/
-void Op::vNextLabel(Stz* szNextLabel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_sNextLabel = szNextLabel;
 }
 
 /*----------------------------------------------------------------------------*/

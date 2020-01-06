@@ -188,7 +188,7 @@ void Stage::vDump(void)
            sArgs.szStz(),
            pOp->nLeftEosMarkers(),
            pOp->nRightEosMarkers(),
-           pOp->szNextLabel(),
+           ""_Stz,
            pOp->bAppendRight() ? "appendRight"_Stz : "appendLeft "_Stz
            );
   }

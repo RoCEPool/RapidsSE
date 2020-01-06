@@ -89,8 +89,8 @@ void StageNde::vLinkOperators(StageVec* pStageVec)
     // get operator to be linked
     Op* pOp = m_oOpVec.pGet(i_Op);
     
-    if (pOpNext)
-      pOpNext->vNextLabel(pOp->szName());
+    //if (pOpNext)
+    //  pOpNext->vNextLabel(pOp->szName());
     
     // get the next operator
     pOpNext = m_oOpVec.pGet(i_Op+1);
