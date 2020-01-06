@@ -134,6 +134,25 @@ sinkOp | stageA
 
 end
 ;
+/*
+time pipeline insert
+begin
+
+stage stageA on origin:
+startOp | periodicOp once | stageB
+
+stage stageB on all partitions:
+scanOp lineitem | toCsvOP | toCrwOp lineitem2 | stageC
+
+stage stageC on all partitions:
+insertOp lineitem2  | stageD
+
+stage stageD on origin:
+outputOp | sinkOp | stageA
+
+end
+;
+
 
 time pipeline scan
 begin
@@ -146,7 +165,7 @@ sinkOp | stageA
 
 end
 ;
-/*
+
 
 time pipeline scan
 begin
@@ -154,26 +173,6 @@ begin
 stage stageA on origin:
 startOp | periodicOp once | sinkOp | stageA
 end;
-
-
-
-time pipeline insert
-begin
-
-  stage stageA on origin:
-    startOp | periodicOp once | stageB
-
-  stage stageB on all partitions:
-    scanOp lineitem | toCsvOP | toCrwOp lineitem2 | stageC
-
-  stage stageC on all partitions:
-    insertOp lineitem2  | stageD
-
-  stage stageD on origin:
-    outputOp | sinkOp | stageA
-
-end
-;
 
 
 time pipeline export
@@ -256,7 +255,7 @@ docol epochTake;
 
 
 
-/*
+
 docol epochDump;
 
 

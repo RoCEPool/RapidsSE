@@ -11,6 +11,12 @@
 
   >>logEntry <SEED_REQ>
 
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> <nextOp> op.nextStage!
+
   begin
 
     // bide till next operand is available
@@ -83,7 +89,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: ToCsvOp :: ToCsvOp ;
+jobSyntax: ToCsvOp :: ToCsvOp <topology> <nextStage> <nextOp> ;
 
 jobInfo: ToCsvOp
 {

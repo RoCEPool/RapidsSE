@@ -15,6 +15,12 @@
 
   <tableNm> locals| sTableNm |
 
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> <nextOp> op.nextStage!
+
   begin
 
     // bide till next operand is available
@@ -111,7 +117,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: ToCrwOp :: ToCrwOp <tableNm> ;
+jobSyntax: ToCrwOp :: ToCrwOp <tableNm> <topology> <nextStage> <nextOp> ;
 
 jobInfo: ToCrwOp
 {

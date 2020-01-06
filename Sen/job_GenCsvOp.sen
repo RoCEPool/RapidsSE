@@ -16,6 +16,12 @@
 
   <tableNm> locals| sTableNm |
 
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> <nextOp> op.nextStage!
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   begin
 
@@ -97,7 +103,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: genCsvOp :: genCsvOp <tableNm> ;
+jobSyntax: genCsvOp :: genCsvOp <tableNm> <topology> <nextStage> <nextOp> ;
 
 jobInfo: genCsvOp
 {

@@ -13,11 +13,6 @@
 
   <consumeXmits> locals| xmits |
 
-  xmits "**********XMITS %v" str.format .
-<topology> "**********topology %v" str.format .
-<nextStage> "**********nextStage %v" str.format .
-<nextOp> "**********nextOp %v" str.format .
-
   0 0 0 locals| start pulse def |
   xmits xmits locals| stop eos |
 
