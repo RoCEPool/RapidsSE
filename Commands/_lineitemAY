@@ -115,7 +115,28 @@ outputOp | sinkOp | stageA
 end
 ;
 
+
 /*
+
+time pipeline scan
+begin
+
+stage stageA on origin:
+startOp | periodicOp once | stageB
+
+stage stageB on all partitions:
+scanOp lineitem | stageC
+
+stage stageC on origin:
+outputOp | stageD
+
+stage stageD on origin:
+sinkOp | stageA
+
+end
+;
+
+
 
 
 time pipeline scan

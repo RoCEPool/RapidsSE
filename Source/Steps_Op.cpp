@@ -50,21 +50,30 @@ void Step::vOpLinkNextStage(void)
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   Pipeline* pPipeline = pOp->pPipeline();
+  StageNde* pStageNde;
+  Stage* pNextStage;
+  Op* pOpNext;
+  i8 i_Node;
   
+  if (pOp->eTopologyX() != PX_ORIGIN_TO_ORIGIN) {
+    RASSERT(pOp->pOpOut() != nullptr);
+    goto L_EXIT;
+  }
+
   RASSERT(pOp->eTopologyX() == PX_ORIGIN_TO_ORIGIN);
   
   // get the originating node
-  i8 i_Node = pPipeline->iOriginatingNode();
+  i_Node = pPipeline->iOriginatingNode();
   
   // get the next stage
-  Stage* pNextStage = pPipeline->pStageVec()->pGet(pOp->iNextStage());
+  pNextStage = pPipeline->pStageVec()->pGet(pOp->iNextStage());
   RASSERT(pNextStage->pStageNdeVec()->nItems() == 1) ;
   
   // get the stageNde of originating node
-  StageNde* pStageNde = pNextStage->pStageNde(i_Node);
+  pStageNde = pNextStage->pStageNde(i_Node);
   
   // get the first op of the stage nde
-  Op* pOpNext = pStageNde->pOpVec()->pGet(0);
+  pOpNext = pStageNde->pOpVec()->pGet(0);
   
   // set the next label
   pOp->vNextLabel(pOpNext->szName());
@@ -72,6 +81,7 @@ void Step::vOpLinkNextStage(void)
   // set the op out
   pOp->vOpOut(pOpNext);
   
+L_EXIT:
   EXIT();
 }
 

@@ -77,6 +77,7 @@ namespace Operators
     void vNode(i8 nNode);
     i8   iOpId(void);
     void vOpOut(Op* pOpOut);
+    Op*  pOpOut(void);
     Job* pOpJob(void);
     OpSpec* pOpSpec(void);
     void vPartition(i8 iPartition);

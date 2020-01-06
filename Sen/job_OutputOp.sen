@@ -11,7 +11,14 @@
 
   >>logEntry <SEED_REQ>
 
-  //Op.pipelineJob@ job.id@ olist::findJob locals| origPipelineJob |
+  // set topolgy in the op
+  <topology> op.topology!
+
+  // set nextStage in op
+  <nextStage> op.nextStage!
+
+  // link sinkOp to next stage
+  op.linkNextStage
 
   begin
 
@@ -121,6 +128,7 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 jobSyntax: outputOp :: outputOp ;
+jobSyntax: outputOp :: outputOp <topology> <nextStage> ;
 
 jobInfo: outputOp
 {
