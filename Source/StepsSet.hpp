@@ -851,6 +851,7 @@ public:
   void vOpAckPipelineJob(void);
   void vOpLeftEosMarkersStore(void);
   void vOpLinkNextStage(void);
+  void vOpNextOpStore(void);
   void vOpNextStageStore(void);
   void vOpPartitionFetch(void);
   void vOpPipleineJobFetch(void);

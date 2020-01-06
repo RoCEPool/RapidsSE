@@ -15,10 +15,10 @@
   <topology> op.topology!
 
   // set nextStage in op
-  <nextStage> <nextOp> op.nextStage!
+  <nextStage> op.nextStage!
 
-  // link sinkOp to next stage
-  //op.linkNextStage
+  // set nextOp in op
+  <nextOp> op.nextOp!
 
   begin
 

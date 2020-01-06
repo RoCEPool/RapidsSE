@@ -13,6 +13,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
   vAddStep("Op.leftEosMarkers!"_Stz,  &Step::vOpLeftEosMarkersStore);
   vAddStep("Op.linkNextStage"_Stz,    &Step::vOpLinkNextStage);
+  vAddStep("Op.nextOp!"_Stz,          &Step::vOpNextOpStore);
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
   vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPipleineJobFetch);
@@ -86,13 +87,24 @@ L_EXIT:
 }
 
 /*----------------------------------------------------------------------------*/
+/* Op.nextOp! -- store next op in the operator                                */
+/*----------------------------------------------------------------------------*/
+void Step::vOpNextOpStore(void)
+{
+  ENTRY(); // ENTRY("vOpNextOpStore"_Stz);
+  
+  m_pTask->m_pJob->m_pOp->vNextOp(m_pDataStack->iPopInt(__func__));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Op.nextStage! -- store next stage in the operator                          */
 /*----------------------------------------------------------------------------*/
 void Step::vOpNextStageStore(void)
 {
   ENTRY(); // ENTRY("vOpNextStageStore"_Stz);
   
-  m_pTask->m_pJob->m_pOp->vNextOp(m_pDataStack->iPopInt(__func__));
   m_pTask->m_pJob->m_pOp->vNextStage(m_pDataStack->iPopInt(__func__));
   
   EXIT();

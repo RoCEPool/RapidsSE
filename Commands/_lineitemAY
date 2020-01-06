@@ -115,8 +115,6 @@ outputOp | sinkOp | stageA
 end
 ;
 
-
-
 time pipeline scan
 begin
 
@@ -134,7 +132,7 @@ sinkOp | stageA
 
 end
 ;
-/*
+
 time pipeline insert
 begin
 
@@ -153,7 +151,22 @@ outputOp | sinkOp | stageA
 end
 ;
 
+time pipeline export
+begin
 
+stage stageA on origin:
+startOp | periodicOp once | stageB
+
+stage stageB on all partitions:
+scanOp lineitem | toCsvOp | stageC
+
+stage stageC on origin:
+toFileOp "/tmp/xxx.csv" | sinkOp | stageA
+
+end
+;
+
+/*
 time pipeline scan
 begin
 
