@@ -68,10 +68,9 @@ Table::Table(void)
   
   Word* pWord = Word::pToWord(this);
   
-  m_pTableDef  = new TableDef;
+  m_pTableDef  = nullptr;
   
   m_sTableNm = pWord->szWordNm();
-  m_pTableDef->m_sTableNm = m_sTableNm;
   
   //m_xSubDic
 
