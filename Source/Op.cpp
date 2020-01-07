@@ -497,36 +497,27 @@ void Op::vPipeOut(Operand* pOperand)
       break;
       
     default:
-      if (m_bAppendRight) {
-//        AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-//                    "PipeOut operand %s to right queue of %s"_Stz, //!format-LogOpr
-//                    pOperand->eClass() == CN_MARKER ?
-//                      aOM[(_pMarker(pOperand))->eOpMarker()] :
-//                      aCN[pOperand->eClass()],
-//                    aCN[m_pOpOut->eClass()]);
-//        m_pOpOut->vAppendRight(pOperand);
-      }
-      else {
         
         // get the next stage the xmit is supposed to xmit to
         Stage* pStage = m_pPipeline->pStageVec()->pGet(m_iNextStage);
         
         // get the op to forward to depending on the cross topology
-        pStage->vPipeOutOp(pOperand,
-                           m_bAppendRight,
-                           m_eTopologyX,
-                           m_nNode,
-                           m_nPartition,
-                           m_iNextOp);
-        
-//        AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-//                    "PipeOut operand %s to left queue of %s"_Stz, //!format-LogOpr
-//                    pOperand->eClass() == CN_MARKER ?
-//                      aOM[(_pMarker(pOperand))->eOpMarker()] :
-//                      aCN[pOperand->eClass()],
-//                    aCN[m_pOpOut->eClass()]);
-        //m_pOpOut->vAppendLeft(pOperand);
-      }
+        Op* pOp = pStage->pPipeOutOp(m_eTopologyX,
+                                     m_nNode,
+                                     m_nPartition,
+                                     m_iNextOp);                
+      if (m_bAppendRight)
+        pOp->vAppendRight(pOperand);
+      else
+        pOp->vAppendLeft(pOperand);
+      
+      AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                  "PipeOut operand %s to %s queue of %s"_Stz, //!format-LogOpr
+                  pOperand->eClass() == CN_MARKER ?
+                  aOM[(_pMarker(pOperand))->eOpMarker()] :
+                  aCN[pOperand->eClass()],
+                  m_bAppendRight ? "right"_Stz : "left"_Stz,
+                  aCN[pOp->eClass()]);
       break;
   }
   

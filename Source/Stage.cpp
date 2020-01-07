@@ -240,7 +240,7 @@ OpVec* Stage::pOpVec(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-void Stage::vPipeOutOp(Operand* pOperand, bool bAppendRight, ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
+Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
 {
   Op* pOp = nullptr;
   StageNde* pStageNde = nullptr;
@@ -274,11 +274,7 @@ void Stage::vPipeOutOp(Operand* pOperand, bool bAppendRight, ePX eTopologyX, i8 
       RASSERT(0);
   }
   
-  if (bAppendRight)
-    pOp->vAppendRight(pOperand);
-  else
-    pOp->vAppendLeft(pOperand);
-  
+  return pOp;  
 }
 
 /*----------------------------------------------------------------------------*/

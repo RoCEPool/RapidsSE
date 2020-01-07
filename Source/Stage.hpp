@@ -28,7 +28,7 @@ namespace Operators
     void         vCancelOperators(i8 iThisNode);
     i8           nOpsOnNode(i8 iNode);
     OpVec*       pOpVec(void);
-    void         vPipeOutOp(Operand* pOperand, bool bAppendRight, ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp);
+    Op*          pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp);
     StageSpec*   pStageSpec(void);
     StageNde*    pStageNde(i8 i_Nde);
     StageNdeVec* pStageNdeVec(void);

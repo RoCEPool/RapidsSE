@@ -29,12 +29,14 @@ void Step::vJob_OperandPipeOut(void)
   Stage* pStage = pParentJob->m_pPipeline->pStageVec()->pGet(pJob_Operand->m_iNextStage);
   
   // get the op to forward to depending on the cross topology
-  pStage->vPipeOutOp(pJob_Operand->m_pOperand,
-                     false,
-                     pJob_Operand->m_eTopologyX,
-                     pJob_Operand->m_iNode,
-                     pJob_Operand->m_iPartition,
-                     pJob_Operand->m_iNextOp);
+  Op* pOp = pStage->pPipeOutOp(pJob_Operand->m_eTopologyX,
+                               pJob_Operand->m_iNode,
+                               pJob_Operand->m_iPartition,
+                               pJob_Operand->m_iNextOp);
+  
+  //! ALKA come back to this. May need a m_bAppendLeft in pJob_Operand
+  // append to left queue
+  pOp->vAppendLeft(pJob_Operand->m_pOperand);
   
   // now delete the job_operand
   delete pJob_Operand;
