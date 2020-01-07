@@ -555,7 +555,7 @@ void Op::vPipeToJob(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* pop operand queue                                                          */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopQueue2(void)
+Operand* Op::pPopQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

@@ -28,14 +28,14 @@ namespace Operators
     OperandQueue*  m_pQueueLeft;     // the input queue being processed
     OperandQueue*  m_pQueueRight;    // the input queue being processed
     
-    i8             m_nNode;               // node no
-    i8             m_nPartition;          // partition no
-    i8             m_nLeftEosMarkers;     // expected left end markers
-    i8             m_nRightEosMarkers;    // expected left end markers
+    i8             m_nNode;            // node no
+    i8             m_nPartition;       // partition no
+    i8             m_nLeftEosMarkers;  // expected left end markers
+    i8             m_nRightEosMarkers; // expected left end markers
     
     ePX            m_eTopologyX;      // cross topology
     i8             m_iNextStage;      // next stage in the cross topology
-    i8             m_iNextOp;
+    i8             m_iNextOp;         // next Op in the stage
     i8             m_iXmitNode;       // xmit node (for xmitOp)
 
   public:
@@ -81,7 +81,7 @@ namespace Operators
     Pipeline* pPipeline(void);
     void vPipeOut(Operand* pOperand);
     void vPipeToJob(Operand* pOperand);
-    Operand* pPopQueue2(void);
+    Operand* pPopQueue(void);
     Operand* pPopQueueLeft(void);
     Operand* pPopQueueRight(void);
     OperandQueue* pQueueLeft(void);

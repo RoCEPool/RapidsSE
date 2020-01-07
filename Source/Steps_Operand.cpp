@@ -46,7 +46,7 @@ void Step::vOperandBide(void)
 {
   ENTRY(); // ENTRY("vOperandBide"_Stz);
   
-  m_pRegSet->m_xpOperand = m_pTask->m_pJob->m_pOp->pPopQueue2();
+  m_pRegSet->m_xpOperand = m_pTask->m_pJob->m_pOp->pPopQueue();
   
   if (m_pRegSet->m_xpOperand.bIsNull()) {
     ASSERT(m_pTask->bIsLocked());
@@ -256,7 +256,7 @@ void Step::vOperandNext(void)
   ENTRY(); // ENTRY("vOperandNext"_Stz);
   
   if (m_pRegSet->m_xpOperand.bIsNull())
-    m_pRegSet->m_xpOperand = m_pTask->m_pJob->m_pOp->pPopQueue2();
+    m_pRegSet->m_xpOperand = m_pTask->m_pJob->m_pOp->pPopQueue();
   ASSERT(*m_pRegSet->m_xpOperand);
   
   EXIT();
