@@ -562,22 +562,6 @@ void Op::vPipeToJob(Operand* pOperand)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append operand to the pipeline startOp                                     */
-/*----------------------------------------------------------------------------*/
-void Op::vPipeToStart(Operand* pOperand)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-//  AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-//                "PipeOut operand %s to left queue of %s"_Stz, //!format-LogOpr
-//                pOperand->eClass() == CN_MARKER ?
-//                  aOM[(_pMarker(pOperand))->eOpMarker()] :
-//                  aCN[pOperand->eClass()],
-//                aCN[m_pOpOut->eClass()]);
-  //m_pOpOut->vAppendLeft(pOperand);
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop operand queue                                                          */
 /*----------------------------------------------------------------------------*/
 Operand* Op::pPopQueue2(void)

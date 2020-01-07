@@ -81,7 +81,6 @@ namespace Operators
     Pipeline* pPipeline(void);
     void vPipeOut(Operand* pOperand);
     void vPipeToJob(Operand* pOperand);
-    void vPipeToStart(Operand* pOperand);
     Operand* pPopQueue2(void);
     Operand* pPopQueueLeft(void);
     Operand* pPopQueueRight(void);
