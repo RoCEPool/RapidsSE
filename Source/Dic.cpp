@@ -266,6 +266,7 @@ void Dic::vInit(void)
   //m_sName.vInit();
   m_sName = pWord->szWordNm();
   
+  delete m_pArticle;
   m_pArticle = new Article(m_sName,this,nullptr);
 }
 
