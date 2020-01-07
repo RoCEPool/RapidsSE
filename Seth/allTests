@@ -2,11 +2,11 @@ seth.sh -f tests/Queries/testList
 seth.sh -f tests/Datums/testList
 seth.sh -f tests/Examples/testList
 seth.sh -f tests/Misc/testList
-seth.sh -f tests/PartitionKey/testList
+//seth.sh -f tests/PartitionKey/testList
 //seth.sh -f tests/Insert/testList
 seth.sh -f tests/Retrieve/testList
 seth.sh -f tests/Select/testList
 seth.sh -f tests/Table/testList
 seth.sh -f tests/Load/testList
 seth.sh -f tests/Index/testList
-seth.sh -f tests/Tpch/testlist
+//seth.sh -f tests/Tpch/testlist
