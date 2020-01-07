@@ -1,7 +1,7 @@
 #Variables
 CPP = g++
-CPPFLAGS = -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3
-#CPPFLAGS = -std=c++11 -D_DEBUG -D__LINUX__ -DMUNGED -Wall -Wno-unused -g
+CPPFLAGS = -std=c++11 -DWITH_LINUX -DMUNGED -Wall -Wextra -O3
+#CPPFLAGS = -std=c++11 -D_DEBUG -DWITH_LINUX -DMUNGED -Wall -Wno-unused -g
 LIBFLAGS = -shared
 PICFLAGS = -fPIC
 DIR_GUARD=@mkdir -p $(@D)
@@ -11,12 +11,13 @@ CURRENT=${PWD}
 TARGET_PATH = $(CURRENT)/../Linux/bin
 TARGET_EXE = $(TARGET_PATH)/rapidsse
 TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSEv0.4.1.so
+SHOCO = shoco.o
 
 #Source Files
 SOURCES = $(wildcard *.cpp)
 SOURCES += $(wildcard ../Munge/*.cpp)
 SOURCES += $(wildcard ../ThirdParty/xxhash/*.cpp)
-SOURCES += $(../ThirdParty/shoco/*.c)
+SOURCES += $(wildcard ../ThirdParty/mersenne/*.cpp)
 SOURCES := $(filter-out main.cpp, $(SOURCES))
 #S_SOURCES = $(wildcard *.s)
 
@@ -31,14 +32,17 @@ OBJECTS = $(SOURCES:.cpp=.o)
 DEPFILES = $(SOURCES:.cpp=.d)
 
 #Include directories
-INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash -I ../ThirdParty/shoco
+INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2 -I ../ThirdParty/xxhash -I ../ThirdParty/shoco -I../ThirdParty/mersenne
 
 #Libraries
 THIRDPARTY_LIBS = -llz4 -lbz2
 LIBS = -lrt -lpthread
 RAPIDS_LIBS = -lRapidsSEv0.4.1
 
-all : $(TARGET_EXE) $(TARGET_LIBRARY)
+all : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
+
+$(SHOCO): ../ThirdParty/shoco/shoco.c  
+	$(CPP) -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -O3 -Wall -c $(INCLUDES) ../ThirdParty/shoco/shoco.c 
 
 #Library target
 $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES)
@@ -46,11 +50,11 @@ $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES)
 	$(CPP) $(LIBFLAGS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
 
 #Main target
-$(TARGET_EXE): $(TARGET_LIBRARY)
+$(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO)
 	$(DIR_GUARD)
 	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  main.cpp -o main.o
 	cp $(MAN_PAGES) $(TARGET_PATH)
-	$(CPP) main.o -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L$(TARGET_PATH) $(LIBS) $(RAPIDS_LIBS) -o $(TARGET_EXE)
+	$(CPP) main.o $(SHOCO) -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L$(TARGET_PATH) $(LIBS) $(RAPIDS_LIBS) -o $(TARGET_EXE)
 
 #To obtain object files
 %.o: %.cpp %.d
