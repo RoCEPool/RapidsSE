@@ -103,7 +103,7 @@ Op::~Op(void) noexcept(false)
   delete m_pQueueLeft;
   delete m_pQueueRight;
   
-  //delete m_pOpSpec;
+  delete m_pOpSpec;
   
   -- gixOp;
   AM::vLogOpr(SL_INF,this,OA_OP_DESTRUCT,

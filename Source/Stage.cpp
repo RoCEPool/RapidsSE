@@ -190,7 +190,7 @@ void Stage::vDump(void)
            pOp->nRightEosMarkers(),
            ""_Stz,
            pOp->bAppendRight() ? "appendRight"_Stz : "appendLeft "_Stz
-           );
+          );
   }
 }
 

@@ -560,13 +560,12 @@ bool Dynamo::bPhase2_staging(void)
           // remove the last (stage) OpSpec from the OpSpecVec
           RASSERT(i_Op == pOpSpecVec->nItems()-1);
           pOpSpecVec->vRemove(pOpSpec);
+          delete pOpSpec;
         }
       }
       else {
         ePX eTopologyX = eTopoloyX(pStageSpec, pStageSpec);
         vAddStageParams(pOpSpec, eTopologyX, i_Stage, i_Op+1);
-        
-        i8 i = 1;
       }
     }
   }
