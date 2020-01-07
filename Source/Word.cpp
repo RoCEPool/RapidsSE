@@ -118,6 +118,7 @@ Word::~Word(void) noexcept(false)
     (pFinalizeFun)(eClass, pEmbObject);
   }
   
+  delete m_pArticle;
   delete m_pEnameSet;
 }
 
