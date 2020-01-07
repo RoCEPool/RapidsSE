@@ -86,7 +86,7 @@ Stz* CsvBuffer::szAllotRecord(i8 nBytes)
   
   m_nRecords++;
   
-  *szRecord = '\0';
+  * szRecord = '\0';
   
   return szRecord;
 }
