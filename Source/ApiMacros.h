@@ -111,6 +111,10 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
   TRACE_API("exiting"_Stz); \
 }
 
+#ifdef WITH_DEBUG_VERSION
+  #define WITH_TRACE_API
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* validate not null argument                                                 */
 /*----------------------------------------------------------------------------*/
