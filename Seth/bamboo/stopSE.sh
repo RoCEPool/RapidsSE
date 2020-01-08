@@ -21,6 +21,11 @@ EXIT_ITERATIONS=$(bc <<< "${EXIT_GIVE_UP_TIME} / ${EXIT_SLEEP_TIME}")
 #set the library path for the rapidsSE library
 export LD_LIBRARY_PATH="${EXE_DIR}":$LD_LIBRARY_PATH
 
+if [ ! -f "${EXE}" ]
+then
+  return
+fi
+
 if [ -f "${PIDFILE}" ]
 then
 
@@ -28,7 +33,7 @@ then
   PID=$(cat "${PIDFILE}") 2>/dev/null
 
   # This will set a flag in the SE shared memory segment to tell any servers to unlink and exit.
-  echo "Stopping RapidsSE."
+  echo "Stopping RapidsSE with pid ${PID}."
   ${EXE} ${STOP_PARAMS} "$@"
 
   # Now wait for the process to stop. While loop exits if ps -p has a non-zero exit code.
