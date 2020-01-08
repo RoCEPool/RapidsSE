@@ -48,13 +48,14 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
   
-  m_pStageSpec = pStageSpec;
+  m_sName = pStageSpec->szName();
+  
   //m_oOpVec
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create StageNde's and StagePtn's depending on the toplogy of the stage
   
-  switch (m_pStageSpec->eTopology()) {
+  switch (pStageSpec->eTopology()) {
       
     case PO_ALL_NODES:
       for (i8 i_Nde = 0; i_Nde < AM::pGrid()->nConnectedNodes(); i_Nde++) {
@@ -195,6 +196,16 @@ void Stage::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get name                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Stage::szName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_sName;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get ops to be executed on given node                                       */
 /*----------------------------------------------------------------------------*/
 i8 Stage::nOpsOnNode(i8 iNode)
@@ -275,16 +286,6 @@ Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp)
   }
   
   return pOp;  
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stage spec                                                             */
-/*----------------------------------------------------------------------------*/
-StageSpec* Stage::pStageSpec(void)
-{
-  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
-  
-  return m_pStageSpec;
 }
 
 /*----------------------------------------------------------------------------*/

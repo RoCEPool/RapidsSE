@@ -8,7 +8,7 @@ namespace Operators
   class Stage : public Object
   {
   private:
-    StageSpec*  m_pStageSpec;      // specification of the stage
+    s32         m_sName;           // stage name
     OpVec       m_oOpVec;          // set of operators
     StagePtnVec m_oStagePtnVec;    // set of stage-partitions
     StageNdeVec m_oStageNdeVec;    // set of stage-nodes
@@ -26,10 +26,10 @@ namespace Operators
     void vDump(void);
     
     void         vCancelOperators(i8 iThisNode);
+    Stz*         szName(void);
     i8           nOpsOnNode(i8 iNode);
     OpVec*       pOpVec(void);
     Op*          pPipeOutOp(ePX eTopologyX, i8 iNde, i8 iPtn, i8 iOp);
-    StageSpec*   pStageSpec(void);
     StageNde*    pStageNde(i8 i_Nde);
     StageNdeVec* pStageNdeVec(void);
     StagePtn*    pStagePtn(i8 i_Ptn);
