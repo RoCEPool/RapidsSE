@@ -11,8 +11,8 @@ PIDFILE="${ROOT_DIR}/se.pid"
 
 EXE_PATH="${ROOT_DIR}/Linux/bin"
 EXE="${EXE_PATH}/rapidsse"
-START_PARAMS="--name NODE0 --node NODE0 127.0.0.1 5541 --start --metadata --commands ${ROOT_DIR}/Commands --munged"
-START_CLUSTER_PARAMS="--name NODE0 --munged --commands Commands --command startcluster"
+START_PARAMS="--name NODE0 --node NODE0 127.0.0.1 5541 --start --munged --script --metadata --commands ${ROOT_DIR}/Commands"
+START_CLUSTER_PARAMS="--name NODE0 --munged --script --commands Commands --command startcluster"
 
 
 #set the library path for the rapidsSE library

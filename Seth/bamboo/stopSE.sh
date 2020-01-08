@@ -28,7 +28,7 @@ then
   PID=$(cat "${PIDFILE}") 2>/dev/null
 
   # This will set a flag in the SE shared memory segment to tell any servers to unlink and exit.
-  echo "Stopping RapidsSE."
+  echo "Stopping RapidsSE with pid ${PID}."
   ${EXE} ${STOP_PARAMS} "$@"
 
   # Now wait for the process to stop. While loop exits if ps -p has a non-zero exit code.
