@@ -752,6 +752,10 @@ void Op::vSendJobOperand(Operand* pOperand)
       
       // send the operand job across the sendNode
       AM::vSend(m_pTask, pSendNode, pJob_Operand);
+      
+      // delete the operand job
+      AM::vDeleteJobOperand(pJob_Operand);
+      
       break;
     }
       
@@ -769,6 +773,9 @@ void Op::vSendJobOperand(Operand* pOperand)
         
         // send the operand job across the sendNode
         AM::vSend(m_pTask, pSendNode, pJob_Operand);
+        
+        // delete the operand job
+        AM::vDeleteJobOperand(pJob_Operand);
       }
       break;
     }
@@ -791,6 +798,9 @@ void Op::vSendJobOperand(Operand* pOperand)
       // send the operand job across the sendNode
       AM::vSend(m_pTask, pSendNode, pJob_Operand);
       
+      // delete the operand job
+      AM::vDeleteJobOperand(pJob_Operand);
+      
       break;
     }
       
@@ -800,9 +810,6 @@ void Op::vSendJobOperand(Operand* pOperand)
   
   // delete the operand
   AM::vDeleteOperand(pOperand);
-  
-  // delete the operand job
-  AM::vDeleteJobOperand(pJob_Operand);
 }
 
 /*----------------------------------------------------------------------------*/
