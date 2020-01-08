@@ -1,16 +1,21 @@
 #!/bin/bash
 
+# This is the script file that runs in the Bamboo continuous integration environment.
+
 # Get the relative path to this file.
 DIR=$(dirname "$0")
 CLASSPATH=".:*:${DIR}:${DIR}/*"
 
+# This is the colleciton of tests that are actually run.
+TESTLIST_FILE="${DIR}/allTestsBamboo"
+
 #SE_PATH="../OS X/Build/Products/Debug/SE"
-SE_PATH="../Linux/bin"
+SE_PATH="../Linux/bin/rapidsse"
 SE_ARGS="--name NODE0 --munged --metadata --commands ../Commands"  # in addition to --metadata and --script
 
 # Additional arguments for SETH. Enable as required.
 #SETH_ARGS="--clean --logtests"   # log all test executions to a file
-SETH_ARGS="--clean --resultformat junit"   # log executions of all steps within each test to a file.
+SETH_ARGS="--clean --resultdir ${DIR}/results --resultformat junit"   # log executions of all steps within each test to a file.
 
 # The SE JDBC URL that tells the JDBC driver how to connect to SE.
 URL="jdbc:rapidsse:${SE_PATH}?extraargs=${SE_ARGS}"
