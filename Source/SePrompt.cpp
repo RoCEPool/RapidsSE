@@ -73,7 +73,7 @@ SePrompt::SePrompt(bool bOneCommand)
   m_pJob = nullptr;
   // m_oTimer
 
-  m_pSession->m_sToDo = _shortcuts"_Stz;
+  m_pSession->m_sToDo = "_shortcuts"_Stz;
   
   m_pRequest = nullptr;
   m_i_RequestFocal = C_UNKNOWN;
