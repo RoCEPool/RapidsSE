@@ -61,6 +61,10 @@ SePrompt::SePrompt(bool bOneCommand)
                                   (void**)&m_pSession);
   ASSERT(EC_NONE == eResult);
   
+  // reset stdin as on Linux when another process(prompt)
+  //   accesses the stdin , its not a valid fp
+  m_pSession->m_pInput->vUseStdin();
+  
   m_bOneCommand = bOneCommand;
   m_bContinue = true;
   
@@ -69,7 +73,7 @@ SePrompt::SePrompt(bool bOneCommand)
   m_pJob = nullptr;
   // m_oTimer
 
-  m_pSession->m_sToDo = "_shortcuts"_Stz;
+  m_pSession->m_sToDo = _shortcuts"_Stz;
   
   m_pRequest = nullptr;
   m_i_RequestFocal = C_UNKNOWN;

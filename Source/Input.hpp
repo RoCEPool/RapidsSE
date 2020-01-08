@@ -42,7 +42,8 @@ namespace TokenStream
     TokenVec* pTknVec(void);
   
     void vTokenise(Stz* aCommand);
-  
+    void vUseStdin(void);
+    
     Footer* aFooter(void);
   };
   
