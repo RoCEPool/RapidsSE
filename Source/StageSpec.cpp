@@ -51,7 +51,6 @@ StageSpec::~StageSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  m_pOpSpecVec->vClear();
   delete m_pOpSpecVec;
 }
 
