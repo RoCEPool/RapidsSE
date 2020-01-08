@@ -10,7 +10,6 @@ namespace Pipelines
   private:
     s32        m_sName;
     bool       m_bAppendRight;
-    StageSpec* m_pStageSpec;
     i8         m_i_OpSpec;
     i8         m_i_Slot;
 

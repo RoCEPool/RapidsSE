@@ -35,7 +35,6 @@ OpSpec::OpSpec(Stz* szOpName, StageSpec* pStageSpec)
   
   m_sName = szOpName;
   m_bAppendRight = false;
-  m_pStageSpec   = pStageSpec;
   m_i_OpSpec     = C_UNKNOWN;
   m_i_Slot = 0; // ALKA: C_UNKNOWN;
 
