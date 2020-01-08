@@ -52,7 +52,6 @@ Pipeline::Pipeline(Job* pJob, i8 iOriginatingNode)
   m_bCancelling = false;
   m_iOriginatingNode = iOriginatingNode;
   
-  m_pPipelineSpec = nullptr;
   //m_oStageVec
   
   _checkInitialised_(CN_PIPELINE);

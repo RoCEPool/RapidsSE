@@ -14,7 +14,6 @@ namespace Operators
     bool        m_bCancelling;
     i8          m_iOriginatingNode;
     
-    PipelineSpec* m_pPipelineSpec; // the pipeline job specification
     StageVec      m_oStageVec;     // vector of stages
   
   private:
