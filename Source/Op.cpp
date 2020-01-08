@@ -57,7 +57,7 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   
   m_sName = pOpSpec->szName();
 
-  m_pOpSpec       = pOpSpec;
+  m_oEnameSet.vCopy(pOpSpec->pEnameSet());
 
   m_pPipeline     = pPipeline;
   m_pJobPipeline  = pPipeline->pJob();
@@ -102,8 +102,6 @@ Op::~Op(void) noexcept(false)
   
   delete m_pQueueLeft;
   delete m_pQueueRight;
-  
-  delete m_pOpSpec;
   
   -- gixOp;
   AM::vLogOpr(SL_INF,this,OA_OP_DESTRUCT,
@@ -236,6 +234,16 @@ void Op::vDropTaskLock(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   AM::vDropTaskLock(m_pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the EnameSet                                                           */
+/*----------------------------------------------------------------------------*/
+EnameSet* Op::pEnameSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return &m_oEnameSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -408,16 +416,6 @@ Job* Op::pOpJob(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_pOpJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get opSpec                                                                 */
-/*----------------------------------------------------------------------------*/
-OpSpec* Op::pOpSpec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_pOpSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -868,7 +866,7 @@ void Op::vToCmdStr(Stz* szCmdStr)
   _precondition_(_ADDRESS_,_MAGIC_);
     
   szCmdStr->vCopy(m_sName);
-  m_pOpSpec->pEnameSet()->vAppend(szCmdStr);
+  m_oEnameSet.vAppend(szCmdStr);
   //vTrace("%s\n"_Stz, szCmdStr);
 }
 

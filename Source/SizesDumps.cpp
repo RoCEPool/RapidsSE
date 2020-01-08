@@ -833,7 +833,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_LARGE,   // CN_NUMBAT
 
   /* */ HT_INVALID,           // CN__O__
-  /* */ HT_TRANSIENT_SMALL,   // CN_OP
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_OP
   /* */ HT_TRANSIENT_SMALL,   // CN_OPERANDQUEUE
   /* */ HT_TRANSIENT_MEDIUM,  // CN_OPSPEC
   /* */ HT_TRANSIENT_SMALL,   // CN_OPSPECVEC

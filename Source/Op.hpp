@@ -14,7 +14,7 @@ namespace Operators
     s32            m_sName;          // first word of prompt command
     
     Pipeline*      m_pPipeline;      // op digest
-    OpSpec*        m_pOpSpec;        // op specification
+    EnameSet       m_oEnameSet;
     
     Job*           m_pJobPipeline;   // pipeline job this operator belongs to
     Job*           m_pOpJob;         // job this operator belongs to
@@ -57,6 +57,7 @@ namespace Operators
     Stz* szArgs(void);
     i8   nDecLeftEosMarkers(void);
     void vDropTaskLock(void);
+    EnameSet* pEnameSet(void);
     void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     void vIncWorkDone(void);
@@ -74,7 +75,6 @@ namespace Operators
     void vNode(i8 nNode);
     i8   iOpId(void);
     Job* pOpJob(void);
-    OpSpec* pOpSpec(void);
     void vPartition(i8 iPartition);
     i8   nPartition(void);
     bool bPause(void);

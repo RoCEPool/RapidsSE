@@ -179,7 +179,7 @@ void Stage::vDump(void)
     
     s32 sArgs;
     
-    EnameSet* pEnameSet = pOp->pOpSpec()->pEnameSet();
+    EnameSet* pEnameSet = pOp->pEnameSet();
     pEnameSet->vSprint(sArgs);
     
     vTrace("  [%02lld] (N%lld) (P%02lld) {%12s%-24s EosMarkers(L%lld R%lld) :%-10s %s }\n"_Stz,
