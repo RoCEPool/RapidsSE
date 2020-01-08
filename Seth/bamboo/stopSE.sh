@@ -21,6 +21,11 @@ EXIT_ITERATIONS=$(bc <<< "${EXIT_GIVE_UP_TIME} / ${EXIT_SLEEP_TIME}")
 #set the library path for the rapidsSE library
 export LD_LIBRARY_PATH="${EXE_DIR}":$LD_LIBRARY_PATH
 
+if [ ! -f "${EXE}" ]
+then
+  return
+fi
+
 if [ -f "${PIDFILE}" ]
 then
 
