@@ -294,6 +294,8 @@ void Input::vUseStdin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   m_pTokeniser->vUseStdin();
+  m_pTokeniser->vLineMode(true);
+  m_pTokeniser->vNormal(true);
 }
 
 /*----------------------------------------------------------------------------*/
