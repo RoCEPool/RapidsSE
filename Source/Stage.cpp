@@ -128,6 +128,7 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
 Stage::~Stage(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  m_oOpVec.vClear();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,7 +201,7 @@ void Stage::vDump(void)
 /*----------------------------------------------------------------------------*/
 Stz* Stage::szName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
   
   return m_sName;
 }

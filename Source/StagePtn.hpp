@@ -8,7 +8,6 @@ namespace Operators
   class StagePtn : public Object
   {
   private:
-    StageSpec* m_pStageSpec; // specification of the stage
     OpVec      m_oOpVec;     // set of operators
     i8         m_i_Ptn;      // which partition
   
@@ -25,7 +24,6 @@ namespace Operators
     OpVec*     pOpVec(void);
     i8         iPartition(void);
     void       vSpawnOperatorJobs(i8 iSessionId, i8 iNode);
-    StageSpec* pStageSpec(void);
   
     Footer* aFooter(void);
   };

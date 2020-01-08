@@ -49,7 +49,6 @@ StageNde::StageNde(StageSpec* pStageSpec, i8 i_Nde)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGENDE,_FOOTER_);
   
-  m_pStageSpec = pStageSpec;
   m_i_Nde      = i_Nde;
   //m_oOpVec
   
@@ -111,16 +110,6 @@ void StageNde::vSpawnOperatorJobs(i8 iSessionId, i8 iNode)
       ASSERT(bSpawned);
     }
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stage spec                                                             */
-/*----------------------------------------------------------------------------*/
-StageSpec* StageNde::pStageSpec(void)
-{
-  _precondition_(_MAGIC_,CN_STAGENDE,_FOOTER_);
-  
-  return m_pStageSpec;
 }
 
 /*----------------------------------------------------------------------------*/
