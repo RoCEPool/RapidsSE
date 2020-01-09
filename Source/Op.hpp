@@ -38,11 +38,14 @@ namespace Operators
     i8             m_iNextOp;         // next Op in the stage
     i8             m_iXmitNode;       // xmit node (for xmitOp)
 
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Op(eCN eClass, OpSpec* pOpSpec, Pipeline* pPipeline);
+    Op(OpSpec* pOpSpec, Pipeline* pPipeline);
    ~Op(void) noexcept(false);
   
     static Op* pThisTLSOp(void);
@@ -73,7 +76,6 @@ namespace Operators
     void vNextStage(i8 iNextStage);
     i8   nNode(void);
     void vNode(i8 nNode);
-    i8   iOpId(void);
     Job* pOpJob(void);
     void vPartition(i8 iPartition);
     i8   nPartition(void);
@@ -98,6 +100,9 @@ namespace Operators
     void vWorkQuanta(i8 iWorkQuanta);
     i8   iXmitNode(void);
     void vXmitNode(i8 iNde);
+    
+    Footer* aFooter(void);
+    
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

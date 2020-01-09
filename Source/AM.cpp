@@ -1048,11 +1048,11 @@ Job_Operand* AM::pNewJobOperand(Job* pParentJob, Operand* pOperand, Op* pOp, i8 
 /*----------------------------------------------------------------------------*/
 /* new a universal job                                                        */
 /*----------------------------------------------------------------------------*/
-Job* AM::pNewJobUniversal( Op* pOp, ReqTuple* pReqTuple, i8 iUniqueId)
+Job* AM::pNewJobUniversal( Job* pParentJob, Op* pOp, ReqTuple* pReqTuple)
 {
   JobClass* pJobClass_Universal = JobClass::pFind(CN_JOB_UNIVERSAL);
 
-  Job_Universal* pJobUniversal = new Job_Universal(pOp->pPipeline()->pJob(), pJobClass_Universal,pReqTuple,iUniqueId);
+  Job_Universal* pJobUniversal = new Job_Universal(pOp->pPipeline()->pJob(), pJobClass_Universal,pReqTuple,pParentJob->m_iFocalId);
   
   pJobUniversal->m_pOp = pOp;
   pJobUniversal->pEnameSet()->vAdd("<path>"_Stz,

@@ -48,10 +48,11 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
-: Focal(eClassNo,AM::iNextOpId(),AM::iJobUniqueId(pPipeline->pJob()))
+Op::Op(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Focal(CN_OP,AM::iNextOpId(),AM::iJobUniqueId(pPipeline->pJob()))
+
 {
-  _precondition_(_MAGIC_,eClassNo);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   RASSERT(pOpSpec);
   
@@ -91,6 +92,8 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   AM::vLogOpr(SL_INF,this,OA_OP_CONSTRUCT,
               "Op construct : %p (%lld ops exist)"_Stz, //!format-LogOpr
               this,* gixOp);
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,7 +101,7 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
 /*----------------------------------------------------------------------------*/
 Op::~Op(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   delete m_pQueueLeft;
   delete m_pQueueRight;
@@ -129,7 +132,7 @@ Op* Op::pThisTLSOp(void)
 /*----------------------------------------------------------------------------*/
 void Op::vAckJob(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   Task* pTask = AM::pExecutingTask(m_pPipeline->pJob());
   
@@ -147,7 +150,7 @@ void Op::vAckJob(void)
 /*----------------------------------------------------------------------------*/
 void Op::vAddWorkDone(i8 iWorkDone)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iWorkDone += iWorkDone;
 }
@@ -157,7 +160,7 @@ void Op::vAddWorkDone(i8 iWorkDone)
 /*----------------------------------------------------------------------------*/
 void Op::vAppendLeft(Operand* pOperand)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
 //  vTrace("%s::vAppendLeft : %p %s\n"_Stz,
 //         m_sName.szStz(),
@@ -184,7 +187,7 @@ void Op::vAppendLeft(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 void Op::vAppendRight(Operand* pOperand)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
   //  vTrace("%s::vAppendOperand : %p %s\n"_Stz,
   //         m_sName(),
@@ -211,7 +214,7 @@ void Op::vAppendRight(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 bool Op::bAppendRight(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_bAppendRight;
 }
@@ -221,7 +224,7 @@ bool Op::bAppendRight(void)
 /*----------------------------------------------------------------------------*/
 i8 Op::nDecLeftEosMarkers(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return (--m_nLeftEosMarkers);
 }
@@ -231,7 +234,7 @@ i8 Op::nDecLeftEosMarkers(void)
 /*----------------------------------------------------------------------------*/
 void Op::vDropTaskLock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   AM::vDropTaskLock(m_pTask);
 }
@@ -241,7 +244,7 @@ void Op::vDropTaskLock(void)
 /*----------------------------------------------------------------------------*/
 EnameSet* Op::pEnameSet(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return &m_oEnameSet;
 }
@@ -251,7 +254,7 @@ EnameSet* Op::pEnameSet(void)
 /*----------------------------------------------------------------------------*/
 void Op::vFocalOutline(s4K& sOutline)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
 }
@@ -261,7 +264,7 @@ void Op::vFocalOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 void Op::vGrabTaskLock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   AM::vGrabTaskLock(m_pTask);
 }
@@ -271,7 +274,7 @@ void Op::vGrabTaskLock(void)
 /*----------------------------------------------------------------------------*/
 void Op::vIncWorkDone(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+ _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iWorkDone++;
 }
@@ -281,7 +284,7 @@ void Op::vIncWorkDone(void)
 /*----------------------------------------------------------------------------*/
 bool Op::bIsCancelling(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_pPipeline->bCancelling();
 }
@@ -291,7 +294,7 @@ bool Op::bIsCancelling(void)
 /*----------------------------------------------------------------------------*/
 bool Op::bIsLocked(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   bool bLocked = AM::bTaskIsLocked(m_pTask);
 
@@ -303,7 +306,7 @@ bool Op::bIsLocked(void)
 /*----------------------------------------------------------------------------*/
 void Op::vJobPipeline(Job* pJob)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_pJobPipeline = pJob;
 }
@@ -313,7 +316,7 @@ void Op::vJobPipeline(Job* pJob)
 /*----------------------------------------------------------------------------*/
 i8 Op::nLeftEosMarkers(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_nLeftEosMarkers;
 }
@@ -323,7 +326,7 @@ i8 Op::nLeftEosMarkers(void)
 /*----------------------------------------------------------------------------*/
 void Op::vLeftEosMarkers(i8 nEosMarkers)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_nLeftEosMarkers = nEosMarkers;
 }
@@ -333,17 +336,17 @@ void Op::vLeftEosMarkers(i8 nEosMarkers)
 /*----------------------------------------------------------------------------*/
 Stz* Op::szName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_sName;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next op                                                             */
+/* get next op                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Op::iNextOp(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_iNextOp;
 }
@@ -353,7 +356,7 @@ i8 Op::iNextOp(void)
 /*----------------------------------------------------------------------------*/
 void Op::vNextOp(i8 iNextOp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iNextOp = iNextOp;
 }
@@ -363,7 +366,7 @@ void Op::vNextOp(i8 iNextOp)
 /*----------------------------------------------------------------------------*/
 i8 Op::iNextStage(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_iNextStage;
 }
@@ -373,7 +376,7 @@ i8 Op::iNextStage(void)
 /*----------------------------------------------------------------------------*/
 void Op::vNextStage(i8 iNextStage)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iNextStage = iNextStage;
 }
@@ -383,7 +386,7 @@ void Op::vNextStage(i8 iNextStage)
 /*----------------------------------------------------------------------------*/
 i8 Op::nNode(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_nNode;
 }
@@ -393,27 +396,18 @@ i8 Op::nNode(void)
 /*----------------------------------------------------------------------------*/
 void Op::vNode(i8 nNode)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_nNode = nNode;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get operator id                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Op::iOpId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_iFocalId;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get out operator                                                           */
 /*----------------------------------------------------------------------------*/
 Job* Op::pOpJob(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_pOpJob;
 }
@@ -423,7 +417,7 @@ Job* Op::pOpJob(void)
 /*----------------------------------------------------------------------------*/
 void Op::vPartition(i8 nPartition)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_nPartition = nPartition;
   
@@ -436,7 +430,7 @@ void Op::vPartition(i8 nPartition)
 /*----------------------------------------------------------------------------*/
 i8 Op::nPartition(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_nPartition;
 }
@@ -446,7 +440,7 @@ i8 Op::nPartition(void)
 /*----------------------------------------------------------------------------*/
 bool Op::bPause(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   if (! m_bPulsed)
     return false;
@@ -462,7 +456,7 @@ bool Op::bPause(void)
 /*----------------------------------------------------------------------------*/
 Pipeline* Op::pPipeline(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_pPipeline;
 }
@@ -472,7 +466,7 @@ Pipeline* Op::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 void Op::vPipeOut(Operand* pOperand)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   if (AM::bVerbose())
     vTrace("%12s (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
@@ -526,7 +520,7 @@ void Op::vPipeOut(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 void Op::vPipeToJob(Operand* pOperand)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   Queue* pBufferQueue = AM::pBufferQueue(m_pJobPipeline);
   
@@ -555,7 +549,7 @@ void Op::vPipeToJob(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 Operand* Op::pPopQueue(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   Operand* pOperand = nullptr;
   
@@ -599,7 +593,7 @@ Operand* Op::pPopQueue(void)
 /*----------------------------------------------------------------------------*/
 Operand* Op::pPopQueueLeft(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   Operand* pOperand = nullptr;
   
@@ -644,7 +638,7 @@ Operand* Op::pPopQueueLeft(void)
 /*----------------------------------------------------------------------------*/
 Operand* Op::pPopQueueRight(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   Operand* pOperand = nullptr;
   
@@ -685,7 +679,7 @@ Operand* Op::pPopQueueRight(void)
 /*----------------------------------------------------------------------------*/
 OperandQueue* Op::pQueueLeft(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_pQueueLeft;
 }
@@ -695,7 +689,7 @@ OperandQueue* Op::pQueueLeft(void)
 /*----------------------------------------------------------------------------*/
 OperandQueue* Op::pQueueRight(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_pQueueRight;
 }
@@ -705,7 +699,7 @@ OperandQueue* Op::pQueueRight(void)
 /*----------------------------------------------------------------------------*/
 i8 Op::nRightEosMarkers(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_nRightEosMarkers;
 }
@@ -715,7 +709,7 @@ i8 Op::nRightEosMarkers(void)
 /*----------------------------------------------------------------------------*/
 void Op::vRightEosMarkers(i8 nEosMarkers)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_nRightEosMarkers = nEosMarkers;
 }
@@ -725,7 +719,7 @@ void Op::vRightEosMarkers(i8 nEosMarkers)
 /*----------------------------------------------------------------------------*/
 void Op::vSendJobOperand(Operand* pOperand)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   // get next stage to xmit to
   ASSERT (m_iNextStage != C_UNKNOWN);
@@ -817,12 +811,11 @@ void Op::vSendJobOperand(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 bool Op::bSpawnJob(i8 iSessionId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   ReqTuple xReqTuple(m_sName,iSessionId, false);
 
-  m_pOpJob = AM::pNewJobUniversal(this, &xReqTuple,
-                                  this->m_iFocalId);
+  m_pOpJob = AM::pNewJobUniversal(m_pJobPipeline, this, &xReqTuple);
   
   s4K szCmdStr;
   vToCmdStr(szCmdStr);
@@ -850,7 +843,7 @@ bool Op::bSpawnJob(i8 iSessionId)
 /*----------------------------------------------------------------------------*/
 Task* Op::pTask(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_pTask;
 }
@@ -860,7 +853,7 @@ Task* Op::pTask(void)
 /*----------------------------------------------------------------------------*/
 void Op::vTask(Task* pTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_pTask = pTask;
 }
@@ -870,7 +863,7 @@ void Op::vTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Op::vToCmdStr(Stz* szCmdStr)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
   szCmdStr->vCopy(m_sName);
   m_oEnameSet.vAppend(szCmdStr);
@@ -882,7 +875,7 @@ void Op::vToCmdStr(Stz* szCmdStr)
 /*----------------------------------------------------------------------------*/
 ePX Op::eTopologyX(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_eTopologyX;
 }
@@ -892,7 +885,7 @@ ePX Op::eTopologyX(void)
 /*----------------------------------------------------------------------------*/
 void Op::vTopologyX(ePX eTopologyX)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_eTopologyX = eTopologyX;
 }
@@ -902,7 +895,7 @@ void Op::vTopologyX(ePX eTopologyX)
 /*----------------------------------------------------------------------------*/
 void Op::vWorkQuanta(i8 iWorkQuanta)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iWorkQuanta = iWorkQuanta;
 }
@@ -912,7 +905,7 @@ void Op::vWorkQuanta(i8 iWorkQuanta)
 /*----------------------------------------------------------------------------*/
 i8 Op::iXmitNode(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_iXmitNode;
 }
@@ -922,10 +915,15 @@ i8 Op::iXmitNode(void)
 /*----------------------------------------------------------------------------*/
 void Op::vXmitNode(i8 iXmitNode)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iXmitNode = iXmitNode;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+__aFooterFunction(Op);
 
 /*============================================================================*/
 /* end                                                                        */
