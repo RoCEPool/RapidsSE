@@ -8,8 +8,6 @@ enum eZK // operand kind
   /*  0 */ ZK_NONE=0,
 
   /*    */ ZK_CANCELMARKER,
-  /*    */ ZK_COMMENCEMARKER,
-  /*    */ ZK_COMMENCEDMARKER,
   /*    */ ZK_CRWBUFFER,
   /*    */ ZK_CSVBUFFER,
   /*    */ ZK_EOSMARKER,
@@ -32,8 +30,6 @@ static Stz* aZK[]
   /*  0 */ "NONE"_Stz,
   
   /*    */ "ZK_CANCELMARKER"_Stz,
-  /*    */ "ZK_COMMENCEMARKER"_Stz,
-  /*    */ "ZK_COMMENCEDMARKER"_Stz,
   /*    */ "ZK_CRWBUFFER"_Stz,
   /*    */ "ZK_CSVBUFFER"_Stz,
   /*    */ "ZK_EOSMARKER"_Stz,

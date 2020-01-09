@@ -208,8 +208,6 @@ void Step::vOperandKind(void)
          case OM_EOSMARKER:       eOperand = ZK_EOSMARKER;       break;
          case OM_ERRORMARKER:     eOperand = ZK_ERRORMARKER;     break;
          case OM_CANCELMARKER:    eOperand = ZK_CANCELMARKER;    break;
-         case OM_COMMENCEMARKER:  eOperand = ZK_COMMENCEMARKER;  break;
-         case OM_COMMENCEDMARKER: eOperand = ZK_COMMENCEDMARKER; break;
          case OM_PULSEMARKER:     eOperand = ZK_PULSEMARKER;     break;
          case OM_STARTMARKER:     eOperand = ZK_STARTMARKER;     break;
          case OM_STARTEDMARKER:   eOperand = ZK_STARTEDMARKER;   break;

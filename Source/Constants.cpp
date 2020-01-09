@@ -580,8 +580,6 @@ void Constants::vAddConstants(void)
   // ZK_ : operand kind
   /*  0 */ vAddConstant("ZK_NONE"_Stz,            ZK_NONE);
   /*  0 */ vAddConstant("ZK_CANCELMARKER"_Stz,    ZK_CANCELMARKER);
-  /*  0 */ vAddConstant("ZK_COMMENCEMARKER"_Stz,  ZK_COMMENCEMARKER);
-  /*  0 */ vAddConstant("ZK_COMMENCEDMARKER"_Stz, ZK_COMMENCEDMARKER);
   /*  0 */ vAddConstant("ZK_CRWBUFFER"_Stz,       ZK_CRWBUFFER);
   /*  0 */ vAddConstant("ZK_CSVBUFFER"_Stz,       ZK_CSVBUFFER);
   /*  0 */ vAddConstant("ZK_EOSMARKER"_Stz,       ZK_EOSMARKER);
