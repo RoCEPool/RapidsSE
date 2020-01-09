@@ -12,6 +12,32 @@
   // decode kind
   Operand[].kind case
 
+    ZK_CANCELMARKER of
+      //"Operand:- ZK_CANCELMARKER" .verbose
+      Operand[].workDone
+      Operand[].pipeOut
+      true
+    endof
+
+    ZK_CRWBUFFER of
+      //"Operand:- ZK_CRWBUFFER" .verbose
+      Operand[].workDone
+      Operand[].pipeOut
+      true
+    endof
+
+    ZK_CSVBUFFER of
+      //"Operand:- ZK_CSVBUFFER" .verbose
+      Operand[].pipeOut
+      true
+    endof
+
+    ZK_ENTBUFFER of
+      //"Operand:- ZK_ENTBUFFER" .verbose
+      Operand[].pipeOut
+      true
+    endof
+
     ZK_EOSMARKER of
       "jobOperand::generic:- ZK_EOSMARKER" .verbose
       Operand[].pipeOut
@@ -24,8 +50,20 @@
       true
     endof
 
+    ZK_IRWBUFFER of
+      //"Operand:- ZK_IRWBUFFER" .verbose
+      Operand[].pipeOut
+      true
+    endof
+
     ZK_PULSEMARKER of
       "jobOperand::generic:- ZK_PULSEMARKER" .verbose
+      Operand[].pipeOut
+      true
+    endof
+
+    ZK_SRTBUFFER of
+      //"Operand:- ZK_SRTBUFFER" .verbose
       Operand[].pipeOut
       true
     endof
@@ -39,11 +77,12 @@
     ZK_STOPMARKER of
       "jobOperand::generic:- ZK_STOPMARKER" .verbose
       Operand[].pipeOut
-      true
+      Op.ackPipelineJob
+      false
     endof
 
-    ZK_EOSMARKER of
-      "jobOperand::generic:- ZK_EOSMARKER" .verbose
+    ZK_STREAMDEF of
+      "jobOperand::generic:- ZK_STREAMDEF" .verbose
       Operand[].pipeOut
       true
     endof
