@@ -13,39 +13,38 @@
   Operand[].kind case
 
     ZK_CANCELMARKER of
-      //"Operand:- ZK_CANCELMARKER" .verbose
-      Operand[].workDone
+      //"jobOperand::generic:- ZK_CANCELMARKER" .verbose
+      "Query being cancelled\n" .verbose
       Operand[].pipeOut
       true
     endof
 
     ZK_CRWBUFFER of
-      //"Operand:- ZK_CRWBUFFER" .verbose
-      Operand[].workDone
+      //"jobOperand::generic: ZK_CRWBUFFER" .verbose
       Operand[].pipeOut
       true
     endof
 
     ZK_CSVBUFFER of
-      //"Operand:- ZK_CSVBUFFER" .verbose
+      //"jobOperand::generic: ZK_CSVBUFFER" .verbose
       Operand[].pipeOut
       true
     endof
 
     ZK_ENTBUFFER of
-      //"Operand:- ZK_ENTBUFFER" .verbose
+      //"jobOperand::generic: ZK_ENTBUFFER" .verbose
       Operand[].pipeOut
       true
     endof
 
     ZK_EOSMARKER of
-      "jobOperand::generic:- ZK_EOSMARKER" .verbose
+      //"jobOperand::generic:- ZK_EOSMARKER" .verbose
       Operand[].pipeOut
       true
     endof
 
     ZK_ERRORMARKER of
-      "jobOperand::generic:- ZK_ERRORMARKER" .verbose
+      //"jobOperand::generic:- ZK_ERRORMARKER" .verbose
       Operand[].pipeOut
       true
     endof

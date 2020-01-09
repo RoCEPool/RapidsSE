@@ -43,13 +43,6 @@
     // decode kind
     Operand[].kind case
 
-      ZK_CANCELMARKER of
-        //"Operand:- ZK_CANCELMARKER" .verbose
-        "Query being cancelled\n" .verbose
-        Operand[].pipeOut
-        true
-      endof
-
       ZK_ERRORMARKER of
         //"Operand:- ZK_ERRORMARKER" .verbose
         Operand[].delete
@@ -95,11 +88,8 @@
         false
       endof
 
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-        Operand[].pipeOut
-        true
-      endof
+      // handle other operand as generic operands
+      jobOperand::generic
 
     endcase
 

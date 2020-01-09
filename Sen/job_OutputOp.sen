@@ -106,6 +106,9 @@
         true
       endof
 
+      // handle other operand as generic operands
+      jobOperand::generic
+
     endcase
 
   while assert::stack_0 repeat
