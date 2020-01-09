@@ -23,6 +23,7 @@ void Step::vJob_PipelineBegin(void)
   ENTRY(); // ENTRY("vJob_PipelineBegin"_Stz);
   
   Job* pJob_Pipeline = _pJob(m_pDataStack->pPopPtr(__func__));
+  i8 iThisNode = AM::pGrid()->iThisNode();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a pipeline
@@ -35,12 +36,19 @@ void Step::vJob_PipelineBegin(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // popluate the op vector of the pipeline
   pPipeline->vPopulateOpVec(m_pRegSet->m_xpDynamo->pPipelineSpec());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump the pipeline
+  if (AM::bVerbose()) {
+    if (iThisNode == 0)
+       pPipeline->vDump();
+  }
+  
   delete *m_pRegSet->m_xpDynamo;
   m_pRegSet->m_xpDynamo = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operators for this node
-  i8 iThisNode = AM::pGrid()->iThisNode();
   if (AM::bVerbose())
     vTrace("Spawning operator jobs for node %lld\n"_Stz, AM::pGrid()->iThisNode());
   

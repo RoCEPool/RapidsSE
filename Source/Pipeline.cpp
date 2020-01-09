@@ -95,6 +95,31 @@ bool Pipeline::bCancelling(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump the pipeline                                                          */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump all operators of each stage
+    
+  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+    
+  vTrace("Pipeline Job:\n\n"_Stz);
+    
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump the stages with the operators
+  for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++ ) {
+    Stage* pStage = m_oStageVec.pGet(i_Stage);
+    vTrace("\n[%lld] Stage %s: \n"_Stz, i_Stage, pStage->szName());
+    pStage->vDump(&m_oStageVec);
+  }
+  
+  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the originating node                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Pipeline::iOriginatingNode(void)
@@ -162,29 +187,6 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
     // add a stage from the stageSpec to the stageVec
     Stage* pStage = new Stage(pStageSpec, this);
     m_oStageVec.vAdd(pStage);
-    
-    
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dump all operators of a stage
-  if (AM::bVerbose()) {
-    i8 iThisNode = AM::pGrid()->iThisNode();
-    if (iThisNode == 0) {
-      
-      vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
-      
-      vTrace("Pipeline Job:\n\n"_Stz);
-      
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // dump the stages with the operators
-      for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++ ) {
-        Stage* pStage = m_oStageVec.pGet(i_Stage);
-        vTrace("\n[%lld] Stage %s: \n"_Stz, i_Stage, pStage->szName());
-        pStage->vDump(&m_oStageVec);
-      }
-    }
-    vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
   }
 }
 

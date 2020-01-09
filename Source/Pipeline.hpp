@@ -28,6 +28,8 @@ namespace Operators
     Pipeline(Job* pJob, i8 iOriginatingNode);
    ~Pipeline(void) noexcept(false);
   
+    void     vDump(void);
+    
     void      vCancelling(bool bCancelling);
     bool      bCancelling(void);
     i8        iOriginatingNode(void);
