@@ -95,7 +95,7 @@
        1 thread::sleepMsec
     repeat
 
-    "WriteBuffer.insert acking parentJob(endInsert/loadTable):" .verbose
+    //"WriteBuffer.insert acking parentJob(endInsert/loadTable):" .verbose
     pTask_Parent task.grabLock
     pTask_Parent task.dropLock
     pTask_Parent task.ack

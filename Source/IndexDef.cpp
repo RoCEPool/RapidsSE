@@ -124,8 +124,8 @@ Stz* IndexDef::szIndexNm(void)
   return m_sIndexNm;
 }
 
-#define dPT() vTrace("tkn=%s\n"_Stz,pTkn->szText());
-//#define dPT()
+//#define dPT() vTrace("tkn=%s\n"_Stz,pTkn->szText());
+#define dPT()
 
 /*----------------------------------------------------------------------------*/
 /* parse Create Index command                                                 */
@@ -236,7 +236,7 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
   
 L_RETURN:
   
-  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+  //vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
 
   delete pTknVec;
   

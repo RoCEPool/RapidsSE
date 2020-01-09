@@ -26,9 +26,9 @@ void Step::vIndexDefParse(void)
   s4K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
 
-  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
-  vTrace("Stmt: %s\n"_Stz,sCmd.szStz());
-  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+//  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
+//  vTrace("Stmt: %s\n"_Stz,sCmd.szStz());
+//  vTrace("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"_Stz);
 
   IndexDef* pIndexDef = new IndexDef;
   

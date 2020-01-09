@@ -75,7 +75,7 @@
      1 thread::sleepMsec
   repeat
 
-  "WriteRow.insert acking parentJob(insertRow):" .verbose
+  //"WriteRow.insert acking parentJob(insertRow):" .verbose
   pTask_Parent task.grabLock
   pTask_Parent task.dropLock
   pTask_Parent task.ack
