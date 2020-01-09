@@ -174,7 +174,7 @@ void Stage::vCancelOperators(i8 iThisNode)
 /*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
-void Stage::vDump(void)
+void Stage::vDump(StageVec* pStageVec)
 {
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
@@ -187,16 +187,33 @@ void Stage::vDump(void)
     EnameSet* pEnameSet = pOp->pEnameSet();
     pEnameSet->vSprint(sArgs);
     
-    vTrace("  [%02lld] (N%lld) (P%02lld) {%12s%-24s EosMarkers(L%lld R%lld) :%-10s %s }\n"_Stz,
+    // get the next stage
+    i8 iNextStage = pEnameSet->iValue("<nextStage>"_Stz);
+    Stage* pNextStage = pStageVec->pGet(iNextStage);
+    
+    // get the next op
+    i8 iNextOp = pEnameSet->iValue("<nextOp>"_Stz);
+    Op* pNextOp = pNextStage->pOpVec()->pGet(iNextOp);
+    
+    // get the cross topology
+    ePX eTopology = (ePX)(pEnameSet->iValue("<topology>"_Stz));
+    
+    // get the left EOS markers for consume op
+    //! ALKA: right EOS markers ???
+    i8 iConsumeXmits =  pEnameSet->iValue("<consumeXmits>"_Stz);
+    i8 iLeftEosMarkers = iConsumeXmits ? iConsumeXmits : pOp->nLeftEosMarkers();
+    
+    vTrace("  [%02lld] (N%lld) (P%02lld) {%12s%-20s EosMarkers(L%lld R%lld) :%-10s %s %s}\n"_Stz,
            i_Op,
            pOp->nNode(),
            pOp->nPartition(),
            pOp->szName(),
            sArgs.szStz(),
-           pOp->nLeftEosMarkers(),
+           iLeftEosMarkers,
            pOp->nRightEosMarkers(),
-           ""_Stz,
-           pOp->bAppendRight() ? "appendRight"_Stz : "appendLeft "_Stz
+           pNextOp->szName(),
+           pOp->bAppendRight() ? "appendRight"_Stz : "appendLeft "_Stz,
+           aPX[eTopology]
           );
   }
 }

@@ -162,27 +162,30 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
     // add a stage from the stageSpec to the stageVec
     Stage* pStage = new Stage(pStageSpec, this);
     m_oStageVec.vAdd(pStage);
-  
-    if (AM::bVerbose()) {
-      vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
-      vTrace("Pipeline Job:\n\n"_Stz);
-    }
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // dump all operators of a stage
-    if (AM::bVerbose()) {
-      i8 iThisNode = AM::pGrid()->iThisNode();
-      if (iThisNode == 0) {
-        vTrace("\n[%lld] Stage %s: \n"_Stz, i_StageSpec, pStage->szName());
-        pStage->vDump();
-      }
-    }
+    
   }
   
-  if (AM::bVerbose())
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump all operators of a stage
+  if (AM::bVerbose()) {
+    i8 iThisNode = AM::pGrid()->iThisNode();
+    if (iThisNode == 0) {
+      
+      vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+      
+      vTrace("Pipeline Job:\n\n"_Stz);
+      
+      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // dump the stages with the operators
+      for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++ ) {
+        Stage* pStage = m_oStageVec.pGet(i_Stage);
+        vTrace("\n[%lld] Stage %s: \n"_Stz, i_Stage, pStage->szName());
+        pStage->vDump(&m_oStageVec);
+      }
+    }
     vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
-  
-  vDebugPoint();
+  }
 }
 
 /*----------------------------------------------------------------------------*/

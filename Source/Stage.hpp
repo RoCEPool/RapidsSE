@@ -23,7 +23,7 @@ namespace Operators
     Stage(StageSpec* pStageSpec, Pipeline* pPileLine);
    ~Stage(void) noexcept(false);
   
-    void vDump(void);
+    void vDump(StageVec* pStageVec);
     
     void         vCancelOperators(i8 iThisNode);
     Stz*         szName(void);
