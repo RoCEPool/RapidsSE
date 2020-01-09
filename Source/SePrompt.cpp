@@ -675,7 +675,11 @@ void SePrompt::vJobWaitCond(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if (JS_LOCKED != m_pJob->eJobState())
+    vDebugPoint();
+  
   RASSERT(JS_LOCKED == m_pJob->eJobState());
+  
   m_pJob->vJobState(JS_WAITING);
   
   do {

@@ -51,38 +51,38 @@
     endof
 
     ZK_IRWBUFFER of
-      //"Operand:- ZK_IRWBUFFER" .verbose
+      //"jobOperand::generic::- ZK_IRWBUFFER" .verbose
       Operand[].pipeOut
       true
     endof
 
     ZK_PULSEMARKER of
-      "jobOperand::generic:- ZK_PULSEMARKER" .verbose
+      //"jobOperand::generic:- ZK_PULSEMARKER" .verbose
       Operand[].pipeOut
       true
     endof
 
     ZK_SRTBUFFER of
-      //"Operand:- ZK_SRTBUFFER" .verbose
+      //"jobOperand::generic: ZK_SRTBUFFER" .verbose
       Operand[].pipeOut
       true
     endof
 
     ZK_STARTMARKER of
-      "jobOperand::generic:- ZK_STARTMARKER" .verbose
+      //"jobOperand::generic:- ZK_STARTMARKER" .verbose
       Operand[].pipeOut
       true
     endof
 
     ZK_STOPMARKER of
-      "jobOperand::generic:- ZK_STOPMARKER" .verbose
+      //"jobOperand::generic:- ZK_STOPMARKER" .verbose
       Operand[].pipeOut
       Op.ackPipelineJob
       false
     endof
 
     ZK_STREAMDEF of
-      "jobOperand::generic:- ZK_STREAMDEF" .verbose
+      //"jobOperand::generic:- ZK_STREAMDEF" .verbose
       Operand[].pipeOut
       true
     endof

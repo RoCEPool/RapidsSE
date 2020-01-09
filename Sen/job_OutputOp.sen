@@ -33,14 +33,12 @@
 
       ZK_CRWBUFFER of
         //"Operand:- ZK_CRWBUFFER" .verbose
-        Operand[].workDone
         Operand[].pipeToJob
         true
       endof
 
       ZK_CSVBUFFER of
         //"Operand:- ZK_CSVBUFFER" .verbose
-        Operand[].workDone
         Operand[].pipeToJob
         true
       endof
@@ -63,14 +61,12 @@
 
       ZK_ENTBUFFER of
         //"Operand:- ZK_ENTBUFFER" .verbose
-        Operand[].workDone
         Operand[].pipeToJob
         true
       endof
 
       ZK_IRWBUFFER of
         //"Operand:- ZK_IRWBUFFER" .verbose
-        Operand[].workDone
         Operand[].pipeToJob
         true
       endof
@@ -85,19 +81,15 @@
 
       ZK_SRTBUFFER of
         //"Operand:- ZK_SRTBUFFER" .verbose
-        Operand[].workDone
         Operand[].pipeToJob
         true
       endof
 
       ZK_STARTMARKER of
         //"Operand:- ZK_STARTMARKER" .verbose
-        //origPipelineJob job.signalWaiter
         Operand[].pipeToJob
         Operand[].newStartMarker
         Operand[].pipeOut
-        //Operand[].newStartMarker
-        //Operand[].pipeOut
         true
       endof
 
@@ -110,7 +102,6 @@
 
       ZK_STREAMDEF of
         //"Operand:- ZK_STREAMDEF" .verbose
-        Operand[].workDone
         Operand[].pipeToJob
         true
       endof
