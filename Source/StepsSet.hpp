@@ -862,7 +862,6 @@ public:
   void vOperandFirstRowFetch(void);
   void vOperandGet(void);
   void vOperandHandleAggEnd(void);
-  void vOperandHandleStop(void);
   void vOperandIsNull(void);
   void vOperandItemCountFetch(void);
   void vOperandInsertIntoTable(void);

@@ -14,7 +14,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].firstRow@"_Stz,      &Step::vOperandFirstRowFetch);
   vAddStep("Operand[].get"_Stz,            &Step::vOperandGet);
   vAddStep("Operand[].handleAggEnd"_Stz,   &Step::vOperandHandleAggEnd);
-  vAddStep("Operand[].handleStop"_Stz,     &Step::vOperandHandleStop);
   vAddStep("Operand[].isNull"_Stz,         &Step::vOperandIsNull);
   vAddStep("Operand[].itemCount@"_Stz,     &Step::vOperandItemCountFetch);
   vAddStep("Operand[].insertIntoTable"_Stz,&Step::vOperandInsertIntoTable);
@@ -135,21 +134,6 @@ void Step::vOperandHandleAggEnd(void)
   }
   else
     AM::vDeleteOperand(*m_pRegSet->m_xpOperand);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Operand[].handleStop -- handle stop marker                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vOperandHandleStop(void)
-{
-  ENTRY(); // ENTRY("vOperandHandleStop"_Stz);
-  
-  ASSERT(*m_pRegSet->m_xpOperand);
-  
-  Op* pOp = m_pTask->m_pJob->m_pOp;
-  pOp->vPipeOut(*m_pRegSet->m_xpOperand);
   
   EXIT();
 }
