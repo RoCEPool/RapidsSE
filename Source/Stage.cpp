@@ -70,7 +70,12 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
       break;
       
     case PO_ORIGIN:
-      vTrace("Pipeline Originating node : %lld\n"_Stz, pPipeLine->iOriginatingNode());
+      if (AM::bVerbose()) {
+        i8 iThisNode = AM::pGrid()->iThisNode();
+        if (iThisNode == 0) {
+          vTrace("Pipeline Originating node : %lld\n"_Stz, pPipeLine->iOriginatingNode());
+        }
+      }
       m_oStageNdeVec.vAdd(new StageNde(pStageSpec, pPipeLine->iOriginatingNode()));
       break;
       

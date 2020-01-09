@@ -14,10 +14,10 @@ namespace Operators
     s32            m_sName;          // first word of prompt command
     
     Pipeline*      m_pPipeline;      // op digest
-    EnameSet       m_oEnameSet;
+    EnameSet       m_oEnameSet;      // ename set of cmd
     
     Job*           m_pJobPipeline;   // pipeline job this operator belongs to
-    Job*           m_pOpJob;         // job this operator belongs to
+    Job*           m_pOpJob;         // operator job this operator belongs to
     Task*          m_pTask;          // task running this op
   
     bool           m_bPulsed;        // is this a pulsed operand?

@@ -160,54 +160,20 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
     StageSpec* pStageSpec = pPipelineSpec->pStageSpec(i_StageSpec);
     
     // add a stage from the stageSpec to the stageVec
-    m_oStageVec.vAdd(new Stage(pStageSpec, this));
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // link the operators in a stage and across stages
+    Stage* pStage = new Stage(pStageSpec, this);
+    m_oStageVec.vAdd(pStage);
   
-  if (AM::bVerbose()) {
-    vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
-    vTrace("Pipeline Job:\n\n"_Stz);
-  }
-    
-  // for each stage in the stageVec
-  for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++) {
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get the stage
-    Stage* pStage = m_oStageVec.pGet(i_Stage);
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // link all operators of a stagePtn
-
-    for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
-      
-      // get the stagePtn
-      StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
-      
-      // link all operators of the stage partition
-      //pStagePtn->vLinkOperators(&m_oStageVec);
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // link all operators of a stageNde
-    
-    for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
-      
-      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
-      
-      // link all operators of the stage partition
-      //pStageNde->vLinkOperators(&m_oStageVec);
+    if (AM::bVerbose()) {
+      vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+      vTrace("Pipeline Job:\n\n"_Stz);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // dump all operators of a stage
-    
     if (AM::bVerbose()) {
       i8 iThisNode = AM::pGrid()->iThisNode();
       if (iThisNode == 0) {
-        vTrace("\n[%lld] Stage %s: \n"_Stz, i_Stage, pStage->szName());
+        vTrace("\n[%lld] Stage %s: \n"_Stz, i_StageSpec, pStage->szName());
         pStage->vDump();
       }
     }
