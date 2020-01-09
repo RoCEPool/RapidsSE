@@ -38,27 +38,6 @@
       // decode kind
       Operand[].kind case
 
-        ZK_CRWBUFFER of
-          //"Operand:- ZK_CRWBUFFER" .verbose
-          Operand[].workDone
-          Operand[].pipeOut
-          true
-        endof
-
-        ZK_CSVBUFFER of
-          //"Operand:- ZK_CSVBUFFER" .verbose
-          Operand[].workDone
-          Operand[].pipeOut
-          true
-        endof
-
-        ZK_ENTBUFFER of
-          //"Operand:- ZK_ENTBUFFER" .verbose
-          Operand[].workDone
-          Operand[].pipeOut
-          true
-        endof
-
         ZK_EOSMARKER of
           //"Operand:- ZK_EOSMARKER" .verbose
           eos 1 - to eos
@@ -93,13 +72,6 @@
           true
         endof
 
-        ZK_IRWBUFFER of
-          //"Operand:- ZK_IRWBUFFER" .verbose
-          Operand[].workDone
-          Operand[].pipeOut
-          true
-        endof
-
         ZK_PULSEMARKER of
           //"Operand:- ZK_PULSEMARKER" .verbose
           pulse 0 == if
@@ -111,13 +83,6 @@
           pulse xmits > if
             xmits pulse "Warning: ConsumeOp ZK_PULSEMARKER received %v; expected %v" str.format .
           then
-          true
-        endof
-
-        ZK_SRTBUFFER of
-          //"Operand:- ZK_SRTBUFFER" .verbose
-          Operand[].workDone
-          Operand[].pipeOut
           true
         endof
 
@@ -167,8 +132,8 @@
           true
         endof
 
-        // handle the generic operands
-        //jobOperand::generic
+        // handle other operand as generic operands
+        jobOperand::generic
 
       endcase
 
