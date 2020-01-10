@@ -76,6 +76,7 @@
 
       // handle other operand as generic operands
       jobOperand::generic
+      swap
 
     endcase
 

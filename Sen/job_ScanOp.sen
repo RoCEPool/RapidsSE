@@ -82,13 +82,9 @@
         true
       endof
 
-      ZK_STOPMARKER of
-        "Operand:- ZK_STOPMARKER*****" .verbose
-        popTable
-        Operand[].pipeOut
-        Op.ackPipelineJob
-        false
-      endof
+      // handle other operand as generic operands
+      jobOperand::generic
+      swap
 
     endcase
 
