@@ -2,10 +2,6 @@
 -- run operator tests in a loop varying indexEntries
 --------------------------------------------------------------------------------
 
---
--- Examples of other miscellaneous commands you can give to seth.
---
-
 // Logging a message
 LOG 'Running indexEntry test with varying indexEntries per buffer.';
 

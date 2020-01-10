@@ -4,6 +4,9 @@
 DIR=$(dirname "$0")
 CLASSPATH=".:*:${DIR}:${DIR}/*"
 
+# This is the colleciton of tests that are actually run by bamboo.
+TESTLIST_FILE="${DIR}/Bamboo/allTestsBamboo"
+
 SE_PATH="../OS X/Build/Products/Release/SE"
 SE_ARGS="--name NODE0 --sen ../Sen --commands ../Commands"  # in addition to --metadata and --script
 
