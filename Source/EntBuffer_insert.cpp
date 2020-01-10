@@ -316,8 +316,7 @@ void EntBuffer::vCompactLeft(void)
 /*----------------------------------------------------------------------------*/
 /* delete upwards                                                             */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vDeleteUpwards(Ent* aDeleteKey,
-                                 EntBuffer** ppRootKeyBuffer)
+void EntBuffer::vDeleteUpwards(Ent* aDeleteKey, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -364,7 +363,7 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteKey,
   Ent* aFirstEntry = this->aLeadEntry();
   if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer) {
     EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
-    pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
+    pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootBuffer);
   }
   
   vDeleteEntry(&aEntryToBeDeleted);
@@ -374,8 +373,8 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteKey,
 /* handle the insert of a first key                                           */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vHandleFirstInsert(Ent* aInsertedKeyEntry,
-                                     Ent* aOriginalFirstEntry,
-                                     EntBuffer** ppRootKeyBuffer)
+                                   Ent* aOriginalFirstEntry,
+                                   EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -393,12 +392,12 @@ void EntBuffer::vHandleFirstInsert(Ent* aInsertedKeyEntry,
     if (EntWrk::bNotEqual(aInsertedKeyEntry, aOriginalFirstEntry))
       vHandleLeftInsert(aInsertedKeyEntry,
                         aOriginalFirstEntry,
-                        ppRootKeyBuffer);
+                        ppRootBuffer);
   }
   else {
     vHandleLeftInsert(aInsertedKeyEntry,
                       aOriginalFirstEntry,
-                      ppRootKeyBuffer);
+                      ppRootBuffer);
   }
 }
 
@@ -406,8 +405,8 @@ void EntBuffer::vHandleFirstInsert(Ent* aInsertedKeyEntry,
 /* handle the insert of a left most key                                       */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
-                                    Ent* aOriginalFirstEntry,
-                                    EntBuffer** ppRootKeyBuffer)
+                                  Ent* aOriginalFirstEntry,
+                                  EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -419,9 +418,9 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   if (aOriginalFirstEntry) {
     //Key* aDeleteKey = _aKey(aOriginalFirstEntry->aDataArea());
     EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
-    //pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
-    pHigherBuffer->vDeleteUpwards(aOriginalFirstEntry,ppRootKeyBuffer);
-    //(*ppRootKeyBuffer)->vShowTree();
+    //pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootBuffer);
+    pHigherBuffer->vDeleteUpwards(aOriginalFirstEntry,ppRootBuffer);
+    //(*ppRootBuffer)->vShowTree();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -432,14 +431,13 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   xEntWrkIns.vSetEnt(*nPoolBufferNo(), 0, aInsertedKeyEntry);
   
   EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
-  pHigherBuffer->aInsertKeyBuffer(xEntWrkIns,ppRootKeyBuffer);
+  pHigherBuffer->aInsertKeyBuffer(xEntWrkIns,ppRootBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get an insertable buffer                                                   */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pInsertableBuffer(EntWrk& xEntWrk,
-                                            EntBuffer** ppRootKeyBuffer)
+EntBuffer* EntBuffer::pInsertableBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -460,8 +458,8 @@ EntBuffer* EntBuffer::pInsertableBuffer(EntWrk& xEntWrk,
     pInsertIntoBuffer = this;
   else {
     pInsertIntoBuffer =
-      pNewInsertBuffer(xEntWrk,nEntryPlusOffsetsBytes,ppRootKeyBuffer);
-    //(*ppRootKeyBuffer)->vShow();
+      pNewInsertBuffer(xEntWrk,nEntryPlusOffsetsBytes,ppRootBuffer);
+    //(*ppRootBuffer)->vShow();
   }
   
   return pInsertIntoBuffer;
@@ -591,12 +589,11 @@ Ent* EntBuffer::aInsertKeyAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry)
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree                                  */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertKeyTree(EntWrk& xEntWrk,
-                               EntBuffer** ppRootKeyBuffer)
+Ent* EntBuffer::aInsertKeyTree(EntWrk& xEntWrk, EntBuffer** ppRootBuffer)
 {
   // ** note: this is a static function **
 
-  EntBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
+  EntBuffer* pRootKeyBuffer = *ppRootBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set a random number offsets
@@ -614,7 +611,7 @@ Ent* EntBuffer::aInsertKeyTree(EntWrk& xEntWrk,
   // insert into the tree
 
   Ent* aInsertedKeyEntry =
-    pPositionedBuffer->aInsertKeyUpwards(xEntWrk,ppRootKeyBuffer);
+    pPositionedBuffer->aInsertKeyUpwards(xEntWrk,ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -717,8 +714,7 @@ void EntBuffer::vInsertKeySkip(Ent* aKeyEntry)
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this buffer                                    */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertKeyBuffer(EntWrk& xEntWrk,
-                                    EntBuffer** ppRootKeyBuffer)
+Ent* EntBuffer::aInsertKeyBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -731,7 +727,7 @@ Ent* EntBuffer::aInsertKeyBuffer(EntWrk& xEntWrk,
     if (m_iBufferHeight) {
       Ent* aOriginalFirstEntry = aLeadEntry();
       aInsertedKeyEntry = aInsertKeyAbs(xEntWrk);
-      vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootKeyBuffer);
+      vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootBuffer);
     }
     else {
       aInsertedKeyEntry = aInsertKeyAbs(xEntWrk);
@@ -740,12 +736,12 @@ Ent* EntBuffer::aInsertKeyBuffer(EntWrk& xEntWrk,
   else {
     Ent* aOriginalFirstEntry = aLeadEntry();
     aInsertedKeyEntry = aInsertKeyAbs(xEntWrk);
-    vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootKeyBuffer);
+    vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootBuffer);
   }
 #else
   Ent* aOriginalFirstEntry = aFirstEntry();
   pInsertedKeyEntry = pInsertKeyAbs(xEntWrk);
-  vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,ppRootKeyBuffer);
+  vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,ppRootBuffer);
 #endif
   
   return aInsertedKeyEntry;
@@ -754,20 +750,19 @@ Ent* EntBuffer::aInsertKeyBuffer(EntWrk& xEntWrk,
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree (handling ripple upwards)        */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertKeyUpwards(EntWrk& xEntWrk,
-                                     EntBuffer** ppRootKeyBuffer)
+Ent* EntBuffer::aInsertKeyUpwards(EntWrk& xEntWrk, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   EntBuffer* pInsertIntoBuffer =
-    pInsertableBuffer(xEntWrk,ppRootKeyBuffer);
+    pInsertableBuffer(xEntWrk,ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Ent* aInsertedKeyEntry =
-    pInsertIntoBuffer->aInsertKeyBuffer(xEntWrk,ppRootKeyBuffer);
+    pInsertIntoBuffer->aInsertKeyBuffer(xEntWrk,ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -783,9 +778,9 @@ Ent* EntBuffer::aInsertKeyUpwards(EntWrk& xEntWrk,
     
     if (pChildBuffer->m_pHigherBuffer != pInsertIntoBuffer) {
       
-      //(*ppRootKeyBuffer)->vShowTree();
+      //(*ppRootBuffer)->vShowTree();
       pChildBuffer->m_pHigherBuffer = pInsertIntoBuffer;
-      //(*ppRootKeyBuffer)->vShowTree();
+      //(*ppRootBuffer)->vShowTree();
     }
   }
   
@@ -849,8 +844,9 @@ EntBuffer* EntBuffer::pNewHigherBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* create a new insert buffer (adjusting higher buffers accordingly)          */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
-                                      EntBuffer** ppRootKeyBuffer)
+EntBuffer* EntBuffer::pNewInsertBuffer(EntWrk& xInsKey,
+                                       i8 nEntryPlusOffsets,
+                                       EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -873,7 +869,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
   EntBuffer* pHigherBuffer = this->pHigherBuffer();
   if (! pHigherBuffer) {
     pHigherBuffer = this->pNewHigherBuffer();
-    *ppRootKeyBuffer = pHigherBuffer;
+    *ppRootBuffer = pHigherBuffer;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -894,7 +890,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
     xEntWrkLeft.vSetEnt(*pLeftBuffer->nPoolBufferNo(), 0, aFirstKeyLeft);
     
     Ent* aNewKeyLeft =
-      pHigherBuffer->aInsertKeyUpwards(xEntWrkLeft,ppRootKeyBuffer);
+      pHigherBuffer->aInsertKeyUpwards(xEntWrkLeft,ppRootBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -907,11 +903,11 @@ EntBuffer* EntBuffer::pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
   xEntWrkRight.vSetEnt(*pRightBuffer->nPoolBufferNo(), 0, aFirstKeyRight);
   
   Ent* aNewKeyRight =
-    pHigherBuffer->aInsertKeyUpwards(xEntWrkRight,ppRootKeyBuffer);
+    pHigherBuffer->aInsertKeyUpwards(xEntWrkRight,ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //ASSERT( (* ppRootKeyBuffer)->bVerify() );
+  //ASSERT( (* ppRootBuffer)->bVerify() );
   
   if ( pRightBuffer->bKeyBeforeBuffer(xInsKey.aEnt()) )
     return pLeftBuffer;

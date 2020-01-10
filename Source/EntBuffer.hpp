@@ -104,7 +104,7 @@ namespace MetaData
     EntBuffer*  pFirstChildBuffer(void);
     Ent*        aInsertKeyAbs(EntWrk& xEntWrk);
     Ent*        aInsertKeyAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry);
-    static Ent* aInsertKeyTree(EntWrk& xEntWrk, EntBuffer** ppRootKeyBuffer);
+    static Ent* aInsertKeyTree(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
     void        vLazyBuild(void);
     i8          iLengthList(void);
     i8          iLengthSubList(void);
@@ -129,27 +129,27 @@ namespace MetaData
     void       vCompact(void);
     void       vCompactLeft(void);
     void       vCutEntry(Ent* aEnt, Ent* aPriorVec[]);
-    void       vDeleteUpwards(Ent* aDeleteKey, EntBuffer** ppRootKeyBuffer);
+    void       vDeleteUpwards(Ent* aDeleteKey, EntBuffer** ppRootBuffer);
     void       vDumpPriorVec(Ent* aPriorVec[]);
     Ent*       aGetEntryOffset(i8 iOffset);
     Ent*       aGetEntrySplit(i8 iSplitEntryNo, Ent** aaPriorEntry);
     void       vHandleFirstInsert(Ent* aInsertedKeyEntry,
                                   Ent* aOriginalFirstEntry,
-                                  EntBuffer** ppRootKeyBuffer);
+                                  EntBuffer** ppRootBuffer);
     void       vHandleLeftInsert(Ent* aInsertedKeyEntry,
                                  Ent* aOriginalFirstEntry,
-                                 EntBuffer** ppRootKeyBuffer);
+                                 EntBuffer** ppRootBuffer);
     Ent*       aSkipRoots(void);
-    EntBuffer* pInsertableBuffer(EntWrk& xEntWrk, EntBuffer** ppRootKeyBuffer);
+    EntBuffer* pInsertableBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
     Ent*       aInsertKeyAbsLazy(EntWrk& xEntWrk);
     void       vInsertKeySkip(Ent* aKeyEntry);
-    Ent*       aInsertKeyBuffer(EntWrk& xEntWrk, EntBuffer** ppRootKeyBuffer);
-    Ent*       aInsertKeyUpwards(EntWrk& xEntWrk, EntBuffer** ppRootKeyBuffer);
+    Ent*       aInsertKeyBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
+    Ent*       aInsertKeyUpwards(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
     bool       bKeyBeforeBuffer(Ent* aKey);
     FreeItem*  aMakeFreeEntry(Ent* aEnt);
     EntBuffer* pNewHigherBuffer(void);
     EntBuffer* pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
-                                EntBuffer** ppRootKeyBuffer);
+                                EntBuffer** ppRootBuffer);
     EntBuffer* pNewNextBuffer(void);
     Ent*       aPopLazyChain(void);
 
