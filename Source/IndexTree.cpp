@@ -7,8 +7,6 @@
 
 bool mbCheckPriorVec = false;
 
-#define USE_IT_COMPACT_TRACE 10
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -151,7 +149,7 @@ void IndexTree::vCompact(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the number of H1 buffers
   
-#ifdef USE_IT_COMPACT_TRACE
+#ifdef WITH_IT_COMPACT_TRACE
   EntBuffer* pH1First = pFirstH1Buffer();
   i8 nP1Buffers = pH1First ? pH1First->iLengthList() : 0;
 #endif
@@ -165,8 +163,8 @@ void IndexTree::vCompact(void)
     
     iH1BufferNo++;
     
-#ifdef USE_IT_COMPACT_TRACE
-     if (0 == iH1BufferNo % USE_IT_COMPACT_TRACE)
+#ifdef WITH_IT_COMPACT_TRACE
+     if (0 == iH1BufferNo % 10)
       vTrace("Compaction Progress: Partition %lld: H1 Buffer %lld of %lld\n"_Stz,
              m_iPartitionNo,iH1BufferNo,nP1Buffers);
 #endif

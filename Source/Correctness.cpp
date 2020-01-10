@@ -92,6 +92,10 @@ void Correctness::vTraceWith(void)
   vTrace("  WITH_INFLATE_TRACE\n"_Stz);
 #endif
   
+#ifdef WITH_IT_COMPACT_TRACE
+  vTrace("  WITH_IT_COMPACT_TRACE\n"_Stz);
+#endif
+  
 #ifdef WITH_LINUX
   vTrace("  WITH_LINUX\n"_Stz);
 #endif
