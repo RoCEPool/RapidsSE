@@ -42,14 +42,11 @@
           //"Operand:- ZK_EOSMARKER" .verbose
           eos 1 - to eos
           eos 0 == if
+            xmits to eos
             Operand[].pipeOut
           else
+            xmits to eos
             Operand[].delete
-          then
-
-          eos 0 < if
-            xmits xmits eos -
-              "Warning: ConsumeOp ZK_EOSMARKER/ZK_ERRORMARKER received %v; expected %v" str.format .
           then
 
           true
@@ -59,14 +56,10 @@
           //"Operand:- ZK_ERRORMARKER" .verbose
           eos 1 - to eos
           eos 0 == if
+            xmits to eos
             Operand[].pipeOut
           else
             Operand[].delete
-          then
-
-          eos 0 < if
-            xmits xmits eos -
-              "Warning: ConsumeOp ZK_EOSMARKER/ZK_ERRORMARKER received %v; expected %v" str.format .
           then
 
           true
@@ -80,8 +73,9 @@
             Operand[].delete
           then
           pulse 1 + to pulse
-          pulse xmits > if
-            xmits pulse "Warning: ConsumeOp ZK_PULSEMARKER received %v; expected %v" str.format .
+          // reset pulse to allow fow periodic pulses to come
+          pulse xmits == if
+            0 to pulse
           then
           true
         endof

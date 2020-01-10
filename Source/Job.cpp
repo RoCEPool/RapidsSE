@@ -1184,6 +1184,7 @@ void Job::vPrintQueueRows(void)
 //  }
   
   StreamDef* pStreamDef = nullptr;
+  bool bHasError = false;
   
   for (;;) {
     
@@ -1260,7 +1261,7 @@ void Job::vPrintQueueRows(void)
             
           case OM_ERRORMARKER: {
             AM::vDeleteOperand(pOperand);
-            goto L_EXIT;
+            bHasError = true;
             break;
           }
             
@@ -1278,7 +1279,8 @@ void Job::vPrintQueueRows(void)
             
           case OM_STOPMARKER: {
             //vTrace("Pipeline Job: STOPMARKER\n"_Stz);
-            vTrace("success: %lld rows fetched\n"_Stz, *m_xResponse.m_ixRowsProcessed);
+            if ( ! bHasError )
+              vTrace("success: %lld rows fetched\n"_Stz, *m_xResponse.m_ixRowsProcessed);
             AM::vDeleteOperand(pOperand);
             goto L_EXIT;
             break;
