@@ -28,44 +28,81 @@
     // pop next operand from queue into Operand[]
     Operand[].next
 
-    Operand[].kind ZK_EOSMARKER == if
-      //"Operand:- ZK_EOSMARKER" .verbose
-      Operand[].delete
-      true
-    else
+    // decode kind
+    Operand[].kind case
 
-    Operand[].kind ZK_PULSEMARKER == if
-      //"Operand:- ZK_PULSEMARKER" .verbose
-      Operand[].delete
-      true
-    else
+      ZK_CRWBUFFER of
+        //"jobOperand::generic: ZK_CRWBUFFER" .verbose
+        Operand[].delete
+        true
+      endof
 
-    Operand[].kind ZK_ERRORMARKER == if
-      //"Operand:- ZK_ERRORMARKER" .verbose
-      Operand[].pipeOut
-      true
-    else
+      ZK_CSVBUFFER of
+        //"jobOperand::generic: ZK_CSVBUFFER" .verbose
+        Operand[].delete
+        true
+      endof
 
-    Operand[].kind ZK_STARTMARKER == if
-      //"Operand:- ZK_STARTMARKER" .verbose
-      Operand[].delete
-      Operand[].newStartedMarker
-      Operand[].pipeOut
-      true
+      ZK_ENTBUFFER of
+        //"jobOperand::generic: ZK_ENTBUFFER" .verbose
+        Operand[].delete
+        true
+      endof
 
-    else
-    Operand[].kind ZK_STOPMARKER == if
-      //"Operand:- ZK_STOPMARKER" .verbose
-      Operand[].pipeToJob
-      Operand[].newStoppedMarker
-      Operand[].pipeOut
-      Op.ackPipelineJob
-      false
-    else
-      Operand[].delete
-      true
+      ZK_EOSMARKER of
+        //"Operand:- ZK_EOSMARKER" .verbose
+        Operand[].delete
+        true
+      endof
 
-    then then then then then
+      ZK_ERRORMARKER of
+        //"Operand:- ZK_ERRORMARKER" .verbose
+        Operand[].pipeOut
+        true
+      endof
+
+      ZK_IRWBUFFER of
+        //"jobOperand::generic::- ZK_IRWBUFFER" .verbose
+        Operand[].delete
+        true
+      endof
+
+      ZK_PULSEMARKER of
+        //"Operand:- ZK_PULSEMARKER" .verbose
+        Operand[].delete
+        true
+      endof
+
+      ZK_SRTBUFFER of
+        //"jobOperand::generic: ZK_SRTBUFFER" .verbose
+        Operand[].delete
+        true
+      endof
+
+      ZK_STARTMARKER of
+        //"Operand:- ZK_STARTMARKER" .verbose
+        Operand[].delete
+        Operand[].newStartedMarker
+        Operand[].pipeOut
+        true
+      endof
+
+      ZK_STOPMARKER of
+        //"Operand:- ZK_STOPMARKER" .verbose
+        Operand[].pipeToJob
+        Operand[].newStoppedMarker
+        Operand[].pipeOut
+        Op.ackPipelineJob
+        false
+      endof
+
+      ZK_STREAMDEF of
+        //"jobOperand::generic:- ZK_STREAMDEF" .verbose
+        Operand[].delete
+        true
+      endof
+
+    endcase
 
   while assert::stack_0 repeat
 
