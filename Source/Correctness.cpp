@@ -112,6 +112,10 @@ void Correctness::vTraceWith(void)
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
 #endif
   
+#ifdef WITH_SETH_SUPPORT
+  vTrace("  WITH_SETH_SUPPORT\n"_Stz);
+#endif
+  
 #ifdef WITH_SHARED_LOG
   vTrace("  WITH_SHARED_LOG\n"_Stz);
 #endif

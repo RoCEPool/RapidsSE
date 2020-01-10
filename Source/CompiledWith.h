@@ -33,6 +33,7 @@
 #define WITH_EB_LAZY_CHAIN      // build lazy chain on insert
 #define WITH_ENTRY_EXIT         // code for ENTRY() & EXIT() macros compiled in
 #define WITH_PREPOST_CHECKING   // _pre/postCondition_()
+#define WITH_SETH_SUPPORT       // seth support
 #define WITH_SHARED_LOG         // code for Log compiled in
 //#define WITH_STATISTICS_COUNTERS // statistics
 #define WITH_TRACE_API          // code for tracing api's compiled in
@@ -51,6 +52,7 @@
 #define WITH_EB_LAZY_CHAIN         // build lazy chain on insert
 //#define WITH_ENTRY_EXIT          // code for ENTRY() & EXIT() macros compiled in
 //#define WITH_PREPOST_CHECKING    // _pre/postCondition_()
+#define WITH_SETH_SUPPORT          // seth support
 //#define WITH_STATISTICS_COUNTERS // statistics
 //#define WITH_TRACE_API           // code for tracing api's compiled in
 //#define WITH_TRACE_DYNAMO        // code for tracing compiling dynamic pipeline

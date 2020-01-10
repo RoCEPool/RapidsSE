@@ -4,8 +4,6 @@
 
 #include "Utilities.h"
 
-#define USE_SETH_SUPPORT
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -56,7 +54,7 @@ SchemaTest::SchemaTest(Stz* sStream)
   
   m_sStream = sStream;
 
-#ifdef USE_SETH_SUPPORT
+#ifdef WITH_SETH_SUPPORT
   m_sFilePath = "../Seth/schemaTest"_Stz;
   if (*m_sStream.azChar()) {
     m_sFilePath.vConcat("_"_Stz);
@@ -275,7 +273,7 @@ void SchemaTest::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vFileFooter(void)
 {
-#ifdef USE_SETH_SUPPORT
+#ifdef WITH_SETH_SUPPORT
   m_oFile.vPrint("%s\n"_Stz,
   "/*----------------------------------------------------------------------------*/"_Stz);
   m_oFile.vPrint("%s\n"_Stz,
@@ -297,7 +295,7 @@ void SchemaTest::vFileFooter(void)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vFileHeader(void)
 {
-#ifdef USE_SETH_SUPPORT
+#ifdef WITH_SETH_SUPPORT
   m_oFile.vPrint("%s\n"_Stz,
   "/*----------------------------------------------------------------------------*/"_Stz);
   m_oFile.vPrint("%s\n"_Stz,
@@ -617,7 +615,7 @@ void SchemaTest::vMakeTest(void)
   vFormCreateTable();
   vWriteStatement();
   
-#ifdef USE_SETH_SUPPORT
+#ifdef WITH_SETH_SUPPORT
   vWriteSuccess();
   vWriteLsCol();
   vWriteRows();
@@ -626,7 +624,7 @@ void SchemaTest::vMakeTest(void)
   vFormDropTable();
   vWriteStatement();
   
-#ifdef USE_SETH_SUPPORT
+#ifdef WITH_SETH_SUPPORT
   vWriteSuccess();
 #endif
   
