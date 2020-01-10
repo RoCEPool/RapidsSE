@@ -51,22 +51,22 @@ namespace MetaData
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
   
-    void         vBufferCount(i8& nBufferCount);
+    void       vBufferCount(i8& nBufferCount);
     EntBuffer* pHigherBuffer(void);
-    void         vHigherBuffer(EntBuffer* pHigherBuffer);
+    void       vHigherBuffer(EntBuffer* pHigherBuffer);
     EntBuffer* pNextBuffer(void);
-    void         vNextBuffer(EntBuffer* pNextBuffer);
+    void       vNextBuffer(EntBuffer* pNextBuffer);
     EntBuffer* pPrevBuffer(void);
-    void         vPrevBuffer(EntBuffer* pPrevBuffer);
+    void       vPrevBuffer(EntBuffer* pPrevBuffer);
 
-    SrtBuffer*   pToSrtBuffer(i8 iKeyCol);
+    SrtBuffer* pToSrtBuffer(i8 iKeyCol);
     
     ////////////////////////////////////////////////////////////////////////////
     // entry functions
   
     Ent* aLeadEntry(void);
     Ent* aLastEntry(void);
-    void  vShowEntry(Ent* pEntry);
+    void vShowEntry(Ent* pEntry);
   
   private:
     Ent* aAllotEntry(i8 nSizeEnt_Without_NEO);
@@ -90,11 +90,10 @@ namespace MetaData
     
     EntBuffer* pPositionH0Buffer(Ent* aGivenKey);
     Ent*       pPositionPriorEntry(Ent* aFindKey);
-    void       vPositionPriorVecEntry(Ent* aFindKey, Ent** aaPriorVec,
-                                      Ent* aFindEntry);
-    
     void       vPositionPriorVecBuffer(Ent* aFindKey, Ent** aaPriorVec,
                                        EntBuffer* pToBuffer);
+    void       vPositionPriorVecEntry(Ent* aFindKey, Ent** aaPriorVec,
+                                      Ent* aFindEntry);
     
     ////////////////////////////////////////////////////////////////////////////
     
@@ -108,13 +107,11 @@ namespace MetaData
     EntBuffer*  pFirstChildBuffer(void);
     Ent*        aInsertKeyAbs(EntWrk& xEntWrk);
     Ent*        aInsertKeyAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry);
-    static Ent* aInsertKeyTree(EntWrk& xEntWrk,
-                                 EntBuffer** ppRootKeyBuffer);
+    static Ent* aInsertKeyTree(EntWrk& xEntWrk, EntBuffer** ppRootKeyBuffer);
     void        vLazyBuild(void);
     i8          iLengthList(void);
     i8          iLengthSubList(void);
     Ent*        aNextEntry(Ent* aEnt, i8 i_Offset);
-    
     void        vReset(void);
     void        vRestore(void);
     void        vRestoreIndex(Index* pIndex);
@@ -131,65 +128,61 @@ namespace MetaData
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
     
-    void        vBuildSkipList(void);
-    void        vCompact(void);
-    void        vCompactLeft(void);
-    void        vCutEntry(Ent* aEnt, Ent* aPriorVec[]);
-    void        vDeleteUpwards(Ent* aDeleteKey,
-                                EntBuffer** ppRootKeyBuffer);
-    void        vDumpPriorVec(Ent* aPriorVec[]);
-    Ent*        aGetEntryOffset(i8 iOffset);
-    Ent*        aGetEntrySplit(i8 iSplitEntryNo, Ent** aaPriorEntry);
-    void        vHandleFirstInsert(Ent* aInsertedKeyEntry,
-                                   Ent* aOriginalFirstEntry,
+    void       vBuildSkipList(void);
+    void       vCompact(void);
+    void       vCompactLeft(void);
+    void       vCutEntry(Ent* aEnt, Ent* aPriorVec[]);
+    void       vDeleteUpwards(Ent* aDeleteKey, EntBuffer** ppRootKeyBuffer);
+    void       vDumpPriorVec(Ent* aPriorVec[]);
+    Ent*       aGetEntryOffset(i8 iOffset);
+    Ent*       aGetEntrySplit(i8 iSplitEntryNo, Ent** aaPriorEntry);
+    void       vHandleFirstInsert(Ent* aInsertedKeyEntry,
+                                  Ent* aOriginalFirstEntry,
                                   EntBuffer** ppRootKeyBuffer);
-    void        vHandleLeftInsert(Ent* aInsertedKeyEntry,
-                                   Ent* aOriginalFirstEntry,
-                                   EntBuffer** ppRootKeyBuffer);
+    void       vHandleLeftInsert(Ent* aInsertedKeyEntry,
+                                 Ent* aOriginalFirstEntry,
+                                 EntBuffer** ppRootKeyBuffer);
     Ent*       aSkipRoots(void);
-    EntBuffer* pInsertableBuffer(EntWrk& xEntWrk,
-                                   EntBuffer** ppRootKeyBuffer);
+    EntBuffer* pInsertableBuffer(EntWrk& xEntWrk, EntBuffer** ppRootKeyBuffer);
     Ent*       aInsertKeyAbsLazy(EntWrk& xEntWrk);
-    void        vInsertKeySkip(Ent* aKeyEntry);
-    Ent*       aInsertKeyBuffer(EntWrk& xEntWrk,
-                                  EntBuffer** ppRootKeyBuffer);
-    Ent*       aInsertKeyUpwards(EntWrk& xEntWrk,
-                                   EntBuffer** ppRootKeyBuffer);
+    void       vInsertKeySkip(Ent* aKeyEntry);
+    Ent*       aInsertKeyBuffer(EntWrk& xEntWrk, EntBuffer** ppRootKeyBuffer);
+    Ent*       aInsertKeyUpwards(EntWrk& xEntWrk, EntBuffer** ppRootKeyBuffer);
     bool       bKeyBeforeBuffer(Ent* aKey);
     FreeItem*  aMakeFreeEntry(Ent* aEnt);
     EntBuffer* pNewHigherBuffer(void);
     EntBuffer* pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
-                                  EntBuffer** ppRootKeyBuffer);
+                                EntBuffer** ppRootKeyBuffer);
     EntBuffer* pNewNextBuffer(void);
     Ent*       aPopLazyChain(void);
 
     EntBuffer* pSplitBuffer(void);
   
-    NEO*   aAllotNEO(i8 nBytes);
+    NEO*       aAllotNEO(i8 nBytes);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify functions
   
-    bool         bCheckPriorVec(Ent* aPriorVec[]);
-    void         vNumberEntries(void);
+    bool bCheckPriorVec(Ent* aPriorVec[]);
+    void vNumberEntries(void);
   
-    void         vQuickVerify(Ent* aSeeEntry=nullptr);
-    bool         bQuickVerify(Ent* aNotSeeEntry);
+    void vQuickVerify(Ent* aSeeEntry=nullptr);
+    bool bQuickVerify(Ent* aNotSeeEntry);
   
-    bool         bVerifyH0Other(void);
-    bool         bVerifyLnAny(void);
+    bool bVerifyH0Other(void);
+    bool bVerifyLnAny(void);
 
-    bool         bVerifyAdjacent(void);
-    bool         bVerifyBufferRefs(void);
-    bool         bVerifyFirstKeys(void);
-    bool         bVerifyItems(void);
-    bool         bVerifyKeyBufferOrder(void);
-    bool         bVerifyKeyOrder(void);
-    bool         bVerifyNextPrev(void);
-    bool         bVerifyRowRefs(void);
-    bool         bVerifySkipListEntry(bool bShowKeys = false);
-    bool         bVerifySkipListLevels(bool bShowKeys = false);
-    void         vVerifyFault(void);
+    bool bVerifyAdjacent(void);
+    bool bVerifyBufferRefs(void);
+    bool bVerifyFirstKeys(void);
+    bool bVerifyItems(void);
+    bool bVerifyKeyBufferOrder(void);
+    bool bVerifyKeyOrder(void);
+    bool bVerifyNextPrev(void);
+    bool bVerifyRowRefs(void);
+    bool bVerifySkipListEntry(bool bShowKeys = false);
+    bool bVerifySkipListLevels(bool bShowKeys = false);
+    void vVerifyFault(void);
 
     public:
     Footer* aFooter(void);
