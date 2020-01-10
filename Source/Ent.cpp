@@ -274,14 +274,7 @@ bool Ent::bValidEnt(void)
     vTrace("Not valid class\n"_Stz);
     return false;
   }
-  
-#ifdef USE_LW_FOOOTER
-  if (! aFooter()->bValidFooter()) {
-    vTrace("Not valid footer\n"_Stz);
-    return false;
-  }
-#endif
-  
+    
   return true;
 }
 

@@ -331,7 +331,7 @@ void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
 //      //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
 //      //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
 //
-//      //#ifdef USE_EB_SINGLE_COLIDX
+//      //#ifdef WITH_EB_SINGLE_COLIDX
 //      //      if (m_pIndex->bSingleColumn()) {
 //      //        bNextKeyIsGreater = aNextKey->bGreaterThanSingle(aFindKey,m_pIndex);
 //      //        RASSERT(bNextKeyIsGreater == aNextKey->bGreaterThan(aFindKey,pIdxColVec));
