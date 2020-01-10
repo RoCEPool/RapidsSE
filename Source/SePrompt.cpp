@@ -214,9 +214,12 @@ void SePrompt::vPromptLoop(void)
     
     if (m_pJob->m_eJobType == JT_PIPELINE) {
 
-      // wait till we the job has a buffer queue
-      while ( ! m_pJob->m_pBufferQueue )
-        ;
+      // wait till the job has a buffer queue
+      while ( m_pJob->m_pBufferQueue == nullptr ) {
+        // do something else release version optimizes this out
+        if (AM::bVerbose())
+          vTrace("Waiting for buffer queue\n"_Stz);
+      }
     
       // start the post processing while the pipeline ops are running
       vPostJob();
