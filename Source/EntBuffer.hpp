@@ -3,9 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#define USE_EB_LAZY_CHAIN
-//#define USE_EB_WATCH
-
 namespace MetaData
 {
   static const bool C_NOT_FINAL    = false;

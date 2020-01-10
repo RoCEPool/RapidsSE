@@ -12,7 +12,7 @@ EntBuffer* EntBuffer::pPositionH0Buffer(Ent* aGivenKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-#ifdef USE_EB_LAZY_CHAIN
+#ifdef WITH_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
   
   //if (m_aLazyChain)
@@ -70,7 +70,7 @@ Ent* EntBuffer::pPositionPriorEntry(Ent* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-#ifdef USE_EB_LAZY_CHAIN
+#ifdef WITH_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -114,7 +114,7 @@ void EntBuffer::vPositionPriorVecEntry(Ent* aFindKey, Ent* aPriorVec[],
   
   //ASSERT(0 == m_iBufferHeight);
   
-#ifdef USE_EB_LAZY_CHAIN
+#ifdef WITH_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -178,7 +178,7 @@ void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
 
   ASSERT(0 != m_iBufferHeight);
 
-#ifdef USE_EB_LAZY_CHAIN
+#ifdef WITH_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
 
@@ -284,7 +284,7 @@ void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
 //
 //  ASSERT(0 != m_iBufferHeight);
 //
-//#ifdef USE_EB_LAZY_CHAIN
+//#ifdef WITH_EB_LAZY_CHAIN
 //  RASSERT( ! m_aLazyChain );
 //#endif
 //

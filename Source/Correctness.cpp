@@ -76,6 +76,10 @@ void Correctness::vTraceWith(void)
   vTrace("  WITH_DEBUG_VERSION\n"_Stz);
 #endif
   
+#ifdef WITH_EB_LAZY_CHAIN
+  vTrace("  WITH_EB_LAZY_CHAIN\n"_Stz);
+#endif
+  
 #ifdef WITH_ENCODING_TRACE
   vTrace("  WITH_ENCODING_TRACE\n"_Stz);
 #endif

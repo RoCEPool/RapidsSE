@@ -115,7 +115,7 @@ void EntBuffer::vCompact(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-#ifdef USE_EB_LAZY_CHAIN
+#ifdef WITH_EB_LAZY_CHAIN
   //RASSERT( ! m_aLazyChain );
   
   if (m_aLazyChain)
@@ -255,7 +255,7 @@ void EntBuffer::vCompactLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-#ifdef USE_EB_LAZY_CHAIN
+#ifdef WITH_EB_LAZY_CHAIN
   RASSERT(! m_aLazyChain);
 #endif
   
@@ -321,7 +321,7 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteKey,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-#ifdef USE_EB_LAZY_CHAIN
+#ifdef WITH_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -476,7 +476,7 @@ Ent* EntBuffer::aInsertKeyAbs(EntWrk& xEntWrk)
   
   Ent* aKeyEntry;
   
-#ifdef USE_EB_LAZY_CHAIN
+#ifdef WITH_EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
     if (! m_iBufferHeight) {
       aKeyEntry = aInsertKeyAbsLazy(xEntWrk);
@@ -726,7 +726,7 @@ Ent* EntBuffer::aInsertKeyBuffer(EntWrk& xEntWrk,
   
   Ent* aInsertedKeyEntry;
   
-#ifdef USE_EB_LAZY_CHAIN
+#ifdef WITH_EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
     if (m_iBufferHeight) {
       Ent* aOriginalFirstEntry = aLeadEntry();
@@ -957,7 +957,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
   
   i8 iSplitRatio = 50;
   
-#ifdef USE_EB_LAZY_CHAIN
+#ifdef WITH_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   

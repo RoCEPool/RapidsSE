@@ -537,7 +537,7 @@ EntBuffer* EntBuffer::pFirstChildBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-#ifdef USE_EB_LAZY_CHAIN
+#ifdef WITH_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -568,7 +568,7 @@ Ent* EntBuffer::aGetEntrySplit(i8 iSplitEntryNo,Ent** aaPriorEntry)
   
   ASSERT(aSkipRoots());
   
-#ifdef USE_EB_LAZY_CHAIN
+#ifdef WITH_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -648,7 +648,7 @@ Ent* EntBuffer::aLastEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-#ifdef USE_EB_LAZY_CHAIN
+#ifdef WITH_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
   
   //if (m_aLazyChain)
@@ -674,7 +674,7 @@ Ent* EntBuffer::aLeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-#ifdef USE_EB_LAZY_CHAIN
+#ifdef WITH_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   

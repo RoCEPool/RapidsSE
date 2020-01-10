@@ -30,6 +30,7 @@
 #define WITH_ASSERT_MACRO       // Assert() macro
 #define WITH_CHECK_INITIALISED  // _checkInitialised_()
 #define WITH_CORECTNESS_ALGEBRA // known class, magic, footer
+#define WITH_EB_LAZY_CHAIN      // build lazy chain on insert
 #define WITH_ENTRY_EXIT         // code for ENTRY() & EXIT() macros compiled in
 #define WITH_PREPOST_CHECKING   // _pre/postCondition_()
 #define WITH_SHARED_LOG         // code for Log compiled in
@@ -47,6 +48,7 @@
 //#define WITH_ACTION_SEQUENCE     // code for ActionLog compiled in
 //#define WITH_CHECK_INITIALISED   // _checkInitialised_()
 //#define WITH_CORECTNESS_ALGEBRA  // known class, magic, footer
+#define WITH_EB_LAZY_CHAIN         // build lazy chain on insert
 //#define WITH_ENTRY_EXIT          // code for ENTRY() & EXIT() macros compiled in
 //#define WITH_PREPOST_CHECKING    // _pre/postCondition_()
 //#define WITH_STATISTICS_COUNTERS // statistics
