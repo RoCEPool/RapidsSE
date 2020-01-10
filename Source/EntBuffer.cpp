@@ -89,26 +89,26 @@ EntBuffer::~EntBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* copy all keys of right buffer to left buffer; create new left when needed  */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
+void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
 {
   TRACE_COMPACT( vTrace("IndexTree::vCopyLeft (right %lld)\n"_Stz,
                         pRightL0->iBufferNo()); )
   
   EntWrk xLeftEntWrk;
   
-  EntBuffer* pLeftL0 = *ppLeftL0;
+  EntBuffer* pLeftL0 = *ppLeftH0;
   
-  Index* pIndex = pRightL0->pIndex();
+  Index* pIndex = pRightH0->pIndex();
   ASSERT(pLeftL0->pIndex() == pIndex);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert the parameters are sensible
   
   ASSERT(0 == pLeftL0->iBufferHeight());
-  ASSERT(0 == pRightL0->iBufferHeight());
+  ASSERT(0 == pRightH0->iBufferHeight());
   EntBuffer* pH1 = pLeftL0->pHigherBuffer();
   ASSERT(1 == pH1->iBufferHeight());
-  ASSERT(pRightL0->pHigherBuffer() == pLeftL0->pHigherBuffer());
+  ASSERT(pRightH0->pHigherBuffer() == pLeftL0->pHigherBuffer());
   
   //vTrace("IndexTree::vCopyLeft (left %lld right %lld)\n"_Stz,
   //       pLeftL0->iBufferNo(),pRightL0->iBufferNo());
@@ -125,9 +125,9 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
   
   //pLeftL0->vShow();
   
-  for (Ent* aRightL0_Key = pRightL0->aLeadEntry();
+  for (Ent* aRightL0_Key = pRightH0->aLeadEntry();
        aRightL0_Key;
-       aRightL0_Key = pRightL0->aNextEntry(aRightL0_Key,0)) {
+       aRightL0_Key = pRightH0->aNextEntry(aRightL0_Key,0)) {
     
     TRACE_COMPACT( pRightKeyEntryL0->vShow(0, pIndex, true); )
     
@@ -178,7 +178,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftL0, EntBuffer* pRightL0)
       // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
       
       // adjust variables
-      *ppLeftL0 = pNewLeftL0;
+      *ppLeftH0 = pNewLeftL0;
       pLeftL0 = pNewLeftL0;
       
       aPriorEntry = pLeftL0->aLastEntry();
