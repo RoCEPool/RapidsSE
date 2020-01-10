@@ -31,54 +31,6 @@
     // decode kind
     Operand[].kind case
 
-      ZK_CRWBUFFER of
-        //"jobOperand::generic: ZK_CRWBUFFER" .verbose
-        Operand[].delete
-        true
-      endof
-
-      ZK_CSVBUFFER of
-        //"jobOperand::generic: ZK_CSVBUFFER" .verbose
-        Operand[].delete
-        true
-      endof
-
-      ZK_ENTBUFFER of
-        //"jobOperand::generic: ZK_ENTBUFFER" .verbose
-        Operand[].delete
-        true
-      endof
-
-      ZK_EOSMARKER of
-        //"Operand:- ZK_EOSMARKER" .verbose
-        Operand[].delete
-        true
-      endof
-
-      ZK_ERRORMARKER of
-        //"Operand:- ZK_ERRORMARKER" .verbose
-        Operand[].pipeOut
-        true
-      endof
-
-      ZK_IRWBUFFER of
-        //"jobOperand::generic::- ZK_IRWBUFFER" .verbose
-        Operand[].delete
-        true
-      endof
-
-      ZK_PULSEMARKER of
-        //"Operand:- ZK_PULSEMARKER" .verbose
-        Operand[].delete
-        true
-      endof
-
-      ZK_SRTBUFFER of
-        //"jobOperand::generic: ZK_SRTBUFFER" .verbose
-        Operand[].delete
-        true
-      endof
-
       ZK_STARTMARKER of
         //"Operand:- ZK_STARTMARKER" .verbose
         Operand[].delete
@@ -96,11 +48,9 @@
         false
       endof
 
-      ZK_STREAMDEF of
-        //"jobOperand::generic:- ZK_STREAMDEF" .verbose
-        Operand[].delete
-        true
-      endof
+      Operand[].delete
+      true
+      swap
 
     endcase
 

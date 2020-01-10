@@ -15,8 +15,6 @@
   <hours> locals| hours |
   0 locals| elapsed |
 
-  "TOPO" .
-  <topology> .
   // set topolgy in the op
   <topology> op.topology!
 
@@ -25,8 +23,6 @@
 
   // set nextOp in op
   <nextOp> op.nextOp!
-
-  <minutes> .
 
   hours if
     hours 60 * to minutes

@@ -70,7 +70,7 @@ visidx lineitem lineitem_idx1;
 //create table x ( i integer, j integer) partition by (j);
 
 //dumptbl lineitem;
-//docol epochTake;
+;
 time create table LineItem2                 // SF * 6,000,000 rows
 (
 L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B  O_ORDERKEY 1+
@@ -93,6 +93,7 @@ L_COMMENT       VARCHAR(44)   NOT NULL   // 15) 45B  23B  ßrnd[10..43]
 // 16 columns                                  174B  91B
 );
 
+
 create index idx on lineitem2 (L_ORDERKEY);
 
 print "**************************************************************************";
@@ -100,6 +101,20 @@ print "scan lineitem | output;";
 print "**************************************************************************";
 
 docol epochTake;
+time pipeline scan
+begin
+
+stage stageA on origin:
+startOp | periodicOp once | stageB
+
+stage stageB on all partitions:
+scanOp lineitem | stageC
+
+stage stageC on origin:
+outputOp | sinkOp | stageA
+
+end
+;
 
 time pipeline scan
 begin
@@ -181,63 +196,9 @@ toFileOp "/tmp/xxx.csv" | sinkOp | stageA
 
 end
 ;
-
 docol epochDump;
 
 /*
-time pipeline scan
-begin
-
-stage stageA on origin:
-startOp | periodicOp once | stageB
-
-stage stageB on origin:
-sinkOp | stageA
-
-end
-;
-
-
-time pipeline scan
-begin
-
-stage stageA on origin:
-startOp | periodicOp once | sinkOp | stageA
-end;
-
-
-time pipeline export
-begin
-
-stage stageA on origin:
-startOp | periodicOp once | stageB
-
-stage stageB on all partitions:
-scanOp lineitem | toCsvOp | stageC
-
-stage stageC on origin:
-toFileOp "/tmp/xxx.csv" | sinkOp | stageA
-
-end
-;
-
-
-time pipeline scan
-begin
-
-stage stageA on all partitions:
-scanOp lineitemX | stageB
-
-stage stageB on origin:
-outputOp | sinkOp
-
-end
-;
-
-
-
-
-
  pipeline lineItem_dyn
  begin
  
