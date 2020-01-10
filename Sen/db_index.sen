@@ -123,12 +123,13 @@
 /*----------------------------------------------------------------------------*/
 /* find the index sub folder and push it onto task dictionary                 */
 /*----------------------------------------------------------------------------*/
+/*
 : pushIndexSub ( "<indexNm>" -- )
   dup checkIsIndex not if EC_NO_SUCH_INDEX false exit then
   find execute index.subDic pathPush
   true
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* pop the index sub folder                                                   */
 /*----------------------------------------------------------------------------*/

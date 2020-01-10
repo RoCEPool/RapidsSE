@@ -74,7 +74,6 @@ Index::Index(void)
   m_sIndexNm  = pWord->szWordNm();
   
   m_pTable    = nullptr;
-  // m_xSubDic
   
   _checkInitialised_(CN_INDEX);
   
@@ -187,16 +186,6 @@ i8 Index::iIndexNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   return m_iIndexNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get index sub dictionary                                                   */
-/*----------------------------------------------------------------------------*/
-Dic* Index::pSubDic(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
-  
-  return &m_xSubDic;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,7 +14,6 @@ namespace MetaData
     s32        m_sIndexNm;   //
   
     Table*     m_pTable;     //
-    Dic        m_xSubDic;    // sub dictionary for this index
   
     // must be last
     Footer m_xFooter;
@@ -42,7 +41,6 @@ namespace MetaData
     bool   bIsUnique(void);
     void   vIsUnique(bool bUnique);
     i8     iSortKeyDatum(void);
-    Dic*   pSubDic(void);
     void   vTable(Table* pTable);
     Table* pTable(void);
     void   vTidyUp(void);

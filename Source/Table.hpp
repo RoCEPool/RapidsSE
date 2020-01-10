@@ -20,8 +20,6 @@ namespace MetaData
   
     s32        m_sTableNm;    // table name (leave for the moment)
   
-    //Dic        m_xSubDic;    // sub dictionary for this table
-  
     IdxVec*    m_pIdxVec;    // index vector
     Atomic     m_ixIndexNo;  // next index no
 

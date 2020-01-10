@@ -28,7 +28,6 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.populate"_Stz,        &Step::vIndexPopulate);
   vAddStep("index.range"_Stz,           &Step::vIndexRange);
   vAddStep("index.space"_Stz,           &Step::vIndexSpace);
-  vAddStep("index.subDic"_Stz,          &Step::vIndexSubDic);
   vAddStep("index.table@"_Stz,          &Step::vIndexTableFetch);
   vAddStep("index.table!"_Stz,          &Step::vIndexTableStore);
   vAddStep("index.truncate"_Stz,        &Step::vIndexTruncate);
@@ -702,23 +701,6 @@ void Step::vIndexSpace(void)
   i8 iBuffers = pIndex->pTable()->nIndexBuffers(pIndex->iIndexNo());
   i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
   m_pDataStack->vPushInt(iSpace);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.subDic -- get table sub dictionary                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vIndexSubDic(void)
-{
-  ENTRY(); // ENTRY("vIndexSubDic"_Stz);
-  
-  Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  Dic* pDic = pIndex->pSubDic();
-  
-  m_pDataStack->vPushPtr(pDic);
   
   EXIT();
 }
