@@ -12,7 +12,7 @@ SE_ARGS="--name NODE0 --sen ../Sen --commands ../Commands"  # in addition to --m
 
 # Additional arguments for SETH. Enable as required.
 #SETH_ARGS="--clean --logtests"   # log all test executions to a file
-SETH_ARGS="--clean --logsteps"   # log executions of all steps within each test to a file.
+SETH_ARGS="--clean --logsteps -f ${TESTLIST_FILE}"   # log executions of all steps within each test to a file.
 
 # The SE JDBC URL that tells the JDBC driver how to connect to SE.
 URL="jdbc:rapidsse:${SE_PATH}?extraargs=${SE_ARGS}"

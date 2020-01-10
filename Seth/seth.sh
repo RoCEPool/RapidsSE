@@ -19,4 +19,3 @@ URL="jdbc:rapidsse:${SE_PATH}?extraargs=${SE_ARGS}"
 
 # Run the SE Test Harness
 java -cp ${CLASSPATH} com.rapidsdata.seth.Seth -u "${URL}" ${SETH_ARGS}  $@
-
