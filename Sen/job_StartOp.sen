@@ -31,25 +31,6 @@
     // decode kind
     Operand[].kind case
 
-      ZK_CANCELMARKER of
-        //"Operand:- ZK_CANCELMARKER" .verbose
-        "Query being cancelled\n" .verbose
-        Operand[].pipeOut
-        true
-      endof
-
-      ZK_ERRORMARKER of
-        //"Operand:- ZK_ERRORMARKER" .verbose
-        Operand[].pipeout
-        true
-      endof
-
-      ZK_STARTMARKER of
-        //"Operand:- ZK_STARTMARKER" .verbose
-        Operand[].pipeOut
-        true
-      endof
-
       ZK_STARTEDMARKER of
         //"Operand:- ZK_STARTEDMARKER" .verbose
         Operand[].delete
@@ -64,6 +45,10 @@
         Op.ackPipelineJob
         false
       endof
+
+      // handle other operand as generic operands
+      jobOperand::generic
+      swap
 
     endcase
 
