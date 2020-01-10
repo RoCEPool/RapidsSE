@@ -18,7 +18,6 @@ namespace MetaData
   {
   private:
     Table* m_pTable;   // table this slots belongs to
-    Dic    m_xSubDic;  // table partition sub dictionary
     StreamDef*    m_pPtnStreamDef;   // partition stream def
     TablePtnVec*  m_pTablePtnVec;    // table partition vector
   
@@ -41,7 +40,6 @@ namespace MetaData
     StreamDef* pPtnStreamDef(void);
     void       vPublishTable(i8 iPartitionNo);
     bool       bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds);
-    Dic*       pSubDic(void);
     void       vTable(Table* pTable);
     void       vTidyUp(void);
     void       vTidyUpIndex(i8 iIndexNo);

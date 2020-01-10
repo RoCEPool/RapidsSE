@@ -77,9 +77,9 @@ void Step::vSlotsSubDic(void)
   Slots* pSlots = _pSlots(m_pDataStack->pPopPtr(__func__));
   ASSERT(CN_SLOTS == pSlots->eClass());
   
-  Dic* pDic = pSlots->pSubDic();
+  //Dic* pDic = pSlots->pSubDic();
   
-  m_pDataStack->vPushPtr(pDic);
+  //m_pDataStack->vPushPtr(pDic);
   
   EXIT();
 }

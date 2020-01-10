@@ -78,8 +78,6 @@ Slots::Slots(void)
   
   m_pTable = nullptr;
   
-  //m_xSubDic
-  
   m_pTablePtnVec = new TablePtnVec;
   
   // initialize the partitionId's in the slots
@@ -198,16 +196,6 @@ bool Slots::bPurgeTable(i8 iPartitionNo, i8 iOlderThanSeconds)
   bool bPurged = pTablePtn->bPurge(iOlderThanSeconds);
   
   return bPurged;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get partitioning sub dictionary                                            */
-/*----------------------------------------------------------------------------*/
-Dic* Slots::pSubDic(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
-  
-  return &m_xSubDic;
 }
 
 /*----------------------------------------------------------------------------*/
