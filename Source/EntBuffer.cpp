@@ -1399,21 +1399,21 @@ EntBuffer* EntBuffer::pUnlinkSubList(void)
   
   ASSERT(0 == m_iBufferHeight);
   
-  EntBuffer* pThisL0 = this;
-  EntBuffer* pThisH1 = pThisL0->pHigherBuffer();
-  EntBuffer* pNextL0 = pThisL0->pNextBuffer();
+  EntBuffer* pThisH0 = this;
+  EntBuffer* pThisH1 = pThisH0->pHigherBuffer();
+  EntBuffer* pNextH0 = pThisH0->pNextBuffer();
   EntBuffer* pNextH1 = pThisH1->pNextBuffer();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (a) no more L0
   
-  if (! pNextL0)
+  if (! pNextH0)
     return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (b) only one L0 under H1
   
-  if (pNextL0->pHigherBuffer() != pHigherBuffer())
+  if (pNextH0->pHigherBuffer() != pHigherBuffer())
     return nullptr;
   
   //----------------------------------------------------------------------------
@@ -1422,10 +1422,10 @@ EntBuffer* EntBuffer::pUnlinkSubList(void)
   //
   //----------------------------------------------------------------------------
   
-  EntBuffer* pThisL0SubList = pNextL0;
+  EntBuffer* pThisH0SubList = pNextH0;
   
   // the sublist no longer points back to this L0
-  pThisL0SubList->vPrevBuffer(nullptr);
+  pThisH0SubList->vPrevBuffer(nullptr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (c) last H1, there is a sublist
@@ -1433,27 +1433,27 @@ EntBuffer* EntBuffer::pUnlinkSubList(void)
   if (! pNextH1) {
     
     // last H1, therefore the next chain terminates here
-    pThisL0->vNextBuffer(nullptr);
+    pThisH0->vNextBuffer(nullptr);
     
-    return pThisL0SubList;
+    return pThisH0SubList;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // circumstance (d) middle H1, there is a sublist
   
-  EntBuffer* pFirstL0ofNextH1 = pNextH1->pFirstChildBuffer();
-  EntBuffer* pLastL0ofThisH1 = pFirstL0ofNextH1->pPrevBuffer();
+  EntBuffer* pFirstH0ofNextH1 = pNextH1->pFirstChildBuffer();
+  EntBuffer* pLastH0ofThisH1 = pFirstH0ofNextH1->pPrevBuffer();
   
   // the next chain points to first L0 buffer of next H1
-  pThisL0->vNextBuffer(pFirstL0ofNextH1);
+  pThisH0->vNextBuffer(pFirstH0ofNextH1);
   
   // the prev chain of first L0 of next H1 is this L0
-  pFirstL0ofNextH1->vPrevBuffer(pThisL0);
+  pFirstH0ofNextH1->vPrevBuffer(pThisH0);
   
   // the prev chain of last L0 of sublist terminates
-  pLastL0ofThisH1->vNextBuffer(nullptr);
+  pLastH0ofThisH1->vNextBuffer(nullptr);
   
-  return pThisL0SubList;
+  return pThisH0SubList;
 }
 
 
