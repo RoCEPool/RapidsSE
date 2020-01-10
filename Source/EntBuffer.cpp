@@ -1186,26 +1186,26 @@ void EntBuffer::vShowSubList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  EntBuffer* pThisL0 = this;
-  EntBuffer* pThisH1 = pThisL0->pHigherBuffer();
+  EntBuffer* pThisH0 = this;
+  EntBuffer* pThisH1 = pThisH0->pHigherBuffer();
   
   vTrace("{"_Stz);
   
-  if (pThisL0->pPrevBuffer())
+  if (pThisH0->pPrevBuffer())
     vTrace("<-"_Stz);
   
-  EntBuffer* pL0;
-  for (pL0 = pThisL0;
-       pL0 && pL0->pHigherBuffer() == pThisH1;
-       pL0 = pL0->pNextBuffer()) {
+  EntBuffer* pH0;
+  for (pH0 = pThisH0;
+       pH0 && pH0->pHigherBuffer() == pThisH1;
+       pH0 = pH0->pNextBuffer()) {
     
-    if (pL0 != pThisL0)
+    if (pH0 != pThisH0)
       vTrace(","_Stz);
     
-    vTrace("%lld"_Stz,pL0->iPoolBufferNo());
+    vTrace("%lld"_Stz,pH0->iPoolBufferNo());
   }
   
-  if (pL0)
+  if (pH0)
     vTrace("->"_Stz);
   
   vTrace("}\n"_Stz);
