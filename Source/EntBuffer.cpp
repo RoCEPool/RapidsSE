@@ -96,19 +96,19 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
   
   EntWrk xLeftEntWrk;
   
-  EntBuffer* pLeftL0 = *ppLeftH0;
+  EntBuffer* pLeftH0 = *ppLeftH0;
   
   Index* pIndex = pRightH0->pIndex();
-  ASSERT(pLeftL0->pIndex() == pIndex);
+  ASSERT(pLeftH0->pIndex() == pIndex);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert the parameters are sensible
   
-  ASSERT(0 == pLeftL0->iBufferHeight());
+  ASSERT(0 == pLeftH0->iBufferHeight());
   ASSERT(0 == pRightH0->iBufferHeight());
-  EntBuffer* pH1 = pLeftL0->pHigherBuffer();
+  EntBuffer* pH1 = pLeftH0->pHigherBuffer();
   ASSERT(1 == pH1->iBufferHeight());
-  ASSERT(pRightH0->pHigherBuffer() == pLeftL0->pHigherBuffer());
+  ASSERT(pRightH0->pHigherBuffer() == pLeftH0->pHigherBuffer());
   
   //vTrace("IndexTree::vCopyLeft (left %lld right %lld)\n"_Stz,
   //       pLeftL0->iBufferNo(),pRightL0->iBufferNo());
@@ -116,7 +116,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set up for using pInsertKeyAbsL0
   
-  Ent* aPriorEntry = pLeftL0->aLastEntry();
+  Ent* aPriorEntry = pLeftH0->aLastEntry();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru each key in right L0
@@ -160,35 +160,35 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get a new left buffer if not enough space in current left buffer
     
-    if (! pLeftL0->bHasSpace(nEntryPlusOffsets)) {
+    if (! pLeftH0->bHasSpace(nEntryPlusOffsets)) {
       
       // build the skip list for left L0 thats now full
-      pLeftL0->vBuildSkipListSorted();
+      pLeftH0->vBuildSkipListSorted();
       
       //pLeftL0->vShow();
       
       // new left buffer
-      EntBuffer* pNewLeftL0 = new EntBuffer;
-      pNewLeftL0->vIndex(pIndex);
-      pNewLeftL0->vHigherBuffer(pH1);
+      EntBuffer* pNewLeftH0 = new EntBuffer;
+      pNewLeftH0->vIndex(pIndex);
+      pNewLeftH0->vHigherBuffer(pH1);
       
       // splice the new left buffer into the L0 list
-      pLeftL0->vSpliceAfter(pNewLeftL0);
+      pLeftH0->vSpliceAfter(pNewLeftH0);
       
       // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
       
       // adjust variables
-      *ppLeftH0 = pNewLeftL0;
-      pLeftL0 = pNewLeftL0;
+      *ppLeftH0 = pNewLeftH0;
+      pLeftH0 = pNewLeftH0;
       
-      aPriorEntry = pLeftL0->aLastEntry();
+      aPriorEntry = pLeftH0->aLastEntry();
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert a copy of the right key into left buffer
     
     TRACE_COMPACT( pLeftL0->vShow(); )
-    Ent* aLeftKeyEntryL0 = pLeftL0->aInsertKeyAbsL0(xLeftEntWrk,&aPriorEntry);
+    Ent* aLeftKeyEntryL0 = pLeftH0->aInsertKeyAbsL0(xLeftEntWrk,&aPriorEntry);
     TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, pIndex, true); )
     TRACE_COMPACT( pLeftL0->vShow(); )
     
@@ -197,9 +197,9 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert a first L0 key into H1
     
-    if (1 == pLeftL0->nItems()) {
+    if (1 == pLeftH0->nItems()) {
       
-      i8 iLeftL0BufferNo = pLeftL0->iPoolBufferNo();
+      i8 iLeftL0BufferNo = pLeftH0->iPoolBufferNo();
       xRef.vBuffer(iLeftL0BufferNo);
       xLeftEntWrk.vRef(xRef);
       
@@ -708,13 +708,13 @@ i8 EntBuffer::iLengthSubList(void)
   
   i8 iLength = 0;
   
-  EntBuffer* pThisL0 = this;
-  EntBuffer* pThisH1 = pThisL0->pHigherBuffer();
+  EntBuffer* pThisH0 = this;
+  EntBuffer* pThisH1 = pThisH0->pHigherBuffer();
   
-  EntBuffer* pL0;
-  for (pL0 = pThisL0;
-       pL0 && pL0->pHigherBuffer() == pThisH1;
-       pL0 = pL0->pNextBuffer()) {
+  EntBuffer* pH0;
+  for (pH0 = pThisH0;
+       pH0 && pH0->pHigherBuffer() == pThisH1;
+       pH0 = pH0->pNextBuffer()) {
     
     iLength++;
   }
