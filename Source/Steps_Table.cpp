@@ -32,7 +32,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.slots"_Stz,              &Step::vTableSlots);
   vAddStep("table.space"_Stz,              &Step::vTableSpace);
   vAddStep("table.streamDef@"_Stz,         &Step::vTableStreamDefFetch);
-  vAddStep("table.subDic"_Stz,             &Step::vTableSubDic);
   vAddStep("table.subLoaders"_Stz,         &Step::vTableSubLoaders);
   vAddStep("table.tableDef@"_Stz,          &Step::vTableTableDefFetch);
   vAddStep("table.tableDef!"_Stz,          &Step::vTableTableDefStore);
@@ -521,22 +520,6 @@ void Step::vTableScan(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
   pQueue->vAppend(pFetchBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.subDic -- get table sub dictionary                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vTableSubDic(void)
-{
-  ENTRY(); // ENTRY("vTableSubDic"_Stz);
-  
-  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
-  
-  Dic* pDic = pTable->pSubDic();
-  
-  m_pDataStack->vPushPtr(pDic);
   
   EXIT();
 }

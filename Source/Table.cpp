@@ -71,8 +71,6 @@ Table::Table(void)
   m_pTableDef  = nullptr;
   
   m_sTableNm = pWord->szWordNm();
-  
-  //m_xSubDic
 
   m_pIdxVec    = new IdxVec;
   m_ixIndexNo.vCheckInit();
@@ -651,16 +649,6 @@ StreamDef* Table::pStreamDef(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   return m_pTableDef->m_pStreamDef;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table sub dictionary                                                   */
-/*----------------------------------------------------------------------------*/
-Dic* Table::pSubDic(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  return &m_xSubDic;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -20,7 +20,7 @@ namespace MetaData
   
     s32        m_sTableNm;    // table name (leave for the moment)
   
-    Dic        m_xSubDic;    // sub dictionary for this table
+    //Dic        m_xSubDic;    // sub dictionary for this table
   
     IdxVec*    m_pIdxVec;    // index vector
     Atomic     m_ixIndexNo;  // next index no
@@ -69,7 +69,6 @@ namespace MetaData
     void vPublish(i8 iPartitionNo);
     bool bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
     EntBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
-    Dic* pSubDic(void);
     void vSubLoaders(i8 iSubLoaders);
     Slots* pSlots(void);
     StreamDef* pStreamDef(void);
