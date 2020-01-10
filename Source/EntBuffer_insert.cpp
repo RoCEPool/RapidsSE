@@ -26,15 +26,15 @@ void EntBuffer::vBuildSkipList(void)
   
   while (aLazyChain) {
     
-    Ent* aKeyEntry = aLazyChain;
+    Ent* aEntry = aLazyChain;
     
-    i8 iNextOffset = aKeyEntry->iNEO(0);
+    i8 iNextOffset = aEntry->iNEO(0);
     if (-1 == iNextOffset)
       aLazyChain = nullptr;
     else
       aLazyChain = aGetEntryOffset(iNextOffset);
     
-    vInsertEntSkip(aKeyEntry);
+    vInsertEntSkipList(aEntry);
   }
   
   Ent* aInsertedKeyEntry = aNextEntry(aSkipRoots(),0);
@@ -472,13 +472,13 @@ Ent* EntBuffer::aInsertEntAbs(EntWrk& xEntWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  Ent* aKeyEntry;
+  Ent* aEntry;
   
 #ifdef WITH_EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
     if (! m_iBufferHeight) {
-      aKeyEntry = aInsertEntAbsLazy(xEntWrk);
-      return aKeyEntry;
+      aEntry = aInsertEntAbsLazy(xEntWrk);
+      return aEntry;
     }
   }
 #endif
@@ -505,8 +505,8 @@ Ent* EntBuffer::aInsertEntAbs(EntWrk& xEntWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  aKeyEntry = aAllotEntry(nEntryBytes);
-  ASSERT(aKeyEntry);
+  aEntry = aAllotEntry(nEntryBytes);
+  ASSERT(aEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   ASSERT(aNEO);
@@ -514,16 +514,16 @@ Ent* EntBuffer::aInsertEntAbs(EntWrk& xEntWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  xEntWrk.vFormEntry(aKeyEntry);
+  xEntWrk.vFormEntry(aEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the key entry into the skip list
   
-  vInsertEntSkip(aKeyEntry);
+  vInsertEntSkipList(aEntry);
   
   //vShow();
   
-  return aKeyEntry;
+  return aEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -674,9 +674,9 @@ Ent* EntBuffer::aInsertEntAbsLazy(EntWrk& xEntWrk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert key entry into skip list of this buffer                             */
+/* insert given entry into skip list of this buffer                           */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vInsertEntSkip(Ent* aKeyEntry)
+void EntBuffer::vInsertEntSkipList(Ent* aEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -688,10 +688,10 @@ void EntBuffer::vInsertEntSkip(Ent* aKeyEntry)
   //Key* aKey = _aKey(aKeyEntry->aDataArea());
   
   if (0 == m_iBufferHeight)
-    vPositionPriorVecEntry(aKeyEntry, xPriorVec, nullptr);
+    vPositionPriorVecEntry(aEntry, xPriorVec, nullptr);
   else {
-    EntBuffer* pToBuffer = EntBuffer::pRefdEntBuffer(aKeyEntry);
-    vPositionPriorVecBuffer(aKeyEntry, xPriorVec, pToBuffer);
+    EntBuffer* pToBuffer = EntBuffer::pRefdEntBuffer(aEntry);
+    vPositionPriorVecBuffer(aEntry, xPriorVec, pToBuffer);
   }
   
   //vDumpPriorVec(xPriorVec);
@@ -699,12 +699,12 @@ void EntBuffer::vInsertEntSkip(Ent* aKeyEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set prior offsets
   
-  i4 iKeyEntryOffset = iToOffset(aKeyEntry);
+  i4 iKeyEntryOffset = iToOffset(aEntry);
   
-  i8 nLevels = aKeyEntry->nOffsets();
+  i8 nLevels = aEntry->nOffsets();
   for (i8 i_Level = 0; i_Level < nLevels; i_Level++) {
     i4 iNextOffset = xPriorVec[i_Level]->iNEO(i_Level);
-    aKeyEntry->vNEO(i_Level,iNextOffset);
+    aEntry->vNEO(i_Level,iNextOffset);
     xPriorVec[i_Level]->vNEO(i_Level,iKeyEntryOffset);
   }
   
