@@ -377,7 +377,7 @@ bool IndexTree::bInsertEntry(Crw* aCrw, Ref& xRowRef)
   if (! m_pRootBuffer)
     RASSERT(pNewRootBuffer());
   
-  Ent* aKeyEntry = EntBuffer::aInsertKeyTree(xEntWrk,&m_pRootBuffer);
+  Ent* aKeyEntry = EntBuffer::aInsertEntTree(xEntWrk,&m_pRootBuffer);
   ASSERT(aKeyEntry);
   
   //m_pRootBuffer->bVerify();
@@ -405,7 +405,7 @@ bool IndexTree::bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef)
   if (! m_pRootBuffer)
     RASSERT(pNewRootBuffer());
 
-  Ent* aKeyEntry = EntBuffer::aInsertKeyTree(xEntWrk,&m_pRootBuffer);
+  Ent* aKeyEntry = EntBuffer::aInsertEntTree(xEntWrk,&m_pRootBuffer);
   ASSERT(aKeyEntry);
   
   //m_pRootBuffer->bVerify();

@@ -102,9 +102,9 @@ namespace MetaData
     void        vDeleteEntry(Ent** aaEnt);
     void        vDump(void);
     EntBuffer*  pFirstChildBuffer(void);
-    Ent*        aInsertKeyAbs(EntWrk& xEntWrk);
-    Ent*        aInsertKeyAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry);
-    static Ent* aInsertKeyTree(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
+    Ent*        aInsertEntAbs(EntWrk& xEntWrk);
+    Ent*        aInsertEntAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry);
+    static Ent* aInsertEntTree(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
     void        vLazyBuild(void);
     i8          iLengthList(void);
     i8          iLengthSubList(void);
@@ -141,10 +141,10 @@ namespace MetaData
                                  EntBuffer** ppRootBuffer);
     Ent*       aSkipRoots(void);
     EntBuffer* pInsertableBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
-    Ent*       aInsertKeyAbsLazy(EntWrk& xEntWrk);
-    void       vInsertKeySkip(Ent* aKeyEntry);
-    Ent*       aInsertKeyBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
-    Ent*       aInsertKeyUpwards(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
+    Ent*       aInsertEntAbsLazy(EntWrk& xEntWrk);
+    void       vInsertEntSkip(Ent* aKeyEntry);
+    Ent*       aInsertEntBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
+    Ent*       aInsertEntUpwards(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
     bool       bKeyBeforeBuffer(Ent* aKey);
     FreeItem*  aMakeFreeEntry(Ent* aEnt);
     EntBuffer* pNewHigherBuffer(void);
