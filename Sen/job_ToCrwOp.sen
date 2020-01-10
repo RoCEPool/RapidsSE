@@ -57,12 +57,6 @@
         true
       endof
 
-      ZK_ERRORMARKER of
-        //"Operand:- ZK_ERRORMARKER" .verbose
-        Operand[].pipeOut
-        true
-      endof
-
       ZK_PULSEMARKER of
         //"Operand:- ZK_PULSEMARKER" .verbose
         // create a write behind
@@ -92,13 +86,6 @@
         true
       endof
 
-      ZK_STOPMARKER of
-        //"Operand:- ZK_STOPMARKER" .verbose
-        Operand[].pipeOut
-        Op.ackPipelineJob
-        false
-      endof
-
       ZK_STREAMDEF of
         //"Operand:- ZK_STREAMDEF" .verbose
         Operand[].delete
@@ -106,6 +93,10 @@
         Operand[].pipeOut
         true
       endof
+
+      // handle other operand as generic operands
+      jobOperand::generic
+      swap
 
     endcase
 
