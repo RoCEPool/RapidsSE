@@ -1253,7 +1253,7 @@ void Job::vPrintQueueRows(void)
           }
             
           case OM_EOSMARKER: {
-            vTrace("Pipeline Job: EOSMARKER\n"_Stz);
+            //vTrace("Pipeline Job: EOSMARKER\n"_Stz);
             AM::vDeleteOperand(pOperand);
             break;
           }
@@ -1265,19 +1265,19 @@ void Job::vPrintQueueRows(void)
           }
             
           case OM_PULSEMARKER: {
-            vTrace("Pipeline Job: PULSEMARKER\n"_Stz);
+            //vTrace("Pipeline Job: PULSEMARKER\n"_Stz);
             AM::vDeleteOperand(pOperand);
             break;
           }
             
           case OM_STARTMARKER: {
-            vTrace("Pipeline Job: STARTMARKER\n"_Stz);
+            //vTrace("Pipeline Job: STARTMARKER\n"_Stz);
             AM::vDeleteOperand(pOperand);
             break;
           }
             
           case OM_STOPMARKER: {
-            vTrace("Pipeline Job: STOPMARKER\n"_Stz);
+            //vTrace("Pipeline Job: STOPMARKER\n"_Stz);
             vTrace("success: %lld rows fetched\n"_Stz, *m_xResponse.m_ixRowsProcessed);
             AM::vDeleteOperand(pOperand);
             goto L_EXIT;
@@ -1303,7 +1303,7 @@ void Job::vPrintQueueRows(void)
       // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
-        vTrace("Pipeline Job: STREAMMARKER\n"_Stz);
+        //vTrace("Pipeline Job: STREAMMARKER\n"_Stz);
         if ( ! pStreamDef ) {
           pStreamDef = _pStreamDef(pOperand);
           

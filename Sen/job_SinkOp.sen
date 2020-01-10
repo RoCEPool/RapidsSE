@@ -31,6 +31,12 @@
     // decode kind
     Operand[].kind case
 
+      ZK_ERRORMARKER of
+        //"jobOperand::generic:- ZK_ERRORMARKER" .verbose
+        Operand[].pipeOut
+        true
+      endof
+
       ZK_STARTMARKER of
         //"Operand:- ZK_STARTMARKER" .verbose
         Operand[].delete

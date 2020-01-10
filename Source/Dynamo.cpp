@@ -688,7 +688,7 @@ void Dynamo::vAddStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8 i_O
   
   // arg-2 is the op of the next stage for the xmit
   pOpSpec->vAddEnamePair("<nextOp>"_Stz,(i8)i_Op,TN_INTEGER);
-  pOpSpec->pEnameSet()->vPrint();
+  //pOpSpec->pEnameSet()->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -706,7 +706,7 @@ void Dynamo::vReplaceStageParams(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage, i8
   
   // arg-2 is the op of the next stage for the xmit
   pOpSpec->vReplaceEnamePair("<nextOp>"_Stz,(i8)i_Op,TN_INTEGER);
-  pOpSpec->pEnameSet()->vPrint();
+  //pOpSpec->pEnameSet()->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
