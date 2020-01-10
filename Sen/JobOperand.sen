@@ -83,6 +83,7 @@
     ZK_STREAMDEF of
       //"jobOperand::generic:- ZK_STREAMDEF" .verbose
       Operand[].pipeOut
+      true
     endof
 
   endcase
