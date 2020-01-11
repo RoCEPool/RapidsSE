@@ -39,13 +39,11 @@ namespace Folders       {                                                     }
 namespace Gadgets       { class EnumFlags;                                    }
 namespace Grids         { class Grid; class Node;                             }
 namespace Host          {                                                     }
-namespace Indexes       { class IndexTree;                                    }
+namespace Indexes       { class EntBuffer; class IndexTree;                   }
 namespace Interface     { class SessionArray;                                 }
-namespace Jobs          { class Job; struct JobClass;  class JobList;
-                                     class Job_CreateTable;
-                                     class Job_CreateIndex;
-                                     class Job_Operand;
-                                     class Job_Universal;                     }
+namespace Jobs          { class Job; struct JobClass; class JobList;
+                          class Job_CreateTable; class Job_CreateIndex;
+                          class Job_Operand; class Job_Universal;             }
 namespace Library       {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class Log; class LogEntry;                          }
@@ -64,8 +62,7 @@ namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Registers     { class RegSet;                                       }
 namespace Rows          {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
-namespace SenVM         { class Dic; class DicStack;
-                          class Forth; class Word;                            }
+namespace SenVM         { class Dic; class DicStack; class Forth; class Word; }
 namespace Services      {                                                     }
 namespace Sessions      { class Request; class Session; class SessionState;   }
 namespace SqlValues     {                                                     }
@@ -75,8 +72,8 @@ namespace Strings       {                                                     }
 namespace Structures    { class Article; class Queue;                         }
 namespace Tasks         { class Task;                                         }
 namespace Threads       { class Thread;                                       }
-namespace TokenStream   { class Input; class Parser;
-                          class Tokeniser; class TokenVec;                    }
+namespace TokenStream   { class Input; class Parser; class Tokeniser;
+                          class TokenVec;                                     }
 namespace Transactions  { class Tx; class TxSet;                              }
 namespace Utilities     { class BPA;                                          }
 namespace Verbs         {                                                     }
