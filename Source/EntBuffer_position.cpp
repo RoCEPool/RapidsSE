@@ -51,7 +51,7 @@ EntBuffer* EntBuffer::pPositionH0Buffer(Ent* aFindEnt)
     aEnt = pEntBuffer->pPositionPriorEntry(aFindEnt);
     ASSERT(aEnt);
     
-    aEnt = pEntBuffer->pMoveToPrevEntry(aEnt, aFindEnt, &pEntBuffer);
+    aEnt = pEntBuffer->pMoveToPrevEntry(aEnt, aFindEnt->aKey(), &pEntBuffer);
     ASSERT(aEnt);
     
     // get the index buffer of the entry
