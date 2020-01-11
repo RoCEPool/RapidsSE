@@ -129,7 +129,7 @@ namespace Indexes
     void       vCompact(void);
     void       vCompactLeft(void);
     void       vCutEntry(Ent* aEnt, Ent* aPriorVec[]);
-    void       vDeleteUpwards(Ent* aDeleteKey, EntBuffer** ppRootBuffer);
+    void       vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer);
     void       vDumpPriorVec(Ent* aPriorVec[]);
     Ent*       aGetEntryOffset(i8 iOffset);
     Ent*       aGetEntrySplit(i8 iSplitEntryNo, Ent** aaPriorEntry);

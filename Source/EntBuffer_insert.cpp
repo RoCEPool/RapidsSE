@@ -316,7 +316,7 @@ void EntBuffer::vCompactLeft(void)
 /*----------------------------------------------------------------------------*/
 /* delete upwards                                                             */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vDeleteUpwards(Ent* aDeleteKey, EntBuffer** ppRootBuffer)
+void EntBuffer::vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -326,7 +326,7 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteKey, EntBuffer** ppRootBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Ent* aPriorEntry = pPositionPriorEntry(aDeleteKey);
+  Ent* aPriorEntry = pPositionPriorEntry(aDeleteEntry);
   if (!aPriorEntry)
     return;
   
@@ -343,7 +343,7 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteKey, EntBuffer** ppRootBuffer)
   //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   //if ( ! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec) ) {
-  if ( ! Key::bEqualTo(aEntryToBeDeleted->aKey(), aDeleteKey->aKey()) ) {
+  if ( ! Key::bEqualTo(aEntryToBeDeleted->aKey(), aDeleteEntry->aKey()) ) {
     //vShow();
     
     //vShowTree();
@@ -363,7 +363,7 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteKey, EntBuffer** ppRootBuffer)
   Ent* aFirstEntry = this->aLeadEntry();
   if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer) {
     EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
-    pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootBuffer);
+    pHigherBuffer->vDeleteUpwards(aDeleteEntry,ppRootBuffer);
   }
   
   vDeleteEntry(&aEntryToBeDeleted);
@@ -416,9 +416,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (aOriginalFirstEntry) {
-    //Key* aDeleteKey = _aKey(aOriginalFirstEntry->aDataArea());
     EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
-    //pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootBuffer);
     pHigherBuffer->vDeleteUpwards(aOriginalFirstEntry,ppRootBuffer);
     //(*ppRootBuffer)->vShowTree();
   }
