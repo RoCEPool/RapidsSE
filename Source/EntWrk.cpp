@@ -382,18 +382,6 @@ void EntWrk::vOffsets(i8 nLevels)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set a random number of levels                                              */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vRandomLevels(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-    
-  i8 nLevels = AM::nRandomLevels();
-
-  m_xEnt.vOffsets(nLevels);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get ref (sub-ref to child entBuffer or row-ref at H0 leaf buffers to row)  */
 /*----------------------------------------------------------------------------*/
 Ref& EntWrk::xRef(void)

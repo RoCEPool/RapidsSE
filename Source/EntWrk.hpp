@@ -64,7 +64,6 @@ namespace Entries
     i8    nOffsets(void);
     void  vOffsets(i8 nLevels);
 
-    void  vRandomLevels(void);
     Ref&  xRef(void);
     void  vRef(Ref& xRef);
 
