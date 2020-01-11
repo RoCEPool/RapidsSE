@@ -473,13 +473,13 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEntryWork)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
-  Ent* aNewEntry;
+  Ent* aInsertedEntry;
   
 #ifdef WITH_EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
     if (! m_iBufferHeight) {
-      aNewEntry = aInsertEntAbsLazy(aEntryWork);
-      return aNewEntry;
+      aInsertedEntry = aInsertEntAbsLazy(aEntryWork);
+      return aInsertedEntry;
     }
   }
 #endif
@@ -506,8 +506,8 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEntryWork)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  aNewEntry = aAllotEntry(nEntryBytes);
-  ASSERT(aNewEntry);
+  aInsertedEntry = aAllotEntry(nEntryBytes);
+  ASSERT(aInsertedEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   ASSERT(aNEO);
@@ -515,16 +515,16 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEntryWork)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the new entry
   
-  aNewEntry->vSetEntry(aEntryWork);
+  aInsertedEntry->vSetEntry(aEntryWork);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the new entry into the skip list
   
-  vInsertEntSkipList(aNewEntry);
+  vInsertEntSkipList(aInsertedEntry);
   
   //vShow();
   
-  return aNewEntry;
+  return aInsertedEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -555,8 +555,8 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEntryWork, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  Ent* aNewEntry = aAllotEntry(nEntryBytes);
-  ASSERT(aNewEntry);
+  Ent* aInsertedEntry = aAllotEntry(nEntryBytes);
+  ASSERT(aInsertedEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   ASSERT(aNEO);
@@ -564,27 +564,27 @@ Ent* EntBuffer::aInsertEntAbsL0(Ent* aEntryWork, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the new entry
   
-  aNewEntry->vSetEntry(aEntryWork);
+  aInsertedEntry->vSetEntry(aEntryWork);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to prior entry at L0 only
   
-  i4 iOffset = iToOffset(aNewEntry);
+  i4 iOffset = iToOffset(aInsertedEntry);
   
   (*aaPriorEntry)->vNEO(0,iOffset);
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   // for the moment we set offsets in prior entry to -1
   
-  i8 nPriorLevels = aNewEntry->nOffsets();
+  i8 nPriorLevels = aInsertedEntry->nOffsets();
   for (i8 i_Level = 0; i_Level < nPriorLevels; i_Level++)
-    aNewEntry->vNEO(i_Level,-1);
+    aInsertedEntry->vNEO(i_Level,-1);
   
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
   
-  *aaPriorEntry = aNewEntry;
+  *aaPriorEntry = aInsertedEntry;
   
-  return aNewEntry;
+  return aInsertedEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -613,12 +613,12 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEntryWork, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert into the tree
 
-  Ent* aInsertedKeyEntry =
+  Ent* aInsertedEntry =
     pPositionedBuffer->aInsertEntUpwards(aEntryWork,ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  return aInsertedKeyEntry;
+  return aInsertedEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -649,8 +649,8 @@ Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEntryWork)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  Ent* aNewEntry = aAllotEntry(nEntryBytes);
-  ASSERT(aNewEntry);
+  Ent* aInsertedEntry = aAllotEntry(nEntryBytes);
+  ASSERT(aInsertedEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   ASSERT(aNEO);
@@ -658,22 +658,22 @@ Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEntryWork)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the new entry
   
-  aNewEntry->vSetEntry(aEntryWork);
+  aInsertedEntry->vSetEntry(aEntryWork);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form lazy chain
   
   if (m_aLazyChain) {
     i4 iLazyOffset = iToOffset(m_aLazyChain);
-    aNewEntry->vNEO(0,iLazyOffset);
+    aInsertedEntry->vNEO(0,iLazyOffset);
   }
   else {
-    aNewEntry->vNEO(0,-1);
+    aInsertedEntry->vNEO(0,-1);
   }
   
-  m_aLazyChain = aNewEntry;
+  m_aLazyChain = aInsertedEntry;
   
-  return aNewEntry;
+  return aInsertedEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -764,13 +764,13 @@ Ent* EntBuffer::aInsertEntUpwards(Ent* aEntryWork, EntBuffer** ppRootBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Ent* aInsertedKeyEntry =
+  Ent* aInsertedEntry =
     pInsertIntoBuffer->aInsertEntBuffer(aEntryWork,ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pInsertIntoBuffer->m_iBufferHeight) {
-    Ref xRef = aInsertedKeyEntry->xRef();
+    Ref xRef = aInsertedEntry->xRef();
     i8 nBuffer = xRef.iBuffer();
     
     HeapBuffer* pHeapBuffer =
@@ -787,7 +787,7 @@ Ent* EntBuffer::aInsertEntUpwards(Ent* aEntryWork, EntBuffer** ppRootBuffer)
     }
   }
   
-  return aInsertedKeyEntry;
+  return aInsertedEntry;
 }
 
 /*----------------------------------------------------------------------------*/
