@@ -437,7 +437,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
 /*----------------------------------------------------------------------------*/
 /* get an insertable buffer                                                   */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pInsertableBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffer)
+EntBuffer* EntBuffer::pInsertableBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -445,13 +445,11 @@ EntBuffer* EntBuffer::pInsertableBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffe
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  Ent* aEntryWork = xEntWrk.aEnt();
-
-  RASSERT(xEntWrk.nOffsets());
+  RASSERT(aEntryWork->nOffsets());
   
   i8 nEntryBytes  = aEntryWork->nEntKeySize();
   i8 nOffsetBytes = aEntryWork->nNEOsize();
-  i8 nEntryPlusOffsetsBytes = nEntryBytes+nOffsetBytes;
+  i8 nEntryPlusOffsetsBytes = nEntryBytes + nOffsetBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert key into this EntBuffer if it has space or get a new one
@@ -461,7 +459,7 @@ EntBuffer* EntBuffer::pInsertableBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffe
     pInsertIntoBuffer = this;
   else {
     pInsertIntoBuffer =
-      pNewInsertBuffer(xEntWrk.aEnt(),nEntryPlusOffsetsBytes,ppRootBuffer);
+      pNewInsertBuffer(aEntryWork,nEntryPlusOffsetsBytes,ppRootBuffer);
     //(*ppRootBuffer)->vShow();
   }
   
@@ -760,7 +758,7 @@ Ent* EntBuffer::aInsertEntUpwards(EntWrk& xEntWrk, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   EntBuffer* pInsertIntoBuffer =
-    pInsertableBuffer(xEntWrk,ppRootBuffer);
+    pInsertableBuffer(xEntWrk.aEnt(),ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

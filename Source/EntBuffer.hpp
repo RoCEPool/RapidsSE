@@ -140,7 +140,7 @@ namespace MetaData
                                  Ent* aOriginalFirstEntry,
                                  EntBuffer** ppRootBuffer);
     Ent*       aSkipRoots(void);
-    EntBuffer* pInsertableBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
+    EntBuffer* pInsertableBuffer(Ent* aEntry, EntBuffer** ppRootBuffer);
     Ent*       aInsertEntAbsLazy(Ent* aEntry);
     void       vInsertEntSkipList(Ent* aEntry);
     Ent*       aInsertEntBuffer(Ent* aEntry, EntBuffer** ppRootBuffer);
