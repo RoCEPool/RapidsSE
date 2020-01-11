@@ -258,18 +258,6 @@ byte* EntWrk::ayElmNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get element sequence size                                                  */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nElmSeqSize(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  i8 nSize = m_xEnt.nElmSeqSize();
-  
-  return nSize;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set element sequence size                                                  */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vElmSeqSize(i8 nElmSeqSize)
@@ -306,7 +294,7 @@ i8 EntWrk::iHashKey(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  i8 iHash = HshLib::iHash(ayElmSeq(),nElmSeqSize());
+  i8 iHash = HshLib::iHash(ayElmSeq(),m_xEnt.nElmSeqSize());
   
   return iHash;
 }
@@ -487,7 +475,7 @@ i8 EntWrk::nSize_EntKeyNeo(void)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   i8 nSizeEnt    = sizeof(Ent);
-  i8 nSizeElmSeq = nElmSeqSize();
+  i8 nSizeElmSeq = m_xEnt.nElmSeqSize();
   i8 nSizeNeo    = nNEOsize();
   
   i8 nSize = nSizeEnt + nSizeElmSeq + nSizeNeo;
@@ -519,6 +507,7 @@ void EntWrk::vStreamDef(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

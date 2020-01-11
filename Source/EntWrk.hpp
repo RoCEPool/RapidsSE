@@ -50,8 +50,7 @@ namespace Entries
     byte* ayElmNext(void);
     byte* ayElmSeq(void);
     void  vElmSeq(i8 nElmSeqSize, byte* ayElmSeq);
-    i8    nElmSeqSize(void);
-    void  vElmSeqSize(i8 nElmSeqSize);
+     void  vElmSeqSize(i8 nElmSeqSize);
     Ent*  aEnt(void);
     
     i8    iHashKey(void);
@@ -76,6 +75,8 @@ namespace Entries
     i8    nSize_EntKeyNeo(void);
     StreamDef* pStreamDef(void);
     void  vStreamDef(StreamDef* pStreamDef);
+
+  private:
 
   private:
     Footer* aFooter(void);
