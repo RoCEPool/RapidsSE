@@ -103,12 +103,12 @@ void Ent::vElmSeqSize(i8 nElmSeqSize)
 /*----------------------------------------------------------------------------*/
 /* get size of entry with neo                                                 */
 /*----------------------------------------------------------------------------*/
-i8 Ent::nEntSize(void)
-{
-  i8 nBytes = sizeof(Ent) + m_xKey.nElmSeqSize() + nNEOsize();
-  
-  return nBytes;
-}
+//i8 Ent::nEntSize(void)
+//{
+//  i8 nBytes = sizeof(Ent) + m_xKey.nElmSeqSize() + nNEOsize();
+//  
+//  return nBytes;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get item                                                                   */
@@ -254,8 +254,8 @@ void Ent::vSetEntry(Ent* aFromEntry)
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeBytes(void)
 {
-  i8 nBytes = nEntSize();
-  
+  i8 nBytes = sizeof(Ent) + nElmSeqSize() + nNEOsize();
+
   return nBytes;
 }
 

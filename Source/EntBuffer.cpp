@@ -460,7 +460,7 @@ void EntBuffer::vDeleteEntry(Ent** aaEnt)
   
   vCutEntry(aEnt,xPriorVec);
   
-  i8 nEntSize = aEnt->nEntSize();
+  i8 nEntSize = aEnt->nSizeBytes();
   vFreeItem(aEnt,nEntSize);
   
   // entry no longer exists, set the pointer to be null
@@ -729,7 +729,7 @@ FreeItem* EntBuffer::aMakeFreeEntry(Ent* aEnt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  i8 nEntSize = aEnt->nEntSize();
+  i8 nEntSize = aEnt->nSizeBytes();
   
   FreeItem* aFreeItem = new(aEnt) FreeItem(nEntSize);
   
@@ -1066,10 +1066,10 @@ void EntBuffer::vShowEntry(Ent* aEnt)
   Key* aKey = aEnt->aKey();
   i8 iOffset = iToOffset(aEnt);
   
-  vTrace("%lld: Ent: %p Size: %llu Levels: %llu "_Stz,
+  vTrace("%lld: Ent: %p Size: %lluB Offsets: %llu "_Stz,
          iOffset,
          aEnt,
-         aEnt->nEntSize(),
+         aEnt->nSizeBytes(),
          aEnt->nOffsets()
          );
   
