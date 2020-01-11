@@ -480,7 +480,7 @@ Ent* EntBuffer::aInsertEntAbs(EntWrk& xEntWrk)
 #ifdef WITH_EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
     if (! m_iBufferHeight) {
-      aNewEntry = aInsertEntAbsLazy(xEntWrk);
+      aNewEntry = aInsertEntAbsLazy(xEntWrk.aEnt());
       return aNewEntry;
     }
   }
@@ -628,7 +628,7 @@ Ent* EntBuffer::aInsertEntTree(EntWrk& xEntWrk, EntBuffer** ppRootBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert a key entry specifically into this buffer (should be enough space)  */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertEntAbsLazy(EntWrk& xEntWrk)
+Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEntryWork)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -641,12 +641,10 @@ Ent* EntBuffer::aInsertEntAbsLazy(EntWrk& xEntWrk)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
+    
+  RASSERT(aEntryWork->nOffsets());
   
-  Ent* aEntryWork = xEntWrk.aEnt();
-  
-  RASSERT(xEntWrk.nOffsets());
-  
-  i8 nEntryBytes = aEntryWork->nEntKeySize();
+  i8 nEntryBytes  = aEntryWork->nEntKeySize();
   i8 nOffsetBytes = aEntryWork->nNEOsize();
   i8 nEntryPlusOffsets = nEntryBytes + nOffsetBytes;
   
@@ -664,7 +662,7 @@ Ent* EntBuffer::aInsertEntAbsLazy(EntWrk& xEntWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the new entry
   
-  aNewEntry->vSetEntry(xEntWrk.aEnt());
+  aNewEntry->vSetEntry(aEntryWork);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form lazy chain
