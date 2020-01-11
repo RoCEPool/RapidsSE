@@ -147,6 +147,7 @@
 
   DdlLock[].testDrop
 
+  job::deleteThis
   <DONE_RUN>
   job::completed
 
