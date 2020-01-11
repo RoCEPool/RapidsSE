@@ -29,10 +29,9 @@ namespace Entries
     EntWrk(void);
    ~EntWrk(void) noexcept(false);
     
-    static eKC eCompare(Ent* aEnt1, Ent* aEnt2);
-  
     static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
   
+    static eKC  eCompare(Ent* aEnt1, Ent* aEnt2);
     static bool bEqualTo(Ent* aEnt1, Ent* aEnt2);
     static bool bGreaterThan(Ent* aEnt1, Ent* aEnt2);
     static bool bGreaterEqual(Ent* aEnt1, Ent* aEnt2);

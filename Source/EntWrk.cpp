@@ -111,7 +111,8 @@ byte* EntWrk::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
 /*----------------------------------------------------------------------------*/
 bool EntWrk::bEqualTo(Ent* aEnt1, Ent* aEnt2)
 {
-  eKC eCmp = eCompare(aEnt1, aEnt2);
+  eKC eCmp = Key::eCompare(aEnt1->aKey(), aEnt2->aKey());
+  
   return eCmp == KC_SAME ? true : false;
 }
 
@@ -120,7 +121,8 @@ bool EntWrk::bEqualTo(Ent* aEnt1, Ent* aEnt2)
 /*----------------------------------------------------------------------------*/
 bool EntWrk::bGreaterThan(Ent* aEnt1, Ent* aEnt2)
 {
-  eKC eCmp = eCompare(aEnt1, aEnt2);
+  eKC eCmp = Key::eCompare(aEnt1->aKey(), aEnt2->aKey());
+  
   return eCmp == KC_AFTER ? true : false;
 }
 
@@ -129,7 +131,8 @@ bool EntWrk::bGreaterThan(Ent* aEnt1, Ent* aEnt2)
 /*----------------------------------------------------------------------------*/
 bool EntWrk::bGreaterEqual(Ent* aEnt1, Ent* aEnt2)
 {
-  eKC eCmp = eCompare(aEnt1, aEnt2);
+  eKC eCmp = Key::eCompare(aEnt1->aKey(), aEnt2->aKey());
+  
   return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
 }
 
@@ -138,7 +141,8 @@ bool EntWrk::bGreaterEqual(Ent* aEnt1, Ent* aEnt2)
 /*----------------------------------------------------------------------------*/
 bool EntWrk::bLessEqual(Ent* aEnt1, Ent* aEnt2)
 {
-  eKC eCmp = eCompare(aEnt1, aEnt2);
+  eKC eCmp = Key::eCompare(aEnt1->aKey(), aEnt2->aKey());
+  
   return eCmp == KC_BEFORE || eCmp == KC_SAME ? true : false;
 }
 
@@ -147,7 +151,8 @@ bool EntWrk::bLessEqual(Ent* aEnt1, Ent* aEnt2)
 /*----------------------------------------------------------------------------*/
 bool EntWrk::bLessThan(Ent* aEnt1, Ent* aEnt2)
 {
-  eKC eCmp = eCompare(aEnt1, aEnt2);
+  eKC eCmp = Key::eCompare(aEnt1->aKey(), aEnt2->aKey());
+  
   return eCmp == KC_BEFORE ? true : false;
 }
 
@@ -156,7 +161,8 @@ bool EntWrk::bLessThan(Ent* aEnt1, Ent* aEnt2)
 /*----------------------------------------------------------------------------*/
 bool EntWrk::bNotEqual(Ent* aEnt1, Ent* aEnt2)
 {
-  eKC eCmp = eCompare(aEnt1, aEnt2);
+  eKC eCmp = Key::eCompare(aEnt1->aKey(), aEnt2->aKey());
+  
   return eCmp != KC_SAME ? true : false;
 }
 
