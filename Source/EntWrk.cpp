@@ -73,30 +73,6 @@ EntWrk::~EntWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compare key1 and key2                                                      */
-/*----------------------------------------------------------------------------*/
-eKC EntWrk::eCompare(Ent* aEnt1, Ent* aEnt2)
-{
-  i8 nKeySize1 = aEnt1->nElmSeqSize();
-  i8 nKeySize2 = aEnt2->nElmSeqSize();
-  
-  i8 nCmpBytes = nKeySize1 < nKeySize2 ? nKeySize1 : nKeySize2;
-  
-  byte* ayKey1Bytes = aEnt1->ayElmSeq();
-  byte* ayKey2Bytes = aEnt2->ayElmSeq();
-  
-  i8 iCmp = MemLib::iCompareWords(ayKey1Bytes,ayKey2Bytes,nCmpBytes);
-  
-  if (iCmp == 0)
-    return KC_SAME;
-  
-  if (iCmp < 0)
-    return KC_BEFORE;
-  
-  return KC_AFTER;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next element from key                                                  */
 /*----------------------------------------------------------------------------*/
 byte* EntWrk::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
