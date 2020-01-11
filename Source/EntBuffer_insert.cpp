@@ -431,7 +431,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   xEntWrkIns.vSetEnt(*nPoolBufferNo(), 0, aInsertedKeyEntry);
   
   EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
-  pHigherBuffer->aInsertEntBuffer(xEntWrkIns,ppRootBuffer);
+  pHigherBuffer->aInsertEntBuffer(xEntWrkIns.aEnt(),ppRootBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -717,7 +717,7 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this buffer                                    */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertEntBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffer)
+Ent* EntBuffer::aInsertEntBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -729,16 +729,16 @@ Ent* EntBuffer::aInsertEntBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffer)
   if (m_pIndex->pTable()->bIsLoading()) {
     if (m_iBufferHeight) {
       Ent* aOriginalFirstEntry = aLeadEntry();
-      aInsertedKeyEntry = aInsertEntAbs(xEntWrk.aEnt());
+      aInsertedKeyEntry = aInsertEntAbs(aEntryWork);
       vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootBuffer);
     }
     else {
-      aInsertedKeyEntry = aInsertEntAbs(xEntWrk.aEnt());
+      aInsertedKeyEntry = aInsertEntAbs(aEntryWork);
     }
   }
   else {
     Ent* aOriginalFirstEntry = aLeadEntry();
-    aInsertedKeyEntry = aInsertEntAbs(xEntWrk.aEnt());
+    aInsertedKeyEntry = aInsertEntAbs(aEntryWork);
     vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootBuffer);
   }
 #else
@@ -765,7 +765,7 @@ Ent* EntBuffer::aInsertEntUpwards(EntWrk& xEntWrk, EntBuffer** ppRootBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Ent* aInsertedKeyEntry =
-    pInsertIntoBuffer->aInsertEntBuffer(xEntWrk,ppRootBuffer);
+    pInsertIntoBuffer->aInsertEntBuffer(xEntWrk.aEnt(),ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
