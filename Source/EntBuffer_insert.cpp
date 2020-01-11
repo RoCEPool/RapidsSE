@@ -512,13 +512,12 @@ Ent* EntBuffer::aInsertEntAbs(EntWrk& xEntWrk)
   ASSERT(aNEO);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the key entry
+  // set the new entry
   
-  //xEntWrk.vFormEntry(aNewEntry);
   aNewEntry->vSetEntry(xEntWrk.aEnt());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert the key entry into the skip list
+  // insert the new entry into the skip list
   
   vInsertEntSkipList(aNewEntry);
   
@@ -562,9 +561,8 @@ Ent* EntBuffer::aInsertEntAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry)
   ASSERT(aNEO);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the key entry
+  // set the new entry
   
-  //xEntWrk.vFormEntry(aNewEntry);
   aNewEntry->vSetEntry(xEntWrk.aEnt());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -655,9 +653,8 @@ Ent* EntBuffer::aInsertEntAbsLazy(EntWrk& xEntWrk)
   ASSERT(aNEO);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the key entry
+  // set the new entry
   
-  //xEntWrk.vFormEntry(aNewEntry);
   aNewEntry->vSetEntry(xEntWrk.aEnt());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -268,29 +268,6 @@ Ent* EntWrk::aEnt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* form given entry from this working entry                                   */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vFormEntry(Ent* pEntry)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set entry id and levels
-  
-  pEntry->vRef(xRef());
-  pEntry->vOffsets(nOffsets());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy key into entry
-  
-  byte* aSrcKey = ayElmSeq();
-  byte* aDstKey = pEntry->ayElmSeq();
-  i8    nKeySize = this->nElmSeqSize();
-  
-  MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
-}
-
-/*----------------------------------------------------------------------------*/
 /* compute hash of key byte sequence                                          */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::iHashKey(void)

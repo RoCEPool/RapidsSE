@@ -231,20 +231,20 @@ Ref Ent::wRef(void)
 /*----------------------------------------------------------------------------*/
 /* set this entry from given entry                                            */
 /*----------------------------------------------------------------------------*/
-void Ent::vSetEntry(Ent* aEntry)
+void Ent::vSetEntry(Ent* aFromEntry)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set entry id and levels
+  // set entry reference and offsets
   
-  vRef(aEntry->xRef());
-  vOffsets(aEntry->nOffsets());
+  vRef(aFromEntry->xRef());
+  vOffsets(aFromEntry->nOffsets());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy key into entry
+  // copy key into this entry
   
   byte* aDstKey  = this->ayElmSeq();
-  byte* aSrcKey  = aEntry->ayElmSeq();
-  i8    nKeySize = aEntry->nElmSeqSize();
+  byte* aSrcKey  = aFromEntry->ayElmSeq();
+  i8    nKeySize = aFromEntry->nElmSeqSize();
   
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
 }

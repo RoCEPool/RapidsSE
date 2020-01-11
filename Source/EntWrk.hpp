@@ -50,8 +50,6 @@ namespace Entries
     byte* ayElmNext(void);
     Ent*  aEnt(void);
     
-    void  vFormEntry(Ent* pEntry);
-  
     i8    iHashKey(void);
   
     IdxColVec* pIdxColVec(void);

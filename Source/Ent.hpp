@@ -55,7 +55,7 @@ namespace Entries
     void  vRef(Ref xRef);
     Ref   wRef(void);
   
-    void  vSetEntry(Ent* aEntry);
+    void  vSetEntry(Ent* aFromEntry);
 
     i8    nSizeBytes(void);
 
