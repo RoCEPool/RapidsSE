@@ -37,9 +37,9 @@ void EntBuffer::vBuildSkipList(void)
     vInsertEntSkipList(aEntry);
   }
   
-  Ent* aInsertedKeyEntry = aNextEntry(aSkipRoots(),0);
+  Ent* aRevisedEntry = aNextEntry(aSkipRoots(),0);
   
-  vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,nullptr);
+  vHandleFirstInsert(aRevisedEntry,aOriginalFirstEntry,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -887,12 +887,12 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntryWork,
   if ( ! pHigherBuffer->nItems() ) {
     
     EntWrk xEntWrkLeft;
-    Ent* aFirstKeyLeft  = pLeftBuffer->aLeadEntry();
+    Ent* aFirstEntryLeft  = pLeftBuffer->aLeadEntry();
 
     // initialize the keyWrk from the first left key
-    xEntWrkLeft.vSetEnt(*pLeftBuffer->nPoolBufferNo(), 0, aFirstKeyLeft);
+    xEntWrkLeft.vSetEnt(*pLeftBuffer->nPoolBufferNo(), 0, aFirstEntryLeft);
     
-    Ent* aNewKeyLeft =
+    Ent* aInsertedEntryLeft =
       pHigherBuffer->aInsertEntUpwards(xEntWrkLeft.aEnt(),ppRootBuffer);
   }
   
@@ -900,12 +900,12 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntryWork,
   // insert the first key of right buffer into higher buffer
   
   EntWrk xEntWrkRight;
-  Ent* aFirstKeyRight = pRightBuffer->aLeadEntry();
+  Ent* aFirstEntryRight = pRightBuffer->aLeadEntry();
   
   // initialize the keyWrk from the first left key
-  xEntWrkRight.vSetEnt(*pRightBuffer->nPoolBufferNo(), 0, aFirstKeyRight);
+  xEntWrkRight.vSetEnt(*pRightBuffer->nPoolBufferNo(), 0, aFirstEntryRight);
   
-  Ent* aNewKeyRight =
+  Ent* aInsertedEntryRight =
     pHigherBuffer->aInsertEntUpwards(xEntWrkRight.aEnt(),ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
