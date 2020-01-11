@@ -125,30 +125,29 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
   
   //pLeftL0->vShow();
   
-  for (Ent* aRightL0_Key = pRightH0->aLeadEntry();
-       aRightL0_Key;
-       aRightL0_Key = pRightH0->aNextEntry(aRightL0_Key,0)) {
+  for (Ent* aRightH0_Entry = pRightH0->aLeadEntry();
+       aRightH0_Entry;
+       aRightH0_Entry = pRightH0->aNextEntry(aRightH0_Entry,0)) {
     
-    TRACE_COMPACT( pRightKeyEntryL0->vShow(0, pIndex, true); )
+    TRACE_COMPACT( aRightH0_Entry->vShow(0, pIndex, true); )
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the elements of the right key
     
-    Ref xRef = aRightL0_Key->xRef();
-    byte* aKeyBytes = aRightL0_Key->ayElmSeq();
+    Ref xRef = aRightH0_Entry->xRef();
+    byte* ayElmSeq = aRightH0_Entry->ayElmSeq();
     
-    //i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nKeySize = aRightL0_Key->nElmSeqSize();
-    i8 nLevels = aRightL0_Key->nOffsets();
+    i8 nElmSeqSize = aRightH0_Entry->nElmSeqSize();
+    i8 nOffsets = aRightH0_Entry->nOffsets();
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key
     
     xLeftEntWrk.vRef(xRef);
     
-    xLeftEntWrk.vElmSeq(nKeySize,aKeyBytes);
+    xLeftEntWrk.vElmSeq(nElmSeqSize,ayElmSeq);
     
-    xLeftEntWrk.vOffsets(nLevels);
+    xLeftEntWrk.vOffsets(nOffsets);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute the size of the left key
