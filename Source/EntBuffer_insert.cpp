@@ -441,12 +441,15 @@ EntBuffer* EntBuffer::pInsertableBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffe
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
+  Ent* aEntryWork = xEntWrk.aEnt();
+
   RASSERT(xEntWrk.nOffsets());
   
-  i8 nEntryBytes = xEntWrk.nSize_EntKey();
+  i8 nEntryBytes  = aEntryWork->nEntKeySize();
   i8 nOffsetBytes = xEntWrk.nNEOsize();
   i8 nEntryPlusOffsetsBytes = nEntryBytes+nOffsetBytes;
   
@@ -494,9 +497,11 @@ Ent* EntBuffer::aInsertEntAbs(EntWrk& xEntWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
+  Ent* aEntryWork = xEntWrk.aEnt();
+  
   RASSERT(xEntWrk.nOffsets());
   
-  i8 nEntryBytes = xEntWrk.nSize_EntKey();
+  i8 nEntryBytes = aEntryWork->nEntKeySize();
   i8 nOffsetBytes = xEntWrk.nNEOsize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
@@ -543,9 +548,11 @@ Ent* EntBuffer::aInsertEntAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
+  Ent* aEntryWork = xEntWrk.aEnt();
+  
   RASSERT(xEntWrk.nOffsets());
   
-  i8 nEntryBytes = xEntWrk.nSize_EntKey();
+  i8 nEntryBytes = aEntryWork->nEntKeySize();
   i8 nOffsetBytes = xEntWrk.nNEOsize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
@@ -635,9 +642,11 @@ Ent* EntBuffer::aInsertEntAbsLazy(EntWrk& xEntWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
+  Ent* aEntryWork = xEntWrk.aEnt();
+  
   RASSERT(xEntWrk.nOffsets());
   
-  i8 nEntryBytes = xEntWrk.nSize_EntKey();
+  i8 nEntryBytes = aEntryWork->nEntKeySize();
   i8 nOffsetBytes = xEntWrk.nNEOsize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   

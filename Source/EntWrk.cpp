@@ -480,21 +480,6 @@ void EntWrk::vShow(IdxColVec* pIdxColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the size of this (Ent+Key)                                             */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nSize_EntKey(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  i8 nSizeEnt    = sizeof(Ent);
-  i8 nSizeElmSeq = nElmSeqSize();
-
-  i8 nSize = nSizeEnt + nSizeElmSeq;
-
-  return nSize;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the size this (Ent+Key+Neo)                                            */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nSize_EntKeyNeo(void)
