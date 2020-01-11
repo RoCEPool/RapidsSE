@@ -677,6 +677,42 @@ Ent* EntBuffer::aInsertEntAbsLazy(Ent* aEntryWork)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert a new key entry into this buffer                                    */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::aInsertEntBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Ent* aInsertedEntry;
+  
+#ifdef WITH_EB_LAZY_CHAIN
+  if (m_pIndex->pTable()->bIsLoading()) {
+    if (m_iBufferHeight) {
+      Ent* aOriginalFirstEntry = aLeadEntry();
+      aInsertedEntry = aInsertEntAbs(aEntryWork);
+      vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
+    }
+    else {
+      aInsertedEntry = aInsertEntAbs(aEntryWork);
+    }
+  }
+  else {
+    Ent* aOriginalFirstEntry = aLeadEntry();
+    aInsertedEntry = aInsertEntAbs(aEntryWork);
+    vHandleFirstInsert(aInsertedEntry,aOriginalFirstEntry,ppRootBuffer);
+  }
+#else
+  Ent* aOriginalFirstEntry = aFirstEntry();
+  pInsertedKeyEntry = pInsertEntAbs(xEntWrk);
+  vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,ppRootBuffer);
+#endif
+  
+  return aInsertedEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert given entry into skip list of this buffer                           */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vInsertEntSkipList(Ent* aEntry)
@@ -712,42 +748,6 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   }
   
   //vShow();
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert a new key entry into this buffer                                    */
-/*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertEntBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Ent* aInsertedKeyEntry;
-  
-#ifdef WITH_EB_LAZY_CHAIN
-  if (m_pIndex->pTable()->bIsLoading()) {
-    if (m_iBufferHeight) {
-      Ent* aOriginalFirstEntry = aLeadEntry();
-      aInsertedKeyEntry = aInsertEntAbs(aEntryWork);
-      vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootBuffer);
-    }
-    else {
-      aInsertedKeyEntry = aInsertEntAbs(aEntryWork);
-    }
-  }
-  else {
-    Ent* aOriginalFirstEntry = aLeadEntry();
-    aInsertedKeyEntry = aInsertEntAbs(aEntryWork);
-    vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootBuffer);
-  }
-#else
-  Ent* aOriginalFirstEntry = aFirstEntry();
-  pInsertedKeyEntry = pInsertEntAbs(xEntWrk);
-  vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,ppRootBuffer);
-#endif
-  
-  return aInsertedKeyEntry;
 }
 
 /*----------------------------------------------------------------------------*/

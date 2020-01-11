@@ -142,8 +142,8 @@ namespace Indexes
     Ent*       aSkipRoots(void);
     EntBuffer* pInsertableBuffer(Ent* aEntry, EntBuffer** ppRootBuffer);
     Ent*       aInsertEntAbsLazy(Ent* aEntry);
-    void       vInsertEntSkipList(Ent* aEntry);
     Ent*       aInsertEntBuffer(Ent* aEntry, EntBuffer** ppRootBuffer);
+    void       vInsertEntSkipList(Ent* aEntry);
     Ent*       aInsertEntUpwards(Ent* aEntry, EntBuffer** ppRootBuffer);
     bool       bKeyBeforeBuffer(Ent* aKey);
     FreeItem*  aMakeFreeEntry(Ent* aEnt);
