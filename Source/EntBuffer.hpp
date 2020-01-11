@@ -79,8 +79,8 @@ namespace Indexes
     
     static Ent* pMoveToGreaterThanEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer);
     static Ent* pMoveToGreaterEqualEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer);
+    static Ent* pMoveToNextEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer);
     static Ent* pMoveToPrevEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** ppEntBuffer);
-    static Ent* pMoveToNextEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** ppEntBuffer);
     
     ////////////////////////////////////////////////////////////////////////////
     // key positioning functions
