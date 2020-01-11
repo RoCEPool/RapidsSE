@@ -559,19 +559,20 @@ void Step::vIndexRange(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if upperKey > lowerKey
-  eKC eCompare = EntWrk::eCompare(xEntWrkUpper.aEnt(), xEntWrkLower.aEnt());
+  eKC eCompare = Key::eCompare(xEntWrkUpper.aEnt()->aKey(),
+                               xEntWrkLower.aEnt()->aKey());
   
-  if (eCompare == KC_BEFORE) {
+  if (eCompare == KC_BEFORE)
     goto LastBuffer;
-  }
   
   eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   if (eLowerRelnOp == RO_EQUAL_TO) {
     eLowerRelnOp = RO_GREATER_EQUAL;
     eUpperRelnOp = RO_LESS_EQUAL;
   }
-  else
+  else {
     eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
