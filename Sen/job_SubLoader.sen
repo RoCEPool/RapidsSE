@@ -38,6 +38,7 @@
 
   pJob_SubLoader SubLoader_process
 
+  job::deleteThis
   <DONE_RUN>
 
   job::completed

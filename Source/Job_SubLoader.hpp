@@ -38,7 +38,7 @@ namespace Jobs
 
     void vShow(void);
     Footer* aFooter(void);
-
+    
   private:
   };
   
@@ -46,6 +46,7 @@ namespace Jobs
   Job_SubLoader* _pJob_SubLoader(void* aAddr);
   
   void vJob_SubLoader_show(Job* pJob);
+  void vJob_SubLoader_delete(Job* pJob);
   
   JobClass* pJob_SubLoader_class(pFUN** aaFun);
 }

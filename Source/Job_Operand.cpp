@@ -26,13 +26,13 @@ JobClass xJobClass_Xmit =
   JF_NONE,             // flags
 
   nullptr,             // prompt check function
-  pJob_Operand_pre,   // prompt pre-process function
+  pJob_Operand_pre,    // prompt pre-process function
   nullptr,             // prompt post-process function
-  pJob_Operand_new,   // job new function
-  vJob_Operand_delete,// job delete function
+  pJob_Operand_new,    // job new function
+  vJob_Operand_delete, // job delete function
   vJob_send,           // job pre-send function
   vJob_recv,           // job post-receive function
-  vJob_Operand_show,  // job show function
+  vJob_Operand_show,   // job show function
   
   // help and example
   false,
