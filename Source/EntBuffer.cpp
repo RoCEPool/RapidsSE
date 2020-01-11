@@ -188,7 +188,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     // insert a copy of the right key into left buffer
     
     TRACE_COMPACT( pLeftL0->vShow(); )
-    Ent* aLeftKeyEntryL0 = pLeftH0->aInsertEntAbsL0(xLeftEntWrk.aEnt(),&aPriorEntry);
+    Ent* aInsertedEntry = pLeftH0->aInsertEntAbsL0(xLeftEntWrk.aEnt(),&aPriorEntry);
     TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, pIndex, true); )
     TRACE_COMPACT( pLeftL0->vShow(); )
     
@@ -264,7 +264,7 @@ void EntBuffer::vCopyReInitH1(EntBuffer* pH1, EntBuffer* pFirstH0)
   
   xFirstH1_ent.vOffsets(nLevels);
   
-  Ent* aFirstH1_Key = pH1->aInsertEntAbs(xFirstH1_ent.aEnt());
+  Ent* aInsertedEntry_H1 = pH1->aInsertEntAbs(xFirstH1_ent.aEnt());
   
   //pH1->vShow();
 }
