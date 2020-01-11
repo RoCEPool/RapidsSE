@@ -36,7 +36,7 @@ namespace Entries
     byte* ayElmSeq(void);
     i8    nElmSeqSize(void);
     void  vElmSeqSize(i8 nElmSeqSize);
-    //i8    nEntSize(void);
+    i8    nEntKeySize(void);
   
     i8    iItem(void);
     void  vItem(i8 iItem);
