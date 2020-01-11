@@ -8,7 +8,7 @@
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at given height starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pPositionH0Buffer(Ent* aGivenKey)
+EntBuffer* EntBuffer::pPositionH0Buffer(Ent* aFindEnt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -48,10 +48,10 @@ EntBuffer* EntBuffer::pPositionH0Buffer(Ent* aGivenKey)
     //aEnt1 = pEntBuffer->aPositionQuery(xGivenKey);
     //ASSERT(aEnt1);
     
-    aEnt = pEntBuffer->pPositionPriorEntry(aGivenKey);
+    aEnt = pEntBuffer->pPositionPriorEntry(aFindEnt);
     ASSERT(aEnt);
     
-    aEnt = pEntBuffer->pMoveToPrevEntry(aEnt, aGivenKey, &pEntBuffer);
+    aEnt = pEntBuffer->pMoveToPrevEntry(aEnt, aFindEnt, &pEntBuffer);
     ASSERT(aEnt);
     
     // get the index buffer of the entry
@@ -66,7 +66,7 @@ EntBuffer* EntBuffer::pPositionH0Buffer(Ent* aGivenKey)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pPositionPriorEntry(Ent* aFindKey)
+Ent* EntBuffer::pPositionPriorEntry(Ent* aFindEnt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -90,7 +90,7 @@ Ent* EntBuffer::pPositionPriorEntry(Ent* aFindKey)
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
-      bKeyIsGreaterEqual = Key::bGreaterEqual(aNextEntry_sl->aKey(), aFindKey->aKey());
+      bKeyIsGreaterEqual = Key::bGreaterEqual(aNextEntry_sl->aKey(), aFindEnt->aKey());
       
       if (bKeyIsGreaterEqual)
         break;
@@ -108,7 +108,7 @@ Ent* EntBuffer::pPositionPriorEntry(Ent* aFindKey)
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vPositionPriorVecEntry(Ent* aFindKey, Ent* aPriorVec[],
-                                         Ent* aFindEntry)
+                                       Ent* aFindEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -171,8 +171,8 @@ void EntBuffer::vPositionPriorVecEntry(Ent* aFindKey, Ent* aPriorVec[],
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
-                                          Ent* aPriorVec[],
-                                          EntBuffer* pRefdChildBuffer)
+                                        Ent* aPriorVec[],
+                                        EntBuffer* pRefdChildBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
 
