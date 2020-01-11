@@ -379,7 +379,7 @@ void Step::vIndexLowerBound(void)
     }
     else {
       RASSERT (eLowerRelnOp == RO_GREATER_EQUAL)
-      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xEntWrkLower.aEnt(), &aLowerEntBuffer);
+      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xEntWrkLower.aEnt()->aKey(), &aLowerEntBuffer);
     }
   }
   
@@ -593,7 +593,7 @@ void Step::vIndexRange(void)
     }
     else {
       RASSERT (eLowerRelnOp == RO_GREATER_EQUAL)
-      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xEntWrkLower.aEnt(), &aLowerEntBuffer);
+      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xEntWrkLower.aEnt()->aKey(), &aLowerEntBuffer);
     }
     
   }

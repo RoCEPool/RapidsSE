@@ -773,7 +773,7 @@ Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** p
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** ppEntBuffer)
+Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer)
 {
   EntBuffer* pEntBuffer = *ppEntBuffer;
   
@@ -781,7 +781,7 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** 
     aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
   while (aEnt) {
-    eKC eCompare = Key::eCompare(aEnt->aKey(),aGivenKey->aKey());
+    eKC eCompare = Key::eCompare(aEnt->aKey(),aGivenKey);
 
     // have we reached the key?
     if (eCompare == KC_SAME)
