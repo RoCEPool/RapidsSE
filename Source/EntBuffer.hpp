@@ -144,7 +144,7 @@ namespace MetaData
     Ent*       aInsertEntAbsLazy(Ent* aEntry);
     void       vInsertEntSkipList(Ent* aEntry);
     Ent*       aInsertEntBuffer(Ent* aEntry, EntBuffer** ppRootBuffer);
-    Ent*       aInsertEntUpwards(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
+    Ent*       aInsertEntUpwards(Ent* aEntry, EntBuffer** ppRootBuffer);
     bool       bKeyBeforeBuffer(Ent* aKey);
     FreeItem*  aMakeFreeEntry(Ent* aEnt);
     EntBuffer* pNewHigherBuffer(void);

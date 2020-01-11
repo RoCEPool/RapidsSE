@@ -612,7 +612,7 @@ Ent* EntBuffer::aInsertEntTree(EntWrk& xEntWrk, EntBuffer** ppRootBuffer)
   // insert into the tree
 
   Ent* aInsertedKeyEntry =
-    pPositionedBuffer->aInsertEntUpwards(xEntWrk,ppRootBuffer);
+    pPositionedBuffer->aInsertEntUpwards(xEntWrk.aEnt(),ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -751,19 +751,19 @@ Ent* EntBuffer::aInsertEntBuffer(Ent* aEntryWork, EntBuffer** ppRootBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree (handling ripple upwards)        */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertEntUpwards(EntWrk& xEntWrk, EntBuffer** ppRootBuffer)
+Ent* EntBuffer::aInsertEntUpwards(Ent* aEntryWork, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   EntBuffer* pInsertIntoBuffer =
-    pInsertableBuffer(xEntWrk.aEnt(),ppRootBuffer);
+    pInsertableBuffer(aEntryWork,ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Ent* aInsertedKeyEntry =
-    pInsertIntoBuffer->aInsertEntBuffer(xEntWrk.aEnt(),ppRootBuffer);
+    pInsertIntoBuffer->aInsertEntBuffer(aEntryWork,ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -891,7 +891,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntryWork,
     xEntWrkLeft.vSetEnt(*pLeftBuffer->nPoolBufferNo(), 0, aFirstKeyLeft);
     
     Ent* aNewKeyLeft =
-      pHigherBuffer->aInsertEntUpwards(xEntWrkLeft,ppRootBuffer);
+      pHigherBuffer->aInsertEntUpwards(xEntWrkLeft.aEnt(),ppRootBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -904,7 +904,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntryWork,
   xEntWrkRight.vSetEnt(*pRightBuffer->nPoolBufferNo(), 0, aFirstKeyRight);
   
   Ent* aNewKeyRight =
-    pHigherBuffer->aInsertEntUpwards(xEntWrkRight,ppRootBuffer);
+    pHigherBuffer->aInsertEntUpwards(xEntWrkRight.aEnt(),ppRootBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
