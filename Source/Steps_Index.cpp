@@ -373,7 +373,9 @@ void Step::vIndexLowerBound(void)
     aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aEnt());
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
-      aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry, xEntWrkLower.aEnt(), &aLowerEntBuffer);
+      aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry,
+                                                       xEntWrkLower.aEnt()->aKey(),
+                                                       &aLowerEntBuffer);
     }
     else {
       RASSERT (eLowerRelnOp == RO_GREATER_EQUAL)
@@ -585,7 +587,9 @@ void Step::vIndexRange(void)
     aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aEnt());
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
-      aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry, xEntWrkLower.aEnt(), &aLowerEntBuffer);
+      aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry,
+                                                       xEntWrkLower.aEnt()->aKey(),
+                                                       &aLowerEntBuffer);
     }
     else {
       RASSERT (eLowerRelnOp == RO_GREATER_EQUAL)
@@ -613,7 +617,9 @@ void Step::vIndexRange(void)
     aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xEntWrkUpper.aEnt(), &aUpperEntBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
-      aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry, xEntWrkUpper.aEnt(), &aUpperEntBuffer);
+      aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry,
+                                                       xEntWrkUpper.aEnt()->aKey(),
+                                                       &aUpperEntBuffer);
     }
   }
   
@@ -855,7 +861,9 @@ void Step::vIndexUpperBound(void)
     aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xEntWrkUpper.aEnt(), &aUpperEntBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
-      aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry, xEntWrkUpper.aEnt(), &aUpperEntBuffer);
+      aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry,
+                                                       xEntWrkUpper.aEnt()->aKey(),
+                                                       &aUpperEntBuffer);
     }
   }
   

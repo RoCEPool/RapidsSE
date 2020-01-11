@@ -738,7 +738,7 @@ FreeItem* EntBuffer::aMakeFreeEntry(Ent* aEnt)
 /*----------------------------------------------------------------------------*/
 /* move to next key entry                                                     */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** ppEntBuffer)
+Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer)
 {
   EntBuffer* pEntBuffer = *ppEntBuffer;
   
@@ -746,7 +746,7 @@ Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, Ent* aGivenKey, EntBuffer** p
     aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
   while (aEnt) {
-    eKC eCompare = Key::eCompare(aEnt->aKey(),aGivenKey->aKey());
+    eKC eCompare = Key::eCompare(aEnt->aKey(),aGivenKey);
     
     // have we moved beyond ?
     if (eCompare == KC_AFTER)
