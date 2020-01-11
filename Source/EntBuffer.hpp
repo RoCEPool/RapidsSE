@@ -145,7 +145,7 @@ namespace Indexes
     Ent*       aInsertEntBuffer(Ent* aEntry, EntBuffer** ppRootBuffer);
     void       vInsertEntSkipList(Ent* aEntry);
     Ent*       aInsertEntUpwards(Ent* aEntry, EntBuffer** ppRootBuffer);
-    bool       bKeyBeforeBuffer(Ent* aKey);
+    bool       bKeyBeforeBuffer(Key* aKey);
     FreeItem*  aMakeFreeEntry(Ent* aEnt);
     EntBuffer* pNewHigherBuffer(void);
     EntBuffer* pNewInsertBuffer(Ent* aEntry, i8 nEntryPlusOffsets,

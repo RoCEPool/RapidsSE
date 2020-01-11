@@ -793,13 +793,13 @@ Ent* EntBuffer::aInsertEntUpwards(Ent* aEntryWork, EntBuffer** ppRootBuffer)
 /*----------------------------------------------------------------------------*/
 /* is given key before the first key of this buffer                           */
 /*----------------------------------------------------------------------------*/
-bool EntBuffer::bKeyBeforeBuffer(Ent* aKeyTest)
+bool EntBuffer::bKeyBeforeBuffer(Key* aKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   Ent* aFirstEntry = this->aLeadEntry();
   
-  bool bLessEqual = Key::bLessEqual(aKeyTest->aKey(),aFirstEntry->aKey());
+  bool bLessEqual = Key::bLessEqual(aKey,aFirstEntry->aKey());
   
   return bLessEqual;
 }
@@ -912,7 +912,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntryWork,
   
   //ASSERT( (* ppRootBuffer)->bVerify() );
   
-  if ( pRightBuffer->bKeyBeforeBuffer(aEntryWork) )
+  if ( pRightBuffer->bKeyBeforeBuffer(aEntryWork->aKey()) )
     return pLeftBuffer;
   else
     return pRightBuffer;
