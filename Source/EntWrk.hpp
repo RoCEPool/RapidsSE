@@ -31,13 +31,6 @@ namespace Entries
     
     static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
   
-    static bool bEqualTo(Ent* aEnt1, Ent* aEnt2);
-    static bool bGreaterThan(Ent* aEnt1, Ent* aEnt2);
-    static bool bGreaterEqual(Ent* aEnt1, Ent* aEnt2);
-    static bool bLessEqual(Ent* aEnt1, Ent* aEnt2);
-    static bool bLessThan(Ent* aEnt1, Ent* aEnt2);
-    static bool bNotEqual(Ent* aEnt1, Ent* aEnt2);
-
     void  vAppendElement(Row* pRow, Column* pCol);
     void  vAppendMinusInfinity(void);
     void  vAppendPlusInfinity(void);

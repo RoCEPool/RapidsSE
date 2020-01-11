@@ -343,7 +343,7 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteKey, EntBuffer** ppRootBuffer)
   //IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   //if ( ! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec) ) {
-  if ( ! EntWrk::bEqualTo(aEntryToBeDeleted, aDeleteKey) ) {
+  if ( ! Key::bEqualTo(aEntryToBeDeleted->aKey(), aDeleteKey->aKey()) ) {
     //vShow();
     
     //vShowTree();
@@ -389,7 +389,7 @@ void EntBuffer::vHandleFirstInsert(Ent* aInsertedKeyEntry,
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
     
     //if (aInsertedFirstKey->bNotEqual(aOriginalFirstKey,pIdxColVec))
-    if (EntWrk::bNotEqual(aInsertedKeyEntry, aOriginalFirstEntry))
+    if (Key::bNotEqual(aInsertedKeyEntry->aKey(), aOriginalFirstEntry->aKey()))
       vHandleLeftInsert(aInsertedKeyEntry,
                         aOriginalFirstEntry,
                         ppRootBuffer);
@@ -799,7 +799,7 @@ bool EntBuffer::bKeyBeforeBuffer(Ent* aKeyTest)
   
   Ent* aFirstEntry = this->aLeadEntry();
   
-  bool bLessEqual = EntWrk::bLessEqual(aKeyTest,aFirstEntry);
+  bool bLessEqual = Key::bLessEqual(aKeyTest->aKey(),aFirstEntry->aKey());
   
   return bLessEqual;
 }

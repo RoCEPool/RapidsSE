@@ -82,65 +82,6 @@ byte* EntWrk::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
   return ayElm;
 }
 
-/*----------------------------------------------------------------------------*/
-/* if key1 is equal to key2 ?                                                 */
-/*----------------------------------------------------------------------------*/
-bool EntWrk::bEqualTo(Ent* aEnt1, Ent* aEnt2)
-{
-  eKC eCmp = Key::eCompare(aEnt1->aKey(), aEnt2->aKey());
-  
-  return eCmp == KC_SAME ? true : false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* if key1 greater than key2 ?                                                */
-/*----------------------------------------------------------------------------*/
-bool EntWrk::bGreaterThan(Ent* aEnt1, Ent* aEnt2)
-{
-  eKC eCmp = Key::eCompare(aEnt1->aKey(), aEnt2->aKey());
-  
-  return eCmp == KC_AFTER ? true : false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* if key1 greater than equal to key2 ?                                       */
-/*----------------------------------------------------------------------------*/
-bool EntWrk::bGreaterEqual(Ent* aEnt1, Ent* aEnt2)
-{
-  eKC eCmp = Key::eCompare(aEnt1->aKey(), aEnt2->aKey());
-  
-  return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* if key1 less than eqiual to key2 ?                                         */
-/*----------------------------------------------------------------------------*/
-bool EntWrk::bLessEqual(Ent* aEnt1, Ent* aEnt2)
-{
-  eKC eCmp = Key::eCompare(aEnt1->aKey(), aEnt2->aKey());
-  
-  return eCmp == KC_BEFORE || eCmp == KC_SAME ? true : false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* if key1 less than key2 ?                                                   */
-/*----------------------------------------------------------------------------*/
-bool EntWrk::bLessThan(Ent* aEnt1, Ent* aEnt2)
-{
-  eKC eCmp = Key::eCompare(aEnt1->aKey(), aEnt2->aKey());
-  
-  return eCmp == KC_BEFORE ? true : false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* if key1 not equal to key2 ?                                                */
-/*----------------------------------------------------------------------------*/
-bool EntWrk::bNotEqual(Ent* aEnt1, Ent* aEnt2)
-{
-  eKC eCmp = Key::eCompare(aEnt1->aKey(), aEnt2->aKey());
-  
-  return eCmp != KC_SAME ? true : false;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
