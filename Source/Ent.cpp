@@ -229,6 +229,27 @@ Ref Ent::wRef(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this entry from given entry                                            */
+/*----------------------------------------------------------------------------*/
+void Ent::vSetEntry(Ent* aEntry)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set entry id and levels
+  
+  vRef(aEntry->xRef());
+  vOffsets(aEntry->nOffsets());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy key into entry
+  
+  byte* aDstKey  = this->ayElmSeq();
+  byte* aSrcKey  = aEntry->ayElmSeq();
+  i8    nKeySize = aEntry->nElmSeqSize();
+  
+  MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size of entry with neo                                                 */
 /*----------------------------------------------------------------------------*/
 i8 Ent::nSizeBytes(void)

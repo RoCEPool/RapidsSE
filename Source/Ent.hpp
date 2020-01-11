@@ -28,7 +28,7 @@ namespace Entries
     void* operator new(size_t, Ent*);
   
     Ent(eCN eClassNo, i8 nSizeEnt);
-    ~Ent(void) noexcept(false);
+   ~Ent(void) noexcept(false);
   
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
@@ -54,6 +54,8 @@ namespace Entries
     Ref&  xRef(void);
     void  vRef(Ref xRef);
     Ref   wRef(void);
+  
+    void  vSetEntry(Ent* aEntry);
 
     i8    nSizeBytes(void);
 

@@ -285,7 +285,7 @@ void EntWrk::vFormEntry(Ent* pEntry)
   
   byte* aSrcKey = ayElmSeq();
   byte* aDstKey = pEntry->ayElmSeq();
-  i8   nKeySize = this->nElmSeqSize();
+  i8    nKeySize = this->nElmSeqSize();
   
   MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENT);
 }

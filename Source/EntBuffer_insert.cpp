@@ -472,13 +472,13 @@ Ent* EntBuffer::aInsertEntAbs(EntWrk& xEntWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  Ent* aEntry;
+  Ent* aNewEntry;
   
 #ifdef WITH_EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
     if (! m_iBufferHeight) {
-      aEntry = aInsertEntAbsLazy(xEntWrk);
-      return aEntry;
+      aNewEntry = aInsertEntAbsLazy(xEntWrk);
+      return aNewEntry;
     }
   }
 #endif
@@ -505,8 +505,8 @@ Ent* EntBuffer::aInsertEntAbs(EntWrk& xEntWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  aEntry = aAllotEntry(nEntryBytes);
-  ASSERT(aEntry);
+  aNewEntry = aAllotEntry(nEntryBytes);
+  ASSERT(aNewEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   ASSERT(aNEO);
@@ -514,16 +514,17 @@ Ent* EntBuffer::aInsertEntAbs(EntWrk& xEntWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  xEntWrk.vFormEntry(aEntry);
+  //xEntWrk.vFormEntry(aNewEntry);
+  aNewEntry->vSetEntry(xEntWrk.aEnt());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the key entry into the skip list
   
-  vInsertEntSkipList(aEntry);
+  vInsertEntSkipList(aNewEntry);
   
   //vShow();
   
-  return aEntry;
+  return aNewEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -554,8 +555,8 @@ Ent* EntBuffer::aInsertEntAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  Ent* aKeyEntry = aAllotEntry(nEntryBytes);
-  ASSERT(aKeyEntry);
+  Ent* aNewEntry = aAllotEntry(nEntryBytes);
+  ASSERT(aNewEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   ASSERT(aNEO);
@@ -563,27 +564,28 @@ Ent* EntBuffer::aInsertEntAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  xEntWrk.vFormEntry(aKeyEntry);
-  
+  //xEntWrk.vFormEntry(aNewEntry);
+  aNewEntry->vSetEntry(xEntWrk.aEnt());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to prior entry at L0 only
   
-  i4 iOffset = iToOffset(aKeyEntry);
+  i4 iOffset = iToOffset(aNewEntry);
   
   (*aaPriorEntry)->vNEO(0,iOffset);
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   // for the moment we set offsets in prior entry to -1
   
-  i8 nPriorLevels = aKeyEntry->nOffsets();
+  i8 nPriorLevels = aNewEntry->nOffsets();
   for (i8 i_Level = 0; i_Level < nPriorLevels; i_Level++)
-    aKeyEntry->vNEO(i_Level,-1);
+    aNewEntry->vNEO(i_Level,-1);
   
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
   
-  *aaPriorEntry = aKeyEntry;
+  *aaPriorEntry = aNewEntry;
   
-  return aKeyEntry;
+  return aNewEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -646,8 +648,8 @@ Ent* EntBuffer::aInsertEntAbsLazy(EntWrk& xEntWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  Ent* aKeyEntry = aAllotEntry(nEntryBytes);
-  ASSERT(aKeyEntry);
+  Ent* aNewEntry = aAllotEntry(nEntryBytes);
+  ASSERT(aNewEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   ASSERT(aNEO);
@@ -655,22 +657,23 @@ Ent* EntBuffer::aInsertEntAbsLazy(EntWrk& xEntWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  xEntWrk.vFormEntry(aKeyEntry);
-  
+  //xEntWrk.vFormEntry(aNewEntry);
+  aNewEntry->vSetEntry(xEntWrk.aEnt());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form lazy chain
   
   if (m_aLazyChain) {
     i4 iLazyOffset = iToOffset(m_aLazyChain);
-    aKeyEntry->vNEO(0,iLazyOffset);
+    aNewEntry->vNEO(0,iLazyOffset);
   }
   else {
-    aKeyEntry->vNEO(0,-1);
+    aNewEntry->vNEO(0,-1);
   }
   
-  m_aLazyChain = aKeyEntry;
+  m_aLazyChain = aNewEntry;
   
-  return aKeyEntry;
+  return aNewEntry;
 }
 
 /*----------------------------------------------------------------------------*/
