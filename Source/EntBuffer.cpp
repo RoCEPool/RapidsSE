@@ -188,7 +188,7 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     // insert a copy of the right key into left buffer
     
     TRACE_COMPACT( pLeftL0->vShow(); )
-    Ent* aLeftKeyEntryL0 = pLeftH0->aInsertEntAbsL0(xLeftEntWrk,&aPriorEntry);
+    Ent* aLeftKeyEntryL0 = pLeftH0->aInsertEntAbsL0(xLeftEntWrk.aEnt(),&aPriorEntry);
     TRACE_COMPACT( pLeftKeyEntryL0->vShow(0, pIndex, true); )
     TRACE_COMPACT( pLeftL0->vShow(); )
     

@@ -277,7 +277,7 @@ void EntBuffer::vCompactLeft(void)
     Ref xRef = aThisEntry->xRef();
     
     xEntWrk.vSetEnt(xRef.iBuffer(), xRef.iItem(), aThisEntry);
-    pTempBuffer->aInsertEntAbsL0(xEntWrk,&aPriorEntry);
+    pTempBuffer->aInsertEntAbsL0(xEntWrk.aEnt(),&aPriorEntry);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -301,7 +301,7 @@ void EntBuffer::vCompactLeft(void)
     Ref xRef = aTempEntry->xRef();
     
     xEntWrk.vSetEnt(xRef.iBuffer(), xRef.iItem(), aTempEntry);
-    pThisBuffer->aInsertEntAbsL0(xEntWrk,&aPriorEntry);
+    pThisBuffer->aInsertEntAbsL0(xEntWrk.aEnt(),&aPriorEntry);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -532,7 +532,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEntryWork)
 /*----------------------------------------------------------------------------*/
 /* insert a key entry specifically into this buffer (L0 chain only)           */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertEntAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry)
+Ent* EntBuffer::aInsertEntAbsL0(Ent* aEntryWork, Ent** aaPriorEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -546,9 +546,7 @@ Ent* EntBuffer::aInsertEntAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  Ent* aEntryWork = xEntWrk.aEnt();
-  
-  RASSERT(xEntWrk.nOffsets());
+  RASSERT(aEntryWork->nOffsets());
   
   i8 nEntryBytes = aEntryWork->nEntKeySize();
   i8 nOffsetBytes = aEntryWork->nNEOsize();
@@ -568,7 +566,7 @@ Ent* EntBuffer::aInsertEntAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the new entry
   
-  aNewEntry->vSetEntry(xEntWrk.aEnt());
+  aNewEntry->vSetEntry(aEntryWork);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to prior entry at L0 only
@@ -1004,7 +1002,7 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
     Ref xRef = aCopyEntry->xRef();
     xEntWrk.vSetEnt(xRef.iBuffer(), xRef.iItem(), aCopyEntry);
     
-    Ent* aNewEntry = pNewRightBuffer->aInsertEntAbsL0(xEntWrk,&aLastEntryRight);
+    Ent* aNewEntry = pNewRightBuffer->aInsertEntAbsL0(xEntWrk.aEnt(),&aLastEntryRight);
     
     //.pNewRightBuffer->vShow();
     

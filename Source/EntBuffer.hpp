@@ -103,7 +103,7 @@ namespace MetaData
     void        vDump(void);
     EntBuffer*  pFirstChildBuffer(void);
     Ent*        aInsertEntAbs(Ent* aEntry);
-    Ent*        aInsertEntAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry);
+    Ent*        aInsertEntAbsL0(Ent* aEntry, Ent** aaPriorEntry);
     static Ent* aInsertEntTree(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
     void        vLazyBuild(void);
     i8          iLengthList(void);
