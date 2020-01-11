@@ -61,13 +61,13 @@ Key::~Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* compare left key with right key                                            */
 /*----------------------------------------------------------------------------*/
-eKC Key::eCompare(Key* aLeft, Key* aRight)
+eKC Key::eCompare(Key* aKey_l, Key* aKey_r)
 {
-  i8 nKeyBytes_l = aLeft->nElmSeqSize();
-  i8 nKeyBytes_r = aRight->nElmSeqSize();
+  i8 nKeyBytes_l = aKey_l->nElmSeqSize();
+  i8 nKeyBytes_r = aKey_r->nElmSeqSize();
   
-  byte* ayKeyBytes_l = aLeft->ayElmSeq();
-  byte* ayKeyBytes_r = aRight->ayElmSeq();
+  byte* ayKeyBytes_l = aKey_l->ayElmSeq();
+  byte* ayKeyBytes_r = aKey_r->ayElmSeq();
   
   i8 nCmpBytes = nKeyBytes_l < nKeyBytes_r ? nKeyBytes_l : nKeyBytes_r;
   
@@ -88,6 +88,66 @@ eKC Key::eCompare(Key* aLeft, Key* aRight)
   }
   
   return KC_AFTER;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key is equal to right key ?                                        */
+/*----------------------------------------------------------------------------*/
+bool Key::bEqualTo(Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompare(aKey_l,aKey_r);
+  
+  return eCmp == KC_SAME ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key greater than right key ?                                       */
+/*----------------------------------------------------------------------------*/
+bool Key::bGreaterThan(Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompare(aKey_l,aKey_r);
+  
+  return eCmp == KC_AFTER ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key greater than equal to right key ?                              */
+/*----------------------------------------------------------------------------*/
+bool Key::bGreaterEqual(Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompare(aKey_l,aKey_r);
+  
+  return eCmp == KC_AFTER || eCmp == KC_SAME ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key less than eqiual to right key ?                                */
+/*----------------------------------------------------------------------------*/
+bool Key::bLessEqual(Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompare(aKey_l,aKey_r);
+  
+  return eCmp == KC_BEFORE || eCmp == KC_SAME ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key less than right key ?                                          */
+/*----------------------------------------------------------------------------*/
+bool Key::bLessThan(Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompare(aKey_l,aKey_r);
+  
+  return eCmp == KC_BEFORE ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is left key not equal to right key ?                                       */
+/*----------------------------------------------------------------------------*/
+bool Key::bNotEqual(Key* aKey_l, Key* aKey_r)
+{
+  eKC eCmp = Key::eCompare(aKey_l,aKey_r);
+  
+  return eCmp != KC_SAME ? true : false;
 }
 
 

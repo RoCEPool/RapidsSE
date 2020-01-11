@@ -18,8 +18,14 @@ namespace Entries
     Key(void);
    ~Key(void) noexcept(false);
   
-    static eKC eCompare(Key* aLeft, Key* aRight);
-  
+    static eKC  eCompare(Key* aLeft, Key* aRight);
+    static bool bEqualTo(Key* aLeft, Key* aRight);
+    static bool bGreaterThan(Key* aLeft, Key* aRight);
+    static bool bGreaterEqual(Key* aLeft, Key* aRight);
+    static bool bLessEqual(Key* aLeft, Key* aRight);
+    static bool bLessThan(Key* aLeft, Key* aRight);
+    static bool bNotEqual(Key* aLeft, Key* aRight);
+
     i8   iGetInt(void);
     void vIncElmSeqSize(i8 nDeltaBytes);
     i8   nElmSeqSize(void);
