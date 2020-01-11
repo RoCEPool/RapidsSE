@@ -471,16 +471,16 @@ EntBuffer* EntBuffer::pInsertableBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffe
 /*----------------------------------------------------------------------------*/
 /* insert a key entry specifically into this buffer (should be enough space)  */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aInsertEntAbs(EntWrk& xEntWrk)
+Ent* EntBuffer::aInsertEntAbs(Ent* aEntryWork)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
+    
   Ent* aNewEntry;
   
 #ifdef WITH_EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
     if (! m_iBufferHeight) {
-      aNewEntry = aInsertEntAbsLazy(xEntWrk.aEnt());
+      aNewEntry = aInsertEntAbsLazy(aEntryWork);
       return aNewEntry;
     }
   }
@@ -497,11 +497,9 @@ Ent* EntBuffer::aInsertEntAbs(EntWrk& xEntWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute required entry space
   
-  Ent* aEntryWork = xEntWrk.aEnt();
+  RASSERT(aEntryWork->nOffsets());
   
-  RASSERT(xEntWrk.nOffsets());
-  
-  i8 nEntryBytes = aEntryWork->nEntKeySize();
+  i8 nEntryBytes  = aEntryWork->nEntKeySize();
   i8 nOffsetBytes = aEntryWork->nNEOsize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
@@ -519,7 +517,7 @@ Ent* EntBuffer::aInsertEntAbs(EntWrk& xEntWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the new entry
   
-  aNewEntry->vSetEntry(xEntWrk.aEnt());
+  aNewEntry->vSetEntry(aEntryWork);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the new entry into the skip list
@@ -733,16 +731,16 @@ Ent* EntBuffer::aInsertEntBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffer)
   if (m_pIndex->pTable()->bIsLoading()) {
     if (m_iBufferHeight) {
       Ent* aOriginalFirstEntry = aLeadEntry();
-      aInsertedKeyEntry = aInsertEntAbs(xEntWrk);
+      aInsertedKeyEntry = aInsertEntAbs(xEntWrk.aEnt());
       vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootBuffer);
     }
     else {
-      aInsertedKeyEntry = aInsertEntAbs(xEntWrk);
+      aInsertedKeyEntry = aInsertEntAbs(xEntWrk.aEnt());
     }
   }
   else {
     Ent* aOriginalFirstEntry = aLeadEntry();
-    aInsertedKeyEntry = aInsertEntAbs(xEntWrk);
+    aInsertedKeyEntry = aInsertEntAbs(xEntWrk.aEnt());
     vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootBuffer);
   }
 #else

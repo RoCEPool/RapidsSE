@@ -102,7 +102,7 @@ namespace MetaData
     void        vDeleteEntry(Ent** aaEnt);
     void        vDump(void);
     EntBuffer*  pFirstChildBuffer(void);
-    Ent*        aInsertEntAbs(EntWrk& xEntWrk);
+    Ent*        aInsertEntAbs(Ent* aEntry);
     Ent*        aInsertEntAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry);
     static Ent* aInsertEntTree(EntWrk& xEntWrk, EntBuffer** ppRootBuffer);
     void        vLazyBuild(void);
