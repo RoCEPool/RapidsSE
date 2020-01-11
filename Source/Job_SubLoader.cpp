@@ -29,7 +29,7 @@ JobClass xJobClass_SubLoader =
   nullptr,                // prompt pre-process function
   nullptr,                // prompt post-process function
   nullptr,                // job new function
-  nullptr,                // job delete function
+  vJob_SubLoader_delete,  // job delete function
   nullptr,                // job pre-send function
   nullptr,                // job post-receive function
   vJob_SubLoader_show,    // job show function
@@ -324,6 +324,16 @@ __aFooterFunction(Job_SubLoader)
 /*----------------------------------------------------------------------------*/
 /*-- Catalog Functions -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_SubLoader_delete(Job* pJob)
+{
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pJob);
+  
+  delete pJob_SubLoader;
+}
 
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
