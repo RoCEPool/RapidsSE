@@ -148,7 +148,7 @@ namespace MetaData
     bool       bKeyBeforeBuffer(Ent* aKey);
     FreeItem*  aMakeFreeEntry(Ent* aEnt);
     EntBuffer* pNewHigherBuffer(void);
-    EntBuffer* pNewInsertBuffer(EntWrk& xInsKey, i8 nEntryPlusOffsets,
+    EntBuffer* pNewInsertBuffer(Ent* aEntry, i8 nEntryPlusOffsets,
                                 EntBuffer** ppRootBuffer);
     EntBuffer* pNewNextBuffer(void);
     Ent*       aPopLazyChain(void);

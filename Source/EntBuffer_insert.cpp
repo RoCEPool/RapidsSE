@@ -461,7 +461,7 @@ EntBuffer* EntBuffer::pInsertableBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffe
     pInsertIntoBuffer = this;
   else {
     pInsertIntoBuffer =
-      pNewInsertBuffer(xEntWrk,nEntryPlusOffsetsBytes,ppRootBuffer);
+      pNewInsertBuffer(xEntWrk.aEnt(),nEntryPlusOffsetsBytes,ppRootBuffer);
     //(*ppRootBuffer)->vShow();
   }
   
@@ -847,7 +847,7 @@ EntBuffer* EntBuffer::pNewHigherBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* create a new insert buffer (adjusting higher buffers accordingly)          */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pNewInsertBuffer(EntWrk& xInsKey,
+EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntryWork,
                                        i8 nEntryPlusOffsets,
                                        EntBuffer** ppRootBuffer)
 {
@@ -912,7 +912,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(EntWrk& xInsKey,
   
   //ASSERT( (* ppRootBuffer)->bVerify() );
   
-  if ( pRightBuffer->bKeyBeforeBuffer(xInsKey.aEnt()) )
+  if ( pRightBuffer->bKeyBeforeBuffer(aEntryWork) )
     return pLeftBuffer;
   else
     return pRightBuffer;
