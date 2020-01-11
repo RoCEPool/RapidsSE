@@ -154,8 +154,8 @@ void EntBuffer::vCopyLeftH0(EntBuffer** ppLeftH0, EntBuffer* pRightH0)
     // compute the size of the left key
     
     i8 nEntryBytes = xLeftEntWrk.aEnt()->nEntKeySize();
-    i8 nOffsetBytes = xLeftEntWrk.nNEOsize();
-    i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+    i8 nOffsetBytes = xLeftEntWrk.aEnt()->nNEOsize();
+    i8 nEntryPlusOffsets = nEntryBytes + nOffsetBytes;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get a new left buffer if not enough space in current left buffer

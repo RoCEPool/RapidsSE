@@ -450,7 +450,7 @@ EntBuffer* EntBuffer::pInsertableBuffer(EntWrk& xEntWrk, EntBuffer** ppRootBuffe
   RASSERT(xEntWrk.nOffsets());
   
   i8 nEntryBytes  = aEntryWork->nEntKeySize();
-  i8 nOffsetBytes = xEntWrk.nNEOsize();
+  i8 nOffsetBytes = aEntryWork->nNEOsize();
   i8 nEntryPlusOffsetsBytes = nEntryBytes+nOffsetBytes;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -502,7 +502,7 @@ Ent* EntBuffer::aInsertEntAbs(EntWrk& xEntWrk)
   RASSERT(xEntWrk.nOffsets());
   
   i8 nEntryBytes = aEntryWork->nEntKeySize();
-  i8 nOffsetBytes = xEntWrk.nNEOsize();
+  i8 nOffsetBytes = aEntryWork->nNEOsize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
   RASSERT(bHasSpace(nEntryPlusOffsets));
@@ -553,7 +553,7 @@ Ent* EntBuffer::aInsertEntAbsL0(EntWrk& xEntWrk, Ent** aaPriorEntry)
   RASSERT(xEntWrk.nOffsets());
   
   i8 nEntryBytes = aEntryWork->nEntKeySize();
-  i8 nOffsetBytes = xEntWrk.nNEOsize();
+  i8 nOffsetBytes = aEntryWork->nNEOsize();
   i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
   
   RASSERT(bHasSpace(nEntryPlusOffsets));
@@ -647,8 +647,8 @@ Ent* EntBuffer::aInsertEntAbsLazy(EntWrk& xEntWrk)
   RASSERT(xEntWrk.nOffsets());
   
   i8 nEntryBytes = aEntryWork->nEntKeySize();
-  i8 nOffsetBytes = xEntWrk.nNEOsize();
-  i8 nEntryPlusOffsets = nEntryBytes+nOffsetBytes;
+  i8 nOffsetBytes = aEntryWork->nNEOsize();
+  i8 nEntryPlusOffsets = nEntryBytes + nOffsetBytes;
   
   RASSERT(bHasSpace(nEntryPlusOffsets));
   

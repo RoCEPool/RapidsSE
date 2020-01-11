@@ -362,18 +362,6 @@ void EntWrk::vElmSeq(i8 nElmSeqSize, byte* ayElmSeq)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the size of the next entry offset(s) in bytes                          */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nNEOsize(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  i8 nBytes = m_xEnt.nNEOsize();
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of levels                                                       */
 /*----------------------------------------------------------------------------*/
 i8 EntWrk::nOffsets(void)
@@ -476,7 +464,7 @@ i8 EntWrk::nSize_EntKeyNeo(void)
   
   i8 nSizeEnt    = sizeof(Ent);
   i8 nSizeElmSeq = m_xEnt.nElmSeqSize();
-  i8 nSizeNeo    = nNEOsize();
+  i8 nSizeNeo    = m_xEnt.nNEOsize();
   
   i8 nSize = nSizeEnt + nSizeElmSeq + nSizeNeo;
   
