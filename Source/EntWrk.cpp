@@ -258,6 +258,38 @@ byte* EntWrk::ayElmNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get element sequence size                                                  */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nElmSeqSize(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  i8 nSize = m_xEnt.nElmSeqSize();
+  
+  return nSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set element sequence size                                                  */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vElmSeqSize(i8 nElmSeqSize)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  m_xEnt.vElmSeqSize(nElmSeqSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get byte sequence of key                                                   */
+/*----------------------------------------------------------------------------*/
+byte* EntWrk::ayElmSeq(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  return m_xEnt.ayElmSeq();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get entry pointer                                                          */
 /*----------------------------------------------------------------------------*/
 Ent* EntWrk::aEnt(void)
@@ -330,38 +362,6 @@ void EntWrk::vItem(i8 iItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get element sequence size                                                  */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nElmSeqSize(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  i8 nSize = m_xEnt.nElmSeqSize();
-  
-  return nSize;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set element sequence size                                                  */
-/*----------------------------------------------------------------------------*/
-void EntWrk::vElmSeqSize(i8 nElmSeqSize)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  m_xEnt.vElmSeqSize(nElmSeqSize);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get byte sequence of key                                                   */
-/*----------------------------------------------------------------------------*/
-byte* EntWrk::ayElmSeq(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  return m_xEnt.ayElmSeq();
-}
-
-/*----------------------------------------------------------------------------*/
 /* set element sequence size and element sequence of key                      */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vElmSeq(i8 nElmSeqSize, byte* ayElmSeq)
@@ -371,6 +371,18 @@ void EntWrk::vElmSeq(i8 nElmSeqSize, byte* ayElmSeq)
   m_xEnt.vElmSeqSize(nElmSeqSize);
   
   MemLib::vCopy(this->ayElmSeq(),ayElmSeq,nElmSeqSize,CN_ENTWRK);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the size of the next entry offset(s) in bytes                          */
+/*----------------------------------------------------------------------------*/
+i8 EntWrk::nNEOsize(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  i8 nBytes = m_xEnt.nNEOsize();
+  
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -391,18 +403,6 @@ void EntWrk::vOffsets(i8 nLevels)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   m_xEnt.vOffsets(nLevels);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the size of the next entry offset(s) in bytes                          */
-/*----------------------------------------------------------------------------*/
-i8 EntWrk::nNEOsize(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  i8 nBytes = m_xEnt.nNEOsize();
-  
-  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/

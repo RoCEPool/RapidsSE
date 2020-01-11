@@ -48,6 +48,10 @@ namespace Entries
     void  vBuffer(i8 iBuffer);
 
     byte* ayElmNext(void);
+    byte* ayElmSeq(void);
+    void  vElmSeq(i8 nElmSeqSize, byte* ayElmSeq);
+    i8    nElmSeqSize(void);
+    void  vElmSeqSize(i8 nElmSeqSize);
     Ent*  aEnt(void);
     
     i8    iHashKey(void);
@@ -58,16 +62,11 @@ namespace Entries
     i8    iItem(void);
     void  vItem(i8 iItem);
   
-    byte* ayElmSeq(void);
-    void  vElmSeq(i8 nElmSeqSize, byte* ayElmSeq);
-    i8    nElmSeqSize(void);
-    void  vElmSeqSize(i8 nElmSeqSize);
-
+    i8    nNEOsize(void);
+  
     i8    nOffsets(void);
     void  vOffsets(i8 nLevels);
 
-    i8    nNEOsize(void);
-  
     void  vRandomLevels(void);
     Ref&  xRef(void);
     void  vRef(Ref& xRef);
@@ -78,6 +77,7 @@ namespace Entries
     StreamDef* pStreamDef(void);
     void  vStreamDef(StreamDef* pStreamDef);
 
+  private:
     Footer* aFooter(void);
   };
 }
