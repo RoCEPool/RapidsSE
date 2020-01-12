@@ -8,22 +8,28 @@ namespace Rows
   class Row : public Object
   {
   public:
+    // - - - - - - - - - - - - - - - - - -
+    // meta data
+  
     StreamDef* m_pStreamDef;     // stream def
+    i8         m_nColumns;       // no cols in stream def
     i8         m_iSubSet;        // stream def subset
     
-    i8         m_nColumns;
+    bool       m_bGetAll;        // get all crw columns?
   
-    bool       m_bGetAll;
     bool       m_abGetCol[C_MAX_COLUMNS];
     i8         m_iLastCol;
 
     // - - - - - - - - - - - - - - - - - -
+    // data
   
-    i8  m_iHash; // hash of partition column values
+    t8  m_tPerspective;   // transaction perspective
+    i8  m_iHash;          // hash of partition column values
     Dtm m_waColVal[C_MAX_COLUMNS]; // column value array
-    Wsp_t<C_MAX_RECORD> m_xWsp; // sz workspace
+    Wsp_t<C_MAX_RECORD> m_xWsp;    // sz workspace
 
-    // must be last
+    // - - - - - - - - - - - - - - - - - -
+    // footer -- must be last
     Footer m_xFooter;
   
   public:

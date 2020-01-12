@@ -57,10 +57,12 @@ Row::Row(StreamDef* pStreamDef, i8 iSubSet)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
   m_pStreamDef  = pStreamDef;
-  m_iSubSet     = iSubSet;
   m_nColumns    = pStreamDef->nColumns(iSubSet);
+  m_iSubSet     = iSubSet;
+  
   m_bGetAll     = true;
   
+  m_tPerspective = C_UNKNOWN;
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
     m_abGetCol[i_Col] = false;
   m_iLastCol    = C_UNKNOWN;
