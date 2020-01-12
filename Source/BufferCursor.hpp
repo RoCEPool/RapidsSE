@@ -3,11 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-namespace DataBuffers
+namespace SortBuffers
 {
-  class IntBuffer;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class BufferCursor : public Object
   {
   public:

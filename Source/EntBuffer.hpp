@@ -56,7 +56,7 @@ namespace Indexes
     EntBuffer* pPrevBuffer(void);
     void       vPrevBuffer(EntBuffer* pPrevBuffer);
 
-    SrtBuffer* pToSrtBuffer(i8 iKeyCol);
+    //SrtBuffer* pToSrtBuffer(i8 iKeyCol);
     
     ////////////////////////////////////////////////////////////////////////////
     // entry functions

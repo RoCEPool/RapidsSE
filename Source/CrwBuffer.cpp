@@ -618,47 +618,47 @@ CsvBuffer* CrwBuffer::pToCsvBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* generate a SrtBuffer from entry buffer                                     */
 /*----------------------------------------------------------------------------*/
-SrtBuffer* CrwBuffer::pToSrtBuffer(i8 iKeyCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  i8 nRowRefs = 1;
-  
-  HV_Row hRow(pTable()->pStreamDef(),C_ALL);
-  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
-  
-  i8 nRows = nRowCount();
-  
-  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-    
-    SrtSet* pSrtSet = pSrtBuffer->aAllotSrtSet();
-    
-    if ( ! pSrtSet ) {
-      
-      // create a new SrtBuffer
-      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
-      pNewSrtBuffer->vNextBuffer(pSrtBuffer);
-      pSrtBuffer = pNewSrtBuffer;
-      pSrtSet = pSrtBuffer->aAllotSrtSet();
-      
-    }
-    RASSERT(pSrtSet);
-    
-    // get compact row
-    Crw* aCrw = (Crw*)aGetHead(i_Row);
-    
-    // set the rowData in the srtSet
-    pSrtSet->vRowRef(0, (i8)aCrw);
-    
-    // get the key from the row
-    RowInflator::vInflateColumn(hRow, aCrw, iKeyCol);
-    
-    // set the key in the srtSet
-    pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iWrd);
-  }
-  
-  return pSrtBuffer;
-}
+//SrtBuffer* CrwBuffer::pToSrtBuffer(i8 iKeyCol)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+//  
+//  i8 nRowRefs = 1;
+//  
+//  HV_Row hRow(pTable()->pStreamDef(),C_ALL);
+//  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
+//  
+//  i8 nRows = nRowCount();
+//  
+//  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+//    
+//    SrtSet* pSrtSet = pSrtBuffer->aAllotSrtSet();
+//    
+//    if ( ! pSrtSet ) {
+//      
+//      // create a new SrtBuffer
+//      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
+//      pNewSrtBuffer->vNextBuffer(pSrtBuffer);
+//      pSrtBuffer = pNewSrtBuffer;
+//      pSrtSet = pSrtBuffer->aAllotSrtSet();
+//      
+//    }
+//    RASSERT(pSrtSet);
+//    
+//    // get compact row
+//    Crw* aCrw = (Crw*)aGetHead(i_Row);
+//    
+//    // set the rowData in the srtSet
+//    pSrtSet->vRowRef(0, (i8)aCrw);
+//    
+//    // get the key from the row
+//    RowInflator::vInflateColumn(hRow, aCrw, iKeyCol);
+//    
+//    // set the key in the srtSet
+//    pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iWrd);
+//  }
+//  
+//  return pSrtBuffer;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* generate an IrwBuffer from entry buffer                                    */

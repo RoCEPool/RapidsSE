@@ -1314,52 +1314,52 @@ IrwBuffer* EntBuffer::pToIrwBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* convert entBuffer to srtBuffer                                             */
 /*----------------------------------------------------------------------------*/
-SrtBuffer* EntBuffer::pToSrtBuffer(i8 iKeyCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-  
-  i8 nRowRefs = 1;
-  
-  HV_Row hRow(m_pIndex->pTable()->pStreamDef(), C_ALL);
-  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
-  
-  Ent* aEntry = aLeadEntry();
-  SrtSet* pSrtSet;
-  
-  while (aEntry) {
-    
-    pSrtSet = pSrtBuffer->aAllotSrtSet();
-    if ( ! pSrtSet ) {
-      
-      // create a new SrtBuffer
-      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
-      pNewSrtBuffer->vNextBuffer(pSrtBuffer);
-      pSrtBuffer = pNewSrtBuffer;
-      pSrtSet = pSrtBuffer->aAllotSrtSet();
-      
-    }
-    RASSERT(pSrtSet);
-    
-    // get the left (this) rowBuffer
-    CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEntry->xRef());
-    
-    // get the dataRow
-    Crw* aCrw = pCrwBuffer->aCrw(aEntry->iItem());
-    
-    // set the rowData in the srtSet
-    pSrtSet->vRowRef(0, (i8)aCrw);
-  
-    // get the key from the left buffer row
-    RowInflator::vInflateColumn(hRow, aCrw, iKeyCol);
-    
-    // set the key in the srtSet
-    pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iWrd);
-    
-    aEntry = aNextEntry(aEntry,0);
-  }
-  
-  return pSrtBuffer;
-}
+//SrtBuffer* EntBuffer::pToSrtBuffer(i8 iKeyCol)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+//  
+//  i8 nRowRefs = 1;
+//  
+//  HV_Row hRow(m_pIndex->pTable()->pStreamDef(), C_ALL);
+//  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
+//  
+//  Ent* aEntry = aLeadEntry();
+//  SrtSet* pSrtSet;
+//  
+//  while (aEntry) {
+//    
+//    pSrtSet = pSrtBuffer->aAllotSrtSet();
+//    if ( ! pSrtSet ) {
+//      
+//      // create a new SrtBuffer
+//      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
+//      pNewSrtBuffer->vNextBuffer(pSrtBuffer);
+//      pSrtBuffer = pNewSrtBuffer;
+//      pSrtSet = pSrtBuffer->aAllotSrtSet();
+//      
+//    }
+//    RASSERT(pSrtSet);
+//    
+//    // get the left (this) rowBuffer
+//    CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEntry->xRef());
+//    
+//    // get the dataRow
+//    Crw* aCrw = pCrwBuffer->aCrw(aEntry->iItem());
+//    
+//    // set the rowData in the srtSet
+//    pSrtSet->vRowRef(0, (i8)aCrw);
+//  
+//    // get the key from the left buffer row
+//    RowInflator::vInflateColumn(hRow, aCrw, iKeyCol);
+//    
+//    // set the key in the srtSet
+//    pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iWrd);
+//    
+//    aEntry = aNextEntry(aEntry,0);
+//  }
+//  
+//  return pSrtBuffer;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* truncate this buffer by removing all entries                               */

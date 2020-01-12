@@ -3,10 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-namespace DataBuffers
+namespace SortBuffers
 {
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class QuickSort
   {
   public:

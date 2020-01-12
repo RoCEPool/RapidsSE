@@ -2,7 +2,7 @@
 /* BufferCursor.cpp -- Buffer Cursor                                          */
 /*============================================================================*/
 
-#include "DataBuffers.h"
+#include "SortBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-BufferCursor* DataBuffers::_pBufferCursor(void* aAddr)
+BufferCursor* SortBuffers::_pBufferCursor(void* aAddr)
 {
   BufferCursor* pBufferCursor = reinterpret_cast<BufferCursor*>(aAddr);
   

@@ -14,6 +14,11 @@ namespace SortBuffers
 
 //------------------------------------------------------------------------------
 
+#include "SrtSet.hpp"
+#include "SrtBuffer.hpp"
+#include "QuickSort.hpp"
+#include "BufferCursor.hpp"
+#include "BufferSort.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

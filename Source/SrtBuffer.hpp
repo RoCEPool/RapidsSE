@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DataBuffers
+namespace SortBuffers
 {
   class SrtBuffer : public DataBuffer,
                     public MiniHeap_t<SrtSet>

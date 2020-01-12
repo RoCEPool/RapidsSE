@@ -2,7 +2,7 @@
 /* SrtBuffer.cpp -- Reference Buffer                                          */
 /*============================================================================*/
 
-#include "DataBuffers.h"
+#include "SortBuffers.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SrtBuffer* DataBuffers::_pSrtBuffer(void* aAddress)
+SrtBuffer* SortBuffers::_pSrtBuffer(void* aAddress)
 {
   SrtBuffer* pSrtBuffer = reinterpret_cast<SrtBuffer*>(aAddress);
   

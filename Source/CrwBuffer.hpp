@@ -7,7 +7,6 @@ namespace DataBuffers
 {
   class CsvBuffer;
   class RowCompactor;
-  class SrtBuffer;
   
   class CrwBuffer : public DataBuffer
   {
@@ -52,7 +51,7 @@ namespace DataBuffers
     void       vPrevBuffer(CrwBuffer* pPrevBuffer);
     void       vPrintRows(StreamDef* pStreamDef);
     CsvBuffer* pToCsvBuffer(void);
-    SrtBuffer* pToSrtBuffer(i8 iKeyCol);
+    //SrtBuffer* pToSrtBuffer(i8 iKeyCol);
     IrwBuffer* pToIrwBuffer(void);
     void       vTruncate(void);
     
