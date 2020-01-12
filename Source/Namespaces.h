@@ -8,7 +8,9 @@ namespace Assembler     {                                                     }
 namespace Base          {                                                     }
 namespace Chunks        { class Format;                                       }
 namespace ClassData     {                                                     }
-namespace CompactBuffers{ class Crw; class CrwBuffer;                         }
+namespace CompactBuffers{ class Crw; class CrwBuffer; class CsvBuffer;
+                          class RowCompactor;
+                          class HeadLine; class OverLine; class TailLine;     }
 namespace CompilerOperators {                                                 }
 namespace CompilerStream{                                                     }
 namespace ControlData   {                                                     }

@@ -5,8 +5,6 @@
 
 namespace CompactBuffers
 {
-  class RowCompactor;
-  
   class ExtractRow : public Object
   {
   public:

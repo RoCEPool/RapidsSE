@@ -12,7 +12,7 @@ namespace CompactBuffers
   
   public:
     TailLine(void);
-    ~TailLine(void) noexcept(false);
+   ~TailLine(void) noexcept(false);
   
     i8 nBytes(void);
     i8 nUnits(void);

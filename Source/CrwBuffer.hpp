@@ -5,14 +5,8 @@
 
 namespace CompactBuffers
 {
-  class CsvBuffer;
-  class RowCompactor;
-  
   class CrwBuffer : public DataBuffer
   {
-  friend class IndexTree;
-  friend class RowCompactor;
-
   public:
     RowTray m_oRowTray;  // tray of rows
     SeeMe   m_xSeeMe;

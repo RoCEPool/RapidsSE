@@ -4,10 +4,7 @@
 #pragma once
 
 namespace CompactBuffers
-{
-  class OverLine;
-  class TailLine;
-  
+{  
   class HeadLine : public Line
   {
   public:
