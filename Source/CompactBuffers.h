@@ -44,7 +44,7 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 #include "CrwBuffer.hpp"
 #include "CsvBuffer.hpp"
 #include "RowCompactor.hpp"
-#include "RowDecoder.hpp"
+#include "ColDecoder.hpp"
 #include "RowInflator.hpp"
 
 
