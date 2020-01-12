@@ -36,7 +36,7 @@ namespace CompactBuffers
     void vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize);
     void vPutLogical(i8 i_Offset, Stz* szString, i8 nLength);
     void vSetOver(OverLine* aOverLine);
-    byte* ayShoco(Column* pCol, i8 iBaseOffset);
+    byte* ayShoco(Column* pCol, i8 iBaseOffsetData);
 
     i8   nW(void);
     void vW(i8 nWords);

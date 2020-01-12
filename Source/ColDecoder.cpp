@@ -63,7 +63,7 @@ void ColDecoder::vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
+  i8 i_BaseOffset = RowCoder::iBaseOffsetData(nColumns);
 
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                           i_ColCrs_,i_OfsCrs_);
@@ -135,7 +135,7 @@ void ColDecoder::vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
+  i8 i_BaseOffset = RowCoder::iBaseOffsetData(nColumns);
   
   i8 iEra = C_ERA_0;
   
@@ -179,7 +179,7 @@ void ColDecoder::vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
+  i8 i_BaseOffset = RowCoder::iBaseOffsetData(nColumns);
     
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                           i_ColCrs_,i_OfsCrs_);
@@ -208,7 +208,7 @@ void ColDecoder::vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
                             i8 nColumns, Column* pCol,
                             i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
+  i8 i_BaseOffset = RowCoder::iBaseOffsetData(nColumns);
   
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                           i_ColCrs_,i_OfsCrs_);
@@ -252,7 +252,7 @@ void ColDecoder::vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
+  i8 i_BaseOffset = RowCoder::iBaseOffsetData(nColumns);
   
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                           i_ColCrs_,i_OfsCrs_);
@@ -281,7 +281,7 @@ void ColDecoder::vDecodeTme(Datum* pDatum, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
+  i8 i_BaseOffset = RowCoder::iBaseOffsetData(nColumns);
   
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                           i_ColCrs_,i_OfsCrs_);
@@ -313,7 +313,7 @@ void ColDecoder::vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
+  i8 i_BaseOffset = RowCoder::iBaseOffsetData(nColumns);
   
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                           i_ColCrs_,i_OfsCrs);
@@ -339,7 +339,7 @@ void ColDecoder::vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
                               i8 nColumns, Column* pCol,
                               i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
+  i8 i_BaseOffset = RowCoder::iBaseOffsetData(nColumns);
   
   //! needs more work
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,

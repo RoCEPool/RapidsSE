@@ -32,7 +32,7 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
   i8 nCols = pRow->m_nColumns;
   
   eMC*  aeMetaCode = aAdd<eMC*>(aHeadLine,C_W_1B);
-  byte* ayDataByte = (byte*)aHeadLine + iBaseOffset(nCols);
+  byte* ayDataByte = (byte*)aHeadLine + iBaseOffsetData(nCols);
   i8*   aiColVal   = & pRow->m_waColVal[0].m_iWrd;
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
@@ -445,7 +445,7 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
   i8 nCols = pRow->m_nColumns;
   
   eMC*  aeMetaCode = aAdd<eMC*>(aHeadLine,C_W_1B);
-  byte* ayDataByte = (byte*)aHeadLine + iBaseOffset(nCols);
+  byte* ayDataByte = (byte*)aHeadLine + iBaseOffsetData(nCols);
   i8*   aiColVal   = & pRow->m_waColVal[0].m_iWrd;
   
   bool  bGetAll    = pRow->m_bGetAll;
@@ -863,7 +863,7 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
   i8 nCols = pRow->m_nColumns;
   
   eMC*  aeMetaCode = aAdd<eMC*>(aHeadLine,C_W_1B);
-  byte* ayDataByte = (byte*)aHeadLine + iBaseOffset(nCols);
+  byte* ayDataByte = (byte*)aHeadLine + iBaseOffsetData(nCols);
   i8*   aiColVal   = & pRow->m_waColVal[0].m_iWrd;
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {

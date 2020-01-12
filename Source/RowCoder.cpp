@@ -21,9 +21,9 @@ i8 RowCoder::iAuxLen(eMC eMetaCode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calc base offset for column vector                                         */
+/* calc base offset for column data in head line                              */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iBaseOffset(i8 nColumns)
+i8 RowCoder::iBaseOffsetData(i8 nColumns)
 {
   i8 iOffset = C_W_1B + nColumns;
   

@@ -141,7 +141,7 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
  // ASSERT(pLastCol->bIsLastColumn());
   
   i8 nColumns = pStreamDef->nColumns(C_ALL);
-  i8 i_BaseOffset = RowCoder::iBaseOffset(nColumns);
+  i8 i_BaseOffset = RowCoder::iBaseOffsetData(nColumns);
   
   i8 i_ColCrs_ = 0;
   i8 i_OfsCrs_ = i_BaseOffset;
