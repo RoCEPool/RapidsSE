@@ -20,6 +20,8 @@ namespace SortBuffers
 #include "BufferCursor.hpp"
 #include "BufferSort.hpp"
 
+#include "IntBuffer.hpp"
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
