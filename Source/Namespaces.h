@@ -8,6 +8,7 @@ namespace Assembler     {                                                     }
 namespace Base          {                                                     }
 namespace Chunks        { class Format;                                       }
 namespace ClassData     {                                                     }
+namespace CompactBuffers{                                                     }
 namespace CompilerOperators {                                                 }
 namespace CompilerStream{                                                     }
 namespace ControlData   {                                                     }
@@ -84,13 +85,14 @@ namespace Verbs         {                                                     }
 using namespace Alignment;
 using namespace Assembler;
 using namespace Base;
-using namespace DataBuffers;
 using namespace Chunks;
 using namespace ClassData;
+using namespace CompactBuffers;
 using namespace CompilerOperators;
 using namespace CompilerStream;
 using namespace ControlData;
 using namespace Correctness;
+using namespace DataBuffers;
 using namespace DataOperators;
 using namespace Datums;
 using namespace Debugging;
