@@ -14,44 +14,8 @@ namespace DataBuffers
 
 //------------------------------------------------------------------------------
 
-#include "HeadLine.hpp"
-#include "OverLine.hpp"
-#include "TailLine.hpp"
-#include "TailStr.hpp"
-#include "Crw.hpp"
-
-//------------------------------------------------------------------------------
-
-static const i8 C_TRAY_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HeadLine);
-
-typedef       HV <Row,   StreamDef>                            HV_Row;
-
-typedef    Nub_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table> RowNub;
-
-typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
-                  (C_TRAY_ROWS * sizeof(HeadLine))>            RowTray;
-
-//------------------------------------------------------------------------------
-
-#include "RowCoder.hpp"
-#include "ExtractRow.hpp"
-#include "Encoding.hpp"
-#include "Packing.hpp"
-#include "SP_Encoding.hpp"
-
 #include "DataBuffer.hpp"
 
-
-#include "IrwBuffer.hpp"
-#include "CrwBuffer.hpp"
-#include "CsvBuffer.hpp"
-#include "RowCompactor.hpp"
-#include "RowDecoder.hpp"
-#include "RowInflator.hpp"
-
-
-#include "IntBuffer.hpp"
-#include "WriteBehind.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

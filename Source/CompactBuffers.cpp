@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void CompactBuffers::vCheckAssumptions(void)
 {
+  RASSERT(sizeof(HeadLine) == sizeof(SingleWord));
+  RASSERT(sizeof(TailLine) == sizeof(SpaceUnit));
 }
 
 /*============================================================================*/

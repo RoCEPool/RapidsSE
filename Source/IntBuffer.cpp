@@ -2,7 +2,7 @@
 /* IntBuffer.cpp -- Integer Buffer                                            */
 /*============================================================================*/
 
-#include "DataBuffers.h"
+#include "CompactBuffers.h"
 #include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IntBuffer* DataBuffers::_pIntBuffer(void* aAddress)
+IntBuffer* CompactBuffers::_pIntBuffer(void* aAddress)
 {
   IntBuffer* pIntBuffer = reinterpret_cast<IntBuffer*>(aAddress);
   

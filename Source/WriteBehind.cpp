@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-WriteBehind* DataBuffers::_pWriteBehind(void* aAddr)
+WriteBehind* CompactBuffers::_pWriteBehind(void* aAddr)
 {
   WriteBehind* pWriteBehind = reinterpret_cast<WriteBehind*>(aAddr);
   

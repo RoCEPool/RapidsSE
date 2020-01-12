@@ -8,12 +8,12 @@ namespace Assembler     {                                                     }
 namespace Base          {                                                     }
 namespace Chunks        { class Format;                                       }
 namespace ClassData     {                                                     }
-namespace CompactBuffers{                                                     }
+namespace CompactBuffers{ class Crw; class CrwBuffer;                         }
 namespace CompilerOperators {                                                 }
 namespace CompilerStream{                                                     }
 namespace ControlData   {                                                     }
 namespace Correctness   { class Cell;                                         }
-namespace DataBuffers    { class Crw; class CrwBuffer;                        }
+namespace DataBuffers   {                                                     }
 namespace DataOperators {                                                     }
 namespace Datums        { class Datum_h;
                           template <i8 SPACE> class Datum_t;                  }

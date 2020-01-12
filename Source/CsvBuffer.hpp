@@ -6,7 +6,7 @@
 static const i8 C_WSP_CSVBUFFER = C_SIZE_LARGE_OBJECT - C_4KB;
 
 
-namespace DataBuffers
+namespace CompactBuffers
 {
   class RowCompactor;
   

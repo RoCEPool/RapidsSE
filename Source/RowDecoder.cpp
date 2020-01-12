@@ -2,7 +2,7 @@
 /* RowDecoder.cpp -- Row Decoder Mark V                                       */
 /*============================================================================*/
 
-#include "DataBuffers.h"
+#include "CompactBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /* get encoded datum from row                                                 */

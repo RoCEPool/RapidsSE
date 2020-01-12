@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DataBuffers
+namespace CompactBuffers
 {
   class RowDecoder : private RowCoder
   {

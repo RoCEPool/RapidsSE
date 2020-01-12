@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DataBuffers
+namespace CompactBuffers
 {
   // how a column is to be compacted
   struct _ColEnc {

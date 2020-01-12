@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DataBuffers
+namespace CompactBuffers
 {
   static const i8 ELEMENTS = 100; //(C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(i8);
   

@@ -2,7 +2,7 @@
 /* RowInflator.cpp -- Row Inflator Mark V                                     */
 /*============================================================================*/
 
-#include "DataBuffers.h"
+#include "CompactBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */

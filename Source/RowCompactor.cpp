@@ -2,7 +2,7 @@
 /* RowCompactor.cpp -- Row Compactor Mark V                                   */
 /*============================================================================*/
 
-#include "DataBuffers.h"
+#include "CompactBuffers.h"
 
 static Numbat oNumBat("partKey"_Stz);
 
@@ -14,7 +14,7 @@ static Numbat oNumBat("partKey"_Stz);
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowCompactor* DataBuffers::_pRowCoder(void* aAddr)
+RowCompactor* CompactBuffers::_pRowCoder(void* aAddr)
 {
   RowCompactor* pRowCompactor = reinterpret_cast<RowCompactor*>(aAddr);
   

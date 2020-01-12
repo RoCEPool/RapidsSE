@@ -2,7 +2,7 @@
 /* Encoding.cpp -- Row Encoding (intermediate representation of compact row)  */
 /*============================================================================*/
 
-#include "DataBuffers.h"
+#include "CompactBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Encoding* DataBuffers::_pEncoding(void* aAddr)
+Encoding* CompactBuffers::_pEncoding(void* aAddr)
 {
   Encoding* pEncoding = reinterpret_cast<Encoding*>(aAddr);
   

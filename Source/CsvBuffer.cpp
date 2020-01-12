@@ -2,7 +2,7 @@
 /* CsvBuffer.cpp -- Csv Buffer                                                */
 /*============================================================================*/
 
-#include "DataBuffers.h"
+#include "CompactBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-CsvBuffer* DataBuffers::_pCsvBuffer(void* aAddress)
+CsvBuffer* CompactBuffers::_pCsvBuffer(void* aAddress)
 {
   CsvBuffer* pCsvBuffer = reinterpret_cast<CsvBuffer*>(aAddress);
   

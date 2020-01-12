@@ -2,7 +2,7 @@
 /* Packing.cpp -- Compact Row Packing                                         */
 /*============================================================================*/
 
-#include "DataBuffers.h"
+#include "CompactBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /* pack the encoded inflated row into head[+over]{+tail}                      */
