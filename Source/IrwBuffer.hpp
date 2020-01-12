@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace CompactBuffers
+namespace DataBuffers
 {
   typedef       HV <Record,StreamDef>                            HV_Rec;
   

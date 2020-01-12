@@ -16,6 +16,7 @@ namespace DataBuffers
 
 #include "DataBuffer.hpp"
 
+#include "IrwBuffer.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
