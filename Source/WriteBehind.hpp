@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Buffers
+namespace DataBuffers
 {
   class WriteBehind : public Object
   {

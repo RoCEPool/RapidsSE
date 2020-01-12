@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IntBuffer* Buffers::_pIntBuffer(void* aAddress)
+IntBuffer* DataBuffers::_pIntBuffer(void* aAddress)
 {
   IntBuffer* pIntBuffer = reinterpret_cast<IntBuffer*>(aAddress);
   

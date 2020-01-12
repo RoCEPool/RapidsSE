@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-BufferCursor* Buffers::_pBufferCursor(void* aAddr)
+BufferCursor* DataBuffers::_pBufferCursor(void* aAddr)
 {
   BufferCursor* pBufferCursor = reinterpret_cast<BufferCursor*>(aAddr);
   

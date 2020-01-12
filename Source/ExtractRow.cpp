@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ExtractRow* Buffers::_pExtractRow(void* aAddress)
+ExtractRow* DataBuffers::_pExtractRow(void* aAddress)
 {
   ExtractRow* pExtractRow = reinterpret_cast<ExtractRow*>(aAddress);
   

@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IrwBuffer* Buffers::_pIrwBuffer(void* aAddress)
+IrwBuffer* DataBuffers::_pIrwBuffer(void* aAddress)
 {
   IrwBuffer* pIrwBuffer = reinterpret_cast<IrwBuffer*>(aAddress);
   

@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* Buffers::_pCrwBuffer(void* aAddress)
+CrwBuffer* DataBuffers::_pCrwBuffer(void* aAddress)
 {
   CrwBuffer* pCrwBuffer = reinterpret_cast<CrwBuffer*>(aAddress);
   

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Buffers.cpp - Buffers namespace functions                                  */
+/* DataBuffers.cpp - DataBuffers namespace functions                                  */
 /*============================================================================*/
 
 #include "Buffers.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Buffers::vCheckAssumptions(void)
+void DataBuffers::vCheckAssumptions(void)
 {
   RASSERT(sizeof(HeadLine) == sizeof(SingleWord));
   RASSERT(sizeof(TailLine) == sizeof(SpaceUnit));

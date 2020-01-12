@@ -17,7 +17,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Alignment::vCheckAssumptions();
   Assembler::vCheckAssumptions();
   Base::vCheckAssumptions();
-  Buffers::vCheckAssumptions();
+  DataBuffers::vCheckAssumptions();
   Chunks::vCheckAssumptions();
   ClassData::vCheckAssumptions();
   CompilerStream::vCheckAssumptions();

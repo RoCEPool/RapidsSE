@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-CsvBuffer* Buffers::_pCsvBuffer(void* aAddress)
+CsvBuffer* DataBuffers::_pCsvBuffer(void* aAddress)
 {
   CsvBuffer* pCsvBuffer = reinterpret_cast<CsvBuffer*>(aAddress);
   

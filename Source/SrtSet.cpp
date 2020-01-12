@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SrtSet* Buffers::_pSrtSet(void* aAddr)
+SrtSet* DataBuffers::_pSrtSet(void* aAddr)
 {
   SrtSet* pSrtSet = reinterpret_cast<SrtSet*>(aAddr);
   
