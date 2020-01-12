@@ -6,13 +6,13 @@
 namespace Alignment     {                                                     }
 namespace Assembler     {                                                     }
 namespace Base          {                                                     }
-namespace DataBuffers       { class Crw; class CrwBuffer;                         }
 namespace Chunks        { class Format;                                       }
 namespace ClassData     {                                                     }
 namespace CompilerOperators {                                                 }
 namespace CompilerStream{                                                     }
 namespace ControlData   {                                                     }
 namespace Correctness   { class Cell;                                         }
+namespace DataBuffers    { class Crw; class CrwBuffer;                        }
 namespace DataOperators {                                                     }
 namespace Datums        { class Datum_h;
                           template <i8 SPACE> class Datum_t;                  }
@@ -65,6 +65,7 @@ namespace Scheduling    { class Queues; class Scheduler;                      }
 namespace SenVM         { class Dic; class DicStack; class Forth; class Word; }
 namespace Services      {                                                     }
 namespace Sessions      { class Request; class Session; class SessionState;   }
+namespace SortBuffers   {                                                     }
 namespace SqlValues     {                                                     }
 namespace Steps         { class Step; class StepTiming;                       }
 namespace StorageEngine { class AttachMap; class Engine;                      }
@@ -125,6 +126,7 @@ using namespace Scheduling;
 using namespace SenVM;
 using namespace Services;
 using namespace Sessions;
+using namespace SortBuffers;
 using namespace SqlValues;
 using namespace Steps;
 using namespace StorageEngine;

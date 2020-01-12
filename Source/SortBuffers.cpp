@@ -1,16 +1,14 @@
 /*============================================================================*/
-/* DataBuffers.cpp - DataBuffers namespace functions                                  */
+/* SortBuffers.cpp - SortBuffers namespace functions                          */
 /*============================================================================*/
 
-#include "Buffers.h"
+#include "SortBuffers.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void DataBuffers::vCheckAssumptions(void)
+void SortBuffers::vCheckAssumptions(void)
 {
-  RASSERT(sizeof(HeadLine) == sizeof(SingleWord));
-  RASSERT(sizeof(TailLine) == sizeof(SpaceUnit));
 }
 
 /*============================================================================*/

@@ -17,12 +17,12 @@ void StorageEngine::vCheckAllAssumptions(void)
   Alignment::vCheckAssumptions();
   Assembler::vCheckAssumptions();
   Base::vCheckAssumptions();
-  DataBuffers::vCheckAssumptions();
   Chunks::vCheckAssumptions();
   ClassData::vCheckAssumptions();
   CompilerStream::vCheckAssumptions();
   ControlData::vCheckAssumptions();
   Correctness::vCheckAssumptions();
+  DataBuffers::vCheckAssumptions();
   Entries::vCheckAssumptions();
   Enums::vCheckAssumptions();
   Esses::vCheckAssumptions();
@@ -49,6 +49,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   SenVM::vCheckAssumptions();
   Services::vCheckAssumptions();
   Sessions::vCheckAssumptions();
+  SortBuffers::vCheckAssumptions();
   Steps::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
   Operands::vCheckAssumptions();
