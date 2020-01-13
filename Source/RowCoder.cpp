@@ -37,7 +37,7 @@ i8 RowCoder::iBaseOffsetData(StreamDef* pStreamDef)
 {
   i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
   
-  i8 i_OffsetData = RowCoder::iBaseOffsetData(nMetaSize);
+  i8 i_OffsetData = C_W_1B + nMetaSize;
 
   return i_OffsetData;
 }

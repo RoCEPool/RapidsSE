@@ -33,6 +33,7 @@ namespace CompactBuffers
     i8  m_nColumns;
     i8  m_nHeadSize;
     i8  m_nMetaSize;
+    i8  m_i_BaseOffsetData;
   
     i8  m_nBytesNeeded;
     i8  m_nShiftOver;  // by how much a shift occurs

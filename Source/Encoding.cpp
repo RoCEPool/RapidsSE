@@ -59,6 +59,7 @@ Encoding::Encoding(StreamDef* pStreamDef)
   
   m_nHeadSize  = nHeadSize(m_pStreamDef);
   m_nMetaSize  = nMetaSize(m_pStreamDef);
+  m_i_BaseOffsetData = iBaseOffsetData(m_pStreamDef);
   
   m_nBytesNeeded = C_UNKNOWN;
   m_nShiftOver   = C_UNKNOWN;
@@ -225,8 +226,8 @@ void Encoding::vInitialEncoding(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
-  m_i_Offset_next = RowCoder::iBaseOffsetData(m_nMetaSize);
-  
+  m_i_Offset_next = m_i_BaseOffsetData;
+
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
     _ColEnc& xrColEnc = xaColEnc[i_Col];
