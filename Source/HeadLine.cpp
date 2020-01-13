@@ -326,26 +326,6 @@ void HeadLine::vSetOver(OverLine* aOverLine)
   vOverflow2B(i_Over_rel);
  
   vHasOverflow();
- }
-
-/*----------------------------------------------------------------------------*/
-/* get address of given shoco column from head line                           */
-/*----------------------------------------------------------------------------*/
-byte* HeadLine::ayShoco(Column* pCol, i8 i_BaseOffset)
-{
-  i8 i_ColCrs_ = 0;
-  i8 i_OfsCrs_ = i_BaseOffset;
-  
-  eMC eEncoding = eGetEncoding(pCol,i_BaseOffset,
-                               i_ColCrs_,i_OfsCrs_);
-  
-//  if (MC_SHOCO_FIT_1C != eEncoding)
-//    return nullptr;
-  
-  // get address of <C><shoco...>
-  byte* ayAddress = ayAdrLogical(i_OfsCrs_);
-  
-  return ayAddress;
 }
 
 /*----------------------------------------------------------------------------*/
