@@ -162,7 +162,7 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 /* get the encoding (metacode and offset) of a column datum                   */
 /*----------------------------------------------------------------------------*/
-eMC HeadLine::eGetEncoding(Column* pForCol, i8 i_BaseOffset,
+eMC HeadLine::eGetEncoding(Column* pForCol, i8 i_BaseOffsetData,
                            i8& i_ColCrs_, i8& i_OfsCrs_)
 {
   i8 i_ForCol = pForCol->iColumnNo();
@@ -172,7 +172,7 @@ eMC HeadLine::eGetEncoding(Column* pForCol, i8 i_BaseOffset,
   
   if (i_ForCol < i_ColCrs_) {
     i_ColCrs_ = 0;
-    i_OfsCrs_ = i_BaseOffset;
+    i_OfsCrs_ = i_BaseOffsetData;
   }
   
   for (i8 i_Col = i_ColCrs_; i_Col < i_ForCol; i_Col++) {

@@ -25,9 +25,19 @@ i8 RowCoder::iAuxLen(eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffsetData(i8 nColumns)
 {
-  i8 iOffset = C_W_1B + nColumns;
+  i8 i_Offset = C_W_1B + nColumns;
   
-  return iOffset;
+  return i_Offset;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calc base offset for meta data in head line                                */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iBaseOffsetMeta(void)
+{
+  i8 i_Offset = C_W_1B;
+  
+  return i_Offset;
 }
 
 /*----------------------------------------------------------------------------*/
