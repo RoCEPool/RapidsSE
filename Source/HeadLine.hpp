@@ -44,9 +44,9 @@ namespace CompactBuffers
     /*------------------------------------------------------------------------*/
     /* return meta code                                                       */
     /*------------------------------------------------------------------------*/
-    inline eMC eMetaCode(i8 i_Meta)
+    inline eMC eMetaCode(i8 i_Col)
     {
-      eMC eCode = *(eMC*)((byte*)this + C_W_1B + i_Meta);
+      eMC eCode = *aAdd<eMC*>(this,C_W_1B + i_Col);
   
       return eCode;
     }

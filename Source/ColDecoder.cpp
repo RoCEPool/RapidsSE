@@ -105,8 +105,8 @@ void ColDecoder::vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,Column* pCol)
 {
   //eMC eEncoding = aHeadLine->eGetEncoding(pCol,pColVec,i_ColCrs_,i_Offset);
   
-  i8 i_Column = pCol->iColumnNo();
-  eMC eEncoding = aHeadLine->eMetaCode(i_Column);
+  i8 i_Col = pCol->iColumnNo();
+  eMC eEncoding = aHeadLine->eMetaCode(i_Col);
   
   if (MC_BOL_FALSE == eEncoding)
     (* pDatum) = (i8)0;
