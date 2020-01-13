@@ -32,7 +32,11 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
   i8 nCols = pRow->m_nColumns;
   
   eMC*  aeMetaCode = aHeadLine->aeMetaArea();
-  byte* ayDataByte = (byte*)aHeadLine + iBaseOffsetData(nCols);
+  
+  i8 nMetaSize = RowCoder::nMetaSize(pRow->m_pStreamDef);
+  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
+  byte* ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
+  
   i8*   aiColVal   = & pRow->m_waColVal[0].m_iWrd;
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
@@ -445,7 +449,11 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
   i8 nCols = pRow->m_nColumns;
   
   eMC*  aeMetaCode = aHeadLine->aeMetaArea();
-  byte* ayDataByte = (byte*)aHeadLine + iBaseOffsetData(nCols);
+  
+  i8 nMetaSize = RowCoder::nMetaSize(pRow->m_pStreamDef);
+  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
+  byte* ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
+  
   i8*   aiColVal   = & pRow->m_waColVal[0].m_iWrd;
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
