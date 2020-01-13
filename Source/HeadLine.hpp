@@ -14,7 +14,7 @@ namespace CompactBuffers
     HeadLine(void);
     ~HeadLine(void) noexcept(false);
   
-    void vMetaCode(i8 i_Meta, eMC eMetaCode);
+    void vMetaCode(i8 i_Col, eMC eMetaCode);
     
     i8   nBytes(void);
     i8   nUnits(void);
@@ -41,6 +41,16 @@ namespace CompactBuffers
     i8   nW(void);
     void vW(i8 nWords);
 
+    /*------------------------------------------------------------------------*/
+    /* calculate address of meta area of head line                            */
+    /*------------------------------------------------------------------------*/
+    inline eMC* aeMetaArea(void)
+    {
+      eMC* aeCode = aAdd<eMC*>(this,C_W_1B);
+  
+      return aeCode;
+    }
+  
     /*------------------------------------------------------------------------*/
     /* return meta code                                                       */
     /*------------------------------------------------------------------------*/

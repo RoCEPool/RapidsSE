@@ -29,9 +29,9 @@ HeadLine::~HeadLine(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* store meta code                                                            */
 /*----------------------------------------------------------------------------*/
-void HeadLine::vMetaCode(i8 i_Meta, eMC eMetaCode)
+void HeadLine::vMetaCode(i8 i_Col, eMC eMetaCode)
 {
-  v1B((C_W_1B + i_Meta),eMetaCode);
+  v1B((C_W_1B + i_Col),eMetaCode);
 }
 
 /*----------------------------------------------------------------------------*/
