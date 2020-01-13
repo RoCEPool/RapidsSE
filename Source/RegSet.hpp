@@ -29,6 +29,8 @@ namespace Registers
     REG<StreamDef> m_xpStreamDef;
     REG<TablePtn>  m_xpTablePtn;
     REG<Operand>   m_xpSubset;
+  
+    REG<Tx>        m_xpTx;
     
     REG<WriteBehind> m_xpWriteBehind;
     REG<Row>         m_xpRow;
