@@ -23,16 +23,6 @@ i8 RowCoder::iAuxLen(eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 /* calc base offset for column data in head line                              */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iBaseOffsetData(i8 nMetaSize)
-{
-  i8 i_OffsetData = C_W_1B + nMetaSize;
-  
-  return i_OffsetData;
-}
-
-/*----------------------------------------------------------------------------*/
-/* calc base offset for column data in head line                              */
-/*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffsetData(StreamDef* pStreamDef)
 {
   i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
