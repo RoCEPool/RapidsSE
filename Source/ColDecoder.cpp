@@ -67,7 +67,7 @@ void ColDecoder::vDecodeBcd(Datum* pDatum,
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
 
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                          i_ColCrs_,i_OfsCrs_);
+                                          i_ColCrs_,i_OfsCrs_,pStreamDef);
   switch (eEncoding) {
       
     case MC_NULL: (* pDatum) = C_DATUM_NULL; break;
@@ -143,7 +143,7 @@ void ColDecoder::vDecodeDte(Datum* pDatum,
   
   //!! needs more work
   eMC eThisEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                              i_ColCrs_,i_OfsCrs_);
+                                              i_ColCrs_,i_OfsCrs_,pStreamDef);
   
   
   switch (eThisEncoding) {
@@ -185,7 +185,7 @@ void ColDecoder::vDecodeFlt(Datum* pDatum,
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
 
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                          i_ColCrs_,i_OfsCrs_);
+                                          i_ColCrs_,i_OfsCrs_,pStreamDef);
   switch (eEncoding) {
       
     case MC_NULL: (* pDatum) = C_DATUM_NULL; break;
@@ -215,7 +215,7 @@ void ColDecoder::vDecodeInt(Datum* pDatum,
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
 
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                          i_ColCrs_,i_OfsCrs_);
+                                          i_ColCrs_,i_OfsCrs_,pStreamDef);
   //vTrace("Decoding %lld\n"_Stz, eEncoding);
   
   switch (eEncoding) {
@@ -260,7 +260,7 @@ void ColDecoder::vDecodeIvl(Datum* pDatum,
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
 
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                          i_ColCrs_,i_OfsCrs_);
+                                          i_ColCrs_,i_OfsCrs_,pStreamDef);
   switch (eEncoding) {
       
     case MC_NULL: (* pDatum) = C_DATUM_NULL; break;
@@ -290,7 +290,7 @@ void ColDecoder::vDecodeTme(Datum* pDatum,
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
 
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                          i_ColCrs_,i_OfsCrs_);
+                                          i_ColCrs_,i_OfsCrs_,pStreamDef);
   switch (eEncoding) {
       
     case MC_NULL: (* pDatum) = C_DATUM_NULL; break;
@@ -323,7 +323,7 @@ void ColDecoder::vDecodeTsp(Datum* pDatum,
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
 
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                          i_ColCrs_,i_OfsCrs);
+                                          i_ColCrs_,i_OfsCrs,pStreamDef);
   switch (eEncoding) {
       
     case MC_NULL: (* pDatum) = C_DATUM_NULL; break;
@@ -352,7 +352,7 @@ void ColDecoder::vDecodeVch(Datum* pDatum,
   
   //! needs more work
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                          i_ColCrs_,i_OfsCrs_);
+                                          i_ColCrs_,i_OfsCrs_,pStreamDef);
   
   if (MC_NULL == eEncoding) {
     (* pDatum) = C_DATUM_NULL;

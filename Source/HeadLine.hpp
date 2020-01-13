@@ -19,7 +19,7 @@ namespace CompactBuffers
     void vDump(void);
     i8   nFreeSpace(StreamDef* pStreamDef);
     eMC  eGetEncoding(Column* pCol, i8 i_BaseOffset,
-                      i8& i_ColCrs_, i8& i_OfsCrs_);
+                      i8& i_ColCrs_, i8& i_OfsCrs_, StreamDef* pStreamDef);
     w8   wGetLogical(i8 i_Offset, i8 nDataSize);
     OverLine* aGetOver(void);
     i8   iGetTailRel(TailLine* TailLine);

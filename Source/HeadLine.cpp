@@ -95,7 +95,7 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
   i8 i_OfsCrs_ = i_BaseOffset;
 
   eMC eLastEncoding = eGetEncoding(pLastCol,i_BaseOffset,
-                                   i_ColCrs_,i_OfsCrs_);
+                                   i_ColCrs_,i_OfsCrs_,pStreamDef);
   
   i8 nDataBytes = RowCoder::nDataSize(eLastEncoding);
   
@@ -111,7 +111,7 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
 /* get the encoding (metacode and offset) of a column datum                   */
 /*----------------------------------------------------------------------------*/
 eMC HeadLine::eGetEncoding(Column* pForCol, i8 i_BaseOffsetData,
-                           i8& i_ColCrs_, i8& i_OfsCrs_)
+                           i8& i_ColCrs_, i8& i_OfsCrs_, StreamDef* pStreamDef)
 {
   i8 i_ForCol = pForCol->iColumnNo();
   
