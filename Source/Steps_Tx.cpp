@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Tx.cpp - tx step grou                                                */
+/* Steps_Tx.cpp - tx step group                                               */
 /*============================================================================*/
 
 #include "Steps.h"
@@ -9,6 +9,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Tx(void)
 {
+  vAddStep("tx[].begin"_Stz,     &Step::vTx0Begin);
+  vAddStep("tx[].commit"_Stz,    &Step::vTx0Commit);
+
   vAddStep("tx::begin"_Stz,      &Step::vTxBegin);
   vAddStep("tx.commit"_Stz,      &Step::vTxCommit);
   vAddStep("tx.counterDec"_Stz,  &Step::vTxCounterDec);
@@ -24,6 +27,40 @@ void Step::vAddSteps_Tx(void)
   vAddStep("tx.rollback"_Stz,    &Step::vTxRollback);
   vAddStep("tx::testDist"_Stz,   &Step::vTxTestDist);
 }
+
+/*----------------------------------------------------------------------------*/
+/* tx[].begin -- begin a new current tx                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vTx0Begin(void)
+{
+  ENTRY(); // ENTRY("vTx0Begin"_Stz);
+  
+  Tx* pTx = new Tx;
+    
+  m_pRegSet->m_xpTx = pTx;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tx[].commit -- commit current tx                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vTx0Commit(void)
+{
+  ENTRY(); // ENTRY("vTx0Commit"_Stz);
+  
+  Tx* pTx = *m_pRegSet->m_xpTx;
+  m_pRegSet->m_xpTx = nullptr;
+
+  pTx->vPhase(XP_COMMITTED);
+
+  delete pTx;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* tx::begin -- begin a tx                                                    */

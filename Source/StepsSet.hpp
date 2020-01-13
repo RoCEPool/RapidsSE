@@ -1285,6 +1285,10 @@ public:
   void vTxRollback(void);
   void vTxTestDist(void);
 
+  void vTx0Begin(void);
+  void vTx0Commit(void);
+
+
   // txCollection
   void vTxCollectionDump(void);
   void vTxCollectionInit(void);
