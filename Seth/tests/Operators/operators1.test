@@ -152,7 +152,7 @@ pipeline scan2
     scanOp OpTable1 | stageC
 
   stage stageC on origin:
-  outputOp | stageD
+    outputOp | stageD
 
   stage stageD on origin:
     sinkOp | stageA

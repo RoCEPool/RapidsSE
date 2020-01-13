@@ -105,17 +105,17 @@ void EntWrk::vAppendElement(Row* pRow, Column* pCol)
     return;
   }
   
-  
   if (DM_VCH == pCol->eDatum()) {
     char* aDst = (char*)ayElmNext();
     char* aSrc = (char*)iValue;
     nElmSize = StrLib::iWordFlip(aDst, aSrc);
     vIncElmSeqSize(nElmSize);
   }
-  
-  byte* ayDst = ayElmNext();
-  nElmSize = Dtm::nCopy(ayDst,iValue);
-  vIncElmSeqSize(nElmSize);
+  else {
+    byte* ayDst = ayElmNext();
+    nElmSize = Dtm::nCopy(ayDst,iValue);
+    vIncElmSeqSize(nElmSize);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
