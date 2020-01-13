@@ -14,13 +14,8 @@ namespace CompactBuffers
     HeadLine(void);
     ~HeadLine(void) noexcept(false);
   
-    void vMetaCode(i8 i_Col, eMC eMetaCode);
-    
-    i8   nBytes(void);
-    i8   nUnits(void);
-    i8   nWords(void);
-
     byte* ayAdrLogical(i8 i_Offset);
+    i8   nBytes(void);
     void vDump(void);
     i8   nFreeSpace(StreamDef* pStreamDef);
     eMC  eGetEncoding(Column* pCol, i8 i_BaseOffset,
@@ -31,16 +26,20 @@ namespace CompactBuffers
     TailLine* aGetTailRel(i8 i_Tail_rel);
     bool bHasOverflow(void);
     void vHasOverflow(void);
+    void vMetaCode(i8 i_Col, eMC eMetaCode);
     i8   iOverflow2B(void);
     void vOverflow2B(i8 iOver2B);
     void vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize);
     void vPutLogical(i8 i_Offset, Stz* szString, i8 nLength);
     void vSetOver(OverLine* aOverLine);
     byte* ayShoco(Column* pCol, i8 iBaseOffsetData);
-
+    i8   nUnits(void);
     i8   nW(void);
     void vW(i8 nWords);
+    i8   nWords(void);
 
+    // inline functions
+  
     /*------------------------------------------------------------------------*/
     /* calculate address of meta area of head line                            */
     /*------------------------------------------------------------------------*/
