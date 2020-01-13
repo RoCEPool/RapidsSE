@@ -88,11 +88,8 @@ i8 HeadLine::nFreeSpace(StreamDef* pStreamDef)
   
  // ASSERT(pLastCol->bIsLastColumn());
   
-  i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
-  i8 i_BaseOffset = RowCoder::iBaseOffsetData(nMetaSize);
-  
   i8 i_ColCrs_ = 0;
-  i8 i_OfsCrs_ = i_BaseOffset;
+  i8 i_OfsCrs_ = C_UNKNOWN;
 
   eMC eLastEncoding = eGetEncoding(pLastCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
@@ -117,10 +114,10 @@ eMC HeadLine::eGetEncoding(Column* pForCol, i8& i_ColCrs_, i8& i_OfsCrs_,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move cursor forward to column required
   
-  if (i_ForCol < i_ColCrs_) {
-    i_ColCrs_ = 0;
-    //i_OfsCrs_ = i_BaseOffsetData;.
+  if (C_UNKNOWN == i_OfsCrs_ || i_ForCol < i_ColCrs_) {
     
+    i_ColCrs_ = 0;
+
     i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
     i_OfsCrs_ = RowCoder::iBaseOffsetData(nMetaSize);
   }

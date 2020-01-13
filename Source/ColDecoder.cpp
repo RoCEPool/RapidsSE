@@ -64,6 +64,7 @@ void ColDecoder::vDecodeBcd(Datum* pDatum,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  
   switch (eEncoding) {
       
     case MC_NULL: (* pDatum) = C_DATUM_NULL; break;

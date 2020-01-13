@@ -107,9 +107,8 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef)
   HV_Rec hvRec(pStreamDef, C_ALL);
   Datum oDatum;
   
-  i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
-  i8 i_Offset  = RowCoder::iBaseOffsetData(nMetaSize);
-  
+  i8 i_Offset = C_UNKNOWN;
+
   vTrace("Col ColNm         Datum MetaCode"
          "           Offset Address      DataBytes           ColVal\n"_Stz);
   
