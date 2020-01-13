@@ -49,7 +49,11 @@ i8 RowCoder::iBaseOffsetMeta(void)
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nControlSize(void)
 {
-  return C_W_1B;
+  i8 nControlSize = C_W_1B // 1 byte for the headline size (in words)
+                  + C_T_8B // 8 bytes for the perspective
+                  ;
+  
+  return nControlSize;
 }
 
 /*----------------------------------------------------------------------------*/
