@@ -60,6 +60,8 @@ void Engine::vMainEntry(void)
   
   vRunCommandLine();
   
+  vCloseTrace();
+  
   vClosePool();
   
   vPrintExit();
@@ -233,6 +235,18 @@ void Engine::vCheckPort(void)
 void Engine::vClosePool(void)
 {
   //delete gpBufferPool;
+}
+
+/*----------------------------------------------------------------------------*/
+/* close trace file                                                           */
+/*----------------------------------------------------------------------------*/
+void Engine::vCloseTrace(void)
+{
+  gpTraceFile->vClose();
+  delete gpTraceFile;
+  
+  if (gxArguments.m_bVerbose)
+    vInfo("** trace file closed: %s\n"_Stz, C_SE_TRACE);
 }
 
 /*----------------------------------------------------------------------------*/
