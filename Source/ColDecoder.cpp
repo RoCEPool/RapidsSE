@@ -9,15 +9,14 @@
 /*----------------------------------------------------------------------------*/
 void ColDecoder::vDecode(Datum* pDatum,
                          HeadLine* aHeadLine, StreamDef* pStreamDef,
-                         i8 nColumns, Column* pCol,
-                         i8& i_ColCrs_, i8& i_OfsCrs_)
+                         Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
   eDM eDatum = pCol->eDatum();
   
   switch (eDatum) {
       
     case DM_BCD:
-      vDecodeBcd(pDatum,aHeadLine,pStreamDef,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeBcd(pDatum,aHeadLine,pStreamDef,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_BOL:
@@ -25,31 +24,31 @@ void ColDecoder::vDecode(Datum* pDatum,
       break;
       
     case DM_DTE:
-      vDecodeDte(pDatum,aHeadLine,pStreamDef,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeDte(pDatum,aHeadLine,pStreamDef,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_FLT:
-      vDecodeFlt(pDatum,aHeadLine,pStreamDef,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeFlt(pDatum,aHeadLine,pStreamDef,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_INT:
-      vDecodeInt(pDatum,aHeadLine,pStreamDef,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeInt(pDatum,aHeadLine,pStreamDef,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_IVL:
-      vDecodeIvl(pDatum,aHeadLine,pStreamDef,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeIvl(pDatum,aHeadLine,pStreamDef,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_TME:
-      vDecodeTme(pDatum,aHeadLine,pStreamDef,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeTme(pDatum,aHeadLine,pStreamDef,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_TSP:
-      vDecodeTsp(pDatum,aHeadLine,pStreamDef,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeTsp(pDatum,aHeadLine,pStreamDef,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     case DM_VCH:
-      vDecodeVch(pDatum,aHeadLine,pStreamDef,nColumns,pCol,i_ColCrs_,i_OfsCrs_);
+      vDecodeVch(pDatum,aHeadLine,pStreamDef,pCol,i_ColCrs_,i_OfsCrs_);
       break;
       
     default:
@@ -62,9 +61,10 @@ void ColDecoder::vDecode(Datum* pDatum,
 /*----------------------------------------------------------------------------*/
 void ColDecoder::vDecodeBcd(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
-                            i8 nColumns, Column* pCol,
-                            i8& i_ColCrs_, i8& i_OfsCrs_)
+                            Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
+  i8 nColumns = pStreamDef->nColumns(C_ALL);
+  
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nColumns);
 
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
@@ -137,9 +137,9 @@ void ColDecoder::vDecodeBol(Datum* pDatum,
 /*----------------------------------------------------------------------------*/
 void ColDecoder::vDecodeDte(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
-                            i8 nColumns, Column* pCol,
-                            i8& i_ColCrs_, i8& i_OfsCrs_)
+                            Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
+  i8 nColumns = pStreamDef->nColumns(C_ALL);
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nColumns);
   
   i8 iEra = C_ERA_0;
@@ -182,9 +182,9 @@ void ColDecoder::vDecodeDte(Datum* pDatum,
 /*----------------------------------------------------------------------------*/
 void ColDecoder::vDecodeFlt(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
-                            i8 nColumns, Column* pCol,
-                            i8& i_ColCrs_, i8& i_OfsCrs_)
+                            Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
+  i8 nColumns = pStreamDef->nColumns(C_ALL);
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nColumns);
     
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
@@ -212,9 +212,9 @@ void ColDecoder::vDecodeFlt(Datum* pDatum,
 /*----------------------------------------------------------------------------*/
 void ColDecoder::vDecodeInt(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
-                            i8 nColumns, Column* pCol,
-                            i8& i_ColCrs_, i8& i_OfsCrs_)
+                            Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
+  i8 nColumns = pStreamDef->nColumns(C_ALL);
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nColumns);
   
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
@@ -257,9 +257,9 @@ void ColDecoder::vDecodeInt(Datum* pDatum,
 /*----------------------------------------------------------------------------*/
 void ColDecoder::vDecodeIvl(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
-                            i8 nColumns, Column* pCol,
-                            i8& i_ColCrs_, i8& i_OfsCrs_)
+                            Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
+  i8 nColumns = pStreamDef->nColumns(C_ALL);
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nColumns);
   
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
@@ -287,9 +287,9 @@ void ColDecoder::vDecodeIvl(Datum* pDatum,
 /*----------------------------------------------------------------------------*/
 void ColDecoder::vDecodeTme(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
-                            i8 nColumns, Column* pCol,
-                            i8& i_ColCrs_, i8& i_OfsCrs_)
+                            Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
+  i8 nColumns = pStreamDef->nColumns(C_ALL);
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nColumns);
   
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
@@ -320,9 +320,9 @@ void ColDecoder::vDecodeTme(Datum* pDatum,
 /*----------------------------------------------------------------------------*/
 void ColDecoder::vDecodeTsp(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
-                            i8 nColumns, Column* pCol,
-                            i8& i_ColCrs_, i8& i_OfsCrs)
+                            Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs)
 {
+  i8 nColumns = pStreamDef->nColumns(C_ALL);
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nColumns);
   
   eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
@@ -347,9 +347,9 @@ void ColDecoder::vDecodeTsp(Datum* pDatum,
 /*----------------------------------------------------------------------------*/
 void ColDecoder::vDecodeVch(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
-                            i8 nColumns, Column* pCol,
-                            i8& i_ColCrs_, i8& i_OfsCrs_)
+                            Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
+  i8 nColumns = pStreamDef->nColumns(C_ALL);
   i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nColumns);
   
   //! needs more work
