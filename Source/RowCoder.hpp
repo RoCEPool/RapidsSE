@@ -17,7 +17,7 @@ namespace CompactBuffers
   {
   public:
     static i8   iAuxLen(eMC eMetaCode);
-    static i8   iBaseOffsetData(i8 nColumns);
+    static i8   iBaseOffsetData(i8 nMetaSize);
     static i8   iBaseOffsetMeta(void);
     static i8   nDataSize(eMC eMetaCode);
     static void vDteFromEdt(i8* awEdtDte_rpl, i8 iEra);

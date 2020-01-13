@@ -23,11 +23,11 @@ i8 RowCoder::iAuxLen(eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 /* calc base offset for column data in head line                              */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::iBaseOffsetData(i8 nColumns)
+i8 RowCoder::iBaseOffsetData(i8 nMetaSize)
 {
-  i8 i_Offset = C_W_1B + nColumns;
+  i8 i_OffsetData = C_W_1B + nMetaSize;
   
-  return i_Offset;
+  return i_OffsetData;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,9 +35,9 @@ i8 RowCoder::iBaseOffsetData(i8 nColumns)
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffsetMeta(void)
 {
-  i8 i_Offset = C_W_1B;
+  i8 i_OffsetMeta = C_W_1B;
   
-  return i_Offset;
+  return i_OffsetMeta;
 }
 
 /*----------------------------------------------------------------------------*/

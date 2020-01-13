@@ -9,45 +9,62 @@ namespace CompactBuffers
   {
   public:
   
-    static void vDecode(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecode(Datum* pDatum,
+                        HeadLine* aHeadLine, StreamDef* pStreamDef,
                         i8 nColumns, Column* pCol,
                         i8& i_ColCrs_, i8& i_OfsCrs_);
-    static void vDecodeBcd(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeBcd(Datum* pDatum,
+                           HeadLine* aHeadLine, StreamDef* pStreamDef,
                            i8 nColumns, Column* pCol,
                            i8& i_ColCrs_, i8& i_OfsCrs_);
-    static void vDecodeBol(Datum* pDatum, HeadLine* aHeadLine,Column* pCol);
-    static void vDecodeDte(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeBol(Datum* pDatum,
+                           HeadLine* aHeadLine, StreamDef* pStreamDef,
+                           Column* pCol);
+    static void vDecodeDte(Datum* pDatum,
+                           HeadLine* aHeadLine, StreamDef* pStreamDef,
                            i8 nColumns, Column* pCol,
                            i8& i_ColCrs_, i8& i_OfsCrs_);
-    static void vDecodeFlt(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeFlt(Datum* pDatum,
+                           HeadLine* aHeadLine, StreamDef* pStreamDef,
                            i8 nColumns, Column* pCol,
                            i8& i_ColCrs_, i8& i_OfsCrs_);
-    static void vDecodeInt(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeInt(Datum* pDatum,
+                           HeadLine* aHeadLine, StreamDef* pStreamDef,
                            i8 nColumns, Column* pCol,
                            i8& i_ColCrs_, i8& i_OfsCrs_);
-    static void vDecodeIvl(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeIvl(Datum* pDatum,
+                           HeadLine* aHeadLine, StreamDef* pStreamDef,
                            i8 nColumns, Column* pCol,
                            i8& i_ColCrs_, i8& i_OfsCrs_);
-    static void vDecodeTme(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeTme(Datum* pDatum,
+                           HeadLine* aHeadLine, StreamDef* pStreamDef,
                            i8 nColumns, Column* pCol,
                            i8& i_ColCrs_, i8& i_OfsCrs_);
-    static void vDecodeTsp(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeTsp(Datum* pDatum,
+                           HeadLine* aHeadLine, StreamDef* pStreamDef,
                            i8 nColumns, Column* pCol,
                            i8& i_ColCrs_, i8& i_OfsCrs_);
-    static void vDecodeVch(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeVch(Datum* pDatum,
+                           HeadLine* aHeadLine, StreamDef* pStreamDef,
                            i8 nColumns, Column* pCol,
                            i8& i_ColCrs_, i8& i_OfsCrs_);
-    static void vDecodeVchLong(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeVchLong(Datum* pDatum,
+                               HeadLine* aHeadLine, StreamDef* pStreamDef,
                                 Column* pCol, i8 i_Offset);
-    static void vDecodeVchShocoFit(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeVchShocoFit(Datum* pDatum,
+                                   HeadLine* aHeadLine, StreamDef* pStreamDef,
                                    Column* pCol, i8 i_Offset);
-    static void vDecodeVchShocoSplit(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeVchShocoSplit(Datum* pDatum,
+                                     HeadLine* aHeadLine, StreamDef* pStreamDef,
                                      Column* pCol, i8 i_Offset);
-    static void vDecodeVchShocoTail(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeVchShocoTail(Datum* pDatum,
+                                    HeadLine* aHeadLine, StreamDef* pStreamDef,
                                     Column* pCol, i8 i_Offset);
-    static void vDecodeVchStringTail(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeVchStringTail(Datum* pDatum,
+                                     HeadLine* aHeadLine, StreamDef* pStreamDef,
                                      Column* pCol, i8 i_Offset);
-    static void vDecodeVchSmall(Datum* pDatum, HeadLine* aHeadLine,
+    static void vDecodeVchSmall(Datum* pDatum,
+                                HeadLine* aHeadLine, StreamDef* pStreamDef,
                                 Column* pCol, i8 i_Offset);
   };
 }
