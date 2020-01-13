@@ -25,9 +25,11 @@ i8 RowCoder::iAuxLen(eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffsetData(StreamDef* pStreamDef)
 {
+  i8 i_OffsetMeta = nControlSize();
+  
   i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
   
-  i8 i_OffsetData = C_W_1B + nMetaSize;
+  i8 i_OffsetData = i_OffsetMeta + nMetaSize;
 
   return i_OffsetData;
 }
@@ -37,9 +39,17 @@ i8 RowCoder::iBaseOffsetData(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffsetMeta(void)
 {
-  i8 i_OffsetMeta = C_W_1B;
+  i8 i_OffsetMeta = nControlSize();
   
   return i_OffsetMeta;
+}
+
+/*----------------------------------------------------------------------------*/
+/* how many bytes does the control area occupy?                               */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::nControlSize(void)
+{
+  return C_W_1B;
 }
 
 /*----------------------------------------------------------------------------*/
