@@ -31,6 +31,18 @@ i8 RowCoder::iBaseOffsetData(i8 nMetaSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* calc base offset for column data in head line                              */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iBaseOffsetData(StreamDef* pStreamDef)
+{
+  i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
+  
+  i8 i_OffsetData = RowCoder::iBaseOffsetData(nMetaSize);
+
+  return i_OffsetData;
+}
+
+/*----------------------------------------------------------------------------*/
 /* calc base offset for meta data in head line                                */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffsetMeta(void)
