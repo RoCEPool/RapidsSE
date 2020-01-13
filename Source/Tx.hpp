@@ -8,11 +8,13 @@ namespace Transactions
   class Tx : public Focal
   {
   private:
-    Lock   m_okLock;     // lock
-    i8     m_iLocalTxId; // local transaction id
-    i8     m_iDistTxId;  // distributed transaction id
-    eXP    m_ePhase;     // phase (executing, committing, ...)
-    Atomic m_ixCounter;  // general counter
+    Lock   m_okLock;       // lock
+    t8     m_tPerspective; // perspective
+    eXP    m_ePhase;       // phase (executing, committing, ...)
+  
+    i8     m_iLocalTxId;   // local transaction id
+    i8     m_iDistTxId;    // distributed transaction id
+    Atomic m_ixCounter;    // general counter
 
     struct {
       bool m_bDistMember; // true if part of distributed tx
@@ -48,7 +50,9 @@ namespace Transactions
     i8 iDistTxNode(void);
     void vDistTxId(i8 iTxId);
   
-    eXP ePhase(void);
+    t8   tPerspective(void);
+  
+    eXP  ePhase(void);
     void vPhase(eXP ePhase);
     
     void vContentDump(void);

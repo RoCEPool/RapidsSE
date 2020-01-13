@@ -54,9 +54,12 @@ Tx::Tx(bool bAddToSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 
+  // m_okLock
+  m_tPerspective = C_UNKNOWN;
+  m_ePhase       = XP_EXECUTING;
+  
   m_iLocalTxId = -1;
   m_iDistTxId  = -1;
-  m_ePhase     = XP_EXECUTING;
   m_ixCounter  = AM::nSlotsPerNode();
   
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
