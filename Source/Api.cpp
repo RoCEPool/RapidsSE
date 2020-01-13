@@ -409,6 +409,9 @@ void Api::vSpawnJobAndWait(Job* pJob)
   
   pJob->vSeed(SS_SEED_REQ);
   
+  // set the job state to be waiting
+  pJob->vJobState(JS_WAITING);
+  
   pJob->vTimerStart();
   
 
@@ -418,9 +421,6 @@ void Api::vSpawnJobAndWait(Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for condition & state
-  
-  // set the job state to be waiting
-  pJob->vJobState(JS_WAITING);
   
   // wait till signalled
   do {
