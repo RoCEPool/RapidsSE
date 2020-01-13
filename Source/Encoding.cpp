@@ -225,7 +225,7 @@ void Encoding::vInitialEncoding(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
-  m_i_Offset_next = C_W_1B + m_nMetaSize;
+  m_i_Offset_next = RowCoder::iBaseOffsetData(m_nMetaSize);
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
@@ -698,19 +698,11 @@ bool Encoding::bWithinHead(i8 i_Col)
   return false;
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Encoding::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(Encoding)
 
 /*============================================================================*/
 /* end                                                                        */
