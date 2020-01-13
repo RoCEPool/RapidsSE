@@ -208,12 +208,13 @@ void Key::vShow(IdxColVec* pIdxColVec)
     
     eDM eDatum = pCol->eDatum();
     
-    if (eDatum == DM_VCH)
+    if (eDatum == DM_VCH) {
       nBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
+    }
     else
       CsvValue::vInto((Stz*)caLiteral,ayElm,pCol);
     
-    vTrace("Elm[%lld %lldB] %s "_Stz,i_Col,nBytes,caLiteral);
+    vTrace("Elm[%lld %lldB %s]"_Stz,i_Col,nBytes,caLiteral);
   }
 }
 
