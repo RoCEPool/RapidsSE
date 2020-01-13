@@ -196,6 +196,7 @@ void SePrompt::vPromptLoop(void)
       vDumpTokenVec();
       vCompletedTask();
       vDeleteJob();
+      vEndRequest();
       continue;
     }
     
