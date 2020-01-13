@@ -63,11 +63,7 @@ void ColDecoder::vDecodeBcd(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
-  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
-
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                          i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   switch (eEncoding) {
       
     case MC_NULL: (* pDatum) = C_DATUM_NULL; break;
@@ -136,17 +132,12 @@ void ColDecoder::vDecodeDte(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
-  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
-
   i8 iEra = C_ERA_0;
   
   //!! needs more work
-  eMC eThisEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                              i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
-  
-  switch (eThisEncoding) {
+  switch (eEncoding) {
       
     case MC_NULL:
       (* pDatum) = C_DATUM_NULL;
@@ -181,11 +172,8 @@ void ColDecoder::vDecodeFlt(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
-  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
-
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                          i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  
   switch (eEncoding) {
       
     case MC_NULL: (* pDatum) = C_DATUM_NULL; break;
@@ -211,11 +199,7 @@ void ColDecoder::vDecodeInt(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
-  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
-
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                          i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   //vTrace("Decoding %lld\n"_Stz, eEncoding);
   
   switch (eEncoding) {
@@ -256,11 +240,8 @@ void ColDecoder::vDecodeIvl(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
-  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
-
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                          i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  
   switch (eEncoding) {
       
     case MC_NULL: (* pDatum) = C_DATUM_NULL; break;
@@ -286,11 +267,8 @@ void ColDecoder::vDecodeTme(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
-  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
-
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                          i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
+  
   switch (eEncoding) {
       
     case MC_NULL: (* pDatum) = C_DATUM_NULL; break;
@@ -319,11 +297,8 @@ void ColDecoder::vDecodeTsp(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs)
 {
-  i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
-  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
-
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                          i_ColCrs_,i_OfsCrs,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs,pStreamDef);
+  
   switch (eEncoding) {
       
     case MC_NULL: (* pDatum) = C_DATUM_NULL; break;
@@ -346,13 +321,8 @@ void ColDecoder::vDecodeVch(Datum* pDatum,
                             HeadLine* aHeadLine, StreamDef* pStreamDef,
                             Column* pCol, i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
-  i8 i_BaseOffsetData = RowCoder::iBaseOffsetData(nMetaSize);
-
-  
   //! needs more work
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffsetData,
-                                          i_ColCrs_,i_OfsCrs_,pStreamDef);
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_ColCrs_,i_OfsCrs_,pStreamDef);
   
   if (MC_NULL == eEncoding) {
     (* pDatum) = C_DATUM_NULL;
