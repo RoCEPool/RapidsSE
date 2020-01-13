@@ -24,7 +24,7 @@ export LD_LIBRARY_PATH="${EXE_DIR}":$LD_LIBRARY_PATH
 if [ ! -f "${EXE}" ]
 then
   echo "Not stopping SE because the binary does not exist."
-  return
+  exit 1
 fi
 
 if [ -f "${PIDFILE}" ]
