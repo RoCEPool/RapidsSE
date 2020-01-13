@@ -120,7 +120,10 @@ eMC HeadLine::eGetEncoding(Column* pForCol, i8 i_BaseOffsetData,
   
   if (i_ForCol < i_ColCrs_) {
     i_ColCrs_ = 0;
-    i_OfsCrs_ = i_BaseOffsetData;
+    //i_OfsCrs_ = i_BaseOffsetData;.
+    
+    i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
+    i_OfsCrs_ = RowCoder::iBaseOffsetData(nMetaSize);
   }
   
   for (i8 i_Col = i_ColCrs_; i_Col < i_ForCol; i_Col++) {
