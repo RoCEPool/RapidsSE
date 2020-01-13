@@ -29,6 +29,8 @@ namespace CompactBuffers
     void vMetaCode(i8 i_Col, eMC eMetaCode);
     i8   iOverflow2B(void);
     void vOverflow2B(i8 iOver2B);
+    t8   tPerspective(void);
+    void vPerspective(t8 tPerspective);
     void vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize);
     void vPutLogical(i8 i_Offset, Stz* szString, i8 nLength);
     void vSetOver(OverLine* aOverLine);

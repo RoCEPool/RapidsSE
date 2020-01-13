@@ -304,6 +304,24 @@ void HeadLine::vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get perspective                                                            */
+/*----------------------------------------------------------------------------*/
+t8 HeadLine::tPerspective(void)
+{
+  t8 tPerspective = w8_8B(1);
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set perspective                                                            */
+/*----------------------------------------------------------------------------*/
+void HeadLine::vPerspective(t8 tPerspective)
+{
+  v8B(1,tPerspective);
+}
+
+/*----------------------------------------------------------------------------*/
 /* put string into logical compact row : head[+over]                          */
 /*----------------------------------------------------------------------------*/
 void HeadLine::vPutLogical(i8 i_Offset, Stz* szString, i8 nLength)
@@ -326,7 +344,7 @@ void HeadLine::vSetOver(OverLine* aOverLine)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return size of head in words                                               */
+/* return size of head in units                                               */
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::nUnits(void)
 {
