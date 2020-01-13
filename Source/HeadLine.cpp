@@ -249,7 +249,11 @@ void HeadLine::vHasOverflow(void)
 /*----------------------------------------------------------------------------*/
 void HeadLine::vMetaCode(i8 i_Col, eMC eMetaCode)
 {
-  v1B((C_W_1B + i_Col),eMetaCode);
+  i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
+  
+  i8 i_Offset = i_BaseOffsetMeta + i_Col;
+  
+  v1B(i_Offset,eMetaCode);
 }
 
 /*----------------------------------------------------------------------------*/

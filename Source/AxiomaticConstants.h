@@ -36,6 +36,7 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 static const i8 C_C_1B = 1;   // <C> 1B number of compressed bytes
 static const i8 C_L_1B = 1;   // <L> 1B string length in bytes
 static const i8 C_M_1B = 1;   // <M> 1B overflowed metacode
+static const i8 C_T_8B = 8;   // <T> 8B transaction perspective
 static const i8 C_U_1B = 1;   // <U> 1B over/tail line size in units
 static const i8 C_W_1B = 1;   // <W> 1B head line size in words
 

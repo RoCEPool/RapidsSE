@@ -25,17 +25,17 @@ namespace Enums         {                                                     }
 namespace Esses         { template <int BYTES> class String_t;
                           typedef String_t<32>     s32;
                           typedef String_t<256>    s256;
-                          typedef String_t<C_4K>   s4K;   // note this is 4K not 4KB
-                          typedef String_t<C_16KB> s16KB; // note this is 16KB
-                          typedef String_t<C_17KB> s17KB; // note this is 17KB
-                          typedef String_t<C_48K>  s48K;  // note this is 48K not 48KB
-                          typedef String_t<C_1M>   s1M;   // note this is 1M not 1MB
+                          typedef String_t<C_4K>   s4K;   // note: 4K not 4KB
+                          typedef String_t<C_16KB> s16KB; // note: this is 16KB
+                          typedef String_t<C_17KB> s17KB; // note: this is 17KB
+                          typedef String_t<C_48K>  s48K;  // note: 48K not 48KB
+                          typedef String_t<C_1M>   s1M;   // note: 1M not 1MB
                           typedef String_t<C_4K>   sVCH;
   
                           template <int BYTES> class Bytes_t;
                           typedef Bytes_t<32>      b32;
                           typedef Bytes_t<256>     b256;
-                          typedef Bytes_t<C_4K>    b4K;   // note this is 4K not 4KB
+                          typedef Bytes_t<C_4K>    b4K;   // note: 4K not 4KB
                                                                               }
 namespace Focals        { class ReqTuple;                                     }
 namespace Folders       {                                                     }

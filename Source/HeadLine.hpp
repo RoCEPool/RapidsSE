@@ -45,7 +45,9 @@ namespace CompactBuffers
     /*------------------------------------------------------------------------*/
     inline eMC* aeMetaArea(void)
     {
-      eMC* aeCode = aAdd<eMC*>(this,C_W_1B);
+      i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
+
+      eMC* aeCode = aAdd<eMC*>(this,i_BaseOffsetMeta);
   
       return aeCode;
     }
@@ -55,7 +57,9 @@ namespace CompactBuffers
     /*------------------------------------------------------------------------*/
     inline eMC eMetaCode(i8 i_Col)
     {
-      eMC eCode = *aAdd<eMC*>(this,C_W_1B + i_Col);
+      i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
+    
+      eMC eCode = *aAdd<eMC*>(this,i_BaseOffsetMeta + i_Col);
   
       return eCode;
     }

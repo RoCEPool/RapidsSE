@@ -14,6 +14,7 @@ namespace CompactBuffers
 
 //------------------------------------------------------------------------------
 
+#include "RowCoder.hpp"
 #include "HeadLine.hpp"
 #include "OverLine.hpp"
 #include "TailLine.hpp"
@@ -33,7 +34,6 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 
 //------------------------------------------------------------------------------
 
-#include "RowCoder.hpp"
 #include "ExtractRow.hpp"
 #include "Encoding.hpp"
 #include "Packing.hpp"
