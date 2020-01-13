@@ -2,7 +2,7 @@
 /* EntBuffer_verify.cpp -- verify related functions for Entry Buffer          */
 /*============================================================================*/
 
-#include "Indexes.h"
+#include "IndexTrees.h"
 #include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/

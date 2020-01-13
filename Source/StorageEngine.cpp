@@ -31,7 +31,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Gadgets::vCheckAssumptions();
   Grids::vCheckAssumptions();
   Host::vCheckAssumptions();
-  Indexes::vCheckAssumptions();
+  IndexTrees::vCheckAssumptions();
   Interface::vCheckAssumptions();
   Jobs::vCheckAssumptions();
   Library::vCheckAssumptions();

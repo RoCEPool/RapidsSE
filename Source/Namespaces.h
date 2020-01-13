@@ -42,7 +42,7 @@ namespace Folders       {                                                     }
 namespace Gadgets       { class EnumFlags;                                    }
 namespace Grids         { class Grid; class Node;                             }
 namespace Host          {                                                     }
-namespace Indexes       { class EntBuffer; class IndexTree;                   }
+namespace IndexTrees    { class EntBuffer; class IndexTree;                   }
 namespace Interface     { class SessionArray;                                 }
 namespace Jobs          { class Job; struct JobClass; class JobList;
                           class Job_CreateTable; class Job_CreateIndex;
@@ -107,7 +107,7 @@ using namespace Folders;
 using namespace Gadgets;
 using namespace Grids;
 using namespace Host;
-using namespace Indexes;
+using namespace IndexTrees;
 using namespace Interface;
 using namespace Jobs;
 using namespace Library;

@@ -2,7 +2,7 @@
 /* IndexTree.cpp - index data portion of table partition                      */
 /*============================================================================*/
 
-#include "Indexes.h"
+#include "IndexTrees.h"
 #include "AM.hpp"
 
 bool mbCheckPriorVec = false;
@@ -14,7 +14,7 @@ bool mbCheckPriorVec = false;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IndexTree* Indexes::_pIndexTree(void* pAddr)
+IndexTree* IndexTrees::_pIndexTree(void* pAddr)
 {
   IndexTree* pIndexTree = reinterpret_cast<IndexTree*>(pAddr);
   
