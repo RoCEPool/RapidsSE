@@ -61,7 +61,6 @@ Tx::Tx(void)
   m_ePhase       = XP_EXECUTING;
   
   m_iLocalTxId = -1;
-  m_iDistTxId  = -1;
   m_ixCounter  = AM::nSlotsPerNode();
   
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
@@ -229,55 +228,6 @@ void Tx::vLocalTxId(i8 iLocalTxId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get dist tx id                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Tx::iDistTxId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  return m_iDistTxId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get dist tx no                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Tx::iDistTxNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  i8 iMaskOffUpper16Bits = 0x0000FFFFFFFFFFFF;
-  
-  i8 iTxNo = m_iDistTxId & iMaskOffUpper16Bits;
-  
-  return iTxNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get dist tx node no                                                        */
-/*----------------------------------------------------------------------------*/
-i8 Tx::iDistTxNode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  i8 iMaskOffLower48Bits = 0xFFFF000000000000;
-  
-  i8 iTxNode = m_iDistTxId & iMaskOffLower48Bits;
-  iTxNode >>= 48;
-  
-  return iTxNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set dist tx id                                                             */
-/*----------------------------------------------------------------------------*/
-void Tx::vDistTxId(i8 iDistTxId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  m_iDistTxId = iDistTxId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get perspective                                                            */
 /*----------------------------------------------------------------------------*/
 t8 Tx::tPerspective(void)
@@ -285,6 +235,16 @@ t8 Tx::tPerspective(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
   return m_tPerspective;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set perspective                                                            */
+/*----------------------------------------------------------------------------*/
+void Tx::vPerspective(t8 tPerspective)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  m_tPerspective = tPerspective;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -326,59 +286,17 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   // get string of the distributed members of this transaction
   char caMembers[C_64KB] = "";
-  if (pTx->bLocalTx()) {
-    StrLib::vConcat(caMembers,"{");
-    for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
-      if (pTx->bDistMember(i_Node))
-        StrLib::vSprintCat((Stz*)caMembers," %lld"_Stz,i_Node);
-    StrLib::vConcat(caMembers," }");
-  }
+  StrLib::vConcat(caMembers,"{");
+  for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
+    if (pTx->bDistMember(i_Node))
+      StrLib::vSprintCat((Stz*)caMembers," %lld"_Stz,i_Node);
+  StrLib::vConcat(caMembers," }");
   
-  vTrace("tx: %lld.%lld-%lld.%lld phase %s counter %lld %s\n"_Stz,
+  vTrace("tx: %lld.%lld phase %s counter %lld %s\n"_Stz,
          pTx->iLocalTxNode(), pTx->iLocalTxNo(),
-         pTx->iDistTxNode(), pTx->iDistTxNo(),  
          aXP[pTx->m_ePhase],
          pTx->iCounterGet(),
          caMembers);
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a local tx?                                                        */
-/*----------------------------------------------------------------------------*/
-bool Tx::bLocalTx(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  if (m_iDistTxId == m_iLocalTxId)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a distributed tx?                                                  */
-/*----------------------------------------------------------------------------*/
-bool Tx::bDistTx(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  if (m_iDistTxId != m_iLocalTxId)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* decode whether this is a local or distributed transaction                  */
-/*----------------------------------------------------------------------------*/
-Stz* Tx::aDecode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  if (bLocalTx())
-    return "local"_Stz;
-  else
-    return "dist"_Stz;
 }
 
 /*----------------------------------------------------------------------------*/

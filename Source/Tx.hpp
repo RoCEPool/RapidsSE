@@ -13,7 +13,6 @@ namespace Transactions
     eXP    m_ePhase;       // phase (executing, committing, ...)
   
     i8     m_iLocalTxId;   // local transaction id
-    i8     m_iDistTxId;    // distributed transaction id
     Atomic m_ixCounter;    // general counter
 
     struct {
@@ -43,14 +42,10 @@ namespace Transactions
     i8 iLocalTxNo(void);
     i8 iLocalTxNode(void);
     void vLocalTxId(i8 iTxId);
-
-    i8 iDistTxId(void);
-    i8 iDistTxNo(void);
-    i8 iDistTxNode(void);
-    void vDistTxId(i8 iTxId);
   
     t8   tPerspective(void);
-  
+    void vPerspective(t8 tPerspective);
+
     eXP  ePhase(void);
     void vPhase(eXP ePhase);
     
@@ -59,11 +54,7 @@ namespace Transactions
     i8   iCounterDec(void);
     i8   iCounterGet(void);
     void vCounterSet(i8 iCounter);
-  
-    bool bLocalTx(void);
-    bool bDistTx(void);
-    Stz* aDecode(void);
-  
+    
     bool bDistMember(i8 i_Node);
     void vDistMember(i8 i_Node, bool bDistMember);
   

@@ -180,7 +180,7 @@ void Step::vTxDistMemberFetch(void)
   
   Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
-  ASSERT(pTx->bLocalTx());
+  //ASSERT(pTx->bLocalTx());
   
   i8 i_Node = m_pDataStack->iPopInt(__func__);
   
@@ -200,7 +200,7 @@ void Step::vTxDistMemberStore(void)
   
   Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
-  ASSERT(pTx->bLocalTx());
+  //ASSERT(pTx->bLocalTx());
   
   i8 i_Node = m_pDataStack->iPopInt(__func__);
 
