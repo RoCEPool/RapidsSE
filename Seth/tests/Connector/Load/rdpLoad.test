@@ -39,11 +39,11 @@ success
 ////////////////////////////////////////////////////////////////////////////////
 
 // load with missing tableName
-escape connector se 'load' with  file='/DATA/Load/rdp.csv', node='node1';
+escape connector se 'load' with  file='../DATA/Load/rdp.csv', node='node1';
 failure contains: 'No table name'
 
 // load data into the table with invalid table
-escape connector se 'load rdp2' with file='/DATA/Load/rdp.csv', node='node1';
+escape connector se 'load rdp2' with file='../DATA/Load/rdp.csv', node='node1';
 failure contains: 'no such table'
 
 
@@ -53,7 +53,7 @@ failure contains: 'no such table'
 ////////////////////////////////////////////////////////////////////////////////
 
 // load data into the table with invalid file
-escape connector se 'load rdp' with file='/DATA/Load/rdpX.csv', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdpX.csv', node='node1';
 failure contains: 'invalid file'
 
 // load with missing fileName
@@ -67,7 +67,7 @@ failure contains: 'No file name'
 ////////////////////////////////////////////////////////////////////////////////
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
@@ -117,15 +117,15 @@ create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', delimiter= 'xy', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', delimiter= 'xy', node='node1';
 failure contains: 'delimiter can only be'
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', delimiter= '\n', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', delimiter= '\n', node='node1';
 failure contains: 'delimiter can only be'
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', delimiter= '\r', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', delimiter= '\r', node='node1';
 failure contains: 'delimiter can only be'
 
 //-----------------------//
@@ -133,7 +133,7 @@ failure contains: 'delimiter can only be'
 //-----------------------//
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
@@ -178,7 +178,7 @@ create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='/DATA/Load/rdp_pipe.csv', delimiter= '|', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp_pipe.csv', delimiter= '|', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
@@ -223,7 +223,7 @@ create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='/DATA/Load/rdp_delimiter_tab.csv', delimiter= '\t', enclosed_by="'", node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp_delimiter_tab.csv', delimiter= '\t', enclosed_by="'", node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
@@ -280,11 +280,11 @@ create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with incorrect enclosed by
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', enclosed_by= 'xyz', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', enclosed_by= 'xyz', node='node1';
 failure contains: 'enclosed_by can only be'
 
 // load data into the table with incorrect enclosed by
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', enclosed_by= '\nx', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', enclosed_by= '\nx', node='node1';
 failure contains: 'enclosed_by can only be'
 
 // load data into the table with incorrect enclosed by
@@ -296,7 +296,7 @@ failure contains: 'enclosed_by can only be'
 //-----------------------//
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='/DATA/Load/rdp_enclosed_by_pipe.csv', enclosed_by='|', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp_enclosed_by_pipe.csv', enclosed_by='|', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
@@ -343,7 +343,7 @@ create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='/DATA/Load/rdp_enclosed_by_quote.csv', enclosed_by="'", node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp_enclosed_by_quote.csv', enclosed_by="'", node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
@@ -390,11 +390,11 @@ create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with incorrect escape_char
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', escape_char= 'xy', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', escape_char= 'xy', node='node1';
 failure contains: 'escape_char can only be'
 
 // load data into the table with incorrect enclosed by
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', escape_char= '\n', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', escape_char= '\n', node='node1';
 failure contains: 'escape_char can only be'
 
 //-----------------------//
@@ -402,7 +402,7 @@ failure contains: 'escape_char can only be'
 //-----------------------//
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', escape_char='\', enclosed_by="'", node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', escape_char='\', enclosed_by="'", node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
@@ -453,47 +453,47 @@ create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= 'xy', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator= 'xy', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= 'x', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator= 'x', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= 'xy\r\n', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator= 'xy\r\n', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= 'xy\r', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator= 'xy\r', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= 'xy\n', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator= 'xy\n', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= '\r\n\r', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator= '\r\n\r', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= '\r\r', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator= '\r\r', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= '\n\n', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator= '\n\n', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= '\r\nx', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator= '\r\nx', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= '\rx', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator= '\rx', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= '\nx', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator= '\nx', node='node1';
 failure contains: 'terminator can only be'
 
 //-----------------------//
@@ -501,7 +501,7 @@ failure contains: 'terminator can only be'
 //-----------------------//
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator='\n', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator='\n', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
@@ -548,7 +548,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator='\r', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator='\r', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
@@ -596,7 +596,7 @@ success
 
 // load data into the table with default formatter settings
 
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator='\n', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator='\n', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
@@ -690,7 +690,7 @@ create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='/DATA/Load/rdp_terminator.csv', terminator=';\n', node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp_terminator.csv', terminator=';\n', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
@@ -738,7 +738,7 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator=';\r', enclosed_by="'", node='node1';
+escape connector se 'load rdp' with file='../DATA/Load/rdp.csv', terminator=';\r', enclosed_by="'", node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's

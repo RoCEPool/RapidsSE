@@ -27,7 +27,7 @@ success
 create index jCdt_idx5 on rapidsse.public.jCdt (jE);
 success
 
-ESCAPE CONNECTOR se 'load jCdt' with file = '/DATA/Select/range.csv', node = 'node1';
+ESCAPE CONNECTOR se 'load jCdt' with file = '../DATA/Select/range.csv', node = 'node1';
 failure contains: 'Success'
 
 //------------------------------------------------------------------------------

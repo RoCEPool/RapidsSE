@@ -11,7 +11,7 @@ create table rapidsse.public.terminator_cr (
 success
 
 // load data into the table with default formatter settings
-ESCAPE CONNECTOR se 'load terminator_cr' with file='/DATA/Load/terminator_cr.csv' , terminator='\r', node='NODE1' ;
+ESCAPE CONNECTOR se 'load terminator_cr' with file='../DATA/Load/terminator_cr.csv' , terminator='\r', node='NODE1' ;
 failure contains: 'Success'
 
 // create index

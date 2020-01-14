@@ -23,7 +23,7 @@ int_col15  INTEGER
 );
 success
   
-ld intTbl "/DATA/Encoding/integer.csv" ;
+ld intTbl "../DATA/Encoding/integer.csv" ;
 success
 
 // check no of rows

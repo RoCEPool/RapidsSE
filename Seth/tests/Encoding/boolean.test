@@ -23,7 +23,7 @@ create table bolTbl (
 );
 success
   
-ld bolTbl "/DATA/Encoding/boolean.csv" ;
+ld bolTbl "../DATA/Encoding/boolean.csv" ;
 success
 
 // check no of rows

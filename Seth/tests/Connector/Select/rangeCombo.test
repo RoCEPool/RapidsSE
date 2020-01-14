@@ -14,7 +14,7 @@ success
 create index T1_idx1 on rapidsse.public.G1 (jA, jC);
 success
 
-ESCAPE CONNECTOR se 'load G1' with file = '/DATA/Select/rangeCombo.csv', node = 'node1';
+ESCAPE CONNECTOR se 'load G1' with file = '../DATA/Select/rangeCombo.csv', node = 'node1';
 failure contains: 'Success'
 
 select * from rapidsse.public.G1;

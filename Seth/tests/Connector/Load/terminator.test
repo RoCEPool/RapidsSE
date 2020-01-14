@@ -10,7 +10,7 @@ create table rapidsse.public.G1(
 success
 
 // load data into the table with default formatter settings
-ESCAPE CONNECTOR se 'load G1' with file='/DATA/Load/terminator2.csv' , terminator='|\n', node='NODE1' ;
+ESCAPE CONNECTOR se 'load G1' with file='../DATA/Load/terminator2.csv' , terminator='|\n', node='NODE1' ;
 failure contains: 'Warning'
 
 // create index

@@ -174,7 +174,7 @@ create table rapidsse.public.max_columns (
 );
 success
 
-ESCAPE CONNECTOR se 'load rapidsse.public.max_columns' WITH FILE ='/DATA/load/max_150_columns_varchar100.csv', node = 'NODE1';
+ESCAPE CONNECTOR se 'load rapidsse.public.max_columns' WITH FILE ='../DATA/load/max_150_columns_varchar100.csv', node = 'NODE1';
 failure contains: 'Success'
 
 drop table rapidsse.public.max_columns;
@@ -251,7 +251,7 @@ create table rapidsse.public.max_columns (
   c_field059   VARCHAR(254)
 );
 
-ESCAPE CONNECTOR se 'load rapidsse.public.max_columns' WITH FILE ='/DATA/load/max_60_columns_varchar254.csv', node = 'NODE1' ;
+ESCAPE CONNECTOR se 'load rapidsse.public.max_columns' WITH FILE ='../DATA/load/max_60_columns_varchar254.csv', node = 'NODE1' ;
 failure contains: 'Success'
 
 drop table rapidsse.public.max_columns;

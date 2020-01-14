@@ -15,43 +15,43 @@ success
 //------------------------------------------------------------------------------
 // load data into the table with incorrect formatters
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YYYY-DD.MM", node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YYYY-DD.MM", node='NODE1'  ;
 failure contains: 'invalid command'
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="XX-DD-MM", node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="XX-DD-MM", node='NODE1'  ;
 failure contains: 'invalid command'
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YY-DD-MM", node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YY-DD-MM", node='NODE1'  ;
 failure contains: 'invalid command'
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YYY-DD-MM", node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YYY-DD-MM", node='NODE1'  ;
 failure contains: 'invalid command'
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YYYY-XX-MM", node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YYYY-XX-MM", node='NODE1'  ;
 failure contains: 'invalid command'
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YYYY-DX-MM", node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YYYY-DX-MM", node='NODE1'  ;
 failure contains: 'invalid command'
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YYYY-DD-XM", node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YYYY-DD-XM", node='NODE1'  ;
 failure contains: 'invalid command'
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YYYY-DD-MX", node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YYYY-DD-MX", node='NODE1'  ;
 failure contains: 'invalid command'
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YYYY/DD-MM", node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="YYYY/DD-MM", node='NODE1'  ;
 failure contains: 'invalid command'
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="DD-MM-YYYD", node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="DD-MM-YYYD", node='NODE1'  ;
 failure contains: 'invalid command'
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="MM-MM-YYYD", node='NODE1' ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="MM-MM-YYYD", node='NODE1' ;
 failure contains: 'invalid command'
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="MM-DD/YYYYY", node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="MM-DD/YYYYY", node='NODE1'  ;
 failure contains: 'invalid command'
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="DD-MM/YYYYY", node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT="DD-MM/YYYYY", node='NODE1'  ;
 failure contains: 'invalid command'
 
 //------------------------------------------------------------------------------
@@ -185,7 +185,7 @@ create table rapidsse.public.tsp (
 );
 success
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-MM-DD.csv' , node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-MM-DD.csv' , node='NODE1'  ;
 failure contains: 'Success'
 
 create index idx on rapidsse.public.tsp (tsp_key);
@@ -240,7 +240,7 @@ create table rapidsse.public.tsp (
 success
 
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-MM-DD.csv' , DATE_FORMAT='YYYY-MM-DD', node='NODE1' ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-MM-DD.csv' , DATE_FORMAT='YYYY-MM-DD', node='NODE1' ;
 failure contains: 'Success'
 
 create index idx on rapidsse.public.tsp (tsp_key);
@@ -294,7 +294,7 @@ create table rapidsse.public.tsp (
 );
 success
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT='YYYY-DD-MM' , node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT='YYYY-DD-MM' , node='NODE1'  ;
 failure contains: 'Success'
 
 create index idx on rapidsse.public.tsp (tsp_key);
@@ -347,7 +347,7 @@ tsp_tsp    TIMESTAMP   NOT NULL
 );
 success
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_DD-YYYY-MM.csv' , DATE_FORMAT='DD-YYYY-MM', node='NODE1' ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_DD-YYYY-MM.csv' , DATE_FORMAT='DD-YYYY-MM', node='NODE1' ;
 failure contains: 'Success'
 
 create index idx on rapidsse.public.tsp (tsp_key);
@@ -401,7 +401,7 @@ tsp_tsp    TIMESTAMP   NOT NULL
 );
 success
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_DD-MM-YYYY.csv' ,DATE_FORMAT='DD-MM-YYYY', node='NODE1';
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_DD-MM-YYYY.csv' ,DATE_FORMAT='DD-MM-YYYY', node='NODE1';
 failure contains: 'Success'
 
 create index idx on rapidsse.public.tsp (tsp_key);
@@ -455,7 +455,7 @@ create table rapidsse.public.tsp (
 );
 success
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_MM-DD-YYYY_backslash.csv' ,DATE_FORMAT='MM/DD/YYYY', node='NODE1' ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_MM-DD-YYYY_backslash.csv' ,DATE_FORMAT='MM/DD/YYYY', node='NODE1' ;
 failure contains: 'Success'
 
 create index idx on rapidsse.public.tsp (tsp_key);
@@ -509,7 +509,7 @@ create table rapidsse.public.tsp (
 );
 success
 
-ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_MM-YYYY-DD_backslash.csv' ,DATE_FORMAT='MM/YYYY/DD', node='NODE1'  ;
+ESCAPE CONNECTOR se 'load tsp' with file='../DATA/Load/tsp_MM-YYYY-DD_backslash.csv' ,DATE_FORMAT='MM/YYYY/DD', node='NODE1'  ;
 failure contains: 'Success'
 
 create index idx on rapidsse.public.tsp (tsp_key);

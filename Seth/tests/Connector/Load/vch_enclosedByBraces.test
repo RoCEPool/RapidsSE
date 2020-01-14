@@ -10,11 +10,11 @@ create table rapidsse.public.vch (
 );
 
 // load data into the table with enclosed_by as 3 characters
-ESCAPE CONNECTOR se 'load vch' WITH file = '/DATA/Load/vch_braces.csv', enclosed_by = '{x}' , node = 'node1' ;
+ESCAPE CONNECTOR se 'load vch' WITH file = '../DATA/Load/vch_braces.csv', enclosed_by = '{x}' , node = 'node1' ;
 failure contains: 'enclosed_by can only be'
 
 // load data into the table with enclosed_by as {}
-ESCAPE CONNECTOR se 'load vch' WITH file = '/DATA/Load/vch_braces.csv', enclosed_by = '{}' , node = 'node1' ;
+ESCAPE CONNECTOR se 'load vch' WITH file = '../DATA/Load/vch_braces.csv', enclosed_by = '{}' , node = 'node1' ;
 failure contains: 'Warning'
 
 Select * from rapidsse.public.vch;

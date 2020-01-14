@@ -19,7 +19,7 @@ partition by (pcol9,colb9)
 ;
 success
 
-ESCAPE CONNECTOR se 'load table9' WITH file = '/DATA/Load/tbl9data.csv', node = 'node1' ;
+ESCAPE CONNECTOR se 'load table9' WITH file = '../DATA/Load/tbl9data.csv', node = 'node1' ;
 failure contains: 'Success'
 
 create index tbl9idx2 on table9(scol9);

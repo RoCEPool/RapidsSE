@@ -15,7 +15,7 @@ create table nulTbl (
 );
 success
 
-ld nulTbl "/DATA/Datums/nulls.csv" ;
+ld nulTbl "../DATA/Datums/nulls.csv" ;
 success
 
 // check no of rows

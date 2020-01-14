@@ -17,7 +17,7 @@ p_comment VARCHAR(23)
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rapidsse.public.part' with file='/DATA/Load/part_curlyBraces.csv', enclosed_by='{}',  terminator='\r\n', node='node1';
+escape connector se 'load rapidsse.public.part' with file='../DATA/Load/part_curlyBraces.csv', enclosed_by='{}',  terminator='\r\n', node='node1';
 success
 
 select * from rapidsse.public.part where p_type is null;
