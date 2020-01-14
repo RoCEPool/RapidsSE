@@ -13,7 +13,6 @@ namespace Transactions
     eXP    m_ePhase;       // phase (executing, committing, ...)
   
     i8     m_iLocalTxId;   // local transaction id
-    Atomic m_ixCounter;    // general counter
 
     struct {
       bool m_bDistMember; // true if part of distributed tx
@@ -51,10 +50,6 @@ namespace Transactions
     
     void vContentDump(void);
   
-    i8   iCounterDec(void);
-    i8   iCounterGet(void);
-    void vCounterSet(i8 iCounter);
-    
     bool bDistMember(i8 i_Node);
     void vDistMember(i8 i_Node, bool bDistMember);
   

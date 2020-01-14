@@ -61,7 +61,6 @@ Tx::Tx(void)
   m_ePhase       = XP_EXECUTING;
   
   m_iLocalTxId = -1;
-  m_ixCounter  = AM::nSlotsPerNode();
   
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
     m_xNode[i_Node].m_bDistMember = false;
@@ -144,38 +143,6 @@ void Tx::vFocalOutline(s4K& sOutline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
-}
-
-/*----------------------------------------------------------------------------*/
-/* decrement atmoic counter                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Tx::iCounterDec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  i8 iCounter = --m_ixCounter;
-  
-  return iCounter;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get general counter                                                        */
-/*----------------------------------------------------------------------------*/
-i8 Tx::iCounterGet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  return *m_ixCounter;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set general counter                                                        */
-/*----------------------------------------------------------------------------*/
-void Tx::vCounterSet(i8 iCounter)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  m_ixCounter = iCounter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -292,10 +259,9 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
       StrLib::vSprintCat((Stz*)caMembers," %lld"_Stz,i_Node);
   StrLib::vConcat(caMembers," }");
   
-  vTrace("tx: %lld.%lld phase %s counter %lld %s\n"_Stz,
+  vTrace("tx: %lld.%lld phase %s %s\n"_Stz,
          pTx->iLocalTxNode(), pTx->iLocalTxNo(),
          aXP[pTx->m_ePhase],
-         pTx->iCounterGet(),
          caMembers);
 }
 

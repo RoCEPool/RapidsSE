@@ -126,7 +126,7 @@ void Step::vTxCounterDec(void)
   
   Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
-  i8 iCounter = pTx->iCounterDec();
+  //i8 iCounter = pTx->iCounterDec();
   
 //  vTrace("Dec counter tx: %lld.%lld-%lld.%lld(%s) now %lld\n"_Stz,
 //         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
@@ -134,7 +134,7 @@ void Step::vTxCounterDec(void)
 //         pTx->aDecode(),
 //         iCounter);
   
-  m_pDataStack->vPushInt(iCounter);
+  //m_pDataStack->vPushInt(iCounter);
   
   EXIT();
 }
@@ -148,9 +148,9 @@ void Step::vTxCounterFetch(void)
   
   Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
-  i8 iCounter = pTx->iCounterGet();
+  //i8 iCounter = pTx->iCounterGet();
   
-  m_pDataStack->vPushInt(iCounter);
+  //m_pDataStack->vPushInt(iCounter);
   
   EXIT();
 }
@@ -166,7 +166,7 @@ void Step::vTxCounterStore(void)
   
   i8 iCounter = m_pDataStack->iPopInt(__func__);
   
-  pTx->vCounterSet(iCounter);
+  //pTx->vCounterSet(iCounter);
   
   EXIT();
 }
