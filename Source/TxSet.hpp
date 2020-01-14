@@ -9,9 +9,10 @@ namespace Transactions
   {
   private:
     
-    Lock      m_okLock;        // lock for the set
-    i8        m_iNodeNo;      // this node no
-    SkipListNL* m_pLocalTxList; // skip list of tx's by local tx id
+    Lock m_okLock;  // lock for the set
+    i8   m_iNodeNo; // this node no
+  
+    SkipListNL* m_pTxList; // skip list of tx's
   
     // must be last
     Footer m_xFooter;
@@ -41,7 +42,6 @@ namespace Transactions
 }
 
 bool bTxSetCompareLocal(void* pObjectInsert, void* pObjectScan, bool& bMatch);
-bool bTxSetCompareDist(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
 /*============================================================================*/
 /* end                                                                        */

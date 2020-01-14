@@ -27,28 +27,6 @@ bool bTxSetCompareLocal(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compare two tx's by their distributed tx id's                              */
-/*----------------------------------------------------------------------------*/
-bool bTxSetCompareDist(void* pObjectInsert, void* pObjectScan, bool& bMatch)
-{
-  Tx* pInsertEntry = _pTx(pObjectInsert);
-  Tx* pScanEntry   = _pTx(pObjectScan);
-  
-  if ( ! pObjectScan )
-    return false;
-  
-  if (pInsertEntry->iDistTxId() == pScanEntry->iDistTxId())
-    bMatch = true;
-  else
-    bMatch = false;
-  
-  if (pInsertEntry->iDistTxId() > pScanEntry->iDistTxId())
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 TxSet* Transactions::_pTxSet(void* aAddr)
@@ -89,7 +67,7 @@ TxSet::TxSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
   m_iNodeNo = C_UNKNOWN;
-  m_pLocalTxList = new SkipListNL(C_UNQIUE_KEY,bTxSetCompareLocal);
+  m_pTxList = new SkipListNL(C_UNQIUE_KEY,bTxSetCompareLocal);
   
   _checkInitialised_(CN_TXSET);
   
@@ -106,7 +84,7 @@ void TxSet::vAddLocalTx(Tx* pTx)
   m_okLock.vGrabWrite();
       
   m_iNodeNo = C_UNKNOWN;
-  m_pLocalTxList->bInsert(pTx);
+  m_pTxList->bInsert(pTx);
   
   m_okLock.vDropWrite();
 }
@@ -123,13 +101,13 @@ void TxSet::vDumpAll(void)
 //  SkipCursor xCursor;
 //  
 //  vTrace("All tx's:\n"_Stz);
-//  while ( Tx* pTx = _pTx(m_pLocalTxList->pEach(&xCursor)) )
+//  while ( Tx* pTx = _pTx(m_pTxList->pEach(&xCursor)) )
 //    pTx->vContentDump();
 
   vTrace("All tx's:\n"_Stz);
-  for (SkipNode* pNode = m_pLocalTxList->pFirst(0);
+  for (SkipNode* pNode = m_pTxList->pFirst(0);
        pNode;
-       pNode = m_pLocalTxList->pNext(pNode,0)) {
+       pNode = m_pTxList->pNext(pNode,0)) {
        
     Tx* pTx = _pTx(pNode->m_pObject);
     pTx->vContentDump();
@@ -170,7 +148,7 @@ Tx* TxSet::pFindTx_NL(i8 iTxId)
   Tx* pTxFound = nullptr;
   
     pTxFind->vLocalTxId(iTxId);
-    pTxFound = _pTx(m_pLocalTxList->pFind(pTxFind));
+    pTxFound = _pTx(m_pTxList->pFind(pTxFind));
   
   pTxFind->vLocalTxId(-1);
   delete pTxFind;
@@ -189,7 +167,7 @@ void TxSet::vRemoveTx(Tx* pTx)
   
   m_okLock.vGrabWrite();
   
-  bRemoved = m_pLocalTxList->bRemove(pTx);
+  bRemoved = m_pTxList->bRemove(pTx);
     
   m_okLock.vDropWrite();
 }
@@ -205,9 +183,9 @@ i8 TxSet::iOldestActiveId(void)
   
   m_okLock.vGrabRead();
   
-  for (SkipNode* pNode = m_pLocalTxList->pFirst(0);
+  for (SkipNode* pNode = m_pTxList->pFirst(0);
        pNode;
-       pNode = m_pLocalTxList->pNext(pNode,0)) {
+       pNode = m_pTxList->pNext(pNode,0)) {
     
     Tx* pTx = _pTx(pNode->m_pObject);
     
@@ -233,7 +211,7 @@ void TxSet::vRemoveTx_NL(Tx* pTx)
   
   bool bRemoved;
   
-  bRemoved = m_pLocalTxList->bRemove(pTx);
+  bRemoved = m_pTxList->bRemove(pTx);
 }
 
 /*----------------------------------------------------------------------------*/
