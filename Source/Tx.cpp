@@ -50,7 +50,7 @@ void Tx::operator delete(void* pTxAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Tx::Tx(bool bAddToSet)
+Tx::Tx(void)
 : Focal(CN_TX,AM::iNextTxId(),C_UNKNOWN)
 , m_okLock(LK_TX_SET,this)
 {
@@ -69,9 +69,6 @@ Tx::Tx(bool bAddToSet)
   
   _checkInitialised_(CN_TX);
 
-  if (bAddToSet)
-    AM::pTxSet()->vAddLocalTx(this);
-  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 }
 
@@ -81,9 +78,6 @@ Tx::Tx(bool bAddToSet)
 Tx::~Tx(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  if (-1 != m_iLocalTxId)
-    AM::pTxSet()->vRemoveTx(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,7 +102,7 @@ Tx* Tx::pTestDistTx(i8 iDistTxId)
     return pTxFound;
   }
   
-  pDistTx = new Tx(iDistTxId);
+  pDistTx = new Tx;
   
   pTxSet->vDropWrite();
   

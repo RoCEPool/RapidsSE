@@ -28,7 +28,7 @@ namespace Transactions
     void* operator new(size_t, Tx* pTx);
     void  operator delete(void*);
     
-    Tx(bool bAddToSet = true);
+    Tx(void);
     ~Tx(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
