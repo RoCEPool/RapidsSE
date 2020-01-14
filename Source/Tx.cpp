@@ -156,35 +156,6 @@ i8 Tx::iLocalTxId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get local tx no                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Tx::iLocalTxNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  i8 iMaskOffUpper16Bits = 0x0000FFFFFFFFFFFF;
-  
-  i8 iTxNo = m_iLocalTxId & iMaskOffUpper16Bits;
-  
-  return iTxNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get local tx node no                                                       */
-/*----------------------------------------------------------------------------*/
-i8 Tx::iLocalTxNode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  i8 iMaskOffLower48Bits = 0xFFFF000000000000;
-  
-  i8 iTxNode = m_iLocalTxId & iMaskOffLower48Bits;
-  iTxNode >>= 48;
-  
-  return iTxNode;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set local tx id                                                            */
 /*----------------------------------------------------------------------------*/
 void Tx::vLocalTxId(i8 iLocalTxId)
@@ -252,39 +223,11 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Tx* pTx = _pTx(pObject);
   
   // get string of the distributed members of this transaction
-  char caMembers[C_64KB] = "";
-  StrLib::vConcat(caMembers,"{");
-  for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
-    if (pTx->bDistMember(i_Node))
-      StrLib::vSprintCat((Stz*)caMembers," %lld"_Stz,i_Node);
-  StrLib::vConcat(caMembers," }");
   
-  vTrace("tx: %lld.%lld phase %s %s\n"_Stz,
-         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
-         aXP[pTx->m_ePhase],
-         caMembers);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get if distributed tx member                                               */
-/*----------------------------------------------------------------------------*/
-bool Tx::bDistMember(i8 i_Node)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  bool bDistMember = m_xNode[i_Node].m_bDistMember;
-  
-  return bDistMember;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set if distributed tx member                                               */
-/*----------------------------------------------------------------------------*/
-void Tx::vDistMember(i8 i_Node, bool bDistMember)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  m_xNode[i_Node].m_bDistMember = bDistMember;
+  vTrace("tx: %lld phase %s\n"_Stz,
+         pTx->tPerspective(),
+         aXP[pTx->m_ePhase]
+         );
 }
 
 /*----------------------------------------------------------------------------*/

@@ -38,8 +38,6 @@ namespace Transactions
     void vFocalOutline(s4K& sOutline);
   
     i8 iLocalTxId(void);
-    i8 iLocalTxNo(void);
-    i8 iLocalTxNode(void);
     void vLocalTxId(i8 iTxId);
   
     t8   tPerspective(void);
@@ -49,10 +47,7 @@ namespace Transactions
     void vPhase(eXP ePhase);
     
     void vContentDump(void);
-  
-    bool bDistMember(i8 i_Node);
-    void vDistMember(i8 i_Node, bool bDistMember);
-  
+    
     bool bIsActive(void);
   
     Footer* aFooter(void);
