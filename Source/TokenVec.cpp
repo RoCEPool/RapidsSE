@@ -70,7 +70,8 @@ TokenVec::TokenVec(bool bNewTokens)
 TokenVec::~TokenVec(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-
+  
+  vSetAllTokens();
 }
 
 /*----------------------------------------------------------------------------*/
