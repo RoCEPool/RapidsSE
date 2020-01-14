@@ -36,9 +36,11 @@
 
     ZK_CRWBUFFER of
       //"Operand:- ZK_CRWBUFFER" .verbose
+      tx[].begin
       tablePtn[].get tablePtnGrabWrite2
       Operand[].upsertIntoTable
       tablePtn[].get tablePtnDropWrite2
+      tx[].commit
       true
     endof
 
