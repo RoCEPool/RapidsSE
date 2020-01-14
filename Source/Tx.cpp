@@ -78,6 +78,31 @@ Tx::~Tx(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Tx::vContentDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  vDump(CN_TX, this, Stz::szTab(1));
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump transaction                                                           */
+/*----------------------------------------------------------------------------*/
+void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  Tx* pTx = _pTx(pObject);
+  
+  // get string of the distributed members of this transaction
+  
+  vTrace("tx: %lld phase %s\n"_Stz,
+         pTx->tPerspective(),
+         aXP[pTx->m_ePhase]
+         );
+}
+
+/*----------------------------------------------------------------------------*/
 /* focal outline                                                              */
 /*----------------------------------------------------------------------------*/
 void Tx::vFocalOutline(s4K& sOutline)
@@ -85,6 +110,22 @@ void Tx::vFocalOutline(s4K& sOutline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this an active transaction?                                             */
+/*----------------------------------------------------------------------------*/
+bool Tx::bIsActive(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
+  if (XP_EXECUTING   == m_ePhase ||
+      XP_COMMITTING  == m_ePhase ||
+      XP_PREPARING   == m_ePhase ||
+      XP_ROLLINGBACK == m_ePhase)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,47 +166,6 @@ void Tx::vPhase(eXP ePhase)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
   m_ePhase = ePhase;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump                                                                       */
-/*----------------------------------------------------------------------------*/
-void Tx::vContentDump(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  vDump(CN_TX, this, Stz::szTab(1));
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump transaction                                                           */
-/*----------------------------------------------------------------------------*/
-void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-  Tx* pTx = _pTx(pObject);
-  
-  // get string of the distributed members of this transaction
-  
-  vTrace("tx: %lld phase %s\n"_Stz,
-         pTx->tPerspective(),
-         aXP[pTx->m_ePhase]
-         );
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this an active transaction?                                             */
-/*----------------------------------------------------------------------------*/
-bool Tx::bIsActive(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  if (XP_EXECUTING   == m_ePhase ||
-      XP_COMMITTING  == m_ePhase ||
-      XP_PREPARING   == m_ePhase ||
-      XP_ROLLINGBACK == m_ePhase)
-    return true;
-  else
-    return false;
 }
 
 
