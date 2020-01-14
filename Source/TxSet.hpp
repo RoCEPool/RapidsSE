@@ -10,7 +10,6 @@ namespace Transactions
   private:
     
     Lock m_okLock;  // lock for the set
-    i8   m_iNodeNo; // this node no
   
     SkipListNL* m_pTxList; // skip list of tx's
   
@@ -24,7 +23,7 @@ namespace Transactions
     TxSet(void);
     ~TxSet(void) noexcept(false);
   
-    void vAddLocalTx(Tx* pTx);
+    void vAddTx(Tx* pTx);
     void vDumpAll(void);
     Tx*  pFindTx(i8 iTxId);
     Tx*  pFindTx_NL(i8 iTxId);
