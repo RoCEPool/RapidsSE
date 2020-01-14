@@ -89,7 +89,6 @@ TxSet::TxSet(i8 iNodeNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
   m_iNodeNo = iNodeNo;
-  m_iNextTxId = iNodeNo << 48;
   m_pLocalTxList = new SkipListNL(C_UNQIUE_KEY,bTxSetCompareLocal);
   m_pDistTxList  = new SkipListNL(C_UNQIUE_KEY,bTxSetCompareDist);
   
@@ -106,12 +105,7 @@ void TxSet::vAddLocalTx(Tx* pTx)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
   m_okLock.vGrabWrite();
-  
-  i8 iTxId = m_iNextTxId++;
-  
-  pTx->vLocalTxId(iTxId);
-  pTx->vDistTxId(iTxId);
-  
+      
   m_pLocalTxList->bInsert(pTx);
   m_pDistTxList->bInsert(pTx);
   
@@ -124,11 +118,7 @@ void TxSet::vAddLocalTx(Tx* pTx)
 void TxSet::vAddDistTx_NL(Tx* pTx)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
-  
-  i8 iLocalTxId = m_iNextTxId++;
-  
-  pTx->vLocalTxId(iLocalTxId);
-  
+    
   m_pLocalTxList->bInsert(pTx);
   m_pDistTxList->bInsert(pTx);
 }
