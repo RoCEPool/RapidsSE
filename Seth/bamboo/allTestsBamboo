@@ -6,7 +6,7 @@
 ../tests/Datums/testList
 ../tests/examples/testList
 ../tests/Misc/testList
-../tests/Operators/testList
+//../tests/Operators/testList
 ../tests/PartitionKey/testList
 //../tests/Insert/testList
 ../tests/Retrieve/testList
