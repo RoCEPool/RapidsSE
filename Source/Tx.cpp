@@ -76,33 +76,6 @@ Tx::Tx(bool bAddToSet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Tx::Tx(i8 iDistTxId)
-: Focal(CN_TX,AM::iNextTxId(),C_UNKNOWN)
-, m_okLock(LK_TX_SET,this)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  // m_okLock
-  m_tPerspective = ++ gixTx;
-  m_ePhase       = XP_EXECUTING;
-  
-  m_iLocalTxId = -1;
-  m_iDistTxId  = iDistTxId;
-  m_ixCounter  = AM::nSlotsPerNode();
-
-  for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
-    m_xNode[i_Node].m_bDistMember = false;
-  
-  _checkInitialised_(CN_TX);
-  
-  AM::pTxSet()->vAddDistTx_NL(this);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Tx::~Tx(void) noexcept(false)

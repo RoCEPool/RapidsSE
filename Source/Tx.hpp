@@ -29,7 +29,6 @@ namespace Transactions
     void  operator delete(void*);
     
     Tx(bool bAddToSet = true);
-    Tx(i8 iDistTxId);
     ~Tx(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

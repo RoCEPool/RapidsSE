@@ -9,11 +9,10 @@ namespace Transactions
   {
   private:
     
-    Lock      m_okLock;        // lock for the set
-    i8        m_iNodeNo;      // this node no
-    i8        m_iNextTxId;    // next tx id
-    SkipListNL* m_pLocalTxList; // skip list of tx's by local tx id
-    SkipListNL* m_pDistTxList;  // skip list of tx's by distributed tx id
+    Lock m_okLock;  // lock for the set
+    i8   m_iNodeNo; // this node no
+  
+    SkipListNL* m_pTxList; // skip list of tx's
   
     // must be last
     Footer m_xFooter;
@@ -22,11 +21,10 @@ namespace Transactions
     void* operator new(size_t);
     void  operator delete(void*);
     
-    TxSet(i8 iNodeNo);
+    TxSet(void);
     ~TxSet(void) noexcept(false);
   
     void vAddLocalTx(Tx* pTx);
-    void vAddDistTx_NL(Tx* pTx);
     void vDumpAll(void);
     Tx*  pFindTx(i8 iTxId);
     Tx*  pFindTx_NL(i8 iTxId);
@@ -44,7 +42,6 @@ namespace Transactions
 }
 
 bool bTxSetCompareLocal(void* pObjectInsert, void* pObjectScan, bool& bMatch);
-bool bTxSetCompareDist(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
 /*============================================================================*/
 /* end                                                                        */
