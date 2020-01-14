@@ -5,6 +5,8 @@
 #include "Transactions.h"
 #include "AM.hpp"
 
+Atomic gixTx;
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -55,7 +57,7 @@ Tx::Tx(bool bAddToSet)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 
   // m_okLock
-  m_tPerspective = C_UNKNOWN;
+  m_tPerspective = ++ gixTx;
   m_ePhase       = XP_EXECUTING;
   
   m_iLocalTxId = -1;
@@ -82,9 +84,12 @@ Tx::Tx(i8 iDistTxId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
+  // m_okLock
+  m_tPerspective = ++ gixTx;
+  m_ePhase       = XP_EXECUTING;
+  
   m_iLocalTxId = -1;
   m_iDistTxId  = iDistTxId;
-  m_ePhase     = XP_EXECUTING;
   m_ixCounter  = AM::nSlotsPerNode();
 
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
