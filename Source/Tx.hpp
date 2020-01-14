@@ -25,17 +25,13 @@ namespace Transactions
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
+    void vContentDump(void);
     void vFocalOutline(s4K& sOutline);
-    
+    bool bIsActive(void);
     t8   tPerspective(void);
     void vPerspective(t8 tPerspective);
-
     eXP  ePhase(void);
     void vPhase(eXP ePhase);
-    
-    void vContentDump(void);
-    
-    bool bIsActive(void);
   
   private:
     Footer* aFooter(void);

@@ -1270,20 +1270,7 @@ public:
   void vTraceSet(void);
 
   // tx
-  void vTxBegin(void);
-  void vTxCommit(void);
-  void vTxCounterDec(void);
-  void vTxCounterFetch(void);
-  void vTxCounterStore(void);
-  void vTxDistMemberFetch(void);
-  void vTxDistMemberStore(void);
-  void vTxDump(void);
   void vTxDumpAll(void);
-  void vTxFree(void);
-  void vTxId(void);
-  void vTxPrepare(void);
-  void vTxRollback(void);
-  void vTxTestDist(void);
 
   void vTx0Begin(void);
   void vTx0Commit(void);
