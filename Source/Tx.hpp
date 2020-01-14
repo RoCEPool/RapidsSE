@@ -12,8 +12,6 @@ namespace Transactions
     t8     m_tPerspective; // perspective
     eXP    m_ePhase;       // phase (executing, committing, ...)
   
-    i8     m_iLocalTxId;   // local transaction id
-
     struct {
       bool m_bDistMember; // true if part of distributed tx
     } m_xNode[C_MAX_NODES];
@@ -36,10 +34,7 @@ namespace Transactions
     static i8 iTxNode(i8 iTxId);
 
     void vFocalOutline(s4K& sOutline);
-  
-    i8 iLocalTxId(void);
-    void vLocalTxId(i8 iTxId);
-  
+    
     t8   tPerspective(void);
     void vPerspective(t8 tPerspective);
 

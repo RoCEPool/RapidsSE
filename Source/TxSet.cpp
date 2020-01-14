@@ -15,12 +15,12 @@ bool bTxSetCompareLocal(void* pObjectInsert, void* pObjectScan, bool& bMatch)
   if ( ! pObjectScan )
     return false;
   
-  if (pInsertEntry->iLocalTxId() == pScanEntry->iLocalTxId())
+  if (pInsertEntry->tPerspective() == pScanEntry->tPerspective())
     bMatch = true;
   else
     bMatch = false;
   
-  if (pInsertEntry->iLocalTxId() > pScanEntry->iLocalTxId())
+  if (pInsertEntry->tPerspective() > pScanEntry->tPerspective())
     return true;
   else
     return false;
@@ -145,10 +145,10 @@ Tx* TxSet::pFindTx_NL(i8 iTxId)
   
   Tx* pTxFound = nullptr;
   
-    pTxFind->vLocalTxId(iTxId);
+    pTxFind->vPerspective(iTxId);
     pTxFound = _pTx(m_pTxList->pFind(pTxFind));
   
-  pTxFind->vLocalTxId(-1);
+  pTxFind->vPerspective(-1);
   delete pTxFind;
   
   return pTxFound;
@@ -188,7 +188,7 @@ i8 TxSet::iOldestActiveId(void)
     Tx* pTx = _pTx(pNode->m_pObject);
     
     if (pTx->bIsActive()) {
-      iOldestActiveId = pTx->iLocalTxId();
+      iOldestActiveId = pTx->tPerspective();
       break;
     }
   }

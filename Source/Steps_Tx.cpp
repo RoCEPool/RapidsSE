@@ -183,9 +183,9 @@ void Step::vTxDistMemberFetch(void)
   //ASSERT(pTx->bLocalTx());
   
 //  i8 i_Node = m_pDataStack->iPopInt(__func__);
-//  
+//
 //  bool bDistMember = pTx->bDistMember(i_Node);
-//  
+//
 //  m_pDataStack->vPushInt(bDistMember);
   
   EXIT();
@@ -205,7 +205,7 @@ void Step::vTxDistMemberStore(void)
 //  i8 i_Node = m_pDataStack->iPopInt(__func__);
 //
 //  i8 iDistMember = m_pDataStack->iPopInt(__func__);
-//  
+//
 //  pTx->vDistMember(i_Node,iDistMember);
   
   EXIT();
@@ -265,9 +265,9 @@ void Step::vTxId(void)
   
   Tx* pTx = _pTx(m_pDataStack->pPopPtr(__func__));
   
-  i8 iTxId = pTx->iLocalTxId();
-  
-  m_pDataStack->vPushInt(iTxId);
+//  i8 iTxId = pTx->iLocalTxId();
+//  
+//  m_pDataStack->vPushInt(iTxId);
   
   EXIT();
 }

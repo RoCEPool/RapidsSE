@@ -59,9 +59,7 @@ Tx::Tx(void)
   // m_okLock
   m_tPerspective = ++ gixTx;
   m_ePhase       = XP_EXECUTING;
-  
-  m_iLocalTxId = -1;
-  
+    
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
     m_xNode[i_Node].m_bDistMember = false;
   
@@ -143,26 +141,6 @@ void Tx::vFocalOutline(s4K& sOutline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get local tx id                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Tx::iLocalTxId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  return m_iLocalTxId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set local tx id                                                            */
-/*----------------------------------------------------------------------------*/
-void Tx::vLocalTxId(i8 iLocalTxId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-  
-  m_iLocalTxId = iLocalTxId;
 }
 
 /*----------------------------------------------------------------------------*/
