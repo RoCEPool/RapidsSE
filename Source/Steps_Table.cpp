@@ -202,7 +202,7 @@ void Step::vTableGenCsvBuffer(void)
     
     SP_Record spRecord(pRow);
     StrLib::vConcat(spRecord.sz()->azChar(),'\n');               //! sub-optimal
-    //vTrace("Random Rec: %s"_Stz,spRecord.sz());
+    vTrace("Random Rec: %s"_Stz,spRecord.sz());
 
     if (! pCsvBuffer->szAppendRecord(spRecord.sz()))
       break;
