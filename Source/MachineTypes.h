@@ -19,6 +19,8 @@ namespace Base
   typedef int                i4;   // 4 byte signed integer
   typedef long long          i8;   // 8 byte signed integer
   
+  typedef i8                 t8;   // transaction perspective
+
   typedef unsigned char      u1;   // 1 byte unsigned integer
   typedef unsigned short     u2;   // 2 byte unsigned integer
   typedef unsigned int       u4;   // 4 byte unsigned integer

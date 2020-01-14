@@ -151,10 +151,13 @@ namespace Oblique
     static i8   nRandomLevels(void);
     static Job* pThisTLSJob(void);
     static Op*  pThisTLSOp(void);
+    static t8   tThisTLSPespective(void);
     static Task* pThisTLSTask(void);
     static Thread* pThisTLSThread(void);
+    static Tx* pThisTLSTx(void);
     static PsxThd* pThisTLSPsxThd(void);
 
+  
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static bool bAttached(void);

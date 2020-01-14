@@ -320,6 +320,18 @@ Op* AM::pThisTLSOp(void) {
   Op* pOp = pTask->pOp();
   return pOp;
 }
+
+t8 AM::tThisTLSPespective(void)
+{
+  Tx* pTx = pThisTLSTx();
+  if (! pTx)
+    return C_UNKNOWN;
+
+  t8 tPerspective = pTx->tPerspective();
+  
+  return tPerspective;
+}
+
 Tasks::Task* AM::pThisTLSTask(void) {
   Thread* pThread = Thread::pThisTLSThread();
   if (! pThread)
@@ -331,6 +343,16 @@ Thread* AM::pThisTLSThread(void) {
   Thread* pThread = Thread::pThisTLSThread();
   return pThread;
 }
+Tx* AM::pThisTLSTx(void) {
+
+  Task* pTask = pThisTLSTask();
+  if (! pTask)
+    return nullptr;
+  
+  Tx* pTx = *pTask->pRegSet()->m_xpTx;
+  return pTx;
+}
+
 PsxThd* AM::pThisTLSPsxThd(void) {
   Thread* pThread = Thread::pThisTLSThread();
   PsxThd* pPsxThd =pThread->m_pPsxThd;
@@ -345,6 +367,7 @@ void AM::vWelcomeText(s256& sWelcome) {
 void AM::vCopyrightText(s256& sCopyright) {
   Engine::vGetCopyright(sCopyright);
 }
+
 void AM::vWriteLog(void) {
   Log::vWriteCsv(false);
 }
