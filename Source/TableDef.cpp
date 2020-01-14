@@ -780,6 +780,8 @@ eEC TableDef::eParseTableClauses(TokenVec* pTknVec)
       if (EC_NONE != eError)
         return eError;
       
+      bSawPartition = true;
+      
       continue;
     }
     
@@ -848,10 +850,6 @@ eEC TableDef::eParsePartitionBy(TokenVec* pTknVec)
   if ( ! iPartKeys ) {
     return EC_INVALID_COMMAND;
   }
-  
-  pTkn = pTknVec->pNextToken(); dPT();
-  if ( ! pTkn->bSame(";"_Stz))
-    return EC_INVALID_COMMAND;
   
   return EC_NONE;
 }

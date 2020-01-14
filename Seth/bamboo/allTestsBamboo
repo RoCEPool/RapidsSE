@@ -7,7 +7,7 @@
 ../tests/examples/testList
 ../tests/Misc/testList
 //../tests/Operators/testList
-//../tests/PartitionKey/testList
+../tests/PartitionKey/testList
 //../tests/Insert/testList
 ../tests/Retrieve/testList
 ../tests/Select/testList
