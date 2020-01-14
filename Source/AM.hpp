@@ -232,6 +232,7 @@ namespace Oblique
     static Job* pNewJobUniversal(Job* pParentJob, Op* pOp, ReqTuple* pReqTuple);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    static void vPoolAnalyze(void);
     static eEC ePopulateJob(Job* pJob, TokenVec* pTknVec);
     static void vPrintGlobals(void);
   

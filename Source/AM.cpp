@@ -134,6 +134,7 @@ Queue* AM::pBufferQueue(Job* pJob) {
 void AM::vBootError(bool bBootError) {
   gpAttachMap->m_bBootError = bBootError;
 }
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -260,6 +261,8 @@ bool AM::bJobIsForeign(i8 iJobId) {
 void AM::vLogArguments(void) {
   gxArguments.vLog();
 }
+void AM::vPoolAnalyze(void)   { return BPA::vPoolAnalyze(); }
+
 eEC AM::ePopulateJob(Job* pJob, TokenVec* pTknVec)
 {
   eEC eError = _pJob_Universal(pJob)->ePopulateJob(pTknVec);
