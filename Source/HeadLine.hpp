@@ -4,7 +4,10 @@
 #pragma once
 
 namespace CompactBuffers
-{  
+{
+  static const i8 C_HEADLINE_OFS_WORDS = 0;
+  static const i8 C_HEADLINE_OFS_PERSPECTIVE = 1;
+
   class HeadLine : public Line
   {
   public:

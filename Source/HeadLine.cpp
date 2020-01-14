@@ -308,7 +308,7 @@ void HeadLine::vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
 /*----------------------------------------------------------------------------*/
 t8 HeadLine::tPerspective(void)
 {
-  t8 tPerspective = w8_8B(1);
+  t8 tPerspective = w8_8B(C_HEADLINE_OFS_PERSPECTIVE);
 
   return C_UNKNOWN;
 }
@@ -318,7 +318,7 @@ t8 HeadLine::tPerspective(void)
 /*----------------------------------------------------------------------------*/
 void HeadLine::vPerspective(t8 tPerspective)
 {
-  v8B(1,tPerspective);
+  v8B(C_HEADLINE_OFS_PERSPECTIVE,tPerspective);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -348,7 +348,7 @@ void HeadLine::vSetOver(OverLine* aOverLine)
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::nUnits(void)
 {
-  i8 nSizeUnits = w8_1B(0);
+  i8 nSizeUnits = w8_1B(C_HEADLINE_OFS_WORDS);
     
   if (nSizeUnits >= 128)
     nSizeUnits -= 128;
@@ -361,7 +361,7 @@ i8 HeadLine::nUnits(void)
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::nW(void)
 {
-  i8 nWords = w8_1B(0);
+  i8 nWords = w8_1B(C_HEADLINE_OFS_WORDS);
   
   return nWords;
 }
@@ -371,7 +371,7 @@ i8 HeadLine::nW(void)
 /*----------------------------------------------------------------------------*/
 void HeadLine::vW(i8 nWords)
 {
-  v1B(0,nWords);
+  v1B(C_HEADLINE_OFS_WORDS,nWords);
 }
 
 /*----------------------------------------------------------------------------*/
