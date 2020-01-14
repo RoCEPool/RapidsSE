@@ -12,7 +12,6 @@ namespace Transactions
     Lock      m_okLock;        // lock for the set
     i8        m_iNodeNo;      // this node no
     SkipListNL* m_pLocalTxList; // skip list of tx's by local tx id
-    SkipListNL* m_pDistTxList;  // skip list of tx's by distributed tx id
   
     // must be last
     Footer m_xFooter;
@@ -25,7 +24,6 @@ namespace Transactions
     ~TxSet(void) noexcept(false);
   
     void vAddLocalTx(Tx* pTx);
-    void vAddDistTx_NL(Tx* pTx);
     void vDumpAll(void);
     Tx*  pFindTx(i8 iTxId);
     Tx*  pFindTx_NL(i8 iTxId);

@@ -90,7 +90,6 @@ TxSet::TxSet(void)
   
   m_iNodeNo = C_UNKNOWN;
   m_pLocalTxList = new SkipListNL(C_UNQIUE_KEY,bTxSetCompareLocal);
-  m_pDistTxList  = new SkipListNL(C_UNQIUE_KEY,bTxSetCompareDist);
   
   _checkInitialised_(CN_TXSET);
   
@@ -108,20 +107,8 @@ void TxSet::vAddLocalTx(Tx* pTx)
       
   m_iNodeNo = C_UNKNOWN;
   m_pLocalTxList->bInsert(pTx);
-  m_pDistTxList->bInsert(pTx);
   
   m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* add given distributed tx (non-locking)                                     */
-/*----------------------------------------------------------------------------*/
-void TxSet::vAddDistTx_NL(Tx* pTx)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
-    
-  m_pLocalTxList->bInsert(pTx);
-  m_pDistTxList->bInsert(pTx);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,14 +169,8 @@ Tx* TxSet::pFindTx_NL(i8 iTxId)
   
   Tx* pTxFound = nullptr;
   
-  if (iNodeNo == m_iNodeNo) {
     pTxFind->vLocalTxId(iTxId);
     pTxFound = _pTx(m_pLocalTxList->pFind(pTxFind));
-  }
-  else {
-    pTxFind->vDistTxId(iTxId);
-    pTxFound = _pTx(m_pDistTxList->pFind(pTxFind));
-  }
   
   pTxFind->vLocalTxId(-1);
   delete pTxFind;
@@ -209,9 +190,7 @@ void TxSet::vRemoveTx(Tx* pTx)
   m_okLock.vGrabWrite();
   
   bRemoved = m_pLocalTxList->bRemove(pTx);
-  
-  bRemoved = m_pDistTxList->bRemove(pTx);
-  
+    
   m_okLock.vDropWrite();
 }
 
@@ -255,8 +234,6 @@ void TxSet::vRemoveTx_NL(Tx* pTx)
   bool bRemoved;
   
   bRemoved = m_pLocalTxList->bRemove(pTx);
-  
-  bRemoved = m_pDistTxList->bRemove(pTx);
 }
 
 /*----------------------------------------------------------------------------*/
