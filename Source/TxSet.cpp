@@ -82,13 +82,13 @@ void TxSet::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TxSet::TxSet(i8 iNodeNo)
+TxSet::TxSet(void)
 : Object(CN_TXSET)
 , m_okLock(LK_TX_SET,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
-  m_iNodeNo = iNodeNo;
+  m_iNodeNo = C_UNKNOWN;
   m_pLocalTxList = new SkipListNL(C_UNQIUE_KEY,bTxSetCompareLocal);
   m_pDistTxList  = new SkipListNL(C_UNQIUE_KEY,bTxSetCompareDist);
   
@@ -106,6 +106,7 @@ void TxSet::vAddLocalTx(Tx* pTx)
   
   m_okLock.vGrabWrite();
       
+  m_iNodeNo = C_UNKNOWN;
   m_pLocalTxList->bInsert(pTx);
   m_pDistTxList->bInsert(pTx);
   
@@ -278,19 +279,11 @@ void TxSet::vDropWrite(void)
   m_okLock.vDropWrite();
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* TxSet::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(TxSet)
 
 /*============================================================================*/
 /* end                                                                        */

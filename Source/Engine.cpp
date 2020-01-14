@@ -954,8 +954,8 @@ void Engine::vStartSystem(void)
   
   gpAttachMap->m_pSessionArray = new SessionArray;
   
-  // create the tx sets
-  gpAttachMap->m_pTxSet = new TxSet(AM::pGrid()->iThisNode());
+  // create the tx set
+  gpAttachMap->m_pTxSet = new TxSet();
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

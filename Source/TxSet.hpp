@@ -21,7 +21,7 @@ namespace Transactions
     void* operator new(size_t);
     void  operator delete(void*);
     
-    TxSet(i8 iNodeNo);
+    TxSet(void);
     ~TxSet(void) noexcept(false);
   
     void vAddLocalTx(Tx* pTx);
