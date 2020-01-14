@@ -489,8 +489,8 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("JT_STATUS"_Stz,          JT_STATUS);
   /*    */ vAddConstant("JT_SUPERCOUNTOP"_Stz,    JT_SUPERCOUNTOP);
   /*    */ vAddConstant("JT_TABLESIZES"_Stz,      JT_TABLESIZES);
-  /*    */ vAddConstant("JT_TOCRWOP"_Stz,         JT_TOCSVOP);
-  /*    */ vAddConstant("JT_TOCSVOP"_Stz,         JT_TOCRWOP);
+  /*    */ vAddConstant("JT_TOCRWOP"_Stz,         JT_TOCRWOP);
+  /*    */ vAddConstant("JT_TOCSVOP"_Stz,         JT_TOCSVOP);
   /*    */ vAddConstant("JT_TOFILEOP"_Stz,        JT_TOFILEOP);
   /*    */ vAddConstant("JT_TRUNCATETABLE"_Stz,   JT_TRUNCATETABLE);
   /*    */ vAddConstant("JT_USESCHEMA"_Stz,       JT_USESCHEMA);

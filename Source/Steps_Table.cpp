@@ -237,9 +237,9 @@ void Step::vTableGetColumnsAsString(void)
     s.vConcat(","_Stz);
     
     if (i_Column == 0)
-    s.vCopy(pStreamDef->pGetColumn(i_Column)->szColNm());
+      s.vCopy(pStreamDef->pGetColumn(i_Column)->szColNm());
     else
-    s.vConcat(pStreamDef->pGetColumn(i_Column)->szColNm());
+      s.vConcat(pStreamDef->pGetColumn(i_Column)->szColNm());
     
     s.vConcat(" "_Stz);
     s.vConcat(aCT[pStreamDef->pGetColumn(i_Column)->eColumnType()]);

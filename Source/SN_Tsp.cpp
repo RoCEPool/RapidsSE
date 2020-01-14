@@ -39,6 +39,8 @@ i8 SN_Tsp::i(char** aacCrs, Column* pCol, Format* pFmt)
   i8 iYear, iMonth,  iDay;
   i8 iHour, iMinute, iSecond, iMicro;
   
+  char* aBegin = *aacCrs;
+  
   if ( ! StrLib::bExtractTimestamp2(aacCrs,
                                     iYear, iMonth, iDay,
                                     iHour, iMinute, iSecond, iMicro,
