@@ -319,14 +319,14 @@ void Step::vTxTestDist(void)
   
   i8 iDistTxId = m_pDataStack->iPopInt(__func__);
   
-  Tx* pTx = Tx::pTestDistTx(iDistTxId);
+//  Tx* pTx = Tx::pTestDistTx(iDistTxId);
 
 //  vTrace("Testing dist tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
 //         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
 //         pTx->iDistTxNode(), pTx->iDistTxNo(),
 //         pTx->aDecode());
   
-  m_pDataStack->vPushPtr(pTx);
+//  m_pDataStack->vPushPtr(pTx);
   
   EXIT();
 }

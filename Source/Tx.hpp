@@ -8,13 +8,9 @@ namespace Transactions
   class Tx : public Focal
   {
   private:
-    Lock   m_okLock;       // lock
-    t8     m_tPerspective; // perspective
-    eXP    m_ePhase;       // phase (executing, committing, ...)
-  
-    struct {
-      bool m_bDistMember; // true if part of distributed tx
-    } m_xNode[C_MAX_NODES];
+    Lock m_okLock;       // lock
+    t8   m_tPerspective; // perspective
+    eXP  m_ePhase;       // phase (executing, committing, ...)
   
     // must be last
     Footer m_xFooter;
@@ -25,13 +21,9 @@ namespace Transactions
     void  operator delete(void*);
     
     Tx(void);
-    ~Tx(void) noexcept(false);
+   ~Tx(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static Tx*  pTestDistTx(i8 iDistTxId);
-
-    static i8 iTxNo(i8 iTxId);
-    static i8 iTxNode(i8 iTxId);
 
     void vFocalOutline(s4K& sOutline);
     
@@ -45,6 +37,7 @@ namespace Transactions
     
     bool bIsActive(void);
   
+  private:
     Footer* aFooter(void);
   };
     

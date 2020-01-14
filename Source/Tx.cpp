@@ -59,10 +59,7 @@ Tx::Tx(void)
   // m_okLock
   m_tPerspective = ++ gixTx;
   m_ePhase       = XP_EXECUTING;
-    
-  for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
-    m_xNode[i_Node].m_bDistMember = false;
-  
+      
   _checkInitialised_(CN_TX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
@@ -74,59 +71,6 @@ Tx::Tx(void)
 Tx::~Tx(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* attempt to find a tx by dist tx id, create if not found                    */
-/*----------------------------------------------------------------------------*/
-Tx* Tx::pTestDistTx(i8 iDistTxId)
-{
-  Tx* pDistTx = nullptr;
-  
-  TxSet* pTxSet = AM::pTxSet();
-  
-  pTxSet->vGrabWrite();
-  
-  Tx* pTxFound = pTxSet->pFindTx_NL(iDistTxId);
-  
-  if (pTxFound) {
-    pTxSet->vDropWrite();
-    return pTxFound;
-  }
-  
-  pDistTx = new Tx;
-  
-  pTxSet->vDropWrite();
-  
-  return pDistTx;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get tx no of given tx id                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Tx::iTxNo(i8 iTxId)
-{
-  i8 iMaskOffUpper16Bits = 0x0000FFFFFFFFFFFF;
-  
-  i8 iTxNo = iTxId & iMaskOffUpper16Bits;
-  
-  return iTxNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get tx node no of given tx id                                              */
-/*----------------------------------------------------------------------------*/
-i8 Tx::iTxNode(i8 iTxId)
-{
-  i8 iShiftRight48Bits = 48;
-  
-  i8 iTxNode = iTxId >> iShiftRight48Bits;
-  
-  return iTxNode;
 }
 
 /*----------------------------------------------------------------------------*/
