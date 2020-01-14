@@ -9,8 +9,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Tx(void)
 {
-  vAddStep("tx[].begin"_Stz,     &Step::vTx0Begin);
-  vAddStep("tx[].commit"_Stz,    &Step::vTx0Commit);
+  vAddStep("tx[].begin"_Stz,       &Step::vTx0Begin);
+  vAddStep("tx[].commit"_Stz,      &Step::vTx0Commit);
+  vAddStep("tx[].perspective"_Stz, &Step::vTx0Perspective);
 
   vAddStep("tx::begin"_Stz,      &Step::vTxBegin);
   vAddStep("tx.commit"_Stz,      &Step::vTxCommit);
@@ -56,6 +57,22 @@ void Step::vTx0Commit(void)
 
   delete pTx;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tx[].perspective -- get current tx perspective                             */
+/*----------------------------------------------------------------------------*/
+void Step::vTx0Perspective(void)
+{
+  ENTRY(); // ENTRY("vTx0Perspective"_Stz);
+  
+  Tx* pTx = *m_pRegSet->m_xpTx;
+  
+  t8 tPerspective = pTx->tPerspective();
+
+  m_pDataStack->vPushInt(tPerspective);
+
   EXIT();
 }
 

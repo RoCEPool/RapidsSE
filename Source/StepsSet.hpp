@@ -1287,7 +1287,7 @@ public:
 
   void vTx0Begin(void);
   void vTx0Commit(void);
-
+  void vTx0Perspective(void);
 
   // txCollection
   void vTxCollectionDump(void);
