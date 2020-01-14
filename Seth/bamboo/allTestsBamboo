@@ -2,16 +2,16 @@
 # All test files included in here will be run in the continuous integration environment.
 # This is a recursive testList file.
 
-//../tests/Queries/testList
-//../tests/Datums/testList
-//../tests/examples/testList
-//../tests/Misc/testList
-../tests/Operators/testList
-//../tests/PartitionKey/testList
+../tests/Queries/testList
+../tests/Datums/testList
+../tests/examples/testList
+../tests/Misc/testList
+//../tests/Operators/testList
+../tests/PartitionKey/testList
 //../tests/Insert/testList
-//../tests/Retrieve/testList
-//../tests/Select/testList
-//../tests/table/testList
-//../tests/Load/testList
-//../tests/Index/testList
+../tests/Retrieve/testList
+../tests/Select/testList
+../tests/table/testList
+../tests/Load/testList
+../tests/Index/testList
 //../tests/Tpch/testlist

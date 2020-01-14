@@ -194,15 +194,15 @@ void Task::vTaskLoop(void)
     StepFp fpStep = * ( (m_pForth->m_aInxPtr ++)->m_afpStep );
     
     // call the intinsic
-    //try {
+    try {
       ((Step*) (*m_pForth)->*fpStep)();
-    //}
+    }
     
     // catch any exception
-//    catch (Exception xException) {
-//      xException.vJob(m_pJob);
-//      vCaught(xException);
-//    }
+    catch (Exception xException) {
+      xException.vJob(m_pJob);
+      vCaught(xException);
+    }
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
