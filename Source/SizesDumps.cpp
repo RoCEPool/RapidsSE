@@ -538,7 +538,7 @@ i8 giClassSize[]
   /* */ sizeof(Queues),             // CN_QUEUES
   
   /* */ 'R'-'A' + 1,                // CN__R__
-  /* */ 0,//sizeof(ReadApi),        // CN_READAPI
+  /* */ sizeof(ReadApi),            // CN_READAPI
   /* */ sizeof(Record),             // CN_RECORD
   /* */ sizeof(RecordBuffer),       // CN_RECORDBUFFER
   /* */ sizeof(RegSet),             // CN_REGSET

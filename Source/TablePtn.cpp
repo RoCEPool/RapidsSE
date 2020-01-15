@@ -68,6 +68,8 @@ TablePtn::TablePtn(void)
   
   m_pIndexTreeVec = new IndexTreeVec;
   
+  m_pReadApi = new ReadApi;
+  
   _checkInitialised_(CN_TABLEPTN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
@@ -823,6 +825,8 @@ void TablePtn::vTidyUp(void)
   
   // delete the index data vector
   delete m_pIndexTreeVec;
+  
+  delete m_pReadApi;
 }
 
 /*----------------------------------------------------------------------------*/
