@@ -80,8 +80,7 @@ namespace Partitioning
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
-    void vUpsertBuffer(CrwBuffer* pCrwBuffer);
-    void vUpsertBuffer2(CrwBuffer* pCrwBuffer);
+    void vUpsertBuffer(CrwBuffer* pCrwBuffer, t8 tPerspective);
     void vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* pEntWrk, Encoding* pEncoding_upsert);
     void vUpsertRow_update(Crw* aCrw_exists, EntWrk* pEntWrk, Encoding* pEncoding_upsert);
     bool bVerifyTable(void);

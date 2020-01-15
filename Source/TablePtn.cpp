@@ -854,38 +854,9 @@ void TablePtn::vTruncate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* upsert entries from a row buffer                                           */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append the buffer to the data row buffers
-  
-  vAppendBuffer(pCrwBuffer);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert entries from crwBuffer into all indexes of the table
-  
-  // get no of indexes of the table
-  i8 nIndexes = m_pIndexTreeVec->nItems();
-  
-  // iterate all indexes of the table
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    
-    // get index
-    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
-    
-    // insert entries from EntBuffer into the index
-    pIndexTree->vInsertEntries(pCrwBuffer);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* WIP: upsert entries from a row buffer                                      */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vUpsertBuffer2(CrwBuffer* pCrwBuffer_upsert)
+void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
