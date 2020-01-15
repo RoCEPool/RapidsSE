@@ -82,7 +82,7 @@ void ReadApi::vAddCrwVersion(Ref xwRef, Crw* pCrw)
   if (! m_pCrvBufferHead->bSpaceFor(0)) {
     CrvBuffer* pNewCrvBufferHead = new CrvBuffer;
     
-    
+    pNewCrvBufferHead->vLinkAsNext(m_pCrvBufferHead);
     m_pCrvBufferHead = pNewCrvBufferHead;
   }
   
