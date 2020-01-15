@@ -34,7 +34,6 @@ namespace Tasks
     Sleep        m_oWakeup;      // wakeup time from sleeping
 
     SMA<Forth>   m_pForth;       // forth execution context
-    SMA<Op>      m_pOp;          // the op for this task
     SMA<RegSet>  m_pRegSet;      // set of registers for the task steps
 
     i8           m_iTraceMask;   // tracing mask
@@ -87,7 +86,6 @@ namespace Tasks
     void vMutexUnlock(void);
     void vMutexWait(void);
     i8&  i_NextRnd(void);
-    Op*  pOp(void);
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
     void vRefindJobClass(void);

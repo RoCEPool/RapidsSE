@@ -384,7 +384,7 @@ bool Api::bSpawnJob(Job* pJob)
 //              pJob,
 //              C_ENDARGS);
 
-   pJob->vTimerStart();
+  pJob->vTimerStart();
 
   Scheduler::vAddTaskGeneral(pJob->pTask());
   

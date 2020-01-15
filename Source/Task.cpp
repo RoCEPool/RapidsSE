@@ -99,7 +99,6 @@ void Task::vInit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_pJob         = nullptr;
-  m_pOp          = nullptr;
 
   m_pThread      = nullptr;
   m_pMutex       = new Mutex(MK_TASK,this);
@@ -668,16 +667,6 @@ void Task::vMutexWait(void)
 i8& Task::i_NextRnd(void)
 {
   return m_pRegSet->m_i_NextRnd;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the op of this task                                                    */
-/*----------------------------------------------------------------------------*/
-Op* Task::pOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_pOp;
 }
 
 /*----------------------------------------------------------------------------*/

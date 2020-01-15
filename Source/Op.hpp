@@ -47,9 +47,7 @@ namespace Operators
   
     Op(OpSpec* pOpSpec, Pipeline* pPipeline);
    ~Op(void) noexcept(false);
-  
-    static Op* pThisTLSOp(void);
-  
+
     // - - - - - - - - - - - - - - - -
     void vAckJob(void);
     void vAddWorkDone(i8 iWorkDone);
