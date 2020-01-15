@@ -18,7 +18,6 @@ namespace Operators
     
     Job*           m_pJobPipeline;   // pipeline job this operator belongs to
     Job*           m_pOpJob;         // operator job this operator belongs to
-    Task*          m_pTask;          // task running this op
   
     bool           m_bPulsed;        // is this a pulsed operand?
     i8             m_iWorkQuanta;    // quanta of work between pulses
@@ -91,7 +90,6 @@ namespace Operators
     void vSendJobOperand(Operand* pOperand);
     bool bSpawnJob(i8 iSessionId);
     Task* pTask(void);
-    void vTask(Task* pTask);
     void vToCmdStr(Stz* szCmdStr);
     ePX  eTopologyX(void);
     void vTopologyX(ePX eTopologyX);

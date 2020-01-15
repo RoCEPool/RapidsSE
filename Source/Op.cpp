@@ -63,7 +63,6 @@ Op::Op(OpSpec* pOpSpec, Pipeline* pPipeline)
   m_pPipeline     = pPipeline;
   m_pJobPipeline  = pPipeline->pJob();
   m_pOpJob        = nullptr;
-  m_pTask         = nullptr;
   
   m_bPulsed       = false;
   m_iWorkQuanta   = 1;
@@ -133,7 +132,7 @@ void Op::vAckJob(void)
   if (AM::bVerbose())
     vTrace("Op %s: acking pipeline job\n"_Stz, aJT[AM::eJobType(m_pOpJob)]);
   
-  AM::vAckWaitingTask(pTask,m_pTask);
+  AM::vAckWaitingTask(pTask,AM::pExecutingTask(m_pOpJob));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -162,7 +161,9 @@ void Op::vAppendLeft(Operand* pOperand)
   
   pQueueLeft()->vAppendOperand(pOperand);
 
-  if (TS_BIDING != (eTS)AM::iTaskState(m_pTask)) {
+  Task* pTask = AM::pExecutingTask(m_pOpJob);
+  
+  if (TS_BIDING != (eTS)AM::iTaskState(pTask)) {
     vDropTaskLock();
     return;
   }
@@ -170,7 +171,7 @@ void Op::vAppendLeft(Operand* pOperand)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::vTriggerBidingTask(m_pTask);
+  AM::vTriggerBidingTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -189,7 +190,9 @@ void Op::vAppendRight(Operand* pOperand)
   
   pQueueRight()->vAppendOperand(pOperand);
   
-  if (TS_BIDING != (eTS)AM::iTaskState(m_pTask)) {
+  Task* pTask = AM::pExecutingTask(m_pOpJob);
+  
+  if (TS_BIDING != (eTS)AM::iTaskState(pTask)) {
     vDropTaskLock();
     return;
   }
@@ -197,7 +200,7 @@ void Op::vAppendRight(Operand* pOperand)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  AM::vTriggerBidingTask(m_pTask);
+  AM::vTriggerBidingTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -227,7 +230,7 @@ void Op::vDropTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  AM::vDropTaskLock(m_pTask);
+  AM::vDropTaskLock(AM::pExecutingTask(m_pOpJob));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -257,7 +260,7 @@ void Op::vGrabTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  AM::vGrabTaskLock(m_pTask);
+  AM::vGrabTaskLock(AM::pExecutingTask(m_pOpJob));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +290,7 @@ bool Op::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  bool bLocked = AM::bTaskIsLocked(m_pTask);
+  bool bLocked = AM::bTaskIsLocked(AM::pExecutingTask(m_pOpJob));
 
   return bLocked;
 }
@@ -736,7 +739,7 @@ void Op::vSendJobOperand(Operand* pOperand)
       Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
       
       // send the operand job across the sendNode
-      AM::vSend(m_pTask, pSendNode, pJob_Operand);
+      AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
       
       // delete the operand job
       AM::vDeleteJobOperand(pJob_Operand);
@@ -757,7 +760,7 @@ void Op::vSendJobOperand(Operand* pOperand)
         Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
         
         // send the operand job across the sendNode
-        AM::vSend(m_pTask, pSendNode, pJob_Operand);
+        AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
         
         // delete the operand job
         AM::vDeleteJobOperand(pJob_Operand);
@@ -781,7 +784,7 @@ void Op::vSendJobOperand(Operand* pOperand)
       Node* pSendNode = AM::pGrid()->pGetNode(m_iXmitNode);
       
       // send the operand job across the sendNode
-      AM::vSend(m_pTask, pSendNode, pJob_Operand);
+      AM::vSend(AM::pExecutingTask(m_pOpJob), pSendNode, pJob_Operand);
       
       // delete the operand job
       AM::vDeleteJobOperand(pJob_Operand);
@@ -824,8 +827,6 @@ bool Op::bSpawnJob(i8 iSessionId)
   
   bool bSpawned = AM::bSpawnJob(m_pOpJob);
   
-  m_pTask = AM::pExecutingTask(m_pOpJob);
-  
   return bSpawned;
 }
 
@@ -836,18 +837,18 @@ Task* Op::pTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pTask;
+  return AM::pExecutingTask(m_pOpJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set task                                                                   */
 /*----------------------------------------------------------------------------*/
-void Op::vTask(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  m_pTask = pTask;
-}
+//void Op::vTask(Task* pTask)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+//
+//  m_pTask = pTask;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* print stage spec                                                           */
