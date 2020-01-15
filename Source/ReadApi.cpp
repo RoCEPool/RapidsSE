@@ -72,6 +72,7 @@ void ReadApi::vAddCrwVersion(Ref xwRef, Crw* pCrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
+  ASSERT(m_pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/

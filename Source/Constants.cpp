@@ -168,6 +168,7 @@ void Constants::vAddConstants(void)
   /* 16 */ vAddConstant("CN_BUFFERPOOL"_Stz,   CN_BUFFERPOOL);
   /* 16 */ vAddConstant("CN_BYTERATE"_Stz,     CN_BYTERATE);
 
+  /*    */ vAddConstant("CN_CRVBUFFER"_Stz,    CN_CRVBUFFER);
   /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
   /*    */ vAddConstant("CN_CSVBUFFER"_Stz,    CN_CSVBUFFER);
   
