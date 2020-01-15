@@ -56,7 +56,7 @@ rows:
   ('key', 'INTEGER', 19, 0, false, true)
 
 // drop the index
-drop index T1.Idx;
+drop index T1 Idx;
 success
 
 // check existence of index

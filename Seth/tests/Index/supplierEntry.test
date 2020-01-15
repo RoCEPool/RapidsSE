@@ -679,7 +679,7 @@ fetch supplier "s_suppkey 9972 >= s_suppkey 9971 <= AND";
 rows: 0
 
 // drop the index idx;
-drop index supplier.idx;
+drop index supplier idx;
 success
 
 //------------------------------------------------------------------------------
@@ -746,7 +746,7 @@ fetch supplier "s_nationkey 40 >= s_nationkey 10 <= and";
 rows: 0
 
 // drop the index idx;
-drop index supplier.idx;
+drop index supplier idx;
 success
 
 // now drop the table
