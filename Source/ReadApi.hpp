@@ -10,6 +10,8 @@ namespace ReadConsistency
   private:
     StreamDef* m_pStreamDef; // definition of the rows
   
+    CrvBuffer* m_pCrvBufferHead; // head of crv buffer list
+  
     // must be last
     Footer m_xFooter;
   

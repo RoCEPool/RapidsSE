@@ -48,6 +48,8 @@ ReadApi::ReadApi(void)
   
   m_pStreamDef = nullptr;
   
+  m_pCrvBufferHead = nullptr;
+  
   _checkInitialised_(CN_READAPI);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
@@ -73,6 +75,18 @@ void ReadApi::vAddCrwVersion(Ref xwRef, Crw* pCrw)
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
   ASSERT(m_pStreamDef);
+  
+  if (! m_pCrvBufferHead)
+    m_pCrvBufferHead = new CrvBuffer;
+  
+  if (! m_pCrvBufferHead->bSpaceFor(0)) {
+    CrvBuffer* pNewCrvBufferHead = new CrvBuffer;
+    
+    
+    m_pCrvBufferHead = pNewCrvBufferHead;
+  }
+  
+  m_pCrvBufferHead->vAddCrwVersion(xwRef,pCrw);
 }
 
 /*----------------------------------------------------------------------------*/

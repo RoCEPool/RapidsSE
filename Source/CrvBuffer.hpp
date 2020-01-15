@@ -23,7 +23,8 @@ namespace ReadConsistency
   
     CrvBuffer(void);
    ~CrvBuffer(void) noexcept(false);
-  
+
+    void vAddCrwVersion(Ref xwRef, Crw* pCrw);
     bool bSpaceFor(i8 nBytes);
 
   private:

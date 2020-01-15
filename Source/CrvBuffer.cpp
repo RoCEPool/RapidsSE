@@ -73,6 +73,15 @@ CrvBuffer::~CrvBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add crw version into this buffer                                           */
+/*----------------------------------------------------------------------------*/
+void CrvBuffer::vAddCrwVersion(Ref xwRef, Crw* pCrw)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if buffer has space for given number of bytes                         */
 /*----------------------------------------------------------------------------*/
 bool CrvBuffer::bSpaceFor(i8 nBytes)
