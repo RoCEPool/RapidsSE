@@ -1004,6 +1004,9 @@ void TablePtn::vUpsertRow_update(Crw* aCrw_exists, EntWrk* pEntWrk,
   SP_Encoding spEncoding;
   vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert));
   
+  // record prior version
+  m_pReadApi->vAddCrwVersion(pEntWrk->xRef(),aCrw_exists);
+  
   Packing::vPackCrw(aCrw_exists,pEncoding_upsert);
   
   // set perspective

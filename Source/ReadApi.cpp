@@ -46,6 +46,8 @@ ReadApi::ReadApi(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
+  m_pStreamDef = nullptr;
+  
   _checkInitialised_(CN_READAPI);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
@@ -89,6 +91,16 @@ void ReadApi::vPurgePriorVersions(t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* set steam definition                                                       */
+/*----------------------------------------------------------------------------*/
+void ReadApi::vStreamDef(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
+  
+  m_pStreamDef = pStreamDef;
 }
 
 
