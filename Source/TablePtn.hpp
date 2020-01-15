@@ -12,22 +12,24 @@ namespace Partitioning
   class TablePtn : public Object
   {
   private:
-    Lock m_okLock;               // lock on the partition
-    Table* m_pTable;             // table this partition belongs to
-    i8 m_iPartitionId;           // partition number
-    bool m_bLowMemLoad;          // was low memory detected during this load
+    Lock m_okLock;         // lock on the partition
+    Table* m_pTable;       // table this partition belongs to
+    i8   m_iPartitionId;   // partition number
+    bool m_bLowMemLoad;    // was low memory detected during this load
   
-    i8 m_nWriteBehindBuffers;    // buffers to be written
-    i8 m_nBuffersWritten;        // buffers written so far
+    i8   m_nWriteBehindBuffers;     // buffers to be written
+    i8   m_nBuffersWritten;         // buffers written so far
     
-    i8 m_nSubLoadersDone;        // number of subloader which have completed
-    i8 m_nSubInsertersDone;      // number of subInserters which have completed
-    i8 m_iParentJobId;           // parent jobid
+    i8   m_nSubLoadersDone;         // number of subloader which have completed
+    i8   m_nSubInsertersDone;       // number of subInserters which have completed
+    i8   m_iParentJobId;            // parent jobid
     
-    CrwBuffer* m_pRootCrwBuffer;      // the data root buffer
-    CrwBuffer* m_pCurrentCrwBuffer;   // the data current buffer for insert
+    CrwBuffer* m_pRootCrwBuffer;    // the data root buffer
+    CrwBuffer* m_pCurrentCrwBuffer; // the data current buffer for insert
     
-    IndexTreeVec* m_pIndexTreeVec; // vector of index trees
+    IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
+  
+    ReadApi* m_pReadApi;            // read consistency api
   
     // must be last
     Footer m_xFooter;
