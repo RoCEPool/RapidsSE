@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace CompactBuffers
+namespace ReadConsistency
 {
   class ReadApi : public Object
   {

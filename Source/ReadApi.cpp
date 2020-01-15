@@ -2,7 +2,7 @@
 /* ReadApi.cpp -- Read Consistency API                                        */
 /*============================================================================*/
 
-#include "CompactBuffers.h"
+#include "ReadConsistency.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ReadApi* CompactBuffers::_pReadApi(void* aAddr)
+ReadApi* ReadConsistency::_pReadApi(void* aAddr)
 {
   ReadApi* pReadApi = reinterpret_cast<ReadApi*>(aAddr);
   
