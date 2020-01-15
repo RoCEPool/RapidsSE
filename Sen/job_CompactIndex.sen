@@ -100,7 +100,7 @@ jobInfo: compactIndex
   
   <?jobType?>  = JT_COMPACTINDEX
   <?jobKind?>  = JK_DIST2PC
-  <?rspKind?>  = RS_NODE_ROWS
+  <?rspKind?>  = RS_NODE_ZERO
   <?ddlLock?>  = DL_GRAB_WRITE
   
   <?preCheck?> = bClusterStarted
