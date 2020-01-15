@@ -7,7 +7,11 @@ namespace ReadConsistency
 {
   class CrvBuffer : public DataBuffer
   {
+    static const i8 C_WSP_CSVBUFFER = C_SIZE_LARGE_OBJECT - C_4KB;
+  
   public:
+    Wsp_t<C_WSP_CSVBUFFER> m_xWsp;
+
     SeeMe m_xSeeMe;
     
     // must be last
@@ -19,6 +23,8 @@ namespace ReadConsistency
   
     CrvBuffer(void);
    ~CrvBuffer(void) noexcept(false);
+  
+    bool bSpaceFor(i8 nBytes);
 
   private:
     Footer* aFooter(void);
