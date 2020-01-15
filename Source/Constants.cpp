@@ -243,6 +243,7 @@ void Constants::vAddConstants(void)
   /* 46 */ vAddConstant("CN_QUEUEBUFFER"_Stz,  CN_QUEUEBUFFER);
   /*    */ vAddConstant("CN_QUEUES"_Stz,       CN_QUEUES);
   
+  /*    */ vAddConstant("CN_READAPI"_Stz,      CN_READAPI);
   /*    */ vAddConstant("CN_RECORD"_Stz,       CN_RECORD);
   /*    */ vAddConstant("CN_RECORDBUFFER"_Stz, CN_RECORDBUFFER);
   /*    */ vAddConstant("CN_RESPONSE"_Stz,     CN_RESPONSE);

@@ -213,6 +213,7 @@ enum eCN : u2 // Class Number
   /* 183 0x0B7      160B Heap:S */ CN_QUEUES,
   
   /* 184 0x0B8       18B Heap:I */ CN__R__,
+  /*                            */ CN_READAPI,
   /* 185 0x0B9    16448B Heap:M */ CN_RECORD,
   /* 186 0x0BA  1043496B Heap:L */ CN_RECORDBUFFER,
   /* 187 0x0BB      184B Heap:S */ CN_REGSET,
@@ -535,6 +536,7 @@ static Stz* aCN[]
   /* 183 0x0B7 */ "QUEUES"_Stz,              // CN_QUEUES
   
   /* 184 0x0B8 */ "_R__"_Stz,                // CN__R__
+  /* 185 0x0B9 */ "READAI"_Stz,              // CN_READAPI
   /* 185 0x0B9 */ "RECORD"_Stz,              // CN_RECORD
   /* 186 0x0BA */ "RECORDBUFFER"_Stz,        // CN_RECORDBUFFER
   /* 187 0x0BB */ "REGSET"_Stz,              // CN_REGSET

@@ -210,6 +210,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_QUEUES
   
   /*    */ &Finalize::vUndefined,         // CN__R__
+  /*    */ &Finalize::vUndefined,         // CN_READAPI
   /*    */ &Finalize::vUndefined,         // CN_RECORD
   /*    */ &Finalize::vUndefined,         // CN_RECORDBUFFER
   /*    */ &Finalize::vUndefined,         // CN_REGSET
