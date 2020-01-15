@@ -771,6 +771,16 @@ bool TablePtn::bPurge(i8 iOlderThanSeconds)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get read api                                                               */
+/*----------------------------------------------------------------------------*/
+ReadApi* TablePtn::pReadApi(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_pReadApi;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset the buffer write members                                             */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vResetWrite(void)
