@@ -63,6 +63,34 @@ ReadApi::~ReadApi(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* add a row version                                                          */
+/*----------------------------------------------------------------------------*/
+void ReadApi::vAddCrwVersion(Ref xwRef, Crw* pCrw)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a row version given a reference and perspective                        */
+/*----------------------------------------------------------------------------*/
+Crw* ReadApi::aGetCrwVersion(Ref xwRef, t8 tPerspective)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a row version given a reference and perspective                        */
+/*----------------------------------------------------------------------------*/
+void ReadApi::vPurgePriorVersions(t8 tPerspective)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
+  
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
