@@ -3,7 +3,7 @@ createLoop.test
 //createUnique.test
 emptyTable.test
 rangeQuery.test
-//indexEntry.test
+indexEntry.test
 //supplierEntry.test
 //lineitemEntry.test
 //supplierEntryLoop.test
