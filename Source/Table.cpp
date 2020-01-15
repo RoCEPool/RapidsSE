@@ -806,7 +806,9 @@ void Table::vUpsertBuffer(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
   
   TablePtn* pPartition = this->pPartition(iSlot);
   
-  pPartition->vUpsertBuffer(pCrwBuffer,C_UNKNOWN);
+  t8 tPerspectibe = AM::tThisTLSPespective();
+  
+  pPartition->vUpsertBuffer(pCrwBuffer,tPerspectibe);
 }
 
 /*----------------------------------------------------------------------------*/
