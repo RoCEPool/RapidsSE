@@ -60,6 +60,7 @@ namespace Prompt        { class SePrompt;                                     }
 namespace Oblique       { class AM;                                           }
 namespace Operands      { class Operand;                                      }
 namespace Operators     { class Op; class Pipeline;                           }
+namespace ReadConsistency {                                                   }
 namespace Records       {                                                     }
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Registers     { class RegSet;                                       }
@@ -122,6 +123,7 @@ using namespace Persistence;
 using namespace Plans;
 using namespace Pool;
 using namespace Prompt;
+using namespace ReadConsistency;
 using namespace Records;
 using namespace Registers;
 using namespace Resources;
