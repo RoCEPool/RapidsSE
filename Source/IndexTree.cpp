@@ -357,6 +357,28 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert a given entry into this index tree starting at leaf / height 0      */
+/*----------------------------------------------------------------------------*/
+bool IndexTree::bInsertEntry(Ent* aEnt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+  m_okLock.vGrabWrite();                                           //! GRAB LOCK
+  
+  if (! m_pRootBuffer)
+    RASSERT(pNewRootBuffer());
+  
+  Ent* aInsertedEntry = EntBuffer::aInsertEntTree(aEnt,&m_pRootBuffer);
+  ASSERT(aInsertedEntry);
+  
+  //m_pRootBuffer->bVerify();
+  
+  m_okLock.vDropWrite();                                           //! DROP LOCK
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
 bool IndexTree::bInsertEntry(Crw* aCrw, Ref& xRowRef)
