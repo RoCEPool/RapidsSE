@@ -220,7 +220,7 @@ void SePrompt::vPromptLoop(void)
         // do something else release version optimizes this out
         //if (AM::bVerbose())
         //  vTrace("Waiting for buffer queue\n"_Stz);
-        AM::vNap(1,CN_SEPROMPT);
+        AM::vNapMsec(1,CN_SEPROMPT);
       }
     
       // start the post processing while the pipeline ops are running

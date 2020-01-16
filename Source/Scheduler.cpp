@@ -1310,7 +1310,7 @@ void Scheduler::vThread_PauseGeneral(void)
   
   // pause till all general threads have all begun
   while (AM::nThreadsBegun() != AM::nThreads())
-    AM::vNap(10,CN_NONE);
+    AM::vNapMsec(10,CN_NONE);
   
   RASSERT(pQueues->m_pGeneralThreadVec->nItems() == AM::nThreads());
   
@@ -1323,7 +1323,7 @@ void Scheduler::vThread_PauseGeneral(void)
     Thread* pThread = pQueues->m_pGeneralThreadVec->pGet(i_Thread);
     
     while (HS_IDLE != pThread->m_eThreadState)
-      AM::vNap(10,CN_QUEUES);
+      AM::vNapMsec(10,CN_QUEUES);
   }
 }
 

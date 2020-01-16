@@ -706,7 +706,7 @@ void Jobs::vJob_FetchRows_post(Job* pJob)
     pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
     if (! pFetchBuffer) {
       //PsxThd::vSleepMilli(1,CN_JOB_FETCHROWS);
-      AM::vNap(1,CN_JOB_FETCHROWS);
+      AM::vNapMsec(1,CN_JOB_FETCHROWS);
       continue;
     }
     

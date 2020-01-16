@@ -975,7 +975,7 @@ void AM::vDdlGrabWrite(Task* pTask)  { Scheduler::vDdlGrabWrite(pTask);        }
 /*----------------------------------------------------------------------------*/
 /* nap for given number of milliseconds (no known calling thread)             */
 /*----------------------------------------------------------------------------*/
-void AM::vNap(i8 nMilliSeconds, eCN eCallingClass)
+void AM::vNapMsec(i8 nMilliSeconds, eCN eCallingClass)
 {
   struct timespec xReq;
   struct timespec xRem;
