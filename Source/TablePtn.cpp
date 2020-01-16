@@ -957,7 +957,7 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
       continue;
     }
     
-    vUpsertRow_update(aCrw_exists,&xEntWrk,pEncoding_upsert,tPerspective);
+    vUpsertRow_update(aCrw_exists,aEnt_found,pEncoding_upsert,tPerspective);
     
     vDebugPoint();
 
@@ -967,7 +967,7 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
 /*----------------------------------------------------------------------------*/
 /* WIP: insert a new row (no such row yet exists in the index)                */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* pEntWrk,
+void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
                                  Encoding* pEncoding_upsert, t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
@@ -982,16 +982,16 @@ void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* pEntWrk,
   SP_Encoding spEncoding;
   vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert));
   
-  Crw* aCrw_insert = aAllotFixedSizeCrw(pEntWrk->xRef());
+  Crw* aCrw_insert = aAllotFixedSizeCrw(aEntWrk->xRef());
   Packing::vPackCrw(aCrw_insert,pEncoding_upsert);
   
   // set perspective
   aCrw_insert->vPerspective(tPerspective);
   
   SP_Ref spRef;
-  vTrace("Insert Entries to : %s\n"_Stz,spRef.sz(pEntWrk->xRef()));
+  vTrace("Insert Entries to : %s\n"_Stz,spRef.sz(aEntWrk->xRef()));
 
-  vInsertIndexEntries(aCrw_insert,pEntWrk->xRef());
+  vInsertIndexEntries(aCrw_insert,aEntWrk->xRef());
   
   vDebugPoint();
 }
@@ -999,7 +999,7 @@ void TablePtn::vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* pEntWrk,
 /*----------------------------------------------------------------------------*/
 /* WIP: update an existing row                                                */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vUpsertRow_update(Crw* aCrw_exists, EntWrk* pEntWrk,
+void TablePtn::vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_found,
                                  Encoding* pEncoding_upsert, t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
@@ -1015,7 +1015,7 @@ void TablePtn::vUpsertRow_update(Crw* aCrw_exists, EntWrk* pEntWrk,
   vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert));
   
   // record prior version
-  m_pReadApi->vAddCrwVersion(pEntWrk->xRef(),aCrw_exists);
+  m_pReadApi->vAddCrwVersion(aEnt_found->xRef(),aCrw_exists);
   
   Packing::vPackCrw(aCrw_exists,pEncoding_upsert);
   

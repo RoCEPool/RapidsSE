@@ -84,9 +84,9 @@ namespace Partitioning
     void vTidyUpIndex(i8 iIndexNo);
     void vTruncate(void);
     void vUpsertBuffer(CrwBuffer* pCrwBuffer, t8 tPerspective);
-    void vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* pEntWrk,
+    void vUpsertRow_insert(Crw* aCrw_nosuch, EntWrk* aEntWrk,
                            Encoding* pEncoding_upsert, t8 tPerspective);
-    void vUpsertRow_update(Crw* aCrw_exists, EntWrk* pEntWrk,
+    void vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_Found,
                            Encoding* pEncoding_upsert, t8 tPerspective);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
