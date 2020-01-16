@@ -2983,7 +2983,7 @@ void Task::vAddMunged(Forth* pForth)
     "  \n"
     "  <?jobType?>  = JT_COMPACTINDEX\n"
     "  <?jobKind?>  = JK_DIST2PC\n"
-    "  <?rspKind?>  = RS_NODE_ROWS\n"
+    "  <?rspKind?>  = RS_NODE_ZERO\n"
     "  <?ddlLock?>  = DL_GRAB_WRITE\n"
     "  \n"
     "  <?preCheck?> = bClusterStarted\n"
@@ -11101,9 +11101,11 @@ void Task::vAddMunged(Forth* pForth)
     "\n"
     "    ZK_CRWBUFFER of\n"
     "      //\\\"Operand:- ZK_CRWBUFFER\\\" .verbose\n"
+    "      tx[].begin\n"
     "      tablePtn[].get tablePtnGrabWrite2\n"
     "      Operand[].upsertIntoTable\n"
     "      tablePtn[].get tablePtnDropWrite2\n"
+    "      tx[].commit\n"
     "      true\n"
     "    endof\n"
     "\n"
@@ -16368,6 +16370,35 @@ void Task::vAddMunged(Forth* pForth)
 
 
   //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of test_sleep.sen
+
+  sFileContents =
+    "\""
+    "\\\"munged test_sleep.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* test_sleep.sen -- sleep test                                               */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" test_sleep.sen\\\" .verbose\n"
+    "\n"
+    ": sleep\n"
+    "\n"
+    "  \\\"sleeping\\\" .\n"
+    "  20 task::sleepSsec\n"
+    "  \\\"awake\\\" .\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT test_sleep.sen"_Stz
+  ;
+
+  vCompileConstant(sFileContents);
+
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_str.sen
 
   sFileContents =
@@ -16528,6 +16559,7 @@ void Task::vAddMunged(Forth* pForth)
     "\\\"test_iData.sen\\\" include\n"
     "\\\"test_dData.sen\\\" include\n"
     "\\\"test_1m.sen\\\" include\n"
+    "\\\"test_sleep.sen\\\" include\n"
     "\n"
     "\\\"test_rjh.sen\\\" include\n"
     "\n"
