@@ -121,17 +121,25 @@ i8 CrvBuffer::nCrv(void)
 void CrvBuffer::vDumpAllCrv(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
+    
   
   HV_Row hvRow(m_pStreamDef,C_ALL);
   SP_Record spRec;
 
   for (i8 i_Crv = 0; i_Crv < m_nCrv; i_Crv++) {
-    Crv* aCrv = aGetCrv(i_Crv);
     
+    Crv* aCrv = aGetCrv(i_Crv);
+  
+  
     Crw* aCrw = aCrv->aCrw();
-      
     CrwBuffer::vToRow(hvRow,aCrw);
-    vTrace("Crv %lld : %s\n"_Stz,i_Crv,spRec.sz(hvRow));
+    
+    vTrace("Crv %lld Ref %lld.%lld Psp %lld: %s\n"_Stz,
+           i_Crv,
+           aCrv->xwRef().iBuffer(),
+           aCrv->xwRef().iItem(),
+           aCrw->tPerspective(),
+           spRec.sz(hvRow));
 
     vDebugPoint();
   }
