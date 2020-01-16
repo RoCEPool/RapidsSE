@@ -376,7 +376,7 @@ i8 giClassSize[]
   /* */ sizeof(Column),             // CN_COLUMN
   /* */ sizeof(Request),            // CN_COMMAND
   /* */ sizeof(Compiler),           // CN_COMPILER
-  /* */ 0,//sizeof(CrvBuffer),          // CN_CRVBUFFER
+  /* */ sizeof(CrvBuffer),          // CN_CRVBUFFER
   /* */ sizeof(CrwBuffer),          // CN_CRWBUFFER
   /* */ sizeof(CsvBuffer),          // CN_CSVBUFFER
 

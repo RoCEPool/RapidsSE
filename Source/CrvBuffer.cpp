@@ -49,6 +49,10 @@ CrvBuffer::CrvBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
     
+  #ifdef WITH_CHECK_INITIALISED
+    m_xWsp.vZero(CN_CRVBUFFER);
+  #endif
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
   
   _checkInitialised_(CN_CRVBUFFER);
