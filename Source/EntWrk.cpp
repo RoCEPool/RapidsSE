@@ -112,10 +112,25 @@ void EntWrk::vAppendElement(Row* pRow, Column* pCol)
     vIncElmSeqSize(nElmSize);
   }
   else {
-    byte* ayDst = ayElmNext();
-    nElmSize = Dtm::nCopy(ayDst,iValue);
-    vIncElmSeqSize(nElmSize);
+//    byte* ayDst = ayElmNext();
+//    nElmSize = Dtm::nCopy(ayDst,iValue);
+//    vIncElmSeqSize(nElmSize);
+    vAppendInt(iValue);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add int element to key                                                     */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendInt(i8 iArg)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  byte* ayDst = ayElmNext();
+  
+  i8 nElmSize = Dtm::nCopy(ayDst,iArg);
+  
+  vIncElmSeqSize(nElmSize);
 }
 
 /*----------------------------------------------------------------------------*/

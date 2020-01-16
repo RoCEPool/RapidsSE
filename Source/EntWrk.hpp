@@ -32,9 +32,12 @@ namespace Entries
     static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
   
     void  vAppendElement(Row* pRow, Column* pCol);
+    void  vAppendInt(i8 iArg);
     void  vAppendMinusInfinity(void);
+    void  vAppendNull(i8 iArg);
     void  vAppendPlusInfinity(void);
-  
+    void  vAppendStz(Stz* szArg);
+
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
 
