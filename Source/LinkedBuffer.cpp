@@ -74,15 +74,15 @@ void LinkedBuffer::vLinkAsNext(LinkedBuffer* pArgBuffer)
      | prev        | <-- (d) | prev        | <-- (b) | prev         |
      +-------------+         +-------------+         +--------------+
    
-   */
+  */
   
-  pArgBuffer->vNextBuffer(m_pNextBuffer);  // (a)
+  pArgBuffer->vNextBuffer(m_pNextBuffer);    // (a)
   
-  m_pNextBuffer->vPrevBuffer(pArgBuffer);  // (b)
-
-  m_pNextBuffer = pArgBuffer;              // (c)
+  if (m_pNextBuffer)
+    m_pNextBuffer->vPrevBuffer(pArgBuffer);  // (b)
+  m_pNextBuffer = pArgBuffer;                // (c)
   
-  pArgBuffer->vPrevBuffer(this);           // (d)
+  pArgBuffer->vPrevBuffer(this);             // (d)
 }
 
 /*----------------------------------------------------------------------------*/

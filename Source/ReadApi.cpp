@@ -76,17 +76,19 @@ void ReadApi::vAddCrwVersion(Ref xwRef, Crw* pCrw)
   
   ASSERT(m_pStreamDef);
   
+  i8 nFixedCrwSize = m_pStreamDef->m_nFixedSized;
+  
   if (! m_pCrvBufferHead)
     m_pCrvBufferHead = new CrvBuffer;
   
-  if (! m_pCrvBufferHead->bSpaceFor(0)) {
+  if (! m_pCrvBufferHead->bSpaceFor(nFixedCrwSize)) {
     CrvBuffer* pNewCrvBufferHead = new CrvBuffer;
     
     pNewCrvBufferHead->vLinkAsNext(m_pCrvBufferHead);
     m_pCrvBufferHead = pNewCrvBufferHead;
   }
   
-  m_pCrvBufferHead->vAddCrwVersion(xwRef,pCrw);
+  m_pCrvBufferHead->vAddCrwVersion(xwRef,pCrw,m_pStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/

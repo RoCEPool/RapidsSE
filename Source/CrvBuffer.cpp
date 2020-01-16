@@ -79,20 +79,25 @@ CrvBuffer::~CrvBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add crw version into this buffer                                           */
 /*----------------------------------------------------------------------------*/
-void CrvBuffer::vAddCrwVersion(Ref xwRef, Crw* pCrw)
+void CrvBuffer::vAddCrwVersion(Ref xwRef, Crw* pCrw, StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
   
+  i8 nTotalBytesNeeded = pStreamDef->m_nFixedSized + /*lets say*/64/*for them moment*/;
+  
+  byte* ayCrv = m_xWsp.ayAllot(nTotalBytesNeeded);
+  ASSERT(ayCrv);
 }
 
 /*----------------------------------------------------------------------------*/
 /* test if buffer has space for given number of bytes                         */
 /*----------------------------------------------------------------------------*/
-bool CrvBuffer::bSpaceFor(i8 nBytes)
+bool CrvBuffer::bSpaceFor(i8 nFixedCrwSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
   
-  if (m_xWsp.nFree() >= nBytes)
+  i8 nTotalBytesNeeded = nFixedCrwSize + /*lets say*/64/*for them moment*/;
+  if (m_xWsp.nFree() >= nTotalBytesNeeded)
     return true;
   else
     return false;
