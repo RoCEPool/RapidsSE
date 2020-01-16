@@ -11,7 +11,7 @@ namespace CompactBuffers
 
   public:
     Crw(void);
-    ~Crw(void) noexcept(false);
+   ~Crw(void) noexcept(false);
   
     static void vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef);
     static void vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, StreamDef* pStreamDef);

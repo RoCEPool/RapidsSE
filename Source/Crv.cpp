@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Crv.hpp -- Compact Row Version                                             */
+/* Crv.hpp -- Consistent Row Version                                          */
 /*============================================================================*/
 
 #include "ReadConsistency.h"
@@ -31,8 +31,11 @@ Crv::~Crv(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 Crv::nCrvBytesNeed(i8 nCrwBytes)
 {
+  i8 nBytesNeeded = sizeof(Crv) - sizeof(Crw) + nCrwBytes;
   
-  return 64 + nCrwBytes;
+  ASSERT(nBytesNeeded == nCrwBytes + 16); // cross-check
+  
+  return nBytesNeeded;
 }
 
 /*----------------------------------------------------------------------------*/
