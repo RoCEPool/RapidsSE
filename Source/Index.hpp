@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+static Stz* S_READAPI_I = "__READAPI_I"_Stz;
+
 namespace MetaData
 {
   class Index : public Object

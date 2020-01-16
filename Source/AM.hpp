@@ -240,7 +240,9 @@ namespace Oblique
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static i8   iRdTimePoint(void);
-  
+    static void vReadApiIndex(Index* pIndex);
+    static Index* pReadApiIndex(void);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static ReqTuple* aReqTuple_tls(void);
   

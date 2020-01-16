@@ -9,9 +9,10 @@ extern PromptCatalog gxPromptCatalog;
 
 extern AttachMap*    gpAttachMap;
 extern BufferPool*   gpBufferPool;
-extern Log*          gpLog;
-extern Header*       gaSeShmRegion;
 extern File*         gpTraceFile;
+extern Header*       gaSeShmRegion;
+extern Index*        gpReadApiIndex;
+extern Log*          gpLog;
 
 extern eHT           geWhichHeap[];
 extern i8            giClassSize[];
@@ -1337,7 +1338,8 @@ void AM::vPrintGlobals(void)
   printf("gpTraceFile     @%p : %p\n",&gpTraceFile,  gpTraceFile);
 }
 
-
+Index* AM::pReadApiIndex(void) { return gpReadApiIndex; }
+void   AM::vReadApiIndex(Index* pIndex) { gpReadApiIndex = pIndex; }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
