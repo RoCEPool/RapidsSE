@@ -725,12 +725,11 @@ void Task::vRenderPortrait(s256& sTaskPortrait)
     
     Now sDateTime;
     
-    sTaskPortrait.vSprint("Task %p %s %s wakeup %s"_Stz,
+    sTaskPortrait.vSprint("Task %p %s %s wakeup %lld"_Stz,
                           this,
                           aCN[m_pJob->eClass()],
                           aTS[m_eState],
-                          sDateTime.sz(&m_oWakeup.m_wWakeupTsp)
-                        );
+                          m_oWakeup.m_wWakeupIvl.m_iAsI8);
   }
   else if (QK_NONE != m_eQueue) {
     sTaskPortrait.vSprint("Task %p %s %s"_Stz,

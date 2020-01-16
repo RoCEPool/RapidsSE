@@ -15,6 +15,7 @@
 "test_iData.sen" include
 "test_dData.sen" include
 "test_1m.sen" include
+"test_sleep.sen" include
 
 "test_rjh.sen" include
 
