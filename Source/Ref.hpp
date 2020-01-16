@@ -26,6 +26,7 @@ namespace Rows
     void operator =(Ref& xRef); // assignment
   
     i8    iAsI8(void);
+    void  vSet(Ref xwRef);
     void  vAssign(Ref& xRef);
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);

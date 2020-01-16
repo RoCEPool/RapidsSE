@@ -94,13 +94,23 @@ i8 Ref::iAsI8(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign id                                                                  */
+/* assign ref                                                                 */
+/*----------------------------------------------------------------------------*/
+void Ref::vSet(Ref xwRef)
+{
+  m_uBuffer  = xwRef.m_uBuffer;
+  m_uItem    = xwRef.m_uItem;
+  m_uOffsets = xwRef.m_uOffsets;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign ref                                                                  */
 /*----------------------------------------------------------------------------*/
 void Ref::vAssign(Ref& xRef)
 {
   m_uBuffer  = xRef.m_uBuffer;
   m_uItem    = xRef.m_uItem;
-  m_uOffsets  = xRef.m_uOffsets;
+  m_uOffsets = xRef.m_uOffsets;
 }
 
 /*----------------------------------------------------------------------------*/
