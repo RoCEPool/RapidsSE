@@ -28,7 +28,7 @@ namespace ReadConsistency
     CrvBuffer(StreamDef* pStreamDef);
    ~CrvBuffer(void) noexcept(false);
 
-    bool bAddCrwVersion(Ref xwRef, Crw* pCrw);
+    i8   iAddCrwVersion(Ref xwRef, Crw* pCrw);
     i8   nCrv(void);
     void vDumpAllCrv(void);
     Crv* aGetCrv(i8 i_Crv);

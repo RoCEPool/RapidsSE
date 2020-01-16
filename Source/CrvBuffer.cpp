@@ -81,9 +81,9 @@ CrvBuffer::~CrvBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add crw version into this buffer                                           */
+/* add crw version into this buffer, return crv item subscript                */
 /*----------------------------------------------------------------------------*/
-bool CrvBuffer::bAddCrwVersion(Ref xwRef, Crw* pCrw)
+i8 CrvBuffer::iAddCrwVersion(Ref xwRef, Crw* pCrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
   
@@ -92,7 +92,7 @@ bool CrvBuffer::bAddCrwVersion(Ref xwRef, Crw* pCrw)
   
   if (! bHasSpace(nTotalBytesNeeded)) {
     vDumpAllCrv();
-     return false;
+     return C_UNKNOWN;
   }
    
   Crv* aCrv = _aCrv(m_xWsp.ayAllot(nTotalBytesNeeded));
@@ -102,7 +102,7 @@ bool CrvBuffer::bAddCrwVersion(Ref xwRef, Crw* pCrw)
   
   aCrv->vTakeVersion(xwRef,pCrw,nCrwBytes);
   
-  return true;
+  return m_nCrv - 1;
 }
 
 /*----------------------------------------------------------------------------*/
