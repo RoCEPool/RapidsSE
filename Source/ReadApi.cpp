@@ -180,6 +180,8 @@ Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // need a new head buffer
   
+  m_pIndexTree->vDump(false);
+  
   CrvBuffer* pNewCrvBufferHead = new CrvBuffer(m_pStreamDef);
   
   pNewCrvBufferHead->vLinkAsNext(m_pCrvBufferHead);

@@ -506,7 +506,7 @@ void CrwBuffer::vRestoreTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vShowRow(i8 i_Row)
 {
-  vTrace("Ref: %3lli.%03lli "_Stz,m_iBufferNo,i_Row);
+  vTrace("Ref: %3lli.%03lli"_Stz,m_iBufferNo,i_Row);
   
   StreamDef* pStreamDef = pTable()->pStreamDef();
   HV_Rec hvRec(pStreamDef,C_ALL);
