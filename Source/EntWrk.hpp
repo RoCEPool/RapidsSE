@@ -41,7 +41,7 @@ namespace Entries
     byte* ayElmNext(void);
     byte* ayElmSeq(void);
     void  vElmSeq(i8 nElmSeqSize, byte* ayElmSeq);
-     void  vElmSeqSize(i8 nElmSeqSize);
+    void  vElmSeqSize(i8 nElmSeqSize);
     Ent*  aEnt(void);
     
     i8    iHashKey(void);

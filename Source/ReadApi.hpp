@@ -31,6 +31,9 @@ namespace ReadConsistency
     void vStreamDef(StreamDef* pStreamDef);
 
   private:
+    void vAddVersionEntry(Ref xwCurrentRef,
+                          Ref xwVersionRef, t8 tVersionPsp);
+  
     Footer* aFooter(void);
   };
   
