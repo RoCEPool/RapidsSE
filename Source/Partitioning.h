@@ -14,6 +14,11 @@ namespace Partitioning
 
 //------------------------------------------------------------------------------
 
+//#define TRACE_UPSERT(smt) smt
+#define TRACE_UPSERT(smt)
+
+//------------------------------------------------------------------------------
+
 #include "BucketMap.hpp"
 #include "TablePtn.hpp"
 
