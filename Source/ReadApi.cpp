@@ -46,9 +46,13 @@ ReadApi::ReadApi(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
+  Index* pReadApiIndex = AM::pReadApiIndex();
+  
+  // -- -- --
+  
   m_pStreamDef = nullptr;
   
-  m_pIndexTree = nullptr;
+  m_pIndexTree = new IndexTree(pReadApiIndex,0);
   
   m_pCrvBufferHead = nullptr;
   
