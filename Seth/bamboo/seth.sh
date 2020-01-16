@@ -53,7 +53,7 @@ fi
 SETH_START_TIME="$(date +%s)"
 
 # Run the SE Test Harness in the background so we can monitor both it and SE.
-java -cp ${CLASSPATH} com.rapidsdata.seth.Seth -u "${URL}" ${SETH_ARGS} &
+java -cp ${CLASSPATH} com.rapidsdata.seth.Seth -u "${URL}" ${SETH_ARGS} $@ &
 
 SETH_PID=$!
 
