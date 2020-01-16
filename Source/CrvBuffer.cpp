@@ -114,6 +114,19 @@ i8 CrvBuffer::nCrv(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump all crv's in this buffer                                             */
+/*----------------------------------------------------------------------------*/
+void CrvBuffer::vDumpAllCrv(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
+  
+  for (i8 i_Crv = 0; i_Crv < m_nCrv; i_Crv++) {
+    Crv* aCrv = aGetCrv(i_Crv);
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get crv for given subscript                                                */
 /*----------------------------------------------------------------------------*/
 Crv* CrvBuffer::aGetCrv(i8 i_Crv)

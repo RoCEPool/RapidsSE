@@ -20,6 +20,9 @@ namespace ReadConsistency
   
     static i8 nCrvBytesNeed(i8 nCrwBytes);
   
+    Crw* aCrw(void);
+    Ref  xwRef(void);
+
     void vTakeVersion(Ref xwRef, Crw* aCrw, i8 nCrwBytes);
   };
 
