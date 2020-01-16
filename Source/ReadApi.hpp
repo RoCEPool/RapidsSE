@@ -10,6 +10,8 @@ namespace ReadConsistency
   private:
     StreamDef* m_pStreamDef; // definition of the rows
   
+    IndexTree* m_pIndexTree; // the index for this 
+  
     CrvBuffer* m_pCrvBufferHead; // head of crv buffer list
   
     // must be last

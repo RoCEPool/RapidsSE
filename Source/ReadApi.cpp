@@ -48,6 +48,8 @@ ReadApi::ReadApi(void)
   
   m_pStreamDef = nullptr;
   
+  m_pIndexTree = nullptr;
+  
   m_pCrvBufferHead = nullptr;
   
   _checkInitialised_(CN_READAPI);
