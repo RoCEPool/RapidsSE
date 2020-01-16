@@ -16,24 +16,21 @@ namespace Rows
   
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Ref* aRef);
     
     Ref(void);
-    Ref(Ref& xRef);
     Ref(u8 uBuffer, u8 uItem, u8 uOffsets);
    ~Ref(void) noexcept(false);
     
-    void operator =(Ref& xRef); // assignment
+    void operator =(Ref xwRef); // assignment
   
     i8    iAsI8(void);
-    void  vSet(Ref xwRef);
-    void  vAssign(Ref& xRef);
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
     i8    iItem(void);
     void  vItem(i8 iItem);
     i8    nOffsets(void);
     void  vOffsets(i8 nOffsets);
+    void  vSet(Ref xwRef);
   };
 }
 
