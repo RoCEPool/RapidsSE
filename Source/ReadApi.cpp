@@ -76,36 +76,19 @@ ReadApi::~ReadApi(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add a row version                                                          */
 /*----------------------------------------------------------------------------*/
-void ReadApi::vAddCrwVersion(Ref xwRef, Crw* pCrw)
+void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
-  ASSERT(m_pStreamDef);
-    
-  // test for current head buffer
-  if (! m_pCrvBufferHead)
-    m_pCrvBufferHead = new CrvBuffer(m_pStreamDef);
+  Ref xwVersionRef ;
   
-  // attempt to add crw into current head buffer
-  if (m_pCrvBufferHead->bAddCrwVersion(xwRef,pCrw))
-    return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // need a new head buffer
-  
-  CrvBuffer* pNewCrvBufferHead = new CrvBuffer(m_pStreamDef);
-  
-  pNewCrvBufferHead->vLinkAsNext(m_pCrvBufferHead);
-  m_pCrvBufferHead = pNewCrvBufferHead;
-  
-  bool b = m_pCrvBufferHead->bAddCrwVersion(xwRef,pCrw);
-  ASSERT(b);
+  xwAddCrvItem(xwCurrentRef,aCrw);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get a row version given a reference and perspective                        */
 /*----------------------------------------------------------------------------*/
-Crw* ReadApi::aGetCrwVersion(Ref xwRef, t8 tPerspective)
+Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
@@ -157,6 +140,37 @@ void ReadApi::vAddVersionEntry(Ref xwCurrentRef,
   // insert the entry into the index tree
 
   m_pIndexTree->bInsertEntry(xEntWrk.aEnt());
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a row version                                                          */
+/*----------------------------------------------------------------------------*/
+Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
+  
+  Ref xwVersionRef;
+  
+  // test for current head buffer
+  if (! m_pCrvBufferHead)
+    m_pCrvBufferHead = new CrvBuffer(m_pStreamDef);
+  
+  // attempt to add crw into current head buffer
+  if (m_pCrvBufferHead->bAddCrwVersion(xwCurrentRef,aCrw))
+    return xwVersionRef;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // need a new head buffer
+  
+  CrvBuffer* pNewCrvBufferHead = new CrvBuffer(m_pStreamDef);
+  
+  pNewCrvBufferHead->vLinkAsNext(m_pCrvBufferHead);
+  m_pCrvBufferHead = pNewCrvBufferHead;
+  
+  bool b = m_pCrvBufferHead->bAddCrwVersion(xwCurrentRef,aCrw);
+  ASSERT(b);
+ 
+  return xwVersionRef;
 }
 
 

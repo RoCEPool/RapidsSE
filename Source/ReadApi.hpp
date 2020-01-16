@@ -24,8 +24,8 @@ namespace ReadConsistency
     ReadApi(void);
    ~ReadApi(void) noexcept(false);
   
-    void vAddCrwVersion(Ref xwRef, Crw* pCrw);
-    Crw* aGetCrwVersion(Ref xwRef, t8 tPerspective);
+    void vAddCrwVersion(Ref xwCurrentRef, Crw* pCrw);
+    Crw* aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective);
     void vPurgePriorVersions(t8 tPerspective);
 
     void vStreamDef(StreamDef* pStreamDef);
@@ -33,6 +33,9 @@ namespace ReadConsistency
   private:
     void vAddVersionEntry(Ref xwCurrentRef,
                           Ref xwVersionRef, t8 tVersionPsp);
+  
+    Ref  xwAddCrvItem(Ref xwCurrentRef, Crw* pCrw);
+
   
     Footer* aFooter(void);
   };
