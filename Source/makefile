@@ -41,6 +41,10 @@ RAPIDS_LIBS = -lRapidsSEv0.4.1
 
 all : $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
 
+#Debug builds
+debug: CPPFLAGS = -std=c++11 -DWITH_DEBUG_VERSION -DWITH_LINUX -DWITH_MUNGED_SEN -Wall -Wno-unused -g
+debug: $(SHOCO) $(TARGET_EXE) $(TARGET_LIBRARY)
+
 $(SHOCO): ../ThirdParty/shoco/shoco.c  
 	$(CPP) -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -O3 -Wall -c $(INCLUDES) ../ThirdParty/shoco/shoco.c 
 
@@ -66,8 +70,6 @@ $(TARGET_EXE): $(TARGET_LIBRARY) $(SHOCO)
 #To generate dependency files
 %.d: %.cpp
 	$(CPP) $(CPPFLAGS) $(INCLUDES) -MM $< > $@
-
--include $(DEPFILES)
 
 #To remove generated files
 clean:
