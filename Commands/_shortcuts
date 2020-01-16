@@ -15,7 +15,6 @@ shortcut dl _pipelineLineItem ;
 shortcut dn _defineNode ;
 shortcut en semantic ;
 shortcut fn forget node node9 abc def;
-shortcut g  _tRjh;
 shortcut ln show nodes ;
 shortcut lw logwrite ;
 shortcut o  olist;
@@ -23,6 +22,7 @@ shortcut p  _pipeline2 ;
 shortcut r  _lineitemrjh ;
 shortcut s  _select ;
 shortcut sc startCluster ;
+shortcut u  _upsertRJH;
 
 // shortcut;
 
