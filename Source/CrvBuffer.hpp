@@ -26,10 +26,10 @@ namespace ReadConsistency
     CrvBuffer(StreamDef* pStreamDef);
    ~CrvBuffer(void) noexcept(false);
 
-    void vAddCrwVersion(Ref xwRef, Crw* pCrw);
-    bool bSpaceForCrv(void);
+    bool bAddCrwVersion(Ref xwRef, Crw* pCrw);
 
   private:
+    bool bHasSpace(i8 nBytes);
     Footer* aFooter(void);
   };
   

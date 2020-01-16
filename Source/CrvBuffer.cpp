@@ -81,28 +81,35 @@ CrvBuffer::~CrvBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add crw version into this buffer                                           */
 /*----------------------------------------------------------------------------*/
-void CrvBuffer::vAddCrwVersion(Ref xwRef, Crw* pCrw)
+bool CrvBuffer::bAddCrwVersion(Ref xwRef, Crw* pCrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
   
   i8 nCrwBytes = m_pStreamDef->m_nFixedSized;
   i8 nTotalBytesNeeded = Crv::nCrvBytesNeed(nCrwBytes);
   
+  if (! bHasSpace(nTotalBytesNeeded))
+     return false;
+   
   byte* ayCrv = m_xWsp.ayAllot(nTotalBytesNeeded);
   ASSERT(ayCrv);
+  
+  return true;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* test if buffer has space for given number of bytes                         */
 /*----------------------------------------------------------------------------*/
-bool CrvBuffer::bSpaceForCrv(void)
+bool CrvBuffer::bHasSpace(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
   
-  i8 nCrwBytes = m_pStreamDef->m_nFixedSized;
-  i8 nTotalBytesNeeded = Crv::nCrvBytesNeed(nCrwBytes);
-
-  if (m_xWsp.nFree() >= nTotalBytesNeeded)
+  if (m_xWsp.nFree() >= nBytes)
     return true;
   else
     return false;
