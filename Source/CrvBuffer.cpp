@@ -91,8 +91,10 @@ bool CrvBuffer::bAddCrwVersion(Ref xwRef, Crw* pCrw)
   if (! bHasSpace(nTotalBytesNeeded))
      return false;
    
-  byte* ayCrv = m_xWsp.ayAllot(nTotalBytesNeeded);
-  ASSERT(ayCrv);
+  Crv* aCrv = _aCrv(m_xWsp.ayAllot(nTotalBytesNeeded));
+  ASSERT(aCrv);
+  
+  aCrv->vTakeVersion(xwRef,pCrw,nCrwBytes);
   
   return true;
 }
