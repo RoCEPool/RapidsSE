@@ -4,6 +4,21 @@
 
 startCluster;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+logSection __READAPI_T;
+
+create table __READAPI_T
+(
+  ref INTEGER NOT NULL,
+  psp INTEGER NOT NULL
+)
+;
+
+create index __READAPI_I on __READAPI_T (ref,psp);
+
+lsidxcol __READAPI_T __READAPI_I;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection createTable;
 
 pwf ;
@@ -32,6 +47,9 @@ lsidx T;
 
 lsidxcol T T_Idx_1;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+logSection createIndex;
+
 pipeline t_ups
 begin
 
@@ -45,6 +63,9 @@ begin
     outputOp | sinkOp | stageA
 
 end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+logSection fetch;
 
 fetch T "colE 100 <";
 
