@@ -310,7 +310,7 @@ t8 HeadLine::tPerspective(void)
 {
   t8 tPerspective = w8_8B(C_HEADLINE_OFS_PERSPECTIVE);
 
-  return C_UNKNOWN;
+  return tPerspective;
 }
 
 /*----------------------------------------------------------------------------*/
