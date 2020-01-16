@@ -14,4 +14,4 @@
 ../tests/table/testList
 ../tests/Load/testList
 ../tests/Index/testList
-//../tests/Tpch/testlist
+../tests/Tpch/testlist
