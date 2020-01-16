@@ -29,7 +29,9 @@ namespace ReadConsistency
    ~CrvBuffer(void) noexcept(false);
 
     bool bAddCrwVersion(Ref xwRef, Crw* pCrw);
-
+    i8   nCrv(void);
+    Crv* aGetCrv(i8 i_Crv);
+  
   private:
     bool bHasSpace(i8 nBytes);
     Footer* aFooter(void);

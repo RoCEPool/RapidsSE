@@ -103,6 +103,32 @@ bool CrvBuffer::bAddCrwVersion(Ref xwRef, Crw* pCrw)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get number of crv's in this buffer                                         */
+/*----------------------------------------------------------------------------*/
+i8 CrvBuffer::nCrv(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
+  
+  return m_nCrv;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get crv for given subscript                                                */
+/*----------------------------------------------------------------------------*/
+Crv* CrvBuffer::aGetCrv(i8 i_Crv)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
+  
+  i8 nCrwBytes = m_pStreamDef->m_nFixedSized;
+  i8 nSizeCrv  = Crv::nCrvBytesNeed(nCrwBytes);
+  
+  i8 i_Offset  = nSizeCrv * i_Crv;
+  
+  Crv* aCrv = aAdd<Crv*>(m_xWsp.ayArea(),i_Offset);
+
+  return aCrv;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
