@@ -54,26 +54,19 @@
 
         minutes if
           begin
-/*
             begin
               minutes elapsed >
             while
-              "while" .
               task::yield
               assert::stack_0
-              "sleeping" .
+              "sleeping for 1 min" .
               60 task::sleepSsec
-              "awake" .
-              60 elapsed + to elapsed
+              elapsed 1 + to elapsed
             repeat
-*/
-            "sleeping" .
-            minutes 5 * thread::sleepSsec
-            "awake" .
-
+            0 to elapsed
+            minutes "Sending PULSEMARKER after %v mins" str.format .
             Operand[].newPulseMarker
             Operand[].pipeOut
-            0 to elapsed
             true
           while assert::stack_0 repeat
         then
