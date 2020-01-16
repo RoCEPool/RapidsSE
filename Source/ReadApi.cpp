@@ -148,6 +148,11 @@ void ReadApi::vAddVersionEntry(Ref xwCurrentRef,
   
   xEntWrk.vRef(xwVersionRef);
 
+  xEntWrk.vAppendInt(xwCurrentRef.iAsI8());
+  xEntWrk.vAppendInt(tVersionPsp);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
 }
 
 
