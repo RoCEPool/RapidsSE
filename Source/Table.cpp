@@ -681,6 +681,18 @@ void Table::vTableDef(TableDef* pTableDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   m_pTableDef = pTableDef;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set stream def for each read api
+
+  StreamDef* pStreamDef = m_pTableDef->m_pStreamDef;
+  
+  for (i8 iPartition = 0; iPartition < AM::nSlotsPerNode(); iPartition++) {
+    TablePtn* pPartition = this->pPartition(iPartition);
+    ReadApi* pReadApi = pPartition->pReadApi();
+    pReadApi->vStreamDef(pStreamDef);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

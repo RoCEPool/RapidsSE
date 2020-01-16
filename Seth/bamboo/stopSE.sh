@@ -7,8 +7,6 @@ DIR=$(dirname "$0")
 ROOT_DIR="${DIR}/../.."
 
 PIDFILE="${ROOT_DIR}/se.pid"
-REGION_FILE="${ROOT_DIR}/se.region"
-REGION=$(cat "${REGION_FILE}")
 
 EXE_DIR="${ROOT_DIR}/Linux/bin"
 EXE="${EXE_DIR}/rapidsse"

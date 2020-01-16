@@ -20,6 +20,8 @@ namespace Operands
   public:
     LinkedBuffer(eCN eClass);
     ~LinkedBuffer(void) noexcept(false);
+  
+    void vLinkAsNext(LinkedBuffer* pArgBuffer);
 
     LinkedBuffer* pHigherBuffer(void);
     void          vHigherBuffer(LinkedBuffer* pHigherBuffer);

@@ -474,7 +474,8 @@ void Step::vOperandCsvToCrw(void)
   
   Row* pRow;
   
-  for(i8 i_Record = 0; i_Record < pCsvBuffer->nRecords(); i_Record++) {
+  i8 nRecords =pCsvBuffer->nRecords();
+  for (i8 i_Record = 0; i_Record < nRecords; i_Record++) {
     
     bool bValid = pExtractRow->bExtractRow(&pRow, &aCursor, bBlankLine);
     

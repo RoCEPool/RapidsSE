@@ -771,6 +771,16 @@ bool TablePtn::bPurge(i8 iOlderThanSeconds)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get read api                                                               */
+/*----------------------------------------------------------------------------*/
+ReadApi* TablePtn::pReadApi(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_pReadApi;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset the buffer write members                                             */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vResetWrite(void)
@@ -1003,6 +1013,9 @@ void TablePtn::vUpsertRow_update(Crw* aCrw_exists, EntWrk* pEntWrk,
   
   SP_Encoding spEncoding;
   vTrace("Encoding : \n%s\n"_Stz,spEncoding.sz(pEncoding_upsert));
+  
+  // record prior version
+  m_pReadApi->vAddCrwVersion(pEntWrk->xRef(),aCrw_exists);
   
   Packing::vPackCrw(aCrw_exists,pEncoding_upsert);
   

@@ -75,6 +75,7 @@ namespace Partitioning
     bool bPopulateIndex(i8 iIndexNo);
     void vPublish(void);
     bool bPurge(i8 iOlderThanSeconds);
+    ReadApi* pReadApi(void);
     void vResetWrite(void);
     CrwBuffer* pRootCrwBuffer(void);
     void vTable(Table* pTable);

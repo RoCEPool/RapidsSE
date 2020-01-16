@@ -52,6 +52,40 @@ LinkedBuffer::~LinkedBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* link given buffer after this buffer                                        */
+/*----------------------------------------------------------------------------*/
+void LinkedBuffer::vLinkAsNext(LinkedBuffer* pArgBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  /*
+      
+     +-------------+         +-------------+
+     | this buffer |         | next buffer |
+     +-------------+         +-------------+
+     +        next |     --> |        next |
+     | prev        | <--     | prev        |
+     +-------------+         +-------------+
+   
+     +-------------+         +-------------+         +--------------+
+     | this buffer |         | arg buffer  |         | next' buffer |
+     +-------------+         +-------------+         +--------------+
+     +        next | (c) --> |        next | (a) --> |         next |
+     | prev        | <-- (d) | prev        | <-- (b) | prev         |
+     +-------------+         +-------------+         +--------------+
+   
+  */
+  
+  pArgBuffer->vNextBuffer(m_pNextBuffer);    // (a)
+  
+  if (m_pNextBuffer)
+    m_pNextBuffer->vPrevBuffer(pArgBuffer);  // (b)
+  m_pNextBuffer = pArgBuffer;                // (c)
+  
+  pArgBuffer->vPrevBuffer(this);             // (d)
+}
+
+/*----------------------------------------------------------------------------*/
 /* get higher buffer                                                          */
 /*----------------------------------------------------------------------------*/
 LinkedBuffer* LinkedBuffer::pHigherBuffer(void)

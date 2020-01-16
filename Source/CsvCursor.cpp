@@ -64,6 +64,10 @@ bool CsvCursor::bExtractNext(Row* pRow, StreamDef* pStreamDef,
   //SP_Row spRow;
   //vTrace("%s\n"_Stz,spRow.sz(pRow));
   
+  if (**aazCrs == ' ' || **aazCrs == C_NL || **aazCrs == C_CR)
+    (*aazCrs)++;
+    
+  
   return true;
 }
 
