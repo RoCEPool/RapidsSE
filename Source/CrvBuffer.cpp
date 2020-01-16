@@ -90,8 +90,10 @@ bool CrvBuffer::bAddCrwVersion(Ref xwRef, Crw* pCrw)
   i8 nCrwBytes = m_pStreamDef->m_nFixedSized;
   i8 nTotalBytesNeeded = Crv::nCrvBytesNeed(nCrwBytes);
   
-  if (! bHasSpace(nTotalBytesNeeded))
+  if (! bHasSpace(nTotalBytesNeeded)) {
+    vDumpAllCrv();
      return false;
+  }
    
   Crv* aCrv = _aCrv(m_xWsp.ayAllot(nTotalBytesNeeded));
   ASSERT(aCrv);
@@ -120,9 +122,18 @@ void CrvBuffer::vDumpAllCrv(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
   
+  HV_Row hvRow(m_pStreamDef,C_ALL);
+  SP_Record spRec;
+
   for (i8 i_Crv = 0; i_Crv < m_nCrv; i_Crv++) {
     Crv* aCrv = aGetCrv(i_Crv);
     
+    Crw* aCrw = aCrv->aCrw();
+      
+    CrwBuffer::vToRow(hvRow,aCrw);
+    vTrace("Crv %lld : %s\n"_Stz,i_Crv,spRec.sz(hvRow));
+
+    vDebugPoint();
   }
 }
 
