@@ -80,8 +80,21 @@ void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
-  Ref xwVersionRef = xwAddCrvItem(xwCurrentRef,aCrw);
+  EntWrk xEntVersion;
   
+  // -- -- --
+  Ref xwVersionRef = xwAddCrvItem(xwCurrentRef,aCrw);
+  xEntVersion.vRef(xwVersionRef);
+  
+  // -- -- --
+  xEntVersion.vAppendInt(xwCurrentRef.iAsI8());
+  
+  t8 tVersionPsp = aCrw->tPerspective();
+  xEntVersion.vAppendInt(tVersionPsp);
+
+  // -- -- --
+  bool b = m_pIndexTree->bInsertEntry(xEntVersion.aEnt());
+  ASSERT(b);
 }
 
 /*----------------------------------------------------------------------------*/
