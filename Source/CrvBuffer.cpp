@@ -51,6 +51,8 @@ CrvBuffer::CrvBuffer(StreamDef* pStreamDef)
     
   m_pStreamDef = pStreamDef;
   
+  m_nCrv = 0;
+  
   #ifdef WITH_CHECK_INITIALISED
     m_xWsp.vZero(CN_CRVBUFFER);
   #endif
@@ -93,6 +95,8 @@ bool CrvBuffer::bAddCrwVersion(Ref xwRef, Crw* pCrw)
    
   Crv* aCrv = _aCrv(m_xWsp.ayAllot(nTotalBytesNeeded));
   ASSERT(aCrv);
+  
+  m_nCrv++;
   
   aCrv->vTakeVersion(xwRef,pCrw,nCrwBytes);
   
