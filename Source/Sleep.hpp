@@ -8,9 +8,7 @@ namespace Gadgets
   class Sleep : public Object
   {
   public:
-    Dtm m_wSleptTsp;    // tsp when slept
-    Dtm m_wWakeupTsp;   // wakeup tsp
-  
+    Ivl m_wSleptIvl;    // slept ivl
     Ivl m_wWakeupIvl;   // wakeup ivl epoch
     Ivl m_wDurationIvl; // sleep duration ivl
   

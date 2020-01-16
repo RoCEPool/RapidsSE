@@ -109,6 +109,8 @@ Ivl IvlLib::wToIvl(u8 uMicroseconds)
 {
   Ivl wIvl;
   
+  wIvl = 0;
+  
   if (uMicroseconds < C_1M) {
     wIvl.m_uMicro = uMicroseconds;
     return wIvl;

@@ -18,6 +18,7 @@ Tsp TspLib::wGetCurrTsp_local(void)
   
   // get current epoch interval
   wIvl = IvlLib::wGetCurrIvl();
+  vTrace("CURRENT %lld %lld\n"_Stz, wIvl.m_uMicro, wIvl.m_uSecond);
   
   // convert current epoch interval into local timestamp
   time_t iSecondsSincePosixEpoch = wIvl.m_uSecond;

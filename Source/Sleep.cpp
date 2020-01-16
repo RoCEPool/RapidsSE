@@ -12,8 +12,7 @@ Sleep::Sleep(void)
 {
   _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
   
-  m_wSleptTsp.m_iWrd    = 0;
-  m_wWakeupTsp.m_iWrd   = 0;
+  m_wSleptIvl    = 0;
   m_wWakeupIvl   = 0;
   m_wDurationIvl = 0;
   
@@ -45,13 +44,10 @@ void Sleep::vClear(void)
 {
   _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
   
-  // reset slept tsp
-  m_wSleptTsp.m_iWrd = 0;
+  // reset slept interval
+  m_wSleptIvl = 0;
   
-  // reset the wakeup time
-  m_wWakeupTsp.m_iWrd = 0;
-  
-  // reset the wakeup Ivl
+  // reset the wakeup interval
   m_wWakeupIvl = 0;
   
   // reset the sleep interval
@@ -65,20 +61,14 @@ void Sleep::vSleepFor(i8 iMicroseconds)
 {
   _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
   
-  // get current tsp as an ivl
-  m_wSleptTsp = TspLib::wGetCurrTsp_local();
+  // get current ivlwhen slept
+  m_wSleptIvl = IvlLib::wGetCurrIvl();;
   
   // set the sleep duration as Ivl
   m_wDurationIvl = IvlLib::wToIvl(iMicroseconds);
   
-  // get current sleptTsp as ivl
-  Ivl wCurrentIvl = IvlLib::wToIvl(m_wSleptTsp);
-  
   // calculate the wakeup time in Ivl
-  m_wWakeupIvl = IvlLib::wAdd(wCurrentIvl, m_wDurationIvl);
-  
-  // set the wakeup time
-  m_wWakeupTsp = TspLib::wToTsp_local(m_wWakeupIvl);
+  m_wWakeupIvl = IvlLib::wAdd(m_wSleptIvl, m_wDurationIvl);
 }
 
 /*----------------------------------------------------------------------------*/
