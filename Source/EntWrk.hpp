@@ -34,7 +34,7 @@ namespace Entries
     void  vAppendElement(Row* pRow, Column* pCol);
     void  vAppendInt(i8 iArg);
     void  vAppendMinusInfinity(void);
-    void  vAppendNull(i8 iArg);
+    void  vAppendNull(void);
     void  vAppendPlusInfinity(void);
     void  vAppendStz(Stz* szArg);
 

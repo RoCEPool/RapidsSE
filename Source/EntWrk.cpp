@@ -99,17 +99,19 @@ void EntWrk::vAppendElement(Row* pRow, Column* pCol)
   i8 iValue = pRow->m_waColVal[pCol->iColumnNo()].m_iWrd;
   
   if (Null::bIsNull(iValue)) {
-    byte* ayDst = (byte*)ayElmNext();
-    nElmSize = Null::nCopy(ayDst);
-    vIncElmSeqSize(nElmSize);
+//    byte* ayDst = (byte*)ayElmNext();
+//    nElmSize = Null::nCopy(ayDst);
+//    vIncElmSeqSize(nElmSize);
+    vAppendNull();
     return;
   }
   
   if (DM_VCH == pCol->eDatum()) {
-    char* aDst = (char*)ayElmNext();
-    char* aSrc = (char*)iValue;
-    nElmSize = StrLib::iWordFlip(aDst, aSrc);
-    vIncElmSeqSize(nElmSize);
+    Stz* szSrc = (Stz*)iValue;
+//    char* aDst = (char*)ayElmNext();
+//    nElmSize = StrLib::iWordFlip(aDst, aSrc);
+//    vIncElmSeqSize(nElmSize);
+    vAppendStz(szSrc);
   }
   else {
 //    byte* ayDst = ayElmNext();
@@ -147,6 +149,20 @@ void EntWrk::vAppendMinusInfinity(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add null element to key                                                    */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendNull(void)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  byte* ayDst = (byte*)ayElmNext();
+  
+  i8 nElmSize = Null::nCopy(ayDst);
+  
+  vIncElmSeqSize(nElmSize);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add max upper value to key                                                 */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAppendPlusInfinity(void)
@@ -157,6 +173,20 @@ void EntWrk::vAppendPlusInfinity(void)
   Dtm::vCopy(ayDst,(i8)C_DATUM_PLUS_INFINITY);
   
   vIncElmSeqSize(C_BYTES_PER_WORD);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add stz element to key                                                     */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendStz(Stz* szArg)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  char* aDst = (char*)ayElmNext();
+  
+  i8 nElmSize = StrLib::iWordFlip(aDst, szArg->azChar());
+  
+  vIncElmSeqSize(nElmSize);
 }
 
 /*----------------------------------------------------------------------------*/
