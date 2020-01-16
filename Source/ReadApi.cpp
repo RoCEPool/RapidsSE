@@ -79,12 +79,17 @@ void ReadApi::vAddCrwVersion(Ref xwRef, Crw* pCrw)
   if (! m_pCrvBufferHead)
     m_pCrvBufferHead = new CrvBuffer(m_pStreamDef);
   
-  if (! m_pCrvBufferHead->bAddCrwVersion(xwRef,pCrw)) {
-    CrvBuffer* pNewCrvBufferHead = new CrvBuffer(m_pStreamDef);
-    
-    pNewCrvBufferHead->vLinkAsNext(m_pCrvBufferHead);
-    m_pCrvBufferHead = pNewCrvBufferHead;
-  }
+  // attempt to ad crw into current head buffer
+  if (m_pCrvBufferHead->bAddCrwVersion(xwRef,pCrw))
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // need a new head buffer
+  
+  CrvBuffer* pNewCrvBufferHead = new CrvBuffer(m_pStreamDef);
+  
+  pNewCrvBufferHead->vLinkAsNext(m_pCrvBufferHead);
+  m_pCrvBufferHead = pNewCrvBufferHead;
   
   bool b = m_pCrvBufferHead->bAddCrwVersion(xwRef,pCrw);
   ASSERT(b);
