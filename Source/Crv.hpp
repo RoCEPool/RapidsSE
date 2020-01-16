@@ -12,6 +12,8 @@ namespace ReadConsistency
   public:
     Crv(void);
    ~Crv(void) noexcept(false);
+  
+    static i8 nCrvBytesNeed(i8 nCrwBytes);
   };
 
   /*--------------------------------------------------------------------------*/

@@ -26,8 +26,8 @@ namespace ReadConsistency
     CrvBuffer(StreamDef* pStreamDef);
    ~CrvBuffer(void) noexcept(false);
 
-    void vAddCrwVersion(Ref xwRef, Crw* pCrw, StreamDef* pStreamDef);
-    bool bSpaceFor(i8 nFixedCrwSize);
+    void vAddCrwVersion(Ref xwRef, Crw* pCrw);
+    bool bSpaceForCrv(void);
 
   private:
     Footer* aFooter(void);
