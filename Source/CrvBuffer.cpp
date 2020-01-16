@@ -44,11 +44,13 @@ void CrvBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CrvBuffer::CrvBuffer(void)
+CrvBuffer::CrvBuffer(StreamDef* pStreamDef)
 : DataBuffer(CN_CRVBUFFER, false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
     
+  m_pStreamDef = pStreamDef;
+  
   #ifdef WITH_CHECK_INITIALISED
     m_xWsp.vZero(CN_CRVBUFFER);
   #endif

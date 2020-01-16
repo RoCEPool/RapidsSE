@@ -10,6 +10,8 @@ namespace ReadConsistency
     static const i8 C_WSP_CSVBUFFER = C_SIZE_LARGE_OBJECT - C_4KB;
   
   public:
+    StreamDef* m_pStreamDef;
+  
     Wsp_t<C_WSP_CSVBUFFER> m_xWsp;
 
     SeeMe m_xSeeMe;
@@ -21,7 +23,7 @@ namespace ReadConsistency
     void* operator new(size_t);
     void  operator delete(void*);
   
-    CrvBuffer(void);
+    CrvBuffer(StreamDef* pStreamDef);
    ~CrvBuffer(void) noexcept(false);
 
     void vAddCrwVersion(Ref xwRef, Crw* pCrw, StreamDef* pStreamDef);

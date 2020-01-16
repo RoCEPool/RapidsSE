@@ -79,10 +79,10 @@ void ReadApi::vAddCrwVersion(Ref xwRef, Crw* pCrw)
   i8 nFixedCrwSize = m_pStreamDef->m_nFixedSized;
   
   if (! m_pCrvBufferHead)
-    m_pCrvBufferHead = new CrvBuffer;
+    m_pCrvBufferHead = new CrvBuffer(m_pStreamDef);
   
   if (! m_pCrvBufferHead->bSpaceFor(nFixedCrwSize)) {
-    CrvBuffer* pNewCrvBufferHead = new CrvBuffer;
+    CrvBuffer* pNewCrvBufferHead = new CrvBuffer(m_pStreamDef);
     
     pNewCrvBufferHead->vLinkAsNext(m_pCrvBufferHead);
     m_pCrvBufferHead = pNewCrvBufferHead;
