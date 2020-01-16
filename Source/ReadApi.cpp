@@ -144,6 +144,8 @@ void ReadApi::vAddVersionEntry(Ref xwCurrentRef,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
+  // form the entry
+  
   EntWrk xEntWrk;
   
   xEntWrk.vRef(xwVersionRef);
@@ -152,7 +154,9 @@ void ReadApi::vAddVersionEntry(Ref xwCurrentRef,
   xEntWrk.vAppendInt(tVersionPsp);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  // insert the entry into the index tree
+
+  m_pIndexTree->bInsertEntry(xEntWrk.aEnt());
 }
 
 
