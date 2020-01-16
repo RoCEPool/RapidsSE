@@ -81,6 +81,7 @@ void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
   Ref xwVersionRef = xwAddCrvItem(xwCurrentRef,aCrw);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -155,8 +156,13 @@ Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
   
   // attempt to add crw into current head buffer
   i8 i_Crv = m_pCrvBufferHead->iAddCrwVersion(xwCurrentRef,aCrw);
-  if (C_UNKNOWN == i_Crv)
+  if (C_UNKNOWN != i_Crv) {
+    
+    xwVersionRef.vBuffer(*m_pCrvBufferHead->nPoolBufferNo());
+    xwVersionRef.vItem(i_Crv);
+    
     return xwVersionRef;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // need a new head buffer
@@ -168,6 +174,9 @@ Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
   
   i_Crv = m_pCrvBufferHead->iAddCrwVersion(xwCurrentRef,aCrw);
  
+  xwVersionRef.vBuffer(*m_pCrvBufferHead->nPoolBufferNo());
+  xwVersionRef.vItem(i_Crv);
+  
   return xwVersionRef;
 }
 
