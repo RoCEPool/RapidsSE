@@ -74,7 +74,15 @@ void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cross-check
   
-  aGetCrwVersion(xwCurrentRef,tVersionPsp);
+  Crw* aCrwXCheck = aGetCrwVersion(xwCurrentRef,tVersionPsp);
+  
+  i8 nCrwBytes = m_pStreamDef->m_nFixedSized;
+  
+  //MemLib::vHexDump(aCrw,nCrwBytes);
+  //MemLib::vHexDump(aCrwXCheck,nCrwBytes);
+
+  b = MemLib::bCompareBytes(aCrw,aCrwXCheck,nCrwBytes);
+  ASSERT(b);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,8 +105,10 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective)
   i8 iItemNo   = xwRef.iItem();
   
   Crv* aCrv = CrvBuffer::aToCrv(iBufferNo,iItemNo);
+  
+  Crw* aCrw = aCrv->aCrw();
 
-  return nullptr;
+  return aCrw;
 }
 
 /*----------------------------------------------------------------------------*/
