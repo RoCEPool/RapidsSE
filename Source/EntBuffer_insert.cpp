@@ -193,7 +193,7 @@ void EntBuffer::vCompact(void)
     //aKey->vShow(pIdxColVec);
     //vTrace("\n"_Stz);
     
-    vPositionPriorVecEntry(aMoveEntry, xPriorVec, aMoveEntry);
+    vPositionPriorVecEntry(aMoveEntry->aKey(), xPriorVec, aMoveEntry);
     
     if (m_iBufferHeight) {
       //vDumpPriorVec(xPriorVec);
@@ -725,7 +725,7 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   //Key* aKey = _aKey(aKeyEntry->aDataArea());
   
   if (0 == m_iBufferHeight)
-    vPositionPriorVecEntry(aEntry, xPriorVec, nullptr);
+    vPositionPriorVecEntry(aEntry->aKey(), xPriorVec, nullptr);
   else {
     EntBuffer* pToBuffer = EntBuffer::pRefdEntBuffer(aEntry);
     vPositionPriorVecBuffer(aEntry->aKey(), xPriorVec, pToBuffer);

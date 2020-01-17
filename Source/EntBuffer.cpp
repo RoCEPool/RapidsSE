@@ -455,7 +455,7 @@ void EntBuffer::vDeleteEntry(Ent** aaEnt)
   
   Ent* xPriorVec[3];
   
-  vPositionPriorVecEntry(aEnt, xPriorVec, aEnt);
+  vPositionPriorVecEntry(aEnt->aKey(), xPriorVec, aEnt);
   
   vCutEntry(aEnt,xPriorVec);
   

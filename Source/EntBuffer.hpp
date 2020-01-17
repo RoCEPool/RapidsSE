@@ -89,7 +89,7 @@ namespace IndexTrees
     Ent*       pPositionPriorEntry(Key* aFindKey);
     void       vPositionPriorVecBuffer(Key* aFindKey, Ent** aaPriorVec,
                                        EntBuffer* pToBuffer);
-    void       vPositionPriorVecEntry(Ent* aFindKey, Ent** aaPriorVec,
+    void       vPositionPriorVecEntry(Key* aFindKey, Ent** aaPriorVec,
                                       Ent* aFindEntry);
     
     ////////////////////////////////////////////////////////////////////////////

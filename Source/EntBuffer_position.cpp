@@ -107,7 +107,7 @@ Ent* EntBuffer::pPositionPriorEntry(Key* aFindKey)
 /* compute prior vector for find key, such that next of priorVec[0] is        */
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPositionPriorVecEntry(Ent* aFindKey, Ent* aPriorVec[],
+void EntBuffer::vPositionPriorVecEntry(Key* aFindKey, Ent* aPriorVec[],
                                        Ent* aFindEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
@@ -147,7 +147,7 @@ void EntBuffer::vPositionPriorVecEntry(Ent* aFindKey, Ent* aPriorVec[],
       
       Key* aNextKey = _aKey(aNextEntry_sl->ayElmSeq());
       
-      bIsJuxta = Key::bGreaterEqual(aNextEntry_sl->aKey(), aFindKey->aKey());
+      bIsJuxta = Key::bGreaterEqual(aNextEntry_sl->aKey(), aFindKey);
       
       if (bIsJuxta) {
         if (! aFindEntry || aNextEntry_sl == aFindEntry)
