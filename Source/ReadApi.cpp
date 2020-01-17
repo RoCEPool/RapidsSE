@@ -11,32 +11,36 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ReadApi* ReadConsistency::_pReadApi(void* aAddr)
-{
-  ReadApi* pReadApi = reinterpret_cast<ReadApi*>(aAddr);
-  
-  return pReadApi;
-}
+//ReadApi* ReadConsistency::_pReadApi(void* aAddr)
+//{
+//  ReadApi* pObject = reinterpret_cast<ReadApi*>(aAddr);
+//  RASSERT_TYPE(pObject,CN_READAPI);
+//
+//  return pObject;
+//}
+__pCastFunction(ReadConsistency,ReadApi,CN_READAPI)
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ReadApi::operator new(size_t)
-{
-  void* pObject = HeapMem::pAllocate(CN_READAPI);
-  
-  return pObject;
-}
+//void* ReadApi::operator new(size_t)
+//{
+//  void* pObject = HeapMem::pAllocate(CN_READAPI);
+//
+//  return pObject;
+//}
+__aNewFunction(ReadApi,CN_READAPI)
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void ReadApi::operator delete(void* aAddr)
-{
-  ReadApi* pReadApi = reinterpret_cast<ReadApi*>(aAddr);
-  
-  HeapMem::vFree(pReadApi);
-}
+//void ReadApi::operator delete(void* aAddr)
+//{
+//  ReadApi* pReadApi = reinterpret_cast<ReadApi*>(aAddr);
+//
+//  HeapMem::vFree(pReadApi);
+//}
+__vDeleteFunction(ReadApi,CN_READAPI)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -60,7 +64,6 @@ ReadApi::ReadApi(void)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
