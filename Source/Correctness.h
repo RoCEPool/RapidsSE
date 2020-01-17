@@ -30,6 +30,7 @@ namespace Correctness
 #include "AssertMacros.h"
 
 #include "Object.hpp"
+#include "NonProper.hpp"
 
 #include "Addressing.hpp"
 #include "SizedHeader.hpp"

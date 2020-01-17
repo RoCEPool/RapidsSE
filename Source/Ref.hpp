@@ -5,7 +5,7 @@
 
 namespace Rows
 {
-  class Ref
+  class Ref : public NonProper
   {
   private:
     union {
@@ -18,9 +18,7 @@ namespace Rows
       i8 m_iAsI8;
     };
   
-  public:
-    void* operator new(size_t);
-    
+  public:   
     Ref(void);
     Ref(u8 uBuffer, u8 uItem, u8 uOffsets);
    ~Ref(void) noexcept(false);

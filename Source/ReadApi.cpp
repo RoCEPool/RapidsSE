@@ -54,7 +54,7 @@ ReadApi::~ReadApi(void) noexcept(false)
 void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
-  
+    
   EntWrk xEntVersion;
   
   // -- -- --
