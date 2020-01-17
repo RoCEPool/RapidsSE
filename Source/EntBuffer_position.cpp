@@ -170,7 +170,7 @@ void EntBuffer::vPositionPriorVecEntry(Ent* aFindKey, Ent* aPriorVec[],
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
+void EntBuffer::vPositionPriorVecBuffer(Key* aFindKey,
                                         Ent* aPriorVec[],
                                         EntBuffer* pRefdChildBuffer)
 {
@@ -236,7 +236,7 @@ void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
 //        vShowEntry(aInsertingEntry);
 //       }
       
-      bool bNextKeyIsGreater = Key::bGreaterThan(aNextEntry_sl->aKey(),aInsertingEntry->aKey());
+      bool bNextKeyIsGreater = Key::bGreaterThan(aNextEntry_sl->aKey(),aFindKey);
       if (bNextKeyIsGreater) {
         // nextEntry[sl] > aInsertingEntry, insert at this level after prior entry
         aPriorVec[i_ScanLevel] = aPriorEntry_sl;
@@ -244,7 +244,7 @@ void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
         break;
       }
 
-      bool bKeysAreEqual = Key::bEqualTo(aNextEntry_sl->aKey(),aInsertingEntry->aKey());
+      bool bKeysAreEqual = Key::bEqualTo(aNextEntry_sl->aKey(),aFindKey);
       if (! bKeysAreEqual) {
         // haven't found key at this level yet, go right at this level
         aPriorVec[i_ScanLevel] = aNextEntry_sl;//aPriorEntry_sl;

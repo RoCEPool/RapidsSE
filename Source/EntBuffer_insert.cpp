@@ -728,7 +728,7 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
     vPositionPriorVecEntry(aEntry, xPriorVec, nullptr);
   else {
     EntBuffer* pToBuffer = EntBuffer::pRefdEntBuffer(aEntry);
-    vPositionPriorVecBuffer(aEntry, xPriorVec, pToBuffer);
+    vPositionPriorVecBuffer(aEntry->aKey(), xPriorVec, pToBuffer);
   }
   
   //vDumpPriorVec(xPriorVec);

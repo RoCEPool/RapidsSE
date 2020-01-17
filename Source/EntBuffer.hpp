@@ -87,7 +87,7 @@ namespace IndexTrees
     
     EntBuffer* pPositionH0Buffer(Key* aFindKey);
     Ent*       pPositionPriorEntry(Key* aFindKey);
-    void       vPositionPriorVecBuffer(Ent* aFindKey, Ent** aaPriorVec,
+    void       vPositionPriorVecBuffer(Key* aFindKey, Ent** aaPriorVec,
                                        EntBuffer* pToBuffer);
     void       vPositionPriorVecEntry(Ent* aFindKey, Ent** aaPriorVec,
                                       Ent* aFindEntry);
