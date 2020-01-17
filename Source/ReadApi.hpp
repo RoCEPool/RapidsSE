@@ -25,6 +25,7 @@ namespace ReadConsistency
    ~ReadApi(void) noexcept(false);
   
     void vAddCrwVersion(Ref xwCurrentRef, Crw* pCrw);
+    Crw* aGetCrwConsistent(Ref xwCurrentRef, t8 tPerspective);
     Crw* aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective);
     void vPurgePriorVersions(t8 tPerspective);
 

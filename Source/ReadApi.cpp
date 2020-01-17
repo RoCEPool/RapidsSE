@@ -86,6 +86,32 @@ void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a consistent read version of row given a reference and perspective     */
+/*----------------------------------------------------------------------------*/
+Crw* ReadApi::aGetCrwConsistent(Ref xwCurrentRef, t8 tPerspective)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
+  
+  EntWrk xEntWrk;
+  
+  Crv::vFormFindKey(&xEntWrk,xwCurrentRef,tPerspective);
+  
+  Ref xwRef = m_pIndexTree->xwGetRef(xEntWrk.aKey());
+  
+  if (xwRef.bIsNil())
+    return nullptr;
+  
+  i8 iBufferNo = xwRef.iBuffer();
+  i8 iItemNo   = xwRef.iItem();
+  
+  Crv* aCrv = CrvBuffer::aToCrv(iBufferNo,iItemNo);
+  
+  Crw* aCrw = aCrv->aCrw();
+
+  return aCrw;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a row version given a reference and perspective                        */
 /*----------------------------------------------------------------------------*/
 Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective)
