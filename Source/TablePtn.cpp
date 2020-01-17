@@ -912,7 +912,7 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // possible insert (can we find the row using primary key)
     
-    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aEnt());
+    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aEnt()->aKey());
     if (! pEntH0Buf) {
       TRACE_UPSERT( vTrace("No pEntBuf @%lld; inserting...\n"_Stz,(i8)__LINE__); )
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);

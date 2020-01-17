@@ -44,7 +44,7 @@ namespace IndexTrees
     bool       bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Ref& xRowRef);
     void       vLazyBuild(void);
     EntBuffer* pNewRootBuffer(void);
-    EntBuffer* pPositionH0Buffer(Ent* aEnt);
+    EntBuffer* pPositionH0Buffer(Key* aFindKey);
     EntBuffer* pRootBuffer(void);
     void       vTidyUp(void);
     void       vTruncate(void);

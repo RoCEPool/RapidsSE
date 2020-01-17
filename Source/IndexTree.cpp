@@ -473,12 +473,12 @@ EntBuffer* IndexTree::pPopSubList(EntBuffer** ppSubList)
 /*----------------------------------------------------------------------------*/
 /* position to the first H0 buffer which has given key                        */
 /*----------------------------------------------------------------------------*/
-EntBuffer* IndexTree::pPositionH0Buffer(Ent* aEnt)
+EntBuffer* IndexTree::pPositionH0Buffer(Key* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   if (m_pRootBuffer)
-    return m_pRootBuffer->pPositionH0Buffer(aEnt->aKey());
+    return m_pRootBuffer->pPositionH0Buffer(aFindKey);
   else
     return nullptr;
 }

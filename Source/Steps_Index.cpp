@@ -361,7 +361,7 @@ void Step::vIndexLowerBound(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
-  aLowerEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkLower.aEnt());
+  aLowerEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkLower.aEnt()->aKey());
   eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -578,7 +578,7 @@ void Step::vIndexRange(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
-  aLowerEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkLower.aEnt());
+  aLowerEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkLower.aEnt()->aKey());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry buffer ?
@@ -605,7 +605,7 @@ void Step::vIndexRange(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer with keyUpper
-  aUpperEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkUpper.aEnt());
+  aUpperEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkUpper.aEnt()->aKey());
   
   //aUpperEntBuffer->vShow();
   
@@ -851,7 +851,7 @@ void Step::vIndexUpperBound(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer for the upper key
-  aUpperEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkUpper.aEnt());
+  aUpperEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkUpper.aEnt()->aKey());
   
   eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
   
