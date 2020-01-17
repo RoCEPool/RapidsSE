@@ -455,7 +455,7 @@ void EntBuffer::vDeleteEntry(Ent** aaEnt)
   
   Ent* xPriorVec[3];
   
-  vPositionPriorVecEntry(aEnt, xPriorVec, aEnt);
+  vPositionPriorVecEntry(aEnt->aKey(), xPriorVec, aEnt);
   
   vCutEntry(aEnt,xPriorVec);
   
@@ -1072,7 +1072,7 @@ void EntBuffer::vShowEntry(Ent* aEnt)
          aEnt->nOffsets()
          );
   
-  vTrace("Ref: %3lli.%03lli "_Stz,
+  vTrace("Ref: %3lli.%03lli"_Stz,
          aEnt->xRef().iBuffer(),
          aEnt->xRef().iItem()
          );

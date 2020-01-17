@@ -193,7 +193,7 @@ void EntBuffer::vCompact(void)
     //aKey->vShow(pIdxColVec);
     //vTrace("\n"_Stz);
     
-    vPositionPriorVecEntry(aMoveEntry, xPriorVec, aMoveEntry);
+    vPositionPriorVecEntry(aMoveEntry->aKey(), xPriorVec, aMoveEntry);
     
     if (m_iBufferHeight) {
       //vDumpPriorVec(xPriorVec);
@@ -326,7 +326,7 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Ent* aPriorEntry = pPositionPriorEntry(aDeleteEntry);
+  Ent* aPriorEntry = pPositionPriorEntry(aDeleteEntry->aKey());
   if (!aPriorEntry)
     return;
   
@@ -604,7 +604,7 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEntryWork, EntBuffer** ppRootBuffer)
   // position on an H0 buffer which we will try and insert into
   
   EntBuffer* pPositionedBuffer =
-    pRootKeyBuffer->pPositionH0Buffer(aEntryWork);
+    pRootKeyBuffer->pPositionH0Buffer(aEntryWork->aKey());
   
   ASSERT(0 == pPositionedBuffer->iBufferHeight());
   
@@ -725,10 +725,10 @@ void EntBuffer::vInsertEntSkipList(Ent* aEntry)
   //Key* aKey = _aKey(aKeyEntry->aDataArea());
   
   if (0 == m_iBufferHeight)
-    vPositionPriorVecEntry(aEntry, xPriorVec, nullptr);
+    vPositionPriorVecEntry(aEntry->aKey(), xPriorVec, nullptr);
   else {
     EntBuffer* pToBuffer = EntBuffer::pRefdEntBuffer(aEntry);
-    vPositionPriorVecBuffer(aEntry, xPriorVec, pToBuffer);
+    vPositionPriorVecBuffer(aEntry->aKey(), xPriorVec, pToBuffer);
   }
   
   //vDumpPriorVec(xPriorVec);

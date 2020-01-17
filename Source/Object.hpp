@@ -144,6 +144,41 @@ bool CLASS::bCorrectLayout(void) \
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* macro for standard safe cast function                                      */
+/*----------------------------------------------------------------------------*/
+#define __pCastFunction(SPACENM,CLASSNM,CN) \
+  CLASSNM* SPACENM::_p##CLASSNM(void* aAddr) \
+  { \
+    CLASSNM* pObject = reinterpret_cast<CLASSNM*>(aAddr); \
+    RASSERT_TYPE(pObject,CN); \
+    \
+    return pObject; \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* macro for standard operator new() function                                 */
+/*----------------------------------------------------------------------------*/
+#define __aNewFunction(CLASSNM,CN) \
+  void* CLASSNM::operator new(size_t) \
+  { \
+    void* pObject = HeapMem::pAllocate(CN); \
+  \
+    return pObject; \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* macro for standard operator delete() function                              */
+/*----------------------------------------------------------------------------*/
+#define __vDeleteFunction(CLASSNM,CN) \
+  void CLASSNM::operator delete(void* aAddr) \
+  { \
+    CLASSNM* pObject = reinterpret_cast<CLASSNM*>(aAddr); \
+   \
+    HeapMem::vFree(pObject); \
+  }
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

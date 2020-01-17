@@ -8,35 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-ReadApi* ReadConsistency::_pReadApi(void* aAddr)
-{
-  ReadApi* pReadApi = reinterpret_cast<ReadApi*>(aAddr);
-  
-  return pReadApi;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* ReadApi::operator new(size_t)
-{
-  void* pObject = HeapMem::pAllocate(CN_READAPI);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void ReadApi::operator delete(void* aAddr)
-{
-  ReadApi* pReadApi = reinterpret_cast<ReadApi*>(aAddr);
-  
-  HeapMem::vFree(pReadApi);
-}
+__pCastFunction(ReadConsistency,ReadApi,CN_READAPI)
+__aNewFunction(ReadApi,CN_READAPI)
+__vDeleteFunction(ReadApi,CN_READAPI)
+__aFooterFunction(ReadApi)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -46,7 +21,13 @@ ReadApi::ReadApi(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
+  Index* pReadApiIndex = AM::pReadApiIndex();
+  
+  // -- -- --
+  
   m_pStreamDef = nullptr;
+  
+  m_pIndexTree = new IndexTree(pReadApiIndex,0);
   
   m_pCrvBufferHead = nullptr;
   
@@ -55,13 +36,13 @@ ReadApi::ReadApi(void)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 ReadApi::~ReadApi(void) noexcept(false)
 {
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -70,36 +51,31 @@ ReadApi::~ReadApi(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add a row version                                                          */
 /*----------------------------------------------------------------------------*/
-void ReadApi::vAddCrwVersion(Ref xwRef, Crw* pCrw)
+void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
-  ASSERT(m_pStreamDef);
-    
-  // test for current head buffer
-  if (! m_pCrvBufferHead)
-    m_pCrvBufferHead = new CrvBuffer(m_pStreamDef);
+  EntWrk xEntVersion;
   
-  // attempt to add crw into current head buffer
-  if (m_pCrvBufferHead->bAddCrwVersion(xwRef,pCrw))
-    return;
+  // -- -- --
+  Ref xwVersionRef = xwAddCrvItem(xwCurrentRef,aCrw);
+  xEntVersion.vRef(xwVersionRef);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // need a new head buffer
+  // -- -- --
+  xEntVersion.vAppendRef(xwCurrentRef);
   
-  CrvBuffer* pNewCrvBufferHead = new CrvBuffer(m_pStreamDef);
-  
-  pNewCrvBufferHead->vLinkAsNext(m_pCrvBufferHead);
-  m_pCrvBufferHead = pNewCrvBufferHead;
-  
-  bool b = m_pCrvBufferHead->bAddCrwVersion(xwRef,pCrw);
+  t8 tVersionPsp = aCrw->tPerspective();
+  xEntVersion.vAppendInt(tVersionPsp);
+
+  // -- -- --
+  bool b = m_pIndexTree->bInsertEntry(xEntVersion.aEnt());
   ASSERT(b);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get a row version given a reference and perspective                        */
 /*----------------------------------------------------------------------------*/
-Crw* ReadApi::aGetCrwVersion(Ref xwRef, t8 tPerspective)
+Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
@@ -127,9 +103,73 @@ void ReadApi::vStreamDef(StreamDef* pStreamDef)
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(ReadApi);
+
+/*----------------------------------------------------------------------------*/
+/* add an index entry for version                                             */
+/*----------------------------------------------------------------------------*/
+void ReadApi::vAddVersionEntry(Ref xwCurrentRef,
+                               Ref xwVersionRef, t8 tVersionPsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
+  
+  // form the entry
+  
+  EntWrk xEntWrk;
+  
+  xEntWrk.vRef(xwVersionRef);
+
+  xEntWrk.vAppendInt(xwCurrentRef.iAsI8());
+  xEntWrk.vAppendInt(tVersionPsp);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert the entry into the index tree
+
+  m_pIndexTree->bInsertEntry(xEntWrk.aEnt());
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a row version                                                          */
+/*----------------------------------------------------------------------------*/
+Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
+  
+  Ref xwVersionRef;
+  
+  // test for current head buffer
+  if (! m_pCrvBufferHead)
+    m_pCrvBufferHead = new CrvBuffer(m_pStreamDef);
+  
+  // attempt to add crw into current head buffer
+  i8 i_Crv = m_pCrvBufferHead->iAddCrwVersion(xwCurrentRef,aCrw);
+  if (C_UNKNOWN != i_Crv) {
+    
+    xwVersionRef.vBuffer(*m_pCrvBufferHead->nPoolBufferNo());
+    xwVersionRef.vItem(i_Crv);
+    
+    return xwVersionRef;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // need a new head buffer
+  
+  m_pIndexTree->vDump(false);
+  
+  CrvBuffer* pNewCrvBufferHead = new CrvBuffer(m_pStreamDef);
+  
+  pNewCrvBufferHead->vLinkAsNext(m_pCrvBufferHead);
+  m_pCrvBufferHead = pNewCrvBufferHead;
+  
+  i_Crv = m_pCrvBufferHead->iAddCrwVersion(xwCurrentRef,aCrw);
+ 
+  xwVersionRef.vBuffer(*m_pCrvBufferHead->nPoolBufferNo());
+  xwVersionRef.vItem(i_Crv);
+  
+  return xwVersionRef;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

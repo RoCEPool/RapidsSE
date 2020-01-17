@@ -10,6 +10,8 @@ namespace ReadConsistency
   private:
     StreamDef* m_pStreamDef; // definition of the rows
   
+    IndexTree* m_pIndexTree; // the index for this 
+  
     CrvBuffer* m_pCrvBufferHead; // head of crv buffer list
   
     // must be last
@@ -22,13 +24,19 @@ namespace ReadConsistency
     ReadApi(void);
    ~ReadApi(void) noexcept(false);
   
-    void vAddCrwVersion(Ref xwRef, Crw* pCrw);
-    Crw* aGetCrwVersion(Ref xwRef, t8 tPerspective);
+    void vAddCrwVersion(Ref xwCurrentRef, Crw* pCrw);
+    Crw* aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective);
     void vPurgePriorVersions(t8 tPerspective);
 
     void vStreamDef(StreamDef* pStreamDef);
 
   private:
+    void vAddVersionEntry(Ref xwCurrentRef,
+                          Ref xwVersionRef, t8 tVersionPsp);
+  
+    Ref  xwAddCrvItem(Ref xwCurrentRef, Crw* pCrw);
+
+  
     Footer* aFooter(void);
   };
   

@@ -357,6 +357,28 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert a given entry into this index tree starting at leaf / height 0      */
+/*----------------------------------------------------------------------------*/
+bool IndexTree::bInsertEntry(Ent* aEnt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+  m_okLock.vGrabWrite();                                           //! GRAB LOCK
+  
+  if (! m_pRootBuffer)
+    RASSERT(pNewRootBuffer());
+  
+  Ent* aInsertedEntry = EntBuffer::aInsertEntTree(aEnt,&m_pRootBuffer);
+  ASSERT(aInsertedEntry);
+  
+  //m_pRootBuffer->bVerify();
+  
+  m_okLock.vDropWrite();                                           //! DROP LOCK
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
 bool IndexTree::bInsertEntry(Crw* aCrw, Ref& xRowRef)
@@ -451,12 +473,12 @@ EntBuffer* IndexTree::pPopSubList(EntBuffer** ppSubList)
 /*----------------------------------------------------------------------------*/
 /* position to the first H0 buffer which has given key                        */
 /*----------------------------------------------------------------------------*/
-EntBuffer* IndexTree::pPositionH0Buffer(Ent* aEnt)
+EntBuffer* IndexTree::pPositionH0Buffer(Key* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   if (m_pRootBuffer)
-    return m_pRootBuffer->pPositionH0Buffer(aEnt);
+    return m_pRootBuffer->pPositionH0Buffer(aFindKey);
   else
     return nullptr;
 }

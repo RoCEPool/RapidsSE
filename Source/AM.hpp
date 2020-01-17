@@ -227,8 +227,8 @@ namespace Oblique
     static void vMri(TokenVec* pTknVec);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    static void vNap(i8 nMilliSeconds, eCN eCallingClass);
-    static void vNapUsec(i8 nMilliSeconds, eCN eCallingClass);
+    static void vNapMsec(i8 nMilliSeconds, eCN eCallingClass);
+    static void vNapUsec(i8 nMicroSeconds, eCN eCallingClass);
     static void vDeleteJobOperand(Job_Operand* pJob);
     static Job_Operand* pNewJobOperand(Job* pParentJob, Operand* pOperand, Op* pOp, i8 iNde, i8 iPtn);
     static Job* pNewJobUniversal(Job* pParentJob, Op* pOp, ReqTuple* pReqTuple);
@@ -240,7 +240,9 @@ namespace Oblique
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static i8   iRdTimePoint(void);
-  
+    static void vReadApiIndex(Index* pIndex);
+    static Index* pReadApiIndex(void);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static ReqTuple* aReqTuple_tls(void);
   

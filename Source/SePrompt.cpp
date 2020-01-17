@@ -223,8 +223,9 @@ void SePrompt::vPromptLoop(void)
       // wait till the job has a buffer queue
       while ( m_pJob->m_pBufferQueue == nullptr ) {
         // do something else release version optimizes this out
-        if (AM::bVerbose())
-          vTrace("Waiting for buffer queue\n"_Stz);
+        //if (AM::bVerbose())
+        //  vTrace("Waiting for buffer queue\n"_Stz);
+        AM::vNapMsec(1,CN_SEPROMPT);
       }
     
       // start the post processing while the pipeline ops are running

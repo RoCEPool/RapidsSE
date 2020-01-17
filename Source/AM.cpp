@@ -9,9 +9,10 @@ extern PromptCatalog gxPromptCatalog;
 
 extern AttachMap*    gpAttachMap;
 extern BufferPool*   gpBufferPool;
-extern Log*          gpLog;
-extern Header*       gaSeShmRegion;
 extern File*         gpTraceFile;
+extern Header*       gaSeShmRegion;
+extern Index*        gpReadApiIndex;
+extern Log*          gpLog;
 
 extern eHT           geWhichHeap[];
 extern i8            giClassSize[];
@@ -975,7 +976,7 @@ void AM::vDdlGrabWrite(Task* pTask)  { Scheduler::vDdlGrabWrite(pTask);        }
 /*----------------------------------------------------------------------------*/
 /* nap for given number of milliseconds (no known calling thread)             */
 /*----------------------------------------------------------------------------*/
-void AM::vNap(i8 nMilliSeconds, eCN eCallingClass)
+void AM::vNapMsec(i8 nMilliSeconds, eCN eCallingClass)
 {
   struct timespec xReq;
   struct timespec xRem;
@@ -1337,7 +1338,8 @@ void AM::vPrintGlobals(void)
   printf("gpTraceFile     @%p : %p\n",&gpTraceFile,  gpTraceFile);
 }
 
-
+Index* AM::pReadApiIndex(void) { return gpReadApiIndex; }
+void   AM::vReadApiIndex(Index* pIndex) { gpReadApiIndex = pIndex; }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

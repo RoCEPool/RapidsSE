@@ -272,7 +272,7 @@ Job::~Job(void) noexcept(false)
   //! are completely returned
   while (nReferences()) {
     vTrace("Napping\n"_Stz);
-    AM::vNap(10, eClass());
+    AM::vNapMsec(10, eClass());
   }
   
   if (m_pPipeline)
