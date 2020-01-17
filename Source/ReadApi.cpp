@@ -81,6 +81,8 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective)
   
   EntWrk xEntWrk;
   
+  Crv::vFormKey(&xEntWrk,xwCurrentRef,tPerspective);
+  
   Ref xwRef = m_pIndexTree->xwGetRef(xEntWrk.aKey());
   
   if (xwRef.bIsNil())
