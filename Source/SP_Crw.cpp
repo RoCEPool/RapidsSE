@@ -10,6 +10,12 @@
 SP_Crw::SP_Crw(void)
 {
   _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
+  
+  #ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caCrw,sizeof(m_caCrw),CN_RECORD);
+  #else
+    m_caCrw[0] = '\0';
+  #endif
     
   _checkInitialised_(CN_RECORD);
   
@@ -21,7 +27,7 @@ SP_Crw::SP_Crw(void)
 /*----------------------------------------------------------------------------*/
 SP_Crw::~SP_Crw(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_MAGIC_,CN_RECORD,_FOOTER_);
 }
 
 
@@ -36,7 +42,7 @@ Stz* SP_Crw::sz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caRecord[0];
+  return (Stz*) &m_caCrw[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +58,11 @@ Stz* SP_Crw::sz(Crw* aCrw, StreamDef* pStreamDef)
   
   vToRecord(hvRow);
   
-  return (Stz*) &m_caRecord[0];
+  StrLib::vSprint(m_caCrw,"[Psp %lld] "_Stz,aCrw->tPerspective());
+  
+  StrLib::vConcat(m_caCrw, m_caRecord);
+
+  return (Stz*) &m_caCrw[0];
 }
 
 

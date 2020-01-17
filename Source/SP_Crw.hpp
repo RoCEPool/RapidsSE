@@ -9,6 +9,8 @@ namespace CompactBuffers
   {
   public:
   
+    char  m_caCrw[C_MAX_RECORD];
+
     // must be last
     Footer m_xFooter;
     
