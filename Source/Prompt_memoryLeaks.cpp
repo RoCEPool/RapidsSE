@@ -1,27 +1,27 @@
 /*============================================================================*/
-/* Prompt_memoryObjects.cpp -- memory objects                                 */
+/* Prompt_memoryLeaks.cpp -- memory leaks                                     */
 /*============================================================================*/
 
 #include "Prompt.h"
 
-PromptFun __Prompt_memoryObjects (
+PromptFun __Prompt_memoryLeaks (
   PF_ENUMS,                    // prompt function
-  "Prompt_memoryObjects"_Stz,  // name of the prompt function
-  "memory objects"_Stz,        // comment about the function
-  "memoryObjects"_Stz,         // the prompt command
+  "Prompt_memoryLeaks"_Stz,    // name of the prompt function
+  "memory leaks"_Stz,          // comment about the function
+  "memoryLeaks"_Stz,           // the prompt command
   nullptr,                     // the second word
-  bPrompt_memoryObjects,       // prompt function
+  bPrompt_memoryLeaks,         // prompt function
   true,                        // enabled
 
   true,                        // visible
-  "memoryObjects"_Stz,         // help
+  "memoryLeaks"_Stz,           // help
   ""_Stz                       // description
 );
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_memoryObjects(SePrompt* pPrompt)
+bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
 {
   i8 iRowsProcessed = 0;
   

@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Prompt_memoryObjects.hpp -- memory objects                                 */
+/* Prompt_memoryLeaks.hpp -- memory leaks                                     */
 /*============================================================================*/
 #pragma once
 
 namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bool bPrompt_memoryObjects(SePrompt* pPrompt);
+  bool bPrompt_memoryLeaks(SePrompt* pPrompt);
 }
 
 /*============================================================================*/
