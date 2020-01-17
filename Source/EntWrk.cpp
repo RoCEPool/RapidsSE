@@ -32,7 +32,7 @@ void* EntWrk::operator new(size_t, EntWrk* pEntWrk)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntWrk::EntWrk(void)
-: Object(CN_ENTWRK),
+: StackObject(CN_ENTWRK),
   m_xEnt(CN_ENT,sizeof(Ent))
 {
   _precondition_(_MAGIC_,CN_ENTWRK);
