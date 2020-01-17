@@ -326,7 +326,7 @@ void EntBuffer::vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Ent* aPriorEntry = pPositionPriorEntry(aDeleteEntry);
+  Ent* aPriorEntry = pPositionPriorEntry(aDeleteEntry->aKey());
   if (!aPriorEntry)
     return;
   

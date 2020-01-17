@@ -48,7 +48,7 @@ EntBuffer* EntBuffer::pPositionH0Buffer(Ent* aFindEnt)
     //aEnt1 = pEntBuffer->aPositionQuery(xGivenKey);
     //ASSERT(aEnt1);
     
-    aEnt = pEntBuffer->pPositionPriorEntry(aFindEnt);
+    aEnt = pEntBuffer->pPositionPriorEntry(aFindEnt->aKey());
     ASSERT(aEnt);
     
     aEnt = pEntBuffer->pMoveToPrevEntry(aEnt, aFindEnt->aKey(), &pEntBuffer);
@@ -66,7 +66,7 @@ EntBuffer* EntBuffer::pPositionH0Buffer(Ent* aFindEnt)
 /*----------------------------------------------------------------------------*/
 /* scan thru skip list and return entry prior to key                          */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pPositionPriorEntry(Ent* aFindEnt)
+Ent* EntBuffer::pPositionPriorEntry(Key* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -90,7 +90,7 @@ Ent* EntBuffer::pPositionPriorEntry(Ent* aFindEnt)
     Ent* aNextEntry_sl = aNextEntry(aScanEntry_sl,i_ScanLevel);
     while (aNextEntry_sl) {
       
-      bKeyIsGreaterEqual = Key::bGreaterEqual(aNextEntry_sl->aKey(), aFindEnt->aKey());
+      bKeyIsGreaterEqual = Key::bGreaterEqual(aNextEntry_sl->aKey(),aFindKey);
       
       if (bKeyIsGreaterEqual)
         break;

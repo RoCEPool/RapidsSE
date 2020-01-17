@@ -370,7 +370,7 @@ void Step::vIndexLowerBound(void)
     // position in the index buffer at an entry prior to the lower key
     //aLowerEntry = aLowerEntBuffer->aPositionQuery(xEntWrkLower, eLowerRelnOp);
     
-    aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aEnt());
+    aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aEnt()->aKey());
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
       aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry,
@@ -584,7 +584,7 @@ void Step::vIndexRange(void)
   // did we get an entry buffer ?
   if (aLowerEntBuffer) {
     // position in the index buffer at the lower key
-    aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aEnt());
+    aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aEnt()->aKey());
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
       aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry,
@@ -613,7 +613,7 @@ void Step::vIndexRange(void)
   // did we get an entry buffer ?
   if (aUpperEntBuffer) {
     //aUpperEntry = aUpperEntBuffer->aPositionQuery(xEntWrkUpper, eUpperRelnOp);
-    aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xEntWrkUpper.aEnt());
+    aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xEntWrkUpper.aEnt()->aKey());
     aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xEntWrkUpper.aEnt()->aKey(), &aUpperEntBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
@@ -857,7 +857,7 @@ void Step::vIndexUpperBound(void)
   
   if (aUpperEntBuffer) {
     
-    aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xEntWrkUpper.aEnt());
+    aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xEntWrkUpper.aEnt()->aKey());
     aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xEntWrkUpper.aEnt()->aKey(), &aUpperEntBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
