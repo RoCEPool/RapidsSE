@@ -27,6 +27,9 @@ namespace Prompt
 
     ShortCutVec m_oShortCutVec; // vector of short cuts
   
+    bool      m_bTrackingMemory; // tracking memory ?
+    i8        m_nObjectsInPool[CN_ENUMS];
+    
     EnameSet  m_oJobCtl;
   
     // must be last
@@ -87,6 +90,8 @@ namespace Prompt
     void vSpawnJob(void);
     bool bSubLet(void);
     TokenVec* pTknVec(void);
+    void vTrackingMemory(bool bTrackMemory);
+    bool bTrackingMemory(void);
     void vUnknownCommand(void);
     void vVerifyJobSeeds(void);
 

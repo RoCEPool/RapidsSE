@@ -80,6 +80,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 
 #include "Prompt_masks.hpp"
 #include "Prompt_memory.hpp"
+#include "Prompt_memoryObjects.hpp"
 #include "Prompt_memTest.hpp"
 #include "Prompt_mkfifo.hpp"
 #include "Prompt_mon.hpp"
@@ -129,6 +130,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_timerEnd.hpp"
 #include "Prompt_timerStart.hpp"
 #include "Prompt_tpch.hpp"
+#include "Prompt_trackMemory.hpp"
 
 #include "Prompt_uptime.hpp"
 

@@ -75,6 +75,11 @@ SePrompt::SePrompt(bool bOneCommand)
 
   m_pSession->m_sToDo = "_shortcuts"_Stz;
   
+  m_bTrackingMemory = false;
+  
+  for (i8 i_enum = 0; i_enum < CN_ENUMS; i_enum++)
+    m_nObjectsInPool[i_enum] = 0;
+  
   m_pRequest = nullptr;
   m_i_RequestFocal = C_UNKNOWN;
   m_iRequestId = C_UNKNOWN;
@@ -1069,6 +1074,30 @@ Token* SePrompt::pTkn(i8 i_Token)
   Token* pTkn = (*pTknVec)[i_Token];
   
   return pTkn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get token vector                                                           */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vTrackingMemory(bool bTrackingMemory)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_bTrackingMemory = bTrackingMemory;
+  
+  // increment the epoch
+  AM::iNextEpoch();
+  BPA::vObjectSnapshot(m_nObjectsInPool);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get token vector                                                           */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bTrackingMemory(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_bTrackingMemory;
 }
 
 /*----------------------------------------------------------------------------*/
