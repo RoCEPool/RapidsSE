@@ -478,7 +478,7 @@ EntBuffer* IndexTree::pPositionH0Buffer(Ent* aEnt)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   if (m_pRootBuffer)
-    return m_pRootBuffer->pPositionH0Buffer(aEnt);
+    return m_pRootBuffer->pPositionH0Buffer(aEnt->aKey());
   else
     return nullptr;
 }

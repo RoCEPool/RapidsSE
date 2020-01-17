@@ -8,7 +8,7 @@
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at given height starting from this buffer      */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pPositionH0Buffer(Ent* aFindEnt)
+EntBuffer* EntBuffer::pPositionH0Buffer(Key* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -48,10 +48,10 @@ EntBuffer* EntBuffer::pPositionH0Buffer(Ent* aFindEnt)
     //aEnt1 = pEntBuffer->aPositionQuery(xGivenKey);
     //ASSERT(aEnt1);
     
-    aEnt = pEntBuffer->pPositionPriorEntry(aFindEnt->aKey());
+    aEnt = pEntBuffer->pPositionPriorEntry(aFindKey);
     ASSERT(aEnt);
     
-    aEnt = pEntBuffer->pMoveToPrevEntry(aEnt, aFindEnt->aKey(), &pEntBuffer);
+    aEnt = pEntBuffer->pMoveToPrevEntry(aEnt, aFindKey, &pEntBuffer);
     ASSERT(aEnt);
     
     // get the index buffer of the entry

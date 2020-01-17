@@ -604,7 +604,7 @@ Ent* EntBuffer::aInsertEntTree(Ent* aEntryWork, EntBuffer** ppRootBuffer)
   // position on an H0 buffer which we will try and insert into
   
   EntBuffer* pPositionedBuffer =
-    pRootKeyBuffer->pPositionH0Buffer(aEntryWork);
+    pRootKeyBuffer->pPositionH0Buffer(aEntryWork->aKey());
   
   ASSERT(0 == pPositionedBuffer->iBufferHeight());
   
