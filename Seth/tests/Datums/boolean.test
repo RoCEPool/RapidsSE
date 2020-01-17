@@ -2,6 +2,10 @@
 /* boolean.test -- BOOLEAN DATUM tests                                        */
 /*----------------------------------------------------------------------------*/
 
+// begin tracking memory
+trackMemory;
+success
+
 // (1) create a table
 create table bolTbl (
   bol_col1   BOOLEAN     NOT NULL,
@@ -58,6 +62,10 @@ success
 
 // check existence of table
 lstbl;
+rows: 0
+
+// get memory leaks
+memoryLeaks;
 rows: 0
 
 CLEANUP {

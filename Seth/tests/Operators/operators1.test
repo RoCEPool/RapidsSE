@@ -2,6 +2,10 @@
 /* operators.test -- OPERATORS tests                                          */
 /*----------------------------------------------------------------------------*/
 
+// begin tracking memory
+trackMemory;
+success
+
 // (1) create a table
 create table OpTable1 (
   jidx_key   INTEGER     NOT NULL,
@@ -692,6 +696,10 @@ success
 
 // check existence of table
 lstbl;
+rows: 0
+
+// get memory leaks
+memoryLeaks;
 rows: 0
 
 CLEANUP {

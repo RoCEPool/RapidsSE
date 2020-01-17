@@ -2,6 +2,10 @@
 /* integer.test -- INTEGER DATUM tests                                        */
 /*----------------------------------------------------------------------------*/
 
+// begin tracking memory
+trackMemory;
+success
+
 // (1) create a table
 create table IntTbl (
   int_col1  INTEGER NOT NULL,
@@ -59,6 +63,13 @@ fetch intTbl "int_col1 14 =";
 rows:
   (14,'one four',114,null)
 
+// drop the table
+drop table IntTbl;
+success
+
+// get memory leaks
+memoryLeaks;
+rows: 0
 
 CLEANUP {
   

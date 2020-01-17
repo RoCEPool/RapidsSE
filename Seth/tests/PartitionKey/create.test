@@ -2,6 +2,10 @@
 -- create partition key tests
 --------------------------------------------------------------------------------
 
+// begin tracking memory
+trackMemory;
+success
+
 -- create a table
 create table createT1 (
   key   INTEGER NOT NULL, 
@@ -131,6 +135,11 @@ rows:
 -- drop the table
 drop table createT1;
 success
+
+// get memory leaks
+memoryLeaks;
+rows: 0
+
 CLEANUP {
   -- Commands in the cleanup section always run, and do so at the end
   -- of a test (whether successful or not). 

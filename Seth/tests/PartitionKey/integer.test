@@ -2,6 +2,10 @@
 -- create partition key tests
 --------------------------------------------------------------------------------
 
+// begin tracking memory
+trackMemory;
+success
+
 // create a table
 create table dataTable (
   key     INTEGER NOT NULL,
@@ -28,6 +32,10 @@ rows:
 // drop the table
 drop table dataTable;
 success
+
+// get memory leaks
+memoryLeaks;
+rows: 0
 
 CLEANUP {
 

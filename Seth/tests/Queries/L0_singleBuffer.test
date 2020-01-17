@@ -2,8 +2,9 @@
 /* L0 single buffer tests                                                     */
 /*----------------------------------------------------------------------------*/
 
-//startCluster;
-//mute
+// begin tracking memory
+trackMemory;
+success
 
 IndexEntries 5;
 success
@@ -145,6 +146,10 @@ success
 
 indexEntries 0;
 mute;
+
+// get memory leaks
+memoryLeaks;
+rows: 0
 
 CLEANUP {
 

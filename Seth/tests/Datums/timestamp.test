@@ -2,6 +2,10 @@
 /* timestamp.test -- TIMESTAMP DATUM tests                                    */
 /*============================================================================*/
 
+// begin tracking memory
+trackMemory;
+success
+
 create table tspTbl (
   tsp_col1   TIMESTAMP   NOT NULL,
   vch_col2   VARCHAR(32) NOT NULL,
@@ -58,13 +62,16 @@ success
 //  ('1904-01-01 00:00:00',four,104,4,4.004,1004.004,null)
 
 // drop the table
-//drop table tspTbl;
-//success
+drop table tspTbl;
+success
 
 // check existence of table
-//lstbl;
-//rows: 0
+lstbl;
+rows: 0
 
+// get memory leaks
+memoryLeaks;
+rows: 0
 
 CLEANUP {
   
