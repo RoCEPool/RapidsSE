@@ -37,6 +37,7 @@ namespace IndexTrees
     void       vDump(bool bSameHeight);
     i8         nEntBuffers(void);
     EntBuffer* pFirstH0Buffer(void);
+    Ref        xwGetRef(Key* aKey);
     Index*     pIndex(void);
     void       vInsertEntries(CrwBuffer* pCrwBuffer);
     bool       bInsertEntry(Ent* aEnt);
@@ -52,10 +53,9 @@ namespace IndexTrees
     bool       bVerifyIndex(void);
     void       vVisualize(void);
 
-    void      vExtractKey(EntWrk* pEntWrk, Crw* aCrw);
-    void      vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row);
+    void       vExtractKey(EntWrk* pEntWrk, Crw* aCrw);
+    void       vExtractKey(EntWrk* pEntWrk, CrwBuffer* pCrwBuffer, i8 i_Row);
 
-    
     Footer*   aFooter(void);
     
   private:

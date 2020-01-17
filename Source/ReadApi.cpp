@@ -79,6 +79,13 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
+  EntWrk xEntWrk;
+  
+  Ref xwRef = m_pIndexTree->xwGetRef(xEntWrk.aEnt()->aKey());
+  
+  if (xwRef.bIsNilRef())
+    return nullptr;
+  
   return nullptr;
 }
 

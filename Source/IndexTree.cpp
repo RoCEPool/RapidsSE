@@ -304,6 +304,18 @@ EntBuffer* IndexTree::pFirstH0Buffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get reference given key                                                    */
+/*----------------------------------------------------------------------------*/
+Ref IndexTree::xwGetRef(Key* aKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  Ref xwRef;
+  
+  return xwRef;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the index                                                              */
 /*----------------------------------------------------------------------------*/
 Index* IndexTree::pIndex(void)
