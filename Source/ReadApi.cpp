@@ -83,7 +83,7 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective)
   
   Ref xwRef = m_pIndexTree->xwGetRef(xEntWrk.aEnt()->aKey());
   
-  if (xwRef.bIsNilRef())
+  if (xwRef.bIsNil())
     return nullptr;
   
   return nullptr;

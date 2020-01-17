@@ -14,7 +14,7 @@
 void* Ref::operator new(size_t)
 {
   vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: Ref class cannot be new'd\n"_Stz);
+         "fatal: Ref class 'd\n"_Stz);
   
   NEVER_REACH;
 }
@@ -24,9 +24,7 @@ void* Ref::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 Ref::Ref(void)
 {
-  m_uBuffer  = 0;
-  m_uItem    = 0;
-  m_uOffsets = 0;
+  vSetNil();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,7 +96,7 @@ void Ref::vBuffer(i8 iBuffer)
 /*----------------------------------------------------------------------------*/
 /* is nil reference?                                                          */
 /*----------------------------------------------------------------------------*/
-bool Ref::bIsNilRef(void)
+bool Ref::bIsNil(void)
 {
   if (0 == m_uBuffer)
     return true;
@@ -146,6 +144,16 @@ void Ref::vSet(Ref xwRef)
   m_uBuffer  = xwRef.m_uBuffer;
   m_uItem    = xwRef.m_uItem;
   m_uOffsets = xwRef.m_uOffsets;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set nil ref                                                                */
+/*----------------------------------------------------------------------------*/
+void Ref::vSetNil(void)
+{
+  m_uBuffer  = 0;
+  m_uItem    = 0;
+  m_uOffsets = 0;
 }
 
 /*============================================================================*/

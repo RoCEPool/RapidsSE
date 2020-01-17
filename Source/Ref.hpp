@@ -30,12 +30,13 @@ namespace Rows
     i8    iAsI8(void);
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
-    bool  bIsNilRef(void);
+    bool  bIsNil(void);
     i8    iItem(void);
     void  vItem(i8 iItem);
     i8    nOffsets(void);
     void  vOffsets(i8 nOffsets);
     void  vSet(Ref xwRef);
+    void  vSetNil(void);
   };
 }
 
