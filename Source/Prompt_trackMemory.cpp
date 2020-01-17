@@ -25,6 +25,8 @@ bool Prompt::bPrompt_trackMemory(SePrompt* pPrompt)
 {
   pPrompt->vTrackingMemory(true);
 
+  vTrace("success: 0 rows affected\n"_Stz);
+  
   return true;
 }
 

@@ -76,7 +76,7 @@ SePrompt::SePrompt(bool bOneCommand)
   m_pSession->m_sToDo = "_shortcuts"_Stz;
   
   m_bTrackingMemory = false;
-  
+  m_iEpoch = C_UNKNOWN;
   for (i8 i_enum = 0; i_enum < CN_ENUMS; i_enum++)
     m_nObjectsInPool[i_enum] = 0;
   
@@ -467,6 +467,16 @@ void SePrompt::vEndRequest(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get epoch                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 SePrompt::iEpoch(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_iEpoch;
+}
+
+/*----------------------------------------------------------------------------*/
 /* potentially execute a pipeline job                                         */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bExecutePipeline(void)
@@ -747,6 +757,16 @@ bool SePrompt::bNoWait(void)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* no wait                                                                    */
+/*----------------------------------------------------------------------------*/
+i8* SePrompt::iaObjectsInPool(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_nObjectsInPool;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1086,9 +1106,11 @@ void SePrompt::vTrackingMemory(bool bTrackingMemory)
   
   m_bTrackingMemory = bTrackingMemory;
   
-  // increment the epoch
-  AM::iNextEpoch();
-  BPA::vObjectSnapshot(m_nObjectsInPool);
+  if (bTrackingMemory) {
+    // increment the epoch
+    m_iEpoch = AM::iNextEpoch();
+    BPA::vObjectSnapshot(m_nObjectsInPool);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
