@@ -194,6 +194,11 @@ void Key::vElmSeqSize(i8 nElmSeqSize)
 /*----------------------------------------------------------------------------*/
 void Key::vShow(IdxColVec* pIdxColVec)
 {
+  bool bReadApi = false;
+  
+  if (pIdxColVec->pIndexDef()->szIndexNm()->bSame(S_READAPI_I))
+    bReadApi = true;
+  
   i8 nBytes;
   
   byte* ayCursor = ayElmSeq();
@@ -208,13 +213,20 @@ void Key::vShow(IdxColVec* pIdxColVec)
     
     eDM eDatum = pCol->eDatum();
     
+    if (0 == i_Col && bReadApi) {
+      Ref xwRef;
+      xwRef = * (Ref*)ayElm;
+      StrLib::vSprint(caLiteral,"%lld.%lld"_Stz,xwRef.iBuffer(),xwRef.iItem());
+    }
+    else
     if (eDatum == DM_VCH) {
       nBytes = StrLib::iWordFlipBack(caLiteral, (char*)ayElm);
     }
-    else
+    else {
       CsvValue::vInto((Stz*)caLiteral,ayElm,pCol);
+    }
     
-    vTrace("Elm[%lld %lldB %s]"_Stz,i_Col,nBytes,caLiteral);
+    vTrace(" Elm[%lld %lldB %s]"_Stz,i_Col,nBytes,caLiteral);
   }
 }
 

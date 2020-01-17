@@ -22,7 +22,7 @@ namespace Rows
    ~Ref(void) noexcept(false);
     
     void operator =(Ref xwRef); // assignment
-  
+
     i8    iAsI8(void);
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
