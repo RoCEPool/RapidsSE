@@ -49,6 +49,8 @@ namespace Entries
     Ent*  aEnt(void);
     
     i8    iHashKey(void);
+
+    Key*  aKey(void);
   
     IdxColVec* pIdxColVec(void);
     void  vIdxColVec(IdxColVec* pIdxColVec);
