@@ -20,7 +20,7 @@ namespace ReadConsistency
   
     static i8 nCrvBytesNeed(i8 nCrwBytes);
   
-    static void vFormKey(EntWrk* aEntWrk, Ref xwRef, t8 tPerspective);
+    static void vFormFindKey(EntWrk* aEntWrk, Ref xwRef, t8 tPerspective);
   
     Crw* aCrw(void);
     Ref  xwRef(void);

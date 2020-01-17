@@ -41,7 +41,7 @@ i8 Crv::nCrvBytesNeed(i8 nCrwBytes)
 /*----------------------------------------------------------------------------*/
 /* form key used for finding a prior version                                  */
 /*----------------------------------------------------------------------------*/
-void Crv::vFormKey(EntWrk* aEntWrk, Ref xwRef, t8 tPerspective)
+void Crv::vFormFindKey(EntWrk* aEntWrk, Ref xwRef, t8 tPerspective)
 {
   aEntWrk->vAppendRef(xwRef);
   aEntWrk->vAppendInt(tPerspective);

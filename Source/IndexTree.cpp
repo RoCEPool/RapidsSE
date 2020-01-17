@@ -306,13 +306,27 @@ EntBuffer* IndexTree::pFirstH0Buffer(void)
 /*----------------------------------------------------------------------------*/
 /* get reference given key                                                    */
 /*----------------------------------------------------------------------------*/
-Ref IndexTree::xwGetRef(Key* aKey)
+Ref IndexTree::xwGetRef(Key* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  Ref xwRef;
+  Ref xwNilRef;
   
-  return xwRef;
+  EntBuffer* pEntBuffer = pPositionH0Buffer(aFindKey);
+  if (! pEntBuffer)
+    return xwNilRef;
+
+  Ent* aEntPos = pEntBuffer->pPositionPriorEntry(aFindKey);
+  if (! aEntPos)
+    return xwNilRef;
+
+  aEntPos = EntBuffer::pMoveToNextEntry(aEntPos,nullptr,&pEntBuffer);
+  
+  eKC eCompare = Key::eCompare(aEntPos->aKey(),aFindKey);
+  if (KC_SAME != eCompare)
+    return xwNilRef;
+
+  return aEntPos->xRef();
 }
 
 /*----------------------------------------------------------------------------*/

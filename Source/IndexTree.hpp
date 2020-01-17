@@ -37,7 +37,7 @@ namespace IndexTrees
     void       vDump(bool bSameHeight);
     i8         nEntBuffers(void);
     EntBuffer* pFirstH0Buffer(void);
-    Ref        xwGetRef(Key* aKey);
+    Ref        xwGetRef(Key* aFindKey);
     Index*     pIndex(void);
     void       vInsertEntries(CrwBuffer* pCrwBuffer);
     bool       bInsertEntry(Ent* aEnt);
