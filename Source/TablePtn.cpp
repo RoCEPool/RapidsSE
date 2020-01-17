@@ -1017,6 +1017,20 @@ void TablePtn::vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_found,
   // record prior version
   m_pReadApi->vAddCrwVersion(aEnt_found->xRef(),aCrw_exists);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read-check
+  
+  Crw* aCrwRead = m_pReadApi->aGetCrwVersion(aEnt_found->xRef(),tPerspective - 1);
+//  if (aCrwRead) {
+//    SP_Crw spCrw;
+//    vTrace("CrwRead : %s\n"_Stz,spCrw.sz(aCrwRead,pStreamDef));
+//  }
+//  else {
+//    vDebugPoint();
+//  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Packing::vPackCrw(aCrw_exists,pEncoding_upsert);
   
   // set perspective

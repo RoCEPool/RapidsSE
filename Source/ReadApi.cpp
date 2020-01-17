@@ -83,15 +83,6 @@ void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
 
   b = MemLib::bCompareBytes(aCrw,aCrwXCheck,nCrwBytes);
   ASSERT(b);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // read-check
-
-  Crw* aCrwRead = aGetCrwVersion(xwCurrentRef,tVersionPsp - 1);
-  if (aCrwRead)
-    vDebugPoint();
-  else
-    vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
