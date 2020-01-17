@@ -69,12 +69,14 @@ void Ref::operator =(Ref xwRef)
 /*----------------------------------------------------------------------------*/
 i8 Ref::iAsI8(void)
 {
-  i8 iRef;
-
-  iRef  = m_uBuffer << 48;
-  iRef |= m_uItem;
-
-  return iRef;
+//  i8 iRef;
+//
+//  iRef  = m_uBuffer << 48;
+//  iRef |= m_uItem;
+//
+//  return iRef;
+  
+  return m_iAsI8;
 }
 
 /*----------------------------------------------------------------------------*/
