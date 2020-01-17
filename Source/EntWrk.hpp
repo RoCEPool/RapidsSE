@@ -36,6 +36,7 @@ namespace Entries
     void  vAppendMinusInfinity(void);
     void  vAppendNull(void);
     void  vAppendPlusInfinity(void);
+    void  vAppendRef(Ref xwArg);
     void  vAppendStz(Stz* szArg);
 
     i8    iBuffer(void);

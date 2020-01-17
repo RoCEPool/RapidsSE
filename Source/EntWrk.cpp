@@ -176,6 +176,21 @@ void EntWrk::vAppendPlusInfinity(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add ref element to key                                                     */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendRef(Ref xwArg)
+{
+  _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
+  
+  byte* ayDst = ayElmNext();
+  
+  MemLib::vCopy(ayDst,&xwArg,8,CN_ENTWRK);
+  
+  i8 nElmSize = 8;
+  vIncElmSeqSize(nElmSize);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add stz element to key                                                     */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAppendStz(Stz* szArg)

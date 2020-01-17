@@ -29,7 +29,7 @@ time create table T
   colB BOOLEAN   NOT NULL min false          max true,
   colC DATE      NOT NULL min "2019-01-01"   max "2019-12-31",
   colD FLOAT     NOT NULL min "1.0"          max "1000.0",
-  colE INTEGER   NOT NULL min 1              max 100,
+  colE INTEGER   NOT NULL min 1              max 1000,
   colF INTERVAL  NOT NULL min "0.0"          max "100.0",
   colG TIME      NOT NULL min "00:00:00.000" max "23:59:59.999",
 //  colH TIMESTAMP NOT NULL min "2019-01-01 00:00:00.000"

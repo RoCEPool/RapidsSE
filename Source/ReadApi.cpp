@@ -87,7 +87,7 @@ void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
   xEntVersion.vRef(xwVersionRef);
   
   // -- -- --
-  xEntVersion.vAppendInt(xwCurrentRef.iAsI8());
+  xEntVersion.vAppendRef(xwCurrentRef);
   
   t8 tVersionPsp = aCrw->tPerspective();
   xEntVersion.vAppendInt(tVersionPsp);
