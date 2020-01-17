@@ -8,39 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-//ReadApi* ReadConsistency::_pReadApi(void* aAddr)
-//{
-//  ReadApi* pObject = reinterpret_cast<ReadApi*>(aAddr);
-//  RASSERT_TYPE(pObject,CN_READAPI);
-//
-//  return pObject;
-//}
 __pCastFunction(ReadConsistency,ReadApi,CN_READAPI)
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-//void* ReadApi::operator new(size_t)
-//{
-//  void* pObject = HeapMem::pAllocate(CN_READAPI);
-//
-//  return pObject;
-//}
 __aNewFunction(ReadApi,CN_READAPI)
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-//void ReadApi::operator delete(void* aAddr)
-//{
-//  ReadApi* pReadApi = reinterpret_cast<ReadApi*>(aAddr);
-//
-//  HeapMem::vFree(pReadApi);
-//}
 __vDeleteFunction(ReadApi,CN_READAPI)
+__aFooterFunction(ReadApi)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -71,6 +42,7 @@ ReadApi::ReadApi(void)
 ReadApi::~ReadApi(void) noexcept(false)
 {
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -198,11 +170,6 @@ Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
   return xwVersionRef;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-__aFooterFunction(ReadApi);
 
 /*============================================================================*/
 /* end                                                                        */
