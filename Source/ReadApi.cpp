@@ -70,6 +70,11 @@ void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
   // -- -- --
   bool b = m_pIndexTree->bInsertEntry(xEntVersion.aEnt());
   ASSERT(b);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-check
+  
+  aGetCrwVersion(xwCurrentRef,tVersionPsp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,6 +93,11 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective)
   if (xwRef.bIsNil())
     return nullptr;
   
+  i8 iBufferNo = xwRef.iBuffer();
+  i8 iItemNo   = xwRef.iItem();
+  
+  Crv* aCrv = CrvBuffer::aToCrv(iBufferNo,iItemNo);
+
   return nullptr;
 }
 

@@ -27,6 +27,9 @@ namespace ReadConsistency
   
     CrvBuffer(StreamDef* pStreamDef);
    ~CrvBuffer(void) noexcept(false);
+  
+    static Crv* aToCrv(i8 iBufferNo,i8 iItemNo);
+    static CrvBuffer* aToCrvBuffer(i8 iBufferNo);
 
     i8   iAddCrwVersion(Ref xwRef, Crw* pCrw);
     i8   nCrv(void);
