@@ -8,7 +8,7 @@ namespace Esses
   static const i8 C_SP_FORMAT = 32;
   static const i8 C_SP_RESULT = C_4K;
   
-  class SP : public Object
+  class SP : public StackObject
   {
   public:
   
