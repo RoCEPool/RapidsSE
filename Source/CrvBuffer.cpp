@@ -94,11 +94,7 @@ CrvBuffer* CrvBuffer::aToCrvBuffer(i8 iBufferNo)
 {
   bn nBufferNo = iBufferNo;
   
-  HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
-  
-  CrvBuffer* pCrvBuffer =
-    reinterpret_cast<CrvBuffer*>(pHeapBuffer->aFirstChunk());
+  CrvBuffer* pCrvBuffer = _pCrvBuffer(AM::pToLargeObect(iBufferNo));
 
   return pCrvBuffer;
 }
