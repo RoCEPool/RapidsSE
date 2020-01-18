@@ -1030,8 +1030,8 @@ void TablePtn::vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_found,
   Crw* aCrwPrior = m_pReadApi->aGetCrwVersion(aEnt_found->xRef(),tPerspective - 2);
   if (aCrwPrior) {
     SP_Crw spCrw;
-    vTrace("CrwExists : %s\n"_Stz,spCrw.sz(aCrw_exists,pStreamDef));
-    vTrace("aCrwPrior : %s\n"_Stz,spCrw.sz(aCrwPrior,pStreamDef));
+    //vTrace("CrwExists : %s\n"_Stz,spCrw.sz(aCrw_exists,pStreamDef));
+    //vTrace("aCrwPrior : %s\n"_Stz,spCrw.sz(aCrwPrior,pStreamDef));
     vDebugPoint();
   }
   else {

@@ -42,6 +42,12 @@ ReadApi::ReadApi(void)
 ReadApi::~ReadApi(void) noexcept(false)
 {
   delete m_pIndexTree;
+  
+  for (CrvBuffer* pCrvBuffer = m_pCrvBufferHead; pCrvBuffer; /*none*/) {
+    CrvBuffer* pCrvBufferTBD = pCrvBuffer;
+    pCrvBuffer = _pCrvBuffer(pCrvBuffer->pNextBuffer());
+    delete pCrvBufferTBD;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -210,7 +216,7 @@ Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // need a new head buffer
   
-  m_pIndexTree->vDump(false);
+  //m_pIndexTree->vDump(false);
   
   CrvBuffer* pNewCrvBufferHead = new CrvBuffer(m_pStreamDef);
   
