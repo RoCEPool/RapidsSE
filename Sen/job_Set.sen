@@ -79,6 +79,7 @@
 "Job_SinkOp.sen"         include
 "Job_SizeIndex.sen"      include
 "Job_SizeTable.sen"      include
+"Job_SnapshotOp.sen"     include
 "job_Space.sen"          include
 "job_StartCluster.sen"   include
 "job_StartNode.sen"      include
