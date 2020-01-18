@@ -962,6 +962,8 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
     vDebugPoint();
 
   } // for i_Row
+  
+  delete pEncoding_upsert;
 }
 
 /*----------------------------------------------------------------------------*/
