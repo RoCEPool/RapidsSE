@@ -857,6 +857,7 @@ public:
 
   // operand
   void vOperandBide(void);
+  void vOperandCsvData(void);
   void vOperandDelete(void);
   void vOperandFirstRowFetch(void);
   void vOperandGet(void);
@@ -864,6 +865,7 @@ public:
   void vOperandIsNull(void);
   void vOperandItemCountFetch(void);
   void vOperandInsertIntoTable(void);
+  void vOperandInvokePython(void);
   void vOperandKind(void);
   void vOperandNewEosMarker(void);
   void vOperandNewErrorMarker(void);

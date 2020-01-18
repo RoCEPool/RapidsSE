@@ -170,6 +170,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* push value of <pythonFile> from job's ename-set                            */
+/*----------------------------------------------------------------------------*/
+: <pythonFile> <<jobArgTag>> ( -- s )
+
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
+;
+
+/*----------------------------------------------------------------------------*/
+/* push value of <pythonFunction> from job's ename-set                        */
+/*----------------------------------------------------------------------------*/
+: <pythonFunction> <<jobArgTag>> ( -- s )
+
+  [ compiler::current@ word.name@ , ] job::this job.enameSet@ enameSet.getStr
+;
+
+/*----------------------------------------------------------------------------*/
 /* push value of <routineNm> from job's ename-set                             */
 /*----------------------------------------------------------------------------*/
 : <routineNm> <<jobArgTag>> ( -- s )

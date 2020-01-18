@@ -58,6 +58,10 @@
 //#include <pcap/pcap.h>
 #include <arpa/inet.h>
 
+#ifdef WITH_PYTHON_SUPPORT
+  #include "/usr/include/python2.7/Python.h"
+#endif
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

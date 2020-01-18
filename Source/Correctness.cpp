@@ -112,6 +112,10 @@ void Correctness::vTraceWith(void)
   vTrace("  WITH_PULSING\n"_Stz);
 #endif
   
+#ifdef WITH_PYTHON_SUPPORT
+  vTrace("  WITH_PYTHON_SUPPORT\n"_Stz);
+#endif
+  
 #ifdef WITH_RELEASE_VERSION
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
 #endif

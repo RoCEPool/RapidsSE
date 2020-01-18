@@ -182,7 +182,7 @@ void Stage::vDump(StageVec* pStageVec)
     
     Op* pOp = m_oOpVec.pGet(i_Op);
     
-    s32 sArgs;
+    s256 sArgs;
     
     EnameSet* pEnameSet = pOp->pEnameSet();
     pEnameSet->vSprint(sArgs);

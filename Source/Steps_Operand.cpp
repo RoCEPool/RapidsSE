@@ -10,6 +10,7 @@
 void Step::vAddSteps_Operand(void)
 {
   vAddStep("Operand[].bide"_Stz,           &Step::vOperandBide);
+  vAddStep("Operand[].csvData"_Stz,        &Step::vOperandCsvData);
   vAddStep("Operand[].delete"_Stz,         &Step::vOperandDelete);
   vAddStep("Operand[].firstRow@"_Stz,      &Step::vOperandFirstRowFetch);
   vAddStep("Operand[].get"_Stz,            &Step::vOperandGet);
@@ -17,6 +18,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].isNull"_Stz,         &Step::vOperandIsNull);
   vAddStep("Operand[].itemCount@"_Stz,     &Step::vOperandItemCountFetch);
   vAddStep("Operand[].insertIntoTable"_Stz,&Step::vOperandInsertIntoTable);
+  vAddStep("Operand[].invokePython"_Stz,   &Step::vOperandInvokePython);
   vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
@@ -51,6 +53,20 @@ void Step::vOperandBide(void)
     ASSERT(m_pTask->bIsLocked());
     m_pTask->vSchedulerAct(SA_BIDE);
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].csvData -- return operand csv data                               */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandCsvData(void)
+{
+  ENTRY(); // ENTRY("vOperandCsvData"_Stz);
+  
+  CsvBuffer* pCsvBuffer = _pCsvBuffer(*m_pRegSet->m_xpOperand);
+  char* data = (char*)pCsvBuffer->ayDataArea();
+  m_pDataStack->vPushStz((Stz*)data);
   
   EXIT();
 }
@@ -180,6 +196,78 @@ void Step::vOperandInsertIntoTable(void)
   i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
   
   m_pRegSet->m_xpTable->vAppendBufferInsertEntries(C_UNKNOWN, iSlot, pCrwBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].invokePython -- invoke python script                             */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandInvokePython(void)
+{
+  ENTRY(); // ENTRY("vOperandInvokePython"_Stz);
+
+  s4K  pData;
+  s256 pPythonFile;
+  s256 pPythonFunction;
+  
+  // pop the python file name
+  m_pDataStack->vPopStr(pPythonFile, __func__);
+  
+  // pop the python function name
+  m_pDataStack->vPopStr(pPythonFunction, __func__);
+  
+  // pop the data to be printed
+  m_pDataStack->vPopStr(pData, __func__);
+
+#ifdef WITH_PYTHON_SUPPORT
+  
+  // Initialize the Python interpreter.
+  Py_Initialize();
+  PySys_SetPath((char*)("../Python"));
+  
+  // Create some Python objects
+  PyObject *pModuleName, *pModule, *pDict, *pFunction, *pArgs, *pArgString;
+  
+  // Convert the python file name to a Python string.
+  pModuleName = PyString_FromString(pPythonFile.azChar());
+  
+  // Import the file as a Python module.
+  pModule = PyImport_Import(pModuleName);
+  if (pModule == nullptr)
+  {
+    PyErr_Print();
+  }
+  // get the dictionary of the contents of the module.
+  pDict = PyModule_GetDict(pModule);
+  
+  // Get the function from the dictionary.
+  pFunction = PyDict_GetItemString(pDict, pPythonFunction.azChar());
+  
+  // Create a Python tuple to hold one argument to the method.
+  pArgs = PyTuple_New(1);
+
+  // covert the data argument to a python string and add to teh arg tuple
+  pArgString = PyString_FromString(pData.azChar());
+  PyTuple_SetItem(pArgs, 0, pArgString);
+  
+  // Call the function with the arguments.
+  PyObject* pResult = PyObject_CallObject(pFunction, pArgs);
+  
+  // Print a message if calling the method failed.
+  if(pResult == NULL) {
+    printf("Calling the print method failed.\n");
+    PyErr_Print();
+  }
+  
+  // Convert the result to a long from a Python object.
+  i8 iResult = PyInt_AsLong(pResult);
+  RASSERT(iResult);
+  
+  // Destroy the Python interpreter.
+  Py_Finalize();
+  
+#endif
   
   EXIT();
 }
