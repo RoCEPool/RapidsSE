@@ -11,6 +11,8 @@ void Step::vAddSteps_Operand(void)
 {
   vAddStep("Operand[].bide"_Stz,           &Step::vOperandBide);
   vAddStep("Operand[].csvData"_Stz,        &Step::vOperandCsvData);
+  vAddStep("Operand[].crwToCsv"_Stz,       &Step::vOperandCrwToCsv);
+  vAddStep("Operand[].csvToCrw"_Stz,       &Step::vOperandCsvToCrw);
   vAddStep("Operand[].delete"_Stz,         &Step::vOperandDelete);
   vAddStep("Operand[].firstRow@"_Stz,      &Step::vOperandFirstRowFetch);
   vAddStep("Operand[].get"_Stz,            &Step::vOperandGet);
@@ -34,8 +36,6 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].rowCount@"_Stz,      &Step::vOperandRowCountFetch);
   vAddStep("Operand[].set"_Stz,            &Step::vOperandSet);
   vAddStep("Operand[].upsertIntoTable"_Stz,&Step::vOperandUpsertIntoTable);
-  vAddStep("Operand[].crwToCsv"_Stz,       &Step::vOperandCrwToCsv);
-  vAddStep("Operand[].csvToCrw"_Stz,       &Step::vOperandCsvToCrw);
   vAddStep("Operand[].workDone"_Stz,       &Step::vOperandWorkDone);
   vAddStep("Operand[].writeToFile0"_Stz,   &Step::vOperandWriteToFile0);
 }
@@ -523,6 +523,9 @@ void Step::vOperandUpsertIntoTable(void)
   i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
   
   m_pRegSet->m_xpTable->vUpsertBuffer(C_UNKNOWN, iSlot, pCrwBuffer);
+  
+  // will delete this buffer
+  pCrwBuffer->vIsPermanent(false);
   
   EXIT();
 }

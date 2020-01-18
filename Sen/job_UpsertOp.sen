@@ -41,6 +41,7 @@
       Operand[].upsertIntoTable
       tablePtn[].get tablePtnDropWrite2
       tx[].commit
+      Operand[].delete
       true
     endof
 
