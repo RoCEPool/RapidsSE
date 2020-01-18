@@ -220,7 +220,7 @@ Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
   
   CrvBuffer* pNewCrvBufferHead = new CrvBuffer(m_pStreamDef);
   
-  pNewCrvBufferHead->vLinkAsNext(m_pCrvBufferHead);
+  pNewCrvBufferHead->vLinkAsPrev(m_pCrvBufferHead);
   m_pCrvBufferHead = pNewCrvBufferHead;
   
   i_Crv = m_pCrvBufferHead->iAddCrwVersion(xwCurrentRef,aCrw);

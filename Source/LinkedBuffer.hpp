@@ -22,6 +22,7 @@ namespace Operands
     ~LinkedBuffer(void) noexcept(false);
   
     void vLinkAsNext(LinkedBuffer* pArgBuffer);
+    void vLinkAsPrev(LinkedBuffer* pArgBuffer);
 
     LinkedBuffer* pHigherBuffer(void);
     void          vHigherBuffer(LinkedBuffer* pHigherBuffer);
