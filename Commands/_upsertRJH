@@ -54,6 +54,12 @@ lsidxcol T T_Idx_1;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection createIndex;
 
+drop index T T_Idx_1;
+
+drop table T;
+
+memoryLeaks fatal;
+/*
 pipeline t_ups
 begin
 
@@ -77,9 +83,11 @@ fetch T;
 
 dumpindex T T_Idx_1;
 
+
 drop table T;
 
 memoryLeaks fatal;
+*/
 
 /*============================================================================*/
 /* end                                                                        */
