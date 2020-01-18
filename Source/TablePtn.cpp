@@ -912,14 +912,14 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     // possible insert (can we find the row using primary key)
     
-    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aEnt()->aKey());
+    EntBuffer* pEntH0Buf = pIndexTree->pPositionH0Buffer(xEntWrk.aKey());
     if (! pEntH0Buf) {
       TRACE_UPSERT( vTrace("No pEntBuf @%lld; inserting...\n"_Stz,(i8)__LINE__); )
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
       continue;
     }
     
-    Ent* aEnt_prior = pEntH0Buf->pPositionPriorEntry(xEntWrk.aEnt()->aKey());
+    Ent* aEnt_prior = pEntH0Buf->pPositionPriorEntry(xEntWrk.aKey());
     if (! aEnt_prior) {
       TRACE_UPSERT( vTrace("No aEnt_prior @%lld; inserting...\n"_Stz,(i8)__LINE__); )
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
@@ -939,7 +939,7 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
     
     TRACE_UPSERT( vTrace("Key Found: %s\n"_Stz,spKey.sz(aEnt_found->aKey(),pIdxColVec)); )
     
-    if (KC_SAME != Key::eCompare(aEnt_found->aKey(),xEntWrk.aEnt()->aKey())) {
+    if (KC_SAME != Key::eCompare(aEnt_found->aKey(),xEntWrk.aKey())) {
       TRACE_UPSERT( vTrace("NOT SAME @%lld; inserting...\n"_Stz,(i8)__LINE__); )
       vUpsertRow_insert(aCrw_upsert,&xEntWrk,pEncoding_upsert,tPerspective);
       continue;
@@ -962,6 +962,8 @@ void TablePtn::vUpsertBuffer(CrwBuffer* pCrwBuffer_upsert, t8 tPerspective)
     vDebugPoint();
 
   } // for i_Row
+  
+  delete pEncoding_upsert;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1017,10 +1019,26 @@ void TablePtn::vUpsertRow_update(Crw* aCrw_exists, Ent* aEnt_found,
   // record prior version
   m_pReadApi->vAddCrwVersion(aEnt_found->xRef(),aCrw_exists);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Packing::vPackCrw(aCrw_exists,pEncoding_upsert);
   
   // set perspective
   aCrw_exists->vPerspective(tPerspective);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read-check
+  
+  Crw* aCrwPrior = m_pReadApi->aGetCrwVersion(aEnt_found->xRef(),tPerspective - 2);
+  if (aCrwPrior) {
+    SP_Crw spCrw;
+    //vTrace("CrwExists : %s\n"_Stz,spCrw.sz(aCrw_exists,pStreamDef));
+    //vTrace("aCrwPrior : %s\n"_Stz,spCrw.sz(aCrwPrior,pStreamDef));
+    vDebugPoint();
+  }
+  else {
+    vDebugPoint();
+  }
   
   vDebugPoint();
 }

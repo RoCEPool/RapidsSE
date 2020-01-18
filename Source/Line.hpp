@@ -5,7 +5,7 @@
 
 namespace Alignment
 {
-  class Line
+  class Line : public NonProper
   {
   public:
   

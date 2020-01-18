@@ -42,6 +42,12 @@ ReadApi::ReadApi(void)
 ReadApi::~ReadApi(void) noexcept(false)
 {
   delete m_pIndexTree;
+  
+  for (CrvBuffer* pCrvBuffer = m_pCrvBufferHead; pCrvBuffer; /*none*/) {
+    CrvBuffer* pCrvBufferTBD = pCrvBuffer;
+    pCrvBuffer = _pCrvBuffer(pCrvBuffer->pNextBuffer());
+    delete pCrvBufferTBD;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +60,7 @@ ReadApi::~ReadApi(void) noexcept(false)
 void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
-  
+    
   EntWrk xEntVersion;
   
   // -- -- --
@@ -70,6 +76,45 @@ void ReadApi::vAddCrwVersion(Ref xwCurrentRef, Crw* aCrw)
   // -- -- --
   bool b = m_pIndexTree->bInsertEntry(xEntVersion.aEnt());
   ASSERT(b);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cross-check
+  
+  Crw* aCrwXCheck = aGetCrwVersion(xwCurrentRef,tVersionPsp);
+  
+  i8 nCrwBytes = m_pStreamDef->m_nFixedSized;
+  
+  //MemLib::vHexDump(aCrw,nCrwBytes);
+  //MemLib::vHexDump(aCrwXCheck,nCrwBytes);
+
+  b = MemLib::bCompareBytes(aCrw,aCrwXCheck,nCrwBytes);
+  ASSERT(b);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a consistent read version of row given a reference and perspective     */
+/*----------------------------------------------------------------------------*/
+Crw* ReadApi::aGetCrwConsistent(Ref xwCurrentRef, t8 tPerspective)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
+  
+  EntWrk xEntWrk;
+  
+  Crv::vFormFindKey(&xEntWrk,xwCurrentRef,tPerspective);
+  
+  Ref xwRef = m_pIndexTree->xwGetRef(xEntWrk.aKey());
+  
+  if (xwRef.bIsNil())
+    return nullptr;
+  
+  i8 iBufferNo = xwRef.iBuffer();
+  i8 iItemNo   = xwRef.iItem();
+  
+  Crv* aCrv = CrvBuffer::aToCrv(iBufferNo,iItemNo);
+  
+  Crw* aCrw = aCrv->aCrw();
+
+  return aCrw;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +124,23 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
-  return nullptr;
+  EntWrk xEntWrk;
+  
+  Crv::vFormFindKey(&xEntWrk,xwCurrentRef,tPerspective);
+  
+  Ref xwRef = m_pIndexTree->xwGetRef(xEntWrk.aKey());
+  
+  if (xwRef.bIsNil())
+    return nullptr;
+  
+  i8 iBufferNo = xwRef.iBuffer();
+  i8 iItemNo   = xwRef.iItem();
+  
+  Crv* aCrv = CrvBuffer::aToCrv(iBufferNo,iItemNo);
+  
+  Crw* aCrw = aCrv->aCrw();
+
+  return aCrw;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -155,11 +216,11 @@ Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // need a new head buffer
   
-  m_pIndexTree->vDump(false);
+  //m_pIndexTree->vDump(false);
   
   CrvBuffer* pNewCrvBufferHead = new CrvBuffer(m_pStreamDef);
   
-  pNewCrvBufferHead->vLinkAsNext(m_pCrvBufferHead);
+  pNewCrvBufferHead->vLinkAsPrev(m_pCrvBufferHead);
   m_pCrvBufferHead = pNewCrvBufferHead;
   
   i_Crv = m_pCrvBufferHead->iAddCrwVersion(xwCurrentRef,aCrw);

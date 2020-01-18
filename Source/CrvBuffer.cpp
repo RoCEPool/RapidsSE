@@ -75,6 +75,29 @@ CrvBuffer::~CrvBuffer(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* get crv given buffer number and crv subscript                              */
+/*----------------------------------------------------------------------------*/
+Crv* CrvBuffer::aToCrv(i8 iBufferNo,i8 i_Crv)
+{
+  CrvBuffer* pCrvBuffer = aToCrvBuffer(iBufferNo);
+  
+  Crv* aCrv = pCrvBuffer->aGetCrv(i_Crv);
+  
+  return aCrv;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get crv buffer given buffer no                                             */
+/*----------------------------------------------------------------------------*/
+CrvBuffer* CrvBuffer::aToCrvBuffer(i8 iBufferNo)
+{
+  bn nBufferNo = iBufferNo;
+  
+  CrvBuffer* pCrvBuffer = _pCrvBuffer(AM::pToLargeObect(iBufferNo));
+
+  return pCrvBuffer;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

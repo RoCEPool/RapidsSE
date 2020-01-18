@@ -55,7 +55,8 @@ namespace Partitioning  { class BucketMap;  class TablePtn;                   }
 namespace Persistence   { class CarryOver;                                    }
 namespace Pipelines     { class OpSpec; class StageSpec; class StageVec;      }
 namespace Plans         {                                                     }
-namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }
+namespace Pool          { class BufferPool; class HeapBuffer; class HeapMem;
+                          class PoolBuffer;                                   }
 namespace Prompt        { class SePrompt;                                     }
 namespace Oblique       { class AM;                                           }
 namespace Operands      { class Operand;                                      }

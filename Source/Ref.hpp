@@ -5,18 +5,20 @@
 
 namespace Rows
 {
-  class Ref
+  class Ref : public NonProper
   {
   private:
-    struct {
-      u8 m_uBuffer  : 45; // which buffer
-      u8 m_uItem    : 16; // item in that buffer
-      u8 m_uOffsets :  3; // number of neo's that follow
-    };             // 64
+    union {
+      struct {
+        u8 m_uBuffer  : 45; // which buffer
+        u8 m_uItem    : 16; // item in that buffer
+        u8 m_uOffsets :  3; // number of neo's that follow
+      };             // 64
+      
+      i8 m_iAsI8;
+    };
   
-  public:
-    void* operator new(size_t);
-    
+  public:   
     Ref(void);
     Ref(u8 uBuffer, u8 uItem, u8 uOffsets);
    ~Ref(void) noexcept(false);
@@ -26,11 +28,13 @@ namespace Rows
     i8    iAsI8(void);
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
+    bool  bIsNil(void);
     i8    iItem(void);
     void  vItem(i8 iItem);
     i8    nOffsets(void);
     void  vOffsets(i8 nOffsets);
     void  vSet(Ref xwRef);
+    void  vSetNil(void);
   };
 }
 

@@ -267,6 +267,9 @@ namespace Oblique
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static i8   iThreadId(Thread* pThread);
+  
+    static HeapBuffer* pToHeapBuffer(i8 iBufferNo);
+    static Object* pToLargeObect(i8 iBufferNo);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vWelcomeText(s256& sWelcome);

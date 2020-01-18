@@ -7,7 +7,7 @@
 
 namespace Entries
 {
-  class EntWrk : public Object
+  class EntWrk : public StackObject
   {
   private:
   
@@ -23,9 +23,6 @@ namespace Entries
     Footer m_xFooter;
   
   public:
-    void* operator new(size_t);
-    void* operator new(size_t, EntWrk*);
-
     EntWrk(void);
    ~EntWrk(void) noexcept(false);
     
@@ -49,6 +46,8 @@ namespace Entries
     Ent*  aEnt(void);
     
     i8    iHashKey(void);
+
+    Key*  aKey(void);
   
     IdxColVec* pIdxColVec(void);
     void  vIdxColVec(IdxColVec* pIdxColVec);

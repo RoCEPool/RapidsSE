@@ -4,6 +4,7 @@
 
 startCluster;
 
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __READAPI_T;
 
@@ -19,6 +20,9 @@ create index __READAPI_I on __READAPI_T (ref,psp);
 lsidxcol __READAPI_T __READAPI_I;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+trackMemory;
+
 logSection createTable;
 
 pwf ;
@@ -50,6 +54,12 @@ lsidxcol T T_Idx_1;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection createIndex;
 
+//drop index T T_Idx_1;
+
+//drop table T;
+
+//memoryLeaks fatal;
+
 pipeline t_ups
 begin
 
@@ -72,6 +82,12 @@ fetch T "colE 100 <";
 fetch T;
 
 dumpindex T T_Idx_1;
+
+
+drop table T;
+
+memoryLeaks fatal;
+
 
 /*============================================================================*/
 /* end                                                                        */

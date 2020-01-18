@@ -30,6 +30,14 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
     return true;
   }
   
+  bool bFatal = false;
+  
+  TokenVec* pTokenVec = pPrompt->pTknVec();
+  i8 iNumTokens = pTokenVec->nItems();
+  
+  if (2 == iNumTokens && pTokenVec->pGet(1)->bSame("fatal"_Stz))
+    bFatal = true;
+
   i8 iSnapshotObjects[CN_ENUMS];
   BPA::vObjectSnapshot(&iSnapshotObjects[0]);
   
@@ -56,8 +64,12 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
            );
     iRowsProcessed++;
   }
-  
+
   vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
+  
+  if (iRowsProcessed && bFatal)
+    vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
+           "fatal: memory leaks detected"_Stz);
   
   pPrompt->vTrackingMemory(false);
   

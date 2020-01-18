@@ -8,7 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP::SP(eCN eClass)
-: Object(eClass)
+: StackObject(eClass)
 {
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caFormat,sizeof(m_caFormat),eClass);

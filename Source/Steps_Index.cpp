@@ -361,7 +361,7 @@ void Step::vIndexLowerBound(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
-  aLowerEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkLower.aEnt()->aKey());
+  aLowerEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkLower.aKey());
   eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -370,16 +370,16 @@ void Step::vIndexLowerBound(void)
     // position in the index buffer at an entry prior to the lower key
     //aLowerEntry = aLowerEntBuffer->aPositionQuery(xEntWrkLower, eLowerRelnOp);
     
-    aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aEnt()->aKey());
+    aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aKey());
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
       aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry,
-                                                       xEntWrkLower.aEnt()->aKey(),
+                                                       xEntWrkLower.aKey(),
                                                        &aLowerEntBuffer);
     }
     else {
       RASSERT (eLowerRelnOp == RO_GREATER_EQUAL)
-      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xEntWrkLower.aEnt()->aKey(), &aLowerEntBuffer);
+      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xEntWrkLower.aKey(), &aLowerEntBuffer);
     }
   }
   
@@ -561,8 +561,8 @@ void Step::vIndexRange(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if upperKey > lowerKey
-  eKC eCompare = Key::eCompare(xEntWrkUpper.aEnt()->aKey(),
-                               xEntWrkLower.aEnt()->aKey());
+  eKC eCompare = Key::eCompare(xEntWrkUpper.aKey(),
+                               xEntWrkLower.aKey());
   
   if (eCompare == KC_BEFORE)
     goto LastBuffer;
@@ -578,22 +578,22 @@ void Step::vIndexRange(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
-  aLowerEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkLower.aEnt()->aKey());
+  aLowerEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkLower.aKey());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry buffer ?
   if (aLowerEntBuffer) {
     // position in the index buffer at the lower key
-    aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aEnt()->aKey());
+    aLowerEntry = aLowerEntBuffer->pPositionPriorEntry(xEntWrkLower.aKey());
     
     if (eLowerRelnOp == RO_GREATER_THAN) {
       aLowerEntry = EntBuffer::pMoveToGreaterThanEntry(aLowerEntry,
-                                                       xEntWrkLower.aEnt()->aKey(),
+                                                       xEntWrkLower.aKey(),
                                                        &aLowerEntBuffer);
     }
     else {
       RASSERT (eLowerRelnOp == RO_GREATER_EQUAL)
-      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xEntWrkLower.aEnt()->aKey(), &aLowerEntBuffer);
+      aLowerEntry = EntBuffer::pMoveToGreaterEqualEntry(aLowerEntry, xEntWrkLower.aKey(), &aLowerEntBuffer);
     }
     
   }
@@ -605,7 +605,7 @@ void Step::vIndexRange(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer with keyUpper
-  aUpperEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkUpper.aEnt()->aKey());
+  aUpperEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkUpper.aKey());
   
   //aUpperEntBuffer->vShow();
   
@@ -613,12 +613,12 @@ void Step::vIndexRange(void)
   // did we get an entry buffer ?
   if (aUpperEntBuffer) {
     //aUpperEntry = aUpperEntBuffer->aPositionQuery(xEntWrkUpper, eUpperRelnOp);
-    aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xEntWrkUpper.aEnt()->aKey());
-    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xEntWrkUpper.aEnt()->aKey(), &aUpperEntBuffer);
+    aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xEntWrkUpper.aKey());
+    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xEntWrkUpper.aKey(), &aUpperEntBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
       aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry,
-                                                       xEntWrkUpper.aEnt()->aKey(),
+                                                       xEntWrkUpper.aKey(),
                                                        &aUpperEntBuffer);
     }
   }
@@ -851,18 +851,18 @@ void Step::vIndexUpperBound(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer for the upper key
-  aUpperEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkUpper.aEnt()->aKey());
+  aUpperEntBuffer = pIndexTree->pPositionH0Buffer(xEntWrkUpper.aKey());
   
   eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
   
   if (aUpperEntBuffer) {
     
-    aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xEntWrkUpper.aEnt()->aKey());
-    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xEntWrkUpper.aEnt()->aKey(), &aUpperEntBuffer);
+    aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xEntWrkUpper.aKey());
+    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xEntWrkUpper.aKey(), &aUpperEntBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
       aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry,
-                                                       xEntWrkUpper.aEnt()->aKey(),
+                                                       xEntWrkUpper.aKey(),
                                                        &aUpperEntBuffer);
     }
   }
