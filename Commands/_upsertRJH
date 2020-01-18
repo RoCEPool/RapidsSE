@@ -79,7 +79,7 @@ dumpindex T T_Idx_1;
 
 drop table T;
 
-memoryLeaks;
+memoryLeaks fatal;
 
 /*============================================================================*/
 /* end                                                                        */
