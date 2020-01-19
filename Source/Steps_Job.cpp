@@ -26,6 +26,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.bideOperand"_Stz,      &Step::vJobBideOperand);
 
   vAddStep("job.class"_Stz,            &Step::vJobClass);
+  vAddStep("job.createBufferQueue"_Stz,&Step::vJobCreateBufferQueue);
   vAddStep("job.createResponseVec"_Stz,&Step::vJobCreateResponseVec);
   
   vAddStep("job.dec2pcAcksRmg"_Stz,    &Step::vJobDec2pcAcksRmg);
@@ -432,6 +433,21 @@ void Step::vJobCompleted(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.createBufferQueue -- create the buffer queue in the job                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobCreateBufferQueue(void)
+{
+  ENTRY(); // ENTRY("vJobCreateBufferQueue"_Stz);
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  RASSERT( ! pJob->m_pBufferQueue );
+  pJob->m_pBufferQueue = new Queue;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.createResponseVec -- create the response vector in the job             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobCreateResponseVec(void)
@@ -442,7 +458,6 @@ void Step::vJobCreateResponseVec(void)
   
   RASSERT( ! pJob->m_pResponseVec );
   pJob->m_pResponseVec = new ResponseVec;
-  pJob->m_pBufferQueue = new Queue;
   
   EXIT();
 }

@@ -224,12 +224,17 @@ void SePrompt::vPromptLoop(void)
         // do something else release version optimizes this out
         //if (AM::bVerbose())
         //  vTrace("Waiting for buffer queue\n"_Stz);
+        if (m_pJob->bHasError())
+          break;
+        
         AM::vNapMsec(1,CN_SEPROMPT);
       }
     
-      // start the post processing while the pipeline ops are running
-      vPostJob();
-      
+      // handle errors
+      if ( ! m_pJob->bHasError() )
+        // start the post processing while the pipeline ops are running
+        vPostJob();
+        
       // wait for the pipeline to complete
       vJobWaitCond();
       vJobUnlockMutex();
