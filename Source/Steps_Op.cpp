@@ -10,12 +10,14 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Op(void)
 {
+  vAddStep("Op::pipeout"_Stz,         &Step::vOpPipeOut);
+  
   vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
   vAddStep("Op.leftEosMarkers!"_Stz,  &Step::vOpLeftEosMarkersStore);
   vAddStep("Op.nextOp!"_Stz,          &Step::vOpNextOpStore);
   vAddStep("Op.nextStage!"_Stz,       &Step::vOpNextStageStore);
   vAddStep("Op.partition@"_Stz,       &Step::vOpPartitionFetch);
-  vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPipleineJobFetch);
+  vAddStep("Op.pipelineJob@"_Stz,     &Step::vOpPiplineJobFetch);
   vAddStep("Op.topology!"_Stz,        &Step::vOpTopologyStore);
 }
 
@@ -80,7 +82,7 @@ void Step::vOpPartitionFetch(void)
 /*----------------------------------------------------------------------------*/
 /* Op.pipelineJob@ -- fetch pipeline job from op                              */
 /*----------------------------------------------------------------------------*/
-void Step::vOpPipleineJobFetch(void)
+void Step::vOpPiplineJobFetch(void)
 {
   ENTRY(); // ENTRY("vOpPipleineJobFetch"_Stz);
   
@@ -88,6 +90,22 @@ void Step::vOpPipleineJobFetch(void)
   
   m_pDataStack->vPushPtr(pOp->pPipeline()->pJob());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op::pipeout -- append operand onto next operator in pipeline               */
+/*----------------------------------------------------------------------------*/
+void Step::vOpPipeOut(void)
+{
+  ENTRY(); // ENTRY("vOpPipleOut"_Stz);
+  
+  Op* pOp = m_pTask->m_pJob->m_pOp;
+  
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+
+  pOp->vPipeOut(pOperand);
+
   EXIT();
 }
 

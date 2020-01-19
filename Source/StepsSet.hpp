@@ -853,7 +853,8 @@ public:
   void vOpNextOpStore(void);
   void vOpNextStageStore(void);
   void vOpPartitionFetch(void);
-  void vOpPipleineJobFetch(void);
+  void vOpPiplineJobFetch(void);
+  void vOpPipeOut(void);
   void vOpTopologyStore(void);
 
   // operand
