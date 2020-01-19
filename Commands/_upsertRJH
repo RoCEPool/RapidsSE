@@ -96,7 +96,7 @@ begin
     startOp | periodicOp once | stageB
 
   stage stageB on all partitions:
-    scanOp T | stageC
+    snapshotOp T | stageC
 
   stage stageC on origin:
     outputOp | sinkOp | stageA

@@ -19,7 +19,11 @@ void Step::vCrwBufferSnapshot(void)
 {
   ENTRY(); // ENTRY("vCrwBufferSnapshot"_Stz);
   
-  m_pDataStack->vPushPtr(nullptr);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+
+  CrwBuffer* pCrwBuffer_snaphot = pCrwBuffer->pSnapshot(0);
+
+  m_pDataStack->vPushPtr(pCrwBuffer_snaphot);
   
   EXIT();
 }

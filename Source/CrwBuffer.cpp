@@ -575,7 +575,13 @@ CrwBuffer* CrwBuffer::pSnapshot(t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  return nullptr;
+  CrwBuffer* pCrwBuffer = new CrwBuffer;
+  
+  pCrwBuffer->vTable(pTable());
+  pCrwBuffer->vPartitionNo(iPartitionNo());
+  pCrwBuffer->vIsPermanent(false);
+
+  return pCrwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

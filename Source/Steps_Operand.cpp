@@ -502,8 +502,9 @@ void Step::vOperandSet(void)
 {
   ENTRY(); // ENTRY("vOperandSet"_Stz);
   
-  ASSERT(m_pRegSet->m_xpOperandA.bIsNull());
-  m_pRegSet->m_xpOperandA = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  ASSERT(! pOperand || m_pRegSet->m_xpOperandA.bIsNull());
+  m_pRegSet->m_xpOperandA = _pOperand(pOperand);
   
   EXIT();
 }

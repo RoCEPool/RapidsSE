@@ -55,7 +55,8 @@
         begin
           Operand[].isNull
         not while
-          Operand[].get Op::pipeOut
+          Operand[].get crwBuffer.snapshot Op::pipeOut
+          nullptr Operand[].set
           Subset[].nextBuffer to Operand[]
         repeat
 
