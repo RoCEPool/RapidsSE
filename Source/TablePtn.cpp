@@ -595,13 +595,14 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
   }
   
   CrwBuffer* pCrwBuffer = new CrwBuffer;
-  m_pRootCrwBuffer->vTable(m_pTable);
+  pCrwBuffer->vTable(m_pTable);
   pCrwBuffer->vPartitionNo(m_iPartitionId);
   pCrwBuffer->vIsPermanent(true);
 
   pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
   pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
   m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
+  
   m_pCurrentCrwBuffer = pCrwBuffer;
     
   return m_pCurrentCrwBuffer;
