@@ -32,6 +32,7 @@ void Step::vOperandBSet(void)
 {
   ENTRY(); // ENTRY("vOperandBSet"_Stz);
   
+  ASSERT(m_pRegSet->m_xpOperandB.bIsNull());
   m_pRegSet->m_xpOperandB = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
