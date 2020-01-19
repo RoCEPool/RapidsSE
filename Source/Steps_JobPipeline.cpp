@@ -118,14 +118,15 @@ void Step::vJob_PipelineCompile(void)
   m_pRegSet->m_xpDynamo = new Dynamo(sCmd);
   
   bool bResult = m_pRegSet->m_xpDynamo->bCompile(m_pTask->m_pJob);
-  RASSERT( bResult );
   
-//  if ( ! bResult) {
-//    vAddError(EC_INVALID_COMMAND);
-//  }
-  
-  if (AM::bVerbose()) {
-    m_pRegSet->m_xpDynamo->vShow();
+  if ( ! bResult) {
+    m_pDataStack->vPushInt(EC_INVALID_COMMAND);
+  }
+  else {
+    m_pDataStack->vPushInt(EC_NONE);
+    if (AM::bVerbose()) {
+      m_pRegSet->m_xpDynamo->vShow();
+    }
   }
   
   EXIT();

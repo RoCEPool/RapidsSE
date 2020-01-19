@@ -32,7 +32,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
-  <cmd> job_Pipeline::compile
+  <cmd> job_Pipeline::compile dup
+  EC_NONE != if
+    job::this <ERROR_JOB> !!logError exit
+  else
+    drop
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
