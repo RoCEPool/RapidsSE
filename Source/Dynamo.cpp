@@ -212,6 +212,10 @@ bool Dynamo::bPhase1_collect(Job* pJob)
     return false;
   }
   
+  if ( ! m_pTkn->bSame("stage"_Stz)) {
+    return false;
+  }
+  
   while (m_pTkn->bSame("stage"_Stz))
     bResult = bCollectStage(pJob);
   
