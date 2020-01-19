@@ -35,7 +35,7 @@ namespace Registers
     REG<WriteBehind> m_xpWriteBehind;
     REG<Row>         m_xpRow;
     REG<Dynamo>      m_xpDynamo;    // dynamo pipleine compiler
-    REG<Operand>     m_xpOperand;   // operand
+    REG<Operand>     m_xpOperandA;  // operand
     
     REG<Object> m_xpRegister0; // general purpose reg 0[]
     REG<Object> m_xpRegister1; // general purpose reg 1[]
