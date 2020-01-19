@@ -85,7 +85,14 @@ void Step::vSubsetSet(void)
 {
   ENTRY(); // ENTRY("vOperandSet"_Stz);
   
-  m_pRegSet->m_xpSubset = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  
+  if (CN_CRWBUFFER == pOperand->eClass()) {
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+    vDebugPoint();
+  }
+  
+  m_pRegSet->m_xpSubset = pOperand;
   
   EXIT();
 }

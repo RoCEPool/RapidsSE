@@ -582,10 +582,13 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
   RASSERT(m_okLock.bIsLocked());
   
   if (m_pRootCrwBuffer == nullptr) {
-    ASSERT( ! m_pCurrentCrwBuffer )
+    ASSERT( ! m_pCurrentCrwBuffer );
+    
     m_pRootCrwBuffer = new CrwBuffer;
     m_pRootCrwBuffer->vTable(m_pTable);
     m_pRootCrwBuffer->vPartitionNo(m_iPartitionId);
+    m_pRootCrwBuffer->vIsPermanent(true);
+    
     m_pCurrentCrwBuffer = m_pRootCrwBuffer;
     
     return m_pCurrentCrwBuffer;
@@ -593,7 +596,9 @@ CrwBuffer* TablePtn::pNewCurrentCrwBuffer(void)
   
   CrwBuffer* pCrwBuffer = new CrwBuffer;
   m_pRootCrwBuffer->vTable(m_pTable);
-  m_pRootCrwBuffer->vPartitionNo(m_iPartitionId);
+  pCrwBuffer->vPartitionNo(m_iPartitionId);
+  pCrwBuffer->vIsPermanent(true);
+
   pCrwBuffer->vNextBuffer(m_pCurrentCrwBuffer->pNextBuffer());
   pCrwBuffer->vPrevBuffer(m_pCurrentCrwBuffer);
   m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);

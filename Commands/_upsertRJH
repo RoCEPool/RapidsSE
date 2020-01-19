@@ -89,19 +89,19 @@ dumpindex T T_Idx_1;
 logSection snapshot;
 print "** snapshot";
 
-//pipeline t_snapshot
-//begin
-//
-//  stage stageA on origin:
-//    startOp | periodicOp once | stageB
-//
-//  stage stageB on all partitions:
-//    scanOp T | stageC
-//
-//  stage stageC on origin:
-//    outputOp | sinkOp | stageA
-//
-//end;
+pipeline t_snapshot
+begin
+
+  stage stageA on origin:
+    startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+    scanOp T | stageC
+
+  stage stageC on origin:
+    outputOp | sinkOp | stageA
+
+end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection dropTable;
@@ -111,7 +111,7 @@ drop table T;
 
 memoryLeaks fatal;
 
-print "** _upsertRJH";
+print "** success _upsertRJH";
 
 /*============================================================================*/
 /* end                                                                        */
