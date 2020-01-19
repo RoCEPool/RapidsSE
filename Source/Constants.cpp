@@ -486,6 +486,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("JT_SINKOP"_Stz,          JT_SINKOP);
   /*    */ vAddConstant("JT_SIZEINDEX"_Stz,       JT_SIZEINDEX);
   /*    */ vAddConstant("JT_SIZETABLE"_Stz,       JT_SIZETABLE);
+  /*    */ vAddConstant("JT_SNAPSHOTOP"_Stz,      JT_SNAPSHOTOP);
   /*    */ vAddConstant("JT_SPACE"_Stz,           JT_SPACE);
   /*    */ vAddConstant("JT_STARTNODE"_Stz,       JT_STARTNODE);
   /*    */ vAddConstant("JT_STARTOP"_Stz,         JT_STARTOP);

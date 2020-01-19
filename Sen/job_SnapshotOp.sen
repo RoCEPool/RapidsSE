@@ -46,6 +46,9 @@
         Operand[].newStreamDef
         Operand[].pipeOut
 
+        // begin a read transaction
+        tx[].begin
+
         // pipeout all subsets from tablePtn
         tablePtn[].root to Subset[]
         Subset[]@ to Operand[]
@@ -55,6 +58,9 @@
           Operand[].pipeOut
           Subset[].nextBuffer to Operand[]
         repeat
+
+        // end a read transaction
+        tx[].commit
 
         Operand[].newEosMarker
         Operand[].pipeOut

@@ -4,9 +4,11 @@
 
 startCluster;
 
+pwf ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __READAPI_T;
+print "** __READAPI_T";
 
 create table __READAPI_T
 (
@@ -20,12 +22,10 @@ create index __READAPI_I on __READAPI_T (ref,psp);
 lsidxcol __READAPI_T __READAPI_I;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+logSection createTable;
+print "** createTable";
 
 trackMemory;
-
-logSection createTable;
-
-pwf ;
 
 time create table T
 (
@@ -53,6 +53,7 @@ lsidxcol T T_Idx_1;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection createIndex;
+print "** createIndex";
 
 //drop index T T_Idx_1;
 
@@ -60,7 +61,7 @@ logSection createIndex;
 
 //memoryLeaks fatal;
 
-pipeline t_ups
+pipeline t_upssert
 begin
 
   stage stageA on origin:
@@ -75,7 +76,8 @@ begin
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-logSection fetch;
+logSection t_fetch;
+print "** t_fetch";
 
 fetch T "colE 100 <";
 
@@ -83,11 +85,33 @@ fetch T;
 
 dumpindex T T_Idx_1;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+logSection snapshot;
+print "** snapshot";
+
+//pipeline t_snapshot
+//begin
+//
+//  stage stageA on origin:
+//    startOp | periodicOp once | stageB
+//
+//  stage stageB on all partitions:
+//    scanOp T | stageC
+//
+//  stage stageC on origin:
+//    outputOp | sinkOp | stageA
+//
+//end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+logSection dropTable;
+print "** dropTable";
 
 drop table T;
 
 memoryLeaks fatal;
 
+print "** _upsertRJH";
 
 /*============================================================================*/
 /* end                                                                        */
