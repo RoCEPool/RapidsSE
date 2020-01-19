@@ -224,7 +224,7 @@ void SePrompt::vPromptLoop(void)
         // do something else release version optimizes this out
         //if (AM::bVerbose())
         //  vTrace("Waiting for buffer queue\n"_Stz);
-        if (m_pJob->bHasError()) {
+        if (m_pJob->bHasError(EC_INVALID_COMMAND)) {
           break;
         }
         
@@ -232,7 +232,7 @@ void SePrompt::vPromptLoop(void)
       }
     
       // handle errors
-      if ( ! m_pJob->bHasError() || m_pJob->eErrorCode() != EC_INVALID_COMMAND)
+      if ( ! m_pJob->bHasError(EC_INVALID_COMMAND) )
         // start the post processing while the pipeline ops are running
         vPostJob();
         

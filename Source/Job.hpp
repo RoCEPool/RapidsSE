@@ -112,6 +112,7 @@ namespace Jobs
     void vErrorCode(eEC eErrorCode);
     eEC  eErrorCode(void);
     void vFocalOutline(s4K& sOutline);
+    bool bHasError(eEC eErrorCode);
     bool bHasEnameTag(Stz* szEnameTag);
     bool bHasError(void);
     void vHasError(bool bHasError);
