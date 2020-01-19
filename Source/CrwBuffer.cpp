@@ -569,6 +569,16 @@ void CrwBuffer::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* take a read-consistent snaphot of buffer                                   */
+/*----------------------------------------------------------------------------*/
+CrwBuffer* CrwBuffer::pSnapshot(t8 tPerspective)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate a CsvBuffer from a crw buffer with a csv row                      */
 /*----------------------------------------------------------------------------*/
 CsvBuffer* CrwBuffer::pToCsvBuffer(void)

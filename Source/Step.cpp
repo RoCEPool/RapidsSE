@@ -55,6 +55,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Compiler();
   Step::vAddSteps_CoreWords();
   Step::vAddSteps_Cpu();
+  Step::vAddSteps_CrwBuffer();
   Step::vAddSteps_Cursor();
   
   Step::vAddSteps_DdlLock();

@@ -139,6 +139,9 @@ public:
   // cpu
   void vCpuRdtscp(void);
 
+  // crwBuffer
+  void vCrwBufferSnapshot(void);
+
   // cursor
   void vCursorFetch(void);
   void vCursorStore(void);
