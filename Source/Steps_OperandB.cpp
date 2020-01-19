@@ -20,7 +20,7 @@ void Step::vOperandBGet(void)
 {
   ENTRY(); // ENTRY("vOperandBGet"_Stz);
   
-  m_pDataStack->vPushPtr(*m_pRegSet->m_xpOperandA);
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpOperandB);
   
   EXIT();
 }
@@ -32,8 +32,7 @@ void Step::vOperandBSet(void)
 {
   ENTRY(); // ENTRY("vOperandBSet"_Stz);
   
-  ASSERT(m_pRegSet->m_xpOperandA.bIsNull());
-  m_pRegSet->m_xpOperandA = _pOperand(m_pDataStack->pPopPtr(__func__));
+  m_pRegSet->m_xpOperandB = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   EXIT();
 }
