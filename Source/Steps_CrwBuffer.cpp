@@ -20,8 +20,10 @@ void Step::vCrwBufferSnapshot(void)
   ENTRY(); // ENTRY("vCrwBufferSnapshot"_Stz);
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+  
+  t8 tperspective = AM::tThisTLSPespective();
 
-  CrwBuffer* pCrwBuffer_snaphot = pCrwBuffer->pSnapshot(0);
+  CrwBuffer* pCrwBuffer_snaphot = pCrwBuffer->pSnapshot(tperspective);
 
   m_pDataStack->vPushPtr(pCrwBuffer_snaphot);
   
