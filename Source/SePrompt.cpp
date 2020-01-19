@@ -218,20 +218,21 @@ void SePrompt::vPromptLoop(void)
     }
     
     if (m_pJob->m_eJobType == JT_PIPELINE) {
-
+      
       // wait till the job has a buffer queue
       while ( m_pJob->m_pBufferQueue == nullptr ) {
         // do something else release version optimizes this out
         //if (AM::bVerbose())
         //  vTrace("Waiting for buffer queue\n"_Stz);
-        if (m_pJob->bHasError())
+        if (m_pJob->bHasError()) {
           break;
+        }
         
         AM::vNapMsec(1,CN_SEPROMPT);
       }
     
       // handle errors
-      if ( ! m_pJob->bHasError() )
+      if ( ! m_pJob->bHasError() || m_pJob->eErrorCode() != EC_INVALID_COMMAND)
         // start the post processing while the pipeline ops are running
         vPostJob();
         
