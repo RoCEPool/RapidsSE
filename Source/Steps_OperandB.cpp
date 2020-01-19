@@ -1,0 +1,43 @@
+/*============================================================================*/
+/* Steps_Operand.cpp -- Operand step group                                    */
+/*============================================================================*/
+
+#include "Steps.h"
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vAddSteps_OperandB(void)
+{
+  vAddStep("OperandB[].get"_Stz,            &Step::vOperandBGet);
+  vAddStep("OperandB[].set"_Stz,            &Step::vOperandBSet);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].get -- fetch operand                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandBGet(void)
+{
+  ENTRY(); // ENTRY("vOperandBGet"_Stz);
+  
+  m_pDataStack->vPushPtr(*m_pRegSet->m_xpOperandA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].set -- set operand                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandBSet(void)
+{
+  ENTRY(); // ENTRY("vOperandBSet"_Stz);
+  
+  ASSERT(m_pRegSet->m_xpOperandA.bIsNull());
+  m_pRegSet->m_xpOperandA = _pOperand(m_pDataStack->pPopPtr(__func__));
+  
+  EXIT();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

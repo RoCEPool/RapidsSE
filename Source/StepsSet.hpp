@@ -887,6 +887,10 @@ public:
   void vOperandWorkDone(void);
   void vOperandWriteToFile0(void);
 
+  // operandB
+  void vOperandBGet(void);
+  void vOperandBSet(void);
+
   // persistence
   void vPersistenceCheckpoint(void);
   void vPersistenceReload(void);
