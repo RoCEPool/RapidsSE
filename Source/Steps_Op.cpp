@@ -98,7 +98,7 @@ void Step::vOpPiplineJobFetch(void)
 /*----------------------------------------------------------------------------*/
 void Step::vOpPipeOut(void)
 {
-  ENTRY(); // ENTRY("vOpPipleOut"_Stz);
+  ENTRY(); // ENTRY("vOpPipeOut"_Stz);
   
   Op* pOp = m_pTask->m_pJob->m_pOp;
   

@@ -55,7 +55,7 @@
         begin
           Operand[].isNull
         not while
-          Operand[].pipeOut
+          Operand[].get Op::pipeOut
           Subset[].nextBuffer to Operand[]
         repeat
 
