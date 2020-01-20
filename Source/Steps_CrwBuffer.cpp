@@ -20,6 +20,10 @@ void Step::vCrwBufferSnapshot(void)
   ENTRY(); // ENTRY("vCrwBufferSnapshot"_Stz);
   
   CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+
+  Table* pTable = pCrwBuffer->pTable();
+  i8 i_Ptn = pCrwBuffer->iPartitionNo();
+  TablePtn* pTablePtn = pTable->pPartition(i_Ptn);
   
   t8 tperspective = AM::tThisTLSPespective();
 
