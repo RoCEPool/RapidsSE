@@ -89,7 +89,6 @@ namespace Oblique
     static i8   iNextThreadId(void);
     static i8   iNextTxId(void);
     static Stz* szNodeNm(void);
-    static i8*   anObjectsInPool(void);
     static JobList* pOriginatingJobs(void);
     static JobList* pParticipatingJobs(void);
     static i8   iPid(void);
