@@ -107,10 +107,10 @@ Crw* ReadApi::aGetCrwConsistent(Ref xwCurrentRef, t8 tPerspective)
   if (xwRef.bIsNil())
     return nullptr;
   
-  i8 iBufferNo = xwRef.iBuffer();
-  i8 iItemNo   = xwRef.iItem();
+  i8 i_Buffer = xwRef.iBuffer();
+  i8 i_Item   = xwRef.iItem();
   
-  Crv* aCrv = CrvBuffer::aToCrv(iBufferNo,iItemNo);
+  Crv* aCrv = CrvBuffer::aToCrv(i_Buffer,i_Item);
   
   Crw* aCrw = aCrv->aCrw();
 
@@ -133,10 +133,10 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective)
   if (xwRef.bIsNil())
     return nullptr;
   
-  i8 iBufferNo = xwRef.iBuffer();
-  i8 iItemNo   = xwRef.iItem();
+  i8 i_Buffer = xwRef.iBuffer();
+  i8 i_Item   = xwRef.iItem();
   
-  Crv* aCrv = CrvBuffer::aToCrv(iBufferNo,iItemNo);
+  Crv* aCrv = CrvBuffer::aToCrv(i_Buffer,i_Item);
   
   Crw* aCrw = aCrv->aCrw();
 
@@ -165,10 +165,10 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, Crw* aCurrentCrw, t8 tPerspective
   if (xwRef.bIsNil())
     return nullptr;
   
-  i8 iBufferNo = xwRef.iBuffer();
-  i8 iItemNo   = xwRef.iItem();
+  i8 i_Buffer = xwRef.iBuffer();
+  i8 i_Item   = xwRef.iItem();
   
-  Crv* aCrv = CrvBuffer::aToCrv(iBufferNo,iItemNo);
+  Crv* aCrv = CrvBuffer::aToCrv(i_Buffer,i_Item);
   
   Crw* aCrw = aCrv->aCrw();
 

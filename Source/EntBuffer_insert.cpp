@@ -769,10 +769,10 @@ Ent* EntBuffer::aInsertEntUpwards(Ent* aEntryWork, EntBuffer** ppRootBuffer)
   
   if (pInsertIntoBuffer->m_iBufferHeight) {
     Ref xRef = aInsertedEntry->xRef();
-    i8 nBuffer = xRef.iBuffer();
+    i8 i_Buffer = xRef.iBuffer();
     
     HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));
+    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
     
     EntBuffer* pChildBuffer =
     reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
@@ -1011,9 +1011,9 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
     ASSERT(! m_iBufferHeight ||
            EntBuffer::pRefdEntBuffer(aNewEntry)->m_pHigherBuffer == pThisLeftBuffer);
     
-    i8 nBuffer = xRef.iBuffer();
+    i8 i_Buffer = xRef.iBuffer();
     HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));
+    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
     
     if (m_iBufferHeight) {
       EntBuffer* pChildBuffer =
@@ -1064,10 +1064,10 @@ EntBuffer* EntBuffer::pSplitBuffer(void)
          aMovedEntry = pNewRightBuffer->aNextEntry(aMovedEntry, 0)) {
       
       xRef = aMovedEntry->xRef();
-      i8 nBuffer = xRef.iBuffer();
+      i8 i_Buffer = xRef.iBuffer();
       
       HeapBuffer* pHeapBuffer =
-      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));
+      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
       
       EntBuffer* pChildBuffer =
       reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
