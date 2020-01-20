@@ -49,7 +49,7 @@ bn FreeBuffer::nNextFree(void)
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
   
-  return m_nNextFree;
+  return m_iNextFree;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ void FreeBuffer::vNextFree(bn nBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
   
-  m_nNextFree = nBuffer;
+  m_iNextFree = *nBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

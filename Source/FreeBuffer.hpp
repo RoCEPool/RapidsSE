@@ -8,7 +8,7 @@ namespace Pool
   class FreeBuffer : public PoolBuffer
   {
   private:
-    bn m_nNextFree;  // next buffer in free chain
+    i8 m_iNextFree;  // next buffer in free chain
     
     
   public:
