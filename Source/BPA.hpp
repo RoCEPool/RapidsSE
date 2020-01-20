@@ -8,6 +8,8 @@ namespace Utilities
   class BPA : public Object
   {
   public:
+    i8  m_anObjectsInPool[CN_ENUMS];
+
     // must be last
     Footer m_xFooter;
   
@@ -38,6 +40,8 @@ namespace Utilities
     static void vWriteBuffers(Stz* sFilePath);
     static void vWriteHeap(Heap* pHeap, File* pFile);
     static void vWritePersistentHeapMem(Stz* sFilePath);
+  
+    Footer* aFooter(void);
   };
 
   BPA* _pBPA(void* aAddr);

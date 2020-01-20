@@ -19,7 +19,22 @@ __aFooterFunction(BPA)
 BPA::BPA(void)
 : Object(CN_BPA)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BPA,_FOOTER_);
+  
+  for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++)
+    m_anObjectsInPool[i_Object] = 0;
+  
+  _checkInitialised_(CN_BPA);
 
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BPA,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+BPA::~BPA(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BPA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

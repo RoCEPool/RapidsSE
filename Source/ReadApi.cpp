@@ -41,6 +41,8 @@ ReadApi::ReadApi(void)
 /*----------------------------------------------------------------------------*/
 ReadApi::~ReadApi(void) noexcept(false)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
+
   delete m_pIndexTree;
   
   for (CrvBuffer* pCrvBuffer = m_pCrvBufferHead; pCrvBuffer; /*none*/) {
