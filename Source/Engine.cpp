@@ -513,11 +513,11 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   
   if (1 == ++ gpAttachMap->m_inNextMonitor) {
     pBPA = new BPA;
-    BPA::vEpochTake();
+    pBPA->vEpochTake();
   }
   else {
-    BPA::vEpochDump(sRapidsPortrait);
-    BPA::vEpochTake();
+    pBPA->vEpochDump(sRapidsPortrait);
+    pBPA->vEpochTake();
   }
 }
 

@@ -66,7 +66,7 @@ void Step::vBpEpochDump(void)
   
   s48K sPortrait;
   
-  BPA::vEpochDump(sPortrait);
+  gpBPA->vEpochDump(sPortrait);
   
   vTrace("%s\n"_Stz,sPortrait.szStz());
 
@@ -83,7 +83,7 @@ void Step::vBpEpochTake(void)
   if (! gpBPA)
     gpBPA = new BPA;
   
-  BPA::vEpochTake();
+  gpBPA->vEpochTake();
 
   EXIT();
 }

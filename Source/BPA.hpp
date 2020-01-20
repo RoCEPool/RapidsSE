@@ -22,8 +22,6 @@ namespace Utilities
 
   public:
     static void vBufferDump(PoolBuffer* pBuffer);
-    static void vEpochDump(s48K& sPortrait);
-    static void vEpochTake(void);
     static void vHeapDump(Heap* pBuffer);
     static void vHeapDump(Heap* pBuffer, i8 iEpoch);
     static void vObjectList(void);
@@ -41,6 +39,9 @@ namespace Utilities
     static void vWriteHeap(Heap* pHeap, File* pFile);
     static void vWritePersistentHeapMem(Stz* sFilePath);
   
+    void vEpochDump(s48K& sPortrait);
+    void vEpochTake(void);
+
     Footer* aFooter(void);
   };
 
