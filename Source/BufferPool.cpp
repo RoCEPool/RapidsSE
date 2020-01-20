@@ -579,11 +579,11 @@ void BufferPool::vPoolDump(void)
 /*----------------------------------------------------------------------------*/
 /* translate buffer number to allocated buffer                                */
 /*----------------------------------------------------------------------------*/
-PoolBuffer* BufferPool::pToPoolBuffer(bn nBuffer)
+PoolBuffer* BufferPool::pToPoolBuffer(i8 i_Buffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  i8 iOffset = C_SIZE_POOL_BUFFER * *nBuffer;
+  i8 iOffset = C_SIZE_POOL_BUFFER * i_Buffer;
   
   PoolBuffer* pBuffer = static_cast<PoolBuffer*>(MemLib::aAddBytes(m_pBase,iOffset));
   
@@ -593,12 +593,12 @@ PoolBuffer* BufferPool::pToPoolBuffer(bn nBuffer)
 /*----------------------------------------------------------------------------*/
 /* transalate buffer number to free buffer                                    */
 /*----------------------------------------------------------------------------*/
-FreeBuffer* BufferPool::pToFreeBuffer(bn nBuffer)
+FreeBuffer* BufferPool::pToFreeBuffer(i8 i_Buffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   FreeBuffer* pBufferFree =
-    static_cast<FreeBuffer*>(pToPoolBuffer(nBuffer));
+    static_cast<FreeBuffer*>(pToPoolBuffer(i_Buffer));
   
   return pPoolCheck<FreeBuffer*>(pBufferFree);
 }

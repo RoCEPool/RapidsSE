@@ -109,10 +109,10 @@ Crw* CrwBuffer::pRefdCrw(Ref xRef)
 /*----------------------------------------------------------------------------*/
 CrwBuffer* CrwBuffer::pRefdCrwBuffer(Ref& xRef)
 {
-  bn nBufferNo = xRef.iBuffer();
+  i8 i_Buffer = xRef.iBuffer();
   
   HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
+  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
   
   CrwBuffer* pCrwBuffer =
   reinterpret_cast<CrwBuffer*>(pHeapBuffer->aFirstChunk());

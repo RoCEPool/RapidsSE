@@ -362,7 +362,7 @@ HeapBuffer* AM::pToHeapBuffer(i8 iBufferNo) {
   bn nBufferNo = iBufferNo;
   
   HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
+    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(*nBufferNo));
   
   return pHeapBuffer;
 

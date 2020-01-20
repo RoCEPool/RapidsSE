@@ -313,10 +313,10 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
 /*----------------------------------------------------------------------------*/
 EntBuffer* EntBuffer::pRefdEntBuffer(Ref& xRowRef)
 {
-  bn nBufferNo = xRowRef.iBuffer();
+  i8 i_Buffer = xRowRef.iBuffer();
   
   HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
+  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
   
   EntBuffer* pEntBuffer =
   reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
@@ -1250,10 +1250,10 @@ void EntBuffer::vShowTree(bool bDumpBuffer)
   
   Ref xRef;
   xRef = aFirstEntry->xRef();
-  bn nBuffer = xRef.iBuffer();
+  i8 i_Buffer = xRef.iBuffer();
   
   HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));
+  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
   
   EntBuffer* pChildBuffer =
   reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
