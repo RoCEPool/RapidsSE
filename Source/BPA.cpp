@@ -191,12 +191,12 @@ void BPA::vObjectList(void)
   PoolBuffer* pLargePersistent  = nullptr;
   PoolBuffer* pJumboPersistent  = nullptr;
   
-  bn nBufferCount = gpBufferPool->m_nBuffers - 1;
-  for (bn nBuffer = gpBufferPool->iBufferFirst();
-       nBuffer <= nBufferCount;
-       nBuffer++) {
+  i8 nBuffers = gpBufferPool->m_nBuffers - 1;
+  for (i8 i_Buffer = gpBufferPool->iBufferFirst();
+       i_Buffer <= nBuffers;
+       i_Buffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(*nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
     
     if (CN_SMALLTRANSIENT == pBuffer->eClass())
       pSmallTransient = pBuffer;
@@ -259,14 +259,13 @@ void BPA::vObjectSummary(void)
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
     iCountObjects[i_Index] = 0;
   
-  bn nBuffer = 0;
-  bn nBufferCount = gpBufferPool->m_nBuffers - 1;
+  i8 nBuffers = gpBufferPool->m_nBuffers - 1;
   
-  for (bn nBuffer = gpBufferPool->iBufferFirst();
-       nBuffer <= nBufferCount;
-       nBuffer++) {
+  for (i8 i_Buffer = gpBufferPool->iBufferFirst();
+       i_Buffer <= nBuffers;
+       i_Buffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(*nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
     iCountObjects[pBuffer->eClass()]++;
   }
   
@@ -389,14 +388,13 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bn nBuffer = 0;
-  bn nBufferCount = gpBufferPool->m_nBuffers - 1;
+  i8 nBuffers = gpBufferPool->m_nBuffers - 1;
   
-  for (bn nBuffer = gpBufferPool->iBufferFirst();
-       nBuffer <= nBufferCount;
-       nBuffer++) {
+  for (i8 i_Buffer = gpBufferPool->iBufferFirst();
+       i_Buffer <= nBuffers;
+       i_Buffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(*nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
     
     eCN eClass = pBuffer->eClass();
     
@@ -647,12 +645,12 @@ void BPA::vWordList(i8 iEpoch)
   PoolBuffer* pMediumTransient = nullptr;
   PoolBuffer* pSmallTransient  = nullptr;
   
-  bn nBufferCount = gpBufferPool->m_nBuffers - 1;
-  for (bn nBuffer = gpBufferPool->iBufferFirst();
-       nBuffer <= nBufferCount;
-       nBuffer++) {
+  i8 nBuffers = gpBufferPool->m_nBuffers - 1;
+  for (i8 i_Buffer = gpBufferPool->iBufferFirst();
+       i_Buffer <= nBuffers;
+       i_Buffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(*nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
     
     if (CN_MEDIUMTRANSIENT == pBuffer->eClass())
     pMediumTransient = pBuffer;
@@ -677,19 +675,20 @@ void BPA::vWriteBuffers(Stz* sFilePath)
   pFile->bOpenWrite(sFilePath);
   
   i8 iStart  = Tick::iRdClock();
-  bn nBuffer;
   
-  bn nBufferCount = gpBufferPool->m_nBuffers - 1;
-  for (nBuffer = gpBufferPool->iBufferFirst();
-       nBuffer <= nBufferCount;
-       nBuffer++) {
+  i8 nBuffers = gpBufferPool->m_nBuffers - 1;
+  
+  i8 i_Buffer;
+  for (i_Buffer = gpBufferPool->iBufferFirst();
+       i_Buffer <= nBuffers;
+       i_Buffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(*nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
     bool bResult = pFile->bWriteBytes((void*)pBuffer,C_SIZE_POOL_BUFFER);
     ASSERT(bResult);
     
   }
-  ASSERT(*nBufferCount + 1 == *nBuffer);
+  ASSERT(nBuffers + 1 == i_Buffer);
   
   i8 iUpdate = Tick::iRdClock();
   
@@ -698,7 +697,7 @@ void BPA::vWriteBuffers(Stz* sFilePath)
   
   i8 iMilli = iTicks * C_1K / iTicksPerSecond;
   
-  vTrace("Writing %lld buffers took %lld ms\n"_Stz, *nBufferCount, iMilli);
+  vTrace("Writing %lld buffers took %lld ms\n"_Stz, nBuffers, iMilli);
 }
 
 /*----------------------------------------------------------------------------*/
