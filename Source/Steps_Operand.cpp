@@ -21,6 +21,7 @@ void Step::vAddSteps_Operand(void)
   vAddStep("Operand[].itemCount@"_Stz,     &Step::vOperandItemCountFetch);
   vAddStep("Operand[].insertIntoTable"_Stz,&Step::vOperandInsertIntoTable);
   vAddStep("Operand[].invokePython"_Stz,   &Step::vOperandInvokePython);
+  vAddStep("Operand[].invokePythonShell"_Stz, &Step::vOperandInvokePythonShell);
   vAddStep("Operand[].kind"_Stz,           &Step::vOperandKind);
   vAddStep("Operand[].newEosMarker"_Stz,   &Step::vOperandNewEosMarker);
   vAddStep("Operand[].newErrorMarker"_Stz, &Step::vOperandNewErrorMarker);
@@ -266,6 +267,38 @@ void Step::vOperandInvokePython(void)
   
   // Destroy the Python interpreter.
   Py_Finalize();
+  
+#endif
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Operand[].invokePythonShell -- invoke python script from shell             */
+/*----------------------------------------------------------------------------*/
+void Step::vOperandInvokePythonShell(void)
+{
+  ENTRY(); // ENTRY("vOperandInvokePython"_Stz);
+  
+  s4K  pData;
+  s256 pPythonFile;
+  
+  // pop the python file name
+  m_pDataStack->vPopStr(pPythonFile, __func__);
+  
+  // pop the data to be printed
+  m_pDataStack->vPopStr(pData, __func__);
+  
+#ifdef WITH_PYTHON_SUPPORT
+  
+  SysCall oSysCall;
+  s4K sCommand;
+  
+  sCommand.vSprint("python %s %s"_Stz, pPythonFile.azChar(), pData.azChar());
+  
+  i8 iExitStatus = Shell::iExecute(sCommand.szStz(),oSysCall);
+  
+  RASSERT(iExitStatus);
   
 #endif
   

@@ -71,6 +71,7 @@
 "Job_Pipeline.sen"       include
 "Job_Pwf.sen"            include
 "Job_PythonOp.sen"       include
+"Job_PythonShellOp.sen"  include
 
 "Job_Sanity.sen"         include
 "Job_ScanOp.sen"         include

@@ -100,11 +100,28 @@ print "*************************************************************************
 print "scan lineitem | output;";
 print "**************************************************************************";
 
+
+time pipeline python
+begin
+
+stage stageA on origin:
+startOp | periodicOp once | stageB
+
+stage stageB on all partitions:
+scanOp lineitem | toCsvOp | stageC
+
+stage stageC on origin:
+pythonShellOp "/Users/alka/rapidsse/Python/shellSample.py" | sinkOp | stageA
+
+end
+;
+
+/*
 time pipeline python
 begin
 
   stage stageA on origin:
-  startOp | periodicOp once | stageB
+  startOp | periodicOponce | stageB
 
   stage stageB on all partitions:
   scanOp lineitem | toCsvOp | stageC
@@ -115,7 +132,8 @@ begin
 end
 ;
 
-/*
+
+ pythonOp "sample" "printString" | sinkOp | stageA
 docol epochTake;
 time pipeline scan
 begin

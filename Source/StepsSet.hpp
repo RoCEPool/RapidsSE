@@ -871,6 +871,7 @@ public:
   void vOperandItemCountFetch(void);
   void vOperandInsertIntoTable(void);
   void vOperandInvokePython(void);
+  void vOperandInvokePythonShell(void);
   void vOperandKind(void);
   void vOperandNewEosMarker(void);
   void vOperandNewErrorMarker(void);

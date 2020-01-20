@@ -481,6 +481,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("JT_PIPELINE"_Stz,        JT_PIPELINE);
   /*    */ vAddConstant("JT_PWF"_Stz,             JT_PWF);
   /*    */ vAddConstant("JT_PYTHONOP"_Stz,        JT_PYTHONOP);
+  /*    */ vAddConstant("JT_PYTHONSHELLOP"_Stz,   JT_PYTHONSHELLOP);
   /*    */ vAddConstant("JT_SCANOP"_Stz,          JT_SCANOP);
   /*    */ vAddConstant("JT_SHOWCLUSTER"_Stz,     JT_SHOWCLUSTER);
   /*    */ vAddConstant("JT_SINKOP"_Stz,          JT_SINKOP);

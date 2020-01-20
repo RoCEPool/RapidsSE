@@ -1,5 +1,5 @@
 #print given string.
 def printString(str):
-  print("PYTHON PRINTS: ")
+  print("\n\nPYTHON PRINTS: \n")
   print(str)
   return 1

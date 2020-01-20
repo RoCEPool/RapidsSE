@@ -35,7 +35,6 @@
         //"Operand:- ZK_CSVBUFFER" .verbose
         Operand[].csvData
         <pythonFunction> <pythonFile> Operand[].invokePython
-        Operand[].delete
         true
       endof
 
