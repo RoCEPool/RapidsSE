@@ -192,7 +192,7 @@ void BPA::vObjectList(void)
   PoolBuffer* pJumboPersistent  = nullptr;
   
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
-  for (bn nBuffer = gpBufferPool->nBufferFirst();
+  for (bn nBuffer = gpBufferPool->iBufferFirst();
        nBuffer <= nBufferCount;
        nBuffer++) {
     
@@ -262,7 +262,7 @@ void BPA::vObjectSummary(void)
   bn nBuffer = 0;
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
   
-  for (bn nBuffer = gpBufferPool->nBufferFirst();
+  for (bn nBuffer = gpBufferPool->iBufferFirst();
        nBuffer <= nBufferCount;
        nBuffer++) {
     
@@ -392,7 +392,7 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
   bn nBuffer = 0;
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
   
-  for (bn nBuffer = gpBufferPool->nBufferFirst();
+  for (bn nBuffer = gpBufferPool->iBufferFirst();
        nBuffer <= nBufferCount;
        nBuffer++) {
     
@@ -648,7 +648,7 @@ void BPA::vWordList(i8 iEpoch)
   PoolBuffer* pSmallTransient  = nullptr;
   
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
-  for (bn nBuffer = gpBufferPool->nBufferFirst();
+  for (bn nBuffer = gpBufferPool->iBufferFirst();
        nBuffer <= nBufferCount;
        nBuffer++) {
     
@@ -680,7 +680,7 @@ void BPA::vWriteBuffers(Stz* sFilePath)
   bn nBuffer;
   
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
-  for (nBuffer = gpBufferPool->nBufferFirst();
+  for (nBuffer = gpBufferPool->iBufferFirst();
        nBuffer <= nBufferCount;
        nBuffer++) {
     

@@ -185,17 +185,17 @@ i8 BufferPool::nBufferCount(void)
 /*----------------------------------------------------------------------------*/
 /* get buffer number of first usable buffer in pool                           */
 /*----------------------------------------------------------------------------*/
-bn BufferPool::nBufferFirst(void)
+i8 BufferPool::iBufferFirst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  return 1_bn;
+  return 1;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get buffer number of last buffer in pool                                   */
 /*----------------------------------------------------------------------------*/
-bn BufferPool::nBufferLast(void)
+i8 BufferPool::iBufferLast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
@@ -205,31 +205,31 @@ bn BufferPool::nBufferLast(void)
 /*----------------------------------------------------------------------------*/
 /* calculate next buffer number from given buffer number                      */
 /*----------------------------------------------------------------------------*/
-bn BufferPool::nBufferNext(bn nBuffer)
+i8 BufferPool::iBufferNext(bn nBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   // ALKA:
-  //if (nBuffer + 1 == nBufferLast())
-  if (nBuffer == nBufferLast())
-    return bn::nNil();
+  //if (nBuffer + 1 == iBufferLast())
+  if (*nBuffer == iBufferLast())
+    return * bn::nNil();
   
-  return nBuffer + 1;
+  return (*nBuffer) + 1;
 }
 
 /*----------------------------------------------------------------------------*/
 /* calculate previous buffer number from given buffer number                  */
 /*----------------------------------------------------------------------------*/
-bn BufferPool::nBufferPrev(bn nBuffer)
+i8 BufferPool::iBufferPrev(bn nBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   // ALKA:
-  //if (nBuffer - 1 == nBufferFirst())
-  if (nBuffer == nBufferFirst())
-    return bn::nNil();
+  //if (nBuffer - 1 == iBufferFirst())
+  if ((*nBuffer) == iBufferFirst())
+    return *bn::nNil();
   
-  return nBuffer - 1;
+  return (*nBuffer) - 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -419,11 +419,11 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
   m_nAllocCount = 0;
   //m_nFreeCount  = m_nBuffers;
   m_nFreeCount  = 0;
-  m_nFreeHead   = nBufferFirst();
+  m_nFreeHead   = iBufferFirst();
   
-  //vTrace("FirstBuffer %lld LastBuffer %lld\n"_Stz,*nBufferFirst(),*nBufferLast());
+  //vTrace("FirstBuffer %lld LastBuffer %lld\n"_Stz,*iBufferFirst(),*iBufferLast());
   
-//  bn nBuffer = nBufferFirst();
+//  bn nBuffer = iBufferFirst();
 //  for (FreeBuffer* pFreeBuffer : *this) {
 //    pFreeBuffer->vBufferNo(nBuffer);
 //    nBuffer++;
@@ -432,7 +432,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
 
   i8 iBufferMod;
   
-  bn nBuffer = nBufferFirst();
+  bn nBuffer = iBufferFirst();
   while (bn::nNil() != nBuffer) {
     
     if (bProgress) {
@@ -453,13 +453,13 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
     
     pFreeBuffer->vSetFooter();
     pFreeBuffer->vPoolBufferNo(* nBuffer);
-    nBuffer = nBufferNext(nBuffer);
+    nBuffer = iBufferNext(nBuffer);
     pFreeBuffer->vNextFree(nBuffer);
     
     m_nFreeCount++;
 }
   
-  FreeBuffer* pLastBuffer = pToFreeBuffer(nBufferLast());
+  FreeBuffer* pLastBuffer = pToFreeBuffer(iBufferLast());
   
   pLastBuffer->vMagic();
   pLastBuffer->vClass(CN_FREEBUFFER);
@@ -468,7 +468,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
     pLastBuffer->vZeroData();
 
   pLastBuffer->vSetFooter();
-  pLastBuffer->vPoolBufferNo(* nBufferLast());
+  pLastBuffer->vPoolBufferNo(iBufferLast());
   pLastBuffer->vNextFree(bn::nNil());
 
   

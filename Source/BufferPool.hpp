@@ -55,10 +55,10 @@ namespace Pool
     PoolBuffer* pAllocOtherBuffer(void);
     PoolBuffer* pBase(void);
     i8   nBufferCount(void);
-    bn   nBufferFirst(void);
-    bn   nBufferLast(void);
-    bn   nBufferNext(bn nBuffer);
-    bn   nBufferPrev(bn nBuffer);
+    i8   iBufferFirst(void);
+    i8   iBufferLast(void);
+    i8   iBufferNext(bn nBuffer);
+    i8   iBufferPrev(bn nBuffer);
     i8   iBufferSize(void);
     void vCheckAddress(const void* aAddress);
     bool bDetachPool(void);

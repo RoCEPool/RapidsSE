@@ -54,8 +54,8 @@ PoolBuffer::PoolBuffer(eCN eClassNo)
     
   _setFooter_();
   
-  ASSERT(m_iBufferNo >= *gpBufferPool->nBufferFirst());
-  ASSERT(m_iBufferNo <= *gpBufferPool->nBufferLast());
+  ASSERT(m_iBufferNo >= gpBufferPool->iBufferFirst());
+  ASSERT(m_iBufferNo <= gpBufferPool->iBufferLast());
   
   _checkInitialised_(CN_FREEBUFFER);
   
@@ -71,8 +71,8 @@ PoolBuffer::~PoolBuffer(void) noexcept(false)
   
   ASSERT(eClass() != CN_NONE);
   
-  ASSERT(m_iBufferNo >= *gpBufferPool->nBufferFirst());
-  ASSERT(m_iBufferNo <= *gpBufferPool->nBufferLast());
+  ASSERT(m_iBufferNo >= gpBufferPool->iBufferFirst());
+  ASSERT(m_iBufferNo <= gpBufferPool->iBufferLast());
 }
 
 /*----------------------------------------------------------------------------*/
