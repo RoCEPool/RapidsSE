@@ -117,11 +117,11 @@ bn PoolBuffer::nPoolBufferNo(void)
 /*----------------------------------------------------------------------------*/
 /* set buffer number                                                          */
 /*----------------------------------------------------------------------------*/
-void PoolBuffer::vPoolBufferNo(bn nBufferNo)
+void PoolBuffer::vPoolBufferNo(i8 iBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  m_nBufferNo = nBufferNo;
+  m_nBufferNo = iBufferNo;
 }
 
 /*----------------------------------------------------------------------------*/

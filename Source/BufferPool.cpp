@@ -452,7 +452,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
       pFreeBuffer->vZeroData();
     
     pFreeBuffer->vSetFooter();
-    pFreeBuffer->vPoolBufferNo(nBuffer);
+    pFreeBuffer->vPoolBufferNo(* nBuffer);
     nBuffer = nBufferNext(nBuffer);
     pFreeBuffer->vNextFree(nBuffer);
     
@@ -468,7 +468,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
     pLastBuffer->vZeroData();
 
   pLastBuffer->vSetFooter();
-  pLastBuffer->vPoolBufferNo(nBufferLast());
+  pLastBuffer->vPoolBufferNo(* nBufferLast());
   pLastBuffer->vNextFree(bn::nNil());
 
   

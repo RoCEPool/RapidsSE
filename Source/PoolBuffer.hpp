@@ -22,7 +22,7 @@ namespace Pool
     void* aDataArea(void);
     Stz*  aLastUsableByte(void);
     bn    nPoolBufferNo(void);
-    void  vPoolBufferNo(bn nBufferNo);
+    void  vPoolBufferNo(i8 iBufferNo);
 
     Footer* aFooter(void);
   
