@@ -52,7 +52,7 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
   
   m_nAllocCount  = 0;
   m_nFreeCount   = 0;
-  m_nFreeHead    = C_NIL;
+  m_iFreeHead    = C_NIL;
  
   m_ixHeapBuffers.vCheckInit();
   m_ixOtherBuffers.vCheckInit();
@@ -301,7 +301,7 @@ void BufferPool::vFree(PoolBuffer* pBuffer)
   //vVerifyPool();
   
   // test for existing free list
-  if (C_NIL != *m_nFreeHead) {
+  if (C_NIL != m_iFreeHead) {
     ASSERT( m_nFreeCount > 0 );
   }
   else {
@@ -310,8 +310,8 @@ void BufferPool::vFree(PoolBuffer* pBuffer)
   
   // free buffer by pushing onto free chain
   pFreeBuffer->vClass(CN_FREEBUFFER);
-  pFreeBuffer->vNextFree(m_nFreeHead);
-  m_nFreeHead = pBuffer->iPoolBufferNo();
+  pFreeBuffer->vNextFree(m_iFreeHead);
+  m_iFreeHead = pBuffer->iPoolBufferNo();
   
   // adjust counts
   m_nFreeCount++;
@@ -419,7 +419,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
   m_nAllocCount = 0;
   //m_nFreeCount  = m_nBuffers;
   m_nFreeCount  = 0;
-  m_nFreeHead   = iBufferFirst();
+  m_iFreeHead   = iBufferFirst();
   
   //vTrace("FirstBuffer %lld LastBuffer %lld\n"_Stz,*iBufferFirst(),*iBufferLast());
   
@@ -554,7 +554,7 @@ void BufferPool::vPoolDump(void)
          m_pLimit,
          m_nAllocCount,
          m_nFreeCount,
-         *m_nFreeHead
+         m_iFreeHead
          );
   
   //  for (FreeBuffer* pFreeBuffer : *this)
@@ -563,7 +563,7 @@ void BufferPool::vPoolDump(void)
   //           *pFreeBuffer->nBufferNo(),
   //           *pFreeBuffer->nNextFree());
   
-  bn nBuffer = m_nFreeHead;
+  bn nBuffer = m_iFreeHead;
   while (C_NIL != *nBuffer) {
     FreeBuffer* pFreeBuffer = pToFreeBuffer(nBuffer);
     vTrace("%p: BufferNo %lld NextFree %lld\n"_Stz,
@@ -647,7 +647,7 @@ bool BufferPool::bVerifyBoundaries(void)
 /*----------------------------------------------------------------------------*/
 void BufferPool::vVerifyPool(void)
 {
-  bn nBufferNo = m_nFreeHead;
+  bn nBufferNo = m_iFreeHead;
   
   RASSERT(*nBufferNo < m_nBuffers);
   
@@ -676,7 +676,7 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
   //vVerifyPool();
   
   // test for empty free chain
-  if (C_NIL == *m_nFreeHead) {
+  if (C_NIL == m_iFreeHead) {
     ASSERT( ! m_nFreeCount );
     vTrace("NODE%lld: RUNNING OUT OF MEMORY!!!\n"_Stz, AM::iThisNodeNo());
     vWarn("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
@@ -685,8 +685,8 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
   }
 
   // allocate buffer by popping head off free chain
-  FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_nFreeHead);
-  m_nFreeHead = pAllocatedBuffer->nNextFree();
+  FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_iFreeHead);
+  m_iFreeHead = *pAllocatedBuffer->nNextFree();
   
   // adjust counts
   m_nFreeCount--;
@@ -707,8 +707,8 @@ FreeBuffer* BufferPool::pPopFreeBuffer_NL(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   // allocate buffer by popping head off free chain
-  FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_nFreeHead);
-  m_nFreeHead = pAllocatedBuffer->nNextFree();
+  FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_iFreeHead);
+  m_iFreeHead = *pAllocatedBuffer->nNextFree();
   
   // adjust counts
   m_nFreeCount--;
@@ -732,7 +732,7 @@ void BufferPool::vPrintProgress(void)
   m_okLock.vGrabWrite();
   
   vTrace("BufferPool::nAllocs: %lld; nBuffers: %lld; AllocCount: %lld; nFreeHead: %p; iFreeCount: %lld\n"_Stz,
-        m_nAllocCount, m_nBuffers, m_nAllocCount, *m_nFreeHead, m_nFreeCount);
+        m_nAllocCount, m_nBuffers, m_nAllocCount, m_iFreeHead, m_nFreeCount);
 
   vTrace("   Transient SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
@@ -785,8 +785,8 @@ void BufferPool::vPrintProgress(void)
   
   
   // allocate buffer by popping head off free chain
-  FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_nFreeHead);
-  m_nFreeHead = pAllocatedBuffer->nNextFree();
+  FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_iFreeHead);
+  m_iFreeHead = *pAllocatedBuffer->nNextFree();
   
   // adjust counts
   m_nFreeCount--;
