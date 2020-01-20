@@ -44,9 +44,9 @@ namespace Pool
     {
       PoolBuffer* pBuffer = pWithinPoolBuffer(pObject);
     
-      bn nBufferNo = pBuffer->iPoolBufferNo();
+      i8 i_Buffer = pBuffer->iPoolBufferNo();
     
-      return *nBufferNo;
+      return i_Buffer;
     }
   
   };
