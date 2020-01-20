@@ -1231,7 +1231,7 @@ eEC RapidsSE_GetNextBuffer(i8 iTrace, Session* pSession, void** aaEntBuffer, i8*
     if (pNextBuffer) {
       //vTrace("Returning buffer %p %lld %lld \n"_Stz, pNextBuffer, *pNextBuffer->nBufferNo(), pNextBuffer->nItems());
       *aiRowCount = pNextBuffer->nItems();
-      *aiBufferNo = *pNextBuffer->nPoolBufferNo();
+      *aiBufferNo = pNextBuffer->iPoolBufferNo();
     }
     else {
       *aiRowCount = 0;

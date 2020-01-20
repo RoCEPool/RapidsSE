@@ -75,7 +75,7 @@ void Step::vEntBufferNextBuffer(void)
   EntBuffer* pIndexBuffer = _pEntBuffer(m_pDataStack->pPopPtr(__func__));
   
   if (pIndexBuffer->pNextBuffer()) {
-    bn nBuffer = pIndexBuffer->pNextBuffer()->nPoolBufferNo();
+    i8 nBuffer = pIndexBuffer->pNextBuffer()->iPoolBufferNo();
   }
   
   m_pDataStack->vPushPtr(pIndexBuffer->pNextBuffer());

@@ -1033,14 +1033,14 @@ void EntBuffer::vRestore(void)
   }
   
   // get the buffer no
-  bn nBuffer = nPoolBufferNo();
+  i8 i_Buffer = iPoolBufferNo();
     
   // now restore the row id's to point to this buffer no
   for (Ent* aEnt = aLeadEntry();
        aEnt != nullptr;
        aEnt = aNextEntry(aEnt, 0)) {
     
-    Ref xRef(*nBuffer, aEnt->xRef().iItem(), aEnt->nOffsets());
+    Ref xRef(i_Buffer, aEnt->xRef().iItem(), aEnt->nOffsets());
     aEnt->vRef(xRef);
   }
   
@@ -1110,7 +1110,7 @@ void EntBuffer::vShow(Ent* aMarkEntry)
          "--------------------------------------------------\n"_Stz);
   
   vTrace("EntBuffer: %p (buffer %lld): items: %lld used: %lld freespace %lld\n"_Stz,
-         this,*nPoolBufferNo(),nItems(),nUsedBytes(),nFreeBytes());
+         this,iPoolBufferNo(),nItems(),nUsedBytes(),nFreeBytes());
   
   vTrace("  higherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
          m_pHigherBuffer,sHigherBuffer.szStz(),m_pPrevBuffer,m_pNextBuffer);
@@ -1156,8 +1156,8 @@ void EntBuffer::vShowShort(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   vTrace("[t%lld h%lld: "_Stz,
-         *nPoolBufferNo(),
-         pHigherBuffer() ? *pHigherBuffer()->nPoolBufferNo() : 0);
+         iPoolBufferNo(),
+         pHigherBuffer() ? pHigherBuffer()->iPoolBufferNo() : 0);
   
   i8 iOffset = aSkipRoots()->iNEO(0);
   while (iOffset > -1) {
@@ -1167,9 +1167,9 @@ void EntBuffer::vShowShort(void)
     i8 iVal = aKey->iGetInt();
     
     if (m_iBufferHeight)
-      vTrace("%lld(%lld)"_Stz,iVal,*EntBuffer::pRefdEntBuffer(aEnt)->nPoolBufferNo());
+      vTrace("%lld(%lld)"_Stz,iVal,EntBuffer::pRefdEntBuffer(aEnt)->iPoolBufferNo());
     else
-      vTrace("%lld|%lld|"_Stz,iVal,*EntBuffer::pRefdEntBuffer(aEnt)->nPoolBufferNo());
+      vTrace("%lld|%lld|"_Stz,iVal,EntBuffer::pRefdEntBuffer(aEnt)->iPoolBufferNo());
     
     iOffset = aEnt->iNEO(0);
     if (iOffset > -1)

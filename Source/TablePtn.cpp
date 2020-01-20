@@ -280,7 +280,7 @@ Crw* TablePtn::aAllotFixedSizeCrw(Ref& xRowRef)
   i8 i_Head = pRowNub->iAllotHead(jCrwSize);
   if (C_UNKNOWN != i_Head) {
     aCrw = (Crw*)pRowNub->aGetHead(i_Head);
-    xRowRef.vBuffer(* m_pCurrentCrwBuffer->nPoolBufferNo());
+    xRowRef.vBuffer(m_pCurrentCrwBuffer->iPoolBufferNo());
     xRowRef.vItem(i_Head);
     return aCrw;
   }
@@ -294,7 +294,7 @@ Crw* TablePtn::aAllotFixedSizeCrw(Ref& xRowRef)
   aCrw = (Crw*)pRowNub->aGetHead(i_Head);
   RASSERT(aCrw);
   
-  xRowRef.vBuffer(* m_pCurrentCrwBuffer->nPoolBufferNo());
+  xRowRef.vBuffer(m_pCurrentCrwBuffer->iPoolBufferNo());
   xRowRef.vItem(i_Head);
   
   return aCrw;

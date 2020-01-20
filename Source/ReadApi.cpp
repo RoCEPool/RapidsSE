@@ -239,7 +239,7 @@ Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
   i8 i_Crv = m_pCrvBufferHead->iAddCrwVersion(xwCurrentRef,aCrw);
   if (C_UNKNOWN != i_Crv) {
     
-    xwVersionRef.vBuffer(*m_pCrvBufferHead->nPoolBufferNo());
+    xwVersionRef.vBuffer(m_pCrvBufferHead->iPoolBufferNo());
     xwVersionRef.vItem(i_Crv);
     
     return xwVersionRef;
@@ -257,7 +257,7 @@ Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
   
   i_Crv = m_pCrvBufferHead->iAddCrwVersion(xwCurrentRef,aCrw);
  
-  xwVersionRef.vBuffer(*m_pCrvBufferHead->nPoolBufferNo());
+  xwVersionRef.vBuffer(m_pCrvBufferHead->iPoolBufferNo());
   xwVersionRef.vItem(i_Crv);
   
   return xwVersionRef;

@@ -426,7 +426,7 @@ void EntBuffer::vHandleLeftInsert(Ent* aInsertedKeyEntry,
   //Key* aInsertEnt = _aKey(aInsertedKeyEntry->aDataArea());
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   EntWrk xEntWrkIns;
-  xEntWrkIns.vSetEnt(*nPoolBufferNo(), 0, aInsertedKeyEntry);
+  xEntWrkIns.vSetEnt(iPoolBufferNo(), 0, aInsertedKeyEntry);
   
   EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
   pHigherBuffer->aInsertEntBuffer(xEntWrkIns.aEnt(),ppRootBuffer);
@@ -888,7 +888,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntryWork,
     Ent* aFirstEntryLeft  = pLeftBuffer->aLeadEntry();
 
     // initialize the keyWrk from the first left key
-    xEntWrkLeft.vSetEnt(*pLeftBuffer->nPoolBufferNo(), 0, aFirstEntryLeft);
+    xEntWrkLeft.vSetEnt(pLeftBuffer->iPoolBufferNo(), 0, aFirstEntryLeft);
     
     Ent* aInsertedEntryLeft =
       pHigherBuffer->aInsertEntUpwards(xEntWrkLeft.aEnt(),ppRootBuffer);
@@ -901,7 +901,7 @@ EntBuffer* EntBuffer::pNewInsertBuffer(Ent* aEntryWork,
   Ent* aFirstEntryRight = pRightBuffer->aLeadEntry();
   
   // initialize the keyWrk from the first left key
-  xEntWrkRight.vSetEnt(*pRightBuffer->nPoolBufferNo(), 0, aFirstEntryRight);
+  xEntWrkRight.vSetEnt(pRightBuffer->iPoolBufferNo(), 0, aFirstEntryRight);
   
   Ent* aInsertedEntryRight =
     pHigherBuffer->aInsertEntUpwards(xEntWrkRight.aEnt(),ppRootBuffer);
