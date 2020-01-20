@@ -8,7 +8,7 @@ namespace Utilities
   class BPA : public Object
   {
   public:
-    i8  m_anObjectsInPool[CN_ENUMS];
+    i8  m_naObjectsInPool[CN_ENUMS];
 
     // must be last
     Footer m_xFooter;

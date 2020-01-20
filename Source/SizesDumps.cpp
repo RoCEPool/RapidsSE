@@ -678,7 +678,7 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_BCDVAL
   /* */ HT_INVALID,           // CN_BIRTH
   /* */ HT_INVALID,           // CN_BOLVAL
-  /* */ HT_INVALID,           // CN_BPA
+  /* */ HT_TRANSIENT_SMALL,   // CN_BPA
   /* */ HT_TRANSIENT_LARGE,   // CN_BUCKETMAP
   /* */ HT_TRANSIENT_LARGE,   // CN_BUFFERCURSOR
   /* */ HT_INVALID,           // CN_BUFFERPOOL

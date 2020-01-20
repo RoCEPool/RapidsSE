@@ -22,7 +22,7 @@ BPA::BPA(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BPA,_FOOTER_);
   
   for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++)
-    m_anObjectsInPool[i_Object] = 0;
+    m_naObjectsInPool[i_Object] = 0;
   
   _checkInitialised_(CN_BPA);
 
@@ -80,7 +80,7 @@ void BPA::vEpochDump(s48K& sPortrait)
     
     eCN eClass = (eCN)i_Object;
     
-    if (iSnapshotObjects[eClass] == AM::anObjectsInPool()[eClass])
+    if (iSnapshotObjects[eClass] == m_naObjectsInPool[eClass])
       continue;
     
     sPortrait.vSprintCat(
@@ -88,7 +88,7 @@ void BPA::vEpochDump(s48K& sPortrait)
       Stz::szTab(1),
       aCN[eClass],
       eClass,
-      iSnapshotObjects[eClass] - AM::anObjectsInPool()[eClass]
+      iSnapshotObjects[eClass] - m_naObjectsInPool[eClass]
       );
   }
 
@@ -101,7 +101,7 @@ void BPA::vEpochTake(void)
 {
   // increment the epoch
   AM::iNextEpoch();
-  BPA::vObjectSnapshot(AM::anObjectsInPool());
+  BPA::vObjectSnapshot(m_naObjectsInPool);
 }
 
 /*----------------------------------------------------------------------------*/
