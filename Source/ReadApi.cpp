@@ -151,7 +151,7 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, Crw* aCurrentCrw, t8 tPerspective
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
   i8 tCrwPsp = aCurrentCrw->tPerspective();
-  if (tCrwPsp == tPerspective)
+  if (tCrwPsp <= tPerspective)
     return aCurrentCrw;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
