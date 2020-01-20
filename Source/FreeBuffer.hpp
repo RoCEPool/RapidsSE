@@ -15,8 +15,8 @@ namespace Pool
     FreeBuffer(void);
     ~FreeBuffer(void) noexcept(false);
     
-    bn   nNextFree(void);
-    void vNextFree(bn nBuffer);
+    i8   iNextFree(void);
+    void vNextFree(i8 iNextFree);
     
     void vZeroData(void);
     void vSetFooter(void);

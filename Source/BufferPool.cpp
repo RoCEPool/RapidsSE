@@ -454,7 +454,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
     pFreeBuffer->vSetFooter();
     pFreeBuffer->vPoolBufferNo(* nBuffer);
     nBuffer = iBufferNext(*nBuffer);
-    pFreeBuffer->vNextFree(nBuffer);
+    pFreeBuffer->vNextFree(*nBuffer);
     
     m_nFreeCount++;
 }
@@ -569,9 +569,9 @@ void BufferPool::vPoolDump(void)
     vTrace("%p: BufferNo %lld NextFree %lld\n"_Stz,
            pFreeBuffer,
            pFreeBuffer->iPoolBufferNo(),
-           *pFreeBuffer->nNextFree());
+           pFreeBuffer->iNextFree());
     //nBuffer = pToFreeBuffer((nBuffer);
-    nBuffer = pFreeBuffer->nNextFree();
+    nBuffer = pFreeBuffer->iNextFree();
   }
   
 }
@@ -658,7 +658,7 @@ void BufferPool::vVerifyPool(void)
     RASSERT(pBufferVerify->bValidMagic());
     RASSERT(CN_FREEBUFFER == pBufferVerify->eClass());
     
-    nBufferNo = pBufferVerify->nNextFree();
+    nBufferNo = pBufferVerify->iNextFree();
     RASSERT(*nBufferNo < m_nBuffers);
   }
 
@@ -686,7 +686,7 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
 
   // allocate buffer by popping head off free chain
   FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_iFreeHead);
-  m_iFreeHead = *pAllocatedBuffer->nNextFree();
+  m_iFreeHead = pAllocatedBuffer->iNextFree();
   
   // adjust counts
   m_nFreeCount--;
@@ -708,7 +708,7 @@ FreeBuffer* BufferPool::pPopFreeBuffer_NL(void)
   
   // allocate buffer by popping head off free chain
   FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_iFreeHead);
-  m_iFreeHead = *pAllocatedBuffer->nNextFree();
+  m_iFreeHead = pAllocatedBuffer->iNextFree();
   
   // adjust counts
   m_nFreeCount--;
@@ -786,7 +786,7 @@ void BufferPool::vPrintProgress(void)
   
   // allocate buffer by popping head off free chain
   FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_iFreeHead);
-  m_iFreeHead = *pAllocatedBuffer->nNextFree();
+  m_iFreeHead = pAllocatedBuffer->iNextFree();
   
   // adjust counts
   m_nFreeCount--;

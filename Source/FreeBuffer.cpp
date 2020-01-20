@@ -42,7 +42,7 @@ FreeBuffer::~FreeBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get next free buffer                                                       */
 /*----------------------------------------------------------------------------*/
-bn FreeBuffer::nNextFree(void)
+i8 FreeBuffer::iNextFree(void)
 {
   if (CN_FREEBUFFER != eClass())
     int debug = 1;
@@ -55,11 +55,11 @@ bn FreeBuffer::nNextFree(void)
 /*----------------------------------------------------------------------------*/
 /* set next free buffer                                                       */
 /*----------------------------------------------------------------------------*/
-void FreeBuffer::vNextFree(bn nBuffer)
+void FreeBuffer::vNextFree(i8 iNextFree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
   
-  m_iNextFree = *nBuffer;
+  m_iNextFree = iNextFree;
 }
 
 /*----------------------------------------------------------------------------*/
