@@ -432,17 +432,17 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
 
   i8 iBufferMod;
   
-  bn nBuffer = iBufferFirst();
-  while (C_NIL != *nBuffer) {
+  i8 i_Buffer = iBufferFirst();
+  while (C_NIL != i_Buffer) {
     
     if (bProgress) {
-      iBufferMod = *nBuffer % 1000;
+      iBufferMod = i_Buffer % 1000;
       if (! iBufferMod) {
         fflush(stdout);
       }
     }
     
-    FreeBuffer* pFreeBuffer = pToFreeBuffer(nBuffer);
+    FreeBuffer* pFreeBuffer = pToFreeBuffer(i_Buffer);
     
     pFreeBuffer->vMagic();
     pFreeBuffer->vClass(CN_FREEBUFFER);
@@ -452,9 +452,9 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
       pFreeBuffer->vZeroData();
     
     pFreeBuffer->vSetFooter();
-    pFreeBuffer->vPoolBufferNo(* nBuffer);
-    nBuffer = iBufferNext(*nBuffer);
-    pFreeBuffer->vNextFree(*nBuffer);
+    pFreeBuffer->vPoolBufferNo(i_Buffer);
+    i_Buffer = iBufferNext(i_Buffer);
+    pFreeBuffer->vNextFree(i_Buffer);
     
     m_nFreeCount++;
 }
@@ -563,15 +563,15 @@ void BufferPool::vPoolDump(void)
   //           *pFreeBuffer->nBufferNo(),
   //           *pFreeBuffer->nNextFree());
   
-  bn nBuffer = m_iFreeHead;
-  while (C_NIL != *nBuffer) {
-    FreeBuffer* pFreeBuffer = pToFreeBuffer(nBuffer);
+  i8 i_Buffer = m_iFreeHead;
+  while (C_NIL != i_Buffer) {
+    FreeBuffer* pFreeBuffer = pToFreeBuffer(i_Buffer);
     vTrace("%p: BufferNo %lld NextFree %lld\n"_Stz,
            pFreeBuffer,
            pFreeBuffer->iPoolBufferNo(),
            pFreeBuffer->iNextFree());
     //nBuffer = pToFreeBuffer((nBuffer);
-    nBuffer = pFreeBuffer->iNextFree();
+    i_Buffer = pFreeBuffer->iNextFree();
   }
   
 }
@@ -647,19 +647,19 @@ bool BufferPool::bVerifyBoundaries(void)
 /*----------------------------------------------------------------------------*/
 void BufferPool::vVerifyPool(void)
 {
-  bn nBufferNo = m_iFreeHead;
+  i8 i_Buffer = m_iFreeHead;
   
-  RASSERT(*nBufferNo < m_nBuffers);
+  RASSERT(i_Buffer < m_nBuffers);
   
-  while (C_NIL != *nBufferNo) {
+  while (C_NIL != i_Buffer) {
     
-    FreeBuffer* pBufferVerify = pToFreeBuffer(nBufferNo);
+    FreeBuffer* pBufferVerify = pToFreeBuffer(i_Buffer);
     
     RASSERT(pBufferVerify->bValidMagic());
     RASSERT(CN_FREEBUFFER == pBufferVerify->eClass());
     
-    nBufferNo = pBufferVerify->iNextFree();
-    RASSERT(*nBufferNo < m_nBuffers);
+    i_Buffer = pBufferVerify->iNextFree();
+    RASSERT(i_Buffer < m_nBuffers);
   }
 
 }
