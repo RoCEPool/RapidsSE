@@ -51,6 +51,7 @@ namespace CompactBuffers
     
     ////////////////////////////////////////////////////////////////////////////
     // row functions
+    bool       bAppendCrw(Crw* aCrwSrc);
     Crw*       aCrw(i8 i_Row);
     void       vGetRow(Row* pRow, i8 i_Row);
     void       vShow(void);

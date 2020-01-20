@@ -264,8 +264,8 @@ Crw* TablePtn::aAllotFixedSizeCrw(Ref& xRowRef)
   Crw* aCrw = nullptr;
   
   StreamDef* pStreamDef = m_pTable->pStreamDef();
-  i8 jRowSize = pStreamDef->m_nFixedSized;
-  RASSERT(jRowSize > 0);
+  i8 jCrwSize = pStreamDef->m_nFixedSized;
+  RASSERT(jCrwSize > 0);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // new the first buffer?
@@ -277,7 +277,7 @@ Crw* TablePtn::aAllotFixedSizeCrw(Ref& xRowRef)
   // allot from latest buffer
   
   RowNub* pRowNub = m_pCurrentCrwBuffer->m_oRowTray.pNub();
-  i8 i_Head = pRowNub->iAllotHead(jRowSize);
+  i8 i_Head = pRowNub->iAllotHead(jCrwSize);
   if (C_UNKNOWN != i_Head) {
     aCrw = (Crw*)pRowNub->aGetHead(i_Head);
     xRowRef.vBuffer(* m_pCurrentCrwBuffer->nPoolBufferNo());
@@ -290,7 +290,7 @@ Crw* TablePtn::aAllotFixedSizeCrw(Ref& xRowRef)
 
   RASSERT(pNewCurrentCrwBuffer());                    //! this needs to be fixed
   pRowNub = m_pCurrentCrwBuffer->m_oRowTray.pNub();
-  i_Head = pRowNub->iAllotHead(jRowSize);
+  i_Head = pRowNub->iAllotHead(jCrwSize);
   aCrw = (Crw*)pRowNub->aGetHead(i_Head);
   RASSERT(aCrw);
   

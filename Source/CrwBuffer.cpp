@@ -197,6 +197,29 @@ void CrwBuffer::vAppendClose(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append given crw into this buffer                                          */
+/*----------------------------------------------------------------------------*/
+bool CrwBuffer::bAppendCrw(Crw* aCrwSrc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  Table* pTable = this->pTable();
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  i8 jCrwSize = pStreamDef->m_nFixedSized;
+
+  RowNub* pRowNub = m_oRowTray.pNub();
+  i8 i_Head = pRowNub->iAllotHead(jCrwSize);
+  if (C_UNKNOWN == i_Head)
+    return false;
+  
+  Crw* aCrwDst = _aCrw(pRowNub->aGetHead(i_Head));
+  
+  MemLib::vCopy(aCrwDst,aCrwSrc,jCrwSize,CN_CRWBUFFER);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* open this buffer for append                                                */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples)
@@ -581,6 +604,14 @@ CrwBuffer* CrwBuffer::pSnapshot(t8 tPerspective)
   pCrwBuffer->vPartitionNo(iPartitionNo());
   pCrwBuffer->vIsPermanent(false);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  i8 nCrw = this->nRowCount();
+  for (i8 i_Crw = 0 ; i_Crw < nCrw; i_Crw++) {
+    Crw* aCrw = this->aCrw(i_Crw);
+    
+    pCrwBuffer->bAppendCrw(aCrw);
+  }
+  
   return pCrwBuffer;
 }
 
