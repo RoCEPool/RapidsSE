@@ -357,22 +357,18 @@ i8 AM::iThreadId(Thread* pThread) {
   return pThread->m_iFocalId;
 }
 
-HeapBuffer* AM::pToHeapBuffer(i8 iBufferNo) {
-  
-  bn nBufferNo = iBufferNo;
+HeapBuffer* AM::pToHeapBuffer(i8 i_Buffer) {
   
   HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(*nBufferNo));
+    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
   
   return pHeapBuffer;
 
 }
 
-Object* AM::pToLargeObect(i8 iBufferNo) {
-  
-  bn nBufferNo = iBufferNo;
-  
-  HeapBuffer* pHeapBuffer = pToHeapBuffer(iBufferNo);
+Object* AM::pToLargeObect(i8 i_Buffer) {
+    
+  HeapBuffer* pHeapBuffer = pToHeapBuffer(i_Buffer);
   
   Object* pObject = reinterpret_cast<Object*>(pHeapBuffer->aFirstChunk());
 
