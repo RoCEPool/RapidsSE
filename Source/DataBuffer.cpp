@@ -154,7 +154,7 @@ Pool::bn DataBuffer::nPoolBufferNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  PoolBuffer* pPoolBuffer = PoolBuffer::pGetPoolBuffer(this);
+  PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(this);
   
   bn nBufferNo = pPoolBuffer->iPoolBufferNo();
   

@@ -25,7 +25,7 @@ SkipRoots* IndexTrees::_aSkipRoots(void* aAddr)
 SkipRoots::SkipRoots(void)
 : Ent(CN_ENT,sizeof(SkipRoots))
 {
-  PoolBuffer* pBuffer = PoolBuffer::pGetPoolBuffer((Object*)this);
+  PoolBuffer* pBuffer = PoolBuffer::pWithinPoolBuffer((Object*)this);
   bn nBufferNo = pBuffer->iPoolBufferNo();
 
   vBuffer(*nBufferNo);

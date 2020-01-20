@@ -284,7 +284,7 @@ void Heap::vFreeObject(Object* pObject)
   if (CN_LARGETRANSIENT == eClass()) {
     
     if (m_iFreeCount > 10) {
-      PoolBuffer* pPoolBuffer = PoolBuffer::pGetPoolBuffer(pObject);
+      PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(pObject);
       
       HeapBuffer* pHeapBuffer = _pHeapBuffer(pPoolBuffer);
       vRemoveBuffer(pHeapBuffer);

@@ -129,7 +129,7 @@ CrwBuffer* CrwBuffer::pRefdCrwBuffer(Ref& xRef)
 CrwBuffer* CrwBuffer::pToCrwBuffer(void* aAddr)
 {
   PoolBuffer* pPoolBuffer =
-    PoolBuffer::pGetPoolBuffer((Object*)aAddr);
+    PoolBuffer::pWithinPoolBuffer((Object*)aAddr);
   
   HeapBuffer* pHeapBuffer =
     reinterpret_cast<HeapBuffer*>(pPoolBuffer);

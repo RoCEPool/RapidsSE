@@ -29,7 +29,7 @@ namespace Pool
     /*----------------------------------------------------------------------------*/
     /* get pool buffer boundary that an object is within                          */
     /*----------------------------------------------------------------------------*/
-    inline static PoolBuffer* pGetPoolBuffer(Object* pObject)
+    inline static PoolBuffer* pWithinPoolBuffer(Object* pObject)
     {
       PoolBuffer* pPoolBuffer =
         (PoolBuffer*)(pBitAnd<PoolBuffer*>(pObject,C_OBJECT_TO_BUFFER_MASK));
@@ -40,9 +40,9 @@ namespace Pool
     /*----------------------------------------------------------------------------*/
     /* get the buffer no of the pool buffer that the object is within             */
     /*----------------------------------------------------------------------------*/
-    inline static i8 iPoolBufferNo(Object* pObject)
+    inline static i8 iWithinPoolBuffer(Object* pObject)
     {
-      PoolBuffer* pBuffer = pGetPoolBuffer(pObject);
+      PoolBuffer* pBuffer = pWithinPoolBuffer(pObject);
     
       bn nBufferNo = pBuffer->iPoolBufferNo();
     

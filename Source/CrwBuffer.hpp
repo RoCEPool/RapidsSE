@@ -108,8 +108,8 @@ namespace CompactBuffers
     /*----------------------------------------------------------------------------*/
     inline static bool bCheckAddress(CrwBuffer* pCrwBuffer, void* aAddr)
     {
-      PoolBuffer* pRowPoolBuffer  = PoolBuffer::pGetPoolBuffer(pCrwBuffer);
-      PoolBuffer* pAddrPoolBuffer = PoolBuffer::pGetPoolBuffer((Object*)aAddr);
+      PoolBuffer* pRowPoolBuffer  = PoolBuffer::pWithinPoolBuffer(pCrwBuffer);
+      PoolBuffer* pAddrPoolBuffer = PoolBuffer::pWithinPoolBuffer((Object*)aAddr);
     
       if (pAddrPoolBuffer == pRowPoolBuffer)
         return true;
