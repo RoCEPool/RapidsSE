@@ -21,8 +21,10 @@ BPA::BPA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BPA,_FOOTER_);
   
-  for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++)
-    m_naObjectsInPool[i_Object] = 0;
+  for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {
+    m_naObjectsAtTake[i_Object] = 0;
+    m_naObjectsAtDump[i_Object] = 0;
+  }
   
   _checkInitialised_(CN_BPA);
 
@@ -65,14 +67,12 @@ void BPA::vBufferDump(PoolBuffer* pBuffer)
 /*----------------------------------------------------------------------------*/
 void BPA::vEpochDump(s48K& sPortrait)
 {
-  i8 iSnapshotObjects[CN_ENUMS];
-  
   //vTrace("\n"_Stz);
   //vTrace("%sWords created since last epoch:\n"_Stz,Stz::szTab(1));
   
   BPA::vWordList(AM::iEpoch());
   
-  BPA::vObjectSnapshot(&iSnapshotObjects[0]);
+  BPA::vObjectSnapshot(m_naObjectsAtDump);
   
   sPortrait.vSprintCat("Objects created since last epoch:\n"_Stz);
 
@@ -80,7 +80,7 @@ void BPA::vEpochDump(s48K& sPortrait)
     
     eCN eClass = (eCN)i_Object;
     
-    if (iSnapshotObjects[eClass] == m_naObjectsInPool[eClass])
+    if (m_naObjectsAtDump[eClass] == m_naObjectsAtTake[eClass])
       continue;
     
     sPortrait.vSprintCat(
@@ -88,7 +88,7 @@ void BPA::vEpochDump(s48K& sPortrait)
       Stz::szTab(1),
       aCN[eClass],
       eClass,
-      iSnapshotObjects[eClass] - m_naObjectsInPool[eClass]
+      m_naObjectsAtDump[eClass] - m_naObjectsAtTake[eClass]
       );
   }
 
@@ -101,7 +101,7 @@ void BPA::vEpochTake(void)
 {
   // increment the epoch
   AM::iNextEpoch();
-  BPA::vObjectSnapshot(m_naObjectsInPool);
+  BPA::vObjectSnapshot(m_naObjectsAtTake);
 }
 
 /*----------------------------------------------------------------------------*/
