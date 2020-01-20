@@ -107,26 +107,6 @@ Stz* PoolBuffer::aLastUsableByte(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get overflow buffer number                                                 */
-/*----------------------------------------------------------------------------*/
-bn PoolBuffer::nOverflowBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return m_nOverflowBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set overflow buffer number                                                 */
-/*----------------------------------------------------------------------------*/
-void PoolBuffer::vOverflowBuffer(bn nOverflowBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  m_nOverflowBuffer = nOverflowBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get buffer number                                                          */
 /*----------------------------------------------------------------------------*/
 bn PoolBuffer::nPoolBufferNo(void)

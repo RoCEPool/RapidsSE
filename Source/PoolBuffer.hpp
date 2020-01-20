@@ -9,7 +9,6 @@ namespace Pool
   {
   protected:
     bn   m_nBufferNo;        // this buffer number
-    bn   m_nOverflowBuffer;  // logical overflow
     Stz* m_aLastByte;
     // ..heap buffer..
     
@@ -23,8 +22,6 @@ namespace Pool
   
     void* aDataArea(void);
     Stz*  aLastUsableByte(void);
-    bn    nOverflowBuffer(void);
-    void  vOverflowBuffer(bn nOverflowBuffer);
     bn    nPoolBufferNo(void);
     void  vPoolBufferNo(bn nBufferNo);
 
