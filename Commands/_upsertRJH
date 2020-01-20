@@ -8,7 +8,7 @@ pwf ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection __READAPI_T;
-print "** __READAPI_T";
+print "** 1/8) __READAPI_T ";
 
 create table __READAPI_T
 (
@@ -23,7 +23,7 @@ lsidxcol __READAPI_T __READAPI_I;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection createTable;
-print "** createTable";
+print "** 2/8) createTable";
 
 trackMemory;
 
@@ -53,7 +53,7 @@ lsidxcol T T_Idx_1;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection createIndex;
-print "** createIndex";
+print "** 3/8) createIndex";
 
 //drop index T T_Idx_1;
 
@@ -77,7 +77,7 @@ end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection t_fetch;
-print "** t_fetch";
+print "** 4/8) t_fetch";
 
 fetch T "colE 100 <";
 
@@ -86,8 +86,26 @@ fetch T;
 dumpindex T T_Idx_1;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+logSection scan;
+print "** 5/8) scan";
+
+pipeline t_scan
+begin
+
+  stage stageA on origin:
+    startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+    scanOp T | toCsvOp |stageC
+
+  stage stageC on origin:
+    outputOp | sinkOp | stageA
+
+end;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection snapshot;
-print "** snapshot";
+print "** 6/8) snapshot";
 
 pipeline t_snapshot
 begin
@@ -105,13 +123,13 @@ end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logSection dropTable;
-print "** dropTable";
+print "** 7/8) dropTable";
 
 drop table T;
 
 memoryLeaks fatal;
 
-print "** success _upsertRJH";
+print "** 8/8) success _upsertRJH";
 
 /*============================================================================*/
 /* end                                                                        */
