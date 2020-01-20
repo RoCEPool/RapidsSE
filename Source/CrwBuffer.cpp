@@ -592,30 +592,6 @@ void CrwBuffer::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* take a read-consistent snaphot of buffer                                   */
-/*----------------------------------------------------------------------------*/
-CrwBuffer* CrwBuffer::pSnapshot(t8 tPerspective)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
-  CrwBuffer* pCrwBuffer = new CrwBuffer;
-  
-  pCrwBuffer->vTable(pTable());
-  pCrwBuffer->vPartitionNo(iPartitionNo());
-  pCrwBuffer->vIsPermanent(false);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  i8 nCrw = this->nRowCount();
-  for (i8 i_Crw = 0 ; i_Crw < nCrw; i_Crw++) {
-    Crw* aCrw = this->aCrw(i_Crw);
-    
-    pCrwBuffer->bAppendCrw(aCrw);
-  }
-  
-  return pCrwBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* generate a CsvBuffer from a crw buffer with a csv row                      */
 /*----------------------------------------------------------------------------*/
 CsvBuffer* CrwBuffer::pToCsvBuffer(void)

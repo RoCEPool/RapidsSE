@@ -91,10 +91,6 @@ namespace CompactBuffers
     bool        bVerify(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // snapshot functions
-    CrwBuffer* pSnapshot(t8 tPerspective);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

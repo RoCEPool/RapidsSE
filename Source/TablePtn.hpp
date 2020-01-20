@@ -78,6 +78,7 @@ namespace Partitioning
     ReadApi* pReadApi(void);
     void vResetWrite(void);
     CrwBuffer* pRootCrwBuffer(void);
+    CrwBuffer* pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective);
     void vTable(Table* pTable);
     Table* pTable(void);
     void vTidyUp(void);

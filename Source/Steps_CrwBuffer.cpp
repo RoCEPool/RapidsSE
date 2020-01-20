@@ -25,9 +25,9 @@ void Step::vCrwBufferSnapshot(void)
   i8 i_Ptn = pCrwBuffer->iPartitionNo();
   TablePtn* pTablePtn = pTable->pPartition(i_Ptn);
   
-  t8 tperspective = AM::tThisTLSPespective();
+  t8 tPerspective = AM::tThisTLSPespective();
 
-  CrwBuffer* pCrwBuffer_snaphot = pCrwBuffer->pSnapshot(tperspective);
+  CrwBuffer* pCrwBuffer_snaphot = pTablePtn->pSnapshot(pCrwBuffer,tPerspective);
 
   m_pDataStack->vPushPtr(pCrwBuffer_snaphot);
   

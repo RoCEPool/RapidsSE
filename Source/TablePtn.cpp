@@ -813,6 +813,30 @@ CrwBuffer* TablePtn::pRootCrwBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* take a read-consistent snaphot of buffer                                   */
+/*----------------------------------------------------------------------------*/
+CrwBuffer* TablePtn::pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  CrwBuffer* pCrwBuffer = new CrwBuffer;
+  
+  pCrwBuffer->vTable(pTable());
+  pCrwBuffer->vPartitionNo(iPartitionId());
+  pCrwBuffer->vIsPermanent(false);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  i8 nCrw = pCrwBufferSrc->nRowCount();
+  for (i8 i_Crw = 0 ; i_Crw < nCrw; i_Crw++) {
+    Crw* aCrw = pCrwBufferSrc->aCrw(i_Crw);
+    
+    pCrwBuffer->bAppendCrw(aCrw);
+  }
+  
+  return pCrwBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set table                                                                  */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vTable(Table* pTable)
