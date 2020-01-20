@@ -57,8 +57,8 @@ namespace Pool
     i8   nBufferCount(void);
     i8   iBufferFirst(void);
     i8   iBufferLast(void);
-    i8   iBufferNext(bn nBuffer);
-    i8   iBufferPrev(bn nBuffer);
+    i8   iBufferNext(i8 iBuffer);
+    i8   iBufferPrev(i8 iBuffer);
     i8   iBufferSize(void);
     void vCheckAddress(const void* aAddress);
     bool bDetachPool(void);

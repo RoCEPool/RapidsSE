@@ -205,31 +205,31 @@ i8 BufferPool::iBufferLast(void)
 /*----------------------------------------------------------------------------*/
 /* calculate next buffer number from given buffer number                      */
 /*----------------------------------------------------------------------------*/
-i8 BufferPool::iBufferNext(bn nBuffer)
+i8 BufferPool::iBufferNext(i8 iBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   // ALKA:
   //if (nBuffer + 1 == iBufferLast())
-  if (*nBuffer == iBufferLast())
+  if (iBuffer == iBufferLast())
     return C_NIL;
   
-  return (*nBuffer) + 1;
+  return iBuffer + 1;
 }
 
 /*----------------------------------------------------------------------------*/
 /* calculate previous buffer number from given buffer number                  */
 /*----------------------------------------------------------------------------*/
-i8 BufferPool::iBufferPrev(bn nBuffer)
+i8 BufferPool::iBufferPrev(i8 iBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   // ALKA:
   //if (nBuffer - 1 == iBufferFirst())
-  if ((*nBuffer) == iBufferFirst())
+  if (iBuffer == iBufferFirst())
     return C_NIL;
   
-  return (*nBuffer) - 1;
+  return iBuffer - 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -453,7 +453,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
     
     pFreeBuffer->vSetFooter();
     pFreeBuffer->vPoolBufferNo(* nBuffer);
-    nBuffer = iBufferNext(nBuffer);
+    nBuffer = iBufferNext(*nBuffer);
     pFreeBuffer->vNextFree(nBuffer);
     
     m_nFreeCount++;
