@@ -90,11 +90,9 @@ Crv* CrvBuffer::aToCrv(i8 iBufferNo,i8 i_Crv)
 /*----------------------------------------------------------------------------*/
 /* get crv buffer given buffer no                                             */
 /*----------------------------------------------------------------------------*/
-CrvBuffer* CrvBuffer::aToCrvBuffer(i8 iBufferNo)
+CrvBuffer* CrvBuffer::aToCrvBuffer(i8 i_Buffer)
 {
-  bn nBufferNo = iBufferNo;
-  
-  CrvBuffer* pCrvBuffer = _pCrvBuffer(AM::pToLargeObect(iBufferNo));
+  CrvBuffer* pCrvBuffer = _pCrvBuffer(AM::pToLargeObect(i_Buffer));
 
   return pCrvBuffer;
 }
