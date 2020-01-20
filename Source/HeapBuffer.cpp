@@ -165,7 +165,7 @@ FreeChunk* HeapBuffer::aNextChunk(FreeChunk* aChunk, i8 nBytes)
   FreeChunk* aNextChunk = aAdd<FreeChunk*>(aChunk,nBytes);
 
   // check next buffer ends within this segment
-  if (aChunkEnd(aNextChunk,nBytes) > m_aLastByte)
+  if (aChunkEnd(aNextChunk,nBytes) > aLastUsableByte())
     return nullptr;
   
   ASSERT(CacheLine::bOnCacheLineBoundary(aNextChunk));

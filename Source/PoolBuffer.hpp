@@ -9,7 +9,6 @@ namespace Pool
   {
   protected:
     bn   m_nBufferNo;        // this buffer number
-    Stz* m_aLastByte;
     // ..heap buffer..
     
   public:

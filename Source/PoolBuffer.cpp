@@ -51,9 +51,7 @@ PoolBuffer::PoolBuffer(eCN eClassNo)
 : Object(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-  
-  m_aLastByte = aLastUsableByte();
-  
+    
   _setFooter_();
   
   ASSERT(m_nBufferNo >= gpBufferPool->nBufferFirst());
