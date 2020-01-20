@@ -30,7 +30,6 @@ static const u8 C_OBJECT_TO_BUFFER_MASK = BITWISE_NOT((C_SIZE_POOL_BUFFER - 1));
 
 #include "Shm.hpp"
 
-#include "bn.hpp"
 #include "PoolBuffer.hpp"
 #include "FreeBuffer.hpp"
 #include "FreeChunk.hpp"
