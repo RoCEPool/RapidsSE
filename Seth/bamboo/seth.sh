@@ -75,6 +75,15 @@ do
     >&2 echo "Here are the last 200 lines of its nohup.out file:" 1>&2
     >&2 tail -n 200 "${SE_NOHUP_FILE}" 1>&2
 
+    # Were there any core files produced?
+    CORE_FILES=$(find . -name "core.*" 2>/dev/null)
+    if [ -z "${CORE_FILES}" ]
+    then
+      >&2 echo "No core file was produced." 1>&2
+    else
+      >&2 echo "Core file was produced as: ${CORE_FILES}" 1>&2
+    fi
+
     # Clean up the SETH process and its subordinate SE prompt
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
     kill -9 "${SETH_PID}" &>/dev/null
