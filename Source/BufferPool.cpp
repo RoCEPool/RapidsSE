@@ -52,7 +52,7 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
   
   m_nAllocCount  = 0;
   m_nFreeCount   = 0;
-  m_nFreeHead    = bn::nNil();
+  m_nFreeHead    = C_NIL;
  
   m_ixHeapBuffers.vCheckInit();
   m_ixOtherBuffers.vCheckInit();
@@ -212,7 +212,7 @@ i8 BufferPool::iBufferNext(bn nBuffer)
   // ALKA:
   //if (nBuffer + 1 == iBufferLast())
   if (*nBuffer == iBufferLast())
-    return * bn::nNil();
+    return C_NIL;
   
   return (*nBuffer) + 1;
 }
@@ -227,7 +227,7 @@ i8 BufferPool::iBufferPrev(bn nBuffer)
   // ALKA:
   //if (nBuffer - 1 == iBufferFirst())
   if ((*nBuffer) == iBufferFirst())
-    return *bn::nNil();
+    return C_NIL;
   
   return (*nBuffer) - 1;
 }
@@ -301,7 +301,7 @@ void BufferPool::vFree(PoolBuffer* pBuffer)
   //vVerifyPool();
   
   // test for existing free list
-  if (bn::nNil() != m_nFreeHead) {
+  if (C_NIL != *m_nFreeHead) {
     ASSERT( m_nFreeCount > 0 );
   }
   else {
@@ -433,7 +433,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
   i8 iBufferMod;
   
   bn nBuffer = iBufferFirst();
-  while (bn::nNil() != nBuffer) {
+  while (C_NIL != *nBuffer) {
     
     if (bProgress) {
       iBufferMod = *nBuffer % 1000;
@@ -469,7 +469,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
 
   pLastBuffer->vSetFooter();
   pLastBuffer->vPoolBufferNo(iBufferLast());
-  pLastBuffer->vNextFree(bn::nNil());
+  pLastBuffer->vNextFree(C_NIL);
 
   
   if (bProgress)
@@ -564,7 +564,7 @@ void BufferPool::vPoolDump(void)
   //           *pFreeBuffer->nNextFree());
   
   bn nBuffer = m_nFreeHead;
-  while (bn::nNil() != nBuffer) {
+  while (C_NIL != *nBuffer) {
     FreeBuffer* pFreeBuffer = pToFreeBuffer(nBuffer);
     vTrace("%p: BufferNo %lld NextFree %lld\n"_Stz,
            pFreeBuffer,
@@ -647,19 +647,19 @@ bool BufferPool::bVerifyBoundaries(void)
 /*----------------------------------------------------------------------------*/
 void BufferPool::vVerifyPool(void)
 {
-  bn iBufferNo = m_nFreeHead;
+  bn nBufferNo = m_nFreeHead;
   
-  RASSERT(*iBufferNo < m_nBuffers);
+  RASSERT(*nBufferNo < m_nBuffers);
   
-  while (bn::nNil() != iBufferNo) {
+  while (C_NIL != *nBufferNo) {
     
-    FreeBuffer* pBufferVerify = pToFreeBuffer(iBufferNo);
+    FreeBuffer* pBufferVerify = pToFreeBuffer(nBufferNo);
     
     RASSERT(pBufferVerify->bValidMagic());
     RASSERT(CN_FREEBUFFER == pBufferVerify->eClass());
     
-    iBufferNo = pBufferVerify->nNextFree();
-    RASSERT(*iBufferNo < m_nBuffers);
+    nBufferNo = pBufferVerify->nNextFree();
+    RASSERT(*nBufferNo < m_nBuffers);
   }
 
 }
@@ -676,7 +676,7 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
   //vVerifyPool();
   
   // test for empty free chain
-  if (bn::nNil() == m_nFreeHead) {
+  if (C_NIL == *m_nFreeHead) {
     ASSERT( ! m_nFreeCount );
     vTrace("NODE%lld: RUNNING OUT OF MEMORY!!!\n"_Stz, AM::iThisNodeNo());
     vWarn("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);

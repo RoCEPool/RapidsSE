@@ -15,7 +15,6 @@ namespace Pool
     bn(i8 iBufferNo);
     ~bn(void) noexcept(false);
     
-    static bn nNil(void);
     bool operator ==(bn n);
     bool operator !=(bn n);
     bool operator >=(bn n);
