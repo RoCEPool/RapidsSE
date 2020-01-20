@@ -311,7 +311,7 @@ void BufferPool::vFree(PoolBuffer* pBuffer)
   // free buffer by pushing onto free chain
   pFreeBuffer->vClass(CN_FREEBUFFER);
   pFreeBuffer->vNextFree(m_nFreeHead);
-  m_nFreeHead = pBuffer->nPoolBufferNo();
+  m_nFreeHead = pBuffer->iPoolBufferNo();
   
   // adjust counts
   m_nFreeCount++;
@@ -568,7 +568,7 @@ void BufferPool::vPoolDump(void)
     FreeBuffer* pFreeBuffer = pToFreeBuffer(nBuffer);
     vTrace("%p: BufferNo %lld NextFree %lld\n"_Stz,
            pFreeBuffer,
-           *pFreeBuffer->nPoolBufferNo(),
+           pFreeBuffer->iPoolBufferNo(),
            *pFreeBuffer->nNextFree());
     //nBuffer = pToFreeBuffer((nBuffer);
     nBuffer = pFreeBuffer->nNextFree();

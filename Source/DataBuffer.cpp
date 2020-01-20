@@ -156,7 +156,7 @@ Pool::bn DataBuffer::nPoolBufferNo(void)
 
   PoolBuffer* pPoolBuffer = PoolBuffer::pGetPoolBuffer(this);
   
-  bn nBufferNo = pPoolBuffer->nPoolBufferNo();
+  bn nBufferNo = pPoolBuffer->iPoolBufferNo();
   
   return nBufferNo;
 }

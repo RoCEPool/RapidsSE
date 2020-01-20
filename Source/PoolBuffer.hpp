@@ -8,7 +8,7 @@ namespace Pool
   class PoolBuffer : public Object
   {
   protected:
-    bn   m_nBufferNo;        // this buffer number
+    i8 m_iBufferNo;  // this buffer number
     // ..heap buffer..
     
   public:
@@ -21,7 +21,7 @@ namespace Pool
   
     void* aDataArea(void);
     Stz*  aLastUsableByte(void);
-    bn    nPoolBufferNo(void);
+    i8    iPoolBufferNo(void);
     void  vPoolBufferNo(i8 iBufferNo);
 
     Footer* aFooter(void);
@@ -44,7 +44,7 @@ namespace Pool
     {
       PoolBuffer* pBuffer = pGetPoolBuffer(pObject);
     
-      bn nBufferNo = pBuffer->nPoolBufferNo();
+      bn nBufferNo = pBuffer->iPoolBufferNo();
     
       return nBufferNo;
     }
@@ -56,7 +56,7 @@ namespace Pool
     {
       PoolBuffer* pBuffer = pGetPoolBuffer(pObject);
     
-      bn nBufferNo = pBuffer->nPoolBufferNo();
+      bn nBufferNo = pBuffer->iPoolBufferNo();
     
       return *nBufferNo;
     }

@@ -26,7 +26,7 @@ namespace Pool
     bn operator -(int i);
   };
   
-  bn operator "" _bn(unsigned long long i);
+  bn operator "" _bn(unsigned long long i); // user-defined literal suffix
 }
 
 /*============================================================================*/

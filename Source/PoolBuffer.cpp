@@ -54,8 +54,8 @@ PoolBuffer::PoolBuffer(eCN eClassNo)
     
   _setFooter_();
   
-  ASSERT(m_nBufferNo >= gpBufferPool->nBufferFirst());
-  ASSERT(m_nBufferNo <= gpBufferPool->nBufferLast());
+  ASSERT(m_iBufferNo >= *gpBufferPool->nBufferFirst());
+  ASSERT(m_iBufferNo <= *gpBufferPool->nBufferLast());
   
   _checkInitialised_(CN_FREEBUFFER);
   
@@ -71,8 +71,8 @@ PoolBuffer::~PoolBuffer(void) noexcept(false)
   
   ASSERT(eClass() != CN_NONE);
   
-  ASSERT(m_nBufferNo >= gpBufferPool->nBufferFirst());
-  ASSERT(m_nBufferNo <= gpBufferPool->nBufferLast());
+  ASSERT(m_iBufferNo >= *gpBufferPool->nBufferFirst());
+  ASSERT(m_iBufferNo <= *gpBufferPool->nBufferLast());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,11 +107,11 @@ Stz* PoolBuffer::aLastUsableByte(void)
 /*----------------------------------------------------------------------------*/
 /* get buffer number                                                          */
 /*----------------------------------------------------------------------------*/
-bn PoolBuffer::nPoolBufferNo(void)
+i8 PoolBuffer::iPoolBufferNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  return m_nBufferNo;
+  return m_iBufferNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,7 +121,7 @@ void PoolBuffer::vPoolBufferNo(i8 iBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  m_nBufferNo = iBufferNo;
+  m_iBufferNo = iBufferNo;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -100,7 +100,7 @@ bn bn::operator ++(int)
 }
 
 /*----------------------------------------------------------------------------*/
-/* _bn buffer number literal suffix                                           */
+/* _bn buffer number user-defined literal suffix                              */
 /*----------------------------------------------------------------------------*/
 bn Pool::operator "" _bn(unsigned long long i)
 {
