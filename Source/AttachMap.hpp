@@ -37,7 +37,7 @@ namespace StorageEngine
       i8   m_nThreads;      // number of general threads
     } Arg;
     
-    i8            m_nObjectsInPool[CN_ENUMS];
+    i8            m_anObjectsInPool[CN_ENUMS];
   
     SessionArray* m_pSessionArray;
     bool          m_bBootError;

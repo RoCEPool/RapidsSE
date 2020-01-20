@@ -47,7 +47,7 @@ void BPA::vEpochDump(s48K& sPortrait)
     
     eCN eClass = (eCN)i_Object;
     
-    if (iSnapshotObjects[eClass] == AM::iaObjectsInPool()[eClass])
+    if (iSnapshotObjects[eClass] == AM::anObjectsInPool()[eClass])
       continue;
     
     sPortrait.vSprintCat(
@@ -55,7 +55,7 @@ void BPA::vEpochDump(s48K& sPortrait)
       Stz::szTab(1),
       aCN[eClass],
       eClass,
-      iSnapshotObjects[eClass] - AM::iaObjectsInPool()[eClass]
+      iSnapshotObjects[eClass] - AM::anObjectsInPool()[eClass]
       );
   }
 
@@ -68,7 +68,7 @@ void BPA::vEpochTake(void)
 {
   // increment the epoch
   AM::iNextEpoch();
-  BPA::vObjectSnapshot(AM::iaObjectsInPool());
+  BPA::vObjectSnapshot(AM::anObjectsInPool());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,9 +191,8 @@ void BPA::vObjectList(void)
   PoolBuffer* pLargePersistent  = nullptr;
   PoolBuffer* pJumboPersistent  = nullptr;
   
-  i8 nBuffers = gpBufferPool->m_nBuffers - 1;
   for (i8 i_Buffer = gpBufferPool->iBufferFirst();
-       i_Buffer <= nBuffers;
+       i_Buffer <= gpBufferPool->iBufferLast();
        i_Buffer++) {
     
     PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
@@ -259,10 +258,9 @@ void BPA::vObjectSummary(void)
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
     iCountObjects[i_Index] = 0;
   
-  i8 nBuffers = gpBufferPool->m_nBuffers - 1;
-  
+
   for (i8 i_Buffer = gpBufferPool->iBufferFirst();
-       i_Buffer <= nBuffers;
+       i_Buffer <= gpBufferPool->iBufferLast();
        i_Buffer++) {
     
     PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
@@ -388,10 +386,8 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 nBuffers = gpBufferPool->m_nBuffers - 1;
-  
   for (i8 i_Buffer = gpBufferPool->iBufferFirst();
-       i_Buffer <= nBuffers;
+       i_Buffer <= gpBufferPool->iBufferLast();
        i_Buffer++) {
     
     PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
@@ -645,9 +641,8 @@ void BPA::vWordList(i8 iEpoch)
   PoolBuffer* pMediumTransient = nullptr;
   PoolBuffer* pSmallTransient  = nullptr;
   
-  i8 nBuffers = gpBufferPool->m_nBuffers - 1;
   for (i8 i_Buffer = gpBufferPool->iBufferFirst();
-       i_Buffer <= nBuffers;
+       i_Buffer <= gpBufferPool->iBufferLast();
        i_Buffer++) {
     
     PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
@@ -676,11 +671,8 @@ void BPA::vWriteBuffers(Stz* sFilePath)
   
   i8 iStart  = Tick::iRdClock();
   
-  i8 nBuffers = gpBufferPool->m_nBuffers - 1;
-  
-  i8 i_Buffer;
-  for (i_Buffer = gpBufferPool->iBufferFirst();
-       i_Buffer <= nBuffers;
+  for (i8 i_Buffer = gpBufferPool->iBufferFirst();
+       i_Buffer <= gpBufferPool->iBufferLast();
        i_Buffer++) {
     
     PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(i_Buffer);
@@ -688,8 +680,6 @@ void BPA::vWriteBuffers(Stz* sFilePath)
     ASSERT(bResult);
     
   }
-  ASSERT(nBuffers + 1 == i_Buffer);
-  
   i8 iUpdate = Tick::iRdClock();
   
   i8 iTicks = (iUpdate - iStart);
@@ -697,6 +687,7 @@ void BPA::vWriteBuffers(Stz* sFilePath)
   
   i8 iMilli = iTicks * C_1K / iTicksPerSecond;
   
+  i8 nBuffers =gpBufferPool->iBufferLast() - 1;
   vTrace("Writing %lld buffers took %lld ms\n"_Stz, nBuffers, iMilli);
 }
 
