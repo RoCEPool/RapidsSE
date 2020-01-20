@@ -35,7 +35,7 @@ namespace DataBuffers
     // - - - - - - - - - - - - - -
     bool bIsPermanent(void);
     void vIsPermanent(bool bIsPermanent);
-    i8   iPoolBufferNo(void);
+    i8   iBufferNo(void);
   };
   
   DataBuffer* _pDataBuffer(void* aAddr);

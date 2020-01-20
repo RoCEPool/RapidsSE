@@ -21,8 +21,8 @@ namespace Pool
   
     void* aDataArea(void);
     Stz*  aLastUsableByte(void);
-    i8    iPoolBufferNo(void);
-    void  vPoolBufferNo(i8 iBufferNo);
+    i8    iBufferNo(void);
+    void  vBufferNo(i8 iBufferNo);
 
     Footer* aFooter(void);
   
@@ -44,7 +44,7 @@ namespace Pool
     {
       PoolBuffer* pBuffer = pWithinPoolBuffer(pObject);
     
-      i8 i_Buffer = pBuffer->iPoolBufferNo();
+      i8 i_Buffer = pBuffer->iBufferNo();
     
       return i_Buffer;
     }

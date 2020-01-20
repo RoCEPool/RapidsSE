@@ -367,7 +367,7 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
   //pEntBuffer->vShow();
 
   Ref xRowRef;
-  xRowRef.vBuffer(pCrwBuffer->iPoolBufferNo());
+  xRowRef.vBuffer(pCrwBuffer->iBufferNo());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffer till no more entries

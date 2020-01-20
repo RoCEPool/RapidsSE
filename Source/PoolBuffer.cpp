@@ -107,7 +107,7 @@ Stz* PoolBuffer::aLastUsableByte(void)
 /*----------------------------------------------------------------------------*/
 /* get buffer number                                                          */
 /*----------------------------------------------------------------------------*/
-i8 PoolBuffer::iPoolBufferNo(void)
+i8 PoolBuffer::iBufferNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -117,7 +117,7 @@ i8 PoolBuffer::iPoolBufferNo(void)
 /*----------------------------------------------------------------------------*/
 /* set buffer number                                                          */
 /*----------------------------------------------------------------------------*/
-void PoolBuffer::vPoolBufferNo(i8 iBufferNo)
+void PoolBuffer::vBufferNo(i8 iBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   

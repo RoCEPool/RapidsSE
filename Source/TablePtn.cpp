@@ -280,7 +280,7 @@ Crw* TablePtn::aAllotFixedSizeCrw(Ref& xRowRef)
   i8 i_Head = pRowNub->iAllotHead(jCrwSize);
   if (C_UNKNOWN != i_Head) {
     aCrw = (Crw*)pRowNub->aGetHead(i_Head);
-    xRowRef.vBuffer(m_pCurrentCrwBuffer->iPoolBufferNo());
+    xRowRef.vBuffer(m_pCurrentCrwBuffer->iBufferNo());
     xRowRef.vItem(i_Head);
     return aCrw;
   }
@@ -294,7 +294,7 @@ Crw* TablePtn::aAllotFixedSizeCrw(Ref& xRowRef)
   aCrw = (Crw*)pRowNub->aGetHead(i_Head);
   RASSERT(aCrw);
   
-  xRowRef.vBuffer(m_pCurrentCrwBuffer->iPoolBufferNo());
+  xRowRef.vBuffer(m_pCurrentCrwBuffer->iBufferNo());
   xRowRef.vItem(i_Head);
   
   return aCrw;
@@ -831,7 +831,7 @@ CrwBuffer* TablePtn::pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective)
     
     Crw* aCrw = pCrwBufferSrc->aCrw(i_Crw);
     Ref xwRef;
-    xwRef.vBuffer(pCrwBufferSrc->iPoolBufferNo());
+    xwRef.vBuffer(pCrwBufferSrc->iBufferNo());
     xwRef.vItem(i_Crw);
 
     Crw* aCrw_snapshot = m_pReadApi->aGetCrwVersion(xwRef,aCrw,tPerspective);

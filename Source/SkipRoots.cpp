@@ -26,7 +26,7 @@ SkipRoots::SkipRoots(void)
 : Ent(CN_ENT,sizeof(SkipRoots))
 {
   PoolBuffer* pBuffer = PoolBuffer::pWithinPoolBuffer((Object*)this);
-  i8 i_Buffer = pBuffer->iPoolBufferNo();
+  i8 i_Buffer = pBuffer->iBufferNo();
 
   vBuffer(i_Buffer);
   vOffsets(3);

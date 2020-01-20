@@ -496,7 +496,7 @@ void CrwBuffer::vRestore(void)
   vTable(nullptr);
   
   // get the buffer no
-  i8 i_Buffer = iPoolBufferNo();
+  i8 i_Buffer = iBufferNo();
   
   // restore the bufferNo
   m_iBufferNo = i_Buffer;

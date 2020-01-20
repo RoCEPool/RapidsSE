@@ -28,7 +28,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  m_iBufferNo     = iPoolBufferNo();
+  m_iBufferNo     = iBufferNo();
   m_iPartitionNo  = C_UNKNOWN;
   m_iBufferHeight = 0;
   m_oWhenNewed.vNow();
@@ -136,15 +136,15 @@ Birth& DataBuffer::oWhenNewed(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the buffer no (as i8) of the pool buffer that the object is within     */
+/* get the buffer no of the pool buffer that the object is within             */
 /*----------------------------------------------------------------------------*/
-i8 DataBuffer::iPoolBufferNo(void)
+i8 DataBuffer::iBufferNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   PoolBuffer* pPoolBuffer = PoolBuffer::pWithinPoolBuffer(this);
   
-  i8 i_Buffer = pPoolBuffer->iPoolBufferNo();
+  i8 i_Buffer = pPoolBuffer->iBufferNo();
 
   return i_Buffer;
 }
