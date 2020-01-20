@@ -422,6 +422,8 @@ void Engine::vKillPrev(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
 {
+  static BPA* pBPA = nullptr;
+  
   s48K sPortrait;
   
   Now oNow;
@@ -509,8 +511,10 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   AM::pSessionArray()->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.szStz());
   
-  if (1 == ++ gpAttachMap->m_inNextMonitor)
+  if (1 == ++ gpAttachMap->m_inNextMonitor) {
+    pBPA = new BPA;
     BPA::vEpochTake();
+  }
   else {
     BPA::vEpochDump(sRapidsPortrait);
     BPA::vEpochTake();

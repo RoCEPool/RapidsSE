@@ -4,6 +4,8 @@
 
 #include "Steps.h"
 
+static BPA* gpBPA = nullptr;
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -59,6 +61,9 @@ void Step::vBpEpochDump(void)
 {
   ENTRY(); // ENTRY("vBpEpochDump"_Stz);
   
+  if (! gpBPA)
+    gpBPA = new BPA;
+  
   s48K sPortrait;
   
   BPA::vEpochDump(sPortrait);
@@ -74,6 +79,9 @@ void Step::vBpEpochDump(void)
 void Step::vBpEpochTake(void)
 {
   ENTRY(); // ENTRY("vBpEpochTake"_Stz);
+  
+  if (! gpBPA)
+    gpBPA = new BPA;
   
   BPA::vEpochTake();
 
