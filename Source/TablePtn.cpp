@@ -828,9 +828,15 @@ CrwBuffer* TablePtn::pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 nCrw = pCrwBufferSrc->nRowCount();
   for (i8 i_Crw = 0 ; i_Crw < nCrw; i_Crw++) {
-    Crw* aCrw = pCrwBufferSrc->aCrw(i_Crw);
     
-    pCrwBuffer->bAppendCrw(aCrw);
+    Crw* aCrw = pCrwBufferSrc->aCrw(i_Crw);
+    Ref xwRef;
+    xwRef.vBuffer(pCrwBufferSrc->iPoolBufferNo());
+    xwRef.vItem(i_Crw);
+
+    Crw* aCrw_snapshot = m_pReadApi->aGetCrwVersion(xwRef,aCrw,tPerspective);
+    
+    pCrwBuffer->bAppendCrw(aCrw_snapshot);
   }
   
   return pCrwBuffer;

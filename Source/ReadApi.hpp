@@ -27,6 +27,7 @@ namespace ReadConsistency
     void vAddCrwVersion(Ref xwCurrentRef, Crw* pCrw);
     Crw* aGetCrwConsistent(Ref xwCurrentRef, t8 tPerspective);
     Crw* aGetCrwVersion(Ref xwCurrentRef, t8 tPerspective);
+    Crw* aGetCrwVersion(Ref xwCurrentRef, Crw* aCurrentCrw, t8 tPerspective);
     void vPurgePriorVersions(t8 tPerspective);
 
     void vStreamDef(StreamDef* pStreamDef);
