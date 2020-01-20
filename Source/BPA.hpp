@@ -5,10 +5,20 @@
 
 namespace Utilities
 {
-  class BPA
+  class BPA : public Object
   {
   public:
-    
+    // must be last
+    Footer m_xFooter;
+  
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+ 
+    BPA(void);
+   ~BPA(void) noexcept(false);
+
+  public:
     static void vBufferDump(PoolBuffer* pBuffer);
     static void vEpochDump(s48K& sPortrait);
     static void vEpochTake(void);
@@ -29,6 +39,8 @@ namespace Utilities
     static void vWriteHeap(Heap* pHeap, File* pFile);
     static void vWritePersistentHeapMem(Stz* sFilePath);
   };
+
+  BPA* _pBPA(void* aAddr);
 };
 
 /*============================================================================*/
