@@ -289,8 +289,6 @@ void Step::vOperandInvokePythonShell(void)
   // pop the data to be printed
   m_pDataStack->vPopStr(pData, __func__);
   
-#ifdef WITH_PYTHON_SUPPORT
-  
   SysCall oSysCall;
   s4K sCommand;
   
@@ -299,8 +297,6 @@ void Step::vOperandInvokePythonShell(void)
   i8 iExitStatus = Shell::iExecute(sCommand.szStz(),oSysCall);
   
   RASSERT(iExitStatus);
-  
-#endif
   
   EXIT();
 }
