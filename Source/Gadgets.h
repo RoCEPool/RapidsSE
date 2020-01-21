@@ -22,6 +22,7 @@ namespace Gadgets
 #include "EnumFlags.hpp"
 #include "FreqDist.hpp"
 #include "HV.hpp"
+#include "MemTest.hpp"
 #include "NextGid.hpp"
 #include "NmVal.hpp"
 #include "Now.hpp"
