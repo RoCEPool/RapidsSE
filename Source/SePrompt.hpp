@@ -32,6 +32,8 @@ namespace Prompt
     
     EnameSet  m_oJobCtl;
   
+    BPA*      m_pBPA;         // object delta reporting
+  
     // must be last
     Footer m_xFooter;
   

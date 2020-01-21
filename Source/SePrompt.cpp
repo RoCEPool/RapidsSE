@@ -83,6 +83,10 @@ SePrompt::SePrompt(bool bOneCommand)
   m_i_RequestFocal = C_UNKNOWN;
   m_iRequestId = C_UNKNOWN;
   
+  m_pBPA = nullptr;
+//  if (AM::bDeveloper())
+//    m_pBPA = new BPA;
+
   _checkInitialised_(CN_SEPROMPT);
 }
 
@@ -94,6 +98,8 @@ SePrompt::~SePrompt(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   RapidsSE_DeleteSession(0,&m_pSession);
+  
+  delete m_pBPA;
 }
 
 /*----------------------------------------------------------------------------*/
