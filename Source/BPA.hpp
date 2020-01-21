@@ -22,6 +22,7 @@ namespace Utilities
    ~BPA(void) noexcept(false);
 
   public:
+    void vDeltaReport(s48K& rsReport);
     void vEpochDump(s48K& rsReport);
     void vEpochTake(void);
     i8   nObjectDelta(void);

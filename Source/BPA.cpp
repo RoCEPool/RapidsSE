@@ -41,6 +41,38 @@ BPA::~BPA(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* produce report on the object delta                                         */
+/*----------------------------------------------------------------------------*/
+void BPA::vDeltaReport(s48K& rsPortrait)
+{
+  BPA::vObjectSnapshot(m_naObjectsAtDump);
+  
+  for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {
+    
+    eCN eClass = (eCN)i_Object;
+        
+    if (m_naObjectsAtDump[eClass] == m_naObjectsAtTake[eClass])
+      continue;
+
+    rsPortrait.vSprintCat(
+      "%s "
+      "%-6lld eCN %3lld:%12s \n"_Stz,
+      Stz::szTab(1),
+                          
+      m_naObjectsAtDump[eClass] - m_naObjectsAtTake[eClass],
+      eClass,
+      aCN[eClass]
+                          
+      );
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump all objects in given heap                                             */
 /*----------------------------------------------------------------------------*/
 void BPA::vEpochDump(s48K& rsPortrait)

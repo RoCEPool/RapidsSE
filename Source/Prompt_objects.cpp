@@ -28,11 +28,11 @@ bool Prompt::bPrompt_objects(SePrompt* pPrompt)
   pPrompt->pBPA()->vObjectReport(sReport);
   
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Objects Currently in Buffer Pool\n"_Stz);
+  vTrace("Current Object Report\n"_Stz);
   vTrace("------------------------------------\n"_Stz);
   
   vTrace("%s"_Stz,sReport.szStz());
-  
+  vTrace("====================================\n"_Stz);
   return true;
 }
 
