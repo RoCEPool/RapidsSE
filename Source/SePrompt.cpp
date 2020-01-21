@@ -136,7 +136,7 @@ void SePrompt::vPromptLoop(void)
   while (bContinue()) {
     
     if (bStdIn()) {
-      //vReportObjects();
+      vReportObjects();
       vPromptUser();
     }
 
@@ -971,9 +971,8 @@ void SePrompt::vReportObjects(void)
     return;
   
   if (m_pBPA) {
-    s48K sPortrait;
-    m_pBPA->vEpochDump(sPortrait);
-    m_pBPA->vEpochTake();
+    i8 nObjectDelta = m_pBPA->nObjectDelta();
+    vTrace("object delta: %lld objects\n"_Stz,nObjectDelta);
   }
   else {
     m_pBPA = new BPA;

@@ -24,6 +24,7 @@ namespace Utilities
   public:
     void vEpochDump(s48K& sPortrait);
     void vEpochTake(void);
+    i8   nObjectDelta(void);
     void vObjectSnapshot(i8* pCountObjects);
 
     Footer* aFooter(void);
