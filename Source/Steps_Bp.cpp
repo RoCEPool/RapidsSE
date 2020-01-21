@@ -37,7 +37,7 @@ void Step::vBpAnalyze(void)
 {
   ENTRY(); // ENTRY("vBpa"_Stz);
   
-  BPA::vPoolAnalyze();
+  PoolHelper::vPoolAnalyze();
   
   EXIT();
 }
@@ -49,7 +49,7 @@ void Step::vBpDump(void)
 {
   ENTRY(); // ENTRY("vBpDump"_Stz);
   
-  BPA::vPoolDump();
+  PoolHelper::vPoolDump();
   
   
   EXIT();
@@ -95,7 +95,7 @@ void Step::vBpReadBufferPool(void)
 {
   ENTRY(); // ENTRY("vBpReadBufferPool"_Stz);
   
-  BPA::vReadBuffers("/tmp/buffers.dmp"_Stz);
+  PoolHelper::vReadBuffers("/tmp/buffers.dmp"_Stz);
   
   EXIT();
 }
@@ -107,7 +107,7 @@ void Step::vBpWriteBufferPool(void)
 {
   ENTRY(); // ENTRY("vBpWriteBufferPool"_Stz);
   
-  BPA::vWritePersistentHeapMem("/tmp/persistentHeapMem.dmp"_Stz);
+  PoolHelper::vWritePersistentHeapMem("/tmp/persistentHeapMem.dmp"_Stz);
   
   EXIT();
 }
@@ -148,7 +148,7 @@ void Step::vBpFreeSpace(void)
   ENTRY(); // ENTRY("vBpFreeSpace"_Stz);
   
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
-  i8 iFreeSpaceInPool = BPA::iPoolFree();
+  i8 iFreeSpaceInPool = PoolHelper::iPoolFree();
 
   m_pDataStack->vPushInt(iFreeSpace + iFreeSpaceInPool);
   
@@ -165,7 +165,7 @@ void Step::vBpInUseSpace(void)
   i8 iInUseSpace = AM::iRegionSize()
                      - AM::iJumboSize()
                      - gpBufferPool->iFreeSpace()
-                     - BPA::iPoolFree();
+                     - PoolHelper::iPoolFree();
   
   m_pDataStack->vPushInt(iInUseSpace);
   

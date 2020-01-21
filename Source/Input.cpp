@@ -225,7 +225,7 @@ void Input::vGetTokens(void)
     if (! pTknVec()->nTokens() && m_pTokeniser->bEOF()) {
       bool b = m_pTokeniser->bPop();
       ASSERT(b);
-      continue;
+      break;
     }
     
     break;
@@ -296,6 +296,18 @@ void Input::vUseStdin(void)
   m_pTokeniser->vUseStdin();
   m_pTokeniser->vLineMode(true);
   m_pTokeniser->vNormal(true);
+}
+
+/*----------------------------------------------------------------------------*/
+/* using stdin ?                                                              */
+/*----------------------------------------------------------------------------*/
+bool Input::bStdIn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+
+  bool bIsStdIn = m_pTokeniser->bStdin();
+  
+  return bIsStdIn;
 }
 
 /*----------------------------------------------------------------------------*/

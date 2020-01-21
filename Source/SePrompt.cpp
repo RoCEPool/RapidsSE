@@ -83,6 +83,10 @@ SePrompt::SePrompt(bool bOneCommand)
   m_i_RequestFocal = C_UNKNOWN;
   m_iRequestId = C_UNKNOWN;
   
+  m_pBPA = nullptr;
+//  if (AM::bDeveloper())
+//    m_pBPA = new BPA;
+
   _checkInitialised_(CN_SEPROMPT);
 }
 
@@ -94,6 +98,8 @@ SePrompt::~SePrompt(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   RapidsSE_DeleteSession(0,&m_pSession);
+  
+  delete m_pBPA;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -587,9 +593,11 @@ void SePrompt::vGetCommand(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+    
   Input* pInput = this->pInput();
-  
+  if (pInput->bStdIn())
+    vDebugPoint();
+    
   pInput->vGetCommand();
 }
 
@@ -729,7 +737,7 @@ void SePrompt::vLogFreeSpace(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
-  i8 iFreeSpaceInPool = BPA::iPoolFree();
+  i8 iFreeSpaceInPool = PoolHelper::iPoolFree();
   
   s32 sFreeSpaceMag;
   MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
@@ -1011,6 +1019,20 @@ void SePrompt::vSpawnJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* are we currently reading from stdin?                                       */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bStdIn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Input* pInput = this->pInput();
+  if (pInput->bStdIn())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* subsititute lets                                                           */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bSubLet(void)
@@ -1102,7 +1124,7 @@ void SePrompt::vTrackingMemory(bool bTrackingMemory)
   m_bTrackingMemory = bTrackingMemory;
   
   if (bTrackingMemory) {
-    BPA::vObjectSnapshot(m_nObjectsInPool);
+    PoolHelper::vObjectSnapshot(m_nObjectsInPool);
   }
 }
 

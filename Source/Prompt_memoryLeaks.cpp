@@ -39,7 +39,7 @@ bool Prompt::bPrompt_memoryLeaks(SePrompt* pPrompt)
     bFatal = true;
 
   i8 iSnapshotObjects[CN_ENUMS];
-  BPA::vObjectSnapshot(&iSnapshotObjects[0]);
+  PoolHelper::vObjectSnapshot(&iSnapshotObjects[0]);
   
   if (AM::bMetadata()) {
     vTrace("metadata: (objectName VARCHAR, count INTEGER)\n"_Stz);

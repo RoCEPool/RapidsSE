@@ -43,6 +43,7 @@ namespace TokenStream
   
     void vTokenise(Stz* aCommand);
     void vUseStdin(void);
+    bool bStdIn(void);
     
     Footer* aFooter(void);
   };
