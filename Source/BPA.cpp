@@ -4,6 +4,8 @@
 
 #include "Utilities.h"
 
+extern eHT geWhichHeap[];
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -60,11 +62,12 @@ void BPA::vDeltaReport(s48K& rsPortrait)
 
     rsPortrait.vSprintCat(
       "%s "
-      "%-6lld eCN %3lld:%12s \n"_Stz,
+      "%-6lld eCN %3lld %s:%12s \n"_Stz,
       Stz::szTab(1),
                           
       m_naObjectsAtDump[eClass] - m_naObjectsAtTake[eClass],
       eClass,
+      aHT_short[ geWhichHeap[eClass] ],
       aCN[eClass]
                           
       );

@@ -341,7 +341,7 @@ i8 giClassSize[]
 {
   /* */ 0,                          // CN_NONE
   
-  /* */ 'A'-'A' + 1,                // CN__A__
+  /* */ 'A' - ('A' - 1),            // CN__A__
   /* */ sizeof(AccessPath),         // CN_ACCESSPATH
   /* */ sizeof(Arg),                // CN_ARG
   /* */ sizeof(Arguments),          // CN_ARGUMENTS
@@ -349,7 +349,7 @@ i8 giClassSize[]
   /* */ sizeof(Atomic),             // CN_ATOMIC
   /* */ sizeof(AttachMap),          // CN_ATTACHMAP
 
-  /* */ 'B'-'A' + 1,                // CN__B__
+  /* */ 'B' - ('A' - 1),            // CN__B__
   /* */ sizeof(BcdVal),             // CN_BCDVAL
   /* */ sizeof(Birth),              // CN_BIRTH
   /* */ sizeof(BolVal),             // CN_BOLVAL
@@ -360,7 +360,7 @@ i8 giClassSize[]
   /* */ sizeof(ByteRate),           // CN_BYTERATE
   /* */ sizeof(s32),                // CN_BYTES_T
 
-  /* */ 'C'-'A' + 1,                // CN__C__
+  /* */ 'C' - ('A' - 1),            // CN__C__
   /* */ sizeof(Calculator),         // CN_CALCULATOR
   /* */ sizeof(CarryOver),          // CN_CARRYOVER
   /* */ sizeof(Catalog),            // CN_CATALOG
@@ -380,7 +380,7 @@ i8 giClassSize[]
   /* */ sizeof(CrwBuffer),          // CN_CRWBUFFER
   /* */ sizeof(CsvBuffer),          // CN_CSVBUFFER
 
-  /* */ 'D'-'A' + 1,                // CN__D__
+  /* */ 'D' - ('A' - 1),            // CN__D__
   /* */ sizeof(Datum_h),            // CN_DATUM
   /* */ sizeof(DecaCnt),            // CN_DECACNT
   /* */ sizeof(Decider),            // CN_DECIDER
@@ -391,7 +391,7 @@ i8 giClassSize[]
   /* */ sizeof(DteVal),             // CN_DTEVAL
   /* */ sizeof(Dynamo),             // CN_DYNAMO
 
-  /* */ 'E'-'A' + 1,                // CN__E__
+  /* */ 'E' - ('A' - 1),            // CN__E__
   /* */ sizeof(EdtVal),             // CN_EDTVAL
   /* */ sizeof(Encoding),           // CN_ENCODING
   /* */ sizeof(EnameSet),           // CN_ENMSET
@@ -401,7 +401,7 @@ i8 giClassSize[]
   /* */ sizeof(EnumFlags),          // CN_ENUMFLAGS
   /* */ sizeof(ExtractRow),         // CN_EXTRACTROW
 
-  /* */ 'F'-'A' + 1,                // CN__F__
+  /* */ 'F' - ('A' - 1),            // CN__F__
   /* */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
   /* */ sizeof(Fifo),               // CN_FIFO
   /* */ sizeof(File),               // CN_FILE
@@ -430,16 +430,16 @@ i8 giClassSize[]
   /* */ 0,                          // CN_FREEITEM
   /* */ sizeof(FreqDist),           // CN_FREQDIST
 
-  /* */ 'G'-'A' + 1,                // CN__G__
+  /* */ 'G' - ('A' - 1),            // CN__G__
   /* */ sizeof(Grid),               // CN_GRID
   
-  /* */ 'H'-'A' + 1,                // CN__H__
+  /* */ 'H' - ('A' - 1),            // CN__H__
   /* */ sizeof(HashBuffer),         // CN_HASHBUFFER
   /* */ sizeof(HashMap),            // CN_HASHMAP
   /* */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
   /* */ sizeof(SP_Row),             // CN_HPROW
 
-  /* */ 'I'-'A' + 1,                // CN__I__
+  /* */ 'I' - ('A' - 1),            // CN__I__
   /* */ sizeof(Index),              // CN_INDEX
   /* */ sizeof(IndexDef),           // CN_INDEXDEF
   /* */ sizeof(IndexTree),          // CN_INDEXTREE
@@ -455,7 +455,7 @@ i8 giClassSize[]
   /* */ sizeof(IrwBuffer),          // CN_IRWBUFFER
   /* */ sizeof(IvlVal),             // CN_IVLVAL
 
-  /* */ 'J'-'A' + 1,                // CN__J__
+  /* */ 'J' - ('A' - 1),            // CN__J__
   /* */ sizeof(Job__Find),          // CN_JOB__FIND
   /* */ sizeof(Job_Boot),           // CN_JOB_BOOT
   /* */ sizeof(Job_CopyBuffer),     // CN_JOB_COPYBUFFER
@@ -481,10 +481,10 @@ i8 giClassSize[]
   /* */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
   /* */ sizeof(Heap), // correct    // CN_JUMBOTRANSIENT
   
-  /* */ 'K'-'A' + 1,                // CN__K__
+  /* */ 'K' - ('A' - 1),            // CN__K__
   /* */ sizeof(Key),                // CN_KEY
   
-  /* */ 'L'-'A' + 1,                // CN__L__
+  /* */ 'L' - ('A' - 1),            // CN__L__
   /* */ sizeof(Heap), // correct    // CN_LARGEPERSISTENT
   /* */ sizeof(Heap), // correct    // CN_LARGETRANSIENT
   /* */ sizeof(Lexicon),            // CN_LEXICON
@@ -496,14 +496,14 @@ i8 giClassSize[]
   /* */ sizeof(Log),                // CN_LOG
   /* */ sizeof(LogEntry),           // CN_LOGENTRY
 
-  /* */ 'M'-'A' + 1,                // CN__M__
+  /* */ 'M' - ('A' - 1),            // CN__M__
   /* */ sizeof(Marker),             // CN_MARKER
   /* */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
   /* */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
   /* */ sizeof(MemTest),            // CN_MEMTEST
   /* */ sizeof(Mutex),              // CN_MUTEX
 
-  /* */ 'N'-'A' + 1,                // CN__N__
+  /* */ 'N' - ('A' - 1),            // CN__N__
   /* */ sizeof(NextGid),             // CN_NEXTGID
   /* */ sizeof(NmStr),              // CN_NMSTR
   /* */ sizeof(NmStrList),          // CN_NMSTRLIST
@@ -512,14 +512,14 @@ i8 giClassSize[]
   /* */ sizeof(Now),                // CN_NOW
   /* */ sizeof(Numbat),             // CN_NUMBAT
 
-  /* */ 'O'-'A' + 1,                // CN__O__
+  /* */ 'O' - ('A' - 1),            // CN__O__
   /* */ sizeof(Op),                 // CN_OP
   /* */ sizeof(OperandQueue),       // CN_OPERANDQUEUE
   /* */ sizeof(OpSpec),             // CN_OPSPEC
   /* */ sizeof(OpSpecVec),          // CN_OPSPECVEC
   /* */ sizeof(OpVec),              // CN_OPVEC
 
-  /* */ 'P'-'A' + 1,                // CN__P__
+  /* */ 'P' - ('A' - 1),            // CN__P__
   /* */ sizeof(Parser),             // CN_PARSER
   /* */ sizeof(PathVec),            // CN_PATHVEC
   /* */ sizeof(Peruse),             // CN_PERUSE
@@ -534,12 +534,12 @@ i8 giClassSize[]
   /* */ sizeof(PtnColVec),          // CN_PTNCOLVEC
   /* */ sizeof(PtrVal),             // CN_PTRVAL
 
-  /* */ 'Q'-'A' + 1,                // CN__Q__
+  /* */ 'Q' - ('A' - 1),            // CN__Q__
   /* */ sizeof(Queue),              // CN_QUEUE
   /* */ sizeof(QueueBuffer),        // CN_QUEUEBUFFER
   /* */ sizeof(Queues),             // CN_QUEUES
   
-  /* */ 'R'-'A' + 1,                // CN__R__
+  /* */ 'R' - ('A' - 1),            // CN__R__
   /* */ sizeof(ReadApi),            // CN_READAPI
   /* */ sizeof(Record),             // CN_RECORD
   /* */ sizeof(RecordBuffer),       // CN_RECORDBUFFER
@@ -556,7 +556,7 @@ i8 giClassSize[]
   /* */ sizeof(RowOnce),            // CN_ROWONCE
   /* */ sizeof(RowTray),            // CN_ROWTRAY
   
-  /* */ 'S'-'A' + 1,                // CN__S__
+  /* */ 'S' - ('A' - 1),            // CN__S__
   /* */ sizeof(Schema),             // CN_SCHEMA
   /* */ sizeof(SchemaTest),         // CN_SCHEMATEST
   /* */ sizeof(SeeMe),              // CN_SEEME
@@ -618,7 +618,7 @@ i8 giClassSize[]
   /* */ sizeof(StzVal),             // CN_STZVAL
   /* */ sizeof(SysCall),            // CN_SYSCALL
   
-  /* */ 'T'-'A' + 1,                // CN__T__
+  /* */ 'T' - ('A' - 1),            // CN__T__
   /* */ sizeof(Table),              // CN_TABLE
   /* */ sizeof(TableDef),           // CN_TABLEDEF
   /* */ sizeof(TablePtn),           // CN_TABLEPTN
@@ -641,20 +641,20 @@ i8 giClassSize[]
   /* */ sizeof(Tx),                 // CN_TX
   /* */ sizeof(TxSet),              // CN_TXSET
 
-  /* */ 'U'-'A' + 1,                // CN__U__
+  /* */ 'U' - ('A' - 1),            // CN__U__
   
-  /* */ 'V'-'A' + 1,                // CN__V__
+  /* */ 'V' - ('A' - 1),            // CN__V__
   
-  /* */ 'W'-'A' + 1,                // CN__W__
+  /* */ 'W' - ('A' - 1),            // CN__W__
   /* */ sizeof(Wilderness),         // CN_WILDERNESS
   /* */ sizeof(Word),               // CN_WORD
-  /* */ sizeof(WriteBehind),               // CN_WRITEBEHIND
+  /* */ sizeof(WriteBehind),        // CN_WRITEBEHIND
   
-  /* */ 'X'-'A' + 1,                // CN__X__
+  /* */ 'X' - ('A' - 1),            // CN__X__
   
-  /* */ 'Y'-'A' + 1,                // CN__Y__
+  /* */ 'Y' - ('A' - 1),            // CN__Y__
 
-  /* */ 'Z'-'A' + 1,                // CN__Z__
+  /* */ 'Z' - ('A' - 1),            // CN__Z__
   
   /* */ -1
 };
