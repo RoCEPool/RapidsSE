@@ -593,9 +593,11 @@ void SePrompt::vGetCommand(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+    
   Input* pInput = this->pInput();
-  
+  if (pInput->bStdIn())
+    vDebugPoint();
+    
   pInput->vGetCommand();
 }
 
@@ -1014,6 +1016,20 @@ void SePrompt::vSpawnJob(void)
   
   bool bSpawned = Api::bSpawnJob(m_pJob);
   RASSERT(bSpawned);
+}
+
+/*----------------------------------------------------------------------------*/
+/* are we currently reading from stdin?                                       */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bStdIn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Input* pInput = this->pInput();
+  if (pInput->bStdIn())
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/

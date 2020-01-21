@@ -91,6 +91,7 @@ namespace Prompt
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     void vSpawnJob(void);
+    bool bStdIn(void);
     bool bSubLet(void);
     TokenVec* pTknVec(void);
     void vTrackingMemory(bool bTrackMemory);
