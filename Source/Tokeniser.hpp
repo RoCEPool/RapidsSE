@@ -18,7 +18,6 @@ namespace TokenStream
     s48K m_sToken;  // current token
     eTN  m_eToken;  // token type
 
-    s256  m_sPrompt;    // normal prompt
     s256  m_sContinue;  // continuation prompt
 
     // must be last
@@ -48,7 +47,6 @@ namespace TokenStream
     void vNextToken(void);
     void vNormal(bool bNormal);
     bool bPop(void);
-    void vPrompt(Stz* szPrompt);
     void vPush(void);
     bool bStdin(void);
     TokenVec* pTknVec(void);
