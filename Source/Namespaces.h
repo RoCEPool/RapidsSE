@@ -81,7 +81,7 @@ namespace Threads       { class Thread;                                       }
 namespace TokenStream   { class Input; class Parser; class Tokeniser;
                           class TokenVec;                                     }
 namespace Transactions  { class Tx; class TxSet;                              }
-namespace Utilities     { class BPA;                                          }
+namespace Utilities     { class BPA; class PoolHelper;                        }
 namespace Verbs         {                                                     }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
