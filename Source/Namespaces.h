@@ -70,6 +70,7 @@ namespace Scheduling    { class Queues; class Scheduler;                      }
 namespace SenVM         { class Dic; class DicStack; class Forth; class Word; }
 namespace Services      {                                                     }
 namespace Sessions      { class Request; class Session; class SessionState;   }
+namespace SharedMemory  {                                                     }
 namespace SortBuffers   {                                                     }
 namespace SqlValues     {                                                     }
 namespace Steps         { class Step; class StepTiming;                       }
@@ -133,6 +134,7 @@ using namespace Scheduling;
 using namespace SenVM;
 using namespace Services;
 using namespace Sessions;
+using namespace SharedMemory;
 using namespace SortBuffers;
 using namespace SqlValues;
 using namespace Steps;
