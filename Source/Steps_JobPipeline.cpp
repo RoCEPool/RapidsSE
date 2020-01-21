@@ -120,6 +120,8 @@ void Step::vJob_PipelineCompile(void)
   bool bResult = m_pRegSet->m_xpDynamo->bCompile(m_pTask->m_pJob);
   
   if ( ! bResult) {
+    delete *m_pRegSet->m_xpDynamo;
+    m_pRegSet->m_xpDynamo = nullptr;
     m_pDataStack->vPushInt(EC_INVALID_COMMAND);
   }
   else {
