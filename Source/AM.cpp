@@ -261,7 +261,7 @@ bool AM::bJobIsForeign(i8 iJobId) {
 void AM::vLogArguments(void) {
   gxArguments.vLog();
 }
-void AM::vPoolAnalyze(void)   { return BPA::vPoolAnalyze(); }
+void AM::vPoolAnalyze(void)   { return PoolHelper::vPoolAnalyze(); }
 
 eEC AM::ePopulateJob(Job* pJob, TokenVec* pTknVec)
 {

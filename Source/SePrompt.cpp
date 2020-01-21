@@ -729,7 +729,7 @@ void SePrompt::vLogFreeSpace(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
-  i8 iFreeSpaceInPool = BPA::iPoolFree();
+  i8 iFreeSpaceInPool = PoolHelper::iPoolFree();
   
   s32 sFreeSpaceMag;
   MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
@@ -1102,7 +1102,7 @@ void SePrompt::vTrackingMemory(bool bTrackingMemory)
   m_bTrackingMemory = bTrackingMemory;
   
   if (bTrackingMemory) {
-    BPA::vObjectSnapshot(m_nObjectsInPool);
+    PoolHelper::vObjectSnapshot(m_nObjectsInPool);
   }
 }
 
