@@ -170,14 +170,6 @@ bool Dynamo::bCompile(Job* pJob)
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
 #endif
   
-//  bResult = bPhase3_flatten();
-//  if (! bResult)
-//    return false;
-//  
-//  m_pPipelineSpec->vPrint();
-//  
-//  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
-  
 #ifdef WITH_TRACE_DYNAMO
   m_pPipelineSpec->vPrint();
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
@@ -216,8 +208,11 @@ bool Dynamo::bPhase1_collect(Job* pJob)
     return false;
   }
   
-  while (m_pTkn->bSame("stage"_Stz))
+  while (m_pTkn->bSame("stage"_Stz)) {
     bResult = bCollectStage(pJob);
+    if ( ! bResult )
+      return bResult;
+  }
   
   bResult = bCollectEnd();
 
@@ -291,7 +286,9 @@ bool Dynamo::bCollectStage(Job* pJob)
   
   vAcceptToken();
   
-  bCollectTopology();
+  bool bResult = bCollectTopology();
+  if ( ! bResult )
+    return false;
   
   if (bIsOperator(m_pTkn))
     bCollectPipe(pJob);
@@ -312,6 +309,8 @@ bool Dynamo::bCollectTopology(void)
   
   if (m_pTkn->bSame("on"_Stz))
     vAcceptToken();
+  else
+    return false;
   
   // -- -- -- -- -- -- -- -- -- -- --
   // on all nodes | partitions :
@@ -338,7 +337,7 @@ bool Dynamo::bCollectTopology(void)
     // -- -- -- -- -- -- -- -- -- -- --
     // on all partitions :
     
-    if (m_pTkn->bSame("partitions"_Stz)) {
+    else if (m_pTkn->bSame("partitions"_Stz)) {
       vAcceptToken();
       
       if (m_pTkn->bSame(":"_Stz)) {
@@ -350,12 +349,14 @@ bool Dynamo::bCollectTopology(void)
         return true;
       }
     }
+    else
+      return false;
   }
  
   // -- -- -- -- -- -- -- -- -- -- --
   // on node <nodeNm> :
   
-  if (m_pTkn->bSame("node"_Stz)) {
+  else if (m_pTkn->bSame("node"_Stz)) {
     vAcceptToken();
     
     s32 sLocus(m_pTkn->szText());
@@ -375,7 +376,7 @@ bool Dynamo::bCollectTopology(void)
   // -- -- -- -- -- -- -- -- -- -- --
   // on partition <nodeNm> :
   
-  if (m_pTkn->bSame("partition"_Stz)) {
+  else if (m_pTkn->bSame("partition"_Stz)) {
     vAcceptToken();
     
     s32 sLocus(m_pTkn->szText());
@@ -395,7 +396,7 @@ bool Dynamo::bCollectTopology(void)
   // -- -- -- -- -- -- -- -- -- -- --
   // on origin :
   
-  if (m_pTkn->bSame("origin"_Stz)) {
+  else if (m_pTkn->bSame("origin"_Stz)) {
     vAcceptToken();
     
     if (m_pTkn->bSame(":"_Stz)) {
@@ -407,7 +408,9 @@ bool Dynamo::bCollectTopology(void)
       return true;
     }
   }
-
+  else
+    return false;
+  
   // -- -- -- -- -- -- -- -- -- -- --
   // :
   
@@ -419,7 +422,6 @@ bool Dynamo::bCollectTopology(void)
     m_pStageSpec->vTopology(PO_NONE);
     return true;
   }
-  
 
   // -- -- -- -- -- -- -- -- -- -- --
 #ifdef WITH_TRACE_DYNAMO

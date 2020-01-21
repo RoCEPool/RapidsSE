@@ -1,0 +1,110 @@
+/*----------------------------------------------------------------------------*/
+/* pipelineSyntax.test -- Pipeline syntax tests                               */
+/*----------------------------------------------------------------------------*/
+
+// begin tracking memory
+trackMemory;
+success
+
+// missing pipeline name
+pipeline
+begin
+
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+  scanOp OpTable | stageC
+
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
+
+end
+;
+failure contains: 'invalid command'
+
+// missing begin
+pipeline testPipeline
+
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+  scanOp OpTable | stageC
+
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
+
+  end
+;
+failure contains: 'invalid command'
+
+// missing stage
+pipeline testPipeline
+begin
+  stageA on origin:
+  startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+  scanOp OpTable | stageC
+
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
+
+end
+;
+failure contains: 'invalid command'
+
+// missing on
+pipeline testPipeline
+begin
+  stage stageA origin:
+  startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+  scanOp OpTable | stageC
+
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
+
+end
+;
+failure contains: 'invalid command'
+
+// missing origin/all partitions
+pipeline testPipeline
+begin
+  stage stageA on:
+  startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+  scanOp OpTable | stageC
+
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
+
+end
+;
+failure contains: 'invalid command'
+
+// get memory leaks
+memoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  // drop the table
+  drop table OpTable1;
+  mute
+
+  // drop the table
+  drop table OpTable2;
+  mute
+
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
