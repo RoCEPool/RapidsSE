@@ -270,9 +270,9 @@ bool BufferPool::bDetachPool(void)
   
   SysCall oSysCall;
   
-  bool bResult = Shm::bClose(m_iShmFD,oSysCall);
+  bool bResult = ShmLib::bClose(m_iShmFD,oSysCall);
   
-  bResult = Shm::bUnmap(m_pBase,AM::iRegionSize(),oSysCall);
+  bResult = ShmLib::bUnmap(m_pBase,AM::iRegionSize(),oSysCall);
   
   return bResult;
 }

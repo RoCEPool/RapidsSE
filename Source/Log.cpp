@@ -85,24 +85,24 @@ Log* Log::pAttachCreate(void)
   s32 sLogRegionNm((Stz*)C_LOG_REGION);
   
   // unlink the name of any previous segment
-  IGNORE_RETURN( Shm::bUnlink(sLogRegionNm,oSysCall) );
+  IGNORE_RETURN( ShmLib::bUnlink(sLogRegionNm,oSysCall) );
   
   // open a new shm region
-  bResult = Shm::bOpenCreate(iRegionFd,sLogRegionNm,oSysCall);
+  bResult = ShmLib::bOpenCreate(iRegionFd,sLogRegionNm,oSysCall);
   if (! bResult)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Log::bOpenCreate: failed to create region %s\n"_Stz,
            sLogRegionNm.azChar());
   
   // extend the shm region
-  bResult = Shm::bExtend(iRegionFd,sizeof(Log),oSysCall);
+  bResult = ShmLib::bExtend(iRegionFd,sizeof(Log),oSysCall);
   if (! bResult)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Log::bOpenCreate: failed to extend region %s\n"_Stz,
            sLogRegionNm.azChar());
   
   // map the shm region into a vm segment within this process address space
-  void* aSegment = Shm::aMap(iRegionFd,
+  void* aSegment = ShmLib::aMap(iRegionFd,
                              nullptr,
                              sizeof(Log),
                              C_NO_HUGE_PAGES,
@@ -127,21 +127,21 @@ Log* Log::pAttachExisting(void)
   s32 sLogRegionNm((Stz*)C_LOG_REGION);
 
   // open existing shm region
-  bool bResult = Shm::bOpenExisting(iFD,sLogRegionNm,oSysCall);
+  bool bResult = ShmLib::bOpenExisting(iFD,sLogRegionNm,oSysCall);
   if (! bResult)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Log::bOpenExisting: failed to open region: %s\n"_Stz,
            sLogRegionNm.azChar());
   
   // map the shm region into a vm segment within this process address space
-  void* aSegment = Shm::aMap(iFD,
+  void* aSegment = ShmLib::aMap(iFD,
                              nullptr,
                              sizeof(Log),
                              C_NO_HUGE_PAGES,
                              oSysCall);
   if (! aSegment)  {
     vTrace("Log::bOpenExisting: failed to map\n"_Stz);
-    Shm::bClose(iFD,oSysCall);
+    ShmLib::bClose(iFD,oSysCall);
     NEVER_REACH;
   }
   

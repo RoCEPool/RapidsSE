@@ -17,7 +17,7 @@ bool Region::bAttach(s32& sRegionName, bool bVerbose, void* aRegionAddr)
   bool bResult;
   
   // open existing shm region
-  bResult = Shm::bOpenExisting(iFD,sRegionName,oSysCall);
+  bResult = ShmLib::bOpenExisting(iFD,sRegionName,oSysCall);
   if ( ! bResult ) {
     vTrace("Engine::vAttach: failed to open region: %s\n"_Stz,
            sRegionName.azChar());
@@ -25,14 +25,14 @@ bool Region::bAttach(s32& sRegionName, bool bVerbose, void* aRegionAddr)
   }
   
   // allocate a temporary extent of memory
-  gaSeShmRegion = (Header*)Shm::aMap(iFD,
+  gaSeShmRegion = (Header*)ShmLib::aMap(iFD,
                                      aRegionAddr,
                                      10_MB,
                                      C_NO_HUGE_PAGES,
                                      oSysCall);
   if (! gaSeShmRegion)  {
     vTrace("Engine::vAttach failed to map\n"_Stz);
-    Shm::bClose(iFD,oSysCall);
+    ShmLib::bClose(iFD,oSysCall);
     return false;
   }
   
@@ -48,13 +48,13 @@ bool Region::bAttach(s32& sRegionName, bool bVerbose, void* aRegionAddr)
   AM::vAttachMap(nullptr);
 
   // close the temporary mapping
-  bResult = Shm::bClose(iFD,oSysCall);
-  bResult = Shm::bUnmap(gaSeShmRegion,10_MB,oSysCall);
+  bResult = ShmLib::bClose(iFD,oSysCall);
+  bResult = ShmLib::bUnmap(gaSeShmRegion,10_MB,oSysCall);
   
   //--------------------------------------------------------------------------
   
   // reopen the existing shm region
-  bResult = Shm::bOpenExisting(iFD,sRegionName,oSysCall);
+  bResult = ShmLib::bOpenExisting(iFD,sRegionName,oSysCall);
   if ( ! bResult ) {
     vTrace("Engine::vAttach: failed to open region: %s\n"_Stz,
            sRegionName.azChar());
@@ -62,14 +62,14 @@ bool Region::bAttach(s32& sRegionName, bool bVerbose, void* aRegionAddr)
   }
   
   // map the full extent of memory required
-  gaSeShmRegion = (Header*)Shm::aMap(iFD,
+  gaSeShmRegion = (Header*)ShmLib::aMap(iFD,
                                      aRegionAddr,
                                      iRegionSize,
                                      C_NO_HUGE_PAGES,
                                      oSysCall);
   if (! gaSeShmRegion)  {
     vTrace("Engine::vAttach failed to map\n"_Stz);
-    Shm::bClose(iFD,oSysCall);
+    ShmLib::bClose(iFD,oSysCall);
     return false;
   }
   
@@ -77,7 +77,7 @@ bool Region::bAttach(s32& sRegionName, bool bVerbose, void* aRegionAddr)
   gpBufferPool = reinterpret_cast<BufferPool*>(gaSeShmRegion);
   
   if (bVerbose)
-    vTrace("Shm mapped at %p\n"_Stz,gaSeShmRegion);
+    vTrace("ShmLib mapped at %p\n"_Stz,gaSeShmRegion);
   
   return true;
 }
@@ -108,7 +108,7 @@ void Region::vCreate(s32& sRegionName, bool bVerbose,
            iRegionSize);
   
   // open a new shm region which will contain the activity map
-  bResult = Shm::bOpenCreate(iRegionFd,sRegionName,oSysCall);
+  bResult = ShmLib::bOpenCreate(iRegionFd,sRegionName,oSysCall);
   if (! bResult)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Engine::vCreate: failed to create region %s; errno %lld %s\n"_Stz,
@@ -117,14 +117,14 @@ void Region::vCreate(s32& sRegionName, bool bVerbose,
            strerror((int)oSysCall.iError()));
 
   // extend the shm region
-  bResult = Shm::bExtend(iRegionFd,iRegionSize,oSysCall);
+  bResult = ShmLib::bExtend(iRegionFd,iRegionSize,oSysCall);
   if (! bResult)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Engine::vCreate: failed to extend region %s\n"_Stz,
            sRegionName.azChar());
   
   // map the shm region into a vm segment within this process address space
-  gaSeShmRegion = (Header*)Shm::aMap(iRegionFd,
+  gaSeShmRegion = (Header*)ShmLib::aMap(iRegionFd,
                                      aRegionAddr,
                                      iRegionSize,
                                      C_NO_HUGE_PAGES,
@@ -139,17 +139,17 @@ void Region::vCreate(s32& sRegionName, bool bVerbose,
 
   
   if (bVerbose)
-    vTrace("Shm mapped at %p\n"_Stz,gaSeShmRegion);
+    vTrace("ShmLib mapped at %p\n"_Stz,gaSeShmRegion);
   
   // lock the shared memory in
   if (bLock) {
-    bResult = Shm::bLock(gaSeShmRegion,iRegionSize,oSysCall);
+    bResult = ShmLib::bLock(gaSeShmRegion,iRegionSize,oSysCall);
     if (! bResult)
       vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
              "Engine::vAttach failed to lock\n"_Stz);
     
     if (bVerbose)
-      vTrace("Shm pages locked in memory\n"_Stz);
+      vTrace("ShmLib pages locked in memory\n"_Stz);
   }
   
 }
@@ -163,11 +163,11 @@ bool Region::bTest(s32& sRegionName)
   SysCall oSysCall;
   
   // open existing shm region
-  bool bResult = Shm::bOpenExisting(iFD,sRegionName,oSysCall);
+  bool bResult = ShmLib::bOpenExisting(iFD,sRegionName,oSysCall);
   if ( ! bResult )
     return false;
   
-  bResult = Shm::bClose(iFD,oSysCall);
+  bResult = ShmLib::bClose(iFD,oSysCall);
   
   return true;
 }
@@ -179,7 +179,7 @@ void Region::vUnlink(s32& sRegionName)
 {
   SysCall oSysCall;
   
-  if (! Shm::bUnlink(sRegionName,oSysCall))
+  if (! ShmLib::bUnlink(sRegionName,oSysCall))
     vTrace("Region %s not unlinked\n"_Stz,sRegionName.azChar());
 }
 
@@ -197,7 +197,7 @@ void* Region::aOpen(s32& sRegionName, void* aRegionAddr, int& iFD)
   //  vInfo("Region::pOpen %s\n"_Stz,sRegionName.azChar());
   
   // open shm region
-  bResult = Shm::bOpenExisting(iFD,sRegionName,oSysCall);
+  bResult = ShmLib::bOpenExisting(iFD,sRegionName,oSysCall);
   if ( ! bResult ) {
     vTrace("Region::pOpen: failed to open region: %s\n"_Stz,
            sRegionName.azChar());
@@ -205,14 +205,14 @@ void* Region::aOpen(s32& sRegionName, void* aRegionAddr, int& iFD)
   }
   
   // allocate a temporary extent of memory
-  void* aRegion = Shm::aMap(iFD,
+  void* aRegion = ShmLib::aMap(iFD,
                             aRegionAddr,
                             10_MB,
                             C_NO_HUGE_PAGES,
                             oSysCall);
   if ( ! aRegion )  {
     vTrace("Region::pOpen failed to map\n"_Stz);
-    Shm::bClose(iFD,oSysCall);
+    ShmLib::bClose(iFD,oSysCall);
     return nullptr;
   }
   
@@ -228,8 +228,8 @@ void Region::vClose(void* aRegionAddr, int iFD)
   SysCall oSysCall;
   
   // close the temporary mapping
-  bResult = Shm::bClose(iFD,oSysCall);
-  bResult = Shm::bUnmap(aRegionAddr,10_MB,oSysCall);
+  bResult = ShmLib::bClose(iFD,oSysCall);
+  bResult = ShmLib::bUnmap(aRegionAddr,10_MB,oSysCall);
 }
 
 /*============================================================================*/
