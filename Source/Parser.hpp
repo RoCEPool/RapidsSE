@@ -16,7 +16,6 @@ namespace TokenStream
     
     // input sources
     eIS     m_eSource;   // what source are we parsing? given file or given string?
-    s256    m_sPrompt;   // user prompt when reading from stdin
     File    m_oFile;     // given file
     bool    m_bLineMode; // line mode?
     s48K    m_sRawLine;  // either raw line read from file or given string
@@ -48,7 +47,7 @@ namespace TokenStream
    
     
     // Options
-    void vPrompt(Stz* szPrompt);
+
     void vLineMode(bool bLineMode);
     
     // Use What
