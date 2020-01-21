@@ -2,7 +2,7 @@
 /* SlabAllocator.cpp - slab allocator                                         */
 /*============================================================================*/
 
-#include "Pool.h"
+#include "Gadgets.h"
 
 /*----------------------------------------------------------------------------*/
 /* fetch a new buffer from buffer pool                                        */

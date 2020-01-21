@@ -28,6 +28,8 @@ namespace Gadgets
 #include "Now.hpp"
 #include "Rand.hpp"
 #include "SeeMe.hpp"
+#include "Slab.hpp"
+#include "SlabAllocator.hpp"
 #include "Sleep.hpp"
 #include "Scan.hpp"
 #include "Sprint.hpp"
