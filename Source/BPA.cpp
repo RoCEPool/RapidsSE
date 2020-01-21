@@ -110,6 +110,26 @@ void BPA::vObjectReport(s48K& rsPortrait)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/* calc delta of objects                                                      */
+/*----------------------------------------------------------------------------*/
+i8 BPA::nObjectDelta(void)
+{
+  BPA::vObjectSnapshot(m_naObjectsAtDump);
+  
+  i8 nDelta = 0;
+  
+  for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {
+    
+    eCN eClass = (eCN)i_Object;
+    if (m_naObjectsAtDump[eClass] == m_naObjectsAtTake[eClass])
+      continue;
+    
+    nDelta += (m_naObjectsAtDump[eClass] - m_naObjectsAtTake[eClass]);
+  }
+  
+  return nDelta;
+}
 
 /*----------------------------------------------------------------------------*/
 /* summary report on objects in the pool                                      */
@@ -187,24 +207,11 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calc delta of objects                                                      */
+/* reset take counts                                                          */
 /*----------------------------------------------------------------------------*/
-i8 BPA::nObjectDelta(void)
+void BPA::vReset(void)
 {
-  BPA::vObjectSnapshot(m_naObjectsAtDump);
-  
-  i8 nDelta = 0;
-  
-  for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {
-    
-    eCN eClass = (eCN)i_Object;
-    if (m_naObjectsAtDump[eClass] == m_naObjectsAtTake[eClass])
-      continue;
-    
-    nDelta += (m_naObjectsAtDump[eClass] - m_naObjectsAtTake[eClass]);
-  }
-  
-  return nDelta;
+  vEpochTake();
 }
 
 /*============================================================================*/

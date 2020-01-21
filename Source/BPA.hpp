@@ -27,6 +27,7 @@ namespace Utilities
     i8   nObjectDelta(void);
     void vObjectReport(s48K& rsReport);
     void vObjectSnapshot(i8* pCountObjects);
+    void vReset(void);
 
     Footer* aFooter(void);
   };
