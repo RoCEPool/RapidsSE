@@ -8,15 +8,15 @@ namespace TokenStream
   class Tokeniser : public Object
   {
   private:
-    TokenVec  m_xTokenVec;  // token vector
-    Parser*   m_pParser; // parser
+    TokenVec m_xTokenVec;  // token vector
+    Parser*  m_pParser; // parser
   
-    bool m_bMalloc; // malloc or pool heap?
-    bool m_bNormal; // normal tokens?
-    char m_cParsedChar;   // character from parser
+    bool m_bMalloc;     // malloc or pool heap?
+    bool m_bNormal;     // normal tokens?
+    char m_cParsedChar; // character from parser
     
-    s48K m_sToken;  // current token
-    eTN  m_eToken;  // token type
+    s48K m_sToken;      // current token
+    eTN  m_eToken;      // token type
 
     // must be last
     Footer m_xFooter;    
@@ -26,7 +26,7 @@ namespace TokenStream
     void  operator delete(void*);
     
     Tokeniser(void);
-    ~Tokeniser(void) noexcept(false);
+  ~Tokeniser(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static TokenVec* pTokenise(Stz* szString);
