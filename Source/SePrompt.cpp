@@ -5,6 +5,9 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
+#include "Arguments.hpp" //! Must fix!
+extern Arguments gxArguments;
+
 extern AttachMap*    gpAttachMap;
 extern JobCatalog    gxJobCatalog;
 extern PromptCatalog gxPromptCatalog;
@@ -881,6 +884,46 @@ void SePrompt::vPromptUser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  if (gxArguments.m_bSethScript)
+    return;
+  
+  bool bHasStarted = AM::bHasStarted();
+
+  bool bLowMem = gpBufferPool->bLowMemory();
+  
+
+  if (! AM::bDeveloper()) {
+    vInfo("se> "_Stz);
+    fflush(stdin);
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Stz* szNodeNm = AM::szNodeNm();
+  i8 iPid = Process::iGetPid();
+
+  vInfo("[%s %lld] "
+        "%s%s%s"
+        "se %s%c %s> "_Stz,
+        
+        szNodeNm,
+        iPid,
+        
+        AM::bBootError()      ? "*BOOTERROR* " : "",
+        bLowMem               ? "*LOWMEM* "    : "",
+        AM::pStepTiming()     ? "*STEPTIMING*" : "",
+        
+        RAPIDSSE_VERSION_STRING,
+  #ifdef WITH_DEBUG_VERSION
+        'd',
+  #else
+        'r',
+  #endif
+        bHasStarted           ? "has" : "not"
+        );
+
+  fflush(stdin);
 }
 
 /*----------------------------------------------------------------------------*/
