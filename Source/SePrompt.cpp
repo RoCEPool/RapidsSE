@@ -132,6 +132,9 @@ void SePrompt::vPromptLoop(void)
   
   while (bContinue()) {
     
+    if (bStdIn())
+      vPromptUser();
+    
      vGetCommand();
        
     if (bBlankLine()) {
@@ -869,6 +872,15 @@ i8 SePrompt::iPromptId(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_iFocalId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt the user for input                                                  */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vPromptUser(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
 }
 
 /*----------------------------------------------------------------------------*/
