@@ -24,9 +24,14 @@ PromptFun __Prompt_objects (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_objects(SePrompt* pPrompt)
 {
+  s48K sReport;
+  pPrompt->pBPA()->vObjectReport(sReport);
+  
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Objects List\n"_Stz);
+  vTrace("Objects Currently in Buffer Pool\n"_Stz);
   vTrace("------------------------------------\n"_Stz);
+  
+  vTrace("%s"_Stz,sReport.szStz());
   
   return true;
 }

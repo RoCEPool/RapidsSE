@@ -51,6 +51,7 @@ namespace Prompt
     // these are the prompt.xyz task primitives
     void vBeginRequest(void);
     bool bBlankLine(void);
+    BPA* pBPA(void);
     void vCheckJobCtl(void);
     void vCheckTimed(void);
     i8   iCommandFocal(void);

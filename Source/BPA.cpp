@@ -43,7 +43,7 @@ BPA::~BPA(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump all objects in given heap                                             */
 /*----------------------------------------------------------------------------*/
-void BPA::vEpochDump(s48K& sPortrait)
+void BPA::vEpochDump(s48K& rsPortrait)
 {
   //vTrace("\n"_Stz);
   //vTrace("%sWords created since last epoch:\n"_Stz,Stz::szTab(1));
@@ -52,7 +52,7 @@ void BPA::vEpochDump(s48K& sPortrait)
   
   BPA::vObjectSnapshot(m_naObjectsAtDump);
   
-  sPortrait.vSprintCat("Objects created since last epoch:\n"_Stz);
+  rsPortrait.vSprintCat("Objects created since last epoch:\n"_Stz);
 
   for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {
     
@@ -61,7 +61,7 @@ void BPA::vEpochDump(s48K& sPortrait)
     if (m_naObjectsAtDump[eClass] == m_naObjectsAtTake[eClass])
       continue;
     
-    sPortrait.vSprintCat(
+    rsPortrait.vSprintCat(
       "%s  %12s (eCN %3lld) %-6lld \n"_Stz,
       Stz::szTab(1),
       aCN[eClass],
@@ -80,6 +80,34 @@ void BPA::vEpochTake(void)
   // increment the epoch
   AM::iNextEpoch();
   BPA::vObjectSnapshot(m_naObjectsAtTake);
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce report on the object currently in the buffer pool                  */
+/*----------------------------------------------------------------------------*/
+void BPA::vObjectReport(s48K& rsPortrait)
+{
+  BPA::vObjectSnapshot(m_naObjectsAtDump);
+  
+  for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {
+    
+    eCN eClass = (eCN)i_Object;
+        
+    if (! m_naObjectsAtDump[eClass])
+      continue;
+
+    rsPortrait.vSprintCat(
+      "%s "
+      "%-6lld eCN %3lld:%12s \n"_Stz,
+      Stz::szTab(1),
+                          
+      m_naObjectsAtDump[eClass],
+      eClass,
+      aCN[eClass]
+                          
+      );
+  }
+
 }
 
 
