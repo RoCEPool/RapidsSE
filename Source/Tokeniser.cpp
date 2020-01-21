@@ -53,10 +53,6 @@ Tokeniser::Tokeniser(void)
   m_sToken  = ""_Stz;
   m_eToken  = TN_NONE;
   
-  
-  
-  m_sContinue = "  >"_Stz;
-
   _checkInitialised_(CN_TOKENISER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
