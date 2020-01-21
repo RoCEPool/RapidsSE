@@ -22,10 +22,9 @@ namespace Utilities
    ~BPA(void) noexcept(false);
 
   public:
-    static void vObjectSnapshot(i8* pCountObjects);
-  
     void vEpochDump(s48K& sPortrait);
     void vEpochTake(void);
+    void vObjectSnapshot(i8* pCountObjects);
 
     Footer* aFooter(void);
   };
