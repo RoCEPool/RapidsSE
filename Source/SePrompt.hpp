@@ -69,7 +69,7 @@ namespace Prompt
     bool bFindMatch(void);
     void vFocalOutline(s4K& sOutline);
     void vGetCommand(void);
-     Input* pInput(void);
+    Input* pInput(void);
     bool bIsPromptWord(void);
     void vJobLockMutex(void);
     void vJobUnlockMutex(void);
@@ -86,6 +86,7 @@ namespace Prompt
     void vPromptUser(void);
     void vReformatCommand(void);
     void vRestateCommand(void);
+    void vReportObjects();
     void vReportTime(void);
     Session* pSession(void);
     void vSetJob(void);

@@ -135,10 +135,12 @@ void SePrompt::vPromptLoop(void)
   
   while (bContinue()) {
     
-    if (bStdIn())
+    if (bStdIn()) {
+      //vReportObjects();
       vPromptUser();
-    
-     vGetCommand();
+    }
+
+    vGetCommand();
        
     if (bBlankLine()) {
       if (AM::bDeveloper())
@@ -956,6 +958,27 @@ void SePrompt::vRestateCommand(void)
   
   // -- -- -- -- -- --
   return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* report objects since last command                                          */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vReportObjects(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (! gxArguments.m_bDeveloper)
+    return;
+  
+  if (m_pBPA) {
+    s48K sPortrait;
+    m_pBPA->vEpochDump(sPortrait);
+    m_pBPA->vEpochTake();
+  }
+  else {
+    m_pBPA = new BPA;
+    m_pBPA->vEpochTake();
+  }
 }
 
 /*----------------------------------------------------------------------------*/

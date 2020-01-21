@@ -171,12 +171,12 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   Object* pObject = reinterpret_cast<Object*>(pPopFree());
   
   m_iAllocCount++;
-
-  m_okLock.vDropWrite();
   
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vScribble(pObject,m_iObjectSize,eAllocClass);
 #endif
+  
+  m_okLock.vDropWrite();
   
   //vVerify();
   
