@@ -16,13 +16,12 @@ namespace Pool
     void  operator delete(void*);
 
     PoolBuffer(eCN eClass);
-    ~PoolBuffer(void) noexcept(false);
+   ~PoolBuffer(void) noexcept(false);
   
-  
-    void* aDataArea(void);
-    Stz*  aLastUsableByte(void);
     i8    iBufferNo(void);
     void  vBufferNo(i8 iBufferNo);
+    void* aDataArea(void);
+    Stz*  aLastUsableByte(void);
 
     Footer* aFooter(void);
   
