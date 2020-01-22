@@ -27,7 +27,7 @@
 
 
   // close and delete directory accessor
-  pSeSourceDir dir.close
+  //pSeSourceDir dir.close
   pSeSourceDir dir.delete
 
 

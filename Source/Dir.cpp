@@ -78,6 +78,16 @@ Dir::~Dir(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
+  if (m_aDir) {
+    vWarn("Dir::~Dir dir not closed: %s\n"_Stz,m_sDirPath.azChar());
+
+    vClose();
+    
+    if (m_oSysCall.bHadError())
+      vWarn("Dir::~Dir: dir could not be closed: %s"_Stz,m_sDirPath.azChar());
+  }
+
+  
   -- gixDir;
   AM::vLogRes(SL_INF,this,RA_DIR_DESTRUCT,
               "Dir destruct : %p (%lld dirs exist)"_Stz, //!format-LogRes
