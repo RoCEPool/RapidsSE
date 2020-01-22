@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Scheduling
+namespace Threads
 {
   class Scheduler
   {

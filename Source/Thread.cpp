@@ -3,8 +3,6 @@
 /*============================================================================*/
 
 #include "Threads.h"
-#include "Scheduler.hpp"
-
 
 Atomic gixThread;
 

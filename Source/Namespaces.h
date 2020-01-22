@@ -68,7 +68,7 @@ namespace Records       {                                                     }
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Registers     { class RegSet;                                       }
 namespace Rows          {                                                     }
-namespace Scheduling    { class Queues; class Scheduler;                      }
+namespace Scheduling    {                                                     }
 namespace SenVM         { class Dic; class DicStack; class Forth; class Word; }
 namespace Services      {                                                     }
 namespace Sessions      { class Request; class Session; class SessionState;   }
@@ -80,7 +80,7 @@ namespace StorageEngine { class AttachMap; class Engine;                      }
 namespace Strings       {                                                     }
 namespace Structures    { class Article; class Queue;                         }
 namespace Tasks         { class Task;                                         }
-namespace Threads       { class Thread;                                       }
+namespace Threads       { class Scheduler;  class Thread; class Queues;       }
 namespace TokenStream   { class Input; class Parser; class Tokeniser;
                           class TokenVec;                                     }
 namespace Transactions  { class Tx; class TxSet;                              }

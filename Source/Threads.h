@@ -14,10 +14,15 @@ namespace Threads
 
 //------------------------------------------------------------------------------
 
+
+#include "Scheduler.hpp"
+
 #include "TlsKeys.hpp"
 #include "Thread.hpp"
 #include "ThreadQueue.hpp"
 #include "ThreadVec.hpp"
+
+#include "Queues.hpp"
 
 #include "SP_Thread.hpp"
 

@@ -2,8 +2,7 @@
 /* Queues.cpp -- Collection of the Systems' Queues                            */
 /*============================================================================*/
 
-#include "Scheduling.h"
-
+#include "Threads.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -13,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Queues* Scheduling::_pQueues(void* aAddr)
+Queues* Threads::_pQueues(void* aAddr)
 {
   Queues* pQueues = reinterpret_cast<Queues*>(aAddr);
   
