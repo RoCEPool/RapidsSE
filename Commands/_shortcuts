@@ -12,6 +12,7 @@ shortcut ad article_dump ;
 shortcut ct /flow create table t (a integer);
 shortcut d  _pipeline ;
 shortcut dl _pipelineLineItem ;
+shortcut p _purgeAY;
 shortcut dn _defineNode ;
 shortcut en semantic ;
 shortcut fn forget node node9 abc def;
