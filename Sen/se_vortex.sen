@@ -9,6 +9,32 @@
 /*----------------------------------------------------------------------------*/
 : vortex prompt
 
+  // create a directory accessor
+  dir::new locals| pSeSourceDir |
+
+  // save original dir and change to ../Sen
+  dir::getCurrent locals| pOrigDir |
+
+  // change to source director
+  "../Source" dir::changeCurrent
+  dir::getCurrent "Current working directory now: %v" fmt.print
+
+  // open directory accessor
+  "." pSeSourceDir dir.open assert
+
+
+  "..vortex.." .
+
+
+  // close and delete directory accessor
+  pSeSourceDir dir.close
+  pSeSourceDir dir.delete
+
+
+  // change back to original dir
+  pOrigDir dir::changeCurrent
+  dir::getCurrent "Current working directory now: %v" fmt.print
+
   "Vortexed" .
 ;
 
