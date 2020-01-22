@@ -69,6 +69,7 @@
 "Job_PeriodicOp.sen"     include
 "Job_Ping.sen"           include
 "Job_Pipeline.sen"       include
+"Job_PurgeOp.sen"        include
 "Job_Pwf.sen"            include
 "Job_PythonOp.sen"       include
 "Job_PythonShellOp.sen"  include

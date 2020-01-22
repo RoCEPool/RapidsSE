@@ -479,6 +479,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("JT_PERIODICOP"_Stz,      JT_PERIODICOP);
   /*    */ vAddConstant("JT_PING"_Stz,            JT_PING);
   /*    */ vAddConstant("JT_PIPELINE"_Stz,        JT_PIPELINE);
+  /*    */ vAddConstant("JT_PURGEOP"_Stz,         JT_PURGEOP);
   /*    */ vAddConstant("JT_PWF"_Stz,             JT_PWF);
   /*    */ vAddConstant("JT_PYTHONOP"_Stz,        JT_PYTHONOP);
   /*    */ vAddConstant("JT_PYTHONSHELLOP"_Stz,   JT_PYTHONSHELLOP);

@@ -43,6 +43,7 @@ enum eJT // job type
   /*    */ JT_PERIODICOP,
   /*    */ JT_PING,
   /*    */ JT_PIPELINE,
+  /*    */ JT_PURGEOP,
   /*    */ JT_PWF,
   /*    */ JT_PYTHONOP,
   /*    */ JT_PYTHONSHELLOP,
