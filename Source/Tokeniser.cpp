@@ -215,7 +215,7 @@ void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* collect ';' delimited statement                                            */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vCollectStatement(void)
+void Tokeniser::vCollectStatement(TokenVec* pTokenVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   

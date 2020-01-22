@@ -35,7 +35,7 @@ namespace TokenStream
     static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTokenVec, i8 i_From, i8 i_To);
     static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTokenVec, Stz* sDelimiter, i8 i_From, i8 i_To);
 
-    void vCollectStatement(void);
+    void vCollectStatement(TokenVec* pTokenVec_arg);
     i8   iDepth(void);
     bool bEOF(void);
     void vLineMode(bool bLineMode);

@@ -179,7 +179,7 @@ void Input::vGetCommand(TokenVec* pTknVec_arg)
     return;
   
   // collect till ;
-  m_pTokeniser->vCollectStatement();
+  m_pTokeniser->vCollectStatement(pTknVec_arg);
   
   // stip off ;
   pTknVec_inp()->vStripSemicolon();
