@@ -166,6 +166,30 @@ i8 Key::iGetInt(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get element as int (assuming int)                                          */
+/*----------------------------------------------------------------------------*/
+i8 Key::iGetInt(IdxColVec* pIdxColVec, i8 iElement)
+{
+  i8 nBytes;
+  byte* ayCursor = ayElmSeq();
+  i8 iVal = C_UNKNOWN;
+  
+  for (i8 i_Col = 0; i_Col < pIdxColVec->nItems(); i_Col++) {
+    
+    Column* pCol = pIdxColVec->pGet(i_Col);
+    
+    byte* ayElm = EntWrk::ayEachElm(pCol,nBytes,&ayCursor);
+  
+    if (iElement == i_Col) {
+      iVal  = *(i8*)ayElm;
+      break;
+    }
+  }
+  RASSERT(iVal != C_UNKNOWN);
+  return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* increment the size of the element sequence                                 */
 /*----------------------------------------------------------------------------*/
 void Key::vIncElmSeqSize(i8 nDeltaBytes)

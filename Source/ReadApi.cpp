@@ -184,6 +184,42 @@ void ReadApi::vPurgePriorVersions(t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
+  IdxColVec* pIdxColVec = m_pIndexTree->pIndex()->pIndexDef()->pIdxColVec();
+
+  //m_pIndexTree->vDump(false);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // first position at the first level 0 buffer
+  EntBuffer* pEntBuffer = m_pIndexTree->pFirstH0Buffer();
+  
+  while (pEntBuffer) {
+    
+    vTrace("DELETING...\n"_Stz);
+    Ent* aEnt = pEntBuffer->aLeadEntry();
+    
+    while (aEnt) {
+      
+      // get the key
+      Key* aKey = aEnt->aKey();
+      
+      // get the psp of the Crv entry
+      t8 tCrvPsp = aKey->iGetInt(pIdxColVec, 1);
+      
+      if (tCrvPsp < tPerspective) {
+        aKey->vShow(pIdxColVec);
+        vTrace("\n"_Stz);
+      }
+      else {
+        vTrace("NOT DELETING\n"_Stz);
+        aKey->vShow(pIdxColVec);
+        vTrace("\n"_Stz);
+      }
+      aEnt = pEntBuffer->aNextEntry(aEnt, 0);
+    }
+    
+    pEntBuffer = pEntBuffer->pNextBuffer();
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
