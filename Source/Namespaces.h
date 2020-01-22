@@ -4,6 +4,7 @@
 #pragma once
 
 namespace Alignment     {                                                     }
+namespace Arguments     {                                                     }
 namespace Assembler     {                                                     }
 namespace Base          {                                                     }
 namespace Chunks        { class Format;                                       }
@@ -88,6 +89,7 @@ namespace Verbs         {                                                     }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 using namespace Alignment;
+using namespace Arguments;
 using namespace Assembler;
 using namespace Base;
 using namespace Chunks;

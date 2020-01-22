@@ -15,6 +15,7 @@ extern pFINALIZE *gpFinalize[];
 void StorageEngine::vCheckAllAssumptions(void)
 {
   Alignment::vCheckAssumptions();
+  Arguments::vCheckAssumptions();
   Assembler::vCheckAssumptions();
   Base::vCheckAssumptions();
   Chunks::vCheckAssumptions();
