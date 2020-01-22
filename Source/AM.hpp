@@ -236,6 +236,7 @@ namespace Oblique
     static void vPoolAnalyze(void);
     static eEC ePopulateJob(Job* pJob, TokenVec* pTknVec);
     static void vPrintGlobals(void);
+    static void vPromptCall(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static i8   iRdTimePoint(void);

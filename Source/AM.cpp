@@ -1356,6 +1356,14 @@ void AM::vPrintGlobals(void)
   printf("gaSeShmRegion   @%p : %p\n",&gaSeShmRegion,gaSeShmRegion);
   printf("gpTraceFile     @%p : %p\n",&gpTraceFile,  gpTraceFile);
 }
+void AM::vPromptCall(void)
+{
+  SePrompt* pSePrompt = new SePrompt(gxArgs.m_bCommand);
+  
+  pSePrompt->vPromptLoop();
+  
+  delete pSePrompt;
+}
 
 Index* AM::pReadApiIndex(void) { return gpReadApiIndex; }
 void   AM::vReadApiIndex(Index* pIndex) { gpReadApiIndex = pIndex; }

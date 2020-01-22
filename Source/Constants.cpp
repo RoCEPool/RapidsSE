@@ -693,7 +693,7 @@ void Constants::vAddConstantsCpp(void)
   
   /* 43 */ vAddConstant("SIZEOF_SESSION"_Stz,      sizeof(Session));
   
-  /* 46 */ vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
+  /* 46 */ //vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
   /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Stz,     sizeof(SkipListNL));
   /* 50 */ vAddConstant("SIZEOF_SKIPNODE"_Stz,     sizeof(SkipNode));
   /*    */ vAddConstant("SIZEOF_SLOTS"_Stz,        sizeof(Slots));

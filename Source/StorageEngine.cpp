@@ -44,7 +44,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Pipelines::vCheckAssumptions();
   Plans::vCheckAssumptions();
   Pool::vCheckAssumptions();
-  Prompt::vCheckAssumptions();
+  //Prompt::vCheckAssumptions();
   Registers::vCheckAssumptions();
   Resources::vCheckAssumptions();
   Scheduling::vCheckAssumptions();

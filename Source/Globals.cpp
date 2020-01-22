@@ -7,7 +7,6 @@
 Args     gxArgs;
 FnCatalog     gxFnCatalog;
 JobCatalog    gxJobCatalog;
-PromptCatalog gxPromptCatalog;
 
 AttachMap*    gpAttachMap   = nullptr;
 BufferPool*   gpBufferPool  = nullptr;
