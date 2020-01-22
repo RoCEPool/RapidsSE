@@ -15,7 +15,8 @@ namespace CompactBuffers{ class Crw; class CrwBuffer; class CsvBuffer;
 namespace CompilerOperators {                                                 }
 namespace CompilerStream{                                                     }
 namespace ControlData   {                                                     }
-namespace Correctness   { class Cell;                                         }
+namespace Correctness   { class Cell; class Focal; class Header; class Object;
+                          class Statistics;                                   }
 namespace DataBuffers   {                                                     }
 namespace DataOperators {                                                     }
 namespace Datums        { class Datum_h;
