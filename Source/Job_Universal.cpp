@@ -241,7 +241,7 @@ Job* Jobs::pJob_Universal_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session*
   Job_Universal* pJob_Universal = new Job_Universal(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
-  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec_inp();
 
   eEC eError = pJob_Universal->ePopulateJob(pTokenVec);
   

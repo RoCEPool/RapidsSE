@@ -621,7 +621,7 @@ Job* Jobs::pJob_FetchRows_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session*
   Job_FetchRows* pJob_FetchRows = new Job_FetchRows(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
-  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec_inp();
   
   bool bResult = pJob_FetchRows->bPopulateJob(pTokenVec);
   

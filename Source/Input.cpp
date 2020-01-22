@@ -182,13 +182,13 @@ void Input::vGetCommand(void)
   m_pTokeniser->vCollectStatement();
   
   // stip off ;
-  pTknVec()->vStripSemicolon();
+  pTknVec_inp()->vStripSemicolon();
   
   // stip off &
-  pTknVec()->vStripAmpersand();
+  pTknVec_inp()->vStripAmpersand();
   
   // set no of tokens in token vector
-  pTknVec()->vSetTokens();
+  pTknVec_inp()->vSetTokens();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,11 +200,11 @@ void Input::vGetTokens(void)
   
   while (true) {
     
-    pTknVec()->vReset();
+    pTknVec_inp()->vReset();
     
     for (;;) {
       
-      Token* pToken = pTkn(pTknVec()->nTokens());
+      Token* pToken = pTkn(pTknVec_inp()->nTokens());
       
       eTN eToken = m_pTokeniser->eNextToken((char*)pToken->szText());
       
@@ -214,15 +214,15 @@ void Input::vGetTokens(void)
       pToken->vToken(eToken);
       
       //      vTrace("vGetCommand : token %lld ]%s[\n"_Stz,
-      //             pTknVec()->nTokens(),
-      //             pTkn(pTknVec()->nTokens())->aText());
+      //             pTknVec_inp()->nTokens(),
+      //             pTkn(pTknVec_inp()->nTokens())->aText());
       
-      pTknVec()->vIncTokens();
-      ASSERT(pTknVec()->nTokens() < C_MAX_TOKENS);
+      pTknVec_inp()->vIncTokens();
+      ASSERT(pTknVec_inp()->nTokens() < C_MAX_TOKENS);
     }
     
     // end of file? if so, pop and retry
-    if (! pTknVec()->nTokens() && m_pTokeniser->bEOF()) {
+    if (! pTknVec_inp()->nTokens() && m_pTokeniser->bEOF()) {
       bool b = m_pTokeniser->bPop();
       ASSERT(b);
       break;
@@ -253,7 +253,7 @@ Token* Input::pTkn(i8 i_Token)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  TokenVec* pTknVec = this->pTknVec();
+  TokenVec* pTknVec = this->pTknVec_inp();
   
   Token* pTkn = (*pTknVec)[i_Token];
   
@@ -263,7 +263,7 @@ Token* Input::pTkn(i8 i_Token)
 /*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
 /*----------------------------------------------------------------------------*/
-TokenVec* Input::pTknVec(void)
+TokenVec* Input::pTknVec_inp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   

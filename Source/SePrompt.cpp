@@ -438,7 +438,7 @@ void SePrompt::vCutToken(i8 i_Tkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pTknVec = m_pSession->m_pInput->pTknVec();
+  TokenVec* pTknVec = m_pSession->m_pInput->pTknVec_inp();
   
   //pTknVec->vPrint();
   
@@ -1092,7 +1092,7 @@ void SePrompt::vSpawnJob(void)
   
   Input* pInput = this->pInput();
   
-  pInput->pTknVec()->vSetTokens();
+  pInput->pTknVec_inp()->vSetTokens();
   
   m_pJob->vSeed(SS_SEED_REQ);
   
@@ -1182,7 +1182,7 @@ TokenVec* SePrompt::pTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSession->m_pInput->pTknVec();
+  return m_pSession->m_pInput->pTknVec_inp();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -39,7 +39,7 @@ namespace TokenStream
     bool bTestFile(Stz* aPath);
 
     Token* pTkn(i8 i_Token);
-    TokenVec* pTknVec(void);
+    TokenVec* pTknVec_inp(void);
   
     void vTokenise(Stz* aCommand);
     void vUseStdin(void);

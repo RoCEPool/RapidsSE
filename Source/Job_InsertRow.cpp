@@ -230,7 +230,7 @@ Job* Jobs::pJob_InsertRow_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session*
   Job_InsertRow* pJob_InsertRow = new Job_InsertRow(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
-//  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
+//  TokenVec* pTokenVec = pSession->m_pInput->pTknVec_inp();
   
 //  bool bResult = pJob_InsertRow->bPopulateJob(pTokenVec);
 //
