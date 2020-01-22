@@ -164,11 +164,11 @@ bool Input::bBlankLine(void)
 /*----------------------------------------------------------------------------*/
 /* get command                                                                */
 /*----------------------------------------------------------------------------*/
-void Input::vGetCommand(void)
+void Input::vGetCommand(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  vGetTokens();
+  vGetTokens(pTknVec_arg);
     
   // if empty line just return
   if ( ! pTkn(0)->bHasText() )
@@ -194,7 +194,7 @@ void Input::vGetCommand(void)
 /*----------------------------------------------------------------------------*/
 /* get command tokens from input                                              */
 /*----------------------------------------------------------------------------*/
-void Input::vGetTokens(void)
+void Input::vGetTokens(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -273,7 +273,7 @@ TokenVec* Input::pTknVec_inp(void)
 /*----------------------------------------------------------------------------*/
 /* tokenize string                                                            */
 /*----------------------------------------------------------------------------*/
-void Input::vTokenise(Stz* aCommand)
+void Input::vTokenise(Stz* aCommand, TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -282,7 +282,7 @@ void Input::vTokenise(Stz* aCommand)
   m_pTokeniser->vPush();
   m_pTokeniser->vUseString(sCommand);
   
-  vGetCommand();
+  vGetCommand(pTknVec_arg);
   m_pTokeniser->bPop();
 }
 

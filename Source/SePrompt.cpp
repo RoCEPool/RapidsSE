@@ -614,7 +614,7 @@ void SePrompt::vGetCommand(void)
   if (pInput->bStdIn())
     vDebugPoint();
     
-  pInput->vGetCommand();
+  pInput->vGetCommand(&m_pSession->m_xTokenVec);
 }
 
 /*----------------------------------------------------------------------------*/
