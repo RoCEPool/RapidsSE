@@ -4,6 +4,8 @@
 
 #include "Transactions.h"
 
+extern Atomic gixTx;
+
 /*----------------------------------------------------------------------------*/
 /* compare two tx's by their local tx id's                                    */
 /*----------------------------------------------------------------------------*/
@@ -67,6 +69,7 @@ TxSet::TxSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
   m_pTxList = new SkipListNL(C_UNQIUE_KEY,bTxSetCompareLocal);
+  m_tOldestPsp = *gixTx;
   
   _checkInitialised_(CN_TXSET);
   
@@ -81,7 +84,7 @@ void TxSet::vAddTx(Tx* pTx)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
   m_okLock.vGrabWrite();
-      
+
   m_pTxList->bInsert(pTx);
   
   m_okLock.vDropWrite();
@@ -166,7 +169,10 @@ void TxSet::vRemoveTx(Tx* pTx)
   m_okLock.vGrabWrite();
   
   bRemoved = m_pTxList->bRemove(pTx);
-    
+  
+  if (pTx->tPerspective() > m_tOldestPsp)
+    m_tOldestPsp = pTx->tPerspective();
+  
   m_okLock.vDropWrite();
 }
 
@@ -196,6 +202,14 @@ i8 TxSet::iOldestActiveId(void)
   m_okLock.vDropRead();
   
   return iOldestActiveId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get oldest psp                                                             */
+/*----------------------------------------------------------------------------*/
+i8 TxSet::tOldestPsp(void)
+{
+  return m_tOldestPsp;
 }
 
 /*----------------------------------------------------------------------------*/

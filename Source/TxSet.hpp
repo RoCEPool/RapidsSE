@@ -12,7 +12,8 @@ namespace Transactions
     Lock m_okLock;  // lock for the set
   
     SkipListNL* m_pTxList; // skip list of tx's
-  
+    t8          m_tOldestPsp;  // oldest psp in the system
+    
     // must be last
     Footer m_xFooter;
     
@@ -28,6 +29,7 @@ namespace Transactions
     Tx*  pFindTx(i8 iTxId);
     Tx*  pFindTx_NL(i8 iTxId);
     i8   iOldestActiveId(void);
+    t8   tOldestPsp(void);
     void vRemoveTx(Tx* pTx);
     void vRemoveTx_NL(Tx* pTx);
   

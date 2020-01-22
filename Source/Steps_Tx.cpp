@@ -26,7 +26,10 @@ void Step::vTx0Begin(void)
   Tx* pTx = new Tx;
     
   m_pRegSet->m_xpTx = pTx;
-
+  
+  // add tnx to the tnxSet
+  AM::pTxSet()->vAddTx(pTx);
+  
   EXIT();
 }
 
@@ -41,7 +44,10 @@ void Step::vTx0Commit(void)
   m_pRegSet->m_xpTx = nullptr;
 
   pTx->vPhase(XP_COMMITTED);
-
+  
+  // remove the tx from the txSet
+  AM::pTxSet()->vRemoveTx(pTx);
+  
   delete pTx;
   
   EXIT();
