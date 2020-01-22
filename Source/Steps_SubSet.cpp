@@ -87,7 +87,7 @@ void Step::vSubsetSet(void)
   
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
-  if (CN_CRWBUFFER == pOperand->eClass()) {
+  if (pOperand && CN_CRWBUFFER == pOperand->eClass()) {
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
     vDebugPoint();
   }
