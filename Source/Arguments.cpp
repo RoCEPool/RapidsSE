@@ -130,57 +130,6 @@ void Arguments::vEnvironmentVariables(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add arguments as forth constants                                           */
-/*----------------------------------------------------------------------------*/
-void Arguments::vAddConstants(void)
-{
-  // Arguments
-  Constants::vAddConstant("args.addNode"_Stz,           m_bAddNode);
-  Constants::vAddConstant("args.config"_Stz,            m_bConfig);
-  Constants::vAddConstant("args.developer"_Stz,         m_bDeveloper);
-  Constants::vAddConstant("args.dontFree"_Stz,          m_bDontFree);
-  Constants::vAddConstant("args.freeCB"_Stz,            m_bFreeCB);
-  Constants::vAddConstant("args.help"_Stz,              m_bHelp);
-  Constants::vAddConstant("args.hugePages"_Stz,         m_bHugePages);
-  Constants::vAddConstant("args.jumboBuffers"_Stz,      m_nJumboBuffers);
-  Constants::vAddConstant("args.jumboSize"_Stz,         m_iJumboSize);
-  Constants::vAddConstant("args.jumboTook"_Stz,         m_nJumboTook);
-  Constants::vAddConstant("args.killPrev"_Stz,          m_bKillPrev);
-  Constants::vAddConstant("args.lock"_Stz,              m_bLock);
-  Constants::vAddConstant("args.log"_Stz,               m_bLog);
-  Constants::vAddConstant("args.maxLoadErrors"_Stz,     m_nMaxLoadErrors);
-  Constants::vAddConstant("args.maxReadyLP"_Stz,        m_nMaxReadyLP);
-  Constants::vAddConstant("args.metadata"_Stz,          m_bMetadata);
-  Constants::vAddConstant("args.munged"_Stz,            m_bMunged);
-  Constants::vAddConstant("args.nodeName"_Stz,          m_sNodeName);
-  Constants::vAddConstant("args.nodes"_Stz,             m_nNodes);
-  Constants::vAddConstant("args.partitionsPerNode"_Stz, m_nSlotsPerNode);
-  Constants::vAddConstant("args.periodicSleep"_Stz,     m_nPeriodicSleep);
-  Constants::vAddConstant("args.progress"_Stz,          m_bProgress);
-  Constants::vAddConstant("args.prompt"_Stz,            m_bPrompt);
-  Constants::vAddConstant("args.regionPrefix"_Stz,      m_sRegionPrefix);
-  Constants::vAddConstant("args.regionName"_Stz,        m_sRegionName);
-  Constants::vAddConstant("args.regionSize"_Stz,        m_iRegionSize - m_iJumboSize);
-  Constants::vAddConstant("args.reload"_Stz,            m_bReload);
-  Constants::vAddConstant("args.restart"_Stz,           m_bRestart);
-  Constants::vAddConstant("args.senDir"_Stz,            m_sSenDir);
-  Constants::vAddConstant("args.slots"_Stz,             m_nSlotsPerNode);
-  Constants::vAddConstant("args.start"_Stz,             m_bStart);
-  Constants::vAddConstant("args.status"_Stz,            m_bStatus);
-  Constants::vAddConstant("args.stop"_Stz,              m_bStop);
-  Constants::vAddConstant("args.subIngesters"_Stz,      m_nSubIngesters);
-  Constants::vAddConstant("args.subLoaders"_Stz,        m_nSubLoaders);
-  Constants::vAddConstant("args.supervisorSleep"_Stz,   m_nSupervisorSleep);
-  Constants::vAddConstant("args.threads"_Stz,           m_nThreads);
-  Constants::vAddConstant("args.touch"_Stz,             m_bTouch);
-  Constants::vAddConstant("args.tracepoint"_Stz,        m_bTracepoint);
-  Constants::vAddConstant("args.tracing"_Stz,           m_bTracing);
-  Constants::vAddConstant("args.unlink"_Stz,            m_bUnlink);
-  Constants::vAddConstant("args.verbose"_Stz,           m_bVerbose);
-  Constants::vAddConstant("args.welcome"_Stz,           m_bWelcome);
-}
-
-/*----------------------------------------------------------------------------*/
 /* log the command line arguments                                             */
 /*----------------------------------------------------------------------------*/
 void Arguments::vLog(void)

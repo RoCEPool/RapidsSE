@@ -15,7 +15,7 @@ namespace StorageEngine
 
     friend class   Prompt::SePrompt;
 
-  private:
+  public:
   
     // configuration
     s256  m_sCommandsDir;  // commands dir
@@ -92,11 +92,10 @@ namespace StorageEngine
     
   public:
     Arguments(void);
-    ~Arguments(void) noexcept(false);
+   ~Arguments(void) noexcept(false);
     
     static void vLog(void);
   
-    void vAddConstants(void);
     void vEnvironmentVariables(void);
     bool bParse(int argc, Stz* argv[]);
     void vPrint(void);

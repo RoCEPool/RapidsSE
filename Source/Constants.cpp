@@ -4,6 +4,7 @@
 
 #include "StorageEngine.h"
 
+extern Arguments  gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */
@@ -36,9 +37,61 @@ void Constants::vAddConstant(Stz* szName, Stz* szVal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add arguments as forth constants                                           */
+/*----------------------------------------------------------------------------*/
+void Constants::vAddConstantsArgs(void)
+{
+  // Arguments
+  Constants::vAddConstant("args.addNode"_Stz,           gxArguments.m_bAddNode);
+  Constants::vAddConstant("args.config"_Stz,            gxArguments.m_bConfig);
+  Constants::vAddConstant("args.developer"_Stz,         gxArguments.m_bDeveloper);
+  Constants::vAddConstant("args.dontFree"_Stz,          gxArguments.m_bDontFree);
+  Constants::vAddConstant("args.freeCB"_Stz,            gxArguments.m_bFreeCB);
+  Constants::vAddConstant("args.help"_Stz,              gxArguments.m_bHelp);
+  Constants::vAddConstant("args.hugePages"_Stz,         gxArguments.m_bHugePages);
+  Constants::vAddConstant("args.jumboBuffers"_Stz,      gxArguments.m_nJumboBuffers);
+  Constants::vAddConstant("args.jumboSize"_Stz,         gxArguments.m_iJumboSize);
+  Constants::vAddConstant("args.jumboTook"_Stz,         gxArguments.m_nJumboTook);
+  Constants::vAddConstant("args.killPrev"_Stz,          gxArguments.m_bKillPrev);
+  Constants::vAddConstant("args.lock"_Stz,              gxArguments.m_bLock);
+  Constants::vAddConstant("args.log"_Stz,               gxArguments.m_bLog);
+  Constants::vAddConstant("args.maxLoadErrors"_Stz,     gxArguments.m_nMaxLoadErrors);
+  Constants::vAddConstant("args.maxReadyLP"_Stz,        gxArguments.m_nMaxReadyLP);
+  Constants::vAddConstant("args.metadata"_Stz,          gxArguments.m_bMetadata);
+  Constants::vAddConstant("args.munged"_Stz,            gxArguments.m_bMunged);
+  Constants::vAddConstant("args.nodeName"_Stz,          gxArguments.m_sNodeName);
+  Constants::vAddConstant("args.nodes"_Stz,             gxArguments.m_nNodes);
+  Constants::vAddConstant("args.partitionsPerNode"_Stz, gxArguments.m_nSlotsPerNode);
+  Constants::vAddConstant("args.periodicSleep"_Stz,     gxArguments.m_nPeriodicSleep);
+  Constants::vAddConstant("args.progress"_Stz,          gxArguments.m_bProgress);
+  Constants::vAddConstant("args.prompt"_Stz,            gxArguments.m_bPrompt);
+  Constants::vAddConstant("args.regionPrefix"_Stz,      gxArguments.m_sRegionPrefix);
+  Constants::vAddConstant("args.regionName"_Stz,        gxArguments.m_sRegionName);
+  Constants::vAddConstant("args.regionSize"_Stz,        gxArguments.m_iRegionSize
+                                                        - gxArguments.m_iJumboSize);
+  Constants::vAddConstant("args.reload"_Stz,            gxArguments.m_bReload);
+  Constants::vAddConstant("args.restart"_Stz,           gxArguments.m_bRestart);
+  Constants::vAddConstant("args.senDir"_Stz,            gxArguments.m_sSenDir);
+  Constants::vAddConstant("args.slots"_Stz,             gxArguments.m_nSlotsPerNode);
+  Constants::vAddConstant("args.start"_Stz,             gxArguments.m_bStart);
+  Constants::vAddConstant("args.status"_Stz,            gxArguments.m_bStatus);
+  Constants::vAddConstant("args.stop"_Stz,              gxArguments.m_bStop);
+  Constants::vAddConstant("args.subIngesters"_Stz,      gxArguments.m_nSubIngesters);
+  Constants::vAddConstant("args.subLoaders"_Stz,        gxArguments.m_nSubLoaders);
+  Constants::vAddConstant("args.supervisorSleep"_Stz,   gxArguments.m_nSupervisorSleep);
+  Constants::vAddConstant("args.threads"_Stz,           gxArguments.m_nThreads);
+  Constants::vAddConstant("args.touch"_Stz,             gxArguments.m_bTouch);
+  Constants::vAddConstant("args.tracepoint"_Stz,        gxArguments.m_bTracepoint);
+  Constants::vAddConstant("args.tracing"_Stz,           gxArguments.m_bTracing);
+  Constants::vAddConstant("args.unlink"_Stz,            gxArguments.m_bUnlink);
+  Constants::vAddConstant("args.verbose"_Stz,           gxArguments.m_bVerbose);
+  Constants::vAddConstant("args.welcome"_Stz,           gxArguments.m_bWelcome);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add constants                                                              */
 /*----------------------------------------------------------------------------*/
-void Constants::vAddConstants(void)
+void Constants::vAddConstantsCpp(void)
 {
   if (AM::bVerbose())
     vTrace("[[mainThread]] Adding constants...\n"_Stz);
