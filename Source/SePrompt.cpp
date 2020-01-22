@@ -512,7 +512,7 @@ bool SePrompt::bExecuteFile(void)
   
   Input* pInput = this->pInput();
   
-  bool bExecuteFile = pInput->bExecuteFile();
+  bool bExecuteFile = pInput->bExecuteFile(&m_pSession->m_xTokenVec);
   
   return bExecuteFile;
 }

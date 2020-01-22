@@ -86,7 +86,7 @@ Input::~Input(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* potentially execute a command file                                         */
 /*----------------------------------------------------------------------------*/
-bool Input::bExecuteFile(void)
+bool Input::bExecuteFile(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   

@@ -26,7 +26,7 @@ namespace TokenStream
   
     static bool bExecute(Stz* aCommand);
   
-    bool bExecuteFile(void);
+    bool bExecuteFile(TokenVec* pTknVec);
 
     void vPushFile(Stz* aPath);
     bool bRunFile(void);
