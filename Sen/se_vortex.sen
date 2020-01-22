@@ -22,11 +22,14 @@
 
       pSeSourceDir dir.entryName .
 
+      pSeSourceDir dir.entryName vortex::processHpp
+
     else
     2 pSeSourceDir dir.entryName str.right ".h" str.equal if
 
       pSeSourceDir dir.entryName .
 
+      pSeSourceDir dir.entryName vortex::processH
     then then
 
   repeat

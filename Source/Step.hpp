@@ -142,7 +142,9 @@ namespace Steps
     static void vAddSteps_TxSet(void);
   
     static void vAddSteps_Utility(void);
-  
+ 
+    static void vAddSteps_Vortex(void);
+
     static void vAddSteps_Word(void);
     static void vAddSteps_WriteBehind(void);
     

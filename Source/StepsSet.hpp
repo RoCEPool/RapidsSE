@@ -1321,8 +1321,9 @@ public:
   void vUtilityPrefetch(void);
   void vUtilitySchemaTest(void);
 
-  // vector
-  void vVectorDifference(void);
+  // vortex
+  void vVortexProcessH(void);
+  void vVortexProcessHpp(void);
 
   // word
   void vWord(void);
