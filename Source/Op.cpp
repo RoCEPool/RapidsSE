@@ -5,9 +5,6 @@
 #include "Operators.h"
 
 
-#include "eSA.h"
-#include "eTS.h"
-
 Atomic gixOp;
 
 /*----------------------------------------------------------------------------*/
