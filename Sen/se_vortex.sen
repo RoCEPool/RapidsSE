@@ -5,6 +5,34 @@
 "-se_vortex.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* process all files in the ../Source dir                                     */
+/*----------------------------------------------------------------------------*/
+: vortex_ProcessDir ( pSeSourceDir -- )
+
+  params| pSeSourceDir |
+
+  // read thru directory
+  begin pSeSourceDir dir.read while
+
+    // ignore entries which aren't regular files
+    pSeSourceDir dir.entryType DE_REG == not continue
+
+    // ignore entries which aren't .sen files
+    4 pSeSourceDir dir.entryName str.right ".hpp" str.equal if
+
+      pSeSourceDir dir.entryName .
+
+    else
+    2 pSeSourceDir dir.entryName str.right ".h" str.equal if
+
+      pSeSourceDir dir.entryName .
+
+    then then
+
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
 /* munge all .hpp files                                                       */
 /*----------------------------------------------------------------------------*/
 : vortex prompt
@@ -22,9 +50,9 @@
   // open directory accessor
   "." pSeSourceDir dir.open assert
 
-
   "..vortex.." .
 
+  pSeSourceDir vortex_ProcessDir
 
   // close and delete directory accessor
   pSeSourceDir dir.close
