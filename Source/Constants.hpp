@@ -12,7 +12,8 @@ namespace StorageEngine
   public:
   static void vAddConstant(Stz* aName, i8 iVal);
   static void vAddConstant(Stz* aName, Stz* aValue);
-  static void vAddConstants(void);
+  static void vAddConstantsArgs(void);
+  static void vAddConstantsCpp(void);
   };
 }
 

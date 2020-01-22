@@ -974,9 +974,9 @@ void Engine::vStartSystem(void)
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "adding constants"_Stz); //!format-LogSys
   
-  gxArguments.vAddConstants();
+  Constants::vAddConstantsArgs();
   
-  Constants::vAddConstants();
+  Constants::vAddConstantsCpp();
 
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "running boot job"_Stz); //!format-LogSys
