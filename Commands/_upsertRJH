@@ -61,7 +61,7 @@ print "** 3/8) createIndex";
 
 //memoryLeaks fatal;
 
-pipeline t_upssert
+pipeline t_upsert
 begin
 
   stage stageA on origin:

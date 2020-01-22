@@ -836,6 +836,9 @@ CrwBuffer* TablePtn::pSnapshot(CrwBuffer* pCrwBufferSrc, t8 tPerspective)
 
     Crw* aCrw_snapshot = m_pReadApi->aGetCrwVersion(xwRef,aCrw,tPerspective);
     
+    if (! aCrw_snapshot)
+      continue;
+    
     pCrwBuffer->bAppendCrw(aCrw_snapshot);
   }
   
