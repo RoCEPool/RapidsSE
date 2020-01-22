@@ -29,17 +29,15 @@ namespace TokenStream
     bool bExecuteFile(TokenVec* pTknVec);
 
     void vPushFile(Stz* aPath);
-    bool bRunFile(void);
-    bool bTokenCheck(i8 nTokens);
+    bool bRunFile(TokenVec* pTknVec);
+    bool bTokenCheck(TokenVec* pTknVec,i8 nTokens);
 
-    bool bBlankLine(void);
+    bool bBlankLine(TokenVec* pTknVec);
     void vGetCommand(TokenVec* pTknVec);
     void vGetCommandArgument(void);
     void vGetTokens(TokenVec* pTknVec);
     bool bTestFile(Stz* aPath);
 
-    Token* pTkn(i8 i_Token);
-    TokenVec* pTknVec_inp(void);
   
     void vTokenise(Stz* aCommand, TokenVec* pTknVec);
     void vUseStdin(void);

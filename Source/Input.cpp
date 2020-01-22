@@ -90,10 +90,10 @@ bool Input::bExecuteFile(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  if (! bTestFile(pTkn(0)->szText()))
+  if (! bTestFile(pTknVec_arg->pGet(0)->szText()))
     return false;
   
-  bool b = bRunFile();
+  bool b = bRunFile(pTknVec_arg);
   //ASSERT(b);
   
   return true;
@@ -102,7 +102,7 @@ bool Input::bExecuteFile(TokenVec* pTknVec_arg)
 /*----------------------------------------------------------------------------*/
 /* set file to run                                                            */
 /*----------------------------------------------------------------------------*/
-bool Input::bRunFile(void)
+bool Input::bRunFile(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -110,7 +110,7 @@ bool Input::bRunFile(void)
 //    if (! pTkn(1)->bSame(";"_Stz))
 //      return false;
   
-  vPushFile(pTkn(0)->szText());
+  vPushFile(pTknVec_arg->pGet(0)->szText());
   m_pTokeniser->vLineMode(true);
   
   return true;
@@ -137,11 +137,11 @@ void Input::vPushFile(Stz* aFileName)
 /*----------------------------------------------------------------------------*/
 /* check for a specific number of tokens                                      */
 /*----------------------------------------------------------------------------*/
-bool Input::bTokenCheck(i8 nTokens)
+bool Input::bTokenCheck(TokenVec* pTknVec_arg, i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  if (pTkn(nTokens)->bHasText()) {
+  if (pTknVec_arg->pGet(nTokens)->bHasText()) {
     return false;
   }
   
@@ -151,11 +151,11 @@ bool Input::bTokenCheck(i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* test for blank line                                                        */
 /*----------------------------------------------------------------------------*/
-bool Input::bBlankLine(void)
+bool Input::bBlankLine(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  if (0 != pTkn(0)->iLength())
+  if (0 != (*pTknVec_arg)[0]->iLength())
     return false;
   
   return true;
@@ -171,24 +171,25 @@ void Input::vGetCommand(TokenVec* pTknVec_arg)
   vGetTokens(pTknVec_arg);
     
   // if empty line just return
-  if ( ! pTkn(0)->bHasText() )
+  if ( ! (*pTknVec_arg)[0]->bHasText() )
     return;
   
   // if its a command file just return
-  if ( ! pTkn(0)->szText()->bSame("/"_Stz) && bTestFile(pTkn(0)->szText()))
+  if ( ! (*pTknVec_arg)[0]->szText()->bSame("/"_Stz) &&
+      bTestFile((*pTknVec_arg)[0]->szText()))
     return;
   
   // collect till ;
   m_pTokeniser->vCollectStatement(pTknVec_arg);
   
   // stip off ;
-  pTknVec_inp()->vStripSemicolon();
+  pTknVec_arg->vStripSemicolon();
   
   // stip off &
-  pTknVec_inp()->vStripAmpersand();
+  pTknVec_arg->vStripAmpersand();
   
   // set no of tokens in token vector
-  pTknVec_inp()->vSetTokens();
+  pTknVec_arg->vSetTokens();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,11 +201,11 @@ void Input::vGetTokens(TokenVec* pTknVec_arg)
   
   while (true) {
     
-    pTknVec_inp()->vReset();
+    pTknVec_arg->vReset();
     
     for (;;) {
       
-      Token* pToken = pTkn(pTknVec_inp()->nTokens());
+      Token* pToken = (*pTknVec_arg)[pTknVec_arg->nTokens()];
       
       eTN eToken = m_pTokeniser->eNextToken((char*)pToken->szText());
       
@@ -217,12 +218,12 @@ void Input::vGetTokens(TokenVec* pTknVec_arg)
       //             pTknVec_inp()->nTokens(),
       //             pTkn(pTknVec_inp()->nTokens())->aText());
       
-      pTknVec_inp()->vIncTokens();
-      ASSERT(pTknVec_inp()->nTokens() < C_MAX_TOKENS);
+      pTknVec_arg->vIncTokens();
+      ASSERT(pTknVec_arg->nTokens() < C_MAX_TOKENS);
     }
     
     // end of file? if so, pop and retry
-    if (! pTknVec_inp()->nTokens() && m_pTokeniser->bEOF()) {
+    if (! pTknVec_arg->nTokens() && m_pTokeniser->bEOF()) {
       bool b = m_pTokeniser->bPop();
       ASSERT(b);
       break;
@@ -244,30 +245,6 @@ bool Input::bTestFile(Stz* aFileName)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get token from token vector                                                */
-/*----------------------------------------------------------------------------*/
-Token* Input::pTkn(i8 i_Token)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  TokenVec* pTknVec = this->pTknVec_inp();
-  
-  Token* pTkn = (*pTknVec)[i_Token];
-  
-  return pTkn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get token vector                                                           */
-/*----------------------------------------------------------------------------*/
-TokenVec* Input::pTknVec_inp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  return m_pTokeniser->pTknVec();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -8,7 +8,6 @@ namespace TokenStream
   class Tokeniser : public Object
   {
   private:
-    TokenVec m_xTokenVec;  // token vector
     Parser*  m_pParser; // parser
   
     bool m_bMalloc;     // malloc or pool heap?
@@ -47,7 +46,6 @@ namespace TokenStream
     bool bPop(void);
     void vPush(void);
     bool bStdin(void);
-    TokenVec* pTknVec(void);
     eTN  eToken(void);
     Stz* szToken(void);
     void vToken(Stz* szStr);

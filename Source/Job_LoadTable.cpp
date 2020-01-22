@@ -628,7 +628,7 @@ Job* Jobs::pJob_LoadTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session*
   Job_LoadTable* pJob_LoadTable = new Job_LoadTable(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
-  TokenVec* pTokenVec = pSession->m_pInput->pTknVec_inp();
+  TokenVec* pTokenVec = &pSession->m_xTokenVec;
   
   bool bResult = pJob_LoadTable->bPopulateJob(pTokenVec);
   

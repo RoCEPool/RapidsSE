@@ -65,9 +65,6 @@ Tokeniser::~Tokeniser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_xTokenVec.vSetAllTokens();
-  
-  ASSERT(C_MAX_TOKENS == m_xTokenVec.nItems());
   delete m_pParser;
 }
 
@@ -220,17 +217,17 @@ void Tokeniser::vCollectStatement(TokenVec* pTokenVec_arg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   // we should have a first token (e.g. create or drop)
-  ASSERT(m_xTokenVec[0]->bHasText());
+  ASSERT(pTokenVec_arg->pGet(0)->bHasText());
   
   // have we already seen the ';'
-  i8 i_Token = m_xTokenVec.iFindToken(";"_Stz);
+  i8 i_Token = pTokenVec_arg->iFindToken(";"_Stz);
   
   if (i_Token >= 0) {
     //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_MAX_TOKENS);
     return;
   }
   
-  i_Token = m_xTokenVec.iCountTokens();
+  i_Token = pTokenVec_arg->iCountTokens();
   
   // switch to terminal mode
   vLineMode(false);
@@ -238,7 +235,7 @@ void Tokeniser::vCollectStatement(TokenVec* pTokenVec_arg)
   // get tokens delimited by ';'
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
-    Token* pToken = m_xTokenVec[i_Token];
+    Token* pToken = (*pTokenVec_arg)[i_Token];
     eTN eToken = eNextToken((char*)pToken->szText());
     ASSERT(TN_NONE != eToken);
     pToken->vToken(eToken);
@@ -389,16 +386,6 @@ bool Tokeniser::bStdin(void)
   bool bStdin = m_pParser->bStdin();
   
   return bStdin;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get token vector                                                           */
-/*----------------------------------------------------------------------------*/
-TokenVec* Tokeniser::pTknVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  return &m_xTokenVec;
 }
 
 /*----------------------------------------------------------------------------*/
