@@ -23,7 +23,7 @@ PromptFun __Prompt_how (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_how(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
   
   i8 nTokens = pTokenVec->nItems();
 

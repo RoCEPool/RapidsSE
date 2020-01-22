@@ -23,7 +23,7 @@ PromptFun __Prompt_shell (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_shell(SePrompt* pPrompt)
 {
-  TokenVec* pTknVec = pPrompt->pTknVec();
+  TokenVec* pTknVec = pPrompt->pTokenVec();
   
   s4K sCommand;
   

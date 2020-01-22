@@ -23,7 +23,7 @@ PromptFun __Prompt_pwd (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_pwd(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
   
   ASSERT((*pTokenVec)[0]->bSame("pwd"_Stz));
   

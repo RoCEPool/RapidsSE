@@ -25,7 +25,7 @@ bool Prompt::bPrompt_lvl(SePrompt* pPrompt)
 {
   i8 i_Next = 0;
   
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
   i8 iNumTokens = pTokenVec->nItems();
   
   if (2 == iNumTokens) {

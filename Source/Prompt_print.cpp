@@ -23,7 +23,7 @@ PromptFun __Prompt_print (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_print(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
 
   ASSERT((*pTokenVec)[0]->bSame("print"_Stz));
   

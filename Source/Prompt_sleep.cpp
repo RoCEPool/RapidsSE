@@ -23,7 +23,7 @@ PromptFun __Prompt_sleep (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_sleep(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
 
   ASSERT((*pTokenVec)[0]->bSame("sleep"_Stz));
   

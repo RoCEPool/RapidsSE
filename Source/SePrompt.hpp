@@ -96,7 +96,7 @@ namespace Prompt
     void vSpawnJob(void);
     bool bStdIn(void);
     bool bSubLet(void);
-    TokenVec* pTknVec(void);
+    TokenVec* pTokenVec(void);
     void vTrackingMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
     void vUnknownCommand(void);

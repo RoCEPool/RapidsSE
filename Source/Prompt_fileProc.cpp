@@ -26,7 +26,7 @@ bool Prompt::bPrompt_fileProc(SePrompt* pPrompt)
   s256 sFileInp;
   s256 sFileOut;
 
-  TokenVec* pTknVec = pPrompt->pTknVec();
+  TokenVec* pTknVec = pPrompt->pTokenVec();
   
   ASSERT((*pTknVec)[0]->bSame("fileProc"_Stz));
   

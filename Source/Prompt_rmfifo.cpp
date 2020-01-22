@@ -25,7 +25,7 @@ bool Prompt::bPrompt_rmfifo(SePrompt* pPrompt)
 {
   s256 sFifoPath;
   
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
 
   ASSERT((*pTokenVec)[0]->bSame("rmfifo"_Stz));
   

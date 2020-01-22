@@ -25,7 +25,7 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_logSection(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
 
   if (pTokenVec->nTokens() < 1)
     return true;

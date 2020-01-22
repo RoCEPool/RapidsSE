@@ -23,7 +23,7 @@ PromptFun __Prompt_ascii (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_ascii(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
   
   i8 iNumTokens = pTokenVec->nItems();
 

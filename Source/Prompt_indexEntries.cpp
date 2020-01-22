@@ -25,7 +25,7 @@ PromptFun __Prompt_indexEntries (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_indexEntries(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
 
   ASSERT((*pTokenVec)[0]->bSame("indexEntries"_Stz));
   

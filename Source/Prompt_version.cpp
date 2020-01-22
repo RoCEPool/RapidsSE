@@ -24,7 +24,7 @@ PromptFun __Prompt_version (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_version(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
   /*
   args.metadata if
     "(version VARCHAR)" metadata!

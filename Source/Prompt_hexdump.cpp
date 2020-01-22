@@ -23,7 +23,7 @@ PromptFun __Prompt_hexdump (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_hexdump(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
 
   i8 iNumTokens = pTokenVec->nItems();
   if (2 != iNumTokens)

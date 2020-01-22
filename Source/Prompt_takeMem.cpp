@@ -27,7 +27,7 @@ bool Prompt::bPrompt_takeMem(SePrompt* pPrompt)
 {
   i8 nSpare = 0;
 
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
 
   i8 iNumTokens = pTokenVec->nItems();
   if (2 == iNumTokens) {

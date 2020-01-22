@@ -302,7 +302,7 @@ void SePrompt::vBeginRequest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  //m_pRequest = new Request(m_pSession,pTknVec());
+  //m_pRequest = new Request(m_pSession,pTokenVec());
   m_pRequest = new Request(m_pSession,m_aJobClass->m_aComment,iStepNo());
 
   m_i_RequestFocal = m_pRequest->m_i_Focal;
@@ -319,7 +319,7 @@ bool SePrompt::bBlankLine(void)
   
   Input* pInput = this->pInput();
   
-  TokenVec* pTknVec = this->pTknVec();
+  TokenVec* pTknVec = this->pTokenVec();
   bool bBlankLine = pInput->bBlankLine(pTknVec);
 
   return bBlankLine;
@@ -478,7 +478,7 @@ void SePrompt::vDumpTokenVec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
 //  s48K sCommand;
-//  TokenVec* pTknVec = this->pTknVec();
+//  TokenVec* pTknVec = this->pTokenVec();
 //
 //  pTknVec->vToString(sCommand);
 //  vTrace("Request %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.szStz());
@@ -594,16 +594,16 @@ void SePrompt::vGetCommand(void)
   
   if (m_bOneCommand) {
     s4K szCommand = AM::szCommand();
-    Tokeniser::vTokenise(pTknVec(),szCommand);
-    pTknVec()->vStripSemicolon();
-    pTknVec()->vSetTokens();
+    Tokeniser::vTokenise(pTokenVec(),szCommand);
+    pTokenVec()->vStripSemicolon();
+    pTokenVec()->vSetTokens();
     return;
   }
   
   if (* m_pSession->m_sToDo.azChar()) {
-    Tokeniser::vTokenise(pTknVec(),m_pSession->m_sToDo);
-    pTknVec()->vStripSemicolon();
-    pTknVec()->vSetTokens();
+    Tokeniser::vTokenise(pTokenVec(),m_pSession->m_sToDo);
+    pTokenVec()->vStripSemicolon();
+    pTokenVec()->vSetTokens();
 
     m_pSession->m_sToDo = ""_Stz;
     return;
@@ -635,7 +635,7 @@ bool SePrompt::bIsPromptWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pTknVec = this->pTknVec();
+  TokenVec* pTknVec = this->pTokenVec();
   
   Token* pTkn0 = pTknVec->pGet(0);
 
@@ -731,7 +731,7 @@ void SePrompt::vLogCommand(void)
   
   s16KB sCommand;
   
-  TokenVec* pTknVec = this->pTknVec();
+  TokenVec* pTknVec = this->pTokenVec();
   
   Token* pTkn0 = pTknVec->pGet(0);
   if (pTkn0->bSame("logNote"_Stz))
@@ -944,7 +944,7 @@ void SePrompt::vReformatCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pTknVec = this->pTknVec();
+  TokenVec* pTknVec = this->pTokenVec();
   
   if (Sql::bReformat(pTknVec))
     return;
@@ -960,7 +960,7 @@ void SePrompt::vRestateCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pTknVec = this->pTknVec();
+  TokenVec* pTknVec = this->pTokenVec();
   
   if (Sql::bRestate(pTknVec))
     return;
@@ -1065,7 +1065,7 @@ bool SePrompt::bShortCut(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Token* pTkn = pTknVec()->pGet(0);
+  Token* pTkn = pTokenVec()->pGet(0);
   
   i8 nShortCuts = m_oShortCutVec.nItems();
   for (i8 i_ShortCut = 0; i_ShortCut < nShortCuts; i_ShortCut++) {
@@ -1129,7 +1129,7 @@ bool SePrompt::bSubLet(void)
   if (! pNmStrList)
     return false;
   
-  TokenVec* pTknVec = this->pTknVec();
+  TokenVec* pTknVec = this->pTokenVec();
   i8 nTokens = pTknVec->nTokens();
   
   // concat all the tokens together
@@ -1179,7 +1179,7 @@ bool SePrompt::bSubLet(void)
 /*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
 /*----------------------------------------------------------------------------*/
-TokenVec* SePrompt::pTknVec(void)
+TokenVec* SePrompt::pTokenVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -1193,7 +1193,7 @@ Token* SePrompt::pTkn(i8 i_Token)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pTknVec = this->pTknVec();
+  TokenVec* pTknVec = this->pTokenVec();
   
   Token* pTkn = (*pTknVec)[i_Token];
   
@@ -1231,7 +1231,7 @@ void SePrompt::vUnknownCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Token* pTkn = pTknVec()->pGet(0);
+  Token* pTkn = pTokenVec()->pGet(0);
   
   vTrace("error: Unknown command '%s'\n"_Stz,pTkn->szText());
 }

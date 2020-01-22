@@ -28,7 +28,7 @@ bool Prompt::bPrompt_ls(SePrompt* pPrompt)
   s256 sEntryNm;
   i8 iEntryType;
   
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
 
   ASSERT((*pTokenVec)[0]->bSame("ls"_Stz));
   

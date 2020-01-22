@@ -23,7 +23,7 @@ PromptFun __Prompt_logNote (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_logNote(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
 
   ASSERT((*pTokenVec)[0]->bSame("logNote"_Stz));
   

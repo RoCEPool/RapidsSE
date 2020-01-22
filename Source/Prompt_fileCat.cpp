@@ -25,7 +25,7 @@ bool Prompt::bPrompt_fileCat(SePrompt* pPrompt)
 {
   s256 sFile;
 
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
   
   ASSERT((*pTokenVec)[0]->bSame("fileCat"_Stz));
   

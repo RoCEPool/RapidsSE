@@ -25,7 +25,7 @@ bool Prompt::bPrompt_sleepers(SePrompt* pPrompt)
 {
   bool bReset = false;
   
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
   i8 iNumTokens = pTokenVec->nItems();
   if (3 == iNumTokens)
     bReset = pTokenVec->pGet(2)->bSame("reset"_Stz);

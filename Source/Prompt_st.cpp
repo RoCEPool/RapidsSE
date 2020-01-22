@@ -24,7 +24,7 @@ PromptFun __Prompt_st (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_st(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTokenVec = pPrompt->pTokenVec();
   
   ASSERT((*pTokenVec)[0]->bSame("st"_Stz));
   
