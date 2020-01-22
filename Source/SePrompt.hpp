@@ -83,6 +83,7 @@ namespace Prompt
     void vPostJob(void);
     void vPreJob(void);
     i8   iPromptId(void);
+    void vPromptUser(void);
     void vReformatCommand(void);
     void vRestateCommand(void);
     void vReportTime(void);

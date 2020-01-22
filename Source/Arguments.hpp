@@ -13,6 +13,8 @@ namespace StorageEngine
     friend class   TokenStream::Parser;
     friend class   TokenStream::Tokeniser;
 
+    friend class   Prompt::SePrompt;
+
   private:
   
     // configuration

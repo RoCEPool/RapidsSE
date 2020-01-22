@@ -825,31 +825,31 @@ void Parser::vReadLineStdin(void)
   
   m_pRawChar = m_sRawLine.azChar();
     
-  bool bHasStarted = AM::bHasStarted();
-
-  bool bLowMem = gpBufferPool->bLowMemory();
-  
-  if (! gxArguments.m_bSethScript) {
-    
-    if (! AM::bDeveloper()) {
-      vInfo("%s "_Stz,m_sPrompt.azChar());
-    }
-    else {
-      vInfo("%s%s%s%s %s> "_Stz,
-            m_sPrompt.azChar(),
-            AM::bBootError()      ? " *BOOTERROR* " : "",
-            bLowMem               ? " *LOWMEM* "    : "",
-  #ifdef WITH_ENTRY_EXIT
-            AM::pStepTiming()     ? " *STEPTIMING*" : "",
-  #else
-            "",
-  #endif
-            bHasStarted           ? "has" : "not"
-
-            );
-    }
-    fflush(stdin);
-  }
+//  bool bHasStarted = AM::bHasStarted();
+//
+//  bool bLowMem = gpBufferPool->bLowMemory();
+//  
+//  if (! gxArguments.m_bSethScript) {
+//    
+//    if (! AM::bDeveloper()) {
+//      vInfo("%s "_Stz,m_sPrompt.azChar());
+//    }
+//    else {
+//      vInfo("%s%s%s%s %s> "_Stz,
+//            m_sPrompt.azChar(),
+//            AM::bBootError()      ? " *BOOTERROR* " : "",
+//            bLowMem               ? " *LOWMEM* "    : "",
+//  #ifdef WITH_ENTRY_EXIT
+//            AM::pStepTiming()     ? " *STEPTIMING*" : "",
+//  #else
+//            "",
+//  #endif
+//            bHasStarted           ? "has" : "not"
+//
+//            );
+//    }
+//    fflush(stdin);
+//  }
   
   for (;;) {
     
