@@ -4,7 +4,7 @@
 
 #include "Oblique.h"
 
-extern Arguments  gxArguments;
+extern Args  gxArgs;
 
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
@@ -35,7 +35,7 @@ int main(int argc, const char* argv[])
     Process::vEntry();
     
     // parse the command line arguments
-    if (! gxArguments.bParse(argc,(Stz**)argv))
+    if (! gxArgs.bParse(argc,(Stz**)argv))
       Process::vExitFailure();
     
     // potentially run utilities

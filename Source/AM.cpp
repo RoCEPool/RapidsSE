@@ -4,7 +4,7 @@
 
 #include "Oblique.h"
 
-extern Arguments     gxArguments;
+extern Args          gxArgs;
 extern PromptCatalog gxPromptCatalog;
 
 extern AttachMap*    gpAttachMap;
@@ -19,7 +19,7 @@ extern i8            giClassSize[];
 extern pFINALIZE*    gpFinalize[];
 
 // Arg
-Stz* AM::szCommand(void)      { return gxArguments.m_sCommand.szStz();        }
+Stz* AM::szCommand(void)      { return gxArgs.m_sCommand.szStz();        }
 bool AM::bDeveloper(void)     { return gpAttachMap->Arg.m_bDeveloper;         }
 i8   AM::nDummyLoop(void)     { return gpAttachMap->Arg.m_nDummyLoop;         }
 i8   AM::nDummySleep(void)    { return gpAttachMap->Arg.m_nDummySleep;        }
@@ -259,7 +259,7 @@ bool AM::bJobIsForeign(i8 iJobId) {
   return bForeign;
 }
 void AM::vLogArguments(void) {
-  gxArguments.vLog();
+  gxArgs.vLog();
 }
 void AM::vPoolAnalyze(void)   { return PoolHelper::vPoolAnalyze(); }
 
@@ -271,13 +271,13 @@ eEC AM::ePopulateJob(Job* pJob, TokenVec* pTknVec)
 }
 
 void AM::vPrintArguments(void) {
-  gxArguments.vPrint();
+  gxArgs.vPrint();
 }
 void AM::vPrintAttachMap(void) {
   gpAttachMap->vPrintAttachMap();
 }
 void AM::vPrintStartupInfo(void) {
-  gxArguments.vPrintStartupInfo();
+  gxArgs.vPrintStartupInfo();
 }
 i8 AM::nRandomLevels(void) {
   Task* pTask = Task::pThisTLSTask();
@@ -1346,7 +1346,7 @@ i8 AM::iJobUniqueId(Job* pJob) { return pJob->m_iFocalId;                     }
 
 void AM::vPrintGlobals(void)
 {
-  printf("gxArguments     @%p\n",&gxArguments);
+  printf("gxArgs     @%p\n",&gxArgs);
   printf("gxPromptCatalog @%p\n",&gxPromptCatalog);
   printf("\n");
 

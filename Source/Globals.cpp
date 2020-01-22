@@ -4,7 +4,7 @@
 
 #include "StorageEngine.h"
 
-Arguments     gxArguments;
+Args     gxArgs;
 FnCatalog     gxFnCatalog;
 JobCatalog    gxJobCatalog;
 PromptCatalog gxPromptCatalog;

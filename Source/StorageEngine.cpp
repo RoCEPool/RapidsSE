@@ -4,7 +4,7 @@
 
 #include "StorageEngine.h"
 
-extern Arguments  gxArguments;
+extern Args       gxArgs;
 extern eHT        geWhichHeap[];
 extern i8         giClassSize[];
 extern pFINALIZE *gpFinalize[];

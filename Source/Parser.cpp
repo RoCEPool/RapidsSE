@@ -5,8 +5,8 @@
 #include "TokenStream.h"
 #include "AM.hpp"
 
-#include "Arguments.hpp"
-extern Arguments gxArguments;
+#include "Args.hpp"
+extern Args gxArgs;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -818,7 +818,7 @@ void Parser::vReadLineStdin(void)
 //
 //  bool bLowMem = gpBufferPool->bLowMemory();
 //  
-//  if (! gxArguments.m_bSethScript) {
+//  if (! gxArgs.m_bSethScript) {
 //    
 //    if (! AM::bDeveloper()) {
 //      vInfo("%s "_Stz,m_sPrompt.azChar());

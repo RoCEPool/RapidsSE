@@ -1,0 +1,892 @@
+/*============================================================================*/
+/* Args.cpp - command line arguments                                     */
+/*============================================================================*/
+
+#include "StorageEngine.h"
+
+extern Args       gxArgs;
+extern AttachMap* gpAttachMap;
+extern bool       gbSHM;
+extern Log*       gpLog;
+
+int    gi_argc;
+char** gi_argv;
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Args::Args(void)
+: Object(CN_ARGUMENTS)
+{
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  
+  
+  // calc the number of pool buffers taken by jumbo buffers
+  m_nJumboBuffers = C_JUMBO_COEFFICIENT * Hardware::iCoreCount();
+  m_nJumboTook    = C_JUMBO_RATIO * m_nJumboBuffers;
+  m_iJumboSize    = m_nJumboTook * C_SIZE_POOL_BUFFER;
+  
+  // configuration
+#ifdef WITH_APPLE
+  m_sCommandsDir  = "../../../../Commands"_Stz;
+#else
+  m_sCommandsDir  = "../../Commands"_Stz;
+#endif
+  m_sNodeName     = "node"_Stz;
+  m_aRegionAddr   = (void*)C_ADDR_POOL;
+  m_sRegionName   = ""_Stz;
+  m_sRegionPrefix = "/SE"_Stz;
+  m_iRegionSize   = (4 * 1_GB) + m_iJumboSize;
+#ifdef WITH_APPLE
+  m_sSenDir       = "../Sen/"_Stz;
+#else
+  m_sSenDir       = "../Sen/"_Stz;
+#endif
+  m_nSlotsPerNode        = 4;
+
+  // node configuration
+  m_nNodes = 0;
+  
+  m_sCommand    = ""_Stz;
+  
+  // commands
+  m_bAddNode    = false;
+  m_bCommand    = false;
+  m_bHelp       = false;
+  m_bPrompt     = false;
+  m_bSethScript = false;
+  m_bStart      = false;
+  m_bStatus     = false;
+  m_bStop       = false;
+  m_bUnlink     = false;
+
+  // options
+  m_bConfig          = true;
+  m_bDeveloper       = false;
+  m_bDontFree        = false;
+  m_nDummyThreads    = 0;
+  m_nDummySleep      = 10;
+  m_nDummyLoop       = 0;
+  m_nEntries         = 0;
+  m_bFreeCB          = false;
+  m_bLock            = false;
+  m_bHugePages       = false;
+  m_bKillPrev        = false;
+  m_bLog             = false;
+  m_nMaxLoadErrors   = 0;
+  m_nMaxReadyLP      = 32;
+  m_bMetadata        = false;
+  m_bMunged          = false;
+  m_bProgress        = false;
+  m_bReload          = false;
+  m_bRestart         = true;
+  m_nSubIngesters    = 4;
+  m_nSubLoaders      = 4;
+  m_iThisNode        = -1;
+  m_nThreads         = 12;
+  m_nPeriodicSleep   = 10;
+  m_nSupervisorSleep = 10;
+  m_bTouch           = false;
+  m_bTracepoint      = false;
+  m_bTracing         = false;
+  m_bVerbose         = false;
+  m_bWelcome         = true;
+
+  _checkInitialised_(CN_ARGUMENTS);
+  
+  vEnvironmentVariables();
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Args::~Args(void) noexcept(false)
+{
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* check for environment variables                                            */
+/*----------------------------------------------------------------------------*/
+void Args::vEnvironmentVariables(void)
+{
+  s32  sVarName;
+  s256 sRegionName;
+  s256 sRegionSize;
+  s256 sPartitions;
+  s256 sFolder;
+  
+  sVarName = "SE_INSTANCE_NAME"_Stz;
+  if (Env::bGet(sVarName,sRegionName))
+    m_sRegionName = sRegionName;
+
+  sVarName = "SE_INSTANCE_SIZE"_Stz;
+  if (Env::bGet(sVarName,sRegionSize))
+    m_iRegionSize = sRegionSize.iToI8();
+
+  sVarName = "SE_PARTITIONS"_Stz;
+  if (Env::bGet(sVarName,sPartitions))
+    m_nSlotsPerNode = sPartitions.iToI8();
+}
+
+/*----------------------------------------------------------------------------*/
+/* log the command line arguments                                             */
+/*----------------------------------------------------------------------------*/
+void Args::vLog(void)
+{
+  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_ARGS,
+              "Command line args:"_Stz); //!format-LogSys
+  
+  s256 sArg;
+  
+  for (i8 i_Arg = 0; i_Arg < gi_argc; ) {
+    
+    sArg = (Stz*)(gi_argv[i_Arg ++]);
+    
+    while (i_Arg < gi_argc && '-' != *gi_argv[i_Arg]) {
+      StrLib::vConcat(sArg.azChar(),' ');
+      StrLib::vConcat(sArg.azChar(),gi_argv[i_Arg ++]);
+    }
+    
+    AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_ARGS,
+                "  %s"_Stz //!format-LogSys
+                ,sArg.azChar());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse command line arguments                                               */
+/*----------------------------------------------------------------------------*/
+bool Args::bParse(int argc, Stz* argv[])
+{
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  
+  // save the command line arguments
+  gi_argc = argc;
+  gi_argv = (char**)argv;
+  
+  if (argv[1]->bSame("shm"_Stz)) {
+    gbSHM = true;
+    return true;
+  }
+  
+  // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+  
+  i8 iNode = 0;
+
+  for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--addNode"_Stz)) {
+      m_bAddNode = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--address"_Stz)) {
+      m_aRegionAddr = (void*)argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--command"_Stz)) {
+      m_sCommand = (Stz*)argv[++i_Arg];
+      vTrace("command %s\n"_Stz, m_sCommand.azChar());
+      m_bCommand = true;
+      m_bPrompt  = true;
+      m_bWelcome = false;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--commands"_Stz)) {
+      m_sCommandsDir = (Stz*)argv[++i_Arg];
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--config"_Stz)) {
+      m_bConfig = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--developer"_Stz)) {
+      m_bDeveloper = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--dontFree"_Stz)) {
+      m_bDontFree = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--dummyLoop"_Stz)) {
+      m_nDummyLoop = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--dummySleep"_Stz)) {
+      m_nDummySleep = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--dummyThreads"_Stz)) {
+      m_nDummyThreads = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    if (argv[i_Arg]->bSame("--entries"_Stz)) {
+      m_nEntries = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--freeCB"_Stz)) {
+      m_bFreeCB = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (
+        argv[i_Arg]->bSame("--help"_Stz)
+        || argv[i_Arg]->bSame("-help"_Stz)
+        || argv[i_Arg]->bSame("help"_Stz)
+        || argv[i_Arg]->bSame("--?"_Stz)
+        || argv[i_Arg]->bSame("-?"_Stz)
+        || argv[i_Arg]->bSame("?"_Stz)
+        )  {
+      vPrintHelp();
+      Process::vExitSuccess();
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--hugepages"_Stz)) {
+      m_bHugePages = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--killPrev"_Stz)) {
+      m_bKillPrev = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lock shared memory pages in memory
+    if (argv[i_Arg]->bSame("--lock"_Stz)) {
+      m_bLock = true;
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#ifdef WITH_SHARED_LOG
+    if (argv[i_Arg]->bSame("--log"_Stz)) {
+      m_bLog = true;
+      continue;
+    }
+#else
+    if (argv[i_Arg]->bSame("--log"_Stz)) {
+      vWarn("arg --log ignored; not compiled WITH_SHARED_LOG\n"_Stz);
+      continue;
+    }
+#endif
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--maxLoadErrors"_Stz)) {
+      m_nMaxLoadErrors = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--maxReadyLP"_Stz)) {
+      m_nMaxReadyLP = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--metadata"_Stz)) {
+      m_bMetadata = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--munged"_Stz)) {
+      m_bMunged = true;
+#ifdef WITH_MUNGED_SEN
+      continue;
+#else
+      vWarn("--munged specified but SE not compiled WITH_MUNGED_SEN\n"_Stz);
+      return false;
+#endif
+      
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--name"_Stz)) {
+      m_sNodeName = (Stz*)argv[++i_Arg];
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--node"_Stz)) {
+      m_xNodes[iNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
+      m_xNodes[iNode].m_sIPAddress = (Stz*)argv[++i_Arg];
+      m_xNodes[iNode].m_iPortNo    = argv[++i_Arg]->iToI8();
+      iNode++;
+      
+      if (m_nNodes > C_MAX_NODES) {
+        vWarn("Maximum number of nodes allowed in the cluster is %lld\n"_Stz,C_MAX_NODES);
+        return false;
+      }
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--noLog"_Stz)) {
+      m_bLog = false;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--noprogress"_Stz)) {
+      m_bProgress = false;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--notouch"_Stz)) {
+      m_bTouch = false;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--nowelcome"_Stz)) {
+      m_bWelcome = false;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--partitionsPerNode"_Stz)) {
+      m_nSlotsPerNode = argv[++i_Arg]->iToI8();
+      if (m_nSlotsPerNode > C_MAX_SLOTS) {
+        vWarn("Maximum number of partitions allowed per node is %lld\n"_Stz,
+          C_MAX_SLOTS);
+        return false;
+      }
+      
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--periodicSleep"_Stz)) {
+      m_nPeriodicSleep = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--progress"_Stz)) {
+      m_bProgress = true;
+      continue;
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--prompt"_Stz)) {
+      
+      if (m_bStop) {
+        vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      
+      if (m_bStatus) {
+        vWarn("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      
+      if (m_bSethScript) {
+        vWarn("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      
+      m_bPrompt = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--region"_Stz)) {
+      m_sRegionName = (Stz*)argv[++i_Arg];
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--regionPrefix"_Stz)) {
+      m_sRegionPrefix = (Stz*)argv[++i_Arg];
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--reload"_Stz)) {
+      m_bReload = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    //if (argv[iArg]->bSame("--restart"_Stz)) {
+    //  m_bRestart = true;
+    //  continue;
+    //}
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--script"_Stz)) {
+      if (m_bStop) {
+        vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      if (m_bStatus) {
+        vWarn("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      if (m_bPrompt) {
+        vWarn("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      m_bSethScript = true;
+      m_bWelcome = false;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--seprompt"_Stz)) {
+      m_bPrompt = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--sen"_Stz)) {
+      m_sSenDir = (Stz*)argv[++i_Arg];
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--size"_Stz)) {
+      
+      bool bResult = MagLib::bToBytes((Stz*)argv[++i_Arg], m_iRegionSize);
+      if (!bResult) {
+        vWarn("Invalid size argument: --size %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      
+      i8 iTotalMemory = MemLib::iGetTotalMemory();
+      if (m_iRegionSize > DIV(C_MEMORY_PERCENT * iTotalMemory, 100)) {
+        vWarn("Invalid size argument: --size %s\n"_Stz,argv[i_Arg]);
+        s32 sMag;
+        MagLib::vByteMag(iTotalMemory,sMag);
+        vWarn("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Stz,
+              C_MEMORY_PERCENT,
+              sMag.azChar());
+        return false;
+      }
+      
+      s32 sMinSize;
+      MagLib::vByteMag(C_MIN_REGION, sMinSize);
+      
+      s32 sSize;
+      MagLib::vByteMag(m_iRegionSize, sSize);
+      
+      if (m_iRegionSize < C_MIN_REGION) {
+        vWarn("Insufficient region size: %s. At least %s is required\n"_Stz,
+              sSize.szStz(),
+              sMinSize.szStz());
+        return false;
+      }
+      
+      m_iRegionSize += m_iJumboSize;
+      
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--start"_Stz)) {
+      
+      if (m_bStop) {
+        vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      if (m_bStatus) {
+        vWarn("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      
+      m_bStart = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--status"_Stz)) {
+      if (m_bStop) {
+        vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      if (m_bStart) {
+        vWarn("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      if (m_bPrompt) {
+        vWarn("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      
+      m_bStatus = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--stop"_Stz)) {
+      
+      if (m_bStart) {
+        vWarn("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      if (m_bStatus) {
+        vWarn("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      if (m_bPrompt) {
+        vWarn("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg]);
+        return false;
+      }
+      
+      m_bStop = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--subIngesters"_Stz)) {
+      m_nSubIngesters = argv[++i_Arg]->iToI8();
+      if (m_nThreads > C_MAX_THREADS) {
+        vWarn("Maximum number of subIngesters allowed is %lld\n"_Stz,
+              C_MAX_THREADS);
+        return false;
+      }
+      
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--subloaders"_Stz)) {
+      m_nSubLoaders = argv[++i_Arg]->iToI8();
+      if (m_nThreads > C_MAX_THREADS) {
+        vWarn("Maximum number of subloaders allowed is %lld\n"_Stz,
+              C_MAX_THREADS);
+        return false;
+      }
+      
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--supervisorSleep"_Stz)) {
+      m_nSupervisorSleep = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--threads"_Stz)) {
+      m_nThreads = argv[++i_Arg]->iToI8();
+      if (m_nThreads > C_MAX_THREADS) {
+        vWarn("Maximum number of thread allowed is %lld\n"_Stz,
+               C_MAX_THREADS);
+        return false;
+      }
+      
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--touch"_Stz)) {
+      m_bTouch = true;
+      continue;
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--tracepoint"_Stz)) {
+      m_bTracepoint = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--tracing"_Stz)) {
+      m_bTracing = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--unlink"_Stz)) {
+      m_bUnlink = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--verbose"_Stz)) {
+      m_bVerbose = true;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--welcome"_Stz)) {
+      m_bWelcome = true;
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    vWarn("Unrecognized command argument: %s\n"_Stz,argv[i_Arg]);
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // if --node was defined just set the m_nNodes
+  if (iNode) {
+    
+    // set no. of nodes
+    m_nNodes = iNode;
+    
+    // some basic cluster validations
+    
+    // there should be at aleast 2 nodes ina cluster
+    // if (m_nNodes < 2) {
+    //   vWarn("Minimum two nodes should be there in a cluster\n"_Stz);
+    //   return false;
+    // }
+    
+    // the current node should have been specfied in the --node
+    bool bFound = false;
+    for (i8 i_Index = 0; i_Index < m_nNodes; i_Index++) {
+      if (m_xNodes[i_Index].m_sNodeName.bSame(m_sNodeName)) {
+        bFound = true;
+        m_iThisNode = i_Index;
+        break;
+      }
+    }
+    
+    if ( ! bFound ) {
+      vWarn("Add argument --name with name of this node from the --node definitions\n"_Stz);
+      return false;
+    }
+    
+  } else {
+    // add a single node
+    // m_nNodes = 1;
+    // m_xNodes[0].m_sNodeName = m_sNodeName;
+    // m_xNodes[0].m_sIPAddress = ""_Stz;
+    // m_xNodes[0].m_iPortNo =  -1;
+    if ( m_bStart ) {
+      vWarn("Add argument '--node name ip-address port' for this node %s definition\n"_Stz, m_sNodeName.azChar());
+      return false;
+    }
+  }
+
+  // if no regionName then form region name using regionPrefix and node name
+  if (m_sRegionName.bSame(""_Stz)) {
+    m_sRegionName.vCat(m_sRegionPrefix,"_"_Stz,m_sNodeName.azChar(),nullptr);
+  }
+  else {
+    if (m_bStart && m_nNodes > 1) {
+      vWarn("--region not allowed with --start in a cluster\n"_Stz);
+      return false;
+    }
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print arguments                                                            */
+/*----------------------------------------------------------------------------*/
+void Args::vPrint(void)
+{
+  vTrace("\nArgs:"_Stz);
+  
+  for (i8 i_Arg = 1; i_Arg < gi_argc; i_Arg++) {
+    if ('-' == *gi_argv[i_Arg])
+      vTrace("\n  %s"_Stz,gi_argv[i_Arg]);
+    else
+      vTrace(" %s"_Stz,gi_argv[i_Arg]);
+  }
+  vTrace("\n\n"_Stz);
+  
+  vTrace("  ./SE "_Stz);
+  for (i8 i_Arg = 1; i_Arg < gi_argc; i_Arg++) {
+    vTrace("%s "_Stz,gi_argv[i_Arg]);
+  }
+  
+  //vTrace("--region %s"_Stz,m_sRegionName.szStz());
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print arguments                                                            */
+/*----------------------------------------------------------------------------*/
+void Args::vPrintStartupInfo(void)
+{
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  
+  // print startup information
+  if ( ! (gxArgs.m_bWelcome && gxArgs.m_bStart) ||
+       ! m_bDeveloper)
+    return;
+  
+  if (gxArgs.m_bVerbose) {
+#ifdef WITH_MUNGED_SEN
+    vTrace("  Compiled with MUNGE\n\n"_Stz);
+#else
+    vTrace("  Not compiled with MUNGE\n\n"_Stz);
+#endif
+  }
+  
+  vTrace("Args:\n"_Stz);
+  
+#ifdef WITH_DEBUG_VERSION
+  if (m_bCommand)    vTrace("  --command\n"_Stz);
+  if (m_bHelp)       vTrace("  --help\n"_Stz);
+  if (m_bProgress)   vTrace("  --progress\n"_Stz);
+  if (m_bPrompt)     vTrace("  --seprompt\n"_Stz);
+  if (m_bSethScript) vTrace("  --script\n"_Stz);
+  if (m_bStart)      vTrace("  --start\n"_Stz);
+  if (m_bStatus)     vTrace("  --status\n"_Stz);
+  if (m_bStop)       vTrace("  --stop\n"_Stz);
+  if (m_bVerbose)    vTrace("  --verbose\n"_Stz);
+#endif
+  
+  vTrace("  --name %s\n"_Stz,m_sNodeName.azChar());
+  vTrace("  --region %s\n"_Stz,m_sRegionName.azChar());
+  
+#ifdef WITH_DEBUG_VERSION
+  vTrace("  --address %p\n"_Stz,m_aRegionAddr);
+#endif
+  
+  s32 sSizeMag;
+  MagLib::vByteMag(m_iRegionSize,sSizeMag);
+  vTrace("  --size %s\n"_Stz,sSizeMag.azChar());
+  
+  for (i8 i_Index = 0; i_Index < m_nNodes; i_Index++) {
+    vTrace("  --node %s %s %lld\n"_Stz,
+      m_xNodes[i_Index].m_sNodeName.azChar(),
+      m_xNodes[i_Index].m_sIPAddress.azChar(),
+      m_xNodes[i_Index].m_iPortNo);
+  }
+  
+  vTrace("  --partitionsPerNode %lld\n"_Stz,m_nSlotsPerNode);
+  vTrace("  --threads %lld\n"_Stz,m_nThreads);
+
+  if (m_nDummyThreads) {
+    vTrace("  --dummyThreads %lld\n"_Stz,m_nDummyThreads);
+    vTrace("  --dummySleep %lld\n"_Stz,m_nDummySleep);
+    vTrace("  --dummyLoop %lld\n"_Stz,m_nDummyLoop);
+    vTrace("  --periodicSleep %lld\n"_Stz,m_nPeriodicSleep);
+  }
+  
+  if (m_bMetadata) vTrace("  --metadata\n"_Stz);
+
+#ifdef WITH_DEBUG_VERSION
+  vTrace("  --commands %s\n"_Stz,m_sCommandsDir.azChar());
+  vTrace("  --sen %s\n"_Stz,m_sSenDir.azChar());
+  if (m_bMunged) vTrace("  --munged\n"_Stz);
+#endif
+  
+  if (m_bDeveloper) vTrace("  --developer\n"_Stz);
+  
+  Correctness::vTraceWith();
+}
+
+/*----------------------------------------------------------------------------*/
+/* print help                                                                 */
+/*----------------------------------------------------------------------------*/
+void Args::vPrintHelp(void)
+{
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  
+  vInfo("\n"_Stz);
+  
+  vInfo("Help:\n"_Stz);
+  vInfo("--command <cmd>   (run given command)\n"_Stz);
+  vInfo("--help            (print this list)\n"_Stz);
+  vInfo("--list            (print list of available systems)\n"_Stz);
+  vInfo("--start           (start system)\n"_Stz);
+  vInfo("--status          (print status of system)\n"_Stz);
+  vInfo("--stop            (stop system)\n"_Stz);
+  
+  vInfo("\n"_Stz);
+  //vInfo("--partitionsPerNode <i>  (number of partitions per node)\n"_Stz);
+  vInfo("--node <name> IP port (node information in the cluster)\n"_Stz);
+  vInfo("--regionPrefix <name>    (prefix of shm region name)\n"_Stz);
+  vInfo("--size <i>               (size in bytes of shm region)\n"_Stz);
+
+  vInfo("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* check arguments                                                            */
+/*----------------------------------------------------------------------------*/
+void Args::vSanityCheck(void)
+{
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  
+  if (m_nNodes > C_MAX_NODES) {
+    vTrace("Too many nodes: %lld. Max of %lld\n"_Stz,m_nNodes,C_MAX_NODES);
+    Process::vExitFailure();
+  }
+  
+  i8 iRequiredThreads =
+    1                 // 1 thread for socket answer
+    + m_nNodes        // n threads for socket receiver
+    + m_nSubLoaders   // a threaad per subloader
+    + 1               // a thread for table loader
+    + 1               // 1 for the pot
+  ;
+  
+//RJH  if (m_nThreads < iRequiredThreads) {
+//RJH    vTrace("Insufficient threads: %lld. At least %lld threads required\n"_Stz,
+//RJH           m_nThreads,
+//RJH           iRequiredThreads);
+//RJH    Process::vExitFailure();
+//RJH  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* scribble over arguments                                                    */
+/*----------------------------------------------------------------------------*/
+void Args::vScribble(void)
+{
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  
+  byte* aDst = aAdd<byte*>(this,sizeof(Object));
+  
+  i8 nBytes = sizeof(Args) - sizeof(Object) - sizeof(Footer);
+  
+  MemLib::vSet(aDst,0xFF,nBytes,CN_ARGUMENTS);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Args::aFooter(void)
+{
+  return &m_xFooter;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

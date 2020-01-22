@@ -4,7 +4,7 @@
 
 #include "Oblique.h"
 
-extern Arguments     gxArguments;
+extern Args          gxArgs;
 extern PromptCatalog gxPromptCatalog;
 
 extern AttachMap*    gpAttachMap;

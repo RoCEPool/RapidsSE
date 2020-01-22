@@ -5,8 +5,8 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-#include "Arguments.hpp" //! Must fix!
-extern Arguments gxArguments;
+#include "Args.hpp" //! Must fix!
+extern Args          gxArgs;
 
 extern AttachMap*    gpAttachMap;
 extern JobCatalog    gxJobCatalog;
@@ -896,7 +896,7 @@ void SePrompt::vPromptUser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (gxArguments.m_bSethScript)
+  if (gxArgs.m_bSethScript)
     return;
   
   bool bHasStarted = AM::bHasStarted();
@@ -977,7 +977,7 @@ void SePrompt::vReportObjects(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (! gxArguments.m_bDeveloper)
+  if (! gxArgs.m_bDeveloper)
     return;
   
   if (m_pBPA) {

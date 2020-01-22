@@ -56,7 +56,7 @@ Input::Input(void)
   m_pTokeniser->vMalloc(false);
   m_pTokeniser->vPush();
   
-  //if (gxArguments.m_bPrompt)
+  //if (gxArgs.m_bPrompt)
      m_pTokeniser->vUseStdin();
   
   m_pTokeniser->vLineMode(true);

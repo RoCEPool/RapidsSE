@@ -344,7 +344,7 @@ i8 giClassSize[]
   /* */ 'A' - ('A' - 1),            // CN__A__
   /* */ sizeof(AccessPath),         // CN_ACCESSPATH
   /* */ sizeof(Arg),                // CN_ARG
-  /* */ sizeof(Arguments),          // CN_ARGUMENTS
+  /* */ sizeof(Args),          // CN_ARGUMENTS
   /* */ sizeof(Article),            // CN_ARTICLE
   /* */ sizeof(Atomic),             // CN_ATOMIC
   /* */ sizeof(AttachMap),          // CN_ATTACHMAP
