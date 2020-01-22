@@ -2,7 +2,6 @@
 /* RapidsSE.cpp -- RapidsSE External Api                                      */
 /*============================================================================*/
 
-#include "Interface.h"
 #include "StorageEngine.h"
 
 extern BufferPool*  gpBufferPool;

@@ -17,7 +17,6 @@ namespace Interface
 #include "ApiMacros.h"
 
 #include "Api.hpp"
-#include "RapidsSE.hpp"
 #include "SessionArray.hpp"
 
 /*============================================================================*/
