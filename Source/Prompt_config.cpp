@@ -4,6 +4,8 @@
 
 #include "Prompt.h"
 
+extern Args gxArgs;
+
 PromptFun __Prompt_config (
   PF_CONFIG,            // prompt function
   "Prompt_config"_Stz,  // name of the prompt function
@@ -30,7 +32,6 @@ bool Prompt::bPrompt_config(SePrompt* pPrompt)
   s32 sFreeSpace;
   MagLib::vByteMag(gpBufferPool->iFreeSpace(), sFreeSpace);
   
-  /*
   vTrace("  Node %s ShmLib %s Free %s Nodes %lld Slots %lld Threads %lld SubIngesters %lld SubLoaders %lld : %s\n"_Stz,
          gxArgs.m_sNodeName.azChar(),
          sShmSize.azChar(),
@@ -43,9 +44,7 @@ bool Prompt::bPrompt_config(SePrompt* pPrompt)
          AM::pGrid()->m_bHasStarted ? "cluster started"
                                             : "cluster not started"
          );
-  
-  */
-  
+    
   return true;
 }
 

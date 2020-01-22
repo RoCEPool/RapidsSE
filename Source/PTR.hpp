@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-
-
 namespace Correctness
 {
   template <class CLASS>
