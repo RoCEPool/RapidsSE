@@ -58,6 +58,9 @@ namespace Sessions
     NmStrList* m_pNmStrLst;      // name-string list
   
     Semantic*  m_pSemantic;
+  
+    TokenVec m_xTokenVec;  // token vector
+
 
     // must be last
     Footer m_xFooter;
