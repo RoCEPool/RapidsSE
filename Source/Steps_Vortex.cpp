@@ -22,6 +22,14 @@ void Step::vVortexProcessH(void)
   
   s256 sFilePath;
   m_pDataStack->vPopStr(sFilePath,__func__);
+  
+  File* pHFile = new File(nullptr);
+
+  bool b = pHFile->bOpenMode(sFilePath,C_OPEN_READ);
+  
+  pHFile->vClose();
+  
+  delete pHFile;
 
   EXIT();
 }
