@@ -4,11 +4,10 @@
 
 "-se.sen" .verbose
 
-"se_docols.sen" include
-
-"se_munge.sen" include
-
-"se_folder.sen" include
+"se_docols.sen"  include
+"se_folders.sen" include
+"se_munge.sen"   include
+"se_vortex.sen"  include
 
 // create the root /tenants dictionary
 dicTenants: tenants
