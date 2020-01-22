@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "AM.hpp"
 
 PromptFun __Prompt_deltaReset (
   PF_DELTARESET,            // prompt function

@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "AM.hpp"
 
 extern PromptCatalog gxPromptCatalog;
 

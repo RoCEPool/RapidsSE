@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "AM.hpp"
 
 PromptFun __Prompt_args (
   PF_ARGS,           // prompt function
