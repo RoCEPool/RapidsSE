@@ -16,6 +16,7 @@ namespace Oblique
 #include "SizesDumps.hpp"
 
 #include "Finalizers.hpp"
+#include "My.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

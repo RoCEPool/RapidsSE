@@ -4,6 +4,9 @@
 
 #include "Prompt.h"
 
+extern PromptCatalog gxPromptCatalog;
+extern PromptFun     __Prompt_actionSequence;
+
 PromptFun __Prompt_funs (
   PF_FUNS,               // prompt function
   "Prompt_funs"_Stz,     // name of the prompt function
@@ -18,9 +21,6 @@ PromptFun __Prompt_funs (
   ""_Stz                 // description
 );
 
-extern PromptCatalog gxPromptCatalog;
-
-extern PromptFun __Prompt_actionSequence;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
