@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Interface.h"
-#include "AM.hpp"
+
 
 extern BufferPool*  gpBufferPool;
 extern Log* gpLog;

@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "IndexTrees.h"
-#include "AM.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at given height starting from this buffer      */

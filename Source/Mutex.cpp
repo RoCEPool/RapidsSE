@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Resources.h"
-#include "AM.hpp"
+
 
 Atomic gixMutex;
 Atomic gixMutex_err;

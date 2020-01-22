@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Pool.h"
-#include "AM.hpp"
+
 
 extern Header*    gaSeShmRegion;
 
