@@ -44,6 +44,11 @@ void Step::vVortexProcessHpp(void)
   s256 sFilePath;
   m_pDataStack->vPopStr(sFilePath,__func__);
   
+  Input* pInput = new Input;
+  pInput->vPushFile(sFilePath);
+  
+  delete pInput;
+  
   EXIT();
 }
 
