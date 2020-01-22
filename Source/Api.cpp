@@ -97,7 +97,7 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
 //  }
 //  JobClass* pJobClass = pInput->pJobClass();
   
-  TokenVec* pTknVec = &pSession->m_xTokenVec;
+  TokenVec* pTknVec = pSession->pTokenVec();
   
   pInput->vTokenise(sCommand,pTknVec);
   Stz* aCommand1 = pTknVec->pGet(0)->szText();

@@ -142,7 +142,7 @@ Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession)
     // add <cmd> into job ename-set
     
     s4K sCmd;
-    TokenVec* pTknVec = &pSession->m_xTokenVec;
+    TokenVec* pTknVec = pSession->pTokenVec();
     pTknVec->vToString(sCmd);
     
     pJob->pEnameSet()->vAdd("<cmd>"_Stz,sCmd);

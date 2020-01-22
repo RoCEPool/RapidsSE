@@ -439,7 +439,7 @@ void SePrompt::vCutToken(i8 i_Tkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pTknVec = &m_pSession->m_xTokenVec;
+  TokenVec* pTknVec = m_pSession->pTokenVec();
   
   //pTknVec->vPrint();
   
@@ -513,7 +513,7 @@ bool SePrompt::bExecuteFile(void)
   
   Input* pInput = this->pInput();
   
-  bool bExecuteFile = pInput->bExecuteFile(&m_pSession->m_xTokenVec);
+  bool bExecuteFile = pInput->bExecuteFile(m_pSession->pTokenVec());
   
   return bExecuteFile;
 }
@@ -615,7 +615,7 @@ void SePrompt::vGetCommand(void)
   if (pInput->bStdIn())
     vDebugPoint();
     
-  pInput->vGetCommand(&m_pSession->m_xTokenVec);
+  pInput->vGetCommand(m_pSession->pTokenVec());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1093,7 +1093,7 @@ void SePrompt::vSpawnJob(void)
   
   Input* pInput = this->pInput();
   
-  m_pSession->m_xTokenVec.vSetTokens();
+  m_pSession->pTokenVec()->vSetTokens();
   
   m_pJob->vSeed(SS_SEED_REQ);
   
@@ -1183,7 +1183,7 @@ TokenVec* SePrompt::pTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return &m_pSession->m_xTokenVec;
+  return m_pSession->pTokenVec();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -59,6 +59,7 @@ namespace Sessions
   
     Semantic*  m_pSemantic;
   
+  private:
     TokenVec m_xTokenVec;  // token vector
 
 
@@ -87,6 +88,7 @@ namespace Sessions
     void      vReport(void);
     
     i8        iSlot(void);
+    TokenVec* pTokenVec(void);
     Tx*       pTx(void);
     void      vTx(Tx* pTx);
   

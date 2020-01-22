@@ -198,7 +198,7 @@ Job* Jobs::pJob_Sanity_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pS
   Job_Sanity* pJob_Sanity = new Job_Sanity(aJobClass,aReqTuple);
   //pJob->vDicPath(pSession);
 
-  TokenVec* pTokenVec = &pSession->m_xTokenVec;
+  TokenVec* pTokenVec = pSession->pTokenVec();
   
   bool bResult = pJob_Sanity->bPopulateJob(pTokenVec);
   
