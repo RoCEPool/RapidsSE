@@ -46,7 +46,7 @@
         Operand[].pipeOut
 
         // PURGE
-
+        tablePtn[].purge
         Operand[].newEosMarker
         Operand[].pipeOut
         true
