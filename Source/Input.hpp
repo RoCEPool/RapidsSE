@@ -35,6 +35,7 @@ namespace TokenStream
     bool bBlankLine(TokenVec* pTknVec);
     void vGetCommand(TokenVec* pTknVec);
     void vGetCommandArgument(void);
+    bool bGetToken(Token* pTkn);
     void vGetTokens(TokenVec* pTknVec);
     bool bTestFile(Stz* aPath);
 

@@ -193,6 +193,23 @@ void Input::vGetCommand(TokenVec* pTknVec_arg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next token from input                                                  */
+/*----------------------------------------------------------------------------*/
+bool Input::bGetToken(Token* pTkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  eTN eToken = m_pTokeniser->eNextToken((char*)pTkn->szText());
+      
+  pTkn->vToken(eToken);
+  
+  if (TN_NONE == eToken)
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get command tokens from input                                              */
 /*----------------------------------------------------------------------------*/
 void Input::vGetTokens(TokenVec* pTknVec_arg)
@@ -207,16 +224,20 @@ void Input::vGetTokens(TokenVec* pTknVec_arg)
       
       Token* pToken = (*pTknVec_arg)[pTknVec_arg->nTokens()];
       
-      eTN eToken = m_pTokeniser->eNextToken((char*)pToken->szText());
+//      eTN eToken = m_pTokeniser->eNextToken((char*)pToken->szText());
+//
+//      if (TN_NONE == eToken)
+//        break;
+//
+//      pToken->vToken(eToken);
       
-      if (TN_NONE == eToken)
-        break;
-      
-      pToken->vToken(eToken);
       
       //      vTrace("vGetCommand : token %lld ]%s[\n"_Stz,
       //             pTknVec_inp()->nTokens(),
       //             pTkn(pTknVec_inp()->nTokens())->aText());
+      
+      if (! bGetToken(pToken))
+        break;
       
       pTknVec_arg->vIncTokens();
       ASSERT(pTknVec_arg->nTokens() < C_MAX_TOKENS);
