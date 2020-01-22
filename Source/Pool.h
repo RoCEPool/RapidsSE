@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Alignment.h"
+#include "SharedMemory.h"
 
 //------------------------------------------------------------------------------
 
@@ -28,8 +28,6 @@ static const i8 C_LOW_BUFFERS        = 512;
 
 static const u8 C_OBJECT_TO_BUFFER_MASK = BITWISE_NOT((C_SIZE_POOL_BUFFER - 1));
 
-#include "Shm.hpp"
-
 #include "PoolBuffer.hpp"
 #include "FreeBuffer.hpp"
 #include "FreeChunk.hpp"
@@ -38,12 +36,9 @@ static const u8 C_OBJECT_TO_BUFFER_MASK = BITWISE_NOT((C_SIZE_POOL_BUFFER - 1));
 #include "HeapBuffer.hpp"
 #include "HeapMem.hpp"
 #include "Heap.hpp"
-#include "Slab.hpp"
-#include "SlabAllocator.hpp"
 
 #include "Region.hpp"
 
-#include "MemTest.hpp"
 
 extern BufferPool* gpBufferPool;
 

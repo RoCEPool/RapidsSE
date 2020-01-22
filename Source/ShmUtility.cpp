@@ -86,7 +86,7 @@ void ShmUtility::vAttach(void)
   SysCall oSysCall;
  
   // open existing shm region
-  bool bResult = Shm::bOpenExisting(iFD,msRegionName,oSysCall);
+  bool bResult = ShmLib::bOpenExisting(iFD,msRegionName,oSysCall);
 
   if ( ! bResult ) {
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
@@ -96,14 +96,14 @@ void ShmUtility::vAttach(void)
   }
   
   // allocate an extent of memory
-  gaSeShmRegion = (Header*)Shm::aMap(iFD,
+  gaSeShmRegion = (Header*)ShmLib::aMap(iFD,
                                      gaSeShmRegionAddress,
                                      miRegionSize,
                                      C_NO_HUGE_PAGES,
                                      oSysCall);
 
   if (! gaSeShmRegion)  {
-    Shm::bClose(iFD,oSysCall);
+    ShmLib::bClose(iFD,oSysCall);
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "ShmUtility::vAttach failed to map\n"_Stz);
   }
@@ -126,14 +126,14 @@ void ShmUtility::vCreate(void)
   bool bResult;
   
   // open a new shm region which will contain the activity map
-  bResult = Shm::bOpenCreate(iFD,msRegionName,oSysCall);
+  bResult = ShmLib::bOpenCreate(iFD,msRegionName,oSysCall);
   if (! bResult)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "ShmUtility::vCreate: failed to create region %s\n"_Stz,
            msRegionName.azChar());
   
   // extend the shm region
-  bResult = Shm::bExtend(iFD,miRegionSize,oSysCall);
+  bResult = ShmLib::bExtend(iFD,miRegionSize,oSysCall);
   if (! bResult)
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "ShmUtility::vCreate: failed to extend region %s\n"_Stz,
@@ -141,7 +141,7 @@ void ShmUtility::vCreate(void)
 
   
   // allocate memory for the shm region
-  gaSeShmRegion = (Header*)Shm::aMap(iFD,
+  gaSeShmRegion = (Header*)ShmLib::aMap(iFD,
                                      gaSeShmRegionAddress,
                                      miRegionSize,
                                      C_NO_HUGE_PAGES,
@@ -159,7 +159,7 @@ void ShmUtility::vDelete(void)
 {
   SysCall oSysCall;
   
-  if (! Shm::bUnlink(msRegionName,oSysCall)) {
+  if (! ShmLib::bUnlink(msRegionName,oSysCall)) {
     vThrow(FK_FATAL,VL_FATAL,__func__,__FILE__,__LINE__,
            "Region %s not unlinked\n"_Stz,msRegionName.azChar());
   }

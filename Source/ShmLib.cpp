@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Shm.cpp -- shared memory                                                   */
+/* ShmLib.cpp -- shared memory library                                        */
 /*============================================================================*/
 
-#include "Pool.h"
+#include "SharedMemory.h"
 #include "AM.hpp"
 
 
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* close an existing shared memory segment                                    */
 /*----------------------------------------------------------------------------*/
-bool Shm::bClose(int iShmFd, SysCall& oSysCall)
+bool ShmLib::bClose(int iShmFd, SysCall& oSysCall)
 {
   oSysCall.vClear();
   
@@ -34,7 +34,7 @@ bool Shm::bClose(int iShmFd, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 /* extend newely created shared memory segment to given size                  */
 /*----------------------------------------------------------------------------*/
-bool Shm::bExtend(int iShmFd, i8 iSize, SysCall& oSysCall)
+bool ShmLib::bExtend(int iShmFd, i8 iSize, SysCall& oSysCall)
 {
   // extend segment to given length (will be filled with zero's)
   int iResult = ftruncate(iShmFd, iSize);
@@ -50,7 +50,7 @@ bool Shm::bExtend(int iShmFd, i8 iSize, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 /* lock a shm region into memory                                              */
 /*----------------------------------------------------------------------------*/
-bool Shm::bLock(void* aAddress, i8 iBytes, SysCall& SysCall)
+bool ShmLib::bLock(void* aAddress, i8 iBytes, SysCall& SysCall)
 {
   SysCall.vClear();
   
@@ -65,7 +65,7 @@ bool Shm::bLock(void* aAddress, i8 iBytes, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* create and open a new shared memory segment                                */
 /*----------------------------------------------------------------------------*/
-bool Shm::bOpenCreate(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
+bool ShmLib::bOpenCreate(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
 {
   oSysCall.vClear();
   
@@ -87,7 +87,7 @@ bool Shm::bOpenCreate(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 /* open an existing shared memory sement                                      */
 /*----------------------------------------------------------------------------*/
-bool Shm::bOpenExisting(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
+bool ShmLib::bOpenExisting(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
 {
   oSysCall.vClear();
   
@@ -109,7 +109,7 @@ bool Shm::bOpenExisting(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 /* map address onto a shared memory segment                                   */
 /*----------------------------------------------------------------------------*/
-void* Shm::aMap(int iShmFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall& SysCall)
+void* ShmLib::aMap(int iShmFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall& SysCall)
 {
   SysCall.vClear();
   
@@ -148,17 +148,17 @@ void* Shm::aMap(int iShmFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall& S
 /*----------------------------------------------------------------------------*/
 /* test for region                                                            */
 /*----------------------------------------------------------------------------*/
-bool Shm::bTest(s32& sShmNm)
+bool ShmLib::bTest(s32& sShmNm)
 {
   int iShmFd;
   SysCall oSysCall;
   
   // open existing shm region
-  bool bResult = Shm::bOpenExisting(iShmFd,sShmNm,oSysCall);
+  bool bResult = ShmLib::bOpenExisting(iShmFd,sShmNm,oSysCall);
   if ( ! bResult )
     return false;
   
-  bResult = Shm::bClose(iShmFd,oSysCall);
+  bResult = ShmLib::bClose(iShmFd,oSysCall);
   RASSERT(bResult);
   
   return true;
@@ -167,7 +167,7 @@ bool Shm::bTest(s32& sShmNm)
 /*----------------------------------------------------------------------------*/
 /* unmap an existing memory region                                            */
 /*----------------------------------------------------------------------------*/
-bool Shm::bUnmap(void *aAddress, i8 iBytes, SysCall& oSysCall)
+bool ShmLib::bUnmap(void *aAddress, i8 iBytes, SysCall& oSysCall)
 {
   oSysCall.vClear();
   
@@ -188,7 +188,7 @@ bool Shm::bUnmap(void *aAddress, i8 iBytes, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 /* unlink an existing memory region                                           */
 /*----------------------------------------------------------------------------*/
-bool Shm::bUnlink(s32& sShmNm, SysCall& oSysCall)
+bool ShmLib::bUnlink(s32& sShmNm, SysCall& oSysCall)
 {
   oSysCall.vClear();
   

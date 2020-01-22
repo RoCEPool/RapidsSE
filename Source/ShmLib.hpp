@@ -1,14 +1,14 @@
 /*============================================================================*/
-/* Shm.h -- shared memory                                                     */
+/* ShmLib.h -- shared memory                                                  */
 /*============================================================================*/
 #pragma once
 
-namespace Pool
+namespace SharedMemory
 {
   static const bool C_HUGE_PAGES    = true;
   static const bool C_NO_HUGE_PAGES = false;
 
-  class Shm
+  class ShmLib
   {
   public:
     static bool  bClose(int iShmFd, SysCall& oSysCall);

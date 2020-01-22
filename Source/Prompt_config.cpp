@@ -32,7 +32,7 @@ bool Prompt::bPrompt_config(SePrompt* pPrompt)
   MagLib::vByteMag(gpBufferPool->iFreeSpace(), sFreeSpace);
   
   /*
-  vTrace("  Node %s Shm %s Free %s Nodes %lld Slots %lld Threads %lld SubIngesters %lld SubLoaders %lld : %s\n"_Stz,
+  vTrace("  Node %s ShmLib %s Free %s Nodes %lld Slots %lld Threads %lld SubIngesters %lld SubLoaders %lld : %s\n"_Stz,
          gxArguments.m_sNodeName.azChar(),
          sShmSize.azChar(),
          sFreeSpace.azChar(),

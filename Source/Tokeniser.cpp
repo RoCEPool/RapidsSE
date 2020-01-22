@@ -53,50 +53,6 @@ Tokeniser::Tokeniser(void)
   m_sToken  = ""_Stz;
   m_eToken  = TN_NONE;
   
-  
-  if (! AM::bDeveloper()) {
-    m_sPrompt.vSprint("se>"_Stz);
-  }
-  else {
-  
-    i8 nNodes = AM::nDefinedNodes();
-    Stz* szNodeNm = AM::szNodeNm();
-    i8  i_Node = AM::iThisNodeNo();
-    
-    //m_sPrompt.vSprint("[N%lld/%lld %s %lld%s%s%s] se %s%c"_Stz,
-    m_sPrompt.vSprint("[%s %lld] se %s%c"_Stz,
-                      
-//                      i_Node,
-//                      nNodes,
-                      szNodeNm,
-                      Process::iGetPid(),
-//  #ifdef WITH_SHARED_LOG
-//                      AM::bLog() ? " LG+" : " LG-",
-//  #else
-//                      "",
-//  #endif
-//  #ifdef WITH_ENTRY_EXIT
-//                      " EE+",
-//  #else
-//                      "",
-//  #endif
-//  #ifdef WITH_TRACE_API
-//                      " TA+",
-//  #else
-//                      "",
-//  #endif
-
-                      RAPIDSSE_VERSION_STRING,
-  #ifdef WITH_DEBUG_VERSION
-                      'd'
-  #else
-                      'r'
-  #endif
-                      );
-  }
-  
-  m_sContinue = "  >"_Stz;
-
   _checkInitialised_(CN_TOKENISER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
@@ -279,8 +235,6 @@ void Tokeniser::vCollectStatement(void)
   // switch to terminal mode
   vLineMode(false);
   
-  vPrompt(m_sContinue);
-  
   // get tokens delimited by ';'
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
@@ -296,7 +250,7 @@ void Tokeniser::vCollectStatement(void)
   
   // switch back to line mode
   vLineMode(true);
-  vPrompt(m_sPrompt);
+  //vPrompt(m_sPrompt);
   
   //m_pTokeniser->vDumpTokens("Request : "_Stz,m_xTokenVec,C_MAX_TOKENS);
 }
@@ -416,16 +370,6 @@ bool Tokeniser::bPop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set prompt                                                                 */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vPrompt(Stz* szPrompt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  m_pParser->vPrompt(szPrompt);
-}
-
-/*----------------------------------------------------------------------------*/
 /* push a parser                                                              */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vPush(void)
@@ -433,8 +377,6 @@ void Tokeniser::vPush(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   m_pParser = new(m_bMalloc) Parser(m_pParser);
-  
-  m_pParser->vPrompt(m_sPrompt);
 }
 
 /*----------------------------------------------------------------------------*/

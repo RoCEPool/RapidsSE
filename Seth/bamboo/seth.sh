@@ -23,7 +23,7 @@ SE_ARGS="--name NODE0 --node NODE0 127.0.0.1 5541 --munged --commands ../Command
 export LD_LIBRARY_PATH="${SE_DIR}:${LD_LIBRARY_PATH}"
 
 # Additional arguments for SETH. Enable as required.
-SETH_ARGS="--clean --logsteps --resultdir ${DIR}/results --resultformat junit -f ${TESTLIST_FILE}" 
+SETH_ARGS="--logsteps --resultdir ${DIR}/results --resultformat junit -f ${TESTLIST_FILE}" 
 
 # The SE JDBC URL that tells the JDBC driver how to connect to SE.
 URL="jdbc:rapidsse:${SE_PATH}?extraargs=${SE_ARGS}"

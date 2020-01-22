@@ -135,10 +135,12 @@ void SePrompt::vPromptLoop(void)
   
   while (bContinue()) {
     
-    if (bStdIn())
+    if (bStdIn()) {
+      vReportObjects();
       vPromptUser();
-    
-     vGetCommand();
+    }
+
+    vGetCommand();
        
     if (bBlankLine()) {
       if (AM::bDeveloper())
@@ -322,6 +324,16 @@ bool SePrompt::bBlankLine(void)
   bool bBlankLine = pInput->bBlankLine();
 
   return bBlankLine;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for blank line                                                        */
+/*----------------------------------------------------------------------------*/
+BPA* SePrompt::pBPA(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pBPA;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -956,6 +968,26 @@ void SePrompt::vRestateCommand(void)
   
   // -- -- -- -- -- --
   return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* report objects since last command                                          */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vReportObjects(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (! gxArguments.m_bDeveloper)
+    return;
+  
+  if (m_pBPA) {
+    i8 nObjectDelta = m_pBPA->nObjectDelta();
+    vTrace("object delta: %lld objects\n"_Stz,nObjectDelta);
+  }
+  else {
+    m_pBPA = new BPA;
+    m_pBPA->vEpochTake();
+  }
 }
 
 /*----------------------------------------------------------------------------*/

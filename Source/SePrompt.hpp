@@ -51,6 +51,7 @@ namespace Prompt
     // these are the prompt.xyz task primitives
     void vBeginRequest(void);
     bool bBlankLine(void);
+    BPA* pBPA(void);
     void vCheckJobCtl(void);
     void vCheckTimed(void);
     i8   iCommandFocal(void);
@@ -69,7 +70,7 @@ namespace Prompt
     bool bFindMatch(void);
     void vFocalOutline(s4K& sOutline);
     void vGetCommand(void);
-     Input* pInput(void);
+    Input* pInput(void);
     bool bIsPromptWord(void);
     void vJobLockMutex(void);
     void vJobUnlockMutex(void);
@@ -86,6 +87,7 @@ namespace Prompt
     void vPromptUser(void);
     void vReformatCommand(void);
     void vRestateCommand(void);
+    void vReportObjects();
     void vReportTime(void);
     Session* pSession(void);
     void vSetJob(void);
