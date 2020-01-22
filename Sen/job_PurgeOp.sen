@@ -42,7 +42,8 @@
         //"Operand:- ZK_PULSEMARKER" .verbose
         Operand[].pipeOut
 
-        // pipeout stream def
+        // new a stream def
+        Operand[].newStreamDef
         Operand[].pipeOut
 
         // PURGE
@@ -91,7 +92,7 @@
 /*----------------------------------------------------------------------------*/
 jobSyntax: PurgeOp :: PurgeOp <tableNm> <topology> <nextStage> <nextOp> ;
 
-jobInfo: SnapshotOp
+jobInfo: PurgeOp
 {
   <?jobDesc?>  = "--description of job--"
   
