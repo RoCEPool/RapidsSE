@@ -121,6 +121,10 @@ Session::Session(void)
 
   m_pSemantic       = new Semantic;
   
+  m_xTokenVec.vSetAllTokens();
+  
+  ASSERT(C_MAX_TOKENS == m_xTokenVec.nItems());
+  
   _checkInitialised_(CN_SESSION);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

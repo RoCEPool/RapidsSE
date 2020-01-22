@@ -67,7 +67,7 @@ namespace Sessions
     
   public:
     void* operator new(size_t);
-  void  operator delete(void*);
+    void  operator delete(void*);
 
     Session(void);
    ~Session(void) noexcept(false);
