@@ -64,8 +64,10 @@ void Step::vVortexProcessHpp(void)
   Token m_xToken;
   while (pInput->bGetToken(&m_xToken)) {
     if (m_xToken.bSame("class"_Stz)) {
+      
       if (! pInput->bGetToken(&m_xToken))
         break;
+      
       vTrace("  %s\n"_Stz,m_xToken.azChar());
     }
   }
