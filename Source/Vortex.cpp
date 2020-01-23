@@ -22,7 +22,8 @@ Vortex::Vortex(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_pVortexFile = nullptr;
-  m_pInput = nullptr;
+  m_pInput      = nullptr;
+  // m_xToken_ClassNm
     
   _checkInitialised_(CN_VORTEX);
 
@@ -79,6 +80,36 @@ bool Vortex::bOpen(Stz* szVortexPath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse base clause                                                          */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseBase(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  // just saw :
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse class                                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseClass(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  // just saw {
+  
+  vParseMembers();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse members                                                              */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseMembers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* process a source file (.h or .hpp)                                         */
 /*----------------------------------------------------------------------------*/
 void Vortex::vProcessSource(Stz* szSourcePath)
@@ -88,35 +119,40 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   m_pInput = new Input;
   m_pInput->vPushFile(szSourcePath);
   
-  Token m_xTokenNm;
-  Token m_xTokenXyz;
-  while (m_pInput->bGetToken(&m_xTokenXyz)) {
+  Token xTokenXyz;
+  while (m_pInput->bGetToken(&xTokenXyz)) {
    
-    if (m_xTokenXyz.bSame("friend"_Stz)) {
+    if (xTokenXyz.bSame("friend"_Stz)) {
       
-      while (m_pInput->bGetToken(&m_xTokenXyz)) {
-        if (m_xTokenXyz.bSame(";"_Stz))
+      while (m_pInput->bGetToken(&xTokenXyz)) {
+        if (xTokenXyz.bSame(";"_Stz))
          break;
       }
       continue;
     }
 
-    if (m_xTokenXyz.bSame("class"_Stz)) {
+    if (xTokenXyz.bSame("class"_Stz)) {
       
-      if (! m_pInput->bGetToken(&m_xTokenNm))
+      if (! m_pInput->bGetToken(&m_xToken_ClassNm))
         break;
       
-      if (! m_pInput->bGetToken(&m_xTokenXyz))
+      if (! m_pInput->bGetToken(&xTokenXyz))
         break;
-
-      if (m_xTokenXyz.bSame(":"_Stz) || m_xTokenXyz.bSame("{"_Stz)) {
-        //vTrace("  %s\n"_Stz,m_xTokenNm.azChar());
-        m_pVortexFile->vPrint("%s\n"_Stz,m_xTokenNm.azChar());
+      
+      if (xTokenXyz.bSame("{"_Stz)) {
+        vParseClass();
+        continue;
+      }
+      
+      if (xTokenXyz.bSame(":"_Stz)) {
+        vParseBase();
+        continue;
       }
     }
   }
 
   delete m_pInput;
+  m_pInput = nullptr;
 }
 
 

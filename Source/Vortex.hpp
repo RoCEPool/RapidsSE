@@ -10,7 +10,8 @@ namespace Utilities
   public:
     File*  m_pVortexFile;
     Input* m_pInput;
-  
+    Token  m_xToken_ClassNm;
+
     // must be last
     Footer m_xFooter;
   
@@ -24,7 +25,9 @@ namespace Utilities
   public:
     void vClose(void);
     bool bOpen(Stz* szVortexPath);
+    void vParseBase(void);
     void vParseClass(void);
+    void vParseMembers(void);
     void vProcessSource(Stz* szSourcePath);
 
   private:
