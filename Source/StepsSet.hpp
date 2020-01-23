@@ -1322,8 +1322,10 @@ public:
   void vUtilitySchemaTest(void);
 
   // vortex
+  void vVortexClose(void);
   void vVortexDelete(void);
   void vVortexNew(void);
+  void vVortexOpen(void);
   void vVortexProcessH(void);
   void vVortexProcessHpp(void);
 
