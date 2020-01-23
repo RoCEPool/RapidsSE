@@ -8,7 +8,8 @@ namespace Utilities
   class Vortex : public Object
   {
   public:
-
+    File* m_pFile;
+  
     // must be last
     Footer m_xFooter;
   
