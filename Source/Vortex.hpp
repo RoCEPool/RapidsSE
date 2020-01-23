@@ -15,6 +15,8 @@ namespace Utilities
     Token  m_xToken_Other;
   
     bool   m_bTraceTokens;
+  
+    i8     m_nClasses;
 
     // must be last
     Footer m_xFooter;

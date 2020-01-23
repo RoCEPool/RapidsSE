@@ -28,6 +28,7 @@ Vortex::Vortex(void)
   // m_xToken_Other
   
   m_bTraceTokens = false;
+  m_nClasses     = 0;
   
   _checkInitialised_(CN_VORTEX);
 
@@ -125,6 +126,7 @@ void Vortex::vParseClass(void)
   // just saw {
   
   m_pVortexFile->vPrint("%s\n"_Stz,m_xToken_ClassNm.azChar());
+  m_nClasses++;
   
   vParseMembers();
 }
@@ -175,6 +177,7 @@ bool Vortex::bParseMember(void)
     
     if (m_xToken_Other.bSame("union"_Stz)) {
       vParseMemberUnion();
+      continue;
     }
 
     
@@ -197,7 +200,7 @@ void Vortex::vParseMemberProper(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  vTrace("%s + "_Stz,m_xToken_ClassNm.azChar());
+  vTrace("[%lld] %s + "_Stz,m_nClasses,m_xToken_ClassNm.azChar());
   vTrace("%s "_Stz,m_xToken_Other.azChar());
 
   i8 i_Token = 0;
