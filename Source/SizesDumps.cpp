@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Dump.cpp -- Class Dumps                                                    */
+/* SizesDumps.cpp -- Class Sizes ands Dumps                                   */
 /*============================================================================*/
 
 #include "Oblique.h"
@@ -591,7 +591,7 @@ i8 giClassSize[]
   /* */ sizeof(SP_Dte),             // CN_SPDTE
   /* */ sizeof(SP_Elapsed),         // CN_SPELAPSED
   /* */ sizeof(SP_Flt),             // CN_SPFLT
-  /* */ sizeof(SP_Gid),              // CN_SPID
+  /* */ sizeof(SP_Gid),             // CN_SPID
   /* */ sizeof(SP_Int),             // CN_SPINT
   /* */ sizeof(SP_Ivl),             // CN_SPIVL
   /* */ sizeof(SP_String),          // CN_SPSTRING
@@ -645,7 +645,7 @@ i8 giClassSize[]
   /* */ 'U' - ('A' - 1),            // CN__U__
   
   /* */ 'V' - ('A' - 1),            // CN__V__
-  /* */ 0,//sizeof(Vortex),         // CN_VORTEX
+  /* */ sizeof(Vortex),             // CN_VORTEX
 
   /* */ 'W' - ('A' - 1),            // CN__W__
   /* */ sizeof(Wilderness),         // CN_WILDERNESS
