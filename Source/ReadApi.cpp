@@ -309,7 +309,7 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
       if (tCrvPsp < tPerspective) {
         
 #ifdef WITH_TRACE_PURGING
-        vTrace("DELETING...\n"_Stz);
+        vTrace("PURGING...\n"_Stz);
         aKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);
 #endif
@@ -323,7 +323,7 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
       else {
         
 #ifdef WITH_TRACE_PURGING
-        vTrace("NOT DELETING\n"_Stz);
+        vTrace("NOT PURGING\n"_Stz);
         aKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);
 #endif
