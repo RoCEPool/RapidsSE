@@ -54,6 +54,8 @@ void Step::vVortexProcessH(void)
 {
   ENTRY(); // ENTRY("vVortexProcessH"_Stz);
   
+  Vortex* pVortex = _pVortex(m_pDataStack->pPopPtr(__func__));
+
   s256 sFilePath;
   m_pDataStack->vPopStr(sFilePath,__func__);
   
@@ -105,6 +107,8 @@ void Step::vVortexProcessHpp(void)
 {
   ENTRY(); // ENTRY("vVortexProcessHpp"_Stz);
   
+  Vortex* pVortex = _pVortex(m_pDataStack->pPopPtr(__func__));
+
   s256 sFilePath;
   m_pDataStack->vPopStr(sFilePath,__func__);
   

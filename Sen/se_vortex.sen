@@ -11,6 +11,8 @@
 
   params| pSeSourceDir |
 
+  vortex::new locals| pVortex |
+
   // read thru directory
   begin pSeSourceDir dir.read while
 
@@ -22,17 +24,19 @@
 
       pSeSourceDir dir.entryName .
 
-      pSeSourceDir dir.entryName vortex::processHpp
+      pSeSourceDir dir.entryName pVortex vortex::processHpp
 
     else
     2 pSeSourceDir dir.entryName str.right ".h" str.equal if
 
       pSeSourceDir dir.entryName .
 
-      pSeSourceDir dir.entryName vortex::processH
+      pSeSourceDir dir.entryName pVortex vortex::processH
     then then
 
   repeat
+
+  pVortex vortex.delete
 ;
 
 /*----------------------------------------------------------------------------*/
