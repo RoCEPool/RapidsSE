@@ -319,6 +319,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN__U__
   
   /* */ &Dump::vInvalid,         // CN__V__
+  /* */ &Dump::vInvalid,         // CN_VORTEX
   
   /* */ &Dump::vInvalid,         // CN__W__
   /* */ &Dump::vInvalid,         // CN_WILDERNESS
@@ -644,7 +645,8 @@ i8 giClassSize[]
   /* */ 'U' - ('A' - 1),            // CN__U__
   
   /* */ 'V' - ('A' - 1),            // CN__V__
-  
+  /* */ 0,//sizeof(Vortex),         // CN_VORTEX
+
   /* */ 'W' - ('A' - 1),            // CN__W__
   /* */ sizeof(Wilderness),         // CN_WILDERNESS
   /* */ sizeof(Word),               // CN_WORD
@@ -969,7 +971,8 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN__U__
   
   /* */ HT_INVALID,           // CN__V__
-  
+  /* */ HT_TRANSIENT_LARGE,   // CN_VORTEX
+
   /* */ HT_INVALID,           // CN__W__
   /* */ HT_INVALID,           // CN_WILDERNESS
   /* */ HT_TRANSIENT_MEDIUM,  // CN_WORD
