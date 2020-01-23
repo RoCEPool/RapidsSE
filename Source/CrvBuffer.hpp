@@ -35,7 +35,9 @@ namespace ReadConsistency
     i8   nCrv(void);
     void vDumpAllCrv(void);
     Crv* aGetCrv(i8 i_Crv);
-  
+    CrvBuffer* pNextBuffer(void);
+    CrvBuffer* pPrevBuffer(void);
+    
   private:
     bool bHasSpace(i8 nBytes);
     Footer* aFooter(void);
