@@ -11,6 +11,8 @@ namespace Correctness
   class Footer
   {
   private:
+    i8 m__iPadding__;
+  
     union {
       u8   m_uFooter;
       char m_caFooter[8];
