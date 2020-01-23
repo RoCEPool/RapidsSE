@@ -29,7 +29,8 @@ ReadApi::ReadApi(void)
   
   m_pIndexTree = new IndexTree(pReadApiIndex,0);
   
-  m_pCrvBufferHead = nullptr;
+  m_pCrvBufferHead  = nullptr;
+  m_pCrvBufferFirst = nullptr;
   
   _checkInitialised_(CN_READAPI);
   
@@ -189,10 +190,13 @@ void ReadApi::vPurgePriorVersions(t8 tPerspective)
   //m_pIndexTree->vDump(false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete RC INDEX Entries
+  
   // first position at the first level 0 buffer
   EntBuffer* pEntBuffer = m_pIndexTree->pFirstH0Buffer();
   Ent* aEntNext;
   EntBuffer* pRootBuffer;
+  
   
   while (pEntBuffer) {
     
@@ -223,6 +227,36 @@ void ReadApi::vPurgePriorVersions(t8 tPerspective)
     }
     
     pEntBuffer = pEntBuffer->pNextBuffer();
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete CRV BUFFERS that have psp older than the oldest
+  CrvBuffer* pCrvBuffer = m_pCrvBufferFirst;
+  CrvBuffer* pCrvPrevBuffer = nullptr;
+  
+  while (pCrvBuffer) {
+    // get the last crv entry from the buffer
+    i8 iCrv  = pCrvBuffer->nCrv();
+    Crv* aCrv = pCrvBuffer->aGetCrv(iCrv);
+    Crw* aCrw = aCrv->aCrw();
+    i8 tCrvPsp = aCrw->tPerspective();
+    
+    // save the prevBuffer
+    pCrvPrevBuffer = pCrvBuffer->pPrevBuffer();
+    
+    // check if psp of last entry is older than the given psp
+    if (tCrvPsp < tPerspective) {
+      vTrace("DELETING CRV BUFFER %p...\n"_Stz, pCrvBuffer);
+      // unlink the CrvBuffer
+      delete pCrvBuffer;
+      
+      if (pCrvBuffer == m_pCrvBufferHead) {
+        m_pCrvBufferHead = nullptr;
+        ASSERT( ! pCrvPrevBuffer );
+      }
+    }
+    
+    pCrvBuffer = pCrvPrevBuffer;
   }
   
 }
@@ -277,6 +311,9 @@ Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
   // test for current head buffer
   if (! m_pCrvBufferHead)
     m_pCrvBufferHead = new CrvBuffer(m_pStreamDef);
+  
+  if ( ! m_pCrvBufferFirst)
+    m_pCrvBufferFirst = m_pCrvBufferHead;
   
   // attempt to add crw into current head buffer
   i8 i_Crv = m_pCrvBufferHead->iAddCrwVersion(xwCurrentRef,aCrw);

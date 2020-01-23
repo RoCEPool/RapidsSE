@@ -12,7 +12,8 @@ namespace ReadConsistency
   
     IndexTree* m_pIndexTree; // the index for this 
   
-    CrvBuffer* m_pCrvBufferHead; // head of crv buffer list
+    CrvBuffer* m_pCrvBufferFirst; // first crv buffer
+    CrvBuffer* m_pCrvBufferHead;  // head of crv buffer list
   
     // must be last
     Footer m_xFooter;
