@@ -104,9 +104,6 @@ void Vortex::vProcessSource(Stz* szSourcePath)
       if (! pInput->bGetToken(&m_xTokenNm))
         break;
       
-      if (m_xTokenNm.bSame(":"_Stz))
-        vTrace("  %s\n"_Stz,szSourcePath->azChar());
-
       if (! pInput->bGetToken(&m_xTokenXyz))
         break;
 
@@ -118,7 +115,6 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   }
 
   delete pInput;
-
 }
 
 

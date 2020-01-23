@@ -43,8 +43,8 @@ namespace TokenStream
     eTN  eNextToken(char* aToken);
     void vNextToken(void);
     void vNormal(bool bNormal);
-    bool bPop(void);
-    void vPush(void);
+    bool bPopParser(void);
+    void vPushParser(void);
     bool bStdin(void);
     eTN  eToken(void);
     Stz* szToken(void);

@@ -65,7 +65,8 @@ Tokeniser::~Tokeniser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  delete m_pParser;
+  while (m_pParser)
+    RASSERT(bPopParser());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +81,7 @@ TokenVec* Tokeniser::pTokenise(Stz* szString)
   TokenVec* pTokenVec = new TokenVec;
   
   Tokeniser* pTokeniser = new Tokeniser;
-  pTokeniser->vPush();
+  pTokeniser->vPushParser();
   pTokeniser->vUseString(szString);
   
   for (i8 i_Token = 0; ; i_Token++) {
@@ -109,7 +110,7 @@ void Tokeniser::vTokenise(TokenVec* pTokenVec, Stz* szString)
   pTokenVec->vReset();
   
   Tokeniser* pTokeniser = new Tokeniser;
-  pTokeniser->vPush();
+  pTokeniser->vPushParser();
   pTokeniser->vUseString(szString);
   
   for (i8 i_Token = 0; ; i_Token++) {
@@ -349,17 +350,15 @@ void Tokeniser::vNormal(bool bNormal)
 /*----------------------------------------------------------------------------*/
 /* pop a parser                                                               */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bPop(void)
+bool Tokeniser::bPopParser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ( ! m_pParser )
+  if (! m_pParser)
     return false;
   
   Parser* pToBeDelete = m_pParser;
   m_pParser = m_pParser->pNext();
-  
-  ASSERT(m_pParser);
   
   delete pToBeDelete;
   
@@ -369,7 +368,7 @@ bool Tokeniser::bPop(void)
 /*----------------------------------------------------------------------------*/
 /* push a parser                                                              */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vPush(void)
+void Tokeniser::vPushParser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   

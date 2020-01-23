@@ -93,7 +93,7 @@ void Step::vInputPop(void)
 {
   ENTRY(); // ENTRY("vInputPop"_Stz);
   
-  bool bPopped = m_pCompiler->pTokeniser()->bPop();
+  bool bPopped = m_pCompiler->pTokeniser()->bPopParser();
   ASSERT(bPopped);
   
   EXIT();
@@ -109,7 +109,7 @@ void Step::vInputPush(void)
   if ( ! m_pCompiler )
     m_pCompiler = new Compiler;
   
-  m_pCompiler->pTokeniser()->vPush();
+  m_pCompiler->pTokeniser()->vPushParser();
   
   EXIT();
 }

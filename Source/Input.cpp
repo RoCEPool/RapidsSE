@@ -54,7 +54,7 @@ Input::Input(void)
   m_pTokeniser = new Tokeniser;
   
   m_pTokeniser->vMalloc(false);
-  m_pTokeniser->vPush();
+  m_pTokeniser->vPushParser();
   
   //if (gxArgs.m_bPrompt)
      m_pTokeniser->vUseStdin();
@@ -128,7 +128,7 @@ void Input::vPushFile(Stz* aFileName)
   
   sPath = aFileName;
   
-  m_pTokeniser->vPush();
+  m_pTokeniser->vPushParser();
   
   bool b = m_pTokeniser->bUseFile(sPath);
   ASSERT(b);
@@ -245,7 +245,7 @@ void Input::vGetTokens(TokenVec* pTknVec_arg)
     
     // end of file? if so, pop and retry
     if (! pTknVec_arg->nTokens() && m_pTokeniser->bEOF()) {
-      bool b = m_pTokeniser->bPop();
+      bool b = m_pTokeniser->bPopParser();
       ASSERT(b);
       break;
     }
@@ -277,11 +277,11 @@ void Input::vTokenise(Stz* aCommand, TokenVec* pTknVec_arg)
   
   s48K sCommand(aCommand);
   
-  m_pTokeniser->vPush();
+  m_pTokeniser->vPushParser();
   m_pTokeniser->vUseString(sCommand);
   
   vGetCommand(pTknVec_arg);
-  m_pTokeniser->bPop();
+  m_pTokeniser->bPopParser();
 }
 
 /*----------------------------------------------------------------------------*/

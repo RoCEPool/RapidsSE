@@ -36,7 +36,7 @@ Compiler::Compiler(void)
   m_eMode      = CM_INTERPRETING;
 
   m_pTokeniser = new Tokeniser;
-  m_pTokeniser->vPush();
+  m_pTokeniser->vPushParser();
   m_pTokeniser->vUseString(""_Stz);
   
   m_nLocals    = 0;
