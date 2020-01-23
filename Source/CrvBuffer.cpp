@@ -112,8 +112,8 @@ i8 CrvBuffer::iAddCrwVersion(Ref xwRef, Crw* pCrw)
   i8 nTotalBytesNeeded = Crv::nCrvBytesNeed(nCrwBytes);
   
   if (! bHasSpace(nTotalBytesNeeded)) {
-    vDumpAllCrv();
-     return C_UNKNOWN;
+    //vDumpAllCrv();
+    return C_UNKNOWN;
   }
    
   Crv* aCrv = _aCrv(m_xWsp.ayAllot(nTotalBytesNeeded));
