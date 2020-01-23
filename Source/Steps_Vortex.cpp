@@ -44,6 +44,8 @@ void Step::vVortexClose(void)
 
   Vortex* pVortex = _pVortex(m_pDataStack->pPopPtr(__func__));
     
+  pVortex->vClose();
+  
   EXIT();
 }
 
@@ -72,6 +74,10 @@ void Step::vVortexOpen(void)
     
   s256 sFilePath;
   m_pDataStack->vPopStr(sFilePath,__func__);  EXIT();
+  
+  bool bOpened = pVortex->bOpen(sFilePath);
+
+  m_pDataStack->vPushInt(bOpened);
 }
 
 /*----------------------------------------------------------------------------*/

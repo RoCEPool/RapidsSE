@@ -13,7 +13,7 @@
 
   vortex::new locals| pVortex |
 
-  "?" pVortex vortex.open
+  "/tmp/vortex.txt" pVortex vortex.open assert
 
   // read thru directory
   begin pSeSourceDir dir.read while

@@ -20,6 +20,8 @@ namespace Utilities
    ~Vortex(void) noexcept(false);
 
   public:
+    void vClose(void);
+    bool bOpen(Stz* szVortexPath);
 
   private:
     Footer* aFooter(void);
