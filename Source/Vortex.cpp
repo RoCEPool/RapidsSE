@@ -27,6 +27,8 @@ Vortex::Vortex(void)
   // m_xToken_ClassNm
   // m_xToken_Other
   
+  m_bTraceTokens = false;
+  
   _checkInitialised_(CN_VORTEX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -65,6 +67,21 @@ void Vortex::vClose(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next token                                                             */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bGetToken(Token* pToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  bool b = m_pInput->bGetToken(pToken);
+  
+  if (b && m_bTraceTokens)
+    vTrace("Tkn: %s\n"_Stz,pToken->azChar());
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /* open the vortex                                                            */
 /*----------------------------------------------------------------------------*/
 bool Vortex::bOpen(Stz* szVortexPath)
@@ -89,7 +106,7 @@ void Vortex::vParseBase(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   // just saw :
-  while (m_pInput->bGetToken(&m_xToken_Other)) {
+  while (bGetToken(&m_xToken_Other)) {
     
     if (m_xToken_Other.bSame("{"_Stz)) {
       vParseClass();
@@ -121,7 +138,7 @@ void Vortex::vParseClassFunction(void)
   
   // just saw {
   
-  while (m_pInput->bGetToken(&m_xToken_Other)) {
+  while (bGetToken(&m_xToken_Other)) {
     
     if (m_xToken_Other.bSame("}"_Stz))
       break;
@@ -137,27 +154,32 @@ bool Vortex::bParseMember(void)
  
   // just saw {
 
-  for (i8 i_Token = 0; m_pInput->bGetToken(&m_xToken_Other); i_Token++) {
+  for (i8 i_Token = 0; bGetToken(&m_xToken_Other); i_Token++) {
 
     if (0 == i_Token && m_xToken_Other.bSame(";"_Stz)) {
       break;
     }
     
     if (m_xToken_Other.bSame("private"_Stz)) {
-      RASSERT(m_pInput->bGetToken(&m_xToken_Other));
+      RASSERT(bGetToken(&m_xToken_Other));
       continue;
     }
     if (m_xToken_Other.bSame("protected"_Stz)) {
-      RASSERT(m_pInput->bGetToken(&m_xToken_Other));
+      RASSERT(bGetToken(&m_xToken_Other));
       continue;
     }
     if (m_xToken_Other.bSame("public"_Stz)) {
-      RASSERT(m_pInput->bGetToken(&m_xToken_Other));
+      RASSERT(bGetToken(&m_xToken_Other));
       continue;
     }
     
+    if (m_xToken_Other.bSame("union"_Stz)) {
+      vParseMemberUnion();
+    }
+
+    
     if (m_xToken_Other.bSame("}"_Stz)) {
-      RASSERT(m_pInput->bGetToken(&m_xToken_Other));
+      RASSERT(bGetToken(&m_xToken_Other));
       vTrace("\n"_Stz);
       return false;
     }
@@ -179,7 +201,7 @@ void Vortex::vParseMemberProper(void)
   vTrace("%s "_Stz,m_xToken_Other.azChar());
 
   i8 i_Token = 0;
-  for (; m_pInput->bGetToken(&m_xToken_Other); i_Token++) {
+  for (; bGetToken(&m_xToken_Other); i_Token++) {
     
     if (m_xToken_Other.bSame(";"_Stz)) {
       break;
@@ -196,6 +218,34 @@ void Vortex::vParseMemberProper(void)
   
   if (i_Token)
     vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse main portion of a member                                             */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseMemberUnion(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  // just saw: union
+  
+  m_bTraceTokens = true;
+  
+  RASSERT(bGetToken(&m_xToken_Other));
+  RASSERT(m_xToken_Other.bSame("{"_Stz));
+
+  while (bGetToken(&m_xToken_Other)) {
+
+    if (m_xToken_Other.bSame("}"_Stz)) {
+      RASSERT(bGetToken(&m_xToken_Other));
+      RASSERT(m_xToken_Other.bSame(";"_Stz));
+      break;
+    }
+    
+    vParseMemberProper();
+  }
+  
+  m_bTraceTokens = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -227,11 +277,11 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   m_pInput = new Input;
   m_pInput->vPushFile(szSourcePath);
   
-  while (m_pInput->bGetToken(&m_xToken_Other)) {
+  while (bGetToken(&m_xToken_Other)) {
    
     if (m_xToken_Other.bSame("friend"_Stz)) {
       
-      while (m_pInput->bGetToken(&m_xToken_Other)) {
+      while (bGetToken(&m_xToken_Other)) {
         if (m_xToken_Other.bSame(";"_Stz))
          break;
       }
@@ -240,10 +290,10 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 
     if (m_xToken_Other.bSame("class"_Stz)) {
       
-      if (! m_pInput->bGetToken(&m_xToken_ClassNm))
+      if (! bGetToken(&m_xToken_ClassNm))
         break;
       
-      if (! m_pInput->bGetToken(&m_xToken_Other))
+      if (! bGetToken(&m_xToken_Other))
         break;
       
       if (m_xToken_Other.bSame("{"_Stz)) {

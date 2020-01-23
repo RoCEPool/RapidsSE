@@ -13,6 +13,8 @@ namespace Utilities
     Input* m_pInput;
     Token  m_xToken_ClassNm;
     Token  m_xToken_Other;
+  
+    bool   m_bTraceTokens;
 
     // must be last
     Footer m_xFooter;
@@ -26,12 +28,14 @@ namespace Utilities
 
   public:
     void vClose(void);
+    bool bGetToken(Token* pToken);
     bool bOpen(Stz* szVortexPath);
     void vParseBase(void);
     void vParseClass(void);
     void vParseClassFunction(void);
     bool bParseMember(void);
     void vParseMemberProper(void);
+    void vParseMemberUnion(void);
     void vParseMembers(void);
     void vProcessSource(Stz* szSourcePath);
 
