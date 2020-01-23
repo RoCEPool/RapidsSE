@@ -51,7 +51,7 @@ namespace Resources
     void operator delete(void* pFileAddress);
   
     File(Focal* pIsFor);
-   ~File() noexcept(false);
+   ~File(void) noexcept(false);
     
     static bool bExists(Stz* aFilePath);
     static void vMonitorPortrait(s48K& sPortrait);

@@ -89,8 +89,10 @@ void Step::vVortexProcessH(void)
   
   Vortex* pVortex = _pVortex(m_pDataStack->pPopPtr(__func__));
 
-  s256 sFilePath;
-  m_pDataStack->vPopStr(sFilePath,__func__);
+  s256 sSourcePath;
+  m_pDataStack->vPopStr(sSourcePath,__func__);
+  
+  pVortex->vProcessSource(sSourcePath);
   
 //  File* pHFile = new File(nullptr);
 //
@@ -100,36 +102,36 @@ void Step::vVortexProcessH(void)
 //
 //  delete pHFile;
   
-  Input* pInput = new Input;
-  pInput->vPushFile(sFilePath);
-  
-  Token m_xTokenNm;
-  Token m_xTokenXyz;
-  while (pInput->bGetToken(&m_xTokenXyz)) {
-   
-    if (m_xTokenXyz.bSame("friend"_Stz)) {
-      
-      while (pInput->bGetToken(&m_xTokenXyz)) {
-        if (m_xTokenXyz.bSame(";"_Stz))
-         break;
-      }
-      continue;
-    }
-
-    if (m_xTokenXyz.bSame("class"_Stz)) {
-      
-      if (! pInput->bGetToken(&m_xTokenNm))
-        break;
-
-      if (! pInput->bGetToken(&m_xTokenXyz))
-        break;
-
-      if (m_xTokenXyz.bSame(":"_Stz) || m_xTokenXyz.bSame("{"_Stz))
-        vTrace("  %s\n"_Stz,m_xTokenNm.azChar());
-    }
-  }
-
-  delete pInput;
+//  Input* pInput = new Input;
+//  pInput->vPushFile(sFilePath);
+//
+//  Token m_xTokenNm;
+//  Token m_xTokenXyz;
+//  while (pInput->bGetToken(&m_xTokenXyz)) {
+//
+//    if (m_xTokenXyz.bSame("friend"_Stz)) {
+//
+//      while (pInput->bGetToken(&m_xTokenXyz)) {
+//        if (m_xTokenXyz.bSame(";"_Stz))
+//         break;
+//      }
+//      continue;
+//    }
+//
+//    if (m_xTokenXyz.bSame("class"_Stz)) {
+//
+//      if (! pInput->bGetToken(&m_xTokenNm))
+//        break;
+//
+//      if (! pInput->bGetToken(&m_xTokenXyz))
+//        break;
+//
+//      if (m_xTokenXyz.bSame(":"_Stz) || m_xTokenXyz.bSame("{"_Stz))
+//        vTrace("  %s\n"_Stz,m_xTokenNm.azChar());
+//    }
+//  }
+//
+//  delete pInput;
   EXIT();
 }
 
@@ -142,40 +144,11 @@ void Step::vVortexProcessHpp(void)
   
   Vortex* pVortex = _pVortex(m_pDataStack->pPopPtr(__func__));
 
-  s256 sFilePath;
-  m_pDataStack->vPopStr(sFilePath,__func__);
+  s256 sSourcePath;
+  m_pDataStack->vPopStr(sSourcePath,__func__);
   
-  Input* pInput = new Input;
-  pInput->vPushFile(sFilePath);
-  
-  Token m_xTokenNm;
-  Token m_xTokenXyz;
-  while (pInput->bGetToken(&m_xTokenXyz)) {
-    
-    if (m_xTokenXyz.bSame("friend"_Stz)) {
-      
-      while (pInput->bGetToken(&m_xTokenXyz)) {
-        if (m_xTokenXyz.bSame(";"_Stz))
-         break;
-      }
-      continue;
-    }
-    
-    if (m_xTokenXyz.bSame("class"_Stz)) {
-      
-      if (! pInput->bGetToken(&m_xTokenNm))
-        break;
+  pVortex->vProcessSource(sSourcePath);
 
-      if (! pInput->bGetToken(&m_xTokenXyz))
-        break;
-
-      if (m_xTokenXyz.bSame(":"_Stz) || m_xTokenXyz.bSame("{"_Stz))
-        vTrace("  %s\n"_Stz,m_xTokenNm.azChar());
-    }
-  }
-  
-  delete pInput;
-  
   EXIT();
 }
 

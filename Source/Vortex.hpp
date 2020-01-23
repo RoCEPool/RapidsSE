@@ -8,7 +8,7 @@ namespace Utilities
   class Vortex : public Object
   {
   public:
-    File* m_pFile;
+    File* m_pVortexFile;
   
     // must be last
     Footer m_xFooter;
@@ -23,6 +23,7 @@ namespace Utilities
   public:
     void vClose(void);
     bool bOpen(Stz* szVortexPath);
+    void vProcessSource(Stz* szSourcePath);
 
   private:
     Footer* aFooter(void);
