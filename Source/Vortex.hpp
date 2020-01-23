@@ -29,7 +29,7 @@ namespace Utilities
     void vParseBase(void);
     void vParseClass(void);
     void vParseClassFunction(void);
-    void vParseMember(void);
+    bool bParseMember(void);
     void vParseMembers(void);
     void vProcessSource(Stz* szSourcePath);
 

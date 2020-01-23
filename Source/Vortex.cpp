@@ -132,7 +132,7 @@ void Vortex::vParseClassFunction(void)
 /*----------------------------------------------------------------------------*/
 /* parse single member                                                        */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseMember(void)
+bool Vortex::bParseMember(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
  
@@ -141,20 +141,13 @@ void Vortex::vParseMember(void)
   vTrace("%s + "_Stz,m_xToken_ClassNm.azChar());
 
   Token xTokenXyz;
-  if (xTokenXyz.bSame("private"_Stz)) {
-    RASSERT(m_pInput->bGetToken(&xTokenXyz));
-  }
-  else
-  if (xTokenXyz.bSame("protected"_Stz)) {
-    RASSERT(m_pInput->bGetToken(&xTokenXyz));
-  }
-  else
-  if (xTokenXyz.bSame("public"_Stz)) {
-    RASSERT(m_pInput->bGetToken(&xTokenXyz));
-  }
 
-  while (m_pInput->bGetToken(&xTokenXyz)) {
+  for (i8 i_Token = 0; m_pInput->bGetToken(&xTokenXyz); i_Token++) {
 
+    if (0 == i_Token && xTokenXyz.bSame(";"_Stz)) {
+      break;
+    }
+    
     if (xTokenXyz.bSame("private"_Stz)) {
       RASSERT(m_pInput->bGetToken(&xTokenXyz));
       continue;
@@ -170,17 +163,27 @@ void Vortex::vParseMember(void)
 
     if (xTokenXyz.bSame("{"_Stz)) {
       vParseClassFunction();
-      break;
+      vTrace("\n"_Stz);
+      return true;
     }
 
     if (xTokenXyz.bSame(";"_Stz)) {
-      break;
+      vTrace("\n"_Stz);
+      return true;
     }
     
+    if (xTokenXyz.bSame("}"_Stz)) {
+      RASSERT(m_pInput->bGetToken(&xTokenXyz));
+      vTrace("\n"_Stz);
+      return false;
+    }
+
     vTrace("%s "_Stz,xTokenXyz.azChar());
   }
   
   vTrace("\n"_Stz);
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -196,13 +199,9 @@ void Vortex::vParseMembers(void)
   
   for (;;) {
 
-    vParseMember();
-    
-   if (! m_pInput->bGetToken(&xTokenXyz))
-     break;
-        
-    if (xTokenXyz.bSame(";"_Stz))
+    if (! bParseMember())
       break;
+    
   }
   
 }
