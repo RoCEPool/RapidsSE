@@ -24,14 +24,14 @@
     // ignore entries which aren't .sen files
     4 pSeSourceDir dir.entryName str.right ".hpp" str.equal if
 
-      pSeSourceDir dir.entryName .
+      //pSeSourceDir dir.entryName .
 
       pSeSourceDir dir.entryName pVortex vortex.processHpp
 
     else
     2 pSeSourceDir dir.entryName str.right ".h" str.equal if
 
-      pSeSourceDir dir.entryName .
+      //pSeSourceDir dir.entryName .
 
       pSeSourceDir dir.entryName pVortex vortex.processH
     then then

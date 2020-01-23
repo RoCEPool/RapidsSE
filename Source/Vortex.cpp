@@ -108,7 +108,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
         break;
 
       if (m_xTokenXyz.bSame(":"_Stz) || m_xTokenXyz.bSame("{"_Stz)) {
-        vTrace("  %s\n"_Stz,m_xTokenNm.azChar());
+        //vTrace("  %s\n"_Stz,m_xTokenNm.azChar());
         m_pVortexFile->vPrint("%s\n"_Stz,m_xTokenNm.azChar());
       }
     }
