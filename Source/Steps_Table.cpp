@@ -208,7 +208,7 @@ void Step::vTableGenCsvBuffer(void)
       break;
   }
   
-  pCsvBuffer->vPrintRecords();
+  //pCsvBuffer->vPrintRecords();
   
   //delete pCsvBuffer;
   delete pRow;
