@@ -13,7 +13,7 @@ void Correctness::vCheckAssumptions(void)
     
   ASSERT(8 == sizeof(Header));
   ASSERT(8 == sizeof(Object));
-  ASSERT(8 == sizeof(Footer));
+  ASSERT(16 == sizeof(Footer));
   
 
   ASSERT(8 == sizeof(Gid));
