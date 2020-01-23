@@ -23,13 +23,27 @@ void Step::vVortexProcessH(void)
   s256 sFilePath;
   m_pDataStack->vPopStr(sFilePath,__func__);
   
-  File* pHFile = new File(nullptr);
+//  File* pHFile = new File(nullptr);
+//
+//  bool b = pHFile->bOpenMode(sFilePath,C_OPEN_READ);
+//
+//  pHFile->vClose();
+//
+//  delete pHFile;
+  
+  Input* pInput = new Input;
+  pInput->vPushFile(sFilePath);
+  
+  Token m_xToken;
+  while (pInput->bGetToken(&m_xToken)) {
+    if (m_xToken.bSame("class"_Stz)) {
+      if (! pInput->bGetToken(&m_xToken))
+        break;
+      vTrace("  %s\n"_Stz,m_xToken.azChar());
+    }
+  }
 
-  bool b = pHFile->bOpenMode(sFilePath,C_OPEN_READ);
-  
-  pHFile->vClose();
-  
-  delete pHFile;
+  delete pInput;
 
   EXIT();
 }
@@ -46,6 +60,15 @@ void Step::vVortexProcessHpp(void)
   
   Input* pInput = new Input;
   pInput->vPushFile(sFilePath);
+  
+  Token m_xToken;
+  while (pInput->bGetToken(&m_xToken)) {
+    if (m_xToken.bSame("class"_Stz)) {
+      if (! pInput->bGetToken(&m_xToken))
+        break;
+      vTrace("  %s\n"_Stz,m_xToken.azChar());
+    }
+  }
   
   delete pInput;
   
