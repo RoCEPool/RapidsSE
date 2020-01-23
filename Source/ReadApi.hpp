@@ -38,8 +38,9 @@ namespace ReadConsistency
                           Ref xwVersionRef, t8 tVersionPsp);
   
     Ref  xwAddCrvItem(Ref xwCurrentRef, Crw* pCrw);
-
-  
+    void vPurgeEntBuffers(t8 tPerspective);
+    void vPurgeCrvBuffers(t8 tPerspective);
+    
     Footer* aFooter(void);
   };
   

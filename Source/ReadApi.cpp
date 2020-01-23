@@ -184,80 +184,16 @@ Crw* ReadApi::aGetCrwVersion(Ref xwCurrentRef, Crw* aCurrentCrw, t8 tPerspective
 void ReadApi::vPurgePriorVersions(t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
-  
-  IdxColVec* pIdxColVec = m_pIndexTree->pIndex()->pIndexDef()->pIdxColVec();
 
   //m_pIndexTree->vDump(false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete RC INDEX Entries
-  
-  // first position at the first level 0 buffer
-  EntBuffer* pEntBuffer = m_pIndexTree->pFirstH0Buffer();
-  Ent* aEntNext;
-  EntBuffer* pRootBuffer;
-  
-  
-  while (pEntBuffer) {
-    
-    Ent* aEnt = pEntBuffer->aLeadEntry();
-    
-    while (aEnt) {
-      
-      // get the key
-      Key* aKey = aEnt->aKey();
-      
-      // get the psp of the Crv entry
-      t8 tCrvPsp = aKey->iGetInt(pIdxColVec, 1);
-      
-      if (tCrvPsp < tPerspective) {
-        vTrace("DELETING...\n"_Stz);
-        aKey->vShow(pIdxColVec);
-        vTrace("\n"_Stz);
-        aEntNext = pEntBuffer->aNextEntry(aEnt, 0);
-        pEntBuffer->vDeleteUpwards(aEnt, &pRootBuffer);
-      }
-      else {
-        vTrace("NOT DELETING\n"_Stz);
-        aKey->vShow(pIdxColVec);
-        vTrace("\n"_Stz);
-        aEntNext = pEntBuffer->aNextEntry(aEnt, 0);
-      }
-      aEnt = aEntNext;
-    }
-    
-    pEntBuffer = pEntBuffer->pNextBuffer();
-  }
+  // Purge RC INDEX entry buffers
+  vPurgeEntBuffers(tPerspective);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete CRV BUFFERS that have psp older than the oldest
-  CrvBuffer* pCrvBuffer = m_pCrvBufferFirst;
-  CrvBuffer* pCrvPrevBuffer = nullptr;
-  
-  while (pCrvBuffer) {
-    // get the last crv entry from the buffer
-    i8 iCrv  = pCrvBuffer->nCrv();
-    Crv* aCrv = pCrvBuffer->aGetCrv(iCrv);
-    Crw* aCrw = aCrv->aCrw();
-    i8 tCrvPsp = aCrw->tPerspective();
-    
-    // save the prevBuffer
-    pCrvPrevBuffer = pCrvBuffer->pPrevBuffer();
-    
-    // check if psp of last entry is older than the given psp
-    if (tCrvPsp < tPerspective) {
-      vTrace("DELETING CRV BUFFER %p...\n"_Stz, pCrvBuffer);
-      // unlink the CrvBuffer
-      delete pCrvBuffer;
-      
-      if (pCrvBuffer == m_pCrvBufferHead) {
-        m_pCrvBufferHead = nullptr;
-        ASSERT( ! pCrvPrevBuffer );
-      }
-    }
-    
-    pCrvBuffer = pCrvPrevBuffer;
-  }
+  // Purge RC INDEX Crv Buffers
+  vPurgeCrvBuffers(tPerspective);
   
 }
 
@@ -270,7 +206,6 @@ void ReadApi::vStreamDef(StreamDef* pStreamDef)
   
   m_pStreamDef = pStreamDef;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -343,7 +278,94 @@ Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
   return xwVersionRef;
 }
 
+/*----------------------------------------------------------------------------*/
+/* purge the RC index index buffers                                           */
+/*----------------------------------------------------------------------------*/
+void ReadApi::vPurgeEntBuffers(t8 tPerspective)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
+  
+  Ent* aEntNext;
+  EntBuffer* pRootBuffer;
+  
+  IdxColVec* pIdxColVec = m_pIndexTree->pIndex()->pIndexDef()->pIdxColVec();
 
+  // first position at the first level 0 buffer
+  EntBuffer* pEntBuffer = m_pIndexTree->pFirstH0Buffer();
+  
+
+
+  while (pEntBuffer) {
+    
+    Ent* aEnt = pEntBuffer->aLeadEntry();
+    
+    while (aEnt) {
+      
+      // get the key
+      Key* aKey = aEnt->aKey();
+      
+      // get the psp of the Crv entry
+      t8 tCrvPsp = aKey->iGetInt(pIdxColVec, 1);
+      
+      if (tCrvPsp < tPerspective) {
+        vTrace("DELETING...\n"_Stz);
+        aKey->vShow(pIdxColVec);
+        vTrace("\n"_Stz);
+        aEntNext = pEntBuffer->aNextEntry(aEnt, 0);
+        pEntBuffer->vDeleteUpwards(aEnt, &pRootBuffer);
+      }
+      else {
+        vTrace("NOT DELETING\n"_Stz);
+        aKey->vShow(pIdxColVec);
+        vTrace("\n"_Stz);
+        aEntNext = pEntBuffer->aNextEntry(aEnt, 0);
+      }
+      aEnt = aEntNext;
+    }
+    
+    // move to the next buffer
+    pEntBuffer = pEntBuffer->pNextBuffer();
+  }
+}
+  
+/*----------------------------------------------------------------------------*/
+/* purge the RC Index CrvBuffers                                              */
+/*----------------------------------------------------------------------------*/
+void ReadApi::vPurgeCrvBuffers(t8 tPerspective)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
+  
+  CrvBuffer* pCrvBuffer = m_pCrvBufferFirst;
+  CrvBuffer* pCrvPrevBuffer = nullptr;
+  
+  while (pCrvBuffer) {
+    // get the last crv entry from the buffer
+    i8 iCrv  = pCrvBuffer->nCrv();
+    Crv* aCrv = pCrvBuffer->aGetCrv(iCrv);
+    Crw* aCrw = aCrv->aCrw();
+    i8 tCrvPsp = aCrw->tPerspective();
+    
+    // save the prevBuffer
+    pCrvPrevBuffer = pCrvBuffer->pPrevBuffer();
+    
+    // check if psp of last entry is older than the given psp
+    if (tCrvPsp < tPerspective) {
+      vTrace("DELETING CRV BUFFER %p...\n"_Stz, pCrvBuffer);
+      // unlink the CrvBuffer
+      delete pCrvBuffer;
+      
+      if (pCrvBuffer == m_pCrvBufferHead) {
+        m_pCrvBufferHead = nullptr;
+        ASSERT( ! pCrvPrevBuffer );
+      }
+    }
+    
+    pCrvBuffer = pCrvPrevBuffer;
+  }
+  
+}
+  
+  
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
