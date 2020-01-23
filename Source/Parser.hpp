@@ -47,9 +47,8 @@ namespace TokenStream
     static Parser* _pParser(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
    
-    
-    // Options
 
+    // Options
     void vLineMode(bool bLineMode);
     
     // Use What
@@ -58,12 +57,12 @@ namespace TokenStream
     void vUseString(Stz* szString);
     void vUseEnd(void);
 
-    // Commands Stack
+    // Parser Stack
     Parser* pNext(void);
     void    vNext(Parser* pNext);
     i8      iDepth(void);
     
-    // Commands
+    // Processing Functions
     char cGet(bool bStripComments);
     void vUnget(char c);
     bool bEOF(void);
@@ -75,12 +74,12 @@ namespace TokenStream
     void vResetParser(void);
     
     // Character Processing
-    void vClearLocals(void);
+    void vClearRegs(void);
     char cConsumeFirst(void);
     void vDiscardFirst(void);
     void vLoadBoth(void);
     void vLoadFirst(void);
-    void vLoadLocals(bool bStripComments);
+    void vLoadRegs(bool bStripComments);
     void vLoadSecond(void);
     void vRewindLocals(char c);
     

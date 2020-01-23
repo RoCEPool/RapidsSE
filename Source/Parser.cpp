@@ -229,7 +229,7 @@ char Parser::cGet(bool bStripComments)
   
   // do we have any chars in the regs?
   if (! m_nLoaded)
-    vLoadLocals(bStripComments);
+    vLoadRegs(bStripComments);
   
   if (! m_nLoaded)
     return '\0';
@@ -323,7 +323,7 @@ void Parser::vResetParser(void)
 /*----------------------------------------------------------------------------*/
 /* clear character registers                                                  */
 /*----------------------------------------------------------------------------*/
-void Parser::vClearLocals(void)
+void Parser::vClearRegs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -406,7 +406,7 @@ void Parser::vLoadFirst(void)
 /*----------------------------------------------------------------------------*/
 /* load first (and maybe) second register from input stream, strip comments   */
 /*----------------------------------------------------------------------------*/
-void Parser::vLoadLocals(bool bStripComments)
+void Parser::vLoadRegs(bool bStripComments)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -507,7 +507,7 @@ void Parser::vBlockCommentSkip(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  vClearLocals();
+  vClearRegs();
   
   vLoadBoth();
   
@@ -525,7 +525,7 @@ void Parser::vBlockCommentSkip(void)
       break;
   }
   
-  vClearLocals();
+  vClearRegs();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -596,7 +596,7 @@ void Parser::vLineCommentSkip(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  vClearLocals();
+  vClearRegs();
   
   vLoadFirst();
   
