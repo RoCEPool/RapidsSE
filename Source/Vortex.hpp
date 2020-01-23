@@ -12,6 +12,7 @@ namespace Utilities
     s256   m_sSourcePath;
     Input* m_pInput;
     Token  m_xToken_ClassNm;
+    Token  m_xToken_Other;
 
     // must be last
     Footer m_xFooter;
@@ -30,6 +31,7 @@ namespace Utilities
     void vParseClass(void);
     void vParseClassFunction(void);
     bool bParseMember(void);
+    void vParseMemberProper(void);
     void vParseMembers(void);
     void vProcessSource(Stz* szSourcePath);
 

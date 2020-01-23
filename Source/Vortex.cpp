@@ -25,7 +25,8 @@ Vortex::Vortex(void)
   m_sSourcePath = ""_Stz;
   m_pInput      = nullptr;
   // m_xToken_ClassNm
-    
+  // m_xToken_Other
+  
   _checkInitialised_(CN_VORTEX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -88,10 +89,9 @@ void Vortex::vParseBase(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   // just saw :
-  Token xTokenXyz;
-  while (m_pInput->bGetToken(&xTokenXyz)) {
+  while (m_pInput->bGetToken(&m_xToken_Other)) {
     
-    if (xTokenXyz.bSame("{"_Stz)) {
+    if (m_xToken_Other.bSame("{"_Stz)) {
       vParseClass();
       break;
     }
@@ -121,10 +121,9 @@ void Vortex::vParseClassFunction(void)
   
   // just saw {
   
-  Token xTokenXyz;
-  while (m_pInput->bGetToken(&xTokenXyz)) {
+  while (m_pInput->bGetToken(&m_xToken_Other)) {
     
-    if (xTokenXyz.bSame("}"_Stz))
+    if (m_xToken_Other.bSame("}"_Stz))
       break;
   }
 }
@@ -138,52 +137,65 @@ bool Vortex::bParseMember(void)
  
   // just saw {
 
-  vTrace("%s + "_Stz,m_xToken_ClassNm.azChar());
+  for (i8 i_Token = 0; m_pInput->bGetToken(&m_xToken_Other); i_Token++) {
 
-  Token xTokenXyz;
-
-  for (i8 i_Token = 0; m_pInput->bGetToken(&xTokenXyz); i_Token++) {
-
-    if (0 == i_Token && xTokenXyz.bSame(";"_Stz)) {
+    if (0 == i_Token && m_xToken_Other.bSame(";"_Stz)) {
       break;
     }
     
-    if (xTokenXyz.bSame("private"_Stz)) {
-      RASSERT(m_pInput->bGetToken(&xTokenXyz));
+    if (m_xToken_Other.bSame("private"_Stz)) {
+      RASSERT(m_pInput->bGetToken(&m_xToken_Other));
       continue;
     }
-    if (xTokenXyz.bSame("protected"_Stz)) {
-      RASSERT(m_pInput->bGetToken(&xTokenXyz));
+    if (m_xToken_Other.bSame("protected"_Stz)) {
+      RASSERT(m_pInput->bGetToken(&m_xToken_Other));
       continue;
     }
-    if (xTokenXyz.bSame("public"_Stz)) {
-      RASSERT(m_pInput->bGetToken(&xTokenXyz));
+    if (m_xToken_Other.bSame("public"_Stz)) {
+      RASSERT(m_pInput->bGetToken(&m_xToken_Other));
       continue;
-    }
-
-    if (xTokenXyz.bSame("{"_Stz)) {
-      vParseClassFunction();
-      vTrace("\n"_Stz);
-      return true;
-    }
-
-    if (xTokenXyz.bSame(";"_Stz)) {
-      vTrace("\n"_Stz);
-      return true;
     }
     
-    if (xTokenXyz.bSame("}"_Stz)) {
-      RASSERT(m_pInput->bGetToken(&xTokenXyz));
+    if (m_xToken_Other.bSame("}"_Stz)) {
+      RASSERT(m_pInput->bGetToken(&m_xToken_Other));
       vTrace("\n"_Stz);
       return false;
     }
 
-    vTrace("%s "_Stz,xTokenXyz.azChar());
+    vParseMemberProper();
+  }
+    
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse main portion of a member                                             */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseMemberProper(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vTrace("%s + "_Stz,m_xToken_ClassNm.azChar());
+  vTrace("%s "_Stz,m_xToken_Other.azChar());
+
+  i8 i_Token = 0;
+  for (; m_pInput->bGetToken(&m_xToken_Other); i_Token++) {
+    
+    if (m_xToken_Other.bSame(";"_Stz)) {
+      break;
+    }
+    
+    if (m_xToken_Other.bSame("{"_Stz)) {
+      vParseClassFunction();
+      return ;
+    }
+
+
+    vTrace("%s "_Stz,m_xToken_Other.azChar());
   }
   
-  vTrace("\n"_Stz);
-  
-  return false;
+  if (i_Token)
+    vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,8 +206,6 @@ void Vortex::vParseMembers(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   // just saw {
-
-  Token xTokenXyz;
   
   for (;;) {
 
@@ -217,32 +227,31 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   m_pInput = new Input;
   m_pInput->vPushFile(szSourcePath);
   
-  Token xTokenXyz;
-  while (m_pInput->bGetToken(&xTokenXyz)) {
+  while (m_pInput->bGetToken(&m_xToken_Other)) {
    
-    if (xTokenXyz.bSame("friend"_Stz)) {
+    if (m_xToken_Other.bSame("friend"_Stz)) {
       
-      while (m_pInput->bGetToken(&xTokenXyz)) {
-        if (xTokenXyz.bSame(";"_Stz))
+      while (m_pInput->bGetToken(&m_xToken_Other)) {
+        if (m_xToken_Other.bSame(";"_Stz))
          break;
       }
       continue;
     }
 
-    if (xTokenXyz.bSame("class"_Stz)) {
+    if (m_xToken_Other.bSame("class"_Stz)) {
       
       if (! m_pInput->bGetToken(&m_xToken_ClassNm))
         break;
       
-      if (! m_pInput->bGetToken(&xTokenXyz))
+      if (! m_pInput->bGetToken(&m_xToken_Other))
         break;
       
-      if (xTokenXyz.bSame("{"_Stz)) {
+      if (m_xToken_Other.bSame("{"_Stz)) {
         vParseClass();
         continue;
       }
       
-      if (xTokenXyz.bSame(":"_Stz)) {
+      if (m_xToken_Other.bSame(":"_Stz)) {
         vParseBase();
         continue;
       }
