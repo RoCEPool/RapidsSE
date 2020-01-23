@@ -29,8 +29,8 @@ ReadApi::ReadApi(void)
   
   m_pIndexTree = new IndexTree(pReadApiIndex,0);
   
-  m_pCrvBufferHead  = nullptr;
-  m_pCrvBufferFirst = nullptr;
+  m_pCrvBufferHead = nullptr;
+  m_pCrvBufferTail = nullptr;
   
   _checkInitialised_(CN_READAPI);
   
@@ -46,7 +46,7 @@ ReadApi::~ReadApi(void) noexcept(false)
 
   delete m_pIndexTree;
   
-  for (CrvBuffer* pCrvBuffer = m_pCrvBufferHead; pCrvBuffer; /*none*/) {
+  for (CrvBuffer* pCrvBuffer = m_pCrvBufferTail; pCrvBuffer; /*none*/) {
     CrvBuffer* pCrvBufferTBD = pCrvBuffer;
     pCrvBuffer = _pCrvBuffer(pCrvBuffer->pNextBuffer());
     delete pCrvBufferTBD;
@@ -247,14 +247,14 @@ Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
   if (! m_pCrvBufferHead)
     m_pCrvBufferHead = new CrvBuffer(m_pStreamDef);
   
-  if ( ! m_pCrvBufferFirst)
-    m_pCrvBufferFirst = m_pCrvBufferHead;
+  if ( ! m_pCrvBufferTail)
+    m_pCrvBufferTail = m_pCrvBufferHead;
   
   // attempt to add crw into current head buffer
-  i8 i_Crv = m_pCrvBufferHead->iAddCrwVersion(xwCurrentRef,aCrw);
+  i8 i_Crv = m_pCrvBufferTail->iAddCrwVersion(xwCurrentRef,aCrw);
   if (C_UNKNOWN != i_Crv) {
     
-    xwVersionRef.vBuffer(m_pCrvBufferHead->iBufferNo());
+    xwVersionRef.vBuffer(m_pCrvBufferTail->iBufferNo());
     xwVersionRef.vItem(i_Crv);
     
     return xwVersionRef;
@@ -265,14 +265,14 @@ Ref ReadApi::xwAddCrvItem(Ref xwCurrentRef, Crw* aCrw)
   
   //m_pIndexTree->vDump(false);
   
-  CrvBuffer* pNewCrvBufferHead = new CrvBuffer(m_pStreamDef);
+  CrvBuffer* pNewCrvBufferTail = new CrvBuffer(m_pStreamDef);
   
-  pNewCrvBufferHead->vLinkAsPrev(m_pCrvBufferHead);
-  m_pCrvBufferHead = pNewCrvBufferHead;
+  pNewCrvBufferTail->vLinkAsPrev(m_pCrvBufferTail);
+  m_pCrvBufferTail = pNewCrvBufferTail;
   
-  i_Crv = m_pCrvBufferHead->iAddCrwVersion(xwCurrentRef,aCrw);
+  i_Crv = m_pCrvBufferTail->iAddCrwVersion(xwCurrentRef,aCrw);
  
-  xwVersionRef.vBuffer(m_pCrvBufferHead->iBufferNo());
+  xwVersionRef.vBuffer(m_pCrvBufferTail->iBufferNo());
   xwVersionRef.vItem(i_Crv);
   
   return xwVersionRef;
@@ -335,7 +335,7 @@ void ReadApi::vPurgeCrvBuffers(t8 tPerspective)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_READAPI,_FOOTER_);
   
-  CrvBuffer* pCrvBuffer = m_pCrvBufferFirst;
+  CrvBuffer* pCrvBuffer = m_pCrvBufferHead;
   CrvBuffer* pCrvPrevBuffer = nullptr;
   
   while (pCrvBuffer) {
@@ -352,20 +352,28 @@ void ReadApi::vPurgeCrvBuffers(t8 tPerspective)
     if (tCrvPsp < tPerspective) {
       vTrace("DELETING CRV BUFFER %p...\n"_Stz, pCrvBuffer);
       // unlink the CrvBuffer
+      pCrvBuffer->vUnLinkFromPrev();
       delete pCrvBuffer;
       
-      if (pCrvBuffer == m_pCrvBufferHead) {
-        m_pCrvBufferHead = nullptr;
+      // should be the head
+      ASSERT(pCrvBuffer == m_pCrvBufferHead);
+      
+      // set the new head
+      m_pCrvBufferHead = pCrvPrevBuffer;
+      
+      // was it the tail ?
+      if (pCrvBuffer == m_pCrvBufferTail) {
         ASSERT( ! pCrvPrevBuffer );
+        m_pCrvBufferTail = nullptr;        
       }
+      
     }
     
     pCrvBuffer = pCrvPrevBuffer;
   }
   
 }
-  
-  
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

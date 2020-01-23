@@ -121,7 +121,7 @@ void LinkedBuffer::vLinkAsPrev(LinkedBuffer* pArgBuffer)
 /*----------------------------------------------------------------------------*/
 /* unlink given buffer from the previous buffer                               */
 /*----------------------------------------------------------------------------*/
-void LinkedBuffer::vUnLinkFromPrev(LinkedBuffer* pArgBuffer)
+void LinkedBuffer::vUnLinkFromPrev(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -147,7 +147,8 @@ void LinkedBuffer::vUnLinkFromPrev(LinkedBuffer* pArgBuffer)
   if (m_pPrevBuffer)
     m_pPrevBuffer->vNextBuffer(nullptr);  // (a)
 
-  m_pPrevBuffer = nullptr;                   // (b)
+  m_pPrevBuffer = nullptr;                // (b)
+  
 }
 
 
