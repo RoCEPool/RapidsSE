@@ -40,6 +40,7 @@
 #define WITH_TRACE_API          // code for tracing api's compiled in
 //#define WITH_TRACE_DYNAMO        // code for tracing compiling dynamic pipeline
 //#define WITH_PYTHON_SUPPORT     // code for python support
+#define WITH_TRACE_PURGING        // trace purging
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // release behaviours
@@ -60,6 +61,8 @@
 //#define WITH_TRACE_API           // code for tracing api's compiled in
 //#define WITH_TRACE_DYNAMO        // code for tracing compiling dynamic pipeline
 //#define WITH_PYTHON_SUPPORT      // code for python support
+//#define WITH_TRACE_PURGING       // trace purging
+
 #endif
 
 

@@ -293,8 +293,6 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
   // first position at the first level 0 buffer
   EntBuffer* pEntBuffer = m_pIndexTree->pFirstH0Buffer();
   
-
-
   while (pEntBuffer) {
     
     Ent* aEnt = pEntBuffer->aLeadEntry();
@@ -308,16 +306,20 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
       t8 tCrvPsp = aKey->iGetInt(pIdxColVec, 1);
       
       if (tCrvPsp < tPerspective) {
+#ifdef WITH_TRACE_PURGING
         vTrace("DELETING...\n"_Stz);
         aKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);
+#endif
         aEntNext = pEntBuffer->aNextEntry(aEnt, 0);
         pEntBuffer->vDeleteUpwards(aEnt, &pRootBuffer);
       }
       else {
+#ifdef WITH_TRACE_PURGING
         vTrace("NOT DELETING\n"_Stz);
         aKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);
+#endif
         aEntNext = pEntBuffer->aNextEntry(aEnt, 0);
       }
       aEnt = aEntNext;
@@ -364,7 +366,7 @@ void ReadApi::vPurgeCrvBuffers(t8 tPerspective)
       // was it the tail ?
       if (pCrvBuffer == m_pCrvBufferTail) {
         ASSERT( ! pCrvPrevBuffer );
-        m_pCrvBufferTail = nullptr;        
+        m_pCrvBufferTail = nullptr;
       }
       
     }

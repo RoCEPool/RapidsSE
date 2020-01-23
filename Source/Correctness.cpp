@@ -143,6 +143,10 @@ void Correctness::vTraceWith(void)
 #ifdef WITH_TRACE_DYNAMO
   vTrace("  WITH_TRACE_DYNAMO\n"_Stz);
 #endif
+  
+#ifdef WITH_TRACE_PURGING
+  vTrace("  WITH_TRACE_PURGING\n"_Stz);
+#endif
 }
 
 
