@@ -5,6 +5,8 @@
 // create Upsert child threads
 CREATE 1 THREADS {
 
+  LOG 'STARING UPSERT THREAD.';
+  
   // Child threads wait for table and index to be created by main thread.
   SYNCHRONIZE;
   
@@ -40,6 +42,8 @@ CREATE 1 THREADS {
 
 // create Snapshot child threads
 CREATE 1 THREADS {
+  
+  LOG 'STARING SNAPSHOT THREAD.';
   
   // Child threads wait for table and index to be created by main thread.
   SYNCHRONIZE;
