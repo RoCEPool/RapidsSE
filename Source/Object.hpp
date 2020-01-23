@@ -128,8 +128,8 @@ namespace Correctness
 /*----------------------------------------------------------------------------*/
 /* macro for standard bCorrectLayout() function                               */
 /*----------------------------------------------------------------------------*/
-#define __bCorrectLayout(CLASS,CN) \
-bool CLASS::bCorrectLayout(void) \
+#define __bCorrectLayout(CLASSNM,CN) \
+bool CLASSNM::bCorrectLayout(void) \
 { \
   if (! bValidMagic()) \
     return false; \

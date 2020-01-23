@@ -94,44 +94,6 @@ void Step::vVortexProcessH(void)
   
   pVortex->vProcessSource(sSourcePath);
   
-//  File* pHFile = new File(nullptr);
-//
-//  bool b = pHFile->bOpenMode(sFilePath,C_OPEN_READ);
-//
-//  pHFile->vClose();
-//
-//  delete pHFile;
-  
-//  Input* pInput = new Input;
-//  pInput->vPushFile(sFilePath);
-//
-//  Token m_xTokenNm;
-//  Token m_xTokenXyz;
-//  while (pInput->bGetToken(&m_xTokenXyz)) {
-//
-//    if (m_xTokenXyz.bSame("friend"_Stz)) {
-//
-//      while (pInput->bGetToken(&m_xTokenXyz)) {
-//        if (m_xTokenXyz.bSame(";"_Stz))
-//         break;
-//      }
-//      continue;
-//    }
-//
-//    if (m_xTokenXyz.bSame("class"_Stz)) {
-//
-//      if (! pInput->bGetToken(&m_xTokenNm))
-//        break;
-//
-//      if (! pInput->bGetToken(&m_xTokenXyz))
-//        break;
-//
-//      if (m_xTokenXyz.bSame(":"_Stz) || m_xTokenXyz.bSame("{"_Stz))
-//        vTrace("  %s\n"_Stz,m_xTokenNm.azChar());
-//    }
-//  }
-//
-//  delete pInput;
   EXIT();
 }
 
