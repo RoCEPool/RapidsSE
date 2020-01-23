@@ -305,23 +305,33 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
       // get the psp of the Crv entry
       t8 tCrvPsp = aKey->iGetInt(pIdxColVec, 1);
       
+      // delete if the CrvPsp is less than the tPerspective
       if (tCrvPsp < tPerspective) {
+        
 #ifdef WITH_TRACE_PURGING
         vTrace("DELETING...\n"_Stz);
         aKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);
 #endif
+        
+        // get the next entry before deleting
         aEntNext = pEntBuffer->aNextEntry(aEnt, 0);
+        
+        // delete the entry upwards in the skiplist
         pEntBuffer->vDeleteUpwards(aEnt, &pRootBuffer);
       }
       else {
+        
 #ifdef WITH_TRACE_PURGING
         vTrace("NOT DELETING\n"_Stz);
         aKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);
 #endif
+        // get the next entry
         aEntNext = pEntBuffer->aNextEntry(aEnt, 0);
       }
+      
+      // set the next entry
       aEnt = aEntNext;
     }
     
@@ -341,10 +351,15 @@ void ReadApi::vPurgeCrvBuffers(t8 tPerspective)
   CrvBuffer* pCrvPrevBuffer = nullptr;
   
   while (pCrvBuffer) {
+    
     // get the last crv entry from the buffer
     i8 iCrv  = pCrvBuffer->nCrv();
     Crv* aCrv = pCrvBuffer->aGetCrv(iCrv);
+    
+    // get the Crw entry corresoonding to the Crv entry
     Crw* aCrw = aCrv->aCrw();
+    
+    // get the Crw perspective
     i8 tCrvPsp = aCrw->tPerspective();
     
     // save the prevBuffer
@@ -352,10 +367,13 @@ void ReadApi::vPurgeCrvBuffers(t8 tPerspective)
     
     // check if psp of last entry is older than the given psp
     if (tCrvPsp < tPerspective) {
+
+#ifdef WITH_TRACE_PURGING
       vTrace("DELETING CRV BUFFER %p...\n"_Stz, pCrvBuffer);
+#endif
+      
       // unlink the CrvBuffer
       pCrvBuffer->vUnLinkFromPrev();
-      delete pCrvBuffer;
       
       // should be the head
       ASSERT(pCrvBuffer == m_pCrvBufferHead);
@@ -369,8 +387,11 @@ void ReadApi::vPurgeCrvBuffers(t8 tPerspective)
         m_pCrvBufferTail = nullptr;
       }
       
+      // now delete the CrvBuffer
+      delete pCrvBuffer;
     }
     
+    // move to the prevBuffer
     pCrvBuffer = pCrvPrevBuffer;
   }
   
