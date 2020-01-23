@@ -34,17 +34,33 @@ void Step::vVortexProcessH(void)
   Input* pInput = new Input;
   pInput->vPushFile(sFilePath);
   
-  Token m_xToken;
-  while (pInput->bGetToken(&m_xToken)) {
-    if (m_xToken.bSame("class"_Stz)) {
-      if (! pInput->bGetToken(&m_xToken))
+  Token m_xTokenNm;
+  Token m_xTokenXyz;
+  while (pInput->bGetToken(&m_xTokenXyz)) {
+   
+    if (m_xTokenXyz.bSame("friend"_Stz)) {
+      
+      while (pInput->bGetToken(&m_xTokenXyz)) {
+        if (m_xTokenXyz.bSame(";"_Stz))
+         break;
+      }
+      continue;
+    }
+
+    if (m_xTokenXyz.bSame("class"_Stz)) {
+      
+      if (! pInput->bGetToken(&m_xTokenNm))
         break;
-      vTrace("  %s\n"_Stz,m_xToken.azChar());
+
+      if (! pInput->bGetToken(&m_xTokenXyz))
+        break;
+
+      if (m_xTokenXyz.bSame(":"_Stz) || m_xTokenXyz.bSame("{"_Stz))
+        vTrace("  %s\n"_Stz,m_xTokenNm.azChar());
     }
   }
 
   delete pInput;
-
   EXIT();
 }
 
@@ -61,14 +77,29 @@ void Step::vVortexProcessHpp(void)
   Input* pInput = new Input;
   pInput->vPushFile(sFilePath);
   
-  Token m_xToken;
-  while (pInput->bGetToken(&m_xToken)) {
-    if (m_xToken.bSame("class"_Stz)) {
+  Token m_xTokenNm;
+  Token m_xTokenXyz;
+  while (pInput->bGetToken(&m_xTokenXyz)) {
+    
+    if (m_xTokenXyz.bSame("friend"_Stz)) {
       
-      if (! pInput->bGetToken(&m_xToken))
+      while (pInput->bGetToken(&m_xTokenXyz)) {
+        if (m_xTokenXyz.bSame(";"_Stz))
+         break;
+      }
+      continue;
+    }
+    
+    if (m_xTokenXyz.bSame("class"_Stz)) {
+      
+      if (! pInput->bGetToken(&m_xTokenNm))
         break;
-      
-      vTrace("  %s\n"_Stz,m_xToken.azChar());
+
+      if (! pInput->bGetToken(&m_xTokenXyz))
+        break;
+
+      if (m_xTokenXyz.bSame(":"_Stz) || m_xTokenXyz.bSame("{"_Stz))
+        vTrace("  %s\n"_Stz,m_xTokenNm.azChar());
     }
   }
   
