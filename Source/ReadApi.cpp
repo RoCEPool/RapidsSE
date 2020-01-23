@@ -191,10 +191,11 @@ void ReadApi::vPurgePriorVersions(t8 tPerspective)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at the first level 0 buffer
   EntBuffer* pEntBuffer = m_pIndexTree->pFirstH0Buffer();
+  Ent* aEntNext;
+  EntBuffer* pRootBuffer;
   
   while (pEntBuffer) {
     
-    vTrace("DELETING...\n"_Stz);
     Ent* aEnt = pEntBuffer->aLeadEntry();
     
     while (aEnt) {
@@ -206,15 +207,19 @@ void ReadApi::vPurgePriorVersions(t8 tPerspective)
       t8 tCrvPsp = aKey->iGetInt(pIdxColVec, 1);
       
       if (tCrvPsp < tPerspective) {
+        vTrace("DELETING...\n"_Stz);
         aKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);
+        aEntNext = pEntBuffer->aNextEntry(aEnt, 0);
+        pEntBuffer->vDeleteUpwards(aEnt, &pRootBuffer);
       }
       else {
         vTrace("NOT DELETING\n"_Stz);
         aKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);
+        aEntNext = pEntBuffer->aNextEntry(aEnt, 0);
       }
-      aEnt = pEntBuffer->aNextEntry(aEnt, 0);
+      aEnt = aEntNext;
     }
     
     pEntBuffer = pEntBuffer->pNextBuffer();

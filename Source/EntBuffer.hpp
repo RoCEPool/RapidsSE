@@ -100,6 +100,7 @@ namespace IndexTrees
     void        vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
     void        vBuildSkipListSorted(void);
     void        vDeleteEntry(Ent** aaEnt);
+    void        vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer);
     void        vDump(void);
     EntBuffer*  pFirstChildBuffer(void);
     Ent*        aInsertEntAbs(Ent* aEntry);
@@ -129,7 +130,6 @@ namespace IndexTrees
     void       vCompact(void);
     void       vCompactLeft(void);
     void       vCutEntry(Ent* aEnt, Ent* aPriorVec[]);
-    void       vDeleteUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer);
     void       vDumpPriorVec(Ent* aPriorVec[]);
     Ent*       aGetEntryOffset(i8 iOffset);
     Ent*       aGetEntrySplit(i8 iSplitEntryNo, Ent** aaPriorEntry);
