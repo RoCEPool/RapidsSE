@@ -87,6 +87,14 @@ void Vortex::vParseBase(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   // just saw :
+  Token xTokenXyz;
+  while (m_pInput->bGetToken(&xTokenXyz)) {
+    
+    if (xTokenXyz.bSame("{"_Stz)) {
+      vParseClass();
+      break;
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,6 +105,8 @@ void Vortex::vParseClass(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   // just saw {
+  
+  m_pVortexFile->vPrint("%s\n"_Stz,m_xToken_ClassNm.azChar());
   
   vParseMembers();
 }
