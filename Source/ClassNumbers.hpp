@@ -318,7 +318,8 @@ enum eCN : u2 // Class Number
   /* 281 0x119       21B Heap:I */ CN__U__,
   
   /* 282 0x11A       22B Heap:I */ CN__V__,
-  
+  /* 282 0x11A       22B Heap:I */ CN_VORTEX,
+
   /* 283 0x11B       23B Heap:I */ CN__W__,
   /* 284 0x11C       16B Heap:I */ CN_WILDERNESS,
   /* 285 0x11D    64808B Heap:M */ CN_WORD,
@@ -642,7 +643,8 @@ static Stz* aCN[]
   /* 281 0x119 */ "_U__"_Stz,                // CN__U__
   
   /* 282 0x11A */ "_V__"_Stz,                // CN__V__
-  
+  /* 282 0x11A */ "VORTEX"_Stz,              // CN_VORTEX
+
   /* 283 0x11B */ "_W__"_Stz,                // CN__W__
   /* 284 0x11C */ "WILDERNESS"_Stz,          // CN_WILDERNESS
   /* 285 0x11D */ "WORD"_Stz,                // CN_WORD

@@ -11,6 +11,12 @@
 
   params| pSeSourceDir |
 
+  vortex::new locals| pVortex |
+
+  "/tmp/vortex.txt" locals| sVortexPath |
+
+  sVortexPath pVortex vortex.open assert
+
   // read thru directory
   begin pSeSourceDir dir.read while
 
@@ -20,19 +26,25 @@
     // ignore entries which aren't .sen files
     4 pSeSourceDir dir.entryName str.right ".hpp" str.equal if
 
-      pSeSourceDir dir.entryName .
+      //pSeSourceDir dir.entryName .
 
-      pSeSourceDir dir.entryName vortex::processHpp
+      pSeSourceDir dir.entryName pVortex vortex.processHpp
 
     else
     2 pSeSourceDir dir.entryName str.right ".h" str.equal if
 
-      pSeSourceDir dir.entryName .
+      //pSeSourceDir dir.entryName .
 
-      pSeSourceDir dir.entryName vortex::processH
+      pSeSourceDir dir.entryName pVortex vortex.processH
     then then
 
   repeat
+
+  pVortex vortex.close
+  pVortex vortex.delete
+
+  sVortexPath "Vortexed to: %v" fmt.print
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -53,8 +65,6 @@
   // open directory accessor
   "." pSeSourceDir dir.open assert
 
-  "..vortex.." .
-
   pSeSourceDir vortex_ProcessDir
 
   // close and delete directory accessor
@@ -65,8 +75,6 @@
   // change back to original dir
   pOrigDir dir::changeCurrent
   dir::getCurrent "Current working directory now: %v" fmt.print
-
-  "Vortexed" .
 ;
 
 /*============================================================================*/

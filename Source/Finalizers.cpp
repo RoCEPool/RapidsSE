@@ -315,6 +315,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN__U__
   
   /*    */ &Finalize::vUndefined,         // CN__V__
+  /*    */ &Finalize::vUndefined,         // CN_VORTEX
   
   /*    */ &Finalize::vUndefined,         // CN__W__
   /*149 */ &Finalize::vUndefined,         // CN_WILDERNESS

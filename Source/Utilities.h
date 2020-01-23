@@ -21,6 +21,7 @@ namespace Utilities
 #include "Prefetch.hpp"
 #include "SchemaTest.hpp"
 #include "ShmUtility.hpp"
+#include "Vortex.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
