@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Parser.cpp -- input parser, removing line and block comments              */
+/* Parser.cpp -- input parser, removing line and block comments               */
 /*============================================================================*/
 #pragma once
 
@@ -14,13 +14,15 @@ namespace TokenStream
     i8      m_iDepth;    // depth of this parser
     Parser* m_pNext;     // next parser in stack
     
-    // input sources
+    // source definition
     eIS     m_eSource;   // what source are we parsing? given file or given string?
-    File    m_oFile;     // given file
     bool    m_bLineMode; // line mode?
+  
+    // sources
+    File    m_oRawFile;  // given file
     s48K    m_sRawLine;  // either raw line read from file or given string
     char*   m_aRawLine;  // ptr into m_sLine.s() -- debug help
-    char*   m_pRawChar;  // next raw char in raw line
+    char*   m_aRawChar;  // next raw char in raw line
 
     // registers
     i8      m_nLoaded;   // 0: neither has char
