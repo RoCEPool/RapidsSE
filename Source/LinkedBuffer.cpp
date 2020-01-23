@@ -119,6 +119,39 @@ void LinkedBuffer::vLinkAsPrev(LinkedBuffer* pArgBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* unlink given buffer from the previous buffer                               */
+/*----------------------------------------------------------------------------*/
+void LinkedBuffer::vUnLinkFromPrev(LinkedBuffer* pArgBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  /*
+   
+   +-------------+         +-------------+
+   | prev buffer |         | this buffer |
+   +-------------+         +-------------+
+   |        next | (a) --> |        null |
+   | prev        | <-- (b) | prev        |
+   +-------------+         +-------------+
+   
+   +-------------+         +-------------+
+   | prev buffer |         | arg buffer  |
+   +-------------+         +-------------+
+   |        null |         |        null |
+   | prev        |         | null        |
+   +-------------+         +-------------+
+   
+   */
+  
+  ASSERT( ! m_pNextBuffer )
+  if (m_pPrevBuffer)
+    m_pPrevBuffer->vNextBuffer(nullptr);  // (a)
+
+  m_pPrevBuffer = nullptr;                   // (b)
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get higher buffer                                                          */
 /*----------------------------------------------------------------------------*/
 LinkedBuffer* LinkedBuffer::pHigherBuffer(void)
