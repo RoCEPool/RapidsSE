@@ -22,6 +22,7 @@ Vortex::Vortex(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_pVortexFile = nullptr;
+  m_pInput = nullptr;
     
   _checkInitialised_(CN_VORTEX);
 
@@ -36,6 +37,7 @@ Vortex::~Vortex(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   delete m_pVortexFile;
+  delete m_pInput;
 }
 
 
@@ -83,16 +85,16 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  Input* pInput = new Input;
-  pInput->vPushFile(szSourcePath);
+  m_pInput = new Input;
+  m_pInput->vPushFile(szSourcePath);
   
   Token m_xTokenNm;
   Token m_xTokenXyz;
-  while (pInput->bGetToken(&m_xTokenXyz)) {
+  while (m_pInput->bGetToken(&m_xTokenXyz)) {
    
     if (m_xTokenXyz.bSame("friend"_Stz)) {
       
-      while (pInput->bGetToken(&m_xTokenXyz)) {
+      while (m_pInput->bGetToken(&m_xTokenXyz)) {
         if (m_xTokenXyz.bSame(";"_Stz))
          break;
       }
@@ -101,10 +103,10 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 
     if (m_xTokenXyz.bSame("class"_Stz)) {
       
-      if (! pInput->bGetToken(&m_xTokenNm))
+      if (! m_pInput->bGetToken(&m_xTokenNm))
         break;
       
-      if (! pInput->bGetToken(&m_xTokenXyz))
+      if (! m_pInput->bGetToken(&m_xTokenXyz))
         break;
 
       if (m_xTokenXyz.bSame(":"_Stz) || m_xTokenXyz.bSame("{"_Stz)) {
@@ -114,7 +116,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
     }
   }
 
-  delete pInput;
+  delete m_pInput;
 }
 
 

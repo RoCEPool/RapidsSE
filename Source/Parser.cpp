@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Parser.cpp -- input processor, stripping out line and block comments      */
+/* Parser.cpp -- input processor, stripping out line and block comments       */
 /*============================================================================*/
 
 #include "TokenStream.h"
