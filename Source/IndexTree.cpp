@@ -324,6 +324,12 @@ Ref IndexTree::xwGetRef(Key* aFindKey)
 
   aEntPos = EntBuffer::pMoveToNextEntry(aEntPos,nullptr,&pEntBuffer);
   
+  //! ALKA added:
+  // could be the last entry ...
+  if ( ! aEntPos ) {
+    return xwNilRef;;
+  }
+  
   eKC eCompare = Key::eCompare(aEntPos->aKey(),aFindKey);
   if (KC_SAME != eCompare)
     return xwNilRef;
