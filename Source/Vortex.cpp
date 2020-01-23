@@ -22,6 +22,7 @@ Vortex::Vortex(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_pVortexFile = nullptr;
+  m_sSourcePath = ""_Stz;
   m_pInput      = nullptr;
   // m_xToken_ClassNm
     
@@ -112,11 +113,46 @@ void Vortex::vParseClass(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse class function                                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseClassFunction(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  // just saw {
+  
+  Token xTokenXyz;
+  while (m_pInput->bGetToken(&xTokenXyz)) {
+    
+    if (xTokenXyz.bSame("}"_Stz))
+      break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse members                                                              */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseMembers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTokenXyz;
+  while (m_pInput->bGetToken(&xTokenXyz)) {
+        
+    if (xTokenXyz.bSame(";"_Stz))
+      break;
+    
+    if (xTokenXyz.bSame("{"_Stz)) {
+      vParseClassFunction();
+      continue;
+    }
+
+    if (xTokenXyz.bSame("}"_Stz)) {
+      break;
+    }
+    
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,6 +162,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
+  m_sSourcePath = szSourcePath;
   m_pInput = new Input;
   m_pInput->vPushFile(szSourcePath);
   

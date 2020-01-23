@@ -9,6 +9,7 @@ namespace Utilities
   {
   public:
     File*  m_pVortexFile;
+    s256   m_sSourcePath;
     Input* m_pInput;
     Token  m_xToken_ClassNm;
 
@@ -27,6 +28,7 @@ namespace Utilities
     bool bOpen(Stz* szVortexPath);
     void vParseBase(void);
     void vParseClass(void);
+    void vParseClassFunction(void);
     void vParseMembers(void);
     void vProcessSource(Stz* szSourcePath);
 
