@@ -130,27 +130,79 @@ void Vortex::vParseClassFunction(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse members                                                              */
+/* parse single member                                                        */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseMember(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+ 
+  // just saw {
+
+  vTrace("%s + "_Stz,m_xToken_ClassNm.azChar());
+
+  Token xTokenXyz;
+  if (xTokenXyz.bSame("private"_Stz)) {
+    RASSERT(m_pInput->bGetToken(&xTokenXyz));
+  }
+  else
+  if (xTokenXyz.bSame("protected"_Stz)) {
+    RASSERT(m_pInput->bGetToken(&xTokenXyz));
+  }
+  else
+  if (xTokenXyz.bSame("public"_Stz)) {
+    RASSERT(m_pInput->bGetToken(&xTokenXyz));
+  }
+
+  while (m_pInput->bGetToken(&xTokenXyz)) {
+
+    if (xTokenXyz.bSame("private"_Stz)) {
+      RASSERT(m_pInput->bGetToken(&xTokenXyz));
+      continue;
+    }
+    if (xTokenXyz.bSame("protected"_Stz)) {
+      RASSERT(m_pInput->bGetToken(&xTokenXyz));
+      continue;
+    }
+    if (xTokenXyz.bSame("public"_Stz)) {
+      RASSERT(m_pInput->bGetToken(&xTokenXyz));
+      continue;
+    }
+
+    if (xTokenXyz.bSame("{"_Stz)) {
+      vParseClassFunction();
+      break;
+    }
+
+    if (xTokenXyz.bSame(";"_Stz)) {
+      break;
+    }
+    
+    vTrace("%s "_Stz,xTokenXyz.azChar());
+  }
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse all members                                                          */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseMembers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
+
+  // just saw {
+
   Token xTokenXyz;
-  while (m_pInput->bGetToken(&xTokenXyz)) {
+  
+  for (;;) {
+
+    vParseMember();
+    
+   if (! m_pInput->bGetToken(&xTokenXyz))
+     break;
         
     if (xTokenXyz.bSame(";"_Stz))
       break;
-    
-    if (xTokenXyz.bSame("{"_Stz)) {
-      vParseClassFunction();
-      continue;
-    }
-
-    if (xTokenXyz.bSame("}"_Stz)) {
-      break;
-    }
-    
   }
   
 }
