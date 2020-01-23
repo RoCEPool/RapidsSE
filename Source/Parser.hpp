@@ -15,14 +15,14 @@ namespace TokenStream
     Parser* m_pNext;     // next parser in stack
     
     // source definition
-    eIS     m_eSource;   // what source are we parsing? given file or given string?
+    eIS     m_eSource;   // what source are we parsing? given file or string?
     bool    m_bLineMode; // line mode?
   
     // sources
     File    m_oRawFile;  // given file
     s48K    m_sRawLine;  // either raw line read from file or given string
-    char*   m_aRawLine;  // ptr into m_sLine.s() -- debug help
-    char*   m_aRawChar;  // next raw char in raw line
+    char*   m_azRawLine; // ptr into m_sRawLine -- debug help
+    char*   m_acRawChar; // next raw char in raw line
 
     // registers
     i8      m_nLoaded;   // 0: neither has char

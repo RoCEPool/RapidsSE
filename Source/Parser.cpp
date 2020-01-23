@@ -304,8 +304,8 @@ void Parser::vResetParser(void)
   m_oRawFile.vReset();
   m_bLineMode = false;
   m_sRawLine  = ""_Stz;
-  m_aRawLine  = m_sRawLine.azChar();
-  m_aRawChar  = m_sRawLine.azChar();
+  m_azRawLine = m_sRawLine.azChar();
+  m_acRawChar = m_sRawLine.azChar();
  
   m_nLoaded   = 0;
   m_cFirst    = '\0';
@@ -670,7 +670,7 @@ char Parser::cFromRawFile(void)
   
   char cRaw;
   
-  cRaw = *m_aRawChar++;
+  cRaw = *m_acRawChar++;
   
   if (cRaw)
     return cRaw;
@@ -684,20 +684,20 @@ char Parser::cFromRawFile(void)
   
   if (! m_bLineMode) {
     vReadLineFile();
-    cRaw = *m_aRawChar++;
+    cRaw = *m_acRawChar++;
     return cRaw;
   }
   
   if (! m_bRead) {
     m_bRead = true;
-    m_aRawChar = m_sRawLine.azChar();
-    *m_aRawChar = '\0';
+    m_acRawChar = m_sRawLine.azChar();
+    *m_acRawChar = '\0';
     return '\0';
   }
   
   m_bRead = false;
   vReadLineFile();
-  cRaw = *m_aRawChar++;
+  cRaw = *m_acRawChar++;
   
   ASSERT( (cRaw) || (!cRaw && m_bEOF) );
   
@@ -715,7 +715,7 @@ char Parser::cFromRawStdin(void)
   
   char cRaw;
   
-  cRaw = *m_aRawChar++;
+  cRaw = *m_acRawChar++;
   
   if (cRaw) {
     ASSERT(! m_bEOF);
@@ -727,22 +727,22 @@ char Parser::cFromRawStdin(void)
   
   if (! m_bLineMode) {
     vReadLineStdin();
-    cRaw = *m_aRawChar++;
+    cRaw = *m_acRawChar++;
     ASSERT(! m_bEOF);
     return cRaw;
   }
   
   if (! m_bRead) {
     m_bRead = true;
-    m_aRawChar = m_sRawLine.azChar();
-    *m_aRawChar = '\0';
+    m_acRawChar = m_sRawLine.azChar();
+    *m_acRawChar = '\0';
     ASSERT(! m_bEOF);
     return '\0';
   }
   
   m_bRead = false;
   vReadLineStdin();
-  cRaw = *m_aRawChar++;
+  cRaw = *m_acRawChar++;
   
   ASSERT(! m_bEOF);
   return cRaw;
@@ -759,7 +759,7 @@ char Parser::cFromRawString(void)
   
   char cRaw;
   
-  cRaw = *m_aRawChar++;
+  cRaw = *m_acRawChar++;
   
   if (cRaw)
     return cRaw;
@@ -780,13 +780,13 @@ void Parser::vReadLineFile(void)
 
   char cInput;
   
-  m_aRawChar = m_sRawLine.azChar();
+  m_acRawChar = m_sRawLine.azChar();
   
   do {
     
     cInput = m_oRawFile.cGetChar();
     
-    *m_aRawChar++ = cInput;
+    *m_acRawChar++ = cInput;
     
     if (C_END_OF_LINE == cInput)
       break;
@@ -797,9 +797,9 @@ void Parser::vReadLineFile(void)
   if (! cInput)
     m_bEOF = true;
   
-  *m_aRawChar++ = '\0';
+  *m_acRawChar++ = '\0';
   
-  m_aRawChar = m_sRawLine.azChar();
+  m_acRawChar = m_sRawLine.azChar();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -811,7 +811,7 @@ void Parser::vReadLineStdin(void)
   
   ASSERT(! m_bEOF);
   
-  m_aRawChar = m_sRawLine.azChar();
+  m_acRawChar = m_sRawLine.azChar();
     
 //  bool bHasStarted = AM::bHasStarted();
 //
@@ -843,15 +843,15 @@ void Parser::vReadLineStdin(void)
     
     char cInput = m_oRawFile.cGetChar();
     
-    *m_aRawChar++ = cInput;
+    *m_acRawChar++ = cInput;
     
     if (C_END_OF_LINE == cInput)
       break;
   }
   
-  *m_aRawChar++ = '\0';
+  *m_acRawChar++ = '\0';
   
-  m_aRawChar = m_sRawLine.azChar();
+  m_acRawChar = m_sRawLine.azChar();
   
   ASSERT(! m_bEOF);
 }
