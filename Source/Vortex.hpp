@@ -36,11 +36,13 @@ namespace Utilities
 
   public:
     void vClose(void);
-    bool bGetToken(Token* pToken);
     bool bOpen(Stz* szVortexPath);
     void vProcessSource(Stz* szSourcePath);
 
   private:
+    void vAddTerm(Token* pToken);
+    bool bGetToken(Token* pToken);
+  
     void vParseAllClasses(void);
     void vParseClassBase(void);
     void vParseClassBlock(void);

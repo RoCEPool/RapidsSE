@@ -72,21 +72,6 @@ void Vortex::vClose(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next token                                                             */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bGetToken(Token* pToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  bool b = m_pInput->bGetToken(pToken);
-  
-  if (b && m_bTraceTokens)
-    vTrace("Tkn: %s\n"_Stz,pToken->azChar());
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
 /* open the vortex                                                            */
 /*----------------------------------------------------------------------------*/
 bool Vortex::bOpen(Stz* szVortexPath)
@@ -124,6 +109,31 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add term                                                                   */
+/*----------------------------------------------------------------------------*/
+void Vortex::vAddTerm(Token* pToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_saTerm[m_nTerms++] = pToken->szText();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next token                                                             */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bGetToken(Token* pToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  bool b = m_pInput->bGetToken(pToken);
+  
+  if (b && m_bTraceTokens)
+    vTrace("Tkn: %s\n"_Stz,pToken->azChar());
+  
+  return b;
+}
 
 /*----------------------------------------------------------------------------*/
 /* process all classes in the current source file (.h or .hpp)                */
@@ -299,7 +309,8 @@ void Vortex::vParseMemberProper(void)
   //vTrace("%s "_Stz,m_xToken_Other.azChar());
   
   m_nTerms = 0;
-  m_saTerm[m_nTerms++] = m_xToken_Other.szText();
+  vAddTerm(&m_xToken_Other);
+  
   while (bGetToken(&m_xToken_Other)) {
     
     if (m_xToken_Other.bSame(";"_Stz)) {
@@ -312,7 +323,7 @@ void Vortex::vParseMemberProper(void)
     }
 
     //vTrace("%s "_Stz,m_xToken_Other.azChar());
-    m_saTerm[m_nTerms++] = m_xToken_Other.szText();
+    vAddTerm(&m_xToken_Other);
   }
   
   //vTrace("\n"_Stz);
