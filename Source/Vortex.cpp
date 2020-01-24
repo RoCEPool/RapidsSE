@@ -32,7 +32,6 @@ Vortex::Vortex(void)
   m_nMembers     = 0;
 
   m_nTerms       = 0;
-  //m_saTerm[]
   
   m_pMetaGraph   = nullptr;
   
@@ -119,7 +118,8 @@ void Vortex::vAddTerm(Stz* szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_saTerm[m_nTerms++] = szTerm;
+  m_oTerms.vAdd(szTerm);
+  m_nTerms++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -237,6 +237,7 @@ void Vortex::vParseClassMembers(void)
   // just saw {
   
   m_nMembers = 0;
+  
   vTrace("File %s\n"_Stz,m_sSourcePath.azChar());
   
   for (;;) {
@@ -255,7 +256,7 @@ bool Vortex::bParseLabelledMember(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
  
   // just saw {
-
+  
   for (i8 i_Token = 0; bGetToken(&m_xToken_Other); i_Token++) {
 
     if (0 == i_Token && m_xToken_Other.bSame(";"_Stz))
@@ -311,6 +312,8 @@ void Vortex::vParseMemberProper(void)
   //vTrace("%s "_Stz,m_xToken_Other.azChar());
   
   m_nTerms = 0;
+  m_oTerms.vReset();
+
   vAddTerm(m_xToken_Other.szTerm());
   
   while (bGetToken(&m_xToken_Other)) {
@@ -331,7 +334,7 @@ void Vortex::vParseMemberProper(void)
   //vTrace("\n"_Stz);
   
   for (i8 i_Term = 0; i_Term < m_nTerms; i_Term++)
-    vTrace("[%lld] %s "_Stz,i_Term,m_saTerm[i_Term].azChar());
+    vTrace("[%lld] %s "_Stz,i_Term,m_oTerms.szName(i_Term)->azChar());
   vTrace("\n"_Stz);
   
   vDebugPoint();

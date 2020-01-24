@@ -86,7 +86,23 @@ void EnameSet::vAdd(Stz* szName, i8 iValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add                                                                        */
+/* add name only                                                              */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vAdd(Stz* szName)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  i8 i_Ename = m_nEnames;
+  
+  m_xEname[i_Ename].m_i_Name  = m_bStrings.iAppend(szName);
+  m_xEname[i_Ename].m_i_Value = C_UNKNOWN;
+  m_xEname[i_Ename].m_eToken  = TN_STRING;
+  
+  m_nEnames++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add name and value                                                         */
 /*----------------------------------------------------------------------------*/
 void EnameSet::vAdd(Stz* szName, Stz* szValue)
 {

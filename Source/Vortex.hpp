@@ -5,8 +5,6 @@
 
 namespace Utilities
 {
-  static const i8 C_VOREX_TERMS = 256;
-
   class Vortex : public Object
   {
   public:
@@ -22,7 +20,6 @@ namespace Utilities
     i8     m_nMembers;
   
     i8     m_nTerms;
-    s32    m_saTerm[C_VOREX_TERMS];
   
     EnameSet   m_oTerms;
     MetaGraph* m_pMetaGraph;
