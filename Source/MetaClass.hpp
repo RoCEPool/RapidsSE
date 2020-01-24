@@ -10,6 +10,8 @@ namespace Reflection
   {
   public:
  
+    s32 m_sClassNm;
+  
     // must be last
     Footer m_xFooter;
     
@@ -19,6 +21,9 @@ namespace Reflection
   
     MetaClass(void);
    ~MetaClass(void) noexcept(false);
+  
+    Stz* szClassNm(void);
+    void vClassNm(Stz* szClassNm);
       
     Footer* aFooter(void);
   };

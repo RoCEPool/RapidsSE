@@ -19,6 +19,8 @@ namespace Reflection
   
     MetaGraph(void);
    ~MetaGraph(void) noexcept(false);
+  
+    MetaClass* pAddMetaClass(Stz* szClassNm);
       
     Footer* aFooter(void);
   };

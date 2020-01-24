@@ -24,9 +24,9 @@ namespace Utilities
     EnameSet   m_oTerms;
   
     MetaGraph* m_pMetaGraph;
-    MetaClass* m_pMetaClass;
-    MemberSet* m_pMemberSet;
-    MemberVar* m_pMemberVar;
+    MetaClass* m_pMetaClass_cur;
+    MemberSet* m_pMemberSet_cur;
+    MemberVar* m_pMemberVar_cur;
 
     // must be last
     Footer m_xFooter;

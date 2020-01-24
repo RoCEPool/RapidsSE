@@ -33,10 +33,10 @@ Vortex::Vortex(void)
 
   m_nTerms       = 0;
   
-  m_pMetaGraph   = new MetaGraph;
-  m_pMetaClass   = nullptr;
-  m_pMemberSet   = nullptr;
-  m_pMemberVar   = nullptr;
+  m_pMetaGraph     = new MetaGraph;
+  m_pMetaClass_cur = nullptr;
+  m_pMemberSet_cur = nullptr;
+  m_pMemberVar_cur = nullptr;
 
   _checkInitialised_(CN_VORTEX);
 
