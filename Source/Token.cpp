@@ -94,9 +94,9 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the az area                                                            */
+/* get the az of term                                                         */
 /*----------------------------------------------------------------------------*/
-char* Token::azChar(void)
+char* Token::azTerm(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   

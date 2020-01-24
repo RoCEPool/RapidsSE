@@ -130,7 +130,7 @@ bool Vortex::bGetToken(Token* pToken)
   bool b = m_pInput->bGetToken(pToken);
   
   if (b && m_bTraceTokens)
-    vTrace("Tkn: %s\n"_Stz,pToken->azChar());
+    vTrace("Tkn: %s\n"_Stz,pToken->azTerm());
   
   return b;
 }
@@ -203,7 +203,7 @@ void Vortex::vParseClassBlock(void)
   
   // just saw {
   
-  m_pVortexFile->vPrint("%s\n"_Stz,m_xToken_ClassNm.azChar());
+  m_pVortexFile->vPrint("%s\n"_Stz,m_xToken_ClassNm.azTerm());
   m_nClasses++;
   
   vParseClassMembers();
@@ -304,7 +304,7 @@ void Vortex::vParseMemberProper(void)
   vTrace("%lld.%lld) %s : "_Stz,
          m_nClasses,
          m_nMembers++,
-         m_xToken_ClassNm.azChar());
+         m_xToken_ClassNm.azTerm());
   
   //vTrace("%s "_Stz,m_xToken_Other.azChar());
   
