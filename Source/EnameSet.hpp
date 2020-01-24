@@ -5,7 +5,7 @@
 
 namespace Gadgets
 {
-  static const i8 C_ENAME_SET = 64;
+  static const i8 C_ENAME_SET = 256;
   
   class EnameSet : public Object
   {
