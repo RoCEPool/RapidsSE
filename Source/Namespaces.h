@@ -65,6 +65,7 @@ namespace Operands      { class Operand;                                      }
 namespace Operators     { class Op; class Pipeline;                           }
 namespace ReadConsistency {                                                   }
 namespace Records       {                                                     }
+namespace Reflection    {                                                     }
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Registers     { class RegSet;                                       }
 namespace Rows          {                                                     }
