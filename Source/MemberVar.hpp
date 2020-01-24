@@ -18,6 +18,8 @@ namespace Reflection
   
     MemberVar(void);
    ~MemberVar(void) noexcept(false);
+  
+    static bool bIsMemberVar(EnameSet* pEnameSet);
       
     Footer* aFooter(void);
   };
