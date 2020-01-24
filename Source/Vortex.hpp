@@ -48,6 +48,7 @@ namespace Utilities
     void vParseClassMembers(void);
     bool bParseLabelledMember(void);
     void vParseMemberProper(void);
+    void vParseStructArray(void);
     void vParseStructMember(void);
     void vParseUnionMember(void);
 

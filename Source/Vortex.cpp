@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Vortex.cpp - buffer pool analyzer                                             */
+/* Vortex.cpp - Vortex                                                        */
 /*============================================================================*/
 
 #include "Utilities.h"
@@ -225,6 +225,7 @@ void Vortex::vParseClassMembers(void)
   // just saw {
   
   m_nMembers = 0;
+  vTrace("File %s\n"_Stz,m_sSourcePath.azChar());
   
   for (;;) {
 
@@ -324,6 +325,22 @@ void Vortex::vParseMemberProper(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse struct array                                                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseStructArray(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(bGetToken(&m_xToken_Other));
+  
+  RASSERT(bGetToken(&m_xToken_Other));
+  RASSERT(m_xToken_Other.bSame("]"_Stz));
+
+  RASSERT(bGetToken(&m_xToken_Other));
+  RASSERT(m_xToken_Other.bSame(";"_Stz));
+};
+
+/*----------------------------------------------------------------------------*/
 /* parse struct member                                                        */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseStructMember(void)
@@ -338,6 +355,13 @@ void Vortex::vParseStructMember(void)
   RASSERT(bGetToken(&m_xToken_Other));
   if (! m_xToken_Other.bSame("{"_Stz)) {
     RASSERT(bGetToken(&m_xToken_Other));
+    if (! m_xToken_Other.bSame("{"_Stz)) {
+      RASSERT(bGetToken(&m_xToken_Other));
+      RASSERT(m_xToken_Other.bSame(";"_Stz));
+      
+      m_bTraceTokens = false;
+      return;
+    }
   }
 
   while (bGetToken(&m_xToken_Other)) {
@@ -346,7 +370,8 @@ void Vortex::vParseStructMember(void)
       RASSERT(bGetToken(&m_xToken_Other));
       if (! m_xToken_Other.bSame(";"_Stz)) {
         RASSERT(bGetToken(&m_xToken_Other));
-        RASSERT(m_xToken_Other.bSame(";"_Stz));
+        if (! m_xToken_Other.bSame(";"_Stz))
+          vParseStructArray();
       }
       break;
     }
