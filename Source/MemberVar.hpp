@@ -10,6 +10,8 @@ namespace Reflection
   {
   public:
  
+    s32 m_sVarNm;
+
     // must be last
     Footer m_xFooter;
     
@@ -21,6 +23,10 @@ namespace Reflection
    ~MemberVar(void) noexcept(false);
   
     static bool bIsMemberVar(Stz* szClassNm, EnameSet* pEnameSet);
+  
+    Stz* szVarNm(void);
+    void vVarNm(Stz* szVarNm);
+
       
     Footer* aFooter(void);
   };

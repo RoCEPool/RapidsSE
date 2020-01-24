@@ -49,7 +49,7 @@ MetaClass::~MetaClass(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* MetaClass::szClassNm(void)
 {
-  _precondition_(_MAGIC_,CN_METAGRAPH,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
     
   return m_sClassNm.szStz();
 }
@@ -59,11 +59,10 @@ Stz* MetaClass::szClassNm(void)
 /*----------------------------------------------------------------------------*/
 void MetaClass::vClassNm(Stz* szClassNm)
 {
-  _precondition_(_MAGIC_,CN_METAGRAPH,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
     
   m_sClassNm = szClassNm;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
