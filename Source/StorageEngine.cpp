@@ -30,6 +30,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Esses::vCheckAssumptions();
   Focals::vCheckAssumptions();
   Gadgets::vCheckAssumptions();
+  GoldenGate::vCheckAssumptions();
   Grids::vCheckAssumptions();
   Host::vCheckAssumptions();
   IndexTrees::vCheckAssumptions();
