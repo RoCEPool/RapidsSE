@@ -179,6 +179,7 @@ enum eCN : u2 // Class Number
   /*                            */ CN_MEMBERVAR,
   /* 145 0x091      136B Heap:S */ CN_MEMTEST,
   /*                            */ CN_METACLASS,
+  /*                            */ CN_METAGRAPH,
   /* 146 0x092      480B Heap:S */ CN_MUTEX,
   
   /* 147 0x093       14B Heap:I */ CN__N__,
@@ -508,6 +509,7 @@ static Stz* aCN[]
   /* 145 0x091 */ "MEMBERVAR"_Stz,           // CN_MEMBERVAR
   /* 145 0x091 */ "MEMTEST"_Stz,             // CN_MEMTEST
   /*           */ "METACLASS"_Stz,           // CN_METACLASS
+  /*           */ "METAGRAPH"_Stz,           // CN_METAGRAPH
   /* 146 0x092 */ "MUTEX"_Stz,               // CN_MUTEX
   
   /* 147 0x093 */ "_N__"_Stz,                // CN__N__

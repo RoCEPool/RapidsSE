@@ -1,0 +1,30 @@
+/*============================================================================*/
+/* MetaGraph.hpp - MetaGraph                                                  */
+/*============================================================================*/
+#pragma once
+
+namespace Reflection
+{
+  class MetaGraph : public Object
+  {
+  public:
+ 
+    // must be last
+    Footer m_xFooter;
+    
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    MetaGraph(void);
+   ~MetaGraph(void) noexcept(false);
+      
+    Footer* aFooter(void);
+  };
+
+  MetaGraph* _pMetaGraph(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
