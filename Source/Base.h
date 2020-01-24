@@ -6,6 +6,8 @@
 //#pragma GCC diagnostic warning "-Wunused-parameter"
 //#pragma GCC diagnostic warning "-Wunused-variable"
 
+#define _static_
+
 #include "CompiledWith.h"
 #include "MachineTypes.h"
 #include "SystemIncludes.h"
