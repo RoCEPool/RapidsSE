@@ -5,7 +5,8 @@
 
 namespace Reflection
 {
-  class MetaGraph : public Object
+  class MetaGraph : public Object,
+                    List_t<MetaClass>
   {
   public:
  

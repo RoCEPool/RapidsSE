@@ -33,7 +33,7 @@ Vortex::Vortex(void)
 
   m_nTerms       = 0;
   
-  m_pMetaGraph   = nullptr;
+  m_pMetaGraph   = new MetaGraph;
   m_pMetaClass   = nullptr;
   m_pMemberSet   = nullptr;
   m_pMemberVar   = nullptr;
@@ -52,6 +52,8 @@ Vortex::~Vortex(void) noexcept(false)
   
   delete m_pVortexFile;
   delete m_pInput;
+  
+  delete m_pMetaGraph;
 }
 
 

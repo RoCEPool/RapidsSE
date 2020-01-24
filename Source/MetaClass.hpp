@@ -5,7 +5,8 @@
 
 namespace Reflection
 {
-  class MetaClass : public ListNL_t<MetaClass>
+  class MetaClass : public Object,
+                    public ListItem_t<MetaClass>
   {
   public:
  

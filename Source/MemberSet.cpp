@@ -18,7 +18,7 @@ __aFooterFunction(MemberSet)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MemberSet::MemberSet(void)
-: ListNL_t<MemberSet>(CN_MEMBERSET)
+: Object(CN_MEMBERSET)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
   

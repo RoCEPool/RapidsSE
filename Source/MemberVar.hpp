@@ -5,7 +5,8 @@
 
 namespace Reflection
 {
-  class MemberVar : public ListNL_t<MemberVar>
+  class MemberVar : public Object,
+                    public ListItem_t<MemberVar>
   {
   public:
  
