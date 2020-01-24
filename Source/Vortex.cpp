@@ -29,6 +29,10 @@ Vortex::Vortex(void)
   
   m_bTraceTokens = false;
   m_nClasses     = 0;
+  m_nMembers     = 0;
+
+  m_nTerms       = 0;
+  //m_saTerm[]
   
   _checkInitialised_(CN_VORTEX);
 
@@ -100,9 +104,9 @@ bool Vortex::bOpen(Stz* szVortexPath)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse base clause                                                          */
+/* parse base (inheritence) clause                                            */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseBase(void)
+void Vortex::vParseClassBase(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -110,7 +114,7 @@ void Vortex::vParseBase(void)
   while (bGetToken(&m_xToken_Other)) {
     
     if (m_xToken_Other.bSame("{"_Stz)) {
-      vParseClass();
+      vParseClassBlock();
       break;
     }
   }
@@ -119,7 +123,7 @@ void Vortex::vParseBase(void)
 /*----------------------------------------------------------------------------*/
 /* parse class                                                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseClass(void)
+void Vortex::vParseClassBlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -128,7 +132,7 @@ void Vortex::vParseClass(void)
   m_pVortexFile->vPrint("%s\n"_Stz,m_xToken_ClassNm.azChar());
   m_nClasses++;
   
-  vParseMembers();
+  vParseClassMembers();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,9 +152,28 @@ void Vortex::vParseClassFunction(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse all members                                                          */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseClassMembers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  // just saw {
+  
+  m_nMembers = 0;
+  
+  for (;;) {
+
+    if (! bParseLabelledMember())
+      break;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse single member                                                        */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bParseMember(void)
+bool Vortex::bParseLabelledMember(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
  
@@ -175,12 +198,16 @@ bool Vortex::bParseMember(void)
       continue;
     }
     
+    if (m_xToken_Other.bSame("struct"_Stz)) {
+      vParseStructMember();
+      continue;
+    }
+    
     if (m_xToken_Other.bSame("union"_Stz)) {
-      vParseMemberUnion();
+      vParseUnionMember();
       continue;
     }
 
-    
     if (m_xToken_Other.bSame("}"_Stz)) {
       RASSERT(bGetToken(&m_xToken_Other));
       vTrace("\n"_Stz);
@@ -200,11 +227,16 @@ void Vortex::vParseMemberProper(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  vTrace("[%lld] %s + "_Stz,m_nClasses,m_xToken_ClassNm.azChar());
-  vTrace("%s "_Stz,m_xToken_Other.azChar());
-
-  i8 i_Token = 0;
-  for (; bGetToken(&m_xToken_Other); i_Token++) {
+  vTrace("%lld.%lld) %s : "_Stz,
+         m_nClasses,
+         m_nMembers++,
+         m_xToken_ClassNm.azChar());
+  
+  //vTrace("%s "_Stz,m_xToken_Other.azChar());
+  
+  m_nTerms = 0;
+  m_saTerm[m_nTerms++] = m_xToken_Other.szText();
+  while (bGetToken(&m_xToken_Other)) {
     
     if (m_xToken_Other.bSame(";"_Stz)) {
       break;
@@ -215,24 +247,63 @@ void Vortex::vParseMemberProper(void)
       return ;
     }
 
-
-    vTrace("%s "_Stz,m_xToken_Other.azChar());
+    //vTrace("%s "_Stz,m_xToken_Other.azChar());
+    m_saTerm[m_nTerms++] = m_xToken_Other.szText();
   }
   
-  if (i_Token)
-    vTrace("\n"_Stz);
+  //vTrace("\n"_Stz);
+  
+  for (i8 i_Term = 0; i_Term < m_nTerms; i_Term++)
+    vTrace("[%lld] %s "_Stz,i_Term,m_saTerm[i_Term].azChar());
+  vTrace("\n"_Stz);
+  
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse main portion of a member                                             */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseMemberUnion(void)
+void Vortex::vParseStructMember(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  // just saw: struct
+  
+  m_bTraceTokens = true;
+  
+  // may see name
+  RASSERT(bGetToken(&m_xToken_Other));
+  if (! m_xToken_Other.bSame("{"_Stz)) {
+    RASSERT(bGetToken(&m_xToken_Other));
+  }
+
+  while (bGetToken(&m_xToken_Other)) {
+
+    if (m_xToken_Other.bSame("}"_Stz)) {
+      RASSERT(bGetToken(&m_xToken_Other));
+      if (! m_xToken_Other.bSame(";"_Stz)) {
+        RASSERT(bGetToken(&m_xToken_Other));
+        RASSERT(m_xToken_Other.bSame(";"_Stz));
+      }
+      break;
+    }
+    
+    vParseMemberProper();
+  }
+  
+  m_bTraceTokens = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse main portion of a member                                             */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseUnionMember(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   // just saw: union
   
-  m_bTraceTokens = true;
+  //m_bTraceTokens = true;
   
   RASSERT(bGetToken(&m_xToken_Other));
   RASSERT(m_xToken_Other.bSame("{"_Stz));
@@ -248,25 +319,7 @@ void Vortex::vParseMemberUnion(void)
     vParseMemberProper();
   }
   
-  m_bTraceTokens = false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse all members                                                          */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseMembers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  // just saw {
-  
-  for (;;) {
-
-    if (! bParseMember())
-      break;
-    
-  }
-  
+  //m_bTraceTokens = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -299,22 +352,22 @@ void Vortex::vProcessSource(Stz* szSourcePath)
       if (! bGetToken(&m_xToken_Other))
         break;
       
-      if (m_xToken_Other.bSame("{"_Stz)) {
-        vParseClass();
+      if (m_xToken_Other.bSame(":"_Stz)) {
+        vParseClassBase();
         continue;
       }
       
-      if (m_xToken_Other.bSame(":"_Stz)) {
-        vParseBase();
+      if (m_xToken_Other.bSame("{"_Stz)) {
+        vParseClassBlock();
         continue;
       }
+    
     }
   }
 
   delete m_pInput;
   m_pInput = nullptr;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
