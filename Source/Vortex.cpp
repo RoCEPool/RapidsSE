@@ -308,7 +308,7 @@ void Vortex::vParseMemberProper(void)
     
     if (m_xToken_Other.bSame("{"_Stz)) {
       vParseClassFunction();
-      return ;
+      break ;
     }
 
     //vTrace("%s "_Stz,m_xToken_Other.azChar());
