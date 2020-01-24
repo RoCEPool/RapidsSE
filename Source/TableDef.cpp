@@ -140,7 +140,7 @@ eEC TableDef::eParse(Stz* szCmd)
   // -- -- -- --
 
   pTkn = pTknVec->pNextToken(); dPT();
-  m_sTableNm = pTkn->szText();
+  m_sTableNm = pTkn->szTerm();
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -238,7 +238,7 @@ eEC TableDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
   pCol->vColumnNo(i_Col);
   
   // set column name
-  pCol->vColumnNm(pTkn->szText());
+  pCol->vColumnNm(pTkn->szTerm());
   
   // -- -- -- -- -- -- -- -- -- -- --
   // check for duplicate column name
@@ -257,7 +257,7 @@ eEC TableDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
   // -- -- -- --
   
   pTkn = pTknVec->pNextToken(); dPT();
-  eCT eColumn = TableDef::eColumn(pTkn->szText());
+  eCT eColumn = TableDef::eColumn(pTkn->szTerm());
   
   switch (eColumn) {
       
@@ -830,7 +830,7 @@ eEC TableDef::eParsePartitionBy(TokenVec* pTknVec)
     // find column and set as partition column
     for (i8 i_Col = 0; i_Col < m_pStreamDef->nColumns(C_ALL); i_Col++) {
       Column* pCol = m_pStreamDef->pGetColumn(i_Col);
-      if (pCol->szColNm()->bSame(pTkn->szText())) {
+      if (pCol->szColNm()->bSame(pTkn->szTerm())) {
         pCol->vIsPtnKey(true);
         bFound = true;
         break;

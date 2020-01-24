@@ -125,28 +125,28 @@ bool JobHelper::bExtractJson(EnameSet*   pArgEnmSet,
 
   pTkn = pTknVec->pGet(++i_Tkn_);
   while (! pTkn->bSame("}"_Stz)) {
-    vTrace("  %s\n"_Stz,pTkn->szText());
+    vTrace("  %s\n"_Stz,pTkn->szTerm());
     Token* pTkn_name = pTkn;
     
     pTkn = pTknVec->pGet(++i_Tkn_);
-    vTrace("  %s\n"_Stz,pTkn->szText());
+    vTrace("  %s\n"_Stz,pTkn->szTerm());
 
     pTkn = pTknVec->pGet(++i_Tkn_);
-    vTrace("  %s\n"_Stz,pTkn->szText());
+    vTrace("  %s\n"_Stz,pTkn->szTerm());
     Token* pTkn_value = pTkn;
     
-    pArgEnmSet->vAdd(pTkn_name->szText(),
-                     pTkn_value->szText());
+    pArgEnmSet->vAdd(pTkn_name->szTerm(),
+                     pTkn_value->szTerm());
     
     //pArgEnmSet->vPrint();
 
 
     pTkn = pTknVec->pGet(++i_Tkn_);
-    vTrace("  %s\n"_Stz,pTkn->szText());
+    vTrace("  %s\n"_Stz,pTkn->szTerm());
     
     if (pTkn->bSame(","_Stz)) {
       pTkn = pTknVec->pGet(++i_Tkn_);
-      vTrace("  %s\n"_Stz,pTkn->szText());
+      vTrace("  %s\n"_Stz,pTkn->szTerm());
     }
   }
   
@@ -166,7 +166,7 @@ bool JobHelper::bExtractMeta(EnameSet*   pArgEnmSet,
                              )
 {
   pArgEnmSet->vAdd(pSynEnmSet->szValue(i_Syn_),
-                   pTknVec->pGet(i_Tkn_)->szText());
+                   pTknVec->pGet(i_Tkn_)->szTerm());
   
   // pArgEnmSet->vPrint();
   
@@ -204,7 +204,7 @@ bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, EnameSet* pSynEnmSet)
       return true;
     }
     
-    if (! pTkn->szText()->bSame((pSynEnmSet->szValue(i_Syn)))) {
+    if (! pTkn->bSame((pSynEnmSet->szValue(i_Syn)))) {
       //vTrace("%s\n"_Stz, pTkn->szText());
       //pSynEnmSet->vPrint();
       return false;

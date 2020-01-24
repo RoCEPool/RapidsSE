@@ -162,8 +162,8 @@ void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, i8 i_From, i8 
     
     i8 i_Value = i_Tkn++;
     
-    pEnameSet->vAdd(pTknVec->pGet(i_Name)->szText(),
-                    pTknVec->pGet(i_Value)->szText());
+    pEnameSet->vAdd(pTknVec->pGet(i_Name)->szTerm(),
+                    pTknVec->pGet(i_Value)->szTerm());
     
     if (pTknVec->pGet(i_Tkn)->bSame(","_Stz))
       i_Tkn++;
@@ -186,8 +186,8 @@ void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, Stz* sDelimite
         
     i8 i_Value = i_Tkn++;
     
-    pEnameSet->vAdd(pTknVec->pGet(i_Name)->szText(),
-                    pTknVec->pGet(i_Value)->szText());
+    pEnameSet->vAdd(pTknVec->pGet(i_Name)->szTerm(),
+                    pTknVec->pGet(i_Value)->szTerm());
     
     if (pTknVec->pGet(i_Tkn)->bSame(","_Stz))
     i_Tkn++;
@@ -237,7 +237,7 @@ void Tokeniser::vCollectStatement(TokenVec* pTokenVec_arg)
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
     Token* pToken = (*pTokenVec_arg)[i_Token];
-    eTN eToken = eNextToken((char*)pToken->szText());
+    eTN eToken = eNextToken((char*)pToken->szTerm());
     ASSERT(TN_NONE != eToken);
     pToken->vToken(eToken);
     

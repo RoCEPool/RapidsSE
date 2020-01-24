@@ -37,7 +37,7 @@ namespace TokenStream
     void  vReset(void);
     bool  bSame(Stz*);
     void  vStripSingleQuotes(void);
-    Stz*  szText(void);
+    Stz*  szTerm(void);
     i8    iToI8(void);
     eTN   eToken(void);
     void  vToken(eTN eToken);

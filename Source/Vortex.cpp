@@ -309,7 +309,7 @@ void Vortex::vParseMemberProper(void)
   //vTrace("%s "_Stz,m_xToken_Other.azChar());
   
   m_nTerms = 0;
-  vAddTerm(m_xToken_Other.szText());
+  vAddTerm(m_xToken_Other.szTerm());
   
   while (bGetToken(&m_xToken_Other)) {
     
@@ -323,7 +323,7 @@ void Vortex::vParseMemberProper(void)
     }
 
     //vTrace("%s "_Stz,m_xToken_Other.azChar());
-    vAddTerm(m_xToken_Other.szText());
+    vAddTerm(m_xToken_Other.szTerm());
   }
   
   //vTrace("\n"_Stz);
@@ -343,15 +343,15 @@ void Vortex::vParseStructArray(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(bGetToken(&m_xToken_Other));
-  vAddTerm(m_xToken_Other.szText());
+  vAddTerm(m_xToken_Other.szTerm());
   
   RASSERT(bGetToken(&m_xToken_Other));
   RASSERT(m_xToken_Other.bSame("]"_Stz));
-  vAddTerm(m_xToken_Other.szText());
+  vAddTerm(m_xToken_Other.szTerm());
 
   RASSERT(bGetToken(&m_xToken_Other));
   RASSERT(m_xToken_Other.bSame(";"_Stz));
-  vAddTerm(m_xToken_Other.szText());
+  vAddTerm(m_xToken_Other.szTerm());
 };
 
 /*----------------------------------------------------------------------------*/
@@ -385,7 +385,7 @@ void Vortex::vParseStructMember(void)
       if (! m_xToken_Other.bSame(";"_Stz)) {
         RASSERT(bGetToken(&m_xToken_Other));
         if (! m_xToken_Other.bSame(";"_Stz)) {
-          vAddTerm(m_xToken_Other.szText());
+          vAddTerm(m_xToken_Other.szTerm());
           vParseStructArray();
         }
       }

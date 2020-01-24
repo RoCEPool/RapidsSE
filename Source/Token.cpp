@@ -131,7 +131,7 @@ void Token::vCopy(Token* pGivenToken)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   m_eToken = pGivenToken->m_eToken;
-  m_sTerm.vCopy(pGivenToken->szText());
+  m_sTerm.vCopy(pGivenToken->szTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,7 +222,7 @@ bool Token::bSame(Stz* aArg)
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
-Stz* Token::szText(void)
+Stz* Token::szTerm(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   

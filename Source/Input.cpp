@@ -90,7 +90,7 @@ bool Input::bExecuteFile(TokenVec* pTknVec_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  if (! bTestFile(pTknVec_arg->pGet(0)->szText()))
+  if (! bTestFile(pTknVec_arg->pGet(0)->szTerm()))
     return false;
   
   bool b = bRunFile(pTknVec_arg);
@@ -110,7 +110,7 @@ bool Input::bRunFile(TokenVec* pTknVec_arg)
 //    if (! pTkn(1)->bSame(";"_Stz))
 //      return false;
   
-  vPushFile(pTknVec_arg->pGet(0)->szText());
+  vPushFile(pTknVec_arg->pGet(0)->szTerm());
   m_pTokeniser->vLineMode(true);
   
   return true;
@@ -175,8 +175,8 @@ void Input::vGetCommand(TokenVec* pTknVec_arg)
     return;
   
   // if its a command file just return
-  if ( ! (*pTknVec_arg)[0]->szText()->bSame("/"_Stz) &&
-      bTestFile((*pTknVec_arg)[0]->szText()))
+  if ( ! (*pTknVec_arg)[0]->bSame("/"_Stz) &&
+      bTestFile((*pTknVec_arg)[0]->szTerm()))
     return;
   
   // collect till ;
@@ -199,7 +199,7 @@ bool Input::bGetToken(Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
-  eTN eToken = m_pTokeniser->eNextToken((char*)pTkn->szText());
+  eTN eToken = m_pTokeniser->eNextToken((char*)pTkn->szTerm());
       
   pTkn->vToken(eToken);
   

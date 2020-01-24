@@ -348,10 +348,10 @@ void SePrompt::vCheckJobCtl(void)
   
   s32 sTag;
   
-  while ('/' == * pTkn0->szText()->azChar() ) {
+  while ('/' == * pTkn0->azTerm() ) {
     
    Token* pTkn1 = pTkn(1);
-   sTag.vSprint("</%s/>"_Stz,pTkn1->szText());
+   sTag.vSprint("</%s/>"_Stz,pTkn1->szTerm());
     
     m_oJobCtl.vAdd(sTag,1);
     
@@ -526,7 +526,7 @@ bool SePrompt::bExecuteFunction(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   PromptFun* pPromptDesc =
-    gxPromptCatalog.pFindFun(pTkn(0)->szText(), pTkn(1)->szText());
+    gxPromptCatalog.pFindFun(pTkn(0)->szTerm(), pTkn(1)->szTerm());
   
   if (! pPromptDesc)
     return false;
@@ -543,8 +543,8 @@ bool SePrompt::bFindJobClass(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Stz* aCommand1 = pTkn(0)->szText();
-  Stz* aCommand2 = pTkn(1)->szText();
+  Stz* aCommand1 = pTkn(0)->szTerm();
+  Stz* aCommand2 = pTkn(1)->szTerm();
   
   m_aJobClass = JobClass::pFind(aCommand1, aCommand2);
 
@@ -640,7 +640,7 @@ bool SePrompt::bIsPromptWord(void)
   Token* pTkn0 = pTknVec->pGet(0);
 
   s32 sWordNm;
-  sWordNm = pTkn0->szText();
+  sWordNm = pTkn0->szTerm();
   
   Dic* pRootDic = AM::pRootDic();
 
@@ -1071,7 +1071,7 @@ bool SePrompt::bShortCut(void)
   for (i8 i_ShortCut = 0; i_ShortCut < nShortCuts; i_ShortCut++) {
     ShortCut* pShortCut = m_oShortCutVec.pGet(i_ShortCut);
     
-    if (! pShortCut->m_sName.bSame(pTkn->szText()))
+    if (! pShortCut->m_sName.bSame(pTkn->szTerm()))
       continue;
     
     m_pSession->m_sToDo = pShortCut->m_sCmd;
@@ -1145,7 +1145,7 @@ bool SePrompt::bSubLet(void)
     if (! pToken->bIsName())
       continue;
     
-    s32 sName = pToken->szText();
+    s32 sName = pToken->szTerm();
     
     NmStr* pNmStr = pNmStrList->pFind(sName);
     if (! pNmStr)
@@ -1233,7 +1233,7 @@ void SePrompt::vUnknownCommand(void)
   
   Token* pTkn = pTokenVec()->pGet(0);
   
-  vTrace("error: Unknown command '%s'\n"_Stz,pTkn->szText());
+  vTrace("error: Unknown command '%s'\n"_Stz,pTkn->szTerm());
 }
 
 /*----------------------------------------------------------------------------*/

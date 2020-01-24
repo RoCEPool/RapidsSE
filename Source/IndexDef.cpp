@@ -168,7 +168,7 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
   // -- -- -- --
   
   pTkn = pTknVec->pNextToken(); dPT();
-  m_sIndexNm = pTkn->szText();
+  m_sIndexNm = pTkn->szTerm();
   
   // -- -- -- --
   // ON
@@ -182,7 +182,7 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
   // -- -- -- --
   
   pTkn = pTknVec->pNextToken(); dPT();
-  m_sTableNm = pTkn->szText();
+  m_sTableNm = pTkn->szTerm();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: ( <colNm> ,... )
@@ -221,7 +221,7 @@ eEC IndexDef::eParse(Table* pTable, Stz* szCmd)
     // -- -- -- -- --
     // process column
     // -- -- -- -- --
-    bool bResult = bAddIdxCol(pTable,pTkn->szText());
+    bool bResult = bAddIdxCol(pTable,pTkn->szTerm());
     if ( ! bResult ) {
       eError = EC_INVALID_COMMAND;
       goto L_RETURN;
