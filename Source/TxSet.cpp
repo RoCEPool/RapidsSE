@@ -4,8 +4,6 @@
 
 #include "Transactions.h"
 
-extern Atomic gixTx;
-
 /*----------------------------------------------------------------------------*/
 /* compare two tx's by their local tx id's                                    */
 /*----------------------------------------------------------------------------*/
@@ -69,7 +67,7 @@ TxSet::TxSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
   m_pTxList = new SkipListNL(C_UNQIUE_KEY,bTxSetCompareLocal);
-  m_tOldestPsp = *gixTx;
+  m_tOldestPsp = AM::iNextTxId();
   
   _checkInitialised_(CN_TXSET);
   

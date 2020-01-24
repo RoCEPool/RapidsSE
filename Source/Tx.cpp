@@ -4,9 +4,6 @@
 
 #include "Transactions.h"
 
-
-Atomic gixTx;
-
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -57,7 +54,7 @@ Tx::Tx(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 
   // m_okLock
-  m_tPerspective = ++ gixTx;
+  m_tPerspective = AM::iNextTxId();
   m_ePhase       = XP_EXECUTING;
       
   _checkInitialised_(CN_TX);
