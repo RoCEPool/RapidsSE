@@ -29,6 +29,7 @@ void Step::vCrwBufferSnapshot(void)
 
   CrwBuffer* pCrwBuffer_snaphot = pTablePtn->pSnapshot(pCrwBuffer,tPerspective);
 
+  vTrace("SNAPSHOT BUFFER %p (t%lld)\n"_Stz, pCrwBuffer_snaphot, tPerspective);
   m_pDataStack->vPushPtr(pCrwBuffer_snaphot);
   
   EXIT();
