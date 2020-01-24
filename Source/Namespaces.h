@@ -131,6 +131,7 @@ using namespace Pool;
 using namespace Prompt;
 using namespace ReadConsistency;
 using namespace Records;
+using namespace Reflection;
 using namespace Registers;
 using namespace Resources;
 using namespace Rows;
