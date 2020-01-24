@@ -138,6 +138,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* grab read lock on a partition of given table                               */
+/*----------------------------------------------------------------------------*/
+: tablePtnGrabRead2 ( pTablePtn -- )
+
+  params| pTablePtn |   // table partition
+
+  begin
+    pTablePtn tablePtn.attemptGrabRead
+  not while
+    task::yield
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
 /* drop read lock on a partition of given table                               */
 /*----------------------------------------------------------------------------*/
 : tablePtnDropRead ( i_Partition pTable -- )
@@ -157,6 +171,16 @@
   params| i_Partition | // which partition
 
   i_Partition pTable table.getPtn tablePtn.dropWrite
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop read lock on a partition of given table                               */
+/*----------------------------------------------------------------------------*/
+: tablePtnDropRead2 ( pTablePtn -- )
+
+  params| pTablePtn |  // given tablePtn
+
+  pTablePtn tablePtn.dropRead
 ;
 
 /*----------------------------------------------------------------------------*/

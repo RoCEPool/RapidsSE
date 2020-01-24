@@ -96,7 +96,7 @@ jobInfo: UpsertOp
   <?jobType?>  = JT_INSERTOP
   <?jobKind?>  = JK_LOCAL
   <?rspKind?>  = RS_NODE_ZERO
-  <?ddlLock?>  = DL_GRAB_WRITE
+  <?ddlLock?>  = DL_GRAB_READ
   
   <?preCheck?> = bClusterStarted
 }

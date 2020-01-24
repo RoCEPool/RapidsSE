@@ -195,6 +195,10 @@ void ReadApi::vPurgePriorVersions(t8 tPerspective)
   // Purge RC INDEX Crv Buffers
   vPurgeCrvBuffers(tPerspective);
   
+  // dump after purging
+  vTrace("------------------------\n"_Stz);
+  
+  m_pIndexTree->vDump(false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,6 +294,11 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
   
   IdxColVec* pIdxColVec = m_pIndexTree->pIndex()->pIndexDef()->pIdxColVec();
 
+  vTrace("-----------------------------------\n"_Stz);
+  vTrace("PURGING...\n"_Stz);
+  m_pIndexTree->vDump(false);
+  vTrace("-----------------------------------\n"_Stz);
+  
   // first position at the first level 0 buffer
   EntBuffer* pEntBuffer = m_pIndexTree->pFirstH0Buffer();
   
@@ -309,9 +318,9 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
       if (tCrvPsp < tPerspective) {
         
 #ifdef WITH_TRACE_PURGING
-        vTrace("PURGING...\n"_Stz);
-        aKey->vShow(pIdxColVec);
-        vTrace("\n"_Stz);
+        //vTrace("PURGING...\n"_Stz);
+        //aKey->vShow(pIdxColVec);
+        //vTrace("\n"_Stz);
 #endif
         
         // get the next entry before deleting
@@ -323,7 +332,7 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
       else {
         
 #ifdef WITH_TRACE_PURGING
-        vTrace("NOT PURGING\n"_Stz);
+        vTrace("NOT DELETING\n"_Stz);
         aKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);
 #endif
@@ -338,6 +347,16 @@ void ReadApi::vPurgeEntBuffers(t8 tPerspective)
     // move to the next buffer
     pEntBuffer = pEntBuffer->pNextBuffer();
   }
+  
+//  if (m_pIndexTree->pRootBuffer() &&
+//      m_pIndexTree->pRootBuffer()->nItems() == 0)
+//    m_pIndexTree->vTruncate();
+  
+  vTrace("-----------------------------------\n"_Stz);
+  vTrace("DONE PURGING...\n"_Stz);
+  m_pIndexTree->vDump(false);
+  vTrace("-----------------------------------\n"_Stz);
+  
 }
   
 /*----------------------------------------------------------------------------*/
@@ -352,15 +371,10 @@ void ReadApi::vPurgeCrvBuffers(t8 tPerspective)
   
   while (pCrvBuffer) {
     
-    // get the last crv entry from the buffer
-    i8 iCrv  = pCrvBuffer->nCrv();
-    Crv* aCrv = pCrvBuffer->aGetCrv(iCrv);
-    
-    // get the Crw entry corresoonding to the Crv entry
-    Crw* aCrw = aCrv->aCrw();
+    // get the max psp of the CrvBuffer
     
     // get the Crw perspective
-    i8 tCrvPsp = aCrw->tPerspective();
+    i8 tCrvPsp = pCrvBuffer->m_tMaxPsp;
     
     // save the prevBuffer
     pCrvPrevBuffer = pCrvBuffer->pPrevBuffer();
@@ -369,7 +383,9 @@ void ReadApi::vPurgeCrvBuffers(t8 tPerspective)
     if (tCrvPsp < tPerspective) {
 
 #ifdef WITH_TRACE_PURGING
-      vTrace("DELETING CRV BUFFER %p...\n"_Stz, pCrvBuffer);
+      vTrace("DELETING CRV BUFFER %p %lld %lld ...\n"_Stz, pCrvBuffer, tCrvPsp, tPerspective);
+      pCrvBuffer->vDumpAllCrv();
+      vTrace("END DELETING CRV BUFFER %p %lld %lld ...\n"_Stz, pCrvBuffer, tCrvPsp, tPerspective);
 #endif
       
       // unlink the CrvBuffer
