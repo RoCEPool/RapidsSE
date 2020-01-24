@@ -21,6 +21,8 @@ namespace Reflection
       
     Footer* aFooter(void);
   };
+
+  MetaClass* _pMetaClass(void* aAddr);
 }
 
 /*============================================================================*/
