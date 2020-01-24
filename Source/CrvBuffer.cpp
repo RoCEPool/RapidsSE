@@ -52,6 +52,7 @@ CrvBuffer::CrvBuffer(StreamDef* pStreamDef)
   m_pStreamDef = pStreamDef;
   
   m_nCrv = 0;
+  m_tMaxPsp = C_UNKNOWN;
   
   #ifdef WITH_CHECK_INITIALISED
     m_xWsp.vZero(CN_CRVBUFFER);
@@ -118,6 +119,11 @@ i8 CrvBuffer::iAddCrwVersion(Ref xwRef, Crw* pCrw)
    
   Crv* aCrv = _aCrv(m_xWsp.ayAllot(nTotalBytesNeeded));
   ASSERT(aCrv);
+  
+  t8 tCrwPsp = pCrw->tPerspective();
+
+  if (tCrwPsp > m_tMaxPsp)
+    m_tMaxPsp = tCrwPsp;
   
   m_nCrv++;
   

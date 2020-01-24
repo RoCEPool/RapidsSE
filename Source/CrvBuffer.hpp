@@ -11,7 +11,8 @@ namespace ReadConsistency
   
   public:
     StreamDef* m_pStreamDef;
-  
+    
+    t8 m_tMaxPsp;
     i8 m_nCrv; // number of crv's in this buffer
   
     Wsp_t<C_WSP_CSVBUFFER> m_xWsp;
