@@ -2,6 +2,8 @@
 /* concurrency.test -- concurrency test                                       */
 /*----------------------------------------------------------------------------*/
 
+IndexEntries 100;
+
 // create Upsert child threads
 CREATE 1 THREADS {
 
@@ -15,27 +17,29 @@ CREATE 1 THREADS {
     ('__READAPI_T')
     ('T')
 
-  LOOP 100 {
+  LOOP 10 {
     
-    LOG 'UPSERING';
-    
+    LOG 'UPSERTING';
+
     // execute the upsert pipeline
     pipeline t_upsert
     begin
 
-    stage stageA on origin:
-    startOp | periodicOp once | stageB
+      stage stageA on origin:
+        startOp | periodicOp once | stageB
 
-    stage stageB on all partitions:
-    genCsvOp T | toCrwOp T | upsertOp T | stageC
+      stage stageB on all partitions:
+        genCsvOp T | toCrwOp T | upsertOp T | stageC
 
-    stage stageC on origin:
-    outputOp | sinkOp | stageA
+      stage stageC on origin:
+        outputOp | sinkOp | stageA
 
     end;
     success
     
-    LOG 'DONE UPSERTING';
+    LOG 'DONE UPSERT';
+    
+    SLEEP 1000;
   }
 
   // Synchronizing here tells the main thread that we are done verifying the table.
@@ -45,7 +49,7 @@ CREATE 1 THREADS {
 }
 
 // create Purger child threads
-/*
+
 CREATE 1 THREADS {
   
   LOG 'STARING PURGER THREAD.';
@@ -58,28 +62,37 @@ CREATE 1 THREADS {
   ('__READAPI_T')
   ('T')
   
-  // execute the purge pipeline
-  pipeline t_purge
-  begin
-  
-  stage stageA on origin:
-  startOp | periodicOp min 1 | stageB
-  
-  stage stageB on all partitions:
-  purgeOp T | stageC
-  
-  stage stageC on origin:
-  outputOp | sinkOp | stageA
-  
-  end;
-  success
+  LOOP 100 {
+    
+    LOG 'PURGING';
+    
+    // execute the purge pipeline
+    pipeline t_purge
+    begin
+    
+      stage stageA on origin:
+        startOp | periodicOp min 1 | stageB
+      
+      stage stageB on all partitions:
+        purgeOp T | stageC
+      
+      stage stageC on origin:
+        outputOp | sinkOp | stageA
+    
+    end;
+    success
+    
+    LOG 'DONE PURGING';
+    
+    SLEEP 1000;
+  }
   
   // Synchronizing here tells the main thread that we are done with the table.
   SYNCHRONIZE;
   
   -- Child threads exit here.
 }
-*/
+
 // The main thread keeps running commands from here after creating the child threads..
 
 // create table __READAPI_T
@@ -102,7 +115,7 @@ colB BOOLEAN   NOT NULL min false          max true,
 colC DATE      NOT NULL min "2019-01-01"   max "2019-12-31",
 colD FLOAT     NOT NULL min "1.0"          max "1000.0",
 colE INTEGER   NOT NULL min 1              max 1000,
-colF INTERVAL  NOT NULL min "0.0"          max "100.0",
+//colF INTERVAL  NOT NULL min "0.0"          max "100.0",
 colG TIME      NOT NULL min "00:00:00.000" max "23:59:59.999",
 //  colH TIMESTAMP NOT NULL min "2019-01-01 00:00:00.000"
 //                          max "2019-12-31 23:59:59.999",
@@ -119,45 +132,48 @@ success
 SYNCHRONIZE;
 
 // create Snapshot child threads
-LOOP 100 {
+LOOP 10 {
   
   LOG 'TAKING SNAPSHOT';
   
   // execute the snapshot pipeline
+
   pipeline t_snapshot
   begin
   
-  stage stageA on origin:
-  startOp | periodicOp once | stageB
-  
-  stage stageB on all partitions:
-  snapshotOp T | stageC
-  
-  stage stageC on origin:
-  outputOp | sinkOp | stageA
+    stage stageA on origin:
+      startOp | periodicOp once | stageB
+    
+    stage stageB on all partitions:
+      snapshotOp T | stageC
+    
+    stage stageC on origin:
+      outputOp | sinkOp | stageA
   
   end;
   success
   
   LOG 'DONE SNAPSHOT';
+  
+  SLEEP 10000;
 }
 
 // Main thread waits until child threads indicate that they are done with the table.
 SYNCHRONIZE;
 
-drop table __READAPI_T;
-success
+//drop table __READAPI_T;
+//success
 
-drop table T;
-success
+//drop table T;
+//success
 
 -- Child threads are blocked waiting for the table to be dropped.
 SYNCHRONIZE;
 
 CLEANUP {
-  drop table __READAPI_T;
-  mute
+  //drop table __READAPI_T;
+  //mute
   
-  drop table T;
-  mute
+  //drop table T;
+  //mute
 }
