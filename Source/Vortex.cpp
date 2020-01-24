@@ -34,6 +34,8 @@ Vortex::Vortex(void)
   m_nTerms       = 0;
   //m_saTerm[]
   
+  m_pMetaGraph   = nullptr;
+  
   _checkInitialised_(CN_VORTEX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);

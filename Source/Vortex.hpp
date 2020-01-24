@@ -23,6 +23,8 @@ namespace Utilities
   
     i8     m_nTerms;
     s32    m_saTerm[C_VOREX_TERMS];
+  
+    MetaGraph* m_pMetaGraph;
 
     // must be last
     Footer m_xFooter;
