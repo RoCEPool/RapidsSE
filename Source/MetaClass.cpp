@@ -18,7 +18,7 @@ __aFooterFunction(MetaClass)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MetaClass::MetaClass(void)
-: Object(CN_METACLASS)
+: ListNL_t<MetaClass>(CN_METACLASS)
 {
   _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
   

@@ -18,7 +18,7 @@ __aFooterFunction(MemberVar)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MemberVar::MemberVar(void)
-: Object(CN_MEMBERVAR)
+: ListNL_t<MemberVar>(CN_MEMBERVAR)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
   

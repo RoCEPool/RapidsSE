@@ -5,7 +5,7 @@
 
 namespace Reflection
 {
-  class MemberSet : public Object
+  class MemberSet : public ListNL_t<MemberSet>
   {
   public:
  
