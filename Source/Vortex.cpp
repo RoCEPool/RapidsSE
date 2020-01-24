@@ -34,7 +34,10 @@ Vortex::Vortex(void)
   m_nTerms       = 0;
   
   m_pMetaGraph   = nullptr;
-  
+  m_pMetaClass   = nullptr;
+  m_pMemberSet   = nullptr;
+  m_pMemberVar   = nullptr;
+
   _checkInitialised_(CN_VORTEX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -336,6 +339,10 @@ void Vortex::vParseMemberProper(void)
   for (i8 i_Term = 0; i_Term < m_nTerms; i_Term++)
     vTrace("[%lld] %s "_Stz,i_Term,m_oTerms.szName(i_Term)->azChar());
   vTrace("\n"_Stz);
+  
+  if (MemberVar::bIsMemberVar(&m_oTerms)) {
+    vTrace("  is member variable\n"_Stz);
+  }
   
   vDebugPoint();
 }

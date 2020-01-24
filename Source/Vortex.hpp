@@ -22,7 +22,11 @@ namespace Utilities
     i8     m_nTerms;
   
     EnameSet   m_oTerms;
+  
     MetaGraph* m_pMetaGraph;
+    MetaClass* m_pMetaClass;
+    MemberSet* m_pMemberSet;
+    MemberVar* m_pMemberVar;
 
     // must be last
     Footer m_xFooter;
