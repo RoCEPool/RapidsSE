@@ -102,6 +102,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_FREQDIST
 
   /*    */ &Finalize::vUndefined,         // CN__G__
+  /*    */ &Finalize::vUndefined,         // CN_GGADAPTOR
   /* 48 */ &Finalize::vUndefined,         // CN_GRID
   
   /*    */ &Finalize::vUndefined,         // CN__H__

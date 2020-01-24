@@ -106,6 +106,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vInvalid,         // CN_FREQDIST
 
   /* */ &Dump::vInvalid,         // CN__G__
+  /* */ &Dump::vDummy,           // CN_GGADAPTOR
   /* */ &Grid::vDump,            // CN_GRID
   
   /* */ &Dump::vInvalid,         // CN__H__
@@ -435,6 +436,7 @@ i8 giClassSize[]
   /* */ sizeof(FreqDist),           // CN_FREQDIST
 
   /* */ 'G' - ('A' - 1),            // CN__G__
+  /* */ sizeof(GGadaptor),          // CN_GGADAPTOR
   /* */ sizeof(Grid),               // CN_GRID
   
   /* */ 'H' - ('A' - 1),            // CN__H__
@@ -764,6 +766,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_FREQDIST
 
   /* */ HT_INVALID,           // CN__G__
+  /* */ HT_TRANSIENT_SMALL,   // CN_GGADAPTOR
   /* */ HT_TRANSIENT_LARGE,   // CN_GRID
 
   /* */ HT_INVALID,           // CN__H__
