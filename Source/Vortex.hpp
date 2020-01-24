@@ -38,7 +38,10 @@ namespace Utilities
     void vClose(void);
     bool bGetToken(Token* pToken);
     bool bOpen(Stz* szVortexPath);
- 
+    void vProcessSource(Stz* szSourcePath);
+
+  private:
+    void vParseAllClasses(void);
     void vParseClassBase(void);
     void vParseClassBlock(void);
     void vParseClassFunction(void);
@@ -47,8 +50,6 @@ namespace Utilities
     void vParseMemberProper(void);
     void vParseStructMember(void);
     void vParseUnionMember(void);
-
-    void vProcessSource(Stz* szSourcePath);
 
   private:
     Footer* aFooter(void);

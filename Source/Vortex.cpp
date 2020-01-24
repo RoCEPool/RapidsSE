@@ -104,13 +104,77 @@ bool Vortex::bOpen(Stz* szVortexPath)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse base (inheritence) clause                                            */
+/* process a source file (.h or .hpp)                                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vProcessSource(Stz* szSourcePath)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  m_sSourcePath = szSourcePath;
+  m_pInput = new Input;
+  m_pInput->vPushFile(szSourcePath);
+  
+  vParseAllClasses();
+
+  delete m_pInput;
+  m_pInput = nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* process all classes in the current source file (.h or .hpp)                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseAllClasses(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  while (bGetToken(&m_xToken_Other)) {
+   
+    if (m_xToken_Other.bSame("friend"_Stz)) {
+      
+      while (bGetToken(&m_xToken_Other)) {
+        if (m_xToken_Other.bSame(";"_Stz))
+         break;
+      }
+      continue;
+    }
+
+    if (! m_xToken_Other.bSame("class"_Stz))
+      continue;
+      
+    if (! bGetToken(&m_xToken_ClassNm))
+      break;
+    
+    if (! bGetToken(&m_xToken_Other))
+      break;
+    
+    if (m_xToken_Other.bSame(":"_Stz)) {
+      vParseClassBase();
+      continue;
+    }
+    
+    if (m_xToken_Other.bSame("{"_Stz)) {
+      vParseClassBlock();
+      continue;
+    }
+    
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse base (inheritence) clause of a class                                 */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseClassBase(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  // just saw :
+  // just saw: class <classNm :
+  
   while (bGetToken(&m_xToken_Other)) {
     
     if (m_xToken_Other.bSame("{"_Stz)) {
@@ -121,7 +185,7 @@ void Vortex::vParseClassBase(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse class                                                                */
+/* parse class block, i.e. the { ... } sequence                               */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseClassBlock(void)
 {
@@ -152,7 +216,7 @@ void Vortex::vParseClassFunction(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse all members                                                          */
+/* parse all members of a class                                               */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseClassMembers(void)
 {
@@ -171,7 +235,7 @@ void Vortex::vParseClassMembers(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse single member                                                        */
+/* parse single (optionally labelled) member                                  */
 /*----------------------------------------------------------------------------*/
 bool Vortex::bParseLabelledMember(void)
 {
@@ -181,9 +245,8 @@ bool Vortex::bParseLabelledMember(void)
 
   for (i8 i_Token = 0; bGetToken(&m_xToken_Other); i_Token++) {
 
-    if (0 == i_Token && m_xToken_Other.bSame(";"_Stz)) {
+    if (0 == i_Token && m_xToken_Other.bSame(";"_Stz))
       break;
-    }
     
     if (m_xToken_Other.bSame("private"_Stz)) {
       RASSERT(bGetToken(&m_xToken_Other));
@@ -221,7 +284,7 @@ bool Vortex::bParseLabelledMember(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse main portion of a member                                             */
+/* parse member                                                               */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseMemberProper(void)
 {
@@ -261,7 +324,7 @@ void Vortex::vParseMemberProper(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse main portion of a member                                             */
+/* parse struct member                                                        */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseStructMember(void)
 {
@@ -295,7 +358,7 @@ void Vortex::vParseStructMember(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse main portion of a member                                             */
+/* parse union member                                                         */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseUnionMember(void)
 {
@@ -320,53 +383,6 @@ void Vortex::vParseUnionMember(void)
   }
   
   //m_bTraceTokens = false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* process a source file (.h or .hpp)                                         */
-/*----------------------------------------------------------------------------*/
-void Vortex::vProcessSource(Stz* szSourcePath)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  m_sSourcePath = szSourcePath;
-  m_pInput = new Input;
-  m_pInput->vPushFile(szSourcePath);
-  
-  while (bGetToken(&m_xToken_Other)) {
-   
-    if (m_xToken_Other.bSame("friend"_Stz)) {
-      
-      while (bGetToken(&m_xToken_Other)) {
-        if (m_xToken_Other.bSame(";"_Stz))
-         break;
-      }
-      continue;
-    }
-
-    if (m_xToken_Other.bSame("class"_Stz)) {
-      
-      if (! bGetToken(&m_xToken_ClassNm))
-        break;
-      
-      if (! bGetToken(&m_xToken_Other))
-        break;
-      
-      if (m_xToken_Other.bSame(":"_Stz)) {
-        vParseClassBase();
-        continue;
-      }
-      
-      if (m_xToken_Other.bSame("{"_Stz)) {
-        vParseClassBlock();
-        continue;
-      }
-    
-    }
-  }
-
-  delete m_pInput;
-  m_pInput = nullptr;
 }
 
 /*============================================================================*/
