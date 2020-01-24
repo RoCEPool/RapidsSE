@@ -29,7 +29,7 @@ bool Prompt::bPrompt_rmfifo(SePrompt* pPrompt)
 
   ASSERT((*pTokenVec)[0]->bSame("rmfifo"_Stz));
   
-  sFifoPath = (*pTokenVec)[1]->szText();
+  sFifoPath = (*pTokenVec)[1]->szTerm();
   
   if (! Fifo::bRemove(sFifoPath)) {
     vTrace("Failed to remove fifo: %s\n"_Stz,sFifoPath.azChar());

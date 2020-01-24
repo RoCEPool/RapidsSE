@@ -83,7 +83,7 @@ bool Calculator::bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn
   for (i8 i_Tkn = iStartTkn; i_Tkn <= iEndTkn; i_Tkn++) {
     Token* pTkn = pTknVec->pGet(i_Tkn);
     
-    vTrace(" >%s<"_Stz,pTkn->szText());
+    vTrace(" >%s<"_Stz,pTkn->szTerm());
     
     // -- -- -- -- -- -- -- -- -- -- --
 
@@ -118,7 +118,7 @@ bool Calculator::bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn
       m_eaCode[i_Code++] = EO_COLUMN;
       i8 iColVec;
       piArg = (i8*) & m_eaCode[i_Code];
-      * piArg = pStreamDef->iFindColumn(pTkn->szText()->azChar(), iColVec);
+      * piArg = pStreamDef->iFindColumn(pTkn->azTerm(), iColVec);
       i_Code += sizeof(i8);
       continue;
     }
@@ -157,7 +157,7 @@ bool Calculator::bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn
     // -- -- -- -- -- -- -- -- -- -- --
     
     m_eaCode[i_Code++] = EO_RETURN;
-    vTrace("Error: %s\n"_Stz,pTkn->szText());
+    vTrace("Error: %s\n"_Stz,pTkn->szTerm());
     return false;
   }
 

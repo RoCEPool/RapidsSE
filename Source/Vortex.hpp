@@ -5,6 +5,8 @@
 
 namespace Utilities
 {
+  static const i8 C_VOREX_TERMS = 256;
+
   class Vortex : public Object
   {
   public:
@@ -17,6 +19,10 @@ namespace Utilities
     bool   m_bTraceTokens;
   
     i8     m_nClasses;
+    i8     m_nMembers;
+  
+    i8     m_nTerms;
+    s32    m_saTerm[C_VOREX_TERMS];
 
     // must be last
     Footer m_xFooter;
@@ -30,16 +36,23 @@ namespace Utilities
 
   public:
     void vClose(void);
-    bool bGetToken(Token* pToken);
     bool bOpen(Stz* szVortexPath);
-    void vParseBase(void);
-    void vParseClass(void);
-    void vParseClassFunction(void);
-    bool bParseMember(void);
-    void vParseMemberProper(void);
-    void vParseMemberUnion(void);
-    void vParseMembers(void);
     void vProcessSource(Stz* szSourcePath);
+
+  private:
+    void vAddTerm(Stz* szTerm);
+    bool bGetToken(Token* pToken);
+  
+    void vParseAllClasses(void);
+    void vParseClassBase(void);
+    void vParseClassBlock(void);
+    void vParseClassFunction(void);
+    void vParseClassMembers(void);
+    bool bParseLabelledMember(void);
+    void vParseMemberProper(void);
+    void vParseStructArray(void);
+    void vParseStructMember(void);
+    void vParseUnionMember(void);
 
   private:
     Footer* aFooter(void);

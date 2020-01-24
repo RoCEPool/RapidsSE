@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Vortex.cpp - buffer pool analyzer                                             */
+/* Vortex.cpp - Vortex                                                        */
 /*============================================================================*/
 
 #include "Utilities.h"
@@ -29,6 +29,10 @@ Vortex::Vortex(void)
   
   m_bTraceTokens = false;
   m_nClasses     = 0;
+  m_nMembers     = 0;
+
+  m_nTerms       = 0;
+  //m_saTerm[]
   
   _checkInitialised_(CN_VORTEX);
 
@@ -68,21 +72,6 @@ void Vortex::vClose(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next token                                                             */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bGetToken(Token* pToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  bool b = m_pInput->bGetToken(pToken);
-  
-  if (b && m_bTraceTokens)
-    vTrace("Tkn: %s\n"_Stz,pToken->azChar());
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
 /* open the vortex                                                            */
 /*----------------------------------------------------------------------------*/
 bool Vortex::bOpen(Stz* szVortexPath)
@@ -100,35 +89,124 @@ bool Vortex::bOpen(Stz* szVortexPath)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse base clause                                                          */
+/* process a source file (.h or .hpp)                                         */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseBase(void)
+void Vortex::vProcessSource(Stz* szSourcePath)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  m_sSourcePath = szSourcePath;
+  m_pInput = new Input;
+  m_pInput->vPushFile(szSourcePath);
+  
+  vParseAllClasses();
+
+  delete m_pInput;
+  m_pInput = nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add term                                                                   */
+/*----------------------------------------------------------------------------*/
+void Vortex::vAddTerm(Stz* szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  // just saw :
+  m_saTerm[m_nTerms++] = szTerm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next token                                                             */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bGetToken(Token* pToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  bool b = m_pInput->bGetToken(pToken);
+  
+  if (b && m_bTraceTokens)
+    vTrace("Tkn: %s\n"_Stz,pToken->azTerm());
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* process all classes in the current source file (.h or .hpp)                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseAllClasses(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  while (bGetToken(&m_xToken_Other)) {
+   
+    if (m_xToken_Other.bSame("friend"_Stz)) {
+      
+      while (bGetToken(&m_xToken_Other)) {
+        if (m_xToken_Other.bSame(";"_Stz))
+         break;
+      }
+      continue;
+    }
+
+    if (! m_xToken_Other.bSame("class"_Stz))
+      continue;
+      
+    if (! bGetToken(&m_xToken_ClassNm))
+      break;
+    
+    if (! bGetToken(&m_xToken_Other))
+      break;
+    
+    if (m_xToken_Other.bSame(":"_Stz)) {
+      vParseClassBase();
+      continue;
+    }
+    
+    if (m_xToken_Other.bSame("{"_Stz)) {
+      vParseClassBlock();
+      continue;
+    }
+    
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse base (inheritence) clause of a class                                 */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseClassBase(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  // just saw: class <classNm :
+  
   while (bGetToken(&m_xToken_Other)) {
     
     if (m_xToken_Other.bSame("{"_Stz)) {
-      vParseClass();
+      vParseClassBlock();
       break;
     }
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse class                                                                */
+/* parse class block, i.e. the { ... } sequence                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseClass(void)
+void Vortex::vParseClassBlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   // just saw {
   
-  m_pVortexFile->vPrint("%s\n"_Stz,m_xToken_ClassNm.azChar());
+  m_pVortexFile->vPrint("%s\n"_Stz,m_xToken_ClassNm.azTerm());
   m_nClasses++;
   
-  vParseMembers();
+  vParseClassMembers();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,9 +226,29 @@ void Vortex::vParseClassFunction(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse single member                                                        */
+/* parse all members of a class                                               */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bParseMember(void)
+void Vortex::vParseClassMembers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  // just saw {
+  
+  m_nMembers = 0;
+  vTrace("File %s\n"_Stz,m_sSourcePath.azChar());
+  
+  for (;;) {
+
+    if (! bParseLabelledMember())
+      break;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse single (optionally labelled) member                                  */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bParseLabelledMember(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
  
@@ -158,9 +256,8 @@ bool Vortex::bParseMember(void)
 
   for (i8 i_Token = 0; bGetToken(&m_xToken_Other); i_Token++) {
 
-    if (0 == i_Token && m_xToken_Other.bSame(";"_Stz)) {
+    if (0 == i_Token && m_xToken_Other.bSame(";"_Stz))
       break;
-    }
     
     if (m_xToken_Other.bSame("private"_Stz)) {
       RASSERT(bGetToken(&m_xToken_Other));
@@ -175,12 +272,16 @@ bool Vortex::bParseMember(void)
       continue;
     }
     
+    if (m_xToken_Other.bSame("struct"_Stz)) {
+      vParseStructMember();
+      continue;
+    }
+    
     if (m_xToken_Other.bSame("union"_Stz)) {
-      vParseMemberUnion();
+      vParseUnionMember();
       continue;
     }
 
-    
     if (m_xToken_Other.bSame("}"_Stz)) {
       RASSERT(bGetToken(&m_xToken_Other));
       vTrace("\n"_Stz);
@@ -194,17 +295,23 @@ bool Vortex::bParseMember(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse main portion of a member                                             */
+/* parse member                                                               */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseMemberProper(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  vTrace("[%lld] %s + "_Stz,m_nClasses,m_xToken_ClassNm.azChar());
-  vTrace("%s "_Stz,m_xToken_Other.azChar());
-
-  i8 i_Token = 0;
-  for (; bGetToken(&m_xToken_Other); i_Token++) {
+  vTrace("%lld.%lld) %s : "_Stz,
+         m_nClasses,
+         m_nMembers++,
+         m_xToken_ClassNm.azTerm());
+  
+  //vTrace("%s "_Stz,m_xToken_Other.azChar());
+  
+  m_nTerms = 0;
+  vAddTerm(m_xToken_Other.szTerm());
+  
+  while (bGetToken(&m_xToken_Other)) {
     
     if (m_xToken_Other.bSame(";"_Stz)) {
       break;
@@ -212,27 +319,95 @@ void Vortex::vParseMemberProper(void)
     
     if (m_xToken_Other.bSame("{"_Stz)) {
       vParseClassFunction();
-      return ;
+      break ;
     }
 
-
-    vTrace("%s "_Stz,m_xToken_Other.azChar());
+    //vTrace("%s "_Stz,m_xToken_Other.azChar());
+    vAddTerm(m_xToken_Other.szTerm());
   }
   
-  if (i_Token)
-    vTrace("\n"_Stz);
+  //vTrace("\n"_Stz);
+  
+  for (i8 i_Term = 0; i_Term < m_nTerms; i_Term++)
+    vTrace("[%lld] %s "_Stz,i_Term,m_saTerm[i_Term].azChar());
+  vTrace("\n"_Stz);
+  
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse main portion of a member                                             */
+/* parse struct array                                                         */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseMemberUnion(void)
+void Vortex::vParseStructArray(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(bGetToken(&m_xToken_Other));
+  vAddTerm(m_xToken_Other.szTerm());
+  
+  RASSERT(bGetToken(&m_xToken_Other));
+  RASSERT(m_xToken_Other.bSame("]"_Stz));
+  vAddTerm(m_xToken_Other.szTerm());
+
+  RASSERT(bGetToken(&m_xToken_Other));
+  RASSERT(m_xToken_Other.bSame(";"_Stz));
+  vAddTerm(m_xToken_Other.szTerm());
+};
+
+/*----------------------------------------------------------------------------*/
+/* parse struct member                                                        */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseStructMember(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  // just saw: struct
+  
+  m_bTraceTokens = true;
+  
+  // may see name
+  RASSERT(bGetToken(&m_xToken_Other));
+  if (! m_xToken_Other.bSame("{"_Stz)) {
+    RASSERT(bGetToken(&m_xToken_Other));
+    if (! m_xToken_Other.bSame("{"_Stz)) {
+      RASSERT(bGetToken(&m_xToken_Other));
+      RASSERT(m_xToken_Other.bSame(";"_Stz));
+      
+      m_bTraceTokens = false;
+      return;
+    }
+  }
+
+  while (bGetToken(&m_xToken_Other)) {
+
+    if (m_xToken_Other.bSame("}"_Stz)) {
+      RASSERT(bGetToken(&m_xToken_Other));
+      if (! m_xToken_Other.bSame(";"_Stz)) {
+        RASSERT(bGetToken(&m_xToken_Other));
+        if (! m_xToken_Other.bSame(";"_Stz)) {
+          vAddTerm(m_xToken_Other.szTerm());
+          vParseStructArray();
+        }
+      }
+      break;
+    }
+    
+    vParseMemberProper();
+  }
+  
+  m_bTraceTokens = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse union member                                                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseUnionMember(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   // just saw: union
   
-  m_bTraceTokens = true;
+  //m_bTraceTokens = true;
   
   RASSERT(bGetToken(&m_xToken_Other));
   RASSERT(m_xToken_Other.bSame("{"_Stz));
@@ -248,73 +423,8 @@ void Vortex::vParseMemberUnion(void)
     vParseMemberProper();
   }
   
-  m_bTraceTokens = false;
+  //m_bTraceTokens = false;
 }
-
-/*----------------------------------------------------------------------------*/
-/* parse all members                                                          */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseMembers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  // just saw {
-  
-  for (;;) {
-
-    if (! bParseMember())
-      break;
-    
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* process a source file (.h or .hpp)                                         */
-/*----------------------------------------------------------------------------*/
-void Vortex::vProcessSource(Stz* szSourcePath)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  m_sSourcePath = szSourcePath;
-  m_pInput = new Input;
-  m_pInput->vPushFile(szSourcePath);
-  
-  while (bGetToken(&m_xToken_Other)) {
-   
-    if (m_xToken_Other.bSame("friend"_Stz)) {
-      
-      while (bGetToken(&m_xToken_Other)) {
-        if (m_xToken_Other.bSame(";"_Stz))
-         break;
-      }
-      continue;
-    }
-
-    if (m_xToken_Other.bSame("class"_Stz)) {
-      
-      if (! bGetToken(&m_xToken_ClassNm))
-        break;
-      
-      if (! bGetToken(&m_xToken_Other))
-        break;
-      
-      if (m_xToken_Other.bSame("{"_Stz)) {
-        vParseClass();
-        continue;
-      }
-      
-      if (m_xToken_Other.bSame(":"_Stz)) {
-        vParseBase();
-        continue;
-      }
-    }
-  }
-
-  delete m_pInput;
-  m_pInput = nullptr;
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

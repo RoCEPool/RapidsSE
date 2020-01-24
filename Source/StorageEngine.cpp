@@ -46,6 +46,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Pool::vCheckAssumptions();
   //Prompt::vCheckAssumptions();
   Registers::vCheckAssumptions();
+  Reflection::vCheckAssumptions();
   Resources::vCheckAssumptions();
   Scheduling::vCheckAssumptions();
   SenVM::vCheckAssumptions();

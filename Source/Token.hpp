@@ -9,7 +9,7 @@ namespace TokenStream
   {
   private:
     eTN  m_eToken; // kind of token
-    s256 m_sText;  // token text
+    s256 m_sTerm;  // term (aka text)
   
     // must be last
     Footer m_xFooter;    
@@ -25,7 +25,7 @@ namespace TokenStream
     static Token* _pToken(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
-    char* azChar(void);
+    char* azTerm(void);
     void  vConcat(Stz*);
     void  vCopy(Stz*);
     void  vCopy(Token*);
@@ -37,7 +37,7 @@ namespace TokenStream
     void  vReset(void);
     bool  bSame(Stz*);
     void  vStripSingleQuotes(void);
-    Stz*  szText(void);
+    Stz*  szTerm(void);
     i8    iToI8(void);
     eTN   eToken(void);
     void  vToken(eTN eToken);

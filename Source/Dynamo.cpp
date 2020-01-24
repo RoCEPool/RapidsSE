@@ -234,7 +234,7 @@ bool Dynamo::bCollectName(void)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pPipelineSpec = new PipelineSpec(m_pTkn->szText());
+  m_pPipelineSpec = new PipelineSpec(m_pTkn->szTerm());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -279,7 +279,7 @@ bool Dynamo::bCollectStage(Job* pJob)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pStageSpec = new StageSpec(m_pTkn->szText());
+  m_pStageSpec = new StageSpec(m_pTkn->szTerm());
   m_pPipelineSpec->vAddStageSpec(m_pStageSpec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -359,7 +359,7 @@ bool Dynamo::bCollectTopology(void)
   else if (m_pTkn->bSame("node"_Stz)) {
     vAcceptToken();
     
-    s32 sLocus(m_pTkn->szText());
+    s32 sLocus(m_pTkn->szTerm());
     vAcceptToken();
 
     if (m_pTkn->bSame(":"_Stz)) {
@@ -379,7 +379,7 @@ bool Dynamo::bCollectTopology(void)
   else if (m_pTkn->bSame("partition"_Stz)) {
     vAcceptToken();
     
-    s32 sLocus(m_pTkn->szText());
+    s32 sLocus(m_pTkn->szTerm());
     vAcceptToken();
     
     if (m_pTkn->bSame(":"_Stz)) {
@@ -470,7 +470,7 @@ bool Dynamo::bCollectOp(Job* pJob)
 #endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  OpSpec* pOpSpec = new OpSpec(m_pTkn->szText(),m_pStageSpec);
+  OpSpec* pOpSpec = new OpSpec(m_pTkn->szTerm(),m_pStageSpec);
   m_pStageSpec->vAddOpSpec(pOpSpec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -490,7 +490,7 @@ bool Dynamo::bCollectOp(Job* pJob)
     s32 sArgName;
     sArgName.vSprint("<arg_%lld>"_Stz,i_Arg++);
     
-    s256 sArgValue ( m_pTkn->szText() );
+    s256 sArgValue ( m_pTkn->szTerm() );
     
     pOpSpec->vAddEnamePair(sArgName,sArgValue,TN_STRING);
     

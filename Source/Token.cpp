@@ -85,7 +85,7 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   vTrace("token %s %s\n"_Stz,
          aTN[pToken->m_eToken],
-         pToken->m_sText.azChar());
+         pToken->m_sTerm.azChar());
 }
 
 
@@ -94,13 +94,13 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the az area                                                            */
+/* get the az of term                                                         */
 /*----------------------------------------------------------------------------*/
-char* Token::azChar(void)
+char* Token::azTerm(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  return m_sText.azChar();
+  return m_sTerm.azChar();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -110,7 +110,7 @@ void Token::vConcat(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  m_sText.vConcat(aArg);
+  m_sTerm.vConcat(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,7 +120,7 @@ void Token::vCopy(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  m_sText.vCopy(aArg);
+  m_sTerm.vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -131,7 +131,7 @@ void Token::vCopy(Token* pGivenToken)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   m_eToken = pGivenToken->m_eToken;
-  m_sText.vCopy(pGivenToken->szText());
+  m_sTerm.vCopy(pGivenToken->szTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +141,7 @@ bool Token::bHasText(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  bool b = *(char*)m_sText.szStz() ? true : false;
+  bool b = *(char*)m_sTerm.szStz() ? true : false;
   
   return b;
 }
@@ -153,7 +153,7 @@ i8 Token::iLength()
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  i8 iLen = m_sText.nLength();
+  i8 iLen = m_sTerm.nLength();
   
   return iLen;
 }
@@ -191,7 +191,7 @@ bool Token::bIsNumeric(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  bool b = m_sText.bIsNumeric();
+  bool b = m_sTerm.bIsNumeric();
   
   return b;
 }
@@ -204,7 +204,7 @@ void Token::vReset(void)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   m_eToken = TN_NONE;
-  m_sText = ""_Stz;
+  m_sTerm = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,7 +214,7 @@ bool Token::bSame(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  bool b = m_sText.bSame(aArg);
+  bool b = m_sTerm.bSame(aArg);
   
   return b;
 }
@@ -222,11 +222,11 @@ bool Token::bSame(Stz* aArg)
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
-Stz* Token::szText(void)
+Stz* Token::szTerm(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  return m_sText.szStz();
+  return m_sTerm.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -236,7 +236,7 @@ i8 Token::iToI8(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  i8 i = m_sText.iToI8();
+  i8 i = m_sTerm.iToI8();
   
   return i;
 }
@@ -248,8 +248,8 @@ void Token::vStripSingleQuotes(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
 
-  StrLib::vRemove(m_sText.azChar(),'\'');
-  StrLib::vStrip(m_sText.azChar(),'\'');
+  StrLib::vRemove(m_sTerm.azChar(),'\'');
+  StrLib::vStrip(m_sTerm.azChar(),'\'');
 }
 
 /*----------------------------------------------------------------------------*/

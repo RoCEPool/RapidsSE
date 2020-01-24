@@ -882,25 +882,25 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   API_LOC(330);
 
   while (true) {
-    RASSERT(pTknVec->pGet(iToken++)->szText()->bSame("row:"_Stz));
+    RASSERT(pTknVec->pGet(iToken++)->bSame("row:"_Stz));
     
-    RASSERT(pTknVec->pGet(iToken++)->szText()->bSame("("_Stz));
+    RASSERT(pTknVec->pGet(iToken++)->bSame("("_Stz));
     
     if (iRows == iRow)
       break;
     
-    while ( ! pTknVec->pGet(iToken)->szText()->bSame(")"_Stz)) {
+    while ( ! pTknVec->pGet(iToken)->bSame(")"_Stz)) {
       iToken++;
     }
   
-    RASSERT(pTknVec->pGet(iToken++)->szText()->bSame(")"_Stz));
+    RASSERT(pTknVec->pGet(iToken++)->bSame(")"_Stz));
     iRows++;
   }
   API_LOC(340);
 
   pSession->m_sResponse.vCopy(""_Stz);
-  while ( ! pTknVec->pGet(iToken)->szText()->bSame(")"_Stz)) {
-    pSession->m_sResponse.vConcat(pTknVec->pGet(iToken++)->szText());
+  while ( ! pTknVec->pGet(iToken)->bSame(")"_Stz)) {
+    pSession->m_sResponse.vConcat(pTknVec->pGet(iToken++)->szTerm());
   }
   API_LOC(350);
 

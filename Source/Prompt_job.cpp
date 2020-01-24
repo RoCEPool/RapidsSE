@@ -36,7 +36,7 @@ bool Prompt::bPrompt_job(SePrompt* pPrompt)
   pArg1 = pTokenVec->pGet(2);
   
   s32 sNumber;
-  sNumber.vConcat(pArg1->szText());
+  sNumber.vConcat(pArg1->szTerm());
   vTrace("Job: %s\n"_Stz,sNumber.szStz());
   
   i8 iNumber = sNumber.iToI8();

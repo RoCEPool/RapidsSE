@@ -29,7 +29,7 @@ bool Prompt::bPrompt_fileCat(SePrompt* pPrompt)
   
   ASSERT((*pTokenVec)[0]->bSame("fileCat"_Stz));
   
-  sFile = (*pTokenVec)[1]->szText();
+  sFile = (*pTokenVec)[1]->szTerm();
   i8 nLines = pTokenVec->pGet(2)->iToI8();
 
   File oFile(pPrompt);

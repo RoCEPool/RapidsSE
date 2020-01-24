@@ -98,7 +98,7 @@ void TokenVec::vAppendVector(TokenVec* pTokenVec)
   
   for (i8 i_Token = 0; i_Token < pTokenVec->nTokens(); i_Token++) {
     Token* pToken = pTokenVec->pGet(i_Token);
-    vAddToken(pToken->szText());
+    vAddToken(pToken->szTerm());
   }
 }
 
@@ -190,12 +190,12 @@ void TokenVec::vDumpTokens(void)
     
     Token* pToken = m_pItem[i_Token];
 
-    if (! pToken->szText())
+    if (! pToken->szTerm())
       break;
     
     vTrace("  %s %s\n"_Stz,
            aTN[pToken->eToken()],
-           pToken->szText());
+           pToken->szTerm());
   }
   vTrace("\n"_Stz);
 }
@@ -209,7 +209,7 @@ i8 TokenVec::iFindToken(Stz* aLookFor)
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
     Token* pToken = m_pItem[i_Token];
-    if (aLookFor->bSame(pToken->szText()))
+    if (aLookFor->bSame(pToken->szTerm()))
       return i_Token;
   }
   
@@ -225,7 +225,7 @@ Token* TokenVec::pFindToken(Stz* aText, i8& i_Token)
   
   for (i_Token++; i_Token < nTokens(); i_Token++) {
     Token* pToken = m_pItem[i_Token];
-    if (pToken->szText()->bSame(aText))
+    if (pToken->szTerm()->bSame(aText))
       return pToken;
   }
   
@@ -303,7 +303,7 @@ void TokenVec::vPrint(void)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < nItems(); i_Token++)
-    vTrace("  %s\n"_Stz,m_pItem[i_Token]->szText());
+    vTrace("  %s\n"_Stz,m_pItem[i_Token]->szTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -420,23 +420,23 @@ void TokenVec::vToString(Stz* szBuff, i8 iFromTkn)
     switch (eToken) {
         
       case TN_INTEGER:
-        StrLib::vConcat(szBuff->azChar(),pToken->szText()->azChar());
+        StrLib::vConcat(szBuff->azChar(),pToken->szTerm()->azChar());
         break;
         
       case TN_NAME:
-        StrLib::vConcat(szBuff->azChar(),pToken->szText()->azChar());
+        StrLib::vConcat(szBuff->azChar(),pToken->szTerm()->azChar());
         break;
         
       case TN_NONE:
         break;
         
       case TN_OTHER:
-        StrLib::vConcat(szBuff->azChar(),pToken->szText()->azChar());
+        StrLib::vConcat(szBuff->azChar(),pToken->szTerm()->azChar());
         break;
         
       case TN_STRING:
         StrLib::vConcat(szBuff->azChar(),"\"");
-        StrLib::vConcat(szBuff->azChar(),pToken->szText()->azChar());
+        StrLib::vConcat(szBuff->azChar(),pToken->szTerm()->azChar());
         StrLib::vConcat(szBuff->azChar(),"\"");
         break;
         

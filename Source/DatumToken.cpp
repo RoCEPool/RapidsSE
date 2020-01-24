@@ -15,7 +15,7 @@ void DatumToken::vAssign(Datum_h* pDatum, Token* pTkn, Column* pCol)
 {
   Format* pFmt = AM::pFmt();
   
-  char* azCrs = pTkn->azChar();
+  char* azCrs = pTkn->azTerm();
   
   bool b = CsvValue::bToDtm(pDatum,pCol,&azCrs,pFmt);
   ASSERT(b);
