@@ -113,11 +113,11 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 /*----------------------------------------------------------------------------*/
 /* add term                                                                   */
 /*----------------------------------------------------------------------------*/
-void Vortex::vAddTerm(Token* pToken)
+void Vortex::vAddTerm(Stz* szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_saTerm[m_nTerms++] = pToken->szText();
+  m_saTerm[m_nTerms++] = szTerm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -309,7 +309,7 @@ void Vortex::vParseMemberProper(void)
   //vTrace("%s "_Stz,m_xToken_Other.azChar());
   
   m_nTerms = 0;
-  vAddTerm(&m_xToken_Other);
+  vAddTerm(m_xToken_Other.szText());
   
   while (bGetToken(&m_xToken_Other)) {
     
@@ -323,7 +323,7 @@ void Vortex::vParseMemberProper(void)
     }
 
     //vTrace("%s "_Stz,m_xToken_Other.azChar());
-    vAddTerm(&m_xToken_Other);
+    vAddTerm(m_xToken_Other.szText());
   }
   
   //vTrace("\n"_Stz);
@@ -343,12 +343,15 @@ void Vortex::vParseStructArray(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(bGetToken(&m_xToken_Other));
+  vAddTerm(m_xToken_Other.szText());
   
   RASSERT(bGetToken(&m_xToken_Other));
   RASSERT(m_xToken_Other.bSame("]"_Stz));
+  vAddTerm(m_xToken_Other.szText());
 
   RASSERT(bGetToken(&m_xToken_Other));
   RASSERT(m_xToken_Other.bSame(";"_Stz));
+  vAddTerm(m_xToken_Other.szText());
 };
 
 /*----------------------------------------------------------------------------*/
@@ -381,8 +384,10 @@ void Vortex::vParseStructMember(void)
       RASSERT(bGetToken(&m_xToken_Other));
       if (! m_xToken_Other.bSame(";"_Stz)) {
         RASSERT(bGetToken(&m_xToken_Other));
-        if (! m_xToken_Other.bSame(";"_Stz))
+        if (! m_xToken_Other.bSame(";"_Stz)) {
+          vAddTerm(m_xToken_Other.szText());
           vParseStructArray();
+        }
       }
       break;
     }

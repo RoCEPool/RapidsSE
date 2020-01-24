@@ -9,7 +9,7 @@ namespace TokenStream
   {
   private:
     eTN  m_eToken; // kind of token
-    s256 m_sText;  // token text
+    s256 m_sTerm;  // term (aka text)
   
     // must be last
     Footer m_xFooter;    

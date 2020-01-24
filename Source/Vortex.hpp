@@ -40,7 +40,7 @@ namespace Utilities
     void vProcessSource(Stz* szSourcePath);
 
   private:
-    void vAddTerm(Token* pToken);
+    void vAddTerm(Stz* szTerm);
     bool bGetToken(Token* pToken);
   
     void vParseAllClasses(void);
