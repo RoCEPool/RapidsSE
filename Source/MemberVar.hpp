@@ -19,7 +19,7 @@ namespace Reflection
     MemberVar(void);
    ~MemberVar(void) noexcept(false);
   
-    static bool bIsMemberVar(EnameSet* pEnameSet);
+    static bool bIsMemberVar(Stz* szClassNm, EnameSet* pEnameSet);
       
     Footer* aFooter(void);
   };
