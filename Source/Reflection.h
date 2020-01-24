@@ -15,7 +15,7 @@ namespace Reflection
 //------------------------------------------------------------------------------
 
 #include "MemberVar.hpp"
-#include "MemberSubset.hpp"
+#include "MemberSet.hpp"
 #include "MetaClass.hpp"
 
 /*============================================================================*/
