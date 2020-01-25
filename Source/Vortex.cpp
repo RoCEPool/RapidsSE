@@ -173,12 +173,16 @@ void Vortex::vParseAllClasses(void)
     
     if (m_xToken_Other.bSame(":"_Stz)) {
       m_pMetaClass_cur = m_pMetaGraph->pAddMetaClass(m_xToken_ClassNm.szTerm());
+      m_pMemberSet_cur = nullptr;
+      m_pMemberVar_cur = nullptr;
       vParseClassBase();
       continue;
     }
     
     if (m_xToken_Other.bSame("{"_Stz)) {
       m_pMetaClass_cur = m_pMetaGraph->pAddMetaClass(m_xToken_ClassNm.szTerm());
+      m_pMemberSet_cur = nullptr;
+      m_pMemberVar_cur = nullptr;
       vParseClassBlock();
       continue;
     }
