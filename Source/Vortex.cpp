@@ -149,7 +149,7 @@ void Vortex::vParseAllClasses(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  while (bGetToken(&m_xToken_Other)) {
+  while (bGetToken(&m_xToken_Other)) {                                    // 🌀
    
     if (m_xToken_Other.bSame("friend"_Stz)) {
       
@@ -168,20 +168,22 @@ void Vortex::vParseAllClasses(void)
     
     if (! bGetToken(&m_xToken_Other))
       break;
-    
-    m_pMetaClass_cur = m_pMetaGraph->pAddMetaClass(m_xToken_ClassNm.szTerm());
+
+    // -- -- -- -- -- --
     
     if (m_xToken_Other.bSame(":"_Stz)) {
+      m_pMetaClass_cur = m_pMetaGraph->pAddMetaClass(m_xToken_ClassNm.szTerm());
       vParseClassBase();
       continue;
     }
     
     if (m_xToken_Other.bSame("{"_Stz)) {
+      m_pMetaClass_cur = m_pMetaGraph->pAddMetaClass(m_xToken_ClassNm.szTerm());
       vParseClassBlock();
       continue;
     }
     
-  }
+  } // while
 
 }
 
@@ -283,12 +285,16 @@ bool Vortex::bParseLabelledMember(void)
     }
     
     if (m_xToken_Other.bSame("struct"_Stz)) {
+      m_pMemberSet_cur = m_pMetaClass_cur->pAddMemberSet("struct"_Stz);
       vParseStructMember();
+      m_pMemberSet_cur = nullptr;
       continue;
     }
     
     if (m_xToken_Other.bSame("union"_Stz)) {
+      m_pMemberSet_cur = m_pMetaClass_cur->pAddMemberSet("union"_Stz);
       vParseUnionMember();
+      m_pMemberSet_cur = nullptr;
       continue;
     }
 
@@ -298,6 +304,8 @@ bool Vortex::bParseLabelledMember(void)
       return false;
     }
 
+    if (! m_pMemberSet_cur)
+      m_pMemberSet_cur = m_pMetaClass_cur->pAddMemberSet("linear"_Stz);
     vParseMemberProper();
   }
     
@@ -339,6 +347,7 @@ void Vortex::vParseMemberProper(void)
     
   if (! MemberVar::bIsMemberVar(m_xToken_ClassNm.szTerm(),&m_oTerms)) {
     vTrace("  not a member variable\n"_Stz);
+    return;
   }
   
   vDebugPoint();
