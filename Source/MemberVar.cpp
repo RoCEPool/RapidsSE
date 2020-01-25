@@ -250,6 +250,16 @@ MemberSet* MemberVar::pMemberSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get var kind                                                               */
+/*----------------------------------------------------------------------------*/
+eMV MemberVar::eMemberVar(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  return m_eVar;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the nested set                                                         */
 /*----------------------------------------------------------------------------*/
 MemberSet* MemberVar::pNestedSet(void)
@@ -332,7 +342,7 @@ void MemberVar::vRecPrint(i8 i_Depth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size of this member variable                                           */
+/* get rolled-up size of this member variable                                 */
 /*----------------------------------------------------------------------------*/
 i8 MemberVar::nSize(void)
 {

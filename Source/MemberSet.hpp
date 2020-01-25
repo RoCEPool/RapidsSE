@@ -14,8 +14,9 @@ namespace Reflection
     MetaClass* m_p_MetaClass;    // the _p_ sequence means not owned by
     MemberSet* m_p_ParentMbrSet; // parent member set
 
-    s32 m_sSetNm;
-    eMS m_eMemberSet;
+    s32 m_sSetNm; // name of this set
+    i8  m_nSize;  // rolled up size of this set
+    eMS m_eSet;   // kind of set
 
     // must be last
     Footer m_xFooter;
@@ -39,6 +40,8 @@ namespace Reflection
     Stz* szSetNm(void);
     void vSetNm(Stz* szSetNm);
 
+    i8   nSize(void);
+  
     Footer* aFooter(void);
   };
 

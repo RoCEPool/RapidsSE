@@ -52,7 +52,7 @@ namespace Reflection
     void vFunPtr(bool bFunPtr);
   
     MemberSet* pMemberSet(void);
-  
+    eMV  eMemberVar(void);
     MemberSet* pNestedSet(void);
     void vNestedSet(MemberSet* pNestedSet);
 
@@ -70,7 +70,6 @@ namespace Reflection
     Stz* szVarNm(void);
     void vVarNm(Stz* szVarNm);
 
-      
     Footer* aFooter(void);
   };
 

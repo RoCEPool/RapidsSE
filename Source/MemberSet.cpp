@@ -25,8 +25,10 @@ MemberSet::MemberSet(MetaClass* p_MetaClass, MemberSet* p_ParentMbrSet)
   m_p_MetaClass = p_MetaClass;
   m_p_ParentMbrSet = p_ParentMbrSet;
 
-  m_eMemberSet = MS_NONE;
-  
+  m_sSetNm = "anonymous"_Stz;
+  m_nSize  = 0;
+  m_eSet   = MS_LINEAR;
+
   _checkInitialised_(CN_MEMBERSET);
   
   _postcondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
@@ -71,7 +73,7 @@ eMS MemberSet::eMemberSet(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
     
-  return m_eMemberSet;
+  return m_eSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,7 +93,7 @@ void MemberSet::vMemberSet(eMS eMemberSet)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
     
-  m_eMemberSet = eMemberSet;
+  m_eSet = eMemberSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,6 +141,16 @@ void MemberSet::vSetNm(Stz* szSetNm)
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
     
   m_sSetNm = szSetNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rolled up size of this member set                                      */
+/*----------------------------------------------------------------------------*/
+i8 MemberSet::nSize(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+    
+  return m_nSize;
 }
 
 /*============================================================================*/
