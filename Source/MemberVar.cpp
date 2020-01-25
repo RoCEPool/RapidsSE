@@ -26,7 +26,8 @@ MemberVar::MemberVar(MemberSet* p_MemberSet)
   
   m_nPointers = 0;
   m_bFunPtr   = false;
-  
+  m_nElements = 0;
+
   _checkInitialised_(CN_MEMBERVAR);
   
   _postcondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
@@ -153,6 +154,26 @@ Stz* MemberVar::szVarNm(EnameSet* pTerms,
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get number of array elements                                               */
+/*----------------------------------------------------------------------------*/
+i8 MemberVar::nElements(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  return m_nElements;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of array elements                                               */
+/*----------------------------------------------------------------------------*/
+void MemberVar::vElements(i8 nElements)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  m_nElements = nElements;
+}
 
 /*----------------------------------------------------------------------------*/
 /* is this member a function pointer?                                         */

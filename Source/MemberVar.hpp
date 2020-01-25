@@ -11,13 +11,13 @@ namespace Reflection
   public:
     MemberSet* m_p_MemberSet; // the _p_ sequence means not owned by
   
-    s32 m_sVarNm;
+    s32 m_sVarNm;    // name of the member variable
   
-    s32 m_sTypeNm;
-    i8  m_nPointers;
+    s32 m_sTypeNm;   // type name (such as Footer)
+    i8  m_nPointers; // number of asterisks after the type name
+    bool m_bFunPtr;  // is this variable a function pointer?
+    i8  m_nElements; // how many array elements (0 means not an array)
   
-    bool m_bFunPtr;
-
     // must be last
     Footer m_xFooter;
     
@@ -32,6 +32,9 @@ namespace Reflection
     static Stz* szVarNm(EnameSet* pTerms,
                         i8& rnPtrs, bool& rbFunPtr, i8& rnElements);
 
+    i8   nElements(void);
+    void vElements(i8 nElements);
+  
     bool bFunPtr(void);
     void vFunPtr(bool bFunPtr);
   
