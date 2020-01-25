@@ -41,6 +41,7 @@ Vortex::Vortex(void)
   m_nPointers = 0;
   m_bFunPtr   = false;
   m_nElements = 0;
+  m_nBits     = 0;
 
   _checkInitialised_(CN_VORTEX);
 
@@ -359,7 +360,7 @@ void Vortex::vParseMemberProper(void)
   }
   
   m_sVarNm = MemberVar::szVarNm(&m_oTerms, m_sTypeNm,
-                                m_nPointers,m_bFunPtr,m_nElements);
+                                m_nPointers,m_bFunPtr,m_nElements,m_nBits);
   
   m_pMemberVar_cur = m_pMemberSet_cur->pAddMemberVar(m_sVarNm.szStz());
   

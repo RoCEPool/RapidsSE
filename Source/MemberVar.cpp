@@ -27,7 +27,8 @@ MemberVar::MemberVar(MemberSet* p_MemberSet)
   m_nPointers = 0;
   m_bFunPtr   = false;
   m_nElements = 0;
-
+  m_nBits     = 0;
+  
   _checkInitialised_(CN_MEMBERVAR);
   
   _postcondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
@@ -108,7 +109,7 @@ bool MemberVar::bIsMemberVar(Stz* szClassNm, EnameSet* pTerms)
 /* get variable name from given terms                                         */
 /*----------------------------------------------------------------------------*/
 Stz* MemberVar::szVarNm(EnameSet* pTerms, s32& rsTypeNm,
-                        i8& rnPtrs, bool& rbFunPtr, i8& rnElements)
+                        i8& rnPtrs, bool& rbFunPtr, i8& rnElements, i8& rnBits)
 {
   _static_
   
@@ -157,6 +158,26 @@ Stz* MemberVar::szVarNm(EnameSet* pTerms, s32& rsTypeNm,
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get number of bits for a bit field                                         */
+/*----------------------------------------------------------------------------*/
+i8 MemberVar::nBits(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  return m_nBits;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of bits for a bit field                                         */
+/*----------------------------------------------------------------------------*/
+void MemberVar::vBits(i8 nBits)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  m_nBits = nBits;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get number of array elements                                               */

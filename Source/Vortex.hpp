@@ -35,6 +35,7 @@ namespace Utilities
     i8         m_nPointers;
     bool       m_bFunPtr;
     i8         m_nElements;
+    i8         m_nBits;
 
     // must be last
     Footer m_xFooter;

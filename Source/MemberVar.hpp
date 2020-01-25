@@ -17,6 +17,7 @@ namespace Reflection
     i8  m_nPointers; // number of asterisks after the type name
     bool m_bFunPtr;  // is this variable a function pointer?
     i8  m_nElements; // how many array elements (0 means not an array)
+    i8  m_nBits;     // no of bits if bit field;
   
     // must be last
     Footer m_xFooter;
@@ -30,8 +31,11 @@ namespace Reflection
   
     static bool bIsMemberVar(Stz* szClassNm, EnameSet* pTerms);
     static Stz* szVarNm(EnameSet* pTerms, s32& rsTypeNm,
-                        i8& rnPtrs, bool& rbFunPtr, i8& rnElements);
+                        i8& rnPtrs, bool& rbFunPtr, i8& rnElements, i8& rnBits);
 
+    i8   nBits(void);
+    void vBits(i8 nBits);
+    
     i8   nElements(void);
     void vElements(i8 nElements);
   
