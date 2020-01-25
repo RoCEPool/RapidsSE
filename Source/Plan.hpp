@@ -9,14 +9,14 @@ namespace Plans
                public ListItem_t<Plan>
   {
   private:
-    i8     m_iPlanId;  // plan identifier       //# its an id because its unique
-    s32    m_sName;    // plan name
+    i8    m_iPlanId;  // plan identifier       //# its an id because its unique
+    s32   m_sName;    // plan name
     
-    Dic    m_xDic;     // private dictionary of this plan       //# may not need
-    s48K   m_sLambda;  // generated text of words
+    Dic   m_xDic;     // private dictionary of this plan       //# may not need
+    s48K  m_sLambda;  // generated text of words
     
     LocalChain* m_pRegList; // set of register frames for use by operators
-    Tasks::Task* m_pExecutingTask; // task on the originating node executing the plan
+    Task* m_pExecutingTask; // task on the originating node executing the plan
     
     // always last
     Footer m_xFooter;
