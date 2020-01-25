@@ -9,7 +9,8 @@ namespace Reflection
                     public ListItem_t<MemberVar>
   {
   public:
- 
+    MemberSet* m_p_MemberSet; // the _p_ sequence means not owned by
+  
     s32 m_sVarNm;
   
     s32 m_sTypeNm;
@@ -24,7 +25,7 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MemberVar(void);
+    MemberVar(MemberSet* p_MemberSet);
    ~MemberVar(void) noexcept(false);
   
     static bool bIsMemberVar(Stz* szClassNm, EnameSet* pEnameSet);

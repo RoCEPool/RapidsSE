@@ -17,10 +17,12 @@ __aFooterFunction(MemberVar)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MemberVar::MemberVar(void)
+MemberVar::MemberVar(MemberSet* p_MemberSet)
 : Object(CN_MEMBERVAR)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  
+  m_p_MemberSet = p_MemberSet;
   
   m_nPointers = 0;
   m_bFunPtr   = false;

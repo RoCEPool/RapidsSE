@@ -11,6 +11,8 @@ namespace Reflection
   {
   public:
  
+    MetaClass* m_p_MetaClass; // the _p_ sequence means not owned by
+  
     s32 m_sSetNm;
   
     eMS m_eMemberSet;
@@ -22,7 +24,7 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MemberSet(void);
+    MemberSet(MetaClass* p_MetaClass);
    ~MemberSet(void) noexcept(false);
 
     MemberVar* pAddMemberVar(Stz* szVarNm);

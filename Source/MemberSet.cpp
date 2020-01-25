@@ -17,10 +17,12 @@ __aFooterFunction(MemberSet)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MemberSet::MemberSet(void)
+MemberSet::MemberSet(MetaClass* p_MetaClass)
 : Object(CN_MEMBERSET)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  
+  m_p_MetaClass = p_MetaClass;
   
   m_eMemberSet = MS_NONE;
   
@@ -52,7 +54,7 @@ MemberVar* MemberSet::pAddMemberVar(Stz* szVarNm)
 {
   _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
   
-  MemberVar* pMemberVar = new MemberVar;
+  MemberVar* pMemberVar = new MemberVar(this);
   
   pMemberVar->vVarNm(szVarNm);
   

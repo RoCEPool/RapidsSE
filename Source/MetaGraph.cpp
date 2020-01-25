@@ -51,7 +51,7 @@ MetaClass* MetaGraph::pAddMetaClass(Stz* szClassNm)
 {
   _precondition_(_MAGIC_,CN_METAGRAPH,_FOOTER_);
   
-  MetaClass* pMetaClass = new MetaClass;
+  MetaClass* pMetaClass = new MetaClass(this);
   
   pMetaClass->vClassNm(szClassNm);
   

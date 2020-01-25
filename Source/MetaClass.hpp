@@ -10,7 +10,8 @@ namespace Reflection
                     public List_t<MemberSet>
   {
   public:
- 
+    MetaGraph* m_p_MetaGraph;
+  
     s32 m_sClassNm;
   
     // must be last
@@ -20,7 +21,7 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaClass(void);
+    MetaClass(MetaGraph* p_MetaGraph);
    ~MetaClass(void) noexcept(false);
   
     MemberSet* pAddMemberSet(Stz* szSetNm);

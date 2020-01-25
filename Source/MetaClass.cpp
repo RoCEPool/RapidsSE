@@ -17,11 +17,12 @@ __aFooterFunction(MetaClass)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaClass::MetaClass(void)
+MetaClass::MetaClass(MetaGraph* p_MetaGraph)
 : Object(CN_METACLASS)
 {
   _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
   
+  m_p_MetaGraph = p_MetaGraph;
   
   _checkInitialised_(CN_METACLASS);
   
@@ -51,7 +52,7 @@ MemberSet* MetaClass::pAddMemberSet(Stz* szSetNm)
 {
   _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
   
-  MemberSet* pMemberSet = new MemberSet;
+  MemberSet* pMemberSet = new MemberSet(this);
   
   pMemberSet->vSetNm(szSetNm);
   
