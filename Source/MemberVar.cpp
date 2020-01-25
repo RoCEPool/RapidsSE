@@ -106,10 +106,15 @@ bool MemberVar::bIsMemberVar(Stz* szClassNm, EnameSet* pTerms)
 /*----------------------------------------------------------------------------*/
 /* get variable name from given terms                                         */
 /*----------------------------------------------------------------------------*/
-Stz* MemberVar::szVarNm(EnameSet* pTerms)
+Stz* MemberVar::szVarNm(EnameSet* pTerms,
+                        i8& rnPtrs, bool& rbFunPtr, i8& rnElements)
 {
   _static_
   
+  rnPtrs     = 0;
+  rbFunPtr   = false;
+  rnElements = 0;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Stz* szTerm;
 
   i8 nTerms = pTerms->nEnames();
@@ -120,10 +125,28 @@ Stz* MemberVar::szVarNm(EnameSet* pTerms)
   do {
     szTerm = pTerms->szName(i_Term++);
     
+    if (szTerm->bSame("*"_Stz))
+      rnPtrs++;
+    
+    if (szTerm->bSame("("_Stz))
+      rbFunPtr = true;
+
   } while (szTerm->bSame("*"_Stz) || szTerm->bSame("("_Stz));
   
   vTrace("VarNm = %s\n"_Stz,szTerm->azChar());
   
+  if (i_Term < nTerms) {
+    szTerm = pTerms->szName(i_Term++);
+    //RASSERT(szTerm->bSame("["_Stz))
+    rnElements = 1; //!more
+  }
+  
+  vTrace("VarNm = %s Ptrs = %lld FunPtr = %lld rnElements = %lld\n"_Stz,
+         szTerm->azChar(),
+         rnPtrs,
+         (i8)rbFunPtr,
+         rnElements);
+
   return szTerm;
 }
 
