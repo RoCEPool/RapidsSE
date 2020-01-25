@@ -82,6 +82,16 @@ void MetaClass::vClassNm(Stz* szClassNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get which meta graph this meta class is within                             */
+/*----------------------------------------------------------------------------*/
+MetaGraph* MetaClass::pMetaGraph(void)
+{
+  _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
+    
+  return m_p_MetaGraph;
+}
+
+/*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void MetaClass::vPrint(i8 i_Tab)

@@ -42,6 +42,8 @@ namespace Reflection
     bool bFunPtr(void);
     void vFunPtr(bool bFunPtr);
   
+    MemberSet* pMemberSet(void);
+  
     i8   nPointers(void);
     void vPointers(i8 nPointers);
   

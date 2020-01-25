@@ -226,6 +226,16 @@ void MemberVar::vFunPtr(bool bFunPtr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get which member set this member var is within                             */
+/*----------------------------------------------------------------------------*/
+MemberSet* MemberVar::pMemberSet(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  return m_p_MemberSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of type pointers                                                */
 /*----------------------------------------------------------------------------*/
 i8 MemberVar::nPointers(void)
