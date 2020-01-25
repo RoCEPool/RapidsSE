@@ -117,20 +117,24 @@ Stz* MemberVar::szVarNm(EnameSet* pTerms,
   rnElements = 0;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Stz* szTerm;
+  Stz* szType;
+  Stz* szName = "*UNKNOWN*"_Stz;
 
   i8 nTerms = pTerms->nEnames();
   
   i8 i_Term = 0;
-  szTerm = pTerms->szName(i_Term++);
-  
+  szType = pTerms->szName(i_Term++);
+
   do {
     szTerm = pTerms->szName(i_Term++);
     
     if (szTerm->bSame("*"_Stz))
       rnPtrs++;
-    
+    else
     if (szTerm->bSame("("_Stz))
       rbFunPtr = true;
+    else
+      szName = szTerm;
 
   } while (szTerm->bSame("*"_Stz) || szTerm->bSame("("_Stz));
   
@@ -148,7 +152,7 @@ Stz* MemberVar::szVarNm(EnameSet* pTerms,
          (i8)rbFunPtr,
          rnElements);
 
-  return szTerm;
+  return szName;
 }
 
 /*----------------------------------------------------------------------------*/
