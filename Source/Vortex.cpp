@@ -294,14 +294,14 @@ bool Vortex::bParseLabelledMember(void)
     }
     
     if (m_xToken_Other.bSame("struct"_Stz)) {
-      m_pMemberSet_cur = m_pMetaClass_cur->pAddMemberSet("struct"_Stz);
+      m_pMemberSet_cur = m_pMetaClass_cur->pAddMemberSet("struct"_Stz,m_pMemberSet_cur);
       vParseStructMember();
       m_pMemberSet_cur = nullptr;
       continue;
     }
     
     if (m_xToken_Other.bSame("union"_Stz)) {
-      m_pMemberSet_cur = m_pMetaClass_cur->pAddMemberSet("union"_Stz);
+      m_pMemberSet_cur = m_pMetaClass_cur->pAddMemberSet("union"_Stz,m_pMemberSet_cur);
       vParseUnionMember();
       m_pMemberSet_cur = nullptr;
       continue;
@@ -314,7 +314,7 @@ bool Vortex::bParseLabelledMember(void)
     }
 
     if (! m_pMemberSet_cur)
-      m_pMemberSet_cur = m_pMetaClass_cur->pAddMemberSet("linear"_Stz);
+      m_pMemberSet_cur = m_pMetaClass_cur->pAddMemberSet("linear"_Stz,m_pMemberSet_cur);
     vParseMemberProper();
   }
     

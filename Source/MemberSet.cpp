@@ -17,13 +17,14 @@ __aFooterFunction(MemberSet)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MemberSet::MemberSet(MetaClass* p_MetaClass)
+MemberSet::MemberSet(MetaClass* p_MetaClass, MemberSet* p_ParentMbrSet)
 : Object(CN_MEMBERSET)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
   
   m_p_MetaClass = p_MetaClass;
-  
+  m_p_ParentMbrSet = p_ParentMbrSet;
+
   m_eMemberSet = MS_NONE;
   
   _checkInitialised_(CN_MEMBERSET);
@@ -63,7 +64,6 @@ MemberVar* MemberSet::pAddMemberVar(Stz* szVarNm)
   return pMemberVar;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* get member set kind                                                        */
 /*----------------------------------------------------------------------------*/
@@ -72,6 +72,16 @@ eMS MemberSet::eMemberSet(void)
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
     
   return m_eMemberSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get parent member set                                                      */
+/*----------------------------------------------------------------------------*/
+MemberSet* MemberSet::pParentMbrSet(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  
+  return m_p_ParentMbrSet;
 }
 
 /*----------------------------------------------------------------------------*/

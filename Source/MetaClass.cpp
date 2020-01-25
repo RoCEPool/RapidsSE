@@ -48,11 +48,11 @@ MetaClass::~MetaClass(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add a new member set with given name                                       */
 /*----------------------------------------------------------------------------*/
-MemberSet* MetaClass::pAddMemberSet(Stz* szSetNm)
+MemberSet* MetaClass::pAddMemberSet(Stz* szSetNm, MemberSet* p_ParentMbrSet)
 {
   _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
   
-  MemberSet* pMemberSet = new MemberSet(this);
+  MemberSet* pMemberSet = new MemberSet(this,p_ParentMbrSet);
   
   pMemberSet->vSetNm(szSetNm);
   
