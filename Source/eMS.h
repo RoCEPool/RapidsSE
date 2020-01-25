@@ -3,14 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-enum eMS // meber set
+enum eMS // member set
 {
   /*  0 */ MS_NONE=0,
   
-  /*    */ MS_LINEAR,
-  /*    */ MS_STRUCT,
-  /*    */ MS_STRUCT_BITS,
-  /*    */ MS_UNION,
+  /*    */ MS_LINEAR,       // linear sequence of var's
+  /*    */ MS_STRUCT,       // struct of var's
+  /*    */ MS_STRUCT_BITS,  // struct of bit fields
+  /*    */ MS_UNION,        // union of var's
   
   /*    */ MS_ENUMS
 };

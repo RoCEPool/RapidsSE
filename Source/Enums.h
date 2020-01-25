@@ -68,6 +68,7 @@ namespace Enums
 #include "eMC.h"
 #include "eMK.h"
 #include "eMS.h"
+#include "eMV.h"
 
 #include "eNE.h"
 #include "eNK.h"
