@@ -21,13 +21,16 @@ namespace Structures
     void* operator new(size_t);
     
     List_t(void);
-    
+   ~List_t(void) noexcept(false);
+
     void  vAppend(ITEM* pItem);
+    void  vDeleteAll(void);
     i8    nItems(void);
     ITEM* pPop(void);
     void  vPush(ITEM* pItem);
     void  vRemove(ITEM* pItem);
-    
+    void  vRemoveAll(void);
+  
     void  vReadLock(void);
     void  vReadUnlock(void);
 
@@ -71,6 +74,17 @@ List_t<ITEM>::List_t(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+List_t<ITEM>::~List_t(void) noexcept(false)
+{
+  vDeleteAll();
+  
+  RASSERT(! m_nItems);
+}
+
+/*----------------------------------------------------------------------------*/
 /* append item to end of list                                                 */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
@@ -95,6 +109,16 @@ void List_t<ITEM>::vAppend(ITEM* pItem)
   m_nItems++;
   
   m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete all items in list                                                   */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void List_t<ITEM>::vDeleteAll(void)
+{
+  for (ITEM* pItem = pPop(); pItem; pItem = pPop())
+    delete pItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,6 +226,16 @@ void List_t<ITEM>::vRemove(ITEM* pItem)
   
   pItem->vPrevItem(nullptr);
   pItem->vNextItem(nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove all items in list                                                   */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void List_t<ITEM>::vRemoveAll(void)
+{
+  for (ITEM* pItem = pPop(); pItem; pItem = pPop())
+    {;}
 }
 
 /*----------------------------------------------------------------------------*/

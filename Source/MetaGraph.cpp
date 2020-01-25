@@ -53,10 +53,12 @@ MetaClass* MetaGraph::pAddMetaClass(Stz* szClassNm)
   
   MetaClass* pMetaClass = new MetaClass;
   
+  pMetaClass->vClassNm(szClassNm);
+  
+  vAppend(pMetaClass);
+  
   return pMetaClass;
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */

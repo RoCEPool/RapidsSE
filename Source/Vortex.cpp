@@ -169,6 +169,8 @@ void Vortex::vParseAllClasses(void)
     if (! bGetToken(&m_xToken_Other))
       break;
     
+    m_pMetaClass_cur = m_pMetaGraph->pAddMetaClass(m_xToken_ClassNm.szTerm());
+    
     if (m_xToken_Other.bSame(":"_Stz)) {
       vParseClassBase();
       continue;
