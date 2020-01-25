@@ -358,11 +358,12 @@ void Vortex::vParseMemberProper(void)
     return;
   }
   
-  m_sVarNm = MemberVar::szVarNm(&m_oTerms,
+  m_sVarNm = MemberVar::szVarNm(&m_oTerms, m_sTypeNm,
                                 m_nPointers,m_bFunPtr,m_nElements);
   
   m_pMemberVar_cur = m_pMemberSet_cur->pAddMemberVar(m_sVarNm.szStz());
   
+  m_pMemberVar_cur->vTypeNm(m_sTypeNm.szStz());
   m_pMemberVar_cur->vPointers(m_nPointers);
   m_pMemberVar_cur->vFunPtr(m_bFunPtr);
   m_pMemberVar_cur->vElements(m_nElements);

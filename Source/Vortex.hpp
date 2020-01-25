@@ -16,7 +16,8 @@ namespace Utilities
     Token  m_xToken_Other;
   
     s32    m_sVarNm;
-  
+    s32    m_sTypeNm;
+
     bool   m_bTraceTokens;
   
     i8     m_nClasses;

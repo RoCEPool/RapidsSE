@@ -107,7 +107,7 @@ bool MemberVar::bIsMemberVar(Stz* szClassNm, EnameSet* pTerms)
 /*----------------------------------------------------------------------------*/
 /* get variable name from given terms                                         */
 /*----------------------------------------------------------------------------*/
-Stz* MemberVar::szVarNm(EnameSet* pTerms,
+Stz* MemberVar::szVarNm(EnameSet* pTerms, s32& rsTypeNm,
                         i8& rnPtrs, bool& rbFunPtr, i8& rnElements)
 {
   _static_
@@ -117,13 +117,12 @@ Stz* MemberVar::szVarNm(EnameSet* pTerms,
   rnElements = 0;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Stz* szTerm;
-  Stz* szType;
   Stz* szName = "*UNKNOWN*"_Stz;
 
   i8 nTerms = pTerms->nEnames();
   
   i8 i_Term = 0;
-  szType = pTerms->szName(i_Term++);
+  rsTypeNm = pTerms->szName(i_Term++);
 
   do {
     szTerm = pTerms->szName(i_Term++);
@@ -226,11 +225,12 @@ void MemberVar::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
       
-  vTrace("%sMemberVar %s  Ptrs=%lld FunPtr=%lld Elements=%lld\n"_Stz,
+  vTrace("%sMemberVar %s  Type %s Ptrs=%lld FunPtr=%lld Elements=%lld\n"_Stz,
          
          Stz::szTab(i_Tab)->azChar(),
          m_sVarNm.azChar(),
          
+         m_sTypeNm.azChar(),
          m_nPointers,
          (i8)m_bFunPtr,
          m_nElements,
