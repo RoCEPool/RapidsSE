@@ -26,6 +26,7 @@ MemberVar::MemberVar(MemberSet* p_MemberSet)
   
   // var name
   m_sVarNm = C_NO_NAME;
+  m_nSize  = 0;
   m_eVar   = MV_VAR;
 
   // MV_VAR: simple var
@@ -90,7 +91,7 @@ bool MemberVar::bIsMemberVar(Stz* szClassNm, EnameSet* pTerms)
   if (szTerm->bSame("~"_Stz))
     return false;
   
-  // (*) szTerm is return type at this point
+  // nb. szTerm is return type at this point
 
   
   // -- -- -- -- -- --
@@ -315,7 +316,6 @@ void MemberVar::vPrint(i8 i_Tab)
            m_nBits,
          
            C_ENDARGS);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -329,6 +329,16 @@ void MemberVar::vRecPrint(i8 i_Depth)
   
   if (MV_SET == m_eVar)
     m_pNestedSet->vRecPrint(i_Depth + 1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of this member variable                                           */
+/*----------------------------------------------------------------------------*/
+i8 MemberVar::nSize(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  return m_nSize;
 }
 
 /*----------------------------------------------------------------------------*/

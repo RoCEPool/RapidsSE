@@ -13,6 +13,7 @@ namespace Reflection
   
     // var name
     s32  m_sVarNm;    // name of the member variable
+    i8   m_nSize;     // size of this var
     eMV  m_eVar;      // kind of var
   
     // MV_VAR: simple var
@@ -60,6 +61,8 @@ namespace Reflection
   
     void vPrint(i8 i_Tab);
     void vRecPrint(i8 i_Depth);
+  
+    i8   nSize(void);
   
     Stz* szTypeNm(void);
     void vTypeNm(Stz* szVarNm);
