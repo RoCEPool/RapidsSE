@@ -14,7 +14,6 @@ namespace Reflection
     MetaClass* m_p_MetaClass; // the _p_ sequence means not owned by
   
     s32 m_sSetNm;
-  
     eMS m_eMemberSet;
 
     // must be last

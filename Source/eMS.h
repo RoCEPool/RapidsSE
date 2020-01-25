@@ -9,6 +9,7 @@ enum eMS // meber set
   
   /*    */ MS_LINEAR,
   /*    */ MS_STRUCT,
+  /*    */ MS_STRUCT_BITS,
   /*    */ MS_UNION,
   
   /*    */ MS_ENUMS
@@ -20,6 +21,7 @@ static Stz* aMS[]
   
   /*    */ "MS_LINEAR"_Stz,
   /*    */ "MS_STRUCT"_Stz,
+  /*    */ "MS_STRUCT_BITS"_Stz,
   /*    */ "MS_UNION"_Stz,
   
   /*    */ "ENUMS"_Stz
