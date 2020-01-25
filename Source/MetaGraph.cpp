@@ -45,7 +45,7 @@ MetaGraph::~MetaGraph(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add a new metaclss with given name                                         */
+/* add a new metaclass with given name                                        */
 /*----------------------------------------------------------------------------*/
 MetaClass* MetaGraph::pAddMetaClass(Stz* szClassNm)
 {

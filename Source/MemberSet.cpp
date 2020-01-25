@@ -22,6 +22,7 @@ MemberSet::MemberSet(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
   
+  m_eMemberSet = MS_NONE;
   
   _checkInitialised_(CN_MEMBERSET);
   
@@ -44,6 +45,62 @@ MemberSet::~MemberSet(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* add a new member set with given name                                       */
+/*----------------------------------------------------------------------------*/
+MemberVar* MemberSet::pAddMemberVar(Stz* szVarNm)
+{
+  _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
+  
+  MemberVar* pMemberVar = new MemberVar;
+  
+  pMemberVar->vVarNm(szVarNm);
+  
+  vAppend(pMemberVar);
+  
+  return pMemberVar;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get member set kind                                                        */
+/*----------------------------------------------------------------------------*/
+eMS MemberSet::eMemberSet(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+    
+  return m_eMemberSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set member set kind                                                        */
+/*----------------------------------------------------------------------------*/
+void MemberSet::vMemberSet(eMS eMemberSet)
+{
+  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+    
+  m_eMemberSet = eMemberSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get member set name                                                        */
+/*----------------------------------------------------------------------------*/
+Stz* MemberSet::szSetNm(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+    
+  return m_sSetNm.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set member set name                                                        */
+/*----------------------------------------------------------------------------*/
+void MemberSet::vSetNm(Stz* szSetNm)
+{
+  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+    
+  m_sSetNm = szSetNm;
+}
 
 /*============================================================================*/
 /* end                                                                        */

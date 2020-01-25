@@ -45,6 +45,22 @@ MetaClass::~MetaClass(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add a new member set with given name                                       */
+/*----------------------------------------------------------------------------*/
+MemberSet* MetaClass::pAddMemberSet(Stz* szSetNm)
+{
+  _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
+  
+  MemberSet* pMemberSet = new MemberSet;
+  
+  pMemberSet->vSetNm(szSetNm);
+  
+  vAppend(pMemberSet);
+  
+  return pMemberSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get class name                                                             */
 /*----------------------------------------------------------------------------*/
 Stz* MetaClass::szClassNm(void)

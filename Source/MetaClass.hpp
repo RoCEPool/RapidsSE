@@ -6,7 +6,8 @@
 namespace Reflection
 {
   class MetaClass : public Object,
-                    public ListItem_t<MetaClass>
+                    public ListItem_t<MetaClass>,
+                    public List_t<MemberSet>
   {
   public:
  
@@ -22,6 +23,8 @@ namespace Reflection
     MetaClass(void);
    ~MetaClass(void) noexcept(false);
   
+    MemberSet* pAddMemberSet(Stz* szSetNm);
+
     Stz* szClassNm(void);
     void vClassNm(Stz* szClassNm);
       
