@@ -354,6 +354,10 @@ void Vortex::vParseMemberProper(void)
     return;
   }
   
+  m_sVarNm = MemberVar::szVarNm(&m_oTerms);
+  
+  m_pMemberVar_cur = m_pMemberSet_cur->pAddMemberVar(m_sVarNm.szStz());
+  
   vDebugPoint();
 }
 

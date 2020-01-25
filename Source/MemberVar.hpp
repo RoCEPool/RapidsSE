@@ -28,8 +28,9 @@ namespace Reflection
     MemberVar(MemberSet* p_MemberSet);
    ~MemberVar(void) noexcept(false);
   
-    static bool bIsMemberVar(Stz* szClassNm, EnameSet* pEnameSet);
-  
+    static bool bIsMemberVar(Stz* szClassNm, EnameSet* pTerms);
+    static Stz* szVarNm(EnameSet* pTerms);
+
     bool bFunPtr(void);
     void vFunPtr(bool bFunPtr);
   

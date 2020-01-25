@@ -52,7 +52,7 @@ MemberSet::~MemberSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 MemberVar* MemberSet::pAddMemberVar(Stz* szVarNm)
 {
-  _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
+  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
   
   MemberVar* pMemberVar = new MemberVar(this);
   

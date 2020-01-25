@@ -103,6 +103,29 @@ bool MemberVar::bIsMemberVar(Stz* szClassNm, EnameSet* pTerms)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get variable name from given terms                                         */
+/*----------------------------------------------------------------------------*/
+Stz* MemberVar::szVarNm(EnameSet* pTerms)
+{
+  _static_
+  
+  Stz* szTerm;
+
+  i8 nTerms = pTerms->nEnames();
+  
+  i8 i_Term = 0;
+  szTerm = pTerms->szName(i_Term++);
+  
+  do {
+    szTerm = pTerms->szName(i_Term++);
+    
+  } while (szTerm->bSame("*"_Stz) || szTerm->bSame("("_Stz));
+  
+  vTrace("VarNm = %s\n"_Stz,szTerm->azChar());
+  
+  return szTerm;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

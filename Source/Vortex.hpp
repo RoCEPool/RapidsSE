@@ -11,8 +11,11 @@ namespace Utilities
     File*  m_pVortexFile;
     s256   m_sSourcePath;
     Input* m_pInput;
+  
     Token  m_xToken_ClassNm;
     Token  m_xToken_Other;
+  
+    s32    m_sVarNm;
   
     bool   m_bTraceTokens;
   
