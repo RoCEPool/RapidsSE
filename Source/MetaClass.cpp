@@ -24,6 +24,9 @@ MetaClass::MetaClass(MetaGraph* p_MetaGraph)
   
   m_p_MetaGraph = p_MetaGraph;
   
+  m_sClassNm = C_NO_NAME;
+  m_nSize    = 0;
+  
   _checkInitialised_(CN_METACLASS);
   
   _postcondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
@@ -118,6 +121,15 @@ void MetaClass::vRecPrint(i8 i_Depth)
     pMbrSet->vRecPrint(i_Depth + 1);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get rolled-up size of this class                                           */
+/*----------------------------------------------------------------------------*/
+i8 MetaClass::nSize(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  return m_nSize;
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -13,7 +13,8 @@ namespace Reflection
     MetaGraph* m_p_MetaGraph;
   
     s32 m_sClassNm;
-  
+    i8  m_nSize;     // size of this class
+
     // must be last
     Footer m_xFooter;
     
@@ -34,6 +35,8 @@ namespace Reflection
     void vPrint(i8 i_Depth);
     void vRecPrint(i8 i_Depth);
       
+    i8   nSize(void);
+
     Footer* aFooter(void);
   };
 
