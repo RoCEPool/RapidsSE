@@ -368,6 +368,7 @@ void Vortex::vParseMemberProper(void)
   m_pMemberVar_cur->vPointers(m_nPointers);
   m_pMemberVar_cur->vFunPtr(m_bFunPtr);
   m_pMemberVar_cur->vElements(m_nElements);
+  m_pMemberVar_cur->vBits(m_nBits);
 
   vDebugPoint();
 }

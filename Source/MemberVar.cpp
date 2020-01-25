@@ -128,6 +128,11 @@ Stz* MemberVar::szVarNm(EnameSet* pTerms, s32& rsTypeNm,
   do {
     szTerm = pTerms->szName(i_Term++);
     
+    if (szTerm->bSame(":"_Stz)) {
+      rnBits = pTerms->szName(i_Term)->iToI8();
+      break;
+    }
+    
     if (szTerm->bSame("*"_Stz))
       rnPtrs++;
     else
@@ -146,11 +151,12 @@ Stz* MemberVar::szVarNm(EnameSet* pTerms, s32& rsTypeNm,
     rnElements = 1; //!more
   }
   
-  vTrace("VarNm = %s Ptrs = %lld FunPtr = %lld rnElements = %lld\n"_Stz,
+  vTrace("VarNm %s Ptrs=%lld FunPtr=%lld Elms=%lld Bits=%lld\n"_Stz,
          szTerm->azChar(),
          rnPtrs,
          (i8)rbFunPtr,
-         rnElements);
+         rnElements,
+         rnBits);
 
   return szName;
 }
@@ -246,7 +252,7 @@ void MemberVar::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
       
-  vTrace("%sMemberVar %s  Type %s Ptrs=%lld FunPtr=%lld Elements=%lld\n"_Stz,
+  vTrace("%sMemberVar %s  Type %s Ptrs=%lld FunPtr=%lld Elms=%lld Bits=%lld\n"_Stz,
          
          Stz::szTab(i_Tab)->azChar(),
          m_sVarNm.azChar(),
@@ -255,6 +261,7 @@ void MemberVar::vPrint(i8 i_Tab)
          m_nPointers,
          (i8)m_bFunPtr,
          m_nElements,
+         m_nBits,
          
          C_ENDARGS);
 
