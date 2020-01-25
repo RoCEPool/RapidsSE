@@ -36,6 +36,9 @@ namespace Reflection
     i8   nPointers(void);
     void vPointers(i8 nPointers);
   
+    void vPrint(i8 i_Tab);
+    void vRecPrint(i8 i_Depth);
+  
     Stz* szTypeNm(void);
     void vTypeNm(Stz* szVarNm);
   

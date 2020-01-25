@@ -149,6 +149,30 @@ void MemberVar::vPointers(i8 nPointers)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void MemberVar::vPrint(i8 i_Tab)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  vTrace("%sMemberVar %s\n"_Stz,
+         
+         Stz::szTab(i_Tab)->azChar(),
+         m_sVarNm.azChar()
+         );
+}
+
+/*----------------------------------------------------------------------------*/
+/* recursive print                                                            */
+/*----------------------------------------------------------------------------*/
+void MemberVar::vRecPrint(i8 i_Depth)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  
+  vPrint(i_Depth);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set type name                                                              */
 /*----------------------------------------------------------------------------*/
 void MemberVar::vTypeNm(Stz* szTypeNm)

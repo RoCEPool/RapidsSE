@@ -28,6 +28,9 @@ namespace Reflection
 
     Stz* szClassNm(void);
     void vClassNm(Stz* szClassNm);
+  
+    void vPrint(i8 i_Depth);
+    void vRecPrint(i8 i_Depth);
       
     Footer* aFooter(void);
   };

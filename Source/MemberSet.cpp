@@ -85,6 +85,33 @@ void MemberSet::vMemberSet(eMS eMemberSet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void MemberSet::vPrint(i8 i_Tab)
+{
+  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+    
+  vTrace("%sMemberSet %s\n"_Stz,
+         
+         Stz::szTab(i_Tab)->azChar(),
+         m_sSetNm.azChar()
+         );
+}
+
+/*----------------------------------------------------------------------------*/
+/* recursive print                                                            */
+/*----------------------------------------------------------------------------*/
+void MemberSet::vRecPrint(i8 i_Depth)
+{
+  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  
+  vPrint(i_Depth);
+  
+  for (MemberVar* pMbrVar = pHead(); pMbrVar; pMbrVar = pMbrVar->pNextItem())
+    pMbrVar->vRecPrint(i_Depth + 1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get member set name                                                        */
 /*----------------------------------------------------------------------------*/
 Stz* MemberSet::szSetNm(void)

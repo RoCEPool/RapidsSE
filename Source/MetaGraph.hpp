@@ -22,6 +22,9 @@ namespace Reflection
   
     MetaClass* pAddMetaClass(Stz* szClassNm);
       
+    void vPrint(void);
+    void vRecPrint(void);
+  
     Footer* aFooter(void);
   };
 

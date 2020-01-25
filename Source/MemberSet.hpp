@@ -32,6 +32,9 @@ namespace Reflection
     eMS  eMemberSet(void);
     void vMemberSet(eMS eMemberSet);
 
+    void vPrint(i8 i_Tab);
+    void vRecPrint(i8 i_Depth);
+  
     Stz* szSetNm(void);
     void vSetNm(Stz* szSetNm);
 

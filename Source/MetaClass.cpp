@@ -81,6 +81,34 @@ void MetaClass::vClassNm(Stz* szClassNm)
   m_sClassNm = szClassNm;
 }
 
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void MetaClass::vPrint(i8 i_Tab)
+{
+  _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
+    
+  vTrace("%MetaClass %s\n"_Stz,
+         
+         Stz::szTab(i_Tab)->azChar(),
+         m_sClassNm.azChar()
+         );
+}
+
+/*----------------------------------------------------------------------------*/
+/* recursive print                                                            */
+/*----------------------------------------------------------------------------*/
+void MetaClass::vRecPrint(i8 i_Depth)
+{
+  _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
+  
+  vPrint(i_Depth);
+  
+  for (MemberSet* pMbrSet = pHead(); pMbrSet; pMbrSet = pMbrSet->pNextItem())
+    pMbrSet->vRecPrint(i_Depth + 1);
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
