@@ -221,12 +221,18 @@ void MemberVar::vPointers(i8 nPointers)
 void MemberVar::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
-    
-  vTrace("%sMemberVar %s\n"_Stz,
+      
+  vTrace("%sMemberVar %s  Ptrs=%lld FunPtr=%lld Elements=%lld\n"_Stz,
          
          Stz::szTab(i_Tab)->azChar(),
-         m_sVarNm.azChar()
-         );
+         m_sVarNm.azChar(),
+         
+         m_nPointers,
+         (i8)m_bFunPtr,
+         m_nElements,
+         
+         C_ENDARGS);
+
 }
 
 /*----------------------------------------------------------------------------*/
