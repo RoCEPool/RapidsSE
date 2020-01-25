@@ -68,12 +68,12 @@ void Vortex::vClose(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
-  if (! m_pVortexFile)
-    return;
+  m_pMetaGraph->vRecPrint();
   
-  m_pVortexFile->vClose();
+  if (m_pVortexFile && m_pVortexFile->bIsOpen())
+    m_pVortexFile->vClose();
+  
   delete m_pVortexFile;
-  
   m_pVortexFile = nullptr;
 }
 

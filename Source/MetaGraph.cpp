@@ -60,6 +60,19 @@ MetaClass* MetaGraph::pAddMetaClass(Stz* szClassNm)
   return pMetaClass;
 }
 
+/*----------------------------------------------------------------------------*/
+/* recursive print                                                            */
+/*----------------------------------------------------------------------------*/
+void MetaGraph::vRecPrint(void)
+{
+  _precondition_(_MAGIC_,CN_METAGRAPH,_FOOTER_);
+    
+  for (MetaClass* pMetaClass = pHead();
+       pMetaClass;
+       pMetaClass = pMetaClass->pNextItem())
+    pMetaClass->vRecPrint(0);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
