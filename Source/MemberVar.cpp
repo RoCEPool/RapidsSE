@@ -307,18 +307,20 @@ void MemberVar::vPrint(i8 i_Tab)
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
      
   if (MV_SET == m_eVar)
-    vTrace("%sMemberVar %s\n"_Stz,
+    vTrace("%sMemberVar %s %lldB\n"_Stz,
            
            Stz::szTab(i_Tab)->azChar(),
            m_sVarNm.azChar(),
+           m_nSize,
            
            C_ENDARGS);
   else
-    vTrace("%sMemberVar %s Type %s Ptrs=%lld FunPtr=%lld Elms=%lld Bits=%lld\n"_Stz,
+    vTrace("%sMemberVar %s %lldB : Type %s Ptrs=%lld FunPtr=%lld Elms=%lld Bits=%lld\n"_Stz,
          
            Stz::szTab(i_Tab)->azChar(),
            m_sVarNm.azChar(),
-         
+           m_nSize,
+           
            m_sTypeNm.azChar(),
            m_nPointers,
            (i8)m_bFunPtr,
