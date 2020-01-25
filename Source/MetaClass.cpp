@@ -26,6 +26,7 @@ MetaClass::MetaClass(MetaGraph* p_MetaGraph)
   
   m_sClassNm = C_NO_NAME;
   m_nSize    = 0;
+  m_eClass   = CC_CLASS;
   
   _checkInitialised_(CN_METACLASS);
   
@@ -82,6 +83,16 @@ void MetaClass::vClassNm(Stz* szClassNm)
   _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
     
   m_sClassNm = szClassNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get meta class kind                                                        */
+/*----------------------------------------------------------------------------*/
+eCC MetaClass::eMetaClass(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  return m_eClass;
 }
 
 /*----------------------------------------------------------------------------*/

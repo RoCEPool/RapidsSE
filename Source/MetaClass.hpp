@@ -12,8 +12,9 @@ namespace Reflection
   public:
     MetaGraph* m_p_MetaGraph;
   
-    s32 m_sClassNm;
+    s32 m_sClassNm;  // name of class
     i8  m_nSize;     // size of this class
+    eCC m_eClass;    // kind of class
 
     // must be last
     Footer m_xFooter;
@@ -30,6 +31,7 @@ namespace Reflection
     Stz* szClassNm(void);
     void vClassNm(Stz* szClassNm);
   
+    eCC  eMetaClass(void);
     MetaGraph* pMetaGraph(void);
   
     void vPrint(i8 i_Depth);
