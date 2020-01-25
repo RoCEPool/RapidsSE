@@ -112,10 +112,11 @@ void MetaClass::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
     
-  vTrace("%sMetaClass %s\n"_Stz,
+  vTrace("%sMetaClass %s %s\n"_Stz,
          
          Stz::szTab(i_Tab)->azChar(),
-         m_sClassNm.azChar()
+         m_sClassNm.azChar(),
+         aCC[m_eClass]->azChar()
          );
 }
 

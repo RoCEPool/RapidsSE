@@ -103,10 +103,11 @@ void MemberSet::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
     
-  vTrace("%sMemberSet %s\n"_Stz,
+  vTrace("%sMemberSet %s %s\n"_Stz,
          
          Stz::szTab(i_Tab)->azChar(),
-         m_sSetNm.azChar()
+         m_sSetNm.azChar(),
+         aMS[m_eSet]->azChar()
          );
 }
 
