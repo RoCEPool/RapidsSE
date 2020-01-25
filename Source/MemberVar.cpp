@@ -22,6 +22,8 @@ MemberVar::MemberVar(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
   
+  m_nPointers = 0;
+  m_bFunPtr   = false;
   
   _checkInitialised_(CN_MEMBERVAR);
   
@@ -105,7 +107,67 @@ bool MemberVar::bIsMemberVar(Stz* szClassNm, EnameSet* pTerms)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get class name                                                             */
+/* is this member a function pointer?                                         */
+/*----------------------------------------------------------------------------*/
+bool MemberVar::bFunPtr(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  return m_bFunPtr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set is this member a function pointer?                                     */
+/*----------------------------------------------------------------------------*/
+void MemberVar::vFunPtr(bool bFunPtr)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  m_bFunPtr = bFunPtr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of type pointers                                                */
+/*----------------------------------------------------------------------------*/
+i8 MemberVar::nPointers(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  return m_nPointers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of type pointers                                                */
+/*----------------------------------------------------------------------------*/
+void MemberVar::vPointers(i8 nPointers)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  m_nPointers = nPointers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set type name                                                              */
+/*----------------------------------------------------------------------------*/
+void MemberVar::vTypeNm(Stz* szTypeNm)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  m_sTypeNm = szTypeNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get type name                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* MemberVar::szTypeNm(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  return m_sTypeNm.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get variable name                                                          */
 /*----------------------------------------------------------------------------*/
 Stz* MemberVar::szVarNm(void)
 {
@@ -115,7 +177,7 @@ Stz* MemberVar::szVarNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set class name                                                             */
+/* set variable name                                                          */
 /*----------------------------------------------------------------------------*/
 void MemberVar::vVarNm(Stz* szVarNm)
 {
