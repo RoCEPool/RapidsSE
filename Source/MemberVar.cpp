@@ -32,7 +32,7 @@ MemberVar::MemberVar(MemberSet* p_MemberSet)
   m_sTypeNm   = C_NO_NAME;
   m_nPointers = 0;
   m_bFunPtr   = false;
-  m_nBits = 0;
+  m_nBits     = 0;
   
   // MV_SET: nested set
   m_pNestedSet = nullptr;
@@ -249,6 +249,26 @@ MemberSet* MemberVar::pMemberSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the nested set                                                         */
+/*----------------------------------------------------------------------------*/
+MemberSet* MemberVar::pNestedSet(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  return m_pNestedSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the nested set                                                         */
+/*----------------------------------------------------------------------------*/
+void MemberVar::vNestedSet(MemberSet* pNestedSet)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  m_pNestedSet = pNestedSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of type pointers                                                */
 /*----------------------------------------------------------------------------*/
 i8 MemberVar::nPointers(void)
@@ -274,19 +294,27 @@ void MemberVar::vPointers(i8 nPointers)
 void MemberVar::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
-      
-  vTrace("%sMemberVar %s  Type %s Ptrs=%lld FunPtr=%lld Elms=%lld Bits=%lld\n"_Stz,
+     
+  if (MV_SET == m_eVar)
+    vTrace("%sMemberVar %s\n"_Stz,
+           
+           Stz::szTab(i_Tab)->azChar(),
+           m_sVarNm.azChar(),
+           
+           C_ENDARGS);
+  else
+    vTrace("%sMemberVar %s Type %s Ptrs=%lld FunPtr=%lld Elms=%lld Bits=%lld\n"_Stz,
          
-         Stz::szTab(i_Tab)->azChar(),
-         m_sVarNm.azChar(),
+           Stz::szTab(i_Tab)->azChar(),
+           m_sVarNm.azChar(),
          
-         m_sTypeNm.azChar(),
-         m_nPointers,
-         (i8)m_bFunPtr,
-         m_nElements,
-         m_nBits,
+           m_sTypeNm.azChar(),
+           m_nPointers,
+           (i8)m_bFunPtr,
+           m_nElements,
+           m_nBits,
          
-         C_ENDARGS);
+           C_ENDARGS);
 
 }
 
@@ -298,6 +326,9 @@ void MemberVar::vRecPrint(i8 i_Depth)
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
   
   vPrint(i_Depth);
+  
+  if (MV_SET == m_eVar)
+    m_pNestedSet->vRecPrint(i_Depth + 1);
 }
 
 /*----------------------------------------------------------------------------*/
