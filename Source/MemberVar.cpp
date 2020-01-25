@@ -24,10 +24,21 @@ MemberVar::MemberVar(MemberSet* p_MemberSet)
   
   m_p_MemberSet = p_MemberSet;
   
+  // var name
+  m_sVarNm = C_NO_NAME;
+  m_eVar   = MV_VAR;
+
+  // MV_VAR: simple var
+  m_sTypeNm   = C_NO_NAME;
   m_nPointers = 0;
   m_bFunPtr   = false;
+  m_nBits = 0;
+  
+  // MV_SET: nested set
+  m_pNestedSet = nullptr;
+  
+  // arrays
   m_nElements = 0;
-  m_nBits     = 0;
   
   _checkInitialised_(CN_MEMBERVAR);
   
@@ -40,6 +51,8 @@ MemberVar::MemberVar(MemberSet* p_MemberSet)
 MemberVar::~MemberVar(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  
+  delete m_pNestedSet;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -11,13 +11,21 @@ namespace Reflection
   public:
     MemberSet* m_p_MemberSet; // the _p_ sequence means not owned by
   
+    // var name
     s32 m_sVarNm;    // name of the member variable
+    eMV m_eVar;      // kind of var
   
+    // MV_VAR: simple var
     s32 m_sTypeNm;   // type name (such as Footer)
     i8  m_nPointers; // number of asterisks after the type name
     bool m_bFunPtr;  // is this variable a function pointer?
-    i8  m_nElements; // how many array elements (0 means not an array)
     i8  m_nBits;     // no of bits if bit field;
+    
+    // MV_SET: nested set
+    MemberSet* m_pNestedSet; // nested set
+
+    // arrays
+    i8  m_nElements; // how many array elements (0 means not an array)
   
     // must be last
     Footer m_xFooter;
