@@ -24,6 +24,7 @@ shortcut r  _lineitemrjh ;
 shortcut s  _select ;
 shortcut sc startCluster ;
 shortcut u  _upsertRJH;
+shortcut v  vortex;
 
 // shortcut;
 

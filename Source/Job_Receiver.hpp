@@ -9,8 +9,8 @@ namespace Jobs
   class Job_Receiver : public Job
   {
   private:
-    i8      m_iConnNo;  // which logical connection
-    Grids::Node* m_pNode; // the peer node on the other side of the socket
+    i8    m_iConnNo;  // which logical connection
+    Node* m_pNode; // the peer node on the other side of the socket
   
      // must be last
     Footer m_xFooter;
