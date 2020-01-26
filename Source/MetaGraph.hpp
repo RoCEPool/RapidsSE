@@ -10,6 +10,8 @@ namespace Reflection
   {
   public:
  
+    ConstSet* m_pConsSet;
+  
     // must be last
     Footer m_xFooter;
     
@@ -21,7 +23,9 @@ namespace Reflection
    ~MetaGraph(void) noexcept(false);
   
     MetaClass* pAddMetaClass(Stz* szClassNm);
-      
+    
+    ConstSet* pConstSet(void);
+
     void vPrint(void);
     void vRecPrint(void);
   

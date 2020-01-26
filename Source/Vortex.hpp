@@ -28,6 +28,7 @@ namespace Utilities
     EnameSet   m_oTerms;
   
     MetaGraph* m_pMetaGraph;
+    ConstSet*  m_pConsSet;
     MetaClass* m_pMetaClass_cur;
     MemberSet* m_pMemberSet_cur;
     MemberVar* m_pMemberVar_cur;

@@ -22,6 +22,7 @@ MetaGraph::MetaGraph(void)
 {
   _precondition_(_MAGIC_,CN_METAGRAPH,_FOOTER_);
   
+  m_pConsSet = new ConstSet(this);
   
   _checkInitialised_(CN_METAGRAPH);
   
@@ -34,6 +35,8 @@ MetaGraph::MetaGraph(void)
 MetaGraph::~MetaGraph(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_METAGRAPH,_FOOTER_);
+  
+  delete m_pConsSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,6 +46,14 @@ MetaGraph::~MetaGraph(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get const set                                                              */
+/*----------------------------------------------------------------------------*/
+ConstSet* MetaGraph::pConstSet(void)
+{
+  return m_pConsSet;
+}
 
 /*----------------------------------------------------------------------------*/
 /* add a new metaclass with given name                                        */
