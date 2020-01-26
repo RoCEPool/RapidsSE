@@ -51,6 +51,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vDummy,           // CN_CMD_SELECT
   /* */ &Dump::vDummy,           // CN_COMMAND
   /* */ &Dump::vDummy,           // CN_COMPILER
+  /* */ &Dump::vDummy,           // CN_CONSTDEF
   /* */ &Dump::vUndefined,       // CN_CRVBUFFER
   /* */ &Dump::vUndefined,       // CN_CRWBUFFER
   /* */ &Dump::vUndefined,       // CN_CSVBUFFER
@@ -382,6 +383,7 @@ i8 giClassSize[]
   /* */ sizeof(Column),             // CN_COLUMN
   /* */ sizeof(Request),            // CN_COMMAND
   /* */ sizeof(Compiler),           // CN_COMPILER
+  /* */ sizeof(ConstDef),           // CN_CONSTDEF
   /* */ sizeof(CrvBuffer),          // CN_CRVBUFFER
   /* */ sizeof(CrwBuffer),          // CN_CRWBUFFER
   /* */ sizeof(CsvBuffer),          // CN_CSVBUFFER
@@ -713,6 +715,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_COLUMN
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COMMAND
   /* */ HT_TRANSIENT_MEDIUM,  // CN_COMPILER
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_CONSTDEF
   /* */ HT_TRANSIENT_LARGE,   // CN_CRVBUFFER
   /* */ HT_TRANSIENT_LARGE,   // CN_CRWBUFFER
   /* */ HT_TRANSIENT_LARGE,   // CN_CSVBUFFER
