@@ -22,6 +22,8 @@ namespace Reflection
     MetaGraph(void);
    ~MetaGraph(void) noexcept(false);
   
+    static void vPrintTermSeq(EnameSet& roTerms);
+  
     MetaClass* pAddMetaClass(Stz* szClassNm);
     
     ConstSet* pConstSet(void);

@@ -110,13 +110,17 @@ void ConstDef::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_CONSTDEF,_FOOTER_);
      
-    vTrace("%sConst %-16s %lld\n"_Stz,
-           
-           Stz::szTab(i_Tab)->azChar(),
-           m_sConstNm.azChar(),
-           m_iConst,
-           
-           C_ENDARGS);
+  vTrace("%sConst %-16s %6lld :- "_Stz,
+         
+         Stz::szTab(i_Tab)->azChar(),
+         m_sConstNm.azChar(),
+         m_iConst,
+         
+         C_ENDARGS);
+  
+  MetaGraph::vPrintTermSeq(m_oTerms);
+  
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

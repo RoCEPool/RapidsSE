@@ -312,7 +312,7 @@ void Vortex::vParseClassMembers(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: static const i8 <constNm> = ... ;                                   */
+/* parse: static const i8 <constNm> __ = ... ;                                */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseConst(void)
 {
