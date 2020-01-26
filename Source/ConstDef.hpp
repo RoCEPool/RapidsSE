@@ -5,14 +5,15 @@
 
 namespace Reflection
 {
-  class ConstDef : public Object
+  class ConstDef : public Object,
+                   public ListItem_t<ConstDef>
   {
   public:
-    //MemberSet* m_p_MemberSet; // the _p_ sequence means not owned by
+    ConstSet* m_p_ConstSet; // the _p_ sequence means not owned by
   
     // const name
     s32 m_sConstNm;   // name of the constant
-    i8  m_iValue;     // value of the constant
+    i8  m_iConst;     // value of the constant
   
     EnameSet m_oTerms; // terms of this constant
 
@@ -23,11 +24,18 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    ConstDef(MemberSet* p_MemberSet);
+    ConstDef(ConstSet* p_ConstSet);
    ~ConstDef(void) noexcept(false);
   
     static bool bIsConstDef(Stz* szConstNm, EnameSet* pTerms);
     static Stz* szConstNm(EnameSet* pTerms);
+
+    Stz* szConstNm(void);
+    void vConstNm(Stz* szConstNm);
+
+    i8 iConst(void);
+
+    void vTerms(EnameSet& roTerms);
 
     Footer* aFooter(void);
   };

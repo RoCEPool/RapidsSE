@@ -17,16 +17,15 @@ __aFooterFunction(ConstDef)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ConstDef::ConstDef(MemberSet* p_MemberSet)
+ConstDef::ConstDef(ConstSet* p_ConstSet)
 : Object(CN_CONSTDEF)
 {
   _precondition_(_MAGIC_,CN_CONSTDEF,_FOOTER_);
   
-  //m_p_MemberSet = p_MemberSet;
+  m_p_ConstSet = p_ConstSet;
   
-  // var name
   m_sConstNm = C_NO_NAME;
-  m_iValue   = C_UNKNOWN;
+  m_iConst   = C_UNKNOWN;
 
   //m_oTerms
   
@@ -73,6 +72,48 @@ Stz* ConstDef::szConstNm(EnameSet* pTerms)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get const name                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* ConstDef::szConstNm(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  return m_sConstNm.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set const name                                                             */
+/*----------------------------------------------------------------------------*/
+void ConstDef::vConstNm(Stz* szConstNm)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  m_sConstNm = szConstNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get const value                                                            */
+/*----------------------------------------------------------------------------*/
+i8 ConstDef::iConst(void)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  return m_iConst;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get const terms                                                            */
+/*----------------------------------------------------------------------------*/
+void ConstDef::vTerms(EnameSet& roTerms)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  m_oTerms.vCopy(&roTerms);
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */
