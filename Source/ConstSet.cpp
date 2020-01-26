@@ -68,10 +68,10 @@ void ConstSet::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_CONSTSET,_FOOTER_);
     
-  vTrace("%sConstSet \n"_Stz,
-         
-         Stz::szTab(i_Tab)->azChar()
-         );
+  for (ConstDef* pConstDef = pHead();
+       pConstDef;
+       pConstDef = pConstDef->pNextItem())
+    pConstDef->vPrint(0);
 }
 
 /*============================================================================*/

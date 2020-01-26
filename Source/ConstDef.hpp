@@ -35,6 +35,8 @@ namespace Reflection
 
     i8 iConst(void);
 
+    void vPrint(i8 i_Tab);
+
     void vTerms(EnameSet& roTerms);
 
     Footer* aFooter(void);

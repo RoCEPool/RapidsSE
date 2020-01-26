@@ -10,7 +10,7 @@ namespace Reflection
   {
   public:
  
-    ConstSet* m_pConsSet;
+    ConstSet* m_pConstSet;
   
     // must be last
     Footer m_xFooter;

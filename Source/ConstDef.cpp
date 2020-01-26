@@ -104,6 +104,22 @@ i8 ConstDef::iConst(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void ConstDef::vPrint(i8 i_Tab)
+{
+  _precondition_(_MAGIC_,CN_CONSTDEF,_FOOTER_);
+     
+    vTrace("%sConst %-16s %lld\n"_Stz,
+           
+           Stz::szTab(i_Tab)->azChar(),
+           m_sConstNm.azChar(),
+           m_iConst,
+           
+           C_ENDARGS);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get const terms                                                            */
 /*----------------------------------------------------------------------------*/
 void ConstDef::vTerms(EnameSet& roTerms)

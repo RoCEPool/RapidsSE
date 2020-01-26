@@ -22,7 +22,7 @@ MetaGraph::MetaGraph(void)
 {
   _precondition_(_MAGIC_,CN_METAGRAPH,_FOOTER_);
   
-  m_pConsSet = new ConstSet(this);
+  m_pConstSet = new ConstSet(this);
   
   _checkInitialised_(CN_METAGRAPH);
   
@@ -36,7 +36,7 @@ MetaGraph::~MetaGraph(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_METAGRAPH,_FOOTER_);
   
-  delete m_pConsSet;
+  delete m_pConstSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +52,7 @@ MetaGraph::~MetaGraph(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 ConstSet* MetaGraph::pConstSet(void)
 {
-  return m_pConsSet;
+  return m_pConstSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,6 +78,8 @@ void MetaGraph::vRecPrint(void)
 {
   _precondition_(_MAGIC_,CN_METAGRAPH,_FOOTER_);
     
+  m_pConstSet->vPrint(0);  
+  
   for (MetaClass* pMetaClass = pHead();
        pMetaClass;
        pMetaClass = pMetaClass->pNextItem())
