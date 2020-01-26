@@ -55,13 +55,15 @@ namespace Utilities
 
   private:
     void vAddTerm(Stz* szTerm);
+    bool bCollectTerms(Stz* szEnd, bool bAddEnd=false);
     bool bGetToken(Token* pToken);
   
-    void vParseAllClasses(void);
+    void vParseAll(void);
     void vParseClassBase(void);
     void vParseClassBlock(void);
     void vParseClassFunction(void);
     void vParseClassMembers(void);
+    void vParseConst(void);
     bool bParseLabelledMember(void);
     void vParseMemberProper(void);
     void vParseStructArray(void);

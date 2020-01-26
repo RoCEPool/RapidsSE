@@ -111,7 +111,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   m_pInput = new Input;
   m_pInput->vPushFile(szSourcePath);
   
-  vParseAllClasses();
+  vParseAll();
 
   delete m_pInput;
   m_pInput = nullptr;
@@ -134,6 +134,34 @@ void Vortex::vAddTerm(Stz* szTerm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add term                                                                   */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bCollectTerms(Stz* szEnd, bool bAddEnd)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_oTerms.vReset();
+  
+  Token xTkn;
+  for (;;) {
+    
+    if (! bGetToken(&xTkn))
+      return false;
+    
+    if (xTkn.bSame(szEnd)) {
+      
+      if (bAddEnd)
+        m_oTerms.vAdd(xTkn.szTerm());
+      
+      return true;
+    }
+    
+    m_oTerms.vAdd(xTkn.szTerm());
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next token                                                             */
 /*----------------------------------------------------------------------------*/
 bool Vortex::bGetToken(Token* pToken)
@@ -151,12 +179,28 @@ bool Vortex::bGetToken(Token* pToken)
 /*----------------------------------------------------------------------------*/
 /* process all classes in the current source file (.h or .hpp)                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseAllClasses(void)
+void Vortex::vParseAll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   while (bGetToken(&m_xToken_Other)) {                                    // 🌀
-   
+
+    if (m_xToken_Other.bSame("static"_Stz)) {
+      
+     Token xTkn;
+     if (! bGetToken(&xTkn))
+        break;
+     if (! xTkn.bSame("const"_Stz))
+        break;
+     if (! bGetToken(&xTkn))
+        break;
+     if (! xTkn.bSame("i8"_Stz))
+        break;
+       
+      vParseConst();
+      continue;
+    }
+    
     if (m_xToken_Other.bSame("friend"_Stz)) {
       
       while (bGetToken(&m_xToken_Other)) {
@@ -266,6 +310,37 @@ void Vortex::vParseClassMembers(void)
   }
   
 }
+
+/*----------------------------------------------------------------------------*/
+/* parse: static const i8 <constNm> = ... ;                                   */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseConst(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  // seen: static const i8
+  
+  m_oTerms.vReset();
+  
+  Token xConstNm;
+  if (! bGetToken(&xConstNm))
+     return;
+
+  Token xTkn;
+  do {
+    if (! bGetToken(&xTkn))
+      return;
+    
+  } while (! xTkn.bSame(";"_Stz));
+
+  vTrace("Const %s\n"_Stz,xConstNm.azTerm());
+  
+  if (bCollectTerms(";"_Stz)) {
+    ConstDef* pConstDef = m_pConsSet->pAddConstDef(xConstNm.szTerm());
+    pConstDef->vTerms(m_oTerms);
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* parse single (optionally labelled) member                                  */
