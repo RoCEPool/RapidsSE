@@ -48,6 +48,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_COMMAND
   /*    */ &Finalize::vUndefined,         // CN_COMPILER
   /*    */ &Finalize::vUndefined,         // CN_CONSTDEF
+  /*    */ &Finalize::vUndefined,         // CN_CONSTSET
   /*    */ &Finalize::vUndefined,         // CN_CRVBUFFER
   /*    */ &Finalize::vUndefined,         // CN_CRWBUFFER
   /*    */ &Finalize::vUndefined,         // CN_CSVBUFFER
