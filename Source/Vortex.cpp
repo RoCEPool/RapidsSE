@@ -299,6 +299,41 @@ void Vortex::vParseConst(void)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* parse:                                                                     */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseHashDefine(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+
+  RASSERT(bGetToken(&xTkn));
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse:                                                                     */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseHashInclude(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+
+  RASSERT(bGetToken(&xTkn));
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse:                                                                     */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseHashPragma(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+
+  RASSERT(bGetToken(&xTkn));
+}
 
 /*----------------------------------------------------------------------------*/
 /* parse single (optionally labelled) member                                  */
@@ -409,30 +444,40 @@ bool Vortex::bParseNamespace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  Token xFirstTkn;
-  while (bGetToken(&xFirstTkn)) {                                          // 🌀
+  Token xTkn;
+  
+  RASSERT(bGetToken(&xTkn));
+  RASSERT(xTkn.bSame("{"_Stz));
+  
+  while (bGetToken(&xTkn)) {
 
-    if (bRecogniseClass(xFirstTkn.szTerm()))
+    if (xTkn.bSame("}"_Stz))
+      return true;
+    
+    if (bRecogniseClass(xTkn.szTerm()))
       continue;
 
-    if (bRecogniseConst(xFirstTkn.szTerm()))
+    if (bRecogniseConst(xTkn.szTerm()))
       continue;
     
-    if (bRecogniseFriend(xFirstTkn.szTerm()))
+    if (bRecogniseFriend(xTkn.szTerm()))
       continue;
 
-    if (bRecogniseHash(xFirstTkn.szTerm()))
+    if (bRecogniseHash(xTkn.szTerm()))
+      continue;
+    
+    if (bRecogniseTemplate(xTkn.szTerm()))
       continue;
     
     // -- last --
-    if (bRecogniseFunction(xFirstTkn.szTerm()))
+    if (bRecogniseFunction(xTkn.szTerm()))
       continue;
     
-    vSkipUnrecognised(xFirstTkn.szTerm());
+    vSkipUnrecognised(xTkn.szTerm());
     
   } // while
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -641,14 +686,20 @@ bool Vortex::bRecogniseHash(Stz* szTerm)
     return false;
   
   RASSERT(bGetToken(&xTkn));
-  if (xTkn.bSame("pragma"_Stz)) {
+  
+  if (xTkn.bSame("define"_Stz)) {
     RASSERT(bGetToken(&xTkn));
-    RASSERT(xTkn.bSame("once"_Stz));
     return true;
   }
 
   if (xTkn.bSame("include"_Stz)) {
     RASSERT(bGetToken(&xTkn));
+    return true;
+  }
+
+  if (xTkn.bSame("pragma"_Stz)) {
+    RASSERT(bGetToken(&xTkn));
+    RASSERT(xTkn.bSame("once"_Stz));
     return true;
   }
 
@@ -700,8 +751,10 @@ bool Vortex::bRecogniseNamespace(Stz* szTerm)
   RASSERT(bGetToken(&xTkn));
   
   m_sNamespaceNm = xTkn.szTerm();
+  
+  bool b = bParseNamespace();
 
-  return false;
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/

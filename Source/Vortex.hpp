@@ -49,6 +49,9 @@ namespace Utilities
     void vParseClassFunction(void);
     void vParseClassMembers(void);
     void vParseConst(void);
+    void vParseHashDefine(void);
+    void vParseHashInclude(void);
+    void vParseHashPragma(void);
     bool bParseLabelledMember(void);
     void vParseMemberProper(Stz* szFirstTerm);
     bool bParseNamespace(void);
