@@ -9,9 +9,9 @@ enum eCP // c++ part
   
   /*    */ CP_CLASS,          // class
   /*    */ CP_ENUM,           // enum
-  /*    */ CP_FILE_INCLUDE,   // #include
+  /*    */ CP_FILE_INCLUDE,   // # include
   /*    */ CP_FORWARD_CLASS,  // class <classNm> ;
-  /*    */ CP_HASH_DEFINE,    // #define
+  /*    */ CP_HASH_DEFINE,    // # define
   /*    */ CP_MACRO,          // macro
   /*    */ CP_MEMBER_FUN,     // member function
   /*    */ CP_MEMBER_VAR,     // member variable
