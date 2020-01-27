@@ -279,13 +279,54 @@ bool Vortex::bParseAllParts(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse class _^_ ...                                                        */
+/* parse: namespace <namespaceNm> { ... class _^_ ...                         */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseClassPart(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vDebugPoint();
+  
+  Token xTkn;
+  
+  // SE semantics: we should be i na namespace
+  CHECKED(m_bInNamespace);
+
+  CHECKED(bGetToken(xTkn));
+  m_sClassNm = xTkn.szTerm();
+  m_bInClass = true;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  CHECKED(bGetToken(xTkn));
+
+  // forward declaration of a class?
+  if (xTkn.bSame(";"_Stz)) {
+    vRecognised(CP_FORWARD_CLASS);
+    m_bInClass = false;
+    m_sClassNm = ""_Stz;
+    return;
+  }
+
+  m_p_MetaClass = m_pMetaGraph->pAddMetaClass(m_sClassNm.szStz());
+  
+  // detect class base clause ?
+  if (xTkn.bSame(":"_Stz)) {
+    m_p_MemberSet = nullptr;
+    m_p_MemberVar = nullptr;
+    vWithinClassBase();
+    return;
+  }
+  
+  // detect class block ?
+  if (xTkn.bSame("{"_Stz)) {
+    m_p_MemberSet = nullptr;
+    m_p_MemberVar = nullptr;
+    vWithinClassBlock();
+    return;
+  }
+
+  vThrowProblem(-9);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -329,14 +370,14 @@ void Vortex::vParseHashPart(void)
 
   if (xTkn.bSame("include"_Stz)) {
     RASSERT(bGetToken(xTkn));
-    vRecognised(CP_INCLUDE);
+    vRecognised(CP_FILE_INCLUDE);
     return;
   }
 
   if (xTkn.bSame("pragma"_Stz)) {
     RASSERT(bGetToken(xTkn));
     RASSERT(xTkn.bSame("once"_Stz));
-    vRecognised(CP_ONCE);
+    vRecognised(CP_PRAGMA_ONCE);
     return;
   }
 
@@ -410,6 +451,34 @@ void Vortex::vParse_otherPart(Stz* szTerm)
 
 
 /*----------------------------------------------------------------------------*/
+/* parse within:                                                              */
+/*----------------------------------------------------------------------------*/
+void Vortex::vWithinClassBase(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  Token xTkn;
+
+  vDebugPoint();
+    
+  vThrowProblem(-9);
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse within:                                                              */
+/*----------------------------------------------------------------------------*/
+void Vortex::vWithinClassBlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  Token xTkn;
+
+  vDebugPoint();
+    
+  vThrowProblem(-9);
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse within: namespace { _^_                                              */
 /*----------------------------------------------------------------------------*/
 void Vortex::vWithinNamespace(void)
@@ -443,6 +512,7 @@ void Vortex::vWithinNamespace(void)
   vThrowProblem(-9);
 }
 
+\
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

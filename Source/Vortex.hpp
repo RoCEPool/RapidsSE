@@ -64,6 +64,8 @@ namespace Utilities
     void vParseUsingPart(void);
     void vParse_otherPart(Stz* szTerm);
   
+    void vWithinClassBase(void);
+    void vWithinClassBlock(void);
     void vWithinNamespace(void);
 
 
