@@ -8,20 +8,19 @@ namespace Utilities
   class Vortex : public Object
   {
   public:
-    File*  m_pVortexFile;
-    s256   m_sSourcePath;
-    Input* m_pInput;
+    File*      m_pOutputFile;  // output file
+    s256       m_sSourcePath;  // .ho/hpp source path
+    Input*     m_pInput;       // input  token stream
   
-    MetaGraph* m_pMetaGraph;
-    ConstSet*  m_pConsSet;
-    MetaClass* m_pMetaClass_cur;
-    MemberSet* m_pMemberSet_cur;
-    MemberVar* m_pMemberVar_cur;
+    MetaGraph* m_pMetaGraph;   // the metagraph that is created
+    ConstSet*  m_p_ConsSet;    // set of static const i8's
+    MetaClass* m_p_MetaClass;  // current working metaclass
+    MemberSet* m_p_MemberSet;  // current working member set
+    MemberVar* m_p_MemberVar;  // current working member var
   
-    EnameSet   m_oTerms;
-    bool       m_bTraceTokens;
+    EnameSet   m_oTerms;       // working set of collected terms
+    bool       m_bTraceTokens; // trace tokens
       
-  
     // must be last
     Footer m_xFooter;
   

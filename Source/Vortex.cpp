@@ -21,15 +21,15 @@ Vortex::Vortex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_pVortexFile = nullptr;
+  m_pOutputFile = nullptr;
   m_sSourcePath = ""_Stz;
   m_pInput      = nullptr;
   
-  m_pMetaGraph     = new MetaGraph;
-  m_pConsSet       = m_pMetaGraph->pConstSet();
-  m_pMetaClass_cur = nullptr;
-  m_pMemberSet_cur = nullptr;
-  m_pMemberVar_cur = nullptr;
+  m_pMetaGraph  = new MetaGraph;
+  m_p_ConsSet   = m_pMetaGraph->pConstSet();
+  m_p_MetaClass = nullptr;
+  m_p_MemberSet = nullptr;
+  m_p_MemberVar = nullptr;
   
   //m_oTerms
   m_bTraceTokens = false;
@@ -47,7 +47,7 @@ Vortex::~Vortex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  delete m_pVortexFile;
+  delete m_pOutputFile;
   delete m_pInput;
   
   delete m_pMetaGraph;
@@ -67,11 +67,11 @@ void Vortex::vClose(void)
     
   m_pMetaGraph->vRecPrint();
   
-  if (m_pVortexFile && m_pVortexFile->bIsOpen())
-    m_pVortexFile->vClose();
+  if (m_pOutputFile && m_pOutputFile->bIsOpen())
+    m_pOutputFile->vClose();
   
-  delete m_pVortexFile;
-  m_pVortexFile = nullptr;
+  delete m_pOutputFile;
+  m_pOutputFile = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,11 +81,11 @@ bool Vortex::bOpen(Stz* szVortexPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
-  RASSERT(! m_pVortexFile);
+  RASSERT(! m_pOutputFile);
   
-  m_pVortexFile = new File(nullptr);
+  m_pOutputFile = new File(nullptr);
   
-  bool b = m_pVortexFile->bOpenWrite(szVortexPath);
+  bool b = m_pOutputFile->bOpenWrite(szVortexPath);
   RASSERT(b);
   
   return true;
@@ -176,8 +176,7 @@ void Vortex::vParseAll(void)
   Token xTkn;
   Token xClassNm;
 
-
-  while (bGetToken(&xTkn)) {                                    // 🌀
+  while (bGetToken(&xTkn)) {                                              // 🌀
 
     if (xTkn.bSame("static"_Stz)) {
       
@@ -215,19 +214,19 @@ void Vortex::vParseAll(void)
 
     // -- -- -- -- -- --
     
-    m_pVortexFile->vPrint("%s\n"_Stz,xClassNm.azTerm());
+    m_pOutputFile->vPrint("%s\n"_Stz,xClassNm.azTerm());
     
-    m_pMetaClass_cur = m_pMetaGraph->pAddMetaClass(xClassNm.szTerm());
+    m_p_MetaClass = m_pMetaGraph->pAddMetaClass(xClassNm.szTerm());
     if (xTkn.bSame(":"_Stz)) {
-      m_pMemberSet_cur = nullptr;
-      m_pMemberVar_cur = nullptr;
+      m_p_MemberSet = nullptr;
+      m_p_MemberVar = nullptr;
       vParseClassBase();
       continue;
     }
     
     if (xTkn.bSame("{"_Stz)) {
-      m_pMemberSet_cur = nullptr;
-      m_pMemberVar_cur = nullptr;
+      m_p_MemberSet = nullptr;
+      m_p_MemberVar = nullptr;
       vParseClassBlock();
       continue;
     }
@@ -329,7 +328,7 @@ void Vortex::vParseConst(void)
   vTrace("Const %s\n"_Stz,xConstNm.azTerm());
   
   if (bCollectTerms(";"_Stz)) {
-    ConstDef* pConstDef = m_pConsSet->pAddConstDef(xConstNm.szTerm());
+    ConstDef* pConstDef = m_p_ConsSet->pAddConstDef(xConstNm.szTerm());
     pConstDef->vTerms(m_oTerms);
   }
 }
@@ -367,16 +366,16 @@ bool Vortex::bParseLabelledMember(void)
     }
     
     if (xTkn.bSame("struct"_Stz)) {
-      m_pMemberSet_cur = m_pMetaClass_cur->pAddMemberSet("struct"_Stz,m_pMemberSet_cur);
+      m_p_MemberSet = m_p_MetaClass->pAddMemberSet("struct"_Stz,m_p_MemberSet);
       vParseStructMember();
-      m_pMemberSet_cur = nullptr;
+      m_p_MemberSet = nullptr;
       continue;
     }
     
     if (xTkn.bSame("union"_Stz)) {
-      m_pMemberSet_cur = m_pMetaClass_cur->pAddMemberSet("union"_Stz,m_pMemberSet_cur);
+      m_p_MemberSet = m_p_MetaClass->pAddMemberSet("union"_Stz,m_p_MemberSet);
       vParseUnionMember();
-      m_pMemberSet_cur = nullptr;
+      m_p_MemberSet = nullptr;
       continue;
     }
 
@@ -386,8 +385,8 @@ bool Vortex::bParseLabelledMember(void)
       return false;
     }
 
-    if (! m_pMemberSet_cur)
-      m_pMemberSet_cur = m_pMetaClass_cur->pAddMemberSet("linear"_Stz,m_pMemberSet_cur);
+    if (! m_p_MemberSet)
+      m_p_MemberSet = m_p_MetaClass->pAddMemberSet("linear"_Stz,m_p_MemberSet);
     vParseMemberProper(xTkn.szTerm());
   }
     
@@ -401,11 +400,11 @@ void Vortex::vParseMemberProper(Stz* szFirstTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  Stz* szClassNm = m_pMetaClass_cur->szClassNm();
+  Stz* szClassNm = m_p_MetaClass->szClassNm();
   
   vTrace("%lld.%lld) %s : "_Stz,
          m_pMetaGraph->nItems(),
-         m_pMemberSet_cur->nItems(),
+         m_p_MemberSet->nItems(),
          szClassNm->azChar());
   
   //vTrace("%s "_Stz,xTkn.azChar());
@@ -447,13 +446,13 @@ void Vortex::vParseMemberProper(Stz* szFirstTerm)
   szVarNm = MemberVar::szVarNm(&m_oTerms,szTypeNm,
                                 nPointers,bFunPtr,nElements,nBits);
   
-  m_pMemberVar_cur = m_pMemberSet_cur->pAddMemberVar(szVarNm);
+  m_p_MemberVar = m_p_MemberSet->pAddMemberVar(szVarNm);
   
-  m_pMemberVar_cur->vTypeNm(szTypeNm);
-  m_pMemberVar_cur->vPointers(nPointers);
-  m_pMemberVar_cur->vFunPtr(bFunPtr);
-  m_pMemberVar_cur->vElements(nElements);
-  m_pMemberVar_cur->vBits(nBits);
+  m_p_MemberVar->vTypeNm(szTypeNm);
+  m_p_MemberVar->vPointers(nPointers);
+  m_p_MemberVar->vFunPtr(bFunPtr);
+  m_p_MemberVar->vElements(nElements);
+  m_p_MemberVar->vBits(nBits);
 
   vDebugPoint();
 }
