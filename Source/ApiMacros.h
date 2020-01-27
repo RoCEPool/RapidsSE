@@ -18,16 +18,20 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
 
 #define API_SYSTEM_LEVEL() \
   Session* pSession = nullptr; \
-  Job* pJob = nullptr;
+  Job* pJob = nullptr; \
+EndDefine
 
 #define API_SESSION_LEVEL() \
-  Job* pJob = nullptr;
+  Job* pJob = nullptr; \
+EndDefine
 
 #define API_JOB_LEVEL() \
-  Job* pJob = _pJob(aJob);
+  Job* pJob = _pJob(aJob); \
+EndDefine
 
 #define API_LOC(iLocation) \
-  SessionArray::vMarkApiLoc(pSession,iLocation);
+  SessionArray::vMarkApiLoc(pSession,iLocation); \
+EndDefine
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -39,7 +43,8 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
 /*----------------------------------------------------------------------------*/
 #define API_BEGIN() \
   if (pSession) \
-    SessionArray::vMarkApiLoc(pSession,200);
+    SessionArray::vMarkApiLoc(pSession,200); \
+EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* catch an error in an API function                                          */
@@ -57,7 +62,8 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
   TRACE_API_ERROR("catch"_Stz,eErrorCode); \
   \
   return eErrorCode; \
-}
+} \
+EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* catch an error in an API function                                          */
@@ -71,7 +77,8 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
   TRACE_API_ERROR("catch"_Stz,eErrorCode); \
   \
   return eErrorCode; \
-}
+} \
+EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* enter an API function                                                      */
@@ -94,7 +101,8 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
     SessionArray::vMarkApiLoc(pSession,100); \
   } \
   \
-  TRACE_API("enter"_Stz);
+  TRACE_API("enter"_Stz); \
+EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* API function is exiting prior to API_RETURN                                */
@@ -109,10 +117,12 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
   AM::vLogSsn(SL_INF,pSession,AA_API_EXIT,"Api %s exit"_Stz,eApiCall); \
   \
   TRACE_API("exiting"_Stz); \
-}
+} \
+EndDefine
 
 #ifdef WITH_DEBUG_VERSION
-  #define WITH_TRACE_API
+  #define WITH_TRACE_API \
+EndDefine
 #endif
 
 /*----------------------------------------------------------------------------*/
@@ -125,10 +135,12 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
     TRACE_API_ERROR((char*)#p1, EC_INVALID_PARAMETER); \
     return EC_INVALID_PARAMETER; \
   } \
-}
+} \
+EndDefine
 
 #else
-#define API_NOTNULL(p1)
+#define API_NOTNULL(p1) \
+EndDefine
 
 #endif
 
@@ -137,10 +149,12 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_DEBUG_VERSION
 #define API_PARAM(p1) \
-  TRACE_API_PARAM("param"_Stz,(p1? p1 : "null"_Stz));
+  TRACE_API_PARAM("param"_Stz,(p1? p1 : "null"_Stz)); \
+EndDefine
 
 #else
-#define API_PARAM(p1)
+#define API_PARAM(p1) \
+EndDefine
 
 #endif
 
@@ -159,7 +173,8 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
   TRACE_API("return"_Stz); \
   \
   return EC_NONE; \
-}
+} \
+EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* return from an API function with an error code                             */
@@ -173,7 +188,8 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
   TRACE_API_ERROR("return error"_Stz,eErrorCode); \
   \
   return eErrorCode; \
-}
+} \
+EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* return from an API function with an error code                             */
@@ -183,7 +199,8 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
   TRACE_API_ERROR("return error"_Stz,eErrorCode); \
   \
   return eErrorCode; \
-}
+} \
+EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* verify buffer pool boundaries                                              */
@@ -197,7 +214,8 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
            gpBufferPool->pBase(), gpBufferPool->pLimit() );  \
     return EC_VALIDATION_FAILURE; \
   } \
-}
+} \
+EndDefine
 
 
 
@@ -215,10 +233,12 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
     vTrace("!%s(%s): %p(%lld)\n"_Stz,  \
            aAC[eApiCall], aMarker, \
            pSession, pSession ? pSession->iPartition() : -1); \
-}
+} \
+EndDefine
 
 #else
-#define TRACE_API(aMarker)
+#define TRACE_API(aMarker) \
+EndDefine
 #endif
 
 /*----------------------------------------------------------------------------*/
@@ -232,10 +252,12 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
            aAC[eApiCall], aMarker, \
            pSession, pSession ? pSession->iPartition() : -1, \
            aEC[eErrorCode], (i8)eErrorCode); \
-}
+} \
+EndDefine
 
 #else
-#define TRACE_API_ERROR(aMarker, eErrorCode)
+#define TRACE_API_ERROR(aMarker, eErrorCode) \
+EndDefine
 #endif
 
 /*----------------------------------------------------------------------------*/
@@ -249,10 +271,12 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
            aAC[eApiCall], aMarker, \
            pSession, pSession ? pSession->iPartition() : -1, \
            sParam ? sParam : "<null>"_Stz); \
-}
+} \
+EndDefine
 
 #else
-#define TRACE_API_ERROR(aMarker, eErrorCode)
+#define TRACE_API_ERROR(aMarker, eErrorCode) \
+EndDefine
 #endif
 
 /*============================================================================*/
