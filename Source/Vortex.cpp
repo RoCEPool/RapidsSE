@@ -724,6 +724,22 @@ bool Vortex::bRecogniseStruct(Stz* szTerm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* can we recognise: template ...                                             */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bRecogniseTemplate(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  if (! szTerm->bSame("template"_Stz))
+    return false;
+
+  
+  
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* can we recognise: union  {                                                 */
 /*----------------------------------------------------------------------------*/
 bool Vortex::bRecogniseUnion(Stz* szTerm)

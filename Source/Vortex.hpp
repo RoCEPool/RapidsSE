@@ -65,6 +65,7 @@ namespace Utilities
     bool bRecogniseMbrOrFun(Stz* szTerm);
     bool bRecogniseNamespace(Stz* szTerm);
     bool bRecogniseStruct(Stz* szTerm);
+    bool bRecogniseTemplate(Stz* szTerm);
     bool bRecogniseUnion(Stz* szTerm);
     bool bRecogniseUsing(Stz* szTerm);
 
