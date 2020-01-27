@@ -51,6 +51,7 @@ namespace Utilities
     void vParseConst(void);
     bool bParseLabelledMember(void);
     void vParseMemberProper(Stz* szFirstTerm);
+    bool bParseNamespace(void);
     void vParseStructArray(void);
     void vParseStructMember(void);
     void vParseUnionMember(void);
@@ -58,14 +59,19 @@ namespace Utilities
     bool bRecogniseClass(Stz* szTerm);
     bool bRecogniseConst(Stz* szTerm);
     bool bRecogniseFriend(Stz* szTerm);
+    bool bRecogniseFunction(Stz* szTerm);
     bool bRecogniseHash(Stz* szTerm);
     bool bRecogniseLabel(Stz* szTerm);
+    bool bRecogniseMbrOrFun(Stz* szTerm);
     bool bRecogniseNamespace(Stz* szTerm);
     bool bRecogniseStruct(Stz* szTerm);
     bool bRecogniseUnion(Stz* szTerm);
     bool bRecogniseUsing(Stz* szTerm);
 
     void vSkipTillSemicolon(Stz* szTerm);
+  
+    void vSkipUnrecognised(Stz* szTerm);
+
   private:
   
     Footer* aFooter(void);

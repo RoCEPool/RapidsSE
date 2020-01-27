@@ -403,6 +403,39 @@ void Vortex::vParseMemberProper(Stz* szFirstTerm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* process all classes in the current source file (.h or .hpp)                */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bParseNamespace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xFirstTkn;
+  while (bGetToken(&xFirstTkn)) {                                          // 🌀
+
+    if (bRecogniseClass(xFirstTkn.szTerm()))
+      continue;
+
+    if (bRecogniseConst(xFirstTkn.szTerm()))
+      continue;
+    
+    if (bRecogniseFriend(xFirstTkn.szTerm()))
+      continue;
+
+    if (bRecogniseHash(xFirstTkn.szTerm()))
+      continue;
+    
+    // -- last --
+    if (bRecogniseFunction(xFirstTkn.szTerm()))
+      continue;
+    
+    vSkipUnrecognised(xFirstTkn.szTerm());
+    
+  } // while
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse struct array                                                         */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseStructArray(void)
@@ -586,6 +619,16 @@ bool Vortex::bRecogniseFriend(Stz* szTerm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* can we recognise: function                                                 */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bRecogniseFunction(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+    
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* can we recognise: # ...                                                    */
 /*----------------------------------------------------------------------------*/
 bool Vortex::bRecogniseHash(Stz* szTerm)
@@ -745,6 +788,31 @@ void Vortex::vSkipTillSemicolon(Stz* szTerm)
     }
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* skip till ;                                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vSkipUnrecognised(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  
+  vTrace("Unrecognised: %s "_Stz,szTerm->azChar());
+  if (szTerm->bSame(";"_Stz)) {
+    vTrace("\n"_Stz,szTerm->azChar());
+    return;
+  }
+        
+  while (bGetToken(&xTkn)) {
+    vTrace("%s "_Stz,xTkn.azTerm());
+    if (xTkn.bSame(";"_Stz)) {
+      vTrace("\n"_Stz,xTkn.azTerm());
+      return;
+    }
+  }
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
