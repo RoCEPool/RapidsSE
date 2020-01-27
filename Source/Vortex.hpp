@@ -16,7 +16,6 @@ namespace Utilities
   
     bool   m_bTraceTokens;
   
-    i8     m_nClasses;
     i8     m_nMembers;
   
     i8     m_nTerms;

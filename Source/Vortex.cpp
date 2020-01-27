@@ -28,7 +28,6 @@ Vortex::Vortex(void)
   // xTkn
   
   m_bTraceTokens = false;
-  m_nClasses     = 0;
   m_nMembers     = 0;
 
   m_nTerms       = 0;
@@ -267,7 +266,6 @@ void Vortex::vParseClassBlock(void)
   // just saw {
   
   m_pVortexFile->vPrint("%s\n"_Stz,m_xToken_ClassNm.azTerm());
-  m_nClasses++;
   
   vParseClassMembers();
 }
@@ -408,7 +406,7 @@ void Vortex::vParseMemberProper(Stz* szFirstTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vTrace("%lld.%lld) %s : "_Stz,
-         m_nClasses,
+         m_pMetaGraph->nItems(),
          m_nMembers++,
          m_xToken_ClassNm.azTerm());
   
