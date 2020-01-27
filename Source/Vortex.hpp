@@ -58,6 +58,7 @@ namespace Utilities
     bool bRecogniseFriend(Stz* szTerm);
     bool bRecogniseLabel(Stz* szTerm);
     bool bRecogniseStruct(Stz* szTerm);
+    bool bRecogniseUnion(Stz* szTerm);
 
     void vSkipEnd(Stz* szTerm);
   private:

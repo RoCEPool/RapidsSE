@@ -219,7 +219,6 @@ void Vortex::vParseClassBlock(void)
   
   // just saw {
   
-  
   vParseClassMembers();
 }
 
@@ -317,13 +316,8 @@ bool Vortex::bParseLabelledMember(void)
     if (bRecogniseStruct(xTkn.szTerm()))
       continue;
     
-    if (xTkn.bSame("union"_Stz)) {
-      m_p_MemberSet = m_p_MetaClass->pAddMemberSet("union"_Stz,m_p_MemberSet);
-      vParseUnionMember();
-      m_p_MemberSet = nullptr;
+    if (bRecogniseUnion(xTkn.szTerm()))
       continue;
-    }
-
 
     if (! m_p_MemberSet)
       m_p_MemberSet = m_p_MetaClass->pAddMemberSet("linear"_Stz,m_p_MemberSet);
@@ -626,6 +620,25 @@ bool Vortex::bRecogniseStruct(Stz* szTerm)
   vParseStructMember();
   m_p_MemberSet = nullptr;
   
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* can we recognise: union  {                                                 */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bRecogniseUnion(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  
+  if (! szTerm->bSame("union"_Stz))
+    return false;
+  
+  m_p_MemberSet = m_p_MetaClass->pAddMemberSet("union"_Stz,m_p_MemberSet);
+  vParseUnionMember();
+  m_p_MemberSet = nullptr;
+
   return true;
 }
 
