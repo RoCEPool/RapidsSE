@@ -305,22 +305,9 @@ bool Vortex::bParseLabelledMember(void)
     if (0 == i_Token && xTkn.bSame(";"_Stz))
       break;
     
-    if (xTkn.bSame("private"_Stz)) {
-      RASSERT(bGetToken(&xTkn));
-      RASSERT(xTkn.bSame(":"_Stz));
+    if (bRecogniseLabel(xTkn.szTerm()))
       continue;
-    }
-    if (xTkn.bSame("protected"_Stz)) {
-      RASSERT(bGetToken(&xTkn));
-      RASSERT(xTkn.bSame(":"_Stz));
-      continue;
-    }
-    if (xTkn.bSame("public"_Stz)) {
-      RASSERT(bGetToken(&xTkn));
-      RASSERT(xTkn.bSame(":"_Stz));
-      continue;
-    }
-    
+        
     if (xTkn.bSame("struct"_Stz)) {
       m_p_MemberSet = m_p_MetaClass->pAddMemberSet("struct"_Stz,m_p_MemberSet);
       vParseStructMember();
@@ -594,6 +581,36 @@ bool Vortex::bRecogniseFriend(Stz* szTerm)
   }
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* can we recognise: private|protected|public :                               */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bRecogniseLabel(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  
+  if (szTerm->bSame("private"_Stz)) {
+    RASSERT(bGetToken(&xTkn));
+    RASSERT(xTkn.bSame(":"_Stz));
+    return true;
+  }
+  
+  if (szTerm->bSame("protected"_Stz)) {
+    RASSERT(bGetToken(&xTkn));
+    RASSERT(xTkn.bSame(":"_Stz));
+    return true;
+  }
+  
+  if (szTerm->bSame("public"_Stz)) {
+    RASSERT(bGetToken(&xTkn));
+    RASSERT(xTkn.bSame(":"_Stz));
+    return true;
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
