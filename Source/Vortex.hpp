@@ -58,6 +58,7 @@ namespace Utilities
     void vParseEnumPart(void);
     void vParseFriendPart(void);
     void vParseHashPart(void);
+    void vParseNamespaceFunction(Stz* szTerm);
     void vParseNamespacePart(void);
     void vParseStaticPart(void);
     void vParseTemplatePart(void);

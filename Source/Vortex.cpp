@@ -161,7 +161,6 @@ bool Vortex::bCollectTerms(Stz* szEnd, bool bAddEnd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oTerms.vReset();
   
   Token xTkn;
   for (;;) {
@@ -387,6 +386,20 @@ void Vortex::vParseHashPart(void)
 /*----------------------------------------------------------------------------*/
 /* parse namespace _^_ ...                                                    */
 /*----------------------------------------------------------------------------*/
+void Vortex::vParseNamespaceFunction(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_oTerms.vReset();
+
+  m_oTerms.vAdd(szTerm);
+  
+  CHECKED(bCollectTerms(";"_Stz));
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse namespace _^_ ...                                                    */
+/*----------------------------------------------------------------------------*/
 void Vortex::vParseNamespacePart(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -505,7 +518,7 @@ void Vortex::vWithinNamespace(void)
     else
     if (xTkn.bSame("template"_Stz))  { vParseTemplatePart();    }
     else {
-      vParse_otherPart(xTkn.szTerm());
+      vParseNamespaceFunction(xTkn.szTerm());
     }
   } // while more tokens
   
