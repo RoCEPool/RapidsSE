@@ -4,8 +4,8 @@
 #pragma once
 
 #define DIV(a,b) (b ? (a / b) : 0)    EndDefine // checked divide
-#define MAX(a,b) (((a)>(b))?(a):(b))  EndDefine // which is smaller
-#define MIN(a,b) (((a)<(b))?(a):(b))  EndDefine // which is bigger
+//#define MAX(a,b) (((a)>(b))?(a):(b))  EndDefine // which is smaller
+//#define MIN(a,b) (((a)<(b))?(a):(b))  EndDefine // which is bigger
 #define MOD(a,b) (b ? (a % b) : 0)    EndDefine // checked modulo
 #define NIL(a,b) (a ? a : b)          EndDefine // null replacement
 

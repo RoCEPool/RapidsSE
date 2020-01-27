@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#define RAPIDSSE_VERSION_STRING "3.1.4"
+static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // platform

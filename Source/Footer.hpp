@@ -37,7 +37,8 @@ namespace Correctness
   { \
     _precondition_(_MAGIC_); \
     return &m_xFooter; \
-  }
+  } \
+EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* macro for standard aFooter() function                                      */
@@ -47,26 +48,27 @@ namespace Correctness
   { \
     _precondition_(_ADDRESS_,_MAGIC_,CN); \
     return &m_xFooter; \
-  }
+  } \
+EndDefine
 
 /*--------------------------------------------------------------------------*/
 /* check the object has a footer marker as its last word                    */
 /*--------------------------------------------------------------------------*/
 #ifdef WITH_CORECTNESS_ALGEBRA
-  #define _footer_()    aFooter()->vAssertFooter();
-  #define _hazard_()    aHazard()->vAssertFooter();
-  #define _header_()    aHeader()->vAssertHeader();
-  #define _setFooter_() aFooter()->vSetFooter();
+  #define _footer_()    aFooter()->vAssertFooter(); EndDefine
+  #define _hazard_()    aHazard()->vAssertFooter(); EndDefine
+  #define _header_()    aHeader()->vAssertHeader(); EndDefine
+  #define _setFooter_() aFooter()->vSetFooter(); EndDefine
 #else
-  #define _footer_()
-  #define _hazard_()
-  #define _header_()
-  #define _setFooter_()
+  #define _footer_() EndDefine
+  #define _hazard_() EndDefine
+  #define _header_() EndDefine
+  #define _setFooter_() EndDefine
 #endif
 
 #ifdef WITH_CHECK_INITIALISED
   #undef _setFooter_
-  #define _setFooter_() aFooter()->vSetFooter();
+  #define _setFooter_() aFooter()->vSetFooter(); EndDefine
 #endif
 
 /*============================================================================*/
