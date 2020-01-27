@@ -45,6 +45,8 @@ namespace Utilities
     bool bCollectTerms(Stz* szEnd, bool bAddEnd=false);
     bool bGetToken(Token* pToken);
   
+    void vDetectAll(void);
+  
     void vParseAll(void);
     void vParseClassBase(void);
     void vParseClassBlock(void);
@@ -76,6 +78,8 @@ namespace Utilities
     bool bRecogniseUnion(Stz* szTerm);
     bool bRecogniseUsing(Stz* szTerm);
  
+  
+  
     void vSkipTillSemicolon(Stz* szTerm);
     void vSkipUnrecognised(Stz* szTerm);
 
