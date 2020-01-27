@@ -305,15 +305,17 @@ bool Vortex::bParseLabelledMember(void)
     if (0 == i_Token && xTkn.bSame(";"_Stz))
       break;
     
+    if (xTkn.bSame("}"_Stz)) {
+      RASSERT(bGetToken(&xTkn));
+      vTrace("\n"_Stz);
+      return false;
+    }
+    
     if (bRecogniseLabel(xTkn.szTerm()))
       continue;
         
-    if (xTkn.bSame("struct"_Stz)) {
-      m_p_MemberSet = m_p_MetaClass->pAddMemberSet("struct"_Stz,m_p_MemberSet);
-      vParseStructMember();
-      m_p_MemberSet = nullptr;
+    if (bRecogniseStruct(xTkn.szTerm()))
       continue;
-    }
     
     if (xTkn.bSame("union"_Stz)) {
       m_p_MemberSet = m_p_MetaClass->pAddMemberSet("union"_Stz,m_p_MemberSet);
@@ -322,11 +324,6 @@ bool Vortex::bParseLabelledMember(void)
       continue;
     }
 
-    if (xTkn.bSame("}"_Stz)) {
-      RASSERT(bGetToken(&xTkn));
-      vTrace("\n"_Stz);
-      return false;
-    }
 
     if (! m_p_MemberSet)
       m_p_MemberSet = m_p_MetaClass->pAddMemberSet("linear"_Stz,m_p_MemberSet);
@@ -611,6 +608,25 @@ bool Vortex::bRecogniseLabel(Stz* szTerm)
   }
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* can we recognise: struct {                                                 */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bRecogniseStruct(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  
+  if (! szTerm->bSame("struct"_Stz))
+    return false;
+  
+  m_p_MemberSet = m_p_MetaClass->pAddMemberSet("struct"_Stz,m_p_MemberSet);
+  vParseStructMember();
+  m_p_MemberSet = nullptr;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
