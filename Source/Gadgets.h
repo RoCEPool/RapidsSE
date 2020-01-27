@@ -55,13 +55,15 @@ typedef void (*FNADDR)(void*);
   \
   FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)Step::FNNAME); \
   \
-  void Step::FNNAME(Forth* pForth)
+  void Step::FNNAME(Forth* pForth) \
+EndDefine
 
 #define JOBS_fn(FNNAME) \
   \
   FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)Jobs::FNNAME); \
   \
-  void Jobs::FNNAME(Job* pJob)
+  void Jobs::FNNAME(Job* pJob) \
+EndDefine
 
 /*============================================================================*/
 /* end                                                                        */
