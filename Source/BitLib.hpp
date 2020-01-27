@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#define BITWISE_AND(a,b) ((a) & (b))  // bitwise and
-#define BITWISE_NOT(a)   (~ ((u8)a) ) // bitwise not
-#define BITWISE_OR(a,b)  ((a) | (b))  // bitwise or
-#define BITWISE_XOR(a,b) ((a) ^ (b))  // bitwise xor
+#define BITWISE_AND(a,b) ((a) & (b))  EndDefine // bitwise and
+#define BITWISE_NOT(a)   (~ ((u8)a) ) EndDefine // bitwise not
+#define BITWISE_OR(a,b)  ((a) | (b))  EndDefine // bitwise or
+#define BITWISE_XOR(a,b) ((a) ^ (b))  EndDefine // bitwise xor
 
-#define BITWISE_SHIFT_LEFT(word,nbits)  ((word) << nBits) // bitwise shift left
-#define BITWISE_SHIFT_RIGHT(word,nbits) ((word) >> nBits) // bitwise shift right
+#define BITWISE_SHIFT_LEFT(word,nbits)  ((word) << nBits) EndDefine // bitwise shift left
+#define BITWISE_SHIFT_RIGHT(word,nbits) ((word) >> nBits) EndDefine // bitwise shift right
 
 const u8 C_ALL_BITS_ON   = 0xFFFFFFFFFFFFFFFFLL;
 

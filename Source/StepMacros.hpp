@@ -30,7 +30,8 @@
   } \
   \
   if (C_TRACE_STEPS && mpTask->m_iTracing) \
-    mpTask->vTraceStep(aStepNm);
+    mpTask->vTraceStep(aStepNm); \
+EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* step exit macro                                                            */
@@ -38,7 +39,8 @@
 #define EXIT() \
   \
   if (_pStepAccum) \
-    _pStepAccum->vExit(_iEnterCycles,_iEnterMisses);
+    _pStepAccum->vExit(_iEnterCycles,_iEnterMisses); \
+EndDefine
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,8 +48,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #else
 
-#define ENTRY(aStepNm)
-#define EXIT()
+#define ENTRY(aStepNm) EndDefine
+#define EXIT() EndDefine
 
 #endif
 

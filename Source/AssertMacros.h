@@ -8,15 +8,15 @@
 /*----------------------------------------------------------------------------*/
 /* explicitly ignore the return value                                         */
 /*----------------------------------------------------------------------------*/
-#define IGNORE_RETURN(call) call
+#define IGNORE_RETURN(call) call EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* check the object is within the pool                                        */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_ADDRESS_CHECKING
-  #define _poolAddress_(pArg) Correctness::vCheckAddress(pArg)
+  #define _poolAddress_(pArg) Correctness::vCheckAddress(pArg) EndDefine
 #else
-  #define _poolAddress_(pArg)
+  #define _poolAddress_(pArg) EndDefine
 #endif
 
 /*----------------------------------------------------------------------------*/
@@ -27,9 +27,10 @@
     if (! (condition)) \
       Correctness::vThrow(FK_ASSERT,VL_FATAL,\
                           __func__,__FILE__,__LINE__,\
-                          (Stz*)#condition);
+                          (Stz*)#condition); \
+EndDefine
 #else
-  #define ASSERT(condition)
+  #define ASSERT(condition) EndDefine
 #endif
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +40,8 @@
   if (! (condition)) \
     Correctness::vThrow(FK_RASSERT,VL_FATAL,\
                         __func__,__FILE__,__LINE__,\
-                        (Stz*)#condition);
+                        (Stz*)#condition); \
+EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* RASSERT_TYPE macro                                                         */
@@ -48,7 +50,8 @@
   if (pOBJECT && eCLASS != pOBJECT->eClass()) \
     Correctness::vThrowType(FK_TYPE,VL_FATAL,\
                             __func__,__FILE__,__LINE__,\
-                            pOBJECT,eCLASS);
+                            pOBJECT,eCLASS); \
+EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* THROW macro                                                                */
@@ -56,7 +59,8 @@
 #define THROW(szDescription) \
   Correctness::vThrow(FK_THROW,VL_FATAL,\
                       __func__,__FILE__,__LINE__,\
-                      szDescription);
+                      szDescription); \
+EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* NEVER_REACH macro (point in code which should never be reached             */
@@ -64,7 +68,8 @@
 #define NEVER_REACH \
   Correctness::vThrow(FK_REACHED,VL_FATAL,\
                       __func__,__FILE__,__LINE__, \
-                      (Stz*)"NEVER_REACH point reached");
+                      (Stz*)"NEVER_REACH point reached"); \
+EndDefine
 
 
 /*============================================================================*/
