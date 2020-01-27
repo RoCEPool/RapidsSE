@@ -22,7 +22,9 @@ namespace Utilities
     bool       m_bTraceTokens; // trace tokens
    
     s32        m_sNamespaceNm; // current namespace name
-      
+    
+    s4K        m_sPart;        // current namespace name
+
     // must be last
     Footer m_xFooter;
   
@@ -44,9 +46,21 @@ namespace Utilities
     void vEndRecognise(bool bCorrectly);
     bool bCollectTerms(Stz* szEnd, bool bAddEnd=false);
     bool bGetToken(Token& roToken);
+    void vNewPart(void);
+    void vRecognised(eCP ePart);
+
+    bool bDetectAll(void);
   
-    void vDetectAll(void);
   
+    void vParseClass(void);
+    void vParseEnum(void);
+    void vParseFriend(void);
+    void vParseHash(void);
+    void vParseNamespace(void);
+    void vParseStatic(void);
+    void vParseUsing(void);
+    void vParse_other(Stz* szTerm);
+
     void vProcAll(void);
     void vProcClassBase(void);
     void vProcClassBlock(void);

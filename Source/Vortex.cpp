@@ -178,10 +178,37 @@ bool Vortex::bGetToken(Token& roToken)
   
   bool b = m_pInput->bGetToken(&roToken);
   
+  if (b) {
+    if (m_sPart.nLength())
+      m_sPart.vAppend(' ');
+    m_sPart.vConcat(roToken.szTerm());
+  }
+  
   if (b && m_bTraceTokens)
-    vTrace("Tkn: %s\n"_Stz,roToken.azTerm());
+    vTrace("Part: %s\n"_Stz,m_sPart.azChar());
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* start new c++ part                                                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vNewPart(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_sPart = ""_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* recognised c++ part                                                        */
+/*----------------------------------------------------------------------------*/
+void Vortex::vRecognised(eCP ePart)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vTrace("Recognised %s\n"_Stz,aCP[ePart]);
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -190,31 +217,122 @@ bool Vortex::bGetToken(Token& roToken)
 /*----------------------------------------------------------------------------*/
 /* process all classes in the current source file (.h or .hpp)                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDetectAll(void)
+bool Vortex::bDetectAll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;
   
-  if (! bGetToken(xTkn))
-    return;
+  m_bTraceTokens = true;
   
-  if (xTkn.bSame("class"_Stz))     {  }
-  else
-  if (xTkn.bSame("enum "_Stz))     {  }
-  else
-  if (xTkn.bSame("friend"_Stz))    {  }
-  else
-  if (xTkn.bSame("#"_Stz))         {  }
-  else
-  if (xTkn.bSame("namespace"_Stz)) {  }
-  else
-  if (xTkn.bSame("static"_Stz))    {  }
-  else
-  if (xTkn.bSame("using"_Stz))     {  }
-  else {
-    // otherwise
-  }
+  while (bGetToken(xTkn)) {
+  
+    try {
+      if (xTkn.bSame("class"_Stz))     { vParseClass();       }
+      else
+      if (xTkn.bSame("enum "_Stz))     { vParseEnum();        }
+      else
+      if (xTkn.bSame("friend"_Stz))    { vParseFriend();      }
+      else
+      if (xTkn.bSame("#"_Stz))         { vParseHash();        }
+      else
+      if (xTkn.bSame("namespace"_Stz)) { vParseNamespace();   }
+      else
+      if (xTkn.bSame("static"_Stz))    { vParseStatic();      }
+      else
+      if (xTkn.bSame("using"_Stz))     { vParseUsing();       }
+      else {
+        vParse_other(xTkn.szTerm());
+      }
+      vNewPart();
+    }
+    catch (i8 iProblem) {
+      return false;
+    }
+    
+  } // while more tokens
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse class _^_ ...                                                        */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseClass(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse enum _^_ ...                                                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseEnum(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse friend _^_ ...                                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFriend(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse hash _^_ ...                                                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseHash(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse namespace _^_ ...                                                    */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseNamespace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse static _^_ ...                                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseStatic(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse using _^_ ...                                                        */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseUsing(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse <term> _^_                                                           */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParse_other(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
