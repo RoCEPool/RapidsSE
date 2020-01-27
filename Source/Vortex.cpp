@@ -176,18 +176,21 @@ void Vortex::vParseAll(void)
   Token xFirstTkn;
   while (bGetToken(&xFirstTkn)) {                                          // 🌀
 
-    if (bRecogniseHash(xFirstTkn.szTerm()))
+    if (bRecogniseClass(xFirstTkn.szTerm()))
       continue;
-    
+
     if (bRecogniseConst(xFirstTkn.szTerm()))
       continue;
     
     if (bRecogniseFriend(xFirstTkn.szTerm()))
       continue;
 
-    if (bRecogniseClass(xFirstTkn.szTerm()))
+    if (bRecogniseHash(xFirstTkn.szTerm()))
       continue;
-
+    
+    if (bRecogniseNamespace(xFirstTkn.szTerm()))
+      continue;
+    
     vSkipTillSemicolon(xFirstTkn.szTerm());
     
   } // while
@@ -630,6 +633,18 @@ bool Vortex::bRecogniseLabel(Stz* szTerm)
     RASSERT(xTkn.bSame(":"_Stz));
     return true;
   }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* can we recognise: namespace ...                                            */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bRecogniseNamespace(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
   
   return false;
 }
