@@ -39,11 +39,6 @@ Vortex::Vortex(void)
   m_pMemberSet_cur = nullptr;
   m_pMemberVar_cur = nullptr;
   
-  m_nPointers = 0;
-  m_bFunPtr   = false;
-  m_nElements = 0;
-  m_nBits     = 0;
-
   _checkInitialised_(CN_VORTEX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -444,18 +439,26 @@ void Vortex::vParseMemberProper(Stz* szFirstTerm)
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8   nPointers;
+  bool bFunPtr;
+  i8   nElements;
+  i8   nBits;
+
+  
   Stz* szVarNm;
   Stz* szTypeNm;
   szVarNm = MemberVar::szVarNm(&m_oTerms,szTypeNm,
-                                m_nPointers,m_bFunPtr,m_nElements,m_nBits);
+                                nPointers,bFunPtr,nElements,nBits);
   
   m_pMemberVar_cur = m_pMemberSet_cur->pAddMemberVar(szVarNm);
   
   m_pMemberVar_cur->vTypeNm(szTypeNm);
-  m_pMemberVar_cur->vPointers(m_nPointers);
-  m_pMemberVar_cur->vFunPtr(m_bFunPtr);
-  m_pMemberVar_cur->vElements(m_nElements);
-  m_pMemberVar_cur->vBits(m_nBits);
+  m_pMemberVar_cur->vPointers(nPointers);
+  m_pMemberVar_cur->vFunPtr(bFunPtr);
+  m_pMemberVar_cur->vElements(nElements);
+  m_pMemberVar_cur->vBits(nBits);
 
   vDebugPoint();
 }

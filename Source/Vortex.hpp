@@ -29,11 +29,6 @@ namespace Utilities
     MemberSet* m_pMemberSet_cur;
     MemberVar* m_pMemberVar_cur;
   
-    i8         m_nPointers;
-    bool       m_bFunPtr;
-    i8         m_nElements;
-    i8         m_nBits;
-
     // must be last
     Footer m_xFooter;
   
