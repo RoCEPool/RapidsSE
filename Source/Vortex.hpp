@@ -40,6 +40,8 @@ namespace Utilities
 
   private:
     void vAddTerm(Stz* szTerm);
+    void vBeginRecognise(void);
+    void vEndRecognise(bool bCorrectly);
     bool bCollectTerms(Stz* szEnd, bool bAddEnd=false);
     bool bGetToken(Token* pToken);
   
@@ -71,9 +73,8 @@ namespace Utilities
     bool bRecogniseTemplate(Stz* szTerm);
     bool bRecogniseUnion(Stz* szTerm);
     bool bRecogniseUsing(Stz* szTerm);
-
+ 
     void vSkipTillSemicolon(Stz* szTerm);
-  
     void vSkipUnrecognised(Stz* szTerm);
 
   private:

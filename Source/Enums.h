@@ -26,6 +26,7 @@ namespace Enums
 #include "eCC.h"
 #include "eCK.h"
 #include "eCM.h"
+#include "eCP.h"
 #include "eCS.h"
 #include "eCT.h"
 
