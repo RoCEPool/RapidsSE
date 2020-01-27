@@ -122,7 +122,7 @@ bool MemberVar::bIsMemberVar(Stz* szClassNm, EnameSet* pTerms)
 /*----------------------------------------------------------------------------*/
 /* get variable name from given terms                                         */
 /*----------------------------------------------------------------------------*/
-Stz* MemberVar::szVarNm(EnameSet* pTerms, s32& rsTypeNm,
+Stz* MemberVar::szVarNm(EnameSet* pTerms, Stz*& rszTypeNm,
                         i8& rnPtrs, bool& rbFunPtr, i8& rnElements, i8& rnBits)
 {
   _static_
@@ -137,7 +137,7 @@ Stz* MemberVar::szVarNm(EnameSet* pTerms, s32& rsTypeNm,
   i8 nTerms = pTerms->nEnames();
   
   i8 i_Term = 0;
-  rsTypeNm = pTerms->szName(i_Term++);
+  rszTypeNm = pTerms->szName(i_Term++);
 
   do {
     szTerm = pTerms->szName(i_Term++);

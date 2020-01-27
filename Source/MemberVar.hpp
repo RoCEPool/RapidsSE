@@ -39,7 +39,7 @@ namespace Reflection
    ~MemberVar(void) noexcept(false);
   
     static bool bIsMemberVar(Stz* szClassNm, EnameSet* pTerms);
-    static Stz* szVarNm(EnameSet* pTerms, s32& rsTypeNm,
+    static Stz* szVarNm(EnameSet* pTerms, Stz*& rszTypeNm,
                         i8& rnPtrs, bool& rbFunPtr, i8& rnElements, i8& rnBits);
 
     i8   nBits(void);

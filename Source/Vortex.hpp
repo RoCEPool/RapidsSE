@@ -14,9 +14,6 @@ namespace Utilities
   
     Token  m_xToken_ClassNm;
   
-    s32    m_sVarNm;
-    s32    m_sTypeNm;
-
     bool   m_bTraceTokens;
   
     i8     m_nClasses;
