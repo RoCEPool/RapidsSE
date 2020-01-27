@@ -20,6 +20,8 @@ namespace Utilities
   
     EnameSet   m_oTerms;       // working set of collected terms
     bool       m_bTraceTokens; // trace tokens
+   
+    s32        m_sNamespaceNm; // current namespace name
       
     // must be last
     Footer m_xFooter;
@@ -61,6 +63,7 @@ namespace Utilities
     bool bRecogniseNamespace(Stz* szTerm);
     bool bRecogniseStruct(Stz* szTerm);
     bool bRecogniseUnion(Stz* szTerm);
+    bool bRecogniseUsing(Stz* szTerm);
 
     void vSkipTillSemicolon(Stz* szTerm);
   private:

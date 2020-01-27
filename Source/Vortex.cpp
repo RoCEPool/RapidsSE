@@ -33,6 +33,8 @@ Vortex::Vortex(void)
   
   //m_oTerms
   m_bTraceTokens = false;
+  
+  m_sNamespaceNm = C_NO_NAME;
 
   
   _checkInitialised_(CN_VORTEX);
@@ -189,6 +191,9 @@ void Vortex::vParseAll(void)
       continue;
     
     if (bRecogniseNamespace(xFirstTkn.szTerm()))
+      continue;
+    
+    if (bRecogniseUsing(xFirstTkn.szTerm()))
       continue;
     
     vSkipTillSemicolon(xFirstTkn.szTerm());
@@ -644,8 +649,15 @@ bool Vortex::bRecogniseNamespace(Stz* szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
+  if (! szTerm->bSame("namespace"_Stz))
+    return false;
+
   Token xTkn;
   
+  RASSERT(bGetToken(&xTkn));
+  
+  m_sNamespaceNm = xTkn.szTerm();
+
   return false;
 }
 
@@ -683,6 +695,29 @@ bool Vortex::bRecogniseUnion(Stz* szTerm)
   m_p_MemberSet = m_p_MetaClass->pAddMemberSet("union"_Stz,m_p_MemberSet);
   vParseUnionMember();
   m_p_MemberSet = nullptr;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* can we recognise: using namespace ...                                      */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bRecogniseUsing(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  
+  if (! szTerm->bSame("using"_Stz))
+    return false;
+  
+  RASSERT(bGetToken(&xTkn));
+  RASSERT(xTkn.bSame("namespace"_Stz));
+
+  RASSERT(bGetToken(&xTkn));
+  
+  RASSERT(bGetToken(&xTkn));
+  RASSERT(xTkn.bSame(";"_Stz));
 
   return true;
 }
