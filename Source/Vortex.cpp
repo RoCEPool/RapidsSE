@@ -173,12 +173,18 @@ bool Vortex::bCollectTerms(Stz* szEnd, bool bAddEnd)
       if (bAddEnd)
         m_oTerms.vAdd(xTkn.szTerm());
       
-      return true;
+      break;
     }
     
     m_oTerms.vAdd(xTkn.szTerm());
   }
 
+  s48K sNamesString;
+  m_oTerms.vNamesString(sNamesString);
+  
+  vTrace("Names: %s"_Stz,sNamesString.azChar());
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -19,7 +19,7 @@ namespace Gadgets
       eTN m_eToken;
     } m_xEname[C_ENAME_SET];
 
-    b4K  m_bStrings;
+    b4K  m_yxStrings;
   
     // must be last
     Footer m_xFooter;
@@ -41,6 +41,7 @@ namespace Gadgets
     i8   i_Find(Stz* szName);
     bool bHasName(Stz* szName);
     Stz* szName(i8 i_Ename);
+    void vNamesString(String* pString);
     void vPrint(void);
     void vPrintDetailed(void);
     void vReplace(Stz* szName, Stz* szValue);
