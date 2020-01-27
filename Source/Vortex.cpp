@@ -104,7 +104,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   m_pInput = new Input;
   m_pInput->vPushFile(szSourcePath);
   
-  vParseAll();
+  vProcAll();
 
   delete m_pInput;
   m_pInput = nullptr;
@@ -153,7 +153,7 @@ bool Vortex::bCollectTerms(Stz* szEnd, bool bAddEnd)
   Token xTkn;
   for (;;) {
     
-    if (! bGetToken(&xTkn))
+    if (! bGetToken(xTkn))
       return false;
     
     if (xTkn.bSame(szEnd)) {
@@ -172,14 +172,14 @@ bool Vortex::bCollectTerms(Stz* szEnd, bool bAddEnd)
 /*----------------------------------------------------------------------------*/
 /* get next token                                                             */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bGetToken(Token* pToken)
+bool Vortex::bGetToken(Token& roToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  bool b = m_pInput->bGetToken(pToken);
+  bool b = m_pInput->bGetToken(&roToken);
   
   if (b && m_bTraceTokens)
-    vTrace("Tkn: %s\n"_Stz,pToken->azTerm());
+    vTrace("Tkn: %s\n"_Stz,roToken.azTerm());
   
   return b;
 }
@@ -195,6 +195,9 @@ void Vortex::vDetectAll(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;
+  
+  if (! bGetToken(xTkn))
+    return;
   
   if (xTkn.bSame("class"_Stz))     {  }
   else
@@ -222,12 +225,12 @@ void Vortex::vDetectAll(void)
 /*----------------------------------------------------------------------------*/
 /* process all classes in the current source file (.h or .hpp)                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseAll(void)
+void Vortex::vProcAll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xFirstTkn;
-  while (bGetToken(&xFirstTkn)) {                                          // 🌀
+  while (bGetToken(xFirstTkn)) {                                          // 🌀
 
     if (bRecogniseClass(xFirstTkn.szTerm()))
       continue;
@@ -256,17 +259,17 @@ void Vortex::vParseAll(void)
 /*----------------------------------------------------------------------------*/
 /* parse base (inheritence) clause of a class                                 */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseClassBase(void)
+void Vortex::vProcClassBase(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   // just saw: class <classNm :
   
   Token xTkn;
-  while (bGetToken(&xTkn)) {
+  while (bGetToken(xTkn)) {
     
     if (xTkn.bSame("{"_Stz)) {
-      vParseClassBlock();
+      vProcClassBlock();
       break;
     }
   }
@@ -275,26 +278,26 @@ void Vortex::vParseClassBase(void)
 /*----------------------------------------------------------------------------*/
 /* parse class block, i.e. the { ... } sequence                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseClassBlock(void)
+void Vortex::vProcClassBlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   // just saw {
   
-  vParseClassMembers();
+  vProcClassMembers();
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse class function                                                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseClassFunction(void)
+void Vortex::vProcClassFunction(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   // just saw {
   
   Token xTkn;
-  while (bGetToken(&xTkn)) {
+  while (bGetToken(xTkn)) {
     
     if (xTkn.bSame("}"_Stz))
       break;
@@ -304,7 +307,7 @@ void Vortex::vParseClassFunction(void)
 /*----------------------------------------------------------------------------*/
 /* parse all members of a class                                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseClassMembers(void)
+void Vortex::vProcClassMembers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
@@ -314,7 +317,7 @@ void Vortex::vParseClassMembers(void)
   
   for (;;) {
 
-    if (! bParseLabelledMember())
+    if (! bProcLabelledMember())
       break;
   }
   
@@ -323,7 +326,7 @@ void Vortex::vParseClassMembers(void)
 /*----------------------------------------------------------------------------*/
 /* parse: static const i8 <constNm> ^_ = ... ;                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseConst(void)
+void Vortex::vProcConst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -332,12 +335,12 @@ void Vortex::vParseConst(void)
   m_oTerms.vReset();
   
   Token xConstNm;
-  if (! bGetToken(&xConstNm))
+  if (! bGetToken(xConstNm))
      return;
 
   Token xTkn;
   do {
-    if (! bGetToken(&xTkn))
+    if (! bGetToken(xTkn))
       return;
     
   } while (! xTkn.bSame(";"_Stz));
@@ -353,7 +356,7 @@ void Vortex::vParseConst(void)
 /*----------------------------------------------------------------------------*/
 /* parse:                                                                     */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseEnum(void)
+void Vortex::vProcEnum(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -362,56 +365,56 @@ void Vortex::vParseEnum(void)
 /*----------------------------------------------------------------------------*/
 /* parse:                                                                     */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseHashDefine(void)
+void Vortex::vProcHashDefine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;
 
-  RASSERT(bGetToken(&xTkn));
+  RASSERT(bGetToken(xTkn));
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse:                                                                     */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseHashInclude(void)
+void Vortex::vProcHashInclude(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;
 
-  RASSERT(bGetToken(&xTkn));
+  RASSERT(bGetToken(xTkn));
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse:                                                                     */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseHashPragma(void)
+void Vortex::vProcHashPragma(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;
 
-  RASSERT(bGetToken(&xTkn));
+  RASSERT(bGetToken(xTkn));
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse single (optionally labelled) member                                  */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bParseLabelledMember(void)
+bool Vortex::bProcLabelledMember(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
  
   // just saw {
   
   Token xTkn;
-  for (i8 i_Token = 0; bGetToken(&xTkn); i_Token++) {
+  for (i8 i_Token = 0; bGetToken(xTkn); i_Token++) {
 
     if (0 == i_Token && xTkn.bSame(";"_Stz))
       break;
     
     if (xTkn.bSame("}"_Stz)) {
-      RASSERT(bGetToken(&xTkn));
+      RASSERT(bGetToken(xTkn));
       vTrace("\n"_Stz);
       return false;
     }
@@ -427,7 +430,7 @@ bool Vortex::bParseLabelledMember(void)
 
     if (! m_p_MemberSet)
       m_p_MemberSet = m_p_MetaClass->pAddMemberSet("linear"_Stz,m_p_MemberSet);
-    vParseMemberProper(xTkn.szTerm());
+    vProcMemberProper(xTkn.szTerm());
   }
     
   return false;
@@ -436,7 +439,7 @@ bool Vortex::bParseLabelledMember(void)
 /*----------------------------------------------------------------------------*/
 /* parse member                                                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseMemberProper(Stz* szFirstTerm)
+void Vortex::vProcMemberProper(Stz* szFirstTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -454,14 +457,14 @@ void Vortex::vParseMemberProper(Stz* szFirstTerm)
   vAddTerm(szFirstTerm);
   
   Token xTkn;
-  while (bGetToken(&xTkn)) {
+  while (bGetToken(xTkn)) {
     
     if (xTkn.bSame(";"_Stz)) {
       break;
     }
     
     if (xTkn.bSame("{"_Stz)) {
-      vParseClassFunction();
+      vProcClassFunction();
       break ;
     }
 
@@ -500,16 +503,16 @@ void Vortex::vParseMemberProper(Stz* szFirstTerm)
 /*----------------------------------------------------------------------------*/
 /* process all classes in the current source file (.h or .hpp)                */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bParseNamespace(void)
+bool Vortex::bProcNamespace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;
   
-  RASSERT(bGetToken(&xTkn));
+  RASSERT(bGetToken(xTkn));
   RASSERT(xTkn.bSame("{"_Stz));
   
-  while (bGetToken(&xTkn)) {
+  while (bGetToken(xTkn)) {
 
     if (xTkn.bSame("}"_Stz))
       return true;
@@ -543,19 +546,19 @@ bool Vortex::bParseNamespace(void)
 /*----------------------------------------------------------------------------*/
 /* parse struct array                                                         */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseStructArray(void)
+void Vortex::vProcStructArray(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;
-  RASSERT(bGetToken(&xTkn));
+  RASSERT(bGetToken(xTkn));
   vAddTerm(xTkn.szTerm());
   
-  RASSERT(bGetToken(&xTkn));
+  RASSERT(bGetToken(xTkn));
   RASSERT(xTkn.bSame("]"_Stz));
   vAddTerm(xTkn.szTerm());
 
-  RASSERT(bGetToken(&xTkn));
+  RASSERT(bGetToken(xTkn));
   RASSERT(xTkn.bSame(";"_Stz));
   vAddTerm(xTkn.szTerm());
 };
@@ -563,7 +566,7 @@ void Vortex::vParseStructArray(void)
 /*----------------------------------------------------------------------------*/
 /* parse struct member                                                        */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseStructMember(void)
+void Vortex::vProcStructMember(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -573,11 +576,11 @@ void Vortex::vParseStructMember(void)
   
   // may see name
   Token xTkn;
-  RASSERT(bGetToken(&xTkn));
+  RASSERT(bGetToken(xTkn));
   if (! xTkn.bSame("{"_Stz)) {
-    RASSERT(bGetToken(&xTkn));
+    RASSERT(bGetToken(xTkn));
     if (! xTkn.bSame("{"_Stz)) {
-      RASSERT(bGetToken(&xTkn));
+      RASSERT(bGetToken(xTkn));
       RASSERT(xTkn.bSame(";"_Stz));
       
       m_bTraceTokens = false;
@@ -585,21 +588,21 @@ void Vortex::vParseStructMember(void)
     }
   }
 
-  while (bGetToken(&xTkn)) {
+  while (bGetToken(xTkn)) {
 
     if (xTkn.bSame("}"_Stz)) {
-      RASSERT(bGetToken(&xTkn));
+      RASSERT(bGetToken(xTkn));
       if (! xTkn.bSame(";"_Stz)) {
-        RASSERT(bGetToken(&xTkn));
+        RASSERT(bGetToken(xTkn));
         if (! xTkn.bSame(";"_Stz)) {
           vAddTerm(xTkn.szTerm());
-          vParseStructArray();
+          vProcStructArray();
         }
       }
       break;
     }
     
-    vParseMemberProper(xTkn.szTerm());
+    vProcMemberProper(xTkn.szTerm());
   }
   
   m_bTraceTokens = false;
@@ -608,7 +611,7 @@ void Vortex::vParseStructMember(void)
 /*----------------------------------------------------------------------------*/
 /* parse union member                                                         */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseUnionMember(void)
+void Vortex::vProcUnionMember(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -617,18 +620,18 @@ void Vortex::vParseUnionMember(void)
   //m_bTraceTokens = true;
   
   Token xTkn;
-  RASSERT(bGetToken(&xTkn));
+  RASSERT(bGetToken(xTkn));
   RASSERT(xTkn.bSame("{"_Stz));
 
-  while (bGetToken(&xTkn)) {
+  while (bGetToken(xTkn)) {
 
     if (xTkn.bSame("}"_Stz)) {
-      RASSERT(bGetToken(&xTkn));
+      RASSERT(bGetToken(xTkn));
       RASSERT(xTkn.bSame(";"_Stz));
       break;
     }
     
-    vParseMemberProper(xTkn.szTerm());
+    vProcMemberProper(xTkn.szTerm());
   }
   
   //m_bTraceTokens = false;
@@ -648,10 +651,10 @@ bool Vortex::bRecogniseClass(Stz* szTerm)
   if (! xTkn.bSame("class"_Stz))
     return false;
     
-  if (! bGetToken(&xClassNm))
+  if (! bGetToken(xClassNm))
     return false;
 
-  if (! bGetToken(&xTkn))
+  if (! bGetToken(xTkn))
     return false;
 
   // -- -- -- -- -- --
@@ -662,14 +665,14 @@ bool Vortex::bRecogniseClass(Stz* szTerm)
   if (xTkn.bSame(":"_Stz)) {
     m_p_MemberSet = nullptr;
     m_p_MemberVar = nullptr;
-    vParseClassBase();
+    vProcClassBase();
     return true;
   }
   
   if (xTkn.bSame("{"_Stz)) {
     m_p_MemberSet = nullptr;
     m_p_MemberVar = nullptr;
-    vParseClassBlock();
+    vProcClassBlock();
     return true;
   }
 
@@ -688,17 +691,17 @@ bool Vortex::bRecogniseConst(Stz* szTerm)
   if (! szTerm->bSame("static"_Stz))
     return false;
       
-  if (! bGetToken(&xTkn))
+  if (! bGetToken(xTkn))
     return false;
   if (! xTkn.bSame("const"_Stz))
     return false;
 
-  if (! bGetToken(&xTkn))
+  if (! bGetToken(xTkn))
     return false;
   if (! xTkn.bSame("i8"_Stz))
     return false;
 
-  vParseConst();
+  vProcConst();
   
   return true;
 }
@@ -725,7 +728,7 @@ bool Vortex::bRecogniseFriend(Stz* szTerm)
   if (! szTerm->bSame("friend"_Stz))
     return false;
         
-  while (bGetToken(&xTkn)) {
+  while (bGetToken(xTkn)) {
     if (xTkn.bSame(";"_Stz))
       break;
   }
@@ -755,20 +758,20 @@ bool Vortex::bRecogniseHash(Stz* szTerm)
   if (! szTerm->bSame("#"_Stz))
     return false;
   
-  RASSERT(bGetToken(&xTkn));
+  RASSERT(bGetToken(xTkn));
   
   if (xTkn.bSame("define"_Stz)) {
-    RASSERT(bGetToken(&xTkn));
+    RASSERT(bGetToken(xTkn));
     return true;
   }
 
   if (xTkn.bSame("include"_Stz)) {
-    RASSERT(bGetToken(&xTkn));
+    RASSERT(bGetToken(xTkn));
     return true;
   }
 
   if (xTkn.bSame("pragma"_Stz)) {
-    RASSERT(bGetToken(&xTkn));
+    RASSERT(bGetToken(xTkn));
     RASSERT(xTkn.bSame("once"_Stz));
     return true;
   }
@@ -786,19 +789,19 @@ bool Vortex::bRecogniseLabel(Stz* szTerm)
   Token xTkn;
   
   if (szTerm->bSame("private"_Stz)) {
-    RASSERT(bGetToken(&xTkn));
+    RASSERT(bGetToken(xTkn));
     RASSERT(xTkn.bSame(":"_Stz));
     return true;
   }
   
   if (szTerm->bSame("protected"_Stz)) {
-    RASSERT(bGetToken(&xTkn));
+    RASSERT(bGetToken(xTkn));
     RASSERT(xTkn.bSame(":"_Stz));
     return true;
   }
   
   if (szTerm->bSame("public"_Stz)) {
-    RASSERT(bGetToken(&xTkn));
+    RASSERT(bGetToken(xTkn));
     RASSERT(xTkn.bSame(":"_Stz));
     return true;
   }
@@ -818,11 +821,11 @@ bool Vortex::bRecogniseNamespace(Stz* szTerm)
 
   Token xTkn;
   
-  RASSERT(bGetToken(&xTkn));
+  RASSERT(bGetToken(xTkn));
   
   m_sNamespaceNm = xTkn.szTerm();
   
-  bool b = bParseNamespace();
+  bool b = bProcNamespace();
 
   return b;
 }
@@ -840,7 +843,7 @@ bool Vortex::bRecogniseStruct(Stz* szTerm)
     return false;
   
   m_p_MemberSet = m_p_MetaClass->pAddMemberSet("struct"_Stz,m_p_MemberSet);
-  vParseStructMember();
+  vProcStructMember();
   m_p_MemberSet = nullptr;
   
   return true;
@@ -875,7 +878,7 @@ bool Vortex::bRecogniseUnion(Stz* szTerm)
     return false;
   
   m_p_MemberSet = m_p_MetaClass->pAddMemberSet("union"_Stz,m_p_MemberSet);
-  vParseUnionMember();
+  vProcUnionMember();
   m_p_MemberSet = nullptr;
 
   return true;
@@ -893,12 +896,12 @@ bool Vortex::bRecogniseUsing(Stz* szTerm)
   if (! szTerm->bSame("using"_Stz))
     return false;
   
-  RASSERT(bGetToken(&xTkn));
+  RASSERT(bGetToken(xTkn));
   RASSERT(xTkn.bSame("namespace"_Stz));
 
-  RASSERT(bGetToken(&xTkn));
+  RASSERT(bGetToken(xTkn));
   
-  RASSERT(bGetToken(&xTkn));
+  RASSERT(bGetToken(xTkn));
   RASSERT(xTkn.bSame(";"_Stz));
 
   return true;
@@ -919,7 +922,7 @@ void Vortex::vSkipTillSemicolon(Stz* szTerm)
     return;
   }
         
-  while (bGetToken(&xTkn)) {
+  while (bGetToken(xTkn)) {
     vTrace("%s "_Stz,xTkn.azTerm());
     if (xTkn.bSame(";"_Stz)) {
       vTrace("\n"_Stz,xTkn.azTerm());
@@ -943,7 +946,7 @@ void Vortex::vSkipUnrecognised(Stz* szTerm)
     return;
   }
         
-  while (bGetToken(&xTkn)) {
+  while (bGetToken(xTkn)) {
     vTrace("%s "_Stz,xTkn.azTerm());
     if (xTkn.bSame(";"_Stz)) {
       vTrace("\n"_Stz,xTkn.azTerm());

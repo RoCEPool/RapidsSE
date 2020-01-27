@@ -43,26 +43,26 @@ namespace Utilities
     void vBeginRecognise(void);
     void vEndRecognise(bool bCorrectly);
     bool bCollectTerms(Stz* szEnd, bool bAddEnd=false);
-    bool bGetToken(Token* pToken);
+    bool bGetToken(Token& roToken);
   
     void vDetectAll(void);
   
-    void vParseAll(void);
-    void vParseClassBase(void);
-    void vParseClassBlock(void);
-    void vParseClassFunction(void);
-    void vParseClassMembers(void);
-    void vParseConst(void);
-    void vParseEnum(void);
-    void vParseHashDefine(void);
-    void vParseHashInclude(void);
-    void vParseHashPragma(void);
-    bool bParseLabelledMember(void);
-    void vParseMemberProper(Stz* szFirstTerm);
-    bool bParseNamespace(void);
-    void vParseStructArray(void);
-    void vParseStructMember(void);
-    void vParseUnionMember(void);
+    void vProcAll(void);
+    void vProcClassBase(void);
+    void vProcClassBlock(void);
+    void vProcClassFunction(void);
+    void vProcClassMembers(void);
+    void vProcConst(void);
+    void vProcEnum(void);
+    void vProcHashDefine(void);
+    void vProcHashInclude(void);
+    void vProcHashPragma(void);
+    bool bProcLabelledMember(void);
+    void vProcMemberProper(Stz* szFirstTerm);
+    bool bProcNamespace(void);
+    void vProcStructArray(void);
+    void vProcStructMember(void);
+    void vProcUnionMember(void);
   
     bool bRecogniseClass(Stz* szTerm);
     bool bRecogniseConst(Stz* szTerm);
