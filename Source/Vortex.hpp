@@ -56,8 +56,10 @@ namespace Utilities
     bool bRecogniseClass(Stz* szTerm);
     bool bRecogniseConst(Stz* szTerm);
     bool bRecogniseFriend(Stz* szTerm);
-
+    
+    void vSkipEnd(Stz* szTerm);
   private:
+  
     Footer* aFooter(void);
   };
 

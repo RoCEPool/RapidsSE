@@ -173,18 +173,20 @@ void Vortex::vParseAll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  Token xTkn;
-  while (bGetToken(&xTkn)) {                                              // 🌀
+  Token xFirstTkn;
+  while (bGetToken(&xFirstTkn)) {                                              // 🌀
 
-    if (bRecogniseConst(xTkn.szTerm()))
+    if (bRecogniseConst(xFirstTkn.szTerm()))
       continue;
     
-    if (bRecogniseFriend(xTkn.szTerm()))
+    if (bRecogniseFriend(xFirstTkn.szTerm()))
       continue;
 
-    if (bRecogniseClass(xTkn.szTerm()))
+    if (bRecogniseClass(xFirstTkn.szTerm()))
       continue;
 
+    vSkipEnd(xFirstTkn.szTerm());
+    
   } // while
 
 }
@@ -592,6 +594,24 @@ bool Vortex::bRecogniseFriend(Stz* szTerm)
   }
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* skip till ;                                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vSkipEnd(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  
+  if (szTerm->bSame(";"_Stz))
+    return;
+        
+  while (bGetToken(&xTkn)) {
+    if (xTkn.bSame(";"_Stz))
+      return;
+  }
 }
 
 /*============================================================================*/
