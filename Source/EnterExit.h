@@ -31,7 +31,8 @@
   } \
   \
   if (C_TRACE_STEPS && m_pTask->m_iTraceMask) \
-    m_pTask->vTraceStep((Stz*)__func__);
+    m_pTask->vTraceStep((Stz*)__func__); \
+EndDefine
 
 // this variant uses __func__ instead of szStepNm
 //#define ENTRY(szStepNm) \
@@ -52,7 +53,8 @@
 //  } \
 //  \
 //  if (C_TRACE_STEPS && m_pTask->m_iTraceMask) \
-//    m_pTask->vTraceStep((Stz*)__func__);
+//    m_pTask->vTraceStep((Stz*)__func__); \
+//EndDefine
 
 // this is the original variant which uses szStepNm
 //#define ENTRY(szStepNm) \
@@ -73,7 +75,8 @@
 //  } \
 //  \
 //  if (C_TRACE_STEPS && m_pTask->m_iTraceMask) \
-//    m_pTask->vTraceStep(szStepNm);
+//    m_pTask->vTraceStep(szStepNm); \
+//EndDefine
 
 /*----------------------------------------------------------------------------*/
 /* step exit macro                                                            */
@@ -81,7 +84,8 @@
 #define EXIT() \
   \
   if (_pStepAccum) \
-    _pStepAccum->vExit(_iEnterCycles,_iEnterMisses);
+    _pStepAccum->vExit(_iEnterCycles,_iEnterMisses); \
+EndDefine
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -89,8 +93,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #else
 
-#define ENTRY(aStepNm)
-#define EXIT()
+#define ENTRY(aStepNm) EndDefine
+#define EXIT() EndDefine
 
 #endif
 
