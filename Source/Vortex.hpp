@@ -12,17 +12,15 @@ namespace Utilities
     s256   m_sSourcePath;
     Input* m_pInput;
   
-    Token  m_xToken_ClassNm;
-  
-    bool   m_bTraceTokens;
-      
-    EnameSet   m_oTerms;
-  
     MetaGraph* m_pMetaGraph;
     ConstSet*  m_pConsSet;
     MetaClass* m_pMetaClass_cur;
     MemberSet* m_pMemberSet_cur;
     MemberVar* m_pMemberVar_cur;
+  
+    EnameSet   m_oTerms;
+    bool       m_bTraceTokens;
+      
   
     // must be last
     Footer m_xFooter;

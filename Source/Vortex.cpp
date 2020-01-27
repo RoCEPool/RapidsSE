@@ -24,16 +24,16 @@ Vortex::Vortex(void)
   m_pVortexFile = nullptr;
   m_sSourcePath = ""_Stz;
   m_pInput      = nullptr;
-  // m_xToken_ClassNm
-  // xTkn
   
-  m_bTraceTokens = false;
-
   m_pMetaGraph     = new MetaGraph;
   m_pConsSet       = m_pMetaGraph->pConstSet();
   m_pMetaClass_cur = nullptr;
   m_pMemberSet_cur = nullptr;
   m_pMemberVar_cur = nullptr;
+  
+  //m_oTerms
+  m_bTraceTokens = false;
+
   
   _checkInitialised_(CN_VORTEX);
 
@@ -174,6 +174,8 @@ void Vortex::vParseAll(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;
+  Token xClassNm;
+
 
   while (bGetToken(&xTkn)) {                                    // 🌀
 
@@ -205,7 +207,7 @@ void Vortex::vParseAll(void)
     if (! xTkn.bSame("class"_Stz))
       continue;
       
-    if (! bGetToken(&m_xToken_ClassNm))
+    if (! bGetToken(&xClassNm))
       break;
     
     if (! bGetToken(&xTkn))
@@ -213,8 +215,10 @@ void Vortex::vParseAll(void)
 
     // -- -- -- -- -- --
     
+    m_pVortexFile->vPrint("%s\n"_Stz,xClassNm.azTerm());
+    
+    m_pMetaClass_cur = m_pMetaGraph->pAddMetaClass(xClassNm.szTerm());
     if (xTkn.bSame(":"_Stz)) {
-      m_pMetaClass_cur = m_pMetaGraph->pAddMetaClass(m_xToken_ClassNm.szTerm());
       m_pMemberSet_cur = nullptr;
       m_pMemberVar_cur = nullptr;
       vParseClassBase();
@@ -222,7 +226,6 @@ void Vortex::vParseAll(void)
     }
     
     if (xTkn.bSame("{"_Stz)) {
-      m_pMetaClass_cur = m_pMetaGraph->pAddMetaClass(m_xToken_ClassNm.szTerm());
       m_pMemberSet_cur = nullptr;
       m_pMemberVar_cur = nullptr;
       vParseClassBlock();
@@ -261,7 +264,6 @@ void Vortex::vParseClassBlock(void)
   
   // just saw {
   
-  m_pVortexFile->vPrint("%s\n"_Stz,m_xToken_ClassNm.azTerm());
   
   vParseClassMembers();
 }
@@ -399,10 +401,12 @@ void Vortex::vParseMemberProper(Stz* szFirstTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
+  Stz* szClassNm = m_pMetaClass_cur->szClassNm();
+  
   vTrace("%lld.%lld) %s : "_Stz,
          m_pMetaGraph->nItems(),
          m_pMemberSet_cur->nItems(),
-         m_xToken_ClassNm.azTerm());
+         szClassNm->azChar());
   
   //vTrace("%s "_Stz,xTkn.azChar());
   
@@ -425,7 +429,7 @@ void Vortex::vParseMemberProper(Stz* szFirstTerm)
     vAddTerm(xTkn.szTerm());
   }
     
-  if (! MemberVar::bIsMemberVar(m_xToken_ClassNm.szTerm(),&m_oTerms)) {
+  if (! MemberVar::bIsMemberVar(szClassNm,&m_oTerms)) {
     vTrace("  not a member variable\n"_Stz);
     return;
   }
