@@ -318,6 +318,15 @@ void Vortex::vParseConst(void)
 /*----------------------------------------------------------------------------*/
 /* parse:                                                                     */
 /*----------------------------------------------------------------------------*/
+void Vortex::vParseEnum(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse:                                                                     */
+/*----------------------------------------------------------------------------*/
 void Vortex::vParseHashDefine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -655,6 +664,16 @@ bool Vortex::bRecogniseConst(Stz* szTerm)
     return false;
 
   vParseConst();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* can we recognise: enum ... ;                                               */ 
+/*----------------------------------------------------------------------------*/
+bool Vortex::bRecogniseEnum(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   return true;
 }

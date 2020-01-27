@@ -51,6 +51,7 @@ namespace Utilities
     void vParseClassFunction(void);
     void vParseClassMembers(void);
     void vParseConst(void);
+    void vParseEnum(void);
     void vParseHashDefine(void);
     void vParseHashInclude(void);
     void vParseHashPragma(void);
@@ -63,6 +64,7 @@ namespace Utilities
   
     bool bRecogniseClass(Stz* szTerm);
     bool bRecogniseConst(Stz* szTerm);
+    bool bRecogniseEnum(Stz* szTerm);
     bool bRecogniseFriend(Stz* szTerm);
     bool bRecogniseFunction(Stz* szTerm);
     bool bRecogniseHash(Stz* szTerm);
