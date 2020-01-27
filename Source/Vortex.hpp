@@ -56,6 +56,7 @@ namespace Utilities
     bool bRecogniseClass(Stz* szTerm);
     bool bRecogniseConst(Stz* szTerm);
     bool bRecogniseFriend(Stz* szTerm);
+    bool bRecogniseHash(Stz* szTerm);
     bool bRecogniseLabel(Stz* szTerm);
     bool bRecogniseStruct(Stz* szTerm);
     bool bRecogniseUnion(Stz* szTerm);

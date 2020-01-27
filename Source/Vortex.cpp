@@ -174,8 +174,11 @@ void Vortex::vParseAll(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xFirstTkn;
-  while (bGetToken(&xFirstTkn)) {                                              // 🌀
+  while (bGetToken(&xFirstTkn)) {                                          // 🌀
 
+    if (bRecogniseHash(xFirstTkn.szTerm()))
+      continue;
+    
     if (bRecogniseConst(xFirstTkn.szTerm()))
       continue;
     
@@ -575,6 +578,33 @@ bool Vortex::bRecogniseFriend(Stz* szTerm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* can we recognise: # ...                                                    */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bRecogniseHash(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  
+  if (! szTerm->bSame("#"_Stz))
+    return false;
+  
+  RASSERT(bGetToken(&xTkn));
+  if (xTkn.bSame("pragma"_Stz)) {
+    RASSERT(bGetToken(&xTkn));
+    RASSERT(xTkn.bSame("once"_Stz));
+    return true;
+  }
+
+  if (xTkn.bSame("include"_Stz)) {
+    RASSERT(bGetToken(&xTkn));
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* can we recognise: private|protected|public :                               */
 /*----------------------------------------------------------------------------*/
 bool Vortex::bRecogniseLabel(Stz* szTerm)
@@ -651,12 +681,18 @@ void Vortex::vSkipTillSemicolon(Stz* szTerm)
   
   Token xTkn;
   
-  if (szTerm->bSame(";"_Stz))
+  vTrace("Skipping: %s "_Stz,szTerm->azChar());
+  if (szTerm->bSame(";"_Stz)) {
+    vTrace("\n"_Stz,szTerm->azChar());
     return;
+  }
         
   while (bGetToken(&xTkn)) {
-    if (xTkn.bSame(";"_Stz))
+    vTrace("%s "_Stz,xTkn.azTerm());
+    if (xTkn.bSame(";"_Stz)) {
+      vTrace("\n"_Stz,xTkn.azTerm());
       return;
+    }
   }
 }
 
