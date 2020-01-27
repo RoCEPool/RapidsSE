@@ -7,13 +7,14 @@ enum eCP // c++ part
 {
   /*  0 */ CP_NONE=0,
   
-  /*    */ CP_CLASS,    // class
-  /*    */ CP_ENUM,     // enum
-  /*    */ CP_INCLUDE,  // #include
-  /*    */ CP_MBRFUN,   // member function
-  /*    */ CP_MBRVAR,   // member variable
-  /*    */ CP_ONCE,     // #pragma once
-  /*    */ CP_TEMPLATE, // template
+  /*    */ CP_CLASS,     // class
+  /*    */ CP_ENUM,      // enum
+  /*    */ CP_INCLUDE,   // #include
+  /*    */ CP_MBRFUN,    // member function
+  /*    */ CP_MBRVAR,    // member variable
+  /*    */ CP_NAMESPACE, // namespace <namespaceNm> { ... }
+  /*    */ CP_ONCE,      // #pragma once
+  /*    */ CP_TEMPLATE,  // template
   
   /*    */ CP_ENUMS
 };
@@ -27,6 +28,7 @@ static Stz* aCP[]
   /*    */ "CP_INCLUDE"_Stz,
   /*    */ "CP_MBRFUN"_Stz,
   /*    */ "CP_MBRVAR"_Stz,
+  /*    */ "CP_NAMESPACE"_Stz,
   /*    */ "CP_ONCE"_Stz,
   /*    */ "CP_TEMPLATE"_Stz,
   

@@ -21,6 +21,9 @@ namespace Utilities
     EnameSet   m_oTerms;       // working set of collected terms
     bool       m_bTraceTokens; // trace tokens
    
+    bool       m_bInClass;     // currently in a class?
+    s32        m_sClassNm;     // current namespace name
+    bool       m_bInNamespace; // currently in a namespace?
     s32        m_sNamespaceNm; // current namespace name
     
     s4K        m_sPart;        // current namespace name
@@ -48,16 +51,21 @@ namespace Utilities
     bool bGetToken(Token& roToken);
     void vNewPart(void);
     void vRecognised(eCP ePart);
+    void vThrowProblem(i8 i_Problem);
 
-    bool bParseAll(void);
-    void vParseClass(void);
-    void vParseEnum(void);
-    void vParseFriend(void);
-    void vParseHash(void);
-    void vParseNamespace(void);
-    void vParseStatic(void);
-    void vParseUsing(void);
-    void vParse_other(Stz* szTerm);
+    bool bParseAllParts(void);
+    void vParseClassPart(void);
+    void vParseEnumPart(void);
+    void vParseFriendPart(void);
+    void vParseHashPart(void);
+    void vParseNamespacePart(void);
+    void vParseStaticPart(void);
+    void vParseTemplatePart(void);
+    void vParseUsingPart(void);
+    void vParse_otherPart(Stz* szTerm);
+  
+    void vWithinNamespace(void);
+
 
     void vProcAll(void);
     void vProcClassBase(void);
