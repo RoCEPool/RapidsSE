@@ -130,6 +130,7 @@ Stz* MemberVar::szVarNm(EnameSet* pTerms, Stz*& rszTypeNm,
   rnPtrs     = 0;
   rbFunPtr   = false;
   rnElements = 0;
+  rnBits     = 0;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Stz* szTerm;
   Stz* szName = "*UNKNOWN*"_Stz;

@@ -28,10 +28,7 @@ Vortex::Vortex(void)
   // xTkn
   
   m_bTraceTokens = false;
-  m_nMembers     = 0;
 
-  m_nTerms       = 0;
-  
   m_pMetaGraph     = new MetaGraph;
   m_pConsSet       = m_pMetaGraph->pConstSet();
   m_pMetaClass_cur = nullptr;
@@ -124,7 +121,6 @@ void Vortex::vAddTerm(Stz* szTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_oTerms.vAdd(szTerm);
-  m_nTerms++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -296,8 +292,6 @@ void Vortex::vParseClassMembers(void)
 
   // just saw {
   
-  m_nMembers = 0;
-  
   vTrace("File %s\n"_Stz,m_sSourcePath.azChar());
   
   for (;;) {
@@ -407,12 +401,11 @@ void Vortex::vParseMemberProper(Stz* szFirstTerm)
   
   vTrace("%lld.%lld) %s : "_Stz,
          m_pMetaGraph->nItems(),
-         m_nMembers++,
+         m_pMemberSet_cur->nItems(),
          m_xToken_ClassNm.azTerm());
   
   //vTrace("%s "_Stz,xTkn.azChar());
   
-  m_nTerms = 0;
   m_oTerms.vReset();
 
   vAddTerm(szFirstTerm);

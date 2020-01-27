@@ -15,11 +15,7 @@ namespace Utilities
     Token  m_xToken_ClassNm;
   
     bool   m_bTraceTokens;
-  
-    i8     m_nMembers;
-  
-    i8     m_nTerms;
-  
+      
     EnameSet   m_oTerms;
   
     MetaGraph* m_pMetaGraph;
