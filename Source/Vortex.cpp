@@ -174,52 +174,17 @@ void Vortex::vParseAll(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;
-  Token xClassNm;
-
   while (bGetToken(&xTkn)) {                                              // 🌀
 
-    if (bRecogniseConst(xTkn.szTerm())) {
-      vParseConst();
+    if (bRecogniseConst(xTkn.szTerm()))
       continue;
-    }
     
-    if (xTkn.bSame("friend"_Stz)) {
-      
-      while (bGetToken(&xTkn)) {
-        if (xTkn.bSame(";"_Stz))
-         break;
-      }
+    if (bRecogniseFriend(xTkn.szTerm()))
       continue;
-    }
 
-    if (! xTkn.bSame("class"_Stz))
+    if (bRecogniseClass(xTkn.szTerm()))
       continue;
-      
-    if (! bGetToken(&xClassNm))
-      break;
-    
-    if (! bGetToken(&xTkn))
-      break;
 
-    // -- -- -- -- -- --
-    
-    m_pOutputFile->vPrint("%s\n"_Stz,xClassNm.azTerm());
-    
-    m_p_MetaClass = m_pMetaGraph->pAddMetaClass(xClassNm.szTerm());
-    if (xTkn.bSame(":"_Stz)) {
-      m_p_MemberSet = nullptr;
-      m_p_MemberVar = nullptr;
-      vParseClassBase();
-      continue;
-    }
-    
-    if (xTkn.bSame("{"_Stz)) {
-      m_p_MemberSet = nullptr;
-      m_p_MemberVar = nullptr;
-      vParseClassBlock();
-      continue;
-    }
-    
   } // while
 
 }
@@ -541,7 +506,49 @@ void Vortex::vParseUnionMember(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* can we recognise: static const i8 ?                                        */
+/* can we recognise: class ... ; ?                                            */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bRecogniseClass(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  Token xTkn;
+  Token xClassNm;
+
+
+  if (! xTkn.bSame("class"_Stz))
+    return false;
+    
+  if (! bGetToken(&xClassNm))
+    return false;
+
+  if (! bGetToken(&xTkn))
+    return false;
+
+  // -- -- -- -- -- --
+  
+  m_pOutputFile->vPrint("%s\n"_Stz,xClassNm.azTerm());
+  
+  m_p_MetaClass = m_pMetaGraph->pAddMetaClass(xClassNm.szTerm());
+  if (xTkn.bSame(":"_Stz)) {
+    m_p_MemberSet = nullptr;
+    m_p_MemberVar = nullptr;
+    vParseClassBase();
+    return true;
+  }
+  
+  if (xTkn.bSame("{"_Stz)) {
+    m_p_MemberSet = nullptr;
+    m_p_MemberVar = nullptr;
+    vParseClassBlock();
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* can we recognise: static const i8 ... ; ?                                  */
 /*----------------------------------------------------------------------------*/
 bool Vortex::bRecogniseConst(Stz* szTerm)
 {
@@ -549,7 +556,7 @@ bool Vortex::bRecogniseConst(Stz* szTerm)
 
   Token xTkn;
   
-  if (!xTkn.bSame("static"_Stz))
+  if (! szTerm->bSame("static"_Stz))
     return false;
       
   if (! bGetToken(&xTkn))
@@ -562,6 +569,28 @@ bool Vortex::bRecogniseConst(Stz* szTerm)
   if (! xTkn.bSame("i8"_Stz))
     return false;
 
+  vParseConst();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* can we recognise: friend ... ;                                             */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bRecogniseFriend(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  
+  if (! szTerm->bSame("friend"_Stz))
+    return false;
+        
+  while (bGetToken(&xTkn)) {
+    if (xTkn.bSame(";"_Stz))
+      break;
+  }
+  
   return true;
 }
 

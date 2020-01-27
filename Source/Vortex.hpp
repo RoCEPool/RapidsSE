@@ -53,7 +53,9 @@ namespace Utilities
     void vParseStructMember(void);
     void vParseUnionMember(void);
   
+    bool bRecogniseClass(Stz* szTerm);
     bool bRecogniseConst(Stz* szTerm);
+    bool bRecogniseFriend(Stz* szTerm);
 
   private:
     Footer* aFooter(void);
