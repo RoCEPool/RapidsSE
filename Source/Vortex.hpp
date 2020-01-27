@@ -52,6 +52,8 @@ namespace Utilities
     void vParseStructArray(void);
     void vParseStructMember(void);
     void vParseUnionMember(void);
+  
+    bool bRecogniseConst(Stz* szTerm);
 
   private:
     Footer* aFooter(void);

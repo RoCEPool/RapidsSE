@@ -178,18 +178,7 @@ void Vortex::vParseAll(void)
 
   while (bGetToken(&xTkn)) {                                              // 🌀
 
-    if (xTkn.bSame("static"_Stz)) {
-      
-     Token xTkn;
-     if (! bGetToken(&xTkn))
-        break;
-     if (! xTkn.bSame("const"_Stz))
-        break;
-     if (! bGetToken(&xTkn))
-        break;
-     if (! xTkn.bSame("i8"_Stz))
-        break;
-       
+    if (bRecogniseConst(xTkn.szTerm())) {
       vParseConst();
       continue;
     }
@@ -549,6 +538,31 @@ void Vortex::vParseUnionMember(void)
   }
   
   //m_bTraceTokens = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* can we recognise: static const i8 ?                                        */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bRecogniseConst(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  Token xTkn;
+  
+  if (!xTkn.bSame("static"_Stz))
+    return false;
+      
+  if (! bGetToken(&xTkn))
+    return false;
+  if (! xTkn.bSame("const"_Stz))
+    return false;
+
+  if (! bGetToken(&xTkn))
+    return false;
+  if (! xTkn.bSame("i8"_Stz))
+    return false;
+
+  return true;
 }
 
 /*============================================================================*/
