@@ -13,7 +13,6 @@ namespace Utilities
     Input* m_pInput;
   
     Token  m_xToken_ClassNm;
-    Token  m_xToken_Other;
   
     s32    m_sVarNm;
     s32    m_sTypeNm;
@@ -65,7 +64,7 @@ namespace Utilities
     void vParseClassMembers(void);
     void vParseConst(void);
     bool bParseLabelledMember(void);
-    void vParseMemberProper(void);
+    void vParseMemberProper(Stz* szFirstTerm);
     void vParseStructArray(void);
     void vParseStructMember(void);
     void vParseUnionMember(void);
