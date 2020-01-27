@@ -185,7 +185,7 @@ void Vortex::vParseAll(void)
     if (bRecogniseClass(xFirstTkn.szTerm()))
       continue;
 
-    vSkipEnd(xFirstTkn.szTerm());
+    vSkipTillSemicolon(xFirstTkn.szTerm());
     
   } // while
 
@@ -645,7 +645,7 @@ bool Vortex::bRecogniseUnion(Stz* szTerm)
 /*----------------------------------------------------------------------------*/
 /* skip till ;                                                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vSkipEnd(Stz* szTerm)
+void Vortex::vSkipTillSemicolon(Stz* szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   

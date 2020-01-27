@@ -96,6 +96,16 @@ eCC MetaClass::eMetaClass(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set meta class kind                                                        */
+/*----------------------------------------------------------------------------*/
+void MetaClass::vMetaClass(eCC eMetaClass)
+{
+  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+    
+  m_eClass = eMetaClass;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get which meta graph this meta class is within                             */
 /*----------------------------------------------------------------------------*/
 MetaGraph* MetaClass::pMetaGraph(void)

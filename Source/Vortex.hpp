@@ -60,7 +60,7 @@ namespace Utilities
     bool bRecogniseStruct(Stz* szTerm);
     bool bRecogniseUnion(Stz* szTerm);
 
-    void vSkipEnd(Stz* szTerm);
+    void vSkipTillSemicolon(Stz* szTerm);
   private:
   
     Footer* aFooter(void);

@@ -32,6 +32,8 @@ namespace Reflection
     void vClassNm(Stz* szClassNm);
   
     eCC  eMetaClass(void);
+    void vMetaClass(eCC eMetaClass);
+
     MetaGraph* pMetaGraph(void);
   
     void vPrint(i8 i_Depth);
