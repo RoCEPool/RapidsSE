@@ -100,12 +100,20 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
+  vTrace("Parsing file %s\n"_Stz,szSourcePath->azChar());
+  
   m_sSourcePath = szSourcePath;
   m_pInput = new Input;
   m_pInput->vPushFile(szSourcePath);
   
-  vProcAll();
-
+  //vProcAll();
+  bool b = bParseAll();
+  if (! b) {
+    vTrace("Unable to fully parse %s\n"_Stz,szSourcePath->azChar());
+    vTrace("Last Part: %s\n"_Stz,m_sPart.azChar());
+    vDebugPoint();
+  }
+  
   delete m_pInput;
   m_pInput = nullptr;
 }
@@ -214,10 +222,11 @@ void Vortex::vRecognised(eCP ePart)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* process all classes in the current source file (.h or .hpp)                */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bDetectAll(void)
+bool Vortex::bParseAll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -293,6 +302,31 @@ void Vortex::vParseHash(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   vDebugPoint();
+  
+  Token xTkn;
+  
+  RASSERT(bGetToken(xTkn));
+  
+  if (xTkn.bSame("define"_Stz)) {
+    RASSERT(bGetToken(xTkn));
+    throw -8;
+    return;
+  }
+
+  if (xTkn.bSame("include"_Stz)) {
+    RASSERT(bGetToken(xTkn));
+    vRecognised(CP_INCLUDE);
+    return;
+  }
+
+  if (xTkn.bSame("pragma"_Stz)) {
+    RASSERT(bGetToken(xTkn));
+    RASSERT(xTkn.bSame("once"_Stz));
+    vRecognised(CP_ONCE);
+    return;
+  }
+
+  throw -9;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -49,9 +49,7 @@ namespace Utilities
     void vNewPart(void);
     void vRecognised(eCP ePart);
 
-    bool bDetectAll(void);
-  
-  
+    bool bParseAll(void);
     void vParseClass(void);
     void vParseEnum(void);
     void vParseFriend(void);
