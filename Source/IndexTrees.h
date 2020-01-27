@@ -18,8 +18,8 @@ namespace IndexTrees
 
 //------------------------------------------------------------------------------
 
-//#define TRACE_COMPACT(x) x
-#define TRACE_COMPACT(x)
+//#define TRACE_COMPACT(x) x EndDefine
+#define TRACE_COMPACT(x) EndDefine
 
 // - - - - - - - - - - - -
 

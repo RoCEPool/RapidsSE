@@ -433,7 +433,7 @@ void vPartition_MarkI(i8* A, Cursor& xLowCursor, Cursor& xHighCursor, Cursor& xP
     // swap A[i] and A[j]
     xStart.vSwap(xEnd);
     
-    for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+    for (i8 i = 0; i < C_ARRAY_ELEMENTS; i ++) {
       vTrace("A[%lld] = %lld %x\n"_Stz, i, A[i], &A[i]);
     }
     
@@ -473,7 +473,7 @@ i8 iPartition(i8* A, i8 iLow, i8 iHigh)
     A[i] = iTemp;
     
     vTrace("Swapping \n"_Stz);
-    for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+    for (i8 i = 0; i < C_ARRAY_ELEMENTS; i ++) {
       vTrace("A[%lld] = %lld %x\n"_Stz, i, A[i], &A[i]);
     }
   }
@@ -488,7 +488,7 @@ void vQuickSort(i8* A, i8 iLow, i8 iHigh) {
     i8 iPivot = iPartition(A, iLow, iHigh);
     vTrace("PIVOT %lld\n"_Stz, A[iPivot]);
     
-    for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+    for (i8 i = 0; i < C_ARRAY_ELEMENTS; i ++) {
       vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
     }
     vQuickSort(A, iLow, iPivot);
@@ -506,11 +506,11 @@ void vTest12(void)
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an array of integers
-  i8 A[ARRAY_ELEMENTS];
+  i8 A[C_ARRAY_ELEMENTS];
   
   vTrace("\nSorting array\n"_Stz);
     
-  for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+  for (i8 i = 0; i < C_ARRAY_ELEMENTS; i ++) {
     A[i] = RndLib::iInteger(0,1000);
     vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
   }
@@ -518,11 +518,11 @@ void vTest12(void)
   //--------------------------------------------------------------------------
   // EXPERIMENT 1:
   vTrace("SORTING USING ARRAY INDEXES\n"_Stz);
-   vQuickSort(A, 0, ARRAY_ELEMENTS - 1);
+   vQuickSort(A, 0, C_ARRAY_ELEMENTS - 1);
 
   vTrace("\nSorted array:\n"_Stz);
 
-  for (i8 i = 0; i < ARRAY_ELEMENTS; i++) {
+  for (i8 i = 0; i < C_ARRAY_ELEMENTS; i++) {
     vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
     if (i)
       RASSERT(A[i] >= A[i-1]);
@@ -565,7 +565,7 @@ i8* aPartition(i8* A, i8* aLow, i8* aHigh)
     *j = *i;
     *i = iTemp;
     
-    for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+    for (i8 i = 0; i < C_ARRAY_ELEMENTS; i ++) {
       vTrace("A[%lld] = %lld %x\n"_Stz, i, A[i], &A[i]);
     }
   }
@@ -581,7 +581,7 @@ void vQuickSort(i8* A, i8* aLow, i8* aHigh) {
     
     vTrace("PIVOT %lld\n"_Stz, *aPivot);
     
-    for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+    for (i8 i = 0; i < C_ARRAY_ELEMENTS; i ++) {
       vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
     }
     
@@ -600,22 +600,22 @@ void vTest13(void)
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an array of integers
-  i8 A[ARRAY_ELEMENTS];
+  i8 A[C_ARRAY_ELEMENTS];
   
   vTrace("\nSorting array\n"_Stz);
   
-  for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+  for (i8 i = 0; i < C_ARRAY_ELEMENTS; i ++) {
     A[i] = RndLib::iInteger(0,1000);
     vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
   }
   
   //--------------------------------------------------------------------------
   // EXPERIMENT 2: SORTING USING ARRAY ELEMENT POINTERS
-  vQuickSort(A, &A[0], &A[ARRAY_ELEMENTS - 1]);
+  vQuickSort(A, &A[0], &A[C_ARRAY_ELEMENTS - 1]);
   
   vTrace("\nSorted array:\n"_Stz);
   
-  for (i8 i = 0; i < ARRAY_ELEMENTS; i++) {
+  for (i8 i = 0; i < C_ARRAY_ELEMENTS; i++) {
     vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
     if (i)
       RASSERT(A[i] >= A[i-1]);
@@ -677,7 +677,7 @@ void vPartition(i8* A, Cursor& xLowCursor, Cursor& xHighCursor, Cursor& xPartiti
     // swap A[i] and A[j]
     xLeft.vSwap(xRight);
     
-//    for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+//    for (i8 i = 0; i < C_ARRAY_ELEMENTS; i ++) {
 //      vTrace("A[%lld] = %lld %x\n"_Stz, i, A[i], &A[i]);
 //    }
     
@@ -703,7 +703,7 @@ void vQuickSort(i8* A, Cursor& xLowCursor, Cursor& xHighCursor)
     
     vTrace("PIVOT %lld\n"_Stz, *xPartitionCursor.m_aElement);
     
-    for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+    for (i8 i = 0; i < C_ARRAY_ELEMENTS; i ++) {
       vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
     }
     
@@ -726,11 +726,11 @@ void vTest14(void)
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an array of integers
-  i8 A[ARRAY_ELEMENTS];
+  i8 A[C_ARRAY_ELEMENTS];
   
   vTrace("\nSorting array\n"_Stz);
   
-  for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+  for (i8 i = 0; i < C_ARRAY_ELEMENTS; i ++) {
     A[i] = RndLib::iInteger(0,1000);
     vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
   }
@@ -742,14 +742,14 @@ void vTest14(void)
   Cursor xLow(&A[0]);
 
   // create a High cursor pointing to the first element in the array
-  Cursor xHigh(&A[ARRAY_ELEMENTS-1]);
+  Cursor xHigh(&A[C_ARRAY_ELEMENTS-1]);
 
   // call quick sort (recursive call)
   vQuickSort(A, xLow, xHigh);
 
   vTrace("\nSorted array:\n"_Stz);
   
-  for (i8 i = 0; i < ARRAY_ELEMENTS; i++) {
+  for (i8 i = 0; i < C_ARRAY_ELEMENTS; i++) {
     vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
     if (i)
       RASSERT(A[i] >= A[i-1]);
@@ -812,7 +812,7 @@ void vPartitionBuffer(ArrayBuffer* pArrayBuffer, BufCursor& xLowCursor, BufCurso
     // swap A[i] and A[j]
     xLeft.vSwap(xRight);
     
-    for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+    for (i8 i = 0; i < C_ARRAY_ELEMENTS; i ++) {
       vTrace("A[%lld] = %lld\n"_Stz, i, pArrayBuffer->A[i]);
     }
     
@@ -838,7 +838,7 @@ void vQuickSortBuffer(ArrayBuffer* pArrayBuffer, BufCursor& xLowCursor, BufCurso
     
     vTrace("PIVOT %lld\n"_Stz, *xPartitionCursor.m_aElement);
     
-    for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+    for (i8 i = 0; i < C_ARRAY_ELEMENTS; i ++) {
       vTrace("A[%lld] = %lld\n"_Stz, i, pArrayBuffer->A[i]);
     }
     
@@ -860,13 +860,13 @@ void vTest15(void)
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an array of integers
-  i8 A[ARRAY_ELEMENTS];
+  i8 A[C_ARRAY_ELEMENTS];
   
   //for (i8 iLoop = 0; iLoop < 10; iLoop++ ) {
   
   vTrace("\nSorting array\n"_Stz);
   
-  for (i8 i = 0; i < ARRAY_ELEMENTS; i ++) {
+  for (i8 i = 0; i < C_ARRAY_ELEMENTS; i ++) {
     A[i] = RndLib::iInteger(0,1000);
     vTrace("A[%lld] = %lld\n"_Stz, i, A[i]);
   }
@@ -881,14 +881,14 @@ void vTest15(void)
   BufCursor xLow(&xBuffer, (i8)0);
   
   // create a High cursor pointing to the first element in the array
-  BufCursor xHigh(&xBuffer, ARRAY_ELEMENTS-1);
+  BufCursor xHigh(&xBuffer, C_ARRAY_ELEMENTS-1);
   
   // call quick sort (recursive call)
   vQuickSortBuffer(&xBuffer, xLow, xHigh);
   
   vTrace("\nSorted array:\n"_Stz);
   
-  for (i8 i = 0; i < ARRAY_ELEMENTS; i++) {
+  for (i8 i = 0; i < C_ARRAY_ELEMENTS; i++) {
     vTrace("A[%lld] = %lld\n"_Stz, i, xBuffer.A[i]);
     if (i)
       RASSERT(xBuffer.A[i] >= xBuffer.A[i-1]);

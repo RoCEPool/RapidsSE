@@ -29,7 +29,7 @@ void vTest23(void);
 void vTest24(void);
 void vTest25(void);
 
-#define ARRAY_ELEMENTS 100
+static const i8 C_ARRAY_ELEMENTS = 100;
 
 /*----------------------------------------------------------------------------*/
 /* buffer of arrays                                                           */
