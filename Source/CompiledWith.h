@@ -9,13 +9,13 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 // platform
 
 #ifdef __APPLE__
-#define WITH_APPLE
-#define WITH_MUNGED_SEN  // use munged sen
+#define WITH_APPLE EndDefine
+#define WITH_MUNGED_SEN EndDefine // use munged sen
 #endif
 
 #ifdef __LINUX__
-#define WITH_LINUX
-#define WITH_MUNGED_SEN  // use munged sen
+#define WITH_LINUX EndDefine
+#define WITH_MUNGED_SEN EndDefine // use munged sen
 #endif
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -23,45 +23,45 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 
 #ifdef _DEBUG
 
-#define WITH_DEBUG_VERSION      // compile as debug version
+#define WITH_DEBUG_VERSION EndDefine      // compile as debug version
 
-#define WITH_ACTION_SEQUENCE    // code for ActionLog compiled in
-#define WITH_ADDRESS_CHECKING   // check that address is in pool
-#define WITH_ASSERT_MACRO       // Assert() macro
-#define WITH_CHECK_INITIALISED  // _checkInitialised_()
-#define WITH_CORECTNESS_ALGEBRA // known class, magic, footer
-#define WITH_EB_LAZY_CHAIN      // build lazy chain on insert
-#define WITH_ENTRY_EXIT         // code for ENTRY() & EXIT() macros compiled in
-#define WITH_IT_COMPACT_TRACE   //
-#define WITH_PREPOST_CHECKING   // _pre/postCondition_()
-#define WITH_SETH_SUPPORT       // seth support
-#define WITH_SHARED_LOG         // code for Log compiled in
-//#define WITH_STATISTICS_COUNTERS // statistics
-#define WITH_TRACE_API          // code for tracing api's compiled in
-//#define WITH_TRACE_DYNAMO        // code for tracing compiling dynamic pipeline
-//#define WITH_PYTHON_SUPPORT     // code for python support
-#define WITH_TRACE_PURGING        // trace purging
+#define WITH_ACTION_SEQUENCE EndDefine    // code for ActionLog compiled in
+#define WITH_ADDRESS_CHECKING EndDefine   // check that address is in pool
+#define WITH_ASSERT_MACRO EndDefine       // Assert() macro
+#define WITH_CHECK_INITIALISED EndDefine  // _checkInitialised_()
+#define WITH_CORECTNESS_ALGEBRA EndDefine // known class, magic, footer
+#define WITH_EB_LAZY_CHAIN EndDefine      // build lazy chain on insert
+#define WITH_ENTRY_EXIT EndDefine         // code for ENTRY() & EXIT() macros compiled in
+#define WITH_IT_COMPACT_TRACE EndDefine   //
+#define WITH_PREPOST_CHECKING EndDefine   // _pre/postCondition_()
+#define WITH_SETH_SUPPORT EndDefine       // seth support
+#define WITH_SHARED_LOG EndDefine        // code for Log compiled in
+//#define WITH_STATISTICS_COUNTERS  EndDefine// statistics
+#define WITH_TRACE_API EndDefine          // code for tracing api's compiled in
+//#define WITH_TRACE_DYNAMO EndDefine        // code for tracing compiling dynamic pipeline
+//#define WITH_PYTHON_SUPPORT EndDefine     // code for python support
+#define WITH_TRACE_PURGING EndDefine        // trace purging
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // release behaviours
 
 #else
 
-#define WITH_RELEASE_VERSION       // compile as release version
+#define WITH_RELEASE_VERSION EndDefine       // compile as release version
 
-//#define WITH_ACTION_SEQUENCE     // code for ActionLog compiled in
-//#define WITH_CHECK_INITIALISED   // _checkInitialised_()
-//#define WITH_CORECTNESS_ALGEBRA  // known class, magic, footer
-#define WITH_EB_LAZY_CHAIN         // build lazy chain on insert
-//#define WITH_ENTRY_EXIT          // code for ENTRY() & EXIT() macros compiled in
-#define WITH_IT_COMPACT_TRACE      //
-//#define WITH_PREPOST_CHECKING    // _pre/postCondition_()
-#define WITH_SETH_SUPPORT          // seth support
-//#define WITH_STATISTICS_COUNTERS // statistics
-//#define WITH_TRACE_API           // code for tracing api's compiled in
-//#define WITH_TRACE_DYNAMO        // code for tracing compiling dynamic pipeline
-//#define WITH_PYTHON_SUPPORT      // code for python support
-//#define WITH_TRACE_PURGING       // trace purging
+//#define WITH_ACTION_SEQUENCE EndDefine     // code for ActionLog compiled in
+//#define WITH_CHECK_INITIALISED EndDefine   // _checkInitialised_()
+//#define WITH_CORECTNESS_ALGEBRA EndDefine  // known class, magic, footer
+#define WITH_EB_LAZY_CHAIN EndDefine         // build lazy chain on insert
+//#define WITH_ENTRY_EXIT EndDefine          // code for ENTRY() & EXIT() macros compiled in
+#define WITH_IT_COMPACT_TRACE EndDefine      //
+//#define WITH_PREPOST_CHECKING EndDefine    // _pre/postCondition_()
+#define WITH_SETH_SUPPORT EndDefine          // seth support
+//#define WITH_STATISTICS_COUNTERS EndDefine // statistics
+//#define WITH_TRACE_API EndDefine           // code for tracing api's compiled in
+//#define WITH_TRACE_DYNAMO EndDefine        // code for tracing compiling dynamic pipeline
+//#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
+//#define WITH_TRACE_PURGING EndDefine       // trace purging
 
 #endif
 
@@ -73,22 +73,22 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // buckets
 
-//#define WITH_BUCKET_HASHING        // code for bucket hashing compiled in
+//#define WITH_BUCKET_HASHING EndDefine        // code for bucket hashing compiled in
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // row coder dev
 
-//#define WITH_ANALYSE_FREE        // analyze free space during load
-//#define WITH_ENCODING_TRACE      // code for tracing encoding compiled in
-//#define WITH_INFLATE_TRACE       // code for tracing inflate compiled in
-//#define WITH_SHOCO_DUPLICATES    // test for duplicate shoco values
-//#define WITH_VERIFY_TAILS        // verify tails
+//#define WITH_ANALYSE_FREE EndDefine        // analyze free space during load
+//#define WITH_ENCODING_TRACE EndDefine      // code for tracing encoding compiled in
+//#define WITH_INFLATE_TRACE EndDefine       // code for tracing inflate compiled in
+//#define WITH_SHOCO_DUPLICATES EndDefine    // test for duplicate shoco values
+//#define WITH_VERIFY_TAILS EndDefine        // verify tails
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // event-based task model
 
-//#define WITH_PULSING             // code for pulsing compiled in
+//#define WITH_PULSING EndDefine             // code for pulsing compiled in
 
 /*============================================================================*/
 /* end                                                                        */
