@@ -8,9 +8,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Reflection,MetaBlock,CN_MEMBERSET)
-__aNewFunction(MetaBlock,CN_MEMBERSET)
-__vDeleteFunction(MetaBlock,CN_MEMBERSET)
+__pCastFunction(Reflection,MetaBlock,CN_METABLOCK)
+__aNewFunction(MetaBlock,CN_METABLOCK)
+__vDeleteFunction(MetaBlock,CN_METABLOCK)
 __aFooterFunction(MetaBlock)
 
 
@@ -18,9 +18,9 @@ __aFooterFunction(MetaBlock)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MetaBlock::MetaBlock(MetaClass* p_MetaClass, MetaBlock* p_ParentMbrSet)
-: Object(CN_MEMBERSET)
+: Object(CN_METABLOCK)
 {
-  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
   
   m_p_MetaClass = p_MetaClass;
   m_p_ParentMbrSet = p_ParentMbrSet;
@@ -29,9 +29,9 @@ MetaBlock::MetaBlock(MetaClass* p_MetaClass, MetaBlock* p_ParentMbrSet)
   m_nSize  = 0;
   m_eSet   = MS_LINEAR;
 
-  _checkInitialised_(CN_MEMBERSET);
+  _checkInitialised_(CN_METABLOCK);
   
-  _postcondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +39,7 @@ MetaBlock::MetaBlock(MetaClass* p_MetaClass, MetaBlock* p_ParentMbrSet)
 /*----------------------------------------------------------------------------*/
 MetaBlock::~MetaBlock(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +55,7 @@ MetaBlock::~MetaBlock(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 MemberVar* MetaBlock::pAddMemberVar(Stz* szVarNm)
 {
-  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
   
   MemberVar* pMemberVar = new MemberVar(this);
   
@@ -71,7 +71,7 @@ MemberVar* MetaBlock::pAddMemberVar(Stz* szVarNm)
 /*----------------------------------------------------------------------------*/
 eMS MetaBlock::eMemberSet(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
     
   return m_eSet;
 }
@@ -81,7 +81,7 @@ eMS MetaBlock::eMemberSet(void)
 /*----------------------------------------------------------------------------*/
 MetaBlock* MetaBlock::pParentMbrSet(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
   
   return m_p_ParentMbrSet;
 }
@@ -91,7 +91,7 @@ MetaBlock* MetaBlock::pParentMbrSet(void)
 /*----------------------------------------------------------------------------*/
 void MetaBlock::vMemberSet(eMS eMemberSet)
 {
-  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
     
   m_eSet = eMemberSet;
 }
@@ -101,7 +101,7 @@ void MetaBlock::vMemberSet(eMS eMemberSet)
 /*----------------------------------------------------------------------------*/
 void MetaBlock::vPrint(i8 i_Tab)
 {
-  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
     
   vTrace("%sMemberSet %s %s %lldB\n"_Stz,
          
@@ -117,7 +117,7 @@ void MetaBlock::vPrint(i8 i_Tab)
 /*----------------------------------------------------------------------------*/
 void MetaBlock::vRecPrint(i8 i_Depth)
 {
-  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
   
   vPrint(i_Depth);
   
@@ -130,7 +130,7 @@ void MetaBlock::vRecPrint(i8 i_Depth)
 /*----------------------------------------------------------------------------*/
 Stz* MetaBlock::szSetNm(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
     
   return m_sSetNm.szStz();
 }
@@ -140,7 +140,7 @@ Stz* MetaBlock::szSetNm(void)
 /*----------------------------------------------------------------------------*/
 void MetaBlock::vSetNm(Stz* szSetNm)
 {
-  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
     
   m_sSetNm = szSetNm;
 }
@@ -150,7 +150,7 @@ void MetaBlock::vSetNm(Stz* szSetNm)
 /*----------------------------------------------------------------------------*/
 i8 MetaBlock::nSize(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
     
   return m_nSize;
 }

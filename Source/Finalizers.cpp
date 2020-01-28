@@ -174,9 +174,9 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_MARKER
   /* 73 */ &Finalize::vUndefined,         // CN_MEDIUMPERSISTENT
   /* 74 */ &Finalize::vUndefined,         // CN_MEDIUMTRANSIENT
-  /*    */ &Finalize::vUndefined,         // CN_MEMBERSET
   /*    */ &Finalize::vUndefined,         // CN_MEMBERVAR
   /*    */ &Finalize::vUndefined,         // CN_MEMTEST
+  /*    */ &Finalize::vUndefined,         // CN_METABLOCK
   /*    */ &Finalize::vUndefined,         // CN_METACLASS
   /*    */ &Finalize::vUndefined,         // CN_METAGRAPH
   /*114 */ &Finalize::vUndefined,         // CN_MUTEX
