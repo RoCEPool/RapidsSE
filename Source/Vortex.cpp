@@ -112,7 +112,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   m_pInput->vPushFile(szSourcePath);
   
   //vProcAll();
-  bool b = bParseAllParts();
+  bool b = bParseFile();
   if (! b) {
     vTrace("\n\n"_Stz);
     vTrace("** Unable to fully parse %s\n"_Stz,szSourcePath->azChar());
@@ -366,7 +366,7 @@ void Vortex::vThrowProblem(i8 i_Problem)
 /*----------------------------------------------------------------------------*/
 /* process all parts in the current source file (.h or .hpp)                  */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bParseAllParts(void)
+bool Vortex::bParseFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
@@ -375,22 +375,39 @@ bool Vortex::bParseAllParts(void)
   Token xTkn;
   while (bGetToken(xTkn)) {
   
+    Stz* szTerm = xTkn.szTerm();
+    
     try {
-      if (xTkn.bSame("class"_Stz))     { vParseClassPart();       }
+      if (szTerm->bSame("class"_Stz)) {
+        //vParseClass(szTerm);
+        vThrowProblem(-9);
+      }
       else
-      if (xTkn.bSame("enum"_Stz))      { vParseEnumPart();        }
+      if (szTerm->bSame("enum"_Stz)) {
+        vParseEnumPart();
+      }
       else
-      if (xTkn.bSame("friend"_Stz))    { vParseFriendPart();      }
+      if (szTerm->bSame("friend"_Stz)) {
+        vParseFriendPart();
+      }
       else
-      if (xTkn.bSame("#"_Stz))         { vParseHashPart();        }
+      if (szTerm->bSame("#"_Stz)) {
+        vParseHashPart();
+      }
       else
-      if (xTkn.bSame("namespace"_Stz)) { vParseNamespacePart();   }
+      if (szTerm->bSame("namespace"_Stz)) {
+        vParseNamespacePart();
+      }
       else
-      if (xTkn.bSame("static"_Stz))    { vParseStaticPart();      }
+      if (szTerm->bSame("static"_Stz)) {
+        vParseStaticPart();
+      }
       else
-      if (xTkn.bSame("using"_Stz))     { vParseUsingPart();       }
+      if (szTerm->bSame("using"_Stz)) {
+        vParseUsingPart();
+      }
       else {
-        vParse_otherPart(xTkn.szTerm());
+        vParse_otherPart(szTerm);
       }
       vNewPart();
     }
@@ -428,7 +445,7 @@ void Vortex::vParseClassBase(void)
 /*----------------------------------------------------------------------------*/
 /* parse: namespace <namespaceNm> { ... class _^_ ...                         */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseClassPart(void)
+void Vortex::vParseClass(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -436,7 +453,7 @@ void Vortex::vParseClassPart(void)
   
   Token xTkn;
   
-  // SE semantics: we should be i na namespace
+  // SE semantics: we should be in a namespace
   CHECKED(m_bInNamespace);
 
   CHECKED(bGetToken(xTkn));
@@ -536,41 +553,24 @@ void Vortex::vParseHashPart(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse single (optionally labelled) member                                  */
+/* parse single class member (no label)                                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseLabelledMember(void)
+void Vortex::vParseMember(Stz* szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
  
   // just saw {
-  
-  Token xTkn;
-  for (i8 i_Token = 0; bGetToken(xTkn); i_Token++) {
+           
+  if (bRecogniseStruct(szTerm))
+    return;
+    
+  if (bRecogniseUnion(szTerm))
+    return;
 
-    if (0 == i_Token && xTkn.bSame(";"_Stz))
-      break;
-    
-    if (xTkn.bSame("}"_Stz)) {
-      RASSERT(bGetToken(xTkn));
-      vTrace("\n"_Stz);
-      return ;
-    }
-    
-    if (bSkipLabel(xTkn.szTerm()))
-      continue;
-        
-    if (bRecogniseStruct(xTkn.szTerm()))
-      continue;
-    
-    if (bRecogniseUnion(xTkn.szTerm()))
-      continue;
+  if (! m_p_MemberSet)
+    m_p_MemberSet = m_p_MetaClass->pAddMemberSet("linear"_Stz,m_p_MemberSet);
 
-    if (! m_p_MemberSet)
-      m_p_MemberSet = m_p_MetaClass->pAddMemberSet("linear"_Stz,m_p_MemberSet);
-    vProcMemberProper(xTkn.szTerm());
-  }
-    
-  vThrowProblem(-9);
+  vProcMemberProper(szTerm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -677,10 +677,19 @@ void Vortex::vWithinClassBlock(void)
 
   vDebugPoint();
   
-  for (;;) {
+  while (bGetToken(xTkn)) {
 
-    if (! bProcLabelledMember())
-      break;
+    // class block is terminated by: } ;
+    if (xTkn.bSame("}"_Stz)) {
+      CHECKED(bGetToken(xTkn));
+      CHECKED(xTkn.bSame(";"_Stz));
+      return;
+    }
+    
+    if (bSkipLabel(xTkn.szTerm()))
+      continue;
+    
+    vParseMember(xTkn.szTerm());
   }
 
   vThrowProblem(-9);
@@ -699,21 +708,32 @@ void Vortex::vWithinNamespace(void)
   
   while (bGetToken(xTkn)) {
   
-    if (xTkn.bSame("}"_Stz))         { vRecognised(CP_NAMESPACE);      return;}
-    else
-    if (xTkn.bSame("class"_Stz))     { vParseClassPart();       }
-    else
-    if (xTkn.bSame("enum "_Stz))     { vParseEnumPart();        }
-    else
-    if (xTkn.bSame("friend"_Stz))    { vParseFriendPart();      }
-    else
-    if (xTkn.bSame("#"_Stz))         { vParseHashPart();        }
-    else
-    if (xTkn.bSame("static"_Stz))    { vParseStaticPart();      }
-    else
-    if (xTkn.bSame("template"_Stz))  { vParseTemplatePart();    }
+    Stz* szTerm = xTkn.szTerm();
+    
+    if (xTkn.bSame("}"_Stz))  {
+      vRecognised(CP_NAMESPACE);
+      return;
+    }
+    else if (xTkn.bSame("class"_Stz)) {
+      vParseClass(szTerm);
+    }
+    else if (xTkn.bSame("enum "_Stz)) {
+      vParseEnumPart();
+    }
+    else if (xTkn.bSame("friend"_Stz)) {
+      vParseFriendPart();
+    }
+    else if (xTkn.bSame("#"_Stz)) {
+      vParseHashPart();
+    }
+    else if (xTkn.bSame("static"_Stz)) {
+      vParseStaticPart();
+    }
+    else if (xTkn.bSame("template"_Stz)) {
+      vParseTemplatePart();
+    }
     else {
-      vParseNamespaceFunction(xTkn.szTerm());
+      vParseNamespaceFunction(szTerm);
     }
   } // while more tokens
   
@@ -815,15 +835,6 @@ void Vortex::vProcClassMembers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  // just saw {
-  
-  vTrace("File %s\n"_Stz,m_sSourcePath.azChar());
-  
-  for (;;) {
-
-    if (! bProcLabelledMember())
-      break;
-  }
   
 }
 
@@ -905,39 +916,26 @@ void Vortex::vProcHashPragma(void)
 /*----------------------------------------------------------------------------*/
 /* parse single (optionally labelled) member                                  */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bProcLabelledMember(void)
+void Vortex::vProcLabelledMember(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
- 
-  // just saw {
+  
+  RASSERT(m_bInClass);
   
   Token xTkn;
-  for (i8 i_Token = 0; bGetToken(xTkn); i_Token++) {
+  CHECKED(bGetToken(xTkn));
 
-    if (0 == i_Token && xTkn.bSame(";"_Stz))
-      break;
+  if (bRecogniseStruct(xTkn.szTerm()))
+    return;
     
-    if (xTkn.bSame("}"_Stz)) {
-      RASSERT(bGetToken(xTkn));
-      vTrace("\n"_Stz);
-      return false;
-    }
-    
-    if (bRecogniseLabel(xTkn.szTerm()))
-      continue;
-        
-    if (bRecogniseStruct(xTkn.szTerm()))
-      continue;
-    
-    if (bRecogniseUnion(xTkn.szTerm()))
-      continue;
+  if (bRecogniseUnion(xTkn.szTerm()))
+    return;
 
-    if (! m_p_MemberSet)
-      m_p_MemberSet = m_p_MetaClass->pAddMemberSet("linear"_Stz,m_p_MemberSet);
-    vProcMemberProper(xTkn.szTerm());
-  }
-    
-  return false;
+  if (! m_p_MemberSet)
+    m_p_MemberSet = m_p_MetaClass->pAddMemberSet("linear"_Stz,m_p_MemberSet);
+  
+  vProcMemberProper(xTkn.szTerm());
+  
 }
 
 /*----------------------------------------------------------------------------*/

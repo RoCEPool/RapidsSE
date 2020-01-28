@@ -55,14 +55,15 @@ namespace Utilities
     bool bTermsAreVariable(void);
     void vThrowProblem(i8 i_Problem);
 
-    bool bParseAllParts(void);
+    bool bParseFile(void);
+  
+    void vParseClass(Stz* szTerm);
     void vParseClassBase(void);
-    void vParseClassPart(void);
     void vParseEnumPart(void);
     void vParseFriendPart(void);
     void vParseHashPart(void);
-    void vParseLabelledMember(void);
-    void vParseNamespaceFunction(Stz* szTerm);
+    void vParseMember(Stz* szTerm);
+    void vParseNamespaceFunction(Stz* szSawTerm);
     void vParseNamespacePart(void);
     void vParseStaticPart(void);
     void vParseTemplatePart(void);
@@ -83,7 +84,7 @@ namespace Utilities
     void vProcHashDefine(void);
     void vProcHashInclude(void);
     void vProcHashPragma(void);
-    bool bProcLabelledMember(void);
+    void vProcLabelledMember(void);
     void vProcMemberProper(Stz* szFirstTerm);
     bool bProcNamespace(void);
     void vProcStructArray(void);
