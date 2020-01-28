@@ -26,7 +26,7 @@ namespace Utilities
     bool       m_bInNamespace; // currently in a namespace?
     s32        m_sNamespaceNm; // current namespace name
     
-    s4K        m_sPart;        // current namespace name
+    s4K        m_sPart;        // current part
 
     // must be last
     Footer m_xFooter;
@@ -57,21 +57,23 @@ namespace Utilities
     void vParseEnum(Stz* szSawTerm);
     void vParseFriend(Stz* szSawTerm);
     void vParseFunction(Stz* szSawTerm);
+    void vParseFunVar(Stz* szSawTerm);
     void vParseHash(Stz* szSawTerm);
     bool bParseLabel(Stz* szTerm);
     void vParseStatic(Stz* szSawTerm);
     void vParseStruct(Stz* szSawTerm);
     void vParseTemplate(Stz* szSawTerm);
     void vParseUnion(Stz* szSawTerm);
-    void vParse_other(Stz* szSawTerm);
   
     void vAddTerm(Stz* szTerm);
-    void vBeginRecognise(void);
-    void vEndRecognise(bool bCorrectly);
+    void vAscendFromClass(void);
+    void vAscendFromNamepace(void);
     bool bCollectTerms(Stz* szEnd, bool bAddEnd=false);
+    void vDescendIntoClass(Stz* szName);
+    void vDescendIntoNamepace(Stz* szName);
     bool bGetToken(Token& roToken);
-    void vNewPart(void);
     void vRecognised(eCP ePart);
+    void vResetPart(void);
     void vSkipTillSemicolon(void);
     void vSkipTillSemicolon(Stz* szTerm);
     void vSkipUnrecognised(Stz* szTerm);
