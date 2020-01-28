@@ -114,8 +114,9 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   //vProcAll();
   bool b = bParseAllParts();
   if (! b) {
-    vTrace("Unable to fully parse %s\n"_Stz,szSourcePath->azChar());
-    vTrace("Last Part: %s\n"_Stz,m_sPart.azChar());
+    vTrace("\n\n"_Stz);
+    vTrace("** Unable to fully parse %s\n"_Stz,szSourcePath->azChar());
+    vTrace("** Last Part: %s\n"_Stz,m_sPart.azChar());
     vDebugPoint();
   }
   
@@ -377,7 +378,7 @@ bool Vortex::bParseAllParts(void)
     try {
       if (xTkn.bSame("class"_Stz))     { vParseClassPart();       }
       else
-      if (xTkn.bSame("enum "_Stz))     { vParseEnumPart();        }
+      if (xTkn.bSame("enum"_Stz))      { vParseEnumPart();        }
       else
       if (xTkn.bSame("friend"_Stz))    { vParseFriendPart();      }
       else
@@ -461,6 +462,10 @@ void Vortex::vParseEnumPart(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   vDebugPoint();
+  
+  vSkipTillSemicolon();
+  
+  vRecognised(CP_ENUM);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -524,6 +529,8 @@ void Vortex::vParseNamespaceFunction(Stz* szTerm)
   vDebugPoint();
   
   CHECKED(bTermsAreFunction());
+  
+  vRecognised(CP_NAMESPACE_FUN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -557,6 +564,14 @@ void Vortex::vParseStaticPart(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
+  vDebugPoint();
+  
+  if (! m_bInClass) {
+    vSkipTillSemicolon();
+    vRecognised(CP_STATIC);
+    return;
+  }
+  
   vDebugPoint();
 }
 
@@ -653,7 +668,7 @@ void Vortex::vWithinNamespace(void)
   vThrowProblem(-9);
 }
 
-\
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1342,6 +1357,25 @@ bool Vortex::bRecogniseUsing(Stz* szTerm)
   RASSERT(xTkn.bSame(";"_Stz));
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* skip till ;                                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vSkipTillSemicolon(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vTrace("Skipping: "_Stz);
+
+  Token xTkn;
+  while (bGetToken(xTkn)) {
+    vTrace("%s "_Stz,xTkn.azTerm());
+    if (xTkn.bSame(";"_Stz)) {
+      vTrace("\n"_Stz,xTkn.azTerm());
+      return;
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/

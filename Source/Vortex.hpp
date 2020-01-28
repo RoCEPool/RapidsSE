@@ -105,6 +105,7 @@ namespace Utilities
  
   
   
+    void vSkipTillSemicolon(void);
     void vSkipTillSemicolon(Stz* szTerm);
     void vSkipUnrecognised(Stz* szTerm);
 

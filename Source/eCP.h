@@ -18,6 +18,7 @@ enum eCP // c++ part
   /*    */ CP_NAMESPACE,      // namespace <namespaceNm> { ... }
   /*    */ CP_NAMESPACE_FUN,  // namespace function
   /*    */ CP_PRAGMA_ONCE,    // #pragma once
+  /*    */ CP_STATIC,         // static
   /*    */ CP_TEMPLATE,       // template
   
   /*    */ CP_ENUMS
@@ -38,6 +39,7 @@ static Stz* aCP[]
   /*    */ "CP_NAMESPACE"_Stz,
   /*    */ "CP_NAMESPACE_FUN"_Stz,
   /*    */ "CP_PRAGMA_ONCE"_Stz,
+  /*    */ "CP_STATIC"_Stz,
   /*    */ "CP_TEMPLATE"_Stz,
   
   /*    */ "ENUMS"_Stz
