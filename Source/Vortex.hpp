@@ -46,20 +46,31 @@ namespace Utilities
   private:
     bool bParseFile(void);
   
-    void vParseNamespace(Stz* szSawTerm);
-    void vParseUsing(Stz* szSawTerm);
+    void vParseFileEnum(Stz* szSawTerm);
+    void vParseFileFun(Stz* szSawTerm);
+    void vParseFileHash(Stz* szSawTerm);
+    void vParseFileNspace(Stz* szSawTerm);
+    void vParseFileUsing(Stz* szSawTerm);
 
-    void vParseClass(Stz* szSawTerm);
+    void vParseNspaceClass(Stz* szSawTerm);
+    void vParseNspaceFun(Stz* szSawTerm);
+    void vParseNspaceStatic(Stz* szSawTerm);
+    void vParseNspaceStruct(Stz* szSawTerm);
+    void vParseNspaceTemplate(Stz* szSawTerm);
+    void vParseNspaceUnion(Stz* szSawTerm);
+  
     void vParseClassBase(Stz* szSawTerm);
     void vParseClassBlock(Stz* szSawTerm);
-    void vParseClassMember(Stz* szSawTerm);
+  
+    void vParseBlockFriend(Stz* szSawTerm);
+    bool bParseBlockLabel(Stz* szSawTerm);
+    void vParseBlockMember(Stz* szSawTerm);
 
-    void vParseEnum(Stz* szSawTerm);
-    void vParseFriend(Stz* szSawTerm);
-    void vParseFunction(Stz* szSawTerm);
+    void vParseHashDefine(Stz* szSawTerm);
+    void vParseHashInclude(Stz* szSawTerm);
+    void vParseHashPragma(Stz* szSawTerm);
+
     void vParseFunVar(Stz* szSawTerm);
-    void vParseHash(Stz* szSawTerm);
-    bool bParseLabel(Stz* szTerm);
     void vParseStatic(Stz* szSawTerm);
     void vParseStruct(Stz* szSawTerm);
     void vParseTemplate(Stz* szSawTerm);
@@ -74,7 +85,7 @@ namespace Utilities
     bool bGetToken(Token& roToken);
     void vRecognised(eCP ePart);
     void vResetPart(void);
-    void vSkipTillSemicolon(void);
+    //void vSkipTillSemicolon(void);
     void vSkipTillSemicolon(Stz* szTerm);
     void vSkipUnrecognised(Stz* szTerm);
     bool bTermsAreFunction(void);

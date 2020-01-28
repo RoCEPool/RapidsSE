@@ -147,40 +147,52 @@ bool Vortex::bParseFile(void)
   while (bGetToken(xTkn)) {
   
     try {
-      Stz* szTerm = xTkn.szTerm();
+      Stz* szKeyWord = xTkn.szTerm();
     
       vResetPart();
     
-      if (szTerm->bSame("class"_Stz)) {
+      if (szKeyWord->bSame("class"_Stz)) {
         //vParseClass(szTerm);
         vThrowProblem(__LINE__);
       }
       else
-      if (szTerm->bSame("enum"_Stz)) {
-        vParseEnum(szTerm);
+      if (szKeyWord->bSame("enum"_Stz)) {
+        vParseFileEnum(szKeyWord);
       }
       else
-      if (szTerm->bSame("friend"_Stz)) {
-        vParseFriend(szTerm);
+      if (szKeyWord->bSame("friend"_Stz)) {
+        vThrowProblem(__LINE__);
       }
       else
-      if (szTerm->bSame("#"_Stz)) {
-        vParseHash(szTerm);
+      if (szKeyWord->bSame("#"_Stz)) {
+        vParseFileHash(szKeyWord);
       }
       else
-      if (szTerm->bSame("namespace"_Stz)) {
-        vParseNamespace(szTerm);
+      if (szKeyWord->bSame("namespace"_Stz)) {
+        vParseFileNspace(szKeyWord);
       }
       else
-      if (szTerm->bSame("static"_Stz)) {
-        vParseStatic(szTerm);
+      if (szKeyWord->bSame("static"_Stz)) {
+        vThrowProblem(__LINE__);
       }
       else
-      if (szTerm->bSame("using"_Stz)) {
-        vParseUsing(szTerm);
+      if (szKeyWord->bSame("struct"_Stz)) {
+        vThrowProblem(__LINE__);
+      }
+      else
+      if (szKeyWord->bSame("template"_Stz)) {
+         vThrowProblem(__LINE__);
+      }
+      else
+      if (szKeyWord->bSame("union"_Stz)) {
+        vThrowProblem(__LINE__);
+      }
+      else
+      if (szKeyWord->bSame("using"_Stz)) {
+        vParseFileUsing(szKeyWord);
       }
       else {
-        vParseFunction(szTerm);
+        vParseFileFun(szKeyWord);
       }
     }
     catch (i8 i_Problem) {
@@ -196,9 +208,81 @@ bool Vortex::bParseFile(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* parse NAMESPACE _^_ <name> { ... }                                         */
+/* parse ENUM _^_ ... ;                                                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseNamespace(Stz* szSawTerm)
+void Vortex::vParseFileEnum(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("enum"_Stz));
+  
+  vDebugPoint();
+  
+  vSkipTillSemicolon(szSawTerm);
+  
+  vRecognised(CP_ENUM);
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse <term> _^_ ... ;                                                     */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFileFun(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  //RASSERT(szSawTerm->bSame("???"_Stz));
+  
+  m_oTerms.vReset();
+
+  m_oTerms.vAdd(szSawTerm);
+  
+  CHECKED(bCollectTerms(";"_Stz,true));
+  
+  vDebugPoint();
+  
+  CHECKED(bTermsAreFunction());
+  
+  vRecognised(CP_NAMESPACE_FUN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse # _^_ DEFINE ... | INCLUDE ... | PRAGMA ...                          */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFileHash(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("#"_Stz));
+  
+  vDebugPoint();
+  
+  Token xTkn;
+  CHECKED(bGetToken(xTkn));
+  
+  if (xTkn.bSame("define"_Stz)) {
+    vParseHashDefine(xTkn.szTerm());
+    return;
+  }
+
+  if (xTkn.bSame("include"_Stz)) {
+    vParseHashInclude(xTkn.szTerm());
+    return;
+  }
+
+  if (xTkn.bSame("pragma"_Stz)) {
+    vParseHashPragma(xTkn.szTerm());
+    return;
+  }
+
+  vThrowProblem(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* within file parse NAMESPACE _^_ <name> { ... }                            */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFileNspace(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   RASSERT(szSawTerm->bSame("namespace"_Stz));
@@ -218,8 +302,6 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
   // parse ... }
   while (bGetToken(xTkn)) {
   
-    Stz* szTerm = xTkn.szTerm();
-  
     // test for end-of-namespace
     if (xTkn.bSame("}"_Stz))  {
       vRecognised(CP_NAMESPACE);
@@ -229,27 +311,34 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
     
     // -- -- -- -- -- --
     
-    // the possible parts of a namespacee
-    if (xTkn.bSame("class"_Stz)) {
-      vParseClass(szTerm);
+    Stz* szKeyWord = xTkn.szTerm();
+    
+    // the possible key words in a namespacee
+    if (szKeyWord->bSame("class"_Stz)) {
+      vParseNspaceClass(szKeyWord);
     }
-    else if (xTkn.bSame("enum "_Stz)) {
-      vParseEnum(szTerm);
+    else
+    if (szKeyWord->bSame("enum "_Stz)) {
+      vThrowProblem(__LINE__);
     }
-    else if (xTkn.bSame("friend"_Stz)) {
-      vParseFriend(szTerm);
+    else
+    if (szKeyWord->bSame("friend"_Stz)) {
+       vThrowProblem(__LINE__);
     }
-    else if (xTkn.bSame("#"_Stz)) {
-      vParseHash(szTerm);
+    else
+    if (szKeyWord->bSame("#"_Stz)) {
+      vThrowProblem(__LINE__);
     }
-    else if (xTkn.bSame("static"_Stz)) {
-      vParseStatic(szTerm);
+    else
+    if (szKeyWord->bSame("static"_Stz)) {
+      vParseNspaceStatic(szKeyWord);
     }
-    else if (xTkn.bSame("template"_Stz)) {
-      vParseTemplate(szTerm);
+    else
+    if (szKeyWord->bSame("template"_Stz)) {
+      vParseNspaceTemplate(szKeyWord);
     }
     else {
-      vParseFunction(szTerm);
+      vParseNspaceFun(szKeyWord);
     }
     
   } // while more tokens
@@ -260,7 +349,7 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* parse USING _^_ NAMESPACE <name> ;                                         */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseUsing(Stz* szSawTerm)
+void Vortex::vParseFileUsing(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   RASSERT(szSawTerm->bSame("using"_Stz));
@@ -285,9 +374,9 @@ void Vortex::vParseUsing(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* parse ... CLASS _^_ <name> ...                                             */
+/* parse NAMESPACE ... CLASS _^_ <name> ...                                   */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseClass(Stz* szSawTerm)
+void Vortex::vParseNspaceClass(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   RASSERT(! m_p_MetaClass);
@@ -337,6 +426,102 @@ void Vortex::vParseClass(Stz* szSawTerm)
 
   vThrowProblem(__LINE__);
 }
+
+/*----------------------------------------------------------------------------*/
+/* parse <term> _^_                                                           */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseNspaceFun(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  //RASSERT(szSawTerm->bSame("???"_Stz));
+  
+  m_oTerms.vReset();
+
+  m_oTerms.vAdd(szSawTerm);
+  
+  CHECKED(bCollectTerms(";"_Stz,true));
+  
+  vDebugPoint();
+  
+  CHECKED(bTermsAreFunction());
+  
+  vRecognised(CP_NAMESPACE_FUN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse STATIC _^_ ...                                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseNspaceStatic(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("static"_Stz));
+  
+  vDebugPoint();
+  
+  if (! m_bInClass) {
+    vSkipTillSemicolon(szSawTerm);
+    vRecognised(CP_STATIC);
+    return;
+  }
+  
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse STRUCT {                                                            */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseNspaceStruct(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(szSawTerm->bSame("struct"_Stz));
+
+  Token xTkn;
+  
+  m_p_MemberSet = m_p_MetaClass->pAddMemberSet("struct"_Stz,m_p_MemberSet);
+  
+  vThrowProblem(__LINE__);
+  
+  m_p_MemberSet = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse template _^_ ...                                                     */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseNspaceTemplate(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("template"_Stz));
+  
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* within namespace, parse UNION ...                                          */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseNspaceUnion(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(szSawTerm->bSame("union"_Stz));
+  
+  Token xTkn;
+    
+  m_p_MemberSet = m_p_MetaClass->pAddMemberSet("union"_Stz,m_p_MemberSet);
+  
+  vProcUnionMember();
+  
+  m_p_MemberSet = nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* parse within:                                                              */
@@ -394,16 +579,58 @@ void Vortex::vParseClassBlock(Stz* szSawTerm)
      return;
     }
 
-    vParseClassMember(szTerm);
+    vParseBlockMember(szTerm);
   }
 
   vThrowProblem(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse friend _^_ ...                                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseBlockFriend(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("friend"_Stz));
+  
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* within class block, skip a label i.e. private|protected|public :           */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bParseBlockLabel(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  
+  if (szTerm->bSame("private"_Stz)) {
+    RASSERT(bGetToken(xTkn));
+    RASSERT(xTkn.bSame(":"_Stz));
+    return true;
+  }
+  
+  if (szTerm->bSame("protected"_Stz)) {
+    RASSERT(bGetToken(xTkn));
+    RASSERT(xTkn.bSame(":"_Stz));
+    return true;
+  }
+  
+  if (szTerm->bSame("public"_Stz)) {
+    RASSERT(bGetToken(xTkn));
+    RASSERT(xTkn.bSame(":"_Stz));
+    return true;
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse single class member (no label)                                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseClassMember(Stz* szSawTerm)
+void Vortex::vParseBlockMember(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
  
@@ -480,60 +707,84 @@ void Vortex::vParseClassMember(Stz* szSawTerm)
   vDebugPoint();
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* parse enum _^_ ...                                                         */
+/* parse # DEFINE _^_ ...                                                     */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseEnum(Stz* szSawTerm)
+void Vortex::vParseHashDefine(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  RASSERT(szSawTerm->bSame("enum"_Stz));
+  RASSERT(szSawTerm->bSame("#"_Stz));
   
   vDebugPoint();
   
-  vSkipTillSemicolon();
+  Token xTkn;
+  CHECKED(bGetToken(xTkn));
   
-  vRecognised(CP_ENUM);
+  if (xTkn.bSame("define"_Stz)) {
+    CHECKED(bGetToken(xTkn));
+    vThrowProblem(__LINE__);
+    return;
+  }
+
+  if (xTkn.bSame("include"_Stz)) {
+    CHECKED(bGetToken(xTkn));
+    vRecognised(CP_FILE_INCLUDE);
+    return;
+  }
+
+  if (xTkn.bSame("pragma"_Stz)) {
+    CHECKED(bGetToken(xTkn));
+    CHECKED(xTkn.bSame("once"_Stz));
+    vRecognised(CP_PRAGMA_ONCE);
+    return;
+  }
+
+  vThrowProblem(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse friend _^_ ...                                                       */
+/* parse # INCLUDE _^_ ...                                                    */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseFriend(Stz* szSawTerm)
+void Vortex::vParseHashInclude(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  RASSERT(szSawTerm->bSame("friend"_Stz));
+  RASSERT(szSawTerm->bSame("include"_Stz));
   
   vDebugPoint();
+  
+  Token xTkn;
+  CHECKED(bGetToken(xTkn));
+  CHECKED(bGetToken(xTkn));
+    
+  vRecognised(CP_FILE_INCLUDE);
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse <term> _^_                                                           */
+/* parse # PRAGMA _^_ ...                                                     */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseFunction(Stz* szSawTerm)
+void Vortex::vParseHashPragma(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  //RASSERT(szSawTerm->bSame("???"_Stz));
-  
-  m_oTerms.vReset();
-
-  m_oTerms.vAdd(szSawTerm);
-  
-  CHECKED(bCollectTerms(";"_Stz,true));
+  RASSERT(szSawTerm->bSame("pragma"_Stz));
   
   vDebugPoint();
   
-  CHECKED(bTermsAreFunction());
-  
-  vRecognised(CP_NAMESPACE_FUN);
+  Token xTkn;
+  CHECKED(bGetToken(xTkn));
+  CHECKED(xTkn.bSame("once"_Stz));
+
+  vRecognised(CP_PRAGMA_ONCE);
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* parse <term> _^_                                                           */
@@ -548,73 +799,6 @@ void Vortex::vParseFunVar(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse hash _^_ ...                                                         */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseHash(Stz* szSawTerm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(szSawTerm->bSame("#"_Stz));
-  
-  vDebugPoint();
-  
-  Token xTkn;
-  
-  RASSERT(bGetToken(xTkn));
-  
-  if (xTkn.bSame("define"_Stz)) {
-    RASSERT(bGetToken(xTkn));
-    vThrowProblem(__LINE__);
-    return;
-  }
-
-  if (xTkn.bSame("include"_Stz)) {
-    RASSERT(bGetToken(xTkn));
-    vRecognised(CP_FILE_INCLUDE);
-    return;
-  }
-
-  if (xTkn.bSame("pragma"_Stz)) {
-    RASSERT(bGetToken(xTkn));
-    RASSERT(xTkn.bSame("once"_Stz));
-    vRecognised(CP_PRAGMA_ONCE);
-    return;
-  }
-
-  vThrowProblem(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* skip a label i.e. private|protected|public :                               */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bParseLabel(Stz* szTerm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  Token xTkn;
-  
-  if (szTerm->bSame("private"_Stz)) {
-    RASSERT(bGetToken(xTkn));
-    RASSERT(xTkn.bSame(":"_Stz));
-    return true;
-  }
-  
-  if (szTerm->bSame("protected"_Stz)) {
-    RASSERT(bGetToken(xTkn));
-    RASSERT(xTkn.bSame(":"_Stz));
-    return true;
-  }
-  
-  if (szTerm->bSame("public"_Stz)) {
-    RASSERT(bGetToken(xTkn));
-    RASSERT(xTkn.bSame(":"_Stz));
-    return true;
-  }
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* parse static _^_ ...                                                       */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseStatic(Stz* szSawTerm)
@@ -626,7 +810,7 @@ void Vortex::vParseStatic(Stz* szSawTerm)
   vDebugPoint();
   
   if (! m_bInClass) {
-    vSkipTillSemicolon();
+    vSkipTillSemicolon(szSawTerm);
     vRecognised(CP_STATIC);
     return;
   }
@@ -831,21 +1015,21 @@ void Vortex::vResetPart(void)
 /*----------------------------------------------------------------------------*/
 /* skip till ;                                                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vSkipTillSemicolon(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  vTrace("Skipping: "_Stz);
-
-  Token xTkn;
-  while (bGetToken(xTkn)) {
-    vTrace("%s "_Stz,xTkn.azTerm());
-    if (xTkn.bSame(";"_Stz)) {
-      vTrace("\n"_Stz,xTkn.azTerm());
-      return;
-    }
-  }
-}
+//void Vortex::vSkipTillSemicolon(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+//
+//  vTrace("Skipping: "_Stz);
+//
+//  Token xTkn;
+//  while (bGetToken(xTkn)) {
+//    vTrace("%s "_Stz,xTkn.azTerm());
+//    if (xTkn.bSame(";"_Stz)) {
+//      vTrace("\n"_Stz,xTkn.azTerm());
+//      return;
+//    }
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* skip till ;                                                                */
