@@ -16,7 +16,7 @@ namespace Reflection
 
     s32 m_sBlockNm;    // name of this meta block
     i8  m_nSize;       // rolled up size of this block
-    eMS m_eBlock;      // kind of meta block
+    eMB m_eBlock;      // kind of meta block
 
     // must be last
     Footer m_xFooter;
@@ -30,8 +30,8 @@ namespace Reflection
 
     MetaMember* pAddMember(Stz* szVarNm);
   
-    eMS  eBlock(void);
-    void vBlock(eMS eBlock);
+    eMB  eBlock(void);
+    void vBlock(eMB eBlock);
 
     MetaBlock* pParentBlock(void);
   

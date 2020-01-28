@@ -3,26 +3,26 @@
 /*============================================================================*/
 #pragma once
 
-enum eMS // member set
+enum eMB // meta block
 {
-  /*  0 */ MS_NONE=0,
+  /*  0 */ MB_NONE=0,
   
-  /*    */ MS_LINEAR,       // linear sequence of var's
-  /*    */ MS_STRUCT,       // struct of var's
-  /*    */ MS_STRUCT_BITS,  // struct of bit fields
-  /*    */ MS_UNION,        // union of var's
+  /*    */ MB_CLASS,        // linear sequence of var's
+  /*    */ MB_STRUCT,       // struct of var's
+  /*    */ MB_STRUCT_BITS,  // struct of bit fields
+  /*    */ MB_UNION,        // union of var's
   
-  /*    */ MS_ENUMS
+  /*    */ MB_ENUMS
 };
 
-static Stz* aMS[]
+static Stz* aMB[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "MS_LINEAR"_Stz,
-  /*    */ "MS_STRUCT"_Stz,
-  /*    */ "MS_STRUCT_BITS"_Stz,
-  /*    */ "MS_UNION"_Stz,
+  /*    */ "MB_CLASS"_Stz,
+  /*    */ "MB_STRUCT"_Stz,
+  /*    */ "MB_STRUCT_BITS"_Stz,
+  /*    */ "MB_UNION"_Stz,
   
   /*    */ "ENUMS"_Stz
 };

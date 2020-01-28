@@ -27,7 +27,7 @@ MetaBlock::MetaBlock(MetaClass* p_MetaClass, MetaBlock* p_ParentBlock)
 
   m_sBlockNm = "anonymous"_Stz;
   m_nSize    = 0;
-  m_eBlock   = MS_LINEAR;
+  m_eBlock   = MB_NONE;
 
   _checkInitialised_(CN_METABLOCK);
   
@@ -69,7 +69,7 @@ MetaMember* MetaBlock::pAddMember(Stz* szVarNm)
 /*----------------------------------------------------------------------------*/
 /* get member set kind                                                        */
 /*----------------------------------------------------------------------------*/
-eMS MetaBlock::eBlock(void)
+eMB MetaBlock::eBlock(void)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
     
@@ -89,7 +89,7 @@ MetaBlock* MetaBlock::pParentBlock(void)
 /*----------------------------------------------------------------------------*/
 /* set member set kind                                                        */
 /*----------------------------------------------------------------------------*/
-void MetaBlock::vBlock(eMS eBlock)
+void MetaBlock::vBlock(eMB eBlock)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
     
@@ -107,7 +107,7 @@ void MetaBlock::vPrint(i8 i_Tab)
          
          Stz::szTab(i_Tab)->azChar(),
          m_sBlockNm.azChar(),
-         aMS[m_eBlock]->azChar(),
+         aMB[m_eBlock]->azChar(),
          m_nSize
          );
 }
