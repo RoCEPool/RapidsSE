@@ -8,9 +8,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Reflection,MetaMember,CN_MEMBERVAR)
-__aNewFunction(MetaMember,CN_MEMBERVAR)
-__vDeleteFunction(MetaMember,CN_MEMBERVAR)
+__pCastFunction(Reflection,MetaMember,CN_METAMEMBER)
+__aNewFunction(MetaMember,CN_METAMEMBER)
+__vDeleteFunction(MetaMember,CN_METAMEMBER)
 __aFooterFunction(MetaMember)
 
 
@@ -18,9 +18,9 @@ __aFooterFunction(MetaMember)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MetaMember::MetaMember(MetaBlock* p_ParentBlock)
-: Object(CN_MEMBERVAR)
+: Object(CN_METAMEMBER)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
   
   m_p_ParentBlock = p_ParentBlock;
   
@@ -41,9 +41,9 @@ MetaMember::MetaMember(MetaBlock* p_ParentBlock)
   // arrays
   m_nElements = 0;
   
-  _checkInitialised_(CN_MEMBERVAR);
+  _checkInitialised_(CN_METAMEMBER);
   
-  _postcondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +51,7 @@ MetaMember::MetaMember(MetaBlock* p_ParentBlock)
 /*----------------------------------------------------------------------------*/
 MetaMember::~MetaMember(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
   
   delete m_pNestedBlock;
 }
@@ -185,7 +185,7 @@ Stz* MetaMember::szVarNm(EnameSet* pTerms, Stz*& rszTypeNm,
 /*----------------------------------------------------------------------------*/
 i8 MetaMember::nBits(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   return m_nBits;
 }
@@ -195,7 +195,7 @@ i8 MetaMember::nBits(void)
 /*----------------------------------------------------------------------------*/
 void MetaMember::vBits(i8 nBits)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   m_nBits = nBits;
 }
@@ -205,7 +205,7 @@ void MetaMember::vBits(i8 nBits)
 /*----------------------------------------------------------------------------*/
 i8 MetaMember::nElements(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   return m_nElements;
 }
@@ -215,7 +215,7 @@ i8 MetaMember::nElements(void)
 /*----------------------------------------------------------------------------*/
 void MetaMember::vElements(i8 nElements)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   m_nElements = nElements;
 }
@@ -225,7 +225,7 @@ void MetaMember::vElements(i8 nElements)
 /*----------------------------------------------------------------------------*/
 bool MetaMember::bFunPtr(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   return m_bFunPtr;
 }
@@ -235,7 +235,7 @@ bool MetaMember::bFunPtr(void)
 /*----------------------------------------------------------------------------*/
 void MetaMember::vFunPtr(bool bFunPtr)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   m_bFunPtr = bFunPtr;
 }
@@ -245,7 +245,7 @@ void MetaMember::vFunPtr(bool bFunPtr)
 /*----------------------------------------------------------------------------*/
 MetaBlock* MetaMember::p_ParentBlock(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   return m_p_ParentBlock;
 }
@@ -255,7 +255,7 @@ MetaBlock* MetaMember::p_ParentBlock(void)
 /*----------------------------------------------------------------------------*/
 eMV MetaMember::eMetaMember(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   return m_eVar;
 }
@@ -265,7 +265,7 @@ eMV MetaMember::eMetaMember(void)
 /*----------------------------------------------------------------------------*/
 MetaBlock* MetaMember::pNestedBlock(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   return m_pNestedBlock;
 }
@@ -275,7 +275,7 @@ MetaBlock* MetaMember::pNestedBlock(void)
 /*----------------------------------------------------------------------------*/
 void MetaMember::vNestedBlock(MetaBlock* pNestedBlock)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   m_pNestedBlock = pNestedBlock;
 }
@@ -285,7 +285,7 @@ void MetaMember::vNestedBlock(MetaBlock* pNestedBlock)
 /*----------------------------------------------------------------------------*/
 i8 MetaMember::nPointers(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   return m_nPointers;
 }
@@ -295,7 +295,7 @@ i8 MetaMember::nPointers(void)
 /*----------------------------------------------------------------------------*/
 void MetaMember::vPointers(i8 nPointers)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   m_nPointers = nPointers;
 }
@@ -305,7 +305,7 @@ void MetaMember::vPointers(i8 nPointers)
 /*----------------------------------------------------------------------------*/
 void MetaMember::vPrint(i8 i_Tab)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
      
   if (MV_SET == m_eVar)
     vTrace("%sMemberVar %-16s %lldB\n"_Stz,
@@ -336,7 +336,7 @@ void MetaMember::vPrint(i8 i_Tab)
 /*----------------------------------------------------------------------------*/
 void MetaMember::vRecPrint(i8 i_Depth)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
   
   vPrint(i_Depth);
   
@@ -349,7 +349,7 @@ void MetaMember::vRecPrint(i8 i_Depth)
 /*----------------------------------------------------------------------------*/
 i8 MetaMember::nSize(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   return m_nSize;
 }
@@ -359,7 +359,7 @@ i8 MetaMember::nSize(void)
 /*----------------------------------------------------------------------------*/
 void MetaMember::vTypeNm(Stz* szTypeNm)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   m_sTypeNm = szTypeNm;
 }
@@ -369,7 +369,7 @@ void MetaMember::vTypeNm(Stz* szTypeNm)
 /*----------------------------------------------------------------------------*/
 Stz* MetaMember::szTypeNm(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   return m_sTypeNm.szStz();
 }
@@ -379,7 +379,7 @@ Stz* MetaMember::szTypeNm(void)
 /*----------------------------------------------------------------------------*/
 Stz* MetaMember::szVarNm(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   return m_sVarNm.szStz();
 }
@@ -389,7 +389,7 @@ Stz* MetaMember::szVarNm(void)
 /*----------------------------------------------------------------------------*/
 void MetaMember::vVarNm(Stz* szVarNm)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   m_sVarNm = szVarNm;
 }

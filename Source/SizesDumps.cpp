@@ -178,11 +178,11 @@ pDUMPFUN *gpDump[]
   /* */ &Heap::vDump,            // CN_MARKER
   /* */ &Heap::vDump,            // CN_MEDIUMPERSISTENT
   /* */ &Heap::vDump,            // CN_MEDIUMTRANSIENT
-  /* */ &Dump::vUndefined,       // CN_MEMBERVAR
   /* */ &Dump::vUndefined,       // CN_MEMTEST
   /* */ &Dump::vUndefined,       // CN_METABLOCK
   /* */ &Dump::vUndefined,       // CN_METACLASS
   /* */ &Dump::vUndefined,       // CN_METAGRAPH
+  /* */ &Dump::vUndefined,       // CN_METAMEMBER
   /* */ &Dump::vUndefined,       // CN_MUTEX
 
   /* */ &Dump::vInvalid,         // CN__N__
@@ -511,11 +511,11 @@ i8 giClassSize[]
   /* */ sizeof(Marker),             // CN_MARKER
   /* */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
   /* */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
-  /* */ sizeof(MetaMember),         // CN_MEMBERVAR
   /* */ sizeof(MemTest),            // CN_MEMTEST
   /* */ sizeof(MetaBlock),          // CN_METABLOCK
   /* */ sizeof(MetaClass),          // CN_METACLASS
   /* */ sizeof(MetaGraph),          // CN_METAGRAPH
+  /* */ sizeof(MetaMember),         // CN_METAMEMBER
   /* */ sizeof(Mutex),              // CN_MUTEX
 
   /* */ 'N' - ('A' - 1),            // CN__N__
@@ -844,11 +844,11 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_SMALL,   // CN_MARKER
   /* */ HT_INVALID,           // CN_MEDIUMPERSISTENT
   /* */ HT_INVALID,           // CN_MEDIUMTRANSIENT
-  /* */ HT_TRANSIENT_SMALL,   // CN_MEMBERVAR
   /* */ HT_TRANSIENT_SMALL,   // CN_MEMTEST
   /* */ HT_TRANSIENT_SMALL,   // CN_METABLOCK
   /* */ HT_TRANSIENT_SMALL,   // CN_METACLASS
   /* */ HT_TRANSIENT_SMALL,   // CN_METAGRAPH
+  /* */ HT_TRANSIENT_SMALL,   // CN_METAMEMBER
   /* */ HT_TRANSIENT_SMALL,   // CN_MUTEX
 
   /* */ HT_INVALID,           // CN__N__

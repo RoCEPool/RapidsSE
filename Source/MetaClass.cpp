@@ -90,7 +90,7 @@ void MetaClass::vClassNm(Stz* szClassNm)
 /*----------------------------------------------------------------------------*/
 eCC MetaClass::eMetaClass(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   return m_eClass;
 }
@@ -100,7 +100,7 @@ eCC MetaClass::eMetaClass(void)
 /*----------------------------------------------------------------------------*/
 void MetaClass::vMetaClass(eCC eMetaClass)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   m_eClass = eMetaClass;
 }
@@ -149,7 +149,7 @@ void MetaClass::vRecPrint(i8 i_Depth)
 /*----------------------------------------------------------------------------*/
 i8 MetaClass::nSize(void)
 {
-  _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
   return m_nSize;
 }
