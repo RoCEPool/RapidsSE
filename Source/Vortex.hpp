@@ -9,7 +9,7 @@ namespace Utilities
   {
   public:
     File*      m_pOutputFile;  // output file
-    s256       m_sSourcePath;  // .ho/hpp source path
+    s256       m_sSourcePath;  // .h/hpp source path
     Input*     m_pInput;       // input  token stream
   
     MetaGraph* m_pMetaGraph;   // the metagraph that is created
@@ -51,6 +51,7 @@ namespace Utilities
     bool bGetToken(Token& roToken);
     void vNewPart(void);
     void vRecognised(eCP ePart);
+    bool bTermsAreFunction(void);
     void vThrowProblem(i8 i_Problem);
 
     bool bParseAllParts(void);

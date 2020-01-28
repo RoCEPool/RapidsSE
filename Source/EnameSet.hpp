@@ -40,6 +40,7 @@ namespace Gadgets
     i8   nEnames(void);
     i8   i_Find(Stz* szName);
     bool bHasName(Stz* szName);
+    i8   nItems(void);
     Stz* szName(i8 i_Ename);
     void vNamesString(String* pString);
     void vPrint(void);
