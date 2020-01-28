@@ -57,23 +57,29 @@ namespace Utilities
 
     bool bParseFile(void);
   
-    void vParseClass(Stz* szTerm);
-    void vParseClassBase(void);
-    void vParseEnumPart(void);
-    void vParseFriendPart(void);
-    void vParseHashPart(void);
-    void vParseMember(Stz* szTerm);
+    void vParseClass(Stz* szSawTerm);
+    void vParseClassBase(Stz* szSawTerm);
+    void vParseClassBlock(Stz* szSawTerm);
+    void vParseEnum(Stz* szSawTerm);
+    void vParseFriend(Stz* szSawTerm);
+    void vParseHash(Stz* szSawTerm);
+    void vParseMember(Stz* szSawTerm);
+    void vParseNamespace(Stz* szSawTerm);
     void vParseNamespaceFunction(Stz* szSawTerm);
-    void vParseNamespacePart(void);
-    void vParseStaticPart(void);
-    void vParseTemplatePart(void);
-    void vParseUsingPart(void);
-    void vParse_otherPart(Stz* szTerm);
+    void vParseStatic(Stz* szSawTerm);
+    void vParseTemplate(Stz* szSawTerm);
+    void vParseUsing(Stz* szSawTerm);
+    void vParse_other(Stz* szSawTerm);
   
-    void vWithinClassBlock(void);
-    void vWithinNamespace(void);
+    bool bSkipLabel(Stz* szTerm);
+    void vSkipTillSemicolon(void);
+    void vSkipTillSemicolon(Stz* szTerm);
+    void vSkipUnrecognised(Stz* szTerm);
 
 
+  
+  
+    // remove
     void vProcAll(void);
     void vProcClassBase(void);
     void vProcClassBlock(void);
@@ -105,13 +111,6 @@ namespace Utilities
     bool bRecogniseUnion(Stz* szTerm);
     bool bRecogniseUsing(Stz* szTerm);
  
-  
-  
-    bool bSkipLabel(Stz* szTerm);
-    void vSkipTillSemicolon(void);
-    void vSkipTillSemicolon(Stz* szTerm);
-    void vSkipUnrecognised(Stz* szTerm);
-
   private:
   
     Footer* aFooter(void);
