@@ -753,7 +753,7 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
     vAddTerm(xTkn.szTerm());
   }
     
-  if (! MemberVar::bIsMemberVar(szClassNm,&m_oTerms)) {
+  if (! MetaMember::bIsMember(szClassNm,&m_oTerms)) {
     vTrace("  not a member variable\n"_Stz);
     return;
   }
@@ -768,10 +768,10 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
   
   Stz* szVarNm;
   Stz* szTypeNm;
-  szVarNm = MemberVar::szVarNm(&m_oTerms,szTypeNm,
+  szVarNm = MetaMember::szVarNm(&m_oTerms,szTypeNm,
                                 nPointers,bFunPtr,nElements,nBits);
   
-  m_p_MemberVar = m_p_MemberSet->pAddMemberVar(szVarNm);
+  m_p_MemberVar = m_p_MemberSet->pAddMember(szVarNm);
   
   m_p_MemberVar->vTypeNm(szTypeNm);
   m_p_MemberVar->vPointers(nPointers);
@@ -1473,7 +1473,7 @@ void Vortex::vProcMemberProper(Stz* szFirstTerm)
     vAddTerm(xTkn.szTerm());
   }
     
-  if (! MemberVar::bIsMemberVar(szClassNm,&m_oTerms)) {
+  if (! MetaMember::bIsMember(szClassNm,&m_oTerms)) {
     vTrace("  not a member variable\n"_Stz);
     return;
   }
@@ -1488,10 +1488,10 @@ void Vortex::vProcMemberProper(Stz* szFirstTerm)
   
   Stz* szVarNm;
   Stz* szTypeNm;
-  szVarNm = MemberVar::szVarNm(&m_oTerms,szTypeNm,
+  szVarNm = MetaMember::szVarNm(&m_oTerms,szTypeNm,
                                 nPointers,bFunPtr,nElements,nBits);
   
-  m_p_MemberVar = m_p_MemberSet->pAddMemberVar(szVarNm);
+  m_p_MemberVar = m_p_MemberSet->pAddMember(szVarNm);
   
   m_p_MemberVar->vTypeNm(szTypeNm);
   m_p_MemberVar->vPointers(nPointers);

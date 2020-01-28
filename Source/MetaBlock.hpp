@@ -7,12 +7,12 @@ namespace Reflection
 {
   class MetaBlock : public Object,
                     public ListItem_t<MetaBlock>,
-                    public List_t<MemberVar>
+                    public List_t<MetaMember>
   {
   public:
  
     MetaClass* m_p_MetaClass;    // the _p_ sequence means not owned by
-    MetaBlock* m_p_ParentMbrSet; // parent member set
+    MetaBlock* m_p_ParentBlock;  // parent member set
 
     s32 m_sSetNm; // name of this set
     i8  m_nSize;  // rolled up size of this set
@@ -28,10 +28,10 @@ namespace Reflection
     MetaBlock(MetaClass* p_MetaClass, MetaBlock* p_ParentMbrSet);
    ~MetaBlock(void) noexcept(false);
 
-    MemberVar* pAddMemberVar(Stz* szVarNm);
+    MetaMember* pAddMember(Stz* szVarNm);
   
     eMS  eMemberSet(void);
-    MetaBlock* pParentMbrSet(void);
+    MetaBlock* pParentBlock(void);
     void vMemberSet(eMS eMemberSet);
 
     void vPrint(i8 i_Tab);

@@ -8,25 +8,25 @@ namespace Utilities
   class Vortex : public Object
   {
   public:
-    File*      m_pOutputFile;  // output file
-    s256       m_sSourcePath;  // .h/hpp source path
-    Input*     m_pInput;       // input  token stream
+    File*       m_pOutputFile;  // output file
+    s256        m_sSourcePath;  // .h/hpp source path
+    Input*      m_pInput;       // input  token stream
   
-    MetaGraph* m_pMetaGraph;   // the metagraph that is created
-    ConstSet*  m_p_ConsSet;    // set of static const i8's
-    MetaClass* m_p_MetaClass;  // current working metaclass
-    MetaBlock* m_p_MemberSet;  // current working member set
-    MemberVar* m_p_MemberVar;  // current working member var
+    MetaGraph*  m_pMetaGraph;   // the metagraph that is created
+    ConstSet*   m_p_ConsSet;    // set of static const i8's
+    MetaClass*  m_p_MetaClass;  // current working metaclass
+    MetaBlock*  m_p_MemberSet;  // current working member set
+    MetaMember* m_p_MemberVar;  // current working member var
   
-    EnameSet   m_oTerms;       // working set of collected terms
-    bool       m_bTraceTokens; // trace tokens
+    EnameSet    m_oTerms;       // working set of collected terms
+    bool        m_bTraceTokens; // trace tokens
    
-    bool       m_bInClass;     // currently in a class?
-    s32        m_sClassNm;     // current namespace name
-    bool       m_bInNamespace; // currently in a namespace?
-    s32        m_sNamespaceNm; // current namespace name
+    bool        m_bInClass;     // currently in a class?
+    s32         m_sClassNm;     // current namespace name
+    bool        m_bInNamespace; // currently in a namespace?
+    s32         m_sNamespaceNm; // current namespace name
     
-    s4K        m_sPart;        // current part
+    s4K         m_sPart;        // current part
 
     // must be last
     Footer m_xFooter;

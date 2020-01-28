@@ -68,7 +68,7 @@ namespace ReadConsistency {                                                   }
 namespace Records       {                                                     }
 namespace Reflection    { class ConstDef; class ConstSet;
                           class MetaBlock; class MetaClass; class MetaGraph;
-                          class MemberVar;                                    }
+                          class MetaMember;                                   }
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Registers     { class RegSet;                                       }
 namespace Rows          {                                                     }

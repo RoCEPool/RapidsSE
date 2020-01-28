@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* MemberVar.hpp - Member Variable                                            */
+/* MetaMember.hpp - Meta Block Member                                         */
 /*============================================================================*/
 #pragma once
 
 namespace Reflection
 {
-  class MemberVar : public Object,
-                    public ListItem_t<MemberVar>
+  class MetaMember : public Object,
+                     public ListItem_t<MetaMember>
   {
   public:
     MetaBlock* m_p_ParentBlock; // tparent meta block
@@ -35,10 +35,10 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MemberVar(MetaBlock* p_MetaBlock);
-   ~MemberVar(void) noexcept(false);
+    MetaMember(MetaBlock* p_MetaBlock);
+   ~MetaMember(void) noexcept(false);
   
-    static bool bIsMemberVar(Stz* szClassNm, EnameSet* pTerms);
+    static bool bIsMember(Stz* szClassNm, EnameSet* pTerms);
     static Stz* szVarNm(EnameSet* pTerms, Stz*& rszTypeNm,
                         i8& rnPtrs, bool& rbFunPtr, i8& rnElements, i8& rnBits);
 
@@ -52,7 +52,7 @@ namespace Reflection
     void vFunPtr(bool bFunPtr);
   
     MetaBlock* p_ParentBlock(void);
-    eMV  eMemberVar(void);
+    eMV  eMetaMember(void);
     MetaBlock* pNestedBlock(void);
     void vNestedBlock(MetaBlock* pNestedBlock);
 
@@ -73,7 +73,7 @@ namespace Reflection
     Footer* aFooter(void);
   };
 
-  MemberVar* _pMemberVar(void* aAddr);
+  MetaMember* _pMetaMember(void* aAddr);
 }
 
 /*============================================================================*/

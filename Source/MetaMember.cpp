@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MemberVar.cpp - Member Variable                                            */
+/* MetaMember.cpp - Member Variable                                            */
 /*============================================================================*/
 
 #include "Reflection.h"
@@ -8,16 +8,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Reflection,MemberVar,CN_MEMBERVAR)
-__aNewFunction(MemberVar,CN_MEMBERVAR)
-__vDeleteFunction(MemberVar,CN_MEMBERVAR)
-__aFooterFunction(MemberVar)
+__pCastFunction(Reflection,MetaMember,CN_MEMBERVAR)
+__aNewFunction(MetaMember,CN_MEMBERVAR)
+__vDeleteFunction(MetaMember,CN_MEMBERVAR)
+__aFooterFunction(MetaMember)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MemberVar::MemberVar(MetaBlock* p_ParentBlock)
+MetaMember::MetaMember(MetaBlock* p_ParentBlock)
 : Object(CN_MEMBERVAR)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
@@ -49,7 +49,7 @@ MemberVar::MemberVar(MetaBlock* p_ParentBlock)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MemberVar::~MemberVar(void) noexcept(false)
+MetaMember::~MetaMember(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
   
@@ -63,7 +63,7 @@ MemberVar::~MemberVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* test if term set can be recogised as a member variable                     */
 /*----------------------------------------------------------------------------*/
-bool MemberVar::bIsMemberVar(Stz* szClassNm, EnameSet* pTerms)
+bool MetaMember::bIsMember(Stz* szClassNm, EnameSet* pTerms)
 {
   _static_
   
@@ -122,7 +122,7 @@ bool MemberVar::bIsMemberVar(Stz* szClassNm, EnameSet* pTerms)
 /*----------------------------------------------------------------------------*/
 /* get variable name from given terms                                         */
 /*----------------------------------------------------------------------------*/
-Stz* MemberVar::szVarNm(EnameSet* pTerms, Stz*& rszTypeNm,
+Stz* MetaMember::szVarNm(EnameSet* pTerms, Stz*& rszTypeNm,
                         i8& rnPtrs, bool& rbFunPtr, i8& rnElements, i8& rnBits)
 {
   _static_
@@ -183,7 +183,7 @@ Stz* MemberVar::szVarNm(EnameSet* pTerms, Stz*& rszTypeNm,
 /*----------------------------------------------------------------------------*/
 /* get number of bits for a bit field                                         */
 /*----------------------------------------------------------------------------*/
-i8 MemberVar::nBits(void)
+i8 MetaMember::nBits(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -193,7 +193,7 @@ i8 MemberVar::nBits(void)
 /*----------------------------------------------------------------------------*/
 /* set number of bits for a bit field                                         */
 /*----------------------------------------------------------------------------*/
-void MemberVar::vBits(i8 nBits)
+void MetaMember::vBits(i8 nBits)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -203,7 +203,7 @@ void MemberVar::vBits(i8 nBits)
 /*----------------------------------------------------------------------------*/
 /* get number of array elements                                               */
 /*----------------------------------------------------------------------------*/
-i8 MemberVar::nElements(void)
+i8 MetaMember::nElements(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -213,7 +213,7 @@ i8 MemberVar::nElements(void)
 /*----------------------------------------------------------------------------*/
 /* set number of array elements                                               */
 /*----------------------------------------------------------------------------*/
-void MemberVar::vElements(i8 nElements)
+void MetaMember::vElements(i8 nElements)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -223,7 +223,7 @@ void MemberVar::vElements(i8 nElements)
 /*----------------------------------------------------------------------------*/
 /* is this member a function pointer?                                         */
 /*----------------------------------------------------------------------------*/
-bool MemberVar::bFunPtr(void)
+bool MetaMember::bFunPtr(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -233,7 +233,7 @@ bool MemberVar::bFunPtr(void)
 /*----------------------------------------------------------------------------*/
 /* set is this member a function pointer?                                     */
 /*----------------------------------------------------------------------------*/
-void MemberVar::vFunPtr(bool bFunPtr)
+void MetaMember::vFunPtr(bool bFunPtr)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -243,7 +243,7 @@ void MemberVar::vFunPtr(bool bFunPtr)
 /*----------------------------------------------------------------------------*/
 /* get which member set this member var is within                             */
 /*----------------------------------------------------------------------------*/
-MetaBlock* MemberVar::p_ParentBlock(void)
+MetaBlock* MetaMember::p_ParentBlock(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -253,7 +253,7 @@ MetaBlock* MemberVar::p_ParentBlock(void)
 /*----------------------------------------------------------------------------*/
 /* get var kind                                                               */
 /*----------------------------------------------------------------------------*/
-eMV MemberVar::eMemberVar(void)
+eMV MetaMember::eMetaMember(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -263,7 +263,7 @@ eMV MemberVar::eMemberVar(void)
 /*----------------------------------------------------------------------------*/
 /* get the nested set                                                         */
 /*----------------------------------------------------------------------------*/
-MetaBlock* MemberVar::pNestedBlock(void)
+MetaBlock* MetaMember::pNestedBlock(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -273,7 +273,7 @@ MetaBlock* MemberVar::pNestedBlock(void)
 /*----------------------------------------------------------------------------*/
 /* set the nested set                                                         */
 /*----------------------------------------------------------------------------*/
-void MemberVar::vNestedBlock(MetaBlock* pNestedBlock)
+void MetaMember::vNestedBlock(MetaBlock* pNestedBlock)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -283,7 +283,7 @@ void MemberVar::vNestedBlock(MetaBlock* pNestedBlock)
 /*----------------------------------------------------------------------------*/
 /* get number of type pointers                                                */
 /*----------------------------------------------------------------------------*/
-i8 MemberVar::nPointers(void)
+i8 MetaMember::nPointers(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -293,7 +293,7 @@ i8 MemberVar::nPointers(void)
 /*----------------------------------------------------------------------------*/
 /* get number of type pointers                                                */
 /*----------------------------------------------------------------------------*/
-void MemberVar::vPointers(i8 nPointers)
+void MetaMember::vPointers(i8 nPointers)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -303,7 +303,7 @@ void MemberVar::vPointers(i8 nPointers)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void MemberVar::vPrint(i8 i_Tab)
+void MetaMember::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
      
@@ -334,7 +334,7 @@ void MemberVar::vPrint(i8 i_Tab)
 /*----------------------------------------------------------------------------*/
 /* recursive print                                                            */
 /*----------------------------------------------------------------------------*/
-void MemberVar::vRecPrint(i8 i_Depth)
+void MetaMember::vRecPrint(i8 i_Depth)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
   
@@ -347,7 +347,7 @@ void MemberVar::vRecPrint(i8 i_Depth)
 /*----------------------------------------------------------------------------*/
 /* get rolled-up size of this member variable                                 */
 /*----------------------------------------------------------------------------*/
-i8 MemberVar::nSize(void)
+i8 MetaMember::nSize(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -357,7 +357,7 @@ i8 MemberVar::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* set type name                                                              */
 /*----------------------------------------------------------------------------*/
-void MemberVar::vTypeNm(Stz* szTypeNm)
+void MetaMember::vTypeNm(Stz* szTypeNm)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -367,7 +367,7 @@ void MemberVar::vTypeNm(Stz* szTypeNm)
 /*----------------------------------------------------------------------------*/
 /* get type name                                                              */
 /*----------------------------------------------------------------------------*/
-Stz* MemberVar::szTypeNm(void)
+Stz* MetaMember::szTypeNm(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -377,7 +377,7 @@ Stz* MemberVar::szTypeNm(void)
 /*----------------------------------------------------------------------------*/
 /* get variable name                                                          */
 /*----------------------------------------------------------------------------*/
-Stz* MemberVar::szVarNm(void)
+Stz* MetaMember::szVarNm(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
@@ -387,7 +387,7 @@ Stz* MemberVar::szVarNm(void)
 /*----------------------------------------------------------------------------*/
 /* set variable name                                                          */
 /*----------------------------------------------------------------------------*/
-void MemberVar::vVarNm(Stz* szVarNm)
+void MetaMember::vVarNm(Stz* szVarNm)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     

@@ -17,13 +17,13 @@ __aFooterFunction(MetaBlock)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaBlock::MetaBlock(MetaClass* p_MetaClass, MetaBlock* p_ParentMbrSet)
+MetaBlock::MetaBlock(MetaClass* p_MetaClass, MetaBlock* p_ParentBlock)
 : Object(CN_METABLOCK)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
   
   m_p_MetaClass = p_MetaClass;
-  m_p_ParentMbrSet = p_ParentMbrSet;
+  m_p_ParentBlock = p_ParentBlock;
 
   m_sSetNm = "anonymous"_Stz;
   m_nSize  = 0;
@@ -53,17 +53,17 @@ MetaBlock::~MetaBlock(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add a new member set with given name                                       */
 /*----------------------------------------------------------------------------*/
-MemberVar* MetaBlock::pAddMemberVar(Stz* szVarNm)
+MetaMember* MetaBlock::pAddMember(Stz* szVarNm)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
   
-  MemberVar* pMemberVar = new MemberVar(this);
+  MetaMember* pMember = new MetaMember(this);
   
-  pMemberVar->vVarNm(szVarNm);
+  pMember->vVarNm(szVarNm);
   
-  vAppend(pMemberVar);
+  vAppend(pMember);
   
-  return pMemberVar;
+  return pMember;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,11 +79,11 @@ eMS MetaBlock::eMemberSet(void)
 /*----------------------------------------------------------------------------*/
 /* get parent member set                                                      */
 /*----------------------------------------------------------------------------*/
-MetaBlock* MetaBlock::pParentMbrSet(void)
+MetaBlock* MetaBlock::pParentBlock(void)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
   
-  return m_p_ParentMbrSet;
+  return m_p_ParentBlock;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,8 +121,8 @@ void MetaBlock::vRecPrint(i8 i_Depth)
   
   vPrint(i_Depth);
   
-  for (MemberVar* pMbrVar = pHead(); pMbrVar; pMbrVar = pMbrVar->pNextItem())
-    pMbrVar->vRecPrint(i_Depth + 1);
+  for (MetaMember* pMember = pHead(); pMember; pMember = pMember->pNextItem())
+    pMember->vRecPrint(i_Depth + 1);
 }
 
 /*----------------------------------------------------------------------------*/
