@@ -289,6 +289,66 @@ bool Vortex::bTermsAreFunction(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* are terms a variable ?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bTermsAreVariable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+   Stz* szTerm;
+  
+   i8 nTerms = m_oTerms.nItems();
+     
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // term 0
+   
+   i8 i_Term = 0;
+   szTerm = m_oTerms.szName(i_Term++);
+  
+  // -- -- -- -- -- --
+  // exclude constructor function
+  if (m_bInClass && szTerm->bSame(m_sClassNm.szStz()) &&
+      m_oTerms.szName(i_Term)->bSame("("_Stz)) {
+    return false;
+  }
+  
+  // -- -- -- -- -- --
+  // exclude destructor function
+  if (m_bInClass && szTerm->bSame("~"_Stz))
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  
+  // nb. szTerm is return type at this point
+
+  
+  // -- -- -- -- -- --
+  // skip zero or more '*'
+  szTerm = m_oTerms.szName(i_Term++);
+  while (szTerm->bSame("*"_Stz))
+    szTerm = m_oTerms.szName(i_Term++);
+  
+  // -- -- -- -- -- --
+  // test for variable which is a function pointer
+  if (szTerm->bSame("("_Stz))
+    return true;
+
+  // -- -- -- -- -- --
+  // attempt to detect a function
+  szTerm = m_oTerms.szName(i_Term++);
+  while (i_Term < nTerms) {
+    if (szTerm->bSame("("_Stz))
+      return false;
+    szTerm = m_oTerms.szName(i_Term++);
+  }
+  
+  // -- -- -- -- -- --
+  // must be a variable
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* throw problem                                                              */
 /*----------------------------------------------------------------------------*/
 void Vortex::vThrowProblem(i8 i_Problem)
@@ -488,7 +548,6 @@ void Vortex::vParseNamespacePart(void)
 
   m_bInNamespace = false;
   m_sNamespaceNm = ""_Stz;
-  
 }
 
 /*----------------------------------------------------------------------------*/

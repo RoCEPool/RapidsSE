@@ -52,6 +52,7 @@ namespace Utilities
     void vNewPart(void);
     void vRecognised(eCP ePart);
     bool bTermsAreFunction(void);
+    bool bTermsAreVariable(void);
     void vThrowProblem(i8 i_Problem);
 
     bool bParseAllParts(void);
