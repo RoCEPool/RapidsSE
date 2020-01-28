@@ -177,7 +177,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_METAMEMBER
   /*    */ &Finalize::vUndefined,         // CN_MEMTEST
   /*    */ &Finalize::vUndefined,         // CN_METABLOCK
-  /*    */ &Finalize::vUndefined,         // CN_METACLASS
   /*    */ &Finalize::vUndefined,         // CN_METAGRAPH
   /*114 */ &Finalize::vUndefined,         // CN_MUTEX
   

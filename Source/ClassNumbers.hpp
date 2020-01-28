@@ -179,7 +179,6 @@ enum eCN : u2 // Class Number
   /* 144 0x090      296B Heap:I */ CN_MEDIUMTRANSIENT,
   /* 145 0x091      136B Heap:S */ CN_MEMTEST,
   /*                            */ CN_METABLOCK,
-  /*                            */ CN_METACLASS,
   /*                            */ CN_METAGRAPH,
   /*                            */ CN_METAMEMBER,
 /* 146 0x092      480B Heap:S */ CN_MUTEX,
@@ -511,7 +510,6 @@ static Stz* aCN[]
   /* 144 0x090 */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
   /* 145 0x091 */ "MEMTEST"_Stz,             // CN_MEMTEST
   /* 145 0x091 */ "METABLOCK"_Stz,           // CN_METABLOCK
-  /*           */ "METACLASS"_Stz,           // CN_METACLASS
   /*           */ "METAGRAPH"_Stz,           // CN_METAGRAPH
   /* 145 0x091 */ "METAMEMBER"_Stz,          // CN_METAMEMBER
   /* 146 0x092 */ "MUTEX"_Stz,               // CN_MUTEX

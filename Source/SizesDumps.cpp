@@ -180,7 +180,6 @@ pDUMPFUN *gpDump[]
   /* */ &Heap::vDump,            // CN_MEDIUMTRANSIENT
   /* */ &Dump::vUndefined,       // CN_MEMTEST
   /* */ &Dump::vUndefined,       // CN_METABLOCK
-  /* */ &Dump::vUndefined,       // CN_METACLASS
   /* */ &Dump::vUndefined,       // CN_METAGRAPH
   /* */ &Dump::vUndefined,       // CN_METAMEMBER
   /* */ &Dump::vUndefined,       // CN_MUTEX
@@ -513,7 +512,6 @@ i8 giClassSize[]
   /* */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
   /* */ sizeof(MemTest),            // CN_MEMTEST
   /* */ sizeof(MetaBlock),          // CN_METABLOCK
-  /* */ sizeof(MetaClass),          // CN_METACLASS
   /* */ sizeof(MetaGraph),          // CN_METAGRAPH
   /* */ sizeof(MetaMember),         // CN_METAMEMBER
   /* */ sizeof(Mutex),              // CN_MUTEX
@@ -846,7 +844,6 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_MEDIUMTRANSIENT
   /* */ HT_TRANSIENT_SMALL,   // CN_MEMTEST
   /* */ HT_TRANSIENT_SMALL,   // CN_METABLOCK
-  /* */ HT_TRANSIENT_SMALL,   // CN_METACLASS
   /* */ HT_TRANSIENT_SMALL,   // CN_METAGRAPH
   /* */ HT_TRANSIENT_SMALL,   // CN_METAMEMBER
   /* */ HT_TRANSIENT_SMALL,   // CN_MUTEX

@@ -97,36 +97,36 @@ namespace Utilities
     // - - - - - - - - - - - - - - - - - -
     // remove
   
-    void vProcAll(void);
-    void vProcClassBase(void);
-    void vProcClassBlock(void);
-    void vProcClassFunction(void);
-    void vProcClassMembers(void);
-    void vProcConst(void);
-    void vProcEnum(void);
-    void vProcHashDefine(void);
-    void vProcHashInclude(void);
-    void vProcHashPragma(void);
-    void vProcLabelledMember(void);
-    void vProcMemberProper(Stz* szFirstTerm);
-    bool bProcNamespace(void);
-    void vProcStructArray(void);
-    void vProcStructMember(void);
-    void vProcUnionMember(void);
-  
-    bool bRecogniseClass(Stz* szTerm);
-    bool bRecogniseConst(Stz* szTerm);
-    bool bRecogniseEnum(Stz* szTerm);
-    bool bRecogniseFriend(Stz* szTerm);
-    bool bRecogniseFunction(Stz* szTerm);
-    bool bRecogniseHash(Stz* szTerm);
-    bool bRecogniseLabel(Stz* szTerm);
-    bool bRecogniseMbrOrFun(Stz* szTerm);
-    bool bRecogniseNamespace(Stz* szTerm);
-    bool bRecogniseStruct(Stz* szTerm);
-    bool bRecogniseTemplate(Stz* szTerm);
-    bool bRecogniseUnion(Stz* szTerm);
-    bool bRecogniseUsing(Stz* szTerm);
+//    void vProcAll(void);
+//    void vProcClassBase(void);
+//    void vProcClassBlock(void);
+//    void vProcClassFunction(void);
+//    void vProcClassMembers(void);
+//    void vProcConst(void);
+//    void vProcEnum(void);
+//    void vProcHashDefine(void);
+//    void vProcHashInclude(void);
+//    void vProcHashPragma(void);
+//    void vProcLabelledMember(void);
+//    void vProcMemberProper(Stz* szFirstTerm);
+//    bool bProcNamespace(void);
+//    void vProcStructArray(void);
+//    void vProcStructMember(void);
+//    void vProcUnionMember(void);
+//  
+//    bool bRecogniseClass(Stz* szTerm);
+//    bool bRecogniseConst(Stz* szTerm);
+//    bool bRecogniseEnum(Stz* szTerm);
+//    bool bRecogniseFriend(Stz* szTerm);
+//    bool bRecogniseFunction(Stz* szTerm);
+//    bool bRecogniseHash(Stz* szTerm);
+//    bool bRecogniseLabel(Stz* szTerm);
+//    bool bRecogniseMbrOrFun(Stz* szTerm);
+//    bool bRecogniseNamespace(Stz* szTerm);
+//    bool bRecogniseStruct(Stz* szTerm);
+//    bool bRecogniseTemplate(Stz* szTerm);
+//    bool bRecogniseUnion(Stz* szTerm);
+//    bool bRecogniseUsing(Stz* szTerm);
  
   private:
   
