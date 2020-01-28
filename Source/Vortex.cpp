@@ -205,7 +205,7 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
   
   vDebugPoint();
   
-  // get the name of the namespace
+  // get <name> of namespace
   Token xName;
   CHECKED(bGetToken(xName));
   vDescendIntoNamepace(xName.szTerm());
@@ -219,7 +219,8 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
   while (bGetToken(xTkn)) {
   
     Stz* szTerm = xTkn.szTerm();
-    
+  
+    // test for end-of-namespace
     if (xTkn.bSame("}"_Stz))  {
       vRecognised(CP_NAMESPACE);
       vAscendFromNamepace();
@@ -228,6 +229,7 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
     
     // -- -- -- -- -- --
     
+    // the possible parts of a namespacee
     if (xTkn.bSame("class"_Stz)) {
       vParseClass(szTerm);
     }
@@ -266,39 +268,40 @@ void Vortex::vParseUsing(Stz* szSawTerm)
   vDebugPoint();
   
   Token xTkn;
+  
+  // get NAMESPACE
   CHECKED(bGetToken(xTkn));
   CHECKED(xTkn.bSame("namespace"_Stz));
 
+  // get <name>
   CHECKED(bGetToken(xTkn));
 
+  // get ;
   CHECKED(bGetToken(xTkn));
   CHECKED(xTkn.bSame(";"_Stz));
 }
 
-
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* parse NAMESPACE <name> { ... CLASS _^_ <name> ...                          */
+/* parse ... CLASS _^_ <name> ...                                             */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseClass(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  RASSERT(m_bInNamespace);
+  RASSERT(! m_p_MetaClass);
   RASSERT(szSawTerm->bSame("class"_Stz));
   
   vDebugPoint();
   
-  Token xTkn;
-  
-
-  CHECKED(bGetToken(xTkn));
-  vDescendIntoClass(xTkn.szTerm());
+  // get <name>
+  Token xName;
+  CHECKED(bGetToken(xName));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  Token xTkn;
   CHECKED(bGetToken(xTkn));
 
   // forward declaration of a class?
@@ -308,6 +311,10 @@ void Vortex::vParseClass(Stz* szSawTerm)
     return;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vDescendIntoClass(xName.szTerm());
+
   m_p_MetaClass = m_pMetaGraph->pAddMetaClass(m_sClassNm.szStz());
   
   // detect class base clause ?
@@ -315,6 +322,7 @@ void Vortex::vParseClass(Stz* szSawTerm)
     m_p_MemberSet = nullptr;
     m_p_MemberVar = nullptr;
     vParseClassBase(xTkn.szTerm());
+    RASSERT(! m_p_MetaClass);
     return;
   }
   
@@ -323,6 +331,7 @@ void Vortex::vParseClass(Stz* szSawTerm)
     m_p_MemberSet = nullptr;
     m_p_MemberVar = nullptr;
     vParseClassBlock(xTkn.szTerm());
+    RASSERT(! m_p_MetaClass);
     return;
   }
 
@@ -696,6 +705,9 @@ void Vortex::vAscendFromClass(void)
 
   m_bInClass = false;
   m_sClassNm = ""_Stz;
+
+  m_p_MetaClass  = nullptr;
+  m_p_MemberSet  = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -704,6 +716,7 @@ void Vortex::vAscendFromClass(void)
 void Vortex::vAscendFromNamepace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
   RASSERT(m_bInNamespace);
   RASSERT(! m_bInClass);
 
@@ -750,6 +763,11 @@ void Vortex::vDescendIntoClass(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
+  RASSERT(m_bInNamespace);
+  RASSERT(! m_bInClass);
+  
+  RASSERT(! m_p_MetaClass);
+
   m_sClassNm = szName;
   m_bInClass = true;
 }
@@ -761,6 +779,9 @@ void Vortex::vDescendIntoNamepace(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
+  RASSERT(! m_bInNamespace);
+  RASSERT(! m_bInClass);
+
   m_sNamespaceNm = szName;
   m_bInNamespace = true;
 }
