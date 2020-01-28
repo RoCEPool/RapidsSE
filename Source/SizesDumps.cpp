@@ -511,7 +511,7 @@ i8 giClassSize[]
   /* */ sizeof(Marker),             // CN_MARKER
   /* */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
   /* */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
-  /* */ sizeof(MemberSet),       // CN_MEMBERSET
+  /* */ sizeof(MetaBlock),          // CN_MEMBERSET
   /* */ sizeof(MemberVar),          // CN_MEMBERVAR
   /* */ sizeof(MemTest),            // CN_MEMTEST
   /* */ sizeof(MetaClass),          // CN_METACLASS

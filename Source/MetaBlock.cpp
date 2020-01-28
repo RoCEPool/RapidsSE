@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MemberSet.cpp - MemberSet                                                  */
+/* MetaBlock.cpp - MetaBlock                                                  */
 /*============================================================================*/
 
 #include "Reflection.h"
@@ -8,16 +8,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(Reflection,MemberSet,CN_MEMBERSET)
-__aNewFunction(MemberSet,CN_MEMBERSET)
-__vDeleteFunction(MemberSet,CN_MEMBERSET)
-__aFooterFunction(MemberSet)
+__pCastFunction(Reflection,MetaBlock,CN_MEMBERSET)
+__aNewFunction(MetaBlock,CN_MEMBERSET)
+__vDeleteFunction(MetaBlock,CN_MEMBERSET)
+__aFooterFunction(MetaBlock)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MemberSet::MemberSet(MetaClass* p_MetaClass, MemberSet* p_ParentMbrSet)
+MetaBlock::MetaBlock(MetaClass* p_MetaClass, MetaBlock* p_ParentMbrSet)
 : Object(CN_MEMBERSET)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
@@ -37,7 +37,7 @@ MemberSet::MemberSet(MetaClass* p_MetaClass, MemberSet* p_ParentMbrSet)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MemberSet::~MemberSet(void) noexcept(false)
+MetaBlock::~MetaBlock(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
 }
@@ -53,7 +53,7 @@ MemberSet::~MemberSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add a new member set with given name                                       */
 /*----------------------------------------------------------------------------*/
-MemberVar* MemberSet::pAddMemberVar(Stz* szVarNm)
+MemberVar* MetaBlock::pAddMemberVar(Stz* szVarNm)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
   
@@ -69,7 +69,7 @@ MemberVar* MemberSet::pAddMemberVar(Stz* szVarNm)
 /*----------------------------------------------------------------------------*/
 /* get member set kind                                                        */
 /*----------------------------------------------------------------------------*/
-eMS MemberSet::eMemberSet(void)
+eMS MetaBlock::eMemberSet(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
     
@@ -79,7 +79,7 @@ eMS MemberSet::eMemberSet(void)
 /*----------------------------------------------------------------------------*/
 /* get parent member set                                                      */
 /*----------------------------------------------------------------------------*/
-MemberSet* MemberSet::pParentMbrSet(void)
+MetaBlock* MetaBlock::pParentMbrSet(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
   
@@ -89,7 +89,7 @@ MemberSet* MemberSet::pParentMbrSet(void)
 /*----------------------------------------------------------------------------*/
 /* set member set kind                                                        */
 /*----------------------------------------------------------------------------*/
-void MemberSet::vMemberSet(eMS eMemberSet)
+void MetaBlock::vMemberSet(eMS eMemberSet)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
     
@@ -99,7 +99,7 @@ void MemberSet::vMemberSet(eMS eMemberSet)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void MemberSet::vPrint(i8 i_Tab)
+void MetaBlock::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
     
@@ -115,7 +115,7 @@ void MemberSet::vPrint(i8 i_Tab)
 /*----------------------------------------------------------------------------*/
 /* recursive print                                                            */
 /*----------------------------------------------------------------------------*/
-void MemberSet::vRecPrint(i8 i_Depth)
+void MetaBlock::vRecPrint(i8 i_Depth)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
   
@@ -128,7 +128,7 @@ void MemberSet::vRecPrint(i8 i_Depth)
 /*----------------------------------------------------------------------------*/
 /* get member set name                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* MemberSet::szSetNm(void)
+Stz* MetaBlock::szSetNm(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
     
@@ -138,7 +138,7 @@ Stz* MemberSet::szSetNm(void)
 /*----------------------------------------------------------------------------*/
 /* set member set name                                                        */
 /*----------------------------------------------------------------------------*/
-void MemberSet::vSetNm(Stz* szSetNm)
+void MetaBlock::vSetNm(Stz* szSetNm)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
     
@@ -148,7 +148,7 @@ void MemberSet::vSetNm(Stz* szSetNm)
 /*----------------------------------------------------------------------------*/
 /* get rolled up size of this member set                                      */
 /*----------------------------------------------------------------------------*/
-i8 MemberSet::nSize(void)
+i8 MetaBlock::nSize(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERSET,_FOOTER_);
     

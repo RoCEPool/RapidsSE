@@ -15,7 +15,7 @@ namespace Utilities
     MetaGraph* m_pMetaGraph;   // the metagraph that is created
     ConstSet*  m_p_ConsSet;    // set of static const i8's
     MetaClass* m_p_MetaClass;  // current working metaclass
-    MemberSet* m_p_MemberSet;  // current working member set
+    MetaBlock* m_p_MemberSet;  // current working member set
     MemberVar* m_p_MemberVar;  // current working member var
   
     EnameSet   m_oTerms;       // working set of collected terms

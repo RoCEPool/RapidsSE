@@ -17,12 +17,12 @@ __aFooterFunction(MemberVar)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MemberVar::MemberVar(MemberSet* p_MemberSet)
+MemberVar::MemberVar(MetaBlock* p_ParentBlock)
 : Object(CN_MEMBERVAR)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
   
-  m_p_MemberSet = p_MemberSet;
+  m_p_ParentBlock = p_ParentBlock;
   
   // var name
   m_sVarNm = C_NO_NAME;
@@ -36,7 +36,7 @@ MemberVar::MemberVar(MemberSet* p_MemberSet)
   m_nBits     = 0;
   
   // MV_SET: nested set
-  m_pNestedSet = nullptr;
+  m_pNestedBlock = nullptr;
   
   // arrays
   m_nElements = 0;
@@ -53,7 +53,7 @@ MemberVar::~MemberVar(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
   
-  delete m_pNestedSet;
+  delete m_pNestedBlock;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -243,11 +243,11 @@ void MemberVar::vFunPtr(bool bFunPtr)
 /*----------------------------------------------------------------------------*/
 /* get which member set this member var is within                             */
 /*----------------------------------------------------------------------------*/
-MemberSet* MemberVar::pMemberSet(void)
+MetaBlock* MemberVar::p_ParentBlock(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
-  return m_p_MemberSet;
+  return m_p_ParentBlock;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -263,21 +263,21 @@ eMV MemberVar::eMemberVar(void)
 /*----------------------------------------------------------------------------*/
 /* get the nested set                                                         */
 /*----------------------------------------------------------------------------*/
-MemberSet* MemberVar::pNestedSet(void)
+MetaBlock* MemberVar::pNestedBlock(void)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
-  return m_pNestedSet;
+  return m_pNestedBlock;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the nested set                                                         */
 /*----------------------------------------------------------------------------*/
-void MemberVar::vNestedSet(MemberSet* pNestedSet)
+void MemberVar::vNestedBlock(MetaBlock* pNestedBlock)
 {
   _precondition_(_MAGIC_,CN_MEMBERVAR,_FOOTER_);
     
-  m_pNestedSet = pNestedSet;
+  m_pNestedBlock = pNestedBlock;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -341,7 +341,7 @@ void MemberVar::vRecPrint(i8 i_Depth)
   vPrint(i_Depth);
   
   if (MV_SET == m_eVar)
-    m_pNestedSet->vRecPrint(i_Depth + 1);
+    m_pNestedBlock->vRecPrint(i_Depth + 1);
 }
 
 /*----------------------------------------------------------------------------*/

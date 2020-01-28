@@ -1,18 +1,18 @@
 /*============================================================================*/
-/* MemberSet.hpp - Member Set                                                 */
+/* MetaBlock.hpp - Meta Block                                                 */
 /*============================================================================*/
 #pragma once
 
 namespace Reflection
 {
-  class MemberSet : public Object,
-                    public ListItem_t<MemberSet>,
+  class MetaBlock : public Object,
+                    public ListItem_t<MetaBlock>,
                     public List_t<MemberVar>
   {
   public:
  
     MetaClass* m_p_MetaClass;    // the _p_ sequence means not owned by
-    MemberSet* m_p_ParentMbrSet; // parent member set
+    MetaBlock* m_p_ParentMbrSet; // parent member set
 
     s32 m_sSetNm; // name of this set
     i8  m_nSize;  // rolled up size of this set
@@ -25,13 +25,13 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MemberSet(MetaClass* p_MetaClass, MemberSet* p_ParentMbrSet);
-   ~MemberSet(void) noexcept(false);
+    MetaBlock(MetaClass* p_MetaClass, MetaBlock* p_ParentMbrSet);
+   ~MetaBlock(void) noexcept(false);
 
     MemberVar* pAddMemberVar(Stz* szVarNm);
   
     eMS  eMemberSet(void);
-    MemberSet* pParentMbrSet(void);
+    MetaBlock* pParentMbrSet(void);
     void vMemberSet(eMS eMemberSet);
 
     void vPrint(i8 i_Tab);
@@ -45,7 +45,7 @@ namespace Reflection
     Footer* aFooter(void);
   };
 
-  MemberSet* _pMemberSet(void* aAddr);
+  MetaBlock* _pMetaBlock(void* aAddr);
 }
 
 /*============================================================================*/

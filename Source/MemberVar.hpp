@@ -9,7 +9,7 @@ namespace Reflection
                     public ListItem_t<MemberVar>
   {
   public:
-    MemberSet* m_p_MemberSet; // the _p_ sequence means not owned by
+    MetaBlock* m_p_ParentBlock; // tparent meta block
   
     // var name
     s32  m_sVarNm;    // name of the member variable
@@ -23,7 +23,7 @@ namespace Reflection
     i8   m_nBits;     // no of bits if bit field;
     
     // MV_SET: nested set
-    MemberSet* m_pNestedSet; // nested set
+    MetaBlock* m_pNestedBlock; // nested set
 
     // arrays
     i8   m_nElements; // how many array elements (0 means not an array)
@@ -35,7 +35,7 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MemberVar(MemberSet* p_MemberSet);
+    MemberVar(MetaBlock* p_MetaBlock);
    ~MemberVar(void) noexcept(false);
   
     static bool bIsMemberVar(Stz* szClassNm, EnameSet* pTerms);
@@ -51,10 +51,10 @@ namespace Reflection
     bool bFunPtr(void);
     void vFunPtr(bool bFunPtr);
   
-    MemberSet* pMemberSet(void);
+    MetaBlock* p_ParentBlock(void);
     eMV  eMemberVar(void);
-    MemberSet* pNestedSet(void);
-    void vNestedSet(MemberSet* pNestedSet);
+    MetaBlock* pNestedBlock(void);
+    void vNestedBlock(MetaBlock* pNestedBlock);
 
     i8   nPointers(void);
     void vPointers(i8 nPointers);

@@ -7,7 +7,7 @@ namespace Reflection
 {
   class MetaClass : public Object,
                     public ListItem_t<MetaClass>,
-                    public List_t<MemberSet>
+                    public List_t<MetaBlock>
   {
   public:
     MetaGraph* m_p_MetaGraph;
@@ -26,7 +26,7 @@ namespace Reflection
     MetaClass(MetaGraph* p_MetaGraph);
    ~MetaClass(void) noexcept(false);
   
-    MemberSet* pAddMemberSet(Stz* szSetNm, MemberSet* p_ParentMbrSet);
+    MetaBlock* pAddMemberSet(Stz* szSetNm, MetaBlock* p_ParentMbrSet);
 
     Stz* szClassNm(void);
     void vClassNm(Stz* szClassNm);

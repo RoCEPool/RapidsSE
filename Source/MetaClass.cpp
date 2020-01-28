@@ -52,11 +52,11 @@ MetaClass::~MetaClass(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add a new member set with given name                                       */
 /*----------------------------------------------------------------------------*/
-MemberSet* MetaClass::pAddMemberSet(Stz* szSetNm, MemberSet* p_ParentMbrSet)
+MetaBlock* MetaClass::pAddMemberSet(Stz* szSetNm, MetaBlock* p_ParentMbrSet)
 {
   _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
   
-  MemberSet* pMemberSet = new MemberSet(this,p_ParentMbrSet);
+  MetaBlock* pMemberSet = new MetaBlock(this,p_ParentMbrSet);
   
   pMemberSet->vSetNm(szSetNm);
   
@@ -140,7 +140,7 @@ void MetaClass::vRecPrint(i8 i_Depth)
   
   vPrint(i_Depth);
   
-  for (MemberSet* pMbrSet = pHead(); pMbrSet; pMbrSet = pMbrSet->pNextItem())
+  for (MetaBlock* pMbrSet = pHead(); pMbrSet; pMbrSet = pMbrSet->pNextItem())
     pMbrSet->vRecPrint(i_Depth + 1);
 }
 
