@@ -52,6 +52,10 @@ namespace Utilities
     void vParseFileNspace(Stz* szSawTerm);
     void vParseFileUsing(Stz* szSawTerm);
 
+    void vParseHashDefine(Stz* szSawTerm);
+    void vParseHashInclude(Stz* szSawTerm);
+    void vParseHashPragma(Stz* szSawTerm);
+
     void vParseNspaceClass(Stz* szSawTerm);
     void vParseNspaceFun(Stz* szSawTerm);
     void vParseNspaceStatic(Stz* szSawTerm);
@@ -66,15 +70,11 @@ namespace Utilities
     bool bParseBlockLabel(Stz* szSawTerm);
     void vParseBlockMember(Stz* szSawTerm);
 
-    void vParseHashDefine(Stz* szSawTerm);
-    void vParseHashInclude(Stz* szSawTerm);
-    void vParseHashPragma(Stz* szSawTerm);
-
-    void vParseFunVar(Stz* szSawTerm);
-    void vParseStatic(Stz* szSawTerm);
-    void vParseStruct(Stz* szSawTerm);
-    void vParseTemplate(Stz* szSawTerm);
-    void vParseUnion(Stz* szSawTerm);
+    void vParseMemberFunVar(Stz* szSawTerm);
+    void vParseMemberStatic(Stz* szSawTerm);
+    void vParseMemberStruct(Stz* szSawTerm);
+    void vParseMemberTemplate(Stz* szSawTerm);
+    void vParseMemberUnion(Stz* szSawTerm);
   
     void vAddTerm(Stz* szTerm);
     void vAscendFromClass(void);
