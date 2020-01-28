@@ -14,15 +14,15 @@ namespace Utilities
   
     MetaGraph*  m_pMetaGraph;   // the metagraph that is created
     ConstSet*   m_p_ConsSet;    // set of static const i8's
-    MetaClass*  m_p_MetaClass;  // current working metaclass
-    MetaBlock*  m_p_MemberSet;  // current working member set
-    MetaMember* m_p_MemberVar;  // current working member var
+    MetaClass*  m_p_MetaClass;  // current working meta class
+    MetaBlock*  m_p_MetaBlock;  // current working meta block
+    MetaMember* m_p_MetaMember; // current working meta member
   
     EnameSet    m_oTerms;       // working set of collected terms
     bool        m_bTraceTokens; // trace tokens
    
     bool        m_bInClass;     // currently in a class?
-    s32         m_sClassNm;     // current namespace name
+    s32         m_sClassNm;     // current class name
     bool        m_bInNamespace; // currently in a namespace?
     s32         m_sNamespaceNm; // current namespace name
     

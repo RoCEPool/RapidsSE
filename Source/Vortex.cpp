@@ -28,8 +28,8 @@ Vortex::Vortex(void)
   m_pMetaGraph   = new MetaGraph;
   m_p_ConsSet    = m_pMetaGraph->pConstSet();
   m_p_MetaClass  = nullptr;
-  m_p_MemberSet  = nullptr;
-  m_p_MemberVar  = nullptr;
+  m_p_MetaBlock  = nullptr;
+  m_p_MetaMember  = nullptr;
   
   //m_oTerms
   m_bTraceTokens = false;
@@ -483,8 +483,8 @@ void Vortex::vParseNspaceClass(Stz* szSawTerm)
   
   // detect class base clause ?
   if (xTkn.bSame(":"_Stz)) {
-    m_p_MemberSet = nullptr;
-    m_p_MemberVar = nullptr;
+    m_p_MetaBlock = nullptr;
+    m_p_MetaMember = nullptr;
     vParseClassBase(xTkn.szTerm());
     RASSERT(! m_p_MetaClass);
     return;
@@ -492,8 +492,8 @@ void Vortex::vParseNspaceClass(Stz* szSawTerm)
   
   // detect class block ?
   if (xTkn.bSame("{"_Stz)) {
-    m_p_MemberSet = nullptr;
-    m_p_MemberVar = nullptr;
+    m_p_MetaBlock = nullptr;
+    m_p_MetaMember = nullptr;
     vParseClassBlock(xTkn.szTerm());
     RASSERT(! m_p_MetaClass);
     return;
@@ -557,11 +557,11 @@ void Vortex::vParseNspaceStruct(Stz* szSawTerm)
 
   Token xTkn;
   
-  m_p_MemberSet = m_p_MetaClass->pAddBlock("struct"_Stz,m_p_MemberSet);
+  m_p_MetaBlock = m_p_MetaClass->pAddBlock("struct"_Stz,m_p_MetaBlock);
   
   vThrowProblem(__LINE__);
   
-  m_p_MemberSet = nullptr;
+  m_p_MetaBlock = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -587,11 +587,11 @@ void Vortex::vParseNspaceUnion(Stz* szSawTerm)
   
   Token xTkn;
     
-  m_p_MemberSet = m_p_MetaClass->pAddBlock("union"_Stz,m_p_MemberSet);
+  m_p_MetaBlock = m_p_MetaClass->pAddBlock("union"_Stz,m_p_MetaBlock);
   
   vProcUnionMember();
   
-  m_p_MemberSet = nullptr;
+  m_p_MetaBlock = nullptr;
 }
 
 
@@ -718,8 +718,8 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
   if (bRecogniseUnion(szSawTerm))
     return;
 
-  if (! m_p_MemberSet)
-    m_p_MemberSet = m_p_MetaClass->pAddBlock("linear"_Stz,m_p_MemberSet);
+  if (! m_p_MetaBlock)
+    m_p_MetaBlock = m_p_MetaClass->pAddBlock("linear"_Stz,m_p_MetaBlock);
 
   //vProcMemberProper(szTerm);
   
@@ -729,7 +729,7 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
   
   vTrace("%lld.%lld) %s : "_Stz,
          m_pMetaGraph->nItems(),
-         m_p_MemberSet->nItems(),
+         m_p_MetaBlock->nItems(),
          szClassNm->azChar());
   
   //vTrace("%s "_Stz,xTkn.azChar());
@@ -771,13 +771,13 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
   szVarNm = MetaMember::szVarNm(&m_oTerms,szTypeNm,
                                 nPointers,bFunPtr,nElements,nBits);
   
-  m_p_MemberVar = m_p_MemberSet->pAddMember(szVarNm);
+  m_p_MetaMember = m_p_MetaBlock->pAddMember(szVarNm);
   
-  m_p_MemberVar->vTypeNm(szTypeNm);
-  m_p_MemberVar->vPointers(nPointers);
-  m_p_MemberVar->vFunPtr(bFunPtr);
-  m_p_MemberVar->vElements(nElements);
-  m_p_MemberVar->vBits(nBits);
+  m_p_MetaMember->vTypeNm(szTypeNm);
+  m_p_MetaMember->vPointers(nPointers);
+  m_p_MetaMember->vFunPtr(bFunPtr);
+  m_p_MetaMember->vElements(nElements);
+  m_p_MetaMember->vBits(nBits);
 
   vDebugPoint();
 }
@@ -794,9 +794,9 @@ void Vortex::vParseMemberStruct(Stz* szSawTerm)
 
   Token xTkn;
   
-  m_p_MemberSet = m_p_MetaClass->pAddBlock("struct"_Stz,m_p_MemberSet);
+  m_p_MetaBlock = m_p_MetaClass->pAddBlock("struct"_Stz,m_p_MetaBlock);
   vProcStructMember();
-  m_p_MemberSet = nullptr;
+  m_p_MetaBlock = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -822,9 +822,9 @@ void Vortex::vParseMemberUnion(Stz* szSawTerm)
   
   Token xTkn;
     
-  m_p_MemberSet = m_p_MetaClass->pAddBlock("union"_Stz,m_p_MemberSet);
+  m_p_MetaBlock = m_p_MetaClass->pAddBlock("union"_Stz,m_p_MetaBlock);
   vProcUnionMember();
-  m_p_MemberSet = nullptr;
+  m_p_MetaBlock = nullptr;
 }
 
 
@@ -892,7 +892,7 @@ void Vortex::vAscendFromClass(void)
   m_sClassNm = ""_Stz;
 
   m_p_MetaClass  = nullptr;
-  m_p_MemberSet  = nullptr;
+  m_p_MetaBlock  = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1429,8 +1429,8 @@ void Vortex::vProcLabelledMember(void)
   if (bRecogniseUnion(xTkn.szTerm()))
     return;
 
-  if (! m_p_MemberSet)
-    m_p_MemberSet = m_p_MetaClass->pAddBlock("linear"_Stz,m_p_MemberSet);
+  if (! m_p_MetaBlock)
+    m_p_MetaBlock = m_p_MetaClass->pAddBlock("linear"_Stz,m_p_MetaBlock);
   
   vProcMemberProper(xTkn.szTerm());
   
@@ -1449,7 +1449,7 @@ void Vortex::vProcMemberProper(Stz* szFirstTerm)
   
   vTrace("%lld.%lld) %s : "_Stz,
          m_pMetaGraph->nItems(),
-         m_p_MemberSet->nItems(),
+         m_p_MetaBlock->nItems(),
          szClassNm->azChar());
   
   //vTrace("%s "_Stz,xTkn.azChar());
@@ -1491,13 +1491,13 @@ void Vortex::vProcMemberProper(Stz* szFirstTerm)
   szVarNm = MetaMember::szVarNm(&m_oTerms,szTypeNm,
                                 nPointers,bFunPtr,nElements,nBits);
   
-  m_p_MemberVar = m_p_MemberSet->pAddMember(szVarNm);
+  m_p_MetaMember = m_p_MetaBlock->pAddMember(szVarNm);
   
-  m_p_MemberVar->vTypeNm(szTypeNm);
-  m_p_MemberVar->vPointers(nPointers);
-  m_p_MemberVar->vFunPtr(bFunPtr);
-  m_p_MemberVar->vElements(nElements);
-  m_p_MemberVar->vBits(nBits);
+  m_p_MetaMember->vTypeNm(szTypeNm);
+  m_p_MetaMember->vPointers(nPointers);
+  m_p_MetaMember->vFunPtr(bFunPtr);
+  m_p_MetaMember->vElements(nElements);
+  m_p_MetaMember->vBits(nBits);
 
   vDebugPoint();
 }
@@ -1675,15 +1675,15 @@ bool Vortex::bRecogniseClass(Stz* szTerm)
   
   m_p_MetaClass = m_pMetaGraph->pAddMetaClass(xClassNm.szTerm());
   if (xTkn.bSame(":"_Stz)) {
-    m_p_MemberSet = nullptr;
-    m_p_MemberVar = nullptr;
+    m_p_MetaBlock = nullptr;
+    m_p_MetaMember = nullptr;
     vProcClassBase();
     return true;
   }
   
   if (xTkn.bSame("{"_Stz)) {
-    m_p_MemberSet = nullptr;
-    m_p_MemberVar = nullptr;
+    m_p_MetaBlock = nullptr;
+    m_p_MetaMember = nullptr;
     vProcClassBlock();
     return true;
   }
@@ -1870,9 +1870,9 @@ bool Vortex::bRecogniseStruct(Stz* szTerm)
   if (! szTerm->bSame("struct"_Stz))
     return false;
   
-  m_p_MemberSet = m_p_MetaClass->pAddBlock("struct"_Stz,m_p_MemberSet);
+  m_p_MetaBlock = m_p_MetaClass->pAddBlock("struct"_Stz,m_p_MetaBlock);
   vProcStructMember();
-  m_p_MemberSet = nullptr;
+  m_p_MetaBlock = nullptr;
   
   return true;
 }
@@ -1909,9 +1909,9 @@ bool Vortex::bRecogniseUnion(Stz* szTerm)
   if (! szTerm->bSame("union"_Stz))
     return false;
   
-  m_p_MemberSet = m_p_MetaClass->pAddBlock("union"_Stz,m_p_MemberSet);
+  m_p_MetaBlock = m_p_MetaClass->pAddBlock("union"_Stz,m_p_MetaBlock);
   vProcUnionMember();
-  m_p_MemberSet = nullptr;
+  m_p_MetaBlock = nullptr;
 
   return true;
 }
