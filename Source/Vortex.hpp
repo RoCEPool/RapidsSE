@@ -44,21 +44,9 @@ namespace Utilities
     void vProcessSource(Stz* szSourcePath);
 
   private:
-    void vAddTerm(Stz* szTerm);
-    void vBeginRecognise(void);
-    void vEndRecognise(bool bCorrectly);
-    bool bCollectTerms(Stz* szEnd, bool bAddEnd=false);
-    bool bGetToken(Token& roToken);
-    void vNewPart(void);
-    void vRecognised(eCP ePart);
-    bool bTermsAreFunction(void);
-    bool bTermsAreVariable(void);
-    void vThrowProblem(i8 i_Problem);
-
     bool bParseFile(void);
   
     void vParseNamespace(Stz* szSawTerm);
-    void vParseNamespaceFunction(Stz* szSawTerm);
     void vParseUsing(Stz* szSawTerm);
 
     void vParseClass(Stz* szSawTerm);
@@ -68,17 +56,29 @@ namespace Utilities
 
     void vParseEnum(Stz* szSawTerm);
     void vParseFriend(Stz* szSawTerm);
+    void vParseFunction(Stz* szSawTerm);
     void vParseHash(Stz* szSawTerm);
+    bool bParseLabel(Stz* szTerm);
     void vParseStatic(Stz* szSawTerm);
     void vParseStruct(Stz* szSawTerm);
     void vParseTemplate(Stz* szSawTerm);
     void vParseUnion(Stz* szSawTerm);
     void vParse_other(Stz* szSawTerm);
   
-    bool bSkipLabel(Stz* szTerm);
+    void vAddTerm(Stz* szTerm);
+    void vBeginRecognise(void);
+    void vEndRecognise(bool bCorrectly);
+    bool bCollectTerms(Stz* szEnd, bool bAddEnd=false);
+    bool bGetToken(Token& roToken);
+    void vNewPart(void);
+    void vRecognised(eCP ePart);
     void vSkipTillSemicolon(void);
     void vSkipTillSemicolon(Stz* szTerm);
     void vSkipUnrecognised(Stz* szTerm);
+    bool bTermsAreFunction(void);
+    bool bTermsAreVariable(void);
+    void vThrowProblem(i8 i_Problem);
+
 
 
     // - - - - - - - - - - - - - - - - - -

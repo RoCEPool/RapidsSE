@@ -129,239 +129,6 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* add term                                                                   */
-/*----------------------------------------------------------------------------*/
-void Vortex::vAddTerm(Stz* szTerm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_oTerms.vAdd(szTerm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* begin recognise                                                            */
-/*----------------------------------------------------------------------------*/
-void Vortex::vBeginRecognise(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* end recognise                                                              */
-/*----------------------------------------------------------------------------*/
-void Vortex::vEndRecognise(bool bCorrectly)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add term                                                                   */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bCollectTerms(Stz* szEnd, bool bAddEnd)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  Token xTkn;
-  for (;;) {
-    
-    if (! bGetToken(xTkn))
-      return false;
-    
-    if (xTkn.bSame(szEnd)) {
-      
-      if (bAddEnd)
-        m_oTerms.vAdd(xTkn.szTerm());
-      
-      break;
-    }
-    
-    m_oTerms.vAdd(xTkn.szTerm());
-  }
-
-  s48K sNamesString;
-  m_oTerms.vNamesString(sNamesString);
-  
-  vTrace("Terms: %s\n"_Stz,sNamesString.azChar());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next token                                                             */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bGetToken(Token& roToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  bool b = m_pInput->bGetToken(&roToken);
-  
-  if (b) {
-    if (m_sPart.nLength())
-      m_sPart.vAppend(' ');
-    m_sPart.vConcat(roToken.szTerm());
-  }
-  
-  if (b && m_bTraceTokens)
-    vTrace("Part: %s\n"_Stz,m_sPart.azChar());
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* start new c++ part                                                         */
-/*----------------------------------------------------------------------------*/
-void Vortex::vNewPart(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_sPart = ""_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* recognised c++ part                                                        */
-/*----------------------------------------------------------------------------*/
-void Vortex::vRecognised(eCP ePart)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  vTrace("Recognised %s\n"_Stz,aCP[ePart]);
-  vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* are terms a function ?                                                     */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bTermsAreFunction(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  Stz* szTerm;
- 
-  i8 nTerms = m_oTerms.nItems();
-    
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // term 0
-  
-  i8 i_Term = 0;
-  szTerm = m_oTerms.szName(i_Term++);
-  
-  // -- -- -- -- -- --
-  // constructor function
-  if (m_bInClass && szTerm->bSame(m_sClassNm.szStz())) {
-    return true;
-  }
-  
-  // -- -- -- -- -- --
-  // destructor function
-  if (m_bInClass && szTerm->bSame("~"_Stz))
-    return true;
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-  
-  // nb. szTerm is return type at this point
-
-  
-  // -- -- -- -- -- --
-  // skip zero or more '*'
-  szTerm = m_oTerms.szName(i_Term++);
-  while (szTerm->bSame("*"_Stz))
-    szTerm = m_oTerms.szName(i_Term++);
-  
-  // -- -- -- -- -- --
-  // test for member which is a member which is a function pointer
-  if (m_bInClass && szTerm->bSame("("_Stz))
-    return false;
-
-  // -- -- -- -- -- --
-  // attempt to detect a function
-  szTerm = m_oTerms.szName(i_Term++);
-  while (i_Term < nTerms) {
-    if (szTerm->bSame("("_Stz))
-      return true;
-    szTerm = m_oTerms.szName(i_Term++);
-  }
-  
-  // -- -- -- -- -- --
-  // must be a variable
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* are terms a variable ?                                                     */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bTermsAreVariable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-   Stz* szTerm;
-  
-   i8 nTerms = m_oTerms.nItems();
-     
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   // term 0
-   
-   i8 i_Term = 0;
-   szTerm = m_oTerms.szName(i_Term++);
-  
-  // -- -- -- -- -- --
-  // exclude constructor function
-  if (m_bInClass && szTerm->bSame(m_sClassNm.szStz()) &&
-      m_oTerms.szName(i_Term)->bSame("("_Stz)) {
-    return false;
-  }
-  
-  // -- -- -- -- -- --
-  // exclude destructor function
-  if (m_bInClass && szTerm->bSame("~"_Stz))
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-  
-  // nb. szTerm is return type at this point
-
-  
-  // -- -- -- -- -- --
-  // skip zero or more '*'
-  szTerm = m_oTerms.szName(i_Term++);
-  while (szTerm->bSame("*"_Stz))
-    szTerm = m_oTerms.szName(i_Term++);
-  
-  // -- -- -- -- -- --
-  // test for variable which is a function pointer
-  if (szTerm->bSame("("_Stz))
-    return true;
-
-  // -- -- -- -- -- --
-  // attempt to detect a function
-  szTerm = m_oTerms.szName(i_Term++);
-  while (i_Term < nTerms) {
-    if (szTerm->bSame("("_Stz))
-      return false;
-    szTerm = m_oTerms.szName(i_Term++);
-  }
-  
-  // -- -- -- -- -- --
-  // must be a variable
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* throw problem                                                              */
-/*----------------------------------------------------------------------------*/
-void Vortex::vThrowProblem(i8 i_Problem)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  throw i_Problem;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* process all parts in the current source file (.h or .hpp)                  */
@@ -472,33 +239,11 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
       vParseTemplate(szTerm);
     }
     else {
-      vParseNamespaceFunction(szTerm);
+      vParseFunction(szTerm);
     }
   } // while more tokens
   
   vThrowProblem(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse namespace _^_ ...                                                    */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseNamespaceFunction(Stz* szTerm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  //RASSERT(szSawTerm->bSame("???"_Stz));
-  
-  m_oTerms.vReset();
-
-  m_oTerms.vAdd(szTerm);
-  
-  CHECKED(bCollectTerms(";"_Stz,true));
-  
-  vDebugPoint();
-  
-  CHECKED(bTermsAreFunction());
-  
-  vRecognised(CP_NAMESPACE_FUN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -746,6 +491,30 @@ void Vortex::vParseFriend(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse <term> _^_                                                           */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFunction(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  //RASSERT(szSawTerm->bSame("???"_Stz));
+  
+  m_oTerms.vReset();
+
+  m_oTerms.vAdd(szSawTerm);
+  
+  CHECKED(bCollectTerms(";"_Stz,true));
+  
+  vDebugPoint();
+  
+  CHECKED(bTermsAreFunction());
+  
+  vRecognised(CP_NAMESPACE_FUN);
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse hash _^_ ...                                                         */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHash(Stz* szSawTerm)
@@ -780,6 +549,36 @@ void Vortex::vParseHash(Stz* szSawTerm)
   }
 
   vThrowProblem(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* skip a label i.e. private|protected|public :                               */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bParseLabel(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  
+  if (szTerm->bSame("private"_Stz)) {
+    RASSERT(bGetToken(xTkn));
+    RASSERT(xTkn.bSame(":"_Stz));
+    return true;
+  }
+  
+  if (szTerm->bSame("protected"_Stz)) {
+    RASSERT(bGetToken(xTkn));
+    RASSERT(xTkn.bSame(":"_Stz));
+    return true;
+  }
+  
+  if (szTerm->bSame("public"_Stz)) {
+    RASSERT(bGetToken(xTkn));
+    RASSERT(xTkn.bSame(":"_Stz));
+    return true;
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -858,34 +657,109 @@ void Vortex::vParse_other(Stz* szSawTerm)
   vDebugPoint();
 }
 
+
 /*----------------------------------------------------------------------------*/
-/* skip a label i.e. private|protected|public :                               */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bSkipLabel(Stz* szTerm)
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add term                                                                   */
+/*----------------------------------------------------------------------------*/
+void Vortex::vAddTerm(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_oTerms.vAdd(szTerm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin recognise                                                            */
+/*----------------------------------------------------------------------------*/
+void Vortex::vBeginRecognise(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* end recognise                                                              */
+/*----------------------------------------------------------------------------*/
+void Vortex::vEndRecognise(bool bCorrectly)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add term                                                                   */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bCollectTerms(Stz* szEnd, bool bAddEnd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;
+  for (;;) {
+    
+    if (! bGetToken(xTkn))
+      return false;
+    
+    if (xTkn.bSame(szEnd)) {
+      
+      if (bAddEnd)
+        m_oTerms.vAdd(xTkn.szTerm());
+      
+      break;
+    }
+    
+    m_oTerms.vAdd(xTkn.szTerm());
+  }
+
+  s48K sNamesString;
+  m_oTerms.vNamesString(sNamesString);
   
-  if (szTerm->bSame("private"_Stz)) {
-    RASSERT(bGetToken(xTkn));
-    RASSERT(xTkn.bSame(":"_Stz));
-    return true;
+  vTrace("Terms: %s\n"_Stz,sNamesString.azChar());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next token                                                             */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bGetToken(Token& roToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  bool b = m_pInput->bGetToken(&roToken);
+  
+  if (b) {
+    if (m_sPart.nLength())
+      m_sPart.vAppend(' ');
+    m_sPart.vConcat(roToken.szTerm());
   }
   
-  if (szTerm->bSame("protected"_Stz)) {
-    RASSERT(bGetToken(xTkn));
-    RASSERT(xTkn.bSame(":"_Stz));
-    return true;
-  }
+  if (b && m_bTraceTokens)
+    vTrace("Part: %s\n"_Stz,m_sPart.azChar());
   
-  if (szTerm->bSame("public"_Stz)) {
-    RASSERT(bGetToken(xTkn));
-    RASSERT(xTkn.bSame(":"_Stz));
-    return true;
-  }
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* start new c++ part                                                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vNewPart(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  return false;
+  m_sPart = ""_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* recognised c++ part                                                        */
+/*----------------------------------------------------------------------------*/
+void Vortex::vRecognised(eCP ePart)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vTrace("Recognised %s\n"_Stz,aCP[ePart]);
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -953,6 +827,136 @@ void Vortex::vSkipUnrecognised(Stz* szTerm)
       return;
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* are terms a function ?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bTermsAreFunction(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  Stz* szTerm;
+ 
+  i8 nTerms = m_oTerms.nItems();
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // term 0
+  
+  i8 i_Term = 0;
+  szTerm = m_oTerms.szName(i_Term++);
+  
+  // -- -- -- -- -- --
+  // constructor function
+  if (m_bInClass && szTerm->bSame(m_sClassNm.szStz())) {
+    return true;
+  }
+  
+  // -- -- -- -- -- --
+  // destructor function
+  if (m_bInClass && szTerm->bSame("~"_Stz))
+    return true;
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  
+  // nb. szTerm is return type at this point
+
+  
+  // -- -- -- -- -- --
+  // skip zero or more '*'
+  szTerm = m_oTerms.szName(i_Term++);
+  while (szTerm->bSame("*"_Stz))
+    szTerm = m_oTerms.szName(i_Term++);
+  
+  // -- -- -- -- -- --
+  // test for member which is a member which is a function pointer
+  if (m_bInClass && szTerm->bSame("("_Stz))
+    return false;
+
+  // -- -- -- -- -- --
+  // attempt to detect a function
+  szTerm = m_oTerms.szName(i_Term++);
+  while (i_Term < nTerms) {
+    if (szTerm->bSame("("_Stz))
+      return true;
+    szTerm = m_oTerms.szName(i_Term++);
+  }
+  
+  // -- -- -- -- -- --
+  // must be a variable
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* are terms a variable ?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bTermsAreVariable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+   Stz* szTerm;
+  
+   i8 nTerms = m_oTerms.nItems();
+     
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // term 0
+   
+   i8 i_Term = 0;
+   szTerm = m_oTerms.szName(i_Term++);
+  
+  // -- -- -- -- -- --
+  // exclude constructor function
+  if (m_bInClass && szTerm->bSame(m_sClassNm.szStz()) &&
+      m_oTerms.szName(i_Term)->bSame("("_Stz)) {
+    return false;
+  }
+  
+  // -- -- -- -- -- --
+  // exclude destructor function
+  if (m_bInClass && szTerm->bSame("~"_Stz))
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  
+  // nb. szTerm is return type at this point
+
+  
+  // -- -- -- -- -- --
+  // skip zero or more '*'
+  szTerm = m_oTerms.szName(i_Term++);
+  while (szTerm->bSame("*"_Stz))
+    szTerm = m_oTerms.szName(i_Term++);
+  
+  // -- -- -- -- -- --
+  // test for variable which is a function pointer
+  if (szTerm->bSame("("_Stz))
+    return true;
+
+  // -- -- -- -- -- --
+  // attempt to detect a function
+  szTerm = m_oTerms.szName(i_Term++);
+  while (i_Term < nTerms) {
+    if (szTerm->bSame("("_Stz))
+      return false;
+    szTerm = m_oTerms.szName(i_Term++);
+  }
+  
+  // -- -- -- -- -- --
+  // must be a variable
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* throw problem                                                              */
+/*----------------------------------------------------------------------------*/
+void Vortex::vThrowProblem(i8 i_Problem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  throw i_Problem;
 }
 
 /*============================================================================*/
