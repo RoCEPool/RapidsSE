@@ -26,7 +26,7 @@ namespace Reflection
     MetaClass(MetaGraph* p_MetaGraph);
    ~MetaClass(void) noexcept(false);
   
-    MetaBlock* pAddMemberSet(Stz* szSetNm, MetaBlock* p_ParentMbrSet);
+    MetaBlock* pAddBlock(Stz* szBlockNm, MetaBlock* p_ParentBlock);
 
     Stz* szClassNm(void);
     void vClassNm(Stz* szClassNm);

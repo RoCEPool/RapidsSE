@@ -52,17 +52,17 @@ MetaClass::~MetaClass(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add a new member set with given name                                       */
 /*----------------------------------------------------------------------------*/
-MetaBlock* MetaClass::pAddMemberSet(Stz* szSetNm, MetaBlock* p_ParentMbrSet)
+MetaBlock* MetaClass::pAddBlock(Stz* szBlockNm, MetaBlock* p_ParentBlock)
 {
   _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
   
-  MetaBlock* pMemberSet = new MetaBlock(this,p_ParentMbrSet);
+  MetaBlock* pBlock = new MetaBlock(this,p_ParentBlock);
   
-  pMemberSet->vSetNm(szSetNm);
+  pBlock->vBlockNm(szBlockNm);
   
-  vAppend(pMemberSet);
+  vAppend(pBlock);
   
-  return pMemberSet;
+  return pBlock;
 }
 
 /*----------------------------------------------------------------------------*/

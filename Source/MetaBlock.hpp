@@ -14,9 +14,9 @@ namespace Reflection
     MetaClass* m_p_MetaClass;    // the _p_ sequence means not owned by
     MetaBlock* m_p_ParentBlock;  // parent member set
 
-    s32 m_sSetNm; // name of this set
-    i8  m_nSize;  // rolled up size of this set
-    eMS m_eSet;   // kind of set
+    s32 m_sBlockNm;    // name of this meta block
+    i8  m_nSize;       // rolled up size of this block
+    eMS m_eBlock;      // kind of meta block
 
     // must be last
     Footer m_xFooter;
@@ -30,15 +30,16 @@ namespace Reflection
 
     MetaMember* pAddMember(Stz* szVarNm);
   
-    eMS  eMemberSet(void);
-    MetaBlock* pParentBlock(void);
-    void vMemberSet(eMS eMemberSet);
+    eMS  eBlock(void);
+    void vBlock(eMS eBlock);
 
+    MetaBlock* pParentBlock(void);
+  
     void vPrint(i8 i_Tab);
     void vRecPrint(i8 i_Depth);
   
-    Stz* szSetNm(void);
-    void vSetNm(Stz* szSetNm);
+    Stz* szBlockNm(void);
+    void vBlockNm(Stz* szBlockNm);
 
     i8   nSize(void);
   

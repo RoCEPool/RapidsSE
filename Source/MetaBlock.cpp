@@ -25,9 +25,9 @@ MetaBlock::MetaBlock(MetaClass* p_MetaClass, MetaBlock* p_ParentBlock)
   m_p_MetaClass = p_MetaClass;
   m_p_ParentBlock = p_ParentBlock;
 
-  m_sSetNm = "anonymous"_Stz;
-  m_nSize  = 0;
-  m_eSet   = MS_LINEAR;
+  m_sBlockNm = "anonymous"_Stz;
+  m_nSize    = 0;
+  m_eBlock   = MS_LINEAR;
 
   _checkInitialised_(CN_METABLOCK);
   
@@ -69,11 +69,11 @@ MetaMember* MetaBlock::pAddMember(Stz* szVarNm)
 /*----------------------------------------------------------------------------*/
 /* get member set kind                                                        */
 /*----------------------------------------------------------------------------*/
-eMS MetaBlock::eMemberSet(void)
+eMS MetaBlock::eBlock(void)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
     
-  return m_eSet;
+  return m_eBlock;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,11 +89,11 @@ MetaBlock* MetaBlock::pParentBlock(void)
 /*----------------------------------------------------------------------------*/
 /* set member set kind                                                        */
 /*----------------------------------------------------------------------------*/
-void MetaBlock::vMemberSet(eMS eMemberSet)
+void MetaBlock::vBlock(eMS eBlock)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
     
-  m_eSet = eMemberSet;
+  m_eBlock = eBlock;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,8 +106,8 @@ void MetaBlock::vPrint(i8 i_Tab)
   vTrace("%sMemberSet %s %s %lldB\n"_Stz,
          
          Stz::szTab(i_Tab)->azChar(),
-         m_sSetNm.azChar(),
-         aMS[m_eSet]->azChar(),
+         m_sBlockNm.azChar(),
+         aMS[m_eBlock]->azChar(),
          m_nSize
          );
 }
@@ -128,21 +128,21 @@ void MetaBlock::vRecPrint(i8 i_Depth)
 /*----------------------------------------------------------------------------*/
 /* get member set name                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* MetaBlock::szSetNm(void)
+Stz* MetaBlock::szBlockNm(void)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
     
-  return m_sSetNm.szStz();
+  return m_sBlockNm.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
 /* set member set name                                                        */
 /*----------------------------------------------------------------------------*/
-void MetaBlock::vSetNm(Stz* szSetNm)
+void MetaBlock::vBlockNm(Stz* szBlockNm)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
     
-  m_sSetNm = szSetNm;
+  m_sBlockNm = szBlockNm;
 }
 
 /*----------------------------------------------------------------------------*/
