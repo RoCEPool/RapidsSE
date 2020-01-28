@@ -72,17 +72,17 @@ ConstSet* MetaGraph::pConstSet(void)
 /*----------------------------------------------------------------------------*/
 /* add a new metaclass with given name                                        */
 /*----------------------------------------------------------------------------*/
-MetaClass* MetaGraph::pAddMetaClass(Stz* szClassNm)
+MetaBlock* MetaGraph::pAddBlock(Stz* szClassNm, MetaBlock* p_ParentBlock)
 {
   _precondition_(_MAGIC_,CN_METAGRAPH,_FOOTER_);
   
-  MetaClass* pMetaClass = new MetaClass(this);
+  MetaBlock* pBlock = new MetaBlock(this,p_ParentBlock);
   
-  pMetaClass->vClassNm(szClassNm);
+  pBlock->vBlockNm(szClassNm);
   
-  vAppend(pMetaClass);
+  vAppend(pBlock);
   
-  return pMetaClass;
+  return pBlock;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,10 +94,10 @@ void MetaGraph::vRecPrint(void)
     
   m_pConstSet->vPrint(0);  
   
-  for (MetaClass* pMetaClass = pHead();
-       pMetaClass;
-       pMetaClass = pMetaClass->pNextItem())
-    pMetaClass->vRecPrint(0);
+  for (MetaBlock* pBlock = pHead();
+       pBlock;
+       pBlock = pBlock->pNextItem())
+    pBlock->vRecPrint(0);
 }
 
 /*============================================================================*/

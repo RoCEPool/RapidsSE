@@ -11,7 +11,7 @@ namespace Reflection
   {
   public:
  
-    MetaClass* m_p_MetaClass;    // the _p_ sequence means not owned by
+    MetaGraph* m_p_MetaGraph;    // the _p_ sequence means not owned by
     MetaBlock* m_p_ParentBlock;  // parent member set
 
     s32 m_sBlockNm;    // name of this meta block
@@ -25,7 +25,7 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaBlock(MetaClass* p_MetaClass, MetaBlock* p_ParentMbrSet);
+    MetaBlock(MetaGraph* p_MetaGraph, MetaBlock* p_ParentBlock);
    ~MetaBlock(void) noexcept(false);
 
     MetaMember* pAddMember(Stz* szVarNm);

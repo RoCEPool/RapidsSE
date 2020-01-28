@@ -56,7 +56,7 @@ MetaBlock* MetaClass::pAddBlock(Stz* szBlockNm, MetaBlock* p_ParentBlock)
 {
   _precondition_(_MAGIC_,CN_METACLASS,_FOOTER_);
   
-  MetaBlock* pBlock = new MetaBlock(this,p_ParentBlock);
+  MetaBlock* pBlock = new MetaBlock(m_p_MetaGraph,p_ParentBlock);
   
   pBlock->vBlockNm(szBlockNm);
   

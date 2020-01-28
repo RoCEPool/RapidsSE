@@ -479,7 +479,7 @@ void Vortex::vParseNspaceClass(Stz* szSawTerm)
   
   vDescendIntoClass(xName.szTerm());
 
-  m_p_MetaClass = m_pMetaGraph->pAddMetaClass(m_sClassNm.szStz());
+  m_p_MetaBlock = m_pMetaGraph->pAddBlock(m_sClassNm.szStz(),m_p_MetaBlock);
   
   // detect class base clause ?
   if (xTkn.bSame(":"_Stz)) {
@@ -1673,7 +1673,7 @@ bool Vortex::bRecogniseClass(Stz* szTerm)
   
   m_pOutputFile->vPrint("%s\n"_Stz,xClassNm.azTerm());
   
-  m_p_MetaClass = m_pMetaGraph->pAddMetaClass(xClassNm.szTerm());
+  m_p_MetaBlock = m_pMetaGraph->pAddBlock(xClassNm.szTerm(),m_p_MetaBlock);
   if (xTkn.bSame(":"_Stz)) {
     m_p_MetaBlock = nullptr;
     m_p_MetaMember = nullptr;
