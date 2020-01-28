@@ -56,6 +56,7 @@ namespace Utilities
     void vThrowProblem(i8 i_Problem);
 
     bool bParseAllParts(void);
+    void vParseClassBase(void);
     void vParseClassPart(void);
     void vParseEnumPart(void);
     void vParseFriendPart(void);
@@ -68,7 +69,6 @@ namespace Utilities
     void vParseUsingPart(void);
     void vParse_otherPart(Stz* szTerm);
   
-    void vWithinClassBase(void);
     void vWithinClassBlock(void);
     void vWithinNamespace(void);
 

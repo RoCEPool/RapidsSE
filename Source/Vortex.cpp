@@ -404,6 +404,28 @@ bool Vortex::bParseAllParts(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse within:                                                              */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseClassBase(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  Token xTkn;
+
+  vDebugPoint();
+  
+  while (bGetToken(xTkn)) {
+    
+    if (xTkn.bSame("{"_Stz)) {
+      vWithinClassBlock();
+      return;
+    }
+  }
+
+  vThrowProblem(-9);
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse: namespace <namespaceNm> { ... class _^_ ...                         */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseClassPart(void)
@@ -439,7 +461,7 @@ void Vortex::vParseClassPart(void)
   if (xTkn.bSame(":"_Stz)) {
     m_p_MemberSet = nullptr;
     m_p_MemberVar = nullptr;
-    vWithinClassBase();
+    vParseClassBase();
     return;
   }
   
@@ -643,28 +665,6 @@ void Vortex::vParse_otherPart(Stz* szTerm)
   vDebugPoint();
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* parse within:                                                              */
-/*----------------------------------------------------------------------------*/
-void Vortex::vWithinClassBase(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  Token xTkn;
-
-  vDebugPoint();
-  
-  while (bGetToken(xTkn)) {
-    
-    if (xTkn.bSame("{"_Stz)) {
-      vWithinClassBlock();
-      return;
-    }
-  }
-
-  vThrowProblem(-9);
-}
 
 /*----------------------------------------------------------------------------*/
 /* parse within:                                                              */
