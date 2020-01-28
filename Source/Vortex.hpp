@@ -57,18 +57,22 @@ namespace Utilities
 
     bool bParseFile(void);
   
+    void vParseNamespace(Stz* szSawTerm);
+    void vParseNamespaceFunction(Stz* szSawTerm);
+    void vParseUsing(Stz* szSawTerm);
+
     void vParseClass(Stz* szSawTerm);
     void vParseClassBase(Stz* szSawTerm);
     void vParseClassBlock(Stz* szSawTerm);
+    void vParseClassMember(Stz* szSawTerm);
+
     void vParseEnum(Stz* szSawTerm);
     void vParseFriend(Stz* szSawTerm);
     void vParseHash(Stz* szSawTerm);
-    void vParseMember(Stz* szSawTerm);
-    void vParseNamespace(Stz* szSawTerm);
-    void vParseNamespaceFunction(Stz* szSawTerm);
     void vParseStatic(Stz* szSawTerm);
+    void vParseStruct(Stz* szSawTerm);
     void vParseTemplate(Stz* szSawTerm);
-    void vParseUsing(Stz* szSawTerm);
+    void vParseUnion(Stz* szSawTerm);
     void vParse_other(Stz* szSawTerm);
   
     bool bSkipLabel(Stz* szTerm);
@@ -77,9 +81,9 @@ namespace Utilities
     void vSkipUnrecognised(Stz* szTerm);
 
 
-  
-  
+    // - - - - - - - - - - - - - - - - - -
     // remove
+  
     void vProcAll(void);
     void vProcClassBase(void);
     void vProcClassBlock(void);
