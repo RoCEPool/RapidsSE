@@ -514,6 +514,44 @@ void Vortex::vParseHashPart(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse single (optionally labelled) member                                  */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseLabelledMember(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+ 
+  // just saw {
+  
+  Token xTkn;
+  for (i8 i_Token = 0; bGetToken(xTkn); i_Token++) {
+
+    if (0 == i_Token && xTkn.bSame(";"_Stz))
+      break;
+    
+    if (xTkn.bSame("}"_Stz)) {
+      RASSERT(bGetToken(xTkn));
+      vTrace("\n"_Stz);
+      return ;
+    }
+    
+    if (bSkipLabel(xTkn.szTerm()))
+      continue;
+        
+    if (bRecogniseStruct(xTkn.szTerm()))
+      continue;
+    
+    if (bRecogniseUnion(xTkn.szTerm()))
+      continue;
+
+    if (! m_p_MemberSet)
+      m_p_MemberSet = m_p_MetaClass->pAddMemberSet("linear"_Stz,m_p_MemberSet);
+    vProcMemberProper(xTkn.szTerm());
+  }
+    
+  vThrowProblem(-9);
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse namespace _^_ ...                                                    */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseNamespaceFunction(Stz* szTerm)
@@ -616,7 +654,15 @@ void Vortex::vWithinClassBase(void)
   Token xTkn;
 
   vDebugPoint();
+  
+  while (bGetToken(xTkn)) {
     
+    if (xTkn.bSame("{"_Stz)) {
+      vWithinClassBlock();
+      return;
+    }
+  }
+
   vThrowProblem(-9);
 }
 
@@ -630,7 +676,13 @@ void Vortex::vWithinClassBlock(void)
   Token xTkn;
 
   vDebugPoint();
-    
+  
+  for (;;) {
+
+    if (! bProcLabelledMember())
+      break;
+  }
+
   vThrowProblem(-9);
 }
 
@@ -1357,6 +1409,36 @@ bool Vortex::bRecogniseUsing(Stz* szTerm)
   RASSERT(xTkn.bSame(";"_Stz));
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* skip a label i.e. private|protected|public :                               */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bSkipLabel(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  
+  if (szTerm->bSame("private"_Stz)) {
+    RASSERT(bGetToken(xTkn));
+    RASSERT(xTkn.bSame(":"_Stz));
+    return true;
+  }
+  
+  if (szTerm->bSame("protected"_Stz)) {
+    RASSERT(bGetToken(xTkn));
+    RASSERT(xTkn.bSame(":"_Stz));
+    return true;
+  }
+  
+  if (szTerm->bSame("public"_Stz)) {
+    RASSERT(bGetToken(xTkn));
+    RASSERT(xTkn.bSame(":"_Stz));
+    return true;
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

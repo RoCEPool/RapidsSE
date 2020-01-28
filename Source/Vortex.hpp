@@ -60,6 +60,7 @@ namespace Utilities
     void vParseEnumPart(void);
     void vParseFriendPart(void);
     void vParseHashPart(void);
+    void vParseLabelledMember(void);
     void vParseNamespaceFunction(Stz* szTerm);
     void vParseNamespacePart(void);
     void vParseStaticPart(void);
@@ -105,6 +106,7 @@ namespace Utilities
  
   
   
+    bool bSkipLabel(Stz* szTerm);
     void vSkipTillSemicolon(void);
     void vSkipTillSemicolon(Stz* szTerm);
     void vSkipUnrecognised(Stz* szTerm);
