@@ -94,6 +94,7 @@ namespace Utilities
     void vRecognised(eCP ePart);
     void vResetFunVarTerms(void);
     void vResetPart(void);
+    void vSkipBalancedClosingBrace(Stz* szSawTerm);
     //void vSkipTillSemicolon(void);
     void vSkipTill(Stz* szTerm, Stz* szTill);
     void vSkipUnrecognised(Stz* szTerm);

@@ -1042,6 +1042,33 @@ void Vortex::vAscendFromNamepace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* skip till balanced closing brace                                           */
+/*----------------------------------------------------------------------------*/
+void Vortex::vSkipBalancedClosingBrace(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(szSawTerm->bSame("{"_Stz));
+       
+  Token xTkn;
+  for (;;) {
+    
+    CHECKED(bGetNextToken(xTkn));
+    
+    // test for closing brace
+    if (xTkn.bSame("}"_Stz))
+      return;
+    
+    // test for nested opening brace
+    if (xTkn.bSame("{"_Stz))
+      vSkipBalancedClosingBrace(xTkn.szTerm());
+      
+    // ignore any other token
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect term                                                               */
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectTerm(Stz* szTerm)
