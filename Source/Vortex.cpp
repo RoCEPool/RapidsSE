@@ -198,8 +198,8 @@ bool Vortex::bParseFile(void)
         vParseFileUsing(szKeyWord);
       }
       else {
-        // in SE we don't expect a struct outside of a namespace
-        vParseFileFun(szKeyWord);
+        // in SE we allow global functions
+        vParseFileFunction(szKeyWord);
       }
 
     }
@@ -234,7 +234,7 @@ void Vortex::vParseFileEnum(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* within file, parse <term> _^_ <term> ... ;                                 */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseFileFun(Stz* szSawTerm)
+void Vortex::vParseFileFunction(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
@@ -322,7 +322,7 @@ void Vortex::vParseFileNspace(Stz* szSawTerm)
     
     // the possible key words in a namespacee
     if (szKeyWord->bSame("class"_Stz)) {
-      vParseNspaceClass(szKeyWord);
+      vParseNamespaceClass(szKeyWord);
     }
     else
     if (szKeyWord->bSame("enum "_Stz)) {
@@ -338,14 +338,26 @@ void Vortex::vParseFileNspace(Stz* szSawTerm)
     }
     else
     if (szKeyWord->bSame("static"_Stz)) {
-      vParseNspaceStatic(szKeyWord);
+      vParseNamespaceStatic(szKeyWord);
+    }
+    else
+    if (szKeyWord->bSame("struct"_Stz)) {
+      vParseNamespaceStruct(szKeyWord);
     }
     else
     if (szKeyWord->bSame("template"_Stz)) {
-      vParseNspaceTemplate(szKeyWord);
+      vParseNamespaceTemplate(szKeyWord);
+    }
+    else
+    if (szKeyWord->bSame("typedef"_Stz)) {
+      vParseNamespaceTypedef(szKeyWord);
+    }
+    else
+    if (szKeyWord->bSame("union"_Stz)) {
+      vParseNamespaceStruct(szKeyWord);
     }
     else {
-      vParseNspaceFun(szKeyWord);
+      vParseNamespaceFunction(szKeyWord);
     }
     
   } // while more tokens
@@ -462,7 +474,7 @@ void Vortex::vParseHashPragma(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* within NAMESPACE, parse CLASS _^_ <name> ...                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseNspaceClass(Stz* szSawTerm)
+void Vortex::vParseNamespaceClass(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   RASSERT(! m_p_MetaClass);
@@ -515,7 +527,7 @@ void Vortex::vParseNspaceClass(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* within NAMESPACE, parse <term> _^_ <term> ... ;                            */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseNspaceFun(Stz* szSawTerm)
+void Vortex::vParseNamespaceFunction(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
@@ -538,7 +550,7 @@ void Vortex::vParseNspaceFun(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* within NAMESPACE, parse STATIC _^_ ...                                     */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseNspaceStatic(Stz* szSawTerm)
+void Vortex::vParseNamespaceStatic(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
@@ -558,7 +570,7 @@ void Vortex::vParseNspaceStatic(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* parse STRUCT {                                                             */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseNspaceStruct(Stz* szSawTerm)
+void Vortex::vParseNamespaceStruct(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -576,7 +588,7 @@ void Vortex::vParseNspaceStruct(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* parse template _^_ ...                                                     */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseNspaceTemplate(Stz* szSawTerm)
+void Vortex::vParseNamespaceTemplate(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
@@ -586,13 +598,29 @@ void Vortex::vParseNspaceTemplate(Stz* szSawTerm)
   
   vSkipTill(szSawTerm,";"_Stz);
   
-  vRecognised(CP_NAMESPACE_TEMPLATE);           // template within namespace ✅
+  vRecognised(CP_NAMESPACE_TEMPLATE);   // forward template within namespace ✅
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse typedef _^_ ...                                                      */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseNamespaceTypedef(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("typedef"_Stz));
+  
+  vDebugPoint();
+  
+  vSkipTill(szSawTerm,";"_Stz);
+  
+  vRecognised(CP_NAMESPACE_TYPEDEF);    // forward template within namespace ✅
 }
 
 /*----------------------------------------------------------------------------*/
 /* within namespace, parse UNION ...                                          */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseNspaceUnion(Stz* szSawTerm)
+void Vortex::vParseNamespaceUnion(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
