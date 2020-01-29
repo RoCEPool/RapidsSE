@@ -49,7 +49,7 @@ namespace Utilities
     void vParseFileEnum(Stz* szSawTerm);
     void vParseFileFunction(Stz* szSawTerm);
     void vParseFileHash(Stz* szSawTerm);
-    void vParseFileNspace(Stz* szSawTerm);
+    void vParseFileNamespace(Stz* szSawTerm);
     void vParseFileUsing(Stz* szSawTerm);
 
     void vParseHashDefine(Stz* szSawTerm);
@@ -83,7 +83,7 @@ namespace Utilities
     void vCollectFunVarTerm(Stz* szTerm);
     bool bCollectFunVarTerms(Stz* szEnd, bool bAddEnd=false);
     void vDescendIntoClass(Stz* szClassNm);
-    void vDescendIntoNamepace(Stz* szNspaceNm);
+    void vDescendIntoNamepace(Stz* szNamespaceNm);
     bool bGetNextToken(Token& roToken);
     void vPopNestedBlock(void);
     void vPushNestedBlock(Stz* szBlockNm, eMB eBlock);

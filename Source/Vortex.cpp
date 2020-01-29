@@ -172,7 +172,7 @@ bool Vortex::bParseFile(void)
       else
       if (szKeyWord->bSame("namespace"_Stz)) {
         // recognise a namespace
-        vParseFileNspace(szKeyWord);
+        vParseFileNamespace(szKeyWord);
       }
       else
       if (szKeyWord->bSame("static"_Stz)) {
@@ -289,7 +289,7 @@ void Vortex::vParseFileHash(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* within file, parse NAMESPACE _^_ <name> { ... }                            */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseFileNspace(Stz* szSawTerm)
+void Vortex::vParseFileNamespace(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   RASSERT(szSawTerm->bSame("namespace"_Stz));
@@ -382,8 +382,8 @@ void Vortex::vParseFileUsing(Stz* szSawTerm)
   CHECKED(xTkn.bSame("namespace"_Stz));
 
   // get <name>
-  Token xNspaceNm;
-  CHECKED(bGetNextToken(xNspaceNm));
+  Token xNamespaceNm;
+  CHECKED(bGetNextToken(xNamespaceNm));
 
   // get ;
   CHECKED(bGetNextToken(xTkn));
@@ -580,9 +580,9 @@ void Vortex::vParseNamespaceStruct(Stz* szSawTerm)
   
   vAddTopBlock("struct"_Stz,MB_STRUCT);
 
-  vThrowProblem(__LINE__);
+  vSkipTill(szSawTerm,";"_Stz);
   
-  m_p_MetaBlock = nullptr;
+  vRecognised(CP_NAMESPACE_STRUCT);               // struct within namespace ✅
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1020,14 +1020,14 @@ void Vortex::vDescendIntoClass(Stz* szClassNm)
 /*----------------------------------------------------------------------------*/
 /* descend into parsing a namespace                                           */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendIntoNamepace(Stz* szNspaceNm)
+void Vortex::vDescendIntoNamepace(Stz* szNamespaceNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(! m_bInNamespace);
   RASSERT(! m_bInClass);
 
-  m_sNamespaceNm = szNspaceNm;
+  m_sNamespaceNm = szNamespaceNm;
   m_bInNamespace = true;
 }
 
