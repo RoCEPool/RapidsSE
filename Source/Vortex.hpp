@@ -50,6 +50,7 @@ namespace Utilities
     void vParseFileFunction(Stz* szSawTerm);
     void vParseFileHash(Stz* szSawTerm);
     void vParseFileNamespace(Stz* szSawTerm);
+    void vParseFileStatic(Stz* szSawTerm);
     void vParseFileUsing(Stz* szSawTerm);
 
     void vParseHashDefine(Stz* szSawTerm);

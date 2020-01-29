@@ -178,8 +178,8 @@ bool Vortex::bParseFile(void)
       }
       else
       if (szKeyWord->bSame("static"_Stz)) {
-        vThrowProblem(__LINE__); // syntax?
-      }
+         vParseFileStatic(szKeyWord);
+     }
       else
       if (szKeyWord->bSame("struct"_Stz)) {
         // in SE we don't expect a struct outside of a namespace
@@ -365,6 +365,23 @@ void Vortex::vParseFileNamespace(Stz* szSawTerm)
   } // while more tokens
   
   vThrowProblem(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* within file, parse STATIC ... ;                                            */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFileStatic(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  RASSERT(szSawTerm->bSame("static"_Stz));
+  
+  vDebugPoint();
+  
+  Token xTkn;
+  
+  vSkipTill(szSawTerm,";"_Stz);
+  
+  vRecognised(CP_FILE_STATIC);                                            // ✅
 }
 
 /*----------------------------------------------------------------------------*/
