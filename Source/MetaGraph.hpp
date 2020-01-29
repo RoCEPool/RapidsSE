@@ -29,7 +29,7 @@ namespace Reflection
     ConstSet* pConstSet(void);
 
     void vPrint(void);
-    void vRecPrint(void);
+    void vRecursivePrint(void);
   
     Footer* aFooter(void);
   };

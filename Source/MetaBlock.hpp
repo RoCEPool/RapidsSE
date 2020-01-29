@@ -14,9 +14,10 @@ namespace Reflection
     MetaGraph* m_p_MetaGraph;    // the _p_ sequence means not owned by
     MetaBlock* m_p_ParentBlock;  // parent member set
 
-    s32 m_sBlockNm;    // name of this meta block
-    i8  m_nSize;       // rolled up size of this block
-    eMB m_eBlock;      // kind of meta block
+    s32 m_sBlockNm;  // name of this meta block
+    eMB m_eBlock;    // kind of meta block
+
+    i8  m_nSize;     // rolled up size of this block
 
     // must be last
     Footer m_xFooter;
@@ -25,10 +26,11 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaBlock(MetaGraph* p_MetaGraph, MetaBlock* p_ParentBlock);
+    MetaBlock(Stz* szBlockNm, eMB eBlock,
+              MetaGraph* p_MetaGraph, MetaBlock* p_ParentBlock);
    ~MetaBlock(void) noexcept(false);
 
-    MetaMember* pAddMember(Stz* szVarNm);
+    MetaMember* pAddMember(Stz* szMemberNm);
   
     eMB  eBlock(void);
     void vBlock(eMB eBlock);
@@ -36,7 +38,7 @@ namespace Reflection
     MetaBlock* p_ParentBlock(void);
   
     void vPrint(i8 i_Tab);
-    void vRecPrint(i8 i_Depth);
+    void vRecursivePrint(i8 i_Depth);
   
     Stz* szBlockNm(void);
     void vBlockNm(Stz* szBlockNm);

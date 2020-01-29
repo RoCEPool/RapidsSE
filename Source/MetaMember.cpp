@@ -17,7 +17,7 @@ __aFooterFunction(MetaMember)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaMember::MetaMember(MetaBlock* p_ParentBlock)
+MetaMember::MetaMember(Stz* szMemberNm, MetaBlock* p_ParentBlock)
 : Object(CN_METAMEMBER)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
@@ -25,17 +25,17 @@ MetaMember::MetaMember(MetaBlock* p_ParentBlock)
   m_p_ParentBlock = p_ParentBlock;
   
   // var name
-  m_sVarNm = C_NO_NAME;
-  m_nSize  = 0;
-  m_eVar   = MV_VAR;
+  m_sMemberNm = szMemberNm;
+  m_eVar      = MV_CELL;
+  m_nSize     = 0;
 
-  // MV_VAR: simple var
+  // MV_CELL: simple var
   m_sTypeNm   = C_NO_NAME;
   m_nPointers = 0;
   m_bFunPtr   = false;
   m_nBits     = 0;
   
-  // MV_SET: nested set
+  // MV_BLOCK: nested set
   m_pNestedBlock = nullptr;
   
   // arrays
@@ -307,19 +307,19 @@ void MetaMember::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
      
-  if (MV_SET == m_eVar)
-    vTrace("%sMemberVar %-16s %lldB\n"_Stz,
+  if (MV_CELL == m_eVar)
+    vTrace("%sMember %-16s %lldB\n"_Stz,
            
            Stz::szTab(i_Tab)->azChar(),
-           m_sVarNm.azChar(),
+           m_sMemberNm.azChar(),
            m_nSize,
            
            C_ENDARGS);
   else
-    vTrace("%sMemberVar %-16s %lldB : Type=%s Ptrs=%lld FunPtr=%lld Elms=%lld Bits=%lld\n"_Stz,
+    vTrace("%sMember %-16s %lldB : Type=%s Ptrs=%lld FunPtr=%lld Elms=%lld Bits=%lld\n"_Stz,
          
            Stz::szTab(i_Tab)->azChar(),
-           m_sVarNm.azChar(),
+           m_sMemberNm.azChar(),
            m_nSize,
            
            m_sTypeNm.azChar(),
@@ -334,18 +334,18 @@ void MetaMember::vPrint(i8 i_Tab)
 /*----------------------------------------------------------------------------*/
 /* recursive print                                                            */
 /*----------------------------------------------------------------------------*/
-void MetaMember::vRecPrint(i8 i_Depth)
+void MetaMember::vRecursivePrint(i8 i_Depth)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
   
   vPrint(i_Depth);
   
-  if (MV_SET == m_eVar)
-    m_pNestedBlock->vRecPrint(i_Depth + 1);
+  if (MV_BLOCK == m_eVar)
+    m_pNestedBlock->vRecursivePrint(i_Depth + 1);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get rolled-up size of this member variable                                 */
+/* get rolled-up size of this member                                          */
 /*----------------------------------------------------------------------------*/
 i8 MetaMember::nSize(void)
 {
@@ -377,21 +377,11 @@ Stz* MetaMember::szTypeNm(void)
 /*----------------------------------------------------------------------------*/
 /* get variable name                                                          */
 /*----------------------------------------------------------------------------*/
-Stz* MetaMember::szVarNm(void)
+Stz* MetaMember::szMemberNm(void)
 {
   _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
     
-  return m_sVarNm.szStz();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set variable name                                                          */
-/*----------------------------------------------------------------------------*/
-void MetaMember::vVarNm(Stz* szVarNm)
-{
-  _precondition_(_MAGIC_,CN_METAMEMBER,_FOOTER_);
-    
-  m_sVarNm = szVarNm;
+  return m_sMemberNm.szStz();
 }
 
 /*============================================================================*/

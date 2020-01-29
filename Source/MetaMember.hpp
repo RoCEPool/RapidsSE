@@ -12,10 +12,10 @@ namespace Reflection
     MetaBlock* m_p_ParentBlock; // tparent meta block
   
     // var name
-    s32  m_sVarNm;    // name of the member variable
-    i8   m_nSize;     // size of this var
+    s32  m_sMemberNm; // name of the member variable
     eMV  m_eVar;      // kind of var
-  
+    i8   m_nSize;     // size of this member
+
     // MV_VAR: simple var
     s32  m_sTypeNm;   // type name (such as Footer)
     i8   m_nPointers; // number of asterisks after the type name
@@ -35,7 +35,7 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaMember(MetaBlock* p_MetaBlock);
+    MetaMember(Stz* szMemberNm, MetaBlock* p_ParentBlock);
    ~MetaMember(void) noexcept(false);
   
     static bool bIsMember(Stz* szClassNm, EnameSet* pTerms);
@@ -60,15 +60,14 @@ namespace Reflection
     void vPointers(i8 nPointers);
   
     void vPrint(i8 i_Tab);
-    void vRecPrint(i8 i_Depth);
+    void vRecursivePrint(i8 i_Depth);
   
     i8   nSize(void);
   
     Stz* szTypeNm(void);
-    void vTypeNm(Stz* szVarNm);
+    void vTypeNm(Stz* szTypeNm);
   
-    Stz* szVarNm(void);
-    void vVarNm(Stz* szVarNm);
+    Stz* szMemberNm(void);
 
     Footer* aFooter(void);
   };

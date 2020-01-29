@@ -7,8 +7,8 @@ enum eMV // member variable
 {
   /*  0 */ MV_NONE=0,
   
-  /*    */ MV_VAR, // simple variable
-  /*    */ MV_SET, // nested set of variables
+  /*    */ MV_CELL,  // simple variable
+  /*    */ MV_BLOCK, // nested set of variables
   
   /*    */ MV_ENUMS
 };
@@ -17,8 +17,8 @@ static Stz* aMV[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "MV_VAR"_Stz,
-  /*    */ "MV_SET"_Stz,
+  /*    */ "MV_CELL"_Stz,
+  /*    */ "MV_BLOCK"_Stz,
   
   /*    */ "ENUMS"_Stz
 };

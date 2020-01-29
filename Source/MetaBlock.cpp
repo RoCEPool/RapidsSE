@@ -17,7 +17,8 @@ __aFooterFunction(MetaBlock)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaBlock::MetaBlock(MetaGraph* p_MetaGraph, MetaBlock* p_ParentBlock)
+MetaBlock::MetaBlock(Stz* szBlockNm, eMB eBlock,
+                     MetaGraph* p_MetaGraph, MetaBlock* p_ParentBlock)
 : Object(CN_METABLOCK)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
@@ -25,9 +26,9 @@ MetaBlock::MetaBlock(MetaGraph* p_MetaGraph, MetaBlock* p_ParentBlock)
   m_p_MetaGraph   = p_MetaGraph;
   m_p_ParentBlock = p_ParentBlock;
 
-  m_sBlockNm = "anonymous"_Stz;
+  m_sBlockNm = szBlockNm;
   m_nSize    = 0;
-  m_eBlock   = MB_NONE;
+  m_eBlock   = eBlock;
 
   _checkInitialised_(CN_METABLOCK);
   
@@ -53,14 +54,12 @@ MetaBlock::~MetaBlock(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add a new member set with given name                                       */
 /*----------------------------------------------------------------------------*/
-MetaMember* MetaBlock::pAddMember(Stz* szVarNm)
+MetaMember* MetaBlock::pAddMember(Stz* szMemberNm)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
   
-  MetaMember* pMember = new MetaMember(this);
-  
-  pMember->vVarNm(szVarNm);
-  
+  MetaMember* pMember = new MetaMember(szMemberNm,this);
+    
   vAppend(pMember);
   
   return pMember;
@@ -115,14 +114,14 @@ void MetaBlock::vPrint(i8 i_Tab)
 /*----------------------------------------------------------------------------*/
 /* recursive print                                                            */
 /*----------------------------------------------------------------------------*/
-void MetaBlock::vRecPrint(i8 i_Depth)
+void MetaBlock::vRecursivePrint(i8 i_Depth)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
   
   vPrint(i_Depth);
   
   for (MetaMember* pMember = pHead(); pMember; pMember = pMember->pNextItem())
-    pMember->vRecPrint(i_Depth + 1);
+    pMember->vRecursivePrint(i_Depth + 1);
 }
 
 /*----------------------------------------------------------------------------*/

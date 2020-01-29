@@ -82,7 +82,7 @@ void MetaGraph::vAppendBlock(MetaBlock* pTopBlock)
 /*----------------------------------------------------------------------------*/
 /* recursive print                                                            */
 /*----------------------------------------------------------------------------*/
-void MetaGraph::vRecPrint(void)
+void MetaGraph::vRecursivePrint(void)
 {
   _precondition_(_MAGIC_,CN_METAGRAPH,_FOOTER_);
     
@@ -91,7 +91,7 @@ void MetaGraph::vRecPrint(void)
   for (MetaBlock* pBlock = pHead();
        pBlock;
        pBlock = pBlock->pNextItem())
-    pBlock->vRecPrint(0);
+    pBlock->vRecursivePrint(0);
 }
 
 /*============================================================================*/

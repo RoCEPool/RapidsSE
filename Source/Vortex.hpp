@@ -76,16 +76,16 @@ namespace Utilities
     void vParseMemberTemplate(Stz* szSawTerm);
     void vParseMemberUnion(Stz* szSawTerm);
   
-    void vAddTopBlock(Stz* szName);
+    void vAddTopBlock(Stz* szBlockNm, eMB m_eBlock);
     void vAscendFromClass(void);
     void vAscendFromNamepace(void);
     void vCollectTerm(Stz* szTerm);
     bool bCollectTerms(Stz* szEnd, bool bAddEnd=false);
-    void vDescendIntoClass(Stz* szName);
-    void vDescendIntoNamepace(Stz* szName);
+    void vDescendIntoClass(Stz* szClassNm);
+    void vDescendIntoNamepace(Stz* szNspaceNm);
     bool bGetNextToken(Token& roToken);
     void vPopNestedBlock(void);
-    void vPushNestedBlock(Stz* szName);
+    void vPushNestedBlock(Stz* szBlockNm, eMB eBlock);
     void vRecognised(eCP ePart);
     void vResetPart(void);
     void vResetTerms(void);

@@ -72,7 +72,7 @@ void Vortex::vClose(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
     
-  m_pMetaGraph->vRecPrint();
+  m_pMetaGraph->vRecursivePrint();
   
   if (m_pOutputFile && m_pOutputFile->bIsOpen())
     m_pOutputFile->vClose();
@@ -484,7 +484,7 @@ void Vortex::vParseNspaceClass(Stz* szSawTerm)
   
   vDescendIntoClass(xName.szTerm());
 
-  vAddTopBlock(m_sClassNm.szStz());
+  vAddTopBlock(m_sClassNm.szStz(),MB_CLASS);
   
   // detect class base clause ?
   if (xTkn.bSame(":"_Stz)) {
@@ -561,7 +561,7 @@ void Vortex::vParseNspaceStruct(Stz* szSawTerm)
 
   Token xTkn;
   
-  vAddTopBlock("struct"_Stz);
+  vAddTopBlock("struct"_Stz,MB_STRUCT);
 
   vThrowProblem(__LINE__);
   
@@ -592,7 +592,7 @@ void Vortex::vParseNspaceUnion(Stz* szSawTerm)
   
   Token xTkn;
     
-  vAddTopBlock("union"_Stz);
+  vAddTopBlock("union"_Stz,MB_UNION);
   
   //vProcUnionMember();
   
@@ -801,7 +801,7 @@ void Vortex::vParseMemberStruct(Stz* szSawTerm)
 
   Token xTkn;
   
-  vPushNestedBlock("struct"_Stz);
+  vPushNestedBlock("struct"_Stz,MB_STRUCT);
   //vProcStructMember();
   
   vThrowProblem(__LINE__);
@@ -832,7 +832,7 @@ void Vortex::vParseMemberUnion(Stz* szSawTerm)
   
   Token xTkn;
     
-  vPushNestedBlock("union"_Stz);
+  vPushNestedBlock("union"_Stz,MB_UNION);
   //vProcUnionMember();
   vThrowProblem(__LINE__);
   m_p_MetaBlock = nullptr;
@@ -882,16 +882,14 @@ void Vortex::vParseMemberStatic(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* push new block                                                             */
 /*----------------------------------------------------------------------------*/
-void Vortex::vAddTopBlock(Stz* szName)
+void Vortex::vAddTopBlock(Stz* szBlockNme, eMB eBlock)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_pMetaGraph);
   RASSERT(! m_p_MetaBlock);
 
-  m_p_MetaBlock = new MetaBlock(m_pMetaGraph,nullptr);
-
-  m_p_MetaBlock->vBlockNm(szName);
+  m_p_MetaBlock = new MetaBlock(szBlockNme,eBlock,m_pMetaGraph,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -970,7 +968,7 @@ bool Vortex::bCollectTerms(Stz* szEnd, bool bAddEnd)
 /*----------------------------------------------------------------------------*/
 /* descend into parsing a class                                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendIntoClass(Stz* szName)
+void Vortex::vDescendIntoClass(Stz* szClassNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -979,21 +977,21 @@ void Vortex::vDescendIntoClass(Stz* szName)
   
   RASSERT(! m_p_MetaClass);
 
-  m_sClassNm = szName;
+  m_sClassNm = szClassNm;
   m_bInClass = true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* descend into parsing a namespace                                           */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDescendIntoNamepace(Stz* szName)
+void Vortex::vDescendIntoNamepace(Stz* szNspaceNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(! m_bInNamespace);
   RASSERT(! m_bInClass);
 
-  m_sNamespaceNm = szName;
+  m_sNamespaceNm = szNspaceNm;
   m_bInNamespace = true;
 }
 
@@ -1033,15 +1031,13 @@ void Vortex::vPopNestedBlock(void)
 /*----------------------------------------------------------------------------*/
 /* push new block                                                             */
 /*----------------------------------------------------------------------------*/
-void Vortex::vPushNestedBlock(Stz* szName)
+void Vortex::vPushNestedBlock(Stz* szBlockNm, eMB eBlock)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(m_pMetaGraph);
   
-  m_p_MetaBlock = new MetaBlock(m_pMetaGraph,m_p_MetaBlock);
-  
-  m_p_MetaBlock->vBlockNm(szName);
+  m_p_MetaBlock = new MetaBlock(szBlockNm,eBlock,m_pMetaGraph,m_p_MetaBlock);
 }
 
 /*----------------------------------------------------------------------------*/
