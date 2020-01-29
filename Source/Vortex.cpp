@@ -187,7 +187,7 @@ bool Vortex::bParseFile(void)
       else
       if (szKeyWord->bSame("template"_Stz)) {
          // in SE we don't expect a template class outside of a namespace
-         vThrowProblem(__LINE__);
+         vParseFileTemplate(szKeyWord);
       }
       else
       if (szKeyWord->bSame("union"_Stz)) {
@@ -217,6 +217,49 @@ bool Vortex::bParseFile(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* within file, parse TEMPLATE ... CLASS _^_ <name> ...                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFileClass(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  RASSERT(! m_p_MetaBlock);
+  RASSERT(szSawTerm->bSame("class"_Stz));
+  
+  vDebugPoint();
+  
+  // get <name>
+  Token xName;
+  CHECKED(bGetNextToken(xName));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Token xTkn;
+  CHECKED(bGetNextToken(xTkn));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vDescendIntoClass(xName.szTerm());
+
+  vAddTopBlock(m_sClassNm.szStz(),MB_CLASS);
+  
+  // detect class base clause ?
+  if (xTkn.bSame(":"_Stz)) {
+    vParseClassBase(xTkn.szTerm());
+    m_p_MetaBlock = nullptr;
+    return;
+  }
+  
+  // detect class block ?
+  if (xTkn.bSame("{"_Stz)) {
+    vParseClassBlock(xTkn.szTerm());
+    m_p_MetaBlock = nullptr;
+    return;
+  }
+
+  vThrowProblem(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
 /* within file, parse ENUM _^_ ... ;                                          */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFileEnum(Stz* szSawTerm)
@@ -242,7 +285,7 @@ void Vortex::vParseFileFunction(Stz* szSawTerm)
   //RASSERT(szSawTerm->bSame("???"_Stz));
   
   vResetFunVarTerms();
-  CHECKED(bCollectFunVarTerms(szSawTerm,";"_Stz,true));
+  CHECKED(bCollectFunctionTerms(szSawTerm));
   
   vDebugPoint();
   
@@ -377,6 +420,33 @@ void Vortex::vParseFileStatic(Stz* szSawTerm)
   vSkipTill(szSawTerm,";"_Stz);
   
   vRecognised(CP_FILE_STATIC);                                            // ✅
+}
+
+/*----------------------------------------------------------------------------*/
+/* within file, parse STATIC ... ;                                            */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFileTemplate(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  RASSERT(szSawTerm->bSame("template"_Stz));
+  
+  vDebugPoint();
+  
+  Token xTkn;
+  CHECKED(bGetNextToken(xTkn));
+  CHECKED(xTkn.bSame("<"_Stz));
+  CHECKED(bCollectTemplateTerms(xTkn.szTerm()));
+  
+  vResetPart();
+  
+  CHECKED(bGetNextToken(xTkn));
+  
+  if (xTkn.bSame("class"_Stz)) {
+    vParseFileClass(xTkn.szTerm());
+  }
+  else {
+    vParseFileFunction(xTkn.szTerm());
+  }
 }
 
 /*----------------------------------------------------------------------------*/

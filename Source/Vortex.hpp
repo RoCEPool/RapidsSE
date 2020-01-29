@@ -45,11 +45,13 @@ namespace Utilities
   private:
     bool bParseFile(void);
   
+    void vParseFileClass(Stz* szSawTerm);
     void vParseFileEnum(Stz* szSawTerm);
     void vParseFileFunction(Stz* szSawTerm);
     void vParseFileHash(Stz* szSawTerm);
     void vParseFileNamespace(Stz* szSawTerm);
     void vParseFileStatic(Stz* szSawTerm);
+    void vParseFileTemplate(Stz* szSawTerm);
     void vParseFileUsing(Stz* szSawTerm);
 
     void vParseHashDefine(Stz* szSawTerm);
