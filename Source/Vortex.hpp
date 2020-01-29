@@ -13,11 +13,10 @@ namespace Utilities
     Input*      m_pInput;       // input  token stream
   
     MetaGraph*  m_pMetaGraph;   // the metagraph that is created
-    ConstSet*   m_p_ConsSet;    // set of static const i8's
-    MetaClass*  m_p_MetaClass;  // current working meta class
     MetaBlock*  m_p_MetaBlock;  // current working meta block
     MetaMember* m_p_MetaMember; // current working meta member
-  
+    ConstSet*   m_p_ConstSet;   // set of static const i8's
+
     EnameSet    m_oFunVarTerms; // working set of collected terms
     bool        m_bTraceTokens; // trace tokens
    

@@ -26,8 +26,7 @@ Vortex::Vortex(void)
   m_pInput       = nullptr;
   
   m_pMetaGraph   = new MetaGraph;
-  m_p_ConsSet    = m_pMetaGraph->pConstSet();
-  m_p_MetaClass  = nullptr;
+  m_p_ConstSet   = m_pMetaGraph->pConstSet();
   m_p_MetaBlock  = nullptr;
   m_p_MetaMember = nullptr;
   
@@ -495,7 +494,7 @@ void Vortex::vParseHashPragma(Stz* szSawTerm)
 void Vortex::vParseNamespaceClass(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  RASSERT(! m_p_MetaClass);
+  RASSERT(! m_p_MetaBlock);
   RASSERT(szSawTerm->bSame("class"_Stz));
   
   vDebugPoint();
@@ -523,19 +522,15 @@ void Vortex::vParseNamespaceClass(Stz* szSawTerm)
   
   // detect class base clause ?
   if (xTkn.bSame(":"_Stz)) {
-    m_p_MetaBlock = nullptr;
-    m_p_MetaMember = nullptr;
     vParseClassBase(xTkn.szTerm());
-    RASSERT(! m_p_MetaClass);
+    m_p_MetaBlock = nullptr;
     return;
   }
   
   // detect class block ?
   if (xTkn.bSame("{"_Stz)) {
-    m_p_MetaBlock = nullptr;
-    m_p_MetaMember = nullptr;
     vParseClassBlock(xTkn.szTerm());
-    RASSERT(! m_p_MetaClass);
+    m_p_MetaBlock = nullptr;
     return;
   }
 
@@ -601,6 +596,8 @@ void Vortex::vParseNamespaceStruct(Stz* szSawTerm)
   vSkipTill(szSawTerm,";"_Stz);
   
   vRecognised(CP_NAMESPACE_STRUCT);               // struct within namespace ✅
+  
+  vPopNestedBlock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -712,6 +709,8 @@ void Vortex::vParseClassBlock(Stz* szSawTerm)
     if (szTerm->bSame("}"_Stz)) {
      CHECKED(bGetNextToken(xTkn));
      CHECKED(szTerm->bSame(";"_Stz));
+     vPopNestedBlock();
+     vAscendFromClass();
      return;
     }
 
@@ -772,18 +771,6 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
  
   RASSERT(m_bInClass);
   //RASSERT(szSawTerm->bSame("???"_Stz));
-
-  vThrowProblem(__LINE__);
-
-//  if (bRecogniseStruct(szSawTerm))
-//    return;
-//
-//  if (bRecogniseUnion(szSawTerm))
-//    return;
-
-  //vProcMemberProper(szTerm);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Stz* szClassNm = m_p_MetaBlock->szBlockNm();
   
@@ -791,9 +778,7 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
          m_pMetaGraph->nItems(),
          m_p_MetaBlock->nItems(),
          szClassNm->azChar());
-  
-  //vTrace("%s "_Stz,xTkn.azChar());
-  
+    
   vResetFunVarTerms();
   vCollectFunVarTerm(szSawTerm);
 
@@ -959,7 +944,6 @@ void Vortex::vAscendFromClass(void)
   m_bInClass = false;
   m_sClassNm = ""_Stz;
 
-  m_p_MetaClass  = nullptr;
   m_p_MetaBlock  = nullptr;
 }
 
@@ -1029,7 +1013,7 @@ void Vortex::vDescendIntoClass(Stz* szClassNm)
   RASSERT(m_bInNamespace);
   RASSERT(! m_bInClass);
   
-  RASSERT(! m_p_MetaClass);
+  RASSERT(! m_p_MetaBlock);
 
   m_sClassNm = szClassNm;
   m_bInClass = true;
