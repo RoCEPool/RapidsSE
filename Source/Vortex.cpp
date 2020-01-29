@@ -311,7 +311,7 @@ void Vortex::vParseFileNspace(Stz* szSawTerm)
   
     // test for end-of-namespace
     if (xTkn.bSame("}"_Stz))  {
-      vRecognised(CP_FILE_NAMESPACE);                                    // ✅
+      vRecognised(CP_FILE_NAMESPACE);                          // namespace ✅
       vAscendFromNamepace();
       return;
     }
@@ -583,7 +583,10 @@ void Vortex::vParseNspaceTemplate(Stz* szSawTerm)
   RASSERT(szSawTerm->bSame("template"_Stz));
   
   vDebugPoint();
-  vThrowProblem(__LINE__);
+  
+  vSkipTill(szSawTerm,";"_Stz);
+  
+  vRecognised(CP_NAMESPACE_TEMPLATE);           // template within namespace ✅
 }
 
 /*----------------------------------------------------------------------------*/
