@@ -148,52 +148,58 @@ bool Vortex::bParseFile(void)
   
     try {
       Stz* szKeyWord = xTkn.szTerm();
-    
-      vResetPart();
-    
+        
       if (szKeyWord->bSame("class"_Stz)) {
-        //vParseClass(szTerm);
+        // in SE we don't expect a class outside of a namespace
         vThrowProblem(__LINE__);
       }
       else
       if (szKeyWord->bSame("enum"_Stz)) {
+        // in SE we permit be outside a namespace
         vParseFileEnum(szKeyWord);
       }
       else
       if (szKeyWord->bSame("friend"_Stz)) {
-        vThrowProblem(__LINE__);
+        vThrowProblem(__LINE__); // syntax?
       }
       else
       if (szKeyWord->bSame("#"_Stz)) {
+        // in SE we #include etc to be outside a namespace
         vParseFileHash(szKeyWord);
       }
       else
       if (szKeyWord->bSame("namespace"_Stz)) {
+        // recognise a namespace
         vParseFileNspace(szKeyWord);
       }
       else
       if (szKeyWord->bSame("static"_Stz)) {
-        vThrowProblem(__LINE__);
+        vThrowProblem(__LINE__); // syntax?
       }
       else
       if (szKeyWord->bSame("struct"_Stz)) {
+        // in SE we don't expect a struct outside of a namespace
         vThrowProblem(__LINE__);
       }
       else
       if (szKeyWord->bSame("template"_Stz)) {
+         // in SE we don't expect a template class outside of a namespace
          vThrowProblem(__LINE__);
       }
       else
       if (szKeyWord->bSame("union"_Stz)) {
-        vThrowProblem(__LINE__);
+        vThrowProblem(__LINE__); // syntax?
       }
       else
       if (szKeyWord->bSame("using"_Stz)) {
+        // using namespace is outside a namespace
         vParseFileUsing(szKeyWord);
       }
       else {
+        // in SE we don't expect a struct outside of a namespace
         vParseFileFun(szKeyWord);
       }
+      vResetPart();
     }
     catch (i8 i_Problem) {
       return false;
