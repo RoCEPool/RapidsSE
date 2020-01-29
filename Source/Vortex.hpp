@@ -83,6 +83,8 @@ namespace Utilities
     void vDescendIntoClass(Stz* szName);
     void vDescendIntoNamepace(Stz* szName);
     bool bGetToken(Token& roToken);
+    void vPopBlock(void);
+    void vPushBlock(Stz* szName);
     void vRecognised(eCP ePart);
     void vResetPart(void);
     //void vSkipTillSemicolon(void);

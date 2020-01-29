@@ -79,7 +79,7 @@ eMB MetaBlock::eBlock(void)
 /*----------------------------------------------------------------------------*/
 /* get parent member set                                                      */
 /*----------------------------------------------------------------------------*/
-MetaBlock* MetaBlock::pParentBlock(void)
+MetaBlock* MetaBlock::p_ParentBlock(void)
 {
   _precondition_(_MAGIC_,CN_METABLOCK,_FOOTER_);
   

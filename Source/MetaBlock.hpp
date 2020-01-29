@@ -33,7 +33,7 @@ namespace Reflection
     eMB  eBlock(void);
     void vBlock(eMB eBlock);
 
-    MetaBlock* pParentBlock(void);
+    MetaBlock* p_ParentBlock(void);
   
     void vPrint(i8 i_Tab);
     void vRecPrint(i8 i_Depth);

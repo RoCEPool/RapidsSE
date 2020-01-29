@@ -1004,6 +1004,32 @@ bool Vortex::bGetToken(Token& roToken)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop at block end                                                           */
+/*----------------------------------------------------------------------------*/
+void Vortex::vPopBlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  CHECKED(m_p_MetaBlock);
+  
+  m_p_MetaBlock = m_p_MetaBlock->p_ParentBlock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* push new block                                                             */
+/*----------------------------------------------------------------------------*/
+void Vortex::vPushBlock(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(m_pMetaGraph);
+  
+  m_p_MetaBlock = new MetaBlock(m_pMetaGraph,m_p_MetaBlock);
+  
+  m_p_MetaBlock->vBlockNm(szName);
+}
+
+/*----------------------------------------------------------------------------*/
 /* recognised c++ part                                                        */
 /*----------------------------------------------------------------------------*/
 void Vortex::vRecognised(eCP ePart)
