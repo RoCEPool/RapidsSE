@@ -39,8 +39,9 @@ namespace Reflection
    ~MetaMember(void) noexcept(false);
   
     static bool bIsMember(Stz* szClassNm, EnameSet* pTerms);
-    static Stz* szVarNm(EnameSet* pTerms, Stz*& rszTypeNm,
-                        i8& rnPtrs, bool& rbFunPtr, i8& rnElements, i8& rnBits);
+    static Stz* szMemberNm(EnameSet* pTerms, Stz*& rszTypeNm,
+                           i8& rnPtrs, bool& rbFunPtr,
+                           i8& rnElements, i8& rnBits);
 
     i8   nBits(void);
     void vBits(i8 nBits);

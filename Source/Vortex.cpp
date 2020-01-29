@@ -31,7 +31,7 @@ Vortex::Vortex(void)
   m_p_MetaBlock  = nullptr;
   m_p_MetaMember  = nullptr;
   
-  //m_oTerms
+  //m_oFunVarTerms
   m_bTraceTokens = false;
   
   m_bInClass     = false;
@@ -240,10 +240,10 @@ void Vortex::vParseFileFun(Stz* szSawTerm)
   
   //RASSERT(szSawTerm->bSame("???"_Stz));
   
-  vResetTerms();
-  vCollectTerm(szSawTerm);
+  vResetFunVarTerms();
+  vCollectFunVarTerm(szSawTerm);
   
-  CHECKED(bCollectTerms(";"_Stz,true));
+  CHECKED(bCollectFunVarTerms(";"_Stz,true));
   
   vDebugPoint();
   
@@ -518,10 +518,10 @@ void Vortex::vParseNspaceFun(Stz* szSawTerm)
   
   //RASSERT(szSawTerm->bSame("???"_Stz));
   
-  vResetTerms();
-  vCollectTerm(szSawTerm);
+  vResetFunVarTerms();
+  vCollectFunVarTerm(szSawTerm);
   
-  CHECKED(bCollectTerms(";"_Stz,true));
+  CHECKED(bCollectFunVarTerms(";"_Stz,true));
   
   vDebugPoint();
   
@@ -740,8 +740,8 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
   
   //vTrace("%s "_Stz,xTkn.azChar());
   
-  vResetTerms();
-  vCollectTerm(szSawTerm);
+  vResetFunVarTerms();
+  vCollectFunVarTerm(szSawTerm);
 
   Token xTkn;
   while (bGetNextToken(xTkn)) {
@@ -757,10 +757,10 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
       break ;
     }
 
-    vCollectTerm(xTkn.szTerm());
+    vCollectFunVarTerm(xTkn.szTerm());
   }
     
-  if (! MetaMember::bIsMember(szClassNm,&m_oTerms)) {
+  if (! MetaMember::bIsMember(szClassNm,&m_oFunVarTerms)) {
     vTrace("  not a member variable\n"_Stz);
     return;
   }
@@ -775,8 +775,8 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
   
   Stz* szVarNm;
   Stz* szTypeNm;
-  szVarNm = MetaMember::szVarNm(&m_oTerms,szTypeNm,
-                                nPointers,bFunPtr,nElements,nBits);
+  szVarNm = MetaMember::szMemberNm(&m_oFunVarTerms,szTypeNm,
+                                   nPointers,bFunPtr,nElements,nBits);
   
   m_p_MetaMember = m_p_MetaBlock->pAddMember(szVarNm);
   
@@ -926,17 +926,17 @@ void Vortex::vAscendFromNamepace(void)
 /*----------------------------------------------------------------------------*/
 /* collect term                                                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectTerm(Stz* szTerm)
+void Vortex::vCollectFunVarTerm(Stz* szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oTerms.vAdd(szTerm);
+  m_oFunVarTerms.vAdd(szTerm);
 }
 
 /*----------------------------------------------------------------------------*/
 /* cllect all terms till given end (optionally adding the end term)           */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bCollectTerms(Stz* szEnd, bool bAddEnd)
+bool Vortex::bCollectFunVarTerms(Stz* szEnd, bool bAddEnd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -949,16 +949,16 @@ bool Vortex::bCollectTerms(Stz* szEnd, bool bAddEnd)
     if (xTkn.bSame(szEnd)) {
       
       if (bAddEnd)
-        m_oTerms.vAdd(xTkn.szTerm());
+        m_oFunVarTerms.vAdd(xTkn.szTerm());
       
       break;
     }
     
-    m_oTerms.vAdd(xTkn.szTerm());
+    m_oFunVarTerms.vAdd(xTkn.szTerm());
   }
 
   s48K sNamesString;
-  m_oTerms.vNamesString(sNamesString);
+  m_oFunVarTerms.vNamesString(sNamesString);
   
   vTrace("Terms: %s\n"_Stz,sNamesString.azChar());
   
@@ -1052,6 +1052,16 @@ void Vortex::vRecognised(eCP ePart)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset terms                                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vResetFunVarTerms(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_oFunVarTerms.vReset();
+}
+
+/*----------------------------------------------------------------------------*/
 /* start new c++ part                                                         */
 /*----------------------------------------------------------------------------*/
 void Vortex::vResetPart(void)
@@ -1059,16 +1069,6 @@ void Vortex::vResetPart(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_sPart = ""_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset terms                                                                */
-/*----------------------------------------------------------------------------*/
-void Vortex::vResetTerms(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_oTerms.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1147,13 +1147,13 @@ bool Vortex::bTermsAreFunction(void)
 
   Stz* szTerm;
  
-  i8 nTerms = m_oTerms.nItems();
+  i8 nTerms = m_oFunVarTerms.nItems();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // term 0
   
   i8 i_Term = 0;
-  szTerm = m_oTerms.szName(i_Term++);
+  szTerm = m_oFunVarTerms.szName(i_Term++);
   
   // -- -- -- -- -- --
   // constructor function
@@ -1175,9 +1175,9 @@ bool Vortex::bTermsAreFunction(void)
   
   // -- -- -- -- -- --
   // skip zero or more '*'
-  szTerm = m_oTerms.szName(i_Term++);
+  szTerm = m_oFunVarTerms.szName(i_Term++);
   while (szTerm->bSame("*"_Stz))
-    szTerm = m_oTerms.szName(i_Term++);
+    szTerm = m_oFunVarTerms.szName(i_Term++);
   
   // -- -- -- -- -- --
   // test for member which is a member which is a function pointer
@@ -1186,11 +1186,11 @@ bool Vortex::bTermsAreFunction(void)
 
   // -- -- -- -- -- --
   // attempt to detect a function
-  szTerm = m_oTerms.szName(i_Term++);
+  szTerm = m_oFunVarTerms.szName(i_Term++);
   while (i_Term < nTerms) {
     if (szTerm->bSame("("_Stz))
       return true;
-    szTerm = m_oTerms.szName(i_Term++);
+    szTerm = m_oFunVarTerms.szName(i_Term++);
   }
   
   // -- -- -- -- -- --
@@ -1207,18 +1207,18 @@ bool Vortex::bTermsAreVariable(void)
   
    Stz* szTerm;
   
-   i8 nTerms = m_oTerms.nItems();
+   i8 nTerms = m_oFunVarTerms.nItems();
      
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // term 0
    
    i8 i_Term = 0;
-   szTerm = m_oTerms.szName(i_Term++);
+   szTerm = m_oFunVarTerms.szName(i_Term++);
   
   // -- -- -- -- -- --
   // exclude constructor function
   if (m_bInClass && szTerm->bSame(m_sClassNm.szStz()) &&
-      m_oTerms.szName(i_Term)->bSame("("_Stz)) {
+      m_oFunVarTerms.szName(i_Term)->bSame("("_Stz)) {
     return false;
   }
   
@@ -1235,9 +1235,9 @@ bool Vortex::bTermsAreVariable(void)
   
   // -- -- -- -- -- --
   // skip zero or more '*'
-  szTerm = m_oTerms.szName(i_Term++);
+  szTerm = m_oFunVarTerms.szName(i_Term++);
   while (szTerm->bSame("*"_Stz))
-    szTerm = m_oTerms.szName(i_Term++);
+    szTerm = m_oFunVarTerms.szName(i_Term++);
   
   // -- -- -- -- -- --
   // test for variable which is a function pointer
@@ -1246,11 +1246,11 @@ bool Vortex::bTermsAreVariable(void)
 
   // -- -- -- -- -- --
   // attempt to detect a function
-  szTerm = m_oTerms.szName(i_Term++);
+  szTerm = m_oFunVarTerms.szName(i_Term++);
   while (i_Term < nTerms) {
     if (szTerm->bSame("("_Stz))
       return false;
-    szTerm = m_oTerms.szName(i_Term++);
+    szTerm = m_oFunVarTerms.szName(i_Term++);
   }
   
   // -- -- -- -- -- --
@@ -1394,7 +1394,7 @@ void Vortex::vProcConst(void)
   
   // seen: static const i8
   
-  m_oTerms.vReset();
+  m_oFunVarTerms.vReset();
   
   Token xConstNm;
   if (! bGetNextToken(xConstNm))
@@ -1409,9 +1409,9 @@ void Vortex::vProcConst(void)
 
   vTrace("Const %s\n"_Stz,xConstNm.azTerm());
   
-  if (bCollectTerms(";"_Stz)) {
+  if (bCollectFunVarTerms(";"_Stz)) {
     ConstDef* pConstDef = m_p_ConsSet->pAddConstDef(xConstNm.szTerm());
-    pConstDef->vTerms(m_oTerms);
+    pConstDef->vTerms(m_oFunVarTerms);
   }
 }
 
@@ -1513,7 +1513,7 @@ void Vortex::vProcMemberProper(Stz* szFirstTerm)
   
   //vTrace("%s "_Stz,xTkn.azChar());
   
-  m_oTerms.vReset();
+  m_oFunVarTerms.vReset();
 
   vAddTerm(szFirstTerm);
   
@@ -1532,7 +1532,7 @@ void Vortex::vProcMemberProper(Stz* szFirstTerm)
     vAddTerm(xTkn.szTerm());
   }
     
-  if (! MetaMember::bIsMember(szClassNm,&m_oTerms)) {
+  if (! MetaMember::bIsMember(szClassNm,&m_oFunVarTerms)) {
     vTrace("  not a member variable\n"_Stz);
     return;
   }
@@ -1547,7 +1547,7 @@ void Vortex::vProcMemberProper(Stz* szFirstTerm)
   
   Stz* szVarNm;
   Stz* szTypeNm;
-  szVarNm = MetaMember::szVarNm(&m_oTerms,szTypeNm,
+  szVarNm = MetaMember::szVarNm(&m_oFunVarTerms,szTypeNm,
                                 nPointers,bFunPtr,nElements,nBits);
   
   m_p_MetaMember = m_p_MetaBlock->pAddMember(szVarNm);

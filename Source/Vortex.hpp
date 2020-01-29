@@ -18,7 +18,7 @@ namespace Utilities
     MetaBlock*  m_p_MetaBlock;  // current working meta block
     MetaMember* m_p_MetaMember; // current working meta member
   
-    EnameSet    m_oTerms;       // working set of collected terms
+    EnameSet    m_oFunVarTerms; // working set of collected terms
     bool        m_bTraceTokens; // trace tokens
    
     bool        m_bInClass;     // currently in a class?
@@ -79,16 +79,16 @@ namespace Utilities
     void vAddTopBlock(Stz* szBlockNm, eMB m_eBlock);
     void vAscendFromClass(void);
     void vAscendFromNamepace(void);
-    void vCollectTerm(Stz* szTerm);
-    bool bCollectTerms(Stz* szEnd, bool bAddEnd=false);
+    void vCollectFunVarTerm(Stz* szTerm);
+    bool bCollectFunVarTerms(Stz* szEnd, bool bAddEnd=false);
     void vDescendIntoClass(Stz* szClassNm);
     void vDescendIntoNamepace(Stz* szNspaceNm);
     bool bGetNextToken(Token& roToken);
     void vPopNestedBlock(void);
     void vPushNestedBlock(Stz* szBlockNm, eMB eBlock);
     void vRecognised(eCP ePart);
+    void vResetFunVarTerms(void);
     void vResetPart(void);
-    void vResetTerms(void);
     //void vSkipTillSemicolon(void);
     void vSkipTillSemicolon(Stz* szTerm);
     void vSkipUnrecognised(Stz* szTerm);

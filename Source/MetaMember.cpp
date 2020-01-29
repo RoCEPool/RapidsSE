@@ -120,10 +120,11 @@ bool MetaMember::bIsMember(Stz* szClassNm, EnameSet* pTerms)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get variable name from given terms                                         */
+/* get member name from given terms                                           */
 /*----------------------------------------------------------------------------*/
-Stz* MetaMember::szVarNm(EnameSet* pTerms, Stz*& rszTypeNm,
-                        i8& rnPtrs, bool& rbFunPtr, i8& rnElements, i8& rnBits)
+Stz* MetaMember::szMemberNm(EnameSet* pTerms, Stz*& rszTypeNm,
+                            i8& rnPtrs, bool& rbFunPtr,
+                            i8& rnElements, i8& rnBits)
 {
   _static_
   
