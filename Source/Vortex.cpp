@@ -288,8 +288,9 @@ void Vortex::vParseFileFunction(Stz* szSawTerm)
   
   //RASSERT(szSawTerm->bSame("???"_Stz));
   
+  eFN eFun;
   Token xFunNm;
-  CHECKED(bCollectFunctionIntro(szSawTerm,xFunNm));
+  CHECKED(bCollectFunctionIntro(szSawTerm,xFunNm,eFun));
 
   // get (
   Token xTkn;
@@ -632,8 +633,9 @@ void Vortex::vParseNamespaceFunction(Stz* szSawTerm)
   
   //RASSERT(szSawTerm->bSame("???"_Stz));
   
+  eFN eFun;
   Token xFunNm;
-  CHECKED(bCollectFunctionIntro(szSawTerm,xFunNm));
+  CHECKED(bCollectFunctionIntro(szSawTerm,xFunNm,eFun));
 
   // get (
   Token xTkn;
@@ -1209,7 +1211,7 @@ bool Vortex::bCollectFunctionArgs(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* collect all terms for a function return type                               */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bCollectFunctionIntro(Stz* szSawTerm, Token& roFunNm)
+bool Vortex::bCollectFunctionIntro(Stz* szSawTerm, Token& roFunNm, eFN& reFun)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
