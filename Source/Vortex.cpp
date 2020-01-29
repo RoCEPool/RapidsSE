@@ -29,16 +29,17 @@ Vortex::Vortex(void)
   m_p_ConsSet    = m_pMetaGraph->pConstSet();
   m_p_MetaClass  = nullptr;
   m_p_MetaBlock  = nullptr;
-  m_p_MetaMember  = nullptr;
+  m_p_MetaMember = nullptr;
   
   //m_oFunVarTerms
   m_bTraceTokens = false;
   
   m_bInClass     = false;
   m_sClassNm     = C_NO_NAME;
-  
   m_bInNamespace = false;
   m_sNamespaceNm = C_NO_NAME;
+  
+  m_sPart        = ""_Stz;
 
   _checkInitialised_(CN_VORTEX);
 
@@ -199,7 +200,7 @@ bool Vortex::bParseFile(void)
         // in SE we don't expect a struct outside of a namespace
         vParseFileFun(szKeyWord);
       }
-      vResetPart();
+
     }
     catch (i8 i_Problem) {
       return false;
@@ -214,7 +215,7 @@ bool Vortex::bParseFile(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* parse ENUM _^_ ... ;                                                       */
+/* within file, parse ENUM _^_ ... ;                                          */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFileEnum(Stz* szSawTerm)
 {
@@ -226,11 +227,11 @@ void Vortex::vParseFileEnum(Stz* szSawTerm)
   
   vSkipTill(szSawTerm,";"_Stz);
   
-  vRecognised(CP_ENUM);
+  vRecognised(CP_FILE_ENUM);                                             // ✅
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse <term> _^_ ... ;                                                     */
+/* within file, parse <term> _^_ <term> ... ;                                 */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFileFun(Stz* szSawTerm)
 {
@@ -249,11 +250,11 @@ void Vortex::vParseFileFun(Stz* szSawTerm)
   
   CHECKED(bTermsAreFunction());
   
-  vRecognised(CP_NAMESPACE_FUN);
+  vRecognised(CP_FILE_FUNCTION);                                         // ✅
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse # _^_ DEFINE ... | INCLUDE ... | PRAGMA ...                          */
+/* within file, parse # _^_ DEFINE ... | INCLUDE ... | PRAGMA ...             */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFileHash(Stz* szSawTerm)
 {
@@ -285,7 +286,7 @@ void Vortex::vParseFileHash(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within file parse NAMESPACE _^_ <name> { ... }                            */
+/* within file, parse NAMESPACE _^_ <name> { ... }                            */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFileNspace(Stz* szSawTerm)
 {
@@ -309,7 +310,7 @@ void Vortex::vParseFileNspace(Stz* szSawTerm)
   
     // test for end-of-namespace
     if (xTkn.bSame("}"_Stz))  {
-      vRecognised(CP_NAMESPACE);
+      vRecognised(CP_FILE_NAMESPACE);                                    // ✅
       vAscendFromNamepace();
       return;
     }
@@ -352,7 +353,7 @@ void Vortex::vParseFileNspace(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse USING _^_ NAMESPACE <name> ;                                         */
+/* within file, parse USING _^_ NAMESPACE <name> ;                            */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFileUsing(Stz* szSawTerm)
 {
@@ -368,18 +369,21 @@ void Vortex::vParseFileUsing(Stz* szSawTerm)
   CHECKED(xTkn.bSame("namespace"_Stz));
 
   // get <name>
-  CHECKED(bGetNextToken(xTkn));
+  Token xNspaceNm;
+  CHECKED(bGetNextToken(xNspaceNm));
 
   // get ;
   CHECKED(bGetNextToken(xTkn));
   CHECKED(xTkn.bSame(";"_Stz));
+  
+  vRecognised(CP_FILE_USING);                                            // ✅
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* parse # DEFINE _^_ ...                                                     */
+/* within #, parse DEFINE _^_ ...                                             */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashDefine(Stz* szSawTerm)
 {
@@ -395,19 +399,20 @@ void Vortex::vParseHashDefine(Stz* szSawTerm)
   if (xTkn.bSame("define"_Stz)) {
     CHECKED(bGetNextToken(xTkn));
     vThrowProblem(__LINE__);
+    vRecognised(CP_HASH_DEFINE);
     return;
   }
 
   if (xTkn.bSame("include"_Stz)) {
     CHECKED(bGetNextToken(xTkn));
-    vRecognised(CP_FILE_INCLUDE);
+    vRecognised(CP_HASH_INCLUDE);
     return;
   }
 
   if (xTkn.bSame("pragma"_Stz)) {
     CHECKED(bGetNextToken(xTkn));
     CHECKED(xTkn.bSame("once"_Stz));
-    vRecognised(CP_PRAGMA_ONCE);
+    vRecognised(CP_HASH_PRAGMA);
     return;
   }
 
@@ -415,7 +420,7 @@ void Vortex::vParseHashDefine(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse # INCLUDE _^_ ...                                                    */
+/* within #, parse INCLUDE _^_ <filePath>                                     */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashInclude(Stz* szSawTerm)
 {
@@ -429,11 +434,11 @@ void Vortex::vParseHashInclude(Stz* szSawTerm)
   CHECKED(bGetNextToken(xTkn));
   CHECKED(bGetNextToken(xTkn));
     
-  vRecognised(CP_FILE_INCLUDE);
+  vRecognised(CP_HASH_INCLUDE);
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse # PRAGMA _^_ ...                                                     */
+/* within #, parse # PRAGMA _^_ ONCE                                          */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashPragma(Stz* szSawTerm)
 {
@@ -447,14 +452,14 @@ void Vortex::vParseHashPragma(Stz* szSawTerm)
   CHECKED(bGetNextToken(xTkn));
   CHECKED(xTkn.bSame("once"_Stz));
 
-  vRecognised(CP_PRAGMA_ONCE);
+  vRecognised(CP_HASH_PRAGMA);
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* parse NAMESPACE ... CLASS _^_ <name> ...                                   */
+/* within NAMESPACE, parse CLASS _^_ <name> ...                               */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseNspaceClass(Stz* szSawTerm)
 {
@@ -475,7 +480,7 @@ void Vortex::vParseNspaceClass(Stz* szSawTerm)
 
   // forward declaration of a class?
   if (xTkn.bSame(";"_Stz)) {
-    vRecognised(CP_FORWARD_CLASS);
+    vRecognised(CP_NAMESPACE_FORWARD);
     vAscendFromClass();
     return;
   }
@@ -508,7 +513,7 @@ void Vortex::vParseNspaceClass(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse <term> _^_                                                           */
+/* within NAMESPACE, parse <term> _^_ <term> ... ;                            */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseNspaceFun(Stz* szSawTerm)
 {
@@ -527,11 +532,11 @@ void Vortex::vParseNspaceFun(Stz* szSawTerm)
   
   CHECKED(bTermsAreFunction());
   
-  vRecognised(CP_NAMESPACE_FUN);
+  vRecognised(CP_NAMESPACE_FUNCTION);
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse STATIC _^_ ...                                                       */
+/* within NAMESPACE, parse STATIC _^_ ...                                     */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseNspaceStatic(Stz* szSawTerm)
 {
@@ -543,7 +548,7 @@ void Vortex::vParseNspaceStatic(Stz* szSawTerm)
   
   if (! m_bInClass) {
     vSkipTill(szSawTerm,";"_Stz);
-    vRecognised(CP_STATIC);
+    vRecognised(CP_NAMESPACE_STATIC);
     return;
   }
   
@@ -867,7 +872,7 @@ void Vortex::vParseMemberStatic(Stz* szSawTerm)
   
   if (! m_bInClass) {
     vSkipTill(szSawTerm,";"_Stz);
-    vRecognised(CP_STATIC);
+    vRecognised(CP_MEMBER_STATIC);
     return;
   }
   
@@ -1048,6 +1053,9 @@ void Vortex::vRecognised(eCP ePart)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vTrace("Recognised %s\n"_Stz,aCP[ePart]);
+  
+  vResetPart();
+  
   vDebugPoint();
 }
 

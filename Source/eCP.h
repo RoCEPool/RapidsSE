@@ -7,20 +7,28 @@ enum eCP // c++ part
 {
   /*  0 */ CP_NONE=0,
   
-  /*    */ CP_CLASS,          // class
-  /*    */ CP_ENUM,           // enum
-  /*    */ CP_FILE_INCLUDE,   // # include
-  /*    */ CP_FORWARD_CLASS,  // class <classNm> ;
-  /*    */ CP_HASH_DEFINE,    // # define
-  /*    */ CP_MACRO,          // macro
-  /*    */ CP_MEMBER_FUN,     // member function
-  /*    */ CP_MEMBER_VAR,     // member variable
-  /*    */ CP_NAMESPACE,      // namespace <namespaceNm> { ... }
-  /*    */ CP_NAMESPACE_FUN,  // namespace function
-  /*    */ CP_PRAGMA_ONCE,    // #pragma once
-  /*    */ CP_STATIC,         // static
-  /*    */ CP_TEMPLATE,       // template
+  /*    */ CP_FILE_ENUM,           // enum        (in file)
+  /*    */ CP_FILE_FUNCTION,       // function    (in file)
+  /*    */ CP_FILE_NAMESPACE,      // namespace   (in file)
+  /*    */ CP_FILE_USING,          // using name  (in file)
   
+  /*    */ CP_HASH_DEFINE,         // # define
+  /*    */ CP_HASH_INCLUDE,        // # include
+  /*    */ CP_HASH_PRAGMA,         // # pragma
+  
+  /*    */ CP_MEMBER_FUNCTION,     // member function
+  /*    */ CP_MEMBER_STATIC,       // member static function
+  /*    */ CP_MEMBER_TEMPLATE_FUN, // member templated function
+  /*    */ CP_MEMBER_TEMPLATE_VAR, // member templated variable
+  /*    */ CP_MEMBER_VARIABLE,     // member variable
+  
+  /*    */ CP_NAMESPACE_CLASS,     // class         (in namespace)
+  /*    */ CP_NAMESPACE_FORWARD,   // forward class (in namespace)
+  /*    */ CP_NAMESPACE_FUNCTION,  // function      (in namespace)
+  /*    */ CP_NAMESPACE_STATIC,    // static        (in namespace)
+  /*    */ CP_NAMESPACE_STRUCT,    // struct        (in namespace)
+  /*    */ CP_NAMESPACE_TEMPLATE,  // template      (in namespace)
+
   /*    */ CP_ENUMS
 };
 
@@ -28,19 +36,26 @@ static Stz* aCP[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "CP_CLASS"_Stz,
-  /*    */ "CP_ENUM"_Stz,
-  /*    */ "CP_FILE_INCLUDE"_Stz,
-  /*    */ "CP_FORWARD_CLASS"_Stz,
+  /*    */ "CP_FILE_ENUM"_Stz,
+  /*    */ "CP_FILE_FUNCTION"_Stz,
+  /*    */ "CP_FILE_NAMESPACE"_Stz,
+  /*    */ "CP_FILE_USING"_Stz,
+  
   /*    */ "CP_HASH_DEFINE"_Stz,
-  /*    */ "CP_MACRO"_Stz,
-  /*    */ "CP_MEMBER_FUN"_Stz,
-  /*    */ "CP_MEMBER_FUN"_Stz,
-  /*    */ "CP_NAMESPACE"_Stz,
-  /*    */ "CP_NAMESPACE_FUN"_Stz,
-  /*    */ "CP_PRAGMA_ONCE"_Stz,
-  /*    */ "CP_STATIC"_Stz,
-  /*    */ "CP_TEMPLATE"_Stz,
+  /*    */ "CP_HASH_INCLUDE"_Stz,
+  /*    */ "CP_HASH_PRAGMA"_Stz,
+
+  /*    */ "CP_MEMBER_FUNCTION"_Stz,
+  /*    */ "CP_MEMBER_STATIC"_Stz,
+  /*    */ "CP_MEMBER_TEMPLATE_FUN"_Stz,
+  /*    */ "CP_MEMBER_TEMPLATE_VAR"_Stz,
+  /*    */ "CP_MEMBER_VARIABLE"_Stz,
+
+  /*    */ "CP_NAMESPACE_CLASS"_Stz,
+  /*    */ "CP_NAMESPACE_FORWARD"_Stz,
+  /*    */ "CP_NAMESPACE_FUNCTION"_Stz,
+  /*    */ "CP_NAMESPACE_STATIC"_Stz,
+  /*    */ "CP_NAMESPACE_TEMPLATE"_Stz,
   
   /*    */ "ENUMS"_Stz
 };
