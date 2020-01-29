@@ -90,7 +90,7 @@ namespace Utilities
     void vResetFunVarTerms(void);
     void vResetPart(void);
     //void vSkipTillSemicolon(void);
-    void vSkipTillSemicolon(Stz* szTerm);
+    void vSkipTill(Stz* szTerm, Stz* szTill);
     void vSkipUnrecognised(Stz* szTerm);
     bool bTermsAreFunction(void);
     bool bTermsAreVariable(void);

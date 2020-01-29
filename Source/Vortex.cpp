@@ -224,7 +224,7 @@ void Vortex::vParseFileEnum(Stz* szSawTerm)
   
   vDebugPoint();
   
-  vSkipTillSemicolon(szSawTerm);
+  vSkipTill(szSawTerm,";"_Stz);
   
   vRecognised(CP_ENUM);
 }
@@ -542,7 +542,7 @@ void Vortex::vParseNspaceStatic(Stz* szSawTerm)
   vDebugPoint();
   
   if (! m_bInClass) {
-    vSkipTillSemicolon(szSawTerm);
+    vSkipTill(szSawTerm,";"_Stz);
     vRecognised(CP_STATIC);
     return;
   }
@@ -866,7 +866,7 @@ void Vortex::vParseMemberStatic(Stz* szSawTerm)
   vDebugPoint();
   
   if (! m_bInClass) {
-    vSkipTillSemicolon(szSawTerm);
+    vSkipTill(szSawTerm,";"_Stz);
     vRecognised(CP_STATIC);
     return;
   }
@@ -1091,23 +1091,23 @@ void Vortex::vResetPart(void)
 //}
 
 /*----------------------------------------------------------------------------*/
-/* skip till ;                                                                */
+/* skip till given term                                                       */
 /*----------------------------------------------------------------------------*/
-void Vortex::vSkipTillSemicolon(Stz* szTerm)
+void Vortex::vSkipTill(Stz* szTerm, Stz* szTill)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;
   
   vTrace("Skipping: %s "_Stz,szTerm->azChar());
-  if (szTerm->bSame(";"_Stz)) {
+  if (szTerm->bSame(szTill)) {
     vTrace("\n"_Stz,szTerm->azChar());
     return;
   }
         
   while (bGetNextToken(xTkn)) {
     vTrace("%s "_Stz,xTkn.azTerm());
-    if (xTkn.bSame(";"_Stz)) {
+    if (xTkn.bSame(szTill)) {
       vTrace("\n"_Stz,xTkn.azTerm());
       return;
     }
