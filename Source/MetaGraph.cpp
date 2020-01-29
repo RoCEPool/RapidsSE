@@ -70,19 +70,13 @@ ConstSet* MetaGraph::pConstSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a new metaclass with given name                                        */
+/* append top block to this meta graph                                        */
 /*----------------------------------------------------------------------------*/
-MetaBlock* MetaGraph::pAddBlock(Stz* szClassNm, MetaBlock* p_ParentBlock)
+void MetaGraph::vAppendBlock(MetaBlock* pTopBlock)
 {
   _precondition_(_MAGIC_,CN_METAGRAPH,_FOOTER_);
-  
-  MetaBlock* pBlock = new MetaBlock(this,p_ParentBlock);
-  
-  pBlock->vBlockNm(szClassNm);
-  
-  vAppend(pBlock);
-  
-  return pBlock;
+    
+  vAppend(pTopBlock);
 }
 
 /*----------------------------------------------------------------------------*/

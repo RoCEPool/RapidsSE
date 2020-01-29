@@ -24,8 +24,8 @@ namespace Reflection
   
     static void vPrintTermSeq(EnameSet& roTerms);
   
-    MetaBlock* pAddBlock(Stz* szBlockNm, MetaBlock* p_ParentBlock);
- 
+    void  vAppendBlock(MetaBlock* pTopBlock);
+
     ConstSet* pConstSet(void);
 
     void vPrint(void);

@@ -76,6 +76,7 @@ namespace Utilities
     void vParseMemberTemplate(Stz* szSawTerm);
     void vParseMemberUnion(Stz* szSawTerm);
   
+    void vAddTopBlock(Stz* szName);
     void vAddTerm(Stz* szTerm);
     void vAscendFromClass(void);
     void vAscendFromNamepace(void);
@@ -83,8 +84,8 @@ namespace Utilities
     void vDescendIntoClass(Stz* szName);
     void vDescendIntoNamepace(Stz* szName);
     bool bGetToken(Token& roToken);
-    void vPopBlock(void);
-    void vPushBlock(Stz* szName);
+    void vPopNestedBlock(void);
+    void vPushNestedBlock(Stz* szName);
     void vRecognised(eCP ePart);
     void vResetPart(void);
     //void vSkipTillSemicolon(void);

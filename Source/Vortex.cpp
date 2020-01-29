@@ -479,7 +479,7 @@ void Vortex::vParseNspaceClass(Stz* szSawTerm)
   
   vDescendIntoClass(xName.szTerm());
 
-  m_p_MetaBlock = m_pMetaGraph->pAddBlock(m_sClassNm.szStz(),m_p_MetaBlock);
+  vAddTopBlock(m_sClassNm.szStz());
   
   // detect class base clause ?
   if (xTkn.bSame(":"_Stz)) {
@@ -557,8 +557,8 @@ void Vortex::vParseNspaceStruct(Stz* szSawTerm)
 
   Token xTkn;
   
-  m_p_MetaBlock = m_pMetaGraph->pAddBlock("struct"_Stz,m_p_MetaBlock);
-  
+  vAddTopBlock("struct"_Stz);
+
   vThrowProblem(__LINE__);
   
   m_p_MetaBlock = nullptr;
@@ -588,7 +588,7 @@ void Vortex::vParseNspaceUnion(Stz* szSawTerm)
   
   Token xTkn;
     
-  m_p_MetaBlock = m_pMetaGraph->pAddBlock("union"_Stz,m_p_MetaBlock);
+  vAddTopBlock("union"_Stz);
   
   //vProcUnionMember();
   
@@ -723,9 +723,6 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
 //  if (bRecogniseUnion(szSawTerm))
 //    return;
 
-  if (! m_p_MetaBlock)
-    m_p_MetaBlock = m_pMetaGraph->pAddBlock("linear"_Stz,m_p_MetaBlock);
-
   //vProcMemberProper(szTerm);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -801,7 +798,7 @@ void Vortex::vParseMemberStruct(Stz* szSawTerm)
 
   Token xTkn;
   
-  m_p_MetaBlock = m_pMetaGraph->pAddBlock("struct"_Stz,m_p_MetaBlock);
+  vPushNestedBlock("struct"_Stz);
   //vProcStructMember();
   
   vThrowProblem(__LINE__);
@@ -832,7 +829,7 @@ void Vortex::vParseMemberUnion(Stz* szSawTerm)
   
   Token xTkn;
     
-  m_p_MetaBlock = m_pMetaGraph->pAddBlock("union"_Stz,m_p_MetaBlock);
+  vPushNestedBlock("union"_Stz);
   //vProcUnionMember();
   vThrowProblem(__LINE__);
   m_p_MetaBlock = nullptr;
@@ -878,6 +875,21 @@ void Vortex::vParseMemberStatic(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* push new block                                                             */
+/*----------------------------------------------------------------------------*/
+void Vortex::vAddTopBlock(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(m_pMetaGraph);
+  RASSERT(! m_p_MetaBlock);
+
+  m_p_MetaBlock = new MetaBlock(m_pMetaGraph,nullptr);
+
+  m_p_MetaBlock->vBlockNm(szName);
+}
 
 /*----------------------------------------------------------------------------*/
 /* add term                                                                   */
@@ -1006,7 +1018,7 @@ bool Vortex::bGetToken(Token& roToken)
 /*----------------------------------------------------------------------------*/
 /* pop at block end                                                           */
 /*----------------------------------------------------------------------------*/
-void Vortex::vPopBlock(void)
+void Vortex::vPopNestedBlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
@@ -1018,7 +1030,7 @@ void Vortex::vPopBlock(void)
 /*----------------------------------------------------------------------------*/
 /* push new block                                                             */
 /*----------------------------------------------------------------------------*/
-void Vortex::vPushBlock(Stz* szName)
+void Vortex::vPushNestedBlock(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
