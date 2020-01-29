@@ -545,7 +545,7 @@ void Vortex::vParseNamespaceFunction(Stz* szSawTerm)
   //RASSERT(szSawTerm->bSame("???"_Stz));
   
   vResetFunVarTerms();
-  CHECKED(bCollectFunVarTerms(szSawTerm,";"_Stz,true));
+  CHECKED(bCollectFunctionTerms(szSawTerm));
   
   vDebugPoint();
   
@@ -774,7 +774,7 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
          szClassNm->azChar());
     
   vResetFunVarTerms();
-  vCollectFunVarTerm(szSawTerm);
+  vCollectTerm(szSawTerm);
 
   Token xTkn;
   while (bGetNextToken(xTkn)) {
@@ -789,7 +789,7 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
       break ;
     }
 
-    vCollectFunVarTerm(xTkn.szTerm());
+    vCollectTerm(xTkn.szTerm());
   }
     
   if (! MetaMember::bIsMember(szClassNm,&m_oFunVarTerms)) {
@@ -957,7 +957,7 @@ void Vortex::vAscendFromNamepace(void)
 /*----------------------------------------------------------------------------*/
 /* collect term                                                               */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectFunVarTerm(Stz* szTerm)
+void Vortex::vCollectTerm(Stz* szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -996,6 +996,41 @@ bool Vortex::bCollectFunVarTerms(Stz* szTerm, Stz* szEnd, bool bAddEnd)
     m_oFunVarTerms.vAdd(xTkn.szTerm());
   }
 
+  s48K sNamesString;
+  m_oFunVarTerms.vNamesString(sNamesString);
+  
+  vTrace("Terms: %s\n"_Stz,sNamesString.azChar());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect all terms for a function (with optional { statements } )           */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bCollectFunctionTerms(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_oFunVarTerms.vAdd(szSawTerm);
+
+  Token xTkn;
+  
+  // collect ... ( ... )
+  for (;;) {
+    CHECKED(bGetNextToken(xTkn));
+    m_oFunVarTerms.vAdd(xTkn.szTerm());
+    if (xTkn.bSame(")"_Stz))
+      break;
+  }
+  
+  CHECKED(bGetNextToken(xTkn));
+  if (! xTkn.bSame(";"_Stz)) {
+     CHECKED(xTkn.bSame("{"_Stz));
+    vSkipTill(xTkn.szTerm(),"}"_Stz);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   s48K sNamesString;
   m_oFunVarTerms.vNamesString(sNamesString);
   

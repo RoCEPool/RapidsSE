@@ -80,8 +80,9 @@ namespace Utilities
     void vAddTopBlock(Stz* szBlockNm, eMB m_eBlock);
     void vAscendFromClass(void);
     void vAscendFromNamepace(void);
-    void vCollectFunVarTerm(Stz* szTerm);
+    void vCollectTerm(Stz* szTerm);
     bool bCollectFunVarTerms(Stz* szTerm, Stz* szEnd, bool bAddEnd=false);
+    bool bCollectFunctionTerms(Stz* szTerm);
     void vDescendIntoClass(Stz* szClassNm);
     void vDescendIntoNamepace(Stz* szNamespaceNm);
     bool bGetNextToken(Token& roToken);
