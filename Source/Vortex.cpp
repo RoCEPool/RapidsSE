@@ -244,9 +244,7 @@ void Vortex::vParseFileFunction(Stz* szSawTerm)
   //RASSERT(szSawTerm->bSame("???"_Stz));
   
   vResetFunVarTerms();
-  vCollectFunVarTerm(szSawTerm);
-  
-  CHECKED(bCollectFunVarTerms(";"_Stz,true));
+  CHECKED(bCollectFunVarTerms(szSawTerm,";"_Stz,true));
   
   vDebugPoint();
   
@@ -543,15 +541,11 @@ void Vortex::vParseNamespaceClass(Stz* szSawTerm)
 void Vortex::vParseNamespaceFunction(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   //RASSERT(szSawTerm->bSame("???"_Stz));
   
   vResetFunVarTerms();
-  vCollectFunVarTerm(szSawTerm);
-  
-  CHECKED(bCollectFunVarTerms(";"_Stz,true));
+  CHECKED(bCollectFunVarTerms(szSawTerm,";"_Stz,true));
   
   vDebugPoint();
   
@@ -790,9 +784,8 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
     }
     
     if (xTkn.bSame("{"_Stz)) {
-      //vProcClassFunction();
-      vThrowProblem(__LINE__);
-
+      bCollectFunVarTerms(xTkn.szTerm(),"}"_Stz);
+      CHECKED(bGetNextToken(xTkn))
       break ;
     }
 
@@ -974,9 +967,17 @@ void Vortex::vCollectFunVarTerm(Stz* szTerm)
 /*----------------------------------------------------------------------------*/
 /* cllect all terms till given end (optionally adding the end term)           */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bCollectFunVarTerms(Stz* szEnd, bool bAddEnd)
+bool Vortex::bCollectFunVarTerms(Stz* szTerm, Stz* szEnd, bool bAddEnd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  if (szTerm->bSame(szEnd)) {
+    if (bAddEnd)
+      m_oFunVarTerms.vAdd(szTerm);
+    return true;
+  }
+  
+  m_oFunVarTerms.vAdd(szTerm);
   
   Token xTkn;
   for (;;) {
@@ -1450,7 +1451,7 @@ void Vortex::vProcConst(void)
 
   vTrace("Const %s\n"_Stz,xConstNm.azTerm());
   
-  if (bCollectFunVarTerms(";"_Stz)) {
+  if (bCollectFunVarTerms(xConstNm.szTerm(),";"_Stz)) {
     ConstDef* pConstDef = m_p_ConsSet->pAddConstDef(xConstNm.szTerm());
     pConstDef->vTerms(m_oFunVarTerms);
   }
