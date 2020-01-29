@@ -119,6 +119,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
     vTrace("\n\n"_Stz);
     vTrace("** Unable to fully parse %s\n"_Stz,szSourcePath->azChar());
     vTrace("** Last Part: %s\n"_Stz,m_sPart.azChar());
+    vTrace("\n\n"_Stz);
     vDebugPoint();
   }
   
@@ -481,7 +482,6 @@ void Vortex::vParseNspaceClass(Stz* szSawTerm)
   // forward declaration of a class?
   if (xTkn.bSame(";"_Stz)) {
     vRecognised(CP_NAMESPACE_FORWARD);
-    vAscendFromClass();
     return;
   }
 
