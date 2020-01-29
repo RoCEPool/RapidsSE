@@ -16,11 +16,11 @@ enum eCP // c++ part
   /*    */ CP_HASH_INCLUDE,        // # include
   /*    */ CP_HASH_PRAGMA,         // # pragma
   
-  /*    */ CP_MEMBER_FUNCTION,     // member function
-  /*    */ CP_MEMBER_STATIC,       // member static function
-  /*    */ CP_MEMBER_TEMPLATE_FUN, // member templated function
-  /*    */ CP_MEMBER_TEMPLATE_VAR, // member templated variable
-  /*    */ CP_MEMBER_VARIABLE,     // member variable
+  /*    */ CP_MEMBER_FUNCTION,     // class member function
+  /*    */ CP_MEMBER_STATIC,       // class member static function
+  /*    */ CP_MEMBER_TEMPLATE_FUN, // class member templated function
+  /*    */ CP_MEMBER_TEMPLATE_VAR, // class member templated variable
+  /*    */ CP_MEMBER_VARIABLE,     // class member variable
   
   /*    */ CP_NAMESPACE_CLASS,     // class         (in namespace)
   /*    */ CP_NAMESPACE_FORWARD,   // forward class (in namespace)
