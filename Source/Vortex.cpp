@@ -186,7 +186,7 @@ bool Vortex::bParseFile(void)
       }
       else
       if (szKeyWord->bSame("template"_Stz)) {
-         // in SE we don't expect a template class outside of a namespace
+         // in SE we have templated functions outside of a namespace
          vParseFileTemplate(szKeyWord);
       }
       else
@@ -284,8 +284,8 @@ void Vortex::vParseFileFunction(Stz* szSawTerm)
   
   //RASSERT(szSawTerm->bSame("???"_Stz));
   
-  vResetFunVarTerms();
-  CHECKED(bCollectFunctionTerms(szSawTerm));
+
+  CHECKED(bCollectFunctionArgs(szSawTerm));
   
   vDebugPoint();
   
@@ -423,7 +423,7 @@ void Vortex::vParseFileStatic(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within file, parse STATIC ... ;                                            */
+/* within file, parse TEMPLATE < ... > <fileClass>  | <fileFunction>          */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFileTemplate(Stz* szSawTerm)
 {
@@ -435,13 +435,16 @@ void Vortex::vParseFileTemplate(Stz* szSawTerm)
   Token xTkn;
   CHECKED(bGetNextToken(xTkn));
   CHECKED(xTkn.bSame("<"_Stz));
-  CHECKED(bCollectTemplateTerms(xTkn.szTerm()));
+  CHECKED(bCollectTemplateArgs(xTkn.szTerm()));
   
   vResetPart();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // class or function
   CHECKED(bGetNextToken(xTkn));
   
   if (xTkn.bSame("class"_Stz)) {
+    vThrowProblem(__LINE__);
     vParseFileClass(xTkn.szTerm());
   }
   else {
@@ -612,8 +615,12 @@ void Vortex::vParseNamespaceFunction(Stz* szSawTerm)
   
   //RASSERT(szSawTerm->bSame("???"_Stz));
   
-  vResetFunVarTerms();
-  CHECKED(bCollectFunctionTerms(szSawTerm));
+  // get (
+  Token xTkn;
+  CHECKED(bGetNextToken(xTkn));
+  CHECKED(xTkn.bSame("("_Stz));
+
+  CHECKED(bCollectFunctionArgs(szSawTerm));
   
   vDebugPoint();
   
@@ -676,7 +683,7 @@ void Vortex::vParseNamespaceTemplate(Stz* szSawTerm)
   Token xTkn;
   CHECKED(bGetNextToken(xTkn));
   CHECKED(xTkn.bSame("<"_Stz));
-  CHECKED(bCollectTemplateTerms(xTkn.szTerm()));
+  CHECKED(bCollectTemplateArgs(xTkn.szTerm()));
   
   vResetPart();
   
@@ -1110,10 +1117,10 @@ bool Vortex::bCollectFunVarTerms(Stz* szTerm, Stz* szEnd, bool bAddEnd)
     m_oFunVarTerms.vAdd(xTkn.szTerm());
   }
 
-  s48K sNamesString;
-  m_oFunVarTerms.vNamesString(sNamesString);
+  s48K sTermsString;
+  m_oFunVarTerms.vNamesString(sTermsString);
   
-  vTrace("Terms: %s\n"_Stz,sNamesString.azChar());
+  vTrace("Terms: %s\n"_Stz,sTermsString.azChar());
   
   return true;
 }
@@ -1121,10 +1128,13 @@ bool Vortex::bCollectFunVarTerms(Stz* szTerm, Stz* szEnd, bool bAddEnd)
 /*----------------------------------------------------------------------------*/
 /* collect all terms for a function (with optional { statements } )           */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bCollectFunctionTerms(Stz* szSawTerm)
+bool Vortex::bCollectFunctionArgs(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
+  RASSERT(szSawTerm->bSame("("_Stz));
+
+  m_oFunVarTerms.vReset();
   m_oFunVarTerms.vAdd(szSawTerm);
 
   Token xTkn;
@@ -1157,41 +1167,70 @@ bool Vortex::bCollectFunctionTerms(Stz* szSawTerm)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  s48K sNamesString;
-  m_oFunVarTerms.vNamesString(sNamesString);
+  s48K sTermsString;
+  m_oFunVarTerms.vNamesString(sTermsString);
   
-  vTrace("Terms: %s\n"_Stz,sNamesString.azChar());
+  vTrace("FunVar: %s\n"_Stz,sTermsString.azChar());
   
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect all terms for a function (with optional { statements } )           */
+/* collect all terms for a function return type                               */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bCollectTemplateTerms(Stz* szSawTerm)
+bool Vortex::bCollectReturnType(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+
+  m_oReturnTypeTerms.vReset();
+
+  Token xTkn;
+  
+  CHECKED(bGetNextToken(xTkn));
+  m_oFunVarTerms.vAdd(xTkn.szTerm());
+  
+  if (xTkn.bSame("("_Stz)) {
+
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  s48K sTermsString;
+  m_oReturnTypeTerms.vNamesString(sTermsString);
+  
+  vTrace("ReturnType[]: %s\n"_Stz,sTermsString.azChar());
+  
+  return true;
+}
+/*----------------------------------------------------------------------------*/
+/* collect all teplate arg terms : TEMPLATE _^_ < ... >                       */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bCollectTemplateArgs(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(szSawTerm->bSame("<"_Stz));
 
-  m_oFunVarTerms.vAdd(szSawTerm);
+  m_oTplArgTerms.vReset();
+  m_oTplArgTerms.vAdd(szSawTerm);
 
   Token xTkn;
   
   // collect ... ( ... )
   for (;;) {
     CHECKED(bGetNextToken(xTkn));
-    m_oFunVarTerms.vAdd(xTkn.szTerm());
+    m_oTplArgTerms.vAdd(xTkn.szTerm());
     if (xTkn.bSame(">"_Stz))
       break;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  s48K sNamesString;
-  m_oFunVarTerms.vNamesString(sNamesString);
+  s48K sTermsString;
+  m_oTplArgTerms.vNamesString(sTermsString);
   
-  vTrace("Terms: %s\n"_Stz,sNamesString.azChar());
+  vTrace("TplArgs: %s\n"_Stz,sTermsString.azChar());
   
   return true;
 }

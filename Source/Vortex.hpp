@@ -11,14 +11,16 @@ namespace Utilities
     File*       m_pOutputFile;  // output file
     s256        m_sSourcePath;  // .h/hpp source path
     Input*      m_pInput;       // input  token stream
-  
+    bool        m_bTraceTokens; // trace tokens
+
     MetaGraph*  m_pMetaGraph;   // the metagraph that is created
     MetaBlock*  m_p_MetaBlock;  // current working meta block
     MetaMember* m_p_MetaMember; // current working meta member
     ConstSet*   m_p_ConstSet;   // set of static const i8's
 
-    EnameSet    m_oFunVarTerms; // working set of collected terms
-    bool        m_bTraceTokens; // trace tokens
+    EnameSet    m_oReturnTypeTerms; // working set of collected terms
+    EnameSet    m_oFunVarTerms;     // working set of collected terms
+    EnameSet    m_oTplArgTerms;     // working set of collected terms
    
     bool        m_bInClass;     // currently in a class?
     s32         m_sClassNm;     // current class name
@@ -84,8 +86,9 @@ namespace Utilities
     void vAscendFromNamepace(void);
     void vCollectTerm(Stz* szTerm);
     bool bCollectFunVarTerms(Stz* szTerm, Stz* szEnd, bool bAddEnd=false);
-    bool bCollectFunctionTerms(Stz* szTerm);
-    bool bCollectTemplateTerms(Stz* szTerm);
+    bool bCollectFunctionArgs(Stz* szTerm);
+    bool bCollectReturnType(Stz* szSawTerm);
+    bool bCollectTemplateArgs(Stz* szSawTerm);
     void vDescendIntoClass(Stz* szClassNm);
     void vDescendIntoNamepace(Stz* szNamespaceNm);
     bool bGetNextToken(Token& roToken);
