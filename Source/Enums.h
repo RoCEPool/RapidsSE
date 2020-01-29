@@ -41,6 +41,8 @@ namespace Enums
 #include "eEK.h"
 #include "eEO.h"
 
+#include "eFN.h"
+
 #include "eGA.h"
 
 #include "eHA.h"
