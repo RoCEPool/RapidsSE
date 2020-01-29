@@ -85,8 +85,8 @@ namespace Utilities
     void vAscendFromClass(void);
     void vAscendFromNamepace(void);
     void vCollectTerm(Stz* szTerm);
-    bool bCollectFunVarTerms(Stz* szTerm, Stz* szEnd, bool bAddEnd=false);
-    bool bCollectFunctionArgs(Stz* szTerm);
+    bool bCollectFunVarTerms(Stz* szSawTerm, Stz* szEnd, bool bAddEnd=false);
+    bool bCollectFunctionArgs(Stz* szSawTerm);
     bool bCollectFunctionIntro(Stz* szSawTerm, Token& roFunNm, eFN& reFun);
     bool bCollectTemplateArgs(Stz* szSawTerm);
     void vDescendIntoClass(Stz* szClassNm);

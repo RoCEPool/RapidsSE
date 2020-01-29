@@ -1121,17 +1121,18 @@ void Vortex::vCollectTerm(Stz* szTerm)
 /*----------------------------------------------------------------------------*/
 /* cllect all terms till given end (optionally adding the end term)           */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bCollectFunVarTerms(Stz* szTerm, Stz* szEnd, bool bAddEnd)
+bool Vortex::bCollectFunVarTerms(Stz* szSawTerm, Stz* szEnd, bool bAddEnd)
 {
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  if (szTerm->bSame(szEnd)) {
+  if (szSawTerm->bSame(szEnd)) {
     if (bAddEnd)
-      m_oFunVarTerms.vAdd(szTerm);
+      m_oFunVarTerms.vAdd(szSawTerm);
     return true;
   }
   
-  m_oFunVarTerms.vAdd(szTerm);
+  m_oFunVarTerms.vAdd(szSawTerm);
   
   Token xTkn;
   for (;;) {
@@ -1163,6 +1164,7 @@ bool Vortex::bCollectFunVarTerms(Stz* szTerm, Stz* szEnd, bool bAddEnd)
 /*----------------------------------------------------------------------------*/
 bool Vortex::bCollectFunctionArgs(Stz* szSawTerm)
 {
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(szSawTerm->bSame("("_Stz));
@@ -1213,13 +1215,14 @@ bool Vortex::bCollectFunctionArgs(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 bool Vortex::bCollectFunctionIntro(Stz* szSawTerm, Token& roFunNm, eFN& reFun)
 {
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_oReturnTypeTerms.vReset();
 
   Token xTkn;
   
-  // add the basic return type
+  // add the name of return type
   if (szSawTerm->bSame("inline"_Stz)) {
     CHECKED(bGetNextToken(xTkn));
     m_oReturnTypeTerms.vAdd(xTkn.szTerm());
@@ -1228,8 +1231,36 @@ bool Vortex::bCollectFunctionIntro(Stz* szSawTerm, Token& roFunNm, eFN& reFun)
     m_oReturnTypeTerms.vAdd(szSawTerm);
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   CHECKED(bGetNextToken(xTkn));
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add template args of return type
+
+  if (xTkn.bSame("<"_Stz)) {
+    
+    m_oReturnTypeTerms.vAdd(xTkn.szTerm());
+    for (;;) {
+      CHECKED(bGetNextToken(xTkn));
+      m_oReturnTypeTerms.vAdd(xTkn.szTerm());
+      if (xTkn.bSame(">"_Stz))
+        break;
+    }
+
+    CHECKED(bGetNextToken(xTkn));
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (xTkn.bSame(":"_Stz)) {
+    CHECKED(bGetNextToken(xTkn));
+    CHECKED(xTkn.bSame(":"_Stz));
+    CHECKED(bGetNextToken(xTkn));
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (xTkn.bSame("*"_Stz)) {
     while (xTkn.bSame("*"_Stz)) {
       m_oReturnTypeTerms.vAdd(xTkn.szTerm());
@@ -1276,6 +1307,7 @@ bool Vortex::bCollectFunctionIntro(Stz* szSawTerm, Token& roFunNm, eFN& reFun)
 /*----------------------------------------------------------------------------*/
 bool Vortex::bCollectTemplateArgs(Stz* szSawTerm)
 {
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(szSawTerm->bSame("<"_Stz));
