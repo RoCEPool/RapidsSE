@@ -227,15 +227,18 @@ void Vortex::vParseFileClass(Stz* szSawTerm)
   RASSERT(! m_p_MetaBlock);
   RASSERT(szSawTerm->bSame("class"_Stz));
   
+  Token xTkn;
+  Token xName;
+
+  
   vDebugPoint();
   
   // get <name>
-  Token xName;
-  CHECKED(bGetNextToken(xName));
+  CHECKED(bGetNextToken(xTkn));
+  xName = xTkn;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Token xTkn;
   CHECKED(bGetNextToken(xTkn));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -347,12 +350,12 @@ void Vortex::vParseFileNamespace(Stz* szSawTerm)
   vDebugPoint();
   
   // get <name> of namespace
-  Token xName;
-  CHECKED(bGetNextToken(xName));
-  vDescendIntoNamepace(xName.szTerm());
+  Token xTkn;
+  CHECKED(bGetNextToken(xTkn));
+  
+  vDescendIntoNamepace(xTkn.szTerm());
   
   // get {
-  Token xTkn;
   CHECKED(bGetNextToken(xTkn));
   CHECKED(xTkn.bSame("{"_Stz));
 
@@ -482,8 +485,7 @@ void Vortex::vParseFileUsing(Stz* szSawTerm)
   CHECKED(xTkn.bSame("namespace"_Stz));
 
   // get <name>
-  Token xNamespaceNm;
-  CHECKED(bGetNextToken(xNamespaceNm));
+  CHECKED(bGetNextToken(xTkn));
 
   // get ;
   CHECKED(bGetNextToken(xTkn));
@@ -586,12 +588,13 @@ void Vortex::vParseNamespaceClass(Stz* szSawTerm)
   vDebugPoint();
   
   // get <name>
+  Token xTkn;
   Token xName;
-  CHECKED(bGetNextToken(xName));
+  CHECKED(bGetNextToken(xTkn));
+  xName = xTkn;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Token xTkn;
   CHECKED(bGetNextToken(xTkn));
 
   // forward declaration of a class?
