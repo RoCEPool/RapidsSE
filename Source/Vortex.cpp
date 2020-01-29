@@ -238,8 +238,6 @@ void Vortex::vParseFileEnum(Stz* szSawTerm)
 void Vortex::vParseFileFunction(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   //RASSERT(szSawTerm->bSame("???"_Stz));
   
@@ -605,9 +603,21 @@ void Vortex::vParseNamespaceTemplate(Stz* szSawTerm)
   
   vDebugPoint();
   
-  vSkipTill(szSawTerm,";"_Stz);
+  Token xTkn;
+  CHECKED(bGetNextToken(xTkn));
+  CHECKED(xTkn.bSame("<"_Stz));
+  CHECKED(bCollectTemplateTerms(xTkn.szTerm()));
   
-  vRecognised(CP_NAMESPACE_TEMPLATE);   // forward template within namespace ✅
+  vResetPart();
+  
+  CHECKED(bGetNextToken(xTkn));
+  
+  if (xTkn.bSame("class"_Stz)) {
+    vParseNamespaceClass(xTkn.szTerm());
+  }
+  else {
+    vParseNamespaceFunction(xTkn.szTerm());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -703,6 +713,7 @@ void Vortex::vParseClassBlock(Stz* szSawTerm)
     if (szTerm->bSame("}"_Stz)) {
      CHECKED(bGetNextToken(xTkn));
      CHECKED(szTerm->bSame(";"_Stz));
+     vRecognised(CP_NAMESPACE_CLASS);
      vPopNestedBlock();
      vAscendFromClass();
      return;
@@ -721,7 +732,7 @@ void Vortex::vParseBlockFriend(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  RASSERT(szSawTerm->bSame("friend"_Stz));
+  CHECKED(szSawTerm->bSame("friend"_Stz));
   
   vDebugPoint();
 }
@@ -736,20 +747,23 @@ bool Vortex::bParseBlockLabel(Stz* szTerm)
   Token xTkn;
   
   if (szTerm->bSame("private"_Stz)) {
-    RASSERT(bGetNextToken(xTkn));
-    RASSERT(xTkn.bSame(":"_Stz));
+    CHECKED(bGetNextToken(xTkn));
+    CHECKED(xTkn.bSame(":"_Stz));
+    vRecognised(CP_MEMBER_LABEL);
     return true;
   }
   
   if (szTerm->bSame("protected"_Stz)) {
-    RASSERT(bGetNextToken(xTkn));
-    RASSERT(xTkn.bSame(":"_Stz));
+    CHECKED(bGetNextToken(xTkn));
+    CHECKED(xTkn.bSame(":"_Stz));
+    vRecognised(CP_MEMBER_LABEL);
     return true;
   }
   
   if (szTerm->bSame("public"_Stz)) {
-    RASSERT(bGetNextToken(xTkn));
-    RASSERT(xTkn.bSame(":"_Stz));
+    CHECKED(bGetNextToken(xTkn));
+    CHECKED(xTkn.bSame(":"_Stz));
+    vRecognised(CP_MEMBER_LABEL);
     return true;
   }
   
@@ -794,6 +808,7 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
     
   if (! MetaMember::bIsMember(szClassNm,&m_oFunVarTerms)) {
     vTrace("  not a member variable\n"_Stz);
+    vRecognised(CP_MEMBER_FUNCTION);
     return;
   }
   
@@ -817,6 +832,8 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
   m_p_MetaMember->vFunPtr(bFunPtr);
   m_p_MetaMember->vElements(nElements);
   m_p_MetaMember->vBits(nBits);
+
+  vRecognised(CP_MEMBER_VARIABLE);
 
   vDebugPoint();
 }
@@ -1025,10 +1042,53 @@ bool Vortex::bCollectFunctionTerms(Stz* szSawTerm)
   
   CHECKED(bGetNextToken(xTkn));
   if (! xTkn.bSame(";"_Stz)) {
-     CHECKED(xTkn.bSame("{"_Stz));
-    vSkipTill(xTkn.szTerm(),"}"_Stz);
+    if (xTkn.bSame("{"_Stz)) {
+      vSkipTill(xTkn.szTerm(),"}"_Stz);
+    }
+    else {
+      CHECKED(xTkn.bSame("noexcept"_Stz));
+      CHECKED(bGetNextToken(xTkn));
+      CHECKED(xTkn.bSame("("_Stz));
+      CHECKED(bGetNextToken(xTkn));
+      CHECKED(xTkn.bSame("false"_Stz));
+      CHECKED(bGetNextToken(xTkn));
+      CHECKED(xTkn.bSame(")"_Stz));
+      CHECKED(bGetNextToken(xTkn));
+      CHECKED(xTkn.bSame(";"_Stz));
+    }
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  s48K sNamesString;
+  m_oFunVarTerms.vNamesString(sNamesString);
+  
+  vTrace("Terms: %s\n"_Stz,sNamesString.azChar());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect all terms for a function (with optional { statements } )           */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bCollectTemplateTerms(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(szSawTerm->bSame("<"_Stz));
+
+  m_oFunVarTerms.vAdd(szSawTerm);
+
+  Token xTkn;
+  
+  // collect ... ( ... )
+  for (;;) {
+    CHECKED(bGetNextToken(xTkn));
+    m_oFunVarTerms.vAdd(xTkn.szTerm());
+    if (xTkn.bSame(">"_Stz))
+      break;
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s48K sNamesString;
@@ -1122,8 +1182,10 @@ void Vortex::vRecognised(eCP ePart)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vTrace("Recognised %s\n"_Stz,aCP[ePart]);
-  
+  vTrace("\n"_Stz);
+
   vResetPart();
+  vResetFunVarTerms();
   
   vDebugPoint();
 }

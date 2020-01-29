@@ -18,6 +18,7 @@ enum eCP // c++ part
   /*    */ CP_HASH_PRAGMA,         // # pragma
   
   /*    */ CP_MEMBER_FUNCTION,     // class member function
+  /*    */ CP_MEMBER_LABEL,        // class member label
   /*    */ CP_MEMBER_STATIC,       // class member static function
   /*    */ CP_MEMBER_TEMPLATE_FUN, // class member templated function
   /*    */ CP_MEMBER_TEMPLATE_VAR, // class member templated variable
@@ -28,7 +29,6 @@ enum eCP // c++ part
   /*    */ CP_NAMESPACE_FUNCTION,  // function         (in namespace)
   /*    */ CP_NAMESPACE_STATIC,    // static           (in namespace)
   /*    */ CP_NAMESPACE_STRUCT,    // struct           (in namespace)
-  /*    */ CP_NAMESPACE_TEMPLATE,  // forward template (in namespace)
   /*    */ CP_NAMESPACE_TYPEDEF,   // typedef          (in namespace)
 
   /*    */ CP_ENUMS
@@ -49,6 +49,7 @@ static Stz* aCP[]
   /*    */ "CP_HASH_PRAGMA"_Stz,
 
   /*    */ "CP_MEMBER_FUNCTION"_Stz,
+  /*    */ "CP_MEMBER_LABEL"_Stz,
   /*    */ "CP_MEMBER_STATIC"_Stz,
   /*    */ "CP_MEMBER_TEMPLATE_FUN"_Stz,
   /*    */ "CP_MEMBER_TEMPLATE_VAR"_Stz,
@@ -58,7 +59,6 @@ static Stz* aCP[]
   /*    */ "CP_NAMESPACE_FORWARD"_Stz,
   /*    */ "CP_NAMESPACE_FUNCTION"_Stz,
   /*    */ "CP_NAMESPACE_STATIC"_Stz,
-  /*    */ "CP_NAMESPACE_TEMPLATE"_Stz,
   /*    */ "CP_NAMESPACE_TYPEDEF"_Stz,
 
   /*    */ "ENUMS"_Stz

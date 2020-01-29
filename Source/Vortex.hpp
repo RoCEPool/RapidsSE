@@ -83,6 +83,7 @@ namespace Utilities
     void vCollectTerm(Stz* szTerm);
     bool bCollectFunVarTerms(Stz* szTerm, Stz* szEnd, bool bAddEnd=false);
     bool bCollectFunctionTerms(Stz* szTerm);
+    bool bCollectTemplateTerms(Stz* szTerm);
     void vDescendIntoClass(Stz* szClassNm);
     void vDescendIntoNamepace(Stz* szNamespaceNm);
     bool bGetNextToken(Token& roToken);
