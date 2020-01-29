@@ -59,6 +59,7 @@
   dir::getCurrent locals| pOrigDir |
 
   // change to source director
+  //"../Source" dir::changeCurrent
   "../Vortex" dir::changeCurrent
   dir::getCurrent "Current working directory now: %v" fmt.print
 

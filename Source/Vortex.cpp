@@ -106,6 +106,8 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
+  vTrace("\n\n\n"_Stz);
+  vTrace("-------------------------------------------------------------\n"_Stz);
   vTrace("Parsing file %s\n"_Stz,szSourcePath->azChar());
   
   m_sSourcePath = szSourcePath;
@@ -444,7 +446,6 @@ void Vortex::vParseHashInclude(Stz* szSawTerm)
   vDebugPoint();
   
   Token xTkn;
-  CHECKED(bGetNextToken(xTkn));
   CHECKED(bGetNextToken(xTkn));
     
   vRecognised(CP_HASH_INCLUDE);
