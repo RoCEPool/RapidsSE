@@ -133,6 +133,11 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+/*                                  machinary                                 */
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+
 /*----------------------------------------------------------------------------*/
 /* get next token                                                             */
 /*----------------------------------------------------------------------------*/
@@ -159,11 +164,112 @@ void Vortex::vRecognised(eCP ePart)
   vTrace("\n"_Stz);
 
   vResetPart();
-  vResetFunVarTerms();
+  vTermsReset();
   
   vDebugPoint();
 }
 
+
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+/*                             block management                               */
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+
+/*----------------------------------------------------------------------------*/
+/* create a new top block                                                     */
+/*----------------------------------------------------------------------------*/
+void Vortex::vBlockNewTop(Stz* szBlockNme, eMB eBlock)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(m_pMetaGraph);
+  RASSERT(! m_p_MetaBlock);
+
+  m_p_MetaBlock = new MetaBlock(szBlockNme,eBlock,m_pMetaGraph,nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop at block end                                                           */
+/*----------------------------------------------------------------------------*/
+void Vortex::vBlockPopNested(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  CHECKED(m_p_MetaBlock);
+  
+  m_p_MetaBlock = m_p_MetaBlock->p_ParentBlock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* push new block                                                             */
+/*----------------------------------------------------------------------------*/
+void Vortex::vBlockPushNested(Stz* szBlockNm, eMB eBlock)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(m_pMetaGraph);
+  
+  m_p_MetaBlock = new MetaBlock(szBlockNm,eBlock,m_pMetaGraph,m_p_MetaBlock);
+}
+
+/*----------------------------------------------------------------------------*/
+/* ascend from parsing a class                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vClassAscend(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_bInNamespace);
+  RASSERT(m_bInClass);
+
+  m_bInClass = false;
+  m_sClassNm = ""_Stz;
+
+  m_p_MetaBlock  = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* ascend from parsing a namespace                                            */
+/*----------------------------------------------------------------------------*/
+void Vortex::vNamepaceAscend(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_bInNamespace);
+  RASSERT(! m_bInClass);
+
+  m_bInNamespace = false;
+  m_sNamespaceNm = ""_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend into parsing a class                                               */
+/*----------------------------------------------------------------------------*/
+void Vortex::vClassDescend(Stz* szClassNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_bInNamespace);
+  RASSERT(! m_bInClass);
+  
+  RASSERT(! m_p_MetaBlock);
+
+  m_sClassNm = szClassNm;
+  m_bInClass = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend into parsing a namespace                                           */
+/*----------------------------------------------------------------------------*/
+void Vortex::vNamepaceDescend(Stz* szNamespaceNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(! m_bInNamespace);
+  RASSERT(! m_bInClass);
+
+  m_sNamespaceNm = szNamespaceNm;
+  m_bInNamespace = true;
+}
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 /*                            top-down parsing                                */
@@ -283,9 +389,9 @@ void Vortex::vParseFileClass(Stz* szSawTerm)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vDescendIntoClass(xName.szTerm());
+  vClassDescend(xName.szTerm());
 
-  vNewTopBlock(m_sClassNm.szStz(),MB_CLASS);
+  vBlockNewTop(m_sClassNm.szStz(),MB_CLASS);
   
   // detect class base clause ?
   if (xTkn.bSame(":"_Stz)) {
@@ -406,7 +512,7 @@ void Vortex::vParseFileNamespace(Stz* szSawTerm)
   Token xTkn;
   CHECKED(bGetNextToken(xTkn));
   
-  vDescendIntoNamepace(xTkn.szTerm());
+  vNamepaceDescend(xTkn.szTerm());
   
   // get {
   CHECKED(bGetNextToken(xTkn));
@@ -418,7 +524,7 @@ void Vortex::vParseFileNamespace(Stz* szSawTerm)
     // test for end-of-namespace
     if (xTkn.bSame("}"_Stz))  {
       vRecognised(CP_FILE_NAMESPACE);                          // namespace ✅
-      vAscendFromNamepace();
+      vNamepaceAscend();
       return;
     }
     
@@ -677,9 +783,9 @@ void Vortex::vParseNamespaceClass(Stz* szSawTerm)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vDescendIntoClass(xName.szTerm());
+  vClassDescend(xName.szTerm());
 
-  vNewTopBlock(m_sClassNm.szStz(),MB_CLASS);
+  vBlockNewTop(m_sClassNm.szStz(),MB_CLASS);
   
   // detect class base clause ?
   if (xTkn.bSame(":"_Stz)) {
@@ -749,13 +855,13 @@ void Vortex::vParseNamespaceStruct(Stz* szSawTerm)
 
   Token xTkn;
   
-  vNewTopBlock("struct"_Stz,MB_STRUCT);
+  vBlockNewTop("struct"_Stz,MB_STRUCT);
 
   vSkipTill(szSawTerm,";"_Stz);
   
   vRecognised(CP_NAMESPACE_STRUCT);               // struct within namespace ✅
   
-  vPopNestedBlock();
+  vBlockPopNested();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -815,7 +921,7 @@ void Vortex::vParseNamespaceUnion(Stz* szSawTerm)
   
   Token xTkn;
     
-  vNewTopBlock("union"_Stz,MB_UNION);
+  vBlockNewTop("union"_Stz,MB_UNION);
   
   //vProcUnionMember();
   
@@ -885,8 +991,8 @@ void Vortex::vParseClassBlock(Stz* szSawTerm)
      CHECKED(bGetNextToken(xTkn));
      CHECKED(szTerm->bSame(";"_Stz));
      vRecognised(CP_NAMESPACE_CLASS);
-     vPopNestedBlock();
-     vAscendFromClass();
+     vBlockPopNested();
+     vClassAscend();
      return;
     }
     
@@ -964,7 +1070,7 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
          m_p_MetaBlock->nItems(),
          szClassNm->azChar());
     
-  vResetFunVarTerms();
+  vTermsReset();
   vAddTerm(szSawTerm);
 
   Token xTkn;
@@ -1028,7 +1134,7 @@ void Vortex::vParseMemberStruct(Stz* szSawTerm)
 
   Token xTkn;
   
-  vPushNestedBlock("struct"_Stz,MB_STRUCT);
+  vBlockPushNested("struct"_Stz,MB_STRUCT);
   //vProcStructMember();
   
   vThrowProblem(__LINE__);
@@ -1061,7 +1167,7 @@ void Vortex::vParseMemberUnion(Stz* szSawTerm)
   
   Token xTkn;
     
-  vPushNestedBlock("union"_Stz,MB_UNION);
+  vBlockPushNested("union"_Stz,MB_UNION);
   //vProcUnionMember();
   vThrowProblem(__LINE__);
   m_p_MetaBlock = nullptr;
@@ -1530,114 +1636,13 @@ bool Vortex::bTermsAreVariable(void)
 /*----------------------------------------------------------------------------*/
 /* reset terms                                                                */
 /*----------------------------------------------------------------------------*/
-void Vortex::vResetFunVarTerms(void)
+void Vortex::vTermsReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_oMemberTerms.vReset();
 }
 
-
-/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-/*                             block management                               */
-/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-
-/*----------------------------------------------------------------------------*/
-/* create a new top block                                                     */
-/*----------------------------------------------------------------------------*/
-void Vortex::vNewTopBlock(Stz* szBlockNme, eMB eBlock)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(m_pMetaGraph);
-  RASSERT(! m_p_MetaBlock);
-
-  m_p_MetaBlock = new MetaBlock(szBlockNme,eBlock,m_pMetaGraph,nullptr);
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop at block end                                                           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vPopNestedBlock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  CHECKED(m_p_MetaBlock);
-  
-  m_p_MetaBlock = m_p_MetaBlock->p_ParentBlock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* push new block                                                             */
-/*----------------------------------------------------------------------------*/
-void Vortex::vPushNestedBlock(Stz* szBlockNm, eMB eBlock)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(m_pMetaGraph);
-  
-  m_p_MetaBlock = new MetaBlock(szBlockNm,eBlock,m_pMetaGraph,m_p_MetaBlock);
-}
-
-/*----------------------------------------------------------------------------*/
-/* ascend from parsing a class                                                */
-/*----------------------------------------------------------------------------*/
-void Vortex::vAscendFromClass(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_bInNamespace);
-  RASSERT(m_bInClass);
-
-  m_bInClass = false;
-  m_sClassNm = ""_Stz;
-
-  m_p_MetaBlock  = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* ascend from parsing a namespace                                            */
-/*----------------------------------------------------------------------------*/
-void Vortex::vAscendFromNamepace(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_bInNamespace);
-  RASSERT(! m_bInClass);
-
-  m_bInNamespace = false;
-  m_sNamespaceNm = ""_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* descend into parsing a class                                               */
-/*----------------------------------------------------------------------------*/
-void Vortex::vDescendIntoClass(Stz* szClassNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_bInNamespace);
-  RASSERT(! m_bInClass);
-  
-  RASSERT(! m_p_MetaBlock);
-
-  m_sClassNm = szClassNm;
-  m_bInClass = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* descend into parsing a namespace                                           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vDescendIntoNamepace(Stz* szNamespaceNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(! m_bInNamespace);
-  RASSERT(! m_bInClass);
-
-  m_sNamespaceNm = szNamespaceNm;
-  m_bInNamespace = true;
-}
 
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */

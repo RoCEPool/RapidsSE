@@ -48,8 +48,23 @@ namespace Utilities
 
   private:
   
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // machinary 
+  
     bool bGetNextToken(Token& roToken);
     void vRecognised(eCP ePart);
+
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // block management
+  
+    void vBlockNewTop(Stz* szBlockNm, eMB m_eBlock);
+    void vBlockPopNested(void);
+    void vBlockPushNested(Stz* szBlockNm, eMB eBlock);
+
+    void vClassAscend(void);
+    void vClassDescend(Stz* szClassNm);
+    void vNamepaceAscend(void);
+    void vNamepaceDescend(Stz* szNamespaceNm);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // top-down parsing
@@ -121,19 +136,7 @@ namespace Utilities
   
     bool bTermsAreFunction(void);
     bool bTermsAreVariable(void);
-    void vResetFunVarTerms(void);
-
-    // - + - + - + - + - + - + - + - + - + - + - + - +
-    // block management
-  
-    void vNewTopBlock(Stz* szBlockNm, eMB m_eBlock);
-    void vPopNestedBlock(void);
-    void vPushNestedBlock(Stz* szBlockNm, eMB eBlock);
-
-    void vAscendFromClass(void);
-    void vAscendFromNamepace(void);
-    void vDescendIntoClass(Stz* szClassNm);
-    void vDescendIntoNamepace(Stz* szNamespaceNm);
+    void vTermsReset(void);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // debug
