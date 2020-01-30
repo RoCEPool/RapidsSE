@@ -30,7 +30,7 @@ Vortex::Vortex(void)
   m_p_MetaBlock  = nullptr;
   m_p_MetaMember = nullptr;
   
-  //m_oFunVarTerms
+  //m_oMemberTerms
   m_bTraceTokens = false;
   
   m_bInClass     = false;
@@ -528,33 +528,17 @@ void Vortex::vParseHashDefine(Stz* szSawTerm)
   vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  RASSERT(szSawTerm->bSame("#"_Stz));
+  RASSERT(szSawTerm->bSame("define"_Stz));
   
   vDebugPoint();
   
   Token xTkn;
-  CHECKED(bGetNextToken(xTkn));
+  while (bGetNextToken(xTkn)) {
+    
+    if (xTkn.bSame("EndDefine"_Stz))
+      return;
+  }
   
-  if (xTkn.bSame("define"_Stz)) {
-    CHECKED(bGetNextToken(xTkn));
-    vThrowProblem(__LINE__);
-    vRecognised(CP_HASH_DEFINE);
-    return;
-  }
-
-  if (xTkn.bSame("include"_Stz)) {
-    CHECKED(bGetNextToken(xTkn));
-    vRecognised(CP_HASH_INCLUDE);
-    return;
-  }
-
-  if (xTkn.bSame("pragma"_Stz)) {
-    CHECKED(bGetNextToken(xTkn));
-    CHECKED(xTkn.bSame("once"_Stz));
-    vRecognised(CP_HASH_PRAGMA);
-    return;
-  }
-
   vThrowProblem(__LINE__);
 }
 
@@ -947,14 +931,14 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
     
     if (xTkn.bSame("{"_Stz)) {
       bCollectMemberTerms(xTkn.szTerm());
-      CHECKED(bGetNextToken(xTkn))
+      //CHECKED(bGetNextToken(xTkn))
       break ;
     }
 
     vAddTerm(xTkn.szTerm());
   }
     
-  if (! MetaMember::bIsMemberVar(szClassNm,&m_oFunVarTerms)) {
+  if (! MetaMember::bIsMemberVar(szClassNm,&m_oMemberTerms)) {
     vTrace("  not a member variable\n"_Stz);
     vRecognised(CP_MEMBER_FUNCTION);
     return;
@@ -970,7 +954,7 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
   
   Stz* szVarNm;
   Stz* szTypeNm;
-  szVarNm = MetaMember::szMemberNm(&m_oFunVarTerms,szTypeNm,
+  szVarNm = MetaMember::szMemberNm(&m_oMemberTerms,szTypeNm,
                                    nPointers,bFunPtr,nElements,nBits);
   
   m_p_MetaMember = m_p_MetaBlock->pAddMember(szVarNm);
@@ -1090,11 +1074,11 @@ bool Vortex::bCollectMemberTerms(Stz* szSawTerm)
   vAddPart("@"_Stz);
   
   if (szSawTerm->bSame("}"_Stz)) {
-      m_oFunVarTerms.vAdd(szSawTerm);
+      m_oMemberTerms.vAdd(szSawTerm);
     return true;
   }
   
-  m_oFunVarTerms.vAdd(szSawTerm);
+  m_oMemberTerms.vAdd(szSawTerm);
   
   Token xTkn;
   for (;;) {
@@ -1102,11 +1086,11 @@ bool Vortex::bCollectMemberTerms(Stz* szSawTerm)
     CHECKED(bGetNextToken(xTkn));
     
     if (xTkn.bSame("}"_Stz)) {
-      m_oFunVarTerms.vAdd(xTkn.szTerm());
+      m_oMemberTerms.vAdd(xTkn.szTerm());
       break;
     }
     
-    m_oFunVarTerms.vAdd(xTkn.szTerm());
+    m_oMemberTerms.vAdd(xTkn.szTerm());
     
     if (xTkn.bSame("{"_Stz)) {
       bCollectMemberTerms("{"_Stz);
@@ -1114,9 +1098,12 @@ bool Vortex::bCollectMemberTerms(Stz* szSawTerm)
   }
 
   s48K sTermsString;
-  m_oFunVarTerms.vNamesString(sTermsString);
+  m_oMemberTerms.vNamesString(sTermsString);
   
-  vTrace("  %s Terms: %s\n"_Stz,__func__,sTermsString.azChar());
+  vTrace("  %s MemberTerms: %s\n"_Stz,__func__,sTermsString.azChar());
+  
+  if (m_oMemberTerms.szName(0)->bSame("bIsValid"_Stz))
+    vDebugPoint();
   
   return true;
 }
@@ -1124,37 +1111,37 @@ bool Vortex::bCollectMemberTerms(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* collect all terms for a function (with optional { statements } )           */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bCollectFunctionArgs(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(szSawTerm->bSame("("_Stz));
-
-  vAddPart("@"_Stz);
-
-  m_oFunVarTerms.vReset();
-  m_oFunVarTerms.vAdd(szSawTerm);
-
-  Token xTkn;
-  
-  // collect ... ( ... )
-  for (;;) {
-    CHECKED(bGetNextToken(xTkn));
-    m_oFunVarTerms.vAdd(xTkn.szTerm());
-    if (xTkn.bSame(")"_Stz))
-      break;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  s48K sTermsString;
-  m_oFunVarTerms.vNamesString(sTermsString);
-  
-  vTrace("  %s FunVar: %s\n"_Stz,__func__,sTermsString.azChar());
-  
-  return true;
-}
+//bool Vortex::bCollectFunctionArgs(Stz* szSawTerm)
+//{
+//  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+//  
+//  RASSERT(szSawTerm->bSame("("_Stz));
+//
+//  vAddPart("@"_Stz);
+//
+//  m_oMemberTerms.vReset();
+//  m_oMemberTerms.vAdd(szSawTerm);
+//
+//  Token xTkn;
+//  
+//  // collect ... ( ... )
+//  for (;;) {
+//    CHECKED(bGetNextToken(xTkn));
+//    m_oMemberTerms.vAdd(xTkn.szTerm());
+//    if (xTkn.bSame(")"_Stz))
+//      break;
+//  }
+//  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  
+//  s48K sTermsString;
+//  m_oMemberTerms.vNamesString(sTermsString);
+//  
+//  vTrace("  %s FunVar: %s\n"_Stz,__func__,sTermsString.azChar());
+//  
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* collect terms for function intro:                                          */
@@ -1270,10 +1257,9 @@ bool Vortex::bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun)
   s48K sTermsString;
   m_oFunctionTerms.vNamesString(sTermsString);
   
-  vTrace("  %s Fun: %s ReturnType: %s\n"_Stz,
+  vTrace("  %s FunctionTerms: %s ReturnType: %s\n"_Stz,
          __func__,
          roFunNm.szTerm(),sTermsString.azChar());
-  
   
   return true;
 }
@@ -1342,7 +1328,7 @@ void Vortex::vAddTerm(Stz* szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oFunVarTerms.vAdd(szTerm);
+  m_oMemberTerms.vAdd(szTerm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1480,7 +1466,7 @@ void Vortex::vResetFunVarTerms(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oFunVarTerms.vReset();
+  m_oMemberTerms.vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1596,13 +1582,13 @@ bool Vortex::bTermsAreFunction(void)
 
   Stz* szTerm;
  
-  i8 nTerms = m_oFunVarTerms.nItems();
+  i8 nTerms = m_oMemberTerms.nItems();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // term 0
   
   i8 i_Term = 0;
-  szTerm = m_oFunVarTerms.szName(i_Term++);
+  szTerm = m_oMemberTerms.szName(i_Term++);
   
   // -- -- -- -- -- --
   // constructor function
@@ -1624,9 +1610,9 @@ bool Vortex::bTermsAreFunction(void)
   
   // -- -- -- -- -- --
   // skip zero or more '*'
-  szTerm = m_oFunVarTerms.szName(i_Term++);
+  szTerm = m_oMemberTerms.szName(i_Term++);
   while (szTerm->bSame("*"_Stz))
-    szTerm = m_oFunVarTerms.szName(i_Term++);
+    szTerm = m_oMemberTerms.szName(i_Term++);
   
   // -- -- -- -- -- --
   // test for member which is a member which is a function pointer
@@ -1635,11 +1621,11 @@ bool Vortex::bTermsAreFunction(void)
 
   // -- -- -- -- -- --
   // attempt to detect a function
-  szTerm = m_oFunVarTerms.szName(i_Term++);
+  szTerm = m_oMemberTerms.szName(i_Term++);
   while (i_Term < nTerms) {
     if (szTerm->bSame("("_Stz))
       return true;
-    szTerm = m_oFunVarTerms.szName(i_Term++);
+    szTerm = m_oMemberTerms.szName(i_Term++);
   }
   
   // -- -- -- -- -- --
@@ -1656,18 +1642,18 @@ bool Vortex::bTermsAreVariable(void)
   
    Stz* szTerm;
   
-   i8 nTerms = m_oFunVarTerms.nItems();
+   i8 nTerms = m_oMemberTerms.nItems();
      
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // term 0
    
    i8 i_Term = 0;
-   szTerm = m_oFunVarTerms.szName(i_Term++);
+   szTerm = m_oMemberTerms.szName(i_Term++);
   
   // -- -- -- -- -- --
   // exclude constructor function
   if (m_bInClass && szTerm->bSame(m_sClassNm.szStz()) &&
-      m_oFunVarTerms.szName(i_Term)->bSame("("_Stz)) {
+      m_oMemberTerms.szName(i_Term)->bSame("("_Stz)) {
     return false;
   }
   
@@ -1684,9 +1670,9 @@ bool Vortex::bTermsAreVariable(void)
   
   // -- -- -- -- -- --
   // skip zero or more '*'
-  szTerm = m_oFunVarTerms.szName(i_Term++);
+  szTerm = m_oMemberTerms.szName(i_Term++);
   while (szTerm->bSame("*"_Stz))
-    szTerm = m_oFunVarTerms.szName(i_Term++);
+    szTerm = m_oMemberTerms.szName(i_Term++);
   
   // -- -- -- -- -- --
   // test for variable which is a function pointer
@@ -1695,11 +1681,11 @@ bool Vortex::bTermsAreVariable(void)
 
   // -- -- -- -- -- --
   // attempt to detect a function
-  szTerm = m_oFunVarTerms.szName(i_Term++);
+  szTerm = m_oMemberTerms.szName(i_Term++);
   while (i_Term < nTerms) {
     if (szTerm->bSame("("_Stz))
       return false;
-    szTerm = m_oFunVarTerms.szName(i_Term++);
+    szTerm = m_oMemberTerms.szName(i_Term++);
   }
   
   // -- -- -- -- -- --
@@ -1843,7 +1829,7 @@ void Vortex::vProcConst(void)
   
   // seen: static const i8
   
-  m_oFunVarTerms.vReset();
+  m_oMemberTerms.vReset();
   
   Token xConstNm;
   if (! bGetNextToken(xConstNm))
@@ -1860,7 +1846,7 @@ void Vortex::vProcConst(void)
   
   if (bCollectMemberTerms(xConstNm.szTerm(),";"_Stz)) {
     ConstDef* pConstDef = m_p_ConsSet->pAddConstDef(xConstNm.szTerm());
-    pConstDef->vTerms(m_oFunVarTerms);
+    pConstDef->vTerms(m_oMemberTerms);
   }
 }
 
@@ -1962,7 +1948,7 @@ void Vortex::vProcMemberProper(Stz* szFirstTerm)
   
   //vTrace("%s "_Stz,xTkn.azChar());
   
-  m_oFunVarTerms.vReset();
+  m_oMemberTerms.vReset();
 
   vAddTerm(szFirstTerm);
   
@@ -1981,7 +1967,7 @@ void Vortex::vProcMemberProper(Stz* szFirstTerm)
     vAddTerm(xTkn.szTerm());
   }
     
-  if (! MetaMember::bIsMember(szClassNm,&m_oFunVarTerms)) {
+  if (! MetaMember::bIsMember(szClassNm,&m_oMemberTerms)) {
     vTrace("  not a member variable\n"_Stz);
     return;
   }
@@ -1996,7 +1982,7 @@ void Vortex::vProcMemberProper(Stz* szFirstTerm)
   
   Stz* szVarNm;
   Stz* szTypeNm;
-  szVarNm = MetaMember::szVarNm(&m_oFunVarTerms,szTypeNm,
+  szVarNm = MetaMember::szVarNm(&m_oMemberTerms,szTypeNm,
                                 nPointers,bFunPtr,nElements,nBits);
   
   m_p_MetaMember = m_p_MetaBlock->pAddMember(szVarNm);

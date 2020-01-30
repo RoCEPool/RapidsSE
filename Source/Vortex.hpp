@@ -19,7 +19,7 @@ namespace Utilities
     ConstSet*   m_p_ConstSet;   // set of static const i8's
 
     EnameSet    m_oFunctionTerms;   // working set of collected terms
-    EnameSet    m_oFunVarTerms;     // working set of collected terms
+    EnameSet    m_oMemberTerms;     // working set of collected terms
     EnameSet    m_oTplArgTerms;     // working set of collected terms
    
     bool        m_bInClass;     // currently in a class?
@@ -83,7 +83,7 @@ namespace Utilities
     void vParseMemberUnion(Stz* szSawTerm);
   
     bool bCollectMemberTerms(Stz* szSawTerm);
-    bool bCollectFunctionArgs(Stz* szSawTerm);
+    //bool bCollectFunctionArgs(Stz* szSawTerm);
     bool bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun);
     bool bCollectTemplateArgs(Stz* szSawTerm);
 
