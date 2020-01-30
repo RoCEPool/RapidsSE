@@ -8,31 +8,39 @@ namespace Utilities
   class Vortex : public Object
   {
   public:
-    File*       m_pOutputFile;  // output file
-    s256        m_sSourcePath;  // .h/hpp source path
-    Input*      m_pInput;       // input  token stream
-    bool        m_bTraceTokens; // trace tokens
+  
+    // input section
+  
+    s256        m_sSourcePath;   // .h/hpp source path
+    Input*      m_pInput;        // input token stream of source file
+    bool        m_bTraceTokens;  // trace input tokens
 
-    MetaGraph*  m_pMetaGraph;   // the metagraph that is created
-    MetaBlock*  m_p_MetaBlock;  // current working meta block
-    MetaMember* m_p_MetaMember; // current working meta member
-    ConstSet*   m_p_ConstSet;   // set of static const i8's
+    // output section
+  
+    File*       m_pOutputFile;   // output file
+    MetaGraph*  m_pMetaGraph;    // the metagraph that is created
+  
+    // working section
+  
+    s4K         m_sFragment;     // top-down fragment of tokens
 
-    EnameSet    m_oOtherTerms;  // working set of collected terms
-
-    EnameSet    m_oFunctionTerms;   // working set of collected terms
-    EnameSet    m_oMemberTerms;     // working set of collected terms
-    EnameSet    m_oTplArgTerms;     // working set of collected terms
-   
-    bool        m_bInClass;     // currently in a class?
-    s32         m_sClassNm;     // current class name
-    bool        m_bInNamespace; // currently in a namespace?
-    s32         m_sNamespaceNm; // current namespace name
+    bool        m_bInClass;      // currently in a class?
+    s32         m_sClassNm;      // current class name
+    bool        m_bInNamespace;  // currently in a namespace?
+    s32         m_sNamespaceNm;  // current namespace name
     
-    s4K         m_sPart;        // current part
+    MetaBlock*  m_p_MetaBlock;   // current working meta block
+    MetaMember* m_p_MetaMember;  // current working meta member
+    ConstSet*   m_p_ConstSet;    // set of static const i8's
 
-    // must be last
-    Footer m_xFooter;
+    EnameSet    m_oOtherTerms;   // working set of collected terms
+    EnameSet    m_oFunctionTerms;// working set of collected terms
+    EnameSet    m_oMemberTerms;  // working set of collected terms
+    EnameSet    m_oTplArgTerms;  // working set of collected terms
+    
+    // correctness section
+  
+    Footer m_xFooter;            // must be last
   
   public:
     void* operator new(size_t);
@@ -49,10 +57,15 @@ namespace Utilities
   private:
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    // machinary 
+    // machinary
   
+    bool bGetNextTerm(Token& roTerm);
     bool bGetNextToken(Token& roToken);
     void vRecognised(eCP ePart);
+  
+    void vAddPart(Stz* szTerm);
+    void vResetPart(void);
+    void vThrowProblem(i8 i_Problem);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // block management
@@ -141,9 +154,6 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // debug
   
-    void vAddPart(Stz* szTerm);
-    void vResetPart(void);
-    void vThrowProblem(i8 i_Problem);
   
    private:
   

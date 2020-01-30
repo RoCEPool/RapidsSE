@@ -21,25 +21,32 @@ Vortex::Vortex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_pOutputFile  = nullptr;
+  // input
+  
   m_sSourcePath  = ""_Stz;
   m_pInput       = nullptr;
-  
-  m_pMetaGraph   = new MetaGraph;
-  m_p_ConstSet   = m_pMetaGraph->pConstSet();
-  m_p_MetaBlock  = nullptr;
-  m_p_MetaMember = nullptr;
-  
-  //m_oOtherTerms
   m_bTraceTokens = false;
+
+  // output
+  
+  m_pOutputFile  = nullptr;
+  m_pMetaGraph   = new MetaGraph;
+  
+  // working
+  
+  m_sFragment    = ""_Stz;
   
   m_bInClass     = false;
   m_sClassNm     = C_NO_NAME;
   m_bInNamespace = false;
   m_sNamespaceNm = C_NO_NAME;
   
-  m_sPart        = ""_Stz;
+  m_p_MetaBlock  = nullptr;
+  m_p_MetaMember = nullptr;
+  m_p_ConstSet   = m_pMetaGraph->pConstSet();
 
+  //m_oOtherTerms
+  
   _checkInitialised_(CN_VORTEX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -52,9 +59,8 @@ Vortex::~Vortex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  delete m_pOutputFile;
   delete m_pInput;
-  
+  delete m_pOutputFile;
   delete m_pMetaGraph;
 }
 
@@ -119,7 +125,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   if (! b) {
     vTrace("\n\n"_Stz);
     vTrace("** Unable to fully parse %s\n"_Stz,szSourcePath->azChar());
-    vTrace("** Last Part: %s\n"_Stz,m_sPart.azChar());
+    vTrace("** Last Part: %s\n"_Stz,m_sFragment.azChar());
     vTrace("\n\n"_Stz);
     vDebugPoint();
   }
@@ -137,6 +143,21 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 /*                                  machinary                                 */
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+
+/*----------------------------------------------------------------------------*/
+/* get next token                                                             */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bGetNextTerm(Token& roTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  bool b = m_pInput->bGetToken(&roTerm);
+  
+  if (b)
+    vAddPart(roTerm.szTerm());
+  
+  return b;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get next token                                                             */
@@ -1656,13 +1677,13 @@ void Vortex::vAddPart(Stz* szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  if (m_sPart.nLength())
-    m_sPart.vAppend(' ');
+  if (m_sFragment.nLength())
+    m_sFragment.vAppend(' ');
   
-  m_sPart.vConcat(szTerm);
+  m_sFragment.vConcat(szTerm);
   
   if (m_bTraceTokens)
-    vTrace("Part: %s\n"_Stz,m_sPart.azChar());
+    vTrace("Part: %s\n"_Stz,m_sFragment.azChar());
 
 }
 
@@ -1673,7 +1694,7 @@ void Vortex::vResetPart(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_sPart = ""_Stz;
+  m_sFragment = ""_Stz;
 }
 
 /*----------------------------------------------------------------------------*/
