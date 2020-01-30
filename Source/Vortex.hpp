@@ -99,7 +99,6 @@ namespace Utilities
     bool bCollectOtherTerms(Stz* szSawTerm);
   
     bool bCollectMemberTerms(Stz* szSawTerm);
-    //bool bCollectFunctionArgs(Stz* szSawTerm);
     bool bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun);
     bool bCollectTemplateArgs(Stz* szSawTerm);
 
@@ -107,7 +106,6 @@ namespace Utilities
     // term skipping
   
     void vSkipBalancedClosingBrace(Stz* szSawTerm);
-    //void vSkipTillSemicolon(void);
     void vSkipTill(Stz* szTerm, Stz* szTill);
     void vSkipUnrecognised(Stz* szTerm);
 
@@ -139,42 +137,7 @@ namespace Utilities
     void vResetPart(void);
     void vThrowProblem(i8 i_Problem);
 
-
-    // - - - - - - - - - - - - - - - - - -
-    // remove
-  
-//    void vProcAll(void);
-//    void vProcClassBase(void);
-//    void vProcClassBlock(void);
-//    void vProcClassFunction(void);
-//    void vProcClassMembers(void);
-//    void vProcConst(void);
-//    void vProcEnum(void);
-//    void vProcHashDefine(void);
-//    void vProcHashInclude(void);
-//    void vProcHashPragma(void);
-//    void vProcLabelledMember(void);
-//    void vProcMemberProper(Stz* szFirstTerm);
-//    bool bProcNamespace(void);
-//    void vProcStructArray(void);
-//    void vProcStructMember(void);
-//    void vProcUnionMember(void);
-//  
-//    bool bRecogniseClass(Stz* szTerm);
-//    bool bRecogniseConst(Stz* szTerm);
-//    bool bRecogniseEnum(Stz* szTerm);
-//    bool bRecogniseFriend(Stz* szTerm);
-//    bool bRecogniseFunction(Stz* szTerm);
-//    bool bRecogniseHash(Stz* szTerm);
-//    bool bRecogniseLabel(Stz* szTerm);
-//    bool bRecogniseMbrOrFun(Stz* szTerm);
-//    bool bRecogniseNamespace(Stz* szTerm);
-//    bool bRecogniseStruct(Stz* szTerm);
-//    bool bRecogniseTemplate(Stz* szTerm);
-//    bool bRecogniseUnion(Stz* szTerm);
-//    bool bRecogniseUsing(Stz* szTerm);
- 
-  private:
+   private:
   
     Footer* aFooter(void);
   };
