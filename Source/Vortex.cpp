@@ -567,8 +567,16 @@ void Vortex::vParseHashIf(Stz* szSawTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame("if"_Stz));
+  
+  Token xTkn;
+  
+  CHECKED(bGetNextToken(xTkn));
+
+  while (! xTkn.bSame("endif"_Stz)) {
+    CHECKED(bGetNextToken(xTkn));
+  }
       
-  vRecognised(CP_HASH_INCLUDE);
+  vRecognised(CP_HASH_IF);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -852,6 +860,9 @@ void Vortex::vParseClassBlock(Stz* szSawTerm)
      vAscendFromClass();
      return;
     }
+    
+    if (bParseBlockLabel(xTkn.szTerm()))
+      continue;
 
     vParseBlockMember(szTerm);
   }
