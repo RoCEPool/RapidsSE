@@ -61,10 +61,12 @@ namespace Utilities
   
     bool bGetNextTerm(Token& roTerm);
     bool bGetNextToken(Token& roToken);
-    void vRecognised(eCP ePart);
   
-    void vAddPart(Stz* szTerm);
-    void vResetPart(void);
+    void vFragmentAdd(Stz* szTerm);
+    void vFragmentReset(void);
+  
+    void vPartRecognised(eCP ePart);
+    
     void vThrowProblem(i8 i_Problem);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
@@ -129,7 +131,12 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
   
-    bool bCollectOtherTerms(Stz* szSawTerm);
+    void vCollectBalanced(Stz* szOpen, Stz* szClose);
+    void vCollectBalancedAngles(void);
+    void vCollectBalancedBraces(void);
+    void vCollectBalancedParenthesis(void);
+  
+    void vCollectOtherTerms(Stz* szSawTerm);
   
     bool bCollectMemberTerms(Stz* szSawTerm);
     bool bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun);
@@ -140,7 +147,10 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term skipping
   
-    void vSkipBalancedClosingBrace(Stz* szSawTerm);
+
+    void vSkipBalancedBraces(Stz* szSawTerm);
+  
+
     void vSkipTill(Stz* szTerm, Stz* szTill);
     void vSkipUnrecognised(Stz* szTerm);
 
@@ -150,10 +160,6 @@ namespace Utilities
     bool bTermsAreFunction(void);
     bool bTermsAreVariable(void);
     void vTermsReset(void);
-
-    // - + - + - + - + - + - + - + - + - + - + - + - +
-    // debug
-  
   
    private:
   
