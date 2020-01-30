@@ -57,6 +57,7 @@ namespace Utilities
     void vParseFileUsing(Stz* szSawTerm);
 
     void vParseHashDefine(Stz* szSawTerm);
+    void vParseHashIf(Stz* szSawTerm);
     void vParseHashInclude(Stz* szSawTerm);
     void vParseHashPragma(Stz* szSawTerm);
 

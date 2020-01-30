@@ -345,6 +345,11 @@ void Vortex::vParseFileHash(Stz* szSawTerm)
     return;
   }
 
+  if (xTkn.bSame("if"_Stz)) {
+    vParseHashIf(xTkn.szTerm());
+    return;
+  }
+
   if (xTkn.bSame("include"_Stz)) {
     vParseHashInclude(xTkn.szTerm());
     return;
@@ -551,6 +556,19 @@ void Vortex::vParseHashDefine(Stz* szSawTerm)
   }
 
   vThrowProblem(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* within #, parse INCLUDE _^_ <filePath>                                     */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseHashIf(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("if"_Stz));
+      
+  vRecognised(CP_HASH_INCLUDE);
 }
 
 /*----------------------------------------------------------------------------*/
