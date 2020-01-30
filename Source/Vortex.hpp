@@ -59,14 +59,12 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // machinary
   
+    bool bDiscardNextToken(void);
     bool bGetNextTerm(Token& roTerm);
     bool bGetNextToken(Token& roToken);
-  
     void vFragmentAdd(Stz* szTerm);
     void vFragmentReset(void);
-  
     void vPartRecognised(eCP ePart);
-    
     void vThrowProblem(i8 i_Problem);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
@@ -75,7 +73,7 @@ namespace Utilities
     void vBlockNewTop(Stz* szBlockNm, eMB m_eBlock);
     void vBlockPopNested(void);
     void vBlockPushNested(Stz* szBlockNm, eMB eBlock);
-
+  
     void vClassAscend(void);
     void vClassDescend(Stz* szClassNm);
     void vNamepaceAscend(void);
@@ -92,7 +90,7 @@ namespace Utilities
     void vParseFileHash(Stz* szSawTerm);
     void vParseFileNamespace(Stz* szSawTerm);
     void vParseFileOther(Stz* szSawTerm);
-    void vParseFileStatic(Stz* szSawTerm);      // -> other
+    void vParseFileStatic(Stz* szSawTerm);           // -> other
     void vParseFileTemplate(Stz* szSawTerm);
     void vParseFileUsing(Stz* szSawTerm);
 
@@ -110,30 +108,25 @@ namespace Utilities
     void vParseNamespaceTypedef(Stz* szSawTerm);
     void vParseNamespaceUnion(Stz* szSawTerm);
   
-    // - + - + - + - + - + - + - + - + - + - + - + - +
-    // class, block, member parsing
-
     void vParseClassBase(Stz* szSawTerm);
     void vParseClassBlock(Stz* szSawTerm);
-  
+    void vParseClassOther(Stz* szSawTerm);
+    void vParseClassTemplate(Stz* szSawTerm);
+
     void vParseBlockFriend(Stz* szSawTerm);
     bool bParseBlockLabel(Stz* szSawTerm);
     void vParseBlockMember(Stz* szSawTerm);
+    void vParseBlockOther(Stz* szSawTerm);
+    void vParseBlockStruct(Stz* szSawTerm);
+    void vParseBlockUnion(Stz* szSawTerm);
 
-    void vParseMemberFunVar(Stz* szSawTerm);    // -> other
-    void vParseMemberOther(Stz* szSawTerm);
-    void vParseMemberStatic(Stz* szSawTerm);    // -> other
-    void vParseMemberStruct(Stz* szSawTerm);
-    void vParseMemberTemplate(Stz* szSawTerm);
-    void vParseMemberUnion(Stz* szSawTerm);
-  
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
   
     void vCollectBalanced(Stz* szOpen, Stz* szClose);
-    void vCollectBalancedAngles(void);
-    void vCollectBalancedBraces(void);
-    void vCollectBalancedParenthesis(void);
+    void vCollectBalancedAngles(Stz* szSawTerm);
+    void vCollectBalancedBraces(Stz* szSawTerm);
+    void vCollectBalancedParenthesis(Stz* szSawTerm);
   
     void vCollectOtherTerms(Stz* szSawTerm);
   
@@ -141,27 +134,24 @@ namespace Utilities
     bool bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun);
     bool bCollectTemplateArgs(Stz* szSawTerm);
 
-    void vAddTerm(Stz* szTerm);
-
+    void vDiscardBalanced(Stz* szOpen, Stz* szClose);
+    void vDiscardBalancedAngles(Stz* szSawTerm);
+    void vDiscardBalancedBraces(Stz* szSawTerm);
+    void vDiscardBalancedParenthesis(Stz* szSawTerm);
+  
+    void vDiscardTill(Stz* szTerm, Stz* szTill);
+  
+    void vSkipBalancedBraces(Stz* szSawTerm); // to be removed
+ 
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    // term skipping
+    // terms
   
-
-    void vSkipBalancedBraces(Stz* szSawTerm);
-  
-
-    void vSkipTill(Stz* szTerm, Stz* szTill);
-    void vSkipUnrecognised(Stz* szTerm);
-
-    // - + - + - + - + - + - + - + - + - + - + - + - +
-    // term testing
-  
+    void vTermAdd(Stz* szTerm);
     bool bTermsAreFunction(void);
     bool bTermsAreVariable(void);
     void vTermsReset(void);
   
    private:
-  
     Footer* aFooter(void);
   };
 
