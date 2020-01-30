@@ -9,8 +9,8 @@ enum eCP // c++ part
   
   /*    */ CP_FILE_CONST,          // const       (in file)
   /*    */ CP_FILE_ENUM,           // enum        (in file)
-  /*    */ CP_FILE_FUNCTION,       // function    (in file)
   /*    */ CP_FILE_NAMESPACE,      // namespace   (in file)
+  /*    */ CP_FILE_OTHER,          // other       (in file)
   /*    */ CP_FILE_STATIC,         // static      (in file)
   /*    */ CP_FILE_USING,          // using name  (in file)
   
@@ -42,8 +42,8 @@ static Stz* aCP[]
   
   /*    */ "CP_FILE_CONST"_Stz,
   /*    */ "CP_FILE_ENUM"_Stz,
-  /*    */ "CP_FILE_FUNCTION"_Stz,
   /*    */ "CP_FILE_NAMESPACE"_Stz,
+  /*    */ "CP_FILE_OTHER"_Stz,
   /*    */ "CP_FILE_STATIC"_Stz,
   /*    */ "CP_FILE_USING"_Stz,
   

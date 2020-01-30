@@ -13,7 +13,7 @@ namespace Utilities
   
     s256        m_sSourcePath;   // .h/hpp source path
     Input*      m_pInput;        // input token stream of source file
-    bool        m_bTraceTokens;  // trace input tokens
+    bool        m_bTrace;        // trace activity
 
     // output section
   
@@ -89,7 +89,6 @@ namespace Utilities
     void vParseFileClass(Stz* szSawTerm);
     void vParseFileConst(Stz* szSawTerm);
     void vParseFileEnum(Stz* szSawTerm);
-    void vParseFileFunction(Stz* szSawTerm);
     void vParseFileHash(Stz* szSawTerm);
     void vParseFileNamespace(Stz* szSawTerm);
     void vParseFileOther(Stz* szSawTerm);

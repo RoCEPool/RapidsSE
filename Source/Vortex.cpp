@@ -25,7 +25,7 @@ Vortex::Vortex(void)
   
   m_sSourcePath  = ""_Stz;
   m_pInput       = nullptr;
-  m_bTraceTokens = false;
+  m_bTrace = false;
 
   // output
   
@@ -125,7 +125,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   if (! b) {
     vTrace("\n\n"_Stz);
     vTrace("** Unable to fully parse %s\n"_Stz,szSourcePath->azChar());
-    vTrace("** Last Part: %s\n"_Stz,m_sFragment.azChar());
+    vTrace("** Last Fragment: %s\n"_Stz,m_sFragment.azChar());
     vTrace("\n\n"_Stz);
     vDebugPoint();
   }
@@ -186,8 +186,8 @@ void Vortex::vFragmentAdd(Stz* szString)
   
   m_sFragment.vConcat(szString);
   
-  if (m_bTraceTokens)
-    vTrace("Part: %s\n"_Stz,m_sFragment.azChar());
+  if (m_bTrace)
+    vTrace("Fragment: %s\n"_Stz,m_sFragment.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -343,7 +343,7 @@ bool Vortex::bParseFile(void)
   RASSERT(! m_bInNamespace);
   RASSERT(! m_bInClass);
 
-  m_bTraceTokens = true;
+  m_bTrace = true;
   
   // -- parse till EOF --
   Token xTkn;
@@ -353,59 +353,46 @@ bool Vortex::bParseFile(void)
       Stz* szKeyWord = xTkn.szTerm();
         
       if (szKeyWord->bSame("class"_Stz)) {
-        // in SE we don't expect a class outside of a namespace
-        vThrowProblem(__LINE__);
+        vThrowProblem(__LINE__);   // don't expect class outside of a namespace
       }
       else
       if (szKeyWord->bSame("const"_Stz)) {
-        // in SE we permit be outside a namespace
-        vParseFileConst(szKeyWord);
+         vParseFileConst(szKeyWord);
       }
       else
       if (szKeyWord->bSame("enum"_Stz)) {
-        // in SE we permit be outside a namespace
-        vParseFileEnum(szKeyWord);
-      }
-      else
-      if (szKeyWord->bSame("friend"_Stz)) {
-        vThrowProblem(__LINE__); // syntax?
+         vParseFileEnum(szKeyWord);
       }
       else
       if (szKeyWord->bSame("#"_Stz)) {
-        // in SE we #include etc to be outside a namespace
         vParseFileHash(szKeyWord);
       }
       else
       if (szKeyWord->bSame("namespace"_Stz)) {
-        // recognise a namespace
         vParseFileNamespace(szKeyWord);
       }
       else
-      if (szKeyWord->bSame("static"_Stz)) {
-         vParseFileStatic(szKeyWord);
-      }
-      else
       if (szKeyWord->bSame("struct"_Stz)) {
-        // in SE we don't expect a struct outside of a namespace
-        vThrowProblem(__LINE__);
+        vThrowProblem(__LINE__);  // don't expect struct outside of a namespace
       }
       else
       if (szKeyWord->bSame("template"_Stz)) {
-         // in SE we have templated functions outside of a namespace
          vParseFileTemplate(szKeyWord);
       }
       else
+      if (szKeyWord->bSame("typedef"_Stz)) {
+        vThrowProblem(__LINE__); // don't expect typedef outside of a namespace
+      }
+      else
       if (szKeyWord->bSame("union"_Stz)) {
-        vThrowProblem(__LINE__); // syntax?
+        vThrowProblem(__LINE__);   // don't expect union outside of a namespace
       }
       else
       if (szKeyWord->bSame("using"_Stz)) {
-        // using namespace is outside a namespace
         vParseFileUsing(szKeyWord);
       }
       else {
-        // in SE we allow global functions
-        vParseFileFunction(szKeyWord);
+        vParseFileOther(szKeyWord);
       }
 
     }
@@ -499,23 +486,6 @@ void Vortex::vParseFileEnum(Stz* szSawTerm)
   vSkipTill(szSawTerm,";"_Stz);
   
   vPartRecognised(CP_FILE_ENUM);                                             // ✅
-}
-
-/*----------------------------------------------------------------------------*/
-/* within file, parse <term> _^_ <term> ... ;                                 */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseFileFunction(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  //RASSERT(szSawTerm->bSame("???"_Stz));
-  
-  eFN eFun;
-  Token xFunNm;
-  CHECKED(bCollectFunctionTerms(szSawTerm,xFunNm,eFun));
-  
-  vPartRecognised(CP_FILE_FUNCTION);                                         // ✅
 }
 
 /*----------------------------------------------------------------------------*/
@@ -646,12 +616,11 @@ void Vortex::vParseFileOther(Stz* szSawTerm)
   
   //RASSERT(szSawTerm->bSame("???"_Stz));
   
-  eFN eFun;
-  Token xFunNm;
-  CHECKED(bCollectFunctionTerms(szSawTerm,xFunNm,eFun));
+  vCollectOtherTerms(szSawTerm);
   
-  vPartRecognised(CP_FILE_FUNCTION);                                         // ✅
+  vPartRecognised(CP_FILE_OTHER);                                         // ✅
 }
+
 /*----------------------------------------------------------------------------*/
 /* within file, parse STATIC ... ;                                            */
 /*----------------------------------------------------------------------------*/
@@ -671,7 +640,7 @@ void Vortex::vParseFileStatic(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within file, parse TEMPLATE < ... > CLASS ...  | <other>                   */
+/* within file, parse TEMPLATE < ... > CLASS ...  | <other> ...               */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFileTemplate(Stz* szSawTerm)
 {
@@ -695,7 +664,7 @@ void Vortex::vParseFileTemplate(Stz* szSawTerm)
     vParseFileClass(xTkn.szTerm());
   }
   else {
-    vParseFileFunction(xTkn.szTerm());
+    vParseFileOther(xTkn.szTerm());
   }
 }
 
