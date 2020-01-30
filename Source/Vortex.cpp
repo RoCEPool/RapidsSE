@@ -133,6 +133,41 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* get next token                                                             */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bGetNextToken(Token& roToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  bool b = m_pInput->bGetToken(&roToken);
+  
+  if (b)
+    vAddPart(roToken.szTerm());
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* recognised c++ part                                                        */
+/*----------------------------------------------------------------------------*/
+void Vortex::vRecognised(eCP ePart)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vTrace("Recognised %s\n"_Stz,aCP[ePart]);
+  vTrace("\n"_Stz);
+
+  vResetPart();
+  vResetFunVarTerms();
+  
+  vDebugPoint();
+}
+
+
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+/*                            top-down parsing                                */
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
 /* process all parts in the current source file (.h or .hpp)                  */
@@ -790,8 +825,9 @@ void Vortex::vParseNamespaceUnion(Stz* szSawTerm)
 }
 
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+/*                      class, block, member parsing                          */
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
 /* parse within:                                                              */
@@ -1069,8 +1105,10 @@ void Vortex::vParseMemberStatic(Stz* szSawTerm)
   vDebugPoint();
 }
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+/*                            term collection                                 */
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
 /* collect all terms till given end (optionally adding the end term)          */
@@ -1273,28 +1311,6 @@ bool Vortex::bCollectTemplateArgs(Stz* szSawTerm)
   return true;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get next token                                                             */
-/*----------------------------------------------------------------------------*/
-void Vortex::vAddPart(Stz* szTerm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  if (m_sPart.nLength())
-    m_sPart.vAppend(' ');
-  
-  m_sPart.vConcat(szTerm);
-  
-  if (m_bTraceTokens)
-    vTrace("Part: %s\n"_Stz,m_sPart.azChar());
-
-}
-
 /*----------------------------------------------------------------------------*/
 /* collect term                                                               */
 /*----------------------------------------------------------------------------*/
@@ -1305,153 +1321,11 @@ void Vortex::vAddTerm(Stz* szTerm)
   m_oMemberTerms.vAdd(szTerm);
 }
 
-/*----------------------------------------------------------------------------*/
-/* ascend from parsing a class                                                */
-/*----------------------------------------------------------------------------*/
-void Vortex::vAscendFromClass(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_bInNamespace);
-  RASSERT(m_bInClass);
 
-  m_bInClass = false;
-  m_sClassNm = ""_Stz;
 
-  m_p_MetaBlock  = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* ascend from parsing a namespace                                            */
-/*----------------------------------------------------------------------------*/
-void Vortex::vAscendFromNamepace(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_bInNamespace);
-  RASSERT(! m_bInClass);
-
-  m_bInNamespace = false;
-  m_sNamespaceNm = ""_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* descend into parsing a class                                               */
-/*----------------------------------------------------------------------------*/
-void Vortex::vDescendIntoClass(Stz* szClassNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_bInNamespace);
-  RASSERT(! m_bInClass);
-  
-  RASSERT(! m_p_MetaBlock);
-
-  m_sClassNm = szClassNm;
-  m_bInClass = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* descend into parsing a namespace                                           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vDescendIntoNamepace(Stz* szNamespaceNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(! m_bInNamespace);
-  RASSERT(! m_bInClass);
-
-  m_sNamespaceNm = szNamespaceNm;
-  m_bInNamespace = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next token                                                             */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bGetNextToken(Token& roToken)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  bool b = m_pInput->bGetToken(&roToken);
-  
-  if (b)
-    vAddPart(roToken.szTerm());
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a new top block                                                     */
-/*----------------------------------------------------------------------------*/
-void Vortex::vNewTopBlock(Stz* szBlockNme, eMB eBlock)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(m_pMetaGraph);
-  RASSERT(! m_p_MetaBlock);
-
-  m_p_MetaBlock = new MetaBlock(szBlockNme,eBlock,m_pMetaGraph,nullptr);
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop at block end                                                           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vPopNestedBlock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  CHECKED(m_p_MetaBlock);
-  
-  m_p_MetaBlock = m_p_MetaBlock->p_ParentBlock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* push new block                                                             */
-/*----------------------------------------------------------------------------*/
-void Vortex::vPushNestedBlock(Stz* szBlockNm, eMB eBlock)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(m_pMetaGraph);
-  
-  m_p_MetaBlock = new MetaBlock(szBlockNm,eBlock,m_pMetaGraph,m_p_MetaBlock);
-}
-
-/*----------------------------------------------------------------------------*/
-/* recognised c++ part                                                        */
-/*----------------------------------------------------------------------------*/
-void Vortex::vRecognised(eCP ePart)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  vTrace("Recognised %s\n"_Stz,aCP[ePart]);
-  vTrace("\n"_Stz);
-
-  vResetPart();
-  vResetFunVarTerms();
-  
-  vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset terms                                                                */
-/*----------------------------------------------------------------------------*/
-void Vortex::vResetFunVarTerms(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_oMemberTerms.vReset();
-}
-
-/*----------------------------------------------------------------------------*/
-/* start new c++ part                                                         */
-/*----------------------------------------------------------------------------*/
-void Vortex::vResetPart(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  m_sPart = ""_Stz;
-}
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+/*                              term skipping                                 */
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
 /* skip till balanced closing brace                                           */
@@ -1528,6 +1402,11 @@ void Vortex::vSkipUnrecognised(Stz* szTerm)
   }
 }
 
+
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+/*                              term testing                                  */
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+
 /*----------------------------------------------------------------------------*/
 /* are terms a function ?                                                     */
 /*----------------------------------------------------------------------------*/
@@ -1599,7 +1478,7 @@ bool Vortex::bTermsAreVariable(void)
   
    i8 nTerms = m_oMemberTerms.nItems();
      
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // term 0
    
    i8 i_Term = 0;
@@ -1649,6 +1528,150 @@ bool Vortex::bTermsAreVariable(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset terms                                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vResetFunVarTerms(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_oMemberTerms.vReset();
+}
+
+
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+/*                             block management                               */
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+
+/*----------------------------------------------------------------------------*/
+/* create a new top block                                                     */
+/*----------------------------------------------------------------------------*/
+void Vortex::vNewTopBlock(Stz* szBlockNme, eMB eBlock)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(m_pMetaGraph);
+  RASSERT(! m_p_MetaBlock);
+
+  m_p_MetaBlock = new MetaBlock(szBlockNme,eBlock,m_pMetaGraph,nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop at block end                                                           */
+/*----------------------------------------------------------------------------*/
+void Vortex::vPopNestedBlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  CHECKED(m_p_MetaBlock);
+  
+  m_p_MetaBlock = m_p_MetaBlock->p_ParentBlock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* push new block                                                             */
+/*----------------------------------------------------------------------------*/
+void Vortex::vPushNestedBlock(Stz* szBlockNm, eMB eBlock)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(m_pMetaGraph);
+  
+  m_p_MetaBlock = new MetaBlock(szBlockNm,eBlock,m_pMetaGraph,m_p_MetaBlock);
+}
+
+/*----------------------------------------------------------------------------*/
+/* ascend from parsing a class                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vAscendFromClass(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_bInNamespace);
+  RASSERT(m_bInClass);
+
+  m_bInClass = false;
+  m_sClassNm = ""_Stz;
+
+  m_p_MetaBlock  = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* ascend from parsing a namespace                                            */
+/*----------------------------------------------------------------------------*/
+void Vortex::vAscendFromNamepace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_bInNamespace);
+  RASSERT(! m_bInClass);
+
+  m_bInNamespace = false;
+  m_sNamespaceNm = ""_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend into parsing a class                                               */
+/*----------------------------------------------------------------------------*/
+void Vortex::vDescendIntoClass(Stz* szClassNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(m_bInNamespace);
+  RASSERT(! m_bInClass);
+  
+  RASSERT(! m_p_MetaBlock);
+
+  m_sClassNm = szClassNm;
+  m_bInClass = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* descend into parsing a namespace                                           */
+/*----------------------------------------------------------------------------*/
+void Vortex::vDescendIntoNamepace(Stz* szNamespaceNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(! m_bInNamespace);
+  RASSERT(! m_bInClass);
+
+  m_sNamespaceNm = szNamespaceNm;
+  m_bInNamespace = true;
+}
+
+
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+/*                                  debug                                     */
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+
+/*----------------------------------------------------------------------------*/
+/* add part                                                                   */
+/*----------------------------------------------------------------------------*/
+void Vortex::vAddPart(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  if (m_sPart.nLength())
+    m_sPart.vAppend(' ');
+  
+  m_sPart.vConcat(szTerm);
+  
+  if (m_bTraceTokens)
+    vTrace("Part: %s\n"_Stz,m_sPart.azChar());
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* start new c++ part                                                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vResetPart(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_sPart = ""_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
 /* throw problem                                                              */
 /*----------------------------------------------------------------------------*/
 void Vortex::vThrowProblem(i8 i_Problem)
@@ -1657,6 +1680,14 @@ void Vortex::vThrowProblem(i8 i_Problem)
 
   throw i_Problem;
 }
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*============================================================================*/
 /* end                                                                        */

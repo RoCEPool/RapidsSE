@@ -48,6 +48,9 @@ namespace Utilities
 
   private:
   
+    bool bGetNextToken(Token& roToken);
+    void vRecognised(eCP ePart);
+
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // top-down parsing
   
@@ -70,7 +73,8 @@ namespace Utilities
     void vParseHashPragma(Stz* szSawTerm);
 
     void vParseNamespaceClass(Stz* szSawTerm);
-    void vParseNamespaceFunction(Stz* szSawTerm);
+    void vParseNamespaceFunction(Stz* szSawTerm);    // -> other
+    void vParseNamespaceOther(Stz* szSawTerm);
     void vParseNamespaceStatic(Stz* szSawTerm);      // -> other
     void vParseNamespaceStruct(Stz* szSawTerm);
     void vParseNamespaceTemplate(Stz* szSawTerm);
@@ -87,8 +91,9 @@ namespace Utilities
     bool bParseBlockLabel(Stz* szSawTerm);
     void vParseBlockMember(Stz* szSawTerm);
 
-    void vParseMemberFunVar(Stz* szSawTerm);
-    void vParseMemberStatic(Stz* szSawTerm);
+    void vParseMemberFunVar(Stz* szSawTerm);    // -> other
+    void vParseMemberOther(Stz* szSawTerm);
+    void vParseMemberStatic(Stz* szSawTerm);    // -> other
     void vParseMemberStruct(Stz* szSawTerm);
     void vParseMemberTemplate(Stz* szSawTerm);
     void vParseMemberUnion(Stz* szSawTerm);
@@ -102,6 +107,8 @@ namespace Utilities
     bool bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun);
     bool bCollectTemplateArgs(Stz* szSawTerm);
 
+    void vAddTerm(Stz* szTerm);
+
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term skipping
   
@@ -114,29 +121,27 @@ namespace Utilities
   
     bool bTermsAreFunction(void);
     bool bTermsAreVariable(void);
+    void vResetFunVarTerms(void);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    // blocks
+    // block management
   
     void vNewTopBlock(Stz* szBlockNm, eMB m_eBlock);
     void vPopNestedBlock(void);
     void vPushNestedBlock(Stz* szBlockNm, eMB eBlock);
 
-    // - + - + - + - + - + - + - + - + - + - + - + - +
-    // support
-  
-    void vAddPart(Stz* szTerm);
-    void vAddTerm(Stz* szTerm);
     void vAscendFromClass(void);
     void vAscendFromNamepace(void);
     void vDescendIntoClass(Stz* szClassNm);
     void vDescendIntoNamepace(Stz* szNamespaceNm);
-    bool bGetNextToken(Token& roToken);
-    void vRecognised(eCP ePart);
-    void vResetFunVarTerms(void);
+
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // debug
+  
+    void vAddPart(Stz* szTerm);
     void vResetPart(void);
     void vThrowProblem(i8 i_Problem);
-
+  
    private:
   
     Footer* aFooter(void);
