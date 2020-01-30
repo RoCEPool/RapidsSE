@@ -157,6 +157,11 @@ bool Vortex::bParseFile(void)
         vThrowProblem(__LINE__);
       }
       else
+      if (szKeyWord->bSame("const"_Stz)) {
+        // in SE we permit be outside a namespace
+        vParseFileConst(szKeyWord);
+      }
+      else
       if (szKeyWord->bSame("enum"_Stz)) {
         // in SE we permit be outside a namespace
         vParseFileEnum(szKeyWord);
@@ -262,6 +267,21 @@ void Vortex::vParseFileClass(Stz* szSawTerm)
   }
 
   vThrowProblem(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* within file, parse CONST _^_ ... ;                                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFileConst(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("const"_Stz));
+ 
+  vThrowProblem(__LINE__);
+
+  vRecognised(CP_FILE_CONST);                                             // ✅
 }
 
 /*----------------------------------------------------------------------------*/

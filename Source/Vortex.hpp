@@ -48,6 +48,7 @@ namespace Utilities
     bool bParseFile(void);
   
     void vParseFileClass(Stz* szSawTerm);
+    void vParseFileConst(Stz* szSawTerm);
     void vParseFileEnum(Stz* szSawTerm);
     void vParseFileFunction(Stz* szSawTerm);
     void vParseFileHash(Stz* szSawTerm);
