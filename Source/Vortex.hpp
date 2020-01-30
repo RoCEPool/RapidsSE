@@ -18,7 +18,7 @@ namespace Utilities
     MetaMember* m_p_MetaMember; // current working meta member
     ConstSet*   m_p_ConstSet;   // set of static const i8's
 
-    EnameSet    m_oReturnTypeTerms; // working set of collected terms
+    EnameSet    m_oFunctionTerms;   // working set of collected terms
     EnameSet    m_oFunVarTerms;     // working set of collected terms
     EnameSet    m_oTplArgTerms;     // working set of collected terms
    
@@ -81,17 +81,19 @@ namespace Utilities
     void vParseMemberTemplate(Stz* szSawTerm);
     void vParseMemberUnion(Stz* szSawTerm);
   
-    void vAddTopBlock(Stz* szBlockNm, eMB m_eBlock);
-    void vAscendFromClass(void);
-    void vAscendFromNamepace(void);
-    void vCollectTerm(Stz* szTerm);
     bool bCollectFunVarTerms(Stz* szSawTerm, Stz* szEnd, bool bAddEnd=false);
     bool bCollectFunctionArgs(Stz* szSawTerm);
-    bool bCollectFunctionIntro(Stz* szSawTerm, Token& roFunNm, eFN& reFun);
+    bool bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun);
     bool bCollectTemplateArgs(Stz* szSawTerm);
+
+    void vAddPart(Stz* szTerm);
+    void vAddTerm(Stz* szTerm);
+    void vAscendFromClass(void);
+    void vAscendFromNamepace(void);
     void vDescendIntoClass(Stz* szClassNm);
     void vDescendIntoNamepace(Stz* szNamespaceNm);
     bool bGetNextToken(Token& roToken);
+    void vNewTopBlock(Stz* szBlockNm, eMB m_eBlock);
     void vPopNestedBlock(void);
     void vPushNestedBlock(Stz* szBlockNm, eMB eBlock);
     void vRecognised(eCP ePart);
