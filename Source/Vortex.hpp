@@ -82,7 +82,7 @@ namespace Utilities
     void vParseMemberTemplate(Stz* szSawTerm);
     void vParseMemberUnion(Stz* szSawTerm);
   
-    bool bCollectFunVarTerms(Stz* szSawTerm, Stz* szEnd, bool bAddEnd=false);
+    bool bCollectMemberTerms(Stz* szSawTerm);
     bool bCollectFunctionArgs(Stz* szSawTerm);
     bool bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun);
     bool bCollectTemplateArgs(Stz* szSawTerm);

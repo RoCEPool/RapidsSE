@@ -946,7 +946,7 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
     }
     
     if (xTkn.bSame("{"_Stz)) {
-      bCollectFunVarTerms(xTkn.szTerm(),"}"_Stz);
+      bCollectMemberTerms(xTkn.szTerm());
       CHECKED(bGetNextToken(xTkn))
       break ;
     }
@@ -954,7 +954,7 @@ void Vortex::vParseBlockMember(Stz* szSawTerm)
     vAddTerm(xTkn.szTerm());
   }
     
-  if (! MetaMember::bIsMember(szClassNm,&m_oFunVarTerms)) {
+  if (! MetaMember::bIsMemberVar(szClassNm,&m_oFunVarTerms)) {
     vTrace("  not a member variable\n"_Stz);
     vRecognised(CP_MEMBER_FUNCTION);
     return;
@@ -1082,15 +1082,14 @@ void Vortex::vParseMemberStatic(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* collect all terms till given end (optionally adding the end term)          */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bCollectFunVarTerms(Stz* szSawTerm, Stz* szEnd, bool bAddEnd)
+bool Vortex::bCollectMemberTerms(Stz* szSawTerm)
 {
   vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vAddPart("@"_Stz);
   
-  if (szSawTerm->bSame(szEnd)) {
-    if (bAddEnd)
+  if (szSawTerm->bSame("}"_Stz)) {
       m_oFunVarTerms.vAdd(szSawTerm);
     return true;
   }
@@ -1100,18 +1099,18 @@ bool Vortex::bCollectFunVarTerms(Stz* szSawTerm, Stz* szEnd, bool bAddEnd)
   Token xTkn;
   for (;;) {
     
-    if (! bGetNextToken(xTkn))
-      return false;
+    CHECKED(bGetNextToken(xTkn));
     
-    if (xTkn.bSame(szEnd)) {
-      
-      if (bAddEnd)
-        m_oFunVarTerms.vAdd(xTkn.szTerm());
-      
+    if (xTkn.bSame("}"_Stz)) {
+      m_oFunVarTerms.vAdd(xTkn.szTerm());
       break;
     }
     
     m_oFunVarTerms.vAdd(xTkn.szTerm());
+    
+    if (xTkn.bSame("{"_Stz)) {
+      bCollectMemberTerms("{"_Stz);
+    }
   }
 
   s48K sTermsString;
@@ -1859,7 +1858,7 @@ void Vortex::vProcConst(void)
 
   vTrace("Const %s\n"_Stz,xConstNm.azTerm());
   
-  if (bCollectFunVarTerms(xConstNm.szTerm(),";"_Stz)) {
+  if (bCollectMemberTerms(xConstNm.szTerm(),";"_Stz)) {
     ConstDef* pConstDef = m_p_ConsSet->pAddConstDef(xConstNm.szTerm());
     pConstDef->vTerms(m_oFunVarTerms);
   }

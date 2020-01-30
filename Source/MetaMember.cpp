@@ -63,7 +63,7 @@ MetaMember::~MetaMember(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* test if term set can be recogised as a member variable                     */
 /*----------------------------------------------------------------------------*/
-bool MetaMember::bIsMember(Stz* szClassNm, EnameSet* pTerms)
+bool MetaMember::bIsMemberVar(Stz* szClassNm, EnameSet* pTerms)
 {
   _static_
   
@@ -71,8 +71,11 @@ bool MetaMember::bIsMember(Stz* szClassNm, EnameSet* pTerms)
   
   i8 nTerms = pTerms->nEnames();
   
-  for (i8 i_Term = 0; i_Term < nTerms; i_Term++)
+  for (i8 i_Term = 0; i_Term < nTerms; i_Term++) {
     vTrace("[%lld] %s "_Stz,i_Term,pTerms->szName(i_Term)->azChar());
+    if (pTerms->szName(i_Term)->bSame("operator"_Stz))
+      return false;
+  }
   vTrace("\n"_Stz);
   
   i8 i_Term = 0;
@@ -102,9 +105,14 @@ bool MetaMember::bIsMember(Stz* szClassNm, EnameSet* pTerms)
   
   // -- -- -- -- -- --
   // test for member which is a function pointer
-  if (szTerm->bSame("("_Stz))
-    return true;
-
+  if (szTerm->bSame("("_Stz)) {
+    szTerm = pTerms->szName(i_Term++);
+    
+    if (szTerm->bSame("*"_Stz))
+  
+      return true;
+  }
+  
   // -- -- -- -- -- --
   // attempt to detect a member function
   szTerm = pTerms->szName(i_Term++);
