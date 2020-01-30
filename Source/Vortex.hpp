@@ -18,6 +18,8 @@ namespace Utilities
     MetaMember* m_p_MetaMember; // current working meta member
     ConstSet*   m_p_ConstSet;   // set of static const i8's
 
+    EnameSet    m_oOtherTerms;  // working set of collected terms
+
     EnameSet    m_oFunctionTerms;   // working set of collected terms
     EnameSet    m_oMemberTerms;     // working set of collected terms
     EnameSet    m_oTplArgTerms;     // working set of collected terms
@@ -45,6 +47,10 @@ namespace Utilities
     void vProcessSource(Stz* szSourcePath);
 
   private:
+  
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // top-down parsing
+  
     bool bParseFile(void);
   
     void vParseFileClass(Stz* szSawTerm);
@@ -53,7 +59,8 @@ namespace Utilities
     void vParseFileFunction(Stz* szSawTerm);
     void vParseFileHash(Stz* szSawTerm);
     void vParseFileNamespace(Stz* szSawTerm);
-    void vParseFileStatic(Stz* szSawTerm);
+    void vParseFileOther(Stz* szSawTerm);
+    void vParseFileStatic(Stz* szSawTerm);      // -> other
     void vParseFileTemplate(Stz* szSawTerm);
     void vParseFileUsing(Stz* szSawTerm);
 
@@ -64,12 +71,15 @@ namespace Utilities
 
     void vParseNamespaceClass(Stz* szSawTerm);
     void vParseNamespaceFunction(Stz* szSawTerm);
-    void vParseNamespaceStatic(Stz* szSawTerm);
+    void vParseNamespaceStatic(Stz* szSawTerm);      // -> other
     void vParseNamespaceStruct(Stz* szSawTerm);
     void vParseNamespaceTemplate(Stz* szSawTerm);
     void vParseNamespaceTypedef(Stz* szSawTerm);
     void vParseNamespaceUnion(Stz* szSawTerm);
   
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // class, block, member parsing
+
     void vParseClassBase(Stz* szSawTerm);
     void vParseClassBlock(Stz* szSawTerm);
   
@@ -83,11 +93,40 @@ namespace Utilities
     void vParseMemberTemplate(Stz* szSawTerm);
     void vParseMemberUnion(Stz* szSawTerm);
   
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // term collection
+  
+    bool bCollectOtherTerms(Stz* szSawTerm);
+  
     bool bCollectMemberTerms(Stz* szSawTerm);
     //bool bCollectFunctionArgs(Stz* szSawTerm);
     bool bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun);
     bool bCollectTemplateArgs(Stz* szSawTerm);
 
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // term skipping
+  
+    void vSkipBalancedClosingBrace(Stz* szSawTerm);
+    //void vSkipTillSemicolon(void);
+    void vSkipTill(Stz* szTerm, Stz* szTill);
+    void vSkipUnrecognised(Stz* szTerm);
+
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // term testing
+  
+    bool bTermsAreFunction(void);
+    bool bTermsAreVariable(void);
+
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // blocks
+  
+    void vNewTopBlock(Stz* szBlockNm, eMB m_eBlock);
+    void vPopNestedBlock(void);
+    void vPushNestedBlock(Stz* szBlockNm, eMB eBlock);
+
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // support
+  
     void vAddPart(Stz* szTerm);
     void vAddTerm(Stz* szTerm);
     void vAscendFromClass(void);
@@ -95,20 +134,10 @@ namespace Utilities
     void vDescendIntoClass(Stz* szClassNm);
     void vDescendIntoNamepace(Stz* szNamespaceNm);
     bool bGetNextToken(Token& roToken);
-    void vNewTopBlock(Stz* szBlockNm, eMB m_eBlock);
-    void vPopNestedBlock(void);
-    void vPushNestedBlock(Stz* szBlockNm, eMB eBlock);
     void vRecognised(eCP ePart);
     void vResetFunVarTerms(void);
     void vResetPart(void);
-    void vSkipBalancedClosingBrace(Stz* szSawTerm);
-    //void vSkipTillSemicolon(void);
-    void vSkipTill(Stz* szTerm, Stz* szTill);
-    void vSkipUnrecognised(Stz* szTerm);
-    bool bTermsAreFunction(void);
-    bool bTermsAreVariable(void);
     void vThrowProblem(i8 i_Problem);
-
 
 
     // - - - - - - - - - - - - - - - - - -

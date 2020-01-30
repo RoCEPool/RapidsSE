@@ -30,7 +30,7 @@ Vortex::Vortex(void)
   m_p_MetaBlock  = nullptr;
   m_p_MetaMember = nullptr;
   
-  //m_oMemberTerms
+  //m_oOtherTerms
   m_bTraceTokens = false;
   
   m_bInClass     = false;
@@ -183,7 +183,7 @@ bool Vortex::bParseFile(void)
       else
       if (szKeyWord->bSame("static"_Stz)) {
          vParseFileStatic(szKeyWord);
-     }
+      }
       else
       if (szKeyWord->bSame("struct"_Stz)) {
         // in SE we don't expect a struct outside of a namespace
@@ -464,6 +464,22 @@ void Vortex::vParseFileNamespace(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* within file, parse <other> _^_ <term> ... ;                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFileOther(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  //RASSERT(szSawTerm->bSame("???"_Stz));
+  
+  eFN eFun;
+  Token xFunNm;
+  CHECKED(bCollectFunctionTerms(szSawTerm,xFunNm,eFun));
+  
+  vRecognised(CP_FILE_FUNCTION);                                         // ✅
+}
+/*----------------------------------------------------------------------------*/
 /* within file, parse STATIC ... ;                                            */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFileStatic(Stz* szSawTerm)
@@ -482,7 +498,7 @@ void Vortex::vParseFileStatic(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within file, parse TEMPLATE < ... > <fileClass>  | <fileFunction>          */
+/* within file, parse TEMPLATE < ... > CLASS ...  | <other>                   */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFileTemplate(Stz* szSawTerm)
 {
