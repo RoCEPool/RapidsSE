@@ -17,8 +17,11 @@ namespace Resources
   
     void*   m_aLowBuff; // low memory read area
 
-    struct sockaddr_in m_xServAddr;
-    
+    union {
+      struct sockaddr_in m_xServAddr;
+      i8 m__Padding[16];
+    };
+  
     // must be last
     Footer m_xFooter;
         

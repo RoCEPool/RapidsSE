@@ -63,6 +63,8 @@ Socket::Socket(Object* pIsFor)
   
   m_aLowBuff  = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   
+  MemLib::vZero(m__Padding,sizeof(m__Padding),CN_SOCKET);
+  
   vAddrInit(&m_xServAddr,nullptr,0);
   
   _checkInitialised_(CN_SOCKET);
@@ -89,6 +91,8 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   m_bBlocking = true;
   
   m_aLowBuff  = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
+  
+  MemLib::vZero(m__Padding,sizeof(m__Padding),CN_SOCKET);
   
   vAddrInit(&m_xServAddr,nullptr,0);
   

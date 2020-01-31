@@ -201,6 +201,8 @@ void Vortex::vGetExpectedToken(Stz* szExpect)
   Token xTkn;
   CHECKED(m_pInput->bGetToken(&xTkn));
   CHECKED(xTkn.bSame(szExpect));
+  
+  vFragmentAdd(xTkn.szTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -376,6 +378,7 @@ bool Vortex::bParseFile(void)
     try {
       Stz* szKeyWord = xTkn.szTerm();
         
+      // the possible key words in a file
       if (szKeyWord->bSame("class"_Stz)) {
         vThrowProblem(__LINE__);   // don't expect class outside of a namespace
       }
@@ -557,8 +560,6 @@ void Vortex::vParseFileNamespace(Stz* szSawTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   RASSERT(szSawTerm->bSame("namespace"_Stz));
   
-  vDebugPoint();
-  
   // get <name> of namespace
   Token xTkn;
   CHECKED(bGetNextToken(xTkn));
@@ -566,15 +567,14 @@ void Vortex::vParseFileNamespace(Stz* szSawTerm)
   vNamepaceDescend(xTkn.szTerm());
   
   // get {
-  CHECKED(bGetNextToken(xTkn));
-  CHECKED(xTkn.bSame("{"_Stz));
+  vGetExpectedToken("{"_Stz);
 
   // parse ... }
   while (bGetNextToken(xTkn)) {
   
     // test for end-of-namespace
     if (xTkn.bSame("}"_Stz))  {
-      vPartRecognised(CP_FILE_NAMESPACE);                          // namespace ✅
+      vPartRecognised(CP_FILE_NAMESPACE);                       // namespace ✅
       vNamepaceAscend();
       return;
     }
@@ -658,7 +658,7 @@ void Vortex::vParseFileStatic(Stz* szSawTerm)
   
   vDiscardTill(szSawTerm,";"_Stz);
   
-  vPartRecognised(CP_FILE_STATIC);                                            // ✅
+  vPartRecognised(CP_FILE_STATIC);                                        // ✅
 }
 
 /*----------------------------------------------------------------------------*/
@@ -714,7 +714,7 @@ void Vortex::vParseFileUsing(Stz* szSawTerm)
   CHECKED(bGetNextToken(xTkn));
   CHECKED(xTkn.bSame(";"_Stz));
   
-  vPartRecognised(CP_FILE_USING);                                            // ✅
+  vPartRecognised(CP_FILE_USING);                                         // ✅
 }
 
 /*----------------------------------------------------------------------------*/
