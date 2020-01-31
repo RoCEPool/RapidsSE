@@ -146,9 +146,11 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // terms
   
+    Stz* szTerm(i8 i_Term);
     void vTermAdd(Stz* szTerm);
     bool bTermsAreFunction(void);
     bool bTermsAreVariable(void);
+    i8   nTerms(void);
     void vTermsReset(void);
   
    private:
