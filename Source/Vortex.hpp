@@ -113,7 +113,6 @@ namespace Utilities
   
     void vParseClassBase(Stz* szSawTerm);
     void vParseClassBlock(Stz* szSawTerm);
-    void vParseClassOther(Stz* szSawTerm);
     void vParseClassTemplate(Stz* szSawTerm);
 
     void vParseBlockFriend(Stz* szSawTerm);
@@ -124,7 +123,8 @@ namespace Utilities
     void vParseBlockUnion(Stz* szSawTerm);
 
     void vParseConst(Stz* szSawTerm);
-  
+    void vParseOther(Stz* szSawTerm);
+
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
   
@@ -135,9 +135,9 @@ namespace Utilities
   
     void vCollectOtherTerms(Stz* szSawTerm);
   
-    bool bCollectMemberTerms(Stz* szSawTerm);
+
     bool bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun);
-    bool bCollectTemplateArgs(Stz* szSawTerm);
+    void vCollectTplArgs(Stz* szSawTerm);
 
     void vDiscardBalanced(Stz* szOpen, Stz* szClose);
     void vDiscardBalancedAngles(Stz* szSawTerm);

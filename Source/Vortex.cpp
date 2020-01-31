@@ -660,8 +660,6 @@ void Vortex::vParseFileOther(Stz* szSawTerm)
   vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  //RASSERT(szSawTerm->bSame("???"_Stz));
-  
   vCollectOtherTerms(szSawTerm);
   
   vPartRecognised(CP_FILE_OTHER);                                         // ✅
@@ -827,13 +825,11 @@ void Vortex::vParseNamespaceClass(Stz* szSawTerm)
   RASSERT(! m_p_MetaBlock);
   RASSERT(szSawTerm->bSame("class"_Stz));
   
-  vDebugPoint();
-  
-  // get <name>
   Token xTkn;
+
+  // get <name>
   Token xName;
-  CHECKED(bGetNextToken(xTkn));
-  xName = xTkn;
+  vGetNextToken(xName);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -845,11 +841,11 @@ void Vortex::vParseNamespaceClass(Stz* szSawTerm)
     return;
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   vClassDescend(xName.szTerm());
 
   vBlockNewTop(m_sClassNm.szStz(),MB_CLASS);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // detect class base clause ?
   if (xTkn.bSame(":"_Stz)) {
@@ -857,6 +853,8 @@ void Vortex::vParseNamespaceClass(Stz* szSawTerm)
     m_p_MetaBlock = nullptr;
     return;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // detect class block ?
   if (xTkn.bSame("{"_Stz)) {
@@ -884,6 +882,19 @@ void Vortex::vParseNamespaceFunction(Stz* szSawTerm)
 
   
   vPartRecognised(CP_NAMESPACE_FUNCTION);
+}
+
+/*----------------------------------------------------------------------------*/
+/* within file, parse <other> _^_ <term> ... ;                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseNamespaceOther(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  vCollectOtherTerms(szSawTerm);
+  
+  vPartRecognised(CP_NAMESPACE_OTHER);                                         // ✅
 }
 
 /*----------------------------------------------------------------------------*/
@@ -944,7 +955,7 @@ void Vortex::vParseNamespaceTemplate(Stz* szSawTerm)
   CHECKED(bGetNextToken(xTkn));
   CHECKED(xTkn.bSame("<"_Stz));
   
-  CHECKED(bCollectTemplateArgs(xTkn.szTerm()));
+  vCollectTplArgs(xTkn.szTerm());
     
   CHECKED(bGetNextToken(xTkn));
   
@@ -952,7 +963,7 @@ void Vortex::vParseNamespaceTemplate(Stz* szSawTerm)
     vParseNamespaceClass(xTkn.szTerm());
   }
   else {
-    vParseNamespaceFunction(xTkn.szTerm());
+    vParseNamespaceOther(xTkn.szTerm());
   }
 }
 
@@ -1128,42 +1139,12 @@ void Vortex::vParseBlockOther(Stz* szSawTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
  
   RASSERT(m_bInClass);
-  //RASSERT(szSawTerm->bSame("???"_Stz));
   
-  Stz* szClassNm = m_p_MetaBlock->szBlockNm();
-  
-  vTrace("%lld.%lld) %s : "_Stz,
-         m_pMetaGraph->nItems(),
-         m_p_MetaBlock->nItems(),
-         szClassNm->azChar());
-    
-  vTermsReset();
-  vTermAdd(szSawTerm);
-
-  Token xTkn;
-  while (bGetNextToken(xTkn)) {
-    
-    if (xTkn.bSame(";"_Stz)) {
-      break;
-    }
-    
-    if (xTkn.bSame("{"_Stz)) {
-      bCollectMemberTerms(xTkn.szTerm());
-      //CHECKED(bGetNextToken(xTkn))
-      break ;
-    }
-
-    vTermAdd(xTkn.szTerm());
-  }
-    
-  if (! MetaMember::bIsMemberVar(szClassNm,&m_oMemberTerms)) {
-    vTrace("  not a member variable\n"_Stz);
-    vPartRecognised(CP_MEMBER_FUNCTION);
-    return;
-  }
+  vCollectOtherTerms(szSawTerm);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+#if 0
   i8   nPointers;
   bool bFunPtr;
   i8   nElements;
@@ -1183,7 +1164,9 @@ void Vortex::vParseBlockOther(Stz* szSawTerm)
   m_p_MetaMember->vElements(nElements);
   m_p_MetaMember->vBits(nBits);
 
-  vPartRecognised(CP_MEMBER_VARIABLE);
+#endif
+  
+  vPartRecognised(CP_MEMBER_OTHER);
 
   vDebugPoint();
 }
@@ -1226,6 +1209,8 @@ void Vortex::vParseBlockUnion(Stz* szSawTerm)
   m_p_MetaBlock = nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /* parse [STATIC] CONST _^_ ... ;                                             */
 /*----------------------------------------------------------------------------*/
@@ -1339,54 +1324,6 @@ void Vortex::vCollectOtherTerms(Stz* szSawTerm)
 
 }
 
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/* collect all terms till given end (optionally adding the end term)          */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bCollectMemberTerms(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  vFragmentMarker("@"_Stz);
-  
-  if (szSawTerm->bSame("}"_Stz)) {
-      m_oMemberTerms.vAdd(szSawTerm);
-    return true;
-  }
-  
-  m_oMemberTerms.vAdd(szSawTerm);
-  
-  Token xTkn;
-  for (;;) {
-    
-    CHECKED(bGetNextToken(xTkn));
-    
-    if (xTkn.bSame("}"_Stz)) {
-      m_oMemberTerms.vAdd(xTkn.szTerm());
-      break;
-    }
-    
-    m_oMemberTerms.vAdd(xTkn.szTerm());
-    
-    if (xTkn.bSame("{"_Stz)) {
-      bCollectMemberTerms("{"_Stz);
-    }
-  }
-
-  s48K sTermsString;
-  m_oMemberTerms.vNamesString(sTermsString);
-  
-  vTrace("  %s MemberTerms: %s\n"_Stz,__func__,sTermsString.azChar());
-  
-  if (m_oMemberTerms.szName(0)->bSame("bIsValid"_Stz))
-    vDebugPoint();
-  
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* collect terms for function intro:                                          */
@@ -1512,7 +1449,7 @@ bool Vortex::bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun)
 /*----------------------------------------------------------------------------*/
 /* collect all teplate arg terms : TEMPLATE _^_ < ... >                       */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bCollectTemplateArgs(Stz* szSawTerm)
+void Vortex::vCollectTplArgs(Stz* szSawTerm)
 {
   vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -1540,8 +1477,6 @@ bool Vortex::bCollectTemplateArgs(Stz* szSawTerm)
   m_oTplArgTerms.vNamesString(sTermsString);
   
   vTrace("  %s TplArgs: %s\n"_Stz,__func__,sTermsString.azChar());
-  
-  return true;
 }
 
 
@@ -1856,3 +1791,40 @@ void Vortex::vTermsReset(void)
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+ 1)
+    void vCheckAssumptions ( void ) ;
+ 
+ 2)
+    Forth * _pForth  ( void * aAddr ) ;
+ 
+ 3)    template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+    OVER * Nub_t <CN,HEAD,OVER,TAIL,DESC> :: aAllotOver (i8 nOverSize)
+ 
+ 
+ 4)    template <eCN CN, class HEAD, class OVER, class TAIL, class DESC, i8 BYTES>
+    TrayNL_t < CN,HEAD,OVER,TAIL,DESC,BYTES> * _pNubNL (void* aAddr);
+
+ 5)
+       template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+    Nub_t < CN,HEAD,OVER,TAIL,DESC> :: Nub_t (void)
+    : Object(CN)
+    { .. }
+
+ 6)
+       template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+    Nub_t < CN,HEAD,OVER,TAIL,DESC> :: ~ Nub_t (void) noexcept(false)
+    { ... }
+ 
+ 7)    template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+    i8 Nub_t  <CN,HEAD,OVER,TAIL,DESC> :: nBytes (i8 nUnits) { .. }
+
+
+maybe
+  ?)    template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+    Some_t <CN>* Nub_t <CN,HEAD,OVER,TAIL,DESC> :: aFun (i8 nOverSize)
+
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
