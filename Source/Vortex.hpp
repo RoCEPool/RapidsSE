@@ -60,10 +60,12 @@ namespace Utilities
     // machinary
   
     bool bDiscardNextToken(void);
-    void vGetExpectedToken(Stz* szExpect);
+    void vGetExpectedToken(Stz* szExpect); // -> vDisardExpectedToken()
     bool bGetNextTerm(Token& roTerm);
     bool bGetNextToken(Token& roToken);
-    void vFragmentAdd(Stz* szTerm);
+    void vGetNextToken(Token& roToken);
+    void vFragmentAppend(Stz* szTerm);
+    void vFragmentMarker(Stz* szTerm);
     void vFragmentReset(void);
     void vPartRecognised(eCP ePart);
     void vThrowProblem(i8 i_Problem);
@@ -121,6 +123,8 @@ namespace Utilities
     void vParseBlockStruct(Stz* szSawTerm);
     void vParseBlockUnion(Stz* szSawTerm);
 
+    void vParseConst(Stz* szSawTerm);
+  
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
   
@@ -140,6 +144,7 @@ namespace Utilities
     void vDiscardBalancedBraces(Stz* szSawTerm);
     void vDiscardBalancedParenthesis(Stz* szSawTerm);
   
+    void vDiscardOtherTokens(Stz* szSawTerm);
     void vDiscardTill(Stz* szTerm, Stz* szTill);
   
     void vSkipBalancedBraces(Stz* szSawTerm); // to be removed
