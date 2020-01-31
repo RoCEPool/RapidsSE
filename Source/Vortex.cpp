@@ -236,13 +236,10 @@ void Vortex::vPartRecognised(eCP ePart)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  vTrace("Recognised %s\n"_Stz,aCP[ePart]);
-  vTrace("\n"_Stz);
+  if (m_bTrace)
+    vTrace("Recognised: %s\n\n"_Stz,aCP[ePart]);
 
   vFragmentReset();
-  vTermsReset();
-  
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,8 +251,6 @@ void Vortex::vThrowProblem(i8 i_Problem)
 
   throw i_Problem;
 }
-
-
 
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
