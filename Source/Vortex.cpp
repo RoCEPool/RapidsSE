@@ -192,6 +192,18 @@ bool Vortex::bGetNextToken(Token& roToken)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get expected token                                                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vGetExpectedToken(Stz* szExpect)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  CHECKED(m_pInput->bGetToken(&xTkn));
+  CHECKED(xTkn.bSame(szExpect));
+}
+
+/*----------------------------------------------------------------------------*/
 /* add sub-string to fragment string                                          */
 /*----------------------------------------------------------------------------*/
 void Vortex::vFragmentAdd(Stz* szString)
@@ -514,9 +526,7 @@ void Vortex::vParseFileHash(Stz* szSawTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame("#"_Stz));
-  
-  vDebugPoint();
-  
+    
   Token xTkn;
   CHECKED(bGetNextToken(xTkn));
   
@@ -724,9 +734,7 @@ void Vortex::vParseHashDefine(Stz* szSawTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame("define"_Stz));
-  
-  vDebugPoint();
-  
+    
   Token xTkn;
   while (bGetNextToken(xTkn)) {
     
@@ -738,7 +746,7 @@ void Vortex::vParseHashDefine(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within #, parse INCLUDE _^_ <filePath>                                     */
+/* within #, parse IF _^_ ... #ENDIF                                          */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashIf(Stz* szSawTerm)
 {
@@ -748,7 +756,6 @@ void Vortex::vParseHashIf(Stz* szSawTerm)
   RASSERT(szSawTerm->bSame("if"_Stz));
   
   Token xTkn;
-  
   CHECKED(bGetNextToken(xTkn));
 
   while (! xTkn.bSame("endif"_Stz)) {
@@ -768,8 +775,6 @@ void Vortex::vParseHashInclude(Stz* szSawTerm)
 
   RASSERT(szSawTerm->bSame("include"_Stz));
   
-  vDebugPoint();
-  
   Token xTkn;
   CHECKED(bGetNextToken(xTkn));
     
@@ -786,11 +791,7 @@ void Vortex::vParseHashPragma(Stz* szSawTerm)
 
   RASSERT(szSawTerm->bSame("pragma"_Stz));
   
-  vDebugPoint();
-  
-  Token xTkn;
-  CHECKED(bGetNextToken(xTkn));
-  CHECKED(xTkn.bSame("once"_Stz));
+  vGetExpectedToken("once"_Stz);
 
   vPartRecognised(CP_HASH_PRAGMA);
 }

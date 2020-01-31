@@ -60,6 +60,7 @@ namespace Utilities
     // machinary
   
     bool bDiscardNextToken(void);
+    void vGetExpectedToken(Stz* szExpect);
     bool bGetNextTerm(Token& roTerm);
     bool bGetNextToken(Token& roToken);
     void vFragmentAdd(Stz* szTerm);
