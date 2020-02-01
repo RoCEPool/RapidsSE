@@ -22,7 +22,7 @@ namespace Utilities
   
     // working section
   
-    s4K         m_sFragment;     // top-down fragment of tokens
+    s48K        m_sFragment;     // top-down fragment of tokens
 
     bool        m_bInClass;      // currently in a class?
     s32         m_sClassNm;      // current class name

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* REG.cpp -- hidden shared memory pointer (or nullptr)                       */
+/* REG_t.cpp -- hidden shared memory pointer (or nullptr)                     */
 /*============================================================================*/
 
 #include "Correctness.h"
