@@ -87,8 +87,6 @@ namespace Utilities
     // top-down parsing
   
     bool bParseFile(void);
-
-     void vParseNamespaceTemplate(Stz* szSawTerm);
   
     void vParseBlockOther(Stz* szSawTerm);
  

@@ -503,34 +503,6 @@ bool Vortex::bParseFile(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* within NAMESPACE, parse template _^_ CLASS ... | <other> ...               */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseNamespaceTemplate(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(szSawTerm->bSame("template"_Stz));
-  
-  vDebugPoint();
-  
-  Token xTkn;
-  CHECKED(bGetNextToken(xTkn));
-  CHECKED(xTkn.bSame("<"_Stz));
-  
-  vCollectTplArgs(xTkn.szTerm());
-    
-  CHECKED(bGetNextToken(xTkn));
-  
-  if (xTkn.bSame("class"_Stz)) {
-    vParseClass(xTkn.szTerm());
-  }
-  else {
-    vParseOther(xTkn.szTerm());
-  }
-}
-
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 /*                      class, block, member parsing                          */
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
@@ -979,7 +951,7 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
     }
     else
     if (szKeyWord->bSame("template"_Stz)) {
-      vParseNamespaceTemplate(szKeyWord);
+      vParseTemplate(szKeyWord);
     }
     else
     if (szKeyWord->bSame("typedef"_Stz)) {
@@ -1084,7 +1056,6 @@ void Vortex::vParseTemplate(Stz* szSawTerm)
   vGetNextToken(xTkn);
   
   if (xTkn.bSame("class"_Stz)) {
-    vThrowProblem(__LINE__);
     vParseClass(xTkn.szTerm());
     return;
   }
