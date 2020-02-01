@@ -7,8 +7,6 @@ enum eCP // c++ part
 {
   /*  0 */ CP_NONE=0,
   
-  /*    */ CP_CLASS_OTHER,         // class other
-  
   /*    */ CP_CONST,               // const       (in file, namespace, class)
   
   /*    */ CP_FILE_ENUM,           // enum        (in file)
@@ -22,18 +20,18 @@ enum eCP // c++ part
   /*    */ CP_HASH_INCLUDE,        // # include
   /*    */ CP_HASH_PRAGMA,         // # pragma
 
-  /*    */ CP_MEMBER_FUNCTION,     // class member function
+  /*    */ CP_MEMBER_FRIEND,       // class member friend
   /*    */ CP_MEMBER_LABEL,        // class member label
   /*    */ CP_MEMBER_OTHER,        // class member other
   /*    */ CP_MEMBER_STATIC,       // class member static function
   
   /*    */ CP_NAMESPACE_CLASS,     // class            (in namespace)
   /*    */ CP_NAMESPACE_FORWARD,   // forward class    (in namespace)
-  /*    */ CP_NAMESPACE_FUNCTION,  // function         (in namespace)
   /*    */ CP_NAMESPACE_OTHER,     // other            (in namespace)
   /*    */ CP_NAMESPACE_STATIC,    // static           (in namespace)
   /*    */ CP_NAMESPACE_STRUCT,    // struct           (in namespace)
   /*    */ CP_NAMESPACE_TYPEDEF,   // typedef          (in namespace)
+  /*    */ CP_NAMESPACE_UNION,     // union            (in namespace)
 
   /*    */ CP_ENUMS
 };
@@ -41,8 +39,6 @@ enum eCP // c++ part
 static Stz* aCP[]
 {
   /*  0 */ "NONE"_Stz,
-  
-  /*    */ "CP_CLASS_OTHER"_Stz,
   
   /*    */ "CP_CONST"_Stz,
   
@@ -57,14 +53,14 @@ static Stz* aCP[]
   /*    */ "CP_HASH_INCLUDE"_Stz,
   /*    */ "CP_HASH_PRAGMA"_Stz,
 
-  /*    */ "CP_MEMBER_FUNCTION"_Stz,
+  /*    */ "CP_MEMBER_FRIEND"_Stz,
   /*    */ "CP_MEMBER_LABEL"_Stz,
   /*    */ "CP_MEMBER_OTHER"_Stz,
   /*    */ "CP_MEMBER_STATIC"_Stz,
 
   /*    */ "CP_NAMESPACE_CLASS"_Stz,
   /*    */ "CP_NAMESPACE_FORWARD"_Stz,
-  /*    */ "CP_NAMESPACE_FUNCTION"_Stz,
+  /*    */ "CP_NAMESPACE_OTHER"_Stz,
   /*    */ "CP_NAMESPACE_STATIC"_Stz,
   /*    */ "CP_NAMESPACE_STRUCT"_Stz,
   /*    */ "CP_NAMESPACE_TYPEDEF"_Stz,

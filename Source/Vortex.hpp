@@ -57,16 +57,19 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // machinary
   
-    bool bDiscardNextToken(void);
+    void vDiscardNextToken(void);
     void vGetExpectedToken(Stz* szExpect); // -> vDisardExpectedToken()
-    bool bGetNextTerm(Token& roTerm);
     bool bGetNextToken(Token& roToken);
     void vGetNextToken(Token& roToken);
+    void vGetOtherTerm(Token& roTerm);
+    void vGetTplArg(Token& roTerm);
     void vFragmentAppend(Stz* szTerm);
     void vFragmentMarker(Stz* szTerm);
     void vFragmentReset(void);
+    void vOtherTermsReset(void);
     void vPartRecognised(eCP ePart);
     void vThrowProblem(i8 i_Problem);
+    void vTplArgsReset(void);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // block management
