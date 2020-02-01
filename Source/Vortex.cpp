@@ -982,8 +982,12 @@ void Vortex::vParseStatic(Stz* szSawTerm)
     return;
   }
   
-  vDiscardStaticTokens(xTkn.szTerm());
+  if (xTkn.bSame("inline"_Stz)) {
+    vDiscardInlineTokens(xTkn.szTerm());
+    return;
+  }
   
+  vDiscardStaticTokens(xTkn.szTerm());
   vPartRecognised(CP_FILE_STATIC);                                        // ✅
 }
 
@@ -1321,7 +1325,34 @@ void Vortex::vDiscardBalancedParenthesis(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect static tokens: ... STATIC ... | ; | { ... }                        */
+/* discard inline tokens: ... INLINE { ... }                                  */
+/*----------------------------------------------------------------------------*/
+void Vortex::vDiscardInlineTokens(Stz* szSawTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  for (;;) {
+    
+   vGetNextToken(xTkn);
+    
+    // test for terminating ;
+    if (xTkn.bSame(";"_Stz))
+      return;
+    
+    // test for terminating brace pair
+    if (xTkn.bSame("{"_Stz)) {
+      vDiscardBalancedBraces("{"_Stz);
+      return;
+    }
+    
+    // ignore any other token
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* discard static tokens: ... STATIC ... | ; | { ... } ;                      */
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardStaticTokens(Stz* szSawTerm)
 {

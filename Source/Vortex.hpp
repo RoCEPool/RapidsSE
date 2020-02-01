@@ -127,6 +127,7 @@ namespace Utilities
     void vDiscardBalancedAngles(Stz* szSawTerm);
     void vDiscardBalancedBraces(Stz* szSawTerm);
     void vDiscardBalancedParenthesis(Stz* szSawTerm);
+    void vDiscardInlineTokens(Stz* szSawTerm);
     void vDiscardStaticTokens(Stz* szSawTerm);
     void vDiscardTill(Stz* szTerm, Stz* szTill);
   
