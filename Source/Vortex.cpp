@@ -498,56 +498,6 @@ bool Vortex::bParseFile(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* within file, parse  CLASS _^_ <name> : ...  | { ...                        */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseClass(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  RASSERT(! m_p_MetaBlock);
-  RASSERT(szSawTerm->bSame("class"_Stz));
-    
-  Token xTkn;
-  Token xClassNm;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get <name>
-  
-  vGetNextToken(xTkn);
-  xClassNm = xTkn;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get ; or : or {
-  
-  vGetNextToken(xTkn);
-    
-  // forward declaration of a class?
-  if (xTkn.bSame(";"_Stz)) {
-    vPartRecognised(CP_NAMESPACE_FORWARD);                                // ✅
-    return;
-  }
-
-  // detect class base clause ?
-  if (xTkn.bSame(":"_Stz)) {
-    vClassDescend(xClassNm.szTerm());
-    vParseClassBase(xTkn.szTerm());
-    vClassAscend();
-    return;
-  }
-  
-  // detect class block ?
-  if (xTkn.bSame("{"_Stz)) {
-    vClassDescend(xClassNm.szTerm());
-    vParseBlock(xTkn.szTerm(),MB_CLASS,xClassNm.szTerm());
-    vClassAscend();
-    return;
-  }
-
-  vThrowProblem(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -699,29 +649,6 @@ void Vortex::vParseNamespaceStatic(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within NAMESPACE, parse STRUCT {                                           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseNamespaceStruct(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(szSawTerm->bSame("struct"_Stz));
-
-  Token xTkn;
-  
-  vDebugPoint();
-
-  vBlockNewTop("struct"_Stz,MB_STRUCT);
-
-  vDiscardTill(szSawTerm,";"_Stz);
-  
-  vPartRecognised(CP_NAMESPACE_STRUCT);           // struct within namespace ✅
-  
-  vBlockPopNested();
-}
-
-/*----------------------------------------------------------------------------*/
 /* within NAMESPACE, parse template _^_ CLASS ... | <other> ...               */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseNamespaceTemplate(Stz* szSawTerm)
@@ -793,204 +720,6 @@ void Vortex::vParseNamespaceUnion(Stz* szSawTerm)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* parse within:                                                              */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseClassBase(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(m_bInClass);
-  RASSERT(szSawTerm->bSame(":"_Stz));
-  
-  Token xTkn;
-
-  vDebugPoint();
-  
-  while (bGetNextToken(xTkn)) {
-
-    Stz* szTerm = xTkn.szTerm();
-    
-    // class base is terminated by {
-    if (szTerm->bSame("{"_Stz)) {
-      vParseBlock(szTerm,MB_CLASS,m_sClassNm);
-      return;
-    }
-
-    // ..incomplete..
-    
-    // skip token
-    
-  }
-
-  vThrowProblem(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* parse: namespace <namespaceNm> { ... class _^_ ...                         */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseClassBlock(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(m_bInClass);
-  RASSERT(szSawTerm->bSame("{"_Stz));
-  
-  vDebugPoint();
-  
-  Token xTkn;
-
-  while (bGetNextToken(xTkn)) {
-
-    Stz* szTerm = xTkn.szTerm();
-
-    // class base is terminated by } ;
-    if (szTerm->bSame("}"_Stz)) {
-     CHECKED(bGetNextToken(xTkn));
-     CHECKED(szTerm->bSame(";"_Stz));
-     vPartRecognised(CP_NAMESPACE_CLASS);
-     vBlockPopNested();
-     vClassAscend();
-     return;
-    }
-    
-    if (bParseBlockLabel(xTkn.szTerm()))
-      continue;
-
-    Stz* szKeyWord = xTkn.szTerm();
-    
-    if (szKeyWord->bSame("friend"_Stz)) {
-      vParseBlockFriend(szKeyWord);
-    }
-    else
-    if (szKeyWord->bSame("#"_Stz)) {
-      vParseHash(szKeyWord);
-    }
-    else
-    if (szKeyWord->bSame("struct"_Stz)) {
-      vParseBlockStruct(szKeyWord);
-    }
-    else
-    if (szKeyWord->bSame("union"_Stz)) {
-      vParseBlockUnion(szKeyWord);
-    }
-    else {
-      vParseBlockOther(szTerm);
-    }
-  }
-
-  vThrowProblem(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* parse: ... _^_ { ... } ;                                                   */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseBlock(Stz* szSawTerm, eMB eBlock, Stz* szBlockNm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(szSawTerm->bSame("{"_Stz));
-  
-  vBlockPushNested(szBlockNm,eBlock);
-
-  Token xTkn;
-
-  while (bGetNextToken(xTkn)) {
-
-    Stz* szTerm = xTkn.szTerm();
-
-    // block is terminated by } ;
-    if (szTerm->bSame("}"_Stz)) {
-     vGetExpectedToken(xTkn,";"_Stz);
-     vPartRecognised(CP_BLOCK);
-     vBlockPopNested();
-     return;
-    }
-    
-    if (bParseBlockLabel(xTkn.szTerm()))
-      continue;
-
-    Stz* szKeyWord = xTkn.szTerm();
-    
-    if (szKeyWord->bSame("friend"_Stz)) {
-      vParseBlockFriend(szKeyWord);
-    }
-    else
-    if (szKeyWord->bSame("#"_Stz)) {
-      vParseHash(szKeyWord);
-    }
-    else
-    if (szKeyWord->bSame("struct"_Stz)) {
-      vParseBlockStruct(szKeyWord);
-    }
-    else
-    if (szKeyWord->bSame("union"_Stz)) {
-      vParseBlockUnion(szKeyWord);
-    }
-    else {
-      vParseBlockOther(szTerm);
-    }
-  }
-
-  vThrowProblem(__LINE__);
-}
-/*----------------------------------------------------------------------------*/
-/* within class block, parse friend _^_ ... ;                                 */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseBlockFriend(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(szSawTerm->bSame("friend"_Stz));
-  
-  vDiscardTill(szSawTerm,";"_Stz);
-  
-  vPartRecognised(CP_MEMBER_FRIEND);                                      // ✅
-  
-  vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* within class block, skip a label i.e. private|protected|public :           */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bParseBlockLabel(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  Token xTkn;
-  
-  if (szSawTerm->bSame("private"_Stz)) {
-    CHECKED(bGetNextToken(xTkn));
-    CHECKED(xTkn.bSame(":"_Stz));
-    vPartRecognised(CP_MEMBER_LABEL);
-    return true;
-  }
-  
-  if (szSawTerm->bSame("protected"_Stz)) {
-    CHECKED(bGetNextToken(xTkn));
-    CHECKED(xTkn.bSame(":"_Stz));
-    vPartRecognised(CP_MEMBER_LABEL);
-    return true;
-  }
-  
-  if (szSawTerm->bSame("public"_Stz)) {
-    CHECKED(bGetNextToken(xTkn));
-    CHECKED(xTkn.bSame(":"_Stz));
-    vPartRecognised(CP_MEMBER_LABEL);
-    return true;
-  }
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* parse single class member (no label)                                       */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseBlockOther(Stz* szSawTerm)
@@ -1032,44 +761,144 @@ void Vortex::vParseBlockOther(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* can we recognise: struct {                                                 */
 /*----------------------------------------------------------------------------*/
-void Vortex::vParseBlockStruct(Stz* szSawTerm)
+
+/*----------------------------------------------------------------------------*/
+/* parse within:                                                              */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseBase(Stz* szSawTerm)
 {
   vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(szSawTerm->bSame("static"_Stz));
 
-  Token xTkn;
-  
-  vBlockPushNested("struct"_Stz,MB_STRUCT);
-  //vProcStructMember();
-  
-  vThrowProblem(__LINE__);
-
-  m_p_MetaBlock = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* can we recognise: union  {                                                 */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseBlockUnion(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(szSawTerm->bSame("union"_Stz));
+  RASSERT(m_bInClass);
+  RASSERT(szSawTerm->bSame(":"_Stz));
   
   Token xTkn;
+
+  vDebugPoint();
+  
+  while (bGetNextToken(xTkn)) {
+
+    Stz* szTerm = xTkn.szTerm();
     
-  vGetExpectedToken(xTkn,"{"_Stz);
+    // class base is terminated by {
+    if (szTerm->bSame("{"_Stz)) {
+      vParseBlock(szTerm,MB_CLASS,m_sClassNm);
+      return;
+    }
 
-  vParseBlock("{"_Stz,MB_UNION,"union"_Stz); // indirect recursive call
+    // ..incomplete..
+    
+    // skip token
+    
+  }
+
+  vThrowProblem(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse: ... _^_ { ... } ;                                                   */
 /*----------------------------------------------------------------------------*/
+void Vortex::vParseBlock(Stz* szSawTerm, eMB eBlock, Stz* szBlockNm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(szSawTerm->bSame("{"_Stz));
+  
+  vBlockPushNested(szBlockNm,eBlock);
+
+  Token xTkn;
+
+  while (bGetNextToken(xTkn)) {
+
+    Stz* szTerm = xTkn.szTerm();
+
+    // block is terminated by } ;
+    if (szTerm->bSame("}"_Stz)) {
+     vGetExpectedToken(xTkn,";"_Stz);
+     vPartRecognised(CP_BLOCK);
+     vBlockPopNested();
+     return;
+    }
+    
+    if (bParseLabel(xTkn.szTerm()))
+      continue;
+
+    Stz* szKeyWord = xTkn.szTerm();
+    
+    if (szKeyWord->bSame("friend"_Stz)) {
+      vParseFriend(szKeyWord);
+    }
+    else
+    if (szKeyWord->bSame("#"_Stz)) {
+      vParseHash(szKeyWord);
+    }
+    else
+    if (szKeyWord->bSame("struct"_Stz)) {
+      vParseStruct(szKeyWord);
+    }
+    else
+    if (szKeyWord->bSame("union"_Stz)) {
+      vParseUnion(szKeyWord);
+    }
+    else {
+      vParseBlockOther(szTerm);
+    }
+  }
+
+  vThrowProblem(__LINE__);
+}
+/*----------------------------------------------------------------------------*/
+/* within file, parse  CLASS _^_ <name> : ...  | { ...                        */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseClass(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  RASSERT(! m_p_MetaBlock);
+  RASSERT(szSawTerm->bSame("class"_Stz));
+    
+  Token xTkn;
+  Token xClassNm;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get <name>
+  
+  vGetNextToken(xTkn);
+  xClassNm = xTkn;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get ; or : or {
+  
+  vGetNextToken(xTkn);
+    
+  // forward declaration of a class?
+  if (xTkn.bSame(";"_Stz)) {
+    vPartRecognised(CP_NAMESPACE_FORWARD);                                // ✅
+    return;
+  }
+
+  // detect class base clause ?
+  if (xTkn.bSame(":"_Stz)) {
+    vClassDescend(xClassNm.szTerm());
+    vParseBase(xTkn.szTerm());
+    vClassAscend();
+    return;
+  }
+  
+  // detect class block ?
+  if (xTkn.bSame("{"_Stz)) {
+    vClassDescend(xClassNm.szTerm());
+    vParseBlock(xTkn.szTerm(),MB_CLASS,xClassNm.szTerm());
+    vClassAscend();
+    return;
+  }
+
+  vThrowProblem(__LINE__);
+}
 
 /*----------------------------------------------------------------------------*/
 /* parse [STATIC] CONST _^_ ... ;                                             */
@@ -1109,6 +938,57 @@ void Vortex::vParseEnum(Stz* szSawTerm)
   vDiscardTill(szSawTerm,";"_Stz);
   
   vPartRecognised(CP_FILE_ENUM);                                          // ✅
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse FRIEND _^_ ... ;                                                     */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseFriend(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("friend"_Stz));
+  
+  vDiscardTill(szSawTerm,";"_Stz);
+  
+  vPartRecognised(CP_MEMBER_FRIEND);                                      // ✅
+  
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* within block, skip a label i.e. private|protected|public :                 */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bParseLabel(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+  
+  if (szSawTerm->bSame("private"_Stz)) {
+    CHECKED(bGetNextToken(xTkn));
+    CHECKED(xTkn.bSame(":"_Stz));
+    vPartRecognised(CP_MEMBER_LABEL);
+    return true;
+  }
+  
+  if (szSawTerm->bSame("protected"_Stz)) {
+    CHECKED(bGetNextToken(xTkn));
+    CHECKED(xTkn.bSame(":"_Stz));
+    vPartRecognised(CP_MEMBER_LABEL);
+    return true;
+  }
+  
+  if (szSawTerm->bSame("public"_Stz)) {
+    CHECKED(bGetNextToken(xTkn));
+    CHECKED(xTkn.bSame(":"_Stz));
+    vPartRecognised(CP_MEMBER_LABEL);
+    return true;
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1165,7 +1045,7 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
     }
     else
     if (szKeyWord->bSame("struct"_Stz)) {
-      vParseNamespaceStruct(szKeyWord);
+      vParseStruct(szKeyWord);
     }
     else
     if (szKeyWord->bSame("template"_Stz)) {
@@ -1177,7 +1057,7 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
     }
     else
     if (szKeyWord->bSame("union"_Stz)) {
-      vParseNamespaceStruct(szKeyWord);
+      vParseUnion(szKeyWord);
     }
     else {
       vParseNamespaceOther(xTkn.szTerm());
@@ -1227,6 +1107,35 @@ void Vortex::vParseStatic(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse STRUCT { ...                                                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseStruct(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(szSawTerm->bSame("struct"_Stz));
+
+  Token xTkn;
+ 
+  vGetNextToken(xTkn);
+  
+  if (xTkn.bSame("{"_Stz)) {
+    vParseBlock("{"_Stz,MB_STRUCT,"struct"_Stz); // indirect recursive call
+  }
+  else {
+    Token xTknBraceSemi;
+    vGetNextToken(xTknBraceSemi);
+    if (xTkn.bSame("{"_Stz)) {
+      vParseBlock("{"_Stz,MB_STRUCT,xTkn.szTerm()); // indirect recursive call
+    }
+    else {
+      CHECKED(xTknBraceSemi.bSame(";"_Stz));
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse TEMPLATE < ... > CLASS ...  | <other> ...                            */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseTemplate(Stz* szSawTerm)
@@ -1251,6 +1160,23 @@ void Vortex::vParseTemplate(Stz* szSawTerm)
   }
   
   vParseOther(xTkn.szTerm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* can we recognise: union  {                                                 */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseUnion(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  RASSERT(szSawTerm->bSame("union"_Stz));
+  
+  Token xTkn;
+    
+  vGetExpectedToken(xTkn,"{"_Stz);
+
+  vParseBlock("{"_Stz,MB_UNION,"union"_Stz); // indirect recursive call
 }
 
 /*----------------------------------------------------------------------------*/
