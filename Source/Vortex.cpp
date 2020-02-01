@@ -961,12 +961,14 @@ void Vortex::vParseStruct(Stz* szSawTerm)
   /*
     
    1) struct { ... } ;
+      
+   2) struct { ... } <memberNm> ;
    
-   2) struct <blockNm> { ... } ;
-   
-   3) struct { ... } <memberNm> ;
-   
-   4) struct { ... } <memberNm> [ <constNm> ] ;
+   3) struct { ... } <memberNm> [ <constNm> ] ;
+
+   4) struct <blockNm> ;
+
+   5) struct <blockNm> { ... } ;
 
    */
   
@@ -974,19 +976,45 @@ void Vortex::vParseStruct(Stz* szSawTerm)
  
   vGetNextToken(xTkn);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // scenarios 1), 2) and 3)
+  
   if (xTkn.bSame("{"_Stz)) {
-    MetaBlock* p_Block = pParseBlock("{"_Stz,"struct"_Stz,MB_STRUCT,true);
+    
+    MetaBlock* p_Block = pParseBlock("{"_Stz,"struct"_Stz,MB_STRUCT,false);
+    
+    // 1) struct { ... } ;
+    vGetNextToken(xTkn);
+    if (xTkn.bSame(";"_Stz))
+      return;
+    
+    // <#> handle member name in xTkn
+    
+    // 2) struct { ... } <memberNm> ;
+    vGetNextToken(xTkn);
+    if (xTkn.bSame(";"_Stz))
+      return;
+
+    // 3) struct { ... } <memberNm> [ <constNm> ] ;
+    CHECKED(xTkn.bSame("["_Stz));
+    vGetNextToken(xTkn);
+    vGetExpectedToken(xTkn,"]"_Stz);
+    vGetExpectedToken(xTkn,";"_Stz);
+    return;
   }
-  else {
-    Token xTknBraceSemi;
-    vGetNextToken(xTknBraceSemi);
-    if (xTkn.bSame("{"_Stz)) {
-      MetaBlock* p_Block = pParseBlock("{"_Stz,xTkn.szTerm(),MB_STRUCT,true);
-    }
-    else {
-      CHECKED(xTknBraceSemi.bSame(";"_Stz));
-    }
-  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // <#> handle member name in xTkn
+
+  vGetNextToken(xTkn);
+  
+  // 4) struct <blockNm> ;
+  if (xTkn.bSame(";"_Stz))
+    return;
+
+  // 5) struct <blockNm> { ... } ;
+  MetaBlock* p_Block = pParseBlock("{"_Stz,xTkn.szTerm(),MB_STRUCT,true);
 }
 
 /*----------------------------------------------------------------------------*/
