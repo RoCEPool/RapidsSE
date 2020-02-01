@@ -790,6 +790,9 @@ void Vortex::vParseHashInclude(Stz* szSawTerm)
   Token xTkn;
   
   vGetNextToken(xTkn);
+  
+  if (xTkn.bSame("<"_Stz))
+    vDiscardBalancedAngles("<"_Stz);
     
   vPartRecognised(CP_HASH_INCLUDE);                                       // ✅
 }

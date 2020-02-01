@@ -43,9 +43,9 @@
 #include <signal.h>
 
 #ifdef WITH_APPLE
-  #include "mach/thread_act.h"
+  #include <mach/thread_act.h>
   #include <libkern/OSAtomic.h>
-  #include "mach/vm_map.h"
+  #include <mach/vm_map.h>
   #include <mach/mach_time.h>
   #include <mach/thread_policy.h>
   #include <mach/mach.h>
