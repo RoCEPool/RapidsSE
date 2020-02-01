@@ -88,7 +88,6 @@ namespace Utilities
   
     bool bParseFile(void);
   
-    void vParseFileConst(Stz* szSawTerm);
     void vParseFileEnum(Stz* szSawTerm);
     void vParseFileNamespace(Stz* szSawTerm);
     void vParseFileOther(Stz* szSawTerm);

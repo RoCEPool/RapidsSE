@@ -443,7 +443,7 @@ bool Vortex::bParseFile(void)
       }
       else
       if (szKeyWord->bSame("const"_Stz)) {
-         vParseFileConst(szKeyWord);
+         vParseConst(szKeyWord);
       }
       else
       if (szKeyWord->bSame("enum"_Stz)) {
@@ -546,19 +546,6 @@ void Vortex::vParseClass(Stz* szSawTerm)
   }
 
   vThrowProblem(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* within file, parse CONST _^_ ...                                           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseFileConst(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(szSawTerm->bSame("const"_Stz));
-  
-  vParseConst(szSawTerm);                                                 // ✅
 }
 
 /*----------------------------------------------------------------------------*/
