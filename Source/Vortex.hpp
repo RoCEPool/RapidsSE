@@ -88,7 +88,6 @@ namespace Utilities
   
     bool bParseFile(void);
   
-    void vParseFileClass(Stz* szSawTerm);
     void vParseFileConst(Stz* szSawTerm);
     void vParseFileEnum(Stz* szSawTerm);
     void vParseFileNamespace(Stz* szSawTerm);
@@ -103,7 +102,6 @@ namespace Utilities
     void vParseHashInclude(Stz* szSawTerm);
     void vParseHashPragma(Stz* szSawTerm);
 
-    void vParseNamespaceClass(Stz* szSawTerm);
     void vParseNamespaceOther(Stz* szSawTerm);
     void vParseNamespaceStatic(Stz* szSawTerm);      // -> other
     void vParseNamespaceStruct(Stz* szSawTerm);
@@ -111,10 +109,12 @@ namespace Utilities
     void vParseNamespaceTypedef(Stz* szSawTerm);
     void vParseNamespaceUnion(Stz* szSawTerm);
   
+    void vParseClass(Stz* szSawTerm);
     void vParseClassBase(Stz* szSawTerm);
     void vParseClassBlock(Stz* szSawTerm);
     void vParseClassTemplate(Stz* szSawTerm);
 
+    void vParseBlock(Stz* szSawTerm, eMB eBlock, Stz* szBlockNm);
     void vParseBlockFriend(Stz* szSawTerm);
     bool bParseBlockLabel(Stz* szSawTerm);
     void vParseBlockOther(Stz* szSawTerm);
