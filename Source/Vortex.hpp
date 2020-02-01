@@ -87,12 +87,7 @@ namespace Utilities
     // top-down parsing
   
     bool bParseFile(void);
-  
-    void vParseFileNamespace(Stz* szSawTerm);
-    void vParseFileOther(Stz* szSawTerm);
-    void vParseFileStatic(Stz* szSawTerm);           // -> other
-    void vParseFileTemplate(Stz* szSawTerm);
- 
+
     void vParseHash(Stz* szSawTerm);
     void vParseHashDefine(Stz* szSawTerm);
     void vParseHashIf(Stz* szSawTerm);
@@ -120,7 +115,10 @@ namespace Utilities
 
     void vParseConst(Stz* szSawTerm);
     void vParseEnum(Stz* szSawTerm);
+    void vParseNamespace(Stz* szSawTerm);
     void vParseOther(Stz* szSawTerm);
+    void vParseStatic(Stz* szSawTerm);
+    void vParseTemplate(Stz* szSawTerm);
     void vParseUsing(Stz* szSawTerm);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
