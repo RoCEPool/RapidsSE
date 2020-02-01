@@ -687,6 +687,11 @@ void Vortex::vParseHash(Stz* szSawTerm)
     return;
   }
 
+  if (xTkn.bSame("ifdef"_Stz)) {
+    vParseHashIfdef(xTkn.szTerm());
+    return;
+  }
+
   if (xTkn.bSame("include"_Stz)) {
     vParseHashInclude(xTkn.szTerm());
     return;
@@ -711,13 +716,13 @@ void Vortex::vParseHashDefine(Stz* szSawTerm)
   RASSERT(szSawTerm->bSame("define"_Stz));
     
   Token xTkn;
-  while (bGetNextToken(xTkn)) {
-    
-    if (xTkn.bSame("EndDefine"_Stz))
-      return;
-  }
   
-  vThrowProblem(__LINE__);
+  vGetNextToken(xTkn);
+  while (! xTkn.bSame("enddefine"_Stz)) {
+    vGetNextToken(xTkn);
+  }
+      
+  vPartRecognised(CP_HASH_DEFINE);                                        // ✅
 }
 
 /*----------------------------------------------------------------------------*/
@@ -729,6 +734,26 @@ void Vortex::vParseHashIf(Stz* szSawTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame("if"_Stz));
+  
+  Token xTkn;
+  
+  vGetNextToken(xTkn);
+  while (! xTkn.bSame("endif"_Stz)) {
+    vGetNextToken(xTkn);
+  }
+      
+  vPartRecognised(CP_HASH_IF);                                            // ✅
+}
+
+/*----------------------------------------------------------------------------*/
+/* within #, parse IF _^_ ... #ENDIF                                          */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseHashIfdef(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("ifdef"_Stz));
   
   Token xTkn;
   
@@ -1004,6 +1029,7 @@ void Vortex::vParseStruct(Stz* szSawTerm)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // scenarios 4) and 5)
   
   // <#> handle member name in xTkn
 

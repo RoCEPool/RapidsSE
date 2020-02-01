@@ -99,6 +99,7 @@ namespace Utilities
     void vParseHash(Stz* szSawTerm);
     void vParseHashDefine(Stz* szSawTerm);
     void vParseHashIf(Stz* szSawTerm);
+    void vParseHashIfdef(Stz* szSawTerm);
     void vParseHashInclude(Stz* szSawTerm);
     void vParseHashPragma(Stz* szSawTerm);
     bool bParseLabel(Stz* szSawTerm);

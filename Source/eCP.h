@@ -19,6 +19,7 @@ enum eCP // c++ part
   
   /*    */ CP_HASH_DEFINE,         // # define
   /*    */ CP_HASH_IF,             // # if
+  /*    */ CP_HASH_IFDEF,          // # ifdef
   /*    */ CP_HASH_INCLUDE,        // # include
   /*    */ CP_HASH_PRAGMA,         // # pragma
 
@@ -54,6 +55,7 @@ static Stz* aCP[]
   
   /*    */ "CP_HASH_DEFINE"_Stz,
   /*    */ "CP_HASH_IF"_Stz,
+  /*    */ "CP_HASH_IFDEF"_Stz,
   /*    */ "CP_HASH_INCLUDE"_Stz,
   /*    */ "CP_HASH_PRAGMA"_Stz,
 
