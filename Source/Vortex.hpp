@@ -90,7 +90,8 @@ namespace Utilities
     void vKeywordDescend(Stz* szKeyWord);
 
     void vParseBase(Stz* szSawTerm);
-    MetaBlock* pParseBlock(Stz* szSawTerm, Stz* szBlockNm, eMB eBlock);
+    MetaBlock* pParseBlock(Stz* szSawTerm, Stz* szBlockNm, eMB eBlock,
+                           bool bSemiTerminated);
     void vParseClass(Stz* szSawTerm);
     void vParseConst(Stz* szSawTerm);
     void vParseEnum(Stz* szSawTerm);

@@ -498,7 +498,7 @@ void Vortex::vParseBase(Stz* szSawTerm)
     
     // class base is terminated by {
     if (szTerm->bSame("{"_Stz)) {
-      MetaBlock* p_Block = pParseBlock(szTerm,m_sClassNm,MB_CLASS);
+      MetaBlock* p_Block = pParseBlock(szTerm,m_sClassNm,MB_CLASS,true);
       return;
     }
 
@@ -514,7 +514,8 @@ void Vortex::vParseBase(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 /* parse: ... _^_ { ... } ;                                                   */
 /*----------------------------------------------------------------------------*/
-MetaBlock* Vortex::pParseBlock(Stz* szSawTerm, Stz* szBlockNm, eMB eBlock)
+MetaBlock* Vortex::pParseBlock(Stz* szSawTerm, Stz* szBlockNm, eMB eBlock,
+                               bool bSemiTerminated)
 {
   vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
@@ -533,10 +534,11 @@ MetaBlock* Vortex::pParseBlock(Stz* szSawTerm, Stz* szBlockNm, eMB eBlock)
 
     // block is terminated by } ;
     if (szTerm->bSame("}"_Stz)) {
-     vGetExpectedToken(xTkn,";"_Stz);
-     vPartRecognised(CP_BLOCK);
-     vBlockPopNested();
-     return p_Block;
+      if (bSemiTerminated)
+        vGetExpectedToken(xTkn,";"_Stz);
+      vPartRecognised(CP_BLOCK);
+      vBlockPopNested();
+      return p_Block;
     }
     
     if (bParseLabel(xTkn.szTerm()))
@@ -592,7 +594,7 @@ void Vortex::vParseClass(Stz* szSawTerm)
   // detect class block ?
   if (xTkn.bSame("{"_Stz)) {
     vClassDescend(xClassNm.szTerm());
-    MetaBlock* p_Block = pParseBlock(xTkn.szTerm(),xClassNm.szTerm(),MB_CLASS);
+    MetaBlock* p_Block = pParseBlock(xTkn.szTerm(),xClassNm.szTerm(),MB_CLASS,true);
     vClassAscend();
     return;
   }
@@ -956,18 +958,30 @@ void Vortex::vParseStruct(Stz* szSawTerm)
   
   RASSERT(szSawTerm->bSame("struct"_Stz));
 
+  /*
+    
+   1) struct { ... } ;
+   
+   2) struct <blockNm> { ... } ;
+   
+   3) struct { ... } <memberNm> ;
+   
+   4) struct { ... } <memberNm> [ <constNm> ] ;
+
+   */
+  
   Token xTkn;
  
   vGetNextToken(xTkn);
   
   if (xTkn.bSame("{"_Stz)) {
-    MetaBlock* p_Block = pParseBlock("{"_Stz,"struct"_Stz,MB_STRUCT);
+    MetaBlock* p_Block = pParseBlock("{"_Stz,"struct"_Stz,MB_STRUCT,true);
   }
   else {
     Token xTknBraceSemi;
     vGetNextToken(xTknBraceSemi);
     if (xTkn.bSame("{"_Stz)) {
-      MetaBlock* p_Block = pParseBlock("{"_Stz,xTkn.szTerm(),MB_STRUCT);
+      MetaBlock* p_Block = pParseBlock("{"_Stz,xTkn.szTerm(),MB_STRUCT,true);
     }
     else {
       CHECKED(xTknBraceSemi.bSame(";"_Stz));
@@ -1032,7 +1046,7 @@ void Vortex::vParseUnion(Stz* szSawTerm)
     
   vGetExpectedToken(xTkn,"{"_Stz);
 
-  MetaBlock* p_Block = pParseBlock("{"_Stz,"union"_Stz,MB_UNION);
+  MetaBlock* p_Block = pParseBlock("{"_Stz,"union"_Stz,MB_UNION,true);
 }
 
 /*----------------------------------------------------------------------------*/
