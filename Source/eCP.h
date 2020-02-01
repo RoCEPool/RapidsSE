@@ -28,7 +28,8 @@ enum eCP // c++ part
   /*    */ CP_MEMBER_LABEL,        // class member label
   /*    */ CP_MEMBER_OTHER,        // class member other
   /*    */ CP_MEMBER_STATIC,       // class member static function
-  
+  /*    */ CP_MEMBER_STRUCT,       // class member static function
+
   /*    */ CP_NAMESPACE_CLASS,     // class            (in namespace)
   /*    */ CP_NAMESPACE_FORWARD,   // forward class    (in namespace)
   /*    */ CP_NAMESPACE_OTHER,     // other            (in namespace)
@@ -66,6 +67,7 @@ static Stz* aCP[]
   /*    */ "CP_MEMBER_LABEL"_Stz,
   /*    */ "CP_MEMBER_OTHER"_Stz,
   /*    */ "CP_MEMBER_STATIC"_Stz,
+  /*    */ "CP_MEMBER_STRUCT"_Stz,
 
   /*    */ "CP_NAMESPACE_CLASS"_Stz,
   /*    */ "CP_NAMESPACE_FORWARD"_Stz,

@@ -1076,6 +1076,10 @@ void Vortex::vParseStruct(Stz* szSawTerm)
   
   // <#> handle member name in xTkn
 
+  Token xBlockNm;
+  xBlockNm = xTkn;
+  
+  // get ; or {
   vGetNextToken(xTkn);
   
   // 4) struct <blockNm> ;
@@ -1083,7 +1087,17 @@ void Vortex::vParseStruct(Stz* szSawTerm)
     return;
 
   // 5) struct <blockNm> { ... } ;
-  MetaBlock* p_Block = pParseBlock("{"_Stz,xTkn.szTerm(),MB_STRUCT,true);
+  if (xTkn.bSame("{"_Stz)) {
+    MetaBlock* p_Block = pParseBlock(xTkn.szTerm(),xBlockNm.szTerm(),MB_STRUCT,true);
+    return;
+  }
+  
+  // 6) struct <blockNm> <memberNm> ;
+  vGetExpectedToken(xTkn,";"_Stz);
+
+  // <#> handle member name
+  
+  vPartRecognised(CP_MEMBER_STRUCT);                                  // ✅
 }
 
 /*----------------------------------------------------------------------------*/
