@@ -34,8 +34,6 @@ namespace Utilities
     ConstSet*   m_p_ConstSet;    // set of static const i8's
 
     EnameSet    m_oOtherTerms;   // working set of collected terms
-    EnameSet    m_oFunctionTerms;// working set of collected terms
-    EnameSet    m_oMemberTerms;  // working set of collected terms
     EnameSet    m_oTplArgTerms;  // working set of collected terms
     
     // correctness section
@@ -103,7 +101,6 @@ namespace Utilities
     void vParseHashPragma(Stz* szSawTerm);
 
     void vParseNamespaceClass(Stz* szSawTerm);
-    void vParseNamespaceFunction(Stz* szSawTerm);    // -> other
     void vParseNamespaceOther(Stz* szSawTerm);
     void vParseNamespaceStatic(Stz* szSawTerm);      // -> other
     void vParseNamespaceStruct(Stz* szSawTerm);
@@ -117,7 +114,6 @@ namespace Utilities
 
     void vParseBlockFriend(Stz* szSawTerm);
     bool bParseBlockLabel(Stz* szSawTerm);
-    void vParseBlockMember(Stz* szSawTerm);
     void vParseBlockOther(Stz* szSawTerm);
     void vParseBlockStruct(Stz* szSawTerm);
     void vParseBlockUnion(Stz* szSawTerm);
@@ -132,23 +128,16 @@ namespace Utilities
     void vCollectBalancedAngles(Stz* szSawTerm);
     void vCollectBalancedBraces(Stz* szSawTerm);
     void vCollectBalancedParenthesis(Stz* szSawTerm);
-  
     void vCollectOtherTerms(Stz* szSawTerm);
-  
-
-    bool bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun);
     void vCollectTplArgs(Stz* szSawTerm);
 
     void vDiscardBalanced(Stz* szOpen, Stz* szClose);
     void vDiscardBalancedAngles(Stz* szSawTerm);
     void vDiscardBalancedBraces(Stz* szSawTerm);
     void vDiscardBalancedParenthesis(Stz* szSawTerm);
-  
     void vDiscardOtherTokens(Stz* szSawTerm);
     void vDiscardTill(Stz* szTerm, Stz* szTill);
   
-    void vSkipBalancedBraces(Stz* szSawTerm); // to be removed
- 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // terms
   

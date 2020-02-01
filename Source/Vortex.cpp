@@ -644,7 +644,7 @@ void Vortex::vParseFileNamespace(Stz* szSawTerm)
       vParseNamespaceStruct(szKeyWord);
     }
     else {
-      vParseNamespaceFunction(szKeyWord);
+      vParseNamespaceOther(xTkn.szTerm());
     }
     
   } // while more tokens
@@ -864,24 +864,6 @@ void Vortex::vParseNamespaceClass(Stz* szSawTerm)
   }
 
   vThrowProblem(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* within NAMESPACE, parse <term> _^_ <term> ... ;                            */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseNamespaceFunction(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  //RASSERT(szSawTerm->bSame("???"_Stz));
-  
-  eFN eFun;
-  Token xFunNm;
-  CHECKED(bCollectFunctionTerms(szSawTerm,xFunNm,eFun));
-
-  
-  vPartRecognised(CP_NAMESPACE_FUNCTION);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1153,7 +1135,7 @@ void Vortex::vParseBlockOther(Stz* szSawTerm)
   
   Stz* szVarNm;
   Stz* szTypeNm;
-  szVarNm = MetaMember::szMemberNm(&m_oMemberTerms,szTypeNm,
+  szVarNm = MetaMember::szMemberNm(&m_oOtherTerms,szTypeNm,
                                    nPointers,bFunPtr,nElements,nBits);
   
   m_p_MetaMember = m_p_MetaBlock->pAddMember(szVarNm);
@@ -1325,126 +1307,6 @@ void Vortex::vCollectOtherTerms(Stz* szSawTerm)
 }
 
 
-/*----------------------------------------------------------------------------*/
-/* collect terms for function intro:                                          */
-/*----------------------------------------------------------------------------*/
-bool Vortex::bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-  
-   1)
-      void vCheckAssumptions ( void ) ;
-   
-   2)
-      Forth * _pForth  ( void * aAddr ) ;
-   
-   3)    template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-      OVER * Nub_t <CN,HEAD,OVER,TAIL,DESC> :: aAllotOver (i8 nOverSize)
-   
-   
-   4)    template <eCN CN, class HEAD, class OVER, class TAIL, class DESC, i8 BYTES>
-      TrayNL_t < CN,HEAD,OVER,TAIL,DESC,BYTES> * _pNubNL (void* aAddr);
-
-   5)
-         template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-      Nub_t < CN,HEAD,OVER,TAIL,DESC> :: Nub_t (void)
-      : Object(CN)
-      { .. }
-
-   6)
-         template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-      Nub_t < CN,HEAD,OVER,TAIL,DESC> :: ~ Nub_t (void) noexcept(false)
-      { ... }
-   
-   7)    template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-      i8 Nub_t  <CN,HEAD,OVER,TAIL,DESC> :: nBytes (i8 nUnits) { .. }
-
-
-  maybe
-    ?)    template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-      Some_t <CN>* Nub_t <CN,HEAD,OVER,TAIL,DESC> :: aFun (i8 nOverSize)
-
-   * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-  
-  vFragmentMarker("@"_Stz);
-
-  Token xTkn;
-
-  m_oFunctionTerms.vReset();
-  
-  s32 sPrior = szSawTerm;
-  
-  xTkn.vCopy(sPrior);
-  xTkn.vToken(TN_NAME);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // skip over optional inline
-
-  if (xTkn.bSame("inline"_Stz)) {
-    m_oFunctionTerms.vAdd(szSawTerm);
-    CHECKED(bGetNextToken(xTkn));
-  }
-  m_oFunctionTerms.vAdd(xTkn.szTerm());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  while (! xTkn.bSame("("_Stz)) {
-    m_oFunctionTerms.vAdd(xTkn.szTerm());
-    sPrior = xTkn.szTerm();
-    CHECKED(bGetNextToken(xTkn));
-  }
-  m_oFunctionTerms.vAdd(xTkn.szTerm());
-
-  roFunNm.vCopy(sPrior);
-  roFunNm.vToken(TN_NAME);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  while (! xTkn.bSame(")"_Stz)) {
-    m_oFunctionTerms.vAdd(xTkn.szTerm());
-    CHECKED(bGetNextToken(xTkn));
-  }
-  m_oFunctionTerms.vAdd(xTkn.szTerm());
-
-  CHECKED(bGetNextToken(xTkn));
-
-  if (xTkn.bSame(":"_Stz)) {
-    while (! xTkn.bSame("{"_Stz)) {
-      CHECKED(bGetNextToken(xTkn));
-    }
-  }
-  
-  if (xTkn.bSame("noexcept"_Stz)) {
-    CHECKED(bGetNextToken(xTkn));
-    CHECKED(xTkn.bSame("("_Stz));
-    CHECKED(bGetNextToken(xTkn));
-    CHECKED(xTkn.bSame("false"_Stz));
-    CHECKED(bGetNextToken(xTkn));
-    CHECKED(xTkn.bSame(")"_Stz));
-    CHECKED(bGetNextToken(xTkn));
-  }
-
-  if (xTkn.bSame("{"_Stz)) {
-    vSkipBalancedBraces("{"_Stz);
-  }
-  else {
-    CHECKED(xTkn.bSame(";"_Stz));
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  s48K sTermsString;
-  m_oFunctionTerms.vNamesString(sTermsString);
-  
-  vTrace("  %s FunctionTerms: %s ReturnType: %s\n"_Stz,
-         __func__,
-         roFunNm.szTerm(),sTermsString.azChar());
-  
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* collect all teplate arg terms : TEMPLATE _^_ < ... >                       */
@@ -1569,33 +1431,6 @@ void Vortex::vDiscardOtherTokens(Stz* szSawTerm)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* skip till balanced closing brace                                           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vSkipBalancedBraces(Stz* szSawTerm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(szSawTerm->bSame("{"_Stz));
-       
-  Token xTkn;
-  for (;;) {
-    
-    CHECKED(bGetNextToken(xTkn));
-    
-    // test for closing brace
-    if (xTkn.bSame("}"_Stz))
-      return;
-    
-    // test for nested opening brace
-    if (xTkn.bSame("{"_Stz))
-      vSkipBalancedBraces(xTkn.szTerm());
-      
-    // ignore any other token
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* skip till given term                                                       */
 /*----------------------------------------------------------------------------*/
 void Vortex::vDiscardTill(Stz* szTerm, Stz* szTill)
@@ -1643,7 +1478,7 @@ void Vortex::vTermAdd(Stz* szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oMemberTerms.vAdd(szTerm);
+  m_oOtherTerms.vAdd(szTerm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1655,13 +1490,13 @@ bool Vortex::bTermsAreFunction(void)
 
   Stz* szTerm;
  
-  i8 nTerms = m_oMemberTerms.nItems();
+  i8 nTerms = m_oOtherTerms.nItems();
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // term 0
   
   i8 i_Term = 0;
-  szTerm = m_oMemberTerms.szName(i_Term++);
+  szTerm = m_oOtherTerms.szName(i_Term++);
   
   // -- -- -- -- -- --
   // constructor function
@@ -1683,9 +1518,9 @@ bool Vortex::bTermsAreFunction(void)
   
   // -- -- -- -- -- --
   // skip zero or more '*'
-  szTerm = m_oMemberTerms.szName(i_Term++);
+  szTerm = m_oOtherTerms.szName(i_Term++);
   while (szTerm->bSame("*"_Stz))
-    szTerm = m_oMemberTerms.szName(i_Term++);
+    szTerm = m_oOtherTerms.szName(i_Term++);
   
   // -- -- -- -- -- --
   // test for member which is a member which is a function pointer
@@ -1694,11 +1529,11 @@ bool Vortex::bTermsAreFunction(void)
 
   // -- -- -- -- -- --
   // attempt to detect a function
-  szTerm = m_oMemberTerms.szName(i_Term++);
+  szTerm = m_oOtherTerms.szName(i_Term++);
   while (i_Term < nTerms) {
     if (szTerm->bSame("("_Stz))
       return true;
-    szTerm = m_oMemberTerms.szName(i_Term++);
+    szTerm = m_oOtherTerms.szName(i_Term++);
   }
   
   // -- -- -- -- -- --
@@ -1715,18 +1550,18 @@ bool Vortex::bTermsAreVariable(void)
   
    Stz* szTerm;
   
-   i8 nTerms = m_oMemberTerms.nItems();
+   i8 nTerms = m_oOtherTerms.nItems();
      
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // term 0
    
    i8 i_Term = 0;
-   szTerm = m_oMemberTerms.szName(i_Term++);
+   szTerm = m_oOtherTerms.szName(i_Term++);
   
   // -- -- -- -- -- --
   // exclude constructor function
   if (m_bInClass && szTerm->bSame(m_sClassNm.szStz()) &&
-      m_oMemberTerms.szName(i_Term)->bSame("("_Stz)) {
+      m_oOtherTerms.szName(i_Term)->bSame("("_Stz)) {
     return false;
   }
   
@@ -1743,9 +1578,9 @@ bool Vortex::bTermsAreVariable(void)
   
   // -- -- -- -- -- --
   // skip zero or more '*'
-  szTerm = m_oMemberTerms.szName(i_Term++);
+  szTerm = m_oOtherTerms.szName(i_Term++);
   while (szTerm->bSame("*"_Stz))
-    szTerm = m_oMemberTerms.szName(i_Term++);
+    szTerm = m_oOtherTerms.szName(i_Term++);
   
   // -- -- -- -- -- --
   // test for variable which is a function pointer
@@ -1754,11 +1589,11 @@ bool Vortex::bTermsAreVariable(void)
 
   // -- -- -- -- -- --
   // attempt to detect a function
-  szTerm = m_oMemberTerms.szName(i_Term++);
+  szTerm = m_oOtherTerms.szName(i_Term++);
   while (i_Term < nTerms) {
     if (szTerm->bSame("("_Stz))
       return false;
-    szTerm = m_oMemberTerms.szName(i_Term++);
+    szTerm = m_oOtherTerms.szName(i_Term++);
   }
   
   // -- -- -- -- -- --
@@ -1785,7 +1620,7 @@ void Vortex::vTermsReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oMemberTerms.vReset();
+  m_oOtherTerms.vReset();
 }
 
 /*============================================================================*/
@@ -1827,4 +1662,129 @@ maybe
     Some_t <CN>* Nub_t <CN,HEAD,OVER,TAIL,DESC> :: aFun (i8 nOverSize)
 
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+#if 0
+/*----------------------------------------------------------------------------*/
+/* collect terms for function intro:                                          */
+/*----------------------------------------------------------------------------*/
+bool Vortex::bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+  
+   1)
+      void vCheckAssumptions ( void ) ;
+   
+   2)
+      Forth * _pForth  ( void * aAddr ) ;
+   
+   3)    template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+      OVER * Nub_t <CN,HEAD,OVER,TAIL,DESC> :: aAllotOver (i8 nOverSize)
+   
+   
+   4)    template <eCN CN, class HEAD, class OVER, class TAIL, class DESC, i8 BYTES>
+      TrayNL_t < CN,HEAD,OVER,TAIL,DESC,BYTES> * _pNubNL (void* aAddr);
+
+   5)
+         template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+      Nub_t < CN,HEAD,OVER,TAIL,DESC> :: Nub_t (void)
+      : Object(CN)
+      { .. }
+
+   6)
+         template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+      Nub_t < CN,HEAD,OVER,TAIL,DESC> :: ~ Nub_t (void) noexcept(false)
+      { ... }
+   
+   7)    template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+      i8 Nub_t  <CN,HEAD,OVER,TAIL,DESC> :: nBytes (i8 nUnits) { .. }
+
+
+  maybe
+    ?)    template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+      Some_t <CN>* Nub_t <CN,HEAD,OVER,TAIL,DESC> :: aFun (i8 nOverSize)
+
+   * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+  
+  vFragmentMarker("@"_Stz);
+
+  Token xTkn;
+
+  m_oFunctionTerms.vReset();
+  
+  s32 sPrior = szSawTerm;
+  
+  xTkn.vCopy(sPrior);
+  xTkn.vToken(TN_NAME);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // skip over optional inline
+
+  if (xTkn.bSame("inline"_Stz)) {
+    m_oFunctionTerms.vAdd(szSawTerm);
+    CHECKED(bGetNextToken(xTkn));
+  }
+  m_oFunctionTerms.vAdd(xTkn.szTerm());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  while (! xTkn.bSame("("_Stz)) {
+    m_oFunctionTerms.vAdd(xTkn.szTerm());
+    sPrior = xTkn.szTerm();
+    CHECKED(bGetNextToken(xTkn));
+  }
+  m_oFunctionTerms.vAdd(xTkn.szTerm());
+
+  roFunNm.vCopy(sPrior);
+  roFunNm.vToken(TN_NAME);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  while (! xTkn.bSame(")"_Stz)) {
+    m_oFunctionTerms.vAdd(xTkn.szTerm());
+    CHECKED(bGetNextToken(xTkn));
+  }
+  m_oFunctionTerms.vAdd(xTkn.szTerm());
+
+  CHECKED(bGetNextToken(xTkn));
+
+  if (xTkn.bSame(":"_Stz)) {
+    while (! xTkn.bSame("{"_Stz)) {
+      CHECKED(bGetNextToken(xTkn));
+    }
+  }
+  
+  if (xTkn.bSame("noexcept"_Stz)) {
+    CHECKED(bGetNextToken(xTkn));
+    CHECKED(xTkn.bSame("("_Stz));
+    CHECKED(bGetNextToken(xTkn));
+    CHECKED(xTkn.bSame("false"_Stz));
+    CHECKED(bGetNextToken(xTkn));
+    CHECKED(xTkn.bSame(")"_Stz));
+    CHECKED(bGetNextToken(xTkn));
+  }
+
+  if (xTkn.bSame("{"_Stz)) {
+    vSkipBalancedBraces("{"_Stz);
+  }
+  else {
+    CHECKED(xTkn.bSame(";"_Stz));
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  s48K sTermsString;
+  m_oFunctionTerms.vNamesString(sTermsString);
+  
+  vTrace("  %s FunctionTerms: %s ReturnType: %s\n"_Stz,
+         __func__,
+         roFunNm.szTerm(),sTermsString.azChar());
+  
+  return true;
+}
+
+#endif
 
