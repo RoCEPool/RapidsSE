@@ -88,9 +88,7 @@ namespace Utilities
   
     bool bParseFile(void);
 
-    void vParseNamespaceOther(Stz* szSawTerm);
-    void vParseNamespaceTemplate(Stz* szSawTerm);
-    void vParseNamespaceUnion(Stz* szSawTerm);
+     void vParseNamespaceTemplate(Stz* szSawTerm);
   
     void vParseBlockOther(Stz* szSawTerm);
  

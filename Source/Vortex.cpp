@@ -504,27 +504,6 @@ bool Vortex::bParseFile(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* within file, parse <term> _^_ <other>                                      */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseNamespaceOther(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  vCollectOtherTerms(szSawTerm);
-  
-  vPartRecognised(CP_NAMESPACE_OTHER);                                    // ✅
-  
-  vOtherTermsReset();
-}
-
-/*----------------------------------------------------------------------------*/
 /* within NAMESPACE, parse template _^_ CLASS ... | <other> ...               */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseNamespaceTemplate(Stz* szSawTerm)
@@ -548,31 +527,9 @@ void Vortex::vParseNamespaceTemplate(Stz* szSawTerm)
     vParseClass(xTkn.szTerm());
   }
   else {
-    vParseNamespaceOther(xTkn.szTerm());
+    vParseOther(xTkn.szTerm());
   }
 }
-
-/*----------------------------------------------------------------------------*/
-/* within namespace, parse UNION ...                                          */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseNamespaceUnion(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(szSawTerm->bSame("union"_Stz));
-  
-  Token xTkn;
-    
-  vBlockNewTop("union"_Stz,MB_UNION);
-
-  vDiscardTill(szSawTerm,";"_Stz);
-  
-  vPartRecognised(CP_NAMESPACE_UNION);           // struct within namespace ✅
-  
-  vBlockPopNested();
-}
-
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 /*                      class, block, member parsing                          */
@@ -1033,7 +990,7 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
       vParseUnion(szKeyWord);
     }
     else {
-      vParseNamespaceOther(xTkn.szTerm());
+      vParseOther(xTkn.szTerm());
     }
     
   } // while more tokens
