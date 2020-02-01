@@ -105,6 +105,7 @@ namespace Utilities
     bool bParseLabel(Stz* szSawTerm);
     void vParseNamespace(Stz* szSawTerm);
     void vParseOther(Stz* szSawTerm);
+    void vParseSemicolon(Stz* szSawTerm);
     void vParseStatic(Stz* szSawTerm);
     void vParseStruct(Stz* szSawTerm);
     void vParseTemplate(Stz* szSawTerm);

@@ -8,9 +8,9 @@ enum eCP // c++ part
   /*  0 */ CP_NONE=0,
   
   /*    */ CP_BLOCK,               // { members }   (in file, namespace, class)
-  
   /*    */ CP_CONST,               // const       (in file, namespace, class)
-  
+  /*    */ CP_SEMICOLON,           // ;         (in file, namespace, class)
+
   /*    */ CP_FILE_ENUM,           // enum        (in file)
   /*    */ CP_FILE_NAMESPACE,      // namespace   (in file)
   /*    */ CP_FILE_OTHER,          // other       (in file)
@@ -46,7 +46,8 @@ static Stz* aCP[]
   /*    */ "CP_BLOCK"_Stz,
   
   /*    */ "CP_CONST"_Stz,
-  
+  /*    */ "CP_SEMICOLON"_Stz,
+
   /*    */ "CP_FILE_ENUM"_Stz,
   /*    */ "CP_FILE_NAMESPACE"_Stz,
   /*    */ "CP_FILE_OTHER"_Stz,

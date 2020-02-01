@@ -464,13 +464,14 @@ void Vortex::vKeywordDescend(Stz* szKeyWord)
   if (szKeyWord->bSame("friend"_Stz))    vParseFriend(szKeyWord);    else
   if (szKeyWord->bSame("#"_Stz))         vParseHash(szKeyWord);      else
   if (szKeyWord->bSame("namespace"_Stz)) vParseNamespace(szKeyWord); else
+  if (szKeyWord->bSame(";"_Stz))         vParseSemicolon(szKeyWord); else
   if (szKeyWord->bSame("static"_Stz))    vParseStatic(szKeyWord);    else
   if (szKeyWord->bSame("struct"_Stz))    vParseStruct(szKeyWord);    else
   if (szKeyWord->bSame("template"_Stz))  vParseTemplate(szKeyWord);  else
   if (szKeyWord->bSame("typedef"_Stz))   vParseTypedef(szKeyWord);   else
   if (szKeyWord->bSame("union"_Stz))     vParseUnion(szKeyWord);     else
-  if (szKeyWord->bSame("using"_Stz))     vParseUsing(szKeyWord);     else
-                                         vParseOther(szKeyWord);
+  if (szKeyWord->bSame("using"_Stz))     vParseUsing(szKeyWord);
+  else                                   vParseOther(szKeyWord);
 }
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
@@ -948,6 +949,19 @@ void Vortex::vParseOther(Stz* szSawTerm)
   vPartRecognised(CP_FILE_OTHER);                                         // ✅
   
   vOtherTermsReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse ;                                                                    */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseSemicolon(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame(";"_Stz));
+  
+  vPartRecognised(CP_SEMICOLON);                                          // ✅
 }
 
 /*----------------------------------------------------------------------------*/
