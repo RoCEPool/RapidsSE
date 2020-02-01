@@ -167,7 +167,13 @@ void Vortex::vGetExpectedToken(Token& roToken, Stz* szExpect)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   CHECKED(m_pInput->bGetToken(&roToken));
-  CHECKED(roToken.bSame(szExpect));
+  
+  if (! roToken.bSame(szExpect)) {
+    vTrace("Expecting token: %s got: %s\n"_Stz,
+           szExpect->azChar(), roToken.azTerm());
+    
+    vThrowProblem(__LINE__);
+  }
   
   vFragmentAppend(roToken.szTerm());
 }
@@ -501,115 +507,6 @@ bool Vortex::bParseFile(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* parse # _^_ DEFINE ... | IF ... | INCLUDE ... | PRAGMA ...                 */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseHash(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(szSawTerm->bSame("#"_Stz));
-    
-  Token xTkn;
-  CHECKED(bGetNextToken(xTkn));
-  
-  if (xTkn.bSame("define"_Stz)) {
-    vParseHashDefine(xTkn.szTerm());
-    return;
-  }
-
-  if (xTkn.bSame("if"_Stz)) {
-    vParseHashIf(xTkn.szTerm());
-    return;
-  }
-
-  if (xTkn.bSame("include"_Stz)) {
-    vParseHashInclude(xTkn.szTerm());
-    return;
-  }
-
-  if (xTkn.bSame("pragma"_Stz)) {
-    vParseHashPragma(xTkn.szTerm());
-    return;
-  }
-
-  vThrowProblem(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* within #, parse DEFINE _^_ ... ENDDEFINE                                   */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseHashDefine(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(szSawTerm->bSame("define"_Stz));
-    
-  Token xTkn;
-  while (bGetNextToken(xTkn)) {
-    
-    if (xTkn.bSame("EndDefine"_Stz))
-      return;
-  }
-  
-  vThrowProblem(__LINE__);
-}
-
-/*----------------------------------------------------------------------------*/
-/* within #, parse IF _^_ ... #ENDIF                                          */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseHashIf(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(szSawTerm->bSame("if"_Stz));
-  
-  Token xTkn;
-  
-  vGetNextToken(xTkn);
-  while (! xTkn.bSame("endif"_Stz)) {
-    vGetNextToken(xTkn);
-  }
-      
-  vPartRecognised(CP_HASH_IF);                                            // ✅
-}
-
-/*----------------------------------------------------------------------------*/
-/* within #, parse INCLUDE _^_ <filePath>                                     */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseHashInclude(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(szSawTerm->bSame("include"_Stz));
-  
-  Token xTkn;
-  
-  vGetNextToken(xTkn);
-    
-  vPartRecognised(CP_HASH_INCLUDE);                                       // ✅
-}
-
-/*----------------------------------------------------------------------------*/
-/* within #, parse # PRAGMA _^_ ONCE                                          */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseHashPragma(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(szSawTerm->bSame("pragma"_Stz));
-  
-  Token xTkn;
-  vGetExpectedToken(xTkn,"once"_Stz);
-
-  vPartRecognised(CP_HASH_PRAGMA);                                        // ✅
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -625,27 +522,6 @@ void Vortex::vParseNamespaceOther(Stz* szSawTerm)
   vPartRecognised(CP_NAMESPACE_OTHER);                                    // ✅
   
   vOtherTermsReset();
-}
-
-/*----------------------------------------------------------------------------*/
-/* within NAMESPACE, parse STATIC _^_ ...                                     */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseNamespaceStatic(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(szSawTerm->bSame("static"_Stz));
-  
-  vDebugPoint();
-  
-  if (! m_bInClass) {
-    vDiscardTill(szSawTerm,";"_Stz);
-    vPartRecognised(CP_NAMESPACE_STATIC);                                 // ✅
-    return;
-  }
-  
-  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -674,23 +550,6 @@ void Vortex::vParseNamespaceTemplate(Stz* szSawTerm)
   else {
     vParseNamespaceOther(xTkn.szTerm());
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* within NAMESPACE, parse typedef _^_ ... ;                                  */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseNamespaceTypedef(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(szSawTerm->bSame("typedef"_Stz));
-  
-  vDebugPoint();
-  
-  vDiscardTill(szSawTerm,";"_Stz);
-  
-  vPartRecognised(CP_NAMESPACE_TYPEDEF); // forward template within namespace ✅
 }
 
 /*----------------------------------------------------------------------------*/
@@ -911,6 +770,9 @@ void Vortex::vParseConst(Stz* szSawTerm)
   RASSERT(szSawTerm->bSame("const"_Stz));
   RASSERT(0 == m_oOtherTerms.nItems());
   
+  Token xConstType;
+  vGetNextToken(xConstType);
+  
   Token xConstNm;
   vGetNextToken(xConstNm);
 
@@ -923,6 +785,8 @@ void Vortex::vParseConst(Stz* szSawTerm)
   pConstDef->vTerms(m_oOtherTerms);
 
   vPartRecognised(CP_CONST);                                              // ✅
+  
+  vOtherTermsReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -955,6 +819,115 @@ void Vortex::vParseFriend(Stz* szSawTerm)
   vPartRecognised(CP_MEMBER_FRIEND);                                      // ✅
   
   vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse # _^_ DEFINE ... | IF ... | INCLUDE ... | PRAGMA ...                 */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseHash(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("#"_Stz));
+    
+  Token xTkn;
+  CHECKED(bGetNextToken(xTkn));
+  
+  if (xTkn.bSame("define"_Stz)) {
+    vParseHashDefine(xTkn.szTerm());
+    return;
+  }
+
+  if (xTkn.bSame("if"_Stz)) {
+    vParseHashIf(xTkn.szTerm());
+    return;
+  }
+
+  if (xTkn.bSame("include"_Stz)) {
+    vParseHashInclude(xTkn.szTerm());
+    return;
+  }
+
+  if (xTkn.bSame("pragma"_Stz)) {
+    vParseHashPragma(xTkn.szTerm());
+    return;
+  }
+
+  vThrowProblem(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* within #, parse DEFINE _^_ ... ENDDEFINE                                   */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseHashDefine(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("define"_Stz));
+    
+  Token xTkn;
+  while (bGetNextToken(xTkn)) {
+    
+    if (xTkn.bSame("EndDefine"_Stz))
+      return;
+  }
+  
+  vThrowProblem(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* within #, parse IF _^_ ... #ENDIF                                          */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseHashIf(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("if"_Stz));
+  
+  Token xTkn;
+  
+  vGetNextToken(xTkn);
+  while (! xTkn.bSame("endif"_Stz)) {
+    vGetNextToken(xTkn);
+  }
+      
+  vPartRecognised(CP_HASH_IF);                                            // ✅
+}
+
+/*----------------------------------------------------------------------------*/
+/* within #, parse INCLUDE _^_ <filePath>                                     */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseHashInclude(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("include"_Stz));
+  
+  Token xTkn;
+  
+  vGetNextToken(xTkn);
+    
+  vPartRecognised(CP_HASH_INCLUDE);                                       // ✅
+}
+
+/*----------------------------------------------------------------------------*/
+/* within #, parse # PRAGMA _^_ ONCE                                          */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseHashPragma(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("pragma"_Stz));
+  
+  Token xTkn;
+  vGetExpectedToken(xTkn,"once"_Stz);
+
+  vPartRecognised(CP_HASH_PRAGMA);                                        // ✅
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1041,7 +1014,7 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
     }
     else
     if (szKeyWord->bSame("static"_Stz)) {
-      vParseNamespaceStatic(szKeyWord);
+      vParseStatic(szKeyWord);
     }
     else
     if (szKeyWord->bSame("struct"_Stz)) {
@@ -1053,7 +1026,7 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
     }
     else
     if (szKeyWord->bSame("typedef"_Stz)) {
-      vParseNamespaceTypedef(szKeyWord);
+      vParseTypedef(szKeyWord);
     }
     else
     if (szKeyWord->bSame("union"_Stz)) {
@@ -1160,6 +1133,23 @@ void Vortex::vParseTemplate(Stz* szSawTerm)
   }
   
   vParseOther(xTkn.szTerm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse TYPEDEF _^_ ... ;                                                    */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseTypedef(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("typedef"_Stz));
+  
+  vDebugPoint();
+  
+  vDiscardTill(szSawTerm,";"_Stz);
+  
+  vPartRecognised(CP_NAMESPACE_TYPEDEF); // forward template within namespace ✅
 }
 
 /*----------------------------------------------------------------------------*/

@@ -88,16 +88,8 @@ namespace Utilities
   
     bool bParseFile(void);
 
-    void vParseHash(Stz* szSawTerm);
-    void vParseHashDefine(Stz* szSawTerm);
-    void vParseHashIf(Stz* szSawTerm);
-    void vParseHashInclude(Stz* szSawTerm);
-    void vParseHashPragma(Stz* szSawTerm);
-
     void vParseNamespaceOther(Stz* szSawTerm);
-    void vParseNamespaceStatic(Stz* szSawTerm);      // -> other
     void vParseNamespaceTemplate(Stz* szSawTerm);
-    void vParseNamespaceTypedef(Stz* szSawTerm);
     void vParseNamespaceUnion(Stz* szSawTerm);
   
     void vParseBlockOther(Stz* szSawTerm);
@@ -108,12 +100,18 @@ namespace Utilities
     void vParseConst(Stz* szSawTerm);
     void vParseEnum(Stz* szSawTerm);
     void vParseFriend(Stz* szSawTerm);
+    void vParseHash(Stz* szSawTerm);
+    void vParseHashDefine(Stz* szSawTerm);
+    void vParseHashIf(Stz* szSawTerm);
+    void vParseHashInclude(Stz* szSawTerm);
+    void vParseHashPragma(Stz* szSawTerm);
     bool bParseLabel(Stz* szSawTerm);
     void vParseNamespace(Stz* szSawTerm);
     void vParseOther(Stz* szSawTerm);
     void vParseStatic(Stz* szSawTerm);
     void vParseStruct(Stz* szSawTerm);
     void vParseTemplate(Stz* szSawTerm);
+    void vParseTypedef(Stz* szSawTerm);
     void vParseUnion(Stz* szSawTerm);
     void vParseUsing(Stz* szSawTerm);
 
