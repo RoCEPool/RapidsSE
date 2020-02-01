@@ -369,7 +369,6 @@ void Vortex::vClassAscend(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  RASSERT(m_bInNamespace);
   RASSERT(m_bInClass);
 
   m_bInClass = false;
@@ -385,7 +384,6 @@ void Vortex::vClassDescend(Stz* szClassNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  RASSERT(m_bInNamespace);
   RASSERT(! m_bInClass);
   
   RASSERT(! m_p_MetaBlock);
