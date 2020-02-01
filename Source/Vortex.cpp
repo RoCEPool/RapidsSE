@@ -162,15 +162,14 @@ void Vortex::vDiscardNextToken(void)
 /*----------------------------------------------------------------------------*/
 /* get expected token                                                         */
 /*----------------------------------------------------------------------------*/
-void Vortex::vGetExpectedToken(Stz* szExpect)
+void Vortex::vGetExpectedToken(Token& roToken, Stz* szExpect)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  Token xTkn;
-  CHECKED(m_pInput->bGetToken(&xTkn));
-  CHECKED(xTkn.bSame(szExpect));
+  CHECKED(m_pInput->bGetToken(&roToken));
+  CHECKED(roToken.bSame(szExpect));
   
-  vFragmentAppend(xTkn.szTerm());
+  vFragmentAppend(roToken.szTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -447,7 +446,7 @@ bool Vortex::bParseFile(void)
       }
       else
       if (szKeyWord->bSame("enum"_Stz)) {
-         vParseFileEnum(szKeyWord);
+         vParseEnum(szKeyWord);
       }
       else
       if (szKeyWord->bSame("#"_Stz)) {
@@ -479,7 +478,7 @@ bool Vortex::bParseFile(void)
       }
       else
       if (szKeyWord->bSame("using"_Stz)) {
-        vParseFileUsing(szKeyWord);
+        vParseUsing(szKeyWord);
       }
       else {
         vParseFileOther(xTkn.szTerm());
@@ -549,21 +548,6 @@ void Vortex::vParseClass(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within file, parse ENUM _^_ ... ;                                          */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseFileEnum(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(szSawTerm->bSame("enum"_Stz));
-    
-  vDiscardTill(szSawTerm,";"_Stz);
-  
-  vPartRecognised(CP_FILE_ENUM);                                          // ✅
-}
-
-/*----------------------------------------------------------------------------*/
 /* within file, parse NAMESPACE _^_ <name> { <parts> }                        */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFileNamespace(Stz* szSawTerm)
@@ -579,7 +563,7 @@ void Vortex::vParseFileNamespace(Stz* szSawTerm)
   vNamepaceDescend(xTkn.szTerm());
   
   // get {
-  vGetExpectedToken("{"_Stz);
+  vGetExpectedToken(xTkn,"{"_Stz);
 
   // parse ... }
   while (bGetNextToken(xTkn)) {
@@ -688,7 +672,7 @@ void Vortex::vParseFileTemplate(Stz* szSawTerm)
     
   Token xTkn;
   
-  vGetExpectedToken("<"_Stz);
+  vGetExpectedToken(xTkn,"<"_Stz);
   vDiscardBalancedAngles("<"_Stz);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -702,29 +686,6 @@ void Vortex::vParseFileTemplate(Stz* szSawTerm)
   }
   
   vParseFileOther(xTkn.szTerm());
-}
-
-/*----------------------------------------------------------------------------*/
-/* within file, parse USING _^_ NAMESPACE <name> ;                            */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseFileUsing(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  RASSERT(szSawTerm->bSame("using"_Stz));
-  
-  Token xTkn;
-  
-  // get NAMESPACE
-  vGetExpectedToken("namespace"_Stz);
-
-  // get <name>
-  vGetNextToken(xTkn);
-
-  // get ;
-  vGetExpectedToken(";"_Stz);
-  
-  vPartRecognised(CP_FILE_USING);                                         // ✅
 }
 
 /*----------------------------------------------------------------------------*/
@@ -833,7 +794,8 @@ void Vortex::vParseHashPragma(Stz* szSawTerm)
 
   RASSERT(szSawTerm->bSame("pragma"_Stz));
   
-  vGetExpectedToken("once"_Stz);
+  Token xTkn;
+  vGetExpectedToken(xTkn,"once"_Stz);
 
   vPartRecognised(CP_HASH_PRAGMA);                                        // ✅
 }
@@ -1085,7 +1047,7 @@ void Vortex::vParseBlock(Stz* szSawTerm, eMB eBlock, Stz* szBlockNm)
 
     // block is terminated by } ;
     if (szTerm->bSame("}"_Stz)) {
-     vGetExpectedToken(";"_Stz);
+     vGetExpectedToken(xTkn,";"_Stz);
      vPartRecognised(CP_BLOCK);
      vBlockPopNested();
      return;
@@ -1242,13 +1204,14 @@ void Vortex::vParseBlockUnion(Stz* szSawTerm)
   
   Token xTkn;
     
-  vGetExpectedToken("{"_Stz);
+  vGetExpectedToken(xTkn,"{"_Stz);
 
   vParseBlock("{"_Stz,MB_UNION,"union"_Stz); // indirect recursive call
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* parse [STATIC] CONST _^_ ... ;                                             */
 /*----------------------------------------------------------------------------*/
@@ -1264,7 +1227,7 @@ void Vortex::vParseConst(Stz* szSawTerm)
   vGetNextToken(xConstNm);
 
   Token xTkn;
-  vGetExpectedToken("="_Stz);
+  vGetExpectedToken(xTkn,"="_Stz);
   
   vCollectOtherTerms("="_Stz);
   
@@ -1272,6 +1235,44 @@ void Vortex::vParseConst(Stz* szSawTerm)
   pConstDef->vTerms(m_oOtherTerms);
 
   vPartRecognised(CP_CONST);                                         // ✅
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse ENUM _^_ ... ;                                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseEnum(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("enum"_Stz));
+    
+  vDiscardTill(szSawTerm,";"_Stz);
+  
+  vPartRecognised(CP_FILE_ENUM);                                          // ✅
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse USING _^_ NAMESPACE <name> ;                                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseUsing(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  RASSERT(szSawTerm->bSame("using"_Stz));
+  
+  Token xTkn;
+  
+  // get NAMESPACE
+  vGetExpectedToken(xTkn,"namespace"_Stz);
+
+  // get <name>
+  vGetNextToken(xTkn);
+
+  // get ;
+  vGetExpectedToken(xTkn,";"_Stz);
+  
+  vPartRecognised(CP_FILE_USING);                                         // ✅
 }
 
 
@@ -1473,7 +1474,7 @@ void Vortex::vDiscardStaticTokens(Stz* szSawTerm)
     // test for terminating brace pair
     if (xTkn.bSame("{"_Stz)) {
       vDiscardBalancedBraces("{"_Stz);
-      vGetExpectedToken(";"_Stz);
+      vGetExpectedToken(xTkn,";"_Stz);
       return;
     }
     

@@ -58,7 +58,7 @@ namespace Utilities
     // machinary
   
     void vDiscardNextToken(void);
-    void vGetExpectedToken(Stz* szExpect); // -> vDisardExpectedToken()
+    void vGetExpectedToken(Token& roToken, Stz* szExpect);
     bool bGetNextToken(Token& roToken);
     void vGetNextToken(Token& roToken);
     void vGetOtherTerm(Token& roTerm);
@@ -88,13 +88,11 @@ namespace Utilities
   
     bool bParseFile(void);
   
-    void vParseFileEnum(Stz* szSawTerm);
     void vParseFileNamespace(Stz* szSawTerm);
     void vParseFileOther(Stz* szSawTerm);
     void vParseFileStatic(Stz* szSawTerm);           // -> other
     void vParseFileTemplate(Stz* szSawTerm);
-    void vParseFileUsing(Stz* szSawTerm);
-
+ 
     void vParseHash(Stz* szSawTerm);
     void vParseHashDefine(Stz* szSawTerm);
     void vParseHashIf(Stz* szSawTerm);
@@ -121,7 +119,9 @@ namespace Utilities
     void vParseBlockUnion(Stz* szSawTerm);
 
     void vParseConst(Stz* szSawTerm);
+    void vParseEnum(Stz* szSawTerm);
     void vParseOther(Stz* szSawTerm);
+    void vParseUsing(Stz* szSawTerm);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
