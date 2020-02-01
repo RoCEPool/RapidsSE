@@ -5,27 +5,27 @@
 
 namespace Gadgets
 {
-  template <class CLASS, class PARAMETER>
+  template <class CLASSNM, class PARAMETER>
   class HV
   {
   private:
   
-    CLASS* m_pObject;
+    CLASSNM* m_pObject;
     
   public:
   
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    HV<CLASS,PARAMETER>(PARAMETER* pParameter, i8 iValue)
+    HV<CLASSNM,PARAMETER>(PARAMETER* pParameter, i8 iValue)
     {
-      m_pObject = new CLASS(pParameter, iValue);
+      m_pObject = new CLASSNM(pParameter, iValue);
     }
     
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */
     /*------------------------------------------------------------------------*/
-    ~HV<CLASS,PARAMETER>(void)
+    ~HV<CLASSNM,PARAMETER>(void)
     {
       if (m_pObject)
         delete m_pObject;
@@ -34,7 +34,7 @@ namespace Gadgets
     /*------------------------------------------------------------------------*/
     /* member                                                                 */
     /*------------------------------------------------------------------------*/
-    CLASS* operator -> (void)
+    CLASSNM* operator -> (void)
     {
       if (! m_pObject)
         THROW("HV::m_pObject is null"_Stz);
@@ -45,7 +45,7 @@ namespace Gadgets
     /*------------------------------------------------------------------------*/
     /* dereference                                                            */
     /*------------------------------------------------------------------------*/
-    operator CLASS *(void)
+    operator CLASSNM *(void)
     {
       return m_pObject;
     }
