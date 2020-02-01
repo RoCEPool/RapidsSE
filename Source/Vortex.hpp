@@ -91,13 +91,13 @@ namespace Utilities
     void vParseFileClass(Stz* szSawTerm);
     void vParseFileConst(Stz* szSawTerm);
     void vParseFileEnum(Stz* szSawTerm);
-    void vParseFileHash(Stz* szSawTerm);
     void vParseFileNamespace(Stz* szSawTerm);
     void vParseFileOther(Stz* szSawTerm);
     void vParseFileStatic(Stz* szSawTerm);           // -> other
     void vParseFileTemplate(Stz* szSawTerm);
     void vParseFileUsing(Stz* szSawTerm);
 
+    void vParseHash(Stz* szSawTerm);
     void vParseHashDefine(Stz* szSawTerm);
     void vParseHashIf(Stz* szSawTerm);
     void vParseHashInclude(Stz* szSawTerm);
@@ -138,7 +138,7 @@ namespace Utilities
     void vDiscardBalancedAngles(Stz* szSawTerm);
     void vDiscardBalancedBraces(Stz* szSawTerm);
     void vDiscardBalancedParenthesis(Stz* szSawTerm);
-    void vDiscardOtherTokens(Stz* szSawTerm);
+    void vDiscardStaticTokens(Stz* szSawTerm);
     void vDiscardTill(Stz* szTerm, Stz* szTill);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +

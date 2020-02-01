@@ -450,11 +450,15 @@ bool Vortex::bParseFile(void)
       }
       else
       if (szKeyWord->bSame("#"_Stz)) {
-        vParseFileHash(szKeyWord);
+        vParseHash(szKeyWord);
       }
       else
       if (szKeyWord->bSame("namespace"_Stz)) {
         vParseFileNamespace(szKeyWord);
+      }
+      else
+      if (szKeyWord->bSame("static"_Stz)) {
+         vParseFileStatic(szKeyWord);
       }
       else
       if (szKeyWord->bSame("struct"_Stz)) {
@@ -504,7 +508,7 @@ void Vortex::vParseFileClass(Stz* szSawTerm)
   RASSERT(! m_p_MetaBlock);
   RASSERT(szSawTerm->bSame("class"_Stz));
   
-  RASSERT(0);
+  NEVER_REACH;
   
   Token xTkn;
   Token xName;
@@ -567,42 +571,6 @@ void Vortex::vParseFileEnum(Stz* szSawTerm)
   vDiscardTill(szSawTerm,";"_Stz);
   
   vPartRecognised(CP_FILE_ENUM);                                          // ✅
-}
-
-/*----------------------------------------------------------------------------*/
-/* within file, parse # _^_ DEFINE ... | INCLUDE ... | PRAGMA ...             */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseFileHash(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(szSawTerm->bSame("#"_Stz));
-    
-  Token xTkn;
-  CHECKED(bGetNextToken(xTkn));
-  
-  if (xTkn.bSame("define"_Stz)) {
-    vParseHashDefine(xTkn.szTerm());
-    return;
-  }
-
-  if (xTkn.bSame("if"_Stz)) {
-    vParseHashIf(xTkn.szTerm());
-    return;
-  }
-
-  if (xTkn.bSame("include"_Stz)) {
-    vParseHashInclude(xTkn.szTerm());
-    return;
-  }
-
-  if (xTkn.bSame("pragma"_Stz)) {
-    vParseHashPragma(xTkn.szTerm());
-    return;
-  }
-
-  vThrowProblem(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -698,7 +666,7 @@ void Vortex::vParseFileOther(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* within file, parse STATIC CONST ... | <other>                              */
+/* within file, parse STATIC CONST ... | ...                                  */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFileStatic(Stz* szSawTerm)
 {
@@ -714,7 +682,8 @@ void Vortex::vParseFileStatic(Stz* szSawTerm)
     return;
   }
   
-  vDiscardOtherTokens(xTkn.szTerm());
+  vDiscardStaticTokens(xTkn.szTerm());
+  
   vPartRecognised(CP_FILE_STATIC);                                        // ✅
 }
 
@@ -770,6 +739,42 @@ void Vortex::vParseFileUsing(Stz* szSawTerm)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* parse # _^_ DEFINE ... | IF ... | INCLUDE ... | PRAGMA ...                 */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseHash(Stz* szSawTerm)
+{
+  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(szSawTerm->bSame("#"_Stz));
+    
+  Token xTkn;
+  CHECKED(bGetNextToken(xTkn));
+  
+  if (xTkn.bSame("define"_Stz)) {
+    vParseHashDefine(xTkn.szTerm());
+    return;
+  }
+
+  if (xTkn.bSame("if"_Stz)) {
+    vParseHashIf(xTkn.szTerm());
+    return;
+  }
+
+  if (xTkn.bSame("include"_Stz)) {
+    vParseHashInclude(xTkn.szTerm());
+    return;
+  }
+
+  if (xTkn.bSame("pragma"_Stz)) {
+    vParseHashPragma(xTkn.szTerm());
+    return;
+  }
+
+  vThrowProblem(__LINE__);
+}
 
 /*----------------------------------------------------------------------------*/
 /* within #, parse DEFINE _^_ ... ENDDEFINE                                   */
@@ -1094,7 +1099,26 @@ void Vortex::vParseClassBlock(Stz* szSawTerm)
     if (bParseBlockLabel(xTkn.szTerm()))
       continue;
 
-    vParseBlockOther(szTerm);
+    Stz* szKeyWord = xTkn.szTerm();
+    
+    if (szKeyWord->bSame("friend"_Stz)) {
+      vParseBlockFriend(szKeyWord);
+    }
+    else
+    if (szKeyWord->bSame("#"_Stz)) {
+      vParseHash(szKeyWord);
+    }
+    else
+    if (szKeyWord->bSame("struct"_Stz)) {
+      vParseBlockStruct(szKeyWord);
+    }
+    else
+    if (szKeyWord->bSame("union"_Stz)) {
+      vParseBlockUnion(szKeyWord);
+    }
+    else {
+      vParseBlockOther(szTerm);
+    }
   }
 
   vThrowProblem(__LINE__);
@@ -1443,9 +1467,9 @@ void Vortex::vDiscardBalancedParenthesis(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect other tokens: <other> ... | ; | { ... }                            */
+/* collect static tokens: ... STATIC ... | ; | { ... }                        */
 /*----------------------------------------------------------------------------*/
-void Vortex::vDiscardOtherTokens(Stz* szSawTerm)
+void Vortex::vDiscardStaticTokens(Stz* szSawTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -1461,6 +1485,7 @@ void Vortex::vDiscardOtherTokens(Stz* szSawTerm)
     // test for terminating brace pair
     if (xTkn.bSame("{"_Stz)) {
       vDiscardBalancedBraces("{"_Stz);
+      vGetExpectedToken(";"_Stz);
       return;
     }
     
