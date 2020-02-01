@@ -441,57 +441,6 @@ bool Vortex::bProcessFile(void)
   
     try {
       vKeywordDescend(xTkn.szTerm());
-      
-//      Stz* szKeyWord = xTkn.szTerm();
-//
-//      // the possible key words in a file
-//      if (szKeyWord->bSame("class"_Stz)) {
-//        vThrowProblem(__LINE__);   // don't expect class outside of a namespace
-//      }
-//      else
-//      if (szKeyWord->bSame("const"_Stz)) {
-//         vParseConst(szKeyWord);
-//      }
-//      else
-//      if (szKeyWord->bSame("enum"_Stz)) {
-//         vParseEnum(szKeyWord);
-//      }
-//      else
-//      if (szKeyWord->bSame("#"_Stz)) {
-//        vParseHash(szKeyWord);
-//      }
-//      else
-//      if (szKeyWord->bSame("namespace"_Stz)) {
-//        vParseNamespace(szKeyWord);
-//      }
-//      else
-//      if (szKeyWord->bSame("static"_Stz)) {
-//         vParseStatic(szKeyWord);
-//      }
-//      else
-//      if (szKeyWord->bSame("struct"_Stz)) {
-//        vThrowProblem(__LINE__);  // don't expect struct outside of a namespace
-//      }
-//      else
-//      if (szKeyWord->bSame("template"_Stz)) {
-//         vParseTemplate(szKeyWord);
-//      }
-//      else
-//      if (szKeyWord->bSame("typedef"_Stz)) {
-//        vThrowProblem(__LINE__); // don't expect typedef outside of a namespace
-//      }
-//      else
-//      if (szKeyWord->bSame("union"_Stz)) {
-//        vThrowProblem(__LINE__);   // don't expect union outside of a namespace
-//      }
-//      else
-//      if (szKeyWord->bSame("using"_Stz)) {
-//        vParseUsing(szKeyWord);
-//      }
-//      else {
-//        vParseOther(xTkn.szTerm());
-//      }
-
     }
     catch (i8 i_Problem) {
       return false;
@@ -590,27 +539,8 @@ void Vortex::vParseBlock(Stz* szSawTerm, eMB eBlock, Stz* szBlockNm)
     
     if (bParseLabel(xTkn.szTerm()))
       continue;
-
-    Stz* szKeyWord = xTkn.szTerm();
     
-    if (szKeyWord->bSame("friend"_Stz)) {
-      vParseFriend(szKeyWord);
-    }
-    else
-    if (szKeyWord->bSame("#"_Stz)) {
-      vParseHash(szKeyWord);
-    }
-    else
-    if (szKeyWord->bSame("struct"_Stz)) {
-      vParseStruct(szKeyWord);
-    }
-    else
-    if (szKeyWord->bSame("union"_Stz)) {
-      vParseUnion(szKeyWord);
-    }
-    else {
-      vParseOther(szTerm);
-    }
+    vKeywordDescend(xTkn.szTerm());
   }
 
   vThrowProblem(__LINE__);
