@@ -500,56 +500,9 @@ bool Vortex::bParseFile(void)
   return true;
 }
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 /*                      class, block, member parsing                          */
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-
-/*----------------------------------------------------------------------------*/
-/* parse single class member (no label)                                       */
-/*----------------------------------------------------------------------------*/
-void Vortex::vParseBlockOther(Stz* szSawTerm)
-{
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-   
-  vCollectOtherTerms(szSawTerm);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-#if 0
-  i8   nPointers;
-  bool bFunPtr;
-  i8   nElements;
-  i8   nBits;
-
-  
-  Stz* szVarNm;
-  Stz* szTypeNm;
-  szVarNm = MetaMember::szMemberNm(&m_oOtherTerms,szTypeNm,
-                                   nPointers,bFunPtr,nElements,nBits);
-  
-  m_p_MetaMember = m_p_MetaBlock->pAddMember(szVarNm);
-  
-  m_p_MetaMember->vTypeNm(szTypeNm);
-  m_p_MetaMember->vPointers(nPointers);
-  m_p_MetaMember->vFunPtr(bFunPtr);
-  m_p_MetaMember->vElements(nElements);
-  m_p_MetaMember->vBits(nBits);
-
-#endif
-  
-  vPartRecognised(CP_MEMBER_OTHER);
-  
-  vOtherTermsReset();
-
-  vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* parse within:                                                              */
@@ -632,7 +585,7 @@ void Vortex::vParseBlock(Stz* szSawTerm, eMB eBlock, Stz* szBlockNm)
       vParseUnion(szKeyWord);
     }
     else {
-      vParseBlockOther(szTerm);
+      vParseOther(szTerm);
     }
   }
 
@@ -980,6 +933,32 @@ void Vortex::vParseOther(Stz* szSawTerm)
   
   vCollectOtherTerms(szSawTerm);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+#if 0
+  i8   nPointers;
+  bool bFunPtr;
+  i8   nElements;
+  i8   nBits;
+
+  
+  Stz* szVarNm;
+  Stz* szTypeNm;
+  szVarNm = MetaMember::szMemberNm(&m_oOtherTerms,szTypeNm,
+                                   nPointers,bFunPtr,nElements,nBits);
+  
+  m_p_MetaMember = m_p_MetaBlock->pAddMember(szVarNm);
+  
+  m_p_MetaMember->vTypeNm(szTypeNm);
+  m_p_MetaMember->vPointers(nPointers);
+  m_p_MetaMember->vFunPtr(bFunPtr);
+  m_p_MetaMember->vElements(nElements);
+  m_p_MetaMember->vBits(nBits);
+
+#endif
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   vPartRecognised(CP_FILE_OTHER);                                         // ✅
   
   vOtherTermsReset();
