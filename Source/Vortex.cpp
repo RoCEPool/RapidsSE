@@ -1032,7 +1032,7 @@ void Vortex::vParseUnion(Stz* szSawTerm)
     
   vGetExpectedToken(xTkn,"{"_Stz);
 
-  MetaBlock* p_Block = pParseBlock("{"_Stz,MB_UNION,"union"_Stz);
+  MetaBlock* p_Block = pParseBlock("{"_Stz,"union"_Stz,MB_UNION);
 }
 
 /*----------------------------------------------------------------------------*/
