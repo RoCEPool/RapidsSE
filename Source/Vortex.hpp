@@ -86,8 +86,9 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // top-down parsing
   
-    bool bParseFile(void);
-   
+    bool bProcessFile(void);
+    void vKeywordDescend(Stz* szKeyWord);
+
     void vParseBase(Stz* szSawTerm);
     void vParseBlock(Stz* szSawTerm, eMB eBlock, Stz* szBlockNm);
     void vParseClass(Stz* szSawTerm);

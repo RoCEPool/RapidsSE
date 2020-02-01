@@ -120,11 +120,11 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   m_pInput->vPushFile(szSourcePath);
   
   //vProcAll();
-  bool b = bParseFile();
+  bool b = bProcessFile();
   
   if (! b) {
     vTrace("\n\n"_Stz);
-    vTrace("** Unable to fully parse %s\n"_Stz,szSourcePath->azChar());
+    vTrace("** Unable to fully process %s\n"_Stz,szSourcePath->azChar());
     vTrace("** Last Fragment: %s\n"_Stz,m_sFragment.azChar());
     vTrace("\n\n"_Stz);
     vDebugPoint();
@@ -428,7 +428,7 @@ void Vortex::vNamepaceDescend(Stz* szNamespaceNm)
 /*----------------------------------------------------------------------------*/
 /* process all parts in the current source file (.h or .hpp)                  */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bParseFile(void)
+bool Vortex::bProcessFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   RASSERT(! m_bInNamespace);
@@ -440,55 +440,57 @@ bool Vortex::bParseFile(void)
   while (bGetNextToken(xTkn)) {
   
     try {
-      Stz* szKeyWord = xTkn.szTerm();
-        
-      // the possible key words in a file
-      if (szKeyWord->bSame("class"_Stz)) {
-        vThrowProblem(__LINE__);   // don't expect class outside of a namespace
-      }
-      else
-      if (szKeyWord->bSame("const"_Stz)) {
-         vParseConst(szKeyWord);
-      }
-      else
-      if (szKeyWord->bSame("enum"_Stz)) {
-         vParseEnum(szKeyWord);
-      }
-      else
-      if (szKeyWord->bSame("#"_Stz)) {
-        vParseHash(szKeyWord);
-      }
-      else
-      if (szKeyWord->bSame("namespace"_Stz)) {
-        vParseNamespace(szKeyWord);
-      }
-      else
-      if (szKeyWord->bSame("static"_Stz)) {
-         vParseStatic(szKeyWord);
-      }
-      else
-      if (szKeyWord->bSame("struct"_Stz)) {
-        vThrowProblem(__LINE__);  // don't expect struct outside of a namespace
-      }
-      else
-      if (szKeyWord->bSame("template"_Stz)) {
-         vParseTemplate(szKeyWord);
-      }
-      else
-      if (szKeyWord->bSame("typedef"_Stz)) {
-        vThrowProblem(__LINE__); // don't expect typedef outside of a namespace
-      }
-      else
-      if (szKeyWord->bSame("union"_Stz)) {
-        vThrowProblem(__LINE__);   // don't expect union outside of a namespace
-      }
-      else
-      if (szKeyWord->bSame("using"_Stz)) {
-        vParseUsing(szKeyWord);
-      }
-      else {
-        vParseOther(xTkn.szTerm());
-      }
+      vKeywordDescend(xTkn.szTerm());
+      
+//      Stz* szKeyWord = xTkn.szTerm();
+//
+//      // the possible key words in a file
+//      if (szKeyWord->bSame("class"_Stz)) {
+//        vThrowProblem(__LINE__);   // don't expect class outside of a namespace
+//      }
+//      else
+//      if (szKeyWord->bSame("const"_Stz)) {
+//         vParseConst(szKeyWord);
+//      }
+//      else
+//      if (szKeyWord->bSame("enum"_Stz)) {
+//         vParseEnum(szKeyWord);
+//      }
+//      else
+//      if (szKeyWord->bSame("#"_Stz)) {
+//        vParseHash(szKeyWord);
+//      }
+//      else
+//      if (szKeyWord->bSame("namespace"_Stz)) {
+//        vParseNamespace(szKeyWord);
+//      }
+//      else
+//      if (szKeyWord->bSame("static"_Stz)) {
+//         vParseStatic(szKeyWord);
+//      }
+//      else
+//      if (szKeyWord->bSame("struct"_Stz)) {
+//        vThrowProblem(__LINE__);  // don't expect struct outside of a namespace
+//      }
+//      else
+//      if (szKeyWord->bSame("template"_Stz)) {
+//         vParseTemplate(szKeyWord);
+//      }
+//      else
+//      if (szKeyWord->bSame("typedef"_Stz)) {
+//        vThrowProblem(__LINE__); // don't expect typedef outside of a namespace
+//      }
+//      else
+//      if (szKeyWord->bSame("union"_Stz)) {
+//        vThrowProblem(__LINE__);   // don't expect union outside of a namespace
+//      }
+//      else
+//      if (szKeyWord->bSame("using"_Stz)) {
+//        vParseUsing(szKeyWord);
+//      }
+//      else {
+//        vParseOther(xTkn.szTerm());
+//      }
 
     }
     catch (i8 i_Problem) {
@@ -498,6 +500,28 @@ bool Vortex::bParseFile(void)
   } // while more tokens
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode keyword and descend into parse                                      */
+/*----------------------------------------------------------------------------*/
+void Vortex::vKeywordDescend(Stz* szKeyWord)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  if (szKeyWord->bSame("class"_Stz))     vParseClass(szKeyWord);     else
+  if (szKeyWord->bSame("const"_Stz))     vParseConst(szKeyWord);     else
+  if (szKeyWord->bSame("enum"_Stz))      vParseEnum(szKeyWord);      else
+  if (szKeyWord->bSame("friend"_Stz))    vParseFriend(szKeyWord);    else
+  if (szKeyWord->bSame("#"_Stz))         vParseHash(szKeyWord);      else
+  if (szKeyWord->bSame("namespace"_Stz)) vParseNamespace(szKeyWord); else
+  if (szKeyWord->bSame("static"_Stz))    vParseStatic(szKeyWord);    else
+  if (szKeyWord->bSame("struct"_Stz))    vParseStruct(szKeyWord);    else
+  if (szKeyWord->bSame("template"_Stz))  vParseTemplate(szKeyWord);  else
+  if (szKeyWord->bSame("typedef"_Stz))   vParseTypedef(szKeyWord);   else
+  if (szKeyWord->bSame("union"_Stz))     vParseUnion(szKeyWord);     else
+  if (szKeyWord->bSame("using"_Stz))     vParseUsing(szKeyWord);     else
+                                         vParseOther(szKeyWord);
 }
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
