@@ -893,46 +893,6 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
     
     vKeywordDescend(szKeyWord);
     
-//    // the possible key words in a namespacee
-//    if (szKeyWord->bSame("class"_Stz)) {
-//      vParseClass(szKeyWord);
-//    }
-//    else
-//    if (szKeyWord->bSame("enum "_Stz)) {
-//      vThrowProblem(__LINE__);
-//    }
-//    else
-//    if (szKeyWord->bSame("friend"_Stz)) {
-//       vThrowProblem(__LINE__);
-//    }
-//    else
-//    if (szKeyWord->bSame("#"_Stz)) {
-//      vThrowProblem(__LINE__);
-//    }
-//    else
-//    if (szKeyWord->bSame("static"_Stz)) {
-//      vParseStatic(szKeyWord);
-//    }
-//    else
-//    if (szKeyWord->bSame("struct"_Stz)) {
-//      vParseStruct(szKeyWord);
-//    }
-//    else
-//    if (szKeyWord->bSame("template"_Stz)) {
-//      vParseTemplate(szKeyWord);
-//    }
-//    else
-//    if (szKeyWord->bSame("typedef"_Stz)) {
-//      vParseTypedef(szKeyWord);
-//    }
-//    else
-//    if (szKeyWord->bSame("union"_Stz)) {
-//      vParseUnion(szKeyWord);
-//    }
-//    else {
-//      vParseOther(xTkn.szTerm());
-//    }
-    
   } // while more tokens
   
   vThrowProblem(__LINE__);
