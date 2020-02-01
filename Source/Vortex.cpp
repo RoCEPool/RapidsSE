@@ -613,17 +613,30 @@ void Vortex::vParseConst(Stz* szSawTerm)
 
   RASSERT(szSawTerm->bSame("const"_Stz));
   RASSERT(0 == m_oOtherTerms.nItems());
-  
-  Token xConstType;
-  vGetNextToken(xConstType);
-  
-  Token xConstNm;
-  vGetNextToken(xConstNm);
 
   Token xTkn;
+  Token xConstType;
+  Token xConstNm;
+
+  // get <type>
+  vGetNextToken(xConstType);
+  
+  for (;;) {
+    CHECKED(bGetNextToken(xTkn));
+    if (! xTkn.bSame("*"_Stz))
+      break;
+  }
+    
+  // get <type>
+  xConstNm = xTkn;
+
+  // get =
   vGetExpectedToken(xTkn,"="_Stz);
   
+  // get ... ;
   vCollectOtherTerms("="_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   ConstDef* pConstDef = m_p_ConstSet->pAddConstDef(xConstNm.szTerm());
   pConstDef->vTerms(m_oOtherTerms);

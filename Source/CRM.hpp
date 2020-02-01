@@ -7,12 +7,12 @@
 
 namespace Gadgets
 {
-  template <class CLASS>
+  template <class CLASSNM>
   class CRM
   {
   public:
   
-    CLASS* m_pThis; // pointer to the object
+    CLASSNM* m_pThis; // pointer to the object
   
     Atomic m_nxReferences; // number of references
   
@@ -21,7 +21,7 @@ namespace Gadgets
     /*------------------------------------------------------------------------*/
     /* parameterized constructor                        (nullptr not allowed) */
     /*------------------------------------------------------------------------*/
-    CRM<CLASS>(CLASS* pThis)
+    CRM<CLASSNM>(CLASSNM* pThis)
     {
       if ( ! pThis || ! AM::bInBufferPool(pThis) )
         THROW("CRM::CRM(pThis) : invalid pThis parameter"_Stz);
@@ -32,7 +32,7 @@ namespace Gadgets
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */
     /*------------------------------------------------------------------------*/
-    ~CRM<CLASS>(void)
+    ~CRM<CLASSNM>(void)
     {
       //! this assert may fail if a job completes before its references
       //! are completely returned
@@ -49,14 +49,14 @@ namespace Gadgets
     /*------------------------------------------------------------------------*/
     /* borrow a reference to this object                                      */
     /*------------------------------------------------------------------------*/
-    void vBorrowRefBy(REF<CLASS>* pBorrowingRef)
+    void vBorrowRefBy(REF<CLASSNM>* pBorrowingRef)
     {
        RASSERT(pBorrowingRef);
        RASSERT(! pBorrowingRef->m_pReferencedObject);
 
        ++ m_nxReferences;
     
-       pBorrowingRef->m_pReferencedObject = (CLASS*)this;
+       pBorrowingRef->m_pReferencedObject = (CLASSNM*)this;
     }
   
     /*------------------------------------------------------------------------*/
@@ -70,7 +70,7 @@ namespace Gadgets
     /*------------------------------------------------------------------------*/
     /* return a reference to this object                                      */
     /*------------------------------------------------------------------------*/
-    void vReturnRefBy(REF<CLASS>* pReturningRef)
+    void vReturnRefBy(REF<CLASSNM>* pReturningRef)
     {
       RASSERT(pReturningRef);
       RASSERT(pReturningRef->m_pReferencedObject);
