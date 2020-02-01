@@ -805,9 +805,21 @@ void Vortex::vParseHashPragma(Stz* szSawTerm)
   RASSERT(szSawTerm->bSame("pragma"_Stz));
   
   Token xTkn;
-  vGetExpectedToken(xTkn,"once"_Stz);
+  vGetNextToken(xTkn);
+  
+  if (xTkn.bSame("once"_Stz)) {
+    vPartRecognised(CP_HASH_PRAGMA_ONCE);                                 // ✅
+    return;
+  }
 
-  vPartRecognised(CP_HASH_PRAGMA);                                        // ✅
+  if (xTkn.bSame("pack"_Stz)) {
+    vGetExpectedToken(xTkn,"("_Stz);
+    vDiscardBalancedParenthesis("("_Stz);
+    vPartRecognised(CP_HASH_PRAGMA_PACK);                                 // ✅
+    return;
+  }
+
+  vThrowProblem(__LINE__);
 }
 
 /*----------------------------------------------------------------------------*/

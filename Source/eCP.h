@@ -21,7 +21,8 @@ enum eCP // c++ part
   /*    */ CP_HASH_IF,             // # if
   /*    */ CP_HASH_IFDEF,          // # ifdef
   /*    */ CP_HASH_INCLUDE,        // # include
-  /*    */ CP_HASH_PRAGMA,         // # pragma
+  /*    */ CP_HASH_PRAGMA_ONCE,    // # pragma once
+  /*    */ CP_HASH_PRAGMA_PACK,    // # pragma pack
 
   /*    */ CP_MEMBER_FRIEND,       // class member friend
   /*    */ CP_MEMBER_LABEL,        // class member label
@@ -58,7 +59,8 @@ static Stz* aCP[]
   /*    */ "CP_HASH_IF"_Stz,
   /*    */ "CP_HASH_IFDEF"_Stz,
   /*    */ "CP_HASH_INCLUDE"_Stz,
-  /*    */ "CP_HASH_PRAGMA"_Stz,
+  /*    */ "CP_HASH_PRAGMA_ONCE"_Stz,
+  /*    */ "CP_HASH_PRAGMA_PACK"_Stz,
 
   /*    */ "CP_MEMBER_FRIEND"_Stz,
   /*    */ "CP_MEMBER_LABEL"_Stz,
