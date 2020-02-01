@@ -1158,7 +1158,9 @@ void Vortex::vParseUnion(Stz* szSawTerm)
   
   Token xTkn;
     
-  vGetExpectedToken(xTkn,"{"_Stz);
+  vGetNextToken(xTkn);
+  if (! xTkn.bSame("{"_Stz)) // have union name here
+    vGetExpectedToken(xTkn,"{"_Stz);
 
   MetaBlock* p_Block = pParseBlock("{"_Stz,"union"_Stz,MB_UNION,true);
 }
