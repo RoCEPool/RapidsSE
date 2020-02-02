@@ -18,13 +18,14 @@ __aFooterFunction(MetaStructure)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MetaStructure::MetaStructure(Stz* szBlockNm, eMB eBlock,
-                     MetaGraph* p_MetaGraph, MetaStructure* p_ParentBlock)
+                             MetaGraph* p_MetaGraph,
+                             MetaStructure* p_ParentStructure)
 : Object(CN_METASTRUCTURE)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
   
-  m_p_MetaGraph   = p_MetaGraph;
-  m_p_ParentBlock = p_ParentBlock;
+  m_p_MetaGraph       = p_MetaGraph;
+  m_p_ParentStructure = p_ParentStructure;
 
   m_sBlockNm = szBlockNm;
   m_nSize    = 0;
@@ -78,11 +79,11 @@ eMB MetaStructure::eBlock(void)
 /*----------------------------------------------------------------------------*/
 /* get parent member set                                                      */
 /*----------------------------------------------------------------------------*/
-MetaStructure* MetaStructure::p_ParentBlock(void)
+MetaStructure* MetaStructure::p_ParentStructure(void)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
   
-  return m_p_ParentBlock;
+  return m_p_ParentStructure;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +103,7 @@ void MetaStructure::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
     
-  vTrace("%sMemberSet %s %s %lldB\n"_Stz,
+  vTrace("%MetaStructure %s %s %lldB\n"_Stz,
          
          Stz::szTab(i_Tab)->azChar(),
          m_sBlockNm.azChar(),

@@ -6,13 +6,13 @@
 namespace Reflection
 {
   class MetaStructure : public Object,
-                    public ListItem_t<MetaStructure>,
-                    public List_t<MetaMember>
+                        public ListItem_t<MetaStructure>,
+                        public List_t<MetaMember>
   {
   public:
  
-    MetaGraph* m_p_MetaGraph;    // the _p_ sequence means not owned by
-    MetaStructure* m_p_ParentBlock;  // parent member set
+    MetaGraph*     m_p_MetaGraph;        // the _p_ sequence means not owned by
+    MetaStructure* m_p_ParentStructure;  // parent structure
 
     s32 m_sBlockNm;  // name of this meta block
     eMB m_eBlock;    // kind of meta block
@@ -27,7 +27,7 @@ namespace Reflection
     void  operator delete(void*);
   
     MetaStructure(Stz* szBlockNm, eMB eBlock,
-              MetaGraph* p_MetaGraph, MetaStructure* p_ParentBlock);
+                  MetaGraph* p_MetaGraph, MetaStructure* p_ParentStructure);
    ~MetaStructure(void) noexcept(false);
 
     MetaMember* pAddMember(Stz* szMemberNm);
@@ -35,7 +35,7 @@ namespace Reflection
     eMB  eBlock(void);
     void vBlock(eMB eBlock);
 
-    MetaStructure* p_ParentBlock(void);
+    MetaStructure* p_ParentStructure(void);
   
     void vPrint(i8 i_Tab);
     void vRecursivePrint(i8 i_Depth);
