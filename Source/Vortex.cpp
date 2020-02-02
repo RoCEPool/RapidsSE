@@ -119,15 +119,18 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   m_pInput = new Input;
   m_pInput->vPushFile(szSourcePath);
   
-  //vProcAll();
-  bool b = bProcessFile();
+  bool b = bParseParts();
   
-  if (! b) {
+  if (b) {
+    vTrace("Parsed file %s\n"_Stz,szSourcePath->azChar());
+    vTrace("=============================================================\n"_Stz);
+  }
+  else {
     vTrace("\n\n"_Stz);
     vTrace("** Unable to fully process %s\n"_Stz,szSourcePath->azChar());
     vTrace("** Last Fragment: %s\n"_Stz,m_sFragment.azChar());
     vTrace("\n\n"_Stz);
-    vDebugPoint();
+    NEVER_REACH;
   }
   
   delete m_pInput;
@@ -424,9 +427,9 @@ void Vortex::vNamepaceDescend(Stz* szNamespaceNm)
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* process all parts in the current source file (.h or .hpp)                  */
+/* parse all parts in the current source file (.h or .hpp)                    */
 /*----------------------------------------------------------------------------*/
-bool Vortex::bProcessFile(void)
+bool Vortex::bParseParts(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   RASSERT(! m_bInNamespace);
@@ -481,11 +484,11 @@ void Vortex::vKeywordDescend(Stz* szKeyWord)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseBase(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
-  RASSERT(m_bInClass);
   RASSERT(szSawTerm->bSame(":"_Stz));
+  RASSERT(m_bInClass);
   
   Token xTkn;
 
@@ -497,7 +500,7 @@ void Vortex::vParseBase(Stz* szSawTerm)
     
     // class base is terminated by {
     if (szTerm->bSame("{"_Stz)) {
-      MetaBlock* p_Block = pParseBlock(szTerm,m_sClassNm,MS_CLASS,true);
+      MetaBlock* p_Block = pParseBlock(szTerm,m_sClassNm,MS_LINEAR,true);
       return;
     }
 
@@ -516,7 +519,7 @@ void Vortex::vParseBase(Stz* szSawTerm)
 MetaBlock* Vortex::pParseBlock(Stz* szSawTerm, Stz* szBlockNm, eMS eBlock,
                                bool bSemiTerminated)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(szSawTerm->bSame("{"_Stz));
@@ -556,11 +559,11 @@ MetaBlock* Vortex::pParseBlock(Stz* szSawTerm, Stz* szBlockNm, eMS eBlock,
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseClass(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
-  
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  RASSERT(! m_p_MetaBlock);
+  
   RASSERT(szSawTerm->bSame("class"_Stz));
+  RASSERT(! m_p_MetaBlock);
     
   Token xTkn;
   Token xClassNm;
@@ -593,7 +596,7 @@ void Vortex::vParseClass(Stz* szSawTerm)
   // detect class block ?
   if (xTkn.bSame("{"_Stz)) {
     vClassDescend(xClassNm.szTerm());
-    MetaBlock* p_Block = pParseBlock(xTkn.szTerm(),xClassNm.szTerm(),MS_CLASS,true);
+    MetaBlock* p_Block = pParseBlock(xTkn.szTerm(),xClassNm.szTerm(),MS_LINEAR,true);
     vClassAscend();
     return;
   }
@@ -606,7 +609,7 @@ void Vortex::vParseClass(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseConst(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame("const"_Stz));
@@ -649,7 +652,7 @@ void Vortex::vParseConst(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseEnum(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame("enum"_Stz));
@@ -664,7 +667,7 @@ void Vortex::vParseEnum(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseFriend(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame("friend"_Stz));
@@ -681,7 +684,7 @@ void Vortex::vParseFriend(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHash(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame("#"_Stz));
@@ -722,7 +725,7 @@ void Vortex::vParseHash(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashDefine(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame("define"_Stz));
@@ -742,7 +745,7 @@ void Vortex::vParseHashDefine(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashIf(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame("if"_Stz));
@@ -762,7 +765,7 @@ void Vortex::vParseHashIf(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashIfdef(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame("ifdef"_Stz));
@@ -782,7 +785,7 @@ void Vortex::vParseHashIfdef(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashInclude(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame("include"_Stz));
@@ -802,7 +805,7 @@ void Vortex::vParseHashInclude(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseHashPragma(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame("pragma"_Stz));
@@ -830,7 +833,7 @@ void Vortex::vParseHashPragma(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 bool Vortex::bParseLabel(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   Token xTkn;
@@ -864,8 +867,9 @@ bool Vortex::bParseLabel(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseNamespace(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
   RASSERT(szSawTerm->bSame("namespace"_Stz));
   
   // get <name> of namespace
@@ -903,7 +907,7 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseOther(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   vCollectOtherTerms(szSawTerm);
@@ -944,7 +948,7 @@ void Vortex::vParseOther(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseSemicolon(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame(";"_Stz));
@@ -957,7 +961,7 @@ void Vortex::vParseSemicolon(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseStatic(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(szSawTerm->bSame("static"_Stz));
@@ -984,7 +988,7 @@ void Vortex::vParseStatic(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseStruct(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(szSawTerm->bSame("struct"_Stz));
@@ -1012,7 +1016,7 @@ void Vortex::vParseStruct(Stz* szSawTerm)
   
   if (xTkn.bSame("{"_Stz)) {
     
-    MetaBlock* p_Block = pParseBlock("{"_Stz,"struct"_Stz,MS_STRUCT,false);
+    MetaBlock* p_Block = pParseBlock("{"_Stz,"struct"_Stz,MS_LINEAR,false);
     
     // 1) struct { ... } ;
     vGetNextToken(xTkn);
@@ -1051,7 +1055,7 @@ void Vortex::vParseStruct(Stz* szSawTerm)
 
   // 5) struct <blockNm> { ... } ;
   if (xTkn.bSame("{"_Stz)) {
-    MetaBlock* p_Block = pParseBlock(xTkn.szTerm(),xBlockNm.szTerm(),MS_STRUCT,true);
+    MetaBlock* p_Block = pParseBlock(xTkn.szTerm(),xBlockNm.szTerm(),MS_LINEAR,true);
     return;
   }
   
@@ -1068,8 +1072,9 @@ void Vortex::vParseStruct(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseTemplate(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
   RASSERT(szSawTerm->bSame("template"_Stz));
     
   Token xTkn;
@@ -1094,7 +1099,7 @@ void Vortex::vParseTemplate(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseTypedef(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
 
   RASSERT(szSawTerm->bSame("typedef"_Stz));
@@ -1111,7 +1116,7 @@ void Vortex::vParseTypedef(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseUnion(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(szSawTerm->bSame("union"_Stz));
@@ -1130,8 +1135,9 @@ void Vortex::vParseUnion(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseUsing(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
   RASSERT(szSawTerm->bSame("using"_Stz));
   
   Token xTkn;
@@ -1243,7 +1249,7 @@ void Vortex::vCollectOtherTerms(Stz* szSawTerm)
 /*----------------------------------------------------------------------------*/
 void Vortex::vCollectTplArgs(Stz* szSawTerm)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(szSawTerm->bSame("<"_Stz));
@@ -1629,7 +1635,7 @@ maybe
 /*----------------------------------------------------------------------------*/
 bool Vortex::bCollectFunctionTerms(Stz* szSawTerm, Token& roFunNm, eFN& reFun)
 {
-  vTrace("> %s SAW: %s\n"_Stz,__func__,szSawTerm->azChar());
+  vTrace("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

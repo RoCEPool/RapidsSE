@@ -29,6 +29,9 @@ MetaStructure::MetaStructure(Stz* szStructureNm, eMS eStructure,
 
   m_sStructureNm = szStructureNm;
   m_eStructure   = eStructure;
+  
+  //m_oTplArgs
+  
   m_nSize        = 0;
 
   _checkInitialised_(CN_METASTRUCTURE);
@@ -126,6 +129,16 @@ void MetaStructure::vRecursivePrint(i8 i_Depth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get rolled up size of this structure                                       */
+/*----------------------------------------------------------------------------*/
+i8 MetaStructure::nSize(void)
+{
+  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+    
+  return m_nSize;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get structure name                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* MetaStructure::szStructureNm(void)
@@ -146,13 +159,23 @@ void MetaStructure::vStructureNm(Stz* szStructureNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get rolled up size of this structure                                       */
+/* get template arguments                                                     */
 /*----------------------------------------------------------------------------*/
-i8 MetaStructure::nSize(void)
+EnameSet* MetaStructure::pTplArgs(void)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
     
-  return m_nSize;
+  return & m_oTplArgs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set template arguments                                                     */
+/*----------------------------------------------------------------------------*/
+void MetaStructure::vTplArgs(EnameSet* pTplArgs)
+{
+  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+    
+  m_oTplArgs.vCopy(pTplArgs);
 }
 
 /*============================================================================*/

@@ -16,6 +16,8 @@ namespace Reflection
 
     s32 m_sStructureNm;  // name of this structure
     eMS m_eStructure;    // kind of structure
+  
+    EnameSet m_oTplArgs; // set of template arguments
 
     i8  m_nSize;         // rolled up size of this structure
 
@@ -40,10 +42,13 @@ namespace Reflection
     void vPrint(i8 i_Tab);
     void vRecursivePrint(i8 i_Depth);
   
+    i8   nSize(void);
+  
     Stz* szStructureNm(void);
     void vStructureNm(Stz* szStructureNm);
 
-    i8   nSize(void);
+    EnameSet* pTplArgs(void);
+    void vTplArgs(EnameSet* pTplArgs);
   
     Footer* aFooter(void);
   };
