@@ -17,7 +17,7 @@ __aFooterFunction(MetaStructure)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaStructure::MetaStructure(Stz* szBlockNm, eMB eBlock,
+MetaStructure::MetaStructure(Stz* szStructureNm, eMB eStructure,
                              MetaGraph* p_MetaGraph,
                              MetaStructure* p_ParentStructure)
 : Object(CN_METASTRUCTURE)
@@ -27,9 +27,9 @@ MetaStructure::MetaStructure(Stz* szBlockNm, eMB eBlock,
   m_p_MetaGraph       = p_MetaGraph;
   m_p_ParentStructure = p_ParentStructure;
 
-  m_sBlockNm = szBlockNm;
-  m_nSize    = 0;
-  m_eBlock   = eBlock;
+  m_sStructureNm = szStructureNm;
+  m_eStructure   = eStructure;
+  m_nSize        = 0;
 
   _checkInitialised_(CN_METASTRUCTURE);
   
@@ -53,7 +53,7 @@ MetaStructure::~MetaStructure(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add a new member set with given name                                       */
+/* add a new member with given name                                           */
 /*----------------------------------------------------------------------------*/
 MetaMember* MetaStructure::pAddMember(Stz* szMemberNm)
 {
@@ -67,17 +67,7 @@ MetaMember* MetaStructure::pAddMember(Stz* szMemberNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get member set kind                                                        */
-/*----------------------------------------------------------------------------*/
-eMB MetaStructure::eBlock(void)
-{
-  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
-    
-  return m_eBlock;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get parent member set                                                      */
+/* get parent structure                                                       */
 /*----------------------------------------------------------------------------*/
 MetaStructure* MetaStructure::p_ParentStructure(void)
 {
@@ -87,13 +77,23 @@ MetaStructure* MetaStructure::p_ParentStructure(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set member set kind                                                        */
+/* get structure kind                                                         */
 /*----------------------------------------------------------------------------*/
-void MetaStructure::vBlock(eMB eBlock)
+eMB MetaStructure::eStructure(void)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
     
-  m_eBlock = eBlock;
+  return m_eStructure;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set structure kind                                                         */
+/*----------------------------------------------------------------------------*/
+void MetaStructure::vStructure(eMB eStructure)
+{
+  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+    
+  m_eStructure = eStructure;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,8 +106,8 @@ void MetaStructure::vPrint(i8 i_Tab)
   vTrace("%MetaStructure %s %s %lldB\n"_Stz,
          
          Stz::szTab(i_Tab)->azChar(),
-         m_sBlockNm.azChar(),
-         aMB[m_eBlock]->azChar(),
+         m_sStructureNm.azChar(),
+         aMB[m_eStructure]->azChar(),
          m_nSize
          );
 }
@@ -126,27 +126,27 @@ void MetaStructure::vRecursivePrint(i8 i_Depth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get member set name                                                        */
+/* get structure name                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* MetaStructure::szBlockNm(void)
+Stz* MetaStructure::szStructureNm(void)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
     
-  return m_sBlockNm.szStz();
+  return m_sStructureNm.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
-/* set member set name                                                        */
+/* set structure name                                                         */
 /*----------------------------------------------------------------------------*/
-void MetaStructure::vBlockNm(Stz* szBlockNm)
+void MetaStructure::vStructureNm(Stz* szStructureNm)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
     
-  m_sBlockNm = szBlockNm;
+  m_sStructureNm = szStructureNm;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get rolled up size of this member set                                      */
+/* get rolled up size of this structure                                       */
 /*----------------------------------------------------------------------------*/
 i8 MetaStructure::nSize(void)
 {
