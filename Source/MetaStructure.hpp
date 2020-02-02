@@ -15,7 +15,7 @@ namespace Reflection
     MetaStructure* m_p_ParentStructure;  // parent structure
 
     s32 m_sStructureNm;  // name of this structure
-    eMB m_eStructure;    // kind of structure
+    eMS m_eStructure;    // kind of structure
 
     i8  m_nSize;         // rolled up size of this structure
 
@@ -26,14 +26,14 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaStructure(Stz* szStructureNm, eMB eStructure,
+    MetaStructure(Stz* szStructureNm, eMS eStructure,
                   MetaGraph* p_MetaGraph, MetaStructure* p_ParentStructure);
    ~MetaStructure(void) noexcept(false);
 
     MetaMember* pAddMember(Stz* szMemberNm);
   
-    eMB  eStructure(void);
-    void vStructure(eMB eStructure);
+    eMS  eStructure(void);
+    void vStructure(eMS eStructure);
 
     MetaStructure* p_ParentStructure(void);
   

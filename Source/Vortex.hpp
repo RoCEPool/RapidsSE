@@ -74,9 +74,9 @@ namespace Utilities
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // block management
   
-    void vBlockNewTop(Stz* szBlockNm, eMB m_eBlock);
+    void vBlockNewTop(Stz* szBlockNm, eMS m_eBlock);
     void vBlockPopNested(void);
-    void vBlockPushNested(Stz* szBlockNm, eMB eBlock);
+    void vBlockPushNested(Stz* szBlockNm, eMS eBlock);
   
     void vClassAscend(void);
     void vClassDescend(Stz* szClassNm);
@@ -90,7 +90,7 @@ namespace Utilities
     void vKeywordDescend(Stz* szKeyWord);
 
     void vParseBase(Stz* szSawTerm);
-    MetaBlock* pParseBlock(Stz* szSawTerm, Stz* szBlockNm, eMB eBlock,
+    MetaBlock* pParseBlock(Stz* szSawTerm, Stz* szBlockNm, eMS eBlock,
                            bool bSemiTerminated);
     void vParseClass(Stz* szSawTerm);
     void vParseConst(Stz* szSawTerm);

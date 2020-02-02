@@ -17,7 +17,7 @@ __aFooterFunction(MetaStructure)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaStructure::MetaStructure(Stz* szStructureNm, eMB eStructure,
+MetaStructure::MetaStructure(Stz* szStructureNm, eMS eStructure,
                              MetaGraph* p_MetaGraph,
                              MetaStructure* p_ParentStructure)
 : Object(CN_METASTRUCTURE)
@@ -79,7 +79,7 @@ MetaStructure* MetaStructure::p_ParentStructure(void)
 /*----------------------------------------------------------------------------*/
 /* get structure kind                                                         */
 /*----------------------------------------------------------------------------*/
-eMB MetaStructure::eStructure(void)
+eMS MetaStructure::eStructure(void)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
     
@@ -89,7 +89,7 @@ eMB MetaStructure::eStructure(void)
 /*----------------------------------------------------------------------------*/
 /* set structure kind                                                         */
 /*----------------------------------------------------------------------------*/
-void MetaStructure::vStructure(eMB eStructure)
+void MetaStructure::vStructure(eMS eStructure)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
     
@@ -107,7 +107,7 @@ void MetaStructure::vPrint(i8 i_Tab)
          
          Stz::szTab(i_Tab)->azChar(),
          m_sStructureNm.azChar(),
-         aMB[m_eStructure]->azChar(),
+         aMS[m_eStructure]->azChar(),
          m_nSize
          );
 }
