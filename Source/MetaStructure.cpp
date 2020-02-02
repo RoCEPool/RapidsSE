@@ -17,7 +17,9 @@ __aFooterFunction(MetaStructure)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaStructure::MetaStructure(Stz* szStructureNm, eMS eStructure, eCP ePart,
+MetaStructure::MetaStructure(Stz* szStructureNm,
+                             eMS eStructure,
+                             eCP ePart,
                              MetaGraph* p_MetaGraph,
                              MetaStructure* p_ParentStructure)
 : Object(CN_METASTRUCTURE)
