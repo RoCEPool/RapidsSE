@@ -72,11 +72,11 @@ ConstSet* MetaGraph::pConstSet(void)
 /*----------------------------------------------------------------------------*/
 /* append top block to this meta graph                                        */
 /*----------------------------------------------------------------------------*/
-void MetaGraph::vAppendBlock(MetaBlock* pTopBlock)
+void MetaGraph::vAppendBlock(MetaStructure* pTopStructure)
 {
   _precondition_(_MAGIC_,CN_METAGRAPH,_FOOTER_);
     
-  vAppend(pTopBlock);
+  vAppend(pTopStructure);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,10 +88,10 @@ void MetaGraph::vRecursivePrint(void)
     
   m_pConstSet->vPrint(0);  
   
-  for (MetaBlock* pBlock = pHead();
-       pBlock;
-       pBlock = pBlock->pNextItem())
-    pBlock->vRecursivePrint(0);
+  for (MetaStructure* pStructure = pHead();
+       pStructure;
+       pStructure = pStructure->pNextItem())
+    pStructure->vRecursivePrint(0);
 }
 
 /*============================================================================*/

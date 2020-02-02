@@ -6,7 +6,7 @@
 namespace Reflection
 {
   class MetaGraph : public Object,
-                    public List_t<MetaBlock>
+                    public List_t<MetaStructure>
   {
   public:
  
@@ -24,7 +24,7 @@ namespace Reflection
   
     static void vPrintTermSeq(EnameSet& roTerms);
   
-    void  vAppendBlock(MetaBlock* pTopBlock);
+    void  vAppendBlock(MetaStructure* pTopBStructure);
 
     ConstSet* pConstSet(void);
 
