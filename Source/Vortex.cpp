@@ -808,7 +808,7 @@ void Vortex::vParseTypedef(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* can we recognise: union  {                                                 */
+/* parse UNION  { ...                                                         */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseUnion(Stz* szSawTerm)
 {
@@ -822,13 +822,14 @@ void Vortex::vParseUnion(Stz* szSawTerm)
   
   vGetNextToken(xTkn);
   if (xTkn.bSame("{"_Stz)) {
-    
+    sUnionNm = xTkn.szTerm();
   }
   else {
+    sUnionNm.vSprint("_UNION_%lld"_Stz,++m_iNextUnion);
     vGetExpectedToken(xTkn,"{"_Stz);
   }
 
-  MetaStructure* p_Structure = pParseStructure("{"_Stz,"union"_Stz,MS_UNION,true);
+  MetaStructure* p_Structure = pParseStructure("{"_Stz,sUnionNm,MS_UNION,true);
 }
 
 /*----------------------------------------------------------------------------*/
