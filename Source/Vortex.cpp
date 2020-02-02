@@ -440,6 +440,9 @@ bool Vortex::bParseParts(void)
   Token xTkn;
   while (bGetNextToken(xTkn)) {
   
+    vTrace("/%s/ >%s KeyWord: %s\n"_Stz,
+           m_sSourcePath.szStz(),__func__,xTkn.azTerm());
+    
     try {
       vKeywordDescend(xTkn.szTerm());
     }
