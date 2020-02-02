@@ -32,8 +32,7 @@ namespace Correctness
                                  i8    iLineNo,
                                  void* aObject,
                                  eCN   eExpectingClass);
-};
-
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -1,36 +1,44 @@
 /*============================================================================*/
 /* Vortex.hpp -- Vortex                                                       */
 /*============================================================================*/
-#pragma once
+# pragma once
 
 namespace Utilities
 {
   class Vortex : public Object
   {
   public:
-    File*       m_pOutputFile;  // output file
-    s256        m_sSourcePath;  // .h/hpp source path
-    Input*      m_pInput;       // input  token stream
-    bool        m_bTraceTokens; // trace tokens
+  
+    // input section
+  
+    s256        m_sSourcePath;   // .h/hpp source path
+    Input*      m_pInput;        // input token stream of source file
+    bool        m_bTrace;        // trace activity
 
-    MetaGraph*  m_pMetaGraph;   // the metagraph that is created
-    MetaBlock*  m_p_MetaBlock;  // current working meta block
-    MetaMember* m_p_MetaMember; // current working meta member
-    ConstSet*   m_p_ConstSet;   // set of static const i8's
+    // output section
+  
+    File*       m_pOutputFile;   // output file
+    MetaGraph*  m_pMetaGraph;    // the metagraph that is created
+  
+    // working section
+  
+    s48K        m_sFragment;     // top-down fragment of tokens
 
-    EnameSet    m_oReturnTypeTerms; // working set of collected terms
-    EnameSet    m_oFunVarTerms;     // working set of collected terms
-    EnameSet    m_oTplArgTerms;     // working set of collected terms
-   
-    bool        m_bInClass;     // currently in a class?
-    s32         m_sClassNm;     // current class name
-    bool        m_bInNamespace; // currently in a namespace?
-    s32         m_sNamespaceNm; // current namespace name
+    bool        m_bInClass;      // currently in a class?
+    s32         m_sClassNm;      // current class name
+    bool        m_bInNamespace;  // currently in a namespace?
+    s32         m_sNamespaceNm;  // current namespace name
     
-    s4K         m_sPart;        // current part
+    MetaBlock*  m_p_MetaBlock;   // current working meta block
+    MetaMember* m_p_MetaMember;  // current working meta member
+    ConstSet*   m_p_ConstSet;    // set of static const i8's
 
-    // must be last
-    Footer m_xFooter;
+    EnameSet    m_oOtherTerms;   // working set of collected terms
+    EnameSet    m_oTplArgTerms;  // working set of collected terms
+    
+    // correctness section
+  
+    Footer m_xFooter;            // must be last
   
   public:
     void* operator new(size_t);
@@ -45,104 +53,95 @@ namespace Utilities
     void vProcessSource(Stz* szSourcePath);
 
   private:
-    bool bParseFile(void);
   
-    void vParseFileClass(Stz* szSawTerm);
-    void vParseFileEnum(Stz* szSawTerm);
-    void vParseFileFunction(Stz* szSawTerm);
-    void vParseFileHash(Stz* szSawTerm);
-    void vParseFileNamespace(Stz* szSawTerm);
-    void vParseFileStatic(Stz* szSawTerm);
-    void vParseFileTemplate(Stz* szSawTerm);
-    void vParseFileUsing(Stz* szSawTerm);
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // machinary
+  
+    void vDiscardNextToken(void);
+    void vGetExpectedToken(Token& roToken, Stz* szExpect);
+    bool bGetNextToken(Token& roToken);
+    void vGetNextToken(Token& roToken);
+    void vGetOtherTerm(Token& roTerm);
+    void vGetTplArg(Token& roTerm);
+    void vFragmentAppend(Stz* szTerm);
+    void vFragmentMarker(Stz* szTerm);
+    void vFragmentReset(void);
+    void vOtherTermsReset(void);
+    void vPartRecognised(eCP ePart);
+    void vThrowProblem(i8 i_Problem);
+    void vTplArgsReset(void);
 
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // block management
+  
+    void vBlockNewTop(Stz* szBlockNm, eMB m_eBlock);
+    void vBlockPopNested(void);
+    void vBlockPushNested(Stz* szBlockNm, eMB eBlock);
+  
+    void vClassAscend(void);
+    void vClassDescend(Stz* szClassNm);
+    void vNamepaceAscend(void);
+    void vNamepaceDescend(Stz* szNamespaceNm);
+
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // top-down parsing
+  
+    bool bProcessFile(void);
+    void vKeywordDescend(Stz* szKeyWord);
+
+    void vParseBase(Stz* szSawTerm);
+    MetaBlock* pParseBlock(Stz* szSawTerm, Stz* szBlockNm, eMB eBlock,
+                           bool bSemiTerminated);
+    void vParseClass(Stz* szSawTerm);
+    void vParseConst(Stz* szSawTerm);
+    void vParseEnum(Stz* szSawTerm);
+    void vParseFriend(Stz* szSawTerm);
+    void vParseHash(Stz* szSawTerm);
     void vParseHashDefine(Stz* szSawTerm);
+    void vParseHashIf(Stz* szSawTerm);
+    void vParseHashIfdef(Stz* szSawTerm);
     void vParseHashInclude(Stz* szSawTerm);
     void vParseHashPragma(Stz* szSawTerm);
+    bool bParseLabel(Stz* szSawTerm);
+    void vParseNamespace(Stz* szSawTerm);
+    void vParseOther(Stz* szSawTerm);
+    void vParseSemicolon(Stz* szSawTerm);
+    void vParseStatic(Stz* szSawTerm);
+    void vParseStruct(Stz* szSawTerm);
+    void vParseTemplate(Stz* szSawTerm);
+    void vParseTypedef(Stz* szSawTerm);
+    void vParseUnion(Stz* szSawTerm);
+    void vParseUsing(Stz* szSawTerm);
 
-    void vParseNamespaceClass(Stz* szSawTerm);
-    void vParseNamespaceFunction(Stz* szSawTerm);
-    void vParseNamespaceStatic(Stz* szSawTerm);
-    void vParseNamespaceStruct(Stz* szSawTerm);
-    void vParseNamespaceTemplate(Stz* szSawTerm);
-    void vParseNamespaceTypedef(Stz* szSawTerm);
-    void vParseNamespaceUnion(Stz* szSawTerm);
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // term collection
   
-    void vParseClassBase(Stz* szSawTerm);
-    void vParseClassBlock(Stz* szSawTerm);
-  
-    void vParseBlockFriend(Stz* szSawTerm);
-    bool bParseBlockLabel(Stz* szSawTerm);
-    void vParseBlockMember(Stz* szSawTerm);
+    void vCollectBalanced(Stz* szOpen, Stz* szClose);
+    void vCollectBalancedAngles(Stz* szSawTerm);
+    void vCollectBalancedBraces(Stz* szSawTerm);
+    void vCollectBalancedParenthesis(Stz* szSawTerm);
+    void vCollectOtherTerms(Stz* szSawTerm);
+    void vCollectTplArgs(Stz* szSawTerm);
 
-    void vParseMemberFunVar(Stz* szSawTerm);
-    void vParseMemberStatic(Stz* szSawTerm);
-    void vParseMemberStruct(Stz* szSawTerm);
-    void vParseMemberTemplate(Stz* szSawTerm);
-    void vParseMemberUnion(Stz* szSawTerm);
+    void vDiscardBalanced(Stz* szOpen, Stz* szClose);
+    void vDiscardBalancedAngles(Stz* szSawTerm);
+    void vDiscardBalancedBraces(Stz* szSawTerm);
+    void vDiscardBalancedParenthesis(Stz* szSawTerm);
+    void vDiscardInlineTokens(Stz* szSawTerm);
+    void vDiscardStaticTokens(Stz* szSawTerm);
+    void vDiscardTill(Stz* szTerm, Stz* szTill);
   
-    void vAddTopBlock(Stz* szBlockNm, eMB m_eBlock);
-    void vAscendFromClass(void);
-    void vAscendFromNamepace(void);
-    void vCollectTerm(Stz* szTerm);
-    bool bCollectFunVarTerms(Stz* szSawTerm, Stz* szEnd, bool bAddEnd=false);
-    bool bCollectFunctionArgs(Stz* szSawTerm);
-    bool bCollectFunctionIntro(Stz* szSawTerm, Token& roFunNm, eFN& reFun);
-    bool bCollectTemplateArgs(Stz* szSawTerm);
-    void vDescendIntoClass(Stz* szClassNm);
-    void vDescendIntoNamepace(Stz* szNamespaceNm);
-    bool bGetNextToken(Token& roToken);
-    void vPopNestedBlock(void);
-    void vPushNestedBlock(Stz* szBlockNm, eMB eBlock);
-    void vRecognised(eCP ePart);
-    void vResetFunVarTerms(void);
-    void vResetPart(void);
-    void vSkipBalancedClosingBrace(Stz* szSawTerm);
-    //void vSkipTillSemicolon(void);
-    void vSkipTill(Stz* szTerm, Stz* szTill);
-    void vSkipUnrecognised(Stz* szTerm);
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // terms
+  
+    Stz* szTerm(i8 i_Term);
+    void vTermAdd(Stz* szTerm);
     bool bTermsAreFunction(void);
     bool bTermsAreVariable(void);
-    void vThrowProblem(i8 i_Problem);
-
-
-
-    // - - - - - - - - - - - - - - - - - -
-    // remove
+    i8   nTerms(void);
+    void vTermsReset(void);
   
-//    void vProcAll(void);
-//    void vProcClassBase(void);
-//    void vProcClassBlock(void);
-//    void vProcClassFunction(void);
-//    void vProcClassMembers(void);
-//    void vProcConst(void);
-//    void vProcEnum(void);
-//    void vProcHashDefine(void);
-//    void vProcHashInclude(void);
-//    void vProcHashPragma(void);
-//    void vProcLabelledMember(void);
-//    void vProcMemberProper(Stz* szFirstTerm);
-//    bool bProcNamespace(void);
-//    void vProcStructArray(void);
-//    void vProcStructMember(void);
-//    void vProcUnionMember(void);
-//  
-//    bool bRecogniseClass(Stz* szTerm);
-//    bool bRecogniseConst(Stz* szTerm);
-//    bool bRecogniseEnum(Stz* szTerm);
-//    bool bRecogniseFriend(Stz* szTerm);
-//    bool bRecogniseFunction(Stz* szTerm);
-//    bool bRecogniseHash(Stz* szTerm);
-//    bool bRecogniseLabel(Stz* szTerm);
-//    bool bRecogniseMbrOrFun(Stz* szTerm);
-//    bool bRecogniseNamespace(Stz* szTerm);
-//    bool bRecogniseStruct(Stz* szTerm);
-//    bool bRecogniseTemplate(Stz* szTerm);
-//    bool bRecogniseUnion(Stz* szTerm);
-//    bool bRecogniseUsing(Stz* szTerm);
- 
-  private:
-  
+   private:
     Footer* aFooter(void);
   };
 

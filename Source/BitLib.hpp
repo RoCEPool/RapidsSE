@@ -123,7 +123,6 @@ namespace Base
     static u8   uShuffleLeft(u8 uBitMap, u8 nBits);
     static u8   uShuffleRight(u8 uBitMap, u8 nBits);
   };
-}
 
 /*----------------------------------------------------------------------------*/
 /* bitwise-and of non-object address with mask                                */
@@ -167,6 +166,8 @@ static CAST pBitOr(void* aAddress, u8 uMask)
   u8 uNewAddress = BITWISE_OR((u8)aAddress,uMask);
   
   return reinterpret_cast<CAST>(uNewAddress);
+}
+
 }
 
 /*============================================================================*/

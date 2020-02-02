@@ -3,23 +3,21 @@
 /*============================================================================*/
 #pragma once
 
-
-
 namespace Correctness
 {
-  template <class CLASS>
+  template <class CLASSNM>
   class SMA
   {
   public:
   
-    CLASS* m_pObject; // pointer to the object
+    CLASSNM* m_pObject; // pointer to the object
   
   public:
   
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    SMA<CLASS>(void)
+    SMA<CLASSNM>(void)
     {
       m_pObject = nullptr;
     }
@@ -27,7 +25,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* parameterized constructor                            (nullptr allowed) */
     /*------------------------------------------------------------------------*/
-    SMA<CLASS>(CLASS* pObject)
+    SMA<CLASSNM>(CLASSNM* pObject)
     {
       if ( pObject && ! AM::bInBufferPool(pObject) )
         THROW("SMA::SMA(pObject) : invalid pObject parameter"_Stz);
@@ -41,7 +39,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* assignment operator =                                (nullptr allowed) */
     /*------------------------------------------------------------------------*/
-    void operator = (CLASS* pObject)
+    void operator = (CLASSNM* pObject)
     {
       if ( pObject && ! AM::bInBufferPool((Object*)pObject) )
         THROW("SMA::operator =() : invalid pObject parameter"_Stz);
@@ -52,15 +50,15 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* auto conversion operator                                               */
     /*------------------------------------------------------------------------*/
-    operator CLASS*(void)
+    operator CLASSNM*(void)
     {
-      return (CLASS*)m_pObject;
+      return (CLASSNM*)m_pObject;
     }
   
     /*------------------------------------------------------------------------*/
     /* dereference operator *                           (nullptr not allowed) */
     /*------------------------------------------------------------------------*/
-    CLASS* operator * (void)
+    CLASSNM* operator * (void)
     {
       if (! m_pObject)
         THROW("SMA::operator *() : m_pObject member is null"_Stz);
@@ -71,7 +69,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* member operator ->                               (nullptr not allowed) */
     /*------------------------------------------------------------------------*/
-    CLASS* operator -> (void)
+    CLASSNM* operator -> (void)
     {
       if (! m_pObject) {
         vDebugPoint();
@@ -84,7 +82,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* equal to operator ==                                                   */
     /*------------------------------------------------------------------------*/
-    bool operator == (CLASS* pObject)
+    bool operator == (CLASSNM* pObject)
     {
       return m_pObject == pObject;
     }
@@ -92,7 +90,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* not equal to operator !=                                               */
     /*------------------------------------------------------------------------*/
-    bool operator != (CLASS* pObject)
+    bool operator != (CLASSNM* pObject)
     {
       return m_pObject != pObject;
     }

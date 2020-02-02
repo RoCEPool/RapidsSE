@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* REG.hpp -- hidden shared memory pointer (or nullptr)                       */
+/* REG_t.hpp -- hidden shared memory pointer (or nullptr)                     */
 /*============================================================================*/
 #pragma once
 
@@ -7,19 +7,19 @@
 
 namespace Correctness
 {
-  template <class CLASS>
+  template <class CLASSNM>
   class REG
   {
   public:
   
-    CLASS* m_pObject; // pointer to the object
+    CLASSNM* m_pObject; // pointer to the object
   
   public:
   
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REG<CLASS>(void)
+    REG<CLASSNM>(void)
     {
       m_pObject = nullptr;
     }
@@ -27,7 +27,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* parameterized constructor                            (nullptr allowed) */
     /*------------------------------------------------------------------------*/
-    REG<CLASS>(CLASS* pObject)
+    REG<CLASSNM>(CLASSNM* pObject)
     {
       if ( pObject && ! AM::bInBufferPool(pObject) )
         THROW("REG::REG(pObject) : invalid pObject parameter"_Stz);
@@ -41,7 +41,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* assignment operator =                                (nullptr allowed) */
     /*------------------------------------------------------------------------*/
-    void operator = (CLASS* pObject)
+    void operator = (CLASSNM* pObject)
     {
       if ( pObject && ! AM::bInBufferPool((Object*)pObject) )
         THROW("REG::operator =(pObject) : invalid pObject parameter"_Stz);
@@ -52,7 +52,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* member operator ->                               (nullptr not allowed) */
     /*------------------------------------------------------------------------*/
-    CLASS* operator -> (void)
+    CLASSNM* operator -> (void)
     {
       if (! m_pObject)
         THROW("REG::operator ->(void) : m_pObject member is null"_Stz);
@@ -63,7 +63,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* member operator *                               (nullptr not allowed) */
     /*------------------------------------------------------------------------*/
-    CLASS* operator * (void)
+    CLASSNM* operator * (void)
     {
       if (! m_pObject)
         THROW("SMA::operator *() : m_pObject member is null"_Stz);

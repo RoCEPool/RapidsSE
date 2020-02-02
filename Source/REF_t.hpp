@@ -1,31 +1,31 @@
 /*============================================================================*/
-/* REF.hpp -- counted reference pointer                                       */
+/* REF_t.hpp -- counted reference pointer                                     */
 /*============================================================================*/
 #pragma once
 
 
 
 namespace Gadgets {
-  template <class CLASS> class CRM;
+  template <class CLASSNM> class CRM;
 }
 
 namespace Correctness
 {
-  template <class CLASS>
+  template <class CLASSNM>
   class REF
   {
-    friend class CRM<CLASS>;
+    friend class CRM<CLASSNM>;
   
   private:
   
-    CLASS* m_pReferencedObject; // pointer to the referenced object
+    CLASSNM* m_pReferencedObject; // pointer to the referenced object
   
   public:
   
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    REF<CLASS>(void)
+    REF<CLASSNM>(void)
     {
       m_pReferencedObject = nullptr;
     }
@@ -33,7 +33,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* parameterized constructor                        (nullptr not allowed) */
     /*------------------------------------------------------------------------*/
-//    REF<CLASS>(CRM<CLASS>* pReferenceTo)
+//    REF<CLASSNM>(CRM<CLASSNM>* pReferenceTo)
 //    {
 //      if ( ! pReferenceTo || ! AM::bInBufferPool(pReferenceTo) )
 //        THROW("REF::REF(pReferenceTo) : invalid pReferenceTo parameter"_Stz);
@@ -46,7 +46,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* destructor                                                             */
     /*------------------------------------------------------------------------*/
-    ~REF<CLASS>(void)
+    ~REF<CLASSNM>(void)
     {
       RASSERT(! m_pReferencedObject);
     }
@@ -57,7 +57,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* member operator ->                               (nullptr not allowed) */
     /*------------------------------------------------------------------------*/
-    CLASS* operator -> (void)
+    CLASSNM* operator -> (void)
     {
       if (! m_pReferencedObject)
         THROW("REF::operator ->(void) : m_pObject member is null"_Stz);
@@ -79,7 +79,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* get the referenced object                                              */
     /*------------------------------------------------------------------------*/
-    CLASS* pReferencedObject(void)
+    CLASSNM* pReferencedObject(void)
     {
       return m_pReferencedObject;
     }

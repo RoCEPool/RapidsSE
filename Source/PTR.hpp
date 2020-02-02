@@ -5,19 +5,19 @@
 
 namespace Correctness
 {
-  template <class CLASS>
+  template <class CLASSNM>
   class PTR
   {
   public:
   
-    CLASS* m_pObject; // pointer to the object
+    CLASSNM* m_pObject; // pointer to the object
   
   public:
   
     /*------------------------------------------------------------------------*/
     /* constructor                                                            */
     /*------------------------------------------------------------------------*/
-    PTR<CLASS>(void)
+    PTR<CLASSNM>(void)
     {
       m_pObject = nullptr;
     }
@@ -25,7 +25,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* parameterized constructor                            (nullptr allowed) */
     /*------------------------------------------------------------------------*/
-    PTR<CLASS>(CLASS* pObject)
+    PTR<CLASSNM>(CLASSNM* pObject)
     {
       if ( pObject && ! AM::bInBufferPool(pObject) )
         THROW("PTR::PTR(pObject) : invalid pObject parameter"_Stz);
@@ -39,7 +39,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* assignment operator =                                (nullptr allowed) */
     /*------------------------------------------------------------------------*/
-    void operator = (CLASS* pObject)
+    void operator = (CLASSNM* pObject)
     {
       if ( pObject && ! AM::bInBufferPool((Object*)pObject) )
         THROW("PTR::operator =(pObject) : invalid pObject parameter"_Stz);
@@ -50,7 +50,7 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     /* member operator ->                               (nullptr not allowed) */
     /*------------------------------------------------------------------------*/
-    CLASS* operator -> (void)
+    CLASSNM* operator -> (void)
     {
       if (! m_pObject)
         THROW("PTR::operator ->(void) : m_pObject member is null"_Stz);
