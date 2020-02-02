@@ -17,34 +17,34 @@ CREATE 1 THREADS {
     ('__READAPI_T')
     ('T')
 
-  LOOP 10 {
-    
-    LOG 'UPSERTING';
 
-    // execute the upsert pipeline
-    pipeline t_upsert
-    begin
+LOOP 6 {
+  LOG 'UPSERTING';
 
-      stage stageA on origin:
-        startOp | periodicOp once | stageB
+  // execute the upsert pipeline
+  pipeline t_upsert
+  begin
 
-      stage stageB on all partitions:
-        genCsvOp T | toCrwOp T | upsertOp T | stageC
+    stage stageA on origin:
+      startOp | periodicOp once | stageB
 
-      stage stageC on origin:
-        outputOp | sinkOp | stageA
+    stage stageB on all partitions:
+      genCsvOp T | toCrwOp T | upsertOp T | stageC
 
-    end;
-    success
-    
-    LOG 'DONE UPSERT';
-    
-    SLEEP 1000;
-  }
+    stage stageC on origin:
+      outputOp | sinkOp | stageA
 
+  end;
+  success
+  
+  LOG 'DONE UPSERTING';
+}
+
+LOG 'UPSERTS DONE.............';
   // Synchronizing here tells the main thread that we are done verifying the table.
   SYNCHRONIZE;
 
+LOG 'UPSERT THREAD EXITING.............';
   -- Child threads exit here.
 }
 
@@ -62,7 +62,8 @@ CREATE 1 THREADS {
   ('__READAPI_T')
   ('T')
   
-  LOOP 100 {
+  Loop 10 {
+    SLEEP 1000;
     
     LOG 'PURGING';
     
@@ -71,7 +72,7 @@ CREATE 1 THREADS {
     begin
     
       stage stageA on origin:
-        startOp | periodicOp min 1 | stageB
+        startOp | periodicOp once | stageB
       
       stage stageB on all partitions:
         purgeOp T | stageC
@@ -84,11 +85,14 @@ CREATE 1 THREADS {
     
     LOG 'DONE PURGING';
     
-    SLEEP 1000;
   }
+  
+  LOG 'PURGES DONE.............';
   
   // Synchronizing here tells the main thread that we are done with the table.
   SYNCHRONIZE;
+  
+  LOG 'PURGER THREAD EXITING.............';
   
   -- Child threads exit here.
 }
@@ -131,49 +135,46 @@ success
 // Unblocks child threads who can now work with the tables and indexes
 SYNCHRONIZE;
 
-// create Snapshot child threads
 LOOP 10 {
-  
   LOG 'TAKING SNAPSHOT';
-  
+
   // execute the snapshot pipeline
 
   pipeline t_snapshot
   begin
-  
+
     stage stageA on origin:
       startOp | periodicOp once | stageB
-    
+
     stage stageB on all partitions:
       snapshotOp T | stageC
-    
+
     stage stageC on origin:
       outputOp | sinkOp | stageA
-  
+
   end;
   success
-  
+
   LOG 'DONE SNAPSHOT';
-  
-  SLEEP 10000;
 }
+
+LOG 'SNAPSHOTS DONE.............';
 
 // Main thread waits until child threads indicate that they are done with the table.
 SYNCHRONIZE;
 
-//drop table __READAPI_T;
-//success
+LOG 'DELETING TABLES.............';
 
-//drop table T;
-//success
+drop table __READAPI_T;
+success
 
--- Child threads are blocked waiting for the table to be dropped.
-SYNCHRONIZE;
+drop table T;
+success
 
 CLEANUP {
-  //drop table __READAPI_T;
-  //mute
+  drop table __READAPI_T;
+  mute
   
-  //drop table T;
-  //mute
+  drop table T;
+  mute
 }
