@@ -17,8 +17,12 @@ namespace Reflection
 #include "ConstDef.hpp"
 #include "ConstSet.hpp"
 
+
 #include "MetaMember.hpp"
 #include "MetaBlock.hpp"
+
+#include "MetaCell.hpp"
+
 #include "MetaGraph.hpp"
 
 #include "Reflective.hpp"
