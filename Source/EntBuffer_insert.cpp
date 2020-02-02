@@ -946,6 +946,78 @@ EntBuffer* EntBuffer::pNewNextBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* purge upwards                                                              */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+#ifdef WITH_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // position to entry prior to the entry to be deleted
+  Ent* aPriorEntry = pPositionPriorEntry(aDeleteEntry->aKey());
+  if (!aPriorEntry)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // now get the entry to be deleted
+  Ent* aEntryToBeDeleted = this->aNextEntry(aPriorEntry,0);
+  if (!aEntryToBeDeleted)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // does the aEntryToBeDeleted match the aDeleteEntry ?
+  if ( ! Key::bEqualTo(aEntryToBeDeleted->aKey(), aDeleteEntry->aKey()) ) {
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the firstEntry and the next entry
+  Ent* aFirstEntry = this->aLeadEntry();
+  Ent* aEntNext = aNextEntry(aEntryToBeDeleted, 0);
+  EntBuffer* pHigherBuffer = _pEntBuffer(m_pHigherBuffer);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is the entry to be deleted the first entry and we have a higher buffer ?
+  if (aEntryToBeDeleted == aFirstEntry && pHigherBuffer) {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // if there is a next entry then insert the next entry to the higher buffers
+    if ( aEntNext ) {
+      EntWrk xEntWrkIns;
+      xEntWrkIns.vSetEnt(m_iBufferNo, 0, aEntNext);
+      pHigherBuffer->aInsertEntUpwards(xEntWrkIns.aEnt(),ppRootBuffer);
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // now purge the deleteEntry upwards
+    pHigherBuffer->vPurgeUpwards(aDeleteEntry,ppRootBuffer);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete the entry to be deleted from this buffer
+  vDeleteEntry(&aEntryToBeDeleted);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is this buffer empty ?
+  if (nItems() == 0) {
+    
+    // unlink this buffer
+    vUnLink();
+    
+    // delete this buffer
+    delete this;
+    
+    // ws this biuffer the root ?
+    if (*ppRootBuffer == this)
+      *ppRootBuffer = nullptr;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* split this buffer into two: this original buffer and a new right buffer    */
 /*----------------------------------------------------------------------------*/
 EntBuffer* EntBuffer::pSplitBuffer(void)

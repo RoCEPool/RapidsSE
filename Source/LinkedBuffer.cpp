@@ -119,35 +119,36 @@ void LinkedBuffer::vLinkAsPrev(LinkedBuffer* pArgBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* unlink given buffer from the previous buffer                               */
+/* unlink given buffer from the next and previous buffers                     */
 /*----------------------------------------------------------------------------*/
-void LinkedBuffer::vUnLinkFromPrev(void)
+void LinkedBuffer::vUnLink(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
   /*
    
-   +-------------+         +-------------+
-   | prev buffer |         | this buffer |
-   +-------------+         +-------------+
-   |        next | (a) --> |        null |
-   | prev        | <-- (b) | prev        |
-   +-------------+         +-------------+
+   +-------------+         +-------------+         +--------------+
+   | prev buffer |         | this buffer  |        | next buffer  |
+   +-------------+         +-------------+         +--------------+
+   |        next | (a) --> |        next | (c) --> |         next |
+   | prev        | <-- (b) | prev        | <-- (d) | prev         |
+   +-------------+         +-------------+         +--------------+
    
    +-------------+         +-------------+
-   | prev buffer |         | arg buffer  |
+   | prev buffer |         | next buffer |
    +-------------+         +-------------+
-   |        null |         |        null |
-   | prev        |         | null        |
+   |        next | (a) --> |        next |
+   | prev        | <-- (d) | prev        |
    +-------------+         +-------------+
    
    */
   
-  ASSERT( ! m_pNextBuffer )
+  //ASSERT( ! m_pNextBuffer )
   if (m_pPrevBuffer)
-    m_pPrevBuffer->vNextBuffer(nullptr);  // (a)
+    m_pPrevBuffer->vNextBuffer(m_pNextBuffer);    // (a)
 
-  m_pPrevBuffer = nullptr;                // (b)
+  if (m_pNextBuffer)
+    m_pNextBuffer->m_pPrevBuffer = m_pPrevBuffer; // (d)
   
 }
 

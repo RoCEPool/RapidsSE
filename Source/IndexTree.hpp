@@ -34,6 +34,7 @@ namespace IndexTrees
   
     Stz*       pAnalyze(void);
     void       vCompact(void);
+    i8         iCountH0Entries(void);
     void       vDump(bool bSameHeight);
     i8         nEntBuffers(void);
     EntBuffer* pFirstH0Buffer(void);
@@ -47,6 +48,7 @@ namespace IndexTrees
     EntBuffer* pNewRootBuffer(void);
     EntBuffer* pPositionH0Buffer(Key* aFindKey);
     EntBuffer* pRootBuffer(void);
+    void       vRootBuffer(EntBuffer* pRootBuffer);
     void       vTidyUp(void);
     void       vTruncate(void);
     bool       bVerify(void);

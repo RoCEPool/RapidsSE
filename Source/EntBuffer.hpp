@@ -110,6 +110,7 @@ namespace IndexTrees
     i8          iLengthList(void);
     i8          iLengthSubList(void);
     Ent*        aNextEntry(Ent* aEnt, i8 i_Offset);
+    void        vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer);
     void        vReset(void);
     void        vRestore(void);
     void        vRestoreIndex(Index* pIndex);

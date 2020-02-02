@@ -225,6 +225,24 @@ void IndexTree::vCompact(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* count the index entries at H0 level                                        */
+/*----------------------------------------------------------------------------*/
+i8 IndexTree::iCountH0Entries(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  i8 iCount = 0;
+  EntBuffer* pEntBuffer = pFirstH0Buffer();
+
+  while (pEntBuffer) {
+    iCount += pEntBuffer->nItems();
+    pEntBuffer = pEntBuffer->pNextBuffer();
+  }
+  
+  return iCount;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump the index                                                             */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vDump(bool bSameHeight)
@@ -235,7 +253,7 @@ void IndexTree::vDump(bool bSameHeight)
     EntBuffer* pEntBuffer = m_pRootBuffer;
     
     while (pEntBuffer) {
-      pEntBuffer->vShow();
+      //pEntBuffer->vShow();
       pEntBuffer = pEntBuffer->pNextBuffer();
     }
   }
@@ -295,6 +313,7 @@ EntBuffer* IndexTree::pFirstH0Buffer(void)
   while (pEntBuffer) {
     
     Ent* aFirstEntry = pEntBuffer->aLeadEntry();
+    
     pEntBuffer = EntBuffer::pRefdEntBuffer(aFirstEntry);
     
     if (pEntBuffer->iBufferHeight() == 0) {
@@ -541,6 +560,16 @@ EntBuffer* IndexTree::pRootBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   return m_pRootBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set root buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vRootBuffer(EntBuffer* pRootBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  m_pRootBuffer = pRootBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
