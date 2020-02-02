@@ -7,36 +7,27 @@ enum eCP // c++ part
 {
   /*  0 */ CP_NONE=0,
   
-  /*    */ CP_BLOCK,               // { members }   (in file, namespace, class)
-  /*    */ CP_CONST,               // const       (in file, namespace, class)
-  /*    */ CP_SEMICOLON,           // ;         (in file, namespace, class)
-
-  /*    */ CP_FILE_ENUM,           // enum        (in file)
-  /*    */ CP_FILE_NAMESPACE,      // namespace   (in file)
-  /*    */ CP_FILE_OTHER,          // other       (in file)
-  /*    */ CP_FILE_STATIC,         // static      (in file)
-  /*    */ CP_FILE_USING,          // using name  (in file)
-  
+  /*    */ CP_BLOCK,               // class
+  /*    */ CP_CLASS,               // class
+  /*    */ CP_CONST,               // const
+  /*    */ CP_EMPTY,               // ;
+  /*    */ CP_ENUM,                // enum
+  /*    */ CP_FORWARD,             // forward class
+  /*    */ CP_FRIEND,              // friend
   /*    */ CP_HASH_DEFINE,         // # define
   /*    */ CP_HASH_IF,             // # if
   /*    */ CP_HASH_IFDEF,          // # ifdef
   /*    */ CP_HASH_INCLUDE,        // # include
   /*    */ CP_HASH_PRAGMA_ONCE,    // # pragma once
   /*    */ CP_HASH_PRAGMA_PACK,    // # pragma pack
-
-  /*    */ CP_MEMBER_FRIEND,       // class member friend
-  /*    */ CP_MEMBER_LABEL,        // class member label
-  /*    */ CP_MEMBER_OTHER,        // class member other
-  /*    */ CP_MEMBER_STATIC,       // class member static function
-  /*    */ CP_MEMBER_STRUCT,       // class member static function
-
-  /*    */ CP_NAMESPACE_CLASS,     // class            (in namespace)
-  /*    */ CP_NAMESPACE_FORWARD,   // forward class    (in namespace)
-  /*    */ CP_NAMESPACE_OTHER,     // other            (in namespace)
-  /*    */ CP_NAMESPACE_STATIC,    // static           (in namespace)
-  /*    */ CP_NAMESPACE_STRUCT,    // struct           (in namespace)
-  /*    */ CP_NAMESPACE_TYPEDEF,   // typedef          (in namespace)
-  /*    */ CP_NAMESPACE_UNION,     // union            (in namespace)
+  /*    */ CP_LABEL,               // class member label
+  /*    */ CP_NAMESPACE,           // namespace
+  /*    */ CP_OTHER,               // other       (in file)
+  /*    */ CP_STATIC,              // static
+  /*    */ CP_STRUCT,              // struct
+  /*    */ CP_TYPEDEF,             // typedef
+  /*    */ CP_UNION,               // union
+  /*    */ CP_USING,               // using namespace
 
   /*    */ CP_ENUMS
 };
