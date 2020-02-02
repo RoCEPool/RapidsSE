@@ -14,7 +14,7 @@ namespace Utilities
     s256        m_sSourcePath;   // .h/hpp source path
     i8          m_nSources;      // sources so far
     Input*      m_pInput;        // input token stream of source file
-    bool        m_bPrint;        // print results
+    bool        m_bPrint;        // print
     bool        m_bTrace;        // trace activity
  
     // output section
@@ -35,8 +35,6 @@ namespace Utilities
     i8          m_iNextUnion;    // next anonymous union
 
     MetaStructure* m_p_MetaStructure;  // current working meta block
-  
-    MetaBlock*  m_p_MetaBlock;   // current working meta block
     MetaMember* m_p_MetaMember;  // current working meta member
     ConstSet*   m_p_ConstSet;    // set of static const i8's
 
@@ -62,43 +60,14 @@ namespace Utilities
   private:
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    // machinary
-  
-    void vDiscardNextToken(void);
-    void vGetExpectedToken(Token& roToken, Stz* szExpect);
-    bool bGetNextToken(Token& roToken);
-    void vGetNextToken(Token& roToken);
-    void vGetOtherTerm(Token& roTerm);
-    void vGetTplArg(Token& roTerm);
-    void vFragmentAppend(Stz* szTerm);
-    void vFragmentMarker(Stz* szTerm);
-    void vFragmentReset(void);
-    void vOtherTermsReset(void);
-    void vPartRecognised(eCP ePart);
-    void vThrowProblem(i8 i_Problem);
-    void vTplArgsReset(void);
-
-    // - + - + - + - + - + - + - + - + - + - + - + - +
-    // block management
-  
-    void vBlockNewTop(Stz* szBlockNm, eMS m_eBlock);
-    void vBlockPopNested(void);
-    void vBlockPushNested(Stz* szBlockNm, eMS eBlock);
-  
-    void vClassAscend(void);
-    void vClassDescend(Stz* szClassNm);
-    void vNamepaceAscend(void);
-    void vNamepaceDescend(Stz* szNamespaceNm);
-
-    // - + - + - + - + - + - + - + - + - + - + - + - +
     // top-down parsing
   
     bool bParseParts(void);
+    MetaStructure* pParseStructure(Stz* szSawTerm, Stz* szBlockNm, eMS eBlock,
+                                   bool bSemiTerminated);
     void vKeywordDescend(Stz* szKeyWord);
 
     void vParseBase(Stz* szSawTerm);
-    MetaBlock* pParseBlock(Stz* szSawTerm, Stz* szBlockNm, eMS eBlock,
-                           bool bSemiTerminated);
     void vParseClass(Stz* szSawTerm);
     void vParseConst(Stz* szSawTerm);
     void vParseEnum(Stz* szSawTerm);
@@ -120,6 +89,13 @@ namespace Utilities
     void vParseUnion(Stz* szSawTerm);
     void vParseUsing(Stz* szSawTerm);
 
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // block management
+  
+    void vStructureNewTop(Stz* szBlockNm, eMS m_eBlock);
+    void vStructurePopNested(void);
+    void vStructurePushNested(Stz* szBlockNm, eMS eBlock);
+  
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
   
@@ -155,6 +131,27 @@ namespace Utilities
     i8   nTerms(void);
     void vTermsReset(void);
   
+     // - + - + - + - + - + - + - + - + - + - + - + - +
+     // machinary
+   
+     void vClassAscend(void);
+     void vClassDescend(Stz* szClassNm);
+     void vDiscardNextToken(void);
+     void vGetExpectedToken(Token& roToken, Stz* szExpect);
+     bool bGetNextToken(Token& roToken);
+     void vGetNextToken(Token& roToken);
+     void vGetOtherTerm(Token& roTerm);
+     void vGetTplArg(Token& roTerm);
+     void vFragmentAppend(Stz* szTerm);
+     void vFragmentMarker(Stz* szTerm);
+     void vFragmentReset(void);
+     void vNamepaceAscend(void);
+     void vNamepaceDescend(Stz* szNamespaceNm);
+     void vOtherTermsReset(void);
+     void vPartRecognised(eCP ePart);
+     void vThrowProblem(i8 i_Problem);
+     void vTplArgsReset(void);
+
    private:
     Footer* aFooter(void);
   };
