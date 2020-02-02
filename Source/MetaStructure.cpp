@@ -106,7 +106,7 @@ void MetaStructure::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
     
-  vTrace("%MetaStructure %s %s %lldB\n"_Stz,
+  vTrace("%sMetaStructure %16s %s %lldB\n"_Stz,
          
          Stz::szTab(i_Tab)->azChar(),
          m_sStructureNm.azChar(),

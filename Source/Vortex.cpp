@@ -27,8 +27,8 @@ Vortex::Vortex(void)
   m_sSourcePath  = ""_Stz;
   m_nSources     = 0;
   m_pInput       = nullptr;
-  m_bPrint       = false;
-  m_bTrace       = true;
+  m_bPrint       = true;
+  m_bTrace       = false;
 
   // output
   
@@ -1249,10 +1249,19 @@ void Vortex::vStructurePush(Stz* szBlockNm, eMS eStructure)
 
   RASSERT(m_pMetaGraph);
   
-  m_p_MetaStructure = new MetaStructure(szBlockNm,
-                                        eStructure,
-                                        m_pMetaGraph,
-                                        m_p_MetaStructure);
+  if (m_p_MetaStructure) {
+    m_p_MetaStructure = new MetaStructure(szBlockNm,
+                                          eStructure,
+                                          m_pMetaGraph,
+                                          m_p_MetaStructure);
+  }
+  else {
+    m_p_MetaStructure = new MetaStructure(szBlockNm,
+                                          eStructure,
+                                          m_pMetaGraph,
+                                          nullptr);
+    m_pMetaGraph->vAppendStructure(m_p_MetaStructure);
+  }
 }
 
 
