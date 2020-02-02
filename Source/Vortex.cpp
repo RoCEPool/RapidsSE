@@ -271,7 +271,7 @@ void Vortex::vParseClass(Stz* szSawTerm)
     
   // forward declaration of a class?
   if (xTkn.bSame(";"_Stz)) {
-    vPartRecognised(CP_FORWARD);                                // ✅
+    vPartRecognised(CP_FORWARD);
     return;
   }
 
@@ -335,7 +335,7 @@ void Vortex::vParseConst(Stz* szSawTerm)
   ConstDef* pConstDef = m_p_ConstSet->pAddConstDef(xConstNm.szTerm());
   pConstDef->vTerms(m_oOtherTerms);
 
-  vPartRecognised(CP_CONST);                                              // ✅
+  vPartRecognised(CP_CONST);
   
   vOtherTermsReset();
 }
@@ -352,7 +352,7 @@ void Vortex::vParseEnum(Stz* szSawTerm)
     
   vDiscardTill(szSawTerm,";"_Stz);
   
-  vPartRecognised(CP_ENUM);                                          // ✅
+  vPartRecognised(CP_ENUM);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,7 +367,7 @@ void Vortex::vParseFriend(Stz* szSawTerm)
   
   vDiscardTill(szSawTerm,";"_Stz);
   
-  vPartRecognised(CP_FRIEND);                                      // ✅
+  vPartRecognised(CP_FRIEND);
   
   vDebugPoint();
 }
@@ -430,7 +430,7 @@ void Vortex::vParseHashDefine(Stz* szSawTerm)
     vGetNextToken(xTkn);
   }
       
-  vPartRecognised(CP_HASH_DEFINE);                                        // ✅
+  vPartRecognised(CP_HASH_DEFINE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -450,7 +450,7 @@ void Vortex::vParseHashIf(Stz* szSawTerm)
     vGetNextToken(xTkn);
   }
       
-  vPartRecognised(CP_HASH_IF);                                            // ✅
+  vPartRecognised(CP_HASH_IF);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -470,7 +470,7 @@ void Vortex::vParseHashIfdef(Stz* szSawTerm)
     vGetNextToken(xTkn);
   }
       
-  vPartRecognised(CP_HASH_IF);                                            // ✅
+  vPartRecognised(CP_HASH_IF);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -490,7 +490,7 @@ void Vortex::vParseHashInclude(Stz* szSawTerm)
   if (xTkn.bSame("<"_Stz))
     vDiscardBalancedAngles("<"_Stz);
     
-  vPartRecognised(CP_HASH_INCLUDE);                                       // ✅
+  vPartRecognised(CP_HASH_INCLUDE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -507,14 +507,14 @@ void Vortex::vParseHashPragma(Stz* szSawTerm)
   vGetNextToken(xTkn);
   
   if (xTkn.bSame("once"_Stz)) {
-    vPartRecognised(CP_HASH_PRAGMA_ONCE);                                 // ✅
+    vPartRecognised(CP_HASH_PRAGMA_ONCE);
     return;
   }
 
   if (xTkn.bSame("pack"_Stz)) {
     vGetExpectedToken(xTkn,"("_Stz);
     vDiscardBalancedParenthesis("("_Stz);
-    vPartRecognised(CP_HASH_PRAGMA_PACK);                                 // ✅
+    vPartRecognised(CP_HASH_PRAGMA_PACK);
     return;
   }
 
@@ -579,7 +579,7 @@ void Vortex::vParseNamespace(Stz* szSawTerm)
   
     // test for } being end-of-namespace
     if (xTkn.bSame("}"_Stz))  {
-      vPartRecognised(CP_NAMESPACE);                            // namespace ✅
+      vPartRecognised(CP_NAMESPACE);
       vNamepaceAscend();
       return;
     }
@@ -631,7 +631,7 @@ void Vortex::vParseOther(Stz* szSawTerm)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vPartRecognised(CP_OTHER);                                         // ✅
+  vPartRecognised(CP_OTHER);
   
   vOtherTermsReset();
 }
@@ -646,7 +646,7 @@ void Vortex::vParseSemicolon(Stz* szSawTerm)
 
   RASSERT(szSawTerm->bSame(";"_Stz));
   
-  vPartRecognised(CP_EMPTY);                                              // ✅
+  vPartRecognised(CP_EMPTY);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -673,7 +673,7 @@ void Vortex::vParseStatic(Stz* szSawTerm)
   }
   
   vDiscardStaticTokens(xTkn.szTerm());
-  vPartRecognised(CP_STATIC);                                        // ✅
+  vPartRecognised(CP_STATIC);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -694,14 +694,15 @@ void Vortex::vParseStruct(Stz* szSawTerm)
    
    3) struct { ... } <memberNm> [ <constNm> ] ;
 
-   4) struct <blockNm> ;
+   4) struct <structNm> ;
 
-   5) struct <blockNm> { ... } ;
+   5) struct <structNm> { ... } ;
 
    */
   
   Token xTkn;
- 
+  s32 sStructNm;
+
   vGetNextToken(xTkn);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -709,7 +710,9 @@ void Vortex::vParseStruct(Stz* szSawTerm)
   
   if (xTkn.bSame("{"_Stz)) {
     
-    MetaStructure* p_Structure = pParseStructure("{"_Stz,"struct"_Stz,MS_LINEAR,false);
+    sStructNm.vSprint("_STRUCT_%lld"_Stz,++m_iNextStruct);
+
+    MetaStructure* p_Structure = pParseStructure("{"_Stz,sStructNm,MS_LINEAR,false);
     
     // 1) struct { ... } ;
     vGetNextToken(xTkn);
@@ -736,8 +739,7 @@ void Vortex::vParseStruct(Stz* szSawTerm)
   
   // <#> handle member name in xTkn
 
-  Token xBlockNm;
-  xBlockNm = xTkn;
+  sStructNm = xTkn.szTerm();
   
   // get ; or {
   vGetNextToken(xTkn);
@@ -748,7 +750,7 @@ void Vortex::vParseStruct(Stz* szSawTerm)
 
   // 5) struct <blockNm> { ... } ;
   if (xTkn.bSame("{"_Stz)) {
-    MetaStructure* p_Structure = pParseStructure(xTkn.szTerm(),xBlockNm.szTerm(),MS_LINEAR,true);
+    MetaStructure* p_Structure = pParseStructure(xTkn.szTerm(),sStructNm,MS_LINEAR,true);
     return;
   }
   
@@ -757,7 +759,7 @@ void Vortex::vParseStruct(Stz* szSawTerm)
 
   // <#> handle member name
   
-  vPartRecognised(CP_STRUCT);                                             // ✅
+  vPartRecognised(CP_STRUCT);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -804,7 +806,7 @@ void Vortex::vParseTypedef(Stz* szSawTerm)
   
   vDiscardTill(szSawTerm,";"_Stz);
   
-  vPartRecognised(CP_TYPEDEF); // forward template within namespace ✅
+  vPartRecognised(CP_TYPEDEF);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -817,14 +819,24 @@ void Vortex::vParseUnion(Stz* szSawTerm)
   
   RASSERT(szSawTerm->bSame("union"_Stz));
   
+  /*
+    
+   1) union { ... } ;
+      
+   2) union <unionNm> { ... } ;
+
+   */
+
   Token xTkn;
   s32 sUnionNm;
   
   vGetNextToken(xTkn);
   if (xTkn.bSame("{"_Stz)) {
+    // 1) union { ... } ;
     sUnionNm = xTkn.szTerm();
   }
   else {
+    // 2) union <unionNm> { ... } ;
     sUnionNm.vSprint("_UNION_%lld"_Stz,++m_iNextUnion);
     vGetExpectedToken(xTkn,"{"_Stz);
   }
@@ -853,7 +865,7 @@ void Vortex::vParseUsing(Stz* szSawTerm)
   // get ;
   vGetExpectedToken(xTkn,";"_Stz);
   
-  vPartRecognised(CP_USING);                                              // ✅
+  vPartRecognised(CP_USING);
 }
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
