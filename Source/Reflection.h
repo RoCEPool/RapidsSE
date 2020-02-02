@@ -19,9 +19,10 @@ namespace Reflection
 
 
 #include "MetaMember.hpp"
-#include "MetaBlock.hpp"
+#include "MetaStructure.hpp"
 
 #include "MetaCell.hpp"
+#include "MetaBlock.hpp"
 
 #include "MetaGraph.hpp"
 
