@@ -14,8 +14,9 @@ namespace Utilities
     s256        m_sSourcePath;   // .h/hpp source path
     i8          m_nSources;      // sources so far
     Input*      m_pInput;        // input token stream of source file
+    bool        m_bPrint;        // print results
     bool        m_bTrace;        // trace activity
-
+ 
     // output section
   
     File*       m_pOutputFile;   // output file
