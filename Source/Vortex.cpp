@@ -184,47 +184,6 @@ bool Vortex::bParseParts(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse: ... _^_ { ... } ;                                                   */
-/*----------------------------------------------------------------------------*/
-MetaStructure* Vortex::pParseStructure(Stz* szSawTerm, Stz* szBlockNm, eMS eBlock,
-                               bool bSemiTerminated)
-{
-  TRACE("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  RASSERT(szSawTerm->bSame("{"_Stz));
-  
-  vStructurePushNested(szBlockNm,eBlock);
-  
-  MetaStructure* p_Structure = m_p_MetaStructure;
-
-  Token xTkn;
-
-  while (bGetNextToken(xTkn)) {
-
-    Stz* szTerm = xTkn.szTerm();
-
-    // block is terminated by } ;
-    if (szTerm->bSame("}"_Stz)) {
-      if (bSemiTerminated)
-        vGetExpectedToken(xTkn,";"_Stz);
-      vPartRecognised(CP_BLOCK);
-      vStructurePopNested();
-      return p_Structure;
-    }
-    
-    if (bParseLabel(xTkn.szTerm()))
-      continue;
-    
-    vKeywordDescend(xTkn.szTerm());
-  }
-
-  vThrowProblem(__LINE__);
-  
-  NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
 /* decode keyword and descend into parse                                      */
 /*----------------------------------------------------------------------------*/
 void Vortex::vKeywordDescend(Stz* szKeyWord)
@@ -896,50 +855,50 @@ void Vortex::vParseUsing(Stz* szSawTerm)
   vPartRecognised(CP_USING);                                              // ✅
 }
 
-
-
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
-/*                             block management                               */
+/*                    parsing of class | struct | union { ... }               */
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 
 /*----------------------------------------------------------------------------*/
-/* create a new top block                                                     */
+/* parse: ... _^_ { ... } ;                                                   */
 /*----------------------------------------------------------------------------*/
-void Vortex::vStructureNewTop(Stz* szBlockNme, eMS eBlock)
+MetaStructure* Vortex::pParseStructure(Stz* szSawTerm,
+                                       Stz* szBlockNm, eMS eStructure,
+                                       bool bSemiTerminated)
 {
+  TRACE("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(m_pMetaGraph);
-  RASSERT(! m_p_MetaStructure);
-
-  m_p_MetaStructure = new MetaStructure(szBlockNme,eBlock,m_pMetaGraph,nullptr);
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop at block end                                                           */
-/*----------------------------------------------------------------------------*/
-void Vortex::vStructurePopNested(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(m_p_MetaStructure);
   
-  m_p_MetaStructure = m_p_MetaStructure->p_ParentStructure();
-}
-
-/*----------------------------------------------------------------------------*/
-/* push new block                                                             */
-/*----------------------------------------------------------------------------*/
-void Vortex::vStructurePushNested(Stz* szBlockNm, eMS eBlock)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-
-  RASSERT(m_pMetaGraph);
+  RASSERT(szSawTerm->bSame("{"_Stz));
   
-  if (! m_p_MetaStructure)
-    vStructureNewTop(szBlockNm,eBlock);
-  else
-    m_p_MetaStructure = new MetaStructure(szBlockNm,eBlock,m_pMetaGraph,m_p_MetaStructure);
+  vStructurePush(szBlockNm,eStructure);
+  
+  MetaStructure* p_Structure = m_p_MetaStructure;
+
+  Token xTkn;
+
+  while (bGetNextToken(xTkn)) {
+
+    Stz* szTerm = xTkn.szTerm();
+
+    // block is terminated by } ;
+    if (szTerm->bSame("}"_Stz)) {
+      if (bSemiTerminated)
+        vGetExpectedToken(xTkn,";"_Stz);
+      vPartRecognised(CP_BLOCK);
+      vStructurePop();
+      return p_Structure;
+    }
+    
+    if (bParseLabel(xTkn.szTerm()))
+      continue;
+    
+    vKeywordDescend(xTkn.szTerm());
+  }
+
+  vThrowProblem(__LINE__);
+  
+  NEVER_REACH;
 }
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
@@ -1063,7 +1022,6 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
   TRACE("  TplArgs: %s\n"_Stz,sTermsString.azChar());
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* discard delimited tokens (potentially nested)                              */
 /*----------------------------------------------------------------------------*/
@@ -1175,7 +1133,6 @@ void Vortex::vDiscardStaticTokens(Stz* szSawTerm)
 }
 
 
-
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
 /*                              term skipping                                 */
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
@@ -1212,7 +1169,7 @@ void Vortex::vDiscardTill(Stz* szTerm, Stz* szTill)
 /*----------------------------------------------------------------------------*/
 /* create new meta structure for c++ class                                    */
 /*----------------------------------------------------------------------------*/
-void Vortex::vNewStructure_class(Stz* szClassNm)
+void Vortex::vStructureNew_class(Stz* szClassNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -1235,7 +1192,7 @@ void Vortex::vNewStructure_class(Stz* szClassNm)
 /*----------------------------------------------------------------------------*/
 /* create new meta structure for c++ struct                                   */
 /*----------------------------------------------------------------------------*/
-void Vortex::vNewStructure_struct(Stz* szStructNm)
+void Vortex::vStructureNew_struct(Stz* szStructNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -1248,7 +1205,7 @@ void Vortex::vNewStructure_struct(Stz* szStructNm)
 /*----------------------------------------------------------------------------*/
 /* create new meta structure for c++ union                                    */
 /*----------------------------------------------------------------------------*/
-void Vortex::vNewStructure_union(Stz* szUnionNm)
+void Vortex::vStructureNew_union(Stz* szUnionNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
@@ -1258,6 +1215,32 @@ void Vortex::vNewStructure_union(Stz* szUnionNm)
                                         m_p_MetaStructure);
 }
 
+/*----------------------------------------------------------------------------*/
+/* pop at structure end                                                       */
+/*----------------------------------------------------------------------------*/
+void Vortex::vStructurePop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(m_p_MetaStructure);
+  
+  m_p_MetaStructure = m_p_MetaStructure->p_ParentStructure();
+}
+
+/*----------------------------------------------------------------------------*/
+/* push new structure                                                         */
+/*----------------------------------------------------------------------------*/
+void Vortex::vStructurePush(Stz* szBlockNm, eMS eStructure)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+
+  RASSERT(m_pMetaGraph);
+  
+  m_p_MetaStructure = new MetaStructure(szBlockNm,
+                                        eStructure,
+                                        m_pMetaGraph,
+                                        m_p_MetaStructure);
+}
 
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
@@ -1284,6 +1267,18 @@ void Vortex::vTermAdd(Stz* szTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   m_oOtherTerms.vAdd(szTerm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of terms                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Vortex::nTerms(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  i8 nTerms = m_oOtherTerms.nItems();
+  
+  return nTerms;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1404,18 +1399,6 @@ bool Vortex::bTermsAreVariable(void)
   // -- -- -- -- -- --
   // must be a variable
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of terms                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Vortex::nTerms(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
-  
-  i8 nTerms = m_oOtherTerms.nItems();
-  
-  return nTerms;
 }
 
 /*----------------------------------------------------------------------------*/

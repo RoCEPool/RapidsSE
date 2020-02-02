@@ -60,13 +60,10 @@ namespace Utilities
   private:
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    // top-down parsing
+    // top-down parsing of C++ parts
   
     bool bParseParts(void);
-    MetaStructure* pParseStructure(Stz* szSawTerm, Stz* szBlockNm, eMS eBlock,
-                                   bool bSemiTerminated);
     void vKeywordDescend(Stz* szKeyWord);
-
     void vParseBase(Stz* szSawTerm);
     void vParseClass(Stz* szSawTerm);
     void vParseConst(Stz* szSawTerm);
@@ -90,11 +87,11 @@ namespace Utilities
     void vParseUsing(Stz* szSawTerm);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    // block management
+    // parsing of class | struct | union { ... }
   
-    void vStructureNewTop(Stz* szBlockNm, eMS m_eBlock);
-    void vStructurePopNested(void);
-    void vStructurePushNested(Stz* szBlockNm, eMS eBlock);
+    MetaStructure* pParseStructure(Stz* szSawTerm,
+                                   Stz* szBlockNm, eMS eStructure,
+                                   bool bSemiTerminated);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
@@ -116,19 +113,21 @@ namespace Utilities
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // meta structure
-
-    void vNewStructure_class(Stz* szClassNm);
-    void vNewStructure_struct(Stz* szStructNm);
-    void vNewStructure_union(Stz* szUnionNm);
+    
+    void vStructureNew_class(Stz* szClassNm);
+    void vStructureNew_struct(Stz* szStructNm);
+    void vStructureNew_union(Stz* szUnionNm);
+    void vStructurePop(void);
+    void vStructurePush(Stz* szBlockNm, eMS eStructure);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // terms
   
     Stz* szTerm(i8 i_Term);
     void vTermAdd(Stz* szTerm);
+    i8   nTerms(void);
     bool bTermsAreFunction(void);
     bool bTermsAreVariable(void);
-    i8   nTerms(void);
     void vTermsReset(void);
   
      // - + - + - + - + - + - + - + - + - + - + - + - +
