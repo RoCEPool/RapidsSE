@@ -17,7 +17,7 @@ __aFooterFunction(MetaStructure)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaStructure::MetaStructure(Stz* szStructureNm, eMS eStructure,
+MetaStructure::MetaStructure(Stz* szStructureNm, eMS eStructure, eCP ePart,
                              MetaGraph* p_MetaGraph,
                              MetaStructure* p_ParentStructure)
 : Object(CN_METASTRUCTURE)
@@ -29,6 +29,7 @@ MetaStructure::MetaStructure(Stz* szStructureNm, eMS eStructure,
 
   m_sStructureNm = szStructureNm;
   m_eStructure   = eStructure;
+  m_ePart        = ePart;
   
   //m_oTplArgs
   
@@ -106,11 +107,12 @@ void MetaStructure::vPrint(i8 i_Tab)
 {
   _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
     
-  vTrace("%sMetaStructure %16s %s %lldB\n"_Stz,
+  vTrace("%sMetaStructure %16s %s %s %lldB\n"_Stz,
          
          Stz::szTab(i_Tab)->azChar(),
          m_sStructureNm.azChar(),
          aMS[m_eStructure]->azChar(),
+         aCP[m_ePart]->azChar(),
          m_nSize
          );
 }

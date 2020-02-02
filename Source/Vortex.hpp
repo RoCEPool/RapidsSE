@@ -90,7 +90,9 @@ namespace Utilities
     // parsing of class | struct | union { ... }
   
     MetaStructure* pParseStructure(Stz* szSawTerm,
-                                   Stz* szBlockNm, eMS eStructure,
+                                   Stz* szStructureNm,
+                                   eMS  eStructure,
+                                   eCP  ePart,
                                    bool bSemiTerminated);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
@@ -118,7 +120,7 @@ namespace Utilities
     void vStructureNew_struct(Stz* szStructNm);
     void vStructureNew_union(Stz* szUnionNm);
     void vStructurePop(void);
-    void vStructurePush(Stz* szBlockNm, eMS eStructure);
+    void vStructurePush(Stz* szBlockNm, eMS eStructure, eCP ePart);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // terms
