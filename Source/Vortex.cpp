@@ -24,6 +24,7 @@ Vortex::Vortex(void)
   // input
   
   m_sSourcePath  = ""_Stz;
+  m_nSources     = 0;
   m_pInput       = nullptr;
   m_bTrace       = false;
 
@@ -41,6 +42,10 @@ Vortex::Vortex(void)
   m_bInNamespace = false;
   m_sNamespaceNm = C_NO_NAME;
   
+  m_iNextStruct  = 0;
+  m_iNextUnion   = 0;
+
+  m_p_MetaStructure  = nullptr;
   m_p_MetaBlock  = nullptr;
   m_p_MetaMember = nullptr;
   m_p_ConstSet   = m_pMetaGraph->pConstSet();
@@ -113,7 +118,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
 
   vTrace("\n\n\n"_Stz);
   vTrace("-------------------------------------------------------------\n"_Stz);
-  vTrace("Parsing file %s\n"_Stz,szSourcePath->azChar());
+  vTrace("Parsing file %lld) %s\n"_Stz,m_nSources,szSourcePath->azChar());
   
   m_sSourcePath = szSourcePath;
   m_pInput = new Input;
@@ -122,7 +127,7 @@ void Vortex::vProcessSource(Stz* szSourcePath)
   bool b = bParseParts();
   
   if (b) {
-    vTrace("Parsed file %s\n"_Stz,szSourcePath->azChar());
+    vTrace("Parsed file %lld) %s\n"_Stz,m_nSources,szSourcePath->azChar());
     vTrace("=============================================================\n"_Stz);
   }
   else {
@@ -132,6 +137,8 @@ void Vortex::vProcessSource(Stz* szSourcePath)
     vTrace("\n\n"_Stz);
     NEVER_REACH;
   }
+  
+  m_nSources++;
   
   delete m_pInput;
   m_pInput = nullptr;
@@ -230,7 +237,7 @@ void Vortex::vGetTplArg(Token& roTerm)
   
   CHECKED(bGetNextToken(roTerm))
   
-  m_oTplArgTerms.vAdd(roTerm.szTerm());
+  m_oTplArgs.vAdd(roTerm.szTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -316,7 +323,7 @@ void Vortex::vTplArgsReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oTplArgTerms.vReset();
+  m_oTplArgs.vReset();
 }
 
 
@@ -588,6 +595,9 @@ void Vortex::vParseClass(Stz* szSawTerm)
     return;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  
   // detect class base clause ?
   if (xTkn.bSame(":"_Stz)) {
     vClassDescend(xClassNm.szTerm());
@@ -1080,10 +1090,13 @@ void Vortex::vParseTemplate(Stz* szSawTerm)
   
   RASSERT(szSawTerm->bSame("template"_Stz));
     
+  vTplArgsReset();
+  
   Token xTkn;
   
   vGetExpectedToken(xTkn,"<"_Stz);
-  vDiscardBalancedAngles("<"_Stz);
+  
+  vCollectTplArgs("<"_Stz);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // class or function
@@ -1260,15 +1273,14 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
 
   vFragmentMarker("@"_Stz);
   
-  m_oTplArgTerms.vReset();
-  m_oTplArgTerms.vAdd(szSawTerm);
+  m_oTplArgs.vAdd(szSawTerm);
 
   Token xTkn;
   
   // collect ... ( ... )
   for (;;) {
     CHECKED(bGetNextToken(xTkn));
-    m_oTplArgTerms.vAdd(xTkn.szTerm());
+    m_oTplArgs.vAdd(xTkn.szTerm());
     if (xTkn.bSame(">"_Stz))
       break;
   }
@@ -1276,9 +1288,9 @@ void Vortex::vCollectTplArgs(Stz* szSawTerm)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s48K sTermsString;
-  m_oTplArgTerms.vNamesString(sTermsString);
+  m_oTplArgs.vNamesString(sTermsString);
   
-  vTrace("  %s TplArgs: %s\n"_Stz,__func__,sTermsString.azChar());
+  vTrace("  TplArgs: %s\n"_Stz,sTermsString.azChar());
 }
 
 
@@ -1421,6 +1433,61 @@ void Vortex::vDiscardTill(Stz* szTerm, Stz* szTill)
     }
   }
 }
+
+
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+/*                               meta structure                               */
+/*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */
+
+/*----------------------------------------------------------------------------*/
+/* create new meta structure for c++ class                                    */
+/*----------------------------------------------------------------------------*/
+void Vortex::vNewStructure_class(Stz* szClassNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  if (m_oTplArgs.nItems()) {
+    m_p_MetaStructure = new MetaStructure(szClassNm,
+                                          MS_TEMPLATE,
+                                          m_pMetaGraph,
+                                          m_p_MetaStructure);
+    
+    m_p_MetaStructure->vTplArgs(&m_oTplArgs);
+  }
+  else {
+    m_p_MetaStructure = new MetaStructure(szClassNm,
+                                          MS_LINEAR,
+                                          m_pMetaGraph,
+                                          m_p_MetaStructure);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* create new meta structure for c++ struct                                   */
+/*----------------------------------------------------------------------------*/
+void Vortex::vNewStructure_struct(Stz* szStructNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_p_MetaStructure = new MetaStructure(szStructNm,
+                                        MS_LINEAR,
+                                        m_pMetaGraph,
+                                        m_p_MetaStructure);
+}
+
+/*----------------------------------------------------------------------------*/
+/* create new meta structure for c++ union                                    */
+/*----------------------------------------------------------------------------*/
+void Vortex::vNewStructure_union(Stz* szUnionNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  m_p_MetaStructure = new MetaStructure(szUnionNm,
+                                        MS_UNION,
+                                        m_pMetaGraph,
+                                        m_p_MetaStructure);
+}
+
 
 
 /*- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + */

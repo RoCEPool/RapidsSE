@@ -12,6 +12,7 @@ namespace Utilities
     // input section
   
     s256        m_sSourcePath;   // .h/hpp source path
+    i8          m_nSources;      // sources so far
     Input*      m_pInput;        // input token stream of source file
     bool        m_bTrace;        // trace activity
 
@@ -28,13 +29,18 @@ namespace Utilities
     s32         m_sClassNm;      // current class name
     bool        m_bInNamespace;  // currently in a namespace?
     s32         m_sNamespaceNm;  // current namespace name
-    
+  
+    i8          m_iNextStruct;   // next anonymous struct
+    i8          m_iNextUnion;    // next anonymous union
+
+    MetaStructure* m_p_MetaStructure;  // current working meta block
+  
     MetaBlock*  m_p_MetaBlock;   // current working meta block
     MetaMember* m_p_MetaMember;  // current working meta member
     ConstSet*   m_p_ConstSet;    // set of static const i8's
 
     EnameSet    m_oOtherTerms;   // working set of collected terms
-    EnameSet    m_oTplArgTerms;  // working set of collected terms
+    EnameSet    m_oTplArgs;      // working set of collected template args
     
     // correctness section
   
@@ -131,6 +137,13 @@ namespace Utilities
     void vDiscardStaticTokens(Stz* szSawTerm);
     void vDiscardTill(Stz* szTerm, Stz* szTill);
   
+    // - + - + - + - + - + - + - + - + - + - + - + - +
+    // meta structure
+
+    void vNewStructure_class(Stz* szClassNm);
+    void vNewStructure_struct(Stz* szStructNm);
+    void vNewStructure_union(Stz* szUnionNm);
+
     // - + - + - + - + - + - + - + - + - + - + - + - +
     // terms
   
