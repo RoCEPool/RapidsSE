@@ -28,7 +28,7 @@ Vortex::Vortex(void)
   m_nSources     = 0;
   m_pInput       = nullptr;
   m_bPrint       = true;
-  m_bTrace       = false;
+  m_bTrace       = true;
 
   // output
   
@@ -833,11 +833,11 @@ void Vortex::vParseUnion(Stz* szSawTerm)
   vGetNextToken(xTkn);
   if (xTkn.bSame("{"_Stz)) {
     // 1) union { ... } ;
-    sUnionNm = xTkn.szTerm();
+    sUnionNm.vSprint("_UNION_%lld"_Stz,++m_iNextUnion);
   }
   else {
     // 2) union <unionNm> { ... } ;
-    sUnionNm.vSprint("_UNION_%lld"_Stz,++m_iNextUnion);
+    sUnionNm = xTkn.szTerm();
     vGetExpectedToken(xTkn,"{"_Stz);
   }
 
