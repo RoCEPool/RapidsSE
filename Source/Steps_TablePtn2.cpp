@@ -38,7 +38,6 @@ void Step::vTablePtnPurge(void)
   
   // get the oldest perspective
   t8 tOldestPsp = AM::pTxSet()->tOldestPsp();
-  vTrace("PurgerOp OldestPsp: %lld\n"_Stz, tOldestPsp);
   pTablePtn->pReadApi()->vPurgePriorVersions(tOldestPsp);
   
   EXIT();

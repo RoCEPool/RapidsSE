@@ -62,8 +62,7 @@ CREATE 1 THREADS {
   ('__READAPI_T')
   ('T')
   
-  Loop 10 {
-    SLEEP 1000;
+  Loop 20 {
     
     LOG 'PURGING';
     
@@ -85,6 +84,7 @@ CREATE 1 THREADS {
     
     LOG 'DONE PURGING';
     
+    SLEEP 1000;
   }
   
   LOG 'PURGES DONE.............';
@@ -135,7 +135,7 @@ success
 // Unblocks child threads who can now work with the tables and indexes
 SYNCHRONIZE;
 
-LOOP 10 {
+LOOP 20 {
   LOG 'TAKING SNAPSHOT';
 
   // execute the snapshot pipeline
@@ -156,12 +156,31 @@ LOOP 10 {
   success
 
   LOG 'DONE SNAPSHOT';
+  SLEEP 1000;
 }
 
 LOG 'SNAPSHOTS DONE.............';
 
 // Main thread waits until child threads indicate that they are done with the table.
 SYNCHRONIZE;
+
+LOG 'ONE LAST PURGE...';
+pipeline t_purge
+begin
+
+  stage stageA on origin:
+  startOp | periodicOp once | stageB
+
+  stage stageB on all partitions:
+  purgeOp T | stageC
+
+  stage stageC on origin:
+  outputOp | sinkOp | stageA
+
+end;
+success
+
+LOG 'LAST PURGE DONE...';
 
 LOG 'DELETING TABLES.............';
 
