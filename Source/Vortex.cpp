@@ -221,31 +221,13 @@ void Vortex::vParseBase(Stz* szSawTerm)
   RASSERT(szSawTerm->bSame(":"_Stz));
   RASSERT(m_bInClass);
   
-  Token xTkn;
-
-  vDebugPoint();
+  vParseInherit(szSawTerm);
   
-  while (bGetNextToken(xTkn)) {
-
-    Stz* szTerm = xTkn.szTerm();
-    
-    // class base is terminated by {
-    if (szTerm->bSame("{"_Stz)) {
-      MetaStructure* p_Structure = pParseStructure(szTerm,
-                                                   m_sClassNm,
-                                                   MS_LINEAR,
-                                                   CP_CLASS,
-                                                   true);
-      return;
-    }
-
-    // ..incomplete..
-    
-    // skip token
-    
-  }
-
-  vThrowProblem(__LINE__);
+  MetaStructure* p_Structure = pParseStructure("{"_Stz,
+                                               m_sClassNm,
+                                               MS_LINEAR,
+                                               CP_CLASS,
+                                               true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -527,6 +509,35 @@ void Vortex::vParseHashPragma(Stz* szSawTerm)
   }
 
   vThrowProblem(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse                                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseInherit(Stz* szSawTerm)
+{
+  TRACE("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+  
+  Token xTkn;
+
+  vDebugPoint();
+  
+  while (bGetNextToken(xTkn)) {
+
+    Stz* szTerm = xTkn.szTerm();
+    
+    // class base is terminated by {
+    if (szTerm->bSame("{"_Stz))
+      return;
+
+    // ..incomplete..
+    
+    // skip token
+  }
+
+  vThrowProblem(__LINE__);
+
 }
 
 /*----------------------------------------------------------------------------*/

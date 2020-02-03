@@ -75,6 +75,7 @@ namespace Utilities
     void vParseHashIfdef(Stz* szSawTerm);
     void vParseHashInclude(Stz* szSawTerm);
     void vParseHashPragma(Stz* szSawTerm);
+    void vParseInherit(Stz* szSawTerm);
     bool bParseLabel(Stz* szSawTerm);
     void vParseNamespace(Stz* szSawTerm);
     void vParseOther(Stz* szSawTerm);
