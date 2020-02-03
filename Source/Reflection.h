@@ -18,6 +18,7 @@ namespace Reflection
 #include "ConstSet.hpp"
 
 
+#include "MetaInherits.hpp"
 #include "MetaMember.hpp"
 #include "MetaStructure.hpp"
 

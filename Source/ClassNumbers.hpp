@@ -181,6 +181,7 @@ enum eCN : u2 // Class Number
   /*                            */ CN_METABLOCK,
   /*                            */ CN_METACELL,
   /*                            */ CN_METAGRAPH,
+  /*                            */ CN_METAINHERITS,
   /*                            */ CN_METAMEMBER,
   /*                            */ CN_METASTRUCTURE,
   /* 146 0x092      480B Heap:S */ CN_MUTEX,
@@ -514,6 +515,7 @@ static Stz* aCN[]
   /* 145 0x091 */ "METABLOCK"_Stz,           // CN_METABLOCK
   /* 145 0x091 */ "METACELL"_Stz,            // CN_METACELL
   /*           */ "METAGRAPH"_Stz,           // CN_METAGRAPH
+  /*           */ "METAINHERITS"_Stz,        // CN_METAINHERITS
   /* 145 0x091 */ "METAMEMBER"_Stz,          // CN_METAMEMBER
   /* 145 0x091 */ "METASTRUCTURE"_Stz,       // CN_METASTRUCTURE
   /* 146 0x092 */ "MUTEX"_Stz,               // CN_MUTEX

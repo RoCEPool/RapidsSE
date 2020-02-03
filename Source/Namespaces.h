@@ -67,7 +67,8 @@ namespace Operators     { class Op; class Pipeline;                           }
 namespace ReadConsistency {                                                   }
 namespace Records       {                                                     }
 namespace Reflection    { class ConstDef; class ConstSet;
-                          class MetaBlock; class MetaGraph; class MetaMember; }
+                          class MetaBlock; class Metacell; class MetaGraph;
+                          class MetaMember; class MetaStructure;              }
 namespace Resources     { class Resource; class ResourceTracker; class PsxThd;}
 namespace Registers     { class RegSet;                                       }
 namespace Rows          {                                                     }
