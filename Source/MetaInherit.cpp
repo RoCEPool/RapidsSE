@@ -17,13 +17,17 @@ __aFooterFunction(MetaInherit)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaInherit::MetaInherit(MetaInherits* p_MetaInherits)
+MetaInherit::MetaInherit(Stz* szStructure, MetaInherits* p_MetaInherits)
 : Object(CN_METAINHERIT)
 {
   _precondition_(_MAGIC_,CN_METAINHERIT,_FOOTER_);
   
   m_p_MetaInherits = p_MetaInherits;
-
+  
+  m_sMetaStructure = szStructure;
+  
+  // m_oTplArgs
+  
   _checkInitialised_(CN_METAINHERIT);
   
   _postcondition_(_MAGIC_,CN_METAINHERIT,_FOOTER_);
@@ -44,6 +48,27 @@ MetaInherit::~MetaInherit(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get the structure that is inherited                                        */
+/*----------------------------------------------------------------------------*/
+Stz* MetaInherit::sMetaStructure(void)
+{
+  _precondition_(_MAGIC_,CN_METAINHERIT,_FOOTER_);
+  
+  return m_sMetaStructure;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the structure that is inherited                                        */
+/*----------------------------------------------------------------------------*/
+EnameSet* MetaInherit::pTplArgs(void)
+{
+  _precondition_(_MAGIC_,CN_METAINHERIT,_FOOTER_);
+  
+  return & m_oTplArgs;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -10,6 +10,10 @@ namespace Reflection
   public:
  
     MetaInherits* m_p_MetaInherits;  // parent member set
+   
+    s32           m_sMetaStructure;  // structure that is inherited
+  
+    EnameSet      m_oTplArgs;        // with these template arguments
 
     // must be last
     Footer m_xFooter;
@@ -18,9 +22,12 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaInherit(MetaInherits* m_p_MetaInherits);
+    MetaInherit(Stz* szStructure, MetaInherits* m_p_MetaInherits);
    ~MetaInherit(void) noexcept(false);
-
+  
+    Stz* sMetaStructure(void);
+    EnameSet* pTplArgs(void);
+  
     Footer* aFooter(void);
   };
 
