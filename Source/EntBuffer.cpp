@@ -837,9 +837,9 @@ Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuf
 }
 
 /*----------------------------------------------------------------------------*/
-/* move to next key entry                                                     */
+/* find the prev key entry                                                    */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToPrevEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer)
+Ent* EntBuffer::pFindPrevKeyEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer)
 {
   EntBuffer* pEntBuffer = *ppEntBuffer;
   

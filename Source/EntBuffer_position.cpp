@@ -52,7 +52,7 @@ EntBuffer* EntBuffer::pPositionH0Buffer(Key* aFindKey)
     ASSERT(aEnt);
     Ent* aEntPrev = aEnt;
     
-    aEnt = pEntBuffer->pMoveToPrevEntry(aEnt, aFindKey, &pEntBuffer);
+    aEnt = pEntBuffer->pFindPrevKeyEntry(aEnt, aFindKey, &pEntBuffer);
     if (! aEnt ) {
       aFindKey->vShow(m_pIndex->pIndexDef()->pIdxColVec());
       vTrace("\n"_Stz);
