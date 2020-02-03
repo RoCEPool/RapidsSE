@@ -696,6 +696,9 @@ void Task::vRefindJobClass(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  if (m_pJob)
+    return;
+  
   // find the job class on this node
   eCN eClass = m_pJob->eClass();
   JobClass* pJobClass = JobClass::pFind(eClass);

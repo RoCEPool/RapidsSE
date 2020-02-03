@@ -72,7 +72,9 @@ namespace Jobs
     i8        m_iOriginatingId;   // job id of originating job
 
     // to go ------------------
+  //private:
     JobClass* m_aJobClass;    // job class THIS WILL GO
+  public:
     eJT       m_eJobType;     // type of job
   
   private:
@@ -119,6 +121,8 @@ namespace Jobs
     void vIncRowsProcessed(void);
     void vIncRowsInvalid(void);
     i8   iJobId(void);
+    JobClass* aJobClass(void);
+    void vJobClass(JobClass* aJobClass);
     eJK  eJobKind(void);
     void vJobKind(eJK eJobKind);
     eJL  eJobList(void);
