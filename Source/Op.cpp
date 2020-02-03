@@ -515,6 +515,8 @@ void Op::vPipeToJob(Operand* pOperand)
   
   Queue* pBufferQueue = AM::pBufferQueue(m_pJobPipeline);
   
+  RASSERT(pBufferQueue);
+  
   if (AM::bVerbose())
     vTrace("%12s (N%lld) (P%02lld) (job:%p)::%12s %12s %p\n"_Stz,
            m_sName.szStz(),

@@ -528,7 +528,8 @@ void Job::vContentDump(void)
          "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
          "m_iParentId=%lld m_iOriginatingId=%lld\n"
          "m_nxReferences=%lld\n"_Stz,
-
+         "m_pBufferQueue=%p\n"_Stz,
+         "m_pPipeline=%p\n"_Stz,
          this,
          aCN[eClass()],
          
@@ -547,10 +548,20 @@ void Job::vContentDump(void)
          m_iOriginatingId,
          
          nReferences(),
-         
+         m_pBufferQueue,
+         m_pPipeline,
          C_ENDARGS
          );
-
+  
+  if (m_pPipeline) {
+    
+    vTrace("\n"_Stz);
+    vTrace("Pipeline Job\n"_Stz);
+    vTrace("---\n"_Stz);
+    
+    m_pPipeline->pJob()->vContentDump();
+  }
+  
   m_oEnameSet.vContentDump();
 }
 
