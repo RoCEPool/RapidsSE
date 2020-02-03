@@ -135,7 +135,7 @@ success
 // Unblocks child threads who can now work with the tables and indexes
 SYNCHRONIZE;
 
-LOOP 20 {
+LOOP 10 {
   LOG 'TAKING SNAPSHOT';
 
   // execute the snapshot pipeline

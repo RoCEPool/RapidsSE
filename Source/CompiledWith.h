@@ -61,7 +61,7 @@ static char* RAPIDSSE_VERSION_STRING = (char*)"3.1.4";
 //#define WITH_TRACE_API EndDefine           // code for tracing api's compiled in
 //#define WITH_TRACE_DYNAMO EndDefine        // code for tracing compiling dynamic pipeline
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
-//#define WITH_TRACE_PURGING EndDefine       // trace purging
+#define WITH_TRACE_PURGING EndDefine       // trace purging
 
 #endif
 

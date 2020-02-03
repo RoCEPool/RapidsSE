@@ -699,7 +699,9 @@ void Task::vRefindJobClass(void)
   // find the job class on this node
   eCN eClass = m_pJob->eClass();
   JobClass* pJobClass = JobClass::pFind(eClass);
+  vTrace("Refinding jobClass for job %p old:%p %p\n"_Stz, m_pJob, m_pJob->m_aJobClass, pJobClass);
   m_pJob->m_aJobClass = pJobClass;
+  
   
   //m_pJob->m_aJobClass->vJobCat();
 }

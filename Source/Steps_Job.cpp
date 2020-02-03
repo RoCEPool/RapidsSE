@@ -75,6 +75,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.phase!"_Stz,           &Step::vJobPhaseStore);
   vAddStep("job.postRecv"_Stz,         &Step::vJobPostRecv);
   vAddStep("job.preSend"_Stz,          &Step::vJobPreSend);
+  vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
   vAddStep("job.recv"_Stz,             &Step::vJobRecv);
   vAddStep("job.regionSize@"_Stz,      &Step::vJobRegionSizeFetch);
@@ -441,8 +442,28 @@ void Step::vJobCreateBufferQueue(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
+  if (pJob->eClass() == CN_JOB_UNIVERSAL) {
+    vTrace("Job: %p JobClass: %p\n"_Stz, pJob, pJob->m_aJobClass);
+  }
+  
   RASSERT( ! pJob->m_pBufferQueue );
   pJob->m_pBufferQueue = new Queue;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.printMember -- print a member of the job                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobPrintMember(void)
+{
+  ENTRY(); // ENTRY("vJobPrintMember"_Stz);
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
+  if (pJob->eClass() == CN_JOB_UNIVERSAL) {
+    vTrace("------------------Job: %p JobClass: %p\n"_Stz, pJob, pJob->m_aJobClass);
+  }
   
   EXIT();
 }

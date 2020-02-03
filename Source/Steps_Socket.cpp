@@ -334,7 +334,9 @@ void Step::vSocketRecvObject(void)
     //ActLog::vAdd(pJob,AN_RECV_JOB,m_pTask->pJob(),nObjectSize);
 
     pJob->m_i_Focal = C_UNKNOWN;
-                         
+    pJob->m_pResponseVec = nullptr;
+    pJob->m_pBufferQueue = nullptr;
+    
     m_pDataStack->vPushPtr(pJob);
     m_pDataStack->vPushInt(true);
     EXIT();
@@ -618,7 +620,9 @@ void Step::vSocketRecvObject_LowMem(void)
     //ActLog::vAdd(pJob,AN_RECV_JOB_LOW_MEMORY);
     
     pJob->m_i_Focal = C_UNKNOWN;
-
+    pJob->m_pResponseVec = nullptr;
+    pJob->m_pBufferQueue = nullptr;
+    
     m_pDataStack->vPushPtr(pJob);
     m_pDataStack->vPushInt(true);
     EXIT();
@@ -774,6 +778,10 @@ void Step::vSocketSendObject(void)
   
   if (_bIsValidJob(eClass)) {
     Job* pJob = _pJob(pObject);
+    
+    if (pJob->eClass() == CN_JOB_UNIVERSAL) {
+      vTrace("********Job: %p JobClass: %p\n"_Stz, pJob, pJob->m_aJobClass);
+    }
     
     // ray added 25 Aug 2019
     ASSERT(pJob->m_aJobClass->m_fpSend && pJob->m_aJobClass->m_fpRecv);
