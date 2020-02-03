@@ -223,11 +223,15 @@ void Vortex::vParseBase(Stz* szSawTerm)
   
   vParseInherit(szSawTerm);
   
+  vStructurePush(m_sClassNm,MS_LINEAR,CP_CLASS);
+
   MetaStructure* p_Structure = pParseStructure("{"_Stz,
                                                m_sClassNm,
                                                MS_LINEAR,
                                                CP_CLASS,
                                                true);
+
+  vStructurePop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -274,11 +278,15 @@ void Vortex::vParseClass(Stz* szSawTerm)
   // detect class block ?
   if (xTkn.bSame("{"_Stz)) {
     vClassDescend(xClassNm.szTerm());
+
+    vStructurePush(xClassNm.szTerm(),MS_LINEAR,CP_CLASS);
+
     MetaStructure* p_Structure = pParseStructure(xTkn.szTerm(),
                                                  xClassNm.szTerm(),
                                                  MS_LINEAR,
                                                  CP_CLASS,
                                                  true);
+    vStructurePop();
     vClassAscend();
     return;
   }
@@ -742,12 +750,15 @@ void Vortex::vParseStruct(Stz* szSawTerm)
     
     sStructNm.vSprint("_STRUCT_%lld"_Stz,++m_iNextStruct);
 
+    vStructurePush(sStructNm,MS_LINEAR,CP_STRUCT);
+
     MetaStructure* p_Structure = pParseStructure("{"_Stz,
                                                  sStructNm,
                                                  MS_LINEAR,
                                                  CP_STRUCT,
                                                  false);
-    
+    vStructurePop();
+
     // 1) struct { ... } ;
     vGetNextToken(xTkn);
     if (xTkn.bSame(";"_Stz))
@@ -784,11 +795,16 @@ void Vortex::vParseStruct(Stz* szSawTerm)
 
   // 5) struct <blockNm> { ... } ;
   if (xTkn.bSame("{"_Stz)) {
+    
+    vStructurePush(xTkn.szTerm(),MS_LINEAR,CP_STRUCT);
+
     MetaStructure* p_Structure = pParseStructure(xTkn.szTerm(),
                                                  sStructNm,
                                                  MS_LINEAR,
                                                  CP_STRUCT,
                                                  true);
+    vStructurePop();
+    
     return;
   }
   
@@ -877,12 +893,16 @@ void Vortex::vParseUnion(Stz* szSawTerm)
     sUnionNm = xTkn.szTerm();
     vGetExpectedToken(xTkn,"{"_Stz);
   }
+  
+  vStructurePush(sUnionNm,MS_UNION,CP_UNION);
 
   MetaStructure* p_Structure = pParseStructure("{"_Stz,
                                                sUnionNm,
                                                MS_UNION,
                                                CP_UNION,
                                                true);
+  
+  vStructurePop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -927,7 +947,7 @@ MetaStructure* Vortex::pParseStructure(Stz* szSawTerm,
   
   RASSERT(szSawTerm->bSame("{"_Stz));
   
-  vStructurePush(szBlockNm,eStructure,ePart);
+  //vStructurePush(szBlockNm,eStructure,ePart);
   
   MetaStructure* p_Structure = m_p_MetaStructure;
 
@@ -942,7 +962,7 @@ MetaStructure* Vortex::pParseStructure(Stz* szSawTerm,
       if (bSemiTerminated)
         vGetExpectedToken(xTkn,";"_Stz);
       vPartRecognised(CP_BLOCK);
-      vStructurePop();
+      //vStructurePop();
       return p_Structure;
     }
     
