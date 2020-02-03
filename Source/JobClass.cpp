@@ -58,7 +58,7 @@ Job* JobClass::pNewJob(ReqTuple* aReqTuple)
 {
   Job* pNewJob = (*m_fpNew)(this,aReqTuple);
   
-  pNewJob->m_aJobClass = this;
+  pNewJob->vJobClass(this,(char*)__func__);
   
   return pNewJob;
 }
@@ -134,7 +134,7 @@ Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession)
   
   Job* pJob = (*m_fpPre)(this,aReqTuple,pSession);
   
-  ASSERT(this == pJob->m_aJobClass);
+  ASSERT(this == pJob->aJobClass());
   pJob->m_xReqTuple.m_i_Session = pSession ? pSession->m_i_Session : -1;
   
   if (pSession) {

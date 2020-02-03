@@ -664,6 +664,35 @@ void Job::vIncRowsInvalid(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the job class                                                          */
+/*----------------------------------------------------------------------------*/
+JobClass* Job::aJobClass(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_aJobClass;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job class                                                              */
+/*----------------------------------------------------------------------------*/
+void Job::vJobClass(JobClass* aJobClass, char* azCaller)
+{
+  m_aJobClass = aJobClass;
+  
+  Thread* pThread = AM::pThisTLSThread();
+  
+  vTrace("Job %p %s m_aJobClass set to %p %s; thread %p caller %s\n"_Stz,
+         this,
+         m_sJobNm.szStz(),
+         m_aJobClass,
+         m_aJobClass->m_aComment->azChar(),
+         pThread,
+         azCaller
+         );
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the job id                                                             */
 /*----------------------------------------------------------------------------*/
 i8 Job::iJobId(void)
@@ -1665,7 +1694,7 @@ void Jobs::vJob_post(Job* pJob)
   
   //! why wouldn't this be set by now??
   JobClass* pJobClass = JobClass::pFind(eClass);
-  pJob->m_aJobClass = pJobClass;
+  pJob->vJobClass(pJobClass,(char*)__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1681,7 +1710,7 @@ void Jobs::vJob_post(Job* pJob)
     //eResponse = pJob->m_aJobClass->m_eResponse;
   }
   else {
-    eResponse = pJob->m_aJobClass->m_eResponse;
+    eResponse = pJob->aJobClass()->m_eResponse;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1701,8 +1730,8 @@ void Jobs::vJob_post(Job* pJob)
       
     default:
       vTrace("Invalid response in job %s : %s\n"_Stz,
-             aCN[pJob->m_aJobClass->m_eClass],
-             aRS[pJob->m_aJobClass->m_eResponse]);
+             aCN[pJob->aJobClass()->m_eClass],
+             aRS[pJob->aJobClass()->m_eResponse]);
   }
 }
 

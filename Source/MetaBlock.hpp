@@ -15,7 +15,7 @@ namespace Reflection
     MetaBlock* m_p_ParentBlock;  // parent member set
 
     s32 m_sBlockNm;  // name of this meta block
-    eMB m_eBlock;    // kind of meta block
+    eMS m_eBlock;    // kind of meta block
 
     i8  m_nSize;     // rolled up size of this block
 
@@ -26,14 +26,14 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaBlock(Stz* szBlockNm, eMB eBlock,
+    MetaBlock(Stz* szBlockNm, eMS eBlock,
               MetaGraph* p_MetaGraph, MetaBlock* p_ParentBlock);
    ~MetaBlock(void) noexcept(false);
 
     MetaMember* pAddMember(Stz* szMemberNm);
   
-    eMB  eBlock(void);
-    void vBlock(eMB eBlock);
+    eMS  eBlock(void);
+    void vBlock(eMS eBlock);
 
     MetaBlock* p_ParentBlock(void);
   

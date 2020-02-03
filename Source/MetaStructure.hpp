@@ -14,10 +14,15 @@ namespace Reflection
     MetaGraph*     m_p_MetaGraph;        // the _p_ sequence means not owned by
     MetaStructure* m_p_ParentStructure;  // parent structure
 
-    s32 m_sBlockNm;  // name of this meta block
-    eMB m_eBlock;    // kind of meta block
+    s32            m_sStructureNm;  // name of this structure
+    eMS            m_eStructure;    // kind of structure
+    eCP            m_ePart;         // c++ part
+  
+    EnameSet       m_oTplArgs;      // set of template arguments
+  
+    MetaInherits*  m_pMetaInherits;
 
-    i8  m_nSize;     // rolled up size of this block
+    i8  m_nSize;         // rolled up size of this structure
 
     // must be last
     Footer m_xFooter;
@@ -26,24 +31,29 @@ namespace Reflection
     void* operator new(size_t);
     void  operator delete(void*);
   
-    MetaStructure(Stz* szBlockNm, eMB eBlock,
+    MetaStructure(Stz* szStructureNm, eMS eStructure, eCP ePart,
                   MetaGraph* p_MetaGraph, MetaStructure* p_ParentStructure);
    ~MetaStructure(void) noexcept(false);
 
     MetaMember* pAddMember(Stz* szMemberNm);
-  
-    eMB  eBlock(void);
-    void vBlock(eMB eBlock);
+
+    MetaInherits* pInherits(void);
+
+    eMS  eStructure(void);
+    void vStructure(eMS eStructure);
 
     MetaStructure* p_ParentStructure(void);
   
     void vPrint(i8 i_Tab);
     void vRecursivePrint(i8 i_Depth);
   
-    Stz* szBlockNm(void);
-    void vBlockNm(Stz* szBlockNm);
-
     i8   nSize(void);
+  
+    Stz* szStructureNm(void);
+    void vStructureNm(Stz* szStructureNm);
+
+    EnameSet* pTplArgs(void);
+    void vTplArgs(EnameSet* pTplArgs);
   
     Footer* aFooter(void);
   };

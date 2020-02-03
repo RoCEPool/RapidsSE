@@ -12,9 +12,11 @@ namespace Utilities
     // input section
   
     s256        m_sSourcePath;   // .h/hpp source path
+    i8          m_nSources;      // sources so far
     Input*      m_pInput;        // input token stream of source file
+    bool        m_bPrint;        // print
     bool        m_bTrace;        // trace activity
-
+ 
     // output section
   
     File*       m_pOutputFile;   // output file
@@ -28,13 +30,16 @@ namespace Utilities
     s32         m_sClassNm;      // current class name
     bool        m_bInNamespace;  // currently in a namespace?
     s32         m_sNamespaceNm;  // current namespace name
-    
-    MetaBlock*  m_p_MetaBlock;   // current working meta block
+  
+    i8          m_iNextStruct;   // next anonymous struct
+    i8          m_iNextUnion;    // next anonymous union
+
+    MetaStructure* m_p_MetaStructure;  // current working meta block
     MetaMember* m_p_MetaMember;  // current working meta member
     ConstSet*   m_p_ConstSet;    // set of static const i8's
 
     EnameSet    m_oOtherTerms;   // working set of collected terms
-    EnameSet    m_oTplArgTerms;  // working set of collected terms
+    EnameSet    m_oTplArgs;      // working set of collected template args
     
     // correctness section
   
@@ -55,43 +60,11 @@ namespace Utilities
   private:
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
-    // machinary
+    // top-down parsing of C++ parts
   
-    void vDiscardNextToken(void);
-    void vGetExpectedToken(Token& roToken, Stz* szExpect);
-    bool bGetNextToken(Token& roToken);
-    void vGetNextToken(Token& roToken);
-    void vGetOtherTerm(Token& roTerm);
-    void vGetTplArg(Token& roTerm);
-    void vFragmentAppend(Stz* szTerm);
-    void vFragmentMarker(Stz* szTerm);
-    void vFragmentReset(void);
-    void vOtherTermsReset(void);
-    void vPartRecognised(eCP ePart);
-    void vThrowProblem(i8 i_Problem);
-    void vTplArgsReset(void);
-
-    // - + - + - + - + - + - + - + - + - + - + - + - +
-    // block management
-  
-    void vBlockNewTop(Stz* szBlockNm, eMB m_eBlock);
-    void vBlockPopNested(void);
-    void vBlockPushNested(Stz* szBlockNm, eMB eBlock);
-  
-    void vClassAscend(void);
-    void vClassDescend(Stz* szClassNm);
-    void vNamepaceAscend(void);
-    void vNamepaceDescend(Stz* szNamespaceNm);
-
-    // - + - + - + - + - + - + - + - + - + - + - + - +
-    // top-down parsing
-  
-    bool bProcessFile(void);
+    bool bParseParts(void);
     void vKeywordDescend(Stz* szKeyWord);
-
     void vParseBase(Stz* szSawTerm);
-    MetaBlock* pParseBlock(Stz* szSawTerm, Stz* szBlockNm, eMB eBlock,
-                           bool bSemiTerminated);
     void vParseClass(Stz* szSawTerm);
     void vParseConst(Stz* szSawTerm);
     void vParseEnum(Stz* szSawTerm);
@@ -114,6 +87,15 @@ namespace Utilities
     void vParseUsing(Stz* szSawTerm);
 
     // - + - + - + - + - + - + - + - + - + - + - + - +
+    // parsing of class | struct | union { ... }
+  
+    MetaStructure* pParseStructure(Stz* szSawTerm,
+                                   Stz* szStructureNm,
+                                   eMS  eStructure,
+                                   eCP  ePart,
+                                   bool bSemiTerminated);
+  
+    // - + - + - + - + - + - + - + - + - + - + - + - +
     // term collection
   
     void vCollectBalanced(Stz* szOpen, Stz* szClose);
@@ -132,15 +114,45 @@ namespace Utilities
     void vDiscardTill(Stz* szTerm, Stz* szTill);
   
     // - + - + - + - + - + - + - + - + - + - + - + - +
+    // meta structure
+    
+    void vStructureNew_class(Stz* szClassNm);
+    void vStructureNew_struct(Stz* szStructNm);
+    void vStructureNew_union(Stz* szUnionNm);
+    void vStructurePop(void);
+    void vStructurePush(Stz* szBlockNm, eMS eStructure, eCP ePart);
+
+    // - + - + - + - + - + - + - + - + - + - + - + - +
     // terms
   
     Stz* szTerm(i8 i_Term);
     void vTermAdd(Stz* szTerm);
+    i8   nTerms(void);
     bool bTermsAreFunction(void);
     bool bTermsAreVariable(void);
-    i8   nTerms(void);
     void vTermsReset(void);
   
+     // - + - + - + - + - + - + - + - + - + - + - + - +
+     // machinary
+   
+     void vClassAscend(void);
+     void vClassDescend(Stz* szClassNm);
+     void vDiscardNextToken(void);
+     void vGetExpectedToken(Token& roToken, Stz* szExpect);
+     bool bGetNextToken(Token& roToken);
+     void vGetNextToken(Token& roToken);
+     void vGetOtherTerm(Token& roTerm);
+     void vGetTplArg(Token& roTerm);
+     void vFragmentAppend(Stz* szTerm);
+     void vFragmentMarker(Stz* szTerm);
+     void vFragmentReset(void);
+     void vNamepaceAscend(void);
+     void vNamepaceDescend(Stz* szNamespaceNm);
+     void vOtherTermsReset(void);
+     void vPartRecognised(eCP ePart);
+     void vThrowProblem(i8 i_Problem);
+     void vTplArgsReset(void);
+
    private:
     Footer* aFooter(void);
   };

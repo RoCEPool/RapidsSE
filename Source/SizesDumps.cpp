@@ -182,6 +182,8 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_METABLOCK
   /* */ &Dump::vUndefined,       // CN_METACELL
   /* */ &Dump::vUndefined,       // CN_METAGRAPH
+  /* */ &Dump::vUndefined,       // CN_METAINHERIT
+  /* */ &Dump::vUndefined,       // CN_METAINHERITS
   /* */ &Dump::vUndefined,       // CN_METAMEMBER
   /* */ &Dump::vUndefined,       // CN_METASTRUCTURE
   /* */ &Dump::vUndefined,       // CN_MUTEX
@@ -514,10 +516,12 @@ i8 giClassSize[]
   /* */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
   /* */ sizeof(MemTest),            // CN_MEMTEST
   /* */ sizeof(MetaBlock),          // CN_METABLOCK
-  /* */ 0,//sizeof(MetaCell),          // CN_METACELL
+  /* */ sizeof(MetaCell),           // CN_METACELL
   /* */ sizeof(MetaGraph),          // CN_METAGRAPH
+  /* */ sizeof(MetaInherit),        // CN_METAINHERIT
+  /* */ sizeof(MetaInherits),       // CN_METAINHERITS
   /* */ sizeof(MetaMember),         // CN_METAMEMBER
-  /* */ 9,//sizeof(MetaMember),         // CN_METASTRUCTURE
+  /* */ sizeof(MetaStructure),      // CN_METASTRUCTURE
   /* */ sizeof(Mutex),              // CN_MUTEX
 
   /* */ 'N' - ('A' - 1),            // CN__N__
@@ -847,11 +851,13 @@ eHT geWhichHeap[]
   /* */ HT_INVALID,           // CN_MEDIUMPERSISTENT
   /* */ HT_INVALID,           // CN_MEDIUMTRANSIENT
   /* */ HT_TRANSIENT_SMALL,   // CN_MEMTEST
-  /* */ HT_TRANSIENT_SMALL,   // CN_METABLOCK
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_METABLOCK
   /* */ HT_TRANSIENT_SMALL,   // CN_METACELL
-  /* */ HT_TRANSIENT_SMALL,   // CN_METAGRAPH
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_METAGRAPH
+  /* */ HT_TRANSIENT_SMALL,   // CN_METAINHERIT
+  /* */ HT_TRANSIENT_SMALL,   // CN_METAINHERITS
   /* */ HT_TRANSIENT_SMALL,   // CN_METAMEMBER
-  /* */ HT_TRANSIENT_SMALL,   // CN_METASTRUCTURE
+  /* */ HT_TRANSIENT_MEDIUM,  // CN_METASTRUCTURE
   /* */ HT_TRANSIENT_SMALL,   // CN_MUTEX
 
   /* */ HT_INVALID,           // CN__N__

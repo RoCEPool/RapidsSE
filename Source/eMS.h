@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* eMB.h -- Meta Block                                                        */
+/* eMS.h -- Meta Structure                                                    */
 /*============================================================================*/
 #pragma once
 
-enum eMB // meta block
+enum eMS // meta structure
 {
-  /*  0 */ MB_NONE=0,
+  /*  0 */ MS_NONE=0,
   
-  /*    */ MB_CLASS,  // linear sequence of members
-  /*    */ MB_STRUCT, // linear sequence of members
-  /*    */ MB_UNION,  // union sequence of members
+  /*    */ MS_LINEAR,    // linear sequence of members
+  /*    */ MS_TEMPLATE,  // template of linear sequence
+  /*    */ MS_UNION,     // union of members
   
-  /*    */ MB_ENUMS
+  /*    */ MS_ENUMS
 };
 
-static Stz* aMB[]
+static Stz* aMS[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "MB_CLASS"_Stz,
-  /*    */ "MB_STRUCT"_Stz,
-  /*    */ "MB_UNION"_Stz,
+  /*    */ "MS_LINEAR"_Stz,
+  /*    */ "MS_TEMPLATE"_Stz,
+  /*    */ "MS_UNION"_Stz,
   
   /*    */ "ENUMS"_Stz
 };

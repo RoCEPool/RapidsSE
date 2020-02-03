@@ -24,7 +24,7 @@ namespace Reflection
   
     static void vPrintTermSeq(EnameSet& roTerms);
   
-    void  vAppendBlock(MetaStructure* pTopBStructure);
+    void  vAppendStructure(MetaStructure* pTopStructure);
 
     ConstSet* pConstSet(void);
 
