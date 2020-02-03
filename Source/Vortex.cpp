@@ -530,6 +530,15 @@ void Vortex::vParseHashPragma(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse                                                                */
+/*----------------------------------------------------------------------------*/
+void Vortex::vParseInherit(Stz* szSawTerm)
+{
+  TRACE("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* within block, skip a label i.e. private|protected|public :                 */
 /*----------------------------------------------------------------------------*/
 bool Vortex::bParseLabel(Stz* szSawTerm)
