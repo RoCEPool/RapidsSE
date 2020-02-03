@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MetaInherit.cpp - Meta Inherit                                           */
+/* MetaInherit.cpp - Meta Inheritance of another MetaStructure                */
 /*============================================================================*/
 
 #include "Reflection.h"

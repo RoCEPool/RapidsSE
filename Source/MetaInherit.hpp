@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MetaInherit.hpp - Meta Inherit                                             */
+/* MetaInherit.hpp - Meta Inheritance of another MetaStructure                */
 /*============================================================================*/
 #pragma once
 

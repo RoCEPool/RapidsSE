@@ -34,6 +34,7 @@ MetaStructure::MetaStructure(Stz* szStructureNm,
   m_ePart        = ePart;
   
   //m_oTplArgs
+  m_pMetaInherits = nullptr;
   
   m_nSize        = 0;
 
@@ -70,6 +71,16 @@ MetaMember* MetaStructure::pAddMember(Stz* szMemberNm)
   vAppend(pMember);
   
   return pMember;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get meta inheritance list                                                  */
+/*----------------------------------------------------------------------------*/
+MetaInherits* MetaStructure::pInherits(void)
+{
+  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  
+  return m_pMetaInherits;
 }
 
 /*----------------------------------------------------------------------------*/

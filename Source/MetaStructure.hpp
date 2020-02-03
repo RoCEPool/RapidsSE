@@ -14,11 +14,13 @@ namespace Reflection
     MetaGraph*     m_p_MetaGraph;        // the _p_ sequence means not owned by
     MetaStructure* m_p_ParentStructure;  // parent structure
 
-    s32 m_sStructureNm;  // name of this structure
-    eMS m_eStructure;    // kind of structure
-    eCP m_ePart;         // c++ part
+    s32            m_sStructureNm;  // name of this structure
+    eMS            m_eStructure;    // kind of structure
+    eCP            m_ePart;         // c++ part
   
-    EnameSet m_oTplArgs; // set of template arguments
+    EnameSet       m_oTplArgs;      // set of template arguments
+  
+    MetaInherits*  m_pMetaInherits;
 
     i8  m_nSize;         // rolled up size of this structure
 
@@ -34,7 +36,9 @@ namespace Reflection
    ~MetaStructure(void) noexcept(false);
 
     MetaMember* pAddMember(Stz* szMemberNm);
-  
+
+    MetaInherits* pInherits(void);
+
     eMS  eStructure(void);
     void vStructure(eMS eStructure);
 
