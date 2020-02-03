@@ -198,16 +198,6 @@ void SePrompt::vPromptLoop(void)
     vPreJob();
     
     if (m_pJob->bHasError()) {
-      //vTrace("job has error (maybe syntax error)\n"_Stz);
-      
-      //! temp  // // // // // // // // // // // // // //
-//      if (CN_JOB_PIPELINE == m_pJob->eClass()) {
-//        vTrace("deleting Job_Pipeline\n"_Stz);
-//        vDeleteJob();
-//        continue;
-//      }
-      //! end temp // // // // // // // // // // // // //
-      
       vPostJob();
       vDumpTokenVec();
       vCompletedTask();
@@ -236,17 +226,11 @@ void SePrompt::vPromptLoop(void)
         // do something else release version optimizes this out
         //if (AM::bVerbose())
         //  vTrace("Waiting for buffer queue\n"_Stz);
-        if (m_pJob->bHasError(EC_INVALID_COMMAND)) {
-          break;
-        }
-        
         AM::vNapMsec(1,CN_SEPROMPT);
       }
     
-      // handle errors
-      if ( ! m_pJob->bHasError(EC_INVALID_COMMAND) )
-        // start the post processing while the pipeline ops are running
-        vPostJob();
+      // start the post processing while the pipeline ops are running
+      vPostJob();
         
       // wait for the pipeline to complete
       vJobWaitCond();

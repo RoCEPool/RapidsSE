@@ -1245,12 +1245,16 @@ void Job::vPrintQueueRows(void)
   
   StreamDef* pStreamDef = nullptr;
   bool bHasError = false;
-  
+    
   for (;;) {
     
     Operand* pOperand = _pOperand(m_pBufferQueue->pPop());
     
     if (! pOperand) {
+      // invalid command ? exit early
+      if (this->bHasError(EC_INVALID_COMMAND)) {
+        break;
+      }
       AM::vNapUsec(250,CN_NONE);
       continue;
     }
