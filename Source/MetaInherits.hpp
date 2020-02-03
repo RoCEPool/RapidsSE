@@ -6,7 +6,7 @@
 namespace Reflection
 {
   class MetaInherits : public Object,
-                       public List_t<MetaMember>
+                       public List_t<MetaInherit>
   {
   public:
  
@@ -22,6 +22,8 @@ namespace Reflection
   
     MetaInherits(MetaGraph* p_MetaGraph, MetaStructure* p_MetaStructure);
    ~MetaInherits(void) noexcept(false);
+
+    MetaInherit* pAddInherit(Stz* szBaseClassNm);
 
     Footer* aFooter(void);
   };

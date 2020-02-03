@@ -5,7 +5,8 @@
 
 namespace Reflection
 {
-  class MetaInherit : public Object
+  class MetaInherit : public Object,
+                      public ListItem_t<MetaInherit>
   {
   public:
  

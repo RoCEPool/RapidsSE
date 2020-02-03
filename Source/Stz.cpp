@@ -215,6 +215,25 @@ bool Stz::bIsNumeric(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bOneOf: test if this Stz is same as one of the args (ignores case)         */
+/*----------------------------------------------------------------------------*/
+bool Stz::bOneOf(Stz* szArg, ...)
+{
+  va_list args;
+  va_start(args,szArg);
+  
+  while (szArg) {
+    if (bSame(szArg))
+      return true;
+    szArg = va_arg(args,Stz*);
+  }
+
+  va_end(args);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bSame: test if this Stz is same as arg (ignores case)                      */
 /*----------------------------------------------------------------------------*/
 bool Stz::bSame(Stz* szArg)

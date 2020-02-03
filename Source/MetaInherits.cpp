@@ -46,6 +46,21 @@ MetaInherits::~MetaInherits(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* add a new member with given name                                           */
+/*----------------------------------------------------------------------------*/
+MetaInherit* MetaInherits::pAddInherit(Stz* szBaseClassNm)
+{
+  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  
+  MetaInherit* pMetaInherit = new MetaInherit(szBaseClassNm,this);
+
+  vAppend(pMetaInherit);
+  
+  return pMetaInherit;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

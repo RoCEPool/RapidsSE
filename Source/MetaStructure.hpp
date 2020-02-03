@@ -37,6 +37,8 @@ namespace Reflection
 
     MetaMember* pAddMember(Stz* szMemberNm);
 
+    MetaInherit* pAddInherit(Stz* szBaseClassNm);
+
     MetaInherits* pInherits(void);
 
     eMS  eStructure(void);

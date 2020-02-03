@@ -34,6 +34,7 @@ namespace Strings
     bool  bIsSomeFalse(void);
     bool  bIsSomeTrue(void);
     i8    nLength(void);
+    bool  bOneOf(Stz* szArg, ...);
     bool  bSame(Stz* szArg);
     i8    nSize(void);
     void  vSprint(Stz* szFormat, ...);

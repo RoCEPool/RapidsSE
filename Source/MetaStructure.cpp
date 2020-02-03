@@ -74,6 +74,21 @@ MetaMember* MetaStructure::pAddMember(Stz* szMemberNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a new member with given name                                           */
+/*----------------------------------------------------------------------------*/
+MetaInherit* MetaStructure::pAddInherit(Stz* szBaseClassNm)
+{
+  _precondition_(_MAGIC_,CN_METASTRUCTURE,_FOOTER_);
+  
+  if (! m_pMetaInherits)
+    m_pMetaInherits = new MetaInherits(m_p_MetaGraph,this);
+
+  MetaInherit* pMetaInherit = m_pMetaInherits->pAddInherit(szBaseClassNm);
+  
+  return pMetaInherit;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get meta inheritance list                                                  */
 /*----------------------------------------------------------------------------*/
 MetaInherits* MetaStructure::pInherits(void)

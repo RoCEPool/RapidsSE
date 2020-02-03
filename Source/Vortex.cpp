@@ -28,7 +28,7 @@ Vortex::Vortex(void)
   m_nSources     = 0;
   m_pInput       = nullptr;
   m_bPrint       = true;
-  m_bTrace       = false;
+  m_bTrace       = true;
 
   // output
   
@@ -511,7 +511,7 @@ void Vortex::vParseHashPragma(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse                                                                */
+/* parse                                                                      */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseInherit(Stz* szSawTerm)
 {
@@ -523,16 +523,28 @@ void Vortex::vParseInherit(Stz* szSawTerm)
   vDebugPoint();
   
   while (bGetNextToken(xTkn)) {
-
+    
     Stz* szTerm = xTkn.szTerm();
     
+    TRACE("   %s\n"_Stz,szTerm);
+
+    if (szTerm->bOneOf("private"_Stz,"protected"_Stz,"public"_Stz,nullptr)) {
+      vGetNextToken(xTkn);
+      TRACE("   %s\n"_Stz,szTerm);
+    }
+
+    Stz* szBaseClassNm = xTkn.szTerm();
+    
+    // add
+    //MetaInherit* pInherit = m_p_MetaStructure->pAddInherit(szBaseClassNm);
+    
+    vGetNextToken(xTkn);
+
     // class base is terminated by {
     if (szTerm->bSame("{"_Stz))
       return;
 
-    // ..incomplete..
-    
-    // skip token
+    CHECKED(szTerm->bSame(","_Stz));
   }
 
   vThrowProblem(__LINE__);
