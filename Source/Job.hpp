@@ -34,6 +34,7 @@ namespace Jobs
               public CRM<Job>
   {
   private:
+    JobClass* m_aJobClass;    // job class THIS WILL GO
     s32       m_sJobNm;       // name of job
     EnameSet  m_oEnameSet;    // ename-value set
     i8        m_iParentId;    // job id of parent job which spawned this job
@@ -72,8 +73,7 @@ namespace Jobs
     i8        m_iOriginatingId;   // job id of originating job
 
     // to go ------------------
-  private:
-    JobClass* m_aJobClass;    // job class THIS WILL GO
+    
   public:
     eJT       m_eJobType;     // type of job
   
@@ -202,7 +202,7 @@ namespace Jobs
   eEC  eJob_checkCluster(Session* pSession);
   void vJob_recv(Job* pJob);
   void vJob_send(Job* pJob);
-  void vJob_post(Job* pJob);
+  void vJob_post(JobClass* aJobClass, Job* pJob);
 }
 
 bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch);

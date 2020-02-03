@@ -344,7 +344,7 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob(Job* pJob)
 {
-  ASSERT(pJob->aJobClass());
+  //ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
 
   

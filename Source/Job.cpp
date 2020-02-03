@@ -686,7 +686,7 @@ void Job::vJobClass(JobClass* aJobClass, char* azCaller)
          this,
          m_sJobNm.szStz(),
          m_aJobClass,
-         m_aJobClass->m_aComment->azChar(),
+         "comment"_Stz, //m_aJobClass->m_aComment->azChar(),
          pThread,
          azCaller
          );
@@ -1688,13 +1688,13 @@ eEC Jobs::eJob_checkCluster(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* post-execute job function                                                  */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_post(Job* pJob)
+void Jobs::vJob_post(JobClass* aJobClass, Job* pJob)
 {
   eCN eClass = pJob->eClass();
   
   //! why wouldn't this be set by now??
-  JobClass* pJobClass = JobClass::pFind(eClass);
-  pJob->vJobClass(pJobClass,(char*)__func__);
+  //JobClass* pJobClass = JobClass::pFind(eClass);
+  //pJob->vJobClass(pJobClass,(char*)__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1710,7 +1710,7 @@ void Jobs::vJob_post(Job* pJob)
     //eResponse = pJob->m_aJobClass->m_eResponse;
   }
   else {
-    eResponse = pJob->aJobClass()->m_eResponse;
+    eResponse = aJobClass->m_eResponse;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

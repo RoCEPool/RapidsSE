@@ -696,7 +696,7 @@ void Task::vRefindJobClass(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (m_pJob)
+  if (m_pJob->aJobClass())
     return;
   
   // find the job class on this node

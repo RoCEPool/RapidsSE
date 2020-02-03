@@ -32,7 +32,7 @@ namespace Jobs
             
             eEC  (*fpCheck)(Session* pSession),
             Job* (*fpPre)(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession),
-            void (*fpPost)(Job* pJob),
+            void (*fpPost)(JobClass* aJobClass, Job* pJob),
             Job* (*fpNew)(JobClass* aJobClass, ReqTuple* aReqTuple),
             void (*fpDelete)(Job* pJob),
             void (*fpSend)(Job* pJob),

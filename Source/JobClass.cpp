@@ -122,7 +122,7 @@ void JobClass::vGrabDdlLock(void)
 /*----------------------------------------------------------------------------*/
 void JobClass::vPostJob(Job* pJob)
 {
-  (*m_fpPost)(pJob);
+  (*m_fpPost)(this, pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +134,7 @@ Job* JobClass::pPreJob(ReqTuple* aReqTuple, Session* pSession)
   
   Job* pJob = (*m_fpPre)(this,aReqTuple,pSession);
   
-  ASSERT(this == pJob->aJobClass());
+  //ASSERT(this == pJob->aJobClass());
   pJob->m_xReqTuple.m_i_Session = pSession ? pSession->m_i_Session : -1;
   
   if (pSession) {

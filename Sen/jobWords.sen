@@ -189,12 +189,8 @@
   params| pJob |
   params| i_Node |
 
-  "job.forward" .
-  pjob job.printMember
-
   i_Node grid::node task::this task.sendNode!
 
-  pjob job.printMember
   pJob job.send
 ;
 
@@ -243,19 +239,11 @@
   // create the response vector in the orginating job to receive responses
   pJob job.createResponseVec
 
-  pJob job.printMember
-
-  pJob job.printMember
-
   // set the no of acks expected in originator job to nodes in the grid
   grid::connectedNodes pJob job.acksRemaining!
 
-  pJob job.printMember
-
   // grab this task's lock
   task::this task.grabLock
-
-  pJob job.printMember
 
   // set acks for originator task
   1 task::acks!
@@ -263,12 +251,8 @@
   // send the job to each node in the grid
   grid::definedNodes 0 do
 
-    pJob job.printMember
-
     I grid::node node.sendSocket@ if
-      pJob job.printMember
       I pJob job.forward
-      pJob job.printMember
     then
 
   loop

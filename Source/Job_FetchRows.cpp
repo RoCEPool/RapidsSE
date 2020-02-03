@@ -635,7 +635,7 @@ Job* Jobs::pJob_FetchRows_pre(JobClass* aJobClass, ReqTuple* aReqTuple, Session*
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_FetchRows_post(Job* pJob)
+void Jobs::vJob_FetchRows_post(JobClass* aJobClass, Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   

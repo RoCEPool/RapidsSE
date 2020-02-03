@@ -1100,6 +1100,9 @@ void SePrompt::vSpawnJob(void)
   if (m_pJob->bHasEnameTag(C_TAG_JE))
     m_pJob->pEnameSet()->vPrint();
   
+  //! ALKA: Come back to this : 3 feb 2020
+  m_pJob->vJobClass(nullptr, (char*)__func__);
+  
   bool bSpawned = Api::bSpawnJob(m_pJob);
   RASSERT(bSpawned);
 }
