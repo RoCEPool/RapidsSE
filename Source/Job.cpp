@@ -680,7 +680,7 @@ void Job::vJobClass(JobClass* aJobClass, char* azCaller)
 {
   m_aJobClass = aJobClass;
   
-  Thread* pThread = AM::pThisTLSThread();
+//  Thread* pThread = AM::pThisTLSThread();
   
 //  vTrace("Job %p %s m_aJobClass set to %p %s; thread %p caller %s\n"_Stz,
 //         this,

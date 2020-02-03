@@ -442,10 +442,6 @@ void Step::vJobCreateBufferQueue(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  if (pJob->eClass() == CN_JOB_UNIVERSAL) {
-    vTrace("Job: %p JobClass: %p\n"_Stz, pJob, pJob->aJobClass());
-  }
-  
   RASSERT( ! pJob->m_pBufferQueue );
   pJob->m_pBufferQueue = new Queue;
   
