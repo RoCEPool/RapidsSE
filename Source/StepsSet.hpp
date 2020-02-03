@@ -499,6 +499,7 @@ public:
   void vJobPhaseStore(void);
   void vJobPostRecv(void);
   void vJobPreSend(void);
+  void vJobPrintMember(void);
 
   void vJobRecv(void);
   void vJobRegionSizeFetch(void);

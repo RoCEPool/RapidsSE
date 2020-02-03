@@ -54,8 +54,8 @@ namespace Jobs
     Response     m_xResponse;    // response of this job
     
   public:
-    ResponseVec* m_pResponseVec; // vector of responses from all the nodes
     Queue*       m_pBufferQueue; // buffer queue to receive the buffers of the result
+    ResponseVec* m_pResponseVec; // vector of responses from all the nodes
   
   public:
 
