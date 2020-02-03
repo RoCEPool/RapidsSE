@@ -527,8 +527,8 @@ void Job::vContentDump(void)
          "m_eJobList=%s m_eJobPhase=%s m_eJobState=%s\n"
          "bByPrompt=%d bNoWait=%d m_bWasReceived=%d\n"
          "m_iParentId=%lld m_iOriginatingId=%lld\n"
-         "m_nxReferences=%lld\n"_Stz,
-         "m_pBufferQueue=%p\n"_Stz,
+         "m_nxReferences=%lld\n"
+         "m_pBufferQueue=%p\n"
          "m_pPipeline=%p\n"_Stz,
          this,
          aCN[eClass()],
