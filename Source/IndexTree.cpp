@@ -341,7 +341,7 @@ Ref IndexTree::xwGetRef(Key* aFindKey)
   if (! aEntPos)
     return xwNilRef;
 
-  aEntPos = EntBuffer::pMoveToNextEntry(aEntPos,nullptr,&pEntBuffer);
+  aEntPos = EntBuffer::pMoveToNextEntry(aEntPos,&pEntBuffer);
   
   //! ALKA added:
   // could be the last entry ...

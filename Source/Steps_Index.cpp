@@ -614,7 +614,7 @@ void Step::vIndexRange(void)
   if (aUpperEntBuffer) {
     //aUpperEntry = aUpperEntBuffer->aPositionQuery(xEntWrkUpper, eUpperRelnOp);
     aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xEntWrkUpper.aKey());
-    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xEntWrkUpper.aKey(), &aUpperEntBuffer);
+    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, &aUpperEntBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
       aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry,
@@ -858,7 +858,7 @@ void Step::vIndexUpperBound(void)
   if (aUpperEntBuffer) {
     
     aUpperEntry = aUpperEntBuffer->pPositionPriorEntry(xEntWrkUpper.aKey());
-    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, xEntWrkUpper.aKey(), &aUpperEntBuffer);
+    aUpperEntry = EntBuffer::pMoveToNextEntry(aUpperEntry, &aUpperEntBuffer);
     
     if (aUpperEntry && eUpperRelnOp == RO_LESS_EQUAL) {
       aUpperEntry = EntBuffer::pMoveToGreaterThanEntry(aUpperEntry,

@@ -79,7 +79,7 @@ namespace IndexTrees
     
     static Ent* pMoveToGreaterThanEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer);
     static Ent* pMoveToGreaterEqualEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer);
-    static Ent* pMoveToNextEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer);
+    static Ent* pMoveToNextEntry(Ent* aEnt, EntBuffer** ppEntBuffer);
     static Ent* pFindPrevKeyEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer);
     
     ////////////////////////////////////////////////////////////////////////////
