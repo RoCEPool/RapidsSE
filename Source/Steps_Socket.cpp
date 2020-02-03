@@ -779,10 +779,6 @@ void Step::vSocketSendObject(void)
   if (_bIsValidJob(eClass)) {
     Job* pJob = _pJob(pObject);
     
-    if (pJob->eClass() == CN_JOB_UNIVERSAL) {
-      vTrace("********Job: %p JobClass: %p\n"_Stz, pJob, pJob->aJobClass());
-    }
-    
     // ray added 25 Aug 2019
     ASSERT(pJob->aJobClass()->m_fpSend && pJob->aJobClass()->m_fpRecv);
     
