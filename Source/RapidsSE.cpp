@@ -849,9 +849,9 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   i8 iMaxRowNo = 0;
   
   eCN eClass = pJob->eClass();
-  JobClass* pJobClass = JobClass::pFind(eClass);
-  pJob->m_aJobClass = pJobClass;
-  eRS eResponseKind = pJob->m_aJobClass->m_eResponse;
+  JobClass* aJobClass = JobClass::pFind(eClass);
+  pJob->vJobClass(aJobClass);
+  eRS eResponseKind = pJob->aJobClass()->m_eResponse;
   Response* pResponse = nullptr;
   
   if (eResponseKind == RS_LOCAL_ROWS) {
@@ -928,9 +928,9 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
   API_BEGIN();
   
   eCN eClass = pJob->eClass();
-  JobClass* pJobClass = JobClass::pFind(eClass);
-  pJob->m_aJobClass = pJobClass;
-  eRS eResponseKind = pJob->m_aJobClass->m_eResponse;
+  JobClass* aJobClass = JobClass::pFind(eClass);
+  pJob->vJobClass(aJobClass);
+  eRS eResponseKind = pJob->aJobClass()->m_eResponse;
   
   i8 iRowsProcessed= 0;
   

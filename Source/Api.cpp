@@ -303,7 +303,7 @@ void Api::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 bool Api::bReseedJob(Session* pSession, Job* pJob)
 {
-  ASSERT(pJob->m_aJobClass);
+  ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
   
   
@@ -344,7 +344,7 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob(Job* pJob)
 {
-  ASSERT(pJob->m_aJobClass);
+  ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
 
   
@@ -464,7 +464,7 @@ void Api::vSpawnJobAndWait(Job* pJob)
 /*----------------------------------------------------------------------------*/
 bool Api::bSpawnJobDedicated(Job* pJob)
 {
-  ASSERT(pJob->m_aJobClass);
+  ASSERT(pJob->aJobClass());
   ASSERT(SS_ENUMS != pJob->eSeed());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

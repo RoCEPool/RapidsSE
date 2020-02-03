@@ -564,7 +564,7 @@ void Step::vJobExecuteFetch(void)
   switch (pJob->eClass()) {
             
     default:
-      StrLib::vCopy(sExecute.azChar(),pJob->m_aJobClass->m_aSeedExe->azChar());
+      StrLib::vCopy(sExecute.azChar(),pJob->aJobClass()->m_aSeedExe->azChar());
       //sExecute.vConcat("_exe"_Stz);
       break;
   }
@@ -643,7 +643,7 @@ void Step::vJobHasOperand(void)
   
   
   i8 bHas = pJob->m_pOperand ? true : false;
-  if (pJob->m_aJobClass->m_eClass == CN_JOB_WRITEBUFFER)
+  if (pJob->aJobClass()->m_eClass == CN_JOB_WRITEBUFFER)
     int iDebug = 1;
   
   m_pDataStack->vPushInt(bHas);
@@ -1057,7 +1057,7 @@ void Step::vJobPostRecv(void)
     aJobClass = JobClass::pFind(eClass);
   }
   
-  pJob->m_aJobClass = aJobClass;
+  pJob->vJobClass(aJobClass);
 
   ASSERT(aJobClass->m_fpRecv == vJob_recv);
   
@@ -1089,11 +1089,11 @@ void Step::vJobPreSend(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
-  JobClass* pJobClass = pJob->m_aJobClass;
+  JobClass* aJobClass = pJob->aJobClass();
   
   //ActLog::vAdd(pJob,AN_PRE_SEND,m_pTask->pJob());
-  if (pJobClass->m_fpSend)
-    (*pJobClass->m_fpSend)(pJob);
+  if (aJobClass->m_fpSend)
+    (*aJobClass->m_fpSend)(pJob);
   
   if (pJob->m_xReqTuple.m_iDetail)
     JobLog::vNote(pJob,

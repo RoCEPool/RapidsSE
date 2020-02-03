@@ -1683,7 +1683,7 @@ void Jobs::vJob_post(Job* pJob)
   
   //! why wouldn't this be set by now??
   JobClass* pJobClass = JobClass::pFind(eClass);
-  pJob->m_aJobClass = pJobClass;
+  pJob->vJobClass(pJobClass);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1699,7 +1699,7 @@ void Jobs::vJob_post(Job* pJob)
     //eResponse = pJob->m_aJobClass->m_eResponse;
   }
   else {
-    eResponse = pJob->m_aJobClass->m_eResponse;
+    eResponse = pJob->aJobClass()->m_eResponse;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1719,8 +1719,8 @@ void Jobs::vJob_post(Job* pJob)
       
     default:
       vTrace("Invalid response in job %s : %s\n"_Stz,
-             aCN[pJob->m_aJobClass->m_eClass],
-             aRS[pJob->m_aJobClass->m_eResponse]);
+             aCN[pJob->aJobClass()->m_eClass],
+             aRS[pJob->aJobClass()->m_eResponse]);
   }
 }
 

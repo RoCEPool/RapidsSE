@@ -72,7 +72,7 @@ namespace Jobs
     i8        m_iOriginatingId;   // job id of originating job
 
     // to go ------------------
-  //private:
+  private:
     JobClass* m_aJobClass;    // job class THIS WILL GO
   public:
     eJT       m_eJobType;     // type of job
