@@ -38,7 +38,7 @@ void Step::vJob__BegunNew(void)
   //JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
   //pJobBegun->m_aJobClass = pJobClass__Begun;
 
-  pJobBegun->vJobClass(aJobClass_Universal);
+  pJobBegun->vJobClass(aJobClass_Universal,(char*)__func__);
 
   pJobBegun->vJobNm("_begun"_Stz);
   pJobBegun->pEnameSet()->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
@@ -74,7 +74,7 @@ void Step::vJob__CancelNew(void)
   pJobCancel->vJobKind(JK_GENERIC);
 
   JobClass* aJobClass__Cancel = pJobClass_Universal;
-  pJobCancel->vJobClass(aJobClass__Cancel);
+  pJobCancel->vJobClass(aJobClass__Cancel,(char*)__func__);
 
   pJobCancel->vJobNm("_cancel"_Stz);
   pJobCancel->pEnameSet()->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
@@ -111,7 +111,7 @@ void Step::vJob__CancelledNew(void)
   pJobCancelled->vJobKind(JK_GENERIC);
 
   JobClass* aJobClass__Cancelled = pJobClass_Universal;
-  pJobCancelled->vJobClass(aJobClass__Cancelled);
+  pJobCancelled->vJobClass(aJobClass__Cancelled,(char*)__func__);
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobCancelled);
   
@@ -147,7 +147,7 @@ void Step::vJob__EndNew(void)
   pJobEnd->vJobKind(JK_GENERIC);
 
   JobClass* aJobClass__End = pJobClass_Universal;
-  pJobEnd->vJobClass(aJobClass__End);
+  pJobEnd->vJobClass(aJobClass__End,(char*)__func__);
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobEnd);
   
@@ -184,7 +184,7 @@ void Step::vJob__EndedNew(void)
   pJobEnded->vJobKind(JK_GENERIC);
 
   JobClass* aJobClass__Ended = pJobClass_Universal;
-  pJobEnded->vJobClass(aJobClass__Ended);
+  pJobEnded->vJobClass(aJobClass__Ended,(char*)__func__);
   
   pJobEnded->vJobNm("_ended"_Stz);
   pJobEnded->pEnameSet()->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);
@@ -220,7 +220,7 @@ void Step::vJob__ExecuteNew(void)
   pJobExecute->vJobKind(JK_GENERIC);
 
   JobClass* aJobClass__Execute = pJobClass_Universal;
-  pJobExecute->vJobClass(aJobClass__Execute);
+  pJobExecute->vJobClass(aJobClass__Execute,(char*)__func__);
   
   //ActLog::vAdd(m_pTask->pJob(),AN_NEW_JOB,pJobExecute);
   
@@ -257,7 +257,7 @@ void Step::vJob__ExecutedNew(void)
   pJobExecuted->vJobKind(JK_GENERIC);
 
   JobClass* aJobClass__Executed = pJobClass_Universal;
-  pJobExecuted->vJobClass(aJobClass__Executed);
+  pJobExecuted->vJobClass(aJobClass__Executed,(char*)__func__);
   
   pJobExecuted->vJobNm("_executed"_Stz);
   pJobExecuted->pEnameSet()->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL);

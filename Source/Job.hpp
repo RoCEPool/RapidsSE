@@ -122,7 +122,7 @@ namespace Jobs
     void vIncRowsInvalid(void);
     i8   iJobId(void);
     JobClass* aJobClass(void);
-    void vJobClass(JobClass* aJobClass);
+    void vJobClass(JobClass* aJobClass, char* azCaller);
     eJK  eJobKind(void);
     void vJobKind(eJK eJobKind);
     eJL  eJobList(void);

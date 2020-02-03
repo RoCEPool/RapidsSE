@@ -676,9 +676,20 @@ JobClass* Job::aJobClass(void)
 /*----------------------------------------------------------------------------*/
 /* set job class                                                              */
 /*----------------------------------------------------------------------------*/
-void Job::vJobClass(JobClass* aJobClass)
+void Job::vJobClass(JobClass* aJobClass, char* azCaller)
 {
   m_aJobClass = aJobClass;
+  
+  Thread* pThread = AM::pThisTLSThread();
+  
+  vTrace("Job %p %s m_aJobClass set to %p %s; thread %p caller %s\n"_Stz,
+         this,
+         m_sJobNm.szStz(),
+         m_aJobClass,
+         m_aJobClass->m_aComment->azChar(),
+         pThread,
+         azCaller
+         );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1683,7 +1694,7 @@ void Jobs::vJob_post(Job* pJob)
   
   //! why wouldn't this be set by now??
   JobClass* pJobClass = JobClass::pFind(eClass);
-  pJob->vJobClass(pJobClass);
+  pJob->vJobClass(pJobClass,(char*)__func__);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

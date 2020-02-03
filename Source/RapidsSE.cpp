@@ -850,7 +850,7 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   
   eCN eClass = pJob->eClass();
   JobClass* aJobClass = JobClass::pFind(eClass);
-  pJob->vJobClass(aJobClass);
+  pJob->vJobClass(aJobClass,(char*)__func__);
   eRS eResponseKind = pJob->aJobClass()->m_eResponse;
   Response* pResponse = nullptr;
   
@@ -929,7 +929,7 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
   
   eCN eClass = pJob->eClass();
   JobClass* aJobClass = JobClass::pFind(eClass);
-  pJob->vJobClass(aJobClass);
+  pJob->vJobClass(aJobClass,(char*)__func__);
   eRS eResponseKind = pJob->aJobClass()->m_eResponse;
   
   i8 iRowsProcessed= 0;

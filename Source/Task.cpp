@@ -702,7 +702,7 @@ void Task::vRefindJobClass(void)
   // find the job class on this node
   eCN eClass = m_pJob->eClass();
   JobClass* aJobClass = JobClass::pFind(eClass);
-  m_pJob->vJobClass(aJobClass);
+  m_pJob->vJobClass(aJobClass,(char*)__func__);
   
   //m_pJob->m_aJobClass->vJobCat();
 }

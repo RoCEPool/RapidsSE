@@ -1057,7 +1057,7 @@ void Step::vJobPostRecv(void)
     aJobClass = JobClass::pFind(eClass);
   }
   
-  pJob->vJobClass(aJobClass);
+  pJob->vJobClass(aJobClass,(char*)__func__);
 
   ASSERT(aJobClass->m_fpRecv == vJob_recv);
   

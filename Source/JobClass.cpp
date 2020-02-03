@@ -58,7 +58,7 @@ Job* JobClass::pNewJob(ReqTuple* aReqTuple)
 {
   Job* pNewJob = (*m_fpNew)(this,aReqTuple);
   
-  pNewJob->vJobClass(this);
+  pNewJob->vJobClass(this,(char*)__func__);
   
   return pNewJob;
 }
