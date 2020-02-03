@@ -182,6 +182,7 @@ pDUMPFUN *gpDump[]
   /* */ &Dump::vUndefined,       // CN_METABLOCK
   /* */ &Dump::vUndefined,       // CN_METACELL
   /* */ &Dump::vUndefined,       // CN_METAGRAPH
+  /* */ &Dump::vUndefined,       // CN_METAINHERIT
   /* */ &Dump::vUndefined,       // CN_METAINHERITS
   /* */ &Dump::vUndefined,       // CN_METAMEMBER
   /* */ &Dump::vUndefined,       // CN_METASTRUCTURE
@@ -517,6 +518,7 @@ i8 giClassSize[]
   /* */ sizeof(MetaBlock),          // CN_METABLOCK
   /* */ sizeof(MetaCell),           // CN_METACELL
   /* */ sizeof(MetaGraph),          // CN_METAGRAPH
+  /* */ sizeof(MetaInherit),        // CN_METAINHERIT
   /* */ sizeof(MetaInherits),       // CN_METAINHERITS
   /* */ sizeof(MetaMember),         // CN_METAMEMBER
   /* */ sizeof(MetaStructure),      // CN_METASTRUCTURE
@@ -852,6 +854,7 @@ eHT geWhichHeap[]
   /* */ HT_TRANSIENT_MEDIUM,  // CN_METABLOCK
   /* */ HT_TRANSIENT_SMALL,   // CN_METACELL
   /* */ HT_TRANSIENT_MEDIUM,  // CN_METAGRAPH
+  /* */ HT_TRANSIENT_SMALL,   // CN_METAINHERIT
   /* */ HT_TRANSIENT_SMALL,   // CN_METAINHERITS
   /* */ HT_TRANSIENT_SMALL,   // CN_METAMEMBER
   /* */ HT_TRANSIENT_MEDIUM,  // CN_METASTRUCTURE
