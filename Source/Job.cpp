@@ -682,14 +682,14 @@ void Job::vJobClass(JobClass* aJobClass, char* azCaller)
   
   Thread* pThread = AM::pThisTLSThread();
   
-  vTrace("Job %p %s m_aJobClass set to %p %s; thread %p caller %s\n"_Stz,
-         this,
-         m_sJobNm.szStz(),
-         m_aJobClass,
-         "comment"_Stz, //m_aJobClass->m_aComment->azChar(),
-         pThread,
-         azCaller
-         );
+//  vTrace("Job %p %s m_aJobClass set to %p %s; thread %p caller %s\n"_Stz,
+//         this,
+//         m_sJobNm.szStz(),
+//         m_aJobClass,
+//         "comment"_Stz, //m_aJobClass->m_aComment->azChar(),
+//         pThread,
+//         azCaller
+//         );
 }
 
 /*----------------------------------------------------------------------------*/
