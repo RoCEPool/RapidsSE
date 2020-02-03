@@ -263,7 +263,6 @@ void Vortex::vParseClass(Stz* szSawTerm)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  
   // detect class base clause ?
   if (xTkn.bSame(":"_Stz)) {
     vClassDescend(xClassNm.szTerm());
@@ -790,7 +789,7 @@ void Vortex::vParseStruct(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse TEMPLATE < ... > CLASS ...  | <other> ...                            */
+/* parse TEMPLATE _^_ < ... > CLASS ...  | <other> ...                        */
 /*----------------------------------------------------------------------------*/
 void Vortex::vParseTemplate(Stz* szSawTerm)
 {
@@ -798,17 +797,16 @@ void Vortex::vParseTemplate(Stz* szSawTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(szSawTerm->bSame("template"_Stz));
-    
-  vTplArgsReset();
-  
+      
   Token xTkn;
   
   vGetExpectedToken(xTkn,"<"_Stz);
   
-  vCollectTplArgs("<"_Stz);
+  vCollectTplTerms("<"_Stz);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // class or function
+  // class or other
+  
   vGetNextToken(xTkn);
   
   if (xTkn.bSame("class"_Stz)) {
@@ -1036,36 +1034,34 @@ void Vortex::vCollectOtherTerms(Stz* szSawTerm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect all teplate arg terms : TEMPLATE _^_ < ... >                       */
+/* collect all template terms : TEMPLATE  < _^_ ... >                         */
 /*----------------------------------------------------------------------------*/
-void Vortex::vCollectTplArgs(Stz* szSawTerm)
+void Vortex::vCollectTplTerms(Stz* szSawTerm)
 {
   TRACE("/%s/ >%s SAW: %s\n"_Stz,m_sSourcePath.szStz(),__func__,szSawTerm->azChar());
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
   RASSERT(szSawTerm->bSame("<"_Stz));
-  RASSERT(0 == m_oOtherTerms.nItems());
 
+  m_oTplTerms.vReset();
+  
   vFragmentMarker("@"_Stz);
   
-  m_oTplArgs.vAdd(szSawTerm);
-
   Token xTkn;
   
-  // collect ... ( ... )
-  for (;;) {
-    CHECKED(bGetNextToken(xTkn));
-    m_oTplArgs.vAdd(xTkn.szTerm());
+  // collect ... >
+  while (bGetNextToken(xTkn)) {
     if (xTkn.bSame(">"_Stz))
       break;
+    m_oTplTerms.vAdd(xTkn.szTerm());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  s48K sTermsString;
-  m_oTplArgs.vNamesString(sTermsString);
+  s48K sTerms;
+  m_oTplTerms.vNamesString(sTerms);
   
-  TRACE("  TplArgs: %s\n"_Stz,sTermsString.azChar());
+  TRACE("  TplTerms: %s\n"_Stz,sTerms.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1219,14 +1215,14 @@ void Vortex::vStructureNew_class(Stz* szClassNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  if (m_oTplArgs.nItems()) {
+  if (m_oTplTerms.nItems()) {
     m_p_MetaStructure = new MetaStructure(szClassNm,
                                           MS_TEMPLATE,
                                           CP_CLASS,
                                           m_pMetaGraph,
                                           m_p_MetaStructure);
     
-    m_p_MetaStructure->vTplArgs(&m_oTplArgs);
+    m_p_MetaStructure->vTplArgs(&m_oTplTerms);
   }
   else {
     m_p_MetaStructure = new MetaStructure(szClassNm,
@@ -1589,7 +1585,7 @@ void Vortex::vGetTplArg(Token& roTerm)
   
   CHECKED(bGetNextToken(roTerm))
   
-  m_oTplArgs.vAdd(roTerm.szTerm());
+  m_oTplTerms.vAdd(roTerm.szTerm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1698,11 +1694,11 @@ void Vortex::vThrowProblem(i8 i_Problem)
 /*----------------------------------------------------------------------------*/
 /* reset template argument terms                                              */
 /*----------------------------------------------------------------------------*/
-void Vortex::vTplArgsReset(void)
+void Vortex::vTplTermsReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_VORTEX,_FOOTER_);
   
-  m_oTplArgs.vReset();
+  m_oTplTerms.vReset();
 }
 
 

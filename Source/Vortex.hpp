@@ -38,8 +38,8 @@ namespace Utilities
     MetaMember* m_p_MetaMember;  // current working meta member
     ConstSet*   m_p_ConstSet;    // set of static const i8's
 
-    EnameSet    m_oOtherTerms;   // working set of collected terms
-    EnameSet    m_oTplArgs;      // working set of collected template args
+    EnameSet    m_oOtherTerms;   // working set of collected other terms
+    EnameSet    m_oTplTerms;     // working set of collected template terms
     
     // correctness section
   
@@ -104,7 +104,7 @@ namespace Utilities
     void vCollectBalancedBraces(Stz* szSawTerm);
     void vCollectBalancedParenthesis(Stz* szSawTerm);
     void vCollectOtherTerms(Stz* szSawTerm);
-    void vCollectTplArgs(Stz* szSawTerm);
+    void vCollectTplTerms(Stz* szSawTerm);
 
     void vDiscardBalanced(Stz* szOpen, Stz* szClose);
     void vDiscardBalancedAngles(Stz* szSawTerm);
@@ -152,7 +152,7 @@ namespace Utilities
      void vOtherTermsReset(void);
      void vPartRecognised(eCP ePart);
      void vThrowProblem(i8 i_Problem);
-     void vTplArgsReset(void);
+     void vTplTermsReset(void);
 
    private:
     Footer* aFooter(void);
