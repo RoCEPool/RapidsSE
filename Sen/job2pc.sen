@@ -14,8 +14,6 @@
   // create the response vector in the orginating job to receive responses
   pJob job.createResponseVec
 
-  1000 thread::sleepMsec
-
   // create the buffer queue in the orginating job to receive buffers
   pJob job.createBufferQueue
 

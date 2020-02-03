@@ -239,6 +239,9 @@
   // create the response vector in the orginating job to receive responses
   pJob job.createResponseVec
 
+  // create the buffer queue in the orginating job to receive buffers
+  pJob job.createBufferQueue
+
   // set the no of acks expected in originator job to nodes in the grid
   grid::connectedNodes pJob job.acksRemaining!
 
@@ -256,9 +259,6 @@
     then
 
   loop
-
-  // create the buffer queue in the orginating job to receive buffers
-  pJob job.createBufferQueue
 
   // wait for ack from deciding job__Ended
   task::wait
