@@ -443,7 +443,7 @@ void Step::vJobCreateBufferQueue(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   if (pJob->eClass() == CN_JOB_UNIVERSAL) {
-    vTrace("Job: %p JobClass: %p\n"_Stz, pJob, pJob->m_aJobClass);
+    vTrace("Job: %p JobClass: %p\n"_Stz, pJob, pJob->aJobClass());
   }
   
   RASSERT( ! pJob->m_pBufferQueue );
@@ -462,7 +462,7 @@ void Step::vJobPrintMember(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   if (pJob->eClass() == CN_JOB_UNIVERSAL) {
-    vTrace("------------------Job: %p JobClass: %p\n"_Stz, pJob, pJob->m_aJobClass);
+    vTrace("------------------Job: %p JobClass: %p\n"_Stz, pJob, pJob->aJobClass());
   }
   
   EXIT();
