@@ -19,13 +19,16 @@ namespace Reflection
 
 #include "MetaInherit.hpp"
 #include "MetaInherits.hpp"
+
 #include "MetaMember.hpp"
-#include "MetaStructure.hpp"
+#include "MetaType.hpp"
 
 #include "MetaCell.hpp"
 #include "MetaBlock.hpp"
 
 #include "MetaGraph.hpp"
+
+//------------------------------------------------------------------------------
 
 #include "Reflective.hpp"
 
