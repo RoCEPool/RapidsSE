@@ -154,6 +154,15 @@ void MetaStructure::vPrint(i8 i_Tab)
           vTrace(", "_Stz);
 
       vTrace("%s"_Stz,pInherit->sMetaStructure()->azChar());
+      
+      EnameSet* pTplArgs = pInherit->pTplArgs();
+      if (pTplArgs) {
+        vTrace("<"_Stz);
+        i8 nArgs = pTplArgs->nItems();
+        for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++)
+          vTrace("%s"_Stz,pTplArgs->szName(i_Arg));
+        vTrace(">"_Stz);
+      }
     }
   }
   
