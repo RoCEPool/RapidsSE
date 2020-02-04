@@ -169,6 +169,25 @@ void DataBuffer::vIsPermanent(bool bIsPermanent)
   m_bIsPermanent = bIsPermanent;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the entry buffer that given id references                              */
+/*----------------------------------------------------------------------------*/
+DataBuffer* DataBuffer::pRefdDataBuffer(Ref& xRef)
+{
+  i8 i_Buffer = xRef.iBuffer();
+  
+  HeapBuffer* pHeapBuffer =
+  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+  
+  DataBuffer* pDataBuffer =
+  reinterpret_cast<DataBuffer*>(pHeapBuffer->aFirstChunk());
+  
+  ASSERT(pDataBuffer);
+  ASSERT(pDataBuffer->eClass() == CN_CRWBUFFER || pDataBuffer->eClass() == CN_CRVBUFFER);
+  
+  return pDataBuffer;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

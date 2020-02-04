@@ -19,6 +19,8 @@ namespace DataBuffers
     DataBuffer(eCN eClass, bool bIsPermanent);
    ~DataBuffer(void) noexcept(false);
 
+    static DataBuffer* pRefdDataBuffer(Ref& xRef);
+    
     i8          iAgeSec(void);
 
     void        vBufferHeight(i8 iBufferHeight);
@@ -29,7 +31,7 @@ namespace DataBuffers
   
     void        vPartitionNo(i8 iPartitionNo);
     i8          iPartitionNo(void);
- 
+    
     Birth&      oWhenNewed(void);
   
     // - - - - - - - - - - - - - -

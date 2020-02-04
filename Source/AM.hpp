@@ -166,7 +166,8 @@ namespace Oblique
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vCopyrightText(s256& sCopyRight);
-
+    static Crv* aCrv(DataBuffer* pDataBuffer, i8 iItem);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     static void vDdlDropRead(Task* pTask);
     static void vDdlDropWrite(Task* pTask);

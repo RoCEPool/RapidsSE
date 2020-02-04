@@ -17,7 +17,7 @@ namespace CompilerStream{                                                     }
 namespace ControlData   {                                                     }
 namespace Correctness   { class Cell; class Focal; class Header; class Object;
                           class Statistics;                                   }
-namespace DataBuffers   {                                                     }
+namespace DataBuffers   { class DataBuffer;                                   }
 namespace DataOperators {                                                     }
 namespace Datums        { class Datum_h;
                           template <i8 SPACE> class Datum_t;                  }
@@ -64,7 +64,7 @@ namespace Prompt        { class SePrompt;                                     }
 namespace Oblique       { class AM;                                           }
 namespace Operands      { class Operand;                                      }
 namespace Operators     { class Op; class Pipeline;                           }
-namespace ReadConsistency {                                                   }
+namespace ReadConsistency { class Crv;                                        }
 namespace Records       {                                                     }
 namespace Reflection    { class ConstDef; class ConstSet;
                           class MetaBlock; class MetaCell; class MetaGraph;

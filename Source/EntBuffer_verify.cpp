@@ -674,15 +674,28 @@ bool EntBuffer::bVerifyRowRefs(void)
     
     // get the row buffer that this H0 key leaf references
     Ref xRef = aEnt->xRef();
-    CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
+    //CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
+    
+    DataBuffer* pDataBuffer = DataBuffer::pRefdDataBuffer(xRef);
     
     // get the row entry from referenced entry buffer
     i8 i_Item = aEnt->xRef().iItem();
-    Crw* aCrw = pCrwBuffer->aCrw(i_Item);
     
-    if (! aCrw ) {
-      vVerifyFault();
-      return false;
+    if (pDataBuffer->eClass() == CN_CRWBUFFER) {
+      CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
+      Crw* aCrw = pCrwBuffer->aCrw(i_Item);
+      if (! aCrw ) {
+        vVerifyFault();
+        return false;
+      }
+    }
+    else {
+      ASSERT(pDataBuffer->eClass() == CN_CRVBUFFER);
+      Crv* aCrv = AM::aCrv(pDataBuffer,i_Item);
+      if (! aCrv ) {
+        vVerifyFault();
+        return false;
+      }
     }
   }
   

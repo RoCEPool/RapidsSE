@@ -382,6 +382,12 @@ void AM::vCopyrightText(s256& sCopyright) {
   Engine::vGetCopyright(sCopyright);
 }
 
+Crv* AM::aCrv(DataBuffer* pDataBuffer, i8 iItem) {
+  CrvBuffer* pCrvBuffer = _pCrvBuffer(pDataBuffer);
+  Crv* aCrv = pCrvBuffer->aGetCrv(iItem);
+  return aCrv;
+}
+
 void AM::vWriteLog(void) {
   Log::vWriteCsv(false);
 }
