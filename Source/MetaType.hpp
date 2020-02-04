@@ -11,7 +11,7 @@ namespace Reflection
   {
   public:
  
-    MetaType*     m_p_ParentType;  // parent structure
+    MetaType*     m_p_OuterType;   // outer/containing type
 
     s32           m_sTypeNm;       // name of this type
     eMS           m_eStructure;    // kind of structure
@@ -31,7 +31,7 @@ namespace Reflection
     void  operator delete(void*);
   
     MetaType(Stz* szTypeNm, eMS eStructure, eCP eCppPart,
-             MetaType* p_ParentType);
+             MetaType* p_OuterType);
    ~MetaType(void) noexcept(false);
 
     MetaMember* pAddMember(Stz* szMemberNm);
@@ -43,7 +43,7 @@ namespace Reflection
     eMS  eStructure(void);
     void vStructure(eMS eStructure);
 
-    MetaType* p_ParentType(void);
+    MetaType* p_OuterType(void);
   
     void vPrint(i8 i_Tab);
     void vRecursivePrint(i8 i_Depth);

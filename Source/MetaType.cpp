@@ -20,12 +20,12 @@ __aFooterFunction(MetaType)
 MetaType::MetaType(Stz* szTypeNm,
                    eMS eStructure,
                    eCP eCppPart,
-                   MetaType* p_ParentType)
+                   MetaType* p_OuterType)
 : Object(CN_METATYPE)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
-  m_p_ParentType  = p_ParentType;
+  m_p_OuterType   = p_OuterType;
 
   m_sTypeNm       = szTypeNm;
   m_eStructure    = eStructure;
@@ -97,13 +97,13 @@ MetaInherits* MetaType::pInherits(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get parent structure                                                       */
+/* get outer/containing structure                                             */
 /*----------------------------------------------------------------------------*/
-MetaType* MetaType::p_ParentType(void)
+MetaType* MetaType::p_OuterType(void)
 {
   _precondition_(_MAGIC_,CN_METATYPE,_FOOTER_);
   
-  return m_p_ParentType;
+  return m_p_OuterType;
 }
 
 /*----------------------------------------------------------------------------*/
